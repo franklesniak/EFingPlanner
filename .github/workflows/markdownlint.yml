@@ -1,0 +1,91 @@
+# Markdown and toolchain validation workflow.
+#
+# This workflow uses markdownlint by David Anson (@DavidAnson)
+# Licensed under MIT License
+# Source: https://github.com/DavidAnson/markdownlint
+#
+# Purpose: Enforce Markdown formatting, nested Markdown linting,
+# offline repository-local link validation, and the toolchain-EOL regression
+# test across the repository
+# Runs on: push and pull_request events
+
+name: Markdown and Toolchain Checks
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: ["**"]
+
+permissions:
+  contents: read
+
+jobs:
+  markdownlint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+          cache: 'npm'
+          cache-dependency-path: package-lock.json
+
+      # Python is required so the generated-output nested-Markdown regression can
+      # materialize TEMPLATE_UPDATE_PROCEDURE.md and run the real nested linter.
+      # The Node tooling installed below provides that test's prerequisites; the
+      # Python CI workflow runs pytest without node_modules, so the test would
+      # otherwise silently skip there and leave the behavior unenforced.
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.13'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: npm ci --ignore-scripts
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev]"
+
+      - name: Run markdownlint on outer files
+        id: lint-outer
+        continue-on-error: true
+        run: npm run lint:md
+
+      - name: Run markdownlint on nested Markdown code fences
+        id: lint-nested
+        continue-on-error: true
+        run: npm run lint:md:nested
+
+      - name: Validate Markdown links
+        id: lint-links
+        continue-on-error: true
+        run: npm run lint:md:links
+
+      - name: Lint materialized generated output (nested Markdown)
+        id: lint-generated
+        continue-on-error: true
+        run: pytest tests/test_materialize_downstream_adoption.py -k passes_nested_markdown_lint -v
+
+      - name: Run toolchain EOL regression tests
+        id: test-toolchain
+        continue-on-error: true
+        run: npm run test:toolchain-eol
+
+      - name: Check validation results
+        if: >-
+          steps.lint-outer.outcome == 'failure' ||
+          steps.lint-nested.outcome == 'failure' ||
+          steps.lint-links.outcome == 'failure' ||
+          steps.lint-generated.outcome == 'failure' ||
+          steps.test-toolchain.outcome == 'failure'
+        run: |
+          echo "::error::Markdown and toolchain checks failed. Check the logs above for details."
+          exit 1
