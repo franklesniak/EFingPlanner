@@ -60,7 +60,7 @@ After copying the starter schema into `schemas/<your-name>.schema.json` and the 
 
 > **Version pinning.** Look up the latest tagged release of [`check-jsonschema`](https://github.com/python-jsonschema/check-jsonschema) and pin a current version rather than copying the example `rev:` value above. Update the pin via your normal dependency-update process.
 
-Invalid fixtures should be exercised by a test that asserts validation fails. The active worked example in this template uses [`tests/test_schema_examples.py`](../../tests/test_schema_examples.py) for this purpose, and a starter version of that test lives at [`templates/python/tests/test_schema_examples.py`](../python/tests/test_schema_examples.py).
+Invalid fixtures should be exercised by a test that asserts validation fails. The active worked example in this template uses [`tests/test_schema_examples.py`](../../tests/test_schema_examples.py) for this purpose.
 
 You can verify any single fixture from the command line at any time without pre-commit:
 

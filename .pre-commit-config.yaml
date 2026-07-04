@@ -111,22 +111,6 @@ repos:
       - id: actionlint
   # template-sync: end github-actions-only
 
-  # template-sync: begin python-only
-  # Python formatting
-  - repo: https://github.com/psf/black
-    rev: 26.5.1
-    hooks:
-      - id: black
-        args: [--line-length=100]
-
-  # Python linting
-  - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.15.20
-    hooks:
-      - id: ruff-check
-        args: [--fix, --line-length=100]
-  # template-sync: end python-only
-
   # JSON Schema validation is split by module ownership so downstream
   # repositories can strip module-specific hooks without affecting unrelated
   # validation surfaces.
@@ -377,6 +361,12 @@ repos:
         language: python
         types: [markdown]
         files: ^docs/.*\.md$
+        # Archived design record: docs/spec/specification.md intentionally uses
+        # "TBD" for open trip parameters (traveler count, dates, etc.) that the
+        # family determines. It is frozen (the built repo supersedes it on
+        # conflict); the built curriculum lives under framework/ and
+        # destinations/, which this hook still guards.
+        exclude: ^docs/spec/
 
   # Markdown linting
   - repo: https://github.com/DavidAnson/markdownlint-cli2
@@ -384,31 +374,3 @@ repos:
     hooks:
       - id: markdownlint-cli2
   # template-sync: end markdown-only
-
-  # template-sync: begin terraform-only
-  # Terraform formatting and validation.
-  #
-  # These repo-local Python wrappers avoid POSIX shell assumptions so the
-  # hooks run consistently from native Windows / PowerShell, WSL/Linux, and
-  # macOS.
-  - repo: local
-    hooks:
-      - id: terraform-fmt
-        name: Terraform fmt
-        entry: python .github/scripts/terraform_hooks.py fmt
-        language: python
-        pass_filenames: false
-        files: '(^|/)([^/]+\.(tf|tfvars|tftest\.hcl|tf\.json)$|templates/terraform/)'
-      - id: terraform-validate
-        name: Terraform validate
-        entry: python .github/scripts/terraform_hooks.py validate
-        language: python
-        pass_filenames: false
-        files: '(^|/)[^/]+\.tf(\.json)?$'
-      - id: terraform-tflint
-        name: Terraform validate with tflint
-        entry: python .github/scripts/terraform_hooks.py tflint
-        language: python
-        pass_filenames: false
-        files: '(^|/)([^/]+\.tf(\.json)?|\.tflint\.hcl)$'
-  # template-sync: end terraform-only

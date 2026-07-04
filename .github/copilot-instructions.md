@@ -123,9 +123,6 @@ Prettier is **opt-in** and is **not** part of the default data-file toolchain. (
 
 When the `github-actions` module is retained, the dedicated [`.github/workflows/data-ci.yml`](workflows/data-ci.yml) workflow re-runs the repository's retained data-file pre-commit hooks (JSON, TOML, YAML, and GitHub Actions checks plus the retained schema-validation alias hooks) so retained data-file enforcement can be required via branch protection independent of language-specific CI jobs. That workflow file is the authoritative list of the hooks it executes.
 
-<!-- template-sync: begin azure-devops-guide-reference-only -->
-When the `azure-pipelines` module is retained, `.azuredevops/pipelines/data-ci.yml` re-runs retained data-file and template-sync hooks in Azure Pipelines without GitHub Actions-only `actionlint`. Azure Pipelines YAML registration, service-schema validation, queued runs, and Azure Repos branch-policy build validation remain Azure DevOps Services setup and verification tasks. For Azure DevOps Services security scanning, dependency-update choices, URL forms, and service-validation boundaries, use the durable Azure DevOps Services support guide at `docs/azure-devops-support.md` when that guide is retained.
-<!-- template-sync: end azure-devops-guide-reference-only -->
 
 <!-- template-sync: begin yaml-reference-only -->
 When YAML style validation is retained, the dedicated data-file workflow or
@@ -299,20 +296,11 @@ This repository uses modular instruction files covering both language-specific s
 <!-- template-sync: end json-reference-only -->
 - Markdown/Docs: `.github/instructions/docs.instructions.md` applies to `**/*.md` and `**/*.mdc`.
 - PowerShell: `.github/instructions/powershell.instructions.md` applies to `**/*.ps1`.
-<!-- template-sync: begin python-reference-only -->
-- Python: `.github/instructions/python.instructions.md` applies to `**/*.py`.
-<!-- template-sync: end python-reference-only -->
-<!-- template-sync: begin terraform-reference-only -->
-- Terraform: `.github/instructions/terraform.instructions.md` applies to `**/*.tf`, `**/*.tfvars`, `**/*.tftest.hcl`, `**/*.tf.json`, `**/*.tftpl`, and `**/*.tfbackend`.
-<!-- template-sync: end terraform-reference-only -->
 <!-- template-sync: begin yaml-reference-only -->
 - YAML: `.github/instructions/yaml.instructions.md` applies to `**/*.yml` and `**/*.yaml`.
 <!-- template-sync: end yaml-reference-only -->
 
 **Note:** The PowerShell instructions include comprehensive guidance on Pester testing.
-<!-- template-sync: begin terraform-reference-only -->
-The Terraform instructions include comprehensive guidance on the Terraform test framework.
-<!-- template-sync: end terraform-reference-only -->
 
 **To customize for your project:**
 
@@ -320,9 +308,6 @@ The Terraform instructions include comprehensive guidance on the Terraform test 
 - Add new instruction files for additional languages or cross-cutting rules as needed
 - Update this list to reflect the instruction files present in your project
 
-<!-- template-sync: begin terraform-reference-only -->
-> **Terraform note:** If your project does not use Terraform, remove the Terraform instruction file (`.github/instructions/terraform.instructions.md`), remove the Terraform bullet from the instruction list above, and remove Terraform-related entries from the Linting and Validation Configurations and Testing Tools sections below.
-<!-- template-sync: end terraform-reference-only -->
 
 ## Agent Instruction Files
 
@@ -383,9 +368,6 @@ This repository includes linting and validation tool configurations that align w
 
 - PSScriptAnalyzer: `.github/linting/PSScriptAnalyzerSettings.psd1` for PowerShell formatting/linting (OTBS style).
 - markdownlint: `.markdownlint.jsonc` for Markdown linting.
-<!-- template-sync: begin terraform-reference-only -->
-- TFLint: `.tflint.hcl` for Terraform linting.
-<!-- template-sync: end terraform-reference-only -->
 <!-- template-sync: begin yaml-reference-only -->
 - yamllint: `.yamllint.yml` for YAML style enforcement.
 <!-- template-sync: end yaml-reference-only -->
@@ -408,25 +390,9 @@ npm run lint:md
 
 **PowerShell:**
 
-<!-- template-sync: begin powershell-reference-only -->
-
-```powershell
-Invoke-ScriptAnalyzer -Path .\script.ps1 -Settings .\.github\linting\PSScriptAnalyzerSettings.psd1
-```
-
-<!-- template-sync: end powershell-reference-only -->
 
 **Terraform:**
 
-<!-- template-sync: begin terraform-reference-only -->
-
-```bash
-terraform fmt -check -recursive -diff
-tflint --init
-tflint --recursive --config "$(pwd)/.tflint.hcl"
-```
-
-<!-- template-sync: end terraform-reference-only -->
 
 **JSON, YAML, and GitHub Actions:**
 
@@ -474,18 +440,6 @@ Prettier is **opt-in** and is **not** part of the default data-file toolchain. T
 
 This repository includes retained testing infrastructure for the adopted language and validation contracts:
 
-<!-- template-sync: begin python-reference-only -->
-- Python: pytest, configured by `pyproject.toml` (`[tool.pytest.ini_options]`) and located under `tests/`.
-<!-- template-sync: end python-reference-only -->
-<!-- template-sync: begin powershell-reference-only -->
-- PowerShell: Pester 5.x, configured inline in the retained host CI surface
-  (`.github/workflows/powershell-ci.yml` for GitHub Actions or
-  `.azuredevops/pipelines/powershell-ci.yml` for Azure Pipelines) and located
-  under `tests/PowerShell/`.
-<!-- template-sync: end powershell-reference-only -->
-<!-- template-sync: begin terraform-reference-only -->
-- Terraform: Terraform test framework, located under `modules/*/tests/` or `tests/`.
-<!-- template-sync: end terraform-reference-only -->
 <!-- template-sync: begin schema-reference-only -->
 - JSON Schema (Draft 2020-12) example fixtures: `check-jsonschema` plus pytest, using `schemas/` and `tests/test_schema_examples.py` with fixtures under `schemas/examples/<name>/{valid,invalid}/`.
 <!-- template-sync: end schema-reference-only -->
@@ -494,35 +448,12 @@ This repository includes retained testing infrastructure for the adopted languag
 
 **Python:**
 
-<!-- template-sync: begin python-reference-only -->
-
-```bash
-python -m pyright --project pyrightconfig.json
-pytest tests/ -m "not slow" -v --cov --cov-report=term-missing
-pytest tests/ -m slow -v --no-cov
-```
-
-<!-- template-sync: end python-reference-only -->
 
 **PowerShell:**
 
-<!-- template-sync: begin powershell-reference-only -->
-
-```powershell
-Invoke-Pester -Path tests/ -Output Detailed
-```
-
-<!-- template-sync: end powershell-reference-only -->
 
 **Terraform:**
 
-<!-- template-sync: begin terraform-reference-only -->
-
-```bash
-terraform test -verbose
-```
-
-<!-- template-sync: end terraform-reference-only -->
 
 **JSON Schema example fixtures:**
 

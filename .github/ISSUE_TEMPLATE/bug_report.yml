@@ -21,7 +21,7 @@ title: "[Bug] "
 #   - Area labels: area:api, area:cli, area:docs
 labels:
   - bug
-  # - triage  # ACTION ITEM: Uncomment after creating the `triage` label in your repository
+  - triage
 # CUSTOMIZE: Uncomment and update to specify an issue type (defined at the organization level).
 # See: https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/syntax-for-issue-forms#top-level-syntax
 # type: Bug
@@ -56,10 +56,10 @@ body:
 
         **Security Notice:** If you are reporting a security vulnerability, do NOT use this form.
         Report it through the repository's
-        [private vulnerability reporting form](https://github.com/OWNER/REPO/security/advisories/new)
+        [private vulnerability reporting form](https://github.com/franklesniak/EFingPlanner/security/advisories/new)
         after maintainers have enabled private vulnerability reporting in GitHub settings.
         If that form is unavailable, review
-        [SECURITY.md](https://github.com/OWNER/REPO/blob/HEAD/SECURITY.md).
+        [SECURITY.md](https://github.com/franklesniak/EFingPlanner/blob/HEAD/SECURITY.md).
 
   - type: checkboxes
     id: pre_flight

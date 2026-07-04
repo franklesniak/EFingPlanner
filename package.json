@@ -1,7 +1,7 @@
 {
-  "name": "copilot-repo-template",
+  "name": "efingplanner",
   "version": "1.0.0",
-  "description": "Template repository with Copilot instructions and code quality tooling",
+  "description": "A self-guided executive-function curriculum for kids (roughly ages 9-11) that teaches breaking down a big project by planning a real family trip to Japan. Markdown-only educational content; the tooling here only lints the docs.",
   "private": true,
   "scripts": {
     "lint:md": "markdownlint-cli2 \"**/*.md\" \"#node_modules\" \"#.pytest_cache\"",
@@ -10,12 +10,14 @@
     "test:toolchain-eol": "node --test tests/toolchain-eol/check-toolchain-eol.test.js"
   },
   "keywords": [
-    "template",
-    "copilot",
-    "linting"
+    "executive-function",
+    "education",
+    "curriculum",
+    "open-educational-resources",
+    "markdown"
   ],
   "author": "Frank Lesniak",
-  "license": "MIT",
+  "license": "SEE LICENSE IN LICENSE",
   "engines": {
     "node": ">=22.0.0"
   },

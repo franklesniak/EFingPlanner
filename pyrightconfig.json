@@ -2,9 +2,7 @@
   "include": [
     ".github/scripts",
     ".template-sync/scripts",
-    "src",
-    "tests",
-    "templates/python/tests"
+    "tests"
   ],
   "exclude": [
     "**/__pycache__",
@@ -19,8 +17,7 @@
   ],
   "extraPaths": [
     ".github/scripts",
-    ".template-sync/scripts",
-    "src"
+    ".template-sync/scripts"
   ],
   "pythonVersion": "3.13",
   "typeCheckingMode": "basic"

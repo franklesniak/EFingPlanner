@@ -1,15 +1,10 @@
 {
-  "window.title": "Go to .vscode/settings.json and make this the name of the repo",
+  "window.title": "EFingPlanner",
   "python.analysis.extraPaths": [
     "${workspaceFolder}/.github/scripts",
     "${workspaceFolder}/.template-sync/scripts",
-    "${workspaceFolder}/src",
-    "${workspaceFolder}/tests",
-    "${workspaceFolder}/templates/python/tests"
+    "${workspaceFolder}/tests"
   ],
-  "[powershell]": {
-    "files.encoding": "utf8"
-  },
   "files.associations": {
     "**/CODEOWNERS": "ignore"
   }

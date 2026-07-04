@@ -63,24 +63,6 @@ jobs:
         with:
           python-version: "3.14"
 
-      # template-sync: begin terraform-only
-      # Install Terraform for repo-local Terraform pre-commit hooks.
-      # Version Policy: Use the latest stable Terraform version for pre-commit.
-      # Review and update quarterly per TEMPLATE_MAINTENANCE.md.
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v4
-        with:
-          terraform_version: "1.14.4"
-
-      # Install TFLint for the repo-local terraform-tflint pre-commit hook.
-      # Keep this tflint_version aligned with every other tflint_version input
-      # passed to terraform-linters/setup-tflint under .github/workflows/.
-      - name: Setup TFLint
-        uses: terraform-linters/setup-tflint@v6
-        with:
-          tflint_version: "v0.51.1"
-      # template-sync: end terraform-only
-
       - name: Install pre-commit
         run: pip install pre-commit
 

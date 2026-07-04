@@ -46,22 +46,9 @@ During downstream template adoption and stack selection, perform non-protected c
     <!-- template-sync: begin markdown-reference-only -->
     - `npm run lint:md`
     <!-- template-sync: end markdown-reference-only -->
-    <!-- template-sync: begin python-reference-only -->
-    - `python -m pyright --project pyrightconfig.json`
-    - `pytest tests/ -m "not slow" -v --cov --cov-report=term-missing`
-    - `pytest tests/ -m slow -v --no-cov`
-    <!-- template-sync: end python-reference-only -->
     <!-- template-sync: begin schema-reference-only -->
     - `pytest tests/test_schema_examples.py -v` (after any schema or schema-example change)
     <!-- template-sync: end schema-reference-only -->
-    <!-- template-sync: begin powershell-reference-only -->
-    - `Invoke-Pester -Path tests/ -Output Detailed`
-    <!-- template-sync: end powershell-reference-only -->
-    <!-- template-sync: begin terraform-reference-only -->
-    - `terraform fmt -check -recursive`
-    - `tflint --recursive`
-    - `terraform test -verbose`
-    <!-- template-sync: end terraform-reference-only -->
   - The `pre-commit run --all-files` command exercises the active hooks configured in [`.pre-commit-config.yaml`](.pre-commit-config.yaml), the authoritative list of active hooks.
   <!-- template-sync: begin json-reference-only -->
   - Retained JSON checks include strict JSON syntax (`check-json`).
@@ -75,9 +62,6 @@ During downstream template adoption and stack selection, perform non-protected c
   - Retained schema checks include JSON Schema validation (`check-jsonschema`) and schema self-validation (`check-metaschema`).
   <!-- template-sync: end schema-reference-only -->
   - When the `github-actions` module is retained, the dedicated [`.github/workflows/data-ci.yml`](.github/workflows/data-ci.yml) workflow re-runs retained data-file hooks so adopted data-file enforcement can be required via branch protection.
-  <!-- template-sync: begin azure-devops-guide-reference-only -->
-  - When the `azure-pipelines` module is retained, `.azuredevops/pipelines/data-ci.yml` re-runs retained data-file hooks; pipeline YAML and branch-policy validation remain Azure DevOps Services-backed.
-  <!-- template-sync: end azure-devops-guide-reference-only -->
   - Retained data-file authoring guidance lives in the matching module docs.
   <!-- template-sync: begin json-reference-only -->
   - JSON guidance: [`.github/instructions/json.instructions.md`](.github/instructions/json.instructions.md).
@@ -98,15 +82,6 @@ During downstream template adoption and stack selection, perform non-protected c
     <!-- template-sync: begin markdown-reference-only -->
     - Markdown/Docs: `.github/instructions/docs.instructions.md`
     <!-- template-sync: end markdown-reference-only -->
-    <!-- template-sync: begin powershell-reference-only -->
-    - PowerShell: `.github/instructions/powershell.instructions.md`
-    <!-- template-sync: end powershell-reference-only -->
-    <!-- template-sync: begin python-reference-only -->
-    - Python: `.github/instructions/python.instructions.md`
-    <!-- template-sync: end python-reference-only -->
-    <!-- template-sync: begin terraform-reference-only -->
-    - Terraform: `.github/instructions/terraform.instructions.md`
-    <!-- template-sync: end terraform-reference-only -->
     <!-- template-sync: begin yaml-reference-only -->
     - YAML: `.github/instructions/yaml.instructions.md`
     <!-- template-sync: end yaml-reference-only -->
@@ -125,9 +100,6 @@ This section is retained as Gemini host-specific protocol. Thin-entry-point prun
 
 Use this protocol only for Azure DevOps Services pull requests hosted in Azure Repos. GitHub-hosted repositories continue to use the repository's GitHub-specific protocol and tooling.
 
-<!-- template-sync: begin azure-devops-guide-reference-only -->
-For broader Azure DevOps Services module setup, validation, security scanning, dependency-update, and URL-form guidance, use the durable Azure DevOps Services support guide at `docs/azure-devops-support.md` when that guide is retained.
-<!-- template-sync: end azure-devops-guide-reference-only -->
 
 - Azure Repos Copilot code review is a limited public preview for Azure DevOps Services. It requires sign-up, organization-level enablement by a Project Collection Administrator, repository-level enablement by a repository owner or administrator, and individual-user opt-in through Preview features unless the administrator enables it for the organization. It requires Azure billing through a subscription linked to the Azure DevOps organization; Azure DevOps review usage does not draw down GitHub Copilot plan AI credits. Treat licensing and pricing details as preview-specific and documentation-driven, and do not assume GitHub-hosted Copilot review entitlements cover Azure Repos review usage.
 - Copilot review is requested manually from the Azure Repos PR Reviewers list by selecting **Request** next to **GitHub Copilot**. If Azure DevOps tooling supports reviewer operations, Gemini MAY inspect or add ordinary reviewers through Azure DevOps Pull Request Reviewers APIs, but MUST NOT claim API-triggered Copilot preview review unless the available tooling explicitly verifies that behavior.

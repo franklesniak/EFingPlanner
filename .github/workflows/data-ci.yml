@@ -251,3 +251,18 @@ jobs:
       - name: Run validate-dependabot-config
         run: pre-commit run validate-dependabot-config --all-files
       # template-sync: end github-platform-only
+
+      # LOCAL OVERRIDE (recorded in .template-sync/marker.yml): this repository
+      # excludes the `python` package module but retains the `schema` module,
+      # whose regression tests are written in Python. Run the schema guards here
+      # so a schema/fixture regression fails CI. Scoped to the downstream-
+      # meaningful schema tests rather than the full `-m "not
+      # upstream_template_only"` suite: several retained template-sync QA tests
+      # inspect the repo as if it were the pristine upstream template (expecting
+      # deleted azure/python/powershell surfaces) and cannot pass in a
+      # customized downstream repo.
+      - name: Install retained Python test dependencies
+        run: pip install pytest "check-jsonschema==0.37.3" "jsonschema>=4.18.0" "PyYAML>=6.0.3"
+
+      - name: Run schema-example and dependabot-schema regression tests
+        run: python -m pytest tests/test_schema_examples.py tests/test_dependabot_schema.py -v

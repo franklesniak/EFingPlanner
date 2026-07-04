@@ -1,0 +1,127 @@
+# Template-sync adoption marker for EFingPlanner.
+#
+# Records which upstream modules were retained at first adoption, the authorized
+# protected-file decisions, and intentional local deviations, so future template
+# syncs stay clean. `last_reviewed_template_commit` is intentionally unset until
+# an upstream commit is actually reviewed during a sync.
+template_sync:
+  source_repo: https://github.com/franklesniak/copilot-repo-template.git
+  included_modules:
+    - baseline
+    - agent-instructions
+    - github-platform
+    - github-actions
+    - github-templates
+    - markdown
+    - template-sync-support
+    - json
+    - yaml
+    - schema
+  protected_file_decisions:
+    - path: .github/copilot-instructions.md
+      adoption_mode: minimal-preservation
+      decision: MERGE
+      authorization_basis: Owner explicitly authorized trimming excluded-module reference-only blocks during first-init (question Q-A).
+      authorized_scope: Remove powershell/python/terraform/git-lfs/azure reference-only blocks only; retained content and instruction-contract anchors preserved.
+    - path: CLAUDE.md
+      adoption_mode: minimal-preservation
+      decision: MERGE
+      authorization_basis: Owner explicitly authorized trimming excluded-module reference-only blocks during first-init (question Q-A).
+      authorized_scope: Remove powershell/python/terraform/git-lfs/azure reference-only blocks only; retained Claude platform protocol preserved.
+    - path: AGENTS.md
+      adoption_mode: minimal-preservation
+      decision: MERGE
+      authorization_basis: Owner explicitly authorized trimming excluded-module reference-only blocks during first-init (question Q-A).
+      authorized_scope: Remove excluded-module reference-only blocks only; retained Codex platform protocol preserved.
+    - path: GEMINI.md
+      adoption_mode: minimal-preservation
+      decision: MERGE
+      authorization_basis: Owner explicitly authorized trimming excluded-module reference-only blocks during first-init (question Q-A).
+      authorized_scope: Remove excluded-module reference-only blocks only.
+    - path: .hermes.md
+      adoption_mode: minimal-preservation
+      decision: MERGE
+      authorization_basis: Owner explicitly authorized trimming excluded-module reference-only blocks during first-init (question Q-A).
+      authorized_scope: Remove excluded-module reference-only blocks only.
+    - path: .cursor/rules/repository-instructions.mdc
+      adoption_mode: minimal-preservation
+      decision: MERGE
+      authorization_basis: Owner explicitly authorized trimming excluded-module reference-only blocks during first-init (question Q-A).
+      authorized_scope: Remove excluded-module reference-only blocks only.
+    - path: .github/instructions/powershell.instructions.md
+      decision: REMOVE-LOCAL
+      authorization_basis: Owner explicitly authorized deleting the excluded-module instruction files during first-init (question Q-B).
+      authorized_scope: Deletion of powershell/python/terraform instruction files only.
+      reason: PowerShell module excluded.
+    - path: .github/instructions/python.instructions.md
+      decision: REMOVE-LOCAL
+      authorization_basis: Owner explicitly authorized deleting the excluded-module instruction files during first-init (question Q-B).
+      authorized_scope: Deletion of powershell/python/terraform instruction files only.
+      reason: Python module excluded.
+    - path: .github/instructions/terraform.instructions.md
+      decision: REMOVE-LOCAL
+      authorization_basis: Owner explicitly authorized deleting the excluded-module instruction files during first-init (question Q-B).
+      authorized_scope: Deletion of powershell/python/terraform instruction files only.
+      reason: Terraform module excluded.
+    - path: .github/instructions/docs.instructions.md
+      adoption_mode: minimal-preservation
+      decision: SKIP
+      reason: Owner declined edits to docs.instructions.md (question Q-C) to avoid future template-sync friction; retained verbatim.
+  protected_guide_contract_waivers:
+    - path: AGENTS.md
+      contract_key: agents-azure-devops-pr-review-protocol
+      target_module: azure-devops-collaboration
+      reason: GitHub-only adoption; the Azure DevOps PR Review Protocol section is retained intact but is not applicable to this repository.
+      authorization_basis: Owner explicitly authorized this protected-guide waiver during first-initialization (chose "Waive in the marker").
+    - path: CLAUDE.md
+      contract_key: claude-azure-devops-pr-review-protocol
+      target_module: azure-devops-collaboration
+      reason: GitHub-only adoption; the Azure DevOps PR Review Protocol section is retained intact but is not applicable to this repository.
+      authorization_basis: Owner explicitly authorized this protected-guide waiver during first-initialization (chose "Waive in the marker").
+    - path: GEMINI.md
+      contract_key: gemini-azure-devops-pr-review-protocol
+      target_module: azure-devops-collaboration
+      reason: GitHub-only adoption; the Azure DevOps PR Review Protocol section is retained intact but is not applicable to this repository.
+      authorization_basis: Owner explicitly authorized this protected-guide waiver during first-initialization (chose "Waive in the marker").
+    - path: .hermes.md
+      contract_key: hermes-azure-devops-pr-review-protocol
+      target_module: azure-devops-collaboration
+      reason: GitHub-only adoption; the Azure DevOps PR Review Protocol section is retained intact but is not applicable to this repository.
+      authorization_basis: Owner explicitly authorized this protected-guide waiver during first-initialization (chose "Waive in the marker").
+  local_overrides:
+    - path: README.md
+      reason: Fully tailored, project-specific reader-facing README for the EFingPlanner curriculum.
+      default_decision: SKIP
+    - path: LICENSE
+      reason: Downstream license is CC BY-NC-SA 4.0, not the upstream template's MIT.
+      default_decision: SKIP
+    - path: pyproject.toml
+      reason: Python package module excluded, but trimmed to pytest config as a local override so retained schema/template-sync Python tests keep their markers.
+      default_decision: SKIP
+    - path: pyrightconfig.json
+      reason: Python package module excluded; retained (trimmed) as local type-check config for the retained Python test suite.
+      default_decision: SKIP
+    - path: tests/__init__.py
+      reason: Shared pytest package marker required by retained template-sync/schema tests; falls under the python catch-all mapping but is load-bearing for retained modules.
+      default_decision: SKIP
+    - path: tests/_pytest_compat.py
+      reason: Shared pytest import shim required by retained template-sync/schema tests; falls under the python catch-all mapping but is load-bearing for retained modules.
+      default_decision: SKIP
+    - path: tests/test_gitattributes.py
+      reason: Baseline .gitattributes regression test retained; falls under the python catch-all mapping but validates the retained baseline file.
+      default_decision: SKIP
+    - path: .github/workflows/data-ci.yml
+      reason: Local override adds a schema-guard pytest step (test_schema_examples + test_dependabot_schema) because the python CI workflow was excluded; the full template-sync QA suite is not wired to CI as it assumes the pristine upstream template.
+      default_decision: MERGE
+    - path: .pre-commit-config.yaml
+      reason: Local override excludes docs/spec/ from the check-prohibited-placeholders hook because the archived design record intentionally uses "TBD" for open trip parameters.
+      default_decision: MERGE
+  local_path_ownership:
+    - path: docs/spec/
+      reason: Downstream-owned archived design record (the curriculum specification); not an upstream template path.
+    - path: LICENSING.md
+      reason: Downstream-owned licensing detail document supporting the CC BY-NC-SA 4.0 license.
+    - path: _TODO-repo-init.md
+      reason: Maintainer-owned first-initialization manual-actions checklist; downstream adoption artifact, deleted once complete.
+    - path: _ADOPTION-DIFFICULTIES.md
+      reason: Downstream adoption difficulty journal; first-initialization artifact.

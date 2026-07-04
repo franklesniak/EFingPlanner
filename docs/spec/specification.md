@@ -2,6 +2,14 @@
 
 # Unified Specification: Japan Trip Planning Executive Function Repository
 
+## Metadata
+
+- **Status:** Active
+- **Owner:** Repository Maintainers
+- **Last Updated:** 2026-07-04
+- **Scope:** Archived design record for the EFingPlanner executive-function curriculum (a self-guided project-planning course for kids roughly ages 9-11, framed as planning a real family trip to Japan). Defines the intended repository structure, session set, and build methodology. It does NOT govern the built curriculum: once the curriculum is built, the built repository supersedes this spec on any conflict, per this document's own end-of-life clause in the Split plan ("How to read and build from this spec"). Day-to-day improvements then flow through the built repository rather than this file.
+- **Related:** [README](../../README.md), [Documentation Writing Style](../../.github/instructions/docs.instructions.md)
+
 **Start here -- who this is for (read this one line first).** **If you just want worksheets for one kid and one trip: read Section 0 and ignore everything marked `Full Build only.` -- you do not need a repo, Git, or any of the machinery.** If you will hand this to an AI/coding agent to build: same Lean path, plus the build sections Section 0 names. If you will publish it or rebuild it for other destinations: also read the Full Build appendix (the `Full Build only.` set, indexed in "How to read and build from this spec"). The spec's own version block, revision history, and maintainer note live in an appendix at the very end -- they are for whoever *edits this spec*, not for building.
 
 **You do not have to build a repository or learn Git.** There are **three ways to use this**, and most families pick one of the first two: (1) **print the worksheet text as-is** and use it on paper; (2) have an **AI generate the ~13 worksheets and a parent guide** for you; (3) build the full repo. Everything in this document that looks like engineering is *optional infrastructure*. The handful of files a Lean family actually touches (~10) is listed in Section 0.
@@ -1953,8 +1961,8 @@ Goal: establish the project, roles, binder, and early artifacts.
 
 #### Session 00: Parent Setup
 
-Status: Core  
-Parent involvement: Adult-only  
+Status: Core
+Parent involvement: Adult-only
 Artifact: Parent setup checklist completed.
 
 Open with the **"If you're not sure, do exactly this (fastest safe start)" defaults block** (mirror or link the canonical version in Section 21.0) so a parent can begin in minutes and defer every optional judgment. In particular, the City C (18), food (36/37), and language (47) sessions **start Recommended and promote later automatically** -- the parent is **not** asked to predict them here (Section 14.1.1).
@@ -1980,7 +1988,7 @@ Include:
 
 #### Session 01: Project Kickoff
 
-Status: Core  
+Status: Core
 Artifact: Trip planner cover page.
 
 Child learns:
@@ -2012,7 +2020,7 @@ Include a light bridging mention (Section 5.4): the planning moves the child wil
 
 #### Session 02: Family Traveler Profiles
 
-Status: Core  
+Status: Core
 Artifact: Traveler profiles and family input notes.
 
 Include one profile per traveler on the trip-basics roster (`trip_basics.md`), written by relationship so the session stays reusable. For this family the roster is:
@@ -2060,7 +2068,7 @@ Include a `Current Family Travel Assumptions` section (this is the canonical hom
 
 #### Session 03: What Makes a Good Trip?
 
-Status: Core  
+Status: Core
 Artifact: Family trip goals and family input summary.
 
 Prompts:
@@ -2085,7 +2093,7 @@ Keep it destination-neutral (no baked-in temple/theme-park names in the built se
 
 #### Session 04: Start a Source Log
 
-Status: Core  
+Status: Core
 Artifact: First source log entry.
 
 Teach:
@@ -2107,7 +2115,7 @@ Goal: teach research before major decisions.
 
 #### Session 05: Good Sources, Bad Sources
 
-Status: Core  
+Status: Core
 Artifact: Quick trust test and deep trust checklist.
 
 Teach, **in two sittings** (both required -- "second sitting" sizes the load, it does not lower the bar; splitting a session across sittings is the existing Section 21.7 mechanic, applied here permanently because this session genuinely carries two sittings' worth of ideas -- Section 3.2's one-idea discipline):
@@ -2151,7 +2159,7 @@ This concept block is done by every family (it is part of Core Session 05). Actu
 
 #### Session 06: Book Research With a Guidebook
 
-Status: Core  
+Status: Core
 Artifact: Book notes page.
 
 The session is destination-agnostic: it teaches how to use a guidebook. The specific recommended guidebook (for Japan, for example Lonely Planet Japan or DK Eyewitness Japan) comes from the active destination pack's trusted-sources list, not from the session text. **A library copy or free reputable travel sites work just as well** -- no guidebook needs to be bought; foreground the free/library path here (and wherever a guidebook is invoked), consistent with the no-new-purchases equity note (Section 13.2). The library research plan (Session 07) is a first-class way to do this, not just a Recommended add-on.
@@ -2169,7 +2177,7 @@ Teach:
 
 #### Session 07: Library Research Plan
 
-Status: Recommended  
+Status: Recommended
 Artifact: Library visit plan or book list.
 
 Include suggested book types:
@@ -2182,7 +2190,7 @@ Include suggested book types:
 
 #### Session 08: Web Research Practice
 
-Status: Core  
+Status: Core
 Artifact: Website comparison notes.
 
 Child compares at least two sources on the same topic.
@@ -2205,7 +2213,7 @@ Record:
 
 #### Session 09: AI as Helper, Not Boss
 
-Status: Conditional core. Done if and only if the family opts into AI use (recorded in Session 00), and sequenced before any session where AI could be used. When the family is AI-free (the default), this full session is **not done at all** -- it is skipped, not "recommended." The short AI-literacy *concept* lesson stays Core for every family regardless, but it lives in **Session 05** (the always-core "what AI is and is not" block), not here. This full Session 09 is the additional teaching needed only when a family actually uses an AI tool. See Section 20.  
+Status: Conditional core. Done if and only if the family opts into AI use (recorded in Session 00), and sequenced before any session where AI could be used. When the family is AI-free (the default), this full session is **not done at all** -- it is skipped, not "recommended." The short AI-literacy *concept* lesson stays Core for every family regardless, but it lives in **Session 05** (the always-core "what AI is and is not" block), not here. This full Session 09 is the additional teaching needed only when a family actually uses an AI tool. See Section 20.
 Artifact: AI notes and verification checklist.
 
 Teach the adult-operated, confined, sequenced pattern from Section 20 (a grown-up runs the tool on the grown-up's account with the child present; AI is confined to brainstorming, search terms, and tidying the child's own notes; AI never supplies facts; no personal data goes into AI; AI logs may be retained), and:
@@ -2240,7 +2248,7 @@ Goal: understand enough about the destination to recommend a season and general 
 
 #### Session 10: Destination Snapshot
 
-Status: Core  
+Status: Core
 Artifact: Destination snapshot page. (Built artifact name is neutral; "Japan snapshot" is only the instance.)
 
 Open this session's Destination Notes (`destinations/japan/session_inserts/10_snapshot_facts.md`) for the place specifics. Prompts (the place facts come from the insert, not the session body):
@@ -2258,7 +2266,7 @@ Do not require mastery.
 
 #### Session 11: Regions and Cities Overview
 
-Status: Core  
+Status: Core
 Artifact: Region/map notes.
 
 Include:
@@ -2278,7 +2286,7 @@ State clearly:
 
 #### Session 12: Weather, Seasons, and Events
 
-Status: Core  
+Status: Core
 Artifact: Season comparison chart.
 
 Compare:
@@ -2311,7 +2319,7 @@ These seasonal specifics live in the Japan pack (`destinations/japan/reference/s
 
 #### Session 13: Trip Goals and Travel Style
 
-Status: Core  
+Status: Core
 Artifact: Travel style worksheet.
 
 Child considers:
@@ -2330,7 +2338,7 @@ Add a light cost-awareness touch here (the detailed budget work stays in Phase 6
 
 #### Session 14: Checkpoint 1 Season Recommendation
 
-Status: Core  
+Status: Core
 Artifact: Season recommendation report.
 
 Child recommends:
@@ -2367,7 +2375,7 @@ Goal: research candidate cities and recommend a city shortlist.
 
 #### Session 15: City Research Cards
 
-Status: Core  
+Status: Core
 Artifact: City research card template started.
 
 Fields:
@@ -2413,7 +2421,7 @@ Each session should provide:
 
 #### Session 19: Other Places Research
 
-Status: Core  
+Status: Core
 Artifact: At least two additional city/region cards.
 
 The menu of candidate places comes from the destination pack (`destinations/japan/session_inserts/19_other_places_menu.md`), not the session text. For Japan the menu includes, for example:
@@ -2438,7 +2446,7 @@ Require at least two alternatives beyond the City A / City B / City C deep-dives
 
 #### Session 20: City Long-List
 
-Status: Core  
+Status: Core
 Artifact: Long-list of 5-8 possible cities/regions.
 
 Fields:
@@ -2451,7 +2459,7 @@ Fields:
 
 #### Session 21: Compare Cities
 
-Status: Core  
+Status: Core
 Artifact: City comparison table.
 
 Default scoring categories:
@@ -2473,7 +2481,7 @@ Add a light, recurring budget-band check here and at each Phase 3-5 decision poi
 
 #### Session 22: Checkpoint 2 City Shortlist
 
-Status: Core  
+Status: Core
 Artifact: City shortlist recommendation.
 
 Child recommends:
@@ -2506,7 +2514,7 @@ Goal: build a ranked list of things to do.
 
 #### Session 23: Attraction Research Cards
 
-Status: Core  
+Status: Core
 Artifact: Attraction cards.
 
 Fields:
@@ -2534,7 +2542,7 @@ Starter attraction ideas come from the destination pack (`destinations/japan/ses
 
 #### Session 24: Culture, History, Nature, Food, and Fun Balance
 
-Status: Core  
+Status: Core
 Artifact: Balance chart.
 
 Categories:
@@ -2553,7 +2561,7 @@ Goal: avoid planning the same type of day repeatedly.
 
 #### Session 25: Review Reviews Carefully
 
-Status: Core  
+Status: Core
 Artifact: Review trust worksheet.
 
 Teach, **in two sittings** (both required -- the same split-across-sittings rule as Session 05; "second sitting" sizes the load, it does not lower the bar):
@@ -2588,7 +2596,7 @@ Use Google Maps, Tripadvisor, hotel reviews, restaurant reviews, or attraction r
 
 #### Session 26: Rank Attractions
 
-Status: Core  
+Status: Core
 Artifact: Ranked attraction list.
 
 Use a rubric such as:
@@ -2613,7 +2621,7 @@ As with Session 21, offer a lighter three-criteria version of this rubric beside
 
 #### Session 27: Checkpoint 3 Top Experiences
 
-Status: Core  
+Status: Core
 Artifact: Top experiences recommendation.
 
 Child presents:
@@ -2642,7 +2650,7 @@ Goal: turn places into a realistic route and trip length.
 
 #### Session 28: Map the Route
 
-Status: Core  
+Status: Core
 Artifact: Route map notes.
 
 Use Google Maps or another map.
@@ -2666,7 +2674,7 @@ Ask (reason from train **time**, using the "Directions" step above -- not eyebal
 
 #### Session 29: How Long Should We Stay?
 
-Status: Core  
+Status: Core
 Artifact: Nights-per-city estimate.
 
 Teach:
@@ -2691,7 +2699,7 @@ Teach:
 
 #### Session 30: Trains, Transit, and IC Cards
 
-Status: Core  
+Status: Core
 Artifact: Transportation basics notes.
 
 Teach lightly:
@@ -2713,7 +2721,7 @@ Teach lightly:
 
 #### Session 31: Route Trade-Off Report
 
-Status: Core  
+Status: Core
 Artifact: Trade-off report comparing at least two route options.
 
 Possible comparisons:
@@ -2739,7 +2747,7 @@ Free-form weighted reasoning (assigning their own importance weights and arguing
 
 #### Session 32: Checkpoint 4 Route and Trip Length
 
-Status: Core  
+Status: Core
 Artifact: Route and trip-length recommendation.
 
 Child recommends:
@@ -2772,7 +2780,7 @@ Goal: teach practical constraints and moderate budget awareness.
 
 #### Session 33: Budget Basics, First Pass
 
-Status: Core  
+Status: Core
 Artifact: Budget category worksheet and simple high/medium/low hotel/meal estimate.
 
 Teach categories:
@@ -2827,7 +2835,7 @@ Flag one lodging-pricing wrinkle: a **ryokan** (traditional inn) is usually pric
 
 #### Session 34: Neighborhoods and Hotel Location
 
-Status: Core  
+Status: Core
 Artifact: Neighborhood comparison.
 
 Teach:
@@ -2843,7 +2851,7 @@ Teach:
 
 #### Session 35: Hotel Comparison
 
-Status: Core  
+Status: Core
 Artifact: Hotel comparison cards.
 
 Fields:
@@ -2870,7 +2878,7 @@ Child compares; adults book. **How many comparisons:** at least 1 per likely ove
 
 #### Session 36: Food Research
 
-Status: Conditional core (Core if the family wants the restaurant and food shortlist binder component; otherwise Recommended; see Section 14.1.1).  
+Status: Conditional core (Core if the family wants the restaurant and food shortlist binder component; otherwise Recommended; see Section 14.1.1).
 Artifact: Food wish list.
 
 The built session is destination-neutral ("explore your destination's foods; open this session's Destination Notes"). The specific foods live in the pack insert (`destinations/japan/session_inserts/36_37_food_ideas.md`), which for Japan includes, for example:
@@ -2908,7 +2916,7 @@ Include a brief food safety mini-checklist:
 
 #### Session 37: Restaurant Shortlist
 
-Status: Conditional core (Core if the family wants the restaurant and food shortlist binder component; otherwise Recommended; see Section 14.1.1).  
+Status: Conditional core (Core if the family wants the restaurant and food shortlist binder component; otherwise Recommended; see Section 14.1.1).
 Artifact: Restaurant cards and dining-area list.
 
 Fields:
@@ -2928,7 +2936,7 @@ Include Tabelog as optional and possibly adult-assisted.
 
 #### Session 38: Daily Cost Estimates
 
-Status: Core  
+Status: Core
 Artifact: Daily cost table.
 
 Use low/medium/high estimates.
@@ -2944,7 +2952,7 @@ Include:
 
 #### Session 39: Budget Review, Second Pass
 
-Status: Core  
+Status: Core
 Artifact: Updated budget summary.
 
 Child connects budget to actual route and itinerary, keeping the **adult-provided flight placeholder** (Session 33) in the running total so the second-pass comparison against the rough budget band stays meaningful.
@@ -2959,7 +2967,7 @@ Goal: assemble a realistic day-by-day plan.
 
 #### Session 40: Realistic Day Planning
 
-Status: Core  
+Status: Core
 Artifact: Realistic day rules.
 
 Teach:
@@ -2976,7 +2984,7 @@ Teach:
 
 #### Session 41: Build Day Cards
 
-Status: Core (a heavier stretch; pace over several sittings)  
+Status: Core (a heavier stretch; pace over several sittings)
 Artifact: Daily plan cards.
 
 Day cards are built only after the route and trip length are set (a dependency on Checkpoint 4). Save the filled cards as `research/day_cards/day_01.md`, `day_02.md`, and so on.
@@ -3006,7 +3014,7 @@ Fields:
 
 #### Session 42: Reservations and Timed Entries
 
-Status: Core  
+Status: Core
 Artifact: Reservation watchlist.
 
 Teach the date-gating idea with concrete examples from the destination pack (`destinations/japan/session_inserts/42_reservation_examples.md`): certain experiences require committing to a date to reserve, sometimes weeks or a month ahead, and can sell out. For Japan the clearest examples are the Ghibli Museum (advance-only tickets released in a monthly drop, no walk-up sales), Tokyo Disney (date-specific tickets only, no walk-up gate sales), teamLab (dated timed slots), and Universal Studios Japan's Super Nintendo World (timed area entry). Connect this explicitly to the dates-TBD philosophy (Section 2.4) and the parent flight/date guidance (Section 21.4): the longer dates stay open, the more of these become unbookable. The fix is awareness, not forcing dates. Add a "date-gated?" flag to the watchlist. For the fast-changing access, entry, and pricing categories that bear on what adults must book or verify (reservation systems, IC-card options, entry authorization, the moving taxes), re-check the Japan access/pricing watch (Section 22.4) -- categories to verify, never memorized values.
@@ -3035,7 +3043,7 @@ Fields:
 
 #### Session 43: Rest Days, Jet Lag, and Pacing
 
-Status: Core  
+Status: Core
 Artifact: Pacing review.
 
 Check:
@@ -3064,7 +3072,7 @@ Keep this a few calm sentences, in the reassuring tone of the earthquake note (S
 
 #### Session 44: Backup Plans and Cut List
 
-Status: Core  
+Status: Core
 Artifact: Backup plan and cut list.
 
 This is where the **formal cut list** is assembled; it gathers the earlier "places to skip / save for a future trip" notes the child already made at Sessions 22 and 27, rather than starting from scratch (Section 5.2 tracker map).
@@ -3088,7 +3096,7 @@ Cut list fields:
 
 #### Session 45: Full Itinerary Draft
 
-Status: Core (a synthesis session; allow extra time or split into several sittings)  
+Status: Core (a synthesis session; allow extra time or split into several sittings)
 Artifact: Full itinerary draft.
 
 Include:
@@ -3104,7 +3112,7 @@ Include:
 
 #### Session 46: Checkpoint 5 Itinerary Review
 
-Status: Core  
+Status: Core
 Artifact: Itinerary review packet.
 
 This is the Minimum Viable Plan finish line (Section 8.6). State it plainly here and in the roadmap: "You could stop here and still have a usable plan. You know when to go, where, how long, a day-by-day plan, a rough budget, and what adults need to book. Everything after this is a bonus." Ensure the output shells and the itinerary file read as coherent even if only the Core Finish Line sections are filled in.
@@ -3136,7 +3144,7 @@ Goal: prepare the final binder, presentation, and adult handoff.
 
 #### Session 47: Language and Etiquette
 
-Status: Conditional core (Core if the family wants the language and etiquette quick sheet binder component; otherwise Recommended; see Section 14.1.1). **This is one of the highest-payoff, most enjoyable sessions in the whole project -- a top-tier engagement and confidence builder the family should be reluctant to drop.** For a ten-year-old, learning to say hello and thank-you and to read a few signs is a delight the child uses *live*, in their own hands, in Japan; it is "conditional" only in the technical sense that a family may omit the binder component, **not** because it is low-value. Where status is shown (here, Section 14.1.1, the roadmap, the First Taste list), flag it as a session to keep, not a routine optional. (It stays conditional rather than Core so the Core count is unchanged and a family that truly needs to drop it still can; the escape hatch and the First-Taste omission are preserved.)  
+Status: Conditional core (Core if the family wants the language and etiquette quick sheet binder component; otherwise Recommended; see Section 14.1.1). **This is one of the highest-payoff, most enjoyable sessions in the whole project -- a top-tier engagement and confidence builder the family should be reluctant to drop.** For a ten-year-old, learning to say hello and thank-you and to read a few signs is a delight the child uses *live*, in their own hands, in Japan; it is "conditional" only in the technical sense that a family may omit the binder component, **not** because it is low-value. Where status is shown (here, Section 14.1.1, the roadmap, the First Taste list), flag it as a session to keep, not a routine optional. (It stays conditional rather than Core so the Core count is unchanged and a family that truly needs to drop it still can; the escape hatch and the First-Taste omission are preserved.)
 Artifact: One-page language and etiquette quick sheet.
 
 **Frame this for the child as a tool the child will use themselves on the trip** -- to say hello and thank-you, order food, and follow etiquette signs in real time -- not just a page in the binder. Tell them to build it for their own pocket, not only for the family meeting; this is work that pays off live, in their own hands, in Japan. (The builder may also suggest a pocket-sized or phone-photo version the child can actually carry.)
@@ -3166,7 +3174,7 @@ Adult-owned note for the parent guide: the onsen/sento age-appropriateness call 
 
 #### Session 48: Packing List
 
-Status: Core  
+Status: Core
 Artifact: Draft packing list.
 
 Include:
@@ -3196,7 +3204,7 @@ Adults review.
 
 #### Session 49: Travel Readiness Checklist
 
-Status: Core  
+Status: Core
 Artifact: Readiness checklist.
 
 Student-facing items should be high-level.
@@ -3225,7 +3233,7 @@ Keep it warm and brief, and have the adult rehearse it once as a calm "what if,"
 
 #### Session 50: Final Binder Assembly
 
-Status: Core (a larger assembly session; allow extra time or split into several sittings)  
+Status: Core (a larger assembly session; allow extra time or split into several sittings)
 Artifact: Completed binder table of contents or assembled binder checklist.
 
 The child assembles the binder by building the canonical binder tabs **in order**, exactly as listed in Section 13.5 (Start Here; Research Skills; Destination Overview; Cities and Route; Attractions and Food; Hotels and Budget; Itinerary; Readiness; Sources and Decisions; Parent Review; Final Recommendation). The 27 binder contents (Section 8.1) file under those tabs per the mapping table in Section 13.5. There is one organizing scheme; the assembly order is simply "build tab 1, then tab 2, and so on."
@@ -3236,7 +3244,7 @@ The substantive content and the assembly are judged on organization and clarity.
 
 #### Session 51: Final Presentation
 
-Status: Core  
+Status: Core
 Artifact: Presentation outline.
 
 Prepare a 5-10 minute presentation. **There is no single required way to present:** the child may present live, practice with one parent first, present from notes, record a video and play it, or hand over the binder with a short written summary -- whichever fits their (presentation accommodations and a rehearsal ladder are in the differentiation appendix, Section 21.7). The family still makes its decision at Checkpoint 6; only the delivery format flexes.
@@ -3255,7 +3263,7 @@ Include:
 
 #### Session 52: Checkpoint 6 Family Decision Meeting
 
-Status: Core  
+Status: Core
 Artifact: Final recommendation packet.
 
 Adults decide:
@@ -3278,7 +3286,7 @@ Adult handoff includes:
 
 #### Session 53: Reflection and Handoff
 
-Status: Core  
+Status: Core
 Artifact: Final reflection.
 
 Prompts:

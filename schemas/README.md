@@ -106,9 +106,6 @@ If a downstream repository deletes one of these files, it **MUST** also remove t
 
 <!-- template-sync: end github-platform-reference-only -->
 
-<!-- template-sync: begin azure-devops-guide-reference-only -->
-For Azure DevOps-only adoptions, see the [Azure DevOps Services Support Guide](../docs/azure-devops-support.md) for host-specific service boundaries.
-<!-- template-sync: end azure-devops-guide-reference-only -->
 
 ### Project-Owned Schema-Backed Files
 
@@ -219,7 +216,7 @@ def test_invalid_example_is_rejected():
 
 The command resolver prefers the `check-jsonschema` console script when it is on `PATH`, falls back to `python -m check_jsonschema` when the package is importable in the pytest environment, and skips only when neither invocation is available. The same shape applies in PowerShell, Bash, or any CI step: invoke the validator on the invalid fixture and assert a non-zero exit.
 
-A starter version of this pattern lives at [`templates/python/tests/test_schema_examples.py`](../templates/python/tests/test_schema_examples.py); the active, canonical version that this repository runs in CI lives at [`tests/test_schema_examples.py`](../tests/test_schema_examples.py). Both auto-discover schema/example pairs under `schemas/`, prefer the console script, and fall back to `python -m check_jsonschema` when the package is importable. The starter retains a `skipif` guard so it remains safe to copy into downstream projects that have not yet added `check-jsonschema` to their dev/test dependencies.
+The active, canonical version that this repository runs in CI lives at [`tests/test_schema_examples.py`](../tests/test_schema_examples.py). It auto-discovers schema/example pairs under `schemas/`, prefers the console script, and falls back to `python -m check_jsonschema` when the package is importable.
 
 ## Worked Example
 
@@ -238,7 +235,7 @@ How the worked example is validated:
 
 - The `valid/` example data files are validated by the `Validate example-config valid examples` `check-jsonschema` hook in [`.pre-commit-config.yaml`](../.pre-commit-config.yaml) and by [`.github/workflows/data-ci.yml`](../.github/workflows/data-ci.yml).
 - The schema itself is self-validated against its declared JSON Schema Draft 2020-12 metaschema by the `Self-validate example-config schema` `check-metaschema` hook in [`.pre-commit-config.yaml`](../.pre-commit-config.yaml), also executed by [`.github/workflows/data-ci.yml`](../.github/workflows/data-ci.yml).
-- The `invalid/` example data files are exercised by [`tests/test_schema_examples.py`](../tests/test_schema_examples.py), which uses `check-jsonschema` to assert that each invalid example causes a non-zero exit code (and that each valid example exits cleanly). A starter version of this pattern, with the same discovery and assertion logic but with project-root resolution suitable for downstream repositories, is also available at [`templates/python/tests/test_schema_examples.py`](../templates/python/tests/test_schema_examples.py).
+- The `invalid/` example data files are exercised by [`tests/test_schema_examples.py`](../tests/test_schema_examples.py), which uses `check-jsonschema` to assert that each invalid example causes a non-zero exit code (and that each valid example exits cleanly).
 - Invalid example data files MUST NOT be wired into a normal pre-commit hook because `check-jsonschema` would treat their (expected) failure as a hook failure.
 
 ## Template Placeholder Manifest Schema
@@ -333,7 +330,7 @@ The worked example is intentionally easy to remove. This checklist removes only 
 1. Delete [`schemas/example-config.schema.json`](./example-config.schema.json).
 2. Delete the [`schemas/examples/example-config/`](./examples/example-config/) directory and all of its contents.
 3. Remove the `Validate example-config valid examples` and `Self-validate example-config schema` hooks (and the surrounding `python-jsonschema/check-jsonschema` repo block, if no other hooks from that repo remain) from [`.pre-commit-config.yaml`](../.pre-commit-config.yaml). Keep the template-sync support hooks when the repository retains `template-sync-support`.
-4. If you adopted the optional schema-example tests (for example, by copying [`templates/python/tests/test_schema_examples.py`](../templates/python/tests/test_schema_examples.py) into your repository's `tests/` directory), remove or adjust the corresponding test cases there if no schemas remain in the downstream repository.
+4. If you adopted the optional schema-example tests (for example, [`tests/test_schema_examples.py`](../tests/test_schema_examples.py)), remove or adjust the corresponding test cases there if no schemas remain in the downstream repository.
 5. Update any documentation that mentions the example schema, including this `README.md` and any references in [`.github/workflows/data-ci.yml`](../.github/workflows/data-ci.yml).
 
 ## Future Work

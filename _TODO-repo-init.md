@@ -32,7 +32,7 @@
 - [ ] Optional: **Dependabot security updates → Enable** for automatic fix PRs. It requires the dependency graph (on by default for public repos) and Dependabot alerts, and it opens a pull request for **every** open alert that has a patch — leave it off and use auto-triage rules if you want selective handling.
 - Why this is a manual step: the committed `.github/dependabot.yml` drives Dependabot **version updates** only (routine dependency bumps). **Alerts** (vulnerability notifications) and **security updates** (auto-fix PRs) are separate repository settings that `dependabot.yml` does not control.
 - The version-update ecosystems in `.github/dependabot.yml` will be **npm** (Markdown tooling) + **github-actions** after initialization trims the excluded pip/python ecosystem block from the file.
-- Docs: <https://docs.github.com/en/code-security/dependabot/dependabot-alerts/configuring-dependabot-alerts>
+- Docs: <https://docs.github.com/en/code-security/dependabot/dependabot-alerts/configuring-dependabot-alerts> and <https://docs.github.com/en/code-security/dependabot/dependabot-security-updates/configuring-dependabot-security-updates>
 
 ### 4. Enable GitHub Discussions
 
