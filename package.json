@@ -17,7 +17,7 @@
     "markdown"
   ],
   "author": "Frank Lesniak",
-  "license": "SEE LICENSE IN LICENSE",
+  "license": "CC-BY-NC-SA-4.0",
   "engines": {
     "node": ">=22.0.0"
   },

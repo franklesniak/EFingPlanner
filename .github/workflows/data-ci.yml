@@ -2,8 +2,7 @@
 #
 # Purpose: Run JSON, YAML, and GitHub Actions workflow validation as a
 # first-class, dedicated CI workflow alongside the aggregate pre-commit gate
-# (precommit-ci.yml) and the per-language workflows (python-ci.yml,
-# powershell-ci.yml, terraform-ci.yml, markdownlint.yml).
+# (precommit-ci.yml) and the Markdown workflow (markdownlint.yml).
 #
 # Hooks executed (all from .pre-commit-config.yaml):
 #   - check-json        — strict JSON syntax (.json only; .jsonc excluded)
@@ -105,9 +104,9 @@
 #
 #    Trade-off: the JSON/YAML/actionlint hooks run in both workflows. This
 #    duplication is intentional and accepted in exchange for clearer
-#    ownership and parity with the other per-language workflows. See the
-#    "Dedicated data-file CI workflow (data-ci.yml)" entry in
-#    `.github/TEMPLATE_DESIGN_DECISIONS.md` for the full rationale.
+#    ownership and parity with the other retained workflows. See the
+#    "Dedicated data-file CI workflow (data-ci.yml)" entry in the upstream
+#    https://github.com/franklesniak/copilot-repo-template/blob/HEAD/.github/TEMPLATE_DESIGN_DECISIONS.md.
 #
 # 2. Relationship to auto-fix-precommit.yml:
 #    `.github/workflows/auto-fix-precommit.yml` is intentionally NOT a peer
@@ -116,15 +115,12 @@
 #    enforcement gate. `data-ci.yml` is a contract enforcement gate for all
 #    PRs and pushes.
 #
-# 3. Template Repository Trigger Policy:
-#    This workflow does NOT use path-based filtering. This repository is a
-#    template, and existing aggregate/per-language workflows
-#    (precommit-ci.yml, python-ci.yml, powershell-ci.yml, terraform-ci.yml)
-#    intentionally avoid path filters so the workflow itself is exercised on
-#    every change and copied accurately by downstream consumers. This workflow
+# 3. Trigger Policy:
+#    This workflow does NOT use path-based filtering. The retained aggregate
+#    and Markdown workflows (precommit-ci.yml, markdownlint.yml) likewise avoid
+#    path filters so each workflow is exercised on every change. This workflow
 #    mirrors that convention by running on all pushes and pull requests, plus
-#    `workflow_dispatch` to match `precommit-ci.yml`, `python-ci.yml`, and
-#    `terraform-ci.yml`.
+#    `workflow_dispatch` to match `precommit-ci.yml`.
 #
 # 4. Job and Workflow Naming:
 #    The workflow name (`Data file linting`) and job name (`Data file
@@ -269,7 +265,7 @@ jobs:
         run: |
           python -m pip install "PyYAML>=6.0.3"
           check_jsonschema_rev="$(python .github/scripts/pinned-check-jsonschema-rev.py)"
-          pip install pytest "check-jsonschema==${check_jsonschema_rev}" "jsonschema>=4.18.0" "PyYAML>=6.0.3"
+          pip install pytest "check-jsonschema==${check_jsonschema_rev}" "jsonschema>=4.18.0"
 
       - name: Run schema-example and dependabot-schema regression tests
         run: python -m pytest tests/test_schema_examples.py tests/test_dependabot_schema.py -v

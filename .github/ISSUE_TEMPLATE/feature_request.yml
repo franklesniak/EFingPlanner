@@ -2,7 +2,7 @@
 # FEATURE REQUEST TEMPLATE
 # =============================================================================
 # For detailed design decisions and customization options, see:
-# .github/TEMPLATE_DESIGN_DECISIONS.md > Issue Template Design Decisions
+# https://github.com/franklesniak/copilot-repo-template/blob/HEAD/.github/TEMPLATE_DESIGN_DECISIONS.md
 #
 # CUSTOMIZE: markers below indicate actionable customization points.
 # Look for `# CUSTOMIZE:` comments throughout this file.
@@ -136,8 +136,6 @@ body:
       description: What part of the project would this feature impact?
       # CUSTOMIZE: Update these options to match your project's languages/components (remove unused entries).
       options:
-        - Python
-        - PowerShell
         - Markdown / Documentation
         - GitHub Actions / CI
         - Cross-language / Integration

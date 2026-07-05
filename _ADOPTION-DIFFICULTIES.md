@@ -77,3 +77,58 @@ After context loss, interruption, or compaction, reread this journal, `_TODO-rep
 - **Follow-up:** Keep the hook scope and the checker's accepted roots in sync with the documented content layout as curriculum directories are created.
 - **Related files:** `.pre-commit-config.yaml`, `.github/scripts/check-prohibited-placeholders.py`, `tests/test_check_prohibited_placeholders.py`
 - **Related commands:** `python -m pytest tests/test_check_prohibited_placeholders.py -q`
+
+### 2026-07-05 PR #5 code review - SessionStart hook still installed the pruned Terraform toolchain
+
+- **What happened:** `.claude/hooks/session-start.sh` (unchanged by the initialization) still downloaded and installed Terraform 1.14.4 into `/usr/local/bin` on every Claude Code web session, and its header comment told maintainers to "keep TERRAFORM_VERSION in sync with … terraform-ci.yml" — a workflow this PR deleted. The PR removed the entire Terraform stack (`terraform-ci.yml`, `.tflint.hcl`, `.github/scripts/terraform_hooks.py`, `templates/terraform/`, `docs/terraform/`) and left zero Terraform pre-commit hooks, so the install was pure waste and the sync comment pointed at nothing.
+- **Why it mattered:** Every web session paid the Terraform download/verify/install cost for a gate that no longer exists, and the stale comment would mislead a maintainer trying to keep the version in sync.
+- **Impact or risk:** Wasted session-bootstrap time; misleading maintenance guidance. Not a CI failure (the hook is session bootstrap, not CI).
+- **Resolution or workaround:** Rewrote the hook to bootstrap only pre-commit (the actual local gate for a Markdown-only repo); removed the Terraform download/verify/install block, `TERRAFORM_VERSION`, `INSTALL_DIR`, the `compute_sha256` helper, and the stale sync comment. Verified with `bash -n`.
+- **Follow-up:** When an adoption excludes a stack, sweep session/bootstrap tooling (`.claude/hooks/`) for installs and comments tied to that stack, not just workflows and pre-commit hooks.
+- **Related files:** `.claude/hooks/session-start.sh`
+- **Related commands:** `bash -n .claude/hooks/session-start.sh`
+
+### 2026-07-05 PR #5 code review - Issue templates advertised excluded stacks and pointed at a deleted design-decisions doc
+
+- **What happened:** The bug-report and feature-request templates offered `Python` and `PowerShell` as `Area` dropdown options for this Markdown-only repo (their own `# CUSTOMIZE: … remove unused entries` note was never applied), and all four issue templates' header comments pointed to the local `.github/TEMPLATE_DESIGN_DECISIONS.md`, which this PR deleted. Those references live in YAML comments, so the offline markdown link-check never flagged them.
+- **Why it mattered:** A reporter is offered components that don't exist here; a maintainer following the design-decisions pointer hits a missing file.
+- **Impact or risk:** User-facing stale options; dangling maintenance pointers. Not a CI failure.
+- **Resolution or workaround:** Removed `Python`/`PowerShell` from the `Area` dropdowns in `bug_report.yml` and `feature_request.yml` (kept in sync per the templates' note), and repointed the `TEMPLATE_DESIGN_DECISIONS.md` references to the upstream template URL, matching the convention already used in `CONTRIBUTING.md`/`.pre-commit-config.yaml`.
+- **Follow-up:** Adoption should apply issue-template `# CUSTOMIZE` notes and repoint/drop references to template-only files it deletes. The broader `bug_report.yml` still carries software-project scaffolding (OS/architecture/runtime-version/reproduction fields) a printable Markdown curriculum does not need — a larger redesign left for later.
+- **Related files:** `.github/ISSUE_TEMPLATE/bug_report.yml`, `.github/ISSUE_TEMPLATE/feature_request.yml`, `.github/ISSUE_TEMPLATE/config.yml`, `.github/ISSUE_TEMPLATE/documentation_issue.yml`
+
+### 2026-07-05 PR #5 code review - data-ci.yml comments described deleted per-language workflows
+
+- **What happened:** Retained `.github/workflows/data-ci.yml` header/design comments described this workflow as running "alongside … the per-language workflows (python-ci.yml, powershell-ci.yml, terraform-ci.yml, markdownlint.yml)" and cited `.github/TEMPLATE_DESIGN_DECISIONS.md` — three of those workflows and that doc were deleted by this PR.
+- **Why it mattered:** A maintainer reasoning about CI topology from these comments is misled about which workflows exist.
+- **Impact or risk:** Misleading CI documentation. Not a CI failure.
+- **Resolution or workaround:** Updated the comments to name only the retained workflows (`precommit-ci.yml`, `markdownlint.yml`) and repointed the design-decisions reference to the upstream URL.
+- **Follow-up:** Treat workflow header comments as part of the pruning surface when excluding per-language CI.
+- **Related files:** `.github/workflows/data-ci.yml`
+
+### 2026-07-05 PR #5 code review - _TODO-repo-init.md miscounted the Dependabot ecosystems and mis-sequenced the Discussions link
+
+- **What happened:** `_TODO-repo-init.md` stated the `.github/dependabot.yml` ecosystems "will be **npm** + **github-actions**," but the file actually retains three: `npm`, `github-actions`, and `pre-commit`. Separately, `config.yml`'s "💬 Questions & Discussions" chooser link was activated during initialization while enabling GitHub Discussions is still an unchecked manual step, so the link 404s until the feature is turned on.
+- **Why it mattered:** A maintainer relying on the checklist undercounts what Dependabot manages, and the issue-chooser link ships broken until Discussions is enabled.
+- **Impact or risk:** Inaccurate init checklist; a window where the Discussions link 404s.
+- **Resolution or workaround:** Corrected the ecosystem enumeration to include `pre-commit`, and added a checklist note that the Discussions link is already active so Discussions must be enabled before/at merge to avoid the 404 (link left active per the author's intent).
+- **Follow-up:** Keep the init checklist's enumerations synced with the committed config, and sequence "activate the chooser link" after "enable the feature."
+- **Related files:** `_TODO-repo-init.md`, `.github/dependabot.yml`, `.github/ISSUE_TEMPLATE/config.yml`
+
+### 2026-07-05 PR #5 code review - review-loop fixes introduced small duplications (self-review)
+
+- **What happened:** The earlier check-jsonschema-pin fix added `.github/scripts/pinned-check-jsonschema-rev.py` whose extraction logic was byte-identical to `tests/test_dependabot_schema.py::pinned_check_jsonschema_rev()`, and `data-ci.yml` installed `PyYAML>=6.0.3` twice in one step. `package.json` also used `"license": "SEE LICENSE IN LICENSE"` where the SPDX id `CC-BY-NC-SA-4.0` is precise.
+- **Why it mattered:** Two copies of the pin-parsing rule to hand-sync; a redundant reinstall; an imprecise license value.
+- **Impact or risk:** Minor maintainability. Not a CI failure (the duplication was self-protecting — the regression test reads back the version the script installs).
+- **Resolution or workaround:** `test_dependabot_schema.py` now loads and reuses the script's function via importlib (single source), the second `PyYAML` install was dropped, and `package.json`'s license is now `CC-BY-NC-SA-4.0`. 67 schema-guard tests still pass.
+- **Follow-up:** When mirroring known-good logic into a CI helper, prefer importing over copying.
+- **Related files:** `.github/scripts/pinned-check-jsonschema-rev.py`, `tests/test_dependabot_schema.py`, `.github/workflows/data-ci.yml`, `package.json`
+
+### 2026-07-05 PR #5 code review - copilot-instructions.md retains empty Python/Terraform subheaders (pending)
+
+- **What happened:** After content-stripping, `.github/copilot-instructions.md`'s "Running Linters" and "Running Tests" sections still carry empty `**Python:**` and `**Terraform:**` subheaders with no body (the `*-reference-only` code blocks were removed but the headers left). Terraform is excluded entirely; the Python subheaders are empty.
+- **Why it mattered:** Those sections promise per-language commands and render nothing.
+- **Impact or risk:** Cosmetic; in a protected instruction file.
+- **Resolution or workaround:** Pending maintainer authorization — `.github/copilot-instructions.md` is protected, and the parallel Terraform sweep was previously left out of scope at the maintainer's direction. Raised again as a code-review finding; awaiting explicit go-ahead before editing.
+- **Follow-up:** Have the upstream template wrap these `**Python:**`/`**Terraform:**`/`**Azure Pipelines:**` subheaders (and their bodies) in `template-sync` reference-only markers so downstream module exclusion removes header+body together.
+- **Related files:** `.github/copilot-instructions.md`

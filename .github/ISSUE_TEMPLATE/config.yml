@@ -2,7 +2,7 @@
 # ISSUE TEMPLATE CONFIG
 # =============================================================================
 # For detailed design decisions and customization options, see:
-# .github/TEMPLATE_DESIGN_DECISIONS.md > Issue Template Design Decisions > config.yml
+# https://github.com/franklesniak/copilot-repo-template/blob/HEAD/.github/TEMPLATE_DESIGN_DECISIONS.md
 #
 # CUSTOMIZE: markers below indicate actionable customization points.
 # Look for `# CUSTOMIZE:` comments throughout this file.

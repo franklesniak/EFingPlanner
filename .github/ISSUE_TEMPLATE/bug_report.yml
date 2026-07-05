@@ -2,7 +2,7 @@
 # BUG REPORT TEMPLATE
 # =============================================================================
 # For detailed design decisions and customization options, see:
-# .github/TEMPLATE_DESIGN_DECISIONS.md > Issue Template Design Decisions > bug_report.yml
+# https://github.com/franklesniak/copilot-repo-template/blob/HEAD/.github/TEMPLATE_DESIGN_DECISIONS.md
 #
 # CUSTOMIZE: markers below indicate actionable customization points.
 # Look for `# CUSTOMIZE:` comments throughout this file.
@@ -35,7 +35,7 @@ body:
   # DESIGN DECISION: REDUNDANT SECURITY WARNINGS
   # This template intentionally includes multiple security warnings (top-of-form,
   # checkbox, severity dropdown). This defense-in-depth approach maximizes chance
-  # of catching accidental security disclosure. See .github/TEMPLATE_DESIGN_DECISIONS.md for rationale.
+  # of catching accidental security disclosure.
   # NOTE: The Markdown links below use absolute URLs because relative paths
   # (e.g., `[SECURITY.md](blob/HEAD/SECURITY.md)`) resolve against the
   # rendering URL `/{owner}/{repo}/issues/new?...` and 404. See the
@@ -102,8 +102,6 @@ body:
         Tip: For documentation typos/missing info, prefer the 📚 Documentation Issue template.
       # CUSTOMIZE: Update these options to match your project's languages/components (remove unused entries).
       options:
-        - Python
-        - PowerShell
         - Markdown / Documentation
         - GitHub Actions / CI
         - Cross-language / Integration
