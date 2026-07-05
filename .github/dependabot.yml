@@ -21,7 +21,8 @@
 #   are referenced inside .github/workflows/*.yml lives in the "Workflow
 #   Version Pinning" section of .github/copilot-instructions.md, with rationale
 #   captured in the "Workflow Version Pinning and Dependabot Coherence" ADR in
-#   .github/TEMPLATE_DESIGN_DECISIONS.md. In short: action versions live only
+#   https://github.com/franklesniak/copilot-repo-template/blob/HEAD/.github/TEMPLATE_DESIGN_DECISIONS.md.
+#   In short: action versions live only
 #   in `uses:` lines (Dependabot rewrites those); they MUST NOT be mirrored
 #   into workflow-level `env:` values, cache keys, file paths, shell literals,
 #   image tags, or comments presented as authoritative version state, because
@@ -35,9 +36,9 @@
 #   Do NOT use `ignore:` to silence routine update noise; use the grouping or
 #   schedule controls for that instead.
 #
-# TEMPLATE NOTE: This is enabled by default because security-conscious defaults
-# are appropriate for template repositories. To disable Dependabot, delete this
-# file. To customize, see: https://docs.github.com/en/code-security/dependabot
+# Dependabot version updates are enabled by default for security-conscious
+# defaults. To disable, delete this file. To customize, see:
+# https://docs.github.com/en/code-security/dependabot
 
 version: 2
 updates:

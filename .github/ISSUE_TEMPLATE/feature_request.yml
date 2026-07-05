@@ -2,7 +2,7 @@
 # FEATURE REQUEST TEMPLATE
 # =============================================================================
 # For detailed design decisions and customization options, see:
-# .github/TEMPLATE_DESIGN_DECISIONS.md > Issue Template Design Decisions
+# https://github.com/franklesniak/copilot-repo-template/blob/HEAD/.github/TEMPLATE_DESIGN_DECISIONS.md
 #
 # CUSTOMIZE: markers below indicate actionable customization points.
 # Look for `# CUSTOMIZE:` comments throughout this file.
@@ -110,7 +110,7 @@ body:
         Describe who benefits from this feature and how.
         Use the format "As a [type of user], I want [goal] so that [benefit]"
       placeholder: |
-        As a [developer/user/admin], I want [feature]
+        As a [parent/educator/child], I want [feature]
         so that [benefit/outcome].
 
         Example scenarios:
@@ -134,15 +134,13 @@ body:
     attributes:
       label: Area
       description: What part of the project would this feature impact?
-      # CUSTOMIZE: Update these options to match your project's languages/components (remove unused entries).
       options:
-        - Python
-        - PowerShell
-        - Markdown / Documentation
-        - GitHub Actions / CI
-        - Cross-language / Integration
-        - Cross-cutting / Repo-wide
-        - Other (describe/specify in Additional Context)
+        - A specific session / worksheet
+        - Reference or destination pages (e.g., Japan)
+        - Framework / how-to guidance
+        - Accessibility (screen reader, print, dyslexia-friendly formatting)
+        - The repository or site itself (links, rendering, GitHub)
+        - Other (describe in Additional Context)
     validations:
       required: false
 

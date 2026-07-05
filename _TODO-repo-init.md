@@ -31,12 +31,13 @@
 - [ ] **Settings → Advanced Security** (same tab as PVR) → **Dependabot alerts → Enable** (or confirm already enabled).
 - [ ] Optional: **Dependabot security updates → Enable** for automatic fix PRs. It requires the dependency graph (on by default for public repos) and Dependabot alerts, and it opens a pull request for **every** open alert that has a patch — leave it off and use auto-triage rules if you want selective handling.
 - Why this is a manual step: the committed `.github/dependabot.yml` drives Dependabot **version updates** only (routine dependency bumps). **Alerts** (vulnerability notifications) and **security updates** (auto-fix PRs) are separate repository settings that `dependabot.yml` does not control.
-- The version-update ecosystems in `.github/dependabot.yml` will be **npm** (Markdown tooling) + **github-actions** after initialization trims the excluded pip/python ecosystem block from the file.
+- The version-update ecosystems in `.github/dependabot.yml` are **npm** (Markdown tooling), **github-actions**, and **pre-commit** after initialization trimmed the excluded pip/python ecosystem block from the file.
 - Docs: <https://docs.github.com/en/code-security/dependabot/dependabot-alerts/configuring-dependabot-alerts> and <https://docs.github.com/en/code-security/dependabot/dependabot-security-updates/configuring-dependabot-security-updates>
 
 ### 4. Enable GitHub Discussions
 
 - [ ] **Settings → General → Features →** check **Discussions →** (optionally) **Set up discussions** to publish the welcome post.
+- Note: the "💬 Questions & Discussions" contact link in `.github/ISSUE_TEMPLATE/config.yml` is already active, so enable Discussions before (or at) merge or that issue-chooser link will 404.
 - Docs: <https://docs.github.com/en/discussions/quickstart>
 
 ### 5. Create the `triage` issue label
@@ -50,7 +51,7 @@
 - [ ] **Settings → Rules → Rulesets → New ruleset → New branch ruleset**.
 - [ ] **Ruleset name:** e.g. `Protect default branch`. **Enforcement status:** `Active`.
 - [ ] **Target branches → Add target →** include the **default branch**.
-- [ ] Enable branch rules: **Require a pull request before merging**; **Require status checks to pass before merging** (add each CI check by name — the markdown-lint job, the link-check job, and — because `template-sync-support` is retained — the `data-ci` / pre-commit checks; names appear in the picker only after each workflow has run once); **Block force pushes**.
+- [ ] Enable branch rules: **Require a pull request before merging**; **Require status checks to pass before merging** (add each required check by name — `markdownlint` (this single check also runs link validation and the toolchain regression as steps), `Data file linting`, `Pre-commit`, and `Check for OWNER/REPO Placeholders`; names appear in the picker only after each workflow has run once); **Block force pushes**.
 - [ ] **Create.**
 - Modern repository rulesets are assumed (rather than classic branch protection).
 - Docs: <https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/creating-rulesets-for-a-repository>

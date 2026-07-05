@@ -18,11 +18,11 @@ Schemas live at the repository root (under `schemas/`, not `.github/schemas/`) s
 
 ## Template Portability
 
-This template provides `schemas/` as a convention for repositories that adopt schema-backed JSON or YAML contracts. Downstream repositories MAY delete `schemas/` (including this `README.md`) if they do not use schema-backed data files or the template sync support scripts.
+This repository uses `schemas/` for schema-backed JSON or YAML contracts (a convention inherited from the template). It MAY be deleted (including this `README.md`) if the repository stops using schema-backed data files and the template sync support scripts.
 
 ## Repository-Specific Validation Inventory
 
-The portable JSON and YAML style guides describe validation rules generically so they can be reused by repositories with different schema, test, and CI layouts. This README is the repository-specific home for this template's concrete schema inventory, worked-example fixtures, built-in schema validation choices, regression tests, and data-file CI wiring.
+The portable JSON and YAML style guides describe validation rules generically so they can be reused by repositories with different schema, test, and CI layouts. This README is the repository-specific home for this repository's concrete schema inventory, worked-example fixtures, built-in schema validation choices, regression tests, and data-file CI wiring.
 
 The authoritative active hook list remains [`.pre-commit-config.yaml`](../.pre-commit-config.yaml). The dedicated data-file workflow, [`.github/workflows/data-ci.yml`](../.github/workflows/data-ci.yml), re-runs the retained data-file hooks so branch protection can require JSON, YAML, GitHub Actions, and schema validation independently of language-specific CI jobs.
 
@@ -71,7 +71,7 @@ Schemas whose root type is `object` SHOULD define:
 
 ## Validation
 
-Schema-backed files are validated by pre-commit and the dedicated data-file CI workflow ([`.github/workflows/data-ci.yml`](../.github/workflows/data-ci.yml)). This template ships a worked example (see [Worked Example](#worked-example) below) so the validation pipeline is exercised end to end out of the box, and it ships production schemas for the baseline placeholder manifest, template sync manifest, marker, instruction contracts, and first-adoption quality suppressions (see [Template Placeholder Manifest Schema](#template-placeholder-manifest-schema), [Template Sync Manifest Schema](#template-sync-manifest-schema), [Template Sync Marker Schema](#template-sync-marker-schema), [Template Sync Instruction Contracts Schema](#template-sync-instruction-contracts-schema), and [First-Adoption Quality Suppressions Schema](#first-adoption-quality-suppressions-schema)). Downstream repositories that do not use general schema-backed data files SHOULD remove the worked example using the [Downstream Removal Checklist](#downstream-removal-checklist). Repositories that keep the baseline placeholder helper SHOULD retain the placeholder manifest schema, manifest file, and placeholder-specific invalid-example validator. Repositories that keep `template-sync-support` SHOULD retain the template-sync production schemas and their template-sync example fixtures even when they remove the general `schema` module. See the JSON authoring standards for the schema-validation policy and tier guidance.
+Schema-backed files are validated by pre-commit and the dedicated data-file CI workflow ([`.github/workflows/data-ci.yml`](../.github/workflows/data-ci.yml)). This repository includes a worked example (see [Worked Example](#worked-example) below) so the validation pipeline is exercised end to end out of the box, and it ships production schemas for the baseline placeholder manifest, template sync manifest, marker, instruction contracts, and first-adoption quality suppressions (see [Template Placeholder Manifest Schema](#template-placeholder-manifest-schema), [Template Sync Manifest Schema](#template-sync-manifest-schema), [Template Sync Marker Schema](#template-sync-marker-schema), [Template Sync Instruction Contracts Schema](#template-sync-instruction-contracts-schema), and [First-Adoption Quality Suppressions Schema](#first-adoption-quality-suppressions-schema)). Downstream repositories that do not use general schema-backed data files SHOULD remove the worked example using the [Downstream Removal Checklist](#downstream-removal-checklist). Repositories that keep the baseline placeholder helper SHOULD retain the placeholder manifest schema, manifest file, and placeholder-specific invalid-example validator. Repositories that keep `template-sync-support` SHOULD retain the template-sync production schemas and their template-sync example fixtures even when they remove the general `schema` module. See the JSON authoring standards for the schema-validation policy and tier guidance.
 
 ### Schema Categories
 
@@ -220,7 +220,7 @@ The active, canonical version that this repository runs in CI lives at [`tests/t
 
 ## Worked Example
 
-This template ships a worked example so the schema-validation pipeline works out of the box. The worked example is **template starter content**, not a production contract for downstream repositories.
+This repository includes a worked example so the schema-validation pipeline works out of the box. The worked example is inherited template starter content, not a production contract.
 
 - Schema: [`example-config.schema.json`](./example-config.schema.json)
 - Valid example data: [`examples/example-config/valid/`](./examples/example-config/valid/)

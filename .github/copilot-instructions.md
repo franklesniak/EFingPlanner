@@ -140,7 +140,7 @@ pipeline also re-runs `yamllint`.
 > - The pre-commit hook scope in `.pre-commit-config.yaml`.
 > - `.github/workflows/data-ci.yml` only when the `github-actions` module is retained and the change is **adding or removing a hook ID** (for example, introducing a new `check-yaml-custom` hook), or when adding, removing, or renaming an explicit CI step or hook alias that the workflow invokes by name. Apply the same condition to `.azuredevops/pipelines/data-ci.yml` when the `azure-pipelines` module is retained. Changes to an **existing** hook's `files:` regex (including `check-jsonschema` scope changes) are picked up automatically, because each `data-ci.yml` step invokes hooks by ID via `pre-commit run <hook-id> --all-files`.
 > - The **Built-in Schema Validation for Real Load-Bearing Configuration Files** ADR in [`.github/TEMPLATE_DESIGN_DECISIONS.md`](https://github.com/franklesniak/copilot-repo-template/blob/HEAD/.github/TEMPLATE_DESIGN_DECISIONS.md) when **adding or removing** a default validated real load-bearing configuration file (for example, when wiring or unwiring a new built-in vendor schema).
-> - Any documentation that references the schema or the validation policy (for example, `schemas/README.md`, `README.md`, `CONTRIBUTING.md`, and `OPTIONAL_CONFIGURATIONS.md`).
+> - Any documentation that references the schema or the validation policy (for example, `schemas/README.md`, `README.md`, and `CONTRIBUTING.md`).
 <!-- template-sync: end schema-reference-only -->
 
 ### For GitHub Copilot Coding Agent (Automated PRs)
@@ -264,7 +264,6 @@ For each PR-sized change:
   - Always review and commit these auto-fixes as part of your change.
 - Add/adjust tests for new behavior.
   - Python: pytest tests in `tests/`
-  - PowerShell: Pester tests in `tests/PowerShell/`
 - For data-file changes, run the applicable validation hooks via `pre-commit run --all-files` so that retained checks such as `check-json`, `check-yaml`, GitHub Actions-only `actionlint`, and configured `check-jsonschema` / `check-metaschema` hooks pass before committing.
   <!-- template-sync: begin yaml-reference-only -->
   - When YAML style validation is retained, `yamllint` must also pass.
@@ -295,12 +294,9 @@ This repository uses modular instruction files covering both language-specific s
 - JSON: `.github/instructions/json.instructions.md` applies to `**/*.json` and `**/*.jsonc`.
 <!-- template-sync: end json-reference-only -->
 - Markdown/Docs: `.github/instructions/docs.instructions.md` applies to `**/*.md` and `**/*.mdc`.
-- PowerShell: `.github/instructions/powershell.instructions.md` applies to `**/*.ps1`.
 <!-- template-sync: begin yaml-reference-only -->
 - YAML: `.github/instructions/yaml.instructions.md` applies to `**/*.yml` and `**/*.yaml`.
 <!-- template-sync: end yaml-reference-only -->
-
-**Note:** The PowerShell instructions include comprehensive guidance on Pester testing.
 
 **To customize for your project:**
 
@@ -366,7 +362,6 @@ Manual owner actions for Azure DevOps commonly include enabling the preview at o
 
 This repository includes linting and validation tool configurations that align with the coding standards. The active files include:
 
-- PSScriptAnalyzer: `.github/linting/PSScriptAnalyzerSettings.psd1` for PowerShell formatting/linting (OTBS style).
 - markdownlint: `.markdownlint.jsonc` for Markdown linting.
 <!-- template-sync: begin yaml-reference-only -->
 - yamllint: `.yamllint.yml` for YAML style enforcement.
@@ -387,12 +382,6 @@ npm run lint:md
 ```
 
 <!-- template-sync: end markdown-reference-only -->
-
-**PowerShell:**
-
-
-**Terraform:**
-
 
 **JSON, YAML, and GitHub Actions:**
 
@@ -446,15 +435,6 @@ This repository includes retained testing infrastructure for the adopted languag
 
 ### Running Tests
 
-**Python:**
-
-
-**PowerShell:**
-
-
-**Terraform:**
-
-
 **JSON Schema example fixtures:**
 
 <!-- template-sync: begin schema-reference-only -->
@@ -463,6 +443,6 @@ This repository includes retained testing infrastructure for the adopted languag
 pytest tests/test_schema_examples.py -v
 ```
 
-`tests/test_schema_examples.py` shells out to the `check-jsonschema` validator by first using the `check-jsonschema` console script when it is on `PATH`, then falling back to `python -m check_jsonschema` when the package is importable in the pytest environment. The parametrized cases skip only when neither invocation is available (a skipped test is not a passing test — pytest still exits `0`, but no schema validation actually ran). Install it via `pip install -e ".[dev]"` or `pip install check-jsonschema` so the package is importable and, where supported by the environment, the console script is on `PATH`. To validate schemas through the pre-commit toolchain instead, run `pre-commit run check-jsonschema --all-files` for example-fixture validation against schemas and `pre-commit run check-metaschema --all-files` for project-owned schema self-validation; `pre-commit run --all-files` exercises both at once. See [`README.md`](../README.md) for the full prerequisite note.
+`tests/test_schema_examples.py` shells out to the `check-jsonschema` validator by first using the `check-jsonschema` console script when it is on `PATH`, then falling back to `python -m check_jsonschema` when the package is importable in the pytest environment. The parametrized cases skip only when neither invocation is available (a skipped test is not a passing test — pytest still exits `0`, but no schema validation actually ran). Install it via `pip install check-jsonschema` so the package is importable and, where supported by the environment, the console script is on `PATH`. To validate schemas through the pre-commit toolchain instead, run `pre-commit run check-jsonschema --all-files` for example-fixture validation against schemas and `pre-commit run check-metaschema --all-files` for project-owned schema self-validation; `pre-commit run --all-files` exercises both at once.
 
 <!-- template-sync: end schema-reference-only -->

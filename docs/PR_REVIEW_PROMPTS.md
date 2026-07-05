@@ -193,17 +193,3 @@ any markdownlint rule customizations. I think MD032 doesn't apply if the
 previous line is an ordered list, as long as the unordered list item is
 indented. If it's not markdownlint-compliant the way it currently is, fix it.
 ```
-
-## Version and Compatibility Clarifications
-
-### PowerShell Version Support
-
-Use this when a new version of PowerShell is released and the script's version
-support requirements need to be updated. Adjust the version numbers and release
-context as needed:
-
-```markdown
-PowerShell 7.6.x was recently released. So, the script must support
-Windows PowerShell 5.1, PowerShell 7.4.x, PowerShell 7.5.x, and PowerShell
-7.6.x. Please ensure this requirement is thoroughly clarified.
-```

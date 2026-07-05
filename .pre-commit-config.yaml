@@ -360,7 +360,7 @@ repos:
         entry: python .github/scripts/check-prohibited-placeholders.py
         language: python
         types: [markdown]
-        files: ^docs/.*\.md$
+        files: ^(docs|framework|destinations)/.*\.md$
         # Archived design record: docs/spec/specification.md intentionally uses
         # "TBD" for open trip parameters (traveler count, dates, etc.) that the
         # family determines. It is frozen (the built repo supersedes it on

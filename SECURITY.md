@@ -21,15 +21,15 @@ When reporting, please include:
 
 ### Response Timeline
 
-We will acknowledge receipt of your report within **48 hours** and aim to provide a more detailed response within **7 days**, including:
+This project is provided as-is by one family and is not actively monitored, so there is no guaranteed response time. Reports are reviewed on a best-effort basis. When a report is picked up, the response will aim to include:
 
 - Confirmation of the issue
 - An assessment of severity
-- An estimated timeline for a fix
+- Any planned mitigation
 
 ### Disclosure Policy
 
-We follow coordinated disclosure practices:
+If and when a report is acted on, we aim to follow coordinated disclosure practices on a best-effort basis:
 
 1. **Private Report:** Report the concern privately using the method above
 2. **Assessment:** We assess the concern and determine severity

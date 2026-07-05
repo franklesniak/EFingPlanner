@@ -2,13 +2,12 @@
 # ISSUE TEMPLATE CONFIG
 # =============================================================================
 # For detailed design decisions and customization options, see:
-# .github/TEMPLATE_DESIGN_DECISIONS.md > Issue Template Design Decisions > config.yml
+# https://github.com/franklesniak/copilot-repo-template/blob/HEAD/.github/TEMPLATE_DESIGN_DECISIONS.md
 #
 # CUSTOMIZE: markers below indicate actionable customization points.
 # Look for `# CUSTOMIZE:` comments throughout this file.
 #
 # IMPORTANT: contact_links URLs MUST be absolute URLs (relative paths do not work).
-# You MUST replace OWNER/REPO with your actual org/repo or links will 404.
 # - GHES users: Replace github.com with your GHES host (e.g., github.company.com)
 # =============================================================================
 
@@ -19,7 +18,6 @@
 blank_issues_enabled: true
 
 contact_links:
-  # CUSTOMIZE: Update the URL below by replacing `OWNER/REPO` with your org/repo name.
   # NOTE: blob/HEAD is used instead of blob/main to support repos with non-main default branches.
   - name: 📝 Contributing Guide
     url: https://github.com/franklesniak/EFingPlanner/blob/HEAD/CONTRIBUTING.md
@@ -28,7 +26,6 @@ contact_links:
   # =============================================================================
   # SECURITY LINK CONFIGURATION
   # =============================================================================
-  # CUSTOMIZE: Replace `OWNER/REPO` with your org/repo name.
   # GHES users must also replace github.com with their GHES host.
   # The issue chooser links to SECURITY.md, which is always reachable and
   # documents the reporting path for the configured security reporting mode.
@@ -37,21 +34,11 @@ contact_links:
     about: Report security issues privately using the instructions in SECURITY.md. Do not open a public issue.
 
   # =============================================================================
-  # DISCUSSIONS LINK (OPTIONAL)
+  # DISCUSSIONS LINK
   # =============================================================================
-  # Trade-off notes on Discussions link:
-  # - Kept commented out by default because many downstream repos don't enable Discussions.
-  # - If you know most downstream repos will enable Discussions, you can uncomment by default.
-  # - Enabling this redirects support questions away from issues, which improves triage.
-  #
-  # HOW TO ENABLE DISCUSSIONS:
-  # 1. Go to your repository Settings > General > Features
-  # 2. Check the "Discussions" checkbox to enable the feature
-  #    See: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/enabling-features-for-your-repository/enabling-or-disabling-github-discussions-for-a-repository
-  # 3. Uncomment the block below
-  # 4. Replace `OWNER/REPO` with your actual organization and repository name
-  # 5. Test the link in the issue template chooser to verify it works
-  #
+  # This link assumes GitHub Discussions is enabled for the repository
+  # (Settings > General > Features). GHES users must replace github.com with
+  # their GHES host.
   # =============================================================================
   - name: 💬 Questions & Discussions
     url: https://github.com/franklesniak/EFingPlanner/discussions

@@ -1018,7 +1018,7 @@ trip-planner/
 |-- GETTING_STARTED.md             # print/copy workflow; the data-flow walkthrough
 |-- CONTRIBUTING.md                # how to propose a destination pack; pack quality bar; flag stale facts (Section 29.3)
 |-- LICENSE                        # CC BY-NC-SA 4.0 (see Section 11.4)
-|-- .markdownlint.json
+|-- .markdownlint.jsonc
 |-- .gitignore                     # recommended; ignores any copied-out trip work
 |-- .github/
 |   `-- workflows/
@@ -1346,7 +1346,7 @@ Educational and worksheet content should be Markdown.
 
 Allowed non-Markdown support files:
 
-- `.markdownlint.json`
+- `.markdownlint.jsonc`
 - optional `.github/workflows/markdown-lint.yml`
 - `LICENSE` (CC BY-NC-SA 4.0)
 - optional `.gitignore`
@@ -1364,6 +1364,8 @@ Do not require:
 - Command-line tooling.
 
 The repository should be usable by opening Markdown files in GitHub, copying them to Google Docs, or printing them.
+
+These constraints are about what a family needs to *use* the materials. They do **not** forbid a maintainer from keeping optional, end-user-invisible repository tooling -- for example the lint/link-check workflows above, or (when the repository is created from a template that ships them) linting, schema-validation, or template-sync scaffolding such as a `package.json`, a pre-commit configuration, JSON Schemas, or helper scripts. Such tooling is allowed only as long as nothing about reading, printing, filling in, or otherwise using the curriculum depends on it, and it stays out of the child- and parent-facing content. The "Allowed non-Markdown support files" list above is the minimum a from-scratch build needs, not a cap on maintainer tooling.
 
 ### 11.2 Markdown Style
 
@@ -1385,16 +1387,22 @@ Requirements:
 
 **Honest tradeoff of the text-only / print-first format.** Optimizing for printability and zero tooling (plain Markdown, no images) has a real cost worth stating once: there are **no diagrams for a visual learner, and limited richness for a low-vision child relying on a screen reader.** This is a deliberate accessibility-vs-printability tradeoff, not an oversight; a family that needs visual or screen-reader support may need to **adapt** (for example, add their own diagrams, or use an accessible reader) -- see the differentiation appendix (Section 21.7) for adapt guidance. The format is not changed here; the cost is simply named honestly.
 
-`.markdownlint.json`:
+`.markdownlint.jsonc` (the committed config; the `.jsonc` extension is used because the file carries explanatory `//` comments):
 
-```json
+```jsonc
 {
-  "MD013": false,
-  "MD034": false
+  // Content disables:
+  "MD013": false,   // line length (content is one paragraph per line on purpose)
+  "MD034": false,   // bare URLs (bulk reference content predictably emits some)
+  // Non-auto-fixable rules disabled to avoid CI noise:
+  "MD036": false,   // emphasis-as-heading false positives
+  "MD041": false,   // first-line-heading (allows a leading markdownlint-disable directive)
+  // Auto-fixable style rules kept enabled and pinned for consistency
+  // (MD003 atx, MD004 dash, MD012, MD024, MD029, MD035, MD048, MD049, MD050).
 }
 ```
 
-**Why two rules are disabled, and why only two.** MD013 (line length) is disabled because the content is written as one paragraph per line on purpose. MD034 (no-bare-URLs) is disabled as a safety net because bulk-generated reference content predictably emits some bare URLs and chasing every one across 200+ files is not a good use of build effort. **The other rules that bulk-generated Markdown commonly trips are kept enabled and avoided by convention instead** (recorded in `build_style_and_vocab.md`, Section 31): every fenced code block declares a language (so MD040 passes) and no heading ends in punctuation like `:` or `?` (so MD026 passes). Keeping MD040 and MD026 on is cheap because the conventions are easy to follow and the rules catch real sloppiness; disabling MD034 is the one concession to scale. Do **not** disable rules beyond these two without a recorded reason.
+**Which rules are disabled, and why.** The two *content* disables are MD013 (line length; the content is written as one paragraph per line on purpose) and MD034 (no-bare-URLs; a safety net because bulk-generated reference content predictably emits some bare URLs and chasing every one across 200+ files is not a good use of build effort). The committed config additionally disables two **non-auto-fixable** rules that produce false positives at scale: MD036 (emphasis used instead of a heading) and MD041 (first line should be a top-level heading, disabled so files may lead with a `<!-- markdownlint-disable -->` directive). **The rules that bulk-generated Markdown most commonly trips are kept enabled and satisfied by convention instead** (recorded in `build_style_and_vocab.md`, Section 31): every fenced code block declares a language (so MD040 passes) and no heading ends in punctuation like `:` or `?` (so MD026 passes). Keeping MD040 and MD026 on is cheap and catches real sloppiness. Do **not** disable rules beyond the four above without a recorded reason.
 
 ### 11.3 Optional GitHub Actions
 
@@ -1405,6 +1413,8 @@ If included, each should be simple and documented as optional technical support,
 ### 11.4 License
 
 Ship a real `LICENSE` file containing CC BY-NC-SA 4.0 (Attribution-NonCommercial-ShareAlike). This repository is public and intended for third-party reuse (the public framework-only repository with no committed trip data; see Section 24.1), so the license is selected now rather than deferred.
+
+Use the **verbatim** license text from a canonical source -- `https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode` or the SPDX license list (`CC-BY-NC-SA-4.0`) -- rather than a summarized or paraphrased copy.
 
 For reference, the options considered:
 
@@ -1813,12 +1823,14 @@ Every student-facing session should use this structure. The order puts the child
 You are here: Phase N, Session M of this phase.
 Previous: [previous session] | Next: [next session]
 
-**For parents** (clean labeled lines, not a faux table -- prints and reads cleanly; a tiny real one-row table is fine where it fits):
-Status: Core / Recommended / Optional
-Planner skill: ...
-Estimated time: ...
-Parent involvement: ...
-Materials: ...
+**For parents** (a short labeled list, one field per line -- not a faux table, and prints and reads cleanly; a tiny real one-row table is fine where it fits):
+
+- Status: Core / Recommended / Optional
+- Planner skill: ...
+- Estimated time: ...
+- Parent involvement: ...
+- Materials: ...
+
 (See the matching entry in parent_guide/session_support_notes.md.)
 
 ## Goal
@@ -1961,9 +1973,9 @@ Goal: establish the project, roles, binder, and early artifacts.
 
 #### Session 00: Parent Setup
 
-Status: Core
-Parent involvement: Adult-only
-Artifact: Parent setup checklist completed.
+- Status: Core
+- Parent involvement: Adult-only
+- Artifact: Parent setup checklist completed.
 
 Open with the **"If you're not sure, do exactly this (fastest safe start)" defaults block** (mirror or link the canonical version in Section 21.0) so a parent can begin in minutes and defer every optional judgment. In particular, the City C (18), food (36/37), and language (47) sessions **start Recommended and promote later automatically** -- the parent is **not** asked to predict them here (Section 14.1.1).
 
@@ -1988,8 +2000,8 @@ Include:
 
 #### Session 01: Project Kickoff
 
-Status: Core
-Artifact: Trip planner cover page.
+- Status: Core
+- Artifact: Trip planner cover page.
 
 Child learns:
 
@@ -2020,8 +2032,8 @@ Include a light bridging mention (Section 5.4): the planning moves the child wil
 
 #### Session 02: Family Traveler Profiles
 
-Status: Core
-Artifact: Traveler profiles and family input notes.
+- Status: Core
+- Artifact: Traveler profiles and family input notes.
 
 Include one profile per traveler on the trip-basics roster (`trip_basics.md`), written by relationship so the session stays reusable. For this family the roster is:
 
@@ -2068,8 +2080,8 @@ Include a `Current Family Travel Assumptions` section (this is the canonical hom
 
 #### Session 03: What Makes a Good Trip?
 
-Status: Core
-Artifact: Family trip goals and family input summary.
+- Status: Core
+- Artifact: Family trip goals and family input summary.
 
 Prompts:
 
@@ -2093,8 +2105,8 @@ Keep it destination-neutral (no baked-in temple/theme-park names in the built se
 
 #### Session 04: Start a Source Log
 
-Status: Core
-Artifact: First source log entry.
+- Status: Core
+- Artifact: First source log entry.
 
 Teach:
 
@@ -2115,8 +2127,8 @@ Goal: teach research before major decisions.
 
 #### Session 05: Good Sources, Bad Sources
 
-Status: Core
-Artifact: Quick trust test and deep trust checklist.
+- Status: Core
+- Artifact: Quick trust test and deep trust checklist.
 
 Teach, **in two sittings** (both required -- "second sitting" sizes the load, it does not lower the bar; splitting a session across sittings is the existing Section 21.7 mechanic, applied here permanently because this session genuinely carries two sittings' worth of ideas -- Section 3.2's one-idea discipline):
 
@@ -2159,8 +2171,8 @@ This concept block is done by every family (it is part of Core Session 05). Actu
 
 #### Session 06: Book Research With a Guidebook
 
-Status: Core
-Artifact: Book notes page.
+- Status: Core
+- Artifact: Book notes page.
 
 The session is destination-agnostic: it teaches how to use a guidebook. The specific recommended guidebook (for Japan, for example Lonely Planet Japan or DK Eyewitness Japan) comes from the active destination pack's trusted-sources list, not from the session text. **A library copy or free reputable travel sites work just as well** -- no guidebook needs to be bought; foreground the free/library path here (and wherever a guidebook is invoked), consistent with the no-new-purchases equity note (Section 13.2). The library research plan (Session 07) is a first-class way to do this, not just a Recommended add-on.
 
@@ -2177,8 +2189,8 @@ Teach:
 
 #### Session 07: Library Research Plan
 
-Status: Recommended
-Artifact: Library visit plan or book list.
+- Status: Recommended
+- Artifact: Library visit plan or book list.
 
 Include suggested book types:
 
@@ -2190,8 +2202,8 @@ Include suggested book types:
 
 #### Session 08: Web Research Practice
 
-Status: Core
-Artifact: Website comparison notes.
+- Status: Core
+- Artifact: Website comparison notes.
 
 Child compares at least two sources on the same topic.
 
@@ -2213,8 +2225,8 @@ Record:
 
 #### Session 09: AI as Helper, Not Boss
 
-Status: Conditional core. Done if and only if the family opts into AI use (recorded in Session 00), and sequenced before any session where AI could be used. When the family is AI-free (the default), this full session is **not done at all** -- it is skipped, not "recommended." The short AI-literacy *concept* lesson stays Core for every family regardless, but it lives in **Session 05** (the always-core "what AI is and is not" block), not here. This full Session 09 is the additional teaching needed only when a family actually uses an AI tool. See Section 20.
-Artifact: AI notes and verification checklist.
+- Status: Conditional core. Done if and only if the family opts into AI use (recorded in Session 00), and sequenced before any session where AI could be used. When the family is AI-free (the default), this full session is **not done at all** -- it is skipped, not "recommended." The short AI-literacy *concept* lesson stays Core for every family regardless, but it lives in **Session 05** (the always-core "what AI is and is not" block), not here. This full Session 09 is the additional teaching needed only when a family actually uses an AI tool. See Section 20.
+- Artifact: AI notes and verification checklist.
 
 Teach the adult-operated, confined, sequenced pattern from Section 20 (a grown-up runs the tool on the grown-up's account with the child present; AI is confined to brainstorming, search terms, and tidying the child's own notes; AI never supplies facts; no personal data goes into AI; AI logs may be retained), and:
 
@@ -2248,8 +2260,8 @@ Goal: understand enough about the destination to recommend a season and general 
 
 #### Session 10: Destination Snapshot
 
-Status: Core
-Artifact: Destination snapshot page. (Built artifact name is neutral; "Japan snapshot" is only the instance.)
+- Status: Core
+- Artifact: Destination snapshot page. (Built artifact name is neutral; "Japan snapshot" is only the instance.)
 
 Open this session's Destination Notes (`destinations/japan/session_inserts/10_snapshot_facts.md`) for the place specifics. Prompts (the place facts come from the insert, not the session body):
 
@@ -2266,8 +2278,8 @@ Do not require mastery.
 
 #### Session 11: Regions and Cities Overview
 
-Status: Core
-Artifact: Region/map notes.
+- Status: Core
+- Artifact: Region/map notes.
 
 Include:
 
@@ -2286,8 +2298,8 @@ State clearly:
 
 #### Session 12: Weather, Seasons, and Events
 
-Status: Core
-Artifact: Season comparison chart.
+- Status: Core
+- Artifact: Season comparison chart.
 
 Compare:
 
@@ -2319,8 +2331,8 @@ These seasonal specifics live in the Japan pack (`destinations/japan/reference/s
 
 #### Session 13: Trip Goals and Travel Style
 
-Status: Core
-Artifact: Travel style worksheet.
+- Status: Core
+- Artifact: Travel style worksheet.
 
 Child considers:
 
@@ -2338,8 +2350,8 @@ Add a light cost-awareness touch here (the detailed budget work stays in Phase 6
 
 #### Session 14: Checkpoint 1 Season Recommendation
 
-Status: Core
-Artifact: Season recommendation report.
+- Status: Core
+- Artifact: Season recommendation report.
 
 Child recommends:
 
@@ -2375,8 +2387,8 @@ Goal: research candidate cities and recommend a city shortlist.
 
 #### Session 15: City Research Cards
 
-Status: Core
-Artifact: City research card template started.
+- Status: Core
+- Artifact: City research card template started.
 
 Fields:
 
@@ -2399,13 +2411,11 @@ Fields:
 
 #### Sessions 16-18: Deep-Dive Candidate Cities
 
-Status:
-
-- Deep-dive City A (for Japan, typically Tokyo): Core.
-- Deep-dive City B (for Japan, typically Kyoto): Core.
-- Deep-dive City C (the Osaka slot): Recommended by default; Core if parents expect this city to be a major candidate.
-
-Artifact: City research cards.
+- Status:
+  - Deep-dive City A (for Japan, typically Tokyo): Core.
+  - Deep-dive City B (for Japan, typically Kyoto): Core.
+  - Deep-dive City C (the Osaka slot): Recommended by default; Core if parents expect this city to be a major candidate.
+- Artifact: City research cards.
 
 The candidate cities come from the active destination pack's candidate list (`destinations/japan/session_inserts/16_18_candidate_cities.md`), not from the session text. For Japan these are major first-trip candidates, but researching them does not mean choosing them.
 
@@ -2421,8 +2431,8 @@ Each session should provide:
 
 #### Session 19: Other Places Research
 
-Status: Core
-Artifact: At least two additional city/region cards.
+- Status: Core
+- Artifact: At least two additional city/region cards.
 
 The menu of candidate places comes from the destination pack (`destinations/japan/session_inserts/19_other_places_menu.md`), not the session text. For Japan the menu includes, for example:
 
@@ -2446,8 +2456,8 @@ Require at least two alternatives beyond the City A / City B / City C deep-dives
 
 #### Session 20: City Long-List
 
-Status: Core
-Artifact: Long-list of 5-8 possible cities/regions.
+- Status: Core
+- Artifact: Long-list of 5-8 possible cities/regions.
 
 Fields:
 
@@ -2459,8 +2469,8 @@ Fields:
 
 #### Session 21: Compare Cities
 
-Status: Core
-Artifact: City comparison table.
+- Status: Core
+- Artifact: City comparison table.
 
 Default scoring categories:
 
@@ -2481,8 +2491,8 @@ Add a light, recurring budget-band check here and at each Phase 3-5 decision poi
 
 #### Session 22: Checkpoint 2 City Shortlist
 
-Status: Core
-Artifact: City shortlist recommendation.
+- Status: Core
+- Artifact: City shortlist recommendation.
 
 Child recommends:
 
@@ -2514,8 +2524,8 @@ Goal: build a ranked list of things to do.
 
 #### Session 23: Attraction Research Cards
 
-Status: Core
-Artifact: Attraction cards.
+- Status: Core
+- Artifact: Attraction cards.
 
 Fields:
 
@@ -2542,8 +2552,8 @@ Starter attraction ideas come from the destination pack (`destinations/japan/ses
 
 #### Session 24: Culture, History, Nature, Food, and Fun Balance
 
-Status: Core
-Artifact: Balance chart.
+- Status: Core
+- Artifact: Balance chart.
 
 Categories:
 
@@ -2561,8 +2571,8 @@ Goal: avoid planning the same type of day repeatedly.
 
 #### Session 25: Review Reviews Carefully
 
-Status: Core
-Artifact: Review trust worksheet.
+- Status: Core
+- Artifact: Review trust worksheet.
 
 Teach, **in two sittings** (both required -- the same split-across-sittings rule as Session 05; "second sitting" sizes the load, it does not lower the bar):
 
@@ -2596,8 +2606,8 @@ Use Google Maps, Tripadvisor, hotel reviews, restaurant reviews, or attraction r
 
 #### Session 26: Rank Attractions
 
-Status: Core
-Artifact: Ranked attraction list.
+- Status: Core
+- Artifact: Ranked attraction list.
 
 Use a rubric such as:
 
@@ -2621,8 +2631,8 @@ As with Session 21, offer a lighter three-criteria version of this rubric beside
 
 #### Session 27: Checkpoint 3 Top Experiences
 
-Status: Core
-Artifact: Top experiences recommendation.
+- Status: Core
+- Artifact: Top experiences recommendation.
 
 Child presents:
 
@@ -2650,8 +2660,8 @@ Goal: turn places into a realistic route and trip length.
 
 #### Session 28: Map the Route
 
-Status: Core
-Artifact: Route map notes.
+- Status: Core
+- Artifact: Route map notes.
 
 Use Google Maps or another map.
 
@@ -2674,8 +2684,8 @@ Ask (reason from train **time**, using the "Directions" step above -- not eyebal
 
 #### Session 29: How Long Should We Stay?
 
-Status: Core
-Artifact: Nights-per-city estimate.
+- Status: Core
+- Artifact: Nights-per-city estimate.
 
 Teach:
 
@@ -2699,8 +2709,8 @@ Teach:
 
 #### Session 30: Trains, Transit, and IC Cards
 
-Status: Core
-Artifact: Transportation basics notes.
+- Status: Core
+- Artifact: Transportation basics notes.
 
 Teach lightly:
 
@@ -2721,8 +2731,8 @@ Teach lightly:
 
 #### Session 31: Route Trade-Off Report
 
-Status: Core
-Artifact: Trade-off report comparing at least two route options.
+- Status: Core
+- Artifact: Trade-off report comparing at least two route options.
 
 Possible comparisons:
 
@@ -2747,8 +2757,8 @@ Free-form weighted reasoning (assigning their own importance weights and arguing
 
 #### Session 32: Checkpoint 4 Route and Trip Length
 
-Status: Core
-Artifact: Route and trip-length recommendation.
+- Status: Core
+- Artifact: Route and trip-length recommendation.
 
 Child recommends:
 
@@ -2780,8 +2790,8 @@ Goal: teach practical constraints and moderate budget awareness.
 
 #### Session 33: Budget Basics, First Pass
 
-Status: Core
-Artifact: Budget category worksheet and simple high/medium/low hotel/meal estimate.
+- Status: Core
+- Artifact: Budget category worksheet and simple high/medium/low hotel/meal estimate.
 
 Teach categories:
 
@@ -2835,8 +2845,8 @@ Flag one lodging-pricing wrinkle: a **ryokan** (traditional inn) is usually pric
 
 #### Session 34: Neighborhoods and Hotel Location
 
-Status: Core
-Artifact: Neighborhood comparison.
+- Status: Core
+- Artifact: Neighborhood comparison.
 
 Teach:
 
@@ -2851,8 +2861,8 @@ Teach:
 
 #### Session 35: Hotel Comparison
 
-Status: Core
-Artifact: Hotel comparison cards.
+- Status: Core
+- Artifact: Hotel comparison cards.
 
 Fields:
 
@@ -2878,8 +2888,8 @@ Child compares; adults book. **How many comparisons:** at least 1 per likely ove
 
 #### Session 36: Food Research
 
-Status: Conditional core (Core if the family wants the restaurant and food shortlist binder component; otherwise Recommended; see Section 14.1.1).
-Artifact: Food wish list.
+- Status: Conditional core (Core if the family wants the restaurant and food shortlist binder component; otherwise Recommended; see Section 14.1.1).
+- Artifact: Food wish list.
 
 The built session is destination-neutral ("explore your destination's foods; open this session's Destination Notes"). The specific foods live in the pack insert (`destinations/japan/session_inserts/36_37_food_ideas.md`), which for Japan includes, for example:
 
@@ -2916,8 +2926,8 @@ Include a brief food safety mini-checklist:
 
 #### Session 37: Restaurant Shortlist
 
-Status: Conditional core (Core if the family wants the restaurant and food shortlist binder component; otherwise Recommended; see Section 14.1.1).
-Artifact: Restaurant cards and dining-area list.
+- Status: Conditional core (Core if the family wants the restaurant and food shortlist binder component; otherwise Recommended; see Section 14.1.1).
+- Artifact: Restaurant cards and dining-area list.
 
 Fields:
 
@@ -2936,8 +2946,8 @@ Include Tabelog as optional and possibly adult-assisted.
 
 #### Session 38: Daily Cost Estimates
 
-Status: Core
-Artifact: Daily cost table.
+- Status: Core
+- Artifact: Daily cost table.
 
 Use low/medium/high estimates.
 
@@ -2952,8 +2962,8 @@ Include:
 
 #### Session 39: Budget Review, Second Pass
 
-Status: Core
-Artifact: Updated budget summary.
+- Status: Core
+- Artifact: Updated budget summary.
 
 Child connects budget to actual route and itinerary, keeping the **adult-provided flight placeholder** (Session 33) in the running total so the second-pass comparison against the rough budget band stays meaningful.
 
@@ -2967,8 +2977,8 @@ Goal: assemble a realistic day-by-day plan.
 
 #### Session 40: Realistic Day Planning
 
-Status: Core
-Artifact: Realistic day rules.
+- Status: Core
+- Artifact: Realistic day rules.
 
 Teach:
 
@@ -2984,8 +2994,8 @@ Teach:
 
 #### Session 41: Build Day Cards
 
-Status: Core (a heavier stretch; pace over several sittings)
-Artifact: Daily plan cards.
+- Status: Core (a heavier stretch; pace over several sittings)
+- Artifact: Daily plan cards.
 
 Day cards are built only after the route and trip length are set (a dependency on Checkpoint 4). Save the filled cards as `research/day_cards/day_01.md`, `day_02.md`, and so on.
 
@@ -3014,8 +3024,8 @@ Fields:
 
 #### Session 42: Reservations and Timed Entries
 
-Status: Core
-Artifact: Reservation watchlist.
+- Status: Core
+- Artifact: Reservation watchlist.
 
 Teach the date-gating idea with concrete examples from the destination pack (`destinations/japan/session_inserts/42_reservation_examples.md`): certain experiences require committing to a date to reserve, sometimes weeks or a month ahead, and can sell out. For Japan the clearest examples are the Ghibli Museum (advance-only tickets released in a monthly drop, no walk-up sales), Tokyo Disney (date-specific tickets only, no walk-up gate sales), teamLab (dated timed slots), and Universal Studios Japan's Super Nintendo World (timed area entry). Connect this explicitly to the dates-TBD philosophy (Section 2.4) and the parent flight/date guidance (Section 21.4): the longer dates stay open, the more of these become unbookable. The fix is awareness, not forcing dates. Add a "date-gated?" flag to the watchlist. For the fast-changing access, entry, and pricing categories that bear on what adults must book or verify (reservation systems, IC-card options, entry authorization, the moving taxes), re-check the Japan access/pricing watch (Section 22.4) -- categories to verify, never memorized values.
 
@@ -3043,8 +3053,8 @@ Fields:
 
 #### Session 43: Rest Days, Jet Lag, and Pacing
 
-Status: Core
-Artifact: Pacing review.
+- Status: Core
+- Artifact: Pacing review.
 
 Check:
 
@@ -3072,8 +3082,8 @@ Keep this a few calm sentences, in the reassuring tone of the earthquake note (S
 
 #### Session 44: Backup Plans and Cut List
 
-Status: Core
-Artifact: Backup plan and cut list.
+- Status: Core
+- Artifact: Backup plan and cut list.
 
 This is where the **formal cut list** is assembled; it gathers the earlier "places to skip / save for a future trip" notes the child already made at Sessions 22 and 27, rather than starting from scratch (Section 5.2 tracker map).
 
@@ -3096,8 +3106,8 @@ Cut list fields:
 
 #### Session 45: Full Itinerary Draft
 
-Status: Core (a synthesis session; allow extra time or split into several sittings)
-Artifact: Full itinerary draft.
+- Status: Core (a synthesis session; allow extra time or split into several sittings)
+- Artifact: Full itinerary draft.
 
 Include:
 
@@ -3112,8 +3122,8 @@ Include:
 
 #### Session 46: Checkpoint 5 Itinerary Review
 
-Status: Core
-Artifact: Itinerary review packet.
+- Status: Core
+- Artifact: Itinerary review packet.
 
 This is the Minimum Viable Plan finish line (Section 8.6). State it plainly here and in the roadmap: "You could stop here and still have a usable plan. You know when to go, where, how long, a day-by-day plan, a rough budget, and what adults need to book. Everything after this is a bonus." Ensure the output shells and the itinerary file read as coherent even if only the Core Finish Line sections are filled in.
 
@@ -3144,8 +3154,8 @@ Goal: prepare the final binder, presentation, and adult handoff.
 
 #### Session 47: Language and Etiquette
 
-Status: Conditional core (Core if the family wants the language and etiquette quick sheet binder component; otherwise Recommended; see Section 14.1.1). **This is one of the highest-payoff, most enjoyable sessions in the whole project -- a top-tier engagement and confidence builder the family should be reluctant to drop.** For a ten-year-old, learning to say hello and thank-you and to read a few signs is a delight the child uses *live*, in their own hands, in Japan; it is "conditional" only in the technical sense that a family may omit the binder component, **not** because it is low-value. Where status is shown (here, Section 14.1.1, the roadmap, the First Taste list), flag it as a session to keep, not a routine optional. (It stays conditional rather than Core so the Core count is unchanged and a family that truly needs to drop it still can; the escape hatch and the First-Taste omission are preserved.)
-Artifact: One-page language and etiquette quick sheet.
+- Status: Conditional core (Core if the family wants the language and etiquette quick sheet binder component; otherwise Recommended; see Section 14.1.1). **This is one of the highest-payoff, most enjoyable sessions in the whole project -- a top-tier engagement and confidence builder the family should be reluctant to drop.** For a ten-year-old, learning to say hello and thank-you and to read a few signs is a delight the child uses *live*, in their own hands, in Japan; it is "conditional" only in the technical sense that a family may omit the binder component, **not** because it is low-value. Where status is shown (here, Section 14.1.1, the roadmap, the First Taste list), flag it as a session to keep, not a routine optional. (It stays conditional rather than Core so the Core count is unchanged and a family that truly needs to drop it still can; the escape hatch and the First-Taste omission are preserved.)
+- Artifact: One-page language and etiquette quick sheet.
 
 **Frame this for the child as a tool the child will use themselves on the trip** -- to say hello and thank-you, order food, and follow etiquette signs in real time -- not just a page in the binder. Tell them to build it for their own pocket, not only for the family meeting; this is work that pays off live, in their own hands, in Japan. (The builder may also suggest a pocket-sized or phone-photo version the child can actually carry.)
 
@@ -3174,8 +3184,8 @@ Adult-owned note for the parent guide: the onsen/sento age-appropriateness call 
 
 #### Session 48: Packing List
 
-Status: Core
-Artifact: Draft packing list.
+- Status: Core
+- Artifact: Draft packing list.
 
 Include:
 
@@ -3204,8 +3214,8 @@ Adults review.
 
 #### Session 49: Travel Readiness Checklist
 
-Status: Core
-Artifact: Readiness checklist.
+- Status: Core
+- Artifact: Readiness checklist.
 
 Student-facing items should be high-level.
 
@@ -3233,8 +3243,8 @@ Keep it warm and brief, and have the adult rehearse it once as a calm "what if,"
 
 #### Session 50: Final Binder Assembly
 
-Status: Core (a larger assembly session; allow extra time or split into several sittings)
-Artifact: Completed binder table of contents or assembled binder checklist.
+- Status: Core (a larger assembly session; allow extra time or split into several sittings)
+- Artifact: Completed binder table of contents or assembled binder checklist.
 
 The child assembles the binder by building the canonical binder tabs **in order**, exactly as listed in Section 13.5 (Start Here; Research Skills; Destination Overview; Cities and Route; Attractions and Food; Hotels and Budget; Itinerary; Readiness; Sources and Decisions; Parent Review; Final Recommendation). The 27 binder contents (Section 8.1) file under those tabs per the mapping table in Section 13.5. There is one organizing scheme; the assembly order is simply "build tab 1, then tab 2, and so on."
 
@@ -3244,8 +3254,8 @@ The substantive content and the assembly are judged on organization and clarity.
 
 #### Session 51: Final Presentation
 
-Status: Core
-Artifact: Presentation outline.
+- Status: Core
+- Artifact: Presentation outline.
 
 Prepare a 5-10 minute presentation. **There is no single required way to present:** the child may present live, practice with one parent first, present from notes, record a video and play it, or hand over the binder with a short written summary -- whichever fits their (presentation accommodations and a rehearsal ladder are in the differentiation appendix, Section 21.7). The family still makes its decision at Checkpoint 6; only the delivery format flexes.
 
@@ -3263,8 +3273,8 @@ Include:
 
 #### Session 52: Checkpoint 6 Family Decision Meeting
 
-Status: Core
-Artifact: Final recommendation packet.
+- Status: Core
+- Artifact: Final recommendation packet.
 
 Adults decide:
 
@@ -3286,8 +3296,8 @@ Adult handoff includes:
 
 #### Session 53: Reflection and Handoff
 
-Status: Core
-Artifact: Final reflection.
+- Status: Core
+- Artifact: Final reflection.
 
 Prompts:
 
@@ -4754,7 +4764,7 @@ The casual-involvement pivot is a real, honored finish, tied to "your work wasn'
 Generate the repository in this order (batched as above).
 
 1. Create the three-layer directory tree (`framework/`, `destinations/japan/`, and the blank `framework/trip_starter/` kit).
-2. Create `.markdownlint.json`, the recommended `.gitignore`, and the `LICENSE` (CC BY-NC-SA 4.0; see Section 11.4).
+2. Use the committed `.markdownlint.jsonc` if the repository already ships one (do **not** add a second `.markdownlint.json`); otherwise create `.markdownlint.jsonc`. Also create the recommended `.gitignore` and the `LICENSE` (CC BY-NC-SA 4.0; see Section 11.4).
 3. Create the optional GitHub Actions workflows if included (markdown-lint and the optional link-check).
 4. Create root overview files: `README.md`, `GETTING_STARTED.md`, `CONTRIBUTING.md` (Section 29.3).
 5. Create `framework/` overview files: `README.md`, `PROJECT_ROADMAP.md` (including the Core Finish Line index), `FINAL_DELIVERABLE.md`, `print_index.md`, `cross_reference_map.md`, `how_to_add_a_destination.md`, `how_to_start_a_trip.md`.

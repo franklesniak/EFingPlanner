@@ -2,7 +2,7 @@
 # DOCUMENTATION ISSUE TEMPLATE
 # =============================================================================
 # For detailed design decisions and customization options, see:
-# .github/TEMPLATE_DESIGN_DECISIONS.md > Issue Template Design Decisions
+# https://github.com/franklesniak/copilot-repo-template/blob/HEAD/.github/TEMPLATE_DESIGN_DECISIONS.md
 #
 # CUSTOMIZE: markers below indicate actionable customization points.
 # Look for `# CUSTOMIZE:` comments throughout this file.
@@ -70,17 +70,6 @@ body:
     validations:
       required: false
 
-  # CUSTOMIZE: Remove if your project doesn't maintain versioned documentation
-  - type: input
-    id: doc_version
-    attributes:
-      label: Documentation Version (optional)
-      description: >-
-        If the documentation is versioned, which version are you viewing?
-      placeholder: e.g., v1.2.3, latest, main branch
-    validations:
-      required: false
-
   # CUSTOMIZE: Adjust options to match your project's documentation structure.
   # This field is optional by default. Downstream repos can make it required if
   # they do structured documentation triage.
@@ -95,7 +84,6 @@ body:
         - Missing Information
         - Broken Link
         - Outdated Information
-        - Code Example Issue
         - Formatting / Rendering
         - Other
     validations:

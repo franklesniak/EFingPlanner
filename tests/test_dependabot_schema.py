@@ -7,10 +7,9 @@ import importlib.metadata
 import shutil
 import subprocess
 import sys
-from importlib.util import find_spec
+from importlib.util import find_spec, module_from_spec, spec_from_file_location
 from pathlib import Path
-
-import yaml  # type: ignore[import-untyped]
+from typing import Any
 
 from tests._pytest_compat import pytest
 
@@ -27,25 +26,29 @@ def check_jsonschema_command() -> list[str] | None:
 
 CHECK_JSONSCHEMA_COMMAND = check_jsonschema_command()
 REPO_ROOT = Path(__file__).resolve().parent.parent
-PRE_COMMIT_CONFIG = REPO_ROOT / ".pre-commit-config.yaml"
 DEPENDABOT_AUTO_ASSIGNMENT_FIXTURE = (
     REPO_ROOT / "tests" / "fixtures" / "dependabot" / "auto-assignment.yml"
 )
 
 
-def pinned_check_jsonschema_rev() -> str:
-    """Return the ``check-jsonschema`` rev pinned in ``.pre-commit-config.yaml``."""
-    config = yaml.safe_load(PRE_COMMIT_CONFIG.read_text(encoding="utf-8"))
-    revs = {
-        str(repo["rev"]).strip().lstrip("v")
-        for repo in config.get("repos", [])
-        if str(repo.get("repo", "")).rstrip("/").endswith("/check-jsonschema") and "rev" in repo
-    }
-    assert revs, "No pinned check-jsonschema repo found in .pre-commit-config.yaml"
-    assert len(revs) == 1, (
-        "check-jsonschema is pinned to multiple revs in .pre-commit-config.yaml: " f"{sorted(revs)}"
-    )
-    return next(iter(revs))
+def _load_module_from_path(name: str, path: Path) -> Any:
+    """Load a Python module from an explicit file path (supports hyphenated names)."""
+    spec = spec_from_file_location(name, path)
+    assert spec is not None and spec.loader is not None, f"cannot load module from {path}"
+    module = module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+# The CI install step in .github/workflows/data-ci.yml pins check-jsonschema to
+# the version this helper prints, so reuse the helper here instead of duplicating
+# the .pre-commit-config.yaml parsing and single-rev invariant. Because that
+# install feeds the version this test reads back, any drift between the helper
+# and this test would surface as a failure in the regression assertion below.
+pinned_check_jsonschema_rev = _load_module_from_path(
+    "pinned_check_jsonschema_rev",
+    REPO_ROOT / ".github" / "scripts" / "pinned-check-jsonschema-rev.py",
+).pinned_check_jsonschema_rev
 
 
 @pytest.mark.skipif(
@@ -89,6 +92,8 @@ def test_regression_check_jsonschema_matches_pinned_pre_commit_rev() -> None:
         f"Installed check-jsonschema {installed!r} does not match the pinned "
         f".pre-commit-config.yaml rev {pinned!r}. The Dependabot regression test "
         "would validate against a different bundled vendor.dependabot schema than "
-        "the default validate-dependabot-config hook. Bump the check-jsonschema "
-        "pin in pyproject.toml and the pre-commit `rev` together."
+        "the default validate-dependabot-config hook. The pinned rev lives only "
+        "in .pre-commit-config.yaml (Dependabot updates it); install a matching "
+        "check-jsonschema locally (CI derives it via "
+        ".github/scripts/pinned-check-jsonschema-rev.py)."
     )

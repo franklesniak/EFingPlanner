@@ -114,11 +114,17 @@ def is_changelog_file(path: Path) -> bool:
     return name.startswith("changelog") and name.endswith(".md")
 
 
+# Repo-relative top-level directories whose Markdown the hook guards. docs/ holds
+# reference and design material (docs/spec/ is excluded by the pre-commit `exclude`
+# pattern); framework/ and destinations/ hold the built curriculum.
+SCAN_TARGET_ROOTS = ("docs", "framework", "destinations")
+
+
 def is_scan_target(relative_path: Path) -> bool:
-    """Return whether a repo-relative path is a docs Markdown scan target."""
+    """Return whether a repo-relative path is a curriculum or docs Markdown scan target."""
     return (
         len(relative_path.parts) >= 2
-        and relative_path.parts[0] == "docs"
+        and relative_path.parts[0] in SCAN_TARGET_ROOTS
         and relative_path.suffix.lower() == ".md"
         and not is_changelog_file(relative_path)
     )

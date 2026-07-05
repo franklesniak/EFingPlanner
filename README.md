@@ -29,7 +29,7 @@ The design (spec §9) organizes the repository into three layers:
 - `destinations/japan/` — Layer 2: the Japan knowledge pack (stable reference facts and the notes the generic sessions pull in).
 - the **trip layer** — Layer 3: the family's real trip work, copied out of a blank starter kit and *never committed*.
 
-Only `framework/` and `destinations/japan/` are built here; the trip layer lives on the family's own computer.
+Only `framework/` and `destinations/japan/` will be built in this repository; the trip layer lives on the family's own computer.
 
 ## Repository housekeeping
 
