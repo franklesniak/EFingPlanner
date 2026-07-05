@@ -140,7 +140,7 @@ pipeline also re-runs `yamllint`.
 > - The pre-commit hook scope in `.pre-commit-config.yaml`.
 > - `.github/workflows/data-ci.yml` only when the `github-actions` module is retained and the change is **adding or removing a hook ID** (for example, introducing a new `check-yaml-custom` hook), or when adding, removing, or renaming an explicit CI step or hook alias that the workflow invokes by name. Apply the same condition to `.azuredevops/pipelines/data-ci.yml` when the `azure-pipelines` module is retained. Changes to an **existing** hook's `files:` regex (including `check-jsonschema` scope changes) are picked up automatically, because each `data-ci.yml` step invokes hooks by ID via `pre-commit run <hook-id> --all-files`.
 > - The **Built-in Schema Validation for Real Load-Bearing Configuration Files** ADR in [`.github/TEMPLATE_DESIGN_DECISIONS.md`](https://github.com/franklesniak/copilot-repo-template/blob/HEAD/.github/TEMPLATE_DESIGN_DECISIONS.md) when **adding or removing** a default validated real load-bearing configuration file (for example, when wiring or unwiring a new built-in vendor schema).
-> - Any documentation that references the schema or the validation policy (for example, `schemas/README.md`, `README.md`, `CONTRIBUTING.md`, and `OPTIONAL_CONFIGURATIONS.md`).
+> - Any documentation that references the schema or the validation policy (for example, `schemas/README.md`, `README.md`, and `CONTRIBUTING.md`).
 <!-- template-sync: end schema-reference-only -->
 
 ### For GitHub Copilot Coding Agent (Automated PRs)

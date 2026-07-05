@@ -37,9 +37,9 @@ jobs:
 
       # Python is required so the generated-output nested-Markdown regression can
       # materialize TEMPLATE_UPDATE_PROCEDURE.md and run the real nested linter.
-      # The Node tooling installed below provides that test's prerequisites; the
-      # Python CI workflow runs pytest without node_modules, so the test would
-      # otherwise silently skip there and leave the behavior unenforced.
+      # That regression is a pytest test that also needs the Node tooling
+      # installed below, and this workflow is the only place it runs, so both
+      # runtimes are provisioned here to keep the behavior enforced.
       - name: Setup Python
         uses: actions/setup-python@v6
         with:

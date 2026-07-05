@@ -22,7 +22,7 @@ npm install
 
 Git hooks are managed by pre-commit.
 
-### Install Python
+### 3. Install Python
 
 `pre-commit` is installed and run through `pip`/`pipx`, and the template-sync helper scripts run on Python, so a working Python 3 interpreter is required even when your project does not adopt the Python module:
 
@@ -31,7 +31,7 @@ python --version
 ```
 
 
-### 3. Install Pre-commit
+### 4. Install Pre-commit
 
 Install `pre-commit` globally using **one** of the following. With `pip`:
 
@@ -47,13 +47,13 @@ pipx install pre-commit
 
 `pre-commit` manages isolated hook environments, so it does not need to be installed as a project runtime dependency.
 
-### 4. Install Git Hooks
+### 5. Install Git Hooks
 
 ```bash
 pre-commit install
 ```
 
-### 5. Run Pre-commit Manually
+### 6. Run Pre-commit Manually
 
 Run all hooks across the whole repository:
 
@@ -255,7 +255,7 @@ Before submitting a pull request, ensure the retained test suites pass locally.
 
 #### Test Requirements
 
-- The tests wired into CI (the Data CI schema-guard checks and the Markdown checks) must pass. The broader template-sync QA suite under `tests/` is not CI-gated.
+- The tests wired into CI (the Data CI schema-guard checks and the Markdown checks) must pass. The Markdown checks include the nested-Markdown regression (`tests/test_materialize_downstream_adoption.py`); the broader template-sync QA suite under `tests/` is otherwise not CI-gated.
 
 ### 5. Commit Your Changes
 

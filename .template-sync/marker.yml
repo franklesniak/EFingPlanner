@@ -21,8 +21,8 @@ template_sync:
     - path: .github/copilot-instructions.md
       adoption_mode: minimal-preservation
       decision: MERGE
-      authorization_basis: Owner explicitly authorized trimming excluded-module reference-only blocks during first-init (question Q-A).
-      authorized_scope: Remove powershell/python/terraform/git-lfs/azure reference-only blocks only; retained content and instruction-contract anchors preserved.
+      authorization_basis: Owner authorized trimming excluded-module reference-only blocks at first-init (question Q-A); the empty Python/Terraform Running-Linters and Running-Tests subheader removal and the template-onboarding OPTIONAL_CONFIGURATIONS.md reference removal were owner-authorized during the PR #5 review.
+      authorized_scope: Remove excluded-module reference-only blocks (powershell/python/terraform/git-lfs/azure); remove the emptied Python/Terraform Running-Linters and Running-Tests subheaders left after content-stripping; and remove the excluded template-onboarding OPTIONAL_CONFIGURATIONS.md reference from the retained schema-reference-only block. Retained content and instruction-contract anchors preserved.
     - path: CLAUDE.md
       adoption_mode: minimal-preservation
       decision: MERGE

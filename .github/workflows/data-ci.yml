@@ -100,7 +100,7 @@
 #    workflow does NOT replace that — it adds dedicated visibility and a
 #    distinct required-check identity for JSON/YAML/Actions validation so
 #    branch protection rules and contributors can reason about data-file
-#    quality independently of the aggregate gate and Python CI.
+#    quality independently of the aggregate gate.
 #
 #    Trade-off: the JSON/YAML/actionlint hooks run in both workflows. This
 #    duplication is intentional and accepted in exchange for clearer

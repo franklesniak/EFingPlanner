@@ -62,7 +62,7 @@ body:
       description: >-
         Which session, worksheet, or page? A file path or a title/heading both work.
         Pointing to a location greatly speeds up a fix.
-      placeholder: e.g., framework/session-03.md, or "Japan — Budget worksheet"
+      placeholder: e.g., the "Destination snapshot" session, or framework/sessions/phase_02_destination_big_picture/10_destination_snapshot.md
     validations:
       required: true
 
@@ -88,8 +88,8 @@ body:
       description: Some problems only show up in one format.
       options:
         - Printed on paper
-        - On screen (reading the Markdown or site)
-        - PDF
+        - On screen (reading the Markdown on GitHub or the site)
+        - In a document editor (e.g., Google Docs) after copying it in
         - Not sure / not applicable
     validations:
       required: false
