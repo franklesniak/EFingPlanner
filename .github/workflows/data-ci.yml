@@ -262,7 +262,14 @@ jobs:
       # deleted azure/python/powershell surfaces) and cannot pass in a
       # customized downstream repo.
       - name: Install retained Python test dependencies
-        run: pip install pytest "check-jsonschema==0.37.3" "jsonschema>=4.18.0" "PyYAML>=6.0.3"
+        # Derive the check-jsonschema version from the single pinned source in
+        # .pre-commit-config.yaml (which Dependabot updates) so the pytest-facing
+        # install matches the validate-dependabot-config hook and its bundled
+        # vendor.dependabot schema. tests/test_dependabot_schema.py enforces this.
+        run: |
+          python -m pip install "PyYAML>=6.0.3"
+          check_jsonschema_rev="$(python .github/scripts/pinned-check-jsonschema-rev.py)"
+          pip install pytest "check-jsonschema==${check_jsonschema_rev}" "jsonschema>=4.18.0" "PyYAML>=6.0.3"
 
       - name: Run schema-example and dependabot-schema regression tests
         run: python -m pytest tests/test_schema_examples.py tests/test_dependabot_schema.py -v

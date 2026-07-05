@@ -452,12 +452,22 @@ def test_todo_task_list_without_colon_is_not_flagged(tmp_path: Path) -> None:
 
 
 def test_markdown_outside_docs_is_not_scanned(tmp_path: Path) -> None:
-    """The hook scope is limited to Markdown files under docs/."""
+    """Markdown outside the guarded roots (docs/, framework/, destinations/) is not scanned."""
     path = write_file(tmp_path / "README.md", "The value is TBD.\n")
 
     violations = scan_single_file(path, tmp_path)
 
     assert violations == []
+
+
+@pytest.mark.parametrize("root_dir", ["framework", "destinations"])
+def test_curriculum_markdown_is_scanned(tmp_path: Path, root_dir: str) -> None:
+    """Built-curriculum Markdown under framework/ and destinations/ is guarded."""
+    path = write_file(tmp_path / root_dir / "session-01.md", "The value is TBD.\n")
+
+    violations = scan_single_file(path, tmp_path)
+
+    assert [violation.matched_text for violation in violations] == ["TBD"]
 
 
 def test_main_reports_actionable_failure_message(

@@ -1,22 +1,5 @@
 # Contributing to This Project
 
-<!--
-TEMPLATE DESIGN DECISION: Placeholder Strategy
-
-This file uses OWNER/REPO placeholders (not generic <your-repo> syntax) because:
-- Enables bulk find-and-replace for template adopters (single operation)
-- CI automation can verify all placeholders are replaced (.github/workflows/check-placeholders.yml)
-- Results in working, copy-pastable commands after replacement
-- Consistent with issue templates and other template files
-
-Alternative considered: Generic angle-bracket syntax like <your-repository-clone-url>
-Rejected because: Harder to replace in bulk, produces non-working commands,
-inconsistent with other files that require real values (CI configs, package.json)
-
-See README.md Template Setup Checklist for adoption instructions.
-See [OPTIONAL_CONFIGURATIONS.md](https://github.com/franklesniak/copilot-repo-template/blob/HEAD/OPTIONAL_CONFIGURATIONS.md) for detailed customization guidance.
--->
-
 Thank you for your interest in contributing. This document describes the retained contributor workflow, validation expectations, and pull-request readiness checks for this repository.
 
 
@@ -24,11 +7,9 @@ Thank you for your interest in contributing. This document describes the retaine
 
 ### 1. Clone the Repository
 
-<!-- CUSTOMIZE: Replace `OWNER/REPO` with your organization and repository name -->
-
 ```bash
-git clone https://github.com/OWNER/REPO.git
-cd REPO
+git clone https://github.com/franklesniak/EFingPlanner.git
+cd EFingPlanner
 ```
 
 ### 2. Install Node.js Dependencies
@@ -94,7 +75,6 @@ This repository uses pre-commit for git hooks. Configured hooks include:
 
 - **Formatting:** trailing whitespace and end-of-file fixes.
 - **Markdown linting:** markdownlint and local Markdown link validation.
-- **PowerShell linting:** PSScriptAnalyzer with repository settings.
 - **Data-file validation:** `check-json` for strict `.json` files, `check-yaml`, and `actionlint` for GitHub Actions workflows.
 <!-- template-sync: begin yaml-reference-only -->
 - **YAML style validation:** `yamllint` configured by `.yamllint.yml`.
@@ -133,14 +113,6 @@ npm run lint:md:links
 npm run lint:md:nested
 ```
 
-### PowerShell Validation
-
-```powershell
-Invoke-ScriptAnalyzer -Path .\script.ps1 -Settings .\.github\linting\PSScriptAnalyzerSettings.psd1
-Invoke-Pester -Path tests/ -Output Detailed
-```
-
-
 <!-- template-sync: begin template-sync-support-reference-only -->
 ### Template-Sync Validation
 
@@ -167,7 +139,6 @@ Pre-commit hooks are not optional. They enforce:
 
 - Formatting and end-of-file hygiene.
 - Markdown linting and local Markdown link validation.
-- PowerShell linting.
 - Data-file validation for strict `.json`, YAML parsing, and GitHub Actions workflows.
 <!-- template-sync: begin yaml-reference-only -->
 - YAML style validation through `yamllint`.
@@ -243,7 +214,6 @@ This repository includes retained GitHub Actions workflows that run automaticall
 - **Pre-commit CI** (`.github/workflows/precommit-ci.yml`) - Runs the aggregate `pre-commit run --all-files` gate over every hook in `.pre-commit-config.yaml`.
 - **Auto-fix Pre-commit** (`.github/workflows/auto-fix-precommit.yml`) - Automatically commits pre-commit auto-fixes on Copilot-agent branches when the workflow conditions match.
 - **Markdown Lint** (`.github/workflows/markdownlint.yml`) - Validates Markdown formatting and local links.
-- **PowerShell CI** (`.github/workflows/powershell-ci.yml`) - Runs PSScriptAnalyzer and Pester on PowerShell files.
 <!-- template-sync: begin data-ci-reference-only -->
 - **Data CI** (`.github/workflows/data-ci.yml`) - Runs retained baseline placeholder, data-file, GitHub Actions, template-sync, and schema validation hooks.
 <!-- template-sync: end data-ci-reference-only -->
@@ -283,17 +253,8 @@ Fix any issues that are reported.
 
 Before submitting a pull request, ensure the retained test suites pass locally.
 
-
-#### PowerShell Tests
-
-```powershell
-Install-Module -Name Pester -MinimumVersion 5.0 -Force -Scope CurrentUser
-Invoke-Pester -Path tests/ -Output Detailed
-```
-
 #### Test Requirements
 
-- PowerShell changes should include Pester tests in `tests/PowerShell/`.
 - Retained test suites must pass on the applicable CI matrix.
 
 ### 5. Commit Your Changes
@@ -329,27 +290,10 @@ When submitting a pull request:
 
 If you have questions or encounter issues:
 
-<!-- CUSTOMIZE: Replace `OWNER/REPO` with your organization and repository name -->
-
-1. Check existing [Issues](https://github.com/OWNER/REPO/issues).
+1. Check existing [Issues](https://github.com/franklesniak/EFingPlanner/issues).
 2. Review the retained documentation in `.github/instructions/`.
 3. Open a new issue with a clear description of the problem.
 
 ## License
 
-<!--
-TEMPLATE ADOPTERS: Update this section if your project uses a license other than MIT.
-
-If using a different open source license (Apache 2.0, GPL, BSD, etc.):
-- Replace "MIT License" with your license name
-- Ensure consistency with the LICENSE file in the repository root
-
-If using a proprietary license:
-- Replace the entire contribution agreement text below
-- Consider adding Contributor License Agreement (CLA) requirements
-- Consult with legal counsel for appropriate contribution terms
-
-See the [OPTIONAL_CONFIGURATIONS.md "License Customization" section](https://github.com/franklesniak/copilot-repo-template/blob/HEAD/OPTIONAL_CONFIGURATIONS.md#license-customization) for detailed guidance.
--->
-
-By contributing to this project, you agree that your contributions will be licensed under the same license as the project (MIT License).
+By contributing to this project, you agree that your contributions will be licensed under the same license as the project: Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0). See [LICENSE](LICENSE) and [LICENSING.md](LICENSING.md).
