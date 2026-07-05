@@ -264,7 +264,6 @@ For each PR-sized change:
   - Always review and commit these auto-fixes as part of your change.
 - Add/adjust tests for new behavior.
   - Python: pytest tests in `tests/`
-  - PowerShell: Pester tests in `tests/PowerShell/`
 - For data-file changes, run the applicable validation hooks via `pre-commit run --all-files` so that retained checks such as `check-json`, `check-yaml`, GitHub Actions-only `actionlint`, and configured `check-jsonschema` / `check-metaschema` hooks pass before committing.
   <!-- template-sync: begin yaml-reference-only -->
   - When YAML style validation is retained, `yamllint` must also pass.
@@ -295,12 +294,9 @@ This repository uses modular instruction files covering both language-specific s
 - JSON: `.github/instructions/json.instructions.md` applies to `**/*.json` and `**/*.jsonc`.
 <!-- template-sync: end json-reference-only -->
 - Markdown/Docs: `.github/instructions/docs.instructions.md` applies to `**/*.md` and `**/*.mdc`.
-- PowerShell: `.github/instructions/powershell.instructions.md` applies to `**/*.ps1`.
 <!-- template-sync: begin yaml-reference-only -->
 - YAML: `.github/instructions/yaml.instructions.md` applies to `**/*.yml` and `**/*.yaml`.
 <!-- template-sync: end yaml-reference-only -->
-
-**Note:** The PowerShell instructions include comprehensive guidance on Pester testing.
 
 **To customize for your project:**
 
@@ -366,7 +362,6 @@ Manual owner actions for Azure DevOps commonly include enabling the preview at o
 
 This repository includes linting and validation tool configurations that align with the coding standards. The active files include:
 
-- PSScriptAnalyzer: `.github/linting/PSScriptAnalyzerSettings.psd1` for PowerShell formatting/linting (OTBS style).
 - markdownlint: `.markdownlint.jsonc` for Markdown linting.
 <!-- template-sync: begin yaml-reference-only -->
 - yamllint: `.yamllint.yml` for YAML style enforcement.
@@ -387,9 +382,6 @@ npm run lint:md
 ```
 
 <!-- template-sync: end markdown-reference-only -->
-
-**PowerShell:**
-
 
 **Terraform:**
 
@@ -447,9 +439,6 @@ This repository includes retained testing infrastructure for the adopted languag
 ### Running Tests
 
 **Python:**
-
-
-**PowerShell:**
 
 
 **Terraform:**
