@@ -124,11 +124,11 @@ After context loss, interruption, or compaction, reread this journal, `_TODO-rep
 - **Follow-up:** When mirroring known-good logic into a CI helper, prefer importing over copying.
 - **Related files:** `.github/scripts/pinned-check-jsonschema-rev.py`, `tests/test_dependabot_schema.py`, `.github/workflows/data-ci.yml`, `package.json`
 
-### 2026-07-05 PR #5 code review - copilot-instructions.md retains empty Python/Terraform subheaders (pending)
+### 2026-07-05 PR #5 code review - copilot-instructions.md retained empty Python/Terraform subheaders
 
 - **What happened:** After content-stripping, `.github/copilot-instructions.md`'s "Running Linters" and "Running Tests" sections still carry empty `**Python:**` and `**Terraform:**` subheaders with no body (the `*-reference-only` code blocks were removed but the headers left). Terraform is excluded entirely; the Python subheaders are empty.
 - **Why it mattered:** Those sections promise per-language commands and render nothing.
 - **Impact or risk:** Cosmetic; in a protected instruction file.
-- **Resolution or workaround:** Pending maintainer authorization — `.github/copilot-instructions.md` is protected, and the parallel Terraform sweep was previously left out of scope at the maintainer's direction. Raised again as a code-review finding; awaiting explicit go-ahead before editing.
+- **Resolution or workaround:** With explicit maintainer authorization, removed the empty `**Python:**` (Running Tests) and `**Terraform:**` (Running Linters + Running Tests) subheaders. Kept the populated `**Azure Pipelines:**` subsection, retained per the marker.yml Azure protocol waiver. The `validate-instruction-contracts-*` hooks and markdownlint pass.
 - **Follow-up:** Have the upstream template wrap these `**Python:**`/`**Terraform:**`/`**Azure Pipelines:**` subheaders (and their bodies) in `template-sync` reference-only markers so downstream module exclusion removes header+body together.
 - **Related files:** `.github/copilot-instructions.md`

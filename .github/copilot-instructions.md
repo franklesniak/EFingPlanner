@@ -383,9 +383,6 @@ npm run lint:md
 
 <!-- template-sync: end markdown-reference-only -->
 
-**Terraform:**
-
-
 **JSON, YAML, and GitHub Actions:**
 
 <!-- template-sync: begin json-reference-only -->
@@ -437,12 +434,6 @@ This repository includes retained testing infrastructure for the adopted languag
 <!-- template-sync: end schema-reference-only -->
 
 ### Running Tests
-
-**Python:**
-
-
-**Terraform:**
-
 
 **JSON Schema example fixtures:**
 
