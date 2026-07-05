@@ -92,6 +92,8 @@ def test_regression_check_jsonschema_matches_pinned_pre_commit_rev() -> None:
         f"Installed check-jsonschema {installed!r} does not match the pinned "
         f".pre-commit-config.yaml rev {pinned!r}. The Dependabot regression test "
         "would validate against a different bundled vendor.dependabot schema than "
-        "the default validate-dependabot-config hook. Bump the check-jsonschema "
-        "pin in pyproject.toml and the pre-commit `rev` together."
+        "the default validate-dependabot-config hook. The pinned rev lives only "
+        "in .pre-commit-config.yaml (Dependabot updates it); install a matching "
+        "check-jsonschema locally (CI derives it via "
+        ".github/scripts/pinned-check-jsonschema-rev.py)."
     )

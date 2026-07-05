@@ -255,7 +255,7 @@ Before submitting a pull request, ensure the retained test suites pass locally.
 
 #### Test Requirements
 
-- Retained test suites must pass on the applicable CI matrix.
+- The tests wired into CI (the Data CI schema-guard checks and the Markdown checks) must pass. The broader template-sync QA suite under `tests/` is not CI-gated.
 
 ### 5. Commit Your Changes
 
