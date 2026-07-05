@@ -89,6 +89,9 @@ template_sync:
       reason: GitHub-only adoption; the Azure DevOps PR Review Protocol section is retained intact but is not applicable to this repository.
       authorization_basis: Owner explicitly authorized this protected-guide waiver during first-initialization (chose "Waive in the marker").
   local_overrides:
+    - path: .github/ISSUE_TEMPLATE/bug_report.yml
+      reason: Reshaped from the upstream software-bug form into a no-software curriculum problem report; removed OS/architecture/runtime/shell/run-command and version/regression/reproducibility fields that contradict the README's no-software premise, and tailored the areas, format, and severity options to the printable Markdown curriculum.
+      default_decision: SKIP
     - path: README.md
       reason: Fully tailored, project-specific reader-facing README for the EFingPlanner curriculum.
       default_decision: SKIP
