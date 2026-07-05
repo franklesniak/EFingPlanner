@@ -51,7 +51,7 @@
 - [ ] **Settings → Rules → Rulesets → New ruleset → New branch ruleset**.
 - [ ] **Ruleset name:** e.g. `Protect default branch`. **Enforcement status:** `Active`.
 - [ ] **Target branches → Add target →** include the **default branch**.
-- [ ] Enable branch rules: **Require a pull request before merging**; **Require status checks to pass before merging** (add each CI check by name — the markdown-lint job, the link-check job, and — because `template-sync-support` is retained — the `data-ci` / pre-commit checks; names appear in the picker only after each workflow has run once); **Block force pushes**.
+- [ ] Enable branch rules: **Require a pull request before merging**; **Require status checks to pass before merging** (add each required check by name — `markdownlint` (this single check also runs link validation and the toolchain regression as steps), `Data file linting`, `Pre-commit`, and `Check for OWNER/REPO Placeholders`; names appear in the picker only after each workflow has run once); **Block force pushes**.
 - [ ] **Create.**
 - Modern repository rulesets are assumed (rather than classic branch protection).
 - Docs: <https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/creating-rulesets-for-a-repository>
