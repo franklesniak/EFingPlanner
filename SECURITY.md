@@ -29,7 +29,7 @@ This project is provided as-is by one family and is not actively monitored, so t
 
 ### Disclosure Policy
 
-We follow coordinated disclosure practices:
+If and when a report is acted on, we aim to follow coordinated disclosure practices on a best-effort basis:
 
 1. **Private Report:** Report the concern privately using the method above
 2. **Assessment:** We assess the concern and determine severity
