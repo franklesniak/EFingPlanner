@@ -2,7 +2,7 @@
 
 # Session 05: Good Sources, Bad Sources
 
-You are here: Phase 1 (Research Skills), First Taste step 4 of 13. Previous: [04 Start a Source Log](../phase_00_setup/04_start_a_source_log.md) | Next: [10 Destination Snapshot](../phase_02_destination_big_picture/10_destination_snapshot.md)
+You are here: Phase 1 (Research Skills), First Taste step 4 of 13. Previous: [04 Start a Source Log](../phase_00_setup/04_start_a_source_log.md) | Next: [09 AI as Helper, Not Boss](09_ai_as_helper_not_boss.md) if your family opted into AI, then [10 Destination Snapshot](../phase_02_destination_big_picture/10_destination_snapshot.md) (AI-free families go straight to 10).
 
 *If your family chose to use AI, do [Session 09](09_ai_as_helper_not_boss.md) right after this one, before you use any AI tool.*
 
