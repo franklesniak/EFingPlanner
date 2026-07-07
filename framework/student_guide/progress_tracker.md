@@ -32,7 +32,8 @@ to keep going toward the fuller plan afterward, you can, and nothing you did get
 Most sessions you can do on your own. Only a few need a grown-up first:
 
 - **Need a grown-up:** Session 00 (setup, grown-ups only), Session 05 (do it together),
-  and Checkpoint 1 (a grown-up reviews it).
+  Session 09 (only if your family uses AI -- a grown-up runs the AI tool, on their
+  account, with you there), and Checkpoint 1 (a grown-up reviews it).
 - **On your own:** everything else.
 
 So when a grown-up is busy, look at the list and keep going on the next on-your-own
@@ -40,12 +41,12 @@ session. **A gap of a week or two is normal -- you do not start over.**
 
 ## What to do while you wait for a grown-up
 
-If you are waiting for a checkpoint review, keep your momentum:
+If you are waiting for a **checkpoint** review, keep your momentum without racing ahead --
+the next session waits until a grown-up finishes the review:
 
 - Do an Optional Extension from your last session.
 - Add to your [question parking lot](../templates/question_parking_lot.md).
 - Grow your "things I can't wait to see" page.
-- Start the next on-your-own session.
 
 ## Getting back on track after a break
 

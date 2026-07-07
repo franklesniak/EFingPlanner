@@ -27,8 +27,9 @@ in-order companion. Plan on about 1-2 hours, once.
   numbers, birthdates, confirmation numbers, home address, payment details, and exact booked
   dates out of every page.
 - **Check passports early.** A child's first passport is a long-lead item that can set the
-  earliest date you could travel; a child under 16 applies in person with both parents.
-  Confirm current processing times at travel.state.gov. Start this now.
+  earliest date you could travel, and children's applications follow their own rules.
+  Confirm the current child-passport requirements and processing times with the official
+  source at travel.state.gov, since these can change. Start this now.
 - Gather a guidebook (a library copy is fine) or a couple of reputable travel sites. Nothing
   needs to be bought.
 - Print [Session 01](../sessions/phase_00_setup/01_project_kickoff.md) and print each session

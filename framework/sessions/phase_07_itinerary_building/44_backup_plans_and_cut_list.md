@@ -9,7 +9,7 @@ Previous: [33 Budget Basics, First Pass](../phase_06_lodging_food_budget/33_budg
 - Planner skill: prioritizing; knowing when to stop; flexible thinking
 - Estimated time: 20-30 minutes
 - Parent involvement: 5-minute check-in; help co-choose the one unconditional pick
-- Materials: your City Research Cards (starred sights), a [Cut List page](../../templates/cut_list.md), a [Backup Plan page](../../templates/backup_plan.md)
+- Materials: your City Research Cards (starred sights), a [Cut List page](../../templates/cut_list.md), a [Backup Plan page](../../templates/backup_plan.md), and a My Calls page (a blank sheet -- start one if you do not have it yet)
 
 ## Goal
 
@@ -39,7 +39,10 @@ save for later, and what to do if a plan falls through is real skill. This is th
    Choose it *with a grown-up*, who will show you the only three things that could change
    it first: it costs more than the budget band, it can't be booked, or it isn't safe or
    doable for everyone in the group. A grown-up vote can't take this one away. Write it on
-   your **My Calls** page and have a grown-up initial it.
+   your **My Calls** page and have a grown-up initial it. (Your My Calls page is a fresh
+   sheet for the choices that are yours -- start one now if you do not have it yet. It is
+   where your [owned decisions](../../student_guide/what_i_decide.md) get a grown-up's "got
+   it.")
 4. **Make two backup plans** on a [Backup Plan page](../../templates/backup_plan.md) for
    common problems:
    - Rainy day -- what could you do instead?

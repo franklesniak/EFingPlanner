@@ -13,8 +13,9 @@ Fill in:
 ```text
 Home airport and code: __________________ ( ____ )
 Home time zone, or hours ahead to the destination: __________
-   (For families in the US, Japan is roughly 14-15 hours ahead.
-    A grown-up confirms the exact figure, since it shifts with daylight saving.)
+   (A grown-up looks up your home zone's current hours-ahead to Japan and writes it
+    here. It varies by US time zone and shifts with daylight saving, so confirm today's
+    figure.)
 Maximum trip length (in days): ____
 Number of travelers: ____   (write "not decided yet" if you are unsure)
 
