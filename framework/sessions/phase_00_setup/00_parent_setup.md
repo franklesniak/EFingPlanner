@@ -38,9 +38,12 @@ everything else has a default and can wait.
 3. **Set a rough season window and a rough budget band** on the
    [Family Travel Assumptions page](../../templates/current_family_travel_assumptions.md).
    Both are "this can change" starting points, not final decisions.
-4. **Choose AI: yes or no.** The default is **no** (AI-free). If you choose yes, you
-   commit to the adult-operated pattern in the [privacy and safety rules](../../docs/privacy_and_safety.md),
-   and your child does Session 09 before using any AI tool.
+4. **Choose AI: yes or no**, and record the choice on the
+   [Family Travel Assumptions page](../../templates/current_family_travel_assumptions.md). The
+   default is **no** (AI-free). If you choose yes, you commit to the adult-operated pattern in
+   the [privacy and safety rules](../../docs/privacy_and_safety.md), and your child does Session
+   09 before using any AI tool -- writing the yes/no down is what keeps that safety gate from
+   being missed.
 
 Leave everything else at its default. You do not decide the "City C," food, or language
 sessions now -- they promote themselves later only if your child's research keeps
@@ -73,7 +76,8 @@ Keep your filled-in pages with your child's binder.
 - Record a **rough trip shape** on the assumptions page if you can: fly in and out of one
   city, or in one and out of another, and the likely arrival city. If you have never been
   to Japan, naming just the arrival city is a fine answer -- leave the rest open and firm
-  it up by Checkpoint 2.
+  it up later on the full Core path (by the City Shortlist checkpoint). For the First Taste,
+  leaving it open is fine.
 - Decide how you will describe the budget band to your child in a kid-sized form -- a
   rough per-day or per-person figure, or "we can / can't afford this tier of hotel." Keep
   the full trip total an adult number.
@@ -117,5 +121,7 @@ filled in, AI choice recorded, passports started, and Session 01 printed.
 
 ## Stop Point
 
-You are done when the four fastest-safe-start actions are complete and Session 01 is
-printed. Your child can now begin.
+You are done when the four fastest-safe-start actions are complete, Session 01 is printed,
+and you have started the passport check -- a long-lead item. Confirm current child-passport
+requirements and processing times at travel.state.gov now, even though it finishes later; it
+shapes the season research your child does next. Your child can now begin.

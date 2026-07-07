@@ -36,7 +36,8 @@ in-order companion. Plan on about 1-2 hours, once.
   as you reach it -- not the whole set at once.
 - If you can, record a rough trip shape (fly in and out of one city, or in one and out of
   another) and the likely arrival city on the assumptions page. Naming just the arrival city
-  is a fine answer; firm up the rest by Checkpoint 2.
+  is a fine answer; firm up the rest later on the full Core path (by the City Shortlist
+  checkpoint) -- for the First Taste, leaving it open is fine.
 
 ## What you do not decide now
 

@@ -11,8 +11,9 @@ To judge whether something is expensive, convert yen to dollars. But **rates mov
 year to year**, and any conversion is only true for the day you checked it -- so look up
 today's rate and write the date beside it.
 
-*Example only -- check today's rate:* roughly 100 yen is a bit under 1 US dollar. (Do not
-rely on this number; look up the current rate.)
+*Example only -- check today's rate:* recently it took very roughly 150-160 yen to make 1 US
+dollar, so 100 yen was worth a bit more than half a US dollar. Rates move a lot -- do not rely
+on this number; look up today's rate and write the date beside it.
 
 ## Cash still matters
 

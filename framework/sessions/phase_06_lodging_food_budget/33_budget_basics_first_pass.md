@@ -46,7 +46,7 @@ how trip money is split up, and checking whether the parts *you* choose fit.
    family, *or* a hotel "tier we can afford" (never your whole-trip total -- that stays a
    grown-up number). Compare the matching piece, not your big two-slice total:
    - Band is **per person, per day**? Your **meals guess** is already in that unit -- check it against the band.
-   - Band is **per day for the family**? Add your **meals for everyone per day** (meals per person x your travelers) to your **hotel per night** -- check that daily total against the band.
+   - Band is **per day for the family**? Add your **meals for everyone per day** (meals per person x your travelers) to your **hotel for one night, all your rooms** (hotel per night x rooms) -- check that daily total against the band.
    - Band is a **hotel tier**? Check your **hotel-per-night** pick against that tier.
    Circle **fits** or **too high** for the part you checked.
 

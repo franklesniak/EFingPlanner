@@ -37,8 +37,8 @@ boundary up front.
    - Project title (name your planning practice if you want -- that is yours to choose).
    - Planner name (you).
    - Destination: Japan.
-   - Home airport and code: ______ (from your trip-basics card).
-   - Travel party: ______ (from your trip-basics card; "not decided yet" is fine for anyone unsure).
+   - Home airport and code: ______ (from your Trip-Basics card).
+   - Travel party: ______ (from your Trip-Basics card; "not decided yet" is fine for anyone unsure).
    - Date started: ______.
    - A note: *Adults make the final decisions.*
 2. Start a **"things I can't wait to see" page.** Any time something about Japan sounds

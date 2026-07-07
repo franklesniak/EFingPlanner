@@ -73,7 +73,7 @@ into the labeled "For parents" strip near the top.
 - **No leaked trip/origin/roster values in any framework session.** Never hard-code this
   family's specific home airport or airport code, the specific maximum trip-length number,
   or the named relatives on the roster. Use fill-in blanks that point to the Trip-Basics
-  card (for example, "your home airport (from your trip-basics card)"). Speak generically:
+  card (for example, "your home airport (from your Trip-Basics card)"). Speak generically:
   "an older relative (for example a grandparent)," "each traveler," "your maximum trip
   length." The archived spec's trip-basics build rule lists the exact tokens the leak-check
   greps for; keep this file and every session clear of them. Never copy the spec's
@@ -97,12 +97,12 @@ date, never a hard-coded rate.
 
 - family decision meeting (not "executive meeting")
 - adult reviewers / parents / adults / adults who make final bookings
-- Core Finish Line; First Taste path; Minimum Viable Plan
+- Core Finish Line; First Taste path; mini-plan (the spec's "Minimum Viable Plan")
 - Source Log; decision log; question parking lot; cut list; research cards
   (the five trackers -- the only ones the child maintains)
 - "things I can't wait to see" page; "Make It Yours" zone; "My Calls" page
 - Start Here; Stop Point; carry-over tag; checkpoint
-- trip-basics card; controllable-slice band
+- Trip-Basics card; budget band
 
 ## Canonical concept Names and their built-file homes (name-first, never "Section NN")
 

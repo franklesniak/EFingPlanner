@@ -39,4 +39,5 @@ they show up.
 - **Time uses a 24-hour clock.** 14:00 means 2 p.m. After noon, subtract 12.
 - **Money is in yen.** To judge if something is expensive, convert to dollars -- but rates
   change, so look up today's rate and write the date. (Example only, check today's rate:
-  about 100 yen = a bit under 1 US dollar.)
+  recently very roughly 150-160 yen made 1 US dollar, so 100 yen was worth a bit more than
+  half a US dollar.)
