@@ -12,7 +12,7 @@
 
 ## Companion Scope
 
-Use this companion only when the project is rebuilt for another destination or published as an open educational resource. The Lean Build remains the default for one family planning one Japan trip.
+Use this companion only when the project is rebuilt for another destination or published as an open educational resource. The Lean Build remains the default for one family planning one Japan trip. This companion, the [Lean specification](lean-spec.md), and the combined [specification](specification.md) overlap by design and are treated as a frozen archived set: an edit to one should be reconciled across the others to avoid drift.
 
 ## 1. Three Layers: Curriculum, Destination, Trip
 
@@ -58,7 +58,7 @@ This neutral-skeleton + insert pattern has a real cost (it roughly doubles the a
 >
 > Matter-of-fact: "In Japan you take your shoes off before going inside many homes and some restaurants. A small nod or bow is a normal, friendly hello. People don't expect visitors to get it perfect."
 
-Both convey the same custom; the matter-of-fact version states how it works without "mysterious," "ancient ritual," exclamation alarm, or implying the child will offend. This is what the human reviewer checks on cultural/etiquette content; it pairs with the warm-vs-flat bar (`AC-7-1`, [Professional, Warm, and Respectful](specification.md#41-professional-warm-and-respectful)).
+Both convey the same custom; the matter-of-fact version states how it works without "mysterious," "ancient ritual," exclamation alarm, or implying the child will offend. This is what the human reviewer checks on cultural/etiquette content; it pairs with the warm-vs-flat bar (`AC-7-1` in the [Lean spec's acceptance matrix](lean-spec.md#12-acceptance-criteria); [Professional, Warm, and Respectful](specification.md#41-professional-warm-and-respectful)).
 
 **BUILD RULE callout convention (one canonical statement per rule).** High-risk authoring points carry a `> **BUILD RULE**` callout *in place*. There are **four distinct rules, each with one canonical home** -- do not restate a rule's rationale elsewhere; point to its canonical callout instead (the same single-source-of-truth discipline this spec applies to built files, [What to Pin Early vs. What to Keep Open](specification.md#24-what-to-pin-early-vs-what-to-keep-open)):
 
