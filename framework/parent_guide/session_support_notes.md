@@ -95,7 +95,7 @@ Parent Notes inside each session; it is the at-a-glance map.
 
 - Role: 5-minute check-in.
 - Prep: the two city cards; a Scoring Rubric page.
-- Look for: two cities scored on three things, plus a written trade-off.
+- Look for: two cities scored on three things, a written trade-off, and a recommendation (one city, or both kept on purpose).
 - Coaching question: "Does the total match your gut? Walk me through it."
 - Pitfall: treating the score as the decision. The trade-off sentence is the real work.
 

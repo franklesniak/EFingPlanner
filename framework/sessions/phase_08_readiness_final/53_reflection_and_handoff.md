@@ -79,9 +79,9 @@ Stuck? Use the [When I'm Stuck card](../../student_guide/when_im_stuck.md) in yo
 
 ## Optional Extension
 
-If you want to keep going, there is more you can do -- more cities, a day-by-day plan, food
-research, and more. Your progress tracker shows the next steps. Nothing you did gets
-redone; you just build on it. But finishing here is a real, complete success.
+If you want to keep going, there is more a planner can do -- more cities, a day-by-day plan,
+food research, and more. Those fuller steps are being built and will come later; for now,
+finishing here is a real, complete success, and nothing you did gets redone when they come.
 
 ## Parent Notes
 
@@ -91,5 +91,6 @@ few-weeks project, use the **duration-true** wording -- *"You finished a real pr
 start to finish, and made a real mini-plan we can actually use. That's a big deal"* -- not
 "months-long," which would overclaim. Keep it non-gamified: no certificate or badge, just
 real recognition. This finish stands whether or not the trip ever happens. If your child
-wants to continue toward the fuller plan, the progress tracker shows how -- nothing is
-wasted, and their First Taste work is the seed the later sessions build on.
+wants to continue toward the fuller plan, those later sessions are documented in the
+[roadmap](../../PROJECT_ROADMAP.md) and are built after the pilot -- nothing is wasted, and
+their First Taste work is the seed they build on.

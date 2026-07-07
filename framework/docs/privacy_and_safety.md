@@ -49,15 +49,16 @@ alongside for the riskier topics.
 This repository is public and holds no trip data -- only the reusable curriculum, guides,
 blank templates, and Japan reference. Your child's real, filled-in work is never committed
 here: copy the blank pages out and complete them in a private binder or a Google Docs
-folder. A Google Docs folder is not a private vault either -- the same no-personal-data rule
-applies there.
+folder. A Google Docs folder is not a private vault either -- keep the same **sensitive**
+personal data (passport numbers, birthdates, home address, payment details, exact booked
+dates) off it, just as you would on paper.
 
 ## Back up your work (30 seconds)
 
 Months of work on one paper binder is a single point of failure. If you use paper,
 photograph each finished page (or checkpoint) into a phone or cloud folder, or scan it at
 the library. If you work in Google Docs, the cloud copy is already your backup. Before you
-photograph or scan a page, check it has no personal data on it.
+photograph or scan a page, check it has no sensitive personal data on it.
 
 ## The "if I get separated" card is a small exception
 

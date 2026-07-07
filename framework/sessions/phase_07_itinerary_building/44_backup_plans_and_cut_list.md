@@ -17,8 +17,8 @@ Finish your must-see list, set aside what does not fit, and make a couple of bac
 
 ## Start Here
 
-Look at the starred sights on your City Research Cards and circle the **one** you most
-want to do. That circle is where you start.
+Look at the starred sights on the City Research Card(s) for the city you recommended in
+Session 21, and circle the **one** you most want to do. That circle is where you start.
 
 ## Steps
 
@@ -26,8 +26,9 @@ A good planner cannot fit everything -- and that is fine. Knowing what to keep, 
 save for later, and what to do if a plan falls through is real skill. This is the
 "good enough is good enough" session.
 
-1. **Make your must-see list.** From your starred sights, pick the few you most want.
-   These are the things your plan protects.
+1. **Make your must-see list.** From the starred sights **in the city (or cities) you
+   recommended in Session 21**, pick the few you most want. These are the things your plan
+   protects. (Sights in a city you cut go on your cut list, not here.)
 2. **Make your cut list** on a [Cut List page](../../templates/cut_list.md). For each
    thing that did not make the cut, write:
    - Place or activity.

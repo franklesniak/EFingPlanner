@@ -31,13 +31,14 @@ Most sessions you can do on your own. Only a few need a grown-up first:
 
 - **Need a grown-up:** Session 00 (setup, grown-ups only), Session 05 (do it together),
   Session 09 (only if your family uses AI -- a grown-up runs the AI tool, on their
-  account, with you there), and Checkpoint 1 (a grown-up reviews it).
+  account, with you there), Checkpoint 1 (a grown-up reviews it), and Session 44
+  (co-choose your one special pick with a grown-up).
 - **On your own:** everything else.
 
 So when a grown-up is busy, keep going **in order** on the next session -- unless that next
-session needs a grown-up (Session 05, Session 09 for AI families, or Checkpoint 1). Do those
-*with* a grown-up: pause there until one is free, and do not skip past them. **A gap of a
-week or two is normal -- you do not start over.**
+session needs a grown-up (Session 05, Session 09 for AI families, Checkpoint 1, or Session
+44's special-pick step). Do those *with* a grown-up: pause there until one is free, and do
+not skip past them. **A gap of a week or two is normal -- you do not start over.**
 
 ## What to do while you wait for a grown-up
 

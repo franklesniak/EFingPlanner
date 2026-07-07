@@ -11,8 +11,8 @@ Date: ____
 Looking back at my baseline: what is different now?
    ______________________________________________________
 
-My guesses (time and budget): were my first guesses off?
-Did my guessing get closer as I practiced? (Being off is normal.)
+My budget guess: was my first guess off from what I expected?
+(Being off is normal -- grown-ups' first guesses are often off too.)
    ______________________________________________________
 
 What did I learn about planning?

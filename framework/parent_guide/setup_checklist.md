@@ -45,6 +45,6 @@ if your child's research keeps surfacing them. You are not asked to predict them
 
 ## A privacy reminder
 
-Whatever surface you use -- paper, a binder, or a Google Docs folder -- keep personal data
-off it. A Google Docs folder is not a private vault; the same no-personal-data rule applies.
+Whatever surface you use -- paper, a binder, or a Google Docs folder -- keep sensitive
+personal data off it. A Google Docs folder is not a private vault; the same rule applies.
 Full rules: [privacy and safety](../docs/privacy_and_safety.md).

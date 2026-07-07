@@ -20,11 +20,17 @@ Souvenirs / spending money = $____
 >> My controllable-slice subtotal = $____
 ```
 
-**Check your subtotal against your controllable-slice band** (from your assumptions page):
+**Check against your band -- match the units.** Your band (from the assumptions page) is one
+kid-sized form -- per person/day, per day for the family, or a hotel tier -- not a whole-trip
+total. So compare the *matching* piece of your estimate, not the subtotal:
 
 ```text
-My subtotal: $____      Our band: $____     Fits? (yes / too high) ____
+My band form: __________  (per person/day, per day for family, or hotel tier)
+The matching piece of my estimate: $__________
+Fits my band? (yes / too high) ____
 ```
+
+The subtotal above shows how your slices add up -- the whole-trip total stays a grown-up number.
 
 **The grown-ups' big number, kept on the side (not part of your check):**
 

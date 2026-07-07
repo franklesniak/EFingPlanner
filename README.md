@@ -61,8 +61,9 @@ Quick-start:
 4. Start Session 01.
 5. Review at Checkpoint 1 -- then decide whether to keep going (the try-then-commit on-ramp:
    you do not have to commit to the whole project to start).
-6. Continue along the [roadmap](framework/PROJECT_ROADMAP.md), or stop at the Core Finish
-   Line with a usable plan.
+6. Finish the First Taste path at Session 53 -- a real, usable mini-plan and a complete
+   stopping point. (The fuller [roadmap](framework/PROJECT_ROADMAP.md) toward the Core
+   Finish Line is planned for later, built only after the pilot succeeds.)
 
 ## First Taste session index (what is built now)
 
