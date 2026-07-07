@@ -47,7 +47,7 @@ Your must-see list, your cut list (with "save for future" notes), your one speci
 
 ## Stop Point
 
-You are done when you have a short must-see list, at least two things on your cut list, one special pick written and initialed, and two backup plans. Short is good -- this is about choosing, not listing everything.
+You are done when you have a short must-see list, a cut list with whatever did not make it (even one thing -- or a note that nothing needed cutting), one special pick written and initialed, and two backup plans. Short is good -- this is about choosing, not listing everything.
 
 ## Source Check
 

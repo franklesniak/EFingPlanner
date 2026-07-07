@@ -27,7 +27,7 @@ Every trip is made of cost categories. You do not need exact numbers -- you are 
 1. **Meet the categories** (just read these once): flights, hotels, food, local transit, long-distance trains, activities and tickets, souvenirs, and a buffer for surprises.
 2. **Estimate two of them** with simple **high / medium / low** guesses (a grown-up can help you find rough numbers, and you can use a calculator):
    - **Meals:** about how much per person, per day? (high / medium / low)
-   - **Hotel:** about how much per night, per room? (high / medium / low)
+   - **Hotel:** about how much per night, per room? (high / medium / low) (If you kept two cities in Session 21, guess a hotel for each -- your plan pays for both.)
 3. **Do the easy math** (round to friendly numbers first; a grown-up may do the multiplying while you do the thinking):
 
    ```text

@@ -6,12 +6,12 @@ This page helps you see how trip money is split up, and whether the parts *you* 
 
 All numbers here are estimates you look up and re-check -- never a fixed price. Write the date beside anything you look up.
 
-**The parts your choices drive (your controllable slices).** For **First Taste**, fill in only **Hotel** and **Food** -- that matches Session 33. The other rows are marked *(later)*: they belong to the fuller Core path, so leave them blank for the pilot.
+**The parts your choices drive (your controllable slices).** For **First Taste**, fill in **Hotel** and **Food** -- that matches Session 33. If your Session 21 recommendation kept **two cities**, estimate a hotel for **each** and add them (the "Add the cities' hotels" line) -- your plan pays for both. The other rows are marked *(later)*: they belong to the fuller Core path, so leave them blank for the pilot.
 
 ```text
 Hotel (one city) = $____ per night x ____ nights x ____ rooms = $____
 Food  = $____ per person per day x ____ people x ____ days = $____
-Add the cities:    $____ + $____ + $____ = $____  (whole-trip hotels; later)
+Add the cities' hotels: $____ + $____ = $____   (if you kept two cities in Session 21)
 Activities/tickets = $____ per ticket x ____ people = $____   (later)
 Local transit (trains/buses inside the trip) = $____   (later)
 Souvenirs / spending money = $____   (later)

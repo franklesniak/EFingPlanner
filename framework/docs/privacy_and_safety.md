@@ -31,8 +31,9 @@ Keep these out of the repository and out of any filled-in page, on paper or in G
 
 A kid-safe search filter (turned on at setup) reduces exposure but does not remove it, and it is not a substitute for an adult nearby on riskier research. Stay alongside for: the source-judging sessions, any video research (autoplay, recommendation drift, comments, and monetized links), image searches (place-name and nightlife queries can surface adult imagery even with the filter on), nightlife/drinking topics, and open neighborhood browsing. This is not a ban on open research -- learning to research is the point -- just an adult alongside for the riskier topics.
 
-## AI privacy (if your family uses AI)
+## AI use and privacy (if your family uses AI)
 
+- **A grown-up runs the AI tool, on the grown-up's own account, with the child present -- never the child alone**, and the child completes Session 09 before any AI use. This adult-operated pattern is the supervision boundary the rest of the curriculum relies on.
 - Never share family or personal details with AI tools -- no names, addresses, dates, or booking details.
 - This includes photos or scans of filled-in worksheets and binder pages. A filled page carries the roster and plans in one shot. If you want AI's help, retype the question without the personal parts.
 - AI conversations may be stored by the provider, so treat them as not private.

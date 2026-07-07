@@ -62,7 +62,7 @@ You are done when you have run the three questions on two sites and written down
 
 ## Source Check
 
-Record the trusted site you kept in your Source Log: title, who made it, the web address, and today's date.
+Record the trusted site you kept in your Source Log: title, who made it, the web address, and today's date. Now that you know the trust test, also fill in the two boxes you left blank in Session 04: **Trust level** (high / medium / low, from the trust test) and **how useful** the source was. This is the lesson that teaches them.
 
 ## Finish and Quality Check
 
