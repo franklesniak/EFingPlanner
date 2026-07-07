@@ -108,9 +108,11 @@ on the `lean-spec.md` / `full-oer-companion.md` pointers named under Source of t
 
 - All Batch 0 files above exist, are meaningful (no thin/placeholder files), and lint-clean;
   all relative links resolve.
-- Self-check before stopping: grep every built session for `Chicago|ORD|\b17\b|grandmother|
-  uncle` and confirm no hard-coded family value (blanks pointing to `trip_basics.md` are
-  fine); confirm every session has a named artifact and a stop point (§15).
+- Self-check before stopping: grep every built session for the leak tokens —
+  `grep -wE 'Chicago|ORD|17|grandmother|uncle'` (`-w` gives portable standalone-token
+  matching; the non-POSIX `\b` word-boundary escape is avoided) — and confirm no hard-coded
+  family value (blanks pointing to `trip_basics.md` are fine); confirm every session has a
+  named artifact and a stop point (§15).
 - **STOP at the pilot gate.** Produce a short build report listing what was built, plus the
   full §31 handoff for the human:
   - **Pass/fail signals + remediation:** (a) unaided start, (b) reaches Checkpoint 1 mostly

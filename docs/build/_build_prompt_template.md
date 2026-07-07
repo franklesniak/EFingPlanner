@@ -36,6 +36,6 @@ This project is targeting the **Full / OER Build** (per §30.1.1) — reuse acro
 ## Definition of done for THIS run
 
 - All Batch {{BATCH_NUMBER}} files above exist, are meaningful (no thin/placeholder files), and lint-clean; all relative links resolve.
-- Self-check before stopping: grep every built session for `Chicago|ORD|\b17\b|grandmother|uncle` and confirm no hard-coded family value (blanks pointing to `trip_basics.md` are fine); confirm every session has a named artifact and a stop point (§15).
+- Self-check before stopping: grep every built session for the leak tokens — `grep -wE 'Chicago|ORD|17|grandmother|uncle'` (`-w` gives portable standalone-token matching; the non-POSIX `\b` word-boundary escape is avoided) — and confirm no hard-coded family value (blanks pointing to `trip_basics.md` are fine); confirm every session has a named artifact and a stop point (§15).
 - **Stop + handoff — FILL IN.** State exactly where to STOP and what to hand the human. For Batch 0 this was: stop at the pilot gate; produce a short build report of what was built; hand off the pilot pass/fail signals (a) unaided start, (b) reaches Checkpoint 1 mostly on their own, (c) coaching load matches the estimate — plus the remediation rule (a failed pilot blocks Batch 2+ until Phases 0–2 are fixed and re-piloted). Set the equivalent stop + handoff for this batch from §31.
 - **Next batch — FILL IN.** State the next batch and that this run must not proceed into it. For Batch 0: do NOT proceed to Batch 1; the human runs the child pilot next.

@@ -16,7 +16,7 @@ The spec's build model reuses one set of rules for every batch and changes only 
 
 ## How to create the next batch brief
 
-1. Copy the template to a new file — for example, `Copy-Item docs/build/_build_prompt_template.md docs/build/batch1_build_prompt.md`.
+1. Copy the template to a new file — for example, `cp docs/build/_build_prompt_template.md docs/build/batch1_build_prompt.md` (or, in PowerShell, `Copy-Item docs/build/_build_prompt_template.md docs/build/batch1_build_prompt.md`).
 2. Read the source of truth first. Open `docs/spec/specification.md` and read §31 (Implementation Order) and §33 (Acceptance Criteria) in full. §31 defines this batch's scope, what must not be built yet, and the gate it stops at.
 3. Replace the inline tokens `{{BATCH_NUMBER}}` and `{{BATCH_SHORT_NAME}}` everywhere they appear.
 4. Resolve every **FILL IN** block using the guidance inside it and the spec sections in the next section. Delete each block once resolved.
