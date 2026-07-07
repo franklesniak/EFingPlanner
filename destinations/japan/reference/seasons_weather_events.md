@@ -18,7 +18,7 @@ Use this to compare seasons, not to pick "the perfect" one. These are stable pat
 - **Cherry blossoms** (spring) and **fall colors** (autumn) are big draws and busier times.
 - **Rainy season** is roughly June for most of Japan.
 - **Summer heat and humidity** are real and can be a health concern on long walking days -- for the child and for anyone who tires more easily. Plan summer days gently, with water.
-- **Typhoon season** runs roughly late summer into autumn. A grown-up watches the official forecast; a forecast typhoon can shut trains and attractions for a day or two, so it is a reshuffle-the-days event, not just a rainy afternoon.
+- **Typhoon season** runs roughly from late spring (around May) through autumn, with a peak in late summer and early autumn -- so it matters for late-spring and summer trips too, not just fall. A grown-up watches the official forecast; a forecast typhoon can shut trains and attractions for a day or two, so it is a reshuffle-the-days event, not just a rainy afternoon.
 
 ## Busy travel windows (crowds and higher prices -- confirm this year's dates)
 

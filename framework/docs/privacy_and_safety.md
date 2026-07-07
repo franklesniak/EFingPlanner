@@ -2,6 +2,13 @@
 
 # Privacy and Safety
 
+## Metadata
+
+- **Status:** Active
+- **Owner:** Repository Maintainers
+- **Last Updated:** 2026-07-07
+- **Scope:** The single, canonical home for the EFingPlanner privacy and safety rules -- data that is never recorded, child online-safety rules, the kid-safe-filter caveat, AI-privacy rules, public-repo/private-work separation, and work backup. Other files carry a short reminder and link here instead of repeating these rules.
+
 This is the single home for the privacy and safety rules. Other files carry a short reminder and link here rather than repeating them.
 
 These rules are the same discipline as the "verify, don't trust" habit your child practices and the "provided as-is; always verify" banner on the [README](../../README.md) and [GETTING_STARTED](../../GETTING_STARTED.md): treat facts and personal data with care.

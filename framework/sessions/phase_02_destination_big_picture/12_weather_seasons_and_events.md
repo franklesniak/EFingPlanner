@@ -35,7 +35,7 @@ Now add the special things to watch for. These are patterns, but you must **chec
 - **Cherry blossoms** (spring) and **fall colors** (autumn) are big draws.
 - **Rainy season** is roughly June for most of Japan.
 - **Summer heat and humidity** are real -- it can be a health concern on long walking days, for you and for anyone who tires more easily. Plan summer days gently, with water.
-- **Typhoon season** runs roughly late summer into autumn. A grown-up watches the forecast.
+- **Typhoon season** runs roughly from late spring (around May) through autumn, with a peak in late summer and early autumn -- so it matters for late-spring and summer trips too, not just fall. A grown-up watches the forecast.
 - **Busy travel windows** (crowds and higher prices; confirm this year's dates): Golden Week (roughly late April into early May), Obon (roughly mid-August), and the New Year period (roughly late December into early January, when many places also close).
 
 **A note about cherry blossoms:** you can plan for the *season*, but no one can promise the exact peak week months ahead -- it shifts year to year and forecasts only firm up in late winter. That is normal. Grown-ups book on the usual averages and keep plans flexible. You do not have to control the exact day.
