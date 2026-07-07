@@ -43,19 +43,38 @@ coaching), §22 (Japan facts). Build, at the repo root:
    (adult-only parent setup) preceding them. Each carries the seven mandatory-core fields
    (Goal, Start Here, Steps, Workspace, Artifact, Stop point, Source Check when there's
    research). Preserve the four core moves: start small, track a source, make one
-   trade-off, know when to stop.
+   trade-off, know when to stop. **Conditional `Session 09` (AI opt-in):** Batch 0's
+   default is AI off (§21.0), and the list above is the AI-off slice. Session 00 records
+   the family's AI choice, and **if AI is opted in, `Session 09` must be inserted right
+   after Session 05 and must precede any AI use** (§8.6, §14.1.1, §20). Either build
+   `Session 09` as a conditional Batch 0 deliverable for the AI-on path, or state
+   explicitly that this slice is AI-off only — never ship an AI-on pilot without it.
 3. **The minimal support files to make Batch 0 pilotable:** root `README.md` and
-   `GETTING_STARTED.md` (with the verify-don't-trust banner, §13.1 canonical wording);
-   `framework/PROJECT_ROADMAP.md` (First-Taste index up front); the templates those 13
-   sessions use, incl. `trip_basics.md` and the 3-criteria scoring variant (§26);
+   `GETTING_STARTED.md` — the latter built to **§13.2** (the concrete print/copy workflow,
+   the data-flow walkthrough, the recommended cadence, the privacy/no-commit rules, and the
+   30-second backup habit), opening with the verify-don't-trust banner in §13.1's canonical
+   wording; `framework/PROJECT_ROADMAP.md` (First-Taste index up front); the templates those
+   13 sessions use, incl. `trip_basics.md` and the 3-criteria scoring variant (§26);
    `framework/student_guide/progress_tracker.md` (+ `when_im_stuck.md`, `what_i_decide.md`
-   if the sessions reference them); the parent quick-start, `coaching_and_support.md`,
-   `differentiation.md`, and `time_and_effort.md` — the last MUST contain the pilot
-   pass/fail signals (a)–(c) and the remediation rule (§31); `framework/docs/privacy_and_safety.md`.
+   if the sessions reference them); the parent quick-start (§21.0) **and the three must-reads
+   it points to before Session 00 — `setup_checklist.md`, `adult_roles.md` (adult-vs-child
+   roles + safety boundary), and `time_and_effort.md`** — plus `coaching_and_support.md` and
+   `differentiation.md`. `time_and_effort.md` MUST contain the pilot pass/fail signals
+   (a)–(c) and the remediation rule (§31); `framework/docs/privacy_and_safety.md`.
 
 Consult §9 for the canonical directory tree and exact filenames; build at the repo root
 (`framework/`, and only the Japan reference files Batch 0 needs), leaving `docs/spec/`
 and the existing template/CI infrastructure untouched.
+
+**Prerequisite — the one-time build-start spec split (done before this brief, not by it).**
+The spec mandates that, as the **first action of the build, before the Batch 0 pilot**, a
+builder execute the **Lean/Full file-cut** (saving `lean-spec.md` and `full-oer-companion.md`),
+the **AC renumber**, and the **name-first reference sweep** (§0 "How to read and build from
+this spec"; §31). That is a one-time spec-restructuring step, **not** curriculum authoring —
+it is out of scope for these curriculum-build briefs, which only *create* curriculum files.
+"Leave `docs/spec/` untouched" governs Batch 0 authoring; it does **not** authorize skipping
+the mandated split. Confirm the split (or its deliberate deferral) has happened before relying
+on the `lean-spec.md` / `full-oer-companion.md` pointers named under Source of truth.
 
 ## BUILD RULES (hard constraints)
 
@@ -81,7 +100,9 @@ and the existing template/CI infrastructure untouched.
   --all-files` and fix issues before finishing.
 - **Do not edit** `docs/spec/*`, `CLAUDE.md`, `.github/copilot-instructions.md`,
   `.github/instructions/*`, or any other governance/instruction file. This build only
-  *creates* curriculum files.
+  *creates* curriculum files — the mandated one-time build-start spec split (file-cut, AC
+  renumber, name-first sweep) is a separate prerequisite done before this brief, not a
+  Batch 0 edit (see the prerequisite note above).
 
 ## Definition of done for THIS run
 
@@ -91,9 +112,21 @@ and the existing template/CI infrastructure untouched.
   uncle` and confirm no hard-coded family value (blanks pointing to `trip_basics.md` are
   fine); confirm every session has a named artifact and a stop point (§15).
 - **STOP at the pilot gate.** Produce a short build report listing what was built, plus the
-  handoff for the human: the pilot pass/fail signals (a) unaided start, (b) reaches
-  Checkpoint 1 mostly on their own, (c) coaching load matches the estimate — and the
-  remediation rule (a failed pilot blocks Batch 2+ until Phases 0–2 are fixed and re-piloted).
+  full §31 handoff for the human:
+  - **Pass/fail signals + remediation:** (a) unaided start, (b) reaches Checkpoint 1 mostly
+    on their own, (c) coaching load matches the estimate — and the remediation rule (a
+    failed pilot blocks Batch 2+ until Phases 0–2 are fixed and re-piloted).
+  - **No-child fallback (so the gate degrades, not disappears):** if no ten-year-old is
+    available, run a read-aloud walkthrough against signals (a)–(c), **or** carry an
+    explicit "usability pilot deferred — design unvalidated; pilot before relying on the
+    full apparatus" flag into `framework/parent_guide/time_and_effort.md`. The gate may not
+    be silently skipped.
+  - **Pre-registered decision branch (§31):** Success → continue toward the Core Finish Line
+    (build Batch 1+); Partial (the child can do it but it is heavy, or only finishes with the
+    adult doing the work) → lighten, don't quit (Low-Bandwidth Parent Mode, micro-sessions,
+    or make First Taste the whole project), then re-decide; Fail (the child hates it, or
+    completes it only because the parent is doing the work) → pivot to casual involvement —
+    a designed, successful outcome, not abandonment.
 - Do NOT proceed to Batch 1. The human runs the child pilot next.
 
 ## After the pilot passes (later /goal runs — not now)
