@@ -6,7 +6,7 @@
 
 - **Status:** Active
 - **Owner:** Repository Maintainers
-- **Last Updated:** 2026-07-05
+- **Last Updated:** 2026-07-07
 - **Scope:** Archived Full/OER companion design record for EFingPlanner. Contains the modular reuse apparatus split out of the combined specification: three-layer destination reuse, neutral skeletons, insert/reference contract, contribution process, destination-leak checks, freshness machinery, and Full/OER acceptance gates. It does NOT govern the built curriculum; once built, the repository supersedes this companion on conflict.
 - **Related:** [Combined archived specification](specification.md), [Lean specification](lean-spec.md), [Documentation Writing Style](../../.github/instructions/docs.instructions.md)
 
@@ -58,7 +58,7 @@ This neutral-skeleton + insert pattern has a real cost (it roughly doubles the a
 >
 > Matter-of-fact: "In Japan you take your shoes off before going inside many homes and some restaurants. A small nod or bow is a normal, friendly hello. People don't expect visitors to get it perfect."
 
-Both convey the same custom; the matter-of-fact version states how it works without "mysterious," "ancient ritual," exclamation alarm, or implying the child will offend. This is what the human reviewer checks on cultural/etiquette content; it pairs with the warm-vs-flat bar (`AC-3.1-1`, [Professional, Warm, and Respectful](specification.md#41-professional-warm-and-respectful)).
+Both convey the same custom; the matter-of-fact version states how it works without "mysterious," "ancient ritual," exclamation alarm, or implying the child will offend. This is what the human reviewer checks on cultural/etiquette content; it pairs with the warm-vs-flat bar (`AC-7-1`, [Professional, Warm, and Respectful](specification.md#41-professional-warm-and-respectful)).
 
 **BUILD RULE callout convention (one canonical statement per rule).** High-risk authoring points carry a `> **BUILD RULE**` callout *in place*. There are **four distinct rules, each with one canonical home** -- do not restate a rule's rationale elsewhere; point to its canonical callout instead (the same single-source-of-truth discipline this spec applies to built files, [What to Pin Early vs. What to Keep Open](specification.md#24-what-to-pin-early-vs-what-to-keep-open)):
 

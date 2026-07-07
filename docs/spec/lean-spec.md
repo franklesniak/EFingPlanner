@@ -6,7 +6,7 @@
 
 - **Status:** Active
 - **Owner:** Repository Maintainers
-- **Last Updated:** 2026-07-05
+- **Last Updated:** 2026-07-07
 - **Scope:** Archived Lean Build design record for the EFingPlanner executive-function curriculum. Defines the one-family, one-trip Japan path, the session set, parent guide, Japan reference material, privacy/safety rules, trip-basics card, binder contents, and trip starter kit. It does NOT govern the built curriculum; once built, the repository supersedes this spec on conflict.
 - **Related:** [Combined archived specification](specification.md), [Full/OER companion](full-oer-companion.md), [Documentation Writing Style](../../.github/instructions/docs.instructions.md)
 
