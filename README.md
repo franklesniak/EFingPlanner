@@ -35,7 +35,7 @@ Quick-start:
 3. Print the first sessions.
 4. Start Session 01.
 5. Review at Checkpoint 1 -- then decide whether to keep going (the try-then-commit on-ramp: you do not have to commit to the whole project to start).
-6. Finish the First Taste path at Session 53 -- a real, usable mini-plan and a complete stopping point. (The fuller [roadmap](framework/PROJECT_ROADMAP.md) toward the Core Finish Line is planned for later, built only after the pilot succeeds.)
+6. Finish the First Taste path at Session 53 -- a real, usable mini-plan and a complete stopping point. (The [roadmap](framework/PROJECT_ROADMAP.md) already maps the fuller path toward the Core Finish Line; those later sessions are built only after the pilot succeeds.)
 
 ## First Taste session index (what is built now)
 
@@ -48,7 +48,7 @@ Session 00 is adult-only setup; the child does the First Taste sessions listed b
 | 03 | What Makes a Good Trip | Core | 20-30 min | Family goals + poll |
 | 04 | Start a Source Log | Core | 20-30 min | First source log entry |
 | 05 | Good Sources, Bad Sources | Core | 20-30 min | Trust test + trusted source |
-| 09 | AI as Helper, Not Boss | Conditional (AI only) | 20-30 min | AI notes + checklist |
+| 09 | AI as Helper, Not Boss | Conditional core (AI opt-in; not 1 of the 13) | 20-30 min | AI notes + checklist |
 | 10 | Destination Snapshot | Core | 20-30 min | Snapshot page |
 | 12 | Weather, Seasons, and Events | Core | 20-30 min | Season comparison chart |
 | 13 | Trip Goals and Travel Style | Core | 20-30 min | Travel style worksheet |
