@@ -1,8 +1,8 @@
+<!-- markdownlint-disable-file MD013 -->
+
 # Family Trip Goals and Input Summary
 
-Use this page in Session 03 to capture what your family wants from the trip -- your own
-goals, plus a quick poll of each traveler. These answers are real evidence you will use
-when you choose cities and things to do.
+Use this page in Session 03 to capture what your family wants from the trip -- your own goals, plus a quick poll of each traveler. These answers are real evidence you will use when you choose cities and things to do.
 
 ## My goals
 
@@ -15,9 +15,7 @@ What a successful family trip feels like: ________________
 
 ## Traveler poll
 
-Ask each traveler: *"What is one thing you'd love on this trip?"* One line per person. If
-someone is hard to reach, ask by text or have a grown-up relay it, or mark "asked through
-a grown-up."
+Ask each traveler: *"What is one thing you'd love on this trip?"* One line per person. If someone is hard to reach, ask by text or have a grown-up relay it, or mark "asked through a grown-up."
 
 ```text
 Traveler (by name or relationship)      One thing they'd love

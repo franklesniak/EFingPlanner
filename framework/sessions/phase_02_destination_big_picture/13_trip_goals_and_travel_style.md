@@ -1,7 +1,8 @@
+<!-- markdownlint-disable-file MD013 -->
+
 # Session 13: Trip Goals and Travel Style
 
-You are here: Phase 2 (Destination Big Picture), First Taste step 7 of 13.
-Previous: [12 Weather, Seasons, and Events](12_weather_seasons_and_events.md) | Next: [14 Checkpoint 1: Season Recommendation](14_checkpoint_1_season_recommendation.md)
+You are here: Phase 2 (Destination Big Picture), First Taste step 7 of 13. Previous: [12 Weather, Seasons, and Events](12_weather_seasons_and_events.md) | Next: [14 Checkpoint 1: Season Recommendation](14_checkpoint_1_season_recommendation.md)
 
 **For parents:**
 
@@ -17,14 +18,11 @@ Decide what kind of trip your family wants, so your choices later fit your style
 
 ## Start Here
 
-Circle one word that sounds more like your family: **busy** or **relaxed**. That is your
-first style choice.
+Circle one word that sounds more like your family: **busy** or **relaxed**. That is your first style choice.
 
 ## Steps
 
-There is no single "right" trip. Different families like different styles. Now that you
-know a little about Japan, choose the style that fits your family. Look back at your
-Session 03 goals to remind yourself what people wanted.
+There is no single "right" trip. Different families like different styles. Now that you know a little about Japan, choose the style that fits your family. Look back at your Session 03 goals to remind yourself what people wanted.
 
 For each pair, circle the one your family leans toward (it is okay to land in the middle):
 
@@ -37,10 +35,7 @@ For each pair, circle the one your family leans toward (it is okay to land in th
 
 Then write one sentence: *Our travel style is...*
 
-**A quick money thought (not full budgeting yet):** using the rough budget band a
-grown-up gave you at setup, remember a simple rule -- **more cities and more hotel moves
-usually cost more**, and a far-away region adds travel cost. Keep this in mind so you do
-not plan a trip that is too expensive. You will do real budgeting later.
+**A quick money thought (not full budgeting yet):** using the rough budget band a grown-up gave you at setup, remember a simple rule -- **more cities and more hotel moves usually cost more**, and a far-away region adds travel cost. Keep this in mind so you do not plan a trip that is too expensive. You will do real budgeting later.
 
 ## Workspace
 
@@ -54,8 +49,7 @@ Your Travel style worksheet -- your family's leanings and a one-sentence style s
 
 ## Stop Point
 
-You are done when you have made your six choices and written your one-sentence style
-summary. There are no wrong answers here -- it is about fit.
+You are done when you have made your six choices and written your one-sentence style summary. There are no wrong answers here -- it is about fit.
 
 ## Source Check
 
@@ -71,13 +65,8 @@ Stuck? Use the [When I'm Stuck card](../../student_guide/when_im_stuck.md) in yo
 
 ## Optional Extension
 
-If you have extra energy, ask one other traveler which way *they* lean on two of the
-pairs, and note where you agree or differ. If not, you are done.
+If you have extra energy, ask one other traveler which way *they* lean on two of the pairs, and note where you agree or differ. If not, you are done.
 
 ## Parent Notes
 
-This is a light, low-pressure session that sets direction. The cost-awareness touch keeps
-affordability in view while your child chooses places, so they do not design an
-unaffordable route -- keep it to the simple "more cities and moves cost more" idea; detailed
-budgeting comes later. A mixed-stamina, multi-generational party often fits a "fewer
-places, deeper" style well.
+This is a light, low-pressure session that sets direction. The cost-awareness touch keeps affordability in view while your child chooses places, so they do not design an unaffordable route -- keep it to the simple "more cities and moves cost more" idea; detailed budgeting comes later. A mixed-stamina, multi-generational party often fits a "fewer places, deeper" style well.

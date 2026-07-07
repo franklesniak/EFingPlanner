@@ -1,9 +1,10 @@
+<!-- markdownlint-disable-file MD013 -->
+
 # Sample Search Terms (Japan)
 
 **Last reviewed:** July 2026
 
-Good phrases to start a search. Pair each with a trusted source, and record what you find in
-your Source Log. Add "official" to a search when you want the primary source.
+Good phrases to start a search. Pair each with a trusted source, and record what you find in your Source Log. Add "official" to a search when you want the primary source.
 
 ## When to go
 

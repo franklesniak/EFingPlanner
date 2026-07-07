@@ -1,9 +1,10 @@
+<!-- markdownlint-disable-file MD013 -->
+
 # Trusted Starting Sources (Japan)
 
 **Last reviewed:** July 2026
 
-Where to start your research, grouped by what each is best for. Names and links change, so
-confirm a source is current, and always record what you used in your Source Log.
+Where to start your research, grouped by what each is best for. Names and links change, so confirm a source is current, and always record what you used in your Source Log.
 
 ## Official and government (best for rules and facts)
 
@@ -19,9 +20,7 @@ confirm a source is current, and always record what you used in your Source Log.
 - Lonely Planet Japan, DK Eyewitness Japan, or Fodor's Japan (a library copy is perfect).
 - Children's nonfiction about Japan's geography, history, culture, and food.
 
-A guidebook is great for getting oriented, but **check its publication year** and confirm
-anything that matters (hours, prices, access) against an official source. Library copies can
-be older, so this matters even more.
+A guidebook is great for getting oriented, but **check its publication year** and confirm anything that matters (hours, prices, access) against an official source. Library copies can be older, so this matters even more.
 
 ## Useful travel sites (use with care)
 
@@ -32,11 +31,7 @@ be older, so this matters even more.
 
 ## A note on language
 
-Many official Japanese sources are Japanese-first or only partly translated (official
-transit pages, Tabelog, some attraction pages). JNTO and Japan Guide are reliably English.
-When you land on a Japanese page, look for the "English" toggle, and you may use "translate
-this page" to **understand** it -- but not to **trust** it. Confirm anything that matters
-against an official English page or a grown-up.
+Many official Japanese sources are Japanese-first or only partly translated (official transit pages, Tabelog, some attraction pages). JNTO and Japan Guide are reliably English. When you land on a Japanese page, look for the "English" toggle, and you may use "translate this page" to **understand** it -- but not to **trust** it. Confirm anything that matters against an official English page or a grown-up.
 
 ## Match the source to the question
 

@@ -1,8 +1,8 @@
+<!-- markdownlint-disable-file MD013 -->
+
 # Baseline Reflection
 
-You fill this in near the very start (Session 01). It is a snapshot of how big projects
-feel *right now*. At the end of the project, you will look back at it and see how far you
-have come. There are no wrong answers.
+You fill this in near the very start (Session 01). It is a snapshot of how big projects feel *right now*. At the end of the project, you will look back at it and see how far you have come. There are no wrong answers.
 
 Say your answers aloud to a grown-up who writes them, or draw them, if that is easier.
 

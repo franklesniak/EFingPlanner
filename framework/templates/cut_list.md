@@ -1,8 +1,8 @@
+<!-- markdownlint-disable-file MD013 -->
+
 # Cut List
 
-Your Cut List holds the things you set aside -- because you cannot fit everything, and
-that is fine. Cutting something is not losing it: "save for a future trip" keeps it for
-later. This is part of learning that good enough is good enough.
+Your Cut List holds the things you set aside -- because you cannot fit everything, and that is fine. Cutting something is not losing it: "save for a future trip" keeps it for later. This is part of learning that good enough is good enough.
 
 One row per thing you set aside:
 

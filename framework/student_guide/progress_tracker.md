@@ -1,7 +1,8 @@
+<!-- markdownlint-disable-file MD013 -->
+
 # Progress Tracker
 
-This is your one "what do I do next?" page. Whenever you are not sure what to do next,
-come here.
+This is your one "what do I do next?" page. Whenever you are not sure what to do next, come here.
 
 ## First Taste sessions: ____ of 13
 
@@ -22,28 +23,20 @@ Check off each session as you finish it. Your one big milestone is **Checkpoint 
 - [ ] 12. [44 Backup Plans and Cut List](../sessions/phase_07_itinerary_building/44_backup_plans_and_cut_list.md)
 - [ ] 13. [53 Reflection and Handoff](../sessions/phase_08_readiness_final/53_reflection_and_handoff.md) -- **finish line**
 
-Finishing all 13 is a **complete success** -- you will have a real mini-plan. If you want
-to keep going toward the fuller plan afterward, you can, and nothing you did gets redone.
+Finishing all 13 is a **complete success** -- you will have a real mini-plan. If you want to keep going toward the fuller plan afterward, you can, and nothing you did gets redone.
 
 ## Which sessions need a grown-up
 
 Most sessions you can do on your own. Only a few need a grown-up first:
 
-- **Need a grown-up:** Session 00 (setup, grown-ups only), Session 05 (do it together),
-  Session 09 (only if your family uses AI -- a grown-up runs the AI tool, on their
-  account, with you there), Checkpoint 1 (a grown-up reviews it), and Session 44
-  (co-choose your one special pick with a grown-up).
+- **Need a grown-up:** Session 00 (setup, grown-ups only), Session 05 (do it together), Session 09 (only if your family uses AI -- a grown-up runs the AI tool, on their account, with you there), Checkpoint 1 (a grown-up reviews it), and Session 44 (co-choose your one special pick with a grown-up).
 - **On your own:** everything else.
 
-So when a grown-up is busy, keep going **in order** on the next session -- unless that next
-session needs a grown-up (Session 05, Session 09 for AI families, Checkpoint 1, or Session
-44's special-pick step). Do those *with* a grown-up: pause there until one is free, and do
-not skip past them. **A gap of a week or two is normal -- you do not start over.**
+So when a grown-up is busy, keep going **in order** on the next session -- unless that next session needs a grown-up (Session 05, Session 09 for AI families, Checkpoint 1, or Session 44's special-pick step). Do those *with* a grown-up: pause there until one is free, and do not skip past them. **A gap of a week or two is normal -- you do not start over.**
 
 ## What to do while you wait for a grown-up
 
-If you are waiting for a **checkpoint** review, keep your momentum without racing ahead --
-the next session waits until a grown-up finishes the review:
+If you are waiting for a **checkpoint** review, keep your momentum without racing ahead -- the next session waits until a grown-up finishes the review:
 
 - Do an Optional Extension from your last session.
 - Add to your [question parking lot](../templates/question_parking_lot.md).
@@ -59,5 +52,4 @@ Missed a week or three? That is okay. Come back like this:
 
 ## Going faster is allowed
 
-If a session feels easy, you are allowed to do more in one sitting, go deeper, or take the
-harder "extra-energy" version. That is your choice -- not a rule.
+If a session feels easy, you are allowed to do more in one sitting, go deeper, or take the harder "extra-energy" version. That is your choice -- not a rule.

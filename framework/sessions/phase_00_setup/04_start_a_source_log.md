@@ -1,7 +1,8 @@
+<!-- markdownlint-disable-file MD013 -->
+
 # Session 04: Start a Source Log
 
-You are here: Phase 0 (Setup), First Taste step 3 of 13.
-Previous: [03 What Makes a Good Trip](03_what_makes_a_good_trip.md) | Next: [05 Good Sources, Bad Sources](../phase_01_research_skills/05_good_sources_bad_sources.md)
+You are here: Phase 0 (Setup), First Taste step 3 of 13. Previous: [03 What Makes a Good Trip](03_what_makes_a_good_trip.md) | Next: [05 Good Sources, Bad Sources](../phase_01_research_skills/05_good_sources_bad_sources.md)
 
 **For parents:**
 
@@ -60,10 +61,7 @@ Date checked:   ______________________________________________
 One other place I could check this: __________________________
 ```
 
-Your Source Log template has a few more boxes than the ones above -- *source type*, *why it
-matters*, *trust level*, and *how useful*. You will learn trust level and how useful in
-Session 05, so leave those blank for now (fill *source type* and *why it matters* only if you
-want). The boxes above are a complete first row.
+Your Source Log template has a few more boxes than the ones above -- *source type*, *why it matters*, *trust level*, and *how useful*. You will learn trust level and how useful in Session 05, so leave those blank for now (fill *source type* and *why it matters* only if you want). The boxes above are a complete first row.
 
 ## Artifact Created
 

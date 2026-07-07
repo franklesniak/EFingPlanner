@@ -1,12 +1,10 @@
+<!-- markdownlint-disable-file MD013 -->
+
 # Trip-Basics Card
 
-This card holds the few facts about *your* family and trip that the sessions ask for by
-name. Fill it in once (a grown-up helps), and keep it at the front of your binder. The
-sessions never assume these values -- they point here -- so this card is what makes the
-whole planner work for your family.
+This card holds the few facts about *your* family and trip that the sessions ask for by name. Fill it in once (a grown-up helps), and keep it at the front of your binder. The sessions never assume these values -- they point here -- so this card is what makes the whole planner work for your family.
 
-Keep this card with your setup pages. It holds no sensitive personal data -- no passport numbers,
-birthdates, confirmation numbers, home address, or payment details.
+Keep this card with your setup pages. It holds no sensitive personal data -- no passport numbers, birthdates, confirmation numbers, home address, or payment details.
 
 Fill in:
 
@@ -30,5 +28,4 @@ the child planner, and anyone else):
   6. ______________________________
 ```
 
-The sessions reason generically (for example, "a traveler with lower stamina, like an
-older relative"). This card supplies your family's real people.
+The sessions reason generically (for example, "a traveler with lower stamina, like an older relative"). This card supplies your family's real people.

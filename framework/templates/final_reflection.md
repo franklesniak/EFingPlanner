@@ -1,7 +1,8 @@
+<!-- markdownlint-disable-file MD013 -->
+
 # Final Reflection
 
-You fill this in at the finish line (Session 53), with your baseline reflection next to
-you so you can compare. This is about noticing how you grew -- not about being perfect.
+You fill this in at the finish line (Session 53), with your baseline reflection next to you so you can compare. This is about noticing how you grew -- not about being perfect.
 
 Say your answers aloud to a grown-up who writes them, or draw them, if that is easier.
 
@@ -32,5 +33,4 @@ Where else could I use it -- homework, a chore, a big project?
    ______________________________________________________
 ```
 
-These are the same planning moves people use for homework, chores, and any big project.
-Notice the move, and use it on purpose somewhere else -- that is how it carries over.
+These are the same planning moves people use for homework, chores, and any big project. Notice the move, and use it on purpose somewhere else -- that is how it carries over.

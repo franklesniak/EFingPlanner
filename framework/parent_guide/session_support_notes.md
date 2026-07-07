@@ -1,8 +1,8 @@
+<!-- markdownlint-disable-file MD013 -->
+
 # Session Support Notes
 
-A short, parent-facing overview of each First Taste session -- your role, what to prep, the
-artifact to look for, one coaching question, and a common pitfall. This does not replace the
-Parent Notes inside each session; it is the at-a-glance map.
+A short, parent-facing overview of each First Taste session -- your role, what to prep, the artifact to look for, one coaching question, and a common pitfall. This does not replace the Parent Notes inside each session; it is the at-a-glance map.
 
 ## Session 00: Parent Setup (adult-only)
 

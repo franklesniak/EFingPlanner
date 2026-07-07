@@ -1,3 +1,5 @@
+<!-- markdownlint-disable-file MD013 -->
+
 # Finish and Quality Check
 
 Use this quick card to wrap up any session. It is a quick self-check, **not a grade.**
@@ -17,5 +19,4 @@ Ask yourself three quick questions:
 - **Did I give a reason?** A recommendation is stronger with a "because."
 - **Did I note my source?** If I looked something up, it should be in my Source Log.
 
-If you can say yes to these, you are done. Good enough is good enough -- you do not have to
-make it perfect.
+If you can say yes to these, you are done. Good enough is good enough -- you do not have to make it perfect.

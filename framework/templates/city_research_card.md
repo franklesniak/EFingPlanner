@@ -1,8 +1,8 @@
+<!-- markdownlint-disable-file MD013 -->
+
 # City Research Card
 
-Use one card per city or region. It keeps each place's facts together so you can compare
-places fairly later. Fill it in from trusted sources, and record each source in your
-Source Log.
+Use one card per city or region. It keeps each place's facts together so you can compare places fairly later. Fill it in from trusted sources, and record each source in your Source Log.
 
 ```text
 City or region: __________________________________________
@@ -24,5 +24,4 @@ Needs adult verification? (yes / no) ____
 Final decision status: (researching / shortlist / skip / save for future) ____
 ```
 
-Remember: each card is a movable block. If a grown-up later changes which city you fly
-into or out of, you move a block -- you do not start over.
+Remember: each card is a movable block. If a grown-up later changes which city you fly into or out of, you move a block -- you do not start over.
