@@ -1,4 +1,4 @@
-<!-- markdownlint-disable-file MD013 -->
+<!-- markdownlint-disable MD013 -->
 
 # Travel Glossary
 

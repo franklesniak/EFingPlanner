@@ -1,4 +1,4 @@
-<!-- markdownlint-disable-file MD013 -->
+<!-- markdownlint-disable MD013 -->
 
 # Session 33: Budget Basics, First Pass
 

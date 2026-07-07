@@ -1,4 +1,4 @@
-<!-- markdownlint-disable-file MD013 -->
+<!-- markdownlint-disable MD013 -->
 
 # Session 04: Start a Source Log
 

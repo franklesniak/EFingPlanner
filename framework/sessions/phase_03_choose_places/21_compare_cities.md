@@ -1,4 +1,4 @@
-<!-- markdownlint-disable-file MD013 -->
+<!-- markdownlint-disable MD013 -->
 
 # Session 21: Compare Cities
 
@@ -28,16 +28,16 @@ Score each city from 1 (low) to 5 (high) on three things:
 
 1. **Excitement** -- how much do you want to go there?
 2. **Family fit** -- how well does it match what your travelers wanted (from your Session 03 poll)?
-3. **Getting there and around** -- how easy is it to reach and move around? (Easy is a high score.)
+3. **Easy to get to and around** -- can you reach the city and move around in it without much hassle? (Easier scores higher.)
 
 Fill in the small table (or use your [Scoring Rubric page](../../templates/scoring_rubric.md)):
 
 ```text
-                     City A: ______     City B: ______
-Excitement (1-5):        ____              ____
-Family fit (1-5):        ____              ____
-Getting around (1-5):    ____              ____
-Total:                   ____              ____
+                                 City A: ______     City B: ______
+Excitement (1-5):                ____               ____
+Family fit (1-5):                ____               ____
+Easy to get to and around (1-5): ____               ____
+Total:                           ____               ____
 ```
 
 Then do the real thinking -- **make one trade-off** and write it in one or two sentences:
