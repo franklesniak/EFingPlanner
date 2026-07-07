@@ -119,6 +119,12 @@ template_sync:
     - path: .pre-commit-config.yaml
       reason: Local override excludes docs/spec/ from the check-prohibited-placeholders hook because the archived design record intentionally uses "TBD" for open trip parameters.
       default_decision: MERGE
+    - path: templates/json/
+      reason: The json module stays adopted for its validators (check-json and check-jsonschema) and instruction file, but the sample-authoring subtree templates/json/** was pruned to resolve issue 8; this directory-level SKIP override prevents template-sync materialization (reconcile_staged_files) from re-creating the deleted starter files on a future sync against an upstream that still ships them, without dropping the retained json infrastructure.
+      default_decision: SKIP
+    - path: templates/yaml/
+      reason: The yaml module stays adopted for its validators (check-yaml and yamllint), .yamllint.yml, and instruction file, but the sample-authoring subtree templates/yaml/** was pruned to resolve issue 8; this directory-level SKIP override prevents template-sync materialization (reconcile_staged_files) from re-creating the deleted starter files on a future sync against an upstream that still ships them, without dropping the retained yaml infrastructure.
+      default_decision: SKIP
   local_path_ownership:
     - path: docs/spec/
       reason: Downstream-owned archived design record (the curriculum specification); not an upstream template path.
