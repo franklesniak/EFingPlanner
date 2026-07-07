@@ -55,11 +55,11 @@ You can say your answers to an adult who writes them, or draw them, if that is e
 
 ## Artifact Created
 
-Your City comparison -- two cities scored on three things, with a one- or two-sentence trade-off.
+Your City comparison -- two cities scored on three things, a one- or two-sentence trade-off, and a recommendation naming the city (or cities) you keep with a rough number of days for each (from your City Research Cards).
 
 ## Stop Point
 
-You are done when both cities have three scores and a total, you have written your trade-off in a sentence or two, and you have made a recommendation: either **one city** for this first trip, or **both, kept on purpose**. You do not have to feel sure -- "I recommend both, let's decide together" is a real answer -- but write down which way you lean, because your final plan needs a city or two.
+You are done when both cities have three scores and a total, you have written your trade-off in a sentence or two, and you have made a recommendation: either **one city** for this first trip, or **both, kept on purpose**. You do not have to feel sure -- "I recommend both, let's decide together" is a real answer -- but write down which way you lean, because your final plan needs a city or two. For each city you keep, also jot the rough number of days from your City Research Card, so your plan has a length.
 
 ## Source Check
 

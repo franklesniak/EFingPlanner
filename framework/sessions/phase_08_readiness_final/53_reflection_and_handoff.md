@@ -34,7 +34,7 @@ You made a real mini-plan for a real trip. Before you hand it over, take a few m
 
 These are the same planning moves people use for homework, chores, and any big project. The way to carry them over is to *notice* the move and use it on purpose somewhere else.
 
-**Hand it off.** Give your plan to the grown-ups: your season pick, your city choice, your must-see list, your one special pick, and your budget check. You did the planning; they do the booking.
+**Hand it off.** Give your plan to the grown-ups: your season pick, your city choice (with roughly how many days for each), your must-see list, your one special pick, and your budget check. You did the planning; they do the booking.
 
 ## Workspace
 

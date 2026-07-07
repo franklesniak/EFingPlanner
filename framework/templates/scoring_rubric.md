@@ -18,6 +18,8 @@ Total:                        ____             ____             ____
 
 (For "easy to get to and around," a high score means easier.)
 
+**First Taste:** you compare two cities, so fill Option A and Option B and leave Option C blank -- you only need one column per option.
+
 ## Fuller version (more criteria)
 
 ```text

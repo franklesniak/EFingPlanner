@@ -6,16 +6,16 @@ This page helps you see how trip money is split up, and whether the parts *you* 
 
 All numbers here are estimates you look up and re-check -- never a fixed price. Write the date beside anything you look up.
 
-**The parts your choices drive (your controllable slices):**
+**The parts your choices drive (your controllable slices).** For **First Taste**, fill in only **Hotel** and **Food** -- that matches Session 33. The other rows are marked *(later)*: they belong to the fuller Core path, so leave them blank for the pilot.
 
 ```text
 Hotel (one city) = $____ per night x ____ nights x ____ rooms = $____
-Add the cities:    $____ + $____ + $____ = $____  (whole-trip hotels)
 Food  = $____ per person per day x ____ people x ____ days = $____
-Activities/tickets = $____ per ticket x ____ people = $____
-Local transit (trains/buses inside the trip) = $____
-Souvenirs / spending money = $____
->> My controllable-slice subtotal = $____
+Add the cities:    $____ + $____ + $____ = $____  (whole-trip hotels; later)
+Activities/tickets = $____ per ticket x ____ people = $____   (later)
+Local transit (trains/buses inside the trip) = $____   (later)
+Souvenirs / spending money = $____   (later)
+>> My controllable-slice subtotal (Core path) = $____
 ```
 
 **Check against your band -- match the units.** Your band (from the assumptions page) is one kid-sized form -- per person/day, per day for the family, or a hotel tier -- not a whole-trip total. So compare the *matching* piece of your estimate, not the subtotal:
