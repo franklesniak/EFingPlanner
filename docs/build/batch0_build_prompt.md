@@ -50,10 +50,12 @@ coaching), §22 (Japan facts). Build, at the repo root:
    `Session 09` as a conditional Batch 0 deliverable for the AI-on path, or state
    explicitly that this slice is AI-off only — never ship an AI-on pilot without it.
 3. **The minimal support files to make Batch 0 pilotable:** root `README.md` and
-   `GETTING_STARTED.md` — the latter built to **§13.2** (the concrete print/copy workflow,
-   the data-flow walkthrough, the recommended cadence, the privacy/no-commit rules, and the
-   30-second backup habit), opening with the verify-don't-trust banner in §13.1's canonical
-   wording; `framework/PROJECT_ROADMAP.md` (First-Taste index up front); the templates those
+   `GETTING_STARTED.md` — **both must open with the verify-don't-trust banner in §13.1's
+   canonical wording** (§13.1 requires it verbatim at the top of every start surface — the
+   root `README.md` included, not only `GETTING_STARTED.md`); `GETTING_STARTED.md`
+   additionally follows **§13.2** (the concrete print/copy workflow, the data-flow
+   walkthrough, the recommended cadence, the privacy/no-commit rules, and the 30-second
+   backup habit); `framework/PROJECT_ROADMAP.md` (First-Taste index up front); the templates those
    13 sessions use, incl. `trip_basics.md` and the 3-criteria scoring variant (§26);
    `framework/student_guide/progress_tracker.md` (+ `when_im_stuck.md`, `what_i_decide.md`
    if the sessions reference them); the parent quick-start (§21.0) **and the three must-reads
@@ -108,9 +110,10 @@ on the `lean-spec.md` / `full-oer-companion.md` pointers named under Source of t
 
 - All Batch 0 files above exist, are meaningful (no thin/placeholder files), and lint-clean;
   all relative links resolve.
-- Self-check before stopping: grep every built session for the leak tokens —
-  `grep -wE 'Chicago|ORD|17|grandmother|uncle'` (`-w` gives portable standalone-token
-  matching; the non-POSIX `\b` word-boundary escape is avoided) — and confirm no hard-coded
+- Self-check before stopping: grep the built sessions for the leak tokens —
+  `grep -rwE 'Chicago|ORD|17|grandmother|uncle' framework/sessions/` (the explicit
+  `framework/sessions/` target + `-r` scans the built files instead of reading stdin; `-w`
+  gives portable standalone-token matching without the non-POSIX `\b` escape) — and confirm no hard-coded
   family value (blanks pointing to `trip_basics.md` are fine); confirm every session has a
   named artifact and a stop point (§15).
 - **STOP at the pilot gate.** Produce a short build report listing what was built, plus the
