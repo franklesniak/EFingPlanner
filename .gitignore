@@ -35,3 +35,6 @@ Thumbs.db
 
 # Lock files (optional - uncomment to exclude)
 # package-lock.json
+
+# Documentation build briefs (committed; not Python build output)
+!docs/build/
