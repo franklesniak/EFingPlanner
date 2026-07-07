@@ -27,13 +27,12 @@ Missed a week or more? You do not start over. Come back like this:
 
 ## When I'm waiting for a grown-up
 
-If you are waiting for a checkpoint review, keep your momentum:
+If you are waiting for a **checkpoint** review, keep your momentum without racing ahead --
+the next session waits until a grown-up finishes the review:
 
 - Do an Optional Extension from your last session.
 - Add to your question parking lot.
 - Grow your "things I can't wait to see" page.
-- Start the next on-your-own session (your [progress tracker](progress_tracker.md) shows
-  which ones do not need a grown-up).
 
 ## If something online worries me
 

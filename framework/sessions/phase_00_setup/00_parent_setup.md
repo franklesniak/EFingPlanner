@@ -15,13 +15,23 @@ This is the one setup you do before your child begins. Most of it is quick. The 
 detailed version lives in the [setup checklist](../../parent_guide/setup_checklist.md);
 this session is the short in-order version.
 
-## If you are not sure, do exactly this (fastest safe start)
+## Goal
 
-Only four things are genuine setup *actions*. Everything else has a default and can wait.
+Complete the one-time setup -- safety filter, the Trip-Basics and assumptions pages, the AI
+choice, and passports started -- so your child can begin Session 01.
 
-1. **Turn on a kid-safe search filter** on the device the child will use (for example,
-   Google SafeSearch, which you can lock on through Family Link). It reduces -- but does
-   not remove -- exposure, so plan to stay nearby for the riskier research.
+## Start Here
+
+Turn on a kid-safe search filter on the device your child will use (for example, Google
+SafeSearch, lockable through Family Link). That one action is your start. It reduces exposure
+but does not remove it, so plan to stay nearby for the riskier research.
+
+## Steps
+
+Only four things are genuine setup *actions* (the first is the filter you just turned on);
+everything else has a default and can wait.
+
+1. **Kid-safe filter on** -- done in Start Here.
 2. **Fill in the [Trip-Basics card](../../templates/trip_basics.md)** once: your home
    airport and its code, your time zone or hours-ahead to Japan, your maximum trip
    length, how many travelers, and the roster by relationship.
@@ -36,14 +46,21 @@ Leave everything else at its default. You do not decide the "City C," food, or l
 sessions now -- they promote themselves later only if your child's research keeps
 surfacing them.
 
+## Workspace
+
+You work from this checklist, the [Trip-Basics card](../../templates/trip_basics.md), and
+the [Family Travel Assumptions page](../../templates/current_family_travel_assumptions.md).
+Keep your filled-in pages with your child's binder.
+
 ## Full setup checklist
 
 - Skim the [parent quick-start](../../parent_guide/README.md) -- the three must-reads
   before you begin: the setup checklist, the adult-and-child roles, and the honest
   time-and-effort reality.
-- Read the [privacy and safety rules](../../docs/privacy_and_safety.md) once. Note what
-  never gets written down: passport numbers, birthdates, confirmation numbers, your home
-  address, payment details, and exact booked dates or hotel names in anything public.
+- Read the [privacy and safety rules](../../docs/privacy_and_safety.md) once. Off every
+  working page: passport numbers, birthdates, confirmation numbers, your home address, and
+  payment details -- and use vague travel dates ("spring," "not decided yet") instead of
+  exact booked dates. Keep hotel names off anything public.
 - Print [Session 01](01_project_kickoff.md) and the child's first pages. Print or copy
   each session as you reach it -- not the whole set at once.
 - Gather a guidebook (a library copy is perfect) or a couple of reputable travel
@@ -88,9 +105,10 @@ has concrete lighter moves.
 
 ## What not to record
 
-Keep personal data out of every page, whether on paper, in Google Docs, or anywhere else:
-no passport numbers, birthdates, confirmation numbers, home address, payment details, or
-exact booked dates and hotel names. Adults handle all of that.
+Keep sensitive personal data out of every page, whether on paper, in Google Docs, or
+anywhere else: no passport numbers, birthdates, confirmation numbers, home address, or
+payment details. Use vague travel dates instead of exact booked ones, and keep hotel names
+off anything public. Adults handle all of that.
 
 ## Artifact Created
 

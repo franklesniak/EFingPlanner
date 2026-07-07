@@ -17,8 +17,9 @@ Finish your must-see list, set aside what does not fit, and make a couple of bac
 
 ## Start Here
 
-Look at the starred sights on the City Research Card(s) for the city you recommended in
-Session 21, and circle the **one** you most want to do. That circle is where you start.
+Look at the starred sights on the City Research Card(s) for the city or cities you
+recommended in Session 21, and circle the **one** you most want to do. That circle is where
+you start.
 
 ## Steps
 

@@ -42,10 +42,11 @@ how trip money is split up, and checking whether the parts *you* choose fit.
    ```
 
 4. **Check it against your band -- match the units first.** A grown-up gave you *one*
-   kid-sized band at setup: a per-day/per-person amount, *or* a hotel "tier we can afford"
-   (never your whole-trip total -- that stays a grown-up number). Compare the matching
-   piece, not your big two-slice total:
-   - Band is **per day / per person**? Your **meals guess** is already "per person, per day" -- check that against it.
+   kid-sized band at setup: a per-person-per-day amount, a per-day amount for the whole
+   family, *or* a hotel "tier we can afford" (never your whole-trip total -- that stays a
+   grown-up number). Compare the matching piece, not your big two-slice total:
+   - Band is **per person, per day**? Your **meals guess** is already in that unit -- check it against the band.
+   - Band is **per day for the family**? Add your **meals for everyone per day** (meals per person x your travelers) to your **hotel per night** -- check that daily total against the band.
    - Band is a **hotel tier**? Check your **hotel-per-night** pick against that tier.
    Circle **fits** or **too high** for the part you checked.
 
