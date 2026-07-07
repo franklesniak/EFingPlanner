@@ -13,7 +13,7 @@ Two things are already decided by the grown-ups: **we are going on a trip, and i
 ## About "mine to decide"
 
 - **Your one special pick** -- the single thing you most want -- is honored. Grown-ups can only change it for three reasons: it costs more than the budget, it can't be booked, or it isn't safe or doable for everyone. A grown-up vote can't take it away, and they will always tell you why if something changes.
-- **Your must-do list and the order of your day** are yours too. Sometimes a grown-up will need to reshape one -- because of a rule, or because the whole group has to agree -- but they will always tell you *why*. Your choices still counted.
+- **Your must-do list and the order of your day** are yours too. Sometimes a grown-up will need to reshape one -- because of a rule, or because the whole group has to agree -- but they will always tell you *why*. Your choices still count.
 
 ## About the rest
 

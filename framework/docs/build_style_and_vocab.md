@@ -67,7 +67,7 @@ Built files reference concepts by **Name** and link to the built-file home below
 | Name | One-line meaning | Built-file home |
 | --- | --- | --- |
 | Verify-Don't-Trust | Prefer official/current sources; never treat volatile facts as fixed | `framework/docs/privacy_and_safety.md` / Source Check guidance |
-| Your-Work-Wasn't-Wrong | Adults may change the plan; the child's work still counted | parent guide when-plans-change content |
+| Your-Work-Wasn't-Wrong | Adults may change the plan; the child's work still counts | parent guide when-plans-change content |
 | Trip-Basics card | Family-owned config (home airport, party size, max trip length, roster) kept out of framework files | `framework/templates/trip_basics.md` |
 | Budget Band (kid-graspable) | A rough not-to-exceed signal, per-day/per-person or by hotel tier | `framework/templates/current_family_travel_assumptions.md` |
 | Rough Trip Shape | Provisional adult round-trip-vs-open-jaw call + likely arrival/departure cities | `framework/templates/current_family_travel_assumptions.md` |
