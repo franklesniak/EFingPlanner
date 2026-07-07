@@ -18,7 +18,7 @@ What a successful family trip feels like: ________________
 Ask each traveler: *"What is one thing you'd love on this trip?"* One line per person. If someone is hard to reach, ask by text or have a grown-up relay it, or mark "asked through a grown-up."
 
 ```text
-Traveler (by name or relationship)      One thing they'd love
+Traveler (by relationship or role)      One thing they'd love
    ____________________________          ____________________________
    ____________________________          ____________________________
    ____________________________          ____________________________

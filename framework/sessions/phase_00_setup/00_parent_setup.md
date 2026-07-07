@@ -23,7 +23,7 @@ Turn on a kid-safe search filter on the device your child will use (for example,
 
 ## Steps
 
-Only four things are genuine setup *actions* (the first is the filter you just turned on); everything else has a default and can wait.
+Only four things are genuine setup *actions* (the first is the filter you just turned on). Everything else has a default and can wait -- with one exception: also **start the child's passport check now**, because it is a long-lead item that can set your earliest travel date (details in the checklist below).
 
 1. **Kid-safe filter on** -- done in Start Here.
 2. **Fill in the [Trip-Basics card](../../templates/trip_basics.md)** once: your home airport and its code, your time zone or hours-ahead to Japan, your maximum trip length, how many travelers, and the roster by relationship.

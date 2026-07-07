@@ -29,7 +29,7 @@ A good planner finds out what the *whole* group wants, not just their own ideas.
    - What makes a trip too tiring?
    - What would make this trip feel special?
    - What does a successful family trip feel like?
-2. **Run a quick traveler poll.** Ask each traveler on your trip one question: *"What is one thing you'd love on this trip?"* Write down each answer with who said it -- a name or relationship (for example, "Mom" or "my brother"), whichever your family is comfortable with. These answers are real evidence -- you will use them when you choose cities and things to do.
+2. **Run a quick traveler poll.** Ask each traveler on your trip one question: *"What is one thing you'd love on this trip?"* Write down each answer with who said it -- by relationship or role (for example, "Mom," "my brother," or "Grandpa") -- that keeps private details off the page. These answers are real evidence -- you will use them when you choose cities and things to do.
    - If someone is far away or hard to reach, ask them by text or call, or have a grown-up ask and bring back the answer. You can also poll whoever is around now and mark the rest "asked through a grown-up." Do not wait on anyone's schedule.
 3. Look at all the answers together:
    - Which things did more than one person mention?
