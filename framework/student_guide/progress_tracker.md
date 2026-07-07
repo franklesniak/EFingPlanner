@@ -11,7 +11,7 @@ Check off each session as you finish it. Your one big milestone is **Checkpoint 
 - [ ] 2. [03 What Makes a Good Trip](../sessions/phase_00_setup/03_what_makes_a_good_trip.md)
 - [ ] 3. [04 Start a Source Log](../sessions/phase_00_setup/04_start_a_source_log.md)
 - [ ] 4. [05 Good Sources, Bad Sources](../sessions/phase_01_research_skills/05_good_sources_bad_sources.md) *(do this one with a grown-up)*
-- [ ] [09 AI as Helper, Not Boss](../sessions/phase_01_research_skills/09_ai_as_helper_not_boss.md) *(AI families only -- do right after Session 05, with a grown-up, before any AI tool; an extra, not one of the 13)*
+  - [ ] [09 AI as Helper, Not Boss](../sessions/phase_01_research_skills/09_ai_as_helper_not_boss.md) *(AI families only -- do right after Session 05, with a grown-up, before any AI tool; an extra, not one of the 13)*
 - [ ] 5. [10 Destination Snapshot](../sessions/phase_02_destination_big_picture/10_destination_snapshot.md)
 - [ ] 6. [12 Weather, Seasons, and Events](../sessions/phase_02_destination_big_picture/12_weather_seasons_and_events.md)
 - [ ] 7. [13 Trip Goals and Travel Style](../sessions/phase_02_destination_big_picture/13_trip_goals_and_travel_style.md)

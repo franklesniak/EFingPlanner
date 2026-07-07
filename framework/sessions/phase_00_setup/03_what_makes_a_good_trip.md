@@ -32,7 +32,8 @@ going to gather that now.
    - What would make this trip feel special?
    - What does a successful family trip feel like?
 2. **Run a quick traveler poll.** Ask each traveler on your trip one question: *"What is
-   one thing you'd love on this trip?"* Write down each answer with the person's name.
+   one thing you'd love on this trip?"* Write down each answer with who said it -- a name or
+   relationship (for example, "Mom" or "my brother"), whichever your family is comfortable with.
    These answers are real evidence -- you will use them when you choose cities and things
    to do.
    - If someone is far away or hard to reach, ask them by text or call, or have a grown-up
