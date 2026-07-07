@@ -49,9 +49,10 @@ surfacing them.
 - Gather a guidebook (a library copy is perfect) or a couple of reputable travel
   websites. Nothing needs to be bought.
 - **Check passports early.** A child's first passport is a long-lead item and can set
-  the earliest date you could travel. A child under 16 applies in person with both
-  parents; confirm current processing times at travel.state.gov. This shapes the season
-  research your child will do, so start it now.
+  the earliest date you could travel, and children's applications follow their own rules.
+  Confirm the current child-passport requirements and processing times with the official
+  source at travel.state.gov, since these can change. This shapes the season research your
+  child will do, so start it now.
 - Record a **rough trip shape** on the assumptions page if you can: fly in and out of one
   city, or in one and out of another, and the likely arrival city. If you have never been
   to Japan, naming just the arrival city is a fine answer -- leave the rest open and firm

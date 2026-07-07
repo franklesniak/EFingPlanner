@@ -104,11 +104,11 @@ Standard materials (free option in parentheses):
 - Do not trust one source, and do not use AI as the only source.
 - Do not commit your filled-in trip work to a public repository. Work in a private binder or
   Google Docs -- and note that a Google Docs folder is not a private vault either, so the
-  same no-personal-data rule applies. See [privacy and safety](framework/docs/privacy_and_safety.md).
+  same rule applies: keep sensitive personal data off it. See [privacy and safety](framework/docs/privacy_and_safety.md).
 
 ## Back up your work (30 seconds)
 
 Months of work on one paper binder can be lost in an instant. If you use paper, photograph
 each finished page (or each checkpoint) into a phone or cloud folder, or scan it at the
 library. If you work in Google Docs, the cloud copy is already your backup. Before you
-photograph or scan a page, check it has no personal data on it.
+photograph or scan a page, check it has no sensitive personal data on it.

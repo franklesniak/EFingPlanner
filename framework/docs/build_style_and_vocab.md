@@ -1,5 +1,12 @@
 # Build Style and Vocabulary (builder-facing)
 
+## Metadata
+
+- **Status:** Active
+- **Owner:** Repository Maintainers
+- **Last Updated:** 2026-07-07
+- **Scope:** Builder-facing voice, vocabulary, banned-word, and lint conventions for authoring and editing the EFingPlanner curriculum batches. Not part of the child's or parent's reading path.
+
 This file is for whoever *builds* the curriculum, not for the child or parent. It
 is not part of the child's reading path. Load it before authoring or editing any
 batch so voice, vocabulary, banned words, and lint conventions stay constant across

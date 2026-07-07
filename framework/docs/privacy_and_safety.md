@@ -12,7 +12,8 @@ and the "provided as-is; always verify" banner on the [README](../../README.md) 
 Keep these out of the repository and out of any filled-in page, on paper or in Google Docs:
 
 - Passport numbers, birthdates, confirmation numbers, home address, or payment details.
-- Exact booked travel dates in anything public -- use "spring," "summer," or "not decided yet."
+- Exact booked travel dates -- on any working page use "spring," "summer," or "not decided
+  yet," and keep exact dates out of anything public. (Booking and the real dates are the adults' job.)
 - Hotel names posted publicly during travel.
 
 ## Online safety for the child

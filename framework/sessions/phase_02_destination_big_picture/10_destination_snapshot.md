@@ -32,9 +32,9 @@ Source Log.
 2. **Major islands:** the four big ones are Honshu, Hokkaido, Kyushu, and Shikoku.
 3. **Currency:** the yen.
 4. **Main language:** Japanese.
-5. **Time difference:** use the hours-ahead figure on your Trip-Basics card. For families
-   in the US, Japan is roughly 14 to 15 hours ahead -- about half a day. A grown-up can
-   confirm your exact number.
+5. **Time difference:** use the hours-ahead figure on your Trip-Basics card -- Japan is
+   roughly half a day ahead, and a grown-up confirms your home zone's exact current offset
+   (it varies by US zone and season).
 6. **Getting there:** it is a long flight from the US. A grown-up can tell you roughly how
    long from your home airport. (Flights are the grown-ups' job.)
 7. **Three surprising facts:** find three things about Japan that surprise you, from a

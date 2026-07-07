@@ -11,7 +11,7 @@ Previous: [03 What Makes a Good Trip](03_what_makes_a_good_trip.md) | Next: [05 
 - Parent involvement: 5-minute check-in
 - Materials: your Source Log page, a pencil, and one thing to look up (a book or a website)
 
-(See the matching entry in [the parent session notes](../../parent_guide/session_support_notes.md) if one is available; if not, the Parent Notes below are enough.)
+(For an at-a-glance version, see the matching entry in [the parent session notes](../../parent_guide/session_support_notes.md); the Parent Notes below have the full detail.)
 
 ## Goal
 

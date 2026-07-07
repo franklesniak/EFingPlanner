@@ -66,7 +66,8 @@ Quick-start:
 
 ## First Taste session index (what is built now)
 
-Session 00 is adult-only setup; the child does sessions 01-53. This slice is the pilotable
+Session 00 is adult-only setup; the child does the First Taste sessions listed below,
+ending at Session 53 (a subset, not every number in between). This slice is the pilotable
 First Taste path.
 
 | # | Session | Status | Time | Artifact |
@@ -100,7 +101,7 @@ Three layers (this is Full-Build detail a one-trip family can skip):
 ## Safety and responsibility
 
 - **Privacy:** your child's real trip work is never committed to this public repository, and
-  no personal data goes on any page. See [privacy and safety](framework/docs/privacy_and_safety.md).
+  no sensitive personal data goes on any page. See [privacy and safety](framework/docs/privacy_and_safety.md).
 - **Adults own** money, booking, flights, passports, entry rules, insurance, and safety. The
   child researches and recommends; adults verify and decide.
 - **Equity note:** this project requires **no new purchases** -- a library and free reputable

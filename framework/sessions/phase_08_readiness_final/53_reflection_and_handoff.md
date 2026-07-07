@@ -29,9 +29,9 @@ like.
 
 1. **Look back at your baseline.** You wrote what was hard about big projects and what
    helps you start. What is different now?
-2. **Your guesses.** Look at your time guesses and your budget estimate. Were your first
-   guesses off? Did your guessing get closer as you practiced? (Being off is normal -- this
-   is about noticing, not being right.)
+2. **Your budget guess.** Look at your budget estimate from Session 33. Were your first
+   guesses off from what you expected? That is normal -- grown-ups' first guesses are often
+   off too. This is about noticing how estimating works, not being exactly right.
 3. **What did you learn about planning?**
 4. **What was hard at first, and what helped you get started?**
 5. **What are you proud of?**

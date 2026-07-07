@@ -64,9 +64,11 @@ trade-off.
 
 ## Stop Point
 
-You are done when both cities have three scores and a total, and you have written your
-trade-off in a sentence or two. You do not have to pick a final winner today if you are
-unsure -- the trade-off note is the real work.
+You are done when both cities have three scores and a total, you have written your
+trade-off in a sentence or two, and you have made a recommendation: either **one city**
+for this first trip, or **both, kept on purpose**. You do not have to feel sure -- "I
+recommend both, let's decide together" is a real answer -- but write down which way you
+lean, because your final plan needs a city or two.
 
 ## Source Check
 

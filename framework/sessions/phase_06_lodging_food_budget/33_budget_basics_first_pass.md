@@ -41,9 +41,12 @@ how trip money is split up, and checking whether the parts *you* choose fit.
    My two-slice estimate = $____
    ```
 
-4. **Check it against your band.** A grown-up gave you a kid-sized budget band at setup
-   (a per-day or per-person amount, or a hotel "tier we can afford"). Does your estimate
-   fit inside it? Circle **fits** or **too high**.
+4. **Check it against your band -- match the units first.** A grown-up gave you a kid-sized
+   band at setup: a per-day or per-person amount, or a hotel "tier we can afford." Compare
+   the *same kind* of number -- your **meals guess per person per day** against a
+   per-day/per-person band, and your **hotel guess per night** against the hotel tier. (Do
+   not compare your big two-slice total to a per-day band -- that mixes units.) For each,
+   circle **fits** or **too high**.
 
 **Remember:** your first guesses will probably be off -- everyone's are, even grown-ups'.
 Being off is normal. The point is to practice estimating and checking, not to be exactly

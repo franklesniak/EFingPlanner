@@ -8,8 +8,8 @@ any accessibility verification.
 ## Trains are the backbone
 
 - **Shinkansen** ("bullet trains") connect the big cities quickly and comfortably.
-- Local trains and subways cover the cities. Use a map's **"Directions" tool to get travel
-  *times*** rather than eyeballing distance -- time is what matters for a route.
+- Local trains and subways cover the cities. Use a map's "Directions" tool to get **travel
+  times** rather than eyeballing distance -- time is what matters for a route.
 - **IC cards** are tap-to-pay cards for trains and buses. Which visitor options exist and
   work changes often (physical and mobile versions, adding a card to a phone wallet), and
   mobile cards can be hard to add on some phones. **Verify which options currently work for a
@@ -36,6 +36,6 @@ that verification is a grown-up's job; the child just flags likely trouble spots
 ## Getting there and the arrival day
 
 Flights are adult-owned. Plan the **arrival day gently** -- it comes after a long flight and
-a big time change (roughly 14 to 15 hours for families in the US), so the first two or three
-days can feel jet-lagged. Getting from the airport into the city is part of that first day;
-a grown-up sorts the airport transit.
+a big time change (about half a day, though it varies by US time zone), so the first two or
+three days can feel jet-lagged. Getting from the airport into the city is part of that first
+day; a grown-up sorts the airport transit.
