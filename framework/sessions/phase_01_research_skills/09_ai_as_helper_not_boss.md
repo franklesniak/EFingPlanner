@@ -94,9 +94,10 @@ it did not add any new "facts" you did not give it. If it did, take them out or 
 
 ## Parent Notes
 
-A ten-year-old is below the minimum age for independent use of major AI tools, so the only
-compliant pattern is adult-operated, supervised use on your account, with AI confined to
-brainstorming, search terms, and tidying the child's own notes -- never as a fact source.
-Before you opt in, verify the tool's current minimum-age and supervision policy on the
-tool's own terms page and record the date. Keep all personal data (including photos of
+Major AI tools commonly set a minimum age (often 13+) that a ten-year-old is under, but
+these policies vary by provider and change -- so verify the tool's current minimum-age and
+supervision policy on its own terms page before you opt in, and record the date. Whatever
+the policy says, this curriculum's pattern is adult-operated, supervised use on your account,
+with AI confined to brainstorming, search terms, and tidying the child's own notes -- never
+as a fact source, and never the child on their own. Keep all personal data (including photos of
 pages) out of AI. See the [privacy and safety rules](../../docs/privacy_and_safety.md).
