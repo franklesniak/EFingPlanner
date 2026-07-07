@@ -5,7 +5,7 @@ name. Fill it in once (a grown-up helps), and keep it at the front of your binde
 sessions never assume these values -- they point here -- so this card is what makes the
 whole planner work for your family.
 
-Keep this card with your setup pages. It holds no private data -- no passport numbers,
+Keep this card with your setup pages. It holds no sensitive personal data -- no passport numbers,
 birthdates, confirmation numbers, home address, or payment details.
 
 Fill in:

@@ -111,14 +111,14 @@ files must **not** cite the archived spec's section numbers.
 
 | Name | One-line meaning | Built-file home |
 | --- | --- | --- |
-| Verify-Don't-Trust | Prefer official/current sources; never treat volatile facts as fixed | `privacy_and_safety.md` / Source Check guidance |
+| Verify-Don't-Trust | Prefer official/current sources; never treat volatile facts as fixed | `framework/docs/privacy_and_safety.md` / Source Check guidance |
 | Your-Work-Wasn't-Wrong | Adults may change the plan; the child's work still counted | parent guide when-plans-change content |
 | Trip-Basics card | Family-owned config (home airport, party size, max trip length, roster) kept out of framework files | `framework/templates/trip_basics.md` |
-| Budget Band (kid-graspable) | A rough not-to-exceed signal, per-day/per-person or by hotel tier | `current_family_travel_assumptions.md` |
-| Rough Trip Shape | Provisional adult round-trip-vs-open-jaw call + likely arrival/departure cities | `current_family_travel_assumptions.md` |
+| Budget Band (kid-graspable) | A rough not-to-exceed signal, per-day/per-person or by hotel tier | `framework/templates/current_family_travel_assumptions.md` |
+| Rough Trip Shape | Provisional adult round-trip-vs-open-jaw call + likely arrival/departure cities | `framework/templates/current_family_travel_assumptions.md` |
 | Lighter Rubric (3-criteria) | The simplified scoring option offered wherever weighted scoring appears | `framework/templates/scoring_rubric.md` |
-| Core Finish Line | Shortest route to a usable plan (Checkpoint 5) | `PROJECT_ROADMAP.md` index |
-| First Taste path | The ~13-session minimal path that still yields a complete mini-plan | `PROJECT_ROADMAP.md` index |
+| Core Finish Line | Shortest route to a usable plan (Checkpoint 5) | `framework/PROJECT_ROADMAP.md` index |
+| First Taste path | The ~13-session minimal path that still yields a complete mini-plan | `framework/PROJECT_ROADMAP.md` index |
 
 ## Lint conventions (keep generated files passing at scale)
 

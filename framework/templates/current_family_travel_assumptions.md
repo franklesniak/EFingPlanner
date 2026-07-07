@@ -4,7 +4,7 @@ This page holds the rough starting points the grown-ups set at setup. Everything
 change -- it is a starting point, not a final decision. A grown-up owns and updates this
 page; the child reads it so their plan stays realistic.
 
-Keep no private data here (no exact booked dates, hotel names, confirmation numbers, or
+Keep no sensitive personal data here (no exact booked dates, hotel names, confirmation numbers, or
 payment details).
 
 ```text
