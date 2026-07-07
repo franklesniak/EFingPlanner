@@ -8,7 +8,7 @@ Parent Notes inside each session; it is the at-a-glance map.
 
 - Role: do the setup; the child does not do this session.
 - Prep: kid-safe filter, Trip-Basics card, assumptions page, AI choice, start passports.
-- Look for: your four setup actions done and Session 01 printed.
+- Look for: your four setup actions done, the passport check kicked off, and Session 01 printed.
 - Pitfall: over-deciding up front. Use the fastest-safe-start defaults and move on.
 
 ## Session 01: Project Kickoff

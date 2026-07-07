@@ -60,13 +60,18 @@ Date checked:   ______________________________________________
 One other place I could check this: __________________________
 ```
 
+Your Source Log template has a few more boxes than the ones above -- *source type*, *why it
+matters*, *trust level*, and *how useful*. You will learn trust level and how useful in
+Session 05, so leave those blank for now (fill *source type* and *why it matters* only if you
+want). The boxes above are a complete first row.
+
 ## Artifact Created
 
 Your first Source Log entry -- one fact, with where it came from and where you could check it.
 
 ## Stop Point
 
-You are done when your Source Log has today's date and one complete row. One good row is enough. You do not need to look up more facts today.
+You are done when your Source Log has today's date and one row with the boxes above filled in. (The extra template boxes like *trust level* and *how useful* wait for Session 05.) One good row is enough -- you do not need to look up more facts today.
 
 ## Source Check
 

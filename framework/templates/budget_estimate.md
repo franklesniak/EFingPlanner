@@ -32,15 +32,13 @@ Fits my band? (yes / too high) ____
 
 The subtotal above shows how your slices add up -- the whole-trip total stays a grown-up number.
 
-**The grown-ups' big number, kept on the side (not part of your check):**
-
-```text
-Flights = $____ rough per-person fare (a grown-up gives you this) x ____ travelers = $____
-Whole-trip total (a grown-up sanity check) = my subtotal + flights = $____
-```
+**Flights and the whole-trip total are the grown-ups' numbers.** They add flights -- the
+biggest cost -- to work out the full total on their *own* page. It is not part of your
+worksheet or your band check, so there is nothing to fill in here. Curious what it comes to?
+Ask a grown-up.
 
 Allowed answers anywhere: low / medium / high, "not sure yet," "ask an adult."
 
 What this teaches: how trip money is split into categories, and whether the parts you chose
-fit your band -- not the real final total. Flights are the grown-ups' big number, kept on
-the side. Adults still own the real budget and the booking.
+fit your band -- not the real final total. Flights and the full total are the grown-ups'
+numbers, kept on their own page. Adults still own the real budget and the booking.

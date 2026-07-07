@@ -16,9 +16,11 @@ in-order companion. Plan on about 1-2 hours, once.
    [assumptions page](../templates/current_family_travel_assumptions.md). Both are "this can
    change" starting points. Express the band in kid-sized form (per-day or "this hotel
    tier"); keep the full trip total an adult number.
-4. **Choose AI: yes or no** (default no). If yes, commit to the adult-operated pattern in the
-   [privacy and safety rules](../docs/privacy_and_safety.md), and your child does Session 09
-   before using any AI tool.
+4. **Choose AI: yes or no** (default no), and record the choice on the
+   [assumptions page](../templates/current_family_travel_assumptions.md). If yes, commit to the
+   adult-operated pattern in the [privacy and safety rules](../docs/privacy_and_safety.md), and
+   your child does Session 09 before using any AI tool -- writing the yes/no down is what keeps
+   that safety gate from being missed.
 
 ## Also do soon
 

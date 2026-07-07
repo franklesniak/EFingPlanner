@@ -58,7 +58,11 @@ Only four things are genuine setup actions:
 2. Fill in the [Trip-Basics card](../templates/trip_basics.md).
 3. Set a rough season window and a rough budget band on the
    [assumptions page](../templates/current_family_travel_assumptions.md).
-4. Choose AI: yes or no (default no).
+4. Choose AI: yes or no (default no) -- record it on the assumptions page.
+
+**Also start now (it runs in the background):** kick off the child's passport check at
+travel.state.gov. It is a long-lead item that can set your earliest travel date and shapes the
+season research your child does next, so it should not wait.
 
 Everything else has a default and can wait. You do not decide the "City C," food, or
 language sessions now -- they promote themselves later only if your child's research keeps
