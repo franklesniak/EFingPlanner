@@ -36,7 +36,7 @@ This repository is public and holds no trip data -- only the reusable curriculum
 
 ## Back up your work (30 seconds)
 
-Months of work on one paper binder is a single point of failure. If you use paper, photograph each finished page (or checkpoint) into a phone or cloud folder, or scan it at the library. If you work in Google Docs, the cloud copy is already your backup. Before you photograph or scan a page, check it has no sensitive personal data on it.
+Keeping months of work in one paper binder is a single point of failure. If you use paper, photograph each finished page (or checkpoint) into a phone or cloud folder, or scan it at the library. If you work in Google Docs, the cloud copy is already your backup. Before you photograph or scan a page, check it has no sensitive personal data on it.
 
 ## The "if I get separated" card is a small exception
 

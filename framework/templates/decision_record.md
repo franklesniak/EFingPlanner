@@ -2,7 +2,7 @@
 
 # Decision Record
 
-Use one Decision Record for each big decision. Together, these records make your **decision log** -- the story of what your family decided and why. Each of the six checkpoint decisions gets a record here too, so nothing important is decided but lost.
+Use one Decision Record for each big decision. Together, these records make your **decision log** -- the story of what your family decided and why. Each of the six checkpoint decisions gets a record here too, so nothing important is decided and then forgotten.
 
 ```text
 Decision (what are we deciding?): ________________________
