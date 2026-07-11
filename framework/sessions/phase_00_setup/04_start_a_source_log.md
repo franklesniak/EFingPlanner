@@ -52,14 +52,14 @@ You can say your answers to an adult who writes them, or draw them, if that is e
 
 Fill in your first row here (or on your Source Log page):
 
-```text
-What I learned: ______________________________________________
-Title:          ______________________________________________
-Author/org:     ______________________________________________
-Web address or page number: __________________________________
-Date checked:   ______________________________________________
-One other place I could check this: __________________________
-```
+| Prompt | Your answer |
+| --- | --- |
+| What I learned | |
+| Title | |
+| Author/org | |
+| Web address or page number | |
+| Date checked | |
+| One other place I could check this | |
 
 Your Source Log template has a few more boxes than the ones above -- *source type*, *why it matters*, *trust level*, and *how useful*. You will learn trust level and how useful in Session 05, so leave those blank for now (fill *source type* and *why it matters* only if you want). The boxes above are a complete first row.
 

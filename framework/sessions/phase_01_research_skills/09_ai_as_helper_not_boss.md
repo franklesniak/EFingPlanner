@@ -45,8 +45,7 @@ If your family uses AI, a grown-up runs it, on the grown-up's own account, with 
 Safe example a grown-up can type:
 
 ```text
-I am helping plan a family trip to Japan. Give me five questions a kid planner
-should research about Kyoto. Do not make the decision for me.
+I am helping plan a family trip to Japan. Give me five questions a kid planner should research about Kyoto. Do not make the decision for me.
 ```
 
 ## Workspace

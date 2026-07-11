@@ -6,12 +6,12 @@ When a question pops up that would pull you off track, park it here instead of c
 
 One row per question:
 
-```text
-Question: ________________________________________________
-Why it matters: __________________________________________
-Who can answer it? (me later / a grown-up / a source) ____
-Need it now, or later? (now / later) ____
-Status: (parked / answered) ____
-```
+| Prompt | Your answer |
+| --- | --- |
+| Question | |
+| Why it matters | |
+| Who can answer it? (me later / a grown-up / a source) | |
+| Need it now, or later? (now / later) | |
+| Status (parked / answered) | |
 
 Parking a question is a real planner skill -- it protects your focus and your stop point.

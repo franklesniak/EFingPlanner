@@ -6,17 +6,11 @@ You fill this in near the very start (Session 01). It is a snapshot of how big p
 
 Say your answers aloud to a grown-up who writes them, or draw them, if that is easier.
 
-```text
-Date: ____
-
-What is hard for me when a project is big?
-   ______________________________________________________
-
-What helps me get started?
-   ______________________________________________________
-
-One thing I hope to get better at:
-   ______________________________________________________
-```
+| Prompt | Your answer |
+| --- | --- |
+| Date | |
+| What is hard for me when a project is big? | |
+| What helps me get started? | |
+| One thing I hope to get better at | |
 
 Keep this page safe. Your final reflection (Session 53) looks back at it.

@@ -6,12 +6,12 @@ Your Cut List holds the things you set aside -- because you cannot fit everythin
 
 One row per thing you set aside:
 
-```text
-Place or activity: _______________________________________
-Why it sounded interesting: ______________________________
-Why it may not fit (too far / too costly / not enough time): ____
-Save for a future trip? (yes / no) ____
-Could it be a backup instead? (yes / no) ____
-```
+| Prompt | Your answer |
+| --- | --- |
+| Place or activity | |
+| Why it sounded interesting | |
+| Why it may not fit (too far / too costly / not enough time) | |
+| Save for a future trip? (yes / no) | |
+| Could it be a backup instead? (yes / no) | |
 
 Add more rows as needed. A short cut list is a good cut list.

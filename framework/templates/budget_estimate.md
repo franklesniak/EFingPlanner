@@ -6,27 +6,27 @@ This page helps you see how trip money is split up, and whether the parts *you* 
 
 All numbers here are estimates you look up and re-check -- never a fixed price. Write the date beside anything you look up.
 
-**The parts your choices drive (your controllable slices).** For **First Taste**, fill in **Hotel** and **Food** -- that matches Session 33. If your Session 21 recommendation kept **two cities**, estimate a hotel for **each** and add them (the "Add the cities' hotels" line) -- your plan pays for both. The other rows are marked *(later)*: they belong to the fuller Core path, so leave them blank for the pilot.
+**The parts your choices drive.** For **First Taste**, fill in **Hotel** and **Food** -- that matches Session 33. If your Session 21 recommendation kept **two cities**, estimate a hotel for **each** and add them (the "Add the cities' hotels" line) -- your plan pays for both. The other rows are marked *(later)*: they belong to the fuller Core path, so leave them blank for the pilot.
 
-```text
-Hotel (one city) = $____ per night x ____ nights x ____ rooms = $____
-Food  = $____ per person per day x ____ people x ____ days = $____
-Add the cities' hotels: $____ + $____ = $____   (if you kept two cities in Session 21)
-Activities/tickets = $____ per ticket x ____ people = $____   (later)
-Local transit (trains/buses inside the trip) = $____   (later)
-Souvenirs / spending money = $____   (later)
->> My controllable-slice subtotal (Core path) = $____
-```
+| Cost | How to figure it | My estimate |
+| --- | --- | --- |
+| Hotel (one city) | $____ per night x ____ nights x ____ rooms | |
+| Food | $____ per person per day x ____ people x ____ days | |
+| Add the cities' hotels (if you kept two cities in Session 21) | $____ + $____ | |
+| Activities/tickets (later) | $____ per ticket x ____ people | |
+| Local transit -- trains/buses inside the trip (later) | | |
+| Souvenirs / spending money (later) | | |
+| **Subtotal of the parts I choose (Core path)** | add the costs above | |
 
 **Check against your band -- match the units.** Your band (from the assumptions page) is one kid-sized form -- per person/day, per day for the family, or a hotel tier -- not a whole-trip total. So compare the *matching* piece of your estimate, not the subtotal:
 
-```text
-My band form: __________  (per person/day, per day for family, or hotel tier)
-The matching piece of my estimate: $__________
-Fits my band? (yes / too high) ____
-```
+| Prompt | Your answer |
+| --- | --- |
+| My band form (per person/day, per day for family, or hotel tier) | |
+| The matching piece of my estimate (in $) | |
+| Fits my band? (yes / too high) | |
 
-The subtotal above shows how your slices add up -- the whole-trip total stays a grown-up number.
+The subtotal above shows how the parts you choose add up -- the whole-trip total stays a grown-up number.
 
 **Flights and the whole-trip total are the grown-ups' numbers.** They add flights -- the biggest cost -- to work out the full total on their *own* page. It is not part of your worksheet or your band check, so there is nothing to fill in here. Curious what it comes to? Ask a grown-up.
 

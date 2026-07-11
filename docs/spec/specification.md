@@ -1460,9 +1460,10 @@ Guidelines:
 - Most student sessions should be 1-3 printable pages.
 - Avoid tiny fonts, dense walls of text, and overly wide tables.
 - Tables should be readable in black and white.
-- Leave clear fill-in space or obvious prompts for handwritten or Google Docs responses.
-- Prefer checkboxes and short fielded blanks over large open-prose writing spaces wherever an artifact allows, to lower the writing load for every child (this is the default, and it pairs with the writing accommodations in Section 21.7).
-- If a table would be too wide, use repeated blocks instead.
+- **Worksheet forms are compact Markdown tables, not monospace underscore blocks.** Use a two-column **Field | Answer** table for a single-record form (the label in the first cell, an empty second cell for the response); use a small comparison grid (criteria as rows, options as columns) for scoring or compare worksheets. The empty cells are the fill-in space. A real Markdown table renders with writable cells in a browser or Google Docs and reflows on any screen; an ASCII/underscore fill-in block inside a code fence does neither -- it does not reflow, and it becomes blank-line-separated paragraphs when pasted into Google Docs. Reserve fenced `text` blocks for content that is genuinely preformatted (directory trees, a single worked formula), not fill-in forms.
+- Leave clear fill-in space or obvious prompts for handwritten or Google Docs responses -- an empty table cell is that space.
+- Prefer short fielded blanks (table rows) and checkboxes over large open-prose writing spaces wherever an artifact allows, to lower the writing load for every child (this is the default, and it pairs with the writing accommodations in Section 21.7).
+- Keep comparison grids narrow enough to print on portrait letter/A4 (a few columns at most). If a comparison would be too wide, split it into smaller tables or repeated single-item cards rather than one wide grid.
 - Do not rely on color to communicate meaning.
 - Do not include decorative images or layout tricks.
 
@@ -1527,7 +1528,7 @@ Include:
   - **Simplest for most pages: print straight from the GitHub-rendered page** (the formatted view, **not** the "Raw" file) using the browser's Print -- and, in the print dialog, you can choose **"Save as PDF"** instead of paper if you want a clean file to keep or print later. This is usually the fastest single path to a clean page.
   - **For the most pristine pagination: paste into Google Docs and print (or "Download as PDF") from there.** Open the worksheet on GitHub, copy the rendered text, paste into a Google Doc, and print. This gives the most controllable page but is more steps.
   - These browser/Docs "Save as PDF" options are the **family's own** convenience (the project still ships no PDFs and requires no PDF tooling; Sections 11.1, 32) -- they are explicitly allowed and often the easiest route to "a clean printed page."
-  - Note that **wide tables can break on portrait letter/A4 paper**; the worksheets are designed to avoid this (repeated blocks instead of wide tables, Section 12.1), and a build check confirms tables fit (Section 31.1).
+  - Note that **wide tables can break on portrait letter/A4 paper**; the worksheets are designed to avoid this (worksheet forms are narrow Markdown tables -- two-column Field | Answer forms, and comparison grids kept to a few columns, Section 12.1), and a build check confirms tables fit (Section 31.1).
 - **Print or copy each session as you reach it, in print-index order -- do not print the whole repository at once.** This is both practical (less waste and cost) and easier on the child: a small current stack keeps the work visibly bounded instead of dumping 200 pages on them at once. Be honest that copying every single session into Google Docs across ~53 sessions is tedious: for most sessions, **printing straight from the GitHub-rendered page (or browser "Save as PDF") is the simplest path** and is fine when pristine pagination is not needed; reserve the Google Docs copy for pages where layout really matters. If you would rather not print one at a time, you can also **print a whole phase at once** when you reach it (Section 13.5).
 - How to use the sessions.
 - How to use a binder or Google Docs folder.
@@ -4159,21 +4160,25 @@ Teach:
 
 **Lead with a fill-in-the-blank worked example, not an abstract formula (Section 3.2).** The primary presentation is a plug-in template with the blanks ready to fill, so the child works with concrete numbers rather than parsing a general formula:
 
-```text
 My controllable slices (the parts MY choices drive):
-  Hotel (one city) = $____ per night x ____ nights x ____ rooms = $____
-  Add the cities:    $____ + $____ + $____ = $____  (whole-trip hotels)
-  Food  = $____ per person per day x ____ people x ____ days = $____
-  Activities = $____ per ticket x ____ people = $____
-  Local transit (trains/buses inside the trip) = $____
-  Souvenirs / spending money = $____
-  Ryokan (if any) = $____ per person (meals usually included) x ____ people x ____ nights = $____
-  >> My controllable-slice subtotal = $____   (compare THIS to your controllable-slice band)
+
+| Cost | How to figure it | My estimate |
+| --- | --- | --- |
+| Hotel (one city) | $____ per night x ____ nights x ____ rooms | |
+| Add the cities (whole-trip hotels) | $____ + $____ + $____ | |
+| Food | $____ per person per day x ____ people x ____ days | |
+| Activities | $____ per ticket x ____ people | |
+| Local transit (trains/buses inside the trip) | | |
+| Souvenirs / spending money | | |
+| Ryokan (if any) | $____ per person (meals usually included) x ____ people x ____ nights | |
+| **Subtotal of the parts I choose** | add the costs above (compare THIS to the band for those parts) | |
 
 Grown-ups' big number, kept on the side:
-  Flights = $____ rough per-person fare (an adult gives you this) x ____ travelers = $____
-  Whole-trip total (a grown-up sanity check) = my subtotal + flights = $____
-```
+
+| Grown-ups' number | How to figure it | Amount |
+| --- | --- | --- |
+| Flights | $____ rough per-person fare (an adult gives you this) x ____ travelers | |
+| Whole-trip total (a grown-up sanity check) | my subtotal + flights | |
 
 The **flight line is filled from a rough per-person fare an adult provides** (the child does not research or book fares; Sections 6.2, 21.4). It is kept **on the side as the grown-ups' number**, not inside the slice the child checks, so their "did it fit?" compares the parts the child actually chose against a band for those parts (Session 33).
 
@@ -4209,11 +4214,11 @@ Include a souvenir budget as a child-accessible budgeting topic, with adults set
 
 **"Your own spending money" (a small, motivating, real money-management plug-in).** Extend the souvenir budget into a small **adult-set spending-money** exercise the child *plans*: a kid magnet that teaches real money management. The boundary is firm -- **adults set the amount and hold the actual money** (money is entirely adult-owned, Sections 6.2, 4.7); the child only plans how the child might spend it on kid things (gachapon capsule toys, a Pokemon Center trinket, snacks). Lead with a **fill-in-the-blank** form (concrete-before-abstract, Section 3.2), e.g.:
 
-```text
-My spending money: $____ (an adult sets this).
-I might spend it on: ____ , ____ , ____.
-About how many gachapon is that? ____ (look up the current price -- don't guess).
-```
+| Prompt | Your answer |
+| --- | --- |
+| My spending money (an adult sets this) | |
+| I might spend it on | |
+| About how many gachapon is that? (look up the current price -- don't guess) | |
 
 Keep it **verify-framed and price-free** (Sections 19.6, 22.4): the child **looks up** the current gachapon/trinket price rather than relying on a fixed amount. Reuse the **reasoning-vs-arithmetic split** above (the child reasons "what can my money buy"; an adult may do the multiplication), which also serves the dyscalculia / number-anxiety note (Section 21.7). **Add no new tracker or binder page** -- this is a worksheet line inside the existing budget material (anti-proliferation, Sections 4.1.2, 5.2).
 
@@ -4797,7 +4802,7 @@ Separate from the family risk register (Section 21.6), this tracks the *build's*
 | Reference hygiene (broken or out-of-place pointers) | A reference points to a non-existent section, an out-of-repo document, or a built file cites a spec section number | No reference points to a missing section or an external doc; built files reference each other by name and relative link, never by spec section number (Section 10.3 Links) |
 | Pilot skipped or failed but build continued | Batch 2+ started without a passing Phases 0-2 pilot | The Phases 0-2 pilot met its success signals (Section 31) before later batches; a failed pilot **blocks** the build until the early sessions are fixed and re-piloted (ties `AC-31-1`) |
 | Pack staleness / missing freshness date | A destination reference file has no "Last reviewed" line | Every destination reference file carries a `Last reviewed: <month/year>` line (Section 22.1) |
-| Tables too wide to print on portrait paper | A worksheet table runs off the edge of letter/A4 portrait | Tables fit portrait letter/A4, or use repeated blocks instead (Section 12.1; ties the printing guidance in GETTING_STARTED) |
+| Tables too wide to print on portrait paper | A worksheet table runs off the edge of letter/A4 portrait | Worksheet forms are narrow Markdown tables (two-column Field/Answer; comparison grids kept to a few columns); split a too-wide comparison into smaller tables rather than one wide grid (Section 12.1; ties the printing guidance in GETTING_STARTED) |
 | Two changelogs conflated | The curriculum changelog and the per-trip decision log are mixed or cross-referenced as one | `framework/CHANGELOG.md` (curriculum versions) and the trip decision log are distinct, with a "which is which" tag at each use site (Sections 9, 30.6) |
 | Two glossaries conflated | The framework/EF glossary and the child travel glossary are mixed | `docs/glossary.md` (framework/EF, adult-facing) and `student_guide/travel_glossary.md` + pack `kid_glossary.md` (child travel) are distinct, tagged at each use site (Section 22) |
 | Typos reproduced in built headings/files | A built heading or file carries a grammar slip or typo | Built files get a light proofread pass (the spec was copyedited before handoff; Section 34 quality bar) |
