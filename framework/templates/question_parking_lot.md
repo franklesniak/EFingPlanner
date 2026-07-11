@@ -4,7 +4,7 @@
 
 When a question pops up that would pull you off track, park it here instead of chasing it. This keeps your session focused and makes sure the question is not lost. You can come back to parked questions any time -- including while you wait for a grown-up.
 
-One row per question:
+One entry per question -- start a new copy of this table for each one:
 
 | Prompt | Your answer |
 | --- | --- |

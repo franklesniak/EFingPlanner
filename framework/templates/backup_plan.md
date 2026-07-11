@@ -4,7 +4,7 @@
 
 A good planner has a plan B. Backups make your trip flexible when something does not go as planned -- rain, a closed attraction, a full restaurant, a tired day, or a transit delay.
 
-One row per backup:
+One entry per backup -- start a new copy of this table for each one:
 
 | Prompt | Your answer |
 | --- | --- |

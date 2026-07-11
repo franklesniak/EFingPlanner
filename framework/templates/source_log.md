@@ -2,11 +2,11 @@
 
 # Source Log
 
-Your Source Log is where you record *where* each fact came from. Keep one Source Log for the whole trip. Add a new row every time you look something up. You do not have to fill every row at once.
+Your Source Log is where you record *where* each fact came from. Keep one Source Log for the whole trip. Each source you look up is one entry -- a new copy of the table below. You do not have to fill in every box at once.
 
-How to use it: copy this page into your binder or notebook. Each fact you look up gets one row. "Not listed" and "ask an adult" are fine answers.
+How to use it: copy this page into your binder or notebook. Each fact you look up gets its own copy of the table. "Not listed" and "ask an adult" are fine answers.
 
-One row per source:
+One entry per source:
 
 | Prompt | Your answer |
 | --- | --- |

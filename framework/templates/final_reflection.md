@@ -17,4 +17,6 @@ Say your answers aloud to a grown-up who writes them, or draw them, if that is e
 | What are the grown-ups taking over now? | |
 | Bridging: one planning move I used (like "start with one tiny step"). Where else could I use it -- homework, a chore, a big project? | |
 
+Some of these answers are a sentence or two, not just a word. Give yourself room -- write them in your binder or a Google Doc, where the space grows to fit. You do not have to squeeze a whole thought into a small printed box.
+
 These are the same planning moves people use for homework, chores, and any big project. Notice the move, and use it on purpose somewhere else -- that is how it carries over.

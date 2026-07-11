@@ -4,7 +4,7 @@
 
 Your Cut List holds the things you set aside -- because you cannot fit everything, and that is fine. Cutting something is not losing it: "save for a future trip" keeps it for later. This is part of learning that good enough is good enough.
 
-One row per thing you set aside:
+One entry per thing you set aside -- start a new copy of this table for each one:
 
 | Prompt | Your answer |
 | --- | --- |
@@ -14,4 +14,4 @@ One row per thing you set aside:
 | Save for a future trip? (yes / no) | |
 | Could it be a backup instead? (yes / no) | |
 
-Add more rows as needed. A short cut list is a good cut list.
+Add more entries (new copies of this table) as needed. A short cut list is a good cut list.

@@ -6,7 +6,7 @@
 
 - **Status:** Active
 - **Owner:** Repository Maintainers
-- **Last Updated:** 2026-07-04
+- **Last Updated:** 2026-07-11
 - **Scope:** Archived design record for the EFingPlanner executive-function curriculum (a self-guided project-planning course for kids roughly ages 9-11, framed as planning a real family trip to Japan). Defines the intended repository structure, session set, and build methodology. It does NOT govern the built curriculum: once the curriculum is built, the built repository supersedes this spec on any conflict, per this document's own end-of-life clause in the Split plan ("How to read and build from this spec"). Day-to-day improvements then flow through the built repository rather than this file.
 - **Related:** [README](../../README.md), [Documentation Writing Style](../../.github/instructions/docs.instructions.md)
 

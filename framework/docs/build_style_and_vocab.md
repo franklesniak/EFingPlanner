@@ -6,7 +6,7 @@
 
 - **Status:** Active
 - **Owner:** Repository Maintainers
-- **Last Updated:** 2026-07-07
+- **Last Updated:** 2026-07-11
 - **Scope:** Builder-facing voice, vocabulary, banned-word, and lint conventions for authoring and editing the EFingPlanner curriculum batches. Not part of the child's or parent's reading path.
 
 This file is for whoever *builds* the curriculum, not for the child or parent. It is not part of the child's reading path. Load it before authoring or editing any batch so voice, vocabulary, banned words, and lint conventions stay constant across work sessions. The archived spec at `../../docs/spec/specification.md` is the original design record -- but once curriculum files exist, the built repository supersedes the spec on any conflict; this file is the short, load-before-each-batch digest of the rules that keep the built files consistent.
@@ -77,11 +77,12 @@ Built files reference concepts by **Name** and link to the built-file home below
 
 ## Lint conventions (keep generated files passing at scale)
 
-- Every fenced code block declares a language (use ` ```text ` for worksheets). (MD040)
+- Every fenced code block declares a language. Use ` ```text ` only for genuinely preformatted content (directory trees, a single worked formula) -- **not** for fill-in worksheets. (MD040)
+- **Worksheet forms are Markdown tables, not fenced underscore blocks.** A single-record form is a two-column **Field | Answer** table (label in the first cell; the empty second cell is the fill-in space). A scoring or compare worksheet is a narrow criteria-by-option grid (criteria as rows, options as columns), kept to a few columns so it prints on portrait letter/A4. Empty cells are the writable space -- they render as fillable cells in a browser or Google Docs and reflow on any screen, which fenced underscore blocks do not. This mirrors the built curriculum's worksheet rule (archived spec Section 12.1).
 - No heading ends in punctuation such as `:` or `?`. (MD026)
 - Bullets use `-`; emphasis and strong use `*` / `**`; horizontal rules are `---`; code fences use backticks. (MD004, MD049, MD050, MD035, MD048)
 - Lines have no trailing whitespace; every file ends with exactly one newline.
-- **Prohibited-placeholder hook:** the built curriculum (under `framework/` and `destinations/`) may **not** contain the common "to-be-decided" and "to-do" placeholder markers that the repo's `check-prohibited-placeholders` hook forbids (its exact token list lives in `.github/scripts/check-prohibited-placeholders.py`). Use plain child-friendly language instead ("not decided yet," "we'll decide later," "ask an adult"), which also reads better. Fill-in blanks use underscores (`______`) and are fine.
+- **Prohibited-placeholder hook:** the built curriculum (under `framework/` and `destinations/`) may **not** contain the common "to-be-decided" and "to-do" placeholder markers that the repo's `check-prohibited-placeholders` hook forbids (its exact token list lives in `.github/scripts/check-prohibited-placeholders.py`). Use plain child-friendly language instead ("not decided yet," "we'll decide later," "ask an adult"), which also reads better. Inline underscore blanks (`______`) -- for example inside a worked-formula table cell -- are fine and do not trip the hook; a worksheet's main fill-in space, though, is an empty table cell, not an underscore block (see the worksheet-form rule above).
 - MD013 (line length) and MD034 (bare URLs) are disabled; prefer angle-bracketed `<https://...>` links anyway.
 
 ## First Taste path (the Batch 0 slice)

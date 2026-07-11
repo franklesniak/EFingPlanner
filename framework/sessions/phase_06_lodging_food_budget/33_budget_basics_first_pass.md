@@ -30,11 +30,11 @@ Every trip is made of cost categories. You do not need exact numbers -- you are 
    - **Hotel:** about how much per night, per room? (high / medium / low) (If you kept two cities in Session 21, guess a hotel for each -- your plan pays for both.)
 3. **Do the easy math** (round to friendly numbers first; a grown-up may do the multiplying while you do the thinking):
 
-   ```text
-   Food   = $____ per person per day  x  ____ people  x  ____ days   = $____
-   Hotel  = $____ per night           x  ____ nights  x  ____ rooms  = $____
-   My two-slice estimate = $____
-   ```
+   | Cost | How to figure it | My estimate |
+   | --- | --- | --- |
+   | Food | $____ per person per day x ____ people x ____ days | |
+   | Hotel | $____ per night x ____ nights x ____ rooms | |
+   | **My two-slice estimate** | add Food + Hotel | |
 
 4. **Check it against your band -- match the units first.** A grown-up gave you *one* kid-sized band at setup: a per-person-per-day amount, a per-day amount for the whole family, *or* a hotel "tier we can afford" (never your whole-trip total -- that stays a grown-up number). Compare the matching piece, not your big two-slice total:
    - Band is **per person, per day**? Multiply it by your travelers to get a **per-day family** number, then check that the same way as the **per day for the family** band below (a grown-up can do the multiplying). That way your rooms count too, not just meals.
