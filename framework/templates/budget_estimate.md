@@ -6,13 +6,13 @@ This page helps you see how trip money is split up, and whether the parts *you* 
 
 All numbers here are estimates you look up and re-check -- never a fixed price. Write the date beside anything you look up.
 
-**The parts your choices drive.** For **First Taste**, fill in **Hotel** and **Food** -- that matches Session 33. If your Session 21 recommendation kept **two cities**, estimate a hotel for **each** and add them (the "Add the cities' hotels" line) -- your plan pays for both. The other rows are marked *(later)*: they belong to the fuller Core path, so leave them blank for the pilot.
+**The parts your choices drive.** For **First Taste**, fill in **Hotel** and **Food** -- that matches Session 33. If your Session 21 recommendation kept **two cities**, estimate a hotel for **each** -- fill in the second-city hotel row too, since your plan pays for both. The other rows are marked *(later)*: they belong to the fuller Core path, so leave them blank for the pilot.
 
 | Cost | How to figure it | My estimate |
 | --- | --- | --- |
-| Hotel (one city) | $____ per night x ____ nights x ____ rooms | |
+| Hotel (first city) | $____ per night x ____ nights x ____ rooms | |
+| Second city's hotel (only if you kept two cities in Session 21) | $____ per night x ____ nights x ____ rooms | |
 | Food | $____ per person per day x ____ people x ____ days | |
-| Add the cities' hotels (if you kept two cities in Session 21) | $____ + $____ | |
 | Activities/tickets (later) | $____ per ticket x ____ people | |
 | Local transit -- trains/buses inside the trip (later) | | |
 | Souvenirs / spending money (later) | | |
