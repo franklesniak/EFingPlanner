@@ -69,7 +69,7 @@ Your first Source Log entry -- one fact, with where it came from and where you c
 
 ## Stop Point
 
-You are done when your Source Log has today's date and one row with the boxes above filled in. (The extra template boxes like *trust level* and *how useful* wait for Session 05.) One good row is enough -- you do not need to look up more facts today.
+You are done when your Source Log has today's date and one entry with the boxes above filled in. (The extra template boxes like *trust level* and *how useful* wait for Session 05.) One good entry is enough -- you do not need to look up more facts today.
 
 ## Source Check
 
@@ -89,4 +89,4 @@ If you have extra energy, look up the *same* fact in your "one other place" and 
 
 ## Parent Notes
 
-This is where the Source Log habit starts, and it carries the next several sessions, so it is worth a real 5-minute look. Check that the child recorded *where* the fact came from, not just the fact. Praise the move ("you wrote down where you found it"), not the child's cleverness. If writing is a barrier, let them dictate the row to you or draw it -- the point is the habit, not the handwriting. More support options are in the [differentiation guide](../../parent_guide/differentiation.md).
+This is where the Source Log habit starts, and it carries the next several sessions, so it is worth a real 5-minute look. Check that the child recorded *where* the fact came from, not just the fact. Praise the move ("you wrote down where you found it"), not the child's cleverness. If writing is a barrier, let them dictate the entry to you or draw it -- the point is the habit, not the handwriting. More support options are in the [differentiation guide](../../parent_guide/differentiation.md).
