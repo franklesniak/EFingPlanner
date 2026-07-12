@@ -32,13 +32,13 @@ Score each city from 1 (low) to 5 (high) on three things:
 
 Fill in the small table (or use your [Scoring Rubric page](../../templates/scoring_rubric.md)):
 
-```text
-                                 City A: ______     City B: ______
-Excitement (1-5):                ____               ____
-Family fit (1-5):                ____               ____
-Easy to get to and around (1-5): ____               ____
-Total:                           ____               ____
-```
+| Criteria | City A | City B |
+| --- | --- | --- |
+| City name | | |
+| Excitement (1-5) | | |
+| Family fit (1-5) | | |
+| Easy to get to and around (1-5) | | |
+| **Total** | | |
 
 Then do the real thinking -- **make one trade-off** and write it in one or two sentences:
 

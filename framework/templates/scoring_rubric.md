@@ -8,13 +8,13 @@ Use a rubric to compare choices fairly -- the same questions for each option. Sc
 
 ## Lighter version (3 criteria)
 
-```text
-                          Option A: ____   Option B: ____   Option C: ____
-Excitement (1-5):             ____             ____             ____
-Family fit (1-5):             ____             ____             ____
-Easy to get to and around (1-5): ____          ____             ____
-Total:                        ____             ____             ____
-```
+| Criteria | Option A | Option B | Option C |
+| --- | --- | --- | --- |
+| What is it? | | | |
+| Excitement (1-5) | | | |
+| Family fit (1-5) | | | |
+| Easy to get to and around (1-5) | | | |
+| **Total** | | | |
 
 (For "easy to get to and around," a high score means easier.)
 
@@ -22,25 +22,25 @@ Total:                        ____             ____             ____
 
 ## Fuller version (more criteria)
 
-```text
-                          Option A: ____   Option B: ____   Option C: ____
-Excitement (1-5):             ____             ____             ____
-Uniqueness (1-5):             ____             ____             ____
-Family fit (1-5):             ____             ____             ____
-Easy to get to and around (1-5): ____          ____             ____
-Time it needs (1-5):          ____             ____             ____
-Cost level (1-5, cheaper = high): ____         ____             ____
-Weather/season fit (1-5):     ____             ____             ____
-Variety (1-5):                ____             ____             ____
-Total:                        ____             ____             ____
-```
+| Criteria | Option A | Option B | Option C |
+| --- | --- | --- | --- |
+| What is it? | | | |
+| Excitement (1-5) | | | |
+| Uniqueness (1-5) | | | |
+| Family fit (1-5) | | | |
+| Easy to get to and around (1-5) | | | |
+| Time it needs (1-5) | | | |
+| Cost level (1-5, cheaper = high) | | | |
+| Weather/season fit (1-5) | | | |
+| Variety (1-5) | | | |
+| **Total** | | | |
 
 You may change or add a category if you write one sentence saying why: ________________
 
 After scoring, write the real thinking -- the trade-off:
 
-```text
-My pick: ______________
-What I gain by choosing it: ______________
-What I give up by choosing it: ______________
-```
+| Prompt | Your answer |
+| --- | --- |
+| My pick | |
+| What I gain by choosing it | |
+| What I give up by choosing it | |

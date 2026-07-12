@@ -31,7 +31,7 @@ A short, parent-facing overview of each First Taste session -- your role, what t
 
 - Role: a real 5-minute look -- this habit carries the project.
 - Prep: a Source Log page.
-- Look for: one complete row showing *where* the fact came from, not just the fact.
+- Look for: one complete entry showing *where* the fact came from, not just the fact.
 - Coaching question: "Where could you check that same fact?"
 - Pitfall: recording the fact but not the source. Praise the move, not the cleverness.
 

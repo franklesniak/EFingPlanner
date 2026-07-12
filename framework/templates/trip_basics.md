@@ -8,24 +8,25 @@ Keep this card with your setup pages. It holds no sensitive personal data -- no 
 
 Fill in:
 
-```text
-Home airport and code: __________________ ( ____ )
-Home time zone, or hours ahead to the destination: __________
-   (A grown-up looks up your home zone's current hours-ahead to Japan and writes it
-    here. It varies by US time zone and shifts with daylight saving, so confirm today's
-    figure.)
-Maximum trip length (in days): ____
-Number of travelers: ____   (write "not decided yet" if you are unsure)
+| Prompt | Your answer |
+| --- | --- |
+| Home airport | |
+| Airport code | |
+| Home time zone, or hours ahead to the destination | |
+| Maximum trip length (in days) | |
+| Number of travelers (write "not decided yet" if you are unsure) | |
 
-Traveler roster -- list each traveler by relationship, not private details
-(for example: a parent, a parent, a grandparent, an aunt or another adult relative,
-the child planner, and anyone else):
-  1. ______________________________
-  2. ______________________________
-  3. ______________________________
-  4. ______________________________
-  5. ______________________________
-  6. ______________________________
-```
+For the time zone: a grown-up looks up your home zone's current hours-ahead to Japan and writes it here. It varies by US time zone and shifts with daylight saving, so confirm today's figure.
+
+Traveler roster -- list each traveler by relationship, not private details (for example: a parent, a parent, a grandparent, an aunt or another adult relative, the child planner, and anyone else):
+
+| # | Traveler (by relationship, not private details) |
+| --- | --- |
+| 1 | |
+| 2 | |
+| 3 | |
+| 4 | |
+| 5 | |
+| 6 | |
 
 The sessions reason generically (for example, "a traveler with lower stamina, like an older relative"). This card supplies your family's real people.

@@ -20,7 +20,7 @@ Start one Source Log, and write your first entry in it.
 
 ## Start Here
 
-Open your Source Log to the first blank row and write today's date. That is your first step. You are done starting.
+Open your Source Log and write today's date in its Date checked box. That is your first step. You are done starting.
 
 If you do not have a Source Log page yet, copy the blank [Source Log template](../../templates/source_log.md) into your binder or notebook first, then write today's date.
 
@@ -32,7 +32,7 @@ You are going to practice on one real fact about Japan.
 
 1. Pick one small thing you are curious about. For example: "What is the capital of Japan?" or "What is a bullet train called?"
 2. Look it up in **one** place -- a book you have, or a website an adult says is okay.
-3. In your Source Log, fill in one row about what you used:
+3. In your Source Log, fill in one entry about what you used:
    - **What I learned** -- the fact, in your own words.
    - **Title** -- the name of the website or book.
    - **Author or organization** -- who made it (a museum, a tourism office, a writer). Write "not listed" if you cannot find it.
@@ -46,22 +46,22 @@ You just tracked your first source. That is a real research skill.
 
 ## Workspace
 
-Use your Source Log page. One fact goes in one row. You can add more rows any time you look something up.
+Use your Source Log page. One fact fills one entry (one copy of the table). You can add a new entry any time you look something up.
 
 You can say your answers to an adult who writes them, or draw them, if that is easier.
 
-Fill in your first row here (or on your Source Log page):
+Fill in your first entry here (or on your Source Log page):
 
-```text
-What I learned: ______________________________________________
-Title:          ______________________________________________
-Author/org:     ______________________________________________
-Web address or page number: __________________________________
-Date checked:   ______________________________________________
-One other place I could check this: __________________________
-```
+| Prompt | Your answer |
+| --- | --- |
+| What I learned | |
+| Title | |
+| Author/org | |
+| Web address or page number | |
+| Date checked | |
+| One other place I could check this | |
 
-Your Source Log template has a few more boxes than the ones above -- *source type*, *why it matters*, *trust level*, and *how useful*. You will learn trust level and how useful in Session 05, so leave those blank for now (fill *source type* and *why it matters* only if you want). The boxes above are a complete first row.
+Your Source Log template has a few more boxes than the ones above -- *source type*, *why it matters*, *trust level*, and *how useful*. You will learn trust level and how useful in Session 05, so leave those blank for now (fill *source type* and *why it matters* only if you want). The boxes above are a complete first entry.
 
 ## Artifact Created
 
@@ -69,11 +69,11 @@ Your first Source Log entry -- one fact, with where it came from and where you c
 
 ## Stop Point
 
-You are done when your Source Log has today's date and one row with the boxes above filled in. (The extra template boxes like *trust level* and *how useful* wait for Session 05.) One good row is enough -- you do not need to look up more facts today.
+You are done when your Source Log has today's date and one entry with the boxes above filled in. (The extra template boxes like *trust level* and *how useful* wait for Session 05.) One good entry is enough -- you do not need to look up more facts today.
 
 ## Source Check
 
-This whole session is about sources, so this is easy: the row you just filled in *is* your source record. From now on, whenever you look something up for the trip, add a row to this same Source Log.
+This whole session is about sources, so this is easy: the entry you just filled in *is* your source record. From now on, whenever you look something up for the trip, add a new entry to this same Source Log.
 
 ## Finish and Quality Check
 
@@ -89,4 +89,4 @@ If you have extra energy, look up the *same* fact in your "one other place" and 
 
 ## Parent Notes
 
-This is where the Source Log habit starts, and it carries the next several sessions, so it is worth a real 5-minute look. Check that the child recorded *where* the fact came from, not just the fact. Praise the move ("you wrote down where you found it"), not the child's cleverness. If writing is a barrier, let them dictate the row to you or draw it -- the point is the habit, not the handwriting. More support options are in the [differentiation guide](../../parent_guide/differentiation.md).
+This is where the Source Log habit starts, and it carries the next several sessions, so it is worth a real 5-minute look. Check that the child recorded *where* the fact came from, not just the fact. Praise the move ("you wrote down where you found it"), not the child's cleverness. If writing is a barrier, let them dictate the entry to you or draw it -- the point is the habit, not the handwriting. More support options are in the [differentiation guide](../../parent_guide/differentiation.md).

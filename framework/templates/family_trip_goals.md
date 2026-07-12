@@ -6,29 +6,28 @@ Use this page in Session 03 to capture what your family wants from the trip -- y
 
 ## My goals
 
-```text
-What makes a trip fun for me: ____________________________
-What makes a trip too tiring: ____________________________
-What would make this trip feel special: __________________
-What a successful family trip feels like: ________________
-```
+| Prompt | Your answer |
+| --- | --- |
+| What makes a trip fun for me | |
+| What makes a trip too tiring | |
+| What would make this trip feel special | |
+| What a successful family trip feels like | |
 
 ## Traveler poll
 
 Ask each traveler: *"What is one thing you'd love on this trip?"* One line per person. If someone is hard to reach, ask by text or have a grown-up relay it, or mark "asked through a grown-up."
 
-```text
-Traveler (by relationship or role)      One thing they'd love
-   ____________________________          ____________________________
-   ____________________________          ____________________________
-   ____________________________          ____________________________
-   ____________________________          ____________________________
-```
+| Traveler (by relationship or role) | One thing they'd love |
+| --- | --- |
+| | |
+| | |
+| | |
+| | |
 
 ## What I noticed
 
-```text
-Things more than one person mentioned: ___________________
-Any wants that might clash: ______________________________
-How I balanced what people wanted (one line): ____________
-```
+| Prompt | Your answer |
+| --- | --- |
+| Things more than one person mentioned | |
+| Any wants that might clash | |
+| How I balanced what people wanted (one line) | |
