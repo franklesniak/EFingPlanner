@@ -41,7 +41,7 @@ jobs:
       # installed below, and this workflow is the only place it runs, so both
       # runtimes are provisioned here to keep the behavior enforced.
       - name: Setup Python
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@v7
         with:
           python-version: '3.13'
           cache: 'pip'
