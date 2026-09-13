@@ -4,7 +4,7 @@
 
 ## Source of truth
 
-Build strictly from `docs/spec/specification.md` (the complete, combined archived specification, v9.0). It is authoritative for this build. Do NOT build from `docs/spec/lean-spec.md` or `docs/spec/full-oer-companion.md` — they are partial reading-lenses that link back into `specification.md` and are not self-contained. Read `specification.md` §31 (Implementation Order) and §33 (Acceptance Criteria) in full before writing anything.
+Build strictly from `docs/spec/specification.md` (the complete, combined archived specification). It is authoritative for this build. Do not pin a version number here: the file declares its own version, and a copy of that number in a template is copied forward into every future brief and drifts. Do NOT build from `docs/spec/lean-spec.md` or `docs/spec/full-oer-companion.md` — they are partial reading-lenses that link back into `specification.md` and are not self-contained. Read `specification.md` §31 (Implementation Order) and §33 (Acceptance Criteria) in full before writing anything.
 
 ## Build track
 

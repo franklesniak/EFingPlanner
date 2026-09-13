@@ -3,7 +3,10 @@
 ## Source of truth
 
 Build strictly from `docs/spec/specification.md` (the complete, combined archived
-specification, v9.0). It is authoritative for this build. Do NOT build from
+specification). It is authoritative for this build. Batch 0 was built against
+spec v9.0; the spec has since taken a v9.1 defect-fix erratum, so that number
+records what this completed build targeted, not the spec version in force now.
+Do NOT build from
 `docs/spec/lean-spec.md` or `docs/spec/full-oer-companion.md` — they are partial
 reading-lenses that link back into `specification.md` and are not self-contained.
 Read `specification.md` §31 (Implementation Order) and §33 (Acceptance Criteria) in

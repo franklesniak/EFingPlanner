@@ -58,7 +58,7 @@ Starting points from the spec's implementation order — confirm each against §
 The `/goal` command has a 4000-character limit, so keep it short: point it at the brief and restate only the hard guardrails, so they bind even before the file is re-read.
 
 ```text
-/goal Follow the Batch <N> build brief in `docs/build/batch<N>_build_prompt.md` — read it IN FULL first; it is authoritative. Hard guardrails: build ONLY Batch <N>, strictly from `docs/spec/specification.md` v9.0; STOP at this batch's gate and produce the build report + handoff; do NOT proceed to the next batch or build anything outside this batch's scope; verify-don't-trust all travel facts; no leaked trip/roster values (blanks → `trip_basics.md`); do NOT edit `docs/spec/*`, `CLAUDE.md`, `AGENTS.md`, `GEMINI.md`, `.hermes.md`, or any `.github` or `.cursor` governance or instruction file; create and edit ONLY the files this batch's deliverables list names.
+/goal Follow the Batch <N> build brief in `docs/build/batch<N>_build_prompt.md` — read it IN FULL first; it is authoritative. Hard guardrails: build ONLY Batch <N>, strictly from `docs/spec/specification.md`; STOP at this batch's gate and produce the build report + handoff; do NOT proceed to the next batch or build anything outside this batch's scope; verify-don't-trust all travel facts; no leaked trip/roster values (blanks → `trip_basics.md`); do NOT edit `docs/spec/*`, `CLAUDE.md`, `AGENTS.md`, `GEMINI.md`, `.hermes.md`, or any `.github` or `.cursor` governance or instruction file; create and edit ONLY the files this batch's deliverables list names.
 ```
 
 ## Committing
