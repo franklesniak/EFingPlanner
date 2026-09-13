@@ -8,17 +8,22 @@ build from `docs/spec/lean-spec.md` or `docs/spec/full-oer-companion.md` — the
 partial reading-lenses that link back into `specification.md` and are not
 self-contained.
 
-**You do not need to open the spec for this batch.** Everything Batch 1 requires has
-been extracted and adjudicated already. Read these three files in full, first:
+**You do not need to open the spec for this batch, and there is nothing else to open.**
+Every Batch 1 requirement, every applicable acceptance criterion, and the adjudicated
+answer to all nineteen open questions (OQ-1 through OQ-19) have been extracted and
+resolved already, and **this brief carries all of them**: the session-order table, the
+insert/reference contract, the complete corrected navigation table, and the content
+outlines for the four files the archived spec never specified are all reproduced below.
+It is self-contained, as `docs/build/README.md` requires of every build brief. The
+working artifacts those adjudications were drafted in are agent-local and are never
+committed, so do not look for them and do not treat their absence as a missing input.
 
-1. `.orchestration/spec_extracts/batch1.md` — every Batch 1 requirement, the
-   session-order table, the insert/reference contract, and every applicable
-   acceptance criterion quoted verbatim.
-2. `.orchestration/decisions_batch1_content.md` — the adjudicated answers to OQ-1
-   through OQ-6, OQ-16 and OQ-17.
-3. `.orchestration/decisions_batch1_structure.md` — the adjudicated answers to OQ-7
-   through OQ-15, OQ-18 and OQ-19, including the complete corrected navigation table
-   and the content outlines for four files the spec never specified.
+If a requirement genuinely seems to be missing, do exactly this, in order: re-read this
+brief, because the answer is almost certainly in a later section; then consult
+`docs/spec/specification.md` **only** for the specific detail that is missing,
+remembering that this brief overrides the archived spec wherever the two differ; then
+record the gap in your build report. **Never invent a requirement, and never stop the
+build to ask for a file that does not exist.**
 
 **Precedence rule, applied throughout.** On any conflict between the archived spec
 and the already-built repository, **the built repository wins**. The recording
@@ -81,16 +86,23 @@ to the eight already-built shared sessions.
   first-pass generation. Human-review coverage stays at **full coverage**: every
   child-facing file is human-edited, not sampled. The Full Build's sampling fallback
   is not adopted.
-- **Batch gate.** Batch 1 ends at the second gate, **"Verify the built slice."** Its
-  core is an **equivalence read an adult performs**, comparing the upgraded
-  neutral-skeleton + insert versions of the eight shared sessions against the piloted
-  Batch 0 concrete pages. You cannot perform it. Stop at the gate.
+- **Batch gate.** Batch 1 ends at the second gate, **"Verify the built slice."** On the
+  Full / OER track that gate is **two checks, not one**, and `framework/CHANGELOG.md`
+  already records both under "What is still owed to a human". **Check 1** is an
+  **equivalence read an adult performs**, comparing the upgraded neutral-skeleton +
+  insert versions of the eight shared sessions against the Batch 0 concrete pages (the
+  unpiloted baseline). **Check 2** is an adult **watching the child work the new
+  Sessions 02, 06, 07, 08 and 11, as the child reaches them**, and fixing what the child
+  struggles with before Batch 2 continues. An automated equivalence read can stand in
+  for Check 1, because it compares two texts. **Nothing stands in for Check 2** — it
+  needs a real child, and no review pass replaces one. You cannot perform either check.
+  Stop at the gate, and hand the human both.
 
 ## The decisions are binding
 
-`.orchestration/decisions_batch1_content.md` and
-`.orchestration/decisions_batch1_structure.md` are **already adjudicated**. Do not
-reopen them, do not re-argue them, and do not silently deviate. Where a decision
+The nineteen open questions (OQ-1 through OQ-19) are **already adjudicated**, and their
+outcomes are written into this brief. Do not reopen them, do not re-argue them, and do
+not silently deviate. Where a decision
 changes the deliverables list away from what the spec extract alone suggests, this
 brief already reflects it:
 
@@ -110,17 +122,18 @@ brief already reflects it:
   supplies their content outlines, and those outlines **are** the requirement.
 - **OQ-7** — use the complete corrected navigation table reproduced below, verbatim.
 
-`framework/CHANGELOG.md` is created by an in-flight pull request and may not be on
-`main` when you start. Treat it as existing: several deliverables write to it, and if
-it is genuinely absent, create it to the shape given in Section F below.
+`framework/CHANGELOG.md` is on `main` already. Treat it as existing: several
+deliverables write to it, and if it is genuinely absent on your branch, create it to the
+shape given in Section F below.
 
 ## This run's scope — Batch 1 deliverables
 
 Build at the repo root. Leave `docs/spec/` and the repository's template and CI
-infrastructure untouched. **64 files in total: 38 created, 26 edited.** If
-`framework/CHANGELOG.md` is already on your branch when you start, F10 is an edit
-rather than a create and the split is **37 created, 27 edited**; the total of 64 does
-not change either way. Report whichever split you actually produced.
+infrastructure untouched. **64 files in total: 37 created, 27 edited.**
+`framework/CHANGELOG.md` is already on `main`, so F10 is an edit rather than a create.
+If you are on a branch where that file is genuinely absent, create it and the split
+becomes **38 created, 26 edited**; the total of 64 does not change either way. Report
+whichever split you actually produced.
 
 The list is grouped A–H after the spec extract's sections, but **the item numbers are
 the brief's own**. OQ-5 cancels two extract items, and this list drops them rather than
@@ -171,10 +184,16 @@ add-a-destination checklist. Must contain:
   Most of the slots and several reference files do not exist yet; a link would
   dangle and fail the link check.
 - **The rider, in this exact rewritten form:** *"Sessions not in this table (00-04,
-  07, 09, 13-15, 20-22, 24-29, 31-33, 35, 38-39, 41, 44-46, 49-53) need no
-  destination facts and are fully neutral. A session can be neutral in its wording
-  and still open a pack file: Sessions 05 and 08 name no place, but they do open the
-  pack's starting-sources list. Every such pointer is a row in the table above."*
+  07, 09, 13-15, 20-22, 24-29, 31-32, 35, 39, 41, 44-46, 49-53) need no destination
+  facts and are fully neutral. A session can be routed to a pack file without naming a
+  place in its own wording: Sessions 05 and 08 name no place but open the pack's
+  starting-sources list, and Sessions 33 and 38 take their currency and cash-culture
+  facts from the pack's money reference. Every such pointer is a row in the table
+  above."*
+- **Sessions 33 and 38 are in the table, so they are not in the rider's list.** The
+  ranges above read `31-32` and `39` for that reason. Do not widen them back to `31-33`
+  and `38-39`; a new-destination author uses this list to decide which sessions need no
+  destination work at all.
 - **A per-insert schema section**, stating for each slot: its **filename**, the
   **session that consumes it**, and the **fields it must supply**. Use the two worked
   examples: `10_snapshot_facts.md` supplies capital, major land features, currency,
@@ -348,9 +367,10 @@ Must also contain:
   not reachable, an adult can relay the question and bring back the answer, or the
   child interviews whoever *is* reachable and marks the rest "asked through a grown-up"
   or leaves the answer open. The child is never blocked waiting on a schedule.
-- The 16 profile fields: traveler role (not name); preferences; constraints;
-  interests; food interests; preferred pace; **stamina for long, busy days (high /
-  medium / take it easy)**; **comfort with lots of walking and stairs on a busy day**;
+- The **fourteen** profile fields, and no others: traveler role (not name); preferences;
+  constraints; interests; food interests; preferred pace; **stamina for long, busy days
+  (high / medium / take it easy)**; **comfort with lots of walking and stairs on a busy
+  day**;
   **any sensory sensitivities** (crowds, noise, bright or flashing light, food
   textures), with "none known" a fine answer; here for the whole trip or only part
   (adults decide the exact dates); one thing they might love; one thing that might make
@@ -460,7 +480,13 @@ template, your Source Log"* — plain text, **no link**. Must contain:
 - Website citation form: website title, organization or author, page title, URL, date I
   checked it.
 - Stop point (author it): done when two sources on the same question are written down
-  with where they agree, where they differ, and which one you trust more and why.
+  with where they agree, where they differ, and **which one is more useful and why**.
+  Use "more useful," not "trust more": that is the fifth record field above, it is the
+  Website Notes comparison row, and it is the wording the archived design record uses.
+  The child must be able to reach the stop point by filling the artifact in. Trust is
+  recorded **per source**, in the Website Notes trust-level field that carries the
+  Session 05 quick trust test forward; it is not the comparative judgment this stop
+  point asks for, and the two can legitimately point at different sources.
 
 **C5.
 `framework/sessions/phase_02_destination_big_picture/11_regions_and_cities_overview.md`
@@ -504,9 +530,13 @@ adult,"* *"we'll decide later,"* or an empty cell, never a banned placeholder to
 
 **D1. `framework/templates/traveler_profile.md` (create).** H1; a short "how to use it
 — one copy per traveler, by relationship not name" note; the fields table; a privacy
-reminder. Header row `Prompt | Your answer`. The 16 Session 02 fields as rows. Stamina,
-walking and stairs, sensory sensitivities, and needs-to-design-around each get their own
-row, with "none known" flagged as a fine answer. A row for *"Here for the whole trip, or
+reminder. Header row `Prompt | Your answer`. One row per Session 02 profile field, in
+C1's order — **fourteen rows, and no others.** C1's list is the single source for the
+field set. Do not add a name row, an age row, or any other field C1 does not name: this
+template is filled in by relationship, not by name, and roster identity does not belong
+on a printable page. Stamina, walking and stairs, sensory sensitivities, and
+needs-to-design-around each get their own row, with "none known" flagged as a fine
+answer. A row for *"Here for the whole trip, or
 only part? (Adults decide the exact dates.)"* A privacy line: keep medical specifics
 with the adults, off the page. The say-it-or-draw-it accommodation line.
 
@@ -705,9 +735,11 @@ before Batch 1.** Do not edit it.
   kit out and fills it in a binder or Google Docs. Only the first two layers live in
   the repository. **Write the three-layer claim with no exception** — the Batch 1
   framework scrub makes it true.
-- **A curriculum version field**, with a one-line pointer to `CHANGELOG.md` and the
-  explicit "which is which" tag distinguishing the curriculum changelog from the
-  per-trip decision log.
+- **A curriculum version field reading exactly `0.2.0`**, with a one-line pointer to
+  `CHANGELOG.md` and the explicit "which is which" tag distinguishing the curriculum
+  changelog from the per-trip decision log. `framework/CHANGELOG.md` requires these two
+  surfaces to carry the same version, so it is `0.2.0` in both places or the batch is
+  not done.
 - The Definition of Done for modularity, in plain words: a family can copy the blank
   kit and a destination pack, fill in their own Trip-Basics card, write a new
   destination's reference facts and inserts, and reuse the whole curriculum unchanged
@@ -920,11 +952,11 @@ choice, with a one-clause pointer to `../parent_guide/differentiation.md`; `## A
 about Google Docs` — one clause plus a link to `privacy_and_safety.md`. About one
 printed page. No command-line instructions.
 
-**F10. `framework/CHANGELOG.md` (create if absent; otherwise edit).** The deliverables
-headline counts it as a create, because it is not on `main` today. If the in-flight pull
-request has landed by the time you start, this is an **edit** — add the Batch 1 sections
-to the file that exists rather than overwriting it — and the split becomes 37 created /
-27 edited. The curriculum changelog, distinct from the per-trip decision log. Shape:
+**F10. `framework/CHANGELOG.md` (edit; create only if absent).** The file is on `main`
+already, so the deliverables headline counts it as an **edit** — add the Batch 1 sections
+to the file that exists rather than overwriting it. If you are on a branch where it is
+genuinely absent, create it to the shape below, and the split becomes 38 created / 26
+edited. The curriculum changelog, distinct from the per-trip decision log. Shape:
 
 ```markdown
 # Curriculum Changelog
@@ -932,7 +964,9 @@ to the file that exists rather than overwriting it — and the split becomes 37 
 <one-line "which is which" router: this is the curriculum changelog; the per-trip
 decision log is a different thing and lives in the family's own binder>
 
-## Batch 1 -- Phases 0-2 complete
+## 0.2.0 -- <the date you finish, as YYYY-MM-DD>
+
+Batch 1: the complete Phases 0-2 slice -- Session 00 through Checkpoint 1.
 
 ### Added
 
@@ -943,16 +977,42 @@ decision log is a different thing and lives in the family's own binder>
 ### Deferred to a later batch
 ```
 
+**The version is `0.2.0`, and you must write it.** The file's own `## Versioning`
+section says the minor number moves when sessions, templates, guides, or destination
+files are added or restructured. Batch 1 adds all four, so `0.1.0` becomes `0.2.0`. Do
+not leave the heading unversioned, do not write "Unreleased" as the version, and do not
+jump to `1.0.0` — that is reserved for the complete deliverable inventory plus the
+whole-repo consistency pass. F1 above writes the same `0.2.0` into `framework/README.md`;
+the changelog requires the two to match exactly.
+
+The file already carries an `## Unreleased` section holding two Batch-0-era `### Changed`
+bullets — the recorded pilot deferral and the two recorded build conventions. Those ship
+as part of `0.2.0`. **Rename that heading in place:** `## Unreleased` becomes
+`## 0.2.0 -- <YYYY-MM-DD>`, its line *"Work in progress toward the complete deliverable
+inventory."* becomes *"Batch 1: the complete Phases 0-2 slice -- Session 00 through
+Checkpoint 1."*, its two existing `### Changed` bullets stay at the top of that section's
+`### Changed` list, and the Batch 1 entries are added below and around them. Do not
+create a second section, and do not leave an empty `## Unreleased` heading behind.
+
 Batch 1 must land these entries:
 
 - **Added** — the Phases 0–2 slice: five new sessions, the destination-pack insert
   contract and its first four slots, the Batch 1 templates, the framework docs set, the
   trip starter kit's `family/` subtree, and the new guides.
 - **Changed** — *"Build path moved from the Lean shape to the Full Build shape. The
-  eight piloted Phase 0-2 sessions were split into destination-neutral skeletons plus
+  eight Batch 0 Phase 0-2 sessions were split into destination-neutral skeletons plus
   destination-pack inserts. Their voice, structure, step order and non-destination
-  content are unchanged."* Plus the framework-layer destination scrub, the glossary
-  move, and the style-file change.
+  content are unchanged. Those eight pages remain the Batch 0 concrete baseline, not a
+  validated reference: the usability pilot is still deferred and no child has walked
+  them. See 'What is still owed to a human' below."* Plus the framework-layer
+  destination scrub, the glossary move, and the style-file change.
+
+  **Do not write the word "piloted" about any Batch 0 page, here or anywhere else you
+  author.** The file you are appending to already records the opposite at four separate
+  lines — its `## Versioning` section, the recorded pilot deferral, the `0.1.0` **Added**
+  entry, and "What is still owed to a human". An entry that contradicts them makes this
+  repository claim validation it has not earned, and a reuser who reads only the
+  changelog would treat the baseline as child-tested.
 - **Build decisions on record** — (a) *"Session 14 (Checkpoint 1) has no
   destination-notes slot. The archived design record listed Session 14 among the Batch 1
   insert slots, but the insert/reference contract routes none to it and names Session 14
@@ -979,12 +1039,16 @@ Batch 1 must land these entries:
 **F11. `framework/docs/build_style_and_vocab.md` (edit).** Six changes, in one pass,
 with `Last Updated` bumped exactly once. **This file names the destination on two
 separate lines; both must change, or F1's mandated three-layer claim is false the day
-it is written and the framework leak grep in the self-check returns two hits where it
-predicts one:**
+it is written and the framework leak grep in the self-check returns three hits where it
+predicts two:**
 
 - **Replace** the bullet beginning *"Batch 0 note on destination names:"* with:
   *"**Destination names are banned in `framework/` from Batch 1 onward.** Japan, Tokyo,
-  Kyoto, Osaka, and Shinkansen appear only under `destinations/`. A session that needs
+  Kyoto, Osaka, and Shinkansen appear under `destinations/` only, with one bounded
+  exception: the `0.1.0` **Added** line in `framework/CHANGELOG.md`, which records which
+  destination pack shipped in that release. Version history names what was added; it is
+  not curriculum content. New changelog entries write 'the destination pack', so the
+  exception does not grow. A session that needs
   place facts writes the exact phrase 'open this session's Destination Notes'; it never
   links into a destination folder, because the path string is itself a leak. Framework
   prose says 'your destination'. A fill-in that needs the name says '(from your
@@ -1231,10 +1295,23 @@ sessions that need an adult: **Session 07** (*parent setup needed* — an adult 
 catalogue or drives to the library) and **Session 08** (*co-working recommended* — the
 adult stays nearby even in Low-Bandwidth Parent Mode). Add both, in numbered order and
 in the voice the section already uses, to the **Need a grown-up** bullet **and** to the
-"unless that next session needs a grown-up" sentence beneath it. Left unchanged, the
-tracker would tell a child to walk straight past Session 08 alone, contradicting Session
-08's own For-parents strip. OQ-7 item 4 is silent on this section, so this is an
-addition to the decision rather than a departure from it — note it in your build report.
+"unless that next session needs a grown-up" sentence beneath it.
+
+**Session 08 is Core and is added without a condition. Session 07 is Recommended, so it
+must carry its condition in both places, exactly the way Session 09 already does in this
+file.** In the **Need a grown-up** bullet write *"Session 07 (only if you do the library
+session -- a grown-up opens the catalogue or drives you)"*; in the sentence beneath write
+*"Session 07 if you are doing it"*. That sentence ends *"pause there until one is free,
+and do not skip past them"*, and **that instruction must never bind a Recommended
+session**: a child who cannot reach an adult skips Session 07 and carries on to Session
+08. Session 06 supplies the skip affordance and Session 07's own Status field says it is
+*"a fine one to skip"*, so a tracker that told the child to wait would decide the
+family's choice — which OQ-18 forbids in any built text.
+
+Left unchanged, the tracker would tell a child to walk straight past Session 08 alone,
+contradicting Session 08's own For-parents strip. OQ-7 item 4 is silent on this section,
+so this is an addition to the decision rather than a departure from it — note it in your
+build report.
 
 The counts do not change: the Core list stays at 48 entries with 47 child-facing Core
 sessions, and Session 07 is one of the conditional-core additions that add to the
@@ -1284,9 +1361,9 @@ relationship."*
 
 ## The conversion work, session by session
 
-**A conversion is an edit, not a re-author.** The piloted Batch 0 page is the baseline
+**A conversion is an edit, not a re-author.** The Batch 0 page is the baseline
 and its meaning must survive. The equivalence gate compares rendered content: an adult
-reads the upgraded session plus its insert against the piloted page and confirms nothing
+reads the upgraded session plus its insert against the Batch 0 page and confirms nothing
 was lost.
 
 **Universal conversion rules, applied to every session in this section:**
@@ -1587,9 +1664,12 @@ You are here: Phase 2 (Destination Big Picture), First Taste step 5 of 13. Previ
   the "For parents" strip. **No relative link from a `framework/sessions/` body into
   `destinations/japan/`** — the path string is itself a leak. Destination facts live in
   the pack's inserts and reference files, and a session that needs them writes "open
-  this session's Destination Notes." Two bounded exceptions: the quoted leak-grep
-  pattern inside `framework/docs/build_style_and_vocab.md`, and the five already-built
-  later-phase sessions (15, 21, 33, 44, 53), which stay on the exemption list until
+  this session's Destination Notes." Three bounded exceptions: the quoted leak-grep
+  pattern inside `framework/docs/build_style_and_vocab.md`; the `0.1.0` **Added** line in
+  `framework/CHANGELOG.md` that records which destination pack shipped, which is version
+  history rather than curriculum content and which you do not edit; and the five
+  already-built later-phase sessions (15, 21, 33, 44, 53), which stay on the exemption
+  list until
   Batch 2 converts or verifies them. Do not convert them now. (§2.5, §29.1 / `AC-16-1`,
   `AC-14.1-1`.)
 - **Verify-don't-trust (§32):** never state entry/visa/passport/insurance/rail-pass/
@@ -1601,12 +1681,30 @@ You are here: Phase 2 (Destination Big Picture), First Taste step 5 of 13. Previ
   workflows, asking the child to book anything, placeholder-only files, fake completed
   itineraries/recommendations, copyrighted guidebook text, shipped/generated PDFs or PDF
   tooling, build tools, package managers, external images, or inline HTML. (§32.)
+  **HTML *comments* are not inline HTML and are expected:** every built curriculum file
+  opens with a `markdownlint-disable` comment, and the audience, `no-source-check` and
+  `ALLOW-TBD` markers are all comments. They render as nothing, carry no markup into the page, and are how a file declares things about itself. The ban is on rendered HTML elements. <!-- ALLOW-TBD: this line names the suppression marker in order to document it; the marker is the mechanism being described -->
+
+  (This bullet is copied byte-for-byte from `docs/build/_build_prompt_template.md`,
+  **including the trailing suppression comment**, which is what keeps the line
+  hook-clean when this brief is committed to `docs/build/`. Do not shorten it. A1, D7
+  and D8 are each required above to carry `<!-- audience: builder -->`, and all 54 built
+  curriculum files open with a `markdownlint-disable` comment.)
 - **Tone (§3.1, §16):** child-facing text at reading level, warm and non-othering;
   cultural/etiquette content matter-of-fact, never "exotic"/marveling. No points,
   badges, levels, or "mission unlocked." No gendered third-person pronouns for a generic
   child — use "your child," "the child," or "they"; never assume a sibling, a two-parent
-  household, a parent's gender, or a family shape. Never write an age as a fixed number
-  — use a range.
+  household, a parent's gender, or a family shape. **Age stays flexible, in the operative
+  style guide's own words:** the audience statement is always the range "roughly 9-11,"
+  and no page sets a hard age bar ("for 10-year-olds only," "your child must be 10"). A
+  loose reference to a typical reader — "about ten," "a ten-year-old," "a younger
+  planner" — **is fine in parent-facing and builder-facing text, and you must not scrub
+  it.** Two instances inside this batch's own scope depend on that: Session 09's Parent
+  Notes minimum-age verification, which the conversion section requires you to preserve
+  unchanged, and F6's *"a roughly-ten-year-old is below the minimum age"* line in
+  `framework/docs/ai_use_rules.md`, which this brief requires you to write.
+  `framework/docs/build_style_and_vocab.md` is the operative style law; this bullet
+  restates it and does not tighten it.
 - **The seven mandatory-core session fields:** Goal, Start Here, Steps, Workspace,
   Artifact Created, Stop Point, and Source Check when the session has a research step.
   Do not omit one. Source Check is **required** wherever a session has a research step,
@@ -1615,7 +1713,7 @@ You are here: Phase 2 (Destination Big Picture), First Taste step 5 of 13. Previ
   today with the built no-research form, *"No new sources needed unless you looked
   something up."* That form is correct, the style guide requires Source Check only where
   research occurs rather than forbidding it elsewhere, and C1 permits the same form in
-  the new Session 02. Removing it would gut three piloted pages and fail the equivalence
+  the new Session 02. Removing it would gut three Batch 0 pages and fail the equivalence
   read. Phases 0–2 use the full task scaffold — do not thin it.
 - **Worksheet fill-ins are two-column `Prompt | Your answer` Markdown tables**, never
   fenced underscore blocks. The empty answer cell is the fill-in space. Comparison grids
@@ -1671,7 +1769,7 @@ You are here: Phase 2 (Destination Big Picture), First Taste step 5 of 13. Previ
 - All Batch 1 files above exist, are meaningful (no thin or placeholder-only files), and
   are lint-clean; all relative links resolve. "All relative links resolve" is proved by
   `npm run lint:md:links` and by nothing else — `pre-commit` does **not** check links.
-  Batch 1 adds 38 files and rewires every Previous/Next chain in Phases 0–2, so this is
+  Batch 1 adds 37 files and rewires every Previous/Next chain in Phases 0–2, so this is
   the single most likely place for the batch to ship a defect.
 - `destinations/japan/reference/major_cities.md` is byte-identical to its pre-Batch-1
   state.
@@ -1712,12 +1810,21 @@ grep -rnE 'Japan|Tokyo|Kyoto|Osaka|Shinkansen' \
   framework/how_to_start_a_trip.md framework/CHANGELOG.md
 ```
 
-Expect **exactly one line of output**: the new destination-names rule inside
-`framework/docs/build_style_and_vocab.md`, which quotes the five-name leak-grep pattern.
-That is the one bounded exception in this tree. If you get **two** lines, F11's second
-replacement was skipped — the surviving one will be the banned-words bullet *"No
-exotic/othering framing of Japan or its culture."*, and it must be neutralised before
-you stop.
+Expect **exactly two lines of output**, and no others:
+
+1. the new destination-names rule inside `framework/docs/build_style_and_vocab.md`,
+   which quotes the five-name leak-grep pattern;
+2. `framework/CHANGELOG.md`'s `0.1.0` **Added** line, *"The Japan reference pack, and the
+   root start surfaces ..."* — version history recording which pack shipped, and the
+   bounded exception now written into F11's first replacement. **Do not edit that line.**
+   It is not in this batch's change set and it is not a leak.
+
+Those are the only two exceptions in this tree, and **your own Batch 1 changelog entries
+must not add a third** — write "the destination pack", never the destination's name. If
+you get **three** lines, F11's second replacement was skipped: the surviving one will be
+the banned-words bullet *"No exotic/othering framing of Japan or its culture."*, and it
+must be neutralised before you stop. Any hit outside those two is a real leak, and it
+must be fixed.
 
 No hard link from a session into the destination pack:
 
@@ -1766,7 +1873,7 @@ and a stop point, and that `## Source Check` is present in **every session that 
 research step**. Do not read that as "and in no other session." Sessions 01, 03 and 13
 have no research step and already carry `## Source Check` with the built form *"No new
 sources needed unless you looked something up."* That is correct and stays — deleting it
-would gut three piloted pages and fail the equivalence read.
+would gut three Batch 0 pages and fail the equivalence read.
 
 Freshness stamps:
 
@@ -1780,10 +1887,14 @@ done
 
 Expect no output.
 
-Reading level — `.github/scripts/check-readability.py` exists and scores child-facing
-paths (`framework/sessions/`, `framework/student_guide/`, `framework/templates/`,
-`destinations/*/session_inserts/`, `destinations/*/reference/`). Every child-facing file
-this batch creates or edits must pass it:
+Reading level — **if `.github/scripts/check-readability.py` is on your branch, that
+script is the gate: run it and treat its output as authoritative.** It is not on `main`
+as this brief is written — it arrives with an in-flight pull request. It scores
+child-facing paths (`framework/sessions/`, `framework/student_guide/`,
+`framework/templates/`, `destinations/*/session_inserts/`, `destinations/*/reference/`),
+and every child-facing file this batch creates or edits must pass it. If the script is
+not on your branch, say so in your build report and record that the reading-level gate
+was not run — do not report it as passed:
 
 ```bash
 python .github/scripts/check-readability.py
@@ -1812,37 +1923,52 @@ pre-commit run --all-files   # markdownlint + check-prohibited-placeholders only
 ```
 
 All four must be clean before you stop, and the link check is the one that proves the
-rewired Previous/Next chains and the 38 new files actually resolve.
+rewired Previous/Next chains and the 37 new files actually resolve.
 
 ### Stop and handoff
 
-**STOP at the second gate, "Verify the built slice."** You cannot perform it. Produce a
-short build report and hand the human these items:
+**STOP at the second gate, "Verify the built slice."** On the Full / OER track that gate
+is **two checks, not one** (`framework/CHANGELOG.md`, "What is still owed to a human").
+You can perform neither. Produce a short build report and hand the human these items:
 
-1. **The equivalence read (the gate itself).** An adult verifies that the upgraded
+1. **Gate check 1 — the equivalence read.** An adult verifies that the upgraded
    neutral-skeleton plus insert versions of the eight shared sessions render the same
-   content as the piloted Batch 0 concrete pages — an equivalence read of built pages
-   against piloted pages, not a child re-run. Make it easy: for each of Sessions 01, 03,
-   04, 05, 10, 12, 13 and 14, list the diff against its pre-Batch-1 state alongside the
-   insert that received the facts, so the reviewer can confirm **nothing was lost**.
-   Flag the one deliberate exception in writing: Session 10's "a long flight from the
-   US" became "a long flight from home" as an origin-layer neutralisation, so no insert
-   received it.
-2. **Full-coverage human edit.** Every child-facing file built or edited this batch is
+   content as the Batch 0 concrete pages — an equivalence read of built pages against
+   the Batch 0 baseline, not a child re-run. Those Batch 0 pages are unpiloted too, so
+   equivalence proves nothing was lost in the conversion; it does not show that either
+   version works with a child. Make it easy: for each of Sessions 01, 03, 04, 05, 10,
+   12, 13 and 14, list the diff against its pre-Batch-1 state alongside the insert that
+   received the facts, so the reviewer can confirm **nothing was lost**. Flag the one
+   deliberate exception in writing: Session 10's "a long flight from the US" became "a
+   long flight from home" as an origin-layer neutralisation, so no insert received it.
+   An automated equivalence read can stand in for this check, because it compares two
+   texts.
+2. **Gate check 2 — the child observation.** An adult watches the child work the new
+   **Sessions 02, 06, 07, 08 and 11**, as the child reaches them (Session 07 is
+   Recommended, so it is observed only if the family chooses to do it), and fixes what
+   the child struggles with before Batch 2 continues. **Nothing stands in for this
+   check.** It needs a real child, and no review pass, automated scorer, readability run
+   or equivalence read replaces one. Say exactly that in your build report, and say
+   plainly that Batch 1 ships with its five new sessions untested by any child. **Never
+   describe check 1 as "the gate" — it is half of it**, and a passing check 1 clears
+   nothing on its own.
+3. **Full-coverage human edit.** Every child-facing file built or edited this batch is
    human-edited, not sampled — this binds the reading-level and tone criterion, the
    meaningful-non-thin-content criterion, and the guides-and-templates-complete
    criterion.
-3. **Insert/reference-contract completeness.** Confirm by reading that every
+4. **Insert/reference-contract completeness.** Confirm by reading that every
    place-needing session is routed to a named insert and/or reference slot, that there
    are no orphan slots, and that no session reaches for a fact the contract does not
    route.
-4. **The build report.** List every file created and every file edited, and list the
+5. **The build report.** List every file created and every file edited, and list the
    spec departures recorded in `framework/CHANGELOG.md` (the Session 14 slot, the merged
    family-trip-goals page, the canonical acceptance-criteria matrix, the retained
    full-coverage review rule, Session 07's placement, the placeholder vocabulary) plus
    the one deferred link (the print index and the Final Binder Assembly session, named
-   without links in the binder guide).
-5. **Self-check results.** The grep outputs above, the readability run, and the result
+   without links in the binder guide). Carry **Gate check 2** forward in the build
+   report as an open obligation that Batch 2 inherits, in the same words
+   `framework/CHANGELOG.md` uses.
+6. **Self-check results.** The grep outputs above, the readability run, and the result
    of each of the four repo-wide gates — `npm run lint:md`, `npm run lint:md:nested`,
    `npm run lint:md:links` and `pre-commit run --all-files`. Report them separately; a
    green `pre-commit` on its own says nothing about links.
