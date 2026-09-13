@@ -126,8 +126,11 @@ brief already reflects it:
 - **OQ-7** — use the complete corrected navigation table reproduced below, verbatim.
 
 `framework/CHANGELOG.md` is on `main` already. Treat it as existing: several
-deliverables write to it, and if it is genuinely absent on your branch, create it to the
-shape given in Section F below.
+deliverables write to it. If it is genuinely absent on your branch, **recover it rather
+than writing a new one** -- `git show origin/main:framework/CHANGELOG.md >
+framework/CHANGELOG.md` -- then make F10's edits. Writing a fresh file loses the
+versioning policy, the `0.1.0` history, the recorded pilot deferral and the "What is
+still owed to a human" gate, all of which later deliverables assume are still there.
 
 ## This run's scope — Batch 1 deliverables
 
