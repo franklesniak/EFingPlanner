@@ -3,7 +3,10 @@
 ## Source of truth
 
 Build strictly from `docs/spec/specification.md` (the complete, combined archived
-specification, v9.1). It is authoritative for the original design record. Do NOT
+specification). It is authoritative for the original design record. **Do not pin its
+version number here or anywhere in this brief** — the file declares its own version, a
+copy of that number drifts the moment the spec is revised, and this brief overrides the
+archived spec wherever the two differ anyway. Do NOT
 build from `docs/spec/lean-spec.md` or `docs/spec/full-oer-companion.md` — they are
 partial reading-lenses that link back into `specification.md` and are not
 self-contained.
@@ -130,10 +133,10 @@ shape given in Section F below.
 
 Build at the repo root. Leave `docs/spec/` and the repository's template and CI
 infrastructure untouched. **64 files in total: 37 created, 27 edited.**
-`framework/CHANGELOG.md` is already on `main`, so F10 is an edit rather than a create.
-If you are on a branch where that file is genuinely absent, create it and the split
-becomes **38 created, 26 edited**; the total of 64 does not change either way. Report
-whichever split you actually produced.
+`framework/CHANGELOG.md` is already on `main`, so F10 is an **edit**, on every branch.
+If the file is missing from your branch, recover it from `main` as F10 directs -- do not
+recreate it, and do not recount it as a create. The split is **37 created, 27 edited**,
+and your build report states those numbers.
 
 The list is grouped A–H after the spec extract's sections, but **the item numbers are
 the brief's own**. OQ-5 cancels two extract items, and this list drops them rather than
@@ -147,6 +150,20 @@ section number. Every `reference/` and `session_inserts/` file except `README.md
 carries `**Last reviewed:** <month year>` on the line directly below its H1, using the
 month you author it. Do not re-date a file you did not verify — the six existing
 reference files keep their `July 2026` stamp.
+
+**A separate rule, for a separate field.** Three files in this batch's edit list carry a
+`## Metadata` block with a `**Last Updated:**` date: `framework/CHANGELOG.md` (F10),
+`framework/docs/build_style_and_vocab.md` (F11), and
+`framework/docs/privacy_and_safety.md` (F12). **Whenever you change the rendered content
+of a file that carries that block, bump its `Last Updated` to your build date in
+`YYYY-MM-DD` form, once, in the same commit** — and bump the `<YYYYMMDD>` segment of a
+`**Version:**` line too, if the file has one (none of these three does). This is the
+repository's documentation rule, and it binds every later batch as well. **Do not
+confuse it with the `Last reviewed` stamp above:** `Last Updated` is a `YYYY-MM-DD`
+metadata field on `framework/` documents; `Last reviewed` is a `<month year>` honesty
+stamp on `destinations/` fact files. Different fields, different layers, different
+formats. Note also that this rule never reaches a protected instruction file — those are
+never edited by any batch (see BUILD RULES below).
 
 ### Section A — The destination-pack insert contract and its Batch 1 slots
 
@@ -200,9 +217,13 @@ add-a-destination checklist. Must contain:
   main language; `16_18_candidate_cities.md` supplies two to four first-trip candidate
   cities, each with a one-line draw and a few kid-magnet ideas to research, not
   pre-chosen.
-- Then this rule, after the schema: *"Every slot file also carries a `Last reviewed:
-  <month/year>` line under its title. Re-checking is optional upkeep, not a
-  maintenance promise."*
+- Then this rule, after the schema, in **exactly** this form — bold label, a space
+  between month and year, on the line directly below the H1, matching every built
+  reference file and the repo-wide contract above: *"Every slot file also carries a
+  `**Last reviewed:** <month year>` line directly below its title -- for example,
+  `**Last reviewed:** September 2026`. Re-checking is optional upkeep, not a maintenance
+  promise."* Do not write `Last reviewed: <month/year>`: the label is bold, and the month
+  and year are separated by a space, not a slash.
 - **The five add-a-destination rules:** (1) write the small "destination notes" each
   place-specific session pulls in; (2) do not edit any framework session, template,
   guide, or doc; (3) keep adult-owned legal and safety topics adult-owned; (4) keep
@@ -242,8 +263,9 @@ a first trip are in your pack's [major cities reference](../reference/major_citi
 Read them as anchors to compare against, not as the answer."* **Do not repeat the two
 trip shapes here** — `major_cities.md` is their canonical home (OQ-10). Keep it
 price-free and verify-framed: no costs, no pinned travel times. A link from one pack
-file to another pack file is allowed; the no-hard-link rule binds `framework/sessions/`
-bodies only.
+file to another pack file is allowed — the no-hard-link rule constrains links **out of
+`framework/` and into a pack**, and says nothing about links **inside** a pack. It binds
+every `framework/` file, not only session bodies.
 
 **A4. `destinations/japan/session_inserts/12_seasons_and_events.md` (create).**
 Child-facing, with one short adult-facing contingency note. Everything the built
@@ -403,7 +425,15 @@ page.** **Source Check is required.** Templates used: `book_notes.md`, `source_l
   a guidebook or two"*), **never named in the session text**, and never as a link.
 - Foreground the **free / library path**: a library copy or free reputable travel sites
   work just as well; no guidebook needs to be bought. Session 07 is a first-class way
-  to do this.
+  to do this. **Because that path is advertised, it must be completable.** Session 06 is
+  Core, so write the whole session to work on either branch, and teach each move in both
+  forms: a book's table of contents and index, or a site's own section menu and its
+  search box; a book's page numbers, or a page title and web address; a book's
+  publication year, or the date the page says it was last updated (with "not stated" a
+  real answer, and a reason to prefer a source that gives one). Never write the website
+  branch as the lesser one. **This branch is not Session 08.** Session 06 is about
+  finding your way around one long source and judging how current it is; Session 08 is
+  about comparing two sources on the same question. Do not ask for a second source here.
 - Teach, in this order: use the table of contents; use the index; skim before deep
   reading; record page numbers; **pick three places that sound interesting**; write why
   each might be worth researching later.
@@ -419,9 +449,12 @@ page.** **Source Check is required.** Templates used: `book_notes.md`, `source_l
   quotations, and scraped listings are not.
 - Book citation form: book title, author or publisher, page number, date I used it.
   Reference `simple_citation.md` by name and link; do not restate the other forms.
-- Stop point (author it): done when three places are written down with one reason each,
-  and the book is recorded in the Source Log with its page numbers and publication
-  year.
+- Stop point (author it), **reachable on both branches**: done when three places are
+  written down with one reason each, and the source is recorded in the Source Log --
+  from a book, its page numbers and publication year; from a website, its web address
+  and the date you checked it, plus the date the page says it was last updated if it
+  gives one. Write it as one stop point with two fill-ins, not as two stop points: a
+  child on either branch must be able to read it and know they are done.
 - Its Next line carries the Session 07 skip affordance (see the navigation table).
 
 **C3. `framework/sessions/phase_01_research_skills/07_library_research_plan.md`
@@ -502,9 +535,16 @@ required.** Must contain:
 - The four generic lessons stay in the body, stated generically: the country's shape
   and size matter; weather differs by region; **travel time matters**; a first trip
   cannot include everything. The instances live in the insert and the references.
-- The route-shape calibration lives in the insert, not the body. The session tells the
-  child to read the comparison shapes their Destination Notes give and to treat them as
-  anchors to compare against, not as the answer.
+- The route-shape calibration lives **in the pack's major-cities reference**, not in the
+  body and not in the insert. A3 forbids the insert from repeating the two trip shapes
+  (OQ-10 makes the major-cities reference their only home), so the insert **routes**
+  rather than supplies. The session must say so: tell the child to open this session's
+  Destination Notes, follow the pointer those Notes give to the destination pack's
+  major-cities reference, and read the comparison shapes there as anchors to compare
+  against, not as the answer. Name that reference generically, with no link and no place
+  name — it is already on the Materials line above. **This is what makes the stop point
+  reachable:** "record one route shape to compare against" is answerable only after the
+  child has followed the pointer, so the session must actually send them.
 - The canonical reassurance, as a block quote: *"You do not need to memorize this. Your
   job is to understand enough geography to make better travel decisions."*
 - Reinforce that researching a place does not mean choosing it, and that the child still
@@ -549,12 +589,18 @@ fallback written into the template itself. A "what I noticed" line the child can
 forward. **Its referenced-files list points at `family_trip_goals.md`, never at a file
 named `family_input_summary.md`** (OQ-5).
 
-**D3. `framework/templates/book_notes.md` (create).** H1; how to use it; the book's
+**D3. `framework/templates/book_notes.md` (create).** H1; how to use it; the source's
 citation fields; the three places found; the standard note fields. Book citation fields:
-book title; author or publisher; page number; date I used it; **publication year**. A
-"was it out of date?" prompt and the "check anything that matters against an official
-source, with the date checked" reminder. Three places that sound interesting, each with
-one reason it might be worth researching later and the page number it came from. The
+book title; author or publisher; page number; date I used it; **publication year**.
+**Then a short second block, "If you used a website instead", with the matching fields:**
+site name; page title; web address; date I checked it; the date the page says it was
+last updated ("not stated" is a fine answer). Both blocks are `Prompt | Your answer`
+tables; the child fills in the one that matches what they used and leaves the other
+blank. This is what makes Session 06's free path completable -- do not drop it, and do
+not turn it into a second comparison form, which is Session 08's job. A "was it out of
+date?" prompt and the "check anything that matters against an official source, with the
+date checked" reminder. Three places that sound interesting, each with one reason it
+might be worth researching later and **the page number or page title it came from**. The
 standard note structure: **fact / why it matters for our trip / source / question for
 later.** A "write it in your own words" instruction that keeps the child clear of
 copying guidebook text.
@@ -574,9 +620,9 @@ checklist; the privacy rule. AI citation fields: AI tool name; prompt I asked; d
 used; what it helped with; facts I checked somewhere else. The verification checklist:
 if AI gave a fact you want to use, verify it with a non-AI source or remove it; for
 major recommendations use at least two non-AI sources. A short reminder of what AI may
-do (brainstorm questions, suggest search terms, tidy the child's own notes, organize a
-comparison, turn the child's notes into a recommendation without adding new facts) and
-may not do (be the only source; decide passports, entry, visa, safety, medical,
+do — **the same three jobs F6 states, and no others** (brainstorm questions, suggest
+search terms, tidy and organize the child's own notes) — and
+may not do (be the only source; write the child's recommendation; decide passports, entry, visa, safety, medical,
 medication, bookings, payments, legal requirements, or the final budget). The privacy
 rule stated on the page: no family or personal details, **including photos or scans of
 filled-in worksheets and binder pages**; a grown-up retypes the question without the
@@ -722,6 +768,10 @@ Match the built pack's register — matter-of-fact, one neighbour telling anothe
 before Batch 1.** Do not edit it.
 
 ### Section F — Framework docs and front matter
+
+Of the new `framework/docs/` files, only F3, F7 and F9 carry a `## Metadata` block; F4,
+F5, F6 and F8 are parent-facing curriculum reading, classified Tier 2, and deliberately
+do not. Do not add the block to a file this brief does not ask for it on.
 
 **F1. `framework/README.md` (create).** Parent-facing and reuser-facing. Must contain:
 
@@ -879,12 +929,14 @@ is below the minimum age for independent use of the major general-purpose tools;
 any specific age as a dated example, not a fixed fact; before opting in, an adult
 verifies the chosen tool's current minimum-age and supervision policy on the tool's own
 terms or help pages and **records the date checked**, alongside the AI yes/no choice);
-product-agnostic description with no tool endorsed; **what AI may do** (brainstorming
-and generating research questions; summarizing the child's own notes; organizing a
-comparison; suggesting search terms; helping turn the child's own notes into a
-recommendation without adding new facts); **what AI may not do** (be the only source;
-decide passport requirements, entry requirements, visa issues, safety, medical issues,
-medication rules, bookings, payments, legal requirements, or the final budget);
+product-agnostic description with no tool endorsed; **what AI may do — the same three
+jobs, in the same order, as the confinement clause above** (brainstorming and generating
+research questions; suggesting search terms; tidying and organizing the child's own
+notes, which covers summarizing those notes and organizing them into a comparison);
+**what AI may not do** (be the only source; **draft or produce the child's
+recommendation, even from the child's own notes — the recommendation is the child's
+work**; decide passport requirements, entry requirements, visa issues, safety, medical
+issues, medication rules, bookings, payments, legal requirements, or the final budget);
 **privacy** (no family or personal details — names, addresses, dates, passport or
 booking details — **including photos and scans of filled-in worksheets and binder
 pages**, because a filled page carries the roster, trip shape, dates and assumptions in
@@ -922,9 +974,17 @@ executive-function** glossary. H1; a one-line "which glossary is which" router; 
 entries. The router must state the **three-way** distinction: this page is the canonical
 adult executive-function and framework lookup; the plain-language executive-function
 intro is the lay-parent narrative and points here for definitions; and the child travel
-glossary — `../student_guide/travel_glossary.md` plus the destination pack's
-`kid_glossary.md` — holds kid-facing travel and destination words. Cross-link all three
-and state explicitly that this page is distinct from them. Terms worth defining: family
+glossary — the student guide's travel glossary, plus the word list in the family's own
+destination pack — holds kid-facing travel and destination words. **Cross-link the two
+framework pages by relative link** (`../parent_guide/what_is_executive_function.md` and
+`../student_guide/travel_glossary.md`) **and name the pack's word list generically, with
+no link and no filename**: say that the destination pack carries its own word list and
+that the student-guide travel glossary points the way to it. **A link would put a
+destination folder name in a framework path, which the destination-leak rule bans, and
+would dangle for the second destination this framework exists to support.** H9 gives the
+travel glossary the routing sentence that carries the reader onward; this page needs
+only to say the pack has one. State explicitly that this page is distinct from both.
+Terms worth defining: family
 decision meeting; adult reviewers; Core Finish Line; First Taste path; mini-plan; Source
 Log; decision log; question parking lot; cut list; research cards; "things I can't wait
 to see" page; "Make It Yours" zone; "My Calls" page; Start Here; Stop Point; carry-over
@@ -952,11 +1012,32 @@ choice, with a one-clause pointer to `../parent_guide/differentiation.md`; `## A
 about Google Docs` — one clause plus a link to `privacy_and_safety.md`. About one
 printed page. No command-line instructions.
 
-**F10. `framework/CHANGELOG.md` (edit; create only if absent).** The file is on `main`
-already, so the deliverables headline counts it as an **edit** — add the Batch 1 sections
-to the file that exists rather than overwriting it. If you are on a branch where it is
-genuinely absent, create it to the shape below, and the split becomes 38 created / 26
-edited. The curriculum changelog, distinct from the per-trip decision log. Shape:
+**F10. `framework/CHANGELOG.md` (edit — never a create).** The file is on `main`, is 68
+lines long, and carries a `## Metadata` block, a `## Which log is this` router table, a
+`## Versioning` policy, an `## Unreleased` section, the `0.1.0` release, and
+`## What is still owed to a human`. **Add the Batch 1 sections to the file that exists.
+Never overwrite it, and never recreate it from a skeleton.** Five other instructions in
+this brief read that existing content: the `## Versioning` citation below, the
+rename-in-place instruction below, the four-lines-record-the-opposite note below, the
+framework leak self-check's expectation of the `0.1.0` **Added** line, and the batch
+gate's and the handoff's citations of "What is still owed to a human". A recreated
+skeleton orphans all five and erases the recorded pilot deferral, which would let this
+repository claim validation it has not earned.
+
+**If the file is genuinely missing on your branch**, do not author a replacement from
+memory and do not write a fresh skeleton. Recover the real file first:
+
+```bash
+git show origin/main:framework/CHANGELOG.md > framework/CHANGELOG.md
+```
+
+Then apply the Batch 1 edits below to what you recovered. If that command fails, **stop
+and report it** — a missing changelog is a branch problem, not a content gap, and a
+partial history is worse than a paused build. F10 stays an **edit** on every branch, so
+the deliverables split is always 37 created / 27 edited.
+
+The curriculum changelog, distinct from the per-trip decision log. The Batch 1 section
+you add takes this shape:
 
 ```markdown
 # Curriculum Changelog
@@ -984,6 +1065,11 @@ not leave the heading unversioned, do not write "Unreleased" as the version, and
 jump to `1.0.0` — that is reserved for the complete deliverable inventory plus the
 whole-repo consistency pass. F1 above writes the same `0.2.0` into `framework/README.md`;
 the changelog requires the two to match exactly.
+
+**Also bump this file's `## Metadata` block `Last Updated` field to your build date, in
+`YYYY-MM-DD` form** — it reads `2026-09-13` today. This is the third metadata-bearing
+file Batch 1 edits, alongside F11 and F12, and the one most easily missed, because the
+visible work is all in the release sections below the block.
 
 The file already carries an `## Unreleased` section holding two Batch-0-era `### Changed`
 bullets — the recorded pilot deferral and the two recorded build conventions. Those ship
@@ -1031,7 +1117,13 @@ Batch 1 must land these entries:
   built repository's placeholder rule supersedes the archived design record's literal
   wording. Built curriculum pages write 'not decided yet', 'we'll decide later', 'ask an
   adult', or leave the table cell empty. The banned software placeholder tokens do not
-  appear under `framework/` or `destinations/`."*
+  appear under `framework/` or `destinations/`."*; (g) *"AI permission boundary: the
+  archived design record states the confinement as three helper jobs in one section and
+  as a five-item list in another. The built repository's Session 09 ships the three, so
+  the three are canonical: brainstorming questions, suggesting search terms, and tidying
+  and organizing the child's own notes. Summarizing notes and organizing a comparison
+  are instances of the third. Drafting the child's recommendation is not a permitted
+  job, because the recommendation is the child's own work."*
 - **Deferred to a later batch** — *"The binder guide names the print index and the Final
   Binder Assembly session but does not link to them, because neither file exists yet.
   Add both relative links when `framework/print_index.md` and Session 50 land."*
@@ -1105,9 +1197,13 @@ specific term, but it is outside the five-name grep pattern and outside the BUIL
 leak list, so it neither trips a gate nor blocks the three-layer claim as that claim is
 scoped. Leave it. Note it in your build report so the human decides knowingly.
 
-**F12. `framework/docs/privacy_and_safety.md` (edit).** One phrase. Replace *"blank
+**F12. `framework/docs/privacy_and_safety.md` (edit).** Two changes. Replace *"blank
 templates, and Japan reference."* with *"blank templates, and the destination reference
-pack."*
+pack."* Then, in the same pass, **bump this file's `## Metadata` block `Last Updated`
+field to your build date, in `YYYY-MM-DD` form** — it reads `2026-07-07` today. The
+phrase change alters the document's rendered meaning, and this file carries the metadata
+header block, so the bump is required in the same commit. It carries no `**Version:**`
+line, so nothing else in the block moves.
 
 ### Section G — The trip starter kit, `family/` subtree
 
@@ -1313,10 +1409,13 @@ contradicting Session 08's own For-parents strip. OQ-7 item 4 is silent on this 
 so this is an addition to the decision rather than a departure from it — note it in your
 build report.
 
-The counts do not change: the Core list stays at 48 entries with 47 child-facing Core
-sessions, and Session 07 is one of the conditional-core additions that add to the
-baseline and never subtract. This file is the canonical home for the counts — do not
-restate a count anywhere else.
+The counts do not change. Batch 1 adds no session to the First Taste thirteen, and the
+full-program Core totals in the archived design record are unaffected: Session 07 is a
+conditional-core addition that adds to the baseline and never subtracts. **Do not write
+a Core count into any built file in this batch.** `progress_tracker.md` is the canonical
+home for the one count that exists today -- `## First Taste sessions: ____ of 13` -- and
+the Core Finish Line index that will hold the Core totals is Batch 2 work. Do not create
+it here, and do not restate a count anywhere else.
 
 **H8. `framework/PROJECT_ROADMAP.md` (edit).** Replace the "what is built right now"
 block quote only. Do not touch the numbered First Taste list, the counts, or the "Beyond
@@ -1661,9 +1760,12 @@ You are here: Phase 2 (Destination Big Picture), First Taste step 5 of 13. Previ
 - **Destination-leak rule — ON from this batch, and widened to all of `framework/`.** No
   `Japan`, `Tokyo`, `Kyoto`, `Osaka` or `Shinkansen` in any `framework/` file — in a
   title, a heading, a body, a fenced block, link text, a link path, image alt text, or
-  the "For parents" strip. **No relative link from a `framework/sessions/` body into
-  `destinations/japan/`** — the path string is itself a leak. Destination facts live in
-  the pack's inserts and reference files, and a session that needs them writes "open
+  the "For parents" strip. **No relative link from any `framework/` file into
+  `destinations/japan/`** — not from a session body, and not from a doc, template,
+  guide or kit file either. The path string is itself a leak, and a framework file that
+  names one pack by path breaks the three-layer claim F1 must write, then dangles the day
+  a second destination pack exists. Name the pack generically instead. Destination facts
+  live in the pack's inserts and reference files, and a session that needs them writes "open
   this session's Destination Notes." Three bounded exceptions: the quoted leak-grep
   pattern inside `framework/docs/build_style_and_vocab.md`; the `0.1.0` **Added** line in
   `framework/CHANGELOG.md` that records which destination pack shipped, which is version
@@ -1812,10 +1914,15 @@ grep -rwE 'Chicago|ORD|17|grandmother|uncle' framework/sessions/
 Expect no output, and confirm no hard-coded family value (blanks pointing to
 `trip_basics.md` are fine).
 
-Destination leak in the converted and new session bodies:
+Destination leak in the converted and new session bodies. **Both leak greps below take
+`-i`, and that is load-bearing, not cosmetic:** the rule bans the destination name in a
+**link path**, and every real path segment is lowercase (`destinations/japan/`). A
+case-sensitive grep sees none of them, so a framework file could link straight into the
+pack and every gate would still report green. Adding `-i` adds no expected hits on a
+correct build; it only closes the lowercase blind spot.
 
 ```bash
-grep -rnE 'Japan|Tokyo|Kyoto|Osaka|Shinkansen' \
+grep -rniE 'japan|tokyo|kyoto|osaka|shinkansen' \
   framework/sessions/phase_00_setup/ \
   framework/sessions/phase_01_research_skills/ \
   framework/sessions/phase_02_destination_big_picture/
@@ -1826,7 +1933,7 @@ Expect no output.
 Destination leak in the rest of the framework layer:
 
 ```bash
-grep -rnE 'Japan|Tokyo|Kyoto|Osaka|Shinkansen' \
+grep -rniE 'japan|tokyo|kyoto|osaka|shinkansen' \
   framework/docs/ framework/parent_guide/ framework/student_guide/ \
   framework/templates/ framework/trip_starter/ \
   framework/README.md framework/PROJECT_ROADMAP.md \
@@ -1849,16 +1956,24 @@ the banned-words bullet *"No exotic/othering framing of Japan or its culture."*,
 must be neutralised before you stop. Any hit outside those two is a real leak, and it
 must be fixed.
 
-No hard link from a session into the destination pack:
+No hard link from **any framework file** into the destination pack. The scope is all of
+`framework/`, not `framework/sessions/`: a pack path in `framework/docs/`,
+`framework/templates/` or `framework/trip_starter/` is the same leak, it escapes the
+name greps above because the path is lowercase, and it passes `npm run lint:md:links`
+because the link resolves.
 
 ```bash
-grep -rn 'destinations/japan' framework/sessions/
+grep -rn 'destinations/japan' framework/
 ```
 
 Expect **exactly two lines, both in
 `framework/sessions/phase_03_choose_places/15_city_research_cards.md`** — its Materials
 line and its Steps intro, each linking to the pack's `major_cities.md`. Nothing from
-Sessions 00–14. Sessions 21, 33, 44 and 53 are on the leak-exemption list but carry no
+Sessions 00–14, and **nothing from `framework/docs/`, `framework/templates/`,
+`framework/trip_starter/`, the guides, or the framework front matter.** Two deliverables
+are required above to name a pack file *without* linking to it for exactly this reason:
+F8's glossary router, and F1's pointers to the destination packs — write "the destination
+pack", never a path. Sessions 21, 33, 44 and 53 are on the leak-exemption list but carry no
 path into the pack today, so they contribute no output at all; do not restate the
 expectation as "hits in the five exempt sessions," because that is exactly the kind of
 slack that lets a real regression pass.
@@ -1904,9 +2019,13 @@ Freshness stamps:
 for f in destinations/*/reference/*.md destinations/*/session_inserts/*.md; do
   [ -e "$f" ] || continue   # an unexpanded glob is not a missing stamp
   case "$(basename "$f")" in README.md) continue;; esac
-  grep -q 'Last reviewed:' "$f" || echo "MISSING stamp: $f"
+  grep -q '^\*\*Last reviewed:\*\* ' "$f" || echo "MISSING or MALFORMED stamp: $f"
 done
 ```
+
+The pattern deliberately matches the **canonical** form -- bold label, trailing space --
+and not the bare substring `Last reviewed:`, which would pass an unbolded or
+slash-separated stamp and let a format divergence into the pack silently.
 
 Expect no output.
 
