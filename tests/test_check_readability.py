@@ -527,19 +527,39 @@ def test_child_facing_paths_are_in_scope(path: str) -> None:
 
 
 def test_resolve_paths_refuses_an_absolute_path_outside_the_repository(tmp_path: Path) -> None:
-    """A caller cannot name a file outside the repository by absolute path."""
+    """A caller cannot name a file outside the repository by absolute path.
+
+    The in-root file is the positive control. Without it an empty result would
+    also be produced by a `resolve_paths` that rejects everything, which would
+    pass this test while breaking the checker.
+    """
     root = tmp_path / "repo"
-    (root / "framework" / "sessions").mkdir(parents=True)
+    session_dir = root / "framework" / "sessions"
+    session_dir.mkdir(parents=True)
+    inside = session_dir / "01_inside.md"
+    inside.write_text("Some prose lives here.", encoding="utf-8")
     outside = tmp_path / "outside.md"
     outside.write_text("Some prose lives here.", encoding="utf-8")
+
+    resolved = readability.resolve_paths([str(inside)], root)
+    assert [entry[0] for entry in resolved] == [inside]
     assert readability.resolve_paths([str(outside)], root) == []
 
 
 def test_resolve_paths_refuses_a_parent_directory_escape(tmp_path: Path) -> None:
-    """A relative path that climbs out of the repository is refused."""
+    """A relative path that climbs out of the repository is refused.
+
+    The in-root relative path is the positive control, for the same reason.
+    """
     root = tmp_path / "repo"
-    (root / "framework" / "sessions").mkdir(parents=True)
+    session_dir = root / "framework" / "sessions"
+    session_dir.mkdir(parents=True)
+    inside = session_dir / "01_inside.md"
+    inside.write_text("Some prose lives here.", encoding="utf-8")
     (tmp_path / "outside.md").write_text("Some prose lives here.", encoding="utf-8")
+
+    resolved = readability.resolve_paths(["framework/sessions/01_inside.md"], root)
+    assert [entry[0] for entry in resolved] == [inside]
     assert readability.resolve_paths(["../outside.md"], root) == []
 
 
@@ -567,11 +587,21 @@ def test_scan_files_refuses_a_symlink_that_leaves_the_repository(tmp_path: Path)
         " ".join(["The cat sat on the mat. She ran to the box. He put it in a bag."] * 4),
         encoding="utf-8",
     )
+    real = " ".join(["The cat sat on the mat. She ran to the box."] * 6)
+    (session_dir / "01_real.md").write_text(real, encoding="utf-8")
     try:
         (session_dir / "link.md").symlink_to(secret)
     except OSError:
         pytest.skip("this platform does not allow symlink creation")
-    assert readability.scan_files([], root=root) == []
+
+    scores = readability.scan_files([], root=root)
+
+    # The positive control: the scan really ran and really found the ordinary
+    # file. Asserting only that the link is absent would pass on a scan that
+    # silently found nothing at all.
+    scored = {score.display_path for score in scores}
+    assert "framework/sessions/01_real.md" in scored
+    assert not any("link.md" in path for path in scored)
 
 
 def _make_unreadable(monkeypatch: Any, name: str) -> None:
@@ -618,7 +648,14 @@ def test_scan_files_skips_a_marked_file(tmp_path: Path) -> None:
     (session_dir / "marked.md").write_text(
         "<!-- audience: adult -- adult-only setup -->\n\n" + hard, encoding="utf-8"
     )
-    assert readability.scan_files([], root=tmp_path) == []
+    # The same content without the marker is the positive control. It proves the
+    # marker caused the skip, rather than the include globs finding nothing.
+    (session_dir / "unmarked.md").write_text(hard, encoding="utf-8")
+
+    scored = {score.display_path for score in readability.scan_files([], root=tmp_path)}
+
+    assert "framework/sessions/unmarked.md" in scored
+    assert "framework/sessions/marked.md" not in scored
 
 
 #: Sixteen one-syllable words in one sentence. Sixteen words per sentence sits
@@ -675,8 +712,22 @@ def test_main_returns_one_on_a_hard_failure(tmp_path: Path) -> None:
     assert readability.main([], root=tmp_path) == 1
 
 
+#: A floor, not the real count. The repository scores far more than this today.
+#: The number exists so that a change which silently stops matching any file --
+#: an edited glob, a broken path filter -- fails loudly instead of reporting a
+#: clean corpus it never looked at.
+MINIMUM_SCORED_FILES = 20
+
+
 def test_repository_child_facing_corpus_has_no_hard_failures() -> None:
     """The gate must be green on the real repository, or it is not a gate."""
     scores = readability.scan_files([], root=readability.REPO_ROOT)
+
+    scored = [score for score in scores if score.scored]
+    assert len(scored) >= MINIMUM_SCORED_FILES, (
+        f"only {len(scored)} child-facing file(s) were scored. The gate is not "
+        "measuring the corpus any more; check DEFAULT_INCLUDE_GLOBS and the path filter."
+    )
+
     failing = [score.display_path for score in scores if score.status == "fail"]
     assert not failing, f"child-facing files past the hard readability limit: {failing}"

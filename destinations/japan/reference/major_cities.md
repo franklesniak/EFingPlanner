@@ -8,7 +8,7 @@ These are places to *research*. They are not choices already made. Reading about
 
 ## Common first-trip cities
 
-- **Tokyo** -- the huge, busy capital. It has food, museums, and pop culture. It has many neighborhoods to walk. It is a great base for day trips too. Tokyo is a strong anchor for most first trips.
+- **Tokyo** -- the huge, busy capital. It has food, museums, and pop culture. It has many neighborhoods to walk around. It is a great base for day trips too. Tokyo is a strong anchor for most first trips.
 - **Kyoto** -- temples, shrines, and gardens. Many streets there still look traditional. The feel is calm and old.
 - **Osaka** -- famous for its food. The city feels lively and friendly. It is a good base for day trips close by.
 
