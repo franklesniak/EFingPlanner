@@ -167,14 +167,32 @@ HTML_COMMENT_PATTERN = re.compile(r"<!--.*?-->", re.DOTALL)
 HTML_TAG_PATTERN = re.compile(r"</?[A-Za-z][A-Za-z0-9-]*(?:\s[^<>]*)?/?>|<[!?][^>]*>")
 IMAGE_PATTERN = re.compile(r"!\[[^\]]*\]\([^)]*\)")
 LINK_PATTERN = re.compile(r"\[([^\]]*)\]\([^)]*\)")
-BARE_URL_PATTERN = re.compile(r"<?https?://\S+>?")
+#: A bare URL or an autolink. Trailing punctuation is *not* part of a bare
+#: URL: GFM's autolink extension trims ``?!.,:;'"`` from the end, so
+#: "Read https://example.com. Then pick a city." keeps the period that ends
+#: its first sentence. A ``\S+`` pattern eats that period, and the two
+#: sentences are then measured as one, which overstates sentence length.
+#: https://github.github.com/gfm/#autolinks-extension-
+BARE_URL_PATTERN = re.compile(
+    r"<https?://[^\s<>]*>"
+    r"|https?://[^\s<>]*[^\s<>.,:;!?'\"]"
+    r"|https?://"
+)
 #: A code span is opened by a backtick string and closed by a backtick string
 #: of the *same* length, so ````the `--strict` flag```` is one span and not
 #: two. A ```[^`]*``` pattern leaves the payload of every multi-backtick
 #: span in the prose, which raises the score of a file whose only fault is that
 #: it documents Markdown.
+#: Both runs must be that length *exactly*, so all four of their boundaries
+#: are guarded. Without the closing run's left guard a two-tick span closes on
+#: the last two ticks of a three-tick run; without the opening run's left
+#: guard the span simply opens one tick later and does the same thing. Either
+#: way the pattern deletes words CommonMark leaves visible, which can push a
+#: file under the 40-word minimum and out of the gate entirely.
 #: https://spec.commonmark.org/0.31.2/#code-spans
-INLINE_CODE_PATTERN = re.compile(r"(?P<code_ticks>`+).*?(?P=code_ticks)(?!`)")
+INLINE_CODE_PATTERN = re.compile(
+    r"(?<!`)(?P<code_ticks>`+)(?!`).*?(?<!`)(?P=code_ticks)(?!`)"
+)
 LIST_MARKER_PATTERN = re.compile(r"^ {0,8}(?:[-*+]|\d{1,3}[.)])\s+")
 BLOCKQUOTE_PATTERN = re.compile(r"^ {0,3}>\s?")
 EMPHASIS_PATTERN = re.compile(r"[*_]{1,3}")
@@ -196,6 +214,15 @@ REFERENCE_LINK_PATTERN = re.compile(r"\[([^\]]*)\]\[[^\]]*\]")
 #: paragraph, so this is consulted only when no unit is open.
 #: https://spec.commonmark.org/0.31.2/#link-reference-definitions
 LINK_DEFINITION_PATTERN = re.compile(r"^ {0,3}\[[^\]]+\]:\s*\S")
+#: A link reference definition's optional title, on the line after the
+#: destination. It renders as nothing either, so it is consumed with the
+#: definition it belongs to; left behind it becomes a short phantom sentence
+#: unit that pulls the average sentence length down. The title runs to the end
+#: of its line, in matching ``"``, ``'`` or ``()`` delimiters, at any indent.
+#: https://spec.commonmark.org/0.31.2/#link-reference-definitions
+LINK_DEFINITION_TITLE_PATTERN = re.compile(
+    r"^\s*(?:\"[^\"]*\"|'[^']*'|\([^()]*\))[ \t]*$"
+)
 #: A YAML front-matter delimiter. Front matter is permitted on any Markdown
 #: file in this repository, and its keys are publishing metadata, not text a
 #: child reads.
@@ -254,6 +281,13 @@ SENTENCE_OPENER_PATTERN = re.compile(
     r"Every|Some|Any|All|Most|Many|Another|Other|Such|Who|What|Why|How)"
     r"(?:[^A-Za-z0-9]|$)"
 )
+#: A contraction whose ``n't`` is a spoken syllable of its own. It is one
+#: whenever a consonant letter precedes the ``n``: "does-n't", "is-n't",
+#: "could-n't", "did-n't" are each two syllables, and that second syllable has
+#: no vowel letter for the vowel-group pass to find. After a vowel letter the
+#: contraction is one syllable ("can't", "won't", "don't") and that vowel is
+#: already counted, so nothing is added.
+SYLLABIC_NT_PATTERN = re.compile(r"[bcdfghjklmnpqrstvwxz]n['’]t$")
 VOWEL_GROUP_PATTERN = re.compile(r"[aeiouy]+")
 
 
@@ -593,6 +627,7 @@ def extract_prose(text: str) -> str:
     in_parent_strip = False
     in_parent_section = False
     in_table = False
+    after_link_definition = False
     open_unit: str | None = None
 
     lines = text.split("\n")
@@ -644,7 +679,15 @@ def extract_prose(text: str) -> str:
             open_unit = None
             continue
 
-        is_heading = bool(HEADING_PATTERN.match(line))
+        # An ATX heading may sit inside a container, where every one of its
+        # lines carries that container's prefix. ``fence_line.content`` is the
+        # line already peeled to its container's content column -- the same
+        # notion of "inside a container" the fence code uses -- so a quoted or
+        # a listed heading is recognized as the heading it is. Matching the
+        # raw line instead leaves the heading text to be scored as prose and
+        # joined to the quoted paragraph under it.
+        # https://spec.commonmark.org/0.31.2/#atx-headings
+        is_heading = bool(HEADING_PATTERN.match(fence_line.content))
 
         # A parent-facing section runs from its heading to the next heading.
         if PARENT_SECTION_PATTERN.match(line):
@@ -698,7 +741,14 @@ def extract_prose(text: str) -> str:
         # wrapped continuation and not a definition.
         # https://spec.commonmark.org/0.31.2/#link-reference-definitions
         if open_unit is None and LINK_DEFINITION_PATTERN.match(table_line):
+            after_link_definition = True
             continue
+        # A definition's title may sit on the line below its destination, and
+        # renders as nothing just as the rest of the definition does.
+        if after_link_definition and LINK_DEFINITION_TITLE_PATTERN.match(table_line):
+            after_link_definition = False
+            continue
+        after_link_definition = False
 
         # A new list item starts its own unit. A plain line that follows prose
         # is a wrapped continuation of that prose.
@@ -759,6 +809,12 @@ def count_syllables(word: str) -> int:
     if lowered[:1].isdigit():
         return 1
 
+    # Read the contraction before the apostrophe is deleted: deleting it fuses
+    # "doesn't" into "doesnt", whose one vowel group reports one syllable for a
+    # word that is spoken with two. Under-counting syllables lowers the
+    # Flesch-Kincaid grade, which is the direction that lets hard text through.
+    syllabic_nt = SYLLABIC_NT_PATTERN.search(lowered) is not None
+
     lowered = re.sub(r"[^a-z]", "", lowered)
     if not lowered:
         return 1
@@ -774,6 +830,9 @@ def count_syllables(word: str) -> int:
     )
     if lowered.endswith("e") and not syllabic_le and count > 1:
         count -= 1
+
+    if syllabic_nt:
+        count += 1
 
     return max(count, 1)
 

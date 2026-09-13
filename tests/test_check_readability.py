@@ -1499,3 +1499,298 @@ def test_both_checkers_refuse_a_non_utf8_file_the_same_way() -> None:
         mine = readability.FileReadError("x.md", error)
     assert "UnicodeDecodeError" in str(sibling)
     assert str(sibling) == str(mine)
+
+
+# ---------------------------------------------------------------------------
+# Round 6: a code span's closing run must match its opening run exactly
+# (4001094121)
+# ---------------------------------------------------------------------------
+
+
+def test_a_code_span_needs_a_closing_run_of_exactly_its_own_length() -> None:
+    """A two-backtick span is not closed by a three-backtick run.
+
+    CommonMark closes a code span on a backtick string of *equal* length, so
+    this line has no code span at all and every word in it stays visible.
+    Consuming it deletes child-facing words, which lowers the score and can
+    push a short file under the 40-word minimum so it stops being scored.
+    https://spec.commonmark.org/0.31.2/#code-spans
+    """
+    text = "Type ``the child words here``` and press enter now."
+    prose = readability.extract_prose(text)
+    assert "the child words here" in prose
+
+
+def test_an_opening_code_span_run_is_not_taken_from_inside_a_longer_run() -> None:
+    """A three-backtick run does not open a two-backtick span.
+
+    The guard has to sit on both ends of both runs: without it the pattern
+    simply starts one backtick later and eats the same words.
+    """
+    prose = readability.extract_prose("Open ``` and close `` later on today.")
+    assert "and close" in prose
+
+
+def test_a_short_file_is_not_pushed_out_of_the_gate_by_a_mismatched_run() -> None:
+    """The score-level consequence of the two tests above.
+
+    Deleting a long mismatched span takes the file under
+    ``MIN_WORDS_TO_SCORE`` and it leaves the gate silently, which is worse
+    than being scored wrongly.
+    """
+    text = "\n".join(
+        [
+            "Pick one city that you want to see on this trip.",
+            "",
+            "Type ``write the name of the city and one thing you want to do "
+            "there on your own paper``` and then show it to a grown up.",
+            "",
+            "Write your answer in your own notebook.",
+        ]
+    )
+    score = readability.score_text(text, "x.md")
+    assert score.scored
+    assert score.words >= readability.MIN_WORDS_TO_SCORE
+
+
+def test_a_matched_multi_backtick_span_is_still_stripped() -> None:
+    """Negative control: an ordinary multi-backtick span still goes."""
+    prose = readability.extract_prose("Use ``the `--strict` flag`` when you want it.")
+    assert "strict" not in prose
+    assert "Use" in prose and "when you want it." in prose
+
+
+def test_an_unclosed_backtick_is_left_alone() -> None:
+    """Negative control: one stray backtick must not eat the rest of the line."""
+    prose = readability.extract_prose("An `unclosed span starts here and runs on.")
+    assert "unclosed span starts here and runs on." in prose
+
+
+# ---------------------------------------------------------------------------
+# Round 6: ATX headings inside a blockquote (4001094123)
+# ---------------------------------------------------------------------------
+
+
+def test_extract_prose_drops_an_atx_heading_inside_a_blockquote() -> None:
+    """A quoted heading is still a heading, and headings are not prose.
+
+    https://spec.commonmark.org/0.31.2/#atx-headings
+    """
+    text = "> ## Planning choices\n> Pick two cities you want to see.\n"
+    prose = readability.extract_prose(text)
+    assert "Planning choices" not in prose
+    assert "#" not in prose
+    assert "Pick two cities you want to see." in prose
+
+
+def test_extract_prose_drops_a_heading_inside_a_nested_blockquote() -> None:
+    """Every blockquote prefix is peeled, not just the first."""
+    prose = readability.extract_prose("> > ### Deep heading here\n> > Pick two cities.\n")
+    assert "Deep heading here" not in prose
+    assert "Pick two cities." in prose
+
+
+def test_a_quoted_heading_does_not_inflate_the_sentence_count() -> None:
+    """The score-level consequence: quoted headings become phantom sentences.
+
+    Each one is a short extra unit, which pulls the reported words per
+    sentence down -- the direction that lets long sentences through.
+    """
+    body = "Pick two cities you would like to see on this trip with your family this year."
+    quoted = "> ## What to do next\n>\n> Write the name of the city you picked on your own paper."
+    text = "\n\n".join([body] * 3 + [quoted] * 5)
+    score = readability.score_text(text, "x.md")
+    assert "What to do next" not in readability.extract_prose(text)
+    assert score.sentences == 8
+
+
+def test_extract_prose_drops_a_heading_inside_a_list_item() -> None:
+    """A container is a container: a listed heading is a heading too."""
+    prose = readability.extract_prose("- ## Planning choices\n- Pick two cities you want.\n")
+    assert "Planning choices" not in prose
+    assert "Pick two cities you want." in prose
+
+
+def test_extract_prose_drops_a_heading_inside_alternating_containers() -> None:
+    """``- > ## ...`` is a heading in a blockquote in a list item."""
+    prose = readability.extract_prose("- > ## Planning choices\n  > Pick two cities.\n")
+    assert "Planning choices" not in prose
+    assert "Pick two cities." in prose
+
+
+def test_a_plain_quoted_line_is_still_prose() -> None:
+    """Negative control: peeling the prefix must not delete quoted prose."""
+    prose = readability.extract_prose("> Pick two cities.\n> Write the names down.\n")
+    assert "Pick two cities. Write the names down." in prose
+
+
+def test_a_hash_inside_prose_is_not_a_heading() -> None:
+    """Negative control: ``#1`` is a word a child reads, not a heading."""
+    prose = readability.extract_prose("Write #1 on your paper and then pick a city.")
+    assert "#1" in prose
+
+
+# ---------------------------------------------------------------------------
+# Round 6: a link definition's title may sit on the next line (4001094125)
+# ---------------------------------------------------------------------------
+
+
+def test_a_link_definition_title_on_the_next_line_is_not_prose() -> None:
+    """A definition's title renders as nothing, wherever it sits.
+
+    Left behind it is a short phantom sentence unit, which pulls the average
+    sentence length down.
+    https://spec.commonmark.org/0.31.2/#link-reference-definitions
+    """
+    text = (
+        "Read the [travel advice][state] page.\n\n"
+        '[state]: https://travel.state.gov\n  "Official travel guidance"\n\n'
+        "Pick two cities you want to see.\n"
+    )
+    prose = readability.extract_prose(text)
+    assert "Official travel guidance" not in prose
+    assert "Read the travel advice page." in prose
+    assert "Pick two cities you want to see." in prose
+
+
+def test_link_definition_titles_do_not_lower_the_reported_sentence_length() -> None:
+    """The score-level positive control for the test above."""
+    body = (
+        "Read the [travel advice][a] page with a grown up before you pick "
+        "the one city that you like the best today."
+    )
+    definition = '[a]: https://travel.state.gov\n  "Official travel guidance"'
+    text = "\n\n".join([body, definition] * 3)
+    score = readability.score_text(text, "x.md")
+    assert score.sentences == 3
+    assert score.words_per_sentence >= readability.SENTENCE_FAIL
+
+
+def test_a_single_quoted_and_a_parenthesized_title_are_both_consumed() -> None:
+    """CommonMark allows three title delimiters, and all three render as nothing."""
+    for title in ("'Official travel guidance'", "(Official travel guidance)"):
+        text = f"[a]: https://travel.state.gov\n  {title}\n\nPick two cities.\n"
+        assert "Official travel guidance" not in readability.extract_prose(text)
+
+
+def test_a_quoted_sentence_of_its_own_is_still_prose() -> None:
+    """Negative control: a line that only looks like a title is child-facing text."""
+    text = 'Pick two cities.\n\n"Stop now," said the guide to the group.\n'
+    assert "Stop now" in readability.extract_prose(text)
+    lone = '  "Official travel guidance"\n\nPick two cities.\n'
+    assert "Official travel guidance" in readability.extract_prose(lone)
+
+
+def test_a_title_after_a_blank_line_is_not_part_of_the_definition() -> None:
+    """Negative control: a blank line ends the definition, so the title is a paragraph."""
+    text = '[a]: https://travel.state.gov\n\n  "Official travel guidance"\n\nPick two.\n'
+    assert "Official travel guidance" in readability.extract_prose(text)
+
+
+def test_plain_text_under_a_definition_is_still_prose() -> None:
+    """Negative control: only a complete title line is consumed."""
+    text = "[a]: https://travel.state.gov\n  Read this page before you go.\n\nPick two.\n"
+    assert "Read this page before you go." in readability.extract_prose(text)
+
+
+# ---------------------------------------------------------------------------
+# Round 6: a bare URL does not swallow the punctuation after it (4001094126)
+# ---------------------------------------------------------------------------
+
+
+def test_a_bare_url_keeps_the_punctuation_that_ends_its_sentence() -> None:
+    """A ``\\S+`` pattern eats the period, so two sentences are measured as one.
+
+    GFM's autolink extension trims trailing punctuation from a bare URL.
+    https://github.github.com/gfm/#autolinks-extension-
+    """
+    prose = readability.extract_prose("Read https://example.com. Then choose a city.")
+    assert len(readability.split_sentences(prose)) == 2
+
+
+def test_a_bare_url_does_not_produce_a_false_failure() -> None:
+    """The score-level consequence: merged sentences report a file as far harder."""
+    body = (
+        "Look up the country you picked on the travel page that the state "
+        "department keeps at https://travel.state.gov. Then write down one "
+        "fact that you found there today."
+    )
+    score = readability.score_text("\n\n".join([body] * 5), "x.md")
+    assert score.sentences == 10
+    assert score.status == "ok"
+
+
+@pytest.mark.parametrize("punctuation", [".", "!", "?", ",", ";", ":"])
+def test_a_bare_url_keeps_each_kind_of_trailing_punctuation(punctuation: str) -> None:
+    """Every mark that can follow a URL belongs to the sentence, not the URL."""
+    prose = readability.extract_prose(f"Read https://example.com{punctuation} Then choose.")
+    assert prose.split()[1] == punctuation
+
+
+def test_an_autolink_and_a_plain_url_are_still_removed() -> None:
+    """Negative control: the URL itself must still go, in every spelling."""
+    for text in (
+        "Go to <https://travel.state.gov> and read it there.",
+        "Go to https://travel.state.gov and read it there.",
+        "Go to https://travel.state.gov/ and read it there.",
+    ):
+        prose = readability.extract_prose(text)
+        assert "travel.state.gov" not in prose
+        assert "and read it there." in prose
+
+
+# ---------------------------------------------------------------------------
+# Round 6: a contraction's n't can be a syllable of its own (4001094129)
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.parametrize(
+    ("word", "expected"),
+    [
+        ("doesn't", 2),
+        ("isn't", 2),
+        ("couldn't", 2),
+        ("didn't", 2),
+        ("wouldn't", 2),
+        ("shouldn't", 2),
+        ("hasn't", 2),
+        ("wasn't", 2),
+        ("hadn't", 2),
+        ("mustn't", 2),
+    ],
+)
+def test_a_contraction_whose_nt_is_spoken_counts_two_syllables(
+    word: str, expected: int
+) -> None:
+    """Deleting the apostrophe hides a syllable that has no vowel letter.
+
+    ``doesn't`` becomes ``doesnt``, whose single vowel group reports one
+    syllable for a word that is spoken with two. Under-counting syllables
+    lowers the Flesch-Kincaid grade, which is the direction that lets hard
+    text through the gate.
+    """
+    assert readability.count_syllables(word) == expected
+
+
+@pytest.mark.parametrize("word", ["can't", "won't", "don't", "ain't", "shan't"])
+def test_a_contraction_whose_nt_is_not_spoken_stays_one_syllable(word: str) -> None:
+    """Negative control: after a vowel letter the ``n't`` adds no syllable."""
+    assert readability.count_syllables(word) == 1
+
+
+@pytest.mark.parametrize("word", ["it's", "that's", "you'll", "we'll", "I've", "let's"])
+def test_other_contractions_are_unchanged(word: str) -> None:
+    """Negative control: only ``n't`` forms are affected."""
+    assert readability.count_syllables(word) == 1
+
+
+def test_contractions_do_not_hide_a_failing_grade() -> None:
+    """The score-level consequence: a file that fails is reported as a warning."""
+    body = "You shouldn't pick a city that isn't on the list your family made together."
+    score = readability.score_text("\n\n".join([body] * 4), "x.md")
+    assert score.status == "fail"
+
+
+def test_a_curly_apostrophe_counts_the_same_as_a_straight_one() -> None:
+    """The curriculum's prose uses both spellings of the apostrophe."""
+    assert readability.count_syllables("doesn’t") == readability.count_syllables("doesn't")
