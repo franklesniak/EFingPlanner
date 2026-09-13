@@ -35,7 +35,7 @@ Quick-start:
 3. Print the first sessions.
 4. Start Session 01.
 5. Review at Checkpoint 1 -- then decide whether to keep going (the try-then-commit on-ramp: you do not have to commit to the whole project to start).
-6. Finish the First Taste path at Session 53 -- a real, usable mini-plan and a complete stopping point. (The [roadmap](framework/PROJECT_ROADMAP.md) already maps the fuller path toward the Core Finish Line; those later sessions are built only after the pilot succeeds.)
+6. Finish the First Taste path at Session 53 -- a real, usable mini-plan and a complete stopping point. (The [roadmap](framework/PROJECT_ROADMAP.md) already maps the fuller path toward the Core Finish Line; those later sessions are built in later batches.)
 
 ## First Taste session index (what is built now)
 
@@ -75,7 +75,7 @@ Three layers (this is Full-Build detail a one-trip family can skip):
 
 ## Status
 
-Early. This repository currently holds the **First Taste** curriculum slice (the sessions above) and its support files, built for a design-validation pilot with a real child. The Core Finish Line and full program are documented in the design record and are built later, only after the pilot succeeds.
+Early. This repository currently holds the **First Taste** curriculum slice (the sessions above) and its support files, built for a design-validation pilot with a real child. The Core Finish Line and full program are documented in the design record and are built in later batches.
 
 - The authoritative design is [docs/spec/specification.md](docs/spec/specification.md) -- an archived design record. Once the curriculum is built, the built repository supersedes the spec on any conflict.
 

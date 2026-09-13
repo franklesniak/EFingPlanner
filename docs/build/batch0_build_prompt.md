@@ -135,7 +135,7 @@ on the `lean-spec.md` / `full-oer-companion.md` pointers named under Source of t
   run the child pilot, or record the no-child fallback in writing. Either clears it;
   an unrun, unrecorded pilot does not.
 
-## After the pilot passes (later /goal runs — not now)
+## After the Batch 0 gate clears (later /goal runs — not now)
 
 - **Batch 1:** the runnable Phase 0–2 vertical slice; for the Full Build, run the
   concrete→insert upgrade (§29.1) on the 8 shared sessions (01, 03, 04, 05, 10, 12, 13, 14)
