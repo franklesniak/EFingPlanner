@@ -13,15 +13,18 @@ lost its Workspace heading in an edit.
 
 What is checked
 ---------------
-1. The title line is ``# Session NN: Title``, and ``NN`` matches the filename.
+1. The first heading in the document -- outside every fenced block -- is
+   ``# Session NN: Title``, and ``NN`` matches the filename.
 2. The navigation line is present.
 3. The parent metadata strip is present.
 4. The six always-mandatory sections exist: Goal, Start Here, Steps, Workspace,
    Artifact Created, Stop Point.
 5. Source Check exists, unless the session is exempt (see below).
-6. Those mandatory sections appear in the canonical relative order. Other
-   sections may be interleaved freely -- Session 00 carries several -- but the
-   mandatory ones may not be reordered, because the order *is* the scaffold.
+6. The scaffold sections appear in the canonical relative order, Source Check
+   included. The style guide numbers it seventh, and seventh is a position, not
+   a label. Other sections may be interleaved freely -- Session 00 carries
+   several -- but the scaffold ones may not be reordered, because the order
+   *is* the scaffold.
 7. No mandatory section is empty.
 8. No fenced code block is used as a worksheet fill-in. Worksheet forms are
    Markdown tables; a fenced block of underscores does not print as a box, does
@@ -45,7 +48,6 @@ from __future__ import annotations
 
 import argparse
 import re
-import sys
 from collections.abc import Sequence
 from dataclasses import dataclass
 from pathlib import Path
@@ -67,11 +69,18 @@ MANDATORY_SECTIONS = (
 #: The seventh, required only when the session has a research step.
 SOURCE_CHECK_SECTION = "Source Check"
 
-TITLE_PATTERN = re.compile(r"^#\s+Session\s+(?P<number>\d{2}):\s+\S.*$", re.MULTILINE)
+#: Every scaffold section, in the order it must appear. Source Check is
+#: conditional in *presence* -- a session with no research step does not carry
+#: it -- but not in *position*. A session that carries it puts it seventh.
+ORDERED_SECTIONS = MANDATORY_SECTIONS + (SOURCE_CHECK_SECTION,)
+
+#: Matches the *title text* of a heading, not the heading line. The leading
+#: hashes are consumed by HEADING_PATTERN, so there is one heading parser.
+TITLE_PATTERN = re.compile(r"^Session\s+(?P<number>\d{2}):\s+\S")
 FILENAME_NUMBER_PATTERN = re.compile(r"^(?P<number>\d{2})[_-]")
 NAV_PATTERN = re.compile(r"^You are here:\s*\S", re.MULTILINE)
 PARENT_STRIP_PATTERN = re.compile(r"^\*\*For parents:?\*\*", re.MULTILINE)
-HEADING_PATTERN = re.compile(r"^##\s+(?P<title>.+?)\s*$", re.MULTILINE)
+HEADING_PATTERN = re.compile(r"^(?P<hashes>#{1,6})\s+(?P<title>.+?)\s*$")
 FENCE_PATTERN = re.compile(r"^ {0,3}(?P<marker>`{3,}|~{3,})", re.MULTILINE)
 UNDERSCORE_RUN_PATTERN = re.compile(r"_{4,}")
 
@@ -94,14 +103,24 @@ class Violation:
         return f"{self.display_path}:{self.line_number}: {self.message}"
 
 
-def line_of(text: str, index: int) -> int:
-    """Return the 1-based line number of a character offset."""
-    return text.count("\n", 0, index) + 1
+@dataclass(frozen=True)
+class Heading:
+    """One ATX heading, found outside every fenced block."""
+
+    level: int
+    title: str
+    line_number: int
 
 
-def find_headings(text: str) -> list[tuple[str, int]]:
-    """Return every level-2 heading as (title, line number), skipping fenced blocks."""
-    headings: list[tuple[str, int]] = []
+def find_headings(text: str) -> list[Heading]:
+    """Return every heading, at every level, skipping fenced blocks.
+
+    Every heading the checker looks at comes from here, the session title
+    included. One fence parser means one behaviour: a heading inside a fenced
+    example is an example, whether it is a ``# Session NN`` title or a
+    ``## Stop Point`` section.
+    """
+    headings: list[Heading] = []
     active_fence: str | None = None
 
     for number, raw_line in enumerate(text.split("\n"), start=1):
@@ -116,18 +135,26 @@ def find_headings(text: str) -> list[tuple[str, int]]:
         if active_fence is not None:
             continue
 
-        heading_match = re.match(r"^##\s+(?P<title>.+?)\s*$", raw_line)
+        heading_match = HEADING_PATTERN.match(raw_line)
         if heading_match:
-            headings.append((heading_match.group("title"), number))
+            headings.append(
+                Heading(
+                    level=len(heading_match.group("hashes")),
+                    title=heading_match.group("title"),
+                    line_number=number,
+                )
+            )
 
     return headings
 
 
-def section_body(text: str, headings: list[tuple[str, int]], index: int) -> str:
-    """Return the text between one heading and the next."""
+def section_body(text: str, headings: list[Heading], index: int) -> str:
+    """Return the text between one section heading and the next."""
     lines = text.split("\n")
-    start = headings[index][1]
-    end = headings[index + 1][1] - 1 if index + 1 < len(headings) else len(lines)
+    start = headings[index].line_number
+    end = (
+        headings[index + 1].line_number - 1 if index + 1 < len(headings) else len(lines)
+    )
     return "\n".join(lines[start:end]).strip()
 
 
@@ -161,13 +188,22 @@ def check_text(text: str, display_path: str, file_name: str) -> list[Violation]:
     """Return every structural violation in one session document."""
     violations: list[Violation] = []
 
-    title_match = TITLE_PATTERN.search(text)
+    headings = find_headings(text)
+    first_heading = headings[0] if headings else None
+    title_match = (
+        TITLE_PATTERN.match(first_heading.title)
+        if first_heading is not None and first_heading.level == 1
+        else None
+    )
+
     if title_match is None:
         violations.append(
             Violation(
                 display_path,
-                1,
-                'no session title. The first heading must read "# Session NN: Title".',
+                first_heading.line_number if first_heading is not None else 1,
+                "no session title. The first heading in the document must read "
+                '"# Session NN: Title". A title inside a fenced example is an example, '
+                "not the name of the session.",
             )
         )
     else:
@@ -176,7 +212,7 @@ def check_text(text: str, display_path: str, file_name: str) -> list[Violation]:
             violations.append(
                 Violation(
                     display_path,
-                    line_of(text, title_match.start()),
+                    first_heading.line_number,
                     f"title says Session {title_match.group('number')} but the filename says "
                     f"Session {name_match.group('number')}. They must agree.",
                 )
@@ -202,8 +238,8 @@ def check_text(text: str, display_path: str, file_name: str) -> list[Violation]:
             )
         )
 
-    headings = find_headings(text)
-    titles = [title for title, _ in headings]
+    section_headings = [heading for heading in headings if heading.level == 2]
+    titles = [heading.title for heading in section_headings]
 
     for section in MANDATORY_SECTIONS:
         if section not in titles:
@@ -225,25 +261,29 @@ def check_text(text: str, display_path: str, file_name: str) -> list[Violation]:
             )
         )
 
-    present = [t for t in titles if t in MANDATORY_SECTIONS]
-    expected = [s for s in MANDATORY_SECTIONS if s in titles]
+    present = [t for t in titles if t in ORDERED_SECTIONS]
+    expected = [s for s in ORDERED_SECTIONS if s in titles]
     if present != expected:
         violations.append(
             Violation(
                 display_path,
-                headings[0][1] if headings else 1,
-                "mandatory sections are out of order. Found "
+                section_headings[0].line_number if section_headings else 1,
+                "scaffold sections are out of order. Found "
                 f"{' > '.join(present)}; expected {' > '.join(expected)}. Other sections may sit "
                 "between them, but these may not be reordered.",
             )
         )
 
-    for index, (title, number) in enumerate(headings):
-        if title not in MANDATORY_SECTIONS and title != SOURCE_CHECK_SECTION:
+    for index, heading in enumerate(section_headings):
+        if heading.title not in ORDERED_SECTIONS:
             continue
-        if not section_body(text, headings, index):
+        if not section_body(text, section_headings, index):
             violations.append(
-                Violation(display_path, number, f'section "## {title}" is empty.')
+                Violation(
+                    display_path,
+                    heading.line_number,
+                    f'section "## {heading.title}" is empty.',
+                )
             )
 
     for number in find_worksheet_fences(text):
@@ -261,40 +301,104 @@ def check_text(text: str, display_path: str, file_name: str) -> list[Violation]:
     return violations
 
 
-def resolve_paths(path_arguments: Sequence[str], root: Path) -> list[Path]:
-    """Turn command-line arguments into session Markdown paths."""
-    if not path_arguments:
-        return sorted(p for p in root.glob(DEFAULT_SCAN_GLOB) if p.is_file())
+@dataclass(frozen=True)
+class ScanTargets:
+    """The session files to read, and the refusals that must fail the run."""
 
-    resolved: list[Path] = []
+    paths: tuple[Path, ...]
+    refusals: tuple[Violation, ...]
+
+
+def display_name(path: Path, root: Path, fallback: str) -> str:
+    """Return the repo-relative name of a path, or ``fallback`` when it is outside."""
+    try:
+        return path.relative_to(root).as_posix()
+    except ValueError:
+        return fallback
+
+
+def guard_path(path: Path, root: Path, label: str) -> Violation | None:
+    """Return a refusal for a path that is a link, or that resolves outside ``root``.
+
+    ``root`` is already resolved. Both halves matter. ``Path.resolve()`` follows
+    symbolic links *and* Windows junctions, so the containment test is what
+    enforces the boundary; the ``is_symlink()`` test refuses a link even when it
+    points back inside the tree, which is what
+    ``check-prohibited-placeholders.py`` already does for its own inputs.
+    """
+    if path.is_symlink():
+        return Violation(
+            label,
+            1,
+            "symbolic link, not a real file. A session file must be a real file in the "
+            "repository, because a link can point at content outside the allowlisted "
+            "tree. Refusing to read it.",
+        )
+    try:
+        path.resolve().relative_to(root)
+    except ValueError:
+        return Violation(
+            label, 1, "resolves outside the repository root. Refusing to read it."
+        )
+    return None
+
+
+def collect_targets(path_arguments: Sequence[str], root: Path) -> ScanTargets:
+    """Turn command-line arguments into session Markdown paths, refusing escapes.
+
+    Every path the checker reads passes through here: the default glob, the walk
+    of a directory argument, and an explicit file argument alike. Validating only
+    the explicit arguments would leave the one path CI actually uses -- the
+    default glob -- unguarded.
+    """
+    root = root.resolve()
+    paths: list[Path] = []
+    refusals: list[Violation] = []
+
+    def take(path: Path) -> None:
+        """Accept one discovered path, or record why it was refused."""
+        refusal = guard_path(path, root, display_name(path, root, path.as_posix()))
+        if refusal is not None:
+            refusals.append(refusal)
+        elif path.is_file():
+            paths.append(path)
+
+    if not path_arguments:
+        for path in sorted(root.glob(DEFAULT_SCAN_GLOB)):
+            take(path)
+        return ScanTargets(tuple(paths), tuple(refusals))
+
     for argument in path_arguments:
         candidate = Path(argument)
         if not candidate.is_absolute():
             candidate = root / candidate
-        candidate = candidate.resolve()
-        try:
-            candidate.relative_to(root.resolve())
-        except ValueError:
-            print(
-                f"{argument}: outside the repository root; refusing to read it.",
-                file=sys.stderr,
-            )
+        refusal = guard_path(candidate, root, display_name(candidate, root, argument))
+        if refusal is not None:
+            refusals.append(refusal)
             continue
+        candidate = candidate.resolve()
         if candidate.is_dir():
-            resolved.extend(sorted(p for p in candidate.rglob("*.md") if p.is_file()))
+            for path in sorted(candidate.rglob("*.md")):
+                take(path)
         elif candidate.is_file() and candidate.suffix.lower() == ".md":
-            resolved.append(candidate)
-    return resolved
+            paths.append(candidate)
+
+    return ScanTargets(tuple(paths), tuple(refusals))
+
+
+def resolve_paths(path_arguments: Sequence[str], root: Path) -> list[Path]:
+    """Return the session Markdown paths the checker will read."""
+    return list(collect_targets(path_arguments, root).paths)
 
 
 def scan_files(path_arguments: Sequence[str], root: Path = REPO_ROOT) -> list[Violation]:
     """Check every named session file and return all violations."""
-    violations: list[Violation] = []
-    for path in resolve_paths(path_arguments, root):
-        try:
-            display_path = path.resolve().relative_to(root.resolve()).as_posix()
-        except ValueError:
-            display_path = path.as_posix()
+    targets = collect_targets(path_arguments, root)
+    violations: list[Violation] = list(targets.refusals)
+    resolved_root = root.resolve()
+    for path in targets.paths:
+        # guard_path has already proved this path resolves inside the root.
+        display_path = path.resolve().relative_to(resolved_root).as_posix()
         text = path.read_text(encoding="utf-8")
         violations.extend(check_text(text, display_path, path.name))
     return violations

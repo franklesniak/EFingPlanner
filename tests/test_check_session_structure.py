@@ -282,3 +282,138 @@ def test_main_returns_zero_on_a_clean_tree(tmp_path: Path) -> None:
     session_dir.mkdir(parents=True)
     (session_dir / "07_a_session.md").write_text(build_session(), encoding="utf-8")
     assert structure.main([], root=tmp_path) == 0
+
+
+# ---------------------------------------------------------------------------
+# Source Check is the seventh field, and seventh is a position
+# ---------------------------------------------------------------------------
+
+
+def test_source_check_may_not_come_before_stop_point() -> None:
+    """The style guide numbers Source Check seventh; that is a position, not a label."""
+    text = build_session(
+        sections=(
+            "Goal",
+            "Start Here",
+            "Steps",
+            "Workspace",
+            "Artifact Created",
+            "Source Check",
+            "Stop Point",
+        )
+    )
+    assert any("out of order" in m for m in check(text))
+
+
+def test_source_check_may_not_come_first() -> None:
+    """A session does not open with the record of what it read."""
+    text = build_session(
+        sections=(
+            "Source Check",
+            "Goal",
+            "Start Here",
+            "Steps",
+            "Workspace",
+            "Artifact Created",
+            "Stop Point",
+        )
+    )
+    assert any("out of order" in m for m in check(text))
+
+
+# ---------------------------------------------------------------------------
+# The title is a real heading, not a fenced example
+# ---------------------------------------------------------------------------
+
+
+def test_a_fenced_title_does_not_satisfy_the_title_check() -> None:
+    """A title inside a fenced example is an example, not the name of the session."""
+    text = build_session().replace("# Session 07: A Well-Formed Session", "# Some Other Title", 1)
+    text += "\n```markdown\n# Session 07: Example Session\n```\n"
+    assert any("no session title" in m for m in check(text))
+
+
+def test_a_fenced_title_does_not_mask_a_filename_mismatch() -> None:
+    """The number that must match the filename is the real title's, not an example's."""
+    text = build_session(number="08").replace(
+        "<!-- markdownlint-disable MD013 -->",
+        "<!-- markdownlint-disable MD013 -->\n\n```markdown\n# Session 07: Fenced Example\n```",
+        1,
+    )
+    assert any("must agree" in m for m in check(text, name="07_a_session.md"))
+
+
+def test_the_title_must_be_the_first_heading() -> None:
+    """A session names itself before it says anything else."""
+    text = build_session().replace(
+        "# Session 07: A Well-Formed Session",
+        "## Before The Title\n\nStray content.\n\n# Session 07: A Well-Formed Session",
+        1,
+    )
+    assert any("no session title" in m for m in check(text))
+
+
+def test_a_level_one_heading_does_not_satisfy_a_section_requirement() -> None:
+    """The scaffold sections are level-2 headings; one parser must not blur the levels."""
+    text = build_session().replace("## Goal", "# Goal", 1)
+    assert any('missing mandatory section "## Goal"' in m for m in check(text))
+
+
+# ---------------------------------------------------------------------------
+# Symbolic links and the allowlisted tree
+# ---------------------------------------------------------------------------
+
+
+def make_session_dir(tmp_path: Path) -> Path:
+    """Return a session directory inside a synthetic repository root."""
+    session_dir = tmp_path / "repo" / "framework" / "sessions" / "phase_00_setup"
+    session_dir.mkdir(parents=True)
+    return session_dir
+
+
+def link_or_skip(link: Path, target: Path) -> None:
+    """Create a symbolic link, or skip the test where the platform forbids one."""
+    try:
+        link.symlink_to(target)
+    except (OSError, NotImplementedError) as error:  # pragma: no cover - platform guard
+        pytest.skip(f"this platform does not allow symbolic links: {error}")
+
+
+def test_a_symlinked_session_is_refused_by_the_default_scan(tmp_path: Path) -> None:
+    """The default scan is the path CI uses, so the default scan is what must be guarded."""
+    outside = tmp_path / "outside.md"
+    outside.write_text("## Secret Heading\n\nnot repository content\n", encoding="utf-8")
+    session_dir = make_session_dir(tmp_path)
+    link_or_skip(session_dir / "08_link.md", outside)
+    root = tmp_path / "repo"
+    (session_dir / "07_a_session.md").write_text(build_session(), encoding="utf-8")
+
+    messages = [v.format_message() for v in structure.scan_files([], root=root)]
+    assert any("symbolic link" in m for m in messages)
+    assert not any("Secret Heading" in m for m in messages)
+    assert structure.resolve_paths([], root) == [session_dir / "07_a_session.md"]
+    assert structure.main([], root=root) == 1
+
+
+def test_a_symlinked_session_in_a_directory_argument_is_refused(tmp_path: Path) -> None:
+    """A directory argument walks the tree, so the walk needs the same guard."""
+    outside = tmp_path / "outside.md"
+    outside.write_text("# Session 08: Elsewhere\n", encoding="utf-8")
+    session_dir = make_session_dir(tmp_path)
+    link_or_skip(session_dir / "08_link.md", outside)
+    root = tmp_path / "repo"
+
+    assert structure.resolve_paths([str(session_dir)], root) == []
+    assert any(
+        "symbolic link" in v.format_message()
+        for v in structure.scan_files([str(session_dir)], root=root)
+    )
+
+
+def test_a_path_outside_the_root_fails_the_run(tmp_path: Path) -> None:
+    """Refusing to read a path is a verdict, not a silent skip."""
+    outside = tmp_path / "outside.md"
+    outside.write_text("# Session 01: Nope\n", encoding="utf-8")
+    root = tmp_path / "repo"
+    root.mkdir()
+    assert structure.main([str(outside)], root=root) == 1
