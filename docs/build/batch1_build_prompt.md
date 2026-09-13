@@ -215,11 +215,31 @@ add-a-destination checklist. Must contain:
   and `38-39`; a new-destination author uses this list to decide which sessions need no
   destination work at all.
 - **A per-insert schema section**, stating for each slot: its **filename**, the
-  **session that consumes it**, and the **fields it must supply**. Use the two worked
-  examples: `10_snapshot_facts.md` supplies capital, major land features, currency,
-  main language; `16_18_candidate_cities.md` supplies two to four first-trip candidate
-  cities, each with a one-line draw and a few kid-magnet ideas to research, not
-  pre-chosen.
+  **session that consumes it**, and the **fields it must supply**. **All twelve slots get
+  an entry, including the eight this batch does not write** -- the schema is what lets a
+  new-destination author fill a slot without reverse-engineering the session, which is
+  the whole reason this file exists. Write every field list **destination-neutral**, so
+  the file copies into a second pack unchanged; the Japan values belong in the slot files,
+  not here. Use these twelve, in contract order:
+
+  | Slot | Consuming session | Fields it must supply |
+  | --- | --- | --- |
+  | `10_snapshot_facts.md` | 10 Destination Snapshot | Capital; major land features; currency; main language. Not the hours-ahead figure -- that is a Trip-Basics card value. |
+  | `11_regions_overview.md` | 11 Regions and Cities Overview | The main regions, one short line each on how each feels different; the geography instances the neutral session may not state (the country's shape and size, how weather differs by region, why travel time between regions matters); a pointer to the pack's major-cities reference for the route shapes. No trip shapes, no costs, no pinned travel times. |
+  | `12_seasons_and_events.md` | 12 Weather, Seasons, and Events | Each season the destination has, with its weather and what travelling in it is like; the big-draw and busiest periods; the congestion windows, named as categories to confirm this year; each seasonal hazard with its pacing consequence; one short adult-facing contingency note. No pinned dates, prices or forecasts. |
+  | `16_18_candidate_cities.md` | 16-18 Deep-Dive Cities | Two to four first-trip candidate cities, each with a one-line draw and a few kid-magnet ideas to research, not pre-chosen. |
+  | `19_other_places_menu.md` | 19 Other Places Research | A menu of further candidate places beyond the deep-dive cities, each with a one-line draw, offered as options to research rather than as a shortlist. |
+  | `23_attraction_ideas.md` | 23 Attraction Research Cards | Starter attraction ideas as options to research, mixing high-draw named attractions with low-cost everyday ones, each with what kind of visit it is; anything ticketed, timed or permit-gated flagged "verify." No prices, no hours. |
+  | `30_transport_specifics.md` | 30 Trains, Transit, and IC Cards | The transport modes a child plans around (long-distance, local, walking, taxis); the stored-value or travel-card options, framed as things whose availability an adult checks; luggage forwarding and station lockers as planning concepts; any pass whose value depends on the itinerary, framed compare-don't-assume; one route-planning tool that works now, with an instruction to confirm it is still operating. No fares, no pinned journey times. |
+  | `34_lodging_types.md` | 34 Neighborhoods and Hotel Location | The lodging categories a family chooses among, one line each; the occupancy reality -- how many people a room holds, and what a larger party has to plan around. No prices, no named properties. |
+  | `36_37_food_ideas.md` | 36-37 Food / Restaurant Shortlist | Food types and dining areas as ideas to research; what a family may have to plan around (dietary needs, group seating). No restaurant recommendations, no prices. |
+  | `42_reservation_examples.md` | 42 Reservations and Timed Entries | A few experiences that require committing to a date to reserve, each with roughly how far ahead and what kind of gate it is, all framed as categories to re-check rather than current values. No release dates, no prices. |
+  | `47_language_etiquette.md` | 47 Language and Etiquette | A short set of everyday phrases; the etiquette points a visiting family actually meets; any custom with rules of its own (bathing, photography, sacred sites), described matter-of-factly and never as something the child will get wrong. |
+  | `kid_glossary.md` | Child travel glossary, all sessions | The destination words a child meets on signs, on menus and on trains, one line each; the units the destination uses (temperature, distance, time format) with a kid-sized conversion for each; one currency example, labelled an example to re-check and dated by this file's own `Last reviewed` line. |
+
+  **These lists are a floor, not a ceiling.** The batch that writes a slot may find it
+  needs one more field and should add it here in the same pass. What it may not do is
+  ship a slot with fewer fields than its row names, or leave a row with no fields at all.
 - Then this rule, after the schema, in **exactly** this form — bold label, a space
   between month and year, on the line directly below the H1, matching every built
   reference file and the repo-wide contract above: *"Every slot file also carries a
@@ -307,8 +327,20 @@ from Batch 3 by OQ-16).** Child-facing. H1: `# Words and Numbers You Will Meet
 the pack's register — *"These are words and units you will see on signs, on menus, and
 on trains."* Then **the ten entries from the built `travel_glossary.md` section "Japan
 words you will meet" and the four entries from "Numbers you will see in Japan",
-copied without change of meaning.** Keep the currency example labelled as an example
-to re-check, with its date, exactly as written. This is the child travel glossary, kept
+copied without change of meaning.** The currency entry needs one deliberate change, and
+it is the only one. **The source line carries no date** -- it says the rate was "recently
+very roughly 150-160 yen" and stops -- so it cannot be copied forward as written without
+putting an undated volatile rate into a new pack file, which this brief's own currency
+rule and the style law both forbid. **The date is this file's `Last reviewed` stamp**, the
+same mechanism `destinations/japan/reference/money_basics.md` already uses for the
+identical figure, so no separate verification date is written and none is claimed. Write
+the entry this way, adopting that reference file's stronger closing warning so the pack's
+two statements of this fact match: *"**Money is in yen.** To judge if something is
+expensive, convert to dollars. Rates move a lot, so look up today's rate and write the
+date beside it. (Example only, good only as of the `Last reviewed` date at the top of this
+page: recently it took very roughly 150-160 yen to make 1 US dollar, so 100 yen was worth a
+bit more than half a US dollar. Do not rely on this number.)"* Do not invent a verification
+month for the rate -- you have not checked it. This is the child travel glossary, kept
 distinct from the adult executive-function glossary.
 
 **A6. `destinations/japan/README.md` (edit).** Two changes only:
@@ -734,10 +766,17 @@ in order:
 
 - Add as the **first data row** of the fill-in table:
   `| Destination (the place the grown-ups picked) | |`
-- Replace *"They find how many hours ahead Japan is right now."* with *"They find how
-  many hours ahead your destination is right now."* Keep the rest of that paragraph,
-  including *"The gap is not the same for every US time zone."* — that is origin-layer
-  adult help text and it stays (OQ-4).
+- **Replace the time-zone sentence.** The paragraph below the fill-in table reads *"For
+  the time zone: a grown-up looks up your home zone's current hours-ahead to Japan and
+  writes it here. It varies by US time zone and shifts with daylight saving, so confirm
+  today's figure."* Change only the destination name in the first sentence, so it becomes
+  *"For the time zone: a grown-up looks up your home zone's current hours-ahead to your
+  destination and writes it here."* **Keep the second sentence exactly as it stands** --
+  "It varies by US time zone and shifts with daylight saving, so confirm today's figure"
+  is origin-layer adult help text and OQ-4 keeps it. This is the only place `Japan` appears
+  in `framework/templates/`, and H10's table deliberately omits this file because this
+  bullet covers it -- so if the framework leak grep returns a hit in
+  `framework/templates/trip_basics.md`, this replacement is what was missed.
 - Add one sentence beside the table: *"A grown-up writes the destination here. The name
   is on the front of your destination pack."*
 
@@ -1130,8 +1169,29 @@ Batch 1 must land these entries:
 - **Deferred to a later batch** — *"The binder guide names the print index and the Final
   Binder Assembly session but does not link to them, because neither file exists yet.
   Add both relative links when `framework/print_index.md` and Session 50 land."*
+- **"What is still owed to a human" — rewrite the Batch-1 gate sentence in place.** That
+  section's second bullet currently ends *"Neither check can start yet, because Batch 1
+  creates those pages and sessions."* Batch 1 creates them, so that sentence is false the
+  moment you finish, and a human reading it would correctly conclude there is nothing to
+  do -- while Batch 2 stays blocked on the gate it describes. Replace **that one sentence**
+  with: *"Batch 1 has now created those pages and sessions, so both checks are ready to
+  run. Neither has been run."* Change nothing else in the bullet. The item stays in **"What
+  is still owed to a human"**, stays open, keeps both check descriptions, keeps the
+  "unpiloted baseline" caveat, and keeps *"Nothing stands in for check 2."* Do not move it
+  into the `0.2.0` release section and do not mark it done: you cannot perform either
+  check, and an entry that reads as closed would let the repository claim a gate it has not
+  passed. The first bullet in that section, the Batch 0 usability pilot, is unchanged --
+  Batch 1 does not pilot anything.
+- **Then re-read the whole file for any other "not yet" claim this build has falsified.**
+  A changelog written before a batch describes a repository that batch changes, and this
+  is the fifth time in this brief's review history that a sentence asserting a state has
+  been outlived by the work. Before you stop, read every sentence in
+  `framework/CHANGELOG.md` that says something does not exist, has not happened, or cannot
+  start, and check it against the tree you just built. Fix any that Batch 1 made false, in
+  place, without closing an open obligation. Report in your build report which sentences
+  you checked and which you changed.
 
-**F11. `framework/docs/build_style_and_vocab.md` (edit).** Six changes, in one pass,
+**F11. `framework/docs/build_style_and_vocab.md` (edit).** Seven changes, in one pass,
 with `Last Updated` bumped exactly once. **This file names the destination on two
 separate lines; both must change, or F1's mandated three-layer claim is false the day
 it is written and the framework leak grep in the self-check returns three hits where it
@@ -1188,17 +1248,38 @@ predicts two:**
   navigation line, on the last on-path session before the skip, and never on
   `Previous:`; a conditional add-on session keeps its add-on label instead of a step
   number.
+- **Replace the two destination instances in `## Verify-don't-trust`.** That section's
+  third and fourth sentences read *"Name seasons and categories (Golden Week, rainy
+  season, typhoon season) as things to confirm this year, never as pinned dates. Refer to
+  "teamLab's current venues" (they change); a venue pinned by name today may have closed
+  before the family books."* Write instead: *"Name seasons and categories (a national
+  holiday week, a rainy season, a typhoon season) as things to confirm this year, never as
+  pinned dates. Refer to "the operator's current venues" (they change); a venue pinned by
+  name today may have closed before the family books."* The rule, the quoted-phrase
+  demonstration and the consequence clause are all unchanged; only the two proper nouns
+  go. `Golden Week` names one country's national holidays and `teamLab` names one
+  country's company, so both are destination facts sitting in the operative style law
+  that a second destination's builder is forbidden to edit (A1 rule 2). Leave "rainy
+  season" and "typhoon season" -- those are weather categories, not place names. Change
+  nothing else in the section: the volatile-fact list, the three quoted verify phrases and
+  the currency sentence all stay.
 
-After these six changes, the destination name survives in this file on **exactly one
+After these seven changes, the destination name survives in this file on **exactly one
 line** — the new destination-names rule, where it quotes the five-name leak-grep
 pattern. That is a builder-facing rule, not a destination fact, and it is the single
 hit the framework leak-grep self-check below expects. Nowhere else.
 
-One thing this edit deliberately does **not** touch: the `## Verify-don't-trust` section
-names "Golden Week" as a season/category to confirm each year. It is a destination-
-specific term, but it is outside the five-name grep pattern and outside the BUILD RULES
-leak list, so it neither trips a gate nor blocks the three-layer claim as that claim is
-scoped. Leave it. Note it in your build report so the human decides knowingly.
+**The five-token grep is a floor, not the rule.** F1 requires the three-layer claim to be
+written with no exception, and OQ-16 orders a full framework scrub, so the rule bans
+destination **facts** -- a class no token list can enumerate. `Golden Week` and `teamLab`
+are the worked proof: both are destination proper nouns, both sat in this file, and
+neither trips `Japan|Tokyo|Kyoto|Osaka|Shinkansen`. The seventh change above removes them.
+When you touch any `framework/` file in this batch, read it for destination-specific
+proper nouns -- a holiday name, a company, an operator, a landmark, a rail brand -- and
+neutralise each one, whether or not a grep would catch it. A clean leak grep proves the
+five tokens are gone; it does not prove the layer is clean. Record in your build report
+which non-grepped proper nouns you neutralised, so the human can see the class was
+swept and not just the pattern.
 
 **F12. `framework/docs/privacy_and_safety.md` (edit).** Two changes. Replace *"blank
 templates, and Japan reference."* with *"blank templates, and the destination reference
@@ -1554,9 +1635,14 @@ navigation only:
 
 **Handle with extra care. Change only the two leaking lines.**
 
+Both quotes below are contracted, and they are contracted in the file: the sentence-level
+voice conventions landed after the first draft of this brief and rewrote this session.
+Match the text you find, and keep the contraction in your replacement -- an uncontracted
+`You are going` here would undo that pass on the exemplar sentence.
+
 | Line | Current text | Neutral replacement |
 | --- | --- | --- |
-| Steps intro | "You are going to practice on one real fact about Japan." | "You are going to practice on one real fact about the place you are going." |
+| Steps intro | "You're going to practice on one real fact about Japan." | "You're going to practice on one real fact about the place you are going." |
 | Step 1 | "For example: 'What is the capital of Japan?' or 'What is a bullet train called?'" | Generic examples that work for any destination — "What is the capital city?" or "What money do they use?" |
 
 Everything else is untouched: the Start Here micro-action, the five-field first entry,
@@ -1880,18 +1966,21 @@ You are here: Phase 2 (Destination Big Picture), First Taste step 5 of 13. Previ
   state.
 - **Every child-facing file this batch creates or edits satisfies the density caps in
   `framework/docs/build_style_and_vocab.md`** -- the dash budget, the
-  `real`/`genuine(ly)` cap and the `X, not Y` cap, each at the child-facing register,
-  counted by the rules that guide states (code spans, fenced blocks, block quotes,
-  table cells, label separators and bold label lead-ins do not count; a paired
-  parenthetical is one device). Read the caps from that file rather than from this
-  brief, so that a later change to the caps does not leave this instruction stale.
+  `real`/`genuine(ly)` cap and the `X, not Y` cap, each at the register the file itself
+  carries. **Read both the caps and the counting rules from that file, never from this
+  brief.** Its `## Sentence-level conventions` section defines what a prose line is, what
+  is outside the count, when a paired parenthetical counts once, when a block quote counts
+  as prose, and how the register changes at a "For parents" strip or a `## Parent Notes`
+  heading. Do not work from a summary: the block-quote rule in particular is not the
+  obvious one, and Session 04's carry-over tag is the case the guide uses to settle it.
 
-  This is stated as acceptance rather than left implicit because **thirteen of the
-  files this batch edits are currently over at least one cap**. They are not listed
-  here, because a list would go stale the moment the corpus pass moves; measure
-  instead. A batch that rewrites a file and leaves it over cap simply moves the
-  defect forward, and the separate corpus pass would then redo work this batch had
-  already touched.
+  This is stated as acceptance rather than left implicit because **a number of the files
+  this batch edits are currently over at least one cap**. They are not listed here, and no
+  count is given either: both go stale the moment another pass touches the corpus -- the
+  sentence-level voice conventions already brought the exemplar back under cap after this
+  brief was drafted. **Measure each file you touch.** A batch that rewrites a file and
+  leaves it over cap simply moves the defect forward, and the separate corpus pass would
+  then redo work this batch had already touched.
 
   **The precedence rule in that guide applies here too:** content outranks the
   budget. Never delete a required rule, a safety statement, a Named concept or a
@@ -1911,11 +2000,17 @@ from BSD grep as well, so `-w` is the form that fails in fewer places rather tha
 the portable one:
 
 ```bash
-grep -rwE 'Chicago|ORD|17|grandmother|uncle' framework/sessions/
+grep -rwE 'Chicago|ORD|17|grandmother|uncle' framework/
 ```
 
 Expect no output, and confirm no hard-coded family value (blanks pointing to
-`trip_basics.md` are fine).
+`trip_basics.md` are fine). **The scope is all of `framework/`, not `framework/sessions/`.**
+The leak rule is written about sessions, but this batch creates
+`framework/trip_starter/family/trip_basics.md` (G2), the traveler-profiles folder README
+(G4) and the traveler-profile template (D1) -- the three files most able to acquire a
+roster value, all of them outside `sessions/`, and all three required above to be
+completely blank with no example family. Widening costs nothing: the whole of `framework/`
+returns zero hits today, so the expectation is unchanged and only the blind spot closes.
 
 Destination leak in the converted and new session bodies. **Both leak greps below take
 `-i`, and that is load-bearing, not cosmetic:** the rule bans the destination name in a
@@ -1954,10 +2049,12 @@ Expect **exactly two lines of output**, and no others:
 
 Those are the only two exceptions in this tree, and **your own Batch 1 changelog entries
 must not add a third** — write "the destination pack", never the destination's name. If
-you get **three** lines, F11's second replacement was skipped: the surviving one will be
-the banned-words bullet *"No exotic/othering framing of Japan or its culture."*, and it
-must be neutralised before you stop. Any hit outside those two is a real leak, and it
-must be fixed.
+you get **three** lines, one of two replacements was missed. Check F11's second
+replacement first -- the surviving line would be the banned-words bullet *"No
+exotic/othering framing of Japan or its culture."* If that one is applied, the survivor is
+`framework/templates/trip_basics.md`'s time-zone sentence, which D9 is the only
+instruction to change. Either way it must be neutralised before you stop. Any hit outside
+those two is a real leak, and it must be fixed.
 
 No hard link from **any framework file** into the destination pack. The scope is all of
 `framework/`, not `framework/sessions/`: a pack path in `framework/docs/`,
@@ -1982,15 +2079,23 @@ expectation as "hits in the five exempt sessions," because that is exactly the k
 slack that lets a real regression pass.
 
 Neutral pronouns for a generic child — this one needs eyeballing, since a legitimate
-"their"/"they" sentence can sit beside a false positive:
+"their"/"they" sentence can sit beside a false positive. **Scope it the way the style
+guide's own QA grep is scoped**, all of `framework/` and all of `destinations/`: the
+neutral-pronoun rule binds every built file, and 37 of this batch's 64 deliverables sit
+outside `sessions/`, `parent_guide/` and `student_guide/` -- every template, every
+framework doc, the whole trip-starter kit, all five session inserts, and the new reference
+page. The templates and the inserts are child-facing by the readability gate's own path
+list below, so a narrower grep would skip the files a child actually fills in:
 
 ```bash
-grep -rniwE 'he|him|his|she|her|hers|himself|herself' \
-  framework/sessions/ framework/parent_guide/ framework/student_guide/
+grep -rniwE 'he|him|his|she|her|hers|himself|herself' framework/ destinations/
 ```
 
-Read every hit. Any generic-child reference must be "your child," "the child," or
-"they."
+**Expect exactly one hit on a correct build:** the neutral-pronoun rule's own line in
+`framework/docs/build_style_and_vocab.md`, which quotes the banned pronouns in order to
+ban them. The style guide predicts that self-match itself. Read every other hit. Any
+generic-child reference must be "your child," "the child," or "they." A hit inside a
+quoted example is fine; a hit that is a real pronoun choice is not.
 
 Structure check — the seven mandatory-core fields, skipping the adult-only Session 00.
 **If `.github/scripts/check-session-structure.py` is on your branch, that script is the
@@ -2019,16 +2124,28 @@ would gut three Batch 0 pages and fail the equivalence read.
 Freshness stamps:
 
 ```bash
+month='(January|February|March|April|May|June|July|August|September|October|November|December)'
 for f in destinations/*/reference/*.md destinations/*/session_inserts/*.md; do
   [ -e "$f" ] || continue   # an unexpanded glob is not a missing stamp
   case "$(basename "$f")" in README.md) continue;; esac
-  grep -q '^\*\*Last reviewed:\*\* ' "$f" || echo "MISSING or MALFORMED stamp: $f"
+  grep -qE "^\*\*Last reviewed:\*\* ${month} [0-9]{4}$" "$f" \
+    || echo "MISSING or MALFORMED stamp: $f"
 done
 ```
 
-The pattern deliberately matches the **canonical** form -- bold label, trailing space --
-and not the bare substring `Last reviewed:`, which would pass an unbolded or
-slash-separated stamp and let a format divergence into the pack silently.
+The pattern matches the **canonical** form end to end -- bold label, one space, a full
+month name, one space, a four-digit year, end of line -- and nothing else. **The end
+anchor is the working part.** Without it the pattern tests only the prefix, so
+`**Last reviewed:** September/2026`, `**Last reviewed:** nonsense` and even an empty value
+all pass while the gate reports green; with it, each of those fails, and so do an
+abbreviated month (`Sept 2026`) and a stamp with anything appended after the year. The
+unbolded form `Last reviewed: July 2026` fails on the `^\*\*` either way. Spelling the
+twelve months out rather than accepting any capitalised word is what stops
+`Nonsense 2026`.
+
+This is POSIX ERE, so `grep -E` accepts it on GNU and BSD alike, and `.gitattributes`
+pins `*.md` to LF, so the `$` anchor matches in Git Bash on Windows as well. Verified
+against the six built reference files: all six pass and the loop prints nothing.
 
 Expect no output.
 
@@ -2082,10 +2199,23 @@ You can perform neither. Produce a short build report and hand the human these i
    the Batch 0 baseline, not a child re-run. Those Batch 0 pages are unpiloted too, so
    equivalence proves nothing was lost in the conversion; it does not show that either
    version works with a child. Make it easy: for each of Sessions 01, 03, 04, 05, 10,
-   12, 13 and 14, list the diff against its pre-Batch-1 state alongside the insert that
-   received the facts, so the reviewer can confirm **nothing was lost**. Flag the one
-   deliberate exception in writing: Session 10's "a long flight from the US" became "a
-   long flight from home" as an origin-layer neutralisation, so no insert received it.
+   12, 13 and 14, list the diff against its pre-Batch-1 state **and name where the content
+   went**, so the reviewer can confirm **nothing was lost**. Only two of the eight send
+   facts to an insert -- Session 10 to `10_snapshot_facts.md` and Session 12 to
+   `12_seasons_and_events.md`. **Record a destination for the other six rather than leaving
+   a blank**, because a blank reads as an omission and a stated reason makes the pack
+   self-checking: Session 05 loses two hard links and gains a generic pointer to the pack's
+   trusted-starting-sources reference, which already holds the content, so nothing moved;
+   and Sessions 01, 03, 04, 13 and 14 have no insert slot at all, so their diffs are
+   wording changes with no content move -- say exactly that for each, and a diff larger
+   than that is a signal to look again. **List one more migration alongside the eight:**
+   `framework/student_guide/travel_glossary.md`'s two deleted sections (H9) against
+   `destinations/japan/session_inserts/kid_glossary.md` (A5). It is fourteen entries
+   leaving a child-facing page, it is the largest block of content this batch moves, and
+   F10 records it in the changelog as a Batch 1 change, so the check that exists to prove
+   nothing was lost has to cover it. Flag the one deliberate exception in writing: Session
+   10's "a long flight from the US" became "a long flight from home" as an origin-layer
+   neutralisation, so no insert received it.
    An automated equivalence read can stand in for this check, because it compares two
    texts.
 2. **Gate check 2 — the child observation.** An adult watches the child work the new
