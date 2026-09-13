@@ -246,7 +246,6 @@ def test_headings_inside_a_fence_are_not_counted() -> None:
     """A fenced example containing '## Goal' must not satisfy the requirement."""
     sections = ("Goal", "Start Here", "Steps", "Workspace", "Artifact Created", "Stop Point")
     text = build_session(sections=sections, markers="<!-- no-source-check: none needed -->")
-    text = text.replace("## Goal", "## Goal", 1)
     fenced = text + "\n```markdown\n## Stop Point\n\nnot a real section\n```\n"
     # Removing the real Stop Point must still be caught even though a fenced copy exists.
     broken = fenced.replace("## Stop Point\n\nReal content for Stop Point.\n", "", 1)
@@ -296,6 +295,23 @@ def test_an_unparsable_filename_is_a_violation() -> None:
 def test_a_hyphenated_filename_number_still_parses() -> None:
     """`07-name.md` is as valid a shape as `07_name.md`."""
     assert check(build_session(number="07"), name="07-a-session.md") == []
+
+
+def test_a_nonexistent_explicit_path_is_refused(tmp_path: Path) -> None:
+    """A typo must not let the run report success for a corpus it never opened."""
+    (tmp_path / "framework" / "sessions").mkdir(parents=True)
+    violations = structure.scan_files(["framework/sessions/99_typo.md"], root=tmp_path)
+    assert any("nothing to check" in v.message for v in violations)
+    assert structure.main(["framework/sessions/99_typo.md"], root=tmp_path) == 1
+
+
+def test_a_non_markdown_explicit_path_is_refused(tmp_path: Path) -> None:
+    """A file that is not Markdown cannot be checked, so it is refused, not skipped."""
+    session_dir = tmp_path / "framework" / "sessions"
+    session_dir.mkdir(parents=True)
+    (session_dir / "notes.txt").write_text("not markdown", encoding="utf-8")
+    violations = structure.scan_files(["framework/sessions/notes.txt"], root=tmp_path)
+    assert any("nothing to check" in v.message for v in violations)
 
 
 def test_the_real_session_corpus_is_well_formed() -> None:

@@ -699,6 +699,21 @@ def collect_targets(path_arguments: Sequence[str], root: Path) -> ScanTargets:
                 take(path)
         elif candidate.is_file() and candidate.suffix.lower() == ".md":
             paths.append(candidate)
+        else:
+            # The argument survived the guard but names nothing this checker can
+            # read: a path that does not exist, or a file that is not Markdown.
+            # Ignoring it silently lets the run report "all well-formed" for a
+            # corpus it never opened, which is the failure a gate exists to
+            # prevent.
+            refusals.append(
+                Violation(
+                    display_name(candidate, root, argument),
+                    1,
+                    "not a Markdown file or a directory, so there is nothing to check. "
+                    "Check the path: a typo here would otherwise pass silently, because "
+                    "a run that checks nothing reports no problems.",
+                )
+            )
 
     return ScanTargets(tuple(paths), tuple(refusals))
 
