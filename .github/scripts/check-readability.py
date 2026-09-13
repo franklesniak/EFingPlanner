@@ -168,7 +168,13 @@ HTML_TAG_PATTERN = re.compile(r"</?[A-Za-z][A-Za-z0-9-]*(?:\s[^<>]*)?/?>|<[!?][^
 IMAGE_PATTERN = re.compile(r"!\[[^\]]*\]\([^)]*\)")
 LINK_PATTERN = re.compile(r"\[([^\]]*)\]\([^)]*\)")
 BARE_URL_PATTERN = re.compile(r"<?https?://\S+>?")
-INLINE_CODE_PATTERN = re.compile(r"`[^`]*`")
+#: A code span is opened by a backtick string and closed by a backtick string
+#: of the *same* length, so ````the `--strict` flag```` is one span and not
+#: two. A ```[^`]*``` pattern leaves the payload of every multi-backtick
+#: span in the prose, which raises the score of a file whose only fault is that
+#: it documents Markdown.
+#: https://spec.commonmark.org/0.31.2/#code-spans
+INLINE_CODE_PATTERN = re.compile(r"(?P<code_ticks>`+).*?(?P=code_ticks)(?!`)")
 LIST_MARKER_PATTERN = re.compile(r"^ {0,8}(?:[-*+]|\d{1,3}[.)])\s+")
 BLOCKQUOTE_PATTERN = re.compile(r"^ {0,3}>\s?")
 EMPHASIS_PATTERN = re.compile(r"[*_]{1,3}")
@@ -181,7 +187,28 @@ UNIT_KIND_PROSE = "prose"
 UNIT_KIND_QUOTE = "quote"
 
 WORD_PATTERN = re.compile(r"[A-Za-z]+(?:['’-][A-Za-z]+)*|\d+(?:[.,]\d+)*")
-SENTENCE_SPLIT_PATTERN = re.compile(r"(?<=[.!?])[\"')\]]*\s+")
+#: A sentence break: terminal punctuation, any closing quotes or brackets that
+#: belong to it, then whitespace. The closers are captured because whether they
+#: are present decides one of the two cases in ``ends_a_sentence`` below.
+SENTENCE_SPLIT_PATTERN = re.compile(r"(?<=[.!?])(?P<closers>[\"')\]]*)\s+")
+
+#: Abbreviations whose period never ends an English sentence, so ``The U.S.
+#: Department of State`` is one sentence and not two. Splitting there inflates
+#: the sentence count, which lowers *both* reported measures -- the direction
+#: that lets genuinely long sentences through the gate.
+ABBREVIATION_PATTERN = re.compile(
+    r"(?:^|[\s\"'(\[])"
+    r"(?:U\.S\.|U\.K\.|e\.g\.|i\.e\.|vs\.|Mr\.|Mrs\.|Ms\.|Dr\.|Prof\.|St\.)"
+    r"$"
+)
+
+#: Abbreviations that *can* end a sentence, so they are not in the list above:
+#: "14:00 means 2 p.m. After noon, subtract 12." is two sentences. They end a
+#: sentence unless a lowercase word follows, as in "a map, a pen, etc. before
+#: you leave".
+AMBIGUOUS_ABBREVIATION_PATTERN = re.compile(
+    r"(?:^|[\s\"'(\[])(?:etc\.|a\.m\.|p\.m\.|incl\.|approx\.|No\.)$"
+)
 VOWEL_GROUP_PATTERN = re.compile(r"[aeiouy]+")
 
 
@@ -333,16 +360,24 @@ def normalize_for_fence_opening(line: str, list_contexts: list[ListContext]) -> 
     relative_line, peeled_count = peel_containers(line, active_path)
     effective_path = active_path[:peeled_count]
 
+    # Containers alternate freely on one line: ``> - item``, ``- > quoted``,
+    # and ``- - item`` are all valid CommonMark. Peeling every blockquote and
+    # then at most one list item handles only the first of those; the rest
+    # leave a container prefix in front of the fence, so the fence is missed
+    # and the fence state stays wrong for the rest of the file.
+    # https://spec.commonmark.org/0.31.2/#container-blocks
     extras: list[Container] = []
     while True:
-        match = BLOCK_QUOTE_PREFIX_PATTERN.match(relative_line)
-        if match is None:
-            break
-        extras.append(Container(kind=CONTAINER_KIND_BLOCK_QUOTE))
-        relative_line = relative_line[match.end() :]
+        quote_match = BLOCK_QUOTE_PREFIX_PATTERN.match(relative_line)
+        if quote_match is not None:
+            extras.append(Container(kind=CONTAINER_KIND_BLOCK_QUOTE))
+            relative_line = relative_line[quote_match.end() :]
+            continue
 
-    list_match = LIST_ITEM_PATTERN.match(relative_line)
-    if list_match is not None:
+        list_match = LIST_ITEM_PATTERN.match(relative_line)
+        if list_match is None:
+            break
+
         content_indent_rel = list_content_indent(list_match)
         extras.append(Container(kind=CONTAINER_KIND_LIST, indent=content_indent_rel))
         relative_line = (
@@ -375,6 +410,22 @@ def build_active_fence(
         minimum_length=minimum_length,
         containment_path=fence_line.containment_path,
     )
+
+
+def strip_block_quote_prefixes(line: str) -> str:
+    """Return ``line`` with every leading blockquote prefix removed.
+
+    A table may sit inside a blockquote, where its header row and its delimiter
+    row both carry a ``>``. The delimiter row is the only thing that marks a
+    table, so without peeling the prefix first the table is never recognized and
+    its prompts and cell text are scored as prose.
+    https://spec.commonmark.org/0.31.2/#block-quotes
+    """
+    while True:
+        match = BLOCK_QUOTE_PREFIX_PATTERN.match(line)
+        if match is None:
+            return line
+        line = line[match.end() :]
 
 
 def is_table_delimiter(line: str) -> bool:
@@ -470,14 +521,18 @@ def extract_prose(text: str) -> str:
 
         # Tables, with or without outer pipe characters. A table is found by
         # its delimiter row. The header line above that row and the body rows
-        # below it are part of the same table.
+        # below it are part of the same table. A quoted table carries a ``>``
+        # on every one of its rows, so the prefix is peeled before the delimiter
+        # row is looked for.
+        table_line = strip_block_quote_prefixes(line)
         if in_table:
-            if line.strip() and "|" in line:
+            if table_line.strip() and "|" in table_line:
                 open_unit = None
                 continue
             in_table = False
         next_line = lines[index + 1] if index + 1 < len(lines) else ""
-        if line.strip() and "|" in line and is_table_delimiter(next_line):
+        next_table_line = strip_block_quote_prefixes(next_line.rstrip())
+        if table_line.strip() and "|" in table_line and is_table_delimiter(next_table_line):
             in_table = True
             open_unit = None
             continue
@@ -511,7 +566,7 @@ def extract_prose(text: str) -> str:
         if is_heading:
             open_unit = None
             continue
-        if TABLE_ROW_PATTERN.match(line):
+        if TABLE_ROW_PATTERN.match(table_line):
             open_unit = None
             continue
         if THEMATIC_BREAK_PATTERN.match(line):
@@ -597,6 +652,30 @@ def count_syllables(word: str) -> int:
     return max(count, 1)
 
 
+def ends_a_sentence(before: str, closers: str, after: str) -> bool:
+    """Return whether one terminal-punctuation break really ends a sentence.
+
+    Two things break a naive "split on every period" rule, and both of them
+    inflate the sentence count, which lowers the reported words-per-sentence
+    figure and the grade -- the direction that lets hard text through the gate.
+
+    An abbreviation's period is not a sentence end: ``The U.S. Department of
+    State`` is one sentence.
+
+    A lowercase word after a closing quote or bracket continues the sentence
+    it is in: ``your "what do I do next?" page`` is one sentence, not two. The
+    closer is what makes this safe to assume. A bare ``sentence. lowercase``
+    is left alone, because an inline code span is replaced by a space before
+    this runs, so a sentence that *starts* with one legitimately begins with a
+    lowercase word here.
+    """
+    if ABBREVIATION_PATTERN.search(before):
+        return False
+    if not after[:1].islower():
+        return True
+    return not closers and AMBIGUOUS_ABBREVIATION_PATTERN.search(before) is None
+
+
 def split_sentences(prose: str) -> list[str]:
     """Split prose into sentences.
 
@@ -604,16 +683,26 @@ def split_sentences(prose: str) -> list[str]:
     Worksheet prompts and short list items are written that way throughout the
     curriculum, and treating a whole paragraph of them as a single enormous
     sentence would wrongly inflate every score.
+
+    Not every terminal-punctuation break is a sentence end; see
+    ``ends_a_sentence``.
     """
     sentences: list[str] = []
     for line in prose.split("\n"):
         line = line.strip()
         if not line:
             continue
-        for piece in SENTENCE_SPLIT_PATTERN.split(line):
-            piece = piece.strip()
-            if piece and WORD_PATTERN.search(piece):
-                sentences.append(piece)
+        start = 0
+        for match in SENTENCE_SPLIT_PATTERN.finditer(line):
+            piece = line[start : match.start()]
+            if not ends_a_sentence(piece, match.group("closers"), line[match.end() :]):
+                continue
+            if WORD_PATTERN.search(piece):
+                sentences.append(piece.strip())
+            start = match.end()
+        tail = line[start:]
+        if WORD_PATTERN.search(tail):
+            sentences.append(tail.strip())
     return sentences
 
 

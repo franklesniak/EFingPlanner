@@ -251,16 +251,24 @@ def normalize_for_fence_opening(line: str, list_contexts: list[ListContext]) -> 
     relative_line, peeled_count = peel_containers(line, active_path)
     effective_path = active_path[:peeled_count]
 
+    # Containers alternate freely on one line: ``> - item``, ``- > quoted``,
+    # and ``- - item`` are all valid CommonMark. Peeling every blockquote and
+    # then at most one list item handles only the first of those; the rest
+    # leave a container prefix in front of the fence, so the fence is missed
+    # and the fence state stays wrong for the rest of the file.
+    # https://spec.commonmark.org/0.31.2/#container-blocks
     extras: list[Container] = []
     while True:
-        match = BLOCK_QUOTE_PREFIX_PATTERN.match(relative_line)
-        if match is None:
-            break
-        extras.append(Container(kind=CONTAINER_KIND_BLOCK_QUOTE))
-        relative_line = relative_line[match.end() :]
+        quote_match = BLOCK_QUOTE_PREFIX_PATTERN.match(relative_line)
+        if quote_match is not None:
+            extras.append(Container(kind=CONTAINER_KIND_BLOCK_QUOTE))
+            relative_line = relative_line[quote_match.end() :]
+            continue
 
-    list_match = LIST_ITEM_PATTERN.match(relative_line)
-    if list_match is not None:
+        list_match = LIST_ITEM_PATTERN.match(relative_line)
+        if list_match is None:
+            break
+
         content_indent_rel = list_content_indent(list_match)
         extras.append(Container(kind=CONTAINER_KIND_LIST, indent=content_indent_rel))
         relative_line = (

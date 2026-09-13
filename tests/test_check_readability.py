@@ -863,6 +863,16 @@ def test_the_two_checkers_agree_on_a_contained_fence() -> None:
     assert placeholders.find_violations_in_text(text, "x.md") == []
     assert "TBD" not in readability.extract_prose(text)
 
+    # Containers may alternate on one line. Both scripts must peel the list and
+    # the blockquote before they look for the fence, or one reports a
+    # placeholder inside a code block while the other scores the code as prose.
+    alternating = "\n".join(
+        ["Prose one.", "", "- > ```text", "  > TBD", "  > ```", "", "Prose two."]
+    )
+    assert placeholders.find_violations_in_text(alternating, "x.md") == []
+    assert "TBD" not in readability.extract_prose(alternating)
+    assert "Prose two." in readability.extract_prose(alternating)
+
 
 # ---------------------------------------------------------------------------
 # HTML stripping
@@ -969,3 +979,166 @@ def test_a_directory_argument_still_refuses_an_adult_tree(tmp_path: Path) -> Non
     (docs_dir / "brief.md").write_text("Some prose lives here.", encoding="utf-8")
 
     assert readability.resolve_paths(["docs"], root) == []
+# --- round 4: containers alternate on one line (H1) -------------------------
+
+
+def test_extract_prose_drops_a_fence_inside_a_list_item_blockquote() -> None:
+    """``- > ```text`` opens a fence: containers may alternate on one line."""
+    text = "\n".join(
+        [
+            "Prose one is here.",
+            "",
+            "- > ```text",
+            "  > ALPHALEAK subsequently demonstrated considerable inefficiencies",
+            "  > ```",
+            "",
+            "Prose two is here.",
+        ]
+    )
+    prose = readability.extract_prose(text)
+    assert "Prose one is here." in prose
+    assert "ALPHALEAK" not in prose
+
+
+def test_a_missed_container_fence_does_not_swallow_the_rest_of_the_file() -> None:
+    """A missed container prefix does more than leak one line.
+
+    The closing fence is then read as a *new opening* fence, so every
+    child-facing line after it is dropped and the file can fall under the
+    40-word minimum and stop being scored at all.
+    """
+    text = "\n".join(
+        [
+            "Prose one is here.",
+            "",
+            "- > ```text",
+            "  > ALPHALEAK subsequently demonstrated considerable inefficiencies",
+            "  > ```",
+            "",
+            "Prose two is here.",
+            "",
+            "Prose three is here.",
+        ]
+    )
+    prose = readability.extract_prose(text)
+    assert "Prose two is here." in prose
+    assert "Prose three is here." in prose
+
+
+def test_extract_prose_drops_a_fence_inside_nested_list_items() -> None:
+    """Two list markers on one line are two containers, not prose."""
+    text = "\n".join(
+        [
+            "Prose one is here.",
+            "",
+            "- - ```text",
+            "    BRAVOLEAK --comprehensive --administrative --documentation",
+            "    ```",
+            "",
+            "Prose two is here.",
+        ]
+    )
+    prose = readability.extract_prose(text)
+    assert "Prose one is here." in prose
+    assert "Prose two is here." in prose
+    assert "BRAVOLEAK" not in prose
+
+
+# --- round 4: not every terminal period ends a sentence (H2) ----------------
+
+
+def test_split_sentences_does_not_split_an_abbreviation() -> None:
+    """``The U.S. Department of State`` is one sentence, not two.
+
+    This is the gate-weakening direction: an extra sentence lowers both the
+    words-per-sentence figure and the grade, so a file can pass while its real
+    sentences are far longer than the limit allows.
+    """
+    abbreviated = "The U.S. Department of State keeps a page for each country you visit."
+    expanded = (
+        "The United States Department of State keeps a page for each country you visit."
+    )
+    assert len(readability.split_sentences(abbreviated)) == 1
+    assert len(readability.split_sentences(expanded)) == 1
+
+
+def test_an_abbreviation_does_not_lower_the_reported_sentence_length() -> None:
+    """The positive control for the test above, at the score level."""
+    document = "\n\n".join(
+        ["The U.S. Department of State keeps a page for each country you visit."] * 4
+    )
+    score = readability.score_text(document, "x.md")
+    assert score.sentences == 4
+    assert score.words_per_sentence >= readability.SENTENCE_WARN
+
+
+def test_split_sentences_keeps_a_quoted_question_inside_its_sentence() -> None:
+    """``your "what do I do next?" page`` is one sentence, not two."""
+    text = 'This is your one "what do I do next?" page. Open it whenever you are stuck.'
+    assert len(readability.split_sentences(text)) == 2
+
+
+def test_split_sentences_still_splits_after_an_abbreviation_that_ends_one() -> None:
+    """``p.m.`` really does end sentences, so the fix must not merge these.
+
+    Without this control, an abbreviation rule that swallowed every period
+    after a dotted token would pass the test above while quietly merging real
+    sentences and making the corpus look harder than it is.
+    """
+    text = "Time uses a 24-hour clock. 14:00 means 2 p.m. After noon, subtract 12."
+    assert len(readability.split_sentences(text)) == 3
+    assert len(readability.split_sentences("A good planner has a plan B. Backups help.")) == 2
+
+
+def test_split_sentences_still_splits_after_a_quoted_sentence() -> None:
+    """The control for the test above: a closing quote can end a sentence."""
+    assert len(readability.split_sentences('She said "Stop now." Then she left.')) == 2
+    assert (
+        len(readability.split_sentences("The cat sat on the mat. the dog ran to the box."))
+        == 2
+    )
+
+
+# --- round 4: a quoted table is still a table (H3) --------------------------
+
+
+def test_extract_prose_drops_a_table_inside_a_blockquote() -> None:
+    """A quoted table is still a table; its prompts are not prose."""
+    text = "\n".join(
+        [
+            "Prose before the quote.",
+            "",
+            "> | Prompt | Your answer |",
+            "> | --- | --- |",
+            "> | Where did you look for this | write it here |",
+            "",
+            "Prose after the quote.",
+        ]
+    )
+    prose = readability.extract_prose(text)
+    assert "Prose before the quote." in prose
+    assert "Prose after the quote." in prose
+    assert "Your answer" not in prose
+    assert "Where did you look" not in prose
+
+
+# --- round 4: multi-backtick code spans (H4) --------------------------------
+
+
+def test_extract_prose_drops_a_multi_backtick_code_span() -> None:
+    """A code span may be delimited by two or more backticks."""
+    prose = readability.extract_prose(
+        "Type ``npm run lint -- --fix`` and then press enter to start the check."
+    )
+    assert "npm" not in prose
+    assert "and then press enter" in prose
+
+
+def test_extract_prose_drops_a_code_span_that_contains_a_backtick() -> None:
+    """The whole span goes, including the single backticks inside it."""
+    prose = readability.extract_prose(
+        "Use ``the `--strict` flag`` when you want warnings to fail the run."
+    )
+    assert "strict" not in prose
+    assert "flag" not in prose
+    assert "when you want warnings to fail the run." in prose
