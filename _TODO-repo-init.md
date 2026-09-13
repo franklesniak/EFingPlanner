@@ -48,7 +48,7 @@
 
 ### 5. Create the `triage` issue label
 
-- [x] Done. The label exists, with the expected colour `d4c5f9`.
+- [x] Done. The label exists, with the expected color `d4c5f9`.
 - Equivalent paths, for reference: `gh label create triage --description "Needs triage" --color "d4c5f9"`, or **Issues → Labels → New label →** Name `triage`, Description `Needs triage`, Color `#d4c5f9`.
 - The `- triage` references in `.github/ISSUE_TEMPLATE/*.yml` were uncommented during initialization, so they activate as soon as the label exists. Color `d4c5f9` (light purple) is the value defined in copilot-repo-template's documentation.
 
@@ -81,7 +81,7 @@
 | 3. Dependabot alerts | `gh api repos/franklesniak/EFingPlanner/vulnerability-alerts` | HTTP 204, so enabled |
 | 3. Dependabot security updates | `gh api repos/franklesniak/EFingPlanner/automated-security-fixes` | `enabled: false`, left off on purpose (see above) |
 | 4. Discussions | `gh api repos/franklesniak/EFingPlanner` field `has_discussions` | `true` |
-| 5. `triage` label | `gh label list --search triage` | Present, colour `d4c5f9` |
+| 5. `triage` label | `gh label list --search triage` | Present, color `d4c5f9` |
 | 6. Branch ruleset | `gh api repos/franklesniak/EFingPlanner/rulesets` | Created 2026-09-13, id 23196428, `active` |
 
 ## B. Offloaded to coding-agent issues — both complete
