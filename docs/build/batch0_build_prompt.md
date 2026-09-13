@@ -50,10 +50,12 @@ coaching), §22 (Japan facts). Build, at the repo root:
    `Session 09` as a conditional Batch 0 deliverable for the AI-on path, or state
    explicitly that this slice is AI-off only — never ship an AI-on pilot without it.
 3. **The minimal support files to make Batch 0 pilotable:** root `README.md` and
-   `GETTING_STARTED.md` — the latter built to **§13.2** (the concrete print/copy workflow,
-   the data-flow walkthrough, the recommended cadence, the privacy/no-commit rules, and the
-   30-second backup habit), opening with the verify-don't-trust banner in §13.1's canonical
-   wording; `framework/PROJECT_ROADMAP.md` (First-Taste index up front); the templates those
+   `GETTING_STARTED.md` — **both must open with the verify-don't-trust banner in §13.1's
+   canonical wording** (§13.1 requires it verbatim at the top of every start surface — the
+   root `README.md` included, not only `GETTING_STARTED.md`); `GETTING_STARTED.md`
+   additionally follows **§13.2** (the concrete print/copy workflow, the data-flow
+   walkthrough, the recommended cadence, the privacy/no-commit rules, and the 30-second
+   backup habit); `framework/PROJECT_ROADMAP.md` (First-Taste index up front); the templates those
    13 sessions use, incl. `trip_basics.md` and the 3-criteria scoring variant (§26);
    `framework/student_guide/progress_tracker.md` (+ `when_im_stuck.md`, `what_i_decide.md`
    if the sessions reference them); the parent quick-start (§21.0) **and the three must-reads
@@ -71,7 +73,8 @@ The spec mandates that, as the **first action of the build, before the Batch 0 p
 builder execute the **Lean/Full file-cut** (saving `lean-spec.md` and `full-oer-companion.md`),
 the **AC renumber**, and the **name-first reference sweep** (§0 "How to read and build from
 this spec"; §31). That is a one-time spec-restructuring step, **not** curriculum authoring —
-it is out of scope for these curriculum-build briefs, which only *create* curriculum files.
+it is out of scope for these curriculum-build briefs, which author curriculum files and never
+edit `docs/spec/`.
 "Leave `docs/spec/` untouched" governs Batch 0 authoring; it does **not** authorize skipping
 the mandated split. Confirm the split (or its deliberate deferral) has happened before relying
 on the `lean-spec.md` / `full-oer-companion.md` pointers named under Source of truth.
@@ -98,19 +101,23 @@ on the `lean-spec.md` / `full-oer-companion.md` pointers named under Source of t
   (every fence declares a language; no heading ends in `:` or `?`). Reuse the repo's
   committed `.markdownlint.jsonc` — do not add a second config. Run `pre-commit run
   --all-files` and fix issues before finishing.
-- **Do not edit** `docs/spec/*`, `CLAUDE.md`, `.github/copilot-instructions.md`,
-  `.github/instructions/*`, or any other governance/instruction file. This build only
-  *creates* curriculum files — the mandated one-time build-start spec split (file-cut, AC
-  renumber, name-first sweep) is a separate prerequisite done before this brief, not a
-  Batch 0 edit (see the prerequisite note above).
+- **Do not edit** `docs/spec/*`, `CLAUDE.md`, `AGENTS.md`, `GEMINI.md`, `.hermes.md`,
+  `.github/copilot-instructions.md`, `.github/instructions/*`, `.cursor/rules/*`, or any
+  other governance or agent-instruction file. This rule has no exceptions — the mandated
+  one-time build-start spec split (file-cut, AC renumber, name-first sweep) is a separate
+  prerequisite done before this brief, not a Batch 0 edit (see the prerequisite note above).
+- **Create and edit only the Batch 0 files listed above.** That list includes the root
+  `README.md`, which this build replaces in place. Touch no other file, and do not touch the
+  repository's template and CI infrastructure.
 
 ## Definition of done for THIS run
 
 - All Batch 0 files above exist, are meaningful (no thin/placeholder files), and lint-clean;
   all relative links resolve.
-- Self-check before stopping: grep every built session for the leak tokens —
-  `grep -wE 'Chicago|ORD|17|grandmother|uncle'` (`-w` gives portable standalone-token
-  matching; the non-POSIX `\b` word-boundary escape is avoided) — and confirm no hard-coded
+- Self-check before stopping: grep the built sessions for the leak tokens —
+  `grep -rwE 'Chicago|ORD|17|grandmother|uncle' framework/sessions/` (the explicit
+  `framework/sessions/` target + `-r` scans the built files instead of reading stdin; `-w`
+  gives portable standalone-token matching without the non-POSIX `\b` escape) — and confirm no hard-coded
   family value (blanks pointing to `trip_basics.md` are fine); confirm every session has a
   named artifact and a stop point (§15).
 - **STOP at the pilot gate.** Produce a short build report listing what was built, plus the

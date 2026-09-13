@@ -1,4 +1,6 @@
 .git/
+.orchestration/
+ORCHESTRATOR_PROMPT.md
 docs/spec/
 .mypy_cache/
 .pytest_cache/

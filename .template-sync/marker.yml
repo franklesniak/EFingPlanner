@@ -95,6 +95,15 @@ template_sync:
     - path: README.md
       reason: Fully tailored, project-specific reader-facing README for the EFingPlanner curriculum.
       default_decision: SKIP
+    - path: .gitignore
+      reason: >-
+        Downstream additions only. `!docs/build/` un-ignores the committed build
+        briefs, which the upstream `build/` pattern would otherwise hide. The
+        local-only agent working paths (`.orchestration/`,
+        `ORCHESTRATOR_PROMPT.md`) pair with the Markdown lint exclusions in
+        package.json, .remarkignore, and
+        .github/scripts/lint-nested-markdown.js.
+      default_decision: MERGE
     - path: LICENSE
       reason: Downstream license is CC BY-NC-SA 4.0, not the upstream template's MIT.
       default_decision: SKIP
