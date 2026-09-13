@@ -48,7 +48,7 @@ Starting points from the spec's implementation order — confirm each against §
 
 ## Guardrails
 
-- **Do not run ahead of a gate.** Each batch stops at its gate; the next batch starts only after the gate is cleared. For Batch 0, that means after the child pilot passes — and a failed pilot blocks Batch 2+ until Phases 0–2 are fixed and re-piloted.
+- **Do not run ahead of a gate.** Each batch stops at its gate; the next batch starts only after the gate is cleared. **The Batch 0 gate clears one of two ways:** the child pilot **passes**, or the documented **no-child fallback is recorded in writing** — the spec permits proceeding once the deferral flag is carried forward, and this repository has recorded it in `framework/parent_guide/time_and_effort.md` and `framework/CHANGELOG.md`. A **failed** pilot is neither of those: it blocks Batch 2+ until Phases 0–2 are fixed and re-piloted. Silence is not a third way — an unrun, unrecorded pilot does not clear the gate.
 - **The destination-leak rule turns on at Batch 1.** Batch 0 is Japan-concrete on purpose; from Batch 1 the concrete→insert conversion keeps destination facts in inserts, not in reusable sessions.
 - **Keep destination and family facts out of the curriculum.** In framework sessions, concrete trip/origin/roster values belong in fill-in blanks that point to `trip_basics.md` — never hard-coded into reusable sessions. The build briefs themselves may name the fixed leak tokens; they are the check, not the leak.
 - **Briefs only create curriculum files.** They never edit `docs/spec/*`, `CLAUDE.md`, or any `.github` governance or instruction file.

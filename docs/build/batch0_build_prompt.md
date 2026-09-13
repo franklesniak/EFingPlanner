@@ -15,7 +15,8 @@ This project is targeting the **Full / OER Build** (per §30.1.1) — reuse acro
 destinations and eventual open-educational-resource publication. HOWEVER, per §31,
 the neutral-skeleton + insert/reference apparatus is NOT built yet. **Batch 0 is
 authored Japan-concrete** (Japan facts written directly into the sessions). The
-concrete→insert conversion happens in Batch 1, only after the child pilot passes.
+concrete→insert conversion happens in Batch 1, once the Batch 0 gate has
+cleared — by a passing child pilot, or by the no-child fallback recorded in writing.
 
 ## Non-negotiable build model (§31)
 
@@ -129,7 +130,9 @@ on the `lean-spec.md` / `full-oer-companion.md` pointers named under Source of t
     or make First Taste the whole project), then re-decide; Fail (the child hates it, or
     completes it only because the parent is doing the work) → pivot to casual involvement —
     a designed, successful outcome, not abandonment.
-- Do NOT proceed to Batch 1. The human runs the child pilot next.
+- Do NOT proceed to Batch 1 from this brief. The human clears the Batch 0 gate next:
+  run the child pilot, or record the no-child fallback in writing. Either clears it;
+  an unrun, unrecorded pilot does not.
 
 ## After the pilot passes (later /goal runs — not now)
 
