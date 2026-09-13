@@ -30,7 +30,7 @@ Both are just starting points to compare. Weigh each one against your family's s
 
 ## Fun things to consider (research, not pre-chosen)
 
-- Big draws: a Ghibli museum or park, Tokyo Disney, and Pokemon Centers. Universal Studios Japan has Super Nintendo World. You could also look at teamLab's current venues -- check which ones are open now. And there are Nara's deer.
+- Big draws: a Ghibli museum or park, Tokyo Disney, and Pokemon Centers. Universal Studios Japan has Super Nintendo World. You could also look at teamLab's current venues -- check which ones are open now. Nara is known for its deer.
 - Small everyday treats count too. Famous is not the only good. You could ride the Shinkansen itself. You could try conveyor-belt sushi. There are gachapon capsule-toy machines, and vending machines are everywhere. There are arcades, themed cafes, and a big aquarium. You can collect goshuin stamps at shrines and temples. Visit first, and be respectful.
 
 ## A note on culture and etiquette

@@ -35,7 +35,10 @@ Audience
 Only child-facing paths are scored by default (see ``DEFAULT_INCLUDE_GLOBS``).
 A directory argument selects from that same set, so ``check-readability.py .``
 is the default scan and not a wider one. A named *file* is an explicit request
-for that one file and is scored even when it sits outside those globs.
+for that one file and is scored even when it sits outside those globs --
+with one limit: the adult- and builder-facing trees in
+``ALWAYS_EXCLUDED_PREFIXES`` are never scored, however the path arrives. Naming
+one of those files does not make it child-facing.
 A file can also opt out of scoring by carrying an audience marker anywhere in
 its text::
 
