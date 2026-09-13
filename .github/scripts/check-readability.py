@@ -189,9 +189,22 @@ BARE_URL_PATTERN = re.compile(
 #: guard the span simply opens one tick later and does the same thing. Either
 #: way the pattern deletes words CommonMark leaves visible, which can push a
 #: file under the 40-word minimum and out of the gate entirely.
+#:
+#: A backslash before the opening run is the fifth guard. A backtick that
+#: carries a backslash escape is literal text and opens nothing, so
+#: ``Read \`this phrase\` aloud`` is a sentence a child reads in full.
+#: The guard sits on the *opening* run alone, because a backslash means
+#: nothing once a span is open: CommonMark reads ``` `foo\`bar` ``` as the
+#: code span ``foo\`` followed by a visible ``bar``. Guarding the closing
+#: run too would delete that ``bar``, which is the very direction this guard
+#: exists to prevent. A run behind two or more backslashes opens nothing
+#: either, which leaves in the prose a span CommonMark would have hidden;
+#: that errs toward keeping words, and keeping words never pushes a file out
+#: of the gate.
+#: https://spec.commonmark.org/0.31.2/#backslash-escapes
 #: https://spec.commonmark.org/0.31.2/#code-spans
 INLINE_CODE_PATTERN = re.compile(
-    r"(?<!`)(?P<code_ticks>`+)(?!`).*?(?<!`)(?P=code_ticks)(?!`)"
+    r"(?<!`)(?<!\\)(?P<code_ticks>`+)(?!`).*?(?<!`)(?P=code_ticks)(?!`)"
 )
 LIST_MARKER_PATTERN = re.compile(r"^ {0,8}(?:[-*+]|\d{1,3}[.)])\s+")
 BLOCKQUOTE_PATTERN = re.compile(r"^ {0,3}>\s?")

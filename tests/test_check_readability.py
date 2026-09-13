@@ -27,6 +27,13 @@ readability = cast(Any, _module)
 #: example does not have to embed the marker in every string it joins.
 FENCE = "`" * 3
 
+#: One backtick, one backslash, and a backslash-escaped backtick. Spelled
+#: through names so a test that needs the two characters side by side never
+#: has to embed them in a literal, where a stray escape is easy to miss.
+TICK = "`"
+BACKSLASH = "\\"
+ESCAPED_TICK = BACKSLASH + TICK
+
 
 # ---------------------------------------------------------------------------
 # Syllable counting
@@ -1794,3 +1801,107 @@ def test_contractions_do_not_hide_a_failing_grade() -> None:
 def test_a_curly_apostrophe_counts_the_same_as_a_straight_one() -> None:
     """The curriculum's prose uses both spellings of the apostrophe."""
     assert readability.count_syllables("doesn’t") == readability.count_syllables("doesn't")
+
+
+# ---------------------------------------------------------------------------
+# Round 7: a backslash-escaped backtick opens no code span (4001246470)
+# ---------------------------------------------------------------------------
+
+
+def test_an_escaped_backtick_does_not_open_a_code_span() -> None:
+    """A backslash makes the backtick after it literal, so no span opens.
+
+    CommonMark renders the words between two escaped backticks as ordinary
+    visible text. Treating the pair as a span deletes them, which lowers the
+    measurement and can take a short file under the 40-word minimum.
+    https://spec.commonmark.org/0.31.2/#backslash-escapes
+    """
+    phrase = "complicated administrative implementation"
+    prose = readability.extract_prose(
+        f"Read {ESCAPED_TICK}{phrase}{ESCAPED_TICK} aloud."
+    )
+    assert phrase in prose
+
+
+def test_one_escaped_backtick_does_not_pair_with_a_real_code_span() -> None:
+    """A stray escaped tick must not swallow the prose up to the next span.
+
+    The only code span here is the one around "code". Letting the escaped tick
+    open a span deletes "stray tick and a" and leaves "code" behind, so the
+    stripper reports the opposite of what a child sees.
+    """
+    prose = readability.extract_prose(
+        f"A {ESCAPED_TICK} stray tick and a {TICK}code{TICK} span."
+    )
+    assert "stray tick and a" in prose
+    assert "code" not in prose
+
+
+def test_a_backslash_does_not_escape_a_closing_backtick() -> None:
+    """Negative control on the direction of the guard.
+
+    Backslash escapes do not work inside a code span, so a span that reaches a
+    backslash closes on the backtick after it and the word that follows stays
+    visible. A guard on the closing run would delete that word instead.
+    https://spec.commonmark.org/0.31.2/#code-spans
+    """
+    prose = readability.extract_prose(
+        f"Open {TICK}code{ESCAPED_TICK} and keep going to the end of this line."
+    )
+    assert "and keep going to the end of this line." in prose
+    assert "code" not in prose
+
+
+def test_an_escaped_backtick_does_not_take_a_short_file_out_of_the_gate() -> None:
+    """The score-level consequence of the three tests above.
+
+    Deleting the escaped phrase takes this file under ``MIN_WORDS_TO_SCORE``,
+    so it stops being scored at all -- worse than being scored wrongly, because
+    nothing reports it.
+    """
+    text = "\n\n".join(
+        [
+            "Pick one city that you want to see.",
+            f"Your guide may call this step {ESCAPED_TICK}the complicated "
+            "administrative implementation that every traveller has to finish "
+            f"before a trip{ESCAPED_TICK} on the form.",
+            "Write that city on your paper.",
+            "Then show the paper to a grown up in your family.",
+        ]
+    )
+    score = readability.score_text(text, "x.md")
+    assert score.scored
+    assert score.words >= readability.MIN_WORDS_TO_SCORE
+
+
+def test_a_span_behind_an_escaped_backslash_keeps_its_words() -> None:
+    """Negative control: the guard declines every run that follows a backslash.
+
+    Two backslashes escape each other, so CommonMark does open a span here and
+    this stripper does not. The words it would have deleted stay in the prose,
+    and keeping words can only make a file more likely to be measured, never
+    less.
+    """
+    prose = readability.extract_prose(
+        f"Use {BACKSLASH}{BACKSLASH}{TICK}code{TICK} here today."
+    )
+    assert "here today." in prose
+
+
+def test_an_ordinary_code_span_is_still_stripped() -> None:
+    """Negative control for round 4: a plain span is untouched by the guard."""
+    prose = readability.extract_prose(f"Type the word {TICK}banana{TICK} now.")
+    assert "banana" not in prose
+    assert "Type the word" in prose
+
+
+def test_the_escape_guard_does_not_reopen_the_round_six_holes() -> None:
+    """Negative control for round 6: both run-boundary guards still hold."""
+    mismatched = readability.extract_prose(
+        f"Type {TICK * 2}the child words here{TICK * 3} and press enter now."
+    )
+    assert "the child words here" in mismatched
+    reversed_run = readability.extract_prose(
+        f"Open {TICK * 3} and close {TICK * 2} later on today."
+    )
+    assert "and close" in reversed_run
