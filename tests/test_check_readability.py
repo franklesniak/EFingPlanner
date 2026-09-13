@@ -23,6 +23,10 @@ SPEC.loader.exec_module(_module)
 
 readability = cast(Any, _module)
 
+#: A three-backtick code fence. Spelled once so a test that builds a fenced
+#: example does not have to embed the marker in every string it joins.
+FENCE = "`" * 3
+
 
 # ---------------------------------------------------------------------------
 # Syllable counting
@@ -1142,3 +1146,292 @@ def test_extract_prose_drops_a_code_span_that_contains_a_backtick() -> None:
     assert "strict" not in prose
     assert "flag" not in prose
     assert "when you want warnings to fail the run." in prose
+
+
+# --- round 5: an initialism can end a sentence (4000910001) -----------------
+
+
+def test_split_sentences_splits_after_an_initialism_before_a_closed_class_word() -> None:
+    """``the U.S. The rules ...`` is two sentences.
+
+    A capitalized closed-class word is opening a new sentence: English has no
+    proper-noun compound whose second element is ``The`` or ``You``.
+    """
+    assert len(readability.split_sentences("We go to the U.S. The rules are different there.")) == 2
+    assert (
+        len(readability.split_sentences("You may live in the U.K. You still need a passport."))
+        == 2
+    )
+
+
+def test_an_initialism_ending_a_sentence_does_not_lower_the_sentence_length() -> None:
+    """The score-level positive control for the test above."""
+    document = "\n\n".join(
+        ["Your family lives in the U.S. Those rules change at the border."] * 6
+    )
+    score = readability.score_text(document, "x.md")
+    assert score.sentences == 12
+
+
+def test_split_sentences_keeps_an_initialism_inside_a_name() -> None:
+    """Negative control: the corpus site round 4 fixed must stay fixed."""
+    assert (
+        len(readability.split_sentences("The U.S. Department of State keeps a page."))
+        == 1
+    )
+    assert len(readability.split_sentences("The U.S. and Japan are far apart.")) == 1
+
+
+def test_split_sentences_keeps_a_bound_abbreviation_before_a_capital() -> None:
+    """Negative control: a title or a connective never ends a sentence."""
+    assert len(readability.split_sentences("Meet Dr. Chen at the station at noon.")) == 1
+    assert (
+        len(readability.split_sentences("Read What to Pin Early vs. What to Keep Open first."))
+        == 1
+    )
+    assert len(readability.split_sentences("Visit St. Louis on the way home.")) == 1
+
+
+def test_a_capitalized_content_word_after_an_initialism_stays_merged() -> None:
+    """The residual this rule deliberately does not try to resolve.
+
+    ``The U.S. Department of State`` and ``lives in the U.S. Travel starts
+    tomorrow`` are both an initialism, a period and a capitalized content word.
+    Nothing available to a dependency-free splitter separates them, so the
+    merge is kept: it overstates sentence length, which reports a file as
+    harder than it is, and a gate must never err the other way. This test pins
+    that choice so a later change has to state it deliberately.
+    """
+    assert (
+        len(readability.split_sentences("This family lives in the U.S. Travel starts tomorrow."))
+        == 1
+    )
+
+
+# --- round 5: a fence ends with its container (4000909997) ------------------
+
+
+def test_an_unclosed_blockquote_fence_ends_with_its_blockquote() -> None:
+    """CommonMark ends a fenced block at the end of its containing block.
+
+    https://spec.commonmark.org/0.31.2/#fenced-code-blocks
+    """
+    text = "\n".join(
+        [
+            "> Write it like this:",
+            "",
+            "> " + FENCE + "text",
+            "> city name",
+            "",
+            "Pick two cities you want to see today.",
+        ]
+    )
+    prose = readability.extract_prose(text)
+    assert "city name" not in prose
+    assert "Pick two cities you want to see today." in prose
+
+
+def test_an_unclosed_list_fence_ends_with_its_list_item() -> None:
+    """A fence under a list item does not swallow the rest of the document."""
+    text = "\n".join(
+        ["1. Look at this:", "", "   " + FENCE + "text", "   city name", "", "Pick two cities."]
+    )
+    prose = readability.extract_prose(text)
+    assert "city name" not in prose
+    assert "Pick two cities." in prose
+
+
+def test_a_blank_line_does_not_end_a_list_held_fence() -> None:
+    """Negative control: a blank line is ordinary content inside a list fence."""
+    text = "\n".join(
+        [
+            "1. Look at this:",
+            "",
+            "   " + FENCE + "text",
+            "   hidden one",
+            "",
+            "   hidden two",
+            "   " + FENCE,
+            "",
+            "Pick two cities.",
+        ]
+    )
+    prose = readability.extract_prose(text)
+    assert "hidden one" not in prose
+    assert "hidden two" not in prose
+    assert "Pick two cities." in prose
+
+
+def test_a_top_level_unclosed_fence_still_runs_to_the_end_of_the_file() -> None:
+    """Negative control: a fence with no container ends only at the document end."""
+    text = "\n".join(["Before the fence.", "", FENCE + "text", "hidden one", "", "hidden two"])
+    prose = readability.extract_prose(text)
+    assert "Before the fence." in prose
+    assert "hidden one" not in prose
+    assert "hidden two" not in prose
+
+
+# --- round 5: a backtick fence's info string (4000909999) -------------------
+
+
+def test_a_backtick_fence_whose_info_string_carries_a_backtick_is_not_a_fence() -> None:
+    """The info string of a backtick fence may not contain a backtick.
+
+    https://spec.commonmark.org/0.31.2/#fenced-code-blocks
+    """
+    text = FENCE + " `source` means where the fact came from\nPick two cities you want."
+    prose = readability.extract_prose(text)
+    assert "means where the fact came from" in prose
+    assert "Pick two cities you want." in prose
+
+
+def test_a_tilde_fence_may_carry_backticks_in_its_info_string() -> None:
+    """Negative control: the restriction is on backtick fences only."""
+    text = "~~~ uses `x`\nhidden one\n~~~\n\nPick two cities."
+    prose = readability.extract_prose(text)
+    assert "hidden one" not in prose
+    assert "Pick two cities." in prose
+
+
+def test_an_ordinary_info_string_still_opens_a_fence() -> None:
+    """Negative control: a language info string is still a fence."""
+    text = FENCE + "python\nhidden one\n" + FENCE + "\n\nPick two cities."
+    prose = readability.extract_prose(text)
+    assert "hidden one" not in prose
+    assert "Pick two cities." in prose
+
+
+def test_the_two_checkers_agree_on_a_backtick_info_string() -> None:
+    """Both copies of ``parse_opening_fence`` must apply the same rule.
+
+    At head the placeholder checker reads the same line as an opening fence and
+    reports no violation for the ``TBD`` below it, which is a silent false
+    green in a different gate.
+    """
+    placeholder_script = (
+        Path(__file__).resolve().parents[1]
+        / ".github"
+        / "scripts"
+        / "check-prohibited-placeholders.py"
+    )
+    spec = importlib.util.spec_from_file_location("check_placeholders_r5", placeholder_script)
+    assert spec is not None and spec.loader is not None
+    placeholders = importlib.util.module_from_spec(spec)
+    sys.modules[spec.name] = placeholders
+    spec.loader.exec_module(placeholders)
+
+    text = FENCE + " `source` is explained here\nTBD in real prose\n"
+    assert [v.matched_text for v in placeholders.find_violations_in_text(text, "x.md")] == ["TBD"]
+    assert "is explained here" in readability.extract_prose(text)
+
+
+# --- round 5: Setext headings (4000910003) ----------------------------------
+
+
+def test_extract_prose_drops_a_setext_heading_and_its_underline() -> None:
+    """A paragraph under a run of ``=`` is a heading, and headings are not prose.
+
+    https://spec.commonmark.org/0.31.2/#setext-headings
+    """
+    prose = readability.extract_prose("Planning choices\n================\n\nPick two cities.")
+    assert "Planning choices" not in prose
+    assert "=" not in prose
+    assert "Pick two cities." in prose
+
+
+def test_extract_prose_drops_a_dash_underlined_setext_heading() -> None:
+    """``---`` under a paragraph is a heading underline, not a thematic break."""
+    prose = readability.extract_prose("Planning choices\n---\nPick two cities.")
+    assert "Planning choices" not in prose
+    assert "Pick two cities." in prose
+
+
+def test_extract_prose_drops_a_multi_line_setext_heading() -> None:
+    """The heading text of a Setext heading may be several source lines."""
+    prose = readability.extract_prose("Planning your\ntrip choices\n===\n\nPick two cities.")
+    assert "Planning" not in prose
+    assert "trip choices" not in prose
+    assert "Pick two cities." in prose
+
+
+def test_a_thematic_break_after_a_blank_line_is_still_a_thematic_break() -> None:
+    """Negative control: with nothing open, ``---`` is a break and keeps the text."""
+    prose = readability.extract_prose("Pick two cities.\n\n---\n\nWrite one thing you like.")
+    assert "Pick two cities." in prose
+    assert "Write one thing you like." in prose
+
+
+def test_a_list_bullet_is_not_a_setext_underline() -> None:
+    """Negative control: a list under a paragraph does not delete that paragraph."""
+    prose = readability.extract_prose("Pick two cities.\n\n- one\n- two")
+    assert "Pick two cities." in prose
+
+
+# --- round 5: reference links and definitions (4000910005) ------------------
+
+
+def test_extract_prose_keeps_reference_link_text_and_drops_its_label() -> None:
+    """Only the link text renders, so the label is not a word a child reads.
+
+    https://spec.commonmark.org/0.31.2/#reference-link
+    """
+    prose = readability.extract_prose("Read the [travel advice][statedept] page before you go.")
+    assert "travel advice" in prose
+    assert "statedept" not in prose
+
+
+def test_extract_prose_drops_a_link_reference_definition() -> None:
+    """A definition renders as nothing, so it is not a sentence unit."""
+    text = "Read the [travel advice][statedept] page.\n\n[statedept]: https://example.gov/x.html"
+    prose = readability.extract_prose(text)
+    assert "statedept" not in prose
+    assert prose.strip().splitlines() == ["Read the travel advice page."]
+
+
+def test_extract_prose_keeps_a_bracketed_worksheet_blank() -> None:
+    """Negative control: a fill-in blank is not a reference link."""
+    prose = readability.extract_prose("Write [your city name] on the line.")
+    assert "your city name" in prose
+
+
+def test_a_definition_shaped_line_cannot_interrupt_a_paragraph() -> None:
+    """Negative control: CommonMark keeps it in the paragraph, and so does this."""
+    prose = readability.extract_prose("Some prose here.\n[statedept]: https://example.gov/x.html")
+    assert "Some prose here." in prose
+    assert prose.count("\n") == 0
+
+
+# --- round 5: YAML front matter (4000910008) --------------------------------
+
+
+def test_extract_prose_drops_yaml_front_matter() -> None:
+    """Publishing metadata is not text a child reads."""
+    text = (
+        "---\n"
+        'title: "Pick your cities"\n'
+        'description: "A worksheet for choosing two cities to visit."\n'
+        "---\n"
+        "\n"
+        "Pick two cities you want to see.\n"
+    )
+    prose = readability.extract_prose(text)
+    assert "title" not in prose
+    assert "worksheet" not in prose
+    assert prose.strip() == "Pick two cities you want to see."
+
+
+def test_extract_prose_drops_front_matter_that_contains_a_blank_line() -> None:
+    """The block ends at its delimiter, not at the first blank line."""
+    text = "---\ntags:\n  - japan\n\ntitle: Cities\n---\n\nPick two cities.\n"
+    prose = readability.extract_prose(text)
+    assert "japan" not in prose
+    assert "title" not in prose
+    assert prose.strip() == "Pick two cities."
+
+
+def test_a_leading_thematic_break_is_not_front_matter() -> None:
+    """Negative control: a document may open with a thematic break."""
+    text = "---\n\nPick two cities you want to see.\n\n---\n\nWrite one thing you like.\n"
+    prose = readability.extract_prose(text)
+    assert "Pick two cities you want to see." in prose
+    assert "Write one thing you like." in prose

@@ -178,6 +178,28 @@ INLINE_CODE_PATTERN = re.compile(r"(?P<code_ticks>`+).*?(?P=code_ticks)(?!`)")
 LIST_MARKER_PATTERN = re.compile(r"^ {0,8}(?:[-*+]|\d{1,3}[.)])\s+")
 BLOCKQUOTE_PATTERN = re.compile(r"^ {0,3}>\s?")
 EMPHASIS_PATTERN = re.compile(r"[*_]{1,3}")
+#: A Setext heading underline. A run of ``=`` or ``-`` under a paragraph turns
+#: that whole paragraph into a heading, so neither the text nor the underline is
+#: prose. A ``-`` run is a Setext underline only when a paragraph is open; with
+#: nothing open it is the thematic break ``THEMATIC_BREAK_PATTERN`` already
+#: drops, which is why the two checks are ordered.
+#: https://spec.commonmark.org/0.31.2/#setext-headings
+SETEXT_UNDERLINE_PATTERN = re.compile(r"^ {0,3}(?:=+|-+)[ \t]*$")
+#: A reference link, full ``[text][label]`` or collapsed ``[text][]``. Only the
+#: text is rendered, so the label is words a child never reads. A *shortcut*
+#: reference (``[text]``) needs no handling here: its brackets carry no word of
+#: their own. https://spec.commonmark.org/0.31.2/#reference-link
+REFERENCE_IMAGE_PATTERN = re.compile(r"!\[[^\]]*\]\[[^\]]*\]")
+REFERENCE_LINK_PATTERN = re.compile(r"\[([^\]]*)\]\[[^\]]*\]")
+#: A link reference definition. It renders as nothing at all, so neither its
+#: label nor its destination is prose. CommonMark does not let one interrupt a
+#: paragraph, so this is consulted only when no unit is open.
+#: https://spec.commonmark.org/0.31.2/#link-reference-definitions
+LINK_DEFINITION_PATTERN = re.compile(r"^ {0,3}\[[^\]]+\]:\s*\S")
+#: A YAML front-matter delimiter. Front matter is permitted on any Markdown
+#: file in this repository, and its keys are publishing metadata, not text a
+#: child reads.
+FRONT_MATTER_DELIMITER_PATTERN = re.compile(r"^(?:-{3}|\.{3})[ \t]*$")
 
 #: The kind of the sentence unit that is still open for a wrapped line to join.
 #: A blockquote line may join only an open *quoted* unit: a blockquote that
@@ -208,6 +230,29 @@ ABBREVIATION_PATTERN = re.compile(
 #: you leave".
 AMBIGUOUS_ABBREVIATION_PATTERN = re.compile(
     r"(?:^|[\s\"'(\[])(?:etc\.|a\.m\.|p\.m\.|incl\.|approx\.|No\.)$"
+)
+#: The abbreviations above that are also complete noun phrases, so English
+#: *can* end a sentence with one: "This family lives in the U.S." Every other
+#: entry is a bound prefix (``Mr.``) or a connective (``e.g.``) that no English
+#: sentence ends with. One of these ends a sentence only when a closed-class
+#: word opens the next one; see ``ends_a_sentence`` for what that cannot do.
+FREESTANDING_ABBREVIATION_PATTERN = re.compile(
+    r"(?:^|[\s\"'(\[])(?:U\.S\.|U\.K\.)$"
+)
+
+#: Closed-class English words -- articles, demonstratives, pronouns,
+#: possessives, conjunctions, subordinators and interrogatives. A capitalized
+#: one of these opens a new sentence, because a closed-class word is never the
+#: second element of an English proper-noun compound. Content words are
+#: deliberately absent: "the U.S. Department of State" and "lives in the U.S.
+#: Travel starts tomorrow" are both an initialism followed by a capitalized
+#: content word, and nothing available here tells those two apart.
+SENTENCE_OPENER_PATTERN = re.compile(
+    r"(?:The|This|That|These|Those|There|Then|Thus|It|Its|He|She|They|We|You|I|"
+    r"His|Her|Their|Our|Your|My|If|When|While|Where|Because|Since|Although|"
+    r"Though|But|And|Or|So|After|Before|Once|Also|However|Now|Here|Both|Each|"
+    r"Every|Some|Any|All|Most|Many|Another|Other|Such|Who|What|Why|How)"
+    r"(?:[^A-Za-z0-9]|$)"
 )
 VOWEL_GROUP_PATTERN = re.compile(r"[aeiouy]+")
 
@@ -438,13 +483,44 @@ def is_table_delimiter(line: str) -> bool:
     return "|" in line and TABLE_DELIMITER_PATTERN.match(line) is not None
 
 
+def fence_container_ended(line: str, active_fence: ActiveFence) -> bool:
+    """Return whether ``line`` has left the container holding the open fence.
+
+    CommonMark ends a fenced block at the end of its containing block when no
+    closing fence is found, so a fence opened inside a list item or a
+    blockquote does not run to the end of the document once the document
+    outdents past that container. A nonblank line that does not peel to the
+    fence's container has left it. A blank line has left a blockquote, which a
+    blank line ends, but not a list item, where a blank line is ordinary
+    content. Kept identical to the helper in
+    ``.github/scripts/check-prohibited-placeholders.py``.
+    https://spec.commonmark.org/0.31.2/#fenced-code-blocks
+    """
+    _, peeled_count = peel_containers(line, active_fence.containment_path)
+    if peeled_count == len(active_fence.containment_path):
+        return False
+    if line.strip():
+        return True
+    return active_fence.containment_path[peeled_count].kind == CONTAINER_KIND_BLOCK_QUOTE
+
+
 def parse_opening_fence(line: str) -> tuple[str, int] | None:
-    """Return the opening fence marker character and length, if present."""
+    """Return the opening fence marker character and length, if present.
+
+    The info string of a *backtick* fence may not itself contain a
+    backtick, so a line whose marker is followed by a code span opens no
+    fence: it is an ordinary paragraph. Without this check the checker
+    drops every following line until another matching fence or the end of
+    the file. A tilde fence carries no such restriction.
+    https://spec.commonmark.org/0.31.2/#fenced-code-blocks
+    """
     match = FENCE_OPEN_PATTERN.match(line)
     if match is None:
         return None
 
     marker = match.group("marker")
+    if marker[0] == "`" and "`" in line[match.end() :]:
+        return None
     return marker[0], len(marker)
 
 
@@ -467,6 +543,26 @@ def strip_html_comments(text: str) -> str:
     return HTML_COMMENT_PATTERN.sub(" ", text)
 
 
+def strip_front_matter(text: str) -> str:
+    """Remove a YAML front-matter block from the start of a document.
+
+    A front-matter block opens with ``---`` on the very first line and closes
+    on the next line that is exactly ``---`` or ``...``. Its keys are
+    publishing metadata, not prose. The opening line must be followed by a
+    nonblank line, so a document that merely begins with a thematic break keeps
+    all of its text.
+    """
+    lines = text.split("\n")
+    if not lines or lines[0].rstrip() != "---":
+        return text
+    if len(lines) < 2 or not lines[1].strip():
+        return text
+    for index in range(1, len(lines)):
+        if FRONT_MATTER_DELIMITER_PATTERN.match(lines[index].rstrip()):
+            return "\n".join(lines[index + 1 :])
+    return text
+
+
 def extract_prose(text: str) -> str:
     """Return only the child-facing prose of a Markdown document.
 
@@ -483,6 +579,7 @@ def extract_prose(text: str) -> str:
     a new unit, which keeps one worksheet prompt or one list item counting as
     one sentence.
     """
+    text = strip_front_matter(text)
     text = strip_html_comments(text)
 
     units: list[str] = []
@@ -503,6 +600,11 @@ def extract_prose(text: str) -> str:
         # or a trailing comment on a fence line cannot close the block.
         # Both fence lines are normalized to their container first, so a fence
         # inside a blockquote or inside a list item is still a fence.
+        if active_fence is not None and fence_container_ended(line, active_fence):
+            # The container holding the fence has ended, so the fence
+            # ended with it and this line is document text again.
+            active_fence = None
+
         if active_fence is not None:
             if is_closing_fence(
                 normalize_for_fence_closing(line, active_fence),
@@ -569,11 +671,28 @@ def extract_prose(text: str) -> str:
         if TABLE_ROW_PATTERN.match(table_line):
             open_unit = None
             continue
+        # A Setext underline turns the paragraph above it into a heading, so
+        # that paragraph is not prose after all and is taken back out. This is
+        # tested before the thematic break, because CommonMark reads ``---``
+        # under a paragraph as a heading underline and only otherwise as a
+        # break. https://spec.commonmark.org/0.31.2/#setext-headings
+        if open_unit is not None and units:
+            setext_line = table_line if open_unit == UNIT_KIND_QUOTE else line
+            if SETEXT_UNDERLINE_PATTERN.match(setext_line):
+                units.pop()
+                open_unit = None
+                continue
         if THEMATIC_BREAK_PATTERN.match(line):
             open_unit = None
             continue
         if NAV_LINE_PATTERN.match(line):
             open_unit = None
+            continue
+        # A link reference definition renders as nothing. CommonMark does not
+        # let one interrupt a paragraph, so an open unit means this line is a
+        # wrapped continuation and not a definition.
+        # https://spec.commonmark.org/0.31.2/#link-reference-definitions
+        if open_unit is None and LINK_DEFINITION_PATTERN.match(table_line):
             continue
 
         # A new list item starts its own unit. A plain line that follows prose
@@ -600,6 +719,8 @@ def extract_prose(text: str) -> str:
 
         line = LIST_MARKER_PATTERN.sub("", line)
         line = IMAGE_PATTERN.sub(" ", line)
+        line = REFERENCE_IMAGE_PATTERN.sub(" ", line)
+        line = REFERENCE_LINK_PATTERN.sub(r"\1", line)
         line = LINK_PATTERN.sub(r"\1", line)
         line = BARE_URL_PATTERN.sub(" ", line)
         line = INLINE_CODE_PATTERN.sub(" ", line)
@@ -659,8 +780,15 @@ def ends_a_sentence(before: str, closers: str, after: str) -> bool:
     inflate the sentence count, which lowers the reported words-per-sentence
     figure and the grade -- the direction that lets hard text through the gate.
 
-    An abbreviation's period is not a sentence end: ``The U.S. Department of
-    State`` is one sentence.
+    An abbreviation's period is usually not a sentence end: ``The U.S.
+    Department of State`` is one sentence. ``U.S.`` and ``U.K.`` are the
+    exception, because each is also a complete noun phrase, so they end a
+    sentence when a capitalized closed-class word follows. A capitalized
+    *content* word after one of them is genuinely ambiguous -- ``the U.S.
+    Department of State`` and ``lives in the U.S. Travel starts tomorrow``
+    have the same shape -- and is left merged on purpose: merging overstates
+    sentence length, which reports the file as harder, and a gate must not err
+    the other way.
 
     A lowercase word after a closing quote or bracket continues the sentence
     it is in: ``your "what do I do next?" page`` is one sentence, not two. The
@@ -670,7 +798,10 @@ def ends_a_sentence(before: str, closers: str, after: str) -> bool:
     lowercase word here.
     """
     if ABBREVIATION_PATTERN.search(before):
-        return False
+        return (
+            FREESTANDING_ABBREVIATION_PATTERN.search(before) is not None
+            and SENTENCE_OPENER_PATTERN.match(after) is not None
+        )
     if not after[:1].islower():
         return True
     return not closers and AMBIGUOUS_ABBREVIATION_PATTERN.search(before) is None

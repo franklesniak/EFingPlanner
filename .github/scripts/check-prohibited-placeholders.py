@@ -304,12 +304,22 @@ def build_active_fence(
 
 
 def parse_opening_fence(line: str) -> tuple[str, int] | None:
-    """Return the opening fence marker character and length, if present."""
+    """Return the opening fence marker character and length, if present.
+
+    The info string of a *backtick* fence may not itself contain a
+    backtick, so a line whose marker is followed by a code span opens no
+    fence: it is an ordinary paragraph. Without this check the checker
+    drops every following line until another matching fence or the end of
+    the file. A tilde fence carries no such restriction.
+    https://spec.commonmark.org/0.31.2/#fenced-code-blocks
+    """
     match = FENCE_OPEN_PATTERN.match(line)
     if match is None:
         return None
 
     marker = match.group("marker")
+    if marker[0] == "`" and "`" in line[match.end() :]:
+        return None
     return marker[0], len(marker)
 
 
