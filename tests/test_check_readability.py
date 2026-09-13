@@ -1435,3 +1435,67 @@ def test_a_leading_thematic_break_is_not_front_matter() -> None:
     prose = readability.extract_prose(text)
     assert "Pick two cities you want to see." in prose
     assert "Write one thing you like." in prose
+# --- round 6: a file that is not valid UTF-8 reports, it does not crash -----
+
+
+def test_a_non_utf8_file_reports_instead_of_crashing(tmp_path: Path) -> None:
+    """UnicodeDecodeError is a ValueError, so ``except OSError`` never saw it.
+
+    Before the fix the run ended in a traceback, which in CI reads as the gate
+    being broken rather than as one unreadable file.
+    """
+    target = tmp_path / "bad.md"
+    target.write_bytes(b"# Title\n\ncaf\xe9 is not valid UTF-8 here.\n")
+    with pytest.raises(readability.FileReadError) as caught:
+        readability.scan_files([target], root=tmp_path)
+    message = str(caught.value)
+    assert "bad.md" in message
+    assert "UnicodeDecodeError" in message
+
+
+def test_file_read_error_summarises_an_error_without_strerror() -> None:
+    """Only OSError carries ``strerror``; reading it blindly raised AttributeError."""
+    try:
+        b"\xe9".decode("utf-8")
+    except UnicodeDecodeError as error:
+        failure = readability.FileReadError("x.md", error)
+    message = str(failure)
+    assert "x.md" in message
+    assert "UnicodeDecodeError" in message
+    assert "I/O error" not in message
+
+
+def test_file_read_error_still_summarises_an_oserror() -> None:
+    """The negative control: OSError handling must not regress."""
+    failure = readability.FileReadError("y.md", FileNotFoundError(2, "No such file"))
+    message = str(failure)
+    assert "y.md" in message
+    assert "No such file" in message
+
+
+def test_both_checkers_refuse_a_non_utf8_file_the_same_way() -> None:
+    """The sibling shares the defect, so it must share the fix.
+
+    Only the readability checker was reported. Fixing one and leaving the other
+    is how the two scripts drift apart.
+    """
+    placeholder_script = (
+        Path(__file__).resolve().parents[1]
+        / ".github"
+        / "scripts"
+        / "check-prohibited-placeholders.py"
+    )
+    spec = importlib.util.spec_from_file_location("check_placeholders", placeholder_script)
+    assert spec is not None and spec.loader is not None
+    placeholders = importlib.util.module_from_spec(spec)
+    sys.modules[spec.name] = placeholders
+    spec.loader.exec_module(placeholders)
+
+    assert hasattr(placeholders, "FileReadError")
+    try:
+        b"\xe9".decode("utf-8")
+    except UnicodeDecodeError as error:
+        sibling = placeholders.FileReadError("x.md", error)
+        mine = readability.FileReadError("x.md", error)
+    assert "UnicodeDecodeError" in str(sibling)
+    assert str(sibling) == str(mine)

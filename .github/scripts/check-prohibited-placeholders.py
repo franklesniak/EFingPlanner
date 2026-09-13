@@ -103,8 +103,13 @@ class ListContext:
 class FileReadError(RuntimeError):
     """Raised when a candidate Markdown file cannot be read."""
 
-    def __init__(self, display_path: str, error: OSError) -> None:
-        error_summary = f"{type(error).__name__}: {error.strerror or 'I/O error'}"
+    def __init__(self, display_path: str, error: Exception) -> None:
+        # Only OSError carries ``strerror``. A UnicodeDecodeError does not, and
+        # reading it unconditionally turned a readable failure into an
+        # AttributeError traceback, which is the opposite of what this class is
+        # for.
+        detail = getattr(error, "strerror", None) or str(error) or "I/O error"
+        error_summary = f"{type(error).__name__}: {detail}"
         super().__init__(f"{display_path}: unable to read file ({error_summary})")
 
 
@@ -389,7 +394,10 @@ def scan_files(path_arguments: Iterable[str | Path], root: Path = REPO_ROOT) -> 
         path, display_path = candidate
         try:
             text = path.read_text(encoding="utf-8")
-        except OSError as error:
+        except (OSError, UnicodeDecodeError) as error:
+            # UnicodeDecodeError is a ValueError, so ``except OSError`` never
+            # caught it: a file that is not valid UTF-8 crashed the run with a
+            # traceback instead of reporting one unreadable file.
             raise FileReadError(display_path, error) from error
 
         violations.extend(find_violations_in_text(text, display_path))
