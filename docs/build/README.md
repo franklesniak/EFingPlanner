@@ -31,7 +31,7 @@ The spec's build model reuses one set of rules for every batch and changes only 
 - **Authoring mode** — Japan-concrete vs insert-based authoring, and the state of the neutral-skeleton + insert apparatus. Source: §29.1, §30–§31.
 - **Scope boundary** — what is in scope and what must NOT be built yet. Source: §31.
 - **Batch gate** — the gate this batch ends at, and whether the agent can perform it. Source: §31.
-- **Deliverables** — the full list of files this batch creates or edits, with their acceptance-relevant details. This list is the batch's file scope. Source: §31, §33, §9 (directory tree and filenames), plus the session and template sections the batch touches.
+- **Deliverables** — the full list of files this batch creates or edits, with their acceptance-relevant details. This list is the batch's file scope, so anything absent from it does not get written. Every curriculum batch includes `framework/CHANGELOG.md` here, because the file-scope rule otherwise leaves the curriculum's own revision record permanently stuck at Batch 0. Source: §31, §33, §9 (directory tree and filenames), plus the session and template sections the batch touches.
 - **Destination-leak rule** — whether destination facts must be pulled into inserts this batch (off for Batch 0, on from Batch 1). Source: §2.5, §29.1.
 - **Stop + handoff** — where to stop and what to hand the human. Source: §31, with acceptance detail from §33.
 - **Next batch** — the next batch and the instruction not to proceed into it. Source: §31.
