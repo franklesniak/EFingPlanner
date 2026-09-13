@@ -79,6 +79,16 @@ jobs:
         continue-on-error: true
         run: pytest tests/test_materialize_downstream_adoption.py -k passes_nested_markdown_lint -v
 
+      # The three Markdown scanners above skip a small set of local-only working
+      # paths by name, unconditionally. If such a path were ever committed it
+      # would silently lose link validation and nested-fence validation. This
+      # test asserts the condition that makes those exclusions safe: each path
+      # stays gitignored and untracked, and every scanner still lists it.
+      - name: Verify local-only lint exclusions stay untracked
+        id: lint-exclusions
+        continue-on-error: true
+        run: pytest tests/test_lint_exclusions.py -v
+
       - name: Run toolchain EOL regression tests
         id: test-toolchain
         continue-on-error: true
@@ -90,6 +100,7 @@ jobs:
           steps.lint-nested.outcome == 'failure' ||
           steps.lint-links.outcome == 'failure' ||
           steps.lint-generated.outcome == 'failure' ||
+          steps.lint-exclusions.outcome == 'failure' ||
           steps.test-toolchain.outcome == 'failure'
         run: |
           echo "::error::Markdown and toolchain checks failed. Check the logs above for details."

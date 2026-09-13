@@ -38,3 +38,9 @@ Thumbs.db
 
 # Documentation build briefs (committed; not Python build output)
 !docs/build/
+
+# Local-only agent working paths. These are never committed. The Markdown lint
+# scripts skip them by name, so tests/test_lint_exclusions.py makes sure that
+# these paths and those lint exclusions stay in agreement.
+.orchestration/
+ORCHESTRATOR_PROMPT.md
