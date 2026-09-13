@@ -25,13 +25,17 @@ One line of the extracted prose is one sentence unit. A Markdown paragraph may
 be hard-wrapped over several source lines, so the continuation lines of a
 paragraph are joined back into one unit before sentences are counted; without
 that, reflowing a paragraph would lower its score without changing a word. A
-blank line, a heading, a table, a code fence, a new list item, and a blockquote
-line each start a new unit, which keeps one worksheet prompt or one list item
-counting as one sentence.
+blockquote is a container, not a unit, so the same joining applies inside one.
+A blank line, a heading, a table, a code fence, a new list item, and a new
+quoted paragraph each start a new unit, which keeps one worksheet prompt or one
+list item counting as one sentence.
 
 Audience
 --------
 Only child-facing paths are scored by default (see ``DEFAULT_INCLUDE_GLOBS``).
+A directory argument selects from that same set, so ``check-readability.py .``
+is the default scan and not a wider one. A named *file* is an explicit request
+for that one file and is scored even when it sits outside those globs.
 A file can also opt out of scoring by carrying an audience marker anywhere in
 its text::
 
@@ -130,10 +134,17 @@ AUDIENCE_ADULT_PATTERN = re.compile(
 # Stripping
 # --------------------------------------------------------------------------
 
-#: Opening code fence. This name and the two fence helpers below are kept
-#: identical to ``.github/scripts/check-prohibited-placeholders.py``, so a
-#: search for either name finds both copies of the same CommonMark rule.
+#: Opening code fence. This name, the container helpers below, and the two
+#: fence helpers below are kept identical to
+#: ``.github/scripts/check-prohibited-placeholders.py``, so a search for either
+#: name finds both copies of the same CommonMark rule.
 FENCE_OPEN_PATTERN = re.compile(r"^ {0,3}(?P<marker>`{3,}|~{3,})")
+#: One blockquote container prefix, peeled before a fence is parsed. This is the
+#: fence-parsing copy of ``BLOCKQUOTE_PATTERN`` below, spelled exactly as the
+#: placeholder checker spells it so that the two scripts agree on what a fence
+#: is. ``BLOCKQUOTE_PATTERN`` stays the prose-stripping copy.
+BLOCK_QUOTE_PREFIX_PATTERN = re.compile(r"^ {0,3}> ?")
+LIST_ITEM_PATTERN = re.compile(r"^(?P<indent> {0,3})(?P<marker>[-*+]|\d{1,9}[.)])(?P<spacing> +)")
 HEADING_PATTERN = re.compile(r"^ {0,3}#{1,6}\s")
 TABLE_ROW_PATTERN = re.compile(r"^ {0,3}\|")
 TABLE_DELIMITER_PATTERN = re.compile(r"^ {0,3}\|?\s*:?-+:?\s*(?:\|\s*:?-+:?\s*)*\|?\s*$")
@@ -145,7 +156,12 @@ PARENT_SECTION_PATTERN = re.compile(
     re.IGNORECASE,
 )
 HTML_COMMENT_PATTERN = re.compile(r"<!--.*?-->", re.DOTALL)
-HTML_TAG_PATTERN = re.compile(r"<[^>]+>")
+#: Raw HTML as CommonMark defines it: an open or closing tag whose name starts
+#: with an ASCII letter, or a declaration, comment remnant, or processing
+#: instruction. A bare ``<[^>]+>`` also eats ``Choose < 5 days and > 2 days``,
+#: which is child-visible prose, not markup.
+#: https://spec.commonmark.org/0.31.2/#raw-html
+HTML_TAG_PATTERN = re.compile(r"</?[A-Za-z][A-Za-z0-9-]*(?:\s[^<>]*)?/?>|<[!?][^>]*>")
 IMAGE_PATTERN = re.compile(r"!\[[^\]]*\]\([^)]*\)")
 LINK_PATTERN = re.compile(r"\[([^\]]*)\]\([^)]*\)")
 BARE_URL_PATTERN = re.compile(r"<?https?://\S+>?")
@@ -153,6 +169,13 @@ INLINE_CODE_PATTERN = re.compile(r"`[^`]*`")
 LIST_MARKER_PATTERN = re.compile(r"^ {0,8}(?:[-*+]|\d{1,3}[.)])\s+")
 BLOCKQUOTE_PATTERN = re.compile(r"^ {0,3}>\s?")
 EMPHASIS_PATTERN = re.compile(r"[*_]{1,3}")
+
+#: The kind of the sentence unit that is still open for a wrapped line to join.
+#: A blockquote line may join only an open *quoted* unit: a blockquote that
+#: opens directly under an ordinary paragraph is a new block, not a wrapped
+#: continuation of that paragraph.
+UNIT_KIND_PROSE = "prose"
+UNIT_KIND_QUOTE = "quote"
 
 WORD_PATTERN = re.compile(r"[A-Za-z]+(?:['’-][A-Za-z]+)*|\d+(?:[.,]\d+)*")
 SENTENCE_SPLIT_PATTERN = re.compile(r"(?<=[.!?])[\"')\]]*\s+")
@@ -192,6 +215,163 @@ class FileReadError(RuntimeError):
     def __init__(self, display_path: str, error: OSError) -> None:
         error_summary = f"{type(error).__name__}: {error.strerror or 'I/O error'}"
         super().__init__(f"{display_path}: unable to read file ({error_summary})")
+
+
+CONTAINER_KIND_LIST = "list"
+CONTAINER_KIND_BLOCK_QUOTE = "blockquote"
+
+
+@dataclass(frozen=True)
+class Container:
+    """A peelable Markdown container prefix on a line.
+
+    A ``list`` container consumes ``indent`` leading spaces from its parent
+    container's interior. A ``blockquote`` container consumes a single
+    ``BLOCK_QUOTE_PREFIX_PATTERN`` match (``>`` optionally followed by a
+    space) at the start of its parent's interior; ``indent`` is unused.
+    """
+
+    kind: str
+    indent: int = 0
+
+
+@dataclass(frozen=True)
+class FenceLine:
+    """A Markdown line normalized for fenced code block detection."""
+
+    content: str
+    containment_path: tuple[Container, ...] = ()
+
+
+@dataclass(frozen=True)
+class ActiveFence:
+    """The active fenced code block marker and containing Markdown context."""
+
+    character: str
+    minimum_length: int
+    containment_path: tuple[Container, ...] = ()
+
+
+@dataclass(frozen=True)
+class ListContext:
+    """An active Markdown list, identified by its full containment path from the document root."""
+
+    containment_path: tuple[Container, ...]
+
+
+def count_leading_spaces(line: str) -> int:
+    """Return the number of leading space characters in a line."""
+    return len(line) - len(line.lstrip(" "))
+
+
+def peel_containers(line: str, path: tuple[Container, ...]) -> tuple[str, int]:
+    """Peel container prefixes from ``line`` in order; return ``(remaining, peeled_count)``.
+
+    A list container consumes ``container.indent`` leading spaces (or fails if
+    the line has fewer). A blockquote container consumes one
+    ``BLOCK_QUOTE_PREFIX_PATTERN`` match (or fails if the line does not start
+    with one in its current coordinate system). Peeling stops at the first
+    container that cannot be consumed; the caller can compare ``peeled_count``
+    to ``len(path)`` to detect partial peels.
+    """
+    for index, container in enumerate(path):
+        if container.kind == CONTAINER_KIND_LIST:
+            if count_leading_spaces(line) < container.indent:
+                return line, index
+            line = line[container.indent :]
+        else:
+            match = BLOCK_QUOTE_PREFIX_PATTERN.match(line)
+            if match is None:
+                return line, index
+            line = line[match.end() :]
+    return line, len(path)
+
+
+def prune_inactive_list_contexts(line: str, list_contexts: list[ListContext]) -> None:
+    """Drop active list contexts that a nonblank Markdown line has outdented past."""
+    if not line.strip():
+        return
+
+    while list_contexts:
+        top = list_contexts[-1]
+        remaining, peeled_count = peel_containers(line, top.containment_path)
+        if peeled_count == len(top.containment_path):
+            return
+        # The line did not peel cleanly to this list's interior. Decide
+        # whether the partial peel still keeps the list active.
+        if not remaining.strip():
+            # A blank line inside a partly-peeled container is a continuation.
+            return
+        failed_container = top.containment_path[peeled_count]
+        if (
+            failed_container.kind == CONTAINER_KIND_LIST
+            and BLOCK_QUOTE_PREFIX_PATTERN.match(remaining) is not None
+        ):
+            # A deeper blockquote nested inside the list keeps the list active;
+            # the list's content indent is not meaningful in that deeper
+            # coordinate system.
+            return
+        list_contexts.pop()
+
+
+def list_content_indent(match: re.Match[str]) -> int:
+    """Return the list-item content indent relative to the marker's parent interior."""
+    marker_end_column = match.end("marker")
+    spacing_width = len(match.group("spacing"))
+    content_padding = spacing_width if spacing_width <= 4 else 1
+    return marker_end_column + content_padding
+
+
+def normalize_for_fence_opening(line: str, list_contexts: list[ListContext]) -> FenceLine:
+    """Return a line normalized to its current Markdown container content column."""
+    prune_inactive_list_contexts(line, list_contexts)
+
+    active_path = list_contexts[-1].containment_path if list_contexts else ()
+    relative_line, peeled_count = peel_containers(line, active_path)
+    effective_path = active_path[:peeled_count]
+
+    extras: list[Container] = []
+    while True:
+        match = BLOCK_QUOTE_PREFIX_PATTERN.match(relative_line)
+        if match is None:
+            break
+        extras.append(Container(kind=CONTAINER_KIND_BLOCK_QUOTE))
+        relative_line = relative_line[match.end() :]
+
+    list_match = LIST_ITEM_PATTERN.match(relative_line)
+    if list_match is not None:
+        content_indent_rel = list_content_indent(list_match)
+        extras.append(Container(kind=CONTAINER_KIND_LIST, indent=content_indent_rel))
+        relative_line = (
+            relative_line[content_indent_rel:] if len(relative_line) >= content_indent_rel else ""
+        )
+        list_contexts.append(ListContext(containment_path=effective_path + tuple(extras)))
+
+    return FenceLine(
+        content=relative_line,
+        containment_path=effective_path + tuple(extras),
+    )
+
+
+def normalize_for_fence_closing(line: str, active_fence: ActiveFence) -> str:
+    """Return a fenced-block line normalized to the opening fence's container."""
+    peeled, peeled_count = peel_containers(line, active_fence.containment_path)
+    if peeled_count < len(active_fence.containment_path):
+        return line
+    return peeled
+
+
+def build_active_fence(
+    opening_fence: tuple[str, int],
+    fence_line: FenceLine,
+) -> ActiveFence:
+    """Return active fenced code block state for a detected opening fence."""
+    fence_character, minimum_length = opening_fence
+    return ActiveFence(
+        character=fence_character,
+        minimum_length=minimum_length,
+        containment_path=fence_line.containment_path,
+    )
 
 
 def is_table_delimiter(line: str) -> bool:
@@ -243,18 +423,21 @@ def extract_prose(text: str) -> str:
 
     One line of the returned text is one sentence unit. A Markdown paragraph
     can be hard-wrapped over many source lines, so the continuation lines of a
-    paragraph are joined back into one line. A blank line, a heading, a table,
-    a code fence, a new list item, and a blockquote line all start a new unit,
-    which keeps one worksheet prompt or one list item counting as one sentence.
+    paragraph are joined back into one line; a blockquote is a container, not a
+    unit, so its wrapped lines are joined the same way. A blank line, a heading,
+    a table, a code fence, a new list item, and a new quoted paragraph all start
+    a new unit, which keeps one worksheet prompt or one list item counting as
+    one sentence.
     """
     text = strip_html_comments(text)
 
     units: list[str] = []
-    active_fence: tuple[str, int] | None = None
+    active_fence: ActiveFence | None = None
+    list_contexts: list[ListContext] = []
     in_parent_strip = False
     in_parent_section = False
     in_table = False
-    continuing = False
+    open_unit: str | None = None
 
     lines = text.split("\n")
     for index, raw_line in enumerate(lines):
@@ -264,15 +447,22 @@ def extract_prose(text: str) -> str:
         # The active fence is tested before the opening pattern, so while a
         # block is open only a genuine closing fence ends it. An info string
         # or a trailing comment on a fence line cannot close the block.
+        # Both fence lines are normalized to their container first, so a fence
+        # inside a blockquote or inside a list item is still a fence.
         if active_fence is not None:
-            if is_closing_fence(line, *active_fence):
+            if is_closing_fence(
+                normalize_for_fence_closing(line, active_fence),
+                active_fence.character,
+                active_fence.minimum_length,
+            ):
                 active_fence = None
-            continuing = False
+            open_unit = None
             continue
-        opening_fence = parse_opening_fence(line)
+        fence_line = normalize_for_fence_opening(line, list_contexts)
+        opening_fence = parse_opening_fence(fence_line.content)
         if opening_fence is not None:
-            active_fence = opening_fence
-            continuing = False
+            active_fence = build_active_fence(opening_fence, fence_line)
+            open_unit = None
             continue
 
         # Tables, with or without outer pipe characters. A table is found by
@@ -280,13 +470,13 @@ def extract_prose(text: str) -> str:
         # below it are part of the same table.
         if in_table:
             if line.strip() and "|" in line:
-                continuing = False
+                open_unit = None
                 continue
             in_table = False
         next_line = lines[index + 1] if index + 1 < len(lines) else ""
         if line.strip() and "|" in line and is_table_delimiter(next_line):
             in_table = True
-            continuing = False
+            open_unit = None
             continue
 
         is_heading = bool(HEADING_PATTERN.match(line))
@@ -294,47 +484,62 @@ def extract_prose(text: str) -> str:
         # A parent-facing section runs from its heading to the next heading.
         if PARENT_SECTION_PATTERN.match(line):
             in_parent_section = True
-            continuing = False
+            open_unit = None
             continue
         if in_parent_section:
             if is_heading:
                 in_parent_section = False
             else:
-                continuing = False
+                open_unit = None
                 continue
 
         # The "For parents" strip runs from its bold label to the next heading.
         if PARENT_STRIP_PATTERN.match(line):
             in_parent_strip = True
-            continuing = False
+            open_unit = None
             continue
         if in_parent_strip:
             if is_heading:
                 in_parent_strip = False
             else:
-                continuing = False
+                open_unit = None
                 continue
 
         if is_heading:
-            continuing = False
+            open_unit = None
             continue
         if TABLE_ROW_PATTERN.match(line):
-            continuing = False
+            open_unit = None
             continue
         if THEMATIC_BREAK_PATTERN.match(line):
-            continuing = False
+            open_unit = None
             continue
         if NAV_LINE_PATTERN.match(line):
-            continuing = False
+            open_unit = None
             continue
 
-        # A new list item or a blockquote line starts its own unit. A plain
-        # line that follows prose is a wrapped continuation of that prose.
-        starts_block = bool(
-            LIST_MARKER_PATTERN.match(line) or BLOCKQUOTE_PATTERN.match(line)
-        )
+        # A new list item starts its own unit. A plain line that follows prose
+        # is a wrapped continuation of that prose.
+        #
+        # A blockquote is a container, not a sentence unit: consecutive quoted
+        # lines are one wrapped quoted paragraph, so a quoted line continues an
+        # open quoted unit. It starts a new unit when nothing quoted is open,
+        # when the quote marker carries no text (the blank ``>`` line that ends
+        # a quoted paragraph), or when its interior starts its own list item.
+        # Without this, re-wrapping a quote would lower its score without
+        # changing a word, exactly as re-wrapping a paragraph once did.
+        quote_match = BLOCKQUOTE_PATTERN.match(line)
+        if quote_match is not None:
+            interior = line[quote_match.end() :]
+            starts_block = (
+                open_unit != UNIT_KIND_QUOTE
+                or not interior.strip()
+                or bool(LIST_MARKER_PATTERN.match(interior))
+            )
+            line = interior
+        else:
+            starts_block = bool(LIST_MARKER_PATTERN.match(line))
 
-        line = BLOCKQUOTE_PATTERN.sub("", line)
         line = LIST_MARKER_PATTERN.sub("", line)
         line = IMAGE_PATTERN.sub(" ", line)
         line = LINK_PATTERN.sub(r"\1", line)
@@ -344,13 +549,15 @@ def extract_prose(text: str) -> str:
         line = EMPHASIS_PATTERN.sub("", line)
 
         if line.strip():
-            if continuing and not starts_block:
+            if open_unit is not None and not starts_block:
                 units[-1] = f"{units[-1]} {line.strip()}"
             else:
                 units.append(line.strip())
-            continuing = True
+                open_unit = (
+                    UNIT_KIND_QUOTE if quote_match is not None else UNIT_KIND_PROSE
+                )
         else:
-            continuing = False
+            open_unit = None
 
     return "\n".join(units)
 
@@ -497,6 +704,24 @@ def default_paths(root: Path) -> list[Path]:
     return sorted(found)
 
 
+def default_path_set(root: Path) -> set[Path]:
+    """Return the default child-facing corpus as resolved paths, for scope tests.
+
+    A symlink is skipped here for the same reason ``resolve_candidate_path``
+    refuses one: the corpus is the real files inside the repository, so a link
+    must not put its target into the set.
+    """
+    found: set[Path] = set()
+    for path in default_paths(root):
+        if path.is_symlink():
+            continue
+        try:
+            found.add(path.resolve())
+        except OSError:
+            continue
+    return found
+
+
 def is_inside(path: Path, root: Path) -> bool:
     """Return ``True`` when a path stays inside ``root`` after resolution."""
     try:
@@ -540,6 +765,7 @@ def resolve_paths(path_arguments: Sequence[str], root: Path) -> list[tuple[Path,
     root = root.resolve()
 
     candidates: list[Path] = []
+    in_scope: set[Path] | None = None
     if not path_arguments:
         candidates.extend(default_paths(root))
     else:
@@ -551,7 +777,27 @@ def resolve_paths(path_arguments: Sequence[str], root: Path) -> list[tuple[Path,
                 and not candidate.is_symlink()
                 and is_inside(candidate, root)
             ):
-                candidates.extend(sorted(candidate.rglob("*.md")))
+                # A directory is a scope selector, so it selects from the same
+                # child-facing corpus the default scan uses. Expanding it to
+                # every Markdown file below it and then subtracting a list of
+                # adult-facing prefixes cannot be kept complete: "." would
+                # score every governance and contributor document in the
+                # repository root. A named *file* is an explicit request for
+                # that one file and is still scored.
+                if in_scope is None:
+                    in_scope = default_path_set(root)
+                found = [
+                    entry
+                    for entry in sorted(candidate.rglob("*.md"))
+                    if not entry.is_symlink() and entry.resolve() in in_scope
+                ]
+                if not found:
+                    print(
+                        f"{argument}: no child-facing Markdown found in this "
+                        "directory; the scanned trees are DEFAULT_INCLUDE_GLOBS",
+                        file=sys.stderr,
+                    )
+                candidates.extend(found)
                 continue
             if resolve_candidate_path(candidate, root) is None:
                 print(
@@ -668,7 +914,14 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
             "With no paths, scans every child-facing tree."
         )
     )
-    parser.add_argument("paths", nargs="*", help="Markdown files or directories to score.")
+    parser.add_argument(
+        "paths",
+        nargs="*",
+        help=(
+            "Markdown files to score, or directories to scan for child-facing "
+            "Markdown. A directory keeps the default child-facing scope."
+        ),
+    )
     parser.add_argument(
         "--strict",
         action="store_true",

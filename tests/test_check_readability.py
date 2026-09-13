@@ -731,3 +731,241 @@ def test_repository_child_facing_corpus_has_no_hard_failures() -> None:
 
     failing = [score.display_path for score in scores if score.status == "fail"]
     assert not failing, f"child-facing files past the hard readability limit: {failing}"
+
+
+# ---------------------------------------------------------------------------
+# Blockquotes are containers, not sentence units
+# ---------------------------------------------------------------------------
+
+
+def test_wrapping_a_blockquote_does_not_change_the_score() -> None:
+    """Re-wrapping a quote must not move the grade, for the same reason a
+    re-wrapped paragraph must not: a gate that reformatting defeats is not a
+    gate."""
+    body = ((WRAPPED_PARAGRAPH_SOURCE + " ") * 3).strip()
+    pieces = body.split(" ")
+    one_line = "> " + body
+    wrapped = "\n".join(
+        "> " + " ".join(pieces[index : index + 8]) for index in range(0, len(pieces), 8)
+    )
+    flat = readability.score_text(one_line, "x.md")
+    hard = readability.score_text(wrapped, "x.md")
+    assert flat.sentences == hard.sentences
+    assert flat.grade == hard.grade
+    assert flat.status == hard.status == "fail"
+
+
+def test_extract_prose_keeps_separate_quoted_paragraphs_separate() -> None:
+    """A bare ``>`` line ends a quoted paragraph, so the next one is its own unit."""
+    text = "> Para one here.\n> Still para one.\n>\n> Para two here.\n> Still para two."
+    assert readability.extract_prose(text).split("\n") == [
+        "Para one here. Still para one.",
+        "Para two here. Still para two.",
+    ]
+
+
+def test_extract_prose_keeps_each_quoted_list_item_separate() -> None:
+    """A list inside a quote is still a list, so each item is one unit."""
+    text = "> - Item one here\n> - Item two here\n> - Item three here"
+    assert readability.extract_prose(text).split("\n") == [
+        "Item one here",
+        "Item two here",
+        "Item three here",
+    ]
+
+
+def test_extract_prose_starts_a_new_unit_for_a_quote_under_a_paragraph() -> None:
+    """A blockquote interrupts a paragraph; it does not continue it."""
+    text = "A plain paragraph line.\n> A quote right under it."
+    assert readability.extract_prose(text).split("\n") == [
+        "A plain paragraph line.",
+        "A quote right under it.",
+    ]
+
+
+def test_extract_prose_joins_a_lazy_blockquote_continuation() -> None:
+    """CommonMark lets a quoted paragraph run on without the marker."""
+    text = "> Quote begins here\nand runs on lazily.\n"
+    assert readability.extract_prose(text).split("\n") == [
+        "Quote begins here and runs on lazily."
+    ]
+
+
+# ---------------------------------------------------------------------------
+# Fenced code blocks inside Markdown containers
+# ---------------------------------------------------------------------------
+
+
+def test_extract_prose_drops_a_fence_inside_a_blockquote() -> None:
+    """A fence carries its container prefix, and is still a fence."""
+    text = "\n".join(
+        [
+            "Prose one.",
+            "",
+            "> Copy this shape:",
+            ">",
+            "> ```text",
+            "> ALPHALEAK subsequently demonstrated considerable inefficiencies",
+            "> ```",
+            "",
+            "Prose two.",
+        ]
+    )
+    prose = readability.extract_prose(text)
+    assert "Prose one." in prose
+    assert "Copy this shape:" in prose
+    assert "Prose two." in prose
+    assert "ALPHALEAK" not in prose
+
+
+def test_extract_prose_drops_a_fence_indented_inside_a_list_item() -> None:
+    """A fence at the content column of a list item is a fence, not prose."""
+    text = "\n".join(
+        [
+            "Prose one.",
+            "",
+            "1. Run the helper.",
+            "",
+            "    ```bash",
+            "    BRAVOLEAK --comprehensive --administrative --documentation",
+            "    ```",
+            "",
+            "Prose two.",
+        ]
+    )
+    prose = readability.extract_prose(text)
+    assert "Prose one." in prose
+    assert "Run the helper." in prose
+    assert "Prose two." in prose
+    assert "BRAVOLEAK" not in prose
+
+
+def test_the_two_checkers_agree_on_a_contained_fence() -> None:
+    """The placeholder checker already hides a contained fence; so must this one.
+
+    The two scripts are deliberately separate copies of one CommonMark rule.
+    This test pins them together, so that a change to one that is not made in
+    the other fails here instead of in a confusing CI verdict.
+    """
+    placeholder_script = (
+        Path(__file__).resolve().parents[1]
+        / ".github"
+        / "scripts"
+        / "check-prohibited-placeholders.py"
+    )
+    spec = importlib.util.spec_from_file_location("check_placeholders", placeholder_script)
+    assert spec is not None and spec.loader is not None
+    placeholders = importlib.util.module_from_spec(spec)
+    sys.modules[spec.name] = placeholders
+    spec.loader.exec_module(placeholders)
+
+    text = "\n".join(["Prose one.", "", "> ```text", "> TBD", "> ```", "", "Prose two."])
+    assert placeholders.find_violations_in_text(text, "x.md") == []
+    assert "TBD" not in readability.extract_prose(text)
+
+
+# ---------------------------------------------------------------------------
+# HTML stripping
+# ---------------------------------------------------------------------------
+
+
+def test_extract_prose_keeps_a_number_comparison() -> None:
+    """``<`` and ``>`` around numbers are child-visible prose, not a tag."""
+    prose = readability.extract_prose(
+        "Choose < 5 days and > 2 days for the trip and write the number down."
+    )
+    assert "5 days and" in prose
+    assert "2 days" in prose
+
+
+def test_extract_prose_still_drops_real_html_tags() -> None:
+    """A real tag is still markup and is still removed."""
+    prose = readability.extract_prose(
+        'A line with <br> a break and <span class="x">some text</span> inside.'
+    )
+    assert "some text" in prose
+    assert "br" not in prose.split()
+    assert "span" not in prose
+    assert "class" not in prose
+
+
+def test_extract_prose_drops_an_unterminated_html_comment() -> None:
+    """A comment opener that never closes is still markup, not prose."""
+    prose = readability.extract_prose(
+        "An <!-- unterminated comment with a > inside it and more words after."
+    )
+    assert "unterminated" not in prose
+    assert "more words after." in prose
+
+
+# ---------------------------------------------------------------------------
+# Directory arguments keep the child-facing scope
+# ---------------------------------------------------------------------------
+
+
+def test_a_directory_argument_keeps_the_default_child_facing_scope(tmp_path: Path) -> None:
+    """A directory selects from the default corpus; it does not widen it."""
+    root = tmp_path / "repo"
+    session_dir = root / "framework" / "sessions"
+    session_dir.mkdir(parents=True)
+    (session_dir / "01_child.md").write_text("Some prose lives here.", encoding="utf-8")
+    (root / "README.md").write_text("Some prose lives here.", encoding="utf-8")
+    (root / "CONTRIBUTING.md").write_text("Some prose lives here.", encoding="utf-8")
+
+    selected = [display for _, display in readability.resolve_paths(["."], root)]
+
+    assert selected == ["framework/sessions/01_child.md"]
+
+
+def test_a_directory_argument_matches_the_default_scan(tmp_path: Path) -> None:
+    """Scanning "." and scanning nothing must select the same files."""
+    root = tmp_path / "repo"
+    session_dir = root / "framework" / "sessions"
+    session_dir.mkdir(parents=True)
+    (session_dir / "01_child.md").write_text("Some prose lives here.", encoding="utf-8")
+    (root / "AGENTS.md").write_text("Some prose lives here.", encoding="utf-8")
+
+    assert readability.resolve_paths(["."], root) == readability.resolve_paths([], root)
+
+
+def test_the_repository_root_as_an_argument_matches_the_default_scan() -> None:
+    """On the real repository, "." is the default scan, not a wider one.
+
+    Without this, ``check-readability.py .`` scores the governance and
+    contributor documents in the repository root and reports failures that the
+    gate does not claim to police.
+    """
+    with_dot = [
+        score.display_path for score in readability.scan_files(["."], root=readability.REPO_ROOT)
+    ]
+    default = [
+        score.display_path for score in readability.scan_files([], root=readability.REPO_ROOT)
+    ]
+    assert with_dot == default
+
+
+def test_a_named_file_outside_the_default_globs_is_still_scored(tmp_path: Path) -> None:
+    """Naming one file is an explicit request, and it is honoured.
+
+    A curriculum author checking a single draft, and a pre-commit hook that
+    passes changed filenames, both depend on this. Only *directory* expansion
+    is narrowed to the default corpus.
+    """
+    root = tmp_path / "repo"
+    root.mkdir()
+    draft = root / "draft_session.md"
+    draft.write_text("Some prose lives here.", encoding="utf-8")
+
+    selected = [display for _, display in readability.resolve_paths(["draft_session.md"], root)]
+
+    assert selected == ["draft_session.md"]
+
+
+def test_a_directory_argument_still_refuses_an_adult_tree(tmp_path: Path) -> None:
+    """A directory that holds no child-facing file selects nothing, and says so."""
+    root = tmp_path / "repo"
+    docs_dir = root / "docs" / "build"
+    docs_dir.mkdir(parents=True)
+    (docs_dir / "brief.md").write_text("Some prose lives here.", encoding="utf-8")
+
+    assert readability.resolve_paths(["docs"], root) == []
