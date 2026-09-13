@@ -497,3 +497,76 @@ def test_main_reports_actionable_failure_message(
     assert "replace with a measurable value" in captured.out
     assert "<!-- ALLOW-TBD: <reason> -->" in captured.out
     assert '.github/instructions/docs.instructions.md "Prohibited Patterns"' in captured.out
+
+
+def test_an_unclosed_blockquote_fence_ends_with_its_blockquote(tmp_path: Path) -> None:
+    """A fence ends with the container that holds it, so the scan resumes after it.
+
+    CommonMark closes an unterminated fenced block at the end of its containing
+    block (<https://spec.commonmark.org/0.31.2/#fenced-code-blocks>). Treating
+    the fence as open to the end of the file would silence every placeholder in
+    the rest of the document.
+    """
+    path = write_file(
+        tmp_path / "docs" / "spec" / "example.md",
+        "\n".join(
+            [
+                "> ```text",
+                "> An example that is never closed.",
+                "",
+                "# Real heading",
+                "",
+                "The limit is TBD.",
+            ]
+        )
+        + "\n",
+    )
+
+    violations = scan_single_file(path, tmp_path)
+
+    assert [v.matched_text for v in violations] == ["TBD"]
+
+
+def test_an_unclosed_list_fence_ends_with_its_list_item(tmp_path: Path) -> None:
+    """The same rule for a fence nested under a list item."""
+    path = write_file(
+        tmp_path / "docs" / "spec" / "example.md",
+        "\n".join(
+            [
+                "1. An example:",
+                "",
+                "   ```text",
+                "   Never closed.",
+                "",
+                "The limit is TBD.",
+            ]
+        )
+        + "\n",
+    )
+
+    violations = scan_single_file(path, tmp_path)
+
+    assert [v.matched_text for v in violations] == ["TBD"]
+
+
+def test_a_blank_line_does_not_end_a_list_nested_fence(tmp_path: Path) -> None:
+    """A positive control. Inside a list item a blank line is ordinary fence content."""
+    path = write_file(
+        tmp_path / "docs" / "spec" / "example.md",
+        "\n".join(
+            [
+                "1. An example:",
+                "",
+                "   ```text",
+                "   first line",
+                "",
+                "   The limit is TBD.",
+                "   ```",
+            ]
+        )
+        + "\n",
+    )
+
+    violations = scan_single_file(path, tmp_path)
+
+    assert violations == []

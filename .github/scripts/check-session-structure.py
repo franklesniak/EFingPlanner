@@ -31,12 +31,16 @@ What is checked
    comments, or only a bare list marker prints as a bare heading, so it counts
    as empty.
 8. No fenced code block is used as a worksheet fill-in. Worksheet forms are
-   Markdown tables; a fenced block of underscores does not print as a box, does
-   not become an editable cell when the page is copied into Google Docs, and
-   does not reflow on a phone. A fence nested in a list item or a blockquote is
-   still a fence; a fence line carrying anything but whitespace after the
-   backticks does not close one; and a fence that is never closed still holds
-   what it holds.
+   Markdown tables; a fenced block of blanks does not print as a box, does not
+   become an editable cell when the page is copied into Google Docs, and does
+   not reflow on a phone. A blank is a run of four or more underscores that
+   starts or ends a token, which is what a child writes on; a run with word
+   characters on both sides, such as ``A____B``, is part of an identifier in a
+   code example and is left alone. A fence nested in a list item or a
+   blockquote is still a fence; a fence line carrying anything but whitespace
+   after the backticks does not close one; a fence ends with the list item or
+   blockquote that holds it, as CommonMark says it does; and a fence that is
+   never closed still holds what it holds.
 
 Source Check exemptions
 -----------------------
@@ -51,6 +55,12 @@ Both markers must be real markers. One document scan removes every fenced block
 before any structural search runs, so a marker printed inside a fenced example
 is an example of a marker, not a marker. The same scan is what the navigation
 search, the parent-strip search, and the heading scan read.
+
+That scan also removes every HTML comment span, because a comment prints as
+nothing: a ``## Goal`` inside ``<!-- ... -->`` is a heading the child never
+sees, and a gate that counts it reports a section that is not on the page. The
+two exemption markers are themselves comments, so they are searched against a
+second view of the same scan, one that keeps the comments in.
 
 Silence is never an exemption. If a session genuinely has no research step, it
 says so.
@@ -123,7 +133,20 @@ PARENT_STRIP_FIELDS: tuple[tuple[str, re.Pattern[str]], ...] = tuple(
     for field in ("Status", "Estimated time", "Parent involvement")
 )
 HEADING_PATTERN = re.compile(r"^(?P<hashes>#{1,6})\s+(?P<title>.+?)\s*$")
-UNDERSCORE_RUN_PATTERN = re.compile(r"_{4,}")
+
+#: A worksheet fill-in blank: a run of four or more underscores that starts
+#: or ends a token. ``Total days ____``, ``Name:____`` and ``$____ per night``
+#: are all blanks a child writes on. A run with word characters on both sides
+#: is not one: ``A____B`` in a code example renders as code, and the rule this
+#: script enforces prohibits underscore *forms*, not underscores.
+WORKSHEET_BLANK_PATTERN = re.compile(r"(?<!\w)_{4,}|_{4,}(?!\w)")
+
+#: CommonMark starts an HTML block on a line whose content begins with
+#: ``<!--`` and ends it on the line that carries ``-->``. Every line of that
+#: block is raw HTML, so nothing on it is a heading -- not even text after
+#: the ``-->``, which prints as the literal characters the author typed.
+#: <https://spec.commonmark.org/0.31.2/#html-blocks>
+HTML_BLOCK_COMMENT_START_PATTERN = re.compile(r"^ {0,3}<!--")
 
 #: A list marker with nothing after it. It prints as a bullet and no words.
 BARE_LIST_MARKER_PATTERN = re.compile(r"^\s*(?:[-*+]|\d{1,9}[.)])\s*$")
@@ -205,19 +228,67 @@ class DocumentScan:
     """One container-aware pass over a session document.
 
     ``content_lines`` holds every line a reader sees as document text. Each
-    line inside a fenced block, and each fence marker, becomes an empty string,
-    so line numbers stay the numbers in the file. Every structural search in
-    this script reads these lines. That is what makes one fence parser govern
-    the whole check, rather than the heading scan alone.
+    line inside a fenced block, each fence marker, and each HTML comment span
+    becomes an empty string, so line numbers stay the numbers in the file. The
+    heading scan, the navigation search and the parent-strip search all read
+    these lines. That is what makes one fence parser and one comment parser
+    govern the whole check, rather than the heading scan alone.
+
+    ``marker_lines`` holds the same lines with the comments left in, because
+    the two Source Check exemption markers *are* comments. Fenced blocks are
+    removed from this view too, so a marker printed inside an example is still
+    an example.
     """
 
     content_lines: tuple[str, ...]
+    marker_lines: tuple[str, ...]
     worksheet_fences: tuple[int, ...]
 
     @property
     def text(self) -> str:
-        """Return the document text with every fenced block removed."""
+        """Return the document text a reader sees: no fences, no comments."""
         return "\n".join(self.content_lines)
+
+    @property
+    def marker_text(self) -> str:
+        """Return the document text outside every fence, comments included."""
+        return "\n".join(self.marker_lines)
+
+
+def strip_html_comments(line: str, is_in_html_comment: bool) -> tuple[str, bool]:
+    """Remove HTML comment spans from a Markdown line.
+
+    An HTML comment prints as nothing, and it spans lines: CommonMark ends an
+    HTML block opened by ``<!--`` only on the line that carries ``-->``. The
+    caller threads ``is_in_html_comment`` from one line to the next, which is
+    why this takes it and returns it. Kept identical to the parser in
+    ``.github/scripts/check-prohibited-placeholders.py``.
+    """
+    uncommented_parts: list[str] = []
+    index = 0
+
+    while index < len(line):
+        if is_in_html_comment:
+            comment_end = line.find("-->", index)
+            if comment_end == -1:
+                return "".join(uncommented_parts), True
+            index = comment_end + len("-->")
+            is_in_html_comment = False
+            continue
+
+        comment_start = line.find("<!--", index)
+        if comment_start == -1:
+            uncommented_parts.append(line[index:])
+            break
+
+        uncommented_parts.append(line[index:comment_start])
+        comment_end = line.find("-->", comment_start + len("<!--"))
+        if comment_end == -1:
+            is_in_html_comment = True
+            break
+        index = comment_end + len("-->")
+
+    return "".join(uncommented_parts), is_in_html_comment
 
 
 def count_leading_spaces(line: str) -> int:
@@ -305,6 +376,26 @@ def normalize_for_fence_closing(line: str, active_fence: ActiveFence) -> str:
     return peeled
 
 
+def fence_container_ended(line: str, active_fence: ActiveFence) -> bool:
+    """Return whether ``line`` has left the container holding the open fence.
+
+    CommonMark ends a fenced block at the end of its containing block when no
+    closing fence is found, so a fence opened inside a list item or a
+    blockquote does not run to the end of the document once the document
+    outdents past that container. A nonblank line that does not peel to the
+    fence's container has left it. A blank line has left a blockquote, which a
+    blank line ends, but not a list item, where a blank line is ordinary
+    content. Kept identical to the helper in
+    ``.github/scripts/check-prohibited-placeholders.py``.
+    """
+    _, peeled_count = peel_containers(line, active_fence.containment_path)
+    if peeled_count == len(active_fence.containment_path):
+        return False
+    if line.strip():
+        return True
+    return active_fence.containment_path[peeled_count].kind == CONTAINER_KIND_BLOCK_QUOTE
+
+
 def parse_opening_fence(line: str) -> tuple[str, int] | None:
     """Return the opening fence marker character and length, if present."""
     match = FENCE_OPEN_PATTERN.match(line)
@@ -327,6 +418,11 @@ def is_closing_fence(line: str, fence_character: str, minimum_length: int) -> bo
     return closing_pattern.match(line) is not None
 
 
+def fence_holds_worksheet(fence_lines: Sequence[str]) -> bool:
+    """Return whether the body of one fenced block reads as a worksheet fill-in."""
+    return any(WORKSHEET_BLANK_PATTERN.search(line) for line in fence_lines)
+
+
 def scan_document(text: str) -> DocumentScan:
     """Return the text outside every fence, and the worksheet fences in the document.
 
@@ -336,28 +432,49 @@ def scan_document(text: str) -> DocumentScan:
     ``check-prohibited-placeholders.py`` uses, under the same names.
     """
     content_lines: list[str] = []
+    marker_lines: list[str] = []
     worksheet_fences: list[int] = []
     active_fence: ActiveFence | None = None
     list_contexts: list[ListContext] = []
+    is_in_html_comment = False
     fence_start = 0
     buffer: list[str] = []
 
     for number, raw_line in enumerate(text.split("\n"), start=1):
+        if active_fence is not None and fence_container_ended(raw_line, active_fence):
+            # The list item or blockquote holding the fence has ended, so the
+            # fence ended with it and this line is document text again.
+            if fence_holds_worksheet(buffer):
+                worksheet_fences.append(fence_start)
+            active_fence = None
+            buffer = []
+
         if active_fence is not None:
             closing_line = normalize_for_fence_closing(raw_line, active_fence)
             if is_closing_fence(
                 closing_line, active_fence.character, active_fence.minimum_length
             ):
-                if any(UNDERSCORE_RUN_PATTERN.search(line) for line in buffer):
+                if fence_holds_worksheet(buffer):
                     worksheet_fences.append(fence_start)
                 active_fence = None
                 buffer = []
             else:
                 buffer.append(closing_line)
             content_lines.append("")
+            marker_lines.append("")
             continue
 
-        opening_fence_line = normalize_for_fence_opening(raw_line, list_contexts)
+        was_in_html_comment = is_in_html_comment
+        visible_line, is_in_html_comment = strip_html_comments(raw_line, was_in_html_comment)
+        # Fence detection reads the span-stripped line, because the sibling
+        # hook reads it that way and the two must not disagree about which
+        # fences exist. The structural searches read less: a whole HTML block
+        # line carries no heading, even after its ``-->``.
+        in_html_block = was_in_html_comment or (
+            HTML_BLOCK_COMMENT_START_PATTERN.match(raw_line) is not None
+        )
+
+        opening_fence_line = normalize_for_fence_opening(visible_line, list_contexts)
         opening_fence = parse_opening_fence(opening_fence_line.content)
         if opening_fence is not None:
             character, minimum_length = opening_fence
@@ -369,16 +486,16 @@ def scan_document(text: str) -> DocumentScan:
             fence_start = number
             buffer = []
             content_lines.append("")
+            marker_lines.append("")
             continue
 
-        content_lines.append(raw_line)
+        content_lines.append("" if in_html_block else visible_line)
+        marker_lines.append(raw_line)
 
-    if active_fence is not None and any(
-        UNDERSCORE_RUN_PATTERN.search(line) for line in buffer
-    ):
+    if active_fence is not None and fence_holds_worksheet(buffer):
         worksheet_fences.append(fence_start)
 
-    return DocumentScan(tuple(content_lines), tuple(worksheet_fences))
+    return DocumentScan(tuple(content_lines), tuple(marker_lines), tuple(worksheet_fences))
 
 
 def find_headings(scan: DocumentScan) -> list[Heading]:
@@ -433,28 +550,6 @@ def parent_strip_body(
     return "\n".join(content_lines[label_line - 1 : end])
 
 
-def strip_html_comments(text: str) -> str:
-    """Return ``text`` with every HTML comment span removed.
-
-    An HTML comment prints as nothing. A section that holds only a comment is a
-    bare heading to the child who opens the page, so the checker must not count
-    a comment as the content of a section.
-    """
-    result: list[str] = []
-    index = 0
-    while index < len(text):
-        comment_start = text.find("<!--", index)
-        if comment_start == -1:
-            result.append(text[index:])
-            break
-        result.append(text[index:comment_start])
-        comment_end = text.find("-->", comment_start + len("<!--"))
-        if comment_end == -1:
-            break
-        index = comment_end + len("-->")
-    return "".join(result)
-
-
 def renders_as_content(body: str) -> bool:
     """Return whether a section body puts anything on the page.
 
@@ -462,10 +557,12 @@ def renders_as_content(body: str) -> bool:
     a list marker with no words after it all print as nothing. A section that
     holds only those is empty to the child, whatever the file holds.
     """
-    for line in strip_html_comments(body).split("\n"):
-        if not line.strip():
+    is_in_html_comment = False
+    for line in body.split("\n"):
+        visible, is_in_html_comment = strip_html_comments(line, is_in_html_comment)
+        if not visible.strip():
             continue
-        if BARE_LIST_MARKER_PATTERN.match(line):
+        if BARE_LIST_MARKER_PATTERN.match(visible):
             continue
         return True
     return False
@@ -564,8 +661,8 @@ def check_text(text: str, display_path: str, file_name: str) -> list[Violation]:
                 Violation(display_path, 1, f'missing mandatory section "## {section}".')
             )
 
-    exempt = bool(AUDIENCE_ADULT_PATTERN.search(content)) or bool(
-        NO_SOURCE_CHECK_PATTERN.search(content)
+    exempt = bool(AUDIENCE_ADULT_PATTERN.search(scan.marker_text)) or bool(
+        NO_SOURCE_CHECK_PATTERN.search(scan.marker_text)
     )
     if SOURCE_CHECK_SECTION not in titles and not exempt:
         violations.append(
@@ -683,37 +780,51 @@ def collect_targets(path_arguments: Sequence[str], root: Path) -> ScanTargets:
     if not path_arguments:
         for path in sorted(root.glob(DEFAULT_SCAN_GLOB)):
             take(path)
-        return ScanTargets(tuple(paths), tuple(refusals))
-
-    for argument in path_arguments:
-        candidate = Path(argument)
-        if not candidate.is_absolute():
-            candidate = root / candidate
-        refusal = guard_path(candidate, root, display_name(candidate, root, argument))
-        if refusal is not None:
-            refusals.append(refusal)
-            continue
-        candidate = candidate.resolve()
-        if candidate.is_dir():
-            for path in sorted(candidate.rglob("*.md")):
-                take(path)
-        elif candidate.is_file() and candidate.suffix.lower() == ".md":
-            paths.append(candidate)
-        else:
-            # The argument survived the guard but names nothing this checker can
-            # read: a path that does not exist, or a file that is not Markdown.
-            # Ignoring it silently lets the run report "all well-formed" for a
-            # corpus it never opened, which is the failure a gate exists to
-            # prevent.
-            refusals.append(
-                Violation(
-                    display_name(candidate, root, argument),
-                    1,
-                    "not a Markdown file or a directory, so there is nothing to check. "
-                    "Check the path: a typo here would otherwise pass silently, because "
-                    "a run that checks nothing reports no problems.",
+    else:
+        for argument in path_arguments:
+            candidate = Path(argument)
+            if not candidate.is_absolute():
+                candidate = root / candidate
+            refusal = guard_path(candidate, root, display_name(candidate, root, argument))
+            if refusal is not None:
+                refusals.append(refusal)
+                continue
+            candidate = candidate.resolve()
+            if candidate.is_dir():
+                for path in sorted(candidate.rglob("*.md")):
+                    take(path)
+            elif candidate.is_file() and candidate.suffix.lower() == ".md":
+                paths.append(candidate)
+            else:
+                # The argument survived the guard but names nothing this checker
+                # can read: a path that does not exist, or a file that is not
+                # Markdown.
+                refusals.append(
+                    Violation(
+                        display_name(candidate, root, argument),
+                        1,
+                        "not a Markdown file or a directory, so there is nothing to "
+                        "check. Check the path: a typo here would otherwise pass "
+                        "silently, because a run that checks nothing reports no "
+                        "problems.",
+                    )
                 )
+
+    if not paths and not refusals:
+        # One guard for every shape of the same mistake: the run was asked for
+        # something and opened nothing. An empty directory, a directory holding
+        # no Markdown, and a default glob that has stopped matching all land
+        # here, so none of them can report a clean corpus that was never read.
+        requested = " ".join(path_arguments) if path_arguments else DEFAULT_SCAN_GLOB
+        refusals.append(
+            Violation(
+                requested,
+                1,
+                "matched no session file, so this run checked nothing. A run that "
+                "opens no file has no evidence that anything is well-formed. Check "
+                "the path, or check DEFAULT_SCAN_GLOB if this was the default scan.",
             )
+        )
 
     return ScanTargets(tuple(paths), tuple(refusals))
 
@@ -723,9 +834,8 @@ def resolve_paths(path_arguments: Sequence[str], root: Path) -> list[Path]:
     return list(collect_targets(path_arguments, root).paths)
 
 
-def scan_files(path_arguments: Sequence[str], root: Path = REPO_ROOT) -> list[Violation]:
-    """Check every named session file and return all violations."""
-    targets = collect_targets(path_arguments, root)
+def check_targets(targets: ScanTargets, root: Path) -> list[Violation]:
+    """Check every collected session file and return all violations."""
     violations: list[Violation] = list(targets.refusals)
     resolved_root = root.resolve()
     for path in targets.paths:
@@ -734,6 +844,11 @@ def scan_files(path_arguments: Sequence[str], root: Path = REPO_ROOT) -> list[Vi
         text = path.read_text(encoding="utf-8")
         violations.extend(check_text(text, display_path, path.name))
     return violations
+
+
+def scan_files(path_arguments: Sequence[str], root: Path = REPO_ROOT) -> list[Violation]:
+    """Check every named session file and return all violations."""
+    return check_targets(collect_targets(path_arguments, root), root)
 
 
 def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
@@ -751,12 +866,15 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
 def main(argv: Sequence[str] | None = None, root: Path = REPO_ROOT) -> int:
     """Run the session-structure check."""
     args = parse_args(argv)
-    violations = scan_files(args.paths, root=root)
+    # One traversal feeds both the verdict and the count. Counting from a
+    # second walk lets the report name a number the verdict never looked at.
+    targets = collect_targets(args.paths, root)
+    violations = check_targets(targets, root)
 
     for violation in violations:
         print(violation.format_message())
 
-    checked = len(resolve_paths(args.paths, root))
+    checked = len(targets.paths)
     if violations:
         print(f"\nSession structure: {checked} file(s) checked, {len(violations)} problem(s).")
         return 1

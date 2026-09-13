@@ -295,6 +295,26 @@ def build_active_fence(
     )
 
 
+def fence_container_ended(line: str, active_fence: ActiveFence) -> bool:
+    """Return whether ``line`` has left the container holding the open fence.
+
+    CommonMark ends a fenced block at the end of its containing block when no
+    closing fence is found, so a fence opened inside a list item or a
+    blockquote does not run to the end of the document once the document
+    outdents past that container. A nonblank line that does not peel to the
+    fence's container has left it. A blank line has left a blockquote, which a
+    blank line ends, but not a list item, where a blank line is ordinary
+    content. Kept identical to the helper in
+    ``.github/scripts/check-session-structure.py``.
+    """
+    _, peeled_count = peel_containers(line, active_fence.containment_path)
+    if peeled_count == len(active_fence.containment_path):
+        return False
+    if line.strip():
+        return True
+    return active_fence.containment_path[peeled_count].kind == CONTAINER_KIND_BLOCK_QUOTE
+
+
 def parse_opening_fence(line: str) -> tuple[str, int] | None:
     """Return the opening fence marker character and length, if present."""
     match = FENCE_OPEN_PATTERN.match(line)
@@ -324,6 +344,11 @@ def find_violations_in_text(text: str, display_path: str) -> list[Violation]:
     list_contexts: list[ListContext] = []
 
     for line_number, raw_line in enumerate(text.splitlines(), start=1):
+        if active_fence is not None and fence_container_ended(raw_line, active_fence):
+            # The container holding the fence has ended, so the fence ended
+            # with it and this line is document text again.
+            active_fence = None
+
         if active_fence is not None:
             closing_line = normalize_for_fence_closing(raw_line, active_fence)
             if is_closing_fence(

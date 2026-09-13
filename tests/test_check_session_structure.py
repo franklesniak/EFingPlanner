@@ -725,3 +725,229 @@ def test_a_section_holding_only_a_fenced_block_is_not_empty() -> None:
         "## Workspace\n", f"## Workspace\n\n{FENCE}text\nnotes here\n{FENCE}\n", 1
     )
     assert check(text) == []
+
+
+# ---------------------------------------------------------------------------
+# A commented-out heading is not a heading
+# ---------------------------------------------------------------------------
+
+
+def test_a_heading_inside_a_multiline_comment_is_not_a_section() -> None:
+    """A section commented out with `<!-- ... -->` is not on the page at all."""
+    text = build_session().replace(
+        "## Goal\n\nReal content for Goal.\n",
+        "<!--\n## Goal\n\nReal content for Goal.\n-->\n",
+        1,
+    )
+    assert any('missing mandatory section "## Goal"' in m for m in check(text))
+
+
+def test_a_commented_out_heading_alone_is_not_a_section() -> None:
+    """The shortest form of the same mistake: only the heading is commented out."""
+    text = build_session().replace(
+        "## Stop Point\n\nReal content for Stop Point.\n",
+        "<!--\n## Stop Point\n-->\n\nReal content for Stop Point.\n",
+        1,
+    )
+    assert any('missing mandatory section "## Stop Point"' in m for m in check(text))
+
+
+def test_a_commented_out_title_does_not_name_the_session() -> None:
+    """A session names itself in words a child can read, not in a comment."""
+    text = build_session().replace(
+        "# Session 07: A Well-Formed Session",
+        "<!--\n# Session 07: A Well-Formed Session\n-->",
+        1,
+    )
+    assert any("no session title" in m for m in check(text))
+
+
+def test_a_commented_out_navigation_line_does_not_satisfy_the_check() -> None:
+    """A navigation line that prints as nothing navigates nobody."""
+    text = build_session(nav=False).replace(
+        "**For parents:**",
+        "<!--\nYou are here: Phase 0 (Setup). Previous: none | Next: 08\n-->\n\n**For parents:**",
+        1,
+    )
+    assert any("navigation line" in m for m in check(text))
+
+
+def test_a_commented_out_parent_strip_does_not_satisfy_the_check() -> None:
+    """A parent cannot read a strip that is inside a comment."""
+    text = build_session(parents=False).replace(
+        "## Goal",
+        "<!--\n**For parents:**\n\n- Status: Core\n- Estimated time: 20 minutes\n"
+        "- Parent involvement: none\n-->\n\n## Goal",
+        1,
+    )
+    assert any("parent metadata strip" in m for m in check(text))
+
+
+def test_a_real_exemption_marker_survives_comment_stripping() -> None:
+    """A positive control. The two exemption markers *are* comments, so they must survive."""
+    text = build_session(
+        sections=SIX_SECTIONS, markers="<!-- no-source-check: no research step here -->"
+    )
+    assert check(text) == []
+
+
+def test_a_real_audience_marker_survives_comment_stripping() -> None:
+    """A positive control for the other marker."""
+    text = build_session(sections=SIX_SECTIONS, markers="<!-- audience: adult -- setup only -->")
+    assert check(text) == []
+
+
+def test_a_fence_inside_a_comment_is_not_a_fence() -> None:
+    """A positive control. A commented-out example prints as nothing, fence and all.
+
+    The sibling hook reads a commented-out fence the same way, so the two
+    scripts do not disagree about which fences exist.
+    """
+    text = build_session(
+        sections=SIX_SECTIONS,
+        markers="<!-- no-source-check: none -->",
+        extra=f"## Example\n\n<!--\n{FENCE}text\nMy answer: ______________________\n{FENCE}\n-->\n",
+    )
+    assert check(text) == []
+
+
+def test_a_heading_after_an_inline_comment_on_one_line_is_not_a_heading() -> None:
+    """A positive control. CommonMark makes the whole line raw HTML.
+
+    ``<!-- note -->## Goal`` prints the literal characters ``## Goal``; it is
+    not a section. See <https://spec.commonmark.org/0.31.2/#html-blocks>.
+    """
+    text = build_session().replace("## Goal\n", "<!-- note -->## Goal\n", 1)
+    assert any('missing mandatory section "## Goal"' in m for m in check(text))
+
+
+# ---------------------------------------------------------------------------
+# A worksheet blank is a blank, not every underscore
+# ---------------------------------------------------------------------------
+
+
+def test_an_identifier_with_embedded_underscores_is_not_a_worksheet() -> None:
+    """`A____B` renders as code. The rule prohibits underscore forms, not underscores."""
+    extra = f"{FENCE}text\nA____B\n{FENCE}"
+    assert check(build_session(extra=extra)) == []
+
+
+def test_a_long_embedded_underscore_run_is_not_a_worksheet() -> None:
+    """Run length does not turn an identifier into a form."""
+    extra = f"{FENCE}python\nMAX______________VALUE = 3\n{FENCE}"
+    assert check(build_session(extra=extra)) == []
+
+
+@pytest.mark.parametrize(
+    "blank_line",
+    [
+        "____",
+        "What I learned: ____________",
+        "Name:____",
+        "$____ per night x ____ nights",
+        "| ____ | ____ |",
+        "Total days ____ - 1 arrival day = ____ real days",
+        "____ of 13",
+    ],
+)
+def test_a_blank_that_starts_or_ends_a_token_is_still_a_worksheet(blank_line: str) -> None:
+    """A positive-control set. Narrowing the rule must not switch it off."""
+    extra = f"{FENCE}text\n{blank_line}\n{FENCE}"
+    assert any("worksheet fill-in" in m for m in check(build_session(extra=extra)))
+
+
+# ---------------------------------------------------------------------------
+# A fence ends with the container that holds it
+# ---------------------------------------------------------------------------
+
+
+def test_an_unclosed_blockquote_fence_ends_with_its_blockquote() -> None:
+    """CommonMark ends a fenced block at the end of its containing block.
+
+    <https://spec.commonmark.org/0.31.2/#fenced-code-blocks>
+    """
+    steps = f"## Steps\n\nLike this:\n\n> {FENCE}markdown\n> # Session 01: Example\n"
+    text = build_session().replace("## Steps\n\nReal content for Steps.\n", steps, 1)
+    assert check(text) == []
+
+
+def test_an_unclosed_list_fence_ends_with_its_list_item() -> None:
+    """A fence under a list item does not swallow the rest of the document."""
+    steps = f"## Steps\n\n1. Like this:\n\n   {FENCE}markdown\n   # Session 01: Example\n"
+    text = build_session().replace("## Steps\n\nReal content for Steps.\n", steps, 1)
+    assert check(text) == []
+
+
+def test_an_unclosed_blockquote_fence_ends_at_a_blank_line() -> None:
+    """A blank line ends a blockquote, so it ends the fence the blockquote holds."""
+    steps = f"## Steps\n\n> {FENCE}markdown\n> # Session 01: Example\n\nBack to prose.\n"
+    text = build_session().replace("## Steps\n\nReal content for Steps.\n", steps, 1)
+    assert check(text) == []
+
+
+def test_a_blank_line_does_not_end_a_list_nested_fence() -> None:
+    """A positive control. Inside a list item a blank line is ordinary fence content."""
+    extra = (
+        f"## Example\n\n1. Like this:\n\n   {FENCE}markdown\n   first line\n\n"
+        f"   <!-- no-source-check: none -->\n   {FENCE}\n"
+    )
+    text = build_session(sections=SIX_SECTIONS, extra=extra)
+    assert any("Source Check" in m for m in check(text))
+
+
+def test_a_worksheet_fence_that_ends_with_its_blockquote_is_still_rejected() -> None:
+    """A positive control. The fence is over, but it still held what it held."""
+    steps = f"## Steps\n\n> {FENCE}text\n> My answer: ______________________\n\nBack to prose.\n"
+    text = build_session().replace("## Steps\n\nReal content for Steps.\n", steps, 1)
+    assert any("worksheet fill-in" in m for m in check(text))
+
+
+# ---------------------------------------------------------------------------
+# A run that opened no file has checked nothing
+# ---------------------------------------------------------------------------
+
+
+def test_an_empty_directory_argument_is_refused(tmp_path: Path) -> None:
+    """A directory with no session file in it is a run that checked nothing."""
+    (tmp_path / "framework" / "sessions" / "phase_09_empty").mkdir(parents=True)
+    violations = structure.scan_files(["framework/sessions/phase_09_empty"], root=tmp_path)
+    assert any("checked nothing" in v.message for v in violations)
+    assert structure.main(["framework/sessions/phase_09_empty"], root=tmp_path) == 1
+
+
+def test_a_directory_holding_no_markdown_is_refused(tmp_path: Path) -> None:
+    """A walk that finds no Markdown has no evidence either."""
+    session_dir = tmp_path / "framework" / "sessions"
+    session_dir.mkdir(parents=True)
+    (session_dir / "notes.txt").write_text("not markdown", encoding="utf-8")
+    assert structure.main(["framework/sessions"], root=tmp_path) == 1
+
+
+def test_a_default_scan_that_matches_nothing_is_refused(tmp_path: Path) -> None:
+    """The default glob is the path CI uses, so a glob that stops matching must fail."""
+    violations = structure.scan_files([], root=tmp_path)
+    assert any("checked nothing" in v.message for v in violations)
+    assert structure.main([], root=tmp_path) == 1
+
+
+def test_the_zero_target_guard_does_not_fire_beside_another_refusal(tmp_path: Path) -> None:
+    """A positive control. One refusal is enough; the guard must not double-report."""
+    session_dir = tmp_path / "framework" / "sessions"
+    session_dir.mkdir(parents=True)
+    violations = structure.scan_files(["framework/sessions/99_typo.md"], root=tmp_path)
+    assert len(violations) == 1
+    assert "nothing to check" in violations[0].message
+
+
+def test_the_reported_file_count_comes_from_the_traversal_that_checked(
+    tmp_path: Path, capsys: Any
+) -> None:
+    """A positive control. The count in the summary is the count that was read."""
+    session_dir = tmp_path / "framework" / "sessions" / "phase_00_setup"
+    session_dir.mkdir(parents=True)
+    for number in ("07", "08"):
+        (session_dir / f"{number}_a_session.md").write_text(
+            build_session(number=number), encoding="utf-8"
+        )
+    assert structure.main([], root=tmp_path) == 0
+    assert "2 file(s) checked, all well-formed" in capsys.readouterr().out
