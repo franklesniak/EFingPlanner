@@ -2,7 +2,7 @@
 
 <!-- markdownlint-disable MD013 -->
 
-**Status:** Section A complete (verified 2026-09-13); section B complete; section C still in force until the curriculum build finishes
+**Status:** Active — sections A and B complete; section C outstanding
 
 **Owner:** @franklesniak
 
@@ -62,20 +62,20 @@
 
 | Item | How it was checked | Result |
 | --- | --- | --- |
-| 1. Topics | `gh api repos/:owner/:repo/topics` | All 17 topics present |
-| 2. Private vulnerability reporting | `gh api repos/:owner/:repo/private-vulnerability-reporting` | HTTP 200, so enabled |
-| 3. Dependabot alerts | `gh api repos/:owner/:repo/vulnerability-alerts` | HTTP 204, so enabled |
-| 3. Dependabot security updates | `gh api repos/:owner/:repo/automated-security-fixes` | `enabled: false`, left off on purpose (see above) |
-| 4. Discussions | `gh api repos/:owner/:repo` field `has_discussions` | `true` |
+| 1. Topics | `gh api repos/franklesniak/EFingPlanner/topics` | All 17 topics present |
+| 2. Private vulnerability reporting | `gh api repos/franklesniak/EFingPlanner/private-vulnerability-reporting` | HTTP 200, so enabled |
+| 3. Dependabot alerts | `gh api repos/franklesniak/EFingPlanner/vulnerability-alerts` | HTTP 204, so enabled |
+| 3. Dependabot security updates | `gh api repos/franklesniak/EFingPlanner/automated-security-fixes` | `enabled: false`, left off on purpose (see above) |
+| 4. Discussions | `gh api repos/franklesniak/EFingPlanner` field `has_discussions` | `true` |
 | 5. `triage` label | `gh label list --search triage` | Present, colour `d4c5f9` |
-| 6. Branch ruleset | `gh api repos/:owner/:repo/rulesets` | Created 2026-09-13, id 23196428, `active` |
+| 6. Branch ruleset | `gh api repos/franklesniak/EFingPlanner/rulesets` | Created 2026-09-13, id 23196428, `active` |
 
 ## B. Offloaded to coding-agent issues (open on GitHub — do not do these by hand)
 
 Both items below are complete, so neither needs an issue opened for it. They are kept here for the record:
 
 - [x] **Done — the specification file-cut** — split `docs/spec/specification.md` into `lean-spec.md` + `full-oer-companion.md` (the first action of the curriculum build, spec §31).
-- [x] **Done — pruning `templates/json/**` + `templates/yaml/**`** — unused sample content retained via whole-module `json`/`yaml` adoption.
+- [x] **Done — pruned `templates/json/**` + `templates/yaml/**`** — whole-module `json`/`yaml` adoption added this unused sample content. Commit `fdd3408` deleted it (issue #8). `.template-sync/marker.yml` now holds directory-level `SKIP` overrides for `templates/json/` and `templates/yaml/`. These overrides stop a later template sync from writing the files again.
 
 ## C. Carried-forward build requirements (not settings; not standalone issues)
 

@@ -49,14 +49,14 @@ The First Taste slice: the shortest path that still produces a usable mini-plan.
 
 ### Added
 
-- Fifteen sessions covering Phase 0 setup through the closing reflection, in the piloted First Taste order.
+- Fifteen sessions covering Phase 0 setup through the closing reflection, in the intended First Taste path order. That order is designed intent, not a piloted result -- no child has walked it yet. See "What is still owed to a human" below.
 - The student guide, the parent guide, and the blank templates those sessions use.
 - The Japan reference pack, and the root start surfaces (`README.md`, `GETTING_STARTED.md`) with the verify-don't-trust banner.
 - `framework/PROJECT_ROADMAP.md` with the First Taste index up front.
 
 ### Changed
 
-- **Worksheet fill-in blocks became Markdown tables.** Fenced underscore blocks were replaced by two-column `Prompt | Your answer` tables for single-record forms, and by narrow criteria-by-option grids for scoring and comparison worksheets. Tables print as bordered boxes to handwrite in, become editable cells when a page is copied into Google Docs, and reflow on a phone screen, none of which a fenced block does. Applied across the sessions and templates in commit `171c029`. The archived spec was amended to match, as its v9.1 erratum, because the built repository supersedes the spec on conflict.
+- **Worksheet fill-in blocks became Markdown tables.** Fenced underscore blocks were replaced by two-column `Prompt | Your answer` tables for single-record forms, and by narrow criteria-by-option grids for scoring and comparison worksheets. Tables print as bordered boxes to handwrite in, become editable cells when a page is copied into Google Docs, and reflow on a phone screen, none of which a fenced block does. Applied across the sessions and templates in [pull request #13](https://github.com/franklesniak/EFingPlanner/pull/13): commit `9c12874` made the conversion, and later commits in that pull request refined it across five review rounds. The archived spec was amended to match, as its v9.1 erratum, in commit `171c029`, because the built repository supersedes the spec on conflict.
 
 ---
 
