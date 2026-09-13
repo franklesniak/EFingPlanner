@@ -105,7 +105,7 @@ Three rules go with that:
 2. **Inline underscore blanks (`______`) are fine** and do not trip the hook. The main fill-in space of a worksheet is still an empty table cell, not an underscore run.
 3. **The literal token is available only under suppression.** Where a built page genuinely must show the software token -- for example, teaching an older child what they will see in a real project plan -- write it with an inline suppression comment on the same line stating why, in the form `<!-- ALLOW-TBD: <reason> -->`. Expect this to be rare; prefer the plain words above. <!-- ALLOW-TBD: naming the banned token is unavoidable when documenting the rule that bans it -->
 
-For reference, the tokens the hook rejects are the usual software placeholder markers -- the "to be decided" abbreviation, `TODO` followed by a colon, `FIXME`, `XXX`, and the spelled-out "to be determined" phrase. The hook's exact list lives in `.github/scripts/check-prohibited-placeholders.py`. <!-- ALLOW-TBD: this line names the prohibited markers in order to document them -->
+For reference, the hook rejects `TBD`, `TODO:`, `FIXME`, `XXX`, and the spelled-out phrase "to be determined", all case-insensitively. Naming them literally is the point of the inline suppression on this line. The exact list lives in `.github/scripts/check-prohibited-placeholders.py`, which is authoritative if the two ever disagree. <!-- ALLOW-TBD: this line names the prohibited markers in order to document them -->
 
 ## First Taste path (the Batch 0 slice)
 
