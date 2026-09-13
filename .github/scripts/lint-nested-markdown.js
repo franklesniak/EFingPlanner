@@ -13,7 +13,8 @@
  *
  * When file arguments are provided, only those files are linted (useful for pre-commit hooks).
  * When no arguments are provided, all .md files are scanned via glob
- * (excluding node_modules and .pytest_cache).
+ * (excluding node_modules, .pytest_cache, and local-only uncommitted
+ * working paths).
  * Both absolute and relative paths are supported; relative paths are resolved from cwd.
  */
 
@@ -263,7 +264,12 @@ async function main() {
                     'node_modules/**',
                     '**/node_modules/**',
                     '.pytest_cache/**',
-                    '**/.pytest_cache/**'
+                    '**/.pytest_cache/**',
+                    // Local-only working paths that are never committed. CI sees
+                    // only committed files, so skipping these keeps a working-tree
+                    // scan aligned with what CI actually lints.
+                    '.orchestration/**',
+                    'ORCHESTRATOR_PROMPT.md'
                 ],
                 cwd: REPO_ROOT,
                 absolute: true

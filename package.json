@@ -4,7 +4,7 @@
   "description": "A self-guided executive-function curriculum for kids (roughly ages 9-11) that teaches breaking down a big project by planning a real family trip to Japan. Markdown-only educational content; the tooling here only lints the docs.",
   "private": true,
   "scripts": {
-    "lint:md": "markdownlint-cli2 \"**/*.md\" \"#node_modules\" \"#.pytest_cache\"",
+    "lint:md": "markdownlint-cli2 \"**/*.md\" \"#node_modules\" \"#.pytest_cache\" \"#.orchestration\" \"#ORCHESTRATOR_PROMPT.md\"",
     "lint:md:links": "remark . --quiet --frail --ignore-path .remarkignore",
     "lint:md:nested": "node .github/scripts/lint-nested-markdown.js",
     "test:toolchain-eol": "node --test tests/toolchain-eol/check-toolchain-eol.test.js"
