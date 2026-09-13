@@ -114,7 +114,8 @@ on the `lean-spec.md` / `full-oer-companion.md` pointers named under Source of t
   matching; the non-POSIX `\b` word-boundary escape is avoided) — and confirm no hard-coded
   family value (blanks pointing to `trip_basics.md` are fine); confirm every session has a
   named artifact and a stop point (§15).
-- **STOP at the pilot gate.** Produce a short build report listing what was built, plus the
+- **STOP at the Batch 0 gate** (cleared by a passing child pilot, or by the no-child
+  fallback recorded in writing). Produce a short build report listing what was built, plus the
   full §31 handoff for the human:
   - **Pass/fail signals + remediation:** (a) unaided start, (b) reaches Checkpoint 1 mostly
     on their own, (c) coaching load matches the estimate — and the remediation rule (a

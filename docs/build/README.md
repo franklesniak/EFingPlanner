@@ -40,7 +40,7 @@ The spec's build model reuses one set of rules for every batch and changes only 
 
 Starting points from the spec's implementation order — confirm each against §31 before finalizing a brief:
 
-- **Batch 0** — the pilotable First-Taste slice, authored Japan-concrete. Gate: human-run child pilot. Already authored in `batch0_build_prompt.md`.
+- **Batch 0** — the pilotable First-Taste slice, authored Japan-concrete. Gate: a human-run child pilot **or** the recorded no-child fallback (see the gate rule below). Already authored in `batch0_build_prompt.md`.
 - **Batch 1** — the runnable Phase 0–2 vertical slice. For the Full Build, run the concrete→insert upgrade (§29.1) on the 8 shared sessions (01, 03, 04, 05, 10, 12, 13, 14), moving Japan facts into `destinations/japan/session_inserts/` and leaving "see Destination Notes" pointers. Gate: the second gate, "Verify the built slice" (§31).
 - **Batch 2** — Phases 3–8 Core sessions.
 - **Batch 3** — the rest of the Japan pack.

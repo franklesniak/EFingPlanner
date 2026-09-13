@@ -17,7 +17,7 @@ This project is targeting the **Full / OER Build** (per §30.1.1) — reuse acro
 - This is incremental, batched authoring — NOT one generation. Your entire scope this run is **Batch {{BATCH_NUMBER}}**; do not build ahead of it.
 - **Scope boundary — FILL IN.** Name exactly what is in scope and what must NOT be built yet. For Batch 0 that was: do not build Batch 1–4, the neutral skeletons, `session_inserts/`, the insert/reference contract, `CONTRIBUTING.md`, or the destination pack beyond what the batch needs. Set the equivalent boundary for this batch from §31.
 - **Authorship mode.** Load-bearing prose (the sessions, parent-facing guides, appendices, and any narrative deliverables in this batch) is drafted, then self-edited to reference quality. Do not ship raw first-pass generation.
-- **Batch gate — FILL IN.** State the gate this batch ends at and whether you can perform it. Batch 0 ended at a human-run child pilot the agent cannot perform. Stop at the gate.
+- **Batch gate — FILL IN.** State the gate this batch ends at and whether you can perform it. Batch 0 ended at a gate the agent cannot clear by building: a child pilot must pass, or the no-child fallback must be recorded in writing by a human. Stop at the gate.
 
 ## This run's scope — Batch {{BATCH_NUMBER}} deliverables
 
@@ -37,5 +37,5 @@ This project is targeting the **Full / OER Build** (per §30.1.1) — reuse acro
 
 - All Batch {{BATCH_NUMBER}} files above exist, are meaningful (no thin/placeholder files), and lint-clean; all relative links resolve.
 - Self-check before stopping: grep every built session for the leak tokens — `grep -wE 'Chicago|ORD|17|grandmother|uncle'` (`-w` gives portable standalone-token matching; the non-POSIX `\b` word-boundary escape is avoided) — and confirm no hard-coded family value (blanks pointing to `trip_basics.md` are fine); confirm every session has a named artifact and a stop point (§15).
-- **Stop + handoff — FILL IN.** State exactly where to STOP and what to hand the human. For Batch 0 this was: stop at the pilot gate; produce a short build report of what was built; hand off the pilot pass/fail signals (a) unaided start, (b) reaches Checkpoint 1 mostly on their own, (c) coaching load matches the estimate — plus the remediation rule (a failed pilot blocks Batch 2+ until Phases 0–2 are fixed and re-piloted). Set the equivalent stop + handoff for this batch from §31.
+- **Stop + handoff — FILL IN.** State exactly where to STOP and what to hand the human. For Batch 0 this was: stop at the Batch 0 gate (cleared by a passing child pilot, or by the recorded no-child fallback); produce a short build report of what was built; hand off the pilot pass/fail signals (a) unaided start, (b) reaches Checkpoint 1 mostly on their own, (c) coaching load matches the estimate — plus the remediation rule (a failed pilot blocks Batch 2+ until Phases 0–2 are fixed and re-piloted). Set the equivalent stop + handoff for this batch from §31.
 - **Next batch — FILL IN.** State the next batch and that this run must not proceed into it. For Batch 0: do NOT proceed to Batch 1; the human runs the child pilot next.
