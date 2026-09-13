@@ -24,7 +24,8 @@ cleared — by a passing child pilot, or by the no-child fallback recorded in wr
   run is **Batch 0**. Do not build Batch 1–4. Do not build the neutral skeletons,
   `session_inserts/`, the insert/reference contract, `CONTRIBUTING.md`, or the
   destination pack beyond what Batch 0 needs.
-- Batch 0 ends at a **human-run child pilot you cannot perform.** Stop there.
+- Batch 0 ends at a **gate you cannot clear by building.** A human must either run the
+  child pilot and have it pass, or record the no-child fallback in writing. Stop there.
 - **Authorship mode:** the First-Taste sessions, the parent guide, the differentiation
   appendix, the budget session (33), and the capstone (53) are load-bearing prose —
   draft, then self-edit hard to reference quality. Do not ship raw first-pass generation.
