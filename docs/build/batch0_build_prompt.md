@@ -122,7 +122,9 @@ on the `lean-spec.md` / `full-oer-companion.md` pointers named under Source of t
 - Self-check before stopping: grep the built sessions for the leak tokens —
   `grep -rwE 'Chicago|ORD|17|grandmother|uncle' framework/sessions/` (the explicit
   `framework/sessions/` target + `-r` scans the built files instead of reading stdin; `-w`
-  gives portable standalone-token matching without the non-POSIX `\b` escape) — and confirm no hard-coded
+  gives standalone-token matching. Neither `-w` nor `-r` is in POSIX, but GNU and BSD grep
+  both carry them, while the `\b` escape is absent from BSD grep as well as
+  from POSIX) — and confirm no hard-coded
   family value (blanks pointing to `trip_basics.md` are fine); confirm every session has a
   named artifact and a stop point (§15).
 - **STOP at the Batch 0 gate** (cleared by a passing child pilot, or by the no-child
