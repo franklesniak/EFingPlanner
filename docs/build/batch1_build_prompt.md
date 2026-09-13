@@ -1773,14 +1773,37 @@ You are here: Phase 2 (Destination Big Picture), First Taste step 5 of 13. Previ
   the single most likely place for the batch to ship a defect.
 - `destinations/japan/reference/major_cities.md` is byte-identical to its pre-Batch-1
   state.
+- **Every child-facing file this batch creates or edits satisfies the density caps in
+  `framework/docs/build_style_and_vocab.md`** -- the dash budget, the
+  `real`/`genuine(ly)` cap and the `X, not Y` cap, each at the child-facing register,
+  counted by the rules that guide states (code spans, fenced blocks, block quotes,
+  table cells, label separators and bold label lead-ins do not count; a paired
+  parenthetical is one device). Read the caps from that file rather than from this
+  brief, so that a later change to the caps does not leave this instruction stale.
+
+  This is stated as acceptance rather than left implicit because **thirteen of the
+  files this batch edits are currently over at least one cap**. They are not listed
+  here, because a list would go stale the moment the corpus pass moves; measure
+  instead. A batch that rewrites a file and leaves it over cap simply moves the
+  defect forward, and the separate corpus pass would then redo work this batch had
+  already touched.
+
+  **The precedence rule in that guide applies here too:** content outranks the
+  budget. Never delete a required rule, a safety statement, a Named concept or a
+  calibration pair to make a count smaller. Rework neighbouring prose, or leave the
+  count high and record why with a `<!-- density-exempt: <device> -- <reason> -->`
+  marker on the line above.
 
 ### Self-check before stopping
 
 Run each of these from the repository root and confirm the stated expectation.
 
 Trip, origin and roster leak — the explicit `framework/sessions/` target plus `-r` scans
-the built files instead of reading stdin, and `-w` gives portable standalone-token
-matching without the non-POSIX `\b` escape:
+the built files instead of reading stdin, and `-w` gives standalone-token matching in
+GNU and BSD grep, so it works on Linux, macOS and Git Bash on Windows. Neither
+`-w` nor `-r` is in POSIX; the `\b` escape is not in POSIX either and is absent
+from BSD grep as well, so `-w` is the form that fails in fewer places rather than
+the portable one:
 
 ```bash
 grep -rwE 'Chicago|ORD|17|grandmother|uncle' framework/sessions/
