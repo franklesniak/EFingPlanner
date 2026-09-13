@@ -44,6 +44,11 @@ def build_session(
     empty_sections: tuple[str, ...] = (),
     markers: str = "",
     extra: str = "",
+    parent_bullets: tuple[str, ...] = (
+        "- Status: Core",
+        "- Estimated time: 20-30 minutes",
+        "- Parent involvement: 5-minute check-in",
+    ),
 ) -> str:
     """Return a synthetic session document for a test."""
     parts = ["<!-- markdownlint-disable MD013 -->"]
@@ -58,7 +63,7 @@ def build_session(
     if parents:
         parts.append("**For parents:**")
         parts.append("")
-        parts.append("- Status: Core")
+        parts.extend(parent_bullets)
         parts.append("")
     for section in sections:
         parts.append(f"## {section}")
@@ -456,3 +461,251 @@ def test_a_path_outside_the_root_fails_the_run(tmp_path: Path) -> None:
     root = tmp_path / "repo"
     root.mkdir()
     assert structure.main([str(outside)], root=root) == 1
+
+
+# ---------------------------------------------------------------------------
+# One fence parser governs every structural search
+# ---------------------------------------------------------------------------
+
+FENCE = "```"
+SIX_SECTIONS = ("Goal", "Start Here", "Steps", "Workspace", "Artifact Created", "Stop Point")
+
+
+def test_a_fenced_no_source_check_marker_does_not_exempt() -> None:
+    """An exemption printed in an example is an example, not an exemption."""
+    text = build_session(
+        sections=SIX_SECTIONS,
+        extra=f"## Example\n\n{FENCE}markdown\n<!-- no-source-check: none -->\n{FENCE}\n",
+    )
+    assert any("Source Check" in m for m in check(text))
+
+
+def test_a_fenced_audience_marker_does_not_exempt() -> None:
+    """The adult-audience marker is read under the same rule as the other marker."""
+    text = build_session(
+        sections=SIX_SECTIONS,
+        extra=f"## Example\n\n{FENCE}markdown\n<!-- audience: adult -->\n{FENCE}\n",
+    )
+    assert any("Source Check" in m for m in check(text))
+
+
+def test_a_fenced_navigation_line_does_not_satisfy_the_check() -> None:
+    """A child cannot navigate by an example of a navigation line."""
+    text = build_session(
+        nav=False,
+        extra=f"## Example\n\n{FENCE}markdown\nYou are here: Phase 1. Next: 06\n{FENCE}\n",
+    )
+    assert any("navigation line" in m for m in check(text))
+
+
+def test_a_fenced_parent_strip_does_not_satisfy_the_check() -> None:
+    """A parent cannot read an example of a strip."""
+    text = build_session(
+        parents=False,
+        extra=f"## Example\n\n{FENCE}markdown\n**For parents:**\n{FENCE}\n",
+    )
+    assert any("parent metadata strip" in m for m in check(text))
+
+
+def test_a_marker_in_a_blockquoted_fence_does_not_exempt() -> None:
+    """A fence inside a blockquote is still a fence."""
+    text = build_session(
+        sections=SIX_SECTIONS,
+        extra=f"## Example\n\n> {FENCE}markdown\n> <!-- no-source-check: none -->\n> {FENCE}\n",
+    )
+    assert any("Source Check" in m for m in check(text))
+
+
+def test_a_marker_in_a_list_nested_fence_does_not_exempt() -> None:
+    """A fence under a two-digit list item is still a fence."""
+    text = build_session(
+        sections=SIX_SECTIONS,
+        extra=(
+            "## Example\n\n10. Like this:\n\n"
+            f"    {FENCE}markdown\n    <!-- no-source-check: none -->\n    {FENCE}\n"
+        ),
+    )
+    assert any("Source Check" in m for m in check(text))
+
+
+# ---------------------------------------------------------------------------
+# Fences inside Markdown containers
+# ---------------------------------------------------------------------------
+
+
+def test_a_worksheet_fence_under_a_two_digit_list_item_is_rejected() -> None:
+    """Item `10.` puts its content at column four, which is still inside the item."""
+    steps = (
+        "## Steps\n\n"
+        + "".join(f"{n}. Step {n}.\n" for n in range(1, 10))
+        + "10. Write your answer.\n\n"
+        + f"    {FENCE}text\n    My answer: ______________________\n    {FENCE}\n"
+    )
+    text = build_session().replace("## Steps\n\nReal content for Steps.\n", steps, 1)
+    assert any("worksheet fill-in" in m for m in check(text))
+
+
+def test_a_worksheet_fence_in_a_blockquote_is_rejected() -> None:
+    """A blockquote prefix does not hide a worksheet fence."""
+    steps = f"## Steps\n\n> {FENCE}text\n> My answer: ______________________\n> {FENCE}\n"
+    text = build_session().replace("## Steps\n\nReal content for Steps.\n", steps, 1)
+    assert any("worksheet fill-in" in m for m in check(text))
+
+
+def test_a_worksheet_fence_under_a_nested_bullet_is_rejected() -> None:
+    """A second-level bullet puts its content at column four as well."""
+    steps = (
+        "## Steps\n\n- Outer.\n  - Inner.\n\n"
+        f"    {FENCE}text\n    My answer: ______________________\n    {FENCE}\n"
+    )
+    text = build_session().replace("## Steps\n\nReal content for Steps.\n", steps, 1)
+    assert any("worksheet fill-in" in m for m in check(text))
+
+
+def test_a_top_level_four_space_fence_marker_is_not_a_fence() -> None:
+    """A positive control. At top level, four spaces make an indented code block."""
+    steps = f"## Steps\n\n    {FENCE}text\n    plain\n    {FENCE}\n"
+    text = build_session().replace("## Steps\n\nReal content for Steps.\n", steps, 1)
+    assert not any("worksheet fill-in" in m for m in check(text))
+
+
+def test_a_nested_fence_without_underscores_is_allowed() -> None:
+    """A positive control. Container awareness must not reject an ordinary example."""
+    steps = f"## Steps\n\n10. Example:\n\n    {FENCE}text\n    plain content\n    {FENCE}\n"
+    text = build_session().replace("## Steps\n\nReal content for Steps.\n", steps, 1)
+    assert check(text) == []
+
+
+def test_trailing_prose_does_not_close_a_fence() -> None:
+    """CommonMark closes a block only on a fence line that carries nothing else."""
+    text = build_session(
+        sections=SIX_SECTIONS,
+        markers="<!-- no-source-check: none -->",
+        extra=f"## Example\n\n{FENCE}text\nplain\n{FENCE} and then prose\n## Stop Point\n{FENCE}\n",
+    )
+    assert check(text) == []
+
+
+def test_an_info_string_does_not_close_a_fence() -> None:
+    """A fence line with an info string opens a block; it never closes one."""
+    text = build_session(
+        sections=SIX_SECTIONS,
+        markers="<!-- no-source-check: none -->",
+        extra=f"## Example\n\n{FENCE}text\n{FENCE}markdown\n## Stop Point\n{FENCE}\n",
+    )
+    assert check(text) == []
+
+
+def test_an_unterminated_worksheet_fence_is_still_rejected() -> None:
+    """A fence that is never closed still holds the underscores it holds."""
+    text = build_session(extra=f"{FENCE}text\nMy answer: ______________________\n")
+    assert any("worksheet fill-in" in m for m in check(text))
+
+
+# ---------------------------------------------------------------------------
+# The parent strip carries fields, not only a label
+# ---------------------------------------------------------------------------
+
+
+def test_a_parent_strip_with_only_a_label_is_a_violation() -> None:
+    """A label with nothing under it tells a parent nothing."""
+    messages = check(build_session(parent_bullets=()))
+    assert any("Status, Estimated time, Parent involvement" in m for m in messages)
+
+
+def test_a_parent_strip_missing_one_field_names_that_field() -> None:
+    """The violation says which bullet to add."""
+    messages = check(
+        build_session(
+            parent_bullets=("- Status: Core", "- Estimated time: 20-30 minutes")
+        )
+    )
+    assert any(
+        "these fields: Parent involvement" in m for m in messages
+    ), messages
+
+
+def test_a_parent_strip_of_prose_only_is_a_violation() -> None:
+    """A paragraph under the label is not a field list."""
+    messages = check(build_session(parent_bullets=("This session is short.",)))
+    assert any("Status, Estimated time, Parent involvement" in m for m in messages)
+
+
+def test_a_parent_strip_with_bold_field_labels_passes() -> None:
+    """A positive control. Bold field labels are the same strip."""
+    text = build_session(
+        parent_bullets=(
+            "- **Status:** Core",
+            "- **Estimated time:** 20 minutes",
+            "- **Parent involvement:** none",
+        )
+    )
+    assert check(text) == []
+
+
+def test_the_session_00_strip_shape_passes() -> None:
+    """A positive control. Session 00 is adult-only and carries no Planner skill line."""
+    text = build_session(
+        parent_bullets=(
+            "- Status: Core (adult-only setup)",
+            "- Estimated time: about 1-2 hours, once",
+            "- Parent involvement: adult-owned; the child does not do this session",
+            "- Materials: this checklist",
+        )
+    )
+    assert check(text) == []
+
+
+# ---------------------------------------------------------------------------
+# A section that prints nothing is empty
+# ---------------------------------------------------------------------------
+
+
+def test_a_comment_only_section_is_empty() -> None:
+    """A drafting note is a bare heading to the child who opens the page."""
+    text = build_session(empty_sections=("Stop Point",)).replace(
+        "## Stop Point\n", "## Stop Point\n\n<!-- drafting note -->\n", 1
+    )
+    assert any('"## Stop Point" is empty' in m for m in check(text))
+
+
+def test_a_markdownlint_disable_only_section_is_empty() -> None:
+    """A lint directive is an HTML comment, so it needs no special case."""
+    text = build_session(empty_sections=("Stop Point",)).replace(
+        "## Stop Point\n", "## Stop Point\n\n<!-- markdownlint-disable -->\n", 1
+    )
+    assert any('"## Stop Point" is empty' in m for m in check(text))
+
+
+def test_a_multi_line_comment_only_section_is_empty() -> None:
+    """A comment across three lines prints as nothing, the same as one line."""
+    text = build_session(empty_sections=("Stop Point",)).replace(
+        "## Stop Point\n", "## Stop Point\n\n<!--\nwrite this\n-->\n", 1
+    )
+    assert any('"## Stop Point" is empty' in m for m in check(text))
+
+
+def test_a_bare_list_marker_section_is_empty() -> None:
+    """One empty bullet does not tell a child when to stop."""
+    text = build_session(empty_sections=("Stop Point",)).replace(
+        "## Stop Point\n", "## Stop Point\n\n-\n", 1
+    )
+    assert any('"## Stop Point" is empty' in m for m in check(text))
+
+
+def test_a_comment_above_real_content_is_not_empty() -> None:
+    """A positive control. A note beside real content is fine."""
+    text = build_session(empty_sections=("Stop Point",)).replace(
+        "## Stop Point\n",
+        "## Stop Point\n\n<!-- note -->\n\nStop when the page is full.\n",
+        1,
+    )
+    assert check(text) == []
+
+
+def test_a_section_holding_only_a_fenced_block_is_not_empty() -> None:
+    """A positive control. A code block is content, even though the scan removes it."""
+    text = build_session(empty_sections=("Workspace",)).replace(
+        "## Workspace\n", f"## Workspace\n\n{FENCE}text\nnotes here\n{FENCE}\n", 1
+    )
+    assert check(text) == []

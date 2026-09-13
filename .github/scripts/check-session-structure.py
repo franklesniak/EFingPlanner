@@ -15,8 +15,10 @@ What is checked
 ---------------
 1. The first heading in the document -- outside every fenced block -- is
    ``# Session NN: Title``, and ``NN`` matches the filename.
-2. The navigation line is present.
-3. The parent metadata strip is present.
+2. The navigation line is present, outside every fenced block.
+3. The parent metadata strip is present, outside every fenced block, and it
+   carries a bullet for Status, for Estimated time, and for Parent
+   involvement.
 4. The six always-mandatory sections exist: Goal, Start Here, Steps, Workspace,
    Artifact Created, Stop Point.
 5. Source Check exists, unless the session is exempt (see below).
@@ -25,11 +27,16 @@ What is checked
    a label. Other sections may be interleaved freely -- Session 00 carries
    several -- but the scaffold ones may not be reordered, because the order
    *is* the scaffold.
-7. No mandatory section is empty.
+7. No mandatory section is empty. A body that holds only whitespace, only HTML
+   comments, or only a bare list marker prints as a bare heading, so it counts
+   as empty.
 8. No fenced code block is used as a worksheet fill-in. Worksheet forms are
    Markdown tables; a fenced block of underscores does not print as a box, does
    not become an editable cell when the page is copied into Google Docs, and
-   does not reflow on a phone.
+   does not reflow on a phone. A fence nested in a list item or a blockquote is
+   still a fence; a fence line carrying anything but whitespace after the
+   backticks does not close one; and a fence that is never closed still holds
+   what it holds.
 
 Source Check exemptions
 -----------------------
@@ -39,6 +46,11 @@ are recognised, both explicit and both visible in the file:
 * an adult-audience marker (``<!-- audience: adult -->``), since an adult-only
   setup session is not doing child research; or
 * ``<!-- no-source-check: <reason> -->``, which states why in the file itself.
+
+Both markers must be real markers. One document scan removes every fenced block
+before any structural search runs, so a marker printed inside a fenced example
+is an example of a marker, not a marker. The same scan is what the navigation
+search, the parent-strip search, and the heading scan read.
 
 Silence is never an exemption. If a session genuinely has no research step, it
 says so.
@@ -93,9 +105,36 @@ TITLE_PATTERN = re.compile(r"^Session\s+(?P<number>\d{2}):\s+\S")
 FILENAME_NUMBER_PATTERN = re.compile(r"^(?P<number>\d{2})[_-]")
 NAV_PATTERN = re.compile(r"^You are here:\s*\S", re.MULTILINE)
 PARENT_STRIP_PATTERN = re.compile(r"^\*\*For parents:?\*\*", re.MULTILINE)
+
+#: The strip's load-bearing fields. Every one of the 15 sessions carries all
+#: three, and the spec names them. They are the three facts a parent needs
+#: before the child starts: is this session required, how long is it, and
+#: does an adult have to be there. ``Planner skill`` and ``Materials`` are
+#: not required here: Session 00 carries no ``Planner skill`` line, and a
+#: session can need no materials.
+PARENT_STRIP_FIELDS: tuple[tuple[str, re.Pattern[str]], ...] = tuple(
+    (
+        field,
+        re.compile(
+            rf"^\s*(?:[-*+]|\d{{1,9}}[.)])\s+\*{{0,2}}{field}\*{{0,2}}\s*:",
+            re.IGNORECASE | re.MULTILINE,
+        ),
+    )
+    for field in ("Status", "Estimated time", "Parent involvement")
+)
 HEADING_PATTERN = re.compile(r"^(?P<hashes>#{1,6})\s+(?P<title>.+?)\s*$")
-FENCE_PATTERN = re.compile(r"^ {0,3}(?P<marker>`{3,}|~{3,})", re.MULTILINE)
 UNDERSCORE_RUN_PATTERN = re.compile(r"_{4,}")
+
+#: A list marker with nothing after it. It prints as a bullet and no words.
+BARE_LIST_MARKER_PATTERN = re.compile(r"^\s*(?:[-*+]|\d{1,9}[.)])\s*$")
+
+#: These three patterns, and the fence helpers below, are kept identical to
+#: ``.github/scripts/check-prohibited-placeholders.py``. A search for
+#: ``normalize_for_fence_opening`` finds every copy of the same CommonMark rule
+#: in this repository, so the copies cannot drift unnoticed.
+FENCE_OPEN_PATTERN = re.compile(r"^ {0,3}(?P<marker>`{3,}|~{3,})")
+BLOCK_QUOTE_PREFIX_PATTERN = re.compile(r"^ {0,3}> ?")
+LIST_ITEM_PATTERN = re.compile(r"^(?P<indent> {0,3})(?P<marker>[-*+]|\d{1,9}[.)])(?P<spacing> +)")
 
 AUDIENCE_ADULT_PATTERN = re.compile(
     r"<!--\s*audience:\s*(?:adult|parent|builder)\b.*?-->", re.IGNORECASE
@@ -125,8 +164,225 @@ class Heading:
     line_number: int
 
 
-def find_headings(text: str) -> list[Heading]:
-    """Return every heading, at every level, skipping fenced blocks.
+CONTAINER_KIND_LIST = "list"
+CONTAINER_KIND_BLOCK_QUOTE = "blockquote"
+
+
+@dataclass(frozen=True)
+class Container:
+    """A peelable Markdown container prefix on a line."""
+
+    kind: str
+    indent: int = 0
+
+
+@dataclass(frozen=True)
+class FenceLine:
+    """A Markdown line normalized for fenced code block detection."""
+
+    content: str
+    containment_path: tuple[Container, ...] = ()
+
+
+@dataclass(frozen=True)
+class ActiveFence:
+    """The active fenced code block marker and containing Markdown context."""
+
+    character: str
+    minimum_length: int
+    containment_path: tuple[Container, ...] = ()
+
+
+@dataclass(frozen=True)
+class ListContext:
+    """An active Markdown list, identified by its containment path from the root."""
+
+    containment_path: tuple[Container, ...]
+
+
+@dataclass(frozen=True)
+class DocumentScan:
+    """One container-aware pass over a session document.
+
+    ``content_lines`` holds every line a reader sees as document text. Each
+    line inside a fenced block, and each fence marker, becomes an empty string,
+    so line numbers stay the numbers in the file. Every structural search in
+    this script reads these lines. That is what makes one fence parser govern
+    the whole check, rather than the heading scan alone.
+    """
+
+    content_lines: tuple[str, ...]
+    worksheet_fences: tuple[int, ...]
+
+    @property
+    def text(self) -> str:
+        """Return the document text with every fenced block removed."""
+        return "\n".join(self.content_lines)
+
+
+def count_leading_spaces(line: str) -> int:
+    """Return the number of leading space characters in a line."""
+    return len(line) - len(line.lstrip(" "))
+
+
+def peel_containers(line: str, path: tuple[Container, ...]) -> tuple[str, int]:
+    """Peel container prefixes from ``line`` in order; return ``(remaining, peeled)``."""
+    for index, container in enumerate(path):
+        if container.kind == CONTAINER_KIND_LIST:
+            if count_leading_spaces(line) < container.indent:
+                return line, index
+            line = line[container.indent :]
+        else:
+            match = BLOCK_QUOTE_PREFIX_PATTERN.match(line)
+            if match is None:
+                return line, index
+            line = line[match.end() :]
+    return line, len(path)
+
+
+def prune_inactive_list_contexts(line: str, list_contexts: list[ListContext]) -> None:
+    """Drop active list contexts that a nonblank Markdown line has outdented past."""
+    if not line.strip():
+        return
+
+    while list_contexts:
+        top = list_contexts[-1]
+        remaining, peeled_count = peel_containers(line, top.containment_path)
+        if peeled_count == len(top.containment_path):
+            return
+        if not remaining.strip():
+            return
+        failed_container = top.containment_path[peeled_count]
+        if (
+            failed_container.kind == CONTAINER_KIND_LIST
+            and BLOCK_QUOTE_PREFIX_PATTERN.match(remaining) is not None
+        ):
+            return
+        list_contexts.pop()
+
+
+def list_content_indent(match: re.Match[str]) -> int:
+    """Return the list-item content indent relative to the marker's parent interior."""
+    marker_end_column = match.end("marker")
+    spacing_width = len(match.group("spacing"))
+    content_padding = spacing_width if spacing_width <= 4 else 1
+    return marker_end_column + content_padding
+
+
+def normalize_for_fence_opening(line: str, list_contexts: list[ListContext]) -> FenceLine:
+    """Return a line normalized to its current Markdown container content column."""
+    prune_inactive_list_contexts(line, list_contexts)
+
+    active_path = list_contexts[-1].containment_path if list_contexts else ()
+    relative_line, peeled_count = peel_containers(line, active_path)
+    effective_path = active_path[:peeled_count]
+
+    extras: list[Container] = []
+    while True:
+        match = BLOCK_QUOTE_PREFIX_PATTERN.match(relative_line)
+        if match is None:
+            break
+        extras.append(Container(kind=CONTAINER_KIND_BLOCK_QUOTE))
+        relative_line = relative_line[match.end() :]
+
+    list_match = LIST_ITEM_PATTERN.match(relative_line)
+    if list_match is not None:
+        content_indent_rel = list_content_indent(list_match)
+        extras.append(Container(kind=CONTAINER_KIND_LIST, indent=content_indent_rel))
+        relative_line = (
+            relative_line[content_indent_rel:] if len(relative_line) >= content_indent_rel else ""
+        )
+        list_contexts.append(ListContext(containment_path=effective_path + tuple(extras)))
+
+    return FenceLine(content=relative_line, containment_path=effective_path + tuple(extras))
+
+
+def normalize_for_fence_closing(line: str, active_fence: ActiveFence) -> str:
+    """Return a fenced-block line normalized to the opening fence's container."""
+    peeled, peeled_count = peel_containers(line, active_fence.containment_path)
+    if peeled_count < len(active_fence.containment_path):
+        return line
+    return peeled
+
+
+def parse_opening_fence(line: str) -> tuple[str, int] | None:
+    """Return the opening fence marker character and length, if present."""
+    match = FENCE_OPEN_PATTERN.match(line)
+    if match is None:
+        return None
+
+    marker = match.group("marker")
+    return marker[0], len(marker)
+
+
+def is_closing_fence(line: str, fence_character: str, minimum_length: int) -> bool:
+    """Return whether a line closes the active fenced code block.
+
+    CommonMark closes a fenced block only on a fence of the same character that
+    is at least as long as the opening fence and that carries nothing but
+    whitespace after it. An info string does not close a block, and trailing
+    prose does not close one either.
+    """
+    closing_pattern = re.compile(rf"^ {{0,3}}{re.escape(fence_character)}{{{minimum_length},}}\s*$")
+    return closing_pattern.match(line) is not None
+
+
+def scan_document(text: str) -> DocumentScan:
+    """Return the text outside every fence, and the worksheet fences in the document.
+
+    One pass, one fence parser. A fenced block is found where Markdown finds
+    one, which includes a block nested in a list item or a blockquote. The
+    container machinery above is the machinery
+    ``check-prohibited-placeholders.py`` uses, under the same names.
+    """
+    content_lines: list[str] = []
+    worksheet_fences: list[int] = []
+    active_fence: ActiveFence | None = None
+    list_contexts: list[ListContext] = []
+    fence_start = 0
+    buffer: list[str] = []
+
+    for number, raw_line in enumerate(text.split("\n"), start=1):
+        if active_fence is not None:
+            closing_line = normalize_for_fence_closing(raw_line, active_fence)
+            if is_closing_fence(
+                closing_line, active_fence.character, active_fence.minimum_length
+            ):
+                if any(UNDERSCORE_RUN_PATTERN.search(line) for line in buffer):
+                    worksheet_fences.append(fence_start)
+                active_fence = None
+                buffer = []
+            else:
+                buffer.append(closing_line)
+            content_lines.append("")
+            continue
+
+        opening_fence_line = normalize_for_fence_opening(raw_line, list_contexts)
+        opening_fence = parse_opening_fence(opening_fence_line.content)
+        if opening_fence is not None:
+            character, minimum_length = opening_fence
+            active_fence = ActiveFence(
+                character=character,
+                minimum_length=minimum_length,
+                containment_path=opening_fence_line.containment_path,
+            )
+            fence_start = number
+            buffer = []
+            content_lines.append("")
+            continue
+
+        content_lines.append(raw_line)
+
+    if active_fence is not None and any(
+        UNDERSCORE_RUN_PATTERN.search(line) for line in buffer
+    ):
+        worksheet_fences.append(fence_start)
+
+    return DocumentScan(tuple(content_lines), tuple(worksheet_fences))
+
+
+def find_headings(scan: DocumentScan) -> list[Heading]:
+    """Return every heading, at every level, from outside every fenced block.
 
     Every heading the checker looks at comes from here, the session title
     included. One fence parser means one behaviour: a heading inside a fenced
@@ -134,21 +390,9 @@ def find_headings(text: str) -> list[Heading]:
     ``## Stop Point`` section.
     """
     headings: list[Heading] = []
-    active_fence: str | None = None
 
-    for number, raw_line in enumerate(text.split("\n"), start=1):
-        fence_match = FENCE_PATTERN.match(raw_line)
-        if fence_match:
-            marker = fence_match.group("marker")
-            if active_fence is None:
-                active_fence = marker
-            elif marker[0] == active_fence[0] and len(marker) >= len(active_fence):
-                active_fence = None
-            continue
-        if active_fence is not None:
-            continue
-
-        heading_match = HEADING_PATTERN.match(raw_line)
+    for number, line in enumerate(scan.content_lines, start=1):
+        heading_match = HEADING_PATTERN.match(line)
         if heading_match:
             headings.append(
                 Heading(
@@ -171,37 +415,70 @@ def section_body(text: str, headings: list[Heading], index: int) -> str:
     return "\n".join(lines[start:end]).strip()
 
 
-def find_worksheet_fences(text: str) -> list[int]:
-    """Return the line numbers of fenced blocks used as underscore fill-ins."""
-    offenders: list[int] = []
-    active_fence: str | None = None
-    fence_start = 0
-    buffer: list[str] = []
+def parent_strip_body(
+    content_lines: tuple[str, ...], headings: list[Heading], label_line: int
+) -> str:
+    """Return the parent strip: the label line, to the next heading.
 
-    for number, raw_line in enumerate(text.split("\n"), start=1):
-        fence_match = FENCE_PATTERN.match(raw_line)
-        if fence_match:
-            marker = fence_match.group("marker")
-            if active_fence is None:
-                active_fence = marker
-                fence_start = number
-                buffer = []
-            elif marker[0] == active_fence[0] and len(marker) >= len(active_fence):
-                if any(UNDERSCORE_RUN_PATTERN.search(line) for line in buffer):
-                    offenders.append(fence_start)
-                active_fence = None
+    The strip sits between the label and the first section, so the first
+    heading after the label is where it stops. A document with no heading after
+    the label gives the rest of the document, which is the safe direction: the
+    checker then looks at more text, not less.
+    """
+    end = len(content_lines)
+    for heading in headings:
+        if heading.line_number > label_line:
+            end = heading.line_number - 1
+            break
+    return "\n".join(content_lines[label_line - 1 : end])
+
+
+def strip_html_comments(text: str) -> str:
+    """Return ``text`` with every HTML comment span removed.
+
+    An HTML comment prints as nothing. A section that holds only a comment is a
+    bare heading to the child who opens the page, so the checker must not count
+    a comment as the content of a section.
+    """
+    result: list[str] = []
+    index = 0
+    while index < len(text):
+        comment_start = text.find("<!--", index)
+        if comment_start == -1:
+            result.append(text[index:])
+            break
+        result.append(text[index:comment_start])
+        comment_end = text.find("-->", comment_start + len("<!--"))
+        if comment_end == -1:
+            break
+        index = comment_end + len("-->")
+    return "".join(result)
+
+
+def renders_as_content(body: str) -> bool:
+    """Return whether a section body puts anything on the page.
+
+    Whitespace, an HTML comment such as ``<!-- markdownlint-disable -->``, and
+    a list marker with no words after it all print as nothing. A section that
+    holds only those is empty to the child, whatever the file holds.
+    """
+    for line in strip_html_comments(body).split("\n"):
+        if not line.strip():
             continue
-        if active_fence is not None:
-            buffer.append(raw_line)
-
-    return offenders
+        if BARE_LIST_MARKER_PATTERN.match(line):
+            continue
+        return True
+    return False
 
 
 def check_text(text: str, display_path: str, file_name: str) -> list[Violation]:
     """Return every structural violation in one session document."""
     violations: list[Violation] = []
 
-    headings = find_headings(text)
+    scan = scan_document(text)
+    content = scan.text
+
+    headings = find_headings(scan)
     first_heading = headings[0] if headings else None
     title_match = (
         TITLE_PATTERN.match(first_heading.title)
@@ -241,7 +518,7 @@ def check_text(text: str, display_path: str, file_name: str) -> list[Violation]:
                 )
             )
 
-    if NAV_PATTERN.search(text) is None:
+    if NAV_PATTERN.search(content) is None:
         violations.append(
             Violation(
                 display_path,
@@ -251,7 +528,8 @@ def check_text(text: str, display_path: str, file_name: str) -> list[Violation]:
             )
         )
 
-    if PARENT_STRIP_PATTERN.search(text) is None:
+    strip_match = PARENT_STRIP_PATTERN.search(content)
+    if strip_match is None:
         violations.append(
             Violation(
                 display_path,
@@ -260,6 +538,22 @@ def check_text(text: str, display_path: str, file_name: str) -> list[Violation]:
                 "near the top with status, time, and involvement.",
             )
         )
+    else:
+        label_line = content.count("\n", 0, strip_match.start()) + 1
+        strip = parent_strip_body(scan.content_lines, headings, label_line)
+        missing = [name for name, pattern in PARENT_STRIP_FIELDS if pattern.search(strip) is None]
+        if missing:
+            violations.append(
+                Violation(
+                    display_path,
+                    label_line,
+                    'the "**For parents:**" strip has no bullet for these fields: '
+                    + ", ".join(missing)
+                    + ". A label with no fields under it tells a parent nothing. Give "
+                    "one bullet for each of Status, Estimated time, and Parent "
+                    "involvement.",
+                )
+            )
 
     section_headings = [heading for heading in headings if heading.level == 2]
     titles = [heading.title for heading in section_headings]
@@ -270,8 +564,8 @@ def check_text(text: str, display_path: str, file_name: str) -> list[Violation]:
                 Violation(display_path, 1, f'missing mandatory section "## {section}".')
             )
 
-    exempt = bool(AUDIENCE_ADULT_PATTERN.search(text)) or bool(
-        NO_SOURCE_CHECK_PATTERN.search(text)
+    exempt = bool(AUDIENCE_ADULT_PATTERN.search(content)) or bool(
+        NO_SOURCE_CHECK_PATTERN.search(content)
     )
     if SOURCE_CHECK_SECTION not in titles and not exempt:
         violations.append(
@@ -300,7 +594,7 @@ def check_text(text: str, display_path: str, file_name: str) -> list[Violation]:
     for index, heading in enumerate(section_headings):
         if heading.title not in ORDERED_SECTIONS:
             continue
-        if not section_body(text, section_headings, index):
+        if not renders_as_content(section_body(text, section_headings, index)):
             violations.append(
                 Violation(
                     display_path,
@@ -309,7 +603,7 @@ def check_text(text: str, display_path: str, file_name: str) -> list[Violation]:
                 )
             )
 
-    for number in find_worksheet_fences(text):
+    for number in scan.worksheet_fences:
         violations.append(
             Violation(
                 display_path,
