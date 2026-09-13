@@ -61,7 +61,7 @@ Fill in your first entry here (or on your Source Log page):
 | Date checked | |
 | One other place I could check this | |
 
-Your Source Log template has a few more boxes than the ones above: *source type*, *why it matters*, *trust level*, and *how useful*. You'll learn trust level and how useful in Session 05, so leave those blank for now (fill *source type* and *why it matters* only if you want). The boxes above are a complete first entry.
+Your Source Log template has a few more boxes than the ones above: *source type*, *why it matters*, *trust level*, and *how useful*. You'll learn about *trust level* and *how useful* in Session 05, so leave those two blank for now (fill *source type* and *why it matters* only if you want). The boxes above are a complete first entry.
 
 ## Artifact Created
 
