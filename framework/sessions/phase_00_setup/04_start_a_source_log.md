@@ -20,27 +20,27 @@ Start one Source Log, and write your first entry in it.
 
 ## Start Here
 
-Open your Source Log and write today's date in its Date checked box. That is your first step. You are done starting.
+Open your Source Log and write today's date in its Date checked box. That's your first step. You're done starting.
 
-If you do not have a Source Log page yet, copy the blank [Source Log template](../../templates/source_log.md) into your binder or notebook first, then write today's date.
+If you don't have a Source Log page yet, copy the blank [Source Log template](../../templates/source_log.md) into your binder or notebook first, then write today's date.
 
 ## Steps
 
 A source is where a fact comes from. It could be a website, a book, a map, a video, or a person. Good planners always know *where* a fact came from, so they can trust it and check it later.
 
-You are going to practice on one real fact about Japan.
+You're going to practice on one real fact about Japan.
 
-1. Pick one small thing you are curious about. For example: "What is the capital of Japan?" or "What is a bullet train called?"
-2. Look it up in **one** place -- a book you have, or a website an adult says is okay.
+1. Pick one small thing you're curious about. For example: "What is the capital of Japan?" or "What is a bullet train called?"
+2. Look it up in **one** place: a book you have, or a website an adult says is okay.
 3. In your Source Log, fill in one entry about what you used:
    - **What I learned** -- the fact, in your own words.
    - **Title** -- the name of the website or book.
-   - **Author or organization** -- who made it (a museum, a tourism office, a writer). Write "not listed" if you cannot find it.
+   - **Author or organization** -- who made it (a museum, a tourism office, a writer). Write "not listed" if you can't find it.
    - **Web address or page number** -- the link, or the book page.
    - **Date checked** -- today's date.
-4. Add one more thing good planners do: write down **one other place you could check the same fact.** That is your "verification source." You do not have to check it right now -- just name where you *could*.
+4. Add one more thing good planners do: write down **one other place you could check the same fact.** That's your "verification source." You don't have to check it right now. Just name where you *could*.
 
-You just tracked your first source. That is a real research skill.
+You just tracked your first source. Now you can find that fact again later, and so can a grown-up.
 
 > **Carry-over tag:** You just used the move "track where a fact came from." Where else could you use it -- homework, a chore, a big school project?
 
@@ -48,7 +48,7 @@ You just tracked your first source. That is a real research skill.
 
 Use your Source Log page. One fact fills one entry (one copy of the table). You can add a new entry any time you look something up.
 
-You can say your answers to an adult who writes them, or draw them, if that is easier.
+You can say your answers to an adult who writes them, or draw them, if that's easier.
 
 Fill in your first entry here (or on your Source Log page):
 
@@ -61,15 +61,15 @@ Fill in your first entry here (or on your Source Log page):
 | Date checked | |
 | One other place I could check this | |
 
-Your Source Log template has a few more boxes than the ones above -- *source type*, *why it matters*, *trust level*, and *how useful*. You will learn trust level and how useful in Session 05, so leave those blank for now (fill *source type* and *why it matters* only if you want). The boxes above are a complete first entry.
+Your Source Log template has a few more boxes than the ones above: *source type*, *why it matters*, *trust level*, and *how useful*. You'll learn about *trust level* and *how useful* in Session 05, so leave those two blank for now (fill *source type* and *why it matters* only if you want). The boxes above are a complete first entry.
 
 ## Artifact Created
 
-Your first Source Log entry -- one fact, with where it came from and where you could check it.
+Your first Source Log entry: one fact, with where it came from and where you could check it.
 
 ## Stop Point
 
-You are done when your Source Log has today's date and one entry with the boxes above filled in. (The extra template boxes like *trust level* and *how useful* wait for Session 05.) One good entry is enough -- you do not need to look up more facts today.
+You are done when your Source Log has today's date and one entry with the boxes above filled in. (The extra template boxes like *trust level* and *how useful* wait for Session 05.) One good entry is enough. You don't need to look up more facts today.
 
 ## Source Check
 
@@ -77,7 +77,7 @@ This whole session is about sources, so this is easy: the entry you just filled 
 
 ## Finish and Quality Check
 
-Finished? Use the [Finish and Quality Check card](../../student_guide/finish_and_quality_check.md) in your student guide. It is a quick self-check, not a grade.
+Finished? Use the [Finish and Quality Check card](../../student_guide/finish_and_quality_check.md) in your student guide. It's a quick self-check, not a grade.
 
 ## If You Get Stuck
 
@@ -85,8 +85,8 @@ Stuck? Use the [When I'm Stuck card](../../student_guide/when_im_stuck.md) in yo
 
 ## Optional Extension
 
-If you have extra energy, look up the *same* fact in your "one other place" and see if the two sources agree. If they do not, that is interesting -- write a note about it. If not, you are done.
+If you have extra energy, look up the *same* fact in your "one other place" and see if the two sources agree. If they don't, that's interesting. Write a note about it. If not, you are done.
 
 ## Parent Notes
 
-This is where the Source Log habit starts, and it carries the next several sessions, so it is worth a real 5-minute look. Check that the child recorded *where* the fact came from, not just the fact. Praise the move ("you wrote down where you found it"), not the child's cleverness. If writing is a barrier, let them dictate the entry to you or draw it -- the point is the habit, not the handwriting. More support options are in the [differentiation guide](../../parent_guide/differentiation.md).
+This is where the Source Log habit starts, and it carries the next several sessions, so it is worth a full five minutes. Check that the child recorded *where* the fact came from, not just the fact. Praise the move: "you wrote down where you found it." If writing is a barrier, let them dictate the entry to you or draw it. The habit is what counts here. More support options are in the [differentiation guide](../../parent_guide/differentiation.md).
