@@ -3,7 +3,10 @@
 ## Source of truth
 
 Build strictly from `docs/spec/specification.md` (the complete, combined archived
-specification, v9.0). It is authoritative for this build. Do NOT build from
+specification). It is authoritative for this build. Batch 0 was built against
+spec v9.0; the spec has since taken a v9.1 defect-fix erratum, so that number
+records what this completed build targeted, not the spec version in force now.
+Do NOT build from
 `docs/spec/lean-spec.md` or `docs/spec/full-oer-companion.md` — they are partial
 reading-lenses that link back into `specification.md` and are not self-contained.
 Read `specification.md` §31 (Implementation Order) and §33 (Acceptance Criteria) in
@@ -15,7 +18,8 @@ This project is targeting the **Full / OER Build** (per §30.1.1) — reuse acro
 destinations and eventual open-educational-resource publication. HOWEVER, per §31,
 the neutral-skeleton + insert/reference apparatus is NOT built yet. **Batch 0 is
 authored Japan-concrete** (Japan facts written directly into the sessions). The
-concrete→insert conversion happens in Batch 1, only after the child pilot passes.
+concrete→insert conversion happens in Batch 1, once the Batch 0 gate has
+cleared — by a passing child pilot, or by the no-child fallback recorded in writing.
 
 ## Non-negotiable build model (§31)
 
@@ -23,7 +27,8 @@ concrete→insert conversion happens in Batch 1, only after the child pilot pass
   run is **Batch 0**. Do not build Batch 1–4. Do not build the neutral skeletons,
   `session_inserts/`, the insert/reference contract, `CONTRIBUTING.md`, or the
   destination pack beyond what Batch 0 needs.
-- Batch 0 ends at a **human-run child pilot you cannot perform.** Stop there.
+- Batch 0 ends at a **gate you cannot clear by building.** A human must either run the
+  child pilot and have it pass, or record the no-child fallback in writing. Stop there.
 - **Authorship mode:** the First-Taste sessions, the parent guide, the differentiation
   appendix, the budget session (33), and the capstone (53) are load-bearing prose —
   draft, then self-edit hard to reference quality. Do not ship raw first-pass generation.
@@ -120,7 +125,8 @@ on the `lean-spec.md` / `full-oer-companion.md` pointers named under Source of t
   gives portable standalone-token matching without the non-POSIX `\b` escape) — and confirm no hard-coded
   family value (blanks pointing to `trip_basics.md` are fine); confirm every session has a
   named artifact and a stop point (§15).
-- **STOP at the pilot gate.** Produce a short build report listing what was built, plus the
+- **STOP at the Batch 0 gate** (cleared by a passing child pilot, or by the no-child
+  fallback recorded in writing). Produce a short build report listing what was built, plus the
   full §31 handoff for the human:
   - **Pass/fail signals + remediation:** (a) unaided start, (b) reaches Checkpoint 1 mostly
     on their own, (c) coaching load matches the estimate — and the remediation rule (a
@@ -136,9 +142,11 @@ on the `lean-spec.md` / `full-oer-companion.md` pointers named under Source of t
     or make First Taste the whole project), then re-decide; Fail (the child hates it, or
     completes it only because the parent is doing the work) → pivot to casual involvement —
     a designed, successful outcome, not abandonment.
-- Do NOT proceed to Batch 1. The human runs the child pilot next.
+- Do NOT proceed to Batch 1 from this brief. The human clears the Batch 0 gate next:
+  run the child pilot, or record the no-child fallback in writing. Either clears it;
+  an unrun, unrecorded pilot does not.
 
-## After the pilot passes (later /goal runs — not now)
+## After the Batch 0 gate clears (later /goal runs — not now)
 
 - **Batch 1:** the runnable Phase 0–2 vertical slice; for the Full Build, run the
   concrete→insert upgrade (§29.1) on the 8 shared sessions (01, 03, 04, 05, 10, 12, 13, 14)

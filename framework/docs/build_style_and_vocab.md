@@ -6,7 +6,7 @@
 
 - **Status:** Active
 - **Owner:** Repository Maintainers
-- **Last Updated:** 2026-07-11
+- **Last Updated:** 2026-09-13
 - **Scope:** Builder-facing voice, vocabulary, banned-word, and lint conventions for authoring and editing the EFingPlanner curriculum batches. Not part of the child's or parent's reading path.
 
 This file is for whoever *builds* the curriculum, not for the child or parent. It is not part of the child's reading path. Load it before authoring or editing any batch so voice, vocabulary, banned words, and lint conventions stay constant across work sessions. The archived spec at `../../docs/spec/specification.md` is the original design record -- but once curriculum files exist, the built repository supersedes the spec on any conflict; this file is the short, load-before-each-batch digest of the rules that keep the built files consistent.
@@ -35,6 +35,7 @@ Everything else -- Finish and Quality Check, If You Get Stuck, Optional Extensio
 - **Junior travel planner framing.** "Your job as the planner...", "Record your evidence...", "Make a recommendation...", "Prepare this for adult review."
 - **Reading level:** target roughly fourth-to-sixth grade for child-facing text. Short sentences (about 10-14 words). One idea per sentence. Short paragraphs (2-4 sentences). Everyday words; gloss any travel term on first use. If a sentence is hard to read aloud smoothly, simplify it.
 - **Matter-of-fact about culture, never exotic.** Describe how a custom works, like one neighbor telling another. No "mysterious," "ancient ritual," or "you must get it perfect or offend."
+- **Neutral about who the child is.** A generic child is "your child," "the child," or **they** -- never "he," "she," or "he or she." Child-facing text stays in the second person ("you"), which sidesteps the problem entirely, so third-person pronouns should appear almost only in `parent_guide/` and builder-facing files. Age stays flexible: the audience statement is always the range "roughly 9-11," and no page sets a hard age bar ("for 10-year-olds only," "your child must be 10"). A loose reference to a typical reader -- "about ten," "a ten-year-old," "a younger planner" -- is fine in parent-facing and builder-facing text. Never assume a sibling, a two-parent household, a gender for a parent, or a specific family shape -- write "an adult," "the adults," "someone at home." QA grep before a batch ships: `grep -rniwE 'he|him|his|himself|she|her|hers|herself' framework/ destinations/` (`-w` gives portable whole-word matching without the non-POSIX word-boundary escape, and it also keeps `him` from matching inside `himself`, so both forms are listed). This rule's own line always matches, so expect at least one hit. Confirm every other hit is a quoted example rather than a real pronoun choice.
 - **Parent-facing text** may read at an adult level, but every `parent_guide/` file still states the point first and qualifies at most once -- plain parent voice, not the spec's nested-qualification voice.
 - **Real and low-stakes, held together.** The trip is real and the child's work matters; adults make the big decisions and "park it for later" is always okay.
 
@@ -85,6 +86,27 @@ Built files reference concepts by **Name** and link to the built-file home below
 - **Prohibited-placeholder hook:** the built curriculum (under `framework/` and `destinations/`) may **not** contain the common "to-be-decided" and "to-do" placeholder markers that the repo's `check-prohibited-placeholders` hook forbids (its exact token list lives in `.github/scripts/check-prohibited-placeholders.py`). Use plain child-friendly language instead ("not decided yet," "we'll decide later," "ask an adult"), which also reads better. Inline underscore blanks (`______`) -- for example inside a worked-formula table cell -- are fine and do not trip the hook; a worksheet's main fill-in space, though, is an empty table cell, not an underscore block (see the worksheet-form rule above).
 - MD013 (line length) and MD034 (bare URLs) are disabled; prefer angle-bracketed `<https://...>` links anyway.
 
+### Saying "we have not decided yet" in built pages
+
+The archived spec teaches a real and load-bearing idea: an honest "we have not decided that yet" is a **valid, complete answer** on a planning worksheet, not a gap the child has to fill. The spec writes that idea using the literal placeholder token that software projects use. The built curriculum may not, because the prohibited-placeholder hook bans that token under `framework/` and `destinations/` -- and because the software token is out of register for a ten-year-old anyway.
+
+So the idea stays and the token changes. Use these words in built pages:
+
+| The idea | Write this in built content |
+| --- | --- |
+| The answer is genuinely open | "not decided yet" |
+| The answer is open and an adult owns it | "ask an adult" / "the adults decide this one" |
+| The answer is open and will be revisited | "we'll decide later" / "park it for now" |
+| A blank a child fills in later | an empty table cell, with the prompt in the first column |
+
+Three rules go with that:
+
+1. **Never treat the blank as a failure.** Wherever a worksheet can plausibly come back empty, the surrounding text should say so out loud: leaving it open is a finished answer.
+2. **Inline underscore blanks (`______`) are fine** and do not trip the hook. The main fill-in space of a worksheet is still an empty table cell, not an underscore run.
+3. **The literal token is available only under suppression.** Where a built page genuinely must show the software token -- for example, teaching an older child what they will see in a real project plan -- write it with an inline suppression comment on the same line stating why, in the form `<!-- ALLOW-TBD: <reason> -->`. Expect this to be rare; prefer the plain words above. <!-- ALLOW-TBD: naming the banned token is unavoidable when documenting the rule that bans it -->
+
+For reference, the hook rejects `TBD`, `TODO:`, `FIXME`, `XXX`, the spelled-out phrase "to be determined", and the parenthesized default form `(default ... to be determined)`, all case-insensitively. That last one is listed separately even though the general phrase already catches it, so a future editor does not trim it as redundant. Naming them literally is the point of the inline suppression on this line. The exact list lives in `.github/scripts/check-prohibited-placeholders.py`, which is authoritative if the two ever disagree. <!-- ALLOW-TBD: this line names the prohibited markers in order to document them -->
+
 ## First Taste path (the Batch 0 slice)
 
-The child-facing order piloted in Batch 0 is: 01, 03, 04, 05, then (only if the family opted into AI at setup) 09, then 10, 12, 13, 14, 15, 21, 33, 44, 53. Session 00 is adult-only setup and precedes all of them. Every session preserves the four core moves: start small, track a source, make one trade-off, know when to stop.
+The child-facing order built for Batch 0 is: 01, 03, 04, 05, then (only if the family opted into AI at setup) 09, then 10, 12, 13, 14, 15, 21, 33, 44, 53. Session 00 is adult-only setup and precedes all of them. Every session preserves the four core moves: start small, track a source, make one trade-off, know when to stop.
