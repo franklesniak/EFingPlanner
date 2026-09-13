@@ -1010,7 +1010,25 @@ def check_targets(targets: ScanTargets, root: Path) -> list[Violation]:
     for path in targets.paths:
         # guard_path has already proved this path resolves inside the root.
         display_path = path.resolve().relative_to(resolved_root).as_posix()
-        text = path.read_text(encoding="utf-8")
+        try:
+            text = path.read_text(encoding="utf-8")
+        except (OSError, UnicodeDecodeError) as error:
+            # An unreadable file is not a well-formed one. Letting the exception
+            # escape ends the run in a traceback, which reads as the gate being
+            # broken rather than as one bad file; and a UnicodeDecodeError is a
+            # ValueError, so catching only OSError would still miss it. Only
+            # OSError carries ``strerror``, hence the getattr.
+            detail = getattr(error, "strerror", None) or str(error) or "I/O error"
+            violations.append(
+                Violation(
+                    display_path,
+                    1,
+                    f"could not be read ({type(error).__name__}: {detail}), so this run "
+                    "cannot say whether it is well-formed. Refusing to report it as "
+                    "clean.",
+                )
+            )
+            continue
         violations.extend(check_text(text, display_path, path.name))
     return violations
 

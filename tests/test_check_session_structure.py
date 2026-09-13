@@ -1263,3 +1263,33 @@ def test_a_real_marker_beside_other_comments_on_one_line_still_exempts() -> None
         markers="<!-- markdownlint-disable MD033 --> <!-- audience: adult -->",
     )
     assert check(text) == []
+# --- a file that cannot be read is not a file that is well-formed ----------
+
+
+def test_a_non_utf8_session_is_a_violation_not_a_crash(tmp_path: Path) -> None:
+    """UnicodeDecodeError is a ValueError, so an OSError-only guard misses it.
+
+    Before the fix this script had no guard at all: one Latin-1 byte in one
+    session ended the run in a traceback. In CI a traceback reads as the gate
+    being broken rather than as one bad file, which is the reading that gets a
+    gate switched off.
+    """
+    session_dir = tmp_path / "framework" / "sessions" / "phase_00_setup"
+    session_dir.mkdir(parents=True)
+    good = session_dir / "01_good.md"
+    good.write_text("# Session 01: Good\n", encoding="utf-8")
+    bad = session_dir / "02_bad.md"
+    bad.write_bytes(
+        b"# Session 02: Bad\n\ncaf\xe9 is not UTF-8\n"
+    )
+
+    targets = structure.ScanTargets((good, bad), ())
+    violations = structure.check_targets(targets, tmp_path)
+    messages = [v.format_message() for v in violations]
+    unreadable = [m for m in messages if "could not be read" in m]
+    assert len(unreadable) == 1, messages
+    assert "02_bad.md" in unreadable[0]
+    assert "UnicodeDecodeError" in unreadable[0]
+    # The positive control: the readable sibling was still checked, so the
+    # refusal did not abort the whole scan.
+    assert any("01_good.md" in m for m in messages)
