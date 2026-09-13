@@ -42,6 +42,19 @@ are recognised, both explicit and both visible in the file:
 
 Silence is never an exemption. If a session genuinely has no research step, it
 says so.
+
+Which files are read
+--------------------
+With no arguments the script scans ``framework/sessions/**/*.md``. Every path
+it reads goes through one guard, whether it came from that scan, from the walk
+of a directory argument, or from an explicit file argument. The guard refuses a
+symbolic link, and refuses anything that resolves outside the repository root;
+both tests are needed, because a link is not always what ``resolve()`` catches
+and a Windows junction is not what ``is_symlink()`` catches.
+
+A refused path is a violation, not a silent skip. A gate that prints ``all
+well-formed`` over a session file it declined to open is telling the reader
+something it does not know, so a refusal fails the run.
 """
 
 from __future__ import annotations
@@ -208,7 +221,17 @@ def check_text(text: str, display_path: str, file_name: str) -> list[Violation]:
         )
     else:
         name_match = FILENAME_NUMBER_PATTERN.match(file_name)
-        if name_match and name_match.group("number") != title_match.group("number"):
+        if name_match is None:
+            violations.append(
+                Violation(
+                    display_path,
+                    first_heading.line_number,
+                    "the filename does not start with a two-digit session number, so the "
+                    "title cannot be checked against it. Name the file NN_short_title.md, "
+                    "matching every other session.",
+                )
+            )
+        elif name_match.group("number") != title_match.group("number"):
             violations.append(
                 Violation(
                     display_path,

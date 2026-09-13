@@ -254,14 +254,53 @@ def test_headings_inside_a_fence_are_not_counted() -> None:
 
 
 def test_paths_outside_the_repository_root_are_refused(tmp_path: Path) -> None:
-    """CLI input must not drive reads outside the allowlisted tree."""
+    """CLI input must not drive reads outside the allowlisted tree.
+
+    The in-root file is the positive control. An empty result would also come
+    from a `resolve_paths` that rejects everything, which would pass this test
+    while breaking the checker.
+    """
+    session_dir = tmp_path / "framework" / "sessions"
+    session_dir.mkdir(parents=True)
+    inside = session_dir / "01_inside.md"
+    inside.write_text("# Session 01: Inside\n", encoding="utf-8")
     outside = tmp_path.parent / "outside.md"
     outside.write_text("# Session 01: Nope\n", encoding="utf-8")
+
+    assert structure.resolve_paths([str(inside)], tmp_path) == [inside]
     assert structure.resolve_paths([str(outside)], tmp_path) == []
+
+
+#: A floor, not the real count. The repository has more sessions than this, and
+#: is about to have many more. The number exists so that a change which silently
+#: stops matching any file fails loudly instead of reporting a clean corpus it
+#: never looked at.
+MINIMUM_SESSIONS = 10
+
+
+def test_an_unparsable_filename_is_a_violation() -> None:
+    """A filename with no session number cannot be checked, so it is a violation.
+
+    Skipping the check for such a file would let a misnamed session pass the one
+    invariant this check exists to hold.
+    """
+    messages = check(build_session(number="07"), name="session_seven.md")
+    assert any("two-digit session number" in m for m in messages)
+
+
+def test_a_hyphenated_filename_number_still_parses() -> None:
+    """`07-name.md` is as valid a shape as `07_name.md`."""
+    assert check(build_session(number="07"), name="07-a-session.md") == []
 
 
 def test_the_real_session_corpus_is_well_formed() -> None:
     """The gate must be green on the real repository, or it is not a gate."""
+    checked = structure.resolve_paths([], structure.REPO_ROOT)
+    assert len(checked) >= MINIMUM_SESSIONS, (
+        f"only {len(checked)} session file(s) were found. The gate is not looking at the "
+        "corpus any more; check DEFAULT_SCAN_GLOB and the path guard."
+    )
+
     violations = structure.scan_files([], root=structure.REPO_ROOT)
     assert not violations, "\n".join(v.format_message() for v in violations)
 
