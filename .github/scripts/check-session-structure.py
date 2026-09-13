@@ -67,12 +67,26 @@ says so.
 
 Which files are read
 --------------------
-With no arguments the script scans ``framework/sessions/**/*.md``. Every path
-it reads goes through one guard, whether it came from that scan, from the walk
-of a directory argument, or from an explicit file argument. The guard refuses a
-symbolic link, and refuses anything that resolves outside the repository root;
-both tests are needed, because a link is not always what ``resolve()`` catches
-and a Windows junction is not what ``is_symlink()`` catches.
+With no arguments the script walks ``framework/sessions``. It walks rather
+than globs, and that is the load-bearing choice. A glob reports what it
+matched and is silent about what it passed over, so everything it passes over
+is invisible to the gate: ``Path.glob`` does not descend into a symbolic link
+to a directory, does not match ``.MD`` on a case-sensitive filesystem, and
+swallows the ``PermissionError`` from a directory it cannot read. Each of
+those is a subtree the gate never opens while it prints ``all well-formed``.
+
+So the walk enumerates directory entries and gives every entry it sees exactly
+one disposition: checked, refused, descended into, or skipped for a stated
+reason. The four are counted, and a run whose dispositions do not add up to
+the number of entries seen fails rather than reports. An entry cannot go
+missing without the arithmetic saying so.
+
+Every path the walk accepts goes through one guard, as does every explicit
+file argument. The guard refuses a symbolic link, refuses a Windows junction,
+and refuses anything that resolves outside the repository root; all three
+tests are needed, because a link is not always what ``resolve()`` catches, a
+junction is not what ``is_symlink()`` catches, and a link that points back
+inside the tree is caught by neither.
 
 A refused path is a violation, not a silent skip. A gate that prints ``all
 well-formed`` over a session file it declined to open is telling the reader
@@ -89,7 +103,17 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 
-DEFAULT_SCAN_GLOB = "framework/sessions/**/*.md"
+#: The directory the default scan reads. It is a directory, not a glob,
+#: because the walk below enumerates what is there and gives every entry a
+#: disposition. A pattern can only report what it matched; it can never
+#: report what it passed over, and what it passes over is invisible.
+DEFAULT_SCAN_ROOT = "framework/sessions"
+
+#: The extension a session file carries, compared case-insensitively. The
+#: CI runner's filesystem is case-sensitive and the developer's is not, so a
+#: lowercase pattern reads a different corpus in the two places. A gate that
+#: checks a different set of files on CI than on the desk is not a gate.
+MARKDOWN_SUFFIX = ".md"
 
 #: The six sections every session carries, in the order they must appear.
 MANDATORY_SECTIONS = (
@@ -116,7 +140,19 @@ FILENAME_NUMBER_PATTERN = re.compile(r"^(?P<number>\d{2})[_-]")
 NAV_PATTERN = re.compile(r"^You are here:\s*\S", re.MULTILINE)
 PARENT_STRIP_PATTERN = re.compile(r"^\*\*For parents:?\*\*", re.MULTILINE)
 
-#: The strip's load-bearing fields. Every one of the 15 sessions carries all
+#: The strip's load-bearing fields. Each pattern requires a *value* after
+#: the colon, on the field's own line. A bullet reading ``- Status:`` with
+#: nothing after it prints a label and no fact, so a strip made of three of
+#: them tells a parent exactly as much as no strip at all.
+#:
+#: The character classes are exact. ``[^\S\r\n]`` is horizontal
+#: whitespace only: a plain ``\s*`` would cross the line break and find
+#: the *next* bullet's text, so an empty field would pass anyway. And the
+#: value must hold a character that is neither whitespace nor ``*``,
+#: because in ``- **Status:**`` the only thing after the colon is the
+#: label's own closing emphasis, which is not a value either.
+#:
+#: Every one of the 15 sessions carries all
 #: three, and the spec names them. They are the three facts a parent needs
 #: before the child starts: is this session required, how long is it, and
 #: does an adult have to be there. ``Planner skill`` and ``Materials`` are
@@ -126,7 +162,8 @@ PARENT_STRIP_FIELDS: tuple[tuple[str, re.Pattern[str]], ...] = tuple(
     (
         field,
         re.compile(
-            rf"^\s*(?:[-*+]|\d{{1,9}}[.)])\s+\*{{0,2}}{field}\*{{0,2}}\s*:",
+            rf"^\s*(?:[-*+]|\d{{1,9}}[.)])\s+\*{{0,2}}{field}\*{{0,2}}"
+            rf"[^\S\r\n]*:[^\r\n]*[^\s*\r\n]",
             re.IGNORECASE | re.MULTILINE,
         ),
     )
@@ -234,10 +271,12 @@ class DocumentScan:
     these lines. That is what makes one fence parser and one comment parser
     govern the whole check, rather than the heading scan alone.
 
-    ``marker_lines`` holds the same lines with the comments left in, because
-    the two Source Check exemption markers *are* comments. Fenced blocks are
-    removed from this view too, so a marker printed inside an example is still
-    an example.
+    ``marker_lines`` holds only the lines CommonMark reads as an HTML
+    comment block, because the two Source Check exemption markers *are*
+    comments and nothing else is one. A marker in a fenced block, in a code
+    span, behind a backslash escape, inside an HTML attribute or indented
+    four spaces prints as characters on the page; it is prose *about* a
+    marker, and it exempts nothing.
     """
 
     content_lines: tuple[str, ...]
@@ -490,7 +529,11 @@ def scan_document(text: str) -> DocumentScan:
             continue
 
         content_lines.append("" if in_html_block else visible_line)
-        marker_lines.append(raw_line)
+        # A marker is a marker only where CommonMark reads it as a comment.
+        # Keeping only HTML-block lines states that positively, so this does
+        # not have to subtract code spans, backslash escapes, HTML
+        # attributes and indented code one context at a time.
+        marker_lines.append(raw_line if in_html_block else "")
 
     if active_fence is not None and fence_holds_worksheet(buffer):
         worksheet_fences.append(fence_start)
@@ -716,11 +759,47 @@ def check_text(text: str, display_path: str, file_name: str) -> list[Violation]:
 
 
 @dataclass(frozen=True)
+class SkippedEntry:
+    """One directory entry the walk saw, did not check, and will not fail on.
+
+    A skip is a decision, not an omission. It is recorded so that the walk can
+    prove every entry it saw received exactly one disposition; a file that is
+    simply not Markdown is the only thing that lands here.
+    """
+
+    display_path: str
+    reason: str
+
+
+@dataclass
+class WalkTally:
+    """How many directory entries the walk saw, and what became of each.
+
+    The four dispositions are exhaustive and mutually exclusive by
+    construction. ``balances`` is the reconciliation: if it is ever false, an
+    entry was seen and then lost, which is the shape of every silent gate hole
+    this checker has had.
+    """
+
+    seen: int = 0
+    checked: int = 0
+    refused: int = 0
+    descended: int = 0
+    skipped: int = 0
+
+    def balances(self) -> bool:
+        """Return whether every entry seen received exactly one disposition."""
+        return self.seen == self.checked + self.refused + self.descended + self.skipped
+
+
+@dataclass(frozen=True)
 class ScanTargets:
-    """The session files to read, and the refusals that must fail the run."""
+    """The session files to read, the refusals that must fail the run, and the
+    entries deliberately passed over."""
 
     paths: tuple[Path, ...]
     refusals: tuple[Violation, ...]
+    skipped: tuple[SkippedEntry, ...] = ()
 
 
 def display_name(path: Path, root: Path, fallback: str) -> str:
@@ -734,19 +813,24 @@ def display_name(path: Path, root: Path, fallback: str) -> str:
 def guard_path(path: Path, root: Path, label: str) -> Violation | None:
     """Return a refusal for a path that is a link, or that resolves outside ``root``.
 
-    ``root`` is already resolved. Both halves matter. ``Path.resolve()`` follows
-    symbolic links *and* Windows junctions, so the containment test is what
-    enforces the boundary; the ``is_symlink()`` test refuses a link even when it
-    points back inside the tree, which is what
-    ``check-prohibited-placeholders.py`` already does for its own inputs.
+    ``root`` is already resolved. All three halves matter. ``Path.resolve()``
+    follows symbolic links *and* Windows junctions, so the containment test is
+    what enforces the boundary; the ``is_symlink()`` test refuses a link even
+    when it points back inside the tree, which is what
+    ``check-prohibited-placeholders.py`` already does for its own inputs; and
+    ``is_junction()`` catches the Windows reparse point that ``is_symlink()``
+    reports as an ordinary directory. The junction test is not decoration: the
+    walk descends into directories, and a junction pointing at one of its own
+    ancestors would otherwise make it descend forever.
     """
-    if path.is_symlink():
+    if path.is_symlink() or path.is_junction():
         return Violation(
             label,
             1,
-            "symbolic link, not a real file. A session file must be a real file in the "
-            "repository, because a link can point at content outside the allowlisted "
-            "tree. Refusing to read it.",
+            "symbolic link or junction, not a real file. A session file must be a real "
+            "file in the repository, because a link can point at content outside the "
+            "allowlisted tree, and a linked directory is a subtree this run would "
+            "otherwise never open. Refusing to read it.",
         )
     try:
         path.resolve().relative_to(root)
@@ -757,29 +841,97 @@ def guard_path(path: Path, root: Path, label: str) -> Violation | None:
     return None
 
 
+def walk_session_directory(
+    directory: Path,
+    root: Path,
+    paths: list[Path],
+    refusals: list[Violation],
+    skipped: list[SkippedEntry],
+    tally: WalkTally,
+) -> None:
+    """Enumerate one directory tree, dispositioning every entry it holds.
+
+    This exists instead of ``Path.glob`` / ``Path.rglob`` because a pattern
+    answers only "what matched". Three things a pattern passes over in silence
+    have each been a hole in this gate:
+
+    * a **symbolic link to a directory**, which ``**`` does not descend into,
+      so the whole linked subtree is never read;
+    * an **uppercase ``.MD``**, which a lowercase pattern does not match on the
+      case-sensitive filesystem CI runs on, though it matches on the
+      developer's case-insensitive one; and
+    * a **directory the process cannot read**, whose ``PermissionError``
+      ``glob`` swallows, so an unreadable subtree reads as an empty one.
+
+    None of the three can hide from an enumeration that must account for every
+    entry it saw. Directories are descended into, Markdown files are checked,
+    links and escapes are refused, and anything else is skipped for a reason
+    that is written down. ``tally`` counts the four so the caller can prove
+    they add up.
+    """
+    try:
+        entries = sorted(directory.iterdir(), key=lambda entry: entry.name)
+    except FileNotFoundError:
+        # Not there at all. The zero-target guard in collect_targets reports
+        # that this run checked nothing, which is the accurate thing to say
+        # and the message that names the setting to fix.
+        return
+    except OSError as error:
+        # A directory that cannot be listed is not an empty directory, and
+        # this is exactly where glob() would have returned nothing instead.
+        refusals.append(
+            Violation(
+                display_name(directory, root, directory.as_posix()),
+                1,
+                f"could not be read ({error.strerror}), so this run does not know what "
+                "is inside it. An unreadable directory is not an empty one; refusing "
+                "to report a clean corpus for a subtree that was never listed.",
+            )
+        )
+        return
+
+    for entry in entries:
+        tally.seen += 1
+        label = display_name(entry, root, entry.as_posix())
+
+        refusal = guard_path(entry, root, label)
+        if refusal is not None:
+            refusals.append(refusal)
+            tally.refused += 1
+            continue
+
+        if entry.is_dir():
+            tally.descended += 1
+            walk_session_directory(entry, root, paths, refusals, skipped, tally)
+            continue
+
+        if entry.is_file() and entry.suffix.lower() == MARKDOWN_SUFFIX:
+            paths.append(entry)
+            tally.checked += 1
+            continue
+
+        skipped.append(SkippedEntry(label, "not a Markdown file"))
+        tally.skipped += 1
+
+
 def collect_targets(path_arguments: Sequence[str], root: Path) -> ScanTargets:
     """Turn command-line arguments into session Markdown paths, refusing escapes.
 
-    Every path the checker reads passes through here: the default glob, the walk
-    of a directory argument, and an explicit file argument alike. Validating only
-    the explicit arguments would leave the one path CI actually uses -- the
-    default glob -- unguarded.
+    Every path the checker reads passes through here: the default walk, the
+    walk of a directory argument, and an explicit file argument alike.
+    Validating only the explicit arguments would leave the one path CI
+    actually uses -- the default walk -- unguarded.
     """
     root = root.resolve()
     paths: list[Path] = []
     refusals: list[Violation] = []
-
-    def take(path: Path) -> None:
-        """Accept one discovered path, or record why it was refused."""
-        refusal = guard_path(path, root, display_name(path, root, path.as_posix()))
-        if refusal is not None:
-            refusals.append(refusal)
-        elif path.is_file():
-            paths.append(path)
+    skipped: list[SkippedEntry] = []
+    tally = WalkTally()
 
     if not path_arguments:
-        for path in sorted(root.glob(DEFAULT_SCAN_GLOB)):
-            take(path)
+        walk_session_directory(
+            root / DEFAULT_SCAN_ROOT, root, paths, refusals, skipped, tally
+        )
     else:
         for argument in path_arguments:
             candidate = Path(argument)
@@ -791,9 +943,8 @@ def collect_targets(path_arguments: Sequence[str], root: Path) -> ScanTargets:
                 continue
             candidate = candidate.resolve()
             if candidate.is_dir():
-                for path in sorted(candidate.rglob("*.md")):
-                    take(path)
-            elif candidate.is_file() and candidate.suffix.lower() == ".md":
+                walk_session_directory(candidate, root, paths, refusals, skipped, tally)
+            elif candidate.is_file() and candidate.suffix.lower() == MARKDOWN_SUFFIX:
                 paths.append(candidate)
             else:
                 # The argument survived the guard but names nothing this checker
@@ -810,23 +961,41 @@ def collect_targets(path_arguments: Sequence[str], root: Path) -> ScanTargets:
                     )
                 )
 
+    if not tally.balances():
+        # The reconciliation. Every entry the walk saw is checked, refused,
+        # descended into, or skipped for a reason; the four are exhaustive by
+        # construction, so they can only fail to add up if a future edit
+        # introduces a fifth, silent outcome. That is the shape of every hole
+        # this gate has had, so it fails the run rather than reporting one.
+        refusals.append(
+            Violation(
+                DEFAULT_SCAN_ROOT if not path_arguments else " ".join(path_arguments),
+                1,
+                f"the walk saw {tally.seen} directory entr(ies) but accounted for "
+                f"{tally.checked + tally.refused + tally.descended + tally.skipped} "
+                "of them. An entry that is neither checked, refused, descended into, "
+                "nor skipped for a stated reason has gone missing, and this run "
+                "cannot say what is in the corpus.",
+            )
+        )
+
     if not paths and not refusals:
         # One guard for every shape of the same mistake: the run was asked for
         # something and opened nothing. An empty directory, a directory holding
-        # no Markdown, and a default glob that has stopped matching all land
-        # here, so none of them can report a clean corpus that was never read.
-        requested = " ".join(path_arguments) if path_arguments else DEFAULT_SCAN_GLOB
+        # no Markdown, and a scan root that has moved all land here, so none of
+        # them can report a clean corpus that was never read.
+        requested = " ".join(path_arguments) if path_arguments else DEFAULT_SCAN_ROOT
         refusals.append(
             Violation(
                 requested,
                 1,
                 "matched no session file, so this run checked nothing. A run that "
                 "opens no file has no evidence that anything is well-formed. Check "
-                "the path, or check DEFAULT_SCAN_GLOB if this was the default scan.",
+                "the path, or check DEFAULT_SCAN_ROOT if this was the default scan.",
             )
         )
 
-    return ScanTargets(tuple(paths), tuple(refusals))
+    return ScanTargets(tuple(paths), tuple(refusals), tuple(skipped))
 
 
 def resolve_paths(path_arguments: Sequence[str], root: Path) -> list[Path]:
@@ -875,11 +1044,21 @@ def main(argv: Sequence[str] | None = None, root: Path = REPO_ROOT) -> int:
         print(violation.format_message())
 
     checked = len(targets.paths)
+    # A skip that is recorded but never printed is still an entry the reader
+    # does not know about, so the count of skips rides along with the verdict.
+    passed_over = (
+        f" {len(targets.skipped)} entr(ies) skipped as not Markdown."
+        if targets.skipped
+        else ""
+    )
     if violations:
-        print(f"\nSession structure: {checked} file(s) checked, {len(violations)} problem(s).")
+        print(
+            f"\nSession structure: {checked} file(s) checked, "
+            f"{len(violations)} problem(s).{passed_over}"
+        )
         return 1
 
-    print(f"Session structure: {checked} file(s) checked, all well-formed.")
+    print(f"Session structure: {checked} file(s) checked, all well-formed.{passed_over}")
     return 0
 
 

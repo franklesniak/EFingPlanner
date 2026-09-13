@@ -7,6 +7,8 @@ the pattern used by `tests/test_check_prohibited_placeholders.py`.
 from __future__ import annotations
 
 import importlib.util
+import os
+import pathlib
 import sys
 from pathlib import Path
 from typing import Any, cast
@@ -951,3 +953,313 @@ def test_the_reported_file_count_comes_from_the_traversal_that_checked(
         )
     assert structure.main([], root=tmp_path) == 0
     assert "2 file(s) checked, all well-formed" in capsys.readouterr().out
+
+
+# ---------------------------------------------------------------------------
+# A metadata label with no value is not metadata
+# ---------------------------------------------------------------------------
+
+
+def test_a_metadata_field_with_no_value_is_a_violation() -> None:
+    """`- Status:` states a label and no fact. A parent learns nothing from it."""
+    text = build_session(
+        parent_bullets=("- Status:", "- Estimated time:", "- Parent involvement:")
+    )
+    assert any("Status, Estimated time, Parent involvement" in m for m in check(text))
+
+
+def test_one_emptied_metadata_field_names_that_field() -> None:
+    """The value must be on the field's own line, not borrowed from the next bullet."""
+    text = build_session(
+        parent_bullets=(
+            "- Status:",
+            "- Estimated time: 20 minutes",
+            "- Parent involvement: none",
+        )
+    )
+    messages = check(text)
+    assert any("fields: Status." in m for m in messages), messages
+
+
+def test_a_bold_metadata_label_with_no_value_is_a_violation() -> None:
+    """In `- **Status:**` the only thing after the colon is the label's own emphasis."""
+    text = build_session(
+        parent_bullets=(
+            "- **Status:**",
+            "- **Estimated time:**",
+            "- **Parent involvement:**",
+        )
+    )
+    assert any("Status, Estimated time, Parent involvement" in m for m in check(text))
+
+
+def test_a_metadata_value_of_only_an_html_comment_is_a_violation() -> None:
+    """A comment prints as nothing, so a field whose value is one has no value."""
+    text = build_session(
+        parent_bullets=(
+            "- Status: <!-- decide later -->",
+            "- Estimated time: 20 minutes",
+            "- Parent involvement: none",
+        )
+    )
+    assert any("fields: Status." in m for m in check(text))
+
+
+def test_a_metadata_field_whose_value_holds_a_colon_still_passes() -> None:
+    """A positive control. Requiring a value must not confuse the value for the label."""
+    text = build_session(
+        parent_bullets=(
+            "- Status: Core -- Checkpoint 1: a real review",
+            "- Estimated time: 20:30 to 21:00",
+            "- Parent involvement: none",
+        )
+    )
+    assert check(text) == []
+
+
+def test_a_metadata_value_wrapped_in_emphasis_still_passes() -> None:
+    """A positive control. Excluding the label's asterisks must not exclude the value's."""
+    text = build_session(
+        parent_bullets=(
+            "- Status: ***Core***",
+            "- **Estimated time:** *20 minutes*",
+            "- Parent involvement: _none_",
+        )
+    )
+    assert check(text) == []
+
+
+def test_every_metadata_pattern_rejects_its_own_valueless_form() -> None:
+    """The A6 meta-test: a presence check that a null instance satisfies is no check.
+
+    This is the only guard this repository has against the next vacuous
+    pattern, and it is a tripwire rather than a cure: it covers the patterns
+    enrolled in PARENT_STRIP_FIELDS and nothing else.
+    """
+    for name, pattern in structure.PARENT_STRIP_FIELDS:
+        for empty in (f"- {name}:", f"- **{name}:**", f"- **{name}**:", f"- {name}:   "):
+            assert pattern.search(empty) is None, (name, empty)
+        assert pattern.search(f"- {name}: a real value") is not None, name
+
+
+# ---------------------------------------------------------------------------
+# The walk sees every entry, and says what became of each one
+# ---------------------------------------------------------------------------
+
+
+def test_a_symlinked_phase_directory_is_refused_by_the_default_scan(tmp_path: Path) -> None:
+    """A pattern does not descend into a linked directory, so the subtree is unread.
+
+    The zero-target guard cannot catch this: ordinary sessions exist, so the
+    run has targets and reports success for a corpus missing a whole subtree.
+    """
+    session_dir = make_session_dir(tmp_path)
+    (session_dir / "07_a_session.md").write_text(build_session(), encoding="utf-8")
+    outside = tmp_path / "elsewhere" / "phase_09_linked"
+    outside.mkdir(parents=True)
+    (outside / "08_broken.md").write_text("no structure at all\n", encoding="utf-8")
+    root = tmp_path / "repo"
+    link_or_skip(root / "framework" / "sessions" / "phase_09_linked", outside)
+
+    messages = [v.format_message() for v in structure.scan_files([], root=root)]
+    assert any("phase_09_linked" in m for m in messages), messages
+    assert structure.main([], root=root) == 1
+
+
+def test_a_symlinked_phase_directory_is_refused_in_a_directory_argument(
+    tmp_path: Path,
+) -> None:
+    """A directory argument walks the same tree, so it needs the same answer."""
+    session_dir = make_session_dir(tmp_path)
+    (session_dir / "07_a_session.md").write_text(build_session(), encoding="utf-8")
+    outside = tmp_path / "elsewhere" / "phase_09_linked"
+    outside.mkdir(parents=True)
+    (outside / "08_broken.md").write_text("no structure at all\n", encoding="utf-8")
+    root = tmp_path / "repo"
+    link_or_skip(root / "framework" / "sessions" / "phase_09_linked", outside)
+
+    assert structure.main(["framework/sessions"], root=root) == 1
+
+
+def test_a_nested_phase_directory_is_still_walked(tmp_path: Path) -> None:
+    """A positive control. Refusing links must not stop the walk descending."""
+    deep = tmp_path / "repo" / "framework" / "sessions" / "phase_00_setup" / "extra"
+    deep.mkdir(parents=True)
+    (deep / "07_a_session.md").write_text(build_session(), encoding="utf-8")
+    root = tmp_path / "repo"
+    assert [p.name for p in structure.resolve_paths([], root)] == ["07_a_session.md"]
+    assert structure.main([], root=root) == 0
+
+
+def test_an_uppercase_markdown_extension_is_checked(tmp_path: Path) -> None:
+    """`02_bad.MD` is a session file. A lowercase pattern misses it on CI.
+
+    This fails at 7e4463f only on a case-sensitive filesystem -- which is the
+    Linux runner CI uses, and is the reason the bug is invisible on Windows.
+    """
+    session_dir = make_session_dir(tmp_path)
+    (session_dir / "07_a_session.md").write_text(build_session(), encoding="utf-8")
+    (session_dir / "02_bad.MD").write_text("no structure at all\n", encoding="utf-8")
+    root = tmp_path / "repo"
+
+    assert sorted(p.name for p in structure.resolve_paths([], root)) == [
+        "02_bad.MD",
+        "07_a_session.md",
+    ]
+    assert structure.main([], root=root) == 1
+
+
+def test_an_uppercase_extension_is_checked_where_patterns_are_case_sensitive(
+    tmp_path: Path, monkeypatch: Any
+) -> None:
+    """The same fact, forced to hold on every platform.
+
+    Pattern matching is made case-sensitive here so the test reproduces the CI
+    runner's filesystem on the developer's. The fixed walk never consults a
+    pattern, so the substitution has nothing to act on -- which is the point.
+    """
+    real_glob, real_rglob = pathlib.Path.glob, pathlib.Path.rglob
+    monkeypatch.setattr(
+        pathlib.Path,
+        "glob",
+        lambda self, pat, **kw: real_glob(self, pat, **{"case_sensitive": True, **kw}),
+    )
+    monkeypatch.setattr(
+        pathlib.Path,
+        "rglob",
+        lambda self, pat, **kw: real_rglob(self, pat, **{"case_sensitive": True, **kw}),
+    )
+    session_dir = make_session_dir(tmp_path)
+    (session_dir / "07_a_session.md").write_text(build_session(), encoding="utf-8")
+    (session_dir / "02_bad.MD").write_text("no structure at all\n", encoding="utf-8")
+    root = tmp_path / "repo"
+
+    assert structure.main([], root=root) == 1
+
+
+def test_an_unreadable_directory_is_refused_not_treated_as_empty(
+    tmp_path: Path, monkeypatch: Any
+) -> None:
+    """A directory that cannot be listed is not an empty directory.
+
+    `Path.glob` swallows the OSError and yields nothing, so an unreadable
+    subtree reads as an absent one and the run reports what it did not see.
+    """
+    session_dir = make_session_dir(tmp_path)
+    (session_dir / "07_a_session.md").write_text(build_session(), encoding="utf-8")
+    locked = tmp_path / "repo" / "framework" / "sessions" / "phase_01_locked"
+    locked.mkdir()
+    (locked / "08_broken.md").write_text("no structure at all\n", encoding="utf-8")
+    root = tmp_path / "repo"
+
+    real_iterdir, real_scandir = pathlib.Path.iterdir, os.scandir
+
+    def guarded_iterdir(self: Path):
+        if self.name == "phase_01_locked":
+            raise PermissionError(13, "Permission denied", str(self))
+        return real_iterdir(self)
+
+    def guarded_scandir(path=None, *args, **kwargs):
+        if path is not None and "phase_01_locked" in str(path):
+            raise PermissionError(13, "Permission denied", str(path))
+        return real_scandir(path, *args, **kwargs)
+
+    monkeypatch.setattr(pathlib.Path, "iterdir", guarded_iterdir)
+    monkeypatch.setattr(os, "scandir", guarded_scandir)
+
+    assert structure.main([], root=root) == 1
+
+
+def test_a_non_markdown_file_is_recorded_as_skipped(tmp_path: Path) -> None:
+    """A skip is a decision the walk writes down, not an entry that vanishes."""
+    session_dir = make_session_dir(tmp_path)
+    (session_dir / "07_a_session.md").write_text(build_session(), encoding="utf-8")
+    (session_dir / "notes.txt").write_text("not markdown", encoding="utf-8")
+    root = tmp_path / "repo"
+
+    targets = structure.collect_targets([], root)
+    assert [s.display_path for s in targets.skipped] == [
+        "framework/sessions/phase_00_setup/notes.txt"
+    ]
+    assert structure.main([], root=root) == 0
+
+
+def test_the_walk_accounts_for_every_entry_it_sees(tmp_path: Path) -> None:
+    """The reconciliation itself: checked + refused + descended + skipped == seen."""
+    session_dir = make_session_dir(tmp_path)
+    (session_dir / "07_a_session.md").write_text(build_session(), encoding="utf-8")
+    (session_dir / "08_b.MD").write_text(build_session(number="08"), encoding="utf-8")
+    (session_dir / "notes.txt").write_text("not markdown", encoding="utf-8")
+    root = tmp_path / "repo"
+
+    tally = structure.WalkTally()
+    structure.walk_session_directory(
+        root / structure.DEFAULT_SCAN_ROOT, root.resolve(), [], [], [], tally
+    )
+    assert tally.balances(), tally
+    assert (tally.seen, tally.checked, tally.descended, tally.skipped) == (4, 2, 1, 1)
+
+
+def test_an_unbalanced_walk_fails_the_run(tmp_path: Path) -> None:
+    """A negative control for the reconciliation: it must actually fail a run.
+
+    A guard that has never been seen to fire is a guard nobody knows works.
+    """
+    session_dir = make_session_dir(tmp_path)
+    (session_dir / "07_a_session.md").write_text(build_session(), encoding="utf-8")
+    root = tmp_path / "repo"
+
+    real_walk = structure.walk_session_directory
+
+    def losing_walk(directory, walk_root, paths, refusals, skipped, tally):
+        real_walk(directory, walk_root, paths, refusals, skipped, tally)
+        tally.seen += 1  # an entry seen and given no disposition
+
+    structure.walk_session_directory = losing_walk
+    try:
+        violations = structure.scan_files([], root=root)
+    finally:
+        structure.walk_session_directory = real_walk
+
+    assert any("gone missing" in v.message for v in violations), violations
+
+
+# ---------------------------------------------------------------------------
+# A marker is a marker only where CommonMark reads it as a comment
+# ---------------------------------------------------------------------------
+
+
+def _session_with(body: str) -> str:
+    return build_session(sections=SIX_SECTIONS, extra=f"## Notes\n\n{body}\n")
+
+
+@pytest.mark.parametrize(
+    ("label", "body"),
+    [
+        ("code span", "Use `<!-- no-source-check: explain why -->` when needed."),
+        ("code span, audience", "Write `<!-- audience: adult -->` at the top."),
+        ("double-backtick span", "Use ``<!-- no-source-check: reason -->`` here."),
+        ("backslash escape", "\\<!-- no-source-check: this renders literally -->"),
+        ("html attribute", '<span title="<!-- no-source-check: x -->">hi</span>'),
+        ("indented code block", "    <!-- no-source-check: an indented example -->"),
+        ("link text", "[see `<!-- no-source-check: x -->`](https://example.com)"),
+        ("block quote", "> <!-- no-source-check: this is quoted, not declared -->"),
+    ],
+)
+def test_a_marker_that_is_not_a_comment_does_not_exempt(label: str, body: str) -> None:
+    """Prose *about* the marker prints as characters, so it exempts nothing.
+
+    Each of these renders the marker visibly instead of as an HTML comment, so
+    the session has said nothing about why it has no research step.
+    """
+    messages = check(_session_with(body))
+    assert any("Source Check" in m for m in messages), (label, messages)
+
+
+def test_a_real_marker_beside_other_comments_on_one_line_still_exempts() -> None:
+    """A positive control. The line starts an HTML block, so the marker is real."""
+    text = build_session(
+        sections=SIX_SECTIONS,
+        markers="<!-- markdownlint-disable MD033 --> <!-- audience: adult -->",
+    )
+    assert check(text) == []
