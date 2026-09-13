@@ -59,14 +59,14 @@
 - [x] Rules enabled: **Require a pull request before merging** (`pull_request`, with `required_approving_review_count: 0` so a solo maintainer can still merge a reviewed PR, and `required_review_thread_resolution: false`); **Require status checks to pass before merging** (`required_status_checks`, non-strict, four contexts — `markdownlint` (this single check also runs link validation and the toolchain regression as steps), `Data file linting`, `Pre-commit`, and `Check for OWNER/REPO Placeholders`); **Block force pushes** (`non_fast_forward`).
 - These four are **check-run names**, not `workflow / job` composites (the form some other setups produce). GitHub takes a check-run name from the job's `name:` field when it has one, and **falls back to the job ID** when it does not. Three of the four have an explicit `name:`; `markdownlint` does not, so its context comes from its job ID. That distinction decides which identifier you must not rename:
 
-    | Required context | Workflow | Job ID | Explicit `name:` | Rename which one breaks it |
-    | --- | --- | --- | --- | --- |
-    | `markdownlint` | `markdownlint.yml` | `markdownlint` | none | the **job ID** |
-    | `Pre-commit` | `precommit-ci.yml` | `pre-commit` | `Pre-commit` | the **`name:`** |
-    | `Data file linting` | `data-ci.yml` | `data-file-linting` | `Data file linting` | the **`name:`** |
-    | `Check for OWNER/REPO Placeholders` | `check-placeholders.yml` | `check-placeholders` | `Check for OWNER/REPO Placeholders` | the **`name:`** |
+  | Required context | Workflow | Job ID | Explicit `name:` | Rename which one breaks it |
+  | --- | --- | --- | --- | --- |
+  | `markdownlint` | `markdownlint.yml` | `markdownlint` | none | the **job ID** |
+  | `Pre-commit` | `precommit-ci.yml` | `pre-commit` | `Pre-commit` | the **`name:`** |
+  | `Data file linting` | `data-ci.yml` | `data-file-linting` | `Data file linting` | the **`name:`** |
+  | `Check for OWNER/REPO Placeholders` | `check-placeholders.yml` | `check-placeholders` | `Check for OWNER/REPO Placeholders` | the **`name:`** |
 
-    To re-derive the live names, run `gh api repos/franklesniak/EFingPlanner/commits/main/check-runs -q '.check_runs[].name'` and compare with `gh api repos/franklesniak/EFingPlanner/rulesets/23196428`. The endpoint accepts a ref, so `main` needs no placeholder and stays current. If either identifier above is ever changed, update the ruleset in the same change: a required context that stops reporting blocks every merge, permanently and silently.
+  To re-derive the live names, run `gh api repos/franklesniak/EFingPlanner/commits/main/check-runs -q '.check_runs[].name'` and compare with `gh api repos/franklesniak/EFingPlanner/rulesets/23196428`. The endpoint accepts a ref, so `main` needs no placeholder and stays current. If either identifier above is ever changed, update the ruleset in the same change: a required context that stops reporting blocks every merge, permanently and silently.
 - All four contexts are safe to require, because all four workflows trigger on every pull request with no `paths:` filter. A required check that never reports would block every merge permanently, so that was verified before the ruleset was created.
 - Web UI path, for reference: **Settings → Rules → Rulesets → New ruleset → New branch ruleset**.
 - Modern repository rulesets are assumed (rather than classic branch protection).
