@@ -4,35 +4,37 @@
 
 **Last reviewed:** July 2026
 
-Candidate places to *research* -- not choices already made. Researching a place does not mean choosing it. You still do the comparing and own the route choice.
+These are places to *research*. They are not choices already made. Reading about a place does not mean you picked it. You still do the comparing. You still own the route choice.
 
 ## Common first-trip cities
 
-- **Tokyo** -- the huge, exciting capital: neighborhoods, food, museums, pop culture, day trips. A strong anchor for most first trips.
-- **Kyoto** -- temples, shrines, gardens, and traditional streets; a calmer, historic feel.
-- **Osaka** -- famous for food and a lively, friendly city feel; a good base for nearby day trips.
+- **Tokyo** -- the huge, busy capital. It has food, museums, and pop culture. It has many neighborhoods to walk. It is a great base for day trips too. Tokyo is a strong anchor for most first trips.
+- **Kyoto** -- temples, shrines, and gardens. Many streets there still look traditional. The feel is calm and old.
+- **Osaka** -- famous for its food. The city feels lively and friendly. It is a good base for day trips close by.
 
 ## Other places people research
 
-- Nara (a beloved, easy day trip near Kyoto, known for its deer park).
+- Nara is an easy day trip near Kyoto. Lots of people love it. It is known for its deer park.
 - Hiroshima and Miyajima.
-- Hakone or Nikko (nature and hot springs near Tokyo).
-- Kanazawa or Takayama (traditional towns).
-- Hokkaido (the north -- nature, snow) or Okinawa (southern islands, beaches).
-- The Mount Fuji area.
+- Hakone or Nikko. Both have nature and hot springs, and both are near Tokyo.
+- Kanazawa or Takayama. These are two towns that keep an old, traditional look.
+- Hokkaido is up north, with nature and snow. Okinawa is down south, with islands and beaches.
+- The area around Mount Fuji.
 
 ## Two ways to shape a first trip (comparison anchors, not answers)
 
-- **The "golden route"** -- Tokyo, Kyoto, and Osaka. A common first-timer shape. The trains are the easy part (one long leg plus a short hop); the real cost is **packed days and hotel moves.**
-- **Fewer cities, deeper** -- a Tokyo base with day trips, or just Tokyo and Kyoto. Often a gentler, better fit for a mixed-stamina, multi-generational party.
+- **The "golden route"** -- Tokyo, Kyoto, and Osaka. Lots of first-timers pick this shape. The trains are the easy part. It is one long leg plus one short hop. The real cost is **packed days and hotel moves.**
+- **Fewer cities, deeper** -- stay in Tokyo and take day trips. Or just do Tokyo and Kyoto. This is often a gentler fit. It can work better when your group has mixed stamina and mixed ages.
 
-Both are just starting points to compare against. Weigh them against your family's stamina and pace.
+Both are just starting points to compare. Weigh each one against your family's stamina and pace.
 
 ## Fun things to consider (research, not pre-chosen)
 
-- Big draws: a Ghibli museum or park, Tokyo Disney, Universal Studios Japan (with Super Nintendo World), teamLab's current venues (check which are open now), Pokemon Centers, and Nara's deer.
-- Everyday delights that show "famous is not the only good": riding the Shinkansen itself, conveyor-belt sushi, gachapon capsule-toy machines, vending machines everywhere, arcades, themed cafes, a big aquarium, and collecting goshuin stamps at shrines and temples (visit respectfully first).
+- Big draws: a Ghibli museum or park, Tokyo Disney, and Pokemon Centers. Universal Studios Japan has Super Nintendo World. You could also look at teamLab's current venues -- check which ones are open now. And there are Nara's deer.
+- Small everyday treats count too. Famous is not the only good. You could ride the Shinkansen itself. You could try conveyor-belt sushi. There are gachapon capsule-toy machines, and vending machines are everywhere. There are arcades, themed cafes, and a big aquarium. You can collect goshuin stamps at shrines and temples. Visit first, and be respectful.
 
 ## A note on culture and etiquette
 
-In Japan you take your shoes off before going inside many homes and some restaurants. A small nod or bow is a normal, friendly hello. People do not expect visitors to get everything perfect. Some private areas limit photos (for example, parts of Kyoto's Gion) -- watch for and follow posted signs. Keep any of this as things to confirm and be considerate about, not rules to stress over.
+In Japan you take your shoes off at the door of many homes. You do it at some restaurants too. A small nod or bow is a normal, friendly hello. People do not expect a visitor to get it all right.
+
+Some private areas limit photos. Parts of Kyoto's Gion are one example. Watch for posted signs, and do what they say. Treat all of this as things to check and be kind about. They are not rules to stress over.

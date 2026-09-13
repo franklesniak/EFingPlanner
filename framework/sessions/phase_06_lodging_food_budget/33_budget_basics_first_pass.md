@@ -37,9 +37,9 @@ Every trip is made of cost categories. You do not need exact numbers -- you are 
    | Second city's hotel (only if you kept two cities in Session 21) | $____ per night x ____ nights x ____ rooms | |
    | **My two-slice estimate** | add Food + your hotel(s) | |
 
-4. **Check it against your band -- match the units first.** A grown-up gave you *one* kid-sized band at setup: a per-person-per-day amount, a per-day amount for the whole family, *or* a hotel "tier we can afford" (never your whole-trip total -- that stays a grown-up number). Compare the matching piece, not your big two-slice total:
-   - Band is **per person, per day**? Multiply it by your travelers to get a **per-day family** number, then check that the same way as the **per day for the family** band below (a grown-up can do the multiplying). That way your rooms count too, not just meals.
-   - Band is **per day for the family**? Add your **meals for everyone per day** (meals per person x your travelers) to your **hotel for one night, all your rooms** (hotel per night x rooms) -- check that daily total against the band.
+4. **Check it against your band -- match the units first.** A grown-up gave you *one* kid-sized band at setup. It is a per-person-per-day amount, a per-day amount for the whole family, *or* a hotel "tier we can afford." It is never your whole-trip total. That stays a grown-up number. Compare the matching piece, not your big two-slice total:
+   - Band is **per person, per day**? Multiply it by your travelers to get a **per-day family** number. Then check that the same way as the **per day for the family** band below. A grown-up can do the multiplying. That way your rooms count too, not just meals.
+   - Band is **per day for the family**? Add your **meals for everyone per day** (meals per person x your travelers) to your **hotel for one night, all your rooms** (hotel per night x rooms). Then check that daily total against the band.
    - Band is a **hotel tier**? Check your **hotel-per-night** pick against that tier. Circle **fits** or **too high** for the part you checked.
 
 **Remember:** your first guesses will probably be off -- everyone's are, even grown-ups'. Being off is normal. The point is to practice estimating and checking, not to be exactly right. (See your [planner mindset card](../../student_guide/planner_mindset.md).)
@@ -72,7 +72,7 @@ Stuck? Use the [When I'm Stuck card](../../student_guide/when_im_stuck.md) in yo
 
 ## Optional Extension
 
-If you have extra energy (or when you continue past First Taste), estimate a third slice like activities or souvenirs, or plan your own "spending money": if a grown-up gave you an amount, look up what a small treat costs (do not guess) and see how many you could get.
+If you have extra energy, estimate a third slice like activities or souvenirs. You can also do this when you continue past First Taste. Or plan your own "spending money." Did a grown-up give you an amount? Then look up what a small treat costs -- do not guess. See how many you could get.
 
 ## Parent Notes
 

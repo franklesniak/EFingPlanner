@@ -2,9 +2,9 @@
 
 # Trip-Basics Card
 
-This card holds the few facts about *your* family and trip that the sessions ask for by name. Fill it in once (a grown-up helps), and keep it at the front of your binder. The sessions never assume these values -- they point here -- so this card is what makes the whole planner work for your family.
+This card holds the few facts about *your* family and trip. The sessions ask for these facts by name. Fill the card in once, with help from a grown-up. Then keep it at the front of your binder. The sessions never guess these facts. They point here instead. That is what makes the planner fit your family.
 
-Keep this card with your setup pages. It holds no sensitive personal data -- no passport numbers, birthdates, confirmation numbers, home address, or payment details.
+Keep this card with your setup pages. It holds no sensitive personal data. Do not write passport numbers or birthdates. Do not write confirmation numbers. Do not write your home address. Do not write payment details.
 
 Fill in:
 
@@ -16,9 +16,9 @@ Fill in:
 | Maximum trip length (in days) | |
 | Number of travelers (write "not decided yet" if you are unsure) | |
 
-For the time zone: a grown-up looks up your home zone's current hours-ahead to Japan and writes it here. It varies by US time zone and shifts with daylight saving, so confirm today's figure.
+For the time zone, a grown-up does the looking up. They find how many hours ahead Japan is right now. Then they write it here. The gap is not the same for every US time zone. It also shifts with daylight saving. So check today's figure.
 
-Traveler roster -- list each traveler by relationship, not private details (for example: a parent, a parent, a grandparent, an aunt or another adult relative, the child planner, and anyone else):
+Traveler roster: write each traveler by relationship, not by private details. For example, you could write: a parent, a parent, a grandparent. You could also write: an aunt or another adult relative, the child planner, and anyone else who is coming.
 
 | # | Traveler (by relationship, not private details) |
 | --- | --- |
@@ -29,4 +29,4 @@ Traveler roster -- list each traveler by relationship, not private details (for 
 | 5 | |
 | 6 | |
 
-The sessions reason generically (for example, "a traveler with lower stamina, like an older relative"). This card supplies your family's real people.
+The sessions talk in general terms. One might say "a traveler with lower stamina, like an older relative." This card names your family's real people.
