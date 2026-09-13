@@ -24,7 +24,7 @@ If you are a family using the curriculum, the decision log is yours and this fil
 
 The curriculum carries its own version, separate from the archived design spec's version.
 
-- **`0.x`** means the deliverable inventory is still incomplete. The sessions that exist are usable, but the set is not whole.
+- **`0.x`** means the deliverable inventory is still incomplete. The sessions that exist are written to be runnable, and the set is not whole. Runnable is not the same as validated: no child has piloted any of it yet, and only a real child can establish that. See "What is still owed to a human" below.
 - **`1.0.0`** is reached when the full deliverable inventory exists and the whole-repo consistency pass has run.
 - The **minor** number moves when sessions, templates, guides, or destination files are added or restructured. The **patch** number moves for wording, link, and consistency fixes that change no structure.
 
