@@ -21,6 +21,14 @@ measurement. Parent-facing regions inside an otherwise child-facing session
 (the "For parents" strip near the top, and the "Parent Notes" section at the
 bottom) are removed too: adults may read at an adult level.
 
+One line of the extracted prose is one sentence unit. A Markdown paragraph may
+be hard-wrapped over several source lines, so the continuation lines of a
+paragraph are joined back into one unit before sentences are counted; without
+that, reflowing a paragraph would lower its score without changing a word. A
+blank line, a heading, a table, a code fence, a new list item, and a blockquote
+line each start a new unit, which keeps one worksheet prompt or one list item
+counting as one sentence.
+
 Audience
 --------
 Only child-facing paths are scored by default (see ``DEFAULT_INCLUDE_GLOBS``).
@@ -40,6 +48,19 @@ Two bands per metric. A *warning* means the file is above target but still
 publishable; a *failure* means it is far enough out that it must be fixed.
 Warnings do not change the exit code unless ``--strict`` is passed, which keeps
 the CI step advisory while still failing on genuinely unreadable text.
+
+Both measures are rounded to two decimal places once, before the thresholds are
+applied, so the number that is compared is the same number that is stored and
+printed.
+
+File access
+-----------
+Only Markdown files that resolve inside the repository are read. An absolute
+path outside the repository, a path that climbs out with ``..``, and a symlink
+are all refused -- including a symlink committed into a scanned tree, which the
+default scan would otherwise follow. A file that is selected but cannot be read
+stops the run with one message and a non-zero exit code, because a corpus that
+was not checked in full must never report success.
 """
 
 from __future__ import annotations
@@ -109,9 +130,13 @@ AUDIENCE_ADULT_PATTERN = re.compile(
 # Stripping
 # --------------------------------------------------------------------------
 
-FENCE_PATTERN = re.compile(r"^ {0,3}(?P<marker>`{3,}|~{3,})")
+#: Opening code fence. This name and the two fence helpers below are kept
+#: identical to ``.github/scripts/check-prohibited-placeholders.py``, so a
+#: search for either name finds both copies of the same CommonMark rule.
+FENCE_OPEN_PATTERN = re.compile(r"^ {0,3}(?P<marker>`{3,}|~{3,})")
 HEADING_PATTERN = re.compile(r"^ {0,3}#{1,6}\s")
 TABLE_ROW_PATTERN = re.compile(r"^ {0,3}\|")
+TABLE_DELIMITER_PATTERN = re.compile(r"^ {0,3}\|?\s*:?-+:?\s*(?:\|\s*:?-+:?\s*)*\|?\s*$")
 THEMATIC_BREAK_PATTERN = re.compile(r"^ {0,3}(?:-{3,}|\*{3,}|_{3,})\s*$")
 NAV_LINE_PATTERN = re.compile(r"^\s*(?:You are here:|Previous:|Next:)", re.IGNORECASE)
 PARENT_STRIP_PATTERN = re.compile(r"^\s*\*\*For parents:?\*\*", re.IGNORECASE)
@@ -161,6 +186,48 @@ class FileScore:
         return "ok"
 
 
+class FileReadError(RuntimeError):
+    """Raised when a candidate Markdown file cannot be read."""
+
+    def __init__(self, display_path: str, error: OSError) -> None:
+        error_summary = f"{type(error).__name__}: {error.strerror or 'I/O error'}"
+        super().__init__(f"{display_path}: unable to read file ({error_summary})")
+
+
+def is_table_delimiter(line: str) -> bool:
+    """Return ``True`` when a line is a Markdown table delimiter row.
+
+    Outer pipe characters are optional in a Markdown table, so ``--- | ---``
+    is a delimiter row in the same way that ``| --- | --- |`` is. A line with
+    no pipe character is a thematic break, not a table.
+    """
+    return "|" in line and TABLE_DELIMITER_PATTERN.match(line) is not None
+
+
+def parse_opening_fence(line: str) -> tuple[str, int] | None:
+    """Return the opening fence marker character and length, if present."""
+    match = FENCE_OPEN_PATTERN.match(line)
+    if match is None:
+        return None
+
+    marker = match.group("marker")
+    return marker[0], len(marker)
+
+
+def is_closing_fence(line: str, fence_character: str, minimum_length: int) -> bool:
+    """Return whether a line closes the active fenced code block.
+
+    CommonMark closes a fenced block only on a fence of the same character that
+    is at least as long as the opening fence and that carries nothing but
+    whitespace after it. Both parts matter here. This repository documents
+    Markdown inside Markdown, so a three-backtick fence often sits inside a
+    four-backtick example; a shorter fence must not close the longer one, or
+    the example code leaks into the score and the prose after it is dropped.
+    """
+    closing_pattern = re.compile(rf"^ {{0,3}}{re.escape(fence_character)}{{{minimum_length},}}\s*$")
+    return closing_pattern.match(line) is not None
+
+
 def strip_html_comments(text: str) -> str:
     """Remove HTML comments, including ones that span lines."""
     return HTML_COMMENT_PATTERN.sub(" ", text)
@@ -173,27 +240,53 @@ def extract_prose(text: str) -> str:
     images, URLs, inline code, HTML tags, and the two parent-facing regions a
     session carries. List markers and blockquote markers are removed but the
     text after them is kept, because that text is prose a child reads.
+
+    One line of the returned text is one sentence unit. A Markdown paragraph
+    can be hard-wrapped over many source lines, so the continuation lines of a
+    paragraph are joined back into one line. A blank line, a heading, a table,
+    a code fence, a new list item, and a blockquote line all start a new unit,
+    which keeps one worksheet prompt or one list item counting as one sentence.
     """
     text = strip_html_comments(text)
 
-    kept: list[str] = []
-    active_fence: str | None = None
+    units: list[str] = []
+    active_fence: tuple[str, int] | None = None
     in_parent_strip = False
     in_parent_section = False
+    in_table = False
+    continuing = False
 
-    for raw_line in text.split("\n"):
+    lines = text.split("\n")
+    for index, raw_line in enumerate(lines):
         line = raw_line.rstrip()
 
         # Code fences: drop the fence markers and everything between them.
-        fence_match = FENCE_PATTERN.match(line)
-        if fence_match:
-            marker = fence_match.group("marker")
-            if active_fence is None:
-                active_fence = marker[0] * 3
-            elif marker[0] * 3 == active_fence:
-                active_fence = None
-            continue
+        # The active fence is tested before the opening pattern, so while a
+        # block is open only a genuine closing fence ends it. An info string
+        # or a trailing comment on a fence line cannot close the block.
         if active_fence is not None:
+            if is_closing_fence(line, *active_fence):
+                active_fence = None
+            continuing = False
+            continue
+        opening_fence = parse_opening_fence(line)
+        if opening_fence is not None:
+            active_fence = opening_fence
+            continuing = False
+            continue
+
+        # Tables, with or without outer pipe characters. A table is found by
+        # its delimiter row. The header line above that row and the body rows
+        # below it are part of the same table.
+        if in_table:
+            if line.strip() and "|" in line:
+                continuing = False
+                continue
+            in_table = False
+        next_line = lines[index + 1] if index + 1 < len(lines) else ""
+        if line.strip() and "|" in line and is_table_delimiter(next_line):
+            in_table = True
+            continuing = False
             continue
 
         is_heading = bool(HEADING_PATTERN.match(line))
@@ -201,31 +294,45 @@ def extract_prose(text: str) -> str:
         # A parent-facing section runs from its heading to the next heading.
         if PARENT_SECTION_PATTERN.match(line):
             in_parent_section = True
+            continuing = False
             continue
         if in_parent_section:
             if is_heading:
                 in_parent_section = False
             else:
+                continuing = False
                 continue
 
         # The "For parents" strip runs from its bold label to the next heading.
         if PARENT_STRIP_PATTERN.match(line):
             in_parent_strip = True
+            continuing = False
             continue
         if in_parent_strip:
             if is_heading:
                 in_parent_strip = False
             else:
+                continuing = False
                 continue
 
         if is_heading:
+            continuing = False
             continue
         if TABLE_ROW_PATTERN.match(line):
+            continuing = False
             continue
         if THEMATIC_BREAK_PATTERN.match(line):
+            continuing = False
             continue
         if NAV_LINE_PATTERN.match(line):
+            continuing = False
             continue
+
+        # A new list item or a blockquote line starts its own unit. A plain
+        # line that follows prose is a wrapped continuation of that prose.
+        starts_block = bool(
+            LIST_MARKER_PATTERN.match(line) or BLOCKQUOTE_PATTERN.match(line)
+        )
 
         line = BLOCKQUOTE_PATTERN.sub("", line)
         line = LIST_MARKER_PATTERN.sub("", line)
@@ -237,9 +344,15 @@ def extract_prose(text: str) -> str:
         line = EMPHASIS_PATTERN.sub("", line)
 
         if line.strip():
-            kept.append(line.strip())
+            if continuing and not starts_block:
+                units[-1] = f"{units[-1]} {line.strip()}"
+            else:
+                units.append(line.strip())
+            continuing = True
+        else:
+            continuing = False
 
-    return "\n".join(kept)
+    return "\n".join(units)
 
 
 def count_syllables(word: str) -> int:
@@ -319,30 +432,37 @@ def score_text(text: str, display_path: str) -> FileScore:
         )
 
     syllable_count = sum(count_syllables(word) for word in words)
-    words_per_sentence = word_count / sentence_count
+    raw_words_per_sentence = word_count / sentence_count
     syllables_per_word = syllable_count / word_count
-    grade = 0.39 * words_per_sentence + 11.8 * syllables_per_word - 15.59
+
+    # Round both measures once, here, so the value that is classified is the
+    # same value that is reported. A raw grade of 7.485 classifies as a warning
+    # but prints as "7.5", which reads as a contradiction of the 7.5 hard limit.
+    words_per_sentence = round(raw_words_per_sentence, 2)
+    grade = round(
+        0.39 * raw_words_per_sentence + 11.8 * syllables_per_word - 15.59, 2
+    )
 
     failures: list[str] = []
     warnings: list[str] = []
 
     if grade >= GRADE_FAIL:
         failures.append(
-            f"Flesch-Kincaid grade {grade:.1f} is at or above the hard limit {GRADE_FAIL}"
+            f"Flesch-Kincaid grade {grade:.2f} is at or above the hard limit {GRADE_FAIL}"
         )
     elif grade >= GRADE_WARN:
         warnings.append(
-            f"Flesch-Kincaid grade {grade:.1f} is above the target {GRADE_WARN}"
+            f"Flesch-Kincaid grade {grade:.2f} is above the target {GRADE_WARN}"
         )
 
     if words_per_sentence >= SENTENCE_FAIL:
         failures.append(
-            f"average sentence length {words_per_sentence:.1f} words is at or above "
+            f"average sentence length {words_per_sentence:.2f} words is at or above "
             f"the hard limit {SENTENCE_FAIL}"
         )
     elif words_per_sentence >= SENTENCE_WARN:
         warnings.append(
-            f"average sentence length {words_per_sentence:.1f} words is above the "
+            f"average sentence length {words_per_sentence:.2f} words is above the "
             f"target {SENTENCE_WARN}"
         )
 
@@ -351,8 +471,8 @@ def score_text(text: str, display_path: str) -> FileScore:
         words=word_count,
         sentences=sentence_count,
         syllables=syllable_count,
-        grade=round(grade, 2),
-        words_per_sentence=round(words_per_sentence, 2),
+        grade=grade,
+        words_per_sentence=words_per_sentence,
         failures=tuple(failures),
         warnings=tuple(warnings),
     )
@@ -377,40 +497,92 @@ def default_paths(root: Path) -> list[Path]:
     return sorted(found)
 
 
-def resolve_paths(path_arguments: Sequence[str], root: Path) -> list[Path]:
-    """Turn command-line path arguments into existing Markdown file paths."""
-    if not path_arguments:
-        return default_paths(root)
+def is_inside(path: Path, root: Path) -> bool:
+    """Return ``True`` when a path stays inside ``root`` after resolution."""
+    try:
+        path.resolve().relative_to(root)
+    except (OSError, ValueError):
+        return False
+    return True
 
-    resolved: list[Path] = []
-    for argument in path_arguments:
-        candidate = Path(argument)
-        if not candidate.is_absolute():
-            candidate = root / candidate
-        if candidate.is_dir():
-            resolved.extend(sorted(p for p in candidate.rglob("*.md") if p.is_file()))
-        elif candidate.is_file() and candidate.suffix.lower() == ".md":
-            resolved.append(candidate)
+
+def resolve_candidate_path(
+    path_argument: str | Path, root: Path
+) -> tuple[Path, str] | None:
+    """Resolve one path to a Markdown file that stays inside the repository.
+
+    This mirrors the containment rule in ``check-prohibited-placeholders.py``.
+    An absolute path outside the repository, a path that climbs out with
+    ``..``, and a symlink are all refused, so neither command-line input nor a
+    link committed into a scanned tree can make the checker read a file beyond
+    the repository.
+    """
+    root = root.resolve()
+    path = Path(path_argument)
+    candidate = path if path.is_absolute() else root / path
+
+    if candidate.is_symlink() or not candidate.is_file():
+        return None
+    if candidate.suffix.lower() != ".md":
+        return None
+
+    resolved_candidate = candidate.resolve()
+    try:
+        relative_path = resolved_candidate.relative_to(root)
+    except ValueError:
+        return None
+
+    return resolved_candidate, relative_path.as_posix()
+
+
+def resolve_paths(path_arguments: Sequence[str], root: Path) -> list[tuple[Path, str]]:
+    """Turn command-line path arguments into contained Markdown file paths."""
+    root = root.resolve()
+
+    candidates: list[Path] = []
+    if not path_arguments:
+        candidates.extend(default_paths(root))
+    else:
+        for argument in path_arguments:
+            path = Path(argument)
+            candidate = path if path.is_absolute() else root / path
+            if (
+                candidate.is_dir()
+                and not candidate.is_symlink()
+                and is_inside(candidate, root)
+            ):
+                candidates.extend(sorted(candidate.rglob("*.md")))
+                continue
+            if resolve_candidate_path(candidate, root) is None:
+                print(
+                    f"{argument}: skipped; not a Markdown file inside the repository",
+                    file=sys.stderr,
+                )
+                continue
+            candidates.append(candidate)
+
+    resolved: list[tuple[Path, str]] = []
+    seen: set[Path] = set()
+    for candidate in candidates:
+        entry = resolve_candidate_path(candidate, root)
+        if entry is None or entry[0] in seen:
+            continue
+        seen.add(entry[0])
+        resolved.append(entry)
     return resolved
 
 
 def scan_files(path_arguments: Sequence[str], root: Path = REPO_ROOT) -> list[FileScore]:
     """Score every in-scope Markdown file named by the arguments."""
     scores: list[FileScore] = []
-    for path in resolve_paths(path_arguments, root):
-        try:
-            display_path = path.resolve().relative_to(root.resolve()).as_posix()
-        except ValueError:
-            display_path = path.as_posix()
-
+    for path, display_path in resolve_paths(path_arguments, root):
         if is_excluded_path(display_path):
             continue
 
         try:
             text = path.read_text(encoding="utf-8")
         except OSError as error:
-            print(f"{display_path}: unable to read ({error})", file=sys.stderr)
-            continue
+            raise FileReadError(display_path, error) from error
 
         if has_adult_marker(text):
             continue
@@ -438,7 +610,7 @@ def report_text(scores: Iterable[FileScore], show_ok: bool) -> tuple[int, int]:
             continue
 
         summary = (
-            f"grade {score.grade:.1f}, {score.words_per_sentence:.1f} words/sentence, "
+            f"grade {score.grade:.2f}, {score.words_per_sentence:.2f} words/sentence, "
             f"{score.words} words in {score.sentences} sentences"
         )
 
@@ -519,7 +691,12 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
 def main(argv: Sequence[str] | None = None, root: Path = REPO_ROOT) -> int:
     """Run the readability check."""
     args = parse_args(argv)
-    scores = scan_files(args.paths, root=root)
+
+    try:
+        scores = scan_files(args.paths, root=root)
+    except FileReadError as error:
+        print(error, file=sys.stderr)
+        return 1
 
     if args.format == "json":
         failed, warned = report_json(scores)

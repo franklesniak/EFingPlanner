@@ -186,6 +186,179 @@ def test_extract_prose_keeps_list_and_quote_text() -> None:
     assert "Carry-over tag applies." in prose
 
 
+def test_extract_prose_keeps_a_longer_fence_open_across_a_shorter_one() -> None:
+    """A three-backtick fence inside a four-backtick example does not close it."""
+    text = "\n".join(
+        [
+            "Here is the shape to copy.",
+            "````markdown",
+            "- Run the helper.",
+            "",
+            "  ```bash",
+            "  ./scripts/write-report.sh",
+            "  ```",
+            "",
+            "  The command prints the report path.",
+            "````",
+            "Now write your own step.",
+        ]
+    )
+    prose = readability.extract_prose(text)
+    assert "Here is the shape to copy." in prose
+    assert "Now write your own step." in prose
+    assert "write-report.sh" not in prose
+    assert "Run the helper." not in prose
+    assert "The command prints the report path." not in prose
+
+
+def test_extract_prose_does_not_close_a_fence_on_an_info_string() -> None:
+    """A closing fence carries no info string, so such a line cannot close one."""
+    text = "\n".join(
+        ["Prose one.", "```", "ALPHALEAK", "```python", "BRAVOLEAK", "```", "Prose two."]
+    )
+    prose = readability.extract_prose(text)
+    assert "Prose one." in prose
+    assert "Prose two." in prose
+    assert "ALPHALEAK" not in prose
+    assert "BRAVOLEAK" not in prose
+
+
+def test_extract_prose_does_not_close_a_fence_on_trailing_text() -> None:
+    """A closing fence may be followed only by whitespace."""
+    text = "\n".join(
+        ["Prose one.", "```", "ALPHALEAK", "``` still inside", "BRAVOLEAK", "```", "Prose two."]
+    )
+    prose = readability.extract_prose(text)
+    assert "Prose one." in prose
+    assert "Prose two." in prose
+    assert "ALPHALEAK" not in prose
+    assert "BRAVOLEAK" not in prose
+
+
+@pytest.mark.parametrize("character", ["`", "~"])
+def test_extract_prose_needs_a_closing_fence_of_equal_length(character: str) -> None:
+    """Backtick and tilde fences obey the same character and length rule."""
+    text = "\n".join(
+        [
+            "Prose one.",
+            character * 4,
+            character * 3,
+            "ALPHALEAK",
+            character * 3,
+            character * 4,
+            "Prose two.",
+        ]
+    )
+    prose = readability.extract_prose(text)
+    assert "Prose one." in prose
+    assert "Prose two." in prose
+    assert "ALPHALEAK" not in prose
+
+
+def test_extract_prose_allows_either_fence_to_be_indented() -> None:
+    """CommonMark allows up to three spaces of indentation on either fence."""
+    text = "\n".join(
+        ["Prose one.", "  ````", "  ```", "  ALPHALEAK", "  ```", "   ````", "Prose two."]
+    )
+    prose = readability.extract_prose(text)
+    assert "Prose one." in prose
+    assert "Prose two." in prose
+    assert "ALPHALEAK" not in prose
+
+
+WRAPPED_PARAGRAPH_SOURCE = (
+    "we went to the shop and got a map and then we sat on the step and read "
+    "the map and made a plan for the day and drew a line from one stop to "
+    "the next stop on the list."
+)
+
+
+def test_extract_prose_joins_a_wrapped_paragraph() -> None:
+    """A hard-wrapped paragraph is one unit, not one unit per source line."""
+    wrapped = "A paragraph that the author\nwrapped over three source\nlines here."
+    assert readability.extract_prose(wrapped) == (
+        "A paragraph that the author wrapped over three source lines here."
+    )
+
+
+def test_wrapping_a_paragraph_does_not_change_the_score() -> None:
+    """Reformatting alone must not move the grade, or the gate is not a gate."""
+    unwrapped = ((WRAPPED_PARAGRAPH_SOURCE + " ") * 3).strip()
+    pieces = unwrapped.split(" ")
+    wrapped = "\n".join(
+        " ".join(pieces[index : index + 8]) for index in range(0, len(pieces), 8)
+    )
+    flat = readability.score_text(unwrapped, "x.md")
+    hard = readability.score_text(wrapped, "x.md")
+    assert flat.sentences == hard.sentences
+    assert flat.grade == hard.grade
+    assert flat.status == hard.status == "fail"
+
+
+def test_extract_prose_keeps_each_list_item_separate() -> None:
+    """A list item is its own sentence unit, even with no full stop."""
+    text = "- Where did you look\n- What did you learn\n- What will you do next\n"
+    assert readability.extract_prose(text).split("\n") == [
+        "Where did you look",
+        "What did you learn",
+        "What will you do next",
+    ]
+
+
+def test_extract_prose_keeps_blank_line_separated_prompts_separate() -> None:
+    """A blank line ends a unit, so two prompts stay two sentences."""
+    text = "Where did you look\n\nWhat did you learn\n"
+    assert readability.extract_prose(text).split("\n") == [
+        "Where did you look",
+        "What did you learn",
+    ]
+
+
+def test_extract_prose_joins_a_wrapped_list_item() -> None:
+    """The continuation line of a wrapped list item belongs to that item."""
+    text = "- Write one thing you liked about the city\n  and one thing you did not like.\n"
+    assert readability.extract_prose(text).split("\n") == [
+        "Write one thing you liked about the city and one thing you did not like."
+    ]
+
+
+def test_extract_prose_drops_a_table_without_outer_pipes() -> None:
+    """Outer pipes are optional in Markdown, so a table without them is a table."""
+    text = "\n".join(
+        [
+            "Prose before the table.",
+            "",
+            "Prompt | Your answer",
+            "--- | ---",
+            "Where did you look for this information | write it here",
+            "What did you learn that surprised you | write it here",
+            "",
+            "Prose after the table.",
+        ]
+    )
+    prose = readability.extract_prose(text)
+    assert "Prose before the table." in prose
+    assert "Prose after the table." in prose
+    assert "Your answer" not in prose
+    assert "Where did you look" not in prose
+
+
+def test_is_table_delimiter_does_not_match_a_thematic_break() -> None:
+    """A row of dashes with no pipe is a thematic break, not a table."""
+    assert readability.is_table_delimiter("--- | ---") is True
+    assert readability.is_table_delimiter("| --- | :---: |") is True
+    assert readability.is_table_delimiter("---") is False
+    assert readability.is_table_delimiter("- - -") is False
+
+
+def test_extract_prose_keeps_prose_after_a_thematic_break() -> None:
+    """A thematic break must not start a table and swallow the prose below it."""
+    text = "Prose above.\n\n---\n\nProse below.\n"
+    prose = readability.extract_prose(text)
+    assert "Prose above." in prose
+    assert "Prose below." in prose
+
+
 # ---------------------------------------------------------------------------
 # Sentence splitting
 # ---------------------------------------------------------------------------
@@ -264,6 +437,43 @@ def test_status_ordering_prefers_fail_over_warn() -> None:
     assert score.status == "fail"
 
 
+#: 40 words, 4 sentences, 65 syllables. The raw grade is 7.485: below the 7.5
+#: hard limit, but it prints as 7.5 at one decimal place.
+NEAR_LIMIT_TEXT = "\n\n".join(
+    [
+        "Happy water little table planner the cat sat open garden.",
+        "Paper window pencil dog ran box yellow basket pocket summer.",
+        "Winter bag mat red dinner teacher doctor letter corner top.",
+        "Cup pen silver button ticket market picture hat map sun.",
+    ]
+)
+
+
+def test_near_limit_sample_has_the_expected_raw_inputs() -> None:
+    """Pin the sample, so a syllable change cannot quietly void the next test."""
+    score = readability.score_text(NEAR_LIMIT_TEXT, "x.md")
+    assert (score.words, score.sentences, score.syllables) == (40, 4, 65)
+
+
+def test_a_warning_never_reports_the_failing_grade(capsys: Any) -> None:
+    """A file below the 7.5 hard limit must not print the number 7.5."""
+    score = readability.score_text(NEAR_LIMIT_TEXT, "x.md")
+    assert score.status == "warn"
+    assert score.grade < readability.GRADE_FAIL
+    readability.report_text([score], show_ok=True)
+    printed = capsys.readouterr().out
+    assert "grade 7.5 " not in printed
+    assert "7.49" in printed
+
+
+def test_the_reported_grade_is_the_classified_grade() -> None:
+    """The stored value and the value the thresholds saw are one value."""
+    score = readability.score_text(NEAR_LIMIT_TEXT, "x.md")
+    expected_status = "fail" if score.grade >= readability.GRADE_FAIL else "warn"
+    assert score.status == expected_status
+    assert any(f"{score.grade:.2f}" in message for message in score.warnings)
+
+
 # ---------------------------------------------------------------------------
 # Audience and scope
 # ---------------------------------------------------------------------------
@@ -316,6 +526,87 @@ def test_child_facing_paths_are_in_scope(path: str) -> None:
 # ---------------------------------------------------------------------------
 
 
+def test_resolve_paths_refuses_an_absolute_path_outside_the_repository(tmp_path: Path) -> None:
+    """A caller cannot name a file outside the repository by absolute path."""
+    root = tmp_path / "repo"
+    (root / "framework" / "sessions").mkdir(parents=True)
+    outside = tmp_path / "outside.md"
+    outside.write_text("Some prose lives here.", encoding="utf-8")
+    assert readability.resolve_paths([str(outside)], root) == []
+
+
+def test_resolve_paths_refuses_a_parent_directory_escape(tmp_path: Path) -> None:
+    """A relative path that climbs out of the repository is refused."""
+    root = tmp_path / "repo"
+    (root / "framework" / "sessions").mkdir(parents=True)
+    (tmp_path / "outside.md").write_text("Some prose lives here.", encoding="utf-8")
+    assert readability.resolve_paths(["../outside.md"], root) == []
+
+
+def test_resolve_paths_keeps_an_in_repository_path(tmp_path: Path) -> None:
+    """Containment must not break the ordinary relative and absolute cases."""
+    root = tmp_path / "repo"
+    session_dir = root / "framework" / "sessions"
+    session_dir.mkdir(parents=True)
+    inside = session_dir / "one.md"
+    inside.write_text("Some prose lives here.", encoding="utf-8")
+
+    relative = readability.resolve_paths(["framework/sessions/one.md"], root)
+    absolute = readability.resolve_paths([str(inside)], root)
+    assert [display for _, display in relative] == ["framework/sessions/one.md"]
+    assert [display for _, display in absolute] == ["framework/sessions/one.md"]
+
+
+def test_scan_files_refuses_a_symlink_that_leaves_the_repository(tmp_path: Path) -> None:
+    """A symlink in a scanned tree cannot read a file outside the repository."""
+    root = tmp_path / "repo"
+    session_dir = root / "framework" / "sessions"
+    session_dir.mkdir(parents=True)
+    secret = tmp_path / "secret.md"
+    secret.write_text(
+        " ".join(["The cat sat on the mat. She ran to the box. He put it in a bag."] * 4),
+        encoding="utf-8",
+    )
+    try:
+        (session_dir / "link.md").symlink_to(secret)
+    except OSError:
+        pytest.skip("this platform does not allow symlink creation")
+    assert readability.scan_files([], root=root) == []
+
+
+def _make_unreadable(monkeypatch: Any, name: str) -> None:
+    """Make one file name raise PermissionError when it is read."""
+    real_read_text = Path.read_text
+
+    def fake_read_text(self: Path, *args: Any, **kwargs: Any) -> str:
+        if self.name == name:
+            raise PermissionError(13, "Permission denied")
+        return real_read_text(self, *args, **kwargs)
+
+    monkeypatch.setattr(Path, "read_text", fake_read_text)
+
+
+def test_scan_files_raises_when_a_file_cannot_be_read(tmp_path: Path, monkeypatch: Any) -> None:
+    """An unreadable file is an error, not a silent pass."""
+    session_dir = tmp_path / "framework" / "sessions"
+    session_dir.mkdir(parents=True)
+    (session_dir / "bad.md").write_text("Some prose lives here.", encoding="utf-8")
+    _make_unreadable(monkeypatch, "bad.md")
+    with pytest.raises(readability.FileReadError):
+        readability.scan_files([], root=tmp_path)
+
+
+def test_main_returns_one_when_a_file_cannot_be_read(tmp_path: Path, monkeypatch: Any) -> None:
+    """The run fails when the corpus was not checked completely."""
+    session_dir = tmp_path / "framework" / "sessions"
+    session_dir.mkdir(parents=True)
+    good = " ".join(["The cat sat on the mat. She ran to the box. He put it in a bag."] * 4)
+    (session_dir / "good.md").write_text(good, encoding="utf-8")
+    (session_dir / "bad.md").write_text(good, encoding="utf-8")
+    _make_unreadable(monkeypatch, "bad.md")
+    assert readability.main([], root=tmp_path) == 1
+
+
 def test_scan_files_skips_a_marked_file(tmp_path: Path) -> None:
     """A file carrying the audience marker produces no score."""
     session_dir = tmp_path / "framework" / "sessions"
@@ -330,19 +621,45 @@ def test_scan_files_skips_a_marked_file(tmp_path: Path) -> None:
     assert readability.scan_files([], root=tmp_path) == []
 
 
-def test_main_returns_zero_when_only_warnings(tmp_path: Path) -> None:
-    """Warnings stay advisory by default, which keeps the CI step warning-level."""
+#: Sixteen one-syllable words in one sentence. Sixteen words per sentence sits
+#: between SENTENCE_WARN (14) and SENTENCE_FAIL (18), and one syllable per word
+#: puts the Flesch-Kincaid grade at 2.45, well under GRADE_WARN (6.9). Four such
+#: lines give 64 prose words, above the 40-word scoring minimum. The file
+#: therefore warns on sentence length and fails on nothing.
+WARNING_SENTENCE = "the cat sat on the mat and the dog ran to the big box for fun."
+WARNING_DOCUMENT = "\n".join([WARNING_SENTENCE] * 4)
+
+
+def write_warning_session(tmp_path: Path) -> None:
+    """Write one child-facing file whose score lands inside the warning band."""
     session_dir = tmp_path / "framework" / "sessions"
     session_dir.mkdir(parents=True)
-    # Sentences long enough to warn, short enough in syllables not to fail.
-    sentence = " ".join(["the small red cat sat"] * 3) + " on a mat now."
-    (session_dir / "warn.md").write_text("\n".join([sentence] * 6), encoding="utf-8")
+    (session_dir / "warn.md").write_text(WARNING_DOCUMENT, encoding="utf-8")
 
-    scores = readability.scan_files([], root=tmp_path)
-    assert len(scores) == 1
-    if scores[0].status == "warn":
-        assert readability.main([], root=tmp_path) == 0
-        assert readability.main(["--strict"], root=tmp_path) == 1
+
+def test_the_warning_sample_lands_between_the_warn_and_fail_limits() -> None:
+    """The two exit-code tests below mean nothing unless this text really warns."""
+    score = readability.score_text(WARNING_DOCUMENT, "warn.md")
+    assert score.status == "warn"
+    assert score.failures == ()
+    assert readability.SENTENCE_WARN <= score.words_per_sentence < readability.SENTENCE_FAIL
+    assert score.grade < readability.GRADE_WARN
+
+
+def test_main_returns_zero_when_only_warnings(tmp_path: Path) -> None:
+    """Warnings stay advisory by default, which keeps the CI step warning-level."""
+    write_warning_session(tmp_path)
+
+    assert [score.status for score in readability.scan_files([], root=tmp_path)] == ["warn"]
+    assert readability.main([], root=tmp_path) == 0
+
+
+def test_main_returns_one_when_strict_and_only_warnings(tmp_path: Path) -> None:
+    """--strict promotes the same warning to a failing exit code."""
+    write_warning_session(tmp_path)
+
+    assert [score.status for score in readability.scan_files([], root=tmp_path)] == ["warn"]
+    assert readability.main(["--strict"], root=tmp_path) == 1
 
 
 def test_main_returns_one_on_a_hard_failure(tmp_path: Path) -> None:
