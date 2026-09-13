@@ -2,7 +2,7 @@
 
 # Decision Record
 
-Use one Decision Record for each big choice. Keep them all in one place. Together they make your **decision log**. That log is the story of what your family chose, and why. Each of the six checkpoint decisions gets a record here too. Then nothing big gets decided and then forgotten.
+Use one Decision Record for each big choice. Keep them all in one place. Together they make your **decision log**. That log is the story of what your family chose, and why. Each of the six checkpoint decisions gets a record here too. That way, nothing big gets decided and then forgotten.
 
 | Prompt | Your answer |
 | --- | --- |
