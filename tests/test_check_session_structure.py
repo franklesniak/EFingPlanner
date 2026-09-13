@@ -1293,3 +1293,298 @@ def test_a_non_utf8_session_is_a_violation_not_a_crash(tmp_path: Path) -> None:
     # The positive control: the readable sibling was still checked, so the
     # refusal did not abort the whole scan.
     assert any("01_good.md" in m for m in messages)
+
+
+# ---------------------------------------------------------------------------
+# Round 6: the scan roots themselves, and three CommonMark defects
+# ---------------------------------------------------------------------------
+
+
+def test_a_symlinked_default_scan_root_is_refused(tmp_path: Path) -> None:
+    """The scan root is a path too, and it was the one path never guarded.
+
+    A link here is the whole corpus redirected. The run reads whatever the
+    link points at and reports success for the directory it was asked for,
+    which is the gate's own promise -- "a linked directory is a subtree this
+    run would otherwise never open" -- falsified at the root.
+    """
+    root = tmp_path / "repo"
+    real = root / "framework" / "curated"
+    real.mkdir(parents=True)
+    (real / "07_a_session.md").write_text(build_session(), encoding="utf-8")
+    (root / "framework" / "sessions").parent.mkdir(parents=True, exist_ok=True)
+    link_or_skip(root / "framework" / "sessions", real)
+
+    messages = [v.format_message() for v in structure.scan_files([], root=root)]
+    assert any("symbolic link" in m for m in messages), messages
+    assert structure.resolve_paths([], root) == []
+    assert structure.main([], root=root) == 1
+
+
+def test_a_linked_scan_root_is_not_enumerated_before_its_children_are_refused(
+    tmp_path: Path,
+) -> None:
+    """Refusing the children is not enough: listing the directory already left the tree.
+
+    A link pointing outside the repository made the run call ``iterdir()`` on
+    an out-of-bounds directory and only then refuse what it found there. The
+    refusal must come first, so nothing outside the root is ever listed.
+    """
+    root = tmp_path / "repo"
+    (root / "framework").mkdir(parents=True)
+    outside = tmp_path / "elsewhere"
+    outside.mkdir()
+    (outside / "07_a_session.md").write_text(build_session(), encoding="utf-8")
+    link_or_skip(root / "framework" / "sessions", outside)
+
+    walked: list[Path] = []
+    real_walk = structure.walk_session_directory
+
+    def recording_walk(directory, walk_root, paths, refusals, skipped, tally):
+        walked.append(Path(directory))
+        real_walk(directory, walk_root, paths, refusals, skipped, tally)
+
+    structure.walk_session_directory = recording_walk
+    try:
+        assert structure.main([], root=root) == 1
+    finally:
+        structure.walk_session_directory = real_walk
+
+    assert walked == [], f"an out-of-bounds directory was enumerated: {walked}"
+
+
+def test_an_empty_directory_argument_is_refused_beside_a_real_file(tmp_path: Path) -> None:
+    """A mistyped directory must not vanish because another argument had a target.
+
+    The run-wide zero-target guard fires only when the whole run opened
+    nothing, so one real file silences it and the directory beside it is
+    dropped without a word.
+    """
+    session_dir = tmp_path / "framework" / "sessions"
+    session_dir.mkdir(parents=True)
+    (session_dir / "07_a_session.md").write_text(build_session(), encoding="utf-8")
+    (tmp_path / "framework" / "sessions_v2").mkdir()
+
+    violations = structure.scan_files(
+        ["framework/sessions_v2", "framework/sessions/07_a_session.md"], root=tmp_path
+    )
+    assert any("sessions_v2" in v.display_path for v in violations), violations
+    assert (
+        structure.main(
+            ["framework/sessions_v2", "framework/sessions/07_a_session.md"], root=tmp_path
+        )
+        == 1
+    )
+
+
+def test_a_directory_argument_of_non_markdown_is_refused_beside_a_real_file(
+    tmp_path: Path,
+) -> None:
+    """A directory whose entries were all skipped still contributed no target.
+
+    The entries are accounted for -- the walk says "skipped, not Markdown" --
+    but the *argument* produced nothing, and the reader was told the run was
+    clean.
+    """
+    session_dir = tmp_path / "framework" / "sessions"
+    session_dir.mkdir(parents=True)
+    (session_dir / "07_a_session.md").write_text(build_session(), encoding="utf-8")
+    notes = tmp_path / "framework" / "notes"
+    notes.mkdir()
+    (notes / "readme.txt").write_text("not markdown", encoding="utf-8")
+
+    assert (
+        structure.main(
+            ["framework/notes", "framework/sessions/07_a_session.md"], root=tmp_path
+        )
+        == 1
+    )
+
+
+def test_the_run_accounts_for_every_scan_root_it_was_given(tmp_path: Path) -> None:
+    """The reconciliation one level up: walked + checked + refused == requested."""
+    session_dir = tmp_path / "framework" / "sessions"
+    session_dir.mkdir(parents=True)
+    (session_dir / "07_a_session.md").write_text(build_session(), encoding="utf-8")
+    (tmp_path / "framework" / "sessions_v2").mkdir()
+
+    roots = structure.RootTally()
+    assert roots.balances()
+    roots.requested = 3
+    roots.walked, roots.checked, roots.refused = 1, 1, 1
+    assert roots.balances()
+    roots.requested = 4
+    assert not roots.balances()
+
+
+def test_an_unaccounted_scan_root_fails_the_run(tmp_path: Path) -> None:
+    """A negative control for the root reconciliation: it must actually fail a run."""
+    session_dir = tmp_path / "framework" / "sessions"
+    session_dir.mkdir(parents=True)
+    (session_dir / "07_a_session.md").write_text(build_session(), encoding="utf-8")
+
+    real_collect = structure.collect_directory_root
+
+    def losing_collect(requested, directory, walk_root, paths, refusals, skipped, tally, roots):
+        real_collect(requested, directory, walk_root, paths, refusals, skipped, tally, roots)
+        roots.requested += 1  # a root requested and given no disposition
+
+    structure.collect_directory_root = losing_collect
+    try:
+        violations = structure.scan_files([], root=tmp_path)
+    finally:
+        structure.collect_directory_root = real_collect
+
+    assert any("gone missing" in v.message for v in violations), violations
+
+
+def test_a_directory_argument_that_yields_a_refusal_is_not_double_reported(
+    tmp_path: Path,
+) -> None:
+    """A positive control. A root that produced a refusal has accounted for itself."""
+    session_dir = tmp_path / "repo" / "framework" / "sessions"
+    session_dir.mkdir(parents=True)
+    outside = tmp_path / "outside.md"
+    outside.write_text("# Session 08: Elsewhere\n", encoding="utf-8")
+    link_or_skip(session_dir / "08_link.md", outside)
+    root = tmp_path / "repo"
+
+    violations = structure.scan_files(["framework/sessions"], root=root)
+    assert len(violations) == 1, [v.format_message() for v in violations]
+    assert "symbolic link" in violations[0].message
+
+
+def test_a_directory_argument_holding_sessions_is_still_accepted(tmp_path: Path) -> None:
+    """A positive control. Per-root accounting must not refuse a productive root."""
+    session_dir = tmp_path / "framework" / "sessions"
+    session_dir.mkdir(parents=True)
+    (session_dir / "07_a_session.md").write_text(build_session(), encoding="utf-8")
+    assert structure.main(["framework/sessions"], root=tmp_path) == 0
+
+
+def test_a_worksheet_fence_under_two_list_markers_on_one_line_is_rejected() -> None:
+    """``- - `` opens two list items on one physical line, and the fence is inside both."""
+    steps = (
+        "## Steps\n\n- - ```text\n    My answer: ______________________\n    ```\n"
+    )
+    text = build_session().replace("## Steps\n\nReal content for Steps.\n", steps, 1)
+    assert any("worksheet fill-in" in m for m in check(text))
+
+
+def test_a_worksheet_fence_under_a_bullet_and_a_blockquote_on_one_line_is_rejected() -> None:
+    """``- > `` alternates the two container kinds on one line; both must be peeled."""
+    steps = (
+        "## Steps\n\n- > ```text\n  > My answer: ______________________\n  > ```\n"
+    )
+    text = build_session().replace("## Steps\n\nReal content for Steps.\n", steps, 1)
+    assert any("worksheet fill-in" in m for m in check(text))
+
+
+def test_a_worksheet_fence_under_three_markers_on_one_line_is_rejected() -> None:
+    """The peel is a loop, not two special cases: ``> - - `` must work too."""
+    steps = (
+        "## Steps\n\n> - - ```text\n>     My answer: ______________________\n>     ```\n"
+    )
+    text = build_session().replace("## Steps\n\nReal content for Steps.\n", steps, 1)
+    assert any("worksheet fill-in" in m for m in check(text))
+
+
+def test_a_compact_nested_fence_without_underscores_is_allowed() -> None:
+    """A positive control. Peeling more markers must not invent a worksheet."""
+    steps = "## Steps\n\n- - ```text\n    plain content\n    ```\n"
+    text = build_session().replace("## Steps\n\nReal content for Steps.\n", steps, 1)
+    assert check(text) == []
+
+
+def test_an_html_block_line_with_trailing_backticks_opens_no_fence() -> None:
+    """An HTML block runs to its ``-->``; the characters after it are raw HTML.
+
+    Treating the comment-stripped remainder as a fence blanks every heading
+    from there to EOF, so a valid session is reported as missing all of them.
+    """
+    text = build_session().replace(
+        "## Goal\n\nReal content for Goal.\n",
+        "## Goal\n\n<!-- note --> ```\n\nReal content for Goal.\n",
+        1,
+    )
+    assert check(text) == []
+
+
+def test_the_closing_line_of_a_multiline_comment_opens_no_fence() -> None:
+    """The line carrying ``-->`` is the block's last line, so it is raw HTML too."""
+    text = build_session().replace(
+        "## Goal\n\nReal content for Goal.\n",
+        "## Goal\n\n<!-- note\nstill the comment --> ```\n\nReal content for Goal.\n",
+        1,
+    )
+    assert check(text) == []
+
+
+def test_the_real_fence_after_an_html_block_line_is_the_one_reported() -> None:
+    """The block that opens is the real fence, not the HTML-block line before it.
+
+    Both lines carry backticks, so both builds report *a* worksheet. Only the
+    reported line number says which line the parser thought the block began on.
+    """
+    steps = (
+        "## Steps\n\n<!-- note --> ```\n\n"
+        "```text\nMy answer: ______________________\n```\n"
+    )
+    text = build_session().replace("## Steps\n\nReal content for Steps.\n", steps, 1)
+    violations = [
+        v
+        for v in structure.check_text(text, "07_a_session.md", "07_a_session.md")
+        if "worksheet fill-in" in v.message
+    ]
+    assert len(violations) == 1, violations
+    opened_on = text.split("\n")[violations[0].line_number - 1]
+    assert opened_on.startswith("```text"), f"the block was opened on {opened_on!r}"
+
+
+def test_a_fence_on_the_line_after_a_comment_still_opens() -> None:
+    """A positive control. Only the HTML-block line itself is exempt."""
+    steps = (
+        "## Steps\n\n<!-- note -->\n\n```text\nMy answer: ______________________\n```\n"
+    )
+    text = build_session().replace("## Steps\n\nReal content for Steps.\n", steps, 1)
+    assert any("worksheet fill-in" in m for m in check(text))
+
+
+def test_a_backtick_in_a_backtick_info_string_opens_no_fence() -> None:
+    """CommonMark forbids it, so the line is an ordinary paragraph.
+
+    Accepting it leaves the scan fenced to EOF and every real heading after it
+    disappears, failing a session that is well formed.
+    """
+    text = build_session().replace(
+        "## Goal\n\nReal content for Goal.\n",
+        "## Goal\n\n```js `x`\n\nReal content for Goal.\n",
+        1,
+    )
+    assert check(text) == []
+
+
+def test_a_backtick_in_a_long_backtick_info_string_opens_no_fence() -> None:
+    """The rule is about the marker character, not the marker length."""
+    text = build_session().replace(
+        "## Goal\n\nReal content for Goal.\n",
+        "## Goal\n\n````js `x`\n\nReal content for Goal.\n",
+        1,
+    )
+    assert check(text) == []
+
+
+def test_a_backtick_in_a_tilde_info_string_still_opens_a_fence() -> None:
+    """A positive control. A tilde fence carries no such restriction."""
+    steps = (
+        "## Steps\n\n~~~text `x`\nMy answer: ______________________\n~~~\n"
+    )
+    text = build_session().replace("## Steps\n\nReal content for Steps.\n", steps, 1)
+    assert any("worksheet fill-in" in m for m in check(text))
+
+
+def test_an_ordinary_backtick_info_string_still_opens_a_fence() -> None:
+    """A positive control. Only a backtick in the info string disqualifies the line."""
+    steps = "## Steps\n\n```text\nMy answer: ______________________\n```\n"
+    text = build_session().replace("## Steps\n\nReal content for Steps.\n", steps, 1)
+    assert any("worksheet fill-in" in m for m in check(text))

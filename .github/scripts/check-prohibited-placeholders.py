@@ -31,6 +31,14 @@ ALLOWED_LABEL_PATTERN = re.compile(
     re.IGNORECASE,
 )
 FENCE_OPEN_PATTERN = re.compile(r"^ {0,3}(?P<marker>`{3,}|~{3,})")
+
+#: CommonMark starts an HTML block on a line whose content begins with
+#: ``<!--`` and ends it on the line carrying ``-->``. Every character on
+#: those lines is raw HTML, so none of them opens a fenced code block --
+#: not even backticks left behind by comment stripping. Kept identical to
+#: the constant in ``.github/scripts/check-session-structure.py``.
+#: <https://spec.commonmark.org/0.31.2/#html-blocks>
+HTML_BLOCK_COMMENT_START_PATTERN = re.compile(r"^ {0,3}<!--")
 BLOCK_QUOTE_PREFIX_PATTERN = re.compile(r"^ {0,3}> ?")
 LIST_ITEM_PATTERN = re.compile(r"^(?P<indent> {0,3})(?P<marker>[-*+]|\d{1,9}[.)])(?P<spacing> +)")
 
@@ -359,10 +367,19 @@ def find_violations_in_text(text: str, display_path: str) -> list[Violation]:
                 active_fence = None
             continue
 
+        was_in_html_comment = is_in_html_comment
         commentless_line, is_in_html_comment = strip_html_comments(raw_line, is_in_html_comment)
+        # A line CommonMark reads as raw HTML opens no fenced block. Without
+        # this the backticks left behind by comment stripping open one, and
+        # every placeholder to the end of the file is hidden inside it.
+        in_html_block = was_in_html_comment or (
+            HTML_BLOCK_COMMENT_START_PATTERN.match(raw_line) is not None
+        )
 
         opening_fence_line = normalize_for_fence_opening(commentless_line, list_contexts)
-        opening_fence = parse_opening_fence(opening_fence_line.content)
+        opening_fence = (
+            None if in_html_block else parse_opening_fence(opening_fence_line.content)
+        )
         if opening_fence is not None:
             active_fence = build_active_fence(opening_fence, opening_fence_line)
             continue

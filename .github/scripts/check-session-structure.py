@@ -81,12 +81,23 @@ reason. The four are counted, and a run whose dispositions do not add up to
 the number of entries seen fails rather than reports. An entry cannot go
 missing without the arithmetic saying so.
 
-Every path the walk accepts goes through one guard, as does every explicit
-file argument. The guard refuses a symbolic link, refuses a Windows junction,
-and refuses anything that resolves outside the repository root; all three
-tests are needed, because a link is not always what ``resolve()`` catches, a
-junction is not what ``is_symlink()`` catches, and a link that points back
-inside the tree is caught by neither.
+Every path the walk accepts goes through one guard, as does every path the
+run was *given* -- the scan root of a default run included. The guard refuses
+a symbolic link, refuses a Windows junction, and refuses anything that
+resolves outside the repository root; all three tests are needed, because a
+link is not always what ``resolve()`` catches, a junction is not what
+``is_symlink()`` catches, and a link that points back inside the tree is
+caught by neither. The root is no exception: a linked ``framework/sessions``
+is the whole corpus redirected, and a run that follows it reports on a
+directory nobody asked about.
+
+The roots are accounted for the way the entries below them are. Each root the
+run was given is walked, checked, or refused, and the three are reconciled
+against the number requested. A root that is walked and yields neither a
+target nor a refusal is itself refused, because a path that was named and
+then contributed nothing is a path the run passed over in silence -- and the
+run-wide "this run checked nothing" guard stops seeing it the moment a second
+argument supplies a real file.
 
 A refused path is a violation, not a silent skip. A gate that prints ``all
 well-formed`` over a session file it declined to open is telling the reader
@@ -387,16 +398,24 @@ def normalize_for_fence_opening(line: str, list_contexts: list[ListContext]) -> 
     relative_line, peeled_count = peel_containers(line, active_path)
     effective_path = active_path[:peeled_count]
 
+    # Containers alternate freely on one line: ``> - item``, ``- > quoted``,
+    # and ``- - item`` are all valid CommonMark. Peeling every blockquote and
+    # then at most one list item handles only the first of those; the rest
+    # leave a container prefix in front of the fence, so the fence is missed
+    # and the fence state stays wrong for the rest of the file.
+    # https://spec.commonmark.org/0.31.2/#container-blocks
     extras: list[Container] = []
     while True:
-        match = BLOCK_QUOTE_PREFIX_PATTERN.match(relative_line)
-        if match is None:
-            break
-        extras.append(Container(kind=CONTAINER_KIND_BLOCK_QUOTE))
-        relative_line = relative_line[match.end() :]
+        quote_match = BLOCK_QUOTE_PREFIX_PATTERN.match(relative_line)
+        if quote_match is not None:
+            extras.append(Container(kind=CONTAINER_KIND_BLOCK_QUOTE))
+            relative_line = relative_line[quote_match.end() :]
+            continue
 
-    list_match = LIST_ITEM_PATTERN.match(relative_line)
-    if list_match is not None:
+        list_match = LIST_ITEM_PATTERN.match(relative_line)
+        if list_match is None:
+            break
+
         content_indent_rel = list_content_indent(list_match)
         extras.append(Container(kind=CONTAINER_KIND_LIST, indent=content_indent_rel))
         relative_line = (
@@ -404,7 +423,10 @@ def normalize_for_fence_opening(line: str, list_contexts: list[ListContext]) -> 
         )
         list_contexts.append(ListContext(containment_path=effective_path + tuple(extras)))
 
-    return FenceLine(content=relative_line, containment_path=effective_path + tuple(extras))
+    return FenceLine(
+        content=relative_line,
+        containment_path=effective_path + tuple(extras),
+    )
 
 
 def normalize_for_fence_closing(line: str, active_fence: ActiveFence) -> str:
@@ -436,12 +458,22 @@ def fence_container_ended(line: str, active_fence: ActiveFence) -> bool:
 
 
 def parse_opening_fence(line: str) -> tuple[str, int] | None:
-    """Return the opening fence marker character and length, if present."""
+    """Return the opening fence marker character and length, if present.
+
+    The info string of a *backtick* fence may not itself contain a
+    backtick, so a line whose marker is followed by a code span opens no
+    fence: it is an ordinary paragraph. Without this check the checker
+    drops every following line until another matching fence or the end of
+    the file. A tilde fence carries no such restriction.
+    https://spec.commonmark.org/0.31.2/#fenced-code-blocks
+    """
     match = FENCE_OPEN_PATTERN.match(line)
     if match is None:
         return None
 
     marker = match.group("marker")
+    if marker[0] == "`" and "`" in line[match.end() :]:
+        return None
     return marker[0], len(marker)
 
 
@@ -507,14 +539,22 @@ def scan_document(text: str) -> DocumentScan:
         visible_line, is_in_html_comment = strip_html_comments(raw_line, was_in_html_comment)
         # Fence detection reads the span-stripped line, because the sibling
         # hook reads it that way and the two must not disagree about which
-        # fences exist. The structural searches read less: a whole HTML block
-        # line carries no heading, even after its ``-->``.
+        # fences exist -- which is also why the sibling carries the same
+        # HTML-block test. The structural searches read less: a whole HTML
+        # block line carries no heading, even after its ``-->``.
         in_html_block = was_in_html_comment or (
             HTML_BLOCK_COMMENT_START_PATTERN.match(raw_line) is not None
         )
 
         opening_fence_line = normalize_for_fence_opening(visible_line, list_contexts)
-        opening_fence = parse_opening_fence(opening_fence_line.content)
+        # A line CommonMark reads as raw HTML opens no fenced block, whatever
+        # backticks survive comment stripping: an HTML block runs to the line
+        # carrying ``-->`` and every character on those lines is raw HTML. The
+        # container state is still taken from the line, because its list and
+        # blockquote prefixes are real; only the fence is not.
+        opening_fence = (
+            None if in_html_block else parse_opening_fence(opening_fence_line.content)
+        )
         if opening_fence is not None:
             character, minimum_length = opening_fence
             active_fence = ActiveFence(
@@ -792,6 +832,41 @@ class WalkTally:
         return self.seen == self.checked + self.refused + self.descended + self.skipped
 
 
+@dataclass
+class RootTally:
+    """How many scan roots the run was given, and what became of each.
+
+    ``WalkTally`` proves that nothing *below* a root went missing. It says
+    nothing about the roots themselves, and the roots are where the last two
+    holes were: the default scan root never passed the guard, and a directory
+    argument that contributed nothing was simply dropped. The three
+    dispositions here are exhaustive and mutually exclusive by construction,
+    exactly as the four below a root are, and ``balances`` is the same
+    reconciliation one level up.
+    """
+
+    requested: int = 0
+    walked: int = 0
+    checked: int = 0
+    refused: int = 0
+
+    def balances(self) -> bool:
+        """Return whether every root requested received exactly one disposition."""
+        return self.requested == self.walked + self.checked + self.refused
+
+
+#: Said of a root that was named and then contributed nothing. A run reports
+#: on what it opened; a path it was given and never opened is a path it
+#: passed over in silence, and with a second argument supplying a target the
+#: run-wide guard never fires.
+ZERO_TARGET_MESSAGE = (
+    "matched no session file, so this run checked nothing from it. A path that "
+    "is named and then yields neither a target nor a refusal is a path this run "
+    "passed over in silence. Check the path, or check DEFAULT_SCAN_ROOT if this "
+    "was the default scan."
+)
+
+
 @dataclass(frozen=True)
 class ScanTargets:
     """The session files to read, the refusals that must fail the run, and the
@@ -914,6 +989,38 @@ def walk_session_directory(
         tally.skipped += 1
 
 
+def collect_directory_root(
+    requested: str,
+    directory: Path,
+    root: Path,
+    paths: list[Path],
+    refusals: list[Violation],
+    skipped: list[SkippedEntry],
+    tally: WalkTally,
+    roots: RootTally,
+) -> None:
+    """Walk one requested directory, and refuse it when it contributes nothing.
+
+    The walk accounts for every entry it *sees*. A directory that holds no
+    entry at all is seen by nobody, so the walk has nothing to account for and
+    the run-wide zero-target guard is the only thing left -- and that guard
+    fires only when the *whole run* opened nothing. One real file from another
+    argument silences it, and the mistyped directory beside it disappears. So
+    the accounting is done per root: a root that adds neither a target nor a
+    refusal is itself the refusal.
+    """
+    before_paths = len(paths)
+    before_refusals = len(refusals)
+    walk_session_directory(directory, root, paths, refusals, skipped, tally)
+    if len(paths) == before_paths and len(refusals) == before_refusals:
+        refusals.append(
+            Violation(display_name(directory, root, requested), 1, ZERO_TARGET_MESSAGE)
+        )
+        roots.refused += 1
+        return
+    roots.walked += 1
+
+
 def collect_targets(path_arguments: Sequence[str], root: Path) -> ScanTargets:
     """Turn command-line arguments into session Markdown paths, refusing escapes.
 
@@ -927,26 +1034,52 @@ def collect_targets(path_arguments: Sequence[str], root: Path) -> ScanTargets:
     refusals: list[Violation] = []
     skipped: list[SkippedEntry] = []
     tally = WalkTally()
+    roots = RootTally()
 
     if not path_arguments:
-        walk_session_directory(
-            root / DEFAULT_SCAN_ROOT, root, paths, refusals, skipped, tally
-        )
+        # The default scan root is a requested root like any other, and it is
+        # the one CI uses. Guarding the arguments and not this was the last
+        # unguarded path into the walk: a symlinked ``framework/sessions``
+        # was followed, so the run reported on whatever the link pointed at
+        # and said nothing about the directory it was asked for.
+        roots.requested += 1
+        default_root = root / DEFAULT_SCAN_ROOT
+        refusal = guard_path(default_root, root, DEFAULT_SCAN_ROOT)
+        if refusal is not None:
+            refusals.append(refusal)
+            roots.refused += 1
+        else:
+            collect_directory_root(
+                DEFAULT_SCAN_ROOT,
+                default_root,
+                root,
+                paths,
+                refusals,
+                skipped,
+                tally,
+                roots,
+            )
     else:
         for argument in path_arguments:
+            roots.requested += 1
             candidate = Path(argument)
             if not candidate.is_absolute():
                 candidate = root / candidate
             refusal = guard_path(candidate, root, display_name(candidate, root, argument))
             if refusal is not None:
                 refusals.append(refusal)
+                roots.refused += 1
                 continue
             candidate = candidate.resolve()
             if candidate.is_dir():
-                walk_session_directory(candidate, root, paths, refusals, skipped, tally)
+                collect_directory_root(
+                    argument, candidate, root, paths, refusals, skipped, tally, roots
+                )
             elif candidate.is_file() and candidate.suffix.lower() == MARKDOWN_SUFFIX:
                 paths.append(candidate)
+                roots.checked += 1
             else:
+                roots.refused += 1
                 # The argument survived the guard but names nothing this checker
                 # can read: a path that does not exist, or a file that is not
                 # Markdown.
@@ -960,6 +1093,22 @@ def collect_targets(path_arguments: Sequence[str], root: Path) -> ScanTargets:
                         "problems.",
                     )
                 )
+
+    if not roots.balances():
+        # The same reconciliation as the walk's, one level up. Every root the
+        # run was given is walked, checked, or refused; a future edit that
+        # adds a fourth, silent outcome for a root is what this catches, and a
+        # silent outcome for a root is exactly the shape of the last two holes.
+        refusals.append(
+            Violation(
+                DEFAULT_SCAN_ROOT if not path_arguments else " ".join(path_arguments),
+                1,
+                f"the run was given {roots.requested} scan root(s) but accounted for "
+                f"{roots.walked + roots.checked + roots.refused} of them. A root that "
+                "is neither walked, checked, nor refused has gone missing, and this "
+                "run cannot say what it was asked to read.",
+            )
+        )
 
     if not tally.balances():
         # The reconciliation. Every entry the walk saw is checked, refused,

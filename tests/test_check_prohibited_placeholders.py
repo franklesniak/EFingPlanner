@@ -570,3 +570,52 @@ def test_a_blank_line_does_not_end_a_list_nested_fence(tmp_path: Path) -> None:
     violations = scan_single_file(path, tmp_path)
 
     assert violations == []
+
+
+# ---------------------------------------------------------------------------
+# Round 6: an HTML block opens no fence here either
+# ---------------------------------------------------------------------------
+
+
+def test_an_html_block_line_with_trailing_backticks_opens_no_fence(tmp_path: Path) -> None:
+    """An HTML block runs to its ``-->``, so nothing on those lines opens a fence.
+
+    Treating the backticks left behind by comment stripping as a fence hides
+    every placeholder from there to the end of the file.
+    """
+    path = write_file(
+        tmp_path / "docs" / "spec" / "example.md",
+        "<!-- note --> ```\n\nThe limit is TBD.\n",
+    )
+
+    violations = scan_single_file(path, tmp_path)
+
+    assert [v.matched_text for v in violations] == ["TBD"]
+
+
+def test_a_placeholder_beside_a_comment_on_one_line_is_still_flagged(tmp_path: Path) -> None:
+    """A positive control. The HTML-block test governs fences, not visibility.
+
+    ``TBD`` after a ``-->`` still prints the characters TBD to the reader, so
+    the hook must still report it.
+    """
+    path = write_file(
+        tmp_path / "docs" / "spec" / "example.md",
+        "<!-- note --> The limit is TBD.\n",
+    )
+
+    violations = scan_single_file(path, tmp_path)
+
+    assert [v.matched_text for v in violations] == ["TBD"]
+
+
+def test_a_fence_on_the_line_after_a_comment_still_hides_a_placeholder(
+    tmp_path: Path,
+) -> None:
+    """A positive control. Only the HTML-block line itself opens no fence."""
+    path = write_file(
+        tmp_path / "docs" / "spec" / "example.md",
+        "<!-- note -->\n\n```text\nThe limit is TBD.\n```\n",
+    )
+
+    assert scan_single_file(path, tmp_path) == []
