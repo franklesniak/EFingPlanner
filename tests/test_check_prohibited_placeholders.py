@@ -928,3 +928,62 @@ def test_an_uppercase_declaration_still_opens_an_html_block() -> None:
     )
 
     assert [violation.matched_text for violation in _find(text)] == ["TBD"]
+
+
+#: One non-breaking space, spelled through a name for the reason the sibling
+#: test modules spell it through one.
+NONBREAKING_SPACE = "\u00a0"
+
+#: A three-backtick code fence.
+FENCE = "`" * 3
+
+
+def test_a_nonbreaking_space_line_does_not_leave_a_list() -> None:
+    """A line of one U+00A0 is a paragraph, not a blank line.
+
+    A fence opened inside a list item ends where the list item ends. The
+    non-breaking space at column 0 has outdented out of the item, so measured
+    against markdown-it 14.3.0 the fence ends there and the placeholder below
+    it is on the page, where this hook has to report it. ``str.strip`` with no
+    argument read the line as blank, kept the fence open, and let the
+    placeholder through.
+    https://spec.commonmark.org/0.31.2/#blank-line
+    """
+    text = f"- item\n\n  {FENCE}\n  code\n{NONBREAKING_SPACE}\n  TBD tomorrow.\n"
+    assert [violation.matched_text for violation in _find(text)] == ["TBD"]
+
+
+@pytest.mark.parametrize(
+    ("label", "filler"),
+    [("an empty line", ""), ("three spaces", "   "), ("a tab", "\t")],
+)
+def test_a_blank_line_does_not_leave_a_list(label: str, filler: str) -> None:
+    """The negative control. A blank line is ordinary list content.
+
+    The fence is still open below it, so the placeholder really is inside a
+    code block and is not reported.
+    """
+    text = f"- item\n\n  {FENCE}\n  code\n{filler}\n  TBD tomorrow.\n"
+    assert _find(text) == [], label
+
+
+def test_a_nonbreaking_space_line_does_not_close_an_html_block() -> None:
+    """Only a blank line closes an HTML block whose condition has no end tag.
+
+    Condition 6 is still open below a line of one U+00A0, so the backticks
+    under it are raw HTML rather than a fence and markdown-it 14.3.0 prints
+    the placeholder between them. Closing the block early made the fence real
+    and hid a placeholder that is on the page.
+    https://spec.commonmark.org/0.31.2/#html-blocks
+    """
+    text = f"<div>\nnote\n{NONBREAKING_SPACE}\n{FENCE}\nTBD tomorrow.\n{FENCE}\n"
+    assert [violation.matched_text for violation in _find(text)] == ["TBD"]
+
+
+def test_a_blank_line_closes_an_html_block() -> None:
+    """The negative control. A real blank line still closes condition 6.
+
+    The fence below it is a real fence, so the placeholder inside it is code.
+    """
+    text = f"<div>\nnote\n\n{FENCE}\nTBD tomorrow.\n{FENCE}\n"
+    assert _find(text) == []

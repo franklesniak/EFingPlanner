@@ -91,6 +91,11 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 
+#: Spaces and tabs, the only whitespace CommonMark and YAML treat as
+#: horizontal. ``str.strip`` with no argument also removes U+00A0 and the
+#: rest of Unicode, which is how a non-delimiter became a delimiter.
+ASCII_HORIZONTAL_WHITESPACE = " 	"
+
 # --------------------------------------------------------------------------
 # Thresholds
 # --------------------------------------------------------------------------
@@ -212,14 +217,18 @@ HTML_BLOCK_START_PATTERNS = (
         re.IGNORECASE,
     ),
 )
-HEADING_PATTERN = re.compile(r"^ {0,3}#{1,6}\s")
+HEADING_PATTERN = re.compile(r"^ {0,3}#{1,6}[ \t]")
 TABLE_ROW_PATTERN = re.compile(r"^ {0,3}\|")
-TABLE_DELIMITER_PATTERN = re.compile(r"^ {0,3}\|?\s*:?-+:?\s*(?:\|\s*:?-+:?\s*)*\|?\s*$")
-THEMATIC_BREAK_PATTERN = re.compile(r"^ {0,3}(?:-{3,}|\*{3,}|_{3,})\s*$")
-NAV_LINE_PATTERN = re.compile(r"^\s*(?:You are here:|Previous:|Next:)", re.IGNORECASE)
-PARENT_STRIP_PATTERN = re.compile(r"^\s*\*\*For parents:?\*\*", re.IGNORECASE)
+TABLE_DELIMITER_PATTERN = re.compile(
+    r"^ {0,3}\|?[ \t]*:?-+:?[ \t]*(?:\|[ \t]*:?-+:?[ \t]*)*\|?[ \t]*$"
+)
+THEMATIC_BREAK_PATTERN = re.compile(r"^ {0,3}(?:-{3,}|\*{3,}|_{3,})[ \t]*$")
+NAV_LINE_PATTERN = re.compile(
+    r"^[ \t]*(?:You are here:|Previous:|Next:)", re.IGNORECASE
+)
+PARENT_STRIP_PATTERN = re.compile(r"^[ \t]*\*\*For parents:?\*\*", re.IGNORECASE)
 PARENT_SECTION_PATTERN = re.compile(
-    r"^ {0,3}#{1,6}\s+(?:Parent Notes?|For Parents?|Notes? for Parents?)\s*$",
+    r"^ {0,3}#{1,6}[ \t]+(?:Parent Notes?|For Parents?|Notes? for Parents?)[ \t]*$",
     re.IGNORECASE,
 )
 HTML_COMMENT_PATTERN = re.compile(r"<!--.*?-->", re.DOTALL)
@@ -228,7 +237,9 @@ HTML_COMMENT_PATTERN = re.compile(r"<!--.*?-->", re.DOTALL)
 #: instruction. A bare ``<[^>]+>`` also eats ``Choose < 5 days and > 2 days``,
 #: which is child-visible prose, not markup.
 #: https://spec.commonmark.org/0.31.2/#raw-html
-HTML_TAG_PATTERN = re.compile(r"</?[A-Za-z][A-Za-z0-9-]*(?:\s[^<>]*)?/?>|<[!?][^>]*>")
+HTML_TAG_PATTERN = re.compile(
+    r"</?[A-Za-z][A-Za-z0-9-]*(?:[ \t][^<>]*)?/?>|<[!?][^>]*>"
+)
 #: One inline HTML tag, open or closing, matched from a known position rather
 #: than searched for. The code-span scan skips a whole tag at a time with it, so
 #: that a backtick inside an attribute value is read as part of the attribute,
@@ -242,12 +253,12 @@ INLINE_HTML_TAG_PATTERN = re.compile(
     r"""
     <
     (?: [A-Za-z][A-Za-z0-9-]*                      # an open tag
-        (?: \s+ [_:A-Za-z][A-Za-z0-9_.:-]*         # an attribute name
-            (?: \s*=\s*                            # an attribute value
-                (?: [^\s"'=<>`]+ | '[^']*' | "[^"]*" ) )?
+        (?: [ \t]+ [_:A-Za-z][A-Za-z0-9_.:-]*      # an attribute name
+            (?: [ \t]*=[ \t]*                      # an attribute value
+                (?: [^ \t\r\n"'=<>`]+ | '[^']*' | "[^"]*" ) )?
         )*
-        \s* /? >
-      | / [A-Za-z][A-Za-z0-9-]* \s* >              # a closing tag
+        [ \t]* /? >
+      | / [A-Za-z][A-Za-z0-9-]* [ \t]* >           # a closing tag
     )
     """,
     re.VERBOSE,
@@ -277,7 +288,7 @@ INLINE_HTML_TAG_PATTERN = re.compile(
 #: happily. Kept in step with the class in
 #: ``.github/scripts/check-session-structure.py``.
 #: https://spec.commonmark.org/0.31.2/#link-destination
-_DESTINATION_CHARACTER = r"(?:[^\s\x00-\x1f\x7f()\\]|\\.)"
+_DESTINATION_CHARACTER = r"(?:[^ \x00-\x1f\x7f()\\]|\\.)"
 #: The same rule, as a set rather than as a character class, for the
 #: hand-written scan in ``inline_link_end``: every character that ends a bare
 #: destination. Spelled as a range so the C0 control characters are named once
@@ -320,8 +331,8 @@ BARE_URL_PATTERN = re.compile(
 #: ``1000.`` standing in the prose, where it splits off as a one-word sentence
 #: and halves the reported words-per-sentence of every prompt below it.
 #: https://spec.commonmark.org/0.31.2/#list-items
-LIST_MARKER_PATTERN = re.compile(r"^ {0,8}(?:[-*+]|\d{1,9}[.)])\s+")
-BLOCKQUOTE_PATTERN = re.compile(r"^ {0,3}>\s?")
+LIST_MARKER_PATTERN = re.compile(r"^ {0,8}(?:[-*+]|\d{1,9}[.)])[ \t]+")
+BLOCKQUOTE_PATTERN = re.compile(r"^ {0,3}>[ \t]?")
 EMPHASIS_PATTERN = re.compile(r"[*_]{1,3}")
 #: A Setext heading underline. A run of ``=`` or ``-`` under a paragraph turns
 #: that whole paragraph into a heading, so neither the text nor the underline is
@@ -360,7 +371,7 @@ LINK_DEFINITION_PATTERN = re.compile(
 #: of its line, in matching ``"``, ``'`` or ``()`` delimiters, at any indent.
 #: https://spec.commonmark.org/0.31.2/#link-reference-definitions
 LINK_DEFINITION_TITLE_PATTERN = re.compile(
-    r"^\s*(?:\"[^\"]*\"|'[^']*'|\([^()]*\))[ \t]*$"
+    r"^[ \t]*(?:\"[^\"]*\"|'[^']*'|\([^()]*\))[ \t]*$"
 )
 #: A YAML front-matter delimiter. Front matter is permitted on any Markdown
 #: file in this repository, and its keys are publishing metadata, not text a
@@ -422,11 +433,11 @@ FRONT_MATTER_LINE_PATTERN = re.compile(
       | \#                                        # a comment
       | -[ \t]                                    # a sequence item
       | (?: {_YAML_DOUBLE_QUOTED} | {_YAML_SINGLE_QUOTED}   # a quoted key
-          | [^\s#:'"]{_YAML_PLAIN_SCALAR} )                 # or a plain one
+          | [^ \t\r\n#:'"]{_YAML_PLAIN_SCALAR} )           # or a plain one
         :
         (?: [ \t]+ (?: {_YAML_DOUBLE_QUOTED}                # a quoted value
                      | {_YAML_SINGLE_QUOTED}
-                     | [^\s#'"]{_YAML_PLAIN_SCALAR} ) )?
+                     | [^ \t\r\n#'"]{_YAML_PLAIN_SCALAR} ) )?
         (?: [ \t]+ \# [^\n]* )?                     # and then a comment
         [ \t]*$
     )
@@ -684,7 +695,7 @@ def peel_containers(line: str, path: tuple[Container, ...]) -> tuple[str, int]:
 
 def prune_inactive_list_contexts(line: str, list_contexts: list[ListContext]) -> None:
     """Drop active list contexts that a nonblank Markdown line has outdented past."""
-    if not line.strip():
+    if not line.strip(ASCII_HORIZONTAL_WHITESPACE):
         return
 
     while list_contexts:
@@ -694,7 +705,7 @@ def prune_inactive_list_contexts(line: str, list_contexts: list[ListContext]) ->
             return
         # The line did not peel cleanly to this list's interior. Decide
         # whether the partial peel still keeps the list active.
-        if not remaining.strip():
+        if not remaining.strip(ASCII_HORIZONTAL_WHITESPACE):
             # A blank line inside a partly-peeled container is a continuation.
             return
         failed_container = top.containment_path[peeled_count]
@@ -818,7 +829,7 @@ def container_path_ended(line: str, containment_path: tuple[Container, ...]) -> 
     _, peeled_count = peel_containers(line, containment_path)
     if peeled_count == len(containment_path):
         return False
-    if line.strip():
+    if line.strip(ASCII_HORIZONTAL_WHITESPACE):
         return True
     return containment_path[peeled_count].kind == CONTAINER_KIND_BLOCK_QUOTE
 
@@ -1003,7 +1014,7 @@ def starts_a_block(
     https://spec.commonmark.org/0.31.2/#paragraphs
     https://spec.commonmark.org/0.31.2/#html-blocks
     """
-    if not content.strip():
+    if not content.strip(ASCII_HORIZONTAL_WHITESPACE):
         return True
     if ATX_HEADING_LINE_PATTERN.match(content) is not None:
         return True
@@ -1268,7 +1279,7 @@ def scan_literal_code(text: str) -> tuple[list[tuple[int, int]], list[tuple[int,
     for raw_line in text.split("\n"):
         line_start = offset
         offset += len(raw_line) + 1
-        line = raw_line.rstrip()
+        line = raw_line.rstrip(ASCII_HORIZONTAL_WHITESPACE)
 
         if active_fence is not None and fence_container_ended(line, active_fence):
             active_fence = None
@@ -1448,12 +1459,6 @@ def strip_html_comments(text: str) -> str:
     return "".join(kept)
 
 
-#: Spaces and tabs, the only whitespace CommonMark and YAML treat as
-#: horizontal. ``str.strip`` with no argument also removes U+00A0 and the
-#: rest of Unicode, which is how a non-delimiter became a delimiter.
-ASCII_HORIZONTAL_WHITESPACE = " 	"
-
-
 def strip_front_matter(text: str) -> str:
     """Remove a YAML front-matter block from the start of a document.
 
@@ -1545,7 +1550,7 @@ def extract_prose(text: str) -> str:
 
     lines = text.split("\n")
     for index, raw_line in enumerate(lines):
-        line = raw_line.rstrip()
+        line = raw_line.rstrip(ASCII_HORIZONTAL_WHITESPACE)
 
         # Code fences: drop the fence markers and everything between them.
         # The active fence is tested before the opening pattern, so while a
@@ -1598,15 +1603,19 @@ def extract_prose(text: str) -> str:
         table_line = strip_block_quote_prefixes(line)
         if in_table:
             if (
-                table_line.strip()
+                table_line.strip(ASCII_HORIZONTAL_WHITESPACE)
                 and "|" in table_line
                 and fence_line.containment_path == table_container
             ):
                 open_unit = None
                 continue
             in_table = False
-        if table_line.strip() and "|" in table_line:
-            next_line = lines[index + 1].rstrip() if index + 1 < len(lines) else ""
+        if table_line.strip(ASCII_HORIZONTAL_WHITESPACE) and "|" in table_line:
+            next_line = (
+                lines[index + 1].rstrip(ASCII_HORIZONTAL_WHITESPACE)
+                if index + 1 < len(lines)
+                else ""
+            )
             # The lookahead gets a *copy* of the list contexts: normalizing a
             # line records the containers it opens, and the next iteration has
             # to start from the state this line left behind, not that one.
@@ -1700,7 +1709,7 @@ def extract_prose(text: str) -> str:
         # a cell delimiter to GFM, which reads a table before it reads any
         # inline.
         # https://github.github.com/gfm/#tables-extension-
-        line = blanked_lines[index].rstrip()
+        line = blanked_lines[index].rstrip(ASCII_HORIZONTAL_WHITESPACE)
 
         # A new list item starts its own unit. A plain line that follows prose
         # is a wrapped continuation of that prose.
@@ -1717,7 +1726,7 @@ def extract_prose(text: str) -> str:
             interior = line[quote_match.end() :]
             starts_block = (
                 open_unit != UNIT_KIND_QUOTE
-                or not interior.strip()
+                or not interior.strip(ASCII_HORIZONTAL_WHITESPACE)
                 or bool(LIST_MARKER_PATTERN.match(interior))
             )
             line = interior
@@ -1737,7 +1746,7 @@ def extract_prose(text: str) -> str:
         # decoded until the Markdown around it has already been read.
         line = decode_character_references(line)
 
-        if line.strip():
+        if line.strip(ASCII_HORIZONTAL_WHITESPACE):
             if open_unit is not None and not starts_block:
                 units[-1] = f"{units[-1]} {line.strip()}"
             else:

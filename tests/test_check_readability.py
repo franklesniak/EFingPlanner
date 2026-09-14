@@ -3047,3 +3047,151 @@ def test_a_bare_destination_may_not_start_with_a_less_than() -> None:
     """
     text = 'Read [the guide](<foo "a title") before you pack a bag.\n'
     assert "a title" in readability.extract_prose(text)
+
+
+#: One non-breaking space. Spelled through a name so no test has to embed a
+#: character an editor, a terminal or a patch tool can turn back into an
+#: ordinary space without anyone noticing.
+NONBREAKING_SPACE = "\u00a0"
+
+#: The three shapes that really are a blank line. CommonMark counts a line
+#: blank when it holds nothing but spaces and tabs, so each of these ends a
+#: paragraph and leaves a container where U+00A0 does not.
+BLANK_LINE_FILLERS = [("an empty line", ""), ("three spaces", "   "), ("a tab", "\t")]
+
+
+def test_a_nonbreaking_space_line_does_not_leave_a_list() -> None:
+    """A line of one U+00A0 is a paragraph, not a blank line.
+
+    A fence opened inside a list item ends where the list item ends. A line of
+    one non-breaking space at column 0 has outdented out of the item, so
+    measured against markdown-it 14.3.0 the fence ends there and the indented
+    line below it is a lazy continuation of that paragraph -- words the child
+    reads. ``str.rstrip`` with no argument removed the character, read the
+    line as blank, kept the fence open and swallowed them, which is the
+    direction that takes a file under the forty-word minimum and out of the
+    gate.
+    https://spec.commonmark.org/0.31.2/#blank-line
+    """
+    text = (
+        f"- item\n\n  {FENCE}\n  code\n{NONBREAKING_SPACE}\n"
+        "  Pack your walking shoes today.\n"
+    )
+    assert "Pack your walking shoes today." in readability.extract_prose(text)
+
+
+@pytest.mark.parametrize(("label", "filler"), BLANK_LINE_FILLERS)
+def test_a_blank_line_does_not_leave_a_list(label: str, filler: str) -> None:
+    """The negative control. Spaces and tabs are blank, and still behave.
+
+    A blank line inside a list item is ordinary list content, so the fence is
+    still open below it and the indented line is still code.
+    """
+    text = f"- item\n\n  {FENCE}\n  code\n{filler}\n  Pack your walking shoes today.\n"
+    assert "Pack your walking shoes today." not in readability.extract_prose(text), label
+
+
+def test_a_nonbreaking_space_line_does_not_split_a_paragraph() -> None:
+    """markdown-it 14.3.0 reads all three lines as one paragraph.
+
+    Splitting them into two sentence units on the strength of a character the
+    renderer prints lowers the reported words per sentence without changing a
+    word of the document.
+    """
+    prose = readability.extract_prose(
+        f"The morning walk is short.\n{NONBREAKING_SPACE}\nBring a hat for the sun.\n"
+    )
+    assert len([unit for unit in prose.split("\n") if unit.strip()]) == 1
+
+
+@pytest.mark.parametrize(("label", "filler"), BLANK_LINE_FILLERS)
+def test_a_blank_line_splits_a_paragraph(label: str, filler: str) -> None:
+    """The negative control. A real blank line really does end a paragraph."""
+    prose = readability.extract_prose(
+        f"The morning walk is short.\n{filler}\nBring a hat for the sun.\n"
+    )
+    assert len([unit for unit in prose.split("\n") if unit.strip()]) == 2, label
+
+
+def test_a_nonbreaking_space_quote_interior_keeps_the_unit_open() -> None:
+    """A quoted line whose interior is one U+00A0 carries content.
+
+    ``BLOCKQUOTE_PATTERN`` consumed the character as the single optional space
+    after the marker, which left an empty interior and started a second unit.
+    CommonMark allows a space or a tab there and nothing else, so the interior
+    is nonblank and the quoted paragraph runs on.
+    https://spec.commonmark.org/0.31.2/#block-quotes
+    """
+    prose = readability.extract_prose(
+        f"> The river runs west.\n>{NONBREAKING_SPACE}\n> Follow it to the bridge.\n"
+    )
+    assert len([unit for unit in prose.split("\n") if unit.strip()]) == 1
+
+
+def test_a_bare_quote_marker_ends_a_quoted_unit() -> None:
+    """The negative control. A ``>`` carrying no text still ends the quote."""
+    prose = readability.extract_prose(
+        "> The river runs west.\n>\n> Follow it to the bridge.\n"
+    )
+    assert len([unit for unit in prose.split("\n") if unit.strip()]) == 2
+
+
+def test_a_nonbreaking_space_voids_a_table_delimiter_row() -> None:
+    """GFM allows spaces and tabs around a delimiter cell, and nothing else.
+
+    A delimiter row carrying a trailing U+00A0 is not a delimiter row, so no
+    table opens and measured against markdown-it 14.3.0 both lines are a
+    paragraph the child reads. Reading the row as a delimiter discarded them.
+    https://github.github.com/gfm/#tables-extension-
+    """
+    text = f"Bring a hat | bring a map\n| --- | --- |{NONBREAKING_SPACE}\n"
+    assert "Bring a hat" in readability.extract_prose(text)
+
+
+def test_a_delimiter_row_still_opens_a_table() -> None:
+    """The negative control. The same two lines without the U+00A0."""
+    text = "Bring a hat | bring a map\n| --- | --- |\n"
+    assert "Bring a hat" not in readability.extract_prose(text)
+
+
+def test_a_nonbreaking_space_does_not_open_an_atx_heading() -> None:
+    """CommonMark requires a space or a tab after the opening hash run.
+
+    ``#`` followed by U+00A0 is an ordinary paragraph to markdown-it 14.3.0,
+    and its words are on the page. Reading it as a heading deleted the line.
+    https://spec.commonmark.org/0.31.2/#atx-headings
+    """
+    text = f"#{NONBREAKING_SPACE}Pack your walking shoes today.\n"
+    assert "Pack your walking shoes today." in readability.extract_prose(text)
+
+
+def test_a_space_after_the_hashes_opens_an_atx_heading() -> None:
+    """The negative control. A real heading is still a heading."""
+    text = "# Pack your walking shoes today.\n"
+    assert "Pack your walking shoes today." not in readability.extract_prose(text)
+
+
+def test_a_nonbreaking_space_between_attributes_is_not_a_tag() -> None:
+    """CommonMark's raw-HTML grammar separates attributes by ASCII whitespace.
+
+    ``<span`` followed by U+00A0 and an attribute is not a tag, so the two
+    backticks around it form a code span and the audience marker between them
+    is literal code rather than an HTML comment. Python's ``\\s`` accepted the
+    character, so the scanner skipped the first backtick as tag data, left the
+    marker unmasked, and excluded a child-facing file from the gate as though
+    it were adult-facing.
+    https://spec.commonmark.org/0.31.2/#raw-html
+    """
+    text = f'<span{NONBREAKING_SPACE}title="{TICK}"> <!-- audience: adult --> {TICK}end\n'
+    assert not readability.has_adult_marker(text)
+
+
+def test_a_space_between_attributes_is_a_tag() -> None:
+    """The negative control. A real tag still hides the backtick in it.
+
+    With an ordinary space the tag parses, the first backtick is attribute
+    data rather than a span opener, and the marker outside it is the comment
+    it looks like.
+    """
+    text = f'<span title="{TICK}"> <!-- audience: adult --> {TICK}end\n'
+    assert readability.has_adult_marker(text)

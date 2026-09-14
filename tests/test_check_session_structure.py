@@ -2774,3 +2774,94 @@ def test_a_bare_destination_may_not_start_with_a_less_than() -> None:
     body = '[a]: <foo "<!-- no-source-check: an offline exercise -->"'
     text = build_session(sections=SIX_SECTIONS, extra=f"## Notes\n\n{body}\n")
     assert check(text) == []
+
+
+#: One non-breaking space, spelled through a name for the reason the sibling
+#: test module spells it through one: an editor or a patch tool can turn the
+#: character back into an ordinary space without anyone noticing.
+NONBREAKING_SPACE = "\u00a0"
+
+
+def test_a_nonbreaking_space_body_renders_as_content() -> None:
+    """A section body of one U+00A0 puts a paragraph on the page.
+
+    markdown-it 14.3.0 renders it as one, so the section is not the bare
+    heading the checker called it. ``str.strip`` with no argument removed the
+    character and read the body as empty.
+    https://spec.commonmark.org/0.31.2/#blank-line
+    """
+    assert structure.renders_as_content(f"{NONBREAKING_SPACE}\n")
+
+
+@pytest.mark.parametrize(
+    ("label", "body"),
+    [("an empty body", ""), ("three spaces", "   \n"), ("a tab", "\t\n")],
+)
+def test_a_blank_body_renders_as_nothing(label: str, body: str) -> None:
+    """The negative control. Spaces and tabs really do render as nothing."""
+    assert not structure.renders_as_content(body), label
+
+
+def test_a_nonbreaking_space_line_keeps_a_paragraph_open() -> None:
+    """A line of one U+00A0 leaves a paragraph open below it.
+
+    HTML block condition 7 is the one condition that may not interrupt a
+    paragraph, so clearing the paragraph state on this line opened a block
+    markdown-it 14.3.0 does not open.
+    https://spec.commonmark.org/0.31.2/#html-blocks
+    """
+    assert structure.opens_a_paragraph(NONBREAKING_SPACE, False)
+
+
+@pytest.mark.parametrize(
+    ("label", "content"), [("an empty line", ""), ("three spaces", "   "), ("a tab", "\t")]
+)
+def test_a_blank_line_opens_no_paragraph(label: str, content: str) -> None:
+    """The negative control. A real blank line still closes the paragraph."""
+    assert not structure.opens_a_paragraph(content, False), label
+
+
+def test_a_nonbreaking_space_line_does_not_close_an_html_block() -> None:
+    """Only a blank line closes an HTML block whose condition has no end tag.
+
+    A line of one U+00A0 is not blank, so condition 6 is still open below it
+    and the backticks under it are raw HTML rather than a fence. markdown-it
+    14.3.0 prints them, and the comment inside is the comment it looks like.
+    Closing the block early made the fence real and buried the marker in a
+    code block.
+    https://spec.commonmark.org/0.31.2/#html-blocks
+    """
+    text = (
+        f"<div>\nnote\n{NONBREAKING_SPACE}\n{FENCE}\n"
+        f"<!-- no-source-check: an exercise -->\n{FENCE}\n"
+    )
+    scan = structure.scan_document(text)
+    assert structure.NO_SOURCE_CHECK_PATTERN.search(scan.marker_text) is not None
+
+
+def test_a_blank_line_closes_an_html_block() -> None:
+    """The negative control. A real blank line still closes condition 6."""
+    text = (
+        f"<div>\nnote\n\n{FENCE}\n"
+        f"<!-- no-source-check: an exercise -->\n{FENCE}\n"
+    )
+    scan = structure.scan_document(text)
+    assert structure.NO_SOURCE_CHECK_PATTERN.search(scan.marker_text) is None
+
+
+def test_a_nonbreaking_space_does_not_open_an_atx_heading() -> None:
+    """CommonMark requires a space or a tab after the opening hash run.
+
+    ``#`` followed by U+00A0 is a paragraph to markdown-it 14.3.0, so the
+    document holds no heading at all and a scaffold section named this way is
+    missing rather than present.
+    https://spec.commonmark.org/0.31.2/#atx-headings
+    """
+    scan = structure.scan_document(f"#{NONBREAKING_SPACE}Goal\n")
+    assert structure.find_headings(scan) == []
+
+
+def test_a_space_after_the_hashes_opens_an_atx_heading() -> None:
+    """The negative control. A real heading is still found."""
+    scan = structure.scan_document("# Goal\n")
+    assert [(h.level, h.title) for h in structure.find_headings(scan)] == [(1, "Goal")]

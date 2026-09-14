@@ -160,6 +160,11 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 
+#: Spaces and tabs, the only whitespace CommonMark and YAML treat as
+#: horizontal. ``str.strip`` with no argument also removes U+00A0 and the
+#: rest of Unicode, which is how a non-delimiter became a delimiter.
+ASCII_HORIZONTAL_WHITESPACE = " 	"
+
 #: The directory the default scan reads. It is a directory, not a glob,
 #: because the walk below enumerates what is there and gives every entry a
 #: disposition. A pattern can only report what it matched; it can never
@@ -226,14 +231,14 @@ PARENT_STRIP_FIELDS: tuple[tuple[str, re.Pattern[str]], ...] = tuple(
     (
         field,
         re.compile(
-            rf"^\s*(?:[-*+]|\d{{1,9}}[.)])\s+\*{{0,2}}{field}\*{{0,2}}"
+            rf"^[ \t]*(?:[-*+]|\d{{1,9}}[.)])[ \t]+\*{{0,2}}{field}\*{{0,2}}"
             rf"[^\S\r\n]*:[^\r\n]*[^\s*\r\n]",
             re.IGNORECASE | re.MULTILINE,
         ),
     )
     for field in ("Status", "Estimated time", "Parent involvement")
 )
-HEADING_PATTERN = re.compile(r"^(?P<hashes>#{1,6})\s+(?P<title>.+?)\s*$")
+HEADING_PATTERN = re.compile(r"^(?P<hashes>#{1,6})[ \t]+(?P<title>.+?)[ \t]*$")
 
 #: A worksheet fill-in blank: a run of four or more underscores that starts
 #: or ends a token. ``Total days ____``, ``Name:____`` and ``$____ per night``
@@ -272,7 +277,7 @@ HTML_BLOCK_ELEMENT_NAMES = (
 HTML_BLOCK_TAG_NAME = r"[A-Za-z][A-Za-z0-9-]*"
 HTML_BLOCK_ATTRIBUTE = (
     r"[ \t]+[_:A-Za-z][A-Za-z0-9_.:-]*"
-    r"""(?:[ \t]*=[ \t]*(?:[^\s"'=<>`]+|'[^']*'|"[^"]*"))?"""
+    r"""(?:[ \t]*=[ \t]*(?:[^ \t\r\n"'=<>`]+|'[^']*'|"[^"]*"))?"""
 )
 HTML_BLOCK_TYPE_SEVEN_PATTERN = re.compile(
     rf"^ {{0,3}}(?:<{HTML_BLOCK_TAG_NAME}(?:{HTML_BLOCK_ATTRIBUTE})*[ \t]*/?>"
@@ -307,19 +312,19 @@ INLINE_HTML_TAG_PATTERN = re.compile(
     r"""
     <
     (?: [A-Za-z][A-Za-z0-9-]*                      # an open tag
-        (?: \s+ [_:A-Za-z][A-Za-z0-9_.:-]*         # an attribute name
-            (?: \s*=\s*                            # an attribute value
-                (?: [^\s"'=<>`]+ | '[^']*' | "[^"]*" ) )?
+        (?: [ \t]+ [_:A-Za-z][A-Za-z0-9_.:-]*      # an attribute name
+            (?: [ \t]*=[ \t]*                      # an attribute value
+                (?: [^ \t\r\n"'=<>`]+ | '[^']*' | "[^"]*" ) )?
         )*
-        \s* /? >
-      | / [A-Za-z][A-Za-z0-9-]* \s* >              # a closing tag
+        [ \t]* /? >
+      | / [A-Za-z][A-Za-z0-9-]* [ \t]* >           # a closing tag
     )
     """,
     re.VERBOSE,
 )
 
 #: A list marker with nothing after it. It prints as a bullet and no words.
-BARE_LIST_MARKER_PATTERN = re.compile(r"^\s*(?:[-*+]|\d{1,9}[.)])\s*$")
+BARE_LIST_MARKER_PATTERN = re.compile(r"^[ \t]*(?:[-*+]|\d{1,9}[.)])[ \t]*$")
 
 #: One character of a bare link destination, and the nesting CommonMark allows
 #: around it. A bare destination "includes parentheses only if they are
@@ -343,7 +348,7 @@ BARE_LIST_MARKER_PATTERN = re.compile(r"^\s*(?:[-*+]|\d{1,9}[.)])\s*$")
 #: counts it as a control character and the range does not reach it. Kept in
 #: step with the class in ``.github/scripts/check-readability.py``.
 #: <https://spec.commonmark.org/0.31.2/#link-destination>
-_DESTINATION_CHARACTER = r"(?:[^\s\x00-\x1f\x7f()\\]|\\.)"
+_DESTINATION_CHARACTER = r"(?:[^ \x00-\x1f\x7f()\\]|\\.)"
 #: The same rule, as a set rather than as a character class, for the
 #: hand-written scan in ``inline_link_end``: every character that ends a bare
 #: destination. Spelled as a range so the C0 control characters are named once
@@ -390,7 +395,7 @@ LINK_LABEL_MAXIMUM_CHARACTERS = 999
 LINK_REFERENCE_DEFINITION_PATTERN = re.compile(
     rf"""
     ^\ {{0,3}}                               # at most three spaces of indent
-    \[ (?=[^\]]*[^\s\]])                     # a label with at least one nonblank
+    \[ (?=[^\]]*[^ \t\r\n\]])              # a label with at least one nonblank
        (?P<label> (?: [^\[\]\\] | \\. )+ ) \]
     :\ *                                     # the colon, then optional spaces
     {_LINK_DESTINATION}                      # the destination
@@ -418,7 +423,7 @@ LINK_REFERENCE_LABEL_PATTERN = re.compile(r"^ {0,3}\[(?P<label>(?:[^\[\]\\]|\\.)
 #: destination sit on the following line, and the construct still renders
 #: nothing at all.
 LINK_REFERENCE_LABEL_LINE_PATTERN = re.compile(
-    r"^ {0,3}\[(?=[^\]]*[^\s\]])(?P<label>(?:[^\[\]\\]|\\.)+)\]:[ \t]*$"
+    r"^ {0,3}\[(?=[^\]]*[^ \t\r\n\]])(?P<label>(?:[^\[\]\\]|\\.)+)\]:[ \t]*$"
 )
 
 #: A definition's destination, alone on its own line, with the optional title
@@ -748,7 +753,7 @@ def peel_containers(line: str, path: tuple[Container, ...]) -> tuple[str, int]:
 
 def prune_inactive_list_contexts(line: str, list_contexts: list[ListContext]) -> None:
     """Drop active list contexts that a nonblank Markdown line has outdented past."""
-    if not line.strip():
+    if not line.strip(ASCII_HORIZONTAL_WHITESPACE):
         return
 
     while list_contexts:
@@ -756,7 +761,7 @@ def prune_inactive_list_contexts(line: str, list_contexts: list[ListContext]) ->
         remaining, peeled_count = peel_containers(line, top.containment_path)
         if peeled_count == len(top.containment_path):
             return
-        if not remaining.strip():
+        if not remaining.strip(ASCII_HORIZONTAL_WHITESPACE):
             return
         failed_container = top.containment_path[peeled_count]
         if (
@@ -858,7 +863,7 @@ def opens_a_paragraph(content: str, paragraph_open: bool) -> bool:
     two answers part: it closes the one above and opens none below.
     <https://spec.commonmark.org/0.31.2/#setext-headings>
     """
-    if not content.strip():
+    if not content.strip(ASCII_HORIZONTAL_WHITESPACE):
         return False
     if ATX_HEADING_LINE_PATTERN.match(content) is not None:
         return False
@@ -889,7 +894,11 @@ def html_block_state(
     this. Kept identical to the helper in the sibling hook.
     <https://spec.commonmark.org/0.31.2/#html-blocks>
     """
-    if open_block is not None and open_block.condition.end is None and not content.strip():
+    if (
+        open_block is not None
+        and open_block.condition.end is None
+        and not content.strip(ASCII_HORIZONTAL_WHITESPACE)
+    ):
         # A blank line closes the conditions that have no end tag, and the
         # blank line is not itself part of the block.
         open_block = None
@@ -937,7 +946,7 @@ def starts_a_block(
     It is not the question ``opens_a_paragraph`` asks above.
     <https://spec.commonmark.org/0.31.2/#paragraphs>
     """
-    if not content.strip():
+    if not content.strip(ASCII_HORIZONTAL_WHITESPACE):
         return True
     if ATX_HEADING_LINE_PATTERN.match(content) is not None:
         return True
@@ -1540,7 +1549,7 @@ def container_path_ended(line: str, containment_path: tuple[Container, ...]) -> 
     _, peeled_count = peel_containers(line, containment_path)
     if peeled_count == len(containment_path):
         return False
-    if line.strip():
+    if line.strip(ASCII_HORIZONTAL_WHITESPACE):
         return True
     return containment_path[peeled_count].kind == CONTAINER_KIND_BLOCK_QUOTE
 
@@ -1895,7 +1904,8 @@ def renders_as_content(body: str) -> bool:
     while index < len(lines):
         line = lines[index]
         visible, is_in_html_comment = strip_html_comments(line, is_in_html_comment)
-        if not visible.strip() or BARE_LIST_MARKER_PATTERN.match(visible):
+        is_blank = not visible.strip(ASCII_HORIZONTAL_WHITESPACE)
+        if is_blank or BARE_LIST_MARKER_PATTERN.match(visible):
             index += 1
             continue
         span = reference_definition_span(lines, index)

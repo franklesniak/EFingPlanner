@@ -16,6 +16,11 @@ from dataclasses import dataclass
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
+
+#: Spaces and tabs, the only whitespace CommonMark and YAML treat as
+#: horizontal. ``str.strip`` with no argument also removes U+00A0 and the
+#: rest of Unicode, which is how a non-delimiter became a delimiter.
+ASCII_HORIZONTAL_WHITESPACE = " 	"
 PLACEHOLDER_PATTERN = re.compile(
     r"\(default[^)]*to\s+be\s+determined[^)]*\)"
     r"|\bTODO\b\s*:"
@@ -27,7 +32,7 @@ PLACEHOLDER_PATTERN = re.compile(
 )
 ALLOW_TBD_PATTERN = re.compile(r"<!--\s*ALLOW-TBD:\s*\S.*?-->", re.IGNORECASE)
 ALLOWED_LABEL_PATTERN = re.compile(
-    r"^\s*(?:(?:[-*+]|\d{1,9}[.)])\s+)?\*\*(?:Open Questions?|Assumption):\*\*",
+    r"^[ \t]*(?:(?:[-*+]|\d{1,9}[.)])[ \t]+)?\*\*(?:Open Questions?|Assumption):\*\*",
     re.IGNORECASE,
 )
 FENCE_OPEN_PATTERN = re.compile(r"^ {0,3}(?P<marker>`{3,}|~{3,})")
@@ -67,7 +72,7 @@ HTML_BLOCK_ELEMENT_NAMES = (
 HTML_BLOCK_TAG_NAME = r"[A-Za-z][A-Za-z0-9-]*"
 HTML_BLOCK_ATTRIBUTE = (
     r"[ \t]+[_:A-Za-z][A-Za-z0-9_.:-]*"
-    r"""(?:[ \t]*=[ \t]*(?:[^\s"'=<>`]+|'[^']*'|"[^"]*"))?"""
+    r"""(?:[ \t]*=[ \t]*(?:[^ \t\r\n"'=<>`]+|'[^']*'|"[^"]*"))?"""
 )
 HTML_BLOCK_TYPE_SEVEN_PATTERN = re.compile(
     rf"^ {{0,3}}(?:<{HTML_BLOCK_TAG_NAME}(?:{HTML_BLOCK_ATTRIBUTE})*[ \t]*/?>"
@@ -370,7 +375,7 @@ def peel_containers(line: str, path: tuple[Container, ...]) -> tuple[str, int]:
 
 def prune_inactive_list_contexts(line: str, list_contexts: list[ListContext]) -> None:
     """Drop active list contexts that a nonblank Markdown line has outdented past."""
-    if not line.strip():
+    if not line.strip(ASCII_HORIZONTAL_WHITESPACE):
         return
 
     while list_contexts:
@@ -380,7 +385,7 @@ def prune_inactive_list_contexts(line: str, list_contexts: list[ListContext]) ->
             return
         # The line did not peel cleanly to this list's interior. Decide
         # whether the partial peel still keeps the list active.
-        if not remaining.strip():
+        if not remaining.strip(ASCII_HORIZONTAL_WHITESPACE):
             # A blank line inside a partly-peeled container is a continuation.
             return
         failed_container = top.containment_path[peeled_count]
@@ -481,7 +486,7 @@ def opens_a_paragraph(content: str, paragraph_open: bool) -> bool:
     ordinary paragraph of its own, and leaves one open below it.
     <https://spec.commonmark.org/0.31.2/#setext-headings>
     """
-    if not content.strip():
+    if not content.strip(ASCII_HORIZONTAL_WHITESPACE):
         return False
     if ATX_HEADING_LINE_PATTERN.match(content) is not None:
         return False
@@ -512,7 +517,11 @@ def html_block_state(
     this. Kept identical to the helper in the sibling hook.
     <https://spec.commonmark.org/0.31.2/#html-blocks>
     """
-    if open_block is not None and open_block.condition.end is None and not content.strip():
+    if (
+        open_block is not None
+        and open_block.condition.end is None
+        and not content.strip(ASCII_HORIZONTAL_WHITESPACE)
+    ):
         # A blank line closes the conditions that have no end tag, and the
         # blank line is not itself part of the block.
         open_block = None
@@ -573,7 +582,7 @@ def container_path_ended(line: str, containment_path: tuple[Container, ...]) -> 
     _, peeled_count = peel_containers(line, containment_path)
     if peeled_count == len(containment_path):
         return False
-    if line.strip():
+    if line.strip(ASCII_HORIZONTAL_WHITESPACE):
         return True
     return containment_path[peeled_count].kind == CONTAINER_KIND_BLOCK_QUOTE
 
