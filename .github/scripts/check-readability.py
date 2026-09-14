@@ -10,13 +10,14 @@ reliably across dozens of files:
 
 The checker carries one dependency and no more: PyYAML, which decides whether a
 block between two delimiters is front matter. That question is a YAML question,
-and a hand-written grammar for it produced four reviewer findings in two rounds
-before the last of them proved it could not be written -- whether an indented
-line is YAML depends on the line above it, which a line-regular pattern cannot
-see. PyYAML is already pinned in this repository for two other local hooks and
-is installed by the workflow that runs this script. Everything else here stays
-on the standard library, like the prohibited-placeholder hook beside it, so the
-rest of the checker runs on Windows, macOS, Linux, and WSL with no install step.
+and a hand-written grammar for it drew three reviewer findings in two rounds,
+against four of its own alternatives, before the last of them proved it could
+not be written: whether an indented line is YAML depends on the line above it,
+which a line-regular pattern cannot see. PyYAML is already pinned in this
+repository for two other local hooks and is installed by the workflow that runs
+this script. Everything else here stays on the standard library, like the
+prohibited-placeholder hook beside it, so the rest of the checker runs on
+Windows, macOS, Linux, and WSL with no install step.
 
 Scoring prose only
 ------------------
