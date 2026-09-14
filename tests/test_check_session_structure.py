@@ -2913,7 +2913,6 @@ def test_an_angle_run_that_is_no_autolink_keeps_its_backtick() -> None:
 # --- round 7: a block start clears the paragraph above condition 7 ----------
 
 #: The Source Check exemption marker, spelled once for the round-7 cases.
-OFFLINE_MARKER = "<!-- no-source-check: an offline exercise -->"
 
 
 @pytest.mark.parametrize(
