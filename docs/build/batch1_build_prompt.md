@@ -114,10 +114,15 @@ to the eight already-built shared sessions.
   insert versions of the eight shared sessions against the Batch 0 concrete pages (the
   unpiloted baseline). **Check 2** is an adult **watching the child work the new
   Sessions 02, 06, 07, 08 and 11, as the child reaches them**, and fixing what the child
-  struggles with before Batch 2 continues. An automated equivalence read can stand in
-  for Check 1, because it compares two texts. **Nothing stands in for Check 2** — it
-  needs a real child, and no review pass replaces one. You cannot perform either check.
-  Stop at the gate, and hand the human both.
+  struggles with before Batch 2 continues. **An automated equivalence read stands in for
+  Check 1, because it compares two texts — and you can run one, because you author both
+  sides of the comparison and the pre-Batch-1 text is in the repository's history. So run
+  it, and report its result**; the handoff at the end of this brief says exactly what to
+  record. **Nothing stands in for Check 2** — it needs a real child, and no review pass,
+  automated scorer or readability run replaces one, so that half is the human's and stays
+  undone. Running Check 1 clears nothing on its own; half a gate is not a gate. Stop at
+  the gate. Hand the human your Check 1 result to accept or re-read, and hand them Check 2
+  whole.
 
 ## The decisions are binding
 
@@ -232,8 +237,10 @@ add-a-destination checklist. Must contain:
   `framework/CHANGELOG.md` per F10. Do not create the file — Session 34 is not in this
   batch's scope.
 - **The rider, in this exact rewritten form:** *"Sessions not in this table (00-04,
-  07, 09, 13-15, 20-22, 24-29, 31-32, 35, 39, 41, 44-46, 49-53) need no destination
-  facts and are fully neutral. A session can be routed to a pack file without naming a
+  07, 09, 13-15, 20-22, 24-29, 31-32, 35, 39, 41, 44-46, 49-54) need no destination
+  facts and are fully neutral -- 54 included, the optional post-trip session, in which the
+  child compares what they predicted against what actually happened on the real trip and
+  names no place. A session can be routed to a pack file without naming a
   place in its own wording: Sessions 05 and 08 name no place but open the pack's
   starting-sources list, and Sessions 33 and 38 take their currency and cash-culture
   facts from the pack's money reference. Every such pointer is a row in the table
@@ -242,6 +249,15 @@ add-a-destination checklist. Must contain:
   ranges above read `31-32` and `39` for that reason. Do not widen them back to `31-33`
   and `38-39`; a new-destination author uses this list to decide which sessions need no
   destination work at all.
+- **The list ends at 54, and that is the whole session set.** The archived design record
+  counts 55 session files, `00` through `54`: the required set `00`-`53` plus the
+  **Optional** post-trip session, "After You Get Back." An earlier draft of the rider
+  stopped at 53, which left the one optional session unclassified -- a later author
+  building it, or an author adapting the curriculum to a second destination, could not
+  tell from this file whether it needed pack work. It does not: it is one short reflection
+  comparing the child's own estimates against what happened, tied back to Session 53, and
+  it consumes no destination fact. So it goes in the rider and **gets no contract row**.
+  It is still not part of the required `01`-`53` count, and it is not built in this batch.
 - **A per-insert schema section**, stating for each slot: its **filename**, the
   **session that consumes it**, and the **fields it must supply**. **All twelve slots get
   an entry, including the eight this batch does not write** -- the schema is what lets a
@@ -446,7 +462,13 @@ a faux table; then `## Goal`, `## Start Here`, `## Steps`, `## Workspace`,
 `## Artifact Created`, `## Stop Point`, `## Source Check` (only if there is a research
 step), then the optional pointer sections and `## Parent Notes`. The **seven
 mandatory-core fields** are Goal, Start Here, Steps, Workspace, Artifact Created, Stop
-Point, and Source Check when the session has a research step. Optional sections
+Point, and Source Check when the session has a research step. **A session that omits
+`## Source Check` must say why in its own text**, with a
+`<!-- no-source-check: <reason> -->` comment near the top:
+`.github/scripts/check-session-structure.py` fails a non-adult session carrying neither
+the heading nor that marker, and silence is never an exemption. Of the five sessions in
+this section only Session 02 has no research step, and C1 settles it by requiring the
+built no-research form rather than the marker. Optional sections
 (`## Finish and Quality Check`, `## If You Get Stuck`, `## Optional Extension`,
 `## Parent Notes`) are pointer-by-default; a pointer counts the same as full text and
 an omitted optional section is correct, not a gap. **Start Here must be a true
@@ -472,9 +494,16 @@ grids stay narrow enough for portrait letter or A4.
 **C1. `framework/sessions/phase_00_setup/02_family_traveler_profiles.md` (create).**
 Phase 0, **Core**, planner skill *organizing information*, 20–30 minutes, parent
 involvement *5-minute check-in* plus adult relay help for unreachable travelers.
-Artifact: **Traveler profiles and family input notes.** No research step, so Source
-Check is not required; if you include it, use the built form *"No new sources needed
-unless you looked something up."* Materials line, exact wording: *"Materials: your
+Artifact: **Traveler profiles and family input notes.** There is no research step, and
+this session still carries `## Source Check`, in the built no-research form *"No new
+sources needed unless you looked something up."* — the same form Sessions 01, 03 and 13
+already ship. **Do not omit it.** `.github/scripts/check-session-structure.py` is on
+`main` and runs in CI, and it fails a non-adult session that carries neither
+`## Source Check` nor a `<!-- no-source-check: <reason> -->` marker, so the silent
+omission an earlier draft of this item permitted would have shipped a Batch 1 file this
+repository's own structure check rejects. Carrying the built form is also what keeps
+Session 02 consistent with its three Phase 0 siblings and with the full Phases 0-2
+scaffold. Materials line, exact wording: *"Materials: your
 filled-in [Trip-Basics card](../../templates/trip_basics.md) (for the roster), the
 [Traveler Profile template](../../templates/traveler_profile.md), the [Family Interview
 template](../../templates/family_interview.md), the grown-ups' [Current Family Travel
@@ -804,8 +833,13 @@ Previous: [previous session] | Next: [next session]
 ## Parent Notes
 ```
 
-Around it, state: the **seven mandatory-core fields**, and that Source Check is required
-only when the session has a research step; that the other sections are **optional and
+Around it, state: the **seven mandatory-core fields**; that Source Check is required
+only when the session has a research step, **and that a session which omits it declares
+why in its own text**, with a `<!-- no-source-check: <reason> -->` comment near the top --
+`.github/scripts/check-session-structure.py` fails a session carrying neither the heading
+nor that marker, and this is the one deliverable in the batch written to be copied, so a
+skeleton that teaches the rule without its exemption teaches the next author to fail the
+gate; that the other sections are **optional and
 pointer-by-default**, that a pointer counts the same as full text, and that an omitted
 optional section is correct, not a gap; the canonical pointer wordings the built
 sessions use (*"Finished? Use the Finish and Quality Check card in your student
@@ -953,16 +987,32 @@ do not. Do not add the block to a file this brief does not ask for it on.
   fourth thing this repository names but does not build separately: the **origin
   logistics layer**. Passport rules, the home airport, the U.S. Department of State
   reference, and the currency the budget pages are written in all assume a family
-  travelling from the United States. A family travelling from elsewhere swaps four
-  things: the passport authority named in Session 00 and the parent guide; the
-  home-airport and time-zone fields on the Trip-Basics card; the flight-time sentence in
-  the Destination Snapshot session; and the home currency on the budget surfaces -- the
-  rough budget band on the current family travel assumptions page, the budget estimate
-  template, and the first-pass budget session all write amounts with a dollar sign. Swap
-  the symbol for your own currency; nothing else on those pages changes. Beyond the
-  origin logistics layer, nothing in the framework assumes an origin country."* **Do not
+  travelling from the United States. A family travelling from elsewhere swaps three
+  things in the framework: the passport authority named in Session 00 and the parent
+  guide; the home-airport and time-zone fields on the Trip-Basics card, together with the
+  two sentences of adult help beside them, which name US time zones and daylight saving;
+  and the home currency on the budget surfaces -- the rough budget band on the current
+  family travel assumptions page, the budget estimate template, and the first-pass budget
+  session all write amounts with a dollar sign. Swap the symbol for your own currency;
+  nothing else on those pages changes. The destination pack carries the same assumption in
+  its own layer: this pack's child word list and its money reference convert prices into US
+  dollars, and the word list gives Fahrenheit and miles beside the local units. A pack
+  written for a family from somewhere else converts into that family's money and units
+  instead. Beyond the origin logistics layer, nothing in the framework assumes an origin
+  country."* **Do not
   edit those three budget surfaces in this batch** -- none of them is on the deliverables
   list, two of them belong to later phases, and naming them accurately is the whole fix.
+  **Do not "fix" the pack surfaces either.** A5 is required above to carry the dollar
+  conversion forward from the built glossary without change of meaning;
+  `destinations/japan/reference/money_basics.md` is not on the deliverables list at all;
+  and the pack `README.md` is on it only as A6, whose three changes do not reach its
+  money-reference line. Naming the assumption is the fix there too.
+  **And do not list the Destination Snapshot session's flight sentence here.** An earlier
+  draft of this bullet did. The Session 10 conversion table below neutralises *"it is a
+  long flight from the US"* to *"it is a long flight from home"* in this same batch, and
+  its Step 5 row drops *"(it varies by US zone and season)"* alongside, so after Batch 1
+  there is nothing origin-specific left in that session for a family to swap. A swap list
+  that names it sends a reader to a sentence that is already neutral.
 - Pointers to the roadmap, the guides, the templates, the kit, and the destination
   packs. Point to the destination pack rather than restating any destination fact.
 
@@ -1314,14 +1364,19 @@ Batch 1 must land these entries:
   those pages and sessions, so that sentence is false the
   moment you finish, and a human reading it would correctly conclude there is nothing to
   do -- while Batch 2 stays blocked on the gate it describes. Replace **that one sentence**
-  with: *"Batch 1 has now created those pages and sessions, so both checks are ready to
-  run. Neither has been run."* Change nothing else in the bullet. The item stays in **"What
+  with: *"Batch 1 has now created those pages and sessions. The automated equivalence read
+  that stands in for check 1 was run during the build, and its result is in the build
+  report for an adult to accept or re-read. Check 2 has not been run; it needs a real
+  child."* Change nothing else in the bullet. The item stays in **"What
   is still owed to a human"**, stays open, keeps both check descriptions, keeps the
   "unpiloted baseline" caveat, and keeps *"Nothing stands in for check 2."* Do not move it
-  into the `0.2.0` release section and do not mark it done: you cannot perform either
-  check, and an entry that reads as closed would let the repository claim a gate it has not
-  passed. The first bullet in that section, the Batch 0 usability pilot, is unchanged --
-  Batch 1 does not pilot anything.
+  into the `0.2.0` release section and do not mark it done: you cannot perform check 2,
+  and an entry that reads as closed would let the repository claim a gate it has not
+  passed. **Write that sentence to match what you actually did.** If for any reason you
+  did not run the automated equivalence read, say so plainly instead of describing a read
+  that did not happen -- a changelog that reports work nobody did is the same defect as
+  one that reports work as undone after it was finished. The first bullet in that section,
+  the Batch 0 usability pilot, is unchanged -- Batch 1 does not pilot anything.
 - **Then re-read the whole file for any other "not yet" claim this build has falsified.**
   A changelog written before a batch describes a repository that batch changes, and this
   is the fifth time in this brief's review history that a sentence asserting a state has
@@ -1854,8 +1909,8 @@ replacement, the way the built line does.
 | Step 1 | "For example: 'What is the capital of Japan?' or 'What is a bullet train called?'" | Generic examples that work for any destination — "What is the capital city?" or "What money do they use?" |
 
 Everything else is untouched: the Start Here micro-action, the five-field first entry,
-the verification-source step, the carry-over tag, the Workspace table, the "your
-template has a few more boxes … leave those blank for now" bridge to Session 05, the
+the verification-source step, the carry-over tag, the Workspace table, the "Your Source
+Log template has a few more boxes … leave those two blank for now" bridge to Session 05, the
 Stop Point, the Source Check, and the Parent Notes. **This file defines the target
 voice. If the conversion changes its reading level or warmth, the conversion is wrong.**
 
@@ -1950,9 +2005,13 @@ This is the canonical worked example of the whole split.
 | Optional Extension | "between your home and Japan" | "between your home and your destination" |
 
 Open the Steps with the canonical line: **"Open this session's Destination Notes."** Keep
-the neutral artifact name "Destination snapshot page" — it is already correct. Keep "do
-not require mastery," the Source Check on the three surprising facts, and the Parent
-Notes.
+the neutral artifact name "Destination snapshot page" — it is already correct. Keep the
+orientation-not-mastery framing **in the built wording the Parent Notes already carry**,
+*"The goal is orientation, not mastery -- a snapshot, not a report."* The archived design
+record writes that rule as *"Do not require mastery"*; those four words are that record's
+phrasing and appear nowhere in this file, so do not go looking for them and do not write
+them in. The built repository wins, and universal conversion rule 1 preserves the sentence
+that is there. Keep the Source Check on the three surprising facts, and the Parent Notes.
 
 ### Session 12 — Weather, Seasons, and Events (convert; insert `12_seasons_and_events.md`)
 
@@ -2154,12 +2213,19 @@ You are here: Phase 2 (Destination Big Picture), First Taste step 5 of 13. Previ
   Artifact Created, Stop Point, and Source Check when the session has a research step.
   Do not omit one. Source Check is **required** wherever a session has a research step,
   and you should not bolt a hollow research-shaped Source Check onto a session that has
-  none — **but never delete one that is already there.** Sessions 01, 03 and 13 ship
-  today with the built no-research form, *"No new sources needed unless you looked
+  none — **but never delete one that is already there, and never leave its absence
+  silent.** `.github/scripts/check-session-structure.py` fails a session carrying neither
+  `## Source Check` nor one of the two exemption markers,
+  `<!-- audience: adult -->` or `<!-- no-source-check: <reason> -->`. So a session with no
+  research step takes one of two routes and never a third: it carries the built
+  no-research form, or it states in its own text why it has none. Sessions 01, 03 and 13
+  ship today with the built no-research form, *"No new sources needed unless you looked
   something up."* That form is correct, the style guide requires Source Check only where
-  research occurs rather than forbidding it elsewhere, and C1 permits the same form in
+  research occurs rather than forbidding it elsewhere, and C1 **requires** the same form in
   the new Session 02. Removing it would gut three Batch 0 pages and fail the equivalence
-  read. Phases 0–2 use the full task scaffold — do not thin it.
+  read. Session 00 is the worked example of the other route: it is adult-only setup, it
+  carries no `## Source Check`, and it declares both markers on the two lines under its
+  `markdownlint-disable` comment. Phases 0–2 use the full task scaffold — do not thin it.
 - **Worksheet fill-ins are two-column `Prompt | Your answer` Markdown tables**, never
   fenced underscore blocks. The empty answer cell is the fill-in space. Comparison grids
   stay narrow enough for portrait letter or A4.
@@ -2393,6 +2459,14 @@ have no research step and already carry `## Source Check` with the built form *"
 sources needed unless you looked something up."* That is correct and stays — deleting it
 would gut three Batch 0 pages and fail the equivalence read.
 
+**This hand-read is narrower than the gate, so finish it with the gate's own question.**
+Presence-where-research-occurred is only half the rule; the other half is that a session
+**without** the heading has to say why. For every session carrying no `## Source Check`,
+confirm the file carries `<!-- audience: adult -->` or
+`<!-- no-source-check: <reason> -->`. Silence is never an exemption, and a silent session
+passes this reading and fails the gate above. Session 00 is the only session in the tree
+on that route today, and it carries both markers.
+
 Freshness stamps. **The contract above is a placement rule, so the check has to test
 placement.** A check that only asks whether a well-formed stamp occurs *somewhere*
 passes a file whose title carries no stamp at all, and passes a file whose stamp is
@@ -2515,7 +2589,10 @@ rewired Previous/Next chains and the 37 new files actually resolve.
 
 **STOP at the second gate, "Verify the built slice."** On the Full / OER track that gate
 is **two checks, not one** (`framework/CHANGELOG.md`, "What is still owed to a human").
-You can perform neither. Produce a short build report and hand the human these items:
+**Check 1 you can perform, and must. Check 2 you cannot perform, and nothing you do
+substitutes for it.** Running Check 1 does not clear the gate -- half a gate clears
+nothing -- so you still stop here. Produce a short build report and hand the human these
+items:
 
 1. **Gate check 1 — the equivalence read.** An adult verifies that the upgraded
    neutral-skeleton plus insert versions of the eight shared sessions render the same
@@ -2540,8 +2617,16 @@ You can perform neither. Produce a short build report and hand the human these i
    nothing was lost has to cover it. Flag the one deliberate exception in writing: Session
    10's "a long flight from the US" became "a long flight from home" as an origin-layer
    neutralisation, so no insert received it.
-   An automated equivalence read can stand in for this check, because it compares two
-   texts.
+   **An automated equivalence read stands in for this check, and you perform it.** It
+   compares two texts, you authored both sides, and the pre-Batch-1 text of every file
+   named above is in the repository's history. So for each of the nine migrations --
+   the eight shared sessions and the glossary move -- compare the pre-Batch-1 text against
+   the built page plus whatever insert or reference file received the content, and record
+   the outcome: accounted for in full, or the specific line you could not place. **Report
+   that as Check 1, run, with its result** -- not as background material for somebody
+   else's read. You wrote both sides, so an adult may still choose to read it themselves;
+   that is their call and it does not make this check undone. F10 records the same fact in
+   `framework/CHANGELOG.md`.
 2. **Gate check 2 — the child observation.** An adult watches the child work the new
    **Sessions 02, 06, 07, 08 and 11**, as the child reaches them (Session 07 is
    Recommended, so it is observed only if the family chooses to do it), and fixes what
