@@ -130,19 +130,21 @@ to the eight already-built shared sessions.
 - **Batch gate.** Batch 1 ends at the second gate, **"Verify the built slice."** On the
   Full / OER track that gate is **two checks, not one**, and `framework/CHANGELOG.md`
   already records both under "What is still owed to a human". **Check 1** is an
-  **equivalence read an adult performs**, comparing the upgraded neutral-skeleton +
-  insert versions of the eight shared sessions against the Batch 0 concrete pages (the
-  unpiloted baseline). **Check 2** is an adult **watching the child work the new
-  Sessions 02, 06, 07, 08 and 11, as the child reaches them**, and fixing what the child
-  struggles with before Batch 2 continues. **An automated equivalence read stands in for
-  Check 1, because it compares two texts — and you can run one, because you author both
-  sides of the comparison and the pre-Batch-1 text is in the repository's history. So run
-  it, and report its result**; the handoff at the end of this brief says exactly what to
-  record. **Nothing stands in for Check 2** — it needs a real child, and no review pass,
-  automated scorer or readability run replaces one, so that half is the human's and stays
-  undone. Running Check 1 clears nothing on its own; half a gate is not a gate. Stop at
-  the gate. Hand the human your Check 1 result to accept or re-read, and hand them Check 2
-  whole.
+  **equivalence read an adult performs**, comparing each upgraded neutral-skeleton
+  session -- together with every insert, reference file or framework doc that received
+  its facts -- against the Batch 0 concrete pages (the unpiloted baseline). **Two of the
+  eight have an insert, not eight**; the conversion section below says what each of the
+  others sent where, and some sent nothing. **Check 2** is an adult **watching the child
+  work the new Sessions 02, 06, 07, 08 and 11, as the child reaches them**, and fixing
+  what the child struggles with before Batch 2 continues. **An automated equivalence read
+  stands in for Check 1, because it compares two texts — and you can run one, because you
+  author both sides of the comparison and the pre-Batch-1 text is in the repository's
+  history. So run it, and report its result**; the handoff at the end of this brief says
+  exactly what to record. **Nothing stands in for Check 2** — it needs a real child, and
+  no review pass, automated scorer or readability run replaces one, so that half is the
+  human's and stays undone. Running Check 1 clears nothing on its own; half a gate is not
+  a gate. Stop at the gate. Hand the human your Check 1 result to accept or re-read, and
+  hand them Check 2 whole.
 
 ## The decisions are binding
 
@@ -381,7 +383,7 @@ add-a-destination checklist. Must contain:
   | `19_other_places_menu.md` | 19 Other Places Research | A menu of further candidate places beyond the deep-dive cities, each with a one-line draw, offered as options to research rather than as a shortlist. Where the pack's major-cities reference already carries that menu, point at it instead of copying it; that reference is their canonical home. |
   | `23_attraction_ideas.md` | 23 Attraction Research Cards | Starter attraction ideas as options to research, mixing high-draw named attractions with low-cost everyday ones, each with what kind of visit it is; anything ticketed, timed or permit-gated flagged "verify." No prices, no hours. |
   | `30_transport_specifics.md` | 30 Trains, Transit, and IC Cards | The transport modes a child plans around, named (long-distance, local, walking, taxis), so the child can sort a day's travel; then a pointer to the pack's transportation reference for the rest -- the stored-value or travel-card options and whether a visitor can get one now, luggage forwarding and station lockers, any pass whose value depends on the itinerary, and a route-planning tool that works today. That reference is their canonical home; do not restate them in the slot. No fares, no pinned journey times. |
-  | `34_lodging_types.md` | 34 Neighborhoods and Hotel Location | The lodging categories a family chooses among, one line each; the occupancy reality -- how many people a room holds, and what a larger party has to plan around. No prices, no named properties. |
+  | `34_lodging_types.md` | 34 Neighborhoods and Hotel Location | The lodging categories a family chooses among, one line each, so the child can sort a night's options; then a pointer to the pack's adult-logistics reference for the occupancy reality -- how many people a room holds, and what a larger party has to plan around. That reference is their canonical home; do not restate it in the slot. No prices, no named properties. |
   | `36_37_food_ideas.md` | 36-37 Food / Restaurant Shortlist | Food types and dining areas as ideas to research; what a family may have to plan around (dietary needs, group seating). No restaurant recommendations, no prices. |
   | `42_reservation_examples.md` | 42 Reservations and Timed Entries | A few experiences that require committing to a date to reserve, each with roughly how far ahead and what kind of gate it is, all framed as categories to re-check rather than current values. No release dates, no prices. |
   | `47_language_etiquette.md` | 47 Language and Etiquette | A short set of everyday phrases; the etiquette points a visiting family actually meets; any custom with rules of its own (bathing, photography, sacred sites), described matter-of-factly and never as something the child will get wrong. |
@@ -397,15 +399,16 @@ add-a-destination checklist. Must contain:
   The reason is mechanical rather than stylistic: **both files carry their own
   `Last reviewed` line**, so a fact written into both is stamped twice and re-checked
   once, and the session then meets two freshness claims with one piece of upkeep behind
-  them. Five of the nine carry the pointer in their own words above, because their
-  reference file exists today: `11_regions_overview.md`, `12_seasons_and_events.md`,
-  `16_18_candidate_cities.md`, `19_other_places_menu.md` and `30_transport_specifics.md`.
-  The other four point at a reference file no batch has written yet --
-  `23_attraction_ideas.md`, `34_lodging_types.md`, `36_37_food_ideas.md` and
-  `47_language_etiquette.md` -- so they inherit the rule, and whichever batch writes
-  either file divides the two then. The remaining three slots have no reference file in
-  the contract at all -- `10_snapshot_facts.md`, `42_reservation_examples.md` and
-  `kid_glossary.md` -- and own their fields outright.
+  them. **Six** of the nine carry the pointer in their own words above: the five whose
+  reference file exists today -- `11_regions_overview.md`, `12_seasons_and_events.md`,
+  `16_18_candidate_cities.md`, `19_other_places_menu.md` and `30_transport_specifics.md`
+  -- and `34_lodging_types.md`, whose reference is not written yet but whose division the
+  contract table above has already made. The other three point at a reference file no
+  batch has written and carry no division yet -- `23_attraction_ideas.md`,
+  `36_37_food_ideas.md` and `47_language_etiquette.md` -- so they inherit the rule, and
+  whichever batch writes either file divides the two then. The remaining three slots have
+  no reference file in the contract at all -- `10_snapshot_facts.md`,
+  `42_reservation_examples.md` and `kid_glossary.md` -- and own their fields outright.
 
   **The transportation row is why this is written down.** Before the rule was stated,
   `30_transport_specifics.md` required a later batch to supply the transport modes, the
@@ -416,6 +419,34 @@ add-a-destination checklist. Must contain:
   of fact a second stamped copy strands. Rows `11_regions_overview.md` and
   `12_seasons_and_events.md` had the pointer from the round that wrote them and the
   other seven did not, which is how one rule came to be applied to two rows out of nine.
+
+  **Dividing a row later means editing the row, in the same pass that writes the
+  reference file.** The floor directly below forbids shipping a slot with fewer
+  fields than its row names, so a batch that split a row's fields between the slot and
+  the reference and left the row alone would break it -- and the deferral sentence above,
+  read against that floor, would otherwise tell a later author to do exactly that and
+  then forbid the result. The order is fixed instead: **narrow this row first**, in the
+  same change that writes the reference file, then build the slot to the row as it now
+  stands. The slot never ships short of its own row, because the row is the thing that
+  moves. Record the narrowing in `framework/CHANGELOG.md`, the way every other contract
+  departure is recorded. **Do not narrow a row without writing its reference file in the
+  same pass**: a row stripped of a field whose new home does not exist yet routes the
+  child nowhere.
+
+  **Row `34_lodging_types.md` is the case that produced that order.** The contract table
+  above already assigns the occupancy reality to `adult_logistics.md`, in its reference
+  column's own parenthetical, while the schema row required the same words of the insert
+  -- *"the occupancy reality -- how many people a room holds, and what a larger party has
+  to plan around"*. Two rows of one contract, in one file, gave one fact two homes, and a
+  new-destination author filling the slot had to duplicate a fact the other row had
+  already placed. **Seven** of the nineteen contract rows scope their reference with a
+  parenthetical, and two of those seven also name an insert: this row and
+  `23_attraction_ideas.md`. Only this one repeated its parenthetical word for word in the
+  schema row -- row 23's reference is scoped *"for food-type attractions"* and its schema
+  row names no food -- which is why it is the row the division rule could be applied to
+  now rather than deferred. It is also adult logistics:
+  how many people a room holds is a rule that changes and that an adult acts on, and the
+  rule above sends every volatile fact to the reference without exception.
 
   **These lists are a floor, not a ceiling.** The batch that writes a slot may find it
   needs one more field and should add it here in the same pass. What it may not do is
@@ -527,7 +558,7 @@ entry rules, or anything volatile.
 Child-facing, and a **routing** insert rather than a second fact page.
 
 **`destinations/japan/reference/regions_overview.md` -- the file E1 creates -- is the
-canonical home for this destination's region facts.** E1 writes the eight regions with a
+canonical home for this destination's region facts.** E1 writes the six areas with a
 short line on each, and the whole of `## Why the regions matter for planning`: the
 country long north to south, how far it stretches, the weather that differs by region,
 and the travel time between regions. **This insert must not write any of that a second
@@ -541,9 +572,11 @@ included -- live in `reference/`. A4 was settled the same way for the seasons, a
 same precedence applies here: **if the two ever disagree, the reference wins.**
 
 Must contain: H1; `Last reviewed`; a "these are starting points, not answers" framing
-line; **the main regions, named** — Tokyo/Kanto, Kyoto, Osaka/Kansai, Hiroshima,
-Hokkaido, Okinawa, the Japanese Alps, Kyushu — as a plain list with no write-up on any of
-them, which is what lets the child start the session's region notes; a statement that the
+line; **the main regions, named** — Kanto (around Tokyo), Kansai (around Kyoto and
+Osaka), the Japanese Alps, Hokkaido, Kyushu, Okinawa — as a plain list with no write-up on
+any of them, which is what lets the child start the session's region notes; **the six
+names are E1's, verbatim**, and the city names in parentheses are locators rather than
+entries of their own, for the reason E1 gives; a statement that the
 child still does the route trade-off later and still owns the route choice; and these two
 routing sentences: *"How each region feels different, how far your destination stretches,
 and why travel time between regions matters are in your pack's [regions
@@ -766,9 +799,13 @@ Must also contain:
 
 - One profile per traveler on the Trip-Basics roster, **written by relationship, not by
   name**. Never write this family's specific relatives into the session.
-- **At least one profile is a live interview** — the child asks a traveler their
-  preferences, what they would love, and what might tire them, and writes the answers
-  down. Written generically ("interview a traveler").
+- **At least one profile comes from an interview the child runs themselves, whenever
+  anyone on the roster is reachable** — the child asks a traveler their preferences, what
+  they would love, and what might tire them, and writes the answers down. Written
+  generically ("interview a traveler"). **The condition is not optional wording.** The
+  relay fallback below is required in the built Session 03's words, and those words end
+  *"The child is never blocked waiting on a schedule."* A session that demands a live
+  interview unconditionally withdraws that promise from the child who needs it most.
 - **The relay fallback**, in the same words the built Session 03 uses: if a traveler is
   not reachable, an adult can relay the question and bring back the answer, or the
   child interviews whoever *is* reachable and marks the rest "asked through a grown-up"
@@ -790,10 +827,35 @@ Must also contain:
 - **No section named "Current Family Travel Assumptions"**, and no prompt copied from
   that page.
 - Stop point (author it; the spec is silent): done when there is one profile per
-  traveler you could reach, at least one of them from a live interview, and the rest
-  marked "asked through a grown-up" or "not decided yet."
+  traveler you could reach yourself or reach through a grown-up, at least one of them
+  from an interview you did yourself **if you could talk to anyone**, and the rest marked
+  "asked through a grown-up" or "not decided yet."
 - A pointer, by name and relative link, to the kit's traveler-profiles folder. Do not
   restate its naming convention.
+
+**The interview clause is conditional, and the relay fallback is what makes it so.** An
+earlier draft wrote the stop point as *"at least one of them from a live interview"* with
+no condition on it, two bullets below a fallback promising that a child is never blocked
+waiting on a schedule. Those two cannot both hold: a child whose travelers are all
+unreachable during the session can complete every profile through the documented relay and
+still never be done, and **a stop point that cannot be reached is the one thing a stop
+point may never be** -- the rule this brief states for Session 06's two branches and
+again for the Session 12 season chart. The built Session 03 already shows the shape,
+which is the same session this item copies the fallback from: its stop point asks for *"at
+least one poll answer written down"* rather than a live one, and it closes *"If some
+travelers are not reachable yet, that is fine -- mark them and move on."* A relayed answer
+is a poll answer there, and a relayed profile is a profile here.
+
+**Do not read that as making the interview optional.** Running one is what this session
+teaches, and the session still asks for one whenever anyone is reachable; the
+For-parents strip's *"adult relay help for unreachable travelers"* is what covers the
+case where nobody is. Write the condition in the child's own words, inside the stop point,
+rather than as a parenthetical exception a child reads as fine print. **Of the five
+sessions this batch creates, four already carry a reachability argument for their stop
+points** -- Session 06 must be reachable on either the book branch or the website branch,
+Session 07 on a plan or a list, Session 08 by filling the artifact in, and Session 11 only
+because the body sends the child to the pointer the stop point depends on. Session 02 was
+the one that did not.
 
 **C2. `framework/sessions/phase_01_research_skills/06_book_research_guidebook.md`
 (create).** Phase 1, **Core**, planner skill *checking sources*, 20–30 minutes, parent
@@ -939,13 +1001,20 @@ instructions cannot be read against each other. Must contain:
   where they differ; which is more useful and why.
 - Topic selection, **neutral shapes only, and each one answerable for any destination**:
   *"the best time to visit your destination"*; *"neighborhoods in one town or city
-  there"*; *"how people get around there"*; *"one thing your Destination Notes flagged."*
-  Point the child at the destination pack's sample search terms, generically. **Two of
-  these were not neutral before this brief reached them:** "getting around by train"
-  presumes a rail network and "one big city" presumes a large city, and a child whose
-  destination has neither is sent to research something that is not there. Neither
-  phrase carries a destination name, so neither trips the leak grep -- which is the
-  reason to read these shapes for what they assume rather than for what they name.
+  there"*; *"how people get around there"*; *"one question from your destination pack's
+  sample search terms."* Point the child at the destination pack's sample search terms,
+  generically. **Two of these were not neutral before this brief reached them:**
+  "getting around by train" presumes a rail network and "one big city" presumes a large
+  city, and a child whose destination has neither is sent to research something that is
+  not there. Neither phrase carries a destination name, so neither trips the leak grep --
+  which is the reason to read these shapes for what they assume rather than for what they
+  name. **The fourth shape no longer names Destination Notes, and it is a third
+  assumption of the same family.** Session 08 has no insert slot, and every session that
+  has one -- 10, 11 and 12 -- comes after it in the numbered order, so a child here has
+  not been sent to a Destination Notes page yet and an earlier draft's *"one thing your
+  Destination Notes flagged"* was unanswerable at this point on the path. The sample
+  search terms are already on this session's Materials line, so the replacement points
+  at a page the child has open.
 - **The formative skill check**, in the Parent Notes: ask the child to show how they
   would judge whether a website is trustworthy. If it is shaky, spend more time before
   moving on.
@@ -1393,15 +1462,18 @@ second page."* Do not change its three sections or its table shapes.
 **E1. `destinations/japan/reference/regions_overview.md` (create).** Child-facing, read
 as a plain page, parent-readable framing. Required sections, in order: H1; the
 `**Last reviewed:** <month year>` line; a "starting points, not answers" framing line
-in the register the built pack already uses; `## The main regions` — Tokyo/Kanto,
-Kyoto, Osaka/Kansai, Hiroshima, Hokkaido, Okinawa, the Japanese Alps, Kyushu, one short
-line each on how each region feels different, with **no city write-ups and no
-attractions**; `## Why the regions matter for planning` — the country is long north to
-south, it stretches roughly 3,000 kilometres (about 1,900 miles) from its far north to its
-far south, weather differs by region, travel time between regions matters, a first trip
-cannot include everything — **this file is the canonical home for every one of those
-facts**, and A3 routes here rather than repeating them, so the pack states each of them
-once and a later correction has one place to reach rather than two; and `## Cities, and
+in the register the built pack already uses; `## The main regions` — **areas, never
+cities**: Kanto (around Tokyo), Kansai (around Kyoto and Osaka), the Japanese Alps,
+Hokkaido, Kyushu, Okinawa, one short line each on how each **area** differs -- its
+landscape, how its weather differs from the others, how far it sits from them -- with
+**no city write-ups and no attractions**, and a city name only ever in parentheses as a
+locator, carrying no description of its own; `## Why the regions matter for planning` —
+the country is long north to south, it stretches roughly 3,000 kilometres (about 1,900
+miles) from its far north to its far south, weather differs by region, travel time
+between regions matters, a first trip cannot include everything — **this file is the
+canonical home for every one of those facts**, and A3 routes here rather than repeating
+them, so the pack states each of them once and a later correction has one place to reach
+rather than two; and `## Cities, and
 two ways to shape a
 first trip` — **three sentences maximum**, then the link: *"The candidate cities, and two
 ways to shape a
@@ -1411,6 +1483,31 @@ orientation, define basic concepts, suggest research questions, point to trusted
 sources; avoid final recommendations, complete itineraries, and fixed prices or rules.
 Match the built pack's register — matter-of-fact, one neighbour telling another, never
 "mysterious," never "ancient ritual," never implying the child will offend.
+
+**Every entry on that list is an area, and the two that were not have gone.** An
+earlier draft required *"Tokyo/Kanto, Kyoto, Osaka/Kansai, Hiroshima, Hokkaido, Okinawa,
+the Japanese Alps, Kyushu"* and a short line each on how they *feel different*. Two of
+those eight are cities and the pack's own city page says so: `major_cities.md` puts Kyoto
+and Osaka under `## Common first-trip cities` and Hiroshima under `## Other places people
+research`. So the list taught a classification the pack contradicts on the very page
+Session 11 reads next, and the instruction ruled itself out in its own breath -- a line on
+how Kyoto feels different **is** a city write-up, which the same sentence forbids. Kyoto
+and Osaka stay as locators for Kansai and get no line of their own; Hiroshima comes off
+the list; all three keep the entries `major_cities.md` already gives them, and that file
+is byte-identical in this batch. Hokkaido and Okinawa stay because they are areas rather
+than cities, and their lines here describe the area rather than repeating the one-line
+place notes the cities page carries. **Narrowing the list is a choice this brief is free
+to make.** The archived design record writes its own version as an example rather than a
+requirement -- *"For Japan that insert covers, for example: ..."* -- and where the record
+and the built repository differ the built repository wins, so the pack's own city/region
+split is what decides it.
+
+**The rule generalises, and the next destination pack inherits it.** A regions reference
+lists areas. A city belongs on the pack's cities page. A city name appears on the regions
+page only as a locator, in parentheses, with no description attached. A3's insert carries
+the same six names for the same reason, and **the two lists move together or the pack
+states one fact twice** -- the insert names the areas so the child can start their notes,
+and this page is the only home for how each one differs.
 
 **`destinations/japan/reference/major_cities.md` must be byte-identical to its state
 before Batch 1.** Do not edit it.
@@ -1821,6 +1918,14 @@ anywhere, and do not touch
 `framework/templates/current_family_travel_assumptions.md` or its kit copy: G3 keeps
 the choice field and adds no link, because the blank the family fills in is not where a
 policy check belongs.
+
+**This prohibition is scoped to those three routing surfaces and reaches no further.**
+Session 09, Session 05 and D5's AI Notes form are each required elsewhere in this brief to
+carry AI rules at the point of use, and the canonical-concept rule in BUILD RULES states
+that safety exception in full. The three surfaces here are different in kind: each is a
+setup step that asks a parent for a yes or no, so the rule they need is *go read the
+rules first*, and a copy of the rules on a checklist line is a second surface to keep in
+step for no reader at all.
 
 **F7. `framework/docs/citation_style.md` (create).** **The canonical home** for the
 citation rule, the reason and the five forms (OQ-11). Required sections, in order:
@@ -2565,32 +2670,38 @@ end) works and prints portrait.
   with no check in between, and the archived design record requires this page to carry a
   short version of the build scope note **and its gate**. This batch is what falsifies
   the advice: it builds the five sessions the gate's second check watches a child work.
-  **Keep the paragraph and append these two sentences to it**, in the page's own plain
+  **Keep the paragraph and append this passage to it**, in the page's own plain
   parent voice: *"One stop, before you build the next phase: read each rebuilt Phase 0-2
-  session with its Destination Notes beside it, against the version it replaced, and
-  confirm nothing was lost; then watch your child work the five sessions this slice
-  adds -- Sessions 02, 06, 07, 08 and 11, with 07 only if you do it. Fix what you find
-  before you build further -- reading the pages is the easy half, and only watching your
-  child tells you whether the new sessions work."* **Name the five; do not write "the
-  sessions that are new to them".** The next sentence of this same bullet records that no
-  child has worked any page in this repository, so under that fallback every session is
-  new to the child and the phrase reaches all eight rebuilt sessions as well as the five.
-  The gate's second check is scoped to exactly those five everywhere else in this brief
-  -- the batch gate near the top and the handoff at the end both name Sessions 02, 06,
-  07, 08 and 11 -- and the parent-facing copy of it may not be the one surface that
-  widens. Session 07 is Recommended, so it is observed only if the family does it, and
-  the clause says so in the same terms the handoff uses.
-  **The comparison is against the versions those pages replaced, and nothing else.**
-  No child has worked any
+  session against the version it replaced, with whatever page took its destination facts
+  open beside it, and confirm nothing was lost. Some of these sessions have a Destination
+  Notes page. Others sent their facts to a page in the destination pack or to a page in
+  the framework, and a few only changed wording. Then watch your child work the five
+  sessions this slice adds -- Sessions 02, 06, 07, 08 and 11, with 07 only if you do it.
+  Fix what you find before you build further. Reading the pages is the easy half, and
+  only watching your child tells you whether the new sessions work."* **Name the five; do
+  not write "the sessions that are new to them".** The next sentence of this same bullet
+  records that no child has worked any page in this repository, so under that fallback
+  every session is new to the child and the phrase reaches all eight rebuilt sessions as
+  well as the five. The gate's second check is scoped to exactly those five everywhere
+  else in this brief -- the batch gate near the top and the handoff at the end both name
+  Sessions 02, 06, 07, 08 and 11 -- and the parent-facing copy of it may not be the one
+  surface that widens. Session 07 is Recommended, so it is observed only if the family
+  does it, and the clause says so in the same terms the handoff uses. **The comparison is
+  against the versions those pages replaced, and nothing else.** No child has worked any
   page in this repository -- the usability pilot is deferred, and this same page records
   that three sections further down -- so a sentence pointing an adult at "the pages your
   child worked" names something that does not exist and makes the read impossible to
-  start. The insert half is not optional either: this batch moves the destination facts
-  out of the session bodies, so an adult reading only the rebuilt session against the old
-  page finds those facts missing and concludes content was lost. Do not number the batches
-  here, do not cite a spec section, and change nothing else in the section. The
-  pilot-runner section further down the page is the **first** gate and is already written;
-  this is the second one, and the two are not the same check.
+  start. The companion-page half is not optional either: this batch moves the destination
+  facts out of the session bodies, so an adult reading only the rebuilt session against
+  the old page finds those facts missing and concludes content was lost. **And that half
+  may not be written as "its Destination Notes".** Only Sessions 10 and 12 have one;
+  Session 05's material went to a pack reference and to a framework doc, and five of the
+  eight moved nothing. A parent told to find Notes beside a session that has none stops
+  the read at its second page. Name the page that took the facts, and say that some
+  sessions took none -- the wording above does both. Do not number the batches here, do
+  not cite a spec section, and change nothing else in the section. The pilot-runner
+  section further down the page is the **first** gate and is already written; this is the
+  second one, and the two are not the same check.
 
 **H7. `framework/student_guide/progress_tracker.md` (edit).** Two parts: the First Taste
 list, and the "Which sessions need a grown-up" section. Both change.
@@ -2836,8 +2947,28 @@ this batch, and an unlisted file is not yours to touch.
 
 **A conversion is an edit, not a re-author.** The Batch 0 page is the baseline
 and its meaning must survive. The equivalence gate compares rendered content: an adult
-reads the upgraded session plus its insert against the Batch 0 page and confirms nothing
-was lost.
+reads the upgraded session, together with every insert, reference file or framework doc
+that received its facts, against the Batch 0 page and confirms nothing was lost.
+
+**Two of these ten sessions have a Destination Notes page, and every statement of this
+gate has to say so.** Universal conversion rule 3 below scopes the phrase itself to the
+sessions the contract routes to an insert -- **10** and **12** -- and this gate is the
+reader's side of the same fact. An instruction to read a rebuilt session *"with its
+Destination Notes beside it"* names a page eight of the ten do not have, and it hides
+where their content actually went: Session 05 sends its two definitions to
+`framework/docs/source_trustworthiness.md` and its sources list to a pack reference,
+Session 12 sends its special-things list and its cherry-blossom paragraph to the pack's
+seasons reference as well as to its insert, and Sessions 00, 01, 03, 04, 09, 13 and 14
+move no destination content at all. The handoff's gate check 1 names a ninth migration
+beside the eight conversions -- `framework/student_guide/travel_glossary.md`'s two
+deleted sections against `destinations/japan/session_inserts/kid_glossary.md` -- and that
+one is not a session. A reader told to look for Notes beside Session 05 finds none,
+concludes the two definitions were dropped, and never opens the framework doc that has
+them. **So every statement of this gate names the insert, reference file or framework
+doc that received the content, and says plainly that some sessions received none.** Four
+surfaces state it -- the batch gate near the top of this brief, this paragraph, H6's
+parent-facing copy, and the handoff's gate check 1 -- and all four read the same way.
+Do not narrow any of them back to "its insert" or "its Destination Notes".
 
 **Universal conversion rules, applied to every session in this section:**
 
@@ -2862,8 +2993,15 @@ was lost.
    `framework/docs/build_style_and_vocab.md` in this batch, so the brief and the style law
    read the same way. **Do not restore the unconditional wording.**
 4. **Remove every relative link into `destinations/japan/`.** Name the resource
-   generically in the Materials line instead — for example, "this session's Destination
-   Notes (from your destination pack)" — never a path.
+   generically in the Materials line instead, and name the page the session actually
+   has. In a session rule 3 gives a slot, that is "this session's Destination Notes
+   (from your destination pack)"; in a session with no slot it is the pack file by its
+   topic, the way Session 05's Materials row below writes "your destination pack's
+   trusted starting sources list". Never a path. **The example is split because rule 3
+   is conditional**: two of the ten sessions in this section have a slot, and the two
+   sessions this rule actually fires on are 05, which has none, and 12, which has one.
+   A single example naming Destination Notes would hand the slotless one the very
+   phrase rule 3 forbids there.
 5. Neutral artifact names only: "Destination snapshot page," never "Japan snapshot
    page."
 6. Keep the seven mandatory-core fields intact; keep the "You are here" navigation aid;
@@ -3441,7 +3579,63 @@ You are here: Phase 2 (Destination Big Picture), First Taste step 5 of 13. Previ
   naming them in running prose would make the brief itself uncommittable.)
 - **Do not restate a canonical concept** — in full or in abbreviated form. Use a
   one-clause reminder plus a relative link to its canonical home. **Do not cite a spec
-  section number in any built file.**
+  section number in any built file.** **Safety and privacy rules are the one exception to
+  the first half, and it is a required exception rather than a tolerated one.** Where this
+  brief tells a session, a form or a page to carry a safety or privacy rule at the point
+  the child or the adult acts on it, write that rule out there in full **and** link its
+  canonical home as well. Never resolve the two instructions by deleting the point-of-use
+  copy.
+
+  **Why the exception is written into the rule rather than left to judgement.** Without
+  it this bullet and the conversion section contradict each other on a safety page: F6
+  makes `framework/docs/ai_use_rules.md` the canonical home of the AI rules and the
+  Session 09 block below requires that session to keep the adult-operated pattern, the
+  allowed jobs, the prohibitions, the privacy rule and the minimum-age check, so a
+  builder reading this bullet literally would either break it or strip point-of-use
+  safety guidance out of the one session where a family first runs an AI tool. The
+  repository has already settled which way that goes, twice. The archived design record
+  places the provided-as-is banner **verbatim on four entry surfaces** and calls it *"the
+  one place a warning is intentionally repeated verbatim rather than pointed-to -- a
+  deliberate, sanctioned exception to the single-source-of-truth rule ... a builder must
+  **not** 'dedupe' it down to a pointer"*, because a safety notice *"must be unmissable on
+  every reading path and must not be skippable by entering through a different door"*. The
+  built tree then does the same thing for a second warning without saying so:
+  `framework/docs/privacy_and_safety.md` declares itself the canonical home of the
+  kid-safe-filter caveat and adds *"Other files carry a short reminder and link here
+  instead of repeating these rules"*, and `framework/parent_guide/setup_checklist.md`
+  step 1 and `framework/sessions/phase_00_setup/00_parent_setup.md` both write the caveat
+  out in full anyway. **All three of those built surfaces are on this batch's edit list**
+  -- the privacy page as F12, the setup checklist through H10, the Session 00 scrub -- and
+  C4 adds a fourth in Session 08, so the unqualified form of this bullet would have sent a
+  builder to delete safety text from pages this brief elsewhere tells them to keep.
+
+  **These are the point-of-use repetitions this batch requires. None may be reduced to a
+  pointer.**
+
+  - **Session 09** keeps the adult-operated pattern, the three allowed jobs, the three
+    prohibitions, the privacy rule including photos and scans of filled-in pages, and the
+    Parent Notes minimum-age verification, although F6 states every one of them.
+  - **Session 05** keeps the three-line "what AI is and is not" block, which F6 states as
+    well. It is the always-core lesson every family gets, AI-free families included.
+  - **D5's AI Notes form** carries the three allowed jobs and no others, the may-not list
+    and the privacy rule, because it is the page open while the tool is running. Its
+    adult-operated pattern is the one clause on that form that does take the
+    reminder-plus-link form, and D5 says so.
+  - **F6 itself** writes `privacy_and_safety.md`'s four AI-privacy bullets out in full
+    and links that page for everything else it owns. F6's own item states the test:
+    AI-specific privacy content is point-of-use safety content and is written out in
+    full.
+  - **Session 00 and Session 08** each keep the kid-safe-filter caveat, beside
+    `privacy_and_safety.md` and the setup checklist.
+
+  **Everything that is not a safety or privacy rule still takes the one-clause-plus-link
+  form, and Session 05's Optional Extension is the worked example on the other side.**
+  Lateral reading and primary-versus-secondary are teaching definitions rather than safety
+  rules, so the conversion sends both explanations to F5 and keeps only their two labels
+  with a reminder and a link. The test is what the sentence protects, not how important
+  it sounds: a rule that keeps a child safe, keeps personal data off a page, or keeps an
+  adult in the loop is repeated where it is acted on; a definition a session can point at
+  is not.
 - **Lint:** markdownlint clean under the repository's committed config, which disables
   **four** rules -- MD013, MD034, MD036 and MD041; MD040 and MD026 stay enabled
   (every fence declares a language; no heading ends in `:` or `?`). Reuse the repo's
@@ -4077,12 +4271,16 @@ substitutes for it.** Running Check 1 does not clear the gate -- half a gate cle
 nothing -- so you still stop here. Produce a short build report and hand the human these
 items:
 
-1. **Gate check 1 — the equivalence read.** An adult verifies that the upgraded
-   neutral-skeleton plus insert versions of the eight shared sessions render the same
-   content as the Batch 0 concrete pages — an equivalence read of built pages against the
-   Batch 0 baseline, not a child re-run. Those Batch 0 pages are unpiloted too, so
-   equivalence proves nothing was lost in the conversion; it does not show that either
-   version works with a child. Make it easy: for each of Sessions 01, 03, 04, 05, 10, 12,
+1. **Gate check 1 — the equivalence read.** An adult verifies that each upgraded
+   neutral-skeleton session, read together with every insert, reference file or framework
+   doc that received its facts, renders the same content as the Batch 0 concrete page —
+   an equivalence read of built pages against the Batch 0 baseline, not a child re-run.
+   **Two of the eight have to be read against an insert and the other six do not, and the
+   rest of this bullet is the authority on where each of those six sent its content**; do
+   not compress this sentence back to "plus insert versions", which names a page six of
+   the eight do not have. Those Batch 0 pages are unpiloted too, so equivalence proves
+   nothing was lost in the conversion; it does not show that either version works with a
+   child. Make it easy: for each of Sessions 01, 03, 04, 05, 10, 12,
    13 and 14, list the diff against its pre-Batch-1 state **and name where the content
    went**, so the reviewer can confirm **nothing was lost**. Only one of the eight sends
    facts to an insert -- Session 10 to `10_snapshot_facts.md` -- but **two of them have to
