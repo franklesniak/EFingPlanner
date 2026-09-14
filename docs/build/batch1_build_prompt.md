@@ -255,9 +255,10 @@ reviewed` is a `<month year>` honesty stamp on a `destinations/` fact file. Diff
 fields, different layers, different formats. **They are not sorted by directory.** Most
 files carrying the block are under `framework/`, but A1 carries one and is a
 `destinations/` file: it is a routing contract rather than a fact file, which is also why
-it carries no `Last reviewed` stamp. **Five files this batch creates are required below to
-carry the block** -- A1, D7, D8, F4 and F7 -- so the bump rule above binds all five from
-the batch that next edits them. Count the creates here and not only the three edits above:
+it carries no `Last reviewed` stamp. **Six files this batch creates are required below to
+carry the block** -- A1, D7, D8, F4, F6 and F7 -- so the bump rule above binds all six
+from the batch that next edits them. Count the creates here and not only the three edits
+above:
 F7 is `framework/docs/citation_style.md`, the citation rule's canonical home, and a later
 batch that changes its wording and leaves its date alone breaks this rule the same way.
 Note also that this rule never reaches a protected instruction file — those are never
@@ -1386,8 +1387,8 @@ before Batch 1.** Do not edit it.
 
 ### Section F — Framework docs and front matter
 
-Of the **seven** new `framework/docs/` files, **F4 and F7 carry a `## Metadata` block.
-F3, F5, F6, F8 and F9 do not**, and five of the seven going without one is the ordinary
+Of the **seven** new `framework/docs/` files, **F4, F6 and F7 carry a `## Metadata`
+block. F3, F5, F8 and F9 do not**, and four of the seven going without one is the ordinary
 outcome rather than an exception being made. **Take the denominator from the item list,
 not from Section F's numbering.** F3 through F9 are the seven creates in that directory;
 F1 and F2 are `framework/` files outside `docs/`, and F10, F11 and F12 are edits to files
@@ -1406,12 +1407,35 @@ author has to follow, which is design rationale in the policy's own sense.
 `citation_style.md` is the second of that kind: it states when a citation is required,
 fixes the five forms and the exact field names D3, D4, D6 and Session 08 must reproduce,
 and forbids a sixth. That is a schema and a rule, and four other items in this brief are
-written to obey it. F5, F6 and F8 are not in that position -- a guide to source types,
-family-facing AI rules and a glossary make nothing binding on a later author, and Tier 2
-says not to add the block without a concrete consumer. **Being a canonical home does not
-decide it either**, or the line would fall in a different place: F5, F7 and F8 are all
-rows in the style law's canonical-concept-Names table once F11's edit lands, and only F7
-states a rule there.
+written to obey it.
+
+**`ai_use_rules.md` is the third of that kind, and an earlier draft of this paragraph had
+it on the wrong side.** Every section F6 requires is a permission or a prohibition: AI off
+by default; the adult-operated pattern; the minimum-age and supervision check an adult
+performs **before** opting in, with the date recorded; what AI may and may not do; the
+privacy prohibitions; the verification rules. It makes something binding on a later author
+in the plainest form this brief has -- D5's AI Notes form is required to carry *"the same
+three jobs F6 states, and no others"* -- and it is the canonical home of the rules it
+holds, because F6 forbids all three surfaces that route to it from restating them.
+**The decisive fact is in the built tree rather than in an argument.**
+`framework/docs/privacy_and_safety.md` carries the block today, and the `Scope` field
+inside it names **AI-privacy rules** among the rules that page is the single canonical
+home for. Its `## AI use and privacy (if your family uses AI)` section states the
+adult-operated pattern, the no-personal-details rule, the photos-and-scans clause and
+provider retention, and F6 writes those same four out in full on the new page. A rule
+that is Tier 1 on one page does not stop being Tier 1 when a second page takes it over.
+
+**Two of the seven stay on the other side, and the line between them and F6 is what a
+page is for.** `source_trustworthiness.md` (F5) is a guide to judging sources that carries
+one rule among its teaching sections, and `glossary.md` (F8) is a lookup table with a
+router; neither is a rule page end to end, and Tier 2 says not to add the block without a
+concrete consumer.
+**Being a canonical home does not decide it either**, or the line would fall in a
+different place: F5, F7 and F8 are all rows in the style law's canonical-concept-Names
+table once F11's edit lands, and of those three only F7 states a rule a later item has to
+reproduce. F5 is the closest call of the four, and the reason it stays Tier 2 is that
+reason exactly: Session 05's conversion is told to delete two definitions and link to it,
+which makes F5 somewhere to point rather than something to copy.
 
 **The two that fail that test most plainly are F3 and F9**, which is why neither carries
 the block. They are this batch's two read-me-first orientation pages -- what the project
@@ -1470,13 +1494,25 @@ this brief does not ask for it on.
   and a destination pack, fill in their own Trip-Basics card, write a new destination's
   reference facts and inserts, and reuse the whole curriculum unchanged without editing
   any framework file or the first destination — **with the one exception the layer bullet
-  above already carries: until Batch 2 converts them, the later-phase sessions on the
-  leak-exemption list are not neutral yet, and the one that still holds the first
-  destination's facts has to be converted by hand before a second destination is
+  above already carries: until Batch 2 converts or verifies them, the later-phase sessions
+  on the leak-exemption list are not all neutral yet, and the one of them that still holds
+  the first destination's facts has to be converted by hand before a second destination is
   finished.** **Write the exception into this bullet too, rather than leaving the reader
   to carry it down from the one above.** This is the sentence that says what *done* means,
   so a reuser who reads only this bullet starts the work believing the number of framework
   files they must edit is zero, and finds out otherwise in the one session that is not.
+  **Carry the layer bullet's two states down with it, and do not collapse them into one.**
+  That bullet says Batch 2 **converts or verifies** the five; that one of them still names
+  the destination and links into the pack; and that the other four carry no destination
+  fact and sit on the list only because nobody has checked them. A clause saying Batch 2
+  *converts* all five, or that all five *are not neutral*, sends a reuser to do four
+  conversions the tree does not need -- and the number of framework files they must edit
+  is the one thing this bullet exists to state. **One session converted by hand, not
+  five.** Every other statement of the exemption in this brief already keeps the two
+  states apart: the out-of-scope list near the top, A1's rider and its rules 3 and 6, the
+  layer bullet above, F10's deferred-list entry, F11's replacement bullet, the BUILD
+  RULES exception and the pack-path self-check's stated expectation. This bullet was the
+  one that collapsed them.
   A1's add-a-destination rules 3 and 6 carry the same clause for the same reason, and
   without it the README promises on one line what the pack's own contract withdraws on
   another. Same wording rule as the bullet above -- "the first destination", never the
@@ -1669,7 +1705,12 @@ destination pack; and **lateral reading and primary-versus-secondary defined onc
 so sessions can point rather than re-teach. The file stays destination-neutral.
 
 **F6. `framework/docs/ai_use_rules.md` (create).** Parent-facing, with child-readable
-rules. H1; AI is off by default; the compliant adult-operated pattern; what AI may and
+rules. H1; then a `## Metadata` block directly below it -- `**Status:**`, `**Owner:**`,
+`**Last Updated:**` (your build date, `YYYY-MM-DD`) and `**Scope:**`, plus `**Related:**`
+where a real target exists. **This page is rules end to end**, which is why the
+classification paragraph above puts it on the required side; write the `Scope` field so it
+names what the page is the canonical home for, the way `privacy_and_safety.md` does. Then:
+AI is off by default; the compliant adult-operated pattern; what AI may and
 may not do; privacy when using AI; verification rules. Must contain: **the program is
 AI-free by default and AI is not required at any point**; the always-core AI-literacy
 *concept* lesson lives in Session 05 for every family (AI can fabricate
@@ -2711,8 +2752,23 @@ was lost.
 1. Preserve voice, structure, step order, and every non-destination sentence.
 2. **Every fact removed from a body must land in an insert or a reference file.** Do not
    drop a destination fact during conversion.
-3. Replace place facts with the exact phrase **"open this session's Destination Notes"**
-   plus neutral prompts.
+3. **In a session the contract routes to an insert**, replace place facts with the exact
+   phrase **"open this session's Destination Notes"** plus neutral prompts. **In a session
+   with no slot, do not write that phrase at all**: there are no matching Notes for the
+   child to open, and a prompt pointing at a page that does not exist is a worse defect
+   than the leak it replaced. Of the ten sessions in this section, exactly **two** have a
+   slot -- **10** (`10_snapshot_facts.md`) and **12** (`12_seasons_and_events.md`) -- and
+   the other eight take the neutral prompt and no phrase: **00, 01, 03, 04, 05, 09, 13 and
+   14**. Sessions 00 and 14 say so in their own blocks below; the other six were silent,
+   and a rule written as universal is what made those two look like exceptions to it.
+   **The same condition binds Section C's five creates:** only **Session 11** has a slot,
+   A3's `11_regions_overview.md`, and C5 requires the phrase there; C1 to C4 do not write
+   it. So three of the fifteen sessions this batch writes or edits carry the phrase, and
+   twelve do not. The operative style law states the rule in this same conditional form --
+   *"A session that needs place facts writes the exact phrase 'open this session's
+   Destination Notes'"* -- and F11 puts that sentence into
+   `framework/docs/build_style_and_vocab.md` in this batch, so the brief and the style law
+   read the same way. **Do not restore the unconditional wording.**
 4. **Remove every relative link into `destinations/japan/`.** Name the resource
    generically in the Materials line instead — for example, "this session's Destination
    Notes (from your destination pack)" — never a path.
@@ -3058,7 +3114,7 @@ required end state for the numbered child order is:
 01 -> 02 -> 03 -> 04 -> 05 -> 06 -> 07 -> 08 -> [09 if AI] -> 10 -> 11 -> 12 -> 13 -> 14 -> 15
 ```
 
-| # | `You are here:` text (the part before `Previous:`) | Previous | Next | First Taste step | Batch 1 edit? |
+| # | `You are here:` text (the part before `Previous:`) | Previous | Next | First Taste step | Navigation edit? |
 | --- | --- | --- | --- | --- | --- |
 | 00 | `Phase 0 (Setup). This session is **adult-only** -- the child starts at [Session 01](01_project_kickoff.md).` | none | `Next (for the child): [01 Project Kickoff](01_project_kickoff.md)` | none (adult-only) | no |
 | 01 | `Phase 0 (Setup), First Taste step 1 of 13.` | `[00 Parent Setup](00_parent_setup.md) (adult-only)` | `[02 Family Traveler Profiles](02_family_traveler_profiles.md)` | 1 | **yes** — Next was 03 |
@@ -3075,7 +3131,20 @@ required end state for the numbered child order is:
 | 12 | `Phase 2 (Destination Big Picture), First Taste step 6 of 13.` | `[11 Regions and Cities Overview](11_regions_and_cities_overview.md)` | `[13 Trip Goals and Travel Style](13_trip_goals_and_travel_style.md)` | 6 | **yes** — Previous was 10 |
 | 13 | `Phase 2 (Destination Big Picture), First Taste step 7 of 13.` | `[12 Weather, Seasons, and Events](12_weather_seasons_and_events.md)` | `[14 Checkpoint 1: Season Recommendation](14_checkpoint_1_season_recommendation.md)` | 7 | no |
 | 14 | `Phase 2 (Destination Big Picture), First Taste step 8 of 13. **This is Checkpoint 1 -- your first family decision.**` | `[13 Trip Goals and Travel Style](13_trip_goals_and_travel_style.md)` | `[15 City Research Cards](../phase_03_choose_places/15_city_research_cards.md)` | 8 | no |
-| 15 | `Phase 3 (Choose Places), First Taste step 9 of 13.` | `[14 Checkpoint 1: Season Recommendation](../phase_02_destination_big_picture/14_checkpoint_1_season_recommendation.md)` | `[21 Compare Cities](21_compare_cities.md)` | 9 | no — listed so you can confirm Session 15 needs no navigation edit |
+| 15 | `Phase 3 (Choose Places), First Taste step 9 of 13.` | `[14 Checkpoint 1: Season Recommendation](../phase_02_destination_big_picture/14_checkpoint_1_season_recommendation.md)` | `[21 Compare Cities](21_compare_cities.md)` | 9 | no — and Session 15 is outside this batch, so it takes no other edit either |
+
+**The last column is about the navigation line, and about nothing else.** It answers one
+question -- does this session's `You are here:`, `Previous:` and `Next:` block change in
+Batch 1? -- and a `no` in it is not a statement that the file is untouched. **Four rows
+read `no` and are edited anyway:** Session 00 is one of Section B's two scrubs, and
+Sessions 04, 13 and 14 are three of its eight conversions; Session 04 is this batch's
+golden exemplar and is rewritten line by line. **Section B is the authority for which
+files this batch edits, and this table is the authority for what the navigation lines
+say.** Neither answers the other's question. An earlier draft headed this column
+`Batch 1 edit?`, which made those four rows read as permission to skip a required scrub or
+conversion in the one table the builder has open while rewiring. Row 15 is the single `no`
+that means both: Session 15 is outside this batch entirely, and it is listed only so you
+can confirm that its navigation needs no edit either.
 
 **The italic path-divergence lines.** Sessions 01, 05, 06, 09 and 10 each end with a
 short italic line directly under the navigation line — those five, and no others.
@@ -3614,12 +3683,13 @@ written that way.
 ```bash
 month='(January|February|March|April|May|June|July|August|September|October|November|December)'
 re="^\*\*Last reviewed:\*\* ${month} [0-9]{4}$"
-label='^[[:space:]]*([-*+>|][[:space:]]*)*last reviewed[[:space:]]*:'
+label='^last[[:space:]]+reviewed[[:space:]]*:'
 for f in destinations/*/reference/*.md destinations/*/session_inserts/*.md; do
   [ -e "$f" ] || continue   # an unexpanded glob is not a missing stamp
   case "$(basename "$f")" in README.md) continue;; esac
   first=$(sed -n '/^# /,$p' "$f" | sed -e '1d' -e '/^[[:space:]]*$/d' | head -n 1)
-  labels=$(sed 's/[*_]//g' "$f" | grep -ciE "$label")
+  labels=$(sed -e 's/<!--.*-->//g' -e 's/[*_]//g' -e 's/^[^[:alpha:]]*//' "$f" \
+    | grep -ciE "$label")
   printf '%s\n' "$first" | grep -qE "$re" \
     || echo "STAMP NOT FIRST LINE BELOW H1: $f"
   [ "$labels" = "1" ] \
@@ -3642,22 +3712,47 @@ and fails, which is the right diagnosis. **The uniqueness:** exactly one
 would test a narrower rule than the contract states: a file whose first content line is a
 good stamp and which carries a second, malformed one further down counts exactly one
 well-formed stamp and passes, while a reader sees two freshness claims and one of them is
-junk. **Count the label after normalising the line, never by enumerating the ways it
-can be written.** An earlier form of `$label` spelled the emphasis out as `\*{0,2}`,
-and a bound of two is a bound: `***Last reviewed:***` is valid bold-italic that
-markdownlint accepts -- measured, `0 issues` -- and a file carrying it beside a good
-stamp counted `1` and passed the very invariant this line states. Enumerating harder
-does not fix that, because eleven spellings evade a two-asterisk bound and each new
-alternative is one more thing to have thought of. So `sed 's/[*_]//g'` strips inline
-emphasis first, the pattern then allows any run of list, blockquote and table markers
-ahead of the label, and `grep -i` makes the casing irrelevant. `**Last reviewed:**`,
-`***Last reviewed***:`, `_Last reviewed:_`, `- **Last reviewed:**`,
-`> **Last reviewed:**`, `| **Last reviewed:** |`, `**Last Reviewed:**` and a bare
-`Last reviewed:` all count as one label each. It stays anchored and it still requires
-the colon, so a mention of the field inside a sentence is not a hit -- measured
-against five such sentences, none matches. Every
-well-formed stamp is also a label, so this count subsumes the canonical one rather than
-sitting beside it, and the loop keeps two messages instead of three. A badly
+junk. **Discard everything in front of the label, then match a bare label. Do not
+enumerate the ways a label can be written.** Two earlier forms of `$label` enumerated and
+both were believed complete when they were written. The first spelled the emphasis out as
+`\*{0,2}`, and a bound of two is a bound: `***Last reviewed:***` is valid bold-italic that
+markdownlint accepts -- measured, `0 issues`. The second normalised the emphasis away and
+then listed the containers a label may sit in, `[-*+>|]`. **`#` was not on that list**, so
+`### Last reviewed: August 2026` under a good stamp counted `1` and passed the very
+invariant this line states -- and it passes everything else too: markdownlint accepts it,
+and the two H1 tests above count `#` lines and ask which heading comes first, so neither
+of them looks at an `###`. A third list would be a third guess. **So the normalisation
+does the work and the pattern has nothing left to enumerate.** `sed` removes HTML
+comments, which render as nothing and are therefore not labels; removes inline emphasis;
+and then deletes every character in front of the **first letter** on the line, whatever
+that character is. What survives is asked one question, case-insensitively: does it begin
+with `last reviewed` and a colon?
+
+**State it as a procedure, because you can run this one by hand.** Ignore everything
+before the first letter on a line. If what is left starts with `Last reviewed` and a
+colon, that line is a label. Count those lines. Measured against thirty-two line shapes,
+the previous form returned the wrong count on **nine** of them -- three heading depths,
+three ordered-list markers, a doubled space inside the label, a code span, and a label in
+a table's second cell -- and this form on **one**. Adding `#` to the old list would have
+fixed three of the nine. The six built reference files count exactly `1` under both forms,
+so the change costs nothing on the tree that exists, and eight sentences that merely
+mention the field -- including this brief's own *"Each reference file carries a
+`Last reviewed` date"* -- still count `0`, because the label has to be the first thing on
+its line and the colon is still required.
+
+**The one shape no `grep` reaches, said plainly.** A label that is not the first thing on
+its line -- `| Field | Last reviewed: July 2026 |` -- is invisible to an anchored pattern,
+and dropping the anchor is not the repair: measured, an unanchored count reports a second
+label on four of those eight ordinary sentences. What separates a freshness claim from a
+sentence about the field is what the line means, and that is outside what a regular
+expression decides. **So read a clean run as evidence rather than as proof.** Write the
+stamp where the contract puts it, directly below the H1 on its own line, and write nothing
+else on any line that begins with those two words and a colon. What would decide this
+invariant is a checker that parses Markdown instead of matching lines; it is item 2 of
+issue #30 in this repository, and it is not in this batch.
+
+Every well-formed stamp is also a label, so this count subsumes the canonical one rather
+than sitting beside it, and the loop keeps two messages instead of three. A badly
 broken file can print both messages, which is two facts about it rather than two bugs.
 
 This is POSIX ERE, so `grep -E` accepts it on GNU and BSD alike; `sed`, `head` and
@@ -3672,7 +3767,7 @@ grep caught. The last two are what counting labels adds: a check that counted on
 well-formed stamps read a file carrying one good stamp and one bad one as carrying
 exactly one, and said nothing about it. The normalised form was then run against the
 six built reference files a second time and returns the same `1` on every one of them,
-so the widening buys the sixteen spellings and costs nothing on the tree that exists.
+so the thirty-two-shape matrix above is bought at no cost on the tree that exists.
 
 Expect no output.
 
