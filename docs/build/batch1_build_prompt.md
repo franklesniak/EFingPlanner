@@ -1,5 +1,13 @@
 # GOAL: Build Batch 1 of the EFingPlanner curriculum — the runnable Phase 0–2 vertical slice
 
+## Metadata
+
+- **Status:** Active
+- **Owner:** Repository Maintainers
+- **Last Updated:** 2026-09-13
+- **Scope:** The complete build instruction for Batch 1 of the EFingPlanner curriculum -- the Phase 0-2 vertical slice, Session 00 through Checkpoint 1. It carries every Batch 1 requirement, every applicable acceptance criterion and the adjudicated answer to every open question, so an authoring run never opens the archived specification. It does not cover Batch 0 or Batches 2-4, and it is a build instruction rather than shipped curriculum.
+- **Related:** [Build prompt directory guide](README.md), [Build prompt template](_build_prompt_template.md), [Archived specification](../spec/specification.md)
+
 ## Source of truth
 
 Build strictly from `docs/spec/specification.md` (the complete, combined archived
@@ -245,7 +253,7 @@ add-a-destination checklist. Must contain:
   | `36_37_food_ideas.md` | 36-37 Food / Restaurant Shortlist | Food types and dining areas as ideas to research; what a family may have to plan around (dietary needs, group seating). No restaurant recommendations, no prices. |
   | `42_reservation_examples.md` | 42 Reservations and Timed Entries | A few experiences that require committing to a date to reserve, each with roughly how far ahead and what kind of gate it is, all framed as categories to re-check rather than current values. No release dates, no prices. |
   | `47_language_etiquette.md` | 47 Language and Etiquette | A short set of everyday phrases; the etiquette points a visiting family actually meets; any custom with rules of its own (bathing, photography, sacred sites), described matter-of-factly and never as something the child will get wrong. |
-  | `kid_glossary.md` | Child travel glossary, all sessions | The destination words a child meets on signs, on menus and on trains, one line each; the units the destination uses (temperature, distance, time format) with a kid-sized conversion for each; one currency example, labelled an example to re-check and dated by this file's own `Last reviewed` line. |
+  | `kid_glossary.md` | Child travel glossary, all sessions | The destination words a child meets on signs, on menus and on trains, one line each; the units the destination uses (temperature, distance, time format) with a kid-sized conversion for each; one currency example, labelled an example to re-check and carrying the month the pack last stood behind the figure, which is normally older than this file's own `Last reviewed` line. |
 
   **These lists are a floor, not a ceiling.** The batch that writes a slot may find it
   needs one more field and should add it here in the same pass. What it may not do is
@@ -305,9 +313,12 @@ Child-facing. Must contain: H1; `Last reviewed`; a "these are starting points, n
 answers" framing line; **the main regions** — Tokyo/Kanto, Kyoto, Osaka/Kansai,
 Hiroshima, Hokkaido, Okinawa, the Japanese Alps, Kyushu, one short line each on how
 each feels different; **the destination-specific geography instances** the session may
-not state (the country is long north to south; weather differs by region; travel time
-between regions matters); a statement that the child still does the route trade-off
-later and still owns the route choice; and this routing sentence: *"Two ways to shape
+not state (the country is long north to south; **how far it stretches -- roughly 3,000
+kilometres, about 1,900 miles, from its far north to its far south**, which is the size
+instance the A1 schema requires and the reason travel time matters; weather differs by
+region; travel time between regions matters); a statement that the child still does the
+route trade-off later and still owns the route choice; and this routing sentence:
+*"Two ways to shape
 a first trip are in your pack's [major cities reference](../reference/major_cities.md).
 Read them as anchors to compare against, not as the answer."* **Do not repeat the two
 trip shapes here** — `major_cities.md` is their canonical home (OQ-10). Keep it
@@ -360,16 +371,20 @@ copied without change of meaning.** The currency entry needs one deliberate chan
 it is the only one. **The source line carries no date** -- it says the rate was "recently
 very roughly 150-160 yen" and stops -- so it cannot be copied forward as written without
 putting an undated volatile rate into a new pack file, which this brief's own currency
-rule and the style law both forbid. **The date is this file's `Last reviewed` stamp**, the
-same mechanism `destinations/japan/reference/money_basics.md` already uses for the
-identical figure, so no separate verification date is written and none is claimed. Write
-the entry this way, adopting that reference file's stronger closing warning so the pack's
-two statements of this fact match: *"**Money is in yen.** To judge if something is
-expensive, convert to dollars. Rates move a lot, so look up today's rate and write the
-date beside it. (Example only, good only as of the `Last reviewed` date at the top of this
-page: recently it took very roughly 150-160 yen to make 1 US dollar, so 100 yen was worth a
-bit more than half a US dollar. Do not rely on this number.)"* Do not invent a verification
-month for the rate -- you have not checked it. This is the child travel glossary, kept
+rule and the style law both forbid. **The date the figure gets is July 2026** -- the
+`Last reviewed` stamp on `destinations/japan/reference/money_basics.md`, which carries the
+identical figure and is the month the pack last stood behind it. **Do not date it by this
+file's own stamp.** That stamp is the month you author the page, so on any build after
+July 2026 it would assert the rate was good on a date nobody checked it -- the same false
+verification claim as writing a checked-date by hand, just routed through the stamp. A
+carried-over fact keeps the date it was carried from, and a figure honestly older than the
+page around it is the correct outcome. Write the entry this way, adopting that reference
+file's stronger closing warning so the pack's two statements of this fact match:
+*"**Money is in yen.** To judge if something is expensive, convert to dollars. Rates move
+a lot, so look up today's rate and write the date beside it. (Example only, from July 2026
+and not re-checked since: it took very roughly 150-160 yen to make 1 US dollar, so 100 yen
+was worth a bit more than half a US dollar. Do not rely on this number.)"* Do not invent a
+newer month for the rate -- you have not checked it. This is the child travel glossary, kept
 distinct from the adult executive-function glossary.
 
 **A6. `destinations/japan/README.md` (edit).** Three changes only:
@@ -856,9 +871,12 @@ in the register the built pack already uses; `## The main regions` — Tokyo/Kan
 Kyoto, Osaka/Kansai, Hiroshima, Hokkaido, Okinawa, the Japanese Alps, Kyushu, one short
 line each on how each region feels different, with **no city write-ups and no
 attractions**; `## Why the regions matter for planning` — the country is long north to
-south, weather differs by region, travel time between regions matters, a first trip
-cannot include everything; and `## Cities, and two ways to shape a first trip` — **three
-sentences maximum**, then the link: *"The candidate cities, and two ways to shape a
+south, it stretches roughly 3,000 kilometres (about 1,900 miles) from its far north to its
+far south, weather differs by region, travel time between regions matters, a first trip
+cannot include everything — **write that distance the same way A3 writes it**, so the
+pack's two statements of one fact do not drift; and `## Cities, and two ways to shape a
+first trip` — **three sentences maximum**, then the link: *"The candidate cities, and two
+ways to shape a
 first trip, are in the [major cities reference](major_cities.md)."* Do not summarise
 either trip shape and do not name them. Apply the destination-files rule: give
 orientation, define basic concepts, suggest research questions, point to trusted
@@ -901,12 +919,18 @@ do not. Do not add the block to a file this brief does not ask for it on.
   (another place — a whole new destination pack).
 - **The origin logistics layer**, named but not separately built. Suggested shape: *"A
   fourth thing this repository names but does not build separately: the **origin
-  logistics layer**. Passport rules, the home airport, and the U.S. Department of State
-  reference are written for a family travelling from the United States. A family
-  travelling from elsewhere swaps three things: the passport authority named in Session
-  00 and the parent guide, the home-airport and time-zone fields on the Trip-Basics
-  card, and the flight-time sentence in the Destination Snapshot session. Nothing else
-  in the framework assumes an origin country."*
+  logistics layer**. Passport rules, the home airport, the U.S. Department of State
+  reference, and the currency the budget pages are written in all assume a family
+  travelling from the United States. A family travelling from elsewhere swaps four
+  things: the passport authority named in Session 00 and the parent guide; the
+  home-airport and time-zone fields on the Trip-Basics card; the flight-time sentence in
+  the Destination Snapshot session; and the home currency on the budget surfaces -- the
+  rough budget band on the current family travel assumptions page, the budget estimate
+  template, and the first-pass budget session all write amounts with a dollar sign. Swap
+  the symbol for your own currency; nothing else on those pages changes. Beyond the
+  origin logistics layer, nothing in the framework assumes an origin country."* **Do not
+  edit those three budget surfaces in this batch** -- none of them is on the deliverables
+  list, two of them belong to later phases, and naming them accurately is the whole fix.
 - Pointers to the roadmap, the guides, the templates, the kit, and the destination
   packs. Point to the destination pack rather than restating any destination fact.
 
@@ -1053,9 +1077,10 @@ link to the canonical privacy home rather than re-explaining the privacy rules.
 **F7. `framework/docs/citation_style.md` (create).** **The canonical home** for the
 citation rule, the reason and the five forms (OQ-11). Required sections, in order:
 `## Metadata`; `## Why we write down where a fact came from` — short, adult register,
-child-readable aloud; `## When a citation is required` — only when a book, website, map,
-review, or AI tool was used, and a session with no research step is never asked for one;
-`## The five forms` — one short sub-block per kind, naming its fields exactly:
+child-readable aloud; `## When a citation is required` — whenever an outside source was
+used: a book, a website, a map, a **video**, a review site, or an AI tool; a review site
+is a website and uses the Website form; and a session with no research step is never asked
+for one; `## The five forms` — one short sub-block per kind, naming its fields exactly:
 
 - Website: website title, organization or author, page title, URL, date I checked it.
 - Book: book title, author or publisher, page number, date I used it.
@@ -1064,6 +1089,16 @@ review, or AI tool was used, and a session with no research step is never asked 
   checked somewhere else, autoplay off, timer set.
 - AI: AI tool name, prompt I asked, date used, what it helped with, facts I checked
   somewhere else.
+
+**Why the trigger names `video` and does not name a Review form.** The archived design
+record writes the trigger as "a book, website, map, review, or AI tool" and then defines
+five forms — website, book, map, **video**, AI. Left as written, the one source kind a
+child reaches for first would sit outside the citation rule, while a source kind with no
+form of its own would trigger it. The built repository settles it: the Source Log already
+offers `video` as a source type and offers no `review` type, and the built repository wins
+on conflict. Naming both, and routing a review site to the Website form, keeps the five
+forms at five. Do not add a sixth form, and do not write this explanation into the built
+page — the page states the rule.
 
 Then `## The three verification fields` — what other source can check this; verification
 source; date checked. Then `## The note structure` — fact / why it matters for our trip
@@ -1356,6 +1391,19 @@ line, so nothing else in the block moves.
 
 ### Section G — The trip starter kit, `family/` subtree
 
+**Shared kit-copy rule.** Three files in this section are kit copies of a
+`framework/templates/` blank: G2, G3 and G5. A kit copy is **not** a byte-identical file,
+and a later consistency check needs to know where the boundary is. **The form body -- every
+heading, prompt, table, row and field of the template, in the template's order and its
+wording -- is identical, and the form body is what a consistency check compares.** Around
+it, and only around it, a kit copy carries a fixed wrapper: one copy-out reminder in the
+kit's voice, *"Copy this page out of the repository before you fill it in. Do not commit
+your filled-in work to a public repository."*, and one relative link back to the template
+it came from, both sitting between the H1 and the form body. Nothing else is added,
+nothing is dropped, and no answer is filled in. When a later batch edits one of those
+templates, it edits the matching kit copy's body in the same pass. Where an item below
+says "exact copy" or "must not diverge", it means the form body.
+
 **G1. `framework/trip_starter/README.md` (create).** Parent-facing and child-readable.
 H1; what this kit is; the three copy-out rules; what is in the kit; the
 one-artifact-one-home rule; the privacy reminder and link. The three notes, verbatim in
@@ -1376,16 +1424,18 @@ what the kit contains, naming the folders even where they are built later (`fami
 `recommendations/`, `outputs/`); and that the kit's `family/` folder maps to binder
 **Tab 1, "Start Here."**
 
-**G2. `framework/trip_starter/family/trip_basics.md` (create).** A blank copy of the
-built `framework/templates/trip_basics.md` **after** the D9 edits. It must not diverge
-from it. Fields: destination; home airport; airport code; home time zone or hours ahead
-to the destination; maximum trip length in days; number of travelers (an open answer
-allowed); the traveler roster by relationship, not by private details. Completely blank
-— no filled values, no example family. Include the kit's copy-out reminder and a
-relative link back to the template.
+**G2. `framework/trip_starter/family/trip_basics.md` (create).** A kit copy of the
+built `framework/templates/trip_basics.md` **after** the D9 edits, under the shared
+kit-copy rule above: the form body must not diverge from it. Fields: destination; home
+airport; airport code; home time zone or hours ahead to the destination; maximum trip
+length in days; number of travelers (an open answer allowed); the traveler roster by
+relationship, not by private details. Completely blank — no filled values, no example
+family. The wrapper's backlink points at `../../templates/trip_basics.md`.
 
 **G3. `framework/trip_starter/family/current_family_travel_assumptions.md` (create).** A
-blank copy of the built `framework/templates/current_family_travel_assumptions.md`.
+kit copy of the built `framework/templates/current_family_travel_assumptions.md`, under
+the shared kit-copy rule above; the wrapper's backlink points at
+`../../templates/current_family_travel_assumptions.md`.
 Rough season window or candidate months; rough budget band in the kid-sized form; rough
 trip shape (round trip or open-jaw); likely arrival city; likely departure city (may
 stay open); mobility, dietary, sensory and medical constraints ("none known" is fine;
@@ -1409,10 +1459,10 @@ is fine to write "not decided yet", "unknown", or "ask an adult". Real content, 
 `.gitkeep`, no blank profile copy in this folder, no filled-in trip data, no example
 family. Do not restate the traveler-profile fields.
 
-**G5. `framework/trip_starter/family/family_trip_goals.md` (create).** An exact blank
-copy of `framework/templates/family_trip_goals.md`, with the kit's copy-out reminder and
-a relative link back to `../../templates/family_trip_goals.md`. No filled answers, no
-example family.
+**G5. `framework/trip_starter/family/family_trip_goals.md` (create).** A kit copy of
+`framework/templates/family_trip_goals.md` under the shared kit-copy rule above -- the
+form body identical, the wrapper's backlink pointing at
+`../../templates/family_trip_goals.md`. No filled answers, no example family.
 
 **Cancelled (OQ-5): do not author `framework/trip_starter/family/family_input_summary.md`.**
 
@@ -1490,15 +1540,23 @@ private notebook, not feedback to the child; no personal data); **noticing, not
 grading** (a rough home signal for you, not an assessment of your child); **not
 diagnostic or clinical** (it cannot diagnose anything and is not a substitute for
 professional evaluation); **optional, and a complement** to — not a replacement for —
-the child's own baseline and final reflection. The three behavior-anchored items, scored
-1–5, each mapped to one of the three core executive-function skills: **"Got started
-without much prompting"** (task initiation; *1 = needed heavy prompting to begin almost
-every session; 5 = usually began on their own*); **"Stuck with it past the hard part"**
-(sustaining effort; *1 = stopped or stalled whenever it got hard; 5 = pushed through the
-hard part most of the time*); **"Knew when to stop"** (stopping and self-regulation; *1
-= either quit too early or could not stop polishing; 5 = usually judged "good enough"
-well*). **Recorded three times** — at the start, at the midpoint (around Checkpoint
-3–4), and at the end. Tie it back to the executive-function goal and the
+the child's own baseline and final reflection. Then the three behavior-anchored items,
+scored 1–5. **They are everyday behaviours, not a one-to-one measurement of the three core
+executive-function skills, and the page says that rather than claiming the mapping.** Name
+them in the lay terms `what_is_executive_function.md` uses -- getting started, sustaining
+effort, knowing when to stop -- add a one-clause reminder that the canonical three
+(working memory, cognitive flexibility, inhibitory control) are defined in the design
+principles page, named by Name with a relative link to `../docs/design_principles.md`, and
+say plainly that a three-item home note cannot see cognitive flexibility, so nothing here
+stands in for it. A parent who wants the taxonomy follows the link; a parent who wants a
+rough signal reads the three items. The items: **"Got started without much prompting"**
+(getting started; *1 = needed heavy prompting to begin almost every session; 5 = usually
+began on their own*); **"Stuck with it past the hard part"** (sustaining effort; *1 =
+stopped or stalled whenever it got hard; 5 = pushed through the hard part most of the
+time*); **"Knew when to stop"** (knowing when to stop; *1 = either quit too early or could
+not stop polishing; 5 = usually judged "good enough" well*). **Recorded three times** —
+at the start, at the midpoint (around Checkpoint 3–4), and at the end. Tie it back to the
+executive-function goal and the
 honest-about-evidence
 stance: a rough signal, not proof of transfer. A simple table (item / start / midpoint /
 end) works and prints portrait.
@@ -1621,10 +1679,12 @@ conversion table); the remaining files are:
 | `parent_guide/coaching_and_support.md` | "You recommended Kyoto for three nights -- here's our Kyoto hotel, three nights." | "You recommended three nights in the city you picked -- here's our hotel there, three nights." |
 | `parent_guide/setup_checklist.md` | "time zone or hours ahead to Japan" | "the destination, time zone or hours ahead to it" |
 
-`framework/parent_guide/setup_checklist.md` step 2 also carries the Trip-Basics field
-list; write it as *"your home airport and its code, your destination, your time zone or
-hours ahead to it, your maximum trip length, how many travelers, and the roster by
-relationship."*
+That replacement lands inside step 2's Trip-Basics field list, and it is the only change
+that step needs. The list then reads *"home airport and code, the destination, time zone
+or hours ahead to it, maximum trip length, number of travelers, and the roster by
+relationship."* **Keep that file's own wording.** It does not write "your" in front of
+each field, and Session 00's differently-voiced copy of the same list is not a model for
+it.
 
 ## The conversion work, session by session
 
@@ -1650,6 +1710,19 @@ was lost.
 7. Re-point Previous and Next per the navigation table below.
 8. Keep the trip, origin and roster discipline: no `Chicago`, `ORD`, `17`,
    `grandmother`, `uncle`.
+9. **The density caps bind a converted session, and they outrank a freeze instruction.**
+   Several sessions below say "change nothing else" or name the only lines to touch. That
+   freeze protects voice, structure, step order and content; it does not license leaving a
+   file over the caps the Definition of Done requires of everything this batch edits.
+   Where a conversion leaves a session over the dash budget, the `real`/`genuine(ly)` cap
+   or the `X, not Y` cap, the narrowly required density edit is permitted and expected:
+   rework the neighbouring prose, or leave the count high and write the
+   `<!-- density-exempt: <device> -- <reason> -->` marker the operative style law defines.
+   Read the caps and the counting rules from that file, never from this brief. Never cut a
+   required rule, a safety statement, a Named concept, a preserved item or a piece of the
+   session choreography to make a count smaller: content outranks the budget here as
+   everywhere. Measure every session you touch, and list each density edit in your build
+   report, so the equivalence read can see it was a wording change and not a content loss.
 
 ### Session 00 — Parent Setup (scrub only, no insert)
 
@@ -1658,7 +1731,7 @@ Destination Notes." Four phrase replacements:
 
 | Line | Current text | Neutral replacement |
 | --- | --- | --- |
-| Step 2 | "your time zone or hours-ahead to Japan" | "your home airport and its code, your destination, your time zone or hours ahead to it, your maximum trip length, how many travelers, and the roster by relationship" (the whole field list, per OQ-2) |
+| Step 2 — **replace the whole field list, not the leaking phrase** | "your home airport and its code, your time zone or hours-ahead to Japan, your maximum trip length, how many travelers, and the roster by relationship" | "your home airport and its code, your destination, your time zone or hours ahead to it, your maximum trip length, how many travelers, and the roster by relationship" (the destination is the new field, per OQ-2; every other field keeps its built wording) |
 | "What to tell your child" | "we are taking a trip, and it is Japan" | "we are taking a trip, and the adults have chosen where" |
 | Buy-in gut-check | "show them a few genuinely exciting things about Japan" | "show them a few genuinely exciting things about your destination (the destination pack is a good place to start)" |
 | Full checklist | "If you have never been to Japan" | "If you have never been to your destination" |
@@ -1722,7 +1795,10 @@ navigation only:
 Both quotes below are contracted, and they are contracted in the file: the sentence-level
 voice conventions landed after the first draft of this brief and rewrote this session.
 Match the text you find, and keep the contraction in your replacement -- an uncontracted
-`You are going` here would undo that pass on the exemplar sentence.
+`You are going` here would undo that pass on the exemplar sentence. **The two example
+questions are double-quoted in the file.** The Step 1 row below renders them with single
+quotes only because the cell is already inside quotation marks; write double quotes in the
+replacement, the way the built line does.
 
 | Line | Current text | Neutral replacement |
 | --- | --- | --- |
@@ -1743,7 +1819,7 @@ voice. If the conversion changes its reading level or warmth, the conversion is 
 | Start Here | "Open the [trusted starting sources list](../../../destinations/japan/…) and read just the first two names on it." | "Open your destination pack's trusted starting sources list and read just the first two names on it. That is your start." |
 | Goal | "practice it on a real Japan travel site" | "Learn a quick way to tell if a website can be trusted, and practice it on a real travel site about your destination." |
 | Practice step 1 | "one **official** Japan travel site (for example, the Japan National Tourism Organization) and one **random** travel blog about Japan" | "Open one **official** tourism site for your destination (your destination pack's trusted starting sources list names them) and one **random** travel blog about the same place." |
-| Optional extension | "(The official page may be in Japanese -- use 'translate this page' …)" | "(The official page may be in the local language -- use 'translate this page' to *understand* it, but check anything important against an official English source or a grown-up.)" |
+| Optional extension | "(The official page may be in Japanese -- use 'translate this page' …)" | "(The official page may be in the local language -- use 'translate this page' to *understand* it, but check anything important against an English official source or a grown-up.)" — only `in Japanese` changes; the rest of the sentence, word order included, stays as built |
 
 Preserve: the two-sitting structure, in the built rendering (sitting one is the quick
 trust test plus the AI concept block; sitting two is the Optional Extension "on another
@@ -1840,8 +1916,17 @@ instruction; and the Parent Notes' mixed-stamina "fewer places, deeper" observat
 
 ### Session 14 — Checkpoint 1: Season Recommendation (convert, no insert slot)
 
-**One change only.** The Goal becomes: `Recommend the best time for your family to visit
-your destination.` Change nothing else. **Do not add the phrase "open this session's
+**One leak, plus whatever the density caps require.** The Goal's destination name goes:
+`Recommend the best time for your family to visit your destination, and write it down as
+your first real decision.` **Keep that second clause.** It names no place, universal
+conversion rule 1 preserves every non-destination sentence, and dropping it would lose
+content the equivalence read exists to protect. Change nothing else **except what
+universal conversion rule 9 requires**: this session is over the child-facing `real` cap
+today, both per file and inside `## Steps`, so a literal freeze and the Definition of Done
+cannot both be satisfied without that rule. Apply the operative style law's delete test to
+each occurrence, reword the ones that fail it, and mark the ones that carry meaning. The
+labelled "For parents" strip and `## Parent Notes` are parent register and are measured
+separately -- leave them as they are. **Do not add the phrase "open this session's
 Destination Notes" to this session** — Checkpoint 1 consumes the child's own season
 chart from Session 12, and the contract routes it no slot (OQ-1). Preserve: the seven
 Decision Record fields (best season; backup season; a season or period to be careful
@@ -2273,6 +2358,15 @@ accepts three values — `<!-- audience: adult -->`, `<!-- audience: parent -->`
 `<!-- audience: builder -- the insert/reference contract table -->`. Three Batch 1
 deliverables sit inside the scored globs while being builder-facing, and are instructed
 above to declare `builder`: A1, D7 and D8.
+
+Density caps — **there is no script for these, and the readability scorer does not
+measure them.** The reading-level gate scores sentences; the dash budget, the
+`real`/`genuine(ly)` cap and the `X, not Y` cap are separate rules with their own
+counting rules, and the Definition of Done makes them binding on every child-facing file
+this batch creates or edits. Measure each of those files by hand against the caps and the
+counting rules in `framework/docs/build_style_and_vocab.md`, and record in your build
+report the per-file counts and every density edit or `density-exempt` marker you made. A
+green readability run is not evidence that the caps are met.
 
 Finally, the four repo-wide gates. **They are four separate commands, and `pre-commit`
 is not a superset of the other three.** `.pre-commit-config.yaml` wires exactly two
