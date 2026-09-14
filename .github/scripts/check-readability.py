@@ -182,6 +182,15 @@ FENCE_OPEN_PATTERN = re.compile(r"^ {0,3}(?P<marker>`{3,}|~{3,})")
 #: is. ``BLOCKQUOTE_PATTERN`` stays the prose-stripping copy.
 BLOCK_QUOTE_PREFIX_PATTERN = re.compile(r"^ {0,3}>[ \t]?")
 LIST_ITEM_PATTERN = re.compile(r"^(?P<indent> {0,3})(?P<marker>[-*+]|\d{1,9}[.)])(?P<spacing>[ \t]+)")
+#: A list item with nothing on its own line. ``LIST_ITEM_PATTERN`` above wants
+#: whitespace after the marker, which a marker at the end of a line does not
+#: have, so the container walk does not see one here -- and a table's header
+#: row is where that gap becomes visible. Measured on GitHub's own renderer:
+#: ``-``, ``*``, ``+``, ``1.`` and ``1)`` over a delimiter row form no table,
+#: because each is an empty list item rather than a paragraph, while ``-x``
+#: over the same row forms one.
+#: https://spec.commonmark.org/0.31.2/#list-items
+EMPTY_LIST_ITEM_PATTERN = re.compile(r"^ {0,3}(?:[-*+]|\d{1,9}[.)])[ \t]*$")
 #: Two of the shapes that end the paragraph above them, spelled as
 #: ``.github/scripts/check-session-structure.py`` spells them so that the
 #: hooks share one notion of where a paragraph ends. ``HEADING_PATTERN`` and
@@ -276,6 +285,13 @@ DISPLAYED_HTML_TAG_PATTERN = re.compile(
 #: tag back into the scan. Kept identical to the constant in
 #: ``.github/scripts/check-session-structure.py``.
 #: https://spec.commonmark.org/0.31.2/#raw-html
+#: A ``<`` an HTML parser reads as the start of a tag, however malformed the
+#: rest of it is. CommonMark's raw-HTML grammar above is stricter, and inside
+#: a raw HTML block the page's grammar is the one that decides: the block is
+#: passed through untouched and the browser tokenizes it.
+#: https://html.spec.whatwg.org/multipage/parsing.html#tag-open-state
+MALFORMED_TAG_START_PATTERN = re.compile(r"</?[A-Za-z]")
+
 INLINE_HTML_TAG_PATTERN = re.compile(
     r"""
     <
@@ -460,6 +476,16 @@ _DESTINATION_CHARACTER = r"(?:[^ \x00-\x1f\x7f()\\]|\\.)"
 DESTINATION_STOP_CHARACTERS = frozenset(
     [chr(code) for code in range(0x21)] + ["\x7f"]
 )
+#: The characters CommonMark allows *between* the parts of an inline link's
+#: target -- after the ``(``, between the destination and the title, and
+#: before the ``)``. A line ending is one of them: ``[x](url`` with
+#: ``"title")`` on the next line is one link with a title, measured on
+#: markdown-it 14.3.0 and on GitHub's own renderer. The destination itself may
+#: not hold one, which is why this set is written here rather than folded into
+#: ``DESTINATION_STOP_CHARACTERS`` above -- the two rules point opposite ways
+#: at the same character.
+#: https://spec.commonmark.org/0.31.2/#links
+LINK_TARGET_WHITESPACE = " \t\n"
 _DESTINATION_DEPTH_0 = rf"{_DESTINATION_CHARACTER}*"
 _DESTINATION_DEPTH_1 = rf"(?:{_DESTINATION_CHARACTER}|\({_DESTINATION_DEPTH_0}\))*"
 _DESTINATION_DEPTH_2 = rf"(?:{_DESTINATION_CHARACTER}|\({_DESTINATION_DEPTH_1}\))*"
@@ -542,7 +568,15 @@ LINK_DEFINITION_TITLE_PATTERN = re.compile(
 #: identical to the constant in
 #: ``.github/scripts/check-session-structure.py``.
 #: https://spec.commonmark.org/0.31.2/#link-label
-LINK_LABEL_MAXIMUM_CHARACTERS = 999
+#: A link label's maximum length, measured on GitHub's own renderer rather
+#: than taken from CommonMark's prose, which says 999. A 1,000-character label
+#: resolves there, as a definition and as a use, and a 1,001-character one
+#: does not; markdown-it 14.3.0 enforces no bound at all. The renderer that
+#: decides what the page carries decides this, and erring the other way is the
+#: permissive direction: a bound one character too tight reads a resolved
+#: reference as literal brackets and honours a marker the page hides.
+#: https://spec.commonmark.org/0.31.2/#link-label
+LINK_LABEL_MAXIMUM_CHARACTERS = 1000
 
 #: Every character markdown-it 14.3.0 reads as nothing at all inside a link
 #: label, measured one at a time rather than taken from a class. CommonMark's
@@ -942,6 +976,73 @@ def count_leading_spaces(line: str) -> int:
     return len(line) - len(line.lstrip(" "))
 
 
+def count_indent_columns(line: str) -> int:
+    """Return how many *columns* of indentation ``line`` opens with.
+
+    Not the number ``count_leading_spaces`` above returns, and the difference
+    is the tab. CommonMark measures indentation in columns and expands a tab
+    to the next multiple of four, so a line beginning with one tab starts at
+    column four and is an indented code block -- while a count of *characters*
+    reads zero and the line is classified as prose. A comment written there is
+    text the page prints inside a ``<pre>`` rather than a comment the page
+    hides, and honouring an ``audience: adult`` marker on such a line took a
+    child-facing document out of the reading gate without a word in the
+    report. Measured on both renderers: markdown-it 14.3.0 and GitHub's own
+    renderer each put a tab-indented marker line in a code block.
+
+    The two counts are kept apart rather than merged, because their callers
+    ask different questions of them. ``peel_containers`` counts characters
+    because it then *slices* them, and a column count cannot slice a tab in
+    half; this counts columns because it then *classifies* a line, which is
+    what CommonMark states in columns. Merging them would have made the
+    container walk cut a tab it cannot cut. Kept identical to the helper in
+    ``.github/scripts/check-session-structure.py``.
+    https://spec.commonmark.org/0.31.2/#tabs
+    """
+    columns = 0
+    for character in line:
+        if character == " ":
+            columns += 1
+        elif character == "\t":
+            columns += 4 - columns % 4
+        else:
+            break
+    return columns
+
+
+def indented_code_rows(contents: Sequence[str]) -> frozenset[int]:
+    """Return the rows of one run that CommonMark reads as an indented code block.
+
+    An indented code block may not interrupt a paragraph, and a run holds no
+    blank line, so the only row in a run where one can *begin* is the first;
+    it then continues for as long as the rows stay indented. A row indented
+    four columns under an open paragraph is that paragraph's own continuation
+    line, and every inline rule applies to it: ``Intro`` over a tab-indented
+    ``<!-- audience: adult -->`` really does carry the marker, and skipping it
+    took an adult-facing document into the child gate.
+
+    The indent is counted in columns rather than characters, so a leading tab
+    reaches column four and a line beginning with one is code. Kept identical
+    to the helper in the sibling hook.
+    https://spec.commonmark.org/0.31.2/#indented-code-blocks
+    """
+    rows: set[int] = set()
+    started = False
+    for row, content in enumerate(contents):
+        if not started and not content.strip(ASCII_HORIZONTAL_WHITESPACE):
+            # A run begins with the blank lines that closed the run above it,
+            # and a blank line begins no code block. Counting one as the run's
+            # first row made every code block that followed a blank line
+            # invisible to this helper, which is every one that is not the
+            # first thing in the document.
+            continue
+        started = True
+        if count_indent_columns(content) < 4:
+            break
+        rows.add(row)
+    return frozenset(rows)
+
+
 def peel_containers(line: str, path: tuple[Container, ...]) -> tuple[str, int]:
     """Peel container prefixes from ``line`` in order; return ``(remaining, peeled_count)``.
 
@@ -1230,10 +1331,55 @@ def is_table_delimiter(line: str) -> bool:
     """Return ``True`` when a line is a Markdown table delimiter row.
 
     Outer pipe characters are optional in a Markdown table, so ``--- | ---``
-    is a delimiter row in the same way that ``| --- | --- |`` is. A line with
-    no pipe character is a thematic break, not a table.
+    is a delimiter row in the same way that ``| --- | --- |`` is -- and so,
+    for a one-column table, is a row with no pipe at all.
+
+    Two lines match the pattern and are still not delimiter rows. Both were
+    found by generating rows rather than by enumerating GFM's prose, and both
+    were settled against GitHub's own renderer:
+
+    * **A pipeless row is a delimiter row only when it is not also a Setext
+      underline.** ``--`` under ``| a |`` is the underline, the heading wins
+      and no table forms; ``-:`` under the same header is a one-column table.
+      Refusing every pipeless row -- which this helper did, on the ground that
+      such a row is a thematic break -- lost the colon-bearing case and kept
+      the other by accident.
+    * **A row a list item could open is a list item.** ``- |`` matches the
+      delimiter pattern and renders as a bullet, because the block parser
+      reaches the list before the table extension does.
+
+    Kept identical to the helper in the sibling hooks.
+    https://github.github.com/gfm/#tables-extension-
+    https://spec.commonmark.org/0.31.2/#setext-headings
     """
-    return "|" in line and TABLE_DELIMITER_PATTERN.match(line) is not None
+    if TABLE_DELIMITER_PATTERN.match(line) is None:
+        return False
+    if LIST_ITEM_PATTERN.match(line) is not None:
+        return False
+    return "|" in line or SETEXT_UNDERLINE_PATTERN.match(line) is None
+
+
+def table_starts_here(header: str, delimiter: str) -> int:
+    """Return the column count of the table ``delimiter`` opens under ``header``.
+
+    Zero where the two lines open none. This is GFM's whole precondition in
+    one place -- the delimiter row's own shape, and its agreement with the
+    header row about the number of cells -- so that every caller asks one
+    question rather than assembling its own. The header needs no pipe of its
+    own: ``x`` over ``-:`` is a one-column table on GitHub's own renderer,
+    measured rather than assumed.
+
+    What the header may not be is a list item with nothing on its line. A bare
+    ``-`` is an empty list item and no paragraph at all, so nothing above the
+    delimiter row can be consumed into a table -- and ``LIST_ITEM_PATTERN``
+    does not see it, because that pattern wants whitespace after the marker.
+    This is the one place the gap shows, so it is named here rather than
+    widened there. Kept identical to the helper in the sibling hooks.
+    https://github.github.com/gfm/#tables-extension-
+    """
+    if EMPTY_LIST_ITEM_PATTERN.match(header) is not None:
+        return 0
+    return table_columns(header, delimiter) if is_table_delimiter(delimiter) else 0
 
 
 def container_path_ended(line: str, containment_path: tuple[Container, ...]) -> bool:
@@ -1502,7 +1648,9 @@ def is_link_reference_definition(content: str) -> bool:
     return match is not None and is_link_label(match.group("label"))
 
 
-def opens_a_paragraph(content: str, paragraph_open: bool) -> bool:
+def opens_a_paragraph(
+    content: str, paragraph_open: bool, previous_content: str = ""
+) -> bool:
     """Return whether a line of document text leaves a paragraph open below it.
 
     ``starts_a_block`` below needs this for the two shapes CommonMark makes
@@ -1524,6 +1672,24 @@ def opens_a_paragraph(content: str, paragraph_open: bool) -> bool:
     block condition 7 that may not interrupt one -- and the liberal fallback
     was holding that block shut and counting a heading the page never shows.
 
+    A table's delimiter row is the third shape that needs the state coming in,
+    and it is the Setext underline's twin: it consumes the line above it into
+    a table exactly as an underline consumes it into a heading, and leaves no
+    paragraph below. ``previous_content`` is that line above, already peeled,
+    and is empty when there is none or when the line above sits in a different
+    container -- because GFM reads the header row as the line immediately
+    above the delimiter row, and the two must agree about the number of cells
+    or no table forms at all. Without this the liberal fallback held one
+    paragraph open across a whole table, the HTML block condition 7 below it
+    was refused, and a ``## Goal`` the page never paints was counted.
+
+    This one is settled against GitHub's own renderer rather than against
+    markdown-it 14.3.0, which reads the type-seven tag below a table as a
+    *table row* and paints the heading. It is the first place in this module's
+    history where the arbiter and the production renderer have been measured
+    to part, and the page is what counts.
+    https://github.github.com/gfm/#tables-extension-
+
     ``starts_a_block`` asks the other half of the question -- whether a line
     closes the paragraph *above* it -- and the Setext underline is where the
     two answers part: it closes the one above and opens none below.
@@ -1537,6 +1703,8 @@ def opens_a_paragraph(content: str, paragraph_open: bool) -> bool:
         return False
     if paragraph_open and SETEXT_UNDERLINE_PATTERN.match(content) is not None:
         return False
+    if paragraph_open and table_starts_here(previous_content, content):
+        return False
     if not paragraph_open and is_link_reference_definition(content):
         return False
     return True
@@ -1548,6 +1716,7 @@ def starts_a_block(
     opened: tuple[Container, ...],
     previous_path: tuple[Container, ...],
     paragraph_open: bool,
+    previous_content: str = "",
 ) -> bool:
     """Return whether a line begins a block rather than continuing the one above.
 
@@ -1617,6 +1786,16 @@ def starts_a_block(
         return True
     if SETEXT_UNDERLINE_PATTERN.match(content) is not None and not lazy_continuation:
         return True
+    if table_starts_here(previous_content, content) and not lazy_continuation:
+        # A delimiter row consumes the line above it into a table, which is the
+        # Setext underline's rule at a different block. Both halves are needed
+        # and for the same reason the underline needs both: this says the
+        # paragraph above has ended, and ``opens_a_paragraph`` says none is
+        # open below. Answering only the second left ``paragraph_open`` true
+        # through ``(paragraph_open and not block_starts)``, and the HTML block
+        # condition 7 under the table stayed shut.
+        # https://github.github.com/gfm/#tables-extension-
+        return True
     if any(container.kind == CONTAINER_KIND_LIST for container in opened):
         return True
     return containment_path != previous_path[: len(containment_path)]
@@ -1632,6 +1811,25 @@ def inline_link_end(line: str, open_index: int) -> int:
     thing this module asks of them. Kept identical to the helper in
     ``.github/scripts/check-session-structure.py``.
 
+    The target may cross a soft line break, so this is given the paragraph's
+    joined text rather than one physical line, by both passes. A title holds a
+    line ending happily, and so does the whitespace around the destination --
+    ``[x](url`` over ``"title")`` is one link -- while the destination itself
+    may hold none, bare or angle-bracketed. Those are the three places
+    ``LINK_TARGET_WHITESPACE`` is spelled and the one place it is not.
+
+    A backslash escapes the character after it, and in a *bare* destination a
+    line ending is the one character it cannot escape: ``\\`` at the end of a
+    line is a hard line break there. Reading it as an escape let a target
+    swallow the break and close on a parenthesis two lines down that the
+    production renderer never reached -- which the two hooks answered
+    differently, because one of them strips a line's trailing spaces and the
+    other does not, and the backslash only lands against the line ending once
+    the space behind it is gone. Inside ``<...>`` the rule is the other way and
+    both renderers agree on it, so the escape there is unconditional; the
+    difference is measured rather than reasoned and is written at each of the
+    two loops.
+
     A bare destination ends at every character in
     ``DESTINATION_STOP_CHARACTERS``: the space and the ASCII control
     characters, which is the set CommonMark forbids it. An unbalanced
@@ -1641,12 +1839,17 @@ def inline_link_end(line: str, open_index: int) -> int:
     """
     length = len(line)
     index = open_index + 1
-    while index < length and line[index] in " \t":
+    while index < length and line[index] in LINK_TARGET_WHITESPACE:
         index += 1
 
     if index < length and line[index] == "<":
         cursor = index + 1
-        while cursor < length and line[cursor] not in "<>":
+        while cursor < length and line[cursor] not in "<>\n":
+            # A backslash escapes whatever follows it here, the line ending
+            # included: both renderers read ``<\`` over ``` `> ``` as one
+            # destination and put a ``%0A`` in the href. An *unescaped* line
+            # ending is what ends the attempt, which is why it is in the set
+            # above and not in this one.
             cursor += 2 if line[cursor] == "\\" else 1
         if cursor >= length or line[cursor] != ">":
             return -1
@@ -1656,7 +1859,7 @@ def inline_link_end(line: str, open_index: int) -> int:
         while index < length:
             character = line[index]
             if character == "\\":
-                index += 2
+                index += 1 if line[index + 1 : index + 2] == "\n" else 2
                 continue
             if character in DESTINATION_STOP_CHARACTERS:
                 break
@@ -1671,7 +1874,7 @@ def inline_link_end(line: str, open_index: int) -> int:
             return -1
 
     spaced = index
-    while spaced < length and line[spaced] in " \t":
+    while spaced < length and line[spaced] in LINK_TARGET_WHITESPACE:
         spaced += 1
     if index < spaced < length and line[spaced] in "\"'(":
         closer = {'"': '"', "'": "'", "(": ")"}[line[spaced]]
@@ -1682,7 +1885,7 @@ def inline_link_end(line: str, open_index: int) -> int:
             return -1
         index = cursor + 1
 
-    while index < length and line[index] in " \t":
+    while index < length and line[index] in LINK_TARGET_WHITESPACE:
         index += 1
     return index + 1 if index < length and line[index] == ")" else -1
 
@@ -1871,9 +2074,18 @@ def link_metadata_regions(
             label_close = matching_bracket(line, after)
             if label_close != -1:
                 label = line[after + 1 : label_close] or line[text_start:index]
-                if normalize_link_label(label) in defined_labels:
+                # The length bound is the label's own, before folding: a
+                # reference whose label is too long is no reference at all,
+                # however the definition spells itself. Matching first and
+                # bounding never let a 1,001-character label resolve, and the
+                # construct it resolved into was an image -- whose description
+                # is an attribute, so a comment written there stopped being a
+                # comment and the document left its gate on alt text.
+                if is_link_label(label) and normalize_link_label(label) in defined_labels:
                     metadata, consumed = (after, label_close + 1), label_close + 1
-        elif normalize_link_label(line[text_start:index]) in defined_labels:
+        elif is_link_label(line[text_start:index]) and (
+            normalize_link_label(line[text_start:index]) in defined_labels
+        ):
             metadata, consumed = (after, after), after
 
         if metadata is None or not is_active:
@@ -2007,6 +2219,46 @@ def following_tag_end(
             return -1, -1
         if prefix is None:
             return next_row, start + position
+    return -1, -1
+
+
+def following_link_end(
+    lines: Sequence[ParagraphLine], row: int, index: int
+) -> tuple[int, int]:
+    """Return where the link target opened at ``index`` closes, or ``(-1, -1)``.
+
+    A link's target crosses a soft line break the way a comment and a tag do.
+    Its destination may hold no line ending, but the whitespace around the
+    destination may hold one and a title may hold as many as the paragraph
+    has: ``[x](url "title`` over ``continued")`` is one link with one title,
+    measured on markdown-it 14.3.0 and on GitHub's own renderer. A first pass
+    that read one physical line rejected that target, left the backtick inside
+    the title standing as ordinary text, and paired it with a backtick further
+    down -- so a real ``audience: adult`` comment between them was read as a
+    code span and a child-facing document was taken out of the reading gate.
+
+    The rows are joined with the line endings they had and handed to
+    ``inline_link_end``, which is the same helper the second pass already runs
+    over the same joined text: there is one grammar here and not two. One that
+    never closes is no link at all, and the caller is then right to read its
+    characters as text. Kept in step with the helper in
+    ``.github/scripts/check-session-structure.py``.
+    https://spec.commonmark.org/0.31.2/#links
+    """
+    joined = lines[row].text[index:]
+    starts = [0]
+    for next_row in range(row + 1, len(lines)):
+        starts.append(len(joined) + 1)
+        joined += "\n" + lines[next_row].text[lines[next_row].content_start :]
+    end = inline_link_end(joined, 0)
+    if end == -1:
+        return -1, -1
+    for offset in range(len(starts) - 1, -1, -1):
+        if end > starts[offset]:
+            if offset == 0:
+                return row, index + end
+            closing = lines[row + offset]
+            return row + offset, closing.content_start + end - starts[offset]
     return -1, -1
 
 
@@ -2393,6 +2645,40 @@ def raw_html_comment_spans(
             continue
 
         if line[index] == "<":
+            # A processing instruction, a declaration and a CDATA section are
+            # raw HTML whose content is characters, exactly as they are in the
+            # Markdown inline walk -- this is the same helper
+            # ``link_metadata_regions`` asks there. A ``<!--`` written inside
+            # one begins no second comment: an HTML parser reads
+            # ``<?foo <!-- audience: adult --> ?>`` as one run and there is no
+            # comment node spelled the way the marker is, so lifting a marker
+            # out of it granted an exemption the page never carried and took a
+            # child-facing document out of its gate. The comment itself is
+            # answered above, before this branch, so the run found here is
+            # never the comment.
+            if line.startswith("<?", index) or (
+                line.startswith("<!", index) and not line.startswith("<!--", index)
+            ):
+                # HTML5's bogus comment. A raw HTML block is passed through to
+                # the page as it stands, so what ends one of these runs is the
+                # browser's rule and not CommonMark's: ``<?``, ``<!`` that is
+                # not ``<!--``, and ``<![CDATA[`` each run to the first ``>``,
+                # however their own delimiters are spelled. Measured on
+                # GitHub's own renderer, whose sanitizer removes the whole of
+                # ``<?foo <!-- audience: adult --> ?>`` and leaves the ``?>``
+                # standing: the run swallowed the marker's closing ``>``.
+                #
+                # The run is skipped rather than reported, because the node it
+                # makes is not the marker -- its text merely holds the marker's
+                # characters -- and honouring it exempted a document whose
+                # author declared nothing. A run with no ``>`` on this line is
+                # a residual: the bogus comment continues below and this
+                # reads the next line afresh.
+                bogus_end = line.find(">", index)
+                if bogus_end == -1:
+                    return "".join(spans), False, None
+                index = bogus_end + 1
+                continue
             tag = INLINE_HTML_TAG_PATTERN.match(line, index)
             if tag is not None:
                 index = tag.end()
@@ -2400,6 +2686,21 @@ def raw_html_comment_spans(
             open_tag = html_tag_prefix(line, index)
             if open_tag is not None:
                 return "".join(spans), False, open_tag
+            if MALFORMED_TAG_START_PATTERN.match(line, index) is not None:
+                # A ``<`` followed by a letter, or by ``/`` and a letter, is a
+                # tag to an HTML parser whether or not CommonMark's raw-HTML
+                # grammar accepts it, and a tag runs to its ``>``.
+                # ``<a<!-- audience: adult -->`` is one malformed start tag
+                # with four attributes, measured on ``html.parser``, and the
+                # ``<!--`` inside it is an attribute name rather than a
+                # comment -- so reading a marker out of it exempted a document
+                # whose author declared nothing. The well-formed grammar is
+                # asked first, and the unfinished-tag state above it, so this
+                # only ever catches what neither could.
+                tag_end = line.find(">", index)
+                if tag_end != -1:
+                    index = tag_end + 1
+                    continue
 
         index += 1
 
@@ -2453,6 +2754,9 @@ def scan_paragraph_inlines(
     """
     comments: list[list[str]] = [[] for _ in lines]
     code_spans: list[tuple[int, int, int]] = []
+    indented_code = indented_code_rows(
+        [line.text[line.content_start :] for line in lines]
+    )
     row = 0
     index = 0
     open_brackets = 0
@@ -2466,7 +2770,7 @@ def scan_paragraph_inlines(
             index = 0
             continue
 
-        if index == 0 and count_leading_spaces(line[content_start:]) >= 4:
+        if index == 0 and row in indented_code:
             row += 1
             continue
 
@@ -2522,9 +2826,14 @@ def scan_paragraph_inlines(
             # inline content, so nothing in it opens a span.
             open_brackets -= 1
             if index + 1 < len(line) and line[index + 1] == "(":
-                target_end = inline_link_end(line, index + 1)
-                if target_end != -1:
-                    index = target_end
+                # The target may cross a soft line break: a title holds one,
+                # and so does the whitespace around the destination. Reading
+                # only this physical line rejected such a target, left the
+                # backtick inside the title standing as text, and paired it
+                # with a backtick below -- masking the comment between them.
+                target_row, target_end = following_link_end(lines, row, index + 1)
+                if target_row != -1:
+                    row, index = target_row, target_end
                     continue
             index += 1
             continue
@@ -2728,6 +3037,12 @@ def scan_document_inlines(text: str) -> DocumentInlines:
     active_fence: ActiveFence | None = None
     list_contexts: list[ListContext] = []
     previous_path: tuple[Container, ...] = ()
+    # The line above, carried for the delimiter-row rule in
+    # ``opens_a_paragraph``: its peeled content and the container it sat in.
+    # Cleared at the top of every iteration, so that any branch which leaves
+    # the loop early leaves no header row behind it.
+    previous_content = ""
+    previous_container: tuple[Container, ...] = ()
     paragraph_open = False
     raw_text: str | None = None
     html_block: ActiveHtmlBlock | None = None
@@ -2749,6 +3064,8 @@ def scan_document_inlines(text: str) -> DocumentInlines:
     table_container: tuple[Container, ...] = ()
 
     for number, raw_line in enumerate(lines):
+        above_content, above_container = previous_content, previous_container
+        previous_content, previous_container = "", ()
         line_start = offset
         offset += len(raw_line) + 1
         line = raw_line.rstrip(ASCII_HORIZONTAL_WHITESPACE)
@@ -2783,12 +3100,16 @@ def scan_document_inlines(text: str) -> DocumentInlines:
         # Asked before the block machine rather than after it, because
         # condition 7 is the one start that may not interrupt a paragraph and
         # has to be told when there is no longer one to interrupt.
+        header_above = (
+            above_content if above_container == fence_line.containment_path else ""
+        )
         block_starts = starts_a_block(
             fence_line.content,
             fence_line.containment_path,
             fence_line.opened,
             previous_path,
             paragraph_open,
+            header_above,
         )
         html_block, line_html_block = html_block_state(
             fence_line.content,
@@ -2800,9 +3121,25 @@ def scan_document_inlines(text: str) -> DocumentInlines:
         # sibling hooks use: a run may open only where CommonMark opens a raw
         # HTML block, so an ``<xmp>`` on a line the paragraph above it still
         # holds opens nothing.
-        raw_text, line_raw_text = raw_text_run_state(
+        raw_text, line_raw_text, raw_text_end = raw_text_run_boundary(
             fence_line.content, raw_text, line_html_block is not None
         )
+        if raw_text_run_holds_text(line_raw_text) and raw_text_end != -1:
+            # The run closes part way along this line, and what follows the
+            # closer is not the element's content.
+            # ``<script></script><!-- audience: adult -->`` holds an empty
+            # script and then a real comment, and dropping the whole line
+            # dropped the comment with it -- so an adult-facing document was
+            # scored by the child gate in silence. The run's own span is
+            # blanked and the rest of the line goes on through the walk, which
+            # is what ``extract_prose`` already does with the same boundary.
+            # Blanking rather than slicing keeps the columns the document's:
+            # every offset below here still points where it pointed.
+            prefix_length = len(line) - len(fence_line.content)
+            visible = " " * raw_text_end + fence_line.content[raw_text_end:]
+            line = line[:prefix_length] + visible
+            fence_line = replace(fence_line, content=visible)
+            line_raw_text = None
 
         # A line CommonMark reads as raw HTML opens no fenced block: the block
         # runs to its own end condition and every character on those lines is
@@ -2924,8 +3261,10 @@ def scan_document_inlines(text: str) -> DocumentInlines:
         # then ``<x>`` is one paragraph of three lines, and the ``## Goal``
         # below is a heading.
         paragraph_open = (paragraph_open and not block_starts) or opens_a_paragraph(
-            fence_line.content, paragraph_open
+            fence_line.content, paragraph_open, header_above
         )
+        previous_content = fence_line.content
+        previous_container = fence_line.containment_path
         paragraph.append(
             ParagraphLine(
                 start=line_start,

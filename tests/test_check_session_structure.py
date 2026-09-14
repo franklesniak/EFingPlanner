@@ -2631,11 +2631,19 @@ def test_a_code_span_opening_inside_alt_text_hides_the_marker_after_it() -> None
     assert any('missing "## Source Check"' in message for message in check(text))
 
 
-#: A label one character past what CommonMark allows between the brackets, and
-#: the longest one it does allow. Spelled here so the two tests below cannot
-#: drift apart by a character.
-LABEL_TOO_LONG = "a" * 1000
-LABEL_LONGEST_ALLOWED = "a" * 999
+#: A label one character past what the renderer of record allows between the
+#: brackets, and the longest one it does allow. Spelled here so the two tests
+#: below cannot drift apart by a character.
+#:
+#: Three renderers, three answers, measured one at a time: micromark 4.0.2
+#: caps the label at 999, which is CommonMark's prose; markdown-it 14.3.0
+#: enforces no cap at all; and GitHub's own renderer -- the one that decides
+#: what these files look like -- matches a 1,000-character label and refuses a
+#: 1,001-character one, as a definition and as a reference use alike. The
+#: production renderer is the arbiter where the three disagree, so the bound
+#: here is 1,000.
+LABEL_TOO_LONG = "a" * 1001
+LABEL_LONGEST_ALLOWED = "a" * 1000
 
 
 @pytest.mark.parametrize(
@@ -2645,15 +2653,16 @@ LABEL_LONGEST_ALLOWED = "a" * 999
         ("a one-line definition", f"[{LABEL_TOO_LONG}]: /destination"),
     ],
 )
-def test_a_label_of_a_thousand_characters_is_not_a_definition(label: str, body: str) -> None:
-    """CommonMark caps a link label at 999 characters between the brackets.
+def test_a_label_past_the_bound_is_not_a_definition(label: str, body: str) -> None:
+    """GitHub's renderer caps a link label at 1,000 characters between the brackets.
 
-    Both definition patterns took a label of any length, so a section holding a
-    1,000-character label was consumed as a definition and reported empty.
-    Measured against micromark 4.0.2, which implements the cap: the brackets
-    and the destination are a paragraph the child reads. markdown-it 14.3.0
-    does not implement the cap, which is why this one rule is measured
-    elsewhere.
+    Both definition patterns took a label of any length, so a section holding
+    an overlong label was consumed as a definition and reported empty: the
+    brackets and the destination are a paragraph the child reads. Measured on
+    GitHub's own renderer, which refuses the label at 1,001 characters and
+    matches it at 1,000; micromark 4.0.2 caps at CommonMark's stated 999 and
+    markdown-it 14.3.0 caps nowhere, which is why this one rule is measured on
+    the production renderer rather than on either proxy.
     """
     text = build_session().replace(
         "## Goal\n\nReal content for Goal.\n", f"## Goal\n\n{body}\n", 1
@@ -2671,12 +2680,12 @@ def test_a_label_of_a_thousand_characters_is_not_a_definition(label: str, body: 
         ("a one-line definition", f"[{LABEL_LONGEST_ALLOWED}]: /destination"),
     ],
 )
-def test_a_label_of_nine_hundred_ninety_nine_characters_still_renders_nothing(
+def test_a_label_of_a_thousand_characters_still_renders_nothing(
     label: str, body: str
 ) -> None:
     """A negative control, and the one that keeps the cap off by no characters.
 
-    Measured against micromark 4.0.2: at 999 the definition parses and the
+    Measured on GitHub's own renderer: at 1,000 the definition parses and the
     section prints to the child as a bare heading.
     """
     text = build_session().replace(
@@ -4078,3 +4087,129 @@ def test_a_tab_before_a_pipe_is_not_the_indentation_gfm_allows() -> None:
     """
     assert structure.table_columns(TAB + "| a | b |", "| --- | --- |") == 0
     assert structure.table_columns("   | a | b |", "| --- | --- |") == 2
+
+
+#: A thousand spaces, which is what takes a link label past the length a
+#: renderer will match. Built rather than typed.
+LONG_GAP = " " * 1000
+
+#: One straight double quotation mark, spelled through a name so a test that
+#: builds a link title never has to nest one inside a literal.
+DOUBLE_QUOTE = chr(34)
+
+#: One GFM table, spelled once: a header row and the delimiter row under it.
+TABLE_ROWS = "a | b\n--- | ---\n"
+
+
+def test_a_table_closes_the_paragraph_above_a_type_seven_tag() -> None:
+    """GFM ends the table before the tag, so the block opens and the heading does not.
+
+    This one is settled against GitHub's own renderer, which is the first
+    place this module has measured the arbiter and the production renderer to
+    part: markdown-it 14.3.0 reads the tag as a *table row* and paints the
+    heading, while GitHub opens HTML block condition 7 and the ``## Goal``
+    below it is raw HTML. A fully formed session using this sequence passed
+    with no visible Goal at all.
+    https://github.github.com/gfm/#tables-extension-
+    """
+    scan = structure.scan_document(TABLE_ROWS + "<custom>\n## Goal\n")
+    assert not any(heading.title == "Goal" for heading in structure.find_headings(scan))
+
+
+def test_a_paragraph_still_refuses_a_type_seven_tag() -> None:
+    """The over-application control: only a table closes the paragraph here.
+
+    Condition 7 may not interrupt a paragraph, so an ordinary line above the
+    tag keeps the block shut and the heading is painted. Pipe rows with no
+    delimiter row under them are an ordinary paragraph, and a header and a
+    delimiter row that disagree about the number of cells are too.
+    """
+    for above in ("Intro\n", "a | b\nc | d\n", "a | b\n--- | --- | ---\n"):
+        scan = structure.scan_document(above + "<custom>\n## Goal\n")
+        assert any(
+            heading.title == "Goal" for heading in structure.find_headings(scan)
+        )
+
+
+def test_a_tab_indented_marker_line_is_an_indented_code_block() -> None:
+    """A tab reaches column four, so the line is code and exempts nothing."""
+    document = TAB + OFFLINE_MARKER + "\n"
+    assert "no-source-check" not in structure.scan_document(document).marker_text
+    assert "no-source-check" in structure.scan_document(
+        "   " + OFFLINE_MARKER + "\n"
+    ).marker_text
+
+
+def test_an_indented_line_under_a_paragraph_is_not_a_code_block() -> None:
+    """The over-application control: indented code may not interrupt a paragraph."""
+    document = "Intro\n" + TAB + OFFLINE_MARKER + "\n"
+    assert "no-source-check" in structure.scan_document(document).marker_text
+
+
+def test_a_marker_after_a_closed_raw_text_run_is_a_comment() -> None:
+    """A run that closes part way along a line releases the rest of it."""
+    document = "<script></script>" + OFFLINE_MARKER + "\n"
+    assert "no-source-check" in structure.scan_document(document).marker_text
+    assert "no-source-check" not in structure.scan_document(
+        "<script>" + OFFLINE_MARKER + "\n"
+    ).marker_text
+
+
+def test_a_processing_instruction_in_a_raw_html_block_carries_no_marker() -> None:
+    """The page's rule for these runs is HTML5's bogus comment, not CommonMark's."""
+    for opener in ("<?", "<!", "<![CDATA["):
+        document = "<div>\nbefore " + opener + OFFLINE_MARKER + "\n</div>\n"
+        assert "no-source-check" not in structure.scan_document(document).marker_text
+    assert "no-source-check" in structure.scan_document(
+        "<div>\nbefore " + OFFLINE_MARKER + "\n</div>\n"
+    ).marker_text
+
+
+def test_an_overlong_reference_label_resolves_nothing() -> None:
+    """A label past the length bound is no label, so the image never forms."""
+    document = "[a b]: /url\n\n![" + OFFLINE_MARKER + "][a" + LONG_GAP + "b]\n"
+    assert "no-source-check" in structure.scan_document(document).marker_text
+    at_bound = "a" + " " * 998 + "b"
+    assert len(at_bound) == structure.LINK_LABEL_MAXIMUM_CHARACTERS
+    assert "no-source-check" not in structure.scan_document(
+        "[a b]: /url\n\n![" + OFFLINE_MARKER + "][" + at_bound + "]\n"
+    ).marker_text
+
+
+def test_a_link_title_across_a_soft_break_keeps_its_backtick() -> None:
+    """A link target crosses a soft line break, and the first pass now reads it."""
+    document = (
+        "[x](url " + DOUBLE_QUOTE + "title " + TICK + "\n"
+        "continued" + DOUBLE_QUOTE + ") " + OFFLINE_MARKER + " " + TICK + "close"
+        + TICK + "\n"
+    )
+    assert "no-source-check" in structure.scan_document(document).marker_text
+
+
+def test_a_pipeless_delimiter_row_with_a_colon_is_a_delimiter_row() -> None:
+    """A one-column table needs no pipe; a Setext underline is not one."""
+    assert structure.is_table_delimiter("-:")
+    assert not structure.is_table_delimiter("--")
+    assert not structure.is_table_delimiter("- |")
+    assert structure.is_table_delimiter("--- | ---")
+
+
+def test_an_angle_destination_ends_at_an_unescaped_line_ending() -> None:
+    """``<...>`` holds no line ending of its own, and a backslash is the exception.
+
+    Measured on markdown-it 14.3.0 and on GitHub's own renderer, which agree:
+    an unescaped line ending inside the angle brackets means no link, so the
+    backtick inside them pairs with the one below and the marker between them
+    is a code span; a backslash before the line ending escapes it and the link
+    forms.
+    """
+    unescaped = (
+        "[x](<a" + "\n" + TICK + "b>) " + OFFLINE_MARKER + " " + TICK + "c" + TICK
+        + "\n"
+    )
+    escaped = (
+        "[x](<" + BACKSLASH + "\n" + TICK + ">) " + OFFLINE_MARKER + " "
+        + TICK + "c" + TICK + "\n"
+    )
+    assert "no-source-check" not in structure.scan_document(unescaped).marker_text
+    assert "no-source-check" in structure.scan_document(escaped).marker_text

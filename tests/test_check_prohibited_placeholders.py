@@ -1491,3 +1491,44 @@ def test_a_tab_after_a_list_marker_puts_the_content_at_column_four() -> None:
     outside = "-" + TAB + FENCE + "\n  TBD\n  " + FENCE + "\n"
     assert _find(inside) == []
     assert _find(outside)
+
+
+def test_a_table_closes_the_paragraph_above_a_type_seven_tag() -> None:
+    """A fence inside a raw HTML block is literal, so the placeholder is on the page.
+
+    GFM ends the table before the tag, so HTML block condition 7 opens and
+    every line under it is raw HTML -- backticks included. Holding the
+    paragraph open across the table refused the block, read the backticks as a
+    fence, and the ``TBD`` between them went unreported while GitHub's own
+    renderer printed it.
+    https://github.github.com/gfm/#tables-extension-
+    """
+    table = "a | b\n--- | ---\n"
+    inside_block = table + "<custom>\n" + FENCE + "\nTBD\n" + FENCE + "\n"
+    assert _find(inside_block)
+
+
+def test_a_paragraph_above_the_tag_still_refuses_the_block() -> None:
+    """The over-application control: only a table closes the paragraph here."""
+    after_paragraph = "Intro\n<custom>\n" + FENCE + "\nTBD\n" + FENCE + "\n"
+    assert _find(after_paragraph) == []
+
+
+def test_a_comment_after_a_closed_raw_text_run_hides_its_placeholder() -> None:
+    """A run that closes part way along a line releases the rest of it.
+
+    The browser leaves raw text at the closing tag, so a comment written
+    after it is a real comment and what it holds is not on the page.
+    Reading the whole line as the element's content skipped the comment
+    stripping and reported a placeholder the page never prints.
+
+    The run's own characters stay readable, and that is this hook's
+    difference from its two siblings: they ask whether the characters are
+    markup, and this one asks whether they are a comment. Script data is
+    neither, so a placeholder written inside an open run is still
+    reported.
+    https://html.spec.whatwg.org/multipage/parsing.html#rawtext-state
+    """
+    assert _find("<script></script><!-- TBD -->\n") == []
+    assert _find("<script><!-- TBD -->\n")
+    assert _find("<script></script>TBD\n")

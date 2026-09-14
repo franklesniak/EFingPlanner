@@ -98,6 +98,24 @@ THEMATIC_BREAK_LINE_PATTERN = re.compile(
 SETEXT_UNDERLINE_PATTERN = re.compile(r"^ {0,3}(?:=+|-+)[ \t]*$")
 BLOCK_QUOTE_PREFIX_PATTERN = re.compile(r"^ {0,3}>[ \t]?")
 LIST_ITEM_PATTERN = re.compile(r"^(?P<indent> {0,3})(?P<marker>[-*+]|\d{1,9}[.)])(?P<spacing>[ \t]+)")
+#: A list item with nothing on its own line. ``LIST_ITEM_PATTERN`` above wants
+#: whitespace after the marker, which a marker at the end of a line does not
+#: have, so the container walk does not see one here -- and a table's header
+#: row is where that gap becomes visible. Measured on GitHub's own renderer:
+#: ``-``, ``*``, ``+``, ``1.`` and ``1)`` over a delimiter row form no table,
+#: because each is an empty list item rather than a paragraph, while ``-x``
+#: over the same row forms one.
+#: https://spec.commonmark.org/0.31.2/#list-items
+EMPTY_LIST_ITEM_PATTERN = re.compile(r"^ {0,3}(?:[-*+]|\d{1,9}[.)])[ \t]*$")
+#: A GFM table's delimiter row, which is the only thing that marks a table.
+#: This hook reports no table cell of its own; it carries the pattern because
+#: a delimiter row ends the paragraph above it, and an HTML block condition 7
+#: written under a table may not be refused on the strength of a paragraph
+#: GFM has already closed. Kept identical to the pattern in the sibling hooks.
+#: https://github.github.com/gfm/#tables-extension-
+TABLE_DELIMITER_PATTERN = re.compile(
+    r"^ {0,3}\|?[ \t]*:?-+:?[ \t]*(?:\|[ \t]*:?-+:?[ \t]*)*\|?[ \t]*$"
+)
 
 #: What a bare link destination may hold, as CommonMark spells it: anything but
 #: a space, an ASCII control character and an unescaped parenthesis, and it may
@@ -120,7 +138,15 @@ _LINK_DESTINATION = (
 #: paragraph and leaves one open below it. Kept identical to the constant in
 #: the sibling hooks.
 #: <https://spec.commonmark.org/0.31.2/#link-label>
-LINK_LABEL_MAXIMUM_CHARACTERS = 999
+#: A link label's maximum length, measured on GitHub's own renderer rather
+#: than taken from CommonMark's prose, which says 999. A 1,000-character label
+#: resolves there, as a definition and as a use, and a 1,001-character one
+#: does not; markdown-it 14.3.0 enforces no bound at all. The renderer that
+#: decides what the page carries decides this, and erring the other way is the
+#: permissive direction: a bound one character too tight reads a resolved
+#: reference as literal brackets and honours a marker the page hides.
+#: https://spec.commonmark.org/0.31.2/#link-label
+LINK_LABEL_MAXIMUM_CHARACTERS = 1000
 
 #: Every character markdown-it 14.3.0 reads as nothing at all inside a link
 #: label, measured one at a time rather than taken from a class. CommonMark's
@@ -732,7 +758,107 @@ def is_link_reference_definition(content: str) -> bool:
     return match is not None and is_link_label(match.group("label"))
 
 
-def opens_a_paragraph(content: str, paragraph_open: bool) -> bool:
+def table_row_cells(content: str) -> tuple[tuple[int, str], ...]:
+    """Return each cell of one GFM table row as ``(offset, text)``.
+
+    The offsets are into ``content``. A leading pipe is a delimiter rather than
+    an empty first cell, and a pipe an author escaped is a pipe the cell holds:
+    GFM reads the table before it reads any inline, so ``\\|`` is a cell
+    character even where a code span would otherwise claim it. GFM lets a row
+    carry up to three columns of indentation; a fourth is an indented code
+    block and no table row at all. Kept identical to the helper in the sibling
+    hooks.
+    https://github.github.com/gfm/#tables-extension-
+    """
+    cells: list[tuple[int, str]] = []
+    indent = len(content) - len(content.lstrip(" "))
+    start = indent + 1 if indent < 4 and content[indent:].startswith("|") else 0
+    index = start
+    while index < len(content):
+        if content[index] == "|" and content[index - 1] != "\\":
+            cells.append((start, content[start:index]))
+            start = index + 1
+        index += 1
+    if start < len(content):
+        cells.append((start, content[start:]))
+    return tuple(cells)
+
+
+def table_column_count(content: str) -> int:
+    """Return how many cells GFM reads in one table row."""
+    return len(table_row_cells(content.rstrip(ASCII_HORIZONTAL_WHITESPACE)))
+
+
+def table_columns(header: str, delimiter: str) -> int:
+    """Return a table's column count, or ``0`` when this is not a table at all.
+
+    A delimiter row under a line is not enough. GFM: "The header row must
+    match the delimiter row in the number of cells. If not, a table will not
+    be recognized." Kept identical to the helper in the sibling hooks.
+    https://github.github.com/gfm/#tables-extension-
+    """
+    count = table_column_count(header)
+    return count if count == table_column_count(delimiter) else 0
+
+
+def is_table_delimiter(line: str) -> bool:
+    """Return ``True`` when a line is a Markdown table delimiter row.
+
+    Outer pipe characters are optional in a Markdown table, so ``--- | ---``
+    is a delimiter row in the same way that ``| --- | --- |`` is -- and so,
+    for a one-column table, is a row with no pipe at all.
+
+    Two lines match the pattern and are still not delimiter rows. Both were
+    found by generating rows rather than by enumerating GFM's prose, and both
+    were settled against GitHub's own renderer:
+
+    * **A pipeless row is a delimiter row only when it is not also a Setext
+      underline.** ``--`` under ``| a |`` is the underline, the heading wins
+      and no table forms; ``-:`` under the same header is a one-column table.
+      Refusing every pipeless row -- which this helper did, on the ground that
+      such a row is a thematic break -- lost the colon-bearing case and kept
+      the other by accident.
+    * **A row a list item could open is a list item.** ``- |`` matches the
+      delimiter pattern and renders as a bullet, because the block parser
+      reaches the list before the table extension does.
+
+    Kept identical to the helper in the sibling hooks.
+    https://github.github.com/gfm/#tables-extension-
+    https://spec.commonmark.org/0.31.2/#setext-headings
+    """
+    if TABLE_DELIMITER_PATTERN.match(line) is None:
+        return False
+    if LIST_ITEM_PATTERN.match(line) is not None:
+        return False
+    return "|" in line or SETEXT_UNDERLINE_PATTERN.match(line) is None
+
+
+def table_starts_here(header: str, delimiter: str) -> int:
+    """Return the column count of the table ``delimiter`` opens under ``header``.
+
+    Zero where the two lines open none. This is GFM's whole precondition in
+    one place -- the delimiter row's own shape, and its agreement with the
+    header row about the number of cells -- so that every caller asks one
+    question rather than assembling its own. The header needs no pipe of its
+    own: ``x`` over ``-:`` is a one-column table on GitHub's own renderer,
+    measured rather than assumed.
+
+    What the header may not be is a list item with nothing on its line. A bare
+    ``-`` is an empty list item and no paragraph at all, so nothing above the
+    delimiter row can be consumed into a table -- and ``LIST_ITEM_PATTERN``
+    does not see it, because that pattern wants whitespace after the marker.
+    This is the one place the gap shows, so it is named here rather than
+    widened there. Kept identical to the helper in the sibling hooks.
+    https://github.github.com/gfm/#tables-extension-
+    """
+    if EMPTY_LIST_ITEM_PATTERN.match(header) is not None:
+        return 0
+    return table_columns(header, delimiter) if is_table_delimiter(delimiter) else 0
+
+
+def opens_a_paragraph(
+    content: str, paragraph_open: bool, previous_content: str = ""
+) -> bool:
     """Return whether a line of document text leaves a paragraph open below it.
 
     HTML block condition 7 is the one condition that may not interrupt a
@@ -754,6 +880,24 @@ def opens_a_paragraph(content: str, paragraph_open: bool) -> bool:
     It is not a paragraph, so a bare tag on the line below it opens the HTML
     block condition 7 that may not interrupt one -- and the liberal fallback
     was holding that block shut and counting a heading the page never shows.
+
+    A table's delimiter row is the third shape that needs the state coming in,
+    and it is the Setext underline's twin: it consumes the line above it into
+    a table exactly as an underline consumes it into a heading, and leaves no
+    paragraph below. ``previous_content`` is that line above, already peeled,
+    and is empty when there is none or when the line above sits in a different
+    container -- because GFM reads the header row as the line immediately
+    above the delimiter row, and the two must agree about the number of cells
+    or no table forms at all. Without this the liberal fallback held one
+    paragraph open across a whole table, the HTML block condition 7 below it
+    was refused, and a ``## Goal`` the page never paints was counted.
+
+    This one is settled against GitHub's own renderer rather than against
+    markdown-it 14.3.0, which reads the type-seven tag below a table as a
+    *table row* and paints the heading. It is the first place in this module's
+    history where the arbiter and the production renderer have been measured
+    to part, and the page is what counts.
+    https://github.github.com/gfm/#tables-extension-
     <https://spec.commonmark.org/0.31.2/#setext-headings>
     <https://spec.commonmark.org/0.31.2/#link-reference-definitions>
     """
@@ -764,6 +908,8 @@ def opens_a_paragraph(content: str, paragraph_open: bool) -> bool:
     if THEMATIC_BREAK_LINE_PATTERN.match(content) is not None:
         return False
     if paragraph_open and SETEXT_UNDERLINE_PATTERN.match(content) is not None:
+        return False
+    if paragraph_open and table_starts_here(previous_content, content):
         return False
     if not paragraph_open and is_link_reference_definition(content):
         return False
@@ -1046,6 +1192,7 @@ def starts_a_block(
     opened: tuple[Container, ...],
     previous_path: tuple[Container, ...],
     paragraph_open: bool,
+    previous_content: str = "",
 ) -> bool:
     """Return whether a line begins a block rather than continuing the one above.
 
@@ -1101,6 +1248,16 @@ def starts_a_block(
     if THEMATIC_BREAK_LINE_PATTERN.match(content) is not None:
         return True
     if SETEXT_UNDERLINE_PATTERN.match(content) is not None and not lazy_continuation:
+        return True
+    if table_starts_here(previous_content, content) and not lazy_continuation:
+        # A delimiter row consumes the line above it into a table, which is the
+        # Setext underline's rule at a different block. Both halves are needed
+        # and for the same reason the underline needs both: this says the
+        # paragraph above has ended, and ``opens_a_paragraph`` says none is
+        # open below. Answering only the second left ``paragraph_open`` true
+        # through ``(paragraph_open and not block_starts)``, and the HTML block
+        # condition 7 under the table stayed shut.
+        # https://github.github.com/gfm/#tables-extension-
         return True
     if any(container.kind == CONTAINER_KIND_LIST for container in opened):
         return True
@@ -1218,9 +1375,17 @@ def find_violations_in_text(text: str, display_path: str) -> list[Violation]:
     html_block: ActiveHtmlBlock | None = None
     paragraph_open = False
     previous_path: tuple[Container, ...] = ()
+    # The line above, carried for the delimiter-row rule in
+    # ``opens_a_paragraph``: its peeled content and the container it sat in.
+    # Cleared at the top of every iteration, so that any branch which leaves
+    # the loop early leaves no header row behind it.
+    previous_content = ""
+    previous_container: tuple[Container, ...] = ()
     raw_text: str | None = None
 
     for line_number, raw_line in enumerate(normalize_line_endings(text).split("\n"), start=1):
+        above_content, above_container = previous_content, previous_container
+        previous_content, previous_container = "", ()
         if active_fence is not None and fence_container_ended(raw_line, active_fence):
             # The container holding the fence has ended, so the fence ended
             # with it and this line is document text again.
@@ -1262,12 +1427,16 @@ def find_violations_in_text(text: str, display_path: str) -> list[Violation]:
         # CommonMark opens inside the new item. The backtick runs under it were
         # then read as a fence rather than as raw HTML, and every placeholder
         # between them went unreported while the page printed them.
+        header_above = (
+            above_content if above_container == block_line.containment_path else ""
+        )
         block_starts = starts_a_block(
             block_content,
             block_line.containment_path,
             block_line.opened,
             previous_path,
             paragraph_open,
+            header_above,
         )
         html_block, line_html_block = html_block_state(
             block_content,
@@ -1283,15 +1452,38 @@ def find_violations_in_text(text: str, display_path: str) -> list[Violation]:
         # inside the paragraph above it; stripping before the run read a
         # comment-shaped run a ``<script>`` prints as a real comment. The
         # sibling hooks ask in this same order.
-        raw_text, line_raw_text = raw_text_run_state(
+        raw_text, line_raw_text, raw_text_end = raw_text_run_boundary(
             block_content, raw_text, line_html_block is not None
         )
         in_raw_text = raw_text_run_holds_text(line_raw_text)
+        run_released_the_line = in_raw_text and raw_text_end != -1
+        if run_released_the_line:
+            # The run closes part way along this line, and what follows the
+            # closer is not the element's content: the browser leaves raw text
+            # at the closing tag. ``<script></script><!-- TBD -->`` holds an
+            # empty script and then a real comment, and reading the whole line
+            # as script data reported a placeholder the comment hides.
+            #
+            # The run's own characters are *kept* rather than blanked, because
+            # this hook reports a placeholder written inside a raw-text
+            # element: its rule is about comments and fences, and script data
+            # is neither. Only the part after the closer has its comments
+            # stripped, which is what the two sibling hooks achieve by blanking
+            # -- they ask whether the run's characters are markup, and this one
+            # asks whether they are a comment.
+            in_raw_text = False
         if in_raw_text:
             # The line is a raw-text element's content, which the page
             # displays as it stands. A comment-shaped run there opens no
             # comment and hides no placeholder, so the line is read whole.
             commentless_line = raw_line
+        elif run_released_the_line:
+            # The run held the head of the line and released the tail, so only
+            # the tail is read for comments -- and no comment can be open
+            # coming in, because a run opens only at the start of a line.
+            split = len(raw_line) - len(block_content) + raw_text_end
+            tail, is_in_html_comment = strip_html_comments(raw_line[split:], False)
+            commentless_line = raw_line[:split] + tail
         else:
             commentless_line, is_in_html_comment = strip_html_comments(
                 raw_line, is_in_html_comment
@@ -1343,8 +1535,10 @@ def find_violations_in_text(text: str, display_path: str) -> list[Violation]:
             False
             if in_html_block
             else (paragraph_open and not block_starts)
-            or opens_a_paragraph(block_content, paragraph_open)
+            or opens_a_paragraph(block_content, paragraph_open, header_above)
         )
+        previous_content = block_content
+        previous_container = block_line.containment_path
 
         if ALLOW_TBD_PATTERN.search(raw_line):
             continue

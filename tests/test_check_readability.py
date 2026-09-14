@@ -5000,3 +5000,246 @@ def test_a_tab_before_a_pipe_is_not_the_indentation_gfm_allows() -> None:
     """
     assert readability.table_columns(TAB + "| a | b |", "| --- | --- |") == 0
     assert readability.table_columns("   | a | b |", "| --- | --- |") == 2
+
+
+#: A thousand spaces, which is what takes a link label past the length a
+#: renderer will match. Built rather than typed.
+LONG_GAP = " " * 1000
+
+#: One straight double quotation mark, spelled through a name so a test that
+#: builds a link title never has to nest one inside a literal.
+DOUBLE_QUOTE = chr(34)
+
+
+def test_a_tab_indented_marker_line_is_an_indented_code_block() -> None:
+    """A tab reaches column four, so the line is code and carries no marker.
+
+    Measured on both renderers: markdown-it 14.3.0 and GitHub's own renderer
+    each put a tab-indented marker line inside ``<pre><code>``, where it is
+    text a reader sees rather than a comment the page hides. Counting the
+    indent in characters read zero, honoured the marker, and took a
+    child-facing document out of the reading gate without a word in the
+    report.
+    https://spec.commonmark.org/0.31.2/#tabs
+    """
+    assert not readability.has_adult_marker(TAB + ADULT_MARKER + "\n")
+    assert not readability.has_adult_marker("  " + TAB + ADULT_MARKER + "\n")
+    assert not readability.has_adult_marker("    " + ADULT_MARKER + "\n")
+
+
+def test_a_marker_indented_three_columns_is_still_a_comment() -> None:
+    """The over-application control: three columns is prose, four is code."""
+    assert readability.has_adult_marker("   " + ADULT_MARKER + "\n")
+    assert readability.has_adult_marker(ADULT_MARKER + "\n")
+
+
+def test_an_indented_line_under_a_paragraph_is_not_a_code_block() -> None:
+    """The second over-application control, and the sharper one.
+
+    An indented code block may not interrupt a paragraph, so a tab-indented
+    line below one is that paragraph's own continuation and every inline rule
+    applies to it. Skipping every indented line, which is what the check did
+    before it counted columns at all, lost the marker here.
+    https://spec.commonmark.org/0.31.2/#indented-code-blocks
+    """
+    assert readability.has_adult_marker("Intro\n" + TAB + ADULT_MARKER + "\n")
+    assert readability.has_adult_marker("Intro\n    " + ADULT_MARKER + "\n")
+    assert not readability.has_adult_marker("\n" + TAB + ADULT_MARKER + "\n")
+
+
+def test_a_marker_after_a_closed_raw_text_run_is_a_comment() -> None:
+    """A run that closes part way along a line releases the rest of it.
+
+    ``<script></script>`` then a marker holds an empty script and then a real
+    comment: the browser leaves script data at the closing tag. Reading the
+    whole line as the element's content dropped the comment with it, and an
+    adult-facing document was scored by the child gate in silence -- the one
+    direction this module never errs in.
+    https://html.spec.whatwg.org/multipage/parsing.html#rawtext-state
+    """
+    assert readability.has_adult_marker("<script></script>" + ADULT_MARKER + "\n")
+    assert readability.has_adult_marker("<style></style> " + ADULT_MARKER + "\n")
+
+
+def test_a_marker_inside_an_open_raw_text_run_is_not_a_comment() -> None:
+    """The over-application control: the run's own span still holds text."""
+    assert not readability.has_adult_marker("<script>" + ADULT_MARKER + "\n")
+    assert not readability.has_adult_marker(
+        "<script>\n" + ADULT_MARKER + "\n</script>\n"
+    )
+
+
+def test_a_link_title_across_a_soft_break_keeps_its_backtick() -> None:
+    """A link target crosses a soft line break, and the first pass now reads it.
+
+    The title holds the line ending; the backtick inside it is title data and
+    pairs with nothing. Reading one physical line rejected the target, left
+    that backtick standing as text, and paired it with the backtick below --
+    so the marker between them was read as a code span. Measured on
+    markdown-it 14.3.0 and on GitHub's own renderer: one link, one title, one
+    comment.
+    https://spec.commonmark.org/0.31.2/#links
+    """
+    document = (
+        "[x](url " + DOUBLE_QUOTE + "title " + TICK + "\n"
+        "continued" + DOUBLE_QUOTE + ") " + ADULT_MARKER + " " + TICK + "close" + TICK
+        + "\n"
+    )
+    assert readability.has_adult_marker(document)
+
+
+def test_a_backslash_does_not_escape_a_line_ending_in_a_link_target() -> None:
+    """The over-application control on the same helper, and it is measured.
+
+    A backslash at the end of a line is a hard line break, not an escape, so a
+    target may not reach across the break behind one. GitHub's own renderer
+    forms no link here and pairs the backticks instead, which puts the marker
+    inside a code span; markdown-it 14.3.0 forms the link, and this is one of
+    three places this round found where the two part.
+    """
+    document = (
+        "[x](" + BACKSLASH + "\n" + TICK + ") " + ADULT_MARKER + " " + TICK + "c"
+        + TICK + "\n"
+    )
+    assert not readability.has_adult_marker(document)
+
+
+def test_a_processing_instruction_in_a_raw_html_block_carries_no_marker() -> None:
+    """A raw HTML block is the page's to parse, and its rule is HTML5's.
+
+    ``<?``, ``<!`` that is not ``<!--``, and ``<![CDATA[`` each begin a bogus
+    comment that runs to the first ``>``. The marker's own ``-->`` supplies
+    that ``>``, so the node holds the marker's characters and is not the
+    marker. Measured on GitHub's own renderer: ``before <!Q`` and the marker
+    are removed together, and no ``Q`` survives -- which it would if ``<!Q``
+    had been text beside a separate comment.
+    https://html.spec.whatwg.org/multipage/parsing.html#bogus-comment-state
+    """
+    for opener in ("<?", "<!", "<![CDATA["):
+        document = "<div>\nbefore " + opener + ADULT_MARKER + "\n</div>\n"
+        assert not readability.has_adult_marker(document)
+
+
+def test_a_real_comment_in_a_raw_html_block_is_still_a_comment() -> None:
+    """The over-application control: the block's own comments still count."""
+    assert readability.has_adult_marker("<div>\nbefore " + ADULT_MARKER + "\n</div>\n")
+    assert readability.has_adult_marker(
+        "<div>\nbefore <!x > " + ADULT_MARKER + "\n</div>\n"
+    )
+
+
+def test_a_malformed_tag_in_a_raw_html_block_carries_no_marker() -> None:
+    """A ``<`` and a letter is a tag to the page, however malformed the rest.
+
+    ``<a<!-- audience: adult -->`` is one start tag with four attributes to an
+    HTML parser, and the ``<!--`` inside it is an attribute name. CommonMark's
+    raw-HTML grammar rejects the tag, and reading the characters on from there
+    found a comment the page never had.
+    https://html.spec.whatwg.org/multipage/parsing.html#tag-open-state
+    """
+    assert not readability.has_adult_marker(
+        "<div>\nbefore <a" + ADULT_MARKER + "\n</div>\n"
+    )
+
+
+def test_an_overlong_reference_label_resolves_nothing() -> None:
+    """A label past the length bound is no label, so the image never forms.
+
+    The description of an image is an attribute, so a marker written there is
+    not on the page -- but only when the reference actually resolves. Matching
+    the normalized label without bounding the written one resolved a
+    1,002-character reference that GitHub's own renderer leaves as literal
+    brackets, and the real comment inside them stopped being read.
+    https://spec.commonmark.org/0.31.2/#link-label
+    """
+    document = (
+        "[a b]: /url\n\n![" + ADULT_MARKER + "][a" + LONG_GAP + "b]\n"
+    )
+    assert readability.has_adult_marker(document)
+
+
+def test_a_label_at_the_bound_still_resolves() -> None:
+    """The over-application control, and the bound is the renderer's own.
+
+    GitHub's renderer matches a 1,000-character label and refuses a
+    1,001-character one, as a definition and as a use alike; CommonMark's
+    prose says 999 and markdown-it 14.3.0 enforces nothing. A bound one
+    character too tight is the permissive direction here: it reads a resolved
+    reference as literal brackets and honours a marker the page hides.
+    """
+    at_bound = "a" + " " * 998 + "b"
+    assert len(at_bound) == readability.LINK_LABEL_MAXIMUM_CHARACTERS
+    document = "[a b]: /url\n\n![" + ADULT_MARKER + "][" + at_bound + "]\n"
+    assert not readability.has_adult_marker(document)
+
+
+def test_a_pipeless_delimiter_row_with_a_colon_is_a_delimiter_row() -> None:
+    """A one-column table needs no pipe, and the colon is what separates it.
+
+    Measured on GitHub's own renderer: ``-:`` under ``| a |`` is a table and
+    ``--`` under the same header is a Setext underline, so the heading wins
+    and no table forms. Refusing every pipeless row kept the second case by
+    accident and lost the first.
+    """
+    assert readability.is_table_delimiter("-:")
+    assert readability.is_table_delimiter(":-:")
+    assert not readability.is_table_delimiter("--")
+    assert not readability.is_table_delimiter("---")
+    assert readability.is_table_delimiter("| --- |")
+
+
+def test_a_list_item_is_not_a_delimiter_row() -> None:
+    """``- |`` renders as a bullet on both renderers, and matched the pattern."""
+    assert not readability.is_table_delimiter("- |")
+    assert not readability.is_table_delimiter("- | ---")
+    assert readability.is_table_delimiter("--- | ---")
+
+
+def test_a_delimiter_row_ends_the_paragraph_its_header_opened() -> None:
+    """GFM consumes the header row into the table, so nothing is open below.
+
+    The counts have to agree or no table forms at all, which is why the line
+    above is carried rather than guessed at.
+    """
+    assert not readability.opens_a_paragraph("| --- |", True, "| a |")
+    assert readability.opens_a_paragraph("| --- | --- |", True, "| a |")
+    assert readability.opens_a_paragraph("| --- |", False, "")
+
+
+def test_the_two_hooks_count_indentation_alike() -> None:
+    """The cross-hook pin: one spelling of the column count in both hooks."""
+    structure_module = _load_structure_hook()
+    for line in ("", " ", TAB, "  " + TAB, "   " + TAB, "    ", " a", TAB + TAB):
+        assert readability.count_indent_columns(line) == (
+            structure_module.count_indent_columns(line)
+        )
+        assert readability.is_table_delimiter(line) == (
+            structure_module.is_table_delimiter(line)
+        )
+
+
+def test_an_angle_destination_ends_at_an_unescaped_line_ending() -> None:
+    """``<...>`` holds no line ending of its own, and a backslash is the exception.
+
+    Two rules that point opposite ways at the same character, and both are
+    measured on markdown-it 14.3.0 and on GitHub's own renderer, which agree
+    here. An *unescaped* line ending inside the angle brackets ends the
+    attempt and there is no link at all, so the backtick inside the brackets
+    is ordinary text and pairs with the one below -- putting the marker inside
+    a code span. A *backslash* before the line ending escapes it, and the link
+    forms with a ``%0A`` in its href.
+
+    This is the document that separates "a line ending is whitespace inside a
+    destination as well" from the shipped rule: without it that mutation fails
+    no test and moves no instrument cell.
+    https://spec.commonmark.org/0.31.2/#link-destination
+    """
+    unescaped = (
+        "[x](<a" + "\n" + TICK + "b>) " + ADULT_MARKER + " " + TICK + "c" + TICK + "\n"
+    )
+    escaped = (
+        "[x](<" + BACKSLASH + "\n" + TICK + ">) " + ADULT_MARKER + " "
+        + TICK + "c" + TICK + "\n"
+    )
+    assert not readability.has_adult_marker(unescaped)
+    assert readability.has_adult_marker(escaped)
