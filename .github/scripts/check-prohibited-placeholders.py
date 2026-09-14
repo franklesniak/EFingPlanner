@@ -735,13 +735,22 @@ def container_interrupts_paragraph(container: Container) -> bool:
     return container.ordered_start is None or container.ordered_start == 1
 
 
-def raw_text_run_state(content: str, open_run: str | None) -> tuple[str | None, bool]:
-    """Return the raw HTML run open below a line, and whether the line is in one.
+def raw_text_run_state(
+    content: str, open_run: str | None
+) -> tuple[str | None, str | None]:
+    """Return the raw HTML run open below a line, and the run the line is in.
 
     Two values because they are two questions, the pair ``html_block_state``
-    asks: what the next line inherits, and whether this line's characters are
-    text the page shows rather than markup. A line carrying the closing
-    delimiter is still the run's last line.
+    asks in the same shape: what the next line inherits, and which run this
+    line's characters belong to. A line carrying the closing delimiter is
+    still the run's last line.
+
+    The run is returned rather than a bare "yes, this is text" because the two
+    callers ask two different things of it. Whether the characters are text
+    rather than markup is ``raw_text_run_holds_text`` below, and every hook
+    asks it. Whether the page *paints* that text is a second question, asked
+    only where a reading score is computed, and it is answered per element
+    from the HTML Standard's own rendering rules rather than from this set.
 
     The state moves a whole line at a time, which is where it is less exact
     than the parsers it follows: a run that opens and closes inside one line
@@ -751,23 +760,35 @@ def raw_text_run_state(content: str, open_run: str | None) -> tuple[str | None, 
     before it asked the question at all.
 
     An open comment is carried in the same state and is the one run whose
-    content is markup, so a comment line answers ``False`` to the second
-    question: a marker inside a comment is the comment it looks like. It is
+    content is markup: a marker inside a comment is the comment it looks like,
+    which is why ``raw_text_run_holds_text`` answers ``False`` for it. It is
     tracked only so that a ``<script>`` line written inside a comment opens no
     run of its own. Kept identical to the helper in the sibling hooks.
     <https://html.spec.whatwg.org/multipage/parsing.html#rawtext-state>
     """
     if open_run is not None:
         closed = RAW_TEXT_CLOSERS[open_run].search(content) is not None
-        return (None if closed else open_run), open_run != COMMENT_RUN
+        return (None if closed else open_run), open_run
     for key, opener, closer in RAW_TEXT_RUNS:
         match = opener.match(content)
         if match is None:
             continue
         if closer.search(content, match.end()) is not None:
-            return None, False
-        return key, False
-    return None, False
+            return None, None
+        return key, None
+    return None, None
+
+
+def raw_text_run_holds_text(run: str | None) -> bool:
+    """Return whether a line inside ``run`` carries text rather than markup.
+
+    Every run in ``RAW_TEXT_RUNS`` but one holds characters the page shows as
+    they stand or drops altogether; in neither case is a comment-shaped run on
+    the line a comment. The exception is the comment itself, which is in that
+    tuple only so that a raw HTML block cannot start inside another one.
+    Kept identical to the helper in the sibling hooks.
+    """
+    return run is not None and run != COMMENT_RUN
 
 
 def starts_a_block(
@@ -979,7 +1000,8 @@ def find_violations_in_text(text: str, display_path: str) -> list[Violation]:
         # a line of backticks inside one is raw HTML rather than a fence.
         block_line = container_line(raw_line, list_contexts)
         block_content = block_line.content
-        raw_text, in_raw_text = raw_text_run_state(block_content, raw_text)
+        raw_text, line_raw_text = raw_text_run_state(block_content, raw_text)
+        in_raw_text = raw_text_run_holds_text(line_raw_text)
         if in_raw_text:
             # The line is a raw-text element's content, which the page
             # displays as it stands. A comment-shaped run there opens no

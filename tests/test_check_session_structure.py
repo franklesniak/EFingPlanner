@@ -3256,3 +3256,23 @@ def test_a_line_that_is_not_a_definition_still_opens_a_paragraph(
     written as "a bracket and a colon are never a paragraph" and still pass.
     """
     assert _goal_found(document), label
+
+
+def test_raw_text_run_state_names_the_run_the_line_is_in() -> None:
+    """The helper's contract, kept identical across the three hooks.
+
+    It returns the run below the line and the run the line is *in*, the pair
+    ``html_block_state`` returns. This hook asks only the first question of it
+    -- are these characters text rather than markup -- and reads the answer
+    through ``raw_text_run_holds_text``.
+    """
+    state, line_run = structure.raw_text_run_state("<textarea>", None)
+    assert (state, line_run) == ("textarea", None)
+    state, line_run = structure.raw_text_run_state("some words", "textarea")
+    assert (state, line_run) == ("textarea", "textarea")
+    state, line_run = structure.raw_text_run_state("</textarea>", "textarea")
+    assert (state, line_run) == (None, "textarea")
+    assert structure.raw_text_run_holds_text("textarea")
+    assert structure.raw_text_run_holds_text("script")
+    assert not structure.raw_text_run_holds_text(structure.HTML_BLOCK_COMMENT)
+    assert not structure.raw_text_run_holds_text(None)

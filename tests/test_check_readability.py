@@ -3672,3 +3672,271 @@ def test_a_raw_text_run_is_not_prose() -> None:
     prose = readability.extract_prose(document)
     assert "Then we will ride the train home again." in prose
     assert "pack a small bag" not in prose
+
+
+# ---------------------------------------------------------------------------
+# Round 9: the raw-text runs a reader actually reads, and raw HTML blocks
+# ---------------------------------------------------------------------------
+
+#: Forty-four words, which is past ``MIN_WORDS_TO_SCORE``. A document whose
+#: prose is dropped falls under that minimum and leaves the gate in silence,
+#: which is the harm these cases are about.
+DISPLAYED_PROSE = (
+    "Write the name of one feeling you had today and say where you felt it in\n"
+    "your body. Then write one thing you could do to help that feeling get\n"
+    "smaller or bigger. Share your answer with a grown up when you are ready.\n"
+)
+
+
+@pytest.mark.parametrize(
+    ("label", "document"),
+    [
+        ("a textarea", f"<textarea>\n{DISPLAYED_PROSE}</textarea>\n"),
+        ("an xmp", f"<xmp>\n{DISPLAYED_PROSE}</xmp>\n"),
+        (
+            "a textarea inside a div",
+            f"<div>\n<textarea>\n{DISPLAYED_PROSE}</textarea>\n</div>\n",
+        ),
+    ],
+)
+def test_a_raw_text_run_the_reader_reads_is_prose(label: str, document: str) -> None:
+    """A ``textarea`` and an ``xmp`` show every word they hold.
+
+    The rule that says a comment-shaped run inside one of these is *displayed
+    text* rather than a comment cannot also be used to delete that text: the
+    two halves contradict each other. The HTML Standard's rendering section is
+    what separates them -- ``script``, ``style``, ``title``, ``noembed`` and
+    ``noframes`` are ``display: none`` and ``iframe`` is a replaced element,
+    while ``textarea`` shows its content as a form control's value and ``xmp``
+    renders it preformatted beside ``pre``.
+    https://html.spec.whatwg.org/multipage/rendering.html#hidden-elements
+    """
+    prose = readability.extract_prose(document)
+    assert "Write the name of one feeling you had today" in prose, label
+    assert "Share your answer with a grown up" in prose, label
+
+
+def test_the_gate_scores_a_worksheet_prompt_written_in_a_textarea() -> None:
+    """The harm, stated as the gate's own verdict rather than as a word count.
+
+    Dropping the interior takes the document to zero prose words, under
+    ``MIN_WORDS_TO_SCORE``, and the file is skipped: the reading level of a
+    page a child reads is never measured and the run still exits 0.
+    """
+    document = f"<textarea>\n{DISPLAYED_PROSE}</textarea>\n"
+    score = readability.score_text(document, "worksheet.md")
+    assert score.scored, score.skip_reason
+    assert score.words >= readability.MIN_WORDS_TO_SCORE
+
+
+@pytest.mark.parametrize(
+    ("label", "document"),
+    [
+        ("a script", f"<script>\n{DISPLAYED_PROSE}</script>\n"),
+        ("a style", f"<style>\n{DISPLAYED_PROSE}</style>\n"),
+        ("a title", f"<title>\n{DISPLAYED_PROSE}</title>\n"),
+        ("an iframe", f"<iframe>\n{DISPLAYED_PROSE}</iframe>\n"),
+        ("a noembed", f"<noembed>\n{DISPLAYED_PROSE}</noembed>\n"),
+        ("a noframes", f"<noframes>\n{DISPLAYED_PROSE}</noframes>\n"),
+        ("a processing instruction", f"<?php\n{DISPLAYED_PROSE}?>\n"),
+        ("a CDATA section", f"<![CDATA[\n{DISPLAYED_PROSE}]]>\n"),
+        ("a declaration", f"<!DOCTYPE\n{DISPLAYED_PROSE}>\n"),
+    ],
+)
+def test_a_raw_text_run_the_page_hides_is_not_prose(label: str, document: str) -> None:
+    """The over-application control, one element at a time.
+
+    ``title`` is the case that has to be decided rather than lumped: its text
+    is real and a reader does see it, in the browser chrome. That is not the
+    page a reading score is about, and the HTML Standard puts ``title`` in the
+    same ``display: none`` rule as ``script`` and ``style``. ``iframe``,
+    ``noembed`` and ``noframes`` hold fallback for a browser that cannot render
+    a frame, and no browser in use is such a browser.
+    """
+    prose = readability.extract_prose(document)
+    assert "Write the name of one feeling" not in prose, label
+    assert "Share your answer with a grown up" not in prose, label
+
+
+def test_a_textarea_shows_its_words_and_still_declares_nothing() -> None:
+    """The two halves of the rule, on one document, in one place.
+
+    A ``textarea``'s interior is text the page displays: every word of it is
+    prose, and a comment-shaped run in it is not a comment. Holding both at
+    once is the whole point, and holding only the second is what took the
+    words away.
+    """
+    document = (
+        "<textarea>\n"
+        f"{ADULT_MARKER}\n"
+        "Write one thing you noticed on the walk home from the station today.\n"
+        "</textarea>\n"
+    )
+    assert not readability.has_adult_marker(document)
+    assert "Write one thing you noticed on the walk home" in readability.extract_prose(
+        document
+    )
+
+
+def test_raw_text_run_state_names_the_run_the_line_is_in() -> None:
+    """The helper's contract, which two different questions now read.
+
+    It returns the run below the line and the run the line is *in*, the pair
+    ``html_block_state`` returns. A bare boolean was enough to say "these
+    characters are text" and not enough to say "and the page paints them".
+    """
+    state, line_run = readability.raw_text_run_state("<textarea>", None)
+    assert (state, line_run) == ("textarea", None)
+    state, line_run = readability.raw_text_run_state("some words", "textarea")
+    assert (state, line_run) == ("textarea", "textarea")
+    state, line_run = readability.raw_text_run_state("</textarea>", "textarea")
+    assert (state, line_run) == (None, "textarea")
+    assert readability.raw_text_run_holds_text("textarea")
+    assert readability.raw_text_run_is_displayed("textarea")
+    assert readability.raw_text_run_holds_text("script")
+    assert not readability.raw_text_run_is_displayed("script")
+    # The comment is in the run table only so that a raw HTML block cannot
+    # start inside another one. Its content really is markup.
+    assert not readability.raw_text_run_holds_text(readability.COMMENT_RUN)
+    assert not readability.raw_text_run_holds_text(None)
+
+
+@pytest.mark.parametrize(
+    ("label", "document"),
+    [
+        ("an image title", f'<div>\n![x](/u.png "{ADULT_MARKER}")\n</div>\n'),
+        ("an inline link title", f'<div>\n[x](/u "{ADULT_MARKER}")\n</div>\n'),
+        ("a code span", f"<div>\nUse {TICK}{ADULT_MARKER}{TICK} here.\n</div>\n"),
+        ("a backslash escape", f"<div>\n{BACKSLASH}{ADULT_MARKER}\n</div>\n"),
+        ("a link reference definition title", f'<div>\n[x]: /u "{ADULT_MARKER}"\n</div>\n'),
+        (
+            "a fenced code block that is not one",
+            f"<div>\n{FENCE}\n{ADULT_MARKER}\n{FENCE}\n</div>\n",
+        ),
+        (
+            "a quoted div",
+            f'> <div>\n> ![x](/u.png "{ADULT_MARKER}")\n> </div>\n',
+        ),
+        ("a section, which is condition 6 too", f'<section>\n![x](/u.png "{ADULT_MARKER}")\n</section>\n'),
+    ],
+)
+def test_a_marker_inside_a_raw_html_block_is_not_markdown(
+    label: str, document: str
+) -> None:
+    """Inside a raw HTML block the Markdown inline rules do not apply at all.
+
+    markdown-it 14.3.0 passes the block through untouched, so the image, the
+    link, the backticks and the backslash are literal characters on the page
+    and the marker between them is a real HTML comment. Reading them as
+    Markdown masked the marker as an image title, a code span or a destination,
+    and an adult-facing document was scored by the child gate.
+    https://spec.commonmark.org/0.31.2/#html-blocks
+    """
+    assert readability.has_adult_marker(document), label
+
+
+@pytest.mark.parametrize(
+    ("label", "document"),
+    [
+        ("the delimiters are in an attribute", f'<div title="{ADULT_MARKER}">\nx\n</div>\n'),
+        ("an image title in ordinary prose", f'See ![x](/u.png "{ADULT_MARKER}") now.\n'),
+        ("a code span in ordinary prose", f"Use {TICK}{ADULT_MARKER}{TICK} here.\n"),
+        (
+            "a fenced example in ordinary prose",
+            f"Prose above.\n\n{FENCE}\n{ADULT_MARKER}\n{FENCE}\n",
+        ),
+    ],
+)
+def test_the_markdown_inline_rules_still_apply_outside_a_raw_html_block(
+    label: str, document: str
+) -> None:
+    """The under- and over-application controls for the block state.
+
+    The first is the block state read too widely: a tag's attribute value is
+    not a comment even inside a block, which is what ``raw_html_comment_spans``
+    is careful about. The other three are it read too widely still: with no
+    block open, an image title and a code span really do mask a marker and a
+    fenced example really is an example.
+    """
+    assert not readability.has_adult_marker(document), label
+
+
+def test_a_fence_inside_a_raw_html_block_opens_no_block() -> None:
+    """A line of backticks inside a raw HTML block is three backticks.
+
+    The block runs to its own end condition and every character on those lines
+    is raw HTML. Both sibling hooks read a fence this way; this module did not,
+    so the three could disagree about which fences a document has -- and the
+    placeholder hook reported a token the reading gate had hidden.
+    """
+    document = f"<div>\n{FENCE}\nThe children walk to the station.\n{FENCE}\n</div>\n"
+    assert readability.literal_code_regions(document) == []
+
+
+def test_a_fence_outside_a_raw_html_block_still_opens() -> None:
+    """The control: with no block open, a fence is a fence."""
+    document = f"Prose above.\n\n{FENCE}\nThe children walk to the station.\n{FENCE}\n"
+    assert readability.literal_code_regions(document) != []
+    assert "The children walk to the station" not in readability.extract_prose(document)
+
+
+def test_the_two_checkers_agree_on_a_fence_inside_a_raw_html_block() -> None:
+    """The cross-script pin for the fence the block machine suppresses.
+
+    ``check-prohibited-placeholders.py`` has carried the HTML block machine
+    since it was written and reports a token on this line; this module read the
+    backticks as a fence and hid it. The two are pinned here so that a change
+    to one that is not made in the other fails as a test rather than as a
+    disagreement nobody runs.
+    """
+    placeholder_script = (
+        Path(__file__).resolve().parents[1]
+        / ".github"
+        / "scripts"
+        / "check-prohibited-placeholders.py"
+    )
+    spec = importlib.util.spec_from_file_location("check_placeholders", placeholder_script)
+    assert spec is not None and spec.loader is not None
+    placeholders = importlib.util.module_from_spec(spec)
+    sys.modules[spec.name] = placeholders
+    spec.loader.exec_module(placeholders)
+
+    inside = f"<div>\n{FENCE}\nTBD\n{FENCE}\n</div>\n"
+    assert placeholders.find_violations_in_text(inside, "x.md") != []
+    assert readability.literal_code_regions(inside) == []
+
+    outside = f"Prose above.\n\n{FENCE}\nTBD\n{FENCE}\n"
+    assert placeholders.find_violations_in_text(outside, "x.md") == []
+    assert readability.literal_code_regions(outside) != []
+
+
+def test_the_two_checkers_agree_on_a_marker_inside_a_raw_html_block() -> None:
+    """The cross-script pin for the marker the block machine exposes.
+
+    ``check-session-structure.py`` has had the block state all along and reads
+    the comment; this module sent the line through the Markdown inline walk and
+    did not. The pair readability-to-structure is one of the two that had no
+    pin test at all.
+    """
+    structure_script = (
+        Path(__file__).resolve().parents[1]
+        / ".github"
+        / "scripts"
+        / "check-session-structure.py"
+    )
+    spec = importlib.util.spec_from_file_location("check_structure", structure_script)
+    assert spec is not None and spec.loader is not None
+    structure = importlib.util.module_from_spec(spec)
+    sys.modules[spec.name] = structure
+    spec.loader.exec_module(structure)
+
+    marker = "<!-- no-source-check: an offline exercise -->"
+    inside = f'<div>\n![x](/u.png "{marker}")\n</div>\n'
+    scan = structure.scan_document(inside)
+    assert structure.NO_SOURCE_CHECK_PATTERN.search(scan.marker_text) is not None
+    assert readability.has_adult_marker(f'<div>\n![x](/u.png "{ADULT_MARKER}")\n</div>\n')
+
+    attribute = f'<div title="{marker}">\nx\n</div>\n'
+    scan = structure.scan_document(attribute)
+    assert structure.NO_SOURCE_CHECK_PATTERN.search(scan.marker_text) is None
+    assert not readability.has_adult_marker(f'<div title="{ADULT_MARKER}">\nx\n</div>\n')
