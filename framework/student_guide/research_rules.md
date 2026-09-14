@@ -7,7 +7,7 @@ A few simple rules keep your research safe and trustworthy. A grown-up also turn
 ## Safety rules
 
 - If a website asks for **personal information, an account, a booking, or payment**, stop and ask a grown-up.
-- If you see something online that seems **wrong or makes you uncomfortable**, close the page and tell a grown-up. You're never in trouble for that.
+- If you see something online that seems **wrong or makes you uncomfortable**, close the page and tell a grown-up. You are never in trouble for that.
 - For riskier topics (nightlife areas, videos, image searches), a grown-up stays nearby.
 
 ## Trust rules

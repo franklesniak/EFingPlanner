@@ -35,4 +35,4 @@ If you're waiting for a **checkpoint** review, the next session waits until a gr
 
 ## If something online worries me
 
-If a website asks for personal information, an account, a booking, or payment, stop and ask a grown-up. If you see something that seems wrong or makes you uncomfortable, close the page and tell a grown-up. You're never in trouble for that.
+If a website asks for personal information, an account, a booking, or payment, stop and ask a grown-up. If you see something that seems wrong or makes you uncomfortable, close the page and tell a grown-up. You are never in trouble for that.
