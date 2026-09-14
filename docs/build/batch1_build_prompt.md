@@ -164,7 +164,8 @@ If the file is missing from your branch, recover it from `main` as F10 directs -
 recreate it, and do not recount it as a create. The split is **37 created, 28 edited**,
 and your build report states those numbers. The twenty-eighth edit is H11, the
 repository's root `README.md`; the archived design record puts the start-up root docs in
-this batch, and three of the four it names were already on this list.
+this batch and names five of them, three of which were already on this list. H11 is the
+fourth; the fifth, `GETTING_STARTED.md`, is deliberately out of scope, and H11 says why.
 
 The list is grouped A–H after the spec extract's sections, but **the item numbers are
 the brief's own**. OQ-5 cancels two extract items, and this list drops them rather than
@@ -202,10 +203,15 @@ of a file that carries that block, bump its `Last Updated` to your build date in
 `YYYY-MM-DD` form, once, in the same commit** — and bump the `<YYYYMMDD>` segment of a
 `**Version:**` line too, if the file has one (none of these three does). This is the
 repository's documentation rule, and it binds every later batch as well. **Do not
-confuse it with the `Last reviewed` stamp above:** `Last Updated` is a `YYYY-MM-DD`
-metadata field on `framework/` documents; `Last reviewed` is a `<month year>` honesty
-stamp on `destinations/` fact files. Different fields, different layers, different
-formats. Note also that this rule never reaches a protected instruction file — those are
+confuse it with the `Last reviewed` stamp above:** `Last Updated` is a `YYYY-MM-DD` field
+inside the `## Metadata` block a specification, instruction or process document carries;
+`Last reviewed` is a `<month year>` honesty stamp on a `destinations/` fact file.
+Different fields, different layers, different formats. **They are not sorted by
+directory.** Most files carrying the block are under `framework/`, but A1 carries one and
+is a `destinations/` file: it is a routing contract rather than a fact file, which is
+also why it carries no `Last reviewed` stamp. A1, D7 and D8 are each required below to
+carry the block, so the bump rule above binds those three from the batch that next edits
+them. Note also that this rule never reaches a protected instruction file — those are
 never edited by any batch (see BUILD RULES below).
 
 ### Section A — The destination-pack insert contract and its Batch 1 slots
@@ -213,7 +219,15 @@ never edited by any batch (see BUILD RULES below).
 **A1. `destinations/japan/session_inserts/README.md` (create).** Builder-facing; the
 add-a-destination checklist. Must contain:
 
-- H1; the pack's "provided as-is, verify close to travel" framing, or a link to the
+- H1; then a `## Metadata` block directly below it -- `**Status:**`, `**Owner:**`,
+  `**Last Updated:**` (your build date, `YYYY-MM-DD`) and `**Scope:**`, plus
+  `**Related:**` where a real target exists. This file's content is a contract, a field
+  schema and a checklist, so the repository's documentation policy classifies it Tier 1
+  on content whatever directory it sits in; no gate checks it, which is why it is stated
+  here. Write the `Scope` line destination-neutrally, like the rest of the file. This is
+  the only `destinations/` file in the batch that carries the block, and it still carries
+  **no** `Last reviewed` stamp -- two different fields, and the rule above says why.
+- The pack's "provided as-is, verify close to travel" framing, or a link to the
   pack `README.md` that carries it.
 - **The insert/reference contract table, reproduced in full, in session order** — the
   17 spec rows plus the two OQ-3 rows, 19 rows total, with no Session 14 row:
@@ -246,7 +260,10 @@ add-a-destination checklist. Must contain:
 - **Every filename in the table is destination-neutral, and the Session 34 reference
   slot is `adult_logistics.md`.** The archived design record calls that one file
   `adult_logistics_japan.md`, both in its tree inventory and in its own copy of this
-  table -- the only place-named filename in either. This contract is copied whole into
+  table -- the only place-named filename among the pack's own committed files in either.
+  (The tree inventory also shows `tokyo.md` and `kyoto.md`, but in a comment naming
+  example city cards a family fills in inside the copied-out kit, not pack files.) This
+  contract is copied whole into
   the next pack, so a place name in it would either travel to a second destination as a
   misleading filename or force that author to diverge from the contract on one row. The
   file exists in no pack today, so nothing is being renamed: the slot is registered
@@ -321,7 +338,12 @@ add-a-destination checklist. Must contain:
 - **Rule 6 counts both columns of the table, and it has to.** Seven rows route a
   session to a reference file and to no insert at all — 05, 06, 08, 33/38, 40, 43 and
   48 — so a pack with all twelve insert slots written would still leave those seven
-  sessions with no trusted-sources, money, airport, transport or seasons page to open. Nine further rows name a reference file alongside an insert.
+  sessions with no trusted-sources, money, airport, transport or seasons page to open.
+  Nine further rows name a reference file alongside an insert -- 11, 12, 16-18, 19, 23,
+  30, 34, 36-37 and 47. Nine is the figure the rest of the table forces: seven
+  reference-only rows, three insert-only rows (10, 42 and the glossary) and nine
+  both-column rows are the nineteen above, and three plus nine are the twelve insert
+  slots the next bullet names. Count them on the table before changing either figure.
   Do not narrow rule 6 back to the insert column.
 - **Say plainly which slots are written and which are not — both columns.** The table
   above names **twelve** insert slots and **twelve** reference files. Four inserts are
@@ -337,9 +359,14 @@ add-a-destination checklist. Must contain:
   pack was finished.
 - This file carries **no** `Last reviewed` stamp — it holds routing, not facts.
 - **This file is builder-facing and sits inside the readability scorer's
-  `destinations/*/session_inserts/**/*.md` glob.** A dense contract table would score as
-  FAIL prose against a 7.5-grade cap, so the file declares its audience in its own text:
-  put `<!-- audience: builder -->` in it, near the top, on its own line.
+  `destinations/*/session_inserts/**/*.md` glob.** Its builder-register **prose** -- the
+  six rules, the rider, the schema explanation -- would score as FAIL against a 7.5-grade
+  cap, so the file declares its audience in its own text: put
+  `<!-- audience: builder -->` in it, near the top, on its own line. **The tables are not
+  the reason.** `check-readability.py` strips tables, headings, code fences and inline
+  code before it scores, so the contract table and the field schema contribute no scored
+  prose at all. Do not reason that a table-heavy file is safe without the marker, and do
+  not thin the prose in the hope of avoiding one.
 
 **A2. `destinations/japan/session_inserts/10_snapshot_facts.md` (create).** The
 canonical worked example of the whole split; child-facing, matter-of-fact register.
@@ -513,8 +540,11 @@ Phase 0, **Core**, planner skill *organizing information*, 20–30 minutes, pare
 involvement *5-minute check-in* plus adult relay help for unreachable travelers.
 Artifact: **Traveler profiles and family input notes.** There is no research step, and
 this session still carries `## Source Check`, in the built no-research form *"No new
-sources needed unless you looked something up."* — the same form Sessions 01, 03 and 13
-already ship. **Do not omit it.** `.github/scripts/check-session-structure.py` is on
+sources needed unless you looked something up."* — the bare form Sessions 01 and 13
+already ship. Session 03 ships the same sentence followed by a rider about its poll
+answers; Session 02 runs interviews rather than a poll, so write the bare form and do
+not carry the rider across. **Do not omit it.**
+`.github/scripts/check-session-structure.py` is on
 `main` and runs in CI, and it fails a non-adult session that carries neither
 `## Source Check` nor a `<!-- no-source-check: <reason> -->` marker, so the silent
 omission an earlier draft of this item permitted would have shipped a Batch 1 file this
@@ -677,8 +707,9 @@ add a second, and do not restate the form's fields in the session. Must contain:
   first; a translation tool helps you *understand* a page, not *trust* it; anything
   that matters gets checked against an official English source or an adult; when in
   doubt, ask an adult.
-- Website citation form: website title, organization or author, page title, URL, date I
-  checked it.
+- Website citation form: website title, organization or author, page title, web address,
+  date I checked it. **Write `web address`, never `URL`** -- F7 is the canonical home and
+  spells it that way, and so does the Source Log this child already filled in.
 - Stop point (author it): done when two sources on the same question are written down
   with where they agree, where they differ, and **which one is more useful and why**.
   Use "more useful," not "trust more": that is the fifth record field above, it is the
@@ -818,8 +849,15 @@ rule — `docs/citation_style.md` owns those.
 **D7. `framework/templates/student_session_template.md` (create).** Builder-facing — a
 template for authoring sessions, not a worksheet. It sits inside the readability
 scorer's `framework/templates/**/*.md` glob, so it must declare its audience in its own
-text: put `<!-- audience: builder -->` near the top, on its own line. Carries the full
-session skeleton in order, inside one fenced `markdown` block. **The skeleton opens with
+text: put `<!-- audience: builder -->` near the top, on its own line. **It also carries a
+`## Metadata` block directly below its H1** -- `**Status:**`, `**Owner:**`,
+`**Last Updated:**` (your build date, `YYYY-MM-DD`) and `**Scope:**`, plus `**Related:**`
+where a real target exists. Its content is authoring instruction, which the repository's
+documentation policy classifies Tier 1 on content whatever directory it sits in; no gate
+checks it, which is why it is stated here. The block is this template's own metadata and
+sits outside the fenced skeleton, so it never travels into a session copied from it.
+Below the block the file carries the full session skeleton in order, inside one fenced
+`markdown` block. **The skeleton opens with
 the `markdownlint-disable` directive, not with the H1.** Every built curriculum file
 carries that comment as line 1, the hard constraints below require it of every built
 curriculum file, and this is the one deliverable in the batch whose whole purpose is to
@@ -886,9 +924,10 @@ parent-facing meta" is satisfied by that section order rather than by pushing th
 five-field strip below `## Steps`. The operative style law asks for both halves in one
 sentence: the child's action first, **and** the parent meta grouped into the labelled
 strip near the top. Do not reorder the strip, here or in any session;
-the "You are here" navigation aid and Previous/Next, with the "You are here"
-line pointing at the progress tracker as the single "what do I do next?" source of
-truth; the point-of-use accommodation line on artifact-producing sessions; that Start
+the "You are here" navigation aid and Previous/Next, and exactly what that line
+carries: the phase, the step label, `Previous:` and `Next:`, and no link to the
+progress tracker, for the reason set out after this list; the point-of-use
+accommodation line on artifact-producing sessions; that Start
 Here is a true micro-action, ideally under one minute; the 20–30 minute default, the six
 parent-involvement values and the planner-skill menu; the lighter late-phase template
 note (in Phases 7–8, or on the two-session readiness trigger, **Steps and Workspace
@@ -897,6 +936,21 @@ Here, Stop Point, the named Artifact, and Source Check when research occurred ar
 **always kept** in full); and the
 worksheet-form rule. Also record the navigation rendering rules from the OQ-7 decision
 so a later author applies them without re-deriving them.
+
+**The navigation line carries no link to the progress tracker, and the template says so.**
+The tracker is still the single "what do I do next?" source of truth; the child reaches it
+from the student guide rather than from the navigation line. Every session carries
+`## Finish and Quality Check`, whose canonical pointer sends the child to a card whose
+last item is *"I checked off this session on my progress tracker"*; the student guide's
+index calls the tracker *"the one place that always answers 'what's next'"*; the When I'm
+Stuck card routes there too; and H2 gives it a section of its own. **Do not add a tracker
+link to the navigation line of any session**, in this batch or a later one. The archived
+design record asks for one and every session on `main` carries a navigation line without
+one, so the built repository wins. Adding it to the Batch 1 sessions alone would split the
+corpus; adding it to all of them would put a diff unrelated to the conversion on each of
+the eight shared sessions for the equivalence read to explain, and would force an edit to
+Session 15, which the navigation table below marks as needing none. That table and the
+five exact navigation blocks are the authority on what the line contains.
 
 **Write the floor into the template, because the archived design record does not carry
 it.** `.github/scripts/check-session-structure.py` requires all six of `## Goal`,
@@ -920,21 +974,28 @@ the top, on its own line. **The spec has no content requirements for this file
 anywhere** — the outline below is the requirement, supplied by OQ-9. Required sections,
 in order:
 
-1. `## What this is` — one paragraph. This is the blank skeleton for a parent-guide
+1. `## Metadata` — `**Status:**`, `**Owner:**`, `**Last Updated:**` (your build
+   date, `YYYY-MM-DD`) and `**Scope:**`, plus `**Related:**` where a real target exists.
+   Like D7, this file's content is authoring instruction, which the repository's
+   documentation policy classifies Tier 1 on content whatever directory it sits in; no
+   gate checks it, which is why it is stated here. The block is the template's own
+   metadata and sits outside the fenced skeletons below, so it never travels into a page
+   copied from one.
+2. `## What this is` — one paragraph. This is the blank skeleton for a parent-guide
    page. It is builder-facing. Point to `../docs/build_style_and_vocab.md` for voice,
    vocabulary and lint law, and do not repeat those rules here.
-2. `## The parent-guide register rule` — state the point first, then qualify at most
+3. `## The parent-guide register rule` — state the point first, then qualify at most
    once. Plain parent voice, not a nested-qualification voice. One to four pages. Mark
    adult-owned responsibilities clearly. Every legal, safety, entry or
    current-information item carries a verify-with-official-sources line and a
    record-the-date-checked line.
-3. `## The page skeleton` — one fenced `markdown` block: `# Page Title`, a one-sentence
+4. `## The page skeleton` — one fenced `markdown` block: `# Page Title`, a one-sentence
    purpose line, two or three `## <Point>` headings, and a closing `## Where to go
    next` pointer list.
-4. `## The per-session support-note shape` — one fenced `markdown` block showing the
+5. `## The per-session support-note shape` — one fenced `markdown` block showing the
    six-part shape `session_support_notes.md` uses: the `## Session NN: Title` heading,
    then Role, Prep, Look for, Coaching question, Pitfall.
-5. `## Checks before you ship a page` — a short list: point-first register; no
+6. `## Checks before you ship a page` — a short list: point-first register; no
    destination facts; no trip, origin or roster values; one canonical home per concern
    with a one-clause reminder and a link elsewhere; verify-framing on every volatile
    fact; no heading ends in `:` or `?`; every fenced block declares a language; every
@@ -995,7 +1056,10 @@ before Batch 1.** Do not edit it.
 
 Of the new `framework/docs/` files, only F3, F7 and F9 carry a `## Metadata` block; F4,
 F5, F6 and F8 are parent-facing curriculum reading, classified Tier 2, and deliberately
-do not. Do not add the block to a file this brief does not ask for it on.
+do not. **That classification covers `framework/docs/` only.** Three files outside this
+section carry the block as well, each required to carry it in its own item: A1, D7 and
+D8, the batch's three builder-facing contracts. Everywhere else, do not add the block
+to a file this brief does not ask for it on.
 
 **F1. `framework/README.md` (create).** Parent-facing and reuser-facing. Must contain:
 
@@ -1044,17 +1108,20 @@ do not. Do not add the block to a file this brief does not ask for it on.
   session all write amounts with a dollar sign. Swap the symbol for your own currency;
   nothing else on those pages changes. The destination pack carries the same assumption in
   its own layer: this pack's child word list and its money reference convert prices into US
-  dollars, and the word list gives Fahrenheit and miles beside the local units. A pack
-  written for a family from somewhere else converts into that family's money and units
-  instead. Beyond the origin logistics layer, nothing in the framework assumes an origin
+  dollars, the word list gives Fahrenheit and miles beside the local units, and its
+  trusted-sources list names a US government travel page as the adult-owned entry and
+  safety source. A pack written for a family from somewhere else converts into that
+  family's money and units and names that family's own government page instead. Beyond
+  the origin logistics layer, nothing in the framework assumes an origin
   country."* **Do not
   edit those three budget surfaces in this batch** -- none of them is on the deliverables
   list, two of them belong to later phases, and naming them accurately is the whole fix.
   **Do not "fix" the pack surfaces either.** A5 is required above to carry the dollar
   conversion forward from the built glossary without change of meaning;
-  `destinations/japan/reference/money_basics.md` is not on the deliverables list at all;
-  and the pack `README.md` is on it only as A6, whose three changes do not reach its
-  money-reference line. Naming the assumption is the fix there too.
+  `destinations/japan/reference/money_basics.md` and
+  `destinations/japan/reference/trusted_starting_sources.md` are not on the deliverables
+  list at all; and the pack `README.md` is on it only as A6, whose three changes do not
+  reach its money-reference line. Naming the assumption is the fix there too.
   **And do not list the Destination Snapshot session's flight sentence here.** An earlier
   draft of this bullet did. The Session 10 conversion table below neutralises *"it is a
   long flight from the US"* to *"it is a long flight from home"* in this same batch, and
@@ -1217,13 +1284,23 @@ used: a book, a website, a map, a **video**, a review site, or an AI tool; a rev
 is a website and uses the Website form; and a session with no research step is never asked
 for one; `## The five forms` — one short sub-block per kind, naming its fields exactly:
 
-- Website: website title, organization or author, page title, URL, date I checked it.
+- Website: website title, organization or author, page title, web address, date I
+  checked it.
 - Book: book title, author or publisher, page number, date I used it.
 - Map: map tool, place or route searched, date I checked it.
 - Video: channel name, video title, date I watched it, what it helped with, the fact I
   checked somewhere else, autoplay off, timer set.
 - AI: AI tool name, prompt I asked, date used, what it helped with, facts I checked
   somewhere else.
+
+**Why the Website form's fourth field is `web address` and not `URL`.** The archived
+design record writes it `URL`. The built repository writes it `web address` everywhere it
+appears -- `framework/templates/source_log.md`, the golden exemplar Session 04 twice, and
+Sessions 05 and 10 -- and the built repository wins on conflict. It is also the plainer
+word, on a form a ten-year-old fills in. **Write `web address` in every citation form in
+this batch**, and do not restore `URL` from the spec: D3's Book Notes website block, D4's
+Website Notes source blocks, D6's printable form and Session 08's citation form all name
+this field, and D3 requires D4 to label the same five cells the same way.
 
 **Why the trigger names `video` and does not name a Review form.** The archived design
 record writes the trigger as "a book, website, map, review, or AI tool" and then defines
@@ -1752,7 +1829,7 @@ end) works and prints portrait.
   session.
 - No entry restates the session's Parent Notes.
 
-**H6. `framework/parent_guide/time_and_effort.md` (edit).** Two changes.
+**H6. `framework/parent_guide/time_and_effort.md` (edit).** Three changes.
 
 - Append one line at the end of the `## Is it worth it (versus casual involvement)`
   section: `If you want a rough signal over time rather than a feeling, the optional
@@ -1767,10 +1844,29 @@ end) works and prints portrait.
   research alone. Replace it with exactly: `Replace per-session co-working with a quick
   after-the-session glance -- except Sessions 05 and 08, which stay hands-on; 08 is the
   open-web research session.` **Change nothing else in that section** -- the other five
-  bullets stay as they are. The sentence above the section, *"Early sessions need real
-  co-working -- especially the source-judging Session 05"*, is about where the coaching
+  bullets stay as they are. The similar sentence two sections earlier, in `## Early
+  sessions are more hands-on` -- *"Early sessions need real co-working -- especially the
+  source-judging Session 05"* -- is about where the coaching
   load sits and is accurate as written; **do not widen it too.** The rule a parent acts on
   has one home, and two copies of it would drift apart.
+- **Put the second build gate on the build-ahead advice.** `## Building the materials
+  (a phase ahead)` is one paragraph, and it reads *"If you are building the worksheets
+  yourself with AI help, build just-in-time: make the runnable Phase 0-2 slice first
+  (days, not weeks), let the child work it, and build the next phase while they are on
+  the current one. A slow week then wastes nothing. Do not build everything up front."*
+  That tells an adult to build the next phase while the child works the current one,
+  with no check in between, and the archived design record requires this page to carry a
+  short version of the build scope note **and its gate**. This batch is what falsifies
+  the advice: it builds the five sessions the gate's second check watches a child work.
+  **Keep the paragraph and append these two sentences to it**, in the page's own plain
+  parent voice: *"One stop, before you build the next phase: read the rebuilt Phase 0-2
+  sessions against the pages your child actually worked and confirm nothing was lost,
+  and watch your child work the sessions that are new to them. Fix what you find before
+  you build further -- reading the pages is the easy half, and only watching your child
+  tells you whether the new sessions work."* Do not number the batches here, do not cite
+  a spec section, and change nothing else in the section. The pilot-runner section
+  further down the page is the **first** gate and is already written; this is the second
+  one, and the two are not the same check.
 
 **H7. `framework/student_guide/progress_tracker.md` (edit).** Two parts: the First Taste
 list, and the "Which sessions need a grown-up" section. Both change.
@@ -1807,8 +1903,10 @@ in the voice the section already uses, to the **Need a grown-up** bullet **and**
 must carry its condition in both places, exactly the way Session 09 already does in this
 file.** In the **Need a grown-up** bullet write *"Session 07 (only if you do the library
 session -- a grown-up opens the catalogue or drives you)"*; in the sentence beneath write
-*"Session 07 if you are doing it"*. That sentence ends *"pause there until one is free,
-and do not skip past them"*, and **that instruction must never bind a Recommended
+*"Session 07 if you are doing it"*. Two sentences sit in that paragraph and they are not
+the same one: the sentence you edit is the one ending *"or Session 44's special-pick
+step)."*, and the sentence directly after it ends *"pause there until one is free, and do
+not skip past them."* **That second instruction must never bind a Recommended
 session**: a child who cannot reach an adult skips Session 07 and carries on to Session
 08. Session 06 supplies the skip affordance and Session 07's own Status field says it is
 *"a fine one to skip"*, so a tracker that told the child to wait would decide the
@@ -1873,9 +1971,13 @@ it.
 **H11. `README.md` (edit).** The repository's **root** landing page -- not
 `framework/README.md`, which F1 creates. It has no spec-extract section of its own, so it
 sits here at the end of Section H. The archived design record puts the start-up root docs
-inside Batch 1, and three of the four it names are already on this list: the roadmap as
-H8, the parent quick-start as H3's second edit and an H10 row, and the student-guide
-README as an H10 row. This is the fourth. Without it the file-scope rule freezes the
+inside Batch 1 and names **five** of them: `README.md`, `GETTING_STARTED.md`,
+`PROJECT_ROADMAP.md`, the parent quick-start and the student guide. Three are already on
+this list -- the roadmap as H8, the parent quick-start as H3's second edit and an H10
+row, and the student-guide README as an H10 row. This root `README.md` is the fourth.
+`GETTING_STARTED.md` is the fifth and is deliberately left alone; the out-of-scope list
+at the end of this item says why. That is an accounted-for omission, not a dropped file.
+Without it the file-scope rule freezes the
 repository's front page at its Batch 0 state while this batch invalidates four of its
 claims -- the same way `framework/CHANGELOG.md` would have stayed frozen because no
 deliverables list named it. **Four regions change, and nothing else does:**
@@ -1972,8 +2074,9 @@ Destination Notes." Four phrase replacements:
 | Buy-in gut-check | "show them a few genuinely exciting things about Japan" | "show them a few genuinely exciting things about your destination (the destination pack is a good place to start)" |
 | Full checklist | "If you have never been to Japan" | "If you have never been to your destination" |
 
-Keep every adult-owned item as-is: the kid-safe filter with the "reduces but does not
-eliminate" caveat; the four fastest-safe-start actions; the passport long-lead check
+Keep every adult-owned item as-is: the kid-safe filter with its built caveat, which reads
+*"It reduces exposure but does not remove it"*; the four fastest-safe-start actions; the
+passport long-lead check
 with its verify framing and recorded date; the AI yes/no choice, default no; the privacy
 link; the rough season window, budget band and rough trip shape anchors; and the "do not
 decide City C, food, or language now" rule. Keep the kid-sized budget-band framing, with
@@ -1998,7 +2101,9 @@ travel party, where an open answer is fine; date started; the "adults make the f
 decisions" note); the "things I can't wait to see" page as the single primary motivation
 mechanism; the baseline reflection ("What is hard for me when a project is big?" and
 "What helps me get started?"), kept safe for Session 53; the carry-over tag in its
-canonical wording; the one-line "Make It Yours" introduction and the optional "what
+canonical wording; the "Make It Yours" cover, which the built page names exactly once,
+inside the Stop Point, and nowhere else -- there is no separate introduction line to
+preserve, and none to add; the optional "what
 would make this fun for you?" conversation, where skipping is fine; the light bridging
 mention framed as something to notice, never a promise; and the Source Check as "No new
 sources needed unless you looked something up." **This session carries `AC-31-1` — "the
@@ -2183,8 +2288,10 @@ cities vs. nature; famous sights vs. hidden gems; museums and history vs. food, 
 and neighborhoods; fewer places deeper vs. more places faster; special planned meals
 vs. flexible meals) — keep the built six, not a seventh. Preserve the "Our travel style
 is…" one-sentence summary; the relative-cost-thinking touch anchored to the setup budget
-band (more cities and more hotel moves usually cost more; a far-flung region adds travel
-cost; detailed budgeting stays in Phase 6); the "look back at your Session 03 goals"
+band, in its three built clauses -- *"more cities and more hotel moves usually cost
+more"*, *"a far-away region adds travel cost"* and *"You will do real budgeting later."*
+The page says "later"; it names no phase, and `Phase 6` appears nowhere in it. Preserve
+the "look back at your Session 03 goals"
 instruction; and the Parent Notes' mixed-stamina "fewer places, deeper" observation.
 
 ### Session 14 — Checkpoint 1: Season Recommendation (convert, no insert slot)
@@ -2204,10 +2311,15 @@ Destination Notes" to this session** — Checkpoint 1 consumes the child's own s
 chart from Session 12, and the contract routes it no slot (OQ-1). Preserve: the seven
 Decision Record fields (best season; backup season; a season or period to be careful
 about; possible months, where an open answer is fine; reasons, which are the important
-part; sources; questions for the grown-ups); the adult-review list (school schedule,
-work schedule, weather tolerance, crowd tolerance, cost, major holidays, family
-constraints); the "progress is real" acknowledgment, kept warm and non-gamified; the
-calm, pressure-free "decide whether to continue" note pointing to the coaching guide;
+part; sources; questions for the grown-ups); the adult-review list, which the built page
+writes as one sentence -- *"They will weigh school and work schedules, weather, crowds,
+cost, and holidays."* -- and which is preserved **as it stands, not expanded**: there is
+no "weather tolerance", no "crowd tolerance" and no "family constraints" on the page, and
+adding one would put content into the session that the equivalence read has no baseline
+for; the "progress is real" acknowledgment, kept warm and non-gamified; the calm,
+pressure-free "decide whether to continue" note, which the built page opens *"A calm
+choice point:"* and which carries **no link** -- this file's one coaching-guide link sits
+in `## Parent Notes`, and it stays there;
 the short, mostly adult-facing date-gating heads-up in a single calm child-facing line;
 the decision-log framing; and the Parent Notes instruction to genuinely use the
 recommendation in a real family conversation.
@@ -2232,7 +2344,7 @@ required end state for the numbered child order is:
 | 06 | `Phase 1 (Research Skills). Not a First Taste step.` | `[05 Good Sources, Bad Sources](05_good_sources_bad_sources.md)` | `[07 Library Research Plan](07_library_research_plan.md)` | none | **new file** |
 | 07 | `Phase 1 (Research Skills). Not a First Taste step.` | `[06 Book Research With a Guidebook](06_book_research_guidebook.md)` | `[08 Web Research Practice](08_web_research_practice.md)` | none | **new file** |
 | 08 | `Phase 1 (Research Skills). Not a First Taste step.` | `[07 Library Research Plan](07_library_research_plan.md)` | `[09 AI as Helper, Not Boss](09_ai_as_helper_not_boss.md)` if your family opted into AI, then `[10 Destination Snapshot](../phase_02_destination_big_picture/10_destination_snapshot.md)` (AI-free families go straight to 10). | none | **new file** |
-| 09 | `Phase 1 (Research Skills), **AI opt-in add-on** -- not a numbered step. Do this before you use any AI tool.` | `[08 Web Research Practice](08_web_research_practice.md)` | `[10 Destination Snapshot](../phase_02_destination_big_picture/10_destination_snapshot.md)` | none (add-on) | **yes** — Previous was 05 |
+| 09 | `Phase 1 (Research Skills), **AI opt-in add-on** -- not a numbered step. Do this before you use any AI tool.` | `[08 Web Research Practice](08_web_research_practice.md)` | `[10 Destination Snapshot](../phase_02_destination_big_picture/10_destination_snapshot.md)` | none (add-on) | **yes** — Previous was 05, and the `You are here:` text changes too; column 2 is the authority |
 | 10 | `Phase 2 (Destination Big Picture), First Taste step 5 of 13.` | `[08 Web Research Practice](../phase_01_research_skills/08_web_research_practice.md)` (or `[09 AI as Helper, Not Boss](../phase_01_research_skills/09_ai_as_helper_not_boss.md)` if your family uses AI) | `[11 Regions and Cities Overview](11_regions_and_cities_overview.md)` | 5 | **yes** — Previous was 05; Next was 12 |
 | 11 | `Phase 2 (Destination Big Picture). Not a First Taste step.` | `[10 Destination Snapshot](10_destination_snapshot.md)` | `[12 Weather, Seasons, and Events](12_weather_seasons_and_events.md)` | none | **new file** |
 | 12 | `Phase 2 (Destination Big Picture), First Taste step 6 of 13.` | `[11 Regions and Cities Overview](11_regions_and_cities_overview.md)` | `[13 Trip Goals and Travel Style](13_trip_goals_and_travel_style.md)` | 6 | **yes** — Previous was 10 |
@@ -2240,8 +2352,14 @@ required end state for the numbered child order is:
 | 14 | `Phase 2 (Destination Big Picture), First Taste step 8 of 13. **This is Checkpoint 1 -- your first family decision.**` | `[13 Trip Goals and Travel Style](13_trip_goals_and_travel_style.md)` | `[15 City Research Cards](../phase_03_choose_places/15_city_research_cards.md)` | 8 | no |
 | 15 | `Phase 3 (Choose Places), First Taste step 9 of 13.` | `[14 Checkpoint 1: Season Recommendation](../phase_02_destination_big_picture/14_checkpoint_1_season_recommendation.md)` | `[21 Compare Cities](21_compare_cities.md)` | 9 | no — listed so you can confirm Session 15 needs no navigation edit |
 
-**The italic path-divergence lines.** Add one short italic line directly under the
-navigation line of Sessions 01, 05, 06, 09 and 10 — those five, and no others. The
+**The italic path-divergence lines.** Sessions 01, 05, 06, 09 and 10 each end with one
+short italic line directly under the navigation line — those five, and no others.
+**Four of the five are additions. Session 05's is not.** That session already carries an
+italic line there today, the only one in the tree, reading *"If your family chose to use
+AI, do [Session 09](09_ai_as_helper_not_boss.md) right after this one, before you use any
+AI tool."* Its block below **rewrites that line and adds a second one above it**, so
+Session 05 ends with two italic lines and not three. Rewrite the existing line; do not
+append a third beside it. The
 general rule is *announce a divergence forward only, and add no line where the numbered
 order and the First Taste order already agree*; that rule explains 01, 05 and 10.
 Sessions 06 and 09 are not on the First Taste chain at all, so the rule does not reach
@@ -2390,7 +2508,8 @@ You are here: Phase 2 (Destination Big Picture), First Taste step 5 of 13. Previ
 - **Do not restate a canonical concept** — in full or in abbreviated form. Use a
   one-clause reminder plus a relative link to its canonical home. **Do not cite a spec
   section number in any built file.**
-- **Lint:** markdownlint clean except MD013 and MD034; MD040 and MD026 stay enabled
+- **Lint:** markdownlint clean under the repository's committed config, which disables
+  **four** rules -- MD013, MD034, MD036 and MD041; MD040 and MD026 stay enabled
   (every fence declares a language; no heading ends in `:` or `?`). Reuse the repo's
   committed `.markdownlint.jsonc` — do not add a second config. Run `pre-commit run
   --all-files` and fix issues before finishing.
@@ -2696,8 +2815,36 @@ and 14:
 python .github/scripts/check-readability.py
 ```
 
-Expect no `FAIL` lines anywhere. **Investigate every `WARN` on a file this batch creates
-or edits**, and fix it unless the file is genuinely not child-facing, in which case it
+**That command does not reach the whole batch, and the gap is in this batch's own
+deliverables.** With no arguments the script scores its default corpus, and
+`framework/trip_starter/` is not in it -- the five scored trees are the ones listed
+above. G1 is child-readable, G4's sections are written for the child, and G2, G3 and G5
+wrap child-facing template bodies in new prose, which is exactly where a grade
+regression would enter. So run a second command, and **name the five files**:
+
+```bash
+python .github/scripts/check-readability.py \
+  framework/trip_starter/README.md \
+  framework/trip_starter/family/trip_basics.md \
+  framework/trip_starter/family/current_family_travel_assumptions.md \
+  framework/trip_starter/family/traveler_profiles/README.md \
+  framework/trip_starter/family/family_trip_goals.md
+```
+
+**Name the files, never the directory.** A named *file* is scored even from outside the
+default trees, which is what makes this work. A *directory* argument is a scope selector
+that picks from the same default corpus, so `check-readability.py framework/trip_starter`
+scores nothing, prints one line to stderr and exits clean -- a green run over an empty
+set. Do not shorten the command that way.
+
+`framework/docs/` and `framework/parent_guide/` are a different case and need no third
+command: both sit in the script's `ALWAYS_EXCLUDED_PREFIXES` and are never scored however
+the path arrives. F5, F6 and F7 carry child-readable content inside adult-register pages,
+so the sentence above does not reach them; read their level by hand instead.
+
+Expect no `FAIL` lines anywhere, from either run. **Investigate every `WARN` on a file
+this batch creates or edits**, and fix it unless the file is genuinely not
+child-facing, in which case it
 declares its audience in its own text. A `WARN` on a file outside this batch's deliverables
 list is **not yours to fix** -- the file-scope rule above forbids the edit. One such warning
 is standing today, on `destinations/japan/reference/sample_search_terms.md` (grade 7.13
