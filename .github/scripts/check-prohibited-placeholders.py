@@ -82,6 +82,15 @@ ATX_HEADING_LINE_PATTERN = re.compile(r"^ {0,3}#{1,6}(?:[ \t]|$)")
 THEMATIC_BREAK_LINE_PATTERN = re.compile(
     r"^ {0,3}(?:(?:\*[ \t]*){3,}|(?:-[ \t]*){3,}|(?:_[ \t]*){3,})$"
 )
+#: A Setext heading underline. A run of ``=`` or ``-`` under a paragraph
+#: turns that whole paragraph into a heading, so the paragraph is closed and
+#: nothing below the underline continues it. A ``-`` run is a Setext
+#: underline only while a paragraph is open; with nothing open it is the
+#: thematic break ``THEMATIC_BREAK_LINE_PATTERN`` already names, which is why
+#: the two tests are ordered. Kept identical to the constant in
+#: ``.github/scripts/check-session-structure.py``.
+#: <https://spec.commonmark.org/0.31.2/#setext-headings>
+SETEXT_UNDERLINE_PATTERN = re.compile(r"^ {0,3}(?:=+|-+)[ \t]*$")
 BLOCK_QUOTE_PREFIX_PATTERN = re.compile(r"^ {0,3}> ?")
 LIST_ITEM_PATTERN = re.compile(r"^(?P<indent> {0,3})(?P<marker>[-*+]|\d{1,9}[.)])(?P<spacing> +)")
 
@@ -419,23 +428,33 @@ def container_content(line: str, list_contexts: list[ListContext]) -> str:
     return container_line(line, list_contexts).content
 
 
-def opens_a_paragraph(content: str) -> bool:
+def opens_a_paragraph(content: str, paragraph_open: bool) -> bool:
     """Return whether a line of document text leaves a paragraph open below it.
 
     HTML block condition 7 is the one condition that may not interrupt a
     paragraph, so classifying it needs to know whether one is open. The test is
-    deliberately liberal: anything nonblank that is not a heading and not a
-    thematic break leaves a paragraph open. Being wrong in that direction only
-    ever *stops* condition 7 from opening, which is the behaviour this scan had
-    before it classified condition 7 at all. Lines inside a fence or an HTML
-    block never reach here; their caller closes the paragraph outright. Kept
-    identical to the helper in the sibling hook.
+    deliberately liberal: anything nonblank that is not a heading, a thematic
+    break or a Setext underline leaves a paragraph open. Being wrong in that
+    direction only ever *stops* condition 7 from opening, which is the
+    behaviour this scan had before it classified condition 7 at all. Lines
+    inside a fence or an HTML block never reach here; their caller closes the
+    paragraph outright. Kept identical to the helper in the sibling hook.
+
+    The underline needs the state coming in, which is the one thing the line
+    alone does not say. ``=====`` under a paragraph is that paragraph's
+    heading underline and closes it; ``=====`` with nothing open is an
+    ordinary paragraph of its own, and leaves one open below it.
+    <https://spec.commonmark.org/0.31.2/#setext-headings>
     """
     if not content.strip():
         return False
     if ATX_HEADING_LINE_PATTERN.match(content) is not None:
         return False
-    return THEMATIC_BREAK_LINE_PATTERN.match(content) is None
+    if THEMATIC_BREAK_LINE_PATTERN.match(content) is not None:
+        return False
+    if paragraph_open and SETEXT_UNDERLINE_PATTERN.match(content) is not None:
+        return False
+    return True
 
 
 def html_block_state(
@@ -630,7 +649,6 @@ def find_violations_in_text(text: str, display_path: str) -> list[Violation]:
         # comment opened part way along a line is not a block, so its
         # cross-line state is still consulted here.
         in_html_block = was_in_html_comment or line_html_block is not None
-        paragraph_open = False if in_html_block else opens_a_paragraph(block_content)
 
         opening_fence_line = normalize_for_fence_opening(commentless_line, list_contexts)
         opening_fence = (
@@ -638,7 +656,20 @@ def find_violations_in_text(text: str, display_path: str) -> list[Violation]:
         )
         if opening_fence is not None:
             active_fence = build_active_fence(opening_fence, opening_fence_line)
+            # A fence line opens a code block, not a paragraph. Leaving the
+            # state set meant that a fence whose container ended on the very
+            # next line handed a stale open paragraph to the line below it,
+            # which then refused to open the HTML block CommonMark opens
+            # there -- and a placeholder inside that block went unreported.
+            paragraph_open = False
             continue
+
+        # Written here rather than above, so the fence branch reads the state
+        # the line above left and not the one this line would leave. The
+        # sibling hook writes it in the same place.
+        paragraph_open = (
+            False if in_html_block else opens_a_paragraph(block_content, paragraph_open)
+        )
 
         if ALLOW_TBD_PATTERN.search(raw_line):
             continue

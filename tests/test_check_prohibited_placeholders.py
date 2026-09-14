@@ -826,3 +826,37 @@ def test_a_nonbreaking_space_does_not_close_a_fence(tmp_path: Path) -> None:
     )
 
     assert scan_single_file(path, tmp_path) == []
+
+
+def test_a_fence_whose_container_ends_does_not_leave_a_paragraph_open(tmp_path: Path) -> None:
+    """A fence line opens a code block, not a paragraph.
+
+    The paragraph state was written before the opening-fence branch, where a
+    fence line reads as ordinary text, so a fence whose blockquote ended on the
+    very next line handed a stale open paragraph to the line below it. The
+    complete tag there was refused HTML block condition 7, the backticks under
+    it opened a fence of their own, and the placeholder inside went unreported.
+    Measured against markdown-it 14.3.0: the tag opens a raw HTML block and the
+    placeholder is characters on the page.
+    """
+    path = write_file(
+        tmp_path / "docs" / "spec" / "example.md",
+        "> ```\n<x-session>\n```\nThe limit is TBD.\n",
+    )
+
+    assert [violation.matched_text for violation in scan_single_file(path, tmp_path)] == ["TBD"]
+
+
+def test_an_open_paragraph_still_refuses_a_complete_tag(tmp_path: Path) -> None:
+    """A negative control. Condition 7 is the one condition that may not interrupt.
+
+    A paragraph really is open above the tag here, so no HTML block opens, the
+    backticks below it are a fence, and the placeholder inside is an example.
+    Measured against markdown-it 14.3.0.
+    """
+    path = write_file(
+        tmp_path / "docs" / "spec" / "example.md",
+        "Heading\n<x-session>\n```\nThe limit is TBD.\n```\n",
+    )
+
+    assert scan_single_file(path, tmp_path) == []

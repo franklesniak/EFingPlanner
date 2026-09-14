@@ -2459,3 +2459,90 @@ def test_a_nonbreaking_space_does_not_close_a_fence() -> None:
     prose = readability.extract_prose(text)
     assert "Pick a city you want to see." not in prose
     assert "Write it down." in prose
+
+
+def test_a_comment_opener_inside_a_multi_line_code_span_is_not_a_delimiter() -> None:
+    """A code span crosses a soft line break, and a delimiter inside one is text.
+
+    Scanning for spans one physical line at a time made a multi-line span
+    invisible, so the ``<!--`` it carries paired with the next real ``-->``
+    below it and eleven words of child-facing prose went with the substitution.
+    Losing words that way can take a file under ``MIN_WORDS_TO_SCORE`` and out
+    of the gate in silence. Measured against markdown-it 14.3.0: the span is
+    one ``<code>`` element and every other word is on the page.
+    """
+    text = (
+        f"Read the {TICK}--flag <!--\n"
+        f"and --other{TICK} aloud with your grown-up today.\n"
+        "\n"
+        "Pack a snack for the walk. <!-- a note --> Then ride your bike.\n"
+    )
+    prose = readability.extract_prose(text)
+    assert "aloud with your grown-up today." in prose
+    assert "Pack a snack for the walk." in prose
+    assert "Then ride your bike." in prose
+    assert "a note" not in prose
+
+
+def test_a_code_span_that_crosses_a_soft_line_break_is_not_prose() -> None:
+    """The words inside a span are printed characters, wherever the span ends.
+
+    A per-line scan left the whole payload of a wrapped span standing in the
+    prose, backticks and all, which raises the score of a file whose only fault
+    is that it documents a command. Measured against markdown-it 14.3.0: all
+    three lines are one ``<code>`` element.
+    """
+    text = f"Read the {TICK}one\ntwo\nthree{TICK} label out loud with a grown-up today.\n"
+    prose = readability.extract_prose(text)
+    assert "label out loud with a grown-up today." in prose
+    assert "one" not in prose
+    assert "three" not in prose
+    assert TICK not in prose
+
+
+def test_a_line_read_alone_pairs_the_wrong_two_backtick_runs() -> None:
+    """A line below a wrapped span offers a pairing the document does not have.
+
+    The closing run of the wrapped span and the opening run of the next span
+    look, on that line alone, like a span of their own -- so the ordinary word
+    between them was deleted while the real spans were left in the prose.
+    Measured against markdown-it 14.3.0: three ``<code>`` elements, and ``and``
+    and ``plus`` both on the page.
+    """
+    text = (
+        f"The {TICK}a{TICK} and {TICK}b\n"
+        f"c{TICK} plus {TICK}d{TICK} are labels you can read out loud today.\n"
+    )
+    prose = readability.extract_prose(text)
+    assert "and" in prose
+    assert "plus" in prose
+    assert TICK not in prose
+
+
+def test_a_code_span_does_not_reach_across_a_blank_line() -> None:
+    """A negative control. A blank line ends the paragraph and the search with it.
+
+    The opening run is then literal text, exactly as markdown-it 14.3.0 renders
+    it, and the words below it stay prose.
+    """
+    text = (
+        f"Read the {TICK}flag name out loud.\n"
+        "\n"
+        f"Then pack a snack and {TICK}ride{TICK} away.\n"
+    )
+    prose = readability.extract_prose(text)
+    assert f"Read the {TICK}flag name out loud." in prose
+    assert "Then pack a snack and" in prose
+    assert "away." in prose
+
+
+def test_a_code_span_does_not_reach_across_a_list_item() -> None:
+    """A negative control. A list item interrupts a paragraph, blank line or not."""
+    text = (
+        f"Read the {TICK}flag name out loud.\n"
+        f"- Then pack a snack and {TICK}ride{TICK} away.\n"
+    )
+    prose = readability.extract_prose(text)
+    assert f"Read the {TICK}flag name out loud." in prose
+    assert "Then pack a snack and" in prose
+    assert "away." in prose

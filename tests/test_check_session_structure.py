@@ -2326,3 +2326,80 @@ def test_a_navigation_value_after_a_tab_is_still_a_navigation_line() -> None:
         "**For parents:**", "You are here:\tPhase 0 (Setup).\n\n**For parents:**", 1
     )
     assert check(text) == []
+
+
+#: One backtick. Spelled through a name so a test that puts a code span beside
+#: an HTML comment never has to embed the character in a literal, where a stray
+#: one is easy to miss.
+TICK = FENCE[0]
+
+#: The exemption marker, spelled once for the tests that place it on one side
+#: or the other of a block boundary.
+OFFLINE_MARKER = "<!-- no-source-check: an offline exercise -->"
+
+
+def test_a_code_span_does_not_reach_across_a_list_item_into_a_marker() -> None:
+    """A list item interrupts a paragraph, so the run above it closes nothing.
+
+    The lookahead stopped at a blank line, a heading and a thematic break and
+    at nothing else, so an unclosed run paired with the first run inside the
+    list item and swallowed the marker between them -- and a session that had
+    declared itself was reported as missing its Source Check. Measured against
+    markdown-it 14.3.0: the paragraph ends before the list and the marker
+    renders as a comment.
+    """
+    text = build_session(
+        sections=SIX_SECTIONS,
+        extra=(
+            f"## Notes\n\nUse {TICK}open on one line and\n"
+            f"- item {OFFLINE_MARKER} {TICK}x{TICK}\n"
+        ),
+    )
+    assert check(text) == []
+
+
+def test_a_code_span_does_not_reach_across_a_blockquote_into_a_marker() -> None:
+    """A blockquote interrupts a paragraph exactly as a list item does.
+
+    Measured against markdown-it 14.3.0: the quoted line is its own block and
+    the marker inside it renders as a comment.
+    """
+    text = build_session(
+        sections=SIX_SECTIONS,
+        extra=(
+            f"## Notes\n\nUse {TICK}open on one line and\n"
+            f"> quoted {OFFLINE_MARKER} {TICK}x{TICK}\n"
+        ),
+    )
+    assert check(text) == []
+
+
+def test_a_code_span_inside_one_paragraph_still_swallows_a_marker() -> None:
+    """A negative control. A span really does cross a soft line break.
+
+    Nothing between the two runs opens a block, so the marker is inside the
+    span, is printed rather than read, and exempts nothing. Measured against
+    markdown-it 14.3.0.
+    """
+    text = build_session(
+        sections=SIX_SECTIONS,
+        extra=f"## Notes\n\nUse {TICK}open and\nmore {OFFLINE_MARKER} here{TICK} today.\n",
+    )
+    assert any('missing "## Source Check"' in message for message in check(text))
+
+
+def test_a_setext_underline_closes_the_paragraph_above_a_raw_html_block() -> None:
+    """A Setext underline turns the paragraph above it into a heading.
+
+    The paragraph tracker recognized an ATX heading and a thematic break and
+    stopped there, so an open paragraph was still claimed under the underline
+    and the complete tag below it was refused HTML block condition 7. The
+    heading inside that block then counted as a mandatory section the page
+    never shows. Measured against markdown-it 14.3.0: the block opens and
+    swallows the heading.
+    """
+    text = build_session(
+        sections=SIX_SECTIONS,
+        extra="## Notes\n\nHeading\n=====\n<x-session>\n## Source Check\n",
+    )
+    assert any('missing "## Source Check"' in message for message in check(text))

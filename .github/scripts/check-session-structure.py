@@ -287,6 +287,15 @@ ATX_HEADING_LINE_PATTERN = re.compile(r"^ {0,3}#{1,6}(?:[ \t]|$)")
 THEMATIC_BREAK_LINE_PATTERN = re.compile(
     r"^ {0,3}(?:(?:\*[ \t]*){3,}|(?:-[ \t]*){3,}|(?:_[ \t]*){3,})$"
 )
+#: A Setext heading underline. A run of ``=`` or ``-`` under a paragraph
+#: turns that whole paragraph into a heading, so the paragraph is closed and
+#: nothing below the underline continues it. A ``-`` run is a Setext
+#: underline only while a paragraph is open; with nothing open it is the
+#: thematic break ``THEMATIC_BREAK_LINE_PATTERN`` already names, which is why
+#: the two tests are ordered. Kept identical to the constant in
+#: ``.github/scripts/check-readability.py``.
+#: <https://spec.commonmark.org/0.31.2/#setext-headings>
+SETEXT_UNDERLINE_PATTERN = re.compile(r"^ {0,3}(?:=+|-+)[ \t]*$")
 
 #: An inline HTML tag, open or closing. The scan skips one whole tag at a
 #: time so that a ``<!--`` inside an attribute value is read as part of the
@@ -397,6 +406,13 @@ MARKER_SOURCE_BLANK = "blank"
 MARKER_SOURCE_RAW_HTML = "raw-html"
 MARKER_SOURCE_TEXT = "text"
 
+#: One line as the scan records it: which rules read it, what it holds once
+#: its container prefixes are peeled, and whether it begins a block of its
+#: own. The last of the three is recorded here rather than worked out later
+#: because only this walk holds the container path of the line above, which
+#: is what tells a wrapped paragraph from a new list item.
+MarkerSource = tuple[str, str, bool]
+
 #: These three patterns, and the fence and container helpers below, are kept
 #: deliberately in sync with ``.github/scripts/check-prohibited-placeholders.py``
 #: and, where they exist there, with ``.github/scripts/check-readability.py``.
@@ -466,6 +482,9 @@ class FenceLine:
 
     content: str
     containment_path: tuple[Container, ...] = ()
+    #: The containers that opened on this line rather than above it. A list
+    #: item among them starts a block, whatever the line goes on to hold.
+    opened: tuple[Container, ...] = ()
 
 
 @dataclass(frozen=True)
@@ -701,6 +720,7 @@ def normalize_for_fence_opening(line: str, list_contexts: list[ListContext]) -> 
     return FenceLine(
         content=relative_line,
         containment_path=effective_path + tuple(extras),
+        opened=tuple(extras),
     )
 
 
@@ -725,23 +745,37 @@ def container_content(line: str, list_contexts: list[ListContext]) -> str:
     return container_line(line, list_contexts).content
 
 
-def opens_a_paragraph(content: str) -> bool:
+def opens_a_paragraph(content: str, paragraph_open: bool) -> bool:
     """Return whether a line of document text leaves a paragraph open below it.
 
     HTML block condition 7 is the one condition that may not interrupt a
     paragraph, so classifying it needs to know whether one is open. The test is
-    deliberately liberal: anything nonblank that is not a heading and not a
-    thematic break leaves a paragraph open. Being wrong in that direction only
-    ever *stops* condition 7 from opening, which is the behaviour this scan had
-    before it classified condition 7 at all. Lines inside a fence or an HTML
-    block never reach here; their caller closes the paragraph outright. Kept
-    identical to the helper in the sibling hook.
+    deliberately liberal: anything nonblank that is not a heading, a thematic
+    break or a Setext underline leaves a paragraph open. Being wrong in that
+    direction only ever *stops* condition 7 from opening, which is the
+    behaviour this scan had before it classified condition 7 at all. Lines
+    inside a fence or an HTML block never reach here; their caller closes the
+    paragraph outright. Kept identical to the helper in the sibling hook.
+
+    The underline needs the state coming in, which is the one thing the line
+    alone does not say. ``=====`` under a paragraph is that paragraph's
+    heading underline and closes it; ``=====`` with nothing open is an
+    ordinary paragraph of its own, and leaves one open below it.
+
+    ``starts_a_block`` asks the other half of the question -- whether a line
+    closes the paragraph *above* it -- and the Setext underline is where the
+    two answers part: it closes the one above and opens none below.
+    <https://spec.commonmark.org/0.31.2/#setext-headings>
     """
     if not content.strip():
         return False
     if ATX_HEADING_LINE_PATTERN.match(content) is not None:
         return False
-    return THEMATIC_BREAK_LINE_PATTERN.match(content) is None
+    if THEMATIC_BREAK_LINE_PATTERN.match(content) is not None:
+        return False
+    if paragraph_open and SETEXT_UNDERLINE_PATTERN.match(content) is not None:
+        return False
+    return True
 
 
 def html_block_state(
@@ -788,6 +822,41 @@ def html_block_state(
             open_block = None
 
     return open_block, line_block
+
+
+def starts_a_block(
+    content: str,
+    containment_path: tuple[Container, ...],
+    opened: tuple[Container, ...],
+    previous_path: tuple[Container, ...],
+) -> bool:
+    """Return whether a line begins a block rather than continuing the one above.
+
+    This is where a paragraph ends, and therefore where a code span stops
+    looking for its closing run. A blank line ends a paragraph, and so do a
+    heading, a thematic break and a Setext underline. So does a container: a
+    list item that opens on this line is a new block whatever it holds, and a
+    line whose container path is neither the path above it nor a prefix of that
+    path has left the paragraph. A prefix *is* a continuation -- an unprefixed
+    line under a quoted or listed paragraph is the lazy continuation CommonMark
+    reads it as, and treating it as a new block would cut a paragraph in half.
+
+    ``check-readability.py`` asks this question under this name, of the same
+    six shapes, so the two hooks cannot disagree about where a paragraph ends.
+    It is not the question ``opens_a_paragraph`` asks above.
+    <https://spec.commonmark.org/0.31.2/#paragraphs>
+    """
+    if not content.strip():
+        return True
+    if ATX_HEADING_LINE_PATTERN.match(content) is not None:
+        return True
+    if THEMATIC_BREAK_LINE_PATTERN.match(content) is not None:
+        return True
+    if SETEXT_UNDERLINE_PATTERN.match(content) is not None:
+        return True
+    if any(container.kind == CONTAINER_KIND_LIST for container in opened):
+        return True
+    return containment_path != previous_path[: len(containment_path)]
 
 
 def closing_backtick_run(line: str, start: int, length: int) -> int:
@@ -1025,20 +1094,17 @@ def following_backtick_run(contents: Sequence[str], row: int, length: int) -> tu
 
     A code span spans a soft line break: CommonMark closes it on the next run
     of the same length anywhere in the same paragraph. So the search runs on
-    past the end of the line and stops where the paragraph does -- at a blank
-    line, a heading or a thematic break -- past which the opening run is
-    literal text and the lines below it are prose again.
+    past the end of the line and stops where the paragraph does -- which is
+    the end of ``contents``, because the caller hands this one paragraph at a
+    time. Past that the opening run is literal text and the lines below it
+    are prose again. Naming the block starts here instead of asking
+    ``starts_a_block`` named three of its six shapes, and a code span then
+    reached across a list item or a blockquote and swallowed a marker that
+    exempts a session.
     <https://spec.commonmark.org/0.31.2/#code-spans>
     """
     for next_row in range(row + 1, len(contents)):
-        line = contents[next_row]
-        if not line.strip():
-            return -1, -1
-        if ATX_HEADING_LINE_PATTERN.match(line) is not None:
-            return -1, -1
-        if THEMATIC_BREAK_LINE_PATTERN.match(line) is not None:
-            return -1, -1
-        closer = closing_backtick_run(line, 0, length)
+        closer = closing_backtick_run(contents[next_row], 0, length)
         if closer != -1:
             return next_row, closer
     return -1, -1
@@ -1142,10 +1208,10 @@ def text_marker_spans(
     return ["".join(parts) for parts in spans], is_in_comment
 
 
-def collect_reference_labels(sources: Sequence[tuple[str, str]]) -> frozenset[str]:
+def collect_reference_labels(sources: Sequence[MarkerSource]) -> frozenset[str]:
     """Return every link label the document defines, normalized."""
     labels: set[str] = set()
-    for kind, content in sources:
+    for kind, content, _ in sources:
         if kind != MARKER_SOURCE_TEXT:
             continue
         match = LINK_REFERENCE_LABEL_PATTERN.match(content)
@@ -1154,7 +1220,7 @@ def collect_reference_labels(sources: Sequence[tuple[str, str]]) -> frozenset[st
     return frozenset(labels)
 
 
-def collect_marker_lines(sources: Sequence[tuple[str, str]]) -> tuple[str, ...]:
+def collect_marker_lines(sources: Sequence[MarkerSource]) -> tuple[str, ...]:
     """Return, for each line, the text CommonMark reads there as an HTML comment.
 
     The two Source Check exemption markers *are* comments and nothing else is
@@ -1169,10 +1235,12 @@ def collect_marker_lines(sources: Sequence[tuple[str, str]]) -> tuple[str, ...]:
     labels the document defines, and whether a backtick run further down the
     paragraph closes the one on this line.
 
-    Document text is scanned a run at a time for the same reason. A raw HTML
-    line ends the run, which is right twice over: the Markdown inline rules do
-    not reach inside a raw HTML block, and a line that opens one ends the
-    paragraph a code span would have needed to close in.
+    Document text is scanned a run at a time for the same reason, and a run is
+    one block. A raw HTML line ends it, which is right twice over: the Markdown
+    inline rules do not reach inside a raw HTML block, and a line that opens
+    one ends the paragraph a code span would have needed to close in. Every
+    other block start ends it too, which is what ``starts_a_block`` records as
+    the document is walked.
     """
     defined_labels = collect_reference_labels(sources)
     markers: list[str] = []
@@ -1180,7 +1248,7 @@ def collect_marker_lines(sources: Sequence[tuple[str, str]]) -> tuple[str, ...]:
     row = 0
 
     while row < len(sources):
-        kind, content = sources[row]
+        kind, content, _ = sources[row]
 
         if kind == MARKER_SOURCE_BLANK:
             markers.append("")
@@ -1193,8 +1261,14 @@ def collect_marker_lines(sources: Sequence[tuple[str, str]]) -> tuple[str, ...]:
             row += 1
             continue
 
-        end = row
-        while end < len(sources) and sources[end][0] == MARKER_SOURCE_TEXT:
+        # The run ends where the next block begins, so what reaches the scan
+        # is one paragraph and a code span cannot close outside its own.
+        end = row + 1
+        while (
+            end < len(sources)
+            and sources[end][0] == MARKER_SOURCE_TEXT
+            and not sources[end][2]
+        ):
             end += 1
         run = [sources[position][1] for position in range(row, end)]
         spans, is_in_comment = text_marker_spans(run, is_in_comment, defined_labels)
@@ -1297,13 +1371,14 @@ def scan_document(text: str) -> DocumentScan:
     ``check-prohibited-placeholders.py`` uses, under the same names.
     """
     content_lines: list[str] = []
-    marker_sources: list[tuple[str, str]] = []
+    marker_sources: list[MarkerSource] = []
     worksheet_fences: list[int] = []
     active_fence: ActiveFence | None = None
     list_contexts: list[ListContext] = []
     is_in_html_comment = False
     html_block: ActiveHtmlBlock | None = None
     paragraph_open = False
+    previous_path: tuple[Container, ...] = ()
     fence_start = 0
     buffer: list[str] = []
 
@@ -1328,8 +1403,9 @@ def scan_document(text: str) -> DocumentScan:
             else:
                 buffer.append(closing_line)
             content_lines.append("")
-            marker_sources.append((MARKER_SOURCE_BLANK, ""))
+            marker_sources.append((MARKER_SOURCE_BLANK, "", True))
             paragraph_open = False
+            previous_path = ()
             continue
 
         was_in_html_comment = is_in_html_comment
@@ -1380,24 +1456,34 @@ def scan_document(text: str) -> DocumentScan:
             fence_start = number
             buffer = []
             content_lines.append("")
-            marker_sources.append((MARKER_SOURCE_BLANK, ""))
+            marker_sources.append((MARKER_SOURCE_BLANK, "", True))
             paragraph_open = False
+            previous_path = ()
             continue
 
         content_lines.append("" if in_html_block else visible_line)
+        block_starts = starts_a_block(
+            block_content,
+            block_line.containment_path,
+            block_line.opened,
+            previous_path,
+        )
         # A marker is a marker only where CommonMark reads it as a comment, and
         # which contexts decide that depends on what the line is. Inside a raw
         # HTML block -- the comment among the conditions -- only a tag and a
         # comment mean anything; everywhere else the Markdown inline rules
         # apply. Recording which, rather than answering now, is what lets the
-        # scan below see a whole paragraph at a time; it is also what stops a
-        # code span reaching across a line that opens a block, because such a
-        # line ends the paragraph that would have held the span.
+        # scan below see a whole paragraph at a time; recording where each
+        # block starts is what keeps that paragraph to one block, so a code
+        # span cannot close outside the one that holds its opening run.
         if line_html_block is not None:
-            marker_sources.append((MARKER_SOURCE_RAW_HTML, block_content))
+            marker_sources.append((MARKER_SOURCE_RAW_HTML, block_content, block_starts))
         else:
-            marker_sources.append((MARKER_SOURCE_TEXT, block_content))
-        paragraph_open = False if in_html_block else opens_a_paragraph(block_content)
+            marker_sources.append((MARKER_SOURCE_TEXT, block_content, block_starts))
+        previous_path = block_line.containment_path
+        paragraph_open = (
+            False if in_html_block else opens_a_paragraph(block_content, paragraph_open)
+        )
 
     if active_fence is not None and fence_holds_worksheet(buffer):
         worksheet_fences.append(fence_start)

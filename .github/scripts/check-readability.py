@@ -156,6 +156,17 @@ FENCE_OPEN_PATTERN = re.compile(r"^ {0,3}(?P<marker>`{3,}|~{3,})")
 #: is. ``BLOCKQUOTE_PATTERN`` stays the prose-stripping copy.
 BLOCK_QUOTE_PREFIX_PATTERN = re.compile(r"^ {0,3}> ?")
 LIST_ITEM_PATTERN = re.compile(r"^(?P<indent> {0,3})(?P<marker>[-*+]|\d{1,9}[.)])(?P<spacing> +)")
+#: Two of the shapes that end the paragraph above them, spelled as
+#: ``.github/scripts/check-session-structure.py`` spells them so that the
+#: hooks share one notion of where a paragraph ends. ``HEADING_PATTERN`` and
+#: ``THEMATIC_BREAK_PATTERN`` below stay the prose-stripping copies, which
+#: ask a narrower question of a line already known to be prose.
+#: ``SETEXT_UNDERLINE_PATTERN``, a third shape, is defined with them.
+#: https://spec.commonmark.org/0.31.2/#atx-headings
+ATX_HEADING_LINE_PATTERN = re.compile(r"^ {0,3}#{1,6}(?:[ \t]|$)")
+THEMATIC_BREAK_LINE_PATTERN = re.compile(
+    r"^ {0,3}(?:(?:\*[ \t]*){3,}|(?:-[ \t]*){3,}|(?:_[ \t]*){3,})$"
+)
 HEADING_PATTERN = re.compile(r"^ {0,3}#{1,6}\s")
 TABLE_ROW_PATTERN = re.compile(r"^ {0,3}\|")
 TABLE_DELIMITER_PATTERN = re.compile(r"^ {0,3}\|?\s*:?-+:?\s*(?:\|\s*:?-+:?\s*)*\|?\s*$")
@@ -212,34 +223,6 @@ BARE_URL_PATTERN = re.compile(
     r"<https?://[^\s<>]*>"
     r"|https?://[^\s<>]*[^\s<>.,:;!?'\"]"
     r"|https?://"
-)
-#: A code span is opened by a backtick string and closed by a backtick string
-#: of the *same* length, so ````the `--strict` flag```` is one span and not
-#: two. A ```[^`]*``` pattern leaves the payload of every multi-backtick
-#: span in the prose, which raises the score of a file whose only fault is that
-#: it documents Markdown.
-#: Both runs must be that length *exactly*, so all four of their boundaries
-#: are guarded. Without the closing run's left guard a two-tick span closes on
-#: the last two ticks of a three-tick run; without the opening run's left
-#: guard the span simply opens one tick later and does the same thing. Either
-#: way the pattern deletes words CommonMark leaves visible, which can push a
-#: file under the 40-word minimum and out of the gate entirely.
-#:
-#: A backslash before the opening run is the fifth guard. A backtick that
-#: carries a backslash escape is literal text and opens nothing, so
-#: ``Read \`this phrase\` aloud`` is a sentence a child reads in full.
-#: The guard sits on the *opening* run alone, because a backslash means
-#: nothing once a span is open: CommonMark reads ``` `foo\`bar` ``` as the
-#: code span ``foo\`` followed by a visible ``bar``. Guarding the closing
-#: run too would delete that ``bar``, which is the very direction this guard
-#: exists to prevent. A run behind two or more backslashes opens nothing
-#: either, which leaves in the prose a span CommonMark would have hidden;
-#: that errs toward keeping words, and keeping words never pushes a file out
-#: of the gate.
-#: https://spec.commonmark.org/0.31.2/#backslash-escapes
-#: https://spec.commonmark.org/0.31.2/#code-spans
-INLINE_CODE_PATTERN = re.compile(
-    r"(?<!`)(?<!\\)(?P<code_ticks>`+)(?!`).*?(?<!`)(?P=code_ticks)(?!`)"
 )
 #: A list marker at the head of a line of prose. The ordered form accepts the
 #: same one-to-nine-digit marker ``LIST_ITEM_PATTERN`` accepts, because
@@ -475,6 +458,9 @@ class FenceLine:
 
     content: str
     containment_path: tuple[Container, ...] = ()
+    #: The containers that opened on this line rather than above it. A list
+    #: item among them starts a block, whatever the line goes on to hold.
+    opened: tuple[Container, ...] = ()
 
 
 @dataclass(frozen=True)
@@ -491,6 +477,20 @@ class ListContext:
     """An active Markdown list, identified by its full containment path from the document root."""
 
     containment_path: tuple[Container, ...]
+
+
+@dataclass(frozen=True)
+class ParagraphLine:
+    """One line of a paragraph, placed in the document it came from.
+
+    ``start`` is the line's offset in the document and ``content_start`` the
+    column where its container prefixes end, so a range the code-span scan
+    reports is an offset a caller can use against the document it holds.
+    """
+
+    start: int
+    text: str
+    content_start: int
 
 
 def count_leading_spaces(line: str) -> int:
@@ -592,6 +592,7 @@ def normalize_for_fence_opening(line: str, list_contexts: list[ListContext]) -> 
     return FenceLine(
         content=relative_line,
         containment_path=effective_path + tuple(extras),
+        opened=tuple(extras),
     )
 
 
@@ -754,31 +755,197 @@ def replace_character_reference(match: re.Match[str]) -> str:
     return decoded.replace("\r", " ").replace("\n", " ")
 
 
-def literal_code_regions(text: str) -> list[tuple[int, int]]:
-    """Return the character ranges of every fenced block line and code span.
+def closing_backtick_run(line: str, start: int, length: int) -> int:
+    """Return the end of the next backtick run of exactly ``length``, or -1.
 
-    Literal code is the text a document *prints* rather than means. Finding it
-    first is what lets the two callers below tell a marker from an example of
-    one, and a comment delimiter from a picture of a comment delimiter.
+    A code span closes on a run of the same length and on no other, so
+    ````the `--strict` flag```` is one span and not two. Scanning run by run
+    rather than searching for the substring is what keeps that true: a rule
+    that lets a shorter run close a longer one deletes words CommonMark leaves
+    visible, which can push a file under the 40-word minimum and out of the
+    gate entirely. Kept identical to the helper in
+    ``.github/scripts/check-session-structure.py``.
+    https://spec.commonmark.org/0.31.2/#code-spans
+    """
+    index = start
+    while index < len(line):
+        if line[index] != "`":
+            index += 1
+            continue
+        run_end = index
+        while run_end < len(line) and line[run_end] == "`":
+            run_end += 1
+        if run_end - index == length:
+            return run_end
+        index = run_end
+    return -1
 
-    The walk is the one ``extract_prose`` does, with the same helpers, so the
-    two passes over a document cannot disagree about where the fences are --
-    the same reason those helpers are kept in step with
-    ``.github/scripts/check-prohibited-placeholders.py``.
 
-    Ranges are half open and are offsets into ``text``, so a caller can rebuild
-    the document with its line breaks, its line count and its columns intact.
+def following_backtick_run(
+    lines: Sequence[ParagraphLine], row: int, length: int
+) -> tuple[int, int]:
+    """Return where a code span opened on ``row`` closes, or ``(-1, -1)``.
 
-    Indented code blocks are deliberately not included. Telling one from an
-    indented list continuation needs the full block parse this module does not
-    do, guessing wrong means an adult-facing file gets scored, and every code
-    block in this repository is fenced.
+    A code span crosses a soft line break: CommonMark closes it on the next run
+    of the same length anywhere in the same paragraph. So the search runs on
+    past the end of the line and stops where the paragraph does -- which is the
+    end of ``lines``, because the caller hands this one paragraph at a time.
+    Past that the opening run is literal text and the lines below it are prose
+    again. Kept in step with the helper in
+    ``.github/scripts/check-session-structure.py``.
+    https://spec.commonmark.org/0.31.2/#code-spans
+    """
+    for next_row in range(row + 1, len(lines)):
+        closer = closing_backtick_run(
+            lines[next_row].text, lines[next_row].content_start, length
+        )
+        if closer != -1:
+            return next_row, closer
+    return -1, -1
+
+
+def starts_a_block(
+    content: str,
+    containment_path: tuple[Container, ...],
+    opened: tuple[Container, ...],
+    previous_path: tuple[Container, ...],
+) -> bool:
+    """Return whether a line begins a block rather than continuing the one above.
+
+    This is where a paragraph ends, and therefore where a code span stops
+    looking for its closing run. A blank line ends a paragraph, and so do a
+    heading, a thematic break and a Setext underline. So does a container: a
+    list item that opens on this line is a new block whatever it holds, and a
+    line whose container path is neither the path above it nor a prefix of that
+    path has left the paragraph. A prefix *is* a continuation -- an unprefixed
+    line under a quoted or listed paragraph is the lazy continuation CommonMark
+    reads it as, and treating it as a new block would cut a paragraph in half.
+
+    ``check-session-structure.py`` asks this question under this name, of the
+    same six shapes, so the two hooks cannot disagree about where a paragraph
+    ends. It is not the question ``opens_a_paragraph`` asks there -- that one
+    asks whether a paragraph is open *below* a line, which HTML block condition
+    7 needs, and a Setext underline is where the two answers part.
+    https://spec.commonmark.org/0.31.2/#paragraphs
+    """
+    if not content.strip():
+        return True
+    if ATX_HEADING_LINE_PATTERN.match(content) is not None:
+        return True
+    if THEMATIC_BREAK_LINE_PATTERN.match(content) is not None:
+        return True
+    if SETEXT_UNDERLINE_PATTERN.match(content) is not None:
+        return True
+    if any(container.kind == CONTAINER_KIND_LIST for container in opened):
+        return True
+    return containment_path != previous_path[: len(containment_path)]
+
+
+def paragraph_code_spans(lines: Sequence[ParagraphLine]) -> list[tuple[int, int]]:
+    """Return the document offsets of every code span in one paragraph.
+
+    A span that crosses a soft line break comes back as one range per physical
+    line, never as one range across the break, so the newline between them is
+    left uncovered and a caller can blank every range and still hold the
+    document with its line breaks, its line count and its columns intact.
+
+    Five guards decide what opens a span, and all five are the boundaries of
+    the backtick runs. Both runs are read maximally, so a two-tick span cannot
+    close on the last two ticks of a three-tick run and cannot open one tick
+    late; either mistake deletes words the renderer leaves standing. The fifth
+    guard is a backslash before the opening run: a backtick carrying a
+    backslash escape is literal text and opens nothing, so
+    ``Read \\`this phrase\\` aloud`` is a sentence a child reads in full. That
+    guard sits on the opening run alone, because a backslash means nothing once
+    a span is open -- CommonMark reads ``` `foo\\`bar` ``` as the code span
+    ``foo\\`` followed by a visible ``bar``, and guarding the closing run too
+    would delete that ``bar``.
+    https://spec.commonmark.org/0.31.2/#backslash-escapes
     https://spec.commonmark.org/0.31.2/#code-spans
     """
     regions: list[tuple[int, int]] = []
+    row = 0
+    index = 0
+
+    while row < len(lines):
+        line = lines[row].text
+        if index >= len(line):
+            row += 1
+            index = 0
+            continue
+
+        character = line[index]
+        if character == "\\":
+            # The escape and the character it escapes are one unit, so a
+            # backtick behind a backslash is never read as a run at all.
+            index += 2
+            continue
+        if character != "`":
+            index += 1
+            continue
+
+        run_end = index
+        while run_end < len(line) and line[run_end] == "`":
+            run_end += 1
+        run_length = run_end - index
+
+        closer = closing_backtick_run(line, run_end, run_length)
+        if closer != -1:
+            regions.append((lines[row].start + index, lines[row].start + closer))
+            index = closer
+            continue
+
+        close_row, close_index = following_backtick_run(lines, row, run_length)
+        if close_row == -1:
+            index = run_end
+            continue
+
+        regions.append((lines[row].start + index, lines[row].start + len(line)))
+        for middle in range(row + 1, close_row):
+            regions.append(
+                (
+                    lines[middle].start + lines[middle].content_start,
+                    lines[middle].start + len(lines[middle].text),
+                )
+            )
+        regions.append(
+            (
+                lines[close_row].start + lines[close_row].content_start,
+                lines[close_row].start + close_index,
+            )
+        )
+        row, index = close_row, close_index
+
+    return regions
+
+
+def scan_literal_code(text: str) -> tuple[list[tuple[int, int]], list[tuple[int, int]]]:
+    """Return a document's fenced-block ranges and its code-span ranges.
+
+    Two walks in one, because they are two different shapes. A fence is a line
+    block, so the fence walk reads one line at a time -- the walk
+    ``extract_prose`` does, with the same helpers, so the two passes over a
+    document cannot disagree about where the fences are. A code span is inline
+    and crosses a soft line break, so the lines a fence does not claim are
+    gathered into paragraphs and scanned a paragraph at a time.
+
+    Ranges are half open and are offsets into ``text``.
+    https://spec.commonmark.org/0.31.2/#fenced-code-blocks
+    https://spec.commonmark.org/0.31.2/#code-spans
+    """
+    fenced: list[tuple[int, int]] = []
+    spans: list[tuple[int, int]] = []
+    paragraph: list[ParagraphLine] = []
     active_fence: ActiveFence | None = None
     list_contexts: list[ListContext] = []
+    previous_path: tuple[Container, ...] = ()
     offset = 0
+
+    def close_paragraph() -> None:
+        nonlocal paragraph, previous_path
+        spans.extend(paragraph_code_spans(paragraph))
+        paragraph = []
+        previous_path = ()
 
     for raw_line in text.split("\n"):
         line_start = offset
@@ -795,20 +962,78 @@ def literal_code_regions(text: str) -> list[tuple[int, int]]:
                 active_fence.minimum_length,
             ):
                 active_fence = None
-            regions.append((line_start, line_start + len(raw_line)))
+            fenced.append((line_start, line_start + len(raw_line)))
             continue
 
         fence_line = normalize_for_fence_opening(line, list_contexts)
         opening_fence = parse_opening_fence(fence_line.content)
         if opening_fence is not None:
             active_fence = build_active_fence(opening_fence, fence_line)
-            regions.append((line_start, line_start + len(raw_line)))
+            fenced.append((line_start, line_start + len(raw_line)))
+            close_paragraph()
             continue
 
-        for match in INLINE_CODE_PATTERN.finditer(line):
-            regions.append((line_start + match.start(), line_start + match.end()))
+        if starts_a_block(
+            fence_line.content,
+            fence_line.containment_path,
+            fence_line.opened,
+            previous_path,
+        ):
+            close_paragraph()
+        previous_path = fence_line.containment_path
+        paragraph.append(
+            ParagraphLine(
+                start=line_start,
+                text=line,
+                content_start=len(line) - len(fence_line.content),
+            )
+        )
 
-    return regions
+    close_paragraph()
+    return fenced, spans
+
+
+def literal_code_regions(text: str) -> list[tuple[int, int]]:
+    """Return the character ranges of every fenced block line and code span.
+
+    Literal code is the text a document *prints* rather than means. Finding it
+    first is what lets the two callers below tell a marker from an example of
+    one, and a comment delimiter from a picture of a comment delimiter.
+
+    Ranges are half open and are offsets into ``text``, so a caller can rebuild
+    the document with its line breaks, its line count and its columns intact.
+    A code span that crosses a soft line break arrives as one range per
+    physical line, which is what keeps that promise.
+
+    Indented code blocks are deliberately not included. Telling one from an
+    indented list continuation needs the full block parse this module does not
+    do, guessing wrong means an adult-facing file gets scored, and every code
+    block in this repository is fenced.
+    https://spec.commonmark.org/0.31.2/#code-spans
+    """
+    fenced, spans = scan_literal_code(text)
+    return sorted(fenced + spans)
+
+
+def code_span_regions(text: str) -> list[tuple[int, int]]:
+    """Return the character ranges of every code span, fenced blocks aside."""
+    return scan_literal_code(text)[1]
+
+
+def strip_code_spans(text: str) -> str:
+    """Return ``text`` with every code span blanked, its line breaks intact.
+
+    A code span is not prose: it is characters a document prints, and the
+    reading score is about the words a child reads. Blanking rather than
+    deleting keeps every line break and every column where the document has
+    them, so the walk that reads this back still sees the document it came
+    from -- its fences, its list markers and its blockquote markers all in the
+    columns they started in.
+    """
+    kept = list(text)
+    for start, end in code_span_regions(text):
+        kept[start:end] = " " * (end - start)
+    return "".join(kept)
 
 
 def literal_code_mask(text: str) -> bytearray:
@@ -932,6 +1157,14 @@ def extract_prose(text: str) -> str:
     """
     text = strip_front_matter(text)
     text = strip_html_comments(text)
+    # The code spans are found once, over the whole document, because one of
+    # them can cross a soft line break and a line read alone cannot see that.
+    # Reading each line alone both leaves a multi-line span standing in the
+    # prose and pairs the wrong two backtick runs on the line below it, which
+    # deletes an ordinary word between two real spans. Blanking keeps every
+    # line break and every column, so the walk below reads the same lines in
+    # the same places.
+    blanked_lines = strip_code_spans(text).split("\n")
 
     units: list[str] = []
     active_fence: ActiveFence | None = None
@@ -1093,6 +1326,15 @@ def extract_prose(text: str) -> str:
             continue
         after_link_definition = False
 
+        # The spans go now, and not before. Everything above reads a line as
+        # the document holds it, and two of those readings turn on a
+        # character a span can carry: a backtick fence whose info string
+        # holds a backtick opens no fence, and a pipe inside a span is still
+        # a cell delimiter to GFM, which reads a table before it reads any
+        # inline.
+        # https://github.github.com/gfm/#tables-extension-
+        line = blanked_lines[index].rstrip()
+
         # A new list item starts its own unit. A plain line that follows prose
         # is a wrapped continuation of that prose.
         #
@@ -1121,7 +1363,6 @@ def extract_prose(text: str) -> str:
         line = REFERENCE_LINK_PATTERN.sub(r"\1", line)
         line = LINK_PATTERN.sub(r"\1", line)
         line = BARE_URL_PATTERN.sub(" ", line)
-        line = INLINE_CODE_PATTERN.sub(" ", line)
         line = HTML_TAG_PATTERN.sub(" ", line)
         line = EMPHASIS_PATTERN.sub("", line)
         # Decoding is last. A reference may name a Markdown character --
