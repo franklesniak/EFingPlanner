@@ -3785,12 +3785,23 @@ def test_raw_text_run_state_names_the_run_the_line_is_in() -> None:
     ``html_block_state`` returns. A bare boolean was enough to say "these
     characters are text" and not enough to say "and the page paints them".
     """
-    state, line_run = readability.raw_text_run_state("<textarea>", None)
+    state, line_run = readability.raw_text_run_state("<textarea>", None, True)
     assert (state, line_run) == ("textarea", None)
-    state, line_run = readability.raw_text_run_state("some words", "textarea")
+    state, line_run = readability.raw_text_run_state("some words", "textarea", False)
     assert (state, line_run) == ("textarea", "textarea")
-    state, line_run = readability.raw_text_run_state("</textarea>", "textarea")
+    state, line_run = readability.raw_text_run_state("</textarea>", "textarea", False)
     assert (state, line_run) == (None, "textarea")
+    # A run that opens and closes on one line is the run that line is in.
+    state, line_run = readability.raw_text_run_state("<script>a</script>", None, True)
+    assert (state, line_run) == (None, "script")
+    # A line CommonMark keeps inside the paragraph above it opens no run.
+    state, line_run = readability.raw_text_run_state("<xmp>", None, False)
+    assert (state, line_run) == (None, None)
+    # The comment may open part way along a line, and may close and open again.
+    state, line_run = readability.raw_text_run_state("<!-- one --> x <!-- two", None, True)
+    assert (state, line_run) == (readability.COMMENT_RUN, None)
+    state, line_run = readability.raw_text_run_state("<!-- one -->", None, True)
+    assert (state, line_run) == (None, None)
     assert readability.raw_text_run_holds_text("textarea")
     assert readability.raw_text_run_is_displayed("textarea")
     assert readability.raw_text_run_holds_text("script")
@@ -3940,3 +3951,130 @@ def test_the_two_checkers_agree_on_a_marker_inside_a_raw_html_block() -> None:
     scan = structure.scan_document(attribute)
     assert structure.NO_SOURCE_CHECK_PATTERN.search(scan.marker_text) is None
     assert not readability.has_adult_marker(f'<div title="{ADULT_MARKER}">\nx\n</div>\n')
+
+
+def test_a_comment_shaped_run_a_textarea_prints_is_prose() -> None:
+    """Words a reader reads are prose, whatever delimiters surround them.
+
+    Document-wide comment stripping ran before any line was classified, so the
+    forty-three words a ``<textarea>`` shows between ``<!--`` and ``-->`` were
+    removed -- the document then had zero prose words and skipped the gate in
+    silence.
+    """
+    document = "<textarea>\n<!-- We pack one small bag for the trip and we choose the clothes together with care so that every single thing inside that bag has a real reason to be there today and nothing at all is left behind by mistake tonight ok -->\n</textarea>\n"
+    prose = readability.extract_prose(document)
+    assert len(readability.WORD_PATTERN.findall(prose)) == 43
+
+
+def test_a_comment_shaped_run_a_script_holds_is_not_prose() -> None:
+    """The over-application control: a ``<script>`` is not painted.
+
+    Its content is text rather than markup, and a reader still reads none of it.
+    A rule that keeps every raw-text interior fails here.
+    """
+    document = "<script>\n<!-- We pack one small bag for the trip and we choose the clothes together with care so that every single thing inside that bag has a real reason to be there today and nothing at all is left behind by mistake tonight ok -->\n</script>\n"
+    prose = readability.extract_prose(document)
+    assert readability.WORD_PATTERN.findall(prose) == []
+
+
+def test_a_real_comment_is_still_removed_from_prose() -> None:
+    """The other over-application control for the same rule.
+
+    An ordinary comment holds no prose, and a mask that covered every line
+    would keep its words.
+    """
+    document = "<div>\n<!-- We pack one small bag for the trip and we choose the clothes together with care so that every single thing inside that bag has a real reason to be there today and nothing at all is left behind by mistake tonight ok -->\n</div>\n"
+    prose = readability.extract_prose(document)
+    assert readability.WORD_PATTERN.findall(prose) == []
+
+
+def test_a_one_line_raw_text_element_declares_nothing() -> None:
+    """``<script><!-- audience: adult --></script>`` is script data.
+
+    The run opens and closes on one line, and answering "no run at all" for it
+    read the marker as a real declaration -- so an ordinary child-facing page
+    could be taken out of the gate by a marker no reader sees.
+    """
+    assert not readability.has_adult_marker(
+        "<script><!-- audience: adult --></script>\n"
+    )
+
+
+def test_a_one_line_ordinary_element_still_declares() -> None:
+    """The over-application control: ``<div>`` holds markup."""
+    assert readability.has_adult_marker("<div><!-- audience: adult --></div>\n")
+
+
+def test_an_unclosed_flow_sequence_is_not_front_matter() -> None:
+    """``- [unclosed ...`` is not YAML, so the block is not front matter.
+
+    Accepting every line that merely begins ``- `` removed a rendered list item
+    from the prose. Checked against PyYAML: the line is a parser error.
+    """
+    document = "---\n- [unclosed We pack one small bag for the trip and we choose the clothes together with care so that every single thing inside that bag has a real reason to be there today and nothing at all is left behind by mistake tonight ok\n...\n\nTail words here.\n"
+    prose = readability.extract_prose(document)
+    assert len(readability.WORD_PATTERN.findall(prose)) > 40
+
+
+def test_a_balanced_flow_sequence_is_still_front_matter() -> None:
+    """The over-application control: ``- [a, b]`` is a YAML sequence item.
+
+    A rule that rejected every sequence item would keep this block's words.
+    """
+    document = "---\n- [a, b]\n...\n\nTail words here.\n"
+    prose = readability.extract_prose(document)
+    assert readability.WORD_PATTERN.findall(prose) == ["Tail", "words", "here"]
+
+
+def test_a_plain_sequence_item_is_still_front_matter() -> None:
+    """And so is ``- japan``, which is the ordinary shape."""
+    document = "---\ntags:\n- japan\n...\n\nTail words here.\n"
+    prose = readability.extract_prose(document)
+    assert readability.WORD_PATTERN.findall(prose) == ["Tail", "words", "here"]
+
+
+def test_a_whitespace_only_reference_label_is_not_a_definition() -> None:
+    """The readability copy of the label rule, kept identical to the sibling's.
+
+    ``[\u00a0]: /url`` renders as a paragraph, so its text is prose a reader
+    reads rather than a line that renders nothing.
+    """
+    assert readability.LINK_REFERENCE_DEFINITION_PATTERN.match("[\u00a0]: /url") is None
+    assert readability.LINK_REFERENCE_DEFINITION_PATTERN.match("[ ]: /url") is None
+    assert readability.LINK_REFERENCE_DEFINITION_PATTERN.match("[x]: /url") is not None
+    assert (
+        readability.LINK_REFERENCE_DEFINITION_PATTERN.match("[\u200b]: /url") is not None
+    )
+
+
+def test_a_fence_line_a_textarea_prints_opens_no_fenced_block() -> None:
+    """Three backticks inside a ``<textarea>`` are three characters.
+
+    Both sibling hooks refuse a fence on a line CommonMark reads as raw HTML,
+    and the three are meant to agree about which fences a document has. Reading
+    the fence before the run let one open here and swallow the forty words
+    under it -- the direction that takes a file under the word floor and out of
+    the gate.
+    """
+    document = "<textarea>\n" + FENCE + "\nWe pack one small bag for the trip and we choose the clothes together with care so that every single thing inside that bag has a real reason to be there today and nothing at all is left behind ok\n" + FENCE + "\n</textarea>\n"
+    prose = readability.extract_prose(document)
+    assert len(readability.WORD_PATTERN.findall(prose)) == 40
+
+
+def test_an_ordinary_fence_still_opens_a_fenced_block() -> None:
+    """The over-application control for the test above.
+
+    A fence outside every raw-text run is a fence, and its content is not prose.
+    A rule that refused every fence would count these words.
+    """
+    document = FENCE + "\nWe pack one small bag for the trip and we choose the clothes together with care so that every single thing inside that bag has a real reason to be there today and nothing at all is left behind ok\n" + FENCE + "\n\nTail words here.\n"
+    prose = readability.extract_prose(document)
+    assert readability.WORD_PATTERN.findall(prose) == ["Tail", "words", "here"]
+
+
+def test_a_link_label_folds_the_blanks_the_renderer_folds() -> None:
+    """The readability copy, kept identical to the sibling's."""
+    assert readability.normalize_link_label("a\ufeffb") == "a b"
+    assert readability.normalize_link_label("a\u0085b") == "a\u0085b"
+    assert readability.normalize_link_label("  a   b  ") == "a b"
+    assert readability.normalize_link_label("A\u00a0B") == "a b"

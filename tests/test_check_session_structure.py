@@ -3266,13 +3266,118 @@ def test_raw_text_run_state_names_the_run_the_line_is_in() -> None:
     -- are these characters text rather than markup -- and reads the answer
     through ``raw_text_run_holds_text``.
     """
-    state, line_run = structure.raw_text_run_state("<textarea>", None)
+    state, line_run = structure.raw_text_run_state("<textarea>", None, True)
     assert (state, line_run) == ("textarea", None)
-    state, line_run = structure.raw_text_run_state("some words", "textarea")
+    state, line_run = structure.raw_text_run_state("some words", "textarea", False)
     assert (state, line_run) == ("textarea", "textarea")
-    state, line_run = structure.raw_text_run_state("</textarea>", "textarea")
+    state, line_run = structure.raw_text_run_state("</textarea>", "textarea", False)
     assert (state, line_run) == (None, "textarea")
+    # A run that opens and closes on one line is the run that line is in.
+    state, line_run = structure.raw_text_run_state("<script>a</script>", None, True)
+    assert (state, line_run) == (None, "script")
+    # A line CommonMark keeps inside the paragraph above it opens no run.
+    state, line_run = structure.raw_text_run_state("<xmp>", None, False)
+    assert (state, line_run) == (None, None)
+    # The comment may open part way along a line, and may close and open again.
+    state, line_run = structure.raw_text_run_state("<!-- one --> x <!-- two", None, True)
+    assert (state, line_run) == (structure.COMMENT_RUN, None)
+    state, line_run = structure.raw_text_run_state("<!-- one -->", None, True)
+    assert (state, line_run) == (None, None)
     assert structure.raw_text_run_holds_text("textarea")
     assert structure.raw_text_run_holds_text("script")
     assert not structure.raw_text_run_holds_text(structure.HTML_BLOCK_COMMENT)
     assert not structure.raw_text_run_holds_text(None)
+
+
+def test_a_comment_shaped_run_inside_a_script_blanks_no_heading() -> None:
+    """A ``<!--`` a ``<script>`` prints opens no comment.
+
+    Stripping comments before classifying the run read it as a real comment,
+    which then ran to the end of the file and blanked every heading below it --
+    including the ``## Goal`` a session must carry.
+    """
+    document = (
+        "# Session 01\n\n<script>\n<!-- not really a comment\n</script>\n\n"
+        "## Goal\n\nWords here.\n"
+    )
+    scan = structure.scan_document(document)
+    titles = [heading.title for heading in structure.find_headings(scan)]
+    assert "Goal" in titles
+
+
+def test_a_real_comment_still_blanks_the_heading_inside_it() -> None:
+    """The over-application control for the test above.
+
+    A ``## Goal`` written inside an ordinary comment is not a heading, and a
+    rule that refused to strip comments at all would find one here.
+    """
+    document = (
+        "# Session 01\n\n<!-- a note\n## Goal\n-->\n\nWords here.\n"
+    )
+    scan = structure.scan_document(document)
+    titles = [heading.title for heading in structure.find_headings(scan)]
+    assert "Goal" not in titles
+
+
+def test_a_one_line_raw_text_element_grants_no_exemption() -> None:
+    """``<script><!-- no-source-check: ... --></script>`` is script data.
+
+    The run opens and closes on the same line. Answering "no run at all" for it
+    let the marker inside be read as a comment and granted an exemption the page
+    never shows.
+    """
+    document = (
+        "# Session 01\n\n<script><!-- no-source-check: offline --></script>\n"
+    )
+    scan = structure.scan_document(document)
+    assert structure.NO_SOURCE_CHECK_PATTERN.search(scan.marker_text) is None
+
+
+def test_a_one_line_ordinary_element_still_grants_the_exemption() -> None:
+    """The over-application control: ``<div>`` holds markup, not raw text."""
+    document = "# Session 01\n\n<div><!-- no-source-check: offline --></div>\n"
+    scan = structure.scan_document(document)
+    assert structure.NO_SOURCE_CHECK_PATTERN.search(scan.marker_text) is not None
+
+
+def test_a_whitespace_only_reference_label_is_not_a_definition() -> None:
+    """``[\u00a0]: /url`` is a paragraph, so the line below it opens no block.
+
+    A link label must hold one character the renderer does not fold away, and
+    markdown-it 14.3.0 folds a non-breaking space. Reading the line as a leaf
+    definition let a ``<custom>`` under it open HTML block condition 7, which
+    then swallowed a real ``## Goal``.
+    """
+    document = (
+        "# Session 01\n\n[\u00a0]: /url\n<custom>\n## Goal\n\nWords here.\n"
+    )
+    scan = structure.scan_document(document)
+    titles = [heading.title for heading in structure.find_headings(scan)]
+    assert "Goal" in titles
+
+
+def test_an_ordinary_reference_label_is_still_a_definition() -> None:
+    """The over-application control for the test above.
+
+    ``[x]: /url`` really is a definition, so the ``<custom>`` below it really
+    does open condition 7 and the ``## Goal`` inside that block is not a
+    heading. A rule that rejected every label fails here.
+    """
+    document = "# Session 01\n\n[x]: /url\n<custom>\n## Goal\n\nWords here.\n"
+    scan = structure.scan_document(document)
+    titles = [heading.title for heading in structure.find_headings(scan)]
+    assert "Goal" not in titles
+
+
+def test_a_link_label_folds_the_blanks_the_renderer_folds() -> None:
+    """And keeps the ones it keeps.
+
+    markdown-it 14.3.0 normalizes a label with a JavaScript trim and collapse.
+    ``str.split`` is a different set in both directions: it folds U+0085, which
+    the renderer keeps as part of the label, and keeps U+FEFF, which the
+    renderer folds. Measured one character at a time against the renderer.
+    """
+    assert structure.normalize_link_label("a\ufeffb") == "a b"
+    assert structure.normalize_link_label("a\u0085b") == "a\u0085b"
+    assert structure.normalize_link_label("  a   b  ") == "a b"
+    assert structure.normalize_link_label("A\u00a0B") == "a b"

@@ -1201,13 +1201,117 @@ def test_raw_text_run_state_names_the_run_the_line_is_in() -> None:
     through ``raw_text_run_holds_text``.
     """
     hook = cast(Any, _placeholder_hook)
-    state, line_run = hook.raw_text_run_state("<textarea>", None)
+    state, line_run = hook.raw_text_run_state("<textarea>", None, True)
     assert (state, line_run) == ("textarea", None)
-    state, line_run = hook.raw_text_run_state("some words", "textarea")
+    state, line_run = hook.raw_text_run_state("some words", "textarea", False)
     assert (state, line_run) == ("textarea", "textarea")
-    state, line_run = hook.raw_text_run_state("</textarea>", "textarea")
+    state, line_run = hook.raw_text_run_state("</textarea>", "textarea", False)
     assert (state, line_run) == (None, "textarea")
+    # A run that opens and closes on one line is the run that line is in.
+    state, line_run = hook.raw_text_run_state("<script>a</script>", None, True)
+    assert (state, line_run) == (None, "script")
+    # A line CommonMark keeps inside the paragraph above it opens no run.
+    state, line_run = hook.raw_text_run_state("<xmp>", None, False)
+    assert (state, line_run) == (None, None)
+    # The comment may open part way along a line, and may close and open again.
+    state, line_run = hook.raw_text_run_state("<!-- one --> x <!-- two", None, True)
+    assert (state, line_run) == (hook.COMMENT_RUN, None)
+    state, line_run = hook.raw_text_run_state("<!-- one -->", None, True)
+    assert (state, line_run) == (None, None)
     assert hook.raw_text_run_holds_text("textarea")
     assert hook.raw_text_run_holds_text("script")
     assert not hook.raw_text_run_holds_text(hook.HTML_BLOCK_COMMENT)
     assert not hook.raw_text_run_holds_text(None)
+
+
+def test_a_condition_seven_opener_inside_an_open_comment_opens_no_run() -> None:
+    """An ``<xmp>`` written inside an open comment is inside the comment.
+
+    ``xmp`` is in neither HTML block condition 1 nor condition 6, so a bare
+    opener on its own line is condition 7 and may not interrupt a paragraph.
+    The comment that opened part way along the line above it is therefore still
+    open, the page shows no ``TBD``, and the hook must report none. Measured
+    against markdown-it 14.3.0 and ``html.parser``: the whole run is one
+    comment.
+    """
+    hook = cast(Any, _placeholder_hook)
+    document = (
+        "Words here <!-- a note\n<xmp>\nTBD\n</xmp>\nend of the note -->\n"
+    )
+    assert hook.find_violations_in_text(document, "doc.md") == []
+
+
+def test_a_condition_one_opener_inside_an_open_comment_ends_the_comment() -> None:
+    """The same shape with ``<script>``, which may interrupt a paragraph.
+
+    Condition 1 ends the paragraph, so the ``<!--`` above it never closes and is
+    escaped text rather than a comment; the ``TBD`` is script data, which is not
+    a comment either, and the hook reports it. This is the over-application
+    control for the test above: a rule that refuses every run under an open
+    comment fails here.
+    """
+    hook = cast(Any, _placeholder_hook)
+    document = (
+        "Words here <!-- a note\n<script>\nTBD\n</script>\nend of the note -->\n"
+    )
+    assert [v.line_number for v in hook.find_violations_in_text(document, "doc.md")] == [3]
+
+
+def test_a_comment_closed_and_reopened_on_one_line_stays_open() -> None:
+    """``<!-- one --> words <!-- two`` leaves a comment open below it.
+
+    Reading only the first delimiter pair answered "no run open", a
+    ``<textarea>`` on the next line opened a raw-text run, and the lines under it
+    stopped being stripped -- so a ``TBD`` inside a real comment was reported.
+    """
+    hook = cast(Any, _placeholder_hook)
+    document = "<!-- one --> words <!-- two\n<textarea>\nTBD\n</textarea> -->\n"
+    assert hook.find_violations_in_text(document, "doc.md") == []
+
+
+def test_a_comment_closed_on_one_line_leaves_nothing_open() -> None:
+    """The narrowing control for the test above.
+
+    One complete comment on a line leaves no comment open, so the
+    ``<textarea>`` below it really does open a run and the ``TBD`` it prints is
+    reported. A rule that treats every line holding ``<!--`` as leaving a
+    comment open fails here.
+    """
+    hook = cast(Any, _placeholder_hook)
+    document = "<!-- one --> words\n\n<textarea>\nTBD\n</textarea>\n"
+    assert [v.line_number for v in hook.find_violations_in_text(document, "doc.md")] == [4]
+
+
+def test_a_comment_shaped_run_inside_a_one_line_element_is_not_a_comment() -> None:
+    """``<script><!-- TBD --></script>`` holds script data, not a comment.
+
+    The run opens and closes on one line. Returning "no run at all" for that
+    line let the body be read as markup, and the comment-shaped run hid the
+    token the page prints.
+    """
+    hook = cast(Any, _placeholder_hook)
+    document = "<script><!-- TBD --></script>\n"
+    assert [v.line_number for v in hook.find_violations_in_text(document, "doc.md")] == [1]
+
+
+def test_a_real_one_line_comment_still_hides_its_placeholder() -> None:
+    """The over-application control: ``<div>`` is not a raw-text element.
+
+    Its content is markup, the comment inside it is a comment, and the token is
+    hidden. A rule that reads every one-line element as raw text fails here.
+    """
+    hook = cast(Any, _placeholder_hook)
+    assert hook.find_violations_in_text("<div><!-- TBD --></div>\n", "doc.md") == []
+
+
+def test_a_comment_opened_on_a_run_opener_line_does_not_outlive_the_run() -> None:
+    """``<textarea> <!-- a note`` opens a run, and the comment dies with it.
+
+    Everything after the opener is the element's content, so the ``<!--`` there
+    is characters the page prints. Leaving the open-comment flag standing
+    carried a comment the page never shows past the ``</textarea>`` and hid a
+    real ``TBD`` below it.
+    """
+    hook = cast(Any, _placeholder_hook)
+    document = "<textarea> <!-- a note\nwords\n</textarea>\n\nTBD\n"
+    assert [v.line_number for v in hook.find_violations_in_text(document, "doc.md")] == [5]

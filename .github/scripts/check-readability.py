@@ -230,6 +230,22 @@ HTML_COMMENT_PATTERN = re.compile(r"<!--.*?-->", re.DOTALL)
 HTML_TAG_PATTERN = re.compile(
     r"</?[A-Za-z][A-Za-z0-9-]*(?:[ \t][^<>]*)?/?>|<[!?][^>]*>"
 )
+#: The same pattern without its declaration alternative, for a line a displayed
+#: raw-text element holds. Inside ``<textarea>`` or ``<xmp>`` a ``<!-- ... -->``
+#: run, a ``<?php ... ?>`` run and a ``<!DOCTYPE ...>`` run are characters the
+#: page prints rather than markup an HTML parser reads, so removing them took
+#: away words a child reads. Measured at the commit this fixes: forty-three
+#: words written between ``<!--`` and ``-->`` inside a ``<textarea>`` left zero
+#: prose words, and the gate skipped the document in silence.
+#:
+#: The element-tag alternative is kept, and the residual is recorded rather than
+#: closed: a ``<b>`` inside a ``<textarea>`` is printed too, and is still
+#: removed here. Its letters are a tag name rather than words a child reads, so
+#: the residual lowers the count by nothing a reader would count.
+#: https://html.spec.whatwg.org/multipage/parsing.html#rawtext-state
+DISPLAYED_HTML_TAG_PATTERN = re.compile(
+    r"</?[A-Za-z][A-Za-z0-9-]*(?:[ \t][^<>]*)?/?>"
+)
 #: One inline HTML tag, open or closing, matched from a known position rather
 #: than searched for. The code-span scan skips a whole tag at a time with it, so
 #: that a backtick inside an attribute value is read as part of the attribute,
@@ -501,6 +517,22 @@ LINK_DEFINITION_TITLE_PATTERN = re.compile(
 #: https://spec.commonmark.org/0.31.2/#link-label
 LINK_LABEL_MAXIMUM_CHARACTERS = 999
 
+#: Every character markdown-it 14.3.0 reads as nothing at all inside a link
+#: label, measured one at a time rather than taken from a class. CommonMark's
+#: prose says a label needs "at least one character that is not a space, tab, or
+#: line ending", and the renderer is stricter than those words: it folds the
+#: label with a Unicode trim first, so ``[\u00a0]: /url`` is a paragraph and not
+#: a definition. Python's ``\s`` is a third set again -- it matches U+0085,
+#: which the renderer keeps as a label, and misses U+FEFF, which the renderer
+#: drops -- so the set is written out rather than spelled ``\s``. U+200B and
+#: U+180E are deliberately absent: the renderer keeps a label made of either.
+#: Measured one character at a time through markdown-it 14.3.0.
+#: https://spec.commonmark.org/0.31.2/#link-label
+_LINK_LABEL_BLANK = (
+    " \t\x0b\f\r\n\u00a0\u1680\u2000-\u200a\u2028\u2029\u202f\u205f\u3000\ufeff"
+)
+#: One run of those blanks, for the fold ``normalize_link_label`` performs.
+_LINK_LABEL_BLANK_RUN = re.compile(f"[{_LINK_LABEL_BLANK}]+")
 #: A link reference definition as the marker scan reads one: the whole line
 #: renders nothing at all, so a marker anywhere on it is metadata rather than a
 #: comment. ``LINK_DEFINITION_PATTERN`` above stays the prose-stripping copy,
@@ -511,7 +543,7 @@ LINK_LABEL_MAXIMUM_CHARACTERS = 999
 LINK_REFERENCE_DEFINITION_PATTERN = re.compile(
     rf"""
     ^\ {{0,3}}                               # at most three spaces of indent
-    \[ (?=[^\]]*[^ \t\r\n\]])              # a label with at least one nonblank
+    \[ (?=[^\]]*[^{_LINK_LABEL_BLANK}\]])    # a label with one nonblank
        (?P<label> (?: [^\[\]\\] | \\. )+ ) \]
     :\ *                                     # the colon, then optional spaces
     {_LINK_DESTINATION}                      # the destination
@@ -539,7 +571,8 @@ LINK_REFERENCE_LABEL_PATTERN = re.compile(r"^ {0,3}\[(?P<label>(?:[^\[\]\\]|\\.)
 #: nothing at all. Kept identical to the constant in
 #: ``.github/scripts/check-session-structure.py``.
 LINK_REFERENCE_LABEL_LINE_PATTERN = re.compile(
-    r"^ {0,3}\[(?=[^\]]*[^ \t\r\n\]])(?P<label>(?:[^\[\]\\]|\\.)+)\]:[ \t]*$"
+    rf"^ {{0,3}}\[(?=[^\]]*[^{_LINK_LABEL_BLANK}\]])"
+    r"(?P<label>(?:[^\[\]\\]|\\.)+)\]:[ \t]*$"
 )
 
 #: A definition's destination, alone on its own line, with the optional title
@@ -666,20 +699,36 @@ _YAML_FLOW_COLLECTION = _yaml_flow_collection(_YAML_FLOW_NESTING_DEPTH)
 #: fill the value to the end of the line, which is what keeps the widening from
 #: reaching prose: ``[Tokyo](https://example.com "a title: here")`` is a
 #: Markdown link, not a flow sequence, and it stays rejected.
+#:
+#: A sequence item is read the same way as a value, and for the same reason.
+#: Accepting every line that merely begins ``- `` took a rendered list item --
+#: ``- [unclosed ...`` under a thematic break, closed by ``...`` -- for front
+#: matter and removed it: measured at the commit this fixes, 44 words on the
+#: page became 3, which is enough to take a file under ``MIN_WORDS_TO_SCORE``
+#: and out of the gate in silence. The plain-scalar alternative refuses a
+#: leading ``[`` or ``{`` in both places, because a YAML plain scalar may not
+#: begin with a flow indicator: a value that starts with one is a flow
+#: collection or it is not YAML, and ``- {unclosed`` is not. Checked against
+#: PyYAML over the shapes a sequence item takes.
+#: https://yaml.org/spec/1.2.2/#733-plain-style
 #: https://yaml.org/spec/1.2.2/#66-comments
 FRONT_MATTER_LINE_PATTERN = re.compile(
     rf"""
     ^(?:
         [ \t]                                     # an indented continuation
       | \#                                        # a comment
-      | -[ \t]                                    # a sequence item
+      | -[ \t]+ (?: {_YAML_DOUBLE_QUOTED}        # a sequence item: a
+                  | {_YAML_SINGLE_QUOTED}          # quoted scalar, a
+                  | {_YAML_FLOW_COLLECTION}        # balanced flow
+                  | [^ \t\r\n#'"{{\[]                # collection, a plain
+                  | $ )                            # scalar, or nothing
       | (?: {_YAML_DOUBLE_QUOTED} | {_YAML_SINGLE_QUOTED}   # a quoted key
           | [^ \t\r\n#:'"]{_YAML_PLAIN_SCALAR} )           # or a plain one
         :
         (?: [ \t]+ (?: {_YAML_DOUBLE_QUOTED}                # a quoted value
                      | {_YAML_SINGLE_QUOTED}
                      | {_YAML_FLOW_COLLECTION}                # a flow collection
-                     | [^ \t\r\n#'"]{_YAML_PLAIN_SCALAR} ) )?
+                     | [^ \t\r\n#'"{{\[]{_YAML_PLAIN_SCALAR} ) )?
         (?: [ \t]+ \# [^\n]* )?                     # and then a comment
         [ \t]*$
     )
@@ -1612,10 +1661,20 @@ def matching_bracket(line: str, open_index: int) -> int:
 def normalize_link_label(label: str) -> str:
     """Return a link label in the form CommonMark matches definitions by.
 
+    The blanks a label folds are the ones ``_LINK_LABEL_BLANK`` names, which is
+    the set markdown-it 14.3.0 trims and collapses -- and neither ``str.split``
+    nor Python's whitespace class is that set. Measured both ways, one character
+    at a time: ``[a\u0085b]`` and ``[a b]`` are two labels to the renderer and
+    one to ``str.split``, while ``[a\ufeffb]`` and ``[a b]`` are one label to the
+    renderer and two to ``str.split``. Whether a reference resolves decides
+    whether its label is rendered away or printed as the brackets the author
+    typed, and a marker inside printed brackets is a comment on the page.
+    <https://spec.commonmark.org/0.31.2/#matches>
+
     Kept identical to the helper in
     ``.github/scripts/check-session-structure.py``.
     """
-    return " ".join(label.split()).casefold()
+    return _LINK_LABEL_BLANK_RUN.sub(" ", label).strip(" ").casefold()
 
 
 def is_link_label(label: str) -> bool:
@@ -1850,15 +1909,52 @@ def following_raw_html_end(
     return -1, -1
 
 
+def comment_open_below(content: str, position: int) -> str | None:
+    """Return ``COMMENT_RUN`` when a comment is still open past ``position``.
+
+    A comment is the one run in ``RAW_TEXT_RUNS`` that can close and open again
+    on a single line, so the line has to be walked rather than tested once:
+    ``<!-- one --> words <!-- two`` opens a block comment, ends it, and leaves a
+    second one open below. Reading only the first delimiter pair answered "no
+    run open" there, and a ``<textarea>`` on the next line then opened a run
+    inside a comment the page never shows -- so a ``TBD`` written in that
+    comment was reported as a placeholder.
+    Kept identical to the helper in the sibling hooks.
+    https://spec.commonmark.org/0.31.2/#html-blocks
+    """
+    while True:
+        start = content.find("<!--", position)
+        if start == -1:
+            return None
+        end = content.find("-->", start + len("<!--"))
+        if end == -1:
+            return COMMENT_RUN
+        position = end + len("-->")
+
+
 def raw_text_run_state(
-    content: str, open_run: str | None
+    content: str, open_run: str | None, opens_html_block: bool
 ) -> tuple[str | None, str | None]:
     """Return the raw HTML run open below a line, and the run the line is in.
 
     Two values because they are two questions, the pair ``html_block_state``
     asks in the same shape: what the next line inherits, and which run this
-    line's characters belong to. A line carrying the closing delimiter is
-    still the run's last line.
+    line's characters belong to. A line carrying the closing delimiter is still
+    the run's last line, and so is a line carrying both delimiters:
+    ``<script><!-- no-source-check: offline --></script>`` holds script data
+    rather than a comment, and answering "no run at all" for that line let every
+    caller read the body as markup and honour the marker written in it.
+
+    ``opens_html_block`` is whether CommonMark reads this line as part of a raw
+    HTML block, and a run may open only where one does. These are the *block*
+    forms of raw HTML, so a line that CommonMark keeps inside the paragraph
+    above it opens no run: ``<xmp>`` and ``<noembed>`` are in neither HTML block
+    condition 1 nor condition 6, so a bare opener on its own line is condition 7
+    and may not interrupt a paragraph -- and an ``<xmp>`` written inside an open
+    HTML comment therefore opens nothing, while a ``<script>`` written in the
+    same place opens condition 1, ends the paragraph, and really does hold raw
+    text. Answering that from the element name alone got both of those wrong in
+    opposite directions. The caller passes ``line_html_block is not None``.
 
     The run is returned rather than a bare "yes, this is text" because the two
     callers ask two different things of it. Whether the characters are text
@@ -1868,28 +1964,37 @@ def raw_text_run_state(
     from the HTML Standard's own rendering rules rather than from this set.
 
     The state moves a whole line at a time, which is where it is less exact
-    than the parsers it follows: a run that opens and closes inside one line
-    leaves the state untouched, and the characters after an opening delimiter
-    on its own line are not counted until the line below it. Both residuals read
-    a displayed comment as a comment, which is the direction this scan ran in
+    than the parsers it follows: the characters after an opening delimiter on
+    its own line are not counted until the line below it. That residual reads a
+    displayed comment as a comment, which is the direction this scan ran in
     before it asked the question at all.
 
     An open comment is carried in the same state and is the one run whose
     content is markup: a marker inside a comment is the comment it looks like,
     which is why ``raw_text_run_holds_text`` answers ``False`` for it. It is
-    tracked only so that a ``<script>`` line written inside a comment opens no
-    run of its own. Kept identical to the helper in the sibling hooks.
+    tracked so that a ``<script>`` line written inside a comment opens no run of
+    its own -- and so that a run and a comment can never both be open, which is
+    what lets a caller strip comments and classify runs in one fixed order
+    instead of an order each caller chose for itself.
+    Kept identical to the helper in the sibling hooks.
     https://html.spec.whatwg.org/multipage/parsing.html#rawtext-state
     """
     if open_run is not None:
-        closed = RAW_TEXT_CLOSERS[open_run].search(content) is not None
-        return (None if closed else open_run), open_run
+        closer = RAW_TEXT_CLOSERS[open_run].search(content)
+        if closer is None:
+            return open_run, open_run
+        return comment_open_below(content, closer.end()), open_run
+    if not opens_html_block:
+        return None, None
     for key, opener, closer in RAW_TEXT_RUNS:
         match = opener.match(content)
         if match is None:
             continue
-        if closer.search(content, match.end()) is not None:
-            return None, None
+        if key == COMMENT_RUN:
+            return comment_open_below(content, match.start()), None
+        closing = closer.search(content, match.end())
+        if closing is not None:
+            return comment_open_below(content, closing.end()), key
         return key, None
     return None, None
 
@@ -2306,12 +2411,18 @@ def scan_document_inlines(text: str) -> DocumentInlines:
             previous_path,
             paragraph_open,
         )
-        raw_text, line_raw_text = raw_text_run_state(fence_line.content, raw_text)
         html_block, line_html_block = html_block_state(
             fence_line.content,
             fence_line.containment_path,
             html_block,
             paragraph_open and not block_starts,
+        )
+        # The block is asked first and the run under it, which is the order the
+        # sibling hooks use: a run may open only where CommonMark opens a raw
+        # HTML block, so an ``<xmp>`` on a line the paragraph above it still
+        # holds opens nothing.
+        raw_text, line_raw_text = raw_text_run_state(
+            fence_line.content, raw_text, line_html_block is not None
         )
 
         # A line CommonMark reads as raw HTML opens no fenced block: the block
@@ -2459,6 +2570,37 @@ def literal_code_mask(text: str) -> bytearray:
     return mask
 
 
+def raw_text_run_mask(text: str) -> bytearray:
+    """Return one byte per character, nonzero where a raw-text run holds it.
+
+    A comment delimiter a raw-text element *prints* is not a delimiter, exactly
+    as a delimiter inside literal code is not one. ``<textarea>`` and ``<xmp>``
+    show their content to the reader and the rest of the set drops it, and in
+    neither case is a comment-shaped run inside one a comment. Measured at the
+    commit this fixes: forty-three words of worksheet prose written inside a
+    ``<textarea>`` between ``<!--`` and ``-->`` left **zero** prose words, and
+    the gate reported success on a page it never read.
+
+    The run state is the one the document walks use, so the two cannot disagree
+    about which lines a run holds. Two things this pass does not have, both
+    recorded rather than hoped over: it carries no HTML block machine, so it
+    tells the run state that any line may open one -- the residual is an
+    opener on a line CommonMark keeps inside the paragraph above it -- and it
+    reads raw lines, so a run opened inside a block quote or a list item is not
+    masked. Both leave a real comment removed, which is the direction this pass
+    ran in before it asked the question at all.
+    """
+    mask = bytearray(len(text))
+    open_run: str | None = None
+    offset = 0
+    for line in text.split("\n"):
+        open_run, line_run = raw_text_run_state(line, open_run, True)
+        if raw_text_run_holds_text(line_run):
+            mask[offset : offset + len(line)] = b"\x01" * len(line)
+        offset += len(line) + 1
+    return mask
+
+
 def strip_html_comments(text: str) -> str:
     """Remove HTML comments, including ones that span lines.
 
@@ -2495,6 +2637,11 @@ def strip_html_comments(text: str) -> str:
     """
     working = text
     mask = literal_code_mask(working)
+    # A run of raw text is masked beside the literal code, for the same reason
+    # and against the same mistake: an opener the page *prints* is not an
+    # opener. The two masks are separate because only the literal one is
+    # recomputed when a comment overlapping it is blanked.
+    raw_text = raw_text_run_mask(working)
     spans: list[tuple[int, int]] = []
     search_from = 0
 
@@ -2502,7 +2649,7 @@ def strip_html_comments(text: str) -> str:
         start = search_from
         while True:
             start = working.find("<!--", start)
-            if start == -1 or not mask[start]:
+            if start == -1 or not (mask[start] or raw_text[start]):
                 break
             start += 1
         if start == -1:
@@ -2518,6 +2665,7 @@ def strip_html_comments(text: str) -> str:
         if b"\x01" in mask[start:end]:
             working = f"{working[:start]}{' ' * (end - start)}{working[end:]}"
             mask = literal_code_mask(working)
+            raw_text = raw_text_run_mask(working)
 
     kept: list[str] = []
     index = 0
@@ -2650,13 +2798,30 @@ def extract_prose(text: str) -> str:
             open_unit = None
             continue
         fence_line = normalize_for_fence_opening(line, list_contexts)
-        opening_fence = parse_opening_fence(fence_line.content)
+        # This walk carries no HTML block machine -- it is a second pass with its
+        # own cascade of tables, headings, parent sections and list units, and
+        # the block state belongs with ``scan_document_inlines`` -- so the run
+        # is told that every line may open one. The residual is recorded: an
+        # ``<xmp>`` opener on a line CommonMark keeps inside the paragraph above
+        # it opens a run here that the marker scans refuse. It runs on text
+        # whose comments are already removed, so the comment half of the same
+        # question cannot arise.
+        raw_text, line_raw_text = raw_text_run_state(fence_line.content, raw_text, True)
+        # Asked before the fence, as both sibling hooks ask it: a line a raw-text
+        # run holds opens no fenced block, because every character on it is the
+        # element's content. Reading the fence first let three backticks a
+        # ``<textarea>`` prints open one and swallow the words below them, and
+        # the three hooks are meant to agree about which fences a document has.
+        opening_fence = (
+            None
+            if raw_text_run_holds_text(line_raw_text)
+            else parse_opening_fence(fence_line.content)
+        )
         if opening_fence is not None:
             active_fence = build_active_fence(opening_fence, fence_line)
             open_unit = None
             continue
 
-        raw_text, line_raw_text = raw_text_run_state(fence_line.content, raw_text)
         if raw_text_run_holds_text(line_raw_text) and not raw_text_run_is_displayed(
             line_raw_text
         ):
@@ -2826,7 +2991,14 @@ def extract_prose(text: str) -> str:
         line = REFERENCE_LINK_PATTERN.sub(r"\1", line)
         line = LINK_PATTERN.sub(r"\1", line)
         line = BARE_URL_PATTERN.sub(" ", line)
-        line = HTML_TAG_PATTERN.sub(" ", line)
+        # A line a displayed raw-text element holds keeps its comment, its
+        # processing instruction and its declaration: the page prints those
+        # characters, so they are not markup to strip.
+        line = (
+            DISPLAYED_HTML_TAG_PATTERN
+            if raw_text_run_is_displayed(line_raw_text)
+            else HTML_TAG_PATTERN
+        ).sub(" ", line)
         line = EMPHASIS_PATTERN.sub("", line)
         # Decoding is last. A reference may name a Markdown character --
         # ``&#42;`` is a literal asterisk and not emphasis -- so nothing is

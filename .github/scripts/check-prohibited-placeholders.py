@@ -122,6 +122,20 @@ _LINK_DESTINATION = (
 #: <https://spec.commonmark.org/0.31.2/#link-label>
 LINK_LABEL_MAXIMUM_CHARACTERS = 999
 
+#: Every character markdown-it 14.3.0 reads as nothing at all inside a link
+#: label, measured one at a time rather than taken from a class. CommonMark's
+#: prose says a label needs "at least one character that is not a space, tab, or
+#: line ending", and the renderer is stricter than those words: it folds the
+#: label with a Unicode trim first, so ``[\u00a0]: /url`` is a paragraph and not
+#: a definition. Python's ``\s`` is a third set again -- it matches U+0085,
+#: which the renderer keeps as a label, and misses U+FEFF, which the renderer
+#: drops -- so the set is written out rather than spelled ``\s``. U+200B and
+#: U+180E are deliberately absent: the renderer keeps a label made of either.
+#: Measured one character at a time through markdown-it 14.3.0.
+#: https://spec.commonmark.org/0.31.2/#link-label
+_LINK_LABEL_BLANK = (
+    " \t\x0b\f\r\n\u00a0\u1680\u2000-\u200a\u2028\u2029\u202f\u205f\u3000\ufeff"
+)
 #: A CommonMark link reference definition: ``[label]: destination "title"``.
 #: It renders nothing at all and is a leaf block rather than a paragraph, which
 #: is what lets HTML block condition 7 open on the line below it. Matched
@@ -133,7 +147,7 @@ LINK_LABEL_MAXIMUM_CHARACTERS = 999
 LINK_REFERENCE_DEFINITION_PATTERN = re.compile(
     rf"""
     ^\ {{0,3}}                               # at most three spaces of indent
-    \[ (?=[^\]]*[^ \t\r\n\]])              # a label with at least one nonblank
+    \[ (?=[^\]]*[^{_LINK_LABEL_BLANK}\]])    # a label with one nonblank
        (?P<label> (?: [^\[\]\\] | \\. )+ ) \]
     :\ *                                     # the colon, then optional spaces
     {_LINK_DESTINATION}                      # the destination
@@ -735,15 +749,52 @@ def container_interrupts_paragraph(container: Container) -> bool:
     return container.ordered_start is None or container.ordered_start == 1
 
 
+def comment_open_below(content: str, position: int) -> str | None:
+    """Return ``COMMENT_RUN`` when a comment is still open past ``position``.
+
+    A comment is the one run in ``RAW_TEXT_RUNS`` that can close and open again
+    on a single line, so the line has to be walked rather than tested once:
+    ``<!-- one --> words <!-- two`` opens a block comment, ends it, and leaves a
+    second one open below. Reading only the first delimiter pair answered "no
+    run open" there, and a ``<textarea>`` on the next line then opened a run
+    inside a comment the page never shows -- so a ``TBD`` written in that
+    comment was reported as a placeholder.
+    Kept identical to the helper in the sibling hooks.
+    <https://spec.commonmark.org/0.31.2/#html-blocks>
+    """
+    while True:
+        start = content.find("<!--", position)
+        if start == -1:
+            return None
+        end = content.find("-->", start + len("<!--"))
+        if end == -1:
+            return COMMENT_RUN
+        position = end + len("-->")
+
+
 def raw_text_run_state(
-    content: str, open_run: str | None
+    content: str, open_run: str | None, opens_html_block: bool
 ) -> tuple[str | None, str | None]:
     """Return the raw HTML run open below a line, and the run the line is in.
 
     Two values because they are two questions, the pair ``html_block_state``
     asks in the same shape: what the next line inherits, and which run this
-    line's characters belong to. A line carrying the closing delimiter is
-    still the run's last line.
+    line's characters belong to. A line carrying the closing delimiter is still
+    the run's last line, and so is a line carrying both delimiters:
+    ``<script><!-- no-source-check: offline --></script>`` holds script data
+    rather than a comment, and answering "no run at all" for that line let every
+    caller read the body as markup and honour the marker written in it.
+
+    ``opens_html_block`` is whether CommonMark reads this line as part of a raw
+    HTML block, and a run may open only where one does. These are the *block*
+    forms of raw HTML, so a line that CommonMark keeps inside the paragraph
+    above it opens no run: ``<xmp>`` and ``<noembed>`` are in neither HTML block
+    condition 1 nor condition 6, so a bare opener on its own line is condition 7
+    and may not interrupt a paragraph -- and an ``<xmp>`` written inside an open
+    HTML comment therefore opens nothing, while a ``<script>`` written in the
+    same place opens condition 1, ends the paragraph, and really does hold raw
+    text. Answering that from the element name alone got both of those wrong in
+    opposite directions. The caller passes ``line_html_block is not None``.
 
     The run is returned rather than a bare "yes, this is text" because the two
     callers ask two different things of it. Whether the characters are text
@@ -753,28 +804,37 @@ def raw_text_run_state(
     from the HTML Standard's own rendering rules rather than from this set.
 
     The state moves a whole line at a time, which is where it is less exact
-    than the parsers it follows: a run that opens and closes inside one line
-    leaves the state untouched, and the characters after an opening delimiter
-    on its own line are not counted until the line below it. Both residuals read
-    a displayed comment as a comment, which is the direction this scan ran in
+    than the parsers it follows: the characters after an opening delimiter on
+    its own line are not counted until the line below it. That residual reads a
+    displayed comment as a comment, which is the direction this scan ran in
     before it asked the question at all.
 
     An open comment is carried in the same state and is the one run whose
     content is markup: a marker inside a comment is the comment it looks like,
     which is why ``raw_text_run_holds_text`` answers ``False`` for it. It is
-    tracked only so that a ``<script>`` line written inside a comment opens no
-    run of its own. Kept identical to the helper in the sibling hooks.
+    tracked so that a ``<script>`` line written inside a comment opens no run of
+    its own -- and so that a run and a comment can never both be open, which is
+    what lets a caller strip comments and classify runs in one fixed order
+    instead of an order each caller chose for itself.
+    Kept identical to the helper in the sibling hooks.
     <https://html.spec.whatwg.org/multipage/parsing.html#rawtext-state>
     """
     if open_run is not None:
-        closed = RAW_TEXT_CLOSERS[open_run].search(content) is not None
-        return (None if closed else open_run), open_run
+        closer = RAW_TEXT_CLOSERS[open_run].search(content)
+        if closer is None:
+            return open_run, open_run
+        return comment_open_below(content, closer.end()), open_run
+    if not opens_html_block:
+        return None, None
     for key, opener, closer in RAW_TEXT_RUNS:
         match = opener.match(content)
         if match is None:
             continue
-        if closer.search(content, match.end()) is not None:
-            return None, None
+        if key == COMMENT_RUN:
+            return comment_open_below(content, match.start()), None
+        closing = closer.search(content, match.end())
+        if closing is not None:
+            return comment_open_below(content, closing.end()), key
         return key, None
     return None, None
 
@@ -1000,17 +1060,6 @@ def find_violations_in_text(text: str, display_path: str) -> list[Violation]:
         # a line of backticks inside one is raw HTML rather than a fence.
         block_line = container_line(raw_line, list_contexts)
         block_content = block_line.content
-        raw_text, line_raw_text = raw_text_run_state(block_content, raw_text)
-        in_raw_text = raw_text_run_holds_text(line_raw_text)
-        if in_raw_text:
-            # The line is a raw-text element's content, which the page
-            # displays as it stands. A comment-shaped run there opens no
-            # comment and hides no placeholder, so the line is read whole.
-            commentless_line = raw_line
-        else:
-            commentless_line, is_in_html_comment = strip_html_comments(
-                raw_line, is_in_html_comment
-            )
         if html_block is not None and container_path_ended(raw_line, html_block.containment_path):
             # The list item or blockquote holding the block has ended, so the
             # block ended with it, exactly as an unclosed fence does.
@@ -1037,6 +1086,34 @@ def find_violations_in_text(text: str, display_path: str) -> list[Violation]:
             html_block,
             paragraph_open and not block_starts,
         )
+        # Three pieces of state and one order, written here once so that no
+        # caller has to rediscover it: CommonMark says which lines are raw HTML
+        # at all, the raw-text run says which of those hold text rather than
+        # markup, and only then are comments stripped from what is left. Asking
+        # the run before the block opened a run on a line CommonMark keeps
+        # inside the paragraph above it; stripping before the run read a
+        # comment-shaped run a ``<script>`` prints as a real comment. The
+        # sibling hooks ask in this same order.
+        raw_text, line_raw_text = raw_text_run_state(
+            block_content, raw_text, line_html_block is not None
+        )
+        in_raw_text = raw_text_run_holds_text(line_raw_text)
+        if in_raw_text:
+            # The line is a raw-text element's content, which the page
+            # displays as it stands. A comment-shaped run there opens no
+            # comment and hides no placeholder, so the line is read whole.
+            commentless_line = raw_line
+        else:
+            commentless_line, is_in_html_comment = strip_html_comments(
+                raw_line, is_in_html_comment
+            )
+        if raw_text_run_holds_text(raw_text):
+            # A raw-text run is open below this line, so no comment can be open
+            # inside it. Said here as well as above because a run opens part way
+            # along its own line -- ``<textarea> <!-- a note`` -- and the
+            # stripping above would otherwise carry a comment the page never
+            # shows down into the lines the element prints.
+            is_in_html_comment = False
         # The comment is one of the conditions the machine tracks; an inline
         # comment opened part way along a line is not a block, so its
         # cross-line state is still consulted here.
