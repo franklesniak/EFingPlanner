@@ -46,10 +46,13 @@ Fourteen of the nineteen appear somewhere below; the other five needed no tag, b
 their outcomes are simply written into the deliverables they govern. If you ever meet a
 citation whose outcome you cannot read off the text around it, that is a defect in this
 brief -- record it in your build report and follow the surrounding instruction, which binds
-on its own. **One question in this brief is not adjudicated and carries no `OQ-n`
-label**: what `Capital` means for a destination that is not a country. It is recorded in
-the repository's `**Open Question:**` form, inside A1's per-insert schema, and it says
-there what it does and does not block. Nothing else in this brief is open.
+on its own. **Two questions in this brief are not adjudicated and carry no `OQ-n`
+label.** The first is what `Capital` means for a destination that is not a country,
+recorded inside A1's per-insert schema. The second is which batch owns
+`how_to_add_a_destination.md`, a file `AC-26-1` requires and no batch builds, recorded in
+the scope boundary below beside the exclusion it belongs to. Both are written in the
+repository's `**Open Question:**` form, and each says what it does and does not block.
+Nothing else in this brief is open.
 
 If a requirement genuinely seems to be missing, do exactly this, in order: re-read this
 brief, because the answer is almost certainly in a later section; then consult
@@ -111,8 +114,42 @@ to the eight already-built shared sessions.
   decision routes it to any batch**. Do not build it. In the interim the pack's
   `destinations/japan/session_inserts/README.md` (A1) carries the add-a-destination
   checklist, which is the substance of that guide. Record `AC-26-1` in your build
-  report as **partially satisfied — `how_to_add_a_destination.md` unrouted**, so the
-  human can assign it a batch.
+  report as **partially satisfied — `how_to_add_a_destination.md` unrouted**, and record
+  the routing itself as the open decision below.
+
+  **Open Question:** which batch owns `how_to_add_a_destination.md`. `AC-26-1` names
+  three things -- the generic blank templates, the two how-to guides, and the curriculum
+  changelog -- and this batch builds all of them except this guide, so a run that
+  executes the documented batches exactly never creates it and the finished inventory
+  misses a file an acceptance criterion requires. A build report does not close that:
+  it says what one batch did, and no later batch reads it. **So the routing is recorded
+  here as an open decision rather than as a note**, in the same form as A1's, which is
+  the only other thing in this brief left open.
+
+  **Measured across the whole matrix, it is the only unrouted one.** The thirty-five
+  `AC-` rows name thirteen distinct file paths between them. Twelve are accounted for:
+  on `main` already, created or edited by an item on this list, or assigned to a named
+  batch by the exclusion list above or by the archived record's batch plan. This guide
+  is the thirteenth, and it is the only one no sentence anywhere gives to a batch. One
+  further exclusion above carries no batch either -- the build-risk register -- but the
+  archived record's own repository layout gives it no path, so whether it is a
+  repository file at all is undecided; this guide's path is in that layout, one line
+  above `how_to_start_a_trip.md`, which F2 does build.
+
+  **The recommendation, so the human answers rather than derives: Batch 3, with one
+  rider.** Batch 3 is the batch that finishes the destination pack and reads the
+  insert/reference contract, which is the guide's whole subject, and the checklist
+  standing in for the guide today lives in the pack file A1 writes. The rider is A1's
+  own Open Question: that entry says this guide cannot be finished until the destination
+  model behind `Capital` is settled. If that question is still open when Batch 3 starts,
+  Batch 3 records the guide as still blocked and it moves to Batch 4 -- it is not written
+  against a model nobody chose.
+
+  **It does not block Batch 1.** Nothing on this run's deliverables list needs the guide
+  to exist, no self-check below counts it, and a new-destination author has the checklist
+  in the pack. What it blocks is the inventory: `AC-26-1` cannot pass until a batch owns
+  the file. **Name it in your build report beside gate check 2 and the open human edit**
+  -- those three are the whole of what this batch hands back to a person.
 - **Authorship mode.** Load-bearing prose — the five new sessions, the framework docs
   set, the two new parent-guide pages, the two new student-guide cards — is drafted,
   then self-edited to reference quality against the exemplar. Do not ship raw
@@ -182,11 +219,11 @@ still owed to a human" gate, all of which later deliverables assume are still th
 ## This run's scope — Batch 1 deliverables
 
 Build at the repo root. Leave `docs/spec/` and the repository's template and CI
-infrastructure untouched. **65 files in total: 37 created, 28 edited.**
+infrastructure untouched. **66 files in total: 37 created, 29 edited.**
 `framework/CHANGELOG.md` is already on `main`, so F10 is an **edit**, on every branch.
 If the file is missing from your branch, recover it from `main` as F10 directs -- do not
-recreate it, and do not recount it as a create. The split is **37 created, 28 edited**,
-and your build report states those numbers. The twenty-eighth edit is H11, the
+recreate it, and do not recount it as a create. The split is **37 created, 29 edited**,
+and your build report states those numbers. The twenty-ninth edit is H11, the
 repository's root `README.md`; the archived design record puts the start-up root docs in
 this batch and names five of them, three of which were already on this list. H11 is the
 fourth; the fifth, `GETTING_STARTED.md`, is deliberately out of scope, and H11 says why.
@@ -204,7 +241,7 @@ stages the batch's output so `pre-commit` can see the 37 new files, and staging 
 tell your work from work that was already in the tree: an unrelated edit or a stray
 scratch file sitting under `framework/` or `destinations/` at the start is still there at
 the end, and a scoped `git add` picks it up. Run the check at the start, where it can
-still tell the difference -- run it at the end and it prints 65 lines of your own work.
+still tell the difference -- run it at the end and it prints 66 lines of your own work.
 If it prints a line now, **stop and hand that line back to the human.** Do not stash it,
 do not commit it, and do not decide on their behalf which of their changes is safe to
 carry. A build that stages nothing is a smaller problem than a build that ships somebody
@@ -1559,6 +1596,67 @@ sentence after the existing intro paragraph: *"This one page holds both of your 
 03 artifacts: your family trip goals and your family input summary. You do not need a
 second page."* Do not change its three sections or its table shapes.
 
+**D11. `framework/templates/current_family_travel_assumptions.md` (edit).** Three
+changes, and they are one defect: the page's trip-shape rows are written in air-travel
+vocabulary, so a family who drives or takes a train to a nearby destination has no true
+answer to give. The built rows read *"Rough trip shape: round trip (in and out of one
+city), or open-jaw (in one city, out of another)?"*, *"Likely arrival city"* and
+*"Likely departure city (leave open if not known yet)"*. **Round-trip and open-jaw are
+the two shapes an itinerary has when the family flies**, and both are stated over cities;
+a one-base stay reached by road, a driving loop, or a destination whose itinerary holds
+no city has no entry in either. Session 10's Step 6 conversion below settles the same
+question for the same reason -- *"'A long flight' is two assumptions, not an origin
+instance: that the destination is reached by air, and that the journey is long. Neither
+holds for a nearby destination, a domestic trip, or one reached by road or rail"* -- and
+this page is the one surface a reuser fills in before any session runs.
+
+- **The trip-shape row** keeps its `Rough trip shape:` prompt and offers three shapes
+  where it offered two: *in and out of the same place (round trip)*, *in one place and
+  out of another (open-jaw)*, and *one base you stay at and travel from*. The two named
+  shapes keep their names, because an adult who already knows them should still
+  recognise them; `place` replaces `city` in both parentheticals; and the third is the
+  shape the built row had no room for. The answer cell stays empty, as every cell on
+  this page does.
+- **The two place rows** become `| Likely arrival place | |` and
+  `| Likely departure place (leave open if not known yet) | |`. That is one change, not
+  two: a page that asks for an arrival place and a departure city is worse than one that
+  asks for two cities.
+- **The closing paragraph** reads *"naming just the arrival city is a fine answer. Leave
+  the trip shape and the exit city open."* Change `arrival city` to `arrival place` and
+  `exit city` to `exit place`, and **leave every other word of that paragraph alone** --
+  the City Shortlist checkpoint it names is a session title, and session titles are not
+  this batch's to rename.
+
+**Change nothing else on the page.** Its privacy lines, its budget row, its constraint
+rows, its AI-helper row and its two adult notes all stand. In particular, **this is not
+the AI-rules change F6 forbids here**: the paragraph above F7 says *"do not touch
+`framework/templates/current_family_travel_assumptions.md` or its kit copy: G3 keeps the
+choice field and adds no link"*, and closes **"This prohibition is scoped to those three
+routing surfaces and reaches no further."** It bars adding the AI rules or a link to
+them. It does not bar this edit, and G3's AI-helper field is unchanged by it.
+
+**G3's kit copy takes the same three rows**, because the shared kit-copy rule says the
+form body must not diverge from the template. G3's field list in Section G is written
+to match this item; if the two ever disagree, this item is the form body and G3's line is
+the summary of it.
+
+**This item is why the deliverables count moved to 66.** It is the thirteenth single-file
+edit, and the count sentence, the split, the ordinal on H11 and the staged-file check all
+state the new number. The archived record puts *"the templates the Phase 0-2 sessions
+use"* in this batch, and Session 02 links this one by name, so the page was always inside
+Batch 1's scope -- it was on the list as a template this batch reads and never as one it
+edits, which is the gap that let an air-shaped field list through twenty-six rounds.
+
+**The origin half of the same vocabulary stays, and that is a ruling rather than an
+oversight.** `home airport` and `airport code` are on the Trip-Basics card (D9, G2),
+Session 00's step 2 field list, Session 01's cover page and
+`parent_guide/setup_checklist.md`, and every one of them assumes the family flies. They
+stay because the archived record scopes the origin layer to a US-origin family in as many
+words and requires exactly that those values live on the family-owned card rather than in
+a session; Session 10's Step 6 removes `home airport` from a **session** for that reason
+and not because the field is wrong on the card. **The destination's shape is not scoped
+that way anywhere**, which is what separates this edit from that one.
+
 **Cancelled (OQ-5): do not author `framework/templates/family_input_summary.md`.**
 
 ### Section E — Destination reference
@@ -1945,13 +2043,24 @@ with the destination-specific row neutralised:**
 | --- | --- |
 | Do we need entry documents? | Official government source |
 | What are museum hours? | Official museum website |
-| What is fun in a city we are considering? | Guidebook plus travel websites |
+| What is fun in a place we are considering? | Guidebook plus travel websites |
 | Is a restaurant good? | Reviews plus menu/location check |
-| How long does a train take? | Transit planner or railway source |
+| How long does it take to get between two places? | Transit planner or the operator's own source |
 | Is a hotel convenient? | Map plus hotel reviews |
 | Is this current? | Official source with date checked |
 
-Plus: the guidebook rider (excellent for the "what is fun?" orientation row, but for
+**Two rows of that table are neutralised, not one.** The archived record writes the
+orientation row over a named city, and an earlier draft of this item replaced the name
+with *"a city we are considering"* -- which keeps the shape C4's topic list forbids,
+so the row now asks about *a place*. The transit row names no destination and was
+carried through unchanged, and it presumes a rail network for the reason C4 gives, so it
+asks how long it takes to get between two places. **The source-type list above still
+names official railway and transit sources, and that is not the same defect**: a source
+type a destination may have is a list to draw from, while a question every child is
+handed is a menu they are sent to answer.
+
+Plus: the guidebook rider (excellent for the "what is fun?"
+orientation row, but for
 orientation and **not** current facts — check its publication year and verify anything
 that matters against an official source with the date checked; library editions can be
 older still); **the verification fields** ("What other source can check this?",
@@ -2252,7 +2361,7 @@ branch problem, not a content gap, and a partial history is worse than a paused 
 `NEITHER ... RESOLVES` line, so the instruction and the command agree; until this round
 the instruction was covering for a command that ended the shell before reaching it.
 F10 stays an **edit** on every branch, so the deliverables split is always
-37 created / 28 edited.
+37 created / 29 edited.
 
 The curriculum changelog, distinct from the per-trip decision log. **The file already
 carries its H1 and its "which log is this" router table, and you add neither.** The block
@@ -2639,8 +2748,9 @@ kit copy of the built `framework/templates/current_family_travel_assumptions.md`
 the shared kit-copy rule above; the wrapper's backlink points at
 `../../templates/current_family_travel_assumptions.md`.
 Rough season window or candidate months; rough budget band in the kid-sized form; rough
-trip shape (round trip or open-jaw); likely arrival city; likely departure city (may
-stay open); mobility, dietary, sensory and medical constraints ("none known" is fine;
+trip shape (in and out of the same place, in one place and out of another, or one base
+you travel from); likely arrival place; likely departure place (may stay open);
+mobility, dietary, sensory and medical constraints ("none known" is fine;
 medical specifics stay with the adults); the AI yes/no choice, default no. "This can
 change" language throughout; adults own and update the page; the full trip total stays
 an adult number. **Do not add a destination row to this page** — the destination lives
@@ -3045,7 +3155,7 @@ conversion table); the remaining files are:
 | `parent_guide/README.md` | "exciting things about Japan (just for fun)" | "exciting things about your destination (just for fun; the destination pack is a good place to start)" |
 | `parent_guide/adult_roles.md` | "we are taking a trip, and it is Japan." | "we are taking a trip, and where it is." |
 | `parent_guide/coaching_and_support.md` | "that we're going, and that it's Japan." | "that we're going, and where." |
-| `parent_guide/coaching_and_support.md` | "You recommended Kyoto for three nights -- here's our Kyoto hotel, three nights." | "You recommended three nights in the city you picked -- here's our hotel there, three nights." |
+| `parent_guide/coaching_and_support.md` | "You recommended Kyoto for three nights -- here's our Kyoto hotel, three nights." | "You recommended three nights in the place you picked -- here's our hotel there, three nights." |
 | `parent_guide/setup_checklist.md` | "time zone or hours ahead to Japan" | "the destination, time zone or the time difference to it" — the direction goes with the name, per D9 |
 
 That replacement lands inside step 2's Trip-Basics field list, and it is the only change
@@ -3412,8 +3522,40 @@ destination fact, and universal conversion rule 1 preserves them.
 
 | Line | Current text | Neutral replacement |
 | --- | --- | --- |
-| "AI may help you" step 1 | "('What should I find out about Kyoto?')" | "('What should I find out about one city we might visit?')" |
-| Fenced safe prompt — **wrapped mid-sentence across two lines in the file, so match the lines, not the sentence** | line 1 `I am helping plan a family trip to Japan. Give me five questions a kid planner`; line 2 `should research about Kyoto. Do not make the decision for me.` | line 1 `I am helping plan a family trip. Give me five questions a kid planner`; line 2 `should research about the city we are considering. Do not make the decision for me.` — keep the fence at two lines, and keep the closing sentence |
+| "AI may help you" step 1 | "('What should I find out about Kyoto?')" | "('What should I find out about one place we might visit?')" |
+| Fenced safe prompt — **wrapped mid-sentence across two lines in the file, so match the lines, not the sentence** | line 1 `I am helping plan a family trip to Japan. Give me five questions a kid planner`; line 2 `should research about Kyoto. Do not make the decision for me.` | line 1 `I am helping plan a family trip. Give me five questions a kid planner`; line 2 `should research about one place we are considering. Do not make the decision for me.` — keep the fence at two lines, and keep the closing sentence |
+
+**Both replacements say `place`, not `city`, and that is the rule rather than a
+preference.** An earlier draft wrote *"one city we might visit"* and *"the city we are
+considering"*. Neither names a destination, so neither trips the five-name leak grep --
+and both still tell a child whose destination is a region, a route or a single island to
+research something that may not be there. This brief states that rule in four places
+already, and each time it removed the assumption rather than the name. C4's topic list
+above names two of them and says what each presumes and what it costs a child whose
+destination has neither; C5 states that **a destination is not always a country**;
+Session 10's Step 6 below reads *"'A long flight' is two assumptions, not an origin
+instance"*; and D9 states that **a direction baked into a field name is a destination
+assumption, and it walks past the five-name leak grep because that grep reads names**.
+Each of those four sentences sits in exactly one place, and this paragraph points at
+them rather than reprinting them, for the reason the canonical-concept rule gives. **A
+neutralisation that keeps the shape is not a neutralisation.** `place` is the noun this
+brief already uses for the layer above a city -- the student-guide card H9 writes is
+headed *"Words for the place you are going"* -- and it is true of a city, a town, a
+region, a stop on a route or a park.
+
+**Two further prescribed replacements said `city` for the same reason and this round
+changes them too**, because both are the same act -- a cell that removes the destination
+name and keeps the shape. H10's `parent_guide/coaching_and_support.md` row now reads
+*"three nights in the place you picked"*, and F5's match-source-to-question table, which
+this brief introduces as *"with the destination-specific row neutralised"*, now asks
+*"What is fun in a place we are considering?"* where it asked about a city; F5's train
+row moves with it, because C4 already ruled that question presumes a rail network and
+F5's own closing sentence is *"The file stays destination-neutral."* **One was left
+alone on purpose.** Session 04's *"What is the capital city?"* carries the same shape,
+and the item that writes it says in as many words that whether it is answerable for a
+destination that is not a country is the Open Question A1 records and that the example is
+not to be rewritten a third time to chase it. A question this brief holds open is not a
+defect to fix inside the round that meets it.
 
 Preserve: the conditional-core status and the "skip this session entirely if AI-free"
 instruction; the adult-operated pattern (grown-up's tool, grown-up's account, child
@@ -4532,11 +4674,11 @@ git diff --cached --name-only | wc -l
 every change in the tree, tracked and untracked alike, so on a tree that already carried
 an unrelated edit or a stray scratch file it stages that file too -- into the gate's
 corpus and into the commit, which is the one thing the file scope above forbids. The
-pathspec form reaches the same 37 creates and 28 edits and can reach nothing else: every
+pathspec form reaches the same 37 creates and 29 edits and can reach nothing else: every
 item on the deliverables list writes under `framework/`, under `destinations/`, or to the
 root `README.md`, and no item writes anywhere else.
 
-**The second command is a check, not decoration, and it must print `65`.** Started from
+**The second command is a check, not decoration, and it must print `66`.** Started from
 the clean tree the scope section requires, the staged list is this batch's output and
 nothing else, so its length is the deliverables count. A larger number means something
 outside the batch is staged: stop and look. A smaller one means a deliverable was never
@@ -4544,7 +4686,7 @@ written. Read `git diff --cached --name-only` in full either way -- it is the ch
 proof you have that the file scope held. Where a hook rewrite sends you back to stage
 again, use the same pathspec command, never `-A`.
 
-**The 28 edited files are not at risk. The 37 created files are, all of them.** The edits
+**The 29 edited files are not at risk. The 37 created files are, all of them.** The edits
 are already tracked, and `--all-files` turns off pre-commit's usual unstaged-changes
 stash, so their new content is read from the working tree either way. The creates are
 invisible until they are staged -- to `markdownlint-cli2` and
