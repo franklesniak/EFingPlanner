@@ -1243,7 +1243,6 @@ def _session_with(body: str) -> str:
         ("html attribute", '<span title="<!-- no-source-check: x -->">hi</span>'),
         ("indented code block", "    <!-- no-source-check: an indented example -->"),
         ("link text", "[see `<!-- no-source-check: x -->`](https://example.com)"),
-        ("block quote", "> <!-- no-source-check: this is quoted, not declared -->"),
     ],
 )
 def test_a_marker_that_is_not_a_comment_does_not_exempt(label: str, body: str) -> None:
@@ -1588,3 +1587,163 @@ def test_an_ordinary_backtick_info_string_still_opens_a_fence() -> None:
     steps = "## Steps\n\n```text\nMy answer: ______________________\n```\n"
     text = build_session().replace("## Steps\n\nReal content for Steps.\n", steps, 1)
     assert any("worksheet fill-in" in m for m in check(text))
+
+
+# ---------------------------------------------------------------------------
+# Round 7: a container prefix does not stop a comment from being a comment
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.parametrize(
+    ("label", "marker"),
+    [
+        ("blockquote", "> <!-- no-source-check: adult-only setup -->"),
+        ("blockquote, audience", "> <!-- audience: adult -->"),
+        ("bullet", "- <!-- no-source-check: adult-only setup -->"),
+        ("ordered item", "1. <!-- no-source-check: adult-only setup -->"),
+        ("nested blockquote", "> > <!-- no-source-check: adult-only setup -->"),
+        ("bullet in a blockquote", "> - <!-- no-source-check: adult-only setup -->"),
+        ("indented bullet", "  - <!-- no-source-check: adult-only setup -->"),
+    ],
+)
+def test_a_marker_inside_a_markdown_container_still_exempts(label: str, marker: str) -> None:
+    """CommonMark decides the block after the container prefix comes off.
+
+    A blockquote or a list item does not turn a comment into prose. The child
+    sees nothing on the line either way, and the session has said in the file
+    why it has no research step -- which is the whole point of the marker.
+    """
+    text = build_session(sections=SIX_SECTIONS, markers=marker)
+    assert check(text) == [], (label, check(text))
+
+
+def test_a_marker_indented_four_spaces_is_still_an_example() -> None:
+    """A negative control. Four spaces is an indented code block, not a comment."""
+    text = build_session(
+        sections=SIX_SECTIONS,
+        extra="## Notes\n\n    <!-- no-source-check: an indented example -->\n",
+    )
+    assert any("Source Check" in m for m in check(text))
+
+
+def test_a_container_nested_marker_inside_a_fence_is_still_an_example() -> None:
+    """A negative control. Round 4 holds: a fenced marker exempts nothing."""
+    text = build_session(
+        sections=SIX_SECTIONS,
+        extra="## Notes\n\n```\n> <!-- no-source-check: printed, not declared -->\n```\n",
+    )
+    assert any("Source Check" in m for m in check(text))
+
+
+def test_a_blockquoted_comment_with_trailing_backticks_opens_no_fence() -> None:
+    """The same line, read as a fence, invented a worksheet that is not there.
+
+    The blockquote prefix hid the HTML block from the round-6 test, so the
+    backticks after the comment opened a fence, and the quoted underscores
+    inside it were reported as a worksheet fill-in. CommonMark opens no fence
+    there: the whole line is one HTML block.
+    """
+    goal = "## Goal\n\n> <!-- a note --> ```\n> Name: ____\n"
+    text = build_session().replace("## Goal\n\nReal content for Goal.\n", goal, 1)
+    assert check(text) == []
+
+
+def test_a_real_fence_inside_a_blockquote_still_holds_what_it_holds() -> None:
+    """A positive control. Only the HTML-block line is exempt from opening one."""
+    goal = "## Goal\n\n> ```\n> Name: ____\n> ```\n"
+    text = build_session().replace("## Goal\n\nReal content for Goal.\n", goal, 1)
+    assert any("worksheet fill-in" in m for m in check(text))
+
+
+def test_a_fence_after_a_blockquoted_comment_line_still_opens() -> None:
+    """A positive control. The HTML block ends on the line carrying ``-->``."""
+    goal = "## Goal\n\n> <!-- a note -->\n> ```\n> Name: ____\n> ```\n"
+    text = build_session().replace("## Goal\n\nReal content for Goal.\n", goal, 1)
+    assert any("worksheet fill-in" in m for m in check(text))
+
+
+# ---------------------------------------------------------------------------
+# Round 7: a link reference definition prints nothing
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.parametrize(
+    ("label", "body"),
+    [
+        ("bare destination", "[shared]: https://example.com"),
+        ("angle-bracket destination", "[shared]: <https://example.com>"),
+        ("double-quoted title", '[shared]: https://example.com "Why it matters"'),
+        ("single-quoted title", "[shared]: https://example.com 'Why it matters'"),
+        ("parenthesised title", "[shared]: https://example.com (Why it matters)"),
+        ("three spaces of indent", "   [shared]: https://example.com"),
+        ("two definitions", "[a]: https://example.com/a\n[b]: https://example.com/b"),
+        ("label with a space", "[shared source]: https://example.com"),
+    ],
+)
+def test_a_section_holding_only_reference_definitions_is_empty(label: str, body: str) -> None:
+    """A definition is a line in the file and nothing on the page.
+
+    The child opening the session sees a heading with no words under it,
+    whether or not a link in some later section resolves through it.
+    """
+    text = build_session().replace(
+        "## Goal\n\nReal content for Goal.\n", f"## Goal\n\n{body}\n", 1
+    )
+    assert any('section "## Goal" is empty' in m for m in check(text))
+
+
+def test_a_definition_used_by_a_later_section_does_not_fill_its_own_section() -> None:
+    """Being useful elsewhere does not put words under this heading."""
+    text = build_session().replace(
+        "## Goal\n\nReal content for Goal.\n",
+        "## Goal\n\n[shared]: https://example.com\n",
+        1,
+    ).replace(
+        "Real content for Steps.",
+        "Read the [shared] page first.",
+        1,
+    )
+    assert any('section "## Goal" is empty' in m for m in check(text))
+
+
+@pytest.mark.parametrize(
+    ("label", "body"),
+    [
+        ("a definition beside a sentence", "[shared]: https://example.com\n\nReal words."),
+        ("an inline link", "[shared](https://example.com) is the page to read."),
+        ("bracket-colon prose", "[shared]: not a url but still a definition?"),
+        ("an unterminated title", '[shared]: https://example.com "Why it matters'),
+        ("trailing words after a title", '[shared]: https://example.com "Title" and more'),
+        ("four spaces, so a code block", "    [shared]: https://example.com"),
+        ("a comment first, so an HTML block", "<!-- a note -->[shared]: https://example.com"),
+        ("a comment last, so a paragraph", "[shared]: https://example.com <!-- a note -->"),
+        ("an empty label", "[]: https://example.com"),
+        ("no destination", "[shared]:"),
+        ("a quoted definition", "> [shared]: https://example.com"),
+    ],
+)
+def test_a_line_that_is_not_a_reference_definition_is_still_content(
+    label: str, body: str
+) -> None:
+    """Negative controls. Each of these puts characters on the page.
+
+    The last two are the conservative direction on purpose: a blockquote round
+    a definition renders an empty quote box, and this checker has never peeled
+    containers when asking whether a section is empty. Calling them content
+    cannot fail a session that is fine.
+    """
+    text = build_session().replace(
+        "## Goal\n\nReal content for Goal.\n", f"## Goal\n\n{body}\n", 1
+    )
+    messages = check(text)
+    assert not any('section "## Goal" is empty' in m for m in messages), (label, messages)
+
+
+def test_the_emptiness_rule_still_reads_comments_and_bare_markers_as_empty() -> None:
+    """A negative control for round 4: the comment rule is untouched."""
+    text = build_session().replace(
+        "## Goal\n\nReal content for Goal.\n",
+        "## Goal\n\n<!-- markdownlint-disable -->\n\n-\n",
+        1,
+    )
+    assert any('section "## Goal" is empty' in m for m in check(text))

@@ -28,8 +28,11 @@ What is checked
    several -- but the scaffold ones may not be reordered, because the order
    *is* the scaffold.
 7. No mandatory section is empty. A body that holds only whitespace, only HTML
-   comments, or only a bare list marker prints as a bare heading, so it counts
-   as empty.
+   comments, only a bare list marker, or only link reference definitions prints
+   as a bare heading, so it counts as empty. A reference definition such as
+   ``[shared]: https://example.com`` is a line in the file that puts nothing on
+   the page; it is no less a definition for being written under a heading the
+   child then reads as blank.
 8. No fenced code block is used as a worksheet fill-in. Worksheet forms are
    Markdown tables; a fenced block of blanks does not print as a box, does not
    become an editable cell when the page is copied into Google Docs, and does
@@ -61,6 +64,11 @@ nothing: a ``## Goal`` inside ``<!-- ... -->`` is a heading the child never
 sees, and a gate that counts it reports a section that is not on the page. The
 two exemption markers are themselves comments, so they are searched against a
 second view of the same scan, one that keeps the comments in.
+
+A marker nested in a blockquote or a list item is still a marker. CommonMark
+decides what a line is from what is left once the container prefixes are
+consumed, so ``> <!-- no-source-check: ... -->`` is the same comment the
+unindented form is, and the scan reads it the same way.
 
 Silence is never an exemption. If a session genuinely has no research step, it
 says so.
@@ -189,15 +197,48 @@ HEADING_PATTERN = re.compile(r"^(?P<hashes>#{1,6})\s+(?P<title>.+?)\s*$")
 #: script enforces prohibits underscore *forms*, not underscores.
 WORKSHEET_BLANK_PATTERN = re.compile(r"(?<!\w)_{4,}|_{4,}(?!\w)")
 
-#: CommonMark starts an HTML block on a line whose content begins with
+#: CommonMark starts an HTML block on a line whose *content* begins with
 #: ``<!--`` and ends it on the line that carries ``-->``. Every line of that
 #: block is raw HTML, so nothing on it is a heading -- not even text after
 #: the ``-->``, which prints as the literal characters the author typed.
+#: Content is what is left once the blockquote and list-item prefixes are
+#: consumed, which is why this is matched against ``container_content`` and
+#: not against the line as the file holds it.
 #: <https://spec.commonmark.org/0.31.2/#html-blocks>
 HTML_BLOCK_COMMENT_START_PATTERN = re.compile(r"^ {0,3}<!--")
 
 #: A list marker with nothing after it. It prints as a bullet and no words.
 BARE_LIST_MARKER_PATTERN = re.compile(r"^\s*(?:[-*+]|\d{1,9}[.)])\s*$")
+
+#: A CommonMark link reference definition: ``[label]: destination "title"``.
+#: It is a line in the file that renders nothing at all. The destination it
+#: names is used by a link somewhere else, or by nothing, so a section holding
+#: only these prints to the child as a bare heading.
+#:
+#: The form is matched conservatively, because the error that matters here is
+#: the one that fails a session that is fine: the destination must be one
+#: unbroken token or the angle-bracket form, a title must be properly closed,
+#: and nothing else may follow. A definition whose destination sits on the
+#: following line is not matched, so a section holding one still counts as
+#: content -- which is what this checker already did.
+#: <https://spec.commonmark.org/0.31.2/#link-reference-definitions>
+LINK_REFERENCE_DEFINITION_PATTERN = re.compile(
+    r"""
+    ^\ {0,3}                                 # at most three spaces of indent
+    \[ (?=[^\]]*[^\s\]])                     # a label with at least one nonblank
+       (?: [^\[\]\\] | \\. )+ \]
+    :\ *                                     # the colon, then optional spaces
+    (?: < [^<>\n]* >                         # an angle-bracket destination
+      | [^\s\x00-\x1f<]+ )                   # or a bare one
+    (?: \ +                                  # an optional title
+        (?: " (?: [^"\\] | \\. )* "
+          | ' (?: [^'\\] | \\. )* '
+          | \( (?: [^()\\] | \\. )* \) )
+    )?
+    \ *$
+    """,
+    re.VERBOSE,
+)
 
 #: These three patterns, and the fence helpers below, are kept identical to
 #: ``.github/scripts/check-prohibited-placeholders.py``. A search for
@@ -429,6 +470,21 @@ def normalize_for_fence_opening(line: str, list_contexts: list[ListContext]) -> 
     )
 
 
+def container_content(line: str, list_contexts: list[ListContext]) -> str:
+    """Return what CommonMark reads on a line, container prefixes peeled off.
+
+    A line's block type -- an HTML block among them -- is decided from what is
+    left once the blockquote and list-item prefixes are consumed, so
+    ``> <!-- a comment -->`` opens an HTML block exactly as the unindented form
+    does. The list contexts are copied because this asks a question about one
+    line rather than advancing the document: the contexts that govern the rest
+    of the file are the ones the fence normalization takes below, from the
+    span-stripped line. Kept identical to the helper in
+    ``.github/scripts/check-prohibited-placeholders.py``.
+    """
+    return normalize_for_fence_opening(line, list(list_contexts)).content
+
+
 def normalize_for_fence_closing(line: str, active_fence: ActiveFence) -> str:
     """Return a fenced-block line normalized to the opening fence's container."""
     peeled, peeled_count = peel_containers(line, active_fence.containment_path)
@@ -541,9 +597,14 @@ def scan_document(text: str) -> DocumentScan:
         # hook reads it that way and the two must not disagree about which
         # fences exist -- which is also why the sibling carries the same
         # HTML-block test. The structural searches read less: a whole HTML
-        # block line carries no heading, even after its ``-->``.
+        # block line carries no heading, even after its ``-->``. The
+        # HTML-block test reads the line as the file holds it, with its
+        # container prefixes peeled: CommonMark classifies a line from what is
+        # left after the prefixes, so a marker inside a blockquote or a list
+        # item is the same comment the unindented one is.
         in_html_block = was_in_html_comment or (
-            HTML_BLOCK_COMMENT_START_PATTERN.match(raw_line) is not None
+            HTML_BLOCK_COMMENT_START_PATTERN.match(container_content(raw_line, list_contexts))
+            is not None
         )
 
         opening_fence_line = normalize_for_fence_opening(visible_line, list_contexts)
@@ -606,13 +667,20 @@ def find_headings(scan: DocumentScan) -> list[Heading]:
 
 
 def section_body(text: str, headings: list[Heading], index: int) -> str:
-    """Return the text between one section heading and the next."""
+    """Return the text between one section heading and the next.
+
+    Only the blank lines around the body are trimmed. Trimming the spaces as
+    well would take the indent off the first line, and four spaces of indent is
+    what makes a line an indented code block rather than the thing it resembles
+    -- a line CommonMark prints as characters rather than reading as a link
+    reference definition.
+    """
     lines = text.split("\n")
     start = headings[index].line_number
     end = (
         headings[index + 1].line_number - 1 if index + 1 < len(headings) else len(lines)
     )
-    return "\n".join(lines[start:end]).strip()
+    return "\n".join(lines[start:end]).strip("\n")
 
 
 def parent_strip_body(
@@ -636,9 +704,16 @@ def parent_strip_body(
 def renders_as_content(body: str) -> bool:
     """Return whether a section body puts anything on the page.
 
-    Whitespace, an HTML comment such as ``<!-- markdownlint-disable -->``, and
-    a list marker with no words after it all print as nothing. A section that
-    holds only those is empty to the child, whatever the file holds.
+    Whitespace, an HTML comment such as ``<!-- markdownlint-disable -->``, a
+    list marker with no words after it, and a link reference definition all
+    print as nothing. A section that holds only those is empty to the child,
+    whatever the file holds.
+
+    The reference-definition test reads the line as the file holds it rather
+    than the comment-stripped line, and that is the load-bearing half of it. A
+    comment and a definition on one line make the whole line an HTML block, and
+    an HTML block prints the characters the author typed: ``<!-- c -->[shared]:
+    /url`` is on the page, while ``[shared]: /url`` is not.
     """
     is_in_html_comment = False
     for line in body.split("\n"):
@@ -646,6 +721,8 @@ def renders_as_content(body: str) -> bool:
         if not visible.strip():
             continue
         if BARE_LIST_MARKER_PATTERN.match(visible):
+            continue
+        if LINK_REFERENCE_DEFINITION_PATTERN.match(line):
             continue
         return True
     return False

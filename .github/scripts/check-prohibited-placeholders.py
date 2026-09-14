@@ -32,11 +32,14 @@ ALLOWED_LABEL_PATTERN = re.compile(
 )
 FENCE_OPEN_PATTERN = re.compile(r"^ {0,3}(?P<marker>`{3,}|~{3,})")
 
-#: CommonMark starts an HTML block on a line whose content begins with
+#: CommonMark starts an HTML block on a line whose *content* begins with
 #: ``<!--`` and ends it on the line carrying ``-->``. Every character on
 #: those lines is raw HTML, so none of them opens a fenced code block --
-#: not even backticks left behind by comment stripping. Kept identical to
-#: the constant in ``.github/scripts/check-session-structure.py``.
+#: not even backticks left behind by comment stripping. Content is what is
+#: left once the blockquote and list-item prefixes are consumed, which is
+#: why this is matched against ``container_content`` and not against the
+#: line as the file holds it. Kept identical to the constant in
+#: ``.github/scripts/check-session-structure.py``.
 #: <https://spec.commonmark.org/0.31.2/#html-blocks>
 HTML_BLOCK_COMMENT_START_PATTERN = re.compile(r"^ {0,3}<!--")
 BLOCK_QUOTE_PREFIX_PATTERN = re.compile(r"^ {0,3}> ?")
@@ -282,6 +285,21 @@ def normalize_for_fence_opening(line: str, list_contexts: list[ListContext]) -> 
     )
 
 
+def container_content(line: str, list_contexts: list[ListContext]) -> str:
+    """Return what CommonMark reads on a line, container prefixes peeled off.
+
+    A line's block type -- an HTML block among them -- is decided from what is
+    left once the blockquote and list-item prefixes are consumed, so
+    ``> <!-- a comment -->`` opens an HTML block exactly as the unindented form
+    does. The list contexts are copied because this asks a question about one
+    line rather than advancing the document: the contexts that govern the rest
+    of the file are the ones the fence normalization takes below, from the
+    span-stripped line. Kept identical to the helper in
+    ``.github/scripts/check-session-structure.py``.
+    """
+    return normalize_for_fence_opening(line, list(list_contexts)).content
+
+
 def normalize_for_fence_closing(line: str, active_fence: ActiveFence) -> str:
     """Return a fenced-block line normalized to the opening fence's container."""
     peeled, peeled_count = peel_containers(line, active_fence.containment_path)
@@ -371,9 +389,13 @@ def find_violations_in_text(text: str, display_path: str) -> list[Violation]:
         commentless_line, is_in_html_comment = strip_html_comments(raw_line, is_in_html_comment)
         # A line CommonMark reads as raw HTML opens no fenced block. Without
         # this the backticks left behind by comment stripping open one, and
-        # every placeholder to the end of the file is hidden inside it.
+        # every placeholder to the end of the file is hidden inside it. The
+        # test reads the line with its container prefixes peeled, because a
+        # comment nested in a blockquote or a list item opens an HTML block
+        # just as the unindented one does -- and hides just as much.
         in_html_block = was_in_html_comment or (
-            HTML_BLOCK_COMMENT_START_PATTERN.match(raw_line) is not None
+            HTML_BLOCK_COMMENT_START_PATTERN.match(container_content(raw_line, list_contexts))
+            is not None
         )
 
         opening_fence_line = normalize_for_fence_opening(commentless_line, list_contexts)

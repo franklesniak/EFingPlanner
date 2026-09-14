@@ -619,3 +619,75 @@ def test_a_fence_on_the_line_after_a_comment_still_hides_a_placeholder(
     )
 
     assert scan_single_file(path, tmp_path) == []
+
+
+# ---------------------------------------------------------------------------
+# Round 7: a container prefix does not stop an HTML block from being one
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.parametrize(
+    ("label", "first_line", "second_line"),
+    [
+        ("blockquote", "> <!-- note --> ```", "> The limit is TBD."),
+        ("nested blockquote", "> > <!-- note --> ```", "> > The limit is TBD."),
+        ("bullet", "- <!-- note -->```", "  The limit is TBD."),
+        ("ordered item", "1. <!-- note -->```", "   The limit is TBD."),
+        ("bullet in a blockquote", "> - <!-- note -->```", ">   The limit is TBD."),
+    ],
+)
+def test_a_container_nested_html_block_opens_no_fence(
+    label: str, first_line: str, second_line: str, tmp_path: Path
+) -> None:
+    """CommonMark decides the block after the container prefix comes off.
+
+    Reading the raw line meant the blockquote or bullet hid the HTML block, so
+    the backticks after the comment opened a fence and every placeholder below
+    it went unreported.
+    """
+    path = write_file(
+        tmp_path / "docs" / "spec" / "example.md",
+        f"{first_line}\n{second_line}\n",
+    )
+
+    violations = scan_single_file(path, tmp_path)
+
+    assert [v.matched_text for v in violations] == ["TBD"], (label, violations)
+
+
+def test_a_real_fence_inside_a_blockquote_still_hides_a_placeholder(tmp_path: Path) -> None:
+    """A positive control. Only the HTML-block line is exempt from opening one."""
+    path = write_file(
+        tmp_path / "docs" / "spec" / "example.md",
+        "> ```text\n> The limit is TBD.\n> ```\n",
+    )
+
+    assert scan_single_file(path, tmp_path) == []
+
+
+def test_a_placeholder_after_a_blockquoted_comment_is_still_flagged(tmp_path: Path) -> None:
+    """A positive control. The HTML-block test governs fences, not visibility."""
+    path = write_file(
+        tmp_path / "docs" / "spec" / "example.md",
+        "> <!-- note --> The limit is TBD.\n",
+    )
+
+    violations = scan_single_file(path, tmp_path)
+
+    assert [v.matched_text for v in violations] == ["TBD"]
+
+
+def test_the_html_block_test_does_not_disturb_list_tracking(tmp_path: Path) -> None:
+    """A negative control on the state, not the answer.
+
+    The peel asks a question about one line; it must not advance the list
+    contexts that govern the rest of the file. If it did, the real fence in the
+    same list item would be peeled against the wrong content column and would
+    not be found, and the placeholder inside it would be reported as prose.
+    """
+    path = write_file(
+        tmp_path / "docs" / "spec" / "example.md",
+        "- <!-- note -->\n\n  ```text\n  The limit is TBD.\n  ```\n",
+    )
+
+    assert scan_single_file(path, tmp_path) == []
