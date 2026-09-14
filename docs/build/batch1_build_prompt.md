@@ -904,9 +904,9 @@ Artifact: **Book notes page.** **Source Check is required.** Templates used:
   branch as the lesser one. **This branch is not Session 08.** Session 06 is about
   finding your way around one long source and judging how current it is; Session 08 is
   about comparing two sources on the same question. Do not ask for a second source here.
-- **One website, and the Materials line above now says so.** That line asked for *"a
-  couple of reputable travel websites"* until this round, three bullets above the
-  sentence forbidding the second source, and a literal builder had to either put a
+- **One website, and the Materials line above now says so.** An earlier draft of that
+  line asked for *"a couple of reputable travel websites"*, in the same item as the
+  bullet forbidding the second source, and a literal builder had to either put a
   source into the session that the session tells it not to ask for or disregard the
   materials list. The website branch is singular everywhere else it is specified: *"one
   long source"* in the bullet above, *"a site's own section menu"* and *"a page title
