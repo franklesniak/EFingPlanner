@@ -240,9 +240,9 @@ inside the `## Metadata` block a specification, instruction or process document 
 Different fields, different layers, different formats. **They are not sorted by
 directory.** Most files carrying the block are under `framework/`, but A1 carries one and
 is a `destinations/` file: it is a routing contract rather than a fact file, which is
-also why it carries no `Last reviewed` stamp. A1, D7 and D8 are each required below to
-carry the block, so the bump rule above binds those three from the batch that next edits
-them. Note also that this rule never reaches a protected instruction file — those are
+also why it carries no `Last reviewed` stamp. A1, D7, D8 and F4 are each required below
+to carry the block, so the bump rule above binds those four from the batch that next
+edits them. Note also that this rule never reaches a protected instruction file — those are
 never edited by any batch (see BUILD RULES below).
 
 ### Section A — The destination-pack insert contract and its Batch 1 slots
@@ -334,7 +334,7 @@ add-a-destination checklist. Must contain:
   | Slot | Consuming session | Fields it must supply |
   | --- | --- | --- |
   | `10_snapshot_facts.md` | 10 Destination Snapshot | Capital; major land features; currency; main language. Not the hours-ahead figure -- that is a Trip-Basics card value. |
-  | `11_regions_overview.md` | 11 Regions and Cities Overview | The main regions, one short line each on how each feels different; the geography instances the neutral session may not state (the country's shape and size, how weather differs by region, why travel time between regions matters); a pointer to the pack's major-cities reference for the route shapes. No trip shapes, no costs, no pinned travel times. |
+  | `11_regions_overview.md` | 11 Regions and Cities Overview | The main regions, named, so the child can start their region notes; then a pointer to the pack's regions reference for how each region feels different and for the geography instances the neutral session may not state -- the country's shape and size, how weather differs by region, why travel time between regions matters -- and a pointer to the pack's major-cities reference for the route shapes. That regions reference is their canonical home; do not restate them in the slot. No trip shapes, no costs, no pinned travel times. |
   | `12_seasons_and_events.md` | 12 Weather, Seasons, and Events | Each season the destination has, named, so the child can label a season chart, with one short line each on what travelling in it is like; then a pointer to the pack's seasons, weather and events reference for the rest -- the big-draw and busiest periods, the congestion windows named as categories to confirm this year, each seasonal hazard with its pacing consequence, and the adult-facing contingency note. That reference is their canonical home; do not restate them in the slot. No pinned dates, prices or forecasts. |
   | `16_18_candidate_cities.md` | 16-18 Deep-Dive Cities | Two to four first-trip candidate cities, each with a one-line draw and a few kid-magnet ideas to research, not pre-chosen. |
   | `19_other_places_menu.md` | 19 Other Places Research | A menu of further candidate places beyond the deep-dive cities, each with a one-line draw, offered as options to research rather than as a shortlist. |
@@ -410,19 +410,37 @@ surprising facts are the child's own research, not supplied here. No prices, hou
 entry rules, or anything volatile.
 
 **A3. `destinations/japan/session_inserts/11_regions_overview.md` (create).**
-Child-facing. Must contain: H1; `Last reviewed`; a "these are starting points, not
-answers" framing line; **the main regions** — Tokyo/Kanto, Kyoto, Osaka/Kansai,
-Hiroshima, Hokkaido, Okinawa, the Japanese Alps, Kyushu, one short line each on how
-each feels different; **the destination-specific geography instances** the session may
-not state (the country is long north to south; **how far it stretches -- roughly 3,000
-kilometres, about 1,900 miles, from its far north to its far south**, which is the size
-instance the A1 schema requires and the reason travel time matters; weather differs by
-region; travel time between regions matters); a statement that the child still does the
-route trade-off later and still owns the route choice; and this routing sentence:
+Child-facing, and a **routing** insert rather than a second fact page.
+
+**`destinations/japan/reference/regions_overview.md` -- the file E1 creates -- is the
+canonical home for this destination's region facts.** E1 writes the eight regions with a
+short line on each, and the whole of `## Why the regions matter for planning`: the
+country long north to south, how far it stretches, the weather that differs by region,
+and the travel time between regions. **This insert must not write any of that a second
+time.** Both files are child-facing, both ship in this batch, and an earlier draft of
+this item gave them the same content with nothing holding them together but an
+instruction to phrase one figure the same way in both. The pack would then carry two
+independently maintained statements of one fact set, stamped with whatever months their
+authors used, and a later correction would reliably reach one of them. A1's first
+add-a-destination rule settles which is which: the pack's stable facts -- regions
+included -- live in `reference/`. A4 was settled the same way for the seasons, and the
+same precedence applies here: **if the two ever disagree, the reference wins.**
+
+Must contain: H1; `Last reviewed`; a "these are starting points, not answers" framing
+line; **the main regions, named** — Tokyo/Kanto, Kyoto, Osaka/Kansai, Hiroshima,
+Hokkaido, Okinawa, the Japanese Alps, Kyushu — as a plain list with no write-up on any of
+them, which is what lets the child start the session's region notes; a statement that the
+child still does the route trade-off later and still owns the route choice; and these two
+routing sentences: *"How each region feels different, how far your destination stretches,
+and why travel time between regions matters are in your pack's [regions
+overview](../reference/regions_overview.md). Read it before you fill in your notes."* and
 *"Two ways to shape
 a first trip are in your pack's [major cities reference](../reference/major_cities.md).
-Read them as anchors to compare against, not as the answer."* **Do not repeat the two
-trip shapes here** — `major_cities.md` is their canonical home (OQ-10). Keep it
+Read them as anchors to compare against, not as the answer."*
+
+**Repeat none of it here** — not the one-line-each character sketches, not the
+north-to-south length, not the weather-by-region or travel-time instances, and not the
+two trip shapes, whose canonical home is `major_cities.md` (OQ-10). Keep it
 price-free and verify-framed: no costs, no pinned travel times. A link from one pack
 file to another pack file is allowed — the no-hard-link rule constrains links **out of
 `framework/` and into a pack**, and says nothing about links **inside** a pack. It binds
@@ -551,7 +569,27 @@ this section only Session 02 has no research step, and C1 settles it by requirin
 built no-research form rather than the marker. Optional sections
 (`## Finish and Quality Check`, `## If You Get Stuck`, `## Optional Extension`,
 `## Parent Notes`) are pointer-by-default; a pointer counts the same as full text and
-an omitted optional section is correct, not a gap. **Start Here must be a true
+an omitted optional section is correct, not a gap. **Three of those four are not optional
+for these five sessions.** The operative style law treats the `Stuck? Use the...` and
+`Finished? Use the...` sentences as designed executive-function choreography a child meets
+unchanged every time, and records that both are identical in all 14 child sessions; it
+says the same of `## Optional Extension`, which all 14 also carry.
+`.github/scripts/check-session-structure.py` requires none of the three, so a new session
+that dropped one would pass every gate in this repository and still be the first page in
+the corpus that does not behave like the others. Write all three into each of the five.
+**The two pointer sentences carry links, and the brief quotes them elsewhere without:**
+`## Finish and Quality Check` holds `Finished? Use the [Finish and Quality Check
+card](../../student_guide/finish_and_quality_check.md) in your student guide.` and
+`## If You Get Stuck` holds `Stuck? Use the [When I'm Stuck
+card](../../student_guide/when_im_stuck.md) in your student guide.`, with `../../` correct
+from a session file in any phase folder. Write the links; a pointer without one strands
+the child on the page it was meant to leave. A session may add its own sentence after the
+`Finished?` pointer, as Session 04 does, and the Optional Extension's opener and close
+vary on purpose -- read that rule in the style law before you write the five and do not
+normalise what it says varies. `## Parent Notes` stays genuinely optional. **The style
+law's own census then needs the new number**, because Batch 1 takes the corpus from 14
+child sessions to 19; F11's eighth change below re-bases both sentences. **Start Here
+must be a true
 micro-action**, doable in under a minute. Artifact-producing sessions carry the
 point-of-use accommodation line, in the exemplar's contracted form: *"You can say your
 answers to an adult who writes them, or draw them, if that's easier."* The other built
@@ -778,7 +816,8 @@ required.** Must contain:
   region, no city, and no trip shape.
 - The four generic lessons stay in the body, stated generically: the country's shape
   and size matter; weather differs by region; **travel time matters**; a first trip
-  cannot include everything. The instances live in the insert and the references.
+  cannot include everything. The instances live in the pack's regions overview, which E1
+  creates and which the insert routes to; the insert itself only names the regions (A3).
 - The route-shape calibration lives **in the pack's major-cities reference**, not in the
   body and not in the insert. A3 forbids the insert from repeating the two trip shapes
   (OQ-10 makes the major-cities reference their only home), so the insert **routes**
@@ -1109,8 +1148,10 @@ line each on how each region feels different, with **no city write-ups and no
 attractions**; `## Why the regions matter for planning` — the country is long north to
 south, it stretches roughly 3,000 kilometres (about 1,900 miles) from its far north to its
 far south, weather differs by region, travel time between regions matters, a first trip
-cannot include everything — **write that distance the same way A3 writes it**, so the
-pack's two statements of one fact do not drift; and `## Cities, and two ways to shape a
+cannot include everything — **this file is the canonical home for every one of those
+facts**, and A3 routes here rather than repeating them, so the pack states each of them
+once and a later correction has one place to reach rather than two; and `## Cities, and
+two ways to shape a
 first trip` — **three sentences maximum**, then the link: *"The candidate cities, and two
 ways to shape a
 first trip, are in the [major cities reference](major_cities.md)."* Do not summarise
@@ -1125,9 +1166,20 @@ before Batch 1.** Do not edit it.
 
 ### Section F — Framework docs and front matter
 
-Of the new `framework/docs/` files, only F3, F7 and F9 carry a `## Metadata` block; F4,
-F5, F6 and F8 are parent-facing curriculum reading, classified Tier 2, and deliberately
-do not. **That classification covers `framework/docs/` only.** Three files outside this
+Of the new `framework/docs/` files, F3, F4, F7 and F9 carry a `## Metadata` block; F5,
+F6 and F8 are parent-facing curriculum reading, classified Tier 2, and deliberately do
+not. **F4 is on the required side, and being parent-facing is not what decides it.** The
+repository's documentation policy classifies on content and says so in as many words --
+Tier 1 wins on content, and file location and filename are secondary -- so the test is
+what a file makes binding, not who reads it. `framework/docs/privacy_and_safety.md` is
+parent-facing and carries the block today, which settles that audience alone exempts
+nothing. `design_principles.md` fixes the carry-over tag's canonical wording and the one
+place it may appear, and it sets the fade gradient together with the readiness test that
+releases each stage; those are rules a Batch 2 author has to follow, which is design
+rationale in the policy's own sense. F5, F6 and F8 are not in that position -- a guide to
+source types, family-facing AI rules and a glossary make nothing binding on a later
+author, and Tier 2 says not to add the block without a concrete consumer. **That
+classification covers `framework/docs/` only.** Three files outside this
 section carry the block as well, each required to carry it in its own item: A1, D7 and
 D8, the batch's three builder-facing contracts. Everywhere else, do not add the block
 to a file this brief does not ask for it on.
@@ -1245,7 +1297,10 @@ router list with relative links. One to one and a half printed pages. **No three
 explanation** — that belongs to `framework/README.md`.
 
 **F4. `framework/docs/design_principles.md` (create).** Parent-facing and
-builder-facing, adult register. H1; the mechanic-to-purpose table; the three core
+builder-facing, adult register. H1; then a `## Metadata` block directly below it --
+`**Status:**`, `**Owner:**`, `**Last Updated:**` (your build date, `YYYY-MM-DD`) and
+`**Scope:**`, plus `**Related:**` where a real target exists. Then the
+mechanic-to-purpose table; the three core
 executive-function skills; the fourth skill underneath; the honest transfer framing.
 Reproduce the mechanic-to-purpose table: Start Here micro-action → makes it easier to
 get started; Timer → makes the task bounded and prevents endless research; Stop point →
@@ -1649,7 +1704,7 @@ Batch 1 must land these entries:
   place, without closing an open obligation. Report in your build report which sentences
   you checked and which you changed.
 
-**F11. `framework/docs/build_style_and_vocab.md` (edit).** Seven changes, in one pass,
+**F11. `framework/docs/build_style_and_vocab.md` (edit).** Eight changes, in one pass,
 with `Last Updated` bumped exactly once. **This file carries the destination name in two
 separate bullets; both must change, or F1's mandated three-layer claim is false the day it
 is written and this file walks past the framework leak self-check below still holding a
@@ -1657,18 +1712,23 @@ destination fact:**
 
 - **Replace** the bullet beginning *"Batch 0 note on destination names:"* with:
   *"**Destination names are banned in `framework/` from Batch 1 onward.** Japan, Tokyo,
-  Kyoto, Osaka, and Shinkansen appear under `destinations/` only, with one bounded
-  exception: the `0.1.0` **Added** line in `framework/CHANGELOG.md`, which records which
-  destination pack shipped in that release. Version history names what was added; it is
-  not curriculum content. New changelog entries write 'the destination pack', so the
-  exception does not grow. A session that needs
+  Kyoto, Osaka, and Shinkansen appear under `destinations/` only, with two bounded
+  exceptions. The first is the `0.1.0` **Added** line in `framework/CHANGELOG.md`, which
+  records which destination pack shipped in that release. Version history names what was
+  added; it is not curriculum content. New changelog entries write 'the destination
+  pack', so that exception does not grow. The second is the five already-built
+  later-phase sessions -- 15, 21, 33, 44 and 53 -- which carry the first destination's
+  facts until Batch 2 converts or verifies them; Session 15 still names the place today.
+  That exception is on the leak-exemption list, and it goes when Batch 2 clears the list.
+  A session that needs
   place facts writes the exact phrase 'open this session's Destination Notes'; it never
   links into a destination folder, because the path string is itself a leak. Framework
   prose says 'your destination'. A fill-in that needs the name says '(from your
   Trip-Basics card)'. No session title, heading, or body may name the destination --
   including inside fenced blocks, link text, link paths, image alt text, and the 'For
   parents' strip. (Batch 0 authored the first sessions Japan-concrete on purpose; Batch 1
-  ran the concrete-to-insert upgrade, and that exemption is now closed.)"*
+  ran the concrete-to-insert upgrade for Phases 0-2, and that exemption is closed for
+  every session this batch reached.)"*
 - **Replace** the second Japan reference — the banned-words bullet *"**No
   exotic/othering framing** of Japan or its culture."* — with *"**No exotic/othering
   framing** of the destination or its culture."* It sits two bullets above the
@@ -1721,8 +1781,22 @@ destination fact:**
   season" and "typhoon season" -- those are weather categories, not place names. Change
   nothing else in the section: the volatile-fact list, the three quoted verify phrases and
   the currency sentence all stay.
+- **Re-base the two 14-session censuses in `## Sentence-level conventions`.** Batch 1
+  takes the corpus from 14 child sessions to 19, so both sentences that count to 14 stop
+  being true the day this batch ships. In the session-choreography bullet, replace
+  *"Both are identical in all 14 child sessions."* with *"Both are identical in every
+  child session."* -- a rule rather than a census, which is what that bullet has always
+  been stating. In the Optional Extension bullet, replace *"All 14 child sessions have
+  the section."* with *"Every child session has the section."*, then re-count its items
+  (b) and (c) against the tree you just built and write the new numbers in. **Count the
+  way that bullet tells you to count** -- list every `## Optional Extension` heading and
+  read the line under it, never grep for the wording you expect to find -- because its own
+  text records that the three earlier versions of the rule were each wrong for doing the
+  opposite. Item (d) does not move: the four sessions with no close are 05, 09, 33 and
+  53, this batch creates none of them, and universal conversion rule 1 preserves Session
+  05's. Report both new numbers in your build report.
 
-After these seven changes, the destination name survives in this file in **exactly one
+After these eight changes, the destination name survives in this file in **exactly one
 bullet** — the new destination-names rule, where it quotes the five-name leak-grep
 pattern. That is a builder-facing rule, not a destination fact, and it is the only place in
 this file the framework leak-grep self-check below expects to find one. Nowhere else.
@@ -2067,7 +2141,18 @@ build report.
 
 The counts do not change. Batch 1 adds no session to the First Taste thirteen, and the
 full-program Core totals in the archived design record are unaffected: Session 07 is a
-conditional-core addition that adds to the baseline and never subtracts. **Do not write
+**Recommended** addition and never enters the Core baseline at all. **It is not a
+conditional-core session, and that distinction is the archived record's own.** §14.1.1
+lists the conditional-core sessions and there are four entries -- 09, 18, 36/37 and 47 --
+each naming the condition that promotes it to Core; Session 07 is not among them. §14.2
+lists it under Recommended with no annotation, where 36, 37 and 47 each carry
+*"(conditional Core -- see Section 14.1.1)"*. And §14.1's phrase *"the conditional /
+Recommended-by-default sessions (07, 09, 18, 36, 37, 47)"* names two classes, not one:
+07 is the second. So no condition promotes Session 07, nothing about it adds to the Core
+baseline, and calling it a conditional-core addition would contradict C3's own
+instruction not to write a rule that promotes it to Core. Its Recommended status, its
+placement in Batch 1 and its absence from every Core count are settled by OQ-18 and are
+not reopened here. **Do not write
 a Core count into any built file in this batch.** `progress_tracker.md` is the canonical
 home for the one count that exists today -- `## First Taste sessions: ____ of 13` -- and
 the Core Finish Line index that will hold the Core totals is Batch 2 work. Do not create
@@ -2441,12 +2526,25 @@ error, corrected in the extract.)
 | Step 1 parenthetical | the four-season description | → **the pack's seasons reference, which already carries it.** The insert names the seasons and gives one short line each, per A4, so the child can label the season chart. Nothing is lost and no second fact page is written. |
 | Special-things list | cherry blossoms, fall colors, rainy season, summer heat, typhoon season, Golden Week / Obon / New Year | → **the pack's seasons reference, which already carries every one of them**, in its "Things to watch for" and "Busy travel windows" sections. The insert routes there and repeats none of them. Session keeps the generic instruction: "Add the special things your Destination Notes flag. These are patterns, but you must **check this year's exact dates** -- they move." |
 | Cherry-blossom note | the whole "A note about cherry blossoms" paragraph | → **the pack's seasons reference, whose "cherry-blossom timing trap" section already carries it**, and more fully than the session does. The session may keep a one-clause generic reminder that some timing cannot be pinned even by verifying, pointing to the Destination Notes. |
-| Stop Point | "you have marked at least one busy window" | unchanged — already generic |
+| Workspace | "Use your four-box season chart for the notes" | "Use your season chart for the notes" — the box count is no longer fixed at four |
+| Artifact Created | "Your Season comparison chart -- four seasons with weather, crowds and cost, calendar fit, and the special things to watch for." | "Your Season comparison chart -- every season your Destination Notes list, with weather, crowds and cost, calendar fit, and the special things to watch for." |
+| Stop Point, first clause | "You are done when all four seasons have a few notes" | "You are done when every season on your chart has a few notes" |
+| Stop Point, busy-window clause | "you have marked at least one busy window" | unchanged — already generic |
 
-Keep the four-box Start Here but make the labels come from the Destination Notes:
+Make the Start Here box count come from the Destination Notes:
 **"Draw one box for each season your Destination Notes list."** The spec is silent on
 destinations without four seasons and no decision covers it; this neutral form is the
-recommendation recorded in the spec extract, and it keeps the built chart working. Keep
+recommendation recorded in the spec extract, and it keeps the built chart working.
+**Neutralising Start Here alone is not enough, which is why the table above carries a row
+for each of the other three.** `four` is not a destination name, so the five-token leak
+grep never sees it, and universal conversion rule 1 would preserve every one of them: the
+Workspace line's "four-box season chart", the Artifact's "four seasons", and the Stop
+Point's "all four seasons". Left standing, a session whose Start Here draws three boxes
+still carries an artifact description and a stop point demanding four, and the child
+cannot finish -- a stop point that cannot be reached is the one thing a stop point may
+never be. Before you stop, run
+`grep -n four framework/sessions/phase_02_destination_big_picture/12_weather_seasons_and_events.md`
+and expect no output. Keep
 the three comparison dimensions in the body — they are generic: weather; crowds and
 cost; school and work calendar fit. Keep the Source Check with its reminder that dates and
 prices change and must be re-checked close to travel, and the Parent Notes'
@@ -2534,6 +2632,16 @@ tool."* Session 05's block below **rewrites that line and adds a second one abov
 Session 05 ends with two italic lines and not three. Rewrite the existing line; do not
 append a third beside it.
 
+**The two lines are ordered, and the second narrows the first.** For a family that opted
+into AI the route out of Session 05 is 09 and then 10, which is why the rewritten AI line
+keeps the built line's *"right after this one"* and adds *"before Session 10"*. Without
+them the child reads *"go straight to 10"* as the instruction and reaches the snapshot
+session having skipped the opt-in safety lesson. This is the same branch the navigation
+table writes on Session 08's Next, which sends a family that opted into AI to 09 and then
+10 and sends an AI-free family straight to 10, and writes again on Session 10's Previous;
+Session 09's own block states it from the other end. All three must agree; change one and
+change the others in the same pass.
+
 **Session 09 carries an italic line too, and it is not one of these five.** It sits
 **below that session's "For parents" strip, not under its navigation line** --
 *"Every family already learned 'what AI is and is not' in Session 05. This session is only
@@ -2562,7 +2670,7 @@ You are here: Phase 1 (Research Skills), First Taste step 4 of 13. Previous: [04
 
 *On the First Taste path, go straight to [10 Destination Snapshot](../phase_02_destination_big_picture/10_destination_snapshot.md). Sessions 06, 07, and 08 are not among the 13.*
 
-*If your family chose to use AI, do [09 AI as Helper, Not Boss](09_ai_as_helper_not_boss.md) before you use any AI tool.*
+*If your family chose to use AI, do [09 AI as Helper, Not Boss](09_ai_as_helper_not_boss.md) right after this one, before Session 10 and before you use any AI tool.*
 ```
 
 ```markdown
@@ -3079,17 +3187,45 @@ is not a superset of the other three.** `.pre-commit-config.yaml` wires exactly 
 Markdown hooks — `markdownlint-cli2` and `check-prohibited-placeholders`. It contains no
 remark hook, no link check and no nested-Markdown hook; those live only in the npm
 scripts and the `markdownlint.yml` workflow. Run `pre-commit` alone and it will report
-success on a tree full of dangling links:
+success on a tree full of dangling links.
+
+**Track the 37 new files before you run `pre-commit`.** `--all-files` does not mean every
+Markdown file on disk. `pre-commit` builds that list from `git ls-files`, which reports
+tracked files only, so a gate run made before the new files are tracked reports every
+hook passed having opened none of them -- a self-check that passes by examining nothing.
+This repository states the same distinction in its own words in
+`TEMPLATE_UPDATE_PROCEDURE.md`: the first-adoption helper there uses
+`git ls-files --cached --others --exclude-standard` precisely because `--all-files`
+leaves newly created files out, and that passage closes by telling the reader to run
+`pre-commit run --all-files` **after** the new files are tracked. So track them first:
+
+```bash
+git add -A
+```
+
+**The 28 edited files are not at risk. The 37 created files are, all of them.** The edits
+are already tracked, and `--all-files` turns off pre-commit's usual unstaged-changes
+stash, so their new content is read from the working tree either way. The creates are
+invisible until they are staged -- to `markdownlint-cli2` and
+`check-prohibited-placeholders` both, and equally to `trailing-whitespace` and
+`end-of-file-fixer`, which are not Markdown-scoped but do reach every `.md` file. A new
+file carrying a prohibited placeholder token, a trailing space or no final newline would
+pass here and fail in CI on the first push. Then run all four:
 
 ```bash
 npm run lint:md          # markdownlint across the repo
 npm run lint:md:nested   # Markdown nested inside fenced markdown blocks
 npm run lint:md:links    # remark-validate-links -- THIS is the link check
-pre-commit run --all-files   # markdownlint + check-prohibited-placeholders only
+pre-commit run --all-files   # markdownlint, placeholders, and the whitespace fixers
 ```
 
-All four must be clean before you stop, and the link check is the one that proves the
-rewired Previous/Next chains and the 37 new files actually resolve.
+The three npm commands read their own filesystem globs and find an untracked file whether
+or not it is staged, so three green npm runs are no evidence that `pre-commit` covered
+anything. All four must be clean before you stop, and the link check is the one that
+proves the rewired Previous/Next chains and the 37 new files actually resolve. **If
+`trailing-whitespace` or `end-of-file-fixer` rewrites a file, stage the rewrite and run
+the gate again** -- the auto-fix belongs in the same commit as the change that caused it,
+and this repository forbids a separate formatting-only commit.
 
 ### Stop and handoff
 
@@ -3170,7 +3306,11 @@ items:
 6. **Self-check results.** The grep outputs above, the readability run, and the result
    of each of the four repo-wide gates — `npm run lint:md`, `npm run lint:md:nested`,
    `npm run lint:md:links` and `pre-commit run --all-files`. Report them separately; a
-   green `pre-commit` on its own says nothing about links.
+   green `pre-commit` on its own says nothing about links. **Say in the report that the
+   37 new files were tracked before `pre-commit` ran, and name the command that tracked
+   them.** `pre-commit run --all-files` reads `git ls-files`, so a run made before the
+   creates are tracked reports success having opened none of them; a gate result that
+   cannot say which files it covered is not a result.
 
 ### Next batch
 
