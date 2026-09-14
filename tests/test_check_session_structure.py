@@ -2054,23 +2054,66 @@ def test_a_real_comment_inside_a_raw_html_block_still_exempts(
 @pytest.mark.parametrize(
     ("label", "opener"),
     [
-        ("a blockquoted script", "> <script>\n"),
-        ("a blockquoted script over a blank line", "> <script>\n\n"),
         ("a blockquoted div", "> <div>\n"),
-        ("a listed script", "- <script>\n\n"),
+        ("a blockquoted div over a blank line", "> <div>\n\n"),
+        ("a listed div", "- <div>\n\n"),
     ],
 )
 def test_an_unclosed_html_block_ends_with_its_container(label: str, opener: str) -> None:
     """A leaf block ends with the block that holds it, as an unclosed fence does.
 
-    The HTML-block state had no containment path, so an unclosed ``<script>``
-    inside a blockquote stayed open to its tag-specific terminator and blanked
-    every heading the document outdented to -- all six mandatory sections
-    reported missing on a session that is fine. Measured against markdown-it
-    14.3.0: the block closes with its container and ``## Goal`` is a heading.
+    The HTML-block state had no containment path, so an unclosed ``<div>``
+    inside a blockquote stayed open to its own terminator and blanked every
+    heading the document outdented to -- all six mandatory sections reported
+    missing on a session that is fine. Measured with markdown-it 14.3.0 read by
+    ``html.parser``: the block closes with its container, the page paints
+    ``<h2>Goal</h2>``, and ``## Goal`` is a heading.
+
+    The three raw-text parameters this test used to carry are now the test
+    below, with the opposite verdict and the measurement that changed it.
     """
     text = build_session().replace("## Goal\n", f"{opener}## Goal\n", 1)
     assert check(text) == [], label
+
+
+@pytest.mark.parametrize(
+    ("label", "opener"),
+    [
+        ("a blockquoted script", "> <script>\n"),
+        ("a blockquoted script over a blank line", "> <script>\n\n"),
+        ("a listed script", "- <script>\n\n"),
+    ],
+)
+def test_a_run_outlives_the_container_its_block_died_with(label: str, opener: str) -> None:
+    """The block ends with its container; the element does not.
+
+    A raw-text run is not CommonMark's construct -- it is the page's. The
+    renderer writes the ``<script>`` into the output and an HTML parser reading
+    that output stays in raw text until a closing tag that never comes, so
+    everything below is script data: no comment is a comment and no heading is
+    painted. Measured with markdown-it 14.3.0 read by ``html.parser``: the
+    rendered page carries no ``<h2>`` at all, and this session really has no
+    visible Goal.
+
+    A previous round asserted the opposite here, from the Markdown layer alone
+    -- markdown-it does emit ``<h2>Goal</h2>`` into a document nothing will
+    ever read as markup. Both layers have to agree before a heading is a
+    heading, which is the same lesson the front-matter rule learned from
+    PyYAML.
+    """
+    text = build_session().replace("## Goal\n", f"{opener}## Goal\n", 1)
+    assert any('missing mandatory section "## Goal"' in m for m in check(text)), label
+
+
+def test_a_container_that_ends_a_div_block_still_frees_the_heading() -> None:
+    """The control in the other direction, and the reason the clearing exists.
+
+    ``<div>`` is not a raw-text element, so nothing survives the container: the
+    page paints the heading below it and a rule that blanked every line under
+    any unclosed block would fail a session that is fine.
+    """
+    text = build_session().replace("## Goal\n", "> <div>\n## Goal\n", 1)
+    assert check(text) == []
 
 
 def test_a_script_line_inside_a_comment_opens_no_block() -> None:
@@ -3292,7 +3335,7 @@ def test_raw_text_run_state_names_the_run_the_line_is_in() -> None:
 
 
 def test_a_comment_shaped_run_inside_a_script_blanks_no_heading() -> None:
-    """A ``<!--`` a ``<script>`` prints opens no comment.
+    """A ``<!--`` that a ``<script>`` prints opens no comment.
 
     Stripping comments before classifying the run read it as a real comment,
     which then ran to the end of the file and blanked every heading below it --
@@ -3472,3 +3515,205 @@ def test_a_declaration_that_never_closes_is_not_raw_html() -> None:
     line = 'Text <!DOC [text](u "t")'
     assert structure.raw_html_run_end(line, 5) == -1
     assert structure.link_metadata_regions(line, frozenset()) != ()
+
+
+def test_a_heading_a_run_holds_is_no_heading() -> None:
+    """A line a raw-text run holds is the element's content, block or no block.
+
+    The block and the run part company when the block ends first: a type 7
+    block meets its blank line while the ``<xmp>`` that opened it is still
+    unclosed. The content walk read only the block, so the ``## Goal`` below
+    was a heading here while the page painted nothing at all -- measured with
+    markdown-it 14.3.0 read by ``html.parser``, which reports no ``<h2>``.
+    """
+    text = build_session().replace("## Goal\n", "<xmp>\nsome text\n\n## Goal\n", 1)
+    assert any('missing mandatory section "## Goal"' in m for m in check(text))
+
+
+def test_a_heading_below_a_closed_run_is_still_a_heading() -> None:
+    """The over-application control: a run that closes frees its lines again."""
+    text = build_session().replace(
+        "## Goal\n", "<xmp>\nsome text\n</xmp>\n\n## Goal\n", 1
+    )
+    assert check(text) == []
+
+
+def test_an_unclosed_inline_comment_does_not_reach_the_next_block() -> None:
+    """An inline comment that never closes is no comment at all.
+
+    ``Text <!-- unfinished`` with no ``-->`` before the block ends is text:
+    markdown-it 14.3.0 escapes it into ``&lt;!-- unfinished``. Collecting it
+    anyway carried an open comment into the next block, where the marker
+    written in a code span became a real comment and exempted the session from
+    Source Check on a declaration the page never shows.
+    """
+    document = (
+        "# Session 01\n\nText <!-- unfinished\n\n"
+        + TICK
+        + "<!-- no-source-check: offline -->"
+        + TICK
+        + "\n"
+    )
+    scan = structure.scan_document(document)
+    assert "no-source-check" not in scan.marker_text
+    assert "unfinished" not in scan.marker_text
+
+
+def test_an_unclosed_inline_comment_bridges_to_no_later_closer() -> None:
+    """The same rule, in the shape that costs an exemption.
+
+    The characters of an opener that never closes are on the page, so putting
+    them in the marker text let a reason-less ``no-source-check:`` reach across
+    a blank line to the ``-->`` of an unrelated comment below it. Measured with
+    markdown-it 14.3.0: the first line renders as
+    ``<p>Text &lt;!-- no-source-check: offline</p>``.
+    """
+    document = "Text <!-- no-source-check: offline\n\n<!-- audience: adult -->\n"
+    scan = structure.scan_document(document)
+    assert structure.NO_SOURCE_CHECK_PATTERN.search(scan.marker_text) is None
+
+
+def test_a_comment_across_a_soft_line_break_is_still_one_comment() -> None:
+    """The control in the other direction: inside one paragraph a comment does
+    cross a line ending, and the marker in it is a real marker."""
+    document = "# Session 01\n\nText <!-- no-source-check:\noffline --> tail words.\n"
+    scan = structure.scan_document(document)
+    assert "no-source-check" in scan.marker_text
+
+
+def test_a_block_comment_still_reaches_the_run_below_it() -> None:
+    """The control for the other scope: a comment a raw HTML block opened is
+    genuinely open, so it does reach the text run under it.
+
+    A blank line ends the blockquote and with it the block, but not the
+    comment: an HTML parser reading the page stays inside it until the
+    ``-->``, so the marker written across the boundary is one marker.
+    """
+    document = "> <!-- no-source-check: offline\n\nstill open -->\n"
+    scan = structure.scan_document(document)
+    assert structure.NO_SOURCE_CHECK_PATTERN.search(scan.marker_text) is not None
+
+
+def test_a_closing_line_is_still_the_runs_last_line() -> None:
+    """The control for the blanking rule: the run holds the line that closes it.
+
+    A previous round settled that a line carrying the closing delimiter is
+    still the run's last line. Reading the state the line *leaves* rather than
+    the state it is *in* would free that line again, and the ``## Goal`` on it
+    would be a heading the page never paints.
+    """
+    document = "# Session 01\n\n> <script>\n\n## Goal</script>\n\nWords.\n"
+    scan = structure.scan_document(document)
+    titles = [heading.title for heading in structure.find_headings(scan)]
+    assert not any("Goal" in title for title in titles), titles
+
+
+def test_a_marker_whose_comment_spans_lines_is_still_a_marker() -> None:
+    """A comment may hold a line ending and still be one comment.
+
+    Found by this round's sweep rather than by a reviewer. The marker patterns
+    used ``.*?``, which stops at a line ending, so a marker written over two
+    lines of one comment exempted nothing. Measured with markdown-it 14.3.0
+    read by ``html.parser``: the page holds one comment, and its text is
+    ``no-source-check: offline\nstill open``.
+    """
+    document = "<div>\n<!-- no-source-check: offline\nstill open -->\n</div>\n"
+    scan = structure.scan_document(document)
+    assert structure.NO_SOURCE_CHECK_PATTERN.search(scan.marker_text) is not None
+
+
+def test_a_marker_split_across_two_comments_is_no_marker() -> None:
+    """The control: the reluctant quantifier still stops at the first ``-->``,
+    so a match cannot run from one comment into the next."""
+    document = "<div>\n<!-- no-source-check: -->\n<!-- offline -->\n</div>\n"
+    scan = structure.scan_document(document)
+    assert structure.NO_SOURCE_CHECK_PATTERN.search(scan.marker_text) is None
+
+
+def test_a_tag_that_spans_lines_inside_a_block_is_still_a_tag() -> None:
+    """Inside a raw HTML block a tag may hold a line ending.
+
+    ``<span`` on one line and ``title="<!-- ... -->">`` on the next is one tag
+    and the marker is attribute data -- measured with markdown-it 14.3.0 read
+    by ``html.parser``, which reports no comment at all. Reading the
+    continuation line on its own read the delimiters as a comment, and the
+    session was exempted on what the renderer puts in a ``title`` attribute.
+    """
+    document = (
+        '<div>\n<span\ntitle="<!-- no-source-check: offline -->">\n</div>\n'
+    )
+    scan = structure.scan_document(document)
+    assert "no-source-check" not in scan.marker_text
+
+
+def test_a_comment_that_spans_lines_inside_a_block_is_still_a_comment() -> None:
+    """The control in the other direction: the comment state still crosses lines
+    inside a raw HTML block, and a real marker written over two lines exempts."""
+    document = "<div>\n<!-- no-source-check:\noffline -->\n</div>\n"
+    scan = structure.scan_document(document)
+    assert structure.NO_SOURCE_CHECK_PATTERN.search(scan.marker_text) is not None
+
+
+def test_an_angle_run_that_is_no_tag_stays_text_across_lines() -> None:
+    """The control for the tag continuation: a ``<`` that begins no tag opens no
+    run, so its backtick still pairs and the marker inside stays masked."""
+    line = "Text <no spaces allowed" + TICK
+    assert structure.html_tag_prefix(line, 5) is None
+
+
+def test_an_empty_list_item_does_not_interrupt_a_paragraph() -> None:
+    """CommonMark forbids an empty list item from interrupting a paragraph.
+
+    ``Words`` then ``*`` then ``<x>`` is one paragraph of three lines --
+    measured with markdown-it 14.3.0 -- so the tag is paragraph text, opens no
+    type 7 block, and the ``## Goal`` below it is a visible heading. The
+    machine closed the paragraph at the empty marker and hid the heading.
+    """
+    for marker in ("*", "+"):
+        text = build_session().replace(
+            "## Goal\n", f"Words\n{marker} \n<x>\n## Goal\n", 1
+        )
+        assert check(text) == [], marker
+
+
+def test_an_item_with_content_still_interrupts_a_paragraph() -> None:
+    """The over-application control, read off the rule itself.
+
+    An item with content interrupts and an empty one does not, in both list
+    kinds; the dash is the exception the test below measures end to end. It is
+    asserted on the helper rather than on a document because an ATX heading
+    ends a list whatever the item held, so both documents paint the heading and
+    no document can tell the two answers apart.
+    """
+    star = structure.Container(kind=structure.CONTAINER_KIND_LIST, bullet="*")
+    dash = structure.Container(kind=structure.CONTAINER_KIND_LIST, bullet="-")
+    first = structure.Container(kind=structure.CONTAINER_KIND_LIST, ordered_start=1)
+    second = structure.Container(kind=structure.CONTAINER_KIND_LIST, ordered_start=2)
+    quote = structure.Container(kind=structure.CONTAINER_KIND_BLOCK_QUOTE)
+    assert not structure.container_interrupts_paragraph(star, "")
+    assert structure.container_interrupts_paragraph(star, "item")
+    assert structure.container_interrupts_paragraph(dash, "")
+    assert not structure.container_interrupts_paragraph(first, "")
+    assert structure.container_interrupts_paragraph(first, "item")
+    assert not structure.container_interrupts_paragraph(second, "item")
+    assert structure.container_interrupts_paragraph(quote, "")
+
+
+def test_an_empty_dash_item_is_a_setext_underline() -> None:
+    """The one bullet that is also a heading.
+
+    ``-`` with nothing after it underlines the paragraph above it, and
+    markdown-it 14.3.0 renders ``Words`` over ``-`` as an ``<h2>``. A heading
+    starts a block, so the tag below it does open a type 7 block and the Goal
+    below that is hidden -- the opposite answer from ``*`` and ``+`` on the
+    same shape.
+    """
+    text = build_session().replace("## Goal\n", "Words\n- \n<x>\n## Goal\n", 1)
+    assert any('missing mandatory section "## Goal"' in m for m in check(text))
+
+
+def test_an_empty_item_with_no_paragraph_above_it_still_opens_a_list() -> None:
+    """The control for the paragraph half: the rule is about interrupting, so an
+    empty item under a blank line opens its list as it always did."""
+    text = build_session().replace("## Goal\n", "* \n<x>\n## Goal\n", 1)
+    assert any('missing mandatory section "## Goal"' in m for m in check(text))

@@ -263,6 +263,7 @@ class Container:
     kind: str
     indent: int = 0
     ordered_start: int | None = field(default=None, compare=False)
+    bullet: str | None = field(default=None, compare=False)
 
 
 @dataclass(frozen=True)
@@ -535,6 +536,21 @@ def list_content_indent(match: re.Match[str]) -> int:
     return marker_end_column + content_padding
 
 
+def bullet_marker(match: re.Match[str]) -> str | None:
+    """Return a bullet list item's marker character, or ``None`` if ordered.
+
+    It travels on the container for the reason ``ordered_list_start`` gives,
+    and it is read for one question: ``-`` with nothing after it is both an
+    empty list item and a level 2 Setext underline, and while a paragraph is
+    open CommonMark reads it as the heading. ``*`` and ``+`` underline
+    nothing, so only this one marker needs telling apart. Kept identical to the
+    helper in the sibling hooks.
+    <https://spec.commonmark.org/0.31.2/#setext-headings>
+    """
+    marker = match.group("marker")
+    return marker if marker[0] in "-*+" else None
+
+
 def ordered_list_start(match: re.Match[str]) -> int | None:
     """Return an ordered list item's start number, or ``None`` for a bullet.
 
@@ -581,6 +597,7 @@ def normalize_for_fence_opening(line: str, list_contexts: list[ListContext]) -> 
                 kind=CONTAINER_KIND_LIST,
                 indent=content_indent_rel,
                 ordered_start=ordered_list_start(list_match),
+                bullet=bullet_marker(list_match),
             )
         )
         relative_line = (
@@ -733,19 +750,39 @@ def html_block_state(
     return open_block, line_block
 
 
-def container_interrupts_paragraph(container: Container) -> bool:
+def container_interrupts_paragraph(container: Container, content: str) -> bool:
     """Return whether a container opening on a line may interrupt a paragraph.
 
-    A blockquote always may, and so does a bullet list. An ordered list may
-    only when it starts at 1: CommonMark draws that line so that a sentence
-    hard-wrapped before ``14.`` keeps the number in the sentence instead of
-    turning the rest of the document into a list. A list that may not
-    interrupt opens nothing at all, and its marker is the paragraph's own
-    text. Kept identical to the helper in the sibling hooks.
+    A blockquote always may. A list needs two things, and CommonMark states
+    them as one rule with two clauses.
+
+    **The item may not be empty.** "In order for a list to interrupt a
+    paragraph, the list must not begin with a blank first block." A marker with
+    nothing after it is the paragraph's own characters, so ``Words`` then
+    ``*`` on the line below is one paragraph of two lines -- and the line after
+    *that* is still inside it, which is what keeps a ``<x>`` there from opening
+    a type 7 block and hiding the heading under it. ``content`` is the line
+    past every container prefix, so a blank one is an empty item.
+
+    **An ordered list must start at 1**, so that a sentence hard-wrapped before
+    ``14.`` keeps the number in the sentence instead of turning the rest of the
+    document into a list.
+
+    A list that may not interrupt opens nothing at all, and its marker is the
+    paragraph's own text. Kept identical to the helper in the sibling hooks.
     <https://spec.commonmark.org/0.31.2/#list-items>
     """
     if container.kind != CONTAINER_KIND_LIST:
         return True
+    if not content.strip(ASCII_HORIZONTAL_WHITESPACE):
+        # One marker is an exception and it is an exception for a reason that
+        # is not about lists at all: ``-`` with nothing after it is also a
+        # level 2 Setext underline, and while a paragraph is open CommonMark
+        # reads it as the heading. The heading does start a block, so the
+        # answer here is the same one the underline would have given.
+        # Measured with markdown-it 14.3.0: ``Words`` over ``-`` is an
+        # ``<h2>``, while ``Words`` over ``*`` is one paragraph of two lines.
+        return container.bullet == "-"
     return container.ordered_start is None or container.ordered_start == 1
 
 
@@ -899,7 +936,7 @@ def starts_a_block(
         for offset, container in enumerate(opened):
             if container.kind != CONTAINER_KIND_LIST:
                 continue
-            if container_interrupts_paragraph(container):
+            if container_interrupts_paragraph(container, content):
                 break
             depth = len(containment_path) - len(opened) + offset
             if (
@@ -1147,8 +1184,19 @@ def find_violations_in_text(text: str, display_path: str) -> list[Violation]:
         # starts a block and closes the paragraph it underlines, and answering
         # that from a cleared state would leave a paragraph open under a
         # heading.
+        # A line that starts no block leaves the paragraph above it open,
+        # whatever its content peels to. The case that needs saying is the
+        # empty list item: it may not interrupt a paragraph, so its marker is
+        # the paragraph's own text -- but the container walk peels the marker
+        # off and hands an empty content down, which reads exactly like a
+        # blank line. Measured with markdown-it 14.3.0: ``Words`` then ``*``
+        # then ``<x>`` is one paragraph of three lines, and the ``## Goal``
+        # below is a heading.
         paragraph_open = (
-            False if in_html_block else opens_a_paragraph(block_content, paragraph_open)
+            False
+            if in_html_block
+            else (paragraph_open and not block_starts)
+            or opens_a_paragraph(block_content, paragraph_open)
         )
 
         if ALLOW_TBD_PATTERN.search(raw_line):

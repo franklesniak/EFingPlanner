@@ -151,8 +151,20 @@ ALWAYS_EXCLUDED_PREFIXES = (
 #: An audience marker may carry a trailing reason, so an author reading the file
 #: can see *why* it is exempt:
 #:     <!-- audience: adult -- this session is adult-only setup -->
+#: ``re.DOTALL`` because a comment may hold a line ending and still be one
+#: comment: the marker scans hand over the comment text the renderer produces,
+#: line breaks included, and ``.*?`` stops at the first one without it. The
+#: reluctant quantifier still stops at the first ``-->``, so a match that
+#: *starts* inside a comment cannot leave it.
+#:
+#: Starting is the half that needed guarding, and the control that found it is
+#: in the suite: the reason's first character is ``\S``, which the ``-`` of an
+#: immediately following ``-->`` satisfies -- so ``<!-- no-source-check: -->``,
+#: a marker with no reason at all, would have reached across to the next
+#: comment's closer for one. The lookahead refuses that character, and an empty
+#: reason is no marker again.
 AUDIENCE_ADULT_PATTERN = re.compile(
-    r"<!--\s*audience:\s*(?:adult|parent|builder)\b.*?-->", re.IGNORECASE
+    r"<!--\s*audience:\s*(?:adult|parent|builder)\b.*?-->", re.IGNORECASE | re.DOTALL
 )
 
 # --------------------------------------------------------------------------
@@ -789,6 +801,7 @@ class Container:
     kind: str
     indent: int = 0
     ordered_start: int | None = field(default=None, compare=False)
+    bullet: str | None = field(default=None, compare=False)
 
 
 @dataclass(frozen=True)
@@ -987,6 +1000,21 @@ def list_content_indent(match: re.Match[str]) -> int:
     return marker_end_column + content_padding
 
 
+def bullet_marker(match: re.Match[str]) -> str | None:
+    """Return a bullet list item's marker character, or ``None`` if ordered.
+
+    It travels on the container for the reason ``ordered_list_start`` gives,
+    and it is read for one question: ``-`` with nothing after it is both an
+    empty list item and a level 2 Setext underline, and while a paragraph is
+    open CommonMark reads it as the heading. ``*`` and ``+`` underline
+    nothing, so only this one marker needs telling apart. Kept identical to the
+    helper in the sibling hooks.
+    <https://spec.commonmark.org/0.31.2/#setext-headings>
+    """
+    marker = match.group("marker")
+    return marker if marker[0] in "-*+" else None
+
+
 def ordered_list_start(match: re.Match[str]) -> int | None:
     """Return an ordered list item's start number, or ``None`` for a bullet.
 
@@ -1033,6 +1061,7 @@ def normalize_for_fence_opening(line: str, list_contexts: list[ListContext]) -> 
                 kind=CONTAINER_KIND_LIST,
                 indent=content_indent_rel,
                 ordered_start=ordered_list_start(list_match),
+                bullet=bullet_marker(list_match),
             )
         )
         relative_line = (
@@ -1305,19 +1334,39 @@ def html_block_state(
     return open_block, line_block
 
 
-def container_interrupts_paragraph(container: Container) -> bool:
+def container_interrupts_paragraph(container: Container, content: str) -> bool:
     """Return whether a container opening on a line may interrupt a paragraph.
 
-    A blockquote always may, and so does a bullet list. An ordered list may
-    only when it starts at 1: CommonMark draws that line so that a sentence
-    hard-wrapped before ``14.`` keeps the number in the sentence instead of
-    turning the rest of the document into a list. A list that may not
-    interrupt opens nothing at all, and its marker is the paragraph's own
-    text. Kept identical to the helper in the sibling hooks.
+    A blockquote always may. A list needs two things, and CommonMark states
+    them as one rule with two clauses.
+
+    **The item may not be empty.** "In order for a list to interrupt a
+    paragraph, the list must not begin with a blank first block." A marker with
+    nothing after it is the paragraph's own characters, so ``Words`` then
+    ``*`` on the line below is one paragraph of two lines -- and the line after
+    *that* is still inside it, which is what keeps a ``<x>`` there from opening
+    a type 7 block and hiding the heading under it. ``content`` is the line
+    past every container prefix, so a blank one is an empty item.
+
+    **An ordered list must start at 1**, so that a sentence hard-wrapped before
+    ``14.`` keeps the number in the sentence instead of turning the rest of the
+    document into a list.
+
+    A list that may not interrupt opens nothing at all, and its marker is the
+    paragraph's own text. Kept identical to the helper in the sibling hooks.
     https://spec.commonmark.org/0.31.2/#list-items
     """
     if container.kind != CONTAINER_KIND_LIST:
         return True
+    if not content.strip(ASCII_HORIZONTAL_WHITESPACE):
+        # One marker is an exception and it is an exception for a reason that
+        # is not about lists at all: ``-`` with nothing after it is also a
+        # level 2 Setext underline, and while a paragraph is open CommonMark
+        # reads it as the heading. The heading does start a block, so the
+        # answer here is the same one the underline would have given.
+        # Measured with markdown-it 14.3.0: ``Words`` over ``-`` is an
+        # ``<h2>``, while ``Words`` over ``*`` is one paragraph of two lines.
+        return container.bullet == "-"
     return container.ordered_start is None or container.ordered_start == 1
 
 
@@ -1436,7 +1485,7 @@ def starts_a_block(
         for offset, container in enumerate(opened):
             if container.kind != CONTAINER_KIND_LIST:
                 continue
-            if container_interrupts_paragraph(container):
+            if container_interrupts_paragraph(container, content):
                 break
             depth = len(containment_path) - len(opened) + offset
             if (
@@ -1803,6 +1852,32 @@ def following_comment_end(
 
 
 
+def following_tag_end(
+    lines: Sequence[ParagraphLine], row: int, index: int
+) -> tuple[int, int]:
+    """Return where the tag opened at ``index`` closes, or ``(-1, -1)``.
+
+    CommonMark lets an open tag hold a line ending, in the whitespace between
+    attributes and inside a quoted attribute value, so a tag crosses a soft
+    line break the way a comment does and ends where the paragraph does. One
+    that never closes is no tag at all, and the caller is then right to read
+    its characters as text. Kept in step with the helper in
+    ``.github/scripts/check-session-structure.py``.
+    https://spec.commonmark.org/0.31.2/#raw-html
+    """
+    prefix = html_tag_prefix(lines[row].text, index)
+    if prefix is None:
+        return -1, -1
+    for next_row in range(row + 1, len(lines)):
+        start = lines[next_row].content_start
+        position, prefix, matched = html_tag_continue(prefix, lines[next_row].text[start:])
+        if not matched:
+            return -1, -1
+        if prefix is None:
+            return next_row, start + position
+    return -1, -1
+
+
 def following_raw_html_end(
     lines: Sequence[ParagraphLine], row: int, index: int
 ) -> tuple[int, int]:
@@ -1956,7 +2031,88 @@ def raw_text_run_is_displayed(run: str | None) -> bool:
     return run in DISPLAYED_RAW_TEXT_ELEMENT_NAMES
 
 
-def raw_html_comment_spans(line: str, is_in_comment: bool) -> tuple[str, bool]:
+#: One attribute of an HTML tag, with a line ending allowed wherever CommonMark
+#: allows whitespace. This is the same grammar ``INLINE_HTML_TAG_PATTERN``
+#: carries, written once so the multiline forms below cannot drift from it.
+#: https://spec.commonmark.org/0.31.2/#raw-html
+_TAG_ATTRIBUTE = r"""
+    [ \t\n]+ [_:A-Za-z][A-Za-z0-9_.:-]*             # an attribute name
+    (?: [ \t\n]*=[ \t\n]*                          # an attribute value
+        (?: [^ \t\r\n"'=<>`]+ | '[^']*' | "[^"]*" ) )?
+"""
+#: A whole tag that may hold line endings. CommonMark lets an open tag carry a
+#: line ending in the whitespace between attributes and inside a quoted
+#: attribute value, so a tag is not a line-local construct: a scan that stops
+#: at the end of a line reads the rest of the tag as text, and a backtick in an
+#: attribute then opens a code span the renderer never opens.
+#: https://spec.commonmark.org/0.31.2/#raw-html
+MULTILINE_HTML_TAG_PATTERN = re.compile(
+    rf"""
+    <
+    (?: [A-Za-z][A-Za-z0-9-]*                      # an open tag
+        (?: {_TAG_ATTRIBUTE} )*
+        [ \t\n]* /? >
+      | / [A-Za-z][A-Za-z0-9-]* [ \t\n]* >         # a closing tag
+    )
+    """,
+    re.VERBOSE,
+)
+#: A *prefix* of such a tag: everything a tag may be so far, with the ``>`` yet
+#: to come. A line that ends inside a tag ends on one of these, and a line that
+#: ends on anything else was never inside a tag -- which is what keeps
+#: ``<no spaces allowed`>`` and ``<a:`>`` ordinary text with their backticks
+#: intact, as markdown-it 14.3.0 reads them.
+HTML_TAG_PREFIX_PATTERN = re.compile(
+    rf"""
+    <
+    /? [A-Za-z][A-Za-z0-9-]*
+    (?: {_TAG_ATTRIBUTE} )*
+    (?: [ \t\n]+ [_:A-Za-z][A-Za-z0-9_.:-]*         # a half-written attribute
+        (?: [ \t\n]*=?[ \t\n]*
+            (?: [^ \t\r\n"'=<>`]* | '[^']* | "[^"]* )? )? )?
+    [ \t\n]* /?
+    $
+    """,
+    re.VERBOSE,
+)
+
+
+def html_tag_prefix(text: str, index: int) -> str | None:
+    """Return the tag prefix beginning at ``index``, if the text ends inside one.
+
+    ``None`` when the characters from ``index`` are not the beginning of a tag,
+    in which case the caller is right to read them as text. Kept identical to
+    the helper in the sibling hooks.
+    https://spec.commonmark.org/0.31.2/#raw-html
+    """
+    if HTML_TAG_PREFIX_PATTERN.match(text, index) is None:
+        return None
+    return text[index:]
+
+
+def html_tag_continue(prefix: str, line: str) -> tuple[int, str | None, bool]:
+    """Carry an unfinished tag onto ``line``.
+
+    Returns ``(position, prefix, matched)``. ``matched`` is ``False`` when the
+    line makes the whole thing no tag at all, and the caller then reads the
+    characters as text. Otherwise ``prefix`` is ``None`` and ``position`` is
+    the offset in ``line`` just past the tag's ``>``, or ``prefix`` is the
+    longer prefix and the tag is still open below this line. Kept identical to
+    the helper in the sibling hooks.
+    https://spec.commonmark.org/0.31.2/#raw-html
+    """
+    joined = f"{prefix}\n{line}"
+    match = MULTILINE_HTML_TAG_PATTERN.match(joined)
+    if match is not None:
+        return match.end() - len(prefix) - 1, None, True
+    if HTML_TAG_PREFIX_PATTERN.match(joined) is not None:
+        return len(line), joined, True
+    return 0, None, False
+
+
+def raw_html_comment_spans(
+    line: str, is_in_comment: bool, open_tag: str | None = None
+) -> tuple[str, bool, str | None]:
     """Return the HTML comment text on one line of a raw HTML block.
 
     Two contexts bind inside a raw HTML block and only two: an open comment,
@@ -1970,16 +2126,35 @@ def raw_html_comment_spans(line: str, is_in_comment: bool) -> tuple[str, bool]:
     the ``title`` attribute. Kept identical to the helper in
     ``.github/scripts/check-session-structure.py``.
     https://spec.commonmark.org/0.31.2/#html-blocks
+
+    A tag may hold a line ending, so the tag state crosses lines the way the
+    comment state does: ``open_tag`` is ``None`` outside a tag and otherwise
+    holds the characters of the tag so far, which is what lets the next line
+    be matched against the whole tag rather than guessed at. Without it a
+    ``<span`` on one line and a ``title=`` holding a marker on the next read
+    as a real comment, and a document left its gate on attribute data.
     """
     spans: list[str] = []
     index = 0
+
+    if open_tag is not None:
+        # A tag left open on the line above continues here, and everything
+        # until its ``>`` is the tag's own characters. A ``<!--`` written in
+        # a quoted attribute value is attribute data, exactly as it is when
+        # the whole tag fits on one line. A line that makes the whole thing
+        # no tag at all drops the state and is read from its start.
+        index, open_tag, matched = html_tag_continue(open_tag, line)
+        if not matched:
+            index = 0
+        elif open_tag is not None:
+            return "", False, open_tag
 
     while index < len(line):
         if is_in_comment:
             comment_end = line.find("-->", index)
             if comment_end == -1:
                 spans.append(line[index:])
-                return "".join(spans), True
+                return "".join(spans), True, None
             spans.append(line[index : comment_end + len("-->")])
             index = comment_end + len("-->")
             is_in_comment = False
@@ -1996,10 +2171,13 @@ def raw_html_comment_spans(line: str, is_in_comment: bool) -> tuple[str, bool]:
             if tag is not None:
                 index = tag.end()
                 continue
+            open_tag = html_tag_prefix(line, index)
+            if open_tag is not None:
+                return "".join(spans), False, open_tag
 
         index += 1
 
-    return "".join(spans), is_in_comment
+    return "".join(spans), is_in_comment, None
 
 
 def scan_paragraph_inlines(
@@ -2167,6 +2345,16 @@ def scan_paragraph_inlines(
                 if tag is not None:
                     index = tag.end()
                     continue
+                # A tag that does not close on this line is not finished: it
+                # closes on a later line of the same paragraph, the way a
+                # comment and the other raw HTML runs already do here.
+                # Reading only this line left a backtick inside a multiline
+                # attribute standing as text, and it then paired with a
+                # backtick below and masked a real comment.
+                tag_row, tag_index = following_tag_end(lines, row, index)
+                if tag_row != -1:
+                    row, index = tag_row, tag_index
+                    continue
 
         index += 1
 
@@ -2290,6 +2478,7 @@ def scan_document_inlines(text: str) -> DocumentInlines:
     raw_text: str | None = None
     html_block: ActiveHtmlBlock | None = None
     is_in_comment = False
+    open_tag: str | None = None
     offset = 0
 
     def close_paragraph() -> None:
@@ -2330,6 +2519,7 @@ def scan_document_inlines(text: str) -> DocumentInlines:
             # block ended with it, exactly as an unclosed fence does.
             html_block = None
             is_in_comment = False
+            open_tag = None
 
         # Asked before the block machine rather than after it, because
         # condition 7 is the one start that may not interrupt a paragraph and
@@ -2387,19 +2577,30 @@ def scan_document_inlines(text: str) -> DocumentInlines:
             # walk instead read a real comment as an image title, a code span
             # or a link destination, and an adult-facing document was scored by
             # the child gate.
-            comment_lines[number], is_in_comment = raw_html_comment_spans(
-                fence_line.content, is_in_comment
+            comment_lines[number], is_in_comment, open_tag = raw_html_comment_spans(
+                fence_line.content, is_in_comment, open_tag
             )
             close_paragraph()
             paragraph_open = False
             continue
         is_in_comment = False
+        open_tag = None
 
         contents[number] = fence_line.content
         if block_starts:
             close_paragraph()
         previous_path = fence_line.containment_path
-        paragraph_open = opens_a_paragraph(fence_line.content, paragraph_open)
+        # A line that starts no block leaves the paragraph above it open,
+        # whatever its content peels to. The case that needs saying is the
+        # empty list item: it may not interrupt a paragraph, so its marker is
+        # the paragraph's own text -- but the container walk peels the marker
+        # off and hands an empty content down, which reads exactly like a
+        # blank line. Measured with markdown-it 14.3.0: ``Words`` then ``*``
+        # then ``<x>`` is one paragraph of three lines, and the ``## Goal``
+        # below is a heading.
+        paragraph_open = (paragraph_open and not block_starts) or opens_a_paragraph(
+            fence_line.content, paragraph_open
+        )
         paragraph.append(
             ParagraphLine(
                 start=line_start,
@@ -2512,19 +2713,32 @@ def raw_text_run_mask(text: str) -> bytearray:
     the gate reported success on a page it never read.
 
     The run state is the one the document walks use, so the two cannot disagree
-    about which lines a run holds. Two things this pass does not have, both
+    about which lines a run holds, and the line is peeled to its container
+    content before the question is asked -- the same normalization the document
+    walks use, for the same reason. One thing this pass still does not have is
     recorded rather than hoped over: it carries no HTML block machine, so it
-    tells the run state that any line may open one -- the residual is an
-    opener on a line CommonMark keeps inside the paragraph above it -- and it
-    reads raw lines, so a run opened inside a block quote or a list item is not
-    masked. Both leave a real comment removed, which is the direction this pass
-    ran in before it asked the question at all.
+    tells the run state that any line may open one, and the residual is an
+    opener on a line CommonMark keeps inside the paragraph above it. That
+    leaves a real comment removed, which is the direction this pass ran in
+    before it asked the question at all.
     """
     mask = bytearray(len(text))
+    list_contexts: list[ListContext] = []
     open_run: str | None = None
     offset = 0
     for line in text.split("\n"):
-        open_run, line_run = raw_text_run_state(line, open_run, True)
+        # The run state is asked about the line's *content*, past its
+        # blockquote and list-item prefixes, because CommonMark classifies a
+        # line from what is left once the prefixes are gone. Asking about the
+        # raw line meant ``> <textarea>`` opened no run at all, so the comment
+        # remover below deleted forty words the page prints -- and a document
+        # that loses that many can fall under the word floor and leave the
+        # gate in silence. The mask still covers the whole raw line: a
+        # container prefix holds no delimiter, and the offsets have to stay
+        # the document's.
+        open_run, line_run = raw_text_run_state(
+            normalize_for_fence_opening(line, list_contexts).content, open_run, True
+        )
         if raw_text_run_holds_text(line_run):
             mask[offset : offset + len(line)] = b"\x01" * len(line)
         offset += len(line) + 1

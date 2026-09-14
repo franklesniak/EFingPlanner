@@ -1358,3 +1358,74 @@ def test_a_placeholder_in_a_real_comment_is_still_allowed() -> None:
     hook = cast(Any, _placeholder_hook)
     document = "<div><!-- TBD -->\nx\n</div>\n"
     assert hook.find_violations_in_text(document, "doc.md") == []
+
+
+def test_a_run_outlives_the_container_its_block_died_with() -> None:
+    """A raw-text run is the page's construct, so a container does not end it.
+
+    The reviewer's shape: an unclosed ``<script>`` inside a blockquote, the
+    container ending, and a comment-shaped run below it. Measured with
+    markdown-it 14.3.0 read by ``html.parser``: the page holds no comment at
+    all, because the renderer wrote the ``<script>`` into the output and the
+    parser stays in raw text to the end of the file. So the ``TBD`` below is
+    not inside a comment and the hook is right to report it. Clearing the run
+    at the container boundary would have hidden it.
+    """
+    hook = cast(Any, _placeholder_hook)
+    for opener in ("> <script>\n> var total = 1;\n", "> <textarea>\n> some text\n"):
+        document = opener + "\n<!-- TBD: a note -->\n\nTail words here.\n"
+        assert [v.matched_text for v in hook.find_violations_in_text(document, "doc.md")] == [
+            "TBD"
+        ], opener
+
+
+def test_a_closed_run_frees_the_comment_below_its_container() -> None:
+    """The control in the other direction: a run that closes inside the
+    blockquote leaves a real comment below it, and the token in it is
+    allowed."""
+    hook = cast(Any, _placeholder_hook)
+    document = (
+        "> <script>\n> var total = 1;\n> </script>\n\n<!-- TBD: a note -->\n\nTail.\n"
+    )
+    assert hook.find_violations_in_text(document, "doc.md") == []
+
+
+def test_a_closer_below_the_container_still_closes_the_run() -> None:
+    """The run ends where the page ends it.
+
+    markdown-it writes the ``</script>`` into the output below the
+    ``</blockquote>``, so the element really does close there and the comment
+    after it is a real comment. The run has to survive the container boundary
+    for this to work.
+    """
+    hook = cast(Any, _placeholder_hook)
+    document = "> <script>\n\n</script>\n\n<!-- TBD: a note -->\n\nTail.\n"
+    assert hook.find_violations_in_text(document, "doc.md") == []
+
+
+def test_an_empty_list_item_does_not_interrupt_a_paragraph() -> None:
+    """The placeholder copy of the empty-item rule, kept identical.
+
+    ``Words`` then ``*`` then ``<x>`` is one paragraph of three lines, so the
+    backticks under it open a real fenced block and the placeholder inside it
+    is an example. Closing the paragraph at the empty marker let the tag open a
+    type 7 block, and the fence below was read as raw HTML.
+    """
+    hook = cast(Any, _placeholder_hook)
+    fence = "`" * 3
+    document = f"Words\n* \n<x>\n\n{fence}\nTBD\n{fence}\n"
+    assert hook.find_violations_in_text(document, "doc.md") == []
+
+
+def test_an_item_with_content_still_interrupts_in_the_placeholder_hook() -> None:
+    """The over-application control for the copy above, read off the rule.
+
+    Kept identical to the assertions in the sibling suites."""
+    hook = cast(Any, _placeholder_hook)
+    star = hook.Container(kind=hook.CONTAINER_KIND_LIST, bullet="*")
+    dash = hook.Container(kind=hook.CONTAINER_KIND_LIST, bullet="-")
+    first = hook.Container(kind=hook.CONTAINER_KIND_LIST, ordered_start=1)
+    assert not hook.container_interrupts_paragraph(star, "")
+    assert hook.container_interrupts_paragraph(star, "item")
+    assert hook.container_interrupts_paragraph(dash, "")
+    assert not hook.container_interrupts_paragraph(first, "")

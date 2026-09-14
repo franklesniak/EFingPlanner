@@ -4245,3 +4245,172 @@ def test_a_declaration_that_never_closes_is_not_raw_html() -> None:
     line = 'Text <!DOC [text](u "t")'
     assert readability.raw_html_run_end(line, 5) == -1
     assert readability.link_metadata_regions(line, frozenset()) != ()
+
+
+def test_a_quoted_textarea_keeps_the_words_it_prints() -> None:
+    """The masking pass reads a line's container content, as every walk does.
+
+    ``> <textarea>`` opened no run at all, because the pass asked about the raw
+    line and a blockquote prefix is not part of a CommonMark block start. The
+    comment remover then deleted forty words the page prints, and a document
+    that loses that many can fall under the word floor and leave the gate in
+    silence. Measured with markdown-it 14.3.0 read by ``html.parser``: a
+    ``textarea`` paints every character of its content.
+    """
+    words = " ".join(f"word{n}" for n in range(1, 41))
+    for opener, prefix in (("> <textarea>", "> "), ("- <textarea>", "  ")):
+        document = f"{opener}\n{prefix}<!-- {words} -->\n{prefix}</textarea>\n"
+        prose = readability.extract_prose(document)
+        assert "word40" in prose, opener
+
+
+def test_a_quoted_div_still_loses_the_comment_it_holds() -> None:
+    """The over-application control: ``<div>`` is not a raw-text element, so a
+    comment inside a quoted one is a comment and its words are not prose."""
+    words = " ".join(f"word{n}" for n in range(1, 41))
+    document = f"> <div>\n> <!-- {words} -->\n> </div>\n"
+    assert "word40" not in readability.extract_prose(document)
+
+
+def test_a_tag_across_a_soft_line_break_masks_no_marker() -> None:
+    """An inline tag may hold a line ending, so a backtick in its attribute is
+    attribute data rather than a code-span opener.
+
+    Measured with markdown-it 14.3.0 read by ``html.parser``: the whole
+    ``<span ... >`` is one raw HTML tag, the backtick inside its ``title`` opens
+    nothing, and the comment beside it is a real comment declaring an adult
+    audience. Reading the tag one line at a time left that backtick standing as
+    text; it paired with the one below and masked the marker, and the document
+    went to the child gate.
+    """
+    document = (
+        "Text <span\ntitle=\"a " + TICK + " quote\"> "
+        "<!-- audience: adult --> " + TICK + "end" + TICK + "\n"
+    )
+    assert readability.has_adult_marker(document)
+
+
+def test_a_tag_on_one_line_still_masks_nothing() -> None:
+    """The control: the same tag written on one line was already right, and the
+    continuation must not change it."""
+    document = (
+        "Text <span title=\"a " + TICK + " quote\"> "
+        "<!-- audience: adult --> " + TICK + "end" + TICK + "\n"
+    )
+    assert readability.has_adult_marker(document)
+
+
+def test_an_angle_run_that_is_no_tag_keeps_its_backtick_across_lines() -> None:
+    """The control in the other direction, and the one that decides the design.
+
+    ``<no spaces allowed`` is not the beginning of a tag -- a backtick may not
+    appear in an unquoted attribute value -- so the characters are text, the
+    backtick pairs, and the marker between the two is inside a code span.
+    A continuation that walked characters to the next ``>`` swallowed it and
+    exempted a child-facing document.
+    """
+    assert readability.html_tag_prefix("Text <no spaces allowed" + TICK, 5) is None
+    assert readability.html_tag_prefix("Text <a:" + TICK, 5) is None
+    assert readability.html_tag_prefix("Text <span title=", 5) is not None
+    assert readability.html_tag_prefix('Text <span title="a ' + TICK, 5) is not None
+
+
+def test_a_tag_that_spans_lines_inside_a_block_declares_nothing() -> None:
+    """Inside a raw HTML block a tag may hold a line ending too.
+
+    ``<span`` on one line and ``title="<!-- audience: adult -->">`` on the next
+    is one tag and the marker is attribute data -- measured with markdown-it
+    14.3.0 read by ``html.parser``, which reports no comment. Reading the
+    continuation line alone read the delimiters as a comment and took a
+    child-facing document out of the gate.
+    """
+    document = '<div>\n<span\ntitle="<!-- audience: adult -->">\n</div>\n'
+    assert not readability.has_adult_marker(document)
+
+
+def test_a_comment_that_spans_lines_inside_a_block_still_declares() -> None:
+    """The control in the other direction: a real comment written over two lines
+    of a raw HTML block is one comment and one marker."""
+    document = "<div>\n<!-- audience: adult\nstill open -->\n</div>\n"
+    assert readability.has_adult_marker(document)
+
+
+def test_a_tag_inside_a_block_ends_and_the_comment_after_it_counts() -> None:
+    """The control for the tag state's own end: the tag closes on the line that
+    carries its ``>``, and a real comment written below it is a real comment.
+
+    A continuation that never ended would swallow the rest of the block and
+    every marker in it, which is the direction that scores an adult-facing
+    document with the child gate.
+    """
+    document = '<div>\n<span\ntitle="x">\n<!-- audience: adult -->\n</div>\n'
+    assert readability.has_adult_marker(document)
+
+
+def test_a_real_block_comment_still_loses_its_words() -> None:
+    """The control for the masking pass: it masks a run the page *prints*, and
+    a comment is the one run whose content is markup.
+
+    Masking a comment run as well would keep the comment in the document, and
+    the forty words no reader sees would be scored as prose.
+    """
+    words = " ".join(f"word{n}" for n in range(1, 41))
+    assert "word40" not in readability.extract_prose(f"<!-- {words} -->\n\nTail words.\n")
+
+
+def test_a_lowercase_inline_declaration_is_raw_html() -> None:
+    """The inline declaration production, pinned against the renderer.
+
+    Reported as accepting too much. Measured instead: markdown-it 14.3.0 passes
+    ``<!foo ... >`` through as raw HTML in inline context, so the backtick
+    inside it opens no code span and the marker beside it is a real comment.
+    The hook already answers what the renderer answers, and the two spellings
+    in this module are not a drift: HTML block condition 4 needs an uppercase
+    letter -- measured, ``<!foo`` opens no block where ``<!FOO`` does -- while
+    the inline production takes any ASCII letter.
+    """
+    lowercase = (
+        "Text <!foo " + TICK + "> <!-- audience: adult --> " + TICK + "end" + TICK + "\n"
+    )
+    uppercase = (
+        "Text <!FOO " + TICK + "> <!-- audience: adult --> " + TICK + "end" + TICK + "\n"
+    )
+    assert readability.has_adult_marker(lowercase)
+    assert readability.has_adult_marker(uppercase)
+
+
+def test_a_block_declaration_still_needs_an_uppercase_letter() -> None:
+    """The block half of the same question, in the other direction.
+
+    Measured with markdown-it 14.3.0: ``<!FOO`` on a line of its own opens a
+    raw HTML block that runs to the line holding ``>``, so a heading inside it
+    is not a heading; ``<!foo`` opens no block and the heading stands.
+    """
+    declaration = readability.HTML_BLOCK_CONDITIONS[3]
+    assert declaration.start.match("<!FOO") is not None
+    assert declaration.start.match("<!foo") is None
+    assert readability.RAW_HTML_RUN_PATTERNS[2][0].match("<!foo") is not None
+
+
+def test_an_empty_list_item_does_not_interrupt_a_paragraph() -> None:
+    """The readability copy of the empty-item rule, kept identical.
+
+    ``Words`` then ``*`` then ``<x>`` is one paragraph, so the words on all
+    three lines are prose. Closing the paragraph at the empty marker let the
+    tag open a type 7 block and dropped the line.
+    """
+    document = "Words here\n* \n<x>\n\nTail words.\n"
+    assert "here" in readability.extract_prose(document)
+
+
+def test_an_item_with_content_still_interrupts_in_readability() -> None:
+    """The over-application control for the copy above, read off the rule.
+
+    Kept identical to the assertions in the sibling suites."""
+    star = readability.Container(kind=readability.CONTAINER_KIND_LIST, bullet="*")
+    dash = readability.Container(kind=readability.CONTAINER_KIND_LIST, bullet="-")
+    first = readability.Container(kind=readability.CONTAINER_KIND_LIST, ordered_start=1)
+    assert not readability.container_interrupts_paragraph(star, "")
+    assert readability.container_interrupts_paragraph(star, "item")
+    assert readability.container_interrupts_paragraph(dash, "")
+    assert not readability.container_interrupts_paragraph(first, "")
