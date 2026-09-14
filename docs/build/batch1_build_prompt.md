@@ -488,7 +488,11 @@ add-a-destination checklist. Must contain:
   `**Last reviewed:** September 2026`. Re-checking is optional upkeep, not a maintenance
   promise."* Do not write `Last reviewed: <month/year>`: the label is bold, and the month
   and year are separated by a space, not a slash.
-- **The six add-a-destination rules:** (1) create the pack's `reference/` directory and
+- **The six add-a-destination rules:** (1) create the pack's **two contents pages** —
+  `destinations/<name>/README.md`, carrying the provided-as-is framing and listing
+  the pack's reference files and its inserts, and
+  `destinations/<name>/session_inserts/README.md`, a destination-neutral copy of this
+  contract — then create the pack's `reference/` directory and
   fill in its stable facts — regions, major cities, seasons, weather and events,
   transportation, airports, money, language, etiquette, food, adult logistics, trusted
   starting sources, and sample search terms — one file per topic, each named as the
@@ -498,8 +502,28 @@ add-a-destination checklist. Must contain:
   and which a new destination converts by hand until Batch 2 converts it for everyone**;
   (4) keep adult-owned legal and safety topics adult-owned; (5) keep
   volatile facts — prices, hours, entry rules — as "verify on official sources,"
-  never fixed; (6) **when every named insert slot and every named reference file is
-  filled -- and, until Batch 2, Session 15 is converted -- the destination is added.**
+  never fixed; (6) **when both contents pages exist, every named insert slot and every
+  named reference file is filled -- and, until Batch 2, Session 15 is converted -- the
+  destination is added.**
+- **Rule 1 names the two contents pages and rule 6 counts them, because a pack without
+  them has no front door.** The checklist named neither `README.md` until now, and that
+  worked only for the pack in front of it. This pack's top-level `README.md` was already
+  on `main` before Batch 1 -- A6 edits it, and it is not on this batch's create list --
+  and its `session_inserts/README.md` is this very file, which A1 creates once. Measured
+  on the tree at this brief's base: the one pack that exists holds a top-level
+  `README.md` and a `reference/` directory, and no `session_inserts/` directory at all.
+  **A second pack starts with neither page**, so a pack that satisfied the completion
+  condition as it stood would ship every reference file and every insert with nothing
+  listing them, and with no
+  statement anywhere in the pack that these facts are provided as-is by one family and
+  kept current by nobody. That framing is the pack's one honest warning to a family, and
+  the bullet above asks this file either to carry it or to link the top-level page that
+  does -- which a pack with no top-level page cannot do. A6 is the authority on what the
+  top-level page carries: the provided-as-is banner, the `## Reference files` list and
+  the `## Session inserts` list. This file is the authority on what the inserts page
+  carries. **Write both before you call the pack added**, and do not read rule 1's
+  "copy of this contract" as permission to carry the first pack's values across with
+  it -- every field list here is written destination-neutral for exactly that reason.
 - **Why rules 3 and 6 both carry that exception, and when both lose it.** The rider above
   tells a new-destination author that Session 15 is not neutral yet and has to be
   converted by hand. Session 15 is a framework session, so rule 3 as it stood forbade
@@ -1288,18 +1312,30 @@ so a later author applies them without re-deriving them.
 
 **The navigation line carries no link to the progress tracker, and the template says so.**
 The tracker is still the single "what do I do next?" source of truth; the child reaches it
-from the student guide rather than from the navigation line. Every session carries
-`## Finish and Quality Check`, whose canonical pointer sends the child to a card whose
-last item is *"I checked off this session on my progress tracker"*; the student guide's
-index calls the tracker *"the one place that always answers 'what's next'"*; the When I'm
-Stuck card routes there too; and H2 gives it a section of its own. **Do not add a tracker
-link to the navigation line of any session**, in this batch or a later one. The archived
+from the student guide rather than from the navigation line. Every **child** session
+carries `## Finish and Quality Check`, whose canonical pointer sends the child to a card
+whose last item is *"I checked off this session on my progress tracker"*; the student
+guide's index calls the tracker *"the one place that always answers 'what's next'"*; the
+When I'm Stuck card routes there too; and H2 gives it a section of its own. **Do not add
+a tracker link to the navigation line of any session**, in this batch or a later one.
+The archived
 design record asks for one and every session on `main` carries a navigation line without
 one, so the built repository wins. Adding it to the Batch 1 sessions alone would split the
 corpus; adding it to all of them would put a diff unrelated to the conversion on each of
 the eight shared sessions for the equivalence read to explain, and would force an edit to
 Session 15, which the navigation table below marks as needing none. That table and the
 five exact navigation blocks are the authority on what the line contains.
+
+**"Every child session" in that paragraph is measured rather than decorative, and it is
+the qualifier the required-sections list above already uses.** Of the fifteen built
+sessions, fourteen carry `## Finish and Quality Check` and `00_parent_setup.md` does
+not, because it is adult-only and no child ever works it. Session 00 is one of this
+batch's two scrubs, so an unqualified claim here would send a builder to a page they are
+editing, show them the heading missing, and invite them to add it. **Do not add it.** It
+would put a child-facing pointer on an adult-only page, and the equivalence read would
+have a diff to account for that the conversion never asked for. The same qualifier binds
+`## If You Get Stuck` and `## Optional Extension`, which the shared authoring contract
+already scopes to every **child** session for the same reason.
 
 **`Conditional core` is a status, and the skeleton has to offer it.** The archived
 design record uses four classifications, not three. §14.1.1 names the conditional-core
@@ -2973,8 +3009,30 @@ Do not narrow any of them back to "its insert" or "its Destination Notes".
 **Universal conversion rules, applied to every session in this section:**
 
 1. Preserve voice, structure, step order, and every non-destination sentence.
-2. **Every fact removed from a body must land in an insert or a reference file.** Do not
-   drop a destination fact during conversion.
+2. **Every destination fact removed from a body must land in an insert, a reference file
+   or a framework doc.** Do not drop a destination fact during conversion. **The third
+   destination is not decoration:** Session 05's two definitions leave the session for
+   `framework/docs/source_trustworthiness.md`, which is neither an insert nor a
+   reference file, so a two-way rule left this section's largest migration with nowhere
+   it was allowed to go. That is the same destination set the equivalence gate above
+   names, written on the builder's side rather than the reader's; the gate's four
+   surfaces are listed there and this rule is not a fifth of them, because it governs
+   what you write rather than what a reader reads afterwards. **One removal in this
+   section is exempt, and it is the only one.** An origin-dependent assumption that
+   destination-neutrality requires you to remove belongs to neither layer, because it
+   depends on where the family starts as much as on where they are going, so there is
+   no insert and no reference file that could correctly hold it. Session 10's Step 6 is
+   that case: the built page asserts the journey is long and made by air, and neither
+   holds for a nearby destination, a domestic trip, or one reached by road or rail. Its
+   row below says in terms that nothing goes to the insert, and the handoff calls it the
+   one deliberate exception. So replace it with a neutral point-of-use prompt, send it
+   nowhere, and **record it in the build report as a deliberate exception**, which the
+   handoff's gate check 1 already requires by name -- an exemption nobody writes down is
+   indistinguishable from a fact somebody lost. **Measured across the ten conversion
+   tables in this section: forty-three rows, and exactly one of them removes content and
+   sends it nowhere.** Do not widen the exemption to a destination fact that is merely
+   awkward to place. The test is whether the assertion depends on the family's origin
+   rather than on the destination, and only an origin-dependent assumption passes it.
 3. **In a session the contract routes to an insert**, replace place facts with the exact
    phrase **"open this session's Destination Notes"** plus neutral prompts. **In a session
    with no slot, do not write that phrase at all**: there are no matching Notes for the
@@ -3741,13 +3799,28 @@ returns zero hits today, so the expectation is unchanged and only the blind spot
 the check had dropped the qualifier and banned the digits. `-w` treats a hyphen as a
 word boundary, so a bare `17` matches the `17` in `**Last Updated:** 2026-07-17` -- and
 this brief requires that field, in `YYYY-MM-DD` form and carrying **your build date**,
-on seven files inside `framework/`: F10's changelog, F11's style law and F12's privacy
-page under the bump rule near the top of this brief, and D7, D8, F4 and F7 as creates.
-Build on the seventeenth of any month and the check prints seven lines it can never be
-cleared of, on content this brief itself mandates. A check that cannot go green is a
-check the builder learns to ignore, or "satisfies" by editing a correct metadata date.
+on **eight** files inside `framework/`: F10's changelog, F11's style law and F12's
+privacy page under the bump rule near the top of this brief, and D7, D8, F4, **F6** and
+F7 as creates. Build on the seventeenth of any month and the check prints a line for
+every one of them that it can never be cleared of, on content this brief itself
+mandates. A check that cannot go green is a check the builder learns to ignore, or
+"satisfies" by editing a correct metadata date.
 The narrowed token has the same effect on a real cap -- `17 days`, `17-day` and `17day`
 all match -- and no effect on a date.
+
+**Do not restate that list here; derive it, and derive it from one place.** It is the
+bump rule's census near the top of this brief, less the one member of it that is not a
+`framework/` file: six creates carry the block, A1 is the `destinations/` one, and the
+three edits already carry it, so five creates plus three edits are eight. **A ruling
+that moves one file's classification moves every count that depends on it**, and this
+brief states that classification in four places -- the bump rule's census, the Section F
+split with its denominator, the sentence naming the three block-carrying files outside
+Section F, and this inventory. When `ai_use_rules.md` moved to the required side, the
+first three were re-based in the same pass and this one was not, because it sits far
+from them in a paragraph about a grep token rather than about metadata. That is the
+shape to watch for: the stale copy of a count is rarely next to the ruling that
+invalidated it. If you ever find this figure and the census disagreeing, **the census
+is the authority** and this line is the one to correct.
 
 **Two roster tokens gained a plural and the check gained `-i`, and neither moves the
 expectation.** `grep -w` does not match `uncles` against `uncle`, nor `grandmothers`
