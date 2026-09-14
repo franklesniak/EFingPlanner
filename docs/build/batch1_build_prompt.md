@@ -1895,8 +1895,27 @@ memory and do not write a fresh skeleton. Recover the real file first:
 
 ```bash
 ref=$(git rev-parse --verify --quiet origin/main || git rev-parse --verify --quiet main)
-git checkout "$ref" -- framework/CHANGELOG.md
+if [ -e framework/CHANGELOG.md ]; then
+  echo "framework/CHANGELOG.md is present -- nothing to recover."
+else
+  git checkout "$ref" -- framework/CHANGELOG.md
+fi
 ```
+
+**The `if` is load-bearing, and it is here because the command was run rather than
+read.** `git checkout <ref> -- <path>` does not refuse a file that is already there: it
+overwrites the working copy **and stages the result**, so `git status` shows a staged
+change while `git diff` shows none, which is the shape of a change nobody notices. Run
+unguarded on a branch whose base is behind `main`, it replaces your branch's changelog
+with `main`'s. Measured on this brief's own branch: the file's checksum moved, `git diff`
+stayed empty, the recovered file carried a different `Last Updated` value and four extra
+`Unreleased` bullets, and the framework leak sweep below returned one hit more than it
+should, because the newer file names the destination once more. A builder who ran the
+block to see whether it worked would then be reading a self-check result produced by a
+file they did not write. The paragraph above already says *"if the file is genuinely
+missing"*; until now only the paragraph said it. **Expect the `is present` line on every
+tree this batch is built on**, because the file is on `main` and F10 is an edit and never
+a create.
 
 **Do not write `git show origin/main:framework/CHANGELOG.md > framework/CHANGELOG.md`.**
 A checkout can legitimately have no `origin/main` remote-tracking ref -- a CI checkout
