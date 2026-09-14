@@ -34,6 +34,18 @@ TICK = "`"
 BACKSLASH = "\\"
 ESCAPED_TICK = BACKSLASH + TICK
 
+#: The typographic quotation marks a word processor produces, and the two
+#: accented letters a Japan curriculum is most likely to carry. Spelled as
+#: escapes and joined through names so no test has to embed a character an
+#: editor, a terminal, or a patch tool can mangle without anyone noticing.
+LEFT_QUOTE = "\u201c"
+RIGHT_QUOTE = "\u201d"
+E_ACUTE = "\u00e9"
+O_MACRON = "\u014c"
+CAFE = "caf" + E_ACUTE
+MONTREAL = "Montr" + E_ACUTE + "al"
+OSAKA = O_MACRON + "saka"
+
 
 # ---------------------------------------------------------------------------
 # Syllable counting
@@ -1905,3 +1917,413 @@ def test_the_escape_guard_does_not_reopen_the_round_six_holes() -> None:
         f"Open {TICK * 3} and close {TICK * 2} later on today."
     )
     assert "and close" in reversed_run
+
+
+# ---------------------------------------------------------------------------
+# Round 8: a marker inside literal code declares nothing (4001360333)
+# ---------------------------------------------------------------------------
+
+
+def test_an_audience_marker_inside_a_fence_does_not_exempt_a_file() -> None:
+    """A lesson that *shows* the marker is not declaring itself adult-facing.
+
+    This is the worst direction the checker has. A failing file prints ``FAIL``;
+    a skipped file prints nothing at all and is counted out of the denominator,
+    so the gate reports success on a corpus it never read.
+    """
+    text = "\n".join(
+        [
+            "# Pack your bag",
+            "",
+            "A builder marks an adult file like this:",
+            "",
+            FENCE + "markdown",
+            "<!-- audience: adult -->",
+            FENCE,
+            "",
+            "Write the name of the city you picked.",
+        ]
+    )
+    assert not readability.has_adult_marker(text)
+
+
+def test_an_audience_marker_inside_a_code_span_does_not_exempt_a_file() -> None:
+    """The same rule for the inline form of literal code."""
+    text = f"Write {TICK}<!-- audience: adult -->{TICK} at the top of an adult file."
+    assert not readability.has_adult_marker(text)
+
+
+def test_a_real_audience_marker_still_exempts_a_file() -> None:
+    """Negative control: a marker that really is a comment still exempts."""
+    assert readability.has_adult_marker(
+        "<!-- audience: adult -->\n\nThis file is for a grown-up."
+    )
+
+
+def test_an_audience_marker_after_a_fenced_example_still_exempts_a_file() -> None:
+    """Negative control: the fence walk closes, so the marker below it is found."""
+    text = "\n".join(
+        [
+            FENCE,
+            "some code",
+            FENCE,
+            "",
+            "<!-- audience: adult -->",
+            "",
+            "This page is for a grown-up.",
+        ]
+    )
+    assert readability.has_adult_marker(text)
+
+
+# ---------------------------------------------------------------------------
+# Round 8: a table ends with its container (4001360337)
+# ---------------------------------------------------------------------------
+
+
+def test_a_quoted_table_ends_when_its_blockquote_ends() -> None:
+    """An unquoted paragraph under a quoted table is prose, not one more row.
+
+    GFM renders that paragraph outside the blockquote: the outdent ended the
+    quote, and a table is not a paragraph, so nothing continues lazily into it.
+    Matching on the pipe alone swallowed the whole document here.
+    """
+    prose = readability.extract_prose(
+        "\n".join(
+            [
+                "> | City | Days |",
+                "> | --- | --- |",
+                "> | Kyoto | 3 |",
+                "Compare option A | option B with your family.",
+            ]
+        )
+    )
+    assert "Compare option A" in prose
+    assert "Kyoto" not in prose
+
+
+def test_a_listed_table_ends_when_the_list_ends() -> None:
+    """The same rule for the other container kind.
+
+    A blockquote-only fix leaves this shape broken, which is why the table
+    remembers its whole containment path and not a quote depth.
+    """
+    prose = readability.extract_prose(
+        "\n".join(
+            [
+                "- | City | Days |",
+                "  | --- | --- |",
+                "  | Kyoto | 3 |",
+                "Compare option A | option B with your family.",
+            ]
+        )
+    )
+    assert "Compare option A" in prose
+    assert "Kyoto" not in prose
+
+
+def test_a_quoted_table_is_still_dropped_in_full() -> None:
+    """Negative control for round 4: a table inside a quote is still a table."""
+    prose = readability.extract_prose(
+        "\n".join(
+            [
+                "> Pick the city you want to see first.",
+                ">",
+                "> | City | Days |",
+                "> | --- | --- |",
+                "> | Kyoto | 3 |",
+            ]
+        )
+    )
+    assert "Pick the city you want to see first." in prose
+    assert "Kyoto" not in prose
+
+
+def test_a_row_under_an_unquoted_table_is_still_a_row() -> None:
+    """Negative control: at the *same* container GFM really does swallow it.
+
+    The fix must not overreach. A pipe-bearing line directly under an unquoted
+    table is one more body row, and dropping it is correct.
+    """
+    prose = readability.extract_prose(
+        "\n".join(
+            [
+                "| City | Days |",
+                "| --- | --- |",
+                "| Kyoto | 3 |",
+                "Compare option A | option B now.",
+            ]
+        )
+    )
+    assert "Compare option A" not in prose
+
+
+# ---------------------------------------------------------------------------
+# Round 8: a link target is consumed whole (4001360339)
+# ---------------------------------------------------------------------------
+
+
+def test_a_link_title_after_a_parenthesised_destination_is_not_prose() -> None:
+    """A title is invisible, so its words are not words a child reads."""
+    prose = readability.extract_prose(
+        "Read [the guide](https://example.com/path_(foo) "
+        '"Official administrative implementation guidance") before you pack.'
+    )
+    assert prose == "Read the guide before you pack."
+
+
+def test_an_image_title_after_a_parenthesised_destination_is_not_prose() -> None:
+    """The image pattern shares the destination grammar, so it shares the fix."""
+    prose = readability.extract_prose(
+        "Look at ![a map](https://example.com/map_(japan) "
+        '"Official administrative map") now.'
+    )
+    assert "Official" not in prose
+    assert "Look at" in prose
+
+
+def test_a_plain_inline_link_still_keeps_only_its_label() -> None:
+    """Negative control: the ordinary shape, which is every link in this repo."""
+    prose = readability.extract_prose(
+        "Read [the guide](https://example.com/guide) before you pack."
+    )
+    assert prose == "Read the guide before you pack."
+
+
+# ---------------------------------------------------------------------------
+# Round 8: a link definition is validated to the end of its line (4001360340)
+# ---------------------------------------------------------------------------
+
+
+def test_a_paragraph_that_looks_like_a_link_definition_is_kept() -> None:
+    """``choose`` looks like a destination; the words after it are prose.
+
+    CommonMark needs a title or nothing after the destination, so this whole
+    line is an ordinary paragraph. Dropping it deletes eight visible words.
+    """
+    prose = readability.extract_prose("[Note]: choose a city with your family today.")
+    assert "choose a city with your family today." in prose
+
+
+def test_a_link_definition_is_still_dropped() -> None:
+    """Negative control: a real definition renders as nothing and is still gone."""
+    assert readability.extract_prose("[note]: https://example.com/guide") == ""
+
+
+def test_a_link_definition_with_a_title_is_still_dropped() -> None:
+    """Negative control: a title on the same line closes the definition."""
+    assert (
+        readability.extract_prose(
+            '[note]: https://example.com/guide "Official guidance"'
+        )
+        == ""
+    )
+
+
+# ---------------------------------------------------------------------------
+# Round 8: ordered markers up to nine digits (4001360342)
+# ---------------------------------------------------------------------------
+
+
+def test_a_four_digit_ordered_marker_is_removed() -> None:
+    """``1000.`` is a list marker, not a one-word sentence.
+
+    Left in, each marker splits off as its own sentence, so three worksheet
+    prompts are measured as six sentences and the reported words-per-sentence
+    halves.
+    """
+    prose = readability.extract_prose(
+        "\n".join(
+            [
+                "1000. Write the city you picked.",
+                "1001. Write the day you leave.",
+                "1002. Write the day you come home.",
+            ]
+        )
+    )
+    assert "1000" not in prose
+    assert len(readability.split_sentences(prose)) == 3
+
+
+def test_a_ten_digit_ordered_marker_is_not_a_list() -> None:
+    """Negative control: CommonMark caps an ordered marker at nine digits."""
+    prose = readability.extract_prose("1234567890. Write the city you picked.")
+    assert "1234567890" in prose
+
+
+# ---------------------------------------------------------------------------
+# Round 8: a word is made of Unicode letters (4001360344)
+# ---------------------------------------------------------------------------
+
+
+def test_an_accented_word_counts_as_one_word() -> None:
+    """An ASCII-only class splits one word into two and truncates another."""
+    words = readability.WORD_PATTERN.findall(f"Visit a {CAFE} in {MONTREAL}.")
+    assert words == ["Visit", "a", CAFE, "in", MONTREAL]
+
+
+def test_a_macron_does_not_split_a_place_name() -> None:
+    """The curriculum's own place names are the case that matters here."""
+    prose = readability.extract_prose(
+        f"We take the train to {OSAKA} and then to Gion."
+    )
+    assert readability.WORD_PATTERN.findall(prose) == [
+        "We",
+        "take",
+        "the",
+        "train",
+        "to",
+        OSAKA,
+        "and",
+        "then",
+        "to",
+        "Gion",
+    ]
+
+
+def test_an_accented_word_keeps_its_syllables() -> None:
+    """Counting words right is not enough if the syllable pass still strips them.
+
+    Deleting the macron leaves ``saka``, two syllables for a three-syllable
+    name. Under-counting syllables lowers the grade, which is the direction
+    that lets hard text through.
+    """
+    assert readability.count_syllables(OSAKA) == 3
+
+
+def test_an_ascii_word_still_counts_the_same() -> None:
+    """Negative control: the fold changes nothing for text that has no accents."""
+    assert readability.count_syllables("Osaka") == 3
+    assert readability.WORD_PATTERN.findall("Visit a cafe in Kyoto.") == [
+        "Visit",
+        "a",
+        "cafe",
+        "in",
+        "Kyoto",
+    ]
+
+
+# ---------------------------------------------------------------------------
+# Round 8: character references are decoded before counting (4001360347)
+# ---------------------------------------------------------------------------
+
+
+def test_a_named_character_reference_is_not_a_word() -> None:
+    """``&nbsp;`` is one character on the page; ``nbsp`` is not a word."""
+    prose = readability.extract_prose("Pack a map&nbsp;or a phone&nbsp;or both today.")
+    assert "nbsp" not in prose
+    assert len(readability.WORD_PATTERN.findall(prose)) == 9
+
+
+def test_a_numeric_character_reference_is_not_a_word() -> None:
+    """The decimal and hexadecimal forms decode too."""
+    prose = readability.extract_prose("Pack a map&#32;or a phone&#x20;or both today.")
+    assert readability.WORD_PATTERN.findall(prose) == [
+        "Pack",
+        "a",
+        "map",
+        "or",
+        "a",
+        "phone",
+        "or",
+        "both",
+        "today",
+    ]
+
+
+def test_a_character_reference_is_decoded_after_the_markdown_is_read() -> None:
+    """``&#42;`` is a literal asterisk, not emphasis, so it decodes last."""
+    prose = readability.extract_prose("A &#42;not emphasis&#42; B here.")
+    assert prose == "A *not emphasis* B here."
+
+
+def test_a_decoded_reference_joins_the_word_it_sits_in() -> None:
+    """The interaction with 4001360344: decoding is only right with Unicode words.
+
+    ``caf&eacute;`` decodes to one word. An ASCII-only word pattern would read
+    the decoded text as ``caf`` plus a dropped accent, trading one wrong count
+    for another.
+    """
+    prose = readability.extract_prose("Visit a caf&eacute; today with your family.")
+    assert CAFE in readability.WORD_PATTERN.findall(prose)
+
+
+def test_an_unterminated_character_reference_keeps_its_word() -> None:
+    """Negative control, and the reason ``html.unescape`` was not used.
+
+    CommonMark needs the semicolon, so ``Fish &amp chips`` really does show a
+    visible ``amp``. A looser decoder deletes a word the child reads.
+    """
+    prose = readability.extract_prose("Fish &amp chips and a map.")
+    assert "amp" in readability.WORD_PATTERN.findall(prose)
+
+
+def test_an_unknown_entity_name_keeps_its_word() -> None:
+    """Negative control: only names HTML5 defines are references."""
+    prose = readability.extract_prose("A &notarealname; B here.")
+    assert "notarealname" in readability.WORD_PATTERN.findall(prose)
+
+
+# ---------------------------------------------------------------------------
+# Round 8: typographic quotation marks (4001360350)
+# ---------------------------------------------------------------------------
+
+
+def test_a_curly_closing_quote_ends_a_sentence() -> None:
+    """The same prose is one sentence or two depending on the author's editor."""
+    prose = readability.extract_prose(
+        f"She asked {LEFT_QUOTE}Where?{RIGHT_QUOTE} Then we picked a city."
+    )
+    assert len(readability.split_sentences(prose)) == 2
+
+
+def test_a_curly_opening_quote_still_hides_an_abbreviation() -> None:
+    """The other half of the same defect: three patterns read the opening mark.
+
+    With only ASCII in the opening class the abbreviation in a curly-quoted
+    phrase goes unrecognized and the period splits a sentence that should not
+    split -- the same gate-weakening direction, from the same root cause.
+    """
+    prose = readability.extract_prose(
+        f"She wrote {LEFT_QUOTE}e.g. Tokyo{RIGHT_QUOTE} on the card."
+    )
+    assert len(readability.split_sentences(prose)) == 1
+
+
+def test_a_decoded_reference_uses_the_new_closer_class() -> None:
+    """The interaction with 4001360347: ``&rdquo;`` decodes to a closer."""
+    prose = readability.extract_prose("He said &ldquo;Go.&rdquo; Then we left.")
+    assert len(readability.split_sentences(prose)) == 2
+
+
+def test_an_ascii_closing_quote_still_ends_a_sentence() -> None:
+    """Negative control: the ASCII half of the closer class is untouched."""
+    prose = readability.extract_prose(
+        'She asked "Where?" Then we picked a city.'
+    )
+    assert len(readability.split_sentences(prose)) == 2
+
+
+def test_an_ascii_opening_quote_still_hides_an_abbreviation() -> None:
+    """Negative control: the ASCII half of the opening class is untouched."""
+    prose = readability.extract_prose('She wrote "e.g. Tokyo" on the card.')
+    assert len(readability.split_sentences(prose)) == 1
+
+
+def test_round_eight_does_not_reopen_the_code_span_holes() -> None:
+    """Negative control for rounds 4, 6 and 7 together.
+
+    Nothing in this round touches the code-span pattern, and the three guards
+    those rounds installed -- multi-backtick runs, both run boundaries, and the
+    opening-run escape -- all still hold.
+    """
+    assert "banana" not in readability.extract_prose(
+        f"Type the word {TICK}banana{TICK} now."
+    )
+    assert "the child words here" in readability.extract_prose(
+        f"Type {TICK * 2}the child words here{TICK * 3} and press enter now."
+    )
+    assert "complicated administrative implementation" in readability.extract_prose(
+        f"Read {ESCAPED_TICK}complicated administrative implementation"
+        f"{ESCAPED_TICK} aloud."
+    )

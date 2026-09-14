@@ -19,7 +19,9 @@ lines are not sentences a child reads aloud, and leaving them in produces
 meaningless scores. Everything in ``STRIPPING`` below is removed before
 measurement. Parent-facing regions inside an otherwise child-facing session
 (the "For parents" strip near the top, and the "Parent Notes" section at the
-bottom) are removed too: adults may read at an adult level.
+bottom) are removed too: adults may read at an adult level. What survives is
+then decoded: a character reference such as ``&nbsp;`` is one character on the
+page, so counting its name as a word measures text nobody reads.
 
 One line of the extracted prose is one sentence unit. A Markdown paragraph may
 be hard-wrapped over several source lines, so the continuation lines of a
@@ -43,6 +45,10 @@ A file can also opt out of scoring by carrying an audience marker anywhere in
 its text::
 
     <!-- audience: adult -->
+
+The marker counts only where CommonMark would render it as a comment: one shown
+as an example inside a code fence or a code span is literal text on the page and
+exempts nothing.
 
 Per-file audience is declared **only** by that marker. There is deliberately no
 second hard-coded exclusion list to keep in sync: an adult-facing file that sits
@@ -77,8 +83,10 @@ import json
 import os
 import re
 import sys
+import unicodedata
 from collections.abc import Iterable, Sequence
 from dataclasses import dataclass, field
+from html.entities import html5
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
@@ -165,8 +173,35 @@ HTML_COMMENT_PATTERN = re.compile(r"<!--.*?-->", re.DOTALL)
 #: which is child-visible prose, not markup.
 #: https://spec.commonmark.org/0.31.2/#raw-html
 HTML_TAG_PATTERN = re.compile(r"</?[A-Za-z][A-Za-z0-9-]*(?:\s[^<>]*)?/?>|<[!?][^>]*>")
-IMAGE_PATTERN = re.compile(r"!\[[^\]]*\]\([^)]*\)")
-LINK_PATTERN = re.compile(r"\[([^\]]*)\]\([^)]*\)")
+#: The two invisible halves of an inline link: its destination and its optional
+#: title. Neither is rendered, so both go with the brackets and only the label
+#: is prose. A destination is either the pointy ``<...>`` form or a bare run
+#: that may carry backslash escapes and balanced parentheses; a title is
+#: delimited by ``"``, ``'`` or ``()``.
+#:
+#: A ``[^)]*`` destination stops at the first ``)``, so
+#: ``[the guide](/path_(foo) "Official guidance")`` loses its destination and
+#: leaves the title's two words -- and a stray ``)`` -- standing in prose a
+#: child never sees. CommonMark nests those parentheses without limit and ``re``
+#: cannot recurse, so three levels are spelled out here. A target nested deeper
+#: than that simply does not match, which leaves the whole link visible: more
+#: words, never fewer, and never a half-eaten one.
+#: https://spec.commonmark.org/0.31.2/#link-destination
+_DESTINATION_CHARACTER = r"(?:[^\s()\\]|\\.)"
+_DESTINATION_DEPTH_0 = rf"{_DESTINATION_CHARACTER}*"
+_DESTINATION_DEPTH_1 = rf"(?:{_DESTINATION_CHARACTER}|\({_DESTINATION_DEPTH_0}\))*"
+_DESTINATION_DEPTH_2 = rf"(?:{_DESTINATION_CHARACTER}|\({_DESTINATION_DEPTH_1}\))*"
+_LINK_DESTINATION = (
+    rf"(?:<[^<>\n]*>|(?:{_DESTINATION_CHARACTER}|\({_DESTINATION_DEPTH_2}\))+)"
+)
+_LINK_TITLE = r"(?:\"(?:[^\"\\]|\\.)*\"|'(?:[^'\\]|\\.)*'|\((?:[^()\\]|\\.)*\))"
+#: A whole inline target, ``(destination "title")``, with every part optional:
+#: ``[label]()`` is a link too.
+_LINK_TARGET = (
+    rf"\([ \t]*(?:{_LINK_DESTINATION}(?:[ \t]+{_LINK_TITLE})?|{_LINK_TITLE})?[ \t]*\)"
+)
+IMAGE_PATTERN = re.compile(rf"!\[[^\]]*\]{_LINK_TARGET}")
+LINK_PATTERN = re.compile(rf"\[([^\]]*)\]{_LINK_TARGET}")
 #: A bare URL or an autolink. Trailing punctuation is *not* part of a bare
 #: URL: GFM's autolink extension trims ``?!.,:;'"`` from the end, so
 #: "Read https://example.com. Then pick a city." keeps the period that ends
@@ -206,7 +241,14 @@ BARE_URL_PATTERN = re.compile(
 INLINE_CODE_PATTERN = re.compile(
     r"(?<!`)(?<!\\)(?P<code_ticks>`+)(?!`).*?(?<!`)(?P=code_ticks)(?!`)"
 )
-LIST_MARKER_PATTERN = re.compile(r"^ {0,8}(?:[-*+]|\d{1,3}[.)])\s+")
+#: A list marker at the head of a line of prose. The ordered form accepts the
+#: same one-to-nine-digit marker ``LIST_ITEM_PATTERN`` accepts, because
+#: CommonMark draws the line there and nowhere else: ``123456789.`` opens a
+#: list and ``1234567890.`` is an ordinary paragraph. A narrower rule leaves
+#: ``1000.`` standing in the prose, where it splits off as a one-word sentence
+#: and halves the reported words-per-sentence of every prompt below it.
+#: https://spec.commonmark.org/0.31.2/#list-items
+LIST_MARKER_PATTERN = re.compile(r"^ {0,8}(?:[-*+]|\d{1,9}[.)])\s+")
 BLOCKQUOTE_PATTERN = re.compile(r"^ {0,3}>\s?")
 EMPHASIS_PATTERN = re.compile(r"[*_]{1,3}")
 #: A Setext heading underline. A run of ``=`` or ``-`` under a paragraph turns
@@ -225,8 +267,20 @@ REFERENCE_LINK_PATTERN = re.compile(r"\[([^\]]*)\]\[[^\]]*\]")
 #: A link reference definition. It renders as nothing at all, so neither its
 #: label nor its destination is prose. CommonMark does not let one interrupt a
 #: paragraph, so this is consulted only when no unit is open.
+#:
+#: The destination and its optional title must fill the line. Validating only
+#: the front of it -- a label, a colon, then any nonblank character -- drops
+#: ``[Note]: choose a city with your family today.``, where ``choose`` looks
+#: like a destination but the unquoted words after it make the line an
+#: ordinary paragraph. The renderer shows that sentence and the checker
+#: deletes it, which is the direction that takes a file under the 40-word
+#: minimum. A definition whose destination sits on the *following* line is
+#: still not recognized, and still errs the safe way: the line keeps its words.
 #: https://spec.commonmark.org/0.31.2/#link-reference-definitions
-LINK_DEFINITION_PATTERN = re.compile(r"^ {0,3}\[[^\]]+\]:\s*\S")
+LINK_DEFINITION_PATTERN = re.compile(
+    rf"^ {{0,3}}\[[^\]]+\]:[ \t]*{_LINK_DESTINATION}"
+    rf"(?:[ \t]+{_LINK_TITLE})?[ \t]*$"
+)
 #: A link reference definition's optional title, on the line after the
 #: destination. It renders as nothing either, so it is consumed with the
 #: definition it belongs to; left behind it becomes a short phantom sentence
@@ -248,18 +302,53 @@ FRONT_MATTER_DELIMITER_PATTERN = re.compile(r"^(?:-{3}|\.{3})[ \t]*$")
 UNIT_KIND_PROSE = "prose"
 UNIT_KIND_QUOTE = "quote"
 
-WORD_PATTERN = re.compile(r"[A-Za-z]+(?:['’-][A-Za-z]+)*|\d+(?:[.,]\d+)*")
+#: A word, as a reader counts one. Letters are Unicode letters, not ASCII ones:
+#: an ASCII-only class splits ``Montréal`` into ``Montr`` and ``al`` and makes
+#: ``café`` into ``caf``, so one word becomes two and a word written entirely
+#: outside ASCII disappears from the count altogether. This curriculum is about
+#: Japan; ``Ōsaka``, ``Gion`` and ``Kyōto`` are the words it is made of.
+#: ``[^\W\d_]`` is "any Unicode letter": a word character that is neither a digit
+#: nor an underscore.
+WORD_PATTERN = re.compile(r"[^\W\d_]+(?:['’-][^\W\d_]+)*|\d+(?:[.,]\d+)*")
+#: The quotation marks and brackets that open and close a quoted span. Both the
+#: ASCII and the typographic forms are listed, because a word processor produces
+#: the typographic ones and an author drafting a session in one and pasting it
+#: here produces them without deciding to. An ASCII-only closing class reads
+#: ``She asked “Where?” Then we picked a city.`` as one sentence instead of two;
+#: an ASCII-only opening class fails to see the abbreviation in ``“e.g. Tokyo”``
+#: and splits a sentence that should not split. Both mistakes lower the reported
+#: measures, which is the direction that lets hard text through the gate.
+_OPENING_QUOTES = "\"'(\\[“‘"
+_CLOSING_QUOTES = "\"')\\]”’"
+#: A character reference: a decimal reference, a hexadecimal one, or an HTML5
+#: entity name, each closed by a semicolon. CommonMark renders one as the
+#: character it names, so its *name* is never text a child reads -- ``A&nbsp;or``
+#: is three words on the page and five to a matcher that never decodes it, and a
+#: file padded with them can clear the 40-word floor without gaining a word.
+#:
+#: The semicolon is required and the name must be one HTML5 defines, which is
+#: narrower than ``html.unescape``: CommonMark leaves ``Fish &amp chips`` showing
+#: a visible ``amp``, and decoding it would delete a word the child reads. A
+#: reference behind a backslash is literal text for the same reason.
+#: https://spec.commonmark.org/0.31.2/#entity-and-numeric-character-references
+CHARACTER_REFERENCE_PATTERN = re.compile(
+    r"(?<!\\)&(?:#(?P<decimal>[0-9]{1,7})"
+    r"|#[Xx](?P<hexadecimal>[0-9A-Fa-f]{1,6})"
+    r"|(?P<name>[A-Za-z][A-Za-z0-9]{1,31}));"
+)
 #: A sentence break: terminal punctuation, any closing quotes or brackets that
 #: belong to it, then whitespace. The closers are captured because whether they
 #: are present decides one of the two cases in ``ends_a_sentence`` below.
-SENTENCE_SPLIT_PATTERN = re.compile(r"(?<=[.!?])(?P<closers>[\"')\]]*)\s+")
+SENTENCE_SPLIT_PATTERN = re.compile(
+    rf"(?<=[.!?])(?P<closers>[{_CLOSING_QUOTES}]*)\s+"
+)
 
 #: Abbreviations whose period never ends an English sentence, so ``The U.S.
 #: Department of State`` is one sentence and not two. Splitting there inflates
 #: the sentence count, which lowers *both* reported measures -- the direction
 #: that lets genuinely long sentences through the gate.
 ABBREVIATION_PATTERN = re.compile(
-    r"(?:^|[\s\"'(\[])"
+    rf"(?:^|[\s{_OPENING_QUOTES}])"
     r"(?:U\.S\.|U\.K\.|e\.g\.|i\.e\.|vs\.|Mr\.|Mrs\.|Ms\.|Dr\.|Prof\.|St\.)"
     r"$"
 )
@@ -269,7 +358,8 @@ ABBREVIATION_PATTERN = re.compile(
 #: sentence unless a lowercase word follows, as in "a map, a pen, etc. before
 #: you leave".
 AMBIGUOUS_ABBREVIATION_PATTERN = re.compile(
-    r"(?:^|[\s\"'(\[])(?:etc\.|a\.m\.|p\.m\.|incl\.|approx\.|No\.)$"
+    rf"(?:^|[\s{_OPENING_QUOTES}])"
+    r"(?:etc\.|a\.m\.|p\.m\.|incl\.|approx\.|No\.)$"
 )
 #: The abbreviations above that are also complete noun phrases, so English
 #: *can* end a sentence with one: "This family lives in the U.S." Every other
@@ -277,7 +367,7 @@ AMBIGUOUS_ABBREVIATION_PATTERN = re.compile(
 #: sentence ends with. One of these ends a sentence only when a closed-class
 #: word opens the next one; see ``ends_a_sentence`` for what that cannot do.
 FREESTANDING_ABBREVIATION_PATTERN = re.compile(
-    r"(?:^|[\s\"'(\[])(?:U\.S\.|U\.K\.)$"
+    rf"(?:^|[\s{_OPENING_QUOTES}])(?:U\.S\.|U\.K\.)$"
 )
 
 #: Closed-class English words -- articles, demonstratives, pronouns,
@@ -590,6 +680,96 @@ def is_closing_fence(line: str, fence_character: str, minimum_length: int) -> bo
     return closing_pattern.match(line) is not None
 
 
+def decode_character_references(text: str) -> str:
+    """Return ``text`` with every HTML character reference replaced by its character.
+
+    A reference is invisible as written: ``A&nbsp;or&nbsp;B`` is three words on
+    the page, and a matcher that never decodes it counts five. Only references
+    CommonMark actually recognizes are decoded -- see
+    ``CHARACTER_REFERENCE_PATTERN`` for why that is narrower than
+    ``html.unescape``.
+    """
+    return CHARACTER_REFERENCE_PATTERN.sub(replace_character_reference, text)
+
+
+def replace_character_reference(match: re.Match[str]) -> str:
+    """Return the character one matched reference names, or the reference itself."""
+    name = match.group("name")
+    if name is not None:
+        # ``html5`` holds both ``nbsp`` and ``nbsp;``; only the second spelling
+        # is a reference CommonMark decodes, so the semicolon is looked up too.
+        decoded = html5.get(f"{name};")
+        if decoded is None:
+            return match.group(0)
+    else:
+        decimal = match.group("decimal")
+        code_point = (
+            int(decimal) if decimal is not None else int(match.group("hexadecimal"), 16)
+        )
+        # CommonMark renders an out-of-range, zero, or surrogate code point as
+        # U+FFFD rather than failing.
+        decoded = (
+            chr(code_point)
+            if 0 < code_point < 0x110000 and not 0xD800 <= code_point <= 0xDFFF
+            else "\ufffd"
+        )
+    # A reference may name a line break. One line of the extracted prose is one
+    # sentence unit, so a decoded newline becomes a space rather than splitting
+    # the unit in two.
+    return decoded.replace("\r", " ").replace("\n", " ")
+
+
+def strip_literal_code(text: str) -> str:
+    """Return ``text`` with fenced code blocks and inline code spans removed.
+
+    A document that *documents* Markdown carries examples of it, and an audience
+    marker shown as one of those examples is literal text on the page -- not
+    metadata the file is declaring about itself. Without this, a single
+    child-facing lesson that shows the marker inside a fence leaves the gate
+    entirely: nothing scores it, and nothing reports that nothing did.
+
+    The fence walk mirrors the one in ``extract_prose``; the two are kept in
+    step for the same reason the fence helpers above are kept in step with
+    ``.github/scripts/check-prohibited-placeholders.py``.
+
+    Indented code blocks are deliberately not removed. Telling one from an
+    indented list continuation needs the full block parse this module does not
+    do, guessing wrong means an adult-facing file gets scored, and every code
+    block in this repository is fenced.
+    https://spec.commonmark.org/0.31.2/#code-spans
+    """
+    kept: list[str] = []
+    active_fence: ActiveFence | None = None
+    list_contexts: list[ListContext] = []
+
+    for raw_line in text.split("\n"):
+        line = raw_line.rstrip()
+
+        if active_fence is not None and fence_container_ended(line, active_fence):
+            active_fence = None
+
+        if active_fence is not None:
+            if is_closing_fence(
+                normalize_for_fence_closing(line, active_fence),
+                active_fence.character,
+                active_fence.minimum_length,
+            ):
+                active_fence = None
+            kept.append("")
+            continue
+
+        fence_line = normalize_for_fence_opening(line, list_contexts)
+        opening_fence = parse_opening_fence(fence_line.content)
+        if opening_fence is not None:
+            active_fence = build_active_fence(opening_fence, fence_line)
+            kept.append("")
+            continue
+
+        kept.append(INLINE_CODE_PATTERN.sub(" ", line))
+
+    return "\n".join(kept)
+
+
 def strip_html_comments(text: str) -> str:
     """Remove HTML comments, including ones that span lines."""
     return HTML_COMMENT_PATTERN.sub(" ", text)
@@ -640,6 +820,7 @@ def extract_prose(text: str) -> str:
     in_parent_strip = False
     in_parent_section = False
     in_table = False
+    table_container: tuple[Container, ...] = ()
     after_link_definition = False
     open_unit: str | None = None
 
@@ -676,21 +857,46 @@ def extract_prose(text: str) -> str:
 
         # Tables, with or without outer pipe characters. A table is found by
         # its delimiter row. The header line above that row and the body rows
-        # below it are part of the same table. A quoted table carries a ``>``
-        # on every one of its rows, so the prefix is peeled before the delimiter
-        # row is looked for.
+        # below it are part of the same table.
+        #
+        # A table belongs to the container it opened in and ends where that
+        # container ends. ``fence_line.containment_path`` is the same notion of
+        # "inside a container" the fence code and the heading check use, so a
+        # quoted or a listed table is recognized as the table it is *and* stops
+        # at the outdent. Matching on the pipe alone keeps swallowing rows past
+        # that point: an unquoted ``Compare option A | option B with your
+        # family.`` under a quoted table is a paragraph GFM renders outside the
+        # blockquote, and discarding it lowers the word count -- the direction
+        # that can take a file under the 40-word minimum and out of the gate.
+        # At the *same* container the swallowing is right: GFM really does read
+        # a pipe-bearing line under an unquoted table as one more row.
+        # https://github.github.com/gfm/#tables-extension-
         table_line = strip_block_quote_prefixes(line)
         if in_table:
-            if table_line.strip() and "|" in table_line:
+            if (
+                table_line.strip()
+                and "|" in table_line
+                and fence_line.containment_path == table_container
+            ):
                 open_unit = None
                 continue
             in_table = False
-        next_line = lines[index + 1] if index + 1 < len(lines) else ""
-        next_table_line = strip_block_quote_prefixes(next_line.rstrip())
-        if table_line.strip() and "|" in table_line and is_table_delimiter(next_table_line):
-            in_table = True
-            open_unit = None
-            continue
+        if table_line.strip() and "|" in table_line:
+            next_line = lines[index + 1].rstrip() if index + 1 < len(lines) else ""
+            # The lookahead gets a *copy* of the list contexts: normalizing a
+            # line records the containers it opens, and the next iteration has
+            # to start from the state this line left behind, not that one.
+            next_fence_line = normalize_for_fence_opening(
+                next_line, list(list_contexts)
+            )
+            if (
+                next_fence_line.containment_path == fence_line.containment_path
+                and is_table_delimiter(next_fence_line.content)
+            ):
+                in_table = True
+                table_container = fence_line.containment_path
+                open_unit = None
+                continue
 
         # An ATX heading may sit inside a container, where every one of its
         # lines carries that container's prefix. ``fence_line.content`` is the
@@ -794,6 +1000,10 @@ def extract_prose(text: str) -> str:
         line = INLINE_CODE_PATTERN.sub(" ", line)
         line = HTML_TAG_PATTERN.sub(" ", line)
         line = EMPHASIS_PATTERN.sub("", line)
+        # Decoding is last. A reference may name a Markdown character --
+        # ``&#42;`` is a literal asterisk and not emphasis -- so nothing is
+        # decoded until the Markdown around it has already been read.
+        line = decode_character_references(line)
 
         if line.strip():
             if open_unit is not None and not starts_block:
@@ -828,6 +1038,16 @@ def count_syllables(word: str) -> int:
     # Flesch-Kincaid grade, which is the direction that lets hard text through.
     syllabic_nt = SYLLABIC_NT_PATTERN.search(lowered) is not None
 
+    # An accent is part of a letter, not a break in the word. Folding the
+    # combining marks away with NFKD lets the vowel-group pass read ``Osaka``
+    # in ``Ōsaka``; deleting the ``Ō`` outright reports two syllables for a
+    # three-syllable name, and under-counting syllables lowers the
+    # Flesch-Kincaid grade -- the direction that lets hard text through.
+    lowered = "".join(
+        character
+        for character in unicodedata.normalize("NFKD", lowered)
+        if not unicodedata.combining(character)
+    )
     lowered = re.sub(r"[^a-z]", "", lowered)
     if not lowered:
         return 1
@@ -992,8 +1212,13 @@ def is_excluded_path(display_path: str) -> bool:
 
 
 def has_adult_marker(text: str) -> bool:
-    """Return ``True`` when a document declares itself adult-facing."""
-    return AUDIENCE_ADULT_PATTERN.search(text) is not None
+    """Return ``True`` when a document declares itself adult-facing.
+
+    The marker is metadata, so it counts only where CommonMark would render it
+    as a comment. One shown as an example inside a fence or a code span is
+    literal text a reader sees and declares nothing; see ``strip_literal_code``.
+    """
+    return AUDIENCE_ADULT_PATTERN.search(strip_literal_code(text)) is not None
 
 
 def default_paths(root: Path) -> list[Path]:
