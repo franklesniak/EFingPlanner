@@ -2702,3 +2702,100 @@ def test_trailing_space_and_tab_still_open_front_matter() -> None:
     for trailer in (" ", "\t", " \t "):
         document = f"---{trailer}\ntitle: real\n---\n\nProse.\n"
         assert "title: real" not in readability.strip_front_matter(document), trailer
+# --- round 3: YAML comments, and raw HTML before code spans -----------------
+
+
+def test_front_matter_may_end_a_mapping_line_on_a_comment() -> None:
+    """YAML lets a comment follow a value, and this block is still front matter.
+
+    The line form demanded end-of-line right after the value, so
+    ``title: Trip plan # editorial note`` stopped the block being front matter
+    and the title, the note and the ``...`` walked into the child's prose --
+    moving the reading score, and the word count with it.
+    """
+    text = (
+        "---\n"
+        "title: Trip plan # editorial note\n"
+        "author: Someone\n"
+        "...\n"
+        "\n"
+        "We will walk to the park and count the red doors that we pass today.\n"
+    )
+    prose = readability.extract_prose(text)
+    assert prose == "We will walk to the park and count the red doors that we pass today."
+
+
+def test_front_matter_may_end_a_valueless_key_on_a_comment() -> None:
+    """A key with no value takes a comment the same way a key with one does."""
+    text = (
+        "---\n"
+        "title: # to be decided\n"
+        "...\n"
+        "\n"
+        "We will walk to the park and count the red doors that we pass today.\n"
+    )
+    prose = readability.extract_prose(text)
+    assert prose == "We will walk to the park and count the red doors that we pass today."
+
+
+def test_a_hash_with_no_space_before_it_is_still_part_of_the_value() -> None:
+    """A negative control. YAML wants whitespace in front of a comment.
+
+    ``version: 1.0#2`` is the plain scalar ``1.0#2``, so the line is a mapping
+    either way and the block is still front matter. What the control protects
+    is the rule, not the outcome: the comment suffix must not be readable as
+    "anything after a hash".
+    """
+    assert readability.FRONT_MATTER_LINE_PATTERN.match("version: 1.0#2") is not None
+    assert readability.FRONT_MATTER_LINE_PATTERN.match("version: 1.0 # note") is not None
+    assert readability.FRONT_MATTER_LINE_PATTERN.match("Ask them: bring a map. Also: a pen") is None
+
+
+def test_a_backtick_in_an_attribute_does_not_open_a_code_span() -> None:
+    """Raw HTML binds as tightly as a code span, and this tag starts first.
+
+    The scan read every backtick outside a backslash escape as a delimiter, so
+    the one inside ``title="`"`` paired with the one on the next line and
+    ``strip_literal_code`` erased the audience marker between them. The
+    adult-facing document was then scored against the child target. Measured
+    against markdown-it 14.3.0: the first backtick is attribute data and the
+    marker is a comment.
+    """
+    text = f'<span title="{TICK}">\nText <!-- audience: adult --> {TICK}end\n'
+    assert readability.has_adult_marker(text)
+
+
+def test_a_backtick_in_an_attribute_on_one_line_does_not_open_a_code_span() -> None:
+    """The same shape without the line break, which is the commoner way to write it."""
+    text = f'Text <span title="{TICK}">x</span> <!-- audience: adult --> {TICK}end of it.\n'
+    assert readability.has_adult_marker(text)
+
+
+def test_a_backtick_inside_a_comment_does_not_open_a_code_span() -> None:
+    """A comment starts first too, and everything inside it belongs to it.
+
+    Measured against markdown-it 14.3.0: ``<!-- a ` b -->`` is a comment and
+    the backtick after it is a literal backtick, so no span pairs across them
+    and no words are blanked. Pairing them blanked ``and``, which is a word the
+    child reads and a word the score counts.
+    """
+    text = f"Text <!-- a {TICK} b --> and {TICK} end of the sentence here.\n"
+    assert "and" in readability.strip_literal_code(text)
+
+
+def test_an_unclosed_comment_leaves_its_backticks_alone() -> None:
+    """A negative control. An unclosed ``<!--`` is not a comment at all.
+
+    Nothing closes it inside the paragraph, so the characters after it are
+    ordinary text and the two backticks around ``span`` really do pair.
+    """
+    text = f"Text <!-- open and {TICK}span{TICK} then more words here.\n"
+    assert "span" not in readability.strip_literal_code(text)
+
+
+def test_a_real_code_span_beside_a_tag_is_still_a_code_span() -> None:
+    """A negative control. Skipping tags must not switch the scan off."""
+    text = f"Read <span>this</span> and then {TICK}literal{TICK} aloud today.\n"
+    stripped = readability.strip_literal_code(text)
+    assert "literal" not in stripped
+    assert "aloud today." in stripped

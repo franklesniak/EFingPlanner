@@ -191,6 +191,16 @@ class ActiveHtmlBlock:
 #: *inside* a comment from opening a second block that outlives the comment.
 HTML_BLOCK_COMMENT = "comment"
 
+#: Condition 4 asks for an *uppercase* ASCII letter after ``<!``. That is the
+#: rule markdown-it 14.3.0 carries, and markdown-it is what this repository
+#: measures a rendered page against. The CommonMark 0.31.2 prose says "an ASCII
+#: letter" instead, and micromark-core-commonmark 2.0.3 reads it that way, so
+#: the two really do part over a lowercase ``<!doctype html>``. Following the
+#: renderer is also the safe way round: a lowercase declaration that opens no
+#: block leaves the paragraph above it open, and a mandatory heading below it is
+#: still a heading. Reading it as a block closes that paragraph, lets the next
+#: line open a type-seven block, and hides every heading down to the blank line.
+#: <https://spec.commonmark.org/0.31.2/#html-blocks>
 HTML_BLOCK_CONDITIONS: tuple[HtmlBlockCondition, ...] = (
     HtmlBlockCondition(
         "script",
@@ -199,7 +209,7 @@ HTML_BLOCK_CONDITIONS: tuple[HtmlBlockCondition, ...] = (
     ),
     HtmlBlockCondition(HTML_BLOCK_COMMENT, HTML_BLOCK_COMMENT_START_PATTERN, re.compile(r"-->")),
     HtmlBlockCondition("instruction", re.compile(r"^ {0,3}<\?"), re.compile(r"\?>")),
-    HtmlBlockCondition("declaration", re.compile(r"^ {0,3}<![A-Za-z]"), re.compile(r">")),
+    HtmlBlockCondition("declaration", re.compile(r"^ {0,3}<![A-Z]"), re.compile(r">")),
     HtmlBlockCondition("cdata", re.compile(r"^ {0,3}<!\[CDATA\["), re.compile(r"\]\]>")),
     HtmlBlockCondition(
         "element",

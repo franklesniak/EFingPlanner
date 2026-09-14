@@ -184,6 +184,29 @@ HTML_COMMENT_PATTERN = re.compile(r"<!--.*?-->", re.DOTALL)
 #: which is child-visible prose, not markup.
 #: https://spec.commonmark.org/0.31.2/#raw-html
 HTML_TAG_PATTERN = re.compile(r"</?[A-Za-z][A-Za-z0-9-]*(?:\s[^<>]*)?/?>|<[!?][^>]*>")
+#: One inline HTML tag, open or closing, matched from a known position rather
+#: than searched for. The code-span scan skips a whole tag at a time with it, so
+#: that a backtick inside an attribute value is read as part of the attribute,
+#: which is what CommonMark does with it. ``HTML_TAG_PATTERN`` above cannot do
+#: that job: its ``[^<>]*`` attribute run stops at the first ``>``, so
+#: ``<span title="a>b">`` would end one character early and put the rest of the
+#: tag back into the scan. Kept identical to the constant in
+#: ``.github/scripts/check-session-structure.py``.
+#: https://spec.commonmark.org/0.31.2/#raw-html
+INLINE_HTML_TAG_PATTERN = re.compile(
+    r"""
+    <
+    (?: [A-Za-z][A-Za-z0-9-]*                      # an open tag
+        (?: \s+ [_:A-Za-z][A-Za-z0-9_.:-]*         # an attribute name
+            (?: \s*=\s*                            # an attribute value
+                (?: [^\s"'=<>`]+ | '[^']*' | "[^"]*" ) )?
+        )*
+        \s* /? >
+      | / [A-Za-z][A-Za-z0-9-]* \s* >              # a closing tag
+    )
+    """,
+    re.VERBOSE,
+)
 #: The two invisible halves of an inline link: its destination and its optional
 #: title. Neither is rendered, so both go with the brackets and only the label
 #: is prose. A destination is either the pointy ``<...>`` form or a bare run
@@ -301,6 +324,15 @@ _YAML_PLAIN_SCALAR = r"(?: (?!:[ \t]) (?!:$) (?![ \t]\#) [^\n] )*"
 #: by ``...`` stays genuinely ambiguous, because it is a YAML document end and
 #: a CommonMark paragraph at once. YAML wins that tie, since front matter is a
 #: YAML convention and not a CommonMark one.
+#:
+#: A mapping line may end on a comment, and ``title: Trip plan # editorial
+#: note`` is a line this pattern has to recognise or the whole block stops
+#: being front matter. That matters only for the two shapes that really print:
+#: a block closed by ``...``, and a block holding a blank line. There the title,
+#: the note and the delimiter walked into the child's prose and moved the
+#: reading score. The space before the ``#`` is required, because YAML requires
+#: it: ``version: 1.0#2`` is the plain scalar ``1.0#2`` and not a comment.
+#: https://yaml.org/spec/1.2.2/#66-comments
 FRONT_MATTER_LINE_PATTERN = re.compile(
     rf"""
     ^(?:
@@ -312,6 +344,7 @@ FRONT_MATTER_LINE_PATTERN = re.compile(
         :
         (?: [ \t]+ (?: "[^"]*" | '[^']*'          # a quoted value
                      | [^\s#'"]{_YAML_PLAIN_SCALAR} ) )?
+        (?: [ \t]+ \# [^\n]* )?                     # and then a comment
         [ \t]*$
     )
     """,
@@ -886,6 +919,25 @@ def starts_a_block(
     return containment_path != previous_path[: len(containment_path)]
 
 
+def following_comment_end(
+    lines: Sequence[ParagraphLine], row: int, index: int
+) -> tuple[int, int]:
+    """Return where the comment opened at ``index`` closes, or ``(-1, -1)``.
+
+    A comment crosses a soft line break the way a code span does, and it ends
+    where the paragraph ends: an unclosed ``<!--`` is not a comment at all, so
+    the caller is right to read the characters after it as ordinary text.
+    """
+    closer = lines[row].text.find("-->", index + len("<!--"))
+    if closer != -1:
+        return row, closer + len("-->")
+    for next_row in range(row + 1, len(lines)):
+        closer = lines[next_row].text.find("-->", lines[next_row].content_start)
+        if closer != -1:
+            return next_row, closer + len("-->")
+    return -1, -1
+
+
 def paragraph_code_spans(lines: Sequence[ParagraphLine]) -> list[tuple[int, int]]:
     """Return the document offsets of every code span in one paragraph.
 
@@ -905,8 +957,19 @@ def paragraph_code_spans(lines: Sequence[ParagraphLine]) -> list[tuple[int, int]
     a span is open -- CommonMark reads ``` `foo\\`bar` ``` as the code span
     ``foo\\`` followed by a visible ``bar``, and guarding the closing run too
     would delete that ``bar``.
+
+    Raw HTML is the sixth guard, and it is not a refinement of the other five.
+    A code span, an inline comment and a raw HTML tag bind equally tightly, so
+    whichever one starts first takes the characters after it -- backticks
+    included. ``<span title="`">`` on one line and ``Text <!-- audience: adult
+    --> `end`` on the next held one backtick that is attribute data and one
+    that is literal text; reading them as a pair erased the marker between
+    them, and an adult-facing document walked into the child reading gate.
+    ``check-session-structure.py`` has skipped tags and comments this way from
+    the start; this is the same rule, one module over.
     https://spec.commonmark.org/0.31.2/#backslash-escapes
     https://spec.commonmark.org/0.31.2/#code-spans
+    https://spec.commonmark.org/0.31.2/#raw-html
     """
     regions: list[tuple[int, int]] = []
     row = 0
@@ -925,6 +988,19 @@ def paragraph_code_spans(lines: Sequence[ParagraphLine]) -> list[tuple[int, int]
             # backtick behind a backslash is never read as a run at all.
             index += 2
             continue
+        if character == "<":
+            # A comment or a tag that opens here is consumed whole, because it
+            # started first and everything inside it belongs to it.
+            if line.startswith("<!--", index):
+                close_row, close_index = following_comment_end(lines, row, index)
+                if close_row != -1:
+                    row, index = close_row, close_index
+                    continue
+            else:
+                tag = INLINE_HTML_TAG_PATTERN.match(line, index)
+                if tag is not None:
+                    index = tag.end()
+                    continue
         if character != "`":
             index += 1
             continue

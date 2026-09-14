@@ -299,7 +299,9 @@ SETEXT_UNDERLINE_PATTERN = re.compile(r"^ {0,3}(?:=+|-+)[ \t]*$")
 
 #: An inline HTML tag, open or closing. The scan skips one whole tag at a
 #: time so that a ``<!--`` inside an attribute value is read as part of the
-#: attribute, which is what CommonMark does with it.
+#: attribute, and a backtick inside one opens no code span, which is what
+#: CommonMark does with both. Kept identical to the constant in
+#: ``.github/scripts/check-readability.py``.
 #: <https://spec.commonmark.org/0.31.2/#raw-html>
 INLINE_HTML_TAG_PATTERN = re.compile(
     r"""
@@ -339,6 +341,21 @@ _LINK_DESTINATION = (
     rf"(?:<[^<>\n]*>|(?:{_DESTINATION_CHARACTER}|\({_DESTINATION_DEPTH_2}\))+)"
 )
 
+#: How long a link label may be. CommonMark caps it at 999 characters between
+#: the brackets, and the cap is load-bearing here rather than a nicety: a
+#: definition is the one construct a section can hold that renders nothing at
+#: all, so a label one character too long turns a line that renders *nothing*
+#: into a paragraph the child reads. Reported at 999 and measured at 1,000:
+#: micromark 4.0.2 prints ``[aaa...]:`` and its destination as visible text,
+#: and a section holding only those two lines was being called empty.
+#: markdown-it 14.3.0 does not implement the cap at all, so this one rule is
+#: checked against micromark and against the spec rather than against the
+#: renderer this repository usually asks. The direction settles it either way:
+#: honouring the cap can only make this hook call a section full, never empty,
+#: and the error that matters is the one that fails a session that is fine.
+#: <https://spec.commonmark.org/0.31.2/#link-label>
+LINK_LABEL_MAXIMUM_CHARACTERS = 999
+
 #: A CommonMark link reference definition: ``[label]: destination "title"``.
 #: It is a line in the file that renders nothing at all. The destination it
 #: names is used by a link somewhere else, or by nothing, so a section holding
@@ -355,7 +372,7 @@ LINK_REFERENCE_DEFINITION_PATTERN = re.compile(
     rf"""
     ^\ {{0,3}}                               # at most three spaces of indent
     \[ (?=[^\]]*[^\s\]])                     # a label with at least one nonblank
-       (?: [^\[\]\\] | \\. )+ \]
+       (?P<label> (?: [^\[\]\\] | \\. )+ ) \]
     :\ *                                     # the colon, then optional spaces
     {_LINK_DESTINATION}                      # the destination
     (?P<title> \ +                           # an optional title
@@ -382,7 +399,7 @@ LINK_REFERENCE_LABEL_PATTERN = re.compile(r"^ {0,3}\[(?P<label>(?:[^\[\]\\]|\\.)
 #: destination sit on the following line, and the construct still renders
 #: nothing at all.
 LINK_REFERENCE_LABEL_LINE_PATTERN = re.compile(
-    r"^ {0,3}\[(?=[^\]]*[^\s\]])(?:[^\[\]\\]|\\.)+\]:[ \t]*$"
+    r"^ {0,3}\[(?=[^\]]*[^\s\]])(?P<label>(?:[^\[\]\\]|\\.)+)\]:[ \t]*$"
 )
 
 #: A definition's destination, alone on its own line, with the optional title
@@ -563,6 +580,16 @@ class ActiveHtmlBlock:
 #: *inside* a comment from opening a second block that outlives the comment.
 HTML_BLOCK_COMMENT = "comment"
 
+#: Condition 4 asks for an *uppercase* ASCII letter after ``<!``. That is the
+#: rule markdown-it 14.3.0 carries, and markdown-it is what this repository
+#: measures a rendered page against. The CommonMark 0.31.2 prose says "an ASCII
+#: letter" instead, and micromark-core-commonmark 2.0.3 reads it that way, so
+#: the two really do part over a lowercase ``<!doctype html>``. Following the
+#: renderer is also the safe way round: a lowercase declaration that opens no
+#: block leaves the paragraph above it open, and a mandatory heading below it is
+#: still a heading. Reading it as a block closes that paragraph, lets the next
+#: line open a type-seven block, and hides every heading down to the blank line.
+#: <https://spec.commonmark.org/0.31.2/#html-blocks>
 HTML_BLOCK_CONDITIONS: tuple[HtmlBlockCondition, ...] = (
     HtmlBlockCondition(
         "script",
@@ -571,7 +598,7 @@ HTML_BLOCK_CONDITIONS: tuple[HtmlBlockCondition, ...] = (
     ),
     HtmlBlockCondition(HTML_BLOCK_COMMENT, HTML_BLOCK_COMMENT_START_PATTERN, re.compile(r"-->")),
     HtmlBlockCondition("instruction", re.compile(r"^ {0,3}<\?"), re.compile(r"\?>")),
-    HtmlBlockCondition("declaration", re.compile(r"^ {0,3}<![A-Za-z]"), re.compile(r">")),
+    HtmlBlockCondition("declaration", re.compile(r"^ {0,3}<![A-Z]"), re.compile(r">")),
     HtmlBlockCondition("cdata", re.compile(r"^ {0,3}<!\[CDATA\["), re.compile(r"\]\]>")),
     HtmlBlockCondition(
         "element",
@@ -950,6 +977,11 @@ def normalize_link_label(label: str) -> str:
     return " ".join(label.split()).casefold()
 
 
+def is_link_label(label: str) -> bool:
+    """Return whether ``label`` is short enough to be a link label at all."""
+    return len(label) <= LINK_LABEL_MAXIMUM_CHARACTERS
+
+
 def inline_link_end(line: str, open_index: int) -> int:
     """Return the index just past the ``)`` of an inline link, or -1.
 
@@ -1027,7 +1059,8 @@ def link_metadata_regions(
     hidden a real marker and then refused a session that had declared itself.
     <https://spec.commonmark.org/0.31.2/#links>
     """
-    if LINK_REFERENCE_DEFINITION_PATTERN.match(line) is not None:
+    definition = LINK_REFERENCE_DEFINITION_PATTERN.match(line)
+    if definition is not None and is_link_label(definition.group("label")):
         return ((0, len(line)),)
 
     regions: list[tuple[int, int]] = []
@@ -1155,32 +1188,27 @@ def following_backtick_run(contents: Sequence[str], row: int, length: int) -> tu
     return -1, -1
 
 
-def text_marker_spans(
-    contents: Sequence[str], is_in_comment: bool, defined_labels: frozenset[str]
-) -> tuple[list[str], bool]:
-    """Return the comment text on each line of one run of document text.
+def scan_inline_run(
+    contents: Sequence[str],
+    is_in_comment: bool,
+    skips: dict[int, tuple[tuple[int, int], ...]] | None,
+) -> tuple[list[str], bool, list[tuple[int, int, int]]]:
+    """Walk one run of document text left to right, one context at a time.
 
-    This answers a narrower question than ``strip_html_comments``: not "what
-    does the reader see", but "what here does CommonMark read as a comment".
-    The difference is the contexts that bind tighter than raw HTML and
-    therefore print the characters the author typed, or hand them to an
-    element as an attribute -- a code span, a backslash escape, an image's alt
-    text, a link's destination or title, an attribute value inside a tag, and a
-    line indented four spaces, which is code rather than a paragraph.
+    Returns three things: the comment text found on each line, the comment
+    state the run ends in, and every code span the walk consumed, as
+    ``(row, start, end)`` -- one range per physical line, because a span that
+    crosses a soft line break is one span and two rows.
 
-    The run is scanned whole rather than a line at a time because two of those
-    contexts cross a line break. A comment does, and the caller threads
-    ``is_in_comment`` in and out for the lines on either side of the run. A code
-    span does too, and deciding whether one closes needs the rest of the
-    paragraph rather than the rest of the line.
-
-    One measured limit is deliberate. A line indented four spaces is read as
-    code even where it is a lazy continuation of the paragraph above, which
-    CommonMark reads as prose. That is the safe direction: it refuses to exempt
-    rather than granting an exemption the file does not visibly declare.
+    ``skips`` holds, per row, the ranges this run is to read as link metadata
+    rather than as text. ``None`` runs the walk with no link model at all. That
+    is not a convenience: CommonMark takes whichever of a code span, a raw HTML
+    tag and a link starts first, so the code spans have to be known *before*
+    the link metadata is computed, and the only way to know them is to walk
+    once without it. ``text_marker_spans`` does exactly that.
     """
     spans: list[list[str]] = [[] for _ in contents]
-    skips: dict[int, tuple[tuple[int, int], ...]] = {}
+    code_spans: list[tuple[int, int, int]] = []
     row = 0
     index = 0
 
@@ -1208,12 +1236,12 @@ def text_marker_spans(
             row += 1
             continue
 
-        if row not in skips:
-            skips[row] = link_metadata_regions(line, defined_labels)
-        skipped = next((end for start, end in skips[row] if start <= index < end), index)
-        if skipped > index:
-            index = skipped
-            continue
+        if skips is not None:
+            regions = skips.get(row, ())
+            skipped = next((end for start, end in regions if start <= index < end), index)
+            if skipped > index:
+                index = skipped
+                continue
 
         character = line[index]
 
@@ -1228,12 +1256,17 @@ def text_marker_spans(
             run_length = run_end - index
             closer = closing_backtick_run(line, run_end, run_length)
             if closer != -1:
+                code_spans.append((row, index, closer))
                 index = closer
                 continue
             close_row, close_index = following_backtick_run(contents, row, run_length)
             if close_row == -1:
                 index = run_end
                 continue
+            code_spans.append((row, index, len(line)))
+            for middle in range(row + 1, close_row):
+                code_spans.append((middle, 0, len(contents[middle])))
+            code_spans.append((close_row, 0, close_index))
             row, index = close_row, close_index
             continue
 
@@ -1250,7 +1283,67 @@ def text_marker_spans(
 
         index += 1
 
-    return ["".join(parts) for parts in spans], is_in_comment
+    return ["".join(parts) for parts in spans], is_in_comment, code_spans
+
+
+def code_span_masked_lines(contents: Sequence[str], is_in_comment: bool) -> list[str]:
+    """Return the run's lines with every code span blanked, its columns intact.
+
+    Blanking rather than deleting is what lets the masked lines be handed
+    straight to ``link_metadata_regions``: the ranges it returns are offsets
+    into the real line, so they have to stay the offsets the real line has.
+    """
+    _, _, code_spans = scan_inline_run(contents, is_in_comment, None)
+    masked = [list(line) for line in contents]
+    for row, start, end in code_spans:
+        masked[row][start:end] = " " * (end - start)
+    return ["".join(characters) for characters in masked]
+
+
+def text_marker_spans(
+    contents: Sequence[str], is_in_comment: bool, defined_labels: frozenset[str]
+) -> tuple[list[str], bool]:
+    """Return the comment text on each line of one run of document text.
+
+    This answers a narrower question than ``strip_html_comments``: not "what
+    does the reader see", but "what here does CommonMark read as a comment".
+    The difference is the contexts that bind tighter than raw HTML and
+    therefore print the characters the author typed, or hand them to an
+    element as an attribute -- a code span, a backslash escape, an image's alt
+    text, a link's destination or title, an attribute value inside a tag, and a
+    line indented four spaces, which is code rather than a paragraph.
+
+    The run is scanned whole rather than a line at a time because two of those
+    contexts cross a line break. A comment does, and the caller threads
+    ``is_in_comment`` in and out for the lines on either side of the run. A code
+    span does too, and deciding whether one closes needs the rest of the
+    paragraph rather than the rest of the line.
+
+    It is scanned *twice* because a code span and a link are not asked about in
+    either order. CommonMark takes whichever construct starts first, and a code
+    span that opens before a ``[`` swallows the bracket, so the link is never
+    there to have metadata. Computing the metadata over the raw line read
+    ``` `![alt](url` "<!-- no-source-check: x -->") ``` as an image running to
+    the final ``)``, and the marker the renderer really does print went with
+    it: a session that had declared its exemption was failed for not declaring
+    one. The first pass therefore finds the code spans with no link model at
+    all, and the second asks what a link is only of the characters the spans
+    left. It closes the other way round too -- ``![a`b](u) <!-- x --> c` `` is
+    an image to a raw-line pass and a code span to the renderer, so the marker
+    inside it was granting an exemption the page never carried.
+
+    One measured limit is deliberate. A line indented four spaces is read as
+    code even where it is a lazy continuation of the paragraph above, which
+    CommonMark reads as prose. That is the safe direction: it refuses to exempt
+    rather than granting an exemption the file does not visibly declare.
+    """
+    masked = code_span_masked_lines(contents, is_in_comment)
+    skips = {
+        row: link_metadata_regions(line, defined_labels)
+        for row, line in enumerate(masked)
+    }
+    spans, is_in_comment, _ = scan_inline_run(contents, is_in_comment, skips)
+    return spans, is_in_comment
 
 
 def collect_reference_labels(sources: Sequence[MarkerSource]) -> frozenset[str]:
@@ -1684,7 +1777,8 @@ def reference_definition_span(lines: Sequence[str], index: int) -> int:
         position = index + offset
         return lines[position] if position < len(lines) else ""
 
-    if LINK_REFERENCE_LABEL_LINE_PATTERN.match(line_at(0)) is not None:
+    label_line = LINK_REFERENCE_LABEL_LINE_PATTERN.match(line_at(0))
+    if label_line is not None and is_link_label(label_line.group("label")):
         destination = LINK_REFERENCE_DESTINATION_LINE_PATTERN.match(line_at(1))
         if destination is None:
             return 0
@@ -1695,7 +1789,7 @@ def reference_definition_span(lines: Sequence[str], index: int) -> int:
         return 2
 
     definition = LINK_REFERENCE_DEFINITION_PATTERN.match(line_at(0))
-    if definition is None:
+    if definition is None or not is_link_label(definition.group("label")):
         return 0
     if definition.group("title") is None and (
         LINK_REFERENCE_TITLE_LINE_PATTERN.match(line_at(1)) is not None

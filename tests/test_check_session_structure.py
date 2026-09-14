@@ -2504,3 +2504,137 @@ def test_a_document_with_crlf_line_endings_keeps_its_sections() -> None:
         .replace("\n", "\r\n")
     )
     assert check(text) == []
+# --- round 3: declarations, code spans before links, and label length -------
+
+
+def test_a_lowercase_declaration_does_not_open_an_html_block() -> None:
+    """``<!foo>`` is a declaration to micromark and prose to markdown-it.
+
+    Condition 4 accepted any ASCII letter, so a lowercase declaration inside a
+    paragraph closed it, the complete tag on the next line opened a type-seven
+    block, and every mandatory heading down to the blank line disappeared into
+    it. Measured against markdown-it 14.3.0, which is what this repository
+    reads a rendered page by: both lines stay in the paragraph and the heading
+    below them is a heading.
+    """
+    text = build_session(
+        sections=SIX_SECTIONS,
+        extra="## Notes\n\nPack a snack for the walk.\n<!foo>\n<x>\n## Source Check\n\nWe read it.\n",
+    )
+    assert check(text) == []
+
+
+def test_an_uppercase_declaration_still_opens_an_html_block() -> None:
+    """A negative control. Condition 4 is a real condition; it just wants a capital.
+
+    Measured against markdown-it 14.3.0: the declaration closes the paragraph,
+    the tag below it opens a block, and the heading inside that block is raw
+    HTML rather than a heading.
+    """
+    text = build_session(
+        sections=SIX_SECTIONS,
+        extra=(
+            "## Notes\n\nPack a snack for the walk.\n<!DOCTYPE html>\n<x>\n"
+            "## Source Check\n\nWe read it.\n"
+        ),
+    )
+    assert any('missing "## Source Check"' in message for message in check(text))
+
+
+def test_a_code_span_shaped_like_an_image_does_not_hide_a_marker() -> None:
+    """The link metadata was computed over the raw line, before the code spans.
+
+    ``` `![alt](url` "<!-- no-source-check: x -->") ``` looked like an image
+    running to the final ``)``, so the marker inside it was thrown away and a
+    session that had declared its exemption was failed for not declaring one.
+    Measured against markdown-it 14.3.0: the code span wins, and what follows
+    it is a comment on the page.
+    """
+    text = build_session(
+        sections=SIX_SECTIONS,
+        extra=f'## Notes\n\n{TICK}![alt](url{TICK} "{OFFLINE_MARKER}")\n',
+    )
+    assert check(text) == []
+
+
+def test_a_real_image_title_still_hides_a_marker() -> None:
+    """A negative control. An image's title is an attribute, not a comment.
+
+    Measured against markdown-it 14.3.0: the marker becomes the ``title`` of an
+    ``<img>`` and the page carries no comment at all.
+    """
+    text = build_session(
+        sections=SIX_SECTIONS,
+        extra=f'## Notes\n\n![alt](url "{OFFLINE_MARKER}")\n',
+    )
+    assert any('missing "## Source Check"' in message for message in check(text))
+
+
+def test_a_code_span_opening_inside_alt_text_hides_the_marker_after_it() -> None:
+    """The same defect the other way round, and the dangerous way round.
+
+    A raw-line pass read ``![a`b](u) <!-- ... --> c` `` as an image ending at
+    ``)``, so the marker after it looked like ordinary text and exempted the
+    session. Measured against markdown-it 14.3.0: the code span opens inside
+    the alt text, swallows the ``]``, and the marker is printed rather than
+    read. The exemption was one the page never carried.
+    """
+    text = build_session(
+        sections=SIX_SECTIONS,
+        extra=f"## Notes\n\n![a{TICK}b](u) {OFFLINE_MARKER} c{TICK}\n",
+    )
+    assert any('missing "## Source Check"' in message for message in check(text))
+
+
+#: A label one character past what CommonMark allows between the brackets, and
+#: the longest one it does allow. Spelled here so the two tests below cannot
+#: drift apart by a character.
+LABEL_TOO_LONG = "a" * 1000
+LABEL_LONGEST_ALLOWED = "a" * 999
+
+
+@pytest.mark.parametrize(
+    ("label", "body"),
+    [
+        ("a label line over an indented destination", f"[{LABEL_TOO_LONG}]:\n    /destination"),
+        ("a one-line definition", f"[{LABEL_TOO_LONG}]: /destination"),
+    ],
+)
+def test_a_label_of_a_thousand_characters_is_not_a_definition(label: str, body: str) -> None:
+    """CommonMark caps a link label at 999 characters between the brackets.
+
+    Both definition patterns took a label of any length, so a section holding a
+    1,000-character label was consumed as a definition and reported empty.
+    Measured against micromark 4.0.2, which implements the cap: the brackets
+    and the destination are a paragraph the child reads. markdown-it 14.3.0
+    does not implement the cap, which is why this one rule is measured
+    elsewhere.
+    """
+    text = build_session().replace(
+        "## Goal\n\nReal content for Goal.\n", f"## Goal\n\n{body}\n", 1
+    )
+    assert not any('section "## Goal" is empty' in m for m in check(text)), label
+
+
+@pytest.mark.parametrize(
+    ("label", "body"),
+    [
+        (
+            "a label line over an indented destination",
+            f"[{LABEL_LONGEST_ALLOWED}]:\n    /destination",
+        ),
+        ("a one-line definition", f"[{LABEL_LONGEST_ALLOWED}]: /destination"),
+    ],
+)
+def test_a_label_of_nine_hundred_ninety_nine_characters_still_renders_nothing(
+    label: str, body: str
+) -> None:
+    """A negative control, and the one that keeps the cap off by no characters.
+
+    Measured against micromark 4.0.2: at 999 the definition parses and the
+    section prints to the child as a bare heading.
+    """
+    text = build_session().replace(
+        "## Goal\n\nReal content for Goal.\n", f"## Goal\n\n{body}\n", 1
+    )
+    assert any('section "## Goal" is empty' in m for m in check(text)), label

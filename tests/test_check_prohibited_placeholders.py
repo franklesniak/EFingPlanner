@@ -899,3 +899,32 @@ def test_crlf_line_endings_report_what_line_feeds_report() -> None:
 
     assert expected == ["TBD"]
     assert [violation.matched_text for violation in _find(text.replace("\n", "\r\n"))] == expected
+# --- round 3: HTML block condition 4 wants a capital ------------------------
+
+
+def test_a_lowercase_declaration_does_not_open_an_html_block() -> None:
+    """Condition 4 took any ASCII letter, and the fence below paid for it.
+
+    ``<!foo>`` closed the paragraph, the complete tag on the next line opened a
+    type-seven block, and the fence inside that block stopped being a fence --
+    so a placeholder that is code was reported as text. Measured against
+    markdown-it 14.3.0: both lines stay in the paragraph, the fence interrupts
+    it, and ``TBD`` is inside a code block.
+    """
+    text = "Pack a snack for the walk.\n<!foo>\n<x>\n```\nTBD\n```\n\nRide your bike.\n"
+
+    assert _find(text) == []
+
+
+def test_an_uppercase_declaration_still_opens_an_html_block() -> None:
+    """A negative control. The condition is real; it just wants a capital.
+
+    Measured against markdown-it 14.3.0: the declaration closes the paragraph,
+    the tag opens a block, and everything down to the blank line -- fence
+    markers included -- is raw HTML the page prints.
+    """
+    text = (
+        "Pack a snack for the walk.\n<!DOCTYPE html>\n<x>\n```\nTBD\n```\n\nRide your bike.\n"
+    )
+
+    assert [violation.matched_text for violation in _find(text)] == ["TBD"]
