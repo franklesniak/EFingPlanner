@@ -739,7 +739,10 @@ medication, bookings, payments, legal requirements, or the final budget). The pr
 rule stated on the page: no family or personal details, **including photos or scans of
 filled-in worksheets and binder pages**; a grown-up retypes the question without the
 personal parts; AI conversations may be stored by the provider. The adult-operated
-pattern restated in one clause with a link, not re-explained.
+pattern restated in one clause with a link, not re-explained. **Its point of use is
+Session 09**, which the conversion section below wires to it: that session's Materials
+line and `## Workspace` both link here, and its `## Artifact Created` line already names
+this form's two halves. Do not duplicate Session 09's Source Log mapping on this page.
 
 **D6. `framework/templates/simple_citation.md` (create).** The **printable child-facing
 form**, not the explanation (OQ-11). H1; one short how-to-use paragraph in the form
@@ -755,9 +758,16 @@ rule — `docs/citation_style.md` owns those.
 template for authoring sessions, not a worksheet. It sits inside the readability
 scorer's `framework/templates/**/*.md` glob, so it must declare its audience in its own
 text: put `<!-- audience: builder -->` near the top, on its own line. Carries the full
-session skeleton in order, inside one fenced `markdown` block:
+session skeleton in order, inside one fenced `markdown` block. **The skeleton opens with
+the `markdownlint-disable` directive, not with the H1.** Every built curriculum file
+carries that comment as line 1, the hard constraints below require it of every built
+curriculum file, and this is the one deliverable in the batch whose whole purpose is to
+be copied -- a skeleton that omits the directive teaches its absence, and the next author
+has to remember an addition the template never showed them:
 
 ```markdown
+<!-- markdownlint-disable MD013 -->
+
 # Session Number: Session Title
 
 You are here: Phase N, Session M of this phase.
@@ -1297,8 +1307,11 @@ Batch 1 must land these entries:
   Binder Assembly session but does not link to them, because neither file exists yet.
   Add both relative links when `framework/print_index.md` and Session 50 land."*
 - **"What is still owed to a human" — rewrite the Batch-1 gate sentence in place.** That
-  section's second bullet currently ends *"Neither check can start yet, because Batch 1
-  creates those pages and sessions."* Batch 1 creates them, so that sentence is false the
+  section's second bullet contains the sentence *"Neither check can start yet, because
+  Batch 1 creates those pages and sessions."* **It is not the last sentence of the
+  bullet** -- three sentences follow it, and this same instruction requires you to keep
+  one of them, so match the sentence itself and not the bullet's tail. Batch 1 creates
+  those pages and sessions, so that sentence is false the
   moment you finish, and a human reading it would correctly conclude there is nothing to
   do -- while Batch 2 stays blocked on the gate it describes. Replace **that one sentence**
   with: *"Batch 1 has now created those pages and sessions, so both checks are ready to
@@ -1861,12 +1874,26 @@ trust test plus the AI concept block; sitting two is the Optional Extension "on 
 day"); the quick trust test's three questions (Who made this? Why did they make it? Can
 another source check it?); the always-core "what AI is and is not" block, three lines
 (AI can make up facts that sound right; AI is never your only source; AI never decides
-legal, safety, entry, medical, money, or booking questions); lateral reading and
-primary-versus-secondary in plain language; the co-working parent involvement and the
-short ungraded formative skill check afterwards; and the Source Check step that fills in
-the Trust level and Usefulness boxes left blank in Session 04.
+legal, safety, entry, medical, money, or booking questions); the co-working parent
+involvement and the short ungraded formative skill check afterwards; and the Source Check
+step that fills in the Trust level and Usefulness boxes left blank in Session 04.
 
-### Session 09 — AI as Helper, Not Boss (scrub only, no insert)
+**Two definitions leave this session, and their names stay.** The Optional Extension's
+**Lateral reading** and **Primary vs. secondary** bullets carry the only full
+explanations of those concepts in the built tree, and F5 makes
+`framework/docs/source_trustworthiness.md` their canonical home -- *"defined once here so
+sessions can point rather than re-teach."* F11 re-points the style guide's
+canonical-homes table at that same file in this batch, and the hard rule below forbids
+restating a canonical concept **in full or in abbreviated form**. Preserving the built
+bullets would make this brief demand both halves of a contradiction and leave two texts
+free to drift apart. So keep both bullet **labels**, so the child still meets the names
+where they use them, and replace each explanation with a one-clause child-facing reminder
+plus a relative link to `../../docs/source_trustworthiness.md`. **The translation
+parenthetical is not a definition and does not leave**: the neutralised sentence from the
+Optional extension row above stays in the Optional Extension, word order unchanged, on
+its own line beneath the two bullets.
+
+### Session 09 — AI as Helper, Not Boss (scrub, plus the AI Notes wiring; no insert)
 
 Two leaks, both inside prose and one inside a fenced example prompt — **the leak grep
 reads the whole body, fences included.**
@@ -1888,6 +1915,19 @@ present, never solo); the three allowed jobs and the three prohibitions; the pri
 rule including no photos or scans of filled-in pages; the Source Log recording mapping
 (Source type = "AI tool", Title = tool name, and so on); and the Parent Notes
 minimum-age verification with a recorded date.
+
+**One addition, and it is the only one: wire in the AI Notes form.** D5 creates
+`framework/templates/ai_notes.md`, and this session is its only point of use. The
+session's `## Artifact Created` line already promises the child *"Your AI notes and
+verification checklist"* -- which is exactly what D5 builds -- and nothing else in this
+batch links to the form. Left alone it ships orphaned, and no family ever finds the page
+carrying the verification checklist, the recommendation boundary and the privacy rule.
+Two touches, and no more. **Materials**, which reads *"the adult's own AI tool, your
+Source Log"*, gains the form: *"the adult's own AI tool, your Source Log, the [AI Notes
+form](../../templates/ai_notes.md)"*. **`## Workspace`** gains one clause pointing at the
+same file. **The Source Log entry stays primary and its mapping is unchanged** -- the AI
+Notes form is the fuller record kept beside it, never a replacement for it. Do not add a
+third mention, and do not restate the form's fields in the session.
 
 ### Session 10 — Destination Snapshot (convert; insert `10_snapshot_facts.md`)
 
@@ -2320,24 +2360,33 @@ ban them. The style guide predicts that self-match itself. Read every other hit.
 generic-child reference must be "your child," "the child," or "they." A hit inside a
 quoted example is fine; a hit that is a real pronoun choice is not.
 
-Structure check — the seven mandatory-core fields, skipping the adult-only Session 00.
-**If `.github/scripts/check-session-structure.py` is on your branch, that script is the
-gate: run it and treat its output as authoritative.** It is not on `main` as this brief
-is written — it arrives with an in-flight pull request. Use the loop below only as the
-fallback for a branch that does not yet have it:
+Structure check — **`.github/scripts/check-session-structure.py` is the gate: run it and
+treat its output as authoritative.** It is on `main`, and on your branch, so the gate is
+unconditional and there is no not-run fallback.
 
 ```bash
-for f in framework/sessions/phase_00_setup/0[1-4]_*.md \
-         framework/sessions/phase_01_research_skills/*.md \
-         framework/sessions/phase_02_destination_big_picture/*.md; do
-  for h in "## Goal" "## Start Here" "## Steps" "## Workspace" \
-           "## Artifact Created" "## Stop Point"; do
-    grep -qF "$h" "$f" || echo "MISSING $h in $f"
-  done
-done
+python .github/scripts/check-session-structure.py
 ```
 
-Expect no output. Then confirm by reading that every session has a **named** artifact
+It prints `Session structure: N file(s) checked, all well-formed.` and exits non-zero on
+any failure. **Do not narrow it to the phases this batch touches.** With no arguments it
+walks the whole of `framework/sessions`, and it enforces more than the seven
+mandatory-core fields: the H1 form `# Session NN: Title`, with `NN` matching the
+filename; the navigation line, present above the first `##` section; the `**For
+parents:**` strip, carrying bullets for Status, Estimated time and Parent involvement;
+the six always-mandatory sections; Source Check, unless the file carries
+`<!-- audience: adult -->` or `<!-- no-source-check: reason -->`; the canonical relative
+order of those scaffold sections, with Source Check seventh; that no mandatory section is
+empty; and that no fenced block is used as a worksheet fill-in. Fenced blocks and HTML
+comments are stripped before the structural search runs, so a heading inside either is
+not a section, and a marker printed inside a fence is an example of a marker rather than
+one.
+
+It is wired into `.github/workflows/markdownlint.yml` and **not** into
+`.pre-commit-config.yaml`, so a clean `pre-commit` run is no evidence that it passed.
+This is a fifth command; run it yourself.
+
+Then confirm by reading that every session has a **named** artifact
 and a stop point, and that `## Source Check` is present in **every session that has a
 research step**. Do not read that as "and in no other session." Sessions 01, 03 and 13
 have no research step and already carry `## Source Check` with the built form *"No new
