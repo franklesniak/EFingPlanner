@@ -150,8 +150,10 @@ brief already reflects it:
 
 `framework/CHANGELOG.md` is on `main` already. Treat it as existing: several
 deliverables write to it. If it is genuinely absent on your branch, **recover it rather
-than writing a new one** -- `git show origin/main:framework/CHANGELOG.md >
-framework/CHANGELOG.md` -- then make F10's edits. Writing a fresh file loses the
+than writing a new one** -- resolve whichever baseline ref your checkout has and restore
+the file from it, with the two-line command F10 gives below; do not assume an
+`origin/main` remote-tracking ref exists, because a CI checkout that fetched only the
+pull-request ref does not have one -- then make F10's edits. Writing a fresh file loses the
 versioning policy, the `0.1.0` history, the recorded pilot deferral and the "What is
 still owed to a human" gate, all of which later deliverables assume are still there.
 
@@ -989,12 +991,24 @@ in order:
    adult-owned responsibilities clearly. Every legal, safety, entry or
    current-information item carries a verify-with-official-sources line and a
    record-the-date-checked line.
-4. `## The page skeleton` — one fenced `markdown` block: `# Page Title`, a one-sentence
-   purpose line, two or three `## <Point>` headings, and a closing `## Where to go
-   next` pointer list.
+4. `## The page skeleton` — one fenced `markdown` block. **It opens with the
+   `markdownlint-disable` directive, not with the H1**, exactly as D7's skeleton does:
+   `<!-- markdownlint-disable MD013 -->`, then `# Page Title`, a one-sentence purpose
+   line, two or three `## <Point>` headings, and a closing `## Where to go next` pointer
+   list. Every built curriculum file carries that comment as line 1 and the hard
+   constraints below require it, `MD013` is off in this repository's own config so the
+   directive earns its keep only when the page is read by an external markdownlint at
+   defaults, and this block is written to be copied into a new file -- a skeleton that
+   starts at the H1 teaches its absence, and the next author has to remember an addition
+   the template never showed them.
 5. `## The per-session support-note shape` — one fenced `markdown` block showing the
    six-part shape `session_support_notes.md` uses: the `## Session NN: Title` heading,
-   then Role, Prep, Look for, Coaching question, Pitfall.
+   then Role, Prep, Look for, Coaching question, Pitfall. **This one starts at the `##`
+   heading and carries no `markdownlint-disable` directive**, and that is correct rather
+   than an oversight: it is a fragment pasted into a file that already has the comment on
+   line 1, not a whole new page, and a directive in the middle of a file is a defect of
+   its own. The rule is about what the copied block becomes -- item 4 becomes a file, this
+   one becomes a section.
 6. `## Checks before you ship a page` — a short list: point-first register; no
    destination facts; no trip, origin or roster values; one canonical home per concern
    with a one-clause reminder and a link elsewhere; verify-framing on every volatile
@@ -1377,13 +1391,25 @@ repository claim validation it has not earned.
 memory and do not write a fresh skeleton. Recover the real file first:
 
 ```bash
-git show origin/main:framework/CHANGELOG.md > framework/CHANGELOG.md
+ref=$(git rev-parse --verify --quiet origin/main || git rev-parse --verify --quiet main)
+git checkout "$ref" -- framework/CHANGELOG.md
 ```
 
-Then apply the Batch 1 edits below to what you recovered. If that command fails, **stop
-and report it** — a missing changelog is a branch problem, not a content gap, and a
-partial history is worse than a paused build. F10 stays an **edit** on every branch, so
-the deliverables split is always 37 created / 28 edited.
+**Do not write `git show origin/main:framework/CHANGELOG.md > framework/CHANGELOG.md`.**
+A checkout can legitimately have no `origin/main` remote-tracking ref -- a CI checkout
+that fetched only the pull-request ref, a single-branch clone, or a remote under another
+name -- and there `git show origin/main:...` exits 128 with
+`fatal: invalid object name 'origin/main'` while a local `main` would have resolved. The
+two lines above try the remote-tracking ref, then the local branch, and restore the file
+with `git checkout`, which writes nothing at all when neither ref resolves -- unlike `>`,
+which truncates the target before the command that was going to fill it runs, and so
+leaves an empty changelog behind on exactly the failure you most need to see.
+
+Then apply the Batch 1 edits below to what you recovered. If neither ref resolves, or the
+restore fails for any other reason, **stop and report it** — a missing changelog is a
+branch problem, not a content gap, and a partial history is worse than a paused build.
+F10 stays an **edit** on every branch, so the deliverables split is always
+37 created / 28 edited.
 
 The curriculum changelog, distinct from the per-trip decision log. The Batch 1 section
 you add takes this shape:
@@ -1442,12 +1468,23 @@ Batch 1 must land these entries:
   them. See 'What is still owed to a human' below."* Plus the framework-layer
   destination scrub, the glossary move, and the style-file change.
 
-  **Do not write the word "piloted" about any Batch 0 page, here or anywhere else you
-  author.** The file you are appending to already records the opposite at four separate
-  lines — its `## Versioning` section, the recorded pilot deferral, the `0.1.0` **Added**
-  entry, and "What is still owed to a human". An entry that contradicts them makes this
-  repository claim validation it has not earned, and a reuser who reads only the
-  changelog would treat the baseline as child-tested.
+  **Do not claim, in any wording, that a child has used a page this repository ships --
+  here, or anywhere else you author.** This is the canonical home of that rule, and it
+  bans the claim rather than one word. "Piloted" is only its most obvious spelling, and
+  the claim has entered this repository five times, most of them through phrasings that
+  do not contain it: *"the piloted First Taste order"*, the second-gate wording,
+  *"the piloted concrete pages"*, *"The sessions that exist are usable"*, and
+  *"the pages your child actually worked"*. Each arrived by reusing language from the
+  archived record or from ordinary changelog convention, both of which assume a pilot
+  happened. So before you write any sentence in which a child, a family or a reader has
+  worked, walked, run, read, tested, tried or validated a built page -- in the changelog,
+  in a session, in a guide, or in replacement text for a file this batch edits -- check
+  it against the deferral: no child has walked any of it, and only a real child can
+  establish that. The file you are appending to already records the opposite at four
+  separate lines — its `## Versioning` section, the recorded pilot deferral, the `0.1.0`
+  **Added** entry, and "What is still owed to a human". An entry that contradicts them
+  makes this repository claim validation it has not earned, and a reuser who reads only
+  the changelog would treat the baseline as child-tested.
 - **Build decisions on record** — (a) *"Session 14 (Checkpoint 1) has no
   destination-notes slot. The archived design record listed Session 14 among the Batch 1
   insert slots, but the insert/reference contract routes none to it and names Session 14
@@ -1859,14 +1896,21 @@ end) works and prints portrait.
   short version of the build scope note **and its gate**. This batch is what falsifies
   the advice: it builds the five sessions the gate's second check watches a child work.
   **Keep the paragraph and append these two sentences to it**, in the page's own plain
-  parent voice: *"One stop, before you build the next phase: read the rebuilt Phase 0-2
-  sessions against the pages your child actually worked and confirm nothing was lost,
-  and watch your child work the sessions that are new to them. Fix what you find before
-  you build further -- reading the pages is the easy half, and only watching your child
-  tells you whether the new sessions work."* Do not number the batches here, do not cite
-  a spec section, and change nothing else in the section. The pilot-runner section
-  further down the page is the **first** gate and is already written; this is the second
-  one, and the two are not the same check.
+  parent voice: *"One stop, before you build the next phase: read each rebuilt Phase 0-2
+  session with its Destination Notes beside it, against the version it replaced, and
+  confirm nothing was lost; then watch your child work the sessions that are new to them.
+  Fix what you find before you build further -- reading the pages is the easy half, and
+  only watching your child tells you whether the new sessions work."* **The comparison is
+  against the versions those pages replaced, and nothing else.** No child has worked any
+  page in this repository -- the usability pilot is deferred, and this same page records
+  that three sections further down -- so a sentence pointing an adult at "the pages your
+  child worked" names something that does not exist and makes the read impossible to
+  start. The insert half is not optional either: this batch moves the destination facts
+  out of the session bodies, so an adult reading only the rebuilt session against the old
+  page finds those facts missing and concludes content was lost. Do not number the batches
+  here, do not cite a spec section, and change nothing else in the section. The
+  pilot-runner section further down the page is the **first** gate and is already written;
+  this is the second one, and the two are not the same check.
 
 **H7. `framework/student_guide/progress_tracker.md` (edit).** Two parts: the First Taste
 list, and the "Which sessions need a grown-up" section. Both change.
@@ -2126,8 +2170,9 @@ navigation only:
 - Preserve: the traveler poll and the relay fallback; the poll results as real evidence
   feeding city and attraction choices; the three-step "balancing what people want" move;
   the one-line "how I balanced what people wanted" note carried to the family decision
-  meeting; the bridging line to later route and budget trade-offs; and "record answers by
-  relationship or role, which keeps private details off the page."
+  meeting; the bridging line to later route and budget trade-offs; and the instruction to
+  write down each answer with who said it, by relationship or role, which keeps private
+  details off the page.
 
 ### Session 04 — Start a Source Log (convert, no insert slot, **golden exemplar**)
 
@@ -2277,8 +2322,9 @@ Keep the four-box Start Here but make the labels come from the Destination Notes
 destinations without four seasons and no decision covers it; this neutral form is the
 recommendation recorded in the spec extract, and it keeps the built chart working. Keep
 the three comparison dimensions in the body — they are generic: weather; crowds and
-cost; school and work calendar fit. Keep the Source Check with its "dates and prices
-change, re-check close to travel" reminder, and the Parent Notes' verify-framing.
+cost; school and work calendar fit. Keep the Source Check with its reminder that dates and
+prices change and must be re-checked close to travel, and the Parent Notes'
+verify-framing.
 
 ### Session 13 — Trip Goals and Travel Style (convert, no insert slot)
 
@@ -2355,13 +2401,24 @@ required end state for the numbered child order is:
 **The italic path-divergence lines.** Sessions 01, 05, 06, 09 and 10 each end with one
 short italic line directly under the navigation line — those five, and no others.
 **Four of the five are additions. Session 05's is not.** That session already carries an
-italic line there today, the only one in the tree, reading *"If your family chose to use
-AI, do [Session 09](09_ai_as_helper_not_boss.md) right after this one, before you use any
-AI tool."* Its block below **rewrites that line and adds a second one above it**, so
+italic line there today, the only one in the tree sitting directly under a navigation
+line, reading *"If your family chose to use AI, do
+[Session 09](09_ai_as_helper_not_boss.md) right after this one, before you use any AI
+tool."* Session 05's block below **rewrites that line and adds a second one above it**, so
 Session 05 ends with two italic lines and not three. Rewrite the existing line; do not
-append a third beside it. The
-general rule is *announce a divergence forward only, and add no line where the numbered
-order and the First Taste order already agree*; that rule explains 01, 05 and 10.
+append a third beside it.
+
+**Session 09 carries an italic line too, and it is not one of these five.** It sits
+**below that session's "For parents" strip, not under its navigation line** --
+*"Every family already learned 'what AI is and is not' in Session 05. This session is only
+for families who will actually use an AI tool."* It announces no path divergence, Session
+09's block below does not reach it, and universal conversion rule 1 preserves it. So
+Session 09's path-divergence line is still an addition, it goes under the navigation line,
+and the built line stays exactly where it is: do not stack the two together, and do not
+delete the built one.
+
+The general rule is *announce a divergence forward only, and add no line where the
+numbered order and the First Taste order already agree*; that rule explains 01, 05 and 10.
 Sessions 06 and 09 are not on the First Taste chain at all, so the rule does not reach
 them — their lines exist because the OQ-7 decision's exact-line blocks supply them (06
 carries Session 07's skip affordance; 09 carries its First Taste placement). The
@@ -2428,6 +2485,13 @@ You are here: Phase 2 (Destination Big Picture), First Taste step 5 of 13. Previ
   sources close to travel" language. Never pin a date to a seasonal pattern; name
   categories to confirm this year. Never hard-code a currency rate — any illustrative
   figure is labelled as an example to re-check, and dated.
+- **Never claim a child has used a built page.** No page this repository ships has been
+  worked by a child: the Batch 0 usability pilot is deferred under the parent guide's own
+  documented no-child fallback, and `framework/CHANGELOG.md` records that at four separate
+  lines. The rule bans the claim and not one word — four of its five appearances in this
+  repository carried no form of "pilot" — and **F10's changelog bullet above is its
+  canonical home**. Read it before you write any sentence, in any file, in which a child
+  has worked, walked, run, read, tested or validated a page.
 - **Never:** real personal info, passport/confirmation numbers, payment or booking
   workflows, asking the child to book anything, placeholder-only files, fake completed
   itineraries/recommendations, copyrighted guidebook text, shipped/generated PDFs or PDF
