@@ -294,6 +294,23 @@ LINK_DEFINITION_TITLE_PATTERN = re.compile(
 #: file in this repository, and its keys are publishing metadata, not text a
 #: child reads.
 FRONT_MATTER_DELIMITER_PATTERN = re.compile(r"^(?:-{3}|\.{3})[ \t]*$")
+#: A line a YAML front-matter block can hold: a mapping key, a sequence item, an
+#: indented continuation, or a comment. The key form takes no internal
+#: whitespace, which is what tells ``applyTo: "**/*.md"`` from a sentence.
+#: A document that merely opens with a thematic break holds prose between its
+#: two ``---`` lines, and prose is none of these.
+FRONT_MATTER_LINE_PATTERN = re.compile(
+    r"""
+    ^(?:
+        [ \t]                                     # an indented continuation
+      | \#                                        # a comment
+      | -[ \t]                                    # a sequence item
+      | (?: "[^"]*" | '[^']*' | [^\s#:'"][^\s:]* )  # a mapping key
+        : (?: [ \t].* )?$
+    )
+    """,
+    re.VERBOSE,
+)
 
 #: The kind of the sentence unit that is still open for a wrapped line to join.
 #: A blockquote line may join only an open *quoted* unit: a blockquote that
@@ -625,25 +642,33 @@ def is_table_delimiter(line: str) -> bool:
     return "|" in line and TABLE_DELIMITER_PATTERN.match(line) is not None
 
 
-def fence_container_ended(line: str, active_fence: ActiveFence) -> bool:
-    """Return whether ``line`` has left the container holding the open fence.
+def container_path_ended(line: str, containment_path: tuple[Container, ...]) -> bool:
+    """Return whether ``line`` has left the container holding an open block.
 
-    CommonMark ends a fenced block at the end of its containing block when no
-    closing fence is found, so a fence opened inside a list item or a
-    blockquote does not run to the end of the document once the document
-    outdents past that container. A nonblank line that does not peel to the
-    fence's container has left it. A blank line has left a blockquote, which a
-    blank line ends, but not a list item, where a blank line is ordinary
-    content. Kept identical to the helper in
-    ``.github/scripts/check-prohibited-placeholders.py``.
-    https://spec.commonmark.org/0.31.2/#fenced-code-blocks
+    CommonMark ends a leaf block at the end of its containing block, so a block
+    opened inside a list item or a blockquote does not run to the end of the
+    document once the document outdents past that container. A nonblank line
+    that does not peel to the block's container has left it. A blank line has
+    left a blockquote, which a blank line ends, but not a list item, where a
+    blank line is ordinary content. Kept identical to the helper in the sibling
+    hooks. https://spec.commonmark.org/0.31.2/#container-blocks
     """
-    _, peeled_count = peel_containers(line, active_fence.containment_path)
-    if peeled_count == len(active_fence.containment_path):
+    _, peeled_count = peel_containers(line, containment_path)
+    if peeled_count == len(containment_path):
         return False
     if line.strip():
         return True
-    return active_fence.containment_path[peeled_count].kind == CONTAINER_KIND_BLOCK_QUOTE
+    return containment_path[peeled_count].kind == CONTAINER_KIND_BLOCK_QUOTE
+
+
+def fence_container_ended(line: str, active_fence: ActiveFence) -> bool:
+    """Return whether ``line`` has left the container holding the open fence.
+
+    A fenced block is one of the leaf blocks ``container_path_ended`` speaks
+    for; the rule is the container's, not the fence's.
+    https://spec.commonmark.org/0.31.2/#fenced-code-blocks
+    """
+    return container_path_ended(line, active_fence.containment_path)
 
 
 def parse_opening_fence(line: str) -> tuple[str, int] | None:
@@ -671,12 +696,22 @@ def is_closing_fence(line: str, fence_character: str, minimum_length: int) -> bo
 
     CommonMark closes a fenced block only on a fence of the same character that
     is at least as long as the opening fence and that carries nothing but
-    whitespace after it. Both parts matter here. This repository documents
+    spaces or tabs after it. Both parts matter here. This repository documents
     Markdown inside Markdown, so a three-backtick fence often sits inside a
     four-backtick example; a shorter fence must not close the longer one, or
     the example code leaks into the score and the prose after it is dropped.
+
+    Spaces and tabs, and not a whitespace class. Python reads ``\\s`` as Unicode
+    whitespace, so a nonbreaking space or a form feed after the backticks closes
+    the block here while the renderer keeps every line below it inside the code.
+    Measured against markdown-it 14.3.0: a fence followed by U+00A0 does not
+    close.
+    Kept in step with the sibling hooks.
+    https://spec.commonmark.org/0.31.2/#fenced-code-blocks
     """
-    closing_pattern = re.compile(rf"^ {{0,3}}{re.escape(fence_character)}{{{minimum_length},}}\s*$")
+    closing_pattern = re.compile(
+        rf"^ {{0,3}}{re.escape(fence_character)}{{{minimum_length},}}[ \t]*$"
+    )
     return closing_pattern.match(line) is not None
 
 
@@ -719,6 +754,71 @@ def replace_character_reference(match: re.Match[str]) -> str:
     return decoded.replace("\r", " ").replace("\n", " ")
 
 
+def literal_code_regions(text: str) -> list[tuple[int, int]]:
+    """Return the character ranges of every fenced block line and code span.
+
+    Literal code is the text a document *prints* rather than means. Finding it
+    first is what lets the two callers below tell a marker from an example of
+    one, and a comment delimiter from a picture of a comment delimiter.
+
+    The walk is the one ``extract_prose`` does, with the same helpers, so the
+    two passes over a document cannot disagree about where the fences are --
+    the same reason those helpers are kept in step with
+    ``.github/scripts/check-prohibited-placeholders.py``.
+
+    Ranges are half open and are offsets into ``text``, so a caller can rebuild
+    the document with its line breaks, its line count and its columns intact.
+
+    Indented code blocks are deliberately not included. Telling one from an
+    indented list continuation needs the full block parse this module does not
+    do, guessing wrong means an adult-facing file gets scored, and every code
+    block in this repository is fenced.
+    https://spec.commonmark.org/0.31.2/#code-spans
+    """
+    regions: list[tuple[int, int]] = []
+    active_fence: ActiveFence | None = None
+    list_contexts: list[ListContext] = []
+    offset = 0
+
+    for raw_line in text.split("\n"):
+        line_start = offset
+        offset += len(raw_line) + 1
+        line = raw_line.rstrip()
+
+        if active_fence is not None and fence_container_ended(line, active_fence):
+            active_fence = None
+
+        if active_fence is not None:
+            if is_closing_fence(
+                normalize_for_fence_closing(raw_line, active_fence),
+                active_fence.character,
+                active_fence.minimum_length,
+            ):
+                active_fence = None
+            regions.append((line_start, line_start + len(raw_line)))
+            continue
+
+        fence_line = normalize_for_fence_opening(line, list_contexts)
+        opening_fence = parse_opening_fence(fence_line.content)
+        if opening_fence is not None:
+            active_fence = build_active_fence(opening_fence, fence_line)
+            regions.append((line_start, line_start + len(raw_line)))
+            continue
+
+        for match in INLINE_CODE_PATTERN.finditer(line):
+            regions.append((line_start + match.start(), line_start + match.end()))
+
+    return regions
+
+
+def literal_code_mask(text: str) -> bytearray:
+    """Return one byte per character, nonzero where the character is literal code."""
+    mask = bytearray(len(text))
+    for start, end in literal_code_regions(text):
+        mask[start:end] = b"\x01" * (end - start)
+    return mask
+
+
 def strip_literal_code(text: str) -> str:
     """Return ``text`` with fenced code blocks and inline code spans removed.
 
@@ -727,52 +827,57 @@ def strip_literal_code(text: str) -> str:
     metadata the file is declaring about itself. Without this, a single
     child-facing lesson that shows the marker inside a fence leaves the gate
     entirely: nothing scores it, and nothing reports that nothing did.
-
-    The fence walk mirrors the one in ``extract_prose``; the two are kept in
-    step for the same reason the fence helpers above are kept in step with
-    ``.github/scripts/check-prohibited-placeholders.py``.
-
-    Indented code blocks are deliberately not removed. Telling one from an
-    indented list continuation needs the full block parse this module does not
-    do, guessing wrong means an adult-facing file gets scored, and every code
-    block in this repository is fenced.
-    https://spec.commonmark.org/0.31.2/#code-spans
     """
-    kept: list[str] = []
-    active_fence: ActiveFence | None = None
-    list_contexts: list[ListContext] = []
-
-    for raw_line in text.split("\n"):
-        line = raw_line.rstrip()
-
-        if active_fence is not None and fence_container_ended(line, active_fence):
-            active_fence = None
-
-        if active_fence is not None:
-            if is_closing_fence(
-                normalize_for_fence_closing(line, active_fence),
-                active_fence.character,
-                active_fence.minimum_length,
-            ):
-                active_fence = None
-            kept.append("")
-            continue
-
-        fence_line = normalize_for_fence_opening(line, list_contexts)
-        opening_fence = parse_opening_fence(fence_line.content)
-        if opening_fence is not None:
-            active_fence = build_active_fence(opening_fence, fence_line)
-            kept.append("")
-            continue
-
-        kept.append(INLINE_CODE_PATTERN.sub(" ", line))
-
-    return "\n".join(kept)
+    kept = list(text)
+    for start, end in literal_code_regions(text):
+        kept[start:end] = " " * (end - start)
+    return "".join(kept)
 
 
 def strip_html_comments(text: str) -> str:
-    """Remove HTML comments, including ones that span lines."""
-    return HTML_COMMENT_PATTERN.sub(" ", text)
+    """Remove HTML comments, including ones that span lines.
+
+    A comment delimiter a document *prints* is not a delimiter. An unmatched
+    ``<!--`` inside a fenced example, or inside a code span, pairs with the next
+    real ``-->`` below it, and a document-wide substitution then deletes every
+    word between them. Measured at the commit this fixes: one fenced example
+    holding an unmatched opener took a whole document's prose to nothing,
+    because the substitution ate the example's closing fence and the opening
+    fence then swallowed the rest of the file. A document that loses words that
+    way can fall under ``MIN_WORDS_TO_SCORE`` and leave the gate in silence.
+
+    So the literal code is found first and a delimiter starting inside it is
+    left alone. A comment is still removed as one span, line breaks included, so
+    a paragraph wrapped around a multi-line comment stays one sentence unit. An
+    unterminated ``<!--`` outside literal code is left in place, which is what
+    the substitution this replaces did.
+    https://spec.commonmark.org/0.31.2/#raw-html
+    """
+    mask = literal_code_mask(text)
+
+    def find_outside(needle: str, start: int) -> int:
+        index = start
+        while True:
+            found = text.find(needle, index)
+            if found == -1 or not mask[found]:
+                return found
+            index = found + 1
+
+    kept: list[str] = []
+    index = 0
+    while True:
+        start = find_outside("<!--", index)
+        if start == -1:
+            break
+        end = find_outside("-->", start + len("<!--"))
+        if end == -1:
+            break
+        kept.append(text[index:start])
+        kept.append(" ")
+        index = end + len("-->")
+
+    kept.append(text[index:])
+    return "".join(kept)
 
 
 def strip_front_matter(text: str) -> str:
@@ -783,6 +888,17 @@ def strip_front_matter(text: str) -> str:
     publishing metadata, not prose. The opening line must be followed by a
     nonblank line, so a document that merely begins with a thematic break keeps
     all of its text.
+
+    The opening delimiter is not enough on its own. A document that opens with
+    ``---``, carries prose, and carries a second ``---`` below it holds two
+    CommonMark thematic breaks with a paragraph between them, and measured
+    against markdown-it 14.3.0 that paragraph is on the page. Removing it can
+    take a file under ``MIN_WORDS_TO_SCORE`` and out of the gate, which is the
+    one direction this module never errs in. So every nonblank line of the
+    block has to look like front matter before any of it is removed. Blank
+    lines are allowed between the delimiters: the block ends at its delimiter,
+    not at the first blank line.
+    https://spec.commonmark.org/0.31.2/#thematic-breaks
     """
     lines = text.split("\n")
     if not lines or lines[0].rstrip() != "---":
@@ -790,8 +906,11 @@ def strip_front_matter(text: str) -> str:
     if len(lines) < 2 or not lines[1].strip():
         return text
     for index in range(1, len(lines)):
-        if FRONT_MATTER_DELIMITER_PATTERN.match(lines[index].rstrip()):
+        line = lines[index].rstrip()
+        if FRONT_MATTER_DELIMITER_PATTERN.match(line):
             return "\n".join(lines[index + 1 :])
+        if line.strip() and FRONT_MATTER_LINE_PATTERN.match(line) is None:
+            return text
     return text
 
 
@@ -840,8 +959,13 @@ def extract_prose(text: str) -> str:
             active_fence = None
 
         if active_fence is not None:
+            # The closing test reads ``raw_line`` rather than ``line``. Python's
+            # ``str.rstrip()`` strips Unicode whitespace, so a nonbreaking space
+            # after the backticks would be gone before ``is_closing_fence``
+            # could refuse it -- and CommonMark permits only spaces and tabs
+            # there.
             if is_closing_fence(
-                normalize_for_fence_closing(line, active_fence),
+                normalize_for_fence_closing(raw_line, active_fence),
                 active_fence.character,
                 active_fence.minimum_length,
             ):

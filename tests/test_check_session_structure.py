@@ -2003,3 +2003,326 @@ def test_a_parent_strip_below_the_first_section_is_allowed() -> None:
 def test_the_navigation_line_in_the_header_still_passes() -> None:
     """A positive control for the ordinary shape every session already uses."""
     assert check(build_session()) == []
+
+
+# ---------------------------------------------------------------------------
+# Issue 27: the findings PR #23 deferred
+# ---------------------------------------------------------------------------
+
+FIVE_SECTIONS = ("Goal", "Start Here", "Steps", "Workspace", "Artifact Created")
+
+
+def test_a_marker_in_a_block_level_tag_attribute_does_not_exempt() -> None:
+    """An attribute value is not a comment, even on a raw HTML block's own line.
+
+    ``<div>`` opens an HTML block, and the whole raw line went into the marker
+    view, so the delimiters inside the attribute exempted a session that had
+    said nothing about why it has no research step. Measured against
+    markdown-it 14.3.0: the text lands in the ``title`` attribute.
+    """
+    text = build_session(
+        sections=SIX_SECTIONS,
+        extra='## Notes\n\n<div title="<!-- no-source-check: x -->">\nhi\n</div>\n',
+    )
+    assert any("Source Check" in m for m in check(text))
+
+
+@pytest.mark.parametrize(
+    ("label", "marker_line"),
+    [
+        ("at the margin", "<!-- no-source-check: an offline exercise -->"),
+        ("four spaces in", "    <!-- no-source-check: an offline exercise -->"),
+    ],
+)
+def test_a_real_comment_inside_a_raw_html_block_still_exempts(
+    label: str, marker_line: str
+) -> None:
+    """A negative control. A raw HTML block is passed through to the page.
+
+    A comment inside one is still a comment, and four spaces of indent inside
+    one is not an indented code block: the block is raw HTML end to end.
+    Measured against markdown-it 14.3.0.
+    """
+    text = build_session(
+        sections=SIX_SECTIONS,
+        extra=f"## Notes\n\n<div>\n{marker_line}\n</div>\n",
+    )
+    assert check(text) == [], label
+
+
+@pytest.mark.parametrize(
+    ("label", "opener"),
+    [
+        ("a blockquoted script", "> <script>\n"),
+        ("a blockquoted script over a blank line", "> <script>\n\n"),
+        ("a blockquoted div", "> <div>\n"),
+        ("a listed script", "- <script>\n\n"),
+    ],
+)
+def test_an_unclosed_html_block_ends_with_its_container(label: str, opener: str) -> None:
+    """A leaf block ends with the block that holds it, as an unclosed fence does.
+
+    The HTML-block state had no containment path, so an unclosed ``<script>``
+    inside a blockquote stayed open to its tag-specific terminator and blanked
+    every heading the document outdented to -- all six mandatory sections
+    reported missing on a session that is fine. Measured against markdown-it
+    14.3.0: the block closes with its container and ``## Goal`` is a heading.
+    """
+    text = build_session().replace("## Goal\n", f"{opener}## Goal\n", 1)
+    assert check(text) == [], label
+
+
+def test_a_script_line_inside_a_comment_opens_no_block() -> None:
+    """No start condition is tried while an HTML block is open.
+
+    A ``<script>`` written inside a multiline comment opened a second state
+    that outlived the ``-->``, and every heading below it was hidden until a
+    ``</script>`` that does not exist. Measured against markdown-it 14.3.0: the
+    comment is one block and ``## Goal`` below it is a heading.
+    """
+    text = build_session().replace("## Goal\n", "<!-- a note\n<script>\n-->\n\n## Goal\n", 1)
+    assert check(text) == []
+
+
+@pytest.mark.parametrize(
+    ("label", "opener"),
+    [
+        ("an open tag", "<x-session>"),
+        ("an open tag with attributes", '<x-session data-id="1">'),
+        ("a self-closing tag", "<x-session />"),
+        ("a closing tag", "</x-session>"),
+    ],
+)
+def test_a_heading_inside_a_type_seven_html_block_is_not_a_section(
+    label: str, opener: str
+) -> None:
+    """Start condition 7 is a condition like the other six.
+
+    A complete tag alone on its line, at a block boundary, opens a raw HTML
+    block that runs to the next blank line, so the ``## Goal`` under it is not
+    a heading and the session has no visible Goal. The scan omitted the
+    condition because deciding it needs paragraph state; it keeps that state
+    now. Measured against markdown-it 14.3.0.
+    """
+    text = build_session().replace("## Goal\n", f"{opener}\n## Goal\n", 1)
+    assert any('missing mandatory section "## Goal"' in m for m in check(text)), label
+
+
+@pytest.mark.parametrize(
+    ("label", "lines"),
+    [
+        ("a tag on the second line of a paragraph", "Some prose first.\n<x-session>\n"),
+        ("an incomplete tag", "<x-session\n"),
+        ("a tag with text after it", "<b>bold</b>\n"),
+    ],
+)
+def test_a_shape_that_is_not_condition_seven_leaves_the_heading_below_it(
+    label: str, lines: str
+) -> None:
+    """Negative controls. Condition 7 needs a complete tag, alone, at a boundary.
+
+    The first is the one condition a paragraph blocks, which is why the
+    paragraph tracker exists at all. Measured against markdown-it 14.3.0.
+    """
+    text = build_session().replace("## Goal\n", f"{lines}## Goal\n", 1)
+    assert check(text) == [], label
+
+
+def test_a_fence_after_a_paragraph_that_starts_with_a_tag_still_opens() -> None:
+    """A negative control, restating the sibling hook's round-eight control.
+
+    A paragraph is open, so the tag opens no block, so the backticks under it
+    are a fence and the heading inside it is an example.
+    """
+    text = build_session(
+        sections=SIX_SECTIONS,
+        extra="## Notes\n\nProse first.\n<x-session>\n```\n## Stop Point\n```\n",
+    )
+    assert any("Source Check" in m for m in check(text))
+    assert not any('missing mandatory section "## Stop Point"' in m for m in check(text))
+
+
+def test_a_marker_inside_a_multiline_code_span_does_not_exempt() -> None:
+    """A code span closes on a run of its own length anywhere in its paragraph.
+
+    The finding that raised this gave an example that does not reproduce: a
+    line beginning ``<!--`` opens HTML block condition 2, which may interrupt a
+    paragraph, so the span never forms and the marker there is a real comment.
+    This is the shape that does reproduce, and markdown-it 14.3.0 renders the
+    whole of it as one ``<code>`` element.
+    """
+    text = build_session(
+        sections=SIX_SECTIONS,
+        extra="## Notes\n\nUse `a\nb <!-- no-source-check: x --> c\nd` here.\n",
+    )
+    assert any("Source Check" in m for m in check(text))
+
+
+@pytest.mark.parametrize(
+    ("label", "body"),
+    [
+        ("the run never closes", "Use `a\nb <!-- no-source-check: x --> c\nd here."),
+        (
+            "the run closes past a blank line",
+            "Use `a\nb <!-- no-source-check: x --> c\n\nd` here.",
+        ),
+        ("the marker opens a block of its own", "Use `\n<!-- no-source-check: x -->\n` here."),
+    ],
+)
+def test_a_code_span_that_does_not_form_leaves_a_real_marker(label: str, body: str) -> None:
+    """Negative controls. Each of these is a comment on the page.
+
+    The third is the shape the finding gave. Its middle line opens an HTML
+    block of its own, which ends the paragraph, so the backticks around it are
+    literal text. All three measured against markdown-it 14.3.0.
+    """
+    text = build_session(sections=SIX_SECTIONS, extra=f"## Notes\n\n{body}\n")
+    assert check(text) == [], label
+
+
+@pytest.mark.parametrize(
+    ("label", "body"),
+    [
+        ("a link title", '[help](page.md "<!-- no-source-check: x -->")'),
+        ("a link destination", "[help](<!-- no-source-check: x -->)"),
+        ("a single-quoted title", "[help](page.md '<!-- no-source-check: x -->')"),
+        ("an angle-bracket destination", '[help](<page.md> "<!-- no-source-check: x -->")'),
+        ("a parenthesised title", "[help](page.md (<!-- no-source-check: x -->))"),
+        ("an image title", '![alt](p.png "<!-- no-source-check: x -->")'),
+        ("image alt text", "![a note <!-- no-source-check: x -->](p.png)"),
+        (
+            "a defined reference label",
+            "[help][<!-- no-source-check: x -->]\n\n[<!-- no-source-check: x -->]: p.md",
+        ),
+        ("a reference definition", '[a]: p.md "<!-- no-source-check: x -->"'),
+    ],
+)
+def test_a_marker_in_link_metadata_does_not_exempt(label: str, body: str) -> None:
+    """Link metadata becomes an attribute of an element, or nothing at all.
+
+    A destination becomes ``href`` or ``src``, a title becomes ``title``, an
+    image's alt text becomes ``alt``, a resolved reference label becomes
+    nothing, and a reference definition renders nothing end to end. None of
+    them is a comment. Every row measured against markdown-it 14.3.0.
+    """
+    text = build_session(sections=SIX_SECTIONS, extra=f"## Notes\n\n{body}\n")
+    assert any("Source Check" in m for m in check(text)), label
+
+
+@pytest.mark.parametrize(
+    ("label", "body"),
+    [
+        ("link text", "[see <!-- no-source-check: x --> here](page.md)"),
+        ("an undefined reference label", "![a note <!-- no-source-check: x -->][lbl]"),
+        ("brackets that are not a link", '[help] (page.md "<!-- no-source-check: x -->")'),
+        (
+            "an outer link that cannot nest",
+            '[a [b](u.md) c](v.md "<!-- no-source-check: x -->")',
+        ),
+    ],
+)
+def test_a_marker_outside_link_metadata_still_exempts(label: str, body: str) -> None:
+    """Negative controls. markdown-it 14.3.0 renders a comment in every one.
+
+    A link's text is inline content. An undefined reference is the brackets the
+    author typed. A space between ``]`` and ``(`` is not a link. And links may
+    not nest, so the inner link of the last row wins and the outer brackets are
+    literal -- which is why the region pass keeps a bracket stack rather than
+    matching brackets where it finds them.
+    """
+    text = build_session(sections=SIX_SECTIONS, extra=f"## Notes\n\n{body}\n")
+    assert check(text) == [], label
+
+
+@pytest.mark.parametrize(
+    ("label", "body"),
+    [
+        ("a destination on the next line", "[shared]:\n    https://example.com"),
+        ("a title on a third line", '[shared]:\n    https://example.com\n    "A title"'),
+        ("an angle-bracket destination", "[shared]:\n  <https://example.com>"),
+        ("a title under a one-line definition", '[shared]: https://example.com\n  "A title"'),
+    ],
+)
+def test_a_multiline_reference_definition_is_an_empty_section(label: str, body: str) -> None:
+    """A definition renders nothing at all, however many lines it took to write.
+
+    The emptiness rule read one line at a time, so it matched neither half of
+    ``[shared]:`` with its destination indented underneath, and a session whose
+    Goal printed as a bare heading passed. Measured against markdown-it 14.3.0:
+    each of these renders an empty section.
+    """
+    text = build_session().replace(
+        "## Goal\n\nReal content for Goal.\n", f"## Goal\n\n{body}\n", 1
+    )
+    assert any('section "## Goal" is empty' in m for m in check(text)), label
+
+
+@pytest.mark.parametrize(
+    ("label", "body"),
+    [
+        ("a label with no destination", "[shared]:"),
+        ("prose under a label line", "[shared]:\nReal visible prose here."),
+        (
+            "prose under a complete definition",
+            "[shared]:\n  https://example.com\n  Real visible prose.",
+        ),
+    ],
+)
+def test_a_reference_definition_that_does_not_parse_is_still_content(
+    label: str, body: str
+) -> None:
+    """Negative controls. markdown-it 14.3.0 puts every one of these on the page.
+
+    The last is the greedy rule doing its work: two lines are the definition,
+    and the third is an indented code block the child sees.
+    """
+    text = build_session().replace(
+        "## Goal\n\nReal content for Goal.\n", f"## Goal\n\n{body}\n", 1
+    )
+    assert not any('section "## Goal" is empty' in m for m in check(text)), label
+
+
+def test_a_nonbreaking_space_does_not_close_a_fence() -> None:
+    """CommonMark permits spaces and tabs after a closing fence and nothing else.
+
+    Python reads a whitespace class as Unicode whitespace, so a fence closed
+    with a nonbreaking space ended the block here while the renderer kept every
+    line below it inside the code -- and the fake ``## Stop Point`` under it counted
+    as structure. Measured against markdown-it 14.3.0: the block runs on.
+    """
+    text = build_session(
+        sections=FIVE_SECTIONS,
+        extra="## Notes\n\n```\ncode\n```\u00a0\n\n## Stop Point\n\nNot a real one.\n",
+    )
+    assert any('missing mandatory section "## Stop Point"' in m for m in check(text))
+
+
+def test_a_tab_after_a_closing_fence_still_closes_it() -> None:
+    """A positive control. A tab is one of the two characters CommonMark allows."""
+    text = build_session(
+        sections=FIVE_SECTIONS,
+        extra="## Notes\n\n```\ncode\n```\t\n\n## Stop Point\n\nA real one.\n",
+    )
+    assert not any('missing mandatory section "## Stop Point"' in m for m in check(text))
+
+
+def test_a_navigation_label_with_no_value_is_not_a_navigation_line() -> None:
+    """The value belongs on the navigation line, not on whatever line follows.
+
+    A plain whitespace run crossed the line break and took the next line's
+    first character as the value, so a session whose location had been deleted
+    passed on the strength of the parent strip's own asterisk below it. markdown-it 14.3.0
+    renders the label as a paragraph with no location in it.
+    """
+    text = build_session(nav=False).replace(
+        "**For parents:**", "You are here:\n\n**For parents:**", 1
+    )
+    assert any("no navigation line" in m for m in check(text))
+
+
+def test_a_navigation_value_after_a_tab_is_still_a_navigation_line() -> None:
+    """A positive control. Horizontal whitespace sits between the colon and the value."""
+    text = build_session(nav=False).replace(
+        "**For parents:**", "You are here:\tPhase 0 (Setup).\n\n**For parents:**", 1
+    )
+    assert check(text) == []

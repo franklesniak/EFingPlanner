@@ -2327,3 +2327,135 @@ def test_round_eight_does_not_reopen_the_code_span_holes() -> None:
         f"Read {ESCAPED_TICK}complicated administrative implementation"
         f"{ESCAPED_TICK} aloud."
     )
+
+
+# --- issue 27: the findings PR #22 deferred ---------------------------------
+
+
+def test_an_unmatched_comment_opener_in_a_fence_keeps_the_prose_below_it() -> None:
+    """A comment delimiter a document *prints* is not a delimiter.
+
+    The document-wide substitution ran before any fence parsing, so the ``<!--``
+    inside the example paired with the real ``-->`` far below it. That took the
+    example's closing fence with it, the opening fence then swallowed the rest
+    of the file, and this document scored no words at all -- out of the gate,
+    with nothing reporting that it had left. Measured against markdown-it
+    14.3.0: both sentences are on the page.
+    """
+    text = (
+        "# Session 01: Trip\n"
+        "\n"
+        "```text\n"
+        "<!-- an unmatched opener shown as an example\n"
+        "```\n"
+        "\n"
+        "Pick a city you want to see.\n"
+        "\n"
+        "<!-- a real comment -->\n"
+        "\n"
+        "Tell a grown up which city you picked.\n"
+    )
+    prose = readability.extract_prose(text)
+    assert "Pick a city you want to see." in prose
+    assert "Tell a grown up which city you picked." in prose
+    assert "unmatched opener" not in prose
+    assert "a real comment" not in prose
+
+
+def test_an_unmatched_comment_opener_in_a_code_span_keeps_the_prose_below_it() -> None:
+    """The same hole, one line wide rather than one block."""
+    text = (
+        "Write `<!--` when you want to start a note.\n"
+        "\n"
+        "Read the next page with a grown up.\n"
+        "\n"
+        "<!-- a real comment -->\n"
+        "\n"
+        "Then write one sentence of your own.\n"
+    )
+    prose = readability.extract_prose(text)
+    assert "Read the next page with a grown up." in prose
+    assert "Then write one sentence of your own." in prose
+    assert "a real comment" not in prose
+
+
+def test_a_comment_that_spans_lines_is_still_removed_as_one_span() -> None:
+    """A negative control. Outside literal code nothing changes, line breaks included.
+
+    The comment goes as one span rather than line by line, so the paragraph it
+    sits inside stays one sentence unit instead of becoming two.
+    """
+    text = "Pick a city <!-- a note\nspread over lines\n--> and write it down.\n"
+    prose = readability.extract_prose(text)
+    assert "a note" not in prose
+    assert "spread over lines" not in prose
+    assert len(readability.split_sentences(prose)) == 1
+
+
+def test_a_fenced_audience_marker_is_still_not_a_declaration() -> None:
+    """A negative control for round 8. The literal-code walk still finds the fence."""
+    text = "# Lesson\n\n```markdown\n<!-- audience: adult -->\n```\n\nPick a city.\n"
+    assert readability.has_adult_marker(text) is False
+    assert readability.has_adult_marker("<!-- audience: adult -->\n\nSet this up.\n") is True
+
+
+def test_a_thematic_break_over_prose_is_not_front_matter() -> None:
+    """Two thematic breaks are not a front-matter block.
+
+    Measured against markdown-it 14.3.0: ``---``, a paragraph, ``---`` and a
+    paragraph render as a break, prose, a break and prose. The opening
+    delimiter and one nonblank line below it were enough before this, and every
+    word between the two breaks was discarded -- the direction that takes a
+    file under ``MIN_WORDS_TO_SCORE`` and out of the gate.
+    """
+    text = (
+        "---\n"
+        "Pick a city you want to see.\n"
+        "Write the name on the line.\n"
+        "\n"
+        "---\n"
+        "\n"
+        "Tell a grown up which city you picked.\n"
+    )
+    prose = readability.extract_prose(text)
+    assert "Pick a city you want to see." in prose
+    assert "Write the name on the line." in prose
+    assert "Tell a grown up which city you picked." in prose
+
+
+def test_front_matter_whose_lines_are_yaml_is_still_dropped() -> None:
+    """A positive control: the shape the front-matter blocks in this repository have."""
+    text = (
+        "---\n"
+        'applyTo: "**/*.md"\n'
+        "tags:\n"
+        "  - japan\n"
+        "# a comment\n"
+        'description: "Notes about choosing a city."\n'
+        "---\n"
+        "\n"
+        "Pick two cities.\n"
+    )
+    prose = readability.extract_prose(text)
+    assert prose.strip() == "Pick two cities."
+
+
+def test_a_nonbreaking_space_does_not_close_a_fence() -> None:
+    """CommonMark permits spaces and tabs after a closing fence and nothing else.
+
+    Python reads ``\\s`` as Unicode whitespace and ``str.rstrip()`` strips it,
+    so the closing test reads the line as the file holds it. Measured against
+    markdown-it 14.3.0: the block runs on and the line below stays inside it.
+    """
+    text = (
+        "```\n"
+        "code\n"
+        "```\u00a0\n"
+        "Pick a city you want to see.\n"
+        "```\n"
+        "\n"
+        "Write it down.\n"
+    )
+    prose = readability.extract_prose(text)
+    assert "Pick a city you want to see." not in prose
+    assert "Write it down." in prose

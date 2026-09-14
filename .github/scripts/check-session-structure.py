@@ -39,7 +39,8 @@ What is checked
    as a bare heading, so it counts as empty. A reference definition such as
    ``[shared]: https://example.com`` is a line in the file that puts nothing on
    the page; it is no less a definition for being written under a heading the
-   child then reads as blank.
+   child then reads as blank, and no less a definition for being written over
+   two lines, with its destination indented under its label.
 8. No fenced code block is used as a worksheet fill-in. Worksheet forms are
    Markdown tables; a fenced block of blanks does not print as a box, does not
    become an editable cell when the page is copied into Google Docs, and does
@@ -73,13 +74,21 @@ two exemption markers are themselves comments, so they are searched against a
 second view of the same scan, one that keeps the comments in.
 
 A comment is not the only raw HTML a document can hold. CommonMark opens an
-HTML block on a ``<script>``, a ``<?``, a ``<!DOCTYPE``, a ``<![CDATA[`` and
-on any of the block-level element names, and every line of such a block is raw
-HTML rather than Markdown. So ``<div>`` on the line above ``## Goal`` means
-there is no Goal heading -- the child opens the session and reads neither the
-element nor a section. The scan classifies those blocks for the same reason it
-classifies comments: a heading Markdown does not parse is not a section, and a
-gate that counts one reports a scaffold the file does not have.
+HTML block on a ``<script>``, a ``<?``, a ``<!DOCTYPE``, a ``<![CDATA[``, on
+any of the block-level element names, and on a complete tag alone on its line;
+every line of such a block is raw HTML rather than Markdown. So ``<div>`` on
+the line above ``## Goal`` means there is no Goal heading -- the child opens the
+session and reads neither the element nor a section. The scan classifies those
+blocks for the same reason it classifies comments: a heading Markdown does not
+parse is not a section, and a gate that counts one reports a scaffold the file
+does not have.
+
+The comment is one of those conditions rather than a state beside them, and
+that is load bearing: a ``<script>`` line written *inside* a comment opens no
+block, because no start condition is tried while a block is open. So is the
+container: a block opened inside a blockquote or a list item ends where that
+container ends, exactly as an unclosed fence does, and the headings the
+document outdents to are headings again.
 
 A marker nested in a blockquote or a list item is still a marker. CommonMark
 decides what a line is from what is left once the container prefixes are
@@ -92,9 +101,12 @@ inline comment span, and it prints exactly as nothing as the whole-line form
 does; the sibling placeholder hook documents that placement for its own
 suppression marker. So the marker view keeps the comment spans a line holds,
 not only the lines that are comments end to end. It keeps the spans CommonMark
-reads as comments: a marker inside a code span, behind a backslash escape,
-inside an HTML tag's attribute, in an image's alt text or indented four spaces
-prints as characters on the page, and prose about a marker exempts nothing.
+reads as comments: a marker inside a code span -- including one that opens on
+one line and closes on the next -- behind a backslash escape, inside an HTML
+tag's attribute, in an image's alt text, in a link's destination or title, in a
+reference label the document defines, or indented four spaces prints as
+characters on the page or as an attribute of an element, and prose about a
+marker exempts nothing.
 
 Silence is never an exemption. If a session genuinely has no research step, it
 says so.
@@ -182,7 +194,14 @@ ORDERED_SECTIONS = MANDATORY_SECTIONS + (SOURCE_CHECK_SECTION,)
 #: hashes are consumed by HEADING_PATTERN, so there is one heading parser.
 TITLE_PATTERN = re.compile(r"^Session\s+(?P<number>\d{2}):\s+\S")
 FILENAME_NUMBER_PATTERN = re.compile(r"^(?P<number>\d{2})[_-]")
-NAV_PATTERN = re.compile(r"^You are here:\s*\S", re.MULTILINE)
+#: The navigation line, with its value. ``[^\\S\\r\\n]`` is horizontal
+#: whitespace only, for the reason the parent-strip fields below use it: a
+#: plain ``\\s*`` crosses the line break and takes the *next* line's first
+#: character as the value, so ``You are here:`` with the location deleted --
+#: which is what happens when it is cut from just above the parent strip --
+#: passes on the strength of the strip's own asterisk. A label is not a
+#: navigation line. The child reads the location or they do not.
+NAV_PATTERN = re.compile(r"^You are here:[^\S\r\n]*\S", re.MULTILINE)
 PARENT_STRIP_PATTERN = re.compile(r"^\*\*For parents:?\*\*", re.MULTILINE)
 
 #: The strip's load-bearing fields. Each pattern requires a *value* after
@@ -244,6 +263,31 @@ HTML_BLOCK_ELEMENT_NAMES = (
     "track|ul"
 )
 
+#: CommonMark HTML block start condition 7: a complete open or closing tag,
+#: alone on its line. It is the one condition that may not interrupt a
+#: paragraph, which is why the classifier below is given the paragraph state.
+#: Conditions 1 to 6 are tried first, so an opening ``<script>`` never reaches
+#: this pattern. Kept identical to the constants in the sibling hook.
+#: <https://spec.commonmark.org/0.31.2/#html-blocks>
+HTML_BLOCK_TAG_NAME = r"[A-Za-z][A-Za-z0-9-]*"
+HTML_BLOCK_ATTRIBUTE = (
+    r"[ \t]+[_:A-Za-z][A-Za-z0-9_.:-]*"
+    r"""(?:[ \t]*=[ \t]*(?:[^\s"'=<>`]+|'[^']*'|"[^"]*"))?"""
+)
+HTML_BLOCK_TYPE_SEVEN_PATTERN = re.compile(
+    rf"^ {{0,3}}(?:<{HTML_BLOCK_TAG_NAME}(?:{HTML_BLOCK_ATTRIBUTE})*[ \t]*/?>"
+    rf"|</{HTML_BLOCK_TAG_NAME}[ \t]*>)[ \t]*$"
+)
+
+#: The two block shapes that close a paragraph and are not themselves one.
+#: They are all the paragraph tracker needs: everything else nonblank that
+#: reaches it is either paragraph text or a line already known to be inside a
+#: fence or an HTML block.
+ATX_HEADING_LINE_PATTERN = re.compile(r"^ {0,3}#{1,6}(?:[ \t]|$)")
+THEMATIC_BREAK_LINE_PATTERN = re.compile(
+    r"^ {0,3}(?:(?:\*[ \t]*){3,}|(?:-[ \t]*){3,}|(?:_[ \t]*){3,})$"
+)
+
 #: An inline HTML tag, open or closing. The scan skips one whole tag at a
 #: time so that a ``<!--`` inside an attribute value is read as part of the
 #: attribute, which is what CommonMark does with it.
@@ -286,7 +330,7 @@ LINK_REFERENCE_DEFINITION_PATTERN = re.compile(
     :\ *                                     # the colon, then optional spaces
     (?: < [^<>\n]* >                         # an angle-bracket destination
       | [^\s\x00-\x1f<]+ )                   # or a bare one
-    (?: \ +                                  # an optional title
+    (?P<title> \ +                           # an optional title
         (?: " (?: [^"\\] | \\. )* "
           | ' (?: [^'\\] | \\. )* '
           | \( (?: [^()\\] | \\. )* \) )
@@ -296,13 +340,77 @@ LINK_REFERENCE_DEFINITION_PATTERN = re.compile(
     re.VERBOSE,
 )
 
-#: These three patterns, and the fence helpers below, are kept deliberately in
-#: sync with ``.github/scripts/check-prohibited-placeholders.py``. They are not
-#: all byte-identical, and the comment must not claim they are: measured by AST
-#: comparison, ``normalize_for_fence_opening``, ``parse_opening_fence`` and
-#: ``normalize_for_fence_closing`` match, ``is_closing_fence`` differs, and
-#: ``container_content`` and ``fence_container_ended`` exist only here. Each
-#: difference is a deliberate scoping decision, not drift.
+#: A link reference definition's label and colon, matched however the rest of
+#: the definition is laid out. This is what collects the labels a document
+#: defines, and a reference whose label has a definition renders as a link or
+#: an image: the label itself becomes nothing, and an image's alt text becomes
+#: an attribute. A reference with no definition renders as the brackets the
+#: author typed, and a marker inside *that* is a comment on the page.
+LINK_REFERENCE_LABEL_PATTERN = re.compile(r"^ {0,3}\[(?P<label>(?:[^\[\]\\]|\\.)+)\]:")
+
+#: A definition's label and colon with nothing after them. CommonMark lets the
+#: destination sit on the following line, and the construct still renders
+#: nothing at all.
+LINK_REFERENCE_LABEL_LINE_PATTERN = re.compile(
+    r"^ {0,3}\[(?=[^\]]*[^\s\]])(?:[^\[\]\\]|\\.)+\]:[ \t]*$"
+)
+
+#: A definition's destination, alone on its own line, with the optional title
+#: that may follow it there. Conservative for the same reason the full pattern
+#: is: the destination must be one unbroken token or the angle-bracket form,
+#: and nothing else may follow, so ``Real visible prose.`` under a label line
+#: is prose rather than a destination -- which is what the renderer makes of it.
+LINK_REFERENCE_DESTINATION_LINE_PATTERN = re.compile(
+    r"""
+    ^[ \t]*
+    (?: < [^<>\n]* >                         # an angle-bracket destination
+      | [^\s\x00-\x1f<]+ )                   # or a bare one
+    (?P<title> [ \t]+                        # an optional title
+        (?: " (?: [^"\\] | \\. )* "
+          | ' (?: [^'\\] | \\. )* '
+          | \( (?: [^()\\] | \\. )* \) )
+    )?
+    [ \t]*$
+    """,
+    re.VERBOSE,
+)
+
+#: A title alone on its own line, which the definition above it takes.
+LINK_REFERENCE_TITLE_LINE_PATTERN = re.compile(
+    r"""
+    ^[ \t]*
+    (?: " (?: [^"\\] | \\. )* "
+      | ' (?: [^'\\] | \\. )* '
+      | \( (?: [^()\\] | \\. )* \) )
+    [ \t]*$
+    """,
+    re.VERBOSE,
+)
+
+#: What one line is, for the purpose of deciding what on it CommonMark reads as
+#: an HTML comment. A blanked line is inside a fenced block and puts nothing on
+#: the page. A raw HTML line is passed through to the page as it stands, so
+#: only a tag and a comment mean anything on it. A text line is Markdown, where
+#: code spans, backslash escapes, images and link metadata all bind tighter
+#: than raw HTML does.
+MARKER_SOURCE_BLANK = "blank"
+MARKER_SOURCE_RAW_HTML = "raw-html"
+MARKER_SOURCE_TEXT = "text"
+
+#: These three patterns, and the fence and container helpers below, are kept
+#: deliberately in sync with ``.github/scripts/check-prohibited-placeholders.py``
+#: and, where they exist there, with ``.github/scripts/check-readability.py``.
+#: They are not all present in all three, and the comment must not claim they
+#: are. Measured by comparing function bodies with the docstrings dropped:
+#: ``normalize_for_fence_opening``, ``parse_opening_fence``,
+#: ``normalize_for_fence_closing``, ``is_closing_fence``,
+#: ``container_path_ended`` and ``fence_container_ended`` agree across all
+#: three; ``container_line``, ``container_content``, ``html_block_state`` and
+#: ``opens_a_paragraph`` agree across the two hooks that classify HTML blocks
+#: and are absent from the readability module, which has no need of them;
+#: ``strip_html_comments`` agrees between the two hooks and differs in the
+#: readability module, where it answers a document-wide question rather than a
+#: per-line one. Each difference is a deliberate scoping decision, not drift.
 #:
 #: A search for ``normalize_for_fence_opening`` still finds every copy of the
 #: same CommonMark rule in this repository, which is the property that matters:
@@ -377,40 +485,54 @@ class ListContext:
 
 
 @dataclass(frozen=True)
-class RawHtmlBlock:
+class HtmlBlockCondition:
     """One CommonMark HTML block condition: how it starts and how it ends.
 
     ``end`` is the pattern that closes the block on the line carrying it, or
-    ``None`` for the conditions a blank line closes. The blank line itself is
+    ``None`` for the conditions a blank line closes; the blank line itself is
     outside the block, which is why it is tested before the start conditions
-    are.
-
-    Condition 2, the comment, is not here: the comment parser above already
-    tracks it across lines and feeds the same classification. Condition 7 --
-    any complete tag alone on a line -- is deliberately absent, because it is
-    the one condition that may not interrupt a paragraph, and deciding that
-    needs paragraph state this scan does not keep. Guessing it wrong in the
-    direction that classifies the line would silence a real heading and fail a
-    session that is fine; leaving it out keeps the behaviour this script
-    already had for that one shape.
+    are. ``interrupts_paragraph`` is false for condition 7 alone, which is what
+    the spec says of it. Kept identical to the record in the sibling hook.
     <https://spec.commonmark.org/0.31.2/#html-blocks>
     """
 
     name: str
     start: re.Pattern[str]
     end: re.Pattern[str] | None
+    interrupts_paragraph: bool = True
 
 
-RAW_HTML_BLOCKS: tuple[RawHtmlBlock, ...] = (
-    RawHtmlBlock(
+@dataclass(frozen=True)
+class ActiveHtmlBlock:
+    """The open HTML block's condition and the container holding it.
+
+    The containment path is here for the reason ``ActiveFence`` carries one:
+    CommonMark ends a leaf block with its containing block, so an unclosed
+    ``<script>`` opened inside a blockquote ends where the blockquote does
+    rather than running to the end of the document. Kept identical to the
+    record in the sibling hook.
+    """
+
+    condition: HtmlBlockCondition
+    containment_path: tuple[Container, ...] = ()
+
+
+#: The name condition 2 answers to. The comment is a condition of this machine
+#: rather than a state beside it, which is what keeps a ``<script>`` line
+#: *inside* a comment from opening a second block that outlives the comment.
+HTML_BLOCK_COMMENT = "comment"
+
+HTML_BLOCK_CONDITIONS: tuple[HtmlBlockCondition, ...] = (
+    HtmlBlockCondition(
         "script",
         re.compile(r"^ {0,3}<(?:script|pre|style|textarea)(?:[ \t>]|$)", re.IGNORECASE),
         re.compile(r"</(?:script|pre|style|textarea)>", re.IGNORECASE),
     ),
-    RawHtmlBlock("instruction", re.compile(r"^ {0,3}<\?"), re.compile(r"\?>")),
-    RawHtmlBlock("cdata", re.compile(r"^ {0,3}<!\[CDATA\["), re.compile(r"\]\]>")),
-    RawHtmlBlock("declaration", re.compile(r"^ {0,3}<![A-Za-z]"), re.compile(r">")),
-    RawHtmlBlock(
+    HtmlBlockCondition(HTML_BLOCK_COMMENT, HTML_BLOCK_COMMENT_START_PATTERN, re.compile(r"-->")),
+    HtmlBlockCondition("instruction", re.compile(r"^ {0,3}<\?"), re.compile(r"\?>")),
+    HtmlBlockCondition("declaration", re.compile(r"^ {0,3}<![A-Za-z]"), re.compile(r">")),
+    HtmlBlockCondition("cdata", re.compile(r"^ {0,3}<!\[CDATA\["), re.compile(r"\]\]>")),
+    HtmlBlockCondition(
         "element",
         re.compile(
             rf"^ {{0,3}}</?(?:{HTML_BLOCK_ELEMENT_NAMES})(?:[ \t>]|/>|$)",
@@ -418,6 +540,7 @@ RAW_HTML_BLOCKS: tuple[RawHtmlBlock, ...] = (
         ),
         None,
     ),
+    HtmlBlockCondition("tag", HTML_BLOCK_TYPE_SEVEN_PATTERN, None, interrupts_paragraph=False),
 )
 
 
@@ -432,13 +555,14 @@ class DocumentScan:
     these lines. That is what makes one fence parser and one comment parser
     govern the whole check, rather than the heading scan alone.
 
-    ``marker_lines`` holds only what CommonMark reads as an HTML comment:
-    the whole line where the line is raw HTML end to end, and otherwise the
-    comment spans the line carries. The two Source Check exemption markers
-    *are* comments and nothing else is one. A marker in a fenced block, in a
-    code span, behind a backslash escape, inside an HTML tag's attribute, in
-    an image's alt text or indented four spaces prints as characters on the
-    page; it is prose *about* a marker, and it exempts nothing.
+    ``marker_lines`` holds only what CommonMark reads as an HTML comment. The
+    two Source Check exemption markers *are* comments and nothing else is one.
+    A marker in a fenced block, in a code span -- including one that closes on
+    a later line -- behind a backslash escape, inside an HTML tag's attribute,
+    in an image's alt text, in a link's destination or title, in a reference
+    label the document defines, or indented four spaces prints as characters on
+    the page or hands them to an element as an attribute; it is prose *about* a
+    marker, and it exempts nothing.
     """
 
     content_lines: tuple[str, ...]
@@ -580,19 +704,90 @@ def normalize_for_fence_opening(line: str, list_contexts: list[ListContext]) -> 
     )
 
 
-def container_content(line: str, list_contexts: list[ListContext]) -> str:
-    """Return what CommonMark reads on a line, container prefixes peeled off.
+def container_line(line: str, list_contexts: list[ListContext]) -> FenceLine:
+    """Return what CommonMark reads on a line, and the containers holding it.
 
     A line's block type -- an HTML block among them -- is decided from what is
     left once the blockquote and list-item prefixes are consumed, so
     ``> <!-- a comment -->`` opens an HTML block exactly as the unindented form
-    does. The list contexts are copied because this asks a question about one
-    line rather than advancing the document: the contexts that govern the rest
-    of the file are the ones the fence normalization takes below, from the
-    span-stripped line. Kept identical to the helper in
-    ``.github/scripts/check-prohibited-placeholders.py``.
+    does. The path comes back with the content because a block opened on this
+    line ends when that path ends. The list contexts are copied because this
+    asks a question about one line rather than advancing the document: the
+    contexts that govern the rest of the file are the ones the fence
+    normalization takes below, from the span-stripped line. Kept identical to
+    the helper in the sibling hook.
     """
-    return normalize_for_fence_opening(line, list(list_contexts)).content
+    return normalize_for_fence_opening(line, list(list_contexts))
+
+
+def container_content(line: str, list_contexts: list[ListContext]) -> str:
+    """Return what CommonMark reads on a line, container prefixes peeled off."""
+    return container_line(line, list_contexts).content
+
+
+def opens_a_paragraph(content: str) -> bool:
+    """Return whether a line of document text leaves a paragraph open below it.
+
+    HTML block condition 7 is the one condition that may not interrupt a
+    paragraph, so classifying it needs to know whether one is open. The test is
+    deliberately liberal: anything nonblank that is not a heading and not a
+    thematic break leaves a paragraph open. Being wrong in that direction only
+    ever *stops* condition 7 from opening, which is the behaviour this scan had
+    before it classified condition 7 at all. Lines inside a fence or an HTML
+    block never reach here; their caller closes the paragraph outright. Kept
+    identical to the helper in the sibling hook.
+    """
+    if not content.strip():
+        return False
+    if ATX_HEADING_LINE_PATTERN.match(content) is not None:
+        return False
+    return THEMATIC_BREAK_LINE_PATTERN.match(content) is None
+
+
+def html_block_state(
+    content: str,
+    containment_path: tuple[Container, ...],
+    open_block: ActiveHtmlBlock | None,
+    paragraph_open: bool,
+) -> tuple[ActiveHtmlBlock | None, ActiveHtmlBlock | None]:
+    """Return the state after one line, and the block the line itself is in.
+
+    Two values because they are two questions. The state after the line is what
+    the next line inherits; the block the line is *in* is what says whether this
+    line is raw HTML, and a block that ends on its own last line is still the
+    block that line belonged to.
+
+    ``content`` is the line with its container prefixes already peeled, for the
+    reason ``container_line`` exists: CommonMark decides a line's block type
+    from what is left once the prefixes are consumed. The caller is responsible
+    for ending a block whose container has ended, which it does before calling
+    this. Kept identical to the helper in the sibling hook.
+    <https://spec.commonmark.org/0.31.2/#html-blocks>
+    """
+    if open_block is not None and open_block.condition.end is None and not content.strip():
+        # A blank line closes the conditions that have no end tag, and the
+        # blank line is not itself part of the block.
+        open_block = None
+
+    if open_block is None:
+        # No start condition is tried while a block is open, which is what the
+        # spec says and is also what keeps a ``<script>`` line inside an open
+        # comment from opening a block that survives the ``-->``.
+        for condition in HTML_BLOCK_CONDITIONS:
+            if paragraph_open and not condition.interrupts_paragraph:
+                continue
+            if condition.start.match(content) is not None:
+                open_block = ActiveHtmlBlock(
+                    condition=condition, containment_path=containment_path
+                )
+                break
+
+    line_block = open_block
+    if open_block is not None and open_block.condition.end is not None:
+        if open_block.condition.end.search(content) is not None:
+            open_block = None
+
+    return open_block, line_block
 
 
 def closing_backtick_run(line: str, start: int, length: int) -> int:
@@ -636,32 +831,164 @@ def matching_bracket(line: str, open_index: int) -> int:
     return -1
 
 
-def comment_spans(line: str, is_in_comment: bool) -> tuple[str, bool]:
-    """Return the HTML comment text on one line, and the state after it.
+def normalize_link_label(label: str) -> str:
+    """Return a link label in the form CommonMark matches definitions by."""
+    return " ".join(label.split()).casefold()
 
-    This answers a narrower question than ``strip_html_comments``: not "what
-    does the reader see", but "what on this line does CommonMark read as a
-    comment". The difference is the contexts that bind tighter than raw HTML
-    and therefore print the characters the author typed -- a code span, a
-    backslash escape, an image's alt text, an attribute value inside a tag,
-    and a line indented four spaces, which is code rather than a paragraph.
 
-    The caller threads ``is_in_comment`` from one line to the next, because a
-    comment spans lines. Two measured limits, both deliberate:
+def inline_link_end(line: str, open_index: int) -> int:
+    """Return the index just past the ``)`` of an inline link, or -1.
 
-    * A backtick run with no matching run **on the same line** is treated as
-      the literal text CommonMark usually makes it. A code span that opens on
-      one line and closes on the next is therefore read as prose, and a marker
-      inside one would exempt. Deciding otherwise needs the paragraph, not the
-      line.
-    * A line indented four spaces is read as code even where it is a lazy
-      continuation of the paragraph above, which CommonMark reads as prose.
-      That is the safe direction: it refuses to exempt rather than granting an
-      exemption the file does not visibly declare.
+    Neither half of what sits between those parentheses is on the page: the
+    destination becomes the element's ``href`` or ``src`` and the title becomes
+    its ``title``. So a comment delimiter inside one is characters in an
+    attribute, which is exactly what markdown-it 14.3.0 renders for
+    ``[help](page.md "<!-- no-source-check: x -->")``.
+    <https://spec.commonmark.org/0.31.2/#links>
     """
-    if not is_in_comment and count_leading_spaces(line) >= 4:
-        return "", False
+    length = len(line)
+    index = open_index + 1
+    while index < length and line[index] in " \t":
+        index += 1
 
+    if index < length and line[index] == "<":
+        cursor = index + 1
+        while cursor < length and line[cursor] not in "<>":
+            cursor += 2 if line[cursor] == "\\" else 1
+        if cursor >= length or line[cursor] != ">":
+            return -1
+        index = cursor + 1
+    else:
+        depth = 0
+        while index < length:
+            character = line[index]
+            if character == "\\":
+                index += 2
+                continue
+            if character in " \t":
+                break
+            if character == "(":
+                depth += 1
+            elif character == ")":
+                if depth == 0:
+                    break
+                depth -= 1
+            index += 1
+        if depth != 0:
+            return -1
+
+    spaced = index
+    while spaced < length and line[spaced] in " \t":
+        spaced += 1
+    if index < spaced < length and line[spaced] in "\"'(":
+        closer = {'"': '"', "'": "'", "(": ")"}[line[spaced]]
+        cursor = spaced + 1
+        while cursor < length and line[cursor] != closer:
+            cursor += 2 if line[cursor] == "\\" else 1
+        if cursor >= length:
+            return -1
+        index = cursor + 1
+
+    while index < length and line[index] in " \t":
+        index += 1
+    return index + 1 if index < length and line[index] == ")" else -1
+
+
+def link_metadata_regions(
+    line: str, defined_labels: frozenset[str]
+) -> tuple[tuple[int, int], ...]:
+    """Return the ranges on one line that render as metadata rather than as text.
+
+    A link's destination and title, an image's alt text, a reference label the
+    document defines, and a link reference definition end to end all become an
+    attribute of an element or nothing at all. A marker inside one of those is
+    not a comment and exempts nothing. A *link's* text is deliberately not here:
+    it is inline content, and markdown-it renders a comment inside it as a
+    comment.
+
+    Links may not nest, so forming one deactivates every link opener still on
+    the stack. That is not a nicety. ``[a [b](u.md) c](v.md "<!-- x -->")``
+    renders with the marker visible, because the inner link wins and the outer
+    brackets are literal text; a pass that matched brackets naively would have
+    hidden a real marker and then refused a session that had declared itself.
+    <https://spec.commonmark.org/0.31.2/#links>
+    """
+    if LINK_REFERENCE_DEFINITION_PATTERN.match(line) is not None:
+        return ((0, len(line)),)
+
+    regions: list[tuple[int, int]] = []
+    openers: list[tuple[int, bool, bool]] = []
+    index = 0
+    length = len(line)
+
+    while index < length:
+        character = line[index]
+        if character == "\\":
+            index += 2
+            continue
+        if line.startswith("![", index):
+            openers.append((index, True, True))
+            index += 2
+            continue
+        if character == "[":
+            openers.append((index, False, True))
+            index += 1
+            continue
+        if character != "]" or not openers:
+            index += 1
+            continue
+
+        opener, is_image, is_active = openers.pop()
+        after = index + 1
+        text_start = opener + (2 if is_image else 1)
+        metadata: tuple[int, int] | None = None
+        consumed = after
+
+        if after < length and line[after] == "(":
+            end = inline_link_end(line, after)
+            if end != -1:
+                metadata, consumed = (after, end), end
+        elif after < length and line[after] == "[":
+            label_close = matching_bracket(line, after)
+            if label_close != -1:
+                label = line[after + 1 : label_close] or line[text_start:index]
+                if normalize_link_label(label) in defined_labels:
+                    metadata, consumed = (after, label_close + 1), label_close + 1
+        elif normalize_link_label(line[text_start:index]) in defined_labels:
+            metadata, consumed = (after, after), after
+
+        if metadata is None or not is_active:
+            index = after
+            continue
+
+        if is_image:
+            # The alt text is an attribute, so the whole construct goes.
+            regions.append((opener, consumed))
+        else:
+            if metadata[0] != metadata[1]:
+                regions.append(metadata)
+            openers[:] = [
+                (start, image, image and active) for start, image, active in openers
+            ]
+        index = consumed
+
+    return tuple(regions)
+
+
+def raw_html_comment_spans(line: str, is_in_comment: bool) -> tuple[str, bool]:
+    """Return the HTML comment text on one line of a raw HTML block.
+
+    Two contexts bind inside a raw HTML block and only two: an open comment,
+    and a complete tag, whose attribute values are attribute values rather than
+    markup. Nothing Markdown would otherwise read on the line means anything
+    here, because the block is passed through to the page as it stands. That
+    cuts both ways, and both ways are measured against markdown-it 14.3.0: a
+    comment four spaces into a ``<div>`` block is still a comment and still
+    exempts, while ``<div title="<!-- no-source-check: x -->">`` yields nothing
+    at all, because the delimiters are inside the tag and the renderer puts
+    them in the ``title`` attribute.
+    <https://spec.commonmark.org/0.31.2/#html-blocks>
+    """
     spans: list[str] = []
     index = 0
 
@@ -676,31 +1003,13 @@ def comment_spans(line: str, is_in_comment: bool) -> tuple[str, bool]:
             is_in_comment = False
             continue
 
-        character = line[index]
-        if character == "\\":
-            index += 2
+        if line.startswith("<!--", index):
+            spans.append("<!--")
+            index += len("<!--")
+            is_in_comment = True
             continue
 
-        if character == "`":
-            run_end = index
-            while run_end < len(line) and line[run_end] == "`":
-                run_end += 1
-            closer = closing_backtick_run(line, run_end, run_end - index)
-            index = run_end if closer == -1 else closer
-            continue
-
-        if line.startswith("![", index):
-            close = matching_bracket(line, index + 1)
-            if close != -1 and line.startswith("(", close + 1):
-                index = close + 1
-                continue
-
-        if character == "<":
-            if line.startswith("<!--", index):
-                spans.append("<!--")
-                index += len("<!--")
-                is_in_comment = True
-                continue
+        if line[index] == "<":
             tag = INLINE_HTML_TAG_PATTERN.match(line, index)
             if tag is not None:
                 index = tag.end()
@@ -711,32 +1020,188 @@ def comment_spans(line: str, is_in_comment: bool) -> tuple[str, bool]:
     return "".join(spans), is_in_comment
 
 
-def raw_html_block_state(
-    content: str, open_block: RawHtmlBlock | None
-) -> tuple[RawHtmlBlock | None, bool]:
-    """Return the HTML-block state after one line, and whether the line is in one.
+def following_backtick_run(contents: Sequence[str], row: int, length: int) -> tuple[int, int]:
+    """Return where a code span opened on ``row`` closes, or ``(-1, -1)``.
 
-    ``content`` is the line with its container prefixes already peeled, for
-    the reason ``container_content`` exists: CommonMark decides a line's block
-    type from what is left once the prefixes are consumed.
+    A code span spans a soft line break: CommonMark closes it on the next run
+    of the same length anywhere in the same paragraph. So the search runs on
+    past the end of the line and stops where the paragraph does -- at a blank
+    line, a heading or a thematic break -- past which the opening run is
+    literal text and the lines below it are prose again.
+    <https://spec.commonmark.org/0.31.2/#code-spans>
     """
-    if open_block is not None and open_block.end is None and not content.strip():
-        # A blank line closes the conditions that have no end tag, and the
-        # blank line is not itself part of the block.
-        open_block = None
+    for next_row in range(row + 1, len(contents)):
+        line = contents[next_row]
+        if not line.strip():
+            return -1, -1
+        if ATX_HEADING_LINE_PATTERN.match(line) is not None:
+            return -1, -1
+        if THEMATIC_BREAK_LINE_PATTERN.match(line) is not None:
+            return -1, -1
+        closer = closing_backtick_run(line, 0, length)
+        if closer != -1:
+            return next_row, closer
+    return -1, -1
 
-    if open_block is None:
-        for candidate in RAW_HTML_BLOCKS:
-            if candidate.start.match(content) is not None:
-                open_block = candidate
-                break
 
-    in_block = open_block is not None
-    if open_block is not None and open_block.end is not None:
-        if open_block.end.search(content) is not None:
-            open_block = None
+def text_marker_spans(
+    contents: Sequence[str], is_in_comment: bool, defined_labels: frozenset[str]
+) -> tuple[list[str], bool]:
+    """Return the comment text on each line of one run of document text.
 
-    return open_block, in_block
+    This answers a narrower question than ``strip_html_comments``: not "what
+    does the reader see", but "what here does CommonMark read as a comment".
+    The difference is the contexts that bind tighter than raw HTML and
+    therefore print the characters the author typed, or hand them to an
+    element as an attribute -- a code span, a backslash escape, an image's alt
+    text, a link's destination or title, an attribute value inside a tag, and a
+    line indented four spaces, which is code rather than a paragraph.
+
+    The run is scanned whole rather than a line at a time because two of those
+    contexts cross a line break. A comment does, and the caller threads
+    ``is_in_comment`` in and out for the lines on either side of the run. A code
+    span does too, and deciding whether one closes needs the rest of the
+    paragraph rather than the rest of the line.
+
+    One measured limit is deliberate. A line indented four spaces is read as
+    code even where it is a lazy continuation of the paragraph above, which
+    CommonMark reads as prose. That is the safe direction: it refuses to exempt
+    rather than granting an exemption the file does not visibly declare.
+    """
+    spans: list[list[str]] = [[] for _ in contents]
+    skips: dict[int, tuple[tuple[int, int], ...]] = {}
+    row = 0
+    index = 0
+
+    while row < len(contents):
+        line = contents[row]
+
+        if index >= len(line):
+            row += 1
+            index = 0
+            continue
+
+        if is_in_comment:
+            comment_end = line.find("-->", index)
+            if comment_end == -1:
+                spans[row].append(line[index:])
+                row += 1
+                index = 0
+                continue
+            spans[row].append(line[index : comment_end + len("-->")])
+            index = comment_end + len("-->")
+            is_in_comment = False
+            continue
+
+        if index == 0 and count_leading_spaces(line) >= 4:
+            row += 1
+            continue
+
+        if row not in skips:
+            skips[row] = link_metadata_regions(line, defined_labels)
+        skipped = next((end for start, end in skips[row] if start <= index < end), index)
+        if skipped > index:
+            index = skipped
+            continue
+
+        character = line[index]
+
+        if character == "\\":
+            index += 2
+            continue
+
+        if character == "`":
+            run_end = index
+            while run_end < len(line) and line[run_end] == "`":
+                run_end += 1
+            run_length = run_end - index
+            closer = closing_backtick_run(line, run_end, run_length)
+            if closer != -1:
+                index = closer
+                continue
+            close_row, close_index = following_backtick_run(contents, row, run_length)
+            if close_row == -1:
+                index = run_end
+                continue
+            row, index = close_row, close_index
+            continue
+
+        if character == "<":
+            if line.startswith("<!--", index):
+                spans[row].append("<!--")
+                index += len("<!--")
+                is_in_comment = True
+                continue
+            tag = INLINE_HTML_TAG_PATTERN.match(line, index)
+            if tag is not None:
+                index = tag.end()
+                continue
+
+        index += 1
+
+    return ["".join(parts) for parts in spans], is_in_comment
+
+
+def collect_reference_labels(sources: Sequence[tuple[str, str]]) -> frozenset[str]:
+    """Return every link label the document defines, normalized."""
+    labels: set[str] = set()
+    for kind, content in sources:
+        if kind != MARKER_SOURCE_TEXT:
+            continue
+        match = LINK_REFERENCE_LABEL_PATTERN.match(content)
+        if match is not None:
+            labels.add(normalize_link_label(match.group("label")))
+    return frozenset(labels)
+
+
+def collect_marker_lines(sources: Sequence[tuple[str, str]]) -> tuple[str, ...]:
+    """Return, for each line, the text CommonMark reads there as an HTML comment.
+
+    The two Source Check exemption markers *are* comments and nothing else is
+    one. Saying that positively -- keeping the comment spans rather than
+    subtracting code spans, escapes, attributes, link metadata and indented code
+    one context at a time -- is what lets one scan cover every shape. It also
+    does not demand that a marker sit alone on its line, which CommonMark has
+    never required of a comment.
+
+    This runs after the document has been classified rather than during it,
+    because two of the questions it asks need more than the line in hand: which
+    labels the document defines, and whether a backtick run further down the
+    paragraph closes the one on this line.
+
+    Document text is scanned a run at a time for the same reason. A raw HTML
+    line ends the run, which is right twice over: the Markdown inline rules do
+    not reach inside a raw HTML block, and a line that opens one ends the
+    paragraph a code span would have needed to close in.
+    """
+    defined_labels = collect_reference_labels(sources)
+    markers: list[str] = []
+    is_in_comment = False
+    row = 0
+
+    while row < len(sources):
+        kind, content = sources[row]
+
+        if kind == MARKER_SOURCE_BLANK:
+            markers.append("")
+            row += 1
+            continue
+
+        if kind == MARKER_SOURCE_RAW_HTML:
+            span, is_in_comment = raw_html_comment_spans(content, is_in_comment)
+            markers.append(span)
+            row += 1
+            continue
+
+        end = row
+        while end < len(sources) and sources[end][0] == MARKER_SOURCE_TEXT:
+            end += 1
+        run = [sources[position][1] for position in range(row, end)]
+        spans, is_in_comment = text_marker_spans(run, is_in_comment, defined_labels)
+        markers.extend(spans)
+        row = end
+
+    return tuple(markers)
 
 
 def normalize_for_fence_closing(line: str, active_fence: ActiveFence) -> str:
@@ -747,24 +1212,33 @@ def normalize_for_fence_closing(line: str, active_fence: ActiveFence) -> str:
     return peeled
 
 
-def fence_container_ended(line: str, active_fence: ActiveFence) -> bool:
-    """Return whether ``line`` has left the container holding the open fence.
+def container_path_ended(line: str, containment_path: tuple[Container, ...]) -> bool:
+    """Return whether ``line`` has left the container holding an open block.
 
-    CommonMark ends a fenced block at the end of its containing block when no
-    closing fence is found, so a fence opened inside a list item or a
-    blockquote does not run to the end of the document once the document
-    outdents past that container. A nonblank line that does not peel to the
-    fence's container has left it. A blank line has left a blockquote, which a
-    blank line ends, but not a list item, where a blank line is ordinary
-    content. Kept identical to the helper in
-    ``.github/scripts/check-prohibited-placeholders.py``.
+    CommonMark ends a leaf block at the end of its containing block, so a block
+    opened inside a list item or a blockquote does not run to the end of the
+    document once the document outdents past that container. A nonblank line
+    that does not peel to the block's container has left it. A blank line has
+    left a blockquote, which a blank line ends, but not a list item, where a
+    blank line is ordinary content. Kept identical to the helper in the sibling
+    hooks. https://spec.commonmark.org/0.31.2/#container-blocks
     """
-    _, peeled_count = peel_containers(line, active_fence.containment_path)
-    if peeled_count == len(active_fence.containment_path):
+    _, peeled_count = peel_containers(line, containment_path)
+    if peeled_count == len(containment_path):
         return False
     if line.strip():
         return True
-    return active_fence.containment_path[peeled_count].kind == CONTAINER_KIND_BLOCK_QUOTE
+    return containment_path[peeled_count].kind == CONTAINER_KIND_BLOCK_QUOTE
+
+
+def fence_container_ended(line: str, active_fence: ActiveFence) -> bool:
+    """Return whether ``line`` has left the container holding the open fence.
+
+    A fenced block is one of the leaf blocks ``container_path_ended`` speaks
+    for; the rule is the container's rather than the fence's.
+    https://spec.commonmark.org/0.31.2/#fenced-code-blocks
+    """
+    return container_path_ended(line, active_fence.containment_path)
 
 
 def parse_opening_fence(line: str) -> tuple[str, int] | None:
@@ -792,10 +1266,20 @@ def is_closing_fence(line: str, fence_character: str, minimum_length: int) -> bo
 
     CommonMark closes a fenced block only on a fence of the same character that
     is at least as long as the opening fence and that carries nothing but
-    whitespace after it. An info string does not close a block, and trailing
-    prose does not close one either.
+    spaces or tabs after it. An info string does not close a block, and
+    trailing prose does not close one either.
+
+    Spaces and tabs, and not a whitespace class. Python reads ``\\s`` as Unicode
+    whitespace, so a nonbreaking space or a form feed after the backticks would
+    close the block here while the renderer kept every line below it inside the
+    code -- and a fake scaffold heading under such a fence would count as
+    structure. Measured against markdown-it 14.3.0: a fence followed by U+00A0
+    does not close. Kept in step with the sibling hooks.
+    https://spec.commonmark.org/0.31.2/#fenced-code-blocks
     """
-    closing_pattern = re.compile(rf"^ {{0,3}}{re.escape(fence_character)}{{{minimum_length},}}\s*$")
+    closing_pattern = re.compile(
+        rf"^ {{0,3}}{re.escape(fence_character)}{{{minimum_length},}}[ \t]*$"
+    )
     return closing_pattern.match(line) is not None
 
 
@@ -813,13 +1297,13 @@ def scan_document(text: str) -> DocumentScan:
     ``check-prohibited-placeholders.py`` uses, under the same names.
     """
     content_lines: list[str] = []
-    marker_lines: list[str] = []
+    marker_sources: list[tuple[str, str]] = []
     worksheet_fences: list[int] = []
     active_fence: ActiveFence | None = None
     list_contexts: list[ListContext] = []
     is_in_html_comment = False
-    is_in_marker_comment = False
-    raw_html_block: RawHtmlBlock | None = None
+    html_block: ActiveHtmlBlock | None = None
+    paragraph_open = False
     fence_start = 0
     buffer: list[str] = []
 
@@ -844,7 +1328,8 @@ def scan_document(text: str) -> DocumentScan:
             else:
                 buffer.append(closing_line)
             content_lines.append("")
-            marker_lines.append("")
+            marker_sources.append((MARKER_SOURCE_BLANK, ""))
+            paragraph_open = False
             continue
 
         was_in_html_comment = is_in_html_comment
@@ -852,25 +1337,29 @@ def scan_document(text: str) -> DocumentScan:
         # Fence detection reads the span-stripped line, because the sibling
         # hook reads it that way and the two must not disagree about which
         # fences exist -- which is also why the sibling carries the same
-        # HTML-block test. The structural searches read less: a whole HTML
+        # HTML-block machine. The structural searches read less: a whole HTML
         # block line carries no heading, even after its ``-->``. The
         # HTML-block test reads the line as the file holds it, with its
         # container prefixes peeled: CommonMark classifies a line from what is
         # left after the prefixes, so a marker inside a blockquote or a list
         # item is the same comment the unindented one is.
-        block_content = container_content(raw_line, list_contexts)
-        raw_html_block, in_raw_html_block = raw_html_block_state(block_content, raw_html_block)
+        block_line = container_line(raw_line, list_contexts)
+        block_content = block_line.content
+        if html_block is not None and container_path_ended(raw_line, html_block.containment_path):
+            # The list item or blockquote holding the block has ended, so the
+            # block ended with it, exactly as an unclosed fence does. Without
+            # this an unclosed ``<script>`` inside a blockquote blanked every
+            # heading the document outdented to, through the end of the file.
+            html_block = None
+        html_block, line_html_block = html_block_state(
+            block_content, block_line.containment_path, html_block, paragraph_open
+        )
         # A comment is one HTML block condition; the rest are raw HTML too,
         # and a ``## Goal`` inside a ``<div>`` is no more a heading than a
-        # ``## Goal`` inside a comment is.
-        in_html_block = (
-            was_in_html_comment
-            or HTML_BLOCK_COMMENT_START_PATTERN.match(block_content) is not None
-            or in_raw_html_block
-        )
-        marker_span_text, is_in_marker_comment = comment_spans(
-            block_content, is_in_marker_comment
-        )
+        # ``## Goal`` inside a comment is. An inline comment opened part way
+        # along a line is not a block, so its cross-line state is consulted
+        # here too.
+        in_html_block = was_in_html_comment or line_html_block is not None
 
         opening_fence_line = normalize_for_fence_opening(visible_line, list_contexts)
         # A line CommonMark reads as raw HTML opens no fenced block, whatever
@@ -891,23 +1380,33 @@ def scan_document(text: str) -> DocumentScan:
             fence_start = number
             buffer = []
             content_lines.append("")
-            marker_lines.append("")
+            marker_sources.append((MARKER_SOURCE_BLANK, ""))
+            paragraph_open = False
             continue
 
         content_lines.append("" if in_html_block else visible_line)
-        # A marker is a marker only where CommonMark reads it as a comment.
-        # Keeping the comment -- the whole line where the line is raw HTML end
-        # to end, the comment spans otherwise -- states that positively, so
-        # this does not have to subtract code spans, backslash escapes, HTML
-        # attributes and indented code one context at a time. It also does not
-        # have to demand that a marker sit alone on its line, which CommonMark
-        # has never required of a comment.
-        marker_lines.append(raw_line if in_html_block else marker_span_text)
+        # A marker is a marker only where CommonMark reads it as a comment, and
+        # which contexts decide that depends on what the line is. Inside a raw
+        # HTML block -- the comment among the conditions -- only a tag and a
+        # comment mean anything; everywhere else the Markdown inline rules
+        # apply. Recording which, rather than answering now, is what lets the
+        # scan below see a whole paragraph at a time; it is also what stops a
+        # code span reaching across a line that opens a block, because such a
+        # line ends the paragraph that would have held the span.
+        if line_html_block is not None:
+            marker_sources.append((MARKER_SOURCE_RAW_HTML, block_content))
+        else:
+            marker_sources.append((MARKER_SOURCE_TEXT, block_content))
+        paragraph_open = False if in_html_block else opens_a_paragraph(block_content)
 
     if active_fence is not None and fence_holds_worksheet(buffer):
         worksheet_fences.append(fence_start)
 
-    return DocumentScan(tuple(content_lines), tuple(marker_lines), tuple(worksheet_fences))
+    return DocumentScan(
+        tuple(content_lines),
+        collect_marker_lines(tuple(marker_sources)),
+        tuple(worksheet_fences),
+    )
 
 
 def find_headings(scan: DocumentScan) -> list[Heading]:
@@ -992,6 +1491,48 @@ def parent_strip_body(
     return "\n".join(content_lines[label_line - 1 : end])
 
 
+def reference_definition_span(lines: Sequence[str], index: int) -> int:
+    """Return how many lines the link reference definition at ``index`` fills.
+
+    Zero where there is none. CommonMark lets the destination sit on the line
+    after the label, and the title on the line after the destination, and the
+    whole construct renders nothing at all -- so a section holding one prints to
+    the child as a bare heading however many lines it took to write.
+
+    The longest form that parses exactly is the one taken, because that is what
+    the renderer does, and only where the line below carries something the
+    definition can still use: a definition that already has its title does not
+    take a second one. A label line, an indented destination and then a line of
+    prose is a two-line definition with the prose left over, and measured
+    against markdown-it 14.3.0 that prose is an indented code block the child
+    sees.
+    <https://spec.commonmark.org/0.31.2/#link-reference-definitions>
+    """
+
+    def line_at(offset: int) -> str:
+        position = index + offset
+        return lines[position] if position < len(lines) else ""
+
+    if LINK_REFERENCE_LABEL_LINE_PATTERN.match(line_at(0)) is not None:
+        destination = LINK_REFERENCE_DESTINATION_LINE_PATTERN.match(line_at(1))
+        if destination is None:
+            return 0
+        if destination.group("title") is None and (
+            LINK_REFERENCE_TITLE_LINE_PATTERN.match(line_at(2)) is not None
+        ):
+            return 3
+        return 2
+
+    definition = LINK_REFERENCE_DEFINITION_PATTERN.match(line_at(0))
+    if definition is None:
+        return 0
+    if definition.group("title") is None and (
+        LINK_REFERENCE_TITLE_LINE_PATTERN.match(line_at(1)) is not None
+    ):
+        return 2
+    return 1
+
+
 def renders_as_content(body: str) -> bool:
     """Return whether a section body puts anything on the page.
 
@@ -1005,15 +1546,29 @@ def renders_as_content(body: str) -> bool:
     comment and a definition on one line make the whole line an HTML block, and
     an HTML block prints the characters the author typed: ``<!-- c -->[shared]:
     /url`` is on the page, while ``[shared]: /url`` is not.
+
+    It reads a definition whole rather than a line at a time, because
+    CommonMark lets one run over two or three lines and the whole of it still
+    renders nothing. A rule applied line by line matched neither half of
+    ``[shared]:`` with its destination indented underneath, and a session whose
+    Goal was a bare heading passed.
     """
+    lines = body.split("\n")
     is_in_html_comment = False
-    for line in body.split("\n"):
+    index = 0
+    while index < len(lines):
+        line = lines[index]
         visible, is_in_html_comment = strip_html_comments(line, is_in_html_comment)
-        if not visible.strip():
+        if not visible.strip() or BARE_LIST_MARKER_PATTERN.match(visible):
+            index += 1
             continue
-        if BARE_LIST_MARKER_PATTERN.match(visible):
-            continue
-        if LINK_REFERENCE_DEFINITION_PATTERN.match(line):
+        span = reference_definition_span(lines, index)
+        if span:
+            for offset in range(1, span):
+                _, is_in_html_comment = strip_html_comments(
+                    lines[index + offset], is_in_html_comment
+                )
+            index += span
             continue
         return True
     return False

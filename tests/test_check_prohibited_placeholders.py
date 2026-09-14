@@ -762,3 +762,67 @@ def test_an_ordinary_paragraph_starting_with_a_tag_still_opens_its_fence(
     )
 
     assert scan_single_file(path, tmp_path) == []
+
+
+# ---------------------------------------------------------------------------
+# Issue 27: the HTML-block findings PR #23 deferred, in the sibling hook
+# ---------------------------------------------------------------------------
+
+
+def test_an_unclosed_html_block_ends_with_its_blockquote(tmp_path: Path) -> None:
+    """A leaf block ends with the block that holds it, as an unclosed fence does.
+
+    The HTML-block state had no containment path, so the ``<script>`` stayed
+    open past the outdent; a line read as raw HTML opens no fence, so the
+    example below was never a fence and its placeholder was reported.
+    """
+    path = write_file(
+        tmp_path / "docs" / "spec" / "example.md",
+        "> <script>\n\n```\nThe limit is TBD.\n```\n",
+    )
+
+    assert scan_single_file(path, tmp_path) == []
+
+
+def test_a_script_line_inside_a_comment_opens_no_block(tmp_path: Path) -> None:
+    """No start condition is tried while an HTML block is open.
+
+    A ``<script>`` written inside a multiline comment opened a second state
+    that outlived the ``-->`` and hid every fence below it.
+    """
+    path = write_file(
+        tmp_path / "docs" / "spec" / "example.md",
+        "<!-- a note\n<script>\n-->\n\n```\nThe limit is TBD.\n```\n",
+    )
+
+    assert scan_single_file(path, tmp_path) == []
+
+
+def test_a_fence_inside_a_type_seven_html_block_is_not_a_fence(tmp_path: Path) -> None:
+    """A complete tag alone at a block boundary opens a raw HTML block.
+
+    The backticks inside it are raw HTML rather than a fence, so the
+    placeholder on the line below is characters on the page and is reported.
+    Measured against markdown-it 14.3.0.
+    """
+    path = write_file(
+        tmp_path / "docs" / "spec" / "example.md",
+        "<x-session>\n```\nThe limit is TBD.\n```\n",
+    )
+
+    assert [violation.matched_text for violation in scan_single_file(path, tmp_path)] == ["TBD"]
+
+
+def test_a_nonbreaking_space_does_not_close_a_fence(tmp_path: Path) -> None:
+    """CommonMark permits spaces and tabs after a closing fence and nothing else.
+
+    The narrowed pattern keeps the block open, so the placeholder under the
+    fake closing fence stays inside the example -- which is where the renderer
+    keeps it.
+    """
+    path = write_file(
+        tmp_path / "docs" / "spec" / "example.md",
+        "```\ncode\n```\u00a0\nThe limit is TBD.\n```\n",
+    )
+
+    assert scan_single_file(path, tmp_path) == []
