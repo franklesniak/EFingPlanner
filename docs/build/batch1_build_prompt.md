@@ -355,7 +355,7 @@ add-a-destination checklist. Must contain:
 
   | Slot | Consuming session | Fields it must supply |
   | --- | --- | --- |
-  | `10_snapshot_facts.md` | 10 Destination Snapshot | Capital; major land features; currency; main language. Not the hours-ahead figure -- that is a Trip-Basics card value. |
+  | `10_snapshot_facts.md` | 10 Destination Snapshot | Capital; major land features; currency; main language. Not the time-difference figure -- that is a Trip-Basics card value. |
   | `11_regions_overview.md` | 11 Regions and Cities Overview | The main regions, named, so the child can start their region notes; then a pointer to the pack's regions reference for how each region feels different and for the geography instances the neutral session may not state -- the country's shape and size, how weather differs by region, why travel time between regions matters -- and a pointer to the pack's major-cities reference for the route shapes. That regions reference is their canonical home; do not restate them in the slot. No trip shapes, no costs, no pinned travel times. |
   | `12_seasons_and_events.md` | 12 Weather, Seasons, and Events | Each season the destination has, named, so the child can label a season chart, with one short line each on what travelling in it is like; then a pointer to the pack's seasons, weather and events reference for the rest -- the big-draw and busiest periods, the congestion windows named as categories to confirm this year, each seasonal hazard with its pacing consequence, and the adult-facing contingency note. That reference is their canonical home; do not restate them in the slot. No pinned dates, prices or forecasts. |
   | `16_18_candidate_cities.md` | 16-18 Deep-Dive Cities | Two to four first-trip candidate cities, each with a one-line draw and a few kid-magnet ideas to research, not pre-chosen. |
@@ -426,7 +426,7 @@ canonical worked example of the whole split; child-facing, matter-of-fact regist
 Must contain: H1 (`Destination Notes` for the snapshot session); the `Last reviewed`
 stamp; **capital — Tokyo**; **major land features / major islands — Honshu, Hokkaido,
 Kyushu, Shikoku**; **currency — the yen**; **main language — Japanese**; the explicit
-exclusion *"The hours-ahead value comes from the family's trip-basics card, not from
+exclusion *"The time-difference value comes from the family's trip-basics card, not from
 this insert"*; an orientation-not-mastery framing; and the note that the three
 surprising facts are the child's own research, not supplied here. No prices, hours,
 entry rules, or anything volatile.
@@ -509,7 +509,14 @@ place.
 
 **A5. `destinations/japan/session_inserts/kid_glossary.md` (create; pulled forward
 from Batch 3 by OQ-16).** Child-facing. H1: `# Words and Numbers You Will Meet
-(Japan)`. Second line: the `Last reviewed` stamp. Then a one-line framing sentence in
+(Japan)`. Then the `Last reviewed` stamp, on the line directly below that H1 under the
+shared rule above -- **the first nonblank content after the title, not the file's second
+physical line.** Like every built curriculum file this one opens with a
+`markdownlint-disable` comment, and a blank line separates that comment from the H1, so a
+builder reading "second line" literally would either drop the directive this brief
+requires everywhere or push the stamp to a line the rule does not mean. The freshness
+self-check below already reads the contract the right way, and this item is the only
+place in the brief that counted physical lines instead. Then a one-line framing sentence in
 the pack's register — *"These are words and units you will see on signs, on menus, and
 on trains."* Then **the ten entries from the built `travel_glossary.md` section "Japan
 words you will meet" and the four entries from "Numbers you will see in Japan",
@@ -798,10 +805,15 @@ instructions cannot be read against each other. Must contain:
 - The child compares **at least two sources on the same topic**.
 - The five record fields: what source A says; what source B says; where they agree;
   where they differ; which is more useful and why.
-- Topic selection, **neutral shapes only**: *"the best time to visit your
-  destination"*; *"neighborhoods in one big city there"*; *"getting around by train"*;
-  *"one thing your Destination Notes flagged."* Point the child at the destination
-  pack's sample search terms, generically.
+- Topic selection, **neutral shapes only, and each one answerable for any destination**:
+  *"the best time to visit your destination"*; *"neighborhoods in one town or city
+  there"*; *"how people get around there"*; *"one thing your Destination Notes flagged."*
+  Point the child at the destination pack's sample search terms, generically. **Two of
+  these were not neutral before this brief reached them:** "getting around by train"
+  presumes a rail network and "one big city" presumes a large city, and a child whose
+  destination has neither is sent to research something that is not there. Neither
+  phrase carries a destination name, so neither trips the leak grep -- which is the
+  reason to read these shapes for what they assume rather than for what they name.
 - **The formative skill check**, in the Parent Notes: ask the child to show how they
   would judge whether a website is trustworthy. If it is shaky, spend more time before
   moving on.
@@ -836,10 +848,14 @@ required.** Must contain:
 - The session **says "open this session's Destination Notes" and covers the
   destination's main regions briefly; it does not list them in its body.** It names no
   region, no city, and no trip shape.
-- The four generic lessons stay in the body, stated generically: the country's shape
-  and size matter; weather differs by region; **travel time matters**; a first trip
-  cannot include everything. The instances live in the pack's regions overview, which E1
-  creates and which the insert routes to; the insert itself only names the regions (A3).
+- The four generic lessons stay in the body, stated generically: your destination's
+  shape and size matter; weather can differ from one region to the next; **travel time
+  matters**; a first trip cannot include everything. The instances live in the pack's
+  regions overview, which E1 creates and which the insert routes to; the insert itself
+  only names the regions (A3). **Write "your destination", not "the country", and write
+  that weather *can* differ rather than that it does.** A destination is not always a
+  country, and a small one may have one weather story; a lesson asserted flat is a
+  destination fact wearing generic clothes, and this file is the neutral layer.
 - The route-shape calibration lives **in the pack's major-cities reference**, not in the
   body and not in the insert. A3 forbids the insert from repeating the two trip shapes
   (OQ-10 makes the major-cities reference their only home), so the insert **routes**
@@ -1137,18 +1153,32 @@ in order:
 
 - Add as the **first data row** of the fill-in table:
   `| Destination (the place the grown-ups picked) | |`
-- **Replace the destination name in the time-zone paragraph.** The paragraph below the
-  fill-in table is six short sentences and reads *"For the time zone, a grown-up does the
-  looking up. They find how many hours ahead Japan is right now. Then they write it here.
-  The gap is not the same for every US time zone. It also shifts with daylight saving. So
-  check today's figure."* Change the second sentence only, to *"They find how many hours
-  ahead your destination is right now."*, and **leave the other five exactly as they
-  stand** -- the US time-zone and daylight-saving sentences are origin-layer adult help
-  text and OQ-4 keeps them, and the short-sentence shape is a readability pass this batch
-  does not undo. One word goes. This is the only place `Japan` appears
+- **Make the time-difference field direction-neutral, and replace the destination name in
+  the paragraph below it.** These are one change, not two. The built card asks only how
+  many hours *ahead* the destination is, which is true of a destination east of the family
+  and false of one west of it, and a family reusing this framework for a destination behind
+  their home zone would be asked to write a negative number into a field whose name says
+  otherwise. **The fill-in row** reads
+  `| Home time zone, or hours ahead to the destination | |` today; change it to
+  `| Home time zone, or the time difference to the destination (hours ahead or behind) | |`
+  and leave every other row alone. **The paragraph** below the fill-in table is six short
+  sentences and reads *"For the time zone, a grown-up does the looking up. They find how
+  many hours ahead Japan is right now. Then they write it here. The gap is not the same
+  for every US time zone. It also shifts with daylight saving. So check today's figure."*
+  Change the second sentence only, to *"They find how many hours ahead of or behind home
+  your destination is right now."*, and **leave the other five exactly as they stand** --
+  the US time-zone and daylight-saving sentences are origin-layer adult help text and OQ-4
+  keeps them, and the short-sentence shape is a readability pass this batch does not undo.
+  This is the only place `Japan` appears
   in `framework/templates/`, and H10's table deliberately omits this file because this
   bullet covers it -- so if the framework leak grep returns a hit in
   `framework/templates/trip_basics.md`, this replacement is what was missed.
+  **`the time difference` is this field's canonical name from here on**, and every other
+  surface that names it takes that spelling: G2's kit copy, Session 00's field list,
+  `parent_guide/setup_checklist.md` through H10, Session 10's Step 5 lookup, and A2's
+  exclusion sentence. Do not write `hours-ahead` in anything this batch authors or edits.
+  A direction baked into a field name is a destination assumption, and it walks past the
+  five-name leak grep because that grep reads names.
 - Add one sentence beside the table: *"A grown-up writes the destination here. The name
   is on the front of your destination pack."*
 
@@ -1226,8 +1256,8 @@ to a file this brief does not ask for it on.
   An unqualified claim here would publish a reuse guarantee the tree does not meet, and
   the first reuser who copied `framework/` toward a second destination would find it in
   Session 15. So write the layer as it is: the framework holds no destination facts and
-  no trip data **except in the later-phase sessions Batch 2 converts, which are named on
-  the leak-exemption list and carry the first destination's facts until then**. Keep the
+  no trip data **except in the later-phase sessions named on the leak-exemption list, one
+  of which still carries the first destination's facts**. Keep the
   exception to one sentence, keep it inside this bullet rather than in a footnote, and
   keep it out of the `framework/` prose as a place name -- write "the first
   destination", never the name. F10 records the same boundary in the changelog's
@@ -1283,11 +1313,15 @@ to a file this brief does not ask for it on.
   list at all; and the pack `README.md` is on it only as A6, whose three changes do not
   reach its money-reference line. Naming the assumption is the fix there too.
   **And do not list the Destination Snapshot session's flight sentence here.** An earlier
-  draft of this bullet did. The Session 10 conversion table below neutralises *"it is a
-  long flight from the US"* to *"it is a long flight from home"* in this same batch, and
+  draft of this bullet did. The Session 10 conversion table below replaces *"it is a
+  long flight from the US"* with a neutral travel-time prompt in this same batch, and
   its Step 5 row drops *"(it varies by US zone and season)"* alongside, so after Batch 1
   there is nothing origin-specific left in that session for a family to swap. A swap list
-  that names it sends a reader to a sentence that is already neutral.
+  that names it sends a reader to a sentence that is already neutral. **It does not belong
+  on the destination side of the swap either.** "A long flight" assumes air travel and a
+  long journey, which is a claim about the destination rather than about the origin, and
+  the conversion removes it instead of moving it into the pack -- a pack cannot hold it,
+  because the answer changes with where the family starts.
 - Pointers to the roadmap, the guides, the templates, the kit, and the destination
   packs. Point to the destination pack rather than restating any destination fact.
 
@@ -1651,11 +1685,25 @@ Batch 1 must land these entries:
   trip starter kit's `family/` subtree, and the new guides.
 - **Changed** — *"Build path moved from the Lean shape to the Full Build shape. The
   eight Batch 0 Phase 0-2 sessions were split into destination-neutral skeletons plus
-  destination-pack inserts. Their voice, structure, step order and non-destination
-  content are unchanged. Those eight pages remain the Batch 0 concrete baseline, not a
-  validated reference: the usability pilot is still deferred and no child has walked
-  them. See 'What is still owed to a human' below."* Plus the framework-layer
-  destination scrub, the glossary move, and the style-file change.
+  destination-pack inserts. Their voice, structure and step order are unchanged. Two
+  non-destination changes went with the split: Session 05's lateral-reading and
+  primary-versus-secondary definitions moved to their canonical home in the framework
+  docs, leaving a one-clause reminder and a link where they stood, and the navigation
+  lines were re-pointed for the sessions this batch adds. Those eight pages remain the
+  Batch 0 concrete baseline, not a validated reference: the usability pilot is still
+  deferred and no child has walked them. See 'What is still owed to a human' below."*
+  Plus the framework-layer destination scrub, the glossary move, and the style-file
+  change.
+
+  **That entry says what changed rather than that nothing did, and the difference is the
+  point.** An earlier draft claimed the eight pages' non-destination content was
+  unchanged. This same brief contradicts it twice: the Session 05 block moves two
+  definitions out of that session and leaves a reminder and a link in their place, and
+  universal conversion rule 7 re-points navigation text in several of the eight. Both
+  preserve meaning; neither leaves the content unchanged, and a changelog that denies a
+  change this repository made is a false history of it. If a conversion also forces a
+  density edit under universal conversion rule 9, that is a third non-destination change
+  and the entry names it too.
 
   **Do not claim, in any wording, that a child has used a page this repository ships --
   here, or anywhere else you author.** This is the canonical home of that rule, and it
@@ -1756,9 +1804,13 @@ destination fact:**
   records which destination pack shipped in that release. Version history names what was
   added; it is not curriculum content. New changelog entries write 'the destination
   pack', so that exception does not grow. The second is the five already-built
-  later-phase sessions -- 15, 21, 33, 44 and 53 -- which carry the first destination's
-  facts until Batch 2 converts or verifies them; Session 15 still names the place today.
-  That exception is on the leak-exemption list, and it goes when Batch 2 clears the list.
+  later-phase sessions -- 15, 21, 33, 44 and 53 -- which stay exempt until Batch 2
+  converts or verifies them. **One of them is a known leak; the other four are unverified,
+  and those are different states.** Session 15 still names the place and links into the
+  pack. Sessions 21, 33, 44 and 53 carry no destination fact today: they are on the list
+  because nobody has checked them, not because anything was found in them. So Batch 2
+  converts one session and verifies four, and this file must not send its authors to
+  convert five. That exemption goes when Batch 2 clears the list.
   A session that needs
   place facts writes the exact phrase 'open this session's Destination Notes'; it never
   links into a destination folder, because the path string is itself a leak. Framework
@@ -1904,7 +1956,7 @@ what the kit contains, naming the folders even where they are built later (`fami
 **G2. `framework/trip_starter/family/trip_basics.md` (create).** A kit copy of the
 built `framework/templates/trip_basics.md` **after** the D9 edits, under the shared
 kit-copy rule above: the form body must not diverge from it. Fields: destination; home
-airport; airport code; home time zone or hours ahead to the destination; maximum trip
+airport; airport code; home time zone or the time difference to the destination; maximum trip
 length in days; number of travelers (an open answer allowed); the traveler roster by
 relationship, not by private details. Completely blank — no filled values, no example
 family. The wrapper's backlink points at `../../templates/trip_basics.md`.
@@ -2201,8 +2253,15 @@ it here, and do not restate a count anywhere else.
 block quote only. Do not touch the numbered First Taste list, the counts, or the "Beyond
 First Taste" section — the roadmap **extension** is Batch 2 work.
 
+**The two sets overlap; neither contains the other.** The numbered list directly below
+this quote is the evidence, and it is the list you are told not to touch: steps 9 through
+13 are Sessions 15, 21, 33, 44 and 53, all of them outside Phases 0-2 and all of them
+already in the tree. So the quote may not call the First Taste path a subset of the
+Phases 0-2 slice, and it may not call the slice a subset of the path either. H11 carries
+the same claim for the root `README.md` and takes the same wording.
+
 ```markdown
-> **What is built right now:** this repository holds the complete **Phases 0-2** slice -- Session 00 through Checkpoint 1 -- plus its support files. The **First Taste** path below runs inside that slice as a curated subset. The Core Finish Line and the full program are documented here but are built later.
+> **What is built right now:** this repository holds the complete **Phases 0-2** slice -- Session 00 through Checkpoint 1 -- plus its support files. The **First Taste** path below overlaps that slice rather than sitting inside it: its first eight numbered steps are sessions in Phases 0-2, and its last five -- Sessions 15, 21, 33, 44 and 53 -- are already-built sessions in later phases. The Core Finish Line and the full program are documented here but are built later.
 ```
 
 **H9. `framework/student_guide/travel_glossary.md` (edit).** Keep `## Travel words (any
@@ -2214,8 +2273,8 @@ kid_glossary.md`. In their place add:
 ## Words for the place you are going
 
 Your destination pack has its own word list. It holds the words you will see on signs,
-on menus, and on trains, and it explains the temperature, distance, and money units used
-there. Ask a grown-up to open it with you.
+on menus, and while you are getting around, and it explains the temperature, distance,
+and money units used there. Ask a grown-up to open it with you.
 ```
 
 **H10. The framework-layer destination scrub (edits).** Make these replacements exactly
@@ -2231,11 +2290,11 @@ conversion table); the remaining files are:
 | `parent_guide/adult_roles.md` | "we are taking a trip, and it is Japan." | "we are taking a trip, and where it is." |
 | `parent_guide/coaching_and_support.md` | "that we're going, and that it's Japan." | "that we're going, and where." |
 | `parent_guide/coaching_and_support.md` | "You recommended Kyoto for three nights -- here's our Kyoto hotel, three nights." | "You recommended three nights in the city you picked -- here's our hotel there, three nights." |
-| `parent_guide/setup_checklist.md` | "time zone or hours ahead to Japan" | "the destination, time zone or hours ahead to it" |
+| `parent_guide/setup_checklist.md` | "time zone or hours ahead to Japan" | "the destination, time zone or the time difference to it" — the direction goes with the name, per D9 |
 
 That replacement lands inside step 2's Trip-Basics field list, and it is the only change
 that step needs. The list then reads *"home airport and code, the destination, time zone
-or hours ahead to it, maximum trip length, number of travelers, and the roster by
+or the time difference to it, maximum trip length, number of travelers, and the roster by
 relationship."* **Keep that file's own wording.** It does not write "your" in front of
 each field, and Session 00's differently-voiced copy of the same list is not a model for
 it.
@@ -2266,7 +2325,8 @@ deliverables list named it. **Four regions change, and nothing else does:**
   design-validation pilot with a real child."* That is the same claim H8 replaces in the
   roadmap. Rewrite the first two sentences to say what is true after this batch: the
   repository holds the complete Phases 0-2 slice, Session 00 through Checkpoint 1, plus
-  its support files, and the First Taste path runs inside that slice as a curated subset.
+  its support files, and the First Taste path overlaps that slice rather than sitting
+  inside it -- it starts there and finishes in five already-built later-phase sessions.
   **Keep the rest of the paragraph exactly** -- the Core Finish Line and the full program
   built in later batches, and the Batch 0 gate clearing either by a passing child pilot or
   by a recorded no-child fallback. **That gate cleared on the second route, which is why
@@ -2299,7 +2359,11 @@ deliverables list named it. **Four regions change, and nothing else does:**
   (what is built now)"* and the sentence *"This slice is the pilotable First Taste path"*
   both claim the table is the built inventory. It is not, after this batch. Reword the
   heading so it names the First Taste path rather than the build state, and reword the
-  lead-in to say the table is the First Taste subset of the built Phases 0-2 slice.
+  lead-in to say the table is the First Taste path: its first eight numbered steps sit
+  inside the built Phases 0-2 slice, and its last five -- Sessions 15, 21, 33, 44 and 53 --
+  are already-built sessions in later phases. **Do not write that the table is a subset of
+  the Phases 0-2 slice**; five of the fifteen rows it keeps are outside that slice, and the
+  table itself is the evidence.
   **Keep all fifteen table rows exactly as they are** -- this is the First Taste index,
   and the First Taste path has not changed.
 
@@ -2358,7 +2422,7 @@ step 4:
 
 | Line | Current text | Neutral replacement |
 | --- | --- | --- |
-| Step 2 — **replace the whole field list, not the leaking phrase** | "your home airport and its code, your time zone or hours-ahead to Japan, your maximum trip length, how many travelers, and the roster by relationship" | "your home airport and its code, your destination, your time zone or hours ahead to it, your maximum trip length, how many travelers, and the roster by relationship" (the destination is the new field, per OQ-2; every other field keeps its built wording) |
+| Step 2 — **replace the whole field list, not the leaking phrase** | "your home airport and its code, your time zone or hours-ahead to Japan, your maximum trip length, how many travelers, and the roster by relationship" | "your home airport and its code, your destination, your time zone or the time difference to it, your maximum trip length, how many travelers, and the roster by relationship" (the destination is the new field, per OQ-2; the time-difference field takes D9's direction-neutral name; every other field keeps its built wording) |
 | "What to tell your child" | "we are taking a trip, and it is Japan" | "we are taking a trip, and the adults have chosen where" |
 | Buy-in gut-check | "show them a few genuinely exciting things about Japan" | "show them a few genuinely exciting things about your destination (the destination pack is a good place to start)" |
 | Full checklist | "If you have never been to Japan" | "If you have never been to your destination" |
@@ -2382,10 +2446,12 @@ and write "the official US source" in place of "the official source"** (OQ-4).
 | Steps intro | "we are going on a trip, and it is Japan" | "we are going on a trip, and the grown-ups have picked where" |
 | Cover page bullet | "Destination: Japan." | `- Destination: ______ (from your Trip-Basics card).` |
 | Step 2 | "Any time something about Japan sounds exciting" | "Any time something about your destination sounds exciting" |
+| Steps intro, junior-planner framing | "The grown-ups make the final calls on money, booking, flights, and safety" | "The grown-ups make the final calls on money, booking, travel, and safety" — one word. **This is the Session 10 Step 6 assumption in a second session**: a family who drives or takes a train to their destination has no flight for a grown-up to decide, and "flights" carries no destination name for the leak grep to catch. Nothing else in the sentence moves. |
 
 Preserve in substance: the junior-travel-planner framing (the child researches,
-compares, recommends; adults make final calls on money, booking, flights and safety; the
-child's recommendations really matter to those calls); the honest boundary, pointed to
+compares, recommends; adults make final calls on money, booking, travel and safety, per
+the row above; the child's recommendations really matter to those calls); the honest
+boundary, pointed to
 via the What I Decide card rather than re-listed; the cover-page fields (project title;
 planner name; destination; home airport and code as a fill-in from the Trip-Basics card;
 travel party, where an open answer is fine; date started; the "adults make the final
@@ -2529,13 +2595,14 @@ This is the canonical worked example of the whole split.
 | Step 2 | "the four big ones are Honshu, Hokkaido, Kyushu, and Shikoku" | → insert. Session: "**Major land features:** from your Destination Notes." |
 | Step 3 | "the yen" | → insert. Session: "**Currency:** from your Destination Notes." |
 | Step 4 | "Japanese" | → insert. Session: "**Main language:** from your Destination Notes." |
-| Step 5 | "Japan is roughly half a day ahead" | Stays a Trip-Basics-card lookup with the instance removed: "use the hours-ahead figure on your Trip-Basics card; a grown-up confirms your home zone's exact current offset." |
-| Step 6 | "it is a long flight from the US" | "it is a long flight from home." Keep the two sentences that follow. This is an **origin-layer neutralisation**, not a lost destination fact — nothing goes to the insert. |
+| Step 5 | "Japan is roughly half a day ahead" | Stays a Trip-Basics-card lookup with the instance removed: "use the time-difference figure on your Trip-Basics card; a grown-up confirms your home zone's exact current offset." **"Ahead" goes with the country name.** Which side of the family's clock a destination sits on is a property of that destination, so the card's field is ahead-or-behind after D9 and this lookup names it the way D9 does. |
+| Step 6 — **replace all three sentences, not the origin name** | "it is a long flight from the US. A grown-up can tell you roughly how long from your home airport. (Flights are the grown-ups' job.)" | A neutral travel-time prompt: "a grown-up can tell you roughly how long the trip takes from home, and how you will travel. (Travel arrangements are the grown-ups' job.)" **"A long flight" is two assumptions, not an origin instance**: that the destination is reached by air, and that the journey is long. Neither holds for a nearby destination, a domestic trip, or one reached by road or rail, and swapping only "the US" for "home" would have left both standing inside a neutral session — a destination assumption with the country name removed, which the five-name leak grep cannot see. The two sentences that follow carry the same assumption in "home airport" and "Flights", so they go with it. **Nothing goes to the insert:** how long a journey takes depends on the family's starting point as much as on the destination, so it sits in neither layer, and the grown-up supplies it where the child needs it. |
 | Step 7 | "find three things about Japan that surprise you" | "find three things about your destination that surprise you" |
 | Artifact | "the big facts about Japan" | "the big facts about your destination" |
 | Stop Point, field list | "your snapshot has the capital, islands, currency, language, time difference" | "your snapshot has the capital, major land features, currency, language, time difference" — "islands" is the Japan instance of "major land features"; it is the same fact Step 2 sends to the insert, and it must not survive here. It does not trip the five-name grep, so only the equivalence read would catch it. |
 | Stop Point, closing sentence | "Do not try to learn everything about Japan today" | "Do not try to learn everything about your destination today" |
 | Optional Extension | "between your home and Japan" | "between your home and your destination" |
+| Parent Notes, closing sentence | "Keep flight specifics as 'a grown-up handles that.'" | "Keep travel specifics as 'a grown-up handles that.'" — one word goes. This is the Step 6 assumption again, one section lower and parent-facing, and a freeze on the Parent Notes would have left it standing. **The built sentence double-quotes the inner phrase**; this cell renders it with single quotes only because the cell is already inside quotation marks, exactly as Session 09's step-1 row does. |
 
 Open the Steps with the canonical line: **"Open this session's Destination Notes."** Keep
 the neutral artifact name "Destination snapshot page" — it is already correct. Keep the
@@ -2544,7 +2611,8 @@ orientation-not-mastery framing **in the built wording the Parent Notes already 
 record writes that rule as *"Do not require mastery"*; those four words are that record's
 phrasing and appear nowhere in this file, so do not go looking for them and do not write
 them in. The built repository wins, and universal conversion rule 1 preserves the sentence
-that is there. Keep the Source Check on the three surprising facts, and the Parent Notes.
+that is there. Keep the Source Check on the three surprising facts, and keep the Parent
+Notes but for the one row above.
 
 ### Session 12 — Weather, Seasons, and Events (convert; insert `12_seasons_and_events.md`)
 
@@ -2661,8 +2729,12 @@ required end state for the numbered child order is:
 | 14 | `Phase 2 (Destination Big Picture), First Taste step 8 of 13. **This is Checkpoint 1 -- your first family decision.**` | `[13 Trip Goals and Travel Style](13_trip_goals_and_travel_style.md)` | `[15 City Research Cards](../phase_03_choose_places/15_city_research_cards.md)` | 8 | no |
 | 15 | `Phase 3 (Choose Places), First Taste step 9 of 13.` | `[14 Checkpoint 1: Season Recommendation](../phase_02_destination_big_picture/14_checkpoint_1_season_recommendation.md)` | `[21 Compare Cities](21_compare_cities.md)` | 9 | no — listed so you can confirm Session 15 needs no navigation edit |
 
-**The italic path-divergence lines.** Sessions 01, 05, 06, 09 and 10 each end with one
+**The italic path-divergence lines.** Sessions 01, 05, 06, 09 and 10 each end with a
 short italic line directly under the navigation line — those five, and no others.
+**Four of them carry one line. Session 05 carries two**, in the order this section fixes
+below. Do not read a count off the other four: a builder who does drops either the First
+Taste shortcut or the AI opt-in route, and Session 05 is the one session where dropping
+either sends a child to Session 10 without the opt-in safety lesson.
 **Four of the five are additions. Session 05's is not.** That session already carries an
 italic line there today, the only one in the tree sitting directly under a navigation
 line, reading *"If your family chose to use AI, do
@@ -3346,8 +3418,12 @@ items:
    leaving a child-facing page, it is the largest block of content this batch moves, and
    F10 records it in the changelog as a Batch 1 change, so the check that exists to prove
    nothing was lost has to cover it. Flag the one deliberate exception in writing: Session
-   10's "a long flight from the US" became "a long flight from home" as an origin-layer
-   neutralisation, so no insert received it.
+   10's "it is a long flight from the US" became a neutral travel-time prompt, because the
+   built sentence asserted two things -- that the destination is reached by air, and that
+   the journey is long -- and neither is true of every destination. **No insert received
+   it, and that is the right outcome rather than a gap:** how long a journey takes depends
+   on where the family starts as much as on where they are going, so the fact belongs in
+   neither layer and the grown-up supplies it at the point of use.
    **An automated equivalence read stands in for this check, and you perform it.** It
    compares two texts, you authored both sides, and the pre-Batch-1 text of every file
    named above is in the repository's history. So for each of the nine migrations --
