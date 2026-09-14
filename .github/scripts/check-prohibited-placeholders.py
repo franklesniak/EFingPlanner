@@ -147,6 +147,9 @@ class FenceLine:
 
     content: str
     containment_path: tuple[Container, ...] = ()
+    #: The containers that opened on this line rather than above it. A list
+    #: item among them starts a block, whatever the line goes on to hold.
+    opened: tuple[Container, ...] = ()
 
 
 @dataclass(frozen=True)
@@ -444,6 +447,7 @@ def normalize_for_fence_opening(line: str, list_contexts: list[ListContext]) -> 
     return FenceLine(
         content=relative_line,
         containment_path=effective_path + tuple(extras),
+        opened=tuple(extras),
     )
 
 
@@ -545,6 +549,42 @@ def html_block_state(
             open_block = None
 
     return open_block, line_block
+
+
+def starts_a_block(
+    content: str,
+    containment_path: tuple[Container, ...],
+    opened: tuple[Container, ...],
+    previous_path: tuple[Container, ...],
+) -> bool:
+    """Return whether a line begins a block rather than continuing the one above.
+
+    This is where a paragraph ends, and therefore where HTML block condition 7
+    is free to open. A blank line ends a paragraph, and so do a heading, a
+    thematic break and a Setext underline. So does a container: a list item
+    that opens on this line is a new block whatever it holds, and a line whose
+    container path is neither the path above it nor a prefix of that path has
+    left the paragraph. A prefix *is* a continuation -- an unprefixed line
+    under a quoted or listed paragraph is the lazy continuation CommonMark
+    reads it as, and treating it as a new block would cut a paragraph in half.
+
+    ``check-session-structure.py`` asks this question under this name, of the
+    same six shapes, so the two hooks cannot disagree about where a paragraph
+    ends. Kept identical to the helper in that sibling. It is not the question
+    ``opens_a_paragraph`` asks above.
+    <https://spec.commonmark.org/0.31.2/#paragraphs>
+    """
+    if not content.strip(ASCII_HORIZONTAL_WHITESPACE):
+        return True
+    if ATX_HEADING_LINE_PATTERN.match(content) is not None:
+        return True
+    if THEMATIC_BREAK_LINE_PATTERN.match(content) is not None:
+        return True
+    if SETEXT_UNDERLINE_PATTERN.match(content) is not None:
+        return True
+    if any(container.kind == CONTAINER_KIND_LIST for container in opened):
+        return True
+    return containment_path != previous_path[: len(containment_path)]
 
 
 def normalize_for_fence_closing(line: str, active_fence: ActiveFence) -> str:
@@ -657,6 +697,7 @@ def find_violations_in_text(text: str, display_path: str) -> list[Violation]:
     list_contexts: list[ListContext] = []
     html_block: ActiveHtmlBlock | None = None
     paragraph_open = False
+    previous_path: tuple[Container, ...] = ()
 
     for line_number, raw_line in enumerate(normalize_line_endings(text).split("\n"), start=1):
         if active_fence is not None and fence_container_ended(raw_line, active_fence):
@@ -673,6 +714,7 @@ def find_violations_in_text(text: str, display_path: str) -> list[Violation]:
             ):
                 active_fence = None
             paragraph_open = False
+            previous_path = ()
             continue
 
         was_in_html_comment = is_in_html_comment
@@ -691,8 +733,26 @@ def find_violations_in_text(text: str, display_path: str) -> list[Violation]:
             # The list item or blockquote holding the block has ended, so the
             # block ended with it, exactly as an unclosed fence does.
             html_block = None
+        # Condition 7 is the one HTML block start that may not interrupt a
+        # paragraph, so it has to be told when there is no longer one to
+        # interrupt. A line that starts a block has closed the paragraph above
+        # it, and ``opens_a_paragraph`` cannot say so: it reads one line and
+        # answers for the line *below*, so a list item opening on this line
+        # inherited the paragraph from the line above and refused the block
+        # CommonMark opens inside the new item. The backtick runs under it were
+        # then read as a fence rather than as raw HTML, and every placeholder
+        # between them went unreported while the page printed them.
+        block_starts = starts_a_block(
+            block_content,
+            block_line.containment_path,
+            block_line.opened,
+            previous_path,
+        )
         html_block, line_html_block = html_block_state(
-            block_content, block_line.containment_path, html_block, paragraph_open
+            block_content,
+            block_line.containment_path,
+            html_block,
+            paragraph_open and not block_starts,
         )
         # The comment is one of the conditions the machine tracks; an inline
         # comment opened part way along a line is not a block, so its
@@ -711,11 +771,17 @@ def find_violations_in_text(text: str, display_path: str) -> list[Violation]:
             # which then refused to open the HTML block CommonMark opens
             # there -- and a placeholder inside that block went unreported.
             paragraph_open = False
+            previous_path = ()
             continue
 
+        previous_path = block_line.containment_path
         # Written here rather than above, so the fence branch reads the state
         # the line above left and not the one this line would leave. The
-        # sibling hook writes it in the same place.
+        # sibling hook writes it in the same place. It reads the state the line
+        # above left rather than ``block_starts``, because a Setext underline
+        # starts a block and closes the paragraph it underlines, and answering
+        # that from a cleared state would leave a paragraph open under a
+        # heading.
         paragraph_open = (
             False if in_html_block else opens_a_paragraph(block_content, paragraph_open)
         )

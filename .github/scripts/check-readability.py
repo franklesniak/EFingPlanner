@@ -517,6 +517,40 @@ _YAML_PLAIN_SCALAR = r"(?: (?!:[ \t]) (?!:$) (?![ \t]\#) [^\n] )*"
 #: https://yaml.org/spec/1.2.2/#731-double-quoted-style
 _YAML_DOUBLE_QUOTED = r'"(?:[^"\\]|\\.)*"'
 _YAML_SINGLE_QUOTED = r"'(?:[^']|'')*'"
+#: One character inside a YAML flow collection: a quoted scalar read whole, or
+#: any character that is neither a collection delimiter nor a quote. The quoted
+#: forms are read whole so that a delimiter inside one does not end the
+#: collection: ``{note: "a } b"}`` is one mapping and not a broken one.
+#: https://yaml.org/spec/1.2.2/#74-flow-collection-styles
+_YAML_FLOW_ITEM = (
+    "(?:" + _YAML_DOUBLE_QUOTED + "|" + _YAML_SINGLE_QUOTED + "|" + r"[^\n{}\[\]'\"]" + ")"
+)
+#: How many levels of nesting a flow collection may hold and still be read as
+#: one. Python's ``re`` has no recursion, so the nesting is unrolled to a fixed
+#: depth; three covers the publishing metadata a Markdown file carries, and a
+#: deeper one falls to the strict side -- the block stops being front matter and
+#: its lines are scored as prose, which is the error this whole pattern exists
+#: to avoid, in a rarer shape.
+_YAML_FLOW_NESTING_DEPTH = 3
+
+
+def _yaml_flow_collection(depth: int) -> str:
+    """Return the pattern for a YAML flow collection nested ``depth`` deep.
+
+    A flow mapping ``{...}`` or a flow sequence ``[...]``. It is spelled here
+    because the plain-scalar rule cannot hold one: a plain scalar may never
+    carry ``": "``, and ``trip: {city: Tokyo, days: 5}`` is a mapping whose
+    value carries one. Without this the line is not front matter, the block
+    around it stops being front matter with it, and the publishing metadata and
+    the ``...`` delimiter are counted as words a child reads.
+    """
+    item = _YAML_FLOW_ITEM
+    for _ in range(depth):
+        item = "(?:" + item + r"|\{" + item + r"*\}|\[" + item + r"*\])"
+    return r"(?:\{" + item + r"*\}|\[" + item + r"*\])"
+
+
+_YAML_FLOW_COLLECTION = _yaml_flow_collection(_YAML_FLOW_NESTING_DEPTH)
 #: A line a YAML front-matter block can hold: a mapping key, a sequence item, an
 #: indented continuation, or a comment. A plain key may hold spaces --
 #: ``session title: Trip plan`` is a mapping with one key -- so what separates
@@ -544,6 +578,12 @@ _YAML_SINGLE_QUOTED = r"'(?:[^']|'')*'"
 #: the note and the delimiter walked into the child's prose and moved the
 #: reading score. The space before the ``#`` is required, because YAML requires
 #: it: ``version: 1.0#2`` is the plain scalar ``1.0#2`` and not a comment.
+#:
+#: A value may also be a flow collection, which is why ``_YAML_FLOW_COLLECTION``
+#: is one of the alternatives. The collection has to be balanced and has to
+#: fill the value to the end of the line, which is what keeps the widening from
+#: reaching prose: ``[Tokyo](https://example.com "a title: here")`` is a
+#: Markdown link, not a flow sequence, and it stays rejected.
 #: https://yaml.org/spec/1.2.2/#66-comments
 FRONT_MATTER_LINE_PATTERN = re.compile(
     rf"""
@@ -556,6 +596,7 @@ FRONT_MATTER_LINE_PATTERN = re.compile(
         :
         (?: [ \t]+ (?: {_YAML_DOUBLE_QUOTED}                # a quoted value
                      | {_YAML_SINGLE_QUOTED}
+                     | {_YAML_FLOW_COLLECTION}                # a flow collection
                      | [^ \t\r\n#'"]{_YAML_PLAIN_SCALAR} ) )?
         (?: [ \t]+ \# [^\n]* )?                     # and then a comment
         [ \t]*$
@@ -1289,6 +1330,24 @@ def link_metadata_regions(
         if character == "\\":
             index += 2
             continue
+        if character == "<":
+            # A bracket inside raw HTML is not a link opener. CommonMark reads
+            # an attribute value and an autolink's destination as data, so
+            # ``<span title="[">text](url "<!-- x -->")`` holds no link at all
+            # and the marker in the parentheses is a comment the page prints.
+            # Recording the attribute's bracket masked that marker as a link
+            # target. The two are tried in the order ``scan_inline_run`` tries
+            # them, and for the same reason: a tag name may not hold a colon
+            # and a URI autolink must, so only one of the two can match here.
+            # <https://spec.commonmark.org/0.31.2/#raw-html>
+            autolink = AUTOLINK_PATTERN.match(line, index)
+            if autolink is not None:
+                index = autolink.end()
+                continue
+            tag = INLINE_HTML_TAG_PATTERN.match(line, index)
+            if tag is not None:
+                index = tag.end()
+                continue
         if line.startswith("![", index):
             openers.append((index, True, True))
             index += 2

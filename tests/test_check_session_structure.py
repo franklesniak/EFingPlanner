@@ -2908,3 +2908,108 @@ def test_an_angle_run_that_is_no_autolink_keeps_its_backtick() -> None:
     text = "<no spaces allowed`> <!-- no-source-check: an offline exercise --> `end`\n"
     scan = structure.scan_document(text)
     assert structure.NO_SOURCE_CHECK_PATTERN.search(scan.marker_text) is None
+
+
+# --- round 7: a block start clears the paragraph above condition 7 ----------
+
+#: The Source Check exemption marker, spelled once for the round-7 cases.
+OFFLINE_MARKER = "<!-- no-source-check: an offline exercise -->"
+
+
+@pytest.mark.parametrize(
+    ("label", "document"),
+    [
+        (
+            "a list item opening on the line",
+            f"Words above the list.\n- <x-session>\n  {FENCE}\n"
+            f"  {OFFLINE_MARKER}\n  {FENCE}\n",
+        ),
+        (
+            "a blockquote opening on the line",
+            f"Words above the quote.\n> <x-session>\n> {FENCE}\n"
+            f"> {OFFLINE_MARKER}\n> {FENCE}\n",
+        ),
+    ],
+)
+def test_a_container_opening_on_a_line_lets_condition_seven_open(
+    label: str, document: str
+) -> None:
+    """A container that opens on a line has closed the paragraph above it.
+
+    Condition 7 may not interrupt a paragraph, and this hook asked
+    ``opens_a_paragraph`` alone, which answers for the line *below* the one it
+    reads. So a container opening on this line inherited the paragraph above it
+    and refused the block CommonMark opens inside the new container; the
+    backtick runs under it were read as a fence, and the exemption marker
+    between them -- which markdown-it 14.3.0 renders as a comment on the page --
+    was never found. ``starts_a_block`` was already in this module, asked of the
+    inline model only; it is now asked here too. Kept in step with the case of
+    the same name in ``tests/test_check_prohibited_placeholders.py``.
+    <https://spec.commonmark.org/0.31.2/#html-blocks>
+    """
+    scan = structure.scan_document(document)
+    assert structure.NO_SOURCE_CHECK_PATTERN.search(scan.marker_text) is not None, label
+
+
+@pytest.mark.parametrize(
+    ("label", "document"),
+    [
+        (
+            "a tag under a root paragraph",
+            f"Words above.\n<x-session>\n{FENCE}\n{OFFLINE_MARKER}\n{FENCE}\n",
+        ),
+        (
+            "a tag outdented out of a list item",
+            f"- Words in a list item.\n<x-session>\n{FENCE}\n{OFFLINE_MARKER}\n{FENCE}\n",
+        ),
+    ],
+)
+def test_condition_seven_still_may_not_interrupt_a_paragraph(
+    label: str, document: str
+) -> None:
+    """The negative controls, and the ones round 6 measured.
+
+    A line that merely outdents out of a container has not started a block, so
+    no type-seven block opens, the backtick runs really are a fence, and the
+    marker inside them declares nothing. Refusing to exempt is the safe
+    direction and it is the one the renderer takes here too.
+    """
+    scan = structure.scan_document(document)
+    assert structure.NO_SOURCE_CHECK_PATTERN.search(scan.marker_text) is None, label
+
+
+# --- round 7: raw HTML before the bracket stack (4003802121) ----------------
+
+
+@pytest.mark.parametrize(
+    ("label", "prefix"),
+    [
+        ("an attribute value", '<span title="[">'),
+        ("an autolink destination", "<http://example.com/[>"),
+    ],
+)
+def test_a_bracket_inside_raw_html_is_no_link_opener(label: str, prefix: str) -> None:
+    """A tag's attribute and an autolink's destination are data, not markup.
+
+    CommonMark consumes the bracket with the tag or the autolink, so the later
+    ``](`` is literal text and the comment in the parentheses is a comment the
+    page prints. The bracket stack recorded that bracket as a link opener,
+    masked the parentheses as a link target, and failed a session that had
+    declared its exemption. Measured against markdown-it 14.3.0. Kept in step
+    with the case of the same name in ``tests/test_check_readability.py``.
+    <https://spec.commonmark.org/0.31.2/#raw-html>
+    """
+    text = f'{prefix}text](url "{OFFLINE_MARKER}")\n'
+    scan = structure.scan_document(text)
+    assert structure.NO_SOURCE_CHECK_PATTERN.search(scan.marker_text) is not None, label
+
+
+def test_a_marker_in_a_real_link_target_still_declares_nothing() -> None:
+    """The negative control. A real link's title is an attribute.
+
+    With no tag in front of it the bracket is an opener, the target parses, and
+    the marker inside it is not a comment the page shows.
+    """
+    text = f'<span title="x">[text](url "{OFFLINE_MARKER}")\n'
+    scan = structure.scan_document(text)
+    assert structure.NO_SOURCE_CHECK_PATTERN.search(scan.marker_text) is None

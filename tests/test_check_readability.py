@@ -3379,3 +3379,86 @@ def test_a_marker_the_page_really_shows_still_declares(label: str, line: str) ->
     any of these would score an adult-facing document against the child target.
     """
     assert readability.has_adult_marker(f"{line}\n"), label
+
+
+# --- round 7: YAML flow collections in front matter (4003802116) ------------
+
+
+@pytest.mark.parametrize(
+    ("label", "line"),
+    [
+        ("a flow mapping", "trip: {city: Tokyo, days: 5}"),
+        ("a nested flow collection", "trip: {stops: [Tokyo, Kyoto], days: 5}"),
+        ("a flow mapping three deep", "trip: {a: {b: {c: d}}}"),
+        ("a quoted colon inside a flow mapping", "trip: {note: 'a colon: here'}"),
+        ("a brace inside a quoted scalar", 'trip: {note: "a brace } here"}'),
+        ("a flow mapping and a comment", "trip: {city: Tokyo} # an editorial note"),
+    ],
+)
+def test_front_matter_may_hold_a_flow_collection(label: str, line: str) -> None:
+    """A YAML value may be a flow mapping or a flow sequence.
+
+    A plain scalar may never carry ``": "``, and a flow mapping carries one in
+    every entry, so the scalar-only alternatives rejected the line, the block
+    around it stopped being front matter, and the publishing metadata and the
+    ``...`` delimiter were counted as words a child reads. PyYAML 6.0.3 reads
+    every line here as a mapping.
+    https://yaml.org/spec/1.2.2/#74-flow-collection-styles
+    """
+    document = f"---\n{line}\ntitle: A trip\n...\n\nThe children pack a small bag today.\n"
+    assert line not in readability.strip_front_matter(document), label
+    prose = readability.extract_prose(document)
+    assert "The children pack a small bag today." in prose, label
+
+
+@pytest.mark.parametrize(
+    ("label", "line"),
+    [
+        ("a sentence holding two colons", "Ask your grown-up: bring a map. Also: bring a pencil."),
+        ("a collection that does not fill the value", "Choose: {a: b} and then: more"),
+        ("a collection that never closes", "Choose: {a: b and then: more"),
+    ],
+)
+def test_a_sentence_is_still_not_a_flow_collection(label: str, line: str) -> None:
+    """The negative controls, and the ones that keep the widening honest.
+
+    The collection has to be balanced and has to fill the value to the end of
+    the line. Without both, a sentence carrying a brace or a bracket would
+    become front matter and its words would leave the child's word count.
+    """
+    document = f"---\n{line}\n...\n\nThen we will ride the train home again today.\n"
+    assert readability.strip_front_matter(document) == document, label
+
+
+# --- round 7: raw HTML before the bracket stack (4003802121) ----------------
+
+
+@pytest.mark.parametrize(
+    ("label", "prefix"),
+    [
+        ("an attribute value", '<span title="[">'),
+        ("an autolink destination", "<http://example.com/[>"),
+    ],
+)
+def test_a_bracket_inside_raw_html_is_no_link_opener(label: str, prefix: str) -> None:
+    """A tag's attribute and an autolink's destination are data, not markup.
+
+    CommonMark consumes the bracket with the tag or the autolink, so the later
+    ``](`` is literal text and the comment in the parentheses is a comment the
+    page prints. The bracket stack recorded that bracket as a link opener and
+    masked the parentheses as a link target, so a document that declares itself
+    adult-facing was scored against the child target. Measured against
+    markdown-it 14.3.0. Kept in step with the case of the same name in
+    ``tests/test_check_session_structure.py``.
+    <https://spec.commonmark.org/0.31.2/#raw-html>
+    """
+    assert readability.has_adult_marker(f'{prefix}text](url "{ADULT_MARKER}")\n'), label
+
+
+def test_a_marker_in_a_real_link_target_still_declares_nothing() -> None:
+    """The negative control. A real link's title is an attribute.
+
+    With no tag in front of it the bracket is an opener, the target parses, and
+    the marker inside it is not a comment the page shows.
+    """
+    assert not readability.has_adult_marker(f'<span title="x">[text](url "{ADULT_MARKER}")\n')

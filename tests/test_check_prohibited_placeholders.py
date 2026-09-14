@@ -987,3 +987,116 @@ def test_a_blank_line_closes_an_html_block() -> None:
     """
     text = f"<div>\nnote\n\n{FENCE}\nTBD tomorrow.\n{FENCE}\n"
     assert _find(text) == []
+
+
+# --- round 7: a block start clears the paragraph above condition 7 ----------
+
+
+@pytest.mark.parametrize(
+    ("label", "document"),
+    [
+        (
+            "a list item opening on the line",
+            f"Words above the list.\n- <x-session>\n  {FENCE}\n  TBD tomorrow.\n  {FENCE}\n",
+        ),
+        (
+            "a second list item",
+            f"- Words in item one\n- <x-session>\n  {FENCE}\n  TBD tomorrow.\n  {FENCE}\n",
+        ),
+        (
+            "a nested list item",
+            f"- Words in item one\n  - <x-session>\n    {FENCE}\n"
+            f"    TBD tomorrow.\n    {FENCE}\n",
+        ),
+        (
+            "a blockquote opening on the line",
+            f"Words above the quote.\n> <x-session>\n> {FENCE}\n"
+            f"> TBD tomorrow.\n> {FENCE}\n",
+        ),
+        (
+            "an ordered list starting at one",
+            f"Words above the list.\n1. <x-session>\n   {FENCE}\n"
+            f"   TBD tomorrow.\n   {FENCE}\n",
+        ),
+    ],
+)
+def test_a_container_opening_on_a_line_lets_condition_seven_open(
+    label: str, document: str
+) -> None:
+    """A container that opens on a line has closed the paragraph above it.
+
+    HTML block condition 7 is the one start that may not interrupt a paragraph,
+    and ``opens_a_paragraph`` answers for the line *below* the one it reads, so
+    a list item or a blockquote opening on this line inherited the paragraph
+    from the line above and refused the block CommonMark opens inside the new
+    container. The backtick runs under it were then read as a fence rather than
+    as raw HTML, and the placeholder between them went unreported while
+    markdown-it 14.3.0 printed it on the page. ``starts_a_block`` is the
+    sibling hook's name for the other half of the question, and this hook had
+    never been given it.
+    <https://spec.commonmark.org/0.31.2/#html-blocks>
+    """
+    assert [violation.matched_text for violation in _find(document)] == ["TBD"], label
+
+
+@pytest.mark.parametrize(
+    ("label", "document"),
+    [
+        (
+            "a tag under a root paragraph",
+            f"Words above.\n<x-session>\n{FENCE}\nTBD tomorrow.\n{FENCE}\n",
+        ),
+        (
+            "a tag outdented out of a list item",
+            f"- Words in a list item.\n<x-session>\n{FENCE}\nTBD tomorrow.\n{FENCE}\n",
+        ),
+        (
+            "a tag continuing a list item's paragraph",
+            f"- Words in a list item.\n  <x-session>\n  {FENCE}\n"
+            f"  TBD tomorrow.\n  {FENCE}\n",
+        ),
+        (
+            "a tag continuing a quoted paragraph",
+            f"> Words in a quote.\n> <x-session>\n> {FENCE}\n"
+            f"> TBD tomorrow.\n> {FENCE}\n",
+        ),
+    ],
+)
+def test_condition_seven_still_may_not_interrupt_a_paragraph(
+    label: str, document: str
+) -> None:
+    """The negative controls, and the ones round 6 measured.
+
+    A line that merely outdents out of a container has not started a block: an
+    unprefixed line under a listed paragraph is the lazy continuation
+    CommonMark reads it as. No type-seven block opens on any of these, the
+    backtick runs really are a fence, and the placeholder inside them is code.
+    Clearing the paragraph state on any change of containment path -- rather
+    than on a block start -- would open a block on all four.
+    <https://spec.commonmark.org/0.31.2/#paragraphs>
+    """
+    assert _find(document) == [], label
+
+
+def test_a_setext_underline_still_closes_the_paragraph_it_underlines() -> None:
+    """A Setext underline starts a block and closes the paragraph above it.
+
+    It is the shape where the two halves of the model part, so the state handed
+    to ``opens_a_paragraph`` is the one the line above left and not the cleared
+    one: reading a cleared state would leave a paragraph open under a heading
+    and shut condition 7 on the line below.
+    <https://spec.commonmark.org/0.31.2/#setext-headings>
+    """
+    text = f"Words above\n===\n<x-session>\n{FENCE}\nTBD tomorrow.\n{FENCE}\n"
+    assert [violation.matched_text for violation in _find(text)] == ["TBD"]
+
+
+def test_a_list_item_holding_a_real_fence_is_still_a_fence() -> None:
+    """The control that keeps the fence model intact.
+
+    A list item whose content is prose and then a fenced block still holds a
+    fenced block; nothing on those lines opens an HTML block, so the
+    placeholder inside the fence is code and is not reported.
+    """
+    text = f"Words above the list.\n- An exercise\n\n  {FENCE}\n  TBD tomorrow.\n  {FENCE}\n"
+    assert _find(text) == []

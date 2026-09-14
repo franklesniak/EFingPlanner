@@ -1146,6 +1146,24 @@ def link_metadata_regions(
         if character == "\\":
             index += 2
             continue
+        if character == "<":
+            # A bracket inside raw HTML is not a link opener. CommonMark reads
+            # an attribute value and an autolink's destination as data, so
+            # ``<span title="[">text](url "<!-- x -->")`` holds no link at all
+            # and the marker in the parentheses is a comment the page prints.
+            # Recording the attribute's bracket masked that marker as a link
+            # target. The two are tried in the order ``scan_inline_run`` tries
+            # them, and for the same reason: a tag name may not hold a colon
+            # and a URI autolink must, so only one of the two can match here.
+            # <https://spec.commonmark.org/0.31.2/#raw-html>
+            autolink = AUTOLINK_PATTERN.match(line, index)
+            if autolink is not None:
+                index = autolink.end()
+                continue
+            tag = INLINE_HTML_TAG_PATTERN.match(line, index)
+            if tag is not None:
+                index = tag.end()
+                continue
         if line.startswith("![", index):
             openers.append((index, True, True))
             index += 2
@@ -1730,8 +1748,26 @@ def scan_document(text: str) -> DocumentScan:
             # this an unclosed ``<script>`` inside a blockquote blanked every
             # heading the document outdented to, through the end of the file.
             html_block = None
+        # Asked before the HTML block machine rather than after it, because
+        # condition 7 is the one start that may not interrupt a paragraph and
+        # has to be told when there is no longer one to interrupt. A line that
+        # starts a block has closed the paragraph above it, and
+        # ``opens_a_paragraph`` cannot say so: it reads one line and answers
+        # for the line *below*, so a list item opening on this line inherited
+        # the paragraph from the line above and refused the block CommonMark
+        # opens inside the new item -- and an exemption marker written in that
+        # block was read as fenced code and never found.
+        block_starts = starts_a_block(
+            block_content,
+            block_line.containment_path,
+            block_line.opened,
+            previous_path,
+        )
         html_block, line_html_block = html_block_state(
-            block_content, block_line.containment_path, html_block, paragraph_open
+            block_content,
+            block_line.containment_path,
+            html_block,
+            paragraph_open and not block_starts,
         )
         # A comment is one HTML block condition; the rest are raw HTML too,
         # and a ``## Goal`` inside a ``<div>`` is no more a heading than a
@@ -1765,12 +1801,6 @@ def scan_document(text: str) -> DocumentScan:
             continue
 
         content_lines.append("" if in_html_block else visible_line)
-        block_starts = starts_a_block(
-            block_content,
-            block_line.containment_path,
-            block_line.opened,
-            previous_path,
-        )
         # A marker is a marker only where CommonMark reads it as a comment, and
         # which contexts decide that depends on what the line is. Inside a raw
         # HTML block -- the comment among the conditions -- only a tag and a
