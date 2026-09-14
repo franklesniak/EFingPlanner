@@ -20,7 +20,7 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 #: Spaces and tabs, the only whitespace CommonMark and YAML treat as
 #: horizontal. ``str.strip`` with no argument also removes U+00A0 and the
 #: rest of Unicode, which is how a non-delimiter became a delimiter.
-ASCII_HORIZONTAL_WHITESPACE = " 	"
+ASCII_HORIZONTAL_WHITESPACE = " \t"
 PLACEHOLDER_PATTERN = re.compile(
     r"\(default[^)]*to\s+be\s+determined[^)]*\)"
     r"|\bTODO\b\s*:"
