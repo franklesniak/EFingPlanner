@@ -768,15 +768,39 @@ Artifact: **Book notes page.** **Source Check is required.** Templates used:
   the Website Notes form would in Session 08. It is a `framework/templates/` file, so a
   relative link to it breaks no rule -- unlike the destination pack's trusted-sources
   list, which this session names generically and never links. Do not add a second
-  mention. **Do not reproduce the form's layout or its note-taking cells in the
-  session**; the book citation form and the publication-year move above are this
+  mention. **The stop point below names the child's own book notes page, and that is
+  this session's Artifact rather than a second mention of the template:** no link, no
+  filename, lower case, exactly the way every stop point in the corpus names the thing
+  the child is filling in. This item settles it, so the two instructions cannot be read
+  against each other. **Do not reproduce the form's layout or its note-taking cells in
+  the session**; the book citation form and the publication-year move above are this
   session's own teaching and stay, on the same reading C4 settles below.
 - Stop point (author it), **reachable on both branches**: done when three places are
-  written down with one reason each, and the source is recorded in the Source Log --
-  from a book, its page numbers and publication year; from a website, its web address
-  and the date you checked it, plus the date the page says it was last updated if it
-  gives one. Write it as one stop point with two fill-ins, not as two stop points: a
-  child on either branch must be able to read it and know they are done.
+  written down with one reason each, the source is recorded in the Source Log -- from a
+  book, its page numbers; from a website, its web address and the date you checked it
+  -- and the currency detail is on the book notes page: a book's publication year, or
+  the date the page says it was last updated if it gives one. Write it as one stop
+  point with two fill-ins, not as two stop points: a child on either branch must be
+  able to read it and know they are done.
+- **Why the two halves land on different pages, and it is not a presentation choice.**
+  `framework/templates/source_log.md` is a built file this batch does not edit, and its
+  twelve rows are fixed: `Source number`, `Date checked`, `Source type`, `Title`,
+  `Author or organization`, `Web address or book page`, and the rest. **It has no
+  publication-year row and no page-last-updated row**, and D3 puts both of those on the
+  Book Notes form instead -- `publication year` in the book block, and *"the date the
+  page says it was last updated"* in the website block. A stop point that sends either
+  value to the Source Log is unreachable, because the box does not exist, or is an
+  instruction to edit a template outside this batch's file scope, and a stop point that
+  cannot be reached is the one thing a stop point may never be. The built corpus has
+  already settled which way this goes: Session 09's `## Source Check` maps a new source
+  kind onto the Source Log's existing fields -- its own words are *"mapping it onto the
+  usual fields"* -- and every field it names is a row the card already has: `Source
+  type`, `Title`, `What I learned`, and the card's `One other place I could check this`
+  row. The Session 09 conversion below states the rule in as many words: the Source Log
+  entry stays primary and carries the Source Log's fields, and the companion form is the
+  fuller record kept beside it. Session 06 is that same shape with a book in place of an
+  AI tool, and the page numbers, the web address and the date checked each have a Source
+  Log box already, so the split falls exactly where the card's rows end.
 - Its Next line carries the Session 07 skip affordance (see the navigation table).
 
 **C3. `framework/sessions/phase_01_research_skills/07_library_research_plan.md`
@@ -1176,13 +1200,19 @@ in order:
    starts at the H1 teaches its absence, and the next author has to remember an addition
    the template never showed them.
 5. `## The per-session support-note shape` — one fenced `markdown` block showing the
-   six-part shape `session_support_notes.md` uses: the `## Session NN: Title` heading,
-   then Role, Prep, Look for, Coaching question, Pitfall. **This one starts at the `##`
-   heading and carries no `markdownlint-disable` directive**, and that is correct rather
-   than an oversight: it is a fragment pasted into a file that already has the comment on
-   line 1, not a whole new page, and a directive in the middle of a file is a defect of
-   its own. The rule is about what the copied block becomes -- item 4 becomes a file, this
-   one becomes a section.
+   six-part shape `session_support_notes.md` uses **for a session the child does**: the
+   `## Session NN: Title` heading, then Role, Prep, Look for, Coaching question,
+   Pitfall. **Add one clause saying that the adult-only setup block is the single
+   exception and carries no Coaching question**, because a parent is not coaching a
+   child through a session the child does not do. Without it this template teaches a
+   uniformity the file it names does not have, and the next author who opens
+   `session_support_notes.md` with the template beside it completes a block that is
+   already complete. **This one starts at the `##` heading and carries no
+   `markdownlint-disable` directive**, and that is correct rather than an oversight: it
+   is a fragment pasted into a file that already has the comment on line 1, not a whole
+   new page, and a directive in the middle of a file is a defect of its own. The rule is
+   about what the copied block becomes -- item 4 becomes a file, this one becomes a
+   section.
 6. `## Checks before you ship a page` — a short list: point-first register; no
    destination facts; no trip, origin or roster values; one canonical home per concern
    with a one-clause reminder and a link elsewhere; verify-framing on every volatile
@@ -2221,9 +2251,24 @@ end) works and prints portrait.
 **H5. `framework/parent_guide/session_support_notes.md` (edit).** Four changes:
 
 - Replace the intro sentence with: `A short, parent-facing overview of each session
-  built so far -- your role, what to prep, the artifact to look for, one coaching
-  question, and a common pitfall. This does not replace the Parent Notes inside each
-  session; it is the at-a-glance map.`
+  built so far -- your role, what to prep, the artifact to look for, a coaching
+  question on the sessions the child does, and a common pitfall. This does not
+  replace the Parent Notes inside each session; it is the at-a-glance map.`
+  **The coaching-question clause is qualified on purpose, and the qualifier is the
+  change.** The built file's first entry is `## Session 00: Parent Setup
+  (adult-only)`, whose own Role line reads *"do the setup; the child does not do this
+  session"*, and it carries four bullets -- Role, Prep, Look for, Pitfall -- where the
+  other fourteen carry five. The built intro says *"each First Taste session"*, and
+  Session 00 is not one of the thirteen, so today the claim reaches past its own first
+  block without covering it. Widening it to *"each session built so far"* -- which this
+  batch has to do, because Sessions 02, 06, 07, 08 and 11 are not First Taste steps
+  either -- pulls Session 00 inside the claim, and an at-a-glance map that advertises
+  five fields and opens on four is wrong on its first entry. **Do not add a coaching
+  question to the Session 00 block and change nothing else in it:** a coaching question
+  is a question a parent asks the child about the work, and that session has no child
+  in it, so inventing one would contradict the block's own Role line and would be the
+  only invented content on the map. Four bullets there is correct, and the qualified
+  intro is what makes it read as correct rather than as missing.
 - Add one line directly after the intro paragraph: `Want a rough signal of how the
   executive-function side is going? The optional [executive-function observation
   aid](ef_observation_aid.md) is a private three-item note you keep to yourself.`
@@ -2512,8 +2557,11 @@ was lost.
 6. Keep the seven mandatory-core fields intact; keep the "You are here" navigation aid;
    keep the point-of-use accommodation line.
 7. Re-point Previous and Next per the navigation table below.
-8. Keep the trip, origin and roster discipline: no `Chicago`, `ORD`, `17`,
-   `grandmother`, `uncle`.
+8. Keep the trip, origin and roster discipline: no `Chicago`, `ORD`, `17` **as a
+   trip-length cap**, `grandmother`, `uncle`. The qualifier is BUILD RULES' own and it
+   is load-bearing in both directions: the digits are not the leak, a hard-coded
+   maximum is, and a converted session may legitimately carry a date or a count that
+   contains them.
 9. **The density caps bind a converted session, and they outrank a freeze instruction.**
    Several sessions below say "change nothing else" or name the only lines to touch. That
    freeze protects voice, structure, step order and content; it does not license leaving a
@@ -3104,7 +3152,7 @@ You are here: Phase 2 (Destination Big Picture), First Taste step 5 of 13. Previ
 
 Run each of these from the repository root and confirm the stated expectation.
 
-Trip, origin and roster leak — the explicit `framework/sessions/` target plus `-r` scans
+Trip, origin and roster leak — the explicit `framework/` target plus `-r` scans
 the built files instead of reading stdin, and `-w` gives standalone-token matching in
 GNU and BSD grep, so it works on Linux, macOS and Git Bash on Windows. Neither
 `-w` nor `-r` is in POSIX; the `\b` escape is not in POSIX either and is absent
@@ -3112,7 +3160,7 @@ from BSD grep as well, so `-w` is the form that fails in fewer places rather tha
 the portable one:
 
 ```bash
-grep -rwE 'Chicago|ORD|17|grandmother|uncle' framework/
+grep -rwiE 'Chicago|ORD|17[ -]?days?|grandmothers?|uncles?' framework/
 ```
 
 Expect no output, and confirm no hard-coded family value (blanks pointing to
@@ -3123,6 +3171,45 @@ The leak rule is written about sessions, but this batch creates
 roster value, all of them outside `sessions/`, and all three required above to be
 completely blank with no example family. Widening costs nothing: the whole of `framework/`
 returns zero hits today, so the expectation is unchanged and only the blind spot closes.
+
+**The trip-length token is `17[ -]?days?` and not a bare `17`, and that is what makes
+"expect no output" reachable.** BUILD RULES below bans `17` **as a trip-length cap**;
+the check had dropped the qualifier and banned the digits. `-w` treats a hyphen as a
+word boundary, so a bare `17` matches the `17` in `**Last Updated:** 2026-07-17` -- and
+this brief requires that field, in `YYYY-MM-DD` form and carrying **your build date**,
+on seven files inside `framework/`: F10's changelog, F11's style law and F12's privacy
+page under the bump rule near the top of this brief, and D7, D8, F4 and F7 as creates.
+Build on the seventeenth of any month and the check prints seven lines it can never be
+cleared of, on content this brief itself mandates. A check that cannot go green is a
+check the builder learns to ignore, or "satisfies" by editing a correct metadata date.
+The narrowed token has the same effect on a real cap -- `17 days`, `17-day` and `17day`
+all match -- and no effect on a date.
+
+**Two roster tokens gained a plural and the check gained `-i`, and neither moves the
+expectation.** `grep -w` does not match `uncles` against `uncle`, nor `grandmothers`
+against `grandmother`, and without `-i` neither matches a capitalised `Uncle` opening a
+sentence, so three of the likeliest shapes of a roster leak walked past the check that
+exists to catch them. Measured rather than argued: against the tree at this brief's
+head the old pattern and the new one both return **nothing** across the whole of
+`framework/`, so the stated expectation does not move; against a fixture carrying
+`Two uncles are coming.`, `Both grandmothers are coming.` and `Uncle Bob is coming.`,
+the old pattern returns nothing and the new one returns all three.
+
+Then the wider trip-length sweep, which the archived design record asks for alongside
+the narrow token and which **is a hand-read, not a pass or fail**:
+
+```bash
+grep -rnwE '17' framework/
+```
+
+**Expect no output on most builds, and date lines only when there is output.** The
+record's own note on this pattern lists its expected false positives -- page numbers,
+item counts, dates -- and requires a person to confirm that none of them is a
+hard-coded family cap. A `Last Updated` value whose day is the seventeenth is exactly
+such a hit and is correct. What this sweep catches that the narrow token cannot is a
+cap written without the word `day`: *"the trip cannot go past 17."* Read every line and
+say in the build report why each one is innocent; an unread list is the same as no
+sweep at all.
 
 Destination leak in the converted and new session bodies. **Both leak greps below take
 `-i`, and that is load-bearing, not cosmetic:** the rule bans the destination name in a
