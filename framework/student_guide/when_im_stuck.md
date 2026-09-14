@@ -27,7 +27,7 @@ Missed a week or more? You do not start over. Come back like this:
 
 ## When I'm waiting for a grown-up
 
-If you are waiting for a **checkpoint** review, the next session waits until a grown-up finishes it. Keep your momentum without racing ahead:
+If you're waiting for a **checkpoint** review, the next session waits until a grown-up finishes it. Keep your momentum without racing ahead:
 
 - Do an Optional Extension from your last session.
 - Add to your question parking lot.
@@ -35,4 +35,4 @@ If you are waiting for a **checkpoint** review, the next session waits until a g
 
 ## If something online worries me
 
-If a website asks for personal information, an account, a booking, or payment, stop and ask a grown-up. If you see something that seems wrong or makes you uncomfortable, close the page and tell a grown-up. You are never in trouble for that.
+If a website asks for personal information, an account, a booking, or payment, stop and ask a grown-up. If you see something that seems wrong or makes you uncomfortable, close the page and tell a grown-up. You're never in trouble for that.

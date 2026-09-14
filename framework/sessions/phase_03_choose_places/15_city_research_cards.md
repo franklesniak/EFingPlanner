@@ -18,7 +18,7 @@ Research two Japan cities, one card each, so you can compare them next time.
 
 ## Start Here
 
-Write the name of one city you are curious about at the top of a City Research Card. Tokyo is a great first one. That is your start.
+Write the name of one city you're curious about at the top of a City Research Card. Tokyo is a great first one. That's your start.
 
 ## Steps
 
@@ -34,7 +34,7 @@ For each city, fill in your card from trusted sources (add each to your Source L
 6. **Roughly how many days** you might want there.
 7. **Possible downsides** (very crowded? far away? expensive?).
 8. **Sources** and **date checked.**
-9. **Planning assumption** -- anything you are *assuming* that a grown-up should check later (for example, "I'm assuming we can day-trip from here").
+9. **Planning assumption** -- anything you're *assuming* that a grown-up should check later (for example, "I'm assuming we can day-trip from here").
 
 **Your route is built in movable blocks.** Think of each city card as one block you can later move, drop, or add. If a grown-up later changes which city you fly into or out of, your plan just flexes. You move a block. You do not start over. Your work still counts.
 
@@ -42,7 +42,7 @@ For each city, fill in your card from trusted sources (add each to your Source L
 
 Use one City Research Card per city (two cards today), plus your Source Log for the sources.
 
-You can say your answers to an adult who writes them, or draw them, if that is easier.
+You can say your answers to an adult who writes them, or draw them, if that's easier.
 
 ## Artifact Created
 
@@ -50,7 +50,7 @@ Two City Research Cards, each with sights, a memorable fact, downsides, season f
 
 ## Stop Point
 
-You are done when you have two cities researched onto two cards, each with at least a few top sights and a source. You do not have to fill every line perfectly. "Ask an adult" or "not sure yet" are fine answers.
+You are done when you have two cities researched onto two cards, each with at least a few top sights and a source. You don't have to fill every line perfectly. "Ask an adult" or "not sure yet" are fine answers.
 
 ## Source Check
 

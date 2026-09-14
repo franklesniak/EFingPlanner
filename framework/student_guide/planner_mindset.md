@@ -18,4 +18,4 @@ Feeling frustrated in the middle of a session is normal. Noticing it -- and taki
 
 ## You are a real planner
 
-The trip is real, and your recommendations matter. It is also low-stakes: grown-ups make every big decision, and "let's park this for later" is always okay. Your job is to help the grown-ups decide better. Nothing has to be perfect.
+The trip is real, and your recommendations matter. It's also low-stakes: grown-ups make every big decision, and "let's park this for later" is always okay. Your job is to help the grown-ups decide better. Nothing has to be perfect.

@@ -2,7 +2,7 @@
 
 # Cut List
 
-Your Cut List holds the things you set aside. You can't fit everything, and that's fine. Cutting something is not losing it: "save for a future trip" keeps it for later. This is part of learning that good enough is good enough.
+Your Cut List holds the things you set aside. You can't fit everything, and that's fine. Cutting something isn't losing it: "save for a future trip" keeps it for later. This is part of learning that good enough is good enough.
 
 One entry per thing you set aside. Start a new copy of this table for each one:
 

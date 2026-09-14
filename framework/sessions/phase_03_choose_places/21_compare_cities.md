@@ -18,11 +18,11 @@ Compare your two cities with a simple score, and make one trade-off.
 
 ## Start Here
 
-Put your two City Research Cards side by side. That is your start. Everything you need is already on them.
+Put your two City Research Cards side by side. That's your start. Everything you need is already on them.
 
 ## Steps
 
-You have two researched cities. Now you compare them fairly, using the same questions for each. For First Taste, use the **lighter 3-criteria version**. It's quick and clear.
+You've researched two cities. Now you compare them fairly, using the same questions for each. For First Taste, use the **lighter 3-criteria version**. It's quick and clear.
 
 Score each city from 1 (low) to 5 (high) on three things:
 
@@ -45,13 +45,13 @@ The scores are only half the job. Now **make one trade-off** and write it in one
 - Which city scored higher, and does the total match your gut?
 - What would you *gain* and what would you *lose* by choosing it?
 
-**A quick money check:** does keeping both cities still fit your family's rough budget band? If two cities feels like too much, it is fine to recommend just one for a first trip. Fewer places, done well, is a real plan.
+**A quick money check:** does keeping both cities still fit your family's rough budget band? If two cities feels like too much, it's fine to recommend just one for a first trip. Fewer places, done well, is a real plan.
 
 ## Workspace
 
 Use the score table above (or your Scoring Rubric page) and a couple of lines for your trade-off.
 
-You can say your answers to an adult who writes them, or draw them, if that is easier.
+You can say your answers to an adult who writes them, or draw them, if that's easier.
 
 ## Artifact Created
 
@@ -59,7 +59,7 @@ Your City comparison. It holds two cities scored on three things. It holds a tra
 
 ## Stop Point
 
-You are done when both cities have three scores and a total. You also need your trade-off, written in a sentence or two. And you need a recommendation: either **one city** for this first trip, or **both, kept on purpose**. You do not have to feel sure. "I recommend both, let's decide together" is a real answer. But write down which way you lean, because your final plan needs a city or two. For each city you keep, also jot the rough number of days from your City Research Card, so your plan has a length.
+You are done when both cities have three scores and a total. You also need your trade-off, written in a sentence or two. And you need a recommendation: either **one city** for this first trip, or **both, kept on purpose**. You don't have to feel sure. "I recommend both, let's decide together" is a real answer. But write down which way you lean, because your final plan needs a city or two. For each city you keep, also jot the rough number of days from your City Research Card, so your plan has a length.
 
 ## Source Check
 

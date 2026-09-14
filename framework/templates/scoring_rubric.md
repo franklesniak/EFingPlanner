@@ -2,7 +2,7 @@
 
 # Scoring Rubric
 
-Use a rubric to compare choices fairly: the same questions for each option. Score each option from 1 (low) to 5 (high), then add up the totals. **Scores inform your choice; they do not make it.** If a total does not match your gut, that is worth talking about.
+Use a rubric to compare choices fairly: the same questions for each option. Score each option from 1 (low) to 5 (high), then add up the totals. **Scores inform your choice; they do not make it.** If a total doesn't match your gut, that's worth talking about.
 
 **Pick whichever version fits you.** The lighter 3-criteria version is quick and clear and is the recommended starting point. The fuller version is for when you want more detail. Neither is more "correct." Use the one that fits.
 

@@ -18,11 +18,11 @@ Learn the main cost categories, make a simple meals-and-hotel estimate, and chec
 
 ## Start Here
 
-Write the word "Food" and the word "Hotel" on your Budget Estimate page. Those are the two you will estimate today. You have started.
+Write the word "Food" and the word "Hotel" on your Budget Estimate page. Those are the two you'll estimate today. You've started.
 
 ## Steps
 
-Every trip is made of cost categories. You do not need exact numbers. You're learning how trip money is split up, and checking whether the parts *you* choose fit.
+Every trip is made of cost categories. You don't need exact numbers. You're learning how trip money is split up, and checking whether the parts *you* choose fit.
 
 1. **Meet the categories** (just read these once): flights, hotels, food, local transit, long-distance trains, activities and tickets, souvenirs, and a buffer for surprises.
 2. **Estimate two of them** with simple **high / medium / low** guesses (a grown-up can help you find rough numbers, and you can use a calculator):
@@ -37,18 +37,18 @@ Every trip is made of cost categories. You do not need exact numbers. You're lea
    | Second city's hotel (only if you kept two cities in Session 21) | $____ per night x ____ nights x ____ rooms | |
    | **My two-slice estimate** | add Food + your hotel(s) | |
 
-4. **Check it against your band. Match the units first.** A grown-up gave you *one* kid-sized band at setup. It is a per-person-per-day amount, a per-day amount for the whole family, *or* a hotel "tier we can afford." It is never your whole-trip total. That stays a grown-up number. Compare the matching piece, not your big two-slice total:
+4. **Check it against your band. Match the units first.** A grown-up gave you *one* kid-sized band at setup. It's a per-person-per-day amount, a per-day amount for the whole family, *or* a hotel "tier we can afford." It's never your whole-trip total. That stays a grown-up number. Compare the matching piece, not your big two-slice total:
    - Band is **per person, per day**? Multiply it by your travelers to get a **per-day family** number. Then check that the same way as the **per day for the family** band below. A grown-up can do the multiplying. That way your rooms count as well as your meals.
    - Band is **per day for the family**? Add your **meals for everyone per day** (meals per person x your travelers) to your **hotel for one night, all your rooms** (hotel per night x rooms). Then check that daily total against the band.
    - Band is a **hotel tier**? Check your **hotel-per-night** pick against that tier. Circle **fits** or **too high** for the part you checked.
 
-**Remember:** your first guesses will probably be off. Everyone's are, even grown-ups'. Being off is normal. The point is to practice estimating and checking. Being exactly right is not the goal. (See your [planner mindset card](../../student_guide/planner_mindset.md).)
+**Remember:** your first guesses will probably be off. Everyone's are, even grown-ups'. Being off is normal. The point is to practice estimating and checking. Being exactly right isn't the goal. (See your [planner mindset card](../../student_guide/planner_mindset.md).)
 
 ## Workspace
 
 Use your Budget Estimate page for the two estimates, the math, and your fits / too-high check.
 
-You can say your answers to an adult who writes them, or draw them, if that is easier.
+You can say your answers to an adult who writes them, or draw them, if that's easier.
 
 ## Artifact Created
 

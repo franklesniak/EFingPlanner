@@ -18,14 +18,14 @@ Look back at what you learned, and hand your plan to the grown-ups.
 
 ## Start Here
 
-Find your baseline reflection from Session 01 (the "what is hard about big projects?" page) and read it once. That is your start.
+Find your baseline reflection from Session 01 (the "what is hard about big projects?" page) and read it once. That's your start.
 
 ## Steps
 
-You made a mini-plan for a real trip. Before you hand it over, take a few minutes to notice how far you have come. Short answers are fine. Say them aloud to a grown-up if you like.
+You made a mini-plan for a real trip. Before you hand it over, take a few minutes to notice how far you've come. Short answers are fine. Say them aloud to a grown-up if you like.
 
 1. **Look back at your baseline.** You wrote what was hard about big projects and what helps you start. What is different now?
-2. **Your budget guess.** Look at your budget estimate from Session 33. Were your first guesses off from what you expected? That is normal. Grown-ups' first guesses are often off too. This is about noticing how estimating works, not being exactly right.
+2. **Your budget guess.** Look at your budget estimate from Session 33. Were your first guesses off from what you expected? That's normal. Grown-ups' first guesses are often off too. This is about noticing how estimating works, not being exactly right.
 3. **What did you learn about planning?**
 4. **What was hard at first, and what helped you get started?**
 5. **What are you proud of?**
@@ -40,7 +40,7 @@ These are the same planning moves people use for homework, chores, and any big p
 
 Use your Final Reflection page for your answers, next to your Session 01 baseline so you can compare.
 
-You can say your answers to an adult who writes them, or draw them, if that is easier.
+You can say your answers to an adult who writes them, or draw them, if that's easier.
 
 ## Artifact Created
 
@@ -64,7 +64,7 @@ Stuck? Use the [When I'm Stuck card](../../student_guide/when_im_stuck.md) in yo
 
 ## Optional Extension
 
-If you want to keep going, there is more a planner can do: more cities, a day-by-day plan, food research, and more. Those fuller steps are being built and will come later; for now, finishing here is a complete success, and nothing you did gets redone when they come.
+If you want to keep going, there's more a planner can do: more cities, a day-by-day plan, food research, and more. Those fuller steps are being built and will come later; for now, finishing here is a complete success, and nothing you did gets redone when they come.
 
 ## Parent Notes
 
