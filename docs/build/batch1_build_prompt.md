@@ -580,12 +580,19 @@ distinct from the adult executive-function glossary.
 - Add `regions_overview.md` to the existing `## Reference files` list, directly above
   the `Major cities` entry, written in the rendering the other six entries already use:
   `- [Regions overview](reference/regions_overview.md) -- how the main regions differ, and why that matters for planning.`
-  E1 creates that page, and this contents list is the only surface that can link a
-  family to it: C5 names the references generically with no link, the destination-leak
-  rule bars any `framework/` file from linking into the pack, and the contract table
-  writes filenames as inline code. Keep the position -- the regions page is read before
-  the cities page, and `11_regions_overview.md` links onward to `major_cities.md`
-  rather than back.
+  E1 creates that page, and this entry is the pack's **contents route** to it: the
+  index a family browsing the pack reads, not the only link that reaches the page.
+  A3's required insert `destinations/japan/session_inserts/11_regions_overview.md`
+  links a child straight to `reference/regions_overview.md` from the session, and
+  A3 says so in the same breath -- a link from one pack file to another is exactly
+  what the no-hard-link rule permits. What no other surface does is **list** it:
+  C5 names the references generically with no link, the destination-leak rule bars
+  any `framework/` file from linking into the pack, and the contract table writes
+  filenames as inline code. So a child arrives from the session and a family
+  arrives from the index, and the entry earns its place as the second route rather
+  than the only one. Keep the position -- the regions page is read before the cities
+  page. The Session 11 insert points at both references, naming the regions overview
+  first and `major_cities.md` second.
 - Add a `## Session inserts` list naming `session_inserts/README.md` and the four
   insert files that exist after Batch 1, `kid_glossary.md` included.
 
@@ -1048,7 +1055,7 @@ You are here: Phase N (Phase Name), First Taste step K of 13. Previous: [previou
 
 **For parents:**
 
-- Status: Core / Recommended / Optional
+- Status: Core / Conditional core / Recommended / Optional
 - Planner skill: ...
 - Estimated time: ...
 - Parent involvement: ...
@@ -1151,6 +1158,25 @@ corpus; adding it to all of them would put a diff unrelated to the conversion on
 the eight shared sessions for the equivalence read to explain, and would force an edit to
 Session 15, which the navigation table below marks as needing none. That table and the
 five exact navigation blocks are the authority on what the line contains.
+
+**`Conditional core` is a status, and the skeleton has to offer it.** The archived
+design record uses four classifications, not three. §14.1.1 names the conditional-core
+sessions -- 09, 18, 36/37 and 47 -- and writes each one's own parent strip as
+`Status: Conditional core`, and the built
+`framework/sessions/phase_01_research_skills/09_ai_as_helper_not_boss.md` this batch
+edits already carries that value on line 9. A three-way menu is the one part of this
+skeleton a later author cannot correct from the corpus, because the other four
+conditional-core sessions are Batch 2 and later work and the author meets the menu
+before they meet a built example. `.github/scripts/check-session-structure.py` requires
+a `Status` bullet and never reads its value, so a session flattened into Core or
+Recommended passes every gate in this repository while moving a session in or out of a
+Core baseline the record fixes on purpose. **State beside the skeleton that a
+conditional-core session names its condition on the same line, in the built form** --
+`Status: Conditional core -- done **only if** ...` -- **and never by citing a spec
+section number**, which the built-file reference-hygiene rule below forbids. This is
+not the Session 07 question: Session 07 is Recommended, is named as such above, and
+enters no Core baseline; what the menu was missing is the classification four other
+sessions carry.
 
 **Write the floor into the template, because the archived design record does not carry
 it.** `.github/scripts/check-session-structure.py` requires all six of `## Goal`,
@@ -2248,7 +2274,7 @@ honest-about-evidence
 stance: a rough signal, not proof of transfer. A simple table (item / start / midpoint /
 end) works and prints portrait.
 
-**H5. `framework/parent_guide/session_support_notes.md` (edit).** Four changes:
+**H5. `framework/parent_guide/session_support_notes.md` (edit).** Five changes:
 
 - Replace the intro sentence with: `A short, parent-facing overview of each session
   built so far -- your role, what to prep, the artifact to look for, a coaching
@@ -2283,6 +2309,19 @@ end) works and prints portrait.
   `parent setup needed if you do it -- an adult opens the catalogue or drives to the
   library`. Session 02's Prep should say the assumptions page must be filled before the
   session.
+- **Replace the Session 12 `Look for` field, which is the conversion's second copy
+  of a count.** The built line reads `- Look for: a four-season chart with at least
+  one busy window flagged to be careful about.`, and the Session 12 conversion below
+  rebuilds that chart to hold every season the Destination Notes list. A destination
+  with three seasons, or six, then gets a parent map that contradicts the artifact
+  its own session produces, and a parent looking for a four-box chart the child was
+  never told to draw reads a finished session as unfinished. Neither check that
+  covers the session reaches this line: `four` is not a destination name, so the
+  five-token leak grep never sees it, and the conversion's own `grep -ni four` is
+  scoped to the session file. Write instead: `- Look for: a season chart covering
+  every season the destination has, with at least one busy window flagged to be
+  careful about.` Change nothing else in the block -- Role, Prep, the coaching
+  question and the pitfall are season-count-neutral as built.
 - No entry restates the session's Parent Notes.
 
 **H6. `framework/parent_guide/time_and_effort.md` (edit).** Three changes.
@@ -2781,9 +2820,15 @@ Notes but for the one row above.
 **This session carries two hard links into `destinations/japan/`, not one.** One is on
 the Materials line; the second is in the *last sentence of the Steps intro paragraph*,
 the same paragraph whose first sentence is neutralised below. Both must go, and the
-table has a row for each. Verify before you stop:
-`grep -n 'destinations/japan' framework/sessions/phase_02_destination_big_picture/12_weather_seasons_and_events.md`
-must return nothing. (The spec extract §2.3 said Session 12 has "one link"; that is an
+table has a row for each. Verify before you stop, case-insensitively, so a
+`destinations/Japan` spelling cannot pass a check written for the lowercase one:
+
+```bash
+grep -ni 'destinations/japan' \
+  framework/sessions/phase_02_destination_big_picture/12_weather_seasons_and_events.md
+```
+
+Expect no output. (The spec extract §2.3 said Session 12 has "one link"; that is an
 error, corrected in the extract.)
 
 | Line | Current text | Where it goes / neutral replacement |
@@ -2811,9 +2856,17 @@ Workspace line's "four-box season chart", the Artifact's "four seasons", and the
 Point's "all four seasons". Left standing, a session whose Start Here draws three boxes
 still carries an artifact description and a stop point demanding four, and the child
 cannot finish -- a stop point that cannot be reached is the one thing a stop point may
-never be. Before you stop, run
-`grep -n four framework/sessions/phase_02_destination_big_picture/12_weather_seasons_and_events.md`
-and expect no output. Keep
+never be. Before you stop, run this -- `-i` because a converted sentence may open on
+`Four`, and a case-sensitive sweep would read that as clean:
+
+```bash
+grep -ni four \
+  framework/sessions/phase_02_destination_big_picture/12_weather_seasons_and_events.md
+```
+
+Expect no output. This sweep is scoped to the session file, and one copy of the same
+count sits outside it: `framework/parent_guide/session_support_notes.md` describes the
+artifact to a parent, and H5 above carries the edit that neutralises it. Keep
 the three comparison dimensions in the body — they are generic: weather; crowds and
 cost; school and work calendar fit. Keep the Source Check with its reminder that dates and
 prices change and must be re-checked close to travel, and the Parent Notes'
@@ -3428,12 +3481,12 @@ written that way.
 ```bash
 month='(January|February|March|April|May|June|July|August|September|October|November|December)'
 re="^\*\*Last reviewed:\*\* ${month} [0-9]{4}$"
-label='^[[:space:]]*\*{0,2}Last reviewed\*{0,2}:'
+label='^[[:space:]]*([-*+>|][[:space:]]*)*last reviewed[[:space:]]*:'
 for f in destinations/*/reference/*.md destinations/*/session_inserts/*.md; do
   [ -e "$f" ] || continue   # an unexpanded glob is not a missing stamp
   case "$(basename "$f")" in README.md) continue;; esac
   first=$(sed -n '/^# /,$p' "$f" | sed -e '1d' -e '/^[[:space:]]*$/d' | head -n 1)
-  labels=$(grep -cE "$label" "$f")
+  labels=$(sed 's/[*_]//g' "$f" | grep -ciE "$label")
   printf '%s\n' "$first" | grep -qE "$re" \
     || echo "STAMP NOT FIRST LINE BELOW H1: $f"
   [ "$labels" = "1" ] \
@@ -3456,10 +3509,20 @@ and fails, which is the right diagnosis. **The uniqueness:** exactly one
 would test a narrower rule than the contract states: a file whose first content line is a
 good stamp and which carries a second, malformed one further down counts exactly one
 well-formed stamp and passes, while a reader sees two freshness claims and one of them is
-junk. `$label` is anchored, so a mention of the field inside a sentence is not a hit; it
-lets the emphasis be absent, doubled, or sit on either side of the colon, so
-`**Last reviewed:**`, `**Last reviewed**:`, `*Last reviewed:*` and a bare
-`Last reviewed:` all count; and it requires the colon, so a stray phrase does not. Every
+junk. **Count the label after normalising the line, never by enumerating the ways it
+can be written.** An earlier form of `$label` spelled the emphasis out as `\*{0,2}`,
+and a bound of two is a bound: `***Last reviewed:***` is valid bold-italic that
+markdownlint accepts -- measured, `0 issues` -- and a file carrying it beside a good
+stamp counted `1` and passed the very invariant this line states. Enumerating harder
+does not fix that, because eleven spellings evade a two-asterisk bound and each new
+alternative is one more thing to have thought of. So `sed 's/[*_]//g'` strips inline
+emphasis first, the pattern then allows any run of list, blockquote and table markers
+ahead of the label, and `grep -i` makes the casing irrelevant. `**Last reviewed:**`,
+`***Last reviewed***:`, `_Last reviewed:_`, `- **Last reviewed:**`,
+`> **Last reviewed:**`, `| **Last reviewed:** |`, `**Last Reviewed:**` and a bare
+`Last reviewed:` all count as one label each. It stays anchored and it still requires
+the colon, so a mention of the field inside a sentence is not a hit -- measured
+against five such sentences, none matches. Every
 well-formed stamp is also a label, so this count subsumes the canonical one rather than
 sitting beside it, and the loop keeps two messages instead of three. A badly
 broken file can print both messages, which is two facts about it rather than two bugs.
@@ -3474,7 +3537,9 @@ duplicated valid stamp, **a valid stamp followed further down by a malformed one
 **a valid stamp followed by an unbolded one**. The first three are all the old whole-file
 grep caught. The last two are what counting labels adds: a check that counted only
 well-formed stamps read a file carrying one good stamp and one bad one as carrying
-exactly one, and said nothing about it.
+exactly one, and said nothing about it. The normalised form was then run against the
+six built reference files a second time and returns the same `1` on every one of them,
+so the widening buys the sixteen spellings and costs nothing on the tree that exists.
 
 Expect no output.
 
@@ -3518,7 +3583,13 @@ command: both sit in the script's `ALWAYS_EXCLUDED_PREFIXES` and are never score
 the path arrives. F5, F6 and F7 carry child-readable content inside adult-register pages,
 so the sentence above does not reach them; read their level by hand instead.
 
-Expect no `FAIL` lines anywhere, from either run. **Investigate every `WARN` on a file
+Expect no `FAIL` lines anywhere, from either run, and **read the summary line of the
+second run before you believe it**: it must say `5 file(s) scored`. A named path the
+script cannot resolve is skipped with one line on stderr and the run still ends
+`0 failing, 0 warning` and exits `0` -- measured -- so a typo in one of the five names
+produces a green run over four files, and a typo in all five produces a green run over
+none. The `FAIL` expectation alone cannot tell those apart from a pass.
+**Investigate every `WARN` on a file
 this batch creates or edits**, and fix it unless the file is genuinely not
 child-facing, in which case it
 declares its audience in its own text. A `WARN` on a file outside this batch's deliverables
@@ -3549,16 +3620,22 @@ this is the only place it is measured, and it matters most in this batch, becaus
 files are generated from a brief whose own prose is full of section citations:
 
 ```bash
-grep -rnE 'Section [0-9]' framework/ destinations/
+grep -rniE 'sections? [0-9]' framework/ destinations/
+grep -rn '§' framework/ destinations/
 ```
 
-Expect no output. `framework/` and `destinations/` are the whole built tree; do not widen
-the scope to the repository, because `docs/spec/` cites its own section numbers by design
-and so does this brief. **This grep is narrower than the rule it enforces**, and you should
-know that while you read its result: the rule bans a spec section citation in any form,
-while the pattern catches only the spelled-out word. The `§` spelling this brief uses
-throughout slips past it. A clean run proves the spelled-out form is absent from the built
-tree; read your own new files for the other one.
+Expect no output from either. `framework/` and `destinations/` are the whole built tree;
+do not widen the scope to the repository, because `docs/spec/` cites its own section
+numbers by design and so does this brief. **Both commands are here because one of them
+used to be the whole check, and it read only one of the three ways this rule gets
+broken.** `-i` is the load-bearing flag: a built file citing `section 15` with a
+lowercase `s` is a spec-section citation, and a case-sensitive `Section [0-9]` returns
+nothing on it -- measured, on a fixture -- so the file passes the one automated
+measurement this rule has. `sections?` covers the plural, which `Sections 14 and 15`
+needs. The second command covers the `§` spelling this brief uses throughout, which no
+pattern over the word can reach; it returns nothing on the built tree today, so its
+expectation is the same as the first's. Neither reaches a citation written out in
+words, so read your own new files as well: a clean run is evidence, not proof.
 
 Finally, the four repo-wide gates. **They are four separate commands, and `pre-commit`
 is not a superset of the other three.** `.pre-commit-config.yaml` wires exactly two
