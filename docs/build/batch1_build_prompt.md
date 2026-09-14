@@ -158,11 +158,13 @@ still owed to a human" gate, all of which later deliverables assume are still th
 ## This run's scope — Batch 1 deliverables
 
 Build at the repo root. Leave `docs/spec/` and the repository's template and CI
-infrastructure untouched. **64 files in total: 37 created, 27 edited.**
+infrastructure untouched. **65 files in total: 37 created, 28 edited.**
 `framework/CHANGELOG.md` is already on `main`, so F10 is an **edit**, on every branch.
 If the file is missing from your branch, recover it from `main` as F10 directs -- do not
-recreate it, and do not recount it as a create. The split is **37 created, 27 edited**,
-and your build report states those numbers.
+recreate it, and do not recount it as a create. The split is **37 created, 28 edited**,
+and your build report states those numbers. The twenty-eighth edit is H11, the
+repository's root `README.md`; the archived design record puts the start-up root docs in
+this batch, and three of the four it names were already on this list.
 
 The list is grouped A–H after the spec extract's sections, but **the item numbers are
 the brief's own**. OQ-5 cancels two extract items, and this list drops them rather than
@@ -170,6 +172,21 @@ keeping them as marked gaps, so from extract items D4 and G6 onward the extract'
 number runs one higher than the brief's for the same file. When you cite an item,
 always write **"extract item D3"** or **"brief item D3"** — never a bare "D3". This
 list is the batch's file scope, and the BUILD RULES below permit no edit outside it.
+
+**Every file this batch creates opens with exactly one H1, and it is the first heading in
+the file.** The archived design record's Markdown convention is one H1 per file, and no
+gate enforces it: `MD041` is switched off in the repository's `.markdownlint.jsonc`,
+`MD025` fires only on a **second** H1, and `.github/scripts/check-session-structure.py`
+reads `framework/sessions/` and nothing else. A file that opens on `## Metadata` with no
+title lints clean and passes every gate this repository runs, and still reaches a family
+with nothing at the top of the page. Several items below open their required-section list
+at a `##` heading -- `## Metadata`, `## What this is`, `## One folder that grows`. **That
+list starts at the first `##`. It never repeals the H1, and the H1 is not one of the
+listed sections.** Eight items are in that position and none of them writes "H1" in its
+own text: **D8, F1, F3, F7, F9, H1, H2 and H3.** The rule binds those eight exactly as it
+binds the twenty-one that do write it, and the five new sessions and the three kit copies
+take it from their own shared contracts below. Every file this batch edits already carries
+an H1; do not add a second.
 
 Every built file references concepts **by Name and relative link**, never by spec
 section number. Every `reference/` and `session_inserts/` file except `README.md`
@@ -550,9 +567,9 @@ Must also contain:
 (create).** Phase 1, **Core**, planner skill *checking sources*, 20–30 minutes, parent
 involvement *5-minute check-in* (an adult may need to fetch the library book).
 Materials: a guidebook (a library copy is perfect) or a couple of reputable travel
-websites, the Book Notes template, the Source Log, a pencil. Artifact: **Book notes
-page.** **Source Check is required.** Templates used: `book_notes.md`, `source_log.md`,
-`simple_citation.md`. Must contain:
+websites, the [Book Notes form](../../templates/book_notes.md), the Source Log, a pencil.
+Artifact: **Book notes page.** **Source Check is required.** Templates used:
+`book_notes.md`, `source_log.md`, `simple_citation.md`. Must contain:
 
 - The session is **destination-agnostic** — it teaches *how to use a guidebook*. The
   specific recommended title comes from the destination pack's trusted-sources list,
@@ -584,6 +601,13 @@ page.** **Source Check is required.** Templates used: `book_notes.md`, `source_l
   quotations, and scraped listings are not.
 - Book citation form: book title, author or publisher, page number, date I used it.
   Reference `simple_citation.md` by name and link; do not restate the other forms.
+- **The Book Notes form is linked once, from the Materials line above.** D3 creates
+  `framework/templates/book_notes.md` and **this session is its only point of use**;
+  nothing else in this batch links to it, so left unlinked it ships orphaned exactly as
+  the Website Notes form would in Session 08. It is a `framework/templates/` file, so a
+  relative link to it breaks no rule -- unlike the destination pack's trusted-sources
+  list, which this session names generically and never links. Do not add a second
+  mention, and do not restate the form's fields in the session.
 - Stop point (author it), **reachable on both branches**: done when three places are
   written down with one reason each, and the source is recorded in the Source Log --
   from a book, its page numbers and publication year; from a website, its web address
@@ -624,8 +648,16 @@ and 08 are the co-researched hands-on pair, and both keep the adult nearby even 
 Low-Bandwidth Parent Mode. Artifact: **Website comparison notes.** **Source Check is
 required.** Templates used: `website_notes.md`, `source_log.md`, `simple_citation.md`.
 Materials line, exact wording: *"a device with the kid-safe filter on, your destination
-pack's trusted starting sources list and its sample search terms, the Website Notes
-template, your Source Log"* — plain text, **no link**. Must contain:
+pack's trusted starting sources list and its sample search terms, the [Website Notes
+form](../../templates/website_notes.md), your Source Log"* — the two pack items in
+plain text with **no link**, because the destination-leak rule forbids a `framework/` file
+from linking into `destinations/japan/`; the Website Notes form is a
+`framework/templates/` file, and it **does** get a relative link. D4 creates it and **this
+session is its only point of use** -- nothing else in this batch links to it, so left
+unlinked it ships orphaned and the child is told to produce Website comparison notes with
+no route to the form holding the source and comparison fields. Session 09's Materials line
+below is the worked example of the same shape. One mention, on the Materials line; do not
+add a second, and do not restate the form's fields in the session. Must contain:
 
 - The child compares **at least two sources on the same topic**.
 - The five record fields: what source A says; what source B says; where they agree;
@@ -859,11 +891,27 @@ line pointing at the progress tracker as the single "what do I do next?" source 
 truth; the point-of-use accommodation line on artifact-producing sessions; that Start
 Here is a true micro-action, ideally under one minute; the 20–30 minute default, the six
 parent-involvement values and the planner-skill menu; the lighter late-phase template
-note (in Phases 7–8, or on the two-session readiness trigger, Steps and Workspace may
-thin and Start Here becomes self-generated, but Start Here, Stop Point, the named
-Artifact, and Source Check when research occurred are **always kept**); and the
+note (in Phases 7–8, or on the two-session readiness trigger, **Steps and Workspace
+become minimal but are never dropped**, Start Here becomes self-generated, and Start
+Here, Stop Point, the named Artifact, and Source Check when research occurred are
+**always kept** in full); and the
 worksheet-form rule. Also record the navigation rendering rules from the OQ-7 decision
 so a later author applies them without re-deriving them.
+
+**Write the floor into the template, because the archived design record does not carry
+it.** `.github/scripts/check-session-structure.py` requires all six of `## Goal`,
+`## Start Here`, `## Steps`, `## Workspace`, `## Artifact Created` and `## Stop Point`,
+each with a non-empty body, in **every** session in **every** phase. It has no late-phase
+exemption and no lighter-template mode. The archived record says Steps may be "omitted
+where the child now supplies their own", and its own acceptance criterion for the same
+rule, in the same document, lists Steps and Workspace among the fields every session
+carries -- so the record contradicts itself, the built repository wins on conflict, and
+the gate is the built repository. **Thinning is a shorter body, never a missing
+heading:** a one-line prompt under `## Steps`, a named blank under `## Workspace`, and
+`## Goal` untouched -- it is mandatory too, and the always-kept list above does not name
+it. State all three in the template. This is the one deliverable in the batch whose whole
+purpose is to be copied, so a skeleton that teaches the fade without its floor teaches
+every later author to fail CI on their first lighter session.
 
 **D8. `framework/templates/parent_guide_template.md` (create).** Builder-facing only; a
 parent never reads it — so, like D7, it sits inside the readability scorer's
@@ -1258,7 +1306,7 @@ git show origin/main:framework/CHANGELOG.md > framework/CHANGELOG.md
 Then apply the Batch 1 edits below to what you recovered. If that command fails, **stop
 and report it** — a missing changelog is a branch problem, not a content gap, and a
 partial history is worse than a paused build. F10 stays an **edit** on every branch, so
-the deliverables split is always 37 created / 27 edited.
+the deliverables split is always 37 created / 28 edited.
 
 The curriculum changelog, distinct from the per-trip decision log. The Batch 1 section
 you add takes this shape:
@@ -1602,6 +1650,24 @@ before then."* **Name the print index and the Final Binder Assembly session by n
 no link** — neither file exists yet and a link would dangle. **Do not list the eleven
 tabs.** One to two printed pages.
 
+**Both new student-guide pages are listed in `framework/student_guide/README.md`, and
+that is a requirement rather than a nicety.** That file is the toolkit index -- *"This is
+your planner's toolkit"* -- and it lists seven cards today in two groups. Nothing else in
+this batch links to either new page, so left off the list they ship orphaned in the one
+folder a child actually opens, which is the same defect the Session 09 conversion below
+names for the AI Notes form. Add both to the second group, **"Keep these nearby for the
+moment you need them:"** -- they are reach-for-it cards, not read-this-first cards -- in
+the file's own dash-and-description form and its own second-person voice:
+
+```markdown
+- [How to Take Notes](how_to_take_notes.md) -- how to write a note you can use later: the fact, why it matters for your trip, where it came from, and the question to ask next.
+- [How to Use This Binder](how_to_use_this_binder.md) -- where your pages live, what to print when, and how to keep months of work safe.
+```
+
+Change nothing else in the file, and add no third group. **This is the second edit to
+`framework/student_guide/README.md`** -- H10's scrub table carries the first -- so the
+file is already on the edit list and **the deliverables count does not move for it.**
+
 **H3. `framework/parent_guide/what_is_executive_function.md` (create).** Parent-facing,
 lay register, one page, jargon-light, plain parent voice — state the point first,
 qualify at most once. Sections: **(a) what executive function is**, in everyday terms —
@@ -1686,10 +1752,25 @@ end) works and prints portrait.
   session.
 - No entry restates the session's Parent Notes.
 
-**H6. `framework/parent_guide/time_and_effort.md` (edit).** Append one line at the end
-of the `## Is it worth it (versus casual involvement)` section: `If you want a rough
-signal over time rather than a feeling, the optional [executive-function observation
-aid](ef_observation_aid.md) takes about a minute, three times across the project.`
+**H6. `framework/parent_guide/time_and_effort.md` (edit).** Two changes.
+
+- Append one line at the end of the `## Is it worth it (versus casual involvement)`
+  section: `If you want a rough signal over time rather than a feeling, the optional
+  [executive-function observation aid](ef_observation_aid.md) takes about a minute, three
+  times across the project.`
+- **Add Session 08 to the Low-Bandwidth Parent Mode exception.** The second bullet of
+  `## Low-Bandwidth Parent Mode` reads `Replace per-session co-working with a quick
+  after-the-session glance -- except Session 05, which stays hands-on.` This batch
+  falsifies it. C4 above makes Session 08 the other half of the co-researched hands-on
+  pair and keeps an adult nearby for its open-web research in this mode too, so the
+  sentence as built would tell a stretched parent to send the child through the riskier
+  research alone. Replace it with exactly: `Replace per-session co-working with a quick
+  after-the-session glance -- except Sessions 05 and 08, which stay hands-on; 08 is the
+  open-web research session.` **Change nothing else in that section** -- the other five
+  bullets stay as they are. The sentence above the section, *"Early sessions need real
+  co-working -- especially the source-judging Session 05"*, is about where the coaching
+  load sits and is accurate as written; **do not widen it too.** The rule a parent acts on
+  has one home, and two copies of it would drift apart.
 
 **H7. `framework/student_guide/progress_tracker.md` (edit).** Two parts: the First Taste
 list, and the "Which sessions need a grown-up" section. Both change.
@@ -1788,6 +1869,58 @@ or hours ahead to it, maximum trip length, number of travelers, and the roster b
 relationship."* **Keep that file's own wording.** It does not write "your" in front of
 each field, and Session 00's differently-voiced copy of the same list is not a model for
 it.
+
+**H11. `README.md` (edit).** The repository's **root** landing page -- not
+`framework/README.md`, which F1 creates. It has no spec-extract section of its own, so it
+sits here at the end of Section H. The archived design record puts the start-up root docs
+inside Batch 1, and three of the four it names are already on this list: the roadmap as
+H8, the parent quick-start as H3's second edit and an H10 row, and the student-guide
+README as an H10 row. This is the fourth. Without it the file-scope rule freezes the
+repository's front page at its Batch 0 state while this batch invalidates four of its
+claims -- the same way `framework/CHANGELOG.md` would have stayed frozen because no
+deliverables list named it. **Four regions change, and nothing else does:**
+
+- **The Status paragraph.** It reads *"Early. This repository currently holds the **First
+  Taste** curriculum slice (the sessions above) and its support files, built for a
+  design-validation pilot with a real child."* That is the same claim H8 replaces in the
+  roadmap. Rewrite the first two sentences to say what is true after this batch: the
+  repository holds the complete Phases 0-2 slice, Session 00 through Checkpoint 1, plus
+  its support files, and the First Taste path runs inside that slice as a curated subset.
+  **Keep the rest of the paragraph exactly** -- the Core Finish Line and the full program
+  built in later batches, and the Batch 0 gate clearing either by a passing child pilot or
+  by a recorded no-child fallback. That gate has not cleared, and this batch does not
+  clear it.
+- **The recommended-default section.** *"Most families should build and run the **Lean
+  path** -- one family, one trip, with the Japan facts written straight into the
+  sessions"* describes a build this batch has replaced. Batch 1 is on the Full / OER
+  track: the Phases 0-2 sessions are neutral skeletons and the destination facts live in
+  the pack's inserts. Rewrite the section so it tells a family what they have rather than
+  which build to pick -- one destination pack ships, a session says "open this session's
+  Destination Notes," and the matching insert supplies the facts. **Keep the reuse
+  distinction that follows it** -- another family going to the same place needs only their
+  own Trip-Basics card, and a different destination needs a new pack -- but drop *"it does
+  nothing for your own trip"*, which is now false of machinery every family uses in every
+  session.
+- **The three-layer parenthetical.** *"Three layers (this is Full-Build detail a one-trip
+  family can skip)"* stops being true the moment F2's step 3 makes reading the matching
+  insert the load-bearing move of the design. Replace the parenthetical with one saying
+  the split is how the pages fit together, and leave the three bullets under it unchanged.
+- **The session-index heading and its lead-in.** The heading *"First Taste session index
+  (what is built now)"* and the sentence *"This slice is the pilotable First Taste path"*
+  both claim the table is the built inventory. It is not, after this batch. Reword the
+  heading so it names the First Taste path rather than the build state, and reword the
+  lead-in to say the table is the First Taste subset of the built Phases 0-2 slice.
+  **Keep all fifteen table rows exactly as they are** -- this is the First Taste index,
+  and the First Taste path has not changed.
+
+**Everything else in that file is out of scope**: the provided-as-is banner, the
+what-your-child-produces paragraph, the what-success-looks-like section, how-to-use-it and
+its quick-start, the repository-organization bullets, safety and responsibility,
+contributing, and licensing. **Do not scrub the destination name from this file.** The
+destination-leak rule binds `framework/`, this is a root document, and the repository
+ships one destination pack whose name its front page may say. `GETTING_STARTED.md` is
+**not** in scope either: read it and satisfy yourself, but nothing in it is falsified by
+this batch, and an unlisted file is not yours to touch.
 
 ## The conversion work, session by session
 
@@ -2467,6 +2600,28 @@ confirm the file carries `<!-- audience: adult -->` or
 passes this reading and fails the gate above. Session 00 is the only session in the tree
 on that route today, and it carries both markers.
 
+One H1 per built file. **No repository gate checks this, so it is checked here or
+nowhere.** `MD041` is switched off in `.markdownlint.jsonc`, `MD025` fires only on a
+*second* H1, and `.github/scripts/check-session-structure.py` reads `framework/sessions/`
+and nothing else, so a file with no title at all lints clean and passes every gate:
+
+```bash
+find framework destinations -name '*.md' | while read -r f; do
+  n=$(grep -cE '^# ' "$f")
+  [ "$n" = "1" ] || echo "H1 COUNT $n (want 1): $f"
+done
+```
+
+**Use `find`, not `git ls-files`.** The 37 new files are untracked when you run this, and
+`git ls-files` would not see one of them. The loop counts rather than tests presence, so
+a stray second H1 fails too.
+
+Expect output for **exactly two files, and no others**: D7 and D8, whose fenced skeletons
+each show an H1 as an example of what a later author writes, so both report `2`. **Judge
+this check by which files appear, never by how many lines print.** Every other file under
+`framework/` and `destinations/` reports `1`. The tree returns nothing at all today,
+across 54 files, so a third name is a title you did not write.
+
 Freshness stamps. **The contract above is a placement rule, so the check has to test
 placement.** A check that only asks whether a well-formed stamp occurs *somewhere*
 passes a file whose title carries no stamp at all, and passes a file whose stamp is
@@ -2478,15 +2633,16 @@ written that way.
 ```bash
 month='(January|February|March|April|May|June|July|August|September|October|November|December)'
 re="^\*\*Last reviewed:\*\* ${month} [0-9]{4}$"
+label='^[[:space:]]*\*{0,2}Last reviewed\*{0,2}:'
 for f in destinations/*/reference/*.md destinations/*/session_inserts/*.md; do
   [ -e "$f" ] || continue   # an unexpanded glob is not a missing stamp
   case "$(basename "$f")" in README.md) continue;; esac
   first=$(sed -n '/^# /,$p' "$f" | sed -e '1d' -e '/^[[:space:]]*$/d' | head -n 1)
-  count=$(grep -cE "$re" "$f")
+  labels=$(grep -cE "$label" "$f")
   printf '%s\n' "$first" | grep -qE "$re" \
     || echo "STAMP NOT FIRST LINE BELOW H1: $f"
-  [ "$count" = "1" ] \
-    || echo "STAMP APPEARS $count TIMES (want 1): $f"
+  [ "$labels" = "1" ] \
+    || echo "LAST REVIEWED LABEL APPEARS $labels TIMES (want 1): $f"
 done
 ```
 
@@ -2501,16 +2657,29 @@ appended after the year. The unbolded form `Last reviewed: July 2026` fails on t
 capitalised word is what stops `Nonsense 2026`. **The placement:** the first non-blank
 line after the file's H1 must be the stamp; a file with no H1 yields an empty `first`
 and fails, which is the right diagnosis. **The uniqueness:** exactly one
-stamp-shaped line per file, so a second stamp cannot mask a bad first one. A badly
+`Last reviewed` **label** per file, well-formed or not. Counting canonical stamps instead
+would test a narrower rule than the contract states: a file whose first content line is a
+good stamp and which carries a second, malformed one further down counts exactly one
+well-formed stamp and passes, while a reader sees two freshness claims and one of them is
+junk. `$label` is anchored, so a mention of the field inside a sentence is not a hit; it
+lets the emphasis be absent, doubled, or sit on either side of the colon, so
+`**Last reviewed:**`, `**Last reviewed**:`, `*Last reviewed:*` and a bare
+`Last reviewed:` all count; and it requires the colon, so a stray phrase does not. Every
+well-formed stamp is also a label, so this count subsumes the canonical one rather than
+sitting beside it, and the loop keeps two messages instead of three. A badly
 broken file can print both messages, which is two facts about it rather than two bugs.
 
 This is POSIX ERE, so `grep -E` accepts it on GNU and BSD alike; `sed`, `head` and
 `printf` are POSIX too; and `.gitattributes` pins `*.md` to LF, so the `$` anchor
 matches in Git Bash on Windows as well. Verified against the six built reference files
--- all six pass and the loop prints nothing -- and against a fixture set, where it
-catches a missing stamp, a slash form, an unbolded form, a stamp pushed below the first
-paragraph, a malformed stamp shadowed by a valid duplicate, and a duplicated valid
-stamp. The first three are all the old whole-file grep caught.
+-- all six pass and the loop prints nothing -- and against a fixture set of ten, where
+it catches a missing stamp, a slash form, an unbolded form, a stamp pushed below the first
+paragraph, a file with no H1 at all, a malformed stamp shadowed by a valid duplicate, a
+duplicated valid stamp, **a valid stamp followed further down by a malformed one**, and
+**a valid stamp followed by an unbolded one**. The first three are all the old whole-file
+grep caught. The last two are what counting labels adds: a check that counted only
+well-formed stamps read a file carrying one good stamp and one bad one as carrying
+exactly one, and said nothing about it.
 
 Expect no output.
 
