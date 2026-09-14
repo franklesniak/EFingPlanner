@@ -191,7 +191,7 @@ add-a-destination checklist. Must contain:
   | 23 Attraction Research Cards | `23_attraction_ideas.md` | `food_basics.md` (for food-type attractions) |
   | 30 Trains, Transit, and IC Cards | `30_transport_specifics.md` | `transportation_basics.md` |
   | 33 / 38 Budget passes | none | `money_basics.md` (cash culture, currency) |
-  | 34 Neighborhoods and Hotel Location | `34_lodging_types.md` | `adult_logistics_japan.md` (occupancy reality) |
+  | 34 Neighborhoods and Hotel Location | `34_lodging_types.md` | `adult_logistics.md` (occupancy reality) |
   | 36-37 Food / Restaurant Shortlist | `36_37_food_ideas.md` | `food_basics.md` |
   | 40 Realistic Day Planning | none | `airports_and_arrival_basics.md` (airport-to-city) |
   | 42 Reservations and Timed Entries | `42_reservation_examples.md` | none |
@@ -203,6 +203,16 @@ add-a-destination checklist. Must contain:
 - **Write every filename in the table as inline code, never as a relative link.**
   Most of the slots and several reference files do not exist yet; a link would
   dangle and fail the link check.
+- **Every filename in the table is destination-neutral, and the Session 34 reference
+  slot is `adult_logistics.md`.** The archived design record calls that one file
+  `adult_logistics_japan.md`, both in its tree inventory and in its own copy of this
+  table -- the only place-named filename in either. This contract is copied whole into
+  the next pack, so a place name in it would either travel to a second destination as a
+  misleading filename or force that author to diverge from the contract on one row. The
+  file exists in no pack today, so nothing is being renamed: the slot is registered
+  under the name a later batch will write it under. Record the departure in
+  `framework/CHANGELOG.md` per F10. Do not create the file — Session 34 is not in this
+  batch's scope.
 - **The rider, in this exact rewritten form:** *"Sessions not in this table (00-04,
   07, 09, 13-15, 20-22, 24-29, 31-32, 35, 39, 41, 44-46, 49-53) need no destination
   facts and are fully neutral. A session can be routed to a pack file without naming a
@@ -247,17 +257,33 @@ add-a-destination checklist. Must contain:
   `**Last reviewed:** September 2026`. Re-checking is optional upkeep, not a maintenance
   promise."* Do not write `Last reviewed: <month/year>`: the label is bold, and the month
   and year are separated by a space, not a slash.
-- **The five add-a-destination rules:** (1) write the small "destination notes" each
-  place-specific session pulls in; (2) do not edit any framework session, template,
-  guide, or doc; (3) keep adult-owned legal and safety topics adult-owned; (4) keep
+- **The six add-a-destination rules:** (1) create the pack's `reference/` directory and
+  fill in its stable facts — regions, major cities, seasons, weather and events,
+  transportation, airports, money, language, etiquette, food, adult logistics, trusted
+  starting sources, and sample search terms — one file per topic, each named as the
+  contract's reference column names it; (2) write the small "destination notes" each
+  place-specific session pulls in; (3) do not edit any framework session, template,
+  guide, or doc; (4) keep adult-owned legal and safety topics adult-owned; (5) keep
   volatile facts — prices, hours, entry rules — as "verify on official sources,"
-  never fixed; (5) when every named slot is filled, the destination is added.
-- **Say plainly which slots are written and which are not.** The table above names
-  **twelve** insert slots. After Batch 1, four are written: `10_snapshot_facts.md`,
-  `11_regions_overview.md`, `12_seasons_and_events.md`, `kid_glossary.md`. **Not yet
-  written: the other eight.** (12 − 4 = 8. Do not write "nine" — that count predates
-  OQ-16 pulling `kid_glossary.md` forward into Batch 1, and a new-destination author
-  uses this number as a completion target.)
+  never fixed; (6) **when every named insert slot and every named reference file is
+  filled, the destination is added.**
+- **Rule 6 counts both columns of the table, and it has to.** Seven rows route a
+  session to a reference file and to no insert at all — 05, 06, 08, 33/38, 40, 43 and
+  48 — so a pack with all twelve insert slots written would still leave those seven
+  sessions with no trusted-sources, money, airport, transport or seasons page to open. Nine further rows name a reference file alongside an insert.
+  Do not narrow rule 6 back to the insert column.
+- **Say plainly which slots are written and which are not — both columns.** The table
+  above names **twelve** insert slots and **twelve** reference files. Four inserts are
+  written after Batch 1: `10_snapshot_facts.md`, `11_regions_overview.md`,
+  `12_seasons_and_events.md`, `kid_glossary.md`. **Not yet written: the other eight.**
+  (12 − 4 = 8. Do not write "nine" — that count predates OQ-16 pulling
+  `kid_glossary.md` forward into Batch 1, and a new-destination author uses this number
+  as a completion target.) Seven reference files are written after Batch 1 — the six
+  the pack already ships, plus `regions_overview.md`, which E1 creates — and **five are
+  not: `food_basics.md`, `language_basics.md`, `etiquette_basics.md`,
+  `adult_logistics.md` and `airports_and_arrival_basics.md`.** (12 − 7 = 5.) State both
+  counts. A reader given only the insert count would build twelve files and believe the
+  pack was finished.
 - This file carries **no** `Last reviewed` stamp — it holds routing, not facts.
 - **This file is builder-facing and sits inside the readability scorer's
   `destinations/*/session_inserts/**/*.md` glob.** A dense contract table would score as
@@ -298,9 +324,10 @@ very popular; summer hot and humid with a rainy stretch, tiring on long walking 
 fall cool and comfortable with colorful leaves, popular; winter cold, snow in the
 north, quieter in many places. Plus: cherry blossoms and fall colors as big draws and
 busier times; **rainy season roughly June** for most of the mainland; **summer heat and
-humidity made vivid** as a genuine health concern, especially for a lower-stamina
-traveler and for the child on a long walking day, so plan summer days gently and with
-water; **typhoon season roughly late spring through autumn**, peaking late summer into
+humidity made vivid** as a health risk (heat exhaustion and dehydration), especially
+for a lower-stamina traveler and for the child on a long walking day, so plan summer
+days gently and with water; **typhoon season roughly late spring through autumn**,
+peaking late summer into
 early autumn, so it matters for late-spring and summer trips too; **the three
 congestion windows** — Golden Week (roughly late April into early May), Obon (roughly
 mid-August), New Year (roughly late December into early January, when many businesses
@@ -319,7 +346,9 @@ flexible or refundable bookings, build a buffer day, and check the official fore
 the time of travel — adult-owned logistics, not a child planning task); that peak
 seasons book lodging out months ahead at high prices so adults book early; and
 "current dates must be verified" stated plainly. No pinned dates, prices, or forecasts
-anywhere.
+anywhere. **This insert is child-facing, so it uses neither `genuine` nor `genuinely`:**
+the operative style law bans both in child-facing text outright, and asks for the
+concrete thing in their place.
 
 **A5. `destinations/japan/session_inserts/kid_glossary.md` (create; pulled forward
 from Batch 3 by OQ-16).** Child-facing. H1: `# Words and Numbers You Will Meet
@@ -343,7 +372,7 @@ bit more than half a US dollar. Do not rely on this number.)"* Do not invent a v
 month for the rate -- you have not checked it. This is the child travel glossary, kept
 distinct from the adult executive-function glossary.
 
-**A6. `destinations/japan/README.md` (edit).** Two changes only:
+**A6. `destinations/japan/README.md` (edit).** Three changes only:
 
 - Replace *"Each file carries a `Last reviewed` date -- an honesty stamp saying when
   one family last looked, not a promise anyone is keeping it current."* with: *"Each
@@ -351,6 +380,15 @@ distinct from the adult executive-function glossary.
   stamp saying when one family last looked, not a promise anyone is keeping it
   current. The two contents pages do not carry one, because they hold no facts to go
   stale."*
+- Add `regions_overview.md` to the existing `## Reference files` list, directly above
+  the `Major cities` entry, written in the rendering the other six entries already use:
+  `- [Regions overview](reference/regions_overview.md) -- how the main regions differ, and why that matters for planning.`
+  E1 creates that page, and this contents list is the only surface that can link a
+  family to it: C5 names the references generically with no link, the destination-leak
+  rule bars any `framework/` file from linking into the pack, and the contract table
+  writes filenames as inline code. Keep the position -- the regions page is read before
+  the cities page, and `11_regions_overview.md` links onward to `major_cities.md`
+  rather than back.
 - Add a `## Session inserts` list naming `session_inserts/README.md` and the four
   insert files that exist after Batch 1, `kid_glossary.md` included.
 
@@ -387,8 +425,15 @@ Point, and Source Check when the session has a research step. Optional sections
 `## Parent Notes`) are pointer-by-default; a pointer counts the same as full text and
 an omitted optional section is correct, not a gap. **Start Here must be a true
 micro-action**, doable in under a minute. Artifact-producing sessions carry the
-point-of-use accommodation line: *"You can say your answers to an adult who writes
-them, or draw them, if that is easier."* Estimated time defaults to 20–30 minutes.
+point-of-use accommodation line, in the exemplar's contracted form: *"You can say your
+answers to an adult who writes them, or draw them, if that's easier."* The other built
+sessions still read `if that is easier`: the sentence-level voice conventions
+contracted the line in the exemplar and left the rest of the corpus to the separate
+pass, and `that is` is on the style law's contraction list. A new session is drafted
+against the exemplar, so it writes the exemplar's form. **The eight conversions keep
+the line exactly as they have it** -- universal conversion rule 1 preserves every
+non-destination sentence, and re-voicing the corpus is not this batch's job.
+Estimated time defaults to 20–30 minutes.
 Parent involvement is one of: none / independent work, 5-minute check-in, parent review
 after session, parent setup needed, co-working recommended, adult-owned. Planner skills
 come from: getting started, comparing choices, checking sources, ranking priorities,
@@ -627,9 +672,15 @@ named `family_input_summary.md`** (OQ-5).
 **D3. `framework/templates/book_notes.md` (create).** H1; how to use it; the source's
 citation fields; the three places found; the standard note fields. Book citation fields:
 book title; author or publisher; page number; date I used it; **publication year**.
-**Then a short second block, "If you used a website instead", with the matching fields:**
-site name; page title; web address; date I checked it; the date the page says it was
-last updated ("not stated" is a fine answer). Both blocks are `Prompt | Your answer`
+**Then a short second block, "If you used a website instead", carrying the whole
+canonical website citation:** website title; organization or author; page title; web
+address; date I checked it (F7's five fields, in F7's order); then the date the page
+says it was last updated ("not stated" is a fine answer). **Do not drop `organization
+or author`, and do not write `site name` in place of `website title`.** The block
+mirrors the book block above -- F7's four book fields plus the one extra this session
+teaches -- so a child who fills in every cell ends up with a citation
+`docs/citation_style.md` calls complete, and D4's Website Notes labels the same five
+cells the same way. Both blocks are `Prompt | Your answer`
 tables; the child fills in the one that matches what they used and leaves the other
 blank. This is what makes Session 06's free path completable -- do not drop it, and do
 not turn it into a second comparison form, which is Session 08's job. A "was it out of
@@ -686,7 +737,7 @@ session skeleton in order, inside one fenced `markdown` block:
 You are here: Phase N, Session M of this phase.
 Previous: [previous session] | Next: [next session]
 
-**For parents** (a short labeled list, one field per line):
+**For parents:**
 
 - Status: Core / Recommended / Optional
 - Planner skill: ...
@@ -722,9 +773,18 @@ only when the session has a research step; that the other sections are **optiona
 pointer-by-default**, that a pointer counts the same as full text, and that an omitted
 optional section is correct, not a gap; the canonical pointer wordings the built
 sessions use (*"Finished? Use the Finish and Quality Check card in your student
-guide."* / *"Stuck? Use the When I'm Stuck card in your student guide."*); that the
-child's action comes before parent-facing meta and the parent strip is visually
-separated; the "You are here" navigation aid and Previous/Next, with the "You are here"
+guide."* / *"Stuck? Use the When I'm Stuck card in your student guide."*); **the exact
+order the skeleton above shows, and why it is not the order the archived matrix's
+wording suggests** -- the labelled parent strip is written exactly `**For parents:**`,
+sits directly under the navigation line and above `## Goal`, and renders as a short
+one-field-per-line list rather than a faux table, while the child's own sections lead
+the body and `## Parent Notes` comes last. Every built session is laid out that way and
+the built repository wins on conflict, so `AC-15-3`'s "child's action before
+parent-facing meta" is satisfied by that section order rather than by pushing the
+five-field strip below `## Steps`. The operative style law asks for both halves in one
+sentence: the child's action first, **and** the parent meta grouped into the labelled
+strip near the top. Do not reorder the strip, here or in any session;
+the "You are here" navigation aid and Previous/Next, with the "You are here"
 line pointing at the progress tracker as the single "what do I do next?" source of
 truth; the point-of-use accommodation line on artifact-producing sessions; that Start
 Here is a true micro-action, ideally under one minute; the 20–30 minute default, the six
@@ -1165,7 +1225,12 @@ Batch 1 must land these entries:
   the three are canonical: brainstorming questions, suggesting search terms, and tidying
   and organizing the child's own notes. Summarizing notes and organizing a comparison
   are instances of the third. Drafting the child's recommendation is not a permitted
-  job, because the recommendation is the child's own work."*
+  job, because the recommendation is the child's own work."*; and (h)
+  *"Destination-pack filenames are destination-neutral. The archived design record named
+  one reference file `adult_logistics_japan.md`, in its tree inventory and in its own
+  copy of the insert/reference contract. That contract is copied whole into each new
+  pack, so the slot is registered as `adult_logistics.md`. The file exists in no pack
+  yet, so nothing was renamed."*
 - **Deferred to a later batch** — *"The binder guide names the print index and the Final
   Binder Assembly session but does not link to them, because neither file exists yet.
   Add both relative links when `framework/print_index.md` and Session 50 land."*
@@ -1390,13 +1455,32 @@ qualify at most once. Sections: **(a) what executive function is**, in everyday 
 the brain skills for getting started, sustaining effort, knowing when to stop,
 organizing, and being flexible; **(b) why it matters beyond the trip** — homework,
 chores, big projects; **(c) why this project is a promising way to build it** — a real,
-authentic, months-long planning task with explicit bridging. Plus **the honest caveat,
+months-long planning task with explicit bridging. **Write `real` and stop there:** the
+operative style law forbids substituting `authentic` for it, one word per idea, and the
+paired synonyms added emphasis rather than meaning. `real` itself survives that law's
+delete test here -- remove it and a parent can read the task as a classroom simulation.
+Plus **the honest caveat,
 required**: transfer is not guaranteed, and the bridging — naming the shared move when
 the child uses it — is what makes it more likely; do not promise a generalized payoff.
 Plus: state plainly that this page is distinct from the framework glossary (this page
 explains the *concept and the why*; the glossary *defines project terms*) and cross-link
 the two. The built parent-guide quick-start already carries a three-sentence version;
-keep that as the pointer and do not duplicate it here.
+keep that as the pointer and do not duplicate it here — **but make it a link.** Today
+that paragraph is unlinked prose, so a parent new to the term has no route from the
+entry point to the page this deliverable creates, which is what the archived design
+record's soft fourth read exists to give them. So **H3 also edits
+`framework/parent_guide/README.md`**, replacing the italic paragraph that begins
+*"New to the term"* with this, and changing nothing else in it:
+
+```markdown
+*New to the term "executive function"? It is the set of brain skills for getting started, sticking with a task, knowing when to stop, staying organized, and being flexible. This project builds them by having your child plan a real trip. Read [what executive function is](what_is_executive_function.md) for the one-page version.*
+```
+
+Keep it a **soft** fourth read: do not promote it to a fourth must-read, and add no
+heading for it. The three-must-reads framing and the one-screen budget are what make
+that page usable for a tired parent. This is the second edit to
+`framework/parent_guide/README.md` — H10's scrub table carries the first — so the file
+is already on the edit list and **the deliverables count does not move.**
 
 **H4. `framework/parent_guide/ef_observation_aid.md` (create).** Parent-facing and
 explicitly private from the child. H1; **the four guardrails, prominently at the top**;
@@ -1679,7 +1763,7 @@ reads the whole body, fences included.**
 | Line | Current text | Neutral replacement |
 | --- | --- | --- |
 | "AI may help you" step 1 | "('What should I find out about Kyoto?')" | "('What should I find out about one city we might visit?')" |
-| Fenced safe prompt | "I am helping plan a family trip to Japan. Give me five questions a kid planner should research about Kyoto." | "I am helping plan a family trip. Give me five questions a kid planner should research about the city we are considering." — keep the "Do not make the decision for me." closing line |
+| Fenced safe prompt — **wrapped mid-sentence across two lines in the file, so match the lines, not the sentence** | line 1 `I am helping plan a family trip to Japan. Give me five questions a kid planner`; line 2 `should research about Kyoto. Do not make the decision for me.` | line 1 `I am helping plan a family trip. Give me five questions a kid planner`; line 2 `should research about the city we are considering. Do not make the decision for me.` — keep the fence at two lines, and keep the closing sentence |
 
 Preserve: the conditional-core status and the "skip this session entirely if AI-free"
 instruction; the adult-operated pattern (grown-up's tool, grown-up's account, child
@@ -2081,10 +2165,11 @@ slack that lets a real regression pass.
 Neutral pronouns for a generic child — this one needs eyeballing, since a legitimate
 "their"/"they" sentence can sit beside a false positive. **Scope it the way the style
 guide's own QA grep is scoped**, all of `framework/` and all of `destinations/`: the
-neutral-pronoun rule binds every built file, and 37 of this batch's 64 deliverables sit
-outside `sessions/`, `parent_guide/` and `student_guide/` -- every template, every
-framework doc, the whole trip-starter kit, all five session inserts, and the new reference
-page. The templates and the inserts are child-facing by the readability gate's own path
+neutral-pronoun rule binds every built file, and this batch's deliverables reach well
+beyond `sessions/`, `parent_guide/` and `student_guide/` -- among them every template,
+every framework doc, the whole trip-starter kit, all five session inserts, and the new
+reference page. The templates and the inserts are child-facing by the readability
+gate's own path
 list below, so a narrower grep would skip the files a child actually fills in:
 
 ```bash
@@ -2121,31 +2206,50 @@ have no research step and already carry `## Source Check` with the built form *"
 sources needed unless you looked something up."* That is correct and stays — deleting it
 would gut three Batch 0 pages and fail the equivalence read.
 
-Freshness stamps:
+Freshness stamps. **The contract above is a placement rule, so the check has to test
+placement.** A check that only asks whether a well-formed stamp occurs *somewhere*
+passes a file whose title carries no stamp at all, and passes a file whose stamp is
+malformed under the title with a valid duplicate further down. Read "the line directly
+below its H1" as **the first line of content under the title**: the blank line
+markdownlint requires after a heading is not content, and every built reference file is
+written that way.
 
 ```bash
 month='(January|February|March|April|May|June|July|August|September|October|November|December)'
+re="^\*\*Last reviewed:\*\* ${month} [0-9]{4}$"
 for f in destinations/*/reference/*.md destinations/*/session_inserts/*.md; do
   [ -e "$f" ] || continue   # an unexpanded glob is not a missing stamp
   case "$(basename "$f")" in README.md) continue;; esac
-  grep -qE "^\*\*Last reviewed:\*\* ${month} [0-9]{4}$" "$f" \
-    || echo "MISSING or MALFORMED stamp: $f"
+  first=$(sed -n '/^# /,$p' "$f" | sed -e '1d' -e '/^[[:space:]]*$/d' | head -n 1)
+  count=$(grep -cE "$re" "$f")
+  printf '%s\n' "$first" | grep -qE "$re" \
+    || echo "STAMP NOT FIRST LINE BELOW H1: $f"
+  [ "$count" = "1" ] \
+    || echo "STAMP APPEARS $count TIMES (want 1): $f"
 done
 ```
 
-The pattern matches the **canonical** form end to end -- bold label, one space, a full
-month name, one space, a four-digit year, end of line -- and nothing else. **The end
-anchor is the working part.** Without it the pattern tests only the prefix, so
+Three properties are tested, and the two messages say which failed. **The form:** the
+pattern matches the canonical stamp end to end -- bold label, one space, a full month
+name, one space, a four-digit year, end of line -- and nothing else. The end anchor is
+the working part; without it the pattern tests only the prefix, so
 `**Last reviewed:** September/2026`, `**Last reviewed:** nonsense` and even an empty value
-all pass while the gate reports green; with it, each of those fails, and so do an
-abbreviated month (`Sept 2026`) and a stamp with anything appended after the year. The
-unbolded form `Last reviewed: July 2026` fails on the `^\*\*` either way. Spelling the
-twelve months out rather than accepting any capitalised word is what stops
-`Nonsense 2026`.
+all pass, and so do an abbreviated month (`Sept 2026`) and a stamp with anything
+appended after the year. The unbolded form `Last reviewed: July 2026` fails on the
+`^\*\*` either way, and spelling the twelve months out rather than accepting any
+capitalised word is what stops `Nonsense 2026`. **The placement:** the first non-blank
+line after the file's H1 must be the stamp; a file with no H1 yields an empty `first`
+and fails, which is the right diagnosis. **The uniqueness:** exactly one
+stamp-shaped line per file, so a second stamp cannot mask a bad first one. A badly
+broken file can print both messages, which is two facts about it rather than two bugs.
 
-This is POSIX ERE, so `grep -E` accepts it on GNU and BSD alike, and `.gitattributes`
-pins `*.md` to LF, so the `$` anchor matches in Git Bash on Windows as well. Verified
-against the six built reference files: all six pass and the loop prints nothing.
+This is POSIX ERE, so `grep -E` accepts it on GNU and BSD alike; `sed`, `head` and
+`printf` are POSIX too; and `.gitattributes` pins `*.md` to LF, so the `$` anchor
+matches in Git Bash on Windows as well. Verified against the six built reference files
+-- all six pass and the loop prints nothing -- and against a fixture set, where it
+catches a missing stamp, a slash form, an unbolded form, a stamp pushed below the first
+paragraph, a malformed stamp shadowed by a valid duplicate, and a duplicated valid
+stamp. The first three are all the old whole-file grep caught.
 
 Expect no output.
 
@@ -2236,11 +2340,13 @@ You can perform neither. Produce a short build report and hand the human these i
    are no orphan slots, and that no session reaches for a fact the contract does not
    route.
 5. **The build report.** List every file created and every file edited, and list the
-   spec departures recorded in `framework/CHANGELOG.md` (the Session 14 slot, the merged
-   family-trip-goals page, the canonical acceptance-criteria matrix, the retained
-   full-coverage review rule, Session 07's placement, the placeholder vocabulary) plus
-   the one deferred link (the print index and the Final Binder Assembly session, named
-   without links in the binder guide). Carry **Gate check 2** forward in the build
+   spec departures recorded in `framework/CHANGELOG.md` -- **all eight**: the Session 14
+   slot, the merged family-trip-goals page, the canonical acceptance-criteria matrix,
+   the retained full-coverage review rule, Session 07's placement, the placeholder
+   vocabulary, the AI permission boundary, and the destination-neutral
+   `adult_logistics.md` filename -- plus the one deferred link (the print index and the
+   Final Binder Assembly session, named without links in the binder guide). Carry
+   **Gate check 2** forward in the build
    report as an open obligation that Batch 2 inherits, in the same words
    `framework/CHANGELOG.md` uses.
 6. **Self-check results.** The grep outputs above, the readability run, and the result
