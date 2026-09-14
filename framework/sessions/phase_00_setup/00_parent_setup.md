@@ -1,4 +1,5 @@
 <!-- markdownlint-disable MD013 -->
+<!-- audience: adult -- Session 00 is adult-only setup; the child starts at Session 01, so this file is exempt from the child-facing reading-level check. -->
 <!-- no-source-check: Session 00 is adult-only setup. The child does no research here, so there is no source to record; the Source Log habit starts in Session 04. -->
 
 # Session 00: Parent Setup

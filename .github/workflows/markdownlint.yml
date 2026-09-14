@@ -89,6 +89,30 @@ jobs:
         continue-on-error: true
         run: pytest tests/test_lint_exclusions.py -v
 
+      # Reading level for child-facing curriculum text. The script is
+      # deliberately advisory about *scores*: it fails only on the outer
+      # hard-fail thresholds (Flesch-Kincaid grade >= 7.5, or >= 18 words per
+      # sentence). Files above target but inside those limits print a warning
+      # and do not fail the step, so an author gets the signal without the gate
+      # becoming noise. It also exits non-zero when an in-scope file cannot be
+      # read at all -- a file that was never parsed has not been judged
+      # advisory, it has not been judged. Its own unit tests run alongside it.
+      # Two steps, not two commands in one step. GitHub Actions runs `run:`
+      # blocks under `bash -e`, so a failing pytest would abort the block and
+      # the corpus scan would never execute. The job would still fail, because
+      # the step outcome feeds the summary below -- but a maintainer would see
+      # only the unit-test error and none of the actual readability numbers,
+      # which are the part that says what to fix.
+      - name: Check child-facing reading level unit tests
+        id: test-readability
+        continue-on-error: true
+        run: pytest tests/test_check_readability.py -v
+
+      - name: Check child-facing reading level
+        id: lint-readability
+        continue-on-error: true
+        run: python .github/scripts/check-readability.py
+
       - name: Run toolchain EOL regression tests
         id: test-toolchain
         continue-on-error: true
@@ -122,6 +146,8 @@ jobs:
           steps.lint-links.outcome == 'failure' ||
           steps.lint-generated.outcome == 'failure' ||
           steps.lint-exclusions.outcome == 'failure' ||
+          steps.test-readability.outcome == 'failure' ||
+          steps.lint-readability.outcome == 'failure' ||
           steps.test-toolchain.outcome == 'failure' ||
           steps.test-structure.outcome == 'failure' ||
           steps.lint-structure.outcome == 'failure'

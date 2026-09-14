@@ -6,7 +6,7 @@ This roadmap shows the paths through the project and where the honest stopping p
 
 For the child this project is designed for, **finishing First Taste is the expected, complete outcome** -- not a lesser starter. Continuing to the Core Finish Line or the full program is a genuine bonus, and nothing done in First Taste is ever redone.
 
-> **What is built right now:** this repository currently holds the **First Taste** slice (the sessions below) plus its support files, for the design-validation pilot. The Core Finish Line and full program are documented here but are built later, only after the pilot succeeds.
+> **What is built right now:** this repository currently holds the **First Taste** slice (the sessions below) plus its support files, for the design-validation pilot. The Core Finish Line and full program are documented here and are built in later batches, once the Batch 0 gate has cleared — by a passing child pilot, or by the no-child fallback recorded in writing.
 
 ## First Taste path (the pilotable mini-plan)
 
@@ -39,7 +39,7 @@ Session 00 (adult-only setup) comes first. Then, in order:
 - After **Checkpoint 1**, your family knows *when* you might go -- the trip is becoming real.
 - (On the fuller path, later checkpoints add the rough *where*, the *top experiences*, the route and *how long*, a usable *day-by-day plan*, and finally a *family decision*.)
 
-## Beyond First Taste (built later, after the pilot)
+## Beyond First Taste (built in later batches)
 
 If your child finishes First Taste and wants more, they continue toward the **Core Finish Line** -- the shortest route to a usable, day-by-day plan, reached at **Checkpoint 5**. It is still most of the core work (about forty sessions), and what it saves is mainly the polish after the itinerary. On that fuller path the headline signal becomes **"Checkpoints reached: N of 6."**
 

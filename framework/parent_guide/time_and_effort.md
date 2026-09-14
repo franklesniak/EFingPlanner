@@ -80,6 +80,12 @@ The file checklist cannot tell you whether this is *usable* -- only a real child
 
 **If no ten-year-old is available.** Do not silently skip the gate. Either run a read-aloud walkthrough of the First Taste sessions with any available person, checking signals (a)-(c), **or** carry this flag forward, in writing: *"Usability pilot deferred -- design unvalidated; pilot before relying on the full apparatus."*
 
+> **Flag carried forward -- recorded 2026-09-13.** This curriculum's own First Taste pilot has **not** been run with a child. The gate is not skipped; it is deferred, and the flag above is carried in writing:
+>
+> *"Usability pilot deferred -- design unvalidated; pilot before relying on the full apparatus."*
+>
+> What that means for you as a reader: the sessions were built, reviewed, and checked against each other, but no ten-year-old has walked them yet. Treat the time estimates and the coaching-load claims on this page as designed intent, not as measured results. If you are the first family to run this, you are the pilot -- check signals (a)-(c) as you go, and expect to lighten things. This note is removed only after a real pilot, and the removal is recorded in the [curriculum changelog](../CHANGELOG.md).
+
 **Decide what each outcome means, before you pilot:**
 
 | Outcome | What it looks like | Response |

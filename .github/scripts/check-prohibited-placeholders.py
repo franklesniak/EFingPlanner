@@ -169,8 +169,13 @@ class ListContext:
 class FileReadError(RuntimeError):
     """Raised when a candidate Markdown file cannot be read."""
 
-    def __init__(self, display_path: str, error: OSError) -> None:
-        error_summary = f"{type(error).__name__}: {error.strerror or 'I/O error'}"
+    def __init__(self, display_path: str, error: Exception) -> None:
+        # Only OSError carries ``strerror``. A UnicodeDecodeError does not, and
+        # reading it unconditionally turned a readable failure into an
+        # AttributeError traceback, which is the opposite of what this class is
+        # for.
+        detail = getattr(error, "strerror", None) or str(error) or "I/O error"
+        error_summary = f"{type(error).__name__}: {detail}"
         super().__init__(f"{display_path}: unable to read file ({error_summary})")
 
 
@@ -317,16 +322,24 @@ def normalize_for_fence_opening(line: str, list_contexts: list[ListContext]) -> 
     relative_line, peeled_count = peel_containers(line, active_path)
     effective_path = active_path[:peeled_count]
 
+    # Containers alternate freely on one line: ``> - item``, ``- > quoted``,
+    # and ``- - item`` are all valid CommonMark. Peeling every blockquote and
+    # then at most one list item handles only the first of those; the rest
+    # leave a container prefix in front of the fence, so the fence is missed
+    # and the fence state stays wrong for the rest of the file.
+    # https://spec.commonmark.org/0.31.2/#container-blocks
     extras: list[Container] = []
     while True:
-        match = BLOCK_QUOTE_PREFIX_PATTERN.match(relative_line)
-        if match is None:
-            break
-        extras.append(Container(kind=CONTAINER_KIND_BLOCK_QUOTE))
-        relative_line = relative_line[match.end() :]
+        quote_match = BLOCK_QUOTE_PREFIX_PATTERN.match(relative_line)
+        if quote_match is not None:
+            extras.append(Container(kind=CONTAINER_KIND_BLOCK_QUOTE))
+            relative_line = relative_line[quote_match.end() :]
+            continue
 
-    list_match = LIST_ITEM_PATTERN.match(relative_line)
-    if list_match is not None:
+        list_match = LIST_ITEM_PATTERN.match(relative_line)
+        if list_match is None:
+            break
+
         content_indent_rel = list_content_indent(list_match)
         extras.append(Container(kind=CONTAINER_KIND_LIST, indent=content_indent_rel))
         relative_line = (
@@ -426,12 +439,22 @@ def fence_container_ended(line: str, active_fence: ActiveFence) -> bool:
 
 
 def parse_opening_fence(line: str) -> tuple[str, int] | None:
-    """Return the opening fence marker character and length, if present."""
+    """Return the opening fence marker character and length, if present.
+
+    The info string of a *backtick* fence may not itself contain a
+    backtick, so a line whose marker is followed by a code span opens no
+    fence: it is an ordinary paragraph. Without this check the checker
+    drops every following line until another matching fence or the end of
+    the file. A tilde fence carries no such restriction.
+    https://spec.commonmark.org/0.31.2/#fenced-code-blocks
+    """
     match = FENCE_OPEN_PATTERN.match(line)
     if match is None:
         return None
 
     marker = match.group("marker")
+    if marker[0] == "`" and "`" in line[match.end() :]:
+        return None
     return marker[0], len(marker)
 
 
@@ -525,7 +548,10 @@ def scan_files(path_arguments: Iterable[str | Path], root: Path = REPO_ROOT) -> 
         path, display_path = candidate
         try:
             text = path.read_text(encoding="utf-8")
-        except OSError as error:
+        except (OSError, UnicodeDecodeError) as error:
+            # UnicodeDecodeError is a ValueError, so ``except OSError`` never
+            # caught it: a file that is not valid UTF-8 crashed the run with a
+            # traceback instead of reporting one unreadable file.
             raise FileReadError(display_path, error) from error
 
         violations.extend(find_violations_in_text(text, display_path))
