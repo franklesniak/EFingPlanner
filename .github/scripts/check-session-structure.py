@@ -1446,11 +1446,15 @@ def scan_document(text: str) -> DocumentScan:
     container machinery above is the machinery
     ``check-prohibited-placeholders.py`` uses, under the same names.
 
-    A document enters this module here as often as it enters at ``check_text``,
-    so this is one of the two places its line endings are made one thing; see
-    ``normalize_line_endings``.
+    Line endings are **not** normalized here. ``check_text`` is this module's
+    single door and normalizes before it calls this function, so that the scan
+    and the ``section_body`` reads that follow both see the same text. Doing it
+    again here would be dead work, and saying it happened here would be wrong:
+    ``check-readability.py`` really does have two entry points and normalizes at
+    each, and this docstring once claimed the same shape without the same
+    callers. If a second caller is ever added, it normalizes, or this becomes
+    the place that does.
     """
-    text = normalize_line_endings(text)
     content_lines: list[str] = []
     marker_sources: list[MarkerSource] = []
     worksheet_fences: list[int] = []
