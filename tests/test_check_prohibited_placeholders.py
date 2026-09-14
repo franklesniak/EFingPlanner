@@ -691,3 +691,74 @@ def test_the_html_block_test_does_not_disturb_list_tracking(tmp_path: Path) -> N
     )
 
     assert scan_single_file(path, tmp_path) == []
+
+
+def test_a_fence_line_inside_a_div_block_hides_nothing(tmp_path: Path) -> None:
+    """Round 8: a comment is one HTML block condition out of several.
+
+    The backticks inside the ``<div>`` are raw HTML, so no fenced block opens.
+    Before this, they opened one that never closed, and every placeholder to
+    the end of the file went unreported.
+    """
+    path = write_file(
+        tmp_path / "docs" / "spec" / "example.md",
+        "<div>\n```\n</div>\n\nThe limit is TBD.\n",
+    )
+
+    assert [v.matched_text for v in scan_single_file(path, tmp_path)] == ["TBD"]
+
+
+def test_a_fence_line_inside_a_blockquoted_div_block_hides_nothing(tmp_path: Path) -> None:
+    """The container prefixes are peeled first, as they are for a comment."""
+    path = write_file(
+        tmp_path / "docs" / "spec" / "example.md",
+        "> <div>\n> ```\n\nThe limit is TBD.\n",
+    )
+
+    assert [v.matched_text for v in scan_single_file(path, tmp_path)] == ["TBD"]
+
+
+def test_a_fence_line_inside_a_script_block_hides_nothing(tmp_path: Path) -> None:
+    """Start condition 1 runs to the line carrying the matching closing tag."""
+    path = write_file(
+        tmp_path / "docs" / "spec" / "example.md",
+        "<script>\n```\n</script>\n\nThe limit is TBD.\n",
+    )
+
+    assert [v.matched_text for v in scan_single_file(path, tmp_path)] == ["TBD"]
+
+
+def test_a_real_fence_after_a_div_block_still_hides_what_it_holds(tmp_path: Path) -> None:
+    """A negative control. The block ends at the blank line; the fence is real."""
+    path = write_file(
+        tmp_path / "docs" / "spec" / "example.md",
+        "<div>\n</div>\n\n```\nThe limit is TBD.\n```\n",
+    )
+
+    assert scan_single_file(path, tmp_path) == []
+
+
+def test_a_placeholder_inside_a_div_block_is_still_reported(tmp_path: Path) -> None:
+    """A positive control. The HTML-block test governs fences, never visibility.
+
+    Raw HTML is passed through to the page, so a placeholder inside a ``<div>``
+    is a placeholder the reader sees.
+    """
+    path = write_file(
+        tmp_path / "docs" / "spec" / "example.md",
+        "<div>\nThe limit is TBD.\n</div>\n",
+    )
+
+    assert [v.matched_text for v in scan_single_file(path, tmp_path)] == ["TBD"]
+
+
+def test_an_ordinary_paragraph_starting_with_a_tag_still_opens_its_fence(
+    tmp_path: Path,
+) -> None:
+    """A negative control. ``<b>`` is not one of the block-level element names."""
+    path = write_file(
+        tmp_path / "docs" / "spec" / "example.md",
+        "<b>bold</b>\n\n```\nThe limit is TBD.\n```\n",
+    )
+
+    assert scan_single_file(path, tmp_path) == []

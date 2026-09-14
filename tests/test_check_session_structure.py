@@ -1243,13 +1243,20 @@ def _session_with(body: str) -> str:
         ("html attribute", '<span title="<!-- no-source-check: x -->">hi</span>'),
         ("indented code block", "    <!-- no-source-check: an indented example -->"),
         ("link text", "[see `<!-- no-source-check: x -->`](https://example.com)"),
+        ("image alt text", "![a note <!-- no-source-check: x -->](picture.png)"),
     ],
 )
 def test_a_marker_that_is_not_a_comment_does_not_exempt(label: str, body: str) -> None:
     """Prose *about* the marker prints as characters, so it exempts nothing.
 
-    Each of these renders the marker visibly instead of as an HTML comment, so
-    the session has said nothing about why it has no research step.
+    None of these is an HTML comment. Six render the marker visibly -- the two
+    code spans, the backslash escape, the indented code block, the code span
+    inside link text, and the image whose alt text is escaped into an
+    attribute. The remaining one, ``<span title="...">``, puts the characters
+    inside a tag's attribute value, where CommonMark reads them as part of the
+    attribute rather than as a comment; measured against markdown-it 14.3.0,
+    that is invisible but it is still not a comment. Either way the session
+    has said nothing about why it has no research step.
     """
     messages = check(_session_with(body))
     assert any("Source Check" in m for m in messages), (label, messages)
@@ -1747,3 +1754,252 @@ def test_the_emptiness_rule_still_reads_comments_and_bare_markers_as_empty() -> 
         1,
     )
     assert any('section "## Goal" is empty' in m for m in check(text))
+
+
+# ---------------------------------------------------------------------------
+# Round 8: a comment is a comment where it sits, not only on a line of its own
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.parametrize(
+    ("label", "body"),
+    [
+        ("after prose", "No research is needed. <!-- no-source-check: offline exercise -->"),
+        ("before prose", "<!-- no-source-check: offline exercise --> No research is needed."),
+        ("mid sentence", "No research. <!-- no-source-check: offline exercise --> Really."),
+        ("no space before it", "No research is needed.<!-- no-source-check: offline -->"),
+        ("beside another comment", "No research. <!-- a note --> <!-- no-source-check: r -->"),
+        ("in a list item", "- No research is needed. <!-- no-source-check: offline -->"),
+        ("in a blockquote", "> No research is needed. <!-- no-source-check: offline -->"),
+        ("after a closed code span", "Use `x` first. <!-- no-source-check: offline -->"),
+        ("after a complete html tag", "<span>hi</span> <!-- no-source-check: offline -->"),
+        ("after an unmatched backtick", "Use ` here. <!-- no-source-check: offline -->"),
+        ("after an image", "![alt](p.png) <!-- no-source-check: offline -->"),
+        ("the audience marker", "This is an adult setup step. <!-- audience: adult -->"),
+        ("three spaces of indent", "   <!-- no-source-check: offline exercise -->"),
+    ],
+)
+def test_an_inline_marker_still_exempts(label: str, body: str) -> None:
+    """An exemption marker is a comment wherever CommonMark reads one.
+
+    ``No research is needed. <!-- no-source-check: offline exercise -->`` is an
+    inline raw-HTML comment span; markdown-it 14.3.0 renders it as a comment,
+    not as characters. Requiring the marker to occupy a line by itself is a
+    placement rule the exemption syntax never stated, and the sibling
+    placeholder hook documents the opposite placement for its own suppression
+    marker.
+    """
+    assert check(_session_with(body)) == [], label
+
+
+def test_an_inline_marker_inside_a_mandatory_section_exempts() -> None:
+    """The marker is read from the whole document, section bodies included."""
+    text = build_session(sections=SIX_SECTIONS).replace(
+        "Real content for Stop Point.",
+        "Stop when the page is full. <!-- no-source-check: offline exercise -->",
+        1,
+    )
+    assert check(text) == []
+
+
+def test_a_marker_split_across_two_lines_still_exempts() -> None:
+    """A comment spans lines, so the marker view has to as well."""
+    text = build_session(
+        sections=SIX_SECTIONS,
+        extra="## Notes\n\nNo research. <!-- no-source-check:\nan offline exercise -->\n",
+    )
+    assert check(text) == []
+
+
+def test_an_inline_marker_five_spaces_into_a_list_item_is_still_an_example() -> None:
+    """A negative control on the peel, not the scan.
+
+    Five spaces after the bullet put the content at relative indent four, which
+    is an indented code block inside the list item. The marker prints there.
+    """
+    text = build_session(
+        sections=SIX_SECTIONS,
+        extra="## Notes\n\n-     <!-- no-source-check: an indented example -->\n",
+    )
+    assert any("Source Check" in m for m in check(text))
+
+
+# ---------------------------------------------------------------------------
+# Round 8: a heading inside any raw HTML block is not a heading
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.parametrize(
+    ("label", "opener"),
+    [
+        ("a div", "<div>"),
+        ("a table", "<table>"),
+        ("a section", "<section>"),
+        ("a list element", "<ul>"),
+        ("a closing tag", "</div>"),
+        ("a div with attributes", '<div class="note">'),
+    ],
+)
+def test_a_heading_inside_a_raw_html_block_is_not_a_section(label: str, opener: str) -> None:
+    """CommonMark opens an HTML block on a block-level element name.
+
+    Every line of that block is raw HTML until the blank line that ends it, so
+    the ``## Goal`` below the opener is not a heading and the session has no
+    Goal. Measured against markdown-it 14.3.0: ``<div>`` followed by
+    ``## Goal`` parses as ``html_block``, with no ``heading_open`` in it.
+    <https://spec.commonmark.org/0.31.2/#html-blocks>
+    """
+    text = build_session().replace("## Goal\n", f"{opener}\n## Goal\n", 1)
+    assert any('missing mandatory section "## Goal"' in m for m in check(text)), label
+
+
+def test_a_heading_inside_a_script_block_is_not_a_section() -> None:
+    """Start condition 1 runs to the line carrying the matching closing tag."""
+    text = build_session().replace(
+        "## Goal\n\nReal content for Goal.\n",
+        "<script>\n## Goal\n</script>\n\nReal content for Goal.\n",
+        1,
+    )
+    assert any('missing mandatory section "## Goal"' in m for m in check(text))
+
+
+def test_a_heading_inside_a_processing_instruction_is_not_a_section() -> None:
+    """Start condition 3 runs to ``?>``."""
+    text = build_session().replace(
+        "## Goal\n\nReal content for Goal.\n",
+        "<?php\n## Goal\n?>\n\nReal content for Goal.\n",
+        1,
+    )
+    assert any('missing mandatory section "## Goal"' in m for m in check(text))
+
+
+def test_a_heading_inside_a_cdata_section_is_not_a_section() -> None:
+    """Start condition 5 runs to ``]]>``."""
+    text = build_session().replace(
+        "## Goal\n\nReal content for Goal.\n",
+        "<![CDATA[\n## Goal\n]]>\n\nReal content for Goal.\n",
+        1,
+    )
+    assert any('missing mandatory section "## Goal"' in m for m in check(text))
+
+
+def test_a_blockquoted_html_block_leaves_no_section_behind() -> None:
+    """A control on the container peel, and on an older behaviour it meets.
+
+    ``> <div>`` opens an HTML block once the blockquote prefix is peeled, so
+    ``> ## Goal`` is raw HTML. It was not a section before this change either:
+    the heading scan has never peeled container prefixes, so a blockquoted ATX
+    heading has never counted as one. The verdict is the same on both sides.
+    What this pins is that the new classifier reaches that same answer instead
+    of a different one.
+    """
+    text = build_session().replace(
+        "## Goal\n\nReal content for Goal.\n",
+        "> <div>\n> ## Goal\n\nReal content for Goal.\n",
+        1,
+    )
+    assert any('missing mandatory section "## Goal"' in m for m in check(text))
+
+
+def test_a_heading_after_a_blank_line_ends_the_html_block() -> None:
+    """A positive control. A blank line ends the conditions that have no end tag."""
+    text = build_session().replace("## Goal\n", "<div>\n\n## Goal\n", 1)
+    assert check(text) == []
+
+
+def test_a_heading_after_a_closed_script_block_is_a_section() -> None:
+    """A positive control. The block ends on the line carrying ``</script>``."""
+    text = build_session().replace("## Goal\n", "<script>\nx\n</script>\n## Goal\n", 1)
+    assert check(text) == []
+
+
+def test_a_heading_after_a_document_type_declaration_is_a_section() -> None:
+    """A positive control. Condition 4 ends on the line carrying ``>``, which is its own."""
+    text = build_session().replace("## Goal\n", "<!DOCTYPE html>\n## Goal\n", 1)
+    assert check(text) == []
+
+
+def test_a_heading_after_a_one_line_comment_is_still_a_section() -> None:
+    """A negative control for round 4. A closed comment does not swallow the next line."""
+    text = build_session().replace("## Goal\n", "<!-- a note -->\n## Goal\n", 1)
+    assert check(text) == []
+
+
+def test_a_fence_line_inside_a_raw_html_block_opens_no_fence() -> None:
+    """Round 6's rule, extended: raw HTML is raw HTML whichever condition opened it.
+
+    The backticks inside the ``<div>`` are characters in an HTML block, not a
+    fence. Before this they opened one that nothing closed, and every heading
+    below it was swallowed, so a well-formed session lost all seven sections.
+    """
+    text = build_session().replace(
+        "## Goal\n\nReal content for Goal.\n",
+        f"<div>\n{FENCE}\n</div>\n\n## Goal\n\nReal content for Goal.\n",
+        1,
+    )
+    assert check(text) == []
+
+
+# ---------------------------------------------------------------------------
+# Round 8: the navigation line belongs in the session header
+# ---------------------------------------------------------------------------
+
+
+def test_a_navigation_line_below_the_first_section_is_a_violation() -> None:
+    """Orientation the child reaches after the work is orientation nobody reads."""
+    text = build_session(nav=False, extra="You are here: Phase 0. Previous: none | Next: 08\n")
+    messages = check(text)
+    assert any("navigation line sits below the first section" in m for m in messages), messages
+
+
+def test_a_misplaced_navigation_line_is_reported_where_it_sits() -> None:
+    """The violation points at the line to move, not at line one."""
+    text = build_session(nav=False, extra="You are here: Phase 0. Previous: none | Next: 08\n")
+    misplaced = [
+        v for v in structure.check_text(text, "07_a.md", "07_a.md")
+        if "navigation line" in v.message
+    ]
+    assert len(misplaced) == 1
+    assert misplaced[0].line_number == text.split("\n").index(
+        "You are here: Phase 0. Previous: none | Next: 08"
+    ) + 1
+
+
+def test_a_missing_navigation_line_still_reads_as_missing() -> None:
+    """A negative control. Absent and misplaced are different problems."""
+    messages = check(build_session(nav=False))
+    assert any("no navigation line" in m for m in messages), messages
+    assert not any("sits below" in m for m in messages), messages
+
+
+def test_a_navigation_line_in_a_document_with_no_sections_is_still_found() -> None:
+    """A positive control, and the safe direction.
+
+    With no level-two heading the header is the whole document, so the search
+    looks at more text rather than less. The missing sections are reported on
+    their own account.
+    """
+    messages = check(build_session(sections=()))
+    assert not any("navigation line" in m for m in messages), messages
+
+
+def test_a_parent_strip_below_the_first_section_is_allowed() -> None:
+    """A negative control, and the reason the strip is not bounded.
+
+    The specification says the parent-facing meta-fields "may be shown in a
+    compact strip near the top, as above, or grouped at the bottom". A gate
+    that demanded the header would reject a session the curriculum allows.
+    """
+    text = build_session(
+        parents=False,
+        extra=(
+            "**For parents:**\n\n- Status: Core\n- Estimated time: 20 minutes\n"
+            "- Parent involvement: none\n"
+        ),
+    )
+    assert check(text) == []
+
+
+def test_the_navigation_line_in_the_header_still_passes() -> None:
+    """A positive control for the ordinary shape every session already uses."""
+    assert check(build_session()) == []
