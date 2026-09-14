@@ -393,9 +393,18 @@ add-a-destination checklist. Must contain:
   and the division between the two is a rule rather than a judgement call.** The insert
   supplies only what the session's own page needs in hand -- the enumeration a child
   fills a worksheet from. Everything else belongs to the reference, and **every volatile
-  fact belongs to the reference without exception**: availability, current tools, rules
+  fact belongs to the reference, with one bounded exception named in the same breath**:
+  availability, current tools, rules
   that change, anything the pack itself tells a reader to check rather than memorise.
   Say so in the slot with a pointer, and if the two ever disagree the reference wins.
+  **The exception is a slot the contract gives no reference file at all.** This is a rule
+  for dividing a slot from its reference, so it binds the nine slots that have one and
+  cannot bind the three that do not: where the contract names no companion reference
+  file, nothing exists for a duplicate stamp to strand the fact against. Where a slot
+  owns its fields outright it **is** the canonical
+  home, and a volatile fact written there carries **the date the pack last stood behind
+  it** -- never the slot's own `Last reviewed` stamp, which is the month the page was
+  authored and would assert a check nobody made.
   The reason is mechanical rather than stylistic: **both files carry their own
   `Last reviewed` line**, so a fact written into both is stamped twice and re-checked
   once, and the session then meets two freshness claims with one piece of upkeep behind
@@ -408,7 +417,23 @@ add-a-destination checklist. Must contain:
   `36_37_food_ideas.md` and `47_language_etiquette.md` -- so they inherit the rule, and
   whichever batch writes either file divides the two then. The remaining three slots have
   no reference file in the contract at all -- `10_snapshot_facts.md`,
-  `42_reservation_examples.md` and `kid_glossary.md` -- and own their fields outright.
+  `42_reservation_examples.md` and `kid_glossary.md` -- and own their fields outright,
+  which is the bounded exception above rather than an oversight. **Two of those three
+  carry a volatile field, and the rule has to say so where it is stated rather than leave
+  the author to discover it.** `10_snapshot_facts.md` does not: a capital, the major land
+  features, the currency and the main language are stable facts, and the row already
+  sends the time-difference figure to the Trip-Basics card.
+  `42_reservation_examples.md` does -- named experiences and roughly how far ahead each
+  one is booked -- which is why its own row already frames every field as a category to
+  re-check rather than as a current value, and that framing is the exception working
+  rather than a departure from it. `kid_glossary.md` does too, in one currency example
+  that has to carry a date. **A5 is the worked case, and it was settled before this rule
+  was written**: it carries the figure forward under the stamp
+  `money_basics.md` already carries -- the month the pack last stood behind the
+  figure, which A5 names -- and refuses to date it by
+  the glossary's own stamp for exactly the reason given above. Read the unqualified form
+  of the rule against either row and the author has to invent a reference file the
+  contract does not have, or ship a field their own row requires and the rule forbids.
 
   **The transportation row is why this is written down.** Before the rule was stated,
   `30_transport_specifics.md` required a later batch to supply the transport modes, the
@@ -445,8 +470,8 @@ add-a-destination checklist. Must contain:
   schema row -- row 23's reference is scoped *"for food-type attractions"* and its schema
   row names no food -- which is why it is the row the division rule could be applied to
   now rather than deferred. It is also adult logistics:
-  how many people a room holds is a rule that changes and that an adult acts on, and the
-  rule above sends every volatile fact to the reference without exception.
+  how many people a room holds is a rule that changes and that an adult acts on, and
+  this row has a reference, so the rule above sends the fact there.
 
   **These lists are a floor, not a ceiling.** The batch that writes a slot may find it
   needs one more field and should add it here in the same pass. What it may not do is
@@ -1783,8 +1808,43 @@ this brief does not ask for it on.
   long journey, which is a claim about the destination rather than about the origin, and
   the conversion removes it instead of moving it into the pack -- a pack cannot hold it,
   because the answer changes with where the family starts.
-- Pointers to the roadmap, the guides, the templates, the kit, and the destination
-  packs. Point to the destination pack rather than restating any destination fact.
+- Pointers to the roadmap, the guides, **the framework's own `docs/` folder**, the
+  templates, the kit,
+  and the destination packs. Point to the destination pack rather than restating any
+  destination fact. **Three pages have to be named here by name, because this bullet is
+  the only inbound route any of them has**: `framework/docs/overview.md` **first, as the
+  page to read first**; `framework/how_to_start_a_trip.md`, the four steps a family
+  actually begins with; and `framework/docs/how_to_use_markdown_files.md`, for a reader
+  who has not opened a Markdown file before. Each of the three sits beside
+  `framework/README.md` or one folder below it, so what you write into the file is a
+  relative link, not the repository-rooted form this brief uses to name a file.
+
+  **That was counted rather than assumed.** Every file this batch creates was checked
+  for an inbound route from some item other than its own -- a link, or an instruction to
+  place one. Six of the 37 had none, and these three are the six's parent-facing half.
+  F3 designates
+  the overview the project's read-me-first orientation page, F2 is the page that tells a
+  family what to do first, and F9 is onboarding for the file format everything here is
+  written in. No session, template, guide or pack file links to any of them; H11
+  puts the root README's repository-organization bullets out of scope; and
+  `framework/docs/` has no index page of its own and gains none in this batch. Left off
+  this list, the page a parent should read first ships reachable only by browsing the
+  repository tree. **Adding the folder covers the rest of `framework/docs/` as well**,
+  including the adult glossary, whose only other mention is a routing row inside a
+  builder-facing file. The other three of the six are `templates/`
+  skeletons a later author reaches through this brief and the changelog rather than
+  through the tree, and one page that is already listed in its own folder's index --
+  so **do not read "six" as six things to fix**; read the rule below instead.
+
+  **The rule this applies is already in this brief, applied twice.** H2 adds both new
+  student-guide pages to `framework/student_guide/README.md` because *"nothing else in
+  this batch links to either new page"*, and calls that a requirement rather than a
+  nicety; the Session 09 conversion keeps the AI Notes form's link for the same reason.
+  A page nothing links to ships orphaned whatever its subject is, and a page designated
+  read-me-first is the worst one to orphan. **Check the rule rather than the two cases:**
+  before you finish, list every file this batch creates and confirm something else in the
+  built tree links to it, or that its audience reaches it another way and you can say
+  how. Report that list.
 
 **F2. `framework/how_to_start_a_trip.md` (create).** Parent-facing. H1; the four steps;
 the privacy reminder. The four steps: (1) copy the blank `framework/trip_starter/` kit
@@ -2115,8 +2175,13 @@ memory and do not write a fresh skeleton. Recover the real file first:
 if [ -e framework/CHANGELOG.md ]; then
   echo "framework/CHANGELOG.md is present -- nothing to recover."
 else
-  ref=$(git rev-parse --verify --quiet origin/main || git rev-parse --verify --quiet main)
-  git checkout "$ref" -- framework/CHANGELOG.md
+  ref=$(git rev-parse --verify --quiet origin/main ||
+    git rev-parse --verify --quiet main) || ref=''
+  if [ -n "$ref" ]; then
+    git checkout "$ref" -- framework/CHANGELOG.md
+  else
+    echo "NEITHER origin/main NOR main RESOLVES -- stop and report the branch problem."
+  fi
 fi
 ```
 
@@ -2143,27 +2208,49 @@ than reasoned about.** An earlier form resolved the fallback ref on the line abo
 guard is reached. Measured in exactly that checkout: the earlier form exited `1` and
 printed nothing, and this form prints
 `framework/CHANGELOG.md is present -- nothing to recover.` and exits `0`. The two forms
-behave identically in the other five states -- file present with either ref, file missing
-with either ref, and file missing with neither -- so the ordering costs nothing. **Resolve
+behave identically in six of the other seven presence-and-ref states -- the changelog
+present with either ref or with neither, and the changelog missing with either ref -- so
+the ordering costs nothing. The eighth is the state the next paragraph is about.
+**Resolve
 a fallback only on the path that needs it.** A lookup placed above the test that decides
 whether it is needed can abort on the very case the test exists to handle, which is the
-first of the three shell rules the self-check section states for every block below.
+first of the four shell rules the self-check section states for every block below.
+
+**The `else` branch reports a missing ref instead of ending the shell on it, and that
+was measured too.** Where the changelog is absent and neither `origin/main` nor a local
+`main` resolves, both quiet lookups fail, an unguarded `ref=$(...)` is a simple command
+that failed, and under `set -e` the shell ends there. Measured in exactly that checkout:
+the earlier form exited `1` with **nothing on standard output and nothing on standard
+error** -- `--verify --quiet` suppresses git's own message -- so the block produced the
+same silence a clean run produces, while the instruction below tells the builder to stop
+and report a branch problem they were never shown. The `|| ref=''` keeps the assignment
+from ending the shell and the inner `if` prints
+`NEITHER origin/main NOR main RESOLVES -- stop and report the branch problem.` **The
+block reports on standard output and does not `exit`**, because every other block here
+signals a problem by printing a line and finishing, and a pasted `exit` would close the
+builder's own shell. This block was run against **eleven** repository states, and the
+one it now fixes was the only one of the eleven that printed nothing on either stream.
 
 **Do not write `git show origin/main:framework/CHANGELOG.md > framework/CHANGELOG.md`.**
 A checkout can legitimately have no `origin/main` remote-tracking ref -- a CI checkout
 that fetched only the pull-request ref, a single-branch clone, or a remote under another
 name -- and there `git show origin/main:...` exits 128 with
 `fatal: invalid object name 'origin/main'` while a local `main` would have resolved. The
-`else` branch above tries the remote-tracking ref, then the local branch, and restores
-the file with `git checkout`, which writes nothing at all when neither ref resolves --
-measured, an empty ref makes `git checkout` exit `128` with
-`fatal: invalid reference:` and leave the tree untouched -- unlike `>`,
+`else` branch above tries the remote-tracking ref, then the local branch, and reaches
+`git checkout` only when one of them resolved, so it writes nothing at all when neither
+does -- measured, it prints the `NEITHER ... RESOLVES` line and leaves the working tree
+and the index untouched. An earlier form let an empty ref reach `git checkout`, which
+exits `128` with `fatal: invalid reference:` and also leaves the tree untouched, but
+only on a shell that got that far. Either way this is unlike `>`,
 which truncates the target before the command that was going to fill it runs, and so
 leaves an empty changelog behind on exactly the failure you most need to see.
 
 Then apply the Batch 1 edits below to what you recovered. If neither ref resolves, or the
 restore fails for any other reason, **stop and report it** — a missing changelog is a
 branch problem, not a content gap, and a partial history is worse than a paused build.
+**The block says so itself now.** On the no-ref path it prints the
+`NEITHER ... RESOLVES` line, so the instruction and the command agree; until this round
+the instruction was covering for a command that ended the shell before reaching it.
 F10 stays an **edit** on every branch, so the deliverables split is always
 37 created / 28 edited.
 
@@ -2465,12 +2552,43 @@ five tokens are gone; it does not prove the layer is clean. Record in your build
 which non-grepped proper nouns you neutralised, so the human can see the class was
 swept and not just the pattern.
 
-**F12. `framework/docs/privacy_and_safety.md` (edit).** Two changes. Replace *"blank
+**F12. `framework/docs/privacy_and_safety.md` (edit).** Three changes. Replace *"blank
 templates, and Japan reference."* with *"blank templates, and the destination reference
-pack."* Then, in the same pass, **bump this file's `## Metadata` block `Last Updated`
+pack."*
+
+**Then qualify this page's own no-repetition claim, which this batch would otherwise
+leave standing and false.** The page makes it twice: in the `## Metadata` block's
+`**Scope:**` field, *"Other files carry a short reminder and link here instead of
+repeating these rules."*, and in the body sentence directly below the H1, *"Other files
+carry a short reminder and link here rather than repeating them."* **Both move, or the
+file contradicts itself.** Append to the Scope field: *"Where a rule is written out in
+full at the point a child or an adult acts on it, that repetition is deliberate and
+required."* Replace the body sentence with: *"Other files carry a short reminder and link
+here rather than repeating them, with one deliberate exception: where a rule is written
+out in full at the point a child or an adult acts on it, the full copy is required and
+must not be reduced to a pointer."* Change nothing else on the page.
+
+**The claim is already false on the branch you start from, and this batch makes it more
+so.** `framework/parent_guide/setup_checklist.md` step 1 and
+`framework/sessions/phase_00_setup/00_parent_setup.md`'s Start Here both write the
+kid-safe-filter caveat out in full today -- *"It reduces exposure but does not remove it,
+so plan to stay nearby for riskier research"* -- rather than carrying a reminder and a
+link, and the BUILD RULES bullet near the end of this brief then requires five more
+point-of-use repetitions of safety and privacy content and forbids reducing any of them
+to a pointer. A page that declares itself the single home and says nothing about the
+exception hands the next author a licence to deduplicate required safety guidance, and
+that author would be following the page. **The exception is written as a rule and not as
+a list**, so it stays true when a later batch adds a sixth repetition and the page never
+has to be edited to keep a census current. **The other direction was available and is
+wrong**: narrowing the point-of-use requirement to fit the sentence would resolve a
+safety rule against a tidiness rule, and the repository has already settled that the
+other way twice, for the provided-as-is banner and for this very caveat.
+
+Then, in the same pass, **bump this file's `## Metadata` block `Last Updated`
 field to your build date, in `YYYY-MM-DD` form** — it reads `2026-07-07` today. The
 phrase change alters the document's rendered meaning, and this file carries the metadata
-header block, so the bump is required in the same commit. It carries no `**Version:**`
+header block, so the bump is required in the same commit; the same bump covers all three
+changes. It carries no `**Version:**`
 line, so nothing else in the block moves.
 
 ### Section G — The trip starter kit, `family/` subtree
@@ -3037,7 +3155,8 @@ Destination Notes beside it"* names a page eight of the ten do not have, and it 
 where their content actually went: Session 05 sends its two definitions to
 `framework/docs/source_trustworthiness.md` and its sources list to a pack reference,
 Session 12 sends its special-things list and its cherry-blossom paragraph to the pack's
-seasons reference as well as to its insert, and Sessions 00, 01, 03, 04, 09, 13 and 14
+seasons reference and nowhere else, and its four-season description to that reference and,
+as one short line per season, to its insert, and Sessions 00, 01, 03, 04, 09, 13 and 14
 move no destination content at all. The handoff's gate check 1 names a ninth migration
 beside the eight conversions -- `framework/student_guide/travel_glossary.md`'s two
 deleted sections against `destinations/japan/session_inserts/kid_glossary.md` -- and that
@@ -3048,6 +3167,21 @@ doc that received the content, and says plainly that some sessions received none
 surfaces state it -- the batch gate near the top of this brief, this paragraph, H6's
 parent-facing copy, and the handoff's gate check 1 -- and all four read the same way.
 Do not narrow any of them back to "its insert" or "its Destination Notes".
+
+**Naming two destinations for Session 12 is not the same as sending one passage to
+both.** A4 builds its insert as a routing page: the seasons named with one short line
+each, and the busy travel windows, the rainy and typhoon seasons and the cherry-blossom
+timing trap *repeated nowhere on it*. So the special-things list and the cherry-blossom
+paragraph have exactly one destination -- the pack's seasons reference, which already
+holds every one of them -- and the insert's share of the migration is the four-season
+description, cut to one line per season so the child can label the season chart. The
+conversion table below already says this row by row. An accounting that sent both
+passages to both pages would have the builder duplicate freshness-stamped facts A4
+forbids, or have the equivalence read look for content on a page forbidden to carry it,
+and a reader who found it missing would record a loss that never happened. The handoff's
+gate check 1 states the split the same way -- *"the insert named above, which carries the
+seasons named with one short line each"* -- and this paragraph now matches it rather than
+contradicting it.
 
 **Universal conversion rules, applied to every session in this section:**
 
@@ -3703,7 +3837,9 @@ You are here: Phase 2 (Destination Big Picture), First Taste step 5 of 13. Previ
   built tree then does the same thing for a second warning without saying so:
   `framework/docs/privacy_and_safety.md` declares itself the canonical home of the
   kid-safe-filter caveat and adds *"Other files carry a short reminder and link here
-  instead of repeating these rules"*, and `framework/parent_guide/setup_checklist.md`
+  instead of repeating these rules"* -- **the wording F12 above qualifies, and this
+  quotation is of the sentence as it stands on the branch you start from** --
+  and `framework/parent_guide/setup_checklist.md`
   step 1 and `framework/sessions/phase_00_setup/00_parent_setup.md` both write the caveat
   out in full anyway. **All three of those built surfaces are on this batch's edit list**
   -- the privacy page as F12, the setup checklist through H10, the Session 00 scrub -- and
@@ -3798,7 +3934,7 @@ Run each of these from the repository root and confirm the stated expectation.
 how the blocks are written rather than advice about how to run them.** GitHub Actions
 runs a `run:` block under `bash -e`, and a builder who pastes one of these into a script
 may or may not; a block that is correct under `-e` is correct either way, so this brief
-carries the stricter form. Three rules follow, and this brief broke all three before they
+carries the stricter form. Four rules follow, and this brief broke all four before they
 were written down here:
 
 1. **Resolve nothing above the test that decides whether it is needed.** A lookup placed
@@ -3810,12 +3946,35 @@ were written down here:
 3. **End a command whose clean result is no match with `|| true` when another command
    follows it.** Otherwise the successful outcome stops the block and the commands after
    it never run.
+4. **A check whose subject set can be empty has to say when the set is empty.** A loop
+   over no files, a glob that did not expand, and a pathspec that matches nothing all
+   finish quietly, and quiet is what these checks print when they pass. So the three
+   blocks below that iterate over a set count the set first and name the empty case. A
+   check whose subject set is empty has not passed; it has not run.
 
-All three failures are **silent**: the shell exits with no message, and a check that
+All four failures are **silent**: the shell exits with no message, and a check that
 passes prints no message either. So on a block holding more than one command, read the
 exit status as well as the output. A block holding a single `grep` is a different case
 and is left alone -- `grep` exiting `1` on no match is the pass there, and each such
 block says so where it appears.
+
+**The first three rules are about blocks; the failures are about states, and rule 4 is
+what that difference produced.** Every runnable block below was run against every
+repository state its own commands can tell apart -- the tree present or absent, a ref
+resolvable or not, a match count zero or not, the index clean or dirty, the subject set
+empty or not -- and the results were sorted by **what the builder sees** rather than by
+exit status. Most unhealthy states do say something: some name the problem on standard
+output, and rather more reach only standard error, which is why *"expect no output"*
+means no output on **either** stream. The cells that matter are the ones that print
+nothing at all, because there a broken state and a clean pass are the same reading.
+Five such cells existed when this sweep was first run over states rather than blocks:
+the changelog recovery's no-ref case, and four vacuous passes where the thing being
+checked was simply not there. Rule 4 and the missing-ref report close all five.
+
+**Run these from the repository root, and that is not a formality.** Run them from
+anywhere else and several come back looking clean, because a pathspec that matches
+nothing, a glob that does not expand and a file that has not changed all produce the
+same silence.
 
 Trip, origin and roster leak — the explicit `framework/` target plus `-r` scans
 the built files instead of reading stdin, and `-w` gives standalone-token matching in
@@ -3982,10 +4141,19 @@ grep above reads that file's contents, and A3 and the Session 34 row both point 
 measure it rather than asserting it:
 
 ```bash
+git ls-files --error-unmatch destinations/japan/reference/major_cities.md >/dev/null \
+  2>&1 || echo "major_cities.md IS NOT TRACKED HERE -- run this from the repo root."
 git diff --exit-code HEAD -- destinations/japan/reference/major_cities.md
 ```
 
-Expect no output and exit `0`. **Naming `HEAD` is the load-bearing part.** A bare
+Expect no output and exit `0`. **The `ls-files` line is rule 4, and it is here because a
+pathspec that matches nothing is not an error.** In a tree where that file is untracked
+-- the wrong working directory is the ordinary way to arrive there --
+`git diff --exit-code HEAD -- <path>` exits `0` and prints nothing, which is the same
+reading as the file being unchanged, and this is the one check whose whole job is to
+notice that the file moved. Measured in exactly that tree: without the `ls-files` line
+the block passed; with it the block prints `major_cities.md IS NOT TRACKED HERE`.
+**Naming `HEAD` is the load-bearing part.** A bare
 `git diff -- <path>` compares the working tree against the **index**, so once the
 scoped `git add` below has staged an edited copy, the file compares clean against itself
 and
@@ -4061,6 +4229,8 @@ checks either half, so both are checked here or nowhere. `MD041` is switched off
 else, so a file with no title at all lints clean and passes every gate:
 
 ```bash
+count=$(find framework destinations -name '*.md' | wc -l)
+[ "$count" -gt 0 ] || echo "NO MARKDOWN FILES FOUND -- run this from the repo root."
 find framework destinations -name '*.md' | while read -r f; do
   n=$(grep -cE '^# ' "$f") || n=0
   first=$(grep -E '^#{1,6} ' "$f" | head -n 1)
@@ -4096,6 +4266,15 @@ exits `1` and prints nothing, and with it the loop prints `H1 COUNT 0 (want 1)` 
 `FIRST HEADING IS NOT THE H1` and exits `0`. The `first=` line needs no fallback because
 it ends in a pipe to `head`, and a pipeline reports its last command's status.
 
+**The `count` line is the same lesson one level up -- rule 4, at the loop rather than at
+the line.** A `find` that matches nothing runs the body zero times and prints nothing,
+and printing nothing is how this loop reports that every file is well formed. Measured
+against a tree holding no Markdown at all, and against the wrong working directory,
+which produces the same thing: the loop exited `0` in silence, and with the count it
+prints `NO MARKDOWN FILES FOUND`. The count is taken with a second `find` rather than
+inside the loop because the loop's body runs in a subshell on the right of a pipe, so a
+variable incremented there does not survive it.
+
 Expect output for **exactly two files, and no others**: D7 and D8, whose fenced skeletons
 each show an H1 as an example of what a later author writes, so both report `2`. **Judge
 this check by which files appear, never by how many lines print.** Every other file under
@@ -4117,9 +4296,11 @@ written that way.
 month='(January|February|March|April|May|June|July|August|September|October|November|December)'
 re="^\*\*Last reviewed:\*\* ${month} [0-9]{4}$"
 label='^last[[:space:]]+reviewed[[:space:]]*:'
+seen=0
 for f in destinations/*/reference/*.md destinations/*/session_inserts/*.md; do
   [ -e "$f" ] || continue   # an unexpanded glob is not a missing stamp
   case "$(basename "$f")" in README.md) continue;; esac
+  seen=$((seen + 1))
   first=$(sed -n '/^# /,$p' "$f" | sed -e '1d' -e '/^[[:space:]]*$/d' | head -n 1)
   labels=$(sed -e 's/<!--.*-->//g' -e 's/[*_]//g' -e 's/^[^[:alpha:]]*//' "$f" \
     | grep -ciE "$label") || labels=0
@@ -4128,6 +4309,7 @@ for f in destinations/*/reference/*.md destinations/*/session_inserts/*.md; do
   [ "$labels" = "1" ] \
     || echo "LAST REVIEWED LABEL APPEARS $labels TIMES (want 1): $f"
 done
+[ "$seen" -gt 0 ] || echo "NO PACK FILES FOUND -- run this from the repo root."
 ```
 
 Three properties are tested, and the two messages say which failed. **The form:** the
@@ -4160,6 +4342,14 @@ comments, which render as nothing and are therefore not labels; removes inline e
 and then deletes every character in front of the **first letter** on the line, whatever
 that character is. What survives is asked one question, case-insensitively: does it begin
 with `last reviewed` and a colon?
+
+**The `seen` counter is rule 4, and the guard above it is why the loop needs one.**
+`[ -e "$f" ] || continue` is right -- an unexpanded glob is not a missing stamp -- but it
+turns *no pack files at all* into the same silence as *every pack file stamped once*.
+Measured against a tree with no `destinations/` directory, and against the wrong working
+directory: the loop exited `0` and printed nothing, which is this check's pass. With the
+counter it prints `NO PACK FILES FOUND`. This loop is a plain `for` rather than a
+pipeline, so the counter survives the loop and needs no second pass over the glob.
 
 **The `|| labels=0` is the H1 loop's rule again, and it matters more here.** The pipeline
 ends in `grep -c`, which prints `0` and exits `1` on a file carrying no label at all --
