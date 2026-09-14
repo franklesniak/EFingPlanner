@@ -4,7 +4,7 @@
 
 - **Status:** Active
 - **Owner:** Repository Maintainers
-- **Last Updated:** 2026-09-13
+- **Last Updated:** 2026-09-14
 - **Scope:** The complete build instruction for Batch 1 of the EFingPlanner curriculum -- the Phase 0-2 vertical slice, Session 00 through Checkpoint 1. It carries every Batch 1 requirement, every applicable acceptance criterion and the adjudicated answer to every open question, so an authoring run never opens the archived specification. It does not cover Batch 0 or Batches 2-4, and it is a build instruction rather than shipped curriculum.
 - **Related:** [Build prompt directory guide](README.md), [Build prompt template](_build_prompt_template.md), [Archived specification](../spec/specification.md)
 
@@ -28,6 +28,16 @@ outlines for the four files the archived spec never specified are all reproduced
 It is self-contained, as `docs/build/README.md` requires of every build brief. The
 working artifacts those adjudications were drafted in are agent-local and are never
 committed, so do not look for them and do not treat their absence as a missing input.
+
+**What an `OQ-n` label is.** Each one names an open question that was adjudicated before
+this brief was drafted. The label is a provenance tag, not a lookup: every instruction that
+carries one states that question's outcome in the same sentence or the same deliverable, so
+you act on the instruction and read the label as a note saying where the ruling came from.
+Fourteen of the nineteen appear somewhere below; the other five needed no tag, because
+their outcomes are simply written into the deliverables they govern. If you ever meet a
+citation whose outcome you cannot read off the text around it, that is a defect in this
+brief -- record it in your build report and follow the surrounding instruction, which binds
+on its own.
 
 If a requirement genuinely seems to be missing, do exactly this, in order: re-read this
 brief, because the answer is almost certainly in a later section; then consult
@@ -378,12 +388,13 @@ file's own stamp.** That stamp is the month you author the page, so on any build
 July 2026 it would assert the rate was good on a date nobody checked it -- the same false
 verification claim as writing a checked-date by hand, just routed through the stamp. A
 carried-over fact keeps the date it was carried from, and a figure honestly older than the
-page around it is the correct outcome. Write the entry this way, adopting that reference
-file's stronger closing warning so the pack's two statements of this fact match:
+page around it is the correct outcome. Write the entry this way, closing it with the same
+warning that reference file uses -- *"Do not lean on this number."* -- so the pack's two
+statements of this fact match:
 *"**Money is in yen.** To judge if something is expensive, convert to dollars. Rates move
 a lot, so look up today's rate and write the date beside it. (Example only, from July 2026
 and not re-checked since: it took very roughly 150-160 yen to make 1 US dollar, so 100 yen
-was worth a bit more than half a US dollar. Do not rely on this number.)"* Do not invent a
+was worth a bit more than half a US dollar. Do not lean on this number.)"* Do not invent a
 newer month for the rate -- you have not checked it. This is the child travel glossary, kept
 distinct from the adult executive-function glossary.
 
@@ -841,14 +852,15 @@ in order:
 
 - Add as the **first data row** of the fill-in table:
   `| Destination (the place the grown-ups picked) | |`
-- **Replace the time-zone sentence.** The paragraph below the fill-in table reads *"For
-  the time zone: a grown-up looks up your home zone's current hours-ahead to Japan and
-  writes it here. It varies by US time zone and shifts with daylight saving, so confirm
-  today's figure."* Change only the destination name in the first sentence, so it becomes
-  *"For the time zone: a grown-up looks up your home zone's current hours-ahead to your
-  destination and writes it here."* **Keep the second sentence exactly as it stands** --
-  "It varies by US time zone and shifts with daylight saving, so confirm today's figure"
-  is origin-layer adult help text and OQ-4 keeps it. This is the only place `Japan` appears
+- **Replace the destination name in the time-zone paragraph.** The paragraph below the
+  fill-in table is six short sentences and reads *"For the time zone, a grown-up does the
+  looking up. They find how many hours ahead Japan is right now. Then they write it here.
+  The gap is not the same for every US time zone. It also shifts with daylight saving. So
+  check today's figure."* Change the second sentence only, to *"They find how many hours
+  ahead your destination is right now."*, and **leave the other five exactly as they
+  stand** -- the US time-zone and daylight-saving sentences are origin-layer adult help
+  text and OQ-4 keeps them, and the short-sentence shape is a readability pass this batch
+  does not undo. One word goes. This is the only place `Japan` appears
   in `framework/templates/`, and H10's table deliberately omits this file because this
   bullet covers it -- so if the framework leak grep returns a hit in
   `framework/templates/trip_basics.md`, this replacement is what was missed.
@@ -917,6 +929,16 @@ do not. Do not add the block to a file this brief does not ask for it on.
 - The honest reuse distinction: **parameter reuse** (another family, same destination —
   change only their own Trip-Basics card, near-zero cost) versus **destination reuse**
   (another place — a whole new destination pack).
+- **The language and literacy boundary, stated beside the reuse claim rather than apart
+  from it.** Everything here assumes English-literate adults and a child who reads English
+  or is read to in English: every session, worksheet, template and guide is written in
+  English, and nothing in this repository translates them. A family that does not read
+  English, or a child who does not read and has nobody to read to them, needs translation
+  and reading support this project does not build and does not plan to. Write that in one
+  or two plain sentences, in the same place the reuse-it-unchanged promise is made, so the
+  promise is bounded where it is given. It is the same honesty move as the origin logistics
+  layer below, and it is there for the same reason: an unqualified modularity claim
+  oversells how far these materials travel.
 - **The origin logistics layer**, named but not separately built. Suggested shape: *"A
   fourth thing this repository names but does not build separately: the **origin
   logistics layer**. Passport rules, the home airport, the U.S. Department of State
@@ -1071,8 +1093,13 @@ question without the personal details instead; AI conversations may be stored an
 retained by the provider); and **verification** ("If AI gives a fact you want to use,
 verify it with a non-AI source or remove it," plus "For major recommendations, use at
 least two non-AI sources. AI may help brainstorm or organize, but it cannot be the only
-source. Verify facts with non-AI official sources."). Use a one-clause reminder plus a
-link to the canonical privacy home rather than re-explaining the privacy rules.
+source. Verify facts with non-AI official sources."). **Which privacy content stays on
+this page, and which is link-only.** The AI-specific privacy rule listed above is
+point-of-use safety content and is written out here in full -- the prohibited detail
+classes, the photos-and-scans clause with its reason, the retype move, and provider
+retention. Everything else that `privacy_and_safety.md` owns -- the public-repository rule,
+the binder and Google Docs guidance, the general sensitive-data list -- gets a one-clause
+reminder plus a relative link to that page, and is not re-explained here.
 
 **F7. `framework/docs/citation_style.md` (create).** **The canonical home** for the
 citation rule, the reason and the five forms (OQ-11). Required sections, in order:
@@ -1292,10 +1319,10 @@ Batch 1 must land these entries:
   you checked and which you changed.
 
 **F11. `framework/docs/build_style_and_vocab.md` (edit).** Seven changes, in one pass,
-with `Last Updated` bumped exactly once. **This file names the destination on two
-separate lines; both must change, or F1's mandated three-layer claim is false the day
-it is written and the framework leak grep in the self-check returns three hits where it
-predicts two:**
+with `Last Updated` bumped exactly once. **This file carries the destination name in two
+separate bullets; both must change, or F1's mandated three-layer claim is false the day it
+is written and this file walks past the framework leak self-check below still holding a
+destination fact:**
 
 - **Replace** the bullet beginning *"Batch 0 note on destination names:"* with:
   *"**Destination names are banned in `framework/` from Batch 1 onward.** Japan, Tokyo,
@@ -1364,10 +1391,13 @@ predicts two:**
   nothing else in the section: the volatile-fact list, the three quoted verify phrases and
   the currency sentence all stay.
 
-After these seven changes, the destination name survives in this file on **exactly one
-line** — the new destination-names rule, where it quotes the five-name leak-grep
-pattern. That is a builder-facing rule, not a destination fact, and it is the single
-hit the framework leak-grep self-check below expects. Nowhere else.
+After these seven changes, the destination name survives in this file in **exactly one
+bullet** — the new destination-names rule, where it quotes the five-name leak-grep
+pattern. That is a builder-facing rule, not a destination fact, and it is the only place in
+this file the framework leak-grep self-check below expects to find one. Nowhere else.
+**Count bullets, not grep output lines.** Wrap that bullet and its five tokens can land on
+two physical lines, which `grep -n` prints as two hits; that is one rule written across two
+lines, not two leaks.
 
 **The five-token grep is a floor, not the rule.** F1 requires the three-layer claim to be
 written with no exception, and OQ-16 orders a full framework scrub, so the rule bans
@@ -1479,8 +1509,13 @@ answers to an adult who writes them, or draw them. **It must not restate the cit
 forms** — point to `../docs/citation_style.md` and `../templates/simple_citation.md`.
 
 **H2. `framework/student_guide/how_to_use_this_binder.md` (create).** **The spec has no
-content requirements for this file anywhere** — the OQ-9 outline plus the OQ-13 rule is
-the requirement. Child-facing. Required sections, in order: `## One folder that grows` —
+content requirements for this file anywhere** — the OQ-9 outline below, plus one rule from
+OQ-13, are the requirement. **That rule, in full:** a Batch 1 file that has to refer to a
+file a later batch will write names it **by name, with no link**, because the target does
+not exist yet and a relative link to it would dangle and fail `npm run lint:md:links`; the
+batch that creates the target adds the link, and the deferral is recorded in
+`framework/CHANGELOG.md` meanwhile. It binds any Batch 1 file in that position, not only
+this one. Child-facing. Required sections, in order: `## One folder that grows` —
 the default is one folder or notebook kept in rough order, tabbed once at the very end;
 tabbing as you go is an option for a child who likes strong structure, not the default;
 `## The five sections you keep` — Source Log, research cards, decision log, question
@@ -1836,6 +1871,12 @@ the Trust level and Usefulness boxes left blank in Session 04.
 Two leaks, both inside prose and one inside a fenced example prompt — **the leak grep
 reads the whole body, fences included.**
 
+**The step-1 example is double-quoted in the file**, exactly as Session 04's two example
+questions are. It reads `("What should I find out about Kyoto?")`. The row below renders it
+with single quotes only because the cell is already inside quotation marks; write double
+quotes in the replacement, the way the built line does. Quote characters are not a
+destination fact, and universal conversion rule 1 preserves them.
+
 | Line | Current text | Neutral replacement |
 | --- | --- | --- |
 | "AI may help you" step 1 | "('What should I find out about Kyoto?')" | "('What should I find out about one city we might visit?')" |
@@ -2045,11 +2086,15 @@ You are here: Phase 2 (Destination Big Picture), First Taste step 5 of 13. Previ
   opens with a `markdownlint-disable` comment, and the audience, `no-source-check` and
   `ALLOW-TBD` markers are all comments. They render as nothing, carry no markup into the page, and are how a file declares things about itself. The ban is on rendered HTML elements. <!-- ALLOW-TBD: this line names the suppression marker in order to document it; the marker is the mechanism being described -->
 
-  (This bullet is copied byte-for-byte from `docs/build/_build_prompt_template.md`,
-  **including the trailing suppression comment**, which is what keeps the line
-  hook-clean when this brief is committed to `docs/build/`. Do not shorten it. A1, D7
-  and D8 are each required above to carry `<!-- audience: builder -->`, and all 54 built
-  curriculum files open with a `markdownlint-disable` comment.)
+  (This bullet is copied word for word from `docs/build/_build_prompt_template.md`,
+  **including the trailing suppression comment**, which is what keeps the line hook-clean
+  when this brief is committed to `docs/build/`. The source is one long line there and is
+  rewrapped to this file's width here, so the two match once the continuation lines are
+  rejoined on single spaces. That rejoin is the comparison; a byte comparison of the two
+  blocks as they stand is not, and the wording here does not claim one. Do not shorten the
+  bullet, and do not drop the trailing marker. A1, D7 and D8 are each required above to
+  carry `<!-- audience: builder -->`, and every built curriculum file opens with a
+  `markdownlint-disable` comment.)
 - **Tone (§3.1, §16):** child-facing text at reading level, warm and non-othering;
   cultural/etiquette content matter-of-fact, never "exotic"/marveling. No points,
   badges, levels, or "mission unlocked." No gendered third-person pronouns for a generic
@@ -2207,23 +2252,31 @@ grep -rniE 'japan|tokyo|kyoto|osaka|shinkansen' \
   framework/how_to_start_a_trip.md framework/CHANGELOG.md
 ```
 
-Expect **exactly two lines of output**, and no others:
+Expect hits in **exactly two files**, and in no others. **Judge this check by which files
+appear and by what their hits say, never by how many output lines there are.** `grep -n`
+prints one line per physical line, so a rule written across two wrapped lines prints twice,
+and a correct build can legitimately produce more output lines than it has exceptions. The
+two files are:
 
-1. the new destination-names rule inside `framework/docs/build_style_and_vocab.md`,
-   which quotes the five-name leak-grep pattern;
+1. `framework/docs/build_style_and_vocab.md`, in the new destination-names rule and
+   nowhere else in that file. Every hit must belong to that one bullet, which quotes the
+   five-name leak-grep pattern. Read them; do not count them.
 2. `framework/CHANGELOG.md`'s `0.1.0` **Added** line, *"The Japan reference pack, and the
    root start surfaces ..."* — version history recording which pack shipped, and the
    bounded exception now written into F11's first replacement. **Do not edit that line.**
    It is not in this batch's change set and it is not a leak.
 
 Those are the only two exceptions in this tree, and **your own Batch 1 changelog entries
-must not add a third** — write "the destination pack", never the destination's name. If
-you get **three** lines, one of two replacements was missed. Check F11's second
-replacement first -- the surviving line would be the banned-words bullet *"No
-exotic/othering framing of Japan or its culture."* If that one is applied, the survivor is
-`framework/templates/trip_basics.md`'s time-zone sentence, which D9 is the only
-instruction to change. Either way it must be neutralised before you stop. Any hit outside
-those two is a real leak, and it must be fixed.
+must not add a third** — write "the destination pack", never the destination's name.
+
+Two failures to look for, neither of which announces itself as a count. **A hit in a third
+file** means a replacement was missed: check `framework/templates/trip_basics.md` first,
+whose time-zone paragraph D9 is the only instruction to change. **A hit inside
+`framework/docs/build_style_and_vocab.md` that is not the destination-names bullet** means
+F11's second replacement was missed -- the survivor would be the banned-words bullet *"No
+exotic/othering framing of Japan or its culture."* Either way it must be neutralised before
+you stop. Any hit that is not one of the two exceptions above is a real leak, and it must
+be fixed.
 
 No hard link from **any framework file** into the destination pack. The scope is all of
 `framework/`, not `framework/sessions/`: a pack path in `framework/docs/`,
@@ -2338,21 +2391,26 @@ stamp. The first three are all the old whole-file grep caught.
 
 Expect no output.
 
-Reading level — **if `.github/scripts/check-readability.py` is on your branch, that
-script is the gate: run it and treat its output as authoritative.** It is not on `main`
-as this brief is written — it arrives with an in-flight pull request. It scores
+Reading level — **`.github/scripts/check-readability.py` is the gate: run it and treat
+its output as authoritative.** It is on `main`, and on your branch, so the gate is
+unconditional and there is no not-run fallback. It scores
 child-facing paths (`framework/sessions/`, `framework/student_guide/`,
 `framework/templates/`, `destinations/*/session_inserts/`, `destinations/*/reference/`),
-and every child-facing file this batch creates or edits must pass it. If the script is
-not on your branch, say so in your build report and record that the reading-level gate
-was not run — do not report it as passed:
+and every child-facing file this batch creates or edits must pass it. It fails a file at a
+Flesch-Kincaid grade of 7.5 or above, or 18 or more words per sentence, and warns above 6.9
+and 14:
 
 ```bash
 python .github/scripts/check-readability.py
 ```
 
-Expect no `FAIL` lines. Investigate every `WARN` and fix it unless the file is genuinely
-not child-facing, in which case it declares its audience in its own text. The script
+Expect no `FAIL` lines anywhere. **Investigate every `WARN` on a file this batch creates
+or edits**, and fix it unless the file is genuinely not child-facing, in which case it
+declares its audience in its own text. A `WARN` on a file outside this batch's deliverables
+list is **not yours to fix** -- the file-scope rule above forbids the edit. One such warning
+is standing today, on `destinations/japan/reference/sample_search_terms.md` (grade 7.13
+against the 6.9 target). Record it in your build report as inherited, and leave the file
+alone. The script
 accepts three values — `<!-- audience: adult -->`, `<!-- audience: parent -->` and
 `<!-- audience: builder -->` — each with an optional trailing reason, for example
 `<!-- audience: builder -- the insert/reference contract table -->`. Three Batch 1
@@ -2367,6 +2425,25 @@ this batch creates or edits. Measure each of those files by hand against the cap
 counting rules in `framework/docs/build_style_and_vocab.md`, and record in your build
 report the per-file counts and every density edit or `density-exempt` marker you made. A
 green readability run is not evidence that the caps are met.
+
+Built-file reference hygiene. `AC-10.3-1` makes this a grep-assisted criterion, and the
+archived design record names the pattern: built files must not cite the archived spec's own
+section numbers, and every built file is grepped for `Section [0-9]`. None of the four
+repo-wide gates below enforces prose reference hygiene -- they are structural checks -- so
+this is the only place it is measured, and it matters most in this batch, because 37 new
+files are generated from a brief whose own prose is full of section citations:
+
+```bash
+grep -rnE 'Section [0-9]' framework/ destinations/
+```
+
+Expect no output. `framework/` and `destinations/` are the whole built tree; do not widen
+the scope to the repository, because `docs/spec/` cites its own section numbers by design
+and so does this brief. **This grep is narrower than the rule it enforces**, and you should
+know that while you read its result: the rule bans a spec section citation in any form,
+while the pattern catches only the spelled-out word. The `§` spelling this brief uses
+throughout slips past it. A clean run proves the spelled-out form is absent from the built
+tree; read your own new files for the other one.
 
 Finally, the four repo-wide gates. **They are four separate commands, and `pre-commit`
 is not a superset of the other three.** `.pre-commit-config.yaml` wires exactly two
