@@ -884,8 +884,8 @@ the one that did not.
 **C2. `framework/sessions/phase_01_research_skills/06_book_research_guidebook.md`
 (create).** Phase 1, **Core**, planner skill *checking sources*, 20–30 minutes, parent
 involvement *5-minute check-in* (an adult may need to fetch the library book).
-Materials: a guidebook (a library copy is perfect) or a couple of reputable travel
-websites, the [Book Notes form](../../templates/book_notes.md), the Source Log, a pencil.
+Materials: a guidebook (a library copy is perfect) or one reputable travel website,
+the [Book Notes form](../../templates/book_notes.md), the Source Log, a pencil.
 Artifact: **Book notes page.** **Source Check is required.** Templates used:
 `book_notes.md`, `source_log.md`, `simple_citation.md`. Must contain:
 
@@ -893,17 +893,30 @@ Artifact: **Book notes page.** **Source Check is required.** Templates used:
   specific recommended title comes from the destination pack's trusted-sources list,
   referenced generically (*"your destination pack's trusted starting sources list names
   a guidebook or two"*), **never named in the session text**, and never as a link.
-- Foreground the **free / library path**: a library copy or free reputable travel sites
-  work just as well; no guidebook needs to be bought. Session 07 is a first-class way
-  to do this. **Because that path is advertised, it must be completable.** Session 06 is
-  Core, so write the whole session to work on either branch, and teach each move in both
-  forms: a book's table of contents and index, or a site's own section menu and its
-  search box; a book's page numbers, or a page title and web address; a book's
+- Foreground the **free / library path**: a library copy or one free reputable travel
+  site works just as well; no guidebook needs to be bought. Session 07 is a first-class
+  way to do this. **Because that path is advertised, it must be completable.** Session
+  06 is Core, so write the whole session to work on either branch, and teach each move
+  in both forms: a book's table of contents and index, or a site's own section menu and
+  its search box; a book's page numbers, or a page title and web address; a book's
   publication year, or the date the page says it was last updated (with "not stated" a
   real answer, and a reason to prefer a source that gives one). Never write the website
   branch as the lesser one. **This branch is not Session 08.** Session 06 is about
   finding your way around one long source and judging how current it is; Session 08 is
   about comparing two sources on the same question. Do not ask for a second source here.
+- **One website, and the Materials line above now says so.** That line asked for *"a
+  couple of reputable travel websites"* until this round, three bullets above the
+  sentence forbidding the second source, and a literal builder had to either put a
+  source into the session that the session tells it not to ask for or disregard the
+  materials list. The website branch is singular everywhere else it is specified: *"one
+  long source"* in the bullet above, *"a site's own section menu"* and *"a page title
+  and web address"* in the both-forms list, and *"from a website, its web address and
+  the date you checked it"* in the stop point below. **The pack's list and the child's
+  source are different counts.** The trusted starting sources list this session points
+  at generically may name several -- the bullet above quotes it as naming *"a guidebook
+  or two"* -- and the child picks one from it and works there. A second website on the
+  Materials line does not give the child a spare; it hands them the Session 08 move that
+  a Session 06 stop point is not written to ask for.
 - Teach, in this order: use the table of contents; use the index; skim before deep
   reading; record page numbers; **pick three places that sound interesting**; write why
   each might be worth researching later.
@@ -1010,15 +1023,30 @@ session is its only point of use** -- nothing else in this batch links to it, so
 unlinked it ships orphaned and the child is told to produce Website comparison notes with
 no route to the form holding the source and comparison fields. Session 09's Materials line
 below is the worked example of the same shape. One mention, on the Materials line; do not
-add a second. **Do not reproduce the form's layout or its citation fields in the
-session** -- the two source blocks, the per-source cells, and the five citation field
-names F7 defines all belong on the form, and a session that reprints them creates two
-surfaces to keep in step. **The five record fields below are a different thing, and they
-stay.** They are what the child is being taught to write down; the Stop Point is
-answerable only if the session names them; and D4 lays the same ground out as form rows
-because a form and a lesson are allowed to meet at the point of use. That is
-point-of-use teaching, not a restated form. This item settles it, so the two
-instructions cannot be read against each other. Must contain:
+add a second. **Do not reproduce the form's layout or its per-source cells in the
+session** -- the two source blocks and the cells inside them belong on the form, and a
+session that reprints them creates two surfaces to keep in step. **The five citation
+field names are not part of that bar, and two other passages in this brief require them
+here.** The Section F paragraph that puts `citation_style.md` on the Tier 1 side says F7
+*"fixes the five forms and the exact field names D3, D4, D6 and Session 08 must
+reproduce,"* and F7's own `web address` paragraph names *"Session 08's citation form"*
+as one of the four places that label that field. An earlier draft of this sentence
+barred the citation fields as well, and a literal builder reading it either dropped the
+citation bullet below -- the one place this session is told to write `web address` and
+never `URL` -- or reprinted a schema the same paragraph forbade. **The test is layout,
+not vocabulary.** Two surfaces that share a field *name* stay in step by themselves,
+because F7 is the one place the name is fixed; two surfaces that both draw the *shape*
+-- the blocks, the cells, the order they sit in -- are two things to keep in step by
+hand. C2's version of this bar already reads *"the form's layout or its note-taking
+cells"* and keeps the book citation form by name, and Session 09's reads *"the form's
+layout or its entry fields"*; both say they follow *"the reading C4 settles,"* and this
+is that reading. **The five record fields below are a different thing, and they stay.**
+They are what the child is being taught to write down; the Stop Point is answerable
+only if the session names them; and D4 lays the same ground out as form rows because a
+form and a lesson are allowed to meet at the point of use. That is point-of-use
+teaching, not a restated form. This item settles all three -- the layout bar, the
+citation form and the record fields -- so no two of them can be read against each
+other. Must contain:
 
 - The child compares **at least two sources on the same topic**.
 - The five record fields: what source A says; what source B says; where they agree;
@@ -1390,9 +1418,24 @@ in order:
    vocabulary and lint law, and do not repeat those rules here.
 3. `## The parent-guide register rule` — state the point first, then qualify at most
    once. Plain parent voice, not a nested-qualification voice. One to four pages. Mark
-   adult-owned responsibilities clearly. Every legal, safety, entry or
-   current-information item carries a verify-with-official-sources line and a
-   record-the-date-checked line.
+   adult-owned responsibilities clearly. **Every legal, entry, safety or
+   current-information item whose answer comes from an outside source that can
+   change** carries a verify-with-official-sources line and a record-the-date-checked
+   line: entry and visa rules, advisories, opening hours and prices, and a tool's
+   current minimum-age and supervision policy are all of that kind. **A standing rule
+   of this curriculum is not, and it takes neither line** -- keep personal data off a
+   page, a grown-up stays in the loop, an adult owns the booking and the legal
+   questions. Those are decisions this project made rather than facts an outside
+   source can confirm, so there is nothing to check them against and no date that
+   would be true of them. Item 6 below already states this scope in three words --
+   *"verify-framing on every volatile fact"* -- and one template may not carry two
+   scopes for one rule. **The unscoped reading ends in a date nobody checked.** A5's
+   currency entry above names that failure in as many words: writing a checked-date by
+   hand for something you have not checked is a false verification claim, and a page
+   of them teaches a family to discount the dates that are real. A safety rule is not
+   the weaker for carrying no date; it is stated and obeyed, which is what the
+   repetition rule near the end of this brief means by a rule that *"keeps a child
+   safe, keeps personal data off a page, or keeps an adult in the loop."*
 4. `## The page skeleton` — one fenced `markdown` block, and it is this one:
 
    ```markdown
