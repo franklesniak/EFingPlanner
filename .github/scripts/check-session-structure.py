@@ -2306,6 +2306,17 @@ def table_row_cells(content: str) -> tuple[tuple[int, str], ...]:
     GFM reads the table before it reads any inline, so ``\\|`` is a cell
     character even where a code span would otherwise claim it.
 
+    The leading pipe is still the leading pipe when the row is indented. GFM
+    lets a row carry up to three columns of indentation, so a row asked about
+    at character zero counted its own indentation as a first cell: a table
+    whose header and delimiter row were indented differently was refused
+    outright, and one indented alike was recognized with a column count one too
+    high, which is the number a body row's excess cells are measured against.
+    A fourth column of indentation is an indented code block and no table row
+    at all -- that is not this helper's rule to state, and the count it returns
+    for such a line disagrees with an unindented delimiter row anyway, which is
+    the only reason the module reaches the right answer there. See residual 1.
+
     The reason a row has to be split at all is that a cell is its own inline
     context. A backtick left unmatched in one cell cannot pair with one in
     another, because the renderer never offers it the chance -- and a scan that
@@ -2316,7 +2327,8 @@ def table_row_cells(content: str) -> tuple[tuple[int, str], ...]:
     https://github.github.com/gfm/#tables-extension-
     """
     cells: list[tuple[int, str]] = []
-    start = 1 if content.startswith("|") else 0
+    indent = len(content) - len(content.lstrip(" "))
+    start = indent + 1 if indent < 4 and content[indent:].startswith("|") else 0
     index = start
     while index < len(content):
         if content[index] == "|" and content[index - 1] != "\\":

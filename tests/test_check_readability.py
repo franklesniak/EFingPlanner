@@ -4909,3 +4909,94 @@ def test_a_body_row_with_fewer_cells_keeps_the_cells_it_has() -> None:
         + "close |\n"
     )
     assert readability.has_adult_marker(document)
+
+
+def test_a_table_row_may_carry_the_indentation_gfm_allows_it() -> None:
+    """GFM lets a table row be indented up to three spaces; the pipe still delimits.
+
+    The sibling of the pin in ``tests/test_check_session_structure.py``. The
+    direction here is a document whose adult marker the page really carries
+    being read as child-facing and sent through the child readability gate.
+    https://github.github.com/gfm/#tables-extension-
+    """
+    for indent in range(4):
+        document = (
+            " " * indent
+            + "| "
+            + TICK
+            + "open | "
+            + ADULT_MARKER
+            + " "
+            + TICK
+            + "close | third |\n| --- | --- | --- |\n"
+        )
+        assert readability.has_adult_marker(document)
+        assert (
+            readability.table_columns(" " * indent + "| a | b |", "| --- | --- |") == 2
+        )
+
+
+def test_four_spaces_before_a_pipe_is_still_not_a_table_row() -> None:
+    """The over-application control: the indent allowance stops where GFM's does."""
+    document = (
+        "    | "
+        + TICK
+        + "open | "
+        + ADULT_MARKER
+        + " "
+        + TICK
+        + "close | third |\n| --- | --- | --- |\n"
+    )
+    assert not readability.has_adult_marker(document)
+    assert readability.table_columns("    | a | b |", "| --- | --- |") == 0
+
+
+def test_an_indented_row_without_a_leading_pipe_gains_no_cell() -> None:
+    """The over-application control: the allowance applies to a leading pipe only."""
+    assert readability.table_columns("  a | b", "  --- | ---") == 2
+    assert readability.table_columns("a | b", "--- | ---") == 2
+
+
+def test_both_hooks_split_an_indented_table_row_alike() -> None:
+    """The cross-hook pin: one spelling of the indent allowance in both hooks.
+
+    ``table_row_cells`` is byte-identical in the two hooks that model a table,
+    and a rule that drifts between them is the defect this repository has now
+    found three separate times. The third such pin.
+    """
+    structure_module = _load_structure_hook()
+    for row in ("| a | b |", " | a | b |", "   | a | b |", "    | a | b |", "a | b"):
+        assert readability.table_row_cells(row) == structure_module.table_row_cells(row)
+
+
+def _load_structure_hook():
+    """Import the session-structure hook beside this one, for cross-hook pins."""
+    import importlib.util
+    import sys
+    from pathlib import Path
+
+    root = Path(__file__).resolve().parent.parent / ".github" / "scripts"
+    spec = importlib.util.spec_from_file_location(
+        "_structure_for_cross_hook_pin", root / "check-session-structure.py"
+    )
+    assert spec is not None and spec.loader is not None
+    module = importlib.util.module_from_spec(spec)
+    sys.modules["_structure_for_cross_hook_pin"] = module
+    spec.loader.exec_module(module)
+    return module
+
+
+def test_a_tab_before_a_pipe_is_not_the_indentation_gfm_allows() -> None:
+    """The over-application control: the allowance is spaces, as GFM's own is.
+
+    A tab advances to the next stop of four, so a tab-indented row is an
+    indented code block and no table row at all. ``TABLE_DELIMITER_PATTERN``
+    spells its own allowance ``^ {0,3}`` for the same reason, and the two
+    are deliberately the same shape.
+
+    This is residual 1 seen from the table site: the module still has no
+    indented-code-block model, and what keeps the answer right here is that a
+    tab-indented row's cell count disagrees with an unindented delimiter row.
+    """
+    assert readability.table_columns(TAB + "| a | b |", "| --- | --- |") == 0
+    assert readability.table_columns("   | a | b |", "| --- | --- |") == 2

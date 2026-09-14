@@ -3994,3 +3994,87 @@ def test_a_body_row_with_fewer_cells_keeps_the_cells_it_has() -> None:
         + "close |\n"
     )
     assert "no-source-check" in structure.scan_document(document).marker_text
+
+
+def test_a_table_row_may_carry_the_indentation_gfm_allows_it() -> None:
+    """GFM lets a table row be indented up to three spaces; the pipe still delimits.
+
+    ``table_row_cells`` decided whether a row opened with a delimiting pipe by
+    looking at character zero, so an indented row counted its own indentation
+    as a first cell. A table whose header and delimiter row were indented
+    differently then disagreed about its width and was refused outright: the
+    rows went into one paragraph run, the backticks paired across a real cell
+    boundary, and a session that had declared its Source Check exemption was
+    failed for not declaring one.
+
+    Measured against markdown-it 14.3.0 and against GitHub's own renderer:
+    both read three cells in each of these rows, at every indent through three.
+    https://github.github.com/gfm/#tables-extension-
+    """
+    for indent in range(4):
+        header = (
+            " " * indent
+            + "| "
+            + TICK
+            + "open | "
+            + OFFLINE_MARKER
+            + " "
+            + TICK
+            + "close | third |\n| --- | --- | --- |\n"
+        )
+        delimiter = (
+            "| "
+            + TICK
+            + "open | "
+            + OFFLINE_MARKER
+            + " "
+            + TICK
+            + "close | third |\n"
+            + " " * indent
+            + "| --- | --- | --- |\n"
+        )
+        assert "no-source-check" in structure.scan_document(header).marker_text
+        assert "no-source-check" in structure.scan_document(delimiter).marker_text
+        assert structure.table_columns(" " * indent + "| a | b |", "| --- | --- |") == 2
+
+
+def test_four_spaces_before_a_pipe_is_still_not_a_table_row() -> None:
+    """The over-application control: the indent allowance stops where GFM's does.
+
+    A fourth column of indentation is an indented code block. Measured against
+    GitHub's own renderer, which forms a table at indents 0 through 3 and none
+    at 4.
+    """
+    document = (
+        "    | "
+        + TICK
+        + "open | "
+        + OFFLINE_MARKER
+        + " "
+        + TICK
+        + "close | third |\n| --- | --- | --- |\n"
+    )
+    assert "no-source-check" not in structure.scan_document(document).marker_text
+    assert structure.table_columns("    | a | b |", "| --- | --- |") == 0
+
+
+def test_an_indented_row_without_a_leading_pipe_gains_no_cell() -> None:
+    """The over-application control: the allowance applies to a leading pipe only."""
+    assert structure.table_columns("  a | b", "  --- | ---") == 2
+    assert structure.table_columns("a | b", "--- | ---") == 2
+
+
+def test_a_tab_before_a_pipe_is_not_the_indentation_gfm_allows() -> None:
+    """The over-application control: the allowance is spaces, as GFM's own is.
+
+    A tab advances to the next stop of four, so a tab-indented row is an
+    indented code block and no table row at all. ``TABLE_DELIMITER_PATTERN``
+    spells its own allowance ``^ {0,3}`` for the same reason, and the two
+    are deliberately the same shape.
+
+    This is residual 1 seen from the table site: the module still has no
+    indented-code-block model, and what keeps the answer right here is that a
+    tab-indented row's cell count disagrees with an unindented delimiter row.
+    """
+    assert structure.table_columns(TAB + "| a | b |", "| --- | --- |") == 0
+    assert structure.table_columns("   | a | b |", "| --- | --- |") == 2
