@@ -497,3 +497,268 @@ def test_main_reports_actionable_failure_message(
     assert "replace with a measurable value" in captured.out
     assert "<!-- ALLOW-TBD: <reason> -->" in captured.out
     assert '.github/instructions/docs.instructions.md "Prohibited Patterns"' in captured.out
+
+
+def test_an_unclosed_blockquote_fence_ends_with_its_blockquote(tmp_path: Path) -> None:
+    """A fence ends with the container that holds it, so the scan resumes after it.
+
+    CommonMark closes an unterminated fenced block at the end of its containing
+    block (<https://spec.commonmark.org/0.31.2/#fenced-code-blocks>). Treating
+    the fence as open to the end of the file would silence every placeholder in
+    the rest of the document.
+    """
+    path = write_file(
+        tmp_path / "docs" / "spec" / "example.md",
+        "\n".join(
+            [
+                "> ```text",
+                "> An example that is never closed.",
+                "",
+                "# Real heading",
+                "",
+                "The limit is TBD.",
+            ]
+        )
+        + "\n",
+    )
+
+    violations = scan_single_file(path, tmp_path)
+
+    assert [v.matched_text for v in violations] == ["TBD"]
+
+
+def test_an_unclosed_list_fence_ends_with_its_list_item(tmp_path: Path) -> None:
+    """The same rule for a fence nested under a list item."""
+    path = write_file(
+        tmp_path / "docs" / "spec" / "example.md",
+        "\n".join(
+            [
+                "1. An example:",
+                "",
+                "   ```text",
+                "   Never closed.",
+                "",
+                "The limit is TBD.",
+            ]
+        )
+        + "\n",
+    )
+
+    violations = scan_single_file(path, tmp_path)
+
+    assert [v.matched_text for v in violations] == ["TBD"]
+
+
+def test_a_blank_line_does_not_end_a_list_nested_fence(tmp_path: Path) -> None:
+    """A positive control. Inside a list item a blank line is ordinary fence content."""
+    path = write_file(
+        tmp_path / "docs" / "spec" / "example.md",
+        "\n".join(
+            [
+                "1. An example:",
+                "",
+                "   ```text",
+                "   first line",
+                "",
+                "   The limit is TBD.",
+                "   ```",
+            ]
+        )
+        + "\n",
+    )
+
+    violations = scan_single_file(path, tmp_path)
+
+    assert violations == []
+
+
+# ---------------------------------------------------------------------------
+# Round 6: an HTML block opens no fence here either
+# ---------------------------------------------------------------------------
+
+
+def test_an_html_block_line_with_trailing_backticks_opens_no_fence(tmp_path: Path) -> None:
+    """An HTML block runs to its ``-->``, so nothing on those lines opens a fence.
+
+    Treating the backticks left behind by comment stripping as a fence hides
+    every placeholder from there to the end of the file.
+    """
+    path = write_file(
+        tmp_path / "docs" / "spec" / "example.md",
+        "<!-- note --> ```\n\nThe limit is TBD.\n",
+    )
+
+    violations = scan_single_file(path, tmp_path)
+
+    assert [v.matched_text for v in violations] == ["TBD"]
+
+
+def test_a_placeholder_beside_a_comment_on_one_line_is_still_flagged(tmp_path: Path) -> None:
+    """A positive control. The HTML-block test governs fences, not visibility.
+
+    ``TBD`` after a ``-->`` still prints the characters TBD to the reader, so
+    the hook must still report it.
+    """
+    path = write_file(
+        tmp_path / "docs" / "spec" / "example.md",
+        "<!-- note --> The limit is TBD.\n",
+    )
+
+    violations = scan_single_file(path, tmp_path)
+
+    assert [v.matched_text for v in violations] == ["TBD"]
+
+
+def test_a_fence_on_the_line_after_a_comment_still_hides_a_placeholder(
+    tmp_path: Path,
+) -> None:
+    """A positive control. Only the HTML-block line itself opens no fence."""
+    path = write_file(
+        tmp_path / "docs" / "spec" / "example.md",
+        "<!-- note -->\n\n```text\nThe limit is TBD.\n```\n",
+    )
+
+    assert scan_single_file(path, tmp_path) == []
+
+
+# ---------------------------------------------------------------------------
+# Round 7: a container prefix does not stop an HTML block from being one
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.parametrize(
+    ("label", "first_line", "second_line"),
+    [
+        ("blockquote", "> <!-- note --> ```", "> The limit is TBD."),
+        ("nested blockquote", "> > <!-- note --> ```", "> > The limit is TBD."),
+        ("bullet", "- <!-- note -->```", "  The limit is TBD."),
+        ("ordered item", "1. <!-- note -->```", "   The limit is TBD."),
+        ("bullet in a blockquote", "> - <!-- note -->```", ">   The limit is TBD."),
+    ],
+)
+def test_a_container_nested_html_block_opens_no_fence(
+    label: str, first_line: str, second_line: str, tmp_path: Path
+) -> None:
+    """CommonMark decides the block after the container prefix comes off.
+
+    Reading the raw line meant the blockquote or bullet hid the HTML block, so
+    the backticks after the comment opened a fence and every placeholder below
+    it went unreported.
+    """
+    path = write_file(
+        tmp_path / "docs" / "spec" / "example.md",
+        f"{first_line}\n{second_line}\n",
+    )
+
+    violations = scan_single_file(path, tmp_path)
+
+    assert [v.matched_text for v in violations] == ["TBD"], (label, violations)
+
+
+def test_a_real_fence_inside_a_blockquote_still_hides_a_placeholder(tmp_path: Path) -> None:
+    """A positive control. Only the HTML-block line is exempt from opening one."""
+    path = write_file(
+        tmp_path / "docs" / "spec" / "example.md",
+        "> ```text\n> The limit is TBD.\n> ```\n",
+    )
+
+    assert scan_single_file(path, tmp_path) == []
+
+
+def test_a_placeholder_after_a_blockquoted_comment_is_still_flagged(tmp_path: Path) -> None:
+    """A positive control. The HTML-block test governs fences, not visibility."""
+    path = write_file(
+        tmp_path / "docs" / "spec" / "example.md",
+        "> <!-- note --> The limit is TBD.\n",
+    )
+
+    violations = scan_single_file(path, tmp_path)
+
+    assert [v.matched_text for v in violations] == ["TBD"]
+
+
+def test_the_html_block_test_does_not_disturb_list_tracking(tmp_path: Path) -> None:
+    """A negative control on the state, not the answer.
+
+    The peel asks a question about one line; it must not advance the list
+    contexts that govern the rest of the file. If it did, the real fence in the
+    same list item would be peeled against the wrong content column and would
+    not be found, and the placeholder inside it would be reported as prose.
+    """
+    path = write_file(
+        tmp_path / "docs" / "spec" / "example.md",
+        "- <!-- note -->\n\n  ```text\n  The limit is TBD.\n  ```\n",
+    )
+
+    assert scan_single_file(path, tmp_path) == []
+
+
+def test_a_fence_line_inside_a_div_block_hides_nothing(tmp_path: Path) -> None:
+    """Round 8: a comment is one HTML block condition out of several.
+
+    The backticks inside the ``<div>`` are raw HTML, so no fenced block opens.
+    Before this, they opened one that never closed, and every placeholder to
+    the end of the file went unreported.
+    """
+    path = write_file(
+        tmp_path / "docs" / "spec" / "example.md",
+        "<div>\n```\n</div>\n\nThe limit is TBD.\n",
+    )
+
+    assert [v.matched_text for v in scan_single_file(path, tmp_path)] == ["TBD"]
+
+
+def test_a_fence_line_inside_a_blockquoted_div_block_hides_nothing(tmp_path: Path) -> None:
+    """The container prefixes are peeled first, as they are for a comment."""
+    path = write_file(
+        tmp_path / "docs" / "spec" / "example.md",
+        "> <div>\n> ```\n\nThe limit is TBD.\n",
+    )
+
+    assert [v.matched_text for v in scan_single_file(path, tmp_path)] == ["TBD"]
+
+
+def test_a_fence_line_inside_a_script_block_hides_nothing(tmp_path: Path) -> None:
+    """Start condition 1 runs to the line carrying the matching closing tag."""
+    path = write_file(
+        tmp_path / "docs" / "spec" / "example.md",
+        "<script>\n```\n</script>\n\nThe limit is TBD.\n",
+    )
+
+    assert [v.matched_text for v in scan_single_file(path, tmp_path)] == ["TBD"]
+
+
+def test_a_real_fence_after_a_div_block_still_hides_what_it_holds(tmp_path: Path) -> None:
+    """A negative control. The block ends at the blank line; the fence is real."""
+    path = write_file(
+        tmp_path / "docs" / "spec" / "example.md",
+        "<div>\n</div>\n\n```\nThe limit is TBD.\n```\n",
+    )
+
+    assert scan_single_file(path, tmp_path) == []
+
+
+def test_a_placeholder_inside_a_div_block_is_still_reported(tmp_path: Path) -> None:
+    """A positive control. The HTML-block test governs fences, never visibility.
+
+    Raw HTML is passed through to the page, so a placeholder inside a ``<div>``
+    is a placeholder the reader sees.
+    """
+    path = write_file(
+        tmp_path / "docs" / "spec" / "example.md",
+        "<div>\nThe limit is TBD.\n</div>\n",
+    )
+
+    assert [v.matched_text for v in scan_single_file(path, tmp_path)] == ["TBD"]
+
+
+def test_an_ordinary_paragraph_starting_with_a_tag_still_opens_its_fence(
+    tmp_path: Path,
+) -> None:
+    """A negative control. ``<b>`` is not one of the block-level element names."""
+    path = write_file(
+        tmp_path / "docs" / "spec" / "example.md",
+        "<b>bold</b>\n\n```\nThe limit is TBD.\n```\n",
+    )
+
+    assert scan_single_file(path, tmp_path) == []

@@ -118,6 +118,27 @@ jobs:
         continue-on-error: true
         run: npm run test:toolchain-eol
 
+      # Curriculum sessions carry seven mandatory fields. The order is the
+      # scaffold: a child with executive-function difficulty needs to know
+      # where to start, what they are making, and when they are allowed to
+      # be finished. A session that loses its Stop Point in an edit is a
+      # session that never ends, and that is not something a reviewer
+      # reliably notices across dozens of files.
+      # Two steps, not two commands in one step. GitHub Actions runs `run:`
+      # blocks under `bash -e`, so a failing pytest would abort the block and
+      # the corpus scan would never execute -- the job would still fail, but a
+      # maintainer would see only the unit-test error and none of the actual
+      # session violations, which are the part that says what to fix.
+      - name: Check session structure unit tests
+        id: test-structure
+        continue-on-error: true
+        run: pytest tests/test_check_session_structure.py -v
+
+      - name: Check session structure
+        id: lint-structure
+        continue-on-error: true
+        run: python .github/scripts/check-session-structure.py
+
       - name: Check validation results
         if: >-
           steps.lint-outer.outcome == 'failure' ||
@@ -127,7 +148,9 @@ jobs:
           steps.lint-exclusions.outcome == 'failure' ||
           steps.test-readability.outcome == 'failure' ||
           steps.lint-readability.outcome == 'failure' ||
-          steps.test-toolchain.outcome == 'failure'
+          steps.test-toolchain.outcome == 'failure' ||
+          steps.test-structure.outcome == 'failure' ||
+          steps.lint-structure.outcome == 'failure'
         run: |
           echo "::error::Markdown and toolchain checks failed. Check the logs above for details."
           exit 1
