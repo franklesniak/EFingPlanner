@@ -3451,8 +3451,11 @@ assumptions template D11 edits. Three were air-shaped and unfixed: this bullet, 
 sentence in `parent_guide/setup_checklist.md`, and the `Rough Trip Shape` row in the
 style law -- all three move in this batch, each in its own item. Two more sit in
 Session 15 and in the city-research-card template, which belong to a later batch and are
-recorded here rather than touched. The remaining twenty-four name an itinerary or a trip
-shape without assuming one.
+recorded here rather than touched. Five more are this brief's own D11 item and G3 row,
+which specify the fix. One is the preservation instruction above, which froze this
+bullet's wording until this pass. **The remaining eighteen name an itinerary or a trip
+shape without assuming one**, and four plus three plus two plus five plus one plus
+eighteen is the thirty-three.
 
 ### Session 01 — Project Kickoff (convert, no insert slot)
 
