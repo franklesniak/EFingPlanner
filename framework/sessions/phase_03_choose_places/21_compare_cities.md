@@ -18,11 +18,11 @@ Compare your two cities with a simple score, and make one trade-off.
 
 ## Start Here
 
-Put your two City Research Cards side by side. That is your start -- everything you need is already on them.
+Put your two City Research Cards side by side. That is your start. Everything you need is already on them.
 
 ## Steps
 
-You have two researched cities. Now you compare them fairly, using the same questions for each. For First Taste, use the **lighter 3-criteria version** -- it is quick and clear.
+You have two researched cities. Now you compare them fairly, using the same questions for each. For First Taste, use the **lighter 3-criteria version**. It's quick and clear.
 
 Score each city from 1 (low) to 5 (high) on three things:
 
@@ -40,7 +40,7 @@ Fill in the small table (or use your [Scoring Rubric page](../../templates/scori
 | Easy to get to and around (1-5) | | |
 | **Total** | | |
 
-Then do the real thinking -- **make one trade-off** and write it in one or two sentences:
+The scores are only half the job. Now **make one trade-off** and write it in one or two sentences:
 
 - Which city scored higher, and does the total match your gut?
 - What would you *gain* and what would you *lose* by choosing it?
@@ -59,7 +59,7 @@ Your City comparison. It holds two cities scored on three things. It holds a tra
 
 ## Stop Point
 
-You are done when both cities have three scores and a total. You also need your trade-off, written in a sentence or two. And you need a recommendation: either **one city** for this first trip, or **both, kept on purpose**. You do not have to feel sure -- "I recommend both, let's decide together" is a real answer -- but write down which way you lean, because your final plan needs a city or two. For each city you keep, also jot the rough number of days from your City Research Card, so your plan has a length.
+You are done when both cities have three scores and a total. You also need your trade-off, written in a sentence or two. And you need a recommendation: either **one city** for this first trip, or **both, kept on purpose**. You do not have to feel sure. "I recommend both, let's decide together" is a real answer. But write down which way you lean, because your final plan needs a city or two. For each city you keep, also jot the rough number of days from your City Research Card, so your plan has a length.
 
 ## Source Check
 

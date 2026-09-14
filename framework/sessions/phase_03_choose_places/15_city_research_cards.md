@@ -22,7 +22,7 @@ Write the name of one city you are curious about at the top of a City Research C
 
 ## Steps
 
-Now you research real places. Use one **City Research Card** per city -- it keeps each city's facts together and easy to compare. Pick **two** cities: Tokyo is a strong first choice for most trips, and then one more that interests you (the [major cities reference](../../../destinations/japan/reference/major_cities.md) lists good candidates like Kyoto and Osaka).
+Now you research real places. Use one **City Research Card** per city. It keeps each city's facts together and easy to compare. Pick **two** cities: Tokyo is a strong first choice for most trips, and then one more that interests you (the [major cities reference](../../../destinations/japan/reference/major_cities.md) lists good candidates like Kyoto and Osaka).
 
 For each city, fill in your card from trusted sources (add each to your Source Log):
 
@@ -36,7 +36,7 @@ For each city, fill in your card from trusted sources (add each to your Source L
 8. **Sources** and **date checked.**
 9. **Planning assumption** -- anything you are *assuming* that a grown-up should check later (for example, "I'm assuming we can day-trip from here").
 
-**Your route is built in movable blocks.** Think of each city card as one block you can later move, drop, or add. If a grown-up later changes which city you fly into or out of, your plan just flexes -- you move a block, you do not start over. Your work still counts.
+**Your route is built in movable blocks.** Think of each city card as one block you can later move, drop, or add. If a grown-up later changes which city you fly into or out of, your plan just flexes. You move a block. You do not start over. Your work still counts.
 
 ## Workspace
 
@@ -50,7 +50,7 @@ Two City Research Cards, each with sights, a memorable fact, downsides, season f
 
 ## Stop Point
 
-You are done when you have two cities researched onto two cards, each with at least a few top sights and a source. You do not have to fill every line perfectly -- "ask an adult" or "not sure yet" are fine answers.
+You are done when you have two cities researched onto two cards, each with at least a few top sights and a source. You do not have to fill every line perfectly. "Ask an adult" or "not sure yet" are fine answers.
 
 ## Source Check
 

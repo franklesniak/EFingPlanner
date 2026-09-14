@@ -2,9 +2,9 @@
 
 # Scoring Rubric
 
-Use a rubric to compare choices fairly -- the same questions for each option. Score each option from 1 (low) to 5 (high), then add up the totals. **Scores inform your choice; they do not make it.** If a total does not match your gut, that is worth talking about.
+Use a rubric to compare choices fairly: the same questions for each option. Score each option from 1 (low) to 5 (high), then add up the totals. **Scores inform your choice; they do not make it.** If a total does not match your gut, that is worth talking about.
 
-**Pick whichever version fits you.** The lighter 3-criteria version is quick and clear and is the recommended starting point. The fuller version is for when you want more detail. Neither is more "correct" -- use the one that fits.
+**Pick whichever version fits you.** The lighter 3-criteria version is quick and clear and is the recommended starting point. The fuller version is for when you want more detail. Neither is more "correct." Use the one that fits.
 
 ## Lighter version (3 criteria)
 
@@ -18,7 +18,7 @@ Use a rubric to compare choices fairly -- the same questions for each option. Sc
 
 (For "easy to get to and around," a high score means easier.)
 
-**First Taste:** you compare two cities, so fill Option A and Option B and leave Option C blank -- you only need one column per option.
+**First Taste:** you compare two cities, so fill Option A and Option B and leave Option C blank. You only need one column per option.
 
 ## Fuller version (more criteria)
 
@@ -37,7 +37,7 @@ Use a rubric to compare choices fairly -- the same questions for each option. Sc
 
 You may change or add a category if you write one sentence saying why: ________________
 
-After scoring, write the real thinking -- the trade-off:
+The scores are only half the job. After scoring, write down your trade-off:
 
 | Prompt | Your answer |
 | --- | --- |

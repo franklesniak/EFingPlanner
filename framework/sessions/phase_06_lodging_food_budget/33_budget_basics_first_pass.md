@@ -22,12 +22,12 @@ Write the word "Food" and the word "Hotel" on your Budget Estimate page. Those a
 
 ## Steps
 
-Every trip is made of cost categories. You do not need exact numbers -- you are learning how trip money is split up, and checking whether the parts *you* choose fit.
+Every trip is made of cost categories. You do not need exact numbers. You're learning how trip money is split up, and checking whether the parts *you* choose fit.
 
 1. **Meet the categories** (just read these once): flights, hotels, food, local transit, long-distance trains, activities and tickets, souvenirs, and a buffer for surprises.
 2. **Estimate two of them** with simple **high / medium / low** guesses (a grown-up can help you find rough numbers, and you can use a calculator):
    - **Meals:** about how much per person, per day? (high / medium / low)
-   - **Hotel:** about how much per night, per room? (high / medium / low) (If you kept two cities in Session 21, guess a hotel for each -- your plan pays for both.)
+   - **Hotel:** about how much per night, per room? (high / medium / low) (If you kept two cities in Session 21, guess a hotel for each. Your plan pays for both.)
 3. **Do the easy math** (round to friendly numbers first; a grown-up may do the multiplying while you do the thinking):
 
    | Cost | How to figure it | My estimate |
@@ -38,11 +38,11 @@ Every trip is made of cost categories. You do not need exact numbers -- you are 
    | **My two-slice estimate** | add Food + your hotel(s) | |
 
 4. **Check it against your band -- match the units first.** A grown-up gave you *one* kid-sized band at setup. It is a per-person-per-day amount, a per-day amount for the whole family, *or* a hotel "tier we can afford." It is never your whole-trip total. That stays a grown-up number. Compare the matching piece, not your big two-slice total:
-   - Band is **per person, per day**? Multiply it by your travelers to get a **per-day family** number. Then check that the same way as the **per day for the family** band below. A grown-up can do the multiplying. That way your rooms count too, not just meals.
+   - Band is **per person, per day**? Multiply it by your travelers to get a **per-day family** number. Then check that the same way as the **per day for the family** band below. A grown-up can do the multiplying. That way your rooms count as well as your meals.
    - Band is **per day for the family**? Add your **meals for everyone per day** (meals per person x your travelers) to your **hotel for one night, all your rooms** (hotel per night x rooms). Then check that daily total against the band.
    - Band is a **hotel tier**? Check your **hotel-per-night** pick against that tier. Circle **fits** or **too high** for the part you checked.
 
-**Remember:** your first guesses will probably be off -- everyone's are, even grown-ups'. Being off is normal. The point is to practice estimating and checking, not to be exactly right. (See your [planner mindset card](../../student_guide/planner_mindset.md).)
+**Remember:** your first guesses will probably be off. Everyone's are, even grown-ups'. Being off is normal. The point is to practice estimating and checking. Being exactly right is not the goal. (See your [planner mindset card](../../student_guide/planner_mindset.md).)
 
 ## Workspace
 
@@ -52,11 +52,11 @@ You can say your answers to an adult who writes them, or draw them, if that is e
 
 ## Artifact Created
 
-Your budget first pass -- the cost categories, a meals-and-hotel estimate, and a check against your family's band.
+Your budget first pass: the cost categories, a meals-and-hotel estimate, and a check against your family's band.
 
 ## Stop Point
 
-You are done when you have a high/medium/low estimate for meals and for hotel, and you have checked whether they fit your band. Two slices is enough for First Taste -- you can stop here.
+You are done when you have a high/medium/low estimate for meals and for hotel, and you have checked whether they fit your band. Two slices is enough for First Taste. You can stop here.
 
 ## Source Check
 
@@ -72,7 +72,7 @@ Stuck? Use the [When I'm Stuck card](../../student_guide/when_im_stuck.md) in yo
 
 ## Optional Extension
 
-If you have extra energy, estimate a third slice like activities or souvenirs. You can also do this when you continue past First Taste. Or plan your own "spending money." Did a grown-up give you an amount? Then look up what a small treat costs -- do not guess. See how many you could get.
+If you have extra energy, estimate a third slice like activities or souvenirs. You can also do this when you continue past First Taste. Or plan your own "spending money." Did a grown-up give you an amount? Then look up what a small treat costs. Do not guess. See how many you could get.
 
 ## Parent Notes
 

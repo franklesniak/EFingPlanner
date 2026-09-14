@@ -22,18 +22,18 @@ Look at the starred sights on the City Research Card(s) for the city or cities y
 
 ## Steps
 
-A good planner cannot fit everything -- and that is fine. Knowing what to keep, what to save for later, and what to do if a plan falls through is real skill. This is the "good enough is good enough" session.
+A good planner cannot fit everything. And that's fine. Knowing what to keep, what to save for later, and what to do if a plan falls through is real skill. This is the "good enough is good enough" session.
 
 1. **Make your must-see list.** From the starred sights **in the city (or cities) you recommended in Session 21**, pick the few you most want. (No stars yet? Choose from all the top sights on those cards.) These are the things your plan protects. (Sights in a city you cut go on your cut list, not here.)
 2. **Make your cut list** on a [Cut List page](../../templates/cut_list.md). For each thing that did not make the cut, write:
    - Place or activity.
    - Why it sounded interesting.
-   - Why it may not fit (too far, too costly, not enough time).
-   - Save for a future trip? Yes / no. Cutting something is not losing it -- "save for a future trip" keeps it for later.
-3. **Choose your one special pick.** Pick the **single** thing you most want on this trip. Choose it *with a grown-up*, who will show you the only three things that could change it first: it costs more than the budget band, it can't be booked, or it isn't safe or doable for everyone in the group. A grown-up vote can't take this one away. Write it on your **My Calls** page and have a grown-up initial it. (Your My Calls page is a fresh sheet for the choices that are yours -- start one now if you do not have it yet. It is where your [owned decisions](../../student_guide/what_i_decide.md) get a grown-up's "got it.")
+   - Why it may not fit (too far, too costly, too little time).
+   - Save for a future trip? Yes / no. Cutting something is not losing it: "save for a future trip" keeps it for later.
+3. **Choose your one special pick.** Pick the **single** thing you most want on this trip. Choose it *with a grown-up*, who will show you the only three things that could change it first: it costs more than the budget band, it can't be booked, or it isn't safe or doable for everyone in the group. A grown-up vote can't take this one away. Write it on your **My Calls** page and have a grown-up initial it. (Your My Calls page is a fresh sheet for the choices that are yours. Start one now if you do not have it yet. It is where your [owned decisions](../../student_guide/what_i_decide.md) get a grown-up's "got it.")
 4. **Make two backup plans** on a [Backup Plan page](../../templates/backup_plan.md) for common problems:
-   - Rainy day -- what could you do instead?
-   - Attraction closed or too crowded -- what is a good nearby swap? (Other backups to consider: tired day, restaurant full, transit delay.)
+   - **Rainy day** -- what could you do instead?
+   - **Attraction closed or too crowded** -- what is a good nearby swap? (Other backups to consider: tired day, restaurant full, transit delay.)
 
 ## Workspace
 
@@ -47,7 +47,7 @@ Your must-see list, your cut list (with "save for future" notes), your one speci
 
 ## Stop Point
 
-You are done when you have a short must-see list, a cut list with whatever did not make it (even one thing -- or a note that nothing needed cutting), one special pick written and initialed, and two backup plans. Short is good -- this is about choosing, not listing everything.
+You are done when you have a short must-see list, a cut list with whatever did not make it (even one thing, or a note that nothing needed cutting), one special pick written and initialed, and two backup plans. Short is good. This is about choosing, not listing everything.
 
 ## Source Check
 
