@@ -3717,3 +3717,130 @@ def test_an_empty_item_with_no_paragraph_above_it_still_opens_a_list() -> None:
     empty item under a blank line opens its list as it always did."""
     text = build_session().replace("## Goal\n", "* \n<x>\n## Goal\n", 1)
     assert any('missing mandatory section "## Goal"' in m for m in check(text))
+
+
+# ---------------------------------------------------------------------------
+# Round 13: the sibling copies of three rules, and one cross-hook pin.
+# ---------------------------------------------------------------------------
+
+ROUND13_ADULT = "<!-- audience: adult -->"
+
+
+def test_an_end_tag_inside_an_attribute_hides_the_heading_under_it() -> None:
+    """The structure copy of the start-tag rule, asked of a heading.
+
+    markdown-it 14.3.0 writes an ``<h2>`` under this line, because CommonMark's
+    HTML block condition 1 ends on a line containing ``</script>``. The page
+    paints no heading at all, because the end tag markdown-it saw is a quoted
+    attribute value and the browser is still in script data. Counting the
+    heading let a session with no visible Goal pass.
+    """
+    document = '<script title="</script>">\n\n## Goal\n'
+    scan = structure.scan_document(document)
+    assert [heading.title for heading in structure.find_headings(scan)] == []
+
+
+def test_a_genuinely_closed_element_still_shows_the_heading() -> None:
+    """The over-application control for the rule above."""
+    scan = structure.scan_document("<script></script>\n\n## Goal\n")
+    assert [heading.title for heading in structure.find_headings(scan)] == ["Goal"]
+
+
+def test_the_three_hooks_agree_about_where_a_raw_text_run_ends() -> None:
+    """One rule, three copies, and the copies are asked the same questions.
+
+    Two of the three pairs of hooks had no pin at all, which an earlier round
+    recorded as a gap. This pins the helper all three now share, on the shape
+    that made it necessary.
+    """
+    import importlib.util as _util
+
+    answers = []
+    for name in (
+        "check-readability.py",
+        "check-session-structure.py",
+        "check-prohibited-placeholders.py",
+    ):
+        path = Path(__file__).resolve().parents[1] / ".github" / "scripts" / name
+        spec = _util.spec_from_file_location(f"pin_{name}", path)
+        assert spec is not None and spec.loader is not None
+        module = _util.module_from_spec(spec)
+        # Registered before it is executed: ``dataclasses`` resolves a field
+        # annotation through ``sys.modules[cls.__module__]``, so a module that
+        # is not there yet raises while its first dataclass is being built.
+        sys.modules[spec.name] = module
+        spec.loader.exec_module(module)
+        answers.append(
+            (
+                module.raw_text_run_boundary('<script title="</script>">', None, True),
+                module.raw_text_run_boundary("<script></script>", None, True),
+                module.raw_text_run_boundary("<script>", None, True),
+                module.raw_text_run_boundary("</script> words", "script", False),
+            )
+        )
+    assert answers[0] == answers[1] == answers[2]
+    assert answers[0][0] == ("script", "script", -1)
+    assert answers[0][1] == (None, "script", 17)
+
+
+def test_a_link_title_across_a_soft_break_exempts_nothing() -> None:
+    """The structure copy of the link rule.
+
+    The marker sits in a title attribute, which renders as an attribute and not
+    as a comment, so the session declares no exemption. Reading line two on its
+    own found a comment there and granted one.
+    """
+    document = '[help\ncontinued](url "' + OFFLINE_MARKER + '")\n'
+    assert "no-source-check" not in structure.scan_document(document).marker_text
+
+
+def test_a_real_comment_beside_a_multiline_link_still_exempts() -> None:
+    """The under-application control for the rule above."""
+    document = "[help\ncontinued](url) " + OFFLINE_MARKER + "\n"
+    assert "no-source-check" in structure.scan_document(document).marker_text
+
+
+def test_backticks_in_different_table_cells_do_not_pair_in_structure() -> None:
+    """The structure copy of the GFM cell rule.
+
+    The hook carried no table model at all, so every row of a table went into
+    one run and two unmatched backticks in different cells formed a code span
+    the renderer cannot form. The marker between them was masked, and a session
+    that had declared its Source Check exemption was failed for not declaring
+    one.
+    """
+    rows = (
+        "| a | b |\n| --- | --- |\n| " + TICK + "open | x |\n"
+        "| " + OFFLINE_MARKER + " " + TICK + "close | y |\n"
+    )
+    assert "no-source-check" in structure.scan_document(rows).marker_text
+
+
+def test_a_code_span_inside_one_cell_still_masks_its_marker_in_structure() -> None:
+    """The over-application control for the rule above."""
+    rows = (
+        "| a | b |\n| --- | --- |\n| "
+        + TICK
+        + OFFLINE_MARKER
+        + TICK
+        + " | y |\n"
+    )
+    assert "no-source-check" not in structure.scan_document(rows).marker_text
+
+
+def test_a_marker_in_a_plain_cell_is_still_a_marker() -> None:
+    """The other over-application control: splitting a row must not lose a cell."""
+    rows = "| a | b |\n| --- | --- |\n| " + OFFLINE_MARKER + " | y |\n"
+    assert "no-source-check" in structure.scan_document(rows).marker_text
+
+
+def test_a_pipe_bearing_paragraph_is_not_a_table() -> None:
+    """A table is found by its delimiter row and by nothing else.
+
+    Without the delimiter the lines are an ordinary paragraph, so the backticks
+    pair across the soft break exactly as CommonMark says they do.
+    """
+    paragraph = "| " + TICK + "open | x |\ntext " + OFFLINE_MARKER + " " + TICK + "close\n"
+    assert "no-source-check" not in structure.scan_document(paragraph).marker_text
+    assert structure.is_table_delimiter("| --- | --- |")
+    assert not structure.is_table_delimiter("| a | b |")

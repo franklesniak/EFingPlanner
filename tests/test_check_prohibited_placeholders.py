@@ -1429,3 +1429,44 @@ def test_an_item_with_content_still_interrupts_in_the_placeholder_hook() -> None
     assert hook.container_interrupts_paragraph(star, "item")
     assert hook.container_interrupts_paragraph(dash, "")
     assert not hook.container_interrupts_paragraph(first, "")
+
+
+# ---------------------------------------------------------------------------
+# Round 13: the third copy of the start-tag rule.
+# ---------------------------------------------------------------------------
+
+
+def test_an_end_tag_inside_an_attribute_does_not_close_the_run() -> None:
+    """The placeholder copy of the rule, kept identical to its two siblings.
+
+    The element never closes, so a comment-shaped run below it is the
+    element's content rather than a comment, and a placeholder written there is
+    reported.
+    """
+    hook = cast(Any, _placeholder_hook)
+    tag = '<script title="</script>">'
+    assert hook.raw_text_run_boundary(tag, None, True) == ("script", "script", -1)
+    assert hook.raw_text_run_boundary("<script></script>", None, True) == (
+        None,
+        "script",
+        17,
+    )
+
+
+def test_a_placeholder_below_an_unclosed_attribute_tag_is_reported() -> None:
+    """The same rule, read through the hook's own answer.
+
+    The run stays open past the line, so the comment-shaped run below it opens
+    no comment and the token inside it is on the page.
+    """
+    document = '<script title="</script>">\n<!-- TBD: a note -->\n'
+    hook = cast(Any, _placeholder_hook)
+    violations = hook.find_violations_in_text(document, "docs/example.md")
+    assert [violation.matched_text for violation in violations] == ["TBD"]
+
+
+def test_a_placeholder_below_a_closed_element_is_still_exempt() -> None:
+    """The over-application control: a real comment still allows the token."""
+    document = "<script></script>\n\n<!-- TBD: a note -->\n"
+    hook = cast(Any, _placeholder_hook)
+    assert hook.find_violations_in_text(document, "docs/example.md") == []

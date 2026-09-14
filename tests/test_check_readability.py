@@ -4414,3 +4414,303 @@ def test_an_item_with_content_still_interrupts_in_readability() -> None:
     assert readability.container_interrupts_paragraph(star, "item")
     assert readability.container_interrupts_paragraph(dash, "")
     assert not readability.container_interrupts_paragraph(first, "")
+
+
+# ---------------------------------------------------------------------------
+# Round 13: front matter YAML cannot construct, a run's visible tail, a tag
+# that holds its own end-tag spelling, a link across a soft break, and a GFM
+# table cell as its own inline context.
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.parametrize(
+    ("block", "escaping"),
+    [
+        ("date: 9999-99-99", "ValueError"),
+        ('n: !!int "abc"', "ValueError"),
+        ("n: " + "1" * 4400, "ValueError"),
+        ('flag: !!bool "maybe"', "KeyError"),
+        ('n: !!int ""', "IndexError"),
+        ('when: !!timestamp "abc"', "AttributeError"),
+    ],
+)
+def test_a_value_yaml_cannot_construct_is_not_front_matter(
+    block: str, escaping: str
+) -> None:
+    """Every failure to read the block is the same answer, not a traceback.
+
+    ``safe_load`` parses and then constructs, and the constructors call
+    ordinary Python conversions. Measured over PyYAML 6.0.3's standard tags,
+    four classes reach the caller past ``yaml.YAMLError``; ``escaping`` names
+    the one this block raises. Each has to come back as ``False``, because an
+    unreadable block is not metadata a publishing tool will consume.
+    """
+    assert readability.front_matter_is_yaml_mapping(block) is False
+
+
+def test_a_readable_mapping_is_still_front_matter() -> None:
+    """The over-application control: a block YAML does read is still front matter."""
+    assert readability.front_matter_is_yaml_mapping("date: 2026-09-14") is True
+    assert readability.front_matter_is_yaml_mapping("Japan trip") is False
+
+
+def test_one_malformed_front_matter_value_does_not_end_the_run() -> None:
+    """A document with an unusable value is scored, and its block is on the page.
+
+    The escape ended ``scan_files`` and ``main`` in a traceback, so *no* file
+    was scored at all -- a gate that fails closed and reads as a broken tool.
+    """
+    document = (
+        "---\ndate: 9999-99-99\n...\n\nWe plan the trip together and we pick "
+        "one city and we pack one bag.\n"
+    )
+    assert "9999" in readability.strip_front_matter(document)
+    assert readability.score_text(document, "x.md").words > 0
+
+
+def test_the_words_after_a_closed_script_are_still_prose() -> None:
+    """A raw-text element drops its content, and its content ends at its tag.
+
+    ``html.parser`` reads the suffix of ``<script></script> words`` as body
+    text, and dropping the whole line dropped the words -- enough of them to
+    take a file under ``MIN_WORDS_TO_SCORE`` and out of the gate in silence.
+    """
+    prose = readability.extract_prose("<script></script> We plan the trip.\n")
+    assert "We plan the trip." in prose
+
+
+def test_the_same_suffix_after_a_closer_on_a_later_line() -> None:
+    """The multi-line spelling of the rule above."""
+    document = "<script>\nvar total = 1;\n</script> We plan the trip.\n"
+    assert "We plan the trip." in readability.extract_prose(document)
+
+
+def test_an_elements_own_content_is_still_not_prose() -> None:
+    """The under-application control, in both of its shapes.
+
+    The body on the opening line and the body on a line of its own are both
+    the element's content, and scoring a stylesheet as a sentence lowers the
+    reported grade of every document that carries one.
+    """
+    inline = readability.extract_prose("<script>var total = 1;</script> We go.\n")
+    assert "var total" not in inline
+    assert "We go." in inline
+    below = readability.extract_prose("<script>\nvar total = 1;\n</script>\n\nWe go.\n")
+    assert "var total" not in below
+
+
+def test_a_run_that_never_closes_still_drops_the_rest_of_the_line() -> None:
+    """The other over-application control: no closer, no visible tail."""
+    assert readability.extract_prose("<script> We plan the trip.\n") == ""
+    assert readability.raw_text_run_boundary("<script>", None, True) == (
+        "script",
+        "script",
+        -1,
+    )
+
+
+def test_an_end_tag_inside_an_attribute_does_not_close_the_run() -> None:
+    """An HTML parser reads the whole start tag before it enters raw text.
+
+    Measured: markdown-it 14.3.0 ends the *Markdown* block on this line,
+    because CommonMark's condition 1 ends on a line that contains
+    ``</script>`` -- and ``html.parser`` stays in script data, because the end
+    tag it wrote is a quoted attribute value. The block is CommonMark's and
+    the run is the page's.
+    """
+    tag = '<script title="</script>">'
+    assert readability.raw_text_run_boundary(tag, None, True) == ("script", "script", -1)
+    assert readability.extract_prose(tag + "\n\nWe plan the trip.\n") == ""
+
+
+def test_a_genuinely_closed_element_still_closes_its_run() -> None:
+    """The over-application control for the rule above, in three shapes."""
+    assert readability.raw_text_run_boundary("<script></script>", None, True) == (
+        None,
+        "script",
+        17,
+    )
+    assert readability.raw_text_run_boundary("<script title=x>", None, True) == (
+        "script",
+        "script",
+        -1,
+    )
+    document = "<script title=x>\n</script>\n\nWe plan the trip.\n"
+    assert "We plan the trip." in readability.extract_prose(document)
+
+
+def test_a_link_title_across_a_soft_break_is_not_a_marker() -> None:
+    """A link is not a line-local construct, so neither is its title attribute.
+
+    markdown-it 14.3.0 forms this as one link whose title is an attribute.
+    Reading line two on its own left the walk with no opening bracket, so the
+    marker was read as a real comment -- and an invented ``audience: adult``
+    takes a child-facing document out of the reading gate without a word in
+    the report.
+    """
+    document = '[help\ncontinued](url "' + ADULT_MARKER + '")\n\nWe go.\n'
+    assert not readability.has_adult_marker(document)
+
+
+def test_a_real_comment_beside_a_multiline_link_is_still_a_marker() -> None:
+    """The under-application control: joining the run must not mask a real one."""
+    document = "[help\ncontinued](url) " + ADULT_MARKER + "\n\nWe go.\n"
+    assert readability.has_adult_marker(document)
+
+
+def test_a_link_reference_definition_is_still_read_one_line_at_a_time() -> None:
+    """The one region the metadata walk finds that is a block rather than an inline.
+
+    It is anchored to the start of its line and ends at the end of it, so it is
+    found per row and blanked out of the joined text before the inline walk
+    reads it. A definition that swallowed the rows below it would mask a real
+    marker.
+    """
+    assert readability.link_reference_definition_region("[label]: /url") == (0, 13)
+    assert readability.link_reference_definition_region("not a definition") is None
+    document = "[label]: /url\n\n" + ADULT_MARKER + "\n\nWe go.\n"
+    assert readability.has_adult_marker(document)
+
+
+def test_backticks_in_different_table_cells_do_not_pair() -> None:
+    """GFM reads the table before it reads any inline, so a cell is its own context.
+
+    Two unmatched backticks in different cells cannot form a code span, because
+    the renderer never offers them the chance. Gathering the rows into one
+    paragraph did offer it, and the marker between them was masked, so an
+    adult-facing document went through the child gate.
+    """
+    rows = (
+        "| a | b |\n| --- | --- |\n| " + TICK + "open | x |\n"
+        "| " + ADULT_MARKER + " " + TICK + "close | y |\n"
+    )
+    assert readability.has_adult_marker(rows)
+    one_row = (
+        "| a | b |\n| --- | --- |\n| "
+        + TICK
+        + "open | "
+        + ADULT_MARKER
+        + " "
+        + TICK
+        + "close |\n"
+    )
+    assert readability.has_adult_marker(one_row)
+
+
+def test_a_code_span_inside_one_cell_still_masks_its_marker() -> None:
+    """The over-application control: a span that closes in its own cell is a span."""
+    rows = (
+        "| a | b |\n| --- | --- |\n| "
+        + TICK
+        + ADULT_MARKER
+        + TICK
+        + " | y |\n"
+    )
+    assert not readability.has_adult_marker(rows)
+
+
+def test_outside_a_table_backticks_still_pair_across_a_soft_break() -> None:
+    """The other over-application control: a paragraph is not a table.
+
+    CommonMark really does let a code span cross a soft line break, so the two
+    backticks here pair and the marker between them is masked. Splitting every
+    pipe-bearing line would have broken this the other way.
+    """
+    paragraph = TICK + "open\ntext " + ADULT_MARKER + " " + TICK + "close\n"
+    assert not readability.has_adult_marker(paragraph)
+
+
+def test_a_table_row_splits_at_its_pipes_and_not_at_an_escaped_one() -> None:
+    """The cell offsets are into the row, and an escaped pipe is cell content.
+
+    GFM reads the table before any inline, so the escape is honoured here even
+    though nothing else on the line has been read yet.
+    """
+    assert readability.table_row_cells("| a | b |") == ((1, " a "), (5, " b "))
+    assert readability.table_row_cells("a | b") == ((0, "a "), (3, " b"))
+    assert readability.table_row_cells("| a " + BACKSLASH + "| b | c |") == (
+        (1, " a " + BACKSLASH + "| b "),
+        (10, " c "),
+    )
+def test_a_link_reference_definition_and_its_title_render_as_nothing() -> None:
+    """The whole line is metadata, title included, so a marker in one is not one.
+
+    Added because a mutation that stopped treating a definition as metadata
+    failed no test at all: the rule had a helper pinned and no consequence
+    pinned.
+    """
+    document = (
+        '[label]: /url "' + ADULT_MARKER + '"\n\n[label]\n\nWe go.\n'
+    )
+    assert not readability.has_adult_marker(document)
+
+
+def test_a_table_header_row_is_part_of_the_table() -> None:
+    """The row above the delimiter is a row, and its cells are scanned.
+
+    Added because a mutation that skipped the header row failed no test: every
+    earlier case put the marker in a body row.
+    """
+    rows = "| " + ADULT_MARKER + " | b |\n| --- | --- |\n| x | y |\n"
+    assert readability.has_adult_marker(rows)
+
+
+def test_a_table_ends_and_the_paragraph_under_it_is_a_paragraph() -> None:
+    """A table ends at the first line that is blank or carries no pipe.
+
+    Added because a mutation in which a table never ended failed no test: the
+    lines below would have been split at pipes they do not have, so each would
+    have become its own inline run and the backticks would never have paired.
+    """
+    document = (
+        "| a | b |\n| --- | --- |\n| x | y |\n\n"
+        + TICK
+        + "open\ntext "
+        + ADULT_MARKER
+        + " "
+        + TICK
+        + "close\n"
+    )
+    assert not readability.has_adult_marker(document)
+
+
+def test_only_an_element_run_advances_its_tail_past_an_angle_bracket() -> None:
+    """The four delimiter runs carry their own closing bracket in the match.
+
+    A processing instruction ends at ``?>``, a CDATA section at ``]]>`` and a
+    declaration at ``>``, so advancing to the *next* bracket would swallow the
+    text between them. Added because a mutation that dropped the guard failed
+    no test.
+    """
+    assert readability.raw_text_run_tail("?> a > b", 2, "processing instruction") == 2
+    assert readability.raw_text_run_tail("</script> a", 8, "script") == 9
+    document = "<?pi still open\n?> We plan the trip. > and more\n"
+    assert "We plan the trip." in readability.extract_prose(document)
+def test_a_bracket_a_definition_swallows_opens_no_link_below_it() -> None:
+    """A definition renders as nothing, so a bracket inside one opens nothing.
+
+    Measured with markdown-it 14.3.0: the second line renders as the literal
+    text ``x](y "<!-- audience: adult -->")`` with the comment passed through,
+    so the marker is a real comment. Leaving the definition's characters in the
+    joined run gave that bracket an opener to pair with, the parentheses became
+    a link's metadata, and the marker went with them. Both spellings are here
+    because the bracket can sit in the destination or in the title.
+    """
+    destination = '[a]: /url[\nx](y "' + ADULT_MARKER + '")\n'
+    title = '[a]: /url "t["\nx](y "' + ADULT_MARKER + '")\n'
+    assert readability.has_adult_marker(destination)
+    assert readability.has_adult_marker(title)
+
+
+def test_a_pipe_with_no_delimiter_row_under_it_is_a_paragraph() -> None:
+    """A table is found by its delimiter row and by nothing else.
+
+    markdown-it 14.3.0 renders these two lines as one paragraph holding one
+    code span, so the marker between the backticks is masked. Treating any
+    pipe-bearing line as a table row would have split this one into cells,
+    made each its own inline run, and found a marker the page never prints.
+    """
+    paragraph = (
+        TICK + "open | x\ntext " + ADULT_MARKER + " " + TICK + "close\n"
+    )
+    assert not readability.has_adult_marker(paragraph)

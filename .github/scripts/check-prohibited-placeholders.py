@@ -214,6 +214,32 @@ RAW_TEXT_RUNS = tuple(
     (COMMENT_RUN, re.compile(r"^ {0,3}<!--"), re.compile(r"-->")),
 )
 RAW_TEXT_CLOSERS = {key: closer for key, _, closer in RAW_TEXT_RUNS}
+#: One attribute of an HTML tag, with a line ending allowed wherever CommonMark
+#: allows whitespace. Written once so the patterns built from it cannot drift,
+#: and identical to the production the two sibling hooks carry.
+#: https://spec.commonmark.org/0.31.2/#raw-html
+_TAG_ATTRIBUTE = r"""
+    [ \t\n]+ [_:A-Za-z][A-Za-z0-9_.:-]*             # an attribute name
+    (?: [ \t\n]*=[ \t\n]*                          # an attribute value
+        (?: [^ \t\r\n"\'=<>`]+ | \'[^\']*\' | "[^"]*" ) )?
+"""
+#: A raw-text element's own opening tag, whole. The closing delimiter of a
+#: raw-text run is searched for *past* this, because an HTML parser reads the
+#: start tag before it enters raw text: in ``<script title="</script>">`` the
+#: end-tag spelling is an attribute value, the element never closes, and
+#: everything below it to the end of the file is script data. Searching from the
+#: element's name instead closed a run that had not begun, and a ``## Goal``
+#: under it was reported as a heading the page never paints. Built from
+#: ``_TAG_ATTRIBUTE`` so this spelling of "a tag" cannot drift from the others.
+#: https://html.spec.whatwg.org/multipage/parsing.html#tag-open-state
+RAW_TEXT_START_TAG_PATTERN = re.compile(
+    rf"""
+    < [A-Za-z][A-Za-z0-9-]*                        # the element's own name
+    (?: {_TAG_ATTRIBUTE} )*
+    [ \t\n]* /? >
+    """,
+    re.VERBOSE,
+)
 
 REMEDIATION_HINT = (
     "replace with a measurable value, an **Open Question:** entry, an "
@@ -861,24 +887,101 @@ def raw_text_run_state(
     Kept identical to the helper in the sibling hooks.
     <https://html.spec.whatwg.org/multipage/parsing.html#rawtext-state>
     """
+    below, line_run, _ = raw_text_run_boundary(content, open_run, opens_html_block)
+    return below, line_run
+
+
+def raw_text_content_start(content: str, match: "re.Match[str]", key: str) -> int:
+    """Return where a raw-text run's *content* begins on its opening line.
+
+    A run opened by one of the eight element names begins after that element's
+    own start tag, and an HTML parser reads the whole tag -- name, attributes,
+    quoted values and all -- before it enters raw text. So the end-tag spelling
+    written inside a quoted attribute value is data:
+    ``<script title="</script>">`` opens a run that never closes, and every
+    line below it to the end of the file is script data. The other four runs --
+    a processing instruction, a CDATA section, a declaration and a comment --
+    have no tag to read, so their content begins where their opener ends.
+
+    Measured against ``html.parser``, and this is a place where the two layers
+    part company on purpose. CommonMark's HTML block condition 1 ends on a line
+    that *contains* ``</script>``, so markdown-it 14.3.0 ends the Markdown block
+    on that line and writes an ``<h2>`` under it -- and the page never paints
+    that heading, because the browser is still in script data. The block is
+    CommonMark's and the run is the page's, and this helper answers for the
+    run. Kept identical to the helper in the sibling hooks.
+    https://html.spec.whatwg.org/multipage/parsing.html#rawtext-state
+    """
+    if key not in RAW_TEXT_ELEMENT_NAMES:
+        return match.end()
+    start_tag = RAW_TEXT_START_TAG_PATTERN.match(content, match.start())
+    return match.end() if start_tag is None else start_tag.end()
+
+
+def raw_text_run_tail(content: str, closer_end: int, key: str) -> int:
+    """Return where a closed raw-text run stops holding the line's characters.
+
+    The eight element closers are spelled ``</name`` with a lookahead, so that
+    ``</script/`` and ``</script foo>`` close the run as an HTML parser closes
+    it. That match ends at the name, and the *tag* ends at its ``>``, so the
+    characters a reader sees begin one character further on. The other four
+    runs carry their whole delimiter in the match -- ``?>``, ``]]>``, ``>``,
+    ``-->`` -- and end where it ends. Kept identical to the helper in the
+    sibling hooks.
+    https://html.spec.whatwg.org/multipage/parsing.html#end-tag-open-state
+    """
+    if key not in RAW_TEXT_ELEMENT_NAMES:
+        return closer_end
+    tag_end = content.find(">", closer_end)
+    return closer_end if tag_end == -1 else tag_end + 1
+
+
+def raw_text_run_boundary(
+    content: str, open_run: str | None, opens_html_block: bool
+) -> tuple[str | None, str | None, int]:
+    """Return a line's raw HTML run state, and where the run ends on this line.
+
+    The first two values are ``raw_text_run_state``'s, unchanged and documented
+    there. The third is the offset just past the run's closing delimiter when
+    the run closes on this line, and ``-1`` when it does not.
+
+    That third value exists because a run closing is not the same event as a
+    line ending. ``<script></script> We plan the trip together`` holds an empty
+    script and then twelve words a child reads, and a caller that dropped the
+    whole line dropped the words with it -- enough of them to take a document
+    under the scoring floor and out of the gate in silence. Only the prose
+    extractor asks, for the same reason only it asks
+    ``raw_text_run_is_displayed``: the two marker scans care that the
+    characters are not markup, and not where the reader's part of the line
+    starts. Kept identical to the helper in the sibling hooks.
+    https://html.spec.whatwg.org/multipage/parsing.html#rawtext-state
+    """
     if open_run is not None:
         closer = RAW_TEXT_CLOSERS[open_run].search(content)
         if closer is None:
-            return open_run, open_run
-        return comment_open_below(content, closer.end()), open_run
+            return open_run, open_run, -1
+        return (
+            comment_open_below(content, closer.end()),
+            open_run,
+            raw_text_run_tail(content, closer.end(), open_run),
+        )
     if not opens_html_block:
-        return None, None
+        return None, None, -1
     for key, opener, closer in RAW_TEXT_RUNS:
         match = opener.match(content)
         if match is None:
             continue
         if key == COMMENT_RUN:
-            return comment_open_below(content, match.start()), None
-        closing = closer.search(content, match.end())
+            return comment_open_below(content, match.start()), None, -1
+        closing = closer.search(content, raw_text_content_start(content, match, key))
         if closing is not None:
-            return comment_open_below(content, closing.end()), key
-        return key, key
-    return None, None
+            return (
+                comment_open_below(content, closing.end()),
+                key,
+                raw_text_run_tail(content, closing.end(), key),
+            )
+        return key, key, -1
+    return None, None, -1
 
 
 def raw_text_run_holds_text(run: str | None) -> bool:

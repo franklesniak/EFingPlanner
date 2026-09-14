@@ -92,7 +92,7 @@ import re
 import sys
 import unicodedata
 from collections.abc import Iterable, Sequence
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from html.entities import html5
 from pathlib import Path
 
@@ -1113,6 +1113,35 @@ def strip_block_quote_prefixes(line: str) -> str:
         line = line[match.end() :]
 
 
+def table_row_cells(content: str) -> tuple[tuple[int, str], ...]:
+    """Return each cell of one GFM table row as ``(offset, text)``.
+
+    The offsets are into ``content``. A leading pipe is a delimiter rather than
+    an empty first cell, and a pipe an author escaped is a pipe the cell holds:
+    GFM reads the table before it reads any inline, so ``\\|`` is a cell
+    character even where a code span would otherwise claim it.
+
+    The reason a row has to be split at all is that a cell is its own inline
+    context. A backtick left unmatched in one cell cannot pair with one in
+    another, because the renderer never offers it the chance -- and a scan that
+    put every row of a table into one paragraph did offer it, formed a code
+    span across the boundary, and masked a real comment between them. Kept
+    identical to the helper in the sibling hook.
+    https://github.github.com/gfm/#tables-extension-
+    """
+    cells: list[tuple[int, str]] = []
+    start = 1 if content.startswith("|") else 0
+    index = start
+    while index < len(content):
+        if content[index] == "|" and content[index - 1] != "\\":
+            cells.append((start, content[start:index]))
+            start = index + 1
+        index += 1
+    if start < len(content):
+        cells.append((start, content[start:]))
+    return tuple(cells)
+
+
 def is_table_delimiter(line: str) -> bool:
     """Return ``True`` when a line is a Markdown table delimiter row.
 
@@ -1651,6 +1680,25 @@ def raw_html_run_end(line: str, index: int) -> int:
     return -1
 
 
+def link_reference_definition_region(line: str) -> tuple[int, int] | None:
+    """Return the region a whole-line link reference definition renders nothing in.
+
+    ``None`` where the line is not one. This is the one region the metadata
+    walk finds that is *not* an inline construct: a definition is a block, it
+    is anchored at the start of its line and it ends at the end of it, so it is
+    the one region that has to keep being asked a line at a time while the
+    inline questions are asked of the paragraph. Its two callers are
+    ``link_metadata_regions`` and the walk that gathers a paragraph for it, and
+    they share this so there is one spelling of the rule. Kept identical to the
+    helper in the sibling hook.
+    https://spec.commonmark.org/0.31.2/#link-reference-definitions
+    """
+    definition = LINK_REFERENCE_DEFINITION_PATTERN.match(line)
+    if definition is None or not is_link_label(definition.group("label")):
+        return None
+    return (0, len(line))
+
+
 def link_metadata_regions(
     line: str, defined_labels: frozenset[str]
 ) -> tuple[tuple[int, int], ...]:
@@ -1672,9 +1720,9 @@ def link_metadata_regions(
     ``.github/scripts/check-session-structure.py``.
     https://spec.commonmark.org/0.31.2/#links
     """
-    definition = LINK_REFERENCE_DEFINITION_PATTERN.match(line)
-    if definition is not None and is_link_label(definition.group("label")):
-        return ((0, len(line)),)
+    definition = link_reference_definition_region(line)
+    if definition is not None:
+        return (definition,)
 
     regions: list[tuple[int, int]] = []
     openers: list[tuple[int, bool, bool]] = []
@@ -1984,24 +2032,101 @@ def raw_text_run_state(
     Kept identical to the helper in the sibling hooks.
     https://html.spec.whatwg.org/multipage/parsing.html#rawtext-state
     """
+    below, line_run, _ = raw_text_run_boundary(content, open_run, opens_html_block)
+    return below, line_run
+
+
+def raw_text_content_start(content: str, match: "re.Match[str]", key: str) -> int:
+    """Return where a raw-text run's *content* begins on its opening line.
+
+    A run opened by one of the eight element names begins after that element's
+    own start tag, and an HTML parser reads the whole tag -- name, attributes,
+    quoted values and all -- before it enters raw text. So the end-tag spelling
+    written inside a quoted attribute value is data:
+    ``<script title="</script>">`` opens a run that never closes, and every
+    line below it to the end of the file is script data. The other four runs --
+    a processing instruction, a CDATA section, a declaration and a comment --
+    have no tag to read, so their content begins where their opener ends.
+
+    Measured against ``html.parser``, and this is a place where the two layers
+    part company on purpose. CommonMark's HTML block condition 1 ends on a line
+    that *contains* ``</script>``, so markdown-it 14.3.0 ends the Markdown block
+    on that line and writes an ``<h2>`` under it -- and the page never paints
+    that heading, because the browser is still in script data. The block is
+    CommonMark's and the run is the page's, and this helper answers for the
+    run. Kept identical to the helper in the sibling hooks.
+    https://html.spec.whatwg.org/multipage/parsing.html#rawtext-state
+    """
+    if key not in RAW_TEXT_ELEMENT_NAMES:
+        return match.end()
+    start_tag = RAW_TEXT_START_TAG_PATTERN.match(content, match.start())
+    return match.end() if start_tag is None else start_tag.end()
+
+
+def raw_text_run_tail(content: str, closer_end: int, key: str) -> int:
+    """Return where a closed raw-text run stops holding the line's characters.
+
+    The eight element closers are spelled ``</name`` with a lookahead, so that
+    ``</script/`` and ``</script foo>`` close the run as an HTML parser closes
+    it. That match ends at the name, and the *tag* ends at its ``>``, so the
+    characters a reader sees begin one character further on. The other four
+    runs carry their whole delimiter in the match -- ``?>``, ``]]>``, ``>``,
+    ``-->`` -- and end where it ends. Kept identical to the helper in the
+    sibling hooks.
+    https://html.spec.whatwg.org/multipage/parsing.html#end-tag-open-state
+    """
+    if key not in RAW_TEXT_ELEMENT_NAMES:
+        return closer_end
+    tag_end = content.find(">", closer_end)
+    return closer_end if tag_end == -1 else tag_end + 1
+
+
+def raw_text_run_boundary(
+    content: str, open_run: str | None, opens_html_block: bool
+) -> tuple[str | None, str | None, int]:
+    """Return a line's raw HTML run state, and where the run ends on this line.
+
+    The first two values are ``raw_text_run_state``'s, unchanged and documented
+    there. The third is the offset just past the run's closing delimiter when
+    the run closes on this line, and ``-1`` when it does not.
+
+    That third value exists because a run closing is not the same event as a
+    line ending. ``<script></script> We plan the trip together`` holds an empty
+    script and then twelve words a child reads, and a caller that dropped the
+    whole line dropped the words with it -- enough of them to take a document
+    under the scoring floor and out of the gate in silence. Only the prose
+    extractor asks, for the same reason only it asks
+    ``raw_text_run_is_displayed``: the two marker scans care that the
+    characters are not markup, and not where the reader's part of the line
+    starts. Kept identical to the helper in the sibling hooks.
+    https://html.spec.whatwg.org/multipage/parsing.html#rawtext-state
+    """
     if open_run is not None:
         closer = RAW_TEXT_CLOSERS[open_run].search(content)
         if closer is None:
-            return open_run, open_run
-        return comment_open_below(content, closer.end()), open_run
+            return open_run, open_run, -1
+        return (
+            comment_open_below(content, closer.end()),
+            open_run,
+            raw_text_run_tail(content, closer.end(), open_run),
+        )
     if not opens_html_block:
-        return None, None
+        return None, None, -1
     for key, opener, closer in RAW_TEXT_RUNS:
         match = opener.match(content)
         if match is None:
             continue
         if key == COMMENT_RUN:
-            return comment_open_below(content, match.start()), None
-        closing = closer.search(content, match.end())
+            return comment_open_below(content, match.start()), None, -1
+        closing = closer.search(content, raw_text_content_start(content, match, key))
         if closing is not None:
-            return comment_open_below(content, closing.end()), key
-        return key, key
-    return None, None
+            return (
+                comment_open_below(content, closing.end()),
+                key,
+                raw_text_run_tail(content, closing.end(), key),
+            )
+        return key, key, -1
+    return None, None, -1
 
 
 def raw_text_run_holds_text(run: str | None) -> bool:
@@ -2072,6 +2197,23 @@ HTML_TAG_PREFIX_PATTERN = re.compile(
             (?: [^ \t\r\n"'=<>`]* | '[^']* | "[^"]* )? )? )?
     [ \t\n]* /?
     $
+    """,
+    re.VERBOSE,
+)
+#: A raw-text element's own opening tag, whole. The closing delimiter of a
+#: raw-text run is searched for *past* this, because an HTML parser reads the
+#: start tag before it enters raw text: in ``<script title="</script>">`` the
+#: end-tag spelling is an attribute value, the element never closes, and
+#: everything below it to the end of the file is script data. Searching from the
+#: element's name instead closed a run that had not begun, and a ``## Goal``
+#: under it was reported as a heading the page never paints. Built from
+#: ``_TAG_ATTRIBUTE`` so this spelling of "a tag" cannot drift from the others.
+#: https://html.spec.whatwg.org/multipage/parsing.html#tag-open-state
+RAW_TEXT_START_TAG_PATTERN = re.compile(
+    rf"""
+    < [A-Za-z][A-Za-z0-9-]*                        # the element's own name
+    (?: {_TAG_ATTRIBUTE} )*
+    [ \t\n]* /? >
     """,
     re.VERBOSE,
 )
@@ -2389,12 +2531,40 @@ def paragraph_metadata_skips(
     for row, start, end in code_spans:
         masked[row][start:end] = " " * (end - start)
 
+    # The rows are joined and walked once, rather than walked one at a time.
+    # A link is not a line-local construct: markdown-it 14.3.0 reads
+    # ``[help`` / ``continued](url "<!-- audience: adult -->")`` as one link
+    # whose title is an attribute, and a walk that started again on the second
+    # line had no opening bracket to close, found no link, and read the title
+    # as a real comment. An ``audience: adult`` marker invented there takes a
+    # child-facing document out of the reading gate without a word in the
+    # report, which is the one direction this module never errs in.
+    #
+    # A link reference definition is the exception and keeps its own line: it
+    # is a block construct anchored to the start of a line and ending at the
+    # end of it, so it is found per row and blanked out of the joined text
+    # before the inline walk reads it.
     skips: dict[int, tuple[tuple[int, int], ...]] = {}
+    pieces: list[str] = []
+    starts: list[int] = []
+    offset = 0
     for row, line in enumerate(lines):
-        start = line.content_start
-        regions = link_metadata_regions("".join(masked[row])[start:], defined_labels)
-        if regions:
-            skips[row] = tuple((left + start, right + start) for left, right in regions)
+        content = "".join(masked[row])[line.content_start :]
+        if link_reference_definition_region(content) is not None:
+            skips[row] = ((line.content_start, line.content_start + len(content)),)
+            content = " " * len(content)
+        pieces.append(content)
+        starts.append(offset)
+        offset += len(content) + 1
+
+    for left, right in link_metadata_regions("\n".join(pieces), defined_labels):
+        for row, line in enumerate(lines):
+            low = max(left, starts[row])
+            high = min(right, starts[row] + len(pieces[row]))
+            if low >= high:
+                continue
+            shift = line.content_start - starts[row]
+            skips[row] = skips.get(row, ()) + ((low + shift, high + shift),)
     return skips
 
 
@@ -2489,7 +2659,11 @@ def scan_document_inlines(text: str) -> DocumentInlines:
         rows = []
         previous_path = ()
 
-    for number, raw_line in enumerate(text.split("\n")):
+    lines = text.split("\n")
+    in_table = False
+    table_container: tuple[Container, ...] = ()
+
+    for number, raw_line in enumerate(lines):
         line_start = offset
         offset += len(raw_line) + 1
         line = raw_line.rstrip(ASCII_HORIZONTAL_WHITESPACE)
@@ -2587,6 +2761,64 @@ def scan_document_inlines(text: str) -> DocumentInlines:
         open_tag = None
 
         contents[number] = fence_line.content
+
+        # GFM reads a table before it reads any inline, and every cell is its
+        # own inline context. Gathering the rows into one paragraph run let an
+        # unmatched backtick in one cell pair with an unmatched backtick in
+        # another, and the ``audience: adult`` marker standing between them
+        # was read as a code span's content rather than as the comment the
+        # page prints -- so an adult-facing document was scored by the child
+        # gate. The rows are found the way ``extract_prose`` finds them, by the
+        # delimiter row under the header and by the container the table opened
+        # in, so the two passes agree about which lines are a table.
+        # https://github.github.com/gfm/#tables-extension-
+        table_line = strip_block_quote_prefixes(line)
+        has_cells = bool(table_line.strip(ASCII_HORIZONTAL_WHITESPACE)) and (
+            "|" in table_line
+        )
+        if in_table and not (
+            has_cells and fence_line.containment_path == table_container
+        ):
+            in_table = False
+        if not in_table and has_cells:
+            next_line = (
+                lines[number + 1].rstrip(ASCII_HORIZONTAL_WHITESPACE)
+                if number + 1 < len(lines)
+                else ""
+            )
+            # The lookahead gets a *copy* of the list contexts, for the reason
+            # ``extract_prose`` gives at the same lookahead: normalizing a line
+            # records the containers it opens, and the next iteration has to
+            # start from the state this line left behind.
+            next_fence_line = normalize_for_fence_opening(
+                next_line, list(list_contexts)
+            )
+            if (
+                next_fence_line.containment_path == fence_line.containment_path
+                and is_table_delimiter(next_fence_line.content)
+            ):
+                in_table = True
+                table_container = fence_line.containment_path
+        if in_table:
+            close_paragraph()
+            paragraph_open = False
+            previous_path = fence_line.containment_path
+            prefix = len(line) - len(fence_line.content)
+            for cell_start, cell_text in table_row_cells(fence_line.content):
+                runs.append(
+                    (
+                        [
+                            ParagraphLine(
+                                start=line_start + prefix + cell_start,
+                                text=cell_text,
+                                content_start=0,
+                            )
+                        ],
+                        [number],
+                    )
+                )
+            continue
+
         if block_starts:
             close_paragraph()
         previous_path = fence_line.containment_path
@@ -2618,7 +2850,11 @@ def scan_document_inlines(text: str) -> DocumentInlines:
         comments, code_spans = paragraph_inlines(run_lines, defined_labels)
         spans.extend(code_spans)
         for row, comment in zip(run_rows, comments, strict=True):
-            comment_lines[row] = comment
+            # Added rather than assigned: one row of a table is several runs,
+            # one per cell, and each contributes the comment text its own cell
+            # holds. Every other line is one run, where this is an assignment
+            # to an empty string by another name.
+            comment_lines[row] += comment
 
     return DocumentInlines(tuple(fenced), tuple(spans), tuple(comment_lines))
 
@@ -2845,16 +3081,41 @@ def front_matter_is_yaml_mapping(block: str) -> bool:
     sequence`` and ``-notaspace``, are plain scalars rather than mappings, so
     they stay rejected and that verdict is unchanged.
 
-    Every error is caught, including the recursion a deeply nested flow
-    collection can raise, because an unreadable block is exactly the block this
-    answers ``False`` for. ``safe_load`` is used rather than ``load``: a
-    document in this repository is not a place to construct Python objects
-    from.
+    **Every failure is one answer.** An unreadable block is exactly the block
+    this returns ``False`` for, so the handler is that rule rather than a list
+    of classes -- and a list is what it was, which is how a document could stop
+    the whole run. ``safe_load`` parses and then *constructs*, and the
+    constructors call ordinary Python conversions that raise ordinary Python
+    exceptions: measured over PyYAML 6.0.3's twelve standard tags, four classes
+    reach the caller past ``yaml.YAMLError``. ``date: 9999-99-99`` is the
+    plainest of them -- no tag, no quoting, the implicit timestamp resolver --
+    and it raised ``ValueError: month must be in 1..12`` out of this helper,
+    out of ``scan_files`` and out of ``main``, so one malformed document ended
+    the run in a traceback and **no file was scored at all**.
+
+    | what a value holds | what escapes ``yaml.YAMLError`` |
+    | --- | --- |
+    | ``date: 9999-99-99``; ``n: !!int "abc"``; an integer of more than 4,300 digits | ``ValueError`` |
+    | ``flag: !!bool "maybe"`` | ``KeyError`` |
+    | ``n: !!int ""`` | ``IndexError`` |
+    | ``when: !!timestamp "abc"`` | ``AttributeError`` |
+
+    Catching ``Exception`` is right here and would be wrong three lines either
+    side of it: the guarded statement is one call into a third-party parser and
+    holds none of this module's own logic, so there is no bug of ours for the
+    handler to hide. ``RecursionError`` -- which a deeply nested flow collection
+    raises -- is inside ``Exception`` and stays covered. ``safe_load`` is used
+    rather than ``load``: a document in this repository is not a place to
+    construct Python objects from.
+
+    A gate that crashes still fails closed in CI, so nothing unsafe shipped.
+    What it stops being is *readable*: a traceback tells a builder the tool is
+    broken, where a refusal tells them which file to fix.
     https://yaml.org/spec/1.2.2/
     """
     try:
         loaded = yaml.safe_load(block)
-    except (yaml.YAMLError, RecursionError):
+    except Exception:
         return False
     return isinstance(loaded, dict)
 
@@ -2950,6 +3211,9 @@ def extract_prose(text: str) -> str:
     lines = text.split("\n")
     for index, raw_line in enumerate(lines):
         line = raw_line.rstrip(ASCII_HORIZONTAL_WHITESPACE)
+        # Per line, and reset here rather than carried: a raw-text run's span
+        # belongs to the line the run closes on and to no other.
+        raw_text_blank_to = 0
 
         # Code fences: drop the fence markers and everything between them.
         # The active fence is tested before the opening pattern, so while a
@@ -2985,7 +3249,9 @@ def extract_prose(text: str) -> str:
         # it opens a run here that the marker scans refuse. It runs on text
         # whose comments are already removed, so the comment half of the same
         # question cannot arise.
-        raw_text, line_raw_text = raw_text_run_state(fence_line.content, raw_text, True)
+        raw_text, line_raw_text, run_end = raw_text_run_boundary(
+            fence_line.content, raw_text, True
+        )
         # Asked before the fence, as both sibling hooks ask it: a line a raw-text
         # run holds opens no fenced block, because every character on it is the
         # element's content. Reading the fence first let three backticks a
@@ -3012,8 +3278,29 @@ def extract_prose(text: str) -> str:
             # one. A ``<textarea>`` and an ``<xmp>`` are the other way round
             # -- the reader sees every word -- so their lines fall through to
             # the walk below and are scored.
-            open_unit = None
-            continue
+            #
+            # What the element drops is its *content*, and its content ends at
+            # its closing tag rather than at the end of the line.
+            # ``<script></script> We plan the trip together`` is an empty
+            # script and then twelve words a child reads, and dropping the
+            # whole line dropped the words too -- the direction that takes a
+            # document under ``MIN_WORDS_TO_SCORE`` and out of the gate in
+            # silence, which is the one direction this module never errs in.
+            # So the run's own span is blanked and the rest of the line goes on
+            # through the walk, as the reviewer's note asks. Blanking rather
+            # than slicing is what keeps the columns the document's: the
+            # container prefix in front of the content is untouched, and every
+            # offset below here still points where it pointed.
+            if run_end == -1:
+                open_unit = None
+                continue
+            visible = " " * run_end + fence_line.content[run_end:]
+            if not visible.strip(ASCII_HORIZONTAL_WHITESPACE):
+                open_unit = None
+                continue
+            raw_text_blank_to = len(line) - len(fence_line.content) + run_end
+            line = line[: len(line) - len(fence_line.content)] + visible
+            fence_line = replace(fence_line, content=visible)
 
         # Tables, with or without outer pipe characters. A table is found by
         # its delimiter row. The header line above that row and the body rows
@@ -3141,6 +3428,13 @@ def extract_prose(text: str) -> str:
         # inline.
         # https://github.github.com/gfm/#tables-extension-
         line = blanked_lines[index].rstrip(ASCII_HORIZONTAL_WHITESPACE)
+        # The line is re-read from the code-span-blanked document here, so a
+        # raw-text run's own characters have to be taken out again: everything
+        # above reads the document's line, and this is the point at which the
+        # line becomes the text that is scored. The same column serves both
+        # blankings, because neither pass changes the document's width.
+        if raw_text_blank_to:
+            line = " " * min(raw_text_blank_to, len(line)) + line[raw_text_blank_to:]
 
         # A new list item starts its own unit. A plain line that follows prose
         # is a wrapped continuation of that prose.
