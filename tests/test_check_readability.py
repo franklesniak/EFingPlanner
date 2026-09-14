@@ -2756,7 +2756,7 @@ def test_a_backtick_in_an_attribute_does_not_open_a_code_span() -> None:
 
     The scan read every backtick outside a backslash escape as a delimiter, so
     the one inside ``title="`"`` paired with the one on the next line and
-    ``strip_literal_code`` erased the audience marker between them. The
+    ``strip_code_spans`` erased the audience marker between them. The
     adult-facing document was then scored against the child target. Measured
     against markdown-it 14.3.0: the first backtick is attribute data and the
     marker is a comment.
@@ -2780,7 +2780,7 @@ def test_a_backtick_inside_a_comment_does_not_open_a_code_span() -> None:
     child reads and a word the score counts.
     """
     text = f"Text <!-- a {TICK} b --> and {TICK} end of the sentence here.\n"
-    assert "and" in readability.strip_literal_code(text)
+    assert "and" in readability.strip_code_spans(text)
 
 
 def test_an_unclosed_comment_leaves_its_backticks_alone() -> None:
@@ -2790,13 +2790,13 @@ def test_an_unclosed_comment_leaves_its_backticks_alone() -> None:
     ordinary text and the two backticks around ``span`` really do pair.
     """
     text = f"Text <!-- open and {TICK}span{TICK} then more words here.\n"
-    assert "span" not in readability.strip_literal_code(text)
+    assert "span" not in readability.strip_code_spans(text)
 
 
 def test_a_real_code_span_beside_a_tag_is_still_a_code_span() -> None:
     """A negative control. Skipping tags must not switch the scan off."""
     text = f"Read <span>this</span> and then {TICK}literal{TICK} aloud today.\n"
-    stripped = readability.strip_literal_code(text)
+    stripped = readability.strip_code_spans(text)
     assert "literal" not in stripped
     assert "aloud today." in stripped
 
@@ -2834,7 +2834,7 @@ def test_an_html_block_start_ends_the_paragraph_a_code_span_searches(
     these sentences is on the page.
     """
     text = f"Use {TICK}open\n{block}\n{CHILD_SENTENCE} {TICK}today.\n"
-    assert CHILD_SENTENCE in readability.strip_literal_code(text), label
+    assert CHILD_SENTENCE in readability.strip_code_spans(text), label
 
 
 def test_a_comment_block_start_leaves_the_audience_marker_standing() -> None:
@@ -2866,7 +2866,7 @@ def test_a_type_seven_html_block_does_not_end_a_paragraph() -> None:
     whole run as one ``<code>``.
     """
     text = f"Use {TICK}open\n<x-thing>\n{CHILD_SENTENCE} {TICK}today.\n"
-    assert CHILD_SENTENCE not in readability.strip_literal_code(text)
+    assert CHILD_SENTENCE not in readability.strip_code_spans(text)
 
 
 def test_a_lowercase_declaration_does_not_end_a_paragraph() -> None:
@@ -2879,7 +2879,7 @@ def test_a_lowercase_declaration_does_not_end_a_paragraph() -> None:
     crosses it.
     """
     text = f"Use {TICK}open\n<!doctype html>\n{CHILD_SENTENCE} {TICK}today.\n"
-    assert CHILD_SENTENCE not in readability.strip_literal_code(text)
+    assert CHILD_SENTENCE not in readability.strip_code_spans(text)
 
 
 # ---------------------------------------------------------------------------
@@ -3195,3 +3195,187 @@ def test_a_space_between_attributes_is_a_tag() -> None:
     """
     text = f'<span title="{TICK}"> <!-- audience: adult --> {TICK}end\n'
     assert readability.has_adult_marker(text)
+
+
+# ---------------------------------------------------------------------------
+# One inline model: what CommonMark reads here as an HTML comment
+# ---------------------------------------------------------------------------
+
+
+#: The audience marker, spelled once, because every case below buries it in a
+#: different construct and the point of each is where it sits, not what it says.
+ADULT_MARKER = "<!-- audience: adult -->"
+
+
+def test_an_inner_link_deactivates_the_enclosing_opener() -> None:
+    """Links may not nest, so forming one kills every opener above it.
+
+    ``[a [b](u) c](v "`")`` is an inner link and then literal text: the outer
+    brackets and the parentheses after them are characters on the page, so the
+    backtick in them opens a code span that runs to the next backtick and
+    swallows the marker between. The scan counted the outer ``](`` as a link
+    target and skipped that backtick, so the marker stayed visible to it and a
+    child-facing document was taken out of the reading gate in silence.
+    Measured against markdown-it 14.3.0, which renders the marker inside a
+    ``<code>``.
+    https://spec.commonmark.org/0.31.2/#links
+    """
+    text = f'[a [b](u) c](v "{TICK}") {ADULT_MARKER} {TICK}end{TICK}\n'
+    assert not readability.has_adult_marker(text)
+
+
+def test_an_inner_image_leaves_the_enclosing_opener_alive() -> None:
+    """A negative control. An image is not a link and deactivates nothing.
+
+    ``[a ![b](u) c](v "`")`` is one link with an image inside it, so the outer
+    target really is a target, the backtick in it is title data, and the marker
+    after it is the comment it looks like.
+    """
+    text = f'[a ![b](u) c](v "{TICK}") {ADULT_MARKER} {TICK}end{TICK}\n'
+    assert readability.has_adult_marker(text)
+
+
+def test_an_ordinary_outer_target_still_hides_its_backtick() -> None:
+    """A negative control. With no inner link the outer link forms as before."""
+    text = f'[a](v "{TICK}") {ADULT_MARKER} {TICK}end{TICK}\n'
+    assert readability.has_adult_marker(text)
+
+
+@pytest.mark.parametrize(
+    ("label", "autolink"),
+    [
+        ("a URI autolink", f"<http://example.com/{TICK}>"),
+        ("an email autolink", f"<a{TICK}b@example.com>"),
+    ],
+)
+def test_a_backtick_inside_an_autolink_opens_no_code_span(
+    label: str, autolink: str
+) -> None:
+    """An autolink is destination data, exactly as an attribute value is.
+
+    Everything between the angle brackets becomes the element's ``href`` and is
+    printed as the link's text, so a backtick in one is a character rather than
+    a delimiter. The scan knew about comments and tags and about no autolink at
+    all, so it paired that backtick with the next one, blanked the marker
+    between them, and sent an adult-facing document into the child reading
+    gate. Measured against markdown-it 14.3.0.
+    https://spec.commonmark.org/0.31.2/#autolinks
+    """
+    text = f"{autolink} {ADULT_MARKER} {TICK}end{TICK}\n"
+    assert readability.has_adult_marker(text), label
+
+
+@pytest.mark.parametrize(
+    ("label", "opening"),
+    [
+        ("a run with spaces in it", f"<no spaces allowed{TICK}>"),
+        ("a one-letter scheme", f"<a:{TICK}>"),
+    ],
+)
+def test_an_angle_run_that_is_no_autolink_keeps_its_backtick(
+    label: str, opening: str
+) -> None:
+    """The negative controls. A scheme is two to thirty-two characters.
+
+    Neither of these is an autolink to markdown-it 14.3.0, so the backtick
+    inside really is an opening run, the code span reaches the marker, and the
+    document declares nothing.
+    """
+    text = f"{opening} {ADULT_MARKER} {TICK}end{TICK}\n"
+    assert not readability.has_adult_marker(text), label
+
+
+def test_a_code_span_beside_an_autolink_is_still_a_code_span() -> None:
+    """A negative control. Skipping autolinks must not switch the scan off."""
+    text = f"<http://example.com/a> {TICK}x{TICK} {ADULT_MARKER} y\n"
+    assert readability.has_adult_marker(text)
+
+
+@pytest.mark.parametrize(
+    ("label", "line"),
+    [
+        ("a link title", f'Read [here](/u "{ADULT_MARKER}") now.'),
+        ("an image's alt text", f"See ![{ADULT_MARKER}](/p.png) now."),
+        ("an image's title", f'See ![alt](/p.png "{ADULT_MARKER}") now.'),
+        ("a tag's attribute value", f'Read <span title="{ADULT_MARKER}">a</span> now.'),
+        ("a backslash escape", f"Words above \\{ADULT_MARKER}"),
+    ],
+)
+def test_a_marker_handed_to_an_element_declares_nothing(label: str, line: str) -> None:
+    """Metadata is not a comment, and every one of these is metadata.
+
+    A destination, a title, an image's alt text and an attribute value all
+    become an attribute of an element; a marker written behind a backslash is
+    the characters the author typed. markdown-it 14.3.0 puts none of them on the
+    page as a comment, and a document carrying one has declared nothing about
+    its audience. The whole-document substitution this replaces read every one
+    of them as a declaration and took the file out of the gate.
+    """
+    assert not readability.has_adult_marker(f"{line}\n"), label
+
+
+def test_a_marker_in_a_link_reference_definition_declares_nothing() -> None:
+    """A definition renders nothing at all, title included."""
+    text = f'[ref]: /u "{ADULT_MARKER}"\n\n[ref]\n'
+    assert not readability.has_adult_marker(text)
+
+
+def test_a_marker_in_a_defined_reference_label_declares_nothing() -> None:
+    """A label the document defines becomes nothing; only the text renders."""
+    text = f"Read [text][{ADULT_MARKER}] now.\n\n[{ADULT_MARKER}]: /u\n"
+    assert not readability.has_adult_marker(text)
+
+
+def test_a_marker_in_an_undefined_reference_label_is_a_comment() -> None:
+    """The negative control, and the reason the labels are collected at all.
+
+    With no definition the brackets stay on the page and the marker inside them
+    is a comment markdown-it 14.3.0 really does render, so the document has
+    declared itself adult-facing.
+    """
+    text = f"Read [text][{ADULT_MARKER}] now.\n"
+    assert readability.has_adult_marker(text)
+
+
+@pytest.mark.parametrize(
+    ("label", "text"),
+    [
+        ("a paragraph below a blank line", f"Words above.\n\n    {ADULT_MARKER}\n"),
+        ("five spaces into a list item", f"-     {ADULT_MARKER}\n"),
+    ],
+)
+def test_a_marker_indented_four_spaces_is_code(label: str, text: str) -> None:
+    """Four spaces past its container makes a line code rather than a paragraph.
+
+    markdown-it 14.3.0 prints both of these inside a ``<pre><code>``, so the
+    marker is an example of a marker and declares nothing. The sibling hook has
+    read indentation this way from the start.
+    https://spec.commonmark.org/0.31.2/#indented-code-blocks
+    """
+    assert not readability.has_adult_marker(text), label
+
+
+def test_a_marker_indented_three_spaces_is_a_comment() -> None:
+    """The negative control. Three spaces is still a paragraph."""
+    text = f"Words above.\n\n   {ADULT_MARKER}\n"
+    assert readability.has_adult_marker(text)
+
+
+@pytest.mark.parametrize(
+    ("label", "line"),
+    [
+        ("a link's text", f"Read [{ADULT_MARKER}](/u) now."),
+        ("beside a link", f'Read [here](/u "t") now. {ADULT_MARKER}'),
+        ("after a closing tag", f"Read <span>a</span> now. {ADULT_MARKER}"),
+        ("in a destination that does not parse", f"Read [here](/u{ADULT_MARKER}) now."),
+    ],
+)
+def test_a_marker_the_page_really_shows_still_declares(label: str, line: str) -> None:
+    """The negative controls, and the direction that matters.
+
+    A link's *text* is inline content, not an attribute, so markdown-it 14.3.0
+    renders a comment inside one as a comment. So does a marker beside a link,
+    after a tag, and inside parentheses that never parse as a target. Missing
+    any of these would score an adult-facing document against the child target.
+    """
+    assert readability.has_adult_marker(f"{line}\n"), label

@@ -263,6 +263,42 @@ INLINE_HTML_TAG_PATTERN = re.compile(
     """,
     re.VERBOSE,
 )
+
+#: An autolink: an absolute URI or an email address between angle brackets.
+#: Everything between them is destination data -- the renderer puts it in the
+#: element's ``href`` and prints the same characters as the link's text -- so a
+#: backtick in one opens no code span. The scan consumes a whole autolink for
+#: the same reason it consumes a whole tag, and tries the two in the order
+#: markdown-it 14.3.0 tries them: an autolink first, because a tag name may not
+#: hold a colon and a URI autolink must. Kept identical to the constant in
+#: ``.github/scripts/check-readability.py`` and in
+#: ``.github/scripts/check-session-structure.py``.
+#:
+#: The scheme is two to thirty-two characters and the rest of a URI is every
+#: character but ``<``, ``>``, a space and a C0 control character; the email
+#: form is the HTML5 address the spec names. markdown-it additionally refuses
+#: to *link* the ``javascript:``, ``vbscript:``, ``file:`` and most ``data:``
+#: schemes, which it documents as a deliberate departure -- "CommonMark allows
+#: too much in links" -- and which is a sanitizer rather than a parser:
+#: CommonMark 0.31.2 says nothing about the scheme's spelling and micromark
+#: 4.0.2 reads ``<data:x>`` as an autolink. This follows the spec and the
+#: second renderer, so a backtick inside a blocked-scheme autolink is
+#: destination data here and a code-span delimiter to markdown-it; the shape
+#: is not one this repository writes.
+#: <https://spec.commonmark.org/0.31.2/#autolinks>
+AUTOLINK_PATTERN = re.compile(
+    r"""
+    <
+    (?: [A-Za-z][A-Za-z0-9+.-]{1,31} :                  # a scheme, then a URI
+        [^<>\x00-\x20]*
+      | [A-Za-z0-9.!\#$%&'*+/=?^_`{|}~-]+               # an email address
+        @ [A-Za-z0-9] (?: [A-Za-z0-9-]{0,61} [A-Za-z0-9] )?
+        (?: \. [A-Za-z0-9] (?: [A-Za-z0-9-]{0,61} [A-Za-z0-9] )? )*
+    )
+    >
+    """,
+    re.VERBOSE,
+)
 #: The two invisible halves of an inline link: its destination and its optional
 #: title. Neither is rendered, so both go with the brackets and only the label
 #: is prose. A destination is either the pointy ``<...>`` form or a bare run
@@ -372,6 +408,89 @@ LINK_DEFINITION_PATTERN = re.compile(
 #: https://spec.commonmark.org/0.31.2/#link-reference-definitions
 LINK_DEFINITION_TITLE_PATTERN = re.compile(
     r"^[ \t]*(?:\"[^\"]*\"|'[^']*'|\([^()]*\))[ \t]*$"
+)
+
+#: How long a link label may be. CommonMark caps it at 999 characters between
+#: the brackets, and the cap decides what a reference *is*: a label one
+#: character too long is no reference at all, so the brackets stay on the page
+#: and a marker inside them is a comment the child's page really carries. Kept
+#: identical to the constant in
+#: ``.github/scripts/check-session-structure.py``.
+#: https://spec.commonmark.org/0.31.2/#link-label
+LINK_LABEL_MAXIMUM_CHARACTERS = 999
+
+#: A link reference definition as the marker scan reads one: the whole line
+#: renders nothing at all, so a marker anywhere on it is metadata rather than a
+#: comment. ``LINK_DEFINITION_PATTERN`` above stays the prose-stripping copy,
+#: which asks a narrower question of a line already known to be prose. Kept
+#: identical to the constant in
+#: ``.github/scripts/check-session-structure.py``.
+#: https://spec.commonmark.org/0.31.2/#link-reference-definitions
+LINK_REFERENCE_DEFINITION_PATTERN = re.compile(
+    rf"""
+    ^\ {{0,3}}                               # at most three spaces of indent
+    \[ (?=[^\]]*[^ \t\r\n\]])              # a label with at least one nonblank
+       (?P<label> (?: [^\[\]\\] | \\. )+ ) \]
+    :\ *                                     # the colon, then optional spaces
+    {_LINK_DESTINATION}                      # the destination
+    (?P<title> \ +                           # an optional title
+        (?: " (?: [^"\\] | \\. )* "
+          | ' (?: [^'\\] | \\. )* '
+          | \( (?: [^()\\] | \\. )* \) )
+    )?
+    \ *$
+    """,
+    re.VERBOSE,
+)
+
+#: A definition's label and colon, matched however the rest of it is laid out.
+#: This reads the label out of a definition ``reference_definition_span`` has
+#: already parsed whole. A reference whose label has a definition renders as a
+#: link or an image, so the label itself becomes nothing; a reference with no
+#: definition renders as the brackets the author typed, and a marker inside
+#: *that* is a comment on the page. Kept identical to the constant in
+#: ``.github/scripts/check-session-structure.py``.
+LINK_REFERENCE_LABEL_PATTERN = re.compile(r"^ {0,3}\[(?P<label>(?:[^\[\]\\]|\\.)+)\]:")
+
+#: A definition's label and colon with nothing after them. CommonMark lets the
+#: destination sit on the following line, and the construct still renders
+#: nothing at all. Kept identical to the constant in
+#: ``.github/scripts/check-session-structure.py``.
+LINK_REFERENCE_LABEL_LINE_PATTERN = re.compile(
+    r"^ {0,3}\[(?=[^\]]*[^ \t\r\n\]])(?P<label>(?:[^\[\]\\]|\\.)+)\]:[ \t]*$"
+)
+
+#: A definition's destination, alone on its own line, with the optional title
+#: that may follow it there. Conservative for the reason the full pattern is:
+#: ``Real visible prose.`` under a label line is prose rather than a
+#: destination, which is what the renderer makes of it. Kept identical to the
+#: constant in ``.github/scripts/check-session-structure.py``.
+LINK_REFERENCE_DESTINATION_LINE_PATTERN = re.compile(
+    rf"""
+    ^[ \t]*
+    {_LINK_DESTINATION}                      # the destination
+    (?P<title> [ \t]+                        # an optional title
+        (?: " (?: [^"\\] | \\. )* "
+          | ' (?: [^'\\] | \\. )* '
+          | \( (?: [^()\\] | \\. )* \) )
+    )?
+    [ \t]*$
+    """,
+    re.VERBOSE,
+)
+
+#: A title alone on its own line, which the definition above it takes. Kept
+#: identical to the constant in
+#: ``.github/scripts/check-session-structure.py``.
+LINK_REFERENCE_TITLE_LINE_PATTERN = re.compile(
+    r"""
+    ^[ \t]*
+    (?: " (?: [^"\\] | \\. )* "
+      | ' (?: [^'\\] | \\. )* '
+      | \( (?: [^()\\] | \\. )* \) )
+    [ \t]*$
+    """,
+    re.VERBOSE,
 )
 #: A YAML front-matter delimiter. Front matter is permitted on any Markdown
 #: file in this repository, and its keys are publishing metadata, not text a
@@ -1094,6 +1213,200 @@ def inline_link_end(line: str, open_index: int) -> int:
     return index + 1 if index < length and line[index] == ")" else -1
 
 
+def matching_bracket(line: str, open_index: int) -> int:
+    """Return the index of the ``]`` closing the ``[`` at ``open_index``, or -1.
+
+    Kept identical to the helper in
+    ``.github/scripts/check-session-structure.py``.
+    """
+    depth = 0
+    index = open_index
+    while index < len(line):
+        character = line[index]
+        if character == "\\":
+            index += 2
+            continue
+        if character == "[":
+            depth += 1
+        elif character == "]":
+            depth -= 1
+            if depth == 0:
+                return index
+        index += 1
+    return -1
+
+
+def normalize_link_label(label: str) -> str:
+    """Return a link label in the form CommonMark matches definitions by.
+
+    Kept identical to the helper in
+    ``.github/scripts/check-session-structure.py``.
+    """
+    return " ".join(label.split()).casefold()
+
+
+def is_link_label(label: str) -> bool:
+    """Return whether ``label`` is short enough to be a link label at all.
+
+    Kept identical to the helper in
+    ``.github/scripts/check-session-structure.py``.
+    """
+    return len(label) <= LINK_LABEL_MAXIMUM_CHARACTERS
+
+
+def link_metadata_regions(
+    line: str, defined_labels: frozenset[str]
+) -> tuple[tuple[int, int], ...]:
+    """Return the ranges on one line that render as metadata rather than as text.
+
+    A link's destination and title, an image's alt text, a reference label the
+    document defines, and a link reference definition end to end all become an
+    attribute of an element or nothing at all. A marker inside one of those is
+    not a comment and declares nothing. A *link's* text is deliberately not
+    here: it is inline content, and markdown-it 14.3.0 renders a comment inside
+    it as a comment.
+
+    Links may not nest, so forming one deactivates every link opener still on
+    the stack. That is not a nicety. ``[a [b](u.md) c](v.md "<!-- x -->")``
+    renders with the marker visible, because the inner link wins and the outer
+    brackets are literal text; a pass that matched brackets naively hid a real
+    marker and then took a child-facing document out of the reading gate as
+    though it had declared itself adult-facing. Kept identical to the helper in
+    ``.github/scripts/check-session-structure.py``.
+    https://spec.commonmark.org/0.31.2/#links
+    """
+    definition = LINK_REFERENCE_DEFINITION_PATTERN.match(line)
+    if definition is not None and is_link_label(definition.group("label")):
+        return ((0, len(line)),)
+
+    regions: list[tuple[int, int]] = []
+    openers: list[tuple[int, bool, bool]] = []
+    index = 0
+    length = len(line)
+
+    while index < length:
+        character = line[index]
+        if character == "\\":
+            index += 2
+            continue
+        if line.startswith("![", index):
+            openers.append((index, True, True))
+            index += 2
+            continue
+        if character == "[":
+            openers.append((index, False, True))
+            index += 1
+            continue
+        if character != "]" or not openers:
+            index += 1
+            continue
+
+        opener, is_image, is_active = openers.pop()
+        after = index + 1
+        text_start = opener + (2 if is_image else 1)
+        metadata: tuple[int, int] | None = None
+        consumed = after
+
+        if after < length and line[after] == "(":
+            end = inline_link_end(line, after)
+            if end != -1:
+                metadata, consumed = (after, end), end
+        elif after < length and line[after] == "[":
+            label_close = matching_bracket(line, after)
+            if label_close != -1:
+                label = line[after + 1 : label_close] or line[text_start:index]
+                if normalize_link_label(label) in defined_labels:
+                    metadata, consumed = (after, label_close + 1), label_close + 1
+        elif normalize_link_label(line[text_start:index]) in defined_labels:
+            metadata, consumed = (after, after), after
+
+        if metadata is None or not is_active:
+            index = after
+            continue
+
+        if is_image:
+            # The alt text is an attribute, so the whole construct goes.
+            regions.append((opener, consumed))
+        else:
+            if metadata[0] != metadata[1]:
+                regions.append(metadata)
+            openers[:] = [
+                (start, image, image and active) for start, image, active in openers
+            ]
+        index = consumed
+
+    return tuple(regions)
+
+
+def reference_definition_span(lines: Sequence[str], index: int) -> int:
+    """Return how many lines the link reference definition at ``index`` fills.
+
+    Zero where there is none. CommonMark lets the destination sit on the line
+    after the label, and the title on the line after the destination, and the
+    whole construct renders nothing at all. The longest form that parses
+    exactly is the one taken, because that is what the renderer does. Kept
+    identical to the helper in
+    ``.github/scripts/check-session-structure.py``.
+    https://spec.commonmark.org/0.31.2/#link-reference-definitions
+    """
+
+    def line_at(offset: int) -> str:
+        position = index + offset
+        return lines[position] if position < len(lines) else ""
+
+    label_line = LINK_REFERENCE_LABEL_LINE_PATTERN.match(line_at(0))
+    if label_line is not None and is_link_label(label_line.group("label")):
+        destination = LINK_REFERENCE_DESTINATION_LINE_PATTERN.match(line_at(1))
+        if destination is None:
+            return 0
+        if destination.group("title") is None and (
+            LINK_REFERENCE_TITLE_LINE_PATTERN.match(line_at(2)) is not None
+        ):
+            return 3
+        return 2
+
+    definition = LINK_REFERENCE_DEFINITION_PATTERN.match(line_at(0))
+    if definition is None or not is_link_label(definition.group("label")):
+        return 0
+    if definition.group("title") is None and (
+        LINK_REFERENCE_TITLE_LINE_PATTERN.match(line_at(1)) is not None
+    ):
+        return 2
+    return 1
+
+
+def collect_reference_labels(contents: Sequence[str]) -> frozenset[str]:
+    """Return every link label the document defines, normalized.
+
+    A label is defined only where a whole definition parses. CommonMark wants a
+    destination for that, so ``[x]:`` with a line of prose under it defines
+    nothing at all: the brackets stay on the page, a reference to ``x`` below
+    them is the characters the author typed, and a marker inside one of those
+    is a comment the child's page really carries.
+
+    The lines a definition fills are skipped with it, so a destination or a
+    title sitting on its own line is never read as a second label. A line
+    inside a fenced block enters this walk empty, which no part of a definition
+    matches. Kept identical to the helper in
+    ``.github/scripts/check-session-structure.py``.
+    https://spec.commonmark.org/0.31.2/#link-reference-definitions
+    """
+    labels: set[str] = set()
+    row = 0
+
+    while row < len(contents):
+        span = reference_definition_span(contents, row)
+        if span == 0:
+            row += 1
+            continue
+        match = LINK_REFERENCE_LABEL_PATTERN.match(contents[row])
+        if match is not None:
+            labels.add(normalize_link_label(match.group("label")))
+        row += span
+
+    return frozenset(labels)
+
+
 def following_comment_end(
     lines: Sequence[ParagraphLine], row: int, index: int
 ) -> tuple[int, int]:
@@ -1113,79 +1426,118 @@ def following_comment_end(
     return -1, -1
 
 
-def paragraph_code_spans(lines: Sequence[ParagraphLine]) -> list[tuple[int, int]]:
-    """Return the document offsets of every code span in one paragraph.
+def scan_paragraph_inlines(
+    lines: Sequence[ParagraphLine],
+    skips: dict[int, tuple[tuple[int, int], ...]] | None,
+) -> tuple[list[str], list[tuple[int, int, int]]]:
+    """Walk one paragraph left to right, one context at a time.
 
-    A span that crosses a soft line break comes back as one range per physical
-    line, never as one range across the break, so the newline between them is
-    left uncovered and a caller can blank every range and still hold the
-    document with its line breaks, its line count and its columns intact.
+    Returns two things: the text CommonMark reads as an HTML comment on each
+    line, and every code span the walk consumed, as ``(row, start, end)`` in
+    that row's own coordinates -- one range per physical line, because a span
+    that crosses a soft line break is one span and two rows.
 
-    Five guards decide what opens a span, and all five are the boundaries of
-    the backtick runs. Both runs are read maximally, so a two-tick span cannot
-    close on the last two ticks of a three-tick run and cannot open one tick
-    late; either mistake deletes words the renderer leaves standing. The fifth
-    guard is a backslash before the opening run: a backtick carrying a
-    backslash escape is literal text and opens nothing, so
-    ``Read \\`this phrase\\` aloud`` is a sentence a child reads in full. That
-    guard sits on the opening run alone, because a backslash means nothing once
-    a span is open -- CommonMark reads ``` `foo\\`bar` ``` as the code span
-    ``foo\\`` followed by a visible ``bar``, and guarding the closing run too
-    would delete that ``bar``.
+    ``skips`` holds, per row, the ranges this walk is to read as link metadata
+    rather than as text. ``None`` runs the walk with no link model at all. That
+    is not a convenience: CommonMark takes whichever of a code span, a raw HTML
+    tag, an autolink and a link starts first, so the code spans have to be
+    known *before* the link metadata is computed, and the only way to know them
+    is to walk once without it. ``paragraph_metadata_skips`` does exactly that.
 
-    A parsed link target is the sixth guard, and it runs the other way. A
-    link's destination and its title are scanned as characters rather than as
-    inline content, so a backtick inside one opens nothing:
-    ``[help](url "title `")`` on one line and ``Text <!-- audience: adult -->
-    tail`` on the next held one backtick that is title data and one that is
-    literal text, and reading them as a pair erased the marker between them.
-    The walk therefore counts the brackets it passes, and a ``]`` that closes
-    one and is followed by a ``(`` hands the rest of the target to
-    ``inline_link_end``. A ``[`` a code span swallowed is never counted, which
-    is what keeps ``` `[a](u` x) ``` a code span and not a link. A reference
-    label is deliberately not skipped: markdown-it 14.3.0 scans a label as
-    inline content, so a code span inside one wins there, and the walk already
-    agrees with it. A target broken over a soft line break is not skipped
-    either, which leaves its backtick standing and its words counted -- more
-    words, never fewer.
+    "No link model" means no *defined labels* and no image rule; it does not
+    mean no brackets. The walk counts the brackets it passes and hands the
+    target of a ``](`` that closes one to ``inline_link_end``, because a
+    destination and a title are scanned as characters rather than as inline
+    content and a backtick in either opens nothing. A ``[`` a code span
+    swallowed is never counted, which is what still leaves ``` `[a](u` x) ```
+    a code span and not a link.
 
-    Raw HTML is the seventh guard, and it is not a refinement of the others.
-    A code span, an inline comment and a raw HTML tag bind equally tightly, so
-    whichever one starts first takes the characters after it -- backticks
-    included. ``<span title="`">`` on one line and ``Text <!-- audience: adult
-    --> `end`` on the next held one backtick that is attribute data and one
-    that is literal text; reading them as a pair erased the marker between
-    them, and an adult-facing document walked into the child reading gate.
-    ``check-session-structure.py`` has skipped tags and comments this way from
-    the start; this is the same rule, one module over.
-    https://spec.commonmark.org/0.31.2/#backslash-escapes
+    The bracket walk runs in that first pass and in no other, because it is
+    half a link model and the second pass has a whole one. Links may not nest,
+    so forming one deactivates every opener still open above it:
+    ``[a [b](u) c](v "<!-- x -->")`` is an inner link and then literal text,
+    and the marker in those literal parentheses is a comment the page carries.
+    ``link_metadata_regions`` knows that and knows which labels the document
+    defines; this walk knows neither, and running it in both passes hid that
+    marker and took a child-facing document out of the gate.
+
+    Four contexts bind at least as tightly as a code span and are consumed
+    whole where they start first: a comment, an autolink, a raw HTML tag, and a
+    backslash escape. A line indented four spaces past its container is code
+    rather than a paragraph, so nothing on it is read at all. Kept in step with
+    ``scan_inline_run`` in ``.github/scripts/check-session-structure.py``.
     https://spec.commonmark.org/0.31.2/#code-spans
     https://spec.commonmark.org/0.31.2/#links
+    https://spec.commonmark.org/0.31.2/#autolinks
     https://spec.commonmark.org/0.31.2/#raw-html
     """
-    regions: list[tuple[int, int]] = []
+    comments: list[list[str]] = [[] for _ in lines]
+    code_spans: list[tuple[int, int, int]] = []
     row = 0
     index = 0
     open_brackets = 0
 
     while row < len(lines):
         line = lines[row].text
+        content_start = lines[row].content_start
+
         if index >= len(line):
             row += 1
             index = 0
             continue
 
+        if index == 0 and count_leading_spaces(line[content_start:]) >= 4:
+            row += 1
+            continue
+
+        if skips is not None:
+            regions = skips.get(row, ())
+            skipped = next(
+                (end for start, end in regions if start <= index < end), index
+            )
+            if skipped > index:
+                index = skipped
+                continue
+
         character = line[index]
+
         if character == "\\":
             # The escape and the character it escapes are one unit, so a
             # backtick behind a backslash is never read as a run at all.
             index += 2
             continue
-        if character == "[":
+
+        if character == "`":
+            run_end = index
+            while run_end < len(line) and line[run_end] == "`":
+                run_end += 1
+            run_length = run_end - index
+            closer = closing_backtick_run(line, run_end, run_length)
+            if closer != -1:
+                code_spans.append((row, index, closer))
+                index = closer
+                continue
+            close_row, close_index = following_backtick_run(lines, row, run_length)
+            if close_row == -1:
+                index = run_end
+                continue
+            code_spans.append((row, index, len(line)))
+            for middle in range(row + 1, close_row):
+                code_spans.append(
+                    (middle, lines[middle].content_start, len(lines[middle].text))
+                )
+            code_spans.append(
+                (close_row, lines[close_row].content_start, close_index)
+            )
+            row, index = close_row, close_index
+            continue
+
+        if skips is None and character == "[":
             open_brackets += 1
             index += 1
             continue
-        if character == "]" and open_brackets:
+
+        if skips is None and character == "]" and open_brackets:
             # The target of a link that closes here is characters rather than
             # inline content, so nothing in it opens a span.
             open_brackets -= 1
@@ -1196,90 +1548,167 @@ def paragraph_code_spans(lines: Sequence[ParagraphLine]) -> list[tuple[int, int]
                     continue
             index += 1
             continue
+
         if character == "<":
-            # A comment or a tag that opens here is consumed whole, because it
-            # started first and everything inside it belongs to it.
             if line.startswith("<!--", index):
+                # A comment that closes inside this paragraph is consumed
+                # whole, because it started first. One that does not close is
+                # no comment at all, so its characters are scanned as text.
                 close_row, close_index = following_comment_end(lines, row, index)
                 if close_row != -1:
+                    if close_row == row:
+                        comments[row].append(line[index:close_index])
+                    else:
+                        comments[row].append(line[index:])
+                        for middle in range(row + 1, close_row):
+                            middle_line = lines[middle]
+                            comments[middle].append(
+                                middle_line.text[middle_line.content_start :]
+                            )
+                        close_line = lines[close_row]
+                        comments[close_row].append(
+                            close_line.text[close_line.content_start : close_index]
+                        )
                     row, index = close_row, close_index
                     continue
             else:
+                # An autolink is asked about before a tag, because a tag name
+                # may not hold a colon and a URI autolink must, so only one of
+                # the two can match here.
+                autolink = AUTOLINK_PATTERN.match(line, index)
+                if autolink is not None:
+                    index = autolink.end()
+                    continue
                 tag = INLINE_HTML_TAG_PATTERN.match(line, index)
                 if tag is not None:
                     index = tag.end()
                     continue
-        if character != "`":
-            index += 1
-            continue
 
-        run_end = index
-        while run_end < len(line) and line[run_end] == "`":
-            run_end += 1
-        run_length = run_end - index
+        index += 1
 
-        closer = closing_backtick_run(line, run_end, run_length)
-        if closer != -1:
-            regions.append((lines[row].start + index, lines[row].start + closer))
-            index = closer
-            continue
-
-        close_row, close_index = following_backtick_run(lines, row, run_length)
-        if close_row == -1:
-            index = run_end
-            continue
-
-        regions.append((lines[row].start + index, lines[row].start + len(line)))
-        for middle in range(row + 1, close_row):
-            regions.append(
-                (
-                    lines[middle].start + lines[middle].content_start,
-                    lines[middle].start + len(lines[middle].text),
-                )
-            )
-        regions.append(
-            (
-                lines[close_row].start + lines[close_row].content_start,
-                lines[close_row].start + close_index,
-            )
-        )
-        row, index = close_row, close_index
-
-    return regions
+    return ["".join(parts) for parts in comments], code_spans
 
 
-def scan_literal_code(text: str) -> tuple[list[tuple[int, int]], list[tuple[int, int]]]:
-    """Return a document's fenced-block ranges and its code-span ranges.
+def paragraph_metadata_skips(
+    lines: Sequence[ParagraphLine], defined_labels: frozenset[str]
+) -> dict[int, tuple[tuple[int, int], ...]]:
+    """Return, per row, the ranges of one paragraph that render as metadata.
+
+    The code spans are found first, with no link model at all, and blanked
+    before a link is looked for -- because a code span that opens before a
+    ``[`` swallows the bracket, so the link is never there to have metadata.
+    Computing the metadata over the raw line read ``` `![alt](url` "<!-- x -->")
+    ``` as an image running to the final ``)``, and the marker the renderer
+    really does print went with it. It closes the other way round too:
+    ``![a`b](u) <!-- x --> c` `` is an image to a raw-line pass and a code span
+    to the renderer.
+
+    Blanking rather than deleting is what keeps the ranges usable: they are
+    offsets into the real line, so they have to stay the offsets the real line
+    has. The regions are computed from each line's *content* -- past its
+    blockquote and list-item prefixes -- because CommonMark classifies a line
+    from what is left once the prefixes are gone, and shifted back to the
+    line's own coordinates for the walk that reads them. Kept in step with
+    ``code_span_masked_lines`` and ``text_marker_spans`` in
+    ``.github/scripts/check-session-structure.py``.
+    """
+    _, code_spans = scan_paragraph_inlines(lines, None)
+    masked = [list(line.text) for line in lines]
+    for row, start, end in code_spans:
+        masked[row][start:end] = " " * (end - start)
+
+    skips: dict[int, tuple[tuple[int, int], ...]] = {}
+    for row, line in enumerate(lines):
+        start = line.content_start
+        regions = link_metadata_regions("".join(masked[row])[start:], defined_labels)
+        if regions:
+            skips[row] = tuple((left + start, right + start) for left, right in regions)
+    return skips
+
+
+def paragraph_inlines(
+    lines: Sequence[ParagraphLine], defined_labels: frozenset[str]
+) -> tuple[list[str], list[tuple[int, int]]]:
+    """Return one paragraph's comment text per line, and its code spans.
+
+    The ranges are half open and are offsets into the document the lines came
+    from, so a caller can blank every one of them and still hold the document
+    with its line breaks, its line count and its columns intact.
+    """
+    skips = paragraph_metadata_skips(lines, defined_labels)
+    comments, code_spans = scan_paragraph_inlines(lines, skips)
+    return comments, [
+        (lines[row].start + start, lines[row].start + end)
+        for row, start, end in code_spans
+    ]
+
+
+@dataclass(frozen=True)
+class DocumentInlines:
+    """One inline walk over a document, and the three answers it yields.
+
+    ``fenced`` and ``code_spans`` are the literal code a document *prints*
+    rather than means. ``comment_lines`` holds, for each line, only what
+    CommonMark reads there as an HTML comment: a marker in a fenced block, in a
+    code span -- including one that closes on a later line -- behind a
+    backslash escape, inside a tag's attribute, inside an autolink, in an
+    image's alt text, in a link's destination or title, in a reference label
+    the document defines, in a link reference definition, or indented four
+    spaces prints as characters on the page or hands them to an element as an
+    attribute. It is prose *about* a marker, and it declares nothing.
+    """
+
+    fenced: tuple[tuple[int, int], ...]
+    code_spans: tuple[tuple[int, int], ...]
+    comment_lines: tuple[str, ...]
+
+
+def scan_document_inlines(text: str) -> DocumentInlines:
+    """Walk a document once for its fences, its code spans and its comments.
 
     Two walks in one, because they are two different shapes. A fence is a line
     block, so the fence walk reads one line at a time -- the walk
     ``extract_prose`` does, with the same helpers, so the two passes over a
-    document cannot disagree about where the fences are. A code span is inline
-    and crosses a soft line break, so the lines a fence does not claim are
-    gathered into paragraphs and scanned a paragraph at a time.
+    document cannot disagree about where the fences are. A code span and a
+    comment are inline and cross a soft line break, so the lines a fence does
+    not claim are gathered into paragraphs and scanned a paragraph at a time.
+
+    A paragraph is where a code span stops looking for its closing run, so the
+    run handed to the inline walk is one block and no more; ``starts_a_block``
+    is what records where one ends. The labels the document defines are
+    collected between the two, because a reference's label is metadata only
+    where a definition for it parses, and that question is answered by the
+    whole document rather than by the line in hand.
 
     Ranges are half open and are offsets into ``text``.
     https://spec.commonmark.org/0.31.2/#fenced-code-blocks
     https://spec.commonmark.org/0.31.2/#code-spans
     """
     fenced: list[tuple[int, int]] = []
-    spans: list[tuple[int, int]] = []
+    runs: list[tuple[list[ParagraphLine], list[int]]] = []
+    contents: list[str] = []
+    comment_lines: list[str] = []
     paragraph: list[ParagraphLine] = []
+    rows: list[int] = []
     active_fence: ActiveFence | None = None
     list_contexts: list[ListContext] = []
     previous_path: tuple[Container, ...] = ()
     offset = 0
 
     def close_paragraph() -> None:
-        nonlocal paragraph, previous_path
-        spans.extend(paragraph_code_spans(paragraph))
+        nonlocal paragraph, rows, previous_path
+        if paragraph:
+            runs.append((paragraph, rows))
         paragraph = []
+        rows = []
         previous_path = ()
 
-    for raw_line in text.split("\n"):
+    for number, raw_line in enumerate(text.split("\n")):
         line_start = offset
         offset += len(raw_line) + 1
         line = raw_line.rstrip(ASCII_HORIZONTAL_WHITESPACE)
+        contents.append("")
+        comment_lines.append("")
 
         if active_fence is not None and fence_container_ended(line, active_fence):
             active_fence = None
@@ -1302,6 +1731,7 @@ def scan_literal_code(text: str) -> tuple[list[tuple[int, int]], list[tuple[int,
             close_paragraph()
             continue
 
+        contents[number] = fence_line.content
         if starts_a_block(
             fence_line.content,
             fence_line.containment_path,
@@ -1317,9 +1747,46 @@ def scan_literal_code(text: str) -> tuple[list[tuple[int, int]], list[tuple[int,
                 content_start=len(line) - len(fence_line.content),
             )
         )
+        rows.append(number)
 
     close_paragraph()
-    return fenced, spans
+
+    defined_labels = collect_reference_labels(contents)
+    spans: list[tuple[int, int]] = []
+    for run_lines, run_rows in runs:
+        comments, code_spans = paragraph_inlines(run_lines, defined_labels)
+        spans.extend(code_spans)
+        for row, comment in zip(run_rows, comments, strict=True):
+            comment_lines[row] = comment
+
+    return DocumentInlines(tuple(fenced), tuple(spans), tuple(comment_lines))
+
+
+def scan_literal_code(text: str) -> tuple[list[tuple[int, int]], list[tuple[int, int]]]:
+    """Return a document's fenced-block ranges and its code-span ranges."""
+    walk = scan_document_inlines(text)
+    return list(walk.fenced), list(walk.code_spans)
+
+
+def document_marker_text(text: str) -> str:
+    """Return only what CommonMark reads as an HTML comment in a document.
+
+    This answers a narrower question than ``strip_html_comments``: not "what
+    does the reader see", but "what here does CommonMark read as a comment".
+    The difference is every context that binds tighter than raw HTML and
+    therefore prints the characters the author typed, or hands them to an
+    element as an attribute; ``DocumentInlines`` lists them.
+
+    Saying it positively -- keeping the comment spans rather than subtracting
+    code spans, escapes, attributes, autolinks, link metadata and indented code
+    one context at a time -- is what lets one scan cover every shape. Lines are
+    joined as the document holds them, so a line number is still a line number
+    and a marker split over a line break is not read as one, which is what the
+    sibling hook does with the same text. Kept in step with
+    ``DocumentScan.marker_text`` in
+    ``.github/scripts/check-session-structure.py``.
+    """
+    return "\n".join(scan_document_inlines(text).comment_lines)
 
 
 def literal_code_regions(text: str) -> list[tuple[int, int]]:
@@ -1371,21 +1838,6 @@ def literal_code_mask(text: str) -> bytearray:
     for start, end in literal_code_regions(text):
         mask[start:end] = b"\x01" * (end - start)
     return mask
-
-
-def strip_literal_code(text: str) -> str:
-    """Return ``text`` with fenced code blocks and inline code spans removed.
-
-    A document that *documents* Markdown carries examples of it, and an audience
-    marker shown as one of those examples is literal text on the page -- not
-    metadata the file is declaring about itself. Without this, a single
-    child-facing lesson that shows the marker inside a fence leaves the gate
-    entirely: nothing scores it, and nothing reports that nothing did.
-    """
-    kept = list(text)
-    for start, end in literal_code_regions(text):
-        kept[start:end] = " " * (end - start)
-    return "".join(kept)
 
 
 def strip_html_comments(text: str) -> str:
@@ -1956,14 +2408,19 @@ def has_adult_marker(text: str) -> bool:
     """Return ``True`` when a document declares itself adult-facing.
 
     The marker is metadata, so it counts only where CommonMark would render it
-    as a comment. One shown as an example inside a fence or a code span is
-    literal text a reader sees and declares nothing; see ``strip_literal_code``.
+    as a comment, and ``document_marker_text`` is the one place this module
+    answers that. A marker shown as an example inside a fence or a code span,
+    written behind a backslash, or handed to an element as an attribute -- a
+    link's title, an image's alt text, an autolink, a tag's attribute value, a
+    link reference definition -- is characters on the page and declares
+    nothing. Reading the whole document instead, with only its literal code
+    blanked, took child-facing documents out of the reading gate in silence.
 
     This is the module's other door, so the document's line endings are made
     one thing here too; see ``normalize_line_endings``.
     """
     text = normalize_line_endings(text)
-    return AUDIENCE_ADULT_PATTERN.search(strip_literal_code(text)) is not None
+    return AUDIENCE_ADULT_PATTERN.search(document_marker_text(text)) is not None
 
 
 def default_paths(root: Path) -> list[Path]:

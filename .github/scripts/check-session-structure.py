@@ -323,6 +323,42 @@ INLINE_HTML_TAG_PATTERN = re.compile(
     re.VERBOSE,
 )
 
+#: An autolink: an absolute URI or an email address between angle brackets.
+#: Everything between them is destination data -- the renderer puts it in the
+#: element's ``href`` and prints the same characters as the link's text -- so a
+#: backtick in one opens no code span. The scan consumes a whole autolink for
+#: the same reason it consumes a whole tag, and tries the two in the order
+#: markdown-it 14.3.0 tries them: an autolink first, because a tag name may not
+#: hold a colon and a URI autolink must. Kept identical to the constant in
+#: ``.github/scripts/check-readability.py`` and in
+#: ``.github/scripts/check-session-structure.py``.
+#:
+#: The scheme is two to thirty-two characters and the rest of a URI is every
+#: character but ``<``, ``>``, a space and a C0 control character; the email
+#: form is the HTML5 address the spec names. markdown-it additionally refuses
+#: to *link* the ``javascript:``, ``vbscript:``, ``file:`` and most ``data:``
+#: schemes, which it documents as a deliberate departure -- "CommonMark allows
+#: too much in links" -- and which is a sanitizer rather than a parser:
+#: CommonMark 0.31.2 says nothing about the scheme's spelling and micromark
+#: 4.0.2 reads ``<data:x>`` as an autolink. This follows the spec and the
+#: second renderer, so a backtick inside a blocked-scheme autolink is
+#: destination data here and a code-span delimiter to markdown-it; the shape
+#: is not one this repository writes.
+#: <https://spec.commonmark.org/0.31.2/#autolinks>
+AUTOLINK_PATTERN = re.compile(
+    r"""
+    <
+    (?: [A-Za-z][A-Za-z0-9+.-]{1,31} :                  # a scheme, then a URI
+        [^<>\x00-\x20]*
+      | [A-Za-z0-9.!\#$%&'*+/=?^_`{|}~-]+               # an email address
+        @ [A-Za-z0-9] (?: [A-Za-z0-9-]{0,61} [A-Za-z0-9] )?
+        (?: \. [A-Za-z0-9] (?: [A-Za-z0-9-]{0,61} [A-Za-z0-9] )? )*
+    )
+    >
+    """,
+    re.VERBOSE,
+)
+
 #: A list marker with nothing after it. It prints as a bullet and no words.
 BARE_LIST_MARKER_PATTERN = re.compile(r"^[ \t]*(?:[-*+]|\d{1,9}[.)])[ \t]*$")
 
@@ -1352,6 +1388,15 @@ def scan_inline_run(
                 spans[row].append("<!--")
                 index += len("<!--")
                 is_in_comment = True
+                continue
+            # An autolink is asked about before a tag, because a tag name may
+            # not hold a colon and a URI autolink must, so only one of the two
+            # can match here. What sits between the angle brackets is the
+            # destination: a backtick in it is data rather than a delimiter,
+            # exactly as a backtick inside an attribute value is.
+            autolink = AUTOLINK_PATTERN.match(line, index)
+            if autolink is not None:
+                index = autolink.end()
                 continue
             tag = INLINE_HTML_TAG_PATTERN.match(line, index)
             if tag is not None:

@@ -2865,3 +2865,46 @@ def test_a_space_after_the_hashes_opens_an_atx_heading() -> None:
     """The negative control. A real heading is still found."""
     scan = structure.scan_document("# Goal\n")
     assert [(h.level, h.title) for h in structure.find_headings(scan)] == [(1, "Goal")]
+
+
+# ---------------------------------------------------------------------------
+# An autolink is destination data
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.parametrize(
+    ("label", "autolink"),
+    [
+        ("a URI autolink", "<http://example.com/`>"),
+        ("an email autolink", "<a`b@example.com>"),
+    ],
+)
+def test_a_backtick_inside_an_autolink_opens_no_code_span(
+    label: str, autolink: str
+) -> None:
+    """Everything between the angle brackets is the destination.
+
+    It becomes the element's ``href`` and is printed as the link's text, so a
+    backtick in one is a character rather than a delimiter. The scan skipped
+    comments and tags and knew nothing of autolinks, so it paired that backtick
+    with the next one and blanked the Source Check marker between them -- and a
+    session that had declared its exemption was failed for not declaring one.
+    Measured against markdown-it 14.3.0, which renders the marker as a comment.
+    Kept in step with the case of the same name in
+    ``tests/test_check_readability.py``.
+    <https://spec.commonmark.org/0.31.2/#autolinks>
+    """
+    text = f"{autolink} <!-- no-source-check: an offline exercise --> `end`\n"
+    scan = structure.scan_document(text)
+    assert structure.NO_SOURCE_CHECK_PATTERN.search(scan.marker_text) is not None, label
+
+
+def test_an_angle_run_that_is_no_autolink_keeps_its_backtick() -> None:
+    """The negative control. A run holding spaces is no autolink at all.
+
+    The backtick inside it really is an opening run, the code span reaches the
+    marker, and the session has declared nothing.
+    """
+    text = "<no spaces allowed`> <!-- no-source-check: an offline exercise --> `end`\n"
+    scan = structure.scan_document(text)
+    assert structure.NO_SOURCE_CHECK_PATTERN.search(scan.marker_text) is None
