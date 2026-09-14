@@ -305,11 +305,33 @@ add-a-destination checklist. Must contain:
   07, 09, 13-15, 20-22, 24-29, 31-32, 35, 39, 41, 44-46, 49-54) need no destination
   facts and are fully neutral -- 54 included, the optional post-trip session, in which the
   child compares what they predicted against what actually happened on the real trip and
-  names no place. A session can be routed to a pack file without naming a
+  names no place. One exception holds until Batch 2: Session 15 needs no destination
+  facts either, but it is not yet neutral in the tree -- it still names the first
+  destination and links into that destination's major cities reference. Converting it is
+  a Batch 2 deliverable; until then, adding a destination means converting that one
+  session by hand. A session can be routed to a pack file without naming a
   place in its own wording: Sessions 05 and 08 name no place but open the pack's
   starting-sources list, and Sessions 33 and 38 take their currency and cash-culture
   facts from the pack's money reference. Every such pointer is a row in the table
   above."*
+- **Why the rider carries that exception.** This rider is the add-a-destination
+  reader's only list of sessions needing no pack work, and A1's own file-scope rule
+  forbids this pack from editing `framework/`. Left flat, it tells that reader Session 15
+  is done while the session hard-links into the first destination's pack -- so a second
+  destination cannot be added as documented, and the reader finds that out by opening
+  Session 15. F1's three-layer claim and F11's style law each carry this same Batch 2
+  exception in their own wording; the rider is the third copy of the neutrality claim and
+  gets it too. **Keep the two halves apart:** "needs no destination facts" is a fact about
+  the session's design and stays true of all of them, Session 15 included; "neutral in
+  the tree" is a fact about the file as it stands, and Session 15 is the one that fails
+  it. Write the exception **destination-neutrally** -- "the first destination", never the
+  name -- because this contract is copied whole into the next pack. When Batch 2 converts
+  Session 15 the sentence goes and the rider reads flat again, the same way F1's clause
+  goes when Batch 2 clears the leak-exemption list. Session 15 is **not** pulled into this
+  batch to make the flat claim true: the BUILD RULES keep all five later-phase sessions on
+  the exemption list and say "Do not convert them now," the navigation table lists Session
+  15 only so you can confirm it needs no edit, and the pack-path self-check **expects**
+  its two links to survive this batch.
 - **Sessions 33 and 38 are in the table, so they are not in the rider's list.** The
   ranges above read `31-32` and `39` for that reason. Do not widen them back to `31-33`
   and `38-39`; a new-destination author uses this list to decide which sessions need no
@@ -1332,8 +1354,25 @@ what makes carry-over more likely; do not promise a generalized payoff); the car
 tag's canonical wording and where it is placed (only on the session that first
 introduces each transferable move); and the fade gradient briefly — Phases 0–1 "I do /
 we do"; 2–4 "we do / you do"; 5–6 "you do, with check-ins"; 7–8 "you do" — fading on
-demonstrated readiness (two consecutive sessions completed without the meta sections or
-the written Steps), with the always-kept anchors never fading.
+demonstrated readiness -- **two consecutive sessions completed without *using* the meta
+sections or *leaning on* the written Steps** -- with the always-kept anchors never
+fading.
+
+**Both verbs are the trigger, and F4 writes them.** The archived design record states
+this test twice, in its scaffolding-fade section and again in its lighter-template
+section, and both times it is use-based: the child completed two sessions without *using*
+the meta sections or *leaning on* the written Steps. Drop the verbs and the sentence
+stops describing the child and starts describing the page -- two sessions that *contained*
+no meta sections and no written Steps -- which no session in this curriculum can be.
+`.github/scripts/check-session-structure.py` requires a non-empty `## Steps` in every
+session in every phase, and Section C requires `## Finish and Quality Check`, `## If You
+Get Stuck` and `## Optional Extension` in each of the five new sessions on the ground that
+all 14 child sessions carry them. So the clipped form names a session that cannot exist,
+the trigger never fires, and a parent applying it literally never reaches the lighter
+template -- a readiness test that is decoration. The archived record's High-Engagement
+Mode paragraph uses the clipped form too; that is shorthand pointing back at the
+scaffolding-fade section, not a second version of the test, and F4 reproduces the
+canonical one.
 
 **F5. `framework/docs/source_trustworthiness.md` (create).** Parent-facing and
 child-usable, adult register, readable aloud. H1; source types; match the source to the
@@ -2833,7 +2872,8 @@ You are here: Phase 2 (Destination Big Picture), First Taste step 5 of 13. Previ
   Batch 1 adds 37 files and rewires every Previous/Next chain in Phases 0–2, so this is
   the single most likely place for the batch to ship a defect.
 - `destinations/japan/reference/major_cities.md` is byte-identical to its pre-Batch-1
-  state.
+  state, and the self-check below **measures** that with `git diff` rather than taking
+  the build report's word for it.
 - **Every child-facing file this batch creates or edits satisfies the density caps in
   `framework/docs/build_style_and_vocab.md`** -- the dash budget, the
   `real`/`genuine(ly)` cap and the `X, not Y` cap, each at the register the file itself
@@ -2940,8 +2980,18 @@ No hard link from **any framework file** into the destination pack. The scope is
 name greps above because the path is lowercase, and it passes `npm run lint:md:links`
 because the link resolves.
 
+**The pattern is `destinations/[a-z]` under `-i`, not the literal `destinations/japan`.**
+A literal one-pack pattern reports clean on the two paths nearest to the rule it
+enforces: a link into a **second** pack the day one exists, and a mixed-case
+`destinations/Japan/` that still resolves on a case-insensitive filesystem and so also
+passes the link check. The `[a-z]` after the slash is what keeps the style guide's four
+prose mentions of "`framework/` and `destinations/`" out of the result -- each of those
+is a bare directory name in backticks with no path segment after it. Against the tree
+today the wide pattern returns the same six lines, in the same three files, as the
+literal one, so nothing about the expectation below changes.
+
 ```bash
-grep -rn 'destinations/japan' framework/
+grep -rniE 'destinations/[a-z]' framework/
 ```
 
 Expect **exactly two lines, both in
@@ -2955,6 +3005,23 @@ pack", never a path. Sessions 21, 33, 44 and 53 are on the leak-exemption list b
 path into the pack today, so they contribute no output at all; do not restate the
 expectation as "hits in the five exempt sessions," because that is exactly the kind of
 slack that lets a real regression pass.
+
+The one pack file this batch must not touch. The Definition of Done above calls
+`destinations/japan/reference/major_cities.md` byte-identical to its pre-Batch-1 state,
+and **"byte-identical" is a claim a build report can make about a file it edited.** No
+grep above reads that file's contents, and A3 and the Session 34 row both point at it, so
+measure it rather than asserting it:
+
+```bash
+git diff --exit-code HEAD -- destinations/japan/reference/major_cities.md
+```
+
+Expect no output and exit `0`. **Naming `HEAD` is the load-bearing part.** A bare
+`git diff -- <path>` compares the working tree against the **index**, so once the
+`git add -A` below has staged an edited copy, the file compares clean against itself and
+the check reports success on the one change it exists to catch. `HEAD` compares against
+the commit instead, staged or not. Run it while `HEAD` is still your pre-Batch-1 commit;
+if you have already committed part of the batch, diff against the branch point.
 
 Neutral pronouns for a generic child — this one needs eyeballing, since a legitimate
 "their"/"they" sentence can sit beside a false positive. **Scope it the way the style
@@ -3017,27 +3084,48 @@ confirm the file carries `<!-- audience: adult -->` or
 passes this reading and fails the gate above. Session 00 is the only session in the tree
 on that route today, and it carries both markers.
 
-One H1 per built file. **No repository gate checks this, so it is checked here or
-nowhere.** `MD041` is switched off in `.markdownlint.jsonc`, `MD025` fires only on a
-*second* H1, and `.github/scripts/check-session-structure.py` reads `framework/sessions/`
-and nothing else, so a file with no title at all lints clean and passes every gate:
+One H1 per built file, **and it is the first heading in the file.** No repository gate
+checks either half, so both are checked here or nowhere. `MD041` is switched off in
+`.markdownlint.jsonc`, `MD025` fires only on a *second* H1, and
+`.github/scripts/check-session-structure.py` reads `framework/sessions/` and nothing
+else, so a file with no title at all lints clean and passes every gate:
 
 ```bash
 find framework destinations -name '*.md' | while read -r f; do
   n=$(grep -cE '^# ' "$f")
+  first=$(grep -E '^#{1,6} ' "$f" | head -n 1)
   [ "$n" = "1" ] || echo "H1 COUNT $n (want 1): $f"
+  case "$first" in
+    '# '*) ;;
+    '') echo "NO HEADING AT ALL: $f" ;;
+    *) echo "FIRST HEADING IS NOT THE H1: $f" ;;
+  esac
 done
 ```
 
+**A count is not the rule, and a count-only check passes the ordering the rule forbids.**
+The shared rule above has two halves -- exactly one H1, and the H1 first -- and a file
+that opens on `## Metadata` with its sole H1 three sections down satisfies the first and
+breaks the second. It still carries exactly one H1 line, so a counting loop reports `1`
+and prints nothing about the very malformation the rule was written to stop. The second test is what
+closes that: it takes the **first heading line of any level** and requires it to be the
+H1. The two tests fail independently and name which failed, so a file with no title at
+all prints `NO HEADING AT ALL` rather than a count that reads like a different bug.
+
 **Use `find`, not `git ls-files`.** The 37 new files are untracked when you run this, and
-`git ls-files` would not see one of them. The loop counts rather than tests presence, so
-a stray second H1 fails too.
+`git ls-files` would not see one of them. The count is a count rather than a presence
+test, so a stray second H1 fails too. `head -n 1` rather than `grep -m1`, because `-m` is
+not in POSIX while the `{1,6}` bound is; `case` rather than a second `grep`, so a title
+whose own text begins with `#` cannot be misread as a deeper heading.
 
 Expect output for **exactly two files, and no others**: D7 and D8, whose fenced skeletons
 each show an H1 as an example of what a later author writes, so both report `2`. **Judge
 this check by which files appear, never by how many lines print.** Every other file under
-`framework/` and `destinations/` reports `1`. The tree returns nothing at all today,
-across 54 files, so a third name is a title you did not write.
+`framework/` and `destinations/` reports `1`. **Neither ordering message may appear on
+any file, D7 and D8 included** -- both open on their own H1 and carry the example H1
+inside a fence below it, so they produce a count line and nothing else. The tree returns
+nothing at all today, across 54 files, so a third name is a title you did not write and
+an ordering line is a title you put in the wrong place.
 
 Freshness stamps. **The contract above is a placement rule, so the check has to test
 placement.** A check that only asks whether a well-formed stamp occurs *somewhere*
