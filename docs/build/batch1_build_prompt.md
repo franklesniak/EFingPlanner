@@ -19,7 +19,16 @@ build from `docs/spec/lean-spec.md` or `docs/spec/full-oer-companion.md` — the
 partial reading-lenses that link back into `specification.md` and are not
 self-contained.
 
-**You do not need to open the spec for this batch, and there is nothing else to open.**
+**You do not need to open the spec for this batch, and no other requirements source
+exists to open.** That is a claim about requirements, not about the repository. **You
+still read the repository, and several instructions below send you into it.** Read
+`framework/docs/build_style_and_vocab.md` for the density caps and their counting rules
+-- the Definition of Done requires you to read them from that file and never from this
+brief. Read the golden exemplar
+`framework/sessions/phase_00_setup/04_start_a_source_log.md`, which the precedence rule
+above names as the file you draft and check every new session against. And read every
+file this batch edits, because an edit is made against what the file actually says
+today. Those reads are required, not merely permitted.
 Every Batch 1 requirement, every applicable acceptance criterion, and the adjudicated
 answer to all nineteen open questions (OQ-1 through OQ-19) have been extracted and
 resolved already, and **this brief carries all of them**: the session-order table, the
@@ -106,7 +115,15 @@ to the eight already-built shared sessions.
   then self-edited to reference quality against the exemplar. Do not ship raw
   first-pass generation. Human-review coverage stays at **full coverage**: every
   child-facing file is human-edited, not sampled. The Full Build's sampling fallback
-  is not adopted.
+  is not adopted. **That second pass is not yours, and you must not report it as done.**
+  The self-edit is yours and covers every file; the human edit is a separate read by a
+  person, and no self-edit, review pass, readability run or density measurement stands
+  in for it -- the same shape as gate check 2 below, and recorded on the same terms. So
+  carry it as an **open human action**: name it in your build report beside gate check
+  2, list every child-facing file you created or edited so the human has the coverage
+  list, and say plainly that those files are self-edited and not yet human-edited.
+  **Batch 1 is not finished until a person has read them.** The handoff at the end of
+  this brief says exactly what to record.
 - **Batch gate.** Batch 1 ends at the second gate, **"Verify the built slice."** On the
   Full / OER track that gate is **two checks, not one**, and `framework/CHANGELOG.md`
   already records both under "What is still owed to a human". **Check 1** is an
@@ -192,7 +209,19 @@ take it from their own shared contracts below. Every file this batch edits alrea
 an H1; do not add a second.
 
 Every built file references concepts **by Name and relative link**, never by spec
-section number. Every `reference/` and `session_inserts/` file except `README.md`
+section number. **The rule being stated is that a concept is reached by its Name rather
+than by a spec section number**, and the link is how a reader gets there when a link is
+allowed. **Three documented cases bar the link, and in each of them the file writes the
+Name and no link:** a `framework/` file naming anything inside a destination pack, which
+the destination-leak rule in BUILD RULES forbids linking to -- Session 08's
+trusted-starting-sources list and sample search terms, Session 05's and Session 11's
+pack references, and F1's and F8's pointers at the pack; a reference to a file a later
+batch will write, because the target does not exist yet and the link would dangle under
+`npm run lint:md:links` -- H2's print index and Final Binder Assembly session, which F10
+records as a deferred link; and a filename written as inline code in A1's contract
+table, for the dangling reason A1 gives on the spot. Those three are exceptions to the
+link, never to the Name. The batch that makes a target linkable adds the link then.
+Every `reference/` and `session_inserts/` file except `README.md`
 carries `**Last reviewed:** <month year>` on the line directly below its H1, using the
 month you author it. Do not re-date a file you did not verify — the six existing
 reference files keep their `July 2026` stamp.
@@ -306,7 +335,7 @@ add-a-destination checklist. Must contain:
   | --- | --- | --- |
   | `10_snapshot_facts.md` | 10 Destination Snapshot | Capital; major land features; currency; main language. Not the hours-ahead figure -- that is a Trip-Basics card value. |
   | `11_regions_overview.md` | 11 Regions and Cities Overview | The main regions, one short line each on how each feels different; the geography instances the neutral session may not state (the country's shape and size, how weather differs by region, why travel time between regions matters); a pointer to the pack's major-cities reference for the route shapes. No trip shapes, no costs, no pinned travel times. |
-  | `12_seasons_and_events.md` | 12 Weather, Seasons, and Events | Each season the destination has, with its weather and what travelling in it is like; the big-draw and busiest periods; the congestion windows, named as categories to confirm this year; each seasonal hazard with its pacing consequence; one short adult-facing contingency note. No pinned dates, prices or forecasts. |
+  | `12_seasons_and_events.md` | 12 Weather, Seasons, and Events | Each season the destination has, named, so the child can label a season chart, with one short line each on what travelling in it is like; then a pointer to the pack's seasons, weather and events reference for the rest -- the big-draw and busiest periods, the congestion windows named as categories to confirm this year, each seasonal hazard with its pacing consequence, and the adult-facing contingency note. That reference is their canonical home; do not restate them in the slot. No pinned dates, prices or forecasts. |
   | `16_18_candidate_cities.md` | 16-18 Deep-Dive Cities | Two to four first-trip candidate cities, each with a one-line draw and a few kid-magnet ideas to research, not pre-chosen. |
   | `19_other_places_menu.md` | 19 Other Places Research | A menu of further candidate places beyond the deep-dive cities, each with a one-line draw, offered as options to research rather than as a shortlist. |
   | `23_attraction_ideas.md` | 23 Attraction Research Cards | Starter attraction ideas as options to research, mixing high-draw named attractions with low-cost everyday ones, each with what kind of visit it is; anything ticketed, timed or permit-gated flagged "verify." No prices, no hours. |
@@ -400,38 +429,43 @@ file to another pack file is allowed — the no-hard-link rule constrains links 
 every `framework/` file, not only session bodies.
 
 **A4. `destinations/japan/session_inserts/12_seasons_and_events.md` (create).**
-Child-facing, with one short adult-facing contingency note. Everything the built
-Session 12 body currently states about the destination moves here. Must contain: H1;
-`Last reviewed`; **the four seasons compared** — spring mild with cherry blossoms and
-very popular; summer hot and humid with a rainy stretch, tiring on long walking days;
-fall cool and comfortable with colorful leaves, popular; winter cold, snow in the
-north, quieter in many places. Plus: cherry blossoms and fall colors as big draws and
-busier times; **rainy season roughly June** for most of the mainland; **summer heat and
-humidity made vivid** as a health risk (heat exhaustion and dehydration), especially
-for a lower-stamina traveler and for the child on a long walking day, so plan summer
-days gently and with water; **typhoon season roughly late spring through autumn**,
-peaking late summer into
-early autumn, so it matters for late-spring and summer trips too; **the three
-congestion windows** — Golden Week (roughly late April into early May), Obon (roughly
-mid-August), New Year (roughly late December into early January, when many businesses
-and attractions also close) — each meaning crowds and higher prices, with New Year
-adding closures, and each needing this year's exact dates confirmed; **winter as a
-conditional note** (snow matters mainly for nature areas or the north); **the
-cherry-blossom timing trap** (peak bloom cannot reliably be booked months ahead, it
-shifts a week or more year to year, forecasts firm up only in February and March; the
-relaxed real move is that adults lock flights and lodging on historical averages, keep
-day-by-day plans flexible, book refundable where possible, and can chase the front
-north if peak slips — reassuring, not stressful, and no pinned bloom date); **the
-one-line adult typhoon contingency note**, distinct from a rainy day (a forecast
-typhoon can shut down trains, flights and attractions for a day or two, so it is a
-reorder-the-days event, not an indoor afternoon; adults expect to reshuffle days, keep
-flexible or refundable bookings, build a buffer day, and check the official forecast at
-the time of travel — adult-owned logistics, not a child planning task); that peak
-seasons book lodging out months ahead at high prices so adults book early; and
-"current dates must be verified" stated plainly. No pinned dates, prices, or forecasts
-anywhere. **This insert is child-facing, so it uses neither `genuine` nor `genuinely`:**
-the operative style law bans both in child-facing text outright, and asks for the
-concrete thing in their place.
+Child-facing, and a **routing** insert rather than a second fact page.
+
+**`destinations/japan/reference/seasons_weather_events.md` is the canonical home for this
+destination's season facts, and it already holds all of them** -- the four seasons at a
+glance, cherry blossoms and fall colors as the big draws, the rainy season, the summer
+heat and humidity with its pacing consequence, the typhoon season with its
+reorder-the-days framing, the three congestion windows, the cherry-blossom timing trap,
+and the adult-owned forecast and advisory note. That file is stamped `July 2026`, it is
+**not** on this batch's deliverables list, and **you do not edit it.** It also serves a
+second contract row -- Session 48's seasonal packing -- so it is the file with two
+consumers and this insert is the file with one. **The insert must therefore not
+reproduce it.** An earlier draft of this item said everything the built Session 12 body
+states about the destination moves here; every one of those facts is already in that
+reference, so following it would build a second child-facing copy of a page the pack
+already ships, stamped a different month, with nothing keeping the two in step. Later
+travel-fact updates would then have two places to reach and would reliably find one.
+
+Must contain: H1; `Last reviewed`; one framing line in the pack's register; **the
+seasons this destination has, named** -- spring, summer, fall and winter -- **with one
+short line each on what travelling in it is like**, which is what lets the child label
+and start the session's four-box season chart; the plain statement that these are
+patterns and **this year's exact dates must be confirmed**; and this routing sentence:
+*"The busy travel windows, the rainy and typhoon seasons, the cherry-blossom timing
+trap, and what stays with the grown-ups are in your pack's [seasons, weather, and events
+reference](../reference/seasons_weather_events.md). Read them there."*
+
+**Repeat none of those four here**, not even in short form, and do not restate the
+timing trap or the adult contingency note: that reference is their canonical home, the
+same way `major_cities.md` is the canonical home of the two trip shapes A3 is forbidden
+to repeat (OQ-10). A link from one pack file to another pack file is allowed -- the
+no-hard-link rule constrains links **out of `framework/`** and says nothing about links
+inside a pack. Keep the four season lines short enough to orient rather than duplicate;
+the reference's own four-season list is the fuller one, and **if the two ever disagree,
+the reference wins.** No prices, no pinned dates, no forecasts anywhere. **This insert is
+child-facing, so it uses neither `genuine` nor `genuinely`:** the operative style law
+bans both in child-facing text outright, and asks for the concrete thing in their
+place.
 
 **A5. `destinations/japan/session_inserts/kid_glossary.md` (create; pulled forward
 from Batch 3 by OQ-16).** Child-facing. H1: `# Words and Numbers You Will Meet
@@ -639,7 +673,9 @@ Artifact: **Book notes page.** **Source Check is required.** Templates used:
   the Website Notes form would in Session 08. It is a `framework/templates/` file, so a
   relative link to it breaks no rule -- unlike the destination pack's trusted-sources
   list, which this session names generically and never links. Do not add a second
-  mention, and do not restate the form's fields in the session.
+  mention. **Do not reproduce the form's layout or its note-taking cells in the
+  session**; the book citation form and the publication-year move above are this
+  session's own teaching and stay, on the same reading C4 settles below.
 - Stop point (author it), **reachable on both branches**: done when three places are
   written down with one reason each, and the source is recorded in the Source Log --
   from a book, its page numbers and publication year; from a website, its web address
@@ -689,7 +725,15 @@ session is its only point of use** -- nothing else in this batch links to it, so
 unlinked it ships orphaned and the child is told to produce Website comparison notes with
 no route to the form holding the source and comparison fields. Session 09's Materials line
 below is the worked example of the same shape. One mention, on the Materials line; do not
-add a second, and do not restate the form's fields in the session. Must contain:
+add a second. **Do not reproduce the form's layout or its citation fields in the
+session** -- the two source blocks, the per-source cells, and the five citation field
+names F7 defines all belong on the form, and a session that reprints them creates two
+surfaces to keep in step. **The five record fields below are a different thing, and they
+stay.** They are what the child is being taught to write down; the Stop Point is
+answerable only if the session names them; and D4 lays the same ground out as form rows
+because a form and a lesson are allowed to meet at the point of use. That is
+point-of-use teaching, not a restated form. This item settles it, so the two
+instructions cannot be read against each other. Must contain:
 
 - The child compares **at least two sources on the same topic**.
 - The five record fields: what source A says; what source B says; where they agree;
@@ -869,10 +913,9 @@ has to remember an addition the template never showed them:
 ```markdown
 <!-- markdownlint-disable MD013 -->
 
-# Session Number: Session Title
+# Session NN: Session Title
 
-You are here: Phase N, Session M of this phase.
-Previous: [previous session] | Next: [next session]
+You are here: Phase N (Phase Name), First Taste step K of 13. Previous: [previous session] | Next: [next session]
 
 **For parents:**
 
@@ -926,9 +969,23 @@ parent-facing meta" is satisfied by that section order rather than by pushing th
 five-field strip below `## Steps`. The operative style law asks for both halves in one
 sentence: the child's action first, **and** the parent meta grouped into the labelled
 strip near the top. Do not reorder the strip, here or in any session;
-the "You are here" navigation aid and Previous/Next, and exactly what that line
-carries: the phase, the step label, `Previous:` and `Next:`, and no link to the
-progress tracker, for the reason set out after this list; the point-of-use
+the H1 form and the "You are here" navigation aid, in the canonical forms the skeleton
+above now shows and the five exact navigation blocks below demonstrate. **The H1 is
+`# Session NN: Session Title`, with a two-digit number matching the filename** --
+`.github/scripts/check-session-structure.py` requires two digits, so `# Session 2:`
+fails the gate. **The navigation aid is one line**, opening
+`You are here: Phase N (Phase Name)`, then the step label, then `Previous:` and `Next:`
+separated by a pipe, and no link to the progress tracker, for the reason set out after
+this list. **State the step label's three forms beside the skeleton**, because it is the
+one part that varies: a session on the First Taste path writes `First Taste step K of
+13`, a session off that path writes `Not a First Taste step.`, and a conditional add-on
+session writes its add-on label in place of a step number. Say plainly that
+`Phase N, Session M of this phase.` is **not** the form -- it names no phase, no path
+and no step, an earlier draft of this skeleton taught it, and the structure gate would
+pass a session carrying it, because that gate checks only that a `You are here:` line
+exists. A skeleton is the one artifact whose wording propagates, so a non-canonical
+navigation line copied out of it reaches every session a later author writes. Then the
+point-of-use
 accommodation line on artifact-producing sessions; that Start
 Here is a true micro-action, ideally under one minute; the 20–30 minute default, the six
 parent-involvement values and the planner-skill menu; the lighter late-phase template
@@ -1085,8 +1142,23 @@ to a file this brief does not ask for it on.
   destination, reused across any number of trips there; (3) a trip, per trip — one
   family's filled-in work, **never committed**; the family copies a blank trip starter
   kit out and fills it in a binder or Google Docs. Only the first two layers live in
-  the repository. **Write the three-layer claim with no exception** — the Batch 1
-  framework scrub makes it true.
+  the repository. **Write the three-layer claim plainly, with one bounded exception
+  named in the same breath — not without exception.** The Batch 1 framework scrub makes
+  the claim true of everything this batch reaches, and the BUILD RULES below
+  deliberately leave five already-built later-phase sessions -- 15, 21, 33, 44 and 53 --
+  on the destination-leak exemption list until Batch 2 converts or verifies them.
+  Session 15 still names the destination and links into the pack today; the other four
+  carry no destination fact but are unverified, which is why all five stay on the list.
+  An unqualified claim here would publish a reuse guarantee the tree does not meet, and
+  the first reuser who copied `framework/` toward a second destination would find it in
+  Session 15. So write the layer as it is: the framework holds no destination facts and
+  no trip data **except in the later-phase sessions Batch 2 converts, which are named on
+  the leak-exemption list and carry the first destination's facts until then**. Keep the
+  exception to one sentence, keep it inside this bullet rather than in a footnote, and
+  keep it out of the `framework/` prose as a place name -- write "the first
+  destination", never the name. F10 records the same boundary in the changelog's
+  deferred list. When Batch 2 clears that list, the clause goes and the claim becomes
+  unconditional.
 - **A curriculum version field reading exactly `0.2.0`**, with a one-line pointer to
   `CHANGELOG.md` and the explicit "which is which" tag distinguishing the curriculum
   changelog from the per-trip decision log. `framework/CHANGELOG.md` requires these two
@@ -1290,6 +1362,25 @@ retention. Everything else that `privacy_and_safety.md` owns -- the public-repos
 the binder and Google Docs guidance, the general sensitive-data list -- gets a one-clause
 reminder plus a relative link to that page, and is not re-explained here.
 
+**Its point of use is the setup AI choice, and two edits route the parent there.** The
+verify-the-policy rule above is a check an adult performs **before** opting in, with the
+date recorded beside the yes/no. Session 09 repeats it, but Session 09 comes after the
+choice is written down, so a parent who meets the rule only there meets it too late.
+Both surfaces that ask for the choice already name the adult-operated pattern and link
+`privacy_and_safety.md` for it, and **both are already on this batch's edit list**, so
+both gain the same second link and neither is left routing differently from the other:
+`framework/sessions/phase_00_setup/00_parent_setup.md` step 4, and
+`framework/parent_guide/setup_checklist.md` step 4. Each keeps its own wording, its own
+voice and its existing privacy link, and each gains one clause -- *"Before you choose
+yes, read the [AI use rules](PATH) -- an adult checks the tool's current minimum-age and
+supervision policy first, and writes the date checked beside the choice."* -- where
+`PATH` is `../../docs/ai_use_rules.md` from the session and `../docs/ai_use_rules.md`
+from the parent guide. **Do not restate the rules themselves on either page**, do not
+add a third mention anywhere, and do not touch
+`framework/templates/current_family_travel_assumptions.md` or its kit copy: G3 keeps
+the choice field and adds no link, because the blank the family fills in is not where a
+policy check belongs.
+
 **F7. `framework/docs/citation_style.md` (create).** **The canonical home** for the
 citation rule, the reason and the five forms (OQ-11). Required sections, in order:
 `## Metadata`; `## Why we write down where a fact came from` — short, adult register,
@@ -1411,15 +1502,12 @@ branch problem, not a content gap, and a partial history is worse than a paused 
 F10 stays an **edit** on every branch, so the deliverables split is always
 37 created / 28 edited.
 
-The curriculum changelog, distinct from the per-trip decision log. The Batch 1 section
-you add takes this shape:
+The curriculum changelog, distinct from the per-trip decision log. **The file already
+carries its H1 and its "which log is this" router table, and you add neither.** The block
+below is the release section on its own -- it is what the existing `## Unreleased`
+heading becomes when you rename it in place, not a file to paste over the top of one:
 
 ```markdown
-# Curriculum Changelog
-
-<one-line "which is which" router: this is the curriculum changelog; the per-trip
-decision log is a different thing and lives in the family's own binder>
-
 ## 0.2.0 -- <the date you finish, as YYYY-MM-DD>
 
 Batch 1: the complete Phases 0-2 slice -- Session 00 through Checkpoint 1.
@@ -1432,6 +1520,13 @@ Batch 1: the complete Phases 0-2 slice -- Session 00 through Checkpoint 1.
 
 ### Deferred to a later batch
 ```
+
+**Do not copy an H1 into this file, and do not copy a router.** It has both already, the
+H1 on the line under its `markdownlint-disable` comment and the router in its
+`## Which log is this` table. A second H1 breaks the one-H1-per-file rule this brief
+states above and the self-check below tests, and a second router is the duplication the
+first one exists to prevent. An earlier draft of this block showed the whole file,
+which taught exactly that paste.
 
 **The version is `0.2.0`, and you must write it.** The file's own `## Versioning`
 section says the minor number moves when sessions, templates, guides, or destination
@@ -1515,9 +1610,15 @@ Batch 1 must land these entries:
   copy of the insert/reference contract. That contract is copied whole into each new
   pack, so the slot is registered as `adult_logistics.md`. The file exists in no pack
   yet, so nothing was renamed."*
-- **Deferred to a later batch** — *"The binder guide names the print index and the Final
-  Binder Assembly session but does not link to them, because neither file exists yet.
-  Add both relative links when `framework/print_index.md` and Session 50 land."*
+- **Deferred to a later batch** — two entries. *"The binder guide names the print index
+  and the Final Binder Assembly session but does not link to them, because neither file
+  exists yet. Add both relative links when `framework/print_index.md` and Session 50
+  land."* And: *"Five already-built later-phase sessions -- 15, 21, 33, 44 and 53 -- stay
+  on the destination-leak exemption list until Batch 2 converts or verifies them. One of
+  them still carries the destination's facts and links into the pack. The framework
+  README's three-layer claim carries the matching exception until that list is
+  cleared."* Write the second entry with no destination name in it, the way the rest of
+  your entries are written.
 - **"What is still owed to a human" — rewrite the Batch-1 gate sentence in place.** That
   section's second bullet contains the sentence *"Neither check can start yet, because
   Batch 1 creates those pages and sessions."* **It is not the last sentence of the
@@ -1629,9 +1730,12 @@ this file the framework leak-grep self-check below expects to find one. Nowhere 
 two physical lines, which `grep -n` prints as two hits; that is one rule written across two
 lines, not two leaks.
 
-**The five-token grep is a floor, not the rule.** F1 requires the three-layer claim to be
-written with no exception, and OQ-16 orders a full framework scrub, so the rule bans
-destination **facts** -- a class no token list can enumerate. `Golden Week` and `teamLab`
+**The five-token grep is a floor, not the rule.** F1 requires the three-layer claim to
+be written with exactly one exception -- the later-phase sessions on the leak-exemption
+list -- and OQ-16 orders a full framework scrub of everything else, so the rule bans
+destination **facts** across every `framework/` file this batch touches, and that is a
+class no token list can enumerate. The exemption narrows which files the scrub reaches;
+it does not soften the rule inside the ones it does. `Golden Week` and `teamLab`
 are the worked proof: both are destination proper nouns, both sat in this file, and
 neither trips `Japan|Tokyo|Kyoto|Osaka|Shinkansen`. The seventh change above removes them.
 When you touch any `framework/` file in this batch, read it for destination-specific
@@ -2012,6 +2116,13 @@ relationship."* **Keep that file's own wording.** It does not write "your" in fr
 each field, and Session 00's differently-voiced copy of the same list is not a model for
 it.
 
+**`parent_guide/setup_checklist.md` takes one further change, and it is not in the table
+above.** Its **step 4**, the AI yes/no choice, gains the AI-use-rules clause F6 specifies,
+for the reason F6 gives: this batch creates the page that carries the before-you-opt-in
+check, and the two surfaces that ask for the choice are the only places a parent meets it
+in time. That file is already on the edit list for its row above, so **the deliverables
+count does not move for it.**
+
 **H11. `README.md` (edit).** The repository's **root** landing page -- not
 `framework/README.md`, which F1 creates. It has no spec-extract section of its own, so it
 sits here at the end of Section H. The archived design record puts the start-up root docs
@@ -2034,8 +2145,17 @@ deliverables list named it. **Four regions change, and nothing else does:**
   its support files, and the First Taste path runs inside that slice as a curated subset.
   **Keep the rest of the paragraph exactly** -- the Core Finish Line and the full program
   built in later batches, and the Batch 0 gate clearing either by a passing child pilot or
-  by a recorded no-child fallback. That gate has not cleared, and this batch does not
-  clear it.
+  by a recorded no-child fallback. **That gate cleared on the second route, which is why
+  this batch was allowed to begin**, and nothing you write may say otherwise. The
+  no-child fallback is recorded in writing at
+  `framework/parent_guide/time_and_effort.md` and in `framework/CHANGELOG.md`, and
+  `docs/build/README.md` names a recorded fallback as one of the two ways that gate
+  clears. **Do not write that it has not cleared, and do not write that the pilot
+  passed.** The pilot is still deferred, no child has walked any page this repository
+  ships, and the design is still unvalidated -- a gate cleared by fallback and a design
+  still unvalidated are both true at once, and the sentences you are keeping already say
+  so. This batch clears nothing of its own: it stops at the **second** gate, "Verify the
+  built slice", which is a different gate and is still open.
 - **The recommended-default section.** *"Most families should build and run the **Lean
   path** -- one family, one trip, with the Japan facts written straight into the
   sessions"* describes a build this batch has replaced. Batch 1 is on the Full / OER
@@ -2109,7 +2229,8 @@ was lost.
 ### Session 00 — Parent Setup (scrub only, no insert)
 
 Adult-only; it is not in the contract and must **not** say "open this session's
-Destination Notes." Four phrase replacements:
+Destination Notes." Four phrase replacements, plus the one link addition F6 requires at
+step 4:
 
 | Line | Current text | Neutral replacement |
 | --- | --- | --- |
@@ -2121,7 +2242,9 @@ Destination Notes." Four phrase replacements:
 Keep every adult-owned item as-is: the kid-safe filter with its built caveat, which reads
 *"It reduces exposure but does not remove it"*; the four fastest-safe-start actions; the
 passport long-lead check
-with its verify framing and recorded date; the AI yes/no choice, default no; the privacy
+with its verify framing and recorded date; the AI yes/no choice, default no -- step 4
+keeps its wording and its existing privacy link and gains only the one AI-use-rules
+clause F6 specifies; the privacy
 link; the rough season window, budget band and rough trip shape anchors; and the "do not
 decide City C, food, or language now" rule. Keep the kid-sized budget-band framing, with
 the full trip total staying an adult number. **Keep `travel.state.gov` in both places,
@@ -2265,7 +2388,10 @@ Source Log"*, gains the form: *"the adult's own AI tool, your Source Log, the [A
 form](../../templates/ai_notes.md)"*. **`## Workspace`** gains one clause pointing at the
 same file. **The Source Log entry stays primary and its mapping is unchanged** -- the AI
 Notes form is the fuller record kept beside it, never a replacement for it. Do not add a
-third mention, and do not restate the form's fields in the session.
+third mention. **Do not reproduce the form's layout or its entry fields in the session**,
+on the reading C4 settles above; the Source Log mapping this session already carries is
+the Source Log's fields and not the form's, so universal conversion rule 1 preserves it
+unchanged.
 
 ### Session 10 — Destination Snapshot (convert; insert `10_snapshot_facts.md`)
 
@@ -2312,9 +2438,9 @@ error, corrected in the extract.)
 | Goal | "Compare Japan's four seasons" | "Compare your destination's seasons" |
 | Steps intro, first sentence | "Japan has four clear seasons, and each one feels different." | "Open this session's Destination Notes. Your destination's seasons each feel different." |
 | Steps intro, last sentence — **the second hard link** | "Use the [seasons reference](../../../destinations/japan/reference/seasons_weather_events.md) and a trusted source, and record what you use." | "Use your Destination Notes and a trusted source, and record what you use." — **no hard link**. The middle sentence ("Your job is to compare them, not to pick the 'perfect' one.") is already neutral; keep it verbatim. |
-| Step 1 parenthetical | the four-season description | → insert, in full |
-| Special-things list | cherry blossoms, fall colors, rainy season, summer heat, typhoon season, Golden Week / Obon / New Year | → insert, in full. Session keeps the generic instruction: "Add the special things your Destination Notes flag. These are patterns, but you must **check this year's exact dates** -- they move." |
-| Cherry-blossom note | the whole "A note about cherry blossoms" paragraph | → insert. The session may keep a one-clause generic reminder that some timing cannot be pinned even by verifying, pointing to the Destination Notes. |
+| Step 1 parenthetical | the four-season description | → **the pack's seasons reference, which already carries it.** The insert names the seasons and gives one short line each, per A4, so the child can label the season chart. Nothing is lost and no second fact page is written. |
+| Special-things list | cherry blossoms, fall colors, rainy season, summer heat, typhoon season, Golden Week / Obon / New Year | → **the pack's seasons reference, which already carries every one of them**, in its "Things to watch for" and "Busy travel windows" sections. The insert routes there and repeats none of them. Session keeps the generic instruction: "Add the special things your Destination Notes flag. These are patterns, but you must **check this year's exact dates** -- they move." |
+| Cherry-blossom note | the whole "A note about cherry blossoms" paragraph | → **the pack's seasons reference, whose "cherry-blossom timing trap" section already carries it**, and more fully than the session does. The session may keep a one-clause generic reminder that some timing cannot be pinned even by verifying, pointing to the Destination Notes. |
 | Stop Point | "you have marked at least one busy window" | unchanged — already generic |
 
 Keep the four-box Start Here but make the labels come from the Destination Notes:
@@ -2981,13 +3107,14 @@ items:
    equivalence proves nothing was lost in the conversion; it does not show that either
    version works with a child. Make it easy: for each of Sessions 01, 03, 04, 05, 10,
    12, 13 and 14, list the diff against its pre-Batch-1 state **and name where the content
-   went**, so the reviewer can confirm **nothing was lost**. Only two of the eight send
-   facts to an insert -- Session 10 to `10_snapshot_facts.md` and Session 12 to
-   `12_seasons_and_events.md`. **Record a destination for the other six rather than leaving
-   a blank**, because a blank reads as an omission and a stated reason makes the pack
-   self-checking: Session 05 loses two hard links and gains a generic pointer to the pack's
-   trusted-starting-sources reference, which already holds the content, so nothing moved;
-   and Sessions 01, 03, 04, 13 and 14 have no insert slot at all, so their diffs are
+   went**, so the reviewer can confirm **nothing was lost**. Only one of the eight sends
+   facts to an insert -- Session 10 to `10_snapshot_facts.md`. **Record a destination for
+   the other seven rather than leaving a blank**, because a blank reads as an omission and
+   a stated reason makes the pack self-checking: Sessions 05 and 12 each lose their hard
+   links into the pack and gain a generic pointer to a pack reference that already holds
+   the content -- `trusted_starting_sources.md` for Session 05 and
+   `seasons_weather_events.md` for Session 12 -- so nothing moved in either case; and
+   Sessions 01, 03, 04, 13 and 14 have no insert slot at all, so their diffs are
    wording changes with no content move -- say exactly that for each, and a diff larger
    than that is a signal to look again. **List one more migration alongside the eight:**
    `framework/student_guide/travel_glossary.md`'s two deleted sections (H9) against
@@ -3016,10 +3143,16 @@ items:
    plainly that Batch 1 ships with its five new sessions untested by any child. **Never
    describe check 1 as "the gate" — it is half of it**, and a passing check 1 clears
    nothing on its own.
-3. **Full-coverage human edit.** Every child-facing file built or edited this batch is
-   human-edited, not sampled — this binds the reading-level and tone criterion, the
-   meaningful-non-thin-content criterion, and the guides-and-templates-complete
-   criterion.
+3. **Full-coverage human edit — an open human action, not a finished one.** Every
+   child-facing file built or edited this batch must be human-edited, not sampled, and
+   that binds the reading-level and tone criterion, the meaningful-non-thin-content
+   criterion, and the guides-and-templates-complete criterion. **You cannot have done
+   it**, so do not write it in the past tense and do not report those three criteria as
+   met on the strength of your own pass. Hand the human the coverage list -- every
+   child-facing file this batch created or edited -- and say for each that it is
+   self-edited against the exemplar and still waiting on a person's read. Carry it
+   forward as an obligation Batch 2 inherits, in the same place and the same words you
+   carry gate check 2.
 4. **Insert/reference-contract completeness.** Confirm by reading that every
    place-needing session is routed to a named insert and/or reference slot, that there
    are no orphan slots, and that no session reaches for a fact the contract does not
