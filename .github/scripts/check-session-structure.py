@@ -631,7 +631,7 @@ BLOCK_QUOTE_PREFIX_PATTERN = re.compile(r"^ {0,3}>[ \t]?")
 TABLE_DELIMITER_PATTERN = re.compile(
     r"^ {0,3}\|?[ \t]*:?-+:?[ \t]*(?:\|[ \t]*:?-+:?[ \t]*)*\|?[ \t]*$"
 )
-LIST_ITEM_PATTERN = re.compile(r"^(?P<indent> {0,3})(?P<marker>[-*+]|\d{1,9}[.)])(?P<spacing> +)")
+LIST_ITEM_PATTERN = re.compile(r"^(?P<indent> {0,3})(?P<marker>[-*+]|\d{1,9}[.)])(?P<spacing>[ \t]+)")
 
 #: ``re.DOTALL`` because a comment may hold a line ending and still be one
 #: comment: the marker scans hand over the comment text the renderer produces,
@@ -930,12 +930,53 @@ def prune_inactive_list_contexts(line: str, list_contexts: list[ListContext]) ->
         list_contexts.pop()
 
 
+def spacing_columns(match: re.Match[str]) -> int:
+    """Return the column just past a list marker's spacing.
+
+    A tab is not one column. CommonMark measures a list item's content indent
+    in columns and expands a tab to the next multiple of four, so ``-`` and a
+    tab put the content at column 4 exactly as ``-`` and three spaces do --
+    which is why the two render identically and why a fenced block indented
+    four spaces under either of them is the item's content rather than code.
+    Kept identical to the helper in the sibling hooks.
+    https://spec.commonmark.org/0.31.2/#tabs
+    """
+    column = match.end("marker")
+    for character in match.group("spacing"):
+        column = column + 4 - (column % 4) if character == "\t" else column + 1
+    return column
+
+
 def list_content_indent(match: re.Match[str]) -> int:
     """Return the list-item content indent relative to the marker's parent interior."""
     marker_end_column = match.end("marker")
-    spacing_width = len(match.group("spacing"))
+    spacing_width = spacing_columns(match) - marker_end_column
     content_padding = spacing_width if spacing_width <= 4 else 1
     return marker_end_column + content_padding
+
+
+def list_content_offset(match: re.Match[str]) -> int:
+    """Return where a list item's content starts on its own line, in characters.
+
+    This is the second of the two numbers a list item's marker produces, and
+    keeping them apart is the whole point. ``list_content_indent`` is a
+    *column*, because that is what the lines below the marker are measured in.
+    This is a *character* offset into the marker's own line, because that is
+    what a slice of that line is measured in. A tab is one character and up to
+    four columns, so the two numbers part company exactly where a tab appears
+    -- and using either one for both jobs loses a cell: the column slices two
+    characters of the item's text away, and the character count puts the
+    content column at 2 where CommonMark puts it at 4.
+    Kept identical to the helper in the sibling hooks.
+    https://spec.commonmark.org/0.31.2/#tabs
+    """
+    marker_end_column = match.end("marker")
+    if spacing_columns(match) - marker_end_column <= 4:
+        return match.end("spacing")
+    # More than four columns of spacing is one space of content indent and the
+    # rest is the item's own first line, so the content begins one character
+    # past the marker.
+    return marker_end_column + 1
 
 
 def bullet_marker(match: re.Match[str]) -> str | None:
@@ -1002,8 +1043,11 @@ def normalize_for_fence_opening(line: str, list_contexts: list[ListContext]) -> 
                 bullet=bullet_marker(list_match),
             )
         )
+        content_offset_rel = list_content_offset(list_match)
         relative_line = (
-            relative_line[content_indent_rel:] if len(relative_line) >= content_indent_rel else ""
+            relative_line[content_offset_rel:]
+            if len(relative_line) >= content_offset_rel
+            else ""
         )
         list_contexts.append(ListContext(containment_path=effective_path + tuple(extras)))
 
@@ -2284,18 +2328,51 @@ def table_row_cells(content: str) -> tuple[tuple[int, str], ...]:
     return tuple(cells)
 
 
-def gfm_table_rows(sources: Sequence[MarkerSource]) -> frozenset[int]:
+def table_column_count(content: str) -> int:
+    """Return how many cells GFM reads in one table row."""
+    return len(table_row_cells(content.rstrip(ASCII_HORIZONTAL_WHITESPACE)))
+
+
+def table_columns(header: str, delimiter: str) -> int:
+    """Return a table's column count, or ``0`` when this is not a table at all.
+
+    A delimiter row under a pipe-bearing line is not enough. GFM: "The header
+    row must match the delimiter row in the number of cells. If not, a table
+    will not be recognized." A three-cell header over a two-cell delimiter row
+    is an ordinary paragraph, so its backticks pair the way a paragraph's do
+    and a marker standing between them is inside a code span the renderer
+    really does form -- where a scanner that split the line into cells read the
+    marker as a real comment and let a document out of its gate on it.
+
+    The count is also what a body row is measured against: "The remainder of
+    the table's rows may vary in the number of cells. If a row has fewer cells
+    than the header row, empty cells are inserted. If a row has greater, the
+    excess is ignored." Cells past the header's count are not on the page, so
+    nothing in them is either. Kept identical to the helper in the sibling
+    hook.
+    https://github.github.com/gfm/#tables-extension-
+    """
+    count = table_column_count(header)
+    return count if count == table_column_count(delimiter) else 0
+
+
+def gfm_table_rows(sources: Sequence[MarkerSource]) -> dict[int, int]:
     """Return every row the document reads as part of a GFM table.
+
+    Each row maps to the table's column count, which is what tells a body row's
+    cells from the excess GFM throws away.
 
     A table is found by its delimiter row, exactly as ``extract_prose`` in
     ``.github/scripts/check-readability.py`` finds one: the line above the
     delimiter is the header, and the rows below it belong to the table until a
-    line arrives that is blank or carries no pipe. The contents handed in are
-    already peeled to their container's content column, so a quoted or a listed
-    table is recognized as the table it is.
+    line arrives that is blank or carries no pipe. The header and the delimiter
+    row must agree about how many cells there are, or GFM reads no table here
+    at all -- see ``table_columns``. The contents handed in are already peeled
+    to their container's content column, so a quoted or a listed table is
+    recognized as the table it is.
     https://github.github.com/gfm/#tables-extension-
     """
-    rows: set[int] = set()
+    rows: dict[int, int] = {}
     index = 0
     while index + 1 < len(sources):
         kind, content, _ = sources[index]
@@ -2308,7 +2385,12 @@ def gfm_table_rows(sources: Sequence[MarkerSource]) -> frozenset[int]:
         ):
             index += 1
             continue
-        rows.update((index, index + 1))
+        columns = table_columns(content, next_content)
+        if not columns:
+            index += 1
+            continue
+        rows[index] = columns
+        rows[index + 1] = columns
         follow = index + 2
         while (
             follow < len(sources)
@@ -2316,10 +2398,10 @@ def gfm_table_rows(sources: Sequence[MarkerSource]) -> frozenset[int]:
             and sources[follow][1].strip(ASCII_HORIZONTAL_WHITESPACE)
             and "|" in sources[follow][1]
         ):
-            rows.add(follow)
+            rows[follow] = columns
             follow += 1
         index = follow
-    return frozenset(rows)
+    return rows
 
 
 def collect_reference_labels(sources: Sequence[MarkerSource]) -> frozenset[str]:
@@ -2419,8 +2501,11 @@ def collect_marker_lines(sources: Sequence[MarkerSource]) -> tuple[str, ...]:
             # boundary and masked the marker standing between them. The comment
             # state still travels through the cells in document order, because
             # that is the order the page is written in.
+            # A body row with more cells than the header has its excess
+            # ignored by GFM, so those characters are not on the page and
+            # nothing written in them is either.
             cell_spans: list[str] = []
-            for _, cell in table_row_cells(content):
+            for _, cell in table_row_cells(content)[: table_rows[row]]:
                 spans, is_in_comment = text_marker_spans(
                     [cell], is_in_comment, defined_labels
                 )

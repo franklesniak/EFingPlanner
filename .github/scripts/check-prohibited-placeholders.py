@@ -97,7 +97,7 @@ THEMATIC_BREAK_LINE_PATTERN = re.compile(
 #: <https://spec.commonmark.org/0.31.2/#setext-headings>
 SETEXT_UNDERLINE_PATTERN = re.compile(r"^ {0,3}(?:=+|-+)[ \t]*$")
 BLOCK_QUOTE_PREFIX_PATTERN = re.compile(r"^ {0,3}>[ \t]?")
-LIST_ITEM_PATTERN = re.compile(r"^(?P<indent> {0,3})(?P<marker>[-*+]|\d{1,9}[.)])(?P<spacing> +)")
+LIST_ITEM_PATTERN = re.compile(r"^(?P<indent> {0,3})(?P<marker>[-*+]|\d{1,9}[.)])(?P<spacing>[ \t]+)")
 
 #: What a bare link destination may hold, as CommonMark spells it: anything but
 #: a space, an ASCII control character and an unescaped parenthesis, and it may
@@ -554,12 +554,53 @@ def prune_inactive_list_contexts(line: str, list_contexts: list[ListContext]) ->
         list_contexts.pop()
 
 
+def spacing_columns(match: re.Match[str]) -> int:
+    """Return the column just past a list marker's spacing.
+
+    A tab is not one column. CommonMark measures a list item's content indent
+    in columns and expands a tab to the next multiple of four, so ``-`` and a
+    tab put the content at column 4 exactly as ``-`` and three spaces do --
+    which is why the two render identically and why a fenced block indented
+    four spaces under either of them is the item's content rather than code.
+    Kept identical to the helper in the sibling hooks.
+    https://spec.commonmark.org/0.31.2/#tabs
+    """
+    column = match.end("marker")
+    for character in match.group("spacing"):
+        column = column + 4 - (column % 4) if character == "\t" else column + 1
+    return column
+
+
 def list_content_indent(match: re.Match[str]) -> int:
     """Return the list-item content indent relative to the marker's parent interior."""
     marker_end_column = match.end("marker")
-    spacing_width = len(match.group("spacing"))
+    spacing_width = spacing_columns(match) - marker_end_column
     content_padding = spacing_width if spacing_width <= 4 else 1
     return marker_end_column + content_padding
+
+
+def list_content_offset(match: re.Match[str]) -> int:
+    """Return where a list item's content starts on its own line, in characters.
+
+    This is the second of the two numbers a list item's marker produces, and
+    keeping them apart is the whole point. ``list_content_indent`` is a
+    *column*, because that is what the lines below the marker are measured in.
+    This is a *character* offset into the marker's own line, because that is
+    what a slice of that line is measured in. A tab is one character and up to
+    four columns, so the two numbers part company exactly where a tab appears
+    -- and using either one for both jobs loses a cell: the column slices two
+    characters of the item's text away, and the character count puts the
+    content column at 2 where CommonMark puts it at 4.
+    Kept identical to the helper in the sibling hooks.
+    https://spec.commonmark.org/0.31.2/#tabs
+    """
+    marker_end_column = match.end("marker")
+    if spacing_columns(match) - marker_end_column <= 4:
+        return match.end("spacing")
+    # More than four columns of spacing is one space of content indent and the
+    # rest is the item's own first line, so the content begins one character
+    # past the marker.
+    return marker_end_column + 1
 
 
 def bullet_marker(match: re.Match[str]) -> str | None:
@@ -626,8 +667,11 @@ def normalize_for_fence_opening(line: str, list_contexts: list[ListContext]) -> 
                 bullet=bullet_marker(list_match),
             )
         )
+        content_offset_rel = list_content_offset(list_match)
         relative_line = (
-            relative_line[content_indent_rel:] if len(relative_line) >= content_indent_rel else ""
+            relative_line[content_offset_rel:]
+            if len(relative_line) >= content_offset_rel
+            else ""
         )
         list_contexts.append(ListContext(containment_path=effective_path + tuple(extras)))
 

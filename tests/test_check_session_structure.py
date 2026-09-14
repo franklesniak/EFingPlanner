@@ -3844,3 +3844,153 @@ def test_a_pipe_bearing_paragraph_is_not_a_table() -> None:
     assert "no-source-check" not in structure.scan_document(paragraph).marker_text
     assert structure.is_table_delimiter("| --- | --- |")
     assert not structure.is_table_delimiter("| a | b |")
+
+
+#: One tab, spelled through a name for the reason ``BACKSLASH`` is.
+TAB = chr(9)
+
+
+def test_a_tab_after_a_list_marker_ends_the_paragraph_above_it() -> None:
+    """The structure hook reads the same list the readability hook reads.
+
+    A tab after the marker starts a list in CommonMark, and a list ends the
+    paragraph above it, so the backticks on either side never pair and the
+    ``no-source-check`` marker between them is a real comment. Without it the
+    session's declared exemption was masked and the session was failed for not
+    declaring one.
+    https://spec.commonmark.org/0.31.2/#tabs
+    """
+    document = (
+        "Use "
+        + TICK
+        + "open\n-"
+        + TAB
+        + "item "
+        + OFFLINE_MARKER
+        + "\n"
+        + TICK
+        + "close\n"
+    )
+    assert "no-source-check" in structure.scan_document(document).marker_text
+
+
+def test_a_list_marker_with_no_spacing_at_all_is_not_a_list_here_either() -> None:
+    """The over-application control: the spacing is required, tab or no tab."""
+    document = (
+        "Use " + TICK + "open\n-item " + OFFLINE_MARKER + "\n" + TICK + "close\n"
+    )
+    assert "no-source-check" not in structure.scan_document(document).marker_text
+
+
+def test_the_three_hooks_measure_a_tabbed_list_marker_identically() -> None:
+    """One rule, three files: the two numbers a marker produces agree everywhere.
+
+    The container walk is copied into all three hooks, so a tab read as one
+    column in one of them and four in another would put the same fenced block
+    inside an item in one gate and outside it in the next.
+    """
+    import importlib.util as _util
+
+    modules = []
+    for name in (
+        "check-readability.py",
+        "check-session-structure.py",
+        "check-prohibited-placeholders.py",
+    ):
+        path = Path(__file__).resolve().parents[1] / ".github" / "scripts" / name
+        spec = _util.spec_from_file_location(f"listpin_{name}", path)
+        assert spec is not None and spec.loader is not None
+        module = _util.module_from_spec(spec)
+        sys.modules[spec.name] = module
+        spec.loader.exec_module(module)
+        modules.append(module)
+
+    for spelling, indent, offset in (
+        ("-" + TAB + "item", 4, 2),
+        ("-   item", 4, 4),
+        ("-     item", 2, 2),
+        ("10." + TAB + "item", 4, 4),
+    ):
+        answers = set()
+        for module in modules:
+            match = module.LIST_ITEM_PATTERN.match(spelling)
+            assert match is not None, spelling
+            answers.add(
+                (module.list_content_indent(match), module.list_content_offset(match))
+            )
+        assert answers == {(indent, offset)}, spelling
+
+
+def test_a_header_row_and_a_delimiter_row_that_disagree_are_no_table() -> None:
+    """GFM: the header row must match the delimiter row in the number of cells.
+
+    A three-cell header over a two-cell delimiter row is a paragraph, so its
+    backticks pair and the ``no-source-check`` marker between them is inside a
+    code span. Splitting it into cells found an exemption the page does not
+    grant and let a session without a Source Check section pass.
+    https://github.github.com/gfm/#tables-extension-
+    """
+    wide = (
+        "| "
+        + TICK
+        + "open | "
+        + OFFLINE_MARKER
+        + " "
+        + TICK
+        + "close | third |\n| --- | --- |\n"
+    )
+    narrow = (
+        "| "
+        + TICK
+        + "open | "
+        + OFFLINE_MARKER
+        + " "
+        + TICK
+        + "close |\n| --- | --- | --- |\n"
+    )
+    assert "no-source-check" not in structure.scan_document(wide).marker_text
+    assert "no-source-check" not in structure.scan_document(narrow).marker_text
+
+
+def test_a_header_row_and_a_delimiter_row_that_agree_are_a_table() -> None:
+    """The over-application control: a real table still splits into cells."""
+    table = (
+        "| "
+        + TICK
+        + "open | "
+        + OFFLINE_MARKER
+        + " "
+        + TICK
+        + "close |\n| --- | --- |\n"
+    )
+    assert "no-source-check" in structure.scan_document(table).marker_text
+    assert structure.table_columns("| a | b |", "| --- | --- |") == 2
+    assert structure.table_columns("| a | b | c |", "| --- | --- |") == 0
+
+
+def test_the_excess_cells_of_a_body_row_are_not_on_the_page() -> None:
+    """GFM ignores a body row's cells past the header's count, so nothing is in them."""
+    document = (
+        "| a | b |\n| --- | --- |\n| "
+        + TICK
+        + "open | x | "
+        + OFFLINE_MARKER
+        + " "
+        + TICK
+        + "close |\n"
+    )
+    assert "no-source-check" not in structure.scan_document(document).marker_text
+
+
+def test_a_body_row_with_fewer_cells_keeps_the_cells_it_has() -> None:
+    """The over-application control: a short row is padded, not truncated."""
+    document = (
+        "| a | b | c |\n| --- | --- | --- |\n| "
+        + TICK
+        + "open | "
+        + OFFLINE_MARKER
+        + " "
+        + TICK
+        + "close |\n"
+    )
+    assert "no-source-check" in structure.scan_document(document).marker_text

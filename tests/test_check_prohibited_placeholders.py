@@ -1470,3 +1470,24 @@ def test_a_placeholder_below_a_closed_element_is_still_exempt() -> None:
     document = "<script></script>\n\n<!-- TBD: a note -->\n"
     hook = cast(Any, _placeholder_hook)
     assert hook.find_violations_in_text(document, "docs/example.md") == []
+
+
+#: One tab, spelled through a name so it is visible in a diff.
+TAB = chr(9)
+
+
+def test_a_tab_after_a_list_marker_puts_the_content_at_column_four() -> None:
+    """A tab is four columns here, so a fenced block indented four is the item's.
+
+    Measured with markdown-it 14.3.0: a dash, a tab and a fence, with ``TBD``
+    indented four spaces under it, renders the placeholder inside
+    ``<pre><code>`` where it is an example rather than an unfinished section.
+    Indent the same body two spaces and it has left the item, the fence never
+    opened around it, and the placeholder is on the page. Reading the tab as
+    one character gets exactly these two the wrong way round.
+    https://spec.commonmark.org/0.31.2/#tabs
+    """
+    inside = "-" + TAB + FENCE + "\n    TBD\n    " + FENCE + "\n"
+    outside = "-" + TAB + FENCE + "\n  TBD\n  " + FENCE + "\n"
+    assert _find(inside) == []
+    assert _find(outside)

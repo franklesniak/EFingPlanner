@@ -4714,3 +4714,198 @@ def test_a_pipe_with_no_delimiter_row_under_it_is_a_paragraph() -> None:
         TICK + "open | x\ntext " + ADULT_MARKER + " " + TICK + "close\n"
     )
     assert not readability.has_adult_marker(paragraph)
+
+
+#: One tab. Spelled through a name for the reason ``BACKSLASH`` is: a literal
+#: tab in a test document is invisible in a diff and an editor may eat it.
+TAB = chr(9)
+
+
+def test_a_tab_after_a_list_marker_starts_the_list_it_starts() -> None:
+    """CommonMark expands a tab after a list marker, and a list ends a paragraph.
+
+    markdown-it 14.3.0 renders ``Use `open`` as its own paragraph and the line
+    below it as a list item, so the two backticks never meet and the marker in
+    the item is a comment the page really prints. Accepting only a literal
+    space left the list unseen, the paragraph open, and the backticks paired
+    around the marker -- which took an adult-facing document through the child
+    gate. Every marker spelling is here because the spacing rule belongs to the
+    marker, not to the bullet.
+    https://spec.commonmark.org/0.31.2/#tabs
+    """
+    for marker in ("-", "*", "1."):
+        document = (
+            "Use "
+            + TICK
+            + "open\n"
+            + marker
+            + TAB
+            + "item "
+            + ADULT_MARKER
+            + "\n"
+            + TICK
+            + "close\n"
+        )
+        assert readability.has_adult_marker(document), marker
+
+
+def test_a_list_marker_with_no_spacing_at_all_is_not_a_list() -> None:
+    """The spacing is required, tab or no tab.
+
+    ``-item`` is a paragraph, so the backticks above and below it pair and the
+    marker between them is masked. A widening that let the spacing be empty
+    would read this as a list and find a marker the page never prints.
+    """
+    document = (
+        "Use " + TICK + "open\n-item " + ADULT_MARKER + "\n" + TICK + "close\n"
+    )
+    assert not readability.has_adult_marker(document)
+
+
+def test_a_tab_after_a_list_marker_is_one_character_and_four_columns() -> None:
+    """The two numbers a marker produces, and why they are two numbers.
+
+    ``list_content_indent`` is the column the lines *below* the marker are
+    measured in, and CommonMark expands a tab to the next stop of four, so
+    ``-`` and a tab put it at 4. ``list_content_offset`` is the character the
+    marker's *own* line is sliced at, and a tab is one character, so it is 2.
+    Using either number for both jobs loses a cell in a measured instrument:
+    the column eats two characters of the item's text, and the character count
+    puts a fenced block indented four spaces outside the item.
+    """
+    tabbed = readability.LIST_ITEM_PATTERN.match("-" + TAB + "item")
+    assert tabbed is not None
+    assert readability.list_content_indent(tabbed) == 4
+    assert readability.list_content_offset(tabbed) == 2
+
+    spaced = readability.LIST_ITEM_PATTERN.match("-   item")
+    assert spaced is not None
+    assert readability.list_content_indent(spaced) == 4
+    assert readability.list_content_offset(spaced) == 4
+
+    wide = readability.LIST_ITEM_PATTERN.match("-     item")
+    assert wide is not None
+    assert readability.list_content_indent(wide) == 2
+    assert readability.list_content_offset(wide) == 2
+
+
+def test_a_tab_indented_item_holds_a_fenced_block_at_column_four() -> None:
+    """A tab puts the item's content column at 4, so a fence body at 4 is inside it.
+
+    Measured with markdown-it 14.3.0: a dash, a tab and a fence, with the body
+    indented four spaces under it, renders the body inside ``<pre><code>``, and
+    the same body indented two spaces leaves the item entirely and is painted
+    as a paragraph. Both directions are here because the two readings of the
+    tab -- one character or four columns -- each get one of them right and the
+    other wrong.
+    """
+    inside = (
+        "-" + TAB + FENCE + "\n    body " + ADULT_MARKER + "\n    " + FENCE + "\n"
+    )
+    outside = "-" + TAB + FENCE + "\n  body " + ADULT_MARKER + "\n  " + FENCE + "\n"
+    assert not readability.has_adult_marker(inside)
+    assert readability.has_adult_marker(outside)
+
+
+def test_a_header_row_and_a_delimiter_row_that_disagree_are_no_table() -> None:
+    """GFM: the header row must match the delimiter row in the number of cells.
+
+    markdown-it 14.3.0 with its table rule enabled renders a three-cell header
+    over a two-cell delimiter row as an ordinary paragraph, so the backticks
+    pair and the marker between them is inside a code span the renderer really
+    does form. Splitting the line into cells anyway made each cell its own
+    inline context and found a marker the page never prints. Both directions of
+    the mismatch are here, with and without outer pipes.
+    https://github.github.com/gfm/#tables-extension-
+    """
+    wide = (
+        "| "
+        + TICK
+        + "open | "
+        + ADULT_MARKER
+        + " "
+        + TICK
+        + "close | third |\n| --- | --- |\n"
+    )
+    narrow = (
+        "| "
+        + TICK
+        + "open | "
+        + ADULT_MARKER
+        + " "
+        + TICK
+        + "close |\n| --- | --- | --- |\n"
+    )
+    bare = (
+        TICK + "open | " + ADULT_MARKER + " " + TICK + "close | third\n--- | ---\n"
+    )
+    assert not readability.has_adult_marker(wide)
+    assert not readability.has_adult_marker(narrow)
+    assert not readability.has_adult_marker(bare)
+
+
+def test_a_header_row_and_a_delimiter_row_that_agree_are_a_table() -> None:
+    """The over-application control: a real table still splits into cells.
+
+    Two cells over a two-cell delimiter row is a table, each cell is its own
+    inline context, and the marker in the second one is a marker.
+    """
+    table = (
+        "| " + TICK + "open | " + ADULT_MARKER + " " + TICK + "close |\n| --- | --- |\n"
+    )
+    assert readability.has_adult_marker(table)
+
+
+def test_the_blanks_after_a_row_do_not_add_a_cell_to_it() -> None:
+    """A trailing run of spaces is not a cell, so the counts still agree."""
+    table = (
+        "| "
+        + TICK
+        + "open | "
+        + ADULT_MARKER
+        + " "
+        + TICK
+        + "close |  \n| --- | --- |\n"
+    )
+    assert readability.has_adult_marker(table)
+    assert readability.table_columns("| a | b |", "| --- | --- |") == 2
+    assert readability.table_columns("| a | b | c |", "| --- | --- |") == 0
+    assert readability.table_column_count("| a | b |  ") == 2
+
+
+def test_the_excess_cells_of_a_body_row_are_not_on_the_page() -> None:
+    """GFM: if a body row has more cells than the header row, the excess is ignored.
+
+    Measured with markdown-it 14.3.0: a two-column table whose body row carries
+    three cells renders two ``<td>`` elements and drops the third entirely, so
+    a marker written in it is on no page at all. Scanning it read a marker the
+    document does not have.
+    """
+    document = (
+        "| a | b |\n| --- | --- |\n| "
+        + TICK
+        + "open | x | "
+        + ADULT_MARKER
+        + " "
+        + TICK
+        + "close |\n"
+    )
+    assert not readability.has_adult_marker(document)
+
+
+def test_a_body_row_with_fewer_cells_keeps_the_cells_it_has() -> None:
+    """The over-application control: a short row is padded, not truncated.
+
+    GFM inserts empty cells for a row shorter than the header, so every cell
+    the author wrote is still a cell and still its own inline context.
+    """
+    document = (
+        "| a | b | c |\n| --- | --- | --- |\n| "
+        + TICK
+        + "open | "
+        + ADULT_MARKER
+        + " "
+        + TICK
+        + "close |\n"
+    )
+    assert readability.has_adult_marker(document)

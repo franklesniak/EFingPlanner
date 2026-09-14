@@ -181,7 +181,7 @@ FENCE_OPEN_PATTERN = re.compile(r"^ {0,3}(?P<marker>`{3,}|~{3,})")
 #: placeholder checker spells it so that the two scripts agree on what a fence
 #: is. ``BLOCKQUOTE_PATTERN`` stays the prose-stripping copy.
 BLOCK_QUOTE_PREFIX_PATTERN = re.compile(r"^ {0,3}>[ \t]?")
-LIST_ITEM_PATTERN = re.compile(r"^(?P<indent> {0,3})(?P<marker>[-*+]|\d{1,9}[.)])(?P<spacing> +)")
+LIST_ITEM_PATTERN = re.compile(r"^(?P<indent> {0,3})(?P<marker>[-*+]|\d{1,9}[.)])(?P<spacing>[ \t]+)")
 #: Two of the shapes that end the paragraph above them, spelled as
 #: ``.github/scripts/check-session-structure.py`` spells them so that the
 #: hooks share one notion of where a paragraph ends. ``HEADING_PATTERN`` and
@@ -992,12 +992,53 @@ def prune_inactive_list_contexts(line: str, list_contexts: list[ListContext]) ->
         list_contexts.pop()
 
 
+def spacing_columns(match: re.Match[str]) -> int:
+    """Return the column just past a list marker's spacing.
+
+    A tab is not one column. CommonMark measures a list item's content indent
+    in columns and expands a tab to the next multiple of four, so ``-`` and a
+    tab put the content at column 4 exactly as ``-`` and three spaces do --
+    which is why the two render identically and why a fenced block indented
+    four spaces under either of them is the item's content rather than code.
+    Kept identical to the helper in the sibling hooks.
+    https://spec.commonmark.org/0.31.2/#tabs
+    """
+    column = match.end("marker")
+    for character in match.group("spacing"):
+        column = column + 4 - (column % 4) if character == "\t" else column + 1
+    return column
+
+
 def list_content_indent(match: re.Match[str]) -> int:
     """Return the list-item content indent relative to the marker's parent interior."""
     marker_end_column = match.end("marker")
-    spacing_width = len(match.group("spacing"))
+    spacing_width = spacing_columns(match) - marker_end_column
     content_padding = spacing_width if spacing_width <= 4 else 1
     return marker_end_column + content_padding
+
+
+def list_content_offset(match: re.Match[str]) -> int:
+    """Return where a list item's content starts on its own line, in characters.
+
+    This is the second of the two numbers a list item's marker produces, and
+    keeping them apart is the whole point. ``list_content_indent`` is a
+    *column*, because that is what the lines below the marker are measured in.
+    This is a *character* offset into the marker's own line, because that is
+    what a slice of that line is measured in. A tab is one character and up to
+    four columns, so the two numbers part company exactly where a tab appears
+    -- and using either one for both jobs loses a cell: the column slices two
+    characters of the item's text away, and the character count puts the
+    content column at 2 where CommonMark puts it at 4.
+    Kept identical to the helper in the sibling hooks.
+    https://spec.commonmark.org/0.31.2/#tabs
+    """
+    marker_end_column = match.end("marker")
+    if spacing_columns(match) - marker_end_column <= 4:
+        return match.end("spacing")
+    # More than four columns of spacing is one space of content indent and the
+    # rest is the item's own first line, so the content begins one character
+    # past the marker.
+    return marker_end_column + 1
 
 
 def bullet_marker(match: re.Match[str]) -> str | None:
@@ -1064,8 +1105,11 @@ def normalize_for_fence_opening(line: str, list_contexts: list[ListContext]) -> 
                 bullet=bullet_marker(list_match),
             )
         )
+        content_offset_rel = list_content_offset(list_match)
         relative_line = (
-            relative_line[content_indent_rel:] if len(relative_line) >= content_indent_rel else ""
+            relative_line[content_offset_rel:]
+            if len(relative_line) >= content_offset_rel
+            else ""
         )
         list_contexts.append(ListContext(containment_path=effective_path + tuple(extras)))
 
@@ -1140,6 +1184,34 @@ def table_row_cells(content: str) -> tuple[tuple[int, str], ...]:
     if start < len(content):
         cells.append((start, content[start:]))
     return tuple(cells)
+
+
+def table_column_count(content: str) -> int:
+    """Return how many cells GFM reads in one table row."""
+    return len(table_row_cells(content.rstrip(ASCII_HORIZONTAL_WHITESPACE)))
+
+
+def table_columns(header: str, delimiter: str) -> int:
+    """Return a table's column count, or ``0`` when this is not a table at all.
+
+    A delimiter row under a pipe-bearing line is not enough. GFM: "The header
+    row must match the delimiter row in the number of cells. If not, a table
+    will not be recognized." A three-cell header over a two-cell delimiter row
+    is an ordinary paragraph, so its backticks pair the way a paragraph's do
+    and a marker standing between them is inside a code span the renderer
+    really does form -- where a scanner that split the line into cells read the
+    marker as a real comment and let a document out of its gate on it.
+
+    The count is also what a body row is measured against: "The remainder of
+    the table's rows may vary in the number of cells. If a row has fewer cells
+    than the header row, empty cells are inserted. If a row has greater, the
+    excess is ignored." Cells past the header's count are not on the page, so
+    nothing in them is either. Kept identical to the helper in the sibling
+    hook.
+    https://github.github.com/gfm/#tables-extension-
+    """
+    count = table_column_count(header)
+    return count if count == table_column_count(delimiter) else 0
 
 
 def is_table_delimiter(line: str) -> bool:
@@ -2661,6 +2733,7 @@ def scan_document_inlines(text: str) -> DocumentInlines:
 
     lines = text.split("\n")
     in_table = False
+    table_columns_here = 0
     table_container: tuple[Container, ...] = ()
 
     for number, raw_line in enumerate(lines):
@@ -2793,18 +2866,26 @@ def scan_document_inlines(text: str) -> DocumentInlines:
             next_fence_line = normalize_for_fence_opening(
                 next_line, list(list_contexts)
             )
-            if (
-                next_fence_line.containment_path == fence_line.containment_path
+            columns = (
+                table_columns(fence_line.content, next_fence_line.content)
+                if next_fence_line.containment_path == fence_line.containment_path
                 and is_table_delimiter(next_fence_line.content)
-            ):
+                else 0
+            )
+            if columns:
                 in_table = True
+                table_columns_here = columns
                 table_container = fence_line.containment_path
         if in_table:
             close_paragraph()
             paragraph_open = False
             previous_path = fence_line.containment_path
             prefix = len(line) - len(fence_line.content)
-            for cell_start, cell_text in table_row_cells(fence_line.content):
+            # A body row with more cells than the header has its excess
+            # ignored by GFM, so those characters are not on the page and
+            # nothing written in them is either.
+            row_cells = table_row_cells(fence_line.content)[:table_columns_here]
+            for cell_start, cell_text in row_cells:
                 runs.append(
                     (
                         [
@@ -3343,6 +3424,7 @@ def extract_prose(text: str) -> str:
             if (
                 next_fence_line.containment_path == fence_line.containment_path
                 and is_table_delimiter(next_fence_line.content)
+                and table_columns(fence_line.content, next_fence_line.content)
             ):
                 in_table = True
                 table_container = fence_line.containment_path
