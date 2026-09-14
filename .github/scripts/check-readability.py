@@ -1297,16 +1297,35 @@ def table_row_cells(content: str) -> tuple[tuple[int, str], ...]:
     GFM reads the table before it reads any inline, so ``\\|`` is a cell
     character even where a code span would otherwise claim it.
 
-    The leading pipe is still the leading pipe when the row is indented. GFM
-    lets a row carry up to three columns of indentation, so a row asked about
-    at character zero counted its own indentation as a first cell: a table
-    whose header and delimiter row were indented differently was refused
-    outright, and one indented alike was recognized with a column count one too
-    high, which is the number a body row's excess cells are measured against.
-    A fourth column of indentation is an indented code block and no table row
-    at all -- that is not this helper's rule to state, and the count it returns
-    for such a line disagrees with an unindented delimiter row anyway, which is
-    the only reason the module reaches the right answer there. See residual 1.
+    The leading pipe is still the leading pipe when the row is indented, and a
+    row asked about at character zero counted its own indentation as a first
+    cell: a table whose header and delimiter row were indented differently was
+    refused outright, and one indented alike was recognized with a column count
+    one too high, which is the number a body row's excess cells are measured
+    against.
+
+    The leading pipe is a delimiter only up to three columns of indentation,
+    which is where GFM lets a table begin. That is the whole of this helper's
+    indent rule, and claiming more than it was the defect: the sentence above
+    used to end "a fourth is an indented code block and no table row at all",
+    and this body parses such a line's cells like any other.
+
+    Both halves of that sentence are wrong here, and the two errors point in
+    opposite directions. A row indented four columns is not always code --
+    where a paragraph is open above it the line is that paragraph's lazy
+    continuation, and ``Intro.`` over a four-space ``| a |`` over ``| - |`` is
+    a one-column table on GitHub's own renderer, measured, which the cap above
+    refuses by reading the indentation as a cell. And where no paragraph is
+    open the line is code and no row at all, which nothing here enforces: a
+    pipeless four-space header over a pipeless delimiter row agrees about the
+    column count and opens a table this helper never sees a reason to refuse.
+
+    Neither is closed here, because the rule belongs to the paragraph and the
+    three walks that look a delimiter row ahead carry no paragraph state --
+    ``extract_prose`` carries none at all. What indentation does decide is
+    settled where the state already is: ``opens_a_paragraph`` opens no
+    paragraph on an indented line, and ``is_table_delimiter`` refuses an
+    indented delimiter row.
 
     The reason a row has to be split at all is that a cell is its own inline
     context. A backtick left unmatched in one cell cannot pair with one in
@@ -1321,7 +1340,7 @@ def table_row_cells(content: str) -> tuple[tuple[int, str], ...]:
     start = indent + 1 if indent < 4 and content[indent:].startswith("|") else 0
     index = start
     while index < len(content):
-        if content[index] == "|" and content[index - 1] != "\\":
+        if content[index] == "|" and (index == 0 or content[index - 1] != "\\"):
             cells.append((start, content[start:index]))
             start = index + 1
         index += 1
@@ -1375,6 +1394,13 @@ def is_table_delimiter(line: str) -> bool:
       Refusing every pipeless row -- which this helper did, on the ground that
       such a row is a thematic break -- lost the colon-bearing case and kept
       the other by accident.
+    * **A row indented four columns is no delimiter row**, whatever else is
+      open. ``x`` over a four-space ``-:`` is one paragraph of two lines on
+      GitHub's own renderer and ``x`` over a three-space ``-:`` is a table,
+      measured; a leading tab reaches column four and does the same. The
+      pattern's own ``^ {0,3}`` does not say this, because the ``[ \t]*`` that
+      follows the optional pipe absorbs the fourth space, and it counts no tab
+      at all.
     * **A row a list item could open is a list item.** ``- |`` matches the
       delimiter pattern and renders as a bullet, because the block parser
       reaches the list before the table extension does.
@@ -1383,6 +1409,8 @@ def is_table_delimiter(line: str) -> bool:
     https://github.github.com/gfm/#tables-extension-
     https://spec.commonmark.org/0.31.2/#setext-headings
     """
+    if count_indent_columns(line) >= 4:
+        return False
     if TABLE_DELIMITER_PATTERN.match(line) is None:
         return False
     if LIST_ITEM_PATTERN.match(line) is not None:
@@ -1703,6 +1731,18 @@ def opens_a_paragraph(
     block condition 7 that may not interrupt one -- and the liberal fallback
     was holding that block shut and counting a heading the page never shows.
 
+    An indented code block is the fourth shape that needs the state coming in,
+    and it is the one the liberal fallback was wrong about in the direction this
+    fallback is not allowed to be wrong in. A line indented four columns opens a
+    code block only where no paragraph is open; where one is, the line is that
+    paragraph's lazy continuation and every rule applies to it. Reading such a
+    line as a paragraph held the HTML block condition 7 below it shut and
+    counted a ``## Goal`` the page never paints -- measured on GitHub's own
+    renderer, which reads a four-space ``x`` over ``<custom>`` over ``## Goal``
+    as a code block, an open condition 7 and no heading at all. The indent is
+    counted in columns, so a leading tab reaches column four.
+    <https://spec.commonmark.org/0.31.2/#indented-code-blocks>
+
     A table's delimiter row is the third shape that needs the state coming in,
     and it is the Setext underline's twin: it consumes the line above it into
     a table exactly as an underline consumes it into a heading, and leaves no
@@ -1727,6 +1767,8 @@ def opens_a_paragraph(
     https://spec.commonmark.org/0.31.2/#setext-headings
     """
     if not content.strip(ASCII_HORIZONTAL_WHITESPACE):
+        return False
+    if not paragraph_open and count_indent_columns(content) >= 4:
         return False
     if ATX_HEADING_LINE_PATTERN.match(content) is not None:
         return False
@@ -2261,7 +2303,9 @@ def reference_definition_span(lines: Sequence[str], index: int) -> int:
     return reference_title_span(lines, index, opens)
 
 
-def collect_reference_labels(contents: Sequence[str]) -> frozenset[str]:
+def collect_reference_labels(
+    contents: Sequence[str], starts: Sequence[bool]
+) -> frozenset[str]:
     """Return every link label the document defines, normalized.
 
     A label is defined only where a whole definition parses. CommonMark wants a
@@ -2285,10 +2329,20 @@ def collect_reference_labels(contents: Sequence[str]) -> frozenset[str]:
 
     ``opens_a_paragraph`` is the same helper the document walk uses, and it
     already knows that a definition is a leaf block rather than a paragraph, so
-    definitions written one under another all define. What this walk cannot see
-    is the container a line sits in: ``previous_content`` is the line above as
-    it stands rather than as it peels, which is only consulted for the table
-    rule and is recorded rather than closed. Kept identical to the helper in
+    definitions written one under another all define. ``starts`` is that same
+    walk's own ``starts_a_block`` answer for each line, carried here rather than
+    recomputed, because a paragraph also ends where the container changes and
+    this walk has no container of its own. ``Intro`` over ``> [x]: /url``
+    defines ``x`` on both renderers -- the blockquote interrupts the paragraph
+    -- and without the flag the walk held the paragraph open, defined nothing,
+    and read the ``![<!-- audience: adult -->][x]`` below it as a comment the
+    page never carries. The other direction is already right and stays right:
+    ``> Intro`` over an unquoted ``[x]: /url`` is the lazy continuation
+    CommonMark reads it as, defines nothing, and ``starts_a_block`` says so.
+
+    What is left is ``previous_content``, which is the line above as it stands
+    rather than as it peels. It is consulted only for the table rule. Kept
+    identical to the helper in
     ``.github/scripts/check-session-structure.py``.
     https://spec.commonmark.org/0.31.2/#link-reference-definitions
     """
@@ -2299,6 +2353,9 @@ def collect_reference_labels(contents: Sequence[str]) -> frozenset[str]:
 
     while row < len(contents):
         content = contents[row]
+        if starts[row]:
+            paragraph_open = False
+            previous_content = ""
         if not paragraph_open:
             span = reference_definition_span(contents, row)
             if span:
@@ -3299,6 +3356,7 @@ def scan_document_inlines(text: str) -> DocumentInlines:
     fenced: list[tuple[int, int]] = []
     runs: list[tuple[list[ParagraphLine], list[int]]] = []
     contents: list[str] = []
+    starts: list[bool] = []
     comment_lines: list[str] = []
     paragraph: list[ParagraphLine] = []
     rows: list[int] = []
@@ -3340,6 +3398,7 @@ def scan_document_inlines(text: str) -> DocumentInlines:
         offset += len(raw_line) + 1
         line = raw_line.rstrip(ASCII_HORIZONTAL_WHITESPACE)
         contents.append("")
+        starts.append(False)
         comment_lines.append("")
 
         if active_fence is not None and fence_container_ended(line, active_fence):
@@ -3382,6 +3441,7 @@ def scan_document_inlines(text: str) -> DocumentInlines:
             paragraph_open,
             header_above,
         )
+        starts[number] = block_starts
         html_block, line_html_block = html_block_state(
             fence_line.content,
             fence_line.containment_path,
@@ -3558,7 +3618,7 @@ def scan_document_inlines(text: str) -> DocumentInlines:
 
     close_paragraph()
 
-    defined_labels = collect_reference_labels(contents)
+    defined_labels = collect_reference_labels(contents, starts)
     spans: list[tuple[int, int]] = []
     for run_lines, run_rows in runs:
         comments, code_spans = paragraph_inlines(run_lines, defined_labels)

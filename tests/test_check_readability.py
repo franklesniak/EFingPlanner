@@ -5454,3 +5454,127 @@ def test_a_tables_delimiter_row_leaves_no_prose_behind() -> None:
     assert readability.extract_prose("zulu\n-:" + tail).strip() == (
         "We walk to the park and count every red car today."
     )
+
+_NL = chr(10)
+
+
+def test_an_indented_line_opens_no_paragraph_with_nothing_open() -> None:
+    """Four columns of indentation is an indented code block, not prose.
+
+    The liberal fallback read every nonblank line as a paragraph, which held
+    the HTML block condition 7 below an indented code block shut and counted a
+    ``## Goal`` the page never paints. Measured on GitHub's own renderer: a
+    four-space ``x`` over ``<custom>`` over ``## Goal`` renders a ``<pre>``, an
+    open condition 7 and no heading at all, while a three-space ``x`` renders
+    the heading.
+
+    Where a paragraph *is* open the same line is that paragraph's lazy
+    continuation, and reading it as code would cut a paragraph in half.
+    """
+    assert not readability.opens_a_paragraph("    x", False)
+    assert not readability.opens_a_paragraph(TAB + "x", False)
+    assert readability.opens_a_paragraph("   x", False)
+    assert readability.opens_a_paragraph("    x", True)
+    assert readability.opens_a_paragraph(TAB + "x", True)
+    # a line of whitespace is blank, not code
+    assert not readability.opens_a_paragraph("      ", False)
+
+
+def test_an_indented_delimiter_row_opens_no_table() -> None:
+    """A delimiter row indented four columns is no delimiter row.
+
+    ``TABLE_DELIMITER_PATTERN`` carries ``^ {0,3}`` and does not enforce it:
+    the ``[ \t]*`` after the optional pipe absorbs a fourth space, and the
+    pattern counts no tab at all. Measured on GitHub's own renderer, ``x`` over
+    a four-space ``-:`` is one paragraph of two lines and ``x`` over a
+    three-space ``-:`` is a one-column table.
+    """
+    assert readability.is_table_delimiter("   -:")
+    assert not readability.is_table_delimiter("    -:")
+    assert not readability.is_table_delimiter(TAB + "-:")
+    assert readability.is_table_delimiter("   | --- |")
+    assert not readability.is_table_delimiter("    | --- |")
+
+
+def test_an_indented_delimiter_row_leaves_its_lines_in_the_prose() -> None:
+    """The document consequence, end to end, and the residual beside it.
+
+    An indented delimiter row opens no table, so ``x`` and ``-:`` stay one
+    paragraph and both are scored -- which is what GitHub renders. Three
+    columns still opens the table it always did.
+
+    The *header* row's own indent is a residual this round names rather than
+    closes: the three walks that look a delimiter row ahead carry no paragraph
+    state, so a four-space header over a pipeless delimiter row still opens a
+    table here. It is pinned so that closing it is a visible change rather
+    than a silent one.
+    """
+    tail = _NL + "<custom>" + _NL + "## Goal" + _NL
+    assert "-:" in readability.extract_prose("x" + _NL + "    -:" + tail)
+    assert "-:" not in readability.extract_prose("x" + _NL + "   -:" + tail)
+    # the residual, pinned rather than asserted to be right
+    assert readability.table_starts_here("    zulu", "-:")
+
+
+def test_table_row_cells_reads_a_pipe_at_index_zero_safely() -> None:
+    """The escape test may not wrap round the end of the line.
+
+    ``content[index - 1]`` at ``index == 0`` reads the line's *last* character,
+    so a row ending in a backslash would have had its leading pipe swallowed.
+    Measured by exhausting every string of six characters or fewer over
+    ``space | backslash a tab : -``: the guard is unreachable today, because a
+    line whose first character is a pipe has no indentation and the loop starts
+    at one. It is closed rather than left standing, because the only thing
+    holding it shut is the indentation rule two lines above it.
+    """
+    assert readability.table_row_cells("|a" + chr(92)) == ((1, "a" + chr(92)),)
+    assert readability.table_row_cells("a" + chr(92) + "|b") == (
+        (0, "a" + chr(92) + "|b"),
+    )
+
+
+def test_a_definition_after_a_container_change_defines_its_label() -> None:
+    """A container that interrupts a paragraph ends it, and a definition follows.
+
+    ``Intro`` over ``> [x]: /url`` defines ``x`` on markdown-it 14.3.0 and on
+    GitHub alike -- the blockquote interrupts the paragraph -- and this walk,
+    carrying paragraph state with no container of its own, held the paragraph
+    open and defined nothing. The ``![<!-- audience: adult -->][x]`` below then
+    read as a comment the page never carries, and an adult declaration nobody
+    wrote took a child-facing document out of the gate in silence.
+
+    The other direction is the control and it must not move: an *outdented*
+    line under a quoted or listed paragraph is the lazy continuation CommonMark
+    reads it as, so no definition forms there on either renderer.
+    """
+    reference = _NL + _NL + "![<!-- audience: adult -->][x]" + _NL
+    defines = (
+        "Intro" + _NL + "> [x]: /url",
+        "Intro" + _NL + "- [x]: /url",
+        "> Intro" + _NL + ">> [x]: /url",
+        "- Intro" + _NL + "- [x]: /url",
+    )
+    for document in defines:
+        assert not readability.has_adult_marker(document + reference)
+    lazy = (
+        "> Intro" + _NL + "[x]: /url",
+        "- Intro" + _NL + "[x]: /url",
+        "> Intro" + _NL + "> [x]: /url",
+        "Intro" + _NL + "[x]: /url",
+    )
+    for document in lazy:
+        assert readability.has_adult_marker(document + reference)
+
+
+def test_the_two_hooks_read_an_indent_alike() -> None:
+    """The cross-hook pin: one spelling of the four-column rule in both hooks."""
+    other = _load_structure_hook()
+    for line in ("x", "   x", "    x", TAB + "x", "  " + TAB + "x", "-:", "    -:"):
+        assert readability.count_indent_columns(line) == other.count_indent_columns(
+            line
+        )
+        assert readability.is_table_delimiter(line) == other.is_table_delimiter(line)
+        for state in (False, True):
+            assert readability.opens_a_paragraph(
+                line, state
+            ) == other.opens_a_paragraph(line, state)

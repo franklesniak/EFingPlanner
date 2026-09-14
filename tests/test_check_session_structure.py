@@ -4373,3 +4373,43 @@ def test_the_two_hooks_read_a_definition_alike() -> None:
         assert OTHER_HOOK.reference_definition_span(shape, 0) == (
             THIS_HOOK.reference_definition_span(shape, 0)
         )
+
+
+def test_an_indented_code_block_opens_no_paragraph() -> None:
+    """Four columns of indentation is a code block, and the heading walk sees it.
+
+    Measured on GitHub's own renderer: a four-space ``x`` over ``<custom>``
+    over ``## Goal`` paints no heading, because the condition 7 block opens
+    where no paragraph is open and swallows the heading. This walk read the
+    indented line as a paragraph, refused condition 7, and counted a mandatory
+    heading the page never shows.
+    """
+    tail = chr(10) + "<custom>" + chr(10) + "## Goal" + chr(10)
+    scan = structure.scan_document("    x" + tail)
+    assert not [h for h in structure.find_headings(scan) if h.title == "Goal"]
+    scan = structure.scan_document("   x" + tail)
+    assert [h for h in structure.find_headings(scan) if h.title == "Goal"]
+
+
+def test_an_indented_delimiter_row_opens_no_table_here_either() -> None:
+    """The delimiter row's own indent, and the tab that reaches column four."""
+    assert structure.is_table_delimiter("   -:")
+    assert not structure.is_table_delimiter("    -:")
+    assert not structure.is_table_delimiter(chr(9) + "-:")
+
+
+def test_a_definition_after_a_container_change_is_collected() -> None:
+    """``starts_a_block`` travels on every source and the collector now reads it.
+
+    The flag was already the third element of every ``MarkerSource`` and was
+    discarded with an underscore. ``Intro`` over ``> [x]: /url`` defines ``x``
+    on both renderers, and collecting nothing there cost this checker an
+    exemption granted where the page carries no comment at all.
+    """
+    reference = chr(10) + chr(10) + "![<!-- no-source-check: offline -->][x]" + chr(10)
+    scan = structure.scan_document("Intro" + chr(10) + "> [x]: /url" + reference)
+    assert "no-source-check" not in scan.marker_text
+    # the control: an outdented definition is a lazy continuation and defines
+    # nothing, so the marker really is a comment there
+    scan = structure.scan_document("> Intro" + chr(10) + "[x]: /url" + reference)
+    assert "no-source-check" in scan.marker_text

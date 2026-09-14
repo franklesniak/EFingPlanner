@@ -1532,3 +1532,39 @@ def test_a_comment_after_a_closed_raw_text_run_hides_its_placeholder() -> None:
     assert _find("<script></script><!-- TBD -->\n") == []
     assert _find("<script><!-- TBD -->\n")
     assert _find("<script></script>TBD\n")
+
+
+def test_an_indented_line_opens_no_paragraph_in_this_hook_too() -> None:
+    """The four-column rule, and the tab that reaches column four.
+
+    This hook carries the rule because a paragraph it holds open refuses the
+    HTML block condition 7 below it, which is what decides whether a run of
+    comment-shaped characters is on the page at all.
+    """
+    assert not _placeholder_hook.opens_a_paragraph("    x", False)
+    assert not _placeholder_hook.opens_a_paragraph(chr(9) + "x", False)
+    assert _placeholder_hook.opens_a_paragraph("   x", False)
+    assert _placeholder_hook.opens_a_paragraph("    x", True)
+    assert not _placeholder_hook.is_table_delimiter("    -:")
+    assert _placeholder_hook.is_table_delimiter("   -:")
+
+
+def test_the_three_hooks_count_an_indent_alike() -> None:
+    """The cross-hook pin: ``count_indent_columns`` is one function in three."""
+    import importlib.util as _util
+    import sys as _sys
+    from pathlib import Path as _Path
+
+    root = _Path(__file__).resolve().parent.parent / ".github" / "scripts"
+    loaded = []
+    for name in ("check-readability.py", "check-session-structure.py"):
+        spec = _util.spec_from_file_location("_indent_pin_" + name[6:9], root / name)
+        assert spec is not None and spec.loader is not None
+        module = _util.module_from_spec(spec)
+        _sys.modules[spec.name] = module
+        spec.loader.exec_module(module)
+        loaded.append(module)
+    for line in ("x", "   x", "    x", chr(9) + "x", "  " + chr(9) + "x", "     "):
+        wanted = _placeholder_hook.count_indent_columns(line)
+        for module in loaded:
+            assert module.count_indent_columns(line) == wanted

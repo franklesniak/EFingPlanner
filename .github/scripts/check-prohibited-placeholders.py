@@ -537,6 +537,35 @@ def count_leading_spaces(line: str) -> int:
     return len(line) - len(line.lstrip(" "))
 
 
+def count_indent_columns(line: str) -> int:
+    """Return how many *columns* of indentation ``line`` opens with.
+
+    Not the number ``count_leading_spaces`` above returns, and the difference
+    is the tab. CommonMark measures indentation in columns and expands a tab
+    to the next multiple of four, so a line beginning with one tab starts at
+    column four and is an indented code block -- while a count of *characters*
+    reads zero and the line is classified as prose.
+
+    The two counts are kept apart rather than merged, because their callers
+    ask different questions of them. ``peel_containers`` counts characters
+    because it then *slices* them, and a column count cannot slice a tab in
+    half; this counts columns because it then *classifies* a line, which is
+    what CommonMark states in columns. Merging them would have made the
+    container walk cut a tab it cannot cut. Kept identical to the helper in
+    the sibling hooks.
+    https://spec.commonmark.org/0.31.2/#tabs
+    """
+    columns = 0
+    for character in line:
+        if character == " ":
+            columns += 1
+        elif character == "\t":
+            columns += 4 - columns % 4
+        else:
+            break
+    return columns
+
+
 def peel_containers(line: str, path: tuple[Container, ...]) -> tuple[str, int]:
     """Peel container prefixes from ``line`` in order; return ``(remaining, peeled_count)``.
 
@@ -771,10 +800,32 @@ def table_row_cells(content: str) -> tuple[tuple[int, str], ...]:
     The offsets are into ``content``. A leading pipe is a delimiter rather than
     an empty first cell, and a pipe an author escaped is a pipe the cell holds:
     GFM reads the table before it reads any inline, so ``\\|`` is a cell
-    character even where a code span would otherwise claim it. GFM lets a row
-    carry up to three columns of indentation; a fourth is an indented code
-    block and no table row at all. Kept identical to the helper in the sibling
-    hooks.
+    character even where a code span would otherwise claim it.
+
+    The leading pipe is a delimiter only up to three columns of indentation,
+    which is where GFM lets a table begin. That is the whole of this helper's
+    indent rule, and claiming more than it was the defect: the sentence above
+    used to end "a fourth is an indented code block and no table row at all",
+    and this body parses such a line's cells like any other.
+
+    Both halves of that sentence are wrong here, and the two errors point in
+    opposite directions. A row indented four columns is not always code --
+    where a paragraph is open above it the line is that paragraph's lazy
+    continuation, and ``Intro.`` over a four-space ``| a |`` over ``| - |`` is
+    a one-column table on GitHub's own renderer, measured, which the cap above
+    refuses by reading the indentation as a cell. And where no paragraph is
+    open the line is code and no row at all, which nothing here enforces: a
+    pipeless four-space header over a pipeless delimiter row agrees about the
+    column count and opens a table this helper never sees a reason to refuse.
+
+    Neither is closed here, because the rule belongs to the paragraph and the
+    three walks that look a delimiter row ahead carry no paragraph state --
+    ``extract_prose`` carries none at all. What indentation does decide is
+    settled where the state already is: ``opens_a_paragraph`` opens no
+    paragraph on an indented line, and ``is_table_delimiter`` refuses an
+    indented delimiter row.
+
+    Kept identical to the helper in the sibling hooks.
     https://github.github.com/gfm/#tables-extension-
     """
     cells: list[tuple[int, str]] = []
@@ -782,7 +833,7 @@ def table_row_cells(content: str) -> tuple[tuple[int, str], ...]:
     start = indent + 1 if indent < 4 and content[indent:].startswith("|") else 0
     index = start
     while index < len(content):
-        if content[index] == "|" and content[index - 1] != "\\":
+        if content[index] == "|" and (index == 0 or content[index - 1] != "\\"):
             cells.append((start, content[start:index]))
             start = index + 1
         index += 1
@@ -825,6 +876,13 @@ def is_table_delimiter(line: str) -> bool:
       Refusing every pipeless row -- which this helper did, on the ground that
       such a row is a thematic break -- lost the colon-bearing case and kept
       the other by accident.
+    * **A row indented four columns is no delimiter row**, whatever else is
+      open. ``x`` over a four-space ``-:`` is one paragraph of two lines on
+      GitHub's own renderer and ``x`` over a three-space ``-:`` is a table,
+      measured; a leading tab reaches column four and does the same. The
+      pattern's own ``^ {0,3}`` does not say this, because the ``[ \t]*`` that
+      follows the optional pipe absorbs the fourth space, and it counts no tab
+      at all.
     * **A row a list item could open is a list item.** ``- |`` matches the
       delimiter pattern and renders as a bullet, because the block parser
       reaches the list before the table extension does.
@@ -833,6 +891,8 @@ def is_table_delimiter(line: str) -> bool:
     https://github.github.com/gfm/#tables-extension-
     https://spec.commonmark.org/0.31.2/#setext-headings
     """
+    if count_indent_columns(line) >= 4:
+        return False
     if TABLE_DELIMITER_PATTERN.match(line) is None:
         return False
     if LIST_ITEM_PATTERN.match(line) is not None:
@@ -888,6 +948,18 @@ def opens_a_paragraph(
     block condition 7 that may not interrupt one -- and the liberal fallback
     was holding that block shut and counting a heading the page never shows.
 
+    An indented code block is the fourth shape that needs the state coming in,
+    and it is the one the liberal fallback was wrong about in the direction this
+    fallback is not allowed to be wrong in. A line indented four columns opens a
+    code block only where no paragraph is open; where one is, the line is that
+    paragraph's lazy continuation and every rule applies to it. Reading such a
+    line as a paragraph held the HTML block condition 7 below it shut and
+    counted a ``## Goal`` the page never paints -- measured on GitHub's own
+    renderer, which reads a four-space ``x`` over ``<custom>`` over ``## Goal``
+    as a code block, an open condition 7 and no heading at all. The indent is
+    counted in columns, so a leading tab reaches column four.
+    <https://spec.commonmark.org/0.31.2/#indented-code-blocks>
+
     A table's delimiter row is the third shape that needs the state coming in,
     and it is the Setext underline's twin: it consumes the line above it into
     a table exactly as an underline consumes it into a heading, and leaves no
@@ -909,6 +981,8 @@ def opens_a_paragraph(
     <https://spec.commonmark.org/0.31.2/#link-reference-definitions>
     """
     if not content.strip(ASCII_HORIZONTAL_WHITESPACE):
+        return False
+    if not paragraph_open and count_indent_columns(content) >= 4:
         return False
     if ATX_HEADING_LINE_PATTERN.match(content) is not None:
         return False
