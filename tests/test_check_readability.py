@@ -2673,3 +2673,32 @@ def test_a_document_with_crlf_line_endings_keeps_its_prose() -> None:
     )
     prose = readability.extract_prose(text)
     assert prose == "We will walk to the park and count the red doors that we pass today."
+# --- front matter trims spaces and tabs, not every Unicode space -----------
+
+
+def test_a_nonbreaking_space_does_not_make_a_front_matter_delimiter() -> None:
+    """``str.strip`` removes U+00A0, so a non-delimiter became a delimiter.
+
+    The closing-fence rule in this module was already narrowed to spaces and
+    tabs. This is the same rule one function away, and it was missed there.
+    """
+    document = "---NBSP\ntitle: not front matter\n---\n\nProse a child reads.\n".replace(
+        "NBSP", "\u00a0"
+    )
+    kept = readability.strip_front_matter(document)
+    assert "title: not front matter" in kept
+
+
+def test_a_plain_front_matter_delimiter_still_strips() -> None:
+    """The positive control: narrowing the trim must not switch the rule off."""
+    document = "---\ntitle: real front matter\n---\n\nProse a child reads.\n"
+    kept = readability.strip_front_matter(document)
+    assert "title: real front matter" not in kept
+    assert "Prose a child reads." in kept
+
+
+def test_trailing_space_and_tab_still_open_front_matter() -> None:
+    """Spaces and tabs are the whitespace that is allowed to trail a delimiter."""
+    for trailer in (" ", "\t", " \t "):
+        document = f"---{trailer}\ntitle: real\n---\n\nProse.\n"
+        assert "title: real" not in readability.strip_front_matter(document), trailer

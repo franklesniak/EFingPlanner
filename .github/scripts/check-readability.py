@@ -1175,6 +1175,12 @@ def strip_html_comments(text: str) -> str:
     return "".join(kept)
 
 
+#: Spaces and tabs, the only whitespace CommonMark and YAML treat as
+#: horizontal. ``str.strip`` with no argument also removes U+00A0 and the
+#: rest of Unicode, which is how a non-delimiter became a delimiter.
+ASCII_HORIZONTAL_WHITESPACE = " 	"
+
+
 def strip_front_matter(text: str) -> str:
     """Remove a YAML front-matter block from the start of a document.
 
@@ -1199,18 +1205,26 @@ def strip_front_matter(text: str) -> str:
     gate, which is the one direction this module never errs in. Blank lines are
     allowed between the delimiters: the block ends at its delimiter, not at the
     first blank line.
+    Trimming here is ASCII horizontal whitespace only. ``str.strip`` removes
+    every Unicode space, so a line reading ``---`` followed by U+00A0 trimmed
+    down to ``---`` and opened a block that is not one. The closing-fence rule
+    in this same module was already narrowed to spaces and tabs for exactly
+    that reason; this is the same rule one function away.
     https://spec.commonmark.org/0.31.2/#setext-headings
     """
     lines = text.split("\n")
-    if not lines or lines[0].rstrip() != "---":
+    if not lines or lines[0].rstrip(ASCII_HORIZONTAL_WHITESPACE) != "---":
         return text
-    if len(lines) < 2 or not lines[1].strip():
+    if len(lines) < 2 or not lines[1].strip(ASCII_HORIZONTAL_WHITESPACE):
         return text
     for index in range(1, len(lines)):
-        line = lines[index].rstrip()
+        line = lines[index].rstrip(ASCII_HORIZONTAL_WHITESPACE)
         if FRONT_MATTER_DELIMITER_PATTERN.match(line):
             return "\n".join(lines[index + 1 :])
-        if line.strip() and FRONT_MATTER_LINE_PATTERN.match(line) is None:
+        if (
+            line.strip(ASCII_HORIZONTAL_WHITESPACE)
+            and FRONT_MATTER_LINE_PATTERN.match(line) is None
+        ):
             return text
     return text
 
