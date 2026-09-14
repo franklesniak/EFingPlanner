@@ -1621,7 +1621,8 @@ def test_a_marker_inside_a_markdown_container_still_exempts(label: str, marker: 
     why it has no research step -- which is the whole point of the marker.
     """
     text = build_session(sections=SIX_SECTIONS, markers=marker)
-    assert check(text) == [], (label, check(text))
+    messages = check(text)
+    assert messages == [], (label, messages)
 
 
 def test_a_marker_indented_four_spaces_is_still_an_example() -> None:
@@ -2138,8 +2139,9 @@ def test_a_fence_after_a_paragraph_that_starts_with_a_tag_still_opens() -> None:
         sections=SIX_SECTIONS,
         extra="## Notes\n\nProse first.\n<x-session>\n```\n## Stop Point\n```\n",
     )
-    assert any("Source Check" in m for m in check(text))
-    assert not any('missing mandatory section "## Stop Point"' in m for m in check(text))
+    messages = check(text)
+    assert any("Source Check" in m for m in messages)
+    assert not any('missing mandatory section "## Stop Point"' in m for m in messages)
 
 
 def test_a_marker_inside_a_multiline_code_span_does_not_exempt() -> None:
@@ -3267,7 +3269,7 @@ def test_raw_text_run_state_names_the_run_the_line_is_in() -> None:
     through ``raw_text_run_holds_text``.
     """
     state, line_run = structure.raw_text_run_state("<textarea>", None, True)
-    assert (state, line_run) == ("textarea", None)
+    assert (state, line_run) == ("textarea", "textarea")
     state, line_run = structure.raw_text_run_state("some words", "textarea", False)
     assert (state, line_run) == ("textarea", "textarea")
     state, line_run = structure.raw_text_run_state("</textarea>", "textarea", False)
@@ -3381,3 +3383,92 @@ def test_a_link_label_folds_the_blanks_the_renderer_folds() -> None:
     assert structure.normalize_link_label("a\u0085b") == "a\u0085b"
     assert structure.normalize_link_label("  a   b  ") == "a b"
     assert structure.normalize_link_label("A\u00a0B") == "a b"
+
+
+# ---------------------------------------------------------------------------
+# Round 11: spaces or tabs, an opener line, and raw HTML productions
+# ---------------------------------------------------------------------------
+
+
+def test_a_tab_separated_reference_definition_is_a_definition() -> None:
+    """The structure copy, kept identical to the sibling's.
+
+    A definition is a leaf block, so what follows it opens HTML block
+    condition 7 where a paragraph would not. Reading a tab-separated
+    definition as a paragraph found a ``## Goal`` the page never shows.
+    """
+    assert structure.LINK_REFERENCE_DEFINITION_PATTERN.match("[a]:\t/url")
+    assert structure.LINK_REFERENCE_DEFINITION_PATTERN.match('[a]: /url\t"t"\t')
+    document = "[a]:\t/url\n<custom>\n## Goal\n"
+    scan = structure.scan_document(document)
+    assert not any(h.title == "Goal" for h in structure.find_headings(scan))
+
+
+def test_a_tab_indented_reference_definition_is_not_a_definition() -> None:
+    """The control in the other direction: a leading tab is four columns."""
+    assert structure.LINK_REFERENCE_DEFINITION_PATTERN.match("\t[a]: /url") is None
+    assert structure.LINK_REFERENCE_DEFINITION_PATTERN.match("   [a]: /url")
+
+
+def test_a_tab_after_a_block_quote_marker_is_peeled() -> None:
+    """The structure copy of the container rule."""
+    assert structure.BLOCK_QUOTE_PREFIX_PATTERN.match(">\tquoted").end() == 2
+    assert structure.BLOCK_QUOTE_PREFIX_PATTERN.match("> quoted").end() == 2
+    assert structure.BLOCK_QUOTE_PREFIX_PATTERN.match(">quoted").end() == 1
+
+
+def test_an_opener_line_belongs_to_the_run_it_opens() -> None:
+    """``<script>`` and its marker on one line, the closer two lines down.
+
+    ``html.parser`` reports no comment there, so the offline marker is script
+    data and grants no exemption. Round eight closed the run that opens and
+    closes on one line; this is the branch with no closer on its line.
+    """
+    assert structure.raw_text_run_state("<script><!-- x -->", None, True) == (
+        "script",
+        "script",
+    )
+    text = build_session(
+        sections=SIX_SECTIONS,
+        markers="<script>" + OFFLINE_MARKER + "\nx\n</script>",
+    )
+    assert any("Source Check" in message for message in check(text))
+
+
+def test_a_marker_beside_a_real_element_still_exempts() -> None:
+    """The control in the other direction: a ``<div>`` holds inline content."""
+    text = build_session(
+        sections=SIX_SECTIONS,
+        markers="<div>" + OFFLINE_MARKER + "\nx\n</div>",
+    )
+    assert not any("Source Check" in message for message in check(text))
+
+
+def test_a_bracket_inside_raw_html_opens_no_link() -> None:
+    """The structure copy, kept identical to the sibling's.
+
+    A ``[`` inside a comment, a processing instruction, a declaration or a
+    CDATA section is data, so no link forms and a marker in the parentheses
+    beside it is a comment the page prints.
+    """
+    for opener, closer in (
+        ("<!--", "-->"),
+        ("<?php", "?>"),
+        ("<![CDATA[", "]]>"),
+        ("<!DOC", ">"),
+    ):
+        line = f'Text {opener}[{closer}text](u "{OFFLINE_MARKER}")'
+        assert structure.link_metadata_regions(line, frozenset()) == (), opener
+
+
+def test_a_bracket_inside_a_real_link_still_masks_its_title() -> None:
+    """The control in the other direction: a real link's title is metadata."""
+    line = f'Text [text](u "{OFFLINE_MARKER}")'
+    assert structure.link_metadata_regions(line, frozenset()) != ()
+
+
+def test_a_declaration_that_never_closes_is_not_raw_html() -> None:
+    """The structure copy, kept identical to the sibling's."""
+    line = 'Text <!DOC [text](u "t")'
+    assert structure.raw_html_run_end(line, 5) == -1
+    assert structure.link_metadata_regions(line, frozenset()) != ()

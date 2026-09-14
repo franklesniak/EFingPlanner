@@ -1202,7 +1202,7 @@ def test_raw_text_run_state_names_the_run_the_line_is_in() -> None:
     """
     hook = cast(Any, _placeholder_hook)
     state, line_run = hook.raw_text_run_state("<textarea>", None, True)
-    assert (state, line_run) == ("textarea", None)
+    assert (state, line_run) == ("textarea", "textarea")
     state, line_run = hook.raw_text_run_state("some words", "textarea", False)
     assert (state, line_run) == ("textarea", "textarea")
     state, line_run = hook.raw_text_run_state("</textarea>", "textarea", False)
@@ -1315,3 +1315,46 @@ def test_a_comment_opened_on_a_run_opener_line_does_not_outlive_the_run() -> Non
     hook = cast(Any, _placeholder_hook)
     document = "<textarea> <!-- a note\nwords\n</textarea>\n\nTBD\n"
     assert [v.line_number for v in hook.find_violations_in_text(document, "doc.md")] == [5]
+
+
+# ---------------------------------------------------------------------------
+# Round 11: spaces or tabs, and an opener line
+# ---------------------------------------------------------------------------
+
+
+def test_a_tab_separated_reference_definition_is_a_definition() -> None:
+    """The placeholder copy, kept identical to the siblings'."""
+    hook = cast(Any, _placeholder_hook)
+    assert hook.LINK_REFERENCE_DEFINITION_PATTERN.match("[a]:\t/url")
+    assert hook.LINK_REFERENCE_DEFINITION_PATTERN.match('[a]: /url\t"t"\t')
+    assert hook.LINK_REFERENCE_DEFINITION_PATTERN.match("\t[a]: /url") is None
+    assert hook.LINK_REFERENCE_DEFINITION_PATTERN.match("   [a]: /url")
+
+
+def test_a_tab_after_a_block_quote_marker_is_peeled() -> None:
+    """A fenced example inside a block quote whose marker is followed by a tab
+    is still a fenced example, so the token in it is not a placeholder."""
+    hook = cast(Any, _placeholder_hook)
+    quoted = ">\t```\n> TBD\n> ```\n"
+    assert hook.find_violations_in_text(quoted, "doc.md") == []
+    assert hook.find_violations_in_text("> TBD\n", "doc.md") != []
+
+
+def test_an_opener_line_belongs_to_the_run_it_opens() -> None:
+    """``<textarea><!-- TBD -->`` with its closer below prints the token.
+
+    The run opens on that line and stays open, so the comment-shaped thing on
+    it is the element's own content. Returning no classification for the
+    opener line hid a placeholder the page shows.
+    """
+    hook = cast(Any, _placeholder_hook)
+    document = "<textarea><!-- TBD -->\nx\n</textarea>\n"
+    assert [v.line_number for v in hook.find_violations_in_text(document, "doc.md")] == [1]
+
+
+def test_a_placeholder_in_a_real_comment_is_still_allowed() -> None:
+    """The control in the other direction: a ``<div>`` holds inline content, so
+    the comment in it is a comment and the token in it is not reported."""
+    hook = cast(Any, _placeholder_hook)
+    document = "<div><!-- TBD -->\nx\n</div>\n"
+    assert hook.find_violations_in_text(document, "doc.md") == []

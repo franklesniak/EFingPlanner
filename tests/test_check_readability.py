@@ -2746,9 +2746,9 @@ def test_a_hash_with_no_space_before_it_is_still_part_of_the_value() -> None:
     is the rule, not the outcome: the comment suffix must not be readable as
     "anything after a hash".
     """
-    assert readability.FRONT_MATTER_LINE_PATTERN.match("version: 1.0#2") is not None
-    assert readability.FRONT_MATTER_LINE_PATTERN.match("version: 1.0 # note") is not None
-    assert readability.FRONT_MATTER_LINE_PATTERN.match("Ask them: bring a map. Also: a pen") is None
+    assert readability.front_matter_is_yaml_mapping("version: 1.0#2")
+    assert readability.front_matter_is_yaml_mapping("version: 1.0 # note")
+    assert not readability.front_matter_is_yaml_mapping("Ask them: bring a map. Also: a pen")
 
 
 def test_a_backtick_in_an_attribute_does_not_open_a_code_span() -> None:
@@ -2921,7 +2921,7 @@ def test_a_quoted_front_matter_scalar_may_carry_an_escape(label: str, line: str)
     Measured at the commit this fixes: 38 words became 42 and the grade moved
     from 0.0 to -0.33. PyYAML reads every line here as a mapping.
     """
-    assert readability.FRONT_MATTER_LINE_PATTERN.match(line) is not None, label
+    assert readability.front_matter_is_yaml_mapping(line), label
     text = _front_matter(line)
     assert readability.strip_front_matter(text) != text, label
 
@@ -2936,7 +2936,7 @@ def test_an_unterminated_double_quoted_scalar_is_not_front_matter() -> None:
     have deleted a paragraph the child reads.
     """
     line = 'title: "unclosed ' + BACKSLASH + '"'
-    assert readability.FRONT_MATTER_LINE_PATTERN.match(line) is None
+    assert not readability.front_matter_is_yaml_mapping(line)
     text = _front_matter(line)
     assert readability.strip_front_matter(text) == text
 
@@ -3786,7 +3786,7 @@ def test_raw_text_run_state_names_the_run_the_line_is_in() -> None:
     characters are text" and not enough to say "and the page paints them".
     """
     state, line_run = readability.raw_text_run_state("<textarea>", None, True)
-    assert (state, line_run) == ("textarea", None)
+    assert (state, line_run) == ("textarea", "textarea")
     state, line_run = readability.raw_text_run_state("some words", "textarea", False)
     assert (state, line_run) == ("textarea", "textarea")
     state, line_run = readability.raw_text_run_state("</textarea>", "textarea", False)
@@ -4016,14 +4016,38 @@ def test_an_unclosed_flow_sequence_is_not_front_matter() -> None:
     assert len(readability.WORD_PATTERN.findall(prose)) > 40
 
 
-def test_a_balanced_flow_sequence_is_still_front_matter() -> None:
-    """The over-application control: ``- [a, b]`` is a YAML sequence item.
+def test_a_top_level_sequence_is_not_front_matter() -> None:
+    """A verdict this round changes, deliberately, and the reason it changed.
 
-    A rule that rejected every sequence item would keep this block's words.
+    An earlier round wrote ``- [a, b]`` as an over-application control: a rule
+    that rejected every sequence item would keep this block's words. Front
+    matter is a *mapping*, though, and the shape the old control protected is
+    the same shape as ``---`` over an ordinary Markdown list. Measured with
+    markdown-it 14.3.0: ``---`` then ``- item one`` then ``...`` renders a
+    thematic break, a list the page prints, and a paragraph -- so accepting a
+    top-level sequence erased list items a child reads. A *nested* sequence
+    under a key, which is how a real ``tags:`` block is written, is a mapping
+    and is still front matter; the test below pins that.
     """
     document = "---\n- [a, b]\n...\n\nTail words here.\n"
     prose = readability.extract_prose(document)
-    assert readability.WORD_PATTERN.findall(prose) == ["Tail", "words", "here"]
+    assert readability.WORD_PATTERN.findall(prose) == ["a", "b", "Tail", "words", "here"]
+
+
+def test_a_markdown_list_under_a_thematic_break_keeps_its_words() -> None:
+    """The shape the old over-application control was protecting by accident.
+
+    ``---`` over two list items, closed by ``...``, is a thematic break, a list
+    and a paragraph. Every word of it is on the page, and every word of it was
+    removed before this round: 32 words became 37.
+    """
+    document = (
+        "---\n- item one\n- item two\n...\n\n"
+        "The children pack a small bag. They choose a city.\n"
+    )
+    prose = readability.extract_prose(document)
+    assert "item one" in prose
+    assert "item two" in prose
 
 
 def test_a_plain_sequence_item_is_still_front_matter() -> None:
@@ -4078,3 +4102,146 @@ def test_a_link_label_folds_the_blanks_the_renderer_folds() -> None:
     assert readability.normalize_link_label("a\u0085b") == "a\u0085b"
     assert readability.normalize_link_label("  a   b  ") == "a b"
     assert readability.normalize_link_label("A\u00a0B") == "a b"
+
+
+# ---------------------------------------------------------------------------
+# Round 11: spaces or tabs, an opener line, raw HTML productions, and YAML
+# ---------------------------------------------------------------------------
+
+
+def test_a_tab_separated_reference_definition_is_a_definition() -> None:
+    """CommonMark says "spaces or tabs" after the colon, before the title and
+    at the end of the line, and the pattern said spaces only.
+
+    Measured with markdown-it 14.3.0: ``[a]:\t/url`` resolves ``[a]`` to a
+    link, so the line is a definition and renders nothing. Reading it as a
+    paragraph instead left a paragraph open where none is, which is what
+    decides whether the line below opens HTML block condition 7.
+    """
+    for separator in ("\t", " "):
+        line = f"[a]:{separator}/url"
+        assert readability.LINK_REFERENCE_DEFINITION_PATTERN.match(line), separator
+    assert readability.LINK_REFERENCE_DEFINITION_PATTERN.match(
+        '[a]: /url\t"t"\t'
+    )
+
+
+def test_a_tab_indented_reference_definition_is_not_a_definition() -> None:
+    """The control in the other direction, and the reason the indent stays
+    spaces only.
+
+    CommonMark measures indentation in columns and a tab advances to the next
+    stop of four, so a leading tab is four columns and opens an indented code
+    block. Widening the indent to accept a tab would have read a code block as
+    a definition. markdown-it 14.3.0 renders no link for it.
+    """
+    assert readability.LINK_REFERENCE_DEFINITION_PATTERN.match("\t[a]: /url") is None
+    assert readability.LINK_REFERENCE_DEFINITION_PATTERN.match("   [a]: /url")
+
+
+def test_a_tab_after_a_block_quote_marker_is_peeled() -> None:
+    """A block-quote marker may be followed by a space or a tab."""
+    assert readability.BLOCK_QUOTE_PREFIX_PATTERN.match(">\tquoted").end() == 2
+    assert readability.BLOCK_QUOTE_PREFIX_PATTERN.match("> quoted").end() == 2
+    assert readability.BLOCK_QUOTE_PREFIX_PATTERN.match(">quoted").end() == 1
+
+
+def test_an_opener_line_belongs_to_the_run_it_opens() -> None:
+    """``<script><!-- audience: adult -->`` with its closer below is script
+    data, so the marker written there is not a comment.
+
+    Python's ``html.parser`` reports no comment at all for that document. The
+    branch that returns the state for a run with no closer on its line returned
+    no classification for the line itself, so every caller read the body as
+    markup and honoured a marker the page never shows as one.
+    """
+    document = "<script><!-- audience: adult -->\nx\n</script>\n"
+    assert readability.raw_text_run_state("<script><!-- x -->", None, True) == (
+        "script",
+        "script",
+    )
+    assert not readability.has_adult_marker(document)
+
+
+def test_a_marker_beside_a_real_element_is_still_a_marker() -> None:
+    """The control in the other direction: a ``<div>`` holds inline content,
+    so a comment written in it is a comment and still exempts the file."""
+    document = "<div><!-- audience: adult -->\nx\n</div>\n"
+    assert readability.has_adult_marker(document)
+
+
+def test_a_bracket_inside_raw_html_opens_no_link() -> None:
+    """Raw HTML has six productions and a bracket is data in every one.
+
+    ``Text <!--[-->text](u "<!-- audience: adult -->")`` holds no link: the
+    first bracket is comment data, so the parentheses are text and the second
+    comment is a real audience marker. Recording that bracket masked the
+    marker as a link title and scored an adult-facing page against the child
+    target.
+    """
+    for opener, closer in (
+        ("<!--", "-->"),
+        ("<?php", "?>"),
+        ("<![CDATA[", "]]>"),
+        ("<!DOC", ">"),
+    ):
+        document = (
+            f'Text {opener}[{closer}text](u "<!-- audience: adult -->")\n'
+        )
+        assert readability.has_adult_marker(document), opener
+
+
+def test_a_bracket_inside_a_real_link_still_masks_its_title() -> None:
+    """The control in the other direction: a real link's title is an attribute,
+    so a marker written there declares nothing."""
+    document = 'Text [text](u "<!-- audience: adult -->")\n'
+    assert not readability.has_adult_marker(document)
+
+
+def test_front_matter_has_to_parse_as_yaml() -> None:
+    """Three shapes a line grammar accepted and a YAML parser refuses.
+
+    An indented line with an unbalanced flow sequence, a tab used as
+    indentation, and an undefined escape in a double-quoted scalar. Each was
+    removed from the page, and enough text removed takes a file under the
+    forty-word floor and out of the gate in silence.
+    """
+    tail = " ".join(["word"] * 45)
+    for label, block in (
+        ("an indented unbalanced flow sequence", f"  [unclosed {tail}"),
+        ("a tab used as indentation", f"title: A trip\n\t{tail}"),
+        ("an undefined escape", f'title: "A {BACKSLASH}q trip {tail}"'),
+    ):
+        document = f"---\n{block}\n...\n\nTail words here.\n"
+        assert not readability.front_matter_is_yaml_mapping(block), label
+        assert readability.strip_front_matter(document) == document, label
+
+
+def test_front_matter_that_parses_as_a_mapping_is_still_removed() -> None:
+    """The control in the other direction, over every shape this module has
+    had to keep: a flow collection, a nested sequence, a block scalar, a key
+    with a space in it, and a comment after a value."""
+    for label, block in (
+        ("a flow collection", "trip: {city: Tokyo, days: 5}"),
+        ("a nested sequence", "tags:\n- japan"),
+        ("a block scalar", "note: |\n  any text at all\n  and more"),
+        ("a key with a space", "session title: Trip plan"),
+        ("a comment after a value", "title: Trip plan # editorial note"),
+    ):
+        document = f"---\n{block}\n...\n\nTail words here.\n"
+        assert readability.front_matter_is_yaml_mapping(block), label
+        assert readability.strip_front_matter(document) != document, label
+
+
+def test_a_declaration_that_never_closes_is_not_raw_html() -> None:
+    """The control for the other half of the raw HTML rule.
+
+    A declaration ends at the first ``>``, and a line with none holds no
+    declaration at all -- so its characters are text and the bracket after it
+    really does open a link. Consuming the rest of the line on the strength of
+    an opener alone would have hidden a real link's title, where a marker
+    declares nothing.
+    """
+    line = 'Text <!DOC [text](u "t")'
+    assert readability.raw_html_run_end(line, 5) == -1
+    assert readability.link_metadata_regions(line, frozenset()) != ()

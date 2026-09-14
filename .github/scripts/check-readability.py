@@ -8,9 +8,15 @@ reliably across dozens of files:
 * **Average sentence length** -- the single strongest lever on the grade score,
   reported separately so an author knows *why* a file scored high.
 
-The checker intentionally stays dependency-free, like the prohibited-placeholder
-hook beside it, so it runs in the repo-local hook environment on Windows,
-macOS, Linux, and WSL with no install step.
+The checker carries one dependency and no more: PyYAML, which decides whether a
+block between two delimiters is front matter. That question is a YAML question,
+and a hand-written grammar for it produced four reviewer findings in two rounds
+before the last of them proved it could not be written -- whether an indented
+line is YAML depends on the line above it, which a line-regular pattern cannot
+see. PyYAML is already pinned in this repository for two other local hooks and
+is installed by the workflow that runs this script. Everything else here stays
+on the standard library, like the prohibited-placeholder hook beside it, so the
+rest of the checker runs on Windows, macOS, Linux, and WSL with no install step.
 
 Scoring prose only
 ------------------
@@ -89,6 +95,8 @@ from dataclasses import dataclass, field
 from html.entities import html5
 from pathlib import Path
 
+import yaml
+
 REPO_ROOT = Path(__file__).resolve().parents[2]
 
 #: Spaces and tabs, the only whitespace CommonMark and YAML treat as
@@ -159,7 +167,7 @@ FENCE_OPEN_PATTERN = re.compile(r"^ {0,3}(?P<marker>`{3,}|~{3,})")
 #: fence-parsing copy of ``BLOCKQUOTE_PATTERN`` below, spelled exactly as the
 #: placeholder checker spells it so that the two scripts agree on what a fence
 #: is. ``BLOCKQUOTE_PATTERN`` stays the prose-stripping copy.
-BLOCK_QUOTE_PREFIX_PATTERN = re.compile(r"^ {0,3}> ?")
+BLOCK_QUOTE_PREFIX_PATTERN = re.compile(r"^ {0,3}>[ \t]?")
 LIST_ITEM_PATTERN = re.compile(r"^(?P<indent> {0,3})(?P<marker>[-*+]|\d{1,9}[.)])(?P<spacing> +)")
 #: Two of the shapes that end the paragraph above them, spelled as
 #: ``.github/scripts/check-session-structure.py`` spells them so that the
@@ -320,6 +328,12 @@ RAW_HTML_RUN_PATTERNS = (
     (re.compile(r"<!\[CDATA\["), "]]>"),
     (re.compile(r"<![A-Za-z]"), ">"),
 )
+#: The same three with the comment in front of them, for a scan that reads one
+#: line rather than one paragraph. The comment is first because it is the one
+#: of the four whose opener another of them could also match, and because that
+#: is the order ``scan_inline_run`` asks in.
+#: https://spec.commonmark.org/0.31.2/#raw-html
+RAW_HTML_INLINE_RUNS = ((re.compile(r"<!--"), "-->"),) + RAW_HTML_RUN_PATTERNS
 #: The raw HTML runs whose content is not markup. What sits inside one is
 #: characters the page shows as they stand or drops altogether, so a
 #: ``<!-- ... -->`` written there is displayed text rather than a comment and
@@ -545,14 +559,14 @@ LINK_REFERENCE_DEFINITION_PATTERN = re.compile(
     ^\ {{0,3}}                               # at most three spaces of indent
     \[ (?=[^\]]*[^{_LINK_LABEL_BLANK}\]])    # a label with one nonblank
        (?P<label> (?: [^\[\]\\] | \\. )+ ) \]
-    :\ *                                     # the colon, then optional spaces
+    :[ \t]*                                  # the colon, then spaces or tabs
     {_LINK_DESTINATION}                      # the destination
-    (?P<title> \ +                           # an optional title
+    (?P<title> [ \t]+                        # an optional title
         (?: " (?: [^"\\] | \\. )* "
           | ' (?: [^'\\] | \\. )* '
           | \( (?: [^()\\] | \\. )* \) )
     )?
-    \ *$
+    [ \t]*$
     """,
     re.VERBOSE,
 )
@@ -611,131 +625,6 @@ LINK_REFERENCE_TITLE_LINE_PATTERN = re.compile(
 #: file in this repository, and its keys are publishing metadata, not text a
 #: child reads.
 FRONT_MATTER_DELIMITER_PATTERN = re.compile(r"^(?:-{3}|\.{3})[ \t]*$")
-#: One YAML plain scalar, as the grammar draws one: a run that never holds
-#: ``": "``, never ends on a bare ``:``, and never holds `` #``. It is spelled
-#: once and used for a key and for a value, because YAML says the same of both.
-#: https://yaml.org/spec/1.2.2/#733-plain-style
-_YAML_PLAIN_SCALAR = r"(?: (?!:[ \t]) (?!:$) (?![ \t]\#) [^\n] )*"
-#: One YAML double-quoted scalar, and one single-quoted one. Both carry an
-#: escape and a pattern that stops at the first quote cannot read either: a
-#: backslash escapes the character after it in the double-quoted style, and a
-#: doubled quote is the only escape the single-quoted style has. So ``title: "A
-#: \"quoted\" trip"`` and ``title: 'It''s a trip'`` are one scalar each, and
-#: PyYAML reads both. Measured at the commit this fixes: neither line matched,
-#: the block stopped being front matter, and the title, the key and the
-#: delimiter walked into the child's prose -- 38 words became 42 and the grade
-#: moved from 0.0 to -0.33. Reading the escape closes the other direction too:
-#: ``title: "unclosed \"`` is not a YAML scalar at all, and the old pattern
-#: accepted it.
-#: https://yaml.org/spec/1.2.2/#732-single-quoted-style
-#:
-#: https://yaml.org/spec/1.2.2/#731-double-quoted-style
-_YAML_DOUBLE_QUOTED = r'"(?:[^"\\]|\\.)*"'
-_YAML_SINGLE_QUOTED = r"'(?:[^']|'')*'"
-#: One character inside a YAML flow collection: a quoted scalar read whole, or
-#: any character that is neither a collection delimiter nor a quote. The quoted
-#: forms are read whole so that a delimiter inside one does not end the
-#: collection: ``{note: "a } b"}`` is one mapping and not a broken one.
-#: https://yaml.org/spec/1.2.2/#74-flow-collection-styles
-_YAML_FLOW_ITEM = (
-    "(?:" + _YAML_DOUBLE_QUOTED + "|" + _YAML_SINGLE_QUOTED + "|" + r"[^\n{}\[\]'\"]" + ")"
-)
-#: How many levels of nesting a flow collection may hold and still be read as
-#: one. Python's ``re`` has no recursion, so the nesting is unrolled to a fixed
-#: depth; three covers the publishing metadata a Markdown file carries, and a
-#: deeper one falls to the strict side -- the block stops being front matter and
-#: its lines are scored as prose, which is the error this whole pattern exists
-#: to avoid, in a rarer shape.
-_YAML_FLOW_NESTING_DEPTH = 3
-
-
-def _yaml_flow_collection(depth: int) -> str:
-    """Return the pattern for a YAML flow collection nested ``depth`` deep.
-
-    A flow mapping ``{...}`` or a flow sequence ``[...]``. It is spelled here
-    because the plain-scalar rule cannot hold one: a plain scalar may never
-    carry ``": "``, and ``trip: {city: Tokyo, days: 5}`` is a mapping whose
-    value carries one. Without this the line is not front matter, the block
-    around it stops being front matter with it, and the publishing metadata and
-    the ``...`` delimiter are counted as words a child reads.
-    """
-    item = _YAML_FLOW_ITEM
-    for _ in range(depth):
-        item = "(?:" + item + r"|\{" + item + r"*\}|\[" + item + r"*\])"
-    return r"(?:\{" + item + r"*\}|\[" + item + r"*\])"
-
-
-_YAML_FLOW_COLLECTION = _yaml_flow_collection(_YAML_FLOW_NESTING_DEPTH)
-#: A line a YAML front-matter block can hold: a mapping key, a sequence item, an
-#: indented continuation, or a comment. A plain key may hold spaces --
-#: ``session title: Trip plan`` is a mapping with one key -- so what separates
-#: front matter from prose is the block frame around it and the plain-scalar
-#: rule above, not a ban on internal whitespace. Measured against PyYAML over
-#: this repository's own lines the two agree, including on the navigation line
-#: every session carries: ``You are here: Phase 0 (Setup). Previous: none`` is
-#: not YAML, because a plain *value* may not hold ``": "`` either.
-#:
-#: A document that merely opens with a thematic break is still safe, for a
-#: reason worth writing down. Its second ``---`` is a Setext underline rather
-#: than a second break, so CommonMark turns the text between them into a
-#: heading -- and ``extract_prose`` drops a heading whether or not this pattern
-#: matched the line. The shapes where the block really does print a paragraph
-#: are the ones that end on ``...``, and the ones that hold a blank line; there
-#: this pattern is what keeps the words, and a mapping-shaped sentence closed
-#: by ``...`` stays genuinely ambiguous, because it is a YAML document end and
-#: a CommonMark paragraph at once. YAML wins that tie, since front matter is a
-#: YAML convention and not a CommonMark one.
-#:
-#: A mapping line may end on a comment, and ``title: Trip plan # editorial
-#: note`` is a line this pattern has to recognise or the whole block stops
-#: being front matter. That matters only for the two shapes that really print:
-#: a block closed by ``...``, and a block holding a blank line. There the title,
-#: the note and the delimiter walked into the child's prose and moved the
-#: reading score. The space before the ``#`` is required, because YAML requires
-#: it: ``version: 1.0#2`` is the plain scalar ``1.0#2`` and not a comment.
-#:
-#: A value may also be a flow collection, which is why ``_YAML_FLOW_COLLECTION``
-#: is one of the alternatives. The collection has to be balanced and has to
-#: fill the value to the end of the line, which is what keeps the widening from
-#: reaching prose: ``[Tokyo](https://example.com "a title: here")`` is a
-#: Markdown link, not a flow sequence, and it stays rejected.
-#:
-#: A sequence item is read the same way as a value, and for the same reason.
-#: Accepting every line that merely begins ``- `` took a rendered list item --
-#: ``- [unclosed ...`` under a thematic break, closed by ``...`` -- for front
-#: matter and removed it: measured at the commit this fixes, 44 words on the
-#: page became 3, which is enough to take a file under ``MIN_WORDS_TO_SCORE``
-#: and out of the gate in silence. The plain-scalar alternative refuses a
-#: leading ``[`` or ``{`` in both places, because a YAML plain scalar may not
-#: begin with a flow indicator: a value that starts with one is a flow
-#: collection or it is not YAML, and ``- {unclosed`` is not. Checked against
-#: PyYAML over the shapes a sequence item takes.
-#: https://yaml.org/spec/1.2.2/#733-plain-style
-#: https://yaml.org/spec/1.2.2/#66-comments
-FRONT_MATTER_LINE_PATTERN = re.compile(
-    rf"""
-    ^(?:
-        [ \t]                                     # an indented continuation
-      | \#                                        # a comment
-      | -[ \t]+ (?: {_YAML_DOUBLE_QUOTED}        # a sequence item: a
-                  | {_YAML_SINGLE_QUOTED}          # quoted scalar, a
-                  | {_YAML_FLOW_COLLECTION}        # balanced flow
-                  | [^ \t\r\n#'"{{\[]                # collection, a plain
-                  | $ )                            # scalar, or nothing
-      | (?: {_YAML_DOUBLE_QUOTED} | {_YAML_SINGLE_QUOTED}   # a quoted key
-          | [^ \t\r\n#:'"]{_YAML_PLAIN_SCALAR} )           # or a plain one
-        :
-        (?: [ \t]+ (?: {_YAML_DOUBLE_QUOTED}                # a quoted value
-                     | {_YAML_SINGLE_QUOTED}
-                     | {_YAML_FLOW_COLLECTION}                # a flow collection
-                     | [^ \t\r\n#'"{{\[]{_YAML_PLAIN_SCALAR} ) )?
-        (?: [ \t]+ \# [^\n]* )?                     # and then a comment
-        [ \t]*$
-    )
-    """,
-    re.VERBOSE,
-)
-
 #: The kind of the sentence unit that is still open for a wrapped line to join.
 #: A blockquote line may join only an open *quoted* unit: a blockquote that
 #: opens directly under an ordinary paragraph is a new block, not a wrapped
@@ -1686,6 +1575,32 @@ def is_link_label(label: str) -> bool:
     return len(label) <= LINK_LABEL_MAXIMUM_CHARACTERS
 
 
+def raw_html_run_end(line: str, index: int) -> int:
+    """Return where the raw HTML run opened at ``index`` ends, or ``-1``.
+
+    A comment, a processing instruction, a declaration and a CDATA section are
+    the four raw HTML productions whose content is characters rather than
+    inline content. What sits inside one is data: a ``[`` there opens no link,
+    a backtick opens no code span, and a ``<!--`` begins no second comment.
+
+    Only a run that closes on this line is reported. This helper reads one line
+    because its caller does, and a run that crosses a soft line break is the
+    caller's recorded limit rather than this one's; answering ``-1`` there
+    leaves the characters to be read as text, which is what they are when the
+    run never closes at all. Kept identical to the helper in the sibling hook.
+    <https://spec.commonmark.org/0.31.2/#raw-html>
+    """
+    for opener, closer in RAW_HTML_INLINE_RUNS:
+        match = opener.match(line, index)
+        if match is None:
+            continue
+        end = line.find(closer, match.end())
+        if end == -1:
+            return -1
+        return end + len(closer)
+    return -1
+
+
 def link_metadata_regions(
     line: str, defined_labels: frozenset[str]
 ) -> tuple[tuple[int, int], ...]:
@@ -1727,10 +1642,19 @@ def link_metadata_regions(
             # ``<span title="[">text](url "<!-- x -->")`` holds no link at all
             # and the marker in the parentheses is a comment the page prints.
             # Recording the attribute's bracket masked that marker as a link
-            # target. The two are tried in the order ``scan_inline_run`` tries
-            # them, and for the same reason: a tag name may not hold a colon
-            # and a URI autolink must, so only one of the two can match here.
+            # target. Raw HTML has six productions and a bracket is data in
+            # every one of them, so all six are asked about here: a comment, a
+            # processing instruction, a declaration and a CDATA section first,
+            # because none of the four can also be an autolink or a tag, then
+            # an autolink before a tag -- a tag name may not hold a colon and a
+            # URI autolink must, so only one of those two can match.
+            # ``Text <!--[-->text](u "<!-- audience: adult -->")`` holds no
+            # link either, and the marker in the parentheses is a real one.
             # <https://spec.commonmark.org/0.31.2/#raw-html>
+            run_end = raw_html_run_end(line, index)
+            if run_end != -1:
+                index = run_end
+                continue
             autolink = AUTOLINK_PATTERN.match(line, index)
             if autolink is not None:
                 index = autolink.end()
@@ -1963,11 +1887,16 @@ def raw_text_run_state(
     only where a reading score is computed, and it is answered per element
     from the HTML Standard's own rendering rules rather than from this set.
 
-    The state moves a whole line at a time, which is where it is less exact
-    than the parsers it follows: the characters after an opening delimiter on
-    its own line are not counted until the line below it. That residual reads a
-    displayed comment as a comment, which is the direction this scan ran in
-    before it asked the question at all.
+    An opener line is the run's own first line, whether the run closes on it
+    or below it. ``<script><!-- no-source-check: offline -->`` with its closer
+    two lines down holds script data on that first line exactly as it does on
+    the next, and answering "no run here" for the opener let every caller read
+    the body as markup. The two branches were settled one round apart, and why
+    the second waited is worth recording: returning the run for *every* line
+    was scored and rejected because it would have left a run open below a line
+    that already closed it. That objection is about the branch above, where
+    ``closing`` is found; in this branch the run really is open below, so the
+    line and the state agree.
 
     An open comment is carried in the same state and is the one run whose
     content is markup: a marker inside a comment is the comment it looks like,
@@ -1995,7 +1924,7 @@ def raw_text_run_state(
         closing = closer.search(content, match.end())
         if closing is not None:
             return comment_open_below(content, closing.end()), key
-        return key, None
+        return key, key
     return None, None
 
 
@@ -2678,6 +2607,43 @@ def strip_html_comments(text: str) -> str:
     return "".join(kept)
 
 
+def front_matter_is_yaml_mapping(block: str) -> bool:
+    """Return whether ``block`` is the YAML mapping a front-matter block is.
+
+    Two conditions, and each closes a different error.
+
+    **It has to parse.** Front matter is a YAML convention, so YAML decides,
+    and a hand-written line grammar kept deciding differently: an unbalanced
+    flow collection, an undefined escape in a double-quoted scalar and a tab
+    used as indentation are all shapes a pattern accepted and a parser refuses.
+    A block that no parser can read is not metadata a publishing tool will ever
+    consume; it is text on the page, and removing it takes words out of a
+    child's reading score without anyone seeing it go.
+
+    **It has to be a mapping.** Parsing alone is not enough, and this is where
+    a parser on its own would be worse than the pattern it replaces: ``Japan
+    trip`` is a perfectly good YAML document -- one plain scalar -- so a
+    thematic break over a sentence, closed by ``...``, would parse and the
+    sentence would vanish. Front matter is a block of keys, every consumer of
+    it reads a mapping, and requiring one keeps that shape out. Measured: the
+    two shapes an earlier round recorded as deliberately rejected, ``-- not a
+    sequence`` and ``-notaspace``, are plain scalars rather than mappings, so
+    they stay rejected and that verdict is unchanged.
+
+    Every error is caught, including the recursion a deeply nested flow
+    collection can raise, because an unreadable block is exactly the block this
+    answers ``False`` for. ``safe_load`` is used rather than ``load``: a
+    document in this repository is not a place to construct Python objects
+    from.
+    https://yaml.org/spec/1.2.2/
+    """
+    try:
+        loaded = yaml.safe_load(block)
+    except (yaml.YAMLError, RecursionError):
+        return False
+    return isinstance(loaded, dict)
+
+
 def strip_front_matter(text: str) -> str:
     """Remove a YAML front-matter block from the start of a document.
 
@@ -2687,10 +2653,11 @@ def strip_front_matter(text: str) -> str:
     nonblank line, so a document that merely begins with a thematic break keeps
     all of its text.
 
-    The opening delimiter is not enough on its own, so every nonblank line of
-    the block has to look like front matter before any of it is removed. Which
-    shapes that guard actually protects is worth stating precisely, because an
-    earlier version of this note had it wrong. A document that opens with
+    The opening delimiter is not enough on its own, so the block between the
+    delimiters has to *be* front matter -- a YAML mapping, read by a YAML
+    parser -- before any of it is removed. Which shapes that guard actually
+    protects is worth stating precisely, because an earlier version of this
+    note had it wrong. A document that opens with
     ``---``, carries one paragraph, and carries a second ``---`` below it does
     *not* hold two thematic breaks: measured against markdown-it 14.3.0 the
     second ``---`` is a Setext underline, so the text between them is a heading
@@ -2717,11 +2684,8 @@ def strip_front_matter(text: str) -> str:
     for index in range(1, len(lines)):
         line = lines[index].rstrip(ASCII_HORIZONTAL_WHITESPACE)
         if FRONT_MATTER_DELIMITER_PATTERN.match(line):
-            return "\n".join(lines[index + 1 :])
-        if (
-            line.strip(ASCII_HORIZONTAL_WHITESPACE)
-            and FRONT_MATTER_LINE_PATTERN.match(line) is None
-        ):
+            if front_matter_is_yaml_mapping("\n".join(lines[1:index])):
+                return "\n".join(lines[index + 1 :])
             return text
     return text
 

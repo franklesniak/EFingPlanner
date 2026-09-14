@@ -96,7 +96,7 @@ THEMATIC_BREAK_LINE_PATTERN = re.compile(
 #: ``.github/scripts/check-session-structure.py``.
 #: <https://spec.commonmark.org/0.31.2/#setext-headings>
 SETEXT_UNDERLINE_PATTERN = re.compile(r"^ {0,3}(?:=+|-+)[ \t]*$")
-BLOCK_QUOTE_PREFIX_PATTERN = re.compile(r"^ {0,3}> ?")
+BLOCK_QUOTE_PREFIX_PATTERN = re.compile(r"^ {0,3}>[ \t]?")
 LIST_ITEM_PATTERN = re.compile(r"^(?P<indent> {0,3})(?P<marker>[-*+]|\d{1,9}[.)])(?P<spacing> +)")
 
 #: What a bare link destination may hold, as CommonMark spells it: anything but
@@ -149,14 +149,14 @@ LINK_REFERENCE_DEFINITION_PATTERN = re.compile(
     ^\ {{0,3}}                               # at most three spaces of indent
     \[ (?=[^\]]*[^{_LINK_LABEL_BLANK}\]])    # a label with one nonblank
        (?P<label> (?: [^\[\]\\] | \\. )+ ) \]
-    :\ *                                     # the colon, then optional spaces
+    :[ \t]*                                  # the colon, then spaces or tabs
     {_LINK_DESTINATION}                      # the destination
-    (?P<title> \ +                           # an optional title
+    (?P<title> [ \t]+                        # an optional title
         (?: " (?: [^"\\] | \\. )* "
           | ' (?: [^'\\] | \\. )* '
           | \( (?: [^()\\] | \\. )* \) )
     )?
-    \ *$
+    [ \t]*$
     """,
     re.VERBOSE,
 )
@@ -803,11 +803,16 @@ def raw_text_run_state(
     only where a reading score is computed, and it is answered per element
     from the HTML Standard's own rendering rules rather than from this set.
 
-    The state moves a whole line at a time, which is where it is less exact
-    than the parsers it follows: the characters after an opening delimiter on
-    its own line are not counted until the line below it. That residual reads a
-    displayed comment as a comment, which is the direction this scan ran in
-    before it asked the question at all.
+    An opener line is the run's own first line, whether the run closes on it
+    or below it. ``<script><!-- no-source-check: offline -->`` with its closer
+    two lines down holds script data on that first line exactly as it does on
+    the next, and answering "no run here" for the opener let every caller read
+    the body as markup. The two branches were settled one round apart, and why
+    the second waited is worth recording: returning the run for *every* line
+    was scored and rejected because it would have left a run open below a line
+    that already closed it. That objection is about the branch above, where
+    ``closing`` is found; in this branch the run really is open below, so the
+    line and the state agree.
 
     An open comment is carried in the same state and is the one run whose
     content is markup: a marker inside a comment is the comment it looks like,
@@ -835,7 +840,7 @@ def raw_text_run_state(
         closing = closer.search(content, match.end())
         if closing is not None:
             return comment_open_below(content, closing.end()), key
-        return key, None
+        return key, key
     return None, None
 
 

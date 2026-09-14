@@ -374,6 +374,12 @@ RAW_HTML_RUN_PATTERNS = (
     (re.compile(r"<!\[CDATA\["), "]]>"),
     (re.compile(r"<![A-Za-z]"), ">"),
 )
+#: The same three with the comment in front of them, for a scan that reads one
+#: line rather than one paragraph. The comment is first because it is the one
+#: of the four whose opener another of them could also match, and because that
+#: is the order ``scan_inline_run`` asks in.
+#: https://spec.commonmark.org/0.31.2/#raw-html
+RAW_HTML_INLINE_RUNS = ((re.compile(r"<!--"), "-->"),) + RAW_HTML_RUN_PATTERNS
 #: The raw HTML runs whose content is not markup. What sits inside one is
 #: characters the page shows as they stand or drops altogether, so a
 #: ``<!-- ... -->`` written there is displayed text rather than a comment and
@@ -518,14 +524,14 @@ LINK_REFERENCE_DEFINITION_PATTERN = re.compile(
     ^\ {{0,3}}                               # at most three spaces of indent
     \[ (?=[^\]]*[^{_LINK_LABEL_BLANK}\]])    # a label with one nonblank
        (?P<label> (?: [^\[\]\\] | \\. )+ ) \]
-    :\ *                                     # the colon, then optional spaces
+    :[ \t]*                                  # the colon, then spaces or tabs
     {_LINK_DESTINATION}                      # the destination
-    (?P<title> \ +                           # an optional title
+    (?P<title> [ \t]+                        # an optional title
         (?: " (?: [^"\\] | \\. )* "
           | ' (?: [^'\\] | \\. )* '
           | \( (?: [^()\\] | \\. )* \) )
     )?
-    \ *$
+    [ \t]*$
     """,
     re.VERBOSE,
 )
@@ -618,7 +624,7 @@ MarkerSource = tuple[str, str, bool]
 #: a change to one is visible from the others. Verify agreement by comparing
 #: function bodies, never by trusting this comment.
 FENCE_OPEN_PATTERN = re.compile(r"^ {0,3}(?P<marker>`{3,}|~{3,})")
-BLOCK_QUOTE_PREFIX_PATTERN = re.compile(r"^ {0,3}> ?")
+BLOCK_QUOTE_PREFIX_PATTERN = re.compile(r"^ {0,3}>[ \t]?")
 LIST_ITEM_PATTERN = re.compile(r"^(?P<indent> {0,3})(?P<marker>[-*+]|\d{1,9}[.)])(?P<spacing> +)")
 
 AUDIENCE_ADULT_PATTERN = re.compile(
@@ -1318,6 +1324,32 @@ def inline_link_end(line: str, open_index: int) -> int:
     return index + 1 if index < length and line[index] == ")" else -1
 
 
+def raw_html_run_end(line: str, index: int) -> int:
+    """Return where the raw HTML run opened at ``index`` ends, or ``-1``.
+
+    A comment, a processing instruction, a declaration and a CDATA section are
+    the four raw HTML productions whose content is characters rather than
+    inline content. What sits inside one is data: a ``[`` there opens no link,
+    a backtick opens no code span, and a ``<!--`` begins no second comment.
+
+    Only a run that closes on this line is reported. This helper reads one line
+    because its caller does, and a run that crosses a soft line break is the
+    caller's recorded limit rather than this one's; answering ``-1`` there
+    leaves the characters to be read as text, which is what they are when the
+    run never closes at all. Kept identical to the helper in the sibling hook.
+    <https://spec.commonmark.org/0.31.2/#raw-html>
+    """
+    for opener, closer in RAW_HTML_INLINE_RUNS:
+        match = opener.match(line, index)
+        if match is None:
+            continue
+        end = line.find(closer, match.end())
+        if end == -1:
+            return -1
+        return end + len(closer)
+    return -1
+
+
 def link_metadata_regions(
     line: str, defined_labels: frozenset[str]
 ) -> tuple[tuple[int, int], ...]:
@@ -1357,10 +1389,19 @@ def link_metadata_regions(
             # ``<span title="[">text](url "<!-- x -->")`` holds no link at all
             # and the marker in the parentheses is a comment the page prints.
             # Recording the attribute's bracket masked that marker as a link
-            # target. The two are tried in the order ``scan_inline_run`` tries
-            # them, and for the same reason: a tag name may not hold a colon
-            # and a URI autolink must, so only one of the two can match here.
+            # target. Raw HTML has six productions and a bracket is data in
+            # every one of them, so all six are asked about here: a comment, a
+            # processing instruction, a declaration and a CDATA section first,
+            # because none of the four can also be an autolink or a tag, then
+            # an autolink before a tag -- a tag name may not hold a colon and a
+            # URI autolink must, so only one of those two can match.
+            # ``Text <!--[-->text](u "<!-- audience: adult -->")`` holds no
+            # link either, and the marker in the parentheses is a real one.
             # <https://spec.commonmark.org/0.31.2/#raw-html>
+            run_end = raw_html_run_end(line, index)
+            if run_end != -1:
+                index = run_end
+                continue
             autolink = AUTOLINK_PATTERN.match(line, index)
             if autolink is not None:
                 index = autolink.end()
@@ -1568,11 +1609,16 @@ def raw_text_run_state(
     only where a reading score is computed, and it is answered per element
     from the HTML Standard's own rendering rules rather than from this set.
 
-    The state moves a whole line at a time, which is where it is less exact
-    than the parsers it follows: the characters after an opening delimiter on
-    its own line are not counted until the line below it. That residual reads a
-    displayed comment as a comment, which is the direction this scan ran in
-    before it asked the question at all.
+    An opener line is the run's own first line, whether the run closes on it
+    or below it. ``<script><!-- no-source-check: offline -->`` with its closer
+    two lines down holds script data on that first line exactly as it does on
+    the next, and answering "no run here" for the opener let every caller read
+    the body as markup. The two branches were settled one round apart, and why
+    the second waited is worth recording: returning the run for *every* line
+    was scored and rejected because it would have left a run open below a line
+    that already closed it. That objection is about the branch above, where
+    ``closing`` is found; in this branch the run really is open below, so the
+    line and the state agree.
 
     An open comment is carried in the same state and is the one run whose
     content is markup: a marker inside a comment is the comment it looks like,
@@ -1600,7 +1646,7 @@ def raw_text_run_state(
         closing = closer.search(content, match.end())
         if closing is not None:
             return comment_open_below(content, closing.end()), key
-        return key, None
+        return key, key
     return None, None
 
 
