@@ -377,15 +377,45 @@ add-a-destination checklist. Must contain:
   | `10_snapshot_facts.md` | 10 Destination Snapshot | Capital; major land features; currency; main language. Not the time-difference figure -- that is a Trip-Basics card value. |
   | `11_regions_overview.md` | 11 Regions and Cities Overview | The main regions, named, so the child can start their region notes; then a pointer to the pack's regions reference for how each region feels different and for the geography instances the neutral session may not state -- your destination's shape and size, how weather differs by region, why travel time between regions matters -- and a pointer to the pack's major-cities reference for the route shapes. That regions reference is their canonical home; do not restate them in the slot. No trip shapes, no costs, no pinned travel times. |
   | `12_seasons_and_events.md` | 12 Weather, Seasons, and Events | Each season the destination has, named, so the child can label a season chart, with one short line each on what travelling in it is like; then a pointer to the pack's seasons, weather and events reference for the rest -- the big-draw and busiest periods, the congestion windows named as categories to confirm this year, each seasonal hazard with its pacing consequence, and the adult-facing contingency note. That reference is their canonical home; do not restate them in the slot. No pinned dates, prices or forecasts. |
-  | `16_18_candidate_cities.md` | 16-18 Deep-Dive Cities | Two to four first-trip candidate cities, each with a one-line draw and a few kid-magnet ideas to research, not pre-chosen. |
-  | `19_other_places_menu.md` | 19 Other Places Research | A menu of further candidate places beyond the deep-dive cities, each with a one-line draw, offered as options to research rather than as a shortlist. |
+  | `16_18_candidate_cities.md` | 16-18 Deep-Dive Cities | Two to four first-trip candidate cities, each with a one-line draw, so the child can start a card per city; then a pointer to the pack's major-cities reference for the kid-magnet ideas and for anything whose opening or availability changes. That reference is their canonical home; do not restate them in the slot. Candidates to research, never a shortlist. |
+  | `19_other_places_menu.md` | 19 Other Places Research | A menu of further candidate places beyond the deep-dive cities, each with a one-line draw, offered as options to research rather than as a shortlist. Where the pack's major-cities reference already carries that menu, point at it instead of copying it; that reference is their canonical home. |
   | `23_attraction_ideas.md` | 23 Attraction Research Cards | Starter attraction ideas as options to research, mixing high-draw named attractions with low-cost everyday ones, each with what kind of visit it is; anything ticketed, timed or permit-gated flagged "verify." No prices, no hours. |
-  | `30_transport_specifics.md` | 30 Trains, Transit, and IC Cards | The transport modes a child plans around (long-distance, local, walking, taxis); the stored-value or travel-card options, framed as things whose availability an adult checks; luggage forwarding and station lockers as planning concepts; any pass whose value depends on the itinerary, framed compare-don't-assume; one route-planning tool that works now, with an instruction to confirm it is still operating. No fares, no pinned journey times. |
+  | `30_transport_specifics.md` | 30 Trains, Transit, and IC Cards | The transport modes a child plans around, named (long-distance, local, walking, taxis), so the child can sort a day's travel; then a pointer to the pack's transportation reference for the rest -- the stored-value or travel-card options and whether a visitor can get one now, luggage forwarding and station lockers, any pass whose value depends on the itinerary, and a route-planning tool that works today. That reference is their canonical home; do not restate them in the slot. No fares, no pinned journey times. |
   | `34_lodging_types.md` | 34 Neighborhoods and Hotel Location | The lodging categories a family chooses among, one line each; the occupancy reality -- how many people a room holds, and what a larger party has to plan around. No prices, no named properties. |
   | `36_37_food_ideas.md` | 36-37 Food / Restaurant Shortlist | Food types and dining areas as ideas to research; what a family may have to plan around (dietary needs, group seating). No restaurant recommendations, no prices. |
   | `42_reservation_examples.md` | 42 Reservations and Timed Entries | A few experiences that require committing to a date to reserve, each with roughly how far ahead and what kind of gate it is, all framed as categories to re-check rather than current values. No release dates, no prices. |
   | `47_language_etiquette.md` | 47 Language and Etiquette | A short set of everyday phrases; the etiquette points a visiting family actually meets; any custom with rules of its own (bathing, photography, sacred sites), described matter-of-factly and never as something the child will get wrong. |
   | `kid_glossary.md` | Child travel glossary, all sessions | The destination words a child meets on signs, on menus and on trains, one line each; the units the destination uses (temperature, distance, time format) with a kid-sized conversion for each; one currency example, labelled an example to re-check and carrying the month the pack last stood behind the figure, which is normally older than this file's own `Last reviewed` line. |
+
+  **Nine of these twelve slots sit beside a reference file in the contract table above,
+  and the division between the two is a rule rather than a judgement call.** The insert
+  supplies only what the session's own page needs in hand -- the enumeration a child
+  fills a worksheet from. Everything else belongs to the reference, and **every volatile
+  fact belongs to the reference without exception**: availability, current tools, rules
+  that change, anything the pack itself tells a reader to check rather than memorise.
+  Say so in the slot with a pointer, and if the two ever disagree the reference wins.
+  The reason is mechanical rather than stylistic: **both files carry their own
+  `Last reviewed` line**, so a fact written into both is stamped twice and re-checked
+  once, and the session then meets two freshness claims with one piece of upkeep behind
+  them. Five of the nine carry the pointer in their own words above, because their
+  reference file exists today: `11_regions_overview.md`, `12_seasons_and_events.md`,
+  `16_18_candidate_cities.md`, `19_other_places_menu.md` and `30_transport_specifics.md`.
+  The other four point at a reference file no batch has written yet --
+  `23_attraction_ideas.md`, `34_lodging_types.md`, `36_37_food_ideas.md` and
+  `47_language_etiquette.md` -- so they inherit the rule, and whichever batch writes
+  either file divides the two then. The remaining three slots have no reference file in
+  the contract at all -- `10_snapshot_facts.md`, `42_reservation_examples.md` and
+  `kid_glossary.md` -- and own their fields outright.
+
+  **The transportation row is why this is written down.** Before the rule was stated,
+  `30_transport_specifics.md` required a later batch to supply the transport modes, the
+  travel-card options, luggage forwarding, station lockers, rail-pass guidance and a
+  route planner -- six things the built `transportation_basics.md` already holds, and
+  the contract routes Session 30 to that reference as well. Two of the six are marked in
+  the reference as things to check now rather than memorise, which is exactly the kind
+  of fact a second stamped copy strands. Rows `11_regions_overview.md` and
+  `12_seasons_and_events.md` had the pointer from the round that wrote them and the
+  other seven did not, which is how one rule came to be applied to two rows out of nine.
 
   **These lists are a floor, not a ceiling.** The batch that writes a slot may find it
   needs one more field and should add it here in the same pass. What it may not do is
@@ -1878,10 +1908,14 @@ reader, a deliberate accessibility-versus-printability choice, with a one-clause
 to `../parent_guide/differentiation.md`; `## A note about Google Docs` — one clause plus a
 link to `privacy_and_safety.md`. About one printed page. No command-line instructions.
 
-**F10. `framework/CHANGELOG.md` (edit — never a create).** The file is on `main`, is 68
-lines long, and carries a `## Metadata` block, a `## Which log is this` router table, a
+**F10. `framework/CHANGELOG.md` (edit — never a create).** The file is on `main` and
+carries a `## Metadata` block, a `## Which log is this` router table, a
 `## Versioning` policy, an `## Unreleased` section, the `0.1.0` release, and
-`## What is still owed to a human`. **Add the Batch 1 sections to the file that exists.
+`## What is still owed to a human`. **Those six sections are the invariant; the file's
+length is not.** An earlier draft of this item pinned it at 68 lines. That was true when
+this brief was drafted and false by the time the release before this batch merged, which
+added four bullets to `## Unreleased`. Check for the six sections, never for a line
+count. **Add the Batch 1 sections to the file that exists.
 Never overwrite it, and never recreate it from a skeleton.** Five other instructions in
 this brief read that existing content: the `## Versioning` citation below, the
 rename-in-place instruction below, the four-lines-record-the-opposite note below, the
@@ -1894,10 +1928,10 @@ repository claim validation it has not earned.
 memory and do not write a fresh skeleton. Recover the real file first:
 
 ```bash
-ref=$(git rev-parse --verify --quiet origin/main || git rev-parse --verify --quiet main)
 if [ -e framework/CHANGELOG.md ]; then
   echo "framework/CHANGELOG.md is present -- nothing to recover."
 else
+  ref=$(git rev-parse --verify --quiet origin/main || git rev-parse --verify --quiet main)
   git checkout "$ref" -- framework/CHANGELOG.md
 fi
 ```
@@ -1917,13 +1951,29 @@ missing"*; until now only the paragraph said it. **Expect the `is present` line 
 tree this batch is built on**, because the file is on `main` and F10 is an edit and never
 a create.
 
+**The ref lookup sits inside the `else` for a second reason, and it was measured rather
+than reasoned about.** An earlier form resolved the fallback ref on the line above the
+`if`. A checkout can have the changelog and still have neither `origin/main` nor a local
+`main` -- the same single-branch case the paragraph below describes -- and there both
+`git rev-parse` calls fail, so under `set -e` the assignment ends the shell before the
+guard is reached. Measured in exactly that checkout: the earlier form exited `1` and
+printed nothing, and this form prints
+`framework/CHANGELOG.md is present -- nothing to recover.` and exits `0`. The two forms
+behave identically in the other five states -- file present with either ref, file missing
+with either ref, and file missing with neither -- so the ordering costs nothing. **Resolve
+a fallback only on the path that needs it.** A lookup placed above the test that decides
+whether it is needed can abort on the very case the test exists to handle, which is the
+first of the three shell rules the self-check section states for every block below.
+
 **Do not write `git show origin/main:framework/CHANGELOG.md > framework/CHANGELOG.md`.**
 A checkout can legitimately have no `origin/main` remote-tracking ref -- a CI checkout
 that fetched only the pull-request ref, a single-branch clone, or a remote under another
 name -- and there `git show origin/main:...` exits 128 with
 `fatal: invalid object name 'origin/main'` while a local `main` would have resolved. The
-two lines above try the remote-tracking ref, then the local branch, and restore the file
-with `git checkout`, which writes nothing at all when neither ref resolves -- unlike `>`,
+`else` branch above tries the remote-tracking ref, then the local branch, and restores
+the file with `git checkout`, which writes nothing at all when neither ref resolves --
+measured, an empty ref makes `git checkout` exit `128` with
+`fatal: invalid reference:` and leave the tree untouched -- unlike `>`,
 which truncates the target before the command that was going to fill it runs, and so
 leaves an empty changelog behind on exactly the failure you most need to see.
 
@@ -2547,16 +2597,39 @@ list, and the "Which sessions need a grown-up" section. Both change.
 
 **The list.** Keep the heading `## First Taste sessions: ____ of 13` and the 13 numbered
 checkboxes exactly as they are. Insert five indented sub-bullets in numbered position,
-using the rendering the file already uses for Session 09 — checkbox, link, then an
-italic parenthetical. Write each one with its full relative path, the way every other
-entry in the file already does, so the link check validates it:
+using the rendering the file already uses for Session 09 — an unchecked checkbox, then
+the link, then an italic parenthetical, the whole line indented two spaces under its
+numbered item. Write each one with its full relative path, the way every other entry in
+the file already does, so the link check validates it. **Each line below is the complete
+entry** apart from those two leading spaces: type it as it stands, `- [ ]` included.
 
-- under item 1 (Session 01): `[02 Family Traveler Profiles](../sessions/phase_00_setup/02_family_traveler_profiles.md)` *(full Phases 0-2 path only -- not one of the 13)*
+- under item 1 (Session 01): `- [ ] [02 Family Traveler Profiles](../sessions/phase_00_setup/02_family_traveler_profiles.md) *(full Phases 0-2 path only -- not one of the 13)*`
 - under item 4 (Session 05), **above** the existing Session 09 sub-bullet, in this order:
-  - `[06 Book Research With a Guidebook](../sessions/phase_01_research_skills/06_book_research_guidebook.md)`
-  - `[07 Library Research Plan](../sessions/phase_01_research_skills/07_library_research_plan.md)` *(Recommended -- you can skip this one; not one of the 13)*
-  - `[08 Web Research Practice](../sessions/phase_01_research_skills/08_web_research_practice.md)`
-- under item 5 (Session 10): `[11 Regions and Cities Overview](../sessions/phase_02_destination_big_picture/11_regions_and_cities_overview.md)`
+  - `- [ ] [06 Book Research With a Guidebook](../sessions/phase_01_research_skills/06_book_research_guidebook.md) *(full Phases 0-2 path only -- not one of the 13)*`
+  - `- [ ] [07 Library Research Plan](../sessions/phase_01_research_skills/07_library_research_plan.md) *(Recommended -- you can skip this one; not one of the 13)*`
+  - `- [ ] [08 Web Research Practice](../sessions/phase_01_research_skills/08_web_research_practice.md) *(full Phases 0-2 path only -- not one of the 13)*`
+- under item 5 (Session 10): `- [ ] [11 Regions and Cities Overview](../sessions/phase_02_destination_big_picture/11_regions_and_cities_overview.md) *(full Phases 0-2 path only -- not one of the 13)*`
+
+**Neither the checkbox nor the parenthetical is optional, and an earlier draft of this
+item supplied neither.** It showed the five links alone, so all five entries lost the
+`- [ ]` box and three of them -- Sessions 06, 08 and 11 -- had no parenthetical at all,
+leaving a builder to invent the text or drop it. This page is the child's completion
+surface: an entry with no box is a line they cannot tick, on the one page whose job is
+telling them what counts toward 13. The Session 09 sub-bullet already on the page is the
+exemplar for both halves -- two spaces, then
+`- [ ] [09 AI as Helper, Not Boss](...) *(AI families only -- ...)*`. The three new
+parentheticals read alike because the same fact is true of all three: Sessions 06, 08 and
+11 are **Core** on the fuller Phases 0-2 path and none of them is one of the 13. Sessions
+07 and 09 differ because each carries a real condition of its own.
+
+**Measure the section again after you insert them.** `## First Taste sessions` is
+child-facing, and five more parentheticals push it further past the per-section dash
+budget and the `X, not Y` cap in `framework/docs/build_style_and_vocab.md`. The
+parentheticals are content rather than density -- this page exists to tell a child what
+counts toward 13 -- so that guide's precedence rule is the one that applies: rework
+neighbouring prose, or leave the count high and record it with a
+`<!-- density-exempt: <device> -- <reason> -->` marker on the line above. **Do not
+resolve it by dropping a parenthetical or a checkbox.**
 
 Change the Session 09 sub-bullet's placement words from "do right after Session 05" to
 "do before any AI tool; on the First Taste path, right after Session 05." Add one
@@ -3426,6 +3499,29 @@ You are here: Phase 2 (Destination Big Picture), First Taste step 5 of 13. Previ
 
 Run each of these from the repository root and confirm the stated expectation.
 
+**Every block below is written to be safe under `set -e`, and that is a constraint on
+how the blocks are written rather than advice about how to run them.** GitHub Actions
+runs a `run:` block under `bash -e`, and a builder who pastes one of these into a script
+may or may not; a block that is correct under `-e` is correct either way, so this brief
+carries the stricter form. Three rules follow, and this brief broke all three before they
+were written down here:
+
+1. **Resolve nothing above the test that decides whether it is needed.** A lookup placed
+   before its guard can abort on exactly the case the guard exists to handle. F10's
+   changelog recovery is the worked example.
+2. **Take a count as `var=$(...) || var=0`.** `grep -c` prints `0` and exits `1` when it
+   matches nothing, so an unprotected assignment aborts on the empty case -- and in both
+   loops below the empty case is the defect being looked for.
+3. **End a command whose clean result is no match with `|| true` when another command
+   follows it.** Otherwise the successful outcome stops the block and the commands after
+   it never run.
+
+All three failures are **silent**: the shell exits with no message, and a check that
+passes prints no message either. So on a block holding more than one command, read the
+exit status as well as the output. A block holding a single `grep` is a different case
+and is left alone -- `grep` exiting `1` on no match is the pass there, and each such
+block says so where it appears.
+
 Trip, origin and roster leak — the explicit `framework/` target plus `-r` scans
 the built files instead of reading stdin, and `-w` gives standalone-token matching in
 GNU and BSD grep, so it works on Linux, macOS and Git Bash on Windows. Neither
@@ -3656,7 +3752,7 @@ else, so a file with no title at all lints clean and passes every gate:
 
 ```bash
 find framework destinations -name '*.md' | while read -r f; do
-  n=$(grep -cE '^# ' "$f")
+  n=$(grep -cE '^# ' "$f") || n=0
   first=$(grep -E '^#{1,6} ' "$f" | head -n 1)
   [ "$n" = "1" ] || echo "H1 COUNT $n (want 1): $f"
   case "$first" in
@@ -3681,6 +3777,14 @@ all prints `NO HEADING AT ALL` rather than a count that reads like a different b
 test, so a stray second H1 fails too. `head -n 1` rather than `grep -m1`, because `-m` is
 not in POSIX while the `{1,6}` bound is; `case` rather than a second `grep`, so a title
 whose own text begins with `#` cannot be misread as a deeper heading.
+
+**The `|| n=0` is not decoration.** `grep -c` prints `0` and exits `1` when it matches
+nothing, so under `set -e` the assignment ends the shell on a file with no H1 -- the one
+file this loop exists to find, and the file the paragraph above says lints clean and
+passes every gate. Measured against a tree holding one: without the fallback the loop
+exits `1` and prints nothing, and with it the loop prints `H1 COUNT 0 (want 1)` and
+`FIRST HEADING IS NOT THE H1` and exits `0`. The `first=` line needs no fallback because
+it ends in a pipe to `head`, and a pipeline reports its last command's status.
 
 Expect output for **exactly two files, and no others**: D7 and D8, whose fenced skeletons
 each show an H1 as an example of what a later author writes, so both report `2`. **Judge
@@ -3708,7 +3812,7 @@ for f in destinations/*/reference/*.md destinations/*/session_inserts/*.md; do
   case "$(basename "$f")" in README.md) continue;; esac
   first=$(sed -n '/^# /,$p' "$f" | sed -e '1d' -e '/^[[:space:]]*$/d' | head -n 1)
   labels=$(sed -e 's/<!--.*-->//g' -e 's/[*_]//g' -e 's/^[^[:alpha:]]*//' "$f" \
-    | grep -ciE "$label")
+    | grep -ciE "$label") || labels=0
   printf '%s\n' "$first" | grep -qE "$re" \
     || echo "STAMP NOT FIRST LINE BELOW H1: $f"
   [ "$labels" = "1" ] \
@@ -3746,6 +3850,15 @@ comments, which render as nothing and are therefore not labels; removes inline e
 and then deletes every character in front of the **first letter** on the line, whatever
 that character is. What survives is asked one question, case-insensitively: does it begin
 with `last reviewed` and a colon?
+
+**The `|| labels=0` is the H1 loop's rule again, and it matters more here.** The pipeline
+ends in `grep -c`, which prints `0` and exits `1` on a file carrying no label at all --
+and a file carrying no label is precisely what the uniqueness test is for. Under `set -e`
+the assignment would end the loop at the first such file, before either message printed
+and before any later file was read. Measured on a fixture whose first two reference files
+carry no stamp: without the fallback, no output and exit `1`; with it, four lines naming
+both files and exit `0`. A clean run prints nothing too, so the aborting form and the
+passing form look the same on screen.
 
 **State it as a procedure, because you can run this one by hand.** Ignore everything
 before the first letter on a line. If what is left starts with `Last reviewed` and a
@@ -3867,8 +3980,8 @@ this is the only place it is measured, and it matters most in this batch, becaus
 files are generated from a brief whose own prose is full of section citations:
 
 ```bash
-grep -rniE 'sections? [0-9]' framework/ destinations/
-grep -rn '§' framework/ destinations/
+grep -rniE 'sections? [0-9]' framework/ destinations/ || true
+grep -rn '§' framework/ destinations/ || true
 ```
 
 Expect no output from either. `framework/` and `destinations/` are the whole built tree;
@@ -3883,6 +3996,14 @@ needs. The second command covers the `§` spelling this brief uses throughout, w
 pattern over the word can reach; it returns nothing on the built tree today, so its
 expectation is the same as the first's. Neither reaches a citation written out in
 words, so read your own new files as well: a clean run is evidence, not proof.
+
+**Both lines end `|| true`, and that is what lets the second one run.** `grep` exits `1`
+when it matches nothing, which here is the expected result, so under `set -e` the first
+command ends the block and the `§` sweep never executes. Measured on a fixture that is
+clean for the word pattern and carries one `§14.1`: without the fallback the pair printed
+nothing and exited `1`, which is indistinguishable from a clean tree; with it, the `§`
+hit printed. This is the only block in the brief holding a command whose expected result
+is a non-zero exit **and** a command after it, so it is the only one that needs this.
 
 Finally, the four repo-wide gates. **They are four separate commands, and `pre-commit`
 is not a superset of the other three.** `.pre-commit-config.yaml` wires exactly two
