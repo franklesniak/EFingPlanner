@@ -260,22 +260,6 @@ HTML_COMMENT_PATTERN = re.compile(r"<!--.*?-->", re.DOTALL)
 HTML_TAG_PATTERN = re.compile(
     r"</?[A-Za-z][A-Za-z0-9-]*(?:[ \t][^<>]*)?/?>|<[!?][^>]*>"
 )
-#: The same pattern without its declaration alternative, for a line a displayed
-#: raw-text element holds. Inside ``<textarea>`` or ``<xmp>`` a ``<!-- ... -->``
-#: run, a ``<?php ... ?>`` run and a ``<!DOCTYPE ...>`` run are characters the
-#: page prints rather than markup an HTML parser reads, so removing them took
-#: away words a child reads. Measured at the commit this fixes: forty-three
-#: words written between ``<!--`` and ``-->`` inside a ``<textarea>`` left zero
-#: prose words, and the gate skipped the document in silence.
-#:
-#: The element-tag alternative is kept, and the residual is recorded rather than
-#: closed: a ``<b>`` inside a ``<textarea>`` is printed too, and is still
-#: removed here. Its letters are a tag name rather than words a child reads, so
-#: the residual lowers the count by nothing a reader would count.
-#: https://html.spec.whatwg.org/multipage/parsing.html#rawtext-state
-DISPLAYED_HTML_TAG_PATTERN = re.compile(
-    r"</?[A-Za-z][A-Za-z0-9-]*(?:[ \t][^<>]*)?/?>"
-)
 #: One inline HTML tag, open or closing, matched from a known position rather
 #: than searched for. The code-span scan skips a whole tag at a time with it, so
 #: that a backtick inside an attribute value is read as part of the attribute,
@@ -392,6 +376,13 @@ RAW_HTML_INLINE_RUNS = ((re.compile(r"<!--"), "-->"),) + RAW_HTML_RUN_PATTERNS
 #: https://html.spec.whatwg.org/multipage/parsing.html#rawtext-state
 #: https://spec.commonmark.org/0.31.2/#html-blocks
 COMMENT_RUN = "comment"
+#: The characters HTML5's tokenizer reads as whitespace inside a tag. The
+#: Markdown layer's ``ASCII_HORIZONTAL_WHITESPACE`` is a different set for a
+#: different question: this one carries the line ending and the form feed,
+#: because a tag may hold either. Kept identical to the constant in the
+#: sibling hooks.
+#: https://html.spec.whatwg.org/multipage/parsing.html#tag-open-state
+HTML_TAG_WHITESPACE = "\t\n\f\r "
 RAW_TEXT_ELEMENT_NAMES = (
     "script",
     "style",
@@ -440,6 +431,31 @@ RAW_TEXT_CLOSERS = {key: closer for key, _, closer in RAW_TEXT_RUNS}
 #: same reason: a browser paints none of them.
 #: https://html.spec.whatwg.org/multipage/rendering.html#hidden-elements
 DISPLAYED_RAW_TEXT_ELEMENT_NAMES = ("textarea", "xmp")
+#: The displayed elements' own tags, and nothing else. A line a ``<textarea>``
+#: or an ``<xmp>`` holds is painted character for character, so the only markup
+#: on it is the element's own opener and closer: everything between them is
+#: text, however it is spelled.
+#:
+#: This replaces a pattern that removed *any* angle-bracketed run on such a
+#: line, which was two errors deep. The first was recorded as a residual and
+#: reasoned about wrongly -- ``a <b> inside a <textarea> is removed, and its
+#: letters are a tag name rather than words a child reads``. The letters are
+#: not the problem. ``[ \t][^<>]*`` matches an *attribute run*, which is
+#: arbitrary text: forty-five words written inside ``<note visible visible
+#: ... >`` are painted by the element and were removed by this substitution,
+#: which left the document under ``MIN_WORDS_TO_SCORE`` and out of the gate in
+#: silence. A list looks complete from the inside, and so does a residual.
+#:
+#: What is left is recorded and is the other direction: markup written *after*
+#: the element's closing tag on the same line is text to this pattern, so a
+#: ``<b>`` there raises the count by one token rather than lowering it by
+#: forty-five. ``MD033/no-inline-html`` refuses every one of these constructs
+#: in every tracked file.
+#: https://html.spec.whatwg.org/multipage/parsing.html#rawtext-state
+DISPLAYED_RAW_TEXT_TAG_PATTERN = re.compile(
+    r"</?(?:" + "|".join(DISPLAYED_RAW_TEXT_ELEMENT_NAMES) + r")(?:[ \t][^<>]*)?/?>",
+    re.IGNORECASE,
+)
 #: The two invisible halves of an inline link: its destination and its optional
 #: title. Neither is rendered, so both go with the brackets and only the label
 #: is prose. A destination is either the pointy ``<...>`` form or a bare run
@@ -655,19 +671,34 @@ LINK_REFERENCE_DESTINATION_LINE_PATTERN = re.compile(
     re.VERBOSE,
 )
 
-#: A title alone on its own line, which the definition above it takes. Kept
-#: identical to the constant in
-#: ``.github/scripts/check-session-structure.py``.
-LINK_REFERENCE_TITLE_LINE_PATTERN = re.compile(
-    r"""
-    ^[ \t]*
-    (?: " (?: [^"\\] | \\. )* "
-      | ' (?: [^'\\] | \\. )* '
-      | \( (?: [^()\\] | \\. )* \) )
-    [ \t]*$
+#: A definition's label, colon and destination, with whatever follows them
+#: left unread. The full pattern above anchors at the end of the line, because
+#: a same-line title that is followed by text makes the whole thing no
+#: definition at all -- measured on both renderers, which read
+#: ``[x]: /url "a" ok`` as a paragraph. A title that has merely not *closed*
+#: yet is a different thing, and this is what hands it to the title scanner.
+#: Kept identical to the constant in the sibling hook.
+#: https://spec.commonmark.org/0.31.2/#link-reference-definitions
+LINK_REFERENCE_DEFINITION_HEAD_PATTERN = re.compile(
+    rf"""
+    ^\ {{0,3}}                               # at most three spaces of indent
+    \[ (?=[^\]]*[^{_LINK_LABEL_BLANK}\]])    # a label with one nonblank
+       (?P<label> (?: [^\[\]\\] | \\. )+ ) \]
+    :[ \t]*                                  # the colon, then spaces or tabs
+    {_LINK_DESTINATION}                      # the destination
     """,
     re.VERBOSE,
 )
+#: The same, for a destination sitting alone on the line under a label line.
+#: Kept identical to the constant in the sibling hook.
+LINK_REFERENCE_DESTINATION_HEAD_PATTERN = re.compile(
+    rf"^[ \t]*{_LINK_DESTINATION}", re.VERBOSE
+)
+#: What opens a definition's title, and what closes each opener. CommonMark
+#: allows all three spellings and allows a line ending inside any of them.
+#: Kept identical to the constant in the sibling hook.
+#: https://spec.commonmark.org/0.31.2/#link-reference-definitions
+LINK_REFERENCE_TITLE_DELIMITERS = {'"': '"', "'": "'", "(": ")"}
 #: A YAML front-matter delimiter. Front matter is permitted on any Markdown
 #: file in this repository, and its keys are publishing metadata, not text a
 #: child reads.
@@ -2106,6 +2137,83 @@ def link_metadata_regions(
     return tuple(regions)
 
 
+def reference_title_span(lines: Sequence[str], row: int, index: int) -> int:
+    """Return how many lines the definition title opening at ``index`` fills.
+
+    Zero where no title opens there or none closes. CommonMark puts no line
+    bound on a title: ``"first`` on one line and ``second"`` on the next is one
+    title carrying a line ending, and both renderers resolve the definition
+    that holds it. A line-local match refused the whole definition, the label
+    was never defined, and the ``![<!-- audience: adult -->][x]`` below it --
+    which the page renders as an image's description, where a marker is
+    attribute data -- was read as a comment the child's page carried.
+
+    Three rules bound it and each was measured on both renderers. A blank line
+    ends the block, so a title reaching one closes nothing. Anything but
+    whitespace after the closing delimiter makes the whole construct a
+    paragraph rather than a definition. And an unescaped ``(`` inside a
+    parenthesised title is not allowed, which is why ``(a`` / ``(b)`` / ``c)``
+    is prose on both. Kept identical to the helper in the sibling hook.
+    https://spec.commonmark.org/0.31.2/#link-reference-definitions
+    """
+    line = lines[row] if row < len(lines) else ""
+    opener = line[index] if 0 <= index < len(line) else ""
+    closer = LINK_REFERENCE_TITLE_DELIMITERS.get(opener)
+    if closer is None:
+        return 0
+    position = index + 1
+    offset = 0
+    while row + offset < len(lines):
+        line = lines[row + offset]
+        if offset and not line.strip(ASCII_HORIZONTAL_WHITESPACE):
+            return 0
+        while position < len(line):
+            character = line[position]
+            if character == "\\":
+                position += 2
+                continue
+            if character == closer:
+                rest = line[position + 1 :]
+                if rest.strip(ASCII_HORIZONTAL_WHITESPACE):
+                    return 0
+                return offset + 1
+            if character == opener == "(":
+                return 0
+            position += 1
+        offset += 1
+        position = 0
+    return 0
+
+
+def reference_title_line_span(lines: Sequence[str], row: int) -> int:
+    """Return how many lines a title beginning on its own line ``row`` fills.
+
+    Zero where that line opens no title. This is the multi-line generalization
+    of a pattern anchored to one line, and it subsumes it: a title that closes
+    where it opened returns ``1``. Kept identical to the helper in the sibling
+    hook.
+    """
+    line = lines[row] if row < len(lines) else ""
+    start = len(line) - len(line.lstrip(ASCII_HORIZONTAL_WHITESPACE))
+    return 0 if start == len(line) else reference_title_span(lines, row, start)
+
+
+def reference_title_opens_at(line: str, after: int) -> int:
+    """Return where a title opens after a destination ending at ``after``.
+
+    ``-1`` where the characters between are not a run of spaces or tabs
+    followed by a title delimiter. CommonMark requires at least one blank
+    between a destination and its title. Kept identical to the helper in the
+    sibling hook.
+    """
+    index = after
+    while index < len(line) and line[index] in ASCII_HORIZONTAL_WHITESPACE:
+        index += 1
+    if index == after or index >= len(line):
+        return -1
+    return index if line[index] in LINK_REFERENCE_TITLE_DELIMITERS else -1
+
+
 def reference_definition_span(lines: Sequence[str], index: int) -> int:
     """Return how many lines the link reference definition at ``index`` fills.
 
@@ -2125,22 +2233,32 @@ def reference_definition_span(lines: Sequence[str], index: int) -> int:
     label_line = LINK_REFERENCE_LABEL_LINE_PATTERN.match(line_at(0))
     if label_line is not None and is_link_label(label_line.group("label")):
         destination = LINK_REFERENCE_DESTINATION_LINE_PATTERN.match(line_at(1))
-        if destination is None:
+        if destination is not None:
+            if destination.group("title") is None:
+                title = reference_title_line_span(lines, index + 2)
+                if title:
+                    return 2 + title
+            return 2
+        head = LINK_REFERENCE_DESTINATION_HEAD_PATTERN.match(line_at(1))
+        if head is None:
             return 0
-        if destination.group("title") is None and (
-            LINK_REFERENCE_TITLE_LINE_PATTERN.match(line_at(2)) is not None
-        ):
-            return 3
-        return 2
+        opens = reference_title_opens_at(line_at(1), head.end())
+        title = reference_title_span(lines, index + 1, opens)
+        return 1 + title if title else 0
 
     definition = LINK_REFERENCE_DEFINITION_PATTERN.match(line_at(0))
-    if definition is None or not is_link_label(definition.group("label")):
+    if definition is not None and is_link_label(definition.group("label")):
+        if definition.group("title") is None:
+            title = reference_title_line_span(lines, index + 1)
+            if title:
+                return 1 + title
+        return 1
+
+    head = LINK_REFERENCE_DEFINITION_HEAD_PATTERN.match(line_at(0))
+    if head is None or not is_link_label(head.group("label")):
         return 0
-    if definition.group("title") is None and (
-        LINK_REFERENCE_TITLE_LINE_PATTERN.match(line_at(1)) is not None
-    ):
-        return 2
-    return 1
+    opens = reference_title_opens_at(line_at(0), head.end())
+    return reference_title_span(lines, index, opens)
 
 
 def collect_reference_labels(contents: Sequence[str]) -> frozenset[str]:
@@ -2155,22 +2273,44 @@ def collect_reference_labels(contents: Sequence[str]) -> frozenset[str]:
     The lines a definition fills are skipped with it, so a destination or a
     title sitting on its own line is never read as a second label. A line
     inside a fenced block enters this walk empty, which no part of a definition
-    matches. Kept identical to the helper in
+    matches.
+
+    And a definition may not interrupt a paragraph, so this walk carries the
+    paragraph state rather than reading every line alike. ``Intro text.`` above
+    ``[x]: /url`` defines nothing on either renderer -- the two lines are one
+    paragraph and the brackets stay on the page -- while the walk defined ``x``
+    anyway, and the ``![<!-- audience: adult -->][x]`` below it then read as
+    resolved image metadata rather than as the comment the page really carries.
+    An adult-facing document went through the child gate on it.
+
+    ``opens_a_paragraph`` is the same helper the document walk uses, and it
+    already knows that a definition is a leaf block rather than a paragraph, so
+    definitions written one under another all define. What this walk cannot see
+    is the container a line sits in: ``previous_content`` is the line above as
+    it stands rather than as it peels, which is only consulted for the table
+    rule and is recorded rather than closed. Kept identical to the helper in
     ``.github/scripts/check-session-structure.py``.
     https://spec.commonmark.org/0.31.2/#link-reference-definitions
     """
     labels: set[str] = set()
+    paragraph_open = False
+    previous_content = ""
     row = 0
 
     while row < len(contents):
-        span = reference_definition_span(contents, row)
-        if span == 0:
-            row += 1
-            continue
-        match = LINK_REFERENCE_LABEL_PATTERN.match(contents[row])
-        if match is not None:
-            labels.add(normalize_link_label(match.group("label")))
-        row += span
+        content = contents[row]
+        if not paragraph_open:
+            span = reference_definition_span(contents, row)
+            if span:
+                match = LINK_REFERENCE_LABEL_PATTERN.match(content)
+                if match is not None:
+                    labels.add(normalize_link_label(match.group("label")))
+                row += span
+                previous_content = ""
+                continue
+        paragraph_open = opens_a_paragraph(content, paragraph_open, previous_content)
+        previous_content = content
+        row += 1
 
     return frozenset(labels)
 
@@ -2399,6 +2539,91 @@ def raw_text_content_start(content: str, match: "re.Match[str]", key: str) -> in
     return match.end() if start_tag is None else start_tag.end()
 
 
+def html_tag_close(content: str, index: int) -> int:
+    """Return the offset past the ``>`` closing a tag whose name ended at ``index``.
+
+    ``-1`` where the tag does not close in ``content``. This is HTML5's own
+    tag-state machine and not a search for a ``>``, because the two give
+    different answers and the page follows the machine: a ``>`` written inside a
+    quoted attribute value is attribute data, so ``</script title="> x">``
+    closes at the *last* ``>`` and not the first. Searching for the character
+    ended the tag inside the value and handed the rest of it back to the
+    caller as though a reader saw it -- which let a comment spelled in an
+    attribute grant an exemption the page never carried.
+
+    The quote characters only open a value after ``=``: HTML5 reads the ``"``
+    in ``</script a"b>`` as part of the attribute *name*, so a scanner that
+    treated every quote as a delimiter would run past the tag's real end. The
+    states below are the spec's, named as the spec names them, and the helper
+    is measured against ``html.parser`` rather than reasoned about. Kept
+    identical to the helper in the sibling hooks.
+    https://html.spec.whatwg.org/multipage/parsing.html#tag-open-state
+    """
+    state = "before-attribute-name"
+    position = index
+    while position < len(content):
+        character = content[position]
+        if state in ("before-attribute-name", "after-attribute-value"):
+            if character == ">":
+                return position + 1
+            if character in HTML_TAG_WHITESPACE or character == "/":
+                position += 1
+                continue
+            state = "attribute-name"
+            # An ``=`` here is a parse error and becomes the *name*, which is
+            # the one character this state may not hand to the state below:
+            # reconsumed as a name character it would open a value, and
+            # ``</script ="><!-- ... -->`` then lost the ``>`` that ends the
+            # tag. Every other character is reconsumed.
+            if character == "=":
+                position += 1
+            continue
+        if state == "attribute-name":
+            if character == ">":
+                return position + 1
+            if character == "=":
+                state = "before-attribute-value"
+            elif character in HTML_TAG_WHITESPACE:
+                state = "after-attribute-name"
+            elif character == "/":
+                state = "before-attribute-name"
+        elif state == "after-attribute-name":
+            if character == ">":
+                return position + 1
+            if character == "=":
+                state = "before-attribute-value"
+            elif character in HTML_TAG_WHITESPACE:
+                pass
+            elif character == "/":
+                state = "before-attribute-name"
+            else:
+                state = "attribute-name"
+        elif state == "before-attribute-value":
+            if character == ">":
+                return position + 1
+            if character == '"':
+                state = "attribute-value-double-quoted"
+            elif character == "'":
+                state = "attribute-value-single-quoted"
+            elif character in HTML_TAG_WHITESPACE:
+                pass
+            else:
+                state = "attribute-value-unquoted"
+        elif state == "attribute-value-double-quoted":
+            if character == '"':
+                state = "after-attribute-value"
+        elif state == "attribute-value-single-quoted":
+            if character == "'":
+                state = "after-attribute-value"
+        else:  # attribute-value-unquoted
+            if character == ">":
+                return position + 1
+            if character in HTML_TAG_WHITESPACE:
+                state = "before-attribute-name"
+        position += 1
+    return -1
+
+
 def raw_text_run_tail(content: str, closer_end: int, key: str) -> int:
     """Return where a closed raw-text run stops holding the line's characters.
 
@@ -2407,14 +2632,22 @@ def raw_text_run_tail(content: str, closer_end: int, key: str) -> int:
     it. That match ends at the name, and the *tag* ends at its ``>``, so the
     characters a reader sees begin one character further on. The other four
     runs carry their whole delimiter in the match -- ``?>``, ``]]>``, ``>``,
-    ``-->`` -- and end where it ends. Kept identical to the helper in the
-    sibling hooks.
+    ``-->`` -- and end where it ends.
+
+    Where the end tag does not close on this line at all, the line has no tail:
+    every character after ``</name`` is the tag's own, and handing them back
+    read ``</script title="a`` as words a child sees and as a place a comment
+    could stand. The other reading -- hand the rest of the line back, which is
+    what this helper did before -- was built rather than argued about, and put
+    to a generator of 1,536 end tags: it disagrees with ``html.parser`` on 12
+    rows against this form's 8, at the same instrument score and the same
+    suites. Kept identical to the helper in the sibling hooks.
     https://html.spec.whatwg.org/multipage/parsing.html#end-tag-open-state
     """
     if key not in RAW_TEXT_ELEMENT_NAMES:
         return closer_end
-    tag_end = content.find(">", closer_end)
-    return closer_end if tag_end == -1 else tag_end + 1
+    tag_end = html_tag_close(content, closer_end)
+    return len(content) if tag_end == -1 else tag_end
 
 
 def raw_text_run_boundary(
@@ -2589,8 +2822,11 @@ def html_tag_continue(prefix: str, line: str) -> tuple[int, str | None, bool]:
 
 
 def raw_html_comment_spans(
-    line: str, is_in_comment: bool, open_tag: str | None = None
-) -> tuple[str, bool, str | None]:
+    line: str,
+    is_in_comment: bool,
+    open_tag: str | None = None,
+    in_bogus_run: bool = False,
+) -> tuple[str, bool, str | None, bool]:
     """Return the HTML comment text on one line of a raw HTML block.
 
     Two contexts bind inside a raw HTML block and only two: an open comment,
@@ -2611,28 +2847,57 @@ def raw_html_comment_spans(
     be matched against the whole tag rather than guessed at. Without it a
     ``<span`` on one line and a ``title=`` holding a marker on the next read
     as a real comment, and a document left its gate on attribute data.
+
+    ``in_bogus_run`` is the third of those cross-line states and it is the same
+    fact told about a different run: a bogus comment and a malformed tag each
+    end at the next ``>``, wherever that ``>`` is, and neither is obliged to
+    put one on the line it opens. Reading the next line afresh made
+    ``<div>`` / ``before <?foo`` / a marker line / ``?>`` carry an audience the
+    page never showed, because the whole of it is one node to an HTML parser
+    and the marker's own ``-->`` merely supplies the ``>`` that ends it.
     """
     spans: list[str] = []
     index = 0
 
-    if open_tag is not None:
+    if in_bogus_run:
+        # A run that ends at the next ``>`` was left open on the line above:
+        # a bogus comment, or a tag too malformed for the grammar above to
+        # read. Every character up to that ``>`` is the run's, so a ``<!--``
+        # among them opens nothing.
+        bogus_end = line.find(">")
+        if bogus_end == -1:
+            return "", False, None, True
+        index = bogus_end + 1
+    elif open_tag is not None:
         # A tag left open on the line above continues here, and everything
         # until its ``>`` is the tag's own characters. A ``<!--`` written in
         # a quoted attribute value is attribute data, exactly as it is when
-        # the whole tag fits on one line. A line that makes the whole thing
-        # no tag at all drops the state and is read from its start.
+        # the whole tag fits on one line.
+        #
+        # A line that makes the whole thing no tag *to CommonMark* does not
+        # make it no tag to the page, and the page is what this helper answers
+        # for. ``html_tag_prefix`` only ever opens on a ``<`` and a letter, and
+        # that is a tag to an HTML parser however the rest of it is spelled --
+        # the same rule the malformed-tag fallback below applies within a
+        # line. So the run goes on to its ``>`` rather than starting over:
+        # ``before <a--`` above a marker line is one tag with the marker's
+        # words as attribute names, and reading the line afresh found a
+        # comment inside a tag that the page still had open.
         index, open_tag, matched = html_tag_continue(open_tag, line)
         if not matched:
-            index = 0
+            bogus_end = line.find(">")
+            if bogus_end == -1:
+                return "", False, None, True
+            index = bogus_end + 1
         elif open_tag is not None:
-            return "", False, open_tag
+            return "", False, open_tag, False
 
     while index < len(line):
         if is_in_comment:
             comment_end = line.find("-->", index)
             if comment_end == -1:
                 spans.append(line[index:])
-                return "".join(spans), True, None
+                return "".join(spans), True, None, False
             spans.append(line[index : comment_end + len("-->")])
             index = comment_end + len("-->")
             is_in_comment = False
@@ -2671,12 +2936,12 @@ def raw_html_comment_spans(
                 # The run is skipped rather than reported, because the node it
                 # makes is not the marker -- its text merely holds the marker's
                 # characters -- and honouring it exempted a document whose
-                # author declared nothing. A run with no ``>`` on this line is
-                # a residual: the bogus comment continues below and this
-                # reads the next line afresh.
+                # author declared nothing. A run with no ``>`` on this line
+                # does not end there: it is handed to the next line as
+                # ``in_bogus_run``, because the page goes on reading it.
                 bogus_end = line.find(">", index)
                 if bogus_end == -1:
-                    return "".join(spans), False, None
+                    return "".join(spans), False, None, True
                 index = bogus_end + 1
                 continue
             tag = INLINE_HTML_TAG_PATTERN.match(line, index)
@@ -2685,7 +2950,7 @@ def raw_html_comment_spans(
                 continue
             open_tag = html_tag_prefix(line, index)
             if open_tag is not None:
-                return "".join(spans), False, open_tag
+                return "".join(spans), False, open_tag, False
             if MALFORMED_TAG_START_PATTERN.match(line, index) is not None:
                 # A ``<`` followed by a letter, or by ``/`` and a letter, is a
                 # tag to an HTML parser whether or not CommonMark's raw-HTML
@@ -2696,15 +2961,18 @@ def raw_html_comment_spans(
                 # comment -- so reading a marker out of it exempted a document
                 # whose author declared nothing. The well-formed grammar is
                 # asked first, and the unfinished-tag state above it, so this
-                # only ever catches what neither could.
+                # only ever catches what neither could, and it ends where a
+                # tag ends rather than where the line does: a ``<a<!--`` with
+                # no ``>`` after it goes on being a tag on the line below.
                 tag_end = line.find(">", index)
-                if tag_end != -1:
-                    index = tag_end + 1
-                    continue
+                if tag_end == -1:
+                    return "".join(spans), False, None, True
+                index = tag_end + 1
+                continue
 
         index += 1
 
-    return "".join(spans), is_in_comment, None
+    return "".join(spans), is_in_comment, None, False
 
 
 def scan_paragraph_inlines(
@@ -3048,6 +3316,7 @@ def scan_document_inlines(text: str) -> DocumentInlines:
     html_block: ActiveHtmlBlock | None = None
     is_in_comment = False
     open_tag: str | None = None
+    in_bogus_run = False
     offset = 0
 
     def close_paragraph() -> None:
@@ -3062,6 +3331,7 @@ def scan_document_inlines(text: str) -> DocumentInlines:
     in_table = False
     table_columns_here = 0
     table_container: tuple[Container, ...] = ()
+    table_delimiter_row = -1
 
     for number, raw_line in enumerate(lines):
         above_content, above_container = previous_content, previous_container
@@ -3096,6 +3366,7 @@ def scan_document_inlines(text: str) -> DocumentInlines:
             html_block = None
             is_in_comment = False
             open_tag = None
+            in_bogus_run = False
 
         # Asked before the block machine rather than after it, because
         # condition 7 is the one start that may not interrupt a paragraph and
@@ -3173,14 +3444,20 @@ def scan_document_inlines(text: str) -> DocumentInlines:
             # walk instead read a real comment as an image title, a code span
             # or a link destination, and an adult-facing document was scored by
             # the child gate.
-            comment_lines[number], is_in_comment, open_tag = raw_html_comment_spans(
-                fence_line.content, is_in_comment, open_tag
+            (
+                comment_lines[number],
+                is_in_comment,
+                open_tag,
+                in_bogus_run,
+            ) = raw_html_comment_spans(
+                fence_line.content, is_in_comment, open_tag, in_bogus_run
             )
             close_paragraph()
             paragraph_open = False
             continue
         is_in_comment = False
         open_tag = None
+        in_bogus_run = False
 
         contents[number] = fence_line.content
 
@@ -3199,10 +3476,15 @@ def scan_document_inlines(text: str) -> DocumentInlines:
             "|" in table_line
         )
         if in_table and not (
-            has_cells and fence_line.containment_path == table_container
+            number == table_delimiter_row
+            or (has_cells and fence_line.containment_path == table_container)
         ):
             in_table = False
-        if not in_table and has_cells:
+        # The header row needs no pipe, here for the reason ``extract_prose``
+        # gives at the same lookahead, and the two passes have to agree about
+        # which lines are a table or one of them reads a cell's backticks as a
+        # paragraph's.
+        if not in_table and table_line.strip(ASCII_HORIZONTAL_WHITESPACE):
             next_line = (
                 lines[number + 1].rstrip(ASCII_HORIZONTAL_WHITESPACE)
                 if number + 1 < len(lines)
@@ -3216,15 +3498,15 @@ def scan_document_inlines(text: str) -> DocumentInlines:
                 next_line, list(list_contexts)
             )
             columns = (
-                table_columns(fence_line.content, next_fence_line.content)
+                table_starts_here(fence_line.content, next_fence_line.content)
                 if next_fence_line.containment_path == fence_line.containment_path
-                and is_table_delimiter(next_fence_line.content)
                 else 0
             )
             if columns:
                 in_table = True
                 table_columns_here = columns
                 table_container = fence_line.containment_path
+                table_delimiter_row = number + 1
         if in_table:
             close_paragraph()
             paragraph_open = False
@@ -3637,6 +3919,7 @@ def extract_prose(text: str) -> str:
     in_table = False
     raw_text: str | None = None
     table_container: tuple[Container, ...] = ()
+    table_delimiter_row = -1
     after_link_definition = False
     open_unit: str | None = None
 
@@ -3752,7 +4035,11 @@ def extract_prose(text: str) -> str:
         # https://github.github.com/gfm/#tables-extension-
         table_line = strip_block_quote_prefixes(line)
         if in_table:
-            if (
+            # The delimiter row is the table's own second line and belongs to
+            # it however it is spelled: ``| zulu |`` over ``-:`` is a table on
+            # GitHub's own renderer, and asking the body-row rule for a pipe
+            # left the ``-:`` standing in the prose as a sentence of its own.
+            if index == table_delimiter_row or (
                 table_line.strip(ASCII_HORIZONTAL_WHITESPACE)
                 and "|" in table_line
                 and fence_line.containment_path == table_container
@@ -3760,7 +4047,20 @@ def extract_prose(text: str) -> str:
                 open_unit = None
                 continue
             in_table = False
-        if table_line.strip(ASCII_HORIZONTAL_WHITESPACE) and "|" in table_line:
+        # The header row needs no pipe of its own, and asking for one was this
+        # walk assembling a precondition its own helpers do not have.
+        # ``table_starts_here`` is GFM's whole precondition in one place and
+        # the two sibling hooks already ask it: a pipeless header over ``-:``
+        # is a one-column table on GitHub's own renderer, measured, and a
+        # header long enough to matter was being scored as child-facing prose
+        # -- which moves a grade, and can carry a document over the 40-word
+        # floor it should never have reached.
+        #
+        # A table's *body* rows still need a pipe, one line below. That is the
+        # same rule in the other direction and it is deliberately not changed
+        # here: a pipeless line continues a table body on GitHub, and reading
+        # it as one needs a body terminator this walk does not have.
+        if table_line.strip(ASCII_HORIZONTAL_WHITESPACE):
             next_line = (
                 lines[index + 1].rstrip(ASCII_HORIZONTAL_WHITESPACE)
                 if index + 1 < len(lines)
@@ -3772,13 +4072,12 @@ def extract_prose(text: str) -> str:
             next_fence_line = normalize_for_fence_opening(
                 next_line, list(list_contexts)
             )
-            if (
-                next_fence_line.containment_path == fence_line.containment_path
-                and is_table_delimiter(next_fence_line.content)
-                and table_columns(fence_line.content, next_fence_line.content)
+            if next_fence_line.containment_path == fence_line.containment_path and (
+                table_starts_here(fence_line.content, next_fence_line.content)
             ):
                 in_table = True
                 table_container = fence_line.containment_path
+                table_delimiter_row = index + 1
                 open_unit = None
                 continue
 
@@ -3897,11 +4196,13 @@ def extract_prose(text: str) -> str:
         line = REFERENCE_LINK_PATTERN.sub(r"\1", line)
         line = LINK_PATTERN.sub(r"\1", line)
         line = BARE_URL_PATTERN.sub(" ", line)
-        # A line a displayed raw-text element holds keeps its comment, its
-        # processing instruction and its declaration: the page prints those
-        # characters, so they are not markup to strip.
+        # A line a displayed raw-text element holds keeps every character
+        # between the element's own tags: the page prints them, so the only
+        # markup on the line is the opener and the closer themselves. A
+        # comment, a processing instruction, a declaration and a pseudo-tag
+        # alike are words a reader reads there.
         line = (
-            DISPLAYED_HTML_TAG_PATTERN
+            DISPLAYED_RAW_TEXT_TAG_PATTERN
             if raw_text_run_is_displayed(line_raw_text)
             else HTML_TAG_PATTERN
         ).sub(" ", line)

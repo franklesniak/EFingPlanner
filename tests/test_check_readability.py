@@ -5243,3 +5243,214 @@ def test_an_angle_destination_ends_at_an_unescaped_line_ending() -> None:
     )
     assert not readability.has_adult_marker(unescaped)
     assert readability.has_adult_marker(escaped)
+
+#: Round 17's shared spellings. The marker view of the readability hook is a
+#: document-wide question, so the two suites bind the same test bodies to
+#: different entry points rather than copying them.
+QUOTE = chr(34)
+MARKER = ADULT_MARKER
+TOKEN = "audience: adult"
+
+
+def MARKER_TEXT(text: str) -> str:  # noqa: N802
+    """The text this hook reads as an HTML comment, over a whole document."""
+    return readability.document_marker_text(text)
+
+
+THIS_HOOK = readability
+OTHER_HOOK = _load_structure_hook()
+
+
+def test_a_raw_text_end_tag_parses_through_its_quoted_values() -> None:
+    """A ``>`` inside a quoted attribute value does not end the tag.
+
+    ``</script title="> <!-- ... -->">visible`` holds no comment: HTML5 reads
+    the attribute value whole, and the tag ends at the last ``>``. Searching
+    for the character ended the tag inside the value and read the rest as a
+    tail a reader sees. A quote outside a value is a *name* character, which
+    is the control that keeps the scan from being "every quote delimits".
+    """
+    quoted = "<script></script title=" + QUOTE + "> " + MARKER + QUOTE + ">visible\n"
+    plain = "<script></script>" + MARKER + "\n"
+    unquoted = "<script></script title=x>" + MARKER + "\n"
+    named = "<script></script a" + QUOTE + "b>" + MARKER + QUOTE + "c>x\n"
+    assert TOKEN not in MARKER_TEXT(quoted)
+    assert TOKEN in MARKER_TEXT(plain)
+    assert TOKEN in MARKER_TEXT(unquoted)
+    assert TOKEN in MARKER_TEXT(named)
+
+
+def test_an_end_tag_that_never_closes_leaves_no_tail() -> None:
+    """At the end of the line the tag has not closed, so nothing follows it.
+
+    The separating document for "hand the rest of the line back", which is
+    what this helper did before: an unterminated quoted value swallows the
+    marker and every character after it.
+    """
+    unterminated = "<script></script title=" + QUOTE + "a " + MARKER + "\n"
+    closed = "<script></script title=" + QUOTE + "a" + QUOTE + ">" + MARKER + "\n"
+    assert TOKEN not in MARKER_TEXT(unterminated)
+    assert TOKEN in MARKER_TEXT(closed)
+
+
+def test_an_embedded_raw_html_run_carries_across_lines() -> None:
+    """A run with no ``>`` on the line it opens goes on below it.
+
+    Measured on GitHub's own renderer with a probe that separates the two
+    readings: a character written inside ``<?foo`` does not survive, and one
+    written beside a real comment does. So the marker under such a line is
+    inside the run, not a comment -- and the run still ends at its own ``>``,
+    which is the control that keeps it from swallowing the rest of the file.
+    """
+    carried = "<div>\nbefore <?foo\n" + MARKER + "\n?>\n</div>\n"
+    closes_below = "<div>\nbefore <?foo\nbar ?>\n" + MARKER + "\n</div>\n"
+    closes_here = "<div>\nbefore <?foo ?>\n" + MARKER + "\n</div>\n"
+    assert TOKEN not in MARKER_TEXT(carried)
+    assert TOKEN in MARKER_TEXT(closes_below)
+    assert TOKEN in MARKER_TEXT(closes_here)
+
+
+def test_a_bogus_comment_ends_at_the_first_angle_bracket() -> None:
+    """``<![CDATA[`` is a bogus comment to the page, not a marked section.
+
+    Measured on GitHub: ``<![CDATA[>x`` leaves ``x`` on the page, so the run
+    ended at the ``>``. ``html.parser`` looks for ``]]>`` instead and swallows
+    the rest of the document, which is a place the arbiter and the production
+    renderer part.
+    """
+    document = "<div>\nbefore <![CDATA[>x\n" + MARKER + "\n</div>\n"
+    assert TOKEN in MARKER_TEXT(document)
+
+
+def test_a_tag_commonmark_gives_up_on_is_still_a_tag() -> None:
+    """``<a--`` above a marker line is one tag with the marker inside it.
+
+    CommonMark's raw-HTML grammar stops matching and the page does not: a
+    ``<`` and a letter is a tag to an HTML parser, and a tag ends at its
+    ``>``. Reading the next line afresh found a comment inside a tag that was
+    still open.
+    """
+    document = "<div>\nbefore <a--\n" + MARKER + "\n>\n</div>\n"
+    assert TOKEN not in MARKER_TEXT(document)
+
+
+def test_a_definition_title_may_cross_a_line_ending() -> None:
+    """CommonMark puts no line bound on a reference definition's title.
+
+    Both renderers resolve ``[x]: /url "first`` over ``second"``. A line-local
+    match refused the definition, the label went undefined, and the image
+    reference below it -- whose description is attribute data -- was read as a
+    comment the page carried. Three controls bound it: a title that never
+    closes, text after the closing delimiter, and a blank line inside.
+    """
+    resolved = "[x]: /url " + QUOTE + "first\nsecond" + QUOTE + "\n\n![" + MARKER + "][x]\n"
+    unterminated = "[x]: /url " + QUOTE + "first\nsecond\n\n![" + MARKER + "][x]\n"
+    trailing = "[x]: /url " + QUOTE + "a\nb" + QUOTE + " ok\n\n![" + MARKER + "][x]\n"
+    blank = "[x]: /url " + QUOTE + "a\n\nb" + QUOTE + "\n\n![" + MARKER + "][x]\n"
+    assert TOKEN not in MARKER_TEXT(resolved)
+    assert TOKEN in MARKER_TEXT(unterminated)
+    assert TOKEN in MARKER_TEXT(trailing)
+    assert TOKEN in MARKER_TEXT(blank)
+
+
+def test_a_definition_may_not_interrupt_a_paragraph() -> None:
+    """``Intro.`` above ``[x]: /url`` defines nothing, on both renderers.
+
+    The two lines are one paragraph and the brackets stay on the page, so a
+    marker written in the image reference below is a real comment. Collecting
+    the label anyway sent an adult-facing document through the child gate in
+    one hook and refused an exemption in the other. Definitions written one
+    under another all define, which is the control that keeps the rule from
+    being "only the first line of the document".
+    """
+    interrupts = "Intro text a child reads.\n[x]: /url\n\n![" + MARKER + "][x]\n"
+    after_blank = "Intro text a child reads.\n\n[x]: /url\n\n![" + MARKER + "][x]\n"
+    after_heading = "# Title\n[x]: /url\n\n![" + MARKER + "][x]\n"
+    two_in_a_row = "[x]: /a\n[y]: /b\n\n![" + MARKER + "][y]\n"
+    definition_paragraph_definition = (
+        "[x]: /a\nIntro.\n[y]: /b\n\n![" + MARKER + "][y]\n"
+    )
+    assert TOKEN in MARKER_TEXT(interrupts)
+    assert TOKEN not in MARKER_TEXT(after_blank)
+    assert TOKEN not in MARKER_TEXT(after_heading)
+    assert TOKEN not in MARKER_TEXT(two_in_a_row)
+    assert TOKEN in MARKER_TEXT(definition_paragraph_definition)
+
+
+def test_the_two_hooks_read_a_definition_alike() -> None:
+    """The cross-hook pin: one spelling of the span in both hooks."""
+    shapes = (
+        ["[x]: /url " + QUOTE + "first", "second" + QUOTE],
+        ["[x]: /url " + QUOTE + "first", "second"],
+        ["[x]:", "/url " + QUOTE + "a", "b" + QUOTE],
+        ["[x]: /url"],
+        ["ordinary prose"],
+    )
+    for shape in shapes:
+        assert OTHER_HOOK.reference_definition_span(shape, 0) == (
+            THIS_HOOK.reference_definition_span(shape, 0)
+        )
+
+
+def test_a_displayed_element_keeps_its_angle_bracketed_prose() -> None:
+    """Inside ``<textarea>`` and ``<xmp>`` the page prints every character.
+
+    The substitution that removed a tag on such a line matched an *attribute
+    run*, which is arbitrary text: forty-five words written inside
+    ``<note visible ...>`` are painted by the element and were deleted,
+    leaving the document under ``MIN_WORDS_TO_SCORE`` and out of the gate in
+    silence. Measured on markdown-it 14.3.0 read by ``html.parser``, which
+    reports a textarea's body as data.
+    """
+    words = " ".join(["visible"] * 45)
+    for holder in ("textarea", "xmp"):
+        page = "<" + holder + ">\n<note " + words + ">\n</" + holder + ">\n"
+        assert "visible" in readability.extract_prose(page)
+    # The element's own tags are still markup, and the same run inside a
+    # <div> really is a tag.
+    assert "textarea" not in readability.extract_prose(
+        "<textarea>\nWe read the plan aloud.\n</textarea>\n"
+    )
+    assert "visible" not in readability.extract_prose(
+        "<div>\n<note " + words + ">\n</div>\n"
+    )
+
+
+def test_a_pipeless_header_opens_a_one_column_table() -> None:
+    """``x`` over ``-:`` is a one-column table on GitHub's own renderer.
+
+    The prose walk asked for a pipe in the header before it would look ahead,
+    which is a precondition ``table_starts_here`` does not have -- so a header
+    long enough to move a grade was scored as child-facing prose. A pipeless
+    row with no colon is a Setext underline and opens no table, which is the
+    control that keeps the rule from being "every two lines are a table".
+    """
+    tail = "\n\nWe walk to the park and count every red car today.\n"
+    assert "zulu" not in readability.extract_prose("zulu\n-:" + tail)
+    assert "zulu" not in readability.extract_prose("zulu\n:-" + tail)
+    # A pipeless row with no colon is a Setext underline and opens no
+    # table; the heading it makes is dropped for a different reason, so
+    # the helper is asked directly and the observable control is a header
+    # and a delimiter that disagree about the number of cells.
+    assert not readability.table_starts_here("zulu", "--")
+    assert readability.table_starts_here("zulu", "-:")
+    assert "zulu" in readability.extract_prose("zulu\n-:|:-" + tail)
+    # A list item is no table header, measured on GitHub.
+    assert "zulu" in readability.extract_prose("- zulu\n-:" + tail)
+
+
+def test_a_tables_delimiter_row_leaves_no_prose_behind() -> None:
+    """The delimiter row belongs to its table however it is spelled.
+
+    ``| zulu |`` over ``-:`` is a table on GitHub, and asking the body-row
+    rule for a pipe left the ``-:`` standing in the prose as a sentence of its
+    own. Pre-existing before this round and reachable from more documents
+    once a pipeless header opens a table.
+    """
+    tail = "\n\nWe walk to the park and count every red car today.\n"
+    assert readability.extract_prose("| zulu |\n-:" + tail).strip() == (
+        "We walk to the park and count every red car today."
+    )
+    assert readability.extract_prose("zulu\n-:" + tail).strip() == (
+        "We walk to the park and count every red car today."
+    )

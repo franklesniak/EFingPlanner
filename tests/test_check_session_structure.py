@@ -4213,3 +4213,163 @@ def test_an_angle_destination_ends_at_an_unescaped_line_ending() -> None:
     )
     assert "no-source-check" not in structure.scan_document(unescaped).marker_text
     assert "no-source-check" in structure.scan_document(escaped).marker_text
+
+
+def _load_readability_hook():
+    """Load the readability hook, for the cross-hook pins below."""
+    import importlib.util as _util
+
+    path = Path(__file__).resolve().parents[1] / ".github" / "scripts"
+    spec = _util.spec_from_file_location(
+        "check_readability_for_structure_tests", path / "check-readability.py"
+    )
+    module = _util.module_from_spec(spec)
+    sys.modules[spec.name] = module
+    spec.loader.exec_module(module)
+    return module
+
+#: Round 17's shared spellings; see the note in
+#: ``tests/test_check_readability.py``.
+QUOTE = chr(34)
+MARKER = OFFLINE_MARKER
+TOKEN = "no-source-check"
+
+
+def MARKER_TEXT(text: str) -> str:  # noqa: N802
+    """The text this hook reads as an HTML comment, over a whole document."""
+    return structure.scan_document(text).marker_text
+
+
+THIS_HOOK = structure
+OTHER_HOOK = _load_readability_hook()
+
+
+def test_a_raw_text_end_tag_parses_through_its_quoted_values() -> None:
+    """A ``>`` inside a quoted attribute value does not end the tag.
+
+    ``</script title="> <!-- ... -->">visible`` holds no comment: HTML5 reads
+    the attribute value whole, and the tag ends at the last ``>``. Searching
+    for the character ended the tag inside the value and read the rest as a
+    tail a reader sees. A quote outside a value is a *name* character, which
+    is the control that keeps the scan from being "every quote delimits".
+    """
+    quoted = "<script></script title=" + QUOTE + "> " + MARKER + QUOTE + ">visible\n"
+    plain = "<script></script>" + MARKER + "\n"
+    unquoted = "<script></script title=x>" + MARKER + "\n"
+    named = "<script></script a" + QUOTE + "b>" + MARKER + QUOTE + "c>x\n"
+    assert TOKEN not in MARKER_TEXT(quoted)
+    assert TOKEN in MARKER_TEXT(plain)
+    assert TOKEN in MARKER_TEXT(unquoted)
+    assert TOKEN in MARKER_TEXT(named)
+
+
+def test_an_end_tag_that_never_closes_leaves_no_tail() -> None:
+    """At the end of the line the tag has not closed, so nothing follows it.
+
+    The separating document for "hand the rest of the line back", which is
+    what this helper did before: an unterminated quoted value swallows the
+    marker and every character after it.
+    """
+    unterminated = "<script></script title=" + QUOTE + "a " + MARKER + "\n"
+    closed = "<script></script title=" + QUOTE + "a" + QUOTE + ">" + MARKER + "\n"
+    assert TOKEN not in MARKER_TEXT(unterminated)
+    assert TOKEN in MARKER_TEXT(closed)
+
+
+def test_an_embedded_raw_html_run_carries_across_lines() -> None:
+    """A run with no ``>`` on the line it opens goes on below it.
+
+    Measured on GitHub's own renderer with a probe that separates the two
+    readings: a character written inside ``<?foo`` does not survive, and one
+    written beside a real comment does. So the marker under such a line is
+    inside the run, not a comment -- and the run still ends at its own ``>``,
+    which is the control that keeps it from swallowing the rest of the file.
+    """
+    carried = "<div>\nbefore <?foo\n" + MARKER + "\n?>\n</div>\n"
+    closes_below = "<div>\nbefore <?foo\nbar ?>\n" + MARKER + "\n</div>\n"
+    closes_here = "<div>\nbefore <?foo ?>\n" + MARKER + "\n</div>\n"
+    assert TOKEN not in MARKER_TEXT(carried)
+    assert TOKEN in MARKER_TEXT(closes_below)
+    assert TOKEN in MARKER_TEXT(closes_here)
+
+
+def test_a_bogus_comment_ends_at_the_first_angle_bracket() -> None:
+    """``<![CDATA[`` is a bogus comment to the page, not a marked section.
+
+    Measured on GitHub: ``<![CDATA[>x`` leaves ``x`` on the page, so the run
+    ended at the ``>``. ``html.parser`` looks for ``]]>`` instead and swallows
+    the rest of the document, which is a place the arbiter and the production
+    renderer part.
+    """
+    document = "<div>\nbefore <![CDATA[>x\n" + MARKER + "\n</div>\n"
+    assert TOKEN in MARKER_TEXT(document)
+
+
+def test_a_tag_commonmark_gives_up_on_is_still_a_tag() -> None:
+    """``<a--`` above a marker line is one tag with the marker inside it.
+
+    CommonMark's raw-HTML grammar stops matching and the page does not: a
+    ``<`` and a letter is a tag to an HTML parser, and a tag ends at its
+    ``>``. Reading the next line afresh found a comment inside a tag that was
+    still open.
+    """
+    document = "<div>\nbefore <a--\n" + MARKER + "\n>\n</div>\n"
+    assert TOKEN not in MARKER_TEXT(document)
+
+
+def test_a_definition_title_may_cross_a_line_ending() -> None:
+    """CommonMark puts no line bound on a reference definition's title.
+
+    Both renderers resolve ``[x]: /url "first`` over ``second"``. A line-local
+    match refused the definition, the label went undefined, and the image
+    reference below it -- whose description is attribute data -- was read as a
+    comment the page carried. Three controls bound it: a title that never
+    closes, text after the closing delimiter, and a blank line inside.
+    """
+    resolved = "[x]: /url " + QUOTE + "first\nsecond" + QUOTE + "\n\n![" + MARKER + "][x]\n"
+    unterminated = "[x]: /url " + QUOTE + "first\nsecond\n\n![" + MARKER + "][x]\n"
+    trailing = "[x]: /url " + QUOTE + "a\nb" + QUOTE + " ok\n\n![" + MARKER + "][x]\n"
+    blank = "[x]: /url " + QUOTE + "a\n\nb" + QUOTE + "\n\n![" + MARKER + "][x]\n"
+    assert TOKEN not in MARKER_TEXT(resolved)
+    assert TOKEN in MARKER_TEXT(unterminated)
+    assert TOKEN in MARKER_TEXT(trailing)
+    assert TOKEN in MARKER_TEXT(blank)
+
+
+def test_a_definition_may_not_interrupt_a_paragraph() -> None:
+    """``Intro.`` above ``[x]: /url`` defines nothing, on both renderers.
+
+    The two lines are one paragraph and the brackets stay on the page, so a
+    marker written in the image reference below is a real comment. Collecting
+    the label anyway sent an adult-facing document through the child gate in
+    one hook and refused an exemption in the other. Definitions written one
+    under another all define, which is the control that keeps the rule from
+    being "only the first line of the document".
+    """
+    interrupts = "Intro text a child reads.\n[x]: /url\n\n![" + MARKER + "][x]\n"
+    after_blank = "Intro text a child reads.\n\n[x]: /url\n\n![" + MARKER + "][x]\n"
+    after_heading = "# Title\n[x]: /url\n\n![" + MARKER + "][x]\n"
+    two_in_a_row = "[x]: /a\n[y]: /b\n\n![" + MARKER + "][y]\n"
+    definition_paragraph_definition = (
+        "[x]: /a\nIntro.\n[y]: /b\n\n![" + MARKER + "][y]\n"
+    )
+    assert TOKEN in MARKER_TEXT(interrupts)
+    assert TOKEN not in MARKER_TEXT(after_blank)
+    assert TOKEN not in MARKER_TEXT(after_heading)
+    assert TOKEN not in MARKER_TEXT(two_in_a_row)
+    assert TOKEN in MARKER_TEXT(definition_paragraph_definition)
+
+
+def test_the_two_hooks_read_a_definition_alike() -> None:
+    """The cross-hook pin: one spelling of the span in both hooks."""
+    shapes = (
+        ["[x]: /url " + QUOTE + "first", "second" + QUOTE],
+        ["[x]: /url " + QUOTE + "first", "second"],
+        ["[x]:", "/url " + QUOTE + "a", "b" + QUOTE],
+        ["[x]: /url"],
+        ["ordinary prose"],
+    )
+    for shape in shapes:
+        assert OTHER_HOOK.reference_definition_span(shape, 0) == (
+            THIS_HOOK.reference_definition_span(shape, 0)
+        )

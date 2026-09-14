@@ -216,6 +216,13 @@ LINK_REFERENCE_DEFINITION_PATTERN = re.compile(
 #: <https://html.spec.whatwg.org/multipage/parsing.html#rawtext-state>
 #: <https://spec.commonmark.org/0.31.2/#html-blocks>
 COMMENT_RUN = "comment"
+#: The characters HTML5's tokenizer reads as whitespace inside a tag. The
+#: Markdown layer's ``ASCII_HORIZONTAL_WHITESPACE`` is a different set for a
+#: different question: this one carries the line ending and the form feed,
+#: because a tag may hold either. Kept identical to the constant in the
+#: sibling hooks.
+#: https://html.spec.whatwg.org/multipage/parsing.html#tag-open-state
+HTML_TAG_WHITESPACE = "\t\n\f\r "
 RAW_TEXT_ELEMENT_NAMES = (
     "script",
     "style",
@@ -1108,6 +1115,91 @@ def raw_text_content_start(content: str, match: "re.Match[str]", key: str) -> in
     return match.end() if start_tag is None else start_tag.end()
 
 
+def html_tag_close(content: str, index: int) -> int:
+    """Return the offset past the ``>`` closing a tag whose name ended at ``index``.
+
+    ``-1`` where the tag does not close in ``content``. This is HTML5's own
+    tag-state machine and not a search for a ``>``, because the two give
+    different answers and the page follows the machine: a ``>`` written inside a
+    quoted attribute value is attribute data, so ``</script title="> x">``
+    closes at the *last* ``>`` and not the first. Searching for the character
+    ended the tag inside the value and handed the rest of it back to the
+    caller as though a reader saw it -- which let a comment spelled in an
+    attribute grant an exemption the page never carried.
+
+    The quote characters only open a value after ``=``: HTML5 reads the ``"``
+    in ``</script a"b>`` as part of the attribute *name*, so a scanner that
+    treated every quote as a delimiter would run past the tag's real end. The
+    states below are the spec's, named as the spec names them, and the helper
+    is measured against ``html.parser`` rather than reasoned about. Kept
+    identical to the helper in the sibling hooks.
+    https://html.spec.whatwg.org/multipage/parsing.html#tag-open-state
+    """
+    state = "before-attribute-name"
+    position = index
+    while position < len(content):
+        character = content[position]
+        if state in ("before-attribute-name", "after-attribute-value"):
+            if character == ">":
+                return position + 1
+            if character in HTML_TAG_WHITESPACE or character == "/":
+                position += 1
+                continue
+            state = "attribute-name"
+            # An ``=`` here is a parse error and becomes the *name*, which is
+            # the one character this state may not hand to the state below:
+            # reconsumed as a name character it would open a value, and
+            # ``</script ="><!-- ... -->`` then lost the ``>`` that ends the
+            # tag. Every other character is reconsumed.
+            if character == "=":
+                position += 1
+            continue
+        if state == "attribute-name":
+            if character == ">":
+                return position + 1
+            if character == "=":
+                state = "before-attribute-value"
+            elif character in HTML_TAG_WHITESPACE:
+                state = "after-attribute-name"
+            elif character == "/":
+                state = "before-attribute-name"
+        elif state == "after-attribute-name":
+            if character == ">":
+                return position + 1
+            if character == "=":
+                state = "before-attribute-value"
+            elif character in HTML_TAG_WHITESPACE:
+                pass
+            elif character == "/":
+                state = "before-attribute-name"
+            else:
+                state = "attribute-name"
+        elif state == "before-attribute-value":
+            if character == ">":
+                return position + 1
+            if character == '"':
+                state = "attribute-value-double-quoted"
+            elif character == "'":
+                state = "attribute-value-single-quoted"
+            elif character in HTML_TAG_WHITESPACE:
+                pass
+            else:
+                state = "attribute-value-unquoted"
+        elif state == "attribute-value-double-quoted":
+            if character == '"':
+                state = "after-attribute-value"
+        elif state == "attribute-value-single-quoted":
+            if character == "'":
+                state = "after-attribute-value"
+        else:  # attribute-value-unquoted
+            if character == ">":
+                return position + 1
+            if character in HTML_TAG_WHITESPACE:
+                state = "before-attribute-name"
+        position += 1
+    return -1
+
+
 def raw_text_run_tail(content: str, closer_end: int, key: str) -> int:
     """Return where a closed raw-text run stops holding the line's characters.
 
@@ -1116,14 +1208,22 @@ def raw_text_run_tail(content: str, closer_end: int, key: str) -> int:
     it. That match ends at the name, and the *tag* ends at its ``>``, so the
     characters a reader sees begin one character further on. The other four
     runs carry their whole delimiter in the match -- ``?>``, ``]]>``, ``>``,
-    ``-->`` -- and end where it ends. Kept identical to the helper in the
-    sibling hooks.
+    ``-->`` -- and end where it ends.
+
+    Where the end tag does not close on this line at all, the line has no tail:
+    every character after ``</name`` is the tag's own, and handing them back
+    read ``</script title="a`` as words a child sees and as a place a comment
+    could stand. The other reading -- hand the rest of the line back, which is
+    what this helper did before -- was built rather than argued about, and put
+    to a generator of 1,536 end tags: it disagrees with ``html.parser`` on 12
+    rows against this form's 8, at the same instrument score and the same
+    suites. Kept identical to the helper in the sibling hooks.
     https://html.spec.whatwg.org/multipage/parsing.html#end-tag-open-state
     """
     if key not in RAW_TEXT_ELEMENT_NAMES:
         return closer_end
-    tag_end = content.find(">", closer_end)
-    return closer_end if tag_end == -1 else tag_end + 1
+    tag_end = html_tag_close(content, closer_end)
+    return len(content) if tag_end == -1 else tag_end
 
 
 def raw_text_run_boundary(
