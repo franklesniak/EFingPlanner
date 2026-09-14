@@ -2403,3 +2403,104 @@ def test_a_setext_underline_closes_the_paragraph_above_a_raw_html_block() -> Non
         extra="## Notes\n\nHeading\n=====\n<x-session>\n## Source Check\n",
     )
     assert any('missing "## Source Check"' in message for message in check(text))
+
+
+# ---------------------------------------------------------------------------
+# Round 2: which labels a document defines, and where a line ends
+# ---------------------------------------------------------------------------
+
+
+def test_an_incomplete_reference_definition_does_not_define_its_label() -> None:
+    """A label with no destination defines nothing, so the reference is text.
+
+    The collector read the label off the front of the line without asking
+    whether the definition parsed, so a reference to it was treated as an image
+    and the marker in its alt text was thrown away with the rest of the link
+    metadata. Measured against markdown-it 14.3.0: the brackets are on the page
+    and the marker inside them is a comment.
+    """
+    text = build_session(
+        sections=SIX_SECTIONS,
+        extra=f"## Notes\n\n[x]:\n![a {OFFLINE_MARKER}][x]\n",
+    )
+    assert check(text) == []
+
+
+def test_a_complete_reference_definition_still_defines_its_label() -> None:
+    """A negative control. A definition that parses makes the reference an image.
+
+    The alt text is then an attribute rather than a page, so the marker inside
+    it declares nothing and the session still owes a Source Check. Measured
+    against markdown-it 14.3.0.
+    """
+    text = build_session(
+        sections=SIX_SECTIONS,
+        extra=f"## Notes\n\n[x]: /y\n\n![a {OFFLINE_MARKER}][x]\n",
+    )
+    assert any('missing "## Source Check"' in message for message in check(text))
+
+
+@pytest.mark.parametrize(
+    ("label", "body"),
+    [
+        ("an unbalanced closer, next line", "[shared]:\n  https://example.com/x)"),
+        ("an unclosed opener, next line", "[shared]:\n  https://example.com/x("),
+        ("an unbalanced closer, one line", "[shared]: https://example.com/x)"),
+        ("an unclosed opener, one line", "[shared]: https://example.com/x("),
+    ],
+)
+def test_a_reference_destination_must_balance_its_parentheses(label: str, body: str) -> None:
+    """A bare destination takes parentheses only in balanced pairs.
+
+    Both destination patterns accepted any run of nonblank characters, so a
+    section holding a stray parenthesis was called empty while the renderer put
+    every character of it on the page. Measured against markdown-it 14.3.0:
+    each of these is a paragraph.
+    """
+    text = build_session().replace(
+        "## Goal\n\nReal content for Goal.\n", f"## Goal\n\n{body}\n", 1
+    )
+    assert not any('section "## Goal" is empty' in m for m in check(text)), label
+
+
+#: One backslash. Spelled through a name so a test that escapes a parenthesis
+#: never has to embed the character in a literal, where a stray one is easy to
+#: miss. Kept as the readability suite spells it.
+BACKSLASH = "\\"
+
+
+@pytest.mark.parametrize(
+    ("label", "body"),
+    [
+        ("a balanced pair, next line", "[shared]:\n  https://example.com/x(y)"),
+        ("a balanced pair, one line", "[shared]: https://example.com/x(y)"),
+        ("a nested balanced pair", "[shared]: https://example.com/a(b(c))"),
+        ("an escaped closer", "[shared]: https://example.com/x" + BACKSLASH + ")"),
+    ],
+)
+def test_a_balanced_reference_destination_still_renders_nothing(label: str, body: str) -> None:
+    """Negative controls. A parenthesis that balances, or is escaped, is allowed.
+
+    Measured against markdown-it 14.3.0: each of these renders an empty
+    section, so narrowing the destination must not have cost them.
+    """
+    text = build_session().replace(
+        "## Goal\n\nReal content for Goal.\n", f"## Goal\n\n{body}\n", 1
+    )
+    assert any('section "## Goal" is empty' in m for m in check(text)), label
+
+
+def test_a_document_with_crlf_line_endings_keeps_its_sections() -> None:
+    """A carriage return is a line ending, not a character on the line.
+
+    The closing fence carried a stray ``\\r``, so it did not close, and every
+    mandatory heading below it disappeared into the code block that never
+    ended. Measured against markdown-it 14.3.0, which reads the three CommonMark
+    line endings alike.
+    """
+    text = (
+        build_session(empty_sections=("Workspace",))
+        .replace("## Workspace\n", f"## Workspace\n\n{FENCE}text\nnotes here\n{FENCE}\n", 1)
+        .replace("\n", "\r\n")
+    )
+    assert check(text) == []

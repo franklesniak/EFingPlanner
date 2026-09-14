@@ -277,19 +277,42 @@ LINK_DEFINITION_TITLE_PATTERN = re.compile(
 #: file in this repository, and its keys are publishing metadata, not text a
 #: child reads.
 FRONT_MATTER_DELIMITER_PATTERN = re.compile(r"^(?:-{3}|\.{3})[ \t]*$")
+#: One YAML plain scalar, as the grammar draws one: a run that never holds
+#: ``": "``, never ends on a bare ``:``, and never holds `` #``. It is spelled
+#: once and used for a key and for a value, because YAML says the same of both.
+#: https://yaml.org/spec/1.2.2/#733-plain-style
+_YAML_PLAIN_SCALAR = r"(?: (?!:[ \t]) (?!:$) (?![ \t]\#) [^\n] )*"
 #: A line a YAML front-matter block can hold: a mapping key, a sequence item, an
-#: indented continuation, or a comment. The key form takes no internal
-#: whitespace, which is what tells ``applyTo: "**/*.md"`` from a sentence.
-#: A document that merely opens with a thematic break holds prose between its
-#: two ``---`` lines, and prose is none of these.
+#: indented continuation, or a comment. A plain key may hold spaces --
+#: ``session title: Trip plan`` is a mapping with one key -- so what separates
+#: front matter from prose is the block frame around it and the plain-scalar
+#: rule above, not a ban on internal whitespace. Measured against PyYAML over
+#: this repository's own lines the two agree, including on the navigation line
+#: every session carries: ``You are here: Phase 0 (Setup). Previous: none`` is
+#: not YAML, because a plain *value* may not hold ``": "`` either.
+#:
+#: A document that merely opens with a thematic break is still safe, for a
+#: reason worth writing down. Its second ``---`` is a Setext underline rather
+#: than a second break, so CommonMark turns the text between them into a
+#: heading -- and ``extract_prose`` drops a heading whether or not this pattern
+#: matched the line. The shapes where the block really does print a paragraph
+#: are the ones that end on ``...``, and the ones that hold a blank line; there
+#: this pattern is what keeps the words, and a mapping-shaped sentence closed
+#: by ``...`` stays genuinely ambiguous, because it is a YAML document end and
+#: a CommonMark paragraph at once. YAML wins that tie, since front matter is a
+#: YAML convention and not a CommonMark one.
 FRONT_MATTER_LINE_PATTERN = re.compile(
-    r"""
+    rf"""
     ^(?:
         [ \t]                                     # an indented continuation
       | \#                                        # a comment
       | -[ \t]                                    # a sequence item
-      | (?: "[^"]*" | '[^']*' | [^\s#:'"][^\s:]* )  # a mapping key
-        : (?: [ \t].* )?$
+      | (?: "[^"]*" | '[^']*'                     # a quoted mapping key
+          | [^\s#:'"]{_YAML_PLAIN_SCALAR} )       # or a plain one
+        :
+        (?: [ \t]+ (?: "[^"]*" | '[^']*'          # a quoted value
+                     | [^\s#'"]{_YAML_PLAIN_SCALAR} ) )?
+        [ \t]*$
     )
     """,
     re.VERBOSE,
@@ -491,6 +514,28 @@ class ParagraphLine:
     start: int
     text: str
     content_start: int
+
+
+def normalize_line_endings(text: str) -> str:
+    """Return ``text`` with every CommonMark line ending written as ``\\n``.
+
+    CommonMark counts a line feed, a carriage return, and a carriage return
+    followed by a line feed as one line ending each, so a document saved on
+    Windows holds exactly the lines a document saved anywhere else does. The
+    translation happens once, here, where a document enters this module --
+    never in the predicates below, which would each have to spell ``\\r`` and
+    would each be a place to forget it. A closing fence carrying a stray
+    ``\\r`` does not close, and every word after it is swallowed as code.
+
+    ``Path.read_text`` translates both forms already, so a file this hook reads
+    from disk arrives normalized whatever an editor wrote. This is what makes
+    the same true for a caller that hands the document over directly.
+    Kept identical to the helper in the sibling hooks.
+    https://spec.commonmark.org/0.31.2/#line-ending
+    """
+    if "\r" not in text:
+        return text
+    return text.replace("\r\n", "\n").replace("\r", "\n")
 
 
 def count_leading_spaces(line: str) -> int:
@@ -1071,35 +1116,60 @@ def strip_html_comments(text: str) -> str:
     fence then swallowed the rest of the file. A document that loses words that
     way can fall under ``MIN_WORDS_TO_SCORE`` and leave the gate in silence.
 
-    So the literal code is found first and a delimiter starting inside it is
-    left alone. A comment is still removed as one span, line breaks included, so
-    a paragraph wrapped around a multi-line comment stays one sentence unit. An
+    So the literal code is found first and an *opener* starting inside it is
+    left alone. A closer is a different question. Nothing is parsed inside an
+    open comment, so the first ``-->`` after a real opener ends it wherever it
+    sits, backticks and fence lines included: CommonMark reads the two
+    constructs in the order they are written and whichever opens first takes
+    the characters after it. Measured against markdown-it 14.3.0,
+    ``<!-- hidden `-->` visible text`` is a comment through that first ``-->``
+    and visible text after it, while ``Say `<!-- a` then -->`` holds no comment
+    at all. Looking for the closer outside the code regions found the first one
+    and refused it, so the whole comment stayed in the document and the words
+    inside it -- words no reader sees -- were scored.
+
+    The regions are recomputed after a comment that overlapped one is removed,
+    because a backtick run inside a comment is not a code-span delimiter and
+    must not pair with a run below it. Blanking the comment to spaces of its own
+    length keeps every offset, so the rescan reads the same lines in the same
+    places. A comment is still removed as one span, line breaks included, so a
+    paragraph wrapped around a multi-line comment stays one sentence unit. An
     unterminated ``<!--`` outside literal code is left in place, which is what
     the substitution this replaces did.
     https://spec.commonmark.org/0.31.2/#raw-html
     """
-    mask = literal_code_mask(text)
+    working = text
+    mask = literal_code_mask(working)
+    spans: list[tuple[int, int]] = []
+    search_from = 0
 
-    def find_outside(needle: str, start: int) -> int:
-        index = start
+    while True:
+        start = search_from
         while True:
-            found = text.find(needle, index)
-            if found == -1 or not mask[found]:
-                return found
-            index = found + 1
+            start = working.find("<!--", start)
+            if start == -1 or not mask[start]:
+                break
+            start += 1
+        if start == -1:
+            break
+
+        end = working.find("-->", start + len("<!--"))
+        if end == -1:
+            break
+        end += len("-->")
+        spans.append((start, end))
+        search_from = end
+
+        if b"\x01" in mask[start:end]:
+            working = f"{working[:start]}{' ' * (end - start)}{working[end:]}"
+            mask = literal_code_mask(working)
 
     kept: list[str] = []
     index = 0
-    while True:
-        start = find_outside("<!--", index)
-        if start == -1:
-            break
-        end = find_outside("-->", start + len("<!--"))
-        if end == -1:
-            break
+    for start, end in spans:
         kept.append(text[index:start])
         kept.append(" ")
-        index = end + len("-->")
+        index = end
 
     kept.append(text[index:])
     return "".join(kept)
@@ -1114,16 +1184,22 @@ def strip_front_matter(text: str) -> str:
     nonblank line, so a document that merely begins with a thematic break keeps
     all of its text.
 
-    The opening delimiter is not enough on its own. A document that opens with
-    ``---``, carries prose, and carries a second ``---`` below it holds two
-    CommonMark thematic breaks with a paragraph between them, and measured
-    against markdown-it 14.3.0 that paragraph is on the page. Removing it can
-    take a file under ``MIN_WORDS_TO_SCORE`` and out of the gate, which is the
-    one direction this module never errs in. So every nonblank line of the
-    block has to look like front matter before any of it is removed. Blank
-    lines are allowed between the delimiters: the block ends at its delimiter,
-    not at the first blank line.
-    https://spec.commonmark.org/0.31.2/#thematic-breaks
+    The opening delimiter is not enough on its own, so every nonblank line of
+    the block has to look like front matter before any of it is removed. Which
+    shapes that guard actually protects is worth stating precisely, because an
+    earlier version of this note had it wrong. A document that opens with
+    ``---``, carries one paragraph, and carries a second ``---`` below it does
+    *not* hold two thematic breaks: measured against markdown-it 14.3.0 the
+    second ``---`` is a Setext underline, so the text between them is a heading
+    and the walk below drops it either way. The shapes that really do print a
+    paragraph are the block that ends on ``...``, which is a YAML document end
+    and an ordinary line of text at the same time, and the block that holds a
+    blank line, where everything above the last paragraph is on the page.
+    Removing those can take a file under ``MIN_WORDS_TO_SCORE`` and out of the
+    gate, which is the one direction this module never errs in. Blank lines are
+    allowed between the delimiters: the block ends at its delimiter, not at the
+    first blank line.
+    https://spec.commonmark.org/0.31.2/#setext-headings
     """
     lines = text.split("\n")
     if not lines or lines[0].rstrip() != "---":
@@ -1154,7 +1230,11 @@ def extract_prose(text: str) -> str:
     a table, a code fence, a new list item, and a new quoted paragraph all start
     a new unit, which keeps one worksheet prompt or one list item counting as
     one sentence.
+
+    A document enters this module here, so this is where its line endings are
+    made one thing; see ``normalize_line_endings``.
     """
+    text = normalize_line_endings(text)
     text = strip_front_matter(text)
     text = strip_html_comments(text)
     # The code spans are found once, over the whole document, because one of
@@ -1582,7 +1662,11 @@ def has_adult_marker(text: str) -> bool:
     The marker is metadata, so it counts only where CommonMark would render it
     as a comment. One shown as an example inside a fence or a code span is
     literal text a reader sees and declares nothing; see ``strip_literal_code``.
+
+    This is the module's other door, so the document's line endings are made
+    one thing here too; see ``normalize_line_endings``.
     """
+    text = normalize_line_endings(text)
     return AUDIENCE_ADULT_PATTERN.search(strip_literal_code(text)) is not None
 
 

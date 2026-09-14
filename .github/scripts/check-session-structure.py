@@ -319,6 +319,26 @@ INLINE_HTML_TAG_PATTERN = re.compile(
 #: A list marker with nothing after it. It prints as a bullet and no words.
 BARE_LIST_MARKER_PATTERN = re.compile(r"^\s*(?:[-*+]|\d{1,9}[.)])\s*$")
 
+#: One character of a bare link destination, and the nesting CommonMark allows
+#: around it. A bare destination "includes parentheses only if they are
+#: backslash-escaped or part of a balanced pair of unescaped parentheses", so
+#: ``foo)`` is not a destination and the line holding it is a paragraph the
+#: child reads. ``re`` cannot recurse, so three levels of nesting are spelled
+#: out, exactly as they are in ``.github/scripts/check-readability.py``; a
+#: destination nested deeper than that simply does not match, which leaves the
+#: line counting as content. That is this checker's safe direction: the error
+#: that matters here is the one that calls a section empty when the page shows
+#: something. This class also excludes ``<`` and the ASCII control characters,
+#: which is the one way it differs from the sibling's.
+#: <https://spec.commonmark.org/0.31.2/#link-destination>
+_DESTINATION_CHARACTER = r"(?:[^\s\x00-\x1f()<\\]|\\.)"
+_DESTINATION_DEPTH_0 = rf"{_DESTINATION_CHARACTER}*"
+_DESTINATION_DEPTH_1 = rf"(?:{_DESTINATION_CHARACTER}|\({_DESTINATION_DEPTH_0}\))*"
+_DESTINATION_DEPTH_2 = rf"(?:{_DESTINATION_CHARACTER}|\({_DESTINATION_DEPTH_1}\))*"
+_LINK_DESTINATION = (
+    rf"(?:<[^<>\n]*>|(?:{_DESTINATION_CHARACTER}|\({_DESTINATION_DEPTH_2}\))+)"
+)
+
 #: A CommonMark link reference definition: ``[label]: destination "title"``.
 #: It is a line in the file that renders nothing at all. The destination it
 #: names is used by a link somewhere else, or by nothing, so a section holding
@@ -332,13 +352,12 @@ BARE_LIST_MARKER_PATTERN = re.compile(r"^\s*(?:[-*+]|\d{1,9}[.)])\s*$")
 #: content -- which is what this checker already did.
 #: <https://spec.commonmark.org/0.31.2/#link-reference-definitions>
 LINK_REFERENCE_DEFINITION_PATTERN = re.compile(
-    r"""
-    ^\ {0,3}                                 # at most three spaces of indent
+    rf"""
+    ^\ {{0,3}}                               # at most three spaces of indent
     \[ (?=[^\]]*[^\s\]])                     # a label with at least one nonblank
        (?: [^\[\]\\] | \\. )+ \]
     :\ *                                     # the colon, then optional spaces
-    (?: < [^<>\n]* >                         # an angle-bracket destination
-      | [^\s\x00-\x1f<]+ )                   # or a bare one
+    {_LINK_DESTINATION}                      # the destination
     (?P<title> \ +                           # an optional title
         (?: " (?: [^"\\] | \\. )* "
           | ' (?: [^'\\] | \\. )* '
@@ -350,11 +369,13 @@ LINK_REFERENCE_DEFINITION_PATTERN = re.compile(
 )
 
 #: A link reference definition's label and colon, matched however the rest of
-#: the definition is laid out. This is what collects the labels a document
-#: defines, and a reference whose label has a definition renders as a link or
-#: an image: the label itself becomes nothing, and an image's alt text becomes
-#: an attribute. A reference with no definition renders as the brackets the
-#: author typed, and a marker inside *that* is a comment on the page.
+#: the definition is laid out. This reads the label out of a definition that
+#: ``reference_definition_span`` has already parsed whole; on its own it says
+#: nothing about whether the document defines anything. A reference whose label
+#: has a definition renders as a link or an image: the label itself becomes
+#: nothing, and an image's alt text becomes an attribute. A reference with no
+#: definition renders as the brackets the author typed, and a marker inside
+#: *that* is a comment on the page.
 LINK_REFERENCE_LABEL_PATTERN = re.compile(r"^ {0,3}\[(?P<label>(?:[^\[\]\\]|\\.)+)\]:")
 
 #: A definition's label and colon with nothing after them. CommonMark lets the
@@ -369,11 +390,12 @@ LINK_REFERENCE_LABEL_LINE_PATTERN = re.compile(
 #: is: the destination must be one unbroken token or the angle-bracket form,
 #: and nothing else may follow, so ``Real visible prose.`` under a label line
 #: is prose rather than a destination -- which is what the renderer makes of it.
+#: ``foo)`` is prose too, for the same reason and by the same rule: the
+#: parentheses of a bare destination have to balance.
 LINK_REFERENCE_DESTINATION_LINE_PATTERN = re.compile(
-    r"""
+    rf"""
     ^[ \t]*
-    (?: < [^<>\n]* >                         # an angle-bracket destination
-      | [^\s\x00-\x1f<]+ )                   # or a bare one
+    {_LINK_DESTINATION}                      # the destination
     (?P<title> [ \t]+                        # an optional title
         (?: " (?: [^"\\] | \\. )* "
           | ' (?: [^'\\] | \\. )* '
@@ -633,6 +655,29 @@ def strip_html_comments(line: str, is_in_html_comment: bool) -> tuple[str, bool]
         index = comment_end + len("-->")
 
     return "".join(uncommented_parts), is_in_html_comment
+
+
+def normalize_line_endings(text: str) -> str:
+    """Return ``text`` with every CommonMark line ending written as ``\\n``.
+
+    CommonMark counts a line feed, a carriage return, and a carriage return
+    followed by a line feed as one line ending each, so a document saved on
+    Windows holds exactly the lines a document saved anywhere else does. The
+    translation happens once, here, where a document enters this module --
+    never in the predicates below, which would each have to spell ``\\r`` and
+    would each be a place to forget it. A closing fence carrying a stray
+    ``\\r`` does not close, and every mandatory heading below it disappears
+    into the code block that never ended.
+
+    ``Path.read_text`` translates both forms already, so a file this hook reads
+    from disk arrives normalized whatever an editor wrote. This is what makes
+    the same true for a caller that hands the document over directly.
+    Kept identical to the helper in the sibling hooks.
+    https://spec.commonmark.org/0.31.2/#line-ending
+    """
+    if "\r" not in text:
+        return text
+    return text.replace("\r\n", "\n").replace("\r", "\n")
 
 
 def count_leading_spaces(line: str) -> int:
@@ -1209,14 +1254,45 @@ def text_marker_spans(
 
 
 def collect_reference_labels(sources: Sequence[MarkerSource]) -> frozenset[str]:
-    """Return every link label the document defines, normalized."""
+    """Return every link label the document defines, normalized.
+
+    A label is defined only where a whole definition parses. CommonMark wants a
+    destination for that, so ``[x]:`` with a line of prose under it defines
+    nothing at all: the brackets stay on the page, a reference to ``x`` below
+    them is the characters the author typed, and a marker inside one of those
+    is a comment the child's page really carries. Reading the label off the
+    front of the line was enough to throw that marker away and fail the session
+    for a Source Check it had declared.
+
+    The lines a definition fills are skipped with it, so a destination or a
+    title sitting on its own line is never read as a second label. A line that
+    is not document text -- a blanked fenced line, a raw HTML line -- can
+    neither hold a definition nor continue one, so it enters this walk empty,
+    which no part of a definition matches.
+
+    What is left over errs the way this checker errs everywhere else. A
+    definition-shaped line inside a paragraph is collected here although
+    CommonMark will not let a definition interrupt one, and the cost of that is
+    an exemption refused rather than an exemption granted to a page that never
+    showed it.
+    <https://spec.commonmark.org/0.31.2/#link-reference-definitions>
+    """
+    contents = [
+        content if kind == MARKER_SOURCE_TEXT else "" for kind, content, _ in sources
+    ]
     labels: set[str] = set()
-    for kind, content, _ in sources:
-        if kind != MARKER_SOURCE_TEXT:
+    row = 0
+
+    while row < len(contents):
+        span = reference_definition_span(contents, row)
+        if span == 0:
+            row += 1
             continue
-        match = LINK_REFERENCE_LABEL_PATTERN.match(content)
+        match = LINK_REFERENCE_LABEL_PATTERN.match(contents[row])
         if match is not None:
             labels.add(normalize_link_label(match.group("label")))
+        row += span
+
     return frozenset(labels)
 
 
@@ -1369,7 +1445,12 @@ def scan_document(text: str) -> DocumentScan:
     one, which includes a block nested in a list item or a blockquote. The
     container machinery above is the machinery
     ``check-prohibited-placeholders.py`` uses, under the same names.
+
+    A document enters this module here as often as it enters at ``check_text``,
+    so this is one of the two places its line endings are made one thing; see
+    ``normalize_line_endings``.
     """
+    text = normalize_line_endings(text)
     content_lines: list[str] = []
     marker_sources: list[MarkerSource] = []
     worksheet_fences: list[int] = []
@@ -1661,7 +1742,14 @@ def renders_as_content(body: str) -> bool:
 
 
 def check_text(text: str, display_path: str, file_name: str) -> list[Violation]:
-    """Return every structural violation in one session document."""
+    """Return every structural violation in one session document.
+
+    A document enters this module here, so this is where its line endings are
+    made one thing; see ``normalize_line_endings``. ``section_body`` below is
+    handed the same normalized text the scan was built from, which is the
+    reason the translation happens before the scan rather than inside it alone.
+    """
+    text = normalize_line_endings(text)
     violations: list[Violation] = []
 
     scan = scan_document(text)

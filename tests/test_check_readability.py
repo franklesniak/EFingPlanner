@@ -2546,3 +2546,130 @@ def test_a_code_span_does_not_reach_across_a_list_item() -> None:
     assert f"Read the {TICK}flag name out loud." in prose
     assert "Then pack a snack and" in prose
     assert "away." in prose
+
+
+# ---------------------------------------------------------------------------
+# Round 2: a comment closer, a YAML key, and a line ending
+# ---------------------------------------------------------------------------
+
+
+def test_a_comment_closer_inside_a_code_span_still_closes_the_comment() -> None:
+    """Nothing is parsed inside an open comment, so the first closer ends it.
+
+    The scan looked for the closer outside the literal code regions, found the
+    one standing between backticks, refused it, and left the whole comment in
+    the document -- so the words inside it, which no reader sees, were scored.
+    Measured against markdown-it 14.3.0: the comment ends at that first
+    ``-->`` and the text after it is on the page.
+    """
+    text = f"<!-- hidden words nobody reads {TICK}-->{TICK} visible text here\n"
+    prose = readability.extract_prose(text)
+    assert "hidden" not in prose
+    assert "visible text here" in prose
+
+
+def test_a_comment_that_prints_a_fence_ends_at_its_own_closer() -> None:
+    """A fence line inside a comment is characters, not a block.
+
+    The closer sat on a line the fence walk had already claimed as code, so it
+    was refused and the comment ran to the end of the file. Measured against
+    markdown-it 14.3.0: the comment ends on its own third line, the fence below
+    it opens a block nothing closes, and the words under that fence are code
+    rather than prose.
+    """
+    text = f"<!-- hidden words nobody reads\n{FENCE}\n-->\n{FENCE}\nvisible text here\n"
+    assert readability.extract_prose(text) == ""
+
+
+def test_a_code_span_before_a_comment_opener_still_hides_it() -> None:
+    """A negative control. Whichever construct opens first takes the rest.
+
+    Here the backticks open first, so the delimiter between them is characters
+    a reader sees and no comment is open at all. Measured against markdown-it
+    14.3.0.
+    """
+    text = f"Say {TICK}<!-- a{TICK} then --> and pack a snack for the walk today.\n"
+    prose = readability.extract_prose(text)
+    assert "then" in prose
+    assert "pack a snack for the walk today." in prose
+
+
+def test_front_matter_may_hold_a_key_with_a_space_in_it() -> None:
+    """A YAML plain key may carry whitespace, and PyYAML reads this one.
+
+    The key form took no internal whitespace, so real front matter stayed in
+    the document and its publishing metadata was scored as though a child read
+    it.
+    """
+    text = (
+        "---\n"
+        "session title: Trip plan\n"
+        "...\n"
+        "\n"
+        "We will walk to the park and count the red doors that we pass today.\n"
+    )
+    prose = readability.extract_prose(text)
+    assert prose == "We will walk to the park and count the red doors that we pass today."
+
+
+def test_prose_between_two_delimiters_is_not_front_matter() -> None:
+    """A negative control. A sentence is not a mapping, whatever surrounds it."""
+    text = (
+        "---\n"
+        "We will walk to the park and count the red doors that we pass today.\n"
+        "...\n"
+        "\n"
+        "Then we will ride the train home again.\n"
+    )
+    prose = readability.extract_prose(text)
+    assert "count the red doors" in prose
+    assert "ride the train home again." in prose
+
+
+def test_a_sentence_holding_two_colons_is_not_front_matter() -> None:
+    """Negative controls, and the ones that keep the widened key honest.
+
+    A YAML plain *value* may not hold ``": "`` either, so a sentence carrying
+    two of them is not a mapping and PyYAML refuses it. The navigation line
+    every session in this repository carries is exactly that shape, and it is
+    measured against ``strip_front_matter`` rather than against the prose,
+    because ``extract_prose`` drops a navigation line for reasons of its own.
+    """
+    text = (
+        "---\n"
+        "Ask your grown-up: bring a map. Also: bring a pencil.\n"
+        "...\n"
+        "\n"
+        "Then we will ride the train home again today.\n"
+    )
+    prose = readability.extract_prose(text)
+    assert "bring a map" in prose
+    assert "ride the train home again today." in prose
+
+    navigation = (
+        "---\n"
+        "You are here: Phase 0 (Setup). Previous: none | Next: 08 Something\n"
+        "...\n"
+    )
+    assert readability.strip_front_matter(navigation) == navigation
+
+
+def test_a_document_with_crlf_line_endings_keeps_its_prose() -> None:
+    """A carriage return is a line ending, not a character on the line.
+
+    The closing fence carried a stray ``\\r``, so it did not close, and every
+    word below it was swallowed as code -- the whole document scored as no
+    prose at all. Measured against markdown-it 14.3.0, which reads the three
+    CommonMark line endings alike.
+    """
+    text = (
+        "# Title\r\n"
+        "\r\n"
+        f"{FENCE}\r\n"
+        "code\r\n"
+        f"{FENCE}\r\n"
+        "\r\n"
+        "We will walk to the park and count the red doors that we pass today.\r\n"
+    )
+    prose = readability.extract_prose(text)
+    assert prose == "We will walk to the park and count the red doors that we pass today."

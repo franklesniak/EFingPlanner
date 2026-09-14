@@ -305,6 +305,31 @@ def strip_html_comments(line: str, is_in_html_comment: bool) -> tuple[str, bool]
     return "".join(uncommented_parts), is_in_html_comment
 
 
+def normalize_line_endings(text: str) -> str:
+    """Return ``text`` with every CommonMark line ending written as ``\\n``.
+
+    CommonMark counts a line feed, a carriage return, and a carriage return
+    followed by a line feed as one line ending each, and counts nothing else.
+    The translation happens once, here, where a document enters this module --
+    never in the predicates below, which would each have to spell ``\\r`` and
+    would each be a place to forget it.
+
+    ``Path.read_text`` translates both forms already, so a file this hook reads
+    from disk arrives normalized whatever an editor wrote. This is what makes
+    the same true for a caller that hands the document over directly, and it is
+    what lets the walk below split on ``\\n`` alone, as the sibling hooks do.
+    ``str.splitlines``, which this replaced, splits on a form feed, a vertical
+    tab and two Unicode separators as well; measured against markdown-it
+    14.3.0, a form feed before a closing fence does not close it, and the
+    placeholder below that fence is an example rather than a violation.
+    Kept identical to the helper in the sibling hooks.
+    https://spec.commonmark.org/0.31.2/#line-ending
+    """
+    if "\r" not in text:
+        return text
+    return text.replace("\r\n", "\n").replace("\r", "\n")
+
+
 def count_leading_spaces(line: str) -> int:
     """Return the number of leading space characters in a line."""
     return len(line) - len(line.lstrip(" "))
@@ -601,7 +626,12 @@ def is_allowed_label_line(line: str) -> bool:
 
 
 def find_violations_in_text(text: str, display_path: str) -> list[Violation]:
-    """Find prohibited placeholder markers in Markdown text."""
+    """Find prohibited placeholder markers in Markdown text.
+
+    A document enters this module here, so this is where its line endings are
+    made one thing and where it is cut into lines; see
+    ``normalize_line_endings``.
+    """
     violations: list[Violation] = []
     is_in_html_comment = False
     active_fence: ActiveFence | None = None
@@ -609,7 +639,7 @@ def find_violations_in_text(text: str, display_path: str) -> list[Violation]:
     html_block: ActiveHtmlBlock | None = None
     paragraph_open = False
 
-    for line_number, raw_line in enumerate(text.splitlines(), start=1):
+    for line_number, raw_line in enumerate(normalize_line_endings(text).split("\n"), start=1):
         if active_fence is not None and fence_container_ended(raw_line, active_fence):
             # The container holding the fence has ended, so the fence ended
             # with it and this line is document text again.

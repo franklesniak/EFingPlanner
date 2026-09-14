@@ -41,6 +41,8 @@ class PlaceholderHookModule(Protocol):
 
     def main(self, argv: Iterable[str] | None = None, root: Path = ...) -> int: ...
 
+    def find_violations_in_text(self, text: str, display_path: str) -> list[ViolationLike]: ...
+
 
 placeholder_hook: PlaceholderHookModule = cast(PlaceholderHookModule, _placeholder_hook)
 
@@ -55,6 +57,11 @@ def write_file(path: Path, content: str) -> Path:
 def scan_single_file(path: Path, root: Path) -> list[ViolationLike]:
     """Scan one file through the public hook path."""
     return placeholder_hook.scan_files([path], root=root)
+
+
+def _find(text: str) -> list[ViolationLike]:
+    """Scan one document through the public text path, with no file in between."""
+    return placeholder_hook.find_violations_in_text(text, "x.md")
 
 
 @pytest.mark.parametrize(
@@ -860,3 +867,35 @@ def test_an_open_paragraph_still_refuses_a_complete_tag(tmp_path: Path) -> None:
     )
 
     assert scan_single_file(path, tmp_path) == []
+
+
+def test_a_form_feed_does_not_end_a_line(tmp_path: Path) -> None:
+    """CommonMark knows three line endings, and a form feed is none of them.
+
+    The walk cut the document with ``str.splitlines``, which also splits on a
+    form feed, a vertical tab and two Unicode separators, so a form feed in
+    front of a fence produced a closing fence out of thin air and the example
+    below it was reported as a violation. Measured against markdown-it 14.3.0:
+    the block never closes and the placeholder stays inside it.
+    """
+    path = write_file(
+        tmp_path / "docs" / "spec" / "example.md",
+        "```\ncode\n\x0c```\nThe limit is TBD.\n",
+    )
+
+    assert scan_single_file(path, tmp_path) == []
+
+
+def test_crlf_line_endings_report_what_line_feeds_report() -> None:
+    """A negative control, and the one that keeps the new split honest.
+
+    Splitting on ``\\n`` alone is what the sibling hooks do, and it is right
+    only because the document's line endings are made one thing first. A
+    closing fence carrying a stray ``\\r`` would not close, and the placeholder
+    below it would vanish into the block that never ended.
+    """
+    text = "# T\n\n```\ncode\n```\n\nThe limit is TBD.\n"
+    expected = [violation.matched_text for violation in _find(text)]
+
+    assert expected == ["TBD"]
+    assert [violation.matched_text for violation in _find(text.replace("\n", "\r\n"))] == expected
