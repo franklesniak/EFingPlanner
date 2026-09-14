@@ -193,6 +193,18 @@ number runs one higher than the brief's for the same file. When you cite an item
 always write **"extract item D3"** or **"brief item D3"** — never a bare "D3". This
 list is the batch's file scope, and the BUILD RULES below permit no edit outside it.
 
+**Start from a clean working tree, and prove it before you write the first file.**
+`git status --porcelain` must print nothing. The gate section at the end of this brief
+stages the batch's output so `pre-commit` can see the 37 new files, and staging cannot
+tell your work from work that was already in the tree: an unrelated edit or a stray
+scratch file sitting under `framework/` or `destinations/` at the start is still there at
+the end, and a scoped `git add` picks it up. Run the check at the start, where it can
+still tell the difference -- run it at the end and it prints 65 lines of your own work.
+If it prints a line now, **stop and hand that line back to the human.** Do not stash it,
+do not commit it, and do not decide on their behalf which of their changes is safe to
+carry. A build that stages nothing is a smaller problem than a build that ships somebody
+else's unfinished file.
+
 **Every file this batch creates opens with exactly one H1, and it is the first heading in
 the file.** The archived design record's Markdown convention is one H1 per file, and no
 gate enforces it: `MD041` is switched off in the repository's `.markdownlint.jsonc`,
@@ -384,10 +396,23 @@ add-a-destination checklist. Must contain:
   starting sources, and sample search terms — one file per topic, each named as the
   contract's reference column names it; (2) write the small "destination notes" each
   place-specific session pulls in; (3) do not edit any framework session, template,
-  guide, or doc; (4) keep adult-owned legal and safety topics adult-owned; (5) keep
+  guide, or doc, **with one temporary exception: Session 15, which the rider above names
+  and which a new destination converts by hand until Batch 2 converts it for everyone**;
+  (4) keep adult-owned legal and safety topics adult-owned; (5) keep
   volatile facts — prices, hours, entry rules — as "verify on official sources,"
   never fixed; (6) **when every named insert slot and every named reference file is
-  filled, the destination is added.**
+  filled -- and, until Batch 2, Session 15 is converted -- the destination is added.**
+- **Why rules 3 and 6 both carry that exception, and when both lose it.** The rider above
+  tells a new-destination author that Session 15 is not neutral yet and has to be
+  converted by hand. Session 15 is a framework session, so rule 3 as it stood forbade
+  exactly that, and the contract handed its reader two instructions with no way to obey
+  both: leave the session alone and ship a pack whose tree still carries the first
+  destination's names and links, or convert it and break the file-scope rule. Rule 6
+  carried the same fault one rule later -- it declared the destination added once every
+  slot and reference file was filled, which is true of a pack whose Session 15 still
+  points at the first destination. Both clauses are temporary, both name Batch 2, and
+  both go out with the rider's exception when Batch 2 clears the leak-exemption list.
+  Write the exception as an exception; do not soften rule 3 into advice.
 - **Rule 6 counts both columns of the table, and it has to.** Seven rows route a
   session to a reference file and to no insert at all — 05, 06, 08, 33/38, 40, 43 and
   48 — so a pack with all twelve insert slots written would still leave those seven
@@ -1031,11 +1056,23 @@ why in its own text**, with a `<!-- no-source-check: <reason> -->` comment near 
 `.github/scripts/check-session-structure.py` fails a session carrying neither the heading
 nor that marker, and this is the one deliverable in the batch written to be copied, so a
 skeleton that teaches the rule without its exemption teaches the next author to fail the
-gate; that the other sections are **optional and
-pointer-by-default**, that a pointer counts the same as full text, and that an omitted
-optional section is correct, not a gap; the canonical pointer wordings the built
-sessions use (*"Finished? Use the Finish and Quality Check card in your student
-guide."* / *"Stuck? Use the When I'm Stuck card in your student guide."*); **the exact
+gate; that `## Finish and Quality Check`, `## If You Get Stuck` and `## Optional
+Extension` are **carried by every child session** and `## Parent Notes` alone is
+**optional and pointer-by-default**, that a pointer counts the same as full text, and
+that an omitted `## Parent Notes` is correct, not a gap; **why the three are required
+when no gate asks for them** -- the operative style law states as a rule that both
+pointer sentences are identical in every child session and that every child session
+carries the Optional Extension, while
+`.github/scripts/check-session-structure.py` requires none of the three, so a session
+that dropped one would pass every gate in this repository and still be the first page in
+the corpus that does not behave like the others; the canonical pointer wordings the built
+sessions use, **with their links, because that is how all fourteen built sessions write
+them and a pointer without one strands the child on the page it was meant to leave** --
+`## Finish and Quality Check` holds `Finished? Use the [Finish and Quality Check
+card](../../student_guide/finish_and_quality_check.md) in your student guide.` and
+`## If You Get Stuck` holds `Stuck? Use the [When I'm Stuck
+card](../../student_guide/when_im_stuck.md) in your student guide.`, with `../../`
+correct from a session file in any phase folder; **the exact
 order the skeleton above shows, and why it is not the order the archived matrix's
 wording suggests** -- the labelled parent strip is written exactly `**For parents:**`,
 sits directly under the navigation line and above `## Goal`, and renders as a short
@@ -1272,9 +1309,19 @@ to a file this brief does not ask for it on.
   kit and a destination pack, fill in their own Trip-Basics card, write a new
   destination's reference facts and inserts, and reuse the whole curriculum unchanged
   without editing any framework file or the first destination.
-- The honest reuse distinction: **parameter reuse** (another family, same destination —
-  change only their own Trip-Basics card, near-zero cost) versus **destination reuse**
-  (another place — a whole new destination pack).
+- The honest reuse distinction: **parameter reuse** (another family with the same origin
+  assumptions, travelling to the same destination — change only their own Trip-Basics
+  card, near-zero cost) versus **destination reuse** (another place — a whole new
+  destination pack). **Bound the first half by origin, and bound it in the sentence that
+  makes the promise.** The root `README.md` already does, in its own words -- *"another
+  US family doing Japan"* -- and this page would otherwise tell a family travelling from
+  outside the United States to change one card, twelve lines above the origin logistics
+  bullet that has them swapping the passport authority, the home-airport and time-zone
+  help, and the currency on three budget surfaces. Name the origin by reference rather
+  than by country -- *the same origin assumptions*, with a pointer to the bullet below
+  that lists them -- so the sentence is still true when a second pack inherits this file.
+  It is the same honesty move as the language boundary and the origin layer, made one
+  bullet earlier because that is where the promise is given.
 - **The language and literacy boundary, stated beside the reuse claim rather than apart
   from it.** Everything here assumes English-literate adults and a child who reads English
   or is read to in English: every session, worksheet, template and guide is written in
@@ -1791,7 +1838,7 @@ Batch 1 must land these entries:
   place, without closing an open obligation. Report in your build report which sentences
   you checked and which you changed.
 
-**F11. `framework/docs/build_style_and_vocab.md` (edit).** Eight changes, in one pass,
+**F11. `framework/docs/build_style_and_vocab.md` (edit).** Nine changes, in one pass,
 with `Last Updated` bumped exactly once. **This file carries the destination name in two
 separate bullets; both must change, or F1's mandated three-layer claim is false the day it
 is written and this file walks past the framework leak self-check below still holding a
@@ -1886,8 +1933,26 @@ destination fact:**
   opposite. Item (d) does not move: the four sessions with no close are 05, 09, 33 and
   53, this batch creates none of them, and universal conversion rule 1 preserves Session
   05's. Report both new numbers in your build report.
+- **Replace the optional-sections sentence under `## The seven mandatory-core session
+  fields`.** It reads *"Everything else -- Finish and Quality Check, If You Get Stuck,
+  Optional Extension, Parent Notes -- is optional and renders as a short one-line pointer
+  by default. A pointer counts the same as full text; an omitted optional section is
+  correct as it stands."* The re-base directly above turns two censuses in this same file
+  into rules -- both pointer sentences identical in **every** child session, the Optional
+  Extension in **every** child session -- and this sentence then tells the next author
+  that three of those four are optional. Write instead: *"Everything else sits outside
+  that mandatory core, and three of the four are not therefore optional. Finish and
+  Quality Check, If You Get Stuck and Optional Extension are carried by every child
+  session and render as short one-line pointers by default; a pointer counts the same as
+  full text. Parent Notes is the one genuinely optional section, and an omitted Parent
+  Notes is correct as it stands."* Leave the two sentences after it -- the
+  child's-action-first rule and the parent strip -- exactly as they stand, and leave the
+  seven-field list and the line above it untouched: the structure gate requires none of
+  the three, which is why the seven are still the mandatory core and why this sentence has
+  to carry the distinction instead. D7's template states the same rule for the next
+  author, and this is the file it sends them to.
 
-After these eight changes, the destination name survives in this file in **exactly one
+After these nine changes, the destination name survives in this file in **exactly one
 bullet** — the new destination-names rule, where it quotes the five-name leak-grep
 pattern. That is a builder-facing rule, not a destination fact, and it is the only place in
 this file the framework leak-grep self-check below expects to find one. Nowhere else.
@@ -2217,9 +2282,18 @@ must carry its condition in both places, exactly the way Session 09 already does
 file.** In the **Need a grown-up** bullet write *"Session 07 (only if you do the library
 session -- a grown-up opens the catalogue or drives you)"*; in the sentence beneath write
 *"Session 07 if you are doing it"*. Two sentences sit in that paragraph and they are not
-the same one: the sentence you edit is the one ending *"or Session 44's special-pick
-step)."*, and the sentence directly after it ends *"pause there until one is free, and do
-not skip past them."* **That second instruction must never bind a Recommended
+the same one: the sentence that takes the two new names is the one ending *"or Session
+44's special-pick step)."*, and the sentence directly after it ends *"pause there until
+one is free, and do not skip past them."* **You edit that second sentence as well, and
+the edit is an exemption rather than an addition.** Its opening *"Do those"* points back
+at the parenthetical you have just widened, so adding Session 07 to the list puts a
+Recommended session under a no-skip order; conditioning the name with *"if you are doing
+it"* narrows who is in the list and does nothing to a command that comes after it.
+**Append one clause**, in the section's own voice, so the sentence ends *"-- except
+Session 07, which you can skip if no grown-up is free, going straight on to Session
+08."* Keep every word before that dash exactly as it stands, italics included, and leave
+Session 08 inside the no-skip half: it is Core, and its For-parents strip keeps an adult
+nearby. **That second instruction must never bind a Recommended
 session**: a child who cannot reach an adult skips Session 07 and carries on to Session
 08. Session 06 supplies the skip affordance and Session 07's own Status field says it is
 *"a fine one to skip"*, so a tracker that told the child to wait would decide the
@@ -3090,7 +3164,8 @@ git diff --exit-code HEAD -- destinations/japan/reference/major_cities.md
 
 Expect no output and exit `0`. **Naming `HEAD` is the load-bearing part.** A bare
 `git diff -- <path>` compares the working tree against the **index**, so once the
-`git add -A` below has staged an edited copy, the file compares clean against itself and
+scoped `git add` below has staged an edited copy, the file compares clean against itself
+and
 the check reports success on the one change it exists to catch. `HEAD` compares against
 the commit instead, staged or not. Run it while `HEAD` is still your pre-Batch-1 commit;
 if you have already committed part of the batch, diff against the branch point.
@@ -3357,11 +3432,29 @@ This repository states the same distinction in its own words in
 `TEMPLATE_UPDATE_PROCEDURE.md`: the first-adoption helper there uses
 `git ls-files --cached --others --exclude-standard` precisely because `--all-files`
 leaves newly created files out, and that passage closes by telling the reader to run
-`pre-commit run --all-files` **after** the new files are tracked. So track them first:
+`pre-commit run --all-files` **after** the new files are tracked. So track them first,
+and track only what this batch wrote:
 
 ```bash
-git add -A
+git add -- framework destinations README.md
+git diff --cached --name-only | wc -l
 ```
+
+**Those three paths are the whole file scope, and `git add -A` is not.** `-A` stages
+every change in the tree, tracked and untracked alike, so on a tree that already carried
+an unrelated edit or a stray scratch file it stages that file too -- into the gate's
+corpus and into the commit, which is the one thing the file scope above forbids. The
+pathspec form reaches the same 37 creates and 28 edits and can reach nothing else: every
+item on the deliverables list writes under `framework/`, under `destinations/`, or to the
+root `README.md`, and no item writes anywhere else.
+
+**The second command is a check, not decoration, and it must print `65`.** Started from
+the clean tree the scope section requires, the staged list is this batch's output and
+nothing else, so its length is the deliverables count. A larger number means something
+outside the batch is staged: stop and look. A smaller one means a deliverable was never
+written. Read `git diff --cached --name-only` in full either way -- it is the cheapest
+proof you have that the file scope held. Where a hook rewrite sends you back to stage
+again, use the same pathspec command, never `-A`.
 
 **The 28 edited files are not at risk. The 37 created files are, all of them.** The edits
 are already tracked, and `--all-files` turns off pre-commit's usual unstaged-changes
