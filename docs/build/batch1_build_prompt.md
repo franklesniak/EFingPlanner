@@ -1640,6 +1640,17 @@ form body must not diverge from the template. G3's field list in Section G is wr
 to match this item; if the two ever disagree, this item is the form body and G3's line is
 the summary of it.
 
+**Three built surfaces outside this page mirror these rows, and all three move in this
+batch.** The trip-shape guidance is written four times in the framework layer, not once:
+here; in Session 00's full-checklist bullet; in `parent_guide/setup_checklist.md`'s
+"Also do soon" list, which carries the same sentence almost word for word; and in
+`build_style_and_vocab.md`'s `Rough Trip Shape` row, which is the canonical one-line
+definition of the Named concept and points at this very file. Each of the three is
+already on this batch's edit list, so **the deliverables count does not move again**;
+each takes its change in its own item, and each says there that the wording comes from
+here. Changing this page alone would hand a family who drives a corrected form and three
+instructions telling them to name the city they fly into.
+
 **This item is why the deliverables count moved to 66.** It is the thirteenth single-file
 edit, and the count sentence, the split, the ordinal on H11 and the staged-file check all
 state the new number. The archived record puts *"the templates the Phase 0-2 sessions
@@ -2524,7 +2535,7 @@ Batch 1 must land these entries:
   place, without closing an open obligation. Report in your build report which sentences
   you checked and which you changed.
 
-**F11. `framework/docs/build_style_and_vocab.md` (edit).** Nine changes, in one pass,
+**F11. `framework/docs/build_style_and_vocab.md` (edit).** Ten changes, in one pass,
 with `Last Updated` bumped exactly once. **This file carries the destination name in two
 separate bullets; both must change, or F1's mandated three-layer claim is false the day it
 is written and this file walks past the framework leak self-check below still holding a
@@ -2637,8 +2648,18 @@ destination fact:**
   the three, which is why the seven are still the mandatory core and why this sentence has
   to carry the distinction instead. D7's template states the same rule for the next
   author, and this is the file it sends them to.
+- **Replace the `Rough Trip Shape` row's meaning cell** in that same
+  `## Canonical concept Names and their built-file homes` table. It reads *"Provisional
+  adult round-trip-vs-open-jaw call + likely arrival/departure cities"*, and D11 changes
+  the file that row points at to offer three shapes and to ask for places, which makes
+  this sentence false about the page it cites. Write instead: *"Provisional adult call on
+  the shape of the trip -- in and out of the same place, in one place and out of another,
+  or one base -- plus the likely arrival and departure places"*. The home column does not
+  move. **This is the canonical one-line definition of a Named concept**, and every later
+  authoring subagent loads this file as its routing table, so leaving it would make the
+  style law the last framework file describing the trip shape in air-travel vocabulary.
 
-After these nine changes, the destination name survives in this file in **exactly one
+After these ten changes, the destination name survives in this file in **exactly one
 bullet** — the new destination-names rule, where it quotes the five-name leak-grep
 pattern. That is a builder-facing rule, not a destination fact, and it is the only place in
 this file the framework leak-grep self-check below expects to find one. Nowhere else.
@@ -3165,12 +3186,21 @@ relationship."* **Keep that file's own wording.** It does not write "your" in fr
 each field, and Session 00's differently-voiced copy of the same list is not a model for
 it.
 
-**`parent_guide/setup_checklist.md` takes one further change, and it is not in the table
-above.** Its **step 4**, the AI yes/no choice, gains the AI-use-rules clause F6 specifies,
-for the reason F6 gives: this batch creates the page that carries the before-you-opt-in
-check, and the three surfaces that ask for the choice are the only places a parent meets
-it in time. That file is already on the edit list for its row above, so **the
-deliverables count does not move for it.**
+**`parent_guide/setup_checklist.md` takes two further changes, and neither is in the
+table above.** Its **step 4**, the AI yes/no choice, gains the AI-use-rules clause F6
+specifies, for the reason F6 gives: this batch creates the page that carries the
+before-you-opt-in check, and the three surfaces that ask for the choice are the only
+places a parent meets it in time. And its **"Also do soon" trip-shape bullet** takes the
+same replacement Session 00's full-checklist row takes below, because it is the same
+sentence: *"If you can, record a rough trip shape (fly in and out of one city, or in one
+and out of another) and the likely arrival city on the assumptions page. Naming just the
+arrival city is a fine answer"* becomes *"If you can, record a rough trip shape (in and
+out of the same place, in one place and out of another, or one base you stay at and
+travel from) and the likely arrival place on the assumptions page. Naming just the
+arrival place is a fine answer"*. Everything after that in the bullet -- the City
+Shortlist checkpoint and the First Taste sentence -- keeps its built wording. That file
+is already on the edit list for its row above, so **the deliverables count does not move
+for it.**
 
 **`parent_guide/README.md` takes two further changes, and neither is in the table
 above.** Its fastest-safe-start **step 4** gains the short AI-use-rules route F6
@@ -3374,15 +3404,17 @@ contradicting it.
 ### Session 00 — Parent Setup (scrub only, no insert)
 
 Adult-only; it is not in the contract and must **not** say "open this session's
-Destination Notes." Four phrase replacements, plus the one link addition F6 requires at
-step 4:
+Destination Notes." Four replacements, plus the one link addition F6 requires at step 4.
+**Two of the four replace a whole clause rather than a phrase**, and each of those two
+says so in its own row; replacing only the leaking phrase would leave the rest of the
+line asserting something the batch has just changed elsewhere:
 
 | Line | Current text | Neutral replacement |
 | --- | --- | --- |
 | Step 2 — **replace the whole field list, not the leaking phrase** | "your home airport and its code, your time zone or hours-ahead to Japan, your maximum trip length, how many travelers, and the roster by relationship" | "your home airport and its code, your destination, your time zone or the time difference to it, your maximum trip length, how many travelers, and the roster by relationship" (the destination is the new field, per OQ-2; the time-difference field takes D9's direction-neutral name; every other field keeps its built wording) |
 | "What to tell your child" | "we are taking a trip, and it is Japan" | "we are taking a trip, and the adults have chosen where" |
 | Buy-in gut-check | "show them a few genuinely exciting things about Japan" | "show them a few genuinely exciting things about your destination (the destination pack is a good place to start)" |
-| Full checklist | "If you have never been to Japan" | "If you have never been to your destination" |
+| Full checklist — **replace the whole trip-shape bullet, not the leaking phrase** | "Record a **rough trip shape** on the assumptions page if you can: fly in and out of one city, or in one and out of another, and the likely arrival city. If you have never been to Japan, naming just the arrival city is a fine answer" | "Record a **rough trip shape** on the assumptions page if you can: in and out of the same place, in one place and out of another, or one base you stay at and travel from, and the likely arrival place. If you have never been to your destination, naming just the arrival place is a fine answer" (the three shapes and the word `place` are D11's, so the form and the instruction that sends a parent to it say the same thing; everything after this clause — the City Shortlist checkpoint and the First Taste sentence — keeps its built wording) |
 
 Keep every adult-owned item as-is: the kid-safe filter with its built caveat, which reads
 *"It reduces exposure but does not remove it"*; the four fastest-safe-start actions; the
@@ -3390,10 +3422,37 @@ passport long-lead check
 with its verify framing and recorded date; the AI yes/no choice, default no -- step 4
 keeps its wording and its existing privacy link and gains only the one AI-use-rules
 clause F6 specifies; the privacy
-link; the rough season window, budget band and rough trip shape anchors; and the "do not
-decide City C, food, or language now" rule. Keep the kid-sized budget-band framing, with
-the full trip total staying an adult number. **Keep `travel.state.gov` in both places,
-and write "the official US source" in place of "the official source"** (OQ-4).
+link; the rough season window and budget band anchors; the rough trip shape anchor,
+**which keeps its place on the page and takes the wording the row above gives it**; and
+the "do not decide City C, food, or language now" rule. Keep the kid-sized budget-band
+framing, with the full trip total staying an adult number. **Keep `travel.state.gov` in
+both places, and write "the official US source" in place of "the official source"**
+(OQ-4).
+
+**Why that one is a whole-clause replacement.** The built bullet is a single sentence
+carrying two destination-shaped claims: the name, which the leak grep reads, and the
+shape -- *"fly in and out of one city, or in one and out of another"* -- which it cannot.
+Replacing only the name leaves the bullet telling a family who drives to a nearby
+destination to choose between two ways of flying, on the same page whose assumptions form
+D11 has just broadened to three shapes and to places. **A conversion that edits one
+clause of a built line owns the whole line**, because the clause it did not read still
+ships over the author's signature. That is this batch's fifth statement of one idea --
+C4 on a topic list, C5 on a destination that is not a country, Session 10 on a long
+flight, D9 on a direction baked into a field name -- and the first one stated about a
+line the batch was already editing for something else.
+
+**The derivation, written down so it can be re-run rather than believed.** Every surface
+in this brief and in the built framework and pack layers that describes the shape of a
+trip was collected, the brief on flattened units, against a declared vocabulary of eight
+term classes: *trip shape*, *round trip*, *open-jaw*, an arrival or departure city or
+place, flying in and out of one place, one base, and *itinerary*. **Thirty-three
+surfaces -- eighteen in this brief and fifteen in the built tree.** Four are the
+assumptions template D11 edits. Three were air-shaped and unfixed: this bullet, the same
+sentence in `parent_guide/setup_checklist.md`, and the `Rough Trip Shape` row in the
+style law -- all three move in this batch, each in its own item. Two more sit in
+Session 15 and in the city-research-card template, which belong to a later batch and are
+recorded here rather than touched. The remaining twenty-four name an itinerary or a trip
+shape without assuming one.
 
 ### Session 01 — Project Kickoff (convert, no insert slot)
 
@@ -4072,12 +4131,18 @@ You are here: Phase 2 (Destination Big Picture), First Taste step 5 of 13. Previ
 
 Run each of these from the repository root and confirm the stated expectation.
 
-**Every block below is written to be safe under `set -e`, and that is a constraint on
-how the blocks are written rather than advice about how to run them.** GitHub Actions
-runs a `run:` block under `bash -e`, and a builder who pastes one of these into a script
-may or may not; a block that is correct under `-e` is correct either way, so this brief
-carries the stricter form. Four rules follow, and this brief broke all four before they
-were written down here:
+**The shell environment these blocks assume, stated rather than implied.** Every block
+below is written to be correct in a POSIX shell and in `bash`, under **any combination of
+`set -e`, `set -u` and `set -o pipefail`** -- and that is a constraint on how the blocks
+are written rather than advice about how to run them. The envelope is named because two
+of the options inside it are not hypothetical: a GitHub Actions `run:` step with no
+`shell:` key runs under `bash -e {0}`, and one that sets `shell: bash` runs under
+`bash --noprofile --norc -eo pipefail {0}`, so the same block has to survive both. What
+sits **outside** the envelope is named too, because an envelope with no edge is not a
+contract: shells this brief does not target -- `csh` and its relatives, PowerShell,
+`cmd` -- and options that change what a command *means* rather than when the shell stops,
+a non-default `IFS` and `set -f` among them. Five rules follow, and this brief broke all
+five before they were written down here:
 
 1. **Resolve nothing above the test that decides whether it is needed.** A lookup placed
    before its guard can abort on exactly the case the guard exists to handle. F10's
@@ -4093,12 +4158,31 @@ were written down here:
    finish quietly, and quiet is what these checks print when they pass. So the three
    blocks below that iterate over a set count the set first and name the empty case. A
    check whose subject set is empty has not passed; it has not run.
+5. **Take a pipeline's result the way rule 2 takes a count.** `set -o pipefail` makes a
+   pipeline fail when **any** stage fails, not only the last, so an assignment whose
+   command substitution holds a pipe aborts on exactly the empty match that rule 2
+   already guards against one line above it. Give every such assignment a fallback of its
+   own, `|| var=''`, or `|| var=0` where the value is a count. Measured: rule 2's form
+   already survives `pipefail`; the unguarded pipeline does not.
 
-All four failures are **silent**: the shell exits with no message, and a check that
+All five failures are **silent**: the shell exits with no message, and a check that
 passes prints no message either. So on a block holding more than one command, read the
 exit status as well as the output. A block holding a single `grep` is a different case
 and is left alone -- `grep` exiting `1` on no match is the pass there, and each such
 block says so where it appears.
+
+**Rule 5 exists because the earlier audit had the right unit and an incomplete
+environment.** Every runnable block was first run against every repository state its own
+commands can tell apart, which is where rule 4 came from; those states were then re-run
+across the six environments named above -- a plain shell, `-e`, `-e` with `pipefail`,
+`-e` with `pipefail` and `-u`, a POSIX shell, and a POSIX shell with `-e` -- which is
+**86 state cells by six environments, 516 runs.** Five of the 86 return different
+verdicts in different environments. Three are the documented fail-fast difference between
+a plain shell and `-e`, in the two blocks that stage and gate. The other two are both in
+the H1 loop below, both are `pipefail`, and one of them prints nothing at all on either
+stream. The POSIX shell and `bash` agree in all 86 positions and `-u` changes nothing, so
+the envelope has exactly two live edges: `-e` and `pipefail`. **A state matrix run in one
+environment measures the environment as much as the block.**
 
 **The first three rules are about blocks; the failures are about states, and rule 4 is
 what that difference produced.** Every runnable block below was run against every
@@ -4371,11 +4455,11 @@ checks either half, so both are checked here or nowhere. `MD041` is switched off
 else, so a file with no title at all lints clean and passes every gate:
 
 ```bash
-count=$(find framework destinations -name '*.md' | wc -l)
+count=$(find framework destinations -name '*.md' | wc -l) || count=0
 [ "$count" -gt 0 ] || echo "NO MARKDOWN FILES FOUND -- run this from the repo root."
 find framework destinations -name '*.md' | while read -r f; do
   n=$(grep -cE '^# ' "$f") || n=0
-  first=$(grep -E '^#{1,6} ' "$f" | head -n 1)
+  first=$(grep -E '^#{1,6} ' "$f" | head -n 1) || first=''
   [ "$n" = "1" ] || echo "H1 COUNT $n (want 1): $f"
   case "$first" in
     '# '*) ;;
@@ -4405,8 +4489,18 @@ nothing, so under `set -e` the assignment ends the shell on a file with no H1 --
 file this loop exists to find, and the file the paragraph above says lints clean and
 passes every gate. Measured against a tree holding one: without the fallback the loop
 exits `1` and prints nothing, and with it the loop prints `H1 COUNT 0 (want 1)` and
-`FIRST HEADING IS NOT THE H1` and exits `0`. The `first=` line needs no fallback because
-it ends in a pipe to `head`, and a pipeline reports its last command's status.
+`FIRST HEADING IS NOT THE H1` and exits `0`.
+
+**The `first=` line's own fallback is rule 5, and the sentence that used to stand here
+was the reason it was missing.** That sentence read *"the `first=` line needs no fallback
+because it ends in a pipe to `head`, and a pipeline reports its last command's status"* --
+true in a plain shell and under `-e`, and false under `pipefail`, where the pipeline
+carries `grep`'s `1` and the assignment ends the shell before either diagnostic prints.
+Measured in the same heading-free fixture: without the fallback the block exits `1` with
+**nothing on standard output and nothing on standard error**, which is the reading a
+clean run gives; with it the block prints both diagnostics and exits `0`. A justification
+that holds in one shell environment and not in another is why this section now names the
+environment instead of naming one option.
 
 **The `count` line is the same lesson one level up -- rule 4, at the loop rather than at
 the line.** A `find` that matches nothing runs the body zero times and prints nothing,
@@ -4416,6 +4510,12 @@ which produces the same thing: the loop exited `0` in silence, and with the coun
 prints `NO MARKDOWN FILES FOUND`. The count is taken with a second `find` rather than
 inside the loop because the loop's body runs in a subshell on the right of a pipe, so a
 variable incremented there does not survive it.
+
+**The `count` line carries rule 5's fallback as well, for a second reason that was
+measured rather than inferred.** In the wrong working directory `find` itself exits `1`,
+so under `pipefail` the count assignment ends the block before the guard it exists to
+feed can print -- rule 4's guard defeated by the very state it was written for. With the
+fallback the block prints `NO MARKDOWN FILES FOUND` in all six environments.
 
 Expect output for **exactly two files, and no others**: D7 and D8, whose fenced skeletons
 each show an H1 as an example of what a later author writes, so both report `2`. **Judge
