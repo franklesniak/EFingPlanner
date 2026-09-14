@@ -46,7 +46,10 @@ Fourteen of the nineteen appear somewhere below; the other five needed no tag, b
 their outcomes are simply written into the deliverables they govern. If you ever meet a
 citation whose outcome you cannot read off the text around it, that is a defect in this
 brief -- record it in your build report and follow the surrounding instruction, which binds
-on its own.
+on its own. **One question in this brief is not adjudicated and carries no `OQ-n`
+label**: what `Capital` means for a destination that is not a country. It is recorded in
+the repository's `**Open Question:**` form, inside A1's per-insert schema, and it says
+there what it does and does not block. Nothing else in this brief is open.
 
 If a requirement genuinely seems to be missing, do exactly this, in order: re-read this
 brief, because the answer is almost certainly in a later section; then consult
@@ -371,7 +374,7 @@ add-a-destination checklist. Must contain:
   | Slot | Consuming session | Fields it must supply |
   | --- | --- | --- |
   | `10_snapshot_facts.md` | 10 Destination Snapshot | Capital; major land features; currency; main language. Not the time-difference figure -- that is a Trip-Basics card value. |
-  | `11_regions_overview.md` | 11 Regions and Cities Overview | The main regions, named, so the child can start their region notes; then a pointer to the pack's regions reference for how each region feels different and for the geography instances the neutral session may not state -- the country's shape and size, how weather differs by region, why travel time between regions matters -- and a pointer to the pack's major-cities reference for the route shapes. That regions reference is their canonical home; do not restate them in the slot. No trip shapes, no costs, no pinned travel times. |
+  | `11_regions_overview.md` | 11 Regions and Cities Overview | The main regions, named, so the child can start their region notes; then a pointer to the pack's regions reference for how each region feels different and for the geography instances the neutral session may not state -- your destination's shape and size, how weather differs by region, why travel time between regions matters -- and a pointer to the pack's major-cities reference for the route shapes. That regions reference is their canonical home; do not restate them in the slot. No trip shapes, no costs, no pinned travel times. |
   | `12_seasons_and_events.md` | 12 Weather, Seasons, and Events | Each season the destination has, named, so the child can label a season chart, with one short line each on what travelling in it is like; then a pointer to the pack's seasons, weather and events reference for the rest -- the big-draw and busiest periods, the congestion windows named as categories to confirm this year, each seasonal hazard with its pacing consequence, and the adult-facing contingency note. That reference is their canonical home; do not restate them in the slot. No pinned dates, prices or forecasts. |
   | `16_18_candidate_cities.md` | 16-18 Deep-Dive Cities | Two to four first-trip candidate cities, each with a one-line draw and a few kid-magnet ideas to research, not pre-chosen. |
   | `19_other_places_menu.md` | 19 Other Places Research | A menu of further candidate places beyond the deep-dive cities, each with a one-line draw, offered as options to research rather than as a shortlist. |
@@ -386,6 +389,36 @@ add-a-destination checklist. Must contain:
   **These lists are a floor, not a ceiling.** The batch that writes a slot may find it
   needs one more field and should add it here in the same pass. What it may not do is
   ship a slot with fewer fields than its row names, or leave a row with no fields at all.
+
+  **Open Question:** what `Capital` means when the destination is not a country, and the
+  destination model behind it. The archived spec writes Session 10's fill-in as *"the
+  country's capital"*, and its own copy of this schema as *"capital, major land
+  features, currency, main language"* -- so the spec's model is a destination that **is**
+  a country. C5 below states the opposite in as many words, *"A destination is not always
+  a country"*, and on a conflict this brief binds rather than the spec. Nothing in the
+  spec, in this brief or in the built repository then says what a pack for a city, a
+  region, or a route across several countries supplies in this field, and three surfaces
+  take their wording from the answer: this row, Session 10's converted Step 1
+  (`**Capital:** from your Destination Notes.`), and Session 10's Stop Point field list.
+  `16_18_candidate_cities.md` carries the same assumption one row below, which is what
+  makes this a question about the model rather than about one field.
+
+  **It does not block Batch 1.** The only pack this batch writes is Japan, which is a
+  country: A2 writes its capital, every field on this row is answerable, and no
+  self-check below changes. What it blocks is **the second destination pack** and the
+  add-a-destination guide -- **`how_to_add_a_destination.md`**, which this brief's own
+  acceptance-criteria note already records as unrouted, and which is written in no
+  batch yet. Both are written against this schema, and neither can be finished without
+  the answer. The guide is named here without a path, the way that note names it,
+  because a repo-relative path in inline code is a promise that the file exists.
+
+  **Until it is answered, write the row as it stands and do not generalise the label on
+  your own.** An author who substitutes "main city", or who defines the field as the
+  containing country's capital, has decided the destination model inside a slot file,
+  and that is the decision this entry exists to hold open. Record it in your build
+  report. This is **not** an `OQ-n`: those nineteen were adjudicated before this brief
+  was drafted and bind you. This one is open, and it is written in the repository's own
+  `**Open Question:**` form rather than answered.
 - Then this rule, after the schema, in **exactly** this form — bold label, a space
   between month and year, on the line directly below the H1, matching every built
   reference file and the repo-wide contract above: *"Every slot file also carries a
@@ -785,10 +818,19 @@ Artifact: **Book notes page.** **Source Check is required.** Templates used:
 - Stop point (author it), **reachable on both branches**: done when three places are
   written down with one reason each, the source is recorded in the Source Log -- from a
   book, its page numbers; from a website, its web address and the date you checked it
-  -- and the currency detail is on the book notes page: a book's publication year, or
-  the date the page says it was last updated if it gives one. Write it as one stop
-  point with two fill-ins, not as two stop points: a child on either branch must be
+  -- and how recent the source is goes on the book notes page: a book's publication
+  year, or the date the page says it was last updated if it gives one. Write it as one
+  stop point with two fill-ins, not as two stop points: a child on either branch must be
   able to read it and know they are done.
+- **Name that half "how recent the source is", never "the currency detail".** A
+  publication year and a page's last-updated date say how current a source is. In this
+  curriculum `currency` is money, and it has no second sense anywhere: Session 10's
+  snapshot carries a literal `Currency:` field, the pack's money reference is
+  `money_basics.md`, and the operative style law's only use of the word is *"Any
+  currency figure is an example to re-check and date"*. A child who reads a stop point
+  asking for a currency detail looks for money, and a builder who reads it literally
+  adds a currency field to the Book Notes form D3 specifies. Name the thing the child
+  writes down, in words the child would use.
 - **Why the two halves land on different pages, and it is not a presentation choice.**
   `framework/templates/source_log.md` is a built file this batch does not edit, and its
   twelve rows are fixed: `Source number`, `Date checked`, `Source type`, `Title`,
@@ -1215,16 +1257,46 @@ in order:
    adult-owned responsibilities clearly. Every legal, safety, entry or
    current-information item carries a verify-with-official-sources line and a
    record-the-date-checked line.
-4. `## The page skeleton` — one fenced `markdown` block. **It opens with the
-   `markdownlint-disable` directive, not with the H1**, exactly as D7's skeleton does:
-   `<!-- markdownlint-disable MD013 -->`, then `# Page Title`, a one-sentence purpose
-   line, two or three `## <Point>` headings, and a closing `## Where to go next` pointer
-   list. Every built curriculum file carries that comment as line 1 and the hard
-   constraints below require it, `MD013` is off in this repository's own config so the
-   directive earns its keep only when the page is read by an external markdownlint at
-   defaults, and this block is written to be copied into a new file -- a skeleton that
-   starts at the H1 teaches its absence, and the next author has to remember an addition
-   the template never showed them.
+4. `## The page skeleton` — one fenced `markdown` block, and it is this one:
+
+   ```markdown
+   <!-- markdownlint-disable MD013 -->
+
+   # Page Title
+
+   One sentence saying what this page is for.
+
+   ## First point title
+
+   ## Second point title
+
+   ## Where to go next
+
+   - Another page in this guide -- one clause saying what it covers.
+   ```
+
+   Two or three point headings, whichever the page needs, and the closing pointer list
+   is required. **It opens with the `markdownlint-disable` directive, not with the
+   H1**, exactly as D7's skeleton does. Every built curriculum file carries that comment
+   as line 1 and the hard constraints below require it, `MD013` is off in this
+   repository's own config so the directive earns its keep only when the page is read by
+   an external markdownlint at defaults, and this block is written to be copied into a
+   new file -- a skeleton that starts at the H1 teaches its absence, and the next author
+   has to remember an addition the template never showed them.
+
+   **Every placeholder heading is visible text, and no two of them are the same.** An
+   earlier draft of this item wrote them as `##` followed by a word in angle brackets,
+   and that spelling does not survive the gate. Markdown parses a bracketed word as an
+   inline HTML tag, so the heading renders blank; `MD033` is on in this repository's
+   config; the block is fenced as `markdown`, which is exactly what
+   `npm run lint:md:nested` extracts and lints; and that command is one of the four
+   repo-wide gates the self-check below requires to pass. Measured on the file this item
+   produces: two bracketed headings fail `MD033/no-inline-html` twice and the run exits
+   `1`. Two headings both reading `## Point title` clear `MD033` and then fail
+   `MD024/no-duplicate-heading`, because they are the same heading written twice -- so
+   the obvious repair of the first defect ships the second. Distinct visible titles
+   clear both, which is why the block above reads `First` and `Second`. The same rule
+   binds item 5's block and every fenced `markdown` block this batch writes.
 5. `## The per-session support-note shape` — one fenced `markdown` block showing the
    six-part shape `session_support_notes.md` uses **for a session the child does**: the
    `## Session NN: Title` heading, then Role, Prep, Look for, Coaching question,
@@ -1314,9 +1386,15 @@ before Batch 1.** Do not edit it.
 
 ### Section F — Framework docs and front matter
 
-Of the new `framework/docs/` files, **F4 and F7 carry a `## Metadata` block. F3, F5, F6,
-F8 and F9 do not**, and five of the nine going without one is the ordinary outcome rather
-than an exception being made. **F4 is on the required side, and being parent-facing is not
+Of the **seven** new `framework/docs/` files, **F4 and F7 carry a `## Metadata` block.
+F3, F5, F6, F8 and F9 do not**, and five of the seven going without one is the ordinary
+outcome rather than an exception being made. **Take the denominator from the item list,
+not from Section F's numbering.** F3 through F9 are the seven creates in that directory;
+F1 and F2 are `framework/` files outside `docs/`, and F10, F11 and F12 are edits to files
+that already carry the block, so neither group belongs in it. An earlier draft wrote
+"five of the nine", which is a denominator no set of files in this batch has, and which
+sends a builder looking for two deliverables that do not exist against a strict
+file-count gate. **F4 is on the required side, and being parent-facing is not
 what decides it.** The repository's documentation policy classifies on content and says so
 in as many words -- Tier 1 wins on content, and file location and filename are secondary
 -- so the test is what a file makes binding, not who reads it.
@@ -1632,21 +1710,43 @@ retention. Everything else that `privacy_and_safety.md` owns -- the public-repos
 the binder and Google Docs guidance, the general sensitive-data list -- gets a one-clause
 reminder plus a relative link to that page, and is not re-explained here.
 
-**Its point of use is the setup AI choice, and two edits route the parent there.** The
-verify-the-policy rule above is a check an adult performs **before** opting in, with the
-date recorded beside the yes/no. Session 09 repeats it, but Session 09 comes after the
-choice is written down, so a parent who meets the rule only there meets it too late.
-Both surfaces that ask for the choice already name the adult-operated pattern and link
-`privacy_and_safety.md` for it, and **both are already on this batch's edit list**, so
-both gain the same second link and neither is left routing differently from the other:
-`framework/sessions/phase_00_setup/00_parent_setup.md` step 4, and
-`framework/parent_guide/setup_checklist.md` step 4. Each keeps its own wording, its own
-voice and its existing privacy link, and each gains one clause -- *"Before you choose
-yes, read the [AI use rules](PATH) -- an adult checks the tool's current minimum-age and
-supervision policy first, and writes the date checked beside the choice."* -- where
-`PATH` is `../../docs/ai_use_rules.md` from the session and `../docs/ai_use_rules.md`
-from the parent guide. **Do not restate the rules themselves on either page**, do not
-add a third mention anywhere, and do not touch
+**Its point of use is the setup AI choice, and three edits route the parent there.**
+The verify-the-policy rule above is a check an adult performs **before** opting in, with
+the date recorded beside the yes/no. Session 09 repeats it, but Session 09 comes after
+the choice is written down, so a parent who meets the rule only there meets it too late.
+**Three built surfaces ask a parent to make the choice, not two**, and all three are
+already on this batch's edit list, so none of them is left routing differently from the
+others:
+
+- `framework/sessions/phase_00_setup/00_parent_setup.md` step 4 and
+  `framework/parent_guide/setup_checklist.md` step 4. Both already name the
+  adult-operated pattern and link `privacy_and_safety.md` for it. Each keeps its own
+  wording, its own voice and its existing privacy link, and each gains one clause --
+  *"Before you choose yes, read the [AI use rules](PATH) -- an adult checks the tool's
+  current minimum-age and supervision policy first, and writes the date checked beside
+  the choice."* -- where `PATH` is `../../docs/ai_use_rules.md` from the session and
+  `../docs/ai_use_rules.md` from the parent guide.
+- `framework/parent_guide/README.md`, the fastest-safe-start list. Its step 4 reads
+  `Choose AI: yes or no (default no) -- record it on the assumptions page.` It names no
+  pattern and links nothing, and it is the shortest route into the program: a parent who
+  follows only that list opts in without ever meeting the check. Append one sentence to
+  that step and change nothing else on the line: *"Before you choose yes, read the
+  [AI use rules](../docs/ai_use_rules.md)."* **It gets the short form on purpose.** That
+  page is the quick-start, one line per action and one screen long; H3 below protects
+  that budget for a tired parent, and the page already sends the reader on with *"Full
+  detail is in the setup checklist."* The trigger and the route are what this surface
+  has to carry, and the rule itself stays on the page the link points at.
+
+**The surface was counted, not assumed.** A case-insensitive grep over `framework/` for
+the AI choice returns seven lines. Three of them ask for it -- the three above. One is
+the blank that records it, `current_family_travel_assumptions.md`, excluded below. Three
+name the choice without asking for it: `00_parent_setup.md`'s goal line and its artifact
+line, and the Session 00 `Prep` bullet in `session_support_notes.md`. Those four gain
+nothing. An earlier draft of this paragraph counted two, called that set exhaustive, and
+left the quick-start unrouted.
+
+**Do not restate the rules themselves on any of the three**, do not add a fourth mention
+anywhere, and do not touch
 `framework/templates/current_family_travel_assumptions.md` or its kit copy: G3 keeps
 the choice field and adds no link, because the blank the family fills in is not where a
 policy check belongs.
@@ -2233,7 +2333,7 @@ that paragraph is unlinked prose, so a parent new to the term has no route from 
 entry point to the page this deliverable creates, which is what the archived design
 record's soft fourth read exists to give them. So **H3 also edits
 `framework/parent_guide/README.md`**, replacing the italic paragraph that begins
-*"New to the term"* with this, and changing nothing else in it:
+*"New to the term"* with this, and changing nothing else about that paragraph:
 
 ```markdown
 *New to the term "executive function"? It is the set of brain skills for getting started, sticking with a task, knowing when to stop, staying organized, and being flexible. This project builds them by having your child plan a real trip. Read [what executive function is](what_is_executive_function.md) for the one-page version.*
@@ -2241,9 +2341,11 @@ record's soft fourth read exists to give them. So **H3 also edits
 
 Keep it a **soft** fourth read: do not promote it to a fourth must-read, and add no
 heading for it. The three-must-reads framing and the one-screen budget are what make
-that page usable for a tired parent. This is the second edit to
-`framework/parent_guide/README.md` — H10's scrub table carries the first — so the file
-is already on the edit list and **the deliverables count does not move.**
+that page usable for a tired parent. This is the **third** edit to
+`framework/parent_guide/README.md`: H10's scrub table carries one, and F6's
+AI-use-rules route carries another. Each of the three is scoped to a different line and
+none of them touches the others, so the file is on the edit list once and **the
+deliverables count does not move.**
 
 **H4. `framework/parent_guide/ef_observation_aid.md` (create).** Parent-facing and
 explicitly private from the child. H1; **the four guardrails, prominently at the top**;
@@ -2356,10 +2458,20 @@ end) works and prints portrait.
   **Keep the paragraph and append these two sentences to it**, in the page's own plain
   parent voice: *"One stop, before you build the next phase: read each rebuilt Phase 0-2
   session with its Destination Notes beside it, against the version it replaced, and
-  confirm nothing was lost; then watch your child work the sessions that are new to them.
-  Fix what you find before you build further -- reading the pages is the easy half, and
-  only watching your child tells you whether the new sessions work."* **The comparison is
-  against the versions those pages replaced, and nothing else.** No child has worked any
+  confirm nothing was lost; then watch your child work the five sessions this slice
+  adds -- Sessions 02, 06, 07, 08 and 11, with 07 only if you do it. Fix what you find
+  before you build further -- reading the pages is the easy half, and only watching your
+  child tells you whether the new sessions work."* **Name the five; do not write "the
+  sessions that are new to them".** The next sentence of this same bullet records that no
+  child has worked any page in this repository, so under that fallback every session is
+  new to the child and the phrase reaches all eight rebuilt sessions as well as the five.
+  The gate's second check is scoped to exactly those five everywhere else in this brief
+  -- the batch gate near the top and the handoff at the end both name Sessions 02, 06,
+  07, 08 and 11 -- and the parent-facing copy of it may not be the one surface that
+  widens. Session 07 is Recommended, so it is observed only if the family does it, and
+  the clause says so in the same terms the handoff uses.
+  **The comparison is against the versions those pages replaced, and nothing else.**
+  No child has worked any
   page in this repository -- the usability pilot is deferred, and this same page records
   that three sections further down -- so a sentence pointing an adult at "the pages your
   child worked" names something that does not exist and makes the read impossible to
@@ -2388,9 +2500,14 @@ entry in the file already does, so the link check validates it:
 
 Change the Session 09 sub-bullet's placement words from "do right after Session 05" to
 "do before any AI tool; on the First Taste path, right after Session 05." Add one
-sentence under the list: `The five extra sessions above are part of the fuller Phases
-0-2 path. They are not among the 13, and skipping them is still a real First Taste
-finish.`
+sentence under the list: `The extra sessions above are part of the fuller Phases 0-2
+path. They are not among the 13, and skipping them is still a real First Taste finish.`
+**That sentence carries no count, and the omission is deliberate.** After these five
+insertions the list holds **six** indented entries, not five: the Session 09 sub-bullet
+is already there, it already reads *"an extra, not one of the 13"*, and Session 09 is a
+Phases 0-2 session too. A sentence reading "the five extra sessions above" is falsified
+by the page it sits on, and this is a child-facing page whose whole job is telling a
+child what counts toward 13. Do not put a numeral back.
 
 **The grown-up list.** `## Which sessions need a grown-up` today names Sessions 00, 05,
 09, Checkpoint 1 and 44, and then tells the child that when a grown-up is busy they
@@ -2500,9 +2617,17 @@ it.
 **`parent_guide/setup_checklist.md` takes one further change, and it is not in the table
 above.** Its **step 4**, the AI yes/no choice, gains the AI-use-rules clause F6 specifies,
 for the reason F6 gives: this batch creates the page that carries the before-you-opt-in
-check, and the two surfaces that ask for the choice are the only places a parent meets it
-in time. That file is already on the edit list for its row above, so **the deliverables
-count does not move for it.**
+check, and the three surfaces that ask for the choice are the only places a parent meets
+it in time. That file is already on the edit list for its row above, so **the
+deliverables count does not move for it.**
+
+**`parent_guide/README.md` takes two further changes, and neither is in the table
+above.** Its fastest-safe-start **step 4** gains the short AI-use-rules route F6
+specifies -- it is the third surface that asks for the choice, and the only one that
+today links nothing -- and its *"New to the term"* paragraph gains the link H3 specifies.
+With the scrub row above, that file takes three changes on three different lines, and no
+two of them overlap. It is already on the edit list, so **the deliverables count does not
+move for it either.**
 
 **H11. `README.md` (edit).** The repository's **root** landing page -- not
 `framework/README.md`, which F1 creates. It has no spec-extract section of its own, so it
@@ -2703,7 +2828,15 @@ replacement, the way the built line does.
 | Line | Current text | Neutral replacement |
 | --- | --- | --- |
 | Steps intro | "You're going to practice on one real fact about Japan." | "You're going to practice on one real fact about the place you are going." |
-| Step 1 | "For example: 'What is the capital of Japan?' or 'What is a bullet train called?'" | Generic examples that work for any destination — "What is the capital city?" or "What money do they use?" |
+| Step 1 | "For example: 'What is the capital of Japan?' or 'What is a bullet train called?'" | Generic examples that name no destination — "What is the capital city?" or "What money do they use?" |
+
+**The replacement is described as naming no destination, not as working for every
+destination.** Destination-neutrality is what this conversion is for: the built line may
+not name Japan, and after the change it does not. Whether *"What is the capital city?"*
+is answerable for a destination that is not a country is the Open Question A1 records,
+and it is not settled here. Do not rewrite the example a third time to chase it -- this
+file is the golden exemplar, and the instruction above is to change only the two leaking
+lines.
 
 Everything else is untouched: the Start Here micro-action, the five-field first entry,
 the verification-source step, the carry-over tag, the Workspace table, the "Your Source
