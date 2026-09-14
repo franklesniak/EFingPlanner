@@ -37,7 +37,7 @@ Every trip is made of cost categories. You do not need exact numbers. You're lea
    | Second city's hotel (only if you kept two cities in Session 21) | $____ per night x ____ nights x ____ rooms | |
    | **My two-slice estimate** | add Food + your hotel(s) | |
 
-4. **Check it against your band -- match the units first.** A grown-up gave you *one* kid-sized band at setup. It is a per-person-per-day amount, a per-day amount for the whole family, *or* a hotel "tier we can afford." It is never your whole-trip total. That stays a grown-up number. Compare the matching piece, not your big two-slice total:
+4. **Check it against your band. Match the units first.** A grown-up gave you *one* kid-sized band at setup. It is a per-person-per-day amount, a per-day amount for the whole family, *or* a hotel "tier we can afford." It is never your whole-trip total. That stays a grown-up number. Compare the matching piece, not your big two-slice total:
    - Band is **per person, per day**? Multiply it by your travelers to get a **per-day family** number. Then check that the same way as the **per day for the family** band below. A grown-up can do the multiplying. That way your rooms count as well as your meals.
    - Band is **per day for the family**? Add your **meals for everyone per day** (meals per person x your travelers) to your **hotel for one night, all your rooms** (hotel per night x rooms). Then check that daily total against the band.
    - Band is a **hotel tier**? Check your **hotel-per-night** pick against that tier. Circle **fits** or **too high** for the part you checked.

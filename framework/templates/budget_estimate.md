@@ -18,7 +18,7 @@ All numbers here are estimates you look up and re-check -- never a fixed price. 
 | Souvenirs / spending money (later) | | |
 | **Subtotal of the parts I choose (Core path)** | add the costs above | |
 
-**Check against your band -- match the units.** Your band comes from the assumptions page. It is one kid-sized form: per person/day, per day for the family, or a hotel tier. It is not a whole-trip total. So compare the *matching* piece of your estimate, not the subtotal:
+**Check against your band. Match the units.** Your band comes from the assumptions page. It is one kid-sized form: per person/day, per day for the family, or a hotel tier. It is not a whole-trip total. So compare the *matching* piece of your estimate, not the subtotal:
 
 | Prompt | Your answer |
 | --- | --- |
