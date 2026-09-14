@@ -20,7 +20,7 @@ Use this to compare seasons, not to pick "the perfect" one. These patterns hold 
 - **Summer heat and humidity** are real. On long walking days they can be a health concern. That's true for the child. It's true for anyone who tires more easily, too. Plan summer days gently, with water.
 - **Typhoon season** runs roughly from late spring, around May, through autumn. The peak comes in late summer and early autumn. So it can hit a late-spring or summer trip, and a fall one. A grown-up watches the official forecast. A forecast typhoon can shut trains and attractions for a day or two. So it's a reshuffle-the-days event, not just a rainy afternoon.
 
-## Busy travel windows (crowds and higher prices -- confirm this year's dates)
+## Busy travel windows (crowds and higher prices; confirm this year's dates)
 
 - **Golden Week** -- roughly late April into early May.
 - **Obon** -- roughly mid-August.

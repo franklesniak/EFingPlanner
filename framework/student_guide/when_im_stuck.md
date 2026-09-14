@@ -19,7 +19,7 @@ Remember: feeling frustrated in the middle is normal. Noticing it and taking a b
 
 ## When I come back after a break
 
-Missed a week or more? You do not start over. Come back like this:
+Missed a week or more? You don't start over. Come back like this:
 
 1. Re-read your last finished page.
 2. Check your [progress tracker](progress_tracker.md) for where you are.

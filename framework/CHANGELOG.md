@@ -6,7 +6,7 @@
 
 - **Status:** Active
 - **Owner:** Repository Maintainers
-- **Last Updated:** 2026-09-13
+- **Last Updated:** 2026-09-14
 - **Scope:** Version history for the reusable curriculum in `framework/` (and the destination packs that plug into it). Builder- and reuser-facing. Not part of the child's or parent's reading path.
 
 ## Which log is this
@@ -40,6 +40,10 @@ Work in progress toward the complete deliverable inventory.
 
 - **Recorded the deferral of the Batch 0 usability pilot.** The design-validation gate for the First Taste slice has not been run with a child. The parent guide's own documented escape hatch is used, and the flag is now carried in writing in [time and effort](parent_guide/time_and_effort.md): *"Usability pilot deferred -- design unvalidated; pilot before relying on the full apparatus."* The flag stays until a real pilot happens. See "What is still owed to a human" below.
 - **Recorded two build conventions in the style guide** so later batches stay consistent: the neutral-pronoun rule (a generic child is "your child" / "the child" / "they"; child-facing text stays second-person "you"), and the vocabulary that replaces the spec's placeholder-token teaching concept in built pages ("not decided yet" / "ask an adult").
+- **Brought thirteen child-facing pages under the density caps.** Spaced dashes, the `real` family, and the `X, not Y` contrast were reworked to the per-file and per-section budgets in [build style and vocabulary](docs/build_style_and_vocab.md), across the five First Taste sessions that were over a cap, four templates, three student-guide cards, and the Japan seasons reference. Punctuation carried the change wherever it could, so a reuser diffing these pages mostly sees sentence breaks and colons rather than rewritten instructions. Applied in [pull request #29](https://github.com/franklesniak/EFingPlanner/pull/29).
+- **Applied the contraction convention to those same thirteen pages.** Child-facing prose now reads `don't` / `that's` / `you've` where the guide's list calls for it, while the seven places that keep the full form stay whole: headings and nav lines, standing rules, safety rules, agreed labels, text the child copies, quoted boilerplate, and parent-facing or builder-facing text. Pages outside those thirteen still carry the register they had, so expect a mixed corpus until a later batch finishes the pass.
+- **Restored the full form in the two child-facing safety guarantees.** [Research rules](student_guide/research_rules.md) and [When I'm Stuck](student_guide/when_im_stuck.md) both read "You are never in trouble for that." again, matching the wording the archived design spec prescribes and the canonical [privacy and safety](docs/privacy_and_safety.md) page.
+- **Restated the density conventions the pages were measured against.** The style guide now names the two sets its rules run over, so an author and a later density gate read one scope instead of two: a test runs over authored text, a count divides by prose lines, and literal syntax such as a code span sits outside both. A named contraction exception now outranks the rule-card test rather than being narrowed by it.
 
 ---
 

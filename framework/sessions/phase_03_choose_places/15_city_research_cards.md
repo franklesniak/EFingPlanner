@@ -36,7 +36,7 @@ For each city, fill in your card from trusted sources (add each to your Source L
 8. **Sources** and **date checked.**
 9. **Planning assumption** -- anything you're *assuming* that a grown-up should check later (for example, "I'm assuming we can day-trip from here").
 
-**Your route is built in movable blocks.** Think of each city card as one block you can later move, drop, or add. If a grown-up later changes which city you fly into or out of, your plan just flexes. You move a block. You do not start over. Your work still counts.
+**Your route is built in movable blocks.** Think of each city card as one block you can later move, drop, or add. If a grown-up later changes which city you fly into or out of, your plan just flexes. You move a block. You don't start over. Your work still counts.
 
 ## Workspace
 
