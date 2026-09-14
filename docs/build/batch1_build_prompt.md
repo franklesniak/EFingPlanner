@@ -245,17 +245,20 @@ reference files keep their `July 2026` stamp.
 of a file that carries that block, bump its `Last Updated` to your build date in
 `YYYY-MM-DD` form, once, in the same commit** — and bump the `<YYYYMMDD>` segment of a
 `**Version:**` line too, if the file has one (none of these three does). This is the
-repository's documentation rule, and it binds every later batch as well. **Do not
-confuse it with the `Last reviewed` stamp above:** `Last Updated` is a `YYYY-MM-DD` field
-inside the `## Metadata` block a specification, instruction or process document carries;
-`Last reviewed` is a `<month year>` honesty stamp on a `destinations/` fact file.
-Different fields, different layers, different formats. **They are not sorted by
-directory.** Most files carrying the block are under `framework/`, but A1 carries one and
-is a `destinations/` file: it is a routing contract rather than a fact file, which is
-also why it carries no `Last reviewed` stamp. A1, D7, D8 and F4 are each required below
-to carry the block, so the bump rule above binds those four from the batch that next
-edits them. Note also that this rule never reaches a protected instruction file — those are
-never edited by any batch (see BUILD RULES below).
+repository's documentation rule, and it binds every later batch as well. **Do not confuse
+it with the `Last reviewed` stamp above:** `Last Updated` is a `YYYY-MM-DD` field inside
+the `## Metadata` block a specification, instruction or process document carries; `Last
+reviewed` is a `<month year>` honesty stamp on a `destinations/` fact file. Different
+fields, different layers, different formats. **They are not sorted by directory.** Most
+files carrying the block are under `framework/`, but A1 carries one and is a
+`destinations/` file: it is a routing contract rather than a fact file, which is also why
+it carries no `Last reviewed` stamp. **Five files this batch creates are required below to
+carry the block** -- A1, D7, D8, F4 and F7 -- so the bump rule above binds all five from
+the batch that next edits them. Count the creates here and not only the three edits above:
+F7 is `framework/docs/citation_style.md`, the citation rule's canonical home, and a later
+batch that changes its wording and leaves its date alone breaks this rule the same way.
+Note also that this rule never reaches a protected instruction file — those are never
+edited by any batch (see BUILD RULES below).
 
 ### Section A — The destination-pack insert contract and its Batch 1 slots
 
@@ -1255,23 +1258,47 @@ before Batch 1.** Do not edit it.
 
 ### Section F — Framework docs and front matter
 
-Of the new `framework/docs/` files, F3, F4, F7 and F9 carry a `## Metadata` block; F5,
-F6 and F8 are parent-facing curriculum reading, classified Tier 2, and deliberately do
-not. **F4 is on the required side, and being parent-facing is not what decides it.** The
-repository's documentation policy classifies on content and says so in as many words --
-Tier 1 wins on content, and file location and filename are secondary -- so the test is
-what a file makes binding, not who reads it. `framework/docs/privacy_and_safety.md` is
-parent-facing and carries the block today, which settles that audience alone exempts
-nothing. `design_principles.md` fixes the carry-over tag's canonical wording and the one
-place it may appear, and it sets the fade gradient together with the readiness test that
-releases each stage; those are rules a Batch 2 author has to follow, which is design
-rationale in the policy's own sense. F5, F6 and F8 are not in that position -- a guide to
-source types, family-facing AI rules and a glossary make nothing binding on a later
-author, and Tier 2 says not to add the block without a concrete consumer. **That
-classification covers `framework/docs/` only.** Three files outside this
-section carry the block as well, each required to carry it in its own item: A1, D7 and
-D8, the batch's three builder-facing contracts. Everywhere else, do not add the block
-to a file this brief does not ask for it on.
+Of the new `framework/docs/` files, **F4 and F7 carry a `## Metadata` block. F3, F5, F6,
+F8 and F9 do not**, and five of the nine going without one is the ordinary outcome rather
+than an exception being made. **F4 is on the required side, and being parent-facing is not
+what decides it.** The repository's documentation policy classifies on content and says so
+in as many words -- Tier 1 wins on content, and file location and filename are secondary
+-- so the test is what a file makes binding, not who reads it.
+`framework/docs/privacy_and_safety.md` is parent-facing and carries the block today, which
+settles that audience alone exempts nothing. `design_principles.md` fixes the carry-over
+tag's canonical wording and the one place it may appear, and it sets the fade gradient
+together with the readiness test that releases each stage; those are rules a Batch 2
+author has to follow, which is design rationale in the policy's own sense.
+`citation_style.md` is the second of that kind: it states when a citation is required,
+fixes the five forms and the exact field names D3, D4, D6 and Session 08 must reproduce,
+and forbids a sixth. That is a schema and a rule, and four other items in this brief are
+written to obey it. F5, F6 and F8 are not in that position -- a guide to source types,
+family-facing AI rules and a glossary make nothing binding on a later author, and Tier 2
+says not to add the block without a concrete consumer. **Being a canonical home does not
+decide it either**, or the line would fall in a different place: F5, F7 and F8 are all
+rows in the style law's canonical-concept-Names table once F11's edit lands, and only F7
+states a rule there.
+
+**The two that fail that test most plainly are F3 and F9**, which is why neither carries
+the block. They are this batch's two read-me-first orientation pages -- what the project
+is, and how to open and print the files -- and **nothing in this brief or in the built
+tree cites either as an authority.** Each is named once in this brief, in its own item,
+and no other item and no built file is told to follow it; the worksheet-table shape F9
+explains has its binding home in `build_style_and_vocab.md`, which F11 edits and which
+carries the block already, while F9 tells a parent what the printed page will look like.
+The built tree draws the line in the same place: of the files under `framework/` on
+`main`, exactly three carry the block -- the changelog, the style law and the privacy page
+-- and every parent guide, student guide, template and session carries none, as do
+`framework/PROJECT_ROADMAP.md` and the root `README.md` and `GETTING_STARTED.md` that
+these two pages route their reader to. There is no consumer to justify one, either: no
+gate in this repository reads metadata, so the only thing the block would create is the
+`Last Updated` bump obligation stated near the top of this brief, binding every later
+batch that edits the file, for no reader at all.
+
+**That classification covers `framework/docs/` only.** Three files outside this section
+carry the block as well, each required to carry it in its own item: A1, D7 and D8, the
+batch's three builder-facing contracts. Everywhere else, do not add the block to a file
+this brief does not ask for it on.
 
 **F1. `framework/README.md` (create).** Parent-facing and reuser-facing. Must contain:
 
@@ -1305,10 +1332,21 @@ to a file this brief does not ask for it on.
   changelog from the per-trip decision log. `framework/CHANGELOG.md` requires these two
   surfaces to carry the same version, so it is `0.2.0` in both places or the batch is
   not done.
-- The Definition of Done for modularity, in plain words: a family can copy the blank
-  kit and a destination pack, fill in their own Trip-Basics card, write a new
-  destination's reference facts and inserts, and reuse the whole curriculum unchanged
-  without editing any framework file or the first destination.
+- The Definition of Done for modularity, in plain words: a family can copy the blank kit
+  and a destination pack, fill in their own Trip-Basics card, write a new destination's
+  reference facts and inserts, and reuse the whole curriculum unchanged without editing
+  any framework file or the first destination — **with the one exception the layer bullet
+  above already carries: until Batch 2 converts them, the later-phase sessions on the
+  leak-exemption list are not neutral yet, and the one that still holds the first
+  destination's facts has to be converted by hand before a second destination is
+  finished.** **Write the exception into this bullet too, rather than leaving the reader
+  to carry it down from the one above.** This is the sentence that says what *done* means,
+  so a reuser who reads only this bullet starts the work believing the number of framework
+  files they must edit is zero, and finds out otherwise in the one session that is not.
+  A1's add-a-destination rules 3 and 6 carry the same clause for the same reason, and
+  without it the README promises on one line what the pack's own contract withdraws on
+  another. Same wording rule as the bullet above -- "the first destination", never the
+  name -- and this clause goes out with the others when Batch 2 clears the list.
 - The honest reuse distinction: **parameter reuse** (another family with the same origin
   assumptions, travelling to the same destination — change only their own Trip-Basics
   card, near-zero cost) versus **destination reuse** (another place — a whole new
@@ -1382,22 +1420,23 @@ no-hard-link rule usable; (4) to plan a second trip to the same place later, cop
 fresh starter kit and reuse the same destination pack. Plus the privacy reminder and
 link, and the "a Google Docs folder is not a private vault" note.
 
-**F3. `framework/docs/overview.md` (create).** **The spec has no content requirements
-for this file anywhere** — the OQ-9 outline is the requirement. Parent-facing and
-reuser-facing, adult register. Required sections, in order: `## Metadata` (Status,
-Owner, Last Updated, Scope — the same shape `privacy_and_safety.md` uses); `## What
-this project is` — one short paragraph, a Markdown curriculum a child of roughly nine
-to eleven works through to plan a real family trip while building executive function;
-`## Two things at once` — a real trip-planning binder **and** an executive-function
-curriculum, with the child making a thoughtful, sourced, family-usable recommendation
-and the adults reviewing, adjusting, verifying and eventually booking; `## Three honest
-finish lines` — one clause each for First Taste, the Core Finish Line and the full
-program, then a one-line pointer to `../PROJECT_ROADMAP.md`, with no session list and
-no path list; `## What this is not` — not a maintained product, not booking or legal
-advice, not a promise that the skills transfer, with a one-clause reminder and link to
-the provided-as-is banner on `../../GETTING_STARTED.md`; `## Where to go next` — a short
-router list with relative links. One to one and a half printed pages. **No three-layer
-explanation** — that belongs to `framework/README.md`.
+**F3. `framework/docs/overview.md` (create).** **The spec has no content requirements for
+this file anywhere** — the OQ-9 outline is the requirement. Parent-facing and
+reuser-facing, adult register. **No `## Metadata` block** — this is the project's
+read-me-first orientation page, it makes nothing binding, and the classification paragraph
+at the head of this section says why. Required sections, in order: `## What this project
+is` — one short paragraph, a Markdown curriculum a child of roughly nine to eleven works
+through to plan a real family trip while building executive function; `## Two things at
+once` — a real trip-planning binder **and** an executive-function curriculum, with the
+child making a thoughtful, sourced, family-usable recommendation and the adults reviewing,
+adjusting, verifying and eventually booking; `## Three honest finish lines` — one clause
+each for First Taste, the Core Finish Line and the full program, then a one-line pointer
+to `../PROJECT_ROADMAP.md`, with no session list and no path list; `## What this is not` —
+not a maintained product, not booking or legal advice, not a promise that the skills
+transfer, with a one-clause reminder and link to the provided-as-is banner on
+`../../GETTING_STARTED.md`; `## Where to go next` — a short router list with relative
+links. One to one and a half printed pages. **No three-layer explanation** — that belongs
+to `framework/README.md`.
 
 **F4. `framework/docs/design_principles.md` (create).** Parent-facing and
 builder-facing, adult register. H1; then a `## Metadata` block directly below it --
@@ -1621,25 +1660,26 @@ tag; checkpoint; Trip-Basics card; budget band; rough trip shape; planning assum
 trade-off report; verify-don't-trust; your-work-wasn't-wrong; lighter 3-criteria rubric.
 **No destination words here.**
 
-**F9. `framework/docs/how_to_use_markdown_files.md` (create).** **The spec has no
-content requirements for this file anywhere** — the OQ-9 outline is the requirement.
-Parent-facing, non-technical, adult register. Required sections, in order:
-`## Metadata`; `## What a Markdown file is` — plain text with light formatting, opens in
-any browser, any text editor, and Google Docs, no software needed; `## Why the whole
-project is plain text` — one source of truth, printable, copyable, no build step, the
-repository ships no PDFs, and nothing about using the materials needs Node, Python, a
-package manager, or a command line; `## Reading and printing` — a one-clause reminder
-and a link to the print routes in `../../GETTING_STARTED.md`, with the two routes **not**
-restated; `## How the worksheet tables work` — worksheet forms are two-column tables, an
-empty cell prints as a bordered box to handwrite in, becomes an editable cell when the
-page is pasted into Google Docs, and reflows on a screen, and comparison grids stay
-narrow enough for portrait letter or A4; `## The automatic checks are not yours to run` —
-the lint and link-check workflows are for technical contributors and a family can ignore
-them completely; `## The honest tradeoff` — text only, no diagrams for a visual learner,
-limited richness for a screen reader, a deliberate accessibility-versus-printability
-choice, with a one-clause pointer to `../parent_guide/differentiation.md`; `## A note
-about Google Docs` — one clause plus a link to `privacy_and_safety.md`. About one
-printed page. No command-line instructions.
+**F9. `framework/docs/how_to_use_markdown_files.md` (create).** **The spec has no content
+requirements for this file anywhere** — the OQ-9 outline is the requirement.
+Parent-facing, non-technical, adult register. **No `## Metadata` block** — this page is
+end-user onboarding, it makes nothing binding, and the classification paragraph at the
+head of this section says why. Required sections, in order: `## What a Markdown file is` —
+plain text with light formatting, opens in any browser, any text editor, and Google Docs,
+no software needed; `## Why the whole project is plain text` — one source of truth,
+printable, copyable, no build step, the repository ships no PDFs, and nothing about using
+the materials needs Node, Python, a package manager, or a command line; `## Reading and
+printing` — a one-clause reminder and a link to the print routes in
+`../../GETTING_STARTED.md`, with the two routes **not** restated; `## How the worksheet
+tables work` — worksheet forms are two-column tables, an empty cell prints as a bordered
+box to handwrite in, becomes an editable cell when the page is pasted into Google Docs,
+and reflows on a screen, and comparison grids stay narrow enough for portrait letter or
+A4; `## The automatic checks are not yours to run` — the lint and link-check workflows are
+for technical contributors and a family can ignore them completely; `## The honest
+tradeoff` — text only, no diagrams for a visual learner, limited richness for a screen
+reader, a deliberate accessibility-versus-printability choice, with a one-clause pointer
+to `../parent_guide/differentiation.md`; `## A note about Google Docs` — one clause plus a
+link to `privacy_and_safety.md`. About one printed page. No command-line instructions.
 
 **F10. `framework/CHANGELOG.md` (edit — never a create).** The file is on `main`, is 68
 lines long, and carries a `## Metadata` block, a `## Which log is this` router table, a
@@ -2817,15 +2857,31 @@ tool."* Session 05's block below **rewrites that line and adds a second one abov
 Session 05 ends with two italic lines and not three. Rewrite the existing line; do not
 append a third beside it.
 
-**The two lines are ordered, and the second narrows the first.** For a family that opted
-into AI the route out of Session 05 is 09 and then 10, which is why the rewritten AI line
-keeps the built line's *"right after this one"* and adds *"before Session 10"*. Without
-them the child reads *"go straight to 10"* as the instruction and reaches the snapshot
-session having skipped the opt-in safety lesson. This is the same branch the navigation
-table writes on Session 08's Next, which sends a family that opted into AI to 09 and then
-10 and sends an AI-free family straight to 10, and writes again on Session 10's Previous;
-Session 09's own block states it from the other end. All three must agree; change one and
-change the others in the same pass.
+**The two lines are ordered, and the second narrows the first -- and it narrows to the
+First Taste path, not to families who use AI.** On that path the child leaves Session 05
+for Session 10, so an AI-opt-in family has to be turned aside to 09 first, and the
+rewritten line says exactly that. Without it the child reads the line above -- *"go
+straight to 10"* -- as the instruction and reaches the snapshot session having skipped the
+opt-in safety lesson.
+
+**Write the shortcut scoped, and never unqualified.** This batch changes Session 05's Next
+from 09 to 06, so on the full Phases 0-2 path the route out of Session 05 is 06, then 07,
+then 08, then 09. The built line's *"right after this one"* was true of the pre-Batch-1
+tree, where Session 05's Next really was 09; **this batch is what makes it false**, which
+is why the conversion rewrites it instead of preserving it. Left unqualified it would send
+an AI-enabled family on the full path straight from 05 to 09 and past Core Sessions 06 and
+08 -- a shortcut written for the thirteen, applied to the fifty-four. The first sentence,
+*"before you use any AI tool"*, is the half that binds both paths, which is why it comes
+first and carries no path name; the second half names its path and stays out of the full
+path's way.
+
+This is the same branch the navigation table writes on Session 08's Next, which sends a
+family that opted into AI to 09 and then 10 and sends an AI-free family straight to 10,
+and writes again on Session 10's Previous; Session 09's own block states it from the other
+end and **already carries the scope** -- *"On the First Taste path, do this one right
+after Session 05"* -- and H7's progress-tracker sub-bullet states it a fourth time, *"do
+before any AI tool; on the First Taste path, right after Session 05."* All four must
+agree; change one and change the others in the same pass.
 
 **Session 09 carries an italic line too, and it is not one of these five.** It sits
 **below that session's "For parents" strip, not under its navigation line** --
@@ -2855,7 +2911,7 @@ You are here: Phase 1 (Research Skills), First Taste step 4 of 13. Previous: [04
 
 *On the First Taste path, go straight to [10 Destination Snapshot](../phase_02_destination_big_picture/10_destination_snapshot.md). Sessions 06, 07, and 08 are not among the 13.*
 
-*If your family chose to use AI, do [09 AI as Helper, Not Boss](09_ai_as_helper_not_boss.md) right after this one, before Session 10 and before you use any AI tool.*
+*If your family chose to use AI, do [09 AI as Helper, Not Boss](09_ai_as_helper_not_boss.md) before you use any AI tool. On the First Taste path, do it right after this one, before Session 10.*
 ```
 
 ```markdown
@@ -3491,21 +3547,35 @@ items:
 
 1. **Gate check 1 — the equivalence read.** An adult verifies that the upgraded
    neutral-skeleton plus insert versions of the eight shared sessions render the same
-   content as the Batch 0 concrete pages — an equivalence read of built pages against
-   the Batch 0 baseline, not a child re-run. Those Batch 0 pages are unpiloted too, so
+   content as the Batch 0 concrete pages — an equivalence read of built pages against the
+   Batch 0 baseline, not a child re-run. Those Batch 0 pages are unpiloted too, so
    equivalence proves nothing was lost in the conversion; it does not show that either
-   version works with a child. Make it easy: for each of Sessions 01, 03, 04, 05, 10,
-   12, 13 and 14, list the diff against its pre-Batch-1 state **and name where the content
+   version works with a child. Make it easy: for each of Sessions 01, 03, 04, 05, 10, 12,
+   13 and 14, list the diff against its pre-Batch-1 state **and name where the content
    went**, so the reviewer can confirm **nothing was lost**. Only one of the eight sends
-   facts to an insert -- Session 10 to `10_snapshot_facts.md`. **Record a destination for
-   the other seven rather than leaving a blank**, because a blank reads as an omission and
-   a stated reason makes the pack self-checking: Sessions 05 and 12 each lose their hard
-   links into the pack and gain a generic pointer to a pack reference that already holds
-   the content -- `trusted_starting_sources.md` for Session 05 and
-   `seasons_weather_events.md` for Session 12 -- so nothing moved in either case; and
-   Sessions 01, 03, 04, 13 and 14 have no insert slot at all, so their diffs are
-   wording changes with no content move -- say exactly that for each, and a diff larger
-   than that is a signal to look again. **List one more migration alongside the eight:**
+   facts to an insert -- Session 10 to `10_snapshot_facts.md` -- but **two of them have to
+   be read against an insert**: A4 creates `12_seasons_and_events.md` for Session 12, and
+   the converted Materials line, the Steps intro and the Start Here box count all route
+   the child there. **Record a destination for each of the rest rather than leaving a
+   blank**, because a blank reads as an omission and a stated reason makes the pack
+   self-checking. **Sessions 05 and 12 each have two destinations, and neither is a case
+   where nothing moved.** Both lose their hard links into the pack and gain a generic
+   pointer to a pack reference that already holds the facts the body drops --
+   `trusted_starting_sources.md` for Session 05 and `seasons_weather_events.md` for
+   Session 12 -- and that is the first destination, not the whole accounting. Session 05
+   also sends two definitions **out of the framework layer**: the Optional Extension's
+   **lateral reading** and **primary vs. secondary** explanations go to
+   `framework/docs/source_trustworthiness.md` (F5), which becomes their canonical home,
+   and only the two bullet labels and a one-clause reminder stay on the page. Session 12's
+   second destination is the insert named above, which carries the seasons named with one
+   short line each. **Read F5 against Session 05 and the insert against Session 12.**
+   Naming only the pack reference for either one is how a reader certifies Check 1 with
+   content unaccounted for -- the reference already held its facts before Batch 1 touched
+   anything, so a comparison against it alone can come back clean while the two longest
+   passages this conversion removes have been read by nobody. And Sessions 01, 03, 04, 13
+   and 14 have no insert slot at all, so their diffs are wording changes with no content
+   move -- say exactly that for each, and a diff larger than that is a signal to look
+   again. **List one more migration alongside the eight:**
    `framework/student_guide/travel_glossary.md`'s two deleted sections (H9) against
    `destinations/japan/session_inserts/kid_glossary.md` (A5). It is fourteen entries
    leaving a child-facing page, it is the largest block of content this batch moves, and
@@ -3516,12 +3586,12 @@ items:
    the journey is long -- and neither is true of every destination. **No insert received
    it, and that is the right outcome rather than a gap:** how long a journey takes depends
    on where the family starts as much as on where they are going, so the fact belongs in
-   neither layer and the grown-up supplies it at the point of use.
-   **An automated equivalence read stands in for this check, and you perform it.** It
-   compares two texts, you authored both sides, and the pre-Batch-1 text of every file
-   named above is in the repository's history. So for each of the nine migrations --
-   the eight shared sessions and the glossary move -- compare the pre-Batch-1 text against
-   the built page plus whatever insert or reference file received the content, and record
+   neither layer and the grown-up supplies it at the point of use. **An automated
+   equivalence read stands in for this check, and you perform it.** It compares two texts,
+   you authored both sides, and the pre-Batch-1 text of every file named above is in the
+   repository's history. So for each of the nine migrations -- the eight shared sessions
+   and the glossary move -- compare the pre-Batch-1 text against the built page plus
+   **every** insert, reference file or framework doc that received the content, and record
    the outcome: accounted for in full, or the specific line you could not place. **Report
    that as Check 1, run, with its result** -- not as background material for somebody
    else's read. You wrote both sides, so an adult may still choose to read it themselves;
