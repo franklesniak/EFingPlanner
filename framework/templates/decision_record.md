@@ -2,7 +2,7 @@
 
 # Decision Record
 
-Use one Decision Record for each big decision. Together, these records make your **decision log** -- the story of what your family decided and why. Each of the six checkpoint decisions gets a record here too, so nothing important is decided and then forgotten.
+Use one Decision Record for each big choice. Keep them all in one place. Together they make your **decision log**. That log is the story of what your family chose, and why. Each of the six checkpoint decisions gets a record here too. That way, nothing big gets decided and then forgotten.
 
 | Prompt | Your answer |
 | --- | --- |
@@ -18,4 +18,4 @@ Use one Decision Record for each big decision. Together, these records make your
 | Does a grown-up need to decide or verify anything? | |
 | Final family decision | |
 
-Tip: your first decision record is your season recommendation at Checkpoint 1. Keep them in order so you can see how the plan grew.
+Tip: your first record is the season you recommend at Checkpoint 1. Keep the records in order. Then you can see how the plan grew.
