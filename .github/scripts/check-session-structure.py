@@ -155,7 +155,7 @@ from __future__ import annotations
 import argparse
 import re
 from collections.abc import Sequence
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
@@ -358,6 +358,75 @@ AUTOLINK_PATTERN = re.compile(
     """,
     re.VERBOSE,
 )
+
+#: The three raw HTML forms whose content is characters rather than inline
+#: content, each as the pattern that opens it and the string that closes it. A
+#: processing instruction runs to ``?>``, a declaration to the first ``>``, and
+#: a CDATA section to ``]]>``; CommonMark forbids each closing string inside
+#: its own form, so the first one found is the one that closes it. An open tag,
+#: a closing tag and a comment are the other three forms and are matched
+#: separately. Each of these crosses a soft line break, so the scan looks on
+#: past the end of the line for the closer exactly as it does for a comment.
+#: Kept identical to the constant in the sibling hook.
+#: <https://spec.commonmark.org/0.31.2/#raw-html>
+RAW_HTML_RUN_PATTERNS = (
+    (re.compile(r"<\?"), "?>"),
+    (re.compile(r"<!\[CDATA\["), "]]>"),
+    (re.compile(r"<![A-Za-z]"), ">"),
+)
+#: The raw HTML runs whose content is not markup. What sits inside one is
+#: characters the page shows as they stand or drops altogether, so a
+#: ``<!-- ... -->`` written there is displayed text rather than a comment and
+#: declares nothing.
+#:
+#: Two families, and each is a rule from a different place. The element names
+#: are HTML's raw text and escapable raw text content models, measured against
+#: Python's ``html.parser``, which reports the run as data for every name here
+#: and as a comment inside ``pre`` and ``div``; ``noscript`` is left out
+#: because whether its content is raw text depends on whether scripting is
+#: enabled. The other three are CommonMark's own raw HTML forms -- a
+#: processing instruction, a CDATA section and a declaration -- which the
+#: renderer passes through untouched and an HTML parser then reads as one
+#: token each.
+#:
+#: Each opener is anchored at the start of the line, because these are the
+#: *block* forms: HTML block conditions 1, 3, 4 and 5 all begin a line. A run
+#: that opens part way along a line of prose is inline raw HTML and is a
+#: question for the inline scan.
+#:
+#: An open comment is tracked beside them, and is the one run here whose
+#: content *is* markup: a marker inside a comment is the comment it looks
+#: like. It is in the list because a raw HTML block may not start inside
+#: another one, so a ``<script>`` line written inside a comment opens no run
+#: -- which is the rule ``html_block_state`` states for the conditions it
+#: tracks.
+#: <https://html.spec.whatwg.org/multipage/parsing.html#rawtext-state>
+#: <https://spec.commonmark.org/0.31.2/#html-blocks>
+COMMENT_RUN = "comment"
+RAW_TEXT_ELEMENT_NAMES = (
+    "script",
+    "style",
+    "textarea",
+    "title",
+    "xmp",
+    "iframe",
+    "noembed",
+    "noframes",
+)
+RAW_TEXT_RUNS = tuple(
+    (
+        name,
+        re.compile(rf"^ {{0,3}}<{name}(?=[ \t/>]|$)", re.IGNORECASE),
+        re.compile(rf"</{name}(?=[ \t/>]|$)", re.IGNORECASE),
+    )
+    for name in RAW_TEXT_ELEMENT_NAMES
+) + (
+    ("processing instruction", re.compile(r"^ {0,3}<\?"), re.compile(r"\?>")),
+    ("CDATA section", re.compile(r"^ {0,3}<!\[CDATA\["), re.compile(r"\]\]>")),
+    ("declaration", re.compile(r"^ {0,3}<![A-Za-z]"), re.compile(r">")),
+    (COMMENT_RUN, re.compile(r"^ {0,3}<!--"), re.compile(r"-->")),
+)
+RAW_TEXT_CLOSERS = {key: closer for key, _, closer in RAW_TEXT_RUNS}
 
 #: A list marker with nothing after it. It prints as a bullet and no words.
 BARE_LIST_MARKER_PATTERN = re.compile(r"^[ \t]*(?:[-*+]|\d{1,9}[.)])[ \t]*$")
@@ -569,10 +638,19 @@ CONTAINER_KIND_BLOCK_QUOTE = "blockquote"
 
 @dataclass(frozen=True)
 class Container:
-    """A peelable Markdown container prefix on a line."""
+    """A peelable Markdown container prefix on a line.
+
+    ``ordered_start`` is an ordered list item's start number, and ``None`` for
+    a bullet list item and for a blockquote. It is kept out of the comparison
+    because a containment path is a path: two items of one list are the same
+    container at the same depth, and a path comparison that read the start
+    number would call every sibling item a different container and cut every
+    list in half.
+    """
 
     kind: str
     indent: int = 0
+    ordered_start: int | None = field(default=None, compare=False)
 
 
 @dataclass(frozen=True)
@@ -816,6 +894,20 @@ def list_content_indent(match: re.Match[str]) -> int:
     return marker_end_column + content_padding
 
 
+def ordered_list_start(match: re.Match[str]) -> int | None:
+    """Return an ordered list item's start number, or ``None`` for a bullet.
+
+    A list may interrupt a paragraph only when an ordered one starts at 1, so
+    the number has to travel on the container the marker opens:
+    ``starts_a_block`` is handed the line's interior, past the marker, and
+    cannot read it back off the line. Kept identical to the helper in the
+    sibling hooks.
+    <https://spec.commonmark.org/0.31.2/#list-items>
+    """
+    marker = match.group("marker")
+    return None if marker[0] in "-*+" else int(marker[:-1])
+
+
 def normalize_for_fence_opening(line: str, list_contexts: list[ListContext]) -> FenceLine:
     """Return a line normalized to its current Markdown container content column."""
     prune_inactive_list_contexts(line, list_contexts)
@@ -843,7 +935,13 @@ def normalize_for_fence_opening(line: str, list_contexts: list[ListContext]) -> 
             break
 
         content_indent_rel = list_content_indent(list_match)
-        extras.append(Container(kind=CONTAINER_KIND_LIST, indent=content_indent_rel))
+        extras.append(
+            Container(
+                kind=CONTAINER_KIND_LIST,
+                indent=content_indent_rel,
+                ordered_start=ordered_list_start(list_match),
+            )
+        )
         relative_line = (
             relative_line[content_indent_rel:] if len(relative_line) >= content_indent_rel else ""
         )
@@ -877,27 +975,54 @@ def container_content(line: str, list_contexts: list[ListContext]) -> str:
     return container_line(line, list_contexts).content
 
 
+def is_link_reference_definition(content: str) -> bool:
+    """Return whether a whole link reference definition fits on this line.
+
+    A definition is a leaf block and not a paragraph: it renders nothing at
+    all and leaves no paragraph open below it, which is what lets HTML block
+    condition 7 open on the line under it. One may not interrupt a paragraph
+    either, so the caller asks this only with nothing open.
+
+    Only the one-line form is read. CommonMark lets the destination sit on the
+    line below the label, and this answers ``False`` there -- the liberal side,
+    where a paragraph stays open and condition 7 stays shut, which is what the
+    whole fallback did before. Kept identical to the helper in the sibling
+    hooks.
+    <https://spec.commonmark.org/0.31.2/#link-reference-definitions>
+    """
+    match = LINK_REFERENCE_DEFINITION_PATTERN.match(content)
+    return match is not None and is_link_label(match.group("label"))
+
+
 def opens_a_paragraph(content: str, paragraph_open: bool) -> bool:
     """Return whether a line of document text leaves a paragraph open below it.
 
     HTML block condition 7 is the one condition that may not interrupt a
     paragraph, so classifying it needs to know whether one is open. The test is
     deliberately liberal: anything nonblank that is not a heading, a thematic
-    break or a Setext underline leaves a paragraph open. Being wrong in that
-    direction only ever *stops* condition 7 from opening, which is the
-    behaviour this scan had before it classified condition 7 at all. Lines
-    inside a fence or an HTML block never reach here; their caller closes the
-    paragraph outright. Kept identical to the helper in the sibling hook.
+    break, a Setext underline or a link reference definition leaves a paragraph
+    open. Being wrong in that direction only ever *stops* condition 7 from
+    opening, which is the behaviour this scan had before it classified
+    condition 7 at all. Lines inside a fence, an HTML block or a raw-text
+    element never reach here; their caller closes the paragraph outright. Kept
+    identical to the helper in the sibling hooks.
 
     The underline needs the state coming in, which is the one thing the line
     alone does not say. ``=====`` under a paragraph is that paragraph's
     heading underline and closes it; ``=====`` with nothing open is an
     ordinary paragraph of its own, and leaves one open below it.
 
+
+    A link reference definition is the one other leaf block this has to name.
+    It is not a paragraph, so a bare tag on the line below it opens the HTML
+    block condition 7 that may not interrupt one -- and the liberal fallback
+    was holding that block shut and counting a heading the page never shows.
+
     ``starts_a_block`` asks the other half of the question -- whether a line
     closes the paragraph *above* it -- and the Setext underline is where the
     two answers part: it closes the one above and opens none below.
     <https://spec.commonmark.org/0.31.2/#setext-headings>
+    <https://spec.commonmark.org/0.31.2/#link-reference-definitions>
     """
     if not content.strip(ASCII_HORIZONTAL_WHITESPACE):
         return False
@@ -906,6 +1031,8 @@ def opens_a_paragraph(content: str, paragraph_open: bool) -> bool:
     if THEMATIC_BREAK_LINE_PATTERN.match(content) is not None:
         return False
     if paragraph_open and SETEXT_UNDERLINE_PATTERN.match(content) is not None:
+        return False
+    if not paragraph_open and is_link_reference_definition(content):
         return False
     return True
 
@@ -960,11 +1087,28 @@ def html_block_state(
     return open_block, line_block
 
 
+def container_interrupts_paragraph(container: Container) -> bool:
+    """Return whether a container opening on a line may interrupt a paragraph.
+
+    A blockquote always may, and so does a bullet list. An ordered list may
+    only when it starts at 1: CommonMark draws that line so that a sentence
+    hard-wrapped before ``14.`` keeps the number in the sentence instead of
+    turning the rest of the document into a list. A list that may not
+    interrupt opens nothing at all, and its marker is the paragraph's own
+    text. Kept identical to the helper in the sibling hooks.
+    <https://spec.commonmark.org/0.31.2/#list-items>
+    """
+    if container.kind != CONTAINER_KIND_LIST:
+        return True
+    return container.ordered_start is None or container.ordered_start == 1
+
+
 def starts_a_block(
     content: str,
     containment_path: tuple[Container, ...],
     opened: tuple[Container, ...],
     previous_path: tuple[Container, ...],
+    paragraph_open: bool,
 ) -> bool:
     """Return whether a line begins a block rather than continuing the one above.
 
@@ -980,15 +1124,45 @@ def starts_a_block(
     ``check-readability.py`` asks this question under this name, of the same
     six shapes, so the two hooks cannot disagree about where a paragraph ends.
     It is not the question ``opens_a_paragraph`` asks above.
+
+    Two of those shapes need the paragraph state, because CommonMark makes both
+    of them conditional on one being open. An ordered list may interrupt a
+    paragraph only when it starts at 1, so ``2.`` under a sentence is that
+    sentence's own text and opens nothing; the rule is the *list's* and not the
+    item's, so a ``3.`` under a list already open is its next item and does
+    start a block. And a Setext underline may never be a lazy continuation
+    line: ``===`` outdented from a quoted or listed paragraph has no root
+    paragraph to underline and stays inside the one above it.
     <https://spec.commonmark.org/0.31.2/#paragraphs>
+    <https://spec.commonmark.org/0.31.2/#list-items>
     """
+    lazy_continuation = (
+        paragraph_open
+        and len(containment_path) < len(previous_path)
+        and containment_path == previous_path[: len(containment_path)]
+    )
+    if paragraph_open:
+        for offset, container in enumerate(opened):
+            if container.kind != CONTAINER_KIND_LIST:
+                continue
+            if container_interrupts_paragraph(container):
+                break
+            depth = len(containment_path) - len(opened) + offset
+            if (
+                len(previous_path) > depth
+                and previous_path[depth].kind == CONTAINER_KIND_LIST
+            ):
+                # The list is already open above this line, so this is its
+                # next item rather than a new list interrupting anything.
+                break
+            return False
     if not content.strip(ASCII_HORIZONTAL_WHITESPACE):
         return True
     if ATX_HEADING_LINE_PATTERN.match(content) is not None:
         return True
     if THEMATIC_BREAK_LINE_PATTERN.match(content) is not None:
         return True
-    if SETEXT_UNDERLINE_PATTERN.match(content) is not None:
+    if SETEXT_UNDERLINE_PATTERN.match(content) is not None and not lazy_continuation:
         return True
     if any(container.kind == CONTAINER_KIND_LIST for container in opened):
         return True
@@ -1279,6 +1453,71 @@ def following_backtick_run(contents: Sequence[str], row: int, length: int) -> tu
     return -1, -1
 
 
+
+
+def following_raw_html_end(contents: Sequence[str], row: int, index: int) -> tuple[int, int]:
+    """Return where the raw HTML run opened at ``index`` closes, or ``(-1, -1)``.
+
+    A processing instruction, a declaration and a CDATA section are raw HTML:
+    what sits between their delimiters is characters the renderer passes
+    through, so a backtick in one opens no code span and a ``<!--`` in one
+    begins no comment. Each crosses a soft line break the way a comment does
+    and ends where the run does; one that never closes is not raw HTML at all,
+    and the caller is then right to read its characters as text. Kept in step
+    with the helper in ``.github/scripts/check-readability.py``.
+    <https://spec.commonmark.org/0.31.2/#raw-html>
+    """
+    line = contents[row]
+    for opener, closer in RAW_HTML_RUN_PATTERNS:
+        match = opener.match(line, index)
+        if match is None:
+            continue
+        found = line.find(closer, match.end())
+        if found != -1:
+            return row, found + len(closer)
+        for next_row in range(row + 1, len(contents)):
+            found = contents[next_row].find(closer)
+            if found != -1:
+                return next_row, found + len(closer)
+        return -1, -1
+    return -1, -1
+
+
+def raw_text_run_state(content: str, open_run: str | None) -> tuple[str | None, bool]:
+    """Return the raw HTML run open below a line, and whether the line is in one.
+
+    Two values because they are two questions, the pair ``html_block_state``
+    asks: what the next line inherits, and whether this line's characters are
+    text the page shows rather than markup. A line carrying the closing
+    delimiter is still the run's last line.
+
+    The state moves a whole line at a time, which is where it is less exact
+    than the parsers it follows: a run that opens and closes inside one line
+    leaves the state untouched, and the characters after an opening delimiter
+    on its own line are not counted until the line below it. Both residuals read
+    a displayed comment as a comment, which is the direction this scan ran in
+    before it asked the question at all.
+
+    An open comment is carried in the same state and is the one run whose
+    content is markup, so a comment line answers ``False`` to the second
+    question: a marker inside a comment is the comment it looks like. It is
+    tracked only so that a ``<script>`` line written inside a comment opens no
+    run of its own. Kept identical to the helper in the sibling hooks.
+    <https://html.spec.whatwg.org/multipage/parsing.html#rawtext-state>
+    """
+    if open_run is not None:
+        closed = RAW_TEXT_CLOSERS[open_run].search(content) is not None
+        return (None if closed else open_run), open_run != COMMENT_RUN
+    for key, opener, closer in RAW_TEXT_RUNS:
+        match = opener.match(content)
+        if match is None:
+            continue
+        if closer.search(content, match.end()) is not None:
+            return None, False
+        return key, False
+    return None, False
+
+
 def scan_inline_run(
     contents: Sequence[str],
     is_in_comment: bool,
@@ -1406,6 +1645,14 @@ def scan_inline_run(
                 spans[row].append("<!--")
                 index += len("<!--")
                 is_in_comment = True
+                continue
+            # A processing instruction, a declaration and a CDATA section
+            # are raw HTML whose content is characters, and none of the three
+            # can also be an autolink or a tag, so they are asked about first
+            # and cost nothing when they do not match.
+            raw_row, raw_index = following_raw_html_end(contents, row, index)
+            if raw_row != -1:
+                row, index = raw_row, raw_index
                 continue
             # An autolink is asked about before a tag, because a tag name may
             # not hold a colon and a URI autolink must, so only one of the two
@@ -1700,6 +1947,7 @@ def scan_document(text: str) -> DocumentScan:
     html_block: ActiveHtmlBlock | None = None
     paragraph_open = False
     previous_path: tuple[Container, ...] = ()
+    raw_text: str | None = None
     fence_start = 0
     buffer: list[str] = []
 
@@ -1762,7 +2010,9 @@ def scan_document(text: str) -> DocumentScan:
             block_line.containment_path,
             block_line.opened,
             previous_path,
+            paragraph_open,
         )
+        raw_text, in_raw_text = raw_text_run_state(block_content, raw_text)
         html_block, line_html_block = html_block_state(
             block_content,
             block_line.containment_path,
@@ -1809,7 +2059,12 @@ def scan_document(text: str) -> DocumentScan:
         # scan below see a whole paragraph at a time; recording where each
         # block starts is what keeps that paragraph to one block, so a code
         # span cannot close outside the one that holds its opening run.
-        if line_html_block is not None:
+        if in_raw_text:
+            # The line is a raw-text element's content. The page displays
+            # those characters, so a comment-shaped run on it is text and
+            # exempts nothing.
+            marker_sources.append((MARKER_SOURCE_BLANK, "", True))
+        elif line_html_block is not None:
             marker_sources.append((MARKER_SOURCE_RAW_HTML, block_content, block_starts))
         else:
             marker_sources.append((MARKER_SOURCE_TEXT, block_content, block_starts))

@@ -3012,3 +3012,247 @@ def test_a_marker_in_a_real_link_target_still_declares_nothing() -> None:
     text = f'<span title="x">[text](url "{OFFLINE_MARKER}")\n'
     scan = structure.scan_document(text)
     assert structure.NO_SOURCE_CHECK_PATTERN.search(scan.marker_text) is None
+
+
+# --- round 8: raw HTML runs, list interruption, lazy Setext, leaf blocks
+# --- (4004076349, 4004076354, 4004076360, 4004076363, 4004076367) -----------
+
+
+def _marker_found(document: str) -> bool:
+    """Return whether the scan reads a Source Check exemption in ``document``."""
+    scan = structure.scan_document(document)
+    return structure.NO_SOURCE_CHECK_PATTERN.search(scan.marker_text) is not None
+
+
+def _goal_found(document: str) -> bool:
+    """Return whether the scan leaves a ``## Goal`` heading to be counted."""
+    scan = structure.scan_document(document)
+    return any(line.strip().lower().startswith("## goal") for line in scan.content_lines)
+
+
+@pytest.mark.parametrize(
+    ("label", "run"),
+    [
+        ("a processing instruction", "<?foo ` ?>"),
+        ("a declaration", "<!DOCTYPE ` html>"),
+        ("a CDATA section", "<![CDATA[ ` ]]>"),
+    ],
+)
+def test_a_raw_html_run_hides_no_marker(label: str, run: str) -> None:
+    """A processing instruction, a declaration and a CDATA section are raw HTML.
+
+    CommonMark takes whichever of a code span and a raw HTML form opens first,
+    so a backtick inside one of these three is data and opens no span. The
+    inline walk knew a comment, an autolink and a tag and not these, so it
+    paired that backtick with the next real run and swallowed the marker
+    between them -- and a session that had declared its exemption was failed
+    for not declaring one. Measured against markdown-it 14.3.0. Kept in step
+    with the case of the same name in ``tests/test_check_readability.py``.
+    <https://spec.commonmark.org/0.31.2/#raw-html>
+    """
+    assert _marker_found(f"Text {run} more {OFFLINE_MARKER} `end`\n"), label
+
+
+@pytest.mark.parametrize(
+    ("label", "document"),
+    [
+        ("an opener that never closes", f"Text <?foo ` more {OFFLINE_MARKER} `end`\n"),
+        ("a lone angle bracket", f"Choose < 5 days ` and more {OFFLINE_MARKER} `end`\n"),
+    ],
+)
+def test_an_unclosed_raw_html_run_is_still_ordinary_text(
+    label: str, document: str
+) -> None:
+    """The positive control: without the closer there is no raw HTML at all.
+
+    The backticks then pair across the marker and the session declares nothing,
+    which is what markdown-it 14.3.0 does with both of these.
+    """
+    assert not _marker_found(document), label
+
+
+def test_an_ordered_list_above_one_does_not_interrupt_a_paragraph() -> None:
+    """A list may interrupt a paragraph only when an ordered one starts at 1.
+
+    So ``2.`` under an open sentence is that sentence's own text, the paragraph
+    runs on, and the code span opened above it closes past the marker. The scan
+    split the paragraph at the marker instead and granted an exemption the page
+    never shows. Measured against markdown-it 14.3.0.
+    <https://spec.commonmark.org/0.31.2/#list-items>
+    """
+    assert not _marker_found(f"Use `open\n2. continuation {OFFLINE_MARKER} `close`\n")
+
+
+@pytest.mark.parametrize(
+    ("label", "document"),
+    [
+        (
+            "an ordered list starting at 1",
+            f"Use `open\n1. continuation {OFFLINE_MARKER} `close`\n",
+        ),
+        ("a bullet list", f"Use `open\n- continuation {OFFLINE_MARKER} `close`\n"),
+        (
+            "a list already open above the line",
+            f"2. Use `open\n3. continuation {OFFLINE_MARKER} `close`\n",
+        ),
+        (
+            "nothing open above the line",
+            f"# A heading\n2. continuation {OFFLINE_MARKER} `close`\n",
+        ),
+    ],
+)
+def test_a_list_that_may_interrupt_still_starts_a_block(label: str, document: str) -> None:
+    """The positive controls the rule has to leave standing.
+
+    The restriction is the *list's* and not the item's: a ``3.`` under a list
+    already open is that list's next item and does start a block, and the
+    marker really is a comment in all four.
+    """
+    assert _marker_found(document), label
+
+
+@pytest.mark.parametrize(
+    ("label", "opener"),
+    [
+        ("out of a block quote", "> Use `open"),
+        ("out of a list item", "- Use `open"),
+    ],
+)
+def test_a_lazy_setext_underline_stays_in_its_paragraph(label: str, opener: str) -> None:
+    """A Setext underline may never be a lazy continuation line.
+
+    An outdented ``===`` under a quoted or listed paragraph has no root
+    paragraph to underline, so it is that paragraph's own text and the code
+    span opened above it closes past the marker. Ending the paragraph there
+    exposed the marker and exempted a session the page never exempts. Measured
+    against markdown-it 14.3.0.
+    <https://spec.commonmark.org/0.31.2/#setext-headings>
+    """
+    assert not _marker_found(f"{opener}\n===\nmore {OFFLINE_MARKER} `close`\n"), label
+
+
+@pytest.mark.parametrize(
+    ("label", "document"),
+    [
+        (
+            "a Setext underline at the root",
+            f"Use `open\n===\nmore {OFFLINE_MARKER} `close`\n",
+        ),
+        (
+            "a Setext underline inside the quote",
+            f"> Use `open\n> ===\n> more {OFFLINE_MARKER} `close`\n",
+        ),
+        (
+            "a lazy line with no paragraph to underline",
+            f"> # A heading `open\n===\nmore {OFFLINE_MARKER} `close`\n",
+        ),
+        (
+            "a lazy thematic break, which may interrupt",
+            f"> Use `open\n---\nmore {OFFLINE_MARKER} `close`\n",
+        ),
+    ],
+)
+def test_a_setext_underline_that_is_not_lazy_still_ends_the_paragraph(
+    label: str, document: str
+) -> None:
+    """The positive controls. Only the lazy line changes."""
+    assert _marker_found(document), label
+
+
+@pytest.mark.parametrize(
+    ("label", "document"),
+    [
+        ("a textarea", f"<textarea>\n{OFFLINE_MARKER}\n</textarea>\n"),
+        ("a script", f"<script>\n{OFFLINE_MARKER}\n</script>\n"),
+        ("a style", f"<style>\n{OFFLINE_MARKER}\n</style>\n"),
+        (
+            "a textarea inside a div",
+            f"<div>\n<textarea>\n{OFFLINE_MARKER}\n</textarea>\n</div>\n",
+        ),
+        ("a processing instruction block", f"<?php\n{OFFLINE_MARKER}\n?>\n"),
+        ("a CDATA block", f"<![CDATA[\n{OFFLINE_MARKER}\n]]>\n"),
+    ],
+)
+def test_a_raw_text_run_holds_no_marker(label: str, document: str) -> None:
+    """Comment-shaped text inside a raw HTML run is not a comment.
+
+    CommonMark passes a raw HTML block through untouched, and what its content
+    *is* is then HTML's question. Inside ``script``, ``style`` and ``textarea``
+    the content is raw text, and a processing instruction and a CDATA section
+    are one token each, so none of these exempts a session from the Source
+    Check. Python's ``html.parser`` reports the run as data for every document
+    here. Kept in step with the case of the same name in
+    ``tests/test_check_readability.py``.
+    <https://html.spec.whatwg.org/multipage/parsing.html#rawtext-state>
+    """
+    assert not _marker_found(document), label
+
+
+@pytest.mark.parametrize(
+    ("label", "document"),
+    [
+        ("a div, whose content is markup", f"<div>\n{OFFLINE_MARKER}\n</div>\n"),
+        ("a pre, whose content is markup", f"<pre>\n{OFFLINE_MARKER}\n</pre>\n"),
+        (
+            "the line after the element closes",
+            f"<textarea>\nx\n</textarea>\n{OFFLINE_MARKER}\n",
+        ),
+        (
+            "a script name written inside a comment",
+            f"<!-- a note\n<script>\n-->\n\n{OFFLINE_MARKER}\n",
+        ),
+    ],
+)
+def test_a_comment_outside_a_raw_text_run_still_exempts(label: str, document: str) -> None:
+    """The positive controls, and the two that bound the new state.
+
+    ``pre`` and ``div`` hold markup, which ``html.parser`` confirms by
+    reporting a comment for both. The run ends at its closing tag, and a
+    ``<script>`` written inside a comment opens no run at all -- a raw HTML
+    block may not start inside another one.
+    """
+    assert _marker_found(document), label
+
+
+@pytest.mark.parametrize(
+    ("label", "definition"),
+    [
+        ("a bare destination", "[x]: /url"),
+        ("a destination and a title", '[x]: /url "a title"'),
+        ("two definitions", "[x]: /url\n[y]: /url2"),
+    ],
+)
+def test_a_link_reference_definition_opens_no_paragraph(
+    label: str, definition: str
+) -> None:
+    """A definition is a leaf block, so condition 7 may open under it.
+
+    ``<custom>`` then opens a type-seven HTML block that runs to the next blank
+    line, and the ``## Goal`` inside it is raw HTML rather than a heading. The
+    liberal fallback called the definition a paragraph, held the block shut,
+    and counted a heading the page never shows -- so a session with no visible
+    Goal passed. Measured against markdown-it 14.3.0.
+    <https://spec.commonmark.org/0.31.2/#link-reference-definitions>
+    """
+    assert not _goal_found(f"{definition}\n<custom>\n## Goal\n"), label
+
+
+@pytest.mark.parametrize(
+    ("label", "document"),
+    [
+        ("a paragraph above the definition", "Words above.\n[x]: /url\n<custom>\n## Goal\n"),
+        ("a paragraph above the tag", "Words above.\n<custom>\n## Goal\n"),
+        ("a label with no destination", "[x]:\n<custom>\n## Goal\n"),
+    ],
+)
+def test_a_line_that_is_not_a_definition_still_opens_a_paragraph(
+    label: str, document: str
+) -> None:
+    """The positive controls. A definition may not interrupt a paragraph either.
+
+    With one open above it, ``[x]: /url`` is paragraph text and the paragraph
+    holds condition 7 shut, so the heading is a heading. A label with no
+    destination is no definition at all. Without these the rule above could be
+    written as "a bracket and a colon are never a paragraph" and still pass.
+    """
+    assert _goal_found(document), label

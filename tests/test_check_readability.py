@@ -3462,3 +3462,213 @@ def test_a_marker_in_a_real_link_target_still_declares_nothing() -> None:
     the marker inside it is not a comment the page shows.
     """
     assert not readability.has_adult_marker(f'<span title="x">[text](url "{ADULT_MARKER}")\n')
+
+
+# --- round 8: raw HTML runs, list interruption, lazy Setext (4004076349,
+# --- 4004076354, 4004076360, 4004076363) ------------------------------------
+
+
+@pytest.mark.parametrize(
+    ("label", "run"),
+    [
+        ("a processing instruction", "<?foo ` ?>"),
+        ("a declaration", "<!DOCTYPE ` html>"),
+        ("a CDATA section", "<![CDATA[ ` ]]>"),
+    ],
+)
+def test_a_raw_html_run_hides_no_marker(label: str, run: str) -> None:
+    """A processing instruction, a declaration and a CDATA section are raw HTML.
+
+    CommonMark takes whichever of a code span and a raw HTML form opens first,
+    so a backtick inside one of these three is data and opens no span. The
+    inline walk knew a comment, an autolink and a tag and not these, so it
+    paired that backtick with the next real run, swallowed the marker between
+    them, and scored an adult-facing document against the child target.
+    Measured against markdown-it 14.3.0. Kept in step with the case of the same
+    name in ``tests/test_check_session_structure.py``.
+    https://spec.commonmark.org/0.31.2/#raw-html
+    """
+    assert readability.has_adult_marker(f"Text {run} more {ADULT_MARKER} `end`\n"), label
+
+
+def test_a_raw_html_run_crossing_a_soft_break_hides_no_marker() -> None:
+    """These runs cross a soft line break, exactly as a comment does."""
+    document = f"Text <?foo `\nbar ?> more {ADULT_MARKER} `end`\n"
+    assert readability.has_adult_marker(document)
+
+
+@pytest.mark.parametrize(
+    ("label", "document"),
+    [
+        ("an opener that never closes", f"Text <?foo ` more {ADULT_MARKER} `end`\n"),
+        ("a lone angle bracket", f"Choose < 5 days ` and more {ADULT_MARKER} `end`\n"),
+    ],
+)
+def test_an_unclosed_raw_html_run_is_still_ordinary_text(
+    label: str, document: str
+) -> None:
+    """The positive control: without the closer there is no raw HTML at all.
+
+    The backticks then pair across the marker and the document declares
+    nothing, which is what markdown-it 14.3.0 does with both of these. Without
+    it the test above would pass on a scan that skipped every ``<``.
+    """
+    assert not readability.has_adult_marker(document), label
+
+
+def test_an_ordered_list_above_one_does_not_interrupt_a_paragraph() -> None:
+    """A list may interrupt a paragraph only when an ordered one starts at 1.
+
+    So ``2.`` under an open sentence is that sentence's own text, the paragraph
+    runs on, and the code span opened above it closes past the marker. The scan
+    split the paragraph at the marker instead, read the marker as a real
+    declaration, and took a child-facing document out of the reading gate.
+    Measured against markdown-it 14.3.0.
+    https://spec.commonmark.org/0.31.2/#list-items
+    """
+    assert not readability.has_adult_marker(
+        f"Use `open\n2. continuation {ADULT_MARKER} `close`\n"
+    )
+
+
+@pytest.mark.parametrize(
+    ("label", "document"),
+    [
+        ("an ordered list starting at 1", f"Use `open\n1. continuation {ADULT_MARKER} `close`\n"),
+        ("a bullet list", f"Use `open\n- continuation {ADULT_MARKER} `close`\n"),
+        (
+            "a list already open above the line",
+            f"2. Use `open\n3. continuation {ADULT_MARKER} `close`\n",
+        ),
+        ("nothing open above the line", f"# A heading\n2. continuation {ADULT_MARKER} `close`\n"),
+    ],
+)
+def test_a_list_that_may_interrupt_still_starts_a_block(label: str, document: str) -> None:
+    """The positive controls the rule has to leave standing.
+
+    The restriction is the *list's* and not the item's: a ``3.`` under a list
+    already open is that list's next item and does start a block, and a marker
+    is a marker in all four. Without these the rule above could be written as
+    "an ordered list never starts a block" and still pass.
+    """
+    assert readability.has_adult_marker(document), label
+
+
+@pytest.mark.parametrize(
+    ("label", "opener"),
+    [
+        ("out of a block quote", "> Use `open"),
+        ("out of a list item", "- Use `open"),
+    ],
+)
+def test_a_lazy_setext_underline_stays_in_its_paragraph(label: str, opener: str) -> None:
+    """A Setext underline may never be a lazy continuation line.
+
+    An outdented ``===`` under a quoted or listed paragraph has no root
+    paragraph to underline, so it is that paragraph's own text and the code
+    span opened above it closes past the marker. Ending the paragraph there
+    exposed the marker and removed a child-facing document from the gate.
+    Measured against markdown-it 14.3.0.
+    https://spec.commonmark.org/0.31.2/#setext-headings
+    """
+    assert not readability.has_adult_marker(
+        f"{opener}\n===\nmore {ADULT_MARKER} `close`\n"
+    ), label
+
+
+@pytest.mark.parametrize(
+    ("label", "document"),
+    [
+        ("a Setext underline at the root", f"Use `open\n===\nmore {ADULT_MARKER} `close`\n"),
+        (
+            "a Setext underline inside the quote",
+            f"> Use `open\n> ===\n> more {ADULT_MARKER} `close`\n",
+        ),
+        (
+            "a lazy line with no paragraph to underline",
+            f"> # A heading `open\n===\nmore {ADULT_MARKER} `close`\n",
+        ),
+        (
+            "a lazy thematic break, which may interrupt",
+            f"> Use `open\n---\nmore {ADULT_MARKER} `close`\n",
+        ),
+    ],
+)
+def test_a_setext_underline_that_is_not_lazy_still_ends_the_paragraph(
+    label: str, document: str
+) -> None:
+    """The positive controls. Only the lazy line changes.
+
+    An underline at the paragraph's own level still closes it, and so does one
+    written with the container prefix. A lazy line with nothing open above it
+    starts its own paragraph, and a thematic break interrupts whatever is open.
+    The marker is a real declaration in all four.
+    """
+    assert readability.has_adult_marker(document), label
+
+
+@pytest.mark.parametrize(
+    ("label", "document"),
+    [
+        ("a textarea", f"<textarea>\n{ADULT_MARKER}\n</textarea>\n"),
+        ("a script", f"<script>\n{ADULT_MARKER}\n</script>\n"),
+        ("a style", f"<style>\n{ADULT_MARKER}\n</style>\n"),
+        ("a textarea inside a div", f"<div>\n<textarea>\n{ADULT_MARKER}\n</textarea>\n</div>\n"),
+        ("a processing instruction block", f"<?php\n{ADULT_MARKER}\n?>\n"),
+        ("a CDATA block", f"<![CDATA[\n{ADULT_MARKER}\n]]>\n"),
+    ],
+)
+def test_a_raw_text_run_holds_no_marker(label: str, document: str) -> None:
+    """Comment-shaped text inside a raw HTML run is not a comment.
+
+    CommonMark passes a raw HTML block through untouched, and what its content
+    *is* is then HTML's question. Inside ``script``, ``style`` and ``textarea``
+    the content is raw text, and a processing instruction and a CDATA section
+    are one token each, so none of these declares anything. Python's
+    ``html.parser`` reports the run as data for every document here. Reading it
+    as a declaration took a child-facing document out of the reading gate.
+    https://html.spec.whatwg.org/multipage/parsing.html#rawtext-state
+    """
+    assert not readability.has_adult_marker(document), label
+
+
+@pytest.mark.parametrize(
+    ("label", "document"),
+    [
+        ("a div, whose content is markup", f"<div>\n{ADULT_MARKER}\n</div>\n"),
+        ("a pre, whose content is markup", f"<pre>\n{ADULT_MARKER}\n</pre>\n"),
+        ("the line after the element closes", f"<textarea>\nx\n</textarea>\n{ADULT_MARKER}\n"),
+        (
+            "a script name written inside a comment",
+            f"<!-- a note\n<script>\n-->\n\n{ADULT_MARKER}\n",
+        ),
+    ],
+)
+def test_a_comment_outside_a_raw_text_run_still_declares(
+    label: str, document: str
+) -> None:
+    """The positive controls, and the two that bound the new state.
+
+    ``pre`` and ``div`` hold markup, which ``html.parser`` confirms by
+    reporting a comment for both. The run ends at its closing tag, and a
+    ``<script>`` written inside a comment opens no run at all -- a raw HTML
+    block may not start inside another one.
+    """
+    assert readability.has_adult_marker(document), label
+
+
+def test_a_raw_text_run_is_not_prose() -> None:
+    """A stylesheet is not words a child reads.
+
+    Scoring one as a sentence lowers the reported grade of every document that
+    carries it, which is the direction that hides a hard page.
+    """
+    document = (
+        "<style>\n"
+        "The children pack a small bag today and walk to the station.\n"
+        "</style>\n\n"
+        "Then we will ride the train home again.\n"
+    )
+    prose = readability.extract_prose(document)
+    assert "Then we will ride the train home again." in prose
+    assert "pack a small bag" not in prose

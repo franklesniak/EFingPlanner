@@ -1100,3 +1100,93 @@ def test_a_list_item_holding_a_real_fence_is_still_a_fence() -> None:
     """
     text = f"Words above the list.\n- An exercise\n\n  {FENCE}\n  TBD tomorrow.\n  {FENCE}\n"
     assert _find(text) == []
+
+
+# --- round 8: list interruption, leaf blocks, raw text (4004076354,
+# --- 4004076363, 4004076367) ------------------------------------------------
+
+
+def test_a_link_reference_definition_lets_condition_seven_open() -> None:
+    """A definition is a leaf block, so no paragraph blocks the block below it.
+
+    ``<x-session>`` opens a type-seven HTML block, the backtick runs under it
+    are raw HTML rather than a fence, and the page prints the placeholder. The
+    liberal fallback called the definition a paragraph, held the block shut,
+    read the runs as a fence, and reported nothing at all.
+    <https://spec.commonmark.org/0.31.2/#link-reference-definitions>
+    """
+    text = f"[x]: /url\n<x-session>\n{FENCE}\nTBD tomorrow.\n{FENCE}\n"
+    assert [violation.matched_text for violation in _find(text)] == ["TBD"]
+
+
+@pytest.mark.parametrize(
+    ("label", "document"),
+    [
+        ("a paragraph above the tag", f"Words above.\n<x-session>\n{FENCE}\nTBD.\n{FENCE}\n"),
+        ("a label with no destination", f"[x]:\n<x-session>\n{FENCE}\nTBD.\n{FENCE}\n"),
+    ],
+)
+def test_a_paragraph_still_holds_condition_seven_shut(label: str, document: str) -> None:
+    """The positive controls. Condition 7 may not interrupt a paragraph.
+
+    With one open the backtick runs really are a fence and the placeholder
+    inside them is code, which is what markdown-it 14.3.0 shows. A label with
+    no destination on its own line is no definition at all.
+    """
+    assert _find(document) == [], label
+
+
+def test_an_ordered_list_above_one_opens_no_block() -> None:
+    """A list may interrupt a paragraph only when an ordered one starts at 1.
+
+    So ``2. <x-session>`` under an open sentence is that sentence's own text,
+    no type-seven block opens, and the backtick runs below it pair as a code
+    span the page prints as code. Round 7 recorded this shape as the one
+    condition-7 case still disagreeing; it agrees now.
+    <https://spec.commonmark.org/0.31.2/#list-items>
+    """
+    text = f"Words above the list.\n2. <x-session>\n   {FENCE}\n   TBD.\n   {FENCE}\n"
+    assert _find(text) == []
+
+
+def test_an_ordered_list_at_one_still_opens_the_block() -> None:
+    """The positive control. A list starting at 1 does interrupt.
+
+    The item closes the paragraph, condition 7 opens inside it, the backtick
+    runs are raw HTML, and the page prints the placeholder.
+    """
+    text = f"Words above the list.\n1. <x-session>\n   {FENCE}\n   TBD.\n   {FENCE}\n"
+    assert [violation.matched_text for violation in _find(text)] == ["TBD"]
+
+
+def test_a_comment_inside_a_raw_text_element_hides_nothing() -> None:
+    """Comment-shaped text inside a textarea is displayed text.
+
+    Python's ``html.parser`` reports it as data rather than as a comment, so
+    the page prints the placeholder and the hook has to report it. Stripping it
+    as a comment hid a placeholder the child can read.
+    https://html.spec.whatwg.org/multipage/parsing.html#rawtext-state
+    """
+    text = "<textarea>\n<!-- TBD tomorrow. -->\n</textarea>\n"
+    assert [violation.matched_text for violation in _find(text)] == ["TBD"]
+
+
+@pytest.mark.parametrize(
+    ("label", "document"),
+    [
+        ("a div, whose content is markup", "<div>\n<!-- TBD tomorrow. -->\n</div>\n"),
+        ("a pre, whose content is markup", "<pre>\n<!-- TBD tomorrow. -->\n</pre>\n"),
+        (
+            "a script name written inside a comment",
+            "<!-- a note\n<script>\n-->\n\nWords with no placeholder.\n",
+        ),
+    ],
+)
+def test_a_real_comment_still_hides_its_placeholder(label: str, document: str) -> None:
+    """The positive controls, and the one that bounds the new state.
+
+    ``pre`` and ``div`` hold markup, so the run really is a comment and the
+    placeholder inside it is not on the page. A ``<script>`` written inside a
+    comment opens no raw-text run, so the comment still ends at its ``-->``.
+    """
+    assert _find(document) == [], label
