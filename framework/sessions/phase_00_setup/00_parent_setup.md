@@ -1,4 +1,5 @@
 <!-- markdownlint-disable MD013 -->
+<!-- audience: adult -- Session 00 is adult-only setup; the child starts at Session 01, so this file is exempt from the child-facing reading-level check. -->
 
 # Session 00: Parent Setup
 
