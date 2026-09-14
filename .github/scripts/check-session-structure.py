@@ -240,10 +240,18 @@ LINK_REFERENCE_DEFINITION_PATTERN = re.compile(
     re.VERBOSE,
 )
 
-#: These three patterns, and the fence helpers below, are kept identical to
-#: ``.github/scripts/check-prohibited-placeholders.py``. A search for
-#: ``normalize_for_fence_opening`` finds every copy of the same CommonMark rule
-#: in this repository, so the copies cannot drift unnoticed.
+#: These three patterns, and the fence helpers below, are kept deliberately in
+#: sync with ``.github/scripts/check-prohibited-placeholders.py``. They are not
+#: all byte-identical, and the comment must not claim they are: measured by AST
+#: comparison, ``normalize_for_fence_opening``, ``parse_opening_fence`` and
+#: ``normalize_for_fence_closing`` match, ``is_closing_fence`` differs, and
+#: ``container_content`` and ``fence_container_ended`` exist only here. Each
+#: difference is a deliberate scoping decision, not drift.
+#:
+#: A search for ``normalize_for_fence_opening`` still finds every copy of the
+#: same CommonMark rule in this repository, which is the property that matters:
+#: a change to one is visible from the others. Verify agreement by comparing
+#: function bodies, never by trusting this comment.
 FENCE_OPEN_PATTERN = re.compile(r"^ {0,3}(?P<marker>`{3,}|~{3,})")
 BLOCK_QUOTE_PREFIX_PATTERN = re.compile(r"^ {0,3}> ?")
 LIST_ITEM_PATTERN = re.compile(r"^(?P<indent> {0,3})(?P<marker>[-*+]|\d{1,9}[.)])(?P<spacing> +)")
