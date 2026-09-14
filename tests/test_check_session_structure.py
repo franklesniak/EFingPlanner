@@ -2638,3 +2638,139 @@ def test_a_label_of_nine_hundred_ninety_nine_characters_still_renders_nothing(
         "## Goal\n\nReal content for Goal.\n", f"## Goal\n\n{body}\n", 1
     )
     assert any('section "## Goal" is empty' in m for m in check(text)), label
+
+
+# ---------------------------------------------------------------------------
+# A backtick inside a parsed link target is not a delimiter
+# ---------------------------------------------------------------------------
+
+
+#: One ASCII control character, and the delete character beside it. Spelled
+#: through ``chr`` so no test has to embed a byte an editor can eat.
+CONTROL_CHARACTER = chr(1)
+DELETE_CHARACTER = chr(127)
+
+
+@pytest.mark.parametrize(
+    ("label", "first_line"),
+    [
+        ("a link title", f'[x](u "t {TICK}")'),
+        ("a link destination", f"[x](u{TICK}v)"),
+        ("an image title", f'![x](p.png "t {TICK}")'),
+        ("a single-quoted title", f"[x](u 't {TICK}')"),
+        ("a parenthesised title", f"[x](u (t {TICK}))"),
+        ("an angle-bracket destination", f'[x](<u> "t {TICK}")'),
+    ],
+)
+def test_a_backtick_in_a_link_target_opens_no_code_span(label: str, first_line: str) -> None:
+    """A destination and a title are scanned as characters, not as inline content.
+
+    The bracket comes first, so the target is consumed whole and the backtick
+    in it is metadata. The pass that finds the code spans had no link model at
+    all, so it paired that backtick with the one on the next line and masked
+    the marker between them -- and a session that had declared its exemption
+    was failed for not declaring one. Every row measured against markdown-it
+    14.3.0.
+    """
+    body = f"{first_line}\nText <!-- no-source-check: an offline exercise --> tail{TICK}"
+    text = build_session(sections=SIX_SECTIONS, extra=f"## Notes\n\n{body}\n")
+    assert check(text) == [], label
+
+
+def test_a_code_span_that_opens_before_a_link_still_swallows_it() -> None:
+    """A negative control. Whichever construct starts first takes the rest.
+
+    The backtick opens before the ``[``, so the bracket and the ``]`` after it
+    are both inside the code span and neither is ever counted. There is no link
+    to have a target, the span closes on the backtick inside those
+    parentheses, and the marker after it is a comment on the page. Measured
+    against markdown-it 14.3.0.
+    """
+    body = f"{TICK}[a](u{TICK} x) <!-- no-source-check: an offline exercise --> y{TICK}"
+    text = build_session(sections=SIX_SECTIONS, extra=f"## Notes\n\n{body}\n")
+    assert check(text) == []
+
+
+def test_an_outer_link_that_cannot_nest_keeps_its_marker() -> None:
+    """A negative control, and the reason the bracket walk runs in one pass only.
+
+    Links may not nest, so the inner link wins and the outer brackets are
+    literal text: the marker in those parentheses is a comment the page
+    carries. ``link_metadata_regions`` models that, and the pass that reads its
+    answer must not be second-guessed by a walk that counts brackets and
+    nothing else. Measured against markdown-it 14.3.0.
+    """
+    body = "[a [b](u.md) c](v.md \"<!-- no-source-check: an offline exercise -->\")"
+    text = build_session(sections=SIX_SECTIONS, extra=f"## Notes\n\n{body}\n")
+    assert check(text) == []
+
+
+def test_a_bracket_with_no_opener_skips_nothing() -> None:
+    """A negative control. A ``]`` that closes nothing is an ordinary character."""
+    body = f"a](u{TICK} x) <!-- no-source-check: an offline exercise --> y{TICK}"
+    text = build_session(sections=SIX_SECTIONS, extra=f"## Notes\n\n{body}\n")
+    assert any("Source Check" in m for m in check(text))
+
+
+# ---------------------------------------------------------------------------
+# What a bare link destination may hold
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.parametrize(
+    ("label", "body"),
+    [
+        (
+            "an inline link",
+            f'[x](fo{CONTROL_CHARACTER}o "<!-- no-source-check: an offline exercise -->")',
+        ),
+        (
+            "an inline link, delete character",
+            f'[x](fo{DELETE_CHARACTER}o "<!-- no-source-check: an offline exercise -->")',
+        ),
+        (
+            "an image",
+            f'![x](fo{CONTROL_CHARACTER}o "<!-- no-source-check: an offline exercise -->")',
+        ),
+        (
+            "a reference definition",
+            f'[a]: fo{DELETE_CHARACTER}o "<!-- no-source-check: an offline exercise -->"',
+        ),
+    ],
+)
+def test_a_control_character_is_not_a_destination_character(label: str, body: str) -> None:
+    """CommonMark forbids an ASCII control character in a bare destination.
+
+    Neither markdown-it 14.3.0 nor micromark 4.0.2 forms a link or a
+    definition, so the marker in the quotes is an ordinary HTML comment on the
+    page and the session really has declared its exemption. ``inline_link_end``
+    stopped only at a space and a tab, and the destination class reached only
+    to U+001F, so both read the whole thing as metadata and masked it.
+    """
+    text = build_session(sections=SIX_SECTIONS, extra=f"## Notes\n\n{body}\n")
+    assert check(text) == [], label
+
+
+def test_a_less_than_part_way_into_a_bare_destination_is_still_a_destination() -> None:
+    """A negative control, and the mirror of the finding that prompted this.
+
+    A bare destination may not *start* with ``<`` and may hold one further
+    along: markdown-it 14.3.0 and micromark 4.0.2 both read ``[a]: foo< "t"``
+    as a definition, which renders nothing at all. The class excluded ``<``
+    outright, so this hook read the line as prose and honoured a marker the
+    page never shows.
+    """
+    body = '[a]: foo< "<!-- no-source-check: an offline exercise -->"'
+    text = build_session(sections=SIX_SECTIONS, extra=f"## Notes\n\n{body}\n")
+    assert any("Source Check" in m for m in check(text))
+
+
+def test_a_bare_destination_may_not_start_with_a_less_than() -> None:
+    """A negative control the lookahead protects.
+
+    ``[a]: <foo "t"`` opens the angle-bracket form and never closes it, so
+    neither renderer forms a definition and the marker in it is a comment.
+    """
+    body = '[a]: <foo "<!-- no-source-check: an offline exercise -->"'
+    text = build_session(sections=SIX_SECTIONS, extra=f"## Notes\n\n{body}\n")
+    assert check(text) == []

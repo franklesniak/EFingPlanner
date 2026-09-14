@@ -2799,3 +2799,251 @@ def test_a_real_code_span_beside_a_tag_is_still_a_code_span() -> None:
     stripped = readability.strip_literal_code(text)
     assert "literal" not in stripped
     assert "aloud today." in stripped
+
+
+# ---------------------------------------------------------------------------
+# A raw HTML block ends the paragraph a code span searches
+# ---------------------------------------------------------------------------
+
+
+#: The prose a code span must not swallow, and enough of it to be a sentence.
+CHILD_SENTENCE = "The children pack a small bag today"
+
+
+@pytest.mark.parametrize(
+    ("label", "block"),
+    [
+        ("condition 1, a pre block", "<pre>\n</pre>"),
+        ("condition 2, a comment", "<!-- a note -->"),
+        ("condition 3, a processing instruction", "<?php ?>"),
+        ("condition 4, a declaration", "<!DOCTYPE html>"),
+        ("condition 5, a CDATA section", "<![CDATA[x]]>"),
+        ("condition 6, a known element", "<div>"),
+    ],
+)
+def test_an_html_block_start_ends_the_paragraph_a_code_span_searches(
+    label: str, block: str
+) -> None:
+    """Six of the seven HTML block conditions interrupt a paragraph.
+
+    A backtick on the line above one therefore has no closing run inside its
+    own paragraph and stays literal text. The scan knew about blanks,
+    headings, breaks, containers and Setext underlines and about no HTML block
+    at all, so it paired the two backticks across the block and blanked the
+    words between them. Measured against markdown-it 14.3.0: every one of
+    these sentences is on the page.
+    """
+    text = f"Use {TICK}open\n{block}\n{CHILD_SENTENCE} {TICK}today.\n"
+    assert CHILD_SENTENCE in readability.strip_literal_code(text), label
+
+
+def test_a_comment_block_start_leaves_the_audience_marker_standing() -> None:
+    """The shape the finding gave, and the consequence it named.
+
+    ``<!-- audience: adult -->`` on its own line opens an HTML block, so the
+    backtick above it never pairs with the one below. Blanking the marker sent
+    an adult-facing document into the child reading gate.
+    """
+    text = f"Use {TICK}open\n<!-- audience: adult -->\nTail {TICK}close here.\n"
+    assert readability.has_adult_marker(text)
+
+
+def test_a_comment_block_start_inside_a_blockquote_ends_the_paragraph() -> None:
+    """CommonMark classifies a line from what is left once its prefixes are gone."""
+    text = (
+        f"> Use {TICK}open\n"
+        "> <!-- audience: adult -->\n"
+        f"> Tail {TICK}close here.\n"
+    )
+    assert readability.has_adult_marker(text)
+
+
+def test_a_type_seven_html_block_does_not_end_a_paragraph() -> None:
+    """A negative control. Condition 7 is the one that may not interrupt one.
+
+    The span really does cross ``<x-thing>``, so the words inside it are code
+    rather than prose. Measured against markdown-it 14.3.0, which renders the
+    whole run as one ``<code>``.
+    """
+    text = f"Use {TICK}open\n<x-thing>\n{CHILD_SENTENCE} {TICK}today.\n"
+    assert CHILD_SENTENCE not in readability.strip_literal_code(text)
+
+
+def test_a_lowercase_declaration_does_not_end_a_paragraph() -> None:
+    """A negative control, and the same split round 3 settled.
+
+    markdown-it 14.3.0 wants an uppercase letter after ``<!``; the CommonMark
+    0.31.2 prose says "an ASCII letter" and micromark 4.0.2 reads it that way.
+    This module follows the renderer the repository measures a page against,
+    as the sibling hooks do, so ``<!doctype html>`` opens no block and the span
+    crosses it.
+    """
+    text = f"Use {TICK}open\n<!doctype html>\n{CHILD_SENTENCE} {TICK}today.\n"
+    assert CHILD_SENTENCE not in readability.strip_literal_code(text)
+
+
+# ---------------------------------------------------------------------------
+# A quoted YAML scalar may carry an escape
+# ---------------------------------------------------------------------------
+
+
+def _front_matter(line: str) -> str:
+    """Return a document whose front matter really does print if it is missed.
+
+    The block closes on ``...``, which is a YAML document end and an ordinary
+    paragraph at once, so a block this module fails to recognise is words the
+    reading score then counts.
+    """
+    return (
+        f"---\n{line}\n...\n"
+        "The children pack a small bag. They choose a city. "
+        "They write down the price of each night. They ask a grown up to check it. "
+        "They read the plan out loud. They pick a day to go. "
+        "They count the days until the trip. They draw a map of the way there.\n"
+    )
+
+
+@pytest.mark.parametrize(
+    ("label", "line"),
+    [
+        ("a double-quoted value", 'title: "A ' + BACKSLASH + '"quoted' + BACKSLASH + '" trip"'),
+        ("a double-quoted key", '"a ' + BACKSLASH + '"b' + BACKSLASH + '" c": travel'),
+        ("a single-quoted value", "title: 'It''s a trip'"),
+        ("a single-quoted key", "'it''s': travel"),
+        ("an escape and a comment", 'nested: "a ' + BACKSLASH + '"b' + BACKSLASH + '"" # note'),
+    ],
+)
+def test_a_quoted_front_matter_scalar_may_carry_an_escape(label: str, line: str) -> None:
+    """A backslash escapes a quote in YAML, and a doubled quote escapes one too.
+
+    Both branches stopped at the first quote, so a valid block stopped being
+    front matter and its keys and delimiter were counted as the child's words.
+    Measured at the commit this fixes: 38 words became 42 and the grade moved
+    from 0.0 to -0.33. PyYAML reads every line here as a mapping.
+    """
+    assert readability.FRONT_MATTER_LINE_PATTERN.match(line) is not None, label
+    text = _front_matter(line)
+    assert readability.strip_front_matter(text) != text, label
+
+
+def test_an_unterminated_double_quoted_scalar_is_not_front_matter() -> None:
+    """A negative control, and the direction the old pattern also had wrong.
+
+    A title whose last two characters are a backslash and a quote is not a
+    YAML scalar: the escape consumes the quote and leaves the scalar open, and
+    PyYAML refuses it. Reading the escape is what makes the pattern refuse it
+    too. The pattern that stopped at the first quote accepted it, and would
+    have deleted a paragraph the child reads.
+    """
+    line = 'title: "unclosed ' + BACKSLASH + '"'
+    assert readability.FRONT_MATTER_LINE_PATTERN.match(line) is None
+    text = _front_matter(line)
+    assert readability.strip_front_matter(text) == text
+
+
+# ---------------------------------------------------------------------------
+# A backtick inside a parsed link target is not a delimiter
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.parametrize(
+    ("label", "first_line"),
+    [
+        ("a link title", f'[help](url "title {TICK}")'),
+        ("a link destination", f"[help](url{TICK}x)"),
+        ("an image title", f'![alt](p.png "t {TICK}")'),
+        ("a single-quoted title", f"[help](url 't {TICK}')"),
+        ("a parenthesised title", f"[help](url (t {TICK}))"),
+        ("an angle-bracket destination", f'[help](<url> "t {TICK}")'),
+    ],
+)
+def test_a_backtick_in_a_link_target_opens_no_code_span(label: str, first_line: str) -> None:
+    """A destination and a title are scanned as characters, not as inline content.
+
+    The bracket comes first, so the target is consumed whole and the backtick
+    in it is metadata. Reading it as a delimiter paired it with the backtick on
+    the next line and blanked the audience marker between them, which sent an
+    adult-facing document into the child reading gate. Every row measured
+    against markdown-it 14.3.0.
+    """
+    text = f"{first_line}\nText <!-- audience: adult --> tail{TICK}\n"
+    assert readability.has_adult_marker(text), label
+
+
+def test_a_code_span_that_opens_before_a_link_still_swallows_it() -> None:
+    """A negative control. Whichever construct starts first takes the rest.
+
+    The backtick here opens before the ``[``, so there is no link to have a
+    target and the backtick inside those parentheses really is the closing run.
+    """
+    text = f"{TICK}[a](u{TICK} x) <!-- audience: adult --> y{TICK}\n"
+    assert readability.has_adult_marker(text)
+
+
+def test_an_unformed_link_keeps_its_backtick() -> None:
+    """A negative control. An unclosed title is no link at all.
+
+    Nothing closes the title, so ``inline_link_end`` refuses the target and the
+    backtick inside it is an ordinary opening run again.
+    """
+    text = f'[help](url "title {TICK}\nText <!-- audience: adult --> tail{TICK}\n'
+    assert not readability.has_adult_marker(text)
+
+
+def test_a_bracket_with_no_opener_skips_nothing() -> None:
+    """A negative control. A ``]`` that closes nothing is an ordinary character."""
+    text = f"a](u{TICK} x) <!-- audience: adult --> y{TICK}\n"
+    assert not readability.has_adult_marker(text)
+
+
+# ---------------------------------------------------------------------------
+# What a bare link destination may hold
+# ---------------------------------------------------------------------------
+
+
+#: One ASCII control character, and the delete character beside it. Spelled
+#: through ``chr`` so no test has to embed a byte an editor can eat.
+CONTROL_CHARACTER = chr(1)
+DELETE_CHARACTER = chr(127)
+
+
+@pytest.mark.parametrize(
+    ("label", "destination"),
+    [
+        ("a C0 control character", f"fo{CONTROL_CHARACTER}o"),
+        ("the delete character", f"fo{DELETE_CHARACTER}o"),
+    ],
+)
+def test_a_control_character_is_not_a_destination_character(
+    label: str, destination: str
+) -> None:
+    """CommonMark forbids an ASCII control character in a bare destination.
+
+    Neither markdown-it 14.3.0 nor micromark 4.0.2 forms a link, so the
+    brackets, the destination and the title are all words on the page. The
+    class excluded only the whitespace characters, which do not reach them,
+    and the link pattern deleted the lot -- the direction that takes a file
+    under the forty-word minimum and out of the gate.
+    """
+    text = f'Read [the guide]({destination} "a title") before you pack a bag.\n'
+    assert "a title" in readability.extract_prose(text), label
+
+
+def test_a_less_than_part_way_into_a_bare_destination_is_allowed() -> None:
+    """A negative control. Only the *first* character may not be ``<``.
+
+    markdown-it 14.3.0 and micromark 4.0.2 both link ``[x](foo< "t")``, so the
+    title is an attribute and none of it is prose.
+    """
+    text = 'Read [the guide](fo<o "a title") before you pack a bag.\n'
+    assert "a title" not in readability.extract_prose(text)
+
+
+def test_a_bare_destination_may_not_start_with_a_less_than() -> None:
+    """A negative control the lookahead protects.
+
+    ``[x](<foo "t")`` opens the angle-bracket form and never closes it, so
+    neither renderer forms a link and every character of it is on the page.
+    """
+    text = 'Read [the guide](<foo "a title") before you pack a bag.\n'
+    assert "a title" in readability.extract_prose(text)

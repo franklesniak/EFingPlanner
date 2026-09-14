@@ -330,15 +330,34 @@ BARE_LIST_MARKER_PATTERN = re.compile(r"^\s*(?:[-*+]|\d{1,9}[.)])\s*$")
 #: destination nested deeper than that simply does not match, which leaves the
 #: line counting as content. That is this checker's safe direction: the error
 #: that matters here is the one that calls a section empty when the page shows
-#: something. This class also excludes ``<`` and the ASCII control characters,
-#: which is the one way it differs from the sibling's.
+#: something.
+#:
+#: What a bare destination may hold is the ASCII rule and not more: it may not
+#: hold a space, and it may not hold an ASCII control character. It may not
+#: *start* with ``<``, which is the lookahead below, and it may hold one
+#: further along, which this class once refused. Both renderers agree on the
+#: refusal being wrong: markdown-it 14.3.0 and micromark 4.0.2 each link
+#: ``[x](foo< "t")``, so a definition written that way renders nothing and a
+#: marker in its title is an attribute rather than a comment -- and this hook
+#: was honouring it. U+007F is named beside ``\x00-\x1f`` because CommonMark
+#: counts it as a control character and the range does not reach it. Kept in
+#: step with the class in ``.github/scripts/check-readability.py``.
 #: <https://spec.commonmark.org/0.31.2/#link-destination>
-_DESTINATION_CHARACTER = r"(?:[^\s\x00-\x1f()<\\]|\\.)"
+_DESTINATION_CHARACTER = r"(?:[^\s\x00-\x1f\x7f()\\]|\\.)"
+#: The same rule, as a set rather than as a character class, for the
+#: hand-written scan in ``inline_link_end``: every character that ends a bare
+#: destination. Spelled as a range so the C0 control characters are named once
+#: and none is missed. Kept identical to the constant in
+#: ``.github/scripts/check-readability.py``.
+#: <https://spec.commonmark.org/0.31.2/#link-destination>
+DESTINATION_STOP_CHARACTERS = frozenset(
+    [chr(code) for code in range(0x21)] + ["\x7f"]
+)
 _DESTINATION_DEPTH_0 = rf"{_DESTINATION_CHARACTER}*"
 _DESTINATION_DEPTH_1 = rf"(?:{_DESTINATION_CHARACTER}|\({_DESTINATION_DEPTH_0}\))*"
 _DESTINATION_DEPTH_2 = rf"(?:{_DESTINATION_CHARACTER}|\({_DESTINATION_DEPTH_1}\))*"
 _LINK_DESTINATION = (
-    rf"(?:<[^<>\n]*>|(?:{_DESTINATION_CHARACTER}|\({_DESTINATION_DEPTH_2}\))+)"
+    rf"(?:<[^<>\n]*>|(?!<)(?:{_DESTINATION_CHARACTER}|\({_DESTINATION_DEPTH_2}\))+)"
 )
 
 #: How long a link label may be. CommonMark caps it at 999 characters between
@@ -989,7 +1008,16 @@ def inline_link_end(line: str, open_index: int) -> int:
     destination becomes the element's ``href`` or ``src`` and the title becomes
     its ``title``. So a comment delimiter inside one is characters in an
     attribute, which is exactly what markdown-it 14.3.0 renders for
-    ``[help](page.md "<!-- no-source-check: x -->")``.
+    ``[help](page.md "<!-- no-source-check: x -->")``. Kept identical to the
+    helper in ``.github/scripts/check-readability.py``.
+
+    A bare destination ends at every character in
+    ``DESTINATION_STOP_CHARACTERS``: the space and the ASCII control
+    characters, which is the set CommonMark forbids it. Stopping only at a
+    space and a tab accepted ``[x](fo\x01o "<!-- no-source-check: x -->")`` as
+    a link, and neither renderer forms one: both print the brackets and the
+    marker in them is a comment the page really does carry, so a session that
+    had declared its exemption was failed for not declaring one.
     <https://spec.commonmark.org/0.31.2/#links>
     """
     length = len(line)
@@ -1011,7 +1039,7 @@ def inline_link_end(line: str, open_index: int) -> int:
             if character == "\\":
                 index += 2
                 continue
-            if character in " \t":
+            if character in DESTINATION_STOP_CHARACTERS:
                 break
             if character == "(":
                 depth += 1
@@ -1206,11 +1234,34 @@ def scan_inline_run(
     tag and a link starts first, so the code spans have to be known *before*
     the link metadata is computed, and the only way to know them is to walk
     once without it. ``text_marker_spans`` does exactly that.
+
+    "No link model" means no *defined labels* and no image rule; it does not
+    mean no brackets. The walk counts the brackets it passes and hands the
+    target of a ``](`` that closes one to ``inline_link_end``, because a
+    destination and a title are scanned as characters rather than as inline
+    content and a backtick in either opens nothing. Without that,
+    ``[x](u "t`")`` on one line and ``Text <!-- no-source-check: y --> tail```
+    on the next paired their backticks across the marker and masked it, and a
+    session that had declared its exemption was failed for not declaring one.
+    A ``[`` a code span swallowed is never counted, which is what still leaves
+    ``` `[a](u` x) ``` a code span and not a link.
+
+    The bracket walk runs in that first pass and in no other, because it is
+    half a link model and the second pass has a whole one. Links may not nest,
+    so forming one deactivates every opener still open above it:
+    ``[a [b](u.md) c](v.md "<!-- x -->")`` is an inner link and then literal
+    text, and the marker in those literal parentheses is a comment the page
+    carries. ``link_metadata_regions`` knows that and knows which labels the
+    document defines; this walk knows neither, and running it in both passes
+    masked that marker. Over-skipping in the first pass costs at worst a code
+    span the walk does not find, which masks less rather than more.
+    <https://spec.commonmark.org/0.31.2/#links>
     """
     spans: list[list[str]] = [[] for _ in contents]
     code_spans: list[tuple[int, int, int]] = []
     row = 0
     index = 0
+    open_brackets = 0
 
     while row < len(contents):
         line = contents[row]
@@ -1270,6 +1321,23 @@ def scan_inline_run(
             row, index = close_row, close_index
             continue
 
+        if skips is None and character == "[":
+            open_brackets += 1
+            index += 1
+            continue
+
+        if skips is None and character == "]" and open_brackets:
+            # The target of a link that closes here is characters rather than
+            # inline content, so nothing in it opens a span.
+            open_brackets -= 1
+            if index + 1 < len(line) and line[index + 1] == "(":
+                target_end = inline_link_end(line, index + 1)
+                if target_end != -1:
+                    index = target_end
+                    continue
+            index += 1
+            continue
+
         if character == "<":
             if line.startswith("<!--", index):
                 spans[row].append("<!--")
@@ -1317,7 +1385,10 @@ def text_marker_spans(
     contexts cross a line break. A comment does, and the caller threads
     ``is_in_comment`` in and out for the lines on either side of the run. A code
     span does too, and deciding whether one closes needs the rest of the
-    paragraph rather than the rest of the line.
+    paragraph rather than the rest of the line. A link target does not: it is
+    read one line at a time, so a target broken over a soft line break leaves
+    its backtick standing and its characters scanned as text -- the direction
+    that masks less, never more.
 
     It is scanned *twice* because a code span and a link are not asked about in
     either order. CommonMark takes whichever construct starts first, and a code

@@ -167,6 +167,51 @@ ATX_HEADING_LINE_PATTERN = re.compile(r"^ {0,3}#{1,6}(?:[ \t]|$)")
 THEMATIC_BREAK_LINE_PATTERN = re.compile(
     r"^ {0,3}(?:(?:\*[ \t]*){3,}|(?:-[ \t]*){3,}|(?:_[ \t]*){3,})$"
 )
+#: The element names CommonMark lists for HTML block start condition 6. Kept
+#: identical to the constant in ``.github/scripts/check-session-structure.py``
+#: and in ``.github/scripts/check-prohibited-placeholders.py``.
+#: https://spec.commonmark.org/0.31.2/#html-blocks
+HTML_BLOCK_ELEMENT_NAMES = (
+    "address|article|aside|base|basefont|blockquote|body|caption|center|col|"
+    "colgroup|dd|details|dialog|dir|div|dl|dt|fieldset|figcaption|figure|"
+    "footer|form|frame|frameset|h1|h2|h3|h4|h5|h6|head|header|hr|html|iframe|"
+    "legend|li|link|main|menu|menuitem|nav|noframes|ol|optgroup|option|p|"
+    "param|search|section|summary|table|tbody|td|tfoot|th|thead|title|tr|"
+    "track|ul"
+)
+#: The six HTML block start conditions that may interrupt a paragraph. A line
+#: matching one of them ends the paragraph above it, so it is where a code span
+#: stops looking for its closing run. Measured at the commit this fixes: ``Use
+#: `open`` on one line and ``<!-- audience: adult -->`` on the next were read
+#: as one paragraph, the two lines paired their backticks across the comment,
+#: and the marker was blanked -- so an adult-facing document walked into the
+#: child reading gate.
+#:
+#: Condition 7 is deliberately absent. It is the one condition that may *not*
+#: interrupt a paragraph, so adding it here would end paragraphs CommonMark
+#: leaves open; where no paragraph is open there is nothing for it to end.
+#: Condition 4 asks for an uppercase letter after ``<!`` because markdown-it
+#: 14.3.0 asks for one and this repository measures a rendered page against
+#: markdown-it; the CommonMark 0.31.2 prose says "an ASCII letter" and
+#: micromark-core-commonmark 2.0.3 reads it that way, and the sibling hooks
+#: carry the same note beside the same choice.
+#:
+#: The sibling hooks carry the whole ``HTML_BLOCK_CONDITIONS`` machine, with
+#: the end patterns and the open-block state, because they have to know which
+#: lines are *inside* a block. This module asks a narrower question -- where
+#: does a paragraph end -- so it needs the start conditions and nothing else.
+#: https://spec.commonmark.org/0.31.2/#html-blocks
+HTML_BLOCK_START_PATTERNS = (
+    re.compile(r"^ {0,3}<(?:script|pre|style|textarea)(?:[ \t>]|$)", re.IGNORECASE),
+    re.compile(r"^ {0,3}<!--"),
+    re.compile(r"^ {0,3}<\?"),
+    re.compile(r"^ {0,3}<![A-Z]"),
+    re.compile(r"^ {0,3}<!\[CDATA\["),
+    re.compile(
+        rf"^ {{0,3}}</?(?:{HTML_BLOCK_ELEMENT_NAMES})(?:[ \t>]|/>|$)",
+        re.IGNORECASE,
+    ),
+)
 HEADING_PATTERN = re.compile(r"^ {0,3}#{1,6}\s")
 TABLE_ROW_PATTERN = re.compile(r"^ {0,3}\|")
 TABLE_DELIMITER_PATTERN = re.compile(r"^ {0,3}\|?\s*:?-+:?\s*(?:\|\s*:?-+:?\s*)*\|?\s*$")
@@ -220,13 +265,34 @@ INLINE_HTML_TAG_PATTERN = re.compile(
 #: cannot recurse, so three levels are spelled out here. A target nested deeper
 #: than that simply does not match, which leaves the whole link visible: more
 #: words, never fewer, and never a half-eaten one.
+#:
+#: What a bare destination may *hold* is spelled the way CommonMark spells it:
+#: anything but a space, an ASCII control character, and an unescaped
+#: parenthesis. The control characters matter, and ``\s`` does not cover them:
+#: ``[the guide](fo\x01o "a title")`` is not a link to markdown-it 14.3.0 or to
+#: micromark 4.0.2, both of which print the brackets and the title as text a
+#: child reads -- and this pattern was deleting them. A bare destination may
+#: not *start* with ``<`` either, which is what the lookahead below says; it
+#: may hold one further along, and both renderers link ``[x](foo< "t")``
+#: happily. Kept in step with the class in
+#: ``.github/scripts/check-session-structure.py``.
 #: https://spec.commonmark.org/0.31.2/#link-destination
-_DESTINATION_CHARACTER = r"(?:[^\s()\\]|\\.)"
+_DESTINATION_CHARACTER = r"(?:[^\s\x00-\x1f\x7f()\\]|\\.)"
+#: The same rule, as a set rather than as a character class, for the
+#: hand-written scan in ``inline_link_end``: every character that ends a bare
+#: destination. Spelled as a range so the C0 control characters are named once
+#: and none is missed, with U+007F beside them because CommonMark counts it as
+#: a control character and ``\x00-\x1f`` does not reach it. Kept identical to
+#: the constant in ``.github/scripts/check-session-structure.py``.
+#: https://spec.commonmark.org/0.31.2/#link-destination
+DESTINATION_STOP_CHARACTERS = frozenset(
+    [chr(code) for code in range(0x21)] + ["\x7f"]
+)
 _DESTINATION_DEPTH_0 = rf"{_DESTINATION_CHARACTER}*"
 _DESTINATION_DEPTH_1 = rf"(?:{_DESTINATION_CHARACTER}|\({_DESTINATION_DEPTH_0}\))*"
 _DESTINATION_DEPTH_2 = rf"(?:{_DESTINATION_CHARACTER}|\({_DESTINATION_DEPTH_1}\))*"
 _LINK_DESTINATION = (
-    rf"(?:<[^<>\n]*>|(?:{_DESTINATION_CHARACTER}|\({_DESTINATION_DEPTH_2}\))+)"
+    rf"(?:<[^<>\n]*>|(?!<)(?:{_DESTINATION_CHARACTER}|\({_DESTINATION_DEPTH_2}\))+)"
 )
 _LINK_TITLE = r"(?:\"(?:[^\"\\]|\\.)*\"|'(?:[^'\\]|\\.)*'|\((?:[^()\\]|\\.)*\))"
 #: A whole inline target, ``(destination "title")``, with every part optional:
@@ -305,6 +371,22 @@ FRONT_MATTER_DELIMITER_PATTERN = re.compile(r"^(?:-{3}|\.{3})[ \t]*$")
 #: once and used for a key and for a value, because YAML says the same of both.
 #: https://yaml.org/spec/1.2.2/#733-plain-style
 _YAML_PLAIN_SCALAR = r"(?: (?!:[ \t]) (?!:$) (?![ \t]\#) [^\n] )*"
+#: One YAML double-quoted scalar, and one single-quoted one. Both carry an
+#: escape and a pattern that stops at the first quote cannot read either: a
+#: backslash escapes the character after it in the double-quoted style, and a
+#: doubled quote is the only escape the single-quoted style has. So ``title: "A
+#: \"quoted\" trip"`` and ``title: 'It''s a trip'`` are one scalar each, and
+#: PyYAML reads both. Measured at the commit this fixes: neither line matched,
+#: the block stopped being front matter, and the title, the key and the
+#: delimiter walked into the child's prose -- 38 words became 42 and the grade
+#: moved from 0.0 to -0.33. Reading the escape closes the other direction too:
+#: ``title: "unclosed \"`` is not a YAML scalar at all, and the old pattern
+#: accepted it.
+#: https://yaml.org/spec/1.2.2/#732-single-quoted-style
+#:
+#: https://yaml.org/spec/1.2.2/#731-double-quoted-style
+_YAML_DOUBLE_QUOTED = r'"(?:[^"\\]|\\.)*"'
+_YAML_SINGLE_QUOTED = r"'(?:[^']|'')*'"
 #: A line a YAML front-matter block can hold: a mapping key, a sequence item, an
 #: indented continuation, or a comment. A plain key may hold spaces --
 #: ``session title: Trip plan`` is a mapping with one key -- so what separates
@@ -339,10 +421,11 @@ FRONT_MATTER_LINE_PATTERN = re.compile(
         [ \t]                                     # an indented continuation
       | \#                                        # a comment
       | -[ \t]                                    # a sequence item
-      | (?: "[^"]*" | '[^']*'                     # a quoted mapping key
-          | [^\s#:'"]{_YAML_PLAIN_SCALAR} )       # or a plain one
+      | (?: {_YAML_DOUBLE_QUOTED} | {_YAML_SINGLE_QUOTED}   # a quoted key
+          | [^\s#:'"]{_YAML_PLAIN_SCALAR} )                 # or a plain one
         :
-        (?: [ \t]+ (?: "[^"]*" | '[^']*'          # a quoted value
+        (?: [ \t]+ (?: {_YAML_DOUBLE_QUOTED}                # a quoted value
+                     | {_YAML_SINGLE_QUOTED}
                      | [^\s#'"]{_YAML_PLAIN_SCALAR} ) )?
         (?: [ \t]+ \# [^\n]* )?                     # and then a comment
         [ \t]*$
@@ -899,12 +982,26 @@ def starts_a_block(
     line under a quoted or listed paragraph is the lazy continuation CommonMark
     reads it as, and treating it as a new block would cut a paragraph in half.
 
+    A raw HTML block ends one too. Six of the seven start conditions may
+    interrupt a paragraph, and a line that opens one is raw HTML rather than
+    the next line of the prose above it; ``HTML_BLOCK_START_PATTERNS`` names
+    them. Condition 7 is not among them, because it is the one that may not
+    interrupt a paragraph.
+
     ``check-session-structure.py`` asks this question under this name, of the
-    same six shapes, so the two hooks cannot disagree about where a paragraph
-    ends. It is not the question ``opens_a_paragraph`` asks there -- that one
-    asks whether a paragraph is open *below* a line, which HTML block condition
-    7 needs, and a Setext underline is where the two answers part.
+    first six shapes, so the two hooks cannot disagree about where a paragraph
+    ends. The HTML block start is the seventh shape and it is asked here alone:
+    that hook runs a full ``HTML_BLOCK_CONDITIONS`` machine beside this
+    question and ends its scan on any line that machine calls raw HTML, so
+    asking again there would be a second, weaker copy of a rule it already
+    models. This module has no such machine, and this is where it says where a
+    paragraph ends.
+
+    It is not the question ``opens_a_paragraph`` asks there -- that one asks
+    whether a paragraph is open *below* a line, which HTML block condition 7
+    needs, and a Setext underline is where the two answers part.
     https://spec.commonmark.org/0.31.2/#paragraphs
+    https://spec.commonmark.org/0.31.2/#html-blocks
     """
     if not content.strip():
         return True
@@ -914,9 +1011,76 @@ def starts_a_block(
         return True
     if SETEXT_UNDERLINE_PATTERN.match(content) is not None:
         return True
+    if any(pattern.match(content) is not None for pattern in HTML_BLOCK_START_PATTERNS):
+        return True
     if any(container.kind == CONTAINER_KIND_LIST for container in opened):
         return True
     return containment_path != previous_path[: len(containment_path)]
+
+
+def inline_link_end(line: str, open_index: int) -> int:
+    """Return the index just past the ``)`` of an inline link, or -1.
+
+    Neither half of what sits between those parentheses is on the page: the
+    destination becomes the element's ``href`` or ``src`` and the title becomes
+    its ``title``. Both are scanned as characters rather than as inline
+    content, so a backtick inside either opens no code span -- which is the one
+    thing this module asks of them. Kept identical to the helper in
+    ``.github/scripts/check-session-structure.py``.
+
+    A bare destination ends at every character in
+    ``DESTINATION_STOP_CHARACTERS``: the space and the ASCII control
+    characters, which is the set CommonMark forbids it. An unbalanced
+    parenthesis and an unclosed title each mean no link at all, and the caller
+    is then right to read the characters as ordinary text.
+    https://spec.commonmark.org/0.31.2/#links
+    """
+    length = len(line)
+    index = open_index + 1
+    while index < length and line[index] in " \t":
+        index += 1
+
+    if index < length and line[index] == "<":
+        cursor = index + 1
+        while cursor < length and line[cursor] not in "<>":
+            cursor += 2 if line[cursor] == "\\" else 1
+        if cursor >= length or line[cursor] != ">":
+            return -1
+        index = cursor + 1
+    else:
+        depth = 0
+        while index < length:
+            character = line[index]
+            if character == "\\":
+                index += 2
+                continue
+            if character in DESTINATION_STOP_CHARACTERS:
+                break
+            if character == "(":
+                depth += 1
+            elif character == ")":
+                if depth == 0:
+                    break
+                depth -= 1
+            index += 1
+        if depth != 0:
+            return -1
+
+    spaced = index
+    while spaced < length and line[spaced] in " \t":
+        spaced += 1
+    if index < spaced < length and line[spaced] in "\"'(":
+        closer = {'"': '"', "'": "'", "(": ")"}[line[spaced]]
+        cursor = spaced + 1
+        while cursor < length and line[cursor] != closer:
+            cursor += 2 if line[cursor] == "\\" else 1
+        if cursor >= length:
+            return -1
+        index = cursor + 1
+
+    while index < length and line[index] in " \t":
+        index += 1
+    return index + 1 if index < length and line[index] == ")" else -1
 
 
 def following_comment_end(
@@ -958,7 +1122,23 @@ def paragraph_code_spans(lines: Sequence[ParagraphLine]) -> list[tuple[int, int]
     ``foo\\`` followed by a visible ``bar``, and guarding the closing run too
     would delete that ``bar``.
 
-    Raw HTML is the sixth guard, and it is not a refinement of the other five.
+    A parsed link target is the sixth guard, and it runs the other way. A
+    link's destination and its title are scanned as characters rather than as
+    inline content, so a backtick inside one opens nothing:
+    ``[help](url "title `")`` on one line and ``Text <!-- audience: adult -->
+    tail`` on the next held one backtick that is title data and one that is
+    literal text, and reading them as a pair erased the marker between them.
+    The walk therefore counts the brackets it passes, and a ``]`` that closes
+    one and is followed by a ``(`` hands the rest of the target to
+    ``inline_link_end``. A ``[`` a code span swallowed is never counted, which
+    is what keeps ``` `[a](u` x) ``` a code span and not a link. A reference
+    label is deliberately not skipped: markdown-it 14.3.0 scans a label as
+    inline content, so a code span inside one wins there, and the walk already
+    agrees with it. A target broken over a soft line break is not skipped
+    either, which leaves its backtick standing and its words counted -- more
+    words, never fewer.
+
+    Raw HTML is the seventh guard, and it is not a refinement of the others.
     A code span, an inline comment and a raw HTML tag bind equally tightly, so
     whichever one starts first takes the characters after it -- backticks
     included. ``<span title="`">`` on one line and ``Text <!-- audience: adult
@@ -969,11 +1149,13 @@ def paragraph_code_spans(lines: Sequence[ParagraphLine]) -> list[tuple[int, int]
     the start; this is the same rule, one module over.
     https://spec.commonmark.org/0.31.2/#backslash-escapes
     https://spec.commonmark.org/0.31.2/#code-spans
+    https://spec.commonmark.org/0.31.2/#links
     https://spec.commonmark.org/0.31.2/#raw-html
     """
     regions: list[tuple[int, int]] = []
     row = 0
     index = 0
+    open_brackets = 0
 
     while row < len(lines):
         line = lines[row].text
@@ -987,6 +1169,21 @@ def paragraph_code_spans(lines: Sequence[ParagraphLine]) -> list[tuple[int, int]
             # The escape and the character it escapes are one unit, so a
             # backtick behind a backslash is never read as a run at all.
             index += 2
+            continue
+        if character == "[":
+            open_brackets += 1
+            index += 1
+            continue
+        if character == "]" and open_brackets:
+            # The target of a link that closes here is characters rather than
+            # inline content, so nothing in it opens a span.
+            open_brackets -= 1
+            if index + 1 < len(line) and line[index + 1] == "(":
+                target_end = inline_link_end(line, index + 1)
+                if target_end != -1:
+                    index = target_end
+                    continue
+            index += 1
             continue
         if character == "<":
             # A comment or a tag that opens here is consumed whole, because it
