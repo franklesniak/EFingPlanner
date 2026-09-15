@@ -1214,8 +1214,46 @@ def ordered_list_start(match: re.Match[str]) -> int | None:
     return None if marker[0] in "-*+" else int(marker[:-1])
 
 
-def normalize_for_fence_opening(line: str, list_contexts: list[ListContext]) -> FenceLine:
-    """Return a line normalized to its current Markdown container content column."""
+def normalize_for_fence_opening(
+    line: str,
+    list_contexts: list[ListContext],
+    paragraph_open: bool = False,
+    previous_path: tuple[Container, ...] = (),
+) -> FenceLine:
+    """Return a line normalized to its current Markdown container content column.
+
+    A container is peeled only where CommonMark opens one. A list that may
+    not interrupt an open paragraph opens nothing at all, so its marker is
+    that paragraph's own text and this walk leaves it on the line:
+    ``Words`` over ``2. <div>`` is one paragraph of two lines on GitHub's
+    own renderer, measured, and peeling the ``2.`` put a ``<div>`` at the
+    start of a line CommonMark never starts there. An HTML block opened on
+    it, a fence opener written behind the same marker opened a fenced
+    block, and everything under either went unread.
+
+    ``starts_a_block`` already carries the interruption rule and could not
+    undo the peel, because the peel runs first and hands it an interior the
+    line does not have. ``container_interrupts_paragraph`` is asked here so
+    that the peel and the classification cannot disagree about one fact.
+
+    **The paragraph has to be the one this container would open inside**,
+    and that is where a container-blind reading of the rule goes wrong in
+    the other direction. ``> Intro.`` over ``2. ``` `` really does open a
+    list on GitHub's own renderer, measured: the paragraph is inside the
+    blockquote and the list opens outside it, so there is nothing at that
+    level to interrupt. ``previous_path`` is the line above's container
+    path, and the rule applies only where it is exactly the path this
+    marker would open in. A list item marker always begins a new item, so
+    once one has been consumed on this line nothing is open inside it and
+    the rule stops speaking -- which is what keeps ``- Intro.`` over
+    ``- 2. x`` reading its ``2.`` as the list CommonMark opens there.
+
+    ``paragraph_open`` and ``previous_path`` are the two facts a line alone
+    does not carry. The defaults are what a caller with neither should get:
+    with no paragraph open every marker peels, which is what this did
+    before. Kept identical to the helper in the sibling hooks.
+    <https://spec.commonmark.org/0.31.2/#list-items>
+    """
     prune_inactive_list_contexts(line, list_contexts)
 
     active_path = list_contexts[-1].containment_path if list_contexts else ()
@@ -1229,6 +1267,9 @@ def normalize_for_fence_opening(line: str, list_contexts: list[ListContext]) -> 
     # and the fence state stays wrong for the rest of the file.
     # https://spec.commonmark.org/0.31.2/#container-blocks
     extras: list[Container] = []
+    # A list item marker always begins a new item, so nothing the line above
+    # left open is open inside it and the paragraph rule below stops speaking.
+    item_opened = False
     while True:
         quote_match = BLOCK_QUOTE_PREFIX_PATTERN.match(relative_line)
         if quote_match is not None:
@@ -1241,20 +1282,31 @@ def normalize_for_fence_opening(line: str, list_contexts: list[ListContext]) -> 
             break
 
         content_indent_rel = list_content_indent(list_match)
-        extras.append(
-            Container(
-                kind=CONTAINER_KIND_LIST,
-                indent=content_indent_rel,
-                ordered_start=ordered_list_start(list_match),
-                bullet=bullet_marker(list_match),
-            )
+        opened = Container(
+            kind=CONTAINER_KIND_LIST,
+            indent=content_indent_rel,
+            ordered_start=ordered_list_start(list_match),
+            bullet=bullet_marker(list_match),
         )
         content_offset_rel = list_content_offset(list_match)
-        relative_line = (
+        interior = (
             relative_line[content_offset_rel:]
             if len(relative_line) >= content_offset_rel
             else ""
         )
+        if (
+            paragraph_open
+            and not item_opened
+            and previous_path == effective_path + tuple(extras)
+            and not container_interrupts_paragraph(opened, interior)
+        ):
+            # The list opens nothing, so the marker is the paragraph's own
+            # text and the line is read whole.
+            break
+
+        extras.append(opened)
+        relative_line = interior
+        item_opened = True
         list_contexts.append(ListContext(containment_path=effective_path + tuple(extras)))
 
     return FenceLine(
@@ -1430,7 +1482,9 @@ def is_table_delimiter(line: str) -> bool:
     return "|" in line or SETEXT_UNDERLINE_PATTERN.match(line) is None
 
 
-def table_starts_here(header: str, delimiter: str) -> int:
+def table_starts_here(
+    header: str, delimiter: str, paragraph_above: bool = True
+) -> int:
     """Return the column count of the table ``delimiter`` opens under ``header``.
 
     Zero where the two lines open none. This is GFM's whole precondition in
@@ -1460,10 +1514,22 @@ def table_starts_here(header: str, delimiter: str) -> int:
     **This is the fifth place markdown-it 14.3.0 and the production renderer
     have been measured to part, and the proxy is on the wrong side of it**:
     markdown-it orders its table rule ahead of its heading rule, so it reads the
-    same two lines as a table. The indent rule is the residual left standing
-    here -- a header indented four columns is an indented code block and this
-    helper does not yet say so, because two of the three walks that ask it have
-    no paragraph state to condition it on.
+    same two lines as a table.
+
+    Nor may the header be an indented code block, and that is the one shape of
+    the three that a line alone cannot settle. A line indented four columns is
+    code where nothing is open above it and is the paragraph's own lazy
+    continuation where something is, so it is a table header in the second case
+    and not in the first -- measured on GitHub's own renderer both ways.
+    ``paragraph_above`` is whether a paragraph was open on the line above the
+    *header*, which is the only thing that can make an indented line paragraph
+    text at all. The default is what a caller that cannot say should get: the
+    answer this helper gave before the rule existed. ``opens_a_paragraph`` and
+    ``starts_a_block`` do not pass it and do not need to -- each has already
+    refused an indented line as a code block one line earlier, so the question
+    cannot reach them. The indent is counted in columns, so one tab reaches
+    column four.
+    <https://spec.commonmark.org/0.31.2/#indented-code-blocks>
 
     Kept identical to the helper in the sibling hooks.
     https://github.github.com/gfm/#tables-extension-
@@ -1473,6 +1539,8 @@ def table_starts_here(header: str, delimiter: str) -> int:
     if ATX_HEADING_LINE_PATTERN.match(header) is not None:
         return 0
     if THEMATIC_BREAK_LINE_PATTERN.match(header) is not None:
+        return 0
+    if not paragraph_above and count_indent_columns(header) >= 4:
         return 0
     return table_columns(header, delimiter) if is_table_delimiter(delimiter) else 0
 
@@ -3537,7 +3605,9 @@ def scan_document_inlines(text: str) -> DocumentInlines:
             paragraph_open = False
             continue
 
-        fence_line = normalize_for_fence_opening(line, list_contexts)
+        fence_line = normalize_for_fence_opening(
+            line, list_contexts, paragraph_open, previous_path
+        )
 
         if html_block is not None and container_path_ended(
             line, html_block.containment_path
@@ -3680,7 +3750,11 @@ def scan_document_inlines(text: str) -> DocumentInlines:
                 next_line, list(list_contexts)
             )
             columns = (
-                table_starts_here(fence_line.content, next_fence_line.content)
+                table_starts_here(
+                    fence_line.content,
+                    next_fence_line.content,
+                    paragraph_open and not block_starts,
+                )
                 if next_fence_line.containment_path == fence_line.containment_path
                 else 0
             )
@@ -3844,6 +3918,16 @@ def raw_text_run_mask(text: str) -> bytearray:
     ``<textarea>`` between ``<!--`` and ``-->`` left **zero** prose words, and
     the gate reported success on a page it never read.
 
+    A tag a fenced example *prints* is not a tag, which is the same sentence
+    one block down. An unmatched ``<script>`` written inside a fence is escaped
+    code on the page, and opening a run on it left the run open past the
+    closing fence: the mask then covered a real multiline comment below, the
+    comment survived ``strip_html_comments``, and the words written inside it
+    were scored as prose a child reads. So the fence is tracked here, in the
+    shape and the order both document walks use -- the run is asked first,
+    because a line a run holds opens no fence, and a line a fence holds opens
+    no run.
+
     The run state is the one the document walks use, so the two cannot disagree
     about which lines a run holds, and the line is peeled to its container
     content before the question is asked -- the same normalization the document
@@ -3856,9 +3940,23 @@ def raw_text_run_mask(text: str) -> bytearray:
     """
     mask = bytearray(len(text))
     list_contexts: list[ListContext] = []
+    active_fence: ActiveFence | None = None
     open_run: str | None = None
     offset = 0
     for line in text.split("\n"):
+        if active_fence is not None and fence_container_ended(line, active_fence):
+            # The container holding the fence has ended, so the fence ended
+            # with it and this line is document text again.
+            active_fence = None
+        if active_fence is not None:
+            if is_closing_fence(
+                normalize_for_fence_closing(line, active_fence),
+                active_fence.character,
+                active_fence.minimum_length,
+            ):
+                active_fence = None
+            offset += len(line) + 1
+            continue
         # The run state is asked about the line's *content*, past its
         # blockquote and list-item prefixes, because CommonMark classifies a
         # line from what is left once the prefixes are gone. Asking about the
@@ -3868,11 +3966,14 @@ def raw_text_run_mask(text: str) -> bytearray:
         # gate in silence. The mask still covers the whole raw line: a
         # container prefix holds no delimiter, and the offsets have to stay
         # the document's.
-        open_run, line_run = raw_text_run_state(
-            normalize_for_fence_opening(line, list_contexts).content, open_run, True
-        )
+        fence_line = normalize_for_fence_opening(line, list_contexts)
+        open_run, line_run = raw_text_run_state(fence_line.content, open_run, True)
         if raw_text_run_holds_text(line_run):
             mask[offset : offset + len(line)] = b"\x01" * len(line)
+        else:
+            opening_fence = parse_opening_fence(fence_line.content)
+            if opening_fence is not None:
+                active_fence = build_active_fence(opening_fence, fence_line)
         offset += len(line) + 1
     return mask
 
@@ -4104,6 +4205,11 @@ def extract_prose(text: str) -> str:
     table_delimiter_row = -1
     after_link_definition = False
     open_unit: str | None = None
+    # This walk's paragraph model, and it is as small as the one rule that
+    # needs it. ``collect_reference_labels`` keeps the same two fields for the
+    # same helper.
+    paragraph_open = False
+    previous_content = ""
 
     lines = text.split("\n")
     for index, raw_line in enumerate(lines):
@@ -4136,6 +4242,8 @@ def extract_prose(text: str) -> str:
             ):
                 active_fence = None
             open_unit = None
+            paragraph_open = False
+            previous_content = ""
             continue
         fence_line = normalize_for_fence_opening(line, list_contexts)
         # This walk carries no HTML block machine -- it is a second pass with its
@@ -4162,6 +4270,8 @@ def extract_prose(text: str) -> str:
         if opening_fence is not None:
             active_fence = build_active_fence(opening_fence, fence_line)
             open_unit = None
+            paragraph_open = False
+            previous_content = ""
             continue
 
         if raw_text_run_holds_text(line_raw_text) and not raw_text_run_is_displayed(
@@ -4190,14 +4300,30 @@ def extract_prose(text: str) -> str:
             # offset below here still points where it pointed.
             if run_end == -1:
                 open_unit = None
+                paragraph_open = False
+                previous_content = ""
                 continue
             visible = " " * run_end + fence_line.content[run_end:]
             if not visible.strip(ASCII_HORIZONTAL_WHITESPACE):
                 open_unit = None
+                paragraph_open = False
+                previous_content = ""
                 continue
             raw_text_blank_to = len(line) - len(fence_line.content) + run_end
             line = line[: len(line) - len(fence_line.content)] + visible
             fence_line = replace(fence_line, content=visible)
+
+        # The paragraph state the line above left, read before it is advanced,
+        # because the table rule below asks what stood above the *header* and
+        # the header is this line. Advanced here rather than at the foot of the
+        # loop so that every exit below leaves it right; every exit above is a
+        # line inside a fence or a raw-text run, and each of those clears it
+        # where it stands.
+        header_paragraph_open = paragraph_open
+        paragraph_open = opens_a_paragraph(
+            fence_line.content, paragraph_open, previous_content
+        )
+        previous_content = fence_line.content
 
         # Tables, with or without outer pipe characters. A table is found by
         # its delimiter row. The header line above that row and the body rows
@@ -4255,7 +4381,11 @@ def extract_prose(text: str) -> str:
                 next_line, list(list_contexts)
             )
             if next_fence_line.containment_path == fence_line.containment_path and (
-                table_starts_here(fence_line.content, next_fence_line.content)
+                table_starts_here(
+                    fence_line.content,
+                    next_fence_line.content,
+                    header_paragraph_open,
+                )
             ):
                 in_table = True
                 table_container = fence_line.containment_path

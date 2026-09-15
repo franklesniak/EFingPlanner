@@ -1002,7 +1002,7 @@ def test_a_directory_argument_still_refuses_an_adult_tree(tmp_path: Path) -> Non
     (docs_dir / "brief.md").write_text("Some prose lives here.", encoding="utf-8")
 
     assert readability.resolve_paths(["docs"], root) == []
-# --- round 4: containers alternate on one line (H1) -------------------------
+# --- containers alternate freely on one line ---------------------------------
 
 
 def test_extract_prose_drops_a_fence_inside_a_list_item_blockquote() -> None:
@@ -1067,7 +1067,7 @@ def test_extract_prose_drops_a_fence_inside_nested_list_items() -> None:
     assert "BRAVOLEAK" not in prose
 
 
-# --- round 4: not every terminal period ends a sentence (H2) ----------------
+# --- not every terminal period ends a sentence -------------------------------
 
 
 def test_split_sentences_does_not_split_an_abbreviation() -> None:
@@ -1122,7 +1122,7 @@ def test_split_sentences_still_splits_after_a_quoted_sentence() -> None:
     )
 
 
-# --- round 4: a quoted table is still a table (H3) --------------------------
+# --- a quoted table is still a table -----------------------------------------
 
 
 def test_extract_prose_drops_a_table_inside_a_blockquote() -> None:
@@ -1145,7 +1145,7 @@ def test_extract_prose_drops_a_table_inside_a_blockquote() -> None:
     assert "Where did you look" not in prose
 
 
-# --- round 4: multi-backtick code spans (H4) --------------------------------
+# --- multi-backtick code spans -----------------------------------------------
 
 
 def test_extract_prose_drops_a_multi_backtick_code_span() -> None:
@@ -1167,7 +1167,7 @@ def test_extract_prose_drops_a_code_span_that_contains_a_backtick() -> None:
     assert "when you want warnings to fail the run." in prose
 
 
-# --- round 5: an initialism can end a sentence (4000910001) -----------------
+# --- an initialism can end a sentence ----------------------------------------
 
 
 def test_split_sentences_splits_after_an_initialism_before_a_closed_class_word() -> None:
@@ -1193,7 +1193,7 @@ def test_an_initialism_ending_a_sentence_does_not_lower_the_sentence_length() ->
 
 
 def test_split_sentences_keeps_an_initialism_inside_a_name() -> None:
-    """Negative control: the corpus site round 4 fixed must stay fixed."""
+    """Negative control: the corpus sentence this rule was written for."""
     assert (
         len(readability.split_sentences("The U.S. Department of State keeps a page."))
         == 1
@@ -1227,7 +1227,7 @@ def test_a_capitalized_content_word_after_an_initialism_stays_merged() -> None:
     )
 
 
-# --- round 5: a fence ends with its container (4000909997) ------------------
+# --- a fence ends with its container -----------------------------------------
 
 
 def test_an_unclosed_blockquote_fence_ends_with_its_blockquote() -> None:
@@ -1290,7 +1290,7 @@ def test_a_top_level_unclosed_fence_still_runs_to_the_end_of_the_file() -> None:
     assert "hidden two" not in prose
 
 
-# --- round 5: a backtick fence's info string (4000909999) -------------------
+# --- a backtick fence's info string ------------------------------------------
 
 
 def test_a_backtick_fence_whose_info_string_carries_a_backtick_is_not_a_fence() -> None:
@@ -1344,7 +1344,7 @@ def test_the_two_checkers_agree_on_a_backtick_info_string() -> None:
     assert "is explained here" in readability.extract_prose(text)
 
 
-# --- round 5: Setext headings (4000910003) ----------------------------------
+# --- Setext headings ---------------------------------------------------------
 
 
 def test_extract_prose_drops_a_setext_heading_and_its_underline() -> None:
@@ -1386,7 +1386,7 @@ def test_a_list_bullet_is_not_a_setext_underline() -> None:
     assert "Pick two cities." in prose
 
 
-# --- round 5: reference links and definitions (4000910005) ------------------
+# --- reference links and definitions -----------------------------------------
 
 
 def test_extract_prose_keeps_reference_link_text_and_drops_its_label() -> None:
@@ -1420,7 +1420,7 @@ def test_a_definition_shaped_line_cannot_interrupt_a_paragraph() -> None:
     assert prose.count("\n") == 0
 
 
-# --- round 5: YAML front matter (4000910008) --------------------------------
+# --- YAML front matter -------------------------------------------------------
 
 
 def test_extract_prose_drops_yaml_front_matter() -> None:
@@ -1454,7 +1454,7 @@ def test_a_leading_thematic_break_is_not_front_matter() -> None:
     prose = readability.extract_prose(text)
     assert "Pick two cities you want to see." in prose
     assert "Write one thing you like." in prose
-# --- round 6: a file that is not valid UTF-8 reports, it does not crash -----
+# --- a file that is not valid UTF-8 reports, it does not crash ---------------
 
 
 def test_a_non_utf8_file_reports_instead_of_crashing(tmp_path: Path) -> None:
@@ -1521,8 +1521,7 @@ def test_both_checkers_refuse_a_non_utf8_file_the_same_way() -> None:
 
 
 # ---------------------------------------------------------------------------
-# Round 6: a code span's closing run must match its opening run exactly
-# (4001094121)
+# A code span's closing run must match its opening run exactly
 # ---------------------------------------------------------------------------
 
 
@@ -1586,7 +1585,7 @@ def test_an_unclosed_backtick_is_left_alone() -> None:
 
 
 # ---------------------------------------------------------------------------
-# Round 6: ATX headings inside a blockquote (4001094123)
+# ATX headings inside a blockquote
 # ---------------------------------------------------------------------------
 
 
@@ -1650,7 +1649,7 @@ def test_a_hash_inside_prose_is_not_a_heading() -> None:
 
 
 # ---------------------------------------------------------------------------
-# Round 6: a link definition's title may sit on the next line (4001094125)
+# A link definition's title may sit on the next line
 # ---------------------------------------------------------------------------
 
 
@@ -1713,7 +1712,7 @@ def test_plain_text_under_a_definition_is_still_prose() -> None:
 
 
 # ---------------------------------------------------------------------------
-# Round 6: a bare URL does not swallow the punctuation after it (4001094126)
+# A bare URL does not swallow the punctuation after it
 # ---------------------------------------------------------------------------
 
 
@@ -1759,7 +1758,7 @@ def test_an_autolink_and_a_plain_url_are_still_removed() -> None:
 
 
 # ---------------------------------------------------------------------------
-# Round 6: a contraction's n't can be a syllable of its own (4001094129)
+# A contraction's n't can be a syllable of its own
 # ---------------------------------------------------------------------------
 
 
@@ -1816,7 +1815,7 @@ def test_a_curly_apostrophe_counts_the_same_as_a_straight_one() -> None:
 
 
 # ---------------------------------------------------------------------------
-# Round 7: a backslash-escaped backtick opens no code span (4001246470)
+# A backslash-escaped backtick opens no code span
 # ---------------------------------------------------------------------------
 
 
@@ -1901,14 +1900,14 @@ def test_a_span_behind_an_escaped_backslash_keeps_its_words() -> None:
 
 
 def test_an_ordinary_code_span_is_still_stripped() -> None:
-    """Negative control for round 4: a plain span is untouched by the guard."""
+    """Negative control: a plain code span is untouched by the escape guard."""
     prose = readability.extract_prose(f"Type the word {TICK}banana{TICK} now.")
     assert "banana" not in prose
     assert "Type the word" in prose
 
 
-def test_the_escape_guard_does_not_reopen_the_round_six_holes() -> None:
-    """Negative control for round 6: both run-boundary guards still hold."""
+def test_the_escape_guard_does_not_reopen_the_code_span_holes() -> None:
+    """Negative control: both code-span run-boundary guards still hold."""
     mismatched = readability.extract_prose(
         f"Type {TICK * 2}the child words here{TICK * 3} and press enter now."
     )
@@ -1920,7 +1919,7 @@ def test_the_escape_guard_does_not_reopen_the_round_six_holes() -> None:
 
 
 # ---------------------------------------------------------------------------
-# Round 8: a marker inside literal code declares nothing (4001360333)
+# A marker inside literal code declares nothing
 # ---------------------------------------------------------------------------
 
 
@@ -1977,7 +1976,7 @@ def test_an_audience_marker_after_a_fenced_example_still_exempts_a_file() -> Non
 
 
 # ---------------------------------------------------------------------------
-# Round 8: a table ends with its container (4001360337)
+# A table ends with its container
 # ---------------------------------------------------------------------------
 
 
@@ -2023,7 +2022,7 @@ def test_a_listed_table_ends_when_the_list_ends() -> None:
 
 
 def test_a_quoted_table_is_still_dropped_in_full() -> None:
-    """Negative control for round 4: a table inside a quote is still a table."""
+    """Negative control: a table inside a blockquote is still a table."""
     prose = readability.extract_prose(
         "\n".join(
             [
@@ -2059,7 +2058,7 @@ def test_a_row_under_an_unquoted_table_is_still_a_row() -> None:
 
 
 # ---------------------------------------------------------------------------
-# Round 8: a link target is consumed whole (4001360339)
+# A link target is consumed whole
 # ---------------------------------------------------------------------------
 
 
@@ -2091,7 +2090,7 @@ def test_a_plain_inline_link_still_keeps_only_its_label() -> None:
 
 
 # ---------------------------------------------------------------------------
-# Round 8: a link definition is validated to the end of its line (4001360340)
+# A link definition is validated to the end of its line
 # ---------------------------------------------------------------------------
 
 
@@ -2121,7 +2120,7 @@ def test_a_link_definition_with_a_title_is_still_dropped() -> None:
 
 
 # ---------------------------------------------------------------------------
-# Round 8: ordered markers up to nine digits (4001360342)
+# Ordered markers up to nine digits
 # ---------------------------------------------------------------------------
 
 
@@ -2152,7 +2151,7 @@ def test_a_ten_digit_ordered_marker_is_not_a_list() -> None:
 
 
 # ---------------------------------------------------------------------------
-# Round 8: a word is made of Unicode letters (4001360344)
+# A word is made of Unicode letters
 # ---------------------------------------------------------------------------
 
 
@@ -2204,7 +2203,7 @@ def test_an_ascii_word_still_counts_the_same() -> None:
 
 
 # ---------------------------------------------------------------------------
-# Round 8: character references are decoded before counting (4001360347)
+# Character references are decoded before counting
 # ---------------------------------------------------------------------------
 
 
@@ -2238,7 +2237,7 @@ def test_a_character_reference_is_decoded_after_the_markdown_is_read() -> None:
 
 
 def test_a_decoded_reference_joins_the_word_it_sits_in() -> None:
-    """The interaction with 4001360344: decoding is only right with Unicode words.
+    """The interaction with Unicode word matching: decoding needs it to be right.
 
     ``caf&eacute;`` decodes to one word. An ASCII-only word pattern would read
     the decoded text as ``caf`` plus a dropped accent, trading one wrong count
@@ -2265,7 +2264,7 @@ def test_an_unknown_entity_name_keeps_its_word() -> None:
 
 
 # ---------------------------------------------------------------------------
-# Round 8: typographic quotation marks (4001360350)
+# Typographic quotation marks
 # ---------------------------------------------------------------------------
 
 
@@ -2291,7 +2290,7 @@ def test_a_curly_opening_quote_still_hides_an_abbreviation() -> None:
 
 
 def test_a_decoded_reference_uses_the_new_closer_class() -> None:
-    """The interaction with 4001360347: ``&rdquo;`` decodes to a closer."""
+    """The interaction with character-reference decoding: ``&rdquo;`` is a closer."""
     prose = readability.extract_prose("He said &ldquo;Go.&rdquo; Then we left.")
     assert len(readability.split_sentences(prose)) == 2
 
@@ -2310,12 +2309,12 @@ def test_an_ascii_opening_quote_still_hides_an_abbreviation() -> None:
     assert len(readability.split_sentences(prose)) == 1
 
 
-def test_round_eight_does_not_reopen_the_code_span_holes() -> None:
-    """Negative control for rounds 4, 6 and 7 together.
+def test_the_literal_code_walk_leaves_the_code_span_guards_alone() -> None:
+    """Negative control for the three code-span guards together.
 
-    Nothing in this round touches the code-span pattern, and the three guards
-    those rounds installed -- multi-backtick runs, both run boundaries, and the
-    opening-run escape -- all still hold.
+    The literal-code walk does not touch the code-span pattern, and the three
+    guards -- multi-backtick runs, both run boundaries, and the opening-run
+    escape -- all still hold.
     """
     assert "banana" not in readability.extract_prose(
         f"Type the word {TICK}banana{TICK} now."
@@ -2329,7 +2328,7 @@ def test_round_eight_does_not_reopen_the_code_span_holes() -> None:
     )
 
 
-# --- issue 27: the findings PR #22 deferred ---------------------------------
+# --- comment delimiters, code spans and blocks a document prints -------------
 
 
 def test_an_unmatched_comment_opener_in_a_fence_keeps_the_prose_below_it() -> None:
@@ -2393,7 +2392,7 @@ def test_a_comment_that_spans_lines_is_still_removed_as_one_span() -> None:
 
 
 def test_a_fenced_audience_marker_is_still_not_a_declaration() -> None:
-    """A negative control for round 8. The literal-code walk still finds the fence."""
+    """A negative control. The literal-code walk still finds the fence."""
     text = "# Lesson\n\n```markdown\n<!-- audience: adult -->\n```\n\nPick a city.\n"
     assert readability.has_adult_marker(text) is False
     assert readability.has_adult_marker("<!-- audience: adult -->\n\nSet this up.\n") is True
@@ -2549,7 +2548,7 @@ def test_a_code_span_does_not_reach_across_a_list_item() -> None:
 
 
 # ---------------------------------------------------------------------------
-# Round 2: a comment closer, a YAML key, and a line ending
+# A comment closer, a YAML key, and a line ending
 # ---------------------------------------------------------------------------
 
 
@@ -2702,7 +2701,7 @@ def test_trailing_space_and_tab_still_open_front_matter() -> None:
     for trailer in (" ", "\t", " \t "):
         document = f"---{trailer}\ntitle: real\n---\n\nProse.\n"
         assert "title: real" not in readability.strip_front_matter(document), trailer
-# --- round 3: YAML comments, and raw HTML before code spans -----------------
+# --- YAML comments, and raw HTML before code spans ---------------------------
 
 
 def test_front_matter_may_end_a_mapping_line_on_a_comment() -> None:
@@ -2838,7 +2837,7 @@ def test_an_html_block_start_ends_the_paragraph_a_code_span_searches(
 
 
 def test_a_comment_block_start_leaves_the_audience_marker_standing() -> None:
-    """The shape the finding gave, and the consequence it named.
+    """The reported shape, and the consequence it carries.
 
     ``<!-- audience: adult -->`` on its own line opens an HTML block, so the
     backtick above it never pairs with the one below. Blanking the marker sent
@@ -2870,7 +2869,7 @@ def test_a_type_seven_html_block_does_not_end_a_paragraph() -> None:
 
 
 def test_a_lowercase_declaration_does_not_end_a_paragraph() -> None:
-    """A negative control, and the same split round 3 settled.
+    """A negative control, and the same split between the two renderers.
 
     markdown-it 14.3.0 wants an uppercase letter after ``<!``; the CommonMark
     0.31.2 prose says "an ASCII letter" and micromark 4.0.2 reads it that way.
@@ -3381,7 +3380,7 @@ def test_a_marker_the_page_really_shows_still_declares(label: str, line: str) ->
     assert readability.has_adult_marker(f"{line}\n"), label
 
 
-# --- round 7: YAML flow collections in front matter (4003802116) ------------
+# --- YAML flow collections in front matter -----------------------------------
 
 
 @pytest.mark.parametrize(
@@ -3430,7 +3429,7 @@ def test_a_sentence_is_still_not_a_flow_collection(label: str, line: str) -> Non
     assert readability.strip_front_matter(document) == document, label
 
 
-# --- round 7: raw HTML before the bracket stack (4003802121) ----------------
+# --- raw HTML before the bracket stack ---------------------------------------
 
 
 @pytest.mark.parametrize(
@@ -3464,8 +3463,7 @@ def test_a_marker_in_a_real_link_target_still_declares_nothing() -> None:
     assert not readability.has_adult_marker(f'<span title="x">[text](url "{ADULT_MARKER}")\n')
 
 
-# --- round 8: raw HTML runs, list interruption, lazy Setext (4004076349,
-# --- 4004076354, 4004076360, 4004076363) ------------------------------------
+# --- raw HTML runs, list interruption, and a lazy Setext underline -----------
 
 
 @pytest.mark.parametrize(
@@ -3675,7 +3673,7 @@ def test_a_raw_text_run_is_not_prose() -> None:
 
 
 # ---------------------------------------------------------------------------
-# Round 9: the raw-text runs a reader actually reads, and raw HTML blocks
+# The raw-text runs a reader actually reads, and raw HTML blocks
 # ---------------------------------------------------------------------------
 
 #: Forty-four words, which is past ``MIN_WORDS_TO_SCORE``. A document whose
@@ -4017,9 +4015,9 @@ def test_an_unclosed_flow_sequence_is_not_front_matter() -> None:
 
 
 def test_a_top_level_sequence_is_not_front_matter() -> None:
-    """A verdict this round changes, deliberately, and the reason it changed.
+    """A verdict this suite changed, deliberately, and the reason it changed.
 
-    An earlier round wrote ``- [a, b]`` as an over-application control: a rule
+    ``- [a, b]`` was written here as an over-application control: a rule
     that rejected every sequence item would keep this block's words. Front
     matter is a *mapping*, though, and the shape the old control protected is
     the same shape as ``---`` over an ordinary Markdown list. Measured with
@@ -4039,7 +4037,7 @@ def test_a_markdown_list_under_a_thematic_break_keeps_its_words() -> None:
 
     ``---`` over two list items, closed by ``...``, is a thematic break, a list
     and a paragraph. Every word of it is on the page, and every word of it was
-    removed before this round: 32 words became 37.
+    being removed as front matter: 32 words became 37.
     """
     document = (
         "---\n- item one\n- item two\n...\n\n"
@@ -4105,7 +4103,7 @@ def test_a_link_label_folds_the_blanks_the_renderer_folds() -> None:
 
 
 # ---------------------------------------------------------------------------
-# Round 11: spaces or tabs, an opener line, raw HTML productions, and YAML
+# Spaces or tabs, an opener line, raw HTML productions, and YAML
 # ---------------------------------------------------------------------------
 
 
@@ -4417,7 +4415,7 @@ def test_an_item_with_content_still_interrupts_in_readability() -> None:
 
 
 # ---------------------------------------------------------------------------
-# Round 13: front matter YAML cannot construct, a run's visible tail, a tag
+# Front matter YAML cannot construct, a run's visible tail, a tag
 # that holds its own end-tag spelling, a link across a soft break, and a GFM
 # table cell as its own inline context.
 # ---------------------------------------------------------------------------
@@ -5095,7 +5093,7 @@ def test_a_backslash_does_not_escape_a_line_ending_in_a_link_target() -> None:
     target may not reach across the break behind one. GitHub's own renderer
     forms no link here and pairs the backticks instead, which puts the marker
     inside a code span; markdown-it 14.3.0 forms the link, and this is one of
-    three places this round found where the two part.
+    the places where the two renderers are measured to part.
     """
     document = (
         "[x](" + BACKSLASH + "\n" + TICK + ") " + ADULT_MARKER + " " + TICK + "c"
@@ -5244,7 +5242,7 @@ def test_an_angle_destination_ends_at_an_unescaped_line_ending() -> None:
     assert not readability.has_adult_marker(unescaped)
     assert readability.has_adult_marker(escaped)
 
-#: Round 17's shared spellings. The marker view of the readability hook is a
+#: The spellings these suites share. The marker view of the readability hook is a
 #: document-wide question, so the two suites bind the same test bodies to
 #: different entry points rather than copying them.
 QUOTE = chr(34)
@@ -5444,8 +5442,8 @@ def test_a_tables_delimiter_row_leaves_no_prose_behind() -> None:
 
     ``| zulu |`` over ``-:`` is a table on GitHub, and asking the body-row
     rule for a pipe left the ``-:`` standing in the prose as a sentence of its
-    own. Pre-existing before this round and reachable from more documents
-    once a pipeless header opens a table.
+    own. It predates the pipeless-header rule and is reachable from more
+    documents once a pipeless header opens a table.
     """
     tail = "\n\nWe walk to the park and count every red car today.\n"
     assert readability.extract_prose("| zulu |\n-:" + tail).strip() == (
@@ -5503,17 +5501,18 @@ def test_an_indented_delimiter_row_leaves_its_lines_in_the_prose() -> None:
     paragraph and both are scored -- which is what GitHub renders. Three
     columns still opens the table it always did.
 
-    The *header* row's own indent is a residual this round names rather than
-    closes: the three walks that look a delimiter row ahead carry no paragraph
-    state, so a four-space header over a pipeless delimiter row still opens a
-    table here. It is pinned so that closing it is a visible change rather
-    than a silent one.
+    The *header* row's own indent is the delimiter row's twin and is settled
+    the same way, with one difference the paragraph state carries: a line
+    indented four columns is an indented code block where nothing is open
+    above it, and is the paragraph's own lazy continuation where something
+    is. So it is no table header in the first case and is one in the second,
+    which is what GitHub renders both ways.
     """
     tail = _NL + "<custom>" + _NL + "## Goal" + _NL
     assert "-:" in readability.extract_prose("x" + _NL + "    -:" + tail)
     assert "-:" not in readability.extract_prose("x" + _NL + "   -:" + tail)
-    # the residual, pinned rather than asserted to be right
-    assert readability.table_starts_here("    zulu", "-:")
+    assert not readability.table_starts_here("    zulu", "-:", False)
+    assert readability.table_starts_here("    zulu", "-:", True)
 
 
 def test_table_row_cells_reads_a_pipe_at_index_zero_safely() -> None:
@@ -5667,3 +5666,84 @@ def test_the_two_hooks_read_a_half_written_tag_alike() -> None:
             assert readability.html_tag_close_state(
                 content, 0, state
             ) == other.html_tag_close_state(content, 0, state)
+
+
+# A container, a table header and a raw-text opener are each read where
+# CommonMark puts them
+# ---------------------------------------------------------------------------
+
+_R20_NL = chr(10)
+_R20_FENCE = chr(96) * 3
+_R20_WORDS = "zulu tango words of prose"
+_R20_NOTE = (
+    "<!-- a hidden note with many words in it"
+    + _R20_NL
+    + "and a second line of the same note -->"
+)
+
+
+def test_a_marker_behind_a_non_interrupting_marker_is_still_a_comment() -> None:
+    """The backticks are a code span, so the marker inside them is a comment.
+
+    ``Intro.`` over ``2. ``` `` is one paragraph on GitHub's own renderer, and
+    the suppression marker written under it is the comment the page carries.
+    Peeling the ``2.`` opened a fenced block and the marker became literal
+    code, so a document lost a declaration it really makes.
+    """
+    marker = "<!-- no-source-check: offline -->"
+    document = (
+        "Intro." + _R20_NL + "2. " + _R20_FENCE + _R20_NL
+        + "   " + marker + _R20_NL + "   " + _R20_FENCE + _R20_NL
+    )
+    assert "no-source-check" in readability.document_marker_text(document)
+    # the control: a start of 1 interrupts, so the marker really is code
+    opened = document.replace("2. ", "1. ", 1)
+    assert "no-source-check" not in readability.document_marker_text(opened)
+
+
+def test_a_header_indented_four_columns_is_code_where_nothing_is_open() -> None:
+    """An indented code block is no table header, and a lazy continuation is.
+
+    A line indented four columns opens a code block where nothing stands above
+    it, so the delimiter row under it consumes nothing and both lines are
+    prose a reader sees. Where a paragraph *is* open above it the same line is
+    that paragraph's lazy continuation and really is a header -- measured on
+    GitHub's own renderer both ways.
+    """
+    code = "    " + _R20_WORDS + _R20_NL + "-:" + _R20_NL
+    assert "zulu" in readability.extract_prose(code)
+    lazy = "Intro." + _R20_NL + "    " + _R20_WORDS + _R20_NL + "-:" + _R20_NL
+    assert "zulu" not in readability.extract_prose(lazy)
+    # three columns is where GFM lets a table begin, and always did
+    allowed = "   " + _R20_WORDS + _R20_NL + "-:" + _R20_NL
+    assert "zulu" not in readability.extract_prose(allowed)
+    # one tab reaches column four
+    tabbed = chr(9) + _R20_WORDS + _R20_NL + "-:" + _R20_NL
+    assert "zulu" in readability.extract_prose(tabbed)
+    assert not readability.table_starts_here("    " + _R20_WORDS, "-:", False)
+    assert readability.table_starts_here("    " + _R20_WORDS, "-:", True)
+
+
+def test_a_raw_text_opener_a_fence_prints_opens_no_run() -> None:
+    """An unmatched ``<script>`` inside an example is escaped code on the page.
+
+    The comment mask opened a browser raw-text run on it, the run never
+    closed, and the mask then covered a real comment below the fence -- so the
+    comment survived removal and the words hidden inside it were scored as
+    prose a child reads.
+    """
+    tail = "We pack the bags and then we walk to the train and we ride today."
+    fenced = (
+        _R20_FENCE + "text" + _R20_NL + "<script>" + _R20_NL + _R20_FENCE + _R20_NL
+        + _R20_NL + _R20_NOTE + _R20_NL + _R20_NL + tail + _R20_NL
+    )
+    prose = readability.extract_prose(fenced)
+    assert "hidden note" not in prose
+    assert "pack the bags" in prose
+    # the control: outside a fence the same opener really does open a run
+    bare = (
+        "<script>" + _R20_NL + _R20_NL + _R20_NOTE + _R20_NL + _R20_NL + tail + _R20_NL
+    )
+    assert "hidden note" not in readability.extract_prose(bare)
+    # and the mask is the one the walks use, so a fenced line carries none of it
+    assert not any(readability.raw_text_run_mask(fenced))

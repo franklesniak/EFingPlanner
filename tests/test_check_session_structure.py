@@ -1302,7 +1302,7 @@ def test_a_non_utf8_session_is_a_violation_not_a_crash(tmp_path: Path) -> None:
 
 
 # ---------------------------------------------------------------------------
-# Round 6: the scan roots themselves, and three CommonMark defects
+# The scan roots themselves, and three CommonMark defects
 # ---------------------------------------------------------------------------
 
 
@@ -1597,7 +1597,7 @@ def test_an_ordinary_backtick_info_string_still_opens_a_fence() -> None:
 
 
 # ---------------------------------------------------------------------------
-# Round 7: a container prefix does not stop a comment from being a comment
+# A container prefix does not stop a comment from being a comment
 # ---------------------------------------------------------------------------
 
 
@@ -1635,7 +1635,7 @@ def test_a_marker_indented_four_spaces_is_still_an_example() -> None:
 
 
 def test_a_container_nested_marker_inside_a_fence_is_still_an_example() -> None:
-    """A negative control. Round 4 holds: a fenced marker exempts nothing."""
+    """A negative control: a marker inside a fence exempts nothing."""
     text = build_session(
         sections=SIX_SECTIONS,
         extra="## Notes\n\n```\n> <!-- no-source-check: printed, not declared -->\n```\n",
@@ -1646,7 +1646,7 @@ def test_a_container_nested_marker_inside_a_fence_is_still_an_example() -> None:
 def test_a_blockquoted_comment_with_trailing_backticks_opens_no_fence() -> None:
     """The same line, read as a fence, invented a worksheet that is not there.
 
-    The blockquote prefix hid the HTML block from the round-6 test, so the
+    The blockquote prefix hid the HTML block from the unquoted test, so the
     backticks after the comment opened a fence, and the quoted underscores
     inside it were reported as a worksheet fill-in. CommonMark opens no fence
     there: the whole line is one HTML block.
@@ -1671,7 +1671,7 @@ def test_a_fence_after_a_blockquoted_comment_line_still_opens() -> None:
 
 
 # ---------------------------------------------------------------------------
-# Round 7: a link reference definition prints nothing
+# A link reference definition prints nothing
 # ---------------------------------------------------------------------------
 
 
@@ -1748,7 +1748,7 @@ def test_a_line_that_is_not_a_reference_definition_is_still_content(
 
 
 def test_the_emptiness_rule_still_reads_comments_and_bare_markers_as_empty() -> None:
-    """A negative control for round 4: the comment rule is untouched."""
+    """A negative control: the comment rule is untouched."""
     text = build_session().replace(
         "## Goal\n\nReal content for Goal.\n",
         "## Goal\n\n<!-- markdownlint-disable -->\n\n-\n",
@@ -1758,7 +1758,7 @@ def test_the_emptiness_rule_still_reads_comments_and_bare_markers_as_empty() -> 
 
 
 # ---------------------------------------------------------------------------
-# Round 8: a comment is a comment where it sits, not only on a line of its own
+# A comment is a comment where it sits, not only on a line of its own
 # ---------------------------------------------------------------------------
 
 
@@ -1826,7 +1826,7 @@ def test_an_inline_marker_five_spaces_into_a_list_item_is_still_an_example() -> 
 
 
 # ---------------------------------------------------------------------------
-# Round 8: a heading inside any raw HTML block is not a heading
+# A heading inside any raw HTML block is not a heading
 # ---------------------------------------------------------------------------
 
 
@@ -1921,13 +1921,13 @@ def test_a_heading_after_a_document_type_declaration_is_a_section() -> None:
 
 
 def test_a_heading_after_a_one_line_comment_is_still_a_section() -> None:
-    """A negative control for round 4. A closed comment does not swallow the next line."""
+    """A negative control. A closed comment does not swallow the next line."""
     text = build_session().replace("## Goal\n", "<!-- a note -->\n## Goal\n", 1)
     assert check(text) == []
 
 
 def test_a_fence_line_inside_a_raw_html_block_opens_no_fence() -> None:
-    """Round 6's rule, extended: raw HTML is raw HTML whichever condition opened it.
+    """The comment rule, extended: raw HTML is raw HTML whichever condition opened it.
 
     The backticks inside the ``<div>`` are characters in an HTML block, not a
     fence. Before this they opened one that nothing closed, and every heading
@@ -1942,7 +1942,7 @@ def test_a_fence_line_inside_a_raw_html_block_opens_no_fence() -> None:
 
 
 # ---------------------------------------------------------------------------
-# Round 8: the navigation line belongs in the session header
+# The navigation line belongs in the session header
 # ---------------------------------------------------------------------------
 
 
@@ -2007,7 +2007,7 @@ def test_the_navigation_line_in_the_header_still_passes() -> None:
 
 
 # ---------------------------------------------------------------------------
-# Issue 27: the findings PR #23 deferred
+# Markers, containers and leaf blocks a session document prints
 # ---------------------------------------------------------------------------
 
 FIVE_SECTIONS = ("Goal", "Start Here", "Steps", "Workspace", "Artifact Created")
@@ -2190,7 +2190,7 @@ def test_a_fence_after_a_paragraph_that_starts_with_a_tag_still_opens() -> None:
 def test_a_marker_inside_a_multiline_code_span_does_not_exempt() -> None:
     """A code span closes on a run of its own length anywhere in its paragraph.
 
-    The finding that raised this gave an example that does not reproduce: a
+    The example this test was written from does not reproduce: a
     line beginning ``<!--`` opens HTML block condition 2, which may interrupt a
     paragraph, so the span never forms and the marker there is a real comment.
     This is the shape that does reproduce, and markdown-it 14.3.0 renders the
@@ -2217,7 +2217,7 @@ def test_a_marker_inside_a_multiline_code_span_does_not_exempt() -> None:
 def test_a_code_span_that_does_not_form_leaves_a_real_marker(label: str, body: str) -> None:
     """Negative controls. Each of these is a comment on the page.
 
-    The third is the shape the finding gave. Its middle line opens an HTML
+    The third is the reported shape. Its middle line opens an HTML
     block of its own, which ends the paragraph, so the backticks around it are
     literal text. All three measured against markdown-it 14.3.0.
     """
@@ -2451,7 +2451,7 @@ def test_a_setext_underline_closes_the_paragraph_above_a_raw_html_block() -> Non
 
 
 # ---------------------------------------------------------------------------
-# Round 2: which labels a document defines, and where a line ends
+# Which labels a document defines, and where a line ends
 # ---------------------------------------------------------------------------
 
 
@@ -2549,7 +2549,7 @@ def test_a_document_with_crlf_line_endings_keeps_its_sections() -> None:
         .replace("\n", "\r\n")
     )
     assert check(text) == []
-# --- round 3: declarations, code spans before links, and label length -------
+# --- declarations, code spans before links, and label length -----------------
 
 
 def test_a_lowercase_declaration_does_not_open_an_html_block() -> None:
@@ -2806,7 +2806,7 @@ def test_a_control_character_is_not_a_destination_character(label: str, body: st
 
 
 def test_a_less_than_part_way_into_a_bare_destination_is_still_a_destination() -> None:
-    """A negative control, and the mirror of the finding that prompted this.
+    """A negative control, and the mirror of the case above.
 
     A bare destination may not *start* with ``<`` and may hold one further
     along: markdown-it 14.3.0 and micromark 4.0.2 both read ``[a]: foo< "t"``
@@ -2964,9 +2964,9 @@ def test_an_angle_run_that_is_no_autolink_keeps_its_backtick() -> None:
     assert structure.NO_SOURCE_CHECK_PATTERN.search(scan.marker_text) is None
 
 
-# --- round 7: a block start clears the paragraph above condition 7 ----------
+# --- a block start clears the paragraph above condition 7 --------------------
 
-#: The Source Check exemption marker, spelled once for the round-7 cases.
+#: The Source Check exemption marker, spelled once for the container cases.
 
 
 @pytest.mark.parametrize(
@@ -3020,7 +3020,7 @@ def test_a_container_opening_on_a_line_lets_condition_seven_open(
 def test_condition_seven_still_may_not_interrupt_a_paragraph(
     label: str, document: str
 ) -> None:
-    """The negative controls, and the ones round 6 measured.
+    """The negative controls, and the ones the comment rule measured.
 
     A line that merely outdents out of a container has not started a block, so
     no type-seven block opens, the backtick runs really are a fence, and the
@@ -3031,7 +3031,7 @@ def test_condition_seven_still_may_not_interrupt_a_paragraph(
     assert structure.NO_SOURCE_CHECK_PATTERN.search(scan.marker_text) is None, label
 
 
-# --- round 7: raw HTML before the bracket stack (4003802121) ----------------
+# --- raw HTML before the bracket stack ---------------------------------------
 
 
 @pytest.mark.parametrize(
@@ -3068,8 +3068,7 @@ def test_a_marker_in_a_real_link_target_still_declares_nothing() -> None:
     assert structure.NO_SOURCE_CHECK_PATTERN.search(scan.marker_text) is None
 
 
-# --- round 8: raw HTML runs, list interruption, lazy Setext, leaf blocks
-# --- (4004076349, 4004076354, 4004076360, 4004076363, 4004076367) -----------
+# --- raw HTML runs, list interruption, lazy Setext, and leaf blocks ----------
 
 
 def _marker_found(document: str) -> bool:
@@ -3438,7 +3437,7 @@ def test_a_link_label_folds_the_blanks_the_renderer_folds() -> None:
 
 
 # ---------------------------------------------------------------------------
-# Round 11: spaces or tabs, an opener line, and raw HTML productions
+# Spaces or tabs, an opener line, and raw HTML productions
 # ---------------------------------------------------------------------------
 
 
@@ -3620,7 +3619,7 @@ def test_a_closing_line_is_still_the_runs_last_line() -> None:
 def test_a_marker_whose_comment_spans_lines_is_still_a_marker() -> None:
     """A comment may hold a line ending and still be one comment.
 
-    Found by this round's sweep rather than by a reviewer. The marker patterns
+    Found by a sweep of the marker patterns rather than by a reviewer. They
     used ``.*?``, which stops at a line ending, so a marker written over two
     lines of one comment exempted nothing. Measured with markdown-it 14.3.0
     read by ``html.parser``: the page holds one comment, and its text is
@@ -3729,7 +3728,7 @@ def test_an_empty_item_with_no_paragraph_above_it_still_opens_a_list() -> None:
 
 
 # ---------------------------------------------------------------------------
-# Round 13: the sibling copies of three rules, and one cross-hook pin.
+# The sibling copies of three rules, and one cross-hook pin.
 # ---------------------------------------------------------------------------
 
 ROUND13_ADULT = "<!-- audience: adult -->"
@@ -3758,9 +3757,9 @@ def test_a_genuinely_closed_element_still_shows_the_heading() -> None:
 def test_the_three_hooks_agree_about_where_a_raw_text_run_ends() -> None:
     """One rule, three copies, and the copies are asked the same questions.
 
-    Two of the three pairs of hooks had no pin at all, which an earlier round
-    recorded as a gap. This pins the helper all three now share, on the shape
-    that made it necessary.
+    Two of the three pairs of hooks had no pin at all, which was recorded as
+    a gap. This pins the helper all three now share, on the shape that made
+    it necessary.
     """
     import importlib.util as _util
 
@@ -4228,7 +4227,7 @@ def _load_readability_hook():
     spec.loader.exec_module(module)
     return module
 
-#: Round 17's shared spellings; see the note in
+#: The spellings these suites share; see the note in
 #: ``tests/test_check_readability.py``.
 QUOTE = chr(34)
 MARKER = OFFLINE_MARKER
@@ -4461,3 +4460,30 @@ def test_a_parenthesised_inline_title_may_hold_no_opener_here_either() -> None:
     valid = "[x](url (a" + marker + "b))"
     assert "no-source-check" not in structure.scan_document(valid).marker_text
     assert structure.reference_title_span(["(a(b)"], 0, 0) == 0
+
+
+def test_a_fence_behind_a_non_interrupting_marker_opens_none_here_either() -> None:
+    """The session hook's copy of the container rule, read end to end."""
+    newline = chr(10)
+    fence = chr(96) * 3
+    marker = "<!-- no-source-check: offline -->"
+    held = (
+        "Intro." + newline + "2. " + fence + newline
+        + "   " + marker + newline + "   " + fence + newline
+    )
+    assert "no-source-check" in structure.scan_document(held).marker_text
+    opened = held.replace("2. ", "1. ", 1)
+    assert "no-source-check" not in structure.scan_document(opened).marker_text
+
+
+def test_a_table_header_indented_four_columns_is_code_here_too() -> None:
+    """The indent rule, and the paragraph state the session walk now carries."""
+    newline = chr(10)
+    tick = chr(96)
+    body = tick + "open | <!-- no-source-check: offline --> " + tick + "close"
+    code = "    " + body + newline + "--- | ---"
+    assert "no-source-check" not in structure.scan_document(code).marker_text
+    lazy = "Intro." + newline + "    " + body + newline + "--- | ---"
+    assert "no-source-check" in structure.scan_document(lazy).marker_text
+    assert not structure.table_starts_here("    a | b", "--- | ---", False)
+    assert structure.table_starts_here("    a | b", "--- | ---", True) == 2

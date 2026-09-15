@@ -580,7 +580,7 @@ def test_a_blank_line_does_not_end_a_list_nested_fence(tmp_path: Path) -> None:
 
 
 # ---------------------------------------------------------------------------
-# Round 6: an HTML block opens no fence here either
+# An HTML block opens no fence here either
 # ---------------------------------------------------------------------------
 
 
@@ -629,7 +629,7 @@ def test_a_fence_on_the_line_after_a_comment_still_hides_a_placeholder(
 
 
 # ---------------------------------------------------------------------------
-# Round 7: a container prefix does not stop an HTML block from being one
+# A container prefix does not stop an HTML block from being one
 # ---------------------------------------------------------------------------
 
 
@@ -701,7 +701,7 @@ def test_the_html_block_test_does_not_disturb_list_tracking(tmp_path: Path) -> N
 
 
 def test_a_fence_line_inside_a_div_block_hides_nothing(tmp_path: Path) -> None:
-    """Round 8: a comment is one HTML block condition out of several.
+    """A comment is one HTML block condition out of several.
 
     The backticks inside the ``<div>`` are raw HTML, so no fenced block opens.
     Before this, they opened one that never closed, and every placeholder to
@@ -772,7 +772,7 @@ def test_an_ordinary_paragraph_starting_with_a_tag_still_opens_its_fence(
 
 
 # ---------------------------------------------------------------------------
-# Issue 27: the HTML-block findings PR #23 deferred, in the sibling hook
+# HTML blocks a document prints, in the third copy of the same walk
 # ---------------------------------------------------------------------------
 
 
@@ -899,7 +899,7 @@ def test_crlf_line_endings_report_what_line_feeds_report() -> None:
 
     assert expected == ["TBD"]
     assert [violation.matched_text for violation in _find(text.replace("\n", "\r\n"))] == expected
-# --- round 3: HTML block condition 4 wants a capital ------------------------
+# --- HTML block condition 4 wants a capital ----------------------------------
 
 
 def test_a_lowercase_declaration_does_not_open_an_html_block() -> None:
@@ -989,7 +989,7 @@ def test_a_blank_line_closes_an_html_block() -> None:
     assert _find(text) == []
 
 
-# --- round 7: a block start clears the paragraph above condition 7 ----------
+# --- a block start clears the paragraph above condition 7 --------------------
 
 
 @pytest.mark.parametrize(
@@ -1065,7 +1065,7 @@ def test_a_container_opening_on_a_line_lets_condition_seven_open(
 def test_condition_seven_still_may_not_interrupt_a_paragraph(
     label: str, document: str
 ) -> None:
-    """The negative controls, and the ones round 6 measured.
+    """The negative controls, and the ones the comment rule measured.
 
     A line that merely outdents out of a container has not started a block: an
     unprefixed line under a listed paragraph is the lazy continuation
@@ -1102,8 +1102,7 @@ def test_a_list_item_holding_a_real_fence_is_still_a_fence() -> None:
     assert _find(text) == []
 
 
-# --- round 8: list interruption, leaf blocks, raw text (4004076354,
-# --- 4004076363, 4004076367) ------------------------------------------------
+# --- list interruption, leaf blocks, and raw text ----------------------------
 
 
 def test_a_link_reference_definition_lets_condition_seven_open() -> None:
@@ -1141,7 +1140,7 @@ def test_an_ordered_list_above_one_opens_no_block() -> None:
 
     So ``2. <x-session>`` under an open sentence is that sentence's own text,
     no type-seven block opens, and the backtick runs below it pair as a code
-    span the page prints as code. Round 7 recorded this shape as the one
+    span the page prints as code. This shape was recorded as the one
     condition-7 case still disagreeing; it agrees now.
     <https://spec.commonmark.org/0.31.2/#list-items>
     """
@@ -1318,7 +1317,7 @@ def test_a_comment_opened_on_a_run_opener_line_does_not_outlive_the_run() -> Non
 
 
 # ---------------------------------------------------------------------------
-# Round 11: spaces or tabs, and an opener line
+# Spaces or tabs, and an opener line
 # ---------------------------------------------------------------------------
 
 
@@ -1432,7 +1431,7 @@ def test_an_item_with_content_still_interrupts_in_the_placeholder_hook() -> None
 
 
 # ---------------------------------------------------------------------------
-# Round 13: the third copy of the start-tag rule.
+# The third copy of the start-tag rule.
 # ---------------------------------------------------------------------------
 
 
@@ -1596,3 +1595,82 @@ def test_a_table_header_may_not_be_a_heading_in_this_hook_either() -> None:
     assert _placeholder_hook.table_starts_here("# a | b", "--- | ---") == 0
     assert _placeholder_hook.table_starts_here("***", "-:") == 0
     assert _placeholder_hook.table_starts_here("a | b", "--- | ---") == 2
+
+
+# A container is peeled only where CommonMark opens one
+# ---------------------------------------------------------------------------
+
+_MARK_NL = chr(10)
+_MARK_FENCE = chr(96) * 3
+
+
+def test_a_fence_behind_a_non_interrupting_marker_opens_no_fenced_block() -> None:
+    """An ordered list starting at 2 may not interrupt an open paragraph.
+
+    ``Intro.`` over ``2. ``` `` is one paragraph of two lines on GitHub's own
+    renderer, measured, so the backticks are a code span and the ``TBD`` under
+    them is text a reader sees. The container walk peeled the ``2.`` anyway,
+    the backticks then opened a fenced block, and every placeholder inside it
+    was exempted as an example.
+    """
+    document = (
+        "Intro."
+        + _MARK_NL
+        + "2. "
+        + _MARK_FENCE
+        + _MARK_NL
+        + "   TBD"
+        + _MARK_NL
+        + "   "
+        + _MARK_FENCE
+        + _MARK_NL
+    )
+    assert _find(document)
+    # the control: a start of 1 does interrupt, so this really is a fence
+    opened = document.replace("2. ", "1. ", 1)
+    assert not _find(opened)
+    # and so does a bullet, whatever its item holds
+    bulleted = "Intro." + _MARK_NL + "- " + _MARK_FENCE + _MARK_NL + "  TBD" + _MARK_NL + "  " + _MARK_FENCE + _MARK_NL
+    assert not _find(bulleted)
+
+
+def test_the_paragraph_has_to_be_the_one_the_marker_would_open_inside() -> None:
+    """A list opens outside the blockquote whose paragraph stands above it.
+
+    ``> Intro.`` over ``2. ``` `` really does open a list on GitHub's own
+    renderer, because the paragraph is inside the blockquote and the list is
+    not, so there is nothing at that level to interrupt. Reading the rule
+    without the container answered this one the other way.
+    """
+    outside = (
+        "> Intro." + _MARK_NL + "2. " + _MARK_FENCE + _MARK_NL
+        + "   TBD" + _MARK_NL + "   " + _MARK_FENCE + _MARK_NL
+    )
+    assert not _find(outside)
+    inside = (
+        "> Intro." + _MARK_NL + "> 2. " + _MARK_FENCE + _MARK_NL
+        + ">    TBD" + _MARK_NL + ">    " + _MARK_FENCE + _MARK_NL
+    )
+    assert _find(inside)
+    # a marker always begins a new item, so nothing is open inside this one
+    sibling = (
+        "- Intro." + _MARK_NL + "- 2. " + _MARK_FENCE + _MARK_NL
+        + "     TBD" + _MARK_NL + "     " + _MARK_FENCE + _MARK_NL
+    )
+    assert not _find(sibling)
+    # and the next item of a list already open interrupts nothing
+    following = (
+        "2. Intro." + _MARK_NL + "3. " + _MARK_FENCE + _MARK_NL
+        + "   TBD" + _MARK_NL + "   " + _MARK_FENCE + _MARK_NL
+    )
+    assert not _find(following)
+
+
+def test_the_peel_defaults_to_the_answer_it_gave_with_no_paragraph_state() -> None:
+    """A caller that cannot say whether a paragraph is open peels as before."""
+    contexts: list = []
+    assert _placeholder_hook.normalize_for_fence_opening("2. x", contexts).content == "x"
+    contexts = []
+    held = _placeholder_hook.normalize_for_fence_opening("2. x", contexts, True, ())
+    assert held.content == "2. x"
+    assert held.opened == ()
