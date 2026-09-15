@@ -1302,7 +1302,7 @@ def test_a_non_utf8_session_is_a_violation_not_a_crash(tmp_path: Path) -> None:
 
 
 # ---------------------------------------------------------------------------
-# Round 6: the scan roots themselves, and three CommonMark defects
+# The scan roots themselves, and three CommonMark defects
 # ---------------------------------------------------------------------------
 
 
@@ -1597,7 +1597,7 @@ def test_an_ordinary_backtick_info_string_still_opens_a_fence() -> None:
 
 
 # ---------------------------------------------------------------------------
-# Round 7: a container prefix does not stop a comment from being a comment
+# A container prefix does not stop a comment from being a comment
 # ---------------------------------------------------------------------------
 
 
@@ -1621,7 +1621,8 @@ def test_a_marker_inside_a_markdown_container_still_exempts(label: str, marker: 
     why it has no research step -- which is the whole point of the marker.
     """
     text = build_session(sections=SIX_SECTIONS, markers=marker)
-    assert check(text) == [], (label, check(text))
+    messages = check(text)
+    assert messages == [], (label, messages)
 
 
 def test_a_marker_indented_four_spaces_is_still_an_example() -> None:
@@ -1634,7 +1635,7 @@ def test_a_marker_indented_four_spaces_is_still_an_example() -> None:
 
 
 def test_a_container_nested_marker_inside_a_fence_is_still_an_example() -> None:
-    """A negative control. Round 4 holds: a fenced marker exempts nothing."""
+    """A negative control: a marker inside a fence exempts nothing."""
     text = build_session(
         sections=SIX_SECTIONS,
         extra="## Notes\n\n```\n> <!-- no-source-check: printed, not declared -->\n```\n",
@@ -1645,7 +1646,7 @@ def test_a_container_nested_marker_inside_a_fence_is_still_an_example() -> None:
 def test_a_blockquoted_comment_with_trailing_backticks_opens_no_fence() -> None:
     """The same line, read as a fence, invented a worksheet that is not there.
 
-    The blockquote prefix hid the HTML block from the round-6 test, so the
+    The blockquote prefix hid the HTML block from the unquoted test, so the
     backticks after the comment opened a fence, and the quoted underscores
     inside it were reported as a worksheet fill-in. CommonMark opens no fence
     there: the whole line is one HTML block.
@@ -1670,7 +1671,7 @@ def test_a_fence_after_a_blockquoted_comment_line_still_opens() -> None:
 
 
 # ---------------------------------------------------------------------------
-# Round 7: a link reference definition prints nothing
+# A link reference definition prints nothing
 # ---------------------------------------------------------------------------
 
 
@@ -1747,7 +1748,7 @@ def test_a_line_that_is_not_a_reference_definition_is_still_content(
 
 
 def test_the_emptiness_rule_still_reads_comments_and_bare_markers_as_empty() -> None:
-    """A negative control for round 4: the comment rule is untouched."""
+    """A negative control: the comment rule is untouched."""
     text = build_session().replace(
         "## Goal\n\nReal content for Goal.\n",
         "## Goal\n\n<!-- markdownlint-disable -->\n\n-\n",
@@ -1757,7 +1758,7 @@ def test_the_emptiness_rule_still_reads_comments_and_bare_markers_as_empty() -> 
 
 
 # ---------------------------------------------------------------------------
-# Round 8: a comment is a comment where it sits, not only on a line of its own
+# A comment is a comment where it sits, not only on a line of its own
 # ---------------------------------------------------------------------------
 
 
@@ -1825,7 +1826,7 @@ def test_an_inline_marker_five_spaces_into_a_list_item_is_still_an_example() -> 
 
 
 # ---------------------------------------------------------------------------
-# Round 8: a heading inside any raw HTML block is not a heading
+# A heading inside any raw HTML block is not a heading
 # ---------------------------------------------------------------------------
 
 
@@ -1920,13 +1921,13 @@ def test_a_heading_after_a_document_type_declaration_is_a_section() -> None:
 
 
 def test_a_heading_after_a_one_line_comment_is_still_a_section() -> None:
-    """A negative control for round 4. A closed comment does not swallow the next line."""
+    """A negative control. A closed comment does not swallow the next line."""
     text = build_session().replace("## Goal\n", "<!-- a note -->\n## Goal\n", 1)
     assert check(text) == []
 
 
 def test_a_fence_line_inside_a_raw_html_block_opens_no_fence() -> None:
-    """Round 6's rule, extended: raw HTML is raw HTML whichever condition opened it.
+    """The comment rule, extended: raw HTML is raw HTML whichever condition opened it.
 
     The backticks inside the ``<div>`` are characters in an HTML block, not a
     fence. Before this they opened one that nothing closed, and every heading
@@ -1941,7 +1942,7 @@ def test_a_fence_line_inside_a_raw_html_block_opens_no_fence() -> None:
 
 
 # ---------------------------------------------------------------------------
-# Round 8: the navigation line belongs in the session header
+# The navigation line belongs in the session header
 # ---------------------------------------------------------------------------
 
 
@@ -2003,3 +2004,2530 @@ def test_a_parent_strip_below_the_first_section_is_allowed() -> None:
 def test_the_navigation_line_in_the_header_still_passes() -> None:
     """A positive control for the ordinary shape every session already uses."""
     assert check(build_session()) == []
+
+
+# ---------------------------------------------------------------------------
+# Markers, containers and leaf blocks a session document prints
+# ---------------------------------------------------------------------------
+
+FIVE_SECTIONS = ("Goal", "Start Here", "Steps", "Workspace", "Artifact Created")
+
+
+def test_a_marker_in_a_block_level_tag_attribute_does_not_exempt() -> None:
+    """An attribute value is not a comment, even on a raw HTML block's own line.
+
+    ``<div>`` opens an HTML block, and the whole raw line went into the marker
+    view, so the delimiters inside the attribute exempted a session that had
+    said nothing about why it has no research step. Measured against
+    markdown-it 14.3.0: the text lands in the ``title`` attribute.
+    """
+    text = build_session(
+        sections=SIX_SECTIONS,
+        extra='## Notes\n\n<div title="<!-- no-source-check: x -->">\nhi\n</div>\n',
+    )
+    assert any("Source Check" in m for m in check(text))
+
+
+@pytest.mark.parametrize(
+    ("label", "marker_line"),
+    [
+        ("at the margin", "<!-- no-source-check: an offline exercise -->"),
+        ("four spaces in", "    <!-- no-source-check: an offline exercise -->"),
+    ],
+)
+def test_a_real_comment_inside_a_raw_html_block_still_exempts(
+    label: str, marker_line: str
+) -> None:
+    """A negative control. A raw HTML block is passed through to the page.
+
+    A comment inside one is still a comment, and four spaces of indent inside
+    one is not an indented code block: the block is raw HTML end to end.
+    Measured against markdown-it 14.3.0.
+    """
+    text = build_session(
+        sections=SIX_SECTIONS,
+        extra=f"## Notes\n\n<div>\n{marker_line}\n</div>\n",
+    )
+    assert check(text) == [], label
+
+
+@pytest.mark.parametrize(
+    ("label", "opener"),
+    [
+        ("a blockquoted div", "> <div>\n"),
+        ("a blockquoted div over a blank line", "> <div>\n\n"),
+        ("a listed div", "- <div>\n\n"),
+    ],
+)
+def test_an_unclosed_html_block_ends_with_its_container(label: str, opener: str) -> None:
+    """A leaf block ends with the block that holds it, as an unclosed fence does.
+
+    The HTML-block state had no containment path, so an unclosed ``<div>``
+    inside a blockquote stayed open to its own terminator and blanked every
+    heading the document outdented to -- all six mandatory sections reported
+    missing on a session that is fine. Measured with markdown-it 14.3.0 read by
+    ``html.parser``: the block closes with its container, the page paints
+    ``<h2>Goal</h2>``, and ``## Goal`` is a heading.
+
+    The three raw-text parameters this test used to carry are now the test
+    below, with the opposite verdict and the measurement that changed it.
+    """
+    text = build_session().replace("## Goal\n", f"{opener}## Goal\n", 1)
+    assert check(text) == [], label
+
+
+@pytest.mark.parametrize(
+    ("label", "opener"),
+    [
+        ("a blockquoted script", "> <script>\n"),
+        ("a blockquoted script over a blank line", "> <script>\n\n"),
+        ("a listed script", "- <script>\n\n"),
+    ],
+)
+def test_a_run_outlives_the_container_its_block_died_with(label: str, opener: str) -> None:
+    """The block ends with its container; the element does not.
+
+    A raw-text run is not CommonMark's construct -- it is the page's. The
+    renderer writes the ``<script>`` into the output and an HTML parser reading
+    that output stays in raw text until a closing tag that never comes, so
+    everything below is script data: no comment is a comment and no heading is
+    painted. Measured with markdown-it 14.3.0 read by ``html.parser``: the
+    rendered page carries no ``<h2>`` at all, and this session really has no
+    visible Goal.
+
+    A previous round asserted the opposite here, from the Markdown layer alone
+    -- markdown-it does emit ``<h2>Goal</h2>`` into a document nothing will
+    ever read as markup. Both layers have to agree before a heading is a
+    heading, which is the same lesson the front-matter rule learned from
+    PyYAML.
+    """
+    text = build_session().replace("## Goal\n", f"{opener}## Goal\n", 1)
+    assert any('missing mandatory section "## Goal"' in m for m in check(text)), label
+
+
+def test_a_container_that_ends_a_div_block_still_frees_the_heading() -> None:
+    """The control in the other direction, and the reason the clearing exists.
+
+    ``<div>`` is not a raw-text element, so nothing survives the container: the
+    page paints the heading below it and a rule that blanked every line under
+    any unclosed block would fail a session that is fine.
+    """
+    text = build_session().replace("## Goal\n", "> <div>\n## Goal\n", 1)
+    assert check(text) == []
+
+
+def test_a_script_line_inside_a_comment_opens_no_block() -> None:
+    """No start condition is tried while an HTML block is open.
+
+    A ``<script>`` written inside a multiline comment opened a second state
+    that outlived the ``-->``, and every heading below it was hidden until a
+    ``</script>`` that does not exist. Measured against markdown-it 14.3.0: the
+    comment is one block and ``## Goal`` below it is a heading.
+    """
+    text = build_session().replace("## Goal\n", "<!-- a note\n<script>\n-->\n\n## Goal\n", 1)
+    assert check(text) == []
+
+
+@pytest.mark.parametrize(
+    ("label", "opener"),
+    [
+        ("an open tag", "<x-session>"),
+        ("an open tag with attributes", '<x-session data-id="1">'),
+        ("a self-closing tag", "<x-session />"),
+        ("a closing tag", "</x-session>"),
+    ],
+)
+def test_a_heading_inside_a_type_seven_html_block_is_not_a_section(
+    label: str, opener: str
+) -> None:
+    """Start condition 7 is a condition like the other six.
+
+    A complete tag alone on its line, at a block boundary, opens a raw HTML
+    block that runs to the next blank line, so the ``## Goal`` under it is not
+    a heading and the session has no visible Goal. The scan omitted the
+    condition because deciding it needs paragraph state; it keeps that state
+    now. Measured against markdown-it 14.3.0.
+    """
+    text = build_session().replace("## Goal\n", f"{opener}\n## Goal\n", 1)
+    assert any('missing mandatory section "## Goal"' in m for m in check(text)), label
+
+
+@pytest.mark.parametrize(
+    ("label", "lines"),
+    [
+        ("a tag on the second line of a paragraph", "Some prose first.\n<x-session>\n"),
+        ("an incomplete tag", "<x-session\n"),
+        ("a tag with text after it", "<b>bold</b>\n"),
+    ],
+)
+def test_a_shape_that_is_not_condition_seven_leaves_the_heading_below_it(
+    label: str, lines: str
+) -> None:
+    """Negative controls. Condition 7 needs a complete tag, alone, at a boundary.
+
+    The first is the one condition a paragraph blocks, which is why the
+    paragraph tracker exists at all. Measured against markdown-it 14.3.0.
+    """
+    text = build_session().replace("## Goal\n", f"{lines}## Goal\n", 1)
+    assert check(text) == [], label
+
+
+def test_a_fence_after_a_paragraph_that_starts_with_a_tag_still_opens() -> None:
+    """A negative control, restating the sibling hook's round-eight control.
+
+    A paragraph is open, so the tag opens no block, so the backticks under it
+    are a fence and the heading inside it is an example.
+    """
+    text = build_session(
+        sections=SIX_SECTIONS,
+        extra="## Notes\n\nProse first.\n<x-session>\n```\n## Stop Point\n```\n",
+    )
+    messages = check(text)
+    assert any("Source Check" in m for m in messages)
+    assert not any('missing mandatory section "## Stop Point"' in m for m in messages)
+
+
+def test_a_marker_inside_a_multiline_code_span_does_not_exempt() -> None:
+    """A code span closes on a run of its own length anywhere in its paragraph.
+
+    The example this test was written from does not reproduce: a
+    line beginning ``<!--`` opens HTML block condition 2, which may interrupt a
+    paragraph, so the span never forms and the marker there is a real comment.
+    This is the shape that does reproduce, and markdown-it 14.3.0 renders the
+    whole of it as one ``<code>`` element.
+    """
+    text = build_session(
+        sections=SIX_SECTIONS,
+        extra="## Notes\n\nUse `a\nb <!-- no-source-check: x --> c\nd` here.\n",
+    )
+    assert any("Source Check" in m for m in check(text))
+
+
+@pytest.mark.parametrize(
+    ("label", "body"),
+    [
+        ("the run never closes", "Use `a\nb <!-- no-source-check: x --> c\nd here."),
+        (
+            "the run closes past a blank line",
+            "Use `a\nb <!-- no-source-check: x --> c\n\nd` here.",
+        ),
+        ("the marker opens a block of its own", "Use `\n<!-- no-source-check: x -->\n` here."),
+    ],
+)
+def test_a_code_span_that_does_not_form_leaves_a_real_marker(label: str, body: str) -> None:
+    """Negative controls. Each of these is a comment on the page.
+
+    The third is the reported shape. Its middle line opens an HTML
+    block of its own, which ends the paragraph, so the backticks around it are
+    literal text. All three measured against markdown-it 14.3.0.
+    """
+    text = build_session(sections=SIX_SECTIONS, extra=f"## Notes\n\n{body}\n")
+    assert check(text) == [], label
+
+
+@pytest.mark.parametrize(
+    ("label", "body"),
+    [
+        ("a link title", '[help](page.md "<!-- no-source-check: x -->")'),
+        ("a link destination", "[help](<!-- no-source-check: x -->)"),
+        ("a single-quoted title", "[help](page.md '<!-- no-source-check: x -->')"),
+        ("an angle-bracket destination", '[help](<page.md> "<!-- no-source-check: x -->")'),
+        ("a parenthesised title", "[help](page.md (<!-- no-source-check: x -->))"),
+        ("an image title", '![alt](p.png "<!-- no-source-check: x -->")'),
+        ("image alt text", "![a note <!-- no-source-check: x -->](p.png)"),
+        (
+            "a defined reference label",
+            "[help][<!-- no-source-check: x -->]\n\n[<!-- no-source-check: x -->]: p.md",
+        ),
+        ("a reference definition", '[a]: p.md "<!-- no-source-check: x -->"'),
+    ],
+)
+def test_a_marker_in_link_metadata_does_not_exempt(label: str, body: str) -> None:
+    """Link metadata becomes an attribute of an element, or nothing at all.
+
+    A destination becomes ``href`` or ``src``, a title becomes ``title``, an
+    image's alt text becomes ``alt``, a resolved reference label becomes
+    nothing, and a reference definition renders nothing end to end. None of
+    them is a comment. Every row measured against markdown-it 14.3.0.
+    """
+    text = build_session(sections=SIX_SECTIONS, extra=f"## Notes\n\n{body}\n")
+    assert any("Source Check" in m for m in check(text)), label
+
+
+@pytest.mark.parametrize(
+    ("label", "body"),
+    [
+        ("link text", "[see <!-- no-source-check: x --> here](page.md)"),
+        ("an undefined reference label", "![a note <!-- no-source-check: x -->][lbl]"),
+        ("brackets that are not a link", '[help] (page.md "<!-- no-source-check: x -->")'),
+        (
+            "an outer link that cannot nest",
+            '[a [b](u.md) c](v.md "<!-- no-source-check: x -->")',
+        ),
+    ],
+)
+def test_a_marker_outside_link_metadata_still_exempts(label: str, body: str) -> None:
+    """Negative controls. markdown-it 14.3.0 renders a comment in every one.
+
+    A link's text is inline content. An undefined reference is the brackets the
+    author typed. A space between ``]`` and ``(`` is not a link. And links may
+    not nest, so the inner link of the last row wins and the outer brackets are
+    literal -- which is why the region pass keeps a bracket stack rather than
+    matching brackets where it finds them.
+    """
+    text = build_session(sections=SIX_SECTIONS, extra=f"## Notes\n\n{body}\n")
+    assert check(text) == [], label
+
+
+@pytest.mark.parametrize(
+    ("label", "body"),
+    [
+        ("a destination on the next line", "[shared]:\n    https://example.com"),
+        ("a title on a third line", '[shared]:\n    https://example.com\n    "A title"'),
+        ("an angle-bracket destination", "[shared]:\n  <https://example.com>"),
+        ("a title under a one-line definition", '[shared]: https://example.com\n  "A title"'),
+    ],
+)
+def test_a_multiline_reference_definition_is_an_empty_section(label: str, body: str) -> None:
+    """A definition renders nothing at all, however many lines it took to write.
+
+    The emptiness rule read one line at a time, so it matched neither half of
+    ``[shared]:`` with its destination indented underneath, and a session whose
+    Goal printed as a bare heading passed. Measured against markdown-it 14.3.0:
+    each of these renders an empty section.
+    """
+    text = build_session().replace(
+        "## Goal\n\nReal content for Goal.\n", f"## Goal\n\n{body}\n", 1
+    )
+    assert any('section "## Goal" is empty' in m for m in check(text)), label
+
+
+@pytest.mark.parametrize(
+    ("label", "body"),
+    [
+        ("a label with no destination", "[shared]:"),
+        ("prose under a label line", "[shared]:\nReal visible prose here."),
+        (
+            "prose under a complete definition",
+            "[shared]:\n  https://example.com\n  Real visible prose.",
+        ),
+    ],
+)
+def test_a_reference_definition_that_does_not_parse_is_still_content(
+    label: str, body: str
+) -> None:
+    """Negative controls. markdown-it 14.3.0 puts every one of these on the page.
+
+    The last is the greedy rule doing its work: two lines are the definition,
+    and the third is an indented code block the child sees.
+    """
+    text = build_session().replace(
+        "## Goal\n\nReal content for Goal.\n", f"## Goal\n\n{body}\n", 1
+    )
+    assert not any('section "## Goal" is empty' in m for m in check(text)), label
+
+
+def test_a_nonbreaking_space_does_not_close_a_fence() -> None:
+    """CommonMark permits spaces and tabs after a closing fence and nothing else.
+
+    Python reads a whitespace class as Unicode whitespace, so a fence closed
+    with a nonbreaking space ended the block here while the renderer kept every
+    line below it inside the code -- and the fake ``## Stop Point`` under it counted
+    as structure. Measured against markdown-it 14.3.0: the block runs on.
+    """
+    text = build_session(
+        sections=FIVE_SECTIONS,
+        extra="## Notes\n\n```\ncode\n```\u00a0\n\n## Stop Point\n\nNot a real one.\n",
+    )
+    assert any('missing mandatory section "## Stop Point"' in m for m in check(text))
+
+
+def test_a_tab_after_a_closing_fence_still_closes_it() -> None:
+    """A positive control. A tab is one of the two characters CommonMark allows."""
+    text = build_session(
+        sections=FIVE_SECTIONS,
+        extra="## Notes\n\n```\ncode\n```\t\n\n## Stop Point\n\nA real one.\n",
+    )
+    assert not any('missing mandatory section "## Stop Point"' in m for m in check(text))
+
+
+def test_a_navigation_label_with_no_value_is_not_a_navigation_line() -> None:
+    """The value belongs on the navigation line, not on whatever line follows.
+
+    A plain whitespace run crossed the line break and took the next line's
+    first character as the value, so a session whose location had been deleted
+    passed on the strength of the parent strip's own asterisk below it. markdown-it 14.3.0
+    renders the label as a paragraph with no location in it.
+    """
+    text = build_session(nav=False).replace(
+        "**For parents:**", "You are here:\n\n**For parents:**", 1
+    )
+    assert any("no navigation line" in m for m in check(text))
+
+
+def test_a_navigation_value_after_a_tab_is_still_a_navigation_line() -> None:
+    """A positive control. Horizontal whitespace sits between the colon and the value."""
+    text = build_session(nav=False).replace(
+        "**For parents:**", "You are here:\tPhase 0 (Setup).\n\n**For parents:**", 1
+    )
+    assert check(text) == []
+
+
+#: One backtick. Spelled through a name so a test that puts a code span beside
+#: an HTML comment never has to embed the character in a literal, where a stray
+#: one is easy to miss.
+TICK = FENCE[0]
+
+#: The exemption marker, spelled once for the tests that place it on one side
+#: or the other of a block boundary.
+OFFLINE_MARKER = "<!-- no-source-check: an offline exercise -->"
+
+
+def test_a_code_span_does_not_reach_across_a_list_item_into_a_marker() -> None:
+    """A list item interrupts a paragraph, so the run above it closes nothing.
+
+    The lookahead stopped at a blank line, a heading and a thematic break and
+    at nothing else, so an unclosed run paired with the first run inside the
+    list item and swallowed the marker between them -- and a session that had
+    declared itself was reported as missing its Source Check. Measured against
+    markdown-it 14.3.0: the paragraph ends before the list and the marker
+    renders as a comment.
+    """
+    text = build_session(
+        sections=SIX_SECTIONS,
+        extra=(
+            f"## Notes\n\nUse {TICK}open on one line and\n"
+            f"- item {OFFLINE_MARKER} {TICK}x{TICK}\n"
+        ),
+    )
+    assert check(text) == []
+
+
+def test_a_code_span_does_not_reach_across_a_blockquote_into_a_marker() -> None:
+    """A blockquote interrupts a paragraph exactly as a list item does.
+
+    Measured against markdown-it 14.3.0: the quoted line is its own block and
+    the marker inside it renders as a comment.
+    """
+    text = build_session(
+        sections=SIX_SECTIONS,
+        extra=(
+            f"## Notes\n\nUse {TICK}open on one line and\n"
+            f"> quoted {OFFLINE_MARKER} {TICK}x{TICK}\n"
+        ),
+    )
+    assert check(text) == []
+
+
+def test_a_code_span_inside_one_paragraph_still_swallows_a_marker() -> None:
+    """A negative control. A span really does cross a soft line break.
+
+    Nothing between the two runs opens a block, so the marker is inside the
+    span, is printed rather than read, and exempts nothing. Measured against
+    markdown-it 14.3.0.
+    """
+    text = build_session(
+        sections=SIX_SECTIONS,
+        extra=f"## Notes\n\nUse {TICK}open and\nmore {OFFLINE_MARKER} here{TICK} today.\n",
+    )
+    assert any('missing "## Source Check"' in message for message in check(text))
+
+
+def test_a_setext_underline_closes_the_paragraph_above_a_raw_html_block() -> None:
+    """A Setext underline turns the paragraph above it into a heading.
+
+    The paragraph tracker recognized an ATX heading and a thematic break and
+    stopped there, so an open paragraph was still claimed under the underline
+    and the complete tag below it was refused HTML block condition 7. The
+    heading inside that block then counted as a mandatory section the page
+    never shows. Measured against markdown-it 14.3.0: the block opens and
+    swallows the heading.
+    """
+    text = build_session(
+        sections=SIX_SECTIONS,
+        extra="## Notes\n\nHeading\n=====\n<x-session>\n## Source Check\n",
+    )
+    assert any('missing "## Source Check"' in message for message in check(text))
+
+
+# ---------------------------------------------------------------------------
+# Which labels a document defines, and where a line ends
+# ---------------------------------------------------------------------------
+
+
+def test_an_incomplete_reference_definition_does_not_define_its_label() -> None:
+    """A label with no destination defines nothing, so the reference is text.
+
+    The collector read the label off the front of the line without asking
+    whether the definition parsed, so a reference to it was treated as an image
+    and the marker in its alt text was thrown away with the rest of the link
+    metadata. Measured against markdown-it 14.3.0: the brackets are on the page
+    and the marker inside them is a comment.
+    """
+    text = build_session(
+        sections=SIX_SECTIONS,
+        extra=f"## Notes\n\n[x]:\n![a {OFFLINE_MARKER}][x]\n",
+    )
+    assert check(text) == []
+
+
+def test_a_complete_reference_definition_still_defines_its_label() -> None:
+    """A negative control. A definition that parses makes the reference an image.
+
+    The alt text is then an attribute rather than a page, so the marker inside
+    it declares nothing and the session still owes a Source Check. Measured
+    against markdown-it 14.3.0.
+    """
+    text = build_session(
+        sections=SIX_SECTIONS,
+        extra=f"## Notes\n\n[x]: /y\n\n![a {OFFLINE_MARKER}][x]\n",
+    )
+    assert any('missing "## Source Check"' in message for message in check(text))
+
+
+@pytest.mark.parametrize(
+    ("label", "body"),
+    [
+        ("an unbalanced closer, next line", "[shared]:\n  https://example.com/x)"),
+        ("an unclosed opener, next line", "[shared]:\n  https://example.com/x("),
+        ("an unbalanced closer, one line", "[shared]: https://example.com/x)"),
+        ("an unclosed opener, one line", "[shared]: https://example.com/x("),
+    ],
+)
+def test_a_reference_destination_must_balance_its_parentheses(label: str, body: str) -> None:
+    """A bare destination takes parentheses only in balanced pairs.
+
+    Both destination patterns accepted any run of nonblank characters, so a
+    section holding a stray parenthesis was called empty while the renderer put
+    every character of it on the page. Measured against markdown-it 14.3.0:
+    each of these is a paragraph.
+    """
+    text = build_session().replace(
+        "## Goal\n\nReal content for Goal.\n", f"## Goal\n\n{body}\n", 1
+    )
+    assert not any('section "## Goal" is empty' in m for m in check(text)), label
+
+
+#: One backslash. Spelled through a name so a test that escapes a parenthesis
+#: never has to embed the character in a literal, where a stray one is easy to
+#: miss. Kept as the readability suite spells it.
+BACKSLASH = "\\"
+
+
+@pytest.mark.parametrize(
+    ("label", "body"),
+    [
+        ("a balanced pair, next line", "[shared]:\n  https://example.com/x(y)"),
+        ("a balanced pair, one line", "[shared]: https://example.com/x(y)"),
+        ("a nested balanced pair", "[shared]: https://example.com/a(b(c))"),
+        ("an escaped closer", "[shared]: https://example.com/x" + BACKSLASH + ")"),
+    ],
+)
+def test_a_balanced_reference_destination_still_renders_nothing(label: str, body: str) -> None:
+    """Negative controls. A parenthesis that balances, or is escaped, is allowed.
+
+    Measured against markdown-it 14.3.0: each of these renders an empty
+    section, so narrowing the destination must not have cost them.
+    """
+    text = build_session().replace(
+        "## Goal\n\nReal content for Goal.\n", f"## Goal\n\n{body}\n", 1
+    )
+    assert any('section "## Goal" is empty' in m for m in check(text)), label
+
+
+def test_a_document_with_crlf_line_endings_keeps_its_sections() -> None:
+    """A carriage return is a line ending, not a character on the line.
+
+    The closing fence carried a stray ``\\r``, so it did not close, and every
+    mandatory heading below it disappeared into the code block that never
+    ended. Measured against markdown-it 14.3.0, which reads the three CommonMark
+    line endings alike.
+    """
+    text = (
+        build_session(empty_sections=("Workspace",))
+        .replace("## Workspace\n", f"## Workspace\n\n{FENCE}text\nnotes here\n{FENCE}\n", 1)
+        .replace("\n", "\r\n")
+    )
+    assert check(text) == []
+# --- declarations, code spans before links, and label length -----------------
+
+
+def test_a_lowercase_declaration_does_not_open_an_html_block() -> None:
+    """``<!foo>`` is a declaration to micromark and prose to markdown-it.
+
+    Condition 4 accepted any ASCII letter, so a lowercase declaration inside a
+    paragraph closed it, the complete tag on the next line opened a type-seven
+    block, and every mandatory heading down to the blank line disappeared into
+    it. Measured against markdown-it 14.3.0, which is what this repository
+    reads a rendered page by: both lines stay in the paragraph and the heading
+    below them is a heading.
+    """
+    text = build_session(
+        sections=SIX_SECTIONS,
+        extra="## Notes\n\nPack a snack for the walk.\n<!foo>\n<x>\n## Source Check\n\nWe read it.\n",
+    )
+    assert check(text) == []
+
+
+def test_an_uppercase_declaration_still_opens_an_html_block() -> None:
+    """A negative control. Condition 4 is a real condition; it just wants a capital.
+
+    Measured against markdown-it 14.3.0: the declaration closes the paragraph,
+    the tag below it opens a block, and the heading inside that block is raw
+    HTML rather than a heading.
+    """
+    text = build_session(
+        sections=SIX_SECTIONS,
+        extra=(
+            "## Notes\n\nPack a snack for the walk.\n<!DOCTYPE html>\n<x>\n"
+            "## Source Check\n\nWe read it.\n"
+        ),
+    )
+    assert any('missing "## Source Check"' in message for message in check(text))
+
+
+def test_a_code_span_shaped_like_an_image_does_not_hide_a_marker() -> None:
+    """The link metadata was computed over the raw line, before the code spans.
+
+    ``` `![alt](url` "<!-- no-source-check: x -->") ``` looked like an image
+    running to the final ``)``, so the marker inside it was thrown away and a
+    session that had declared its exemption was failed for not declaring one.
+    Measured against markdown-it 14.3.0: the code span wins, and what follows
+    it is a comment on the page.
+    """
+    text = build_session(
+        sections=SIX_SECTIONS,
+        extra=f'## Notes\n\n{TICK}![alt](url{TICK} "{OFFLINE_MARKER}")\n',
+    )
+    assert check(text) == []
+
+
+def test_a_real_image_title_still_hides_a_marker() -> None:
+    """A negative control. An image's title is an attribute, not a comment.
+
+    Measured against markdown-it 14.3.0: the marker becomes the ``title`` of an
+    ``<img>`` and the page carries no comment at all.
+    """
+    text = build_session(
+        sections=SIX_SECTIONS,
+        extra=f'## Notes\n\n![alt](url "{OFFLINE_MARKER}")\n',
+    )
+    assert any('missing "## Source Check"' in message for message in check(text))
+
+
+def test_a_code_span_opening_inside_alt_text_hides_the_marker_after_it() -> None:
+    """The same defect the other way round, and the dangerous way round.
+
+    A raw-line pass read ``![a`b](u) <!-- ... --> c` `` as an image ending at
+    ``)``, so the marker after it looked like ordinary text and exempted the
+    session. Measured against markdown-it 14.3.0: the code span opens inside
+    the alt text, swallows the ``]``, and the marker is printed rather than
+    read. The exemption was one the page never carried.
+    """
+    text = build_session(
+        sections=SIX_SECTIONS,
+        extra=f"## Notes\n\n![a{TICK}b](u) {OFFLINE_MARKER} c{TICK}\n",
+    )
+    assert any('missing "## Source Check"' in message for message in check(text))
+
+
+#: A label one character past what the renderer of record allows between the
+#: brackets, and the longest one it does allow. Spelled here so the two tests
+#: below cannot drift apart by a character.
+#:
+#: Three renderers, three answers, measured one at a time: micromark 4.0.2
+#: caps the label at 999, which is CommonMark's prose; markdown-it 14.3.0
+#: enforces no cap at all; and GitHub's own renderer -- the one that decides
+#: what these files look like -- matches a 1,000-character label and refuses a
+#: 1,001-character one, as a definition and as a reference use alike. The
+#: production renderer is the arbiter where the three disagree, so the bound
+#: here is 1,000.
+LABEL_TOO_LONG = "a" * 1001
+LABEL_LONGEST_ALLOWED = "a" * 1000
+
+
+@pytest.mark.parametrize(
+    ("label", "body"),
+    [
+        ("a label line over an indented destination", f"[{LABEL_TOO_LONG}]:\n    /destination"),
+        ("a one-line definition", f"[{LABEL_TOO_LONG}]: /destination"),
+    ],
+)
+def test_a_label_past_the_bound_is_not_a_definition(label: str, body: str) -> None:
+    """GitHub's renderer caps a link label at 1,000 characters between the brackets.
+
+    Both definition patterns took a label of any length, so a section holding
+    an overlong label was consumed as a definition and reported empty: the
+    brackets and the destination are a paragraph the child reads. Measured on
+    GitHub's own renderer, which refuses the label at 1,001 characters and
+    matches it at 1,000; micromark 4.0.2 caps at CommonMark's stated 999 and
+    markdown-it 14.3.0 caps nowhere, which is why this one rule is measured on
+    the production renderer rather than on either proxy.
+    """
+    text = build_session().replace(
+        "## Goal\n\nReal content for Goal.\n", f"## Goal\n\n{body}\n", 1
+    )
+    assert not any('section "## Goal" is empty' in m for m in check(text)), label
+
+
+@pytest.mark.parametrize(
+    ("label", "body"),
+    [
+        (
+            "a label line over an indented destination",
+            f"[{LABEL_LONGEST_ALLOWED}]:\n    /destination",
+        ),
+        ("a one-line definition", f"[{LABEL_LONGEST_ALLOWED}]: /destination"),
+    ],
+)
+def test_a_label_of_a_thousand_characters_still_renders_nothing(
+    label: str, body: str
+) -> None:
+    """A negative control, and the one that keeps the cap off by no characters.
+
+    Measured on GitHub's own renderer: at 1,000 the definition parses and the
+    section prints to the child as a bare heading.
+    """
+    text = build_session().replace(
+        "## Goal\n\nReal content for Goal.\n", f"## Goal\n\n{body}\n", 1
+    )
+    assert any('section "## Goal" is empty' in m for m in check(text)), label
+
+
+# ---------------------------------------------------------------------------
+# A backtick inside a parsed link target is not a delimiter
+# ---------------------------------------------------------------------------
+
+
+#: One ASCII control character, and the delete character beside it. Spelled
+#: through ``chr`` so no test has to embed a byte an editor can eat.
+CONTROL_CHARACTER = chr(1)
+DELETE_CHARACTER = chr(127)
+
+
+@pytest.mark.parametrize(
+    ("label", "first_line"),
+    [
+        ("a link title", f'[x](u "t {TICK}")'),
+        ("a link destination", f"[x](u{TICK}v)"),
+        ("an image title", f'![x](p.png "t {TICK}")'),
+        ("a single-quoted title", f"[x](u 't {TICK}')"),
+        ("a parenthesised title", f"[x](u (t {TICK}))"),
+        ("an angle-bracket destination", f'[x](<u> "t {TICK}")'),
+    ],
+)
+def test_a_backtick_in_a_link_target_opens_no_code_span(label: str, first_line: str) -> None:
+    """A destination and a title are scanned as characters, not as inline content.
+
+    The bracket comes first, so the target is consumed whole and the backtick
+    in it is metadata. The pass that finds the code spans had no link model at
+    all, so it paired that backtick with the one on the next line and masked
+    the marker between them -- and a session that had declared its exemption
+    was failed for not declaring one. Every row measured against markdown-it
+    14.3.0.
+    """
+    body = f"{first_line}\nText <!-- no-source-check: an offline exercise --> tail{TICK}"
+    text = build_session(sections=SIX_SECTIONS, extra=f"## Notes\n\n{body}\n")
+    assert check(text) == [], label
+
+
+def test_a_code_span_that_opens_before_a_link_still_swallows_it() -> None:
+    """A negative control. Whichever construct starts first takes the rest.
+
+    The backtick opens before the ``[``, so the bracket and the ``]`` after it
+    are both inside the code span and neither is ever counted. There is no link
+    to have a target, the span closes on the backtick inside those
+    parentheses, and the marker after it is a comment on the page. Measured
+    against markdown-it 14.3.0.
+    """
+    body = f"{TICK}[a](u{TICK} x) <!-- no-source-check: an offline exercise --> y{TICK}"
+    text = build_session(sections=SIX_SECTIONS, extra=f"## Notes\n\n{body}\n")
+    assert check(text) == []
+
+
+def test_an_outer_link_that_cannot_nest_keeps_its_marker() -> None:
+    """A negative control, and the reason the bracket walk runs in one pass only.
+
+    Links may not nest, so the inner link wins and the outer brackets are
+    literal text: the marker in those parentheses is a comment the page
+    carries. ``link_metadata_regions`` models that, and the pass that reads its
+    answer must not be second-guessed by a walk that counts brackets and
+    nothing else. Measured against markdown-it 14.3.0.
+    """
+    body = "[a [b](u.md) c](v.md \"<!-- no-source-check: an offline exercise -->\")"
+    text = build_session(sections=SIX_SECTIONS, extra=f"## Notes\n\n{body}\n")
+    assert check(text) == []
+
+
+def test_a_bracket_with_no_opener_skips_nothing() -> None:
+    """A negative control. A ``]`` that closes nothing is an ordinary character."""
+    body = f"a](u{TICK} x) <!-- no-source-check: an offline exercise --> y{TICK}"
+    text = build_session(sections=SIX_SECTIONS, extra=f"## Notes\n\n{body}\n")
+    assert any("Source Check" in m for m in check(text))
+
+
+# ---------------------------------------------------------------------------
+# What a bare link destination may hold
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.parametrize(
+    ("label", "body"),
+    [
+        (
+            "an inline link",
+            f'[x](fo{CONTROL_CHARACTER}o "<!-- no-source-check: an offline exercise -->")',
+        ),
+        (
+            "an inline link, delete character",
+            f'[x](fo{DELETE_CHARACTER}o "<!-- no-source-check: an offline exercise -->")',
+        ),
+        (
+            "an image",
+            f'![x](fo{CONTROL_CHARACTER}o "<!-- no-source-check: an offline exercise -->")',
+        ),
+        (
+            "a reference definition",
+            f'[a]: fo{DELETE_CHARACTER}o "<!-- no-source-check: an offline exercise -->"',
+        ),
+    ],
+)
+def test_a_control_character_is_not_a_destination_character(label: str, body: str) -> None:
+    """CommonMark forbids an ASCII control character in a bare destination.
+
+    Neither markdown-it 14.3.0 nor micromark 4.0.2 forms a link or a
+    definition, so the marker in the quotes is an ordinary HTML comment on the
+    page and the session really has declared its exemption. ``inline_link_end``
+    stopped only at a space and a tab, and the destination class reached only
+    to U+001F, so both read the whole thing as metadata and masked it.
+    """
+    text = build_session(sections=SIX_SECTIONS, extra=f"## Notes\n\n{body}\n")
+    assert check(text) == [], label
+
+
+def test_a_less_than_part_way_into_a_bare_destination_is_still_a_destination() -> None:
+    """A negative control, and the mirror of the case above.
+
+    A bare destination may not *start* with ``<`` and may hold one further
+    along: markdown-it 14.3.0 and micromark 4.0.2 both read ``[a]: foo< "t"``
+    as a definition, which renders nothing at all. The class excluded ``<``
+    outright, so this hook read the line as prose and honoured a marker the
+    page never shows.
+    """
+    body = '[a]: foo< "<!-- no-source-check: an offline exercise -->"'
+    text = build_session(sections=SIX_SECTIONS, extra=f"## Notes\n\n{body}\n")
+    assert any("Source Check" in m for m in check(text))
+
+
+def test_a_bare_destination_may_not_start_with_a_less_than() -> None:
+    """A negative control the lookahead protects.
+
+    ``[a]: <foo "t"`` opens the angle-bracket form and never closes it, so
+    neither renderer forms a definition and the marker in it is a comment.
+    """
+    body = '[a]: <foo "<!-- no-source-check: an offline exercise -->"'
+    text = build_session(sections=SIX_SECTIONS, extra=f"## Notes\n\n{body}\n")
+    assert check(text) == []
+
+
+#: One non-breaking space, spelled through a name for the reason the sibling
+#: test module spells it through one: an editor or a patch tool can turn the
+#: character back into an ordinary space without anyone noticing.
+NONBREAKING_SPACE = "\u00a0"
+
+
+def test_a_nonbreaking_space_body_renders_as_content() -> None:
+    """A section body of one U+00A0 puts a paragraph on the page.
+
+    markdown-it 14.3.0 renders it as one, so the section is not the bare
+    heading the checker called it. ``str.strip`` with no argument removed the
+    character and read the body as empty.
+    https://spec.commonmark.org/0.31.2/#blank-line
+    """
+    assert structure.renders_as_content(f"{NONBREAKING_SPACE}\n")
+
+
+@pytest.mark.parametrize(
+    ("label", "body"),
+    [("an empty body", ""), ("three spaces", "   \n"), ("a tab", "\t\n")],
+)
+def test_a_blank_body_renders_as_nothing(label: str, body: str) -> None:
+    """The negative control. Spaces and tabs really do render as nothing."""
+    assert not structure.renders_as_content(body), label
+
+
+def test_a_nonbreaking_space_line_keeps_a_paragraph_open() -> None:
+    """A line of one U+00A0 leaves a paragraph open below it.
+
+    HTML block condition 7 is the one condition that may not interrupt a
+    paragraph, so clearing the paragraph state on this line opened a block
+    markdown-it 14.3.0 does not open.
+    https://spec.commonmark.org/0.31.2/#html-blocks
+    """
+    assert structure.opens_a_paragraph(NONBREAKING_SPACE, False)
+
+
+@pytest.mark.parametrize(
+    ("label", "content"), [("an empty line", ""), ("three spaces", "   "), ("a tab", "\t")]
+)
+def test_a_blank_line_opens_no_paragraph(label: str, content: str) -> None:
+    """The negative control. A real blank line still closes the paragraph."""
+    assert not structure.opens_a_paragraph(content, False), label
+
+
+def test_a_nonbreaking_space_line_does_not_close_an_html_block() -> None:
+    """Only a blank line closes an HTML block whose condition has no end tag.
+
+    A line of one U+00A0 is not blank, so condition 6 is still open below it
+    and the backticks under it are raw HTML rather than a fence. markdown-it
+    14.3.0 prints them, and the comment inside is the comment it looks like.
+    Closing the block early made the fence real and buried the marker in a
+    code block.
+    https://spec.commonmark.org/0.31.2/#html-blocks
+    """
+    text = (
+        f"<div>\nnote\n{NONBREAKING_SPACE}\n{FENCE}\n"
+        f"<!-- no-source-check: an exercise -->\n{FENCE}\n"
+    )
+    scan = structure.scan_document(text)
+    assert structure.NO_SOURCE_CHECK_PATTERN.search(scan.marker_text) is not None
+
+
+def test_a_blank_line_closes_an_html_block() -> None:
+    """The negative control. A real blank line still closes condition 6."""
+    text = (
+        f"<div>\nnote\n\n{FENCE}\n"
+        f"<!-- no-source-check: an exercise -->\n{FENCE}\n"
+    )
+    scan = structure.scan_document(text)
+    assert structure.NO_SOURCE_CHECK_PATTERN.search(scan.marker_text) is None
+
+
+def test_a_nonbreaking_space_does_not_open_an_atx_heading() -> None:
+    """CommonMark requires a space or a tab after the opening hash run.
+
+    ``#`` followed by U+00A0 is a paragraph to markdown-it 14.3.0, so the
+    document holds no heading at all and a scaffold section named this way is
+    missing rather than present.
+    https://spec.commonmark.org/0.31.2/#atx-headings
+    """
+    scan = structure.scan_document(f"#{NONBREAKING_SPACE}Goal\n")
+    assert structure.find_headings(scan) == []
+
+
+def test_a_space_after_the_hashes_opens_an_atx_heading() -> None:
+    """The negative control. A real heading is still found."""
+    scan = structure.scan_document("# Goal\n")
+    assert [(h.level, h.title) for h in structure.find_headings(scan)] == [(1, "Goal")]
+
+
+# ---------------------------------------------------------------------------
+# An autolink is destination data
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.parametrize(
+    ("label", "autolink"),
+    [
+        ("a URI autolink", "<http://example.com/`>"),
+        ("an email autolink", "<a`b@example.com>"),
+    ],
+)
+def test_a_backtick_inside_an_autolink_opens_no_code_span(
+    label: str, autolink: str
+) -> None:
+    """Everything between the angle brackets is the destination.
+
+    It becomes the element's ``href`` and is printed as the link's text, so a
+    backtick in one is a character rather than a delimiter. The scan skipped
+    comments and tags and knew nothing of autolinks, so it paired that backtick
+    with the next one and blanked the Source Check marker between them -- and a
+    session that had declared its exemption was failed for not declaring one.
+    Measured against markdown-it 14.3.0, which renders the marker as a comment.
+    Kept in step with the case of the same name in
+    ``tests/test_check_readability.py``.
+    <https://spec.commonmark.org/0.31.2/#autolinks>
+    """
+    text = f"{autolink} <!-- no-source-check: an offline exercise --> `end`\n"
+    scan = structure.scan_document(text)
+    assert structure.NO_SOURCE_CHECK_PATTERN.search(scan.marker_text) is not None, label
+
+
+def test_an_angle_run_that_is_no_autolink_keeps_its_backtick() -> None:
+    """The negative control. A run holding spaces is no autolink at all.
+
+    The backtick inside it really is an opening run, the code span reaches the
+    marker, and the session has declared nothing.
+    """
+    text = "<no spaces allowed`> <!-- no-source-check: an offline exercise --> `end`\n"
+    scan = structure.scan_document(text)
+    assert structure.NO_SOURCE_CHECK_PATTERN.search(scan.marker_text) is None
+
+
+# --- a block start clears the paragraph above condition 7 --------------------
+
+#: The Source Check exemption marker, spelled once for the container cases.
+
+
+@pytest.mark.parametrize(
+    ("label", "document"),
+    [
+        (
+            "a list item opening on the line",
+            f"Words above the list.\n- <x-session>\n  {FENCE}\n"
+            f"  {OFFLINE_MARKER}\n  {FENCE}\n",
+        ),
+        (
+            "a blockquote opening on the line",
+            f"Words above the quote.\n> <x-session>\n> {FENCE}\n"
+            f"> {OFFLINE_MARKER}\n> {FENCE}\n",
+        ),
+    ],
+)
+def test_a_container_opening_on_a_line_lets_condition_seven_open(
+    label: str, document: str
+) -> None:
+    """A container that opens on a line has closed the paragraph above it.
+
+    Condition 7 may not interrupt a paragraph, and this hook asked
+    ``opens_a_paragraph`` alone, which answers for the line *below* the one it
+    reads. So a container opening on this line inherited the paragraph above it
+    and refused the block CommonMark opens inside the new container; the
+    backtick runs under it were read as a fence, and the exemption marker
+    between them -- which markdown-it 14.3.0 renders as a comment on the page --
+    was never found. ``starts_a_block`` was already in this module, asked of the
+    inline model only; it is now asked here too. Kept in step with the case of
+    the same name in ``tests/test_check_prohibited_placeholders.py``.
+    <https://spec.commonmark.org/0.31.2/#html-blocks>
+    """
+    scan = structure.scan_document(document)
+    assert structure.NO_SOURCE_CHECK_PATTERN.search(scan.marker_text) is not None, label
+
+
+@pytest.mark.parametrize(
+    ("label", "document"),
+    [
+        (
+            "a tag under a root paragraph",
+            f"Words above.\n<x-session>\n{FENCE}\n{OFFLINE_MARKER}\n{FENCE}\n",
+        ),
+        (
+            "a tag outdented out of a list item",
+            f"- Words in a list item.\n<x-session>\n{FENCE}\n{OFFLINE_MARKER}\n{FENCE}\n",
+        ),
+    ],
+)
+def test_condition_seven_still_may_not_interrupt_a_paragraph(
+    label: str, document: str
+) -> None:
+    """The negative controls, and the ones the comment rule measured.
+
+    A line that merely outdents out of a container has not started a block, so
+    no type-seven block opens, the backtick runs really are a fence, and the
+    marker inside them declares nothing. Refusing to exempt is the safe
+    direction and it is the one the renderer takes here too.
+    """
+    scan = structure.scan_document(document)
+    assert structure.NO_SOURCE_CHECK_PATTERN.search(scan.marker_text) is None, label
+
+
+# --- raw HTML before the bracket stack ---------------------------------------
+
+
+@pytest.mark.parametrize(
+    ("label", "prefix"),
+    [
+        ("an attribute value", '<span title="[">'),
+        ("an autolink destination", "<http://example.com/[>"),
+    ],
+)
+def test_a_bracket_inside_raw_html_is_no_link_opener(label: str, prefix: str) -> None:
+    """A tag's attribute and an autolink's destination are data, not markup.
+
+    CommonMark consumes the bracket with the tag or the autolink, so the later
+    ``](`` is literal text and the comment in the parentheses is a comment the
+    page prints. The bracket stack recorded that bracket as a link opener,
+    masked the parentheses as a link target, and failed a session that had
+    declared its exemption. Measured against markdown-it 14.3.0. Kept in step
+    with the case of the same name in ``tests/test_check_readability.py``.
+    <https://spec.commonmark.org/0.31.2/#raw-html>
+    """
+    text = f'{prefix}text](url "{OFFLINE_MARKER}")\n'
+    scan = structure.scan_document(text)
+    assert structure.NO_SOURCE_CHECK_PATTERN.search(scan.marker_text) is not None, label
+
+
+def test_a_marker_in_a_real_link_target_still_declares_nothing() -> None:
+    """The negative control. A real link's title is an attribute.
+
+    With no tag in front of it the bracket is an opener, the target parses, and
+    the marker inside it is not a comment the page shows.
+    """
+    text = f'<span title="x">[text](url "{OFFLINE_MARKER}")\n'
+    scan = structure.scan_document(text)
+    assert structure.NO_SOURCE_CHECK_PATTERN.search(scan.marker_text) is None
+
+
+# --- raw HTML runs, list interruption, lazy Setext, and leaf blocks ----------
+
+
+def _marker_found(document: str) -> bool:
+    """Return whether the scan reads a Source Check exemption in ``document``."""
+    scan = structure.scan_document(document)
+    return structure.NO_SOURCE_CHECK_PATTERN.search(scan.marker_text) is not None
+
+
+def _goal_found(document: str) -> bool:
+    """Return whether the scan leaves a ``## Goal`` heading to be counted."""
+    scan = structure.scan_document(document)
+    return any(line.strip().lower().startswith("## goal") for line in scan.content_lines)
+
+
+@pytest.mark.parametrize(
+    ("label", "run"),
+    [
+        ("a processing instruction", "<?foo ` ?>"),
+        ("a declaration", "<!DOCTYPE ` html>"),
+        ("a CDATA section", "<![CDATA[ ` ]]>"),
+    ],
+)
+def test_a_raw_html_run_hides_no_marker(label: str, run: str) -> None:
+    """A processing instruction, a declaration and a CDATA section are raw HTML.
+
+    CommonMark takes whichever of a code span and a raw HTML form opens first,
+    so a backtick inside one of these three is data and opens no span. The
+    inline walk knew a comment, an autolink and a tag and not these, so it
+    paired that backtick with the next real run and swallowed the marker
+    between them -- and a session that had declared its exemption was failed
+    for not declaring one. Measured against markdown-it 14.3.0. Kept in step
+    with the case of the same name in ``tests/test_check_readability.py``.
+    <https://spec.commonmark.org/0.31.2/#raw-html>
+    """
+    assert _marker_found(f"Text {run} more {OFFLINE_MARKER} `end`\n"), label
+
+
+@pytest.mark.parametrize(
+    ("label", "document"),
+    [
+        ("an opener that never closes", f"Text <?foo ` more {OFFLINE_MARKER} `end`\n"),
+        ("a lone angle bracket", f"Choose < 5 days ` and more {OFFLINE_MARKER} `end`\n"),
+    ],
+)
+def test_an_unclosed_raw_html_run_is_still_ordinary_text(
+    label: str, document: str
+) -> None:
+    """The positive control: without the closer there is no raw HTML at all.
+
+    The backticks then pair across the marker and the session declares nothing,
+    which is what markdown-it 14.3.0 does with both of these.
+    """
+    assert not _marker_found(document), label
+
+
+def test_an_ordered_list_above_one_does_not_interrupt_a_paragraph() -> None:
+    """A list may interrupt a paragraph only when an ordered one starts at 1.
+
+    So ``2.`` under an open sentence is that sentence's own text, the paragraph
+    runs on, and the code span opened above it closes past the marker. The scan
+    split the paragraph at the marker instead and granted an exemption the page
+    never shows. Measured against markdown-it 14.3.0.
+    <https://spec.commonmark.org/0.31.2/#list-items>
+    """
+    assert not _marker_found(f"Use `open\n2. continuation {OFFLINE_MARKER} `close`\n")
+
+
+@pytest.mark.parametrize(
+    ("label", "document"),
+    [
+        (
+            "an ordered list starting at 1",
+            f"Use `open\n1. continuation {OFFLINE_MARKER} `close`\n",
+        ),
+        ("a bullet list", f"Use `open\n- continuation {OFFLINE_MARKER} `close`\n"),
+        (
+            "a list already open above the line",
+            f"2. Use `open\n3. continuation {OFFLINE_MARKER} `close`\n",
+        ),
+        (
+            "nothing open above the line",
+            f"# A heading\n2. continuation {OFFLINE_MARKER} `close`\n",
+        ),
+    ],
+)
+def test_a_list_that_may_interrupt_still_starts_a_block(label: str, document: str) -> None:
+    """The positive controls the rule has to leave standing.
+
+    The restriction is the *list's* and not the item's: a ``3.`` under a list
+    already open is that list's next item and does start a block, and the
+    marker really is a comment in all four.
+    """
+    assert _marker_found(document), label
+
+
+@pytest.mark.parametrize(
+    ("label", "opener"),
+    [
+        ("out of a block quote", "> Use `open"),
+        ("out of a list item", "- Use `open"),
+    ],
+)
+def test_a_lazy_setext_underline_stays_in_its_paragraph(label: str, opener: str) -> None:
+    """A Setext underline may never be a lazy continuation line.
+
+    An outdented ``===`` under a quoted or listed paragraph has no root
+    paragraph to underline, so it is that paragraph's own text and the code
+    span opened above it closes past the marker. Ending the paragraph there
+    exposed the marker and exempted a session the page never exempts. Measured
+    against markdown-it 14.3.0.
+    <https://spec.commonmark.org/0.31.2/#setext-headings>
+    """
+    assert not _marker_found(f"{opener}\n===\nmore {OFFLINE_MARKER} `close`\n"), label
+
+
+@pytest.mark.parametrize(
+    ("label", "document"),
+    [
+        (
+            "a Setext underline at the root",
+            f"Use `open\n===\nmore {OFFLINE_MARKER} `close`\n",
+        ),
+        (
+            "a Setext underline inside the quote",
+            f"> Use `open\n> ===\n> more {OFFLINE_MARKER} `close`\n",
+        ),
+        (
+            "a lazy line with no paragraph to underline",
+            f"> # A heading `open\n===\nmore {OFFLINE_MARKER} `close`\n",
+        ),
+        (
+            "a lazy thematic break, which may interrupt",
+            f"> Use `open\n---\nmore {OFFLINE_MARKER} `close`\n",
+        ),
+    ],
+)
+def test_a_setext_underline_that_is_not_lazy_still_ends_the_paragraph(
+    label: str, document: str
+) -> None:
+    """The positive controls. Only the lazy line changes."""
+    assert _marker_found(document), label
+
+
+@pytest.mark.parametrize(
+    ("label", "document"),
+    [
+        ("a textarea", f"<textarea>\n{OFFLINE_MARKER}\n</textarea>\n"),
+        ("a script", f"<script>\n{OFFLINE_MARKER}\n</script>\n"),
+        ("a style", f"<style>\n{OFFLINE_MARKER}\n</style>\n"),
+        (
+            "a textarea inside a div",
+            f"<div>\n<textarea>\n{OFFLINE_MARKER}\n</textarea>\n</div>\n",
+        ),
+        ("a processing instruction block", f"<?php\n{OFFLINE_MARKER}\n?>\n"),
+        ("a CDATA block", f"<![CDATA[\n{OFFLINE_MARKER}\n]]>\n"),
+    ],
+)
+def test_a_raw_text_run_holds_no_marker(label: str, document: str) -> None:
+    """Comment-shaped text inside a raw HTML run is not a comment.
+
+    CommonMark passes a raw HTML block through untouched, and what its content
+    *is* is then HTML's question. Inside ``script``, ``style`` and ``textarea``
+    the content is raw text, and a processing instruction and a CDATA section
+    are one token each, so none of these exempts a session from the Source
+    Check. Python's ``html.parser`` reports the run as data for every document
+    here. Kept in step with the case of the same name in
+    ``tests/test_check_readability.py``.
+    <https://html.spec.whatwg.org/multipage/parsing.html#rawtext-state>
+    """
+    assert not _marker_found(document), label
+
+
+@pytest.mark.parametrize(
+    ("label", "document"),
+    [
+        ("a div, whose content is markup", f"<div>\n{OFFLINE_MARKER}\n</div>\n"),
+        ("a pre, whose content is markup", f"<pre>\n{OFFLINE_MARKER}\n</pre>\n"),
+        (
+            "the line after the element closes",
+            f"<textarea>\nx\n</textarea>\n{OFFLINE_MARKER}\n",
+        ),
+        (
+            "a script name written inside a comment",
+            f"<!-- a note\n<script>\n-->\n\n{OFFLINE_MARKER}\n",
+        ),
+    ],
+)
+def test_a_comment_outside_a_raw_text_run_still_exempts(label: str, document: str) -> None:
+    """The positive controls, and the two that bound the new state.
+
+    ``pre`` and ``div`` hold markup, which ``html.parser`` confirms by
+    reporting a comment for both. The run ends at its closing tag, and a
+    ``<script>`` written inside a comment opens no run at all -- a raw HTML
+    block may not start inside another one.
+    """
+    assert _marker_found(document), label
+
+
+@pytest.mark.parametrize(
+    ("label", "definition"),
+    [
+        ("a bare destination", "[x]: /url"),
+        ("a destination and a title", '[x]: /url "a title"'),
+        ("two definitions", "[x]: /url\n[y]: /url2"),
+    ],
+)
+def test_a_link_reference_definition_opens_no_paragraph(
+    label: str, definition: str
+) -> None:
+    """A definition is a leaf block, so condition 7 may open under it.
+
+    ``<custom>`` then opens a type-seven HTML block that runs to the next blank
+    line, and the ``## Goal`` inside it is raw HTML rather than a heading. The
+    liberal fallback called the definition a paragraph, held the block shut,
+    and counted a heading the page never shows -- so a session with no visible
+    Goal passed. Measured against markdown-it 14.3.0.
+    <https://spec.commonmark.org/0.31.2/#link-reference-definitions>
+    """
+    assert not _goal_found(f"{definition}\n<custom>\n## Goal\n"), label
+
+
+@pytest.mark.parametrize(
+    ("label", "document"),
+    [
+        ("a paragraph above the definition", "Words above.\n[x]: /url\n<custom>\n## Goal\n"),
+        ("a paragraph above the tag", "Words above.\n<custom>\n## Goal\n"),
+        ("a label with no destination", "[x]:\n<custom>\n## Goal\n"),
+    ],
+)
+def test_a_line_that_is_not_a_definition_still_opens_a_paragraph(
+    label: str, document: str
+) -> None:
+    """The positive controls. A definition may not interrupt a paragraph either.
+
+    With one open above it, ``[x]: /url`` is paragraph text and the paragraph
+    holds condition 7 shut, so the heading is a heading. A label with no
+    destination is no definition at all. Without these the rule above could be
+    written as "a bracket and a colon are never a paragraph" and still pass.
+    """
+    assert _goal_found(document), label
+
+
+def test_raw_text_run_state_names_the_run_the_line_is_in() -> None:
+    """The helper's contract, kept identical across the three hooks.
+
+    It returns the run below the line and the run the line is *in*, the pair
+    ``html_block_state`` returns. This hook asks only the first question of it
+    -- are these characters text rather than markup -- and reads the answer
+    through ``raw_text_run_holds_text``.
+    """
+    state, line_run = structure.raw_text_run_state("<textarea>", None, True)
+    assert (state, line_run) == ("textarea", "textarea")
+    state, line_run = structure.raw_text_run_state("some words", "textarea", False)
+    assert (state, line_run) == ("textarea", "textarea")
+    state, line_run = structure.raw_text_run_state("</textarea>", "textarea", False)
+    assert (state, line_run) == (None, "textarea")
+    # A run that opens and closes on one line is the run that line is in.
+    state, line_run = structure.raw_text_run_state("<script>a</script>", None, True)
+    assert (state, line_run) == (None, "script")
+    # A line CommonMark keeps inside the paragraph above it opens no run.
+    state, line_run = structure.raw_text_run_state("<xmp>", None, False)
+    assert (state, line_run) == (None, None)
+    # The comment may open part way along a line, and may close and open again.
+    state, line_run = structure.raw_text_run_state("<!-- one --> x <!-- two", None, True)
+    assert (state, line_run) == (structure.COMMENT_RUN, None)
+    state, line_run = structure.raw_text_run_state("<!-- one -->", None, True)
+    assert (state, line_run) == (None, None)
+    assert structure.raw_text_run_holds_text("textarea")
+    assert structure.raw_text_run_holds_text("script")
+    assert not structure.raw_text_run_holds_text(structure.HTML_BLOCK_COMMENT)
+    assert not structure.raw_text_run_holds_text(None)
+
+
+def test_a_comment_shaped_run_inside_a_script_blanks_no_heading() -> None:
+    """A ``<!--`` that a ``<script>`` prints opens no comment.
+
+    Stripping comments before classifying the run read it as a real comment,
+    which then ran to the end of the file and blanked every heading below it --
+    including the ``## Goal`` a session must carry.
+    """
+    document = (
+        "# Session 01\n\n<script>\n<!-- not really a comment\n</script>\n\n"
+        "## Goal\n\nWords here.\n"
+    )
+    scan = structure.scan_document(document)
+    titles = [heading.title for heading in structure.find_headings(scan)]
+    assert "Goal" in titles
+
+
+def test_a_real_comment_still_blanks_the_heading_inside_it() -> None:
+    """The over-application control for the test above.
+
+    A ``## Goal`` written inside an ordinary comment is not a heading, and a
+    rule that refused to strip comments at all would find one here.
+    """
+    document = (
+        "# Session 01\n\n<!-- a note\n## Goal\n-->\n\nWords here.\n"
+    )
+    scan = structure.scan_document(document)
+    titles = [heading.title for heading in structure.find_headings(scan)]
+    assert "Goal" not in titles
+
+
+def test_a_one_line_raw_text_element_grants_no_exemption() -> None:
+    """``<script><!-- no-source-check: ... --></script>`` is script data.
+
+    The run opens and closes on the same line. Answering "no run at all" for it
+    let the marker inside be read as a comment and granted an exemption the page
+    never shows.
+    """
+    document = (
+        "# Session 01\n\n<script><!-- no-source-check: offline --></script>\n"
+    )
+    scan = structure.scan_document(document)
+    assert structure.NO_SOURCE_CHECK_PATTERN.search(scan.marker_text) is None
+
+
+def test_a_one_line_ordinary_element_still_grants_the_exemption() -> None:
+    """The over-application control: ``<div>`` holds markup, not raw text."""
+    document = "# Session 01\n\n<div><!-- no-source-check: offline --></div>\n"
+    scan = structure.scan_document(document)
+    assert structure.NO_SOURCE_CHECK_PATTERN.search(scan.marker_text) is not None
+
+
+def test_a_whitespace_only_reference_label_is_not_a_definition() -> None:
+    """``[\u00a0]: /url`` is a paragraph, so the line below it opens no block.
+
+    A link label must hold one character the renderer does not fold away, and
+    markdown-it 14.3.0 folds a non-breaking space. Reading the line as a leaf
+    definition let a ``<custom>`` under it open HTML block condition 7, which
+    then swallowed a real ``## Goal``.
+    """
+    document = (
+        "# Session 01\n\n[\u00a0]: /url\n<custom>\n## Goal\n\nWords here.\n"
+    )
+    scan = structure.scan_document(document)
+    titles = [heading.title for heading in structure.find_headings(scan)]
+    assert "Goal" in titles
+
+
+def test_an_ordinary_reference_label_is_still_a_definition() -> None:
+    """The over-application control for the test above.
+
+    ``[x]: /url`` really is a definition, so the ``<custom>`` below it really
+    does open condition 7 and the ``## Goal`` inside that block is not a
+    heading. A rule that rejected every label fails here.
+    """
+    document = "# Session 01\n\n[x]: /url\n<custom>\n## Goal\n\nWords here.\n"
+    scan = structure.scan_document(document)
+    titles = [heading.title for heading in structure.find_headings(scan)]
+    assert "Goal" not in titles
+
+
+def test_a_link_label_folds_the_blanks_the_renderer_folds() -> None:
+    """And keeps the ones it keeps.
+
+    markdown-it 14.3.0 normalizes a label with a JavaScript trim and collapse.
+    ``str.split`` is a different set in both directions: it folds U+0085, which
+    the renderer keeps as part of the label, and keeps U+FEFF, which the
+    renderer folds. Measured one character at a time against the renderer.
+    """
+    assert structure.normalize_link_label("a\ufeffb") == "a b"
+    assert structure.normalize_link_label("a\u0085b") == "a\u0085b"
+    assert structure.normalize_link_label("  a   b  ") == "a b"
+    assert structure.normalize_link_label("A\u00a0B") == "a b"
+
+
+# ---------------------------------------------------------------------------
+# Spaces or tabs, an opener line, and raw HTML productions
+# ---------------------------------------------------------------------------
+
+
+def test_a_tab_separated_reference_definition_is_a_definition() -> None:
+    """The structure copy, kept identical to the sibling's.
+
+    A definition is a leaf block, so what follows it opens HTML block
+    condition 7 where a paragraph would not. Reading a tab-separated
+    definition as a paragraph found a ``## Goal`` the page never shows.
+    """
+    assert structure.LINK_REFERENCE_DEFINITION_PATTERN.match("[a]:\t/url")
+    assert structure.LINK_REFERENCE_DEFINITION_PATTERN.match('[a]: /url\t"t"\t')
+    document = "[a]:\t/url\n<custom>\n## Goal\n"
+    scan = structure.scan_document(document)
+    assert not any(h.title == "Goal" for h in structure.find_headings(scan))
+
+
+def test_a_tab_indented_reference_definition_is_not_a_definition() -> None:
+    """The control in the other direction: a leading tab is four columns."""
+    assert structure.LINK_REFERENCE_DEFINITION_PATTERN.match("\t[a]: /url") is None
+    assert structure.LINK_REFERENCE_DEFINITION_PATTERN.match("   [a]: /url")
+
+
+def test_a_tab_after_a_block_quote_marker_is_peeled() -> None:
+    """The structure copy of the container rule."""
+    assert structure.BLOCK_QUOTE_PREFIX_PATTERN.match(">\tquoted").end() == 2
+    assert structure.BLOCK_QUOTE_PREFIX_PATTERN.match("> quoted").end() == 2
+    assert structure.BLOCK_QUOTE_PREFIX_PATTERN.match(">quoted").end() == 1
+
+
+def test_an_opener_line_belongs_to_the_run_it_opens() -> None:
+    """``<script>`` and its marker on one line, the closer two lines down.
+
+    ``html.parser`` reports no comment there, so the offline marker is script
+    data and grants no exemption. Round eight closed the run that opens and
+    closes on one line; this is the branch with no closer on its line.
+    """
+    assert structure.raw_text_run_state("<script><!-- x -->", None, True) == (
+        "script",
+        "script",
+    )
+    text = build_session(
+        sections=SIX_SECTIONS,
+        markers="<script>" + OFFLINE_MARKER + "\nx\n</script>",
+    )
+    assert any("Source Check" in message for message in check(text))
+
+
+def test_a_marker_beside_a_real_element_still_exempts() -> None:
+    """The control in the other direction: a ``<div>`` holds inline content."""
+    text = build_session(
+        sections=SIX_SECTIONS,
+        markers="<div>" + OFFLINE_MARKER + "\nx\n</div>",
+    )
+    assert not any("Source Check" in message for message in check(text))
+
+
+def test_a_bracket_inside_raw_html_opens_no_link() -> None:
+    """The structure copy, kept identical to the sibling's.
+
+    A ``[`` inside a comment, a processing instruction, a declaration or a
+    CDATA section is data, so no link forms and a marker in the parentheses
+    beside it is a comment the page prints.
+    """
+    for opener, closer in (
+        ("<!--", "-->"),
+        ("<?php", "?>"),
+        ("<![CDATA[", "]]>"),
+        ("<!DOC", ">"),
+    ):
+        line = f'Text {opener}[{closer}text](u "{OFFLINE_MARKER}")'
+        assert structure.link_metadata_regions(line, frozenset()) == (), opener
+
+
+def test_a_bracket_inside_a_real_link_still_masks_its_title() -> None:
+    """The control in the other direction: a real link's title is metadata."""
+    line = f'Text [text](u "{OFFLINE_MARKER}")'
+    assert structure.link_metadata_regions(line, frozenset()) != ()
+
+
+def test_a_declaration_that_never_closes_is_not_raw_html() -> None:
+    """The structure copy, kept identical to the sibling's."""
+    line = 'Text <!DOC [text](u "t")'
+    assert structure.raw_html_run_end(line, 5) == -1
+    assert structure.link_metadata_regions(line, frozenset()) != ()
+
+
+def test_a_heading_a_run_holds_is_no_heading() -> None:
+    """A line a raw-text run holds is the element's content, block or no block.
+
+    The block and the run part company when the block ends first: a type 7
+    block meets its blank line while the ``<xmp>`` that opened it is still
+    unclosed. The content walk read only the block, so the ``## Goal`` below
+    was a heading here while the page painted nothing at all -- measured with
+    markdown-it 14.3.0 read by ``html.parser``, which reports no ``<h2>``.
+    """
+    text = build_session().replace("## Goal\n", "<xmp>\nsome text\n\n## Goal\n", 1)
+    assert any('missing mandatory section "## Goal"' in m for m in check(text))
+
+
+def test_a_heading_below_a_closed_run_is_still_a_heading() -> None:
+    """The over-application control: a run that closes frees its lines again."""
+    text = build_session().replace(
+        "## Goal\n", "<xmp>\nsome text\n</xmp>\n\n## Goal\n", 1
+    )
+    assert check(text) == []
+
+
+def test_an_unclosed_inline_comment_does_not_reach_the_next_block() -> None:
+    """An inline comment that never closes is no comment at all.
+
+    ``Text <!-- unfinished`` with no ``-->`` before the block ends is text:
+    markdown-it 14.3.0 escapes it into ``&lt;!-- unfinished``. Collecting it
+    anyway carried an open comment into the next block, where the marker
+    written in a code span became a real comment and exempted the session from
+    Source Check on a declaration the page never shows.
+    """
+    document = (
+        "# Session 01\n\nText <!-- unfinished\n\n"
+        + TICK
+        + "<!-- no-source-check: offline -->"
+        + TICK
+        + "\n"
+    )
+    scan = structure.scan_document(document)
+    assert "no-source-check" not in scan.marker_text
+    assert "unfinished" not in scan.marker_text
+
+
+def test_an_unclosed_inline_comment_bridges_to_no_later_closer() -> None:
+    """The same rule, in the shape that costs an exemption.
+
+    The characters of an opener that never closes are on the page, so putting
+    them in the marker text let a reason-less ``no-source-check:`` reach across
+    a blank line to the ``-->`` of an unrelated comment below it. Measured with
+    markdown-it 14.3.0: the first line renders as
+    ``<p>Text &lt;!-- no-source-check: offline</p>``.
+    """
+    document = "Text <!-- no-source-check: offline\n\n<!-- audience: adult -->\n"
+    scan = structure.scan_document(document)
+    assert structure.NO_SOURCE_CHECK_PATTERN.search(scan.marker_text) is None
+
+
+def test_a_comment_across_a_soft_line_break_is_still_one_comment() -> None:
+    """The control in the other direction: inside one paragraph a comment does
+    cross a line ending, and the marker in it is a real marker."""
+    document = "# Session 01\n\nText <!-- no-source-check:\noffline --> tail words.\n"
+    scan = structure.scan_document(document)
+    assert "no-source-check" in scan.marker_text
+
+
+def test_a_block_comment_still_reaches_the_run_below_it() -> None:
+    """The control for the other scope: a comment a raw HTML block opened is
+    genuinely open, so it does reach the text run under it.
+
+    A blank line ends the blockquote and with it the block, but not the
+    comment: an HTML parser reading the page stays inside it until the
+    ``-->``, so the marker written across the boundary is one marker.
+    """
+    document = "> <!-- no-source-check: offline\n\nstill open -->\n"
+    scan = structure.scan_document(document)
+    assert structure.NO_SOURCE_CHECK_PATTERN.search(scan.marker_text) is not None
+
+
+def test_a_closing_line_is_still_the_runs_last_line() -> None:
+    """The control for the blanking rule: the run holds the line that closes it.
+
+    A previous round settled that a line carrying the closing delimiter is
+    still the run's last line. Reading the state the line *leaves* rather than
+    the state it is *in* would free that line again, and the ``## Goal`` on it
+    would be a heading the page never paints.
+    """
+    document = "# Session 01\n\n> <script>\n\n## Goal</script>\n\nWords.\n"
+    scan = structure.scan_document(document)
+    titles = [heading.title for heading in structure.find_headings(scan)]
+    assert not any("Goal" in title for title in titles), titles
+
+
+def test_a_marker_whose_comment_spans_lines_is_still_a_marker() -> None:
+    """A comment may hold a line ending and still be one comment.
+
+    Found by a sweep of the marker patterns rather than by a reviewer. They
+    used ``.*?``, which stops at a line ending, so a marker written over two
+    lines of one comment exempted nothing. Measured with markdown-it 14.3.0
+    read by ``html.parser``: the page holds one comment, and its text is
+    ``no-source-check: offline\nstill open``.
+    """
+    document = "<div>\n<!-- no-source-check: offline\nstill open -->\n</div>\n"
+    scan = structure.scan_document(document)
+    assert structure.NO_SOURCE_CHECK_PATTERN.search(scan.marker_text) is not None
+
+
+def test_a_marker_split_across_two_comments_is_no_marker() -> None:
+    """The control: the reluctant quantifier still stops at the first ``-->``,
+    so a match cannot run from one comment into the next."""
+    document = "<div>\n<!-- no-source-check: -->\n<!-- offline -->\n</div>\n"
+    scan = structure.scan_document(document)
+    assert structure.NO_SOURCE_CHECK_PATTERN.search(scan.marker_text) is None
+
+
+def test_a_tag_that_spans_lines_inside_a_block_is_still_a_tag() -> None:
+    """Inside a raw HTML block a tag may hold a line ending.
+
+    ``<span`` on one line and ``title="<!-- ... -->">`` on the next is one tag
+    and the marker is attribute data -- measured with markdown-it 14.3.0 read
+    by ``html.parser``, which reports no comment at all. Reading the
+    continuation line on its own read the delimiters as a comment, and the
+    session was exempted on what the renderer puts in a ``title`` attribute.
+    """
+    document = (
+        '<div>\n<span\ntitle="<!-- no-source-check: offline -->">\n</div>\n'
+    )
+    scan = structure.scan_document(document)
+    assert "no-source-check" not in scan.marker_text
+
+
+def test_a_comment_that_spans_lines_inside_a_block_is_still_a_comment() -> None:
+    """The control in the other direction: the comment state still crosses lines
+    inside a raw HTML block, and a real marker written over two lines exempts."""
+    document = "<div>\n<!-- no-source-check:\noffline -->\n</div>\n"
+    scan = structure.scan_document(document)
+    assert structure.NO_SOURCE_CHECK_PATTERN.search(scan.marker_text) is not None
+
+
+def test_an_angle_run_that_is_no_tag_stays_text_across_lines() -> None:
+    """The control for the tag continuation: a ``<`` that begins no tag opens no
+    run, so its backtick still pairs and the marker inside stays masked."""
+    line = "Text <no spaces allowed" + TICK
+    assert structure.html_tag_prefix(line, 5) is None
+
+
+def test_an_empty_list_item_does_not_interrupt_a_paragraph() -> None:
+    """CommonMark forbids an empty list item from interrupting a paragraph.
+
+    ``Words`` then ``*`` then ``<x>`` is one paragraph of three lines --
+    measured with markdown-it 14.3.0 -- so the tag is paragraph text, opens no
+    type 7 block, and the ``## Goal`` below it is a visible heading. The
+    machine closed the paragraph at the empty marker and hid the heading.
+    """
+    for marker in ("*", "+"):
+        text = build_session().replace(
+            "## Goal\n", f"Words\n{marker} \n<x>\n## Goal\n", 1
+        )
+        assert check(text) == [], marker
+
+
+def test_an_item_with_content_still_interrupts_a_paragraph() -> None:
+    """The over-application control, read off the rule itself.
+
+    An item with content interrupts and an empty one does not, in both list
+    kinds; the dash is the exception the test below measures end to end. It is
+    asserted on the helper rather than on a document because an ATX heading
+    ends a list whatever the item held, so both documents paint the heading and
+    no document can tell the two answers apart.
+    """
+    star = structure.Container(kind=structure.CONTAINER_KIND_LIST, bullet="*")
+    dash = structure.Container(kind=structure.CONTAINER_KIND_LIST, bullet="-")
+    first = structure.Container(kind=structure.CONTAINER_KIND_LIST, ordered_start=1)
+    second = structure.Container(kind=structure.CONTAINER_KIND_LIST, ordered_start=2)
+    quote = structure.Container(kind=structure.CONTAINER_KIND_BLOCK_QUOTE)
+    assert not structure.container_interrupts_paragraph(star, "")
+    assert structure.container_interrupts_paragraph(star, "item")
+    assert structure.container_interrupts_paragraph(dash, "")
+    assert not structure.container_interrupts_paragraph(first, "")
+    assert structure.container_interrupts_paragraph(first, "item")
+    assert not structure.container_interrupts_paragraph(second, "item")
+    assert structure.container_interrupts_paragraph(quote, "")
+
+
+def test_an_empty_dash_item_is_a_setext_underline() -> None:
+    """The one bullet that is also a heading.
+
+    ``-`` with nothing after it underlines the paragraph above it, and
+    markdown-it 14.3.0 renders ``Words`` over ``-`` as an ``<h2>``. A heading
+    starts a block, so the tag below it does open a type 7 block and the Goal
+    below that is hidden -- the opposite answer from ``*`` and ``+`` on the
+    same shape.
+    """
+    text = build_session().replace("## Goal\n", "Words\n- \n<x>\n## Goal\n", 1)
+    assert any('missing mandatory section "## Goal"' in m for m in check(text))
+
+
+def test_an_empty_item_with_no_paragraph_above_it_still_opens_a_list() -> None:
+    """The control for the paragraph half: the rule is about interrupting, so an
+    empty item under a blank line opens its list as it always did."""
+    text = build_session().replace("## Goal\n", "* \n<x>\n## Goal\n", 1)
+    assert any('missing mandatory section "## Goal"' in m for m in check(text))
+
+
+# ---------------------------------------------------------------------------
+# The sibling copies of three rules, and one cross-hook pin.
+# ---------------------------------------------------------------------------
+
+ROUND13_ADULT = "<!-- audience: adult -->"
+
+
+def test_an_end_tag_inside_an_attribute_hides_the_heading_under_it() -> None:
+    """The structure copy of the start-tag rule, asked of a heading.
+
+    markdown-it 14.3.0 writes an ``<h2>`` under this line, because CommonMark's
+    HTML block condition 1 ends on a line containing ``</script>``. The page
+    paints no heading at all, because the end tag markdown-it saw is a quoted
+    attribute value and the browser is still in script data. Counting the
+    heading let a session with no visible Goal pass.
+    """
+    document = '<script title="</script>">\n\n## Goal\n'
+    scan = structure.scan_document(document)
+    assert [heading.title for heading in structure.find_headings(scan)] == []
+
+
+def test_a_genuinely_closed_element_still_shows_the_heading() -> None:
+    """The over-application control for the rule above."""
+    scan = structure.scan_document("<script></script>\n\n## Goal\n")
+    assert [heading.title for heading in structure.find_headings(scan)] == ["Goal"]
+
+
+def test_the_three_hooks_agree_about_where_a_raw_text_run_ends() -> None:
+    """One rule, three copies, and the copies are asked the same questions.
+
+    Two of the three pairs of hooks had no pin at all, which was recorded as
+    a gap. This pins the helper all three now share, on the shape that made
+    it necessary.
+    """
+    import importlib.util as _util
+
+    answers = []
+    for name in (
+        "check-readability.py",
+        "check-session-structure.py",
+        "check-prohibited-placeholders.py",
+    ):
+        path = Path(__file__).resolve().parents[1] / ".github" / "scripts" / name
+        spec = _util.spec_from_file_location(f"pin_{name}", path)
+        assert spec is not None and spec.loader is not None
+        module = _util.module_from_spec(spec)
+        # Registered before it is executed: ``dataclasses`` resolves a field
+        # annotation through ``sys.modules[cls.__module__]``, so a module that
+        # is not there yet raises while its first dataclass is being built.
+        sys.modules[spec.name] = module
+        spec.loader.exec_module(module)
+        answers.append(
+            (
+                module.raw_text_run_boundary('<script title="</script>">', None, True),
+                module.raw_text_run_boundary("<script></script>", None, True),
+                module.raw_text_run_boundary("<script>", None, True),
+                module.raw_text_run_boundary("</script> words", "script", False),
+            )
+        )
+    assert answers[0] == answers[1] == answers[2]
+    assert answers[0][0] == ("script", "script", -1)
+    assert answers[0][1] == (None, "script", 17)
+
+
+def test_a_link_title_across_a_soft_break_exempts_nothing() -> None:
+    """The structure copy of the link rule.
+
+    The marker sits in a title attribute, which renders as an attribute and not
+    as a comment, so the session declares no exemption. Reading line two on its
+    own found a comment there and granted one.
+    """
+    document = '[help\ncontinued](url "' + OFFLINE_MARKER + '")\n'
+    assert "no-source-check" not in structure.scan_document(document).marker_text
+
+
+def test_a_real_comment_beside_a_multiline_link_still_exempts() -> None:
+    """The under-application control for the rule above."""
+    document = "[help\ncontinued](url) " + OFFLINE_MARKER + "\n"
+    assert "no-source-check" in structure.scan_document(document).marker_text
+
+
+def test_backticks_in_different_table_cells_do_not_pair_in_structure() -> None:
+    """The structure copy of the GFM cell rule.
+
+    The hook carried no table model at all, so every row of a table went into
+    one run and two unmatched backticks in different cells formed a code span
+    the renderer cannot form. The marker between them was masked, and a session
+    that had declared its Source Check exemption was failed for not declaring
+    one.
+    """
+    rows = (
+        "| a | b |\n| --- | --- |\n| " + TICK + "open | x |\n"
+        "| " + OFFLINE_MARKER + " " + TICK + "close | y |\n"
+    )
+    assert "no-source-check" in structure.scan_document(rows).marker_text
+
+
+def test_a_code_span_inside_one_cell_still_masks_its_marker_in_structure() -> None:
+    """The over-application control for the rule above."""
+    rows = (
+        "| a | b |\n| --- | --- |\n| "
+        + TICK
+        + OFFLINE_MARKER
+        + TICK
+        + " | y |\n"
+    )
+    assert "no-source-check" not in structure.scan_document(rows).marker_text
+
+
+def test_a_marker_in_a_plain_cell_is_still_a_marker() -> None:
+    """The other over-application control: splitting a row must not lose a cell."""
+    rows = "| a | b |\n| --- | --- |\n| " + OFFLINE_MARKER + " | y |\n"
+    assert "no-source-check" in structure.scan_document(rows).marker_text
+
+
+def test_a_pipe_bearing_paragraph_is_not_a_table() -> None:
+    """A table is found by its delimiter row and by nothing else.
+
+    Without the delimiter the lines are an ordinary paragraph, so the backticks
+    pair across the soft break exactly as CommonMark says they do.
+    """
+    paragraph = "| " + TICK + "open | x |\ntext " + OFFLINE_MARKER + " " + TICK + "close\n"
+    assert "no-source-check" not in structure.scan_document(paragraph).marker_text
+    assert structure.is_table_delimiter("| --- | --- |")
+    assert not structure.is_table_delimiter("| a | b |")
+
+
+#: One tab, spelled through a name for the reason ``BACKSLASH`` is.
+TAB = chr(9)
+
+
+def test_a_tab_after_a_list_marker_ends_the_paragraph_above_it() -> None:
+    """The structure hook reads the same list the readability hook reads.
+
+    A tab after the marker starts a list in CommonMark, and a list ends the
+    paragraph above it, so the backticks on either side never pair and the
+    ``no-source-check`` marker between them is a real comment. Without it the
+    session's declared exemption was masked and the session was failed for not
+    declaring one.
+    https://spec.commonmark.org/0.31.2/#tabs
+    """
+    document = (
+        "Use "
+        + TICK
+        + "open\n-"
+        + TAB
+        + "item "
+        + OFFLINE_MARKER
+        + "\n"
+        + TICK
+        + "close\n"
+    )
+    assert "no-source-check" in structure.scan_document(document).marker_text
+
+
+def test_a_list_marker_with_no_spacing_at_all_is_not_a_list_here_either() -> None:
+    """The over-application control: the spacing is required, tab or no tab."""
+    document = (
+        "Use " + TICK + "open\n-item " + OFFLINE_MARKER + "\n" + TICK + "close\n"
+    )
+    assert "no-source-check" not in structure.scan_document(document).marker_text
+
+
+def test_the_three_hooks_measure_a_tabbed_list_marker_identically() -> None:
+    """One rule, three files: the two numbers a marker produces agree everywhere.
+
+    The container walk is copied into all three hooks, so a tab read as one
+    column in one of them and four in another would put the same fenced block
+    inside an item in one gate and outside it in the next.
+    """
+    import importlib.util as _util
+
+    modules = []
+    for name in (
+        "check-readability.py",
+        "check-session-structure.py",
+        "check-prohibited-placeholders.py",
+    ):
+        path = Path(__file__).resolve().parents[1] / ".github" / "scripts" / name
+        spec = _util.spec_from_file_location(f"listpin_{name}", path)
+        assert spec is not None and spec.loader is not None
+        module = _util.module_from_spec(spec)
+        sys.modules[spec.name] = module
+        spec.loader.exec_module(module)
+        modules.append(module)
+
+    for spelling, indent, offset in (
+        ("-" + TAB + "item", 4, 2),
+        ("-   item", 4, 4),
+        ("-     item", 2, 2),
+        ("10." + TAB + "item", 4, 4),
+    ):
+        answers = set()
+        for module in modules:
+            match = module.LIST_ITEM_PATTERN.match(spelling)
+            assert match is not None, spelling
+            answers.add(
+                (module.list_content_indent(match), module.list_content_offset(match))
+            )
+        assert answers == {(indent, offset)}, spelling
+
+
+def test_a_header_row_and_a_delimiter_row_that_disagree_are_no_table() -> None:
+    """GFM: the header row must match the delimiter row in the number of cells.
+
+    A three-cell header over a two-cell delimiter row is a paragraph, so its
+    backticks pair and the ``no-source-check`` marker between them is inside a
+    code span. Splitting it into cells found an exemption the page does not
+    grant and let a session without a Source Check section pass.
+    https://github.github.com/gfm/#tables-extension-
+    """
+    wide = (
+        "| "
+        + TICK
+        + "open | "
+        + OFFLINE_MARKER
+        + " "
+        + TICK
+        + "close | third |\n| --- | --- |\n"
+    )
+    narrow = (
+        "| "
+        + TICK
+        + "open | "
+        + OFFLINE_MARKER
+        + " "
+        + TICK
+        + "close |\n| --- | --- | --- |\n"
+    )
+    assert "no-source-check" not in structure.scan_document(wide).marker_text
+    assert "no-source-check" not in structure.scan_document(narrow).marker_text
+
+
+def test_a_header_row_and_a_delimiter_row_that_agree_are_a_table() -> None:
+    """The over-application control: a real table still splits into cells."""
+    table = (
+        "| "
+        + TICK
+        + "open | "
+        + OFFLINE_MARKER
+        + " "
+        + TICK
+        + "close |\n| --- | --- |\n"
+    )
+    assert "no-source-check" in structure.scan_document(table).marker_text
+    assert structure.table_columns("| a | b |", "| --- | --- |") == 2
+    assert structure.table_columns("| a | b | c |", "| --- | --- |") == 0
+
+
+def test_the_excess_cells_of_a_body_row_are_not_on_the_page() -> None:
+    """GFM ignores a body row's cells past the header's count, so nothing is in them."""
+    document = (
+        "| a | b |\n| --- | --- |\n| "
+        + TICK
+        + "open | x | "
+        + OFFLINE_MARKER
+        + " "
+        + TICK
+        + "close |\n"
+    )
+    assert "no-source-check" not in structure.scan_document(document).marker_text
+
+
+def test_a_body_row_with_fewer_cells_keeps_the_cells_it_has() -> None:
+    """The over-application control: a short row is padded, not truncated."""
+    document = (
+        "| a | b | c |\n| --- | --- | --- |\n| "
+        + TICK
+        + "open | "
+        + OFFLINE_MARKER
+        + " "
+        + TICK
+        + "close |\n"
+    )
+    assert "no-source-check" in structure.scan_document(document).marker_text
+
+
+def test_a_table_row_may_carry_the_indentation_gfm_allows_it() -> None:
+    """GFM lets a table row be indented up to three spaces; the pipe still delimits.
+
+    ``table_row_cells`` decided whether a row opened with a delimiting pipe by
+    looking at character zero, so an indented row counted its own indentation
+    as a first cell. A table whose header and delimiter row were indented
+    differently then disagreed about its width and was refused outright: the
+    rows went into one paragraph run, the backticks paired across a real cell
+    boundary, and a session that had declared its Source Check exemption was
+    failed for not declaring one.
+
+    Measured against markdown-it 14.3.0 and against GitHub's own renderer:
+    both read three cells in each of these rows, at every indent through three.
+    https://github.github.com/gfm/#tables-extension-
+    """
+    for indent in range(4):
+        header = (
+            " " * indent
+            + "| "
+            + TICK
+            + "open | "
+            + OFFLINE_MARKER
+            + " "
+            + TICK
+            + "close | third |\n| --- | --- | --- |\n"
+        )
+        delimiter = (
+            "| "
+            + TICK
+            + "open | "
+            + OFFLINE_MARKER
+            + " "
+            + TICK
+            + "close | third |\n"
+            + " " * indent
+            + "| --- | --- | --- |\n"
+        )
+        assert "no-source-check" in structure.scan_document(header).marker_text
+        assert "no-source-check" in structure.scan_document(delimiter).marker_text
+        assert structure.table_columns(" " * indent + "| a | b |", "| --- | --- |") == 2
+
+
+def test_four_spaces_before_a_pipe_is_still_not_a_table_row() -> None:
+    """The over-application control: the indent allowance stops where GFM's does.
+
+    A fourth column of indentation is an indented code block. Measured against
+    GitHub's own renderer, which forms a table at indents 0 through 3 and none
+    at 4.
+    """
+    document = (
+        "    | "
+        + TICK
+        + "open | "
+        + OFFLINE_MARKER
+        + " "
+        + TICK
+        + "close | third |\n| --- | --- | --- |\n"
+    )
+    assert "no-source-check" not in structure.scan_document(document).marker_text
+    assert structure.table_columns("    | a | b |", "| --- | --- |") == 0
+
+
+def test_an_indented_row_without_a_leading_pipe_gains_no_cell() -> None:
+    """The over-application control: the allowance applies to a leading pipe only."""
+    assert structure.table_columns("  a | b", "  --- | ---") == 2
+    assert structure.table_columns("a | b", "--- | ---") == 2
+
+
+def test_a_tab_before_a_pipe_is_not_the_indentation_gfm_allows() -> None:
+    """The over-application control: the allowance is spaces, as GFM's own is.
+
+    A tab advances to the next stop of four, so a tab-indented row is an
+    indented code block and no table row at all. ``TABLE_DELIMITER_PATTERN``
+    spells its own allowance ``^ {0,3}`` for the same reason, and the two
+    are deliberately the same shape.
+
+    This is residual 1 seen from the table site: the module still has no
+    indented-code-block model, and what keeps the answer right here is that a
+    tab-indented row's cell count disagrees with an unindented delimiter row.
+    """
+    assert structure.table_columns(TAB + "| a | b |", "| --- | --- |") == 0
+    assert structure.table_columns("   | a | b |", "| --- | --- |") == 2
+
+
+#: A thousand spaces, which is what takes a link label past the length a
+#: renderer will match. Built rather than typed.
+LONG_GAP = " " * 1000
+
+#: One straight double quotation mark, spelled through a name so a test that
+#: builds a link title never has to nest one inside a literal.
+DOUBLE_QUOTE = chr(34)
+
+#: One GFM table, spelled once: a header row and the delimiter row under it.
+TABLE_ROWS = "a | b\n--- | ---\n"
+
+
+def test_a_table_closes_the_paragraph_above_a_type_seven_tag() -> None:
+    """GFM ends the table before the tag, so the block opens and the heading does not.
+
+    This one is settled against GitHub's own renderer, which is the first
+    place this module has measured the arbiter and the production renderer to
+    part: markdown-it 14.3.0 reads the tag as a *table row* and paints the
+    heading, while GitHub opens HTML block condition 7 and the ``## Goal``
+    below it is raw HTML. A fully formed session using this sequence passed
+    with no visible Goal at all.
+    https://github.github.com/gfm/#tables-extension-
+    """
+    scan = structure.scan_document(TABLE_ROWS + "<custom>\n## Goal\n")
+    assert not any(heading.title == "Goal" for heading in structure.find_headings(scan))
+
+
+def test_a_paragraph_still_refuses_a_type_seven_tag() -> None:
+    """The over-application control: only a table closes the paragraph here.
+
+    Condition 7 may not interrupt a paragraph, so an ordinary line above the
+    tag keeps the block shut and the heading is painted. Pipe rows with no
+    delimiter row under them are an ordinary paragraph, and a header and a
+    delimiter row that disagree about the number of cells are too.
+    """
+    for above in ("Intro\n", "a | b\nc | d\n", "a | b\n--- | --- | ---\n"):
+        scan = structure.scan_document(above + "<custom>\n## Goal\n")
+        assert any(
+            heading.title == "Goal" for heading in structure.find_headings(scan)
+        )
+
+
+def test_a_tab_indented_marker_line_is_an_indented_code_block() -> None:
+    """A tab reaches column four, so the line is code and exempts nothing."""
+    document = TAB + OFFLINE_MARKER + "\n"
+    assert "no-source-check" not in structure.scan_document(document).marker_text
+    assert "no-source-check" in structure.scan_document(
+        "   " + OFFLINE_MARKER + "\n"
+    ).marker_text
+
+
+def test_an_indented_line_under_a_paragraph_is_not_a_code_block() -> None:
+    """The over-application control: indented code may not interrupt a paragraph."""
+    document = "Intro\n" + TAB + OFFLINE_MARKER + "\n"
+    assert "no-source-check" in structure.scan_document(document).marker_text
+
+
+def test_a_marker_after_a_closed_raw_text_run_is_a_comment() -> None:
+    """A run that closes part way along a line releases the rest of it."""
+    document = "<script></script>" + OFFLINE_MARKER + "\n"
+    assert "no-source-check" in structure.scan_document(document).marker_text
+    assert "no-source-check" not in structure.scan_document(
+        "<script>" + OFFLINE_MARKER + "\n"
+    ).marker_text
+
+
+def test_a_processing_instruction_in_a_raw_html_block_carries_no_marker() -> None:
+    """The page's rule for these runs is HTML5's bogus comment, not CommonMark's."""
+    for opener in ("<?", "<!", "<![CDATA["):
+        document = "<div>\nbefore " + opener + OFFLINE_MARKER + "\n</div>\n"
+        assert "no-source-check" not in structure.scan_document(document).marker_text
+    assert "no-source-check" in structure.scan_document(
+        "<div>\nbefore " + OFFLINE_MARKER + "\n</div>\n"
+    ).marker_text
+
+
+def test_an_overlong_reference_label_resolves_nothing() -> None:
+    """A label past the length bound is no label, so the image never forms."""
+    document = "[a b]: /url\n\n![" + OFFLINE_MARKER + "][a" + LONG_GAP + "b]\n"
+    assert "no-source-check" in structure.scan_document(document).marker_text
+    at_bound = "a" + " " * 998 + "b"
+    assert len(at_bound) == structure.LINK_LABEL_MAXIMUM_CHARACTERS
+    assert "no-source-check" not in structure.scan_document(
+        "[a b]: /url\n\n![" + OFFLINE_MARKER + "][" + at_bound + "]\n"
+    ).marker_text
+
+
+def test_a_link_title_across_a_soft_break_keeps_its_backtick() -> None:
+    """A link target crosses a soft line break, and the first pass now reads it."""
+    document = (
+        "[x](url " + DOUBLE_QUOTE + "title " + TICK + "\n"
+        "continued" + DOUBLE_QUOTE + ") " + OFFLINE_MARKER + " " + TICK + "close"
+        + TICK + "\n"
+    )
+    assert "no-source-check" in structure.scan_document(document).marker_text
+
+
+def test_a_pipeless_delimiter_row_with_a_colon_is_a_delimiter_row() -> None:
+    """A one-column table needs no pipe; a Setext underline is not one."""
+    assert structure.is_table_delimiter("-:")
+    assert not structure.is_table_delimiter("--")
+    assert not structure.is_table_delimiter("- |")
+    assert structure.is_table_delimiter("--- | ---")
+
+
+def test_an_angle_destination_ends_at_an_unescaped_line_ending() -> None:
+    """``<...>`` holds no line ending of its own, and a backslash is the exception.
+
+    Measured on markdown-it 14.3.0 and on GitHub's own renderer, which agree:
+    an unescaped line ending inside the angle brackets means no link, so the
+    backtick inside them pairs with the one below and the marker between them
+    is a code span; a backslash before the line ending escapes it and the link
+    forms.
+    """
+    unescaped = (
+        "[x](<a" + "\n" + TICK + "b>) " + OFFLINE_MARKER + " " + TICK + "c" + TICK
+        + "\n"
+    )
+    escaped = (
+        "[x](<" + BACKSLASH + "\n" + TICK + ">) " + OFFLINE_MARKER + " "
+        + TICK + "c" + TICK + "\n"
+    )
+    assert "no-source-check" not in structure.scan_document(unescaped).marker_text
+    assert "no-source-check" in structure.scan_document(escaped).marker_text
+
+
+def _load_readability_hook():
+    """Load the readability hook, for the cross-hook pins below."""
+    import importlib.util as _util
+
+    path = Path(__file__).resolve().parents[1] / ".github" / "scripts"
+    spec = _util.spec_from_file_location(
+        "check_readability_for_structure_tests", path / "check-readability.py"
+    )
+    module = _util.module_from_spec(spec)
+    sys.modules[spec.name] = module
+    spec.loader.exec_module(module)
+    return module
+
+#: The spellings these suites share; see the note in
+#: ``tests/test_check_readability.py``.
+QUOTE = chr(34)
+MARKER = OFFLINE_MARKER
+TOKEN = "no-source-check"
+
+
+def MARKER_TEXT(text: str) -> str:  # noqa: N802
+    """The text this hook reads as an HTML comment, over a whole document."""
+    return structure.scan_document(text).marker_text
+
+
+THIS_HOOK = structure
+OTHER_HOOK = _load_readability_hook()
+
+
+def test_a_raw_text_end_tag_parses_through_its_quoted_values() -> None:
+    """A ``>`` inside a quoted attribute value does not end the tag.
+
+    ``</script title="> <!-- ... -->">visible`` holds no comment: HTML5 reads
+    the attribute value whole, and the tag ends at the last ``>``. Searching
+    for the character ended the tag inside the value and read the rest as a
+    tail a reader sees. A quote outside a value is a *name* character, which
+    is the control that keeps the scan from being "every quote delimits".
+    """
+    quoted = "<script></script title=" + QUOTE + "> " + MARKER + QUOTE + ">visible\n"
+    plain = "<script></script>" + MARKER + "\n"
+    unquoted = "<script></script title=x>" + MARKER + "\n"
+    named = "<script></script a" + QUOTE + "b>" + MARKER + QUOTE + "c>x\n"
+    assert TOKEN not in MARKER_TEXT(quoted)
+    assert TOKEN in MARKER_TEXT(plain)
+    assert TOKEN in MARKER_TEXT(unquoted)
+    assert TOKEN in MARKER_TEXT(named)
+
+
+def test_an_end_tag_that_never_closes_leaves_no_tail() -> None:
+    """At the end of the line the tag has not closed, so nothing follows it.
+
+    The separating document for "hand the rest of the line back", which is
+    what this helper did before: an unterminated quoted value swallows the
+    marker and every character after it.
+    """
+    unterminated = "<script></script title=" + QUOTE + "a " + MARKER + "\n"
+    closed = "<script></script title=" + QUOTE + "a" + QUOTE + ">" + MARKER + "\n"
+    assert TOKEN not in MARKER_TEXT(unterminated)
+    assert TOKEN in MARKER_TEXT(closed)
+
+
+def test_an_embedded_raw_html_run_carries_across_lines() -> None:
+    """A run with no ``>`` on the line it opens goes on below it.
+
+    Measured on GitHub's own renderer with a probe that separates the two
+    readings: a character written inside ``<?foo`` does not survive, and one
+    written beside a real comment does. So the marker under such a line is
+    inside the run, not a comment -- and the run still ends at its own ``>``,
+    which is the control that keeps it from swallowing the rest of the file.
+    """
+    carried = "<div>\nbefore <?foo\n" + MARKER + "\n?>\n</div>\n"
+    closes_below = "<div>\nbefore <?foo\nbar ?>\n" + MARKER + "\n</div>\n"
+    closes_here = "<div>\nbefore <?foo ?>\n" + MARKER + "\n</div>\n"
+    assert TOKEN not in MARKER_TEXT(carried)
+    assert TOKEN in MARKER_TEXT(closes_below)
+    assert TOKEN in MARKER_TEXT(closes_here)
+
+
+def test_a_bogus_comment_ends_at_the_first_angle_bracket() -> None:
+    """``<![CDATA[`` is a bogus comment to the page, not a marked section.
+
+    Measured on GitHub: ``<![CDATA[>x`` leaves ``x`` on the page, so the run
+    ended at the ``>``. ``html.parser`` looks for ``]]>`` instead and swallows
+    the rest of the document, which is a place the arbiter and the production
+    renderer part.
+    """
+    document = "<div>\nbefore <![CDATA[>x\n" + MARKER + "\n</div>\n"
+    assert TOKEN in MARKER_TEXT(document)
+
+
+def test_a_tag_commonmark_gives_up_on_is_still_a_tag() -> None:
+    """``<a--`` above a marker line is one tag with the marker inside it.
+
+    CommonMark's raw-HTML grammar stops matching and the page does not: a
+    ``<`` and a letter is a tag to an HTML parser, and a tag ends at its
+    ``>``. Reading the next line afresh found a comment inside a tag that was
+    still open.
+    """
+    document = "<div>\nbefore <a--\n" + MARKER + "\n>\n</div>\n"
+    assert TOKEN not in MARKER_TEXT(document)
+
+
+def test_a_definition_title_may_cross_a_line_ending() -> None:
+    """CommonMark puts no line bound on a reference definition's title.
+
+    Both renderers resolve ``[x]: /url "first`` over ``second"``. A line-local
+    match refused the definition, the label went undefined, and the image
+    reference below it -- whose description is attribute data -- was read as a
+    comment the page carried. Three controls bound it: a title that never
+    closes, text after the closing delimiter, and a blank line inside.
+    """
+    resolved = "[x]: /url " + QUOTE + "first\nsecond" + QUOTE + "\n\n![" + MARKER + "][x]\n"
+    unterminated = "[x]: /url " + QUOTE + "first\nsecond\n\n![" + MARKER + "][x]\n"
+    trailing = "[x]: /url " + QUOTE + "a\nb" + QUOTE + " ok\n\n![" + MARKER + "][x]\n"
+    blank = "[x]: /url " + QUOTE + "a\n\nb" + QUOTE + "\n\n![" + MARKER + "][x]\n"
+    assert TOKEN not in MARKER_TEXT(resolved)
+    assert TOKEN in MARKER_TEXT(unterminated)
+    assert TOKEN in MARKER_TEXT(trailing)
+    assert TOKEN in MARKER_TEXT(blank)
+
+
+def test_a_definition_may_not_interrupt_a_paragraph() -> None:
+    """``Intro.`` above ``[x]: /url`` defines nothing, on both renderers.
+
+    The two lines are one paragraph and the brackets stay on the page, so a
+    marker written in the image reference below is a real comment. Collecting
+    the label anyway sent an adult-facing document through the child gate in
+    one hook and refused an exemption in the other. Definitions written one
+    under another all define, which is the control that keeps the rule from
+    being "only the first line of the document".
+    """
+    interrupts = "Intro text a child reads.\n[x]: /url\n\n![" + MARKER + "][x]\n"
+    after_blank = "Intro text a child reads.\n\n[x]: /url\n\n![" + MARKER + "][x]\n"
+    after_heading = "# Title\n[x]: /url\n\n![" + MARKER + "][x]\n"
+    two_in_a_row = "[x]: /a\n[y]: /b\n\n![" + MARKER + "][y]\n"
+    definition_paragraph_definition = (
+        "[x]: /a\nIntro.\n[y]: /b\n\n![" + MARKER + "][y]\n"
+    )
+    assert TOKEN in MARKER_TEXT(interrupts)
+    assert TOKEN not in MARKER_TEXT(after_blank)
+    assert TOKEN not in MARKER_TEXT(after_heading)
+    assert TOKEN not in MARKER_TEXT(two_in_a_row)
+    assert TOKEN in MARKER_TEXT(definition_paragraph_definition)
+
+
+def test_the_two_hooks_read_a_definition_alike() -> None:
+    """The cross-hook pin: one spelling of the span in both hooks."""
+    shapes = (
+        ["[x]: /url " + QUOTE + "first", "second" + QUOTE],
+        ["[x]: /url " + QUOTE + "first", "second"],
+        ["[x]:", "/url " + QUOTE + "a", "b" + QUOTE],
+        ["[x]: /url"],
+        ["ordinary prose"],
+    )
+    for shape in shapes:
+        assert OTHER_HOOK.reference_definition_span(shape, 0) == (
+            THIS_HOOK.reference_definition_span(shape, 0)
+        )
+
+
+def test_an_indented_code_block_opens_no_paragraph() -> None:
+    """Four columns of indentation is a code block, and the heading walk sees it.
+
+    Measured on GitHub's own renderer: a four-space ``x`` over ``<custom>``
+    over ``## Goal`` paints no heading, because the condition 7 block opens
+    where no paragraph is open and swallows the heading. This walk read the
+    indented line as a paragraph, refused condition 7, and counted a mandatory
+    heading the page never shows.
+    """
+    tail = chr(10) + "<custom>" + chr(10) + "## Goal" + chr(10)
+    scan = structure.scan_document("    x" + tail)
+    assert not [h for h in structure.find_headings(scan) if h.title == "Goal"]
+    scan = structure.scan_document("   x" + tail)
+    assert [h for h in structure.find_headings(scan) if h.title == "Goal"]
+
+
+def test_an_indented_delimiter_row_opens_no_table_here_either() -> None:
+    """The delimiter row's own indent, and the tab that reaches column four."""
+    assert structure.is_table_delimiter("   -:")
+    assert not structure.is_table_delimiter("    -:")
+    assert not structure.is_table_delimiter(chr(9) + "-:")
+
+
+def test_a_definition_after_a_container_change_is_collected() -> None:
+    """``starts_a_block`` travels on every source and the collector now reads it.
+
+    The flag was already the third element of every ``MarkerSource`` and was
+    discarded with an underscore. ``Intro`` over ``> [x]: /url`` defines ``x``
+    on both renderers, and collecting nothing there cost this checker an
+    exemption granted where the page carries no comment at all.
+    """
+    reference = chr(10) + chr(10) + "![<!-- no-source-check: offline -->][x]" + chr(10)
+    scan = structure.scan_document("Intro" + chr(10) + "> [x]: /url" + reference)
+    assert "no-source-check" not in scan.marker_text
+    # the control: an outdented definition is a lazy continuation and defines
+    # nothing, so the marker really is a comment there
+    scan = structure.scan_document("> Intro" + chr(10) + "[x]: /url" + reference)
+    assert "no-source-check" in scan.marker_text
+
+
+def test_an_unfinished_end_tag_keeps_its_state_below() -> None:
+    """A closer whose *tag* does not finish on its line opens no comment below.
+
+    The session-structure copy of the same rule: an HTML parser is still reading
+    ``</script title="`` on the lines under it, so a ``no-source-check`` marker
+    written there grants no exemption. The control is the tag that really does
+    close one line down, where the marker under it is a comment again.
+    """
+    quote = chr(34)
+    opener = "<script>" + chr(10)
+    marker = "<!-- no-source-check: offline -->"
+    inside = (
+        opener + "</script title=" + quote + chr(10) + marker + chr(10) + quote + ">",
+        opener + "</script foo" + chr(10) + marker + chr(10) + ">",
+    )
+    for document in inside:
+        assert "no-source-check" not in structure.scan_document(document).marker_text
+    below = (
+        opener + "</script title=" + quote + chr(10) + quote + ">" + chr(10) + marker,
+        opener + "</script>" + chr(10) + marker,
+    )
+    for document in below:
+        assert "no-source-check" in structure.scan_document(document).marker_text
+
+
+def test_a_table_header_may_not_be_a_heading_here_either() -> None:
+    """The same GFM precondition, in the hook that reads a session's markers."""
+    tick = chr(96)
+    body = tick + "open | <!-- no-source-check: offline --> " + tick + "close"
+    heading = "# " + body + chr(10) + "--- | ---"
+    assert "no-source-check" not in structure.scan_document(heading).marker_text
+    paragraph = body + chr(10) + "--- | ---"
+    assert "no-source-check" in structure.scan_document(paragraph).marker_text
+    assert structure.table_starts_here("# a | b", "--- | ---") == 0
+    assert structure.table_starts_here("***", "-:") == 0
+    assert structure.table_starts_here("a | b", "--- | ---") == 2
+
+
+def test_a_parenthesised_inline_title_may_hold_no_opener_here_either() -> None:
+    """The inline-link title rule, in step with the definition title's own."""
+    marker = "<!-- no-source-check: offline -->"
+    invalid = "[x](url (a(" + marker + "b))"
+    assert "no-source-check" in structure.scan_document(invalid).marker_text
+    valid = "[x](url (a" + marker + "b))"
+    assert "no-source-check" not in structure.scan_document(valid).marker_text
+    assert structure.reference_title_span(["(a(b)"], 0, 0) == 0
+
+
+def test_a_fence_behind_a_non_interrupting_marker_opens_none_here_either() -> None:
+    """The session hook's copy of the container rule, read end to end."""
+    newline = chr(10)
+    fence = chr(96) * 3
+    marker = "<!-- no-source-check: offline -->"
+    held = (
+        "Intro." + newline + "2. " + fence + newline
+        + "   " + marker + newline + "   " + fence + newline
+    )
+    assert "no-source-check" in structure.scan_document(held).marker_text
+    opened = held.replace("2. ", "1. ", 1)
+    assert "no-source-check" not in structure.scan_document(opened).marker_text
+
+
+def test_a_table_header_indented_four_columns_is_code_here_too() -> None:
+    """The indent rule, and the paragraph state the session walk now carries."""
+    newline = chr(10)
+    tick = chr(96)
+    body = tick + "open | <!-- no-source-check: offline --> " + tick + "close"
+    code = "    " + body + newline + "--- | ---"
+    assert "no-source-check" not in structure.scan_document(code).marker_text
+    lazy = "Intro." + newline + "    " + body + newline + "--- | ---"
+    assert "no-source-check" in structure.scan_document(lazy).marker_text
+    assert not structure.table_starts_here("    a | b", "--- | ---", False)
+    assert structure.table_starts_here("    a | b", "--- | ---", True) == 2
+
+
+def test_a_table_body_row_needs_no_pipe_here_either() -> None:
+    """The session hook's copy of the body rule, and the container it lacked.
+
+    ``MarkerSource`` carries the line's containment path now, so a table
+    inside a blockquote stops at the outdent instead of splitting the root
+    paragraph below it into cells and exposing the marker inside its code
+    span -- which granted a Source Check exemption a session never declared.
+    """
+    newline = chr(10)
+    tick = chr(96)
+    marker = "<!-- no-source-check: offline -->"
+    row = tick + "open | keep " + marker + " " + tick + "close"
+    outdented = "> h | h" + newline + "> --- | ---" + newline + row + newline
+    assert "no-source-check" not in structure.scan_document(outdented).marker_text
+    quoted = "> h | h" + newline + "> --- | ---" + newline + "> " + row + newline
+    assert "no-source-check" in structure.scan_document(quoted).marker_text
+    # a header and a delimiter row in different containers open no table
+    split = "> h | h" + newline + "--- | ---" + newline + row + newline
+    assert "no-source-check" not in structure.scan_document(split).marker_text
+    # and a pipeless line is still a row, so a Setext underline below a table
+    # does not end it
+    underlined = "h | h" + newline + "--- | ---" + newline + "===" + newline
+    assert "no-source-check" in structure.scan_document(
+        underlined + row + newline
+    ).marker_text
+    assert structure.table_body_row_continues("alpha", (), (), ())
+    assert not structure.table_body_row_continues("# alpha", (), (), ())
+
+
+def test_a_definition_does_not_read_across_a_block_boundary_here_either() -> None:
+    """The definition bound, in the session hook's own label collector."""
+    newline = chr(10)
+    marker = "<!-- audience: adult -->"
+    reference = newline + newline + "![" + marker + "][x]" + newline
+    quoted = "[x]:" + newline + "> /url" + reference
+    assert "audience: adult" in structure.scan_document(quoted).marker_text
+    plain = "[x]:" + newline + "/url" + reference
+    assert "audience: adult" not in structure.scan_document(plain).marker_text
+    assert structure.reference_definition_span(["[x]:", "/url"], 0) == 2
+    assert structure.reference_definition_span(
+        ["[x]:", "/url"], 0, [False, True]
+    ) == 0
