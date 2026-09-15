@@ -5746,7 +5746,7 @@ def test_a_raw_text_opener_a_fence_prints_opens_no_run() -> None:
     )
     assert "hidden note" not in readability.extract_prose(bare)
     # and the mask is the one the walks use, so a fenced line carries none of it
-    assert not any(readability.raw_text_run_mask(fenced))
+    assert not any(readability.document_html_masks(fenced).raw_text)
 
 
 def test_a_table_body_row_needs_no_pipe_of_its_own() -> None:
@@ -5852,3 +5852,121 @@ def test_a_definition_does_not_read_across_a_block_boundary() -> None:
     assert readability.reference_definition_span(
         ["[x]:", "/url"], 0, [False, True]
     ) == 0
+
+
+def test_a_raw_text_run_stops_masking_where_it_closes() -> None:
+    """A run closing is not a line ending, and the comment mask has to say so.
+
+    ``<textarea></textarea>`` followed by a real comment holds an empty
+    element and then a comment the page never paints. Masking the whole line
+    hid the comment's own opener from ``strip_html_comments``, so the comment
+    stayed in the document and every word inside it was scored as prose a
+    child reads -- the direction that can carry a file over the forty-word
+    floor it should never have reached. Arbitrated by markdown-it 14.3.0 read
+    by ``html.parser``: GitHub's sanitizer removes the element *and* the
+    comment, so its page cannot tell the two apart.
+    """
+    newline = chr(10)
+    hidden = " ".join(f"w{index}" for index in range(12))
+    for element in ("textarea", "xmp", "script", "title"):
+        document = (
+            f"<{element}></{element}><!-- zqsuf {hidden} -->" + newline
+        )
+        assert "zqsuf" not in readability.extract_prose(document)
+    # the control in the other direction: plain text after the closer is text
+    # the reader reads, and dropping it is the error this guards
+    visible = "<textarea></textarea> zqsuf and twelve more words here" + newline
+    assert "zqsuf" in readability.extract_prose(visible)
+    # and a run that does not close on its line still holds the whole line
+    open_run = "<textarea>" + newline + "<!-- zqsuf " + hidden + " -->" + newline
+    assert "zqsuf" in readability.extract_prose(open_run)
+
+
+def test_a_comment_after_a_closer_may_end_a_line_below() -> None:
+    """The leak is not only the displayed elements: a multiline comment leaks
+    for every run kind, because the tag substitution that covered the
+    single-line case cannot reach across a line ending.
+    """
+    newline = chr(10)
+    hidden = " ".join(f"w{index}" for index in range(12))
+    for element in ("script", "style", "textarea", "iframe"):
+        document = (
+            f"<{element}></{element}><!-- zqsuf {hidden}" + newline
+            + "more words -->" + newline
+        )
+        assert "zqsuf" not in readability.extract_prose(document)
+
+
+def test_an_inline_comment_may_not_pair_across_a_block_boundary() -> None:
+    """Inline raw HTML is one block's, and a comment that leaves it is text.
+
+    ``note here <!-- hidden`` over a blank line over ``more -->`` renders on
+    markdown-it 14.3.0 as two paragraphs with both delimiters *escaped*, so
+    every word between them is text a child reads. Pairing them deleted the
+    lot. A ``<!--`` at the start of a line is HTML block condition 2 and may
+    cross anything, and inside a raw HTML block the question does not arise.
+    """
+    newline = chr(10)
+    words = "zqsuf one two three four five six seven eight nine ten"
+    for gap in ("", "# stop", "- item", "***"):
+        middle = (newline if gap == "" else gap + newline)
+        document = (
+            "note here <!-- " + words + newline + middle + "charlie -->" + newline
+        )
+        assert "zqsuf" in readability.extract_prose(document)
+    # the controls: one paragraph, a block opener, and inside a raw HTML block
+    same_paragraph = "note here <!-- " + words + newline + "charlie -->" + newline
+    assert "zqsuf" not in readability.extract_prose(same_paragraph)
+    block_opener = "<!-- " + words + newline + newline + "charlie -->" + newline
+    assert "zqsuf" not in readability.extract_prose(block_opener)
+    inside_block = (
+        "<div>" + newline + "note <!-- " + words + newline + newline
+        + "charlie -->" + newline + "</div>" + newline
+    )
+    assert "zqsuf" not in readability.extract_prose(inside_block)
+
+
+def test_the_block_mask_is_commonmarks_and_the_run_mask_is_the_pages() -> None:
+    """A browser enters ``<xmp>`` raw text where CommonMark opens no block.
+
+    ``Intro words`` over ``<xmp>`` over a comment: condition 7 may not
+    interrupt a paragraph, so CommonMark opens no HTML block -- and
+    ``html.parser`` still paints every character after the ``<xmp>``, comment
+    delimiters included, because the page's tokenizer does not consult
+    CommonMark. Conditioning the *run* on the block deleted those words. The
+    block mask exists for the comment bound and nothing else.
+    """
+    newline = chr(10)
+    words = "zqsuf one two three four five six seven eight nine ten"
+    document = (
+        "Intro paragraph words" + newline + "<xmp>" + newline
+        + "<!-- " + words + " -->" + newline
+    )
+    assert "zqsuf" in readability.extract_prose(document)
+    masks = readability.document_html_masks(document)
+    opener = document.index("<xmp>")
+    # CommonMark opens no block on the ``<xmp>`` line, and the page opens a
+    # run on it anyway. The comment below it is a block of its own -- an HTML
+    # comment is condition 2 and may interrupt a paragraph -- which is why the
+    # assertion is at the opener rather than over the whole document.
+    assert not masks.html_block[opener]
+    assert masks.raw_text[opener]
+
+
+def test_one_walk_builds_both_masks_and_it_tracks_the_fence() -> None:
+    """A ``<div>`` a fence prints opens no block, so it exempts no comment.
+
+    This is the document that separates the selected fix from the same fix
+    with a second, fence-blind block pass: with no fence model the printed
+    ``<div>`` leaves a block open over the paragraph below the closing fence,
+    and the comment bound is waived on a block the page never carried.
+    """
+    newline = chr(10)
+    fence = chr(96) * 3
+    words = "zqsuf one two three four five six seven eight nine ten"
+    document = (
+        fence + "text" + newline + "<div>" + newline + fence + newline
+        + "note here <!-- " + words + newline + "# stop -->" + newline
+    )
+    assert not any(readability.document_html_masks(document).html_block)
+    assert "zqsuf" in readability.extract_prose(document)

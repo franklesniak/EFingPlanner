@@ -3986,8 +3986,25 @@ def literal_code_mask(text: str) -> bytearray:
     return mask
 
 
-def raw_text_run_mask(text: str) -> bytearray:
-    """Return one byte per character, nonzero where a raw-text run holds it.
+@dataclass(frozen=True)
+class DocumentMasks:
+    """One byte per character of a document, for the two questions below it.
+
+    ``raw_text`` is nonzero where a raw HTML run holds the character, and
+    ``html_block`` is nonzero where CommonMark has a raw HTML block open over
+    it. They are built by one walk and returned together because they are one
+    walk's two answers: a run may open only where a block does, and a comment
+    written inside a block is a comment wherever its closer sits. Holding them
+    apart in two passes meant two fence models, and the second would have been
+    the one without one.
+    """
+
+    raw_text: bytearray
+    html_block: bytearray
+
+
+def document_html_masks(text: str) -> DocumentMasks:
+    """Return, in one walk, where raw text runs and where raw HTML blocks do.
 
     A comment delimiter a raw-text element *prints* is not a delimiter, exactly
     as a delimiter inside literal code is not one. ``<textarea>`` and ``<xmp>``
@@ -3997,30 +4014,52 @@ def raw_text_run_mask(text: str) -> bytearray:
     ``<textarea>`` between ``<!--`` and ``-->`` left **zero** prose words, and
     the gate reported success on a page it never read.
 
+    **A run closing is not the same event as a line ending**, and the mask has
+    to say so. ``<textarea></textarea><!-- forty-five hidden words -->`` holds
+    an empty element and then a real comment: covering the whole line hid the
+    comment's own opener from ``strip_html_comments``, the comment stayed in
+    the document, and ``extract_prose`` scored every word inside it as words a
+    child reads -- which can carry a document over the forty-word floor it
+    should never have reached. ``raw_text_run_boundary``'s third value is
+    where the element stops holding the line, and the two document walks have
+    read it that way since round 12; this pass asked ``raw_text_run_state``
+    instead and threw it away. The mask now stops there, so the characters
+    after the closer are read as the document text they are.
+
     A tag a fenced example *prints* is not a tag, which is the same sentence
     one block down. An unmatched ``<script>`` written inside a fence is escaped
     code on the page, and opening a run on it left the run open past the
     closing fence: the mask then covered a real multiline comment below, the
     comment survived ``strip_html_comments``, and the words written inside it
     were scored as prose a child reads. So the fence is tracked here, in the
-    shape and the order both document walks use -- the run is asked first,
-    because a line a run holds opens no fence, and a line a fence holds opens
-    no run.
+    shape and the order both document walks use -- the run is asked after the
+    block, because a line a run holds opens no fence, and a line a fence holds
+    opens neither.
+
+    **The block mask is CommonMark's and the run mask is the page's**, and the
+    two are deliberately asked different questions. ``html_block`` says where
+    CommonMark has raw HTML open, which is what bounds an inline comment.
+    The run is still told that any line may open one, because a browser enters
+    ``<xmp>`` raw text on a line CommonMark keeps inside the paragraph above
+    it: measured, ``Intro words`` over ``<xmp>`` over a comment paints every
+    character of that comment, and a block-conditioned run deleted them.
+    ``raw_text_content_start`` documents the same parting from the other side.
+    The residual is the mirror image and is recorded rather than hoped over: an
+    opener on a line CommonMark keeps inside a paragraph opens a run here that
+    the marker scans refuse.
 
     The run state is the one the document walks use, so the two cannot disagree
     about which lines a run holds, and the line is peeled to its container
     content before the question is asked -- the same normalization the document
-    walks use, for the same reason. One thing this pass still does not have is
-    recorded rather than hoped over: it carries no HTML block machine, so it
-    tells the run state that any line may open one, and the residual is an
-    opener on a line CommonMark keeps inside the paragraph above it. That
-    leaves a real comment removed, which is the direction this pass ran in
-    before it asked the question at all.
+    walks use, for the same reason.
     """
-    mask = bytearray(len(text))
+    masks = DocumentMasks(bytearray(len(text)), bytearray(len(text)))
     list_contexts: list[ListContext] = []
     active_fence: ActiveFence | None = None
     open_run: str | None = None
+    html_block: ActiveHtmlBlock | None = None
+    paragraph_open = False
+    previous_content = ""
     offset = 0
     for line in text.split("\n"):
         if active_fence is not None and fence_container_ended(line, active_fence):
@@ -4036,25 +4075,88 @@ def raw_text_run_mask(text: str) -> bytearray:
                 active_fence = None
             offset += len(line) + 1
             continue
-        # The run state is asked about the line's *content*, past its
-        # blockquote and list-item prefixes, because CommonMark classifies a
-        # line from what is left once the prefixes are gone. Asking about the
-        # raw line meant ``> <textarea>`` opened no run at all, so the comment
-        # remover below deleted forty words the page prints -- and a document
-        # that loses that many can fall under the word floor and leave the
-        # gate in silence. The mask still covers the whole raw line: a
-        # container prefix holds no delimiter, and the offsets have to stay
-        # the document's.
+        # The run state and the block state are asked about the line's
+        # *content*, past its blockquote and list-item prefixes, because
+        # CommonMark classifies a line from what is left once the prefixes are
+        # gone. Asking about the raw line meant ``> <textarea>`` opened no run
+        # at all, so the comment remover below deleted forty words the page
+        # prints -- and a document that loses that many can fall under the word
+        # floor and leave the gate in silence. Both masks still cover the whole
+        # raw line: a container prefix holds no delimiter, and the offsets have
+        # to stay the document's.
         fence_line = normalize_for_fence_opening(line, list_contexts)
-        open_run, line_run = raw_text_run_state(fence_line.content, open_run, True)
+        html_block, line_html_block = html_block_state(
+            fence_line.content,
+            fence_line.containment_path,
+            html_block,
+            paragraph_open,
+        )
+        paragraph_open = opens_a_paragraph(
+            fence_line.content, paragraph_open, previous_content
+        )
+        previous_content = fence_line.content
+        if line_html_block is not None:
+            masks.html_block[offset : offset + len(line)] = b"\x01" * len(line)
+        open_run, line_run, run_end = raw_text_run_boundary(
+            fence_line.content, open_run, True
+        )
         if raw_text_run_holds_text(line_run):
-            mask[offset : offset + len(line)] = b"\x01" * len(line)
+            # ``run_end`` is ``-1`` where the run does not close on this line,
+            # and the offset just past its closing delimiter where it does. The
+            # prefix in front of the content is added back because the mask's
+            # offsets are the document's, not the peeled line's.
+            masked = (
+                len(line)
+                if run_end == -1
+                else len(line) - len(fence_line.content) + run_end
+            )
+            masks.raw_text[offset : offset + masked] = b"\x01" * masked
         else:
             opening_fence = parse_opening_fence(fence_line.content)
             if opening_fence is not None:
                 active_fence = build_active_fence(opening_fence, fence_line)
         offset += len(line) + 1
-    return mask
+    return masks
+
+
+def comment_span_is_one_block(
+    text: str, start: int, end: int, blocks: bytearray
+) -> bool:
+    """Return whether one HTML comment span stays inside the block it opened in.
+
+    CommonMark has two comments and only one of them may cross a block
+    boundary. A ``<!--`` at the start of a line is HTML **block** condition 2,
+    which runs to the line carrying ``-->`` whatever stands between -- a blank
+    line, a heading, the next item of a list. A ``<!--`` written part way along
+    a paragraph line is **inline** raw HTML, and inline raw HTML cannot span
+    two blocks: measured on markdown-it 14.3.0, ``note here <!-- hidden`` over
+    a blank line over ``more -->`` renders as two paragraphs with the
+    delimiters *escaped*, so every word between them is text a child reads.
+    A document-wide substitution paired them anyway and deleted the lot, which
+    is the direction that takes a file under ``MIN_WORDS_TO_SCORE`` and out of
+    the gate in silence.
+
+    Inside a raw HTML block the question does not arise and the answer is
+    ``True``: every character there is raw HTML, so an opener part way along
+    such a line really does pair with a closer below it.
+    https://spec.commonmark.org/0.31.2/#raw-html
+    """
+    if blocks[start]:
+        return True
+    line_start = text.rfind("\n", 0, start) + 1
+    if not text[line_start:start].strip(ASCII_HORIZONTAL_WHITESPACE):
+        return True
+    for row in text[start:end].split("\n")[1:]:
+        content = BLOCKQUOTE_PATTERN.sub("", row)
+        if not content.strip(ASCII_HORIZONTAL_WHITESPACE):
+            return False
+        if LIST_MARKER_PATTERN.match(content):
+            return False
+        if HEADING_PATTERN.match(content):
+            return False
+        if THEMATIC_BREAK_PATTERN.match(content):
+            return False
+    return True
 
 
 def strip_html_comments(text: str) -> str:
@@ -4088,16 +4190,19 @@ def strip_html_comments(text: str) -> str:
     places. A comment is still removed as one span, line breaks included, so a
     paragraph wrapped around a multi-line comment stays one sentence unit. An
     unterminated ``<!--`` outside literal code is left in place, which is what
-    the substitution this replaces did.
+    the substitution this replaces did, and so is one whose ``-->`` is in
+    another block -- see ``comment_span_is_one_block``.
     https://spec.commonmark.org/0.31.2/#raw-html
     """
     working = text
     mask = literal_code_mask(working)
     # A run of raw text is masked beside the literal code, for the same reason
     # and against the same mistake: an opener the page *prints* is not an
-    # opener. The two masks are separate because only the literal one is
-    # recomputed when a comment overlapping it is blanked.
-    raw_text = raw_text_run_mask(working)
+    # opener. It arrives with the raw HTML block mask because one walk builds
+    # both; the literal-code mask stays its own, because only it is recomputed
+    # when a comment overlapping it is blanked.
+    html = document_html_masks(working)
+    raw_text = html.raw_text
     spans: list[tuple[int, int]] = []
     search_from = 0
 
@@ -4115,13 +4220,21 @@ def strip_html_comments(text: str) -> str:
         if end == -1:
             break
         end += len("-->")
+        if not comment_span_is_one_block(working, start, end, html.html_block):
+            # An inline opener whose closer is in another block pairs with
+            # nothing; the page prints both delimiters. Resume past this
+            # opener rather than past the closer, so a real comment further
+            # along the same line is still found.
+            search_from = start + len("<!--")
+            continue
         spans.append((start, end))
         search_from = end
 
         if b"\x01" in mask[start:end]:
             working = f"{working[:start]}{' ' * (end - start)}{working[end:]}"
             mask = literal_code_mask(working)
-            raw_text = raw_text_run_mask(working)
+            html = document_html_masks(working)
+            raw_text = html.raw_text
 
     kept: list[str] = []
     index = 0
