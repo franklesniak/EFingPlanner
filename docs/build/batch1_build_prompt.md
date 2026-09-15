@@ -4,7 +4,7 @@
 
 - **Status:** Active
 - **Owner:** Repository Maintainers
-- **Last Updated:** 2026-09-14
+- **Last Updated:** 2026-09-15
 - **Scope:** The complete build instruction for Batch 1 of the EFingPlanner curriculum -- the Phase 0-2 vertical slice, Session 00 through Checkpoint 1. It carries every Batch 1 requirement, every applicable acceptance criterion and the adjudicated answer to every open question, so an authoring run never opens the archived specification. It does not cover Batch 0 or Batches 2-4, and it is a build instruction rather than shipped curriculum.
 - **Related:** [Build prompt directory guide](README.md), [Build prompt template](_build_prompt_template.md), [Archived specification](../spec/specification.md)
 
@@ -327,10 +327,18 @@ reference files keep their `July 2026` stamp.
 `## Metadata` block with a `**Last Updated:**` date: `framework/CHANGELOG.md` (F10),
 `framework/docs/build_style_and_vocab.md` (F11), and
 `framework/docs/privacy_and_safety.md` (F12). **Whenever you change the rendered content
-of a file that carries that block, bump its `Last Updated` to your build date in
+of a file that carries that block, bump its `Last Updated` to the current UTC date in
 `YYYY-MM-DD` form, once, in the same commit** — and bump the `<YYYYMMDD>` segment of a
 `**Version:**` line too, if the file has one (none of these three does). This is the
-repository's documentation rule, and it binds every later batch as well. **Do not confuse
+repository's documentation rule, and it binds every later batch as well. **UTC, and not
+the date on your own clock — the difference is not theoretical.** The rule in
+`.github/instructions/docs.instructions.md` says *the current UTC date*. A builder west of
+Greenwich who finishes in the evening is already on the next UTC day, and the date their
+shell prints is yesterday's. This brief was written that way itself and carried a stale
+`Last Updated` from the commit that created its own metadata block, which is how the
+defect was found. Take the value from `date -u +%Y-%m-%d`, not from a local clock — for
+this field everywhere it appears below, and for F10's changelog release heading, which
+sits in the same file as a `Last Updated` the same commit must bump. **Do not confuse
 it with the `Last reviewed` stamp above:** `Last Updated` is a `YYYY-MM-DD` field inside
 the `## Metadata` block a specification, instruction or process document carries; `Last
 reviewed` is a `<month year>` honesty stamp on a `destinations/` fact file. Different
@@ -352,7 +360,7 @@ edited by any batch (see BUILD RULES below).
 add-a-destination checklist. Must contain:
 
 - H1; then a `## Metadata` block directly below it -- `**Status:**`, `**Owner:**`,
-  `**Last Updated:**` (your build date, `YYYY-MM-DD`) and `**Scope:**`, plus
+  `**Last Updated:**` (the UTC date, `YYYY-MM-DD`) and `**Scope:**`, plus
   `**Related:**` where a real target exists. This file's content is a contract, a field
   schema and a checklist, so the repository's documentation policy classifies it Tier 1
   on content whatever directory it sits in; no gate checks it, which is why it is stated
@@ -1332,7 +1340,7 @@ template for authoring sessions, not a worksheet. It sits inside the readability
 scorer's `framework/templates/**/*.md` glob, so it must declare its audience in its own
 text: put `<!-- audience: builder -->` near the top, on its own line. **It also carries a
 `## Metadata` block directly below its H1** -- `**Status:**`, `**Owner:**`,
-`**Last Updated:**` (your build date, `YYYY-MM-DD`) and `**Scope:**`, plus `**Related:**`
+`**Last Updated:**` (the UTC date, `YYYY-MM-DD`) and `**Scope:**`, plus `**Related:**`
 where a real target exists. Its content is authoring instruction, which the repository's
 documentation policy classifies Tier 1 on content whatever directory it sits in; no gate
 checks it, which is why it is stated here. The block is this template's own metadata and
@@ -1511,7 +1519,7 @@ the top, on its own line. **The spec has no content requirements for this file
 anywhere** — the outline below is the requirement, supplied by OQ-9. Required sections,
 in order:
 
-1. `## Metadata` — `**Status:**`, `**Owner:**`, `**Last Updated:**` (your build
+1. `## Metadata` — `**Status:**`, `**Owner:**`, `**Last Updated:**` (the UTC
    date, `YYYY-MM-DD`) and `**Scope:**`, plus `**Related:**` where a real target exists.
    Like D7, this file's content is authoring instruction, which the repository's
    documentation policy classifies Tier 1 on content whatever directory it sits in; no
@@ -2028,7 +2036,7 @@ to `framework/README.md`.
 
 **F4. `framework/docs/design_principles.md` (create).** Parent-facing and
 builder-facing, adult register. H1; then a `## Metadata` block directly below it --
-`**Status:**`, `**Owner:**`, `**Last Updated:**` (your build date, `YYYY-MM-DD`) and
+`**Status:**`, `**Owner:**`, `**Last Updated:**` (the UTC date, `YYYY-MM-DD`) and
 `**Scope:**`, plus `**Related:**` where a real target exists. Then the
 mechanic-to-purpose table; the three core
 executive-function skills; the fourth skill underneath; the honest transfer framing.
@@ -2135,7 +2143,7 @@ so sessions can point rather than re-teach. The file stays destination-neutral.
 
 **F6. `framework/docs/ai_use_rules.md` (create).** Parent-facing, with child-readable
 rules. H1; then a `## Metadata` block directly below it -- `**Status:**`, `**Owner:**`,
-`**Last Updated:**` (your build date, `YYYY-MM-DD`) and `**Scope:**`, plus `**Related:**`
+`**Last Updated:**` (the UTC date, `YYYY-MM-DD`) and `**Scope:**`, plus `**Related:**`
 where a real target exists. **This page is rules end to end**, which is why the
 classification paragraph above puts it on the required side; write the `Scope` field so it
 names what the page is the canonical home for, the way `privacy_and_safety.md` does. Then:
@@ -2420,10 +2428,12 @@ F10 stays an **edit** on every branch, so the deliverables split is always
 The curriculum changelog, distinct from the per-trip decision log. **The file already
 carries its H1 and its "which log is this" router table, and you add neither.** The block
 below is the release section on its own -- it is what the existing `## Unreleased`
-heading becomes when you rename it in place, not a file to paste over the top of one:
+heading becomes when you rename it in place, not a file to paste over the top of one.
+A fresh, empty-by-design `## Unreleased` goes back above it, for the reason given with
+the rename instruction below:
 
 ```markdown
-## 0.2.0 -- <the date you finish, as YYYY-MM-DD>
+## 0.2.0 -- <the UTC date you finish, as YYYY-MM-DD>
 
 Batch 1: the complete Phases 0-2 slice -- Session 00 through Checkpoint 1.
 
@@ -2451,10 +2461,10 @@ jump to `1.0.0` — that is reserved for the complete deliverable inventory plus
 whole-repo consistency pass. F1 above writes the same `0.2.0` into `framework/README.md`;
 the changelog requires the two to match exactly.
 
-**Also bump this file's `## Metadata` block `Last Updated` field to your build date, in
-`YYYY-MM-DD` form** — it reads `2026-09-13` today. This is the third metadata-bearing
-file Batch 1 edits, alongside F11 and F12, and the one most easily missed, because the
-visible work is all in the release sections below the block.
+**Also bump this file's `## Metadata` block `Last Updated` field to the current UTC
+date, in `YYYY-MM-DD` form** — it reads `2026-09-13` today. This is the third
+metadata-bearing file Batch 1 edits, alongside F11 and F12, and the one most easily
+missed, because the visible work is all in the release sections below the block.
 
 The file already carries an `## Unreleased` section holding two Batch-0-era `### Changed`
 bullets — the recorded pilot deferral and the two recorded build conventions. Those ship
@@ -2462,8 +2472,25 @@ as part of `0.2.0`. **Rename that heading in place:** `## Unreleased` becomes
 `## 0.2.0 -- <YYYY-MM-DD>`, its line *"Work in progress toward the complete deliverable
 inventory."* becomes *"Batch 1: the complete Phases 0-2 slice -- Session 00 through
 Checkpoint 1."*, its two existing `### Changed` bullets stay at the top of that section's
-`### Changed` list, and the Batch 1 entries are added below and around them. Do not
-create a second section, and do not leave an empty `## Unreleased` heading behind.
+`### Changed` list, and the Batch 1 entries are added below and around them.
+
+**Then write a fresh `## Unreleased` above it, and that is not the second section this
+item forbids.** Renaming alone leaves the file with no `## Unreleased` at all, and F10's
+own list above calls that section one of the six invariants: cutting a release would
+delete an invariant, and the next batch would have nowhere to record a pending entry
+except inside a shipped release, which is a false history of what shipped. The fresh
+section is the heading and one line — *"Nothing yet. Entries land here until the next
+release is cut."* — and no `###` subheadings, because a `### Changed` heading with no
+bullets under it is an empty promise rather than an empty section. Newest first, the
+file then reads `## Unreleased`, `## 0.2.0 -- <YYYY-MM-DD>`, `## 0.1.0 -- 2026-07-11`,
+`## What is still owed to a human`.
+
+**What you must not do is duplicate the release.** Do not leave the Batch-0-era bullets
+in `## Unreleased` as well as in `0.2.0`, do not write a second `## 0.2.0`, and do not
+keep the renamed heading alongside an old `## Unreleased` holding the same content. One
+copy of every entry, in exactly one section — and the empty heading this item used to
+forbid is the *renamed* one left behind with its bullets moved out, never the fresh
+`## Unreleased` that the six-section invariant requires.
 
 Batch 1 must land these entries:
 
@@ -2784,7 +2811,7 @@ safety rule against a tidiness rule, and the repository has already settled that
 other way twice, for the provided-as-is banner and for this very caveat.
 
 Then, in the same pass, **bump this file's `## Metadata` block `Last Updated`
-field to your build date, in `YYYY-MM-DD` form** — it reads `2026-07-07` today. The
+field to the current UTC date, in `YYYY-MM-DD` form** — it reads `2026-07-07` today. The
 phrase change alters the document's rendered meaning, and this file carries the metadata
 header block, so the bump is required in the same commit; the same bump covers all three
 changes. It carries no `**Version:**`
@@ -3752,7 +3779,8 @@ table has a row for each. Verify before you stop, case-insensitively, so a
 
 ```bash
 grep -ni 'destinations/japan' \
-  framework/sessions/phase_02_destination_big_picture/12_weather_seasons_and_events.md
+  framework/sessions/phase_02_destination_big_picture/12_weather_seasons_and_events.md \
+  || [ $? -eq 1 ]
 ```
 
 Expect no output. (The spec extract §2.3 said Session 12 has "one link"; that is an
@@ -3788,7 +3816,8 @@ never be. Before you stop, run this -- `-i` because a converted sentence may ope
 
 ```bash
 grep -ni four \
-  framework/sessions/phase_02_destination_big_picture/12_weather_seasons_and_events.md
+  framework/sessions/phase_02_destination_big_picture/12_weather_seasons_and_events.md \
+  || [ $? -eq 1 ]
 ```
 
 Expect no output. This sweep is scoped to the session file, and one copy of the same
@@ -4236,7 +4265,7 @@ of the options inside it are not hypothetical: a GitHub Actions `run:` step with
 sits **outside** the envelope is named too, because an envelope with no edge is not a
 contract: shells this brief does not target -- `csh` and its relatives, PowerShell,
 `cmd` -- and options that change what a command *means* rather than when the shell stops,
-a non-default `IFS` and `set -f` among them. Five rules follow, and this brief broke all
+a non-default `IFS` and `set -f` among them. Six rules follow, and this brief broke all
 five before they were written down here:
 
 1. **Resolve nothing above the test that decides whether it is needed.** A lookup placed
@@ -4245,9 +4274,15 @@ five before they were written down here:
 2. **Take a count as `var=$(...) || var=0`.** `grep -c` prints `0` and exits `1` when it
    matches nothing, so an unprotected assignment aborts on the empty case -- and in both
    loops below the empty case is the defect being looked for.
-3. **End a command whose clean result is no match with `|| true` when another command
-   follows it.** Otherwise the successful outcome stops the block and the commands after
-   it never run.
+3. **End every command whose clean result is no match with `|| [ $? -eq 1 ]`, whether or
+   not another command follows it.** `grep` exits `1` when it selects nothing, so a
+   command that is *supposed* to match nothing hands the shell a failure on its own
+   healthy path: the commands after it never run, and the block itself ends non-zero.
+   `|| true` fixes the first half and breaks something else — it swallows `grep`'s **exit
+   `2`** as well, the unreadable file and the bad pattern, so a check that could not run
+   reports what a clean run reports. `|| [ $? -eq 1 ]` accepts the no-match `1` and lets
+   every other status through. Measured in all six environments named above: no match
+   `0`, a hit `0`, a missing path `1` with `grep`'s own line on standard error.
 4. **A check whose subject set can be empty has to say when the set is empty.** A loop
    over no files, a glob that did not expand, and a pathspec that matches nothing all
    finish quietly, and quiet is what these checks print when they pass. So the three
@@ -4259,12 +4294,37 @@ five before they were written down here:
    already guards against one line above it. Give every such assignment a fallback of its
    own, `|| var=''`, or `|| var=0` where the value is a count. Measured: rule 2's form
    already survives `pipefail`; the unguarded pipeline does not.
+6. **A clean run of every block here exits `0`, and that is a promise rather than a
+   remark.** It holds for a one-command block too, and a one-command block is where it
+   was broken longest: a script's status is its last command's status, so a lone `grep`
+   that finds nothing ends the block at `1` in **every** shell in the envelope, `set -e`
+   or not — which is why this one is not a `-e` problem and could not be fixed by choosing
+   a shell. None of these blocks is a gate: a leak makes `grep` exit `0`, so the status
+   never reports the defect and the **output** is what you read. The status is there so
+   that a clean tree does not fail a `run:` step, and so that a block which could not run
+   is told apart from one that ran and found nothing.
 
-All five failures are **silent**: the shell exits with no message, and a check that
+All six failures are **silent**: the shell exits with no message, and a check that
 passes prints no message either. So on a block holding more than one command, read the
-exit status as well as the output. A block holding a single `grep` is a different case
-and is left alone -- `grep` exiting `1` on no match is the pass there, and each such
-block says so where it appears.
+exit status as well as the output.
+
+**A superseded sentence, kept here with the measurement that falsifies it.** Until rule 6
+was written the paragraph above ended: *"A block holding a single `grep` is a different
+case and is left alone -- `grep` exiting `1` on no match is the pass there, and each such
+block says so where it appears."* Both halves are false, and the second half is the one
+that can be counted. **Eight blocks below held a bare single `grep`, and not one of the
+eight said so where it appeared: 0 for 8.** The first half was an exemption resting on
+the second — an exit status nobody had to state was an exit status nobody had to fix.
+
+**And the status it exempted is inverted, which is what the wording hid.** Measured in
+all six environments at the head this replaces: on a **clean** tree those blocks return
+`1`, and on a tree **carrying the leak** they return `0`. Not harmless in a terminal and
+awkward in CI — backwards in both, because `grep` reports whether it matched and these
+checks want the opposite answer. **Three further blocks were never exempt at all**: the
+framework-layer leak sweep, the pack-path sweep and the pronoun sweep each name the hits
+a correct build produces, so their clean run already exits `0` and they needed nothing.
+An audit that groups a block by the shape of its command rather than by the result its
+own prose promises will mis-sort every block whose clean answer is a hit.
 
 **Rule 5 exists because the earlier audit had the right unit and an incomplete
 environment.** Every runnable block was first run against every repository state its own
@@ -4305,7 +4365,8 @@ from BSD grep as well, so `-w` is the form that fails in fewer places rather tha
 the portable one:
 
 ```bash
-grep -rwiE 'Chicago|ORD|17[ -]?days?|grandmothers?|uncles?' framework/
+grep -rwiE 'Chicago|ORD|17[ -]?days?|grandmothers?|uncles?' framework/ \
+  || [ $? -eq 1 ]
 ```
 
 Expect no output, and confirm no hard-coded family value (blanks pointing to
@@ -4321,7 +4382,8 @@ returns zero hits today, so the expectation is unchanged and only the blind spot
 "expect no output" reachable.** BUILD RULES below bans `17` **as a trip-length cap**;
 the check had dropped the qualifier and banned the digits. `-w` treats a hyphen as a
 word boundary, so a bare `17` matches the `17` in `**Last Updated:** 2026-07-17` -- and
-this brief requires that field, in `YYYY-MM-DD` form and carrying **your build date**,
+this brief requires that field, in `YYYY-MM-DD` form and carrying **the current UTC
+date**,
 on **eight** files inside `framework/`: F10's changelog, F11's style law and F12's
 privacy page under the bump rule near the top of this brief, and D7, D8, F4, **F6** and
 F7 as creates. Build on the seventeenth of any month and the check prints a line for
@@ -4359,7 +4421,7 @@ Then the wider trip-length sweep, which the archived design record asks for alon
 the narrow token and which **is a hand-read, not a pass or fail**:
 
 ```bash
-grep -rnwE '17' framework/
+grep -rnwE '17' framework/ || [ $? -eq 1 ]
 ```
 
 **Expect no output on most builds, and date lines only when there is output.** The
@@ -4382,7 +4444,8 @@ correct build; it only closes the lowercase blind spot.
 grep -rniE 'japan|tokyo|kyoto|osaka|shinkansen' \
   framework/sessions/phase_00_setup/ \
   framework/sessions/phase_01_research_skills/ \
-  framework/sessions/phase_02_destination_big_picture/
+  framework/sessions/phase_02_destination_big_picture/ \
+  || [ $? -eq 1 ]
 ```
 
 Expect no output.
@@ -4827,8 +4890,8 @@ this is the only place it is measured, and it matters most in this batch, becaus
 files are generated from a brief whose own prose is full of section citations:
 
 ```bash
-grep -rniE 'sections? [0-9]' framework/ destinations/ || true
-grep -rn '§' framework/ destinations/ || true
+grep -rniE 'sections? [0-9]' framework/ destinations/ || [ $? -eq 1 ]
+grep -rn '§' framework/ destinations/ || [ $? -eq 1 ]
 ```
 
 Expect no output from either. `framework/` and `destinations/` are the whole built tree;
@@ -4844,13 +4907,22 @@ pattern over the word can reach; it returns nothing on the built tree today, so 
 expectation is the same as the first's. Neither reaches a citation written out in
 words, so read your own new files as well: a clean run is evidence, not proof.
 
-**Both lines end `|| true`, and that is what lets the second one run.** `grep` exits `1`
-when it matches nothing, which here is the expected result, so under `set -e` the first
-command ends the block and the `§` sweep never executes. Measured on a fixture that is
-clean for the word pattern and carries one `§14.1`: without the fallback the pair printed
-nothing and exited `1`, which is indistinguishable from a clean tree; with it, the `§`
-hit printed. This is the only block in the brief holding a command whose expected result
-is a non-zero exit **and** a command after it, so it is the only one that needs this.
+**Both lines end `|| [ $? -eq 1 ]`, and that is what lets the second one run.** `grep`
+exits `1` when it matches nothing, which here is the expected result, so without a
+fallback the first command ends the block and the `§` sweep never executes. Measured on
+a fixture that is clean for the word pattern and carries one `§14.1`: without the
+fallback the pair printed nothing and exited `1`, which is indistinguishable from a clean
+tree; with it, the `§` hit printed.
+
+**The fallback used to be `|| true`, and the change is not cosmetic.** `|| true` accepts
+`grep`'s exit `2` as well — an unreadable file, a bad pattern, a path that is not
+there — so a sweep that *could not run* reported the same status as a sweep that ran
+clean, and the second line then ran on half a result. Rule 3's form accepts only the
+no-match `1`, so a real `grep` failure stops the block with `grep`'s own line on
+standard error, which is the reading you want before you trust either sweep. This was
+once the only block here that needed a fallback of any kind, because it was the only
+one with a command after the no-match one; rule 3 now puts the same idiom on the five
+one-command blocks above, whose exit status was wrong for a different reason.
 
 Finally, the four repo-wide gates. **They are four separate commands, and `pre-commit`
 is not a superset of the other three.** `.pre-commit-config.yaml` wires exactly two
