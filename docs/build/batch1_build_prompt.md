@@ -124,21 +124,32 @@ to the eight already-built shared sessions.
   executes the documented batches exactly never creates it and the finished inventory
   misses a file an acceptance criterion requires. A build report does not close that:
   it says what one batch did, and no later batch reads it. **So the routing is recorded
-  here as an open decision rather than as a note**, in the same form as A1's, which is
-  the only other thing in this brief left open.
+  here as an open decision rather than as a note**, in the same form as A1's and as
+  the build-risk-register question below. **The count of what is open lives near the
+  top of this brief and nowhere else.** This sentence once carried a count of its own,
+  said "the only other thing", and went on saying it after a third question was
+  written -- which is why it now names the other two and counts neither.
 
-  **Measured across the whole matrix, it is the only unrouted one.** The thirty-five
-  `AC-` rows name thirteen distinct file paths between them. Twelve are accounted for:
-  on `main` already, created or edited by an item on this list, or assigned to a named
-  batch by the exclusion list above or by the archived record's batch plan. This guide
-  is the thirteenth, and it is the only one no sentence anywhere gives to a batch. One
+  **Measured across the whole matrix, it is the only unrouted path a criterion
+  requires to exist.** The thirty-five `AC-` rows name thirteen distinct file paths
+  between them. **Eleven** are accounted for: on `main` already, created or edited by
+  an item on this list, or assigned to a named batch by the exclusion list above or by
+  the archived record's batch plan. **A twelfth is given to no batch either and needs
+  none** -- the optional acceptance-criteria manifest, named by `AC-GLOBAL-7` and by
+  nothing else, which the archived matrix writes as applying only if that manifest was
+  generated and as a no-op when it was not. Its absence fails nothing, so no batch has
+  to own it; it is named here without a path, because a repo-relative path in inline
+  code is a promise that the file exists. This guide is the thirteenth, and it is the
+  only one whose absence an acceptance criterion can fail. One
   further exclusion above carries no batch either -- the build-risk register -- and that
   one is a different case, because the archived record's own repository layout gives it no
   path, so whether it is a repository file at all is undecided rather than unrouted.
   **Undecided is a state to record, not a category that removes the item from the
   ledger**, so it carries its own Open Question below rather than a remark here. This
   guide's path is in that layout, one line above `how_to_start_a_trip.md`, which F2 does
-  build.
+  build. **Three things in this paragraph carry no batch, and only one of them is a
+  gap:** this guide, which a criterion requires and nobody owns; the manifest, whose
+  criterion is a no-op without it; and the register, which has no path to route.
 
   **The recommendation, so the human answers rather than derives: Batch 3, with one
   rider.** Batch 3 is the batch that finishes the destination pack and reads the
@@ -152,9 +163,16 @@ to the eight already-built shared sessions.
   **It does not block Batch 1.** Nothing on this run's deliverables list needs the guide
   to exist, no self-check below counts it, and a new-destination author has the checklist
   in the pack. What it blocks is the inventory: `AC-26-1` cannot pass until a batch owns
-  the file. **Name it in your build report beside gate check 2, the open human edit, and
-  the build-risk-register question below** -- those four are the whole of what this batch
-  hands back to a person.
+  the file. **Name it in your build report beside gate check 2, the open human edit,
+  the build-risk-register question below, and A1's `Capital` question** -- those five
+  are the whole of what this batch hands back to a person. A1's is on the list for the
+  reason the rider above gives: it blocks this guide as well as the second destination
+  pack, so a handback carrying the routing without it hands a batch a file it still
+  cannot write. **Derive that list rather than trusting the count:** every question
+  this brief leaves open in the repository's own labelled form is a handback, and so
+  are the two obligations no builder can discharge -- gate check 2 and the
+  full-coverage human edit. A question written later joins the list by that rule,
+  whether or not anyone remembers to edit this sentence.
 
   **Open Question:** whether `AC-GLOBAL-1`'s **build-risk register** is a repository file
   at all. That criterion lists the register among the directories and files the required
@@ -3441,9 +3459,10 @@ contradicting it.
    one deliberate exception. So replace it with a neutral point-of-use prompt, send it
    nowhere, and **record it in the build report as a deliberate exception**, which the
    handoff's gate check 1 already requires by name -- an exemption nobody writes down is
-   indistinguishable from a fact somebody lost. **Measured across the ten conversion
-   tables in this section: forty-three rows, and exactly one of them removes content and
-   sends it nowhere.** Do not widen the exemption to a destination fact that is merely
+   indistinguishable from a fact somebody lost. **Measured across this section's seven
+   conversion tables -- ten sessions are converted here and Sessions 03, 13 and 14 need
+   none: forty-three rows, and exactly one of those rows removes content and sends it
+   nowhere.** Do not widen the exemption to a destination fact that is merely
    awkward to place. The test is whether the assertion depends on the family's origin
    rather than on the destination, and only an origin-dependent assumption passes it.
 3. **In a session the contract routes to an insert**, replace place facts with the exact
