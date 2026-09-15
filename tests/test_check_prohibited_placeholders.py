@@ -1568,3 +1568,31 @@ def test_the_three_hooks_count_an_indent_alike() -> None:
         wanted = _placeholder_hook.count_indent_columns(line)
         for module in loaded:
             assert module.count_indent_columns(line) == wanted
+
+
+def test_an_unfinished_end_tag_keeps_its_state_below() -> None:
+    """The placeholder hook's copy of the same rule, read through the boundary.
+
+    A closer whose tag does not finish on its line leaves the parser inside that
+    tag, so the state below is the half-read tag rather than "nothing open".
+    """
+    quote = chr(34)
+    below, line_run, tail = _placeholder_hook.raw_text_run_boundary(
+        "</script title=" + quote, "script", True
+    )
+    assert line_run == "script"
+    assert tail == len("</script title=" + quote)
+    assert _placeholder_hook.closing_tag_state(below) == "attribute-value-double-quoted"
+    # the control: a tag that closes where it starts leaves no tag open at all
+    closed, _line, _tail = _placeholder_hook.raw_text_run_boundary(
+        "</script>", "script", True
+    )
+    assert _placeholder_hook.closing_tag_state(closed) is None
+    assert closed is None
+
+
+def test_a_table_header_may_not_be_a_heading_in_this_hook_either() -> None:
+    """``table_starts_here`` carries the paragraph precondition in all three."""
+    assert _placeholder_hook.table_starts_here("# a | b", "--- | ---") == 0
+    assert _placeholder_hook.table_starts_here("***", "-:") == 0
+    assert _placeholder_hook.table_starts_here("a | b", "--- | ---") == 2

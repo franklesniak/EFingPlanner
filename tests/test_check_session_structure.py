@@ -4413,3 +4413,51 @@ def test_a_definition_after_a_container_change_is_collected() -> None:
     # nothing, so the marker really is a comment there
     scan = structure.scan_document("> Intro" + chr(10) + "[x]: /url" + reference)
     assert "no-source-check" in scan.marker_text
+
+
+def test_an_unfinished_end_tag_keeps_its_state_below() -> None:
+    """A closer whose *tag* does not finish on its line opens no comment below.
+
+    The session-structure copy of the same rule: an HTML parser is still reading
+    ``</script title="`` on the lines under it, so a ``no-source-check`` marker
+    written there grants no exemption. The control is the tag that really does
+    close one line down, where the marker under it is a comment again.
+    """
+    quote = chr(34)
+    opener = "<script>" + chr(10)
+    marker = "<!-- no-source-check: offline -->"
+    inside = (
+        opener + "</script title=" + quote + chr(10) + marker + chr(10) + quote + ">",
+        opener + "</script foo" + chr(10) + marker + chr(10) + ">",
+    )
+    for document in inside:
+        assert "no-source-check" not in structure.scan_document(document).marker_text
+    below = (
+        opener + "</script title=" + quote + chr(10) + quote + ">" + chr(10) + marker,
+        opener + "</script>" + chr(10) + marker,
+    )
+    for document in below:
+        assert "no-source-check" in structure.scan_document(document).marker_text
+
+
+def test_a_table_header_may_not_be_a_heading_here_either() -> None:
+    """The same GFM precondition, in the hook that reads a session's markers."""
+    tick = chr(96)
+    body = tick + "open | <!-- no-source-check: offline --> " + tick + "close"
+    heading = "# " + body + chr(10) + "--- | ---"
+    assert "no-source-check" not in structure.scan_document(heading).marker_text
+    paragraph = body + chr(10) + "--- | ---"
+    assert "no-source-check" in structure.scan_document(paragraph).marker_text
+    assert structure.table_starts_here("# a | b", "--- | ---") == 0
+    assert structure.table_starts_here("***", "-:") == 0
+    assert structure.table_starts_here("a | b", "--- | ---") == 2
+
+
+def test_a_parenthesised_inline_title_may_hold_no_opener_here_either() -> None:
+    """The inline-link title rule, in step with the definition title's own."""
+    marker = "<!-- no-source-check: offline -->"
+    invalid = "[x](url (a(" + marker + "b))"
+    assert "no-source-check" in structure.scan_document(invalid).marker_text
+    valid = "[x](url (a" + marker + "b))"
+    assert "no-source-check" not in structure.scan_document(valid).marker_text
+    assert structure.reference_title_span(["(a(b)"], 0, 0) == 0

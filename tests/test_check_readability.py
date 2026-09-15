@@ -5578,3 +5578,92 @@ def test_the_two_hooks_read_an_indent_alike() -> None:
             assert readability.opens_a_paragraph(
                 line, state
             ) == other.opens_a_paragraph(line, state)
+
+
+def test_an_unfinished_end_tag_keeps_its_state_below() -> None:
+    """A closer whose *tag* does not finish on its line opens no comment below.
+
+    ``</script title="`` ends the element's raw text and leaves an HTML parser
+    inside a tag: the lines under it are attribute data until the tag's own
+    ``>`` arrives, so a marker written there is not a declaration. Clearing the
+    run state there let ``has_adult_marker`` skip a child-facing document on a
+    comment the page never carried.
+
+    The control is the other half and must not move: once the tag really does
+    close, a marker below it is a comment again.
+    """
+    opener = "<script>" + _NL
+    marker = "<!-- audience: adult -->"
+    inside = (
+        opener + chr(34).join(["</script title=", _NL + marker + _NL, ">"]) + _NL,
+        opener + "</script foo" + _NL + marker + _NL + ">" + _NL,
+        opener + "</script title=" + chr(34) + _NL + "a>" + _NL + marker + _NL,
+    )
+    for document in inside:
+        assert not readability.has_adult_marker(document)
+    below = (
+        opener + "</script title=" + chr(34) + _NL + chr(34) + ">" + _NL + marker + _NL,
+        opener + "</script>" + _NL + marker + _NL,
+        opener + "</script title=" + chr(34) + "> x" + chr(34) + ">" + _NL + marker + _NL,
+    )
+    for document in below:
+        assert readability.has_adult_marker(document)
+
+
+def test_a_table_header_may_not_be_a_heading() -> None:
+    """GFM builds a table out of a paragraph, and an ATX heading is not one.
+
+    Measured on GitHub's own renderer: ``# `a | <!-- ... --> `b`` over
+    ``--- | ---`` is one heading holding one code span, so the marker between
+    the backticks is printed rather than read. Splitting the heading into cells
+    exposed it and let a document out of its gate on a declaration nobody made.
+    markdown-it 14.3.0 orders its table rule ahead of its heading rule and is
+    on the wrong side of this one.
+    """
+    body = TICK + "open | <!-- audience: adult --> " + TICK + "close"
+    assert not readability.has_adult_marker("# " + body + _NL + "--- | ---" + _NL)
+    assert not readability.has_adult_marker("###### " + body + _NL + "--- | ---" + _NL)
+    assert not readability.has_adult_marker("   # " + body + _NL + "--- | ---" + _NL)
+    # the controls: neither of these is a heading, so both really are headers
+    assert readability.has_adult_marker(body + _NL + "--- | ---" + _NL)
+    assert readability.has_adult_marker("####### " + body + _NL + "--- | ---" + _NL)
+    assert readability.has_adult_marker("#" + body + _NL + "--- | ---" + _NL)
+    # and the helper says so in one place rather than at each caller
+    assert readability.table_starts_here("# a | b", "--- | ---") == 0
+    assert readability.table_starts_here("***", "-:") == 0
+    assert readability.table_starts_here("a | b", "--- | ---") == 2
+
+
+def test_a_parenthesised_inline_title_may_hold_no_opener() -> None:
+    """CommonMark lets a ``(...)`` title hold a parenthesis only backslashed.
+
+    ``[x](url (a(<!-- ... -->b))`` is therefore no link at all: both renderers
+    print the brackets and read the marker as the comment it looks like. Masking
+    the whole target as metadata hid an adult declaration and handed the
+    document to the child gate.
+    """
+    marker = "<!-- audience: adult -->"
+    assert readability.has_adult_marker("[x](url (a(" + marker + "b))" + _NL)
+    assert readability.has_adult_marker("![x](url (a(" + marker + "b))" + _NL)
+    assert readability.has_adult_marker("[x](url (a)" + marker + "b))" + _NL)
+    # the controls: each of these really is a link, and the marker is a title
+    assert not readability.has_adult_marker("[x](url (a" + marker + "b))" + _NL)
+    assert not readability.has_adult_marker(
+        "[x](url (a" + BACKSLASH + "(" + marker + "b))" + _NL
+    )
+    assert not readability.has_adult_marker(
+        "[x](url " + chr(34) + "a(" + marker + "b" + chr(34) + ")" + _NL
+    )
+    assert not readability.has_adult_marker("[x](url 'a(" + marker + "b')" + _NL)
+    # and the definition's own title parser already spelled the same rule
+    assert readability.reference_title_span(["(a(b)"], 0, 0) == 0
+
+
+def test_the_two_hooks_read_a_half_written_tag_alike() -> None:
+    """The cross-hook pin: one tag-state machine, resumed the same way in both."""
+    other = _load_structure_hook()
+    for content in ("</script", "</script title=" + chr(34), "a>", chr(34) + ">", ">"):
+        for state in ("before-attribute-name", "attribute-value-double-quoted"):
+            assert readability.html_tag_close_state(
+                content, 0, state
+            ) == other.html_tag_close_state(content, 0, state)

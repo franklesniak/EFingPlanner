@@ -407,6 +407,18 @@ RAW_TEXT_RUNS = tuple(
     (COMMENT_RUN, re.compile(r"^ {0,3}<!--"), re.compile(r"-->")),
 )
 RAW_TEXT_CLOSERS = {key: closer for key, _, closer in RAW_TEXT_RUNS}
+#: HTML5's tag-state machine, entered where a tag's name has just ended.
+#: ``html_tag_close_state`` names its states as the standard names them and
+#: hands the state back, because a tag may end on a line below the one it
+#: started on and the machine has to be resumed where it stopped.
+#: https://html.spec.whatwg.org/multipage/parsing.html#before-attribute-name-state
+TAG_STATE_START = "before-attribute-name"
+#: The prefix of a run state that is an unfinished *end tag* rather than a run
+#: of raw text. No element name and none of the other four run keys begins with
+#: it, so the one state field still holds one thing at a time. What it records
+#: is the half-open tag's own tokenizer state, so that a quoted attribute value
+#: carried across a line break is resumed rather than restarted.
+CLOSING_TAG_RUN_PREFIX = "</"
 #: Of those runs, the ones a browser *paints in the page body*. This is a
 #: different question from the one ``RAW_TEXT_ELEMENT_NAMES`` answers, and the
 #: two were briefly conflated here: that tuple says a comment-shaped run inside
@@ -1433,10 +1445,34 @@ def table_starts_here(header: str, delimiter: str) -> int:
     delimiter row can be consumed into a table -- and ``LIST_ITEM_PATTERN``
     does not see it, because that pattern wants whitespace after the marker.
     This is the one place the gap shows, so it is named here rather than
-    widened there. Kept identical to the helper in the sibling hooks.
+    widened there.
+
+    Nor may the header be a line the block grammar has already classified as
+    something other than a paragraph. GFM builds a table out of a *paragraph*
+    whose last line is followed by a delimiter row, so an ATX heading over
+    ``--- | ---`` is a heading and its backticks pair as a heading's do:
+    measured on GitHub's own renderer, which paints ``# `a | <!-- x --> `b``
+    over ``--- | ---`` as one heading holding one code span, so the marker
+    between the backticks is printed rather than read. Splitting it into cells
+    exposed the marker and let a session out of its gate on it. A thematic break
+    is refused for the same reason and measured the same way.
+
+    **This is the fifth place markdown-it 14.3.0 and the production renderer
+    have been measured to part, and the proxy is on the wrong side of it**:
+    markdown-it orders its table rule ahead of its heading rule, so it reads the
+    same two lines as a table. The indent rule is the residual left standing
+    here -- a header indented four columns is an indented code block and this
+    helper does not yet say so, because two of the three walks that ask it have
+    no paragraph state to condition it on.
+
+    Kept identical to the helper in the sibling hooks.
     https://github.github.com/gfm/#tables-extension-
     """
     if EMPTY_LIST_ITEM_PATTERN.match(header) is not None:
+        return 0
+    if ATX_HEADING_LINE_PATTERN.match(header) is not None:
+        return 0
+    if THEMATIC_BREAK_LINE_PATTERN.match(header) is not None:
         return 0
     return table_columns(header, delimiter) if is_table_delimiter(delimiter) else 0
 
@@ -1950,9 +1986,18 @@ def inline_link_end(line: str, open_index: int) -> int:
     while spaced < length and line[spaced] in LINK_TARGET_WHITESPACE:
         spaced += 1
     if index < spaced < length and line[spaced] in "\"'(":
-        closer = {'"': '"', "'": "'", "(": ")"}[line[spaced]]
+        opener = line[spaced]
+        closer = {'"': '"', "'": "'", "(": ")"}[opener]
         cursor = spaced + 1
         while cursor < length and line[cursor] != closer:
+            # A parenthesised title may hold a parenthesis only backslashed, so
+            # a second ``(`` is not title text: it means no link at all, and the
+            # characters are the ones the author typed. This is the rule
+            # ``reference_title_span`` already spells for a definition's title,
+            # and the two are the same construct.
+            # https://spec.commonmark.org/0.31.2/#link-title
+            if line[cursor] == opener == "(":
+                return -1
             cursor += 2 if line[cursor] == "\\" else 1
         if cursor >= length:
             return -1
@@ -2562,6 +2607,15 @@ def raw_text_run_state(
     its own -- and so that a run and a comment can never both be open, which is
     what lets a caller strip comments and classify runs in one fixed order
     instead of an order each caller chose for itself.
+
+    The same field carries a third thing, and it is neither a run nor a comment:
+    an end tag that has started and not finished. ``</script title="`` ends the
+    element's raw text and leaves an HTML parser inside a tag, where the lines
+    below are attribute data until the tag's own ``>`` arrives --
+    ``closing_tag_run`` spells that state and ``closing_tag_state`` reads it
+    back. It is in this field rather than beside it for the reason the comment
+    is: three states that exclude one another are one state, and a caller that
+    held them apart would have to choose an order to ask them in.
     Kept identical to the helper in the sibling hooks.
     https://html.spec.whatwg.org/multipage/parsing.html#rawtext-state
     """
@@ -2614,15 +2668,35 @@ def html_tag_close(content: str, index: int) -> int:
     states below are the spec's, named as the spec names them, and the helper
     is measured against ``html.parser`` rather than reasoned about. Kept
     identical to the helper in the sibling hooks.
+    A tag may also *not* end on the line it starts on, and the machine then has
+    to be resumed rather than restarted: a line ending inside a quoted attribute
+    value is value data, and a line ending between attributes is whitespace.
+    ``html_tag_close_state`` is that machine and this is the one-line reading of
+    it. Kept identical to the helper in the sibling hooks.
     https://html.spec.whatwg.org/multipage/parsing.html#tag-open-state
     """
-    state = "before-attribute-name"
+    return html_tag_close_state(content, index, TAG_STATE_START)[0]
+
+
+def html_tag_close_state(content: str, index: int, state: str) -> tuple[int, str]:
+    """Return where a tag resumed at ``state`` ends, and the state it ends in.
+
+    The offset is ``-1`` where the tag does not close in ``content``, and the
+    second value is then the state the next line has to resume from. This is
+    ``html_tag_close``'s own machine with its entry state made a parameter and
+    its exit state reported, so that an end tag spanning lines is read as one
+    tag: ``</script title="`` leaves the machine inside a double-quoted value,
+    and every character on the lines below it -- a ``<!--`` included -- is that
+    value's data until the quote closes. Kept identical to the helper in the
+    sibling hooks.
+    https://html.spec.whatwg.org/multipage/parsing.html#tag-open-state
+    """
     position = index
     while position < len(content):
         character = content[position]
         if state in ("before-attribute-name", "after-attribute-value"):
             if character == ">":
-                return position + 1
+                return position + 1, state
             if character in HTML_TAG_WHITESPACE or character == "/":
                 position += 1
                 continue
@@ -2637,7 +2711,7 @@ def html_tag_close(content: str, index: int) -> int:
             continue
         if state == "attribute-name":
             if character == ">":
-                return position + 1
+                return position + 1, state
             if character == "=":
                 state = "before-attribute-value"
             elif character in HTML_TAG_WHITESPACE:
@@ -2646,7 +2720,7 @@ def html_tag_close(content: str, index: int) -> int:
                 state = "before-attribute-name"
         elif state == "after-attribute-name":
             if character == ">":
-                return position + 1
+                return position + 1, state
             if character == "=":
                 state = "before-attribute-value"
             elif character in HTML_TAG_WHITESPACE:
@@ -2657,7 +2731,7 @@ def html_tag_close(content: str, index: int) -> int:
                 state = "attribute-name"
         elif state == "before-attribute-value":
             if character == ">":
-                return position + 1
+                return position + 1, state
             if character == '"':
                 state = "attribute-value-double-quoted"
             elif character == "'":
@@ -2674,11 +2748,11 @@ def html_tag_close(content: str, index: int) -> int:
                 state = "after-attribute-value"
         else:  # attribute-value-unquoted
             if character == ">":
-                return position + 1
+                return position + 1, state
             if character in HTML_TAG_WHITESPACE:
                 state = "before-attribute-name"
         position += 1
-    return -1
+    return -1, state
 
 
 def raw_text_run_tail(content: str, closer_end: int, key: str) -> int:
@@ -2698,7 +2772,13 @@ def raw_text_run_tail(content: str, closer_end: int, key: str) -> int:
     what this helper did before -- was built rather than argued about, and put
     to a generator of 1,536 end tags: it disagrees with ``html.parser`` on 12
     rows against this form's 8, at the same instrument score and the same
-    suites. Kept identical to the helper in the sibling hooks.
+    suites.
+
+    Handing the whole line back is only half of what an unfinished end tag
+    needs. The other half is the state *below* it, which is
+    ``raw_text_run_boundary``'s: an HTML parser goes on reading the tag on the
+    lines below, and a comment may not open inside one. Kept identical to the
+    helper in the sibling hooks.
     https://html.spec.whatwg.org/multipage/parsing.html#end-tag-open-state
     """
     if key not in RAW_TEXT_ELEMENT_NAMES:
@@ -2706,6 +2786,23 @@ def raw_text_run_tail(content: str, closer_end: int, key: str) -> int:
     tag_end = html_tag_close(content, closer_end)
     return len(content) if tag_end == -1 else tag_end
 
+
+def closing_tag_run(state: str) -> str:
+    """Return the run state an end tag left half-read at ``state`` carries.
+
+    Kept identical to the helper in the sibling hooks.
+    """
+    return CLOSING_TAG_RUN_PREFIX + state
+
+
+def closing_tag_state(run: str | None) -> str | None:
+    """Return the tag state ``run`` carries, or ``None`` where it carries none.
+
+    Kept identical to the helper in the sibling hooks.
+    """
+    if run is None or not run.startswith(CLOSING_TAG_RUN_PREFIX):
+        return None
+    return run[len(CLOSING_TAG_RUN_PREFIX) :]
 
 def raw_text_run_boundary(
     content: str, open_run: str | None, opens_html_block: bool
@@ -2728,13 +2825,38 @@ def raw_text_run_boundary(
     https://html.spec.whatwg.org/multipage/parsing.html#rawtext-state
     """
     if open_run is not None:
+        pending = closing_tag_state(open_run)
+        if pending is not None:
+            # The line is the middle of an end tag that began above it. A tag
+            # holds a line ending the way it holds a space -- inside a quoted
+            # value it is value data -- so the machine is resumed at the state
+            # the line above left it in, with that line ending fed to it.
+            end, below = html_tag_close_state(content + "\n", 0, pending)
+            if end == -1:
+                return closing_tag_run(below), open_run, -1
+            end = min(end, len(content))
+            return comment_open_below(content, end), open_run, end
         closer = RAW_TEXT_CLOSERS[open_run].search(content)
         if closer is None:
             return open_run, open_run, -1
+        tail = raw_text_run_tail(content, closer.end(), open_run)
+        end, below = html_tag_close_state(
+            content + "\n", closer.end(), TAG_STATE_START
+        )
+        if open_run in RAW_TEXT_ELEMENT_NAMES and end == -1:
+            # The closer started and its *tag* has not finished on this line,
+            # which ``raw_text_run_tail`` already says by handing back the whole
+            # line. The state below has to say it too: an HTML parser is still
+            # reading the tag, so nothing below here opens a comment until the
+            # tag's own ``>`` arrives. Clearing the run there read
+            # ``</script title="`` over a marker line as a run that had closed
+            # and a comment that had opened, and ``has_adult_marker`` skipped a
+            # child-facing document on a declaration the page never carried.
+            return closing_tag_run(below), open_run, tail
         return (
             comment_open_below(content, closer.end()),
             open_run,
-            raw_text_run_tail(content, closer.end(), open_run),
+            tail,
         )
     if not opens_html_block:
         return None, None, -1
