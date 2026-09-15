@@ -46,13 +46,14 @@ Fourteen of the nineteen appear somewhere below; the other five needed no tag, b
 their outcomes are simply written into the deliverables they govern. If you ever meet a
 citation whose outcome you cannot read off the text around it, that is a defect in this
 brief -- record it in your build report and follow the surrounding instruction, which binds
-on its own. **Two questions in this brief are not adjudicated and carry no `OQ-n`
+on its own. **Three questions in this brief are not adjudicated and carry no `OQ-n`
 label.** The first is what `Capital` means for a destination that is not a country,
 recorded inside A1's per-insert schema. The second is which batch owns
 `how_to_add_a_destination.md`, a file `AC-26-1` requires and no batch builds, recorded in
-the scope boundary below beside the exclusion it belongs to. Both are written in the
-repository's `**Open Question:**` form, and each says what it does and does not block.
-Nothing else in this brief is open.
+the scope boundary below beside the exclusion it belongs to. The third is whether
+`AC-GLOBAL-1`'s build-risk register is a repository file at all, recorded beside that same
+exclusion list. All three are written in the repository's `**Open Question:**` form, and
+each says what it does and does not block. Nothing else in this brief is open.
 
 If a requirement genuinely seems to be missing, do exactly this, in order: re-read this
 brief, because the answer is almost certainly in a later section; then consult
@@ -131,10 +132,13 @@ to the eight already-built shared sessions.
   on `main` already, created or edited by an item on this list, or assigned to a named
   batch by the exclusion list above or by the archived record's batch plan. This guide
   is the thirteenth, and it is the only one no sentence anywhere gives to a batch. One
-  further exclusion above carries no batch either -- the build-risk register -- but the
-  archived record's own repository layout gives it no path, so whether it is a
-  repository file at all is undecided; this guide's path is in that layout, one line
-  above `how_to_start_a_trip.md`, which F2 does build.
+  further exclusion above carries no batch either -- the build-risk register -- and that
+  one is a different case, because the archived record's own repository layout gives it no
+  path, so whether it is a repository file at all is undecided rather than unrouted.
+  **Undecided is a state to record, not a category that removes the item from the
+  ledger**, so it carries its own Open Question below rather than a remark here. This
+  guide's path is in that layout, one line above `how_to_start_a_trip.md`, which F2 does
+  build.
 
   **The recommendation, so the human answers rather than derives: Batch 3, with one
   rider.** Batch 3 is the batch that finishes the destination pack and reads the
@@ -148,8 +152,47 @@ to the eight already-built shared sessions.
   **It does not block Batch 1.** Nothing on this run's deliverables list needs the guide
   to exist, no self-check below counts it, and a new-destination author has the checklist
   in the pack. What it blocks is the inventory: `AC-26-1` cannot pass until a batch owns
-  the file. **Name it in your build report beside gate check 2 and the open human edit**
-  -- those three are the whole of what this batch hands back to a person.
+  the file. **Name it in your build report beside gate check 2, the open human edit, and
+  the build-risk-register question below** -- those four are the whole of what this batch
+  hands back to a person.
+
+  **Open Question:** whether `AC-GLOBAL-1`'s **build-risk register** is a repository file
+  at all. That criterion lists the register among the directories and files the required
+  structure must contain, in the same breath as `CONTRIBUTING.md`, the curriculum
+  changelog and the child travel glossary -- and every other member of that list is a
+  path. The register itself is a section of the archived design record, and **the archived
+  record's own repository layout gives it no path of its own.** So when every documented
+  batch has run, the criterion still cannot be evaluated: nothing in the tree is the
+  register, and no sentence anywhere says that building none is the right answer.
+
+  **One near-miss, measured rather than assumed.** The layout's line for
+  `framework/parent_guide/time_and_effort.md` carries the words "risk register" in its
+  comment, and that file exists today and does carry a `## Risk register` heading. **It is
+  not this register.** That one lists what can go wrong for the **family** -- the child
+  loses interest, the project becomes a fight, a booking outruns the plan, the binder is
+  lost. The register the criterion names lists what can go wrong for the **builder**: the
+  leak greps, the thin-content check, the reading-level check. The two share a name and
+  not a subject, so do not record the criterion as satisfied by that page.
+
+  **An acceptance criterion a finished build cannot evaluate is not satisfied**, and
+  calling its blocker undecided does not make it pass. That is why this is written here in
+  the same form as the other two rather than left as an aside: **undecidable is
+  a state that has to be tracked where a completion check reads, not a category that takes
+  an item off the ledger.**
+
+  **The recommendation, so the human answers rather than derives: rule that the archived
+  record's own section is the register, and that `AC-GLOBAL-1` needs no new file.** The
+  register is builder-facing, every other member of that criterion is a file a family or a
+  contributor reads, and the layout that defines "the required structure" never gave it a
+  path. If the owner decides otherwise, the answer has to carry the two things this brief
+  cannot invent -- **a path and an owning batch** -- and until it carries both, no batch
+  can build it.
+
+  **It does not block Batch 1.** Nothing on this run's deliverables list is the register,
+  no self-check below looks for it, and no gate reads it. What it blocks is what the guide
+  blocks: the inventory. Record `AC-GLOBAL-1` in your build report as **partially
+  satisfied -- the build-risk-register member undecided**, in the same form you record
+  `AC-26-1`, and name it in the handback list above.
 - **Authorship mode.** Load-bearing prose — the five new sessions, the framework docs
   set, the two new parent-guide pages, the two new student-guide cards — is drafted,
   then self-edited to reference quality against the exemplar. Do not ship raw
@@ -2543,15 +2586,19 @@ destination fact:**
 
 - **Replace** the bullet beginning *"Batch 0 note on destination names:"* with:
   *"**Destination names are banned in `framework/` from Batch 1 onward.** Japan, Tokyo,
-  Kyoto, Osaka, and Shinkansen appear under `destinations/` only, with two bounded
-  exceptions. The first is the `0.1.0` **Added** line in `framework/CHANGELOG.md`, which
-  records which destination pack shipped in that release. Version history names what was
-  added; it is not curriculum content. New changelog entries write 'the destination
-  pack', so that exception does not grow. The second is the five already-built
-  later-phase sessions -- 15, 21, 33, 44 and 53 -- which stay exempt until Batch 2
-  converts or verifies them. **One of them is a known leak; the other four are unverified,
-  and those are different states.** Session 15 still names the place and links into the
-  pack. Sessions 21, 33, 44 and 53 carry no destination fact today: they are on the list
+  Kyoto, Osaka, and Shinkansen appear under `destinations/` only, with three bounded
+  exceptions. The first is **this rule's own sentence, the one you are reading**, which
+  prints the five tokens in order to ban them: a law that names a banned token is an
+  instance of what it bans, so the framework leak grep finds all five here and nowhere
+  else in this file. The second is the `0.1.0` **Added** line in
+  `framework/CHANGELOG.md`, which records which destination pack shipped in that release.
+  Version history names what was added; it is not curriculum content. New changelog
+  entries write 'the destination pack', so that exception does not grow. The third is the
+  five already-built later-phase sessions -- 15, 21, 33, 44 and 53 -- which stay exempt
+  until Batch 2 converts or verifies them.
+  **One of them is a known leak; the other four are unverified, and those are different
+  states.** Session 15 still names the place and links into the pack. Sessions 21, 33, 44
+  and 53 carry no destination fact today: they are on the list
   because nobody has checked them, not because anything was found in them. So Batch 2
   converts one session and verifies four, and this file must not send its authors to
   convert five. That exemption goes when Batch 2 clears the list.
@@ -2598,9 +2645,19 @@ destination fact:**
   step K of 13`) and a session not on that path carries `Not a First Taste step.`;
   `Previous:` and `Next:` always follow the **numbered** session order; a path
   divergence is announced **forward only**, with one short italic line under the
-  navigation line, on the last on-path session before the skip, and never on
-  `Previous:`; a conditional add-on session keeps its add-on label instead of a step
-  number.
+  navigation line **for each divergence announced -- a session that turns two paths aside
+  carries two lines, and a count read off the other sessions drops one of them** -- on the
+  last on-path session before the skip, and never on `Previous:`; a conditional add-on
+  session keeps its add-on label instead of a step number. **Two further kinds of italic
+  line sit under the navigation line of a session that is not on the named path. Both are
+  required wherever the session list gives them, and neither may be removed for failing
+  the on-path condition above.** The first is a **skip affordance**: an off-path session
+  may carry one line saying that a named following session is optional and where to go
+  instead of it. The second is a **placement note**: a conditional add-on session may
+  carry one line saying where it sits on a named path. Neither announces a divergence
+  from a path, which is why the divergence rule does not reach them -- and why they are
+  written down here, in the law, rather than left in the batch brief that first supplied
+  them.
 - **Replace the two destination instances in `## Verify-don't-trust`.** That section's
   third and fourth sentences read *"Name seasons and categories (Golden Week, rainy
   season, typhoon season) as things to confirm this year, never as pinned dates. Refer to
@@ -2666,6 +2723,18 @@ this file the framework leak-grep self-check below expects to find one. Nowhere 
 **Count bullets, not grep output lines.** Wrap that bullet and its five tokens can land on
 two physical lines, which `grep -n` prints as two hits; that is one rule written across two
 lines, not two leaks.
+
+**Why the rule now counts itself, and why that was worth a change.** Four surfaces in this
+brief describe the framework layer's leak exceptions: the BUILD RULES' exception list,
+the framework leak self-check's expected-files list, the paragraph directly above, and
+the text of the rule F11 writes into the file. The first three all name the new
+destination-names bullet as an exception. The fourth did not -- and the fourth is the
+only one that ships,
+because a style law is read by authors who never see the brief that generated it. **A rule
+that has to print a banned token is an instance of what it bans, so it has to count
+itself**: an exception list that omits the line it is written on is false about the file
+it lives in, and a later author reading only the law would meet the law's own sentence as
+the leak they were sent to find.
 
 **The five-token grep is a floor, not the rule.** F1 requires the three-layer claim to
 be written with exactly one exception -- the later-phase sessions on the leak-exemption
@@ -3815,8 +3884,9 @@ conversion in the one table the builder has open while rewiring. Row 15 is the s
 that means both: Session 15 is outside this batch entirely, and it is listed only so you
 can confirm that its navigation needs no edit either.
 
-**The italic path-divergence lines.** Sessions 01, 05, 06, 09 and 10 each end with a
-short italic line directly under the navigation line — those five, and no others.
+**The italic lines under the navigation line, and the three kinds they come in.**
+Sessions 01, 05, 06, 09 and 10 each end with a short italic line directly under the
+navigation line — those five, and no others.
 **Four of them carry one line. Session 05 carries two**, in the order this section fixes
 below. Do not read a count off the other four: a builder who does drops either the First
 Taste shortcut or the AI opt-in route, and Session 05 is the one session where dropping
@@ -3860,7 +3930,7 @@ agree; change one and change the others in the same pass.
 *"Every family already learned 'what AI is and is not' in Session 05. This session is only
 for families who will actually use an AI tool."* It announces no path divergence, Session
 09's block below does not reach it, and universal conversion rule 1 preserves it. So
-Session 09's path-divergence line is still an addition, it goes under the navigation line,
+Session 09's placement note is still an addition, it goes under the navigation line,
 and the built line stays exactly where it is: do not stack the two together, and do not
 delete the built one.
 
@@ -3871,6 +3941,28 @@ them — their lines exist because the OQ-7 decision's exact-line blocks supply 
 carries Session 07's skip affordance; 09 carries its First Taste placement). The
 decision's prose says "01, 05 and 10 only" while its own blocks give five. **The blocks
 win. This is deliberate, not a slip — do not "correct" it back to three.**
+
+**Six lines, three kinds, and each one classified — because the general rule above
+explains three of the six, and F11 turns that rule into the canonical style law.**
+
+| Where the line sits | Path state on its own navigation line | The line's kind |
+| --- | --- | --- |
+| Session 01 | on the First Taste path, step 1 of 13 | path divergence |
+| Session 05, first line | on the path, step 4 of 13 | path divergence |
+| Session 05, second line | on the path, step 4 of 13 | placement note |
+| Session 06 | `Not a First Taste step.` | skip affordance |
+| Session 09 | AI opt-in add-on, not a numbered step | placement note |
+| Session 10 | on the path, step 5 of 13 | path divergence |
+
+Three are path divergences, two are placement notes, one is a skip affordance; four sit on
+on-path sessions and two do not. **F11 carries the two off-path kinds and the
+one-line-per-divergence count as named exceptions**, for the general reason: **a style law
+generated from a brief has to carry that brief's exceptions, because the law outlives the
+brief that knew them.** A later author holding only the law would find two lines it does
+not authorise and one session carrying twice the count it names, and the cheapest way to
+reconcile that is to delete Session 07's skip affordance, Session 09's placement note, and
+one of Session 05's two lines -- the third of which is the harm this section already names
+where it warns against reading a count off the other four.
 
 ```markdown
 You are here: Phase 0 (Setup), First Taste step 1 of 13. Previous: [00 Parent Setup](00_parent_setup.md) (adult-only) | Next: [02 Family Traveler Profiles](02_family_traveler_profiles.md)
@@ -4319,8 +4411,18 @@ two files are:
    bounded exception now written into F11's first replacement. **Do not edit that line.**
    It is not in this batch's change set and it is not a leak.
 
-Those are the only two exceptions in this tree, and **your own Batch 1 changelog entries
-must not add a third** — write "the destination pack", never the destination's name.
+Those are the only two files **these two greps** may name, and **your own Batch 1
+changelog entries must not add a third** — write "the destination pack", never the
+destination's name.
+
+**Two files is this check's expectation, not the layer's whole exception list.** The
+framework leak rule has three bounded exceptions, and the third -- the five
+already-built later-phase sessions -- is reached by neither grep above: the first covers
+Phases 0-2 only, and the second lists the framework layer outside `framework/sessions/`.
+That is deliberate, because those five are exempt until Batch 2 converts or verifies
+them. It is written down here so that a reader who greps `framework/` unscoped is not
+surprised by a third file that is not a leak, and so that nobody reads "two" as a
+statement about the tree.
 
 Two failures to look for, neither of which announces itself as a count. **A hit in a third
 file** means a replacement was missed: check `framework/templates/trip_basics.md` first,
