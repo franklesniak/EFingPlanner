@@ -1657,6 +1657,58 @@ def replace_character_reference(match: re.Match[str]) -> str:
     return decoded.replace("\r", " ").replace("\n", " ")
 
 
+def table_body_row_continues(
+    content: str,
+    containment_path: tuple[Container, ...],
+    opened: tuple[Container, ...],
+    table_path: tuple[Container, ...],
+) -> bool:
+    """Return whether this line is one more body row of the table above it.
+
+    GFM's table extension opens a body row *last*, after every other block
+    start has been tried, so a row is whatever is left over: a non-blank line
+    in the table's own container that opens no block of its own. The pipe is
+    not the test, and asking for one was each walk assembling a terminator out
+    of the wrong fact. Measured on GitHub's own renderer: ``alpha`` under ``h``
+    over ``-:`` is a second one-column row, and under ``h | h`` over
+    ``--- | ---`` it is a row whose second cell is empty. Each row is its own
+    inline context, so joining two of them into a paragraph let a backtick in
+    one pair with a backtick in the other and read the marker between them as
+    a code span.
+
+    What ends the body is whatever wins the race against the row opener: a
+    blank line; a line whose container is not the table's, which is an
+    unquoted line under a quoted table or the next item of the list a listed
+    table sits in; an ATX heading; a thematic break; a container opening on
+    the line; and four columns of indentation, which is an indented code
+    block.
+
+    Three shapes deliberately do **not** end it, and each was measured rather
+    than reasoned about: a Setext underline, because the extension's parent
+    here is the table rather than a paragraph; a second delimiter row, for the
+    same reason; and three columns of indentation, which is not code. That is
+    why this is not ``starts_a_block``, which answers a different question
+    about a paragraph and says yes to all three.
+
+    A fence opener and an HTML block opener end the body too and are not
+    spelled here, because every walk that asks this question has already
+    classified those lines: they arrive as a blanked source, as raw HTML, or
+    not at all.
+    https://github.github.com/gfm/#tables-extension-
+    """
+    if not content.strip(ASCII_HORIZONTAL_WHITESPACE):
+        return False
+    if containment_path != table_path:
+        return False
+    if any(container.kind == CONTAINER_KIND_LIST for container in opened):
+        return False
+    if count_indent_columns(content) >= 4:
+        return False
+    if ATX_HEADING_LINE_PATTERN.match(content) is not None:
+        return False
+    return THEMATIC_BREAK_LINE_PATTERN.match(content) is None
+
+
 def closing_backtick_run(line: str, start: int, length: int) -> int:
     """Return the end of the next backtick run of exactly ``length``, or -1.
 
@@ -2369,7 +2421,9 @@ def reference_title_opens_at(line: str, after: int) -> int:
     return index if line[index] in LINK_REFERENCE_TITLE_DELIMITERS else -1
 
 
-def reference_definition_span(lines: Sequence[str], index: int) -> int:
+def reference_definition_span(
+    lines: Sequence[str], index: int, starts: Sequence[bool] | None = None
+) -> int:
     """Return how many lines the link reference definition at ``index`` fills.
 
     Zero where there is none. CommonMark lets the destination sit on the line
@@ -2379,7 +2433,28 @@ def reference_definition_span(lines: Sequence[str], index: int) -> int:
     identical to the helper in
     ``.github/scripts/check-session-structure.py``.
     https://spec.commonmark.org/0.31.2/#link-reference-definitions
+
+    A definition reaches a line below its label only where that line is the
+    paragraph's own continuation. ``starts`` is the walk's own
+    ``starts_a_block`` answer for every line, and the first line at or below
+    ``index + 1`` that begins a block is where this helper stops looking.
+    ``[x]:`` over ``> /url`` starts a blockquote on both renderers and defines
+    nothing; reading the destination across that boundary defined ``x``
+    anyway, so an ``![<!-- audience: adult -->][x]`` below it was read as
+    resolved image metadata rather than as the comment the page really
+    carries, and an adult-facing document went through the child gate. The
+    other direction stays right, and it is why the bound is the block start
+    rather than the indent: ``[x]:`` over ``    /url`` *does* define, because
+    an indented code block may not interrupt a paragraph.
+
+    ``starts`` defaults to ``None``, which is what a caller with no walk of
+    its own should get -- every line readable, which is what this did before.
     """
+    if starts is not None:
+        limit = index + 1
+        while limit < len(lines) and not starts[limit]:
+            limit += 1
+        lines = lines[:limit]
 
     def line_at(offset: int) -> str:
         position = index + offset
@@ -2470,7 +2545,7 @@ def collect_reference_labels(
             paragraph_open = False
             previous_content = ""
         if not paragraph_open:
-            span = reference_definition_span(contents, row)
+            span = reference_definition_span(contents, row, starts)
             if span:
                 match = LINK_REFERENCE_LABEL_PATTERN.match(content)
                 if match is not None:
@@ -3724,18 +3799,22 @@ def scan_document_inlines(text: str) -> DocumentInlines:
         # in, so the two passes agree about which lines are a table.
         # https://github.github.com/gfm/#tables-extension-
         table_line = strip_block_quote_prefixes(line)
-        has_cells = bool(table_line.strip(ASCII_HORIZONTAL_WHITESPACE)) and (
-            "|" in table_line
-        )
         if in_table and not (
             number == table_delimiter_row
-            or (has_cells and fence_line.containment_path == table_container)
+            or table_body_row_continues(
+                fence_line.content,
+                fence_line.containment_path,
+                fence_line.opened,
+                table_container,
+            )
         ):
             in_table = False
         # The header row needs no pipe, here for the reason ``extract_prose``
         # gives at the same lookahead, and the two passes have to agree about
         # which lines are a table or one of them reads a cell's backticks as a
-        # paragraph's.
+        # paragraph's. Neither does a body row, one line above:
+        # ``table_body_row_continues`` is the same agreement at the other end
+        # of the table.
         if not in_table and table_line.strip(ASCII_HORIZONTAL_WHITESPACE):
             next_line = (
                 lines[number + 1].rstrip(ASCII_HORIZONTAL_WHITESPACE)
@@ -4347,10 +4426,11 @@ def extract_prose(text: str) -> str:
             # it however it is spelled: ``| zulu |`` over ``-:`` is a table on
             # GitHub's own renderer, and asking the body-row rule for a pipe
             # left the ``-:`` standing in the prose as a sentence of its own.
-            if index == table_delimiter_row or (
-                table_line.strip(ASCII_HORIZONTAL_WHITESPACE)
-                and "|" in table_line
-                and fence_line.containment_path == table_container
+            if index == table_delimiter_row or table_body_row_continues(
+                fence_line.content,
+                fence_line.containment_path,
+                fence_line.opened,
+                table_container,
             ):
                 open_unit = None
                 continue
@@ -4364,10 +4444,9 @@ def extract_prose(text: str) -> str:
         # -- which moves a grade, and can carry a document over the 40-word
         # floor it should never have reached.
         #
-        # A table's *body* rows still need a pipe, one line below. That is the
-        # same rule in the other direction and it is deliberately not changed
-        # here: a pipeless line continues a table body on GitHub, and reading
-        # it as one needs a body terminator this walk does not have.
+        # A table's body rows need no pipe either, one line below, and that is
+        # the same rule in the other direction: ``table_body_row_continues``
+        # is the body terminator this walk did not have.
         if table_line.strip(ASCII_HORIZONTAL_WHITESPACE):
             next_line = (
                 lines[index + 1].rstrip(ASCII_HORIZONTAL_WHITESPACE)

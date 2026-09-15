@@ -4487,3 +4487,47 @@ def test_a_table_header_indented_four_columns_is_code_here_too() -> None:
     assert "no-source-check" in structure.scan_document(lazy).marker_text
     assert not structure.table_starts_here("    a | b", "--- | ---", False)
     assert structure.table_starts_here("    a | b", "--- | ---", True) == 2
+
+
+def test_a_table_body_row_needs_no_pipe_here_either() -> None:
+    """The session hook's copy of the body rule, and the container it lacked.
+
+    ``MarkerSource`` carries the line's containment path now, so a table
+    inside a blockquote stops at the outdent instead of splitting the root
+    paragraph below it into cells and exposing the marker inside its code
+    span -- which granted a Source Check exemption a session never declared.
+    """
+    newline = chr(10)
+    tick = chr(96)
+    marker = "<!-- no-source-check: offline -->"
+    row = tick + "open | keep " + marker + " " + tick + "close"
+    outdented = "> h | h" + newline + "> --- | ---" + newline + row + newline
+    assert "no-source-check" not in structure.scan_document(outdented).marker_text
+    quoted = "> h | h" + newline + "> --- | ---" + newline + "> " + row + newline
+    assert "no-source-check" in structure.scan_document(quoted).marker_text
+    # a header and a delimiter row in different containers open no table
+    split = "> h | h" + newline + "--- | ---" + newline + row + newline
+    assert "no-source-check" not in structure.scan_document(split).marker_text
+    # and a pipeless line is still a row, so a Setext underline below a table
+    # does not end it
+    underlined = "h | h" + newline + "--- | ---" + newline + "===" + newline
+    assert "no-source-check" in structure.scan_document(
+        underlined + row + newline
+    ).marker_text
+    assert structure.table_body_row_continues("alpha", (), (), ())
+    assert not structure.table_body_row_continues("# alpha", (), (), ())
+
+
+def test_a_definition_does_not_read_across_a_block_boundary_here_either() -> None:
+    """The definition bound, in the session hook's own label collector."""
+    newline = chr(10)
+    marker = "<!-- audience: adult -->"
+    reference = newline + newline + "![" + marker + "][x]" + newline
+    quoted = "[x]:" + newline + "> /url" + reference
+    assert "audience: adult" in structure.scan_document(quoted).marker_text
+    plain = "[x]:" + newline + "/url" + reference
+    assert "audience: adult" not in structure.scan_document(plain).marker_text
+    assert structure.reference_definition_span(["[x]:", "/url"], 0) == 2
+    assert structure.reference_definition_span(
+        ["[x]:", "/url"], 0, [False, True]
+    ) == 0

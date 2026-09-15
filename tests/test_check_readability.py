@@ -5747,3 +5747,108 @@ def test_a_raw_text_opener_a_fence_prints_opens_no_run() -> None:
     assert "hidden note" not in readability.extract_prose(bare)
     # and the mask is the one the walks use, so a fenced line carries none of it
     assert not any(readability.raw_text_run_mask(fenced))
+
+
+def test_a_table_body_row_needs_no_pipe_of_its_own() -> None:
+    """A pipeless line under a table is one more row, and its cells are its own.
+
+    GFM opens a body row after every other block start has been tried, so a
+    non-blank line in the table's container that opens no block of its own is
+    a row whatever it holds. Reading a pipe as the test joined two rows into
+    one paragraph, an unmatched backtick in each paired across them, and the
+    ``audience: adult`` marker standing between the two was scored as a code
+    span's content -- so an adult-facing document went through the child gate.
+    Measured on GitHub's own renderer.
+    """
+    newline = chr(10)
+    tick = chr(96)
+    marker = "<!-- audience: adult -->"
+    body = tick + "open" + newline + "text " + marker + " " + tick + "close"
+    for delimiter in ("-:", "--- | ---"):
+        header = "h" if delimiter == "-:" else "h | h"
+        document = header + newline + delimiter + newline + body + newline
+        assert readability.has_adult_marker(document)
+    # the control in the other direction: a heading ends the body, so the two
+    # lines below it really are one paragraph and the backticks really do pair
+    stopped = "h" + newline + "-:" + newline + "# stop" + newline + body + newline
+    assert not readability.has_adult_marker(stopped)
+
+
+def test_a_table_body_ends_where_its_own_block_does() -> None:
+    """What ends a body is what wins the race against GFM's row opener.
+
+    Each of these was put to GitHub's own renderer: a blank line, an ATX
+    heading, a thematic break, a container opening on the line and four
+    columns of indentation all end the body, and a Setext underline, a second
+    delimiter row and three columns of indentation do not. Scoring a cell as
+    prose a child reads moves a grade; dropping a paragraph as a cell can take
+    a file under the forty-word floor and out of the gate altogether.
+    """
+    newline = chr(10)
+    words = "zulu tango words of prose that a child would read aloud today"
+    table = "h" + newline + "-:" + newline
+
+    def prose_holds(below: str) -> bool:
+        return "zulu" in readability.extract_prose(table + below + newline)
+
+    assert not prose_holds(words)
+    assert not prose_holds("   " + words)
+    assert not prose_holds("===" + newline + words)
+    assert not prose_holds("--- | ---" + newline + words)
+    assert prose_holds("" + newline + words)
+    assert prose_holds("# stop" + newline + newline + words)
+    assert prose_holds("***" + newline + words)
+    # Four columns ends the body too, and the words below it are an indented
+    # code block the page prints inside a ``<pre>``. The body rule is asserted
+    # at the helper rather than through the prose, because this walk has no
+    # indented-code model of its own and scores those words as prose wherever
+    # they stand -- a residual named here rather than closed.
+    assert readability.table_body_row_continues(words, (), (), ())
+    assert not readability.table_body_row_continues("    " + words, (), (), ())
+    assert readability.table_body_row_continues("   " + words, (), (), ())
+    assert not readability.table_body_row_continues("", (), (), ())
+
+
+def test_a_quoted_table_does_not_swallow_the_line_below_the_quote() -> None:
+    """A table belongs to its container and stops where the container stops."""
+    newline = chr(10)
+    tick = chr(96)
+    marker = "<!-- no-source-check: offline -->"
+    row = tick + "open | keep " + marker + " " + tick + "close"
+    outdented = "> h | h" + newline + "> --- | ---" + newline + row + newline
+    assert "no-source-check" not in readability.document_marker_text(outdented)
+    # the control: at the table's own container the same line really is a row
+    quoted = "> h | h" + newline + "> --- | ---" + newline + "> " + row + newline
+    assert "no-source-check" in readability.document_marker_text(quoted)
+    # and inside the quote a pipeless line is a row like any other, so the
+    # marker row below it is still split into its own cells
+    carried = (
+        "> h | h" + newline + "> --- | ---" + newline + "> alpha" + newline
+        + "> " + row + newline
+    )
+    assert "no-source-check" in readability.document_marker_text(carried)
+
+
+def test_a_definition_does_not_read_across_a_block_boundary() -> None:
+    """A destination in another block is another block, and defines nothing.
+
+    ``[x]:`` over ``> /url`` starts a blockquote on both renderers, so no
+    label is defined and the ``![<!-- audience: adult -->][x]`` below it is
+    the comment the page really carries rather than resolved image metadata.
+    """
+    newline = chr(10)
+    marker = "<!-- audience: adult -->"
+    reference = newline + newline + "![" + marker + "][x]" + newline
+    assert readability.has_adult_marker("[x]:" + newline + "> /url" + reference)
+    assert readability.has_adult_marker("[x]:" + newline + "- /url" + reference)
+    assert readability.has_adult_marker("[x]:" + newline + "# /url" + reference)
+    # the controls: an ordinary line defines, and so does an indented one,
+    # because an indented code block may not interrupt a paragraph
+    assert not readability.has_adult_marker("[x]:" + newline + "/url" + reference)
+    assert not readability.has_adult_marker(
+        "[x]:" + newline + "    /url" + reference
+    )
+    assert readability.reference_definition_span(["[x]:", "/url"], 0) == 2
+    assert readability.reference_definition_span(
+        ["[x]:", "/url"], 0, [False, True]
+    ) == 0

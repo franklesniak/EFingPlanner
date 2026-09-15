@@ -658,13 +658,6 @@ MARKER_SOURCE_BLANK = "blank"
 MARKER_SOURCE_RAW_HTML = "raw-html"
 MARKER_SOURCE_TEXT = "text"
 
-#: One line as the scan records it: which rules read it, what it holds once
-#: its container prefixes are peeled, and whether it begins a block of its
-#: own. The last of the three is recorded here rather than worked out later
-#: because only this walk holds the container path of the line above, which
-#: is what tells a wrapped paragraph from a new list item.
-MarkerSource = tuple[str, str, bool]
-
 #: These three patterns, and the fence and container helpers below, are kept
 #: deliberately in sync with ``.github/scripts/check-prohibited-placeholders.py``
 #: and, where they exist there, with ``.github/scripts/check-readability.py``.
@@ -776,6 +769,18 @@ class FenceLine:
     #: The containers that opened on this line rather than above it. A list
     #: item among them starts a block, whatever the line goes on to hold.
     opened: tuple[Container, ...] = ()
+
+
+#: One line as the scan records it: which rules read it, what it holds once
+#: its container prefixes are peeled, whether it begins a block of its own,
+#: and the containers it sits in and opens. The last three are recorded here
+#: rather than worked out later because only this walk holds the container
+#: path of the line above, which is what tells a wrapped paragraph from a new
+#: list item -- and what tells a table's own next row from the outdented line
+#: that ends it. It is defined below ``Container`` because it names one.
+MarkerSource = tuple[
+    str, str, bool, tuple[Container, ...], tuple[Container, ...]
+]
 
 
 @dataclass(frozen=True)
@@ -1534,6 +1539,58 @@ def starts_a_block(
     if any(container.kind == CONTAINER_KIND_LIST for container in opened):
         return True
     return containment_path != previous_path[: len(containment_path)]
+
+
+def table_body_row_continues(
+    content: str,
+    containment_path: tuple[Container, ...],
+    opened: tuple[Container, ...],
+    table_path: tuple[Container, ...],
+) -> bool:
+    """Return whether this line is one more body row of the table above it.
+
+    GFM's table extension opens a body row *last*, after every other block
+    start has been tried, so a row is whatever is left over: a non-blank line
+    in the table's own container that opens no block of its own. The pipe is
+    not the test, and asking for one was each walk assembling a terminator out
+    of the wrong fact. Measured on GitHub's own renderer: ``alpha`` under ``h``
+    over ``-:`` is a second one-column row, and under ``h | h`` over
+    ``--- | ---`` it is a row whose second cell is empty. Each row is its own
+    inline context, so joining two of them into a paragraph let a backtick in
+    one pair with a backtick in the other and read the marker between them as
+    a code span.
+
+    What ends the body is whatever wins the race against the row opener: a
+    blank line; a line whose container is not the table's, which is an
+    unquoted line under a quoted table or the next item of the list a listed
+    table sits in; an ATX heading; a thematic break; a container opening on
+    the line; and four columns of indentation, which is an indented code
+    block.
+
+    Three shapes deliberately do **not** end it, and each was measured rather
+    than reasoned about: a Setext underline, because the extension's parent
+    here is the table rather than a paragraph; a second delimiter row, for the
+    same reason; and three columns of indentation, which is not code. That is
+    why this is not ``starts_a_block``, which answers a different question
+    about a paragraph and says yes to all three.
+
+    A fence opener and an HTML block opener end the body too and are not
+    spelled here, because every walk that asks this question has already
+    classified those lines: they arrive as a blanked source, as raw HTML, or
+    not at all.
+    https://github.github.com/gfm/#tables-extension-
+    """
+    if not content.strip(ASCII_HORIZONTAL_WHITESPACE):
+        return False
+    if containment_path != table_path:
+        return False
+    if any(container.kind == CONTAINER_KIND_LIST for container in opened):
+        return False
+    if count_indent_columns(content) >= 4:
+        return False
+    if ATX_HEADING_LINE_PATTERN.match(content) is not None:
+        return False
+    return THEMATIC_BREAK_LINE_PATTERN.match(content) is None
 
 
 def closing_backtick_run(line: str, start: int, length: int) -> int:
@@ -3070,12 +3127,13 @@ def gfm_table_rows(sources: Sequence[MarkerSource]) -> dict[int, int]:
 
     A table is found by its delimiter row, exactly as ``extract_prose`` in
     ``.github/scripts/check-readability.py`` finds one: the line above the
-    delimiter is the header, and the rows below it belong to the table until a
-    line arrives that is blank or carries no pipe. The header and the delimiter
-    row must agree about how many cells there are, or GFM reads no table here
-    at all -- see ``table_columns``. The contents handed in are already peeled
-    to their container's content column, so a quoted or a listed table is
-    recognized as the table it is.
+    delimiter is the header, and the rows below it belong to the table until
+    ``table_body_row_continues`` says one does not -- one notion of a body's
+    end, in this walk and in the two that always carried the container it
+    lacked. The header and the delimiter row must agree about how many cells
+    there are, or GFM reads no table here at all -- see ``table_columns``. The
+    contents handed in are already peeled to their container's content column,
+    so a quoted or a listed table is recognized as the table it is.
     https://github.github.com/gfm/#tables-extension-
     """
     rows: dict[int, int] = {}
@@ -3088,7 +3146,7 @@ def gfm_table_rows(sources: Sequence[MarkerSource]) -> dict[int, int]:
     paragraph_open = False
     previous_text = ""
     above = [False] * len(sources)
-    for position, (kind, content, starts) in enumerate(sources):
+    for position, (kind, content, starts, _path, _opened) in enumerate(sources):
         if starts:
             # A line that begins a block has no paragraph open above it,
             # so the flag is cleared before it is read rather than after.
@@ -3102,9 +3160,21 @@ def gfm_table_rows(sources: Sequence[MarkerSource]) -> dict[int, int]:
         paragraph_open = opens_a_paragraph(content, paragraph_open, previous_text)
         previous_text = content
     while index + 1 < len(sources):
-        kind, content, _ = sources[index]
-        next_kind, next_content, _ = sources[index + 1]
+        kind, content, _starts, path, _opened = sources[index]
+        next_kind, next_content, _next_starts, next_path, _next_opened = (
+            sources[index + 1]
+        )
         if not (kind == MARKER_SOURCE_TEXT and next_kind == MARKER_SOURCE_TEXT):
+            index += 1
+            continue
+        if path != next_path:
+            # A table is the header row and the delimiter row together, and
+            # GFM reads both inside one container. A quoted header over an
+            # unquoted delimiter row is a lazy continuation of the quoted
+            # paragraph and opens no table at all -- which is what the
+            # readability walk has always answered by comparing the two
+            # containment paths, and what this walk could not answer while
+            # ``MarkerSource`` carried no path.
             index += 1
             continue
         # The header row needs no pipe of its own. ``table_starts_here`` is
@@ -3121,8 +3191,9 @@ def gfm_table_rows(sources: Sequence[MarkerSource]) -> dict[int, int]:
         while (
             follow < len(sources)
             and sources[follow][0] == MARKER_SOURCE_TEXT
-            and sources[follow][1].strip(ASCII_HORIZONTAL_WHITESPACE)
-            and "|" in sources[follow][1]
+            and table_body_row_continues(
+                sources[follow][1], sources[follow][3], sources[follow][4], path
+            )
         ):
             rows[follow] = columns
             follow += 1
@@ -3187,7 +3258,7 @@ def collect_reference_labels(
             paragraph_open = False
             previous_content = ""
         if not paragraph_open:
-            span = reference_definition_span(contents, row)
+            span = reference_definition_span(contents, row, starts)
             if span:
                 match = LINK_REFERENCE_LABEL_PATTERN.match(content)
                 if match is not None:
@@ -3229,10 +3300,10 @@ def collect_marker_lines(sources: Sequence[MarkerSource]) -> tuple[str, ...]:
     # boundary CommonMark ends one at.
     defined_labels = collect_reference_labels(
         [
-            content if kind == MARKER_SOURCE_TEXT else ""
-            for kind, content, _ in sources
+            source[1] if source[0] == MARKER_SOURCE_TEXT else ""
+            for source in sources
         ],
-        [starts for _, _, starts in sources],
+        [source[2] for source in sources],
     )
     table_rows = gfm_table_rows(sources)
     markers: list[str] = []
@@ -3242,7 +3313,7 @@ def collect_marker_lines(sources: Sequence[MarkerSource]) -> tuple[str, ...]:
     row = 0
 
     while row < len(sources):
-        kind, content, _ = sources[row]
+        kind, content = sources[row][0], sources[row][1]
 
         if kind == MARKER_SOURCE_BLANK:
             markers.append("")
@@ -3446,7 +3517,9 @@ def scan_document(text: str) -> DocumentScan:
             else:
                 buffer.append(closing_line)
             content_lines.append("")
-            marker_sources.append((MARKER_SOURCE_BLANK, "", True))
+            marker_sources.append(
+                (MARKER_SOURCE_BLANK, "", True, (), ())
+            )
             paragraph_open = False
             previous_path = ()
             continue
@@ -3577,7 +3650,9 @@ def scan_document(text: str) -> DocumentScan:
             fence_start = number
             buffer = []
             content_lines.append("")
-            marker_sources.append((MARKER_SOURCE_BLANK, "", True))
+            marker_sources.append(
+                (MARKER_SOURCE_BLANK, "", True, (), ())
+            )
             paragraph_open = False
             previous_path = ()
             continue
@@ -3603,11 +3678,29 @@ def scan_document(text: str) -> DocumentScan:
             # The line is a raw-text element's content. The page displays
             # those characters, so a comment-shaped run on it is text and
             # exempts nothing.
-            marker_sources.append((MARKER_SOURCE_BLANK, "", True))
+            marker_sources.append(
+                (MARKER_SOURCE_BLANK, "", True, (), ())
+            )
         elif line_html_block is not None:
-            marker_sources.append((MARKER_SOURCE_RAW_HTML, block_content, block_starts))
+            marker_sources.append(
+                (
+                    MARKER_SOURCE_RAW_HTML,
+                    block_content,
+                    block_starts,
+                    block_line.containment_path,
+                    block_line.opened,
+                )
+            )
         else:
-            marker_sources.append((MARKER_SOURCE_TEXT, block_content, block_starts))
+            marker_sources.append(
+                (
+                    MARKER_SOURCE_TEXT,
+                    block_content,
+                    block_starts,
+                    block_line.containment_path,
+                    block_line.opened,
+                )
+            )
         previous_path = block_line.containment_path
         # A line that starts no block leaves the paragraph above it open,
         # whatever its content peels to. The case that needs saying is the
@@ -3795,7 +3888,9 @@ def reference_title_opens_at(line: str, after: int) -> int:
     return index if line[index] in LINK_REFERENCE_TITLE_DELIMITERS else -1
 
 
-def reference_definition_span(lines: Sequence[str], index: int) -> int:
+def reference_definition_span(
+    lines: Sequence[str], index: int, starts: Sequence[bool] | None = None
+) -> int:
     """Return how many lines the link reference definition at ``index`` fills.
 
     Zero where there is none. CommonMark lets the destination sit on the line
@@ -3811,7 +3906,28 @@ def reference_definition_span(lines: Sequence[str], index: int) -> int:
     against markdown-it 14.3.0 that prose is an indented code block the child
     sees.
     <https://spec.commonmark.org/0.31.2/#link-reference-definitions>
+
+    A definition reaches a line below its label only where that line is the
+    paragraph's own continuation. ``starts`` is the walk's own
+    ``starts_a_block`` answer for every line, and the first line at or below
+    ``index + 1`` that begins a block is where this helper stops looking.
+    ``[x]:`` over ``> /url`` starts a blockquote on both renderers and defines
+    nothing; reading the destination across that boundary defined ``x``
+    anyway, so an ``![<!-- audience: adult -->][x]`` below it was read as
+    resolved image metadata rather than as the comment the page really
+    carries, and an adult-facing document went through the child gate. The
+    other direction stays right, and it is why the bound is the block start
+    rather than the indent: ``[x]:`` over ``    /url`` *does* define, because
+    an indented code block may not interrupt a paragraph.
+
+    ``starts`` defaults to ``None``, which is what a caller with no walk of
+    its own should get -- every line readable, which is what this did before.
     """
+    if starts is not None:
+        limit = index + 1
+        while limit < len(lines) and not starts[limit]:
+            limit += 1
+        lines = lines[:limit]
 
     def line_at(offset: int) -> str:
         position = index + offset
