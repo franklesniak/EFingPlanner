@@ -4,7 +4,7 @@
 
 - **Status:** Active
 - **Owner:** Repository Maintainers
-- **Last Updated:** 2026-09-15
+- **Last Updated:** 2026-09-20
 - **Scope:** The complete build instruction for Batch 1 of the EFingPlanner curriculum -- the Phase 0-2 vertical slice, Session 00 through Checkpoint 1. It carries every Batch 1 requirement, every applicable acceptance criterion and the adjudicated answer to every open question, so an authoring run never opens the archived specification. It does not cover Batch 0 or Batches 2-4, and it is a build instruction rather than shipped curriculum.
 - **Related:** [Build prompt directory guide](README.md), [Build prompt template](_build_prompt_template.md), [Archived specification](../spec/specification.md)
 
@@ -1627,7 +1627,7 @@ in order:
    fact; no heading ends in `:` or `?`; every fenced block declares a language; every
    relative link resolves.
 
-**D9. `framework/templates/trip_basics.md` (edit).** Three changes (OQ-2, OQ-16):
+**D9. `framework/templates/trip_basics.md` (edit).** Four changes (OQ-2, OQ-16):
 
 - Add as the **first data row** of the fill-in table:
   `| Destination (the place the grown-ups picked) | |`
@@ -1657,6 +1657,22 @@ in order:
   exclusion sentence. Do not write `hours-ahead` in anything this batch authors or edits.
   A direction baked into a field name is a destination assumption, and it walks past the
   five-name leak grep because that grep reads names.
+- **Make the two airport rows conditional, for the same reason the row above is
+  direction-neutral.** The built card asks `| Home airport | |` and `| Airport code | |`
+  of every family that fills it in, and a family who drives or takes a train to a
+  domestic or nearby destination has no answer to give. Being a US-origin family does not
+  make a family a flying family. **The fill-in rows** read `| Home airport | |` and
+  `| Airport code | |` today; change them to `| Home airport, if you are flying | |` and
+  `| Airport code, if you are flying | |`, and **add one sentence beside the table**:
+  *"If you are not flying, write how you will travel instead -- by car, by train, or
+  another way."* Leave every other row alone. **`if you are flying` is these two fields'
+  canonical qualifier from here on**, and every other surface that names them takes it:
+  G2's kit copy, `parent_guide/setup_checklist.md` through H10, Session 00's step 2 field
+  list, and Session 01's cover page. The archived record does not require these fields to
+  exist. It requires that origin **values** live only on this card and never inside a
+  session, which is a rule about where a value may sit rather than about which families
+  have one, and its human half asks that a fresh trip start without editing the
+  framework -- which is exactly what a mandatory field with no true answer prevents.
 - Add one sentence beside the table: *"A grown-up writes the destination here. The name
   is on the front of your destination pack."*
 
@@ -1727,15 +1743,23 @@ use"* in this batch, and Session 02 links this one by name, so the page was alwa
 Batch 1's scope -- it was on the list as a template this batch reads and never as one it
 edits, which is the gap that let an air-shaped field list through twenty-six rounds.
 
-**The origin half of the same vocabulary stays, and that is a ruling rather than an
-oversight.** `home airport` and `airport code` are on the Trip-Basics card (D9, G2),
-Session 00's step 2 field list, Session 01's cover page and
+**The origin half of the same vocabulary takes the same treatment, and the earlier
+ruling that it should not is withdrawn.** `home airport` and `airport code` are on the
+Trip-Basics card (D9, G2), Session 00's step 2 field list, Session 01's cover page and
 `parent_guide/setup_checklist.md`, and every one of them assumes the family flies. They
-stay because the archived record scopes the origin layer to a US-origin family in as many
-words and requires exactly that those values live on the family-owned card rather than in
-a session; Session 10's Step 6 removes `home airport` from a **session** for that reason
-and not because the field is wrong on the card. **The destination's shape is not scoped
-that way anywhere**, which is what separates this edit from that one.
+were kept mandatory on the ground that the archived record scopes the origin layer to a
+US-origin family and requires those values to live on the family-owned card rather than
+in a session. Read again, that criterion is a **placement** rule and not an existence
+one: it says where an origin value may sit, not that every family has one, and the half
+of it a person has to judge asks that a fresh trip start **without editing the
+framework** -- which is precisely what a family who drives cannot do when a required
+field has no true answer. A US origin is a statement about where the family starts, not
+about how they travel. So D9 qualifies both rows with `if you are flying` and gives the
+non-flying answer somewhere to go, and the four surfaces above carry that qualifier
+rather than the bare field name. **Session 10's Step 6 still removes `home airport` from
+a session rather than qualifying it**, because a session must carry no origin value at
+all, qualified or otherwise; that half of the earlier ruling stands and this edit does
+not disturb it.
 
 **Cancelled (OQ-5): do not author `framework/templates/family_input_summary.md`.**
 
@@ -2873,7 +2897,8 @@ what the kit contains, naming the folders even where they are built later (`fami
 **G2. `framework/trip_starter/family/trip_basics.md` (create).** A kit copy of the
 built `framework/templates/trip_basics.md` **after** the D9 edits, under the shared
 kit-copy rule above: the form body must not diverge from it. Fields: destination; home
-airport; airport code; home time zone or the time difference to the destination; maximum trip
+airport, if you are flying; airport code, if you are flying; home time zone or the time
+difference to the destination; maximum trip
 length in days; number of travelers (an open answer allowed); the traveler roster by
 relationship, not by private details. Completely blank — no filled values, no example
 family. The wrapper's backlink points at `../../templates/trip_basics.md`.
@@ -3292,13 +3317,14 @@ conversion table); the remaining files are:
 | `parent_guide/coaching_and_support.md` | "that we're going, and that it's Japan." | "that we're going, and where." |
 | `parent_guide/coaching_and_support.md` | "You recommended Kyoto for three nights -- here's our Kyoto hotel, three nights." | "You recommended three nights in the place you picked -- here's our hotel there, three nights." |
 | `parent_guide/setup_checklist.md` | "time zone or hours ahead to Japan" | "the destination, time zone or the time difference to it" — the direction goes with the name, per D9 |
+| `parent_guide/setup_checklist.md` | "home airport and code" | "home airport and code, if you are flying" — the qualifier goes with the fields, per D9; a family who drives has no airport and this line is where they first meet the card |
 
-That replacement lands inside step 2's Trip-Basics field list, and it is the only change
-that step needs. The list then reads *"home airport and code, the destination, time zone
-or the time difference to it, maximum trip length, number of travelers, and the roster by
-relationship."* **Keep that file's own wording.** It does not write "your" in front of
-each field, and Session 00's differently-voiced copy of the same list is not a model for
-it.
+Both replacements land inside step 2's Trip-Basics field list, and together they are the
+only changes that step needs. The list then reads *"home airport and code, if you are
+flying, the destination, time zone or the time difference to it, maximum trip length,
+number of travelers, and the roster by relationship."* **Keep that file's own wording
+otherwise.** It does not write "your" in front of each field, and Session 00's
+differently-voiced copy of the same list is not a model for it.
 
 **`parent_guide/setup_checklist.md` takes two further changes, and neither is in the
 table above.** Its **step 4**, the AI yes/no choice, gains the AI-use-rules clause F6
@@ -3461,7 +3487,7 @@ contradicting it.
    handoff's gate check 1 already requires by name -- an exemption nobody writes down is
    indistinguishable from a fact somebody lost. **Measured across this section's seven
    conversion tables -- ten sessions are converted here and Sessions 03, 13 and 14 need
-   none: forty-three rows, and exactly one of those rows removes content and sends it
+   none: forty-four rows, and exactly one of those rows removes content and sends it
    nowhere.** Do not widen the exemption to a destination fact that is merely
    awkward to place. The test is whether the assertion depends on the family's origin
    rather than on the destination, and only an origin-dependent assumption passes it.
@@ -3526,7 +3552,7 @@ line asserting something the batch has just changed elsewhere:
 
 | Line | Current text | Neutral replacement |
 | --- | --- | --- |
-| Step 2 — **replace the whole field list, not the leaking phrase** | "your home airport and its code, your time zone or hours-ahead to Japan, your maximum trip length, how many travelers, and the roster by relationship" | "your home airport and its code, your destination, your time zone or the time difference to it, your maximum trip length, how many travelers, and the roster by relationship" (the destination is the new field, per OQ-2; the time-difference field takes D9's direction-neutral name; every other field keeps its built wording) |
+| Step 2 — **replace the whole field list, not the leaking phrase** | "your home airport and its code, your time zone or hours-ahead to Japan, your maximum trip length, how many travelers, and the roster by relationship" | "your home airport and its code if you are flying, your destination, your time zone or the time difference to it, your maximum trip length, how many travelers, and the roster by relationship" (the destination is the new field, per OQ-2; the time-difference field takes D9's direction-neutral name; the airport fields take D9's `if you are flying` qualifier; every other field keeps its built wording) |
 | "What to tell your child" | "we are taking a trip, and it is Japan" | "we are taking a trip, and the adults have chosen where" |
 | Buy-in gut-check | "show them a few genuinely exciting things about Japan" | "show them a few genuinely exciting things about your destination (the destination pack is a good place to start)" |
 | Full checklist — **replace the whole trip-shape bullet, not the leaking phrase** | "Record a **rough trip shape** on the assumptions page if you can: fly in and out of one city, or in one and out of another, and the likely arrival city. If you have never been to Japan, naming just the arrival city is a fine answer" | "Record a **rough trip shape** on the assumptions page if you can: in and out of the same place, in one place and out of another, or one base you stay at and travel from, and the likely arrival place. If you have never been to your destination, naming just the arrival place is a fine answer" (the three shapes and the word `place` are D11's, so the form and the instruction that sends a parent to it say the same thing; everything after this clause — the City Shortlist checkpoint and the First Taste sentence — keeps its built wording) |
@@ -3579,6 +3605,7 @@ eighteen is the thirty-three.
 | Steps intro | "a real family trip to Japan" | "a real family trip" |
 | Steps intro | "we are going on a trip, and it is Japan" | "we are going on a trip, and the grown-ups have picked where" |
 | Cover page bullet | "Destination: Japan." | `- Destination: ______ (from your Trip-Basics card).` |
+| Cover page bullet | "Home airport and code: ______ (from your Trip-Basics card)." | "Home airport and code, if you are flying: ______ (from your Trip-Basics card)." — D9's qualifier, carried here because this is the first page the child fills in and a family who drives has nothing to write on the line as it stands |
 | Step 2 | "Any time something about Japan sounds exciting" | "Any time something about your destination sounds exciting" |
 | Steps intro, junior-planner framing | "The grown-ups make the final calls on money, booking, flights, and safety" | "The grown-ups make the final calls on money, booking, travel, and safety" — one word. **This is the Session 10 Step 6 assumption in a second session**: a family who drives or takes a train to their destination has no flight for a grown-up to decide, and "flights" carries no destination name for the leak grep to catch. Nothing else in the sentence moves. |
 
@@ -3587,7 +3614,8 @@ compares, recommends; adults make final calls on money, booking, travel and safe
 the row above; the child's recommendations really matter to those calls); the honest
 boundary, pointed to
 via the What I Decide card rather than re-listed; the cover-page fields (project title;
-planner name; destination; home airport and code as a fill-in from the Trip-Basics card;
+planner name; destination; home airport and code as a fill-in from the Trip-Basics card,
+carrying that card's `if you are flying` qualifier per the row above;
 travel party, where an open answer is fine; date started; the "adults make the final
 decisions" note); the "things I can't wait to see" page as the single primary motivation
 mechanism; the baseline reflection ("What is hard for me when a project is big?" and
@@ -4087,15 +4115,23 @@ You are here: Phase 2 (Destination Big Picture), First Taste step 5 of 13. Previ
   opens with a `markdownlint-disable` comment, and the audience, `no-source-check` and
   `ALLOW-TBD` markers are all comments. They render as nothing, carry no markup into the page, and are how a file declares things about itself. The ban is on rendered HTML elements. <!-- ALLOW-TBD: this line names the suppression marker in order to document it; the marker is the mechanism being described -->
 
-  (This bullet is copied word for word from `docs/build/_build_prompt_template.md`,
-  **including the trailing suppression comment**, which is what keeps the line hook-clean
-  when this brief is committed to `docs/build/`. The source is one long line there and is
-  rewrapped to this file's width here, so the two match once the continuation lines are
-  rejoined on single spaces. That rejoin is the comparison; a byte comparison of the two
-  blocks as they stand is not, and the wording here does not claim one. Do not shorten the
-  bullet, and do not drop the trailing marker. A1, D7 and D8 are each required above to
-  carry `<!-- audience: builder -->`, and every built curriculum file opens with a
-  `markdownlint-disable` comment.)
+  (This bullet is a **verbatim copy** of the `Never:` bullet in
+  `docs/build/_build_prompt_template.md`, **including the trailing suppression comment**,
+  which is what keeps the line hook-clean when this brief is committed to `docs/build/`.
+  The source is one long line there and is soft-wrapped to this file's width here.
+  **Soft-wrapping is not a rewrite.** Rejoin this bullet's continuation lines on single
+  spaces and the result is the source line byte for byte -- measured at this commit --
+  so this excerpt is on the verbatim-copy path rather than the pointer path, and no
+  literal in it is paraphrased or selectively rewritten. That rejoin is the comparison a
+  template change should run, and it is stated here so that an audit has a test rather
+  than an assurance. **Three other bullets in this brief stand on the same terms**: the
+  `Trip/origin/roster leak:` bullet above, and the `Never edit these files, in any
+  batch:` and `Create and edit only the files this batch's deliverables list names.`
+  bullets below. Each is byte-identical to its template line under the same rejoin; every
+  other template bullet this brief carries is deliberately expanded and is not a copy of
+  one. Do not shorten the bullet, and do not drop the trailing marker. A1, D7 and D8 are
+  each required above to carry `<!-- audience: builder -->`, and every built curriculum
+  file opens with a `markdownlint-disable` comment.)
 - **Tone (§3.1, §16):** child-facing text at reading level, warm and non-othering;
   cultural/etiquette content matter-of-fact, never "exotic"/marveling. No points,
   badges, levels, or "mission unlocked." No gendered third-person pronouns for a generic
@@ -4307,12 +4343,26 @@ five before they were written down here:
    finish quietly, and quiet is what these checks print when they pass. So the three
    blocks below that iterate over a set count the set first and name the empty case. A
    check whose subject set is empty has not passed; it has not run.
-5. **Take a pipeline's result the way rule 2 takes a count.** `set -o pipefail` makes a
-   pipeline fail when **any** stage fails, not only the last, so an assignment whose
-   command substitution holds a pipe aborts on exactly the empty match that rule 2
-   already guards against one line above it. Give every such assignment a fallback of its
-   own, `|| var=''`, or `|| var=0` where the value is a count. Measured: rule 2's form
-   already survives `pipefail`; the unguarded pipeline does not.
+5. **Take a pipeline's result the way rule 2 takes a count, and let no stage die before
+   the pipeline ends.** `set -o pipefail` makes a pipeline fail when **any** stage fails,
+   not only the last, so an assignment whose command substitution holds a pipe aborts on
+   exactly the empty match that rule 2 already guards against one line above it. Give
+   every such assignment a fallback of its own, `|| var=''`, or `|| var=0` where the
+   value is a count. **A stage can also fail because a stage after it stopped reading.**
+   A consumer that exits early -- `head`, `grep -q`, `grep -m`, a `sed` that quits --
+   closes the pipe, and the next thing the stage in front of it writes kills that stage
+   with `SIGPIPE`, status `141`, whatever command it happens to be. `pipefail` reports
+   that as the pipeline's status too. **The fallback is the wrong remedy here and makes
+   the failure quieter rather than safer**: the early-closing consumer has already
+   produced the right answer, so `|| var=''` throws it away and the check reports a
+   defect that is not there. **Prefer a consumer that reads to end of input** --
+   `sed -n '1p'` where `head -n 1` would have gone -- so no stage is ever killed and the
+   value stands. Measured across the six environments, against a reference file long
+   enough to fill a pipe buffer and against a short one: rule 2's form already survives
+   `pipefail`; the unguarded early-closing pipeline exits `141` with nothing on either
+   stream; the same pipeline with a fallback exits `0` and hands the check an empty
+   value it then reports as a missing stamp; and the reading form is correct in every
+   environment at both lengths.
 6. **A clean run of every block here exits `0`, and that is a promise rather than a
    remark.** It holds for a one-command block too, and a one-command block is where it
    was broken longest: a script's status is its last command's status, so a lone `grep`
@@ -4646,7 +4696,7 @@ count=$(find framework destinations -name '*.md' | wc -l) || count=0
 [ "$count" -gt 0 ] || echo "NO MARKDOWN FILES FOUND -- run this from the repo root."
 find framework destinations -name '*.md' | while read -r f; do
   n=$(grep -cE '^# ' "$f") || n=0
-  first=$(grep -E '^#{1,6} ' "$f" | head -n 1) || first=''
+  first=$(grep -E '^#{1,6} ' "$f" | sed -n '1p') || first=''
   [ "$n" = "1" ] || echo "H1 COUNT $n (want 1): $f"
   case "$first" in
     '# '*) ;;
@@ -4667,9 +4717,11 @@ all prints `NO HEADING AT ALL` rather than a count that reads like a different b
 
 **Use `find`, not `git ls-files`.** The 37 new files are untracked when you run this, and
 `git ls-files` would not see one of them. The count is a count rather than a presence
-test, so a stray second H1 fails too. `head -n 1` rather than `grep -m1`, because `-m` is
-not in POSIX while the `{1,6}` bound is; `case` rather than a second `grep`, so a title
-whose own text begins with `#` cannot be misread as a deeper heading.
+test, so a stray second H1 fails too. `sed -n '1p'` rather than `grep -m1`, because `-m`
+is not in POSIX while the `{1,6}` bound is -- and rather than `head -n 1`, because `head`
+stops reading as soon as it has its line and rule 5 says what that costs the stage
+feeding it; `case` rather than a second `grep`, so a title whose own text begins with `#`
+cannot be misread as a deeper heading.
 
 **The `|| n=0` is not decoration.** `grep -c` prints `0` and exits `1` when it matches
 nothing, so under `set -e` the assignment ends the shell on a file with no H1 -- the one
@@ -4688,6 +4740,18 @@ Measured in the same heading-free fixture: without the fallback the block exits 
 clean run gives; with it the block prints both diagnostics and exits `0`. A justification
 that holds in one shell environment and not in another is why this section now names the
 environment instead of naming one option.
+
+**The fallback covers `grep`'s empty result and must not be asked to cover anything
+else, which is why this line no longer ends in `head`.** While it did, a file carrying
+more than one pipe buffer of heading lines killed `grep` with `SIGPIPE` the moment
+`head` stopped reading; `pipefail` handed the assignment status `141`, the fallback
+fired, and `first` came back empty **after `head` had already captured the right
+title** -- so the block printed `NO HEADING AT ALL` about a correctly titled file.
+Measured across the six environments: under `pipefail` and under `pipefail` with `-u`
+the old form returns an empty `first` on that fixture and the two plain shells and both
+POSIX shells return the title. `sed -n '1p'` reads to end of input, so nothing upstream
+is ever killed, the fallback is left to the one case it was written for, and all six
+environments return the title.
 
 **The `count` line is the same lesson one level up -- rule 4, at the loop rather than at
 the line.** A `find` that matches nothing runs the body zero times and prints nothing,
@@ -4730,7 +4794,8 @@ for f in destinations/*/reference/*.md destinations/*/session_inserts/*.md; do
   [ -e "$f" ] || continue   # an unexpanded glob is not a missing stamp
   case "$(basename "$f")" in README.md) continue;; esac
   seen=$((seen + 1))
-  first=$(sed -n '/^# /,$p' "$f" | sed -e '1d' -e '/^[[:space:]]*$/d' | head -n 1)
+  first=$(sed -n '/^# /,$p' "$f" | sed -e '1d' -e '/^[[:space:]]*$/d' \
+    | sed -n '1p') || first=''
   labels=$(sed -e 's/<!--.*-->//g' -e 's/[*_]//g' -e 's/^[^[:alpha:]]*//' "$f" \
     | grep -ciE "$label") || labels=0
   printf '%s\n' "$first" | grep -qE "$re" \
@@ -4816,8 +4881,9 @@ Every well-formed stamp is also a label, so this count subsumes the canonical on
 than sitting beside it, and the loop keeps two messages instead of three. A badly
 broken file can print both messages, which is two facts about it rather than two bugs.
 
-This is POSIX ERE, so `grep -E` accepts it on GNU and BSD alike; `sed`, `head` and
-`printf` are POSIX too; and `.gitattributes` pins `*.md` to LF, so the `$` anchor
+This is POSIX ERE, so `grep -E` accepts it on GNU and BSD alike; `sed` and
+`printf` are POSIX too, and `sed -n '1p'` is the reading form rule 5 requires; and
+`.gitattributes` pins `*.md` to LF, so the `$` anchor
 matches in Git Bash on Windows as well. Verified against the six built reference files
 -- all six pass and the loop prints nothing -- and against a fixture set of ten, where
 it catches a missing stamp, a slash form, an unbolded form, a stamp pushed below the first
