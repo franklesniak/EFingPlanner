@@ -1252,7 +1252,7 @@ def raw_text_run_state(
     or below it. ``<script><!-- no-source-check: offline -->`` with its closer
     two lines down holds script data on that first line exactly as it does on
     the next, and answering "no run here" for the opener let every caller read
-    the body as markup. The two branches were settled one round apart, and why
+    the body as markup. The two branches were settled separately, and why
     the second waited is worth recording: returning the run for *every* line
     was scored and rejected because it would have left a run open below a line
     that already closed it. That objection is about the branch above, where

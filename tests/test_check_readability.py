@@ -4181,12 +4181,19 @@ def test_a_bracket_inside_raw_html_opens_no_link() -> None:
         ("<!--", "-->"),
         ("<?php", "?>"),
         ("<![CDATA[", "]]>"),
-        ("<!DOC", ">"),
+        ("<!DOC ", ">"),
     ):
         document = (
             f'Text {opener}[{closer}text](u "<!-- audience: adult -->")\n'
         )
         assert readability.has_adult_marker(document), opener
+    # A declaration needs an uppercase name and then whitespace, so
+    # ``<!DOC[`` is not one: the opener is text on the page, a real link
+    # forms after it, and a marker written in that link title is an
+    # attribute rather than a comment. Measured on GitHub's own
+    # renderer, which escapes the opener and emits the anchor.
+    text_opener = 'Text <!DOC[>text](u "<!-- audience: adult -->")\n'
+    assert not readability.has_adult_marker(text_opener)
 
 
 def test_a_bracket_inside_a_real_link_still_masks_its_title() -> None:
@@ -4356,16 +4363,20 @@ def test_a_real_block_comment_still_loses_its_words() -> None:
     assert "word40" not in readability.extract_prose(f"<!-- {words} -->\n\nTail words.\n")
 
 
-def test_a_lowercase_inline_declaration_is_raw_html() -> None:
-    """The inline declaration production, pinned against the renderer.
+def test_a_lowercase_inline_declaration_is_not_a_declaration() -> None:
+    """The inline declaration production, pinned against the page it renders on.
 
-    Reported as accepting too much. Measured instead: markdown-it 14.3.0 passes
-    ``<!foo ... >`` through as raw HTML in inline context, so the backtick
-    inside it opens no code span and the marker beside it is a real comment.
-    The hook already answers what the renderer answers, and the two spellings
-    in this module are not a drift: HTML block condition 4 needs an uppercase
-    letter -- measured, ``<!foo`` opens no block where ``<!FOO`` does -- while
-    the inline production takes any ASCII letter.
+    Two grammars, and this follows the one the reader sees. CommonMark
+    0.31.2 says ``<!``, an ASCII letter, characters, ``>``; markdown-it
+    14.3.0 and micromark 4.0.2 implement exactly that and agree with each
+    other on all 92 spellings measured. GitHub's own renderer wants one or
+    more *uppercase* letters and then whitespace, and the two readings part
+    on 45 of those 92. So ``<!foo `` is text on the page: the backtick
+    after it opens a code span, and the marker inside that span is code
+    rather than a comment. Where the same opener stands beside a marker
+    with no backtick, the marker is a real comment and has to be found --
+    reading the run as raw HTML swallowed it through its first ``>`` and
+    sent an adult-facing document through the child gate.
     """
     lowercase = (
         "Text <!foo " + TICK + "> <!-- audience: adult --> " + TICK + "end" + TICK + "\n"
@@ -4373,21 +4384,36 @@ def test_a_lowercase_inline_declaration_is_raw_html() -> None:
     uppercase = (
         "Text <!FOO " + TICK + "> <!-- audience: adult --> " + TICK + "end" + TICK + "\n"
     )
-    assert readability.has_adult_marker(lowercase)
+    assert not readability.has_adult_marker(lowercase)
     assert readability.has_adult_marker(uppercase)
+    assert readability.has_adult_marker("Text <!foo <!-- audience: adult --> tail\n")
+    assert not readability.has_adult_marker("Text <!FOO <!-- audience: adult --> tail\n")
 
 
 def test_a_block_declaration_still_needs_an_uppercase_letter() -> None:
-    """The block half of the same question, in the other direction.
+    """The block half of the same question, and the two halves now agree.
 
-    Measured with markdown-it 14.3.0: ``<!FOO`` on a line of its own opens a
-    raw HTML block that runs to the line holding ``>``, so a heading inside it
-    is not a heading; ``<!foo`` opens no block and the heading stands.
+    Measured on both renderers this time: ``<!FOO`` on a line of its own
+    opens a raw HTML block that runs to the line holding ``>``, so a
+    heading inside it is not a heading, and ``<!doctype html`` opens no
+    block -- markdown-it 14.3.0 and GitHub agree, and a lowercase opener
+    under a delimiter row is one more table row on GitHub rather than the
+    end of the table. The inline production took any ASCII letter and now
+    takes the same uppercase name the block condition does, so the two
+    spellings in this module are one rule rather than a pair held apart
+    by the proxy's own asymmetry.
     """
     declaration = readability.HTML_BLOCK_CONDITIONS[3]
     assert declaration.start.match("<!FOO") is not None
     assert declaration.start.match("<!foo") is None
-    assert readability.RAW_HTML_RUN_PATTERNS[2][0].match("<!foo") is not None
+    assert readability.RAW_HTML_RUN_PATTERNS[2][0].match("<!foo ") is None
+    assert readability.RAW_HTML_RUN_PATTERNS[2][0].match("<!FOO ") is not None
+    # The line ending is whitespace to that grammar too, so an opener at
+    # the end of a line begins a declaration that closes on the line below
+    # -- measured on GitHub, which swallows ``before <!FOO`` over ``x>``
+    # and leaves ``before <!foo`` escaped in the paragraph.
+    assert readability.RAW_HTML_RUN_PATTERNS[2][0].match("<!FOO") is not None
+    assert readability.RAW_HTML_RUN_PATTERNS[2][0].match("<!FOO1") is None
 
 
 def test_an_empty_list_item_does_not_interrupt_a_paragraph() -> None:
@@ -5970,3 +5996,220 @@ def test_one_walk_builds_both_masks_and_it_tracks_the_fence() -> None:
     )
     assert not any(readability.document_html_masks(document).html_block)
     assert "zqsuf" in readability.extract_prose(document)
+
+
+# ---------------------------------------------------------------------------
+# A block, a comment span and a table body each end where their own block does
+# ---------------------------------------------------------------------------
+
+#: Forty-four words, so a document that loses the paragraph carrying them
+#: falls under ``MIN_WORDS_TO_SCORE`` and leaves the gate in silence -- which
+#: is the direction each of the three tests below measures.
+SCORED_BODY = " ".join(f"w{index}" for index in range(44))
+
+
+def test_an_html_block_ends_where_its_container_ends() -> None:
+    """``> <div>`` holds no block over the root paragraph under it.
+
+    The block opened inside the blockquote and the next line leaves it, so
+    CommonMark ends the block there. Leaving it open marked that paragraph as
+    raw HTML, ``comment_span_is_one_block`` then let its inline ``<!--`` pair
+    with a ``-->`` two blocks below, and ``strip_html_comments`` deleted every
+    word between them. Measured with markdown-it 14.3.0 read by
+    ``html.parser``: the page paints all of it.
+    """
+    newline = chr(10)
+    document = newline.join([
+        "> <div>",
+        "Intro zqsuf <!--",
+        "",
+        "qmore words -->",
+        "",
+        SCORED_BODY,
+        "",
+    ])
+    prose = readability.extract_prose(document)
+    assert "qmore" in prose
+    assert "zqsuf" in prose
+    masks = readability.document_html_masks(document)
+    assert not masks.html_block[document.index("Intro")]
+
+
+def test_an_html_block_with_no_container_still_holds_the_line_below() -> None:
+    """The control: at the root there is no container to end, so the block runs."""
+    newline = chr(10)
+    document = newline.join([
+        "<div>",
+        "Intro zqsuf <!--",
+        "",
+        "qmore words -->",
+        "",
+        SCORED_BODY,
+        "",
+    ])
+    masks = readability.document_html_masks(document)
+    assert masks.html_block[document.index("Intro")]
+
+
+@pytest.mark.parametrize("fence", [chr(96) * 3, "~" * 3])
+def test_a_comment_span_may_not_cross_a_fence(fence: str) -> None:
+    """A fenced block ends the paragraph, so the two delimiters are not a pair.
+
+    Measured with markdown-it 14.3.0: the opener is escaped into the paragraph
+    and the fence prints its own ``-->``, so every word is on the page. Pairing
+    them deleted the paragraph, the opening fence and the closing fence
+    together, and the fence that survived then swallowed the body below --
+    forty-eight words down to three.
+    """
+    newline = chr(10)
+    document = newline.join([
+        "note zqsuf <!--",
+        fence,
+        "qmore words -->",
+        fence,
+        "",
+        SCORED_BODY,
+        "",
+    ])
+    prose = readability.extract_prose(document)
+    assert "zqsuf" in prose
+    assert "w43" in prose
+    assert len(prose.split()) > readability.MIN_WORDS_TO_SCORE
+
+
+def test_a_comment_span_with_no_fence_between_its_ends_is_one_comment() -> None:
+    """The control: the same two lines with nothing between them are a comment."""
+    newline = chr(10)
+    document = newline.join([
+        "note zqsuf <!--",
+        "qmore words -->",
+        "",
+        SCORED_BODY,
+        "",
+    ])
+    prose = readability.extract_prose(document)
+    assert "zqsuf" in prose
+    assert "qmore" not in prose
+
+
+@pytest.mark.parametrize(
+    "opener",
+    [
+        "<pre>",
+        "<textarea>",
+        "<?php ?>",
+        "<!DOCTYPE html>",
+        "<![CDATA[x]]>",
+        "<div>",
+        "<p>",
+        "<table>",
+        "<x-thing>",
+        '<span class="q">',
+    ],
+)
+def test_a_table_body_ends_where_an_html_block_begins(opener: str) -> None:
+    """A body row opens last, so any HTML block start under a table ends it.
+
+    Measured on GitHub's own renderer, which is the arbiter for its own table
+    extension: each of these openers under a delimiter row leaves the table
+    with its header row alone, and the words below are a block of their own.
+    This walk keeps no block state, so it read the opener and every line under
+    it as body rows and returned no prose at all -- a forty-four word document
+    scored as zero words and left the gate in silence.
+    """
+    newline = chr(10)
+    pipe = chr(124)
+    document = newline.join([
+        "h " + pipe + " h",
+        "--- " + pipe + " ---",
+        opener,
+        SCORED_BODY,
+        "",
+    ])
+    assert "w43" in readability.extract_prose(document)
+
+
+@pytest.mark.parametrize("row", ["a " + chr(124) + " b", "alpha"])
+def test_a_table_body_still_swallows_its_own_rows(row: str) -> None:
+    """The control: a row that opens no block is one more row, pipe or not."""
+    newline = chr(10)
+    pipe = chr(124)
+    document = newline.join([
+        "h " + pipe + " h",
+        "--- " + pipe + " ---",
+        row,
+        "",
+        SCORED_BODY,
+        "",
+    ])
+    prose = readability.extract_prose(document)
+    assert row.split()[0] not in prose.split()
+    assert "w43" in prose
+
+def test_a_quoted_block_is_still_open_on_the_quoted_lines_under_it() -> None:
+    """The reset reads the raw line, and peeling it first would lose the block.
+
+    ``> <div>`` opens a block *inside* the blockquote, and the quoted lines
+    under it are still the block's. Asking ``container_path_ended`` about the
+    line already peeled to its container content answers "the container ended"
+    on every one of them, so the block would close on its own second line.
+    Measured with markdown-it 14.3.0 read by ``html.parser``: the page paints
+    no word of the comment here, and peeling first left them all in the prose.
+    """
+    newline = chr(10)
+    document = newline.join([
+        "> <div>",
+        "> Intro zqsuf <!--",
+        "> ## head",
+        "> qmore words -->",
+        "",
+        SCORED_BODY,
+        "",
+    ])
+    assert "qmore" not in readability.extract_prose(document)
+
+
+def test_a_line_that_merely_holds_three_backticks_opens_no_fence() -> None:
+    """The fence rule is ``parse_opening_fence``, not a search for the marker.
+
+    ``text ``` more`` holds a fence marker and opens nothing: the paragraph
+    runs on and the comment really does span it. Testing for the substring
+    instead refused the span and left words no reader sees in the prose.
+    """
+    newline = chr(10)
+    fence = chr(96) * 3
+    document = newline.join([
+        "note zqsuf <!--",
+        "text " + fence + " more",
+        "qmore words -->",
+        "",
+        SCORED_BODY,
+        "",
+    ])
+    assert "qmore" not in readability.extract_prose(document)
+
+
+def test_no_gfm_delimiter_row_can_open_an_html_block() -> None:
+    """Why the table test needs no exemption for the delimiter row itself.
+
+    Every HTML block start condition wants ``<`` after at most three spaces,
+    and a GFM delimiter row holds only pipes, hyphens, colons and whitespace.
+    Generated rather than argued: one to three columns over eight cell
+    spellings, with and without outer pipes, at nought to three columns of
+    indent.
+    """
+    import itertools
+
+    pipe = chr(124)
+    cells = ("---", ":--", "--:", ":-:", "-", ":-", "-:", "::-")
+    tried = 0
+    for columns in (1, 2, 3):
+        for spelling in itertools.product(cells, repeat=columns):
+            for outer in (False, True):
+                for indent in range(4):
+                    body = (" " + pipe + " ").join(spelling)
+                    row = (pipe + " " + body + " " + pipe) if outer else body
+                    row = " " * indent + row
+                    tried += 1
+                    assert not readability.html_block_starts_here(row), row
+    assert tried == 4672

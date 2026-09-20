@@ -1094,8 +1094,9 @@ def test_a_nested_phase_directory_is_still_walked(tmp_path: Path) -> None:
 def test_an_uppercase_markdown_extension_is_checked(tmp_path: Path) -> None:
     """`02_bad.MD` is a session file. A lowercase pattern misses it on CI.
 
-    This fails at 7e4463f only on a case-sensitive filesystem -- which is the
-    Linux runner CI uses, and is the reason the bug is invisible on Windows.
+    A lowercase-only extension pattern passes this on Windows and fails it
+    on a case-sensitive filesystem -- which is the Linux runner CI uses,
+    and is why the bug is invisible to anyone developing on Windows.
     """
     session_dir = make_session_dir(tmp_path)
     (session_dir / "07_a_session.md").write_text(build_session(), encoding="utf-8")
@@ -2095,9 +2096,9 @@ def test_a_run_outlives_the_container_its_block_died_with(label: str, opener: st
     rendered page carries no ``<h2>`` at all, and this session really has no
     visible Goal.
 
-    A previous round asserted the opposite here, from the Markdown layer alone
-    -- markdown-it does emit ``<h2>Goal</h2>`` into a document nothing will
-    ever read as markup. Both layers have to agree before a heading is a
+    The Markdown layer alone says the opposite -- markdown-it does emit
+    ``<h2>Goal</h2>`` here, into a document nothing will ever read as
+    markup. Both layers have to agree before a heading is a
     heading, which is the same lesson the front-matter rule learned from
     PyYAML.
     """
@@ -3506,10 +3507,17 @@ def test_a_bracket_inside_raw_html_opens_no_link() -> None:
         ("<!--", "-->"),
         ("<?php", "?>"),
         ("<![CDATA[", "]]>"),
-        ("<!DOC", ">"),
+        ("<!DOC ", ">"),
     ):
         line = f'Text {opener}[{closer}text](u "{OFFLINE_MARKER}")'
         assert structure.link_metadata_regions(line, frozenset()) == (), opener
+    # A declaration needs an uppercase name and then whitespace, so
+    # ``<!DOC[`` is not one: the opener is text on the page and the link
+    # after it is a real link whose title really is metadata. Measured on
+    # GitHub's own renderer, which escapes the opener and emits the
+    # anchor with the marker as its ``title``.
+    text_opener = f'Text <!DOC[>text](u "{OFFLINE_MARKER}")'
+    assert structure.link_metadata_regions(text_opener, frozenset()) != ()
 
 
 def test_a_bracket_inside_a_real_link_still_masks_its_title() -> None:
@@ -3605,8 +3613,8 @@ def test_a_block_comment_still_reaches_the_run_below_it() -> None:
 def test_a_closing_line_is_still_the_runs_last_line() -> None:
     """The control for the blanking rule: the run holds the line that closes it.
 
-    A previous round settled that a line carrying the closing delimiter is
-    still the run's last line. Reading the state the line *leaves* rather than
+    A line carrying the closing delimiter is still the run's last line.
+    Reading the state the line *leaves* rather than
     the state it is *in* would free that line again, and the ``## Goal`` on it
     would be a heading the page never paints.
     """

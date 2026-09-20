@@ -334,12 +334,39 @@ AUTOLINK_PATTERN = re.compile(
 #: a closing tag and a comment are the other three forms and are matched
 #: separately. Each of these crosses a soft line break, so the scan looks on
 #: past the end of the line for the closer exactly as it does for a comment.
+#:
+#: **The declaration's name is uppercase and is followed by whitespace**,
+#: which is the production renderer's grammar rather than CommonMark
+#: 0.31.2's. The spec says ``<!``, an ASCII letter, zero or more
+#: characters other than ``>``, and ``>``; markdown-it 14.3.0 and
+#: micromark 4.0.2 both implement exactly that and agree with each other
+#: on all 92 spellings measured. The renderer these files are read on
+#: does not: it takes ``<!FOO `` and ``<!Q`` followed by a tab or a line
+#: ending, and refuses ``<!foo ``, ``<!Foo ``, ``<!FOO1 ``,
+#: ``<!FOO-BAR `` and ``<!FOO>`` -- one or more uppercase ASCII letters,
+#: then whitespace. The two readings part on 45 of those 92.
+#:
+#: This follows the page, because the error the other way is the one
+#: this gate exists to refuse: a ``<!-- audience: adult -->`` written
+#: after ``<!foo `` **is** a comment there, and reading the run as raw
+#: HTML swallowed the marker through its first ``>`` and sent an
+#: adult-facing document through the child readability gate. Scored
+#: against that renderer the three candidate spellings are 47, 62 and
+#: **92** of 92; ``<![A-Z]`` alone -- the spelling HTML block condition 4
+#: carries -- is wrong 30 times, because the whitespace is half the rule.
+#: ``$`` stands for the line ending, which is whitespace to that grammar
+#: too and is where a declaration carried across a soft break begins.
+#:
+#: Condition 4 needs no such change: ``<![A-Z]`` there agrees with both
+#: renderers, measured, so the two spellings in this module were never a
+#: matched pair -- the block half followed both and the inline half
+#: followed only the proxy.
 #: Kept identical to the constant in the sibling hook.
 #: https://spec.commonmark.org/0.31.2/#raw-html
 RAW_HTML_RUN_PATTERNS = (
     (re.compile(r"<\?"), "?>"),
     (re.compile(r"<!\[CDATA\["), "]]>"),
-    (re.compile(r"<![A-Za-z]"), ">"),
+    (re.compile(r"<![A-Z]+(?=[ \t]|$)"), ">"),
 )
 #: The same three with the comment in front of them, for a scan that reads one
 #: line rather than one paragraph. The comment is first because it is the one
@@ -1758,6 +1785,29 @@ def following_backtick_run(
     return -1, -1
 
 
+def html_block_starts_here(content: str) -> bool:
+    """Return whether this line opens a raw HTML block of any condition.
+
+    The seven start conditions asked as one question, for a walk that
+    keeps no block *state* and only needs to know that a block begins.
+    ``html_block_state`` is the machine; this is the one bit of it a
+    second pass can use without carrying the rest.
+
+    Every condition is tried, condition 7 included. Condition 7's single
+    restriction is that it may not interrupt a paragraph, and the caller
+    asks this where a *table* is open rather than a paragraph: measured
+    on GitHub's own renderer, ``<x-thing>`` and ``<span class="q">``
+    under a delimiter row each end the table, exactly as ``<div>`` and
+    ``<script>`` do. All thirteen openers measured there end it and all
+    three non-openers do not.
+    https://spec.commonmark.org/0.31.2/#html-blocks
+    """
+    return any(
+        condition.start.match(content) is not None
+        for condition in HTML_BLOCK_CONDITIONS
+    )
+
+
 def html_block_state(
     content: str,
     containment_path: tuple[Container, ...],
@@ -2736,7 +2786,7 @@ def raw_text_run_state(
     or below it. ``<script><!-- no-source-check: offline -->`` with its closer
     two lines down holds script data on that first line exactly as it does on
     the next, and answering "no run here" for the opener let every caller read
-    the body as markup. The two branches were settled one round apart, and why
+    the body as markup. The two branches were settled separately, and why
     the second waited is worth recording: returning the run for *every* line
     was scored and rejected because it would have left a run open below a line
     that already closed it. That objection is about the branch above, where
@@ -4021,9 +4071,9 @@ def document_html_masks(text: str) -> DocumentMasks:
     the document, and ``extract_prose`` scored every word inside it as words a
     child reads -- which can carry a document over the forty-word floor it
     should never have reached. ``raw_text_run_boundary``'s third value is
-    where the element stops holding the line, and the two document walks have
-    read it that way since round 12; this pass asked ``raw_text_run_state``
-    instead and threw it away. The mask now stops there, so the characters
+    where the element stops holding the line, and it is the value the two
+    document walks read; this pass asked ``raw_text_run_state`` instead
+    and threw it away. The mask now stops there, so the characters
     after the closer are read as the document text they are.
 
     A tag a fenced example *prints* is not a tag, which is the same sentence
@@ -4085,6 +4135,22 @@ def document_html_masks(text: str) -> DocumentMasks:
         # raw line: a container prefix holds no delimiter, and the offsets have
         # to stay the document's.
         fence_line = normalize_for_fence_opening(line, list_contexts)
+        if html_block is not None and container_path_ended(
+            line, html_block.containment_path
+        ):
+            # The list item or blockquote holding the block has ended,
+            # so the block ended with it, exactly as an unclosed fence
+            # does. ``html_block_state`` states that its caller owes it
+            # this reset; the two other document walks did it and this
+            # one did not. Measured: ``> <div>`` over a root paragraph
+            # beginning ``Intro <!--`` left the block open over the
+            # paragraph, so ``comment_span_is_one_block`` read every
+            # character there as raw HTML and paired the opener with a
+            # ``-->`` two blocks below -- and ``strip_html_comments``
+            # deleted a paragraph the page prints, which is the
+            # direction that takes a document under
+            # ``MIN_WORDS_TO_SCORE`` and out of the gate in silence.
+            html_block = None
         html_block, line_html_block = html_block_state(
             fence_line.content,
             fence_line.containment_path,
@@ -4136,6 +4202,16 @@ def comment_span_is_one_block(
     is the direction that takes a file under ``MIN_WORDS_TO_SCORE`` and out of
     the gate in silence.
 
+    A fenced block ends the paragraph the same way. ``note here <!--``
+    over three backticks over ``more -->`` renders on markdown-it 14.3.0
+    as a paragraph, a code block and then nothing -- every word of it
+    painted, the opener escaped -- and pairing the two delimiters deleted
+    the paragraph, the fence and the closing fence with it, which then
+    let the surviving fence swallow the rest of the file. A forty-eight
+    word document came out at three. The four tests above ask about a
+    blank line, a heading, a list marker and a thematic break; a fence's
+    own lines are not in the block mask, so it had to be asked here.
+
     Inside a raw HTML block the question does not arise and the answer is
     ``True``: every character there is raw HTML, so an opener part way along
     such a line really does pair with a closer below it.
@@ -4155,6 +4231,8 @@ def comment_span_is_one_block(
         if HEADING_PATTERN.match(content):
             return False
         if THEMATIC_BREAK_PATTERN.match(content):
+            return False
+        if parse_opening_fence(content) is not None:
             return False
     return True
 
@@ -4266,7 +4344,7 @@ def front_matter_is_yaml_mapping(block: str) -> bool:
     thematic break over a sentence, closed by ``...``, would parse and the
     sentence would vanish. Front matter is a block of keys, every consumer of
     it reads a mapping, and requiring one keeps that shape out. Measured: the
-    two shapes an earlier round recorded as deliberately rejected, ``-- not a
+    two shapes recorded here as deliberately rejected, ``-- not a
     sequence`` and ``-notaspace``, are plain scalars rather than mappings, so
     they stay rejected and that verdict is unchanged.
 
@@ -4438,6 +4516,24 @@ def extract_prose(text: str) -> str:
             previous_content = ""
             continue
         fence_line = normalize_for_fence_opening(line, list_contexts)
+        if in_table and html_block_starts_here(fence_line.content):
+            # A table body row opens *last*, after every other block
+            # start has been tried, so a raw HTML block that opens here
+            # ends the table. ``table_body_row_continues`` does not
+            # spell that rule because it was written for walks that
+            # classify raw HTML before they ask it -- and this walk does
+            # not. Measured: ``h | h`` over ``--- | ---`` over ``<div>``
+            # over forty-four words returned no prose at all, because
+            # the opener and every line under it were read as body rows
+            # and discarded. Asked here rather than beside that call
+            # because three branches below reach a raw-text run, a
+            # processing instruction, a CDATA section or a declaration
+            # and never reach the table test at all. The delimiter
+            # row needs no exemption: every start condition wants
+            # ``<`` after at most three spaces and a delimiter row
+            # holds only pipes, hyphens, colons and whitespace, so
+            # none of 4,672 generated rows matches one.
+            in_table = False
         # This walk carries no HTML block machine -- it is a second pass with its
         # own cascade of tables, headings, parent sections and list units, and
         # the block state belongs with ``scan_document_inlines`` -- so the run

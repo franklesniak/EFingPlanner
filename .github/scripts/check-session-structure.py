@@ -374,12 +374,39 @@ AUTOLINK_PATTERN = re.compile(
 #: a closing tag and a comment are the other three forms and are matched
 #: separately. Each of these crosses a soft line break, so the scan looks on
 #: past the end of the line for the closer exactly as it does for a comment.
+#:
+#: **The declaration's name is uppercase and is followed by whitespace**,
+#: which is the production renderer's grammar rather than CommonMark
+#: 0.31.2's. The spec says ``<!``, an ASCII letter, zero or more
+#: characters other than ``>``, and ``>``; markdown-it 14.3.0 and
+#: micromark 4.0.2 both implement exactly that and agree with each other
+#: on all 92 spellings measured. The renderer these files are read on
+#: does not: it takes ``<!FOO `` and ``<!Q`` followed by a tab or a line
+#: ending, and refuses ``<!foo ``, ``<!Foo ``, ``<!FOO1 ``,
+#: ``<!FOO-BAR `` and ``<!FOO>`` -- one or more uppercase ASCII letters,
+#: then whitespace. The two readings part on 45 of those 92.
+#:
+#: This follows the page, because the error the other way is the one
+#: this gate exists to refuse: a ``<!-- audience: adult -->`` written
+#: after ``<!foo `` **is** a comment there, and reading the run as raw
+#: HTML swallowed the marker through its first ``>`` and sent an
+#: adult-facing document through the child readability gate. Scored
+#: against that renderer the three candidate spellings are 47, 62 and
+#: **92** of 92; ``<![A-Z]`` alone -- the spelling HTML block condition 4
+#: carries -- is wrong 30 times, because the whitespace is half the rule.
+#: ``$`` stands for the line ending, which is whitespace to that grammar
+#: too and is where a declaration carried across a soft break begins.
+#:
+#: Condition 4 needs no such change: ``<![A-Z]`` there agrees with both
+#: renderers, measured, so the two spellings in this module were never a
+#: matched pair -- the block half followed both and the inline half
+#: followed only the proxy.
 #: Kept identical to the constant in the sibling hook.
 #: <https://spec.commonmark.org/0.31.2/#raw-html>
 RAW_HTML_RUN_PATTERNS = (
     (re.compile(r"<\?"), "?>"),
     (re.compile(r"<!\[CDATA\["), "]]>"),
-    (re.compile(r"<![A-Za-z]"), ">"),
+    (re.compile(r"<![A-Z]+(?=[ \t]|$)"), ">"),
 )
 #: The same three with the comment in front of them, for a scan that reads one
 #: line rather than one paragraph. The comment is first because it is the one
@@ -2358,7 +2385,7 @@ def raw_text_run_state(
     or below it. ``<script><!-- no-source-check: offline -->`` with its closer
     two lines down holds script data on that first line exactly as it does on
     the next, and answering "no run here" for the opener let every caller read
-    the body as markup. The two branches were settled one round apart, and why
+    the body as markup. The two branches were settled separately, and why
     the second waited is worth recording: returning the run for *every* line
     was scored and rejected because it would have left a run open below a line
     that already closed it. That objection is about the branch above, where
