@@ -36,10 +36,13 @@ pass's own, because a bare ``R`` and a numeral inside a sentence refers to
 nothing and inside a name it refers to a round.
 
 **Every file, and this one.** The corpus is every Python file the repository
-tracks, asked of Git rather than guessed at, minus the files named in
-``UNSWEPT_FILES`` with the reason each is named. The three sets are reconciled
-against each other, so a file added later is swept by default and a file left
-out has to be argued for in writing. The second version of this module scoped
+tracks, asked of Git rather than guessed at, and nothing is subtracted from it.
+Exemptions are per occurrence: the exemption fixture names one
+string in one file with the reason it is there, and every other line of that
+file is read. An earlier version named seven whole *files*, and a reviewer said
+what that cost -- a fixture hash already in the file kept the exemption alive,
+so an opaque reference written into any of those seven later would never have
+been read at all. The second version of this module scoped
 itself with two globs that matched neither itself nor most of the tree, and a
 reviewer found what that cost: its own committed samples carried every shape
 it exists to refuse, under every pattern below, and it passed. Its docstring
@@ -59,7 +62,7 @@ rather than through the file. It reads text and not syntax, so a reference
 inside a string literal a test *feeds to a hook* is reported like any other --
 which is the conservative direction, and is why the samples are data. The text
 pass also cannot tell a synthetic hash written as a fixture from a real commit,
-which is what every entry in ``UNSWEPT_FILES`` is about.
+which is what every text-pass exemption is about.
 """
 
 from __future__ import annotations
@@ -96,26 +99,77 @@ REQUIRED_MEMBERS = (
     THIS_MODULE,
 )
 
-#: The files the rule is **not** enforced on, each with the reason. Everything
-#: else the repository tracks is swept, so a file added later is inside the
-#: rule until somebody writes down why it should not be.
+#: The occurrences the rule is **not** enforced on, read from a file outside
+#: the corpus. **The unit is the occurrence, not the file.** An earlier version
+#: named seven whole files here, and a reviewer said what that cost: a file is
+#: removed from the scan entirely, so an opaque reference written into any of
+#: those seven later would never be read, while the synthetic hash already in
+#: the file kept the exemption looking necessary. Seventeen occurrences were
+#: hidden that way, and three distinct strings account for every textual one.
 #:
-#: Every entry here is a suite for a script this branch did not write, and
-#: every one is named for the same reason: it feeds a synthetic forty-character
-#: hash, or a name carrying an issue number from the upstream template's own
-#: tracker, to the code it tests. The text pass reads text and not syntax, so it
-#: cannot tell a fixture hash from a commit -- and a rule that fires on files
-#: nobody has swept is a rule that gets turned off. Each entry is checked below
-#: for still being needed, so an exemption cannot outlive its reason.
-UNSWEPT_FILES = (
-    ("tests/test_materialize_downstream_adoption.py", "a fixture hash and upstream issue names"),
-    ("tests/test_report_excluded_module_references.py", "a fixture hash"),
-    ("tests/test_template_manifest.py", "a fixture hash and upstream issue names"),
-    ("tests/test_template_sync_materialization_helpers.py", "a fixture hash"),
-    ("tests/test_validate_downstream_adoption.py", "a fixture hash"),
-    ("tests/test_validate_instruction_contracts.py", "a fixture hash"),
-    ("tests/test_validate_marker.py", "several fixture hashes"),
+#: Every entry is a fixture in a suite for a script this branch did not write:
+#: a synthetic forty-character hash, or a name carrying an issue number from
+#: the upstream template's own tracker. The text pass reads text and not
+#: syntax, so it cannot tell a fixture hash from a commit.
+#:
+#: **The strings live in the fixture file and not here**, for the reason this
+#: module states about its positive controls: this file is inside its own
+#: scope, and a hash written here is a reference in a swept file. The first
+#: draft of the narrowing wrote all nine of them into this module, and the scan
+#: reported all nine -- the check working on its author.
+EXEMPTIONS = (
+    REPO_ROOT / "tests" / "fixtures" / "self_contained_references" / "exemptions.tsv"
 )
+
+#: The cases that say what "a URL resolves this reference" means, held outside
+#: the corpus for the same reason. Each row is a verdict and a line.
+URL_RESOLUTION_CASES = (
+    REPO_ROOT / "tests" / "fixtures" / "self_contained_references" / "url_resolution.tsv"
+)
+
+
+def exemption_rows() -> tuple[tuple[str, str, str, str], ...]:
+    """Return the recorded exemptions as ``(kind, path, occurrence, reason)``.
+
+    A row with the wrong number of fields raises rather than being skipped: a
+    loader that drops what it cannot read turns an exemption file into an empty
+    one and reports success on a scan that enforced nothing.
+    """
+    text = EXEMPTIONS.read_text(encoding="utf-8")
+    rows: list[tuple[str, str, str, str]] = []
+    for number, line in enumerate(text.split("\n"), start=1):
+        if not line.strip():
+            continue
+        fields = line.split("\t")
+        if len(fields) != 4:
+            raise AssertionError(
+                f"{EXEMPTIONS.name}:{number} holds {len(fields)} field(s); "
+                "every row is kind, path, occurrence, reason"
+            )
+        kind, path, occurrence, reason = fields
+        if kind not in ("text", "name"):
+            raise AssertionError(
+                f"{EXEMPTIONS.name}:{number} names the kind {kind!r}; "
+                "it is 'text' or 'name'"
+            )
+        rows.append((kind, path, occurrence, reason))
+    if not rows:
+        raise AssertionError(
+            f"{EXEMPTIONS.name} holds no row, so either every exemption has "
+            "gone or the file did not load; the two need different repairs"
+        )
+    return tuple(rows)
+
+
+def exempt_texts() -> tuple[tuple[str, str, str], ...]:
+    """Return the text-pass exemptions as ``(path, occurrence, reason)``."""
+    return tuple((p, o, r) for kind, p, o, r in exemption_rows() if kind == "text")
+
+
+def exempt_names() -> tuple[tuple[str, str, str], ...]:
+    """Return the identifier-pass exemptions as ``(path, occurrence, reason)``."""
+    return tuple((p, o, r) for kind, p, o, r in exemption_rows() if kind == "name")
+
 
 #: Each pattern is one way of pointing out of the repository, with the name a
 #: failure message gives it. ``the second pass`` and ``the first pass`` name
@@ -149,9 +203,99 @@ REVIEW_HISTORY_PATTERNS = (
 )
 
 #: A reference inside a URL resolves. The URL is removed before the scan, and a
-#: number that also appears in a URL on the same line is read as linked.
+#: reference a URL on the same line **resolves** is read as linked.
+#:
+#: Resolving is the word that had to be narrowed. This compared digit runs: any
+#: URL holding the same digits excused the reference, so a private issue
+#: mentioned beside an unrelated release link whose path segment happened to
+#: carry the same number passed, and a hash was looser still because its
+#: separate digit runs were compared rather than the hash itself. A later link
+#: could therefore make an opaque reference pass without ever pointing at it.
+#: Now the URL has to name the same resource: an issues or pull path carrying
+#: the number for an issue or a pull request, a commit path carrying the hash
+#: for a hash, and the identifier itself in a comments path or in the fragment
+#: that scrolls to it for a review-comment id -- as a whole path segment or
+#: fragment token in every case, so a release path resolves nothing.
+#:
+#: **A round is not on this list at all**, and that is deliberate rather than
+#: an omission: a round number names a position in a conversation, and no URL
+#: resolves it. There is nothing to link to, which is the whole reason the rule
+#: refuses the shape. Rewording is the only repair.
+#:
+#: The cases that fix this meaning live in the fixture file beside the positive
+#: controls, and for the same reason: a sample written here would be a
+#: reference in a swept file.
 URL_PATTERN = re.compile(r"(?:https?://|www\.)\S+")
 DIGITS_PATTERN = re.compile(r"\d+")
+#: The pieces a URL is cut into before a reference is matched against it: a
+#: path segment, a query value or a fragment. Splitting on these rather than
+#: searching the whole string is what keeps a release path from resolving an
+#: issue whose number it happens to carry, while an issues path does.
+URL_SEPARATORS = re.compile(r"[/?&=#]+")
+HEX_RUN = re.compile(r"\A[0-9a-f]{7,40}\Z")
+#: What a host writes in front of a review-comment id inside a fragment. The
+#: list is closed on purpose: an open rule that accepted any prefix would let a
+#: release path resolve a comment id whose digits it happened to carry.
+COMMENT_FRAGMENT_PREFIXES = (
+    "discussion_r",
+    "issuecomment-",
+    "discussion-diff-",
+    "pullrequestreview-",
+)
+
+
+def url_parts(url: str) -> list[str]:
+    """Return the path, query and fragment pieces of one URL."""
+    return [part for part in URL_SEPARATORS.split(url) if part]
+
+
+def url_resolves(label: str, matched: str, urls: list[str]) -> bool:
+    """Return whether any URL on the line resolves *this* reference.
+
+    ``label`` is the pattern's own name, so each shape is asked the question
+    that fits it rather than all of them being asked about digits.
+    """
+    if "round" in label:
+        # No URL names a round. See the note above the patterns.
+        return False
+
+    digits = DIGITS_PATTERN.findall(matched)
+    for url in urls:
+        parts = url_parts(url)
+        lowered = [part.lower() for part in parts]
+        if label in ("an unlinked pull request", "an unlinked issue"):
+            # GitHub serves an issue and a pull request from either path, so
+            # both are accepted for either spelling of the reference.
+            for index, part in enumerate(lowered[:-1]):
+                if part in ("issues", "issue", "pull", "pulls") and lowered[
+                    index + 1
+                ] in digits:
+                    return True
+        elif label == "a bare review-comment id":
+            # The id is served as its own path segment under ``comments`` and
+            # written into the fragment that scrolls to it, where the host puts
+            # a prefix in front of it. Both placements resolve it; a bare digit
+            # run anywhere else does not, which is why the prefixes are listed
+            # rather than the part being split on punctuation and searched.
+            for index, part in enumerate(parts):
+                if part == matched and (index == 0 or lowered[index - 1] == "comments"):
+                    return True
+                for prefix in COMMENT_FRAGMENT_PREFIXES:
+                    if part.lower() == prefix + matched:
+                        return True
+        elif label == "a bare commit hash":
+            # A URL may carry the full forty characters where the prose wrote
+            # seven, or the other way about, so a prefix either way counts --
+            # but only in a path the host serves a commit from.
+            for index, part in enumerate(lowered[:-1]):
+                if part not in ("commit", "commits"):
+                    continue
+                candidate = lowered[index + 1]
+                if not HEX_RUN.match(candidate):
+                    continue
+                if candidate.startswith(matched) or matched.startswith(candidate):
+                    return True
+    return False
 
 #: Where one word of an identifier ends and the next begins: the underscore,
 #: a lower-to-upper case change, and either side of a run of digits. So a name
@@ -200,12 +344,19 @@ def identifiers_of(source: str) -> set[str]:
     return found
 
 
-def names_in(path: Path, root: Path) -> list[str]:
-    """Return one message per identifier in ``path`` that names a review run."""
+def names_in(path: Path, root: Path, exempt: frozenset[str] = frozenset()) -> list[str]:
+    """Return one message per identifier in ``path`` that names a review run.
+
+    ``exempt`` holds the names recorded for **this file**.
+    A caller that passes nothing gets the rule unexempted, which is what the
+    test that proves each exemption still occurs needs.
+    """
     found: list[str] = []
     relative = path.relative_to(root).as_posix()
     source = path.read_text(encoding="utf-8")
     for name in sorted(identifiers_of(source)):
+        if name in exempt:
+            continue
         words = name_words(name)
         for label, pattern in REVIEW_HISTORY_PATTERNS:
             if pattern.search(words) or pattern.search(name):
@@ -219,22 +370,41 @@ def names_in(path: Path, root: Path) -> list[str]:
     return found
 
 
-def references_in(path: Path, root: Path) -> list[str]:
-    """Return one message per reference in ``path`` that resolves only elsewhere."""
+def references_in(
+    path: Path, root: Path, exempt: frozenset[str] = frozenset()
+) -> list[str]:
+    """Return one message per reference in ``path`` that resolves only elsewhere.
+
+    ``exempt`` holds the matched texts recorded for **this file** in
+    the exemption fixture. A caller that passes nothing gets the rule unexempted,
+    which is what the test that proves each exemption still occurs needs.
+    """
     found: list[str] = []
     relative = path.relative_to(root).as_posix()
     for number, line in enumerate(
         path.read_text(encoding="utf-8").split("\n"), start=1
     ):
-        linked = set(DIGITS_PATTERN.findall(" ".join(URL_PATTERN.findall(line))))
+        urls = URL_PATTERN.findall(line)
         scanned = URL_PATTERN.sub(" ", line)
         for name, pattern in REVIEW_HISTORY_PATTERNS:
             for match in pattern.finditer(scanned):
-                cited = set(DIGITS_PATTERN.findall(match.group(0)))
-                if cited and cited <= linked:
+                matched = match.group(0)
+                if matched in exempt:
                     continue
-                found.append(f"{relative}:{number}: {name}: {match.group(0)!r}")
+                if url_resolves(name, matched, urls):
+                    continue
+                found.append(f"{relative}:{number}: {name}: {matched!r}")
     return found
+
+
+def exempt_texts_for(relative: str) -> frozenset[str]:
+    """Return the matched texts recorded as fixtures in one file."""
+    return frozenset(text for name, text, _ in exempt_texts() if name == relative)
+
+
+def exempt_names_for(relative: str) -> frozenset[str]:
+    """Return the identifiers recorded as fixtures in one file."""
+    return frozenset(name for path, name, _ in exempt_names() if path == relative)
 
 
 def tracked_python_files() -> list[Path]:
@@ -280,13 +450,24 @@ def tracked_python_files() -> list[Path]:
     return [REPO_ROOT / name for name in names]
 
 
-def unswept_names() -> set[str]:
-    """Return the paths the rule is deliberately not enforced on."""
-    return {name for name, _reason in UNSWEPT_FILES}
+def exempt_paths() -> set[str]:
+    """Return every path an exemption names, for reconciliation below.
+
+    A path here is **not** removed from the corpus. It is read like every
+    other file, with the one recorded occurrence skipped; naming it here says
+    only that somebody wrote a reason down for something inside it.
+    """
+    return {name for name, _text, _reason in exempt_texts()} | {
+        name for name, _ident, _reason in exempt_names()
+    }
 
 
 def scoped_paths() -> list[Path]:
     """Return every file in scope, with the scope proved complete first.
+
+    **Every tracked Python file is in scope now.** The exemptions below it are
+    per occurrence, so no file leaves the corpus and a reference written into
+    one of the seven fixture-holding suites later is read like any other.
 
     The message says how many files the scan did collect, and out of how many
     the repository holds, before it names the ones it should have. The two
@@ -295,13 +476,8 @@ def scoped_paths() -> list[Path]:
     that says only "collected nothing from" reads as the first when it is the
     second.
     """
-    exempt = unswept_names()
     tracked = tracked_python_files()
-    found = sorted(
-        path
-        for path in tracked
-        if path.relative_to(REPO_ROOT).as_posix() not in exempt
-    )
+    found = sorted(tracked)
     relative = {path.relative_to(REPO_ROOT).as_posix() for path in found}
     missing = [name for name in REQUIRED_MEMBERS if name not in relative]
     assert not missing, (
@@ -334,41 +510,115 @@ def test_the_scan_reads_the_module_that_states_the_rule() -> None:
     assert Path(__file__).resolve() in set(scoped_paths())
 
 
-def test_no_tracked_python_file_is_outside_both_sets() -> None:
-    """Swept and unswept together are every file, and they do not overlap.
+def test_no_tracked_python_file_is_outside_the_corpus() -> None:
+    """Every tracked file is read, and every exemption names a tracked file.
 
     This is the reconciliation rather than the rule: it says nothing about
-    whether a file is clean, only that no file is invisible. A file added to
-    the repository is swept by default and has to be argued out in writing.
+    whether a file is clean, only that no file is invisible. Since the
+    exemptions became per occurrence there is no second set to add, which is
+    the point -- a file cannot leave the corpus any more, so the reconciliation
+    has one side to check instead of two.
     """
     tracked = {path.relative_to(REPO_ROOT).as_posix() for path in tracked_python_files()}
     swept = {path.relative_to(REPO_ROOT).as_posix() for path in scoped_paths()}
-    exempt = unswept_names()
-    assert not swept & exempt
-    assert tracked == swept | exempt, {
-        "tracked but in neither set": sorted(tracked - swept - exempt),
-        "named unswept but not tracked": sorted(exempt - tracked),
+    assert tracked == swept, {
+        "tracked but not swept": sorted(tracked - swept),
+        "swept but not tracked": sorted(swept - tracked),
     }
+    named = exempt_paths()
+    assert named <= tracked, {"named in an exemption but not tracked": sorted(named - tracked)}
 
 
-def test_every_unswept_file_still_needs_its_exemption() -> None:
-    """An exemption that has outlived its reason is deleted, not inherited."""
+def test_every_exempt_occurrence_still_occurs() -> None:
+    """An exemption that has outlived its reason is deleted, not inherited.
+
+    Each entry is proved against **its own string in its own file**, not
+    against the file reporting something. The version this replaces asked only
+    whether anything at all was still found in the file, so one fixture hash
+    kept six other exemptions alive -- and kept the rule switched off for
+    every line of seven files.
+    """
     tracked = {path.relative_to(REPO_ROOT).as_posix() for path in tracked_python_files()}
-    for name, reason in UNSWEPT_FILES:
-        assert name in tracked, f"{name} is named unswept and is not tracked"
-        path = REPO_ROOT / name
-        assert references_in(path, REPO_ROOT) or names_in(path, REPO_ROOT), (
-            f"{name} is exempt because of {reason}, and the scan now reports "
-            "nothing in it. Delete the entry rather than keeping a rule that "
-            "is turned off for a file that does not need it."
+    for name, text, reason in exempt_texts():
+        assert name in tracked, f"{name} is named in an exemption and is not tracked"
+        reported = references_in(REPO_ROOT / name, REPO_ROOT)
+        assert any(message.endswith(repr(text)) for message in reported), (
+            f"{name} is exempt for {text!r} because it is {reason}, and the "
+            "scan no longer reports that string there. Delete the entry rather "
+            "than keeping an exemption nothing needs."
         )
+    for name, identifier, reason in exempt_names():
+        assert name in tracked, f"{name} is named in an exemption and is not tracked"
+        reported = names_in(REPO_ROOT / name, REPO_ROOT)
+        assert any(message.endswith(repr(identifier)) for message in reported), (
+            f"{name} is exempt for {identifier!r} because it is {reason}, and "
+            "the scan no longer reports that name there. Delete the entry "
+            "rather than keeping an exemption nothing needs."
+        )
+
+
+def url_resolution_rows() -> list[tuple[str, str]]:
+    """Return the recorded URL cases as ``(verdict, line)``."""
+    text = URL_RESOLUTION_CASES.read_text(encoding="utf-8")
+    rows: list[tuple[str, str]] = []
+    for number, line in enumerate(text.split("\n"), start=1):
+        if not line.strip():
+            continue
+        fields = line.split("\t")
+        if len(fields) != 2:
+            raise AssertionError(
+                f"{URL_RESOLUTION_CASES.name}:{number} holds {len(fields)} "
+                "field(s); every row is a verdict and a line"
+            )
+        verdict, sample = fields
+        if verdict not in ("resolves", "refuses"):
+            raise AssertionError(
+                f"{URL_RESOLUTION_CASES.name}:{number} names the verdict "
+                f"{verdict!r}; it is 'resolves' or 'refuses'"
+            )
+        rows.append((verdict, sample))
+    if not rows:
+        raise AssertionError(
+            f"{URL_RESOLUTION_CASES.name} holds no row, so this rule is "
+            "measured by nothing"
+        )
+    return rows
+
+
+def test_the_url_cases_hold_both_verdicts() -> None:
+    """A file that has lost one side passes every assertion below it.
+
+    The refusals are what the narrowing is for. The acceptances are what keeps
+    the narrowing honest: a rule that stopped accepting anything would pass a
+    test that only proved refusals, and it would mean every genuine citation in
+    this repository had to be reworded instead.
+    """
+    rows = url_resolution_rows()
+    verdicts = {verdict for verdict, _ in rows}
+    assert verdicts == {"resolves", "refuses"}, verdicts
+
+
+def test_each_url_case_gets_the_verdict_it_records(tmp_path: Path) -> None:
+    """A URL resolves the reference it points at, and no other."""
+    sample = tmp_path / "line.py"
+    wrong: list[str] = []
+    for verdict, line in url_resolution_rows():
+        sample.write_text(line + "\n", encoding="utf-8")
+        reported = bool(references_in(sample, tmp_path))
+        if reported != (verdict == "refuses"):
+            wrong.append(f"{verdict}: {line}")
+    assert not wrong, (
+        "these lines no longer get the verdict recorded beside them:\n"
+        + "\n".join(wrong)
+    )
 
 
 def test_no_hook_or_suite_cites_the_review_run_that_wrote_it() -> None:
     """No file in scope points at a round, a number or a hash instead of a rule."""
     found: list[str] = []
     for path in scoped_paths():
-        found.extend(references_in(path, REPO_ROOT))
+        relative = path.relative_to(REPO_ROOT).as_posix()
+        found.extend(references_in(path, REPO_ROOT, exempt_texts_for(relative)))
     assert not found, (
         "these references resolve only inside a review conversation this "
         "repository does not hold; say what the code does or what the test "
@@ -388,7 +638,8 @@ def test_no_hook_or_suite_names_the_review_run_in_an_identifier() -> None:
     """
     found: list[str] = []
     for path in scoped_paths():
-        found.extend(names_in(path, REPO_ROOT))
+        relative = path.relative_to(REPO_ROOT).as_posix()
+        found.extend(names_in(path, REPO_ROOT, exempt_names_for(relative)))
     assert not found, (
         "these identifiers name a review conversation this repository does "
         "not hold; name the behaviour the value stands for instead:\n"
@@ -554,8 +805,21 @@ def test_the_scope_failure_says_how_much_it_did_collect() -> None:
     assert "collected nothing" not in message
 
 
-@pytest.mark.parametrize("name,reason", UNSWEPT_FILES)
-def test_each_unswept_entry_names_a_path_and_a_reason(name: str, reason: str) -> None:
+@pytest.mark.parametrize(
+    "name,occurrence,reason", list(exempt_texts()) + list(exempt_names())
+)
+def test_each_exemption_names_a_path_an_occurrence_and_a_reason(
+    name: str, occurrence: str, reason: str
+) -> None:
     """An entry with an empty reason is an exemption nobody has to defend."""
     assert name.endswith(".py")
+    assert occurrence and occurrence.strip() == occurrence
     assert len(reason.split()) >= 2
+
+
+def test_no_two_exemptions_are_the_same_entry() -> None:
+    """A duplicate entry is one nobody would notice going stale."""
+    texts = [(name, text) for name, text, _ in exempt_texts()]
+    names = [(name, identifier) for name, identifier, _ in exempt_names()]
+    assert len(set(texts)) == len(texts), texts
+    assert len(set(names)) == len(names), names

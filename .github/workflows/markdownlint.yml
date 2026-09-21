@@ -139,6 +139,27 @@ jobs:
         continue-on-error: true
         run: python .github/scripts/check-session-structure.py
 
+      # The placeholder hook runs on every commit through pre-commit, and
+      # until this step its own unit tests ran nowhere: a change to its
+      # CommonMark reading could pass every required check while breaking the
+      # parsing the hook depends on. Its two sibling suites already run here
+      # and this one did not, which is the shape of gap that survives by
+      # looking like the others.
+      - name: Check placeholder hook unit tests
+        id: test-placeholders
+        continue-on-error: true
+        run: pytest tests/test_check_prohibited_placeholders.py -v
+
+      # A repository-wide rule enforced only by a test nothing runs is a rule
+      # in name: a later comment could point at a review round, an issue
+      # number or a bare commit hash and every required check would stay
+      # green. This suite is the only enforcement the self-containment scan
+      # has, so it is the one that most needed wiring.
+      - name: Check references resolve inside this repository
+        id: test-self-contained
+        continue-on-error: true
+        run: pytest tests/test_self_contained_references.py -v
+
       - name: Check validation results
         if: >-
           steps.lint-outer.outcome == 'failure' ||
@@ -150,7 +171,9 @@ jobs:
           steps.lint-readability.outcome == 'failure' ||
           steps.test-toolchain.outcome == 'failure' ||
           steps.test-structure.outcome == 'failure' ||
-          steps.lint-structure.outcome == 'failure'
+          steps.lint-structure.outcome == 'failure' ||
+          steps.test-placeholders.outcome == 'failure' ||
+          steps.test-self-contained.outcome == 'failure'
         run: |
           echo "::error::Markdown and toolchain checks failed. Check the logs above for details."
           exit 1

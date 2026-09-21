@@ -1017,23 +1017,32 @@ class DocumentScan:
         return "\n".join(self.marker_lines)
 
 
-def strip_html_comments(line: str, is_in_html_comment: bool) -> tuple[str, bool]:
+def strip_html_comments(
+    line: str, is_in_html_comment: bool
+) -> tuple[str, bool, bool]:
     """Remove HTML comment spans from a Markdown line.
 
-    An HTML comment prints as nothing, and it spans lines: CommonMark ends an
-    HTML block opened by ``<!--`` only on the line that carries ``-->``. The
-    caller threads ``is_in_html_comment`` from one line to the next, which is
-    why this takes it and returns it. Kept identical to the parser in
+    An HTML comment prints as nothing, and one kind of it spans lines:
+    CommonMark ends an HTML block opened by ``<!--`` only on the line that
+    carries ``-->``. The caller threads ``is_in_html_comment`` from one line to
+    the next, which is why this takes it and returns it.
+
+    The third value says whether the comment left open below this line *opened
+    on* it. The caller needs that to tell CommonMark's two comments apart, and
+    the second value cannot answer it: a line that closes one comment and opens
+    another comes in open and goes out open, while the answer changes. Kept
+    identical to the parser in
     ``.github/scripts/check-prohibited-placeholders.py``.
     """
     uncommented_parts: list[str] = []
     index = 0
+    opened_here = False
 
     while index < len(line):
         if is_in_html_comment:
             comment_end = line.find("-->", index)
             if comment_end == -1:
-                return "".join(uncommented_parts), True
+                return "".join(uncommented_parts), True, opened_here
             index = comment_end + len("-->")
             is_in_html_comment = False
             continue
@@ -1047,10 +1056,11 @@ def strip_html_comments(line: str, is_in_html_comment: bool) -> tuple[str, bool]
         comment_end = line.find("-->", comment_start + len("<!--"))
         if comment_end == -1:
             is_in_html_comment = True
+            opened_here = True
             break
         index = comment_end + len("-->")
 
-    return "".join(uncommented_parts), is_in_html_comment
+    return "".join(uncommented_parts), is_in_html_comment, opened_here
 
 
 def normalize_line_endings(text: str) -> str:
@@ -3735,6 +3745,20 @@ def scan_document(text: str) -> DocumentScan:
     active_fence: ActiveFence | None = None
     list_contexts: list[ListContext] = []
     is_in_html_comment = False
+    # Where the comment that is open below the current line began. CommonMark
+    # has two comments and only one may cross a block boundary: a ``<!--`` at
+    # the start of a line's block content is HTML block condition 2 and runs to
+    # the line carrying ``-->`` whatever stands between, while a ``<!--``
+    # written part way along a paragraph line is inline raw HTML and cannot
+    # leave the paragraph it opened in. Measured on GitHub's own renderer and
+    # on markdown-it 14.3.0: ``text <!-- a`` over ``## Goal`` paints the
+    # heading, and reading every ``<!--`` as the block kind reported that
+    # heading and six more below it missing from a session that carries all
+    # seven. ``check-readability.py`` states the same rule for a whole span in
+    # ``comment_span_is_one_block``; this is that rule for a walk that reads
+    # one line at a time, and the sibling hook carries it in this same form.
+    comment_is_inline = False
+    comment_containment_path: tuple[Container, ...] = ()
     html_block: ActiveHtmlBlock | None = None
     paragraph_open = False
     previous_path: tuple[Container, ...] = ()
@@ -3829,6 +3853,32 @@ def scan_document(text: str) -> DocumentScan:
             paragraph_open,
             header_above,
         )
+        if is_in_html_comment and comment_is_inline and (
+            block_line.containment_path != comment_containment_path
+            or bool(block_line.opened)
+            or block_starts
+            or parse_opening_fence(block_content) is not None
+            or not opens_a_paragraph(block_content, True, header_above)
+        ):
+            # The paragraph holding the opener has ended, so the ``<!--`` was
+            # never a comment. The five tests are the five ways a paragraph
+            # ends under it: the line has left the container the opener sat in,
+            # a container opened on this line, an HTML block opened, a fence
+            # opened, or the line is one ``opens_a_paragraph`` refuses -- a
+            # blank line, a heading, a thematic break, a Setext underline, a
+            # table's delimiter row.
+            #
+            # ``paragraph_open`` is *not* asked, and the reason is worth the
+            # line: it is set ``False`` on every line of an open HTML block,
+            # and an open comment is one of the conditions that makes a line
+            # one. Reading it here made the comment end the paragraph and the
+            # ended paragraph end the comment, on a document both renderers
+            # keep inside one paragraph.
+            #
+            # ``was_in_html_comment`` is cleared with it, because the stripping
+            # below is handed that variable rather than this one.
+            is_in_html_comment = False
+            was_in_html_comment = False
         html_block, line_html_block = html_block_state(
             block_content,
             block_line.containment_path,
@@ -3867,10 +3917,17 @@ def scan_document(text: str) -> DocumentScan:
             # it stands or drops altogether. A comment-shaped run there is text
             # and opens no comment, so the line is read whole.
             visible_line = raw_line
+            comment_opened_here = False
         else:
-            visible_line, is_in_html_comment = strip_html_comments(
-                raw_line, was_in_html_comment
+            visible_line, is_in_html_comment, comment_opened_here = (
+                strip_html_comments(raw_line, was_in_html_comment)
             )
+        if comment_opened_here:
+            # A line CommonMark reads as raw HTML holds no inline content, so a
+            # comment opening on one is the block kind. Everywhere else the
+            # opener sits inside a paragraph and the comment is inline.
+            comment_is_inline = line_html_block is None
+            comment_containment_path = block_line.containment_path
         if raw_text_run_holds_text(raw_text):
             # A raw-text run is open below this line, so no comment can be open
             # inside it. Said here as well as above because a run opens part way
@@ -4311,7 +4368,7 @@ def renders_as_content(body: str) -> bool:
     index = 0
     while index < len(lines):
         line = lines[index]
-        visible, is_in_html_comment = strip_html_comments(line, is_in_html_comment)
+        visible, is_in_html_comment, _opened = strip_html_comments(line, is_in_html_comment)
         is_blank = not visible.strip(ASCII_HORIZONTAL_WHITESPACE)
         if is_blank or BARE_LIST_MARKER_PATTERN.match(visible):
             index += 1
@@ -4319,7 +4376,7 @@ def renders_as_content(body: str) -> bool:
         span = reference_definition_span(lines, index, starts)
         if span:
             for offset in range(1, span):
-                _, is_in_html_comment = strip_html_comments(
+                _, is_in_html_comment, _opened = strip_html_comments(
                     lines[index + offset], is_in_html_comment
                 )
             index += span

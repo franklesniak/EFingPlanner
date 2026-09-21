@@ -4847,3 +4847,92 @@ def test_a_marker_in_a_description_whose_target_is_too_deep_is_read_here_too(
     for depth in (33, 40):
         scan = structure.scan_document(document(depth))
         assert structure.NO_SOURCE_CHECK_PATTERN.search(scan.marker_text)
+
+
+# The inline HTML comment, and the block one. CommonMark has two, and only the
+# block kind crosses a block boundary. The sibling placeholder hook carries the
+# same rule, in the same form, and its suite measures the same shapes against
+# GitHub's own renderer and against markdown-it 14.3.0.
+
+
+def test_an_unterminated_inline_comment_hides_no_heading_below_its_paragraph() -> None:
+    """A ``<!--`` part way along a paragraph line is inline raw HTML.
+
+    Inline raw HTML cannot span two blocks, so an unterminated opener is not a
+    comment at all: both renderers escape it and paint the headings below it.
+    Reading it as the block kind blanked them, and a session carrying all seven
+    mandatory sections was reported as missing every one from the opener
+    downwards.
+    """
+    document = build_session()
+    assert not structure.check_text(document, "s.md", "07_a_session.md")
+    for interrupted in (
+        document.replace("\n## Goal\n", "\nA line <!-- an opener\n\n## Goal\n", 1),
+        document.replace("\n## Goal\n", "\nA line <!-- an opener\n## Goal\n", 1),
+        document.replace("\n## Goal\n", "\n> A line <!-- an opener\n\n## Goal\n", 1),
+    ):
+        assert not structure.check_text(interrupted, "s.md", "07_a_session.md"), interrupted
+
+
+def test_an_unterminated_block_comment_still_hides_what_follows_it() -> None:
+    """The block kind is untouched, and its silence is the measured answer.
+
+    On GitHub an unterminated block comment takes the rest of the page with
+    it: the rendered output carries the unclosed delimiter and the sanitiser
+    drops everything after it. A session whose sections are all inside one is
+    a session with no sections on the page, and saying so is correct.
+    """
+    document = build_session()
+    hidden = document.replace("\n## Goal\n", "\n<!-- an opener\n\n## Goal\n", 1)
+    assert structure.check_text(hidden, "s.md", "07_a_session.md")
+
+
+def test_an_inline_comment_still_spans_the_lines_of_its_own_paragraph() -> None:
+    """The rule ends the comment at the paragraph, not at the line."""
+    document = build_session()
+    wrapped = document.replace(
+        "\n## Goal\n",
+        "\nA line <!-- an opener\nstill inside it --> and out again\n\n## Goal\n",
+        1,
+    )
+    assert not structure.check_text(wrapped, "s.md", "07_a_session.md")
+    swallowed = document.replace(
+        "\n## Goal\n", "\nA line <!-- an opener\nstill inside it\n## Goal\n", 1
+    )
+    # ``## Goal`` ends the paragraph, so the heading is outside the comment and
+    # the document is well-formed. The line above it is not, and nothing here
+    # claims otherwise: this hook reads headings.
+    assert not structure.check_text(swallowed, "s.md", "07_a_session.md")
+
+
+def test_the_two_hooks_walk_a_comment_the_same_way() -> None:
+    """One rule in two files, and this is what keeps them from drifting.
+
+    ``strip_html_comments`` is copied between the hooks rather than shared, so
+    its third value -- whether the comment left open below a line opened on
+    that line -- has to be present in both. A signature that differs is the two
+    walks answering one question two ways.
+    """
+    placeholder_path = (
+        Path(__file__).resolve().parents[1]
+        / ".github"
+        / "scripts"
+        / "check-prohibited-placeholders.py"
+    )
+    spec = importlib.util.spec_from_file_location(
+        "check_prohibited_placeholders_for_comparison", placeholder_path
+    )
+    assert spec is not None and spec.loader is not None
+    sibling = importlib.util.module_from_spec(spec)
+    sys.modules[spec.name] = sibling
+    spec.loader.exec_module(sibling)
+
+    for line, state in (
+        ("text <!-- a", False),
+        ("<!-- a", False),
+        ("a --> b <!-- c", True),
+        ("no comment here", False),
+    ):
+        assert structure.strip_html_comments(line, state) == sibling.strip_html_comments(
+            line, state
+        ), line

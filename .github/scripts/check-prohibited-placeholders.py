@@ -534,6 +534,13 @@ def is_changelog_file(path: Path) -> bool:
 # reference and design material (docs/spec/ is excluded by the pre-commit `exclude`
 # pattern); framework/ and destinations/ hold the built curriculum.
 SCAN_TARGET_ROOTS = ("docs", "framework", "destinations")
+#: What a run given no path leaves out, kept in step with the ``exclude:`` key
+#: on this hook in ``.pre-commit-config.yaml``. The archived design record uses
+#: the literal token for open trip parameters a family decides, and the gate
+#: has never read it. A default walk that scanned it would report dozens of
+#: failures the gate does not consider failures, which is the opposite mistake
+#: from the silence it replaces and just as misleading.
+DEFAULT_SCAN_EXCLUDES = ("docs/spec/",)
 
 
 def is_scan_target(relative_path: Path) -> bool:
@@ -567,16 +574,27 @@ def resolve_candidate_path(path_argument: str | Path, root: Path) -> tuple[Path,
     return resolved_candidate, relative_path.as_posix()
 
 
-def strip_html_comments(line: str, is_in_html_comment: bool) -> tuple[str, bool]:
-    """Remove HTML comment spans from a Markdown line."""
+def strip_html_comments(
+    line: str, is_in_html_comment: bool
+) -> tuple[str, bool, bool]:
+    """Remove HTML comment spans from a Markdown line.
+
+    The third value says whether the comment left open below this line
+    *opened on* it. The caller needs that to tell CommonMark's two comments
+    apart, and the second value cannot answer it: a line that closes one
+    comment and opens another comes in open and goes out open, while the
+    answer changes. The sibling hook walks a line the same way and is kept
+    in step with this.
+    """
     uncommented_parts: list[str] = []
     index = 0
+    opened_here = False
 
     while index < len(line):
         if is_in_html_comment:
             comment_end = line.find("-->", index)
             if comment_end == -1:
-                return "".join(uncommented_parts), True
+                return "".join(uncommented_parts), True, opened_here
             index = comment_end + len("-->")
             is_in_html_comment = False
             continue
@@ -590,10 +608,11 @@ def strip_html_comments(line: str, is_in_html_comment: bool) -> tuple[str, bool]
         comment_end = line.find("-->", comment_start + len("<!--"))
         if comment_end == -1:
             is_in_html_comment = True
+            opened_here = True
             break
         index = comment_end + len("-->")
 
-    return "".join(uncommented_parts), is_in_html_comment
+    return "".join(uncommented_parts), is_in_html_comment, opened_here
 
 
 def normalize_line_endings(text: str) -> str:
@@ -1799,6 +1818,21 @@ def find_violations_in_text(text: str, display_path: str) -> list[Violation]:
     """
     violations: list[Violation] = []
     is_in_html_comment = False
+    # Where the comment that is open below the current line began. CommonMark
+    # has two comments and only one of them may cross a block boundary: a
+    # ``<!--`` at the start of a line's block content is HTML block condition
+    # 2 and runs to the line carrying ``-->`` whatever stands between, while a
+    # ``<!--`` written part way along a paragraph line is inline raw HTML and
+    # cannot leave the paragraph it opened in. Both renderers agree: measured
+    # on GitHub's own and on markdown-it 14.3.0, ``text <!-- a`` over a blank
+    # line over ``TODO: x`` paints two paragraphs with the opener *escaped*,
+    # so the placeholder is text a reader sees. Reading every ``<!--`` as the
+    # block kind hid nine such documents out of seventeen measured.
+    # ``check-readability.py`` states the same rule for a whole span in
+    # ``comment_span_is_one_block``; this is that rule for a walk that reads
+    # one line at a time.
+    comment_is_inline = False
+    comment_containment_path: tuple[Container, ...] = ()
     active_fence: ActiveFence | None = None
     list_contexts: list[ListContext] = []
     html_block: ActiveHtmlBlock | None = None
@@ -1869,6 +1903,38 @@ def find_violations_in_text(text: str, display_path: str) -> list[Violation]:
             paragraph_open,
             header_above,
         )
+        if is_in_html_comment and comment_is_inline and (
+            block_line.containment_path != comment_containment_path
+            or bool(block_line.opened)
+            or block_starts
+            or parse_opening_fence(block_content) is not None
+            or not opens_a_paragraph(block_content, True, header_above)
+        ):
+            # The paragraph holding the opener has ended, so the ``<!--`` was
+            # never a comment. The five tests are the five ways a paragraph
+            # ends under it: the line has left the container the opener sat
+            # in, a container opened on this line, an HTML block opened, a
+            # fence opened, or the line is one ``opens_a_paragraph`` refuses --
+            # a blank line, a heading, a thematic break, a Setext underline, a
+            # table's delimiter row.
+            #
+            # ``paragraph_open`` is *not* asked, and the reason is worth the
+            # line: it is set ``False`` on every line of an open HTML block,
+            # and an open comment is one of the conditions that makes a line
+            # one. Reading it here made the comment end the paragraph and the
+            # ended paragraph end the comment. Measured on the document
+            # ``Words here <!-- a note`` over ``<xmp>`` over ``TBD`` over
+            # ``</xmp>`` over ``end of the note -->``: GitHub paints
+            # ``<p>Words here </p>`` and nothing else, so the ``TBD`` is
+            # inside the comment, and asking ``paragraph_open`` reported it.
+            # ``True`` is passed instead, because a comment that opened inline
+            # had a paragraph to open in.
+            #
+            # ``was_in_html_comment`` is cleared with it: it was read out of
+            # this variable a few lines above and would otherwise carry the
+            # stale answer into ``in_html_block``.
+            is_in_html_comment = False
+            was_in_html_comment = False
         html_block, line_html_block = html_block_state(
             block_content,
             block_line.containment_path,
@@ -1908,17 +1974,26 @@ def find_violations_in_text(text: str, display_path: str) -> list[Violation]:
             # displays as it stands. A comment-shaped run there opens no
             # comment and hides no placeholder, so the line is read whole.
             commentless_line = raw_line
+            comment_opened_here = False
         elif run_released_the_line:
             # The run held the head of the line and released the tail, so only
             # the tail is read for comments -- and no comment can be open
             # coming in, because a run opens only at the start of a line.
             split = len(raw_line) - len(block_content) + raw_text_end
-            tail, is_in_html_comment = strip_html_comments(raw_line[split:], False)
+            tail, is_in_html_comment, comment_opened_here = strip_html_comments(
+                raw_line[split:], False
+            )
             commentless_line = raw_line[:split] + tail
         else:
-            commentless_line, is_in_html_comment = strip_html_comments(
-                raw_line, is_in_html_comment
+            commentless_line, is_in_html_comment, comment_opened_here = (
+                strip_html_comments(raw_line, is_in_html_comment)
             )
+        if comment_opened_here:
+            # A line CommonMark reads as raw HTML holds no inline content, so a
+            # comment opening on one is the block kind. Everywhere else the
+            # opener sits inside a paragraph and the comment is inline.
+            comment_is_inline = line_html_block is None
+            comment_containment_path = block_line.containment_path
         if raw_text_run_holds_text(raw_text):
             # A raw-text run is open below this line, so no comment can be open
             # inside it. Said here as well as above because a run opens part way
@@ -2013,10 +2088,38 @@ def scan_files(path_arguments: Iterable[str | Path], root: Path = REPO_ROOT) -> 
     return violations
 
 
+def default_targets(root: Path) -> list[Path]:
+    """Return every Markdown file under the scan roots, for a run given none.
+
+    Both sibling hooks walk a default set when they are handed no path, and
+    this one did not: it iterated an empty argument list, printed nothing and
+    exited zero, so a maintainer who typed the bare command was told the
+    repository was clean by a run that had opened no file. The two roots that
+    hold no Markdown at all are not an error -- ``docs`` may be the only one
+    populated in a downstream adoption -- but all three being empty is, and
+    the caller says so rather than reporting the clean result of reading
+    nothing.
+    """
+    found: list[Path] = []
+    for name in SCAN_TARGET_ROOTS:
+        directory = root / name
+        if not directory.is_dir():
+            continue
+        for path in sorted(directory.rglob("*.md")):
+            relative = path.relative_to(root).as_posix()
+            if any(relative.startswith(prefix) for prefix in DEFAULT_SCAN_EXCLUDES):
+                continue
+            found.append(path)
+    return found
+
+
 def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
     """Parse command-line arguments."""
     parser = argparse.ArgumentParser(
-        description="Check docs Markdown for prohibited placeholder markers."
+        description=(
+            "Check docs Markdown for prohibited placeholder markers. "
+            "With no paths, checks every Markdown file under the scan roots."
+        )
     )
     parser.add_argument("paths", nargs="*", help="Markdown files passed by pre-commit.")
     return parser.parse_args(argv)
@@ -2026,14 +2129,36 @@ def main(argv: Sequence[str] | None = None, root: Path = REPO_ROOT) -> int:
     """Run the placeholder check."""
     args = parse_args(argv)
 
+    targets: Sequence[str | Path] = args.paths
+    walked = not args.paths
+    if walked:
+        targets = default_targets(root)
+        if not targets:
+            print(
+                "no Markdown file was found under "
+                + ", ".join(SCAN_TARGET_ROOTS)
+                + ", so this run checked nothing. A path that is named and "
+                "then yields neither a target nor a refusal is a path this "
+                "run passed over in silence. Check the working directory, or "
+                "check SCAN_TARGET_ROOTS if this was the default scan.",
+                file=sys.stderr,
+            )
+            return 1
+
     try:
-        violations = scan_files(args.paths, root=root)
+        violations = scan_files(targets, root=root)
     except FileReadError as error:
         print(error, file=sys.stderr)
         return 1
 
     for violation in violations:
         print(violation.format_message())
+
+    if walked and not violations:
+        # The count is the difference between "clean" and "read nothing". The
+        # sibling hooks print theirs; a silent pass is what let this one report
+        # success on an empty set for as long as it did.
+        print(f"Placeholders: {len(targets)} file(s) checked, none found.")
 
     return 1 if violations else 0
 

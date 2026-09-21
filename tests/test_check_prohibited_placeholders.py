@@ -1687,3 +1687,133 @@ def test_the_peel_defaults_to_the_answer_it_gave_with_no_paragraph_state() -> No
     held = _placeholder_hook.normalize_for_fence_opening("2. x", contexts, True, ())
     assert held.content == "2. x"
     assert held.opened == ()
+
+
+# The inline HTML comment, and the block one. CommonMark has two, and only the
+# block kind crosses a block boundary. Every expectation below was measured
+# against GitHub's own renderer and against markdown-it 14.3.0 read the way a
+# browser reads it, and the two agree on all of them.
+
+
+def _scan(tmp_path: Path, text: str) -> list[ViolationLike]:
+    """Scan one document under a root the hook will accept."""
+    hook = cast(PlaceholderHookModule, _placeholder_hook)
+    directory = tmp_path / "framework"
+    directory.mkdir(exist_ok=True)
+    document = directory / "doc.md"
+    document.write_text(text, encoding="utf-8")
+    return hook.scan_files([document], root=tmp_path)
+
+
+def test_an_unterminated_inline_comment_hides_nothing_below_its_paragraph(
+    tmp_path: Path,
+) -> None:
+    """A ``<!--`` part way along a paragraph line is inline raw HTML.
+
+    Inline raw HTML cannot span two blocks, so an unterminated opener is not a
+    comment at all: both renderers escape it and paint every word after it.
+    Reading it as the block kind hid the placeholder below.
+    """
+    assert _scan(tmp_path, "text <!-- a\n\nTBD: visible\n")
+    assert _scan(tmp_path, "> text <!-- a\n\nTBD: visible\n")
+    assert _scan(tmp_path, "- text <!-- a\n\nTBD: visible\n")
+
+
+def test_a_paragraph_ends_at_a_block_start_as_well_as_at_a_blank_line(
+    tmp_path: Path,
+) -> None:
+    """Four ways a paragraph ends without a blank line, each measured."""
+    assert _scan(tmp_path, "text <!-- a\n# H\nTBD: visible\n")
+    assert _scan(tmp_path, "text <!-- a\n***\nTBD: visible\n")
+    assert _scan(tmp_path, "text <!-- a\n- item\nTBD: visible\n")
+    assert _scan(tmp_path, "text <!-- a\n> quoted\nTBD: visible\n")
+
+
+def test_an_inline_comment_still_spans_the_lines_of_its_own_paragraph(
+    tmp_path: Path,
+) -> None:
+    """The rule ends the comment at the paragraph, not at the line.
+
+    Without this the fix would be the opposite defect: an inline comment that
+    genuinely wraps is one comment, and the words inside it are on nobody's
+    page.
+    """
+    assert not _scan(tmp_path, "text <!-- a\nTBD: hidden\nb --> after\n")
+    assert _scan(tmp_path, "text <!-- a\nb --> TBD: visible\n")
+
+
+def test_a_block_comment_still_runs_to_its_closer_or_its_container(
+    tmp_path: Path,
+) -> None:
+    """The block kind is untouched, including where a container ends it.
+
+    On GitHub an unterminated block comment takes the rest of the page with
+    it, container or no container: the rendered output carries the unclosed
+    delimiter and the sanitiser drops everything after it. So the hook stays
+    silent on all three, and that silence is the measured answer rather than
+    the old defect surviving.
+    """
+    assert not _scan(tmp_path, "<!-- a\n\nTBD: hidden\n")
+    assert not _scan(tmp_path, "> <!-- a\n\nTBD: hidden\n")
+    assert not _scan(tmp_path, "- <!-- a\n\nTBD: hidden\n")
+    assert not _scan(tmp_path, "> <!-- a\n> TBD: hidden\n")
+
+
+def test_a_closed_comment_hides_only_what_is_inside_it(tmp_path: Path) -> None:
+    """The control: the rule must not stop comments working."""
+    assert not _scan(tmp_path, "text <!-- TBD: hidden --> after\n")
+    assert _scan(tmp_path, "text <!-- a --> TBD: visible\n")
+    assert _scan(tmp_path, "> <!-- a -->\n\nTBD: visible\n")
+
+
+def test_a_run_given_no_path_walks_the_scan_roots(tmp_path: Path) -> None:
+    """A bare run reads the repository rather than reading nothing.
+
+    It exited zero having opened no file, which is this repository's most
+    frequently recorded defect: a check reporting success on something it
+    never examined. The count is printed for the same reason -- silence and a
+    clean result looked identical.
+    """
+    hook = cast(Any, _placeholder_hook)
+    (tmp_path / "framework").mkdir()
+    (tmp_path / "framework" / "clean.md").write_text("# T\n\nWords.\n", encoding="utf-8")
+    assert hook.main([], root=tmp_path) == 0
+    (tmp_path / "framework" / "dirty.md").write_text("# T\n\nTBD: here\n", encoding="utf-8")
+    assert hook.main([], root=tmp_path) == 1
+
+
+def test_a_run_given_no_path_and_finding_no_file_refuses(tmp_path: Path) -> None:
+    """An empty corpus is a refusal, not a clean result."""
+    hook = cast(Any, _placeholder_hook)
+    assert hook.main([], root=tmp_path) == 1
+
+
+def test_the_default_walk_leaves_out_what_the_hook_config_leaves_out(
+    tmp_path: Path,
+) -> None:
+    """The bare run and the configured gate read the same set.
+
+    The archived design record uses the literal token on purpose and the
+    pre-commit hook excludes it. A default walk that read it would fail on
+    something the gate has never called a failure.
+    """
+    hook = cast(Any, _placeholder_hook)
+    spec_dir = tmp_path / "docs" / "spec"
+    spec_dir.mkdir(parents=True)
+    (spec_dir / "specification.md").write_text("# S\n\nTBD\n", encoding="utf-8")
+    (tmp_path / "framework").mkdir()
+    (tmp_path / "framework" / "clean.md").write_text("# T\n\nWords.\n", encoding="utf-8")
+    assert hook.main([], root=tmp_path) == 0
+    # named explicitly, the same file is still read: the exclusion is the
+    # default walk's, not a rule about the file.
+    assert hook.scan_files([spec_dir / "specification.md"], root=tmp_path)
+
+
+def test_the_default_excludes_match_the_pre_commit_configuration() -> None:
+    """The two lists are kept in step, and this says so when they drift."""
+    hook = cast(Any, _placeholder_hook)
+    config = (
+        Path(__file__).resolve().parents[1] / ".pre-commit-config.yaml"
+    ).read_text(encoding="utf-8")
+    for prefix in hook.DEFAULT_SCAN_EXCLUDES:
+        assert "exclude: ^" + prefix in config, prefix

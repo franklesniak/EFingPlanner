@@ -1,0 +1,10 @@
+refuses	# issue 27 is private; see https://example.com/releases/27
+refuses	# reported at 4011993843, filed as https://example.com/pull/4011993843x
+refuses	# broken at 7e4463f, see https://example.com/releases/7e4463f
+refuses	# settled in round 12, see https://github.com/o/r/pull/12
+refuses	# deferred from PR #22, see https://example.com/notes/22
+resolves	# issue 27 https://github.com/o/r/issues/27
+resolves	# deferred from PR #22 https://github.com/o/r/pull/22
+resolves	# reported at 4011993843 https://github.com/o/r/pull/1#discussion_r4011993843
+resolves	# reported at 4011993843 https://api.github.com/repos/o/r/pulls/comments/4011993843
+resolves	# broken at 7e4463f https://github.com/o/r/commit/7e4463f0a1b2c3d4e5f6
