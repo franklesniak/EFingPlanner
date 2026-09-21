@@ -2613,7 +2613,17 @@ copy of every entry, in exactly one section — and the empty heading this item 
 forbid is the *renamed* one left behind with its bullets moved out, never the fresh
 `## Unreleased` that the six-section invariant requires.
 
-Batch 1 must land these entries:
+Batch 1 must land these entries, and one rule governs every one of them. **No entry
+you write into this file names the destination -- not in its prose, and not inside a
+filename or a path it quotes.** Every entry you add writes "the destination pack"
+instead. **A filename is a name too.** A filename that carries a place, lifted out of
+the archived design record, puts that place into `framework/` exactly as a sentence
+would; the framework leak self-check below reads the hit it makes as a real leak; and
+whoever adds a second destination then meets the first one's name in a file their own
+pack never touches. Where an entry below turns on such a name, **say what the record
+did and leave the spelling out of it** -- the departure is what this file owes its
+reader, and the old spelling stays recoverable from the record the entry already
+cites.
 
 - **Added** — the Phases 0–2 slice: five new sessions, the destination-pack insert
   contract and its first four slots, the Batch 1 templates, the framework docs set, the
@@ -2702,11 +2712,12 @@ Batch 1 must land these entries:
   and organizing the child's own notes. Summarizing notes and organizing a comparison
   are instances of the third. Drafting the child's recommendation is not a permitted
   job, because the recommendation is the child's own work."*; and (h)
-  *"Destination-pack filenames are destination-neutral. The archived design record named
-  one reference file `adult_logistics_japan.md`, in its tree inventory and in its own
-  copy of the insert/reference contract. That contract is copied whole into each new
-  pack, so the slot is registered as `adult_logistics.md`. The file exists in no pack
-  yet, so nothing was renamed."*
+  *"Destination-pack filenames are destination-neutral. In the archived design record
+  one reference file carried the destination inside its own filename, in both that
+  record's tree inventory and its copy of the insert/reference contract, and no other
+  file of the pack did. That contract is copied whole into each new pack, so the slot
+  is registered as `adult_logistics.md`. The file exists in no pack yet, so nothing
+  was renamed."*
 - **Deferred to a later batch** — two entries. *"The binder guide names the print index
   and the Final Binder Assembly session but does not link to them, because neither file
   exists yet. Add both relative links when `framework/print_index.md` and Session 50
@@ -2714,8 +2725,7 @@ Batch 1 must land these entries:
   on the destination-leak exemption list until Batch 2 converts or verifies them. One of
   them still carries the destination's facts and links into the pack. The framework
   README's three-layer claim carries the matching exception until that list is
-  cleared."* Write the second entry with no destination name in it, the way the rest of
-  your entries are written.
+  cleared."*
 - **"What is still owed to a human" — rewrite the Batch-1 gate sentence in place.** That
   section's second bullet contains the sentence *"Neither check can start yet, because
   Batch 1 creates those pages and sessions."* **It is not the last sentence of the
@@ -4824,9 +4834,11 @@ two files are:
    bounded exception now written into F11's first replacement. **Do not edit that line.**
    It is not in this batch's change set and it is not a leak.
 
-Those are the only two files **these two greps** may name, and **your own Batch 1
-changelog entries must not add a third** — write "the destination pack", never the
-destination's name.
+Those are the only two files **these two greps** may name, and **no Batch 1 changelog
+entry may add a hit of its own** -- not a third file, and not a second hit inside
+`framework/CHANGELOG.md`. What is excepted there is that one `0.1.0` line and not
+the file around it, so a quoted filename holding one of the five names fails this
+check exactly as a third file would.
 
 **Two files is this check's expectation, not the layer's whole exception list.** The
 framework leak rule has three bounded exceptions, and the third -- the five
