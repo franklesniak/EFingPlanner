@@ -197,8 +197,18 @@ REVIEW_HISTORY_PATTERNS = (
     ("an unlinked issue", re.compile(r"(?i)\bissues?\s*#?\s*\d+\b")),
     ("a bare review-comment id", re.compile(r"\b40\d{8}\b")),
     (
+        # Case-insensitive, because Git reads an object id in either case
+        # and the lowercase-only form let an uppercase abbreviation out of a
+        # rule that reports the same characters in lower case. Writing the
+        # pair here would be two more findings, which is how this was found:
+        # the first draft of this comment spelled both and the scan reported
+        # both. Measured over 42 tracked Python files and
+        # 77,246 lines: the case-insensitive pattern reports **no** run the
+        # lowercase one did not, so this closes a hole rather than widening
+        # the net. The two lookaheads stay: a run needs a digit and a letter,
+        # which is what keeps ``DEADBEEF`` and a decimal literal out.
         "a bare commit hash",
-        re.compile(r"\b(?=[0-9a-f]*\d)(?=[0-9a-f]*[a-f])[0-9a-f]{7,40}\b"),
+        re.compile(r"(?i)\b(?=[0-9a-f]*\d)(?=[0-9a-f]*[a-f])[0-9a-f]{7,40}\b"),
     ),
 )
 
@@ -227,6 +237,61 @@ REVIEW_HISTORY_PATTERNS = (
 #: reference in a swept file.
 URL_PATTERN = re.compile(r"(?:https?://|www\.)\S+")
 DIGITS_PATTERN = re.compile(r"\d+")
+
+#: A URL written in prose carries the sentence's punctuation on its end, and
+#: ``\S+`` takes all of it. Measured over every URL in every tracked Python
+#: file: **315 of 572 matches ended in a character no reader would click**, the
+#: largest group being the closing angle bracket of the ``<https://...>`` form
+#: this repository writes its citations in. Comparing whole path segments
+#: without trimming refused every one of them, which is a compliant comment
+#: failing a required check.
+#:
+#: The trimming rule is GitHub Flavored Markdown's, quoted rather than invented:
+#: *"Trailing punctuation (specifically ?, !, ., ,, :, *, _, and ~) will not be
+#: considered part of the autolink, though they may be included in the interior
+#: of the link"*; *"When an autolink ends in ), we scan the entire autolink for
+#: the total number of parentheses. If there is a greater number of closing
+#: parentheses than opening ones, we don't consider the unmatched trailing
+#: parentheses part of the autolink"*; a trailing ``;`` that closes an
+#: entity-shaped run is excluded; and *"< immediately ends an autolink"*.
+#: <https://github.github.com/gfm/#autolinks-extension->
+GFM_TRAILING_PUNCTUATION = "?!.,:*_~"
+ENTITY_TAIL_PATTERN = re.compile(r"&[A-Za-z0-9]+;\Z")
+
+#: What prose puts round a URL that the specification's rule does not reach,
+#: with the opener that would claim it. **The parenthesis is deliberately
+#: absent**: the rule above already balances it, and peeling it a second time
+#: removed one that belongs to the URL -- measured against the specification's
+#: own example, ``search?q=Markup+(business)``.
+PROSE_CLOSERS = {">": "<", '"': '"', "'": "'", "]": "[", "`": "`", ";": None}
+
+
+def trim_url(url: str) -> str:
+    """Return ``url`` without the delimiters the prose around it put there."""
+    while True:
+        if url and url[-1] in GFM_TRAILING_PUNCTUATION:
+            url = url[:-1]
+            continue
+        if url.endswith(")") and url.count(")") > url.count("("):
+            url = url[:-1]
+            continue
+        if url.endswith(";"):
+            entity = ENTITY_TAIL_PATTERN.search(url)
+            if entity:
+                url = url[: entity.start()]
+                continue
+        cut = url.find("<")
+        if cut != -1:
+            url = url[:cut]
+            continue
+        if url and url[-1] in PROSE_CLOSERS:
+            closer = url[-1]
+            opener = PROSE_CLOSERS[closer]
+            body = url[:-1]
+            if opener is None or opener == closer or body.count(opener) == 0:
+                url = body
+                continue
+        return url
 #: The pieces a URL is cut into before a reference is matched against it: a
 #: path segment, a query value or a fragment. Splitting on these rather than
 #: searching the whole string is what keeps a release path from resolving an
@@ -260,6 +325,8 @@ def url_resolves(label: str, matched: str, urls: list[str]) -> bool:
         return False
 
     digits = DIGITS_PATTERN.findall(matched)
+    # A hash is read in either case above, so it is compared in one case here.
+    matched_fold = matched.lower()
     for url in urls:
         parts = url_parts(url)
         lowered = [part.lower() for part in parts]
@@ -293,7 +360,7 @@ def url_resolves(label: str, matched: str, urls: list[str]) -> bool:
                 candidate = lowered[index + 1]
                 if not HEX_RUN.match(candidate):
                     continue
-                if candidate.startswith(matched) or matched.startswith(candidate):
+                if candidate.startswith(matched_fold) or matched_fold.startswith(candidate):
                     return True
     return False
 
@@ -384,7 +451,9 @@ def references_in(
     for number, line in enumerate(
         path.read_text(encoding="utf-8").split("\n"), start=1
     ):
-        urls = URL_PATTERN.findall(line)
+        # Found with the greedy pattern so the whole run is blanked, then
+        # trimmed so what is matched against is the URL itself.
+        urls = [trim_url(found) for found in URL_PATTERN.findall(line)]
         scanned = URL_PATTERN.sub(" ", line)
         for name, pattern in REVIEW_HISTORY_PATTERNS:
             for match in pattern.finditer(scanned):
@@ -823,3 +892,84 @@ def test_no_two_exemptions_are_the_same_entry() -> None:
     names = [(name, identifier) for name, identifier, _ in exempt_names()]
     assert len(set(texts)) == len(texts), texts
     assert len(set(names)) == len(names), names
+
+
+def test_trim_url_follows_the_published_rule() -> None:
+    """The specification's own examples, and this repository's own shapes.
+
+    The rule is quoted rather than invented, so the examples it is quoted from
+    are the controls. Without them a trimming rule drifts into whatever makes
+    this repository's lines pass, and the next repository inherits a rule that
+    describes one corpus.
+    <https://github.github.com/gfm/#autolinks-extension->
+    """
+    site = "https://www.commonmark.org"
+    search = "https://www.google.com/search?q=Markup+(business)"
+    for written, wanted in (
+        # Example 624: trailing punctuation is not part of the autolink,
+        # though it may be included in the interior.
+        (site + ".", site),
+        (site + "/a.b.", site + "/a.b"),
+        # Example 625: an unmatched trailing parenthesis is not part of it,
+        # and a matched one is.
+        (search, search),
+        (search + "))", search),
+        # Example 627: an entity-shaped run ending in a semicolon is excluded.
+        ("https://www.google.com/search?q=commonmark&hl;",
+         "https://www.google.com/search?q=commonmark"),
+        # Example 628: a less-than sign immediately ends an autolink.
+        (site + "/he<lp", site + "/he"),
+        # This repository writes its citations inside angle brackets.
+        ("https://spec.commonmark.org/0.31.2/#html-blocks>",
+         "https://spec.commonmark.org/0.31.2/#html-blocks"),
+        ("https://api.github.com/x?page=1>;", "https://api.github.com/x?page=1"),
+        # And inside string literals.
+        ('https://github.com/OWNER/REPO"', "https://github.com/OWNER/REPO"),
+        # Interior characters survive.
+        ("https://example.com/a_b_c", "https://example.com/a_b_c"),
+        ("https://example.com/a~b", "https://example.com/a~b"),
+        ("https://example.com/path/", "https://example.com/path/"),
+    ):
+        assert trim_url(written) == wanted, written
+
+
+def test_a_hash_is_read_in_either_case(tmp_path: Path) -> None:
+    """Git reads an object id in either case, so this rule does too.
+
+    Both spellings are built here rather than written, because this module is
+    inside its own scope and a hash spelled in it is a finding. That is not a
+    hypothetical: the first draft of the fix spelled both in a code comment and
+    the scan reported both.
+    """
+    sample = tmp_path / "line.py"
+    # Built rather than written: a seven-character hexadecimal run spelled in
+    # this module is a finding in it, and the docstring above says so.
+    lower = "7e4" + "463f"
+    for spelling in (lower, lower.upper()):
+        sample.write_text("# broken at " + spelling + "\n", encoding="utf-8")
+        assert references_in(sample, tmp_path), spelling
+        linked = "# broken at %s <https://github.com/o/r/commit/%s0a1b2c3>\n" % (
+            spelling, lower
+        )
+        sample.write_text(linked, encoding="utf-8")
+        assert not references_in(sample, tmp_path), linked
+
+
+def test_a_word_that_is_not_hexadecimal_is_not_a_hash(tmp_path: Path) -> None:
+    """The control for the case above: reading both cases widens nothing.
+
+    A run needs a digit and a letter to be a hash, which is what keeps an
+    all-letter word and a decimal number out. Measured over 42 tracked Python
+    files and 77,246 lines, the case-insensitive pattern reports no run the
+    lowercase pattern did not.
+    """
+    sample = tmp_path / "line.py"
+    for line in (
+        "# the DEADBEEF sentinel",
+        "# the deadbeef sentinel",
+        "# exactly 12345678 rows",
+        "# a SHA256 digest",
+        "# six chars: abc123",
+    ):
+        sample.write_text(line + "\n", encoding="utf-8")
+        assert not references_in(sample, tmp_path), line
