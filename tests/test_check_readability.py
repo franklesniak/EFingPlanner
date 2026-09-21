@@ -3013,19 +3013,35 @@ DELETE_CHARACTER = chr(127)
         ("the delete character", f"fo{DELETE_CHARACTER}o"),
     ],
 )
-def test_a_control_character_is_not_a_destination_character(
+def test_a_control_character_is_a_destination_character_on_the_page(
     label: str, destination: str
 ) -> None:
-    """CommonMark forbids an ASCII control character in a bare destination.
+    """The production renderer forms a link here, and it is the one that counts.
 
-    Neither markdown-it 14.3.0 nor micromark 4.0.2 forms a link, so the
-    brackets, the destination and the title are all words on the page. The
-    class excluded only the whitespace characters, which do not reach them,
-    and the link pattern deleted the lot -- the direction that takes a file
-    under the forty-word minimum and out of the gate.
+    This test asserted the opposite, on a measurement taken against markdown-it
+    14.3.0 and micromark 4.0.2 and never put to the page. Put to
+    ``POST /markdown``, one request per document,
+    ``Read [the guide](fo<0x01>o "a title") before you pack a bag.`` comes back
+    as ``Read <a href="fo%01o" title="a title">the guide</a> before you pack a
+    bag.``: the raw byte reaches the parser and is percent-encoded into the
+    ``href``, so the title is an attribute and none of it is prose. Over 54
+    characters in this position the page ends a bare destination at the tab,
+    the line ending, the carriage return and the space, and at nothing else.
     """
     text = f'Read [the guide]({destination} "a title") before you pack a bag.\n'
-    assert "a title" in readability.extract_prose(text), label
+    assert "a title" not in readability.extract_prose(text), label
+
+
+def test_a_space_still_ends_a_bare_destination() -> None:
+    """The positive control for the test above, and the one all three agree on.
+
+    ``Read [the guide](fo o "a title") before you pack a bag.`` is no link on
+    markdown-it 14.3.0, on micromark 4.0.2 or on the page, so every word of it
+    is prose. Without this the test above would pass on a class that ended a
+    destination nowhere at all.
+    """
+    text = 'Read [the guide](fo o "a title") before you pack a bag.\n'
+    assert "a title" in readability.extract_prose(text)
 
 
 def test_a_less_than_part_way_into_a_bare_destination_is_allowed() -> None:
@@ -6213,3 +6229,266 @@ def test_no_gfm_delimiter_row_can_open_an_html_block() -> None:
                     tried += 1
                     assert not readability.html_block_starts_here(row), row
     assert tried == 4672
+
+
+# ---------------------------------------------------------------------------
+# A construct that spans lines, and the two rules of a bare destination
+# ---------------------------------------------------------------------------
+
+
+def test_an_inline_tag_may_hold_a_line_ending() -> None:
+    """The metadata walk is handed the paragraph joined, so it must read one.
+
+    CommonMark lets an open tag carry a line ending in the whitespace between
+    its attributes and inside a quoted attribute value. ``<span`` over
+    `` title='[x`` over ``'>text](url "<!-- audience: adult -->")`` is therefore
+    one tag and then literal text, and markdown-it 14.3.0, micromark 4.0.2 and
+    the page all carry the marker as a real comment. The line-local pattern
+    stopped at the first line ending, left the ``[`` in the attribute standing,
+    paired it with the ``](`` below and invented a link whose title swallowed
+    the marker.
+    """
+    document = "\n".join([
+        "<span",
+        " title='[x",
+        "'>text](url \"" + ADULT_MARKER + "\")",
+        "",
+        SCORED_BODY,
+        "",
+    ])
+    assert readability.has_adult_marker(document)
+
+
+def test_a_tag_that_closes_on_its_own_line_is_read_the_same_way() -> None:
+    """The control for the test above: the same tag, written on one line."""
+    document = "\n".join([
+        "<span title='[x'>text](url \"" + ADULT_MARKER + "\")",
+        "",
+        SCORED_BODY,
+        "",
+    ])
+    assert readability.has_adult_marker(document)
+
+
+def test_a_definition_is_taken_out_before_the_code_spans_are_found() -> None:
+    """A link reference definition is a block, so it is gone before inlines run.
+
+    ``[x]: /url "t`t"`` over ``Text <!-- audience: adult --> `close` `` renders
+    as one paragraph holding a real comment: the definition itself puts nothing
+    on the page. The metadata walk found its code spans first and its
+    definitions second, so the backtick in the title paired with the one below
+    and masked the marker -- and the mask then stopped the line being read as a
+    definition at all.
+    """
+    document = "\n".join([
+        '[x]: /url "t' + TICK + 't"',
+        "Text " + ADULT_MARKER + " " + TICK + "close" + TICK,
+        "",
+        SCORED_BODY,
+        "",
+    ])
+    assert readability.has_adult_marker(document)
+
+
+def test_a_definition_that_runs_onto_a_second_line_is_taken_out_whole() -> None:
+    """And the rows it fills are found by the walk that knows how many there are.
+
+    A definition's destination and its title may each sit on a line of their
+    own. ``[x]: /url "title `` `` over ``continued"`` is one definition of two
+    lines, and the line under it is a new paragraph with a real comment in it.
+    A line-local test found no definition on either row, so both were scanned
+    as ordinary text.
+    """
+    document = "\n".join([
+        '[x]: /url "title ' + TICK,
+        'continued"',
+        "Text " + ADULT_MARKER + " " + TICK + "close" + TICK,
+        "",
+        SCORED_BODY,
+        "",
+    ])
+    assert readability.has_adult_marker(document)
+
+
+def test_a_definition_shaped_line_inside_a_paragraph_is_not_a_definition() -> None:
+    """The control that the shared walk buys, and the literal fix loses.
+
+    A definition may not interrupt a paragraph. ``Intro words here.`` over
+    ``[x]: /url "t`t"`` over ``Text <!-- audience: adult --> `close` `` is one
+    paragraph on all three renderers, so the backtick in the second line really
+    does pair with the one in the third and the marker between them is inside a
+    code span. Blanking every definition-shaped row -- which is what moving the
+    line-local test earlier would do -- reports a marker the page does not
+    carry.
+    """
+    document = "\n".join([
+        "Intro words here.",
+        '[x]: /url "t' + TICK + 't"',
+        "Text " + ADULT_MARKER + " " + TICK + "close" + TICK,
+        "",
+        SCORED_BODY,
+        "",
+    ])
+    assert not readability.has_adult_marker(document)
+
+
+def test_a_backslash_escapes_only_ascii_punctuation_in_a_destination() -> None:
+    """``foo\\ bar`` is a literal backslash and then the end of the destination.
+
+    ``![<!-- audience: adult -->](foo\\ bar)`` is no image on markdown-it
+    14.3.0, on micromark 4.0.2 or on the page: all three print the brackets and
+    read the marker in the description as a real comment. Skipping two
+    characters whatever the second one is made an image of it and masked the
+    marker, which is the direction that sends an adult-facing document through
+    the child reading gate.
+    """
+    document = "![" + ADULT_MARKER + "](foo" + BACKSLASH + " bar)\n\n" + SCORED_BODY + "\n"
+    assert readability.has_adult_marker(document)
+
+
+def test_a_backslash_does_escape_a_punctuation_character() -> None:
+    """The control: ``foo\\-bar`` really is an escape, so the image forms."""
+    document = "![" + ADULT_MARKER + "](foo" + BACKSLASH + "-bar)\n\n" + SCORED_BODY + "\n"
+    assert not readability.has_adult_marker(document)
+
+
+def test_the_same_rule_holds_in_the_definition_patterns() -> None:
+    """The escape rule has two spellings, and both are the same rule.
+
+    ``[x]:`` over ``/u\\ rl`` defines nothing on markdown-it 14.3.0 or on
+    micromark 4.0.2 -- the backslash is literal, the space ends the destination
+    and ``rl`` is no title -- so the ``![<!-- audience: adult -->][x]`` below it
+    is a real comment. The regular-expression class read ``\\`` followed by
+    anything as an escape and defined ``x`` anyway.
+    """
+    document = "\n".join([
+        "[x]:",
+        "/u" + BACKSLASH + " rl",
+        "",
+        "![" + ADULT_MARKER + "][x]",
+        "",
+        SCORED_BODY,
+        "",
+    ])
+    assert readability.has_adult_marker(document)
+    assert readability.collect_reference_labels(
+        ["[x]:", "/u" + BACKSLASH + " rl"], [False, False]
+    ) == frozenset()
+    assert readability.collect_reference_labels(
+        ["[x]:", "/u" + BACKSLASH + "-rl"], [False, False]
+    ) == frozenset({"x"})
+
+
+def test_ascii_punctuation_is_the_specification_s_own_list() -> None:
+    """The set is written as four ranges, so it is checked against the list.
+
+    CommonMark 0.31.2 names the ASCII punctuation characters one at a time.
+    Spelling them as ranges is what stops one being forgotten; spelling them
+    twice is what would let the set and the regular-expression class drift, so
+    the class is derived from the set and both are pinned here.
+    """
+    named = set("!\"#$%&'()*+,-./:;<=>?@[" + BACKSLASH + "]^_" + TICK + "{|}~")
+    assert readability.ASCII_PUNCTUATION == named
+    assert len(named) == 32
+    assert readability._ASCII_PUNCTUATION_CLASS == "".join(
+        BACKSLASH + character for character in sorted(named)
+    )
+
+
+def test_the_two_hooks_find_the_same_definitions() -> None:
+    """The definition walk is shared, so the two hooks cannot drift on it."""
+    import importlib.util
+
+    path = SCRIPT_PATH.parent / "check-session-structure.py"
+    spec = importlib.util.spec_from_file_location("check_session_structure_r24", path)
+    assert spec is not None and spec.loader is not None
+    sibling = importlib.util.module_from_spec(spec)
+    sys.modules[spec.name] = sibling
+    spec.loader.exec_module(sibling)
+
+    contents = ['[x]: /url "title ' + TICK, 'continued"', "Text and more."]
+    starts = [False, False, False]
+    assert readability.reference_definition_spans(contents, starts) == ((0, 2),)
+    assert sibling.reference_definition_spans(contents, starts) == ((0, 2),)
+    assert readability.reference_definition_spans(
+        ["Intro words.", "[x]: /url"], [False, False]
+    ) == ()
+
+
+def test_a_definition_s_own_second_line_is_taken_out_with_it() -> None:
+    """A definition's destination and title each render nothing, wherever they sit.
+
+    Found by a control that moved no test: blanking only a definition's *first*
+    row passes every other test in this file. ``[x]: /url`` over ``"t`t"`` is
+    one definition of two lines on markdown-it 14.3.0 and micromark 4.0.2, and
+    the line under it is a paragraph with a real comment. Leave the title's own
+    line in and its backtick pairs with the one below it.
+    """
+    document = "\n".join([
+        "[x]: /url",
+        '"t' + TICK + 't"',
+        "Text " + ADULT_MARKER + " " + TICK + "close" + TICK,
+        "",
+        SCORED_BODY,
+        "",
+    ])
+    assert readability.has_adult_marker(document)
+    # and the same with the destination on the second line
+    destination_below = "\n".join([
+        "[x]:",
+        "/u" + TICK + "rl",
+        "Text " + ADULT_MARKER + " " + TICK + "close" + TICK,
+        "",
+        SCORED_BODY,
+        "",
+    ])
+    assert readability.has_adult_marker(destination_below)
+
+
+def test_a_backslash_before_a_parenthesis_is_still_an_escape() -> None:
+    """The other half of the escape rule, which refusing every escape would lose.
+
+    Found by a control that moved no test: reading no backslash as an escape at
+    all passes every other test here. ``![<!-- audience: adult -->](foo\\(bar)``
+    **is** an image on markdown-it 14.3.0, on micromark 4.0.2 and on the page:
+    the escaped ``(`` is not an open parenthesis, so the destination is
+    balanced, the ``)`` closes the image and the marker is its alt text. Stop
+    reading the backslash as an escape and the ``(`` opens a level that the
+    ``)`` closes, no parenthesis is left to end the image, and the marker then
+    reads as a real comment the page does not carry.
+    """
+    document = (
+        "![" + ADULT_MARKER + "](foo" + BACKSLASH + "(bar)\n\n" + SCORED_BODY + "\n"
+    )
+    assert not readability.has_adult_marker(document)
+
+
+def test_a_uri_autolink_may_hold_the_delete_character() -> None:
+    """The reported fix for the autolink class, declined on a measurement.
+
+    A review comment asked for U+007F to be excluded here, on the ground that
+    CommonMark 0.31.2 counts it among the ASCII control characters an absolute
+    URI may not hold. The specification does say that and micromark 4.0.2
+    implements it -- and markdown-it 14.3.0 and the production renderer do not:
+    ``<http://e.com/<0x7f>x>`` comes back from ``POST /markdown`` as
+    ``<a href="http://e.com/%7Fx">``, the raw byte percent-encoded into the
+    ``href``, while ``<ab:<0x07>x>`` comes back with its opener escaped and no
+    link at all. So the page ends a URI at U+0020 and below and at nothing
+    else, which is what this class says. Excluding U+007F would read the
+    backtick below as an ordinary opening run and hide a marker the page
+    carries.
+    """
+    delete_character = chr(127)
+    document = (
+        "<ab:" + delete_character + TICK + "> " + ADULT_MARKER + " "
+        + TICK + "close" + TICK + "\n\n" + SCORED_BODY + "\n"
+    )
+    assert readability.has_adult_marker(document)
+    # the control: a bell character in the same slot forms no autolink on any
+    # renderer, so the backtick opens a code span and the marker is inside it
+    bell = chr(7)
+    bell_document = (
+        "<ab:" + bell + TICK + "> " + ADULT_MARKER + " "
+        + TICK + "close" + TICK + "\n\n" + SCORED_BODY + "\n"
+    )
+    assert not readability.has_adult_marker(bell_document)

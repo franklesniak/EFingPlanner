@@ -117,14 +117,37 @@ TABLE_DELIMITER_PATTERN = re.compile(
     r"^ {0,3}\|?[ \t]*:?-+:?[ \t]*(?:\|[ \t]*:?-+:?[ \t]*)*\|?[ \t]*$"
 )
 
-#: What a bare link destination may hold, as CommonMark spells it: anything but
-#: a space, an ASCII control character and an unescaped parenthesis, and it may
-#: not *start* with ``<``. This hook carries no inline link model and wants
-#: none; it carries the destination only because a link reference definition is
-#: a leaf block, and ``opens_a_paragraph`` has to tell one from a paragraph.
-#: Kept identical to the class in the sibling hooks.
+#: The characters a backslash may escape, which is all a backslash may do.
+#: CommonMark names them as the ASCII punctuation characters and nothing else,
+#: so a backslash before a space, a tab or a control character is a literal
+#: backslash and the character behind it keeps its own meaning. Spelled as the
+#: four ranges the specification spells, so none is missed, with the
+#: regular-expression class derived from the set rather than written a second
+#: time. Kept identical to the constants in the sibling hooks.
+#: <https://spec.commonmark.org/0.31.2/#backslash-escapes>
+ASCII_PUNCTUATION = frozenset(
+    chr(code)
+    for first, last in ((0x21, 0x2F), (0x3A, 0x40), (0x5B, 0x60), (0x7B, 0x7E))
+    for code in range(first, last + 1)
+)
+_ASCII_PUNCTUATION_CLASS = "".join(
+    "\\" + character for character in sorted(ASCII_PUNCTUATION)
+)
+#: What a bare link destination may hold, in two rules: a backslash escapes an
+#: ASCII punctuation character and nothing else, and the destination ends at a
+#: space, a tab or a line ending. The second is the production renderer's
+#: grammar rather than CommonMark 0.31.2's, measured over 54 characters in this
+#: position; the sibling hooks' copies carry the measurement in full. This hook
+#: carries no inline link model and wants none; it carries the destination only
+#: because a link reference definition is a leaf block, and
+#: ``opens_a_paragraph`` has to tell one from a paragraph. Kept identical to the
+#: class in the sibling hooks.
 #: <https://spec.commonmark.org/0.31.2/#link-destination>
-_DESTINATION_CHARACTER = r"(?:[^ \x00-\x1f\x7f()\\]|\\.)"
+_DESTINATION_CHARACTER = (
+    r"(?:[^ \t\n()\\]"
+    rf"|\\[{_ASCII_PUNCTUATION_CLASS}]"
+    rf"|\\(?![{_ASCII_PUNCTUATION_CLASS}]))"
+)
 _DESTINATION_DEPTH_0 = rf"{_DESTINATION_CHARACTER}*"
 _DESTINATION_DEPTH_1 = rf"(?:{_DESTINATION_CHARACTER}|\({_DESTINATION_DEPTH_0}\))*"
 _DESTINATION_DEPTH_2 = rf"(?:{_DESTINATION_CHARACTER}|\({_DESTINATION_DEPTH_1}\))*"

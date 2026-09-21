@@ -501,27 +501,63 @@ BARE_LIST_MARKER_PATTERN = re.compile(r"^[ \t]*(?:[-*+]|\d{1,9}[.)])[ \t]*$")
 #: that matters here is the one that calls a section empty when the page shows
 #: something.
 #:
-#: What a bare destination may hold is the ASCII rule and not more: it may not
-#: hold a space, and it may not hold an ASCII control character. It may not
-#: *start* with ``<``, which is the lookahead below, and it may hold one
-#: further along, which this class once refused. Both renderers agree on the
-#: refusal being wrong: markdown-it 14.3.0 and micromark 4.0.2 each link
-#: ``[x](foo< "t")``, so a definition written that way renders nothing and a
-#: marker in its title is an attribute rather than a comment -- and this hook
-#: was honouring it. U+007F is named beside ``\x00-\x1f`` because CommonMark
-#: counts it as a control character and the range does not reach it. Kept in
-#: step with the class in ``.github/scripts/check-readability.py``.
-#: <https://spec.commonmark.org/0.31.2/#link-destination>
-_DESTINATION_CHARACTER = r"(?:[^ \x00-\x1f\x7f()\\]|\\.)"
-#: The same rule, as a set rather than as a character class, for the
-#: hand-written scan in ``inline_link_end``: every character that ends a bare
-#: destination. Spelled as a range so the C0 control characters are named once
-#: and none is missed. Kept identical to the constant in
-#: ``.github/scripts/check-readability.py``.
-#: <https://spec.commonmark.org/0.31.2/#link-destination>
-DESTINATION_STOP_CHARACTERS = frozenset(
-    [chr(code) for code in range(0x21)] + ["\x7f"]
+#: The characters a backslash may escape, which is all a backslash may do.
+#: CommonMark names them as the ASCII punctuation characters and nothing else,
+#: so a backslash before a space, a tab or a control character is a literal
+#: backslash and the character behind it keeps its own meaning. Spelled as the
+#: four ranges the specification spells, so none is missed, with the
+#: regular-expression class derived from the set rather than written a second
+#: time. Kept identical to the constants in the sibling hooks.
+#: <https://spec.commonmark.org/0.31.2/#backslash-escapes>
+ASCII_PUNCTUATION = frozenset(
+    chr(code)
+    for first, last in ((0x21, 0x2F), (0x3A, 0x40), (0x5B, 0x60), (0x7B, 0x7E))
+    for code in range(first, last + 1)
 )
+_ASCII_PUNCTUATION_CLASS = "".join(
+    "\\" + character for character in sorted(ASCII_PUNCTUATION)
+)
+#: What a bare destination may *hold*, in two rules.
+#:
+#: **A backslash escapes an ASCII punctuation character and nothing else.**
+#: ``![<!-- audience: adult -->](foo\ bar)`` is no image on any of the three
+#: renderers -- the backslash is literal and the space ends the destination --
+#: and reading it as one masked the marker in the description. markdown-it
+#: 14.3.0 skips two characters unconditionally here and is alone in that: on
+#: ``[a](foo\<tab>bar)`` it forms a link where micromark 4.0.2 and the
+#: production renderer do not.
+#:
+#: **A bare destination ends at a space, a tab or a line ending, and holds
+#: every other character.** That is the production renderer's grammar rather
+#: than CommonMark 0.31.2's, which forbids every ASCII control character. The
+#: two were measured apart rather than assumed together: over 54 characters in
+#: this position, one request each, GitHub forms a link for every C0 control
+#: character and for U+007F and refuses only the tab, the line ending, the
+#: carriage return and the space, while markdown-it and micromark refuse all
+#: 33 control characters as well. The page is followed because the error the
+#: other way is the one this gate exists to refuse: on
+#: ``[x](fo<0x01>o "<!-- no-source-check: offline -->")`` the page makes the
+#: marker a ``title`` attribute, and reading it as a comment granted a
+#: session an exemption its page does not show.
+#:
+#: A bare destination may not *start* with ``<``, which is what the lookahead
+#: below says; it may hold one further along, and all three renderers link
+#: ``[x](foo< "t")`` happily. Kept in step with the class in the sibling hooks.
+#: <https://spec.commonmark.org/0.31.2/#link-destination>
+_DESTINATION_CHARACTER = (
+    r"(?:[^ \t\n()\\]"
+    rf"|\\[{_ASCII_PUNCTUATION_CLASS}]"
+    rf"|\\(?![{_ASCII_PUNCTUATION_CLASS}]))"
+)
+#: The same two rules, as a set rather than as a character class, for the
+#: hand-written scan in ``inline_link_end``: every character that ends a bare
+#: destination. It holds the same three characters as ``LINK_TARGET_WHITESPACE``
+#: below and is written separately because the two say opposite things about
+#: them -- a line ending is allowed *between* the parts of a target and ends
+#: the destination itself -- so a change to one is not a change to the other.
+#: Kept identical to the constant in the sibling hook.
+#: <https://spec.commonmark.org/0.31.2/#link-destination>
+DESTINATION_STOP_CHARACTERS = frozenset(" \t\n")
 #: The characters CommonMark allows *between* the parts of an inline link's
 #: target -- after the ``(``, between the destination and the title, and
 #: before the ``)``. A line ending is one of them: ``[x](url`` with
@@ -1702,25 +1738,23 @@ def inline_link_end(line: str, open_index: int) -> int:
     may hold none, bare or angle-bracketed. Those are the three places
     ``LINK_TARGET_WHITESPACE`` is spelled and the one place it is not.
 
-    A backslash escapes the character after it, and in a *bare* destination a
-    line ending is the one character it cannot escape: ``\\`` at the end of a
-    line is a hard line break there. Reading it as an escape let a target
-    swallow the break and close on a parenthesis two lines down that the
-    production renderer never reached -- which the two hooks answered
-    differently, because one of them strips a line's trailing spaces and the
-    other does not, and the backslash only lands against the line ending once
-    the space behind it is gone. Inside ``<...>`` the rule is the other way and
-    both renderers agree on it, so the escape there is unconditional; the
+    A backslash escapes an ASCII punctuation character and nothing else, so
+    ``\\`` before a space, a tab, a control character or a line ending is a
+    literal backslash and the character behind it keeps its own meaning. In a
+    bare destination that means the character behind it still ends the
+    destination, which is what makes ``![<!-- audience: adult -->](foo\\ bar)``
+    no image on any of the three renderers. Inside ``<...>`` the escape is
+    unconditional, because the only characters it can decide there are ``<``,
+    ``>`` and the line ending and all three renderers agree on those; the
     difference is measured rather than reasoned and is written at each of the
     two loops.
 
     A bare destination ends at every character in
-    ``DESTINATION_STOP_CHARACTERS``: the space and the ASCII control
-    characters, which is the set CommonMark forbids it. Stopping only at a
-    space and a tab accepted ``[x](fo\x01o "<!-- no-source-check: x -->")`` as
-    a link, and neither renderer forms one: both print the brackets and the
-    marker in them is a comment the page really does carry, so a session that
-    had declared its exemption was failed for not declaring one.
+    ``DESTINATION_STOP_CHARACTERS``: a space, a tab and a line ending, which is
+    the production renderer's rule rather than CommonMark 0.31.2's. That
+    constant's own comment carries the measurement and the parting. An
+    unbalanced parenthesis and an unclosed title each mean no link at all, and
+    the caller is then right to read the characters as ordinary text.
     <https://spec.commonmark.org/0.31.2/#links>
     """
     length = len(line)
@@ -1745,7 +1779,16 @@ def inline_link_end(line: str, open_index: int) -> int:
         while index < length:
             character = line[index]
             if character == "\\":
-                index += 1 if line[index + 1 : index + 2] == "\n" else 2
+                # A backslash escapes an ASCII punctuation character and
+                # nothing else, so ``\\`` before a space, a tab, a control
+                # character or a line ending is a literal backslash and the
+                # character behind it still ends the destination.
+                # ``![<!-- audience: adult -->](foo\\ bar)`` is no image at
+                # all on markdown-it 14.3.0, on micromark 4.0.2 and on the
+                # production renderer, and reading it as one masked the
+                # marker in its description and sent an adult-facing document
+                # through the child reading gate.
+                index += 2 if line[index + 1 : index + 2] in ASCII_PUNCTUATION else 1
                 continue
             if character in DESTINATION_STOP_CHARACTERS:
                 break
@@ -1886,7 +1929,20 @@ def link_metadata_regions(
             if autolink is not None:
                 index = autolink.end()
                 continue
-            tag = INLINE_HTML_TAG_PATTERN.match(line, index)
+            # The **multiline** tag pattern, because this walk is handed the
+            # paragraph joined rather than one physical line. CommonMark lets
+            # an open tag carry a line ending in the whitespace between its
+            # attributes and inside a quoted attribute value, so
+            # ``<span`` / `` title='[x`` / ``'>text](url "<!-- x -->")`` is one
+            # tag and then literal text. The line-local pattern stopped at the
+            # first line ending, left the bracket in the attribute standing,
+            # paired it with the ``](`` below, invented a link region and
+            # masked a real marker -- which took an adult-facing document
+            # through the child reading gate. ``scan_paragraph_inlines``
+            # already reads a tag across a break, by carrying a per-line state
+            # instead; this walk has the whole paragraph in hand and can ask
+            # once.
+            tag = MULTILINE_HTML_TAG_PATTERN.match(line, index)
             if tag is not None:
                 index = tag.end()
                 continue
@@ -2924,7 +2980,22 @@ def text_marker_spans(
     CommonMark reads as prose. That is the safe direction: it refuses to exempt
     rather than granting an exemption the file does not visibly declare.
     """
-    masked = code_span_masked_lines(contents, is_in_comment)
+    # A link reference definition is a **block**, so the block parser has
+    # already taken it out of the paragraph before any inline rule runs. It is
+    # therefore found here, on the raw lines, and blanked *before* the
+    # code-span pass rather than after it. Asked afterwards, the pass read
+    # ``[x]: /url "t`t"`` as ordinary text, paired the title's backtick with
+    # one on the line below and masked the marker between them.
+    definition_rows = {
+        row
+        for first, span in reference_definition_spans(contents, [False] * len(contents))
+        for row in range(first, first + span)
+    }
+    scanned = [
+        " " * len(content) if row in definition_rows else content
+        for row, content in enumerate(contents)
+    ]
+    masked = code_span_masked_lines(scanned, is_in_comment)
     # Joined and walked once: a link reference definition is a block and keeps
     # its own line, and everything else a link is crosses a soft line break.
     skips: dict[int, tuple[tuple[int, int], ...]] = {}
@@ -2932,10 +3003,8 @@ def text_marker_spans(
     starts: list[int] = []
     offset = 0
     for row, line in enumerate(masked):
-        definition = link_reference_definition_region(line)
-        if definition is not None:
-            skips[row] = (definition,)
-            line = " " * len(line)
+        if row in definition_rows:
+            skips[row] = ((0, len(line)),)
         pieces.append(line)
         starts.append(offset)
         offset += len(line) + 1
@@ -3228,6 +3297,58 @@ def gfm_table_rows(sources: Sequence[MarkerSource]) -> dict[int, int]:
     return rows
 
 
+def reference_definition_spans(
+    contents: Sequence[str], starts: Sequence[bool]
+) -> tuple[tuple[int, int], ...]:
+    """Return ``(row, line count)`` for every link reference definition here.
+
+    One walk answers "where are the definitions", and every caller that needs
+    to know asks it: the label collector below, and the metadata walk that has
+    to blank a definition before it reads anything else. The two used to
+    disagree -- the collector knew a definition may fill three lines and may
+    not interrupt a paragraph, and the metadata walk asked a line-local
+    pattern after it had already scanned those lines for code spans. A
+    ``[x]: /url "t`t"`` therefore had its title's backtick paired with one on
+    the line below, and the marker between them was masked; an adult-facing
+    document went through the child reading gate on it.
+
+    ``starts`` is the document walk's own ``starts_a_block`` answer for each
+    line, which is where a paragraph ends. A caller holding one paragraph run
+    rather than a document passes all ``False``, because a run is cut at every
+    block start already.
+
+    A definition may not interrupt a paragraph, so the walk carries the
+    paragraph state: ``Intro text.`` above ``[x]: /url`` defines nothing on
+    either renderer and neither blanks anything here. ``opens_a_paragraph`` is
+    the same helper the document walk uses and already knows a definition is a
+    leaf block rather than a paragraph, so definitions written one under
+    another all count. Kept identical to the helper in the sibling hook.
+    <https://spec.commonmark.org/0.31.2/#link-reference-definitions>
+    """
+    spans: list[tuple[int, int]] = []
+    paragraph_open = False
+    previous_content = ""
+    row = 0
+
+    while row < len(contents):
+        content = contents[row]
+        if starts[row]:
+            paragraph_open = False
+            previous_content = ""
+        if not paragraph_open:
+            span = reference_definition_span(contents, row, starts)
+            if span:
+                spans.append((row, span))
+                row += span
+                previous_content = ""
+                continue
+        paragraph_open = opens_a_paragraph(content, paragraph_open, previous_content)
+        previous_content = content
+        row += 1
+
+    return tuple(spans)
+
+
 def collect_reference_labels(
     contents: Sequence[str], starts: Sequence[bool]
 ) -> frozenset[str]:
@@ -3275,28 +3396,10 @@ def collect_reference_labels(
     <https://spec.commonmark.org/0.31.2/#link-reference-definitions>
     """
     labels: set[str] = set()
-    paragraph_open = False
-    previous_content = ""
-    row = 0
-
-    while row < len(contents):
-        content = contents[row]
-        if starts[row]:
-            paragraph_open = False
-            previous_content = ""
-        if not paragraph_open:
-            span = reference_definition_span(contents, row, starts)
-            if span:
-                match = LINK_REFERENCE_LABEL_PATTERN.match(content)
-                if match is not None:
-                    labels.add(normalize_link_label(match.group("label")))
-                row += span
-                previous_content = ""
-                continue
-        paragraph_open = opens_a_paragraph(content, paragraph_open, previous_content)
-        previous_content = content
-        row += 1
-
+    for row, _span in reference_definition_spans(contents, starts):
+        match = LINK_REFERENCE_LABEL_PATTERN.match(contents[row])
+        if match is not None:
+            labels.add(normalize_link_label(match.group("label")))
     return frozenset(labels)
 
 

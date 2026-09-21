@@ -2793,17 +2793,35 @@ def test_a_bracket_with_no_opener_skips_nothing() -> None:
         ),
     ],
 )
-def test_a_control_character_is_not_a_destination_character(label: str, body: str) -> None:
-    """CommonMark forbids an ASCII control character in a bare destination.
+def test_a_control_character_is_a_destination_character_on_the_page(
+    label: str, body: str
+) -> None:
+    """The production renderer forms a link here, and it is the one that counts.
 
-    Neither markdown-it 14.3.0 nor micromark 4.0.2 forms a link or a
-    definition, so the marker in the quotes is an ordinary HTML comment on the
-    page and the session really has declared its exemption. ``inline_link_end``
-    stopped only at a space and a tab, and the destination class reached only
-    to U+001F, so both read the whole thing as metadata and masked it.
+    This test asserted the opposite, on a measurement taken against markdown-it
+    14.3.0 and micromark 4.0.2 and never put to the page. Put to
+    ``POST /markdown``, one request per document, all four come back as a link,
+    an image or a resolved definition whose ``title`` carries the marker -- for
+    example ``<a href="fo%01o" title="&lt;!-- no-source-check: ... --&gt;">x</a>``
+    -- so the marker is an attribute and the session has declared nothing. The
+    old reading granted an exemption the page does not show, which is the
+    permissive direction and the one this gate exists to refuse.
     """
     text = build_session(sections=SIX_SECTIONS, extra=f"## Notes\n\n{body}\n")
-    assert check(text) == [], label
+    assert any("Source Check" in message for message in check(text)), label
+
+
+def test_a_space_still_ends_a_bare_destination_here_too() -> None:
+    """The positive control for the test above, and the one all three agree on.
+
+    ``[x](fo o "<!-- no-source-check: ... -->")`` is no link on any of the three
+    renderers, so the marker really is a comment and the session really is
+    exempt. Without this the test above would pass on a class that ended a
+    destination nowhere at all.
+    """
+    body = f'[x](fo o "{OFFLINE_MARKER}")'
+    text = build_session(sections=SIX_SECTIONS, extra=f"## Notes\n\n{body}\n")
+    assert check(text) == []
 
 
 def test_a_less_than_part_way_into_a_bare_destination_is_still_a_destination() -> None:
@@ -4539,3 +4557,88 @@ def test_a_definition_does_not_read_across_a_block_boundary_here_either() -> Non
     assert structure.reference_definition_span(
         ["[x]:", "/url"], 0, [False, True]
     ) == 0
+
+
+# ---------------------------------------------------------------------------
+# A construct that spans lines, and the two rules of a bare destination
+# ---------------------------------------------------------------------------
+
+
+def test_an_inline_tag_may_hold_a_line_ending_here_too() -> None:
+    """The metadata walk is handed the run joined, so it must read a joined tag.
+
+    ``<span`` over `` title='[x`` over ``'>text](url "<!-- no-source-check: ...
+    -->")`` is one tag and then literal text on all three renderers, so the
+    marker really is a comment and the session really is exempt. The line-local
+    pattern left the ``[`` in the attribute standing, paired it with the ``](``
+    below and read the marker as a link title.
+    """
+    body = "\n".join([
+        "<span",
+        " title='[x",
+        "'>text](url \"" + OFFLINE_MARKER + "\")",
+    ])
+    text = build_session(sections=SIX_SECTIONS, extra="## Notes\n\n" + body + "\n")
+    assert check(text) == []
+
+
+def test_a_definition_is_taken_out_before_the_code_spans_are_found_here_too() -> None:
+    """A link reference definition is a block, so it is gone before inlines run.
+
+    ``[x]: /url "t`t"`` renders nothing, and the line under it is a paragraph
+    holding a real comment. The walk found its code spans first, so the
+    backtick in the title paired with the one below and masked the marker --
+    and a session that had declared its exemption was failed for not declaring
+    one.
+    """
+    body = "\n".join([
+        '[x]: /url "t' + TICK + 't"',
+        "Text " + OFFLINE_MARKER + " " + TICK + "close" + TICK,
+    ])
+    text = build_session(sections=SIX_SECTIONS, extra="## Notes\n\n" + body + "\n")
+    assert check(text) == []
+
+
+def test_a_definition_that_runs_onto_a_second_line_is_taken_out_whole_here_too() -> None:
+    """And the rows it fills are found by the walk that knows how many there are."""
+    body = "\n".join([
+        '[x]: /url "title ' + TICK,
+        'continued"',
+        "Text " + OFFLINE_MARKER + " " + TICK + "close" + TICK,
+    ])
+    text = build_session(sections=SIX_SECTIONS, extra="## Notes\n\n" + body + "\n")
+    assert check(text) == []
+
+
+def test_a_definition_shaped_line_inside_a_paragraph_is_not_a_definition_here() -> None:
+    """The control the shared walk buys: a definition may not interrupt a paragraph."""
+    body = "\n".join([
+        "Intro words here.",
+        '[x]: /url "t' + TICK + 't"',
+        "Text " + OFFLINE_MARKER + " " + TICK + "close" + TICK,
+    ])
+    text = build_session(sections=SIX_SECTIONS, extra="## Notes\n\n" + body + "\n")
+    assert any("Source Check" in message for message in check(text))
+
+
+def test_a_backslash_escapes_only_ascii_punctuation_in_a_destination_here_too() -> None:
+    """``foo\\ bar`` is a literal backslash and then the end of the destination."""
+    body = "![" + OFFLINE_MARKER + "](foo" + BACKSLASH + " bar)"
+    text = build_session(sections=SIX_SECTIONS, extra="## Notes\n\n" + body + "\n")
+    assert check(text) == []
+
+
+def test_a_backslash_does_escape_a_punctuation_character_here_too() -> None:
+    """The control: ``foo\\-bar`` really is an escape, so the image forms."""
+    body = "![" + OFFLINE_MARKER + "](foo" + BACKSLASH + "-bar)"
+    text = build_session(sections=SIX_SECTIONS, extra="## Notes\n\n" + body + "\n")
+    assert any("Source Check" in message for message in check(text))
+
+
+def test_ascii_punctuation_is_the_specification_s_own_list_here_too() -> None:
+    """The same set, in the sibling hook, derived the same way."""
+    named = set("!\"#$%&'()*+,-./:;<=>?@[" + BACKSLASH + "]^_" + TICK + "{|}~")
+    assert structure.ASCII_PUNCTUATION == named
+    assert structure._ASCII_PUNCTUATION_CLASS == "".join(
+        BACKSLASH + character for character in sorted(named)
+    )
