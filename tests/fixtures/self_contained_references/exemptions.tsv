@@ -24,3 +24,5 @@ text	schemas/examples/template-sync-marker/valid/protected-decisions.yml	issue 6
 text	schemas/examples/template-sync-marker/valid/protected-guide-contract-waiver.yml	0123456789abcdef0123456789abcdef01234567	1	a synthetic commit hash in a schema example
 text	schemas/examples/template-sync-marker/valid/source-ref-first-adoption.yml	89abcdef0123456789abcdef0123456789abcdef	1	a synthetic commit hash in a schema example
 text	TEMPLATE_UPDATE_PROCEDURE.md	issue 123	1	a placeholder issue number in a worked procedure example
+text	_ADOPTION-DIFFICULTIES.md	PR #5	38	this repository's own pull request 5, named in every entry heading of the adoption journal; GitHub renders it as a link and the commit history holds it
+text	_TODO-repo-init.md	issue #8	1	this repository's own issue 8, named beside the commit that closed it; GitHub renders it as a link

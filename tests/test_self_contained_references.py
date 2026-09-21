@@ -338,33 +338,6 @@ ENTITY_TAIL_PATTERN = re.compile(r"&[A-Za-z0-9]+;\Z")
 PROSE_CLOSERS = {">": "<", '"': '"', "'": "'", "]": "[", "`": "`", ";": None}
 
 
-#: What GitHub turns into a link when it renders a Markdown file **in this
-#: repository**, measured on ``POST /markdown`` with ``mode=gfm`` and this
-#: repository as the context, which is how such a file is displayed:
-#:
-#: ============================  =========================================
-#: written                       rendered
-#: ============================  =========================================
-#: the word PR and a hash-number a link to that pull request
-#: the word issue and hash-number a link to that issue
-#: the word issue and a number   **no link**
-#: a short hash this repo holds  a link to that commit
-#: a hash this repo does not     **no link**
-#: a review-comment id           **no link**
-#: ============================  =========================================
-#:
-#: The spellings are in the fixture file rather than here: a spelling written
-#: in this module is a reference in a swept file, and this table is the fourth
-#: place in two rounds where writing one reported it.
-#:
-#: So the rule is not the same in a Markdown file as in a Python comment, and
-#: pretending otherwise reports 49 references in one root document that a
-#: reader reaches by clicking. The two rows that are linked are read as linked
-#: here; the four that are not stay reported.
-MARKDOWN_SUFFIXES = frozenset({".md", ".mdc"})
-#: The one shorthand GitHub turns into a link: a hash with the digits against
-#: it. A space between them leaves ordinary text on the page.
-COMPACT_SHORTHAND_PATTERN = re.compile(r"#\d")
 HASH_SHAPED = re.compile(r"\A[0-9a-fA-F]{7,40}\Z")
 
 
@@ -411,160 +384,27 @@ def commit_exists(token: str, root: Path) -> bool:
     )
 
 
-#: A fence opener or closer, with its own run length so a longer run inside a
-#: shorter one does not close it.
-FENCE_PATTERN = re.compile(r"^ {0,3}(?P<marker>`{3,}|~{3,})")
-#: An inline code span, an HTML comment, and a Markdown link's text. GitHub
-#: autolinks in none of them -- measured on ``POST /markdown`` with
-#: ``mode=gfm``: plain prose is linked, and a reference inside a code span, a
-#: fenced block, an indented code block, an HTML comment or a link's text is
-#: not. Each is blanked to spaces so every offset stays the line's own.
-CODE_SPAN_PATTERN = re.compile(r"(?P<ticks>`+)(?:.*?)(?P=ticks)")
-HTML_COMMENT_PATTERN = re.compile(r"<!--.*?-->", re.S)
-#: A link's text, in the three shapes Markdown gives it: inline, collapsed or
-#: full reference, and shortcut. GitHub autolinks inside none of them.
-#: **Plain brackets are not a link**, and that is measured rather than assumed:
-#: a hash-number reference inside brackets with no matching definition *is*
-#: autolinked, so masking every bracket pair would report references a reader
-#: can click. Only a label a definition answers is masked.
-LINK_LABEL_PATTERN = re.compile(r"\[(?P<label>[^\[\]]*)\](?P<after>[(\[])?")
-REFERENCE_DEFINITION_PATTERN = re.compile(
-    r"^ {0,3}\[(?P<label>[^\[\]]+)\]:", re.M
-)
-
-
-def reference_definition_labels(text: str) -> set[str]:
-    """Return the labels this document defines, folded as CommonMark folds them."""
-    return {
-        match.group("label").strip().lower()
-        for match in REFERENCE_DEFINITION_PATTERN.finditer(text)
-    }
-
-
-def mask_link_labels(line: str, labels: set[str]) -> str:
-    """Blank the text of every link on one line, leaving its offsets intact."""
-
-    def blank(match: "re.Match[str]") -> str:
-        after = match.group("after")
-        if after in ("(", "["):
-            # Inline, or a full or collapsed reference link.
-            return " " * len(match.group(0))
-        if match.group("label").strip().lower() in labels:
-            # A shortcut reference link: a label this document defines.
-            return " " * len(match.group(0))
-        return match.group(0)
-
-    return LINK_LABEL_PATTERN.sub(blank, line)
-
-
-def markdown_prose(text: str) -> str:
-    """Return ``text`` with everything GitHub does not autolink blanked.
-
-    Offsets are preserved, so a match found in the original can be tested
-    against the same span here. Blanking rather than deleting is what keeps the
-    two strings comparable.
-
-    **What this does not see, said rather than implied.** A code span whose
-    opening run is closed on a later line, a link whose text holds brackets,
-    and an HTML block that is not a comment are all read as prose, so a
-    reference in one of them is reported. That is the safe direction: this
-    function decides whether to *excuse* a reference, and being wrong here
-    means reporting one that a reader could have clicked, which a person sees.
-    Being wrong the other way hides an opaque reference, which nobody sees.
-    """
-    # Comments first: they may span lines, and they may hold anything.
-    masked = HTML_COMMENT_PATTERN.sub(lambda m: " " * len(m.group(0)), text)
-    labels = reference_definition_labels(masked)
-    out: list[str] = []
-    fence: str | None = None
-    indented = False
-    previous_blank = True
-    for line in masked.split("\n"):
-        blank = not line.strip()
-        opener = FENCE_PATTERN.match(line)
-        if fence is not None:
-            out.append(" " * len(line))
-            # A closing fence carries **only whitespace** after its marker, so
-            # a line that merely starts with backticks does not end the block.
-            # Measured on GitHub: three backticks, then a backtick run with a
-            # word after it, renders the rest as code and links nothing in it.
-            if (
-                opener
-                and opener.group("marker")[0] == fence[0]
-                and len(opener.group("marker")) >= len(fence)
-                and not line[opener.end() :].strip()
-            ):
-                fence = None
-            previous_blank = blank
-            continue
-        if opener:
-            fence = opener.group("marker")
-            out.append(" " * len(line))
-            previous_blank = blank
-            continue
-        # An indented code block opens only where no paragraph is open, and
-        # then **runs on** through its own indented lines and the blank lines
-        # between them. Clearing the state on the opening line meant the
-        # second line of every such block was read as prose.
-        if indented:
-            if blank or line[:4] == "    ":
-                out.append(" " * len(line))
-                previous_blank = blank
-                continue
-            indented = False
-        elif previous_blank and line[:4] == "    ":
-            indented = True
-            out.append(" " * len(line))
-            previous_blank = blank
-            continue
-        blanked = CODE_SPAN_PATTERN.sub(lambda m: " " * len(m.group(0)), line)
-        blanked = mask_link_labels(blanked, labels)
-        out.append(blanked)
-        previous_blank = blank
-    return "\n".join(out)
-
-
 def resolves_in_this_repository(label: str, matched: str, root: Path) -> bool:
     """Return whether the reference names something this repository holds.
 
     **This is a different question from whether the page links it, and it is
     the stronger one.** The rule asks that a file be interpretable *using only
     the contents of this repository*. A short hash that names a commit in this
-    repository's own history is interpretable by anyone holding the
-    repository, in a code span, in a fenced block, in a Python comment, in any
-    file type -- ``git show`` answers it without a network. The reference this
+    repository's own history is interpretable by anyone holding the repository
+    -- in a code span, in a fenced block, in a Python comment, in any file type
+    -- because ``git show`` answers it without a network. The reference this
     module was written to refuse is the opposite case: a hash from a branch
     that was squashed away, which resolves in no clone anybody has.
 
-    So the hash rule asks Git, and asks it everywhere. The hash-number
-    shorthand is *not* on this footing -- nothing in the repository resolves
-    it, only the renderer does -- so it stays with the rendering rule below.
+    It speaks for hashes alone. Nothing in the repository resolves a
+    hash-number shorthand, so that shape has no exemption at all; see the note
+    above the patterns for why the one it used to have was removed.
     """
-    return label == "a bare commit hash" and bool(
-        HASH_SHAPED.match(matched)
-    ) and commit_exists(matched, root)
-
-
-def github_renders_as_link(label: str, matched: str, root: Path) -> bool:
-    """Return whether GitHub links this reference when it renders the file."""
-    if label in (
-        "an unlinked issue",
-        "an unlinked pull request",
-        "an unlinked ticket",
-        "an unlinked project item",
-    ):
-        # GitHub links a hash-number reference whatever word precedes it, so a
-        # ticket or project spelling written with a hash reaches the same page.
-        # **The digits have to touch the hash.** The patterns above allow
-        # whitespace between them, and the spaced form is ordinary text on the
-        # page -- measured: the compact form comes back as an anchor and the
-        # spaced form does not -- so testing for a hash anywhere in the match
-        # excused a reference nothing resolves.
-        return COMPACT_SHORTHAND_PATTERN.search(matched) is not None
-    # A hash is settled by ``resolves_in_this_repository`` before this is
-    # asked, because the repository holding the commit is a better reason than
-    # the renderer linking it.
-    return False
+    return (
+        label == "a bare commit hash"
+        and bool(HASH_SHAPED.match(matched))
+        and commit_exists(matched, root)
+    )
 
 
 def trim_url(url: str) -> str:
@@ -593,6 +433,24 @@ def trim_url(url: str) -> str:
                 url = body
                 continue
         return url
+#: **There is no rendering exemption, and that is deliberate.** GitHub turns a
+#: hash-number reference in Markdown prose into a link, and for two rounds this
+#: module read the document to decide where that happens. The reading took 121
+#: lines across five functions, produced nine defects in two review rounds --
+#: fences inside a blockquote, code spans crossing lines, reference-link labels,
+#: shifted offsets, a URL inside a code span counted as resolving -- and
+#: excused, measured across this repository, **two distinct references**.
+#:
+#: The rule it serves asks for references "clearly linked from" the repository.
+#: An autolink is the renderer's doing rather than the file's, so the exemption
+#: was a kindness the rule never asked for. The two references it excused are
+#: recorded in the exemption fixture, where a reader sees the reason instead of
+#: a parser deriving it.
+#:
+#: A hash keeps its exemption, because its reason is different: a commit this
+#: repository holds is interpretable from the repository itself, in any file
+#: type and any context, with no renderer involved.
+
 #: A URL has parts, and which part a reference sits in decides whether the URL
 #: resolves it. An earlier version cut the whole string on every delimiter at
 #: once and matched against the pieces, so a **query parameter could
@@ -779,19 +637,6 @@ def names_in(
     return found
 
 
-def match_is_prose(prose: list[str], number: int, match: "re.Match[str]") -> bool:
-    """Return whether this match sits where GitHub would autolink it.
-
-    The mask holds a space wherever the renderer would not, so the match's own
-    span deciding it is what keeps the two readings aligned. A line the mask
-    does not cover is read as prose, which is the reporting direction.
-    """
-    if number - 1 >= len(prose):
-        return True
-    span = prose[number - 1][match.start() : match.end()]
-    return bool(span.strip())
-
-
 def references_in(
     path: Path,
     root: Path,
@@ -810,11 +655,7 @@ def references_in(
     relative = path.relative_to(root).as_posix()
     if python is None:
         python = path.suffix == ".py"
-    rendered = path.suffix.lower() in MARKDOWN_SUFFIXES
     body = path.read_text(encoding="utf-8", errors="replace")
-    # Only in a rendered file does the question arise, and computing the mask
-    # for a Python file would be work nothing reads.
-    prose = markdown_prose(body).split("\n") if rendered else []
     for number, line in enumerate(body.split("\n"), start=1):
         # Found with the greedy pattern so the whole run is blanked, then
         # trimmed so what is matched against is the URL itself.
@@ -832,10 +673,6 @@ def references_in(
                 if url_resolves(name, matched, urls):
                     continue
                 if resolves_in_this_repository(name, matched, root):
-                    continue
-                if rendered and match_is_prose(prose, number, match) and (
-                    github_renders_as_link(name, matched, root)
-                ):
                     continue
                 found.append(f"{relative}:{number}: {name}: {matched!r}")
     return found
@@ -871,9 +708,12 @@ def exempt_names_for(relative: str) -> dict[str, int]:
 #: a reader to interpret and is counted rather than silently dropped, because a
 #: corpus that shrinks without saying so is this module's own subject.
 #:
-#: Paths whose contents are machine-written are named here instead: a reference
-#: in one of them is not something a person wrote for a reader.
-UNSCANNED_PREFIXES = ("package-lock.json",)
+#: Paths whose contents are machine-written: a reference in one of them is not
+#: something a person wrote for a reader. **Matched as whole paths rather than
+#: as prefixes.** Testing with ``startswith`` also dropped any tracked file
+#: whose name merely began with one of these, so a hand-written
+#: ``package-lock.json.md`` would have left the corpus with nobody deciding it.
+GENERATED_FILES = frozenset({"package-lock.json"})
 
 #: The scan's own data: the positive controls, the exemption rows and the URL
 #: cases. **Every reference in these files is there on purpose**, and each is
@@ -931,10 +771,30 @@ def tracked_text_files() -> list[Path]:
     assert names, "git listed no file at all, so this scan has nothing to read"
     kept: list[str] = []
     undecodable: list[str] = []
+    escaping: list[str] = []
+    resolved_root = REPO_ROOT.resolve()
     for name in names:
-        if name.startswith(UNSCANNED_PREFIXES) or name.startswith(SCAN_DATA_PREFIX):
+        if name in GENERATED_FILES or name.startswith(SCAN_DATA_PREFIX):
             continue
         path = REPO_ROOT / name
+        # **A path Git lists is not automatically a path inside the checkout.**
+        # A symlink is listed under its own name and read through to wherever
+        # it points, so a pull request could aim one at runner-local data and
+        # this scan would read it -- and quote it back in a failed assertion.
+        # Refuse a symlink outright, and prove the resolved path is still under
+        # the root before opening it. This is the boundary the repository's own
+        # rules require of every file-reading tool here.
+        if path.is_symlink():
+            escaping.append(name)
+            continue
+        try:
+            resolved = path.resolve(strict=True)
+        except (OSError, RuntimeError):
+            undecodable.append(name)
+            continue
+        if resolved != resolved_root and resolved_root not in resolved.parents:
+            escaping.append(name)
+            continue
         try:
             path.read_text(encoding="utf-8")
         except (OSError, UnicodeDecodeError):
@@ -942,6 +802,10 @@ def tracked_text_files() -> list[Path]:
             undecodable.append(name)
             continue
         kept.append(name)
+    assert not escaping, (
+        "these tracked paths are symlinks or resolve outside the repository, "
+        "so this scan refuses to read them: %s" % escaping[:5]
+    )
     assert kept, (
         "git listed %d file(s) and none of them read as UTF-8 text, so either "
         "the repository has changed shape or this walk is broken; both need a "
@@ -1458,32 +1322,6 @@ def test_the_anaphora_patterns_speak_only_for_python(tmp_path: Path) -> None:
         assert not references_in(other, tmp_path), name
 
 
-def test_markdown_reads_what_github_turns_into_a_link(tmp_path: Path) -> None:
-    """A Markdown file in this repository is rendered, and rendering links some.
-
-    Measured on ``POST /markdown`` with ``mode=gfm`` and this repository as the
-    context: a hash-number reference and a short hash this repository holds
-    both come back as anchors, while the same number without the hash, a hash
-    this repository does not hold, and a review-comment id do not.
-    """
-    numbered = "See PR #" + "22" + " for the rest.\n"
-    markdown = tmp_path / "a.md"
-    markdown.write_text(numbered, encoding="utf-8")
-    assert not references_in(markdown, tmp_path)
-
-    python = tmp_path / "a.py"
-    python.write_text("# " + numbered, encoding="utf-8")
-    assert references_in(python, tmp_path)
-
-    # The same word without the hash is not linked, so it is still reported.
-    markdown.write_text("See issue " + "27" + " for the rest.\n", encoding="utf-8")
-    assert references_in(markdown, tmp_path)
-
-    # A review-comment id is never linked by the renderer.
-    markdown.write_text("Reported at " + "40" + "11993843" + ".\n", encoding="utf-8")
-    assert references_in(markdown, tmp_path)
-
-
 def test_a_commit_this_repository_holds_is_linked_and_one_it_does_not_is_not() -> None:
     """The hash rule asks Git the question the renderer asks."""
     head = subprocess.run(
@@ -1585,31 +1423,6 @@ def test_a_ticket_and_a_project_number_are_pointers_too(tmp_path: Path) -> None:
         assert not references_in(sample, tmp_path), line
 
 
-def test_the_shorthand_is_excused_only_where_the_renderer_links_it(
-    tmp_path: Path,
-) -> None:
-    """GitHub autolinks in prose and nowhere else.
-
-    Measured on ``POST /markdown`` with ``mode=gfm``: a hash-number reference
-    in plain prose comes back as an anchor, and the same reference inside an
-    inline code span, a fenced block, an indented code block, an HTML comment
-    or a link's text does not.
-    """
-    markdown = tmp_path / "a.md"
-    shorthand = "PR #" + "22"
-    markdown.write_text("See " + shorthand + " here.\n", encoding="utf-8")
-    assert not references_in(markdown, tmp_path)
-    for body in (
-        "See `" + shorthand + "` here.\n",
-        "```\nSee " + shorthand + " here.\n```\n",
-        "    See " + shorthand + " here.\n",
-        "<!-- See " + shorthand + " here. -->\n",
-        "[" + shorthand + "](https://example.com/x)\n",
-    ):
-        markdown.write_text(body, encoding="utf-8")
-        assert references_in(markdown, tmp_path), body
-
-
 def test_a_commit_this_repository_holds_needs_no_link_anywhere() -> None:
     """A hash the repository holds is interpretable from the repository.
 
@@ -1647,77 +1460,11 @@ def test_this_clone_can_answer_the_question_the_hash_rule_asks() -> None:
     assert "fetch-depth: 0" in workflow
 
 
-def test_the_prose_mask_keeps_every_offset() -> None:
-    """Blanking rather than deleting is what makes the two readings comparable."""
-    body = "a `b` c\n```\nd\n```\n<!-- e -->\nf\n"
-    masked = markdown_prose(body)
-    assert len(masked) == len(body)
-    for original, blanked in zip(body.split("\n"), masked.split("\n")):
-        assert len(original) == len(blanked)
-
-
 def _md(tmp_path: Path, body: str) -> bool:
     """Return whether the scan reports anything in one Markdown document."""
     document = tmp_path / "a.md"
     document.write_text(body, encoding="utf-8")
     return bool(references_in(document, tmp_path))
-
-
-def test_an_indented_code_block_runs_past_its_first_line(tmp_path: Path) -> None:
-    """A block runs through its indented lines and the blank lines between.
-
-    Clearing the state on the opening line meant the second line of every
-    indented block was read as prose, so a reference there was excused as
-    autolinkable although GitHub renders no link inside a code block.
-    """
-    shorthand = "issue #" + "27"
-    assert _md(tmp_path, "    first line of code\n    " + shorthand + "\n")
-    assert _md(tmp_path, "    code\n\n    " + shorthand + "\n")
-    # And the block ends where the indentation does.
-    assert not _md(tmp_path, "    code\n\nSee " + shorthand + " here.\n")
-
-
-def test_a_closing_fence_carries_only_whitespace(tmp_path: Path) -> None:
-    """A line that merely starts with the marker does not close the block.
-
-    CommonMark allows only spaces and tabs after a closing fence's marker, so
-    a marker run with a word after it keeps the block open -- measured on
-    GitHub, which renders the rest as code and links nothing in it.
-    """
-    shorthand = "issue #" + "27"
-    fence = "`" * 3
-    assert _md(tmp_path, fence + "\n" + fence + "not a close\n" + shorthand + "\n" + fence + "\n")
-    # The control: a real closing fence does end it.
-    assert not _md(tmp_path, fence + "\ncode\n" + fence + "\nSee " + shorthand + " here.\n")
-
-
-def test_a_links_text_is_masked_in_all_three_shapes(tmp_path: Path) -> None:
-    """Inline, full or collapsed reference, and shortcut.
-
-    **Plain brackets are not a link**, and that is the control that matters:
-    measured on GitHub, a hash-number reference inside brackets with no
-    matching definition *is* autolinked, so masking every bracket pair would
-    report references a reader can click.
-    """
-    shorthand = "issue #" + "27"
-    assert _md(tmp_path, "See [" + shorthand + "](https://example.com/other) here.\n")
-    assert _md(tmp_path, "See [" + shorthand + "][x] here.\n\n[x]: https://example.com/o\n")
-    assert _md(
-        tmp_path,
-        "See [" + shorthand + "][] here.\n\n[" + shorthand + "]: https://example.com/o\n",
-    )
-    assert not _md(tmp_path, "See [" + shorthand + "] here.\n")
-
-
-def test_the_shorthand_needs_its_digits_against_the_hash(tmp_path: Path) -> None:
-    """The spaced form is ordinary text on the page.
-
-    The patterns allow whitespace after the hash, so testing for a hash
-    anywhere in the match excused a reference nothing resolves. Measured: the
-    compact form comes back as an anchor and the spaced form does not.
-    """
-    assert _md(tmp_path, "See issue # " + "27" + " here.\n")
-    assert not _md(tmp_path, "See issue #" + "27" + " here.\n")
 
 
 def test_a_review_comment_is_read_by_its_noun_as_well_as_its_number(
@@ -1768,3 +1515,126 @@ def test_a_plain_trailing_semicolon_leaves_the_url() -> None:
     assert trim_url("https://github.com/o/r/x?a=b&hl;") == (
         "https://github.com/o/r/x?a=b"
     )
+
+
+def _md(tmp_path: Path, body: str) -> bool:
+    """Return whether the scan reports anything in one Markdown document."""
+    document = tmp_path / "a.md"
+    document.write_text(body, encoding="utf-8")
+    return bool(references_in(document, tmp_path))
+
+
+def test_a_shorthand_reference_is_reported_wherever_it_is_written(
+    tmp_path: Path,
+) -> None:
+    """There is no rendering exemption, so the context no longer matters.
+
+    Seven of these were separate findings while the module tried to decide
+    where GitHub autolinks: prose, a code span, a fenced block, a fence inside
+    a blockquote, an indented block, a reference link's text, and a spaced
+    hash. They are one rule now, and the rule is that the file links its own
+    references or records why it does not.
+    """
+    shorthand = "PR #" + "22"
+    fence = "`" * 3
+    for body in (
+        "See " + shorthand + " here.\n",
+        "See `" + shorthand + "` here.\n",
+        fence + "\n" + shorthand + "\n" + fence + "\n",
+        "> " + fence + "\n> " + shorthand + "\n> " + fence + "\n",
+        "    code\n    " + shorthand + "\n",
+        "See [" + shorthand + "][x] here.\n\n[x]: https://example.com/o\n",
+        "See PR # " + "22" + " here.\n",
+    ):
+        assert _md(tmp_path, body), body
+    # And a written link still resolves it, in any of those contexts.
+    assert not _md(
+        tmp_path, "See " + shorthand + " https://github.com/o/r/pull/22 here.\n"
+    )
+
+
+def test_a_commit_this_repository_holds_is_still_excused_everywhere(
+    tmp_path: Path,
+) -> None:
+    """The one exemption that survived, and the reason it is different.
+
+    A commit in this repository's history is interpretable from the repository
+    itself, with no renderer involved, so it needs no context test and no mask.
+    """
+    head = subprocess.run(
+        ["git", "-C", str(REPO_ROOT), "rev-parse", "--short=7", "HEAD"],
+        capture_output=True,
+    )
+    assert head.returncode == 0, head.stderr.decode("utf-8", "replace")
+    real = head.stdout.decode("utf-8").strip()
+    # The probe lives **inside** the repository, because the rule asks Git
+    # about this repository and a temporary directory is not one. Writing
+    # it to tmp_path made the first draft of this test fail for that
+    # reason rather than for the reason it was testing.
+    probe = REPO_ROOT / "_probe_hash_context.md"
+    absent = "0" * 3 + "beef" + "1" * 3
+    try:
+        for body, reported in (
+            ("Broken at `" + real + "` here.\n", False),
+            ("Broken at " + real + " here.\n", False),
+            ("```\nBroken at " + real + "\n```\n", False),
+            ("Broken at " + absent + " here.\n", True),
+        ):
+            probe.write_text(body, encoding="utf-8")
+            assert bool(references_in(probe, REPO_ROOT)) is reported, body
+    finally:
+        if probe.exists():
+            probe.unlink()
+
+
+def test_the_corpus_refuses_a_symlink() -> None:
+    """A path Git lists is not automatically a path inside the checkout.
+
+    A symlink is listed under its own name and read through to wherever it
+    points, so a pull request could aim one at runner-local data and this scan
+    would read it -- and quote it back in a failed assertion.
+
+    **What this test detects, measured by removing each guard in turn.** Two
+    guards implement the property -- refusing a symlink, and refusing a path
+    that resolves outside the root -- and either one alone is enough, so the
+    test passes with either removed and fails only with both gone. It pins the
+    property rather than a line, which is what it should do.
+
+    Its first draft pinned nothing: it raised an ``AssertionError`` and then
+    caught ``AssertionError``, checking the message for a word its own message
+    carried, so it passed with the code deleted. A check written to close a
+    security finding, reporting success on something it never examined, in the
+    pull request whose subject is that defect class.
+    """
+    link = REPO_ROOT / "_probe_symlink.md"
+    target = REPO_ROOT.parent / "_probe_symlink_outside.md"
+    for path in (link, target):
+        if path.is_symlink() or path.exists():
+            path.unlink()
+    try:
+        target.write_text("outside the checkout\n", encoding="utf-8")
+        try:
+            link.symlink_to(target)
+        except (OSError, NotImplementedError):  # pragma: no cover - platform
+            pytest.skip("this environment cannot create a symlink")
+        with pytest.raises(AssertionError) as raised:
+            scoped_paths()
+        assert "_probe_symlink.md" in str(raised.value), raised.value
+        assert "refuses to read" in str(raised.value), raised.value
+    finally:
+        for path in (link, target):
+            if path.is_symlink() or path.exists():
+                path.unlink()
+
+
+def test_a_generated_file_is_matched_as_a_whole_path() -> None:
+    """The exclusion names files, not prefixes.
+
+    Testing with ``startswith`` also dropped any tracked file whose name merely
+    began with one of these, so a hand-written companion document would have
+    left the corpus with nobody deciding that.
+    """
+    assert "package-lock.json" in GENERATED_FILES
+    for near_miss in ("package-lock.json.md", "package-lock.jsonc",
+                      "package-lock.json.notes"):
+        assert near_miss not in GENERATED_FILES, near_miss
