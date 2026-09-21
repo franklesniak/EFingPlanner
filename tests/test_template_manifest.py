@@ -483,7 +483,7 @@ AZURE_DEVOPS_GUIDE_REFERENCE_PATHS = (
     "docs/PR_REVIEW_PROMPTS.md",
     "schemas/README.md",
 )
-ISSUE_694_PARTIAL_PROTECTED_DOC_MODULES = {
+PARTIAL_PROTECTED_DOC_MODULES = {
     "baseline",
     "agent-instructions",
     "github-platform",
@@ -493,7 +493,7 @@ ISSUE_694_PARTIAL_PROTECTED_DOC_MODULES = {
     "markdown",
     "powershell",
 }
-ISSUE_694_PROTECTED_DOC_PATHS = (
+PROTECTED_DOC_PATHS = (
     ".github/copilot-instructions.md",
     ".github/instructions/docs.instructions.md",
     ".github/instructions/gitattributes.instructions.md",
@@ -2951,11 +2951,11 @@ def test_pr_template_reference_pruning_follows_module_boundaries() -> None:
 
 def test_partial_reference_stripping_leaves_protected_docs_clean() -> None:
     """Partial adoption must leave retained protected docs free of excluded references."""
-    included_modules = ISSUE_694_PARTIAL_PROTECTED_DOC_MODULES
+    included_modules = PARTIAL_PROTECTED_DOC_MODULES
     state = _excluded_module_report_state(included_modules)
     failures: list[str] = []
 
-    for relative_path in ISSUE_694_PROTECTED_DOC_PATHS:
+    for relative_path in PROTECTED_DOC_PATHS:
         stripped_text = _strip_inline_blocks_for_modules(relative_path, included_modules)
         findings = EXCLUDED_MODULE_REPORTER.protected_document_prose_reference_findings_for_text(
             relative_path,
@@ -2989,13 +2989,13 @@ def test_partial_reference_stripping_preserves_retained_instruction_contracts() 
             contract_mapping.get("requires_modules"),
             "requires_modules must be a list of strings",
         )
-        if not set(required_modules).issubset(ISSUE_694_PARTIAL_PROTECTED_DOC_MODULES):
+        if not set(required_modules).issubset(PARTIAL_PROTECTED_DOC_MODULES):
             continue
         relative_path = contract_mapping.get("path")
         assert isinstance(relative_path, str), "contract path must be a string"
         stripped_text = _strip_inline_blocks_for_modules(
             relative_path,
-            ISSUE_694_PARTIAL_PROTECTED_DOC_MODULES,
+            PARTIAL_PROTECTED_DOC_MODULES,
         )
         checked_contracts += 1
 

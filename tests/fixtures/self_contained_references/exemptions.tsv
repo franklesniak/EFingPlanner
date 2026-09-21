@@ -1,16 +1,30 @@
-text	tests/test_materialize_downstream_adoption.py	0123456789abcdef0123456789abcdef01234567	a synthetic fixture hash
-text	tests/test_report_excluded_module_references.py	0123456789abcdef0123456789abcdef01234567	a synthetic fixture hash
-text	tests/test_template_manifest.py	0123456789abcdef0123456789abcdef01234567	a synthetic fixture hash
-text	tests/test_template_sync_materialization_helpers.py	0123456789abcdef0123456789abcdef01234567	a synthetic fixture hash
-text	tests/test_validate_downstream_adoption.py	0123456789abcdef0123456789abcdef01234567	a synthetic fixture hash
-text	tests/test_validate_instruction_contracts.py	0123456789abcdef0123456789abcdef01234567	a synthetic fixture hash
-text	tests/test_validate_marker.py	0123456789abcdef0123456789abcdef01234567	a synthetic fixture hash
-text	tests/test_validate_marker.py	89abcdef0123456789abcdef0123456789abcdef	a second synthetic fixture hash
-text	tests/test_validate_marker.py	89abcdef	the abbreviation of the second synthetic fixture hash
-name	tests/test_materialize_downstream_adoption.py	ISSUE_692_NO_PYTHON_MODULES	an upstream tracker issue number in a fixture name
-name	tests/test_materialize_downstream_adoption.py	ISSUE_693_BASELINE_DOCS	an upstream tracker issue number in a fixture name
-name	tests/test_materialize_downstream_adoption.py	ISSUE_693_EXCLUDED_DOC_REFERENCES	an upstream tracker issue number in a fixture name
-name	tests/test_materialize_downstream_adoption.py	ISSUE_693_PARTIAL_DOC_MODULES	an upstream tracker issue number in a fixture name
-name	tests/test_materialize_downstream_adoption.py	ISSUE_693_RETAINED_DOC_REFERENCES	an upstream tracker issue number in a fixture name
-name	tests/test_template_manifest.py	ISSUE_694_PARTIAL_PROTECTED_DOC_MODULES	an upstream tracker issue number in a fixture name
-name	tests/test_template_manifest.py	ISSUE_694_PROTECTED_DOC_PATHS	an upstream tracker issue number in a fixture name
+text	tests/test_materialize_downstream_adoption.py	0123456789abcdef0123456789abcdef01234567	1	a synthetic fixture hash
+text	tests/test_report_excluded_module_references.py	0123456789abcdef0123456789abcdef01234567	1	a synthetic fixture hash
+text	tests/test_template_manifest.py	0123456789abcdef0123456789abcdef01234567	1	a synthetic fixture hash
+text	tests/test_template_sync_materialization_helpers.py	0123456789abcdef0123456789abcdef01234567	1	a synthetic fixture hash
+text	tests/test_validate_downstream_adoption.py	0123456789abcdef0123456789abcdef01234567	1	a synthetic fixture hash
+text	tests/test_validate_instruction_contracts.py	0123456789abcdef0123456789abcdef01234567	1	a synthetic fixture hash
+text	tests/test_validate_marker.py	0123456789abcdef0123456789abcdef01234567	1	a synthetic fixture hash
+text	tests/test_validate_marker.py	89abcdef0123456789abcdef0123456789abcdef	2	a second synthetic fixture hash
+text	tests/test_validate_marker.py	89abcdef	1	the abbreviation of the second synthetic fixture hash
+text	schemas/examples/template-sync-marker/invalid/deferred-candidate-directory-path.yml	89abcdef0123456789abcdef0123456789abcdef	1	a synthetic commit hash in a schema example
+text	schemas/examples/template-sync-marker/invalid/empty-instruction-waiver-reason.yml	0123456789abcdef0123456789abcdef01234567	1	a synthetic commit hash in a schema example
+text	schemas/examples/template-sync-marker/invalid/malformed-protected-guide-waiver-contract-key.yml	0123456789abcdef0123456789abcdef01234567	1	a synthetic commit hash in a schema example
+text	schemas/examples/template-sync-marker/invalid/missing-instruction-waiver-authorization.yml	0123456789abcdef0123456789abcdef01234567	1	a synthetic commit hash in a schema example
+text	schemas/examples/template-sync-marker/invalid/missing-protected-guide-waiver-target.yml	0123456789abcdef0123456789abcdef01234567	1	a synthetic commit hash in a schema example
+text	schemas/examples/template-sync-marker/invalid/missing-remove-local-reason.yml	issue 632	1	an upstream tracker issue number inside a schema example document
+text	schemas/examples/template-sync-marker/invalid/tailored-non-content-decision.yml	issue 632	1	an upstream tracker issue number inside a schema example document
+text	schemas/examples/template-sync-marker/valid/full.yml	0123456789abcdef0123456789abcdef01234567	1	a synthetic commit hash in a schema example
+text	schemas/examples/template-sync-marker/valid/full.yml	89abcdef0123456789abcdef0123456789abcdef	1	a synthetic commit hash in a schema example
+text	schemas/examples/template-sync-marker/valid/full.yml	issue 632	1	an upstream tracker issue number inside a schema example document
+text	schemas/examples/template-sync-marker/valid/instruction-contract-waiver.yml	0123456789abcdef0123456789abcdef01234567	1	a synthetic commit hash in a schema example
+text	schemas/examples/template-sync-marker/valid/placeholder-waiver.yml	0123456789abcdef0123456789abcdef01234567	1	a synthetic commit hash in a schema example
+text	schemas/examples/template-sync-marker/valid/protected-decisions.yml	0123456789abcdef0123456789abcdef01234567	1	a synthetic commit hash in a schema example
+text	schemas/examples/template-sync-marker/valid/protected-decisions.yml	issue 632	1	an upstream tracker issue number inside a schema example document
+text	schemas/examples/template-sync-marker/valid/protected-guide-contract-waiver.yml	0123456789abcdef0123456789abcdef01234567	1	a synthetic commit hash in a schema example
+text	schemas/examples/template-sync-marker/valid/source-ref-first-adoption.yml	89abcdef0123456789abcdef0123456789abcdef	1	a synthetic commit hash in a schema example
+text	TEMPLATE_UPDATE_PROCEDURE.md	issue 123	1	a placeholder issue number in a worked procedure example
+text	tests/fixtures/self_contained_references/reported_lines.txt	PR #22	1	a positive control this scan is required to report
+text	tests/fixtures/self_contained_references/reported_lines.txt	issue 27	1	a positive control this scan is required to report
+text	tests/fixtures/self_contained_references/reported_lines.txt	4011993843	1	a positive control this scan is required to report
+text	tests/fixtures/self_contained_references/reported_lines.txt	7e4463f	1	a positive control this scan is required to report

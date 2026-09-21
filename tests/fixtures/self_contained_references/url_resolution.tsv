@@ -20,3 +20,9 @@ refuses	# broken at 7E4463F
 refuses	# broken at 7e4463f
 resolves	# broken at 7E4463F <https://github.com/o/r/commit/7e4463f0a1b2c3>
 resolves	# broken at 7e4463f <https://github.com/o/r/commit/7e4463f0a1b2c3>
+refuses	# issue 27 https://github.com/o/r?issues=27
+refuses	# broken at 7e4463f https://github.com/o/r?commit=7e4463f0a1b2
+refuses	# reported at 4011993843 https://github.com/o/r?q=discussion_r4011993843
+refuses	# issue 27 https://example.com/x#issues/27
+resolves	# issue 27 https://github.com/o/r/issues/27?tab=comments
+resolves	# reported at 4011993843 https://github.com/o/r/pull/1?w=1#discussion_r4011993843
