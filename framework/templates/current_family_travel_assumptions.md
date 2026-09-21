@@ -10,9 +10,9 @@ Keep no sensitive personal data here. Do not write exact booked dates. Do not wr
 | --- | --- |
 | Rough season window (or a few candidate months) | |
 | Rough budget band -- a not-to-exceed signal, not a final number, in the kid-sized form the child uses: about $____ per person per day, about $____ per day for the family, or "we can afford this hotel tier: ____" | |
-| Rough trip shape: round trip (in and out of one city), or open-jaw (in one city, out of another)? | |
-| Likely arrival city | |
-| Likely departure city (leave open if not known yet) | |
+| Rough trip shape: in and out of the same place (round trip), in one place and out of another (open-jaw), or one base you stay at and travel from? | |
+| Likely arrival place | |
+| Likely departure place (leave open if not known yet) | |
 | Mobility constraints (none known is fine) | |
 | Dietary constraints (none known is fine) | |
 | Sensory constraints (none known is fine) | |
@@ -21,4 +21,4 @@ Keep no sensitive personal data here. Do not write exact booked dates. Do not wr
 
 Two adult notes. First, the full trip total is a grown-up number. Keep it off the child's worksheet. Second, if the AI helper answer is yes, the child does Session 09 first. That comes before any AI tool is used. The grown-ups also follow the adult-operated pattern in the privacy and safety rules.
 
-Has your family never been to the destination? Then naming just the arrival city is a fine answer. Leave the trip shape and the exit city open. You can firm them up later on the full Core path, by the City Shortlist checkpoint. For the First Taste, leaving them open is fine.
+Has your family never been to the destination? Then naming just the arrival place is a fine answer. Leave the trip shape and the exit place open. You can firm them up later on the full Core path, by the City Shortlist checkpoint. For the First Taste, leaving them open is fine.
