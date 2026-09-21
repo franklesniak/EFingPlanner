@@ -21,7 +21,7 @@ This page is distinct from both of those. It defines no travel words and no dest
 - **[Core Finish Line](../PROJECT_ROADMAP.md)** -- the shortest route to a usable plan, ending at Checkpoint 5.
 - **[First Taste path](../PROJECT_ROADMAP.md)** -- the roughly thirteen-session minimal path that still produces a complete mini-plan.
 - **Mini-plan** -- the thin but complete plan the First Taste path produces: a when-to-go call, one or two places, a short must-see list, a rough budget check, and the child's one special pick.
-- **[Source Log](../templates/source_log.md)** -- the child's running record of every source used, one row per source, kept for the whole project.
+- **[Source Log](../templates/source_log.md)** -- the child's running record of every source used, one copy of the table per source, kept for the whole project.
 - **[Decision log](../templates/decision_record.md)** -- the record of what was decided, when, and why, so a decision is not re-argued three weeks later.
 - **[Question parking lot](../templates/question_parking_lot.md)** -- where a question that would derail the current session goes instead.
 - **[Cut list](../templates/cut_list.md)** -- the things the child chose to leave out, kept on purpose so the choosing is visible.

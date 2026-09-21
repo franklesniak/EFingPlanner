@@ -14,7 +14,7 @@ A thoughtful, sourced mini-plan the family can actually use: a when-to-go recomm
 
 ## How a destination fits in
 
-One destination pack ships with this repository, and you do not have to choose a build. The Phases 0-2 sessions carry no facts about any particular place. Where a session needs one, it says "open this session's Destination Notes," and the matching insert in the pack supplies it. Reference pages in the same pack hold the longer facts the sessions point at.
+One [destination pack](destinations/japan/README.md) ships with this repository, and you do not have to choose a build. The Phases 0-2 sessions carry no facts about any particular place. Where a session needs one, it says "open this session's Destination Notes," and the matching insert in the pack supplies it. Reference pages in the same pack hold the longer facts the sessions point at.
 
 **Which kind of "reuse" you actually need:** another US family doing Japan needs only their own [Trip-Basics card](framework/templates/trip_basics.md) (airport, party size, trip length, roster) -- near-zero cost, and the real reuse goal. Rebuilding for a *different destination* is the only thing the heavier machinery is for. They are not the same feature.
 

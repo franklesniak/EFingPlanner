@@ -16,7 +16,7 @@ If you like strong structure and tabbing things as you go makes you happy, go ah
 
 Five things run the whole length of the project. They're five labelled sections inside your one notebook, so you keep one thing in rough order instead of five separate piles.
 
-- **[Source Log](../templates/source_log.md).** One row for every source you use. This is the one that makes your recommendation believable.
+- **[Source Log](../templates/source_log.md).** One copy of the table for every source you use. This is the one that makes your recommendation believable.
 - **[Research cards](../templates/city_research_card.md).** One card per place you look into, so two places can sit side by side.
 - **[Decision log](../templates/decision_record.md).** What you decided, when, and why. It stops you arguing the same thing twice.
 - **[Question parking lot](../templates/question_parking_lot.md).** Where a question goes when it would pull you off today's session.

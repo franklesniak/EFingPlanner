@@ -38,7 +38,7 @@ Score each one from 1 to 5, using the anchors.
 Three times, and no more.
 
 1. **At the start**, before the first session your child does.
-2. **At the midpoint**, around Checkpoint 3 or 4.
+2. **At the midpoint**. On the First Taste path that is Checkpoint 1, Session 14. On the full path it is Checkpoint 3 or 4.
 3. **At the end**, after the final reflection.
 
 Three readings months apart show a direction. Scoring every session would show your mood.

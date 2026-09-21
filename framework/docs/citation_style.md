@@ -74,5 +74,5 @@ The fourth part is the one people drop, and it is the one that keeps research mo
 ## Where these are used
 
 - [Simple citation forms](../templates/simple_citation.md) is the printable page. It carries all five forms and the three verification fields as fill-in tables.
-- [Source log](../templates/source_log.md) is the running record. One row per source, kept for the whole project.
+- [Source log](../templates/source_log.md) is the running record. One copy of the table per source, kept for the whole project.
 - [Source trustworthiness](source_trustworthiness.md) is how to judge whether a source was worth citing in the first place.

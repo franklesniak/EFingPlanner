@@ -26,7 +26,7 @@ Want a rough signal of how the executive-function side is going? The optional [e
 - Role: 5-minute check-in; relay the interview question to any traveler your child cannot reach.
 - Prep: the assumptions page, filled in before this session; the Trip-Basics roster; blank profile and interview pages.
 - Look for: one traveler profile per person on the roster, plus the notes from one interview.
-- Coaching question: "Which traveler will be hardest to plan around, and why?"
+- Coaching question: "Which planning need will change the trip the most?"
 - Pitfall: letting a medical reason onto the page. The need to design around goes down; the why stays with you.
 
 ## Session 03: What Makes a Good Trip
