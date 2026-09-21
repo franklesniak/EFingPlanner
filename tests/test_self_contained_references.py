@@ -111,14 +111,25 @@ def references_in(path: Path, root: Path) -> list[str]:
 
 
 def scoped_paths() -> list[Path]:
-    """Return every file in scope, with the scope proved non-empty first."""
+    """Return every file in scope, with the scope proved complete first.
+
+    The message says how many files the scan did collect, and from which
+    globs, before it names the ones it should have. The two failure modes are
+    different repairs -- a glob that matches nothing is a typo in the glob, and
+    a glob that matches most things is a file that moved -- and a message that
+    says only "collected nothing from" reads as the first when it is the
+    second.
+    """
     paths: set[Path] = set()
     for glob in SCOPED_GLOBS:
         paths.update(REPO_ROOT.glob(glob))
     found = sorted(paths)
     relative = {path.relative_to(REPO_ROOT).as_posix() for path in found}
     missing = [name for name in REQUIRED_MEMBERS if name not in relative]
-    assert not missing, f"the scan collected nothing from: {missing}"
+    assert not missing, (
+        f"the scan collected {len(found)} file(s) from {list(SCOPED_GLOBS)}; "
+        f"required files missing from that set: {missing}"
+    )
     return found
 
 
@@ -184,3 +195,31 @@ def test_a_code_pass_is_not_a_review_round(tmp_path: Path) -> None:
         encoding="utf-8",
     )
     assert not references_in(sample, tmp_path)
+
+
+def test_the_scope_failure_says_how_much_it_did_collect() -> None:
+    """An incomplete scan and an empty one are different repairs.
+
+    The message used to read "the scan collected nothing from: [one file]",
+    which names the right file and reads as the wrong failure. It now carries
+    the count and the globs, so a scope holding thirty files and missing one is
+    not reported in the words of a scope holding none.
+    """
+    import tests.test_self_contained_references as module
+
+    kept = module.REQUIRED_MEMBERS
+    module.REQUIRED_MEMBERS = (*kept, "tests/a_file_that_is_not_there.py")
+    try:
+        scoped_paths()
+    except AssertionError as failure:
+        message = str(failure)
+    else:  # pragma: no cover - the assertion above must fire
+        raise AssertionError("the scope assertion did not fire")
+    finally:
+        module.REQUIRED_MEMBERS = kept
+
+    collected = len(scoped_paths())
+    assert collected >= len(REQUIRED_MEMBERS)
+    assert f"collected {collected} file(s)" in message
+    assert "a_file_that_is_not_there.py" in message
+    assert "collected nothing" not in message
