@@ -22,7 +22,7 @@ Circle one word that sounds more like your family: **busy** or **relaxed**. That
 
 ## Steps
 
-There is no single "right" trip. Different families like different styles. Now that you know a little about Japan, choose the style that fits your family. Look back at your Session 03 goals to remind yourself what people wanted.
+There is no single "right" trip. Different families like different styles. Now that you know a little about your destination, choose the style that fits your family. Look back at your Session 03 goals to remind yourself what people wanted.
 
 For each pair, circle the one your family leans toward (it is okay to land in the middle):
 
@@ -49,7 +49,7 @@ Your Travel style worksheet -- your family's leanings and a one-sentence style s
 
 ## Stop Point
 
-You are done when you have made your six choices and written your one-sentence style summary. There are no wrong answers here -- it is about fit.
+You are done when you have made your six choices and written your one-sentence style summary. There are no wrong answers here. It is about fit.
 
 ## Source Check
 

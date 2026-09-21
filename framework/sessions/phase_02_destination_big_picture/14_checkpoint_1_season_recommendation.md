@@ -14,7 +14,7 @@ You are here: Phase 2 (Destination Big Picture), First Taste step 8 of 13. **Thi
 
 ## Goal
 
-Recommend the best time for your family to visit Japan, and write it down as your first real decision.
+Recommend the best time for your family to visit your destination, and write it down as your first real decision.
 
 ## Start Here
 
@@ -22,7 +22,7 @@ Write "My season recommendation" at the top of a fresh page. You are starting yo
 
 ## Steps
 
-You have compared the seasons. Now you make a recommendation -- a real one the grown-ups will use. A good recommendation gives a clear pick *and* the reasons behind it.
+You have compared the seasons. Now you make a recommendation the grown-ups will use. A good recommendation gives a clear pick *and* the reasons behind it.
 
 On a [Decision Record page](../../templates/decision_record.md), write:
 
@@ -34,13 +34,15 @@ On a [Decision Record page](../../templates/decision_record.md), write:
 6. **Your sources** -- from your Source Log.
 7. **Questions for the grown-ups** (for example, "Does this fit school and work?").
 
-Then bring it to a grown-up for a real family talk. They will weigh school and work schedules, weather, crowds, cost, and holidays. They may agree, or adjust it with you -- either way, your work shaped the decision.
+Then bring it to a grown-up for a family talk. They will weigh school and work schedules, weather, crowds, cost, and holidays. They may agree, or adjust it with you. Either way, your work shaped the decision.
+
+<!-- density-exempt: real -- the progress acknowledgment is preserved in its built wording; the first use separates actual project progress from a badge, and the second is the sentence's own predicate -->
 
 **This is real progress.** Once your season is set, your family knows *when* you might go. The trip is becoming real, and you helped decide it.
 
-*A calm choice point:* this is a natural moment to decide to keep going, take a break, or stop -- and all three are okay. There is no wrong choice here.
+*A calm choice point:* this is a natural moment to decide to keep going, take a break, or stop. All three are okay. There is no wrong choice here.
 
-*One thing to know (mostly for the grown-ups):* a few must-do experiences and popular hotels can fill up months ahead. You do not have to lock in dates now -- just know that waiting a long time can make some options harder to get.
+*One thing to know (mostly for the grown-ups):* a few must-do experiences and popular hotels can fill up months ahead. You do not have to lock in dates now. Just know that waiting a long time can make some options harder to get.
 
 ## Workspace
 
@@ -54,7 +56,7 @@ Your Season recommendation report (your first decision-log entry): a season pick
 
 ## Stop Point
 
-You are done when you have a season pick with reasons and sources, and you have shared it with a grown-up. You do not need exact dates -- a season and maybe some months is a complete recommendation.
+You are done when you have a season pick with reasons and sources, and you have shared it with a grown-up. You do not need exact dates. A season and maybe some months is a complete recommendation.
 
 ## Source Check
 
@@ -70,7 +72,7 @@ Stuck? Use the [When I'm Stuck card](../../student_guide/when_im_stuck.md) in yo
 
 ## Optional Extension
 
-If you have extra energy, write one line about *why* you did not pick your backup season. Explaining a choice you did *not* make is a real planner skill. If not, you are done.
+If you have extra energy, write one line about *why* you did not pick your backup season. Explaining a choice you did *not* make is a planner skill. If not, you are done.
 
 ## Parent Notes
 

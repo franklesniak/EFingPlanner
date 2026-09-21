@@ -28,9 +28,9 @@ If you don't have a Source Log page yet, copy the blank [Source Log template](..
 
 A source is where a fact comes from. It could be a website, a book, a map, a video, or a person. Good planners always know *where* a fact came from, so they can trust it and check it later.
 
-You're going to practice on one real fact about Japan.
+You're going to practice on one real fact about the place you are going.
 
-1. Pick one small thing you're curious about. For example: "What is the capital of Japan?" or "What is a bullet train called?"
+1. Pick one small thing you're curious about. For example: "What is the capital city?" or "What money do they use?"
 2. Look it up in **one** place: a book you have, or a website an adult says is okay.
 3. In your Source Log, fill in one entry about what you used:
    - **What I learned** -- the fact, in your own words.

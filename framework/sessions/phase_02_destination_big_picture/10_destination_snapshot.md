@@ -2,7 +2,9 @@
 
 # Session 10: Destination Snapshot
 
-You are here: Phase 2 (Destination Big Picture), First Taste step 5 of 13. Previous: [05 Good Sources, Bad Sources](../phase_01_research_skills/05_good_sources_bad_sources.md) | Next: [12 Weather, Seasons, and Events](12_weather_seasons_and_events.md)
+You are here: Phase 2 (Destination Big Picture), First Taste step 5 of 13. Previous: [08 Web Research Practice](../phase_01_research_skills/08_web_research_practice.md) (or [09 AI as Helper, Not Boss](../phase_01_research_skills/09_ai_as_helper_not_boss.md) if your family uses AI) | Next: [11 Regions and Cities Overview](11_regions_and_cities_overview.md)
+
+*On the First Taste path, go straight to [12 Weather, Seasons, and Events](12_weather_seasons_and_events.md). Session 11 is not one of the 13.*
 
 **For parents:**
 
@@ -14,25 +16,27 @@ You are here: Phase 2 (Destination Big Picture), First Taste step 5 of 13. Previ
 
 ## Goal
 
-Make one snapshot page of the big facts about Japan.
+Make one snapshot page of the big facts about your destination.
 
 ## Start Here
 
-Write "Japan" at the top of a fresh page and draw a box for your snapshot. That is your start.
+Write your destination's name at the top of a fresh page and draw a box for your snapshot. That is your start.
 
 ## Steps
 
-Before you plan *where* to go, it helps to know a few big facts. You do not need to memorize anything -- this is just a snapshot to get oriented.
+Open this session's Destination Notes.
+
+Before you plan *where* to go, it helps to know a few big facts. You do not need to memorize anything. This is just a snapshot to get oriented.
 
 Fill in your snapshot page. Look up anything you are not sure about, and add it to your Source Log.
 
-1. **Capital:** Japan's capital is Tokyo.
-2. **Major islands:** the four big ones are Honshu, Hokkaido, Kyushu, and Shikoku.
-3. **Currency:** the yen.
-4. **Main language:** Japanese.
-5. **Time difference:** use the hours-ahead figure on your Trip-Basics card -- Japan is roughly half a day ahead, and a grown-up confirms your home zone's exact current offset (it varies by US zone and season).
-6. **Getting there:** it is a long flight from the US. A grown-up can tell you roughly how long from your home airport. (Flights are the grown-ups' job.)
-7. **Three surprising facts:** find three things about Japan that surprise you, from a trusted source. Write them down.
+1. **Capital:** from your Destination Notes.
+2. **Major land features:** from your Destination Notes.
+3. **Currency:** from your Destination Notes.
+4. **Main language:** from your Destination Notes.
+5. **Time difference:** use the time-difference figure on your Trip-Basics card; a grown-up confirms your home zone's exact current offset.
+6. **Getting there:** a grown-up can tell you roughly how long the trip takes from home, and how you will travel. (Travel arrangements are the grown-ups' job.)
+7. **Three surprising facts:** find three things about your destination that surprise you, from a trusted source. Write them down.
 8. **One question for later:** write one thing you want to find out. Park it for now.
 
 ## Workspace
@@ -43,11 +47,11 @@ You can say your answers to an adult who writes them, or draw them, if that is e
 
 ## Artifact Created
 
-Your Destination snapshot page: the big facts about Japan, plus three surprising facts and one question for later.
+Your Destination snapshot page: the big facts about your destination, plus three surprising facts and one question for later.
 
 ## Stop Point
 
-You are done when your snapshot has the capital, islands, currency, language, time difference, three surprising facts, and one question. Do not try to learn everything about Japan today -- a snapshot is enough.
+You are done when your snapshot has the capital, major land features, currency, language, time difference, three surprising facts, and one question. Do not try to learn everything about your destination today. A snapshot is enough.
 
 ## Source Check
 
@@ -63,8 +67,8 @@ Stuck? Use the [When I'm Stuck card](../../student_guide/when_im_stuck.md) in yo
 
 ## Optional Extension
 
-If you have extra energy, find today's *exact* time difference between your home and Japan yourself, and write down why it can change (hint: daylight saving time). It is a small "facts have conditions" check. If not, you are done.
+If you have extra energy, find today's *exact* time difference between your home and your destination yourself, and write down why it can change (hint: daylight saving time). It is a small "facts have conditions" check. If not, you are done.
 
 ## Parent Notes
 
-The goal is orientation, not mastery -- a snapshot, not a report. The time difference comes from your Trip-Basics card so the session stays reusable; do not expect a pinned number here. If your child gets pulled into a fun rabbit hole, that is fine for a few minutes, then steer back to finishing the snapshot. Keep flight specifics as "a grown-up handles that."
+The goal is orientation, not mastery -- a snapshot, not a report. The time difference comes from your Trip-Basics card so the session stays reusable; do not expect a pinned number here. If your child gets pulled into a fun rabbit hole, that is fine for a few minutes, then steer back to finishing the snapshot. Keep travel specifics as "a grown-up handles that."

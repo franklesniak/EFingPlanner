@@ -2,7 +2,7 @@
 
 # Session 12: Weather, Seasons, and Events
 
-You are here: Phase 2 (Destination Big Picture), First Taste step 6 of 13. Previous: [10 Destination Snapshot](10_destination_snapshot.md) | Next: [13 Trip Goals and Travel Style](13_trip_goals_and_travel_style.md)
+You are here: Phase 2 (Destination Big Picture), First Taste step 6 of 13. Previous: [11 Regions and Cities Overview](11_regions_and_cities_overview.md) | Next: [13 Trip Goals and Travel Style](13_trip_goals_and_travel_style.md)
 
 **For parents:**
 
@@ -10,49 +10,43 @@ You are here: Phase 2 (Destination Big Picture), First Taste step 6 of 13. Previ
 - Planner skill: comparing choices
 - Estimated time: 20-30 minutes
 - Parent involvement: 5-minute check-in
-- Materials: a device with the kid-safe filter on, the [seasons reference](../../../destinations/japan/reference/seasons_weather_events.md), your Source Log
+- Materials: a device with the kid-safe filter on, this session's Destination Notes and your destination pack's seasons reference, your Source Log
 
 ## Goal
 
-Compare Japan's four seasons so you can recommend a good time to go.
+Compare your destination's seasons so you can recommend a good time to go.
 
 ## Start Here
 
-Draw four boxes on a page and label them Spring, Summer, Fall, and Winter. That is your season chart, started.
+Draw one box for each season your Destination Notes list. Label each box. That is your season chart, started.
 
 ## Steps
 
-Japan has four clear seasons, and each one feels different. Your job is to compare them, not to pick the "perfect" one. Use the [seasons reference](../../../destinations/japan/reference/seasons_weather_events.md) and a trusted source, and record what you use.
+Open this session's Destination Notes. Your destination's seasons each feel different. Your job is to compare them, not to pick the "perfect" one. Use your Destination Notes and a trusted source, and record what you use.
 
 For each season, jot a few notes:
 
-1. **Weather:** what is it like? (Spring is mild with cherry blossoms; summer is hot and humid; fall is cool with colorful leaves; winter is cold, with snow in the north.)
+1. **Weather:** what is it like?
 2. **Crowds and cost:** busier, more popular times usually cost more.
 3. **School and work:** does this season fit your family's calendar? (Ask a grown-up.)
 
-Now add the special things to watch for. These are patterns, but you must **check this year's exact dates** -- they move:
+Add the special things your Destination Notes flag. These are patterns, but you must **check this year's exact dates** -- they move.
 
-- **Cherry blossoms** (spring) and **fall colors** (autumn) are big draws.
-- **Rainy season** is roughly June for most of Japan.
-- **Summer heat and humidity** are real -- it can be a health concern on long walking days, for you and for anyone who tires more easily. Plan summer days gently, with water.
-- **Typhoon season** runs roughly from late spring (around May) through autumn, with a peak in late summer and early autumn -- so it matters for late-spring and summer trips too, not just fall. A grown-up watches the forecast.
-- **Busy travel windows** (crowds and higher prices; confirm this year's dates): Golden Week (roughly late April into early May), Obon (roughly mid-August), and the New Year period (roughly late December into early January, when many places also close).
-
-**A note about cherry blossoms:** you can plan for the *season*, but no one can promise the exact peak week months ahead -- it shifts year to year and forecasts only firm up in late winter. That is normal. Grown-ups book on the usual averages and keep plans flexible. You do not have to control the exact day.
+Some timing cannot be pinned even after you check, and your Destination Notes say which of your destination's patterns work that way.
 
 ## Workspace
 
-Use your four-box season chart for the notes, and your Source Log for what you looked up.
+Use your season chart for the notes, and your Source Log for what you looked up.
 
 You can say your answers to an adult who writes them, or draw them, if that is easier.
 
 ## Artifact Created
 
-Your Season comparison chart -- four seasons with weather, crowds and cost, calendar fit, and the special things to watch for.
+Your Season comparison chart -- every season your Destination Notes list, with weather, crowds and cost, calendar fit, and the special things to watch for.
 
 ## Stop Point
 
-You are done when all four seasons have a few notes and you have marked at least one busy window to be careful about. You do not need exact dates today -- "check this year" is the right answer.
+You are done when every season on your chart has a few notes and you have marked at least one busy window to be careful about. You do not need exact dates today: "check this year" is the right answer.
 
 ## Source Check
 

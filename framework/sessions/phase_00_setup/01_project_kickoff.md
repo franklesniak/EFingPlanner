@@ -2,7 +2,9 @@
 
 # Session 01: Project Kickoff
 
-You are here: Phase 0 (Setup), First Taste step 1 of 13. Previous: [00 Parent Setup](00_parent_setup.md) (adult-only) | Next: [03 What Makes a Good Trip](03_what_makes_a_good_trip.md)
+You are here: Phase 0 (Setup), First Taste step 1 of 13. Previous: [00 Parent Setup](00_parent_setup.md) (adult-only) | Next: [02 Family Traveler Profiles](02_family_traveler_profiles.md)
+
+*On the First Taste path, go straight to [03 What Makes a Good Trip](03_what_makes_a_good_trip.md). Session 02 is not one of the 13.*
 
 **For parents:**
 
@@ -22,19 +24,21 @@ Write your name and today's date at the top of a fresh page. That is your first 
 
 ## Steps
 
-You are the **junior travel planner** for a real family trip to Japan. Your job is to research, compare, and recommend. The grown-ups make the final calls on money, booking, flights, and safety -- and your recommendations really matter to those calls.
+<!-- density-exempt: real -- the junior-planner framing and the honest boundary are preserved in their built wording; each use here tells the child this is a live family project rather than a practice exercise -->
 
-Two things are already decided by the grown-ups: we are going on a trip, and it is Japan. Everything *else* is really yours to figure out -- which places make the list, your must-dos, the order of your days, and your one special pick. Read the one-page [What I Decide card](../../student_guide/what_i_decide.md) so you can see the honest boundary up front.
+You are the **junior travel planner** for a real family trip. Your job is to research, compare, and recommend. The grown-ups make the final calls on money, booking, travel, and safety. Your recommendations really matter to those calls.
+
+Two things are already decided by the grown-ups: we are going on a trip, and the grown-ups have picked where. Everything *else* is really yours to figure out: which places make the list, your must-dos, the order of your days, and your one special pick. Read the one-page [What I Decide card](../../student_guide/what_i_decide.md) so you can see the honest boundary up front.
 
 1. Make a **cover page** for your binder with:
-   - Project title (name your planning practice if you want -- that is yours to choose).
+   - Project title (name your planning practice if you want; that is yours to choose).
    - Planner name (you).
-   - Destination: Japan.
-   - Home airport and code: ______ (from your Trip-Basics card).
+   - Destination: ______ (from your Trip-Basics card).
+   - Home airport and code, if you are flying: ______ (from your Trip-Basics card).
    - Travel party: ______ (from your Trip-Basics card; "not decided yet" is fine for anyone unsure).
    - Date started: ______.
    - A note: *Adults make the final decisions.*
-2. Start a **"things I can't wait to see" page.** Any time something about Japan sounds exciting, add it here. This page grows all through the project.
+2. Start a **"things I can't wait to see" page.** Any time something about your destination sounds exciting, add it here. This page grows all through the project.
 3. Do a short **baseline reflection** on a fresh page (a few sentences, or say them aloud to an adult who writes them):
    - What is hard for me when a project is big?
    - What helps me get started?
@@ -55,7 +59,7 @@ Your trip planner cover page, the start of your "things I can't wait to see" pag
 
 ## Stop Point
 
-You are done when your cover page is filled in and you have written (or said) your two baseline-reflection answers. You do not need to decorate it perfectly -- you can add to the "Make It Yours" cover any time.
+You are done when your cover page is filled in and you have written (or said) your two baseline-reflection answers. You do not need to decorate it perfectly. You can add to the "Make It Yours" cover any time.
 
 ## Source Check
 

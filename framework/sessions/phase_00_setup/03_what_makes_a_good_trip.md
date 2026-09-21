@@ -2,7 +2,7 @@
 
 # Session 03: What Makes a Good Trip
 
-You are here: Phase 0 (Setup), First Taste step 2 of 13. Previous: [01 Project Kickoff](01_project_kickoff.md) | Next: [04 Start a Source Log](04_start_a_source_log.md)
+You are here: Phase 0 (Setup), First Taste step 2 of 13. Previous: [02 Family Traveler Profiles](02_family_traveler_profiles.md) | Next: [04 Start a Source Log](04_start_a_source_log.md)
 
 **For parents:**
 
@@ -10,7 +10,7 @@ You are here: Phase 0 (Setup), First Taste step 2 of 13. Previous: [01 Project K
 - Planner skill: organizing what people want
 - Estimated time: 20-30 minutes
 - Parent involvement: 5-minute check-in; helps if travelers are reachable to ask
-- Materials: your binder, a pencil
+- Materials: your binder, a pencil, the [Family Trip Goals and Input Summary](../../templates/family_trip_goals.md)
 
 ## Goal
 
@@ -29,7 +29,7 @@ A good planner finds out what the *whole* group wants, not just their own ideas.
    - What makes a trip too tiring?
    - What would make this trip feel special?
    - What does a successful family trip feel like?
-2. **Run a quick traveler poll.** Ask each traveler on your trip one question: *"What is one thing you'd love on this trip?"* Write down each answer with who said it -- by relationship or role (for example, "Mom," "my brother," or "Grandpa") -- that keeps private details off the page. These answers are real evidence -- you will use them when you choose cities and things to do.
+2. **Run a quick traveler poll.** Ask each traveler on your trip one question: *"What is one thing you'd love on this trip?"* Write down each answer with who said it -- by relationship or role (for example, "Mom," "my brother," or "Grandpa") -- that keeps private details off the page. These answers are real evidence. You will use them when you choose cities and things to do.
    - If someone is far away or hard to reach, ask them by text or call, or have a grown-up ask and bring back the answer. You can also poll whoever is around now and mark the rest "asked through a grown-up." Do not wait on anyone's schedule.
 3. Look at all the answers together:
    - Which things did more than one person mention?
@@ -41,11 +41,11 @@ A good planner finds out what the *whole* group wants, not just their own ideas.
 2. Where two wants clash, do one of two things: find one place that gives both something, **or** plan different days so each person gets their day.
 3. Write one line: *"How I balanced what people wanted."* Bring it to the family meeting later.
 
-Balancing what people want is the same kind of trade-off move you will use later on routes and budgets -- something to notice as you go.
+Balancing what people want is the same kind of trade-off move you will use later on routes and budgets, something to notice as you go.
 
 ## Workspace
 
-Use your binder pages for your own answers, the poll answers (one line per person), and your one "how I balanced it" line.
+Use your binder pages for your own answers, the poll answers (one line per person), and your one "how I balanced it" line. The blank [Family Trip Goals and Input Summary](../../templates/family_trip_goals.md) page holds all three.
 
 You can say your answers to an adult who writes them, or draw them, if that is easier.
 
@@ -55,7 +55,7 @@ Your family trip goals and a short family input summary (the poll answers plus y
 
 ## Stop Point
 
-You are done when you have your own answers, at least one poll answer written down, and your one balancing line. If some travelers are not reachable yet, that is fine -- mark them and move on.
+You are done when you have your own answers, at least one poll answer written down, and your one balancing line. If some travelers are not reachable yet, that is fine. Mark them and move on.
 
 ## Source Check
 
