@@ -12,11 +12,11 @@ The trip is the hook; the real subject is *executive function*: getting started,
 
 A thoughtful, sourced mini-plan the family can actually use: a when-to-go recommendation, one or two cities, a short must-see list, a rough budget check, and their own special pick -- plus a source log and a decision log showing their reasoning. Adults review, adjust, verify, and do the real booking.
 
-## The recommended default: one family, one trip
+## How a destination fits in
 
-Most families should build and run the **Lean path** -- one family, one trip, with the Japan facts written straight into the sessions. That is the whole project for the common case. A larger "Full" build (reusing the curriculum for other destinations, or publishing it as an open educational resource) is an optional extension, not the front door.
+One destination pack ships with this repository, and you do not have to choose a build. The Phases 0-2 sessions carry no facts about any particular place. Where a session needs one, it says "open this session's Destination Notes," and the matching insert in the pack supplies it. Reference pages in the same pack hold the longer facts the sessions point at.
 
-**Which kind of "reuse" you actually need:** another US family doing Japan needs only their own [Trip-Basics card](framework/templates/trip_basics.md) (airport, party size, trip length, roster) -- near-zero cost, and the real reuse goal. Rebuilding for a *different destination* is the only thing the heavier machinery is for, and it does nothing for your own trip. They are not the same feature.
+**Which kind of "reuse" you actually need:** another US family doing Japan needs only their own [Trip-Basics card](framework/templates/trip_basics.md) (airport, party size, trip length, roster) -- near-zero cost, and the real reuse goal. Rebuilding for a *different destination* is the only thing the heavier machinery is for. They are not the same feature.
 
 ## What success looks like
 
@@ -37,9 +37,9 @@ Quick-start:
 5. Review at Checkpoint 1 -- then decide whether to keep going (the try-then-commit on-ramp: you do not have to commit to the whole project to start).
 6. Finish the First Taste path at Session 53 -- a real, usable mini-plan and a complete stopping point. (The [roadmap](framework/PROJECT_ROADMAP.md) already maps the fuller path toward the Core Finish Line, and says what has to happen before those later sessions are built.)
 
-## First Taste session index (what is built now)
+## First Taste session index (the short path)
 
-Session 00 is adult-only setup; the child does the First Taste sessions listed below, ending at Session 53 (a subset, not every number in between). This slice is the pilotable First Taste path.
+Session 00 is adult-only setup; the child does the First Taste sessions listed below, ending at Session 53 (a subset, not every number in between). This table is the First Taste path. Its first eight numbered steps sit inside the built Phases 0-2 slice, and its last five -- Sessions 15, 21, 33, 44 and 53 -- are already-built sessions in later phases.
 
 | # | Session | Status | Time | Artifact |
 | --- | --- | --- | --- | --- |
@@ -61,7 +61,7 @@ Session 00 is adult-only setup; the child does the First Taste sessions listed b
 
 ## How the repository is organized
 
-Three layers (this is Full-Build detail a one-trip family can skip):
+Three layers (this is how the pages fit together):
 
 - `framework/` -- the reusable curriculum: sessions, templates, and the student and parent guides. No trip data.
 - `destinations/japan/` -- the Japan knowledge pack: stable reference facts.
@@ -75,7 +75,7 @@ Three layers (this is Full-Build detail a one-trip family can skip):
 
 ## Status
 
-Early. This repository currently holds the **First Taste** curriculum slice (the sessions above) and its support files, built for a design-validation pilot with a real child. The Core Finish Line and full program are documented in the design record and are built in later batches, which begin once the Batch 0 gate has cleared — either the child pilot passes, or the no-child fallback is recorded in writing.
+Early. This repository holds the complete **Phases 0-2** slice -- Session 00 through Checkpoint 1 -- plus its support files. The **First Taste** path in the table above overlaps that slice rather than sitting inside it: it starts there and finishes in five already-built later-phase sessions. The Core Finish Line and full program are documented in the design record and are built in later batches, which begin once the Batch 0 gate has cleared — either the child pilot passes, or the no-child fallback is recorded in writing.
 
 - The authoritative design is [docs/spec/specification.md](docs/spec/specification.md) -- an archived design record. Once the curriculum is built, the built repository supersedes the spec on any conflict.
 

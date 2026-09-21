@@ -6,10 +6,10 @@
 
 - **Status:** Active
 - **Owner:** Repository Maintainers
-- **Last Updated:** 2026-07-07
-- **Scope:** The single, canonical home for the EFingPlanner privacy and safety rules -- data that is never recorded, child online-safety rules, the kid-safe-filter caveat, AI-privacy rules, public-repo/private-work separation, and work backup. Other files carry a short reminder and link here instead of repeating these rules.
+- **Last Updated:** 2026-09-21
+- **Scope:** The single, canonical home for the EFingPlanner privacy and safety rules -- data that is never recorded, child online-safety rules, the kid-safe-filter caveat, AI-privacy rules, public-repo/private-work separation, and work backup. Other files carry a short reminder and link here instead of repeating these rules. Where a rule is written out in full at the point a child or an adult acts on it, that repetition is deliberate and required.
 
-This is the single home for the privacy and safety rules. Other files carry a short reminder and link here rather than repeating them.
+This is the single home for the privacy and safety rules. Other files carry a short reminder and link here rather than repeating them, with one deliberate exception: where a rule is written out in full at the point a child or an adult acts on it, the full copy is required and must not be reduced to a pointer.
 
 These rules are the same discipline as the "verify, don't trust" habit your child practices and the "provided as-is; always verify" banner on the [README](../../README.md) and [GETTING_STARTED](../../GETTING_STARTED.md): treat facts and personal data with care.
 
@@ -40,7 +40,7 @@ A kid-safe search filter (turned on at setup) reduces exposure but does not remo
 
 ## Public framework, private trip work
 
-This repository is public and holds no trip data -- only the reusable curriculum, guides, blank templates, and Japan reference. Your child's real, filled-in work is never committed here: copy the blank pages out and complete them in a private binder or a Google Docs folder. A Google Docs folder is not a private vault either -- keep the same **sensitive** personal data (passport numbers, birthdates, home address, payment details, exact booked dates) off it, just as you would on paper.
+This repository is public and holds no trip data -- only the reusable curriculum, guides, blank templates, and the destination reference pack. Your child's real, filled-in work is never committed here: copy the blank pages out and complete them in a private binder or a Google Docs folder. A Google Docs folder is not a private vault either -- keep the same **sensitive** personal data (passport numbers, birthdates, home address, payment details, exact booked dates) off it, just as you would on paper.
 
 ## Back up your work (30 seconds)
 

@@ -2,13 +2,15 @@
 
 # Session Support Notes
 
-A short, parent-facing overview of each First Taste session -- your role, what to prep, the artifact to look for, one coaching question, and a common pitfall. This does not replace the Parent Notes inside each session; it is the at-a-glance map.
+A short, parent-facing overview of each session built so far -- your role, what to prep, the artifact to look for, a coaching question on the sessions the child does, and a common pitfall. This does not replace the Parent Notes inside each session; it is the at-a-glance map.
+
+Want a rough signal of how the executive-function side is going? The optional [executive-function observation aid](ef_observation_aid.md) is a private three-item note you keep to yourself.
 
 ## Session 00: Parent Setup (adult-only)
 
 - Role: do the setup; the child does not do this session.
-- Prep: kid-safe filter, Trip-Basics card, assumptions page, AI choice, start passports.
-- Look for: your four setup actions done, the passport check kicked off, and Session 01 printed.
+- Prep: kid-safe filter, Trip-Basics card, assumptions page, AI choice, start passports if your trip leaves the country.
+- Look for: your four setup actions done, the passport check kicked off if your trip leaves the country, and Session 01 printed.
 - Pitfall: over-deciding up front. Use the fastest-safe-start defaults and move on.
 
 ## Session 01: Project Kickoff
@@ -18,6 +20,14 @@ A short, parent-facing overview of each First Taste session -- your role, what t
 - Look for: a cover page, the start of a "things I can't wait to see" page, and a baseline reflection.
 - Coaching question: "What would make this fun for you?"
 - Pitfall: doing the cover page for them. Let it be theirs, imperfect and all.
+
+## Session 02: Family Traveler Profiles
+
+- Role: 5-minute check-in; relay the interview question to any traveler your child cannot reach.
+- Prep: the assumptions page, filled in before this session; the Trip-Basics roster; blank profile and interview pages.
+- Look for: one traveler profile per person on the roster, plus the notes from one interview.
+- Coaching question: "Which traveler will be hardest to plan around, and why?"
+- Pitfall: letting a medical reason onto the page. The need to design around goes down; the why stays with you.
 
 ## Session 03: What Makes a Good Trip
 
@@ -43,6 +53,32 @@ A short, parent-facing overview of each First Taste session -- your role, what t
 - Coaching question: "Which would you trust for opening hours, and why?"
 - Pitfall: rushing it. This skill carries the next sessions -- spend the time.
 
+## Session 06: Book Research With a Guidebook
+
+- Role: 5-minute check-in; an adult may need to fetch the library book.
+- Prep: a guidebook (a library copy is perfect) or one reputable travel website.
+- Look for: a book notes page with three places, one reason each, and the source they came from.
+- Coaching question: "Which of your three places surprised you?"
+- Pitfall: reading it cover to cover. Using the contents page and the index is the skill here.
+
+## Session 07: Library Research Plan (Recommended -- you can skip this one)
+
+<!-- density-exempt: spaced dash -- Session 07's Role has to state the parent-setup condition without deciding the family's choice for them -->
+
+- Role: parent setup needed if you do it -- an adult opens the catalog or drives to the library.
+- Prep: a library card, a catalog login, or a ride.
+- Look for: a library visit plan, or a book list worth borrowing.
+- Coaching question: "What would you ask the librarian first?"
+- Pitfall: running the catalog search yourself. Placing the hold is most of the value.
+
+## Session 08: Web Research Practice
+
+- Role: co-working recommended; stay nearby, even in Low-Bandwidth Parent Mode.
+- Prep: a device with the kid-safe filter on; your destination pack's trusted starting sources and its sample search terms.
+- Look for: website comparison notes with one question, two sources, and a call on which is more useful.
+- Coaching question: "What made the one you trusted less feel less trustworthy?"
+- Pitfall: treating it as a solo session. A filter reduces exposure but does not remove it.
+
 ## Session 09: AI as Helper, Not Boss (only if your family uses AI)
 
 - Role: adult-operated -- you run the tool, on your account, with the child present.
@@ -59,11 +95,19 @@ A short, parent-facing overview of each First Taste session -- your role, what t
 - Coaching question: "Which surprising fact do you want to tell someone?"
 - Pitfall: going for mastery. A snapshot is enough.
 
+## Session 11: Regions and Cities Overview
+
+- Role: 5-minute check-in.
+- Prep: this session's Destination Notes, your destination pack's regions and major-cities references, and a map.
+- Look for: region and map notes naming the main regions, one way they differ, and one route shape.
+- Coaching question: "How long does it take to get from this one to that one?"
+- Pitfall: correcting an over-packed route now. Collecting comes first; the cutting comes later.
+
 ## Session 12: Weather, Seasons, and Events
 
 - Role: 5-minute check-in; help with school/work calendar fit.
 - Prep: the seasons reference.
-- Look for: a four-season chart with at least one busy window flagged to be careful about.
+- Look for: a season chart covering every season the destination has, with at least one busy window flagged to be careful about.
 - Coaching question: "Which season fits our family best so far, and why?"
 - Pitfall: chasing exact dates. "Check this year" is the right answer.
 

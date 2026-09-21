@@ -1,0 +1,58 @@
+<!-- markdownlint-disable MD013 -->
+
+# Executive-Function Observation Aid
+
+This is a private note you keep for yourself. It takes about a minute, three times in the whole project. It is optional, and skipping it costs your child nothing.
+
+## Four guardrails, before anything else
+
+- **Keep it private.** Your child does not see a score, ever. This is your own notebook rather than feedback to them, and a number handed to a child becomes a grade the moment they read it. Put no personal data on it.
+- **Noticing, not grading.** This is a rough home signal for you. It is not an assessment of your child, and it measures nothing about their ability.
+- **Not diagnostic or clinical.** Three lines on a page cannot diagnose anything, and nothing here substitutes for a professional evaluation. If something worries you, that is a conversation to have with someone qualified.
+- **Optional, and a complement.** Your child writes their own baseline reflection at the start and their own final reflection at the end. Those are the record that matters. This aid adds a second angle rather than standing in for either of them.
+
+## What the three items are, and what they are not
+
+The three items below are everyday behaviors you can see from across the room. They are not a one-to-one measurement of the three core executive-function skills, and this page does not claim they are.
+
+The canonical three are **working memory**, **cognitive flexibility** and **inhibitory control**, and they are defined in [design principles](../docs/design_principles.md). A three-item home note cannot see cognitive flexibility at all, so nothing here stands in for it. What you are watching is the visible surface: getting started, sustaining effort, and knowing when to stop.
+
+## The three items
+
+Score each one from 1 to 5, using the anchors.
+
+**"Got started without much prompting"** (getting started)
+
+*1 = needed heavy prompting to begin almost every session; 5 = usually began on their own*
+
+**"Stuck with it past the hard part"** (sustaining effort)
+
+*1 = stopped or stalled whenever it got hard; 5 = pushed through the hard part most of the time*
+
+**"Knew when to stop"** (knowing when to stop)
+
+*1 = either quit too early or could not stop polishing; 5 = usually judged "good enough" well*
+
+## When to record
+
+Three times, and no more.
+
+1. **At the start**, before the first session your child does.
+2. **At the midpoint**, around Checkpoint 3 or 4.
+3. **At the end**, after the final reflection.
+
+Three readings months apart show a direction. Scoring every session would show your mood.
+
+## Where it fits
+
+Copy this table into your own notes and fill it in at the three points above.
+
+| Item | Start | Midpoint | End |
+| --- | --- | --- | --- |
+| Got started without much prompting | | | |
+| Stuck with it past the hard part | | | |
+| Knew when to stop | | | |
+
+It prints on portrait letter or A4 without changing anything.
+
+The whole point of this curriculum is executive-function practice, and practice you cannot see is hard to keep faith with. This aid is here so you have something to look at in month four besides a feeling. Read it as a rough signal rather than proof that anything transferred, and read it beside what your child says about their own work.

@@ -2,7 +2,7 @@
 
 # Simple Citation Forms
 
-How to use it: copy this page into your binder or notebook. Fill in the form that matches the kind of source you used. "Not listed" and "ask an adult" are fine answers. Why each field is there is in the citation style page.
+How to use it: copy this page into your binder or notebook. Fill in the form that matches the kind of source you used. "Not listed" and "ask an adult" are fine answers. Why each field is there is in the [citation style page](../docs/citation_style.md).
 
 ## Website
 

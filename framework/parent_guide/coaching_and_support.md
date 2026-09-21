@@ -29,7 +29,7 @@ Two different cases:
 Name the one specific gap, size the redo to one session, frame it as the checkpoint working, and end on what already stands.
 
 **"We had to book before you finished"** (the timeline collision):
-> "We had to lock the flights before you finished, because prices were climbing -- that's how trips work, and it doesn't mean your planning was wrong. Here's what's still yours to decide inside the dates we booked."
+> "We had to lock the bookings before you finished, because prices were climbing -- that's how trips work, and it doesn't mean your planning was wrong. Here's what's still yours to decide inside the dates we booked."
 
 **Honoring the child's calls** (even when you'd have chosen differently):
 > "You chose the aquarium over a third temple. That's your call, and we'll make it work."
@@ -42,12 +42,12 @@ You set the guardrails (budget, approved cities, pacing, safety, availability), 
 A group vote does not override this one. Set it up to be keepable: co-choose an affordable, bookable, everyone-can-do-it pick, and show the three blocks before your child commits. If another adult challenges a pick in front of the child, do not relitigate on the spot -- name the rule ("that's their call; if it needs to change, we owe them the reason") and take it offline. Brief the other travelers in advance that the child owns certain calls.
 
 **The "here's how your plan shaped what we booked" reveal** (after booking):
-> "Want to see how your plan turned into our real trip? You recommended Kyoto for three nights -- here's our Kyoto hotel, three nights. Your must-do aquarium is on Day 4."
+> "Want to see how your plan turned into our real trip? You recommended three nights in the place you picked -- here's our hotel there, three nights. Your must-do aquarium is on Day 4."
 
 Five minutes showing this, concretely, is the strongest answer to "was my advisory work real?" -- far stronger than reassurance. Where you changed something, say why.
 
 **Naming the fixed family decision warmly:**
-> "Two things the grown-ups picked: that we're going, and that it's Japan. The planning -- which places, the must-dos, the order of your days, your one special pick -- is really yours."
+> "Two things the grown-ups picked: that we're going, and where. The planning -- which places, the must-dos, the order of your days, your one special pick -- is really yours."
 
 **The finish acknowledgment** (Session 53). First Taste is a few-weeks project, so use the duration-true, non-overclaiming form:
 > "You finished a real project, start to finish, and made a real mini-plan we can actually use. That's a big deal."

@@ -60,7 +60,7 @@ Use one copy of the Traveler Profile template per traveler, and one copy of the 
 
 You can say your answers to an adult who writes them, or draw them, if that's easier.
 
-Your trip starter kit has a traveler profiles folder. Finished profiles live there, filed the way that folder says.
+Your trip starter kit has a [traveler profiles folder](../../trip_starter/family/traveler_profiles/README.md). Finished profiles live there, filed the way that folder says.
 
 ## Artifact Created
 

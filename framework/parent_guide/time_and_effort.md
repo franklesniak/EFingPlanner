@@ -16,9 +16,9 @@ Plan on about **1-2 hours of setup** up front, **more hands-on time in the first
 
 ## You are running two projects at once
 
-The real adult job is two things in parallel: (1) coaching this course, and (2) doing the actual adult trip planning and booking -- flights, hotels, passports, insurance, reservations. Your child's binder is **advisory**: it feeds your real planning and gives them genuine ownership, but it does not replace adult booking. Budget time for both.
+The real adult job is two things in parallel: (1) coaching this course, and (2) doing the actual adult trip planning and booking -- travel, hotels, insurance, and reservations. Your child's binder is **advisory**: it feeds your real planning and gives them genuine ownership, but it does not replace adult booking. Budget time for both.
 
-The one scheduling thing to do now: **start the passport and check whether your dates land in a peak season.** Those are the longest-lead items.
+The one scheduling thing to do now: **check whether your dates land in a peak season, and, if your trip leaves the country, start the passport.** Those are the longest-lead items.
 
 ## Early sessions are more hands-on
 
@@ -33,7 +33,7 @@ You do not have to commit to the whole project to start. Do Phases 0-2, reach Ch
 If you are stretched, or you share your child's executive-function challenges, you can run this with less load -- and doing less here is a legitimate, designed choice, not a corner cut:
 
 - Run First Taste (or the Core Finish Line) only, not the full program.
-- Replace per-session co-working with a quick after-the-session glance -- except Session 05, which stays hands-on.
+- Replace per-session co-working with a quick after-the-session glance -- except Sessions 05 and 08, which stay hands-on; 08 is the open-web research session.
 - Use the [coaching scripts](coaching_and_support.md) as-is rather than improvising.
 - Default to a single growing folder, and read sessions aloud as needed.
 - Lean on the strong defaults in the quick-start so setup is minutes.
@@ -44,6 +44,8 @@ If *you* get busy, that is the most common way a long project quietly dies -- so
 ## Is it worth it (versus casual involvement)
 
 What the structured version buys: deliberate executive-function practice, real research skill, genuine ownership of concrete decisions, and a reusable planning framework. The honest other side: for some children and families, lighter casual involvement is the better choice. Do not over-claim -- these skills are real practice, but transfer to homework and chores is not guaranteed without deliberate bridging. The honest case is "real practice and real ownership," not "this fixes executive function."
+
+If you want a rough signal over time rather than a feeling, the optional [executive-function observation aid](ef_observation_aid.md) takes about a minute, three times across the project.
 
 ## Is your child ready right now
 
@@ -62,7 +64,7 @@ A short, non-clinical check. Signs they are likely ready: can stay with a ~20-mi
 
 ## Building the materials (a phase ahead)
 
-If you are building the worksheets yourself with AI help, build just-in-time: make the runnable Phase 0-2 slice first (days, not weeks), let the child work it, and build the next phase while they are on the current one. A slow week then wastes nothing. Do not build everything up front.
+If you are building the worksheets yourself with AI help, build just-in-time: make the runnable Phase 0-2 slice first (days, not weeks), let the child work it, and build the next phase while they are on the current one. A slow week then wastes nothing. Do not build everything up front. One stop, before you build the next phase: read each rebuilt Phase 0-2 session against the version it replaced, with whatever page took its destination facts open beside it, and confirm nothing was lost. Some of these sessions have a Destination Notes page. Others sent their facts to a page in the destination pack or to a page in the framework, and a few only changed wording. Then watch your child work the five sessions this slice adds -- Sessions 02, 06, 07, 08 and 11, with 07 only if you do it. Fix what you find before you build further. Reading the pages is the easy half, and only watching your child tells you whether the new sessions work.
 
 ---
 
