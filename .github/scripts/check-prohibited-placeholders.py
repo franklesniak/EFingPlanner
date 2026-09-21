@@ -139,9 +139,11 @@ _ASCII_PUNCTUATION_CLASS = "".join(
 #: grammar rather than CommonMark 0.31.2's, measured over 54 characters in this
 #: position; the sibling hooks' copies carry the measurement in full. This hook
 #: carries no inline link model and wants none; it carries the destination only
-#: because a link reference definition is a leaf block, and
-#: ``opens_a_paragraph`` has to tell one from a paragraph. Kept identical to the
-#: class in the sibling hooks.
+#: so that the three hooks' copies of this class cannot drift, which a
+#: cross-hook test reads. Nothing in this hook's own walk asks it any more: the
+#: paragraph helper used to, and a definition is now known to leave the
+#: paragraph it is written into open. Kept identical to the class in the
+#: sibling hooks.
 #: <https://spec.commonmark.org/0.31.2/#link-destination>
 _DESTINATION_CHARACTER = (
     r"(?:[^ \t\n()\\]"
@@ -224,8 +226,11 @@ _LINK_LABEL_BLANK = (
     " \t\x0b\f\r\n\u00a0\u1680\u2000-\u200a\u2028\u2029\u202f\u205f\u3000\ufeff"
 )
 #: A CommonMark link reference definition: ``[label]: destination "title"``.
-#: It renders nothing at all and is a leaf block rather than a paragraph, which
-#: is what lets HTML block condition 7 open on the line below it. Matched
+#: It renders nothing at all, and it does **not** close the paragraph it is
+#: written into: cmark-gfm and micromark 4.0.2 both read it into that paragraph
+#: and strip it at the end, so HTML block condition 7 stays shut on the line
+#: below it. Nothing in this hook reads this constant any more; it is kept so
+#: the three hooks' copies cannot drift, which a cross-hook test reads. Matched
 #: conservatively, the way the sibling hooks match it: the destination must be
 #: one unbroken token or the angle-bracket form, a title must be properly
 #: closed, and nothing else may follow. Kept identical to the constant in the
@@ -907,25 +912,6 @@ def is_link_label(label: str) -> bool:
     return len(label) <= LINK_LABEL_MAXIMUM_CHARACTERS
 
 
-def is_link_reference_definition(content: str) -> bool:
-    """Return whether a whole link reference definition fits on this line.
-
-    A definition is a leaf block and not a paragraph: it renders nothing at
-    all and leaves no paragraph open below it, which is what lets HTML block
-    condition 7 open on the line under it. One may not interrupt a paragraph
-    either, so the caller asks this only with nothing open.
-
-    Only the one-line form is read. CommonMark lets the destination sit on the
-    line below the label, and this answers ``False`` there -- the liberal side,
-    where a paragraph stays open and condition 7 stays shut, which is what the
-    whole fallback did before. Kept identical to the helper in the sibling
-    hooks.
-    <https://spec.commonmark.org/0.31.2/#link-reference-definitions>
-    """
-    match = LINK_REFERENCE_DEFINITION_PATTERN.match(content)
-    return match is not None and is_link_label(match.group("label"))
-
-
 def table_row_cells(content: str) -> tuple[tuple[int, str], ...]:
     """Return each cell of one GFM table row as ``(offset, text)``.
 
@@ -1103,8 +1089,9 @@ def opens_a_paragraph(
     HTML block condition 7 is the one condition that may not interrupt a
     paragraph, so classifying it needs to know whether one is open. The test is
     deliberately liberal: anything nonblank that is not a heading, a thematic
-    break, a Setext underline or a link reference definition leaves a paragraph
-    open. Being wrong in that direction only ever *stops* condition 7 from
+    break, a Setext underline or a table's delimiter row leaves a paragraph
+    open -- a link reference definition among them, which is measured below.
+    Being wrong in that direction only ever *stops* condition 7 from
     opening, which is the behaviour this scan had before it classified
     condition 7 at all. Lines inside a fence, an HTML block or a raw-text
     element never reach here; their caller closes the paragraph outright. Kept
@@ -1115,10 +1102,20 @@ def opens_a_paragraph(
     heading underline and closes it; ``=====`` with nothing open is an
     ordinary paragraph of its own, and leaves one open below it.
 
-    A link reference definition is the one other leaf block this has to name.
-    It is not a paragraph, so a bare tag on the line below it opens the HTML
-    block condition 7 that may not interrupt one -- and the liberal fallback
-    was holding that block shut and counting a heading the page never shows.
+    A link reference definition is **not** one of them, and saying so reverses
+    what this helper used to do. cmark-gfm, the renderer GitHub runs, and
+    micromark 4.0.2 both read a definition into the paragraph above it and
+    strip it when that paragraph is finalized, so a paragraph *is* open below
+    a definition and HTML block condition 7 stays shut. Measured on GitHub's
+    own renderer: ``[x]: /url`` over ``<custom>`` over ``## Goal`` paints
+    ``<p><custom></p>`` and then ``<h2>Goal</h2>``, and ``[x]: /url`` over a
+    four-space line paints that line as a paragraph rather than as code.
+    markdown-it 14.3.0 is the one of the three that reads the definition as a
+    closed leaf block; this module followed it and counted a heading the page
+    does show. Both renderers reproduce the CommonMark 0.31.2 example suite,
+    and the suite carries no example of this shape -- so the specification is
+    silent here and the page is what counts.
+    <https://spec.commonmark.org/0.31.2/#link-reference-definitions>
 
     An indented code block is the fourth shape that needs the state coming in,
     and it is the one the liberal fallback was wrong about in the direction this
@@ -1163,8 +1160,6 @@ def opens_a_paragraph(
     if paragraph_open and SETEXT_UNDERLINE_PATTERN.match(content) is not None:
         return False
     if paragraph_open and table_starts_here(previous_content, content):
-        return False
-    if not paragraph_open and is_link_reference_definition(content):
         return False
     return True
 

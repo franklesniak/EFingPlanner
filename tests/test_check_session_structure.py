@@ -3294,19 +3294,48 @@ def test_a_comment_outside_a_raw_text_run_still_exempts(label: str, document: st
         ("two definitions", "[x]: /url\n[y]: /url2"),
     ],
 )
-def test_a_link_reference_definition_opens_no_paragraph(
+def test_a_link_reference_definition_leaves_a_paragraph_open(
     label: str, definition: str
 ) -> None:
-    """A definition is a leaf block, so condition 7 may open under it.
+    """A definition does not close the paragraph it is written into.
 
-    ``<custom>`` then opens a type-seven HTML block that runs to the next blank
-    line, and the ``## Goal`` inside it is raw HTML rather than a heading. The
-    liberal fallback called the definition a paragraph, held the block shut,
-    and counted a heading the page never shows -- so a session with no visible
-    Goal passed. Measured against markdown-it 14.3.0.
+    This pin used to say the opposite, on a markdown-it 14.3.0 measurement.
+    Re-measured on GitHub's own renderer, which is the page a child opens:
+    ``[x]: /url`` over ``<custom>`` over ``## Goal`` paints
+    ``<p><custom></p>`` and then ``<h2>Goal</h2>``. cmark-gfm and micromark
+    4.0.2 both read the definition into the paragraph above it and strip it
+    when that paragraph is finalized, so HTML block condition 7 -- the one
+    condition that may not interrupt a paragraph -- stays shut and the heading
+    is a heading. markdown-it is the one of the three that parses the
+    definition as a closed leaf block, and both renderers reproduce the
+    CommonMark 0.31.2 example suite, which carries no example of this shape.
     <https://spec.commonmark.org/0.31.2/#link-reference-definitions>
     """
-    assert not _goal_found(f"{definition}\n<custom>\n## Goal\n"), label
+    assert _goal_found(f"{definition}\n<custom>\n## Goal\n"), label
+
+
+@pytest.mark.parametrize(
+    ("label", "definition"),
+    [
+        ("a bare destination", "[x]: /url"),
+        ("a destination and a title", '[x]: /url "a title"'),
+        ("the destination on the line below", "[x]:\n/url"),
+    ],
+)
+def test_a_definition_makes_an_indented_line_below_it_paragraph_text(
+    label: str, definition: str
+) -> None:
+    """The second half of the same rule, and the direction it is measured in.
+
+    An indented code block may not interrupt a paragraph either, so a
+    four-column line under a definition is that paragraph's lazy continuation
+    rather than code. Measured on GitHub's own renderer: ``[x]: /url`` over
+    ``    code line`` paints ``<p>code line</p>``, with no ``<pre>`` at all.
+    <https://spec.commonmark.org/0.31.2/#indented-code-blocks>
+    """
+    scan = structure.scan_document(f"{definition}\n    code line\n## Goal\n")
+    assert _goal_found(f"{definition}\n    code line\n## Goal\n"), label
+    assert any("code line" in line for line in scan.content_lines), label
 
 
 @pytest.mark.parametrize(
@@ -3429,16 +3458,19 @@ def test_a_whitespace_only_reference_label_is_not_a_definition() -> None:
 
 
 def test_an_ordinary_reference_label_is_still_a_definition() -> None:
-    """The over-application control for the test above.
+    """The over-application control, re-measured with the rule it controls.
 
-    ``[x]: /url`` really is a definition, so the ``<custom>`` below it really
-    does open condition 7 and the ``## Goal`` inside that block is not a
-    heading. A rule that rejected every label fails here.
+    ``[x]: /url`` really is a definition and really does render nothing, and
+    the paragraph it sits in still holds condition 7 shut -- so the ``## Goal``
+    below the tag is a heading on GitHub's own renderer, and the definition's
+    own text is not on the page. Both halves are asserted, because a rule that
+    simply stopped reading definitions would pass the first.
     """
     document = "# Session 01\n\n[x]: /url\n<custom>\n## Goal\n\nWords here.\n"
     scan = structure.scan_document(document)
     titles = [heading.title for heading in structure.find_headings(scan)]
-    assert "Goal" not in titles
+    assert "Goal" in titles
+    assert structure.reference_definition_span(["[x]: /url", "<custom>"], 0) == 1
 
 
 def test_a_link_label_folds_the_blanks_the_renderer_folds() -> None:
@@ -3463,15 +3495,17 @@ def test_a_link_label_folds_the_blanks_the_renderer_folds() -> None:
 def test_a_tab_separated_reference_definition_is_a_definition() -> None:
     """The structure copy, kept identical to the sibling's.
 
-    A definition is a leaf block, so what follows it opens HTML block
-    condition 7 where a paragraph would not. Reading a tab-separated
-    definition as a paragraph found a ``## Goal`` the page never shows.
+    A tab separates a definition's label from its destination exactly as a
+    space does, which is what the pattern is pinned for. What follows the
+    definition is the paragraph's own business: measured on GitHub's own
+    renderer, ``[a]:<tab>/url`` over ``<custom>`` over ``## Goal`` paints the
+    heading, because the definition leaves the paragraph open.
     """
     assert structure.LINK_REFERENCE_DEFINITION_PATTERN.match("[a]:\t/url")
     assert structure.LINK_REFERENCE_DEFINITION_PATTERN.match('[a]: /url\t"t"\t')
     document = "[a]:\t/url\n<custom>\n## Goal\n"
     scan = structure.scan_document(document)
-    assert not any(h.title == "Goal" for h in structure.find_headings(scan))
+    assert any(h.title == "Goal" for h in structure.find_headings(scan))
 
 
 def test_a_tab_indented_reference_definition_is_not_a_definition() -> None:
@@ -4724,3 +4758,53 @@ def test_a_nested_destination_still_renders_as_nothing() -> None:
     """The gate-level shape: a section holding only this definition is empty."""
     assert not structure.renders_as_content("[x]: " + _nested_destination(8))
     assert structure.renders_as_content("[x]: " + _nested_destination(33))
+
+
+# --- the inline comment production, as the production renderer runs it ------
+
+
+def test_an_inline_comment_whose_text_ends_in_a_hyphen_leaves_no_marker() -> None:
+    """The structure copy of the readability pin, kept in step with it.
+
+    cmark-gfm and markdown-it 14.3.0 both refuse an inline comment whose text
+    ends in ``-``; micromark 4.0.2 alone accepts it. The page is what counts,
+    so ``Intro. <!-- no-source-check: why --->`` exempts nothing -- GitHub
+    paints those characters as words.
+
+    **The block form is a different rule and is deliberately untouched.** HTML
+    block condition 2 starts on a line beginning with ``<!--`` and ends on a
+    line holding ``-->``, with no constraint on the text between them, so the
+    same comment written on its own line really is a comment: measured on
+    GitHub, which renders that line to nothing at all. The control below is
+    that line.
+    <https://spec.commonmark.org/0.31.2/#html-blocks>
+    """
+    inline = (
+        "# Session 01" + chr(10) * 2
+        + "Intro words. <!-- no-source-check: why ---> tail." + chr(10)
+    )
+    scan = structure.scan_document(inline)
+    assert structure.NO_SOURCE_CHECK_PATTERN.search(scan.marker_text) is None
+
+    closed = (
+        "# Session 01" + chr(10) * 2
+        + "Intro words. <!-- no-source-check: why --> tail." + chr(10)
+    )
+    assert structure.NO_SOURCE_CHECK_PATTERN.search(
+        structure.scan_document(closed).marker_text
+    )
+
+    block = "# Session 01" + chr(10) * 2 + "<!-- no-source-check: why --->" + chr(10)
+    assert structure.NO_SOURCE_CHECK_PATTERN.search(
+        structure.scan_document(block).marker_text
+    )
+
+
+def test_a_short_inline_comment_ends_where_it_stands_in_this_hook_too() -> None:
+    """``<!-->`` closes at once, so a marker after one is text on the page."""
+    document = (
+        "# Session 01" + chr(10) * 2
+        + "Intro words. <!--> no-source-check: why --> tail." + chr(10)
+    )
+    scan = structure.scan_document(document)
+    assert structure.NO_SOURCE_CHECK_PATTERN.search(scan.marker_text) is None

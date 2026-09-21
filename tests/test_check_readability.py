@@ -6965,3 +6965,152 @@ def test_a_region_keeps_its_delimiters_only_where_it_has_a_pair() -> None:
     assert prose == "See [the guide] here."
     one_line = "See [the guide](guide.md " + quote + "a title" + quote + ") here."
     assert readability.extract_prose(one_line) == "See the guide here."
+
+
+# --- the inline comment production, as the production renderer runs it ------
+
+
+def test_a_comment_whose_text_ends_in_a_hyphen_is_not_a_comment() -> None:
+    """``<!-- x --->`` with no later closer is characters the page prints.
+
+    CommonMark 0.31.2 section 6.6 writes the text as "a string of characters
+    not including the string ``-->``", which would accept this. Its own
+    reference implementation does not: cmark-gfm and markdown-it 14.3.0 both
+    run a production that refuses a text ending in ``-``, and both print
+    ``<!-- audience: adult ---> Tail`` as words. micromark 4.0.2 alone follows
+    the prose and hides them. The page is what counts, so a marker written
+    this way declares nothing and the document stays in the reading gate.
+    """
+    document = "Head words here. <!-- audience: adult ---> Tail words here."
+    assert not readability.has_adult_marker(document)
+    assert readability.document_marker_text(document) == ""
+    longer = "Head words here. <!-- audience: adult ----> Tail words here."
+    assert not readability.has_adult_marker(longer)
+
+
+def test_a_comment_holding_a_double_hyphen_is_still_a_comment() -> None:
+    """The control for the rule above, and it pins a retired rule as retired.
+
+    CommonMark 0.29 and 0.30 refused a comment whose text held ``--`` at all.
+    0.31.2 dropped that clause, and markdown-it 14.3.0, micromark 4.0.2 and
+    GitHub all read ``<!-- audience: adult -- and more -->`` as one comment.
+    A gate that revived the old rule would take this document into the
+    reading score and fail a child's page on an adult's words.
+    """
+    document = "Head words here. <!-- audience: adult -- and more --> Tail."
+    assert readability.has_adult_marker(document)
+
+
+def test_a_marker_after_a_short_comment_is_text() -> None:
+    """``<!-->`` and ``<!--->`` are comments that end where they stand.
+
+    0.31.2 added both spellings. GitHub's sanitizer ends the node there and
+    paints what follows: ``<!--> audience: adult -->`` puts
+    ``audience: adult -->`` on the page, nine words rather than six. Reading
+    the opener as running to the next ``-->`` hid three of them and honoured
+    a marker the page prints.
+
+    Python's own ``html.parser`` reads this the other way, and is not the
+    arbiter for it.
+    """
+    for opener in ("<!-->", "<!--->"):
+        document = "Head words here. " + opener + " audience: adult --> Tail here."
+        assert not readability.has_adult_marker(document), opener
+        assert "audience: adult" in readability.extract_prose(document), opener
+
+
+def test_a_comment_matched_through_a_second_closer_ends_at_the_first() -> None:
+    """The two layers part here, and the page is their composition.
+
+    On ``Head. <!-- a ---> tail --> more`` the Markdown layer matches through
+    the *second* closer -- that is the only way the text can avoid ending in
+    ``-`` -- and GitHub's sanitizer then ends the node at the *first*. The
+    page paints ``tail --> more``. Ending the span where the Markdown layer
+    ends it would delete six words the page prints.
+    """
+    document = "Head words here. <!-- a ---> audience: adult --> after."
+    assert not readability.has_adult_marker(document)
+    prose = readability.extract_prose(document)
+    assert "audience: adult" in prose
+    assert "after." in prose
+
+
+def test_a_nested_marker_inside_one_comment_is_that_comment(
+) -> None:
+    """The reviewer's own document, and the page reads it as one comment.
+
+    ``Text <!-- bad -- `<!-- audience: adult -->` `` looks like a code span
+    holding a marker, and it is not: the ``<!--`` is written before the
+    backtick, so whichever opens first takes the characters after it.
+    markdown-it 14.3.0, micromark 4.0.2 and GitHub all form one comment
+    through the closer and print the trailing backtick alone. So the marker is
+    a marker, the document is adult-facing, and the gate is right to skip it.
+    """
+    document = "Text <!-- bad -- " + TICK + "<!-- audience: adult -->" + TICK
+    assert readability.has_adult_marker(document)
+    assert readability.extract_prose(document).split() == ["Text", TICK]
+
+
+def test_an_unterminated_comment_opener_is_still_not_a_comment() -> None:
+    """The control that must not move: no closer anywhere, no comment."""
+    document = "Head words here. <!-- audience: adult with no closer at all."
+    assert not readability.has_adult_marker(document)
+    assert readability.inline_comment_end(document, 17) == -1
+
+
+def test_inline_comment_end_answers_both_layers() -> None:
+    """The helper's contract, one spelling at a time.
+
+    Existence is CommonMark's question and extent is HTML5's, and the helper
+    carries both so no caller has to remember which is which.
+    """
+    cases = (
+        ("<!-- a -->", 10),
+        ("<!---->", 7),
+        ("<!-->", 5),
+        ("<!--->", 6),
+        ("<!-- a -- b -->", 15),
+        ("<!-- a --->", -1),
+        ("<!-- a ---> b -->", 11),
+        ("<!-- a", -1),
+    )
+    for text, expected in cases:
+        assert readability.inline_comment_end(text, 0) == expected, text
+
+
+def test_the_two_hooks_read_a_comment_alike() -> None:
+    """The cross-hook pin: one comment production in both hooks."""
+    other = _load_structure_hook()
+    assert (
+        readability.INLINE_COMMENT_PATTERN.pattern
+        == other.INLINE_COMMENT_PATTERN.pattern
+    )
+    for text in (
+        "<!-- a -->",
+        "<!-- a --->",
+        "<!-->",
+        "<!--->",
+        "<!-- a ---> b -->",
+        "<!-- a -- b -->",
+        "<!-- a",
+    ):
+        assert readability.inline_comment_end(text, 0) == other.inline_comment_end(
+            text, 0
+        ), text
+
+
+# --- a definition leaves the paragraph it is written into open --------------
+
+
+def test_a_definition_leaves_the_line_below_it_on_the_page() -> None:
+    """The prose half of the paragraph rule, measured on the page.
+
+    ``[x]: /url`` over a four-space line paints ``<p>code line</p>`` on
+    GitHub's own renderer, with no ``<pre>`` at all, because an indented code
+    block may not interrupt a paragraph either. The definition itself renders
+    nothing and is not prose.
+    """
+    document = "[x]: /url" + _NL + "    four words of code" + _NL
+    prose = readability.extract_prose(document)
+    assert "four words of code" in prose
+    assert "/url" not in prose

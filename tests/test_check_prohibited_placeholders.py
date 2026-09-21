@@ -1105,16 +1105,29 @@ def test_a_list_item_holding_a_real_fence_is_still_a_fence() -> None:
 # --- list interruption, leaf blocks, and raw text ----------------------------
 
 
-def test_a_link_reference_definition_lets_condition_seven_open() -> None:
-    """A definition is a leaf block, so no paragraph blocks the block below it.
+def test_a_link_reference_definition_holds_condition_seven_shut() -> None:
+    """A definition leaves the paragraph it is written into open.
 
-    ``<x-session>`` opens a type-seven HTML block, the backtick runs under it
-    are raw HTML rather than a fence, and the page prints the placeholder. The
-    liberal fallback called the definition a paragraph, held the block shut,
-    read the runs as a fence, and reported nothing at all.
+    This pin used to say the opposite, on a markdown-it 14.3.0 measurement.
+    Re-measured on GitHub's own renderer: ``[x]: /url`` over ``<x-session>``
+    over a fenced block paints ``<p></p>`` and then
+    ``<pre><code>TBD tomorrow.</code></pre>``. Condition 7 may not interrupt a
+    paragraph, a fence may, so the backtick runs really are a fence and the
+    placeholder inside them is an example rather than a violation.
     <https://spec.commonmark.org/0.31.2/#link-reference-definitions>
     """
     text = f"[x]: /url\n<x-session>\n{FENCE}\nTBD tomorrow.\n{FENCE}\n"
+    assert _find(text) == []
+
+
+def test_a_placeholder_below_a_definition_with_no_tag_is_still_reported() -> None:
+    """The control in the other direction: nothing here opens a block at all.
+
+    A definition over an ordinary line leaves that line on the page, so a
+    placeholder written there is a violation. Without this the rule above
+    could be written as "a definition silences everything under it".
+    """
+    text = "[x]: /url\nTBD tomorrow.\n"
     assert [violation.matched_text for violation in _find(text)] == ["TBD"]
 
 

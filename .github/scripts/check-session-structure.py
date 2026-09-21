@@ -1381,25 +1381,6 @@ def container_content(line: str, list_contexts: list[ListContext]) -> str:
     return container_line(line, list_contexts).content
 
 
-def is_link_reference_definition(content: str) -> bool:
-    """Return whether a whole link reference definition fits on this line.
-
-    A definition is a leaf block and not a paragraph: it renders nothing at
-    all and leaves no paragraph open below it, which is what lets HTML block
-    condition 7 open on the line under it. One may not interrupt a paragraph
-    either, so the caller asks this only with nothing open.
-
-    Only the one-line form is read. CommonMark lets the destination sit on the
-    line below the label, and this answers ``False`` there -- the liberal side,
-    where a paragraph stays open and condition 7 stays shut, which is what the
-    whole fallback did before. Kept identical to the helper in the sibling
-    hooks.
-    <https://spec.commonmark.org/0.31.2/#link-reference-definitions>
-    """
-    match = LINK_REFERENCE_DEFINITION_PATTERN.match(content)
-    return match is not None and is_link_label(match.group("label"))
-
-
 def opens_a_paragraph(
     content: str, paragraph_open: bool, previous_content: str = ""
 ) -> bool:
@@ -1408,8 +1389,9 @@ def opens_a_paragraph(
     HTML block condition 7 is the one condition that may not interrupt a
     paragraph, so classifying it needs to know whether one is open. The test is
     deliberately liberal: anything nonblank that is not a heading, a thematic
-    break, a Setext underline or a link reference definition leaves a paragraph
-    open. Being wrong in that direction only ever *stops* condition 7 from
+    break, a Setext underline or a table's delimiter row leaves a paragraph
+    open -- a link reference definition among them, which is measured below.
+    Being wrong in that direction only ever *stops* condition 7 from
     opening, which is the behaviour this scan had before it classified
     condition 7 at all. Lines inside a fence, an HTML block or a raw-text
     element never reach here; their caller closes the paragraph outright. Kept
@@ -1421,10 +1403,20 @@ def opens_a_paragraph(
     ordinary paragraph of its own, and leaves one open below it.
 
 
-    A link reference definition is the one other leaf block this has to name.
-    It is not a paragraph, so a bare tag on the line below it opens the HTML
-    block condition 7 that may not interrupt one -- and the liberal fallback
-    was holding that block shut and counting a heading the page never shows.
+    A link reference definition is **not** one of them, and saying so reverses
+    what this helper used to do. cmark-gfm, the renderer GitHub runs, and
+    micromark 4.0.2 both read a definition into the paragraph above it and
+    strip it when that paragraph is finalized, so a paragraph *is* open below
+    a definition and HTML block condition 7 stays shut. Measured on GitHub's
+    own renderer: ``[x]: /url`` over ``<custom>`` over ``## Goal`` paints
+    ``<p><custom></p>`` and then ``<h2>Goal</h2>``, and ``[x]: /url`` over a
+    four-space line paints that line as a paragraph rather than as code.
+    markdown-it 14.3.0 is the one of the three that reads the definition as a
+    closed leaf block; this module followed it and counted a heading the page
+    does show. Both renderers reproduce the CommonMark 0.31.2 example suite,
+    and the suite carries no example of this shape -- so the specification is
+    silent here and the page is what counts.
+    <https://spec.commonmark.org/0.31.2/#link-reference-definitions>
 
     An indented code block is the fourth shape that needs the state coming in,
     and it is the one the liberal fallback was wrong about in the direction this
@@ -1473,8 +1465,6 @@ def opens_a_paragraph(
     if paragraph_open and SETEXT_UNDERLINE_PATTERN.match(content) is not None:
         return False
     if paragraph_open and table_starts_here(previous_content, content):
-        return False
-    if not paragraph_open and is_link_reference_definition(content):
         return False
     return True
 
@@ -2314,22 +2304,89 @@ def following_backtick_run(contents: Sequence[str], row: int, length: int) -> tu
 
 
 
+#: The inline HTML comment, as the production renderer runs it.
+#:
+#: CommonMark 0.31.2 section 6.6 writes it as ``<!-->``, ``<!--->``, or
+#: ``<!--``, "a string of characters not including the string ``-->``", and
+#: ``-->``. The prose and its own reference implementation part: cmark-gfm --
+#: the renderer GitHub runs -- and markdown-it 14.3.0 both run this pattern,
+#: which is the prose minus the texts that end in ``-``, while micromark 4.0.2
+#: alone follows the prose. Measured on ``<!-- audience: adult --->``:
+#: markdown-it and GitHub print the characters, micromark hides them. The page
+#: is what counts.
+#:
+#: The rule that a comment's text may not contain ``--`` is 0.29's and 0.30's.
+#: 0.31.2 retired it, and ``<!-- a -- b -->`` is a comment on all three
+#: renderers.
+#:
+#: The alternation cannot backtrack: ``[^-]`` and the two hyphen branches are
+#: disjoint on their second character, so exactly one branch can match at any
+#: position. A forty-thousand-character subject with no closer is refused in
+#: under four milliseconds.
+#: <https://spec.commonmark.org/0.31.2/#raw-html>
+INLINE_COMMENT_PATTERN = re.compile(r"<!---?>|<!--(?:[^-]|-[^-]|--[^>])*-->")
+
+
+def inline_comment_end(text: str, start: int) -> int:
+    """Return where the comment opened at ``start`` ends, or ``-1``.
+
+    Two layers answer this and the page is their composition, which is why one
+    predicate carries both. **CommonMark decides whether a comment exists**:
+    ``<!-- a --->`` with no later closer is not one, and markdown-it 14.3.0
+    and GitHub both print its characters. **HTML5 then decides how far the
+    node reaches**: GitHub's sanitizer parses the token the Markdown layer
+    emitted and ends the comment at the first ``-->``, and ends ``<!-->`` and
+    ``<!--->`` where they stand.
+
+    The two layers really do part, and one document shows it. On
+    ``Head. <!-- a ---> tail --> more`` the Markdown layer matches through the
+    *second* closer, the HTML layer ends the node at the *first*, and GitHub
+    paints ``tail --> more``. Asking only the first question hid six words the
+    page prints; asking only the second read a marker the page prints as text.
+
+    Python's own ``html.parser`` is not the second layer either: it reads
+    ``<!-->x-->`` as one comment holding ``>x``, where GitHub's sanitizer ends
+    the comment at ``<!-->`` and paints ``x-->``. Measured rather than
+    inherited. Kept identical to the helper in the sibling hook.
+    <https://spec.commonmark.org/0.31.2/#raw-html>
+    """
+    if INLINE_COMMENT_PATTERN.match(text, start) is None:
+        return -1
+    for short in ("<!-->", "<!--->"):
+        if text.startswith(short, start):
+            return start + len(short)
+    closer = text.find("-->", start + len("<!--"))
+    return -1 if closer == -1 else closer + len("-->")
+
+
 def following_comment_end(contents: Sequence[str], row: int, index: int) -> tuple[int, int]:
     """Return where the comment opened at ``index`` closes, or ``(-1, -1)``.
 
     A comment crosses a soft line break the way a code span does, and it ends
     where the run ends: an unclosed ``<!--`` is not a comment at all, so the
-    caller is right to read the characters after it as ordinary text. Kept in
-    step with the helper in ``.github/scripts/check-readability.py``.
+    caller is right to read the characters after it as ordinary text. Nor is
+    one whose text the production refuses, which is what ``<!--`` with any
+    later ``-->`` used to be read as.
+
+    The rows are joined with the line endings they had and handed to
+    ``inline_comment_end``, so this hook and its sibling read one comment
+    production and not two. Kept in step with the helper in
+    ``.github/scripts/check-readability.py``.
     <https://spec.commonmark.org/0.31.2/#raw-html>
     """
-    closer = contents[row].find("-->", index + len("<!--"))
-    if closer != -1:
-        return row, closer + len("-->")
+    joined = contents[row][index:]
+    starts = [0]
     for next_row in range(row + 1, len(contents)):
-        closer = contents[next_row].find("-->")
-        if closer != -1:
-            return next_row, closer + len("-->")
+        starts.append(len(joined) + 1)
+        joined += "\n" + contents[next_row]
+    end = inline_comment_end(joined, 0)
+    if end == -1:
+        return -1, -1
+    for offset in range(len(starts) - 1, -1, -1):
+        if end > starts[offset]:
+            if offset == 0:
+                return row, index + end
+            return row + offset, end - starts[offset]
     return -1, -1
 
 
@@ -3357,10 +3414,13 @@ def reference_definition_spans(
 
     A definition may not interrupt a paragraph, so the walk carries the
     paragraph state: ``Intro text.`` above ``[x]: /url`` defines nothing on
-    either renderer and neither blanks anything here. ``opens_a_paragraph`` is
-    the same helper the document walk uses and already knows a definition is a
-    leaf block rather than a paragraph, so definitions written one under
-    another all count. Kept identical to the helper in the sibling hook.
+    either renderer and neither blanks anything here. Definitions written one
+    under another all count, and the reason is this walk's own: a span is
+    consumed whole and ``paragraph_open`` is left false across it, so the next
+    line is asked with nothing open. ``opens_a_paragraph`` says nothing about
+    definitions -- measured, a definition leaves the paragraph it is written
+    into open -- and it is never reached on a line this walk has already taken
+    as part of a span. Kept identical to the helper in the sibling hook.
     <https://spec.commonmark.org/0.31.2/#link-reference-definitions>
     """
     spans: list[tuple[int, int]] = []
@@ -3414,9 +3474,11 @@ def collect_reference_labels(
     adult-facing document scored by the child gate, which is why one spelling
     in both is worth more than the safe direction in one.
 
-    ``opens_a_paragraph`` is the same helper the document walk uses, and it
-    already knows that a definition is a leaf block rather than a paragraph, so
-    definitions written one under another all define. ``starts`` is that same
+    Definitions written one under another all define, and the reason is this
+    walk's own rather than ``opens_a_paragraph``'s: a span is consumed whole
+    and ``paragraph_open`` is left false across it. ``opens_a_paragraph`` says
+    nothing about definitions -- measured, a definition leaves the paragraph it
+    is written into open. ``starts`` is that same
     walk's own ``starts_a_block`` answer for each line, carried here rather than
     recomputed, because a paragraph also ends where the container changes and
     this walk has no container of its own. ``Intro`` over ``> [x]: /url``
