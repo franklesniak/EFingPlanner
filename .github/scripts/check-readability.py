@@ -3088,6 +3088,59 @@ def closing_tag_state(run: str | None) -> str | None:
         return None
     return run[len(CLOSING_TAG_RUN_PREFIX) :]
 
+def raw_html_begins_the_line(content: str) -> bool:
+    """Return whether Markdown writes raw HTML at the head of this line.
+
+    ``raw_text_run_boundary`` asks this before it opens a page-level run,
+    because a run is the *page's* state: it begins where a browser's
+    tokenizer meets a start tag, and the browser only meets one where the
+    renderer wrote one. There are two routes and either will do.
+
+    A raw HTML **block** passes every character of every line through
+    untouched, so the tag need not even finish on this line: ``<script`` alone
+    opens block condition 1 and the browser reads the next line as the rest of
+    that tag. And a line a paragraph holds may still begin with **inline** raw
+    HTML, which the inline rules pass through as it stands:
+    ``<noembed>text</noembed>`` opens no block -- condition 7 wants the tag
+    alone on its line -- and the page still enters raw text on it.
+
+    A prefix that is neither is not a tag at all. ``<script/`` gives block
+    condition 1 a slash where it wants whitespace, a ``>`` or the end of the
+    line, and gives the inline grammar no ``>``; every renderer escapes it and
+    prints ``<script/`` as characters. Opening a run there discarded every
+    visible line below it until a ``</script>`` that never came -- measured on
+    markdown-it 14.3.0, micromark 4.0.2 and GitHub, which agree on all
+    sixty-four spellings of an opener: a forty-four word body came back as six
+    words, and the document left the reading gate under
+    ``MIN_WORDS_TO_SCORE`` in silence.
+
+    A declaration is left to ``html_block_starts_here`` alone, and that is a
+    measurement rather than an omission. This module follows markdown-it
+    14.3.0 in wanting an *upper-case* letter after ``<!`` for block condition
+    4, so ``<!doctype a`` opens no block; it is no complete inline
+    declaration either, so the renderer escapes it and prints it. A clause
+    that opened a run there took a document of twenty-four words down to six.
+    Measured over eighteen declaration documents, in both cases and with and
+    without a closing ``>``: leaving the block machine to answer agrees with
+    the page sixteen times where opening a run on any ``<!`` and a letter
+    agrees twelve.
+
+    This helper is **not** carried by the sibling hooks, and that is the rule
+    about shared helpers being applied rather than broken. It exists for the
+    two walks in this module that carry no HTML block state of their own; the
+    session-structure and placeholders walks each run the block machine and
+    hand ``raw_text_run_boundary`` its real answer, so neither has anything to
+    ask this. Neither even holds ``html_block_starts_here``, so a copy pasted
+    into them would not run -- which is how this was caught, by a sweep that
+    drives every call site rather than by reading.
+    <https://spec.commonmark.org/0.31.2/#raw-html>
+    """
+    if html_block_starts_here(content):
+        return True
+    start = len(content) - len(content.lstrip(" "))
+    return INLINE_HTML_TAG_PATTERN.match(content, start) is not None
+
+
 def raw_text_run_boundary(
     content: str, open_run: str | None, opens_html_block: bool
 ) -> tuple[str | None, str | None, int]:
@@ -4275,8 +4328,25 @@ def document_html_masks(text: str) -> DocumentMasks:
         previous_content = fence_line.content
         if line_html_block is not None:
             masks.html_block[offset : offset + len(line)] = b"\x01" * len(line)
+        # The same question the prose extractor asks, and asked here for the
+        # same reason: a run that opens where the page has no raw HTML masks
+        # the ``<!--`` of a real comment below it, ``strip_html_comments``
+        # cannot see the opener, and the words written inside that comment
+        # are then scored as prose a child reads.
+        #
+        # What the measurement says about *this* site is worth writing down
+        # rather than overstating. Over 1,608 generated documents and 117
+        # longer ones, fixing the prose walk alone already reaches the right
+        # verdict everywhere, and fixing this one alone reaches none of them:
+        # the two differ only in the word count, on 48 and 8 documents, and
+        # never in a status or in which tokens survive. So this is not a
+        # second defect being closed; it is the same constant, in the second
+        # of the two walks that were told every line may open a block, and
+        # leaving one of them saying so would mean the two walks answer one
+        # question two ways. ``document_html_masks``'s own mask is what pins
+        # it, because the extracted prose cannot tell the two apart.
         open_run, line_run, run_end = raw_text_run_boundary(
-            fence_line.content, open_run, True
+            fence_line.content, open_run, raw_html_begins_the_line(fence_line.content)
         )
         if raw_text_run_holds_text(line_run):
             # ``run_end`` is ``-1`` where the run does not close on this line,
@@ -4646,16 +4716,20 @@ def extract_prose(text: str) -> str:
             # holds only pipes, hyphens, colons and whitespace, so
             # none of 4,672 generated rows matches one.
             in_table = False
-        # This walk carries no HTML block machine -- it is a second pass with its
-        # own cascade of tables, headings, parent sections and list units, and
-        # the block state belongs with ``scan_document_inlines`` -- so the run
-        # is told that every line may open one. The residual is recorded: an
-        # ``<xmp>`` opener on a line CommonMark keeps inside the paragraph above
-        # it opens a run here that the marker scans refuse. It runs on text
-        # whose comments are already removed, so the comment half of the same
-        # question cannot arise.
+        # This walk carries no HTML block *state* -- it is a second pass with
+        # its own cascade of tables, headings, parent sections and list units,
+        # and the open block belongs with ``scan_document_inlines``. What it
+        # does need is the one bit of that machine ``html_block_starts_here``
+        # answers, because a run may not open where Markdown opens no block:
+        # ``<script/`` matches this element's opener and is no start tag at
+        # all, so every renderer escapes it and the words below it are prose;
+        # ``raw_html_begins_the_line`` is where that question is settled, for
+        # this walk and for the mask walk alike.
+        # The residual is unchanged and is recorded: a ``<xmp>`` opener on a
+        # line CommonMark keeps inside the paragraph above it still opens a
+        # run here, because this walk knows no paragraph state either.
         raw_text, line_raw_text, run_end = raw_text_run_boundary(
-            fence_line.content, raw_text, True
+            fence_line.content, raw_text, raw_html_begins_the_line(fence_line.content)
         )
         # Asked before the fence, as both sibling hooks ask it: a line a raw-text
         # run holds opens no fenced block, because every character on it is the

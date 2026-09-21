@@ -20,18 +20,38 @@ rule enforced by re-reading holds until the next commit.
 with its container``. Where a number genuinely has to be cited, put the whole
 URL on the same line and the reference is read as linked.
 
+**Names as well as prose.** The first version of this module read text alone,
+and it said so: a round number spelled inside a Python identifier is not prose
+and no pattern here could see one. A reviewer then found ``ROUND13_ADULT``
+standing in a suite, which is a documented gap costing a review round. So each
+file is read twice -- once as text, and once as the set of identifiers it
+binds. The identifier pass splits a name into its words, on the underscore, on
+a change of case and on the boundary between a letter and a digit, and puts the
+result through the **same** patterns; one grammar states the rule, so a name
+and a sentence cannot drift apart. Only the abbreviation below is the
+identifier pass's own, because a bare ``R 20`` inside a sentence refers to
+nothing and inside a name it refers to a round.
+
 **What this cannot see.** Commit messages, branch names and a pull request's own
 description are outside it, and each of those resolves through Git or GitHub
 rather than through the file. So is every file this repository holds that is
 neither a hook nor one of their suites: the scope below is stated rather than
 global, because a rule that fires on files nobody has swept is a rule that gets
-turned off. It reads text and not syntax, so a reference inside a string
-literal a test *feeds to a hook* would be reported like any other -- which is
-the conservative direction, and no fixture in these suites carries one.
+turned off, and that was measured twice rather than assumed -- widening the
+text pass to every suite fires on seven fixture hashes, and widening the
+identifier pass to the same set fires on seven ``ISSUE_NNN`` names in two
+suites this branch does not own. The text pass reads text and not syntax, so a
+reference inside a string literal a test *feeds to a hook* would be reported
+like any other -- which is the conservative direction, and no fixture in these
+suites carries one. This module itself is outside the scope for that reason and
+is the one file where it bites: its own positive controls are such fixtures,
+and the text pass reports nine references in it, seven of them the samples
+below.
 """
 
 from __future__ import annotations
 
+import ast
 import re
 from pathlib import Path
 
@@ -90,6 +110,70 @@ REVIEW_HISTORY_PATTERNS = (
 #: number that also appears in a URL on the same line is read as linked.
 URL_PATTERN = re.compile(r"(?:https?://|www\.)\S+")
 DIGITS_PATTERN = re.compile(r"\d+")
+
+#: Where one word of an identifier ends and the next begins: the underscore,
+#: a lower-to-upper case change, and either side of a run of digits. So
+#: ``ROUND13_ADULT`` is "ROUND 13 ADULT" and the patterns above read it as the
+#: sentence it abbreviates.
+IDENTIFIER_WORD_BOUNDARY = re.compile(
+    r"_+|(?<=[a-z])(?=[A-Z])|(?<=[A-Za-z])(?=\d)|(?<=\d)(?=[A-Za-z])"
+)
+#: The one rule the identifier pass carries alone. ``_R20_NL`` abbreviates a
+#: round and ``R 20`` in a sentence abbreviates nothing, so this is not in the
+#: shared grammar above. A trailing underscore or the end of the name is
+#: required, which is what keeps ``R2D2``, ``RE2`` and ``SHA256`` out.
+ABBREVIATED_ROUND_PATTERN = re.compile(
+    r"(?<![A-Za-z0-9])_?R(?=\d)\d{1,2}(?!\d)(?:_|$)"
+)
+
+
+def name_words(name: str) -> str:
+    """Return an identifier as the words it is built from, space separated."""
+    return " ".join(part for part in IDENTIFIER_WORD_BOUNDARY.split(name) if part)
+
+
+def identifiers_of(source: str) -> set[str]:
+    """Return every identifier a module binds or reads.
+
+    Read from the syntax tree rather than from the text, which is what makes
+    this pass safe to run beside the text one: a round number inside a string
+    literal is not an identifier, so it is reported once by the text pass
+    rather than twice.
+    """
+    found: set[str] = set()
+    for node in ast.walk(ast.parse(source)):
+        if isinstance(node, ast.Name):
+            found.add(node.id)
+        elif isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)):
+            found.add(node.name)
+        elif isinstance(node, ast.arg):
+            found.add(node.arg)
+        elif isinstance(node, ast.Attribute):
+            found.add(node.attr)
+        elif isinstance(node, ast.keyword) and node.arg:
+            found.add(node.arg)
+        elif isinstance(node, ast.alias):
+            found.add(node.asname or node.name.split(".")[0])
+    return found
+
+
+def names_in(path: Path, root: Path) -> list[str]:
+    """Return one message per identifier in ``path`` that names a review run."""
+    found: list[str] = []
+    relative = path.relative_to(root).as_posix()
+    source = path.read_text(encoding="utf-8")
+    for name in sorted(identifiers_of(source)):
+        words = name_words(name)
+        for label, pattern in REVIEW_HISTORY_PATTERNS:
+            if pattern.search(words) or pattern.search(name):
+                found.append(f"{relative}: {label} in the name {name!r}")
+                break
+        else:
+            if ABBREVIATED_ROUND_PATTERN.search(name):
+                found.append(
+                    f"{relative}: a review round abbreviated in the name {name!r}"
+                )
+    return found
 
 
 def references_in(path: Path, root: Path) -> list[str]:
@@ -155,6 +239,89 @@ def test_no_hook_or_suite_cites_the_review_run_that_wrote_it() -> None:
         "asserts instead, or cite the whole URL on the same line:\n"
         + "\n".join(found)
     )
+
+
+def test_no_hook_or_suite_names_the_review_run_in_an_identifier() -> None:
+    """No name in scope abbreviates a round, a number or a hash.
+
+    The text pass above cannot see one: every pattern it carries wants
+    whitespace or punctuation where an identifier has neither. Five names
+    stood in these files when this was written -- one constant naming a round
+    in a session suite and four naming another in the readability suite -- and
+    all five are reported by this and by nothing else.
+    """
+    found: list[str] = []
+    for path in scoped_paths():
+        found.extend(names_in(path, REPO_ROOT))
+    assert not found, (
+        "these identifiers name a review conversation this repository does "
+        "not hold; name the behaviour the value stands for instead:\n"
+        + "\n".join(found)
+    )
+
+
+def test_an_identifier_is_split_into_the_words_it_is_built_from() -> None:
+    """The split is what lets one grammar read a name and a sentence alike."""
+    assert name_words("ROUND13_ADULT") == "ROUND 13 ADULT"
+    assert name_words("_R20_NL") == "R 20 NL"
+    assert name_words("readAtRound7") == "read At Round 7"
+    assert name_words("plain") == "plain"
+
+
+def test_the_identifier_pass_reads_each_shape_the_text_pass_reads(
+    tmp_path: Path,
+) -> None:
+    """A name carries the same shapes prose does, and is read by the same rules."""
+    sample = tmp_path / "names.py"
+    for name in (
+        "ROUND13_ADULT",
+        "round_12_case",
+        "PR22_FIXTURE",
+        "ISSUE31_NOTE",
+        "_R20_NL",
+    ):
+        sample.write_text(f"{name} = 1\n", encoding="utf-8")
+        assert names_in(sample, tmp_path), name
+
+
+def test_an_ordinary_name_that_ends_in_a_number_is_not_a_round(
+    tmp_path: Path,
+) -> None:
+    """The control, and the one that decides how narrow the abbreviation is.
+
+    ``R2D2``, ``RE2``, ``SHA256`` and ``MD013`` all put a capital letter
+    against a digit, and a rule that read those as rounds would be turned off
+    on its first run. ``round_trip`` is the same trap in the other spelling.
+    """
+    sample = tmp_path / "ordinary.py"
+    for name in (
+        "R2D2",
+        "RE2",
+        "SHA256",
+        "MD013",
+        "UTF8",
+        "round_trip",
+        "rounded",
+        "first_pass",
+        "second_pass",
+        "iso8601",
+        "v1_schema",
+    ):
+        sample.write_text(f"{name} = 1\n", encoding="utf-8")
+        assert not names_in(sample, tmp_path), name
+
+
+def test_a_reference_in_a_string_is_not_read_as_a_name(tmp_path: Path) -> None:
+    """The identifier pass reads syntax, so a fixture a test feeds a hook is safe.
+
+    The text pass reports such a string, which is the conservative direction
+    and is stated in this module's docstring. This says the two passes do not
+    both report it.
+    """
+    sample = tmp_path / "fixture.py"
+    sample.write_text('DOCUMENT = "see round 12 for why"\n', encoding="utf-8")
+    assert not names_in(sample, tmp_path)
+    assert references_in(sample, tmp_path)
 
 
 def test_the_detector_finds_each_shape_it_names(tmp_path: Path) -> None:

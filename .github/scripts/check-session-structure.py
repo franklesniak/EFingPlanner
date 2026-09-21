@@ -4094,6 +4094,60 @@ def reference_definition_span(
     return reference_title_span(lines, index, opens)
 
 
+def section_block_starts(lines: Sequence[str]) -> tuple[bool, ...]:
+    """Return, for each line, whether it begins a block rather than continuing one.
+
+    This is ``scan_document``'s own question, asked of a section body on its
+    own. The body is handed to ``renders_as_content`` as a string rather than
+    as a slice of the document walk, and a helper that is right only when its
+    caller remembers to hand it something is the shape this repository has
+    found defects in most often -- so the helper asks rather than being told.
+
+    Every rule here comes from the same four functions the document walk uses,
+    so the two cannot answer differently about where a paragraph ends:
+    ``container_line`` peels the blockquote and list prefixes,
+    ``starts_a_block`` decides, ``normalize_for_fence_opening`` advances the
+    list contexts, and ``opens_a_paragraph`` carries the one piece of state
+    two of those rules need. A section body starts under a heading, so no
+    paragraph is open on its first line and no container holds it.
+    <https://spec.commonmark.org/0.31.2/#paragraphs>
+    """
+    list_contexts: list[ListContext] = []
+    paragraph_open = False
+    previous_path: tuple[Container, ...] = ()
+    previous_content = ""
+    previous_container: tuple[Container, ...] = ()
+    starts: list[bool] = []
+    for raw_line in lines:
+        above_content, above_container = previous_content, previous_container
+        block_line = container_line(
+            raw_line, list_contexts, paragraph_open, previous_path
+        )
+        content = block_line.content
+        header_above = (
+            above_content if above_container == block_line.containment_path else ""
+        )
+        begins = starts_a_block(
+            content,
+            block_line.containment_path,
+            block_line.opened,
+            previous_path,
+            paragraph_open,
+            header_above,
+        )
+        starts.append(begins)
+        normalize_for_fence_opening(
+            raw_line, list_contexts, paragraph_open, previous_path
+        )
+        paragraph_open = (paragraph_open and not begins) or opens_a_paragraph(
+            content, paragraph_open, header_above
+        )
+        previous_path = block_line.containment_path
+        previous_content = content
+        previous_container = block_line.containment_path
+    return tuple(starts)
+
+
 def renders_as_content(body: str) -> bool:
     """Return whether a section body puts anything on the page.
 
@@ -4113,8 +4167,22 @@ def renders_as_content(body: str) -> bool:
     renders nothing. A rule applied line by line matched neither half of
     ``[shared]:`` with its destination indented underneath, and a session whose
     Goal was a bare heading passed.
+
+    It also reads a definition no further than the block it is in.
+    ``section_block_starts`` is the same answer the document walk computes,
+    and this was the one caller of ``reference_definition_span`` that passed
+    none: ``[x]:`` over ``>visible`` is literal text and then a blockquote on
+    markdown-it 14.3.0, micromark 4.0.2 and GitHub alike, because the
+    blockquote interrupts the definition the label started -- and reading the
+    two lines as one definition reported a mandatory section that puts a
+    quotation on the page as empty. ``---`` and ``***`` below a label do the
+    same thing through the Setext rule. The other direction stays right and is
+    the reason the bound is the block start rather than the indent: ``[x]:``
+    over ``    /url`` still defines, because an indented code block may not
+    interrupt a paragraph.
     """
     lines = body.split("\n")
+    starts = section_block_starts(lines)
     is_in_html_comment = False
     index = 0
     while index < len(lines):
@@ -4124,7 +4192,7 @@ def renders_as_content(body: str) -> bool:
         if is_blank or BARE_LIST_MARKER_PATTERN.match(visible):
             index += 1
             continue
-        span = reference_definition_span(lines, index)
+        span = reference_definition_span(lines, index, starts)
         if span:
             for offset in range(1, span):
                 _, is_in_html_comment = strip_html_comments(

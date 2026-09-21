@@ -5714,12 +5714,12 @@ def test_the_two_hooks_read_a_half_written_tag_alike() -> None:
 # CommonMark puts them
 # ---------------------------------------------------------------------------
 
-_R20_NL = chr(10)
-_R20_FENCE = chr(96) * 3
-_R20_WORDS = "zulu tango words of prose"
-_R20_NOTE = (
+_NEWLINE = chr(10)
+_BACKTICK_FENCE = chr(96) * 3
+_PROSE_WORDS = "zulu tango words of prose"
+_TWO_LINE_COMMENT = (
     "<!-- a hidden note with many words in it"
-    + _R20_NL
+    + _NEWLINE
     + "and a second line of the same note -->"
 )
 
@@ -5734,8 +5734,8 @@ def test_a_marker_behind_a_non_interrupting_marker_is_still_a_comment() -> None:
     """
     marker = "<!-- no-source-check: offline -->"
     document = (
-        "Intro." + _R20_NL + "2. " + _R20_FENCE + _R20_NL
-        + "   " + marker + _R20_NL + "   " + _R20_FENCE + _R20_NL
+        "Intro." + _NEWLINE + "2. " + _BACKTICK_FENCE + _NEWLINE
+        + "   " + marker + _NEWLINE + "   " + _BACKTICK_FENCE + _NEWLINE
     )
     assert "no-source-check" in readability.document_marker_text(document)
     # the control: a start of 1 interrupts, so the marker really is code
@@ -5752,18 +5752,18 @@ def test_a_header_indented_four_columns_is_code_where_nothing_is_open() -> None:
     that paragraph's lazy continuation and really is a header -- measured on
     GitHub's own renderer both ways.
     """
-    code = "    " + _R20_WORDS + _R20_NL + "-:" + _R20_NL
+    code = "    " + _PROSE_WORDS + _NEWLINE + "-:" + _NEWLINE
     assert "zulu" in readability.extract_prose(code)
-    lazy = "Intro." + _R20_NL + "    " + _R20_WORDS + _R20_NL + "-:" + _R20_NL
+    lazy = "Intro." + _NEWLINE + "    " + _PROSE_WORDS + _NEWLINE + "-:" + _NEWLINE
     assert "zulu" not in readability.extract_prose(lazy)
     # three columns is where GFM lets a table begin, and always did
-    allowed = "   " + _R20_WORDS + _R20_NL + "-:" + _R20_NL
+    allowed = "   " + _PROSE_WORDS + _NEWLINE + "-:" + _NEWLINE
     assert "zulu" not in readability.extract_prose(allowed)
     # one tab reaches column four
-    tabbed = chr(9) + _R20_WORDS + _R20_NL + "-:" + _R20_NL
+    tabbed = chr(9) + _PROSE_WORDS + _NEWLINE + "-:" + _NEWLINE
     assert "zulu" in readability.extract_prose(tabbed)
-    assert not readability.table_starts_here("    " + _R20_WORDS, "-:", False)
-    assert readability.table_starts_here("    " + _R20_WORDS, "-:", True)
+    assert not readability.table_starts_here("    " + _PROSE_WORDS, "-:", False)
+    assert readability.table_starts_here("    " + _PROSE_WORDS, "-:", True)
 
 
 def test_a_raw_text_opener_a_fence_prints_opens_no_run() -> None:
@@ -5776,15 +5776,15 @@ def test_a_raw_text_opener_a_fence_prints_opens_no_run() -> None:
     """
     tail = "We pack the bags and then we walk to the train and we ride today."
     fenced = (
-        _R20_FENCE + "text" + _R20_NL + "<script>" + _R20_NL + _R20_FENCE + _R20_NL
-        + _R20_NL + _R20_NOTE + _R20_NL + _R20_NL + tail + _R20_NL
+        _BACKTICK_FENCE + "text" + _NEWLINE + "<script>" + _NEWLINE + _BACKTICK_FENCE + _NEWLINE
+        + _NEWLINE + _TWO_LINE_COMMENT + _NEWLINE + _NEWLINE + tail + _NEWLINE
     )
     prose = readability.extract_prose(fenced)
     assert "hidden note" not in prose
     assert "pack the bags" in prose
     # the control: outside a fence the same opener really does open a run
     bare = (
-        "<script>" + _R20_NL + _R20_NL + _R20_NOTE + _R20_NL + _R20_NL + tail + _R20_NL
+        "<script>" + _NEWLINE + _NEWLINE + _TWO_LINE_COMMENT + _NEWLINE + _NEWLINE + tail + _NEWLINE
     )
     assert "hidden note" not in readability.extract_prose(bare)
     # and the mask is the one the walks use, so a fenced line carries none of it
@@ -6492,3 +6492,183 @@ def test_a_uri_autolink_may_hold_the_delete_character() -> None:
         + TICK + "close" + TICK + "\n\n" + SCORED_BODY + "\n"
     )
     assert not readability.has_adult_marker(bell_document)
+
+
+
+# ---------------------------------------------------------------------------
+# A raw HTML run opens where Markdown opens a block, and a pipe stays escaped
+# ---------------------------------------------------------------------------
+
+_BODY_WORDS = (
+    "We plan the trip together and we write the plan down."
+    + chr(10)
+    + "We look at the map and we pick the roads we will take."
+    + chr(10)
+    + "We count the days and we count the nights we sleep away."
+    + chr(10)
+    + "We ask the family what they want to see along the way home."
+    + chr(10)
+)
+
+
+def test_an_incomplete_element_prefix_opens_no_raw_text_run() -> None:
+    """``<script/`` is not a start tag, so the words under it are still prose.
+
+    CommonMark's HTML block condition 1 wants whitespace, ``>`` or the end of
+    the line after the element name, and ``<script/`` gives it a slash; no
+    other condition opens either, because condition 7 needs a complete tag.
+    Measured on markdown-it 14.3.0, micromark 4.0.2 and GitHub, which all
+    three render the line as a paragraph: a forty-four word body came back as
+    six words and the file left the gate under ``MIN_WORDS_TO_SCORE`` without
+    ever being scored.
+    """
+    document = "Intro words here for the gate." + chr(10) * 2 + "<script/" + chr(10) + _BODY_WORDS
+    assert "family" in readability.extract_prose(document)
+    assert len(readability.extract_prose(document).split()) >= 40
+
+
+def test_a_complete_element_opener_still_opens_a_run() -> None:
+    """The over-application control: ``<script>`` really does open a block."""
+    document = "Intro words here for the gate." + chr(10) * 2 + "<script>" + chr(10) + _BODY_WORDS
+    assert "family" not in readability.extract_prose(document)
+
+
+def test_an_element_name_alone_on_its_line_still_opens_a_run() -> None:
+    """The other control, and the one the reviewer's own wording would break.
+
+    Condition 1 accepts the end of the line after the name, so ``<script``
+    with nothing after it opens a block on all three renderers even though it
+    is no complete start tag. A rule that demanded a complete tag would refuse
+    this line and twelve like it.
+
+    ``<textarea`` is here for the other half of the same point: it opens the
+    block too, and the reader sees every word inside it, so the run is asked
+    of the helper rather than of the extracted prose.
+    """
+    for opener in ("<script", "<script ", "<style", "<style "):
+        document = (
+            "Intro words here for the gate." + chr(10) * 2 + opener + chr(10) + _BODY_WORDS
+        )
+        assert "family" not in readability.extract_prose(document), opener
+    for opener in ("<textarea", "<textarea ", "<script", "<style"):
+        opened, _line_run, _end = readability.raw_text_run_boundary(opener, None, True)
+        assert opened is not None, opener
+    for opener in ("<textarea/", "<script/", "<style/", "<xmp/"):
+        assert not readability.html_block_starts_here(opener), opener
+
+
+def test_a_run_that_opens_nowhere_does_not_hide_the_comment_below_it() -> None:
+    """The second walk asks the same question, and this is what says so.
+
+    ``<xmp/`` opens no block, so the comment under it is a real comment and
+    the words inside it are on nobody's page. The comment mask opened a run
+    there, covered the ``<!--`` so that it was never removed, and every word
+    written inside the comment was scored as prose a child reads.
+
+    The mask is asserted directly as well as through the prose, because the
+    two walks are fixed separately and the prose alone cannot tell them apart:
+    with the mask walk left asking a constant, this document still comes back
+    with twenty words. The mask is where that second walk is visible.
+    """
+    hidden = " ".join(["zulu"] + ["word"] * 44)
+    document = (
+        "Intro words here for the gate." + chr(10) * 2
+        + "<xmp/" + chr(10)
+        + "<!-- " + hidden + " -->" + chr(10)
+        + "We ask the family what they want to see along the way home." + chr(10)
+    )
+    prose = readability.extract_prose(document)
+    assert "zulu" not in prose
+    assert "family" in prose
+    assert not any(readability.document_html_masks(document).raw_text)
+    # the control: a complete opener really does mask the run below it
+    opened = document.replace("<xmp/", "<xmp>", 1)
+    assert any(readability.document_html_masks(opened).raw_text)
+
+
+def test_an_inline_raw_text_tag_opens_a_run_although_no_block_opens() -> None:
+    """A tag the page writes is a tag, whether or not a block carries it.
+
+    ``<noembed>text</noembed>`` with anything after it on the same line opens
+    no HTML block -- condition 7 wants the tag alone on its line and no other
+    condition names ``noembed`` -- and the renderer still writes the tag into
+    the page, so a browser still enters raw text on it. Reading the block
+    alone would take the marker after it for a comment; measured on
+    markdown-it 14.3.0 and micromark 4.0.2, it is one.
+    """
+    document = (
+        "Intro words here for the gate." + chr(10) * 2
+        + "<noembed>hidden</noembed>" + ADULT_MARKER + chr(10) * 2
+        + SCORED_BODY + chr(10)
+    )
+    assert readability.has_adult_marker(document)
+    assert not readability.html_block_starts_here("<noembed>hidden</noembed>")
+    assert readability.raw_html_begins_the_line("<noembed>hidden</noembed>")
+
+
+def test_a_self_closing_raw_text_opener_still_opens_a_run() -> None:
+    """HTML5 ignores the self-closing flag on a non-void element.
+
+    ``<script/>`` is a complete tag, so the page enters script data on it and
+    the marker under it is script content rather than a comment -- measured on
+    both renderers. An opener that refused the slash would read that marker as
+    a declaration the page never carries.
+    """
+    document = (
+        "Intro words here for the gate." + chr(10) * 2
+        + "<script/>" + chr(10) + ADULT_MARKER + chr(10) + SCORED_BODY + chr(10)
+    )
+    assert not readability.has_adult_marker(document)
+    # the control: with no opener at all the same marker really is a comment
+    plain = document.replace("<script/>" + chr(10), "", 1)
+    assert readability.has_adult_marker(plain)
+
+
+def test_a_lowercase_declaration_opens_no_run_here_either() -> None:
+    """The page-level walks follow the same condition 4 the block machine does.
+
+    ``<!doctype a`` has no upper-case letter after ``<!``, which is what
+    markdown-it 14.3.0 wants for block condition 4, and no closing ``>``, so
+    it is no complete inline declaration either. The renderer escapes it and
+    prints it, and every word below it is prose. Opening a run there took a
+    document of twenty-four words down to six.
+    """
+    document = (
+        "Intro words here for the gate." + chr(10) * 2
+        + "<!doctype a" + chr(10) + "trailing words here" + chr(10)
+        + "We ask the family what they want to see along the way home." + chr(10)
+    )
+    prose = readability.extract_prose(document)
+    assert "trailing" in prose
+    assert "family" in prose
+    # the control: the upper-case spelling opens condition 4 and hides them
+    upper = document.replace("<!doctype a", "<!DOCTYPE a", 1)
+    assert "trailing" not in readability.extract_prose(upper)
+
+
+def test_a_backslash_before_a_pipe_escapes_it_however_many_precede_it() -> None:
+    """A run of backslashes before a pipe does not make the pipe a delimiter.
+
+    The parity rule CommonMark's escape grammar implies is not the rule either
+    renderer this repository follows carries. Measured over runs of zero to
+    eight backslashes at delimiter widths two, three and four: markdown-it
+    14.3.0 and GitHub's own renderer read two cells for every run of one or
+    more, and only micromark 4.0.2 reads three at an even run. GitHub is the
+    page a child opens, so this helper follows GitHub, and the parting is
+    recorded here rather than in a comment nobody runs.
+    """
+    for run in range(9):
+        row = "| a " + BACKSLASH * run + "| b | c |"
+        expected = 3 if run == 0 else 2
+        assert len(readability.table_row_cells(row)) == expected, run
+        assert readability.table_columns(row, "| --- | --- |") == (
+            0 if run == 0 else 2
+        ), run
+
+
+def test_the_two_hooks_split_a_row_of_backslashes_the_same_way() -> None:
+    """One rule, two copies, asked the same question."""
+    other = _load_structure_hook()
+    for run in range(9):
+        row = "| a " + BACKSLASH * run + "| b | c |"
+        assert readability.table_row_cells(row) == other.table_row_cells(row), run

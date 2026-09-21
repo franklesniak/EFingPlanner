@@ -3757,9 +3757,6 @@ def test_an_empty_item_with_no_paragraph_above_it_still_opens_a_list() -> None:
 # The sibling copies of three rules, and one cross-hook pin.
 # ---------------------------------------------------------------------------
 
-ROUND13_ADULT = "<!-- audience: adult -->"
-
-
 def test_an_end_tag_inside_an_attribute_hides_the_heading_under_it() -> None:
     """The structure copy of the start-tag rule, asked of a heading.
 
@@ -4642,3 +4639,58 @@ def test_ascii_punctuation_is_the_specification_s_own_list_here_too() -> None:
     assert structure._ASCII_PUNCTUATION_CLASS == "".join(
         BACKSLASH + character for character in sorted(named)
     )
+
+
+
+# ---------------------------------------------------------------------------
+# A link reference definition stops where its block does
+# ---------------------------------------------------------------------------
+
+
+def test_a_definition_does_not_reach_past_a_block_that_begins_below_it() -> None:
+    """``[x]:`` over ``>visible`` is literal text and then a quotation.
+
+    The blockquote interrupts the definition the label started, so the section
+    puts two visible things on the page. Reading the two lines as one
+    definition reported a mandatory section that a child can see as empty --
+    measured on markdown-it 14.3.0, micromark 4.0.2 and GitHub alike.
+    """
+    body = "[x]:" + chr(10) + ">visible"
+    assert structure.renders_as_content(body)
+    text = build_session(empty_sections=("Goal",), extra="")
+    text = text.replace("## Goal" + chr(10) * 2, "## Goal" + chr(10) * 2 + body + chr(10) * 2, 1)
+    assert not any('section "## Goal" is empty.' in m for m in check(text))
+
+
+def test_a_setext_underline_below_a_label_is_not_its_destination() -> None:
+    """``---`` and ``***`` below a label begin a block, so the label is text."""
+    for underline in ("---", "***"):
+        body = "[x]:" + chr(10) + underline
+        assert structure.renders_as_content(body), underline
+
+
+def test_a_definition_still_reaches_an_indented_destination() -> None:
+    """The control in the other direction, and why the bound is the block start.
+
+    An indented code block may not interrupt a paragraph, so ``[x]:`` over
+    four spaces and a destination is one definition and renders nothing at
+    all. A bound written as an indent rather than as a block start would lose
+    this.
+    """
+    assert not structure.renders_as_content("[x]:" + chr(10) + "    /url")
+    assert not structure.renders_as_content("[x]:" + chr(10) + "#visible")
+    assert not structure.renders_as_content("[x]: /url")
+
+
+def test_the_helper_needs_no_caller_to_hand_it_the_block_starts() -> None:
+    """The reason the walk is inside the helper rather than at its one caller.
+
+    ``renders_as_content`` takes a string, and every other reader of
+    ``reference_definition_span`` is handed the walk's own answers. A helper
+    that is right only when its caller remembers to pass something is the
+    shape this repository has found defects in most often, so this asks it
+    with nothing but the body.
+    """
+    assert structure.section_block_starts(("[x]:", ">visible")) == (False, True)
+    assert structure.section_block_starts(("[x]:", "    /url")) == (False, False)
+    assert structure.section_block_starts(("Intro.", "more text")) == (False, False)
