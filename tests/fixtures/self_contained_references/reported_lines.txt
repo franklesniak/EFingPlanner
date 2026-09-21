@@ -1,0 +1,9 @@
+# read it that way since round 12
+# the two branches were settled one round apart
+# those rounds each said the opposite
+# deferred from PR #22
+# the findings issue 27 collects
+# reported at 4011993843
+# this fails at 7e4463f only on a case-sensitive filesystem
+# the previous round asserted the opposite
+# an earlier round settled that

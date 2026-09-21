@@ -4808,3 +4808,42 @@ def test_a_short_inline_comment_ends_where_it_stands_in_this_hook_too() -> None:
     )
     scan = structure.scan_document(document)
     assert structure.NO_SOURCE_CHECK_PATTERN.search(scan.marker_text) is None
+# --- an inline target nests no deeper than the page lets it -----------------
+
+
+def test_an_inline_target_nests_no_deeper_than_a_definition_does() -> None:
+    """The sibling hook's copy of the same rule, asked the same way.
+
+    The pattern carried the bound and the hand-written scan carried none, so
+    this hook answered two ways about one target. A session's marker text is
+    collected through the scan, so a 33-level image was masked as metadata
+    here while the page printed its characters and read the marker inside
+    them.
+    """
+    for depth in (0, 2, 31, 32):
+        target = "(" + _nested_destination(depth) + ")"
+        assert structure.inline_link_end(target, 0) == len(target), depth
+    for depth in (33, 40):
+        target = "(" + _nested_destination(depth) + ")"
+        assert structure.inline_link_end(target, 0) == -1, depth
+    assert structure.inline_link_end("()", 0) == 2
+    side_by_side = "(a" + "(b)" * 40 + ")"
+    assert structure.inline_link_end(side_by_side, 0) == len(side_by_side)
+
+
+def test_a_marker_in_a_description_whose_target_is_too_deep_is_read_here_too(
+) -> None:
+    """The gate-level shape: the marker text this hook collects follows the page."""
+    def document(depth: int) -> str:
+        return (
+            "# Session 01" + chr(10) * 2
+            + "![" + OFFLINE_MARKER + "](" + _nested_destination(depth) + ")"
+            + chr(10)
+        )
+
+    for depth in (2, 32):
+        scan = structure.scan_document(document(depth))
+        assert structure.NO_SOURCE_CHECK_PATTERN.search(scan.marker_text) is None
+    for depth in (33, 40):
+        scan = structure.scan_document(document(depth))
+        assert structure.NO_SOURCE_CHECK_PATTERN.search(scan.marker_text)

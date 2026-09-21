@@ -5,8 +5,11 @@ looked up here: the number is not defined in this repository, not linked from
 it, and resolves only inside a review conversation that was never committed and
 has since ended. A bare pull-request number, a bare issue number, a bare
 review-comment id and a bare commit hash are the same pointer in a different
-spelling, and so is anaphora -- "the previous round", "an earlier round" --
-which names a position in a sequence the reader cannot see.
+spelling, and so is anaphora -- a determiner in front of the word for a review
+run -- which names a position in a sequence the reader cannot see. The
+spellings are written in ``REPORTED_LINES`` below rather than here, because
+this module is inside its own scope and a spelling written here would be a
+finding.
 
 This is a test rather than a convention because the convention was already
 tried. One hundred and twenty-five such references were replaced by hand across
@@ -22,46 +25,61 @@ URL on the same line and the reference is read as linked.
 
 **Names as well as prose.** The first version of this module read text alone,
 and it said so: a round number spelled inside a Python identifier is not prose
-and no pattern here could see one. A reviewer then found ``ROUND13_ADULT``
-standing in a suite, which is a documented gap costing a review round. So each
-file is read twice -- once as text, and once as the set of identifiers it
-binds. The identifier pass splits a name into its words, on the underscore, on
-a change of case and on the boundary between a letter and a digit, and puts the
-result through the **same** patterns; one grammar states the rule, so a name
-and a sentence cannot drift apart. Only the abbreviation below is the
-identifier pass's own, because a bare ``R 20`` inside a sentence refers to
+and no pattern here could see one. A reviewer then found such a name standing
+in a suite, which is a documented gap costing a review round. So each file is
+read twice -- once as text, and once as the set of identifiers it binds. The
+identifier pass splits a name into its words, on the underscore, on a change of
+case and on the boundary between a letter and a digit, and puts the result
+through the **same** patterns; one grammar states the rule, so a name and a
+sentence cannot drift apart. Only the abbreviation below is the identifier
+pass's own, because a bare ``R`` and a numeral inside a sentence refers to
 nothing and inside a name it refers to a round.
+
+**Every file, and this one.** The corpus is every Python file the repository
+tracks, asked of Git rather than guessed at, minus the files named in
+``UNSWEPT_FILES`` with the reason each is named. The three sets are reconciled
+against each other, so a file added later is swept by default and a file left
+out has to be argued for in writing. The second version of this module scoped
+itself with two globs that matched neither itself nor most of the tree, and a
+reviewer found what that cost: its own committed samples carried five of the
+six shapes it exists to refuse, and it passed.
+
+The samples are not in this file for that reason. They are data in
+``REPORTED_LINES``, and they are read under the opposite rule: every line there
+must be reported, and every pattern below must be exercised by one of them, so
+a pattern cannot rot into matching nothing and a line cannot rot into matching
+nothing either. A sample written here would be a reference in a swept file; a
+sample written there is a fixture, and the file it lives in says so.
 
 **What this cannot see.** Commit messages, branch names and a pull request's own
 description are outside it, and each of those resolves through Git or GitHub
-rather than through the file. So is every file this repository holds that is
-neither a hook nor one of their suites: the scope below is stated rather than
-global, because a rule that fires on files nobody has swept is a rule that gets
-turned off, and that was measured twice rather than assumed -- widening the
-text pass to every suite fires on seven fixture hashes, and widening the
-identifier pass to the same set fires on seven ``ISSUE_NNN`` names in two
-suites this branch does not own. The text pass reads text and not syntax, so a
-reference inside a string literal a test *feeds to a hook* would be reported
-like any other -- which is the conservative direction, and no fixture in these
-suites carries one. This module itself is outside the scope for that reason and
-is the one file where it bites: its own positive controls are such fixtures,
-and the text pass reports nine references in it, seven of them the samples
-below.
+rather than through the file. It reads text and not syntax, so a reference
+inside a string literal a test *feeds to a hook* is reported like any other --
+which is the conservative direction, and is why the samples are data. The text
+pass also cannot tell a synthetic hash written as a fixture from a real commit,
+which is what every entry in ``UNSWEPT_FILES`` is about.
 """
 
 from __future__ import annotations
 
 import ast
 import re
+import subprocess
 from pathlib import Path
 
 from tests._pytest_compat import pytest
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 
-#: The hooks, and the suites written against them. Globs rather than a list of
-#: names, so that a hook added later is covered without an edit here.
-SCOPED_GLOBS = (".github/scripts/*.py", "tests/test_check_*.py")
+#: This module's own path, derived rather than typed, so renaming the file
+#: cannot quietly drop it out of the corpus it defines.
+THIS_MODULE = Path(__file__).resolve().relative_to(REPO_ROOT).as_posix()
+
+#: The positive controls, held as data outside any swept file. Each line must
+#: be reported, and between them they must exercise every pattern below.
+REPORTED_LINES = (
+    REPO_ROOT / "tests" / "fixtures" / "self_contained_references" / "reported_lines.txt"
+)
 
 #: Every one of these must be in the scope, or the scan has looked at nothing.
 #: A check that reports success on a corpus it never collected is the failure
@@ -73,6 +91,28 @@ REQUIRED_MEMBERS = (
     "tests/test_check_readability.py",
     "tests/test_check_session_structure.py",
     "tests/test_check_prohibited_placeholders.py",
+    THIS_MODULE,
+)
+
+#: The files the rule is **not** enforced on, each with the reason. Everything
+#: else the repository tracks is swept, so a file added later is inside the
+#: rule until somebody writes down why it should not be.
+#:
+#: Every entry here is a suite for a script this branch did not write, and
+#: every one is named for the same reason: it feeds a synthetic forty-character
+#: hash, or a name carrying an issue number from the upstream template's own
+#: tracker, to the code it tests. The text pass reads text and not syntax, so it
+#: cannot tell a fixture hash from a commit -- and a rule that fires on files
+#: nobody has swept is a rule that gets turned off. Each entry is checked below
+#: for still being needed, so an exemption cannot outlive its reason.
+UNSWEPT_FILES = (
+    ("tests/test_materialize_downstream_adoption.py", "a fixture hash and upstream issue names"),
+    ("tests/test_report_excluded_module_references.py", "a fixture hash"),
+    ("tests/test_template_manifest.py", "a fixture hash and upstream issue names"),
+    ("tests/test_template_sync_materialization_helpers.py", "a fixture hash"),
+    ("tests/test_validate_downstream_adoption.py", "a fixture hash"),
+    ("tests/test_validate_instruction_contracts.py", "a fixture hash"),
+    ("tests/test_validate_marker.py", "several fixture hashes"),
 )
 
 #: Each pattern is one way of pointing out of the repository, with the name a
@@ -112,16 +152,17 @@ URL_PATTERN = re.compile(r"(?:https?://|www\.)\S+")
 DIGITS_PATTERN = re.compile(r"\d+")
 
 #: Where one word of an identifier ends and the next begins: the underscore,
-#: a lower-to-upper case change, and either side of a run of digits. So
-#: ``ROUND13_ADULT`` is "ROUND 13 ADULT" and the patterns above read it as the
-#: sentence it abbreviates.
+#: a lower-to-upper case change, and either side of a run of digits. So a name
+#: holding a round number and a word reads as ``["ROUND", "13", "ADULT"]`` and
+#: the patterns above read it as the sentence it abbreviates.
 IDENTIFIER_WORD_BOUNDARY = re.compile(
     r"_+|(?<=[a-z])(?=[A-Z])|(?<=[A-Za-z])(?=\d)|(?<=\d)(?=[A-Za-z])"
 )
-#: The one rule the identifier pass carries alone. ``_R20_NL`` abbreviates a
-#: round and ``R 20`` in a sentence abbreviates nothing, so this is not in the
-#: shared grammar above. A trailing underscore or the end of the name is
-#: required, which is what keeps ``R2D2``, ``RE2`` and ``SHA256`` out.
+#: The one rule the identifier pass carries alone. A name spelled ``R`` and a
+#: numeral abbreviates a round, and the same two characters in a sentence
+#: abbreviate nothing, so this is not in the shared grammar above. A trailing
+#: underscore or the end of the name is required, which is what keeps ``R2D2``,
+#: ``RE2`` and ``SHA256`` out.
 ABBREVIATED_ROUND_PATTERN = re.compile(
     r"(?<![A-Za-z0-9])_?R(?=\d)\d{1,2}(?!\d)(?:_|$)"
 )
@@ -194,38 +235,131 @@ def references_in(path: Path, root: Path) -> list[str]:
     return found
 
 
+def tracked_python_files() -> list[Path]:
+    """Return every Python file the repository holds, asked of Git.
+
+    Git is asked rather than the filesystem walked, because a walk has to name
+    the directories it refuses -- a build tree, a virtual environment, a
+    package cache -- and each of those names is a place a file can hide. Git
+    already knows which files are the repository's, and ``--others
+    --exclude-standard`` adds the ones that are written but not yet added, so
+    a file is not swept only once somebody remembers to stage it.
+
+    A failure to run Git raises, carrying what Git said, rather than returning
+    an empty list: an empty corpus that reports success is the failure this
+    whole module is about, and a swallowed error is how a corpus comes to be
+    empty.
+    """
+    completed = subprocess.run(
+        [
+            "git",
+            "-C",
+            str(REPO_ROOT),
+            "ls-files",
+            "-z",
+            "--cached",
+            "--others",
+            "--exclude-standard",
+            "--",
+            "*.py",
+        ],
+        capture_output=True,
+    )
+    if completed.returncode != 0:
+        raise AssertionError(
+            "git could not list this repository's Python files, so this scan "
+            "has no corpus and must not report success: "
+            + completed.stderr.decode("utf-8", "replace").strip()
+        )
+    names = [
+        name for name in completed.stdout.decode("utf-8").split(chr(0)) if name
+    ]
+    assert names, "git listed no Python file at all, so this scan has nothing to read"
+    return [REPO_ROOT / name for name in names]
+
+
+def unswept_names() -> set[str]:
+    """Return the paths the rule is deliberately not enforced on."""
+    return {name for name, _reason in UNSWEPT_FILES}
+
+
 def scoped_paths() -> list[Path]:
     """Return every file in scope, with the scope proved complete first.
 
-    The message says how many files the scan did collect, and from which
-    globs, before it names the ones it should have. The two failure modes are
-    different repairs -- a glob that matches nothing is a typo in the glob, and
-    a glob that matches most things is a file that moved -- and a message that
-    says only "collected nothing from" reads as the first when it is the
+    The message says how many files the scan did collect, and out of how many
+    the repository holds, before it names the ones it should have. The two
+    failure modes are different repairs -- a corpus of nothing is a broken
+    walk, and a corpus missing one file is a file that moved -- and a message
+    that says only "collected nothing from" reads as the first when it is the
     second.
     """
-    paths: set[Path] = set()
-    for glob in SCOPED_GLOBS:
-        paths.update(REPO_ROOT.glob(glob))
-    found = sorted(paths)
+    exempt = unswept_names()
+    tracked = tracked_python_files()
+    found = sorted(
+        path
+        for path in tracked
+        if path.relative_to(REPO_ROOT).as_posix() not in exempt
+    )
     relative = {path.relative_to(REPO_ROOT).as_posix() for path in found}
     missing = [name for name in REQUIRED_MEMBERS if name not in relative]
     assert not missing, (
-        f"the scan collected {len(found)} file(s) from {list(SCOPED_GLOBS)}; "
-        f"required files missing from that set: {missing}"
+        f"the scan collected {len(found)} file(s) of the {len(tracked)} this "
+        f"repository tracks; required files missing from that set: {missing}"
     )
     return found
 
 
-@pytest.mark.parametrize("glob", SCOPED_GLOBS)
-def test_each_scoped_glob_matches_something(glob: str) -> None:
-    """A glob that matched nothing would pass this module in silence."""
-    assert list(REPO_ROOT.glob(glob)), glob
+def fixture_lines() -> list[str]:
+    """Return the positive controls, one per line, from outside any swept file."""
+    text = REPORTED_LINES.read_text(encoding="utf-8")
+    return [line for line in text.split("\n") if line.strip()]
 
 
 def test_the_scan_collects_every_hook_and_every_suite() -> None:
     """The corpus is proved before it is searched."""
     assert len(scoped_paths()) >= len(REQUIRED_MEMBERS)
+
+
+def test_the_scan_reads_the_module_that_states_the_rule() -> None:
+    """The file that forbids a reference is one of the files asked about it.
+
+    The version of this module a reviewer found scoped itself with two globs,
+    neither of which matched this file, and its own committed samples then
+    carried five of the six shapes it refuses while every one of its tests
+    passed. A check that exempts itself is the defect it exists to refuse,
+    wearing the check's own name.
+    """
+    assert Path(__file__).resolve() in set(scoped_paths())
+
+
+def test_no_tracked_python_file_is_outside_both_sets() -> None:
+    """Swept and unswept together are every file, and they do not overlap.
+
+    This is the reconciliation rather than the rule: it says nothing about
+    whether a file is clean, only that no file is invisible. A file added to
+    the repository is swept by default and has to be argued out in writing.
+    """
+    tracked = {path.relative_to(REPO_ROOT).as_posix() for path in tracked_python_files()}
+    swept = {path.relative_to(REPO_ROOT).as_posix() for path in scoped_paths()}
+    exempt = unswept_names()
+    assert not swept & exempt
+    assert tracked == swept | exempt, {
+        "tracked but in neither set": sorted(tracked - swept - exempt),
+        "named unswept but not tracked": sorted(exempt - tracked),
+    }
+
+
+def test_every_unswept_file_still_needs_its_exemption() -> None:
+    """An exemption that has outlived its reason is deleted, not inherited."""
+    tracked = {path.relative_to(REPO_ROOT).as_posix() for path in tracked_python_files()}
+    for name, reason in UNSWEPT_FILES:
+        assert name in tracked, f"{name} is named unswept and is not tracked"
+        path = REPO_ROOT / name
+        assert references_in(path, REPO_ROOT) or names_in(path, REPO_ROOT), (
+            f"{name} is exempt because of {reason}, and the scan now reports "
+            "nothing in it. Delete the entry rather than keeping a rule that "
+            "is turned off for a file that does not need it."
+        )
 
 
 def test_no_hook_or_suite_cites_the_review_run_that_wrote_it() -> None:
@@ -260,11 +394,53 @@ def test_no_hook_or_suite_names_the_review_run_in_an_identifier() -> None:
     )
 
 
+def test_the_fixture_file_holds_something_to_read() -> None:
+    """A control file that has emptied out passes every assertion below it."""
+    assert REPORTED_LINES.is_file(), REPORTED_LINES
+    lines = fixture_lines()
+    assert len(lines) >= len(REVIEW_HISTORY_PATTERNS)
+    assert all('"' not in line for line in lines)
+
+
+def test_every_fixture_line_is_a_reference_this_scan_reports(tmp_path: Path) -> None:
+    """The opposite rule, on the one file that holds the shapes on purpose."""
+    sample = tmp_path / "line.py"
+    unreported = []
+    for line in fixture_lines():
+        sample.write_text(line + "\n", encoding="utf-8")
+        if not references_in(sample, tmp_path):
+            unreported.append(line)
+    assert not unreported, (
+        "these lines are kept as positive controls and the scan no longer "
+        "reports them, so the pattern each one stands for has stopped "
+        "matching:\n" + "\n".join(unreported)
+    )
+
+
+def test_every_pattern_is_exercised_by_a_fixture_line(tmp_path: Path) -> None:
+    """Every pattern is exercised, so none can rot into matching nothing."""
+    sample = tmp_path / "line.py"
+    seen: set[str] = set()
+    for line in fixture_lines():
+        sample.write_text(line + "\n", encoding="utf-8")
+        for message in references_in(sample, tmp_path):
+            for label, _pattern in REVIEW_HISTORY_PATTERNS:
+                if f": {label}: " in message:
+                    seen.add(label)
+    missing = [label for label, _pattern in REVIEW_HISTORY_PATTERNS if label not in seen]
+    assert not missing, f"no fixture line exercises: {missing}"
+
+
 def test_an_identifier_is_split_into_the_words_it_is_built_from() -> None:
-    """The split is what lets one grammar read a name and a sentence alike."""
-    assert name_words("ROUND13_ADULT") == "ROUND 13 ADULT"
-    assert name_words("_R20_NL") == "R 20 NL"
-    assert name_words("readAtRound7") == "read At Round 7"
+    """The split is what lets one grammar read a name and a sentence alike.
+
+    The expected values are written as lists rather than as sentences, because
+    this module is inside its own scope: the same three words written as one
+    string would be a reference in a swept file.
+    """
+    assert name_words("ROUND13_ADULT").split() == ["ROUND", "13", "ADULT"]
+    assert name_words("_R20_NL").split() == ["R", "20", "NL"]
+    assert name_words("readAtRound7").split() == ["read", "At", "Round", "7"]
     assert name_words("plain") == "plain"
 
 
@@ -316,30 +492,13 @@ def test_a_reference_in_a_string_is_not_read_as_a_name(tmp_path: Path) -> None:
 
     The text pass reports such a string, which is the conservative direction
     and is stated in this module's docstring. This says the two passes do not
-    both report it.
+    both report it -- and the string it uses is read from the fixture file, so
+    this file does not carry one.
     """
     sample = tmp_path / "fixture.py"
-    sample.write_text('DOCUMENT = "see round 12 for why"\n', encoding="utf-8")
+    sample.write_text(f'DOCUMENT = "{fixture_lines()[0]}"\n', encoding="utf-8")
     assert not names_in(sample, tmp_path)
     assert references_in(sample, tmp_path)
-
-
-def test_the_detector_finds_each_shape_it_names(tmp_path: Path) -> None:
-    """Every pattern is exercised, so none can rot into matching nothing."""
-    samples = (
-        "# read it that way since round 12",
-        "# the two branches were settled one round apart",
-        "# those rounds each said the opposite",
-        "# deferred from PR #22",
-        "# the findings issue 27 collects",
-        "# reported at 4011993843",
-        "# this fails at 7e4463f only on a case-sensitive filesystem",
-    )
-    sample = tmp_path / "sample.py"
-    for text, (name, _pattern) in zip(samples, REVIEW_HISTORY_PATTERNS, strict=True):
-        sample.write_text(text + "\n", encoding="utf-8")
-        hits = [line for line in references_in(sample, tmp_path) if name in line]
-        assert hits, f"{name} matched nothing in {text!r}"
 
 
 def test_a_linked_number_is_not_a_bare_reference(tmp_path: Path) -> None:
@@ -369,8 +528,9 @@ def test_the_scope_failure_says_how_much_it_did_collect() -> None:
 
     The message used to read "the scan collected nothing from: [one file]",
     which names the right file and reads as the wrong failure. It now carries
-    the count and the globs, so a scope holding thirty files and missing one is
-    not reported in the words of a scope holding none.
+    the count it did collect and the count the repository holds, so a scope
+    holding thirty files and missing one is not reported in the words of a
+    scope holding none.
     """
     import tests.test_self_contained_references as module
 
@@ -390,3 +550,10 @@ def test_the_scope_failure_says_how_much_it_did_collect() -> None:
     assert f"collected {collected} file(s)" in message
     assert "a_file_that_is_not_there.py" in message
     assert "collected nothing" not in message
+
+
+@pytest.mark.parametrize("name,reason", UNSWEPT_FILES)
+def test_each_unswept_entry_names_a_path_and_a_reason(name: str, reason: str) -> None:
+    """An entry with an empty reason is an exemption nobody has to defend."""
+    assert name.endswith(".py")
+    assert len(reason.split()) >= 2

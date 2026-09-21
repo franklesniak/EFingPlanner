@@ -582,9 +582,20 @@ LINK_TARGET_WHITESPACE = " \t\n"
 #: decide what this page carries both state one, at the same depth. Measured
 #: one level at a time on ``[x]: a(a(...(z)...))`` with a reference below it:
 #: markdown-it 14.3.0 and GitHub's own renderer resolve it at 32 levels and
-#: refuse it at 33; micromark 4.0.2 has no bound and resolves every depth
-#: asked. The page is followed here, as it is for the character class above,
-#: and the number is the page's rather than a round one.
+#: refuse it at 33. micromark 4.0.2 bounds an *inline* target at the same 32
+#: and leaves a *definition's* destination unbounded, which is one call site
+#: passing ``linkResourceDestinationBalanceMax`` and one passing nothing; both
+#: were measured, one level at a time, before the parting was written down.
+#: The page is followed here, as it is for the character class above, and the
+#: number is the page's rather than a round one.
+#:
+#: The bound belongs to every spelling of the rule, not to the pattern alone.
+#: The two hooks that also scan a target by hand say it again inside
+#: ``inline_link_end``, because a pattern that refuses a destination and a
+#: scan that accepts the same one make the same module answer two ways: the
+#: scan masked a 33-level image as metadata, the renderers printed its
+#: characters and read the marker inside it as a real comment, and an
+#: adult-facing document went through the child reading gate.
 #:
 #: This was three, and three was a number nobody had measured. A definition
 #: four levels deep was no definition to these hooks, so a reference to it was
@@ -2216,6 +2227,19 @@ def inline_link_end(line: str, open_index: int) -> int:
                 break
             if character == "(":
                 depth += 1
+                # The bound ``_LINK_DESTINATION`` carries, in the other
+                # spelling of the same rule. Both say what a destination may
+                # hold and this one said nothing about nesting at all, so at
+                # 33 levels the pattern refused an image and this scan
+                # accepted one: ``![<!-- audience: adult -->](a(a(...)))`` was
+                # masked here as an image's description while markdown-it
+                # 14.3.0, micromark 4.0.2 and the production renderer left the
+                # image literal and read the marker as the comment it is, and
+                # an adult-facing document was scored as a child's page.
+                # Measured from 30 levels to 40 on all three: the target forms
+                # at 32 and does not at 33.
+                if depth > DESTINATION_NESTING_LIMIT:
+                    return -1
             elif character == ")":
                 if depth == 0:
                     break

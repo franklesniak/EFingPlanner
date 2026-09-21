@@ -7114,3 +7114,106 @@ def test_a_definition_leaves_the_line_below_it_on_the_page() -> None:
     prose = readability.extract_prose(document)
     assert "four words of code" in prose
     assert "/url" not in prose
+# --- an inline target nests no deeper than the page lets it -----------------
+
+
+def _inline_target(depth: int) -> str:
+    """The same destination inside an inline target's parentheses."""
+    return "(" + _nested_destination(depth) + ")"
+
+
+def test_an_inline_target_nests_no_deeper_than_a_definition_does() -> None:
+    """One rule, two spellings, and they said different things.
+
+    ``_LINK_DESTINATION`` carried the bound and ``inline_link_end`` carried no
+    bound at all, so the same module refused a 33-level target in one place
+    and accepted it in the other. markdown-it 14.3.0, micromark 4.0.2 and
+    GitHub's own renderer all form the target at 32 and refuse it at 33 --
+    micromark from its inline call site, which passes the same 32 its
+    definition call site does not pass.
+    https://spec.commonmark.org/0.31.2/#link-destination
+    """
+    for depth in (0, 1, 2, 3, 31, 32):
+        target = _inline_target(depth)
+        assert readability.inline_link_end(target, 0) == len(target), depth
+    for depth in (33, 34, 40):
+        assert readability.inline_link_end(_inline_target(depth), 0) == -1, depth
+
+
+def test_a_marker_in_a_description_whose_target_is_too_deep_is_a_comment() -> None:
+    """The direction that matters, and it is the reverse of the definition's.
+
+    At 32 levels the image forms and ``<!-- audience: adult -->`` is its alt
+    attribute, which declares nothing. At 33 no image forms on any of the
+    three renderers: GitHub prints the characters the author typed and reads
+    the marker among them as the comment it is, so the document is
+    adult-facing. Reading it the other way put an adult page through the child
+    reading gate.
+    """
+    def document(depth: int) -> str:
+        return (
+            "Head words here now." + _NL * 2
+            + "![" + ADULT_MARKER + "]" + _inline_target(depth) + _NL
+        )
+
+    for depth in (0, 2, 31, 32):
+        assert not readability.has_adult_marker(document(depth)), depth
+    for depth in (33, 34, 40):
+        assert readability.has_adult_marker(document(depth)), depth
+
+
+def test_an_image_whose_target_is_too_deep_leaves_its_characters_on_the_page(
+) -> None:
+    """The prose half of the same rule: what the page paints, the gate scores."""
+    token = _nested_destination(33)
+    document = "Head words here now." + _NL * 2 + "![a picture](" + token + ")" + _NL
+    assert token in readability.extract_prose(document)
+    formed = _nested_destination(32)
+    assert formed not in readability.extract_prose(
+        "Head words here now." + _NL * 2 + "![a picture](" + formed + ")" + _NL
+    )
+
+
+def test_parentheses_side_by_side_do_not_nest() -> None:
+    """The control, and the one that decides how the bound is counted.
+
+    A rule that counted parentheses rather than measuring depth would refuse
+    ``a(b)(b)...`` at the 33rd pair, and all three renderers form it: the
+    balance returns to zero between each pair and never passes one.
+    """
+    target = "(a" + "(b)" * 40 + ")"
+    assert readability.inline_link_end(target, 0) == len(target)
+    document = "Head words here now." + _NL * 2 + "![" + ADULT_MARKER + "]" + target + _NL
+    assert not readability.has_adult_marker(document)
+
+
+def test_an_empty_inline_target_is_still_a_link() -> None:
+    """The second control: ``[label]()`` is a link, and the bound must not eat it.
+
+    A destination is optional, so the bound belongs to the parentheses the
+    destination holds and not to the target. A version of this that reused the
+    destination *pattern* here refused the empty target, and on
+    ``![<!-- audience: adult -->]()`` that turned an image's alt attribute
+    into a comment.
+    """
+    assert readability.inline_link_end("()", 0) == 2
+    assert not readability.has_adult_marker(
+        "Head words here now." + _NL * 2 + "![" + ADULT_MARKER + "]()" + _NL
+    )
+
+
+def test_the_two_hooks_bound_an_inline_target_alike() -> None:
+    """The copies are pinned against each other, not each against a number."""
+    other = _load_structure_hook()
+    assert (
+        readability.DESTINATION_NESTING_LIMIT == other.DESTINATION_NESTING_LIMIT
+    )
+    for depth in (0, 2, 31, 32, 33, 40):
+        target = _inline_target(depth)
+        assert readability.inline_link_end(target, 0) == other.inline_link_end(
+            target, 0
+        ), depth
+    for target in ("()", "(a" + "(b)" * 40 + ")", "(a(b", "(a)b)"):
+        assert readability.inline_link_end(target, 0) == other.inline_link_end(
+            target, 0
+        ), target
