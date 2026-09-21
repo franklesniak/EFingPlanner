@@ -2729,8 +2729,8 @@ Batch 1 must land these entries:
   the deletion removes a contradiction and loses nothing. **Delete it rather than
   rewriting it:** a rewrite would state the closure rule twice in one bullet, and two
   statements of one rule are two things a later batch has to keep in step. That is rule
-  1 of *"One fact, and the surfaces that state it"* at the top of this brief. Do not
-  move it
+  1 of *"One fact, and the surfaces that state it"* at the top of this brief. **Do not
+  move the gate item itself**
   into the `0.2.0` release section and do not mark it done: you cannot perform check 2,
   and an entry that reads as closed would let the repository claim a gate it has not
   passed. **Write that sentence to match what you actually did.** If for any reason you
