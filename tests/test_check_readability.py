@@ -6672,3 +6672,296 @@ def test_the_two_hooks_split_a_row_of_backslashes_the_same_way() -> None:
     for run in range(9):
         row = "| a " + BACKSLASH * run + "| b | c |"
         assert readability.table_row_cells(row) == other.table_row_cells(row), run
+
+
+# ---------------------------------------------------------------------------
+# A bare destination's parentheses nest to the depth the page allows
+# ---------------------------------------------------------------------------
+
+
+
+def _load_hook_beside_this_one(filename: str, module_name: str):
+    """Import one of the sibling hooks, for a cross-hook pin."""
+    import importlib.util
+    import sys
+    from pathlib import Path
+
+    root = Path(__file__).resolve().parent.parent / ".github" / "scripts"
+    spec = importlib.util.spec_from_file_location(module_name, root / filename)
+    assert spec is not None and spec.loader is not None
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[module_name] = module
+    spec.loader.exec_module(module)
+    return module
+
+def _nested_destination(depth: int) -> str:
+    """``z``, ``a(z)``, ``a(a(z))`` -- ``depth`` balanced levels."""
+    out = "z"
+    for _ in range(depth):
+        out = "a(" + out + ")"
+    return out
+
+
+def test_a_destination_nests_to_the_depth_the_page_allows() -> None:
+    """Thirty-two levels define; thirty-three do not.
+
+    The bound is the production renderer's and not a round number: measured
+    one level at a time on ``[x]: a(a(...(z)...))`` with a reference below it,
+    markdown-it 14.3.0 and GitHub's own renderer both resolve it at 32 and
+    refuse it at 33. CommonMark states no bound and micromark 4.0.2 has none.
+    Three was the bound here, and three was a number nobody had measured.
+    https://spec.commonmark.org/0.31.2/#link-destination
+    """
+    for depth in (0, 1, 2, 3, 4, 8, 31, 32):
+        line = "[x]: " + _nested_destination(depth)
+        assert readability.LINK_REFERENCE_DEFINITION_PATTERN.match(line), depth
+    over = "[x]: " + _nested_destination(33)
+    assert readability.LINK_REFERENCE_DEFINITION_PATTERN.match(over) is None
+
+
+def test_a_marker_in_a_reference_to_a_nested_destination_declares_nothing() -> None:
+    """The gate-level shape of the same rule, and the direction that matters.
+
+    ``![<marker>][x]`` resolves against a four-deep definition on all three
+    renderers, so the apparent marker is alt metadata and the document is
+    child-facing. Reading the definition as literal text honoured the marker
+    and took the document out of the reading gate without a word in the
+    report.
+    """
+    for depth in (4, 5, 8, 32):
+        document = (
+            "[x]: " + _nested_destination(depth) + chr(10) * 2
+            + "See !["
+            + ADULT_MARKER
+            + "][x] here." + chr(10)
+        )
+        assert not readability.has_adult_marker(document), depth
+
+
+def test_an_unbalanced_parenthesis_is_still_not_a_destination() -> None:
+    """The control in the other direction: the bound is a depth, not a licence.
+
+    markdown-it 14.3.0 and micromark 4.0.2 refuse each of these, and so does
+    this pattern. (GitHub accepts an unbalanced opening parenthesis, which is
+    a parting recorded elsewhere and not a rule this constant follows.)
+    """
+    for destination in ("a(b", "a)b", "a(b)c)", "a(b(c"):
+        line = "[x]: " + destination
+        assert readability.LINK_REFERENCE_DEFINITION_PATTERN.match(line) is None
+
+
+def test_an_escaped_parenthesis_needs_no_depth_at_all() -> None:
+    """The second control: a backslash makes a parenthesis an ordinary character."""
+    line = "[x]: a" + BACKSLASH + "(b" + BACKSLASH + "(c" + BACKSLASH + "(d"
+    assert readability.LINK_REFERENCE_DEFINITION_PATTERN.match(line)
+
+
+def test_the_three_hooks_nest_a_destination_to_the_same_depth() -> None:
+    """One rule, three copies, asked the same question.
+
+    The placeholders hook carries the destination only because a definition is
+    a leaf block and ``opens_a_paragraph`` has to tell one from a paragraph,
+    so a limit that drifted there would change which line leaves a paragraph
+    open.
+    """
+    other = _load_structure_hook()
+    third = _load_hook_beside_this_one(
+        "check-prohibited-placeholders.py", "_placeholders_for_cross_hook_pin"
+    )
+    assert (
+        readability.DESTINATION_NESTING_LIMIT
+        == other.DESTINATION_NESTING_LIMIT
+        == third.DESTINATION_NESTING_LIMIT
+    )
+    for depth in (3, 4, 32, 33):
+        line = "[x]: " + _nested_destination(depth)
+        seen = [
+            module.LINK_REFERENCE_DEFINITION_PATTERN.match(line) is not None
+            for module in (readability, other, third)
+        ]
+        assert len(set(seen)) == 1, (depth, seen)
+
+
+# ---------------------------------------------------------------------------
+# A link's metadata is blanked over the paragraph, not over the line
+# ---------------------------------------------------------------------------
+
+
+_HIDDEN_TITLE = (
+    "forty five hidden title words here that no reader ever sees on the page "
+    "at all because a title becomes an attribute of the anchor element"
+)
+
+
+def test_a_target_broken_over_a_line_is_not_a_child_s_prose() -> None:
+    """A title and a destination are attributes wherever the break falls.
+
+    Measured on markdown-it 14.3.0, micromark 4.0.2 and GitHub: each of these
+    is one link whose title is an attribute, and the page carries the label
+    and nothing else. Asking a line-local pattern of each physical line found
+    no link on either line, so every hidden word was scored as a child's
+    prose -- which can push a document into scoring or fail it on text the
+    page never shows.
+    """
+    quote = chr(34)
+    shapes = (
+        "[the guide](guide.md " + quote + _HIDDEN_TITLE[:40] + chr(10)
+        + _HIDDEN_TITLE[40:] + quote + ") here.",
+        "[the guide](guide.md " + quote + _HIDDEN_TITLE + quote + chr(10) + ") here.",
+        "[the guide](guide.md" + chr(10) + quote + _HIDDEN_TITLE + quote + ") here.",
+        "[the" + chr(10) + "guide](guide.md " + quote + _HIDDEN_TITLE + quote
+        + ") here.",
+    )
+    for body in shapes:
+        prose = readability.extract_prose("See " + body + chr(10))
+        assert "hidden" not in prose, body
+        assert "guide" in prose, body
+
+
+def test_an_image_broken_over_a_line_is_not_a_child_s_prose() -> None:
+    """The image shares the walk, so it shares the fix."""
+    quote = chr(34)
+    document = (
+        "See ![alt text](guide.md " + quote + _HIDDEN_TITLE[:40] + chr(10)
+        + _HIDDEN_TITLE[40:] + quote + ") here." + chr(10)
+    )
+    prose = readability.extract_prose(document)
+    assert "hidden" not in prose
+    assert "alt" not in prose
+
+
+def test_a_one_line_target_still_leaves_only_the_label() -> None:
+    """The control that says the blanking keeps the delimiters it needs.
+
+    Blanking a target to its last character leaves the label's brackets in the
+    child's prose, and this repository's own pins read the extracted sentence
+    exactly. The region keeps its own ``(`` and ``)``, so the substitution
+    below still reads a link and takes the brackets with it.
+    """
+    prose = readability.extract_prose(
+        "Read [the guide](https://example.com/guide) before you pack."
+    )
+    assert prose == "Read the guide before you pack."
+
+
+def test_a_bracketed_worksheet_blank_is_not_a_target() -> None:
+    """The second control: a fill-in blank has no target and keeps its words."""
+    prose = readability.extract_prose("Write [your city name] on the line.")
+    assert "your city name" in prose
+
+
+def test_a_bracket_pairs_with_nothing_in_another_block() -> None:
+    """The reason the bound is the paragraph and not the document.
+
+    A link cannot span a blank line. Blanking the metadata over the document
+    joined -- the shortest reading of *blank it over the joined paragraph* --
+    lets an opening bracket here pair with a target-shaped run below and
+    deletes every word between them. Measured on four shapes, the page carries
+    sixty-six to sixty-eight words and that reading returns twenty-four.
+    """
+    quote = chr(34)
+    document = (
+        "See [the guide here and some more words follow." + chr(10) * 2
+        + "Some words then](guide.md " + quote + _HIDDEN_TITLE + quote + ") more."
+        + chr(10)
+    )
+    prose = readability.extract_prose(document)
+    assert "guide here and some more words follow." in prose
+    assert "Some words then" in prose
+
+
+def test_a_second_line_that_opens_no_list_still_belongs_to_the_target() -> None:
+    """The reason the blanking is not a second substitution over the unit.
+
+    An ordered list that does not start at ``1`` may not interrupt a
+    paragraph, so this is one link with a long title on all three renderers
+    and the page carries fifteen words. A pass that re-read the *sentence
+    unit* after joining never sees this one, because the extractor starts a
+    new unit at the list marker it must not honour.
+    https://spec.commonmark.org/0.31.2/#lists
+    """
+    quote = chr(34)
+    document = (
+        "See [the guide](guide.md " + quote + "opening title words" + chr(10)
+        + "2) " + _HIDDEN_TITLE + quote + ") here." + chr(10)
+    )
+    prose = readability.extract_prose(document)
+    assert "hidden" not in prose
+    assert "guide" in prose
+
+
+def test_blanking_the_metadata_opens_and_closes_no_raw_text_run() -> None:
+    """The guard: this fix is invisible to the page's raw-text state.
+
+    The run mask is the state itself, one byte per character. Blanking a
+    link's metadata happens after every structural question has been asked, so
+    the two masks are byte-identical to the ones the walk produced before it.
+    """
+    quote = chr(34)
+    document = (
+        "See [the guide](guide.md " + quote + "a title" + chr(10) + "continued"
+        + quote + ") here." + chr(10)
+        + "<textarea>" + chr(10) + "hidden words" + chr(10) + "</textarea>" + chr(10)
+    )
+    masks = readability.document_html_masks(document)
+    blanked = readability.strip_code_spans_and_link_metadata(document)
+    assert len(blanked) == len(document)
+    assert blanked.count(chr(10)) == document.count(chr(10))
+    assert bytes(masks.raw_text) == bytes(
+        readability.document_html_masks(document).raw_text
+    )
+    assert "hidden words" in readability.extract_prose(document)
+
+
+def test_one_walk_says_where_the_code_spans_and_the_metadata_are() -> None:
+    """Both answers come from one walk, so the two cannot disagree."""
+    quote = chr(34)
+    document = (
+        "Read [the guide](guide.md " + quote + "a title" + quote + ") and "
+        + TICK + "code" + TICK + " here." + chr(10)
+    )
+    walk = readability.scan_document_inlines(document)
+    assert walk.code_spans
+    assert walk.metadata
+    for start, end in walk.metadata:
+        assert document[start] in "[(!"
+
+
+def test_the_destination_chain_is_built_at_every_limit() -> None:
+    """A control found this: the builder had to work at one, and did not.
+
+    Written as a module-level loop, the chain bound its loop variable only
+    when the body ran, so a limit of one left the name undefined and the
+    module did not import. A limit is a number a maintainer may change.
+    """
+    for limit in (1, 2, 3, 32, 64):
+        source = readability._link_destination_pattern(limit)
+        assert source
+        import re as _re
+
+        pattern = _re.compile("^" + source + "$")
+        assert pattern.match(_nested_destination(limit - 1))
+        assert pattern.match(_nested_destination(limit))
+        assert pattern.match(_nested_destination(limit + 1)) is None
+
+
+def test_a_region_keeps_its_delimiters_only_where_it_has_a_pair() -> None:
+    """The mutation the four suites could not see, and the document that shows it.
+
+    A target broken over a line arrives as one region per physical row, so the
+    row that opens it begins with ``(`` and ends in the middle of the title.
+    Keeping the first and last character of *every* region therefore leaves a
+    letter of the title on the page -- ``See [the guide](   e t   `` -- while
+    keeping them only where the region really is a matching pair leaves the
+    label and nothing else. Twelve cells move on this and no test noticed, so
+    this is the test.
+    """
+    quote = chr(34)
+    document = (
+        "See [the guide](guide.md " + quote + "opening title words" + chr(10)
+        + "and more hidden words" + quote + ") here." + chr(10)
+    )
+    prose = readability.extract_prose(document)
+    assert prose == "See [the guide] here."
+    one_line = "See [the guide](guide.md " + quote + "a title" + quote + ") here."
+    assert readability.extract_prose(one_line) == "See the guide here."

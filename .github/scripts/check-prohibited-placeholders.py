@@ -148,12 +148,50 @@ _DESTINATION_CHARACTER = (
     rf"|\\[{_ASCII_PUNCTUATION_CLASS}]"
     rf"|\\(?![{_ASCII_PUNCTUATION_CLASS}]))"
 )
-_DESTINATION_DEPTH_0 = rf"{_DESTINATION_CHARACTER}*"
-_DESTINATION_DEPTH_1 = rf"(?:{_DESTINATION_CHARACTER}|\({_DESTINATION_DEPTH_0}\))*"
-_DESTINATION_DEPTH_2 = rf"(?:{_DESTINATION_CHARACTER}|\({_DESTINATION_DEPTH_1}\))*"
-_LINK_DESTINATION = (
-    rf"(?:<[^<>\n]*>|(?!<)(?:{_DESTINATION_CHARACTER}|\({_DESTINATION_DEPTH_2}\))+)"
-)
+#: How deep a bare destination's parentheses may nest. CommonMark states no
+#: bound at all -- a destination "includes parentheses only if [...] part of a
+#: balanced pair of unescaped parentheses" -- and the two implementations that
+#: decide what this page carries both state one, at the same depth. Measured
+#: one level at a time on ``[x]: a(a(...(z)...))`` with a reference below it:
+#: markdown-it 14.3.0 and GitHub's own renderer resolve it at 32 levels and
+#: refuse it at 33; micromark 4.0.2 has no bound and resolves every depth
+#: asked. The page is followed here, as it is for the character class above,
+#: and the number is the page's rather than a round one.
+#:
+#: This was three, and three was a number nobody had measured. A definition
+#: four levels deep was no definition to these hooks, so a reference to it was
+#: literal text, a marker in that reference was honoured as a comment, and a
+#: child-facing document left the reading gate in silence -- which is the one
+#: direction this module must not err in.
+#:
+#: Written as a chain rather than as one constant per level because a level
+#: names the level below it exactly once: the pattern grows by about seventy
+#: characters a level rather than doubling, and is 2,189 characters and two
+#: milliseconds to compile at 32. It cannot backtrack either, and that is a
+#: property of ``_DESTINATION_CHARACTER`` rather than of the chain: the class
+#: excludes both parentheses, so at every position exactly one branch of the
+#: alternation can match. Kept identical to the constant in the sibling hooks.
+#: <https://spec.commonmark.org/0.31.2/#link-destination>
+DESTINATION_NESTING_LIMIT = 32
+
+
+def _link_destination_pattern(limit: int) -> str:
+    """Return the destination alternative that allows ``limit`` levels of nesting.
+
+    A function rather than a module-level loop, and a control is why: at a
+    limit of one the loop body does not run, so the name it bound was not
+    there to delete and the module did not import at all. A limit is a number
+    a maintainer may change, and one whose only safe values are the ones
+    somebody happened to try is not a limit. Kept identical to the helper in
+    the sibling hooks.
+    """
+    nested = rf"{_DESTINATION_CHARACTER}*"
+    for _ in range(limit - 1):
+        nested = rf"(?:{_DESTINATION_CHARACTER}|\({nested}\))*"
+    return rf"(?:<[^<>\n]*>|(?!<)(?:{_DESTINATION_CHARACTER}|\({nested}\))+)"
+
+
+_LINK_DESTINATION = _link_destination_pattern(DESTINATION_NESTING_LIMIT)
 
 #: How long a link label may be. CommonMark caps it at 999 characters between
 #: the brackets, and the cap decides what a definition *is*: a label one

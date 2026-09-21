@@ -576,12 +576,50 @@ DESTINATION_STOP_CHARACTERS = frozenset(" \t\n")
 #: at the same character.
 #: https://spec.commonmark.org/0.31.2/#links
 LINK_TARGET_WHITESPACE = " \t\n"
-_DESTINATION_DEPTH_0 = rf"{_DESTINATION_CHARACTER}*"
-_DESTINATION_DEPTH_1 = rf"(?:{_DESTINATION_CHARACTER}|\({_DESTINATION_DEPTH_0}\))*"
-_DESTINATION_DEPTH_2 = rf"(?:{_DESTINATION_CHARACTER}|\({_DESTINATION_DEPTH_1}\))*"
-_LINK_DESTINATION = (
-    rf"(?:<[^<>\n]*>|(?!<)(?:{_DESTINATION_CHARACTER}|\({_DESTINATION_DEPTH_2}\))+)"
-)
+#: How deep a bare destination's parentheses may nest. CommonMark states no
+#: bound at all -- a destination "includes parentheses only if [...] part of a
+#: balanced pair of unescaped parentheses" -- and the two implementations that
+#: decide what this page carries both state one, at the same depth. Measured
+#: one level at a time on ``[x]: a(a(...(z)...))`` with a reference below it:
+#: markdown-it 14.3.0 and GitHub's own renderer resolve it at 32 levels and
+#: refuse it at 33; micromark 4.0.2 has no bound and resolves every depth
+#: asked. The page is followed here, as it is for the character class above,
+#: and the number is the page's rather than a round one.
+#:
+#: This was three, and three was a number nobody had measured. A definition
+#: four levels deep was no definition to these hooks, so a reference to it was
+#: literal text, a marker in that reference was honoured as a comment, and a
+#: child-facing document left the reading gate in silence -- which is the one
+#: direction this module must not err in.
+#:
+#: Written as a chain rather than as one constant per level because a level
+#: names the level below it exactly once: the pattern grows by about seventy
+#: characters a level rather than doubling, and is 2,189 characters and two
+#: milliseconds to compile at 32. It cannot backtrack either, and that is a
+#: property of ``_DESTINATION_CHARACTER`` rather than of the chain: the class
+#: excludes both parentheses, so at every position exactly one branch of the
+#: alternation can match. Kept identical to the constant in the sibling hooks.
+#: <https://spec.commonmark.org/0.31.2/#link-destination>
+DESTINATION_NESTING_LIMIT = 32
+
+
+def _link_destination_pattern(limit: int) -> str:
+    """Return the destination alternative that allows ``limit`` levels of nesting.
+
+    A function rather than a module-level loop, and a control is why: at a
+    limit of one the loop body does not run, so the name it bound was not
+    there to delete and the module did not import at all. A limit is a number
+    a maintainer may change, and one whose only safe values are the ones
+    somebody happened to try is not a limit. Kept identical to the helper in
+    the sibling hooks.
+    """
+    nested = rf"{_DESTINATION_CHARACTER}*"
+    for _ in range(limit - 1):
+        nested = rf"(?:{_DESTINATION_CHARACTER}|\({nested}\))*"
+    return rf"(?:<[^<>\n]*>|(?!<)(?:{_DESTINATION_CHARACTER}|\({nested}\))+)"
+
+
+_LINK_DESTINATION = _link_destination_pattern(DESTINATION_NESTING_LIMIT)
 _LINK_TITLE = r"(?:\"(?:[^\"\\]|\\.)*\"|'(?:[^'\\]|\\.)*'|\((?:[^()\\]|\\.)*\))"
 #: A whole inline target, ``(destination "title")``, with every part optional:
 #: ``[label]()`` is a link too.
@@ -3768,24 +3806,43 @@ def paragraph_metadata_skips(
 
 def paragraph_inlines(
     lines: Sequence[ParagraphLine], defined_labels: frozenset[str]
-) -> tuple[list[str], list[tuple[int, int]]]:
-    """Return one paragraph's comment text per line, and its code spans.
+) -> tuple[list[str], list[tuple[int, int]], list[tuple[int, int]]]:
+    """Return a paragraph's comment text per line, its code spans and its metadata.
 
     The ranges are half open and are offsets into the document the lines came
     from, so a caller can blank every one of them and still hold the document
     with its line breaks, its line count and its columns intact.
+
+    The third value is the one this function used to compute and throw away.
+    ``paragraph_metadata_skips`` reads a link over the **joined** paragraph,
+    because a target is not a line-local construct: ``[the guide](page.md``
+    with ``"a title") here.`` below it is one link on markdown-it 14.3.0, on
+    micromark 4.0.2 and on GitHub alike, and its title is an attribute no
+    reader reads. The marker scan has had that answer since the walk was
+    given the paragraph joined; the prose extractor was asking a line-local
+    pattern of its own and counting every hidden word as a child's prose.
+    Handing the same answer to both is what keeps one walk saying where the
+    metadata is.
     """
     skips = paragraph_metadata_skips(lines, defined_labels)
     comments, code_spans = scan_paragraph_inlines(lines, skips)
-    return comments, [
-        (lines[row].start + start, lines[row].start + end)
-        for row, start, end in code_spans
-    ]
+    return (
+        comments,
+        [
+            (lines[row].start + start, lines[row].start + end)
+            for row, start, end in code_spans
+        ],
+        [
+            (lines[row].start + start, lines[row].start + end)
+            for row, spans in skips.items()
+            for start, end in spans
+        ],
+    )
 
 
 @dataclass(frozen=True)
 class DocumentInlines:
-    """One inline walk over a document, and the three answers it yields.
+    """One inline walk over a document, and the four answers it yields.
 
     ``fenced`` and ``code_spans`` are the literal code a document *prints*
     rather than means. ``comment_lines`` holds, for each line, only what
@@ -3796,11 +3853,19 @@ class DocumentInlines:
     the document defines, in a link reference definition, or indented four
     spaces prints as characters on the page or hands them to an element as an
     attribute. It is prose *about* a marker, and it declares nothing.
+
+    ``metadata`` is that same list of contexts read from the other side: every
+    range a link or an image hands to an element as an attribute or renders as
+    nothing at all -- a target, an image whole, a reference label the document
+    defines, and a link reference definition end to end. The marker scan skips
+    those ranges and the prose extractor blanks them, which is one fact and
+    two readers rather than two facts.
     """
 
     fenced: tuple[tuple[int, int], ...]
     code_spans: tuple[tuple[int, int], ...]
     comment_lines: tuple[str, ...]
+    metadata: tuple[tuple[int, int], ...]
 
 
 def scan_document_inlines(text: str) -> DocumentInlines:
@@ -4110,9 +4175,13 @@ def scan_document_inlines(text: str) -> DocumentInlines:
 
     defined_labels = collect_reference_labels(contents, starts)
     spans: list[tuple[int, int]] = []
+    metadata: list[tuple[int, int]] = []
     for run_lines, run_rows in runs:
-        comments, code_spans = paragraph_inlines(run_lines, defined_labels)
+        comments, code_spans, run_metadata = paragraph_inlines(
+            run_lines, defined_labels
+        )
         spans.extend(code_spans)
+        metadata.extend(run_metadata)
         for row, comment in zip(run_rows, comments, strict=True):
             # Added rather than assigned: one row of a table is several runs,
             # one per cell, and each contributes the comment text its own cell
@@ -4120,7 +4189,9 @@ def scan_document_inlines(text: str) -> DocumentInlines:
             # to an empty string by another name.
             comment_lines[row] += comment
 
-    return DocumentInlines(tuple(fenced), tuple(spans), tuple(comment_lines))
+    return DocumentInlines(
+        tuple(fenced), tuple(spans), tuple(comment_lines), tuple(sorted(metadata))
+    )
 
 
 def scan_literal_code(text: str) -> tuple[list[tuple[int, int]], list[tuple[int, int]]]:
@@ -4190,6 +4261,54 @@ def strip_code_spans(text: str) -> str:
     kept = list(text)
     for start, end in code_span_regions(text):
         kept[start:end] = " " * (end - start)
+    return "".join(kept)
+
+
+def strip_code_spans_and_link_metadata(text: str) -> str:
+    """Return the text a reading score is taken from, with its columns intact.
+
+    Two things go, and they go in one walk because they are one walk's two
+    answers and a second walk would read a document the first had already
+    changed. A code span is characters a document prints rather than words a
+    child reads, which is what ``strip_code_spans`` has always said. A link's
+    metadata is its target and an image's alt text: an attribute of an
+    element, which no reader reads.
+
+    **Why the extractor cannot ask a pattern of one line.** A target may carry
+    a soft line break. ``[the guide](page.md`` with ``"a title") here.`` below
+    it is one link with a title on markdown-it 14.3.0, on micromark 4.0.2 and
+    on GitHub, and asking ``LINK_PATTERN`` of each physical line found no link
+    on either -- so forty-five words of title were counted as a child's prose.
+    Measured over twenty documents in four break positions, two constructs and
+    two containers: the page carries fifteen words and the extractor returned
+    forty-one.
+
+    **Why a region keeps its own delimiters where it has a pair.** The
+    substitutions below read ``[label](target)`` and ``[label][reference]``,
+    and a target blanked to its last character leaves the label's brackets
+    standing in the child's prose. Blanking the *inside* of a ``(...)`` or a
+    ``[...]`` leaves ``[the guide](    )``, which those patterns still read as
+    a link, so the label survives and its brackets do not. A region with no
+    matching pair -- a whole link reference definition, or an image, which is
+    reported whole -- is blanked whole, because nothing below needs to read it
+    again.
+
+    **Why the paragraph bound matters**, since the prescription this answers
+    says only "over the joined paragraph": joined over the whole *document*
+    instead, an opening bracket in one paragraph pairs with a target-shaped
+    run in another, and the words between them go. Measured on four shapes --
+    a blank line, a heading, a fence and a list item between the two -- the
+    page carries 66 to 68 words and that reading returns 24.
+    https://spec.commonmark.org/0.31.2/#links
+    """
+    walk = scan_document_inlines(text)
+    kept = list(text)
+    for start, end in walk.code_spans:
+        kept[start:end] = " " * (end - start)
+    for start, end in walk.metadata:
+        paired = text[start] + text[end - 1] in {"()", "[]"}
+        first, last = (start + 1, end - 1) if paired else (start, end)
+        kept[first:last] = " " * (last - first)
     return "".join(kept)
 
 
@@ -4637,14 +4756,15 @@ def extract_prose(text: str) -> str:
     text = normalize_line_endings(text)
     text = strip_front_matter(text)
     text = strip_html_comments(text)
-    # The code spans are found once, over the whole document, because one of
-    # them can cross a soft line break and a line read alone cannot see that.
+    # The code spans and the link metadata are found once, over the whole
+    # document, because either can cross a soft line break and a line read
+    # alone cannot see that.
     # Reading each line alone both leaves a multi-line span standing in the
     # prose and pairs the wrong two backtick runs on the line below it, which
     # deletes an ordinary word between two real spans. Blanking keeps every
     # line break and every column, so the walk below reads the same lines in
     # the same places.
-    blanked_lines = strip_code_spans(text).split("\n")
+    blanked_lines = strip_code_spans_and_link_metadata(text).split("\n")
 
     units: list[str] = []
     active_fence: ActiveFence | None = None

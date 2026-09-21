@@ -4694,3 +4694,33 @@ def test_the_helper_needs_no_caller_to_hand_it_the_block_starts() -> None:
     assert structure.section_block_starts(("[x]:", ">visible")) == (False, True)
     assert structure.section_block_starts(("[x]:", "    /url")) == (False, False)
     assert structure.section_block_starts(("Intro.", "more text")) == (False, False)
+
+
+def _nested_destination(depth: int) -> str:
+    """``z``, ``a(z)``, ``a(a(z))`` -- ``depth`` balanced levels."""
+    out = "z"
+    for _ in range(depth):
+        out = "a(" + out + ")"
+    return out
+
+
+def test_a_destination_nests_to_the_depth_the_page_allows() -> None:
+    """The sibling hook's copy of the same rule, asked the same way.
+
+    A definition renders nothing at all, so a bound one level too tight turns
+    a line that renders nothing into a paragraph a child is scored on -- and
+    turns a resolved reference into literal text, which is how an apparent
+    marker in one comes to be honoured.
+    """
+    for depth in (0, 3, 4, 8, 31, 32):
+        line = "[x]: " + _nested_destination(depth)
+        assert structure.LINK_REFERENCE_DEFINITION_PATTERN.match(line), depth
+    over = "[x]: " + _nested_destination(33)
+    assert structure.LINK_REFERENCE_DEFINITION_PATTERN.match(over) is None
+    assert structure.DESTINATION_NESTING_LIMIT == 32
+
+
+def test_a_nested_destination_still_renders_as_nothing() -> None:
+    """The gate-level shape: a section holding only this definition is empty."""
+    assert not structure.renders_as_content("[x]: " + _nested_destination(8))
+    assert structure.renders_as_content("[x]: " + _nested_destination(33))
