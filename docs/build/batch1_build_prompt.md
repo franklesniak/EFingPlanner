@@ -235,20 +235,23 @@ to the eight already-built shared sessions.
   blocks: the inventory. Record `AC-GLOBAL-1` in your build report as **partially
   satisfied -- the build-risk-register member undecided**, in the same form you record
   `AC-26-1`, and name it in the handback list above.
-- **Authorship mode.** Load-bearing prose — the five new sessions, the framework docs
-  set, the two new parent-guide pages, the two new student-guide cards — is drafted,
-  then self-edited to reference quality against the exemplar. Do not ship raw
-  first-pass generation. Human-review coverage stays at **full coverage**: every
-  child-facing file is human-edited, not sampled. The Full Build's sampling fallback
-  is not adopted. **That second pass is not yours, and you must not report it as done.**
-  The self-edit is yours and covers every file; the human edit is a separate read by a
-  person, and no self-edit, review pass, readability run or density measurement stands
-  in for it -- the same shape as gate check 2 below, and recorded on the same terms. So
-  carry it as an **open human action**: name it in your build report beside gate check
-  2, list every child-facing file you created or edited so the human has the coverage
-  list, and say plainly that those files are self-edited and not yet human-edited.
-  **Batch 1 is not finished until a person has read them.** The handoff at the end of
-  this brief says exactly what to record.
+- **Authorship mode.** Load-bearing prose — the five new sessions, the framework docs set,
+  the two new parent-guide pages, the two new student-guide cards — is drafted, then
+  self-edited to reference quality against the exemplar. Do not ship raw first-pass
+  generation. Human-review coverage stays at **full coverage**: every file this batch
+  creates or edits that a child or a parent reads is human-edited, not sampled. The Full
+  Build's sampling fallback is not adopted. **The test is who reads the file, not which
+  folder it sits in:** the child-facing files are on that list, and so are the
+  parent-guide pages, because an adult reads those before deciding what a child is allowed
+  to do. A page a later batch adds for either reader joins by the same test, named here or
+  not. **That second pass is not yours, and you must not report it as done.** The
+  self-edit is yours and covers every file; the human edit is a separate read by a person,
+  and no self-edit, review pass, readability run or density measurement stands in for it
+  -- the same shape as gate check 2 below, and recorded on the same terms. So carry it as
+  an **open human action**: name it in your build report beside gate check 2, hand over
+  the coverage list that test derives, and say plainly that those files are self-edited
+  and not yet human-edited. **Batch 1 is not finished until a person has read them.** The
+  handoff at the end of this brief says exactly what to record.
 - **Batch gate.** Batch 1 ends at the second gate, **"Verify the built slice."** On the
   Full / OER track that gate is **two checks, not one**, and `framework/CHANGELOG.md`
   already records both under "What is still owed to a human". **Check 1** is an
@@ -2615,21 +2618,23 @@ Batch 1 must land these entries:
 - **Added** — the Phases 0–2 slice: five new sessions, the destination-pack insert
   contract and its first four slots, the Batch 1 templates, the framework docs set, the
   trip starter kit's `family/` subtree, and the new guides.
-- **Changed** — *"Build path moved from the Lean shape to the Full Build shape. The
-  eight Batch 0 Phase 0-2 sessions were split into destination-neutral skeletons plus
-  destination-pack inserts. Their voice, structure and step order are unchanged. Text
-  that named no destination changed with the split as well, and the build report's diff
-  list is the record of which page each change touched: Session 05's lateral-reading and
+- **Changed** — *"Build path moved from the Lean shape to the Full Build shape. The eight
+  Batch 0 Phase 0-2 sessions became destination-neutral skeletons, and the destination
+  facts they held moved into the destination pack: to a session insert where the
+  insert/reference contract routes one, and to a pack reference file otherwise. The
+  contract is the record of which session has which, and not every one of the eight held
+  facts to move. The eight pages' voice, structure and step order are unchanged. Text that
+  named no destination changed with the split as well, and the build report's diff list is
+  the record of which page each change touched: Session 05's lateral-reading and
   primary-versus-secondary definitions moved to their canonical home in the framework
   docs, leaving a one-clause reminder and a link where they stood; the navigation lines
   were re-pointed for the sessions this batch adds; passages that named no place but
   assumed one starting point or one shape of journey were made general; and wording was
-  reworked where a conversion left a page over the density caps. None of them changes
-  what a page teaches. Those eight pages remain the
-  Batch 0 concrete baseline, not a validated reference: the usability pilot is still
-  deferred and no child has walked them. See 'What is still owed to a human' below."*
-  Plus the framework-layer destination scrub, the glossary move, and the style-file
-  change.
+  reworked where a conversion left a page over the density caps. None of them changes what
+  a page teaches. Those eight pages remain the Batch 0 concrete baseline, not a validated
+  reference: the usability pilot is still deferred and no child has walked them. See 'What
+  is still owed to a human' below."* Plus the framework-layer destination scrub, the
+  glossary move, and the style-file change.
 
   **That entry says what changed rather than that nothing did, and the difference is the
   point.** An earlier draft claimed the eight pages' non-destination content was
@@ -2639,13 +2644,20 @@ Batch 1 must land these entries:
   conversion rows in Sessions 00, 01 and 10 replace passages that name no destination but
   assume one starting point or one shape of journey; and universal conversion rule 9
   forces a density edit in at least Session 14, whose own block says a literal freeze and
-  the Definition of Done cannot both be satisfied without it. Each preserves meaning;
-  none leaves the content unchanged, and a changelog that denies a change this repository
-  made is a false history of it. **The entry names the kinds and sends the reader to the
-  build report for the instances, and that is deliberate.** A count inside that entry
-  would be a second place to keep in step with the conversion rules -- rule 3 of *"One
-  fact, and the surfaces that state it"* at the top of this brief -- and it had already
-  been outgrown once: the entry said two while the rules reached four kinds of change.
+  the Definition of Done cannot both be satisfied without it. Each preserves meaning; none
+  leaves the content unchanged, and a changelog that denies a change this repository made
+  is a false history of it. **The entry names the kinds and sends the reader to the build
+  report for the instances, and that is deliberate.** A count inside that entry would be a
+  second place to keep in step with the conversion rules -- rule 3 of *"One fact, and the
+  surfaces that state it"* at the top of this brief -- and it had already been outgrown
+  once: the entry said two while the rules reached four kinds of change. **The insert
+  sentence was the same rule broken in the other direction, and it had been broken since
+  this brief's first commit.** It said the eight sessions gained an insert each. The batch
+  gate near the top of this brief is where the number of the eight that have one is
+  stated, it is stated there once, and the conversion section below heads every one of the
+  eight with what it gets. So the entry names the routing and leaves the contract to say
+  which session has which. A reuser who read the old sentence would go looking for insert
+  pages this batch never creates, and an equivalence reviewer would record them missing.
 
   **Do not claim, in any wording, that a child has used a page this repository ships --
   here, or anywhere else you author.** This is the canonical home of that rule, and it
@@ -2674,8 +2686,9 @@ Batch 1 must land these entries:
   Batch 0, and the merged page is authoritative; (c) *"Acceptance-criteria numbering: the
   combined archive matrix numbering is canonical for this build. A quoted Lean or
   Full/OER companion ID must name its matrix. Recorded in the build style and vocabulary
-  guide."*; (d) *"Human-review coverage stays at full coverage -- every child-facing file
-  is human-edited, not sampled. The Full Build's sampling fallback is not adopted."*;
+  guide."*; (d) *"Human-review coverage stays at full coverage -- every file a batch
+  creates or edits that a child or a parent reads is human-edited, not sampled. The
+  Full Build's sampling fallback is not adopted."*;
   (e) *"Session 07 Library Research Plan is authored in Batch 1 with the Phases 0-2
   slice, not with the later recommended tier. Its Recommended status is unchanged, and
   the family's choice stays open in the built text."*; (f) *"Placeholder vocabulary: the
@@ -2800,7 +2813,7 @@ destination fact:**
   repository is on the **Full Build path** — destination-neutral session skeletons plus
   destination-pack inserts, with the first sessions authored in the earlier Lean shape
   and upgraded in Batch 1 — and that the stricter review regime is retained: **a human
-  edits every child-facing file, not a sample.**
+  edits every file a child or a parent reads, not a sample.**
 - **Add** a new short section, `## Acceptance-criteria numbering (which matrix is
   canonical)`, under 150 words: three matrices exist in the archived design record and
   they renumber the same ideas, with several IDs colliding; for this build the combined
@@ -5419,16 +5432,18 @@ items:
    plainly that Batch 1 ships with its five new sessions untested by any child. **Never
    describe check 1 as "the gate" — it is half of it**, and a passing check 1 clears
    nothing on its own.
-3. **Full-coverage human edit — an open human action, not a finished one.** Every
-   child-facing file built or edited this batch must be human-edited, not sampled, and
-   that binds the reading-level and tone criterion, the meaningful-non-thin-content
-   criterion, and the guides-and-templates-complete criterion. **You cannot have done
-   it**, so do not write it in the past tense and do not report those three criteria as
-   met on the strength of your own pass. Hand the human the coverage list -- every
-   child-facing file this batch created or edited -- and say for each that it is
-   self-edited against the exemplar and still waiting on a person's read. Carry it
-   forward as an obligation Batch 2 inherits, in the same place and the same words you
-   carry gate check 2.
+3. **Full-coverage human edit — an open human action, not a finished one.** Every file the
+   authorship-mode rule near the top of this brief puts on the coverage list must be
+   human-edited, not sampled, and that binds the reading-level and tone criterion, the
+   meaningful-non-thin-content criterion, the guides-and-templates-complete criterion, and
+   the parent-guide-usability criterion. **Those last two are why that rule reaches past
+   the child-facing files**, and a coverage list that left the parent-guide pages out
+   could validate neither of them. **You cannot have done it**, so do not write it in the
+   past tense and do not report those four criteria as met on the strength of your own
+   pass. Hand the human that coverage list, and say for each file that it is self-edited
+   against the exemplar and still waiting on a person's read. Carry it forward as an
+   obligation Batch 2 inherits, in the same place and the same words you carry gate check
+   2.
 4. **Insert/reference-contract completeness.** Confirm by reading that every
    place-needing session is routed to a named insert and/or reference slot, that there
    are no orphan slots, and that no session reaches for a fact the contract does not
