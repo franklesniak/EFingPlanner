@@ -4,7 +4,7 @@
 
 - **Status:** Active
 - **Owner:** Repository Maintainers
-- **Last Updated:** 2026-09-20
+- **Last Updated:** 2026-09-21
 - **Scope:** The complete build instruction for Batch 1 of the EFingPlanner curriculum -- the Phase 0-2 vertical slice, Session 00 through Checkpoint 1. It carries every Batch 1 requirement, every applicable acceptance criterion and the adjudicated answer to every open question, so an authoring run never opens the archived specification. It does not cover Batch 0 or Batches 2-4, and it is a build instruction rather than shipped curriculum.
 - **Related:** [Build prompt directory guide](README.md), [Build prompt template](_build_prompt_template.md), [Archived specification](../spec/specification.md)
 
@@ -3058,7 +3058,7 @@ honest-about-evidence
 stance: a rough signal, not proof of transfer. A simple table (item / start / midpoint /
 end) works and prints portrait.
 
-**H5. `framework/parent_guide/session_support_notes.md` (edit).** Five changes:
+**H5. `framework/parent_guide/session_support_notes.md` (edit).** Six changes:
 
 - Replace the intro sentence with: `A short, parent-facing overview of each session
   built so far -- your role, what to prep, the artifact to look for, a coaching
@@ -3106,14 +3106,45 @@ end) works and prints portrait.
   every season the destination has, with at least one busy window flagged to be
   careful about.` Change nothing else in the block -- Role, Prep, the coaching
   question and the pitfall are season-count-neutral as built.
+- **The Session 00 block's two passport bullets take the qualifier, and they are
+  one change because they are one block.** `- Prep: kid-safe filter, Trip-Basics
+  card, assumptions page, AI choice, start passports.` becomes `- Prep: kid-safe
+  filter, Trip-Basics card, assumptions page, AI choice, start passports if your
+  trip leaves the country.`, and `- Look for: your four setup actions done, the
+  passport check kicked off, and Session 01 printed.` becomes `- Look for: your
+  four setup actions done, the passport check kicked off if your trip leaves the
+  country, and Session 01 printed.` The qualifier is H10's, and these two lines are
+  the map's copy of Session 00's own Goal and Stop Point, which the conversion row
+  below qualifies; a map that keeps a step the page it maps has dropped sends a
+  parent looking for work nobody asked them to do. **This is the passport
+  qualifier and not the AI route**: the F6 paragraph above withholds the AI-use-rules
+  link from this same `Prep` bullet, and that withholding is untouched. Role and
+  Pitfall keep their built wording.
 - No entry restates the session's Parent Notes.
 
-**H6. `framework/parent_guide/time_and_effort.md` (edit).** Three changes.
+**H6. `framework/parent_guide/time_and_effort.md` (edit).** Five changes.
 
 - Append one line at the end of the `## Is it worth it (versus casual involvement)`
   section: `If you want a rough signal over time rather than a feeling, the optional
   [executive-function observation aid](ef_observation_aid.md) takes about a minute, three
   times across the project.`
+- **The adult-job list drops two items that assume a trip shape.** `## You are
+  running two projects at once` reads *"doing the actual adult trip planning and
+  booking -- flights, hotels, passports, insurance, reservations."* Replace that
+  clause with *"doing the actual adult trip planning and booking -- travel, hotels,
+  insurance, and reservations."* A family who drives books no flight, and the
+  passport is named with its condition in the next paragraph rather than twice on
+  one page. **Change nothing else in that section.**
+- **The scheduling sentence takes the passport condition.** The same section's
+  next paragraph reads *"The one scheduling thing to do now: **start the passport
+  and check whether your dates land in a peak season.** Those are the longest-lead
+  items."* Replace it with *"The one scheduling thing to do now: **check whether
+  your dates land in a peak season, and, if your trip leaves the country, start the
+  passport.** Those are the longest-lead items."* The qualifier is H10's, and it is
+  the same one Session 00's conversion row and the setup checklist take. The peak
+  season stays unconditional: every destination has a busier time of year, and the
+  season work this batch neutralises is about which seasons a destination has, not
+  about whether it has any.
 - **Add Session 08 to the Low-Bandwidth Parent Mode exception.** The second bullet of
   `## Low-Bandwidth Parent Mode` reads `Replace per-session co-working with a quick
   after-the-session glance -- except Session 05, which stays hands-on.` This batch
@@ -3210,15 +3241,31 @@ neighbouring prose, or leave the count high and record it with a
 resolve it by dropping a parenthetical or a checkbox.**
 
 Change the Session 09 sub-bullet's placement words from "do right after Session 05" to
-"do before any AI tool; on the First Taste path, right after Session 05." Add one
-sentence under the list: `The extra sessions above are part of the fuller Phases 0-2
-path. They are not among the 13, and skipping them is still a real First Taste finish.`
-**That sentence carries no count, and the omission is deliberate.** After these five
+"do before any AI tool; on the First Taste path, right after Session 05." Add three
+sentences under the list: `The extra sessions above are part of the fuller Phases 0-2
+path. They are not among the 13, and skipping them is still a real First Taste finish.
+Session 09 is different if your family uses AI: do that one before you use any AI
+tool.`
+**The skip sentence carries no count, and the omission is deliberate.** After these five
 insertions the list holds **six** indented entries, not five: the Session 09 sub-bullet
 is already there, it already reads *"an extra, not one of the 13"*, and Session 09 is a
 Phases 0-2 session too. A sentence reading "the five extra sessions above" is falsified
 by the page it sits on, and this is a child-facing page whose whole job is telling a
 child what counts toward 13. Do not put a numeral back.
+
+**The third sentence is there because those same six entries include Session 09, and
+Session 09 is the one an AI family may not skip.** Its own `Status` line says so —
+*"Conditional core -- done **only if** your family opted into AI at setup (Session
+00)"* — and this page's own parenthetical for it already reads *"AI families only
+-- do before any AI tool"*. A flat *"skipping them is still a real First Taste
+finish"* therefore tells a family who opted into AI, on the one page whose job is
+telling a child what counts, that the safety lesson is optional. The third sentence
+scopes the claim and moves nothing else: it carries no count, adds no dash to the
+section's budget, and states the **consequence** rather than repeating the status the
+sub-bullet already carries — a second copy of a status is a second place to keep in
+step. Write it as its own sentence and not as a clause hung off the one before it;
+the skip claim is true of the other five and the exception has to read as an
+instruction, not as a footnote.
 
 **The grown-up list.** `## Which sessions need a grown-up` today names Sessions 00, 05,
 09, Checkpoint 1 and 44, and then tells the child that when a grown-up is busy they
@@ -3311,11 +3358,17 @@ conversion table); the remaining files are:
 | File | Replace | With |
 | --- | --- | --- |
 | `student_guide/what_i_decide.md` | "we are going on a trip, and it is Japan." | "we are going on a trip, and they picked where." |
+| `student_guide/what_i_decide.md` | "Money; booking; flights; passports; safety" | "Money; booking; travel; safety" — the same four words Session 01's junior-planner row below writes, so the card and the session state one boundary once |
+| `student_guide/what_i_decide.md` | "final calls on money, booking, flights, passports, and safety" | "final calls on money, booking, travel, and safety" — the card says the boundary twice and both statements move; replacing one would leave the page disagreeing with itself |
 | `student_guide/README.md` | "travel and Japan words, explained simply." | "travel words, explained simply." |
 | `parent_guide/README.md` | "exciting things about Japan (just for fun)" | "exciting things about your destination (just for fun; the destination pack is a good place to start)" |
 | `parent_guide/adult_roles.md` | "we are taking a trip, and it is Japan." | "we are taking a trip, and where it is." |
+| `parent_guide/adult_roles.md` | the roles-matrix row whose Area cell reads "Flights" | the same row with its Area cell reading "Getting there", the two role cells untouched — the built Session 10 step this batch neutralises already heads this idea "Getting there", and a family who drives has no Flights row to read |
+| `parent_guide/adult_roles.md` | the roles-matrix row whose Area cell reads "Passport, entry" | the same row with its Area cell reading "Passport and entry rules, if your trip leaves the country", the two role cells untouched |
+| `parent_guide/adult_roles.md` | "Money, booking, flights, passports, entry requirements, insurance, safety, and any legal, health, or medical decision." | "Money, booking, travel, insurance, safety, and any legal, health, or medical decision. If your trip leaves the country, passports and entry requirements are adult-owned too." — the page states the boundary a third time, under `## What stays firmly adult-owned`, and a heading is where this one's obligation lives; two sentences rather than one clause, so the paragraph gains no dash |
 | `parent_guide/coaching_and_support.md` | "that we're going, and that it's Japan." | "that we're going, and where." |
 | `parent_guide/coaching_and_support.md` | "You recommended Kyoto for three nights -- here's our Kyoto hotel, three nights." | "You recommended three nights in the place you picked -- here's our hotel there, three nights." |
+| `parent_guide/coaching_and_support.md` | "We had to lock the flights before you finished" | "We had to lock the bookings before you finished" — the timeline-collision script is the voiced form of the roles-matrix row above, and the page the matrix sends a parent to for the scripts; prices climb on hotels too |
 | `parent_guide/setup_checklist.md` | "time zone or hours ahead to Japan" | "the destination, time zone or the time difference to it" — the direction goes with the name, per D9 |
 | `parent_guide/setup_checklist.md` | "home airport and code" | "home airport and code, if you are flying" — the qualifier goes with the fields, per D9; a family who drives has no airport and this line is where they first meet the card |
 
@@ -3326,8 +3379,8 @@ number of travelers, and the roster by relationship."* **Keep that file's own wo
 otherwise.** It does not write "your" in front of each field, and Session 00's
 differently-voiced copy of the same list is not a model for it.
 
-**`parent_guide/setup_checklist.md` takes two further changes, and neither is in the
-table above.** Its **step 4**, the AI yes/no choice, gains the AI-use-rules clause F6
+**`parent_guide/setup_checklist.md` takes three further changes, and none of them is in
+the table above.** Its **step 4**, the AI yes/no choice, gains the AI-use-rules clause F6
 specifies, for the reason F6 gives: this batch creates the page that carries the
 before-you-opt-in check, and the three surfaces that ask for the choice are the only
 places a parent meets it in time. And its **"Also do soon" trip-shape bullet** takes the
@@ -3338,17 +3391,110 @@ arrival city is a fine answer"* becomes *"If you can, record a rough trip shape 
 out of the same place, in one place and out of another, or one base you stay at and
 travel from) and the likely arrival place on the assumptions page. Naming just the
 arrival place is a fine answer"*. Everything after that in the bullet -- the City
-Shortlist checkpoint and the First Taste sentence -- keeps its built wording. That file
-is already on the edit list for its row above, so **the deliverables count does not move
-for it.**
+Shortlist checkpoint and the First Taste sentence -- keeps its built wording.
 
-**`parent_guide/README.md` takes two further changes, and neither is in the table
-above.** Its fastest-safe-start **step 4** gains the short AI-use-rules route F6
+And its **"Also do soon" passport bullet** takes the condition, as a whole-bullet
+replacement for the reason Session 00's block gives about the same check. The built
+bullet reads *"- **Check passports early.** A child's first passport is a long-lead
+item that can set the earliest date you could travel, and children's applications
+follow their own rules. Confirm the current child-passport requirements and processing
+times with the official source at travel.state.gov, since these can change. Start this
+now."* Replace it with *"- **Check passports early, if your trip leaves the country.** A
+child's first passport is a long-lead item that can set the earliest date you could
+travel, and children's applications follow their own rules. Confirm the current
+child-passport requirements and processing times with the official source at
+travel.state.gov, since these can change. Start this now. If your trip stays inside
+your own country, no passport is needed for it and this item is already done."*
+**Leave `the official source` alone here.** OQ-4's *"the official US source"* wording is
+adjudicated for Session 00's two places and nowhere else, and widening it here would
+re-scope an answered question inside a fix for a different one. That file is already
+on the edit list for its row above, so **the deliverables count does not move for it.**
+
+**The adult boundary is one boundary in two renderings, and five rows above move it
+together.** `parent_guide/adult_roles.md` says so on its own second line — *"The child's
+version of this boundary is in the What I Decide card -- one boundary, two renderings"*
+— and the archived design record says it harder: the card is *"the child-language
+rendering of this same Adult Roles Matrix -- one canonical boundary, two renderings,
+cross-linked, so they cannot drift (if the matrix changes, regenerate this card)"*. Both
+renderings hand `flights` and `passports` to the grown-ups, and Session 01's conversion
+row below already replaces its own copy of this sentence — the same sentence without
+`passports` — for the reason it gives there: a family who drives or takes a train has no
+flight for a grown-up to decide. So the card's two statements and the matrix's two — its
+`Flights` row and the paragraph under `## What stays firmly adult-owned`, which states
+the boundary a third time — move in one pass, and they move to words this batch already
+uses — `travel` from Session 01, `Getting there` from the built Session 10 step this
+batch neutralises. The fifth row is the voiced form of the matrix:
+`parent_guide/coaching_and_support.md` is the page the matrix sends a parent to for the
+scripts, and its timeline-collision script says *"We had to lock the flights before you
+finished"*. It becomes *"lock the bookings"*, which is what the sentence means for every
+family and is still true for one that flies. With the scrub rows above,
+`student_guide/what_i_decide.md` takes three changes, `parent_guide/adult_roles.md`
+takes four and `parent_guide/coaching_and_support.md` takes three, none of them
+overlapping, and all three files are already on the edit list, so **the deliverables
+count does not move for any of them.**
+
+**`passports` leaves the child's card and goes somewhere, which is what makes this a
+neutralisation rather than a removal.** It lands in the adult layer, where the
+repository already keeps it and where a child never acts on it: the matrix row above
+carries it with its condition, Session 00 states it five times, the setup checklist
+states it once, and `time_and_effort.md` schedules it. The card keeps the four words
+that are true of every family this framework admits, and a nine-year-old loses nothing
+they were ever asked to do. This is not the conversion section's one exempt removal;
+nothing here is sent nowhere.
+
+**Do not move the `Which cities` cell on the same card line.** It was read rather than
+skipped, and it is ruled rather than omitted: it is a destination-shape assumption
+rather than a trip-shape one, the two sessions it summarises -- 15 and 21 -- sit on the
+destination-leak exemption list until a later batch converts them, and a card
+neutralised ahead of the sessions it points at would offer a child "places" and then
+hand them a City Research Card. **A conversion that edits one clause of a built line
+owns the whole line**, which is the Session 00 rule below; owning a clause includes
+ruling that it stays. **The matrix's own `Cities`, `Hotels` and `Restaurants, transit
+cards` rows stay for a second reason, and it is the one that explains why `Flights`
+moved and they do not.** A roles matrix allocates authority over a category and asks the
+family for nothing, so a category that does not arise for them is an empty row rather
+than a false instruction. `Flights` moves because the **card** moves and the design
+record forbids the two renderings from drifting; `Passport, entry` moves for the
+separate reason the qualifier paragraph below gives. Neither moves because a matrix row
+is defective on its own.
+
+**`if your trip leaves the country` is the passport check's canonical qualifier from
+here on**, in the same shape D9 gives `if you are flying` and `the time difference`, and
+every surface that states the check takes it. **Ten statements, in five files**: Session
+00's five, through the conversion row in its block below;
+`parent_guide/setup_checklist.md`, in the paragraph above;
+`parent_guide/time_and_effort.md`, through H6; `parent_guide/README.md`, in the
+paragraph below; and the `Prep` and `Look for` bullets of
+`parent_guide/session_support_notes.md`'s Session 00 block, through H5. **Four further
+surfaces name a passport without stating the check** — the two adult-boundary statements
+on `student_guide/what_i_decide.md` and the two on `parent_guide/adult_roles.md` — and
+each of those either takes the qualifier or loses the noun, per the rows above. **The
+prohibitions are a different family and not one of them moves**: *never write a passport
+number on a page* is true of a family who holds one and of a family who does not, so it
+depends on no property of the trip. D9 states the idea for a **field**: *"a mandatory
+field with no true answer"* prevents the fresh start the acceptance criterion asks for.
+A **requirement** is that one step further on. A family who stays inside their own
+country cannot start a passport check, so a setup session that makes it mandatory can be
+finished only by pretending, and its Stop Point then certifies something that did not
+happen. Name the condition and give the family with no answer a true path. D9 already
+says why no grep finds this class; the only difference here is that the thing with no
+true answer is an action rather than a blank.
+
+**`parent_guide/README.md` takes three further changes, and none of them is in the
+table above.** Its fastest-safe-start **step 4** gains the short AI-use-rules route F6
 specifies -- it is the third surface that asks for the choice, and the only one that
-today links nothing -- and its *"New to the term"* paragraph gains the link H3 specifies.
-With the scrub row above, that file takes three changes on three different lines, and no
-two of them overlap. It is already on the edit list, so **the deliverables count does not
-move for it either.**
+today links nothing -- and its *"New to the term"* paragraph gains the link H3
+specifies. And its **"Also start now" passport paragraph** takes the qualifier: it
+reads *"**Also start now (it runs in the background):** kick off the child's passport
+check at travel.state.gov"*, and becomes *"**Also start now if your trip leaves the
+country (it runs in the background):** kick off the child's passport check at
+travel.state.gov"*, with one sentence added at the end of the paragraph: *"If your
+trip stays inside your own country, there is nothing to start here."* Everything
+between those two keeps its built wording. **One sentence, because this page is the
+quick-start and H3 below protects its one-screen budget.** With the scrub row above,
+that file takes four changes on four different lines, and no two of them overlap. It
+is already on the edit list, so **the deliverables count does not move for it
+either.**
 
 **H11. `README.md` (edit).** The repository's **root** landing page -- not
 `framework/README.md`, which F1 creates. It has no spec-extract section of its own, so it
@@ -3487,7 +3633,7 @@ contradicting it.
    handoff's gate check 1 already requires by name -- an exemption nobody writes down is
    indistinguishable from a fact somebody lost. **Measured across this section's seven
    conversion tables -- ten sessions are converted here and Sessions 03, 13 and 14 need
-   none: forty-four rows, and exactly one of those rows removes content and sends it
+   none: forty-five rows, and exactly one of those rows removes content and sends it
    nowhere.** Do not widen the exemption to a destination fact that is merely
    awkward to place. The test is whether the assertion depends on the family's origin
    rather than on the destination, and only an origin-dependent assumption passes it.
@@ -3545,22 +3691,24 @@ contradicting it.
 ### Session 00 — Parent Setup (scrub only, no insert)
 
 Adult-only; it is not in the contract and must **not** say "open this session's
-Destination Notes." Four replacements, plus the one link addition F6 requires at step 4.
-**Two of the four replace a whole clause rather than a phrase**, and each of those two
-says so in its own row; replacing only the leaking phrase would leave the rest of the
-line asserting something the batch has just changed elsewhere:
+Destination Notes." Five replacements, plus the one link addition F6 requires at step 4.
+**Three of the five reach past a phrase**, and each of those three says so in its own
+row: two replace a whole clause, and the third carries one qualifier to all five
+statements of a single check. Replacing only the leaking phrase would leave the rest
+of the line asserting something the batch has just changed elsewhere:
 
 | Line | Current text | Neutral replacement |
 | --- | --- | --- |
 | Step 2 — **replace the whole field list, not the leaking phrase** | "your home airport and its code, your time zone or hours-ahead to Japan, your maximum trip length, how many travelers, and the roster by relationship" | "your home airport and its code if you are flying, your destination, your time zone or the time difference to it, your maximum trip length, how many travelers, and the roster by relationship" (the destination is the new field, per OQ-2; the time-difference field takes D9's direction-neutral name; the airport fields take D9's `if you are flying` qualifier; every other field keeps its built wording) |
 | "What to tell your child" | "we are taking a trip, and it is Japan" | "we are taking a trip, and the adults have chosen where" |
 | Buy-in gut-check | "show them a few genuinely exciting things about Japan" | "show them a few genuinely exciting things about your destination (the destination pack is a good place to start)" |
+| The passport long-lead check — **all five statements of it, not the checklist item alone** | the Goal's "passports started"; the steps intro's "also **start the child's passport check now**"; the full checklist's "- **Check passports early.**"; the Artifact Created's "passports started"; the Stop Point's "you have started the passport check" | Each takes H10's canonical qualifier `if your trip leaves the country`. The Goal reads "the AI choice, and passports started if your trip leaves the country"; the steps intro reads "with one exception: if your trip leaves the country, also **start the child's passport check now**"; the checklist item reads "- **Check passports early, if your trip leaves the country.**" and gains one closing sentence, "If your trip stays inside your own country, no passport is needed for it and this item is already done."; the Artifact Created reads "AI choice recorded, passports started if your trip leaves the country, and Session 01 printed"; and the Stop Point reads "and, if your trip leaves the country, you have started the passport check -- a long-lead item", with the two sentences after it sitting inside that condition. **Every other part of the check stays as this block already directs it**: its verify framing, its recorded date, `travel.state.gov`, the OQ-4 wording of the official source, the long-lead reasoning, and the sentence that ties it to the season research. The four fastest-safe-start actions do not become five, because the passport was never one of them — it is the page's one exception, and an exception can carry a condition. |
 | Full checklist — **replace the whole trip-shape bullet, not the leaking phrase** | "Record a **rough trip shape** on the assumptions page if you can: fly in and out of one city, or in one and out of another, and the likely arrival city. If you have never been to Japan, naming just the arrival city is a fine answer" | "Record a **rough trip shape** on the assumptions page if you can: in and out of the same place, in one place and out of another, or one base you stay at and travel from, and the likely arrival place. If you have never been to your destination, naming just the arrival place is a fine answer" (the three shapes and the word `place` are D11's, so the form and the instruction that sends a parent to it say the same thing; everything after this clause — the City Shortlist checkpoint and the First Taste sentence — keeps its built wording) |
 
 Keep every adult-owned item as-is: the kid-safe filter with its built caveat, which reads
 *"It reduces exposure but does not remove it"*; the four fastest-safe-start actions; the
-passport long-lead check
-with its verify framing and recorded date; the AI yes/no choice, default no -- step 4
+passport long-lead check, **which keeps its verify framing and its recorded date and
+takes the condition the row above gives it**; the AI yes/no choice, default no -- step 4
 keeps its wording and its existing privacy link and gains only the one AI-use-rules
 clause F6 specifies; the privacy
 link; the rough season window and budget band anchors; the rough trip shape anchor,
