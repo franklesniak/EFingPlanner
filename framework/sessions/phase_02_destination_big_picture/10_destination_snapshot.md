@@ -55,7 +55,7 @@ You are done when your snapshot has the capital, major land features, currency, 
 
 ## Source Check
 
-Record the source of your three surprising facts in your Source Log: title, who made it, the web address or book page, and today's date.
+Your Destination Notes are a source, so log them first: title and today's date. Then record the source of your three surprising facts in your Source Log: title, who made it, the web address or book page, and today's date.
 
 ## Finish and Quality Check
 

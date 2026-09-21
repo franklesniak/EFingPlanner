@@ -52,7 +52,7 @@ Judging a source finishes with checking it. Three short questions do that, and t
 - Verification source
 - Date checked
 
-If a fact matters and no second source agrees, it is not a fact yet.
+When a fact matters and the sources disagree, when it came from an AI tool, or when it carries a recommendation, it is not settled until a second source agrees. When the fact belongs to the place itself -- a museum's own hours, a railway's own timetable -- that page is the answer, and the question to ask is how recently it was checked.
 
 ## Two moves that make you harder to fool
 

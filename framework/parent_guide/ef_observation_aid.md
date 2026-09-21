@@ -41,7 +41,7 @@ Three times, and no more.
 2. **At the midpoint**. On the First Taste path that is Checkpoint 1, Session 14. On the full path it is Checkpoint 3 or 4.
 3. **At the end**, after the final reflection.
 
-Three readings months apart show a direction. Scoring every session would show your mood.
+Three readings spread across the whole project show a direction. On the full program that is months apart; on First Taste it is weeks. Scoring every session would show your mood.
 
 ## Where it fits
 
@@ -55,4 +55,4 @@ Copy this table into your own notes and fill it in at the three points above.
 
 It prints on portrait letter or A4 without changing anything.
 
-The whole point of this curriculum is executive-function practice, and practice you cannot see is hard to keep faith with. This aid is here so you have something to look at in month four besides a feeling. Read it as a rough signal rather than proof that anything transferred, and read it beside what your child says about their own work.
+The whole point of this curriculum is executive-function practice, and practice you cannot see is hard to keep faith with. This aid is here so you have something to look at near the end besides a feeling. Read it as a rough signal rather than proof that anything transferred, and read it beside what your child says about their own work.
