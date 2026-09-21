@@ -1863,3 +1863,63 @@ def test_the_default_walk_reads_no_file_that_is_not_markdown(
     assert hook.main([], root=tmp_path) == 1
     (tmp_path / "framework" / "real.md").write_text("# T\n\nWords.\n", encoding="utf-8")
     assert hook.main([], root=tmp_path) == 0
+
+
+def test_the_default_walk_refuses_a_symlink(tmp_path: Path) -> None:
+    """``is_file()`` says yes to a symlink pointing at a file.
+
+    So the walk offered one as a target, ``resolve_candidate_path`` refused
+    it, and ``scan_files`` dropped it without a word -- leaving a run that
+    printed "1 file(s) checked" having opened none. A committed symlink
+    therefore walked past both the empty-corpus guard and this repository's
+    requirement to reject symlink escapes.
+    """
+    hook = cast(Any, _placeholder_hook)
+    (tmp_path / "framework").mkdir()
+    outside = tmp_path.parent / (tmp_path.name + "_outside.md")
+    outside.write_text("# T\n\nTBD: here\n", encoding="utf-8")
+    link = tmp_path / "framework" / "linked.md"
+    try:
+        link.symlink_to(outside)
+    except (OSError, NotImplementedError):  # pragma: no cover - platform
+        outside.unlink()
+        pytest.skip("this environment cannot create a symlink")
+    try:
+        # The symlink is the only candidate, so the run has nothing to read
+        # and must say so rather than reporting a clean scan of one file.
+        assert hook.main([], root=tmp_path) == 1
+        assert link not in hook.default_targets(tmp_path)
+
+        # Beside a real file, the count reports the file that was read.
+        (tmp_path / "framework" / "real.md").write_text(
+            "# T\n\nWords.\n", encoding="utf-8"
+        )
+        assert hook.main([], root=tmp_path) == 0
+        assert [path.name for path in hook.default_targets(tmp_path)] == ["real.md"]
+    finally:
+        link.unlink()
+        outside.unlink()
+
+
+def test_the_count_reports_files_read_rather_than_offered(tmp_path: Path) -> None:
+    """A designed exclusion is not a refusal, and the count knows the difference.
+
+    The first version of this fix treated **every** path the resolver declined
+    as a boundary problem, so a changelog under a scan root -- excluded by
+    design -- failed the whole run. Measured against the real repository before
+    that shipped: 58 offered, 1 refused, exit 1. The walk now asks the
+    resolver's own scope question, so a changelog is never offered, and the
+    count dropped from 58 to 57 because it had been counting a file it never
+    opened.
+    """
+    hook = cast(Any, _placeholder_hook)
+    (tmp_path / "framework").mkdir()
+    (tmp_path / "framework" / "real.md").write_text(
+        "# T\n\nWords.\n", encoding="utf-8"
+    )
+    (tmp_path / "framework" / "CHANGELOG.md").write_text(
+        "# Changelog\n\nTBD\n", encoding="utf-8"
+    )
+    names = [path.name for path in hook.default_targets(tmp_path)]
+    assert names == ["real.md"], names
+    assert hook.main([], root=tmp_path) == 0

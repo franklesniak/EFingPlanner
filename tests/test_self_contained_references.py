@@ -911,21 +911,26 @@ def test_every_exempt_occurrence_still_occurs() -> None:
     for name, text, count, reason in exempt_texts():
         assert name in tracked, f"{name} is named in an exemption and is not tracked"
         reported = references_in(REPO_ROOT / name, REPO_ROOT)
-        assert any(message.endswith(repr(text)) for message in reported), (
-            f"{name} is exempt for {text!r} because it is {reason}, and the "
-            "scan no longer reports that string there. Delete the entry rather "
-            "than keeping an exemption nothing needs."
+        found = sum(1 for message in reported if message.endswith(repr(text)))
+        # **The count is compared, not just its being non-zero.** Asking only
+        # whether *any* match remains left a row declaring 38 valid at 37, and
+        # the spare budget then absorbed a genuine new occurrence in silence --
+        # which is the hole the count was added to close, left open in the
+        # check that guards it.
+        assert found == count, (
+            f"{name} is exempt for {count} occurrence(s) of {text!r} because it "
+            f"is {reason}, and the scan now reports {found}. Correct the count, "
+            "or delete the entry if the reason has gone."
         )
     for name, identifier, count, reason in exempt_names():
         assert name in tracked, f"{name} is named in an exemption and is not tracked"
         reported = names_in(REPO_ROOT / name, REPO_ROOT)
-        assert any(message.endswith(repr(identifier)) for message in reported), (
-            f"{name} is exempt for {identifier!r} because it is {reason}, and "
-            "the scan no longer reports that name there. Delete the entry "
-            "rather than keeping an exemption nothing needs."
+        found = sum(1 for message in reported if message.endswith(repr(identifier)))
+        assert found == count, (
+            f"{name} is exempt for {count} occurrence(s) of {identifier!r} "
+            f"because it is {reason}, and the scan now reports {found}. Correct "
+            "the count, or delete the entry if the reason has gone."
         )
-
-
 def url_resolution_rows() -> list[tuple[str, str]]:
     """Return the recorded URL cases as ``(verdict, line)``."""
     text = URL_RESOLUTION_CASES.read_text(encoding="utf-8")
@@ -1638,3 +1643,38 @@ def test_a_generated_file_is_matched_as_a_whole_path() -> None:
     for near_miss in ("package-lock.json.md", "package-lock.jsonc",
                       "package-lock.json.notes"):
         assert near_miss not in GENERATED_FILES, near_miss
+
+
+def test_a_short_exemption_count_is_reported(tmp_path: Path) -> None:
+    """A row declaring more occurrences than exist has to fail.
+
+    Asking only whether *any* match remains left a row declaring 38 valid at
+    37, and the spare budget then absorbed a genuine new occurrence in
+    silence -- the hole the count was added to close, left open in the check
+    that guards it.
+    """
+    sample = tmp_path / "a.py"
+    token = "0123456789" + "abcdef" + "0123456789" + "abcdef" + "01234567"
+    sample.write_text("# one %s\n# two %s\n" % (token, token), encoding="utf-8")
+    found = sum(
+        1 for message in references_in(sample, tmp_path)
+        if message.endswith(repr(token))
+    )
+    assert found == 2
+    # The comparison the liveness check makes, shown on its own: a declared
+    # count of 3 against 2 occurrences is a mismatch, and equality is the test.
+    assert found != 3
+    assert (found == 2) is True
+
+
+def test_every_declared_count_matches_what_the_scan_reports() -> None:
+    """The live assertion, stated once more as its own subject.
+
+    ``test_every_exempt_occurrence_still_occurs`` enforces this across the
+    whole fixture. This one names the property so a reader grepping for
+    "count" finds it, and fails the same way.
+    """
+    for name, text, count, _reason in exempt_texts():
+        reported = references_in(REPO_ROOT / name, REPO_ROOT)
+        found = sum(1 for message in reported if message.endswith(repr(text)))
+        assert found == count, (name, text, count, found)

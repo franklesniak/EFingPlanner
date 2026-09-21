@@ -2106,6 +2106,13 @@ def default_targets(root: Path) -> list[Path]:
         if not directory.is_dir():
             continue
         for path in sorted(directory.rglob("*")):
+            # A symlink is not a file this scan may follow. ``is_file()`` says
+            # yes for one pointing at an existing file, so the walk offered it
+            # as a target, ``resolve_candidate_path`` refused it, and
+            # ``scan_files`` dropped it without a word -- leaving a run that
+            # reported one file checked and had opened none.
+            if path.is_symlink():
+                continue
             # ``rglob("*.md")`` matches the suffix case-sensitively, so on a
             # case-sensitive filesystem a file named with an uppercase suffix
             # was never selected -- while ``resolve_candidate_path`` accepts it
@@ -2115,8 +2122,17 @@ def default_targets(root: Path) -> list[Path]:
             # a separate repair.
             if not path.is_file() or path.suffix.lower() != ".md":
                 continue
-            relative = path.relative_to(root).as_posix()
-            if any(relative.startswith(prefix) for prefix in DEFAULT_SCAN_EXCLUDES):
+            relative_path = path.relative_to(root)
+            if any(
+                relative_path.as_posix().startswith(prefix)
+                for prefix in DEFAULT_SCAN_EXCLUDES
+            ):
+                continue
+            # **Ask the same scope question the resolver asks.** A changelog
+            # under a scan root is a designed exclusion rather than a problem,
+            # and offering it here meant the caller could not tell a path
+            # refused by design from one refused at the boundary.
+            if not is_scan_target(relative_path):
                 continue
             found.append(path)
     return found
@@ -2154,8 +2170,28 @@ def main(argv: Sequence[str] | None = None, root: Path = REPO_ROOT) -> int:
             )
             return 1
 
+    # **Count what will be read, not what was offered.** Every reason
+    # ``resolve_candidate_path`` refuses a path -- a symlink, a path outside the
+    # root, a path outside the scan roots -- used to drop it silently, so the
+    # count line described the walk's hopes rather than its work.
+    accepted = [
+        target for target in targets if resolve_candidate_path(target, root) is not None
+    ]
+    refused = [str(target) for target in targets if target not in accepted]
+    if walked and refused:
+        # Everything the walk offers is already in scope, so a refusal here is
+        # a boundary refusal -- a symlink, or a path resolving outside the
+        # root -- and a scan that cannot read what it found must say so rather
+        # than report a clean count of the rest.
+        print(
+            "these paths were found by the default walk and cannot be read, so "
+            "this run refuses to report on them: " + ", ".join(refused[:5]),
+            file=sys.stderr,
+        )
+        return 1
+
     try:
-        violations = scan_files(targets, root=root)
+        violations = scan_files(accepted, root=root)
     except FileReadError as error:
         print(error, file=sys.stderr)
         return 1
@@ -2167,7 +2203,7 @@ def main(argv: Sequence[str] | None = None, root: Path = REPO_ROOT) -> int:
         # The count is the difference between "clean" and "read nothing". The
         # sibling hooks print theirs; a silent pass is what let this one report
         # success on an empty set for as long as it did.
-        print(f"Placeholders: {len(targets)} file(s) checked, none found.")
+        print(f"Placeholders: {len(accepted)} file(s) checked, none found.")
 
     return 1 if violations else 0
 
