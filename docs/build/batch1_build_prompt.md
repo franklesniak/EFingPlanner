@@ -163,16 +163,17 @@ to the eight already-built shared sessions.
   **It does not block Batch 1.** Nothing on this run's deliverables list needs the guide
   to exist, no self-check below counts it, and a new-destination author has the checklist
   in the pack. What it blocks is the inventory: `AC-26-1` cannot pass until a batch owns
-  the file. **Name it in your build report beside gate check 2, the open human edit,
-  the build-risk-register question below, and A1's `Capital` question** -- those five
-  are the whole of what this batch hands back to a person. A1's is on the list for the
-  reason the rider above gives: it blocks this guide as well as the second destination
-  pack, so a handback carrying the routing without it hands a batch a file it still
-  cannot write. **Derive that list rather than trusting the count:** every question
-  this brief leaves open in the repository's own labelled form is a handback, and so
-  are the two obligations no builder can discharge -- gate check 2 and the
-  full-coverage human edit. A question written later joins the list by that rule,
-  whether or not anyone remembers to edit this sentence.
+  the file. **Name it in your build report beside gate check 1's acceptance, gate check
+  2, the open human edit, the build-risk-register question below, and A1's `Capital`
+  question** -- those six are the whole of what this batch hands back to a person. A1's
+  is on the list for the reason the rider above gives: it blocks this guide as well as
+  the second destination pack, so a handback carrying the routing without it hands a
+  batch a file it still cannot write. **Derive that list rather than trusting the
+  count:** every question this brief leaves open in the repository's own labelled form
+  is a handback, and so are the three obligations no builder can discharge -- gate check
+  1's acceptance, gate check 2 and the full-coverage human edit. A question written
+  later joins the list by that rule, whether or not anyone remembers to edit this
+  sentence.
 
   **Open Question:** whether `AC-GLOBAL-1`'s **build-risk register** is a repository file
   at all. That criterion lists the register among the directories and files the required
@@ -235,14 +236,17 @@ to the eight already-built shared sessions.
   others sent where, and some sent nothing. **Check 2** is an adult **watching the child
   work the new Sessions 02, 06, 07, 08 and 11, as the child reaches them**, and fixing
   what the child struggles with before Batch 2 continues. **An automated equivalence read
-  stands in for Check 1, because it compares two texts — and you can run one, because you
-  author both sides of the comparison and the pre-Batch-1 text is in the repository's
-  history. So run it, and report its result**; the handoff at the end of this brief says
-  exactly what to record. **Nothing stands in for Check 2** — it needs a real child, and
-  no review pass, automated scorer or readability run replaces one, so that half is the
-  human's and stays undone. Running Check 1 clears nothing on its own; half a gate is not
-  a gate. Stop at the gate. Hand the human your Check 1 result to accept or re-read, and
-  hand them Check 2 whole.
+  is Check 1's evidence, and you must run one**: it compares two texts, and the
+  pre-Batch-1 text is in the repository's history. **It is not the check.** You author
+  both sides of the comparison, and the loss this check exists to catch is the one its
+  author did not notice, so the author's own run cannot be the independent reading --
+  the same reason no self-edit stands in for the human edit above. **Check 1 stays open
+  until an adult accepts your result or performs the read**, and you report it that way.
+  **Nothing stands in for Check 2** — it needs a real child, and no review pass,
+  automated scorer or readability run replaces one, so that half is the human's and stays
+  undone. Neither half clears the gate on its own; half a gate is not a gate. Stop at the
+  gate. Hand the human your Check 1 evidence to accept or re-read, and hand them Check 2
+  whole.
 
 ## The decisions are binding
 
@@ -635,7 +639,10 @@ add-a-destination checklist. Must contain:
   volatile facts — prices, hours, entry rules — as "verify on official sources,"
   never fixed; (6) **when both contents pages exist, every named insert slot and every
   named reference file is filled -- and, until Batch 2, Session 15 is converted -- the
-  destination is added.**
+  destination is added. If your destination is not a country, one slot is not fillable
+  yet: what `Capital` means for a city, a region, or a route across several countries is
+  undecided in this repository, and deciding it by substituting another word is not a
+  fill. A pack of that shape is not finished until that question is answered.**
 - **Rule 1 names the two contents pages and rule 6 counts them, because a pack without
   them has no front door.** The checklist named neither `README.md` until now, and that
   worked only for the pack in front of it. This pack's top-level `README.md` was already
@@ -666,6 +673,19 @@ add-a-destination checklist. Must contain:
   points at the first destination. Both clauses are temporary, both name Batch 2, and
   both go out with the rider's exception when Batch 2 clears the leak-exemption list.
   Write the exception as an exception; do not soften rule 3 into advice.
+- **Why rule 6 carries a second bound, and why that one is worded to stand on its own.**
+  Rule 6 now states two bounds on one completion claim, and they clear on different
+  events: Batch 2 clears the Session 15 bound, and only an answer to the Open Question
+  above clears the `Capital` one. Merging them would retire the second when Batch 2
+  retires the first. The two are also bounded differently -- Session 15 is true of every
+  new pack until Batch 2, and the `Capital` bound is true only of a destination that is
+  not a country -- so rule 6 states that condition rather than warning every reader.
+  **Rule 6 is the sentence a new-destination author acts on to decide they are
+  finished**, and that author reads it in this built file rather than in the brief that
+  prescribes it, so the second bound is written in words that need no reference to this
+  brief, to an `OQ-n` or to an issue: it names a field and a destination shape, both
+  destination-neutral. F1's Definition of Done carries the same two bounds for the same
+  reason, and this file and that one are the two places a reuser meets the promise.
 - **Rule 6 counts both columns of the table, and it has to.** Seven rows route a
   session to a reference file and to no insert at all — 05, 06, 08, 33/38, 40, 43 and
   48 — so a pack with all twelve insert slots written would still leave those seven
@@ -913,8 +933,9 @@ sessions still read `if that is easier`: the sentence-level voice conventions
 contracted the line in the exemplar and left the rest of the corpus to the separate
 pass, and `that is` is on the style law's contraction list. A new session is drafted
 against the exemplar, so it writes the exemplar's form. **The eight conversions keep
-the line exactly as they have it** -- universal conversion rule 1 preserves every
-non-destination sentence, and re-voicing the corpus is not this batch's job.
+the line exactly as they have it** -- no conversion rule and no session block
+below moves it, so universal conversion rule 1 preserves it, and re-voicing the
+corpus is not this batch's job.
 Estimated time defaults to 20–30 minutes.
 Parent involvement is one of: none / independent work, 5-minute check-in, parent review
 after session, parent setup needed, co-working recommended, adult-owned. Planner skills
@@ -1950,6 +1971,22 @@ this brief does not ask for it on.
   without it the README promises on one line what the pack's own contract withdraws on
   another. Same wording rule as the bullet above -- "the first destination", never the
   name -- and this clause goes out with the others when Batch 2 clears the list.
+  **A second bound belongs in this bullet, and the layer bullet above does not carry
+  it.** That bullet says what the framework *holds*; this one says what a second
+  destination *costs*, and one further thing raises that cost. A1's `Capital` Open
+  Question records that nothing in the spec, in this brief or in the built tree says what
+  a pack supplies in that field when the destination is not a country, and it names the
+  second destination pack and the add-a-destination guide as what the question blocks. So
+  write this promise conditionally, the way the origin bound and the language bound on
+  the two bullets below are written: a second destination that **is** a country needs no
+  framework edit but the one session; for a city, a region, or a route across several
+  countries, the snapshot slot's `Capital` field and the candidate-cities slot beside it
+  have no settled meaning yet, and that has to be answered before a pack of that shape
+  can be finished. **The two bounds clear on different events and are not one clause** --
+  Batch 2 clears the leak-exemption bound, and only an answer clears the
+  destination-model one -- so a sentence that retires them together retires one of them
+  early. Name the second bound by its field rather than by an `OQ-n` or an issue number:
+  it is not one of the nineteen, and this README has no way to point at a build brief.
 - The honest reuse distinction: **parameter reuse** (another family with the same origin
   assumptions, travelling to the same destination — change only their own Trip-Basics
   card, near-zero cost) versus **destination reuse** (another place — a whole new
@@ -2626,11 +2663,17 @@ Batch 1 must land these entries:
   moment you finish, and a human reading it would correctly conclude there is nothing to
   do -- while Batch 2 stays blocked on the gate it describes. Replace **that one sentence**
   with: *"Batch 1 has now created those pages and sessions. The automated equivalence read
-  that stands in for check 1 was run during the build, and its result is in the build
-  report for an adult to accept or re-read. Check 2 has not been run; it needs a real
-  child."* Change nothing else in the bullet. The item stays in **"What
-  is still owed to a human"**, stays open, keeps both check descriptions, keeps the
-  "unpiloted baseline" caveat, and keeps *"Nothing stands in for check 2."* Do not move it
+  that is check 1's evidence was run during the build, and its result is in the build
+  report; check 1 stays open until an adult accepts that result or performs the read,
+  because the build that wrote both sides of the comparison also ran it. Check 2 has not
+  been run; it needs a real child."* Change nothing else in the bullet. The item stays
+  in **"What is still owed to a human"**, stays open, keeps both check descriptions,
+  keeps the "unpiloted baseline" caveat, and keeps *"Nothing stands in for check 2."*
+  **It also keeps the bullet's own *"An automated equivalence read can stand in for
+  check 1, because it compares two texts."***, and the replacement sentence above is
+  what makes the bullet coherent rather than contradictory: that sentence names the
+  **mechanism** the check may use, and the replacement names **who closes it**. Do not
+  edit the Batch 0 sentence to say the same thing a second time. Do not move it
   into the `0.2.0` release section and do not mark it done: you cannot perform check 2,
   and an entry that reads as closed would let the repository claim a gate it has not
   passed. **Write that sentence to match what you actually did.** If for any reason you
@@ -3611,7 +3654,23 @@ contradicting it.
 
 **Universal conversion rules, applied to every session in this section:**
 
-1. Preserve voice, structure, step order, and every non-destination sentence.
+1. Preserve voice, structure, step order, and every non-destination sentence **that no
+   later rule in this list and no session block below moves or changes**. Preserve is
+   this section's default and not an absolute, and three kinds of change reach a sentence
+   that names no destination. **Rule 2** sends Session 05's two definitions -- lateral
+   reading, and primary versus secondary -- out of the session to
+   `framework/docs/source_trustworthiness.md`; both are destination-neutral, F10 records
+   the move as a non-destination change, and rule 2's own text names it. **A conversion
+   row** may neutralise an origin or trip-shape assumption that carries no destination
+   name and is still untrue of some families -- Session 10's Step 6, Session 01's
+   junior-planner boundary and its cover-page field, Session 00's passport check -- and
+   each of those rows says so where it stands. **Rule 9** permits the narrowly required
+   density edit and says in its own text that it outranks a freeze protecting "voice,
+   structure, step order and content", which is this rule in other words. Where no later
+   rule reaches a sentence it stays exactly as built, and a conversion that wants to
+   change one anyway has no authority here. Rules 2, 3 and 4 each carry their exception
+   in their own text; this one did not, and a builder reading it literally could obey
+   either it or the Session 05 migration and not both.
 2. **Every destination fact removed from a body must land in an insert, a reference file
    or a framework doc.** Do not drop a destination fact during conversion. **The third
    destination is not decoration:** Session 05's two definitions leave the session for
@@ -4041,9 +4100,9 @@ instruction; and the Parent Notes' mixed-stamina "fewer places, deeper" observat
 
 **One leak, plus whatever the density caps require.** The Goal's destination name goes:
 `Recommend the best time for your family to visit your destination, and write it down as
-your first real decision.` **Keep that second clause.** It names no place, universal
-conversion rule 1 preserves every non-destination sentence, and dropping it would lose
-content the equivalence read exists to protect. Change nothing else **except what
+your first real decision.` **Keep that second clause.** It names no place, and no later
+rule or row reaches it, so universal conversion rule 1 preserves it; dropping it would
+lose content the equivalence read exists to protect. Change nothing else **except what
 universal conversion rule 9 requires**: this session is over the child-facing `real` cap
 today, both per file and inside `## Steps`, so a literal freeze and the Definition of Done
 cannot both be satisfied without that rule. Apply the operative style law's delete test to
@@ -5224,8 +5283,9 @@ and this repository forbids a separate formatting-only commit.
 
 **STOP at the second gate, "Verify the built slice."** On the Full / OER track that gate
 is **two checks, not one** (`framework/CHANGELOG.md`, "What is still owed to a human").
-**Check 1 you can perform, and must. Check 2 you cannot perform, and nothing you do
-substitutes for it.** Running Check 1 does not clear the gate -- half a gate clears
+**Check 1's comparison you can run, and must; Check 1 itself you cannot close, because
+you wrote both sides of it. Check 2 you cannot perform at all, and nothing you do
+substitutes for it.** Neither half clears the gate on its own -- half a gate clears
 nothing -- so you still stop here. Produce a short build report and hand the human these
 items:
 
@@ -5275,16 +5335,20 @@ items:
    it, and that is the right outcome rather than a gap:** how long a journey takes depends
    on where the family starts as much as on where they are going, so the fact belongs in
    neither layer and the grown-up supplies it at the point of use. **An automated
-   equivalence read stands in for this check, and you perform it.** It compares two texts,
-   you authored both sides, and the pre-Batch-1 text of every file named above is in the
-   repository's history. So for each of the nine migrations -- the eight shared sessions
-   and the glossary move -- compare the pre-Batch-1 text against the built page plus
-   **every** insert, reference file or framework doc that received the content, and record
-   the outcome: accounted for in full, or the specific line you could not place. **Report
-   that as Check 1, run, with its result** -- not as background material for somebody
-   else's read. You wrote both sides, so an adult may still choose to read it themselves;
-   that is their call and it does not make this check undone. F10 records the same fact in
-   `framework/CHANGELOG.md`.
+   equivalence read is this check's evidence, and you run it.** It compares two texts, and
+   the pre-Batch-1 text of every file named above is in the repository's history. So for
+   each of the nine migrations -- the eight shared sessions and the glossary move --
+   compare the pre-Batch-1 text against the built page plus **every** insert, reference
+   file or framework doc that received the content, and record the outcome: accounted for
+   in full, or the specific line you could not place. **Report it as Check 1's evidence,
+   with its result, and report Check 1 itself as open.** An adult accepts your comparison
+   or performs the read, and until one of those happens this check is not done. **You
+   wrote both sides, and that is the whole reason your run is not the check**: an
+   equivalence read exists to catch what the author dropped, and the author is the one
+   person who cannot notice that on a second pass. It is the same shape as the
+   full-coverage human edit below and it is recorded on the same terms. Hand the adult
+   the result, the file list and every line you could not place, so the read they do is
+   short. F10 records the same fact in `framework/CHANGELOG.md`.
 2. **Gate check 2 — the child observation.** An adult watches the child work the new
    **Sessions 02, 06, 07, 08 and 11**, as the child reaches them (Session 07 is
    Recommended, so it is observed only if the family chooses to do it), and fixes what
@@ -5315,8 +5379,8 @@ items:
    vocabulary, the AI permission boundary, and the destination-neutral
    `adult_logistics.md` filename -- plus the one deferred link (the print index and the
    Final Binder Assembly session, named without links in the binder guide). Carry
-   **Gate check 2** forward in the build
-   report as an open obligation that Batch 2 inherits, in the same words
+   **gate check 1's acceptance and gate check 2** forward in the build
+   report as open obligations that Batch 2 inherits, in the same words
    `framework/CHANGELOG.md` uses.
 6. **Self-check results.** The grep outputs above, the readability run, and the result
    of each of the four repo-wide gates — `npm run lint:md`, `npm run lint:md:nested`,
