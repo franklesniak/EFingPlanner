@@ -26,9 +26,9 @@ A review site is a website, so it uses the Website form. There is no separate fo
 
 A session with no research step is never asked for a citation. If nothing was looked up, there is nothing to record, and an empty Source Log for that session is correct.
 
-## The five forms
+## The six forms
 
-Five kinds of source, five forms. Use these field names exactly, on every page that reproduces a form, so a child meets the same words each time.
+Six kinds of source, six forms. Use these field names exactly, on every page that reproduces a form, so a child meets the same words each time.
 
 ### Website
 
@@ -49,6 +49,17 @@ Channel name, video title, date I watched it, what it helped with, the fact I ch
 ### AI
 
 AI tool name, prompt I asked, date used, what it helped with, facts I checked somewhere else.
+
+### Person
+
+Who they are (their job, not their name), where you asked, date asked, what they
+told you.
+
+Write the role rather than the name: *a librarian at the city library*. A
+person's name is a private detail, and the
+[privacy and safety page](privacy_and_safety.md) keeps those off the page. A
+person source has no web address and no page number, so those boxes stay empty
+in the Source Log.
 
 ## The three verification fields
 
@@ -73,6 +84,6 @@ The fourth part is the one people drop, and it is the one that keeps research mo
 
 ## Where these are used
 
-- [Simple citation forms](../templates/simple_citation.md) is the printable page. It carries all five forms and the three verification fields as fill-in tables.
+- [Simple citation forms](../templates/simple_citation.md) is the printable page. It carries all six forms and the three verification fields as fill-in tables.
 - [Source log](../templates/source_log.md) is the running record. One copy of the table per source, kept for the whole project.
 - [Source trustworthiness](source_trustworthiness.md) is how to judge whether a source was worth citing in the first place.

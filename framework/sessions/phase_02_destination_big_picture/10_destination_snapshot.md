@@ -12,7 +12,7 @@ You are here: Phase 2 (Destination Big Picture), First Taste step 5 of 13. Previ
 - Planner skill: organizing information
 - Estimated time: 20-30 minutes
 - Parent involvement: 5-minute check-in
-- Materials: a device with the kid-safe filter on, your Source Log, your Trip-Basics card
+- Materials: this session's Destination Notes, a device with the kid-safe filter on, your Source Log, your Trip-Basics card
 
 ## Goal
 

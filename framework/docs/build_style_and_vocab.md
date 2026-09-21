@@ -124,7 +124,7 @@ Built files reference concepts by **Name** and link to the built-file home below
 | Lighter Rubric (3-criteria) | The simplified scoring option offered wherever weighted scoring appears | `framework/templates/scoring_rubric.md` |
 | Core Finish Line | Shortest route to a usable plan (Checkpoint 5) | `framework/PROJECT_ROADMAP.md` index |
 | First Taste path | The ~13-session minimal path that still yields a complete mini-plan | `framework/PROJECT_ROADMAP.md` index |
-| Citation rule | When a citation is required, the five forms and their exact field names, and the three verification fields | `framework/docs/citation_style.md` |
+| Citation rule | When a citation is required, the six forms and their exact field names, and the three verification fields | `framework/docs/citation_style.md` |
 | Framework and executive-function glossary | The canonical adult lookup for this project's own vocabulary and its executive-function terms | `framework/docs/glossary.md` |
 
 ## Lint conventions (keep generated files passing at scale)

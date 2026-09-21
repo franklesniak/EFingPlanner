@@ -2,7 +2,7 @@
 
 # How to Use This Binder
 
-This project runs for months, and it makes a lot of paper. Here's how to keep it in a shape you can still use in week twelve.
+This project runs for weeks or months, depending on the path your family picked, and it makes a lot of paper. Here's how to keep it in a shape you can still use at the end.
 
 ## One folder that grows
 
@@ -38,7 +38,7 @@ Whenever you can't remember what comes next, open your [progress tracker](progre
 
 ## Back up your work in 30 seconds
 
-Months of work in one paper folder is one spill away from gone.
+Weeks of work in one paper folder is one spill away from gone.
 
 If you work on paper, photograph or scan each finished page into a phone folder or a cloud folder. If you work in Google Docs, the cloud copy is already your backup.
 
@@ -46,4 +46,4 @@ Before you photograph a page, look at it once. Check there are no private detail
 
 ## At the very end
 
-At the very end of the project, the Final Binder Assembly session helps you put your finished pages in order and add tabs, using the print index. You do not need to think about tabs before then.
+At the very end, put your finished pages in the order you did them and write what each one is on a sticky note. That is enough. Families who go on to the longer path get a session that helps with tabs and order; you do not need to think about tabs before then.

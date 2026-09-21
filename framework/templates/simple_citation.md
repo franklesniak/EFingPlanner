@@ -53,6 +53,15 @@ How to use it: copy this page into your binder or notebook. Fill in the form tha
 | What it helped with | |
 | Facts I checked somewhere else | |
 
+## Person
+
+| Prompt | Your answer |
+| --- | --- |
+| Who they are (their job, not their name) | |
+| Where you asked | |
+| Date asked | |
+| What they told you | |
+
 ## Checking it
 
 | Prompt | Your answer |

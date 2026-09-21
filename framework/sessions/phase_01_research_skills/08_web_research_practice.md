@@ -9,7 +9,7 @@ You are here: Phase 1 (Research Skills). Not a First Taste step. Previous: [07 L
 - Status: Core
 - Planner skill: checking sources, and comparing choices
 - Estimated time: 20-30 minutes
-- Parent involvement: co-working recommended
+- Parent involvement: a grown-up stays nearby for this one
 - Materials: a device with the kid-safe filter on, your destination pack's trusted starting sources list and its sample search terms, the [Website Notes form](../../templates/website_notes.md), your Source Log
 
 ## Goal

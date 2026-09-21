@@ -15,6 +15,7 @@ Fill in:
 | Prompt | Your answer |
 | --- | --- |
 | Destination (the place the grown-ups picked) | |
+| How you will travel (plane / car / train / another way) | |
 | Home airport, if you are flying | |
 | Airport code, if you are flying | |
 | Home time zone, or the time difference to the destination (hours ahead or behind) | |

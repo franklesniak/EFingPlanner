@@ -26,7 +26,7 @@ Three things make this a better practice ground than a worksheet.
 
 It is a real task. The trip actually happens, the child's recommendation actually feeds a family decision, and an adult actually books something at the end of it. Effort on something that matters is easier to sustain.
 
-It is long. The project runs for months, in short sessions, which is the shape these skills are built in. A single afternoon of planning trains nothing.
+It is long. The project runs for weeks or months depending on the path you pick, in short sessions, which is the shape these skills are built in. A single afternoon of planning trains nothing.
 
 It is bridged. Every session names the planning move out loud and asks where else the child could use it. That naming is deliberate, and the next section is about why.
 

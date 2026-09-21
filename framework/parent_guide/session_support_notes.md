@@ -90,7 +90,7 @@ Want a rough signal of how the executive-function side is going? The optional [e
 ## Session 10: Destination Snapshot
 
 - Role: 5-minute check-in.
-- Prep: the Trip-Basics card (for the time difference).
+- Prep: this session's Destination Notes from the destination pack; the Trip-Basics card (for the time difference).
 - Look for: a snapshot page with the big facts, three surprising facts, and one question.
 - Coaching question: "Which surprising fact do you want to tell someone?"
 - Pitfall: going for mastery. A snapshot is enough.

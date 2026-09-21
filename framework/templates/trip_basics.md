@@ -11,6 +11,7 @@ Fill in:
 | Prompt | Your answer |
 | --- | --- |
 | Destination (the place the grown-ups picked) | |
+| How you will travel (plane / car / train / another way) | |
 | Home airport, if you are flying | |
 | Airport code, if you are flying | |
 | Home time zone, or the time difference to the destination (hours ahead or behind) | |
@@ -19,7 +20,7 @@ Fill in:
 
 A grown-up writes the destination here. The name is on the front of your destination pack.
 
-If you are not flying, write how you will travel instead -- by car, by train, or another way.
+If you are not flying, the travel row is where that goes: by car, by train, or another way.
 
 For the time zone, a grown-up does the looking up. They find how many hours ahead of or behind home your destination is right now. Then they write it here. The gap is not the same for every US time zone. It also shifts with daylight saving. So check today's figure.
 
