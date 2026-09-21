@@ -7,3 +7,5 @@
 # this fails at 7e4463f only on a case-sensitive filesystem
 # the previous round asserted the opposite
 # an earlier round settled that
+# blocked on ticket 44 in the vendor tracker
+# tracked as project 12 on the internal board

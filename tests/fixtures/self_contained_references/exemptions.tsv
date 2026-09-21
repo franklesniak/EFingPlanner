@@ -24,7 +24,3 @@ text	schemas/examples/template-sync-marker/valid/protected-decisions.yml	issue 6
 text	schemas/examples/template-sync-marker/valid/protected-guide-contract-waiver.yml	0123456789abcdef0123456789abcdef01234567	1	a synthetic commit hash in a schema example
 text	schemas/examples/template-sync-marker/valid/source-ref-first-adoption.yml	89abcdef0123456789abcdef0123456789abcdef	1	a synthetic commit hash in a schema example
 text	TEMPLATE_UPDATE_PROCEDURE.md	issue 123	1	a placeholder issue number in a worked procedure example
-text	tests/fixtures/self_contained_references/reported_lines.txt	PR #22	1	a positive control this scan is required to report
-text	tests/fixtures/self_contained_references/reported_lines.txt	issue 27	1	a positive control this scan is required to report
-text	tests/fixtures/self_contained_references/reported_lines.txt	4011993843	1	a positive control this scan is required to report
-text	tests/fixtures/self_contained_references/reported_lines.txt	7e4463f	1	a positive control this scan is required to report

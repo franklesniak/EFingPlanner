@@ -239,6 +239,18 @@ REVIEW_HISTORY_PATTERNS = (
         re.compile(r"(?i)\b(?:PR|pull request)\s*#?\s*\d+\b"),
     ),
     ("an unlinked issue", re.compile(r"(?i)\bissues?\s*#?\s*\d+\b")),
+    # The rule forbids "Ticket, issue, or project IDs that resolve only inside
+    # a private or external tracker", and only one of those three words was
+    # here. Measured over the 230 scanned files: these report nothing today, so
+    # this closes a spelling rather than widening the net.
+    (
+        "an unlinked ticket",
+        re.compile(r"(?i)\btickets?\s*#?\s*\d+\b"),
+    ),
+    (
+        "an unlinked project item",
+        re.compile(r"(?i)\bprojects?\s*#?\s*\d+\b"),
+    ),
     ("a bare review-comment id", re.compile(r"\b40\d{8}\b")),
     (
         # Case-insensitive, because Git reads an object id in either case
@@ -337,14 +349,39 @@ MARKDOWN_SUFFIXES = frozenset({".md", ".mdc"})
 HASH_SHAPED = re.compile(r"\A[0-9a-fA-F]{7,40}\Z")
 
 
+def repository_is_shallow(root: Path) -> bool:
+    """Return whether this clone holds only part of the history."""
+    completed = subprocess.run(
+        ["git", "-C", str(root), "rev-parse", "--is-shallow-repository"],
+        capture_output=True,
+    )
+    return (
+        completed.returncode == 0
+        and completed.stdout.decode("utf-8", "replace").strip() == "true"
+    )
+
+
 def commit_exists(token: str, root: Path) -> bool:
     """Return whether this repository holds a commit with that abbreviation.
 
     Asked of Git rather than guessed, because that is exactly the question
     GitHub answers when it decides whether to link a hexadecimal run. A Git
-    failure returns ``False`` -- the conservative direction, which reports the
-    reference rather than excusing it.
+    failure returns ``False`` -- the direction that reports the reference
+    rather than excusing it.
+
+    **A shallow clone cannot answer this and must not pretend to.** The
+    checkout action fetches only the triggering commit unless told otherwise,
+    and in that state every older commit reads as absent, so the check would
+    reject a reference GitHub renders as a link. The workflow now sets
+    ``fetch-depth: 0``; this raises if that ever stops being true, because a
+    silent wrong answer in either direction is worse than a stopped run.
     """
+    if repository_is_shallow(root):
+        raise AssertionError(
+            "this clone is shallow, so whether a short hash names a commit "
+            "here cannot be answered and must not be guessed. Set "
+            "fetch-depth: 0 on the checkout step that runs this suite."
+        )
     completed = subprocess.run(
         ["git", "-C", str(root), "cat-file", "-t", token],
         capture_output=True,
@@ -355,12 +392,102 @@ def commit_exists(token: str, root: Path) -> bool:
     )
 
 
+#: A fence opener or closer, with its own run length so a longer run inside a
+#: shorter one does not close it.
+FENCE_PATTERN = re.compile(r"^ {0,3}(?P<marker>`{3,}|~{3,})")
+#: An inline code span, an HTML comment, and a Markdown link's text. GitHub
+#: autolinks in none of them -- measured on ``POST /markdown`` with
+#: ``mode=gfm``: plain prose is linked, and a reference inside a code span, a
+#: fenced block, an indented code block, an HTML comment or a link's text is
+#: not. Each is blanked to spaces so every offset stays the line's own.
+CODE_SPAN_PATTERN = re.compile(r"(?P<ticks>`+)(?:.*?)(?P=ticks)")
+HTML_COMMENT_PATTERN = re.compile(r"<!--.*?-->", re.S)
+LINK_TEXT_PATTERN = re.compile(r"\[(?:[^\[\]]*)\]\(")
+
+
+def markdown_prose(text: str) -> str:
+    """Return ``text`` with everything GitHub does not autolink blanked.
+
+    Offsets are preserved, so a match found in the original can be tested
+    against the same span here. Blanking rather than deleting is what keeps the
+    two strings comparable.
+
+    **What this does not see, said rather than implied.** A code span whose
+    opening run is closed on a later line, a link whose text holds brackets,
+    and an HTML block that is not a comment are all read as prose, so a
+    reference in one of them is reported. That is the safe direction: this
+    function decides whether to *excuse* a reference, and being wrong here
+    means reporting one that a reader could have clicked, which a person sees.
+    Being wrong the other way hides an opaque reference, which nobody sees.
+    """
+    # Comments first: they may span lines, and they may hold anything.
+    masked = HTML_COMMENT_PATTERN.sub(lambda m: " " * len(m.group(0)), text)
+    out: list[str] = []
+    fence: str | None = None
+    previous_blank = True
+    for line in masked.split("\n"):
+        opener = FENCE_PATTERN.match(line)
+        if fence is not None:
+            out.append(" " * len(line))
+            if opener and opener.group("marker")[0] == fence[0] and len(
+                opener.group("marker")
+            ) >= len(fence):
+                fence = None
+            previous_blank = False
+            continue
+        if opener:
+            fence = opener.group("marker")
+            out.append(" " * len(line))
+            previous_blank = False
+            continue
+        if previous_blank and line[:4] == "    ":
+            # An indented code block, which may only open where no paragraph
+            # is already open.
+            out.append(" " * len(line))
+            previous_blank = False
+            continue
+        blanked = CODE_SPAN_PATTERN.sub(lambda m: " " * len(m.group(0)), line)
+        blanked = LINK_TEXT_PATTERN.sub(lambda m: " " * len(m.group(0)), blanked)
+        out.append(blanked)
+        previous_blank = not line.strip()
+    return "\n".join(out)
+
+
+def resolves_in_this_repository(label: str, matched: str, root: Path) -> bool:
+    """Return whether the reference names something this repository holds.
+
+    **This is a different question from whether the page links it, and it is
+    the stronger one.** The rule asks that a file be interpretable *using only
+    the contents of this repository*. A short hash that names a commit in this
+    repository's own history is interpretable by anyone holding the
+    repository, in a code span, in a fenced block, in a Python comment, in any
+    file type -- ``git show`` answers it without a network. The reference this
+    module was written to refuse is the opposite case: a hash from a branch
+    that was squashed away, which resolves in no clone anybody has.
+
+    So the hash rule asks Git, and asks it everywhere. The hash-number
+    shorthand is *not* on this footing -- nothing in the repository resolves
+    it, only the renderer does -- so it stays with the rendering rule below.
+    """
+    return label == "a bare commit hash" and bool(
+        HASH_SHAPED.match(matched)
+    ) and commit_exists(matched, root)
+
+
 def github_renders_as_link(label: str, matched: str, root: Path) -> bool:
     """Return whether GitHub links this reference when it renders the file."""
-    if label in ("an unlinked issue", "an unlinked pull request"):
+    if label in (
+        "an unlinked issue",
+        "an unlinked pull request",
+        "an unlinked ticket",
+        "an unlinked project item",
+    ):
+        # GitHub links a hash-number reference whatever word precedes it, so a
+        # ticket or project spelling written with a hash reaches the same page.
         return "#" in matched
-    if label == "a bare commit hash":
-        return bool(HASH_SHAPED.match(matched)) and commit_exists(matched, root)
+    # A hash is settled by ``resolves_in_this_repository`` before this is
+    # asked, because the repository holding the commit is a better reason than
+    # the renderer linking it.
     return False
 
 
@@ -446,7 +573,12 @@ def url_resolves(label: str, matched: str, urls: list[str]) -> bool:
         parts = url_path_segments(url)
         lowered = [part.lower() for part in parts]
         fragments = url_fragment_tokens(url)
-        if label in ("an unlinked pull request", "an unlinked issue"):
+        if label in (
+            "an unlinked pull request",
+            "an unlinked issue",
+            "an unlinked ticket",
+            "an unlinked project item",
+        ):
             # GitHub serves an issue and a pull request from either path, so
             # both are accepted for either spelling of the reference.
             for index, part in enumerate(lowered[:-1]):
@@ -568,6 +700,19 @@ def names_in(
     return found
 
 
+def match_is_prose(prose: list[str], number: int, match: "re.Match[str]") -> bool:
+    """Return whether this match sits where GitHub would autolink it.
+
+    The mask holds a space wherever the renderer would not, so the match's own
+    span deciding it is what keeps the two readings aligned. A line the mask
+    does not cover is read as prose, which is the reporting direction.
+    """
+    if number - 1 >= len(prose):
+        return True
+    span = prose[number - 1][match.start() : match.end()]
+    return bool(span.strip())
+
+
 def references_in(
     path: Path,
     root: Path,
@@ -587,9 +732,11 @@ def references_in(
     if python is None:
         python = path.suffix == ".py"
     rendered = path.suffix.lower() in MARKDOWN_SUFFIXES
-    for number, line in enumerate(
-        path.read_text(encoding="utf-8", errors="replace").split("\n"), start=1
-    ):
+    body = path.read_text(encoding="utf-8", errors="replace")
+    # Only in a rendered file does the question arise, and computing the mask
+    # for a Python file would be work nothing reads.
+    prose = markdown_prose(body).split("\n") if rendered else []
+    for number, line in enumerate(body.split("\n"), start=1):
         # Found with the greedy pattern so the whole run is blanked, then
         # trimmed so what is matched against is the URL itself.
         urls = [trim_url(found) for found in URL_PATTERN.findall(line)]
@@ -605,7 +752,11 @@ def references_in(
                     continue
                 if url_resolves(name, matched, urls):
                     continue
-                if rendered and github_renders_as_link(name, matched, root):
+                if resolves_in_this_repository(name, matched, root):
+                    continue
+                if rendered and match_is_prose(prose, number, match) and (
+                    github_renders_as_link(name, matched, root)
+                ):
                     continue
                 found.append(f"{relative}:{number}: {name}: {matched!r}")
     return found
@@ -629,24 +780,29 @@ def exempt_names_for(relative: str) -> dict[str, int]:
     return budget
 
 
-#: The file types the rule is enforced on. The repository rule names
-#: ``README.md`` and other top-level Markdown, everything under ``.github/``
-#: including workflows and instructions, and code comments in committed files,
-#: so a corpus of Python alone enforced it for 42 of 238 tracked files while
-#: the CI step that runs this says it checks the repository. Binary and
-#: generated files are out because there is nothing in them for a reader to
-#: interpret; the lock file is out for the same reason and because it is
-#: machine-written.
-SCANNED_SUFFIXES = frozenset(
-    {
-        ".py", ".md", ".mdc", ".yml", ".yaml", ".json", ".jsonc",
-        ".js", ".mjs", ".cjs", ".sh", ".ps1", ".toml", ".cfg", ".ini", ".txt",
-    }
-)
-
-#: Paths whose contents are machine-written or generated, so a reference in
-#: them is not something a person wrote for a reader.
+#: **A file is text because it decodes, not because of its extension.** The
+#: first version of the widened corpus kept an allowlist of suffixes, and a
+#: reviewer said what that costs: ``LICENSE``, ``.gitattributes``,
+#: ``.gitignore``, ``.remarkignore`` and ``.github/CODEOWNERS`` are tracked,
+#: are read by people, and carry no suffix at all, so an opaque reference
+#: written into any of them was never passed to the scan. Seven of the
+#: repository's 238 tracked files sat outside the list.
+#:
+#: So the test is a UTF-8 decode. A file that does not decode holds nothing for
+#: a reader to interpret and is counted rather than silently dropped, because a
+#: corpus that shrinks without saying so is this module's own subject.
+#:
+#: Paths whose contents are machine-written are named here instead: a reference
+#: in one of them is not something a person wrote for a reader.
 UNSCANNED_PREFIXES = ("package-lock.json",)
+
+#: The scan's own data: the positive controls, the exemption rows and the URL
+#: cases. **Every reference in these files is there on purpose**, and each is
+#: covered by a test that enforces its content harder than this sweep would --
+#: one requires every control line to be reported, one requires every URL row
+#: to get the verdict written beside it, and one requires every exemption to
+#: still match. Sweeping them as prose would report 42 rows of deliberate data.
+SCAN_DATA_PREFIX = "tests/fixtures/self_contained_references/"
 
 
 def tracked_text_files() -> list[Path]:
@@ -694,16 +850,24 @@ def tracked_text_files() -> list[Path]:
         name for name in completed.stdout.decode("utf-8").split(chr(0)) if name
     ]
     assert names, "git listed no file at all, so this scan has nothing to read"
-    kept = [
-        name
-        for name in names
-        if Path(name).suffix.lower() in SCANNED_SUFFIXES
-        and not name.startswith(UNSCANNED_PREFIXES)
-    ]
+    kept: list[str] = []
+    undecodable: list[str] = []
+    for name in names:
+        if name.startswith(UNSCANNED_PREFIXES) or name.startswith(SCAN_DATA_PREFIX):
+            continue
+        path = REPO_ROOT / name
+        try:
+            path.read_text(encoding="utf-8")
+        except (OSError, UnicodeDecodeError):
+            # A ValueError, so ``except OSError`` alone would let it through.
+            undecodable.append(name)
+            continue
+        kept.append(name)
     assert kept, (
-        "git listed %d file(s) and none of them carries a scanned suffix, so "
-        "either the repository has changed shape or SCANNED_SUFFIXES has "
-        "rotted; both need a person" % len(names)
+        "git listed %d file(s) and none of them read as UTF-8 text, so either "
+        "the repository has changed shape or this walk is broken; both need a "
+        "person. %d file(s) did not decode: %s"
+        % (len(names), len(undecodable), undecodable[:5])
     )
     return [REPO_ROOT / name for name in kept]
 
@@ -785,6 +949,10 @@ def test_no_tracked_python_file_is_outside_the_corpus() -> None:
     }
     named = exempt_paths()
     assert named <= tracked, {"named in an exemption but not tracked": sorted(named - tracked)}
+    # An exemption for a file the sweep never reads is an exemption nobody
+    # needs, and it would sit there looking necessary.
+    stranded = sorted(name for name in named if name not in swept)
+    assert not stranded, {"exempted but never swept": stranded}
 
 
 def test_every_exempt_occurrence_still_occurs() -> None:
@@ -1070,7 +1238,7 @@ def test_each_exemption_names_a_path_an_occurrence_and_a_reason(
     name: str, occurrence: str, count: int, reason: str
 ) -> None:
     """An entry with an empty reason is an exemption nobody has to defend."""
-    assert Path(name).suffix.lower() in SCANNED_SUFFIXES, name
+    assert (REPO_ROOT / name).is_file(), name
     assert occurrence and occurrence.strip() == occurrence
     assert count >= 1
     assert len(reason.split()) >= 2
@@ -1175,6 +1343,11 @@ def test_the_corpus_is_more_than_python() -> None:
     assert ".py" in suffixes
     assert ".md" in suffixes
     assert ".yml" in suffixes
+    # And the files a suffix allowlist could not name at all.
+    assert "" in suffixes, "no extensionless tracked file is in the corpus"
+    names = {path.relative_to(REPO_ROOT).as_posix() for path in scoped_paths()}
+    for expected in ("LICENSE", ".gitattributes", ".gitignore", ".github/CODEOWNERS"):
+        assert expected in names, expected
     assert len(scoped_paths()) > 100
 
 
@@ -1278,3 +1451,127 @@ def test_no_tracker_issue_number_survives_in_an_identifier() -> None:
     ):
         assert name in marker, name
         assert not names_in(REPO_ROOT / name, REPO_ROOT), name
+
+
+def test_a_file_is_text_because_it_decodes(tmp_path: Path) -> None:
+    """The corpus holds the files a suffix allowlist could not name.
+
+    ``LICENSE``, ``.gitattributes``, ``.gitignore``, ``.remarkignore`` and
+    ``.github/CODEOWNERS`` are tracked, are read by people, and carry no
+    suffix. Seven of 238 tracked files sat outside the list this replaces.
+    """
+    names = {path.relative_to(REPO_ROOT).as_posix() for path in scoped_paths()}
+    for expected in (
+        "LICENSE",
+        ".gitattributes",
+        ".gitignore",
+        ".remarkignore",
+        ".github/CODEOWNERS",
+    ):
+        assert expected in names, expected
+
+
+def test_the_scan_own_data_is_not_swept_as_prose() -> None:
+    """The fixture directory is data, and three other tests own its content.
+
+    Sweeping it would report 42 rows of deliberate samples. Leaving it
+    unchecked would be an exemption nobody watches, which is why the tests
+    that do watch it are named here: one requires every control line to be
+    reported, one requires every URL row to get the verdict beside it, and
+    one requires every exemption to still match.
+    """
+    swept = {path.relative_to(REPO_ROOT).as_posix() for path in scoped_paths()}
+    assert not any(name.startswith(SCAN_DATA_PREFIX) for name in swept)
+    assert REPORTED_LINES.is_file()
+    assert URL_RESOLUTION_CASES.is_file()
+    assert EXEMPTIONS.is_file()
+
+
+def test_a_ticket_and_a_project_number_are_pointers_too(tmp_path: Path) -> None:
+    """The rule names three words and only one of them was here.
+
+    Measured over the scanned corpus before adding them: zero matches, so
+    this closes a spelling rather than widening the net.
+    """
+    sample = tmp_path / "a.py"
+    # Built rather than written: each of these spellings is a finding in this
+    # file, which is what the file is for.
+    for word, number in (("ticket", "44"), ("project", "12"),
+                         ("tickets", "45"), ("project #", "12")):
+        line = "# see " + word + " " + number
+        sample.write_text(line + "\n", encoding="utf-8")
+        assert references_in(sample, tmp_path), line
+    for line in ("# the ticket office", "# this project builds a curriculum"):
+        sample.write_text(line + "\n", encoding="utf-8")
+        assert not references_in(sample, tmp_path), line
+
+
+def test_the_shorthand_is_excused_only_where_the_renderer_links_it(
+    tmp_path: Path,
+) -> None:
+    """GitHub autolinks in prose and nowhere else.
+
+    Measured on ``POST /markdown`` with ``mode=gfm``: a hash-number reference
+    in plain prose comes back as an anchor, and the same reference inside an
+    inline code span, a fenced block, an indented code block, an HTML comment
+    or a link's text does not.
+    """
+    markdown = tmp_path / "a.md"
+    shorthand = "PR #" + "22"
+    markdown.write_text("See " + shorthand + " here.\n", encoding="utf-8")
+    assert not references_in(markdown, tmp_path)
+    for body in (
+        "See `" + shorthand + "` here.\n",
+        "```\nSee " + shorthand + " here.\n```\n",
+        "    See " + shorthand + " here.\n",
+        "<!-- See " + shorthand + " here. -->\n",
+        "[" + shorthand + "](https://example.com/x)\n",
+    ):
+        markdown.write_text(body, encoding="utf-8")
+        assert references_in(markdown, tmp_path), body
+
+
+def test_a_commit_this_repository_holds_needs_no_link_anywhere() -> None:
+    """A hash the repository holds is interpretable from the repository.
+
+    That is a different reason from the renderer's, and a stronger one: it
+    holds in a code span, in a fenced block, in a Python comment and in a
+    YAML value, because ``git show`` answers it without a network. The
+    reference this module refuses is the other case -- a hash from a branch
+    that was squashed away, which resolves in no clone anybody has.
+    """
+    head = subprocess.run(
+        ["git", "-C", str(REPO_ROOT), "rev-parse", "--short=7", "HEAD"],
+        capture_output=True,
+    )
+    assert head.returncode == 0, head.stderr.decode("utf-8", "replace")
+    real = head.stdout.decode("utf-8").strip()
+    assert resolves_in_this_repository("a bare commit hash", real, REPO_ROOT)
+    absent = "0" * 3 + "beef" + "1" * 3
+    assert not resolves_in_this_repository("a bare commit hash", absent, REPO_ROOT)
+    # And the rule speaks only for hashes.
+    assert not resolves_in_this_repository("an unlinked issue", real, REPO_ROOT)
+
+
+def test_this_clone_can_answer_the_question_the_hash_rule_asks() -> None:
+    """A shallow clone cannot, and the workflow is what keeps it deep.
+
+    The checkout action fetches only the triggering commit unless told
+    otherwise, so in CI every older commit would read as absent and the check
+    would reject a reference a reader can click. ``commit_exists`` raises
+    rather than guessing; this asserts the workflow removes the reason.
+    """
+    assert not repository_is_shallow(REPO_ROOT)
+    workflow = (
+        REPO_ROOT / ".github" / "workflows" / "markdownlint.yml"
+    ).read_text(encoding="utf-8")
+    assert "fetch-depth: 0" in workflow
+
+
+def test_the_prose_mask_keeps_every_offset() -> None:
+    """Blanking rather than deleting is what makes the two readings comparable."""
+    body = "a `b` c\n```\nd\n```\n<!-- e -->\nf\n"
+    masked = markdown_prose(body)
+    assert len(masked) == len(body)
+    for original, blanked in zip(body.split("\n"), masked.split("\n")):
+        assert len(original) == len(blanked)

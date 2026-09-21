@@ -2105,7 +2105,16 @@ def default_targets(root: Path) -> list[Path]:
         directory = root / name
         if not directory.is_dir():
             continue
-        for path in sorted(directory.rglob("*.md")):
+        for path in sorted(directory.rglob("*")):
+            # ``rglob("*.md")`` matches the suffix case-sensitively, so on a
+            # case-sensitive filesystem a file named with an uppercase suffix
+            # was never selected -- while ``resolve_candidate_path`` accepts it
+            # when the same file is named on the command line, so the two
+            # entry points disagreed about the same file. The pre-commit hook's
+            # own ``files:`` regex is lowercase-only for the same reason and is
+            # a separate repair.
+            if not path.is_file() or path.suffix.lower() != ".md":
+                continue
             relative = path.relative_to(root).as_posix()
             if any(relative.startswith(prefix) for prefix in DEFAULT_SCAN_EXCLUDES):
                 continue

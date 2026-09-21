@@ -27,6 +27,15 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v7
+        with:
+          # The self-containment suite asks Git whether a short hash written in
+          # a Markdown file names a commit here, because that is the question
+          # GitHub answers when it decides whether to render it as a link. The
+          # action fetches only the triggering commit by default, so in CI that
+          # question came back "no" for every older commit and the step would
+          # have reported a reference a reader can click.
+          # https://github.com/actions/checkout#usage
+          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v7

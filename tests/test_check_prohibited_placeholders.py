@@ -1817,3 +1817,49 @@ def test_the_default_excludes_match_the_pre_commit_configuration() -> None:
     ).read_text(encoding="utf-8")
     for prefix in hook.DEFAULT_SCAN_EXCLUDES:
         assert "exclude: ^" + prefix in config, prefix
+
+
+def test_the_default_walk_selects_a_markdown_suffix_in_any_case(
+    tmp_path: Path,
+) -> None:
+    """``rglob("*.md")`` matches the suffix case-sensitively.
+
+    On a case-sensitive filesystem an uppercase suffix was never selected by
+    the default walk, while ``resolve_candidate_path`` accepts the same file
+    when it is named on the command line -- so the two entry points disagreed
+    about one file.
+    """
+    hook = cast(Any, _placeholder_hook)
+    (tmp_path / "framework").mkdir()
+    (tmp_path / "framework" / "clean.md").write_text(
+        "# T\n\nWords.\n", encoding="utf-8"
+    )
+    assert hook.main([], root=tmp_path) == 0
+    (tmp_path / "framework" / "SHOUTED.MD").write_text(
+        "# T\n\nTBD: here\n", encoding="utf-8"
+    )
+    assert hook.main([], root=tmp_path) == 1
+    for mixed in ("Mixed.Md", "other.mD"):
+        (tmp_path / "framework" / "SHOUTED.MD").unlink()
+        (tmp_path / "framework" / mixed).write_text(
+            "# T\n\nTBD: here\n", encoding="utf-8"
+        )
+        assert hook.main([], root=tmp_path) == 1, mixed
+        (tmp_path / "framework" / mixed).unlink()
+        (tmp_path / "framework" / "SHOUTED.MD").write_text(
+            "# T\n\nTBD: here\n", encoding="utf-8"
+        )
+
+
+def test_the_default_walk_reads_no_file_that_is_not_markdown(
+    tmp_path: Path,
+) -> None:
+    """The control for the case above: widening the suffix test widens nothing else."""
+    hook = cast(Any, _placeholder_hook)
+    (tmp_path / "framework").mkdir()
+    (tmp_path / "framework" / "notes.txt").write_text("TBD: here\n", encoding="utf-8")
+    (tmp_path / "framework" / "notes.mdx").write_text("TBD: here\n", encoding="utf-8")
+    # No Markdown file at all, so the walk refuses rather than passing.
+    assert hook.main([], root=tmp_path) == 1
+    (tmp_path / "framework" / "real.md").write_text("# T\n\nWords.\n", encoding="utf-8")
+    assert hook.main([], root=tmp_path) == 0
