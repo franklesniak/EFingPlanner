@@ -69,6 +69,29 @@ mechanism for a departure is an entry in `framework/CHANGELOG.md`, never a spec 
 `framework/sessions/phase_00_setup/04_start_a_source_log.md` is the named golden
 exemplar — draft and check every new session against it.
 
+**One fact, and the surfaces that state it.** Some facts below are stated on more
+than one surface on purpose, because the readers of those surfaces are different
+people: a rule here is read by you, and the copy of it you write into a built file is
+read by a family who never opens this brief. Three rules govern that, and they bind
+you the same way the precedence rule above does.
+
+1. **State a rule once, where the rule is made.** A second statement of the same rule
+   on a surface the same reader meets in the same pass is not emphasis. It is a second
+   thing to keep in step, and the copy that gets missed is always the one nobody was
+   editing at the time.
+2. **Restate a consequence only where a different reader acts on it, and then in words
+   that stand alone.** A restatement whose meaning depends on a key held on another
+   surface is not a restatement. It is a contradiction with a note its reader never
+   reaches.
+3. **Never state a count or a membership list twice -- derive it.** Where a sentence
+   would say how many members a set has, state the rule that decides membership
+   instead, so a member added later joins without anyone editing a number. Where a
+   count cannot be avoided, one sentence carries it and every other surface points at
+   that sentence.
+
+Where two surfaces of one fact disagree, the one nearer the rule that makes the fact
+wins, and you record the other in your build report.
+
 **Acceptance-criteria numbering.** The combined archive matrix numbering
 (`AC-GLOBAL-1`, `AC-15-1`, `AC-16-1`, `AC-29-1`, and so on) is canonical for this
 build. When you quote an ID from the Lean matrix or the Full/OER companion matrix,
@@ -639,10 +662,14 @@ add-a-destination checklist. Must contain:
   volatile facts — prices, hours, entry rules — as "verify on official sources,"
   never fixed; (6) **when both contents pages exist, every named insert slot and every
   named reference file is filled -- and, until Batch 2, Session 15 is converted -- the
-  destination is added. If your destination is not a country, one slot is not fillable
-  yet: what `Capital` means for a city, a region, or a route across several countries is
-  undecided in this repository, and deciding it by substituting another word is not a
-  fill. A pack of that shape is not finished until that question is answered.**
+  destination is added. If your destination is not a country, the slots that assume one
+  are not fillable yet: the snapshot slot's `Capital` field and the candidate-cities
+  slot both take their wording from a destination model this repository has not settled,
+  and what either one means for a city, a region, or a route across several countries is
+  undecided. Deciding it by substituting another word is not a fill. The test is the
+  assumption and not this pair of names -- any slot whose field only makes sense for a
+  country is bound by the same undecided question, named here or not. A pack of that
+  shape is not finished until that question is answered.**
 - **Rule 1 names the two contents pages and rule 6 counts them, because a pack without
   them has no front door.** The checklist named neither `README.md` until now, and that
   worked only for the pack in front of it. This pack's top-level `README.md` was already
@@ -676,16 +703,24 @@ add-a-destination checklist. Must contain:
 - **Why rule 6 carries a second bound, and why that one is worded to stand on its own.**
   Rule 6 now states two bounds on one completion claim, and they clear on different
   events: Batch 2 clears the Session 15 bound, and only an answer to the Open Question
-  above clears the `Capital` one. Merging them would retire the second when Batch 2
-  retires the first. The two are also bounded differently -- Session 15 is true of every
-  new pack until Batch 2, and the `Capital` bound is true only of a destination that is
-  not a country -- so rule 6 states that condition rather than warning every reader.
+  above clears the destination-model one. Merging them would retire the second when
+  Batch 2 retires the first. The two are also bounded differently -- Session 15 is true
+  of every new pack until Batch 2, and the destination-model bound is true only of a
+  destination that is not a country -- so rule 6 states that condition rather than
+  warning every reader. **The second bound is written as the assumption it turns on and
+  not as a list of field names.** The Open Question above is about the destination model
+  rather than about one field, and it says so: the snapshot row and the candidate-cities
+  row carry the same assumption, and a bound naming only the first would let an author
+  fill the second and call the pack finished. A named pair is also the thing that goes
+  stale, because the row that assumes a country next is the one nobody listed.
   **Rule 6 is the sentence a new-destination author acts on to decide they are
   finished**, and that author reads it in this built file rather than in the brief that
   prescribes it, so the second bound is written in words that need no reference to this
-  brief, to an `OQ-n` or to an issue: it names a field and a destination shape, both
-  destination-neutral. F1's Definition of Done carries the same two bounds for the same
-  reason, and this file and that one are the two places a reuser meets the promise.
+  brief, to an `OQ-n` or to an issue: it names an assumption and a destination shape,
+  both destination-neutral. F1's Definition of Done carries the same two bounds, and
+  that is rule 2 of *"One fact, and the surfaces that state it"* at the top of this
+  brief: this file and that one are read by different people, so each states the bound
+  in words that stand on their own.
 - **Rule 6 counts both columns of the table, and it has to.** Seven rows route a
   session to a reference file and to no insert at all — 05, 06, 08, 33/38, 40, 43 and
   48 — so a pack with all twelve insert slots written would still leave those seven
@@ -1980,13 +2015,17 @@ this brief does not ask for it on.
   write this promise conditionally, the way the origin bound and the language bound on
   the two bullets below are written: a second destination that **is** a country needs no
   framework edit but the one session; for a city, a region, or a route across several
-  countries, the snapshot slot's `Capital` field and the candidate-cities slot beside it
-  have no settled meaning yet, and that has to be answered before a pack of that shape
-  can be finished. **The two bounds clear on different events and are not one clause** --
+  countries, the slots that assume a country have no settled meaning yet -- the snapshot
+  slot's `Capital` field and the candidate-cities slot beside it are the two the pack
+  contract already names -- and that has to be answered before a pack of that shape can
+  be finished. **Write the bound as the assumption and not as a pair of field names**,
+  so a slot nobody has listed yet is covered by the same sentence. **The two bounds
+  clear on different events and are not one clause** --
   Batch 2 clears the leak-exemption bound, and only an answer clears the
   destination-model one -- so a sentence that retires them together retires one of them
-  early. Name the second bound by its field rather than by an `OQ-n` or an issue number:
-  it is not one of the nineteen, and this README has no way to point at a build brief.
+  early. Name the second bound by what it assumes rather than by an `OQ-n` or an issue
+  number: it is not one of the nineteen, and this README has no way to point at a build
+  brief.
 - The honest reuse distinction: **parameter reuse** (another family with the same origin
   assumptions, travelling to the same destination — change only their own Trip-Basics
   card, near-zero cost) versus **destination reuse** (another place — a whole new
@@ -2578,11 +2617,15 @@ Batch 1 must land these entries:
   trip starter kit's `family/` subtree, and the new guides.
 - **Changed** — *"Build path moved from the Lean shape to the Full Build shape. The
   eight Batch 0 Phase 0-2 sessions were split into destination-neutral skeletons plus
-  destination-pack inserts. Their voice, structure and step order are unchanged. Two
-  non-destination changes went with the split: Session 05's lateral-reading and
+  destination-pack inserts. Their voice, structure and step order are unchanged. Text
+  that named no destination changed with the split as well, and the build report's diff
+  list is the record of which page each change touched: Session 05's lateral-reading and
   primary-versus-secondary definitions moved to their canonical home in the framework
-  docs, leaving a one-clause reminder and a link where they stood, and the navigation
-  lines were re-pointed for the sessions this batch adds. Those eight pages remain the
+  docs, leaving a one-clause reminder and a link where they stood; the navigation lines
+  were re-pointed for the sessions this batch adds; passages that named no place but
+  assumed one starting point or one shape of journey were made general; and wording was
+  reworked where a conversion left a page over the density caps. None of them changes
+  what a page teaches. Those eight pages remain the
   Batch 0 concrete baseline, not a validated reference: the usability pilot is still
   deferred and no child has walked them. See 'What is still owed to a human' below."*
   Plus the framework-layer destination scrub, the glossary move, and the style-file
@@ -2590,13 +2633,19 @@ Batch 1 must land these entries:
 
   **That entry says what changed rather than that nothing did, and the difference is the
   point.** An earlier draft claimed the eight pages' non-destination content was
-  unchanged. This same brief contradicts it twice: the Session 05 block moves two
-  definitions out of that session and leaves a reminder and a link in their place, and
-  universal conversion rule 7 re-points navigation text in several of the eight. Both
-  preserve meaning; neither leaves the content unchanged, and a changelog that denies a
-  change this repository made is a false history of it. If a conversion also forces a
-  density edit under universal conversion rule 9, that is a third non-destination change
-  and the entry names it too.
+  unchanged. This same brief contradicts that in four places: the Session 05 block moves
+  two definitions out of that session and leaves a reminder and a link in their place;
+  universal conversion rule 7 re-points navigation text in several of the eight;
+  conversion rows in Sessions 00, 01 and 10 replace passages that name no destination but
+  assume one starting point or one shape of journey; and universal conversion rule 9
+  forces a density edit in at least Session 14, whose own block says a literal freeze and
+  the Definition of Done cannot both be satisfied without it. Each preserves meaning;
+  none leaves the content unchanged, and a changelog that denies a change this repository
+  made is a false history of it. **The entry names the kinds and sends the reader to the
+  build report for the instances, and that is deliberate.** A count inside that entry
+  would be a second place to keep in step with the conversion rules -- rule 3 of *"One
+  fact, and the surfaces that state it"* at the top of this brief -- and it had already
+  been outgrown once: the entry said two while the rules reached four kinds of change.
 
   **Do not claim, in any wording, that a child has used a page this repository ships --
   here, or anywhere else you author.** This is the canonical home of that rule, and it
@@ -2666,14 +2715,22 @@ Batch 1 must land these entries:
   that is check 1's evidence was run during the build, and its result is in the build
   report; check 1 stays open until an adult accepts that result or performs the read,
   because the build that wrote both sides of the comparison also ran it. Check 2 has not
-  been run; it needs a real child."* Change nothing else in the bullet. The item stays
+  been run; it needs a real child."* That replacement and the deletion named next are
+  the only two changes this item makes to the bullet. The item stays
   in **"What is still owed to a human"**, stays open, keeps both check descriptions,
   keeps the "unpiloted baseline" caveat, and keeps *"Nothing stands in for check 2."*
-  **It also keeps the bullet's own *"An automated equivalence read can stand in for
-  check 1, because it compares two texts."***, and the replacement sentence above is
-  what makes the bullet coherent rather than contradictory: that sentence names the
-  **mechanism** the check may use, and the replacement names **who closes it**. Do not
-  edit the Batch 0 sentence to say the same thing a second time. Do not move it
+  **Then delete the bullet's own *"An automated equivalence read can stand in for
+  check 1, because it compares two texts."*** That sentence says the automated read can
+  take check 1's place. The replacement above says the read is check 1's evidence and
+  that check 1 stays open until an adult accepts it. One bullet cannot hold both, and
+  the person reading that bullet is reading the built changelog rather than this brief,
+  so no key written here reaches them. The replacement already carries what the deleted
+  sentence was for -- that the comparison compares two texts, and that it was run -- so
+  the deletion removes a contradiction and loses nothing. **Delete it rather than
+  rewriting it:** a rewrite would state the closure rule twice in one bullet, and two
+  statements of one rule are two things a later batch has to keep in step. That is rule
+  1 of *"One fact, and the surfaces that state it"* at the top of this brief. Do not
+  move it
   into the `0.2.0` release section and do not mark it done: you cannot perform check 2,
   and an entry that reads as closed would let the repository claim a gate it has not
   passed. **Write that sentence to match what you actually did.** If for any reason you
@@ -3656,17 +3713,21 @@ contradicting it.
 
 1. Preserve voice, structure, step order, and every non-destination sentence **that no
    later rule in this list and no session block below moves or changes**. Preserve is
-   this section's default and not an absolute, and three kinds of change reach a sentence
-   that names no destination. **Rule 2** sends Session 05's two definitions -- lateral
+   this section's default and not an absolute, and the later rules below reach sentences
+   that name no destination. **Rule 2** sends Session 05's two definitions -- lateral
    reading, and primary versus secondary -- out of the session to
    `framework/docs/source_trustworthiness.md`; both are destination-neutral, F10 records
    the move as a non-destination change, and rule 2's own text names it. **A conversion
    row** may neutralise an origin or trip-shape assumption that carries no destination
    name and is still untrue of some families -- Session 10's Step 6, Session 01's
    junior-planner boundary and its cover-page field, Session 00's passport check -- and
-   each of those rows says so where it stands. **Rule 9** permits the narrowly required
+   each of those rows says so where it stands. **Rule 7** re-points a navigation line,
+   which names no destination either. **Rule 9** permits the narrowly required
    density edit and says in its own text that it outranks a freeze protecting "voice,
-   structure, step order and content", which is this rule in other words. Where no later
+   structure, step order and content", which is this rule in other words. That list is
+   an inventory of the rules below and not a count of them: a later rule that moves or
+   changes such a sentence is covered by the first line of this one whether or not it is
+   named here. Where no later
    rule reaches a sentence it stays exactly as built, and a conversion that wants to
    change one anyway has no authority here. Rules 2, 3 and 4 each carry their exception
    in their own text; this one did not, and a builder reading it literally could obey
