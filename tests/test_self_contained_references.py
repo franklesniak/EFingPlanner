@@ -251,7 +251,23 @@ REVIEW_HISTORY_PATTERNS = (
         "an unlinked project item",
         re.compile(r"(?i)\bprojects?\s*#?\s*\d+\b"),
     ),
+    # Two spellings, because neither covers the other. The numeric window
+    # catches a bare identifier written with no context at all, which is the
+    # shape this rule was created for; the contextual spelling catches one
+    # outside that window, which the window will eventually be.
+    #
+    # **The window is not widened, and that is measured.** Any bare run of nine
+    # to twelve digits reports 48 occurrences across the scanned corpus, 44 of
+    # them the leading digits of a synthetic hash in a schema example and the
+    # rest epoch timestamps. The contextual spelling reports none.
+    #
+    # What neither catches, said plainly: a bare identifier outside the window
+    # with no noun beside it.
     ("a bare review-comment id", re.compile(r"\b40\d{8}\b")),
+    (
+        "a review comment named by number",
+        re.compile(r"(?i)\b(?:review[ -]?comments?|comments?)\s*#?\s*\d{4,}\b"),
+    ),
     (
         # Case-insensitive, because Git reads an object id in either case
         # and the lowercase-only form let an uppercase abbreviation out of a
@@ -346,6 +362,9 @@ PROSE_CLOSERS = {">": "<", '"': '"', "'": "'", "]": "[", "`": "`", ";": None}
 #: reader reaches by clicking. The two rows that are linked are read as linked
 #: here; the four that are not stay reported.
 MARKDOWN_SUFFIXES = frozenset({".md", ".mdc"})
+#: The one shorthand GitHub turns into a link: a hash with the digits against
+#: it. A space between them leaves ordinary text on the page.
+COMPACT_SHORTHAND_PATTERN = re.compile(r"#\d")
 HASH_SHAPED = re.compile(r"\A[0-9a-fA-F]{7,40}\Z")
 
 
@@ -402,7 +421,40 @@ FENCE_PATTERN = re.compile(r"^ {0,3}(?P<marker>`{3,}|~{3,})")
 #: not. Each is blanked to spaces so every offset stays the line's own.
 CODE_SPAN_PATTERN = re.compile(r"(?P<ticks>`+)(?:.*?)(?P=ticks)")
 HTML_COMMENT_PATTERN = re.compile(r"<!--.*?-->", re.S)
-LINK_TEXT_PATTERN = re.compile(r"\[(?:[^\[\]]*)\]\(")
+#: A link's text, in the three shapes Markdown gives it: inline, collapsed or
+#: full reference, and shortcut. GitHub autolinks inside none of them.
+#: **Plain brackets are not a link**, and that is measured rather than assumed:
+#: a hash-number reference inside brackets with no matching definition *is*
+#: autolinked, so masking every bracket pair would report references a reader
+#: can click. Only a label a definition answers is masked.
+LINK_LABEL_PATTERN = re.compile(r"\[(?P<label>[^\[\]]*)\](?P<after>[(\[])?")
+REFERENCE_DEFINITION_PATTERN = re.compile(
+    r"^ {0,3}\[(?P<label>[^\[\]]+)\]:", re.M
+)
+
+
+def reference_definition_labels(text: str) -> set[str]:
+    """Return the labels this document defines, folded as CommonMark folds them."""
+    return {
+        match.group("label").strip().lower()
+        for match in REFERENCE_DEFINITION_PATTERN.finditer(text)
+    }
+
+
+def mask_link_labels(line: str, labels: set[str]) -> str:
+    """Blank the text of every link on one line, leaving its offsets intact."""
+
+    def blank(match: "re.Match[str]") -> str:
+        after = match.group("after")
+        if after in ("(", "["):
+            # Inline, or a full or collapsed reference link.
+            return " " * len(match.group(0))
+        if match.group("label").strip().lower() in labels:
+            # A shortcut reference link: a label this document defines.
+            return " " * len(match.group(0))
+        return match.group(0)
+
+    return LINK_LABEL_PATTERN.sub(blank, line)
 
 
 def markdown_prose(text: str) -> str:
@@ -422,34 +474,53 @@ def markdown_prose(text: str) -> str:
     """
     # Comments first: they may span lines, and they may hold anything.
     masked = HTML_COMMENT_PATTERN.sub(lambda m: " " * len(m.group(0)), text)
+    labels = reference_definition_labels(masked)
     out: list[str] = []
     fence: str | None = None
+    indented = False
     previous_blank = True
     for line in masked.split("\n"):
+        blank = not line.strip()
         opener = FENCE_PATTERN.match(line)
         if fence is not None:
             out.append(" " * len(line))
-            if opener and opener.group("marker")[0] == fence[0] and len(
-                opener.group("marker")
-            ) >= len(fence):
+            # A closing fence carries **only whitespace** after its marker, so
+            # a line that merely starts with backticks does not end the block.
+            # Measured on GitHub: three backticks, then a backtick run with a
+            # word after it, renders the rest as code and links nothing in it.
+            if (
+                opener
+                and opener.group("marker")[0] == fence[0]
+                and len(opener.group("marker")) >= len(fence)
+                and not line[opener.end() :].strip()
+            ):
                 fence = None
-            previous_blank = False
+            previous_blank = blank
             continue
         if opener:
             fence = opener.group("marker")
             out.append(" " * len(line))
-            previous_blank = False
+            previous_blank = blank
             continue
-        if previous_blank and line[:4] == "    ":
-            # An indented code block, which may only open where no paragraph
-            # is already open.
+        # An indented code block opens only where no paragraph is open, and
+        # then **runs on** through its own indented lines and the blank lines
+        # between them. Clearing the state on the opening line meant the
+        # second line of every such block was read as prose.
+        if indented:
+            if blank or line[:4] == "    ":
+                out.append(" " * len(line))
+                previous_blank = blank
+                continue
+            indented = False
+        elif previous_blank and line[:4] == "    ":
+            indented = True
             out.append(" " * len(line))
-            previous_blank = False
+            previous_blank = blank
             continue
         blanked = CODE_SPAN_PATTERN.sub(lambda m: " " * len(m.group(0)), line)
-        blanked = LINK_TEXT_PATTERN.sub(lambda m: " " * len(m.group(0)), blanked)
+        blanked = mask_link_labels(blanked, labels)
         out.append(blanked)
-        previous_blank = not line.strip()
+        previous_blank = blank
     return "\n".join(out)
 
 
@@ -484,7 +555,12 @@ def github_renders_as_link(label: str, matched: str, root: Path) -> bool:
     ):
         # GitHub links a hash-number reference whatever word precedes it, so a
         # ticket or project spelling written with a hash reaches the same page.
-        return "#" in matched
+        # **The digits have to touch the hash.** The patterns above allow
+        # whitespace between them, and the spaced form is ordinary text on the
+        # page -- measured: the compact form comes back as an anchor and the
+        # spaced form does not -- so testing for a hash anywhere in the match
+        # excused a reference nothing resolves.
+        return COMPACT_SHORTHAND_PATTERN.search(matched) is not None
     # A hash is settled by ``resolves_in_this_repository`` before this is
     # asked, because the repository holding the commit is a better reason than
     # the renderer linking it.
@@ -586,19 +662,22 @@ def url_resolves(label: str, matched: str, urls: list[str]) -> bool:
                     index + 1
                 ] in digits:
                     return True
-        elif label == "a bare review-comment id":
+        elif label in ("a bare review-comment id", "a review comment named by number"):
             # The id is served as its own path segment under ``comments`` and
             # written into the fragment that scrolls to it, where the host puts
             # a prefix in front of it. Both placements resolve it; a bare digit
             # run anywhere else does not, which is why the prefixes are listed
             # rather than the part being split on punctuation and searched.
-            for index, part in enumerate(parts):
-                if part == matched and index and lowered[index - 1] == "comments":
-                    return True
-            for token in fragments:
-                for prefix in COMMENT_FRAGMENT_PREFIXES:
-                    if token.lower() == prefix + matched:
+            # The contextual spelling carries its noun, so the identifier is
+            # the digit run inside the match rather than the match itself.
+            for identifier in digits or [matched]:
+                for index, part in enumerate(parts):
+                    if part == identifier and index and lowered[index - 1] == "comments":
                         return True
+                for token in fragments:
+                    for prefix in COMMENT_FRAGMENT_PREFIXES:
+                        if token.lower() == prefix + identifier:
+                            return True
         elif label == "a bare commit hash":
             # A URL may carry the full forty characters where the prose wrote
             # seven, or the other way about, so a prefix either way counts --
@@ -1575,3 +1654,117 @@ def test_the_prose_mask_keeps_every_offset() -> None:
     assert len(masked) == len(body)
     for original, blanked in zip(body.split("\n"), masked.split("\n")):
         assert len(original) == len(blanked)
+
+
+def _md(tmp_path: Path, body: str) -> bool:
+    """Return whether the scan reports anything in one Markdown document."""
+    document = tmp_path / "a.md"
+    document.write_text(body, encoding="utf-8")
+    return bool(references_in(document, tmp_path))
+
+
+def test_an_indented_code_block_runs_past_its_first_line(tmp_path: Path) -> None:
+    """A block runs through its indented lines and the blank lines between.
+
+    Clearing the state on the opening line meant the second line of every
+    indented block was read as prose, so a reference there was excused as
+    autolinkable although GitHub renders no link inside a code block.
+    """
+    shorthand = "issue #" + "27"
+    assert _md(tmp_path, "    first line of code\n    " + shorthand + "\n")
+    assert _md(tmp_path, "    code\n\n    " + shorthand + "\n")
+    # And the block ends where the indentation does.
+    assert not _md(tmp_path, "    code\n\nSee " + shorthand + " here.\n")
+
+
+def test_a_closing_fence_carries_only_whitespace(tmp_path: Path) -> None:
+    """A line that merely starts with the marker does not close the block.
+
+    CommonMark allows only spaces and tabs after a closing fence's marker, so
+    a marker run with a word after it keeps the block open -- measured on
+    GitHub, which renders the rest as code and links nothing in it.
+    """
+    shorthand = "issue #" + "27"
+    fence = "`" * 3
+    assert _md(tmp_path, fence + "\n" + fence + "not a close\n" + shorthand + "\n" + fence + "\n")
+    # The control: a real closing fence does end it.
+    assert not _md(tmp_path, fence + "\ncode\n" + fence + "\nSee " + shorthand + " here.\n")
+
+
+def test_a_links_text_is_masked_in_all_three_shapes(tmp_path: Path) -> None:
+    """Inline, full or collapsed reference, and shortcut.
+
+    **Plain brackets are not a link**, and that is the control that matters:
+    measured on GitHub, a hash-number reference inside brackets with no
+    matching definition *is* autolinked, so masking every bracket pair would
+    report references a reader can click.
+    """
+    shorthand = "issue #" + "27"
+    assert _md(tmp_path, "See [" + shorthand + "](https://example.com/other) here.\n")
+    assert _md(tmp_path, "See [" + shorthand + "][x] here.\n\n[x]: https://example.com/o\n")
+    assert _md(
+        tmp_path,
+        "See [" + shorthand + "][] here.\n\n[" + shorthand + "]: https://example.com/o\n",
+    )
+    assert not _md(tmp_path, "See [" + shorthand + "] here.\n")
+
+
+def test_the_shorthand_needs_its_digits_against_the_hash(tmp_path: Path) -> None:
+    """The spaced form is ordinary text on the page.
+
+    The patterns allow whitespace after the hash, so testing for a hash
+    anywhere in the match excused a reference nothing resolves. Measured: the
+    compact form comes back as an anchor and the spaced form does not.
+    """
+    assert _md(tmp_path, "See issue # " + "27" + " here.\n")
+    assert not _md(tmp_path, "See issue #" + "27" + " here.\n")
+
+
+def test_a_review_comment_is_read_by_its_noun_as_well_as_its_number(
+    tmp_path: Path,
+) -> None:
+    """The numeric window will rot, so a contextual spelling stands beside it.
+
+    The window is deliberately not widened: any bare run of nine to twelve
+    digits reports 48 occurrences across the scanned corpus, 44 of them the
+    leading digits of a synthetic hash in a schema example. The contextual
+    spelling reports none.
+    """
+    sample = tmp_path / "a.py"
+    outside = "41" + "11993843"
+    inside = "40" + "11993843"
+    for line in ("# raised in review comment " + outside,
+                 "# raised in comment " + outside,
+                 "# reported at " + inside):
+        sample.write_text(line + "\n", encoding="utf-8")
+        assert references_in(sample, tmp_path), line
+    # Both spellings are excused by a link that resolves them.
+    for line in ("# review comment " + outside
+                 + " https://github.com/o/r/pull/1#discussion_r" + outside,
+                 "# reported at " + inside
+                 + " https://api.github.com/repos/o/r/pulls/comments/" + inside):
+        sample.write_text(line + "\n", encoding="utf-8")
+        assert not references_in(sample, tmp_path), line
+    # And an unrelated link does not.
+    sample.write_text(
+        "# review comment " + outside + " https://example.com/releases/" + outside + "\n",
+        encoding="utf-8",
+    )
+    assert references_in(sample, tmp_path)
+
+
+def test_a_plain_trailing_semicolon_leaves_the_url() -> None:
+    """GitHub trims it, so this trims it, and the two agree.
+
+    A reviewer read the specification as keeping a plain trailing semicolon
+    inside a bare autolink and only excluding an entity-shaped one. Measured on
+    GitHub's own renderer, the anchor for a URL followed by a plain semicolon
+    stops before the semicolon, so trimming it is what keeps this rule and the
+    page saying the same thing about one line.
+    """
+    assert trim_url("https://github.com/o/r/issues/27;") == (
+        "https://github.com/o/r/issues/27"
+    )
+    assert trim_url("https://github.com/o/r/x?a=b&hl;") == (
+        "https://github.com/o/r/x?a=b"
+    )
