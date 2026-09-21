@@ -41,8 +41,10 @@ tracks, asked of Git rather than guessed at, minus the files named in
 against each other, so a file added later is swept by default and a file left
 out has to be argued for in writing. The second version of this module scoped
 itself with two globs that matched neither itself nor most of the tree, and a
-reviewer found what that cost: its own committed samples carried five of the
-six shapes it exists to refuse, and it passed.
+reviewer found what that cost: its own committed samples carried every shape
+it exists to refuse, under every pattern below, and it passed. Its docstring
+also stated a count of what it would find in itself, and that count was wrong
+at the commit that wrote it, which is why no count is written here.
 
 The samples are not in this file for that reason. They are data in
 ``REPORTED_LINES``, and they are read under the opposite rule: every line there
