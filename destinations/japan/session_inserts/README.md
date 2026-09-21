@@ -78,7 +78,7 @@ Dividing a row later means editing the row, in the same pass that writes the ref
 
 ## What is written in this pack, and what is not
 
-The contract table names twelve insert slots and twelve reference files. Both columns are completion targets. A reader given only the insert count would write twelve files and believe the pack was finished.
+The contract table names twelve insert slots and twelve reference files. Both columns are completion targets. A reader given only the insert count would write twelve files and believe the pack was finished. The four bullets below count what *this* pack has built, so they are the one part of this contract that a second pack does not copy; step 1 of the checklist below says what to write instead.
 
 - **Insert slots written (four):** `10_snapshot_facts.md`, `11_regions_overview.md`, `12_seasons_and_events.md` and `kid_glossary.md`.
 - **Insert slots not yet written:** the other eight.
@@ -87,7 +87,7 @@ The contract table names twelve insert slots and twelve reference files. Both co
 
 ## Adding a destination
 
-1. Create the pack's two contents pages. `destinations/<name>/README.md` carries the provided-as-is framing and lists the pack's reference files and its inserts. `destinations/<name>/session_inserts/README.md` is a destination-neutral copy of this contract. Then create the pack's `reference/` directory and fill in its stable facts, one file per topic, each named as the contract's reference column names it: regions, major cities, seasons, weather and events, transportation, airports, money, language, etiquette, food, adult logistics, trusted starting sources, and sample search terms. A copy of this contract carries the contract and none of the first pack's values; every field list above is written destination-neutral for exactly that reason.
+1. Create the pack's two contents pages. `destinations/<name>/README.md` carries the provided-as-is framing and lists the pack's reference files and its inserts. `destinations/<name>/session_inserts/README.md` is a destination-neutral copy of this contract. Then create the pack's `reference/` directory and fill in its stable facts, one file per topic, each named as the contract's reference column names it: regions, major cities, seasons, weather and events, transportation, airports, money, language, etiquette, food, adult logistics, trusted starting sources, and sample search terms. Every field list above is written destination-neutral so that a copy of this contract carries the contract and none of the first pack's values. One section is the exception. The four bullets under **What is written in this pack, and what is not** count what the first pack has built, so copying them hands a new pack counts it has not earned and makes an empty pack look part-finished. Delete those four bullets in the copy and recount them for the pack you are starting: nothing is written on day one, so every insert slot and every reference file in the contract table belongs on the not-yet-written lists.
 2. Write the small "destination notes" each place-specific session pulls in.
 3. Do not edit any framework session, template, guide, or doc, with one temporary exception: Session 15, which the rider above names and which a new destination converts by hand until Batch 2 converts it for everyone.
 4. Keep adult-owned legal and safety topics adult-owned.

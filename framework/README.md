@@ -24,7 +24,7 @@ Which log is which: the curriculum changelog is the version history of these reu
 
 ## What "reusable" means here
 
-Done, for modularity, means this: a family can copy the blank kit and a destination pack, fill in their own Trip-Basics card, write a new destination's reference facts and inserts, and reuse the whole curriculum unchanged, without editing any framework file and without editing the first destination.
+Done, for modularity, means this: a family can copy the blank kit and a destination pack, fill in their own Trip-Basics card and their own Current Family Travel Assumptions page, write a new destination's reference facts and inserts, and reuse the whole curriculum unchanged, without editing any framework file and without editing the first destination.
 
 Two bounds sit on that promise today. They clear on different events, so neither one retires the other.
 
@@ -36,7 +36,7 @@ Two bounds sit on that promise today. They clear on different events, so neither
 
 Two different things both get called reuse, and they cost very different amounts.
 
-- **Parameter reuse.** Another family with the same origin assumptions, travelling to the same destination, changes only their own Trip-Basics card. Near-zero cost, and it is the reuse most families are after. "The same origin assumptions" is carrying weight in that sentence: the origin logistics layer below lists what a family travelling from somewhere else swaps.
+- **Parameter reuse.** Another family with the same origin assumptions, travelling to the same destination, fills in only the two pages that configure a family. Those are the Trip-Basics card and the Current Family Travel Assumptions page, which Session 00 sets with that family's season window, budget band, AI choice, rough trip shape and constraints, and which Session 13 reads the budget band from. Near-zero cost, and it is the reuse most families are after. "The same origin assumptions" is carrying weight in that sentence: the origin logistics layer below lists what a family travelling from somewhere else swaps.
 - **Destination reuse.** Another place needs a whole new destination pack: its reference facts, its session inserts, its word list. That is a project rather than an edit, and it is the only thing the heavier machinery exists for.
 
 One further boundary belongs beside that promise. Everything here assumes English-literate adults and a child who reads English or is read to in English. Every session, worksheet, template and guide is written in English, and nothing in this repository translates them. A family who does not read English, or a child who does not read and has nobody to read to them, needs translation and reading support this project does not build and does not plan to.

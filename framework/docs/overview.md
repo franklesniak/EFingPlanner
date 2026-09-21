@@ -6,7 +6,7 @@ Read this page first. It is the shortest honest description of what this project
 
 ## What this project is
 
-This is a Markdown curriculum that a child of roughly nine to eleven works through, over some months, to plan a real family trip. Every page is plain text. The child reads a short session, does one small piece of work, and writes it down. Along the way they are building executive function, which is the set of brain skills for getting started, staying with a task, and knowing when to stop.
+This is a Markdown curriculum that a child of roughly nine to eleven works through to plan a real family trip. It runs over weeks or months, depending on which of the finish lines below the family picks; [time and effort](../parent_guide/time_and_effort.md) is where the range for each path lives. Every page is plain text. The child reads a short session, does one small piece of work, and writes it down. Along the way they are building executive function, which is the set of brain skills for getting started, staying with a task, and knowing when to stop.
 
 ## Two things at once
 

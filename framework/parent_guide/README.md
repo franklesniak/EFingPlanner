@@ -22,7 +22,7 @@ Read the rest when you need it: [coaching and support](coaching_and_support.md) 
 
 ## Is this realistic for me right now
 
-A quick, honest self-check before you commit months:
+A quick, honest self-check before you commit weeks or months:
 
 - Do I have a little time for the first few weeks (the hands-on part)?
 - Do I myself find getting-started or following-through hard?

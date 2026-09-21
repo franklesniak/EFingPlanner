@@ -48,7 +48,7 @@ Now do the work:
 
 You only need one source today. Comparing two sources on the same question is Session 08's job.
 
-**Book citation form:** book title, author or publisher, page number, date I used it. The other four forms are on the [simple citation page](../../templates/simple_citation.md).
+**Book citation form:** book title, author or publisher, page number, date I used it. The other five forms are on the [simple citation page](../../templates/simple_citation.md).
 
 ## Workspace
 

@@ -47,7 +47,7 @@ That last one is where the thinking happens. "More useful" isn't the same as "lo
 
 **When the source is not in English.** Official pages are often written in the local language first. Look for an official English version of the page before anything else. If there isn't one, a translation tool helps you *understand* the page. It does not help you trust it. Anything that matters gets checked against an official English source or a grown-up. When in doubt, ask a grown-up.
 
-**Website citation form:** website title, organization or author, page title, web address, date I checked it. The other four forms are on the [simple citation page](../../templates/simple_citation.md).
+**Website citation form:** website title, organization or author, page title, web address, date I checked it. The other five forms are on the [simple citation page](../../templates/simple_citation.md).
 
 Session 05's other two moves help here as well: lateral reading, and primary versus secondary. Open [Session 05](05_good_sources_bad_sources.md) again if you want a reminder of either.
 

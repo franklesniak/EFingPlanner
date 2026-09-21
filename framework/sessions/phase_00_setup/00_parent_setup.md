@@ -52,7 +52,7 @@ You work from this checklist, the [Trip-Basics card](../../templates/trip_basics
 
 Explain, warmly, that this leads to a real family trip they are helping plan. Two things the grown-ups already decided: we are taking a trip, and the adults have chosen where. Everything else is genuinely theirs to figure out. They are the junior travel planner; their recommendations matter; and adults make the final calls on money, booking, travel, and safety.
 
-## The buy-in gut-check (do this before committing months)
+## The buy-in gut-check (do this before committing weeks or months)
 
 Ask yourself honestly: is your child actually excited, or is this mostly your idea? **Lukewarm is okay.** If they are lukewarm, do not push -- spark it instead: show them a few genuinely exciting things about your destination (the destination pack is a good place to start; just for fun, nothing decided yet) and have a short "why we're excited" chat that feeds their "things I can't wait to see" page. Then plan to decide at Checkpoint 1 whether to keep going. Pausing or parking the project for later is a real, respected outcome -- see the [coaching guide](../../parent_guide/coaching_and_support.md).
 

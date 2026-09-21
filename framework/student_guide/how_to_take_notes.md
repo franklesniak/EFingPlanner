@@ -43,7 +43,7 @@ You don't have to write paragraphs to be taking this seriously. Paragraphs are s
 
 Write the source while the page is still open. Going back for it later takes three times as long, and sometimes you can't find it again at all.
 
-Each kind of source has its own short form, and there are five of them: website, book, map, video, and AI. You don't have to remember what each one needs.
+Each kind of source has its own short form, and there are six of them: website, book, map, video, AI, and a person you asked. You don't have to remember what each one needs.
 
 - [Simple citation forms](../templates/simple_citation.md) is the printable page. Copy it into your binder and fill in the form that matches.
 - [Citation style](../docs/citation_style.md) is where the forms are explained, if you want to know why a field is there.

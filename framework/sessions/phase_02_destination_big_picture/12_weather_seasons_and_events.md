@@ -50,7 +50,7 @@ You are done when every season on your chart has a few notes and you have marked
 
 ## Source Check
 
-Record your seasons source in your Source Log, with today's date. Remember: dates and prices change, so note that they must be re-checked close to travel.
+Your Destination Notes and your pack's seasons reference are both sources. Log each one in your Source Log, with its title and today's date. The trusted source you used outside the pack gets its own entry too. Remember: dates and prices change, so note that they must be re-checked close to travel.
 
 ## Finish and Quality Check
 
