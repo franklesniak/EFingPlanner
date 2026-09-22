@@ -526,10 +526,14 @@ session never writes one.
 | 47 Language and Etiquette | `47_language_etiquette.md` | `language_basics.md`, `etiquette_basics.md` | all Batch 3 |
 | 48 Packing List | **none** | `seasons_weather_events.md` | reference: built |
 | **49 Travel Readiness Checklist** | **none** | **a safety-and-emergency reference** | **new row -- see 3.5** |
-| child travel glossary, any session | `kid_glossary.md` | none | Batch 3 |
+| child travel glossary, any session | `kid_glossary.md` | none | **built** |
 
 **Fully neutral -- these must not reach for a destination fact at all:** 20, 22, 24, 25,
 26, 27, 28, 29, 31, 32, 35, 39, 41, 45, 46, 50, 51, 52.
+
+**The child glossary insert is the one slot in that table that already exists.** Batch 1
+built `kid_glossary.md`, so a session pointing at it is pointing at a real page today, and
+it is the only row where the pack is ahead of the session rather than behind it.
 
 **Per-insert schema already fixed:** `16_18_candidate_cities.md` supplies 2-4 first-trip
 candidate cities, each with a one-line draw and a few kid-magnet ideas **to research, not
