@@ -359,6 +359,22 @@ project:
   `Phase N, Session M of this phase.` is **not** the form. It names no phase, no path and
   no step; the structure gate would pass a session carrying it, because that gate checks
   only that a `You are here:` line exists.
+
+  **None of the thirty-four sessions in this batch is on the First Taste path**, so every
+  one of them writes `Not a First Taste step.` -- six built sessions already do.
+- **A checkpoint appends a bold marker to the step label**, before `Previous:`. Built
+  Checkpoint 1 is the model:
+
+  ```text
+  You are here: Phase 2 (Destination Big Picture), First Taste step 8 of 13. **This is Checkpoint 1 -- your first family decision.** Previous: ... | Next: ...
+  ```
+
+  **This batch authors five checkpoints -- 22, 27, 32, 46 and 52 -- and each carries its own
+  marker** in that position, after the step label and before `Previous:`. The form for this
+  batch is therefore `Not a First Taste step. **This is Checkpoint N -- <what it decides>.**`
+  Session 53 uses the same slot for `**This is your finish line.**`, so the slot is for
+  whatever makes the page different from an ordinary session -- **not a second status
+  label**, which already lives in the parent strip.
 - **The parent strip is written exactly `**For parents:**`**, directly under the
   navigation line and above `## Goal`, rendering as a short one-field-per-line list
   rather than a faux table. `AC-15-3`'s "child's action before parent-facing meta" is
