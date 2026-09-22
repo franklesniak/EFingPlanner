@@ -10,3 +10,6 @@
 # blocked on ticket 44 in the vendor tracker
 # tracked as project 12 on the internal board
 # the objection raised in review comment 4111993843
+# blocked on ticket ABC-123 in the vendor tracker
+# tracked as project PLAT-9 on the internal board
+# filed as issue ABC-123 in the vendor tracker

@@ -26,3 +26,7 @@ refuses	# reported at 4011993843 https://github.com/o/r?q=discussion_r4011993843
 refuses	# issue 27 https://example.com/x#issues/27
 resolves	# issue 27 https://github.com/o/r/issues/27?tab=comments
 resolves	# reported at 4011993843 https://github.com/o/r/pull/1?w=1#discussion_r4011993843
+resolves	# blocked on ticket ABC-123 https://tracker.example.com/browse/ABC-123
+resolves	# filed as issue ABC-123 https://jira.example.com/issues/ABC-123
+refuses	# blocked on ticket ABC-123, see https://tracker.example.com/browse/ABC-1234
+refuses	# tracked as project PLAT-9, see https://example.com/board/PLAT-90

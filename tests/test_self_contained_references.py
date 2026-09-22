@@ -220,6 +220,23 @@ PYTHON_ONLY_PATTERNS = frozenset(
 #: this module's own two-pass walk and are deliberately absent: they resolve in
 #: the repository, five such lines stand in the files in scope, and a detector
 #: that refused them would have been turned off on its first run.
+#: What may follow the noun in a tracker reference. A bare number is the shape
+#: GitHub writes. A key such as ``ABC-123`` is the shape every other tracker
+#: writes, and the rule names "Ticket, issue, or project IDs" without saying
+#: they must be decimal, so a digits-only grammar read the rule too narrowly
+#: and passed over every reference whose identifier carried letters.
+#:
+#: **The noun is required, and that is the whole safety margin.** Measured over
+#: the 235 scanned files, this grammar reports nothing, while the same key shape
+#: matched anywhere at all reports 383 occurrences across 57 spellings -- this
+#: repository's own ``REQ-001`` and ``ADR-0003`` identifiers, its ``AC-29``
+#: acceptance criteria, and ``UTF-8`` thirty-six times. A reference is a thing
+#: someone wrote a noun in front of; a hyphen between letters and digits is not.
+#:
+#: The key alternative is written first, because ``\d+`` would otherwise match
+#: nothing in ``ABC-123`` and leave the letters unread.
+TRACKER_IDENTIFIER = r"(?:[A-Za-z][A-Za-z0-9]*-\d+|\d+)"
+
 REVIEW_HISTORY_PATTERNS = (
     ("a numbered review round", re.compile(r"(?i)\brounds?\s+\d+\b")),
     (
@@ -238,18 +255,21 @@ REVIEW_HISTORY_PATTERNS = (
         "an unlinked pull request",
         re.compile(r"(?i)\b(?:PR|pull request)\s*#?\s*\d+\b"),
     ),
-    ("an unlinked issue", re.compile(r"(?i)\bissues?\s*#?\s*\d+\b")),
+    (
+        "an unlinked issue",
+        re.compile(r"(?i)\bissues?\s*#?\s*" + TRACKER_IDENTIFIER + r"\b"),
+    ),
     # The rule forbids "Ticket, issue, or project IDs that resolve only inside
     # a private or external tracker", and only one of those three words was
-    # here. Measured over the 230 scanned files: these report nothing today, so
+    # here. Measured over the 235 scanned files: these report nothing today, so
     # this closes a spelling rather than widening the net.
     (
         "an unlinked ticket",
-        re.compile(r"(?i)\btickets?\s*#?\s*\d+\b"),
+        re.compile(r"(?i)\btickets?\s*#?\s*" + TRACKER_IDENTIFIER + r"\b"),
     ),
     (
         "an unlinked project item",
-        re.compile(r"(?i)\bprojects?\s*#?\s*\d+\b"),
+        re.compile(r"(?i)\bprojects?\s*#?\s*" + TRACKER_IDENTIFIER + r"\b"),
     ),
     # Two spellings, because neither covers the other. The numeric window
     # catches a bare identifier written with no context at all, which is the
@@ -309,6 +329,10 @@ REVIEW_HISTORY_PATTERNS = (
 #: reference in a swept file.
 URL_PATTERN = re.compile(r"(?:https?://|www\.)\S+")
 DIGITS_PATTERN = re.compile(r"\d+")
+#: The key inside a tracker reference, pulled back out of the match so a URL
+#: can be asked whether it names the same thing. The shape is the one
+#: ``TRACKER_IDENTIFIER`` accepts.
+TRACKER_KEY_PATTERN = re.compile(r"[A-Za-z][A-Za-z0-9]*-\d+")
 
 #: A URL written in prose carries the sentence's punctuation on its end, and
 #: ``\S+`` takes all of it. Measured over every URL in every tracked Python
@@ -501,6 +525,10 @@ def url_resolves(label: str, matched: str, urls: list[str]) -> bool:
         return False
 
     digits = DIGITS_PATTERN.findall(matched)
+    # The key a non-GitHub tracker puts in its path, when the reference carries
+    # one. ``None`` when the reference carries a number and no key.
+    key_match = TRACKER_KEY_PATTERN.search(matched)
+    key = key_match.group(0).lower() if key_match else None
     # A hash is read in either case above, so it is compared in one case here.
     matched_fold = matched.lower()
     for url in urls:
@@ -520,6 +548,14 @@ def url_resolves(label: str, matched: str, urls: list[str]) -> bool:
                     index + 1
                 ] in digits:
                     return True
+            # A tracker that is not GitHub serves ``ABC-123`` as a path segment
+            # of its own, under whatever word it likes -- ``/browse/ABC-123``,
+            # ``/issues/ABC-123``. The segment must equal the key: a key that
+            # merely appears inside a longer segment is a different resource,
+            # and this is the same whole-segment rule the digit branch above
+            # applies to a number.
+            if key is not None and key in lowered:
+                return True
         elif label in ("a bare review-comment id", "a review comment named by number"):
             # The id is served as its own path segment under ``comments`` and
             # written into the fragment that scrolls to it, where the host puts
