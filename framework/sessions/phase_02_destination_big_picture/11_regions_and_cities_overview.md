@@ -44,6 +44,8 @@ Do this now:
 
 Researching a place does not mean choosing it. You're collecting options now. The route is still yours to build later, and the trade-offs that go with it are still yours to make.
 
+> **Carry-over tag:** You just used the move "get the shape of something big before you choose a part of it." Where else could you use it -- homework, a chore, a big school project?
+
 ## Workspace
 
 Use one page for your region notes and a rough map sketch. A traced map, a printed one, or your own wobbly drawing all work equally well.

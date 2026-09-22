@@ -63,6 +63,8 @@ Batch 1: the complete Phases 0-2 slice -- Session 00 through Checkpoint 1.
 
 ### Build decisions on record
 
+- **Three carry-over tags were placed, and the moves they claim are recorded here so a later batch does not claim them again.** The placement rule puts a tag on the session that *first* introduces a transferable move, and only there, so the claim has to be written down somewhere a later author reads. Session 06 claims finding your way around a long source by its contents page and index; Session 08 claims asking the same question in two places and seeing whether the answers agree; Session 11 claims getting the shape of something big before choosing a part of it. With Sessions 01 and 04, that is five tags across nineteen child sessions.
+
 - **Session 14 (Checkpoint 1) has no destination-notes slot.** The archived design record listed Session 14 among the Batch 1 insert slots, but the insert/reference contract routes none to it and names Session 14 as fully neutral. Checkpoint 1 uses the child's own season chart from Session 12. The contract is authoritative, and the author who finishes the pack inherits a table of 19 rows rather than 17.
 - **The merged family trip goals page is authoritative.** The archived tree listed the family trip goals page and the family input summary as separate files. The built repository merged them into one page in Batch 0, and that merged page stays the one canonical blank.
 - **Acceptance-criteria numbering:** the combined archive matrix numbering is canonical for this build. A quoted Lean or Full/OER companion ID must name its matrix. Recorded in the [build style and vocabulary](docs/build_style_and_vocab.md) guide.

@@ -55,6 +55,8 @@ Session 05's other two moves help here as well: lateral reading, and primary ver
 
 If your two sources flatly disagree, that's a finding, not a failure. Write both down, say which one you trust more and why, and mark the fact "check again."
 
+> **Carry-over tag:** You just used the move "ask the same question in two places and see whether the answers agree." Where else could you use it -- homework, a chore, a big school project?
+
 ## Workspace
 
 Use your website notes page for the two sources and the comparison, and your [Source Log](../../templates/source_log.md) for each source you keep.

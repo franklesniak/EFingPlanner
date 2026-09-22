@@ -50,6 +50,8 @@ You only need one source today. Comparing two sources on the same question is Se
 
 **Book citation form:** book title, author or publisher, page number, date I used it. The other five forms are on the [simple citation page](../../templates/simple_citation.md).
 
+> **Carry-over tag:** You just used the move "find your way around a long source by its contents page and its index, instead of reading all of it." Where else could you use it -- homework, a chore, a big school project?
+
 ## Workspace
 
 Use your book notes page for the three places and your notes, and your [Source Log](../../templates/source_log.md) for the source itself.
