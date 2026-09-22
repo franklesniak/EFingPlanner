@@ -10,7 +10,7 @@ You are here: Phase 1 (Research Skills). Not a First Taste step. Previous: [06 B
 - Planner skill: getting started
 - Estimated time: 20-30 minutes
 - Parent involvement: parent setup needed
-- Materials: the library's online catalog or a library visit, a pencil, the Source Log
+- Materials: the library's online catalog or a library visit, a pencil, your [Source Log](../../templates/source_log.md)
 
 ## Goal
 

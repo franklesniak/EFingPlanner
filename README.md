@@ -31,9 +31,10 @@ This is a set of worksheets a child fills in. The normal way to use it is to **p
 Quick-start:
 
 1. Read [GETTING_STARTED.md](GETTING_STARTED.md).
-2. Do the parent setup (Session 00).
-3. Print the first sessions.
-4. Start Session 01.
+2. Copy the [trip starter kit](framework/trip_starter/README.md) out of this repository. Your filled-in pages live in your copy, never here.
+3. Do the parent setup (Session 00).
+4. Print the first sessions.
+5. Start Session 01.
 5. Review at Checkpoint 1 -- then decide whether to keep going (the try-then-commit on-ramp: you do not have to commit to the whole project to start).
 6. Finish the First Taste path at Session 53 -- a real, usable mini-plan and a complete stopping point. (The [roadmap](framework/PROJECT_ROADMAP.md) already maps the fuller path toward the Core Finish Line, and says what has to happen before those later sessions are built.)
 

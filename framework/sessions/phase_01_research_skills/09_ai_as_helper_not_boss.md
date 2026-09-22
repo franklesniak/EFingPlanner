@@ -12,7 +12,7 @@ You are here: Phase 1 (Research Skills), **AI opt-in add-on** -- not a numbered 
 - Planner skill: checking sources
 - Estimated time: 20-30 minutes
 - Parent involvement: adult-operated (a grown-up runs the tool, on the grown-up's account, with the child present)
-- Materials: the adult's own AI tool, your Source Log, the [AI Notes form](../../templates/ai_notes.md)
+- Materials: the adult's own AI tool, your [Source Log](../../templates/source_log.md), the [AI Notes form](../../templates/ai_notes.md)
 
 *Every family already learned "what AI is and is not" in Session 05. This session is only for families who will actually use an AI tool.*
 
