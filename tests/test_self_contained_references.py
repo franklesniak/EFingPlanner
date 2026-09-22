@@ -270,6 +270,11 @@ TRACKER_IDENTIFIER = r"(?:[A-Za-z][A-Za-z0-9]*-\d+|\d+)"
 #: ``issue-tracker-1``. Measured, the hyphen form would add two matches in this
 #: repository, both a test's parameter id; that is a separate question from the
 #: one this pattern answers.
+#: A tracker noun sitting immediately in front of a hash, which means the
+#: reference belongs to that noun's pattern rather than to the bare one.
+TRACKER_NOUN_BEFORE = re.compile(
+    r"(?i)(?:PR|pull request|issues?|tickets?|projects?)\s*$"
+)
 TRACKER_SEPARATOR = r"\s*:?\s*#?\s*"
 
 REVIEW_HISTORY_PATTERNS = (
@@ -289,6 +294,27 @@ REVIEW_HISTORY_PATTERNS = (
     (
         "an unlinked pull request",
         re.compile(r"(?i)\b(?:PR|pull request)" + TRACKER_SEPARATOR + r"\d+\b"),
+    ),
+    # A hash and a number with no noun in front of it. Measured over the 235
+    # scanned files, this reports five occurrences in two files and nothing
+    # else, because of what is deliberately excluded in front of the hash:
+    #
+    #   ``&``  a character reference such as the one for an asterisk
+    #   ``/``  a cross-repository reference, which names its repository
+    #   ``(``  a Markdown link destination -- an anchor to a numbered heading
+    #          is renderer navigation, and without this exclusion the archived
+    #          design record alone reports 237 of them
+    #   a word character, so a suffix inside a longer token is not a match
+    #
+    # The patterns loop does not stop at the first match, so this spelling is
+    # guarded in ``references_in``: a hash with one of the nouns in front of it
+    # belongs to that noun's pattern and is skipped here, and the reference is
+    # reported once rather than twice. The guard is code rather than a
+    # lookbehind because the nouns vary in length and Python requires a
+    # fixed-width one.
+    (
+        "a bare issue reference",
+        re.compile(r"(?<![\w&#/(])#\d{1,6}\b"),
     ),
     (
         "an unlinked issue",
@@ -366,7 +392,12 @@ URL_PATTERN = re.compile(r"(?:https?://|www\.)\S+")
 #: A Markdown link reference definition: a bracketed label, a colon, and the
 #: destination. CommonMark allows up to three leading spaces.
 #: https://spec.commonmark.org/0.31.2/#link-reference-definitions
-LINK_DEFINITION = re.compile(r"^ {0,3}\[([^\]]+)\]:\s*<?(\S+?)>?\s*$")
+LINK_DEFINITION = re.compile(
+    r"^ {0,3}\[([^\]]+)\]:\s*"      # the label, then the colon
+    r"(?:<([^<>\n]*)>|(\S+))"             # the destination, plain or in angles
+    r"(?:[ \t]+(?:\"[^\"]*\"|'[^']*'|\([^)]*\)))?"   # an optional title
+    r"[ \t]*$"
+)
 #: A use of one. The full, collapsed and shortcut forms all carry a
 #: bracketed label, which is the piece that names a definition.
 LINK_REFERENCE_USE = re.compile(r"\[([^\]]+)\]")
@@ -570,6 +601,7 @@ def url_fragment_tokens(url: str) -> list[str]:
 NOUN_PATH_SEGMENTS = {
     "an unlinked pull request": ("issues", "issue", "pull", "pulls"),
     "an unlinked issue": ("issues", "issue", "pull", "pulls"),
+    "a bare issue reference": ("issues", "issue", "pull", "pulls"),
     "an unlinked ticket": ("issues", "issue", "pull", "pulls", "tickets", "ticket"),
     "an unlinked project item": ("projects", "project"),
 }
@@ -811,6 +843,12 @@ def normalize_link_label(label: str) -> str:
     return LABEL_WHITESPACE.sub(" ", label.strip()).casefold()
 
 
+#: A fenced code block's opening or closing line. Three or more backticks or
+#: tildes, indented by at most three spaces.
+#: https://spec.commonmark.org/0.31.2/#fenced-code-blocks
+CODE_FENCE = re.compile(r"^ {0,3}(`{3,}|~{3,})")
+
+
 def link_definitions(body: str) -> dict[str, str]:
     """Return every link reference definition in one document, by label.
 
@@ -821,10 +859,33 @@ def link_definitions(body: str) -> dict[str, str]:
     the destination, so the definition counts.
     """
     found: dict[str, str] = {}
+    # **A definition inside a fenced block is text, not a definition.** Reading
+    # one as real let a document silence a finding by showing the definition as
+    # an example rather than making it, which is a way of turning the check off
+    # from inside the file it checks. Only the fence is tracked, and only
+    # because that is the one construct that can hold a whole line and still
+    # render as literal text. The corpus holds no link reference definitions at
+    # all today, so this closes a route in rather than a live defect.
+    fence: str | None = None
     for line in body.split(chr(10)):
+        opener = CODE_FENCE.match(line)
+        if opener:
+            marker = opener.group(1)[0]
+            if fence is None:
+                fence = marker
+            elif marker == fence:
+                fence = None
+            continue
+        if fence is not None:
+            continue
         match = LINK_DEFINITION.match(line)
-        if match and URL_PATTERN.match(match.group(2)):
-            found.setdefault(normalize_link_label(match.group(1)), match.group(2))
+        if not match:
+            continue
+        # The destination is whichever of the two spellings matched: inside
+        # angle brackets, or bare.
+        destination = match.group(2) or match.group(3) or ""
+        if URL_PATTERN.match(destination):
+            found.setdefault(normalize_link_label(match.group(1)), destination)
     return found
 
 
@@ -867,6 +928,11 @@ def references_in(
                 continue
             for match in pattern.finditer(scanned):
                 matched = match.group(0)
+                if name == "a bare issue reference" and TRACKER_NOUN_BEFORE.search(
+                    scanned[: match.start()]
+                ):
+                    # Carried a noun, so the noun's own pattern reports it.
+                    continue
                 if budget.get(matched):
                     # Consumed once, so the next occurrence is reported.
                     budget[matched] -= 1
@@ -1995,3 +2061,30 @@ def test_a_reference_style_link_resolves_the_reference_it_labels(
         body.replace("[ticket-ref]: ", "[other-ref]: "), encoding="utf-8"
     )
     assert references_in(sample, tmp_path)
+
+    # A definition may carry a title, in any of the three forms CommonMark
+    # allows, and the destination may sit inside angle brackets. Requiring the
+    # line to end at the destination rejected every one of them, so a compliant
+    # citation was reported as unlinked.
+    for tail in ('"Issue details"', "'Issue details'", "(Issue details)"):
+        sample.write_text(body.rstrip(chr(10)) + " " + tail + chr(10), encoding="utf-8")
+        assert not references_in(sample, tmp_path), tail
+    sample.write_text(
+        body.replace(": " + url, ": <" + url + '> "Issue details"'), encoding="utf-8"
+    )
+    assert not references_in(sample, tmp_path)
+
+    # A definition shown inside a fenced block is an example of one, not one.
+    # Honouring it would let a document switch this check off from inside the
+    # file the check reads.
+    for fence in ("```text", "~~~"):
+        closing = fence[:3]
+        shown = (
+            "# T" + chr(10) * 2
+            + "See [" + reference + "][ticket-ref] here." + chr(10) * 2
+            + fence + chr(10)
+            + "[ticket-ref]: " + url + chr(10)
+            + closing + chr(10)
+        )
+        sample.write_text(shown, encoding="utf-8")
+        assert references_in(sample, tmp_path), fence
