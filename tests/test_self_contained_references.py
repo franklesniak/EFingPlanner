@@ -75,7 +75,7 @@ import re
 import subprocess
 from collections.abc import Iterable
 from pathlib import Path
-from urllib.parse import SplitResult, urlsplit
+from urllib.parse import SplitResult, unquote, urlsplit
 
 from tests._pytest_compat import pytest
 
@@ -712,7 +712,14 @@ def url_path_segments(url: str) -> list[str]:
     parts = split_url(url)
     if parts is None:
         return []
-    return [part for part in parts.path.split("/") if part]
+    # **Each segment is decoded before it is compared.** A destination may
+    # percent-encode characters that need no encoding, and the encoded form is
+    # the same resource: a path whose last segment spells a number in percent
+    # escapes points at that number's issue. Compared raw, a compliant link was
+    # reported as unlinked. Decoding is per segment rather than over the whole
+    # path, so an encoded slash cannot invent a segment boundary that the URL
+    # does not have.
+    return [unquote(part) for part in parts.path.split("/") if part]
 
 
 def url_fragment_tokens(url: str) -> list[str]:
@@ -2413,3 +2420,25 @@ def test_the_scan_data_directory_holds_only_what_is_validated() -> None:
         "excluded from the corpus, so it has to be one this suite loads and "
         "validates; anything else belongs elsewhere or belongs in the corpus."
     )
+
+
+def test_a_percent_encoded_segment_is_the_segment_it_encodes(tmp_path: Path) -> None:
+    """An encoded path names the same resource as the plain one.
+
+    A destination may percent-encode characters that need no encoding, and the
+    comparison was made against the raw text, so a compliant link was reported
+    as unlinked.
+    """
+    sample = tmp_path / "doc.md"
+    reference = "issue" + " " + "27"
+    encoded = "%32%37"          # the two digits, percent-encoded
+    for tail, resolves in ((encoded, True), ("27", True), ("28", False)):
+        sample.write_text(
+            "# T" + chr(10) * 2 + "See " + reference
+            + " https://github.com/o/r/issues/" + tail + chr(10),
+            encoding="utf-8",
+        )
+        assert bool(references_in(sample, tmp_path)) is not resolves, tail
+
+    # Decoding is per segment, so an encoded slash cannot invent a boundary.
+    assert url_path_segments("https://example.com/a%2Fb/c") == ["a/b", "c"]

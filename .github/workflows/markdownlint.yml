@@ -112,8 +112,17 @@ jobs:
       # the step outcome feeds the summary below -- but a maintainer would see
       # only the unit-test error and none of the actual readability numbers,
       # which are the part that says what to fix.
+      # **Skipped rather than failed when the test is not there.** A
+      # downstream adoption that keeps markdown and the workflows but drops
+      # the python module has this workflow and not these tests, and an
+      # unguarded step then failed pytest for a file the manifest removed on
+      # purpose. The compat module is named as well as the test, because the
+      # generic Python mapping takes it even where the test itself is kept.
       - name: Check child-facing reading level unit tests
         id: test-readability
+        if: >-
+          hashFiles('tests/test_check_readability.py') != '' &&
+          hashFiles('tests/_pytest_compat.py') != ''
         continue-on-error: true
         run: pytest tests/test_check_readability.py -v
 
@@ -140,6 +149,9 @@ jobs:
       # session violations, which are the part that says what to fix.
       - name: Check session structure unit tests
         id: test-structure
+        if: >-
+          hashFiles('tests/test_check_session_structure.py') != '' &&
+          hashFiles('tests/_pytest_compat.py') != ''
         continue-on-error: true
         run: pytest tests/test_check_session_structure.py -v
 
@@ -156,6 +168,9 @@ jobs:
       # looking like the others.
       - name: Check placeholder hook unit tests
         id: test-placeholders
+        if: >-
+          hashFiles('tests/test_check_prohibited_placeholders.py') != '' &&
+          hashFiles('tests/_pytest_compat.py') != ''
         continue-on-error: true
         run: pytest tests/test_check_prohibited_placeholders.py -v
 
@@ -166,6 +181,9 @@ jobs:
       # has, so it is the one that most needed wiring.
       - name: Check references resolve inside this repository
         id: test-self-contained
+        if: >-
+          hashFiles('tests/test_self_contained_references.py') != '' &&
+          hashFiles('tests/_pytest_compat.py') != ''
         continue-on-error: true
         run: pytest tests/test_self_contained_references.py -v
 
