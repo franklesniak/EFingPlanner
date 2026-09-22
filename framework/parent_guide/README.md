@@ -26,7 +26,7 @@ You do not need these at the start. Each one is written for the moment its task 
 
 | When | Read |
 | --- | --- |
-| Your child brings you a recommendation | [Review checkpoints](review_checkpoints.md), how to run all six and what to consider at each |
+| Your child brings you a recommendation | [Review checkpoints](review_checkpoints.md). On First Taste there is one, Checkpoint 1; on Core and Full there are six, and the page covers each |
 | Before the first budget session | [Money and budget guidance](money_budget_guidance.md), what the exercise produces and what it does not |
 | When you start looking at flights | [Flights from your home airport](flights_from_origin_guidance.md) |
 | When anything needs booking | [Booking guidance](booking_guidance.md), order, long leads, and what your child hands you |

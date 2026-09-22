@@ -77,6 +77,8 @@ Each has its own **what to consider** list. The review form checks whether the w
 
 **What they bring:** a must-do list, strong maybes, skips and save-for-futures, the biggest trade-offs.
 
+**Also yours to do here:** acknowledge the **one unconditional personal pick** your child made in Session 26. Session 27 opens with it, and it is a distinct action rather than part of the review -- they chose it knowing the three things that could block it, and this is where you say it stands.
+
 **What to consider:** variety; age appropriateness; cost; time realism; reservation needs; and whether it matches your family's pace.
 
 **Progress is real:** the family now knows the *top experiences*.

@@ -26,7 +26,7 @@ A plan that ignores a constraint just breaks later.
 Three steps, every time:
 
 1. **Name it.** Say what the limit actually is.
-2. **Write it down where that kind of thing lives.** A settled trip-wide limit, like the trip length, is already on your Trip-Basics card. Something you are unsure about that belongs to one place you are researching goes in that card's planning-assumption block. And an unsure trip-wide one -- a budget or a date nobody has confirmed -- goes in your **question parking lot**, because there is no card for it and it is a question for a grown-up.
+2. **Write it down where that kind of thing lives.** Some settled limits are already written down for you. Your **Trip-Basics card** holds the airport, the time difference, the maximum trip length and who is coming. The **current travel assumptions** page, which the grown-ups own, holds the budget band, the rough season, the trip shape, and things like how far anyone can comfortably walk. Look there before you write anything down twice. Something you are unsure about that belongs to one place you are researching goes in that card's planning-assumption block. And an unsure trip-wide one -- a budget or a date nobody has confirmed -- goes in your **question parking lot**, because there is no card for it and it is a question for a grown-up.
 3. **Check your recommendation against it.** Does this still fit?
 
 That third step is the budget-band question your [Trade-Off Report](../templates/tradeoff_report.md) asks. Same move.

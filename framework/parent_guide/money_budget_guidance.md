@@ -18,7 +18,9 @@ Your child's controllable slices are hotels, food, activities, local transit and
 
 **Their band check compares matching units, not the subtotal.** The band you give them is a rate or a tier: per person per day, per day for the family, or a hotel tier. A subtotal is a whole-trip amount. Comparing the two would fail a perfectly good estimate on a unit mismatch, so their worksheet asks them to pull out the *matching piece* of their estimate and check that against the band. Give them the band in one of those three forms and the check works; give them a whole-trip number and it cannot.
 
-**Your** sanity check is their subtotal plus your per-person fare multiplied by the number of travelers. The subtotal is already a whole-party amount and the fare is not, so adding them raw understates the result for any family larger than one.
+**Your** sanity check needs a number, and the first pass may not produce one -- Session 33 lets a child answer in **high / medium / low**, which is a complete answer and not a gap. If that is what you have, read the check qualitatively: does the tier they landed on sound like the band you set? Ask for a rough range only if you actually need the arithmetic.
+
+**When you do have numbers:** your check is their subtotal plus your per-person fare multiplied by the number of travelers. The subtotal is already a whole-party amount and the fare is not, so adding them raw understates the result for any family larger than one.
 
 **That figure is a floor, and it is worth knowing what it leaves out.** At the first budget session it leaves out three of the five slices -- activities, local transit and souvenirs -- on top of everything below, so it is a floor under a floor. Once the Core path has added those, the subtotal covers all five.
 

@@ -601,9 +601,9 @@ scope lists carry a place-suffixed variant; that name is not the contract's, and
 author following it would create a file no session routes to.
 
 **And the card instruction changes shape.** A built page must never print an emergency
-number, not even as an example. Session 49 tells the child to make the card and says the
-number is written **by an adult, after checking an official page, with the date they
-checked**. That is the same verify-framing the rest of the curriculum uses, and it is the
+number, not even as an example. Session 49 tells the child to make the card. **An adult
+checks each number on a current official page and writes the date checked; the child
+then writes the verified number on their own card.** That is the same verify-framing the rest of the curriculum uses, and it is the
 only form that keeps the page both printable and true.
 
 **Addition 2 -- the contract routes parent-facing files for the first time.**
@@ -2144,10 +2144,12 @@ decision meeting** -- that is Session 52.
   of a blank page.
 - **Workspace:** a five-row `Prompt | Your answer` table for the prepare-items, plus the
   approval-status row and the optional one-line reflection.
-- **Artifact:** your itinerary review packet.
-- **Stop Point:** you are done when your review packet has all five parts filled in and an
-  adult has written down which of the four choices they picked. Then write that decision in
-  your decision log. That's the checkpoint.
+- **Artifact:** your itinerary review packet, **which is the draft itself plus the five
+  prepare-items.** The adult cannot judge pacing, transit, meals or rest from the five
+  answers alone, so the draft and the day cards behind it go in front of them.
+- **Stop Point:** you are done when your draft is in front of an adult, your review packet
+  has all five parts filled in, and an adult has written down which of the four choices
+  they picked. Then write that decision in your decision log. That's the checkpoint.
 
 **Do not:** name a city; frame stopping here as second best; **add a badge, certificate,
 level, or any gamified marker to the finish line.**
@@ -3380,8 +3382,8 @@ recommendation shape.
 
 | File | Checkpoint | What it must prompt for |
 | --- | --- | --- |
-| `season_recommendation.md` | 1, Session 14 | season; backup season; season to be careful about; how it fits school and work schedules; weather; crowds; cost; major holidays |
-| `city_shortlist.md` | 2, Session 22 | the shortlist; day trips; places skipped and why; travel realism; how it fits the maximum trip length **from the Trip-Basics card**; budget implications |
+| `season_recommendation.md` | 1, Session 14 | season; backup season; season to be careful about; possible months; reasons; sources; **the child's questions for the adults, including whether it fits school and work** -- the shell prompts for the question, because weighing the calendars is the adult's job |
+| `city_shortlist.md` | 2, Session 22 | the shortlist; day trips; places skipped and why; travel realism; how it fits the maximum trip length **from the Trip-Basics card**; budget implications; **and whose "one thing you'd love" from the Session 03 poll each choice makes room for** |
 | `top_experiences.md` | 3, Session 27 | must-do list; strong maybes; skip or save-for-future; biggest trade-offs; the budget-band check |
 | `route_and_trip_length.md` | 4, Session 32 | total days; nights per city; transit days; hotel moves; a shorter backup version; what adults confirm about the trip shape |
 | `itinerary_review.md` | 5, Session 46 | day-by-day plan; pacing; transit; meals; rest; budget; booking watchlist. **Carries the Core Finish Line sentence from section 5.1, word for word** |
