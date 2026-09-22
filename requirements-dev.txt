@@ -1,0 +1,13 @@
+# Python packages the repository's own checks need when you run them
+# locally. This repository is not a Python package -- see the note at the
+# top of pyproject.toml -- so these are listed here rather than as
+# packaging metadata.
+#
+# Install with:  python -m pip install -r requirements-dev.txt
+#
+# Kept in step with the install line in
+# .github/workflows/markdownlint.yml, which is what CI runs.
+
+pytest
+jsonschema>=4.18.0
+PyYAML>=6.0.3

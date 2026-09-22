@@ -846,7 +846,7 @@ def normalize_link_label(label: str) -> str:
 #: A fenced code block's opening or closing line. Three or more backticks or
 #: tildes, indented by at most three spaces.
 #: https://spec.commonmark.org/0.31.2/#fenced-code-blocks
-CODE_FENCE = re.compile(r"^ {0,3}(`{3,}|~{3,})")
+CODE_FENCE = re.compile(r"^ {0,3}(`{3,}|~{3,})(.*)$")
 
 
 def link_definitions(body: str) -> dict[str, str]:
@@ -866,14 +866,27 @@ def link_definitions(body: str) -> dict[str, str]:
     # because that is the one construct that can hold a whole line and still
     # render as literal text. The corpus holds no link reference definitions at
     # all today, so this closes a route in rather than a live defect.
-    fence: str | None = None
+    # ``fence`` holds the run that opened the block: its character and its
+    # length. Both are needed, because a closing fence must use the same
+    # character **and be at least as long** as the one that opened it, and must
+    # carry nothing after it but whitespace. Comparing only the character let a
+    # four-character opener be closed by a three-character line, so the text
+    # after it was read as document rather than as code -- the same bypass this
+    # tracker was added to shut, one level down.
+    # https://spec.commonmark.org/0.31.2/#fenced-code-blocks
+    fence: tuple[str, int] | None = None
     for line in body.split(chr(10)):
-        opener = CODE_FENCE.match(line)
-        if opener:
-            marker = opener.group(1)[0]
+        marker = CODE_FENCE.match(line)
+        if marker:
+            run, tail = marker.group(1), marker.group(2)
             if fence is None:
-                fence = marker
-            elif marker == fence:
+                # An opening fence may carry an info string, so the tail is
+                # only rejected for a backtick fence, where CommonMark forbids
+                # a backtick in it.
+                if run[0] == "`" and "`" in tail:
+                    continue
+                fence = (run[0], len(run))
+            elif run[0] == fence[0] and len(run) >= fence[1] and not tail.strip():
                 fence = None
             continue
         if fence is not None:
@@ -2077,6 +2090,22 @@ def test_a_reference_style_link_resolves_the_reference_it_labels(
     # A definition shown inside a fenced block is an example of one, not one.
     # Honouring it would let a document switch this check off from inside the
     # file the check reads.
+    # A closing fence must use the same character, be at least as long as the
+    # opener, and carry nothing after it but whitespace. Comparing only the
+    # character let a four-character opener be closed by a three-character
+    # line, which reopened the bypass one level down.
+    for opener, closer in (("````", "```"), ("```", "``` not a close")):
+        shown = (
+            "# T" + chr(10) * 2
+            + "See [" + reference + "][ticket-ref] here." + chr(10) * 2
+            + opener + chr(10)
+            + closer + chr(10)
+            + "[ticket-ref]: " + url + chr(10)
+            + opener + chr(10)
+        )
+        sample.write_text(shown, encoding="utf-8")
+        assert references_in(sample, tmp_path), opener + " / " + closer
+
     for fence in ("```text", "~~~"):
         closing = fence[:3]
         shown = (

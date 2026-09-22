@@ -30,6 +30,14 @@ Git hooks are managed by pre-commit.
 python --version
 ```
 
+The repository's own checks -- the readability gate, the session-structure gate, and the test suite -- need a few Python packages. This repository is not a Python package, so they are listed in `requirements-dev.txt` rather than as packaging metadata:
+
+```bash
+python -m pip install -r requirements-dev.txt
+```
+
+Without them, `python .github/scripts/check-readability.py` stops at import and tells you this command.
+
 
 ### 4. Install Pre-commit
 

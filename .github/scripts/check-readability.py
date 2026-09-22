@@ -96,7 +96,20 @@ from dataclasses import dataclass, field, replace
 from html.entities import html5
 from pathlib import Path
 
-import yaml
+try:
+    import yaml
+except ModuleNotFoundError as error:  # pragma: no cover - environment
+    # The documented local command is
+    # ``python .github/scripts/check-readability.py``, and on a fresh
+    # checkout it failed at import with a bare ModuleNotFoundError: CI
+    # installs PyYAML in a step of its own, and nothing told a
+    # contributor to. A tool that cannot run should say what to do about
+    # it rather than name a module and stop.
+    raise SystemExit(
+        'check-readability.py needs PyYAML, which is not installed.\n'
+        "Install the checks' Python dependencies with:\n"
+        '    python -m pip install -r requirements-dev.txt\n'
+    ) from error
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 
