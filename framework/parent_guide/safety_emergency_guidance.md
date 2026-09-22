@@ -37,7 +37,9 @@ It's a carry-in-pocket safety card, not trip data written down anywhere else. Th
 ## Their three-step plan, so you can rehearse it
 
 1. **Do what today's rule says.** One rule, named that morning.
-2. **Find a uniformed helper** — a transit worker, a shop or security worker with a nametag, a staffed shop that's bright and open late, or the local equivalent of a neighbourhood police post. An official post or a uniformed worker is the primary route, because a shop's help is voluntary.
+2. **Look for a uniformed helper you can see from where you are.** A transit worker, a shop or security worker with a nametag, a staffed shop that is bright and open late, or the local equivalent of a neighbourhood police post. An official post or a uniformed worker is the primary route, because a shop's help is voluntary.
+
+   **This step never overrides step 1.** If a helper is close enough to reach without losing sight of the spot, your child asks them. If not, they stay put and keep looking, and say so to anyone who asks. Going to *find* someone is the movement step 1 exists to prevent, and it takes them away from where you are searching.
 3. **Know the emergency numbers**, and know that an adult, a shop worker, or an official post can call them.
 
 Carry the numbers verify-framed. The destination-specific numbers, the local terms, and any local hazard notes are in your destination pack.

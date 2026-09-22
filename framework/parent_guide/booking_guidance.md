@@ -2,7 +2,7 @@
 
 # Booking Guidance
 
-What gets booked, in what order, and how your child's work feeds it — without pulling them into a booking workflow at any point.
+What gets booked, in what order, and how your child's work feeds it, without pulling them into a booking workflow at any point.
 
 ## The boundary
 
@@ -12,7 +12,7 @@ Nothing in this curriculum ever tells a child to book, reserve, buy, create an a
 
 ## What your child hands you
 
-- **The reservation watchlist** — with its date-gated flag, the cancellation note, the source, and a column for your status on each item
+- **The reservation watchlist**, with its date-gated flag, the cancellation note, the source, and a column for your status on each item
 - The hotel comparison cards
 - The neighborhood comparison
 - The day cards
@@ -30,7 +30,7 @@ This is handled two ways: you set the **rough trip shape** early, so their work 
 
 - **Passports are the longest lead.** Start them first.
 - **Peak-season lodging sells out months ahead.**
-- **Date-gated tickets open on their own schedule** — your child's watchlist flags which.
+- **Date-gated tickets open on their own schedule.** Your child's watchlist flags which.
 - **Flight prices climb** as dates approach.
 - **Book refundable where you can.** It's the cheapest insurance against a plan that's still moving.
 
@@ -46,7 +46,7 @@ Your child writes a cancellation note on a card. **That note is a flag, not a fa
 
 ## After you book, tell them what changed and why
 
-You will change parts of the plan — prices, availability, safety, schedules, booking rules. That's normal and expected.
+You will change parts of the plan: prices, availability, safety, schedules, booking rules. That's normal and expected.
 
 **Never silently.** An owned pick is reshaped only with a stated reason.
 

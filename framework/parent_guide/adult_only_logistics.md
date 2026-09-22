@@ -2,7 +2,9 @@
 
 # Adult-Only Logistics
 
-The booking and logistics tasks on this page are yours. Your child never books, pays, or handles personal data.
+The booking and logistics tasks on this page are yours. Your child never books, never pays, and never handles booking, account, passport or payment data.
+
+**One deliberate exception, and it matters:** your child carries an "if I get separated" card with where you are staying, its address and phone number, and a parent's phone number. That is the minimum needed to reunite, it is a carry-in-pocket card rather than data written anywhere else, and it is theirs to carry. Do not strip it.
 
 Two things here are theirs, and they matter: your child **flags** accessibility trouble spots for you, and your child **makes and learns** the separation card and its three-step plan. Don't skim past those. They're the parts a child can actually do, and the safety one is the reason the whole split works.
 

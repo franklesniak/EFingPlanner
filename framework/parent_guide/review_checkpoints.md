@@ -2,13 +2,15 @@
 
 # Review Checkpoints
 
-Six times in this project, your child stops and brings you a recommendation. That's a checkpoint. You look at the work, ask a few questions, and decide.
+Your child stops at certain points and brings you a recommendation. That's a checkpoint. You look at the work, ask a few questions, and decide.
+
+**How many you will meet depends on the path.** On **First Taste**, Checkpoint 1 is the single milestone and the path finishes after it -- if that is where your family is, the one section below is the only one you need. On the **Core and Full** paths there are six, and the rest of this page covers them all.
 
 The blank form is the [parent review form](../templates/parent_review_form.md). This page is the how and the why; the form is what you fill in.
 
 ## Five of the six are low-ceremony
 
-Checkpoints 1 through 5 don't need everyone in a room. One accountable adult can review and relay the decision. That is the intended shape, not a shortcut.
+Checkpoints 1 through 5 don't need everyone in a room. One accountable adult can review and relay the decision. That is the intended shape, and not a shortcut.
 
 Any of these works:
 
@@ -17,7 +19,7 @@ Any of these works:
 - A short text thread
 - One adult deciding and telling the rest
 
-**Lightweight means low-ceremony and still real.** An adult genuinely looks at the work and genuinely decides. It never means skipping it — a checkpoint that doesn't happen removes the one thing that makes this project real to your child.
+**Lightweight means low-ceremony, and the review still happens.** An adult reads the work and makes a decision. It never means skipping it: a checkpoint that does not happen removes the one thing that shows your child their work counts.
 
 **Only Checkpoint 6 is the family decision meeting** — the gathering, with your child presenting. Save that framing for the last one, so it lands.
 
@@ -46,13 +48,16 @@ A signature is optional. Initials or a "got it" is plenty.
 
 Every checkpoint decision also goes in your child's decision log. The checkpoints and the log are meant to tell the same story, and they stop doing that the moment one entry is skipped.
 
+<!-- density-exempt: real -- the six **Progress is real** labels are the spec's required per-checkpoint acknowledgment, one per checkpoint, and are a Named concept rather than emphasis -->
 ## The six, one at a time
 
-Each has its own **what to consider** list. The review form checks whether the work is good enough in general; these are the specific things *this* checkpoint exists to catch, and a decision made without them is a decision made on the form alone.
+Each has its own **what to consider** list. The review form checks whether the work is good enough in general; these are the specific things *this* checkpoint exists to catch. A decision made without them is a decision made on the form alone.
 
 ### Checkpoint 1 — Season Recommendation (Session 14)
 
-**What they bring:** a season, a backup season, a season to be careful about, and how each fits school and work schedules.
+**What they bring:** a season, a backup season, a season to be careful about, possible months, their reasons, their sources, and their questions for you -- which often include whether it fits school and work.
+
+**Weighing the calendars is yours, not theirs.** Session 14 has them ask the question; you answer it.
 
 **What to consider:** weather; crowds; cost; major holidays; and how the season fits school and work schedules.
 
@@ -80,9 +85,9 @@ Each has its own **what to consider** list. The review form checks whether the w
 
 **What they bring:** total days, overnight cities, nights in each, travel days, a shorter backup version.
 
-**Also yours to do here:** confirm or adjust the arrival and departure cities against real flight options. If they change, your child's route flexes — they move a block rather than starting over.
+**Also yours to do here:** confirm or adjust the arrival and departure cities against current flight options. If they change, your child's route flexes — they move a block rather than starting over.
 
-**What to consider:** flights; the arrival and departure cities; how many hotel moves it involves; whether the transit is realistic; how it fits your maximum trip length; budget implications; and the family schedule.
+**What to consider:** flights; the arrival and departure cities; how many hotel moves it involves; whether the transit is workable; how it fits your maximum trip length; budget implications; and the family schedule.
 
 **Progress is real:** the family now knows *when, where, and how long*. The trip is becoming concrete.
 
@@ -92,7 +97,7 @@ Each has its own **what to consider** list. The review form checks whether the w
 
 **What to consider:** pacing; transit time; meals; rest; booking needs; budget; safety; and practicality.
 
-**Progress is real:** the family has a usable *day-by-day plan*. This is the point where stopping is a genuine finish, not a shortfall.
+**Progress is real:** the family has a usable *day-by-day plan*. Stopping here is a finish, not a shortfall.
 
 ### Checkpoint 6 — Family Decision Meeting (Session 52)
 

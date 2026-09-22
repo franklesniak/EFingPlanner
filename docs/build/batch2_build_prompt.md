@@ -2324,10 +2324,13 @@ wording.
   **specific meeting spot** for that outing instead, one visible from where they will be,
   and names it that same morning. One rule per outing, either way. **A panicking child
   executes one rehearsed rule; the child does not choose between two.**
-- **Find a uniformed helper** -- a station attendant, or a shop or security worker with a
-  nametag. The pack names two more kinds of help where you're going. **The police post or a
-  uniformed worker is the main route**; a shop is an extra option, but a store's help is
-  voluntary, so head for the police post if one is near.
+- **Look for a uniformed helper you can see from where you are** -- a station
+  attendant, or a shop or security worker with a nametag. The pack names two more kinds
+  of help. **The police post or a uniformed worker is the main route**; a shop is an
+  extra option, because a store's help is voluntary. **This step never overrides the
+  first one:** if a helper is close enough to reach without losing sight of the spot,
+  ask them; otherwise stay put and keep looking. Going to *find* someone is the
+  movement the first rule exists to prevent.
 - **Know the emergency numbers.** The pack has them. **Write them on your card only after
   an adult checks them on a current official page, and write the date you checked.** An
   adult, a shop worker, or the police post can call them for you.
