@@ -653,8 +653,22 @@ Finish Line entry must match it word for word.** (`D-item-2`.)
 
 **No other session in this batch may carry that sentence or any paraphrase of it.**
 Checkpoints 2, 3, 4 and 6 are real review gates, but wording any of them as a finish line
-would put a second, competing finish line in front of the family -- and Checkpoint 6's
-job is the opposite: it is where the family decides, not where the child stops.
+would put a second, competing finish line in front of the family -- and Checkpoint 6's job
+is the opposite: it is where the family decides, not where the child stops.
+
+**Exactly four surfaces carry it, and they must be identical**, because a family meets them
+at four different moments and each has to stand alone:
+
+| Surface | Where |
+| --- | --- |
+| The session | Session 46 |
+| The checkpoint shell | `trip_starter/recommendations/itinerary_review.md` |
+| The definition of done | `framework/FINAL_DELIVERABLE.md` |
+| The reading order | `framework/PROJECT_ROADMAP.md`, in the Core Finish Line index |
+
+**Copy it from one place into the other three rather than retyping it.** Four hand-typed
+copies of a mandated sentence is four chances to paraphrase one of them, and `AC-8.6-1`
+gates the wording.
 
 ### 5.2 The checkpoint contract — Sessions 22, 27, 32, 46, 52
 
@@ -3498,7 +3512,7 @@ from this table. (`D-item-7`.)
 | 48 | organizing information | 20-30 minutes | parent review after session | Core |
 | 49 | self-control (knowing when to stop) | 20-30 minutes | co-working recommended | Core |
 | 50 | organizing information | several sittings; stop whenever you want | 5-minute check-in | Core |
-| 51 | making a recommendation is not in the vocabulary -- use **organizing information** | 20-30 minutes | 5-minute check-in | Core |
+| 51 | organizing information | 20-30 minutes | 5-minute check-in | Core |
 | 52 | making trade-offs | 20-30 minutes for you, plus the family decision meeting | parent review after session | Core -- **Checkpoint 6** |
 
 **Two notes on that table.** Sessions 18, 36, 37 and 47 render as `Recommended`, with their
