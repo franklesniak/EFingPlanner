@@ -5,9 +5,18 @@
 #
 # Install with:  python -m pip install -r requirements-dev.txt
 #
-# Kept in step with the install line in
-# .github/workflows/markdownlint.yml, which is what CI runs.
+# The first three match the install line in
+# .github/workflows/markdownlint.yml, which is what CI runs. The fourth
+# is a superset of it: CI runs the schema checks through their
+# pre-commit hook, which brings its own copy, and a local pytest run
+# has no such hook to borrow from.
 
 pytest
 jsonschema>=4.18.0
+# The schema example tests shell out to the ``check-jsonschema``
+# command, which is a different package from the ``jsonschema``
+# library above. Without it those tests skip, and a contributor who
+# followed the documented setup would read a green run that had not
+# checked the schemas at all.
+check-jsonschema
 PyYAML>=6.0.3

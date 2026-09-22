@@ -441,9 +441,15 @@ LINK_DEFINITION = re.compile(
     r"(?:[ \t]+(?:\"[^\"]*\"|'[^']*'|\([^)]*\)))?"   # an optional title
     r"[ \t]*$"
 )
-#: A use of one. The full, collapsed and shortcut forms all carry a
-#: bracketed label, which is the piece that names a definition.
-LINK_REFERENCE_USE = re.compile(r"\[([^\]]+)\]")
+#: A use of one, in the three forms CommonMark defines: full
+#: ``[text][label]``, collapsed ``[label][]``, and shortcut ``[label]``.
+#: **An inline link is deliberately not one of them.** Searching for any
+#: bracketed run let an inline link -- a bracketed reference with its own
+#: destination in parentheses -- be resolved by a same-named definition
+#: elsewhere in the document, which the renderer
+#: never consults: an inline destination wins, and the definition is unused.
+#: https://spec.commonmark.org/0.31.2/#reference-link
+LINK_REFERENCE_USE = re.compile(r"\[([^\]]*)\](?:\[([^\]]*)\])?(?!\()")
 #: Whitespace inside a label, which CommonMark folds to a single space.
 LABEL_WHITESPACE = re.compile(r"\s+")
 DIGITS_PATTERN = re.compile(r"\d+")
@@ -592,7 +598,19 @@ def trim_url(url: str) -> str:
             if entity:
                 url = url[: entity.start()]
                 continue
-        cut = url.find("<")
+        # An autolink is delimited by angle brackets and its URL may hold
+        # neither of them, so the URL ends at whichever comes first. Cutting
+        # only at the opening one left the greedy match carrying the prose
+        # written against a closing bracket -- and that prose was then
+        # blanked out of the line along with the URL, taking a reference
+        # with it. Measured: two URLs in this repository hold a closing
+        # bracket after trimming, both of them test data, and cutting
+        # improves each.
+        # https://spec.commonmark.org/0.31.2/#autolinks
+        cut = min(
+            (position for position in (url.find("<"), url.find(">")) if position != -1),
+            default=-1,
+        )
         if cut != -1:
             url = url[:cut]
             continue
@@ -651,6 +669,11 @@ COMMENT_FRAGMENT_PREFIXES = (
 )
 
 
+#: A scheme-less ``www.`` candidate that names something after the prefix.
+#: ``www.`` alone, or followed straight by a slash, names no host.
+WWW_HOST = re.compile(r"(?i)^www\.[^/.\s]+")
+
+
 def split_url(url: str) -> SplitResult | None:
     """Return ``urlsplit(url)``, or ``None`` when the URL cannot be parsed.
 
@@ -687,6 +710,13 @@ def url_has_host(url: str) -> bool:
         return False
     if parts.scheme in ("http", "https"):
         return bool(parts.hostname)
+    if not parts.scheme and url[:4].lower() == "www.":
+        # ``URL_PATTERN`` accepts a scheme-less ``www.`` form, and
+        # ``urlsplit`` reads the whole thing as a path, so there is no
+        # authority for the test above to look at. Asked for a host,
+        # ``www./issues/27`` offered none and the path was then compared as
+        # though it were a real destination.
+        return bool(WWW_HOST.match(url))
     return True
 
 
@@ -1091,15 +1121,35 @@ def references_in(
     for number, line in enumerate(body.split("\n"), start=1):
         # Found with the greedy pattern so the whole run is blanked, then
         # trimmed so what is matched against is the URL itself.
-        urls = [trim_url(found) for found in URL_PATTERN.findall(line)]
+        # **Blank the trimmed URL, not the greedy match.** ``URL_PATTERN``
+        # runs to the next space, so an autolink with prose against its
+        # closing bracket matched the word after it too, and blanking the
+        # whole match took that word out of the line -- so the reference the
+        # word belonged to went unread. What ``trim_url`` gives back is
+        # prose and stays.
+        urls = []
+        pieces = []
+        cursor = 0
+        for spotted in URL_PATTERN.finditer(line):
+            whole = spotted.group(0)
+            trimmed = trim_url(whole)
+            urls.append(trimmed)
+            pieces.append(line[cursor : spotted.start()])
+            pieces.append(" ")
+            pieces.append(whole[len(trimmed) :])
+            cursor = spotted.end()
+        pieces.append(line[cursor:])
         # A reference-style link names its destination elsewhere in the
         # document, so a label used on this line brings its definition along.
         if definitions:
-            for label in LINK_REFERENCE_USE.findall(line):
+            for first, second in LINK_REFERENCE_USE.findall(line):
+                # ``[text][label]`` names its definition second; the
+                # collapsed and shortcut forms name it first.
+                label = second or first
                 destination = definitions.get(normalize_link_label(label))
                 if destination:
                     urls.append(trim_url(destination))
-        scanned = URL_PATTERN.sub(" ", line)
+        scanned = "".join(pieces)
         for name, pattern in REVIEW_HISTORY_PATTERNS:
             # Excused only in the documents that define the review protocol,
             # never by file type. See ``ROUND_CONCEPT_DOCUMENTS``.
@@ -2445,7 +2495,12 @@ def test_a_uuid_segment_is_not_a_commit_hash(tmp_path: Path) -> None:
     assert not references_in(sample, tmp_path)
 
     # Standing alone, the same run is still a hash and is still reported.
-    sample.write_text("broken at " + "7e4463f" + " only" + chr(10), encoding="utf-8")
+    # Split below the seven-character floor, for the same reason the UUID
+    # above is: written whole, this token is a bare hash in this file, and
+    # in a checkout where it names no reachable commit the repository-wide
+    # scan reports it and fails before this test can run at all.
+    lone = "7e44" + "63f"
+    sample.write_text("broken at " + lone + " only" + chr(10), encoding="utf-8")
     assert references_in(sample, tmp_path)
 
 
@@ -2515,3 +2570,84 @@ def test_a_definition_inside_a_raw_html_block_is_not_a_definition(
     # And a definition that is one still resolves.
     sample.write_text(head + "[ticket-ref]: " + url + chr(10), encoding="utf-8")
     assert not references_in(sample, tmp_path)
+
+
+def test_a_www_candidate_must_name_a_host(tmp_path: Path) -> None:
+    """The scheme-less form has no authority for the host test to look at.
+
+    ``urlsplit`` reads the whole of it as a path, so a candidate naming nothing
+    fell through to the branch that assumes an unknown scheme is somebody
+    else's business -- and its path was then compared as though it were a real
+    destination.
+    """
+    sample = tmp_path / "doc.md"
+    reference = "issue" + " " + "27"
+    for candidate, resolves in (
+        ("www./issues/27", False),
+        ("www.github.com/o/r/issues/27", True),
+    ):
+        sample.write_text(
+            "# T" + chr(10) * 2 + "See " + reference + " " + candidate + chr(10),
+            encoding="utf-8",
+        )
+        reported = bool(references_in(sample, tmp_path))
+        assert reported is not resolves, candidate
+
+
+def test_only_a_reference_style_use_may_claim_a_definition(tmp_path: Path) -> None:
+    """An inline destination wins, and the renderer never reads the definition.
+
+    Searching for any bracketed run let a link that carries its own destination
+    be resolved by a same-named definition elsewhere in the document, so a
+    reference pointing somewhere useless was excused by one pointing somewhere
+    real.
+    """
+    sample = tmp_path / "doc.md"
+    reference = "issue" + " " + "27"
+    good = "https://github.com/o/r/issues/27"
+    definition = "[" + reference + "]: " + good + chr(10)
+    head = "# T" + chr(10) * 2
+
+    # Inline link to somewhere else: the definition must not rescue it.
+    sample.write_text(
+        head + "See [" + reference + "](https://example.com/home) here."
+        + chr(10) * 2 + definition,
+        encoding="utf-8",
+    )
+    assert references_in(sample, tmp_path)
+
+    # The three reference forms CommonMark defines all still resolve.
+    for use in ("[" + reference + "][ref]", "[" + reference + "][]",
+                "[" + reference + "]"):
+        body = head + "See " + use + " here." + chr(10) * 2
+        body += ("[ref]: " + good + chr(10)) if "[ref]" in use else definition
+        sample.write_text(body, encoding="utf-8")
+        assert not references_in(sample, tmp_path), use
+
+
+def test_blanking_a_url_leaves_the_prose_written_against_it(tmp_path: Path) -> None:
+    """The URL pattern runs to the next space, and an autolink ends sooner.
+
+    With prose against an autolink's closing bracket, the greedy match carried
+    the word after it, blanking took that word out of the line, and the
+    reference the word belonged to went unread.
+    """
+    sample = tmp_path / "doc.md"
+    reference = "issue" + " " + "27"
+    sample.write_text(
+        "# T" + chr(10) * 2 + "<https://example.com>" + reference + chr(10),
+        encoding="utf-8",
+    )
+    assert references_in(sample, tmp_path)
+
+    # An autolink that does name the reference still resolves it.
+    sample.write_text(
+        "# T" + chr(10) * 2 + "See " + reference
+        + " <https://github.com/o/r/issues/27>" + chr(10),
+        encoding="utf-8",
+    )
+    assert not references_in(sample, tmp_path)
+
+    # And a URL ends at whichever angle bracket comes first.
+    assert trim_url("https://example.com>word") == "https://example.com"
+    assert trim_url("https://example.com<word") == "https://example.com"

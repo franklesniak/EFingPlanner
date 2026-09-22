@@ -38,6 +38,8 @@ python -m pip install -r requirements-dev.txt
 
 Without them, `python .github/scripts/check-readability.py` stops at import and tells you this command.
 
+The list includes `check-jsonschema`, which the schema example tests run as a command and which is a different package from the `jsonschema` library beside it. Without it those tests skip rather than fail, so a run that checked no schema at all still reads green.
+
 
 ### 4. Install Pre-commit
 
