@@ -361,7 +361,15 @@ REVIEW_HISTORY_PATTERNS = (
         # the net. The two lookaheads stay: a run needs a digit and a letter,
         # which is what keeps ``DEADBEEF`` and a decimal literal out.
         "a bare commit hash",
-        re.compile(r"(?i)\b(?=[0-9a-f]*\d)(?=[0-9a-f]*[a-f])[0-9a-f]{7,40}\b"),
+        re.compile(
+            # **Not after a hash sign.** An eight-digit CSS colour is seven to forty
+            # hexadecimal characters, so it read as a commit this repository does
+            # not hold and a stylesheet failed the suite. A commit referenced in
+            # prose is written bare; one written after a hash sign is a colour, a
+            # fragment or an anchor. Measured over the 235 scanned files, the
+            # guard changes nothing: 38 matches before it and 38 after.
+            r"(?i)(?<!#)\b(?=[0-9a-f]*\d)(?=[0-9a-f]*[a-f])[0-9a-f]{7,40}\b"
+        ),
     ),
 )
 
@@ -477,9 +485,30 @@ def commit_exists(token: str, root: Path) -> bool:
         ["git", "-C", str(root), "cat-file", "-t", token],
         capture_output=True,
     )
-    return (
+    held = (
         completed.returncode == 0
         and completed.stdout.decode("utf-8", "replace").strip() == "commit"
+    )
+    if not held:
+        return False
+    # **Held is not the same as reachable, and a clone only gets what is
+    # reachable.** A commit whose branch was deleted or reset stays in a
+    # developer's object database and answers ``cat-file`` for as long as it
+    # survives collection, while a fresh clone -- and GitHub, which decides
+    # whether to render the link -- has never heard of it. Reading mere
+    # presence let this scan excuse a reference locally that CI would refuse,
+    # which is the same local-and-CI divergence that produced a passing branch
+    # and a failing merge earlier in this pull request.
+    #
+    # Measured over the six hashes this repository holds and the corpus cites:
+    # all six are ancestors of HEAD, so this costs nothing today and closes the
+    # divergence.
+    reachable = subprocess.run(
+        ["git", "-C", str(root), "merge-base", "--is-ancestor", token, "HEAD"],
+        capture_output=True,
+    )
+    return (
+        reachable.returncode == 0
     )
 
 
@@ -579,6 +608,25 @@ COMMENT_FRAGMENT_PREFIXES = (
 )
 
 
+def url_has_host(url: str) -> bool:
+    """Return whether an ``http`` or ``https`` URL names a host.
+
+    ``urlsplit`` happily returns path segments for ``https:///issues/27``,
+    which carries a scheme, no host at all, and a path that looks exactly like
+    the one a real reference would have. So a malformed destination resolved a
+    reference that nothing could follow -- the check reading the shape of a URL
+    and never asking whether it pointed anywhere.
+
+    A scheme this function does not know is left alone: only ``http`` and
+    ``https`` are required to be followed, and those are the only two
+    ``URL_PATTERN`` matches.
+    """
+    parts = urlsplit(url)
+    if parts.scheme in ("http", "https"):
+        return bool(parts.hostname)
+    return True
+
+
 def url_path_segments(url: str) -> list[str]:
     """Return the path segments of one URL, in order, without its query."""
     return [part for part in urlsplit(url).path.split("/") if part]
@@ -625,6 +673,8 @@ def url_resolves(label: str, matched: str, urls: list[str]) -> bool:
     # A hash is read in either case above, so it is compared in one case here.
     matched_fold = matched.lower()
     for url in urls:
+        if not url_has_host(url):
+            continue
         parts = url_path_segments(url)
         lowered = [part.lower() for part in parts]
         fragments = url_fragment_tokens(url)
@@ -847,6 +897,19 @@ def normalize_link_label(label: str) -> str:
 #: tildes, indented by at most three spaces.
 #: https://spec.commonmark.org/0.31.2/#fenced-code-blocks
 CODE_FENCE = re.compile(r"^ {0,3}(`{3,}|~{3,})(.*)$")
+#: A list marker at the start of a line, with the space that follows it. A
+#: fenced block nested in a list item carries one, and the fence pattern above
+#: is anchored, so the opener went unseen while the definition indented under
+#: it still matched -- the block's own example read as a live definition. Only
+#: the marker is peeled, because the indentation that follows is already inside
+#: what ``^ {0,3}`` allows.
+#: https://spec.commonmark.org/0.31.2/#list-items
+LIST_MARKER = re.compile(r"^ {0,3}(?:[-*+]|[0-9]{1,9}[.)])(?:[ \t]+|$)")
+
+
+def peel_list_marker(line: str) -> str:
+    """Return ``line`` without a leading list marker, if it carries one."""
+    return LIST_MARKER.sub("", line, count=1)
 
 
 def link_definitions(body: str) -> dict[str, str]:
@@ -875,7 +938,8 @@ def link_definitions(body: str) -> dict[str, str]:
     # tracker was added to shut, one level down.
     # https://spec.commonmark.org/0.31.2/#fenced-code-blocks
     fence: tuple[str, int] | None = None
-    for line in body.split(chr(10)):
+    for raw_line in body.split(chr(10)):
+        line = peel_list_marker(raw_line)
         marker = CODE_FENCE.match(line)
         if marker:
             run, tail = marker.group(1), marker.group(2)
@@ -2117,3 +2181,125 @@ def test_a_reference_style_link_resolves_the_reference_it_labels(
         )
         sample.write_text(shown, encoding="utf-8")
         assert references_in(sample, tmp_path), fence
+
+
+def test_a_fence_inside_a_list_item_is_still_a_fence(tmp_path: Path) -> None:
+    """The example in a nested block must not read as a live definition.
+
+    The fence pattern is anchored near the start of the line, so a fence
+    carrying a list marker went unseen while the definition indented under it
+    still matched -- and the block's own example was collected as real.
+    """
+    sample = tmp_path / "doc.md"
+    url = "https://github.com/o/r/issues/27"
+    reference = "issue" + " " + "27"
+    for marker in ("-", "*", "+", "1.", "2)"):
+        pad = " " * (len(marker) + 1)
+        shown = (
+            "# T" + chr(10) * 2
+            + "See [" + reference + "][ticket-ref] here." + chr(10) * 2
+            + marker + " ```" + chr(10)
+            + pad + "[ticket-ref]: " + url + chr(10)
+            + pad + "```" + chr(10)
+        )
+        sample.write_text(shown, encoding="utf-8")
+        assert references_in(sample, tmp_path), marker
+
+    # A definition that is genuinely a definition still resolves.
+    sample.write_text(
+        "# T" + chr(10) * 2
+        + "See [" + reference + "][ticket-ref] here." + chr(10) * 2
+        + "[ticket-ref]: " + url + chr(10),
+        encoding="utf-8",
+    )
+    assert not references_in(sample, tmp_path)
+
+
+def test_a_hexadecimal_run_after_a_hash_sign_is_not_a_commit(tmp_path: Path) -> None:
+    """A CSS colour is seven to forty hexadecimal characters, and is not a hash.
+
+    Read as one, a stylesheet failed the suite for naming a commit this
+    repository does not hold. A commit referenced in prose is written bare; one
+    written after a hash sign is a colour, a fragment or an anchor.
+    """
+    # Built from pieces: a hash written whole here is a finding in this file.
+    colour = "1a2b" + "3c4d"
+    sample = tmp_path / "styles.css"
+    sample.write_text(".overlay { color: #" + colour + "; }" + chr(10), encoding="utf-8")
+    assert not references_in(sample, tmp_path)
+
+    # Bare, the same run is still reported.
+    sample.write_text("the run " + colour + " names nothing" + chr(10), encoding="utf-8")
+    assert references_in(sample, tmp_path)
+
+
+def test_a_url_with_a_scheme_and_no_host_resolves_nothing(tmp_path: Path) -> None:
+    """``urlsplit`` returns the right path segments for a URL going nowhere.
+
+    So a destination nothing could follow resolved the reference beside it, the
+    check reading the shape of a URL without asking whether it pointed
+    anywhere.
+    """
+    sample = tmp_path / "doc.md"
+    reference = "issue" + " " + "27"
+    sample.write_text(
+        "# T" + chr(10) * 2 + "See " + reference + " https:///issues/27" + chr(10),
+        encoding="utf-8",
+    )
+    assert references_in(sample, tmp_path)
+
+    sample.write_text(
+        "# T" + chr(10) * 2 + "See " + reference
+        + " https://github.com/o/r/issues/27" + chr(10),
+        encoding="utf-8",
+    )
+    assert not references_in(sample, tmp_path)
+
+
+def test_a_commit_must_be_reachable_and_not_merely_held(tmp_path: Path) -> None:
+    """A clone gets what is reachable, and that is what GitHub renders from.
+
+    A commit whose branch was reset stays in a developer's object database and
+    answers ``cat-file`` for as long as it survives collection, while a fresh
+    clone -- and GitHub, which decides whether to render the link -- has never
+    heard of it. Reading mere presence excused locally what CI would refuse.
+
+    **This test builds a real dangling commit**, because the first version of
+    it asked about a tree object instead: ``cat-file`` answered "tree", the
+    function returned before the reachability check, and deleting that check
+    left the test passing. A control that cannot fail is not a control.
+    """
+    import subprocess
+
+    def git(*arguments: str, cwd: Path = tmp_path) -> str:
+        return subprocess.run(
+            ["git", "-C", str(cwd), *arguments],
+            capture_output=True, text=True, check=True,
+        ).stdout.strip()
+
+    git("init", "--quiet", "-b", "main")
+    git("config", "user.email", "test@example.invalid")
+    git("config", "user.name", "Test")
+    git("config", "commit.gpgsign", "false")
+    (tmp_path / "first.txt").write_text("one" + chr(10), encoding="utf-8")
+    git("add", "first.txt")
+    git("commit", "--quiet", "-m", "first")
+    kept = git("rev-parse", "HEAD")
+
+    (tmp_path / "second.txt").write_text("two" + chr(10), encoding="utf-8")
+    git("add", "second.txt")
+    git("commit", "--quiet", "-m", "second")
+    orphaned = git("rev-parse", "HEAD")
+
+    # Move the branch back. The second commit is still in the object database
+    # and is no longer reachable from anything.
+    git("reset", "--hard", "--quiet", kept)
+
+    assert git("cat-file", "-t", orphaned) == "commit", (
+        "the dangling commit should still be held, or this test proves nothing"
+    )
+    assert commit_exists(kept[:10], tmp_path), "a reachable commit must resolve"
+    assert not commit_exists(orphaned[:10], tmp_path), (
+        "a commit held but unreachable must not resolve: a fresh clone would "
+        "not have it, and GitHub would not render a link to it"
+    )
