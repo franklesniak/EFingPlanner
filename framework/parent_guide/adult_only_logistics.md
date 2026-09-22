@@ -52,7 +52,7 @@ Three things go beyond stamina, and you verify them rather than your child:
 
 - **Step-free routing and station elevator availability** on the route you're actually planning
 - **Accessible lodging** — step-free access, and any room or bathroom needs
-- **Luggage handling** for anyone who shouldn't carry bags up stairs: forwarding services, porter help, or lockers
+- **Luggage handling** for anyone who shouldn't carry bags up stairs: forwarding services, porter help, or lockers. Those are categories; **which ones exist where you are going, and what they are called, is in your destination pack's adult-logistics page**
 
 Your child's job is to *flag* likely trouble spots: a stair-heavy transfer, a hilltop site, a station that may not have a lift. They notice and hand it to you. They don't research the fix.
 

@@ -10,7 +10,9 @@ Your child copies both onto their binder cover in Session 01, and that is intend
 
 ## Your arrival city shapes their route
 
-Record the likely arrival and departure cities, and whether you're flying round-trip or into one city and out of another, as the **rough trip shape** at setup. Your child builds their route on it from Phase 3 onward, in movable per-city blocks.
+Record what you actually know at setup as the **rough trip shape**: the likely arrival city, and, if you know them, the departure city and whether you're flying round-trip or into one city and out of another.
+
+**Recording only the arrival city is a supported setup**, and for a family who has never researched the destination it is the honest one. Leave the rest open and firm it up at **Checkpoint 2**, which is where the setup checklist expects it. Do not invent an anchor to fill a field. Your child builds their route on it from Phase 3 onward, in movable per-city blocks.
 
 **Checkpoint 4 is where you confirm or adjust that shape** against real flight options. It is not where you reveal it for the first time. If it changes there, your child moves a block rather than rebuilding, which only works if the shape existed from the start.
 

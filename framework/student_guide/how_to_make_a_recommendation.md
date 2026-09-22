@@ -6,7 +6,7 @@ This is the move every checkpoint asks you for. It's short on purpose. Read it a
 
 ## What a recommendation is
 
-A recommendation is a choice, plus your reasons, plus what it costs you. It isn't a guess, and it isn't a vote. You did the research, so you say what you'd do — and you say it out loud enough that a grown-up could act on it today.
+A recommendation is a choice, plus your reasons, plus what it costs you. Guessing and voting are different things. You did the research, so you say what you'd do, clearly enough that a grown-up could act on it today.
 
 ## The four parts
 
@@ -27,11 +27,11 @@ Every reason should be able to say where it came from. You don't have to remembe
 
 ## Say what you're not sure about
 
-"I'm not sure yet" and "a grown-up should check this" belong *in* a good recommendation. They're parts of it, not holes in it. A recommendation that hides its soft spots is harder to trust, not easier.
+"I'm not sure yet" and "a grown-up should check this" belong *in* a good recommendation. They're parts of it, not holes in it. Hiding a soft spot makes the whole thing harder to trust.
 
 ## Stop when it's useful
 
-You're done when a grown-up could act on it. Not when it's perfect. See [Good enough is good enough](planner_mindset.md) if you're stuck on this one.
+You're done when a grown-up could act on it. Perfect is a different bar, and it's not this one. See [Good enough is good enough](planner_mindset.md) if you're stuck on this one.
 
 And this is worth saying plainly, because "a grown-up could act on it" can sound like a lot of pressure. **Your work is real *and* it's low-stakes, both at once.** It's real because grown-ups will actually use your recommendations. It's low-stakes because grown-ups make every big decision, and "let's park this for later" is always an okay answer. Your job is to help them decide better — not to be right.
 

@@ -65,7 +65,9 @@ Keep it price-free: have them **look up** a current price rather than handing th
 
 If the estimate can't fit the band in any workable window, **"I recommend we change the trip or wait for a better time" is a correct, successful result.** Not a failure, and not a sign the project didn't work.
 
-Receive it warmly. Your child just did the thing adults find hardest — followed the numbers to a conclusion they didn't want. The [coaching guide](coaching_and_support.md) has the script if this one catches you off guard.
+Receive it warmly. Your child just did the thing adults find hardest: they followed the numbers to a conclusion they didn't want.
+
+Three things worth saying, in your own words. **Name what they found**, not what they failed to find: "you worked out that this costs more than we set aside, and that's worth knowing now rather than in April." **Say what happens next**, so it does not feel like an ending: the binder keeps, the research keeps, and a different window or a shorter trip reuses nearly all of it. And **tell them the decision is yours**, so they are not carrying it.
 
 ## One optional, verify-framed note
 

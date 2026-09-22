@@ -890,7 +890,9 @@ Five checkpoints land in this batch. Every one of them includes:
   wait for an adult checkpoint" note on the
   [When I'm Stuck card](../../student_guide/when_im_stuck.md). The outlets are: do an
   Optional Extension, add to the question parking lot, grow the "things I can't wait to
-  see" page, or start the next independent session. **Do not add a "waiting" tracker.**
+  see" page. **The next session waits** until the adult finishes the review, because
+  everything after a checkpoint is built on the decision being made at it. **Do not add
+  a "waiting" tracker.**
 
 **What each checkpoint's "progress is real" line names:**
 
@@ -1813,9 +1815,10 @@ fit. **Fully neutral.**
 - **The child's second pass covers their controllable slices only.** The adult's fare
   number stays on the adult's own page and is never copied into the child's running total
   -- the built `budget_estimate.md` says in as many words that flights are the grown-ups'
-  number with nothing to fill in, and that is deliberate. The adult compares their fare
-  against the child's subtotal on their side, multiplying their per-person fare by the
-  traveler count first; the child compares the **matching piece** of their estimate
+  number with nothing to fill in, and that is deliberate. The adult's own sanity check is an **addition**: the
+  child's subtotal **plus** the per-person fare multiplied by the traveler count. The
+  subtotal is already a whole-party amount and the fare is not, so adding them raw
+  understates the trip for any family larger than one; the child compares the **matching piece** of their estimate
   against the band, because the band is a rate or a tier and a subtotal is not.
 - **Adults review the final budget later**, including replacing the rough flight
   placeholder with real fares. **The child does not research or book flights.** Say this
@@ -2314,10 +2317,12 @@ wording.
 **2. The child learns the simple plan.**
 
 - **Do what today's rule says -- one rule per outing, never two.** Each morning a grown-up
-  names today's rule out loud. The default rule is **"stay where you are"**, or move to the
-  nearest safe, open spot, so the family can find you. Only when the family has a meeting
-  spot that is *visible or right next to where you'll be that day, and named that same
-  morning*, is the day's rule "go to the meeting spot" instead. **A panicking child
+  names today's rule out loud. **The default rule is one action: stay where you are**, so
+  the family can find you. **Not "stay, or move somewhere safer"** -- that is two, and it asks
+  a frightened child to judge which, which is the one assessment they cannot make. If
+  today's route has places a child should not stand still in, the adult names a
+  **specific meeting spot** for that outing instead, one visible from where they will be,
+  and names it that same morning. One rule per outing, either way. **A panicking child
   executes one rehearsed rule; the child does not choose between two.**
 - **Find a uniformed helper** -- a station attendant, or a shop or security worker with a
   nametag. The pack names two more kinds of help where you're going. **The police post or a
