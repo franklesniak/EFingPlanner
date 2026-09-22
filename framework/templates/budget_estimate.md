@@ -28,7 +28,7 @@ All numbers here are estimates you look up and re-check -- never a fixed price. 
 
 The subtotal above shows how the parts you choose add up. The whole-trip total stays a grown-up number.
 
-**Flights and the whole-trip total are the grown-ups' numbers.** They add flights, the biggest cost, on their *own* page, along with things you never see -- insurance, getting between cities, and so on. It's not part of your worksheet or your band check, so there's nothing to fill in here. Curious what it comes to? Ask a grown-up.
+**Flights and the whole-trip total are the grown-ups' numbers.** They add flights, the biggest cost, on their *own* page, along with things you never see -- insurance, passport and entry costs, and the phone plan. It's not part of your worksheet or your band check, so there's nothing to fill in here. Curious what it comes to? Ask a grown-up.
 
 Allowed answers anywhere: low / medium / high, "not sure yet," "ask an adult."
 
