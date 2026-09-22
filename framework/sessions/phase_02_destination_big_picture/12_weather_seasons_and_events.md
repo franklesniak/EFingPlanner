@@ -66,4 +66,4 @@ If you have extra energy, add a "best guess so far" note at the bottom: which se
 
 ## Parent Notes
 
-This feeds the Checkpoint 1 season recommendation. Keep everything verify-framed -- the congestion windows and rainy/typhoon seasons are stable *patterns*, but exact dates, prices, and forecasts must be confirmed this year. The summer-heat note matters for a multi-generational party; it connects forward to the pacing review later. If snow or the north is not on your radar, the winter details can stay light.
+This feeds the Checkpoint 1 season recommendation. Keep everything verify-framed -- the busy windows and seasonal patterns your destination pack lists are stable *patterns*, but exact dates, prices, and forecasts must be confirmed this year. Where the pack flags a season as hard on comfort or health, that matters for a multi-generational party; it connects forward to the pacing review later. Where the pack flags a pattern that can close things for a day or two, treat it as a reshuffle-the-days risk rather than a spoiled afternoon. Seasons your family will not travel in can stay light.

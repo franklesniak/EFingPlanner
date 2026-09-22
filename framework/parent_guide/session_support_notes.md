@@ -106,7 +106,7 @@ Want a rough signal of how the executive-function side is going? The optional [e
 ## Session 12: Weather, Seasons, and Events
 
 - Role: 5-minute check-in; help with school/work calendar fit.
-- Prep: the seasons reference.
+- Prep: this session's Destination Notes, and your destination pack's seasons reference.
 - Look for: a season chart covering every season the destination has, with at least one busy window flagged to be careful about.
 - Coaching question: "Which season fits our family best so far, and why?"
 - Pitfall: chasing exact dates. "Check this year" is the right answer.
