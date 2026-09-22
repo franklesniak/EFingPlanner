@@ -10,7 +10,7 @@ You don't need one of these for every hotel that exists. Do at least one card fo
 | --- | --- |
 | Hotel name | |
 | City or neighborhood | |
-| Approximate nightly cost (an example to re-check — prices move) | |
+| Approximate nightly cost, **per room** (an example to re-check — prices move) | |
 | Date checked | |
 | Room setup question for adults (how many rooms would we need?) | |
 | Distance to useful transit | |
@@ -23,11 +23,16 @@ You don't need one of these for every hotel that exists. Do at least one card fo
 | Pros | |
 | Cons | |
 | Sources (also in my Source Log) | |
+| What other source could check this? | |
+| Verification source (the one I actually used to check) | |
 | Planning assumption (something I'm assuming a grown-up should check) | |
 | Why I'm using this assumption | |
 | What could change it? | |
 | Needs adult verification? (yes / no) | |
-| Final decision status (researching / shortlist / skip / save for future) | |
+| Final decision status (researching / shortlist / **my recommendation for this base** / skip / save for future) | |
+| If I'm recommending this one, why? | |
+
+The cost row is **per room**, not the whole night's lodging. If your family needs two rooms, the night costs about twice that. Keep it per room so two hotels can be compared fairly, and let a grown-up do the multiplying.
 
 **About room counts.** Rooms in some places are smaller than the ones you're used to, and they often cap how many people can stay in one room. Connecting rooms and true four-person rooms can be uncommon. So a bigger family may need more rooms than you'd expect. That's a thing to check for each hotel, not a price — and it's one reason room count and booking are adult decisions, and why this card says "per room."
 

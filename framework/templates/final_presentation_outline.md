@@ -2,7 +2,7 @@
 
 # Final Presentation Outline
 
-This is the outline you'll talk from at the family decision meeting. Aim for **5 to 10 minutes** — roughly six or seven for Part 1, and three or four for Part 2.
+This is the outline you'll talk from at the family decision meeting. Aim for **5 to 10 minutes**. Part 1 is the bigger half: give it about two thirds of whatever time you take, and Part 2 the rest. At five minutes that's roughly three and two; at ten, roughly seven and three.
 
 One line under each item is enough. You're talking from an outline, not reading a script.
 

@@ -4,12 +4,16 @@
 
 This is the page where you compare two real options honestly and then say which one you'd pick. Every option costs you something — that's what a trade-off is, and naming it out loud is the whole skill.
 
-The columns are already drawn for you, and the first row is filled in as an example so you can see the shape. Replace it with your own options. You're plugging into a comparison, not inventing one.
+**You'll write three of these over the project**, one each time a big choice comes up: when to go, which cities and route, and one about pacing, where you stay, or the budget. Use a fresh copy of this page for each. One finished report isn't the finish line; it's the first of three.
+
+The columns are already drawn for you, and the example row shows the shape. Replace it with your own options. You're plugging into a comparison, not inventing one.
+
+**The decision I'm making:**
 
 | What I'm comparing | Option A | Option B | Option C (only if you need it) |
 | --- | --- | --- | --- |
-| *Example:* the decision question | *Route 1: City A + City B* | *Route 2: City A + City C* | *—* |
-| Decision question | | | |
+| *Example row* | *Route 1: City A + City B* | *Route 2: City A + City C* | *—* |
+| What this option is | | | |
 | Pros | | | |
 | Cons | | | |
 | Cost effect (higher / about the same / lower — not a price) | | | |

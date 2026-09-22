@@ -19,6 +19,8 @@ The Source column comes from your Source Log. You're not looking anything new up
 | | | | | |
 | | | | | |
 
+Ran out of rows? Add more, or carry on to a second sheet. Eight rows is the printable size, not the limit — if your research turned up eleven places, all eleven belong on the list.
+
 "Maybe" is a real answer. So is a place you've decided against — write it down anyway, with the reason, because knowing why you said no is worth as much as knowing why you said yes.
 
 You're done when every place you researched has a row and a mark.

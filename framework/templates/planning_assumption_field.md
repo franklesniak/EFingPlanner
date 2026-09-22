@@ -12,13 +12,15 @@ An assumption is something you treat as true so you can keep going. Nobody has c
 
 | Prompt | Your answer |
 | --- | --- |
-| Planning assumption | |
+| Planning assumption (something I'm assuming a grown-up should check) | |
 | Why I'm using this assumption | |
 | What could change it? | |
-| Needs adult verification? | |
+| Needs adult verification? (yes / no) | |
 | Final decision? | |
 
-On a research card, the last prompt is usually written as **Final decision status**, because a card's decision has named states like *researching* or *must-do*. The other four are word for word the same wherever this block appears.
+Copy those labels exactly, parentheticals included — they're part of the label, not decoration.
+
+One prompt changes on a research card. The last one is written there as **Final decision status**, with the card's own named states like *researching* or *must-do*, because a card's decision has states and a loose assumption doesn't. The other four are word for word the same wherever this block appears.
 
 ## When an assumption graduates
 

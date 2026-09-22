@@ -19,6 +19,8 @@ The food sessions are optional. If your family chose to skip them, you're not be
 | Review themes (what do lots of reviews agree on?) | |
 | Possible downside | |
 | Source (also in my Source Log) | |
+| What other source could check this? | |
+| Verification source (the one I actually used to check) | |
 | Date checked | |
 | Planning assumption (something I'm assuming a grown-up should check) | |
 | Why I'm using this assumption | |
