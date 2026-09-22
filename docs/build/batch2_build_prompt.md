@@ -115,6 +115,29 @@ authored destination-concrete "for now."
   thirty-four sessions that read like one session, which is the single most likely way
   this batch fails.
 
+**What this batch delivers, in one place so no later sentence has to repeat it:**
+
+| Group | What | Files |
+| --- | --- | --- |
+| Sessions | New sessions across Phases 3 to 8 | **34** |
+| A | Templates under `framework/templates/` | **13** -- the 12 the spec lists, plus `city_long_list.md` |
+| B | Parent apparatus | **7** (6 new pages, plus the extension to `session_support_notes.md`) |
+| C | Student-guide pages | **2** |
+| D | The rest of `framework/trip_starter/` | **28** |
+| E | `FINAL_DELIVERABLE.md` and `print_index.md` | **2** |
+| F | `PROJECT_ROADMAP.md` extension | **1** |
+| | **Non-session total** | **53** |
+
+**Plus edits to already-built files**, which are deliverables too and are easy to forget
+because they create nothing: Session 15's conversion, the navigation re-point on Sessions
+15, 21, 33, 44 and 53, the insert/reference contract, the kit README, and
+`framework/CHANGELOG.md`.
+
+**The 53 is the non-session count**, which is the number the spec's own grouping produces.
+The sessions are counted separately because they are authored in waves and reviewed as
+waves. Do not add the two numbers into a single target; nothing in this batch is measured
+against a combined total.
+
 ### Scope boundary — what must NOT be built
 
 | Not in this batch | Where it belongs |
@@ -148,7 +171,7 @@ who has read the spec will notice the difference and should not have to wonder.
 | **D-OPEN-4** | Session 30's title names a specific transit fare product | Title and filename are generic: `Trains, Transit, and Travel Cards`, `30_trains_transit_and_travel_cards.md` | That term is destination vocabulary and belongs in the pack's glossary, not in a `framework/` title. Batch 3's contract slot keys on the session **number**, so nothing downstream moves |
 | **D-OPEN-7** | Two different titles for the balance session | `Culture, History, Nature, Food, and Fun Balance` | The more readable of the two, and it matches the repository's heading style. The pinned filename does not change |
 | **D-OPEN-8** | Session title ends in a question mark | `How Long to Stay` | MD026 is enabled repo-wide. The child-facing question survives in the opening line, which is not a heading |
-| **D-OPEN-14** | Twelve templates | **Thirteen** -- `city_long_list.md` is added | The completed long list is binder evidence filed under a tab, and a filed artifact needs a blank to file. Batch file total goes 52 to 53 |
+| **D-OPEN-14** | Twelve templates | **Thirteen** -- `city_long_list.md` is added | The completed long list is binder evidence filed under a tab, and a filed artifact needs a blank to file |
 | **D-OPEN-15** | Checkpoint 4 has no Source Check | Checkpoint 4 carries one | Checkpoints 2 and 3 both do. A checkpoint that presents a recommendation with no source line teaches, at the most persuasive moment, that recommendations need no sources |
 | **D-X-1** | The flights page notes the family's home airport | Fully generic; the Trip-Basics card carries it | Naming it is a leak under `AC-29-2` and a violation of hard rule 3 below |
 | **D-X-8** | The binder list has a separate "Family input summary" item | Dropped; "Family trip goals" carries it in both the 27-item list and the Tab 1 row | That file was cancelled by a prior decision and merged into `family_trip_goals.md`. A binder list naming an unbuilt page sends a child to an empty tab |
