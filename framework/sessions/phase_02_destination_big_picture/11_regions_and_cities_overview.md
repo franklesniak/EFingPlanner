@@ -48,7 +48,7 @@ Researching a place does not mean choosing it. You're collecting options now. Th
 
 ## Workspace
 
-Use one page for your region notes and a rough map sketch. A traced map, a printed one, or your own wobbly drawing all work equally well.
+Use one page for your region notes and a rough map sketch. **There is no blank to print for this one**, because a map is drawn rather than filled in. A traced map, a printed one, or your own wobbly drawing all work equally well.
 
 You can say your answers to an adult who writes them, or draw them, if that's easier.
 

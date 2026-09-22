@@ -14,7 +14,7 @@ You are here: Phase 2 (Destination Big Picture), First Taste step 5 of 13. Previ
 - Planner skill: organizing information
 - Estimated time: 20-30 minutes
 - Parent involvement: 5-minute check-in
-- Materials: this session's Destination Notes, a device with the kid-safe filter on, your [Source Log](../../templates/source_log.md), your [Trip-Basics card](../../templates/trip_basics.md)
+- Materials: this session's Destination Notes, a device with the kid-safe filter on, a blank [Destination Snapshot](../../templates/destination_snapshot.md) page, your [Source Log](../../templates/source_log.md), your [Trip-Basics card](../../templates/trip_basics.md)
 
 ## Goal
 
@@ -43,7 +43,7 @@ Fill in your snapshot page. Look up anything you are not sure about, and add it 
 
 ## Workspace
 
-Use your snapshot page for the facts, and your Source Log for wherever the three surprising facts came from.
+Use your [Destination Snapshot](../../templates/destination_snapshot.md) page for the facts, and your Source Log for wherever the three surprising facts came from.
 
 You can say your answers to an adult who writes them, or draw them, if that is easier.
 

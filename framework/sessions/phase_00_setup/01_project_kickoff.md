@@ -49,7 +49,7 @@ Keep your baseline reflection somewhere safe. At the very end, you will look bac
 
 ## Workspace
 
-Use two fresh pages: your cover page and your "things I can't wait to see" page. The baseline reflection can go on the back of the cover page.
+Use two fresh pages: your cover page and your "things I can't wait to see" page. The baseline reflection can go on the back of the cover page. **These two are yours to make, and there is no blank to print** -- a cover is better when it looks like you drew it.
 
 You can say your answers to an adult who writes them, or draw them, if that is easier.
 

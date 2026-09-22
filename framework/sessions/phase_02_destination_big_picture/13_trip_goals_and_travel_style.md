@@ -10,7 +10,7 @@ You are here: Phase 2 (Destination Big Picture), First Taste step 7 of 13. Previ
 - Planner skill: making trade-offs
 - Estimated time: 20-30 minutes
 - Parent involvement: 5-minute check-in
-- Materials: your binder, your family trip goals from Session 03, your [Trip-Basics card](../../templates/trip_basics.md), the rough budget band from the [assumptions page](../../templates/current_family_travel_assumptions.md)
+- Materials: your binder, your family trip goals from Session 03, a blank [Travel Style Worksheet](../../templates/travel_style_worksheet.md), your [Trip-Basics card](../../templates/trip_basics.md), the rough budget band from the [assumptions page](../../templates/current_family_travel_assumptions.md)
 
 ## Goal
 
@@ -39,7 +39,7 @@ Then write one sentence: *Our travel style is...*
 
 ## Workspace
 
-Use a page for your six circles and your "our travel style is..." sentence.
+Use your [Travel Style Worksheet](../../templates/travel_style_worksheet.md) for the six pairs and your "our travel style is..." sentence.
 
 You can say your answers to an adult who writes them, or draw them, if that is easier.
 

@@ -10,7 +10,7 @@ You are here: Phase 2 (Destination Big Picture), First Taste step 6 of 13. Previ
 - Planner skill: comparing choices
 - Estimated time: 20-30 minutes
 - Parent involvement: 5-minute check-in
-- Materials: a device with the kid-safe filter on, this session's Destination Notes and your destination pack's seasons reference, your [Source Log](../../templates/source_log.md)
+- Materials: a device with the kid-safe filter on, this session's Destination Notes and your destination pack's seasons reference, a blank [Season Comparison Chart](../../templates/season_comparison_chart.md), your [Source Log](../../templates/source_log.md)
 
 ## Goal
 
@@ -36,7 +36,7 @@ Some timing cannot be pinned even after you check. That same reference says whic
 
 ## Workspace
 
-Use your season chart for the notes, and your Source Log for what you looked up.
+Use your [Season Comparison Chart](../../templates/season_comparison_chart.md) for the notes, and your Source Log for what you looked up.
 
 You can say your answers to an adult who writes them, or draw them, if that is easier.
 

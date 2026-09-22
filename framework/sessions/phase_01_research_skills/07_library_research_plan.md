@@ -10,7 +10,7 @@ You are here: Phase 1 (Research Skills). Not a First Taste step. Previous: [06 B
 - Planner skill: getting started
 - Estimated time: 20-30 minutes
 - Parent involvement: parent setup needed
-- Materials: the library's online catalog or a library visit, a pencil, your [Source Log](../../templates/source_log.md)
+- Materials: the library's online catalog or a library visit, a pencil, a blank [Library Book List](../../templates/library_book_list.md), your [Source Log](../../templates/source_log.md)
 
 ## Goal
 
@@ -54,7 +54,7 @@ Keep this small. A list, or a plan. You're not signing up to read four books.
 
 ## Workspace
 
-Use one page for your list. Two columns is plenty: the book, and whether the library has it.
+Use your [Library Book List](../../templates/library_book_list.md) page. Two columns is plenty: the book, and whether the library has it.
 
 You can say your answers to an adult who writes them, or draw them, if that's easier.
 
