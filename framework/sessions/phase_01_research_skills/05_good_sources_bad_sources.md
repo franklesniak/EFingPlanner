@@ -14,7 +14,7 @@ You are here: Phase 1 (Research Skills), First Taste step 4 of 13. Previous: [04
 - Planner skill: checking sources
 - Estimated time: 20-30 minutes
 - Parent involvement: co-working recommended (do this one together)
-- Materials: a device with a kid-safe filter on, your destination pack's trusted starting sources list, your Source Log
+- Materials: a device with a kid-safe filter on, your destination pack's trusted starting sources list, your [Source Log](../../templates/source_log.md)
 
 ## Goal
 
@@ -64,7 +64,7 @@ You are done when you have run the three questions on two sites and written down
 
 ## Source Check
 
-Record the trusted site you kept in your Source Log: title, who made it, the web address, and today's date. Now that you know the trust test, also fill in the two boxes you left blank in Session 04: **Trust level** (high / medium / low, from the trust test) and **how useful** the source was. This is the lesson that teaches them.
+Record the trusted site you kept in your Source Log: title, who made it, the web address, and today's date. Now that you know the trust test, also fill in the two boxes you left blank in Session 04: **Trust level** (high / medium / low, from the trust test) and **useful for this question** the source was. This is the lesson that teaches them.
 
 ## Finish and Quality Check
 

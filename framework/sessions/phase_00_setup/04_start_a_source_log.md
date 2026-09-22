@@ -10,7 +10,7 @@ You are here: Phase 0 (Setup), First Taste step 3 of 13. Previous: [03 What Make
 - Planner skill: checking sources (tracking where a fact came from)
 - Estimated time: 20-30 minutes
 - Parent involvement: 5-minute check-in
-- Materials: your Source Log page, a pencil, and one thing to look up (a book or a website)
+- Materials: your [Source Log](../../templates/source_log.md) page, a pencil, and one thing to look up (a book or a website)
 
 (For an at-a-glance version, see the matching entry in [the parent session notes](../../parent_guide/session_support_notes.md); the Parent Notes below have the full detail.)
 
@@ -36,7 +36,7 @@ You're going to practice on one real fact about the place you are going.
    - **What I learned** -- the fact, in your own words.
    - **Title** -- the name of the website or book.
    - **Author or organization** -- who made it (a museum, a tourism office, a writer). Write "not listed" if you can't find it.
-   - **Web address or page number** -- the link, or the book page.
+   - **Web address or book page** -- the link, or the book page.
    - **Date checked** -- today's date.
 4. Add one more thing good planners do: write down **one other place you could check the same fact.** That's your "verification source." You don't have to check it right now. Just name where you *could*.
 
@@ -56,12 +56,12 @@ Fill in your first entry here (or on your Source Log page):
 | --- | --- |
 | What I learned | |
 | Title | |
-| Author/org | |
-| Web address or page number | |
+| Author or organization | |
+| Web address or book page | |
 | Date checked | |
 | One other place I could check this | |
 
-Your Source Log template has a few more boxes than the ones above: *source type*, *why it matters*, *trust level*, and *how useful*. You'll learn about *trust level* and *how useful* in Session 05, so leave those two blank for now (fill *source type* and *why it matters* only if you want). The boxes above are a complete first entry.
+Your Source Log template has a few more boxes than the ones above, including *source type*, *why it matters*, *trust level*, and *useful for this question*. You'll learn about *trust level* and *useful for this question* in Session 05, so leave those two blank for now (fill *source type* and *why it matters* only if you want). The boxes above are a complete first entry.
 
 ## Artifact Created
 
@@ -69,7 +69,7 @@ Your first Source Log entry: one fact, with where it came from and where you cou
 
 ## Stop Point
 
-You are done when your Source Log has today's date and one entry with the boxes above filled in. (The extra template boxes like *trust level* and *how useful* wait for Session 05.) One good entry is enough. You don't need to look up more facts today.
+You are done when your Source Log has today's date and one entry with the boxes above filled in. (The extra template boxes like *trust level* and *useful for this question* wait for Session 05.) One good entry is enough. You don't need to look up more facts today.
 
 ## Source Check
 

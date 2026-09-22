@@ -12,7 +12,7 @@ You are here: Phase 1 (Research Skills). Not a First Taste step. Previous: [05 G
 - Planner skill: checking sources
 - Estimated time: 20-30 minutes
 - Parent involvement: 5-minute check-in (an adult may need to fetch the library book)
-- Materials: a guidebook (a library copy is perfect) or one reputable travel website, the [Book Notes form](../../templates/book_notes.md), the Source Log, a pencil
+- Materials: a guidebook (a library copy is perfect) or one reputable travel website, the [Book Notes form](../../templates/book_notes.md), the [Source Log](../../templates/source_log.md), a pencil
 
 ## Goal
 

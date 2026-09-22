@@ -2,7 +2,9 @@
 
 # Session 08: Web Research Practice
 
-You are here: Phase 1 (Research Skills). Not a First Taste step. Previous: [07 Library Research Plan](07_library_research_plan.md) | Next: [09 AI as Helper, Not Boss](09_ai_as_helper_not_boss.md) if your family opted into AI, then [10 Destination Snapshot](../phase_02_destination_big_picture/10_destination_snapshot.md) (AI-free families go straight to 10).
+You are here: Phase 1 (Research Skills). Not a First Taste step. Previous: [07 Library Research Plan](07_library_research_plan.md) | Next: [09 AI as Helper, Not Boss](09_ai_as_helper_not_boss.md)
+
+*If your family did not opt into AI, skip Session 09 and go straight to [10 Destination Snapshot](../phase_02_destination_big_picture/10_destination_snapshot.md).*
 
 **For parents:**
 
@@ -10,7 +12,7 @@ You are here: Phase 1 (Research Skills). Not a First Taste step. Previous: [07 L
 - Planner skill: checking sources, and comparing choices
 - Estimated time: 20-30 minutes
 - Parent involvement: a grown-up stays nearby for this one
-- Materials: a device with the kid-safe filter on, your destination pack's trusted starting sources list and its sample search terms, the [Website Notes form](../../templates/website_notes.md), your Source Log
+- Materials: a device with the kid-safe filter on, your destination pack's trusted starting sources list and its sample search terms, the [Website Notes form](../../templates/website_notes.md), your [Source Log](../../templates/source_log.md)
 
 ## Goal
 

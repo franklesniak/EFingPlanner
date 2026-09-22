@@ -25,4 +25,4 @@ Japan trips often mean a lot of walking. Many days run 15,000 to 20,000 steps. S
 
 ## Getting there and the arrival day
 
-Flights are adult-owned. Plan the **arrival day gently**. It comes after a long flight and a big time change. The change is about half a day, though it varies by US time zone. So the first two or three days can feel jet-lagged. Getting from the airport into the city is part of that first day. A grown-up sorts out that airport trip.
+Flights are adult-owned. Plan the **arrival day gently**. It comes after a long flight and a big time change. It comes after a long flight and a big time change. Your Trip-Basics card holds the figure. So the first two or three days can feel jet-lagged. Getting from the airport into the city is part of that first day. A grown-up sorts out that airport trip.

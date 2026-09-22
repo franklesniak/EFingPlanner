@@ -28,7 +28,7 @@ It is a real task. The trip actually happens, the child's recommendation actuall
 
 It is long. The project runs for weeks or months depending on the path you pick, in short sessions, which is the shape these skills are built in. A single afternoon of planning trains nothing.
 
-It is bridged. Every session names the planning move out loud and asks where else the child could use it. That naming is deliberate, and the next section is about why.
+It is bridged. A session names its planning move out loud the first time the child uses it, and asks where else it would work. Repeating the tag on every session turns it into wallpaper, so it appears once per move. The naming that matters most is yours, out loud, in the moment. That naming is deliberate, and the next section is about why.
 
 ## The honest part
 

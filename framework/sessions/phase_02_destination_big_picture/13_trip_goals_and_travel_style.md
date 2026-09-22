@@ -10,7 +10,7 @@ You are here: Phase 2 (Destination Big Picture), First Taste step 7 of 13. Previ
 - Planner skill: making trade-offs
 - Estimated time: 20-30 minutes
 - Parent involvement: 5-minute check-in
-- Materials: your binder, your family trip goals from Session 03, your Trip-Basics card
+- Materials: your binder, your family trip goals from Session 03, your [Trip-Basics card](../../templates/trip_basics.md), the rough budget band from the [assumptions page](../../templates/current_family_travel_assumptions.md)
 
 ## Goal
 

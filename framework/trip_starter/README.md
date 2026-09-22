@@ -20,7 +20,7 @@ The kit grows as the project does. Some of these folders arrive later.
 - `recommendations/` holds what you decide to recommend to the grown-ups.
 - `outputs/` holds the finished pages, put in order at the very end.
 
-Your `family/` folder is Tab 1 of your binder. Its name is "Start Here."
+Your `family/` folder is the "Start Here" section of your binder. The [binder card](../student_guide/how_to_use_this_binder.md) says how the sections work, and it is the page to follow: tabs come once, at the very end, so label the section now and make the tab later.
 
 ## One artifact, one home
 

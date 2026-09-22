@@ -2,7 +2,9 @@
 
 # Session 10: Destination Snapshot
 
-You are here: Phase 2 (Destination Big Picture), First Taste step 5 of 13. Previous: [08 Web Research Practice](../phase_01_research_skills/08_web_research_practice.md) (or [09 AI as Helper, Not Boss](../phase_01_research_skills/09_ai_as_helper_not_boss.md) if your family uses AI) | Next: [11 Regions and Cities Overview](11_regions_and_cities_overview.md)
+You are here: Phase 2 (Destination Big Picture), First Taste step 5 of 13. Previous: [09 AI as Helper, Not Boss](../phase_01_research_skills/09_ai_as_helper_not_boss.md) | Next: [11 Regions and Cities Overview](11_regions_and_cities_overview.md)
+
+*If your family did not opt into AI, the session before this one was [08 Web Research Practice](../phase_01_research_skills/08_web_research_practice.md).*
 
 *On the First Taste path, go straight to [12 Weather, Seasons, and Events](12_weather_seasons_and_events.md). Session 11 is not one of the 13.*
 
@@ -12,7 +14,7 @@ You are here: Phase 2 (Destination Big Picture), First Taste step 5 of 13. Previ
 - Planner skill: organizing information
 - Estimated time: 20-30 minutes
 - Parent involvement: 5-minute check-in
-- Materials: this session's Destination Notes, a device with the kid-safe filter on, your Source Log, your Trip-Basics card
+- Materials: this session's Destination Notes, a device with the kid-safe filter on, your [Source Log](../../templates/source_log.md), your Trip-Basics card
 
 ## Goal
 
@@ -31,7 +33,7 @@ Before you plan *where* to go, it helps to know a few big facts. You do not need
 Fill in your snapshot page. Look up anything you are not sure about, and add it to your Source Log.
 
 1. **Capital:** from your Destination Notes.
-2. **Major land features:** from your Destination Notes.
+2. **Major land features:** from your Destination Notes. Your Notes may call these islands, mountains, or rivers.
 3. **Currency:** from your Destination Notes.
 4. **Main language:** from your Destination Notes.
 5. **Time difference:** use the time-difference figure on your Trip-Basics card; a grown-up confirms your home zone's exact current offset.

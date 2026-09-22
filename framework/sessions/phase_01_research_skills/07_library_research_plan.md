@@ -68,7 +68,7 @@ You are done when your list names at least one book from two or three of the fiv
 
 ## Source Check
 
-A catalog search is a look-up, so record it. Put the library catalog in your Source Log with today's date. If a librarian helped you find a book or a section, record that too. The source type is a person. Write "a librarian" and the library's name. You do not need their name. When you actually borrow a book, that book gets its own entry, with its title, its author or publisher, and the pages you used.
+A catalog search is a look-up, so record it. Put the library catalog in your Source Log with today's date. If a librarian helped you find a book or a section, record that too. The source type is a person. Write "a librarian" and which library it was, like "our city library" or "the school library." You do not need their name, and you do not need the branch. When you actually borrow a book, that book gets its own entry, with its title, its author or publisher, and the pages you used.
 
 ## Finish and Quality Check
 

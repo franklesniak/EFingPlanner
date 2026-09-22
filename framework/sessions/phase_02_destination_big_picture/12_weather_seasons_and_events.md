@@ -10,7 +10,7 @@ You are here: Phase 2 (Destination Big Picture), First Taste step 6 of 13. Previ
 - Planner skill: comparing choices
 - Estimated time: 20-30 minutes
 - Parent involvement: 5-minute check-in
-- Materials: a device with the kid-safe filter on, this session's Destination Notes and your destination pack's seasons reference, your Source Log
+- Materials: a device with the kid-safe filter on, this session's Destination Notes and your destination pack's seasons reference, your [Source Log](../../templates/source_log.md)
 
 ## Goal
 
@@ -30,9 +30,9 @@ For each season, jot a few notes:
 2. **Crowds and cost:** busier, more popular times usually cost more.
 3. **School and work:** does this season fit your family's calendar? (Ask a grown-up.)
 
-Add the special things your Destination Notes flag. These are patterns, but you must **check this year's exact dates** -- they move.
+Now open your destination pack's seasons reference. Your Destination Notes give you the pointer to it. Add the busy windows and the special things it names to your chart. These are patterns, but you must **check this year's exact dates** -- they move.
 
-Some timing cannot be pinned even after you check, and your Destination Notes say which of your destination's patterns work that way.
+Some timing cannot be pinned even after you check. That same reference says which of your destination's patterns work that way.
 
 ## Workspace
 

@@ -18,6 +18,8 @@ Keep no sensitive personal data here. Do not write exact booked dates. Do not wr
 | Sensory constraints (none known is fine) | |
 | Medical constraints (none known is fine; keep specifics with the adults, off the page) | |
 | AI helper -- a grown-up call (default no): yes / no | |
+| Which tool (if yes) | |
+| Date an adult checked its minimum-age and supervision policy | |
 
 Two adult notes. First, the full trip total is a grown-up number. Keep it off the child's worksheet. Second, if the AI helper answer is yes, the child does Session 09 first. That comes before any AI tool is used. The grown-ups also follow the adult-operated pattern in the privacy and safety rules.
 

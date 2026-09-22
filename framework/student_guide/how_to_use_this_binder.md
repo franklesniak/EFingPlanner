@@ -12,10 +12,11 @@ Keep your finished pages in it, in rough order, newest at the back. Rough order 
 
 If you like strong structure and tabbing things as you go makes you happy, go ahead. That's a choice you're allowed, and it isn't the default. Most planners do better putting pages in one place and getting on with the work.
 
-## The five sections you keep
+## The six sections you keep
 
-Five things run the whole length of the project. They're five labelled sections inside your one notebook, so you keep one thing in rough order instead of five separate piles.
+Six things run the whole length of the project. They're six labelled sections inside your one notebook, so you keep one thing in rough order instead of six separate piles.
 
+- **Start Here.** Your [Trip-Basics card](../templates/trip_basics.md), the [assumptions page](../templates/current_family_travel_assumptions.md), your [trip goals](../templates/family_trip_goals.md), and your [traveler profiles](../templates/traveler_profile.md). This one is filled in first and barely changes after that.
 - **[Source Log](../templates/source_log.md).** One copy of the table for every source you use. This is the one that makes your recommendation believable.
 - **[Research cards](../templates/city_research_card.md).** One card per place you look into, so two places can sit side by side.
 - **[Decision log](../templates/decision_record.md).** What you decided, when, and why. It stops you arguing the same thing twice.

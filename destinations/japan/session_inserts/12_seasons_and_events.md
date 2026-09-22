@@ -8,10 +8,10 @@ Japan has four seasons. Use the four lines below to label and start your season 
 
 ## The four seasons
 
-- **Spring** -- mild, and comfortable for long walking days. It's a popular time to visit.
+- **Spring** -- mild, and comfortable for long walking days.
 - **Summer** -- hot and humid. Walking days feel longer.
-- **Fall** -- cool and comfortable. It's popular too.
-- **Winter** -- cold, with snow in the north. Many places are quieter.
+- **Fall** -- cool and comfortable.
+- **Winter** -- cold, with snow in the north.
 
 These are patterns. They hold up well from year to year, but exact dates move. Confirm this year's dates for anything you plan around.
 

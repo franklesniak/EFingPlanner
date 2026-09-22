@@ -6,7 +6,7 @@ This roadmap shows the paths through the project and where the honest stopping p
 
 For the child this project is designed for, **finishing First Taste is the expected, complete outcome** -- not a lesser starter. Continuing to the Core Finish Line or the full program is a genuine bonus, and nothing done in First Taste is ever redone.
 
-> **What is built right now:** this repository holds the complete **Phases 0-2** slice -- Session 00 through Checkpoint 1 -- plus its support files. The **First Taste** path below overlaps that slice rather than sitting inside it: its first eight numbered steps are sessions in Phases 0-2, and its last five -- Sessions 15, 21, 33, 44 and 53 -- are already-built sessions in later phases. The Core Finish Line and the full program are documented here but are built later.
+> **What is built right now:** this repository holds the complete **Phases 0-2** slice -- Session 00 through Checkpoint 1 -- plus its support files. The **First Taste** path below overlaps that slice rather than sitting inside it: its first eight numbered steps are sessions in Phases 0-2, and its last five -- Sessions 15, 21, 33, 44 and 53 -- are already-built sessions in later phases. The Core Finish Line and the full program are documented here but are built later. Those later batches begin once the Batch 0 gate has cleared -- either the child pilot passes, or the no-child fallback is recorded in writing.
 
 ## First Taste path (the pilotable mini-plan)
 

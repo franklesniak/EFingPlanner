@@ -10,7 +10,7 @@ You are here: Phase 2 (Destination Big Picture), First Taste step 8 of 13. **Thi
 - Planner skill: making trade-offs; making a recommendation
 - Estimated time: 20-30 minutes for the child, plus a 20-40 minute review with you
 - Parent involvement: parent review -- genuinely use the recommendation in a real family talk
-- Materials: your Season comparison chart, your Source Log, a [Decision Record page](../../templates/decision_record.md)
+- Materials: your Season comparison chart, your [Source Log](../../templates/source_log.md), a [Decision Record page](../../templates/decision_record.md)
 
 ## Goal
 

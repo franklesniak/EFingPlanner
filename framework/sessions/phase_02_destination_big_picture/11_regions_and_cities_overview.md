@@ -10,7 +10,7 @@ You are here: Phase 2 (Destination Big Picture). Not a First Taste step. Previou
 - Planner skill: organizing information
 - Estimated time: 20-30 minutes
 - Parent involvement: 5-minute check-in
-- Materials: this session's Destination Notes, your destination pack's regions and major-cities references, a map, your Source Log
+- Materials: this session's Destination Notes, your destination pack's regions and major-cities references, a map, your [Source Log](../../templates/source_log.md)
 
 ## Goal
 
