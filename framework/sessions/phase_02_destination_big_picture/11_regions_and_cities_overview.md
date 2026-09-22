@@ -58,7 +58,7 @@ Your region and map notes: the main regions, one way they differ, and one route 
 
 ## Stop Point
 
-You are done when your notes name the main regions, say one thing about how they differ, and hold one route shape you can compare your own ideas against. You don't have to pick a route today.
+You are done when your notes name the regions your Destination Notes list, say one thing about how they differ, and hold one route shape you can compare your own ideas against. You don't have to pick a route today.
 
 ## Source Check
 

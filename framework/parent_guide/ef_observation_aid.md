@@ -56,3 +56,9 @@ Copy this table into your own notes and fill it in at the three points above.
 It prints on portrait letter or A4 without changing anything.
 
 The whole point of this curriculum is executive-function practice, and practice you cannot see is hard to keep faith with. This aid is here so you have something to look at near the end besides a feeling. Read it as a rough signal rather than proof that anything transferred, and read it beside what your child says about their own work.
+
+## Where to go next
+
+- [What is executive function](what_is_executive_function.md) -- what the four skills are, and what this curriculum can and cannot claim about them.
+- [Time and effort](time_and_effort.md) -- what to expect before you commit, and the pilot deferral this batch still carries.
+- [Design principles](../docs/design_principles.md) -- which session mechanic supports which skill.

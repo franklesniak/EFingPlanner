@@ -18,7 +18,7 @@ Build a short list of books worth borrowing, or a plan for one library trip.
 
 ## Start Here
 
-Write "Books to look for" at the top of a fresh page. You've started.
+Open your [Library Book List](../../templates/library_book_list.md) and write one book you already wonder about in the first row. You've started.
 
 ## Steps
 
@@ -68,7 +68,7 @@ You are done when your list names at least one book from two or three of the fiv
 
 ## Source Check
 
-A catalog search is a look-up, so record it. Put the library catalog in your Source Log with today's date. If a librarian helped you find a book or a section, record that too. The source type is a person. Write "a librarian" and which library it was, like "our city library" or "the school library." You do not need their name, and you do not need the branch. When you actually borrow a book, that book gets its own entry, with its title, its author or publisher, and the pages you used.
+Record what you actually used. **If you searched the catalog**, a search is a look-up, so put the library catalog in your Source Log with today's date. **If you asked a librarian instead**, record that and not a catalog you never opened. If you did both, record both. The source type is a person. Write "a librarian" and which library it was, like "our city library" or "the school library." You do not need their name, and you do not need the branch. When you actually borrow a book, that book gets its own entry, with its title, its author or publisher, and the pages you used.
 
 ## Finish and Quality Check
 

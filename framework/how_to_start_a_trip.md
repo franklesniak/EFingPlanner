@@ -2,7 +2,7 @@
 
 # How to Start a Trip
 
-Four steps get a family from this repository to a child working session one. Do them in order, once.
+Three steps get a family from this repository to a child working session one. Do them in order, once. The fourth section is not one of them: it is for later, when the same family plans another trip to the same place.
 
 ## 1. Copy the blank kit out
 
@@ -26,7 +26,7 @@ There is one exception today. [Session 15](sessions/phase_03_choose_places/15_ci
 
 Print each session as you reach it rather than the whole set at once.
 
-## 4. For the next trip to the same place
+## Later: the next trip to the same place
 
 Copy out a fresh starter kit and reuse the same destination pack. The facts have not moved, so nothing needs rebuilding. The child starts with new blanks and the pack they already know.
 

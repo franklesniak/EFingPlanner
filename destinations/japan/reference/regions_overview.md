@@ -6,7 +6,9 @@
 
 These are starting points, not answers. Read them to get a feel for how the country is laid out, before you compare any places.
 
-## The main regions
+## The regions this pack plans around
+
+**This is a planning selection, not a complete list of the country's regions.** These are the areas a first family trip usually touches, chosen so a child can compare a handful of places rather than all of them. A destination has more regions than this, and leaving one out here says nothing about it.
 
 - **Kanto** (around Tokyo) -- a wide, flat plain on the east coast of Honshu, the main island. Winters are mild here. Summers are hot.
 - **Kansai** (around Kyoto and Osaka) -- basins and low hills west of Kanto, a few hours away by fast train. The weather is close to Kanto's, with hot, sticky summers.

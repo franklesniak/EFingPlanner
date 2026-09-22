@@ -43,3 +43,9 @@ So do that part, and do not expect a generalized payoff. This project is worth d
 This page explains the concept and why it matters. The [framework glossary](../docs/glossary.md) defines the project's own terms and every piece of vocabulary the sessions use. The clinical names for these skills -- working memory, cognitive flexibility, inhibitory control and emotional regulation -- are defined in [design principles](../docs/design_principles.md), beside the mechanics that support each one.
 
 Read this one to understand the idea. Open that one when a word in a session is unfamiliar.
+
+## Where to go next
+
+- [Time and effort](time_and_effort.md) -- what the project actually costs you, and the deferral flag it still carries.
+- [EF observation aid](ef_observation_aid.md) -- three readings that show a direction, and what they cannot tell you.
+- [Design principles](../docs/design_principles.md) -- the clinical names for these skills, beside the mechanics built to support each one.
