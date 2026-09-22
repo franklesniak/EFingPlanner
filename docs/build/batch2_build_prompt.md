@@ -130,8 +130,9 @@ authored destination-concrete "for now."
 
 **Plus edits to already-built files**, which are deliverables too and are easy to forget
 because they create nothing: Session 15's conversion, the navigation re-point on Sessions
-15, 21, 33, 44 and 53, the insert/reference contract, the kit README, and
-`framework/CHANGELOG.md`.
+15, 21, 33, 44 and 53, the insert/reference contract, the kit README,
+**`framework/templates/city_research_card.md`** (a two-row addition, see A6),
+**the Batch 1 neutrality riders listed in section 11**, and `framework/CHANGELOG.md`.
 
 **The 53 is the non-session count**, which is the number the spec's own grouping produces.
 The sessions are counted separately because they are authored in waves and reviewed as
@@ -142,7 +143,7 @@ against a combined total.
 
 | Not in this batch | Where it belongs |
 | --- | --- |
-| The remaining `destinations/japan/reference/` files -- `airports_and_arrival_basics.md`, `language_basics.md`, `etiquette_basics.md`, `food_basics.md`, `adult_logistics_japan.md` | Batch 3 |
+| The remaining `destinations/<place>/reference/` files -- `airports_and_arrival_basics.md`, `language_basics.md`, `etiquette_basics.md`, `food_basics.md`, `adult_logistics.md`, **`safety_and_emergency.md`** | Batch 3 |
 | The remaining `session_inserts/` slots -- `16_18_candidate_cities.md`, `19_other_places_menu.md`, `23_attraction_ideas.md`, `30_transport_specifics.md`, `34_lodging_types.md`, `36_37_food_ideas.md`, `42_reservation_examples.md`, `47_language_etiquette.md` | Batch 3 |
 | Session 54 (`After You Get Back`) | Batch 4 |
 | `framework/examples/` -- the seven pretend-Italy example files | Batch 4 |
@@ -552,7 +553,7 @@ session never writes one.
 | 19 Other Places Research | `19_other_places_menu.md` | `major_cities.md` | insert: Batch 3 |
 | 23 Attraction Research Cards | `23_attraction_ideas.md` | `food_basics.md` | both Batch 3 |
 | 30 Trains, Transit, and Travel Cards | `30_transport_specifics.md` | `transportation_basics.md` | insert: Batch 3 |
-| 34 Neighborhoods and Hotel Location | `34_lodging_types.md` | adult-logistics reference | both Batch 3 |
+| 34 Neighborhoods and Hotel Location | `34_lodging_types.md` | `adult_logistics.md` | both Batch 3 |
 | 36 Food Research | `36_37_food_ideas.md` | `food_basics.md` | both Batch 3 |
 | 37 Restaurant Shortlist | `36_37_food_ideas.md` | `food_basics.md` | both Batch 3 |
 | 38 Daily Cost Estimates | **none** | `money_basics.md` | reference: built |
@@ -561,7 +562,7 @@ session never writes one.
 | 43 Rest Days, Jet Lag, and Pacing | **none** | `transportation_basics.md` | reference: built |
 | 47 Language and Etiquette | `47_language_etiquette.md` | `language_basics.md`, `etiquette_basics.md` | all Batch 3 |
 | 48 Packing List | **none** | `seasons_weather_events.md` | reference: built |
-| **49 Travel Readiness Checklist** | **none** | **a safety-and-emergency reference** | **new row -- see 3.5** |
+| **49 Travel Readiness Checklist** | **none** | **`safety_and_emergency.md`** | **new file -- see 3.5** |
 | child travel glossary, any session | `kid_glossary.md` | none | **built** |
 
 **Fully neutral -- these must not reach for a destination fact at all:** 20, 22, 24, 25,
@@ -580,11 +581,23 @@ pre-chosen**. Sessions 16 to 18 must work against exactly that schema and nothin
 The contract file is edited once, with both additions and a short note above the rows
 saying that parent-facing routing is now in scope.
 
-**Addition 1 -- Session 49 gets a reference row.** The spec marks Session 49 as needing
-no destination facts, and it is wrong: the session's "staying found" teaching rests on
-local institution types, two romanized emergency phrases and two emergency numbers, all
-of which are destination facts. Session 49 writes the **reference-file sentence form**,
-not the Destination Notes phrase. (`D-item-5`.)
+**Addition 1 -- Session 49 gets a reference row, and that row names a file no pack has
+yet.** The spec marks Session 49 as needing no destination facts, and it is wrong: the
+session's "staying found" teaching rests on local institution types, two romanized
+emergency phrases and two emergency numbers, all of which are destination facts. Session 49
+writes the **reference-file sentence form**, not the Destination Notes phrase. (`D-item-5`.)
+
+**The file is `safety_and_emergency.md`, and naming it is half the fix.** Section 3.3
+requires every unbuilt target to be written as a concrete inline-code filename, and a row
+reading "a safety-and-emergency reference" would have left Batch 3 with nothing to create
+and Session 49 with nothing to name. **Batch 3's scope in the boundary table above now
+carries that file**, so the route has a destination as well as an origin. Before this
+batch, the pack's planned reference set had no safety file at all.
+
+**One naming correction while you are in the contract.** The canonical reference filename
+is **`adult_logistics.md`**, which is how the Batch 1 contract registers it. Some
+scope lists carry a place-suffixed variant; that name is not the contract's, and a pack
+author following it would create a file no session routes to.
 
 **And the card instruction changes shape.** A built page must never print an emergency
 number, not even as an example. Session 49 tells the child to make the card and says the
@@ -979,7 +992,15 @@ requirement. Where it quotes a form, the form is required.
 
 ### Session 16: Deep-Dive City A
 
-Research the trip's anchor city in depth and fill one City Research Card for it.
+Take the trip's anchor city to full depth on the City Research Card Session 15 already
+started for it.
+
+**This session does not open a new card.** Session 15 produces two City Research Cards, and
+those two cities are the ones this session and Session 17 deep-dive, so a second card for
+the same city would duplicate a canonical artifact and break the kit's one-file-per-city
+rule. **Create a card here only if the child's anchor is not one of Session 15's two** --
+which can happen, since Session 15 lets them choose. Say it to the child plainly: you are
+going deeper on a page you already started, and that is what "extend, don't redo" means.
 
 **This session carries the Phase 3 Start Here hand-off.** The child sets the timer and
 picks their own first tiny step, rather than being handed a pre-written micro-action.
@@ -998,7 +1019,7 @@ and the parent able to nudge. City A is that anchor. **Say this neutrally: the D
 Notes name the anchor; the session never does.**
 
 - **Workspace:** one City Research Card, plus the Source Log.
-- **Artifact:** a City Research Card for City A.
+- **Artifact:** the City Research Card for City A, now at full depth.
 - **Stop Point:** you are done when City A's card has its top sights, one memorable fact,
   at least one downside, a season-fit note, and at least one source with today's date.
   "Ask an adult" and "not sure yet" are complete answers.
@@ -1011,8 +1032,8 @@ Notes name the anchor; the session never does.**
 
 ### Session 17: Deep-Dive City B
 
-Research a second candidate city in depth, on its own card. Everything in Session 16
-applies, with these differences.
+Take the second candidate city to full depth on its own card -- again, **the card Session
+15 started**, not a new one. Everything in Session 16 applies, with these differences.
 
 - **Start Here** is an ordinary micro-action. The hand-off already happened in 16.
 - **Steps** carry the same five required provisions. **Vary the sentence shapes from
@@ -1020,7 +1041,7 @@ applies, with these differences.
   sessions, and a density gate reads 16, 17 and 18 as one family. Give 17 its own
   emphasis: **this is the city the child chose**, so lean on comparing against City A
   rather than restating how a card works.
-- **Artifact:** a City Research Card for City B.
+- **Artifact:** the City Research Card for City B, now at full depth.
 
 ### Session 18: Deep-Dive City C
 
@@ -1369,9 +1390,10 @@ around; **rail passes may or may not save money and require adult verification**
 compare, do not assume, because a pass's value depends on the specific itinerary;
 **planning for a bigger group**, gated on the Trip-Basics party size, where a large group
 plans to **reserve seats together** on long-distance trains rather than assuming everyone
-can sit together, and a small party skips this; **very large suitcases may need their own
-reserved seat** on main high-speed lines, with adults checking the current threshold and
-rule on the official rail sites, since the rule and the numbers can change -- which is one
+can sit together, and a small party skips this; **a very large suitcase may require reserving a
+particular seat -- one with a baggage space behind or beside it, rather than a seat for the
+bag itself** -- on main high-speed lines, with adults checking the current size threshold
+and rule on the official rail sites, since the rule and the numbers can change -- which is one
 more reason luggage forwarding is the classic family move; **use a current transit planner
 and confirm it is current**, where naming any specific planner is the insert's job and **a
 discontinued tool must never be named as live**; and **adults finalize transportation
@@ -1699,8 +1721,11 @@ fit. **Fully neutral.**
 
 **The lighter late-phase template applies from here.** For each of these six files:
 
-- **Steps** shrink to a short prompt, or may be omitted where the child now supplies their
-  own structure. Three or four short moves is right.
+- **Steps** shrink to a short prompt. **The heading stays and the section is never empty**
+  -- `Steps` is one of the six sections `.github/scripts/check-session-structure.py`
+  requires in every session, and the skeleton in section 2.2 carries it too. **Only the
+  amount of scaffolding fades**, so put the short self-directed prompt under the heading.
+  Three or four short moves is right.
 - **Workspace** shrinks. The child brings their own structure by this point.
 - **Start Here becomes self-generated** -- *"set up your own first tiny step"* rather than a
   pre-written micro-action. **The heading stays**; the content changes from "do exactly
@@ -2366,9 +2391,8 @@ One card per attraction or experience. Filled copies live at
 
 **Rows, in order:** Name; City/area; Type; Why it is interesting; Time needed; Ticket or
 reservation needed?; Best time of day?; Nearby places; Possible downside; Review themes;
-Official website needed?; Source; Date checked; Planning assumption; Needs adult
-verification? (yes / no); Final decision status (researching / must-do / strong maybe /
-only if nearby / skip or save for future).
+Official website needed?; Source; Date checked; Planning assumption; **Why I am using this assumption**; **What could change it?**; Needs adult verification? (yes / no); Final decision status (researching / must-do /
+strong maybe / only if nearby / skip or save for future).
 
 **The predict-then-verify row is mandatory and lives on the source line.** Add a prompt row
 worded to keep it there -- for example `My guess before I looked it up`. Frame it ungraded:
@@ -2387,8 +2411,7 @@ ever implying the child is behind.**
 
 **Rows, in order:** Name or dining area; City/neighborhood; Type of food; Near which
 attraction or hotel?; Reservation needed?; Cash-only?; Review themes; Possible downside;
-Source; Date checked. **Add**, to match the other research cards: Planning assumption;
-Needs adult verification?; Final decision status.
+Source; Date checked. **Add**, to match the other research cards, the full five-prompt block: Planning assumption; **Why I am using this assumption**; **What could change it?**; Needs adult verification? (yes / no); Final decision status.
 
 **Mandatory teaching line:** *"Not every meal needs to be famous."* It may sit as the
 card's closing tip or a short lead line.
@@ -2412,7 +2435,7 @@ One card per hotel option. Consumed by Session 35, set up by Session 34.
 re-check, with the date); Date checked; Room setup question for adults; Distance to useful
 transit; Distance to planned sights; Nearby sights; Breakfast available?; Easy breakfast
 nearby?; Cancellation/flexibility note (adults verify); Review themes; Pros; Cons; Sources;
-Planning assumption; Needs adult verification?; Final decision status.
+Planning assumption; **Why I am using this assumption**; **What could change it?**; Needs adult verification? (yes / no); Final decision status.
 
 **Printability is a real constraint: 1-2 pages.** If it runs long, **Pros, Cons and Review
 themes compress first**; the cost, date-checked, verification and decision-status rows
@@ -2492,6 +2515,18 @@ actually drives a decision, it moves into your decision log."*
 
 **The five prompts, exactly:** Planning assumption; Why I am using this assumption; What
 could change it?; Needs adult verification?; Final decision?
+
+**All five go on every research card, and two of them are missing today.** The built
+`city_research_card.md` carries only Planning assumption, Needs adult verification? and
+Final decision status -- it predates this canonical block. **This batch adds the two missing
+rows to it**, which is the edit the scope table authorizes, so the attraction, restaurant,
+hotel and city cards all end up carrying the same block. A canonical field that three of
+four cards implement differently is not canonical.
+
+**One rendering note:** the cards render the fifth prompt as `Final decision status` with
+their own status vocabulary, because a card's decision has named states. The block's
+`Final decision?` is the generic form. **That difference is deliberate; the other four
+prompts are word-for-word.**
 
 **The graduation rule**, in one sentence: an assumption that drives a decision graduates
 into the decision log. Link the decision-record template.
@@ -2731,10 +2766,17 @@ The adult's checklist of everything the child never touches. **Long-lead items f
 
 1. **Passports are an early parent action, not a late readiness step.** A child's first
    passport is a long-lead item and it constrains the earliest feasible travel window, which
-   shapes the seasonal research the child is doing. Note that a child under 16 must apply in
-   person with both parents and that routine processing can take many weeks -- **verify
-   current times on the official government source; do not state a number of weeks.**
-   **Label these rules US-specific**; a family in another country would swap them.
+   shapes the seasonal research the child is doing.
+
+   **Write the requirements as things to verify, not as rules.** The application, consent
+   and who-must-attend requirements for a child's passport, and the processing times, **all
+   change and all have documented exceptions** -- a family where one parent cannot attend
+   has official alternatives, and a page that states the rule flatly tells them they are
+   stuck. So name **that** there are age-based in-person, consent and attendance
+   requirements and that processing takes time, then **route every specific to the current
+   official government source.** Do not state who must attend, and **do not state a number
+   of weeks.** **Label the whole topic US-specific**; a family in another country would swap
+   it.
 2. **Using a travel agent is a legitimate choice -- stay neutral.** **Do not recommend for
    or against, and do not endorse a service.** Say plainly that the child's binder stays
    valuable as the family's **brief to the agent**: it captures what the family actually
@@ -2934,7 +2976,15 @@ not be rewritten.**
 
 **Parent-gated versus independent must be visible.** Only these are parent-gated: **Session
 00**, the six checkpoints (**14, 22, 27, 32, 46, 52**), and the co-research source-judging
-**Sessions 05 and 08.** Everything else is independent.
+**Sessions 05 and 08.**
+
+**Parent-gated is not the same as unsupervised, and the difference matters once.**
+**Session 25 is not parent-gated, and it is not independent either** -- its own
+requirements keep video research with an adult, keep the kid-safe filter on, and set
+`Parent involvement: co-working recommended`. A support-notes entry that files it under
+"everything else is independent" would tell a parent to step away at exactly the session
+whose online-safety guardrail requires them to stay. **Write Session 25's Role line as
+co-worked.** Every session not named in this paragraph is independent.
 
 **Status labels to carry:** 18, 36, 37 and 47 are **`Conditional core`** and
 **auto-promote to Core later** if the need appears -- **the parent is never asked to
@@ -3404,10 +3454,22 @@ file was cancelled by an earlier decision and its artifact merged into the famil
 page, so the goals entry carries it. A binder list naming an unbuilt page sends a child to
 an empty tab. (`D-X-8`.)
 
-**The tab mapping in `print_index.md` holds two things this list does not** -- the
-Trip-Basics card under Tab 1, and the "My Calls" page under Tab 9. Both are required
-elsewhere by the spec, so **neither may be dropped and the list is not renumbered to
-absorb them.** (`D-X-7`.)
+**The tab mapping in `print_index.md` files five things this list does not name**, and a
+reviewer who checks will find all five, so state them rather than two:
+
+| Mapping-only entry | Tab | Why it is not in the item list |
+| --- | --- | --- |
+| Trip-Basics card | 1 | Family setup input, not something the child produces |
+| The kept Phase 1 research-skill artifacts | 2 | The family chooses which to keep, so the set is not fixed |
+| "My Calls" page | 9 | A ceremonial record of owned decisions |
+| Parent review forms | 10 | The adult fills these, one per checkpoint |
+| Final recommendation summary / executive summary | 11 | An output shell, summarized forward from the rest |
+
+**The rule behind the difference, which is what to state on the page:** the item list names
+**what the child produces**; the mapping additionally files **the family's setup input, the
+adult's review forms, and the summaries assembled from the rest.** None of the five may be
+dropped -- each is required somewhere else in the design -- and **the list is not renumbered
+to absorb them.** (`D-X-7`.)
 
 **Print no total on either surface.** The spec labels its list "the 27" and that number is
 now wrong twice over -- once from the cancelled item, once from the two tab-only entries. A
@@ -3658,6 +3720,28 @@ leaves only earlier history for reusers. Add one release entry for Batch 2.
 standing exception is the `0.1.0` entry, which records which pack shipped in that release
 and is not edited.
 
+### The Batch 1 riders this batch retires
+
+**Batch 1 wrote its Session 15 exception onto four surfaces and said in each that Batch 2
+removes it.** This batch does the conversion and the verification, so it must also do the
+removal -- otherwise the shipped builder docs keep telling a new destination author that
+Session 15 leaks and must be converted by hand, long after it does not.
+
+| Surface | What to remove |
+| --- | --- |
+| `framework/docs/build_style_and_vocab.md` | The three-part exception in the destination-name rule: the clause naming Sessions 15, 21, 33, 44 and 53, and the sentence about converting one and verifying four. **Keep the rule's own banning sentence**, which is a permanent, documented exception |
+| `framework/README.md` | The Session 15 exception note, **and bump the Curriculum version field** to match the new changelog release |
+| `destinations/<place>/session_inserts/README.md` | The temporary-exception rider recording Session 15's present state, and Session 15's row in the not-yet-neutral list |
+| The section 4.4 destination-leak exemption list | Session 15's entry. **Once it is empty, remove the list**, since an empty exemption list reads as "exemptions exist" |
+
+**Remove only the cleared exception.** The style law's banning sentence and the `0.1.0`
+changelog line are permanent and documented; they are not riders and they stay. **Do not
+delete a paragraph because it mentions Session 15** -- read what the paragraph is for.
+
+**Verify by re-running the greps in the Definition of Done.** If the exemption list is gone
+and the greps are clean, the retirement is complete. If a grep still fires, the conversion
+is incomplete and removing the rider would make the docs wrong in the other direction.
+
 **The entry must record, at minimum:**
 
 - What was added -- the sessions by phase, the thirteen templates, the parent apparatus, the
@@ -3671,6 +3755,9 @@ and is not edited.
 - **The two designated hand-off sessions, 16 and 40**, so a later batch does not re-derive
   them and land them somewhere else.
 - **The lighter-template phase reading**, with its accepted cost.
+- **The Batch 1 riders retired**, and the curriculum version bump that goes with them.
+- **`safety_and_emergency.md`** as a reference file this batch's routing obliges Batch 3 to
+  write, since it was in no earlier scope list.
 
 ---
 
@@ -3720,14 +3807,25 @@ and is not edited.
 - **Run the leak greps and read their output**, rather than trusting a silent pass:
 
   ```text
-  grep -rwE 'Chicago|ORD|17|grandmother|uncle' framework/
+  grep -rwE 'Chicago|ORD|grandmother|uncle' framework/
+  grep -rnE '17[ -]?(day|night)s?' framework/
   grep -rwE 'Japan|Tokyo|Kyoto|Osaka|Shinkansen' framework/
   grep -rn 'destinations/' framework/sessions/
   grep -rnE 'Section [0-9]' framework/
   ```
 
-  The first two must find nothing but the style law's own banning sentence and the `0.1.0`
-  changelog line. **The third and fourth must find nothing at all.** A grep that prints
+  **The trip-length check is two commands, and the split is not cosmetic.** The archived
+  criterion greps a bare `17`, and **that pattern stops working the moment this batch
+  creates Session 17** -- `-w` treats the colon in `# Session 17:` as a word boundary, so
+  the heading matches, every cross-reference to that session matches, and a date ending
+  `-17` matches. A gate that cannot return clean is not a gate. The value being protected is
+  the **trip-length cap**, so the second command looks for it with its unit attached, which
+  is how it would actually be written. **A bare `17` with no unit is not greppable any
+  more**; if you need to check one, read it in context. The `AC-29-2` hook, when it is
+  built, scopes the pattern the same way.
+
+  The first three must find nothing but the style law's own banning sentence and the `0.1.0`
+  changelog line. **The last two must find nothing at all.** A grep that prints
   nothing because it was pointed at the wrong path is not a pass -- **confirm the command
   read the corpus you think it read.**
 
@@ -3747,8 +3845,13 @@ and is not edited.
 - **Confirm the five re-pointed built sessions** -- 15, 21, 33, 44, 53 -- still carry their
   First Taste position markers, and that the thirteen-session First Taste chain still reads
   end to end on its italic lines.
-- **Confirm the kit copies still equal their templates.** A test in this repository asserts
-  this; run it rather than reading the files.
+- **Confirm the kit copies still equal their templates**, by running
+  `pytest tests/test_trip_starter_kit_copies.py` rather than reading the files. **That test
+  arrives with Batch 1**, so if it is not there, Batch 1 has not merged and this batch
+  should not have started. Running a test is not editing one -- the rule against touching
+  `tests/*` forbids changing it, not executing it. **If a kit copy legitimately needs to
+  change, the template changes and the copy follows**; a Batch 2 author never edits the test
+  to accommodate a divergence.
 - **Write the changelog entry**, including every departure listed in section 11. A batch that
   built correctly and recorded nothing has left the next author to re-derive all of it.
 
