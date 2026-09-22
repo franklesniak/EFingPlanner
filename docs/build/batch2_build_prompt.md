@@ -674,12 +674,18 @@ the running total. **Built Session 33 has no flight content at all** -- it delib
 keeps flights off the child's check, which is correct under the controllable-slice rule.
 So the second pass currently depends on a value nothing creates.
 
-**The fix belongs in Session 33, and it is parent-owned.** Add a short Parent Notes
-instruction and one optional workspace row where **an adult writes their rough per-person
-fare beside the child's estimate**, labelled as the grown-ups' number. **The child never
-researches it and never sums it into their own subtotal** -- that is the whole point of the
-split. A First Taste child whose parent skips the row loses nothing, because First Taste
-never reaches Session 39.
+**The fix belongs in Session 33's Parent Notes, and nowhere else on the page.** Add a
+short instruction telling the adult to keep a rough per-person fare of their own, so the
+second pass has something to compare against.
+
+**Do not add a workspace row for it.** An earlier draft of this brief said to, and that was
+wrong: the built `budget_estimate.md` states in as many words that flights are the
+grown-ups' number and that there is **nothing to fill in** on the child's worksheet. That is
+a deliberate design, not an omission, and the built repository wins. The fare lives on the
+adult's own page -- `money_budget_guidance.md` says so -- and the child never researches it,
+never writes it, and never sums it into their subtotal.
+
+A First Taste child is unaffected either way, because First Taste never reaches Session 39.
 
 #### Session 44 — the personal pick, now chosen at Session 26
 

@@ -2,7 +2,9 @@
 
 # Adult-Only Logistics
 
-Everything on this page is yours. Your child never touches any of it.
+The booking and logistics tasks on this page are yours. Your child never books, pays, or handles personal data.
+
+Two things here are theirs, and they matter: your child **flags** accessibility trouble spots for you, and your child **makes and learns** the separation card and its three-step plan. Don't skim past those — they're the parts a child can actually do, and the safety one is the reason the whole split works.
 
 Long-lead items come first, because those are the ones that quietly set your earliest possible travel date.
 
@@ -60,7 +62,9 @@ Write about this generically with your child — "an older adult" — rather tha
 
 One separation rule per outing, named to your child out loud each morning.
 
-The default is **"stay where you are"**, or move to the nearest safe, open spot. Use a meeting spot *instead* only when it's visible or right next to where you'll be that day, and only when you've named it that same morning.
+**The default rule is one action: stay where you are.** Not "stay or move" — one thing, rehearsed, that a frightened child can do without deciding anything.
+
+If where you're going has spots a child shouldn't stand still in, that's your cue to name a **specific adjacent meeting spot** for that outing instead, one they can see from where they'll be. Either way they leave the hotel each morning holding exactly one instruction.
 
 The reason matters more than the rule: a panicking child executes one rehearsed instruction. A child choosing between two does neither well.
 

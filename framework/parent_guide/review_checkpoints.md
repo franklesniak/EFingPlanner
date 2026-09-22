@@ -46,9 +46,13 @@ Every checkpoint decision also goes in your child's decision log. The checkpoint
 
 ## The six, one at a time
 
+Each has its own **what to consider** list. The review form checks whether the work is good enough in general; these are the specific things *this* checkpoint exists to catch, and a decision made without them is a decision made on the form alone.
+
 ### Checkpoint 1 — Season Recommendation (Session 14)
 
 **What they bring:** a season, a backup season, a season to be careful about, and how each fits school and work schedules.
+
+**What to consider:** weather; crowds; cost; major holidays; and how the season fits school and work schedules.
 
 **Progress is real:** the family now knows roughly *when*.
 
@@ -58,11 +62,15 @@ Every checkpoint decision also goes in your child's decision log. The checkpoint
 
 **Also yours to do here:** if you left the rough trip shape partly open at setup, firm it up now, including the exit city. The Phase 5 route work builds on it.
 
+**What to consider:** whether the travel scope is realistic; how it fits your maximum trip length; family interest; budget implications; safety and common sense; and anything it implies for international flights.
+
 **Progress is real:** the family now knows roughly *where*.
 
 ### Checkpoint 3 — Top Experiences (Session 27)
 
 **What they bring:** a must-do list, strong maybes, skips and save-for-futures, the biggest trade-offs.
+
+**What to consider:** variety; age appropriateness; cost; time realism; reservation needs; and whether it matches your family's pace.
 
 **Progress is real:** the family now knows the *top experiences*.
 
@@ -72,16 +80,22 @@ Every checkpoint decision also goes in your child's decision log. The checkpoint
 
 **Also yours to do here:** confirm or adjust the arrival and departure cities against real flight options. If they change, your child's route flexes — they move a block rather than starting over.
 
+**What to consider:** flights; the arrival and departure cities; how many hotel moves it involves; whether the transit is realistic; how it fits your maximum trip length; budget implications; and the family schedule.
+
 **Progress is real:** the family now knows *when, where, and how long*. The trip is becoming concrete.
 
 ### Checkpoint 5 — Itinerary Review (Session 46)
 
 **What they bring:** what they're confident about, what they're unsure about, what you need to decide, what could be cut, the biggest trade-offs.
 
+**What to consider:** pacing; transit time; meals; rest; booking needs; budget; safety; and practicality.
+
 **Progress is real:** the family has a usable *day-by-day plan*. This is the point where stopping is a genuine finish, not a shortfall.
 
 ### Checkpoint 6 — Family Decision Meeting (Session 52)
 
 **What they bring:** the final recommendation, and the handoff list of what adults verify, decide and book.
+
+**What to consider:** the final recommendation; what you approve; what you want changed; what you'll verify or book; and which questions stay open.
 
 **Progress is real:** the family has *made a decision*.

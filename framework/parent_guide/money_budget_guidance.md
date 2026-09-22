@@ -16,12 +16,14 @@ Your child's controllable slices are hotels, food, activities, local transit and
 
 The whole-trip total — their subtotal plus your flight number — is **your** sanity check, not their exercise.
 
+**Keep your fare number on your own page**, not on their budget worksheet. Their worksheet says in as many words that flights are the grown-ups' number and there's nothing to fill in there, and that's deliberate rather than an omission. A jotted line in this guide, or anywhere you keep trip notes, is all it needs to be.
+
 The honest reason: for a multi-person long-haul trip, flights dominate everything. They can run several times the entire rest of the trip put together. Put that in front of a ten-year-old as one line item and the rest of their careful work looks like rounding error. It isn't, and the split is what keeps it from looking that way.
 
 ## What you supply
 
 - **The controllable-slice band**, in a form a child can hold: a rough per-person per-day figure, a per-day figure for the family, or a hotel tier
-- **A rough per-person fare** for the flight line, which your child never researches
+- **A rough per-person fare**, which your child never researches and never writes down
 - **The final budget**, later
 
 ## The teaching points worth reinforcing

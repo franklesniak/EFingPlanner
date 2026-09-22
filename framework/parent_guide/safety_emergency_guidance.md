@@ -12,7 +12,9 @@ That split is deliberate. A ten-year-old who has rehearsed what to do if they lo
 
 One separation rule per outing, named to your child out loud each morning.
 
-The default is **"stay where you are"**, or move to the nearest safe, open spot, so you can find them. Replace it with "go to the meeting spot" **only** when the spot is visible or right next to where you'll be that day, and only when you've named it that same morning.
+**The default rule is one action: stay where you are**, so you can find them.
+
+Not "stay, or move somewhere safer" — that's two, and it asks a frightened child to judge which. If today's route has places a child shouldn't stand still in, name a **specific meeting spot** for that outing instead, one they can see from where you'll be, and name it that same morning. One rule per outing, either way.
 
 Stated plainly: a panicking child executes one rehearsed rule. A child choosing between two does neither.
 

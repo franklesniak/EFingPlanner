@@ -19,6 +19,8 @@ Copy this shape. It works for a season, a city, a route, a hotel, or a whole pla
 
 Part 3 is the one people skip. Don't. Naming what you're giving up is what makes the rest believable.
 
+When you're comparing two real options, the [Trade-Off Report](../templates/tradeoff_report.md) is the page that holds all four parts for you. Use it rather than rebuilding the comparison here.
+
 ## Back it with a source
 
 Every reason should be able to say where it came from. You don't have to remember it — your Source Log entry is enough. If someone asks "how do you know?", that's your answer.
@@ -30,6 +32,8 @@ Every reason should be able to say where it came from. You don't have to remembe
 ## Stop when it's useful
 
 You're done when a grown-up could act on it. Not when it's perfect. See [Good enough is good enough](planner_mindset.md) if you're stuck on this one.
+
+And this is worth saying plainly, because "a grown-up could act on it" can sound like a lot of pressure. **Your work is real *and* it's low-stakes, both at once.** It's real because grown-ups will actually use your recommendations. It's low-stakes because grown-ups make every big decision, and "let's park this for later" is always an okay answer. Your job is to help them decide better — not to be right.
 
 ## When grown-ups change it
 

@@ -26,14 +26,14 @@ A plan that ignores a constraint isn't a braver plan. It's a plan that breaks la
 Three steps, every time:
 
 1. **Name it.** Say what the limit actually is.
-2. **Write it down** on your card, in the planning-assumption block.
+2. **Write it down.** If it's settled — like the trip length on your Trip-Basics card — it goes in the card field it belongs to. If nobody's checked it yet, it goes in the planning-assumption block instead (see below).
 3. **Check your recommendation against it.** Does this still fit?
 
 That third step is the budget-band question your [Trade-Off Report](../templates/tradeoff_report.md) asks. Same move.
 
 ## Not sure about one?
 
-Then it's an assumption, not a constraint. Write it in your card's planning-assumption block. Say what could change it. Flag whether a grown-up needs to check it.
+Then it's an assumption, not a settled constraint. That's the difference: a constraint someone confirmed is a fact you plan around; one you're guessing at is an assumption you plan around *and flag*. Write it in your card's planning-assumption block. Say what could change it. Flag whether a grown-up needs to check it.
 
 When an assumption starts driving a decision, it moves to your decision log.
 
