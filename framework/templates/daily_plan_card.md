@@ -24,11 +24,12 @@ Save these as `block_01.md`, `block_02.md`, and so on.
 
 | Day | Anchor activity | Morning | Lunch idea | Afternoon | Dinner idea | Transit notes | Tickets or reservations to flag | Estimated cost (an example to re-check) | Energy level (easy / medium / big day) | Backup idea |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 1 | | | | | | | | | | |
-| 2 | | | | | | | | | | |
-| 3 | | | | | | | | | | |
+| | | | | | | | | | | |
+| | | | | | | | | | | |
+| | | | | | | | | | | |
+| | | | | | | | | | | |
 
-Each day gets its own row for transit, tickets, cost and a backup, because those really do change day to day — and Session 45 copies them across one day at a time. If the table is too wide to print, split it: days and activities on one page, transit and tickets and cost on another.
+Number the Day column yourself, and add rows for as many days as the stay lasts — a four-night stay needs four rows, and a long one can carry on to a second sheet. Each day gets its own row for transit, tickets, cost and a backup, because those really do change day to day — and Session 45 copies them across one day at a time. If the table is too wide to print, split it: days and activities on one page, transit and tickets and cost on another.
 
 Mark your first day **easy**. Getting from the airport to where you're staying is a real chunk of that day, and you'll be tired. Often day two is easy too.
 

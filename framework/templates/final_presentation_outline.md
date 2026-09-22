@@ -45,6 +45,6 @@ If you want to work up to it, [the differentiation guide](../parent_guide/differ
 
 | | |
 | --- | --- |
-| I'll present by | |
+| Circle one | live / practise with one parent first / from notes / record a video / hand over the binder with a summary |
 
 Every claim you make should be able to name where it came from. If someone asks "how do you know that?", your Source Log is the answer — you don't have to remember it.

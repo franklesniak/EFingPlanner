@@ -20,6 +20,12 @@ Write the area names across the top, then fill down. If the grid gets too wide t
 | Sources (also in my Source Log) | | | |
 | Date checked | | | |
 
+**The one I'd recommend:**
+
+**Why, in one sentence:**
+
+Circle it on the grid too, so the page says it twice — once where you compared, once where you decided.
+
 A few things worth knowing while you fill this in. A cheaper place far out can cost you time and energy instead of money, and tired is expensive too. Being near a useful station may be worth paying for. How an area *feels* matters — you'll walk it every morning and every night. Easy breakfast nearby saves a slow start. And there's more than one type of place to stay: open your destination pack for the lodging types where you're going.
 
 If you'd rather score these than eyeball them, use the [scoring rubric](scoring_rubric.md) — it has a lighter three-criteria version beside the full one, and either is fine. Adults finalize lodging safety and booking.

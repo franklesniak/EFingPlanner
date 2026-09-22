@@ -28,6 +28,8 @@ Two tables, so the page still prints. The **Item** column is the same in both â€
 | | | | | |
 | | | | | |
 
+Add rows as you need them, and keep the two tables matching â€” every item in the first one needs its row in the second. If you run past the page, carry both halves on to another sheet. Every item off your day cards that might need booking belongs here, however many that turns out to be.
+
 Things worth putting on this list: popular museums, theme parks, special restaurants, tours, long-distance trains if your trip uses them, anything with a timed ticket, and hotels.
 
 For the last column, use words like *ask adults to confirm*, *adults verify*, *adults decide*, *adults book*. That column is the grown-ups' side of the page.
