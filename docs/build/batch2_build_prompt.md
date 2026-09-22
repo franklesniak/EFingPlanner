@@ -215,7 +215,14 @@ and 32 detail -- are annotations and must be **stripped**.
 
 Write a fill-in blank pointing at the card instead:
 
-> your family's maximum trip length (from your [Trip-Basics card](../../trip_starter/family/trip_basics.md))
+> your family's maximum trip length (from your [Trip-Basics card](../../templates/trip_basics.md))
+
+**The path is `../../templates/trip_basics.md`, and it is worth being exact about**,
+because two files carry that name. The blank lives in `framework/templates/`; the copy the
+family actually fills lives in the kit at `framework/trip_starter/family/trip_basics.md`.
+**All five built sessions that reference the card link the template**, and the built
+repository wins, so every session this batch writes links the template too. The kit copy is
+reached through the kit, not from a session.
 
 Speak generically about people: "an older relative (for example a grandparent)", "each
 traveler", "a traveler with lower stamina".
@@ -321,9 +328,19 @@ project:
 
 - The heading is **`## Finish and Quality Check`**. The spec's separate
   `## Completion Checklist` and `## Quick Quality Check` were merged in the built repo.
-- The two card pointers are **frozen wording**, identical in every session:
+- The two card pointers are **frozen wording**:
   - `Finished? Use the [Finish and Quality Check card](../../student_guide/finish_and_quality_check.md) in your student guide.`
   - `Stuck? Use the [When I'm Stuck card](../../student_guide/when_im_stuck.md) in your student guide.`
+
+  **Do not copy these two lines from the golden exemplar.** Measured across the built
+  corpus: the `Stuck?` line is identical in all nineteen sessions, and the `Finished?` line
+  is the bare form above in eighteen of them. The one that differs is
+  `04_start_a_source_log.md`, which adds *"It's a quick self-check, not a grade."* -- and
+  that is correct there, because Session 04 is where the card is introduced and a concept
+  gets glossed once, at introduction. **Every later session points without the gloss.**
+  Since this brief names Session 04 as the file to draft against, an author who copies its
+  pointer block verbatim would diverge from eighteen sessions while believing they matched
+  the exemplar.
 - **The H1 is `# Session NN: Title`, with a two-digit number matching the filename.**
   `# Session 2:` fails the gate; `# Session 02:` passes.
 - **The navigation aid is one line**, opening `You are here: Phase N (Phase Name)`, then
