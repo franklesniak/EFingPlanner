@@ -311,6 +311,7 @@ judgment only the owner can make.
 | **B3-6** | Does this batch extend `kid_glossary.md` with the new terms its files introduce (ryokan, takkyubin, koban, konbini, goshuin)? | **Yes, and it is an edit to a built file, so it is in scope and listed** | The glossary is the child's route to any destination word they meet. A slot that uses `takkyubin` while the glossary does not define it has left a ten-year-old with an unglossed word. Check each term before adding: Batch 1 built the glossary and several are already there |
 | **B3-8** | The built `major_cities.md` already states the shoe-removal and photography guidance that `etiquette_basics.md` must carry, and already carries the attraction menu that `23_attraction_ideas.md` must supply. Two homes, or one? | **One. `major_cities.md` is added to scope**, its etiquette section becomes a pointer to `etiquette_basics.md`, and its attraction menu **stays** as the canonical menu that slot 23 points at | The same treatment `B3-4` gives the arrival day, for the same reason. The direction differs per fact: etiquette moves out, because `etiquette_basics.md` is the canonical home the contract routes Session 47 to; the attraction menu stays, because the contract already routes slot 19 to this reference for exactly that list and moving it would break a built route |
 | **B3-9** | The built `money_basics.md` already carries the per-person and per-room split, the child-fare note and the moving taxes. Does `adult_logistics.md` restate them? | **No, and `money_basics.md` is added to scope** for one edit: the link to `access_and_pricing_watch.md` goes beside its child-fare note, which is the budget surface the archived record names | Restating them would give three dated pages the same facts. The record asks for the watch to be cross-linked from the budget surface, and the budget surface is this file, not `adult_logistics.md`, which carries no child-fare note |
+| **B3-10** | `B3-8` has slot 23 point at `major_cities.md`, which is not in slot 23's contract row. Is that an undocumented route? | **It would be, so the contract row gains it.** Slot 23's Reference column becomes `food_basics.md`, `major_cities.md` | `AC-29-1` asks that no fact reach a child by a route the contract does not carry. A slot pointing somewhere the row does not name is exactly that. The row keeps `food_basics.md`, which is why it exists: food-type attractions |
 | **B3-7** | The archived record names specific high-draw attractions and specific everyday options. Are those names requirements or examples? | **Requirements for the category, examples for the instance** | The record's own teaching point is that famous is not the only good, and it names everyday options precisely so the pack carries them. Write the categories it names. Within a category, an instance that has closed or moved gets replaced rather than preserved, because a pack naming a closed venue teaches the opposite of verify-don't-trust |
 
 **B3-1 adds a file the archived record does not name**, so the counts in sections 0 and 2
@@ -339,10 +340,13 @@ Must carry:
 
 - **The multi-gateway point, which is the reason this file exists.** Where a destination
   city has more than one international gateway, which one the family lands at changes
-  arrival-day fatigue substantially -- one is materially closer to the city than the other,
-  and the difference is more than an hour of extra transit with a tired party. Name the
-  gateways. **Do not pin the transit time**, name that it differs and that current options
-  are checked.
+  arrival-day fatigue substantially: one is materially closer to the city than the other,
+  and the further one can add a long extra leg at the end of a long flight. Name the
+  gateways and name that the difference is large enough to plan around.
+  **Do not pin the difference as a duration.** "More than an hour" is a journey time, and
+  rule 1.2 bans those for the same reason it bans fares: routes and service patterns
+  change while the durable point -- gateway choice drives arrival-day fatigue -- stays
+  true. Write the comparison qualitatively and send the reader to check current options.
 - **Airport-to-city transit as a category:** what kinds of option exist (train, express
   service, bus, taxi), what makes one better for a family with luggage, and that current
   services and prices are verified close to travel.
@@ -453,11 +457,10 @@ file a child has no task in.
 Must carry:
 
 - **The occupancy reality, which is the reason Session 34 routes here.** Rooms are
-  commonly smaller than a US family expects and are priced and capped **per person**
-  rather than per room -- that is, rooms are commonly smaller than a US family expects and
-  cap how many people fit. A larger or multi-generational party often cannot put everyone
-  in one room, connecting rooms are not a given, and this shapes both the budget and which
-  lodging types work. State it as the category and what to verify per property.
+  commonly smaller than a US family expects, and they **cap how many people fit**. A larger
+  or multi-generational party often cannot put everyone in one room, connecting rooms are
+  not a given, and this shapes both the budget and which lodging types work. State it as
+  the category and what to verify per property.
   **Do not write that Japanese lodging is priced per person in general.** Most hotels are
   priced per room with an occupancy cap; a traditional inn is the type usually priced per
   person. `money_basics.md` already carries that three-way split, so point at it rather
@@ -500,9 +503,14 @@ archived record sets:
 - **The "if you ever get separated" note**, in the same register, placed next to it. Most
   of the time you are with your family. If you cannot find them: do what today's one rule
   says, which a grown-up names each morning and is usually to stay where you are, then
-  find a uniformed helper. Name the kinds of helper -- a station worker, a shop or security
-  worker with a nametag, a convenience store, a neighborhood police post -- with the local
-  words, and add each to the child glossary per `B3-6`.
+  find a helper.
+  - **The helpers are not a flat list, and the order is Batch 2's.** A neighborhood police
+    post or a uniformed worker -- a station worker, a security or shop worker with a
+    nametag -- is **the main route**. A convenience store is **an extra option**, because a
+    shop's help is voluntary, so head for the police post if one is near. **Write that
+    priority into the sentence.** A child reading four equivalent options under stress
+    picks the nearest, and Session 49 sends them here expecting the ranked version.
+  - Name each kind with the local word, and add each to the child glossary per `B3-6`.
 - **Two emergency phrases a child could say or show**, romanized, with a pronunciation
   guide a ten-year-old can read aloud. **These are child-facing and belong in this part**:
   Session 49 has the child copy them onto their own card, so putting them under the
@@ -638,6 +646,11 @@ hours.
 - **The stamp book is in the reference too**, and it keeps its etiquette clause there. If
   the slot names it, one line is enough: it is a collection that grows during the trip,
   and the pack explains the custom.
+- **`food_basics.md` is this slot's contracted reference and it keeps its pointer.**
+  Session 23 writes only the Destination Notes phrase, so **every reference in the
+  contract row has to be reachable from the slot** or the child cannot get there at all.
+  The `major_cities.md` pointer that `B3-8` adds sits beside it; it does not replace it.
+  Food-type attractions are why that row names the food reference.
 - **Name operators, not venues, where venues move** (`B3-7` and rule 1.2). The immersive
   art operator whose venues open, close and relocate is named as an operator with a
   pointer to its official site, never as one fixed venue.
@@ -709,8 +722,31 @@ the child will get wrong.
 - **Name the customs with rules of their own, one line each, and point at
   `etiquette_basics.md`** (`B3-3`). The bathing content in particular is reference depth
   with an adult-owned judgment attached.
+- **`language_basics.md` is the row's other reference and it keeps its pointer.** Session
+  47 writes only the Destination Notes phrase, so a reference the slot does not name is a
+  reference the child cannot reach. Both go in.
 - **The phrase set here is the pocket version** of `language_basics.md`'s: the handful a
   child would actually try, with the pronunciation guide. Do not reproduce the full set.
+- **Session 47 builds a quick sheet with fixed categories, and every one of them is filled
+  from this slot.** The session names none of them itself, so a category this slot does
+  not supply is a row the child cannot complete. The categories:
+
+  | Category | What this slot supplies |
+  | --- | --- |
+  | Hello, thank you, excuse me, please, yes and no | The phrase, with the pronunciation guide |
+  | Basic restaurant phrases | The few a child uses ordering |
+  | Quiet public transit | One line on the norm |
+  | Shoes indoors | One line, and the reference carries the depth |
+  | Trash norms | One line on how rubbish is handled |
+  | Respect at religious or historic sites | One line, matter-of-fact |
+  | **No tipping, where that applies** | One line. **This is a category an author drops**, because it is an absence rather than a rule, and a US family will otherwise tip |
+  | **Cash and payment awareness** | One clause and a pointer to `money_basics.md`, which is the canonical home of the cash culture. Say that many small places may take only cash, that the family plans to carry some, and that adults handle getting it |
+  | Local signs and instructions, including photo limits | One line, plus: ask before photographing people |
+  | Public-bathing etiquette, if the family may visit one | One line and a pointer to `etiquette_basics.md` (`B3-3`) |
+
+  **Two of these were missing from an earlier draft of this brief** -- no-tipping and cash
+  awareness -- which would have let an author satisfy every listed requirement and still
+  leave two quick-sheet rows with nothing to fill them from.
 - **This is the slot `AC-16-1`'s human half bites hardest.** Read rule 1.4 again before
   drafting it, and read it again after.
 
@@ -763,7 +799,8 @@ the child will get wrong.
   - Any session that reads wrongly against a pack file, per the paragraph below.
 
 **Findings you cannot fix belong in this brief's own record, not in a framework edit.**
-This batch may not touch `framework/` beyond the changelog. If a session reads wrongly
+This batch may not touch `framework/` beyond the changelog and the curriculum version line
+in `README.md`, which section 2 scopes and the release step above requires. If a session reads wrongly
 against a pack file -- it asks for a fact the contract does not route, or it names a
 reference the pack does not have -- write it down as a Batch 4 item in the changelog's
 "still owed" line and in the run's decision record. **Do not fix it by widening this
@@ -791,22 +828,23 @@ a contract link converted before its target exists.
 ```text
 grep -rwE 'Chicago|ORD|grandmother|uncle' destinations/
 grep -rwE '17[ -]?(day|night)s?' destinations/
-find destinations/japan/reference destinations/japan/session_inserts -name '*.md' ! -name 'README.md' | wc -l
-grep -rlE '^\*\*Last reviewed:\*\* [A-Z][a-z]+ [0-9]{4}$' destinations/japan/reference destinations/japan/session_inserts | wc -l
+for f in $(find destinations/japan/reference destinations/japan/session_inserts -name '*.md' ! -name 'README.md'); do head -6 "$f" | grep -qE '^\*\*Last reviewed:\*\* [A-Z][a-z]+ [0-9]{4}$' || echo "no stamp below the title: $f"; done
 grep -rn '`[a-z_0-9]*\.md`' destinations/japan/session_inserts/README.md
 ```
 
-The first two find nothing. **The third and fourth are a pair and their two counts must be
-equal**: every fact file that is not a README carries a correctly formatted stamp on its
-own line. The fifth lists filenames still written as inline code in the contract, and after
-this batch it should be empty (section 3.3).
+The first two find nothing. **The third names every fact file whose stamp is missing,
+malformed, or not in the first six lines**, and on a correct tree it prints nothing. The
+fourth lists filenames still written as inline code in the contract, and after this batch
+it should be empty (section 3.3).
 
-**The counts are a pair for a reason.** An earlier draft of this check ran
-`grep -rL 'Last reviewed'` and expected it to name only the READMEs. It cannot: the
-contract README mentions the phrase in its own prose about the stamp format, so it would
-not be listed, no file would be, and the command would print nothing and exit non-zero on
-a correct tree. Worse, a malformed or misplaced stamp would pass simply by containing the
-words. **Anchor the format and the placement, and count.**
+**The stamp check has been wrong twice, so here is what it has to do.** The first version
+ran `grep -rL 'Last reviewed'` and expected it to name only the READMEs. It cannot: the
+contract README mentions the phrase in its own prose about the stamp format, so no file
+would be listed, and the command would print nothing and exit non-zero on a correct tree.
+The second version anchored the format but still searched the whole file, so a stamp at
+the bottom of a page counted -- while rule 1.3 requires it directly below the title. The
+form above checks **format and placement together**, which is the only version that
+matches what the rule actually says.
 
 ### Done when
 
