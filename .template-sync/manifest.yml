@@ -484,6 +484,19 @@ template_manifest:
     - pattern: 'tests/test_replace_template_placeholders.py'
       requires_all:
         - baseline
+    # The repository-wide self-containment scan and the fixtures it reads.
+    # It checks every tracked text file rather than one module's, so it
+    # belongs to the baseline.
+    - pattern: 'tests/test_self_contained_references.py'
+      requires_all:
+        - baseline
+    - pattern: 'tests/fixtures/self_contained_references/**'
+      requires_all:
+        - baseline
+    # The Python packages the repository's own checks are installed from.
+    - pattern: 'requirements-dev.txt'
+      requires_all:
+        - baseline
     - pattern: 'tests/test_check_prohibited_placeholders.py'
       requires_all:
         - markdown

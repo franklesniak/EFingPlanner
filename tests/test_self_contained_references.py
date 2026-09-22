@@ -337,7 +337,14 @@ REVIEW_HISTORY_PATTERNS = (
         # and a repository reaching seven of them would have dropped out of
         # this gate without anyone noticing. Measured, removing the cap
         # changes nothing here: 48 matches before and 48 after.
-        re.compile(r"(?<![\w&#/(])#\d+\b"),
+        # The exclusion before the hash is narrowed to a Markdown link
+        # destination. Excluding every opening parenthesis also excluded the
+        # commonest prose form there is -- a reference in brackets after the
+        # word it belongs to -- and no other pattern recovered it. Measured,
+        # the narrowing costs nothing: 48 matches before and 48 after. An
+        # anchor to a numbered heading stays excluded, because its hash sits
+        # after a closing bracket and a parenthesis together.
+        re.compile(r"(?<![\w&#/])(?<!\]\()#\d+\b"),
     ),
     (
         "an unlinked issue",
@@ -432,26 +439,6 @@ REVIEW_HISTORY_PATTERNS = (
 #: of the URL was then searched for references of its own.
 #: https://datatracker.ietf.org/doc/html/rfc3986#section-3.1
 URL_PATTERN = re.compile(r"(?i)(?:https?://|www\.)\S+")
-#: A Markdown link reference definition: a bracketed label, a colon, and the
-#: destination. CommonMark allows up to three leading spaces.
-#: https://spec.commonmark.org/0.31.2/#link-reference-definitions
-LINK_DEFINITION = re.compile(
-    r"^ {0,3}\[([^\]]+)\]:\s*"      # the label, then the colon
-    r"(?:<([^<>\n]*)>|(\S+))"             # the destination, plain or in angles
-    r"(?:[ \t]+(?:\"[^\"]*\"|'[^']*'|\([^)]*\)))?"   # an optional title
-    r"[ \t]*$"
-)
-#: A use of one, in the three forms CommonMark defines: full
-#: ``[text][label]``, collapsed ``[label][]``, and shortcut ``[label]``.
-#: **An inline link is deliberately not one of them.** Searching for any
-#: bracketed run let an inline link -- a bracketed reference with its own
-#: destination in parentheses -- be resolved by a same-named definition
-#: elsewhere in the document, which the renderer
-#: never consults: an inline destination wins, and the definition is unused.
-#: https://spec.commonmark.org/0.31.2/#reference-link
-LINK_REFERENCE_USE = re.compile(r"\[([^\]]*)\](?:\[([^\]]*)\])?(?!\()")
-#: Whitespace inside a label, which CommonMark folds to a single space.
-LABEL_WHITESPACE = re.compile(r"\s+")
 DIGITS_PATTERN = re.compile(r"\d+")
 #: The key inside a tracker reference, pulled back out of the match so a URL
 #: can be asked whether it names the same thing. The shape is the one
@@ -982,122 +969,6 @@ def names_in(
     return found
 
 
-def normalize_link_label(label: str) -> str:
-    """Return a link label in the form CommonMark compares labels in.
-
-    Case is folded and any run of whitespace becomes one space, so a definition
-    written across two lines still matches the use that names it.
-    https://spec.commonmark.org/0.31.2/#matches
-    """
-    return LABEL_WHITESPACE.sub(" ", label.strip()).casefold()
-
-
-#: A raw HTML block whose contents a reader sees as written, and what ends
-#: it. A script, style, pre or textarea element and an HTML comment each
-#: hold their contents literally; an ordinary element opens a block that
-#: CommonMark ends at a blank line. Those are the shapes that can hold a
-#: whole line and still show it, which is what makes them a way in.
-#: https://spec.commonmark.org/0.31.2/#html-blocks
-HTML_BLOCK_OPENS = re.compile(
-    r"(?i)^ {0,3}(?:<(?:script|pre|style|textarea)(?:\s|>|/>|$)|<!--|<[?!]"
-    r"|</?[a-z][a-z0-9-]*(?:\s[^>]*)?/?>\s*$)"
-)
-#: What closes a literal element or a comment on the line it appears on.
-HTML_LITERAL_CLOSES = re.compile(r"(?i)</(?:script|pre|style|textarea)>|-->")
-
-
-#: A fenced code block's opening or closing line. Three or more backticks or
-#: tildes, indented by at most three spaces.
-#: https://spec.commonmark.org/0.31.2/#fenced-code-blocks
-CODE_FENCE = re.compile(r"^ {0,3}(`{3,}|~{3,})(.*)$")
-#: A list marker at the start of a line, with the space that follows it. A
-#: fenced block nested in a list item carries one, and the fence pattern above
-#: is anchored, so the opener went unseen while the definition indented under
-#: it still matched -- the block's own example read as a live definition. Only
-#: the marker is peeled, because the indentation that follows is already inside
-#: what ``^ {0,3}`` allows.
-#: https://spec.commonmark.org/0.31.2/#list-items
-LIST_MARKER = re.compile(r"^ {0,3}(?:[-*+]|[0-9]{1,9}[.)])(?:[ \t]+|$)")
-
-
-def peel_list_marker(line: str) -> str:
-    """Return ``line`` without a leading list marker, if it carries one."""
-    return LIST_MARKER.sub("", line, count=1)
-
-
-def link_definitions(body: str) -> dict[str, str]:
-    """Return every link reference definition in one document, by label.
-
-    A reference-style link puts its destination on another line, so a
-    line-by-line scan saw a reference with no URL beside it and reported a
-    citation that renders as a link on the page. The rule asks for a reference
-    a reader can follow, and a reader following a reference-style link lands on
-    the destination, so the definition counts.
-    """
-    found: dict[str, str] = {}
-    # **A definition inside a fenced block is text, not a definition.** Reading
-    # one as real let a document silence a finding by showing the definition as
-    # an example rather than making it, which is a way of turning the check off
-    # from inside the file it checks. Only the fence is tracked, and only
-    # because that is the one construct that can hold a whole line and still
-    # render as literal text. The corpus holds no link reference definitions at
-    # all today, so this closes a route in rather than a live defect.
-    # ``fence`` holds the run that opened the block: its character and its
-    # length. Both are needed, because a closing fence must use the same
-    # character **and be at least as long** as the one that opened it, and must
-    # carry nothing after it but whitespace. Comparing only the character let a
-    # four-character opener be closed by a three-character line, so the text
-    # after it was read as document rather than as code -- the same bypass this
-    # tracker was added to shut, one level down.
-    # https://spec.commonmark.org/0.31.2/#fenced-code-blocks
-    # **A raw HTML block shows its contents too.** A definition written
-    # inside a script element, an HTML comment or an ordinary HTML block was
-    # collected as a real one -- the same way in that the fence tracker
-    # closes.
-    #
-    # **Measured, the set of contexts now closes.** An indented code block
-    # and a block quote were already immune, because a definition line has to
-    # begin within three spaces of the margin and cannot carry a quote
-    # marker. Fences, fences inside a list item, and raw HTML are the three
-    # that needed tracking, and there is no fourth.
-    html_block = False
-    fence: tuple[str, int] | None = None
-    for raw_line in body.split(chr(10)):
-        line = peel_list_marker(raw_line)
-        if html_block:
-            if not line.strip() or HTML_LITERAL_CLOSES.search(line):
-                html_block = False
-            continue
-        if fence is None and HTML_BLOCK_OPENS.match(line):
-            # A block that opens and closes on one line holds nothing.
-            html_block = not HTML_LITERAL_CLOSES.search(line)
-            continue
-        marker = CODE_FENCE.match(line)
-        if marker:
-            run, tail = marker.group(1), marker.group(2)
-            if fence is None:
-                # An opening fence may carry an info string, so the tail is
-                # only rejected for a backtick fence, where CommonMark forbids
-                # a backtick in it.
-                if run[0] == "`" and "`" in tail:
-                    continue
-                fence = (run[0], len(run))
-            elif run[0] == fence[0] and len(run) >= fence[1] and not tail.strip():
-                fence = None
-            continue
-        if fence is not None:
-            continue
-        match = LINK_DEFINITION.match(line)
-        if not match:
-            continue
-        # The destination is whichever of the two spellings matched: inside
-        # angle brackets, or bare.
-        destination = match.group(2) or match.group(3) or ""
-        if URL_PATTERN.match(destination):
-            found.setdefault(normalize_link_label(match.group(1)), destination)
-    return found
-
-
 def references_in(
     path: Path,
     root: Path,
@@ -1117,7 +988,6 @@ def references_in(
     if python is None:
         python = path.suffix == ".py"
     body = path.read_text(encoding="utf-8", errors="replace")
-    definitions = link_definitions(body)
     for number, line in enumerate(body.split("\n"), start=1):
         # Found with the greedy pattern so the whole run is blanked, then
         # trimmed so what is matched against is the URL itself.
@@ -1139,16 +1009,6 @@ def references_in(
             pieces.append(whole[len(trimmed) :])
             cursor = spotted.end()
         pieces.append(line[cursor:])
-        # A reference-style link names its destination elsewhere in the
-        # document, so a label used on this line brings its definition along.
-        if definitions:
-            for first, second in LINK_REFERENCE_USE.findall(line):
-                # ``[text][label]`` names its definition second; the
-                # collapsed and shortcut forms name it first.
-                label = second or first
-                destination = definitions.get(normalize_link_label(label))
-                if destination:
-                    urls.append(trim_url(destination))
         scanned = "".join(pieces)
         for name, pattern in REVIEW_HISTORY_PATTERNS:
             # Excused only in the documents that define the review protocol,
@@ -2258,115 +2118,6 @@ def test_an_identifier_without_an_underscore_is_still_an_identifier(
     assert not looks_like_an_identifier("SOME_CONSTANT_NAME")
 
 
-def test_a_reference_style_link_resolves_the_reference_it_labels(
-    tmp_path: Path,
-) -> None:
-    """The destination sits on another line, and the reader still lands on it.
-
-    A line-by-line scan saw a reference with no URL beside it and reported a
-    citation that renders as a link on the page -- the scan refusing the very
-    form its own message asks an author to use.
-    """
-    sample = tmp_path / "doc.md"
-    url = "https://github.com/o/r/issues/27"
-    # The reference is built from pieces for the same reason: written whole,
-    # it would be a finding in this file.
-    reference = "issue" + " " + "27"
-    body = (
-        "# T" + chr(10) * 2
-        + "See [" + reference + "][ticket-ref] for context." + chr(10) * 2
-        + "[ticket-ref]: " + url + chr(10)
-    )
-    sample.write_text(body, encoding="utf-8")
-    assert not references_in(sample, tmp_path)
-
-    # The label is matched without case and across folded whitespace, which is
-    # what CommonMark specifies.
-    sample.write_text(body.replace("[ticket-ref]:", "[Ticket-Ref]:"), encoding="utf-8")
-    assert not references_in(sample, tmp_path)
-
-    # A label with no definition resolves nothing, so the reference stands.
-    sample.write_text(
-        body.replace("[ticket-ref]: ", "[other-ref]: "), encoding="utf-8"
-    )
-    assert references_in(sample, tmp_path)
-
-    # A definition may carry a title, in any of the three forms CommonMark
-    # allows, and the destination may sit inside angle brackets. Requiring the
-    # line to end at the destination rejected every one of them, so a compliant
-    # citation was reported as unlinked.
-    for tail in ('"Issue details"', "'Issue details'", "(Issue details)"):
-        sample.write_text(body.rstrip(chr(10)) + " " + tail + chr(10), encoding="utf-8")
-        assert not references_in(sample, tmp_path), tail
-    sample.write_text(
-        body.replace(": " + url, ": <" + url + '> "Issue details"'), encoding="utf-8"
-    )
-    assert not references_in(sample, tmp_path)
-
-    # A definition shown inside a fenced block is an example of one, not one.
-    # Honouring it would let a document switch this check off from inside the
-    # file the check reads.
-    # A closing fence must use the same character, be at least as long as the
-    # opener, and carry nothing after it but whitespace. Comparing only the
-    # character let a four-character opener be closed by a three-character
-    # line, which reopened the bypass one level down.
-    for opener, closer in (("````", "```"), ("```", "``` not a close")):
-        shown = (
-            "# T" + chr(10) * 2
-            + "See [" + reference + "][ticket-ref] here." + chr(10) * 2
-            + opener + chr(10)
-            + closer + chr(10)
-            + "[ticket-ref]: " + url + chr(10)
-            + opener + chr(10)
-        )
-        sample.write_text(shown, encoding="utf-8")
-        assert references_in(sample, tmp_path), opener + " / " + closer
-
-    for fence in ("```text", "~~~"):
-        closing = fence[:3]
-        shown = (
-            "# T" + chr(10) * 2
-            + "See [" + reference + "][ticket-ref] here." + chr(10) * 2
-            + fence + chr(10)
-            + "[ticket-ref]: " + url + chr(10)
-            + closing + chr(10)
-        )
-        sample.write_text(shown, encoding="utf-8")
-        assert references_in(sample, tmp_path), fence
-
-
-def test_a_fence_inside_a_list_item_is_still_a_fence(tmp_path: Path) -> None:
-    """The example in a nested block must not read as a live definition.
-
-    The fence pattern is anchored near the start of the line, so a fence
-    carrying a list marker went unseen while the definition indented under it
-    still matched -- and the block's own example was collected as real.
-    """
-    sample = tmp_path / "doc.md"
-    url = "https://github.com/o/r/issues/27"
-    reference = "issue" + " " + "27"
-    for marker in ("-", "*", "+", "1.", "2)"):
-        pad = " " * (len(marker) + 1)
-        shown = (
-            "# T" + chr(10) * 2
-            + "See [" + reference + "][ticket-ref] here." + chr(10) * 2
-            + marker + " ```" + chr(10)
-            + pad + "[ticket-ref]: " + url + chr(10)
-            + pad + "```" + chr(10)
-        )
-        sample.write_text(shown, encoding="utf-8")
-        assert references_in(sample, tmp_path), marker
-
-    # A definition that is genuinely a definition still resolves.
-    sample.write_text(
-        "# T" + chr(10) * 2
-        + "See [" + reference + "][ticket-ref] here." + chr(10) * 2
-        + "[ticket-ref]: " + url + chr(10),
-        encoding="utf-8",
-    )
-    assert not references_in(sample, tmp_path)
-
-
 def test_a_hexadecimal_run_after_a_hash_sign_is_not_a_commit(tmp_path: Path) -> None:
     """A CSS colour is seven to forty hexadecimal characters, and is not a hash.
 
@@ -2532,46 +2283,6 @@ def test_an_identifier_has_no_ceiling_on_its_digits(tmp_path: Path) -> None:
         assert references_in(sample, tmp_path), digits
 
 
-def test_a_definition_inside_a_raw_html_block_is_not_a_definition(
-    tmp_path: Path,
-) -> None:
-    """A raw HTML block shows its contents, so a definition in one is an example.
-
-    This is the third literal context, and **measured, it is the last**: an
-    indented code block and a block quote were already immune, because a
-    definition line must begin within three spaces of the margin and cannot
-    carry a quote marker.
-    """
-    sample = tmp_path / "doc.md"
-    url = "https://github.com/o/r/issues/27"
-    reference = "issue" + " " + "27"
-    head = (
-        "# T" + chr(10) * 2
-        + "See [" + reference + "][ticket-ref] here." + chr(10) * 2
-    )
-    shapes = {
-        "script": "<script>" + chr(10) + "[ticket-ref]: " + url + chr(10) + "</script>",
-        "division": "<div>" + chr(10) + "[ticket-ref]: " + url + chr(10) + "</div>",
-        "comment": "<!--" + chr(10) + "[ticket-ref]: " + url + chr(10) + "-->",
-    }
-    for name, block in shapes.items():
-        sample.write_text(head + block + chr(10), encoding="utf-8")
-        assert references_in(sample, tmp_path), name
-
-    # Already immune, and asserted so the claim that the set closes is checked
-    # rather than stated.
-    for name, block in {
-        "indented code": "    [ticket-ref]: " + url,
-        "block quote": "> [ticket-ref]: " + url,
-    }.items():
-        sample.write_text(head + block + chr(10), encoding="utf-8")
-        assert references_in(sample, tmp_path), name
-
-    # And a definition that is one still resolves.
-    sample.write_text(head + "[ticket-ref]: " + url + chr(10), encoding="utf-8")
-    assert not references_in(sample, tmp_path)
-
-
 def test_a_www_candidate_must_name_a_host(tmp_path: Path) -> None:
     """The scheme-less form has no authority for the host test to look at.
 
@@ -2594,35 +2305,48 @@ def test_a_www_candidate_must_name_a_host(tmp_path: Path) -> None:
         assert reported is not resolves, candidate
 
 
-def test_only_a_reference_style_use_may_claim_a_definition(tmp_path: Path) -> None:
-    """An inline destination wins, and the renderer never reads the definition.
+def test_a_reference_style_link_is_reported_and_why(tmp_path: Path) -> None:
+    """A reference-style link is **not** resolved, and that is deliberate.
 
-    Searching for any bracketed run let a link that carries its own destination
-    be resolved by a same-named definition elsewhere in the document, so a
-    reference pointing somewhere useless was excused by one pointing somewhere
-    real.
+    The reader that followed a label to its definition elsewhere in the
+    document was removed. Measured over the 235 scanned files before removing
+    it: 91 pattern matches, 6 suppressed by a URL on the line, and **0** by a
+    definition -- because the corpus holds no link reference definitions at
+    all. It had produced six review findings across four rounds, each one a new
+    literal context a definition could hide in. One revision after I argued
+    that the set of those contexts had closed, two more arrived.
+
+    So the escape hatch is the one the failure message names: put the URL on
+    the same line. This test pins the limitation so nobody has to rediscover it
+    from a silent behaviour change.
     """
     sample = tmp_path / "doc.md"
     reference = "issue" + " " + "27"
-    good = "https://github.com/o/r/issues/27"
-    definition = "[" + reference + "]: " + good + chr(10)
-    head = "# T" + chr(10) * 2
+    url = "https://github.com/o/r/issues/27"
 
-    # Inline link to somewhere else: the definition must not rescue it.
     sample.write_text(
-        head + "See [" + reference + "](https://example.com/home) here."
-        + chr(10) * 2 + definition,
+        "# T" + chr(10) * 2
+        + "See [" + reference + "][ref] here." + chr(10) * 2
+        + "[ref]: " + url + chr(10),
         encoding="utf-8",
     )
-    assert references_in(sample, tmp_path)
+    assert references_in(sample, tmp_path), (
+        "a reference-style link is reported; the remedy is an inline URL"
+    )
 
-    # The three reference forms CommonMark defines all still resolve.
-    for use in ("[" + reference + "][ref]", "[" + reference + "][]",
-                "[" + reference + "]"):
-        body = head + "See " + use + " here." + chr(10) * 2
-        body += ("[ref]: " + good + chr(10)) if "[ref]" in use else definition
-        sample.write_text(body, encoding="utf-8")
-        assert not references_in(sample, tmp_path), use
+    # The remedy, on one line, resolves it.
+    sample.write_text(
+        "# T" + chr(10) * 2 + "See [" + reference + "](" + url + ") here." + chr(10),
+        encoding="utf-8",
+    )
+    assert not references_in(sample, tmp_path)
+
+    # And a bare URL beside the reference resolves it too.
+    sample.write_text(
+        "# T" + chr(10) * 2 + "See " + reference + " " + url + chr(10),
+        encoding="utf-8",
+    )
+    assert not references_in(sample, tmp_path)
 
 
 def test_blanking_a_url_leaves_the_prose_written_against_it(tmp_path: Path) -> None:
