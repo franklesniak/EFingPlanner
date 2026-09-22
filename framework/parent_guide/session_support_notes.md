@@ -73,7 +73,7 @@ Want a rough signal of how the executive-function side is going? The optional [e
 
 ## Session 08: Web Research Practice
 
-- Role: co-working recommended; stay nearby, even in Low-Bandwidth Parent Mode.
+- Role: a grown-up stays nearby for this one -- required, not a suggestion, and it holds in Low-Bandwidth Parent Mode too. A filter reduces exposure without removing it.
 - Prep: a device with the kid-safe filter on; your destination pack's trusted starting sources and its sample search terms; a blank Website Notes form.
 - Look for: website comparison notes with one question, two sources, and a call on which is more useful.
 - Coaching question: "What made the one you trusted less feel less trustworthy?"
