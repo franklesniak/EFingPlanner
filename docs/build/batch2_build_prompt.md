@@ -288,7 +288,7 @@ sessions, not from the spec, and where the two differ the built repository wins.
 
 # Session NN: Title
 
-You are here: Phase N (Phase Name), session M of P in this phase. Previous: [NN Prev Title](path) | Next: [NN Next Title](path)
+You are here: Phase N (Phase Name), Not a First Taste step. Previous: [NN Prev Title](path) | Next: [NN Next Title](path)
 
 **For parents:**
 
@@ -322,6 +322,14 @@ You are here: Phase N (Phase Name), session M of P in this phase. Previous: [NN 
 
 ## Parent Notes
 ```
+
+**The navigation line in that skeleton is the real form, not a placeholder.** Every
+session this batch writes is off the First Taste path, so `Not a First Taste step.` is what
+sits in the step-label slot. An earlier draft of this skeleton wrote
+`session M of P in this phase` there, which is the one form the rule below explicitly
+rejects -- and a skeleton is copied thirty-four times before anyone reads the rule. **The
+"N of P in this phase" figures in the inventory tables are for you**, so you know where a
+session sits; they are not written into the page.
 
 Notes on that shape, each of which has already cost a review round somewhere in this
 project:
@@ -3572,11 +3580,11 @@ from this table. (`D-item-7`.)
 | 22 | making trade-offs | 20-30 minutes for you, plus a 20-40 minute review with an adult | parent review after session | Core -- **Checkpoint 2** |
 | 23 | checking sources | 20-30 minutes (can be several sittings) | none / independent work | Core |
 | 24 | organizing information | 20-30 minutes | none / independent work | Core |
-| 25 | checking sources | 20-30 minutes per sitting, two sittings | co-working recommended | Core |
+| 25 | checking sources | 20-30 minutes (one sitting); the second sitting can be its own | co-working recommended | Core |
 | 26 | ranking priorities | 20-30 minutes | none / independent work | Core |
 | 27 | making trade-offs | 20-30 minutes for you, plus a 20-40 minute review with an adult | parent review after session | Core -- **Checkpoint 3** |
 | 28 | planning realistic time | 20-30 minutes | 5-minute check-in | Core |
-| 29 | planning realistic time | 20-30 minutes (one sitting); the second sitting can be its own | none / independent work | Core |
+| 29 | planning realistic time | 20-30 minutes | none / independent work | Core |
 | 30 | checking sources | 20-30 minutes | none / independent work | Core |
 | 31 | making trade-offs | 20-30 minutes | parent review after session | Core |
 | 32 | making trade-offs | 20-30 minutes for you, plus a 20-40 minute review with an adult | parent review after session | Core -- **Checkpoint 4** |
@@ -3598,6 +3606,13 @@ from this table. (`D-item-7`.)
 | 50 | organizing information | several sittings; stop whenever you want | 5-minute check-in | Core |
 | 51 | organizing information | 20-30 minutes | 5-minute check-in | Core |
 | 52 | making trade-offs | 20-30 minutes for you, plus the family decision meeting | parent review after session | Core -- **Checkpoint 6** |
+
+**Session 25's estimate follows a built precedent, and the pattern generalises.** Session
+15 writes `20-30 minutes (one card); a second card can be its own sitting` -- the shape is
+*the default, then the unit of work, then permission for the second unit to be its own
+sitting*. Session 25's unit is a sitting rather than a card, so it reads as the table has
+it. **Use that shape wherever a session honestly needs two sittings**, rather than doubling
+the estimate to sixty minutes, which reads as a session no family will start.
 
 **Two notes on that table.** Sessions 18, 36, 37 and 47 render as `Conditional core`,
 which is the built repo's label rather than the spec's three-value vocabulary, with the
