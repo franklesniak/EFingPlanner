@@ -1738,6 +1738,24 @@ fit. **Fully neutral.**
 - Each Phase 7 and 8 `## Parent Notes` carries a one-line note stating the **two-session
   readiness trigger** for the lighter template and the **always-kept anchors**.
 
+**Two different reasons a section survives the fade, and conflating them is what breaks
+this.** An **anchor** survives because a child with working-memory difficulty needs it on
+the page -- that is a design reason. `Steps` and `Workspace` are **not anchors**, and they
+still survive, because `.github/scripts/check-session-structure.py` requires them in every
+session -- that is a structural reason.
+
+So the fade never removes a heading. It only thins what sits under one:
+
+| Section | Why it survives | What the lighter template does to it |
+| --- | --- | --- |
+| Start Here, Stop Point, Artifact Created, Source Check | Anchor | Content stays; Start Here becomes self-generated |
+| Steps, Workspace | Structurally mandatory | Content thins to a short prompt, never to nothing |
+| Finish and Quality Check, If You Get Stuck, Optional Extension, Parent Notes | Neither | Already pointer-by-default in every phase; unchanged here |
+
+**An author who is told "keep Steps" without being told what thins instead will either
+ignore the instruction or fade the wrong thing**, which is how a lighter session ends up
+lighter than the Conditional-Core session next to it.
+
 **Session 40 carries the Phase 7 hand-off** -- the named *"set up this whole session
 yourself"* moment. **State it once, there, and not in every file.** (`D-X-4b`.)
 
