@@ -100,6 +100,13 @@ and move is a category. Naming one venue and its hours is a value. The archived 
 makes this distinction explicitly for teamLab, and it generalizes: name the thing, never
 pin its state.
 
+**The archived record contains values this rule bans, and an author will copy them.**
+Measured on this brief: it wrote an airport transit duration and a current entry-rule
+position, and both reached a draft of this file because the record states them. The record
+is the **origin of the requirement, not a licence to copy the value.** When the record
+gives a fact and a number, take the fact. A legal or entry requirement is the sharpest
+case, because a stale price costs money and a stale entry rule strands a family.
+
 ### 1.3 Every reference file and every slot carries a freshness stamp
 
 The form is a `**Last reviewed:** <month year>` line directly below the title -- for
@@ -191,6 +198,25 @@ note and the moving taxes. `transportation_basics.md` already carries the arriva
 Rule 1.7 exists because of exactly this, and the first draft of this brief broke it in
 four places before review caught three of them. **Read every built pack file before
 drafting the file that neighbours it.**
+
+**What the two index files owe, stated because neither is obvious from its per-file
+section.** The **pack contents page** carries a curated Reference files list and a Session
+inserts list, and **all fifteen new files go into them**, each with the one-line
+description the existing entries use. A batch that creates fifteen files and leaves the
+pack's browsing surface listing six of them has made its own work undiscoverable. The
+**routing contract** gets the link conversion of section 3.3, the `B3-10` row change, and
+`Last Updated` bumped in the same commit, per the next paragraph.
+
+**Two of this batch's edited files carry a metadata block with `Last Updated`**, and the
+documentation policy requires that field bumped in the same commit that changes the
+document's rendered content. They are the routing contract and `framework/CHANGELOG.md`.
+Bump both.
+
+**`Last reviewed` is a different field and does not bump.** Four built pack files are
+edited here -- the transport, money, major-cities and glossary files -- and their stamps
+say when a person last checked the facts, not when the file was last touched. Moving a
+section out or adding a link does not re-check anything, so **leave those stamps alone.**
+Bumping one is a false claim that someone verified the content.
 
 The seven reference files are `airports_and_arrival_basics.md`, `language_basics.md`,
 `etiquette_basics.md`, `food_basics.md`, `adult_logistics.md`, `safety_and_emergency.md`
@@ -375,15 +401,16 @@ Must carry:
   guide a ten-year-old can read aloud. Greeting, thank you, excuse me, please, yes and no,
   "do you speak English", "where is the bathroom", and how to ask for the bill. Keep the
   set small enough to learn.
-- **The translation-tool rule, which is a research skill rather than a language point:**
-  use translation **to understand, not to trust**. Anything that matters gets checked
-  against an official English source or an adult. This mirrors the source-trust teaching
-  and belongs here because this is where the child reaches for the tool.
-- **Which sources are reliably English and which are not.** The archived record is
-  specific that some official transit pages, restaurant-review sites and some attraction
-  pages are Japanese-first or only partly translated, and that a child who lands on one
-  should not conclude they did something wrong. Name the categories, name the language
-  toggle, and keep the instance list short because it moves.
+- **The translation rule and the which-sources-are-English guidance are already written,
+  in `trusted_starting_sources.md`** under its own language note: translate to understand
+  and not to trust, look for the English toggle, check anything that matters against an
+  official English page or an adult, and which kinds of source are reliably English versus
+  Japanese-first. **Link it. Do not restate it.** That file is stamped and this one will
+  be, and two dated pages carrying one rule drift apart -- the failure rule 1.7 names, and
+  the fifth instance of it found in this brief.
+- **What this file adds that the sources file does not carry:** the reassurance a child
+  needs at the moment they land on a page they cannot read. Landing on a Japanese page is
+  normal and means nothing went wrong.
 - **One line of reassurance, not effusive:** visitors get by. Staff in tourist-facing
   places commonly have some English, and pointing and politeness carry a lot.
 
@@ -478,12 +505,19 @@ Must carry:
   freshness-stamped page carrying the same set is two dated homes for one fact, which is
   the failure rule 1.7 names. Say that several travel taxes are in motion and that the
   money reference carries them, and link it.
-- **Entry authorization, adult-owned and carefully framed.** As of the last review, US
-  visitors get visa-free short stays and nothing extra is required. A future electronic
-  authorization has been legislated and is not live. **Carry the scam warning**: because a
-  scheme has been announced, sites selling an authorization will appear, and nothing is
-  required and nothing is for sale. Verify the current requirement on the official
-  government source close to travel. Do not pin a requirement, a fee, or a date.
+- **Entry authorization, adult-owned, and the category rule 1.2 protects hardest.**
+  Name it as a category: what a US visitor needs in order to enter is set by the
+  destination's government, it changes, and an adult verifies the current requirement on
+  the official government source close to travel.
+  **Do not write what the requirement currently is.** Not that nothing extra is needed,
+  not that a proposed scheme is or is not live, not a fee and not a start date. A family
+  reading a stale "nothing is required" has been told something false about a legal
+  requirement, and that is the worst case this rule exists to prevent -- worse than a
+  stale price, because they cannot recover from it at the airport.
+  - **The scam warning stays, written so it cannot expire.** No third-party site sells a
+    government travel authorization. A site offering to sell one is not the official
+    source. An adult checks the official government page, and pays nobody else. That
+    holds whatever the current requirement turns out to be.
 - **A pointer to `access_and_pricing_watch.md`** for the whole fast-moving category.
 
 ### 5.6 `safety_and_emergency.md`
@@ -828,30 +862,44 @@ a contract link converted before its target exists.
 ```text
 grep -rwE 'Chicago|ORD|grandmother|uncle' destinations/
 grep -rwE '17[ -]?(day|night)s?' destinations/
-for f in $(find destinations/japan/reference destinations/japan/session_inserts -name '*.md' ! -name 'README.md'); do head -6 "$f" | grep -qE '^\*\*Last reviewed:\*\* [A-Z][a-z]+ [0-9]{4}$' || echo "no stamp below the title: $f"; done
+for f in $(find destinations/japan/reference destinations/japan/session_inserts -name '*.md' ! -name 'README.md'); do awk 'NR<=8{if(/^# /)h=NR; if(/^\*\*Last reviewed:\*\* [A-Z][a-z]+ [0-9]{4}$/)s=NR} END{if(!(h&&s&&s==h+2))print "bad stamp header: " FILENAME}' "$f"; done
 grep -rn '`[a-z_0-9]*\.md`' destinations/japan/session_inserts/README.md
 ```
 
 The first two find nothing. **The third names every fact file whose stamp is missing,
-malformed, or not in the first six lines**, and on a correct tree it prints nothing. The
-fourth lists filenames still written as inline code in the contract, and after this batch
-it should be empty (section 3.3).
+malformed, or not two lines below its own H1**, and on a correct tree it prints nothing.
+The fourth lists filenames still written as inline code in the contract, and after this
+batch it should be empty (section 3.3).
 
-**The stamp check has been wrong twice, so here is what it has to do.** The first version
-ran `grep -rL 'Last reviewed'` and expected it to name only the READMEs. It cannot: the
-contract README mentions the phrase in its own prose about the stamp format, so no file
-would be listed, and the command would print nothing and exit non-zero on a correct tree.
-The second version anchored the format but still searched the whole file, so a stamp at
-the bottom of a page counted -- while rule 1.3 requires it directly below the title. The
-form above checks **format and placement together**, which is the only version that
-matches what the rule actually says.
+**The stamp check has been wrong three times, which is why it is written out here rather
+than left to an author.** Version one ran `grep -rL 'Last reviewed'` and expected it to
+name only the READMEs; it cannot, because the contract README carries the phrase in its
+own prose about the stamp format, so no file would be listed and the command would print
+nothing and exit non-zero on a correct tree. Version two anchored the format but searched
+the whole file, so a stamp at the bottom of a page passed. Version three bounded the
+search to the first six lines, which still says nothing about **order**: a stamp sitting
+*above* the H1, or separated from it by a stray line, passed.
+
+**The rule is a sequence, so the check is a sequence.** The form above finds the H1 and
+the stamp in the file's opening lines and requires the stamp to sit exactly two lines
+after the H1 -- title, blank, stamp, which is what the built pack does. It tests the
+relationship rather than a fixed line number, so a file that legitimately carries an extra
+opening comment still passes.
+
+**Each version looked like a fix for the one before it.** That is the property worth
+naming: a check that is nearly right reads as correct, and only a reviewer asking what it
+would miss finds the gap.
 
 ### Done when
 
 - All twenty-three files created or edited, each to its specification in sections 5 and 6.
 - Every contract row routes to a file that exists, and every contract filename is a link.
 - The four gates pass, and the batch's own checks return what section 9 says they should.
-- Every new file carries its freshness stamp.
+- Every new file carries its freshness stamp, two lines below its own title.
+- **The pack contents page lists all fifteen new files**, in its Reference files and
+  Session inserts lists, each with a one-line description.
+- **`Last Updated` is bumped** in the routing contract and in `framework/CHANGELOG.md`, in the same commit that changes them -- and **no `Last reviewed` stamp was bumped** on a built pack file this
+  batch only linked or trimmed.
 - An adversarial review subagent has read the pack's child-facing parts against rule 1.4
   and `AC-3.1-1`, and its findings are fixed. This stands in for the human read under the
   recorded pilot deferral; it does not replace it, and the deferral flag stays.
