@@ -1821,7 +1821,8 @@ anything.
 Look over your plan and find the days that would wear people out.
 
 **Reference-routed with no insert.** Where the walking-and-stairs detail is needed, **name
-the reference in the pack's own words.** (`D-item-3`.)
+the reference in the pack's own words** -- "your destination pack's transportation basics
+page". **Do not write the Destination Notes phrase.** (`D-item-3`.)
 
 **This session carries the heaviest leak risk in the batch.** The spec's text names a
 specific family member twice and gives destination-specific numbers. Every one of those is
@@ -2042,7 +2043,8 @@ custom as strange.
 Draft what you'd pack, so an adult can check it.
 
 **Reference-routed with no insert.** Where the season-specific items are needed, **name the
-reference in the pack's own words.** (`D-item-3`.)
+reference in the pack's own words** -- "your destination pack's seasons and weather page".
+**Do not write the Destination Notes phrase.** (`D-item-3`.)
 
 **The artifact is a *draft* packing list.** The word matters -- adults review.
 
@@ -2077,7 +2079,8 @@ Check that the family is ready, and make your own "if I get separated" card.
 
 **Reference-routed, and this row is new.** The spec marks this session as needing no
 destination facts and it is wrong; the contract gains a safety-and-emergency reference row.
-**Name the reference in the pack's own words.** (`D-item-5`.)
+**Name the reference in the pack's own words** -- "your destination pack's safety and
+emergency page". **Do not write the Destination Notes phrase.** (`D-item-5`.)
 
 **The artifact is the readiness checklist.** The "if I get separated" card is a **companion
 the session hands over**, not a second named artifact -- which keeps `AC-15-2` true.
