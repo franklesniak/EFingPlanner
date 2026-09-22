@@ -16,7 +16,7 @@ If you like strong structure and tabbing things as you go makes you happy, go ah
 
 Six things run the whole length of the project. They're six labelled sections inside your one notebook, so you keep one thing in rough order instead of six separate piles.
 
-- **Start Here.** Your [Trip-Basics card](../templates/trip_basics.md), the [assumptions page](../templates/current_family_travel_assumptions.md), your [trip goals](../templates/family_trip_goals.md), and your [traveler profiles](../templates/traveler_profile.md). This one is filled in first and barely changes after that.
+- **Start Here.** Your [Trip-Basics card](../templates/trip_basics.md), the [assumptions page](../templates/current_family_travel_assumptions.md), your [trip goals](../templates/family_trip_goals.md), and, if you did Session 02, your [traveler profiles](../templates/traveler_profile.md). Session 02 is on the full Phases 0-2 path rather than the 13, so this section is complete without profiles if you are on First Taste. This one is filled in first and barely changes after that.
 - **[Source Log](../templates/source_log.md).** One copy of the table for every source you use. This is the one that makes your recommendation believable.
 - **[Research cards](../templates/city_research_card.md).** One card per place you look into, so two places can sit side by side.
 - **[Decision log](../templates/decision_record.md).** What you decided, when, and why. It stops you arguing the same thing twice.

@@ -56,7 +56,7 @@ Want a rough signal of how the executive-function side is going? The optional [e
 ## Session 06: Book Research With a Guidebook
 
 - Role: 5-minute check-in; an adult may need to fetch the library book.
-- Prep: a guidebook (a library copy is perfect) or one reputable travel website.
+- Prep: a guidebook (a library copy is perfect) or one reputable travel website; a blank Book Notes form.
 - Look for: a book notes page with three places, one reason each, and the source they came from.
 - Coaching question: "Which of your three places surprised you?"
 - Pitfall: reading it cover to cover. Using the contents page and the index is the skill here.
@@ -74,7 +74,7 @@ Want a rough signal of how the executive-function side is going? The optional [e
 ## Session 08: Web Research Practice
 
 - Role: co-working recommended; stay nearby, even in Low-Bandwidth Parent Mode.
-- Prep: a device with the kid-safe filter on; your destination pack's trusted starting sources and its sample search terms.
+- Prep: a device with the kid-safe filter on; your destination pack's trusted starting sources and its sample search terms; a blank Website Notes form.
 - Look for: website comparison notes with one question, two sources, and a call on which is more useful.
 - Coaching question: "What made the one you trusted less feel less trustworthy?"
 - Pitfall: treating it as a solo session. A filter reduces exposure but does not remove it.
@@ -82,8 +82,8 @@ Want a rough signal of how the executive-function side is going? The optional [e
 ## Session 09: AI as Helper, Not Boss (only if your family uses AI)
 
 - Role: adult-operated -- you run the tool, on your account, with the child present.
-- Prep: your AI tool; verify its current minimum-age policy first.
-- Look for: one safe AI use (like brainstorming), recorded in the Source Log.
+- Prep: your AI tool; verify its current minimum-age policy first; a blank AI Notes form.
+- Look for: an AI notes page recording one safe AI use (like brainstorming), with the use also logged in the Source Log.
 - Coaching question: "Where would you check a fact the AI gave you?"
 - Pitfall: letting AI supply facts. It brainstorms and organizes; it never decides facts.
 

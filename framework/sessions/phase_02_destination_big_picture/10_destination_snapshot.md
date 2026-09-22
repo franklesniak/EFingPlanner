@@ -4,7 +4,7 @@
 
 You are here: Phase 2 (Destination Big Picture), First Taste step 5 of 13. Previous: [09 AI as Helper, Not Boss](../phase_01_research_skills/09_ai_as_helper_not_boss.md) | Next: [11 Regions and Cities Overview](11_regions_and_cities_overview.md)
 
-*If your family did not opt into AI, the session before this one was [08 Web Research Practice](../phase_01_research_skills/08_web_research_practice.md).*
+*Which session you just did depends on your path. On the full Phases 0-2 route it was [08 Web Research Practice](../phase_01_research_skills/08_web_research_practice.md), or Session 09 after it if your family uses AI. On the First Taste path it was [05 Good Sources, Bad Sources](../phase_01_research_skills/05_good_sources_bad_sources.md), again with Session 09 after it if your family uses AI.*
 
 *On the First Taste path, go straight to [12 Weather, Seasons, and Events](12_weather_seasons_and_events.md). Session 11 is not one of the 13.*
 
