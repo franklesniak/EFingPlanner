@@ -8,6 +8,7 @@ Your child owns exactly one thing: a personal-safety skill, and the card they ca
 
 That split is deliberate. A ten-year-old who has rehearsed what to do if they lose you in a crowded station is safer and calmer than one who hasn't, and giving them that doesn't hand them any of the rest.
 
+<!-- density-exempt: X-not-Y -- the separation rule and the carry-card boundary are stated as contrasts on purpose: each names a thing an adult would otherwise do by default, and the spec requires both boundaries verbatim -->
 ## The meeting-point rule
 
 One separation rule per outing, named to your child out loud each morning.
@@ -37,16 +38,17 @@ It's a carry-in-pocket safety card, not trip data written down anywhere else. Th
 ## Their three-step plan, so you can rehearse it
 
 1. **Do what today's rule says.** One rule, named that morning.
-2. **Look for a uniformed helper you can see from where you are.** A transit worker, a shop or security worker with a nametag, a staffed shop that is bright and open late, or the local equivalent of a neighbourhood police post. An official post or a uniformed worker is the primary route, because a shop's help is voluntary.
+2. **Ask a helper without leaving the spot.** Call out, wave, or ask whoever is right there. A transit worker, a shop or security worker with a nametag, or the local equivalent of a neighbourhood police post is the one to ask for.
 
-   **This step never overrides step 1.** If a helper is close enough to reach without losing sight of the spot, your child asks them. If not, they stay put and keep looking, and say so to anyone who asks. Going to *find* someone is the movement step 1 exists to prevent, and it takes them away from where you are searching.
+   **Your child does not walk to a helper.** Not even one they can see. Judging how far is too far is the decision this whole plan exists to remove, and a child who crosses a concourse toward a uniform is no longer where you are searching. If nobody is within earshot, they stay put and keep looking, and someone will come. **The only time they move is when that morning's rule named a meeting spot.**
+
 3. **Know the emergency numbers**, and know that an adult, a shop worker, or an official post can call them.
 
 Carry the numbers verify-framed. The destination-specific numbers, the local terms, and any local hazard notes are in your destination pack.
 
 ## Monitoring, insurance, medical coverage
 
-One line each, because the detail belongs on one page rather than two: advisories and weather alerts are worth watching in the weeks before travel, and travel insurance — particularly medical and emergency-evacuation coverage for an older traveler — is on the [adult-only logistics checklist](adult_only_logistics.md).
+One line each, because the detail belongs on a single page. Advisories and weather alerts are worth watching in the weeks before travel. Travel insurance, particularly medical and emergency-evacuation coverage for an older traveler, is on the [adult-only logistics checklist](adult_only_logistics.md).
 
 ## The kid-safe filter is not a supervision plan
 
@@ -64,4 +66,4 @@ Keep the co-research guardrail on:
 
 ## Privacy
 
-A short reminder rather than a second copy of the rules: nothing personal goes in the repository or the kit, and a shared-documents folder is not a private vault. See the [privacy and safety page](../docs/privacy_and_safety.md).
+A short reminder, with the full rules on the [privacy and safety page](../docs/privacy_and_safety.md): nothing personal goes in the repository or the kit, and a shared-documents folder is not a private vault either.

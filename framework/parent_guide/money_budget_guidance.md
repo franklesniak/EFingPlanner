@@ -8,7 +8,7 @@ Your half of the budget lesson. Read this before your child's first budget sessi
 
 They're learning **how trip costs are structured**: what the categories are, what's priced per person versus per room versus per group, what a buffer is, and whether the parts they chose fit the band you gave them.
 
-They are **not** producing a usable, bookable trip budget. Say that plainly to yourself now, so neither of you mistakes the output for one later.
+What they are producing is a structural picture, and it stops short of a usable, bookable trip budget. Say that plainly to yourself now, so neither of you mistakes the output for one later.
 
 ## Why flights sit on the side
 
@@ -16,9 +16,11 @@ Your child's controllable slices are hotels, food, activities, local transit and
 
 **Their band check compares matching units, not the subtotal.** The band you give them is a rate or a tier: per person per day, per day for the family, or a hotel tier. A subtotal is a whole-trip amount. Comparing the two would fail a perfectly good estimate on a unit mismatch, so their worksheet asks them to pull out the *matching piece* of their estimate and check that against the band. Give them the band in one of those three forms and the check works; give them a whole-trip number and it cannot.
 
-The whole-trip total is **your** sanity check, not their exercise, and it needs one step of arithmetic: **their subtotal, plus your per-person fare multiplied by the number of travelers.** The subtotal is already a whole-party amount and the fare is not, so adding them raw understates the total for any family larger than one.
+**Your** sanity check is their subtotal plus your per-person fare multiplied by the number of travelers. The subtotal is already a whole-party amount and the fare is not, so adding them raw understates the result for any family larger than one.
 
-**Keep your fare number on your own page**, not on their budget worksheet. Their worksheet says in as many words that flights are the grown-ups' number and there's nothing to fill in there, and that's deliberate rather than an omission. A jotted line in this guide, or anywhere you keep trip notes, is all it needs to be.
+**That figure is a floor, and it is worth knowing what it leaves out.** Their subtotal covers five slices: hotels, food, activities, local transit and souvenirs. Intercity transportation, travel insurance, any entry or visa costs, phone or data service, and anything else adult-owned are all outside it. So treat the number as *are we in the right range*, and not as what the trip will cost.
+
+**Keep your fare number on your own page.** Their budget worksheet says in as many words that flights are the grown-ups' number and that there is nothing to fill in there. That wording is deliberate. A jotted line in this guide, or anywhere you keep trip notes, is all it needs to be.
 
 The honest reason: for a multi-person long-haul trip, flights dominate everything. They can run several times the entire rest of the trip put together. Put that in front of a ten-year-old as one line item and the rest of their careful work looks like rounding error. It isn't, and the split is what keeps it from looking that way.
 
@@ -53,13 +55,13 @@ This matters a lot for a child with dyscalculia or number anxiety, and it costs 
 
 Estimate lodging **per city, then sum**. A multi-city trip stays in different places at different nightly rates, and a single average hides that.
 
-Any lodging category priced per person rather than per room is the exception and doesn't use the per-room maths. The category names live in your destination pack.
+A lodging category priced per person is the exception, and it skips the per-room maths. The category names live in your destination pack.
 
 ## Spending money
 
 You set the amount and hold the actual money. Your child plans how they might spend it.
 
-Keep it price-free: have them **look up** a current price rather than handing them one. And don't add a page or a tracker for this — it's a line inside the budget work they already do.
+Keep it price-free: have them **look up** a current price. And don't add a page or a tracker for this — it's a line inside the budget work they already do.
 
 ## When the honest answer is no
 

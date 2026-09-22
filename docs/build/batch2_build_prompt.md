@@ -1820,8 +1820,9 @@ fit. **Fully neutral.**
   subtotal is already a whole-party amount and the fare is not, so adding them raw
   understates the trip for any family larger than one; the child compares the **matching piece** of their estimate
   against the band, because the band is a rate or a tier and a subtotal is not.
-- **Adults review the final budget later**, including replacing the rough flight
-  placeholder with real fares. **The child does not research or book flights.** Say this
+- **Adults review the final budget later**, updating their own sanity check with real
+  fares once flights are booked. **There is no flight placeholder on the child's
+  worksheet to replace.** **The child does not research or book flights.** Say this
   plainly.
 - The child's own check compares **matching units**: the piece of their estimate that matches the band's form, against the
   controllable-slice band**; the whole-trip total is an adult sanity check.
@@ -2324,13 +2325,14 @@ wording.
   **specific meeting spot** for that outing instead, one visible from where they will be,
   and names it that same morning. One rule per outing, either way. **A panicking child
   executes one rehearsed rule; the child does not choose between two.**
-- **Look for a uniformed helper you can see from where you are** -- a station
-  attendant, or a shop or security worker with a nametag. The pack names two more kinds
-  of help. **The police post or a uniformed worker is the main route**; a shop is an
-  extra option, because a store's help is voluntary. **This step never overrides the
-  first one:** if a helper is close enough to reach without losing sight of the spot,
-  ask them; otherwise stay put and keep looking. Going to *find* someone is the
-  movement the first rule exists to prevent.
+- **Ask a helper without leaving the spot.** Call out, wave, or ask whoever is right
+  there -- a station attendant, or a shop or security worker with a nametag. The pack
+  names two more kinds of help, and the police post or a uniformed worker is the main
+  route, because a store's help is voluntary. **The child does not walk to a helper,**
+  not even one they can see: judging how far is too far is the decision this plan
+  removes, and a child crossing a concourse is no longer where the family is looking.
+  If nobody is within earshot, they stay put and keep looking. **The only time they
+  move is when that morning's rule named a meeting spot.**
 - **Know the emergency numbers.** The pack has them. **Write them on your card only after
   an adult checks them on a current official page, and write the date you checked.** An
   adult, a shop worker, or the police post can call them for you.
