@@ -1077,7 +1077,23 @@ GENERATED_FILES = frozenset({"package-lock.json"})
 #: one requires every control line to be reported, one requires every URL row
 #: to get the verdict written beside it, and one requires every exemption to
 #: still match. Sweeping them as prose would report 42 rows of deliberate data.
+#: The directory the scan's own fixtures live in. A file under it is data
+#: this suite reads rather than prose it judges, so it is kept out of the
+#: corpus -- but **only the three files that are read**. Excluding the whole
+#: directory meant an unrecognised file dropped out of the corpus in
+#: silence, so a stray note holding an opaque reference would never be seen
+#: by the check whose fixtures it sat beside.
 SCAN_DATA_PREFIX = "tests/fixtures/self_contained_references/"
+#: The exact members, each of which another test in this file loads and
+#: validates. ``test_the_scan_data_directory_holds_only_what_is_validated``
+#: fails when the directory and this set stop agreeing.
+SCAN_DATA_FILES = frozenset(
+    {
+        SCAN_DATA_PREFIX + "exemptions.tsv",
+        SCAN_DATA_PREFIX + "reported_lines.txt",
+        SCAN_DATA_PREFIX + "url_resolution.tsv",
+    }
+)
 
 
 def tracked_text_files() -> list[Path]:
@@ -1130,7 +1146,7 @@ def tracked_text_files() -> list[Path]:
     escaping: list[str] = []
     resolved_root = REPO_ROOT.resolve()
     for name in names:
-        if name in GENERATED_FILES or name.startswith(SCAN_DATA_PREFIX):
+        if name in GENERATED_FILES or name in SCAN_DATA_FILES:
             continue
         path = REPO_ROOT / name
         # **A path Git lists is not automatically a path inside the checkout.**
@@ -1783,7 +1799,7 @@ def test_the_scan_own_data_is_not_swept_as_prose() -> None:
     one requires every exemption to still match.
     """
     swept = {path.relative_to(REPO_ROOT).as_posix() for path in scoped_paths()}
-    assert not any(name.startswith(SCAN_DATA_PREFIX) for name in swept)
+    assert not any(name in SCAN_DATA_FILES for name in swept)
     assert REPORTED_LINES.is_file()
     assert URL_RESOLUTION_CASES.is_file()
     assert EXEMPTIONS.is_file()
@@ -2375,3 +2391,25 @@ def test_blanking_a_url_leaves_the_prose_written_against_it(tmp_path: Path) -> N
     # And a URL ends at whichever angle bracket comes first.
     assert trim_url("https://example.com>word") == "https://example.com"
     assert trim_url("https://example.com<word") == "https://example.com"
+
+
+def test_the_scan_data_directory_holds_only_what_is_validated() -> None:
+    """Every file kept out of the corpus has to be one this suite reads.
+
+    The exclusion was a directory prefix, so anything dropped into that folder
+    left the corpus without a word -- and a stray note holding an opaque
+    reference would have been invisible to the check whose fixtures it sat
+    beside. The exclusion now names three files, and this test fails when the
+    directory and that list stop agreeing, in either direction.
+    """
+    directory = REPO_ROOT / SCAN_DATA_PREFIX.rstrip("/")
+    present = {
+        path.relative_to(REPO_ROOT).as_posix()
+        for path in directory.rglob("*")
+        if path.is_file()
+    }
+    assert present == set(SCAN_DATA_FILES), (
+        "the scan-data directory and the excluded set disagree. A file here is "
+        "excluded from the corpus, so it has to be one this suite loads and "
+        "validates; anything else belongs elsewhere or belongs in the corpus."
+    )

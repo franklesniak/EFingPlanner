@@ -485,14 +485,23 @@ template_manifest:
       requires_all:
         - baseline
     # The repository-wide self-containment scan and the fixtures it reads.
-    # It checks every tracked text file rather than one module's, so it
-    # belongs to the baseline.
+    #
+    # It needs **both** modules, and mapping it to the baseline alone was
+    # wrong. Its REQUIRED_MEMBERS name the prohibited-placeholder hook and
+    # that hook's suite, which belong to `markdown`, so an adoption without
+    # markdown kept the scan and pruned the files it asserts are present.
+    # It is also a Python test importing `tests._pytest_compat`, which the
+    # generic `tests/**/*.py` rule maps to `python` -- and this entry is
+    # earlier and more specific, so it overrode that rule and dropped the
+    # dependency it had been getting for free.
     - pattern: 'tests/test_self_contained_references.py'
       requires_all:
-        - baseline
+        - markdown
+        - python
     - pattern: 'tests/fixtures/self_contained_references/**'
       requires_all:
-        - baseline
+        - markdown
+        - python
     # The Python packages the repository's own checks are installed from.
     - pattern: 'requirements-dev.txt'
       requires_all:

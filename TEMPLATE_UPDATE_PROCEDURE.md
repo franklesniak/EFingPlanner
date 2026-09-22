@@ -774,8 +774,8 @@ Manifest version 2 and version 3 rows MAY also use `requires_any`: the path is i
 | `.pre-commit-config.yaml` | `baseline` |
 | `.markdownlint.jsonc`, `.remarkignore`, `.remarkrc.mjs`, `package.json`, `package-lock.json`, `.github/scripts/lint-nested-markdown.js`, `.github/scripts/check-toolchain-eol.js`, `.github/scripts/check-prohibited-placeholders.py` | `markdown` |
 | `tests/test_replace_template_placeholders.py` | `baseline` |
-| `tests/test_self_contained_references.py` | `baseline` |
-| `tests/fixtures/self_contained_references/**` | `baseline` |
+| `tests/test_self_contained_references.py` | `markdown`, `python` |
+| `tests/fixtures/self_contained_references/**` | `markdown`, `python` |
 | `requirements-dev.txt` | `baseline` |
 | `tests/test_check_prohibited_placeholders.py` | `markdown` |
 | `tests/toolchain-eol/check-toolchain-eol.test.js` | `markdown` |
