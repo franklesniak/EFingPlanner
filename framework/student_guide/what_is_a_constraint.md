@@ -9,7 +9,7 @@ Think of the size of your backpack. It doesn't tell you what to pack. It tells y
 ## The kinds this trip has
 
 - **Time.** How many days the trip can be — that's on your Trip-Basics card. School and work calendars count too.
-- **Money.** Your budget band. It's a rough signal for the parts you choose, not a whole-trip total.
+- **Money.** Your budget band. It's a rough signal for the parts you choose.
 - **People.** How many travelers, and what each one can comfortably do. Someone may tire faster. An older relative, for example a grandparent, might not manage a lot of stairs.
 - **Distance and travel time.** Getting between places costs hours. You can't spend those hours seeing things.
 - **Rules and availability.** Some things need a booking. Some sell out. Some close on certain days, or only open in certain seasons. These change, so check them, and write the date you checked.
@@ -19,7 +19,7 @@ Think of the size of your backpack. It doesn't tell you what to pack. It tells y
 
 They're what makes a plan possible. They're also why a trade-off has two real sides — if nothing limited you, there'd be nothing to trade.
 
-A plan that ignores a constraint isn't a braver plan. It's a plan that breaks later.
+A plan that ignores a constraint just breaks later.
 
 ## How to use one
 
@@ -33,7 +33,7 @@ That third step is the budget-band question your [Trade-Off Report](../templates
 
 ## Not sure about one?
 
-Then it's an assumption, not a settled constraint. That's the difference: a constraint someone confirmed is a fact you plan around; one you're guessing at is an assumption you plan around *and flag*. Write it in your card's planning-assumption block. Say what could change it. Flag whether a grown-up needs to check it.
+Then it's an assumption. That's the difference: a constraint someone confirmed is a fact you plan around; one you're guessing at you plan around *and flag*. Write it in your card's planning-assumption block. Say what could change it. Flag whether a grown-up needs to check it.
 
 When an assumption starts driving a decision, it moves to your decision log.
 

@@ -33,7 +33,7 @@ Every reason should be able to say where it came from. You don't have to remembe
 
 You're done when a grown-up could act on it. Perfect is a different bar, and it's not this one. See [Good enough is good enough](planner_mindset.md) if you're stuck on this one.
 
-And this is worth saying plainly, because "a grown-up could act on it" can sound like a lot of pressure. **Your work is real *and* it's low-stakes, both at once.** It's real because grown-ups will actually use your recommendations. It's low-stakes because grown-ups make every big decision, and "let's park this for later" is always an okay answer. Your job is to help them decide better — not to be right.
+And this is worth saying plainly, because "a grown-up could act on it" can sound like a lot of pressure. **Your work is real *and* it's low-stakes, both at once.** Grown-ups will actually use your recommendations, so it counts. And they make every big decision, so "let's park this for later" is always an okay answer. Your job is to help them decide better — not to be right.
 
 ## When grown-ups change it
 

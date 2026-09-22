@@ -10,7 +10,7 @@ Two things here are theirs, and they matter: your child **flags** accessibility 
 
 Long-lead items come first, because those are the ones that quietly set your earliest possible travel date.
 
-## Passports are an early task, not a readiness task
+## Passports are an early task
 
 A child's first passport takes time to get, and that constrains the earliest window you can travel in, which shapes the seasonal research your child is doing right now. If passports aren't sorted, start them before the trip feels real.
 
@@ -50,7 +50,7 @@ Worth knowing: your child's binder is valuable either way. If you use an agent, 
 
 ## If an older or lower-mobility traveler is coming
 
-Three things go beyond stamina, and you verify them rather than your child:
+Three things go beyond stamina, and they are yours to verify:
 
 - **Step-free routing and station elevator availability** on the route you're actually planning
 - **Accessible lodging** — step-free access, and any room or bathroom needs
@@ -58,8 +58,9 @@ Three things go beyond stamina, and you verify them rather than your child:
 
 Your child's job is to *flag* likely trouble spots: a stair-heavy transfer, a hilltop site, a station that may not have a lift. They notice and hand it to you. They don't research the fix.
 
-Write about this generically with your child — "an older adult" — rather than naming a relative.
+Write about this generically with your child: "an older adult".
 
+<!-- density-exempt: X-not-Y -- the separation default and the carry-card boundary are stated as contrasts because in both cases the wrong version is the intuitive one -->
 ## The meeting-point rule
 
 One separation rule per outing, named to your child out loud each morning.
@@ -72,7 +73,7 @@ The reason matters more than the rule: a panicking child executes one rehearsed 
 
 ## Rehearse their plan once, calmly
 
-Your child makes an "if I get separated" card and learns a three-step plan. Your part is a single calm "what if" rehearsal — not a drill, not a lecture — plus filling in any local-language line on the card and confirming its current wording.
+Your child makes an "if I get separated" card and learns a three-step plan. Your part is a single calm "what if" rehearsal, plus filling in any local-language line on the card and confirming its current wording. Keep it light; a drill teaches fear rather than the script.
 
 A rehearsed plan lowers a child's anxiety. It turns a vague fear into a known script.
 

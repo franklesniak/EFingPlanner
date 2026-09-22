@@ -1825,7 +1825,7 @@ fit. **Fully neutral.**
   worksheet to replace.** **The child does not research or book flights.** Say this
   plainly.
 - The child's own check compares **matching units**: the piece of their estimate that matches the band's form, against the
-  controllable-slice band**; the whole-trip total is an adult sanity check.
+  controllable-slice band**; the adult's own check is a **partial floor**, not a whole-trip total: it adds airfare to those five slices and leaves intercity transport, insurance, entry costs and phone service outside. Name it that way in the session, so nobody reads it as what the trip costs.
 - **If the honest estimate cannot fit the band in any workable window, "recommend we
   change the trip or wait" is a valid, successful result.** One warm line, framed as
   success.
@@ -3531,9 +3531,9 @@ negotiable:
 
 1. **The blank card in `framework/` is completely empty of values.** Labelled rows, empty
    cells. **No** real lodging name, address, phone number or personal detail.
-2. **The allowed rows are exactly four kinds:** where we are staying (name); its address;
+2. **The allowed rows are exactly five kinds:** where we are staying (name); its address;
    its phone number; a parent's phone number. Plus a blank line an adult fills **in the
-   local language**, and two emergency-phrase rows.
+   local language**, and two emergency-phrase rows. **Plus two rows for the emergency numbers and the date an adult checked them** -- Session 49 and the safety guidance both tell the adult to write them on this card, so the card has to have somewhere to put them. Both are **blank in the framework**, like every other row.
 3. **The forbidden list must be printed on the card itself**, in the child's words *and* as
    a standing rule an adult can see at a glance: never a passport number, never a birthdate,
    never a confirmation number, never the home address. **Use the full forms** -- these are

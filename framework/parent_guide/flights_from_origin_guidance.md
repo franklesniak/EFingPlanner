@@ -30,7 +30,7 @@ Layovers add fatigue on top of the time change. Your child's day cards mark day 
 
 Book the trip home so there are a day or two at home before school or work resumes.
 
-Coming home is usually the harder direction for jet lag. A child landing the night before school starts is a classic and completely avoidable planning failure, and it's the part of the trip nobody is thinking about while booking the exciting half. If your window is a fixed school break, part of it belongs to recovery at home.
+One of the two legs will be the harder adjustment, and which one depends on the direction you fly -- so work out which for your own trip rather than assuming the return. Whichever it is, a child landing the night before school starts is a classic and completely avoidable planning failure, and it's the part of the trip nobody is thinking about while booking the exciting half. If your window is a fixed school break, part of it belongs to recovery at home.
 
 ## Where a city has more than one airport
 

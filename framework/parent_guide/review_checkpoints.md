@@ -65,11 +65,11 @@ Each has its own **what to consider** list. The review form checks whether the w
 
 ### Checkpoint 2 — City Shortlist (Session 22)
 
-**What they bring:** likely overnight bases, possible day trips, places to skip, places to save for a future trip, with reasons and sources.
+**What they bring:** likely overnight bases, possible day trips, places to skip, places to save for a future trip, with reasons and sources -- **and how the Session 03 traveler poll shaped it**, naming which traveler's "one thing you'd love" each choice makes room for.
 
 **Also yours to do here:** if you left the rough trip shape partly open at setup, firm it up now, including the exit city. The Phase 5 route work builds on it.
 
-**What to consider:** whether the travel scope is realistic; how it fits your maximum trip length; family interest; budget implications; safety and common sense; and anything it implies for international flights.
+**What to consider:** whether the travel scope is workable; how it fits your maximum trip length; **whether the other travellers appear in it at all**, which is what the poll connection is there to show; budget implications; safety and common sense; and anything it implies for international flights.
 
 **Progress is real:** the family now knows roughly *where*.
 
