@@ -7,7 +7,7 @@
 
 - **Status:** Active
 - **Owner:** Repository Maintainers
-- **Last Updated:** 2026-09-21
+- **Last Updated:** 2026-09-22
 - **Scope:** The destination-pack routing contract. It says which session pulls which insert, which reference files each session points to, what fields every insert slot has to supply, and what it takes to add a new destination pack. It holds routing rather than facts, so it carries no `Last reviewed` stamp.
 - **Related:** [Destination pack contents](../README.md)
 

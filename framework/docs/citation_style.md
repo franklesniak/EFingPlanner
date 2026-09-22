@@ -6,7 +6,7 @@
 
 - **Status:** Active
 - **Owner:** Repository Maintainers
-- **Last Updated:** 2026-09-21
+- **Last Updated:** 2026-09-22
 - **Scope:** The single canonical home for the citation rule in this curriculum: when a citation is required, the six citation forms with their exact field names, the three verification fields, and the note structure. Every built page that reproduces a form copies its field names from here. Builder-facing and parent-facing, and written to be read aloud to a child.
 - **Related:** [Simple citation forms](../templates/simple_citation.md), [Source log](../templates/source_log.md), [Source trustworthiness](source_trustworthiness.md)
 

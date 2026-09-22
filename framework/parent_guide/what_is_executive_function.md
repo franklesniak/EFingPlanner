@@ -24,7 +24,7 @@ That is why the trip is the hook and not the subject.
 
 Three things make this a better practice ground than a worksheet.
 
-It is a real task. The trip actually happens, the child's recommendation actually feeds a family decision, and an adult actually books something at the end of it. Effort on something that matters is easier to sustain.
+It is a real task. The child's recommendation goes to the adults and feeds a real family decision. Whether the trip is taken, moved or dropped is the adults' call and the world's, and the child's work stands either way -- Session 53 says so in as many words. Effort on something that matters is easier to sustain.
 
 It is long. The project runs for weeks or months depending on the path you pick, in short sessions, which is the shape these skills are built in. A single afternoon of planning trains nothing.
 

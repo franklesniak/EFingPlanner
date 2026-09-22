@@ -7,7 +7,7 @@
 
 - **Status:** Active
 - **Owner:** Repository Maintainers
-- **Last Updated:** 2026-09-21
+- **Last Updated:** 2026-09-22
 - **Scope:** The blank authoring skeleton for a child-facing curriculum session, with the rules a new session has to satisfy: the seven mandatory-core fields, the section order, the navigation line, the "For parents" strip, and the structure gate's floor. Builder-facing; a child never reads this page.
 - **Related:** [Build style and vocabulary](../docs/build_style_and_vocab.md), [Golden exemplar session](../sessions/phase_00_setup/04_start_a_source_log.md)
 
@@ -57,7 +57,7 @@ The skeleton opens with the `markdownlint-disable` directive rather than with th
 
 ## The seven mandatory-core fields
 
-Goal, Start Here, Steps, Workspace, Artifact Created, Stop Point, and Source Check when the session has a research step. Nothing else is required.
+Goal, Start Here, Steps, Workspace, Artifact Created, Stop Point, and Source Check when the session has a research step. No other section is part of this mandatory core -- which is not the same as nothing else being required. The three sections below are carried by every child session and the structure gate asks for none of them.
 
 `## Source Check` is required wherever research occurs, and a session that omits it declares why in its own text, with a `<!-- no-source-check: <reason> -->` comment near the top. `.github/scripts/check-session-structure.py` fails a session carrying neither the heading nor that marker; an adult-only session may instead carry `<!-- audience: adult -->`. Silence is never an exemption. A session with no research step has a second, simpler route: carry the heading with the built no-research form, *"No new sources needed unless you looked something up."* Sessions 01, 03 and 13 ship that way.
 

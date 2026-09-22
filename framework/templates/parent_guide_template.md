@@ -7,7 +7,7 @@
 
 - **Status:** Active
 - **Owner:** Repository Maintainers
-- **Last Updated:** 2026-09-21
+- **Last Updated:** 2026-09-22
 - **Scope:** The blank skeleton for a page in the parent guide, with the register rule that page has to be written in and the shape of a per-session support note. Builder-facing; a parent never reads this page.
 - **Related:** [Build style and vocabulary](../docs/build_style_and_vocab.md), [Session support notes](../parent_guide/session_support_notes.md)
 

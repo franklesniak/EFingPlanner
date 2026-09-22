@@ -6,7 +6,7 @@
 
 - **Status:** Active
 - **Owner:** Repository Maintainers
-- **Last Updated:** 2026-09-21
+- **Last Updated:** 2026-09-22
 - **Scope:** Why each session mechanic is there, which executive-function skills the curriculum trains, the honest limit on what transfer can be promised, the canonical carry-over tag wording and its one placement rule, and the scaffolding fade gradient with the readiness test that releases each stage. Parent-facing and builder-facing. A later batch authoring new sessions follows the tag rule and the gradient from here.
 - **Related:** [What executive function is](../parent_guide/what_is_executive_function.md), [Build style and vocabulary](build_style_and_vocab.md), [Project roadmap](../PROJECT_ROADMAP.md)
 
