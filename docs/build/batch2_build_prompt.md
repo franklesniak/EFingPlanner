@@ -130,7 +130,8 @@ authored destination-concrete "for now."
 
 **Plus edits to already-built files**, which are deliverables too and are easy to forget
 because they create nothing: Session 15's conversion, the navigation re-point on Sessions
-15, 21, 33, 44 and 53, the insert/reference contract, the kit README,
+15, 21, 33, 44 and 53, **path-aware content edits to Sessions 33, 44 and 53 (section
+4.1a)**, the insert/reference contract, the kit README,
 **`framework/templates/city_research_card.md`** (a two-row addition, see A6),
 **the Batch 1 neutrality riders listed in section 11**, and `framework/CHANGELOG.md`.
 
@@ -655,6 +656,65 @@ Core; a family that skips one reads past it. **Do not build a bypass link** -- t
 is the numbered order, and a bypass would quietly resolve a choice the text must keep
 open.
 
+### 4.1a The built sessions need content edits, not only navigation
+
+**An earlier draft of this brief scoped the five built later-phase sessions to a navigation
+re-point. That was wrong for three of them.** Sessions 33, 44 and 53 were authored for the
+First Taste path, and a Core/Full child now arrives at each of them through the numbered
+chain this batch builds. Re-pointing an arrow at a page whose text contradicts where the
+child actually is does not make the chain work.
+
+**All three are added to the authorized edit scope.** Each edit is conditional or additive:
+**nothing a First Taste child reads today may change meaning for them.**
+
+#### Session 33 — the adult flight placeholder Session 39 depends on
+
+Session 39 is specified to keep "the adult-provided flight placeholder from Session 33" in
+the running total. **Built Session 33 has no flight content at all** -- it deliberately
+keeps flights off the child's check, which is correct under the controllable-slice rule.
+So the second pass currently depends on a value nothing creates.
+
+**The fix belongs in Session 33, and it is parent-owned.** Add a short Parent Notes
+instruction and one optional workspace row where **an adult writes their rough per-person
+fare beside the child's estimate**, labelled as the grown-ups' number. **The child never
+researches it and never sums it into their own subtotal** -- that is the whole point of the
+split. A First Taste child whose parent skips the row loses nothing, because First Taste
+never reaches Session 39.
+
+#### Session 44 — the personal pick, now chosen at Session 26
+
+Built Session 44 step 3 tells the child to choose the single thing they most want, shows
+the three blocks, and has an adult initial it on the My Calls page. **This batch moves that
+choice to Session 26**, with the acknowledgement at Session 27. A Core/Full child following
+the numbered chain would be asked to make the one unconditional choice **twice**, which
+makes it not one choice.
+
+**Make step 3 path-aware.** On the Core path it **reuses** the pick already on the My Calls
+page -- confirm it still holds, and say so in one line. **It keeps its choose-now behaviour
+for a First Taste child**, who reaches Session 44 without having done Session 26. Both
+readings must be on the page, because both children read it.
+
+#### Session 53 — written for a First Taste finisher
+
+Session 53 tells the child they made a **mini-plan**, that the fuller steps "are being built
+and will come later", and its Parent Notes instruct the **duration-neutral** acknowledgment
+because "First Taste is a few-weeks project". **Every one of those is false for a Core/Full
+child arriving from Session 52**, who has just finished the months-long project and the
+sessions that were "coming later".
+
+Make the page path-aware on four points:
+
+| What it says now | What a Core/Full reader needs |
+| --- | --- |
+| "You made a mini-plan" | The full plan, for a child who went past Checkpoint 5 |
+| "Those fuller steps are being built and will come later" | They are built, and this child did them |
+| Handoff lists First Taste artifacts | The full binder from Session 50 |
+| Parent Notes mandate the duration-neutral acknowledgment | **The duration-true, months-long form** for Core/Full; the duration-neutral form stays for First Taste |
+
+**Neither wording may be deleted.** Both paths end here, so the page carries both and says
+which is which. **This is the only built session in the batch whose Parent Notes change**,
+and the change is to add a branch, not to replace the existing instruction.
+
 ### 4.1b Converting Session 15, the one built session that still leaks
 
 **This is the single edit that clears the destination grep for the whole
@@ -902,6 +962,53 @@ add a third.**
 Both **reuse the existing source line and add no new tracker.** Both stay **ungraded**:
 being off is normal. Never frame either as an accuracy test.
 
+### 5.5b The session-time loop, and the sessions that carry it
+
+**This is the second in-project estimate loop, and it is the one that actually closes
+against a real actual.** The predict-then-verify loop in 5.5 closes on a *fact*; this one
+closes on *time*, and the specification names the two together as the primary, realistic
+carrier of the planning-fallacy lesson -- because the trip has not happened yet, so nothing
+else in the project has a real actual to compare against.
+
+**An earlier draft of this brief omitted it**, which left `final_reflection.md` asking the
+child how far off their time guesses were when nothing had ever recorded one.
+
+**The loop, in full:** on a few designated sessions, the child writes **a one-line guess of
+how many minutes the session will take, at Start Here**, and **the real time when they
+finish, at Stop Point**, then notices the gap. **The timer already exists**, so this adds a
+guess and a glance and **no new tracker** -- it rides on two anchors every session already
+has.
+
+**Framed strictly as practice, never as a graded accuracy test.** This matters most for an
+anxious child. "Being off is normal" is the register, the same as the fact loop.
+
+**The designated sessions.** The specification says "a few designated sessions" and names
+none, so this build designates them, the same way it designates the hand-offs. They are
+spread across the batch so improvement is visible rather than asserted:
+
+| Session | Why this one |
+| --- | --- |
+| **16** Deep-Dive City A | The first open-ended research session of the batch, and the child is already setting their own Start Here here |
+| **26** Rank Attractions | Sorting work, where a child's time sense is usually worst |
+| **35** Hotel Comparison | Explicitly multi-sitting, so the guess is about a sitting rather than the whole task |
+| **45** Full Itinerary Draft | A synthesis session near the end, which is where the comparison pays off |
+
+**The mid-project glance is Session 27, Checkpoint 3.** The specification asks for one
+glance at the accumulated guesses "so the improvement is noticed before the very end, not
+only at the finish". Checkpoint 3 sits closest to the middle of the Core path and is
+already a looking-back moment, so the glance rides on the checkpoint's existing reflection
+line rather than adding a beat.
+
+**Session 53 surfaces the gaps** in the final reflection, alongside the predict-then-verify
+gaps, as concrete evidence that the child's estimating improved. That is what makes the
+capstone's time question answerable, and it is why the sessions above are designated rather
+than left to an author's choice -- **a reflection that asks about data nobody collected is
+worse than no reflection.**
+
+**Frame the budget part differently, and say so:** "how close was your estimate to the
+anchor", never "to an actual". The budget has no actual, and claiming one would be the
+exact dishonesty this loop exists to avoid.
+
 ### 5.6 The lighter three-criteria rubric
 
 Wherever a weighted multi-criteria scoring tool appears, the lighter three-criteria
@@ -1002,7 +1109,11 @@ rule. **Create a card here only if the child's anchor is not one of Session 15's
 which can happen, since Session 15 lets them choose. Say it to the child plainly: you are
 going deeper on a page you already started, and that is what "extend, don't redo" means.
 
-**This session carries the Phase 3 Start Here hand-off.** The child sets the timer and
+**This session carries two designated loops: the Phase 3 Start Here hand-off, and the
+first session-time guess (section 5.5b).** The time guess sits naturally here because the
+child is already setting up their own Start Here.
+
+**The Phase 3 Start Here hand-off.** The child sets the timer and
 picks their own first tiny step, rather than being handed a pre-written micro-action.
 Keep the hand-off gentle and give one fallback example, so a child who freezes has
 somewhere to go. **This is the moment the Phase 3 formative check attaches to** -- see the
@@ -3279,7 +3390,8 @@ complete set of outputs; the later sections are a bonus.**
 
 **`final_reflection.md` must prompt for, at least:** what is different since the baseline;
 patterns across whatever checkpoint reflections the child did; how far off the **time**
-guesses were and whether guessing got closer with practice; how close the budget estimate
+guesses were and whether guessing got closer with practice -- **the session-time loop in
+section 5.5b is what records them**, and this prompt is unanswerable without it; how close the budget estimate
 was **to the band, an anchor rather than real spending**; what was learned about planning;
 what was hard at first; what helped getting started; which research skill improved; what
 would be done differently; what the child is proud of; what adults are taking over now; and
@@ -3774,6 +3886,10 @@ is incomplete and removing the rider would make the docs wrong in the other dire
   them and land them somewhere else.
 - **The lighter-template phase reading**, with its accepted cost.
 - **The Batch 1 riders retired**, and the curriculum version bump that goes with them.
+- **The session-time loop's designated sessions** -- 16, 26, 35, 45, with the mid-project
+  glance at 27 -- so a later batch does not re-derive them.
+- **The path-aware content edits to Sessions 33, 44 and 53**, each as one line saying what
+  a Core/Full reader now gets that a First Taste reader still gets unchanged.
 - **`safety_and_emergency.md`** as a reference file this batch's routing obliges Batch 3 to
   write, since it was in no earlier scope list.
 
