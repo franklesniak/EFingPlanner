@@ -78,7 +78,7 @@ The canonical pointer wordings, with their links, are:
 
 ## The section order, and why it is this one
 
-The labelled parent strip is written exactly `**For parents:**`, sits directly under the navigation line and above `## Goal`, and renders as a short one-field-per-line list rather than a faux table. The child's own sections lead the body, and `## Parent Notes` comes last.
+The order at the top of a session is: the navigation line, then any italic routing lines the section below permits, then the labelled parent strip, then `## Goal`. The strip is written exactly `**For parents:**` and renders as a short one-field-per-line list rather than a faux table. **The routing lines come between the two**, which is where every built session puts them; an earlier wording put the strip directly under the navigation line and left a session that needs a routing note with two rules it could not both follow, so an author could have misplaced a load-bearing route or deleted it to satisfy the template. The child's own sections lead the body, and `## Parent Notes` comes last.
 
 Every built session is laid out that way, and the built repository wins on conflict, so the acceptance criterion asking for the child's action before parent-facing meta is satisfied by that section order rather than by pushing the five-field strip below `## Steps`. The style law asks for both halves in one sentence: the child's action first, and the parent meta grouped into the labelled strip near the top. Do not reorder the strip, here or in any session.
 

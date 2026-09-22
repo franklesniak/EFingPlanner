@@ -75,7 +75,7 @@ Three layers (this is how the pages fit together):
 
 ## Status
 
-Early. This repository holds the complete **Phases 0-2** slice -- Session 00 through Checkpoint 1 -- plus its support files. The **First Taste** path in the table above overlaps that slice rather than sitting inside it: it starts there and finishes in five already-built later-phase sessions. The Core Finish Line and full program are documented in the design record and are built in later batches, which begin once the Batch 0 gate has cleared — either the child pilot passes, or the no-child fallback is recorded in writing.
+Early. This repository holds the complete **Phases 0-2** slice -- Session 00 through Checkpoint 1 -- plus its support files. The **First Taste** path in the table above overlaps that slice rather than sitting inside it: it starts there and finishes in five already-built later-phase sessions. The Core Finish Line and full program are documented in the design record and are built in later batches, which begin once the Batch 0 gate has cleared — either the child pilot passes, or the no-child fallback is recorded in writing. Those later batches also wait on the two built-slice checks this batch opened: an adult reads the converted pages against the Batch 0 originals, and an adult watches a child work the new sessions. Both are recorded as open in the framework changelog, and neither has been done.
 
 - The authoritative design is [docs/spec/specification.md](docs/spec/specification.md) -- an archived design record. Once the curriculum is built, the built repository supersedes the spec on any conflict.
 

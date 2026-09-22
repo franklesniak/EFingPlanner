@@ -37,7 +37,7 @@ Score each one from 1 to 5, using the anchors.
 
 Three times, and no more.
 
-1. **At the start**, before the first session your child does.
+1. **At the start**, after your child has worked their first two or three sessions. Not before: every anchor below asks how often something happened across sessions, and before the first one there is nothing to count. Two or three sittings is enough to score and early enough to still be a start.
 2. **At the midpoint**. On the First Taste path that is Checkpoint 1, Session 14. On the full path it is Checkpoint 3 or 4.
 3. **At the end**, after the final reflection.
 
