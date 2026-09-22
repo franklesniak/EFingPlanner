@@ -1825,7 +1825,7 @@ fit. **Fully neutral.**
   worksheet to replace.** **The child does not research or book flights.** Say this
   plainly.
 - The child's own check compares **matching units**: the piece of their estimate that matches the band's form, against the
-  controllable-slice band**; the adult's own check is a **partial floor**, not a whole-trip total: it adds airfare to those five slices and leaves intercity transport, insurance, entry costs and phone service outside. Name it that way in the session, so nobody reads it as what the trip costs.
+  controllable-slice band**; the adult's own check is a **partial floor**, not a whole-trip total: by Session 39 it adds airfare to all five slices, and it leaves intercity transport, insurance, entry costs and phone service outside. Earlier passes cover fewer slices still. Name it that way in the session, so nobody reads it as what the trip costs.
 - **If the honest estimate cannot fit the band in any workable window, "recommend we
   change the trip or wait" is a valid, successful result.** One warm line, framed as
   success.
@@ -2333,14 +2333,15 @@ wording.
   removes, and a child crossing a concourse is no longer where the family is looking.
   If nobody is within earshot, they stay put and keep looking. **The only time they
   move is when that morning's rule named a meeting spot.**
-- **Know the emergency numbers.** The pack has them. **Write them on your card only after
-  an adult checks them on a current official page, and write the date you checked.** An
-  adult, a shop worker, or the police post can call them for you.
+- **Know the emergency numbers.** The pack has them. **An adult checks them on a current
+  official page and writes the date checked; you write the numbers on your card once
+  they have.** An adult, a shop worker, or the police post can call them for you.
 
 **No built page prints an emergency number, not even as an example.** The card instruction
-is that an adult writes the number after checking an official page, with the date. That is
-the same verify-framing the rest of the curriculum uses, and it is the only form that keeps
-the page both printable and true. (`D-item-5`.)
+is that the adult verifies on an official page and dates the check, and the child writes the
+verified number on their own card. That is the same verify-framing the rest of the
+curriculum uses, and it is the only form that keeps the page both printable and true.
+(`D-item-5`.)
 
 **3. The adult rehearses it once, calmly, as a "what if" -- not a frightening lecture.** A
 rehearsed plan *lowers* a child's anxiety by turning a vague fear into a known script. Put
@@ -3252,11 +3253,16 @@ what the plan can be.**
 3. **Constraints are not the enemy.** They are what makes a plan possible, and they are why
    a trade-off has two real sides. **A plan that ignores a constraint is not a braver plan;
    it is a plan that breaks later.**
-4. **How to use a constraint, as a three-step move:** name it; write it on the card or the
-   assumption block; then check your recommendation against it.
-5. **A constraint you are not sure about is an assumption.** Write it in your card's
-   planning-assumption block, say what could change it, and flag whether a grown-up needs to
-   check it. **When it drives a decision, it moves to your decision log.**
+4. **How to use a constraint, as a three-step move:** name it; write it down where that
+   kind of thing lives; then check your recommendation against it.
+5. **Say where each kind goes, because they do not all have the same home.** A settled
+   trip-wide limit is already on the Trip-Basics card. An unsure one that belongs to a
+   single place goes in **that research card's** planning-assumption block, with what could
+   change it and whether a grown-up must check it. **An unsure trip-wide one -- a budget or
+   a date nobody has confirmed -- goes in the question parking lot**, because no card holds
+   it and it is a question for an adult. Sending every constraint to the assumption block
+   is wrong: that block lives on research cards, and the child cannot follow the method
+   outside them. **When an assumption drives a decision, it moves to the decision log.**
 6. **Constraints change.** When one does, you **move a block** -- you do not start over.
 7. **Carry-over tag**, one short line: where else do you meet constraints? A homework
    deadline, a chore before dinner, how much room is in your bag.

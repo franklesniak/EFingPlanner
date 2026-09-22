@@ -20,7 +20,9 @@ Your child's controllable slices are hotels, food, activities, local transit and
 
 **Your** sanity check is their subtotal plus your per-person fare multiplied by the number of travelers. The subtotal is already a whole-party amount and the fare is not, so adding them raw understates the result for any family larger than one.
 
-**That figure is a floor, and it is worth knowing what it leaves out.** Their subtotal covers five slices: hotels, food, activities, local transit and souvenirs. Intercity transportation, travel insurance, any entry or visa costs, phone or data service, and anything else adult-owned are all outside it. So treat the number as *are we in the right range*, and not as what the trip will cost.
+**That figure is a floor, and it is worth knowing what it leaves out.** At the first budget session it leaves out three of the five slices -- activities, local transit and souvenirs -- on top of everything below, so it is a floor under a floor. Once the Core path has added those, the subtotal covers all five.
+
+**Outside it at every stage:** intercity transportation, travel insurance, any entry or visa costs, phone or data service, and anything else adult-owned. So treat the number as *are we in the right range*, and never as what the trip will cost.
 
 **Keep your fare number on your own page.** Their budget worksheet says in as many words that flights are the grown-ups' number and that there is nothing to fill in there. That wording is deliberate. A jotted line in this guide, or anywhere you keep trip notes, is all it needs to be.
 

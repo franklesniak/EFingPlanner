@@ -26,14 +26,14 @@ A plan that ignores a constraint just breaks later.
 Three steps, every time:
 
 1. **Name it.** Say what the limit actually is.
-2. **Write it down.** If it's settled — like the trip length on your Trip-Basics card — it goes in the card field it belongs to. If nobody's checked it yet, it goes in the planning-assumption block instead (see below).
+2. **Write it down where that kind of thing lives.** A settled trip-wide limit, like the trip length, is already on your Trip-Basics card. Something you are unsure about that belongs to one place you are researching goes in that card's planning-assumption block. And an unsure trip-wide one -- a budget or a date nobody has confirmed -- goes in your **question parking lot**, because there is no card for it and it is a question for a grown-up.
 3. **Check your recommendation against it.** Does this still fit?
 
 That third step is the budget-band question your [Trade-Off Report](../templates/tradeoff_report.md) asks. Same move.
 
 ## Not sure about one?
 
-Then it's an assumption. That's the difference: a constraint someone confirmed is a fact you plan around; one you're guessing at you plan around *and flag*. Write it in your card's planning-assumption block. Say what could change it. Flag whether a grown-up needs to check it.
+Then it's an assumption. That's the difference: a constraint someone confirmed is a fact you plan around; one you're guessing at you plan around *and flag*. If it belongs to a place you are researching, write it in that card's planning-assumption block, say what could change it, and flag whether a grown-up needs to check it. If it is trip-wide, it goes in your question parking lot instead.
 
 When an assumption starts driving a decision, it moves to your decision log.
 
