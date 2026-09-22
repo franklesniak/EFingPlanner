@@ -1866,18 +1866,22 @@ def test_the_default_walk_reads_no_file_that_is_not_markdown(
 
 
 def test_the_default_walk_refuses_a_symlink(tmp_path: Path) -> None:
-    """``is_file()`` says yes to a symlink pointing at a file.
+    """A symlink is refused by name, whatever else the corpus holds.
 
-    So the walk offered one as a target, ``resolve_candidate_path`` refused
-    it, and ``scan_files`` dropped it without a word -- leaving a run that
-    printed "1 file(s) checked" having opened none. A committed symlink
-    therefore walked past both the empty-corpus guard and this repository's
-    requirement to reject symlink escapes.
+    ``is_file()`` says yes to a symlink pointing at a file, so the walk offered
+    one, ``resolve_candidate_path`` declined it, and ``scan_files`` dropped it
+    without a word -- a run that printed "1 file(s) checked" having opened none.
+
+    **Dropping it from the walk was not the repair, and this test used to say
+    it was.** With the symlink skipped, the empty-corpus guard never fired
+    whenever one ordinary file sat beside it, so the run exited zero and a
+    committed symlink walked past the gate anyway. It is now offered as a
+    target so the resolver refuses it by name and the run says so.
     """
     hook = cast(Any, _placeholder_hook)
     (tmp_path / "framework").mkdir()
     outside = tmp_path.parent / (tmp_path.name + "_outside.md")
-    outside.write_text("# T\n\nTBD: here\n", encoding="utf-8")
+    outside.write_text("# T" + chr(10) * 2 + "TBD: here" + chr(10), encoding="utf-8")
     link = tmp_path / "framework" / "linked.md"
     try:
         link.symlink_to(outside)
@@ -1885,19 +1889,27 @@ def test_the_default_walk_refuses_a_symlink(tmp_path: Path) -> None:
         outside.unlink()
         pytest.skip("this environment cannot create a symlink")
     try:
-        # The symlink is the only candidate, so the run has nothing to read
-        # and must say so rather than reporting a clean scan of one file.
+        # Alone, the symlink is the only candidate and the run must refuse.
         assert hook.main([], root=tmp_path) == 1
-        assert link not in hook.default_targets(tmp_path)
+        assert link in hook.default_targets(tmp_path)
 
-        # Beside a real file, the count reports the file that was read.
+        # **Beside an ordinary file it must still refuse.** This is the case
+        # the earlier version of this test asserted the other way round, and it
+        # is the one a bypass would use: a corpus with something legitimate in
+        # it, so the empty-corpus guard stays quiet.
         (tmp_path / "framework" / "real.md").write_text(
-            "# T\n\nWords.\n", encoding="utf-8"
+            "# T" + chr(10) * 2 + "Words." + chr(10), encoding="utf-8"
         )
+        assert hook.main([], root=tmp_path) == 1
+        assert link in hook.default_targets(tmp_path)
+
+        # With the link gone, the same corpus is clean and counts the one file.
+        link.unlink()
         assert hook.main([], root=tmp_path) == 0
         assert [path.name for path in hook.default_targets(tmp_path)] == ["real.md"]
     finally:
-        link.unlink()
+        if link.is_symlink():
+            link.unlink()
         outside.unlink()
 
 

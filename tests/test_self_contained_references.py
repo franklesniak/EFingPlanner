@@ -75,7 +75,7 @@ import re
 import subprocess
 from collections.abc import Iterable
 from pathlib import Path
-from urllib.parse import urlsplit
+from urllib.parse import SplitResult, urlsplit
 
 from tests._pytest_compat import pytest
 
@@ -230,11 +230,12 @@ ROUND_CONCEPT_DOCUMENTS = frozenset(
         "docs/spec/specification.md",
     }
 )
-PYTHON_ONLY_PATTERNS = frozenset(
+ROUND_CONCEPT_PATTERNS = frozenset(
     {
         "a numbered review round",
         "a review round named by position",
         "review rounds named by position",
+        "a review round named by its ordinal",
     }
 )
 
@@ -273,18 +274,36 @@ TRACKER_IDENTIFIER = r"(?:[A-Za-z][A-Za-z0-9]*-\d+|\d+)"
 #: A tracker noun sitting immediately in front of a hash, which means the
 #: reference belongs to that noun's pattern rather than to the bare one.
 TRACKER_NOUN_BEFORE = re.compile(
-    r"(?i)(?:PR|pull request|issues?|tickets?|projects?)\s*$"
+    # ``rounds?`` is in this list so a hash written after that noun belongs
+    # to its own pattern. A review run names a position in a sequence the
+    # reader cannot see
+    # and is deliberately never resolvable by a URL, so letting the bare-hash
+    # spelling claim it let an unrelated issue link excuse one.
+    r"(?i)(?:PR|pull request|issues?|tickets?|projects?|rounds?)\s*[:#]?\s*$"
 )
 TRACKER_SEPARATOR = r"\s*:?\s*#?\s*"
 
 REVIEW_HISTORY_PATTERNS = (
-    ("a numbered review round", re.compile(r"(?i)\brounds?\s+\d+\b")),
+    (
+        "a numbered review round",
+        # The noun may carry the word ``review``, may be joined by label
+        # punctuation or a hash rather than a space, and each spelling names
+        # the same unreachable thing.
+        re.compile(r"(?i)\b(?:review\s+)?rounds?(?:\s*[:#]\s*|\s+)\d+\b"),
+    ),
+    (
+        "a review round named by its ordinal",
+        re.compile(
+            r"(?i)\b(?:first|second|third|fourth|fifth|sixth|seventh|eighth"
+            r"|ninth|tenth|eleventh|twelfth|final)\s+(?:review\s+)?rounds?\b"
+        ),
+    ),
     (
         "a review round named by position",
         re.compile(
             r"(?i)\b(?:this|that|the|an|another|each|every|one|last|next"
             r"|previous|earlier|later|prior|following|preceding|same)"
-            r"\s+rounds?\b"
+            r"\s+(?:review\s+)?rounds?\b"
         ),
     ),
     (
@@ -314,7 +333,11 @@ REVIEW_HISTORY_PATTERNS = (
     # fixed-width one.
     (
         "a bare issue reference",
-        re.compile(r"(?<![\w&#/(])#\d{1,6}\b"),
+        # No ceiling on the digits: an identifier is an increasing integer,
+        # and a repository reaching seven of them would have dropped out of
+        # this gate without anyone noticing. Measured, removing the cap
+        # changes nothing here: 48 matches before and 48 after.
+        re.compile(r"(?<![\w&#/(])#\d+\b"),
     ),
     (
         "an unlinked issue",
@@ -368,7 +391,14 @@ REVIEW_HISTORY_PATTERNS = (
             # prose is written bare; one written after a hash sign is a colour, a
             # fragment or an anchor. Measured over the 235 scanned files, the
             # guard changes nothing: 38 matches before it and 38 after.
-            r"(?i)(?<!#)\b(?=[0-9a-f]*\d)(?=[0-9a-f]*[a-f])[0-9a-f]{7,40}\b"
+            # **Nor beside a hyphen.** A UUID is hexadecimal runs joined by
+            # hyphens, so its first group read as a commit this repository
+            # does not hold. A hash written in prose stands alone; one with
+            # hexadecimal or a hyphen against it is part of something longer.
+            # Measured over the 235 scanned files the guard changes nothing:
+            # 38 matches before it and 38 after, and no spelling is lost.
+            r"(?i)(?<![#\-0-9a-f])\b(?=[0-9a-f]*\d)(?=[0-9a-f]*[a-f])"
+            r"[0-9a-f]{7,40}\b(?![\-0-9a-f])"
         ),
     ),
 )
@@ -396,7 +426,12 @@ REVIEW_HISTORY_PATTERNS = (
 #: The cases that fix this meaning live in the fixture file beside the positive
 #: controls, and for the same reason: a sample written here would be a
 #: reference in a swept file.
-URL_PATTERN = re.compile(r"(?:https?://|www\.)\S+")
+#: A URI scheme is case-insensitive, so this is too. Matched case-sensitively,
+#: an upper-case scheme was neither collected as a URL nor blanked from the
+#: line, so a clearly linked reference was reported as unlinked and the text
+#: of the URL was then searched for references of its own.
+#: https://datatracker.ietf.org/doc/html/rfc3986#section-3.1
+URL_PATTERN = re.compile(r"(?i)(?:https?://|www\.)\S+")
 #: A Markdown link reference definition: a bracketed label, a colon, and the
 #: destination. CommonMark allows up to three leading spaces.
 #: https://spec.commonmark.org/0.31.2/#link-reference-definitions
@@ -503,12 +538,20 @@ def commit_exists(token: str, root: Path) -> bool:
     # Measured over the six hashes this repository holds and the corpus cites:
     # all six are ancestors of HEAD, so this costs nothing today and closes the
     # divergence.
+    # **From any ref, not only from HEAD.** Asking whether the commit is an
+    # ancestor of the current branch rejected one held by a live side branch
+    # or a tag, which a full clone has and GitHub renders a link to -- a
+    # false failure introduced by this pull request's own fix one revision
+    # earlier. Asking
+    # ``for-each-ref --contains`` is the repository-wide question.
     reachable = subprocess.run(
-        ["git", "-C", str(root), "merge-base", "--is-ancestor", token, "HEAD"],
+        ["git", "-C", str(root), "for-each-ref", "--contains", token,
+         "--count=1", "--format=%(refname)"],
         capture_output=True,
     )
     return (
         reachable.returncode == 0
+        and bool(reachable.stdout.strip())
     )
 
 
@@ -608,6 +651,24 @@ COMMENT_FRAGMENT_PREFIXES = (
 )
 
 
+def split_url(url: str) -> SplitResult | None:
+    """Return ``urlsplit(url)``, or ``None`` when the URL cannot be parsed.
+
+    ``urlsplit`` raises ``ValueError: Invalid IPv6 URL`` on an unclosed
+    bracketed authority, and every scanned file is untrusted input to this
+    check. Left to escape, one malformed URL on one committed line ended the
+    whole repository-wide gate in a traceback rather than reporting the
+    reference beside it.
+
+    A URL this cannot parse resolves nothing, which is the direction that
+    reports the reference rather than excusing it.
+    """
+    try:
+        return urlsplit(url)
+    except ValueError:
+        return None
+
+
 def url_has_host(url: str) -> bool:
     """Return whether an ``http`` or ``https`` URL names a host.
 
@@ -621,7 +682,9 @@ def url_has_host(url: str) -> bool:
     ``https`` are required to be followed, and those are the only two
     ``URL_PATTERN`` matches.
     """
-    parts = urlsplit(url)
+    parts = split_url(url)
+    if parts is None:
+        return False
     if parts.scheme in ("http", "https"):
         return bool(parts.hostname)
     return True
@@ -629,12 +692,18 @@ def url_has_host(url: str) -> bool:
 
 def url_path_segments(url: str) -> list[str]:
     """Return the path segments of one URL, in order, without its query."""
-    return [part for part in urlsplit(url).path.split("/") if part]
+    parts = split_url(url)
+    if parts is None:
+        return []
+    return [part for part in parts.path.split("/") if part]
 
 
 def url_fragment_tokens(url: str) -> list[str]:
     """Return the fragment of one URL, cut where a host joins its pieces."""
-    return [part for part in FRAGMENT_SEPARATORS.split(urlsplit(url).fragment) if part]
+    parts = split_url(url)
+    if parts is None:
+        return []
+    return [part for part in FRAGMENT_SEPARATORS.split(parts.fragment) if part]
 
 
 #: The path segments a host serves each kind of reference from. GitHub serves
@@ -893,6 +962,20 @@ def normalize_link_label(label: str) -> str:
     return LABEL_WHITESPACE.sub(" ", label.strip()).casefold()
 
 
+#: A raw HTML block whose contents a reader sees as written, and what ends
+#: it. A script, style, pre or textarea element and an HTML comment each
+#: hold their contents literally; an ordinary element opens a block that
+#: CommonMark ends at a blank line. Those are the shapes that can hold a
+#: whole line and still show it, which is what makes them a way in.
+#: https://spec.commonmark.org/0.31.2/#html-blocks
+HTML_BLOCK_OPENS = re.compile(
+    r"(?i)^ {0,3}(?:<(?:script|pre|style|textarea)(?:\s|>|/>|$)|<!--|<[?!]"
+    r"|</?[a-z][a-z0-9-]*(?:\s[^>]*)?/?>\s*$)"
+)
+#: What closes a literal element or a comment on the line it appears on.
+HTML_LITERAL_CLOSES = re.compile(r"(?i)</(?:script|pre|style|textarea)>|-->")
+
+
 #: A fenced code block's opening or closing line. Three or more backticks or
 #: tildes, indented by at most three spaces.
 #: https://spec.commonmark.org/0.31.2/#fenced-code-blocks
@@ -937,9 +1020,28 @@ def link_definitions(body: str) -> dict[str, str]:
     # after it was read as document rather than as code -- the same bypass this
     # tracker was added to shut, one level down.
     # https://spec.commonmark.org/0.31.2/#fenced-code-blocks
+    # **A raw HTML block shows its contents too.** A definition written
+    # inside a script element, an HTML comment or an ordinary HTML block was
+    # collected as a real one -- the same way in that the fence tracker
+    # closes.
+    #
+    # **Measured, the set of contexts now closes.** An indented code block
+    # and a block quote were already immune, because a definition line has to
+    # begin within three spaces of the margin and cannot carry a quote
+    # marker. Fences, fences inside a list item, and raw HTML are the three
+    # that needed tracking, and there is no fourth.
+    html_block = False
     fence: tuple[str, int] | None = None
     for raw_line in body.split(chr(10)):
         line = peel_list_marker(raw_line)
+        if html_block:
+            if not line.strip() or HTML_LITERAL_CLOSES.search(line):
+                html_block = False
+            continue
+        if fence is None and HTML_BLOCK_OPENS.match(line):
+            # A block that opens and closes on one line holds nothing.
+            html_block = not HTML_LITERAL_CLOSES.search(line)
+            continue
         marker = CODE_FENCE.match(line)
         if marker:
             run, tail = marker.group(1), marker.group(2)
@@ -1001,7 +1103,7 @@ def references_in(
         for name, pattern in REVIEW_HISTORY_PATTERNS:
             # Excused only in the documents that define the review protocol,
             # never by file type. See ``ROUND_CONCEPT_DOCUMENTS``.
-            if name in PYTHON_ONLY_PATTERNS and relative in ROUND_CONCEPT_DOCUMENTS:
+            if name in ROUND_CONCEPT_PATTERNS and relative in ROUND_CONCEPT_DOCUMENTS:
                 continue
             for match in pattern.finditer(scanned):
                 matched = match.group(0)
@@ -2303,3 +2405,113 @@ def test_a_commit_must_be_reachable_and_not_merely_held(tmp_path: Path) -> None:
         "a commit held but unreachable must not resolve: a fresh clone would "
         "not have it, and GitHub would not render a link to it"
     )
+
+
+def test_a_url_this_cannot_parse_reports_rather_than_crashes(tmp_path: Path) -> None:
+    """Every scanned file is untrusted input, so a parse failure is an answer.
+
+    ``urlsplit`` raises on an unclosed bracketed authority, and one malformed
+    URL on one committed line ended the whole repository-wide gate in a
+    traceback rather than reporting the reference sitting beside it.
+    """
+    sample = tmp_path / "doc.md"
+    reference = "issue" + " " + "27"
+    sample.write_text(
+        "# T" + chr(10) * 2 + "See " + reference + " https://[bad/issues/27" + chr(10),
+        encoding="utf-8",
+    )
+    # The call must return, and it must report: a URL nothing can parse
+    # resolves nothing.
+    assert references_in(sample, tmp_path)
+
+    # The helper answers rather than raising, in both directions.
+    assert split_url("https://[bad/issues/27") is None
+    assert split_url("https://github.com/o/r/issues/27") is not None
+
+
+def test_a_uuid_segment_is_not_a_commit_hash(tmp_path: Path) -> None:
+    """A UUID is hexadecimal runs joined by hyphens, and its first group fits.
+
+    Read as a commit, an ordinary request identifier failed the gate for naming
+    an object this repository does not hold.
+    """
+    sample = tmp_path / "notes.md"
+    # Built from pieces: a full identifier written here would be a finding in
+    # this file, which is the property the file exists to enforce.
+    identifier = (
+        "550e" + "8400" + "-e29b-" + "41d4-" + "a716-" + "4466" + "5544" + "0000"
+    )
+    sample.write_text("request id " + identifier + chr(10), encoding="utf-8")
+    assert not references_in(sample, tmp_path)
+
+    # Standing alone, the same run is still a hash and is still reported.
+    sample.write_text("broken at " + "7e4463f" + " only" + chr(10), encoding="utf-8")
+    assert references_in(sample, tmp_path)
+
+
+def test_a_scheme_in_capitals_is_still_a_scheme(tmp_path: Path) -> None:
+    """URI schemes are case-insensitive, and this gate reads them as text.
+
+    Matched case-sensitively, an upper-case scheme was neither collected as a
+    URL nor blanked from the line, so a clearly linked reference was reported
+    as unlinked.
+    """
+    sample = tmp_path / "doc.md"
+    reference = "issue" + " " + "27"
+    for scheme in ("https", "HTTPS", "HtTpS"):
+        sample.write_text(
+            "# T" + chr(10) * 2 + "See [" + reference + "]("
+            + scheme + "://github.com/o/r/issues/27)" + chr(10),
+            encoding="utf-8",
+        )
+        assert not references_in(sample, tmp_path), scheme
+
+
+def test_an_identifier_has_no_ceiling_on_its_digits(tmp_path: Path) -> None:
+    """Identifiers are increasing integers, so a cap is a silent expiry date."""
+    sample = tmp_path / "note.js"
+    for digits in ("27", "123456", "1234567", "12345678"):
+        sample.write_text(
+            "// fixed upstream in #" + digits + chr(10), encoding="utf-8"
+        )
+        assert references_in(sample, tmp_path), digits
+
+
+def test_a_definition_inside_a_raw_html_block_is_not_a_definition(
+    tmp_path: Path,
+) -> None:
+    """A raw HTML block shows its contents, so a definition in one is an example.
+
+    This is the third literal context, and **measured, it is the last**: an
+    indented code block and a block quote were already immune, because a
+    definition line must begin within three spaces of the margin and cannot
+    carry a quote marker.
+    """
+    sample = tmp_path / "doc.md"
+    url = "https://github.com/o/r/issues/27"
+    reference = "issue" + " " + "27"
+    head = (
+        "# T" + chr(10) * 2
+        + "See [" + reference + "][ticket-ref] here." + chr(10) * 2
+    )
+    shapes = {
+        "script": "<script>" + chr(10) + "[ticket-ref]: " + url + chr(10) + "</script>",
+        "division": "<div>" + chr(10) + "[ticket-ref]: " + url + chr(10) + "</div>",
+        "comment": "<!--" + chr(10) + "[ticket-ref]: " + url + chr(10) + "-->",
+    }
+    for name, block in shapes.items():
+        sample.write_text(head + block + chr(10), encoding="utf-8")
+        assert references_in(sample, tmp_path), name
+
+    # Already immune, and asserted so the claim that the set closes is checked
+    # rather than stated.
+    for name, block in {
+        "indented code": "    [ticket-ref]: " + url,
+        "block quote": "> [ticket-ref]: " + url,
+    }.items():
+        sample.write_text(head + block + chr(10), encoding="utf-8")
+        assert references_in(sample, tmp_path), name
+
+    # And a definition that is one still resolves.
+    sample.write_text(head + "[ticket-ref]: " + url + chr(10), encoding="utf-8")
+    assert not references_in(sample, tmp_path)

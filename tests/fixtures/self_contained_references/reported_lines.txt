@@ -17,3 +17,6 @@
 # tracked as project: PLAT-9 on the internal board
 # filed as issue: 27 in the vendor tracker
 # blocked on #27 in the vendor tracker
+# settled in the third review round
+# settled in round: 12
+# settled in the previous review round

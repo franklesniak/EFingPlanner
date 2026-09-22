@@ -2106,12 +2106,16 @@ def default_targets(root: Path) -> list[Path]:
         if not directory.is_dir():
             continue
         for path in sorted(directory.rglob("*")):
-            # A symlink is not a file this scan may follow. ``is_file()`` says
-            # yes for one pointing at an existing file, so the walk offered it
-            # as a target, ``resolve_candidate_path`` refused it, and
-            # ``scan_files`` dropped it without a word -- leaving a run that
-            # reported one file checked and had opened none.
+            # A symlink is not a file this scan may follow, and it is
+            # **offered rather than skipped** so the run refuses it by name.
+            # Skipping it left the empty-corpus guard unfired whenever one
+            # ordinary file sat beside it, so a committed symlink walked past
+            # the gate and the run reported success having never opened it.
+            # ``resolve_candidate_path`` declines it and ``main`` reports the
+            # refusal, which is the loud answer rather than the silent one.
             if path.is_symlink():
+                if path.name.lower().endswith(".md"):
+                    found.append(path)
                 continue
             # ``rglob("*.md")`` matches the suffix case-sensitively, so on a
             # case-sensitive filesystem a file named with an uppercase suffix
