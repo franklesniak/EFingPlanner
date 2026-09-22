@@ -16,7 +16,7 @@ It is a **real trip-planning binder**. What comes out of it is a thoughtful, sou
 
 It is also an **executive-function curriculum**. The trip is the hook. The repeated moves are the subject: start small, track a source, make one trade-off, know when to stop.
 
-The two fit together because the work is real. The adults review the child's recommendation, adjust it, verify anything that matters against official sources, and do the actual booking. The child's work feeds a decision instead of being filed away.
+The two fit together because the work is real. The adults review the child's recommendation, adjust it, verify anything that matters against official sources, and own any booking there turns out to be. The child's work feeds a real decision instead of being filed away. Whether the trip is taken, moved or dropped is the adults' call and the world's, and the child's work stands either way.
 
 ## Three honest finish lines
 

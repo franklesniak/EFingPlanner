@@ -14,7 +14,8 @@ Fill in:
 | How you will travel (plane / car / train / another way) | |
 | Home airport, if you are flying | |
 | Airport code, if you are flying | |
-| Home time zone, or the time difference to the destination (hours ahead or behind) | |
+| Time difference to the destination, in hours ahead or behind (a grown-up looks this up) | |
+| Home time zone, if you want to write it down too | |
 | Maximum trip length (in days) | |
 | Number of travelers (write "not decided yet" if you are unsure) | |
 

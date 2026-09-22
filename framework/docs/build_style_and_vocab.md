@@ -31,7 +31,7 @@ A note for whoever edits it next: Session 04 already holds two `X, not Y` contra
 
 ## The seven mandatory-core session fields
 
-Every child-facing session has these seven, and nothing else is required:
+Every child-facing session has these seven. They are the **mandatory core**, which is not the same as being everything a session needs: three further sections are carried by every child session and named a few lines below, and no gate asks for any of them.
 
 1. Goal
 2. Start Here (a true micro-action, doable in under a minute)

@@ -66,7 +66,7 @@ Want a rough signal of how the executive-function side is going? The optional [e
 <!-- density-exempt: spaced dash -- Session 07's Role has to state the parent-setup condition without deciding the family's choice for them -->
 
 - Role: parent setup needed if you do it -- an adult opens the catalog or drives to the library.
-- Prep: a library card, a catalog login, or a ride.
+- Prep: a library card, a catalog login, or a ride; a blank Library Book List.
 - Look for: a library visit plan, or a book list worth borrowing.
 - Coaching question: "What would you ask the librarian first?"
 - Pitfall: running the catalog search yourself. Placing the hold is most of the value.
@@ -90,7 +90,7 @@ Want a rough signal of how the executive-function side is going? The optional [e
 ## Session 10: Destination Snapshot
 
 - Role: 5-minute check-in.
-- Prep: this session's Destination Notes from the destination pack; the Trip-Basics card (for the time difference).
+- Prep: this session's Destination Notes from the destination pack; the Trip-Basics card (for the time difference); a blank Destination Snapshot page.
 - Look for: a snapshot page with the big facts, three surprising facts, and one question.
 - Coaching question: "Which surprising fact do you want to tell someone?"
 - Pitfall: going for mastery. A snapshot is enough.
@@ -106,7 +106,7 @@ Want a rough signal of how the executive-function side is going? The optional [e
 ## Session 12: Weather, Seasons, and Events
 
 - Role: 5-minute check-in; help with school/work calendar fit.
-- Prep: this session's Destination Notes, and your destination pack's seasons reference.
+- Prep: this session's Destination Notes, your destination pack's seasons reference, and a blank Season Comparison Chart.
 - Look for: a season chart covering every season the destination has, with at least one busy window flagged to be careful about.
 - Coaching question: "Which season fits our family best so far, and why?"
 - Pitfall: chasing exact dates. "Check this year" is the right answer.
@@ -114,7 +114,7 @@ Want a rough signal of how the executive-function side is going? The optional [e
 ## Session 13: Trip Goals and Travel Style
 
 - Role: 5-minute check-in.
-- Prep: the Session 03 goals; the budget band.
+- Prep: the Session 03 goals; the budget band; a blank Travel Style Worksheet.
 - Look for: six style choices and a one-sentence style summary.
 - Coaching question: "Fewer places deeper, or more places faster -- which fits us?"
 - Pitfall: treating it as a test. There are no wrong answers here.

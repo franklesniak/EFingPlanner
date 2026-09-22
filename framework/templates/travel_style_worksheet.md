@@ -4,16 +4,16 @@
 
 Use this page in Session 13. There is no single right trip. Different families like different styles, and this page is where you decide which one fits yours.
 
-For each pair, mark the one your family leans toward. **Landing in the middle is a real answer**, so there is a column for it.
+For each row, circle the one your family leans toward. **Landing in the middle is a real answer**, so circle the middle instead if that is truer.
 
-| Choose between | This one | The middle | Or this one |
-| --- | --- | --- | --- |
-| Busy days **or** relaxed days | | | |
-| Cities **or** nature | | | |
-| Famous must-see sights **or** quieter hidden gems | | | |
-| Museums and history **or** food, shopping, and neighborhoods | | | |
-| Fewer places, staying longer **or** more places, moving faster | | | |
-| Special planned meals **or** flexible, eat-what-we-find meals | | | |
+| One way | The middle | The other way |
+| --- | --- | --- |
+| Busy days | somewhere between | Relaxed days |
+| Cities | somewhere between | Nature |
+| Famous must-see sights | somewhere between | Quieter hidden gems |
+| Museums and history | somewhere between | Food, shopping, and neighborhoods |
+| Fewer places, staying longer | somewhere between | More places, moving faster |
+| Special planned meals | somewhere between | Flexible, eat-what-we-find meals |
 
 Now say it in one sentence.
 
