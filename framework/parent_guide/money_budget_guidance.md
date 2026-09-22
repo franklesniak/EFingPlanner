@@ -12,9 +12,11 @@ They are **not** producing a usable, bookable trip budget. Say that plainly to y
 
 ## Why flights sit on the side
 
-Your child's controllable slices are hotels, food, activities, local transit and souvenirs. Their check is **their subtotal against a controllable-slice band you provide**, flights excluded.
+Your child's controllable slices are hotels, food, activities, local transit and souvenirs, and their subtotal covers those with flights excluded.
 
-The whole-trip total — their subtotal plus your flight number — is **your** sanity check, not their exercise.
+**Their band check compares matching units, not the subtotal.** The band you give them is a rate or a tier: per person per day, per day for the family, or a hotel tier. A subtotal is a whole-trip amount. Comparing the two would fail a perfectly good estimate on a unit mismatch, so their worksheet asks them to pull out the *matching piece* of their estimate and check that against the band. Give them the band in one of those three forms and the check works; give them a whole-trip number and it cannot.
+
+The whole-trip total is **your** sanity check, not their exercise, and it needs one step of arithmetic: **their subtotal, plus your per-person fare multiplied by the number of travelers.** The subtotal is already a whole-party amount and the fare is not, so adding them raw understates the total for any family larger than one.
 
 **Keep your fare number on your own page**, not on their budget worksheet. Their worksheet says in as many words that flights are the grown-ups' number and there's nothing to fill in there, and that's deliberate rather than an omission. A jotted line in this guide, or anywhere you keep trip notes, is all it needs to be.
 

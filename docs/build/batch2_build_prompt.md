@@ -1814,12 +1814,13 @@ fit. **Fully neutral.**
   number stays on the adult's own page and is never copied into the child's running total
   -- the built `budget_estimate.md` says in as many words that flights are the grown-ups'
   number with nothing to fill in, and that is deliberate. The adult compares their fare
-  against the child's subtotal on their side; the child compares their subtotal against the
-  controllable-slice band.
+  against the child's subtotal on their side, multiplying their per-person fare by the
+  traveler count first; the child compares the **matching piece** of their estimate
+  against the band, because the band is a rate or a tier and a subtotal is not.
 - **Adults review the final budget later**, including replacing the rough flight
   placeholder with real fares. **The child does not research or book flights.** Say this
   plainly.
-- The child's own check is their **controllable-slice subtotal against the
+- The child's own check compares **matching units**: the piece of their estimate that matches the band's form, against the
   controllable-slice band**; the whole-trip total is an adult sanity check.
 - **If the honest estimate cannot fit the band in any workable window, "recommend we
   change the trip or wait" is a valid, successful result.** One warm line, framed as
