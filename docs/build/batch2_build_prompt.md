@@ -1787,7 +1787,7 @@ gap.
 - **Rounding and a calculator are always allowed, and an adult may do the arithmetic while
   the child does the reasoning.** State this at the moment of use.
 - **The child's check is over the controllable slices** -- food, local transit, activities,
-  souvenirs, lodging -- **not** the whole-trip total. The adult-provided flight number
+  souvenirs, lodging -- **not** the whole-trip total. The adult's own fare number
   stays on the side as the grown-ups' number.
 - Keep every figure un-pinned. Exchange rates and prices change and must be re-checked and
   dated.
@@ -1810,8 +1810,12 @@ Update your budget now that you know the route, and see whether the parts you ch
 fit. **Fully neutral.**
 
 - The child connects the budget to the **actual route and itinerary**, not a generic trip.
-- The **adult-provided flight placeholder** from Session 33 stays in the running total, so
-  the comparison against the rough band stays meaningful.
+- **The child's second pass covers their controllable slices only.** The adult's fare
+  number stays on the adult's own page and is never copied into the child's running total
+  -- the built `budget_estimate.md` says in as many words that flights are the grown-ups'
+  number with nothing to fill in, and that is deliberate. The adult compares their fare
+  against the child's subtotal on their side; the child compares their subtotal against the
+  controllable-slice band.
 - **Adults review the final budget later**, including replacing the rough flight
   placeholder with real fares. **The child does not research or book flights.** Say this
   plainly.
@@ -3006,7 +3010,8 @@ The adult's half of the budget teaching.
    multi-person long-haul trip the flights dominate everything. **Do not write a party size
    or an airport.**
 3. **What the adult supplies:** the controllable-slice band in kid-sized form; a rough
-   per-person fare for the flight line, which the child never researches; and the final
+   per-person fare kept on the adult's own page, which the child never researches, never
+   writes down and never sums; and the final
    budget.
 4. **The teaching points to reinforce:** a trip has categories of costs; some are per
    person; **some are per room** -- tie this to the occupancy reality; some are per group;

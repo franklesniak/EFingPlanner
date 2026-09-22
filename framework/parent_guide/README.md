@@ -20,6 +20,19 @@ And the most important rule: **this is meant to be a positive experience you sha
 
 Read the rest when you need it: [coaching and support](coaching_and_support.md) for the hard conversations, and [differentiation](differentiation.md) when the defaults are too much or too little for your child.
 
+## The pages for a specific job
+
+You do not need these at the start. Each one is written for the moment its task actually arrives.
+
+| When | Read |
+| --- | --- |
+| Your child brings you a recommendation | [Review checkpoints](review_checkpoints.md), how to run all six and what to consider at each |
+| Before the first budget session | [Money and budget guidance](money_budget_guidance.md), what the exercise produces and what it does not |
+| When you start looking at flights | [Flights from your home airport](flights_from_origin_guidance.md) |
+| When anything needs booking | [Booking guidance](booking_guidance.md), order, long leads, and what your child hands you |
+| Passports, insurance, and the rest of the adult list | [Adult-only logistics](adult_only_logistics.md) |
+| Before the trip, and for the separation plan | [Safety and emergency guidance](safety_emergency_guidance.md) |
+
 ## Is this realistic for me right now
 
 A quick, honest self-check before you commit months:

@@ -31,6 +31,8 @@ The columns are already drawn for you, and the example row shows the shape. Repl
 
 **What we give up by choosing it:**
 
+**What a grown-up still needs to check or decide:**
+
 Travel time is the one people get wrong most. Two places can look close on a map and take hours by train, or look far apart and be a quick ride. Use the "Directions" tool and trust the time, not your eyes.
 
 Scores can help you think, but they don't make the choice — you do. If you want to score the options, the [scoring rubric](scoring_rubric.md) has a lighter three-criteria version beside the full one, and either is fine.

@@ -4,21 +4,25 @@
 
 Flights are yours. Your child learns what a flight decision involves, and never researches or books one.
 
-This page is written generically. Your family's actual home airport and its code live on your [Trip-Basics card](../templates/trip_basics.md), not here — that card is the one place a real value belongs.
+This page is written generically. Your family's actual home airport and its code live on your [Trip-Basics card](../templates/trip_basics.md), which is the **source of truth** for them.
+
+Your child copies both onto their binder cover in Session 01, and that is intended: the binder is a private working copy. What the rule forbids is a real value written into the reusable curriculum, which is what this page is.
 
 ## Your arrival city shapes their route
 
 Record the likely arrival and departure cities, and whether you're flying round-trip or into one city and out of another, as the **rough trip shape** at setup. Your child builds their route on it from Phase 3 onward, in movable per-city blocks.
 
-**Checkpoint 4 is where you confirm or adjust that shape** against real flight options. It is not where you reveal it for the first time. If it changes there, your child moves a block rather than rebuilding — which only works if the shape existed from the start.
+**Checkpoint 4 is where you confirm or adjust that shape** against real flight options. It is not where you reveal it for the first time. If it changes there, your child moves a block rather than rebuilding, which only works if the shape existed from the start.
 
-Flying into one city and out of another can save a lot of backtracking. Keep that a parent-side consideration; your child doesn't need the concept to do their work.
+Flying into one city and out of another is called an **open-jaw** ticket, and a route through several is a **multi-city** one. Both can save real backtracking. You will meet the term on your [current travel assumptions](../templates/current_family_travel_assumptions.md) page, which is why it is named here.
+
+Keep it parent-side. Your child works from the recorded arrival and departure cities and doesn't need the concept.
 
 ## Arrival time and layovers
 
 Arrival time shapes the first day more than most people expect. A late landing turns day one into transit and sleep, which is fine if you planned it that way and demoralising if you didn't.
 
-Layovers add fatigue on top of the time change. Your child's day cards mark day one — and often day two — as easy; that plan only holds if the flights match it.
+Layovers add fatigue on top of the time change. Your child's day cards mark day one, and often day two, as easy. That plan only holds if the flights match it.
 
 ## Plan the return, not just the arrival
 
@@ -28,7 +32,7 @@ Coming home is usually the harder direction for jet lag. A child landing the nig
 
 ## Where a city has more than one airport
 
-Which one you land at can change arrival-day fatigue substantially — sometimes an hour or more of extra transit while everyone is exhausted. The specifics are in your destination pack's airport basics page; verify current transit options rather than assuming.
+Which one you land at can change arrival-day fatigue substantially: sometimes an hour or more of extra transit while everyone is exhausted. The specifics are in your destination pack's airport basics page; verify current transit options rather than assuming.
 
 ## Dates, and what they cost you
 
@@ -36,7 +40,7 @@ Which one you land at can change arrival-day fatigue substantially — sometimes
 
 **Peak-season lodging books out months ahead**, and prices run high. Peak season rewards committing early.
 
-**The peak-bloom trap.** If you're aiming for a natural peak — bloom, colour, a seasonal event — you can't reliably book months ahead and hit it. The timing shifts year to year and forecasts only firm up weeks before. Lock flights and lodging on historical averages, keep the day-by-day plan flexible, book refundable where you can, and chase the front if the peak slips. Your child's seasons work carries the child-facing version of this; the booking decisions are yours.
+**The peak-bloom trap.** If you're aiming for a natural peak, whether bloom, colour, or a seasonal event, you can't reliably book months ahead and hit it. The timing shifts year to year and forecasts only firm up weeks before. Lock flights and lodging on historical averages, keep the day-by-day plan flexible, book refundable where you can, and chase the front if the peak slips. Your child's seasons work carries the child-facing version of this; the booking decisions are yours.
 
 **Flight prices change.** First-night lodging needs planning before you land.
 
