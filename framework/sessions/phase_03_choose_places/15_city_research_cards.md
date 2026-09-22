@@ -36,7 +36,7 @@ For each city, fill in your card from trusted sources (add each to your Source L
 8. **Sources** and **date checked.**
 9. **Planning assumption** -- anything you're *assuming* that a grown-up should check later (for example, "I'm assuming we can day-trip from here").
 
-**Your route is built in movable blocks.** Think of each city card as one block you can later move, drop, or add. If a grown-up later changes which city you fly into or out of, your plan just flexes. You move a block. You don't start over. Your work still counts.
+**Your route is built in movable blocks.** Think of each city card as one block you can later move, drop, or add. If a grown-up later changes which city you arrive in or leave from, your plan just flexes. You move a block. You don't start over. Your work still counts.
 
 ## Workspace
 
@@ -70,4 +70,4 @@ If you have extra energy, start a third city card, or add a "things I can't wait
 
 ## Parent Notes
 
-Keep Tokyo as a gentle anchor, but let your child choose the second city -- ownership matters here. Two cards are enough for First Taste; the comparison next session needs two things to compare. The starred "can't wait to see" sights feed the must-see list later. The movable-blocks idea is what makes a later flight-shape change a small edit, not a redo -- it ties to the "your work wasn't wrong" message. Watch out for rabbit holes; one solid card per sitting is a good pace.
+Keep Tokyo as a gentle anchor, but let your child choose the second city -- ownership matters here. Two cards are enough for First Taste; the comparison next session needs two things to compare. The starred "can't wait to see" sights feed the must-see list later. The movable-blocks idea is what makes a later change to the shape of the journey a small edit, not a redo -- it ties to the "your work wasn't wrong" message. Watch out for rabbit holes; one solid card per sitting is a good pace.
