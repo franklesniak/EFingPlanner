@@ -33,3 +33,6 @@ refuses	# tracked as project PLAT-9, see https://example.com/board/PLAT-90
 refuses	# blocked on ticket ABC-123, see https://github.com/o/r/issues/123
 refuses	# tracked as project PLAT-9, see https://github.com/o/r/pull/9
 resolves	# blocked on ticket: ABC-123 https://tracker.example.com/browse/ABC-123
+resolves	# blocked on ticket 27 https://tracker.example.com/tickets/27
+resolves	# tracked as project 42 https://tracker.example.com/projects/42
+refuses	# tracked as project 42, see https://tracker.example.com/tickets/42

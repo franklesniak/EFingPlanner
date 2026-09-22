@@ -207,6 +207,29 @@ def exempt_names() -> tuple[tuple[str, str, int, str], ...]:
 #:
 #: The four pointer patterns speak everywhere. A bare number or hash resolves
 #: nowhere in any file type, which is the whole rule.
+#: The documents that discuss a review round as a **concept** rather than
+#: pointing at one. Four define or describe the review protocol itself, and the
+#: fifth is this repository's record of adopting the template. A rule telling a
+#: reader to process the comments from whichever review came before is the rule
+#: itself, not a reference to one conversation.
+#:
+#: **This list replaced a file-type gate.** The three patterns below ran on
+#: Python files only, which excused every workflow, shell script and Markdown
+#: page, so a comment saying something was fixed in a numbered round produced no
+#: finding outside a module. Measured, dropping the gate reports 27 occurrences
+#: and every one of them is inside these five documents, so the file type was
+#: standing in for a list that can simply be written down. Two of the five are
+#: protected instruction files this project may not edit, which is a second
+#: reason the exception belongs here rather than in them.
+ROUND_CONCEPT_DOCUMENTS = frozenset(
+    {
+        "AGENTS.md",
+        "CLAUDE.md",
+        "_ADOPTION-DIFFICULTIES.md",
+        "docs/build/batch1_build_prompt.md",
+        "docs/spec/specification.md",
+    }
+)
 PYTHON_ONLY_PATTERNS = frozenset(
     {
         "a numbered review round",
@@ -340,6 +363,15 @@ REVIEW_HISTORY_PATTERNS = (
 #: controls, and for the same reason: a sample written here would be a
 #: reference in a swept file.
 URL_PATTERN = re.compile(r"(?:https?://|www\.)\S+")
+#: A Markdown link reference definition: a bracketed label, a colon, and the
+#: destination. CommonMark allows up to three leading spaces.
+#: https://spec.commonmark.org/0.31.2/#link-reference-definitions
+LINK_DEFINITION = re.compile(r"^ {0,3}\[([^\]]+)\]:\s*<?(\S+?)>?\s*$")
+#: A use of one. The full, collapsed and shortcut forms all carry a
+#: bracketed label, which is the piece that names a definition.
+LINK_REFERENCE_USE = re.compile(r"\[([^\]]+)\]")
+#: Whitespace inside a label, which CommonMark folds to a single space.
+LABEL_WHITESPACE = re.compile(r"\s+")
 DIGITS_PATTERN = re.compile(r"\d+")
 #: The key inside a tracker reference, pulled back out of the match so a URL
 #: can be asked whether it names the same thing. The shape is the one
@@ -526,6 +558,23 @@ def url_fragment_tokens(url: str) -> list[str]:
     return [part for part in FRAGMENT_SEPARATORS.split(urlsplit(url).fragment) if part]
 
 
+#: The path segments a host serves each kind of reference from. GitHub serves
+#: an issue and a pull request from either of its two, so both are accepted for
+#: either spelling. A tracker that is not GitHub serves a ticket and a project
+#: from paths named after them, and accepting only the GitHub pair meant a
+#: reference sitting beside its own tracker URL was still reported -- the scan
+#: telling an author to cite the URL and then refusing the one they cited.
+#:
+#: Each noun keeps its own segments rather than sharing one set, so a project
+#: URL carrying a number does not resolve a ticket that happens to share it.
+NOUN_PATH_SEGMENTS = {
+    "an unlinked pull request": ("issues", "issue", "pull", "pulls"),
+    "an unlinked issue": ("issues", "issue", "pull", "pulls"),
+    "an unlinked ticket": ("issues", "issue", "pull", "pulls", "tickets", "ticket"),
+    "an unlinked project item": ("projects", "project"),
+}
+
+
 def url_resolves(label: str, matched: str, urls: list[str]) -> bool:
     """Return whether any URL on the line resolves *this* reference.
 
@@ -547,12 +596,7 @@ def url_resolves(label: str, matched: str, urls: list[str]) -> bool:
         parts = url_path_segments(url)
         lowered = [part.lower() for part in parts]
         fragments = url_fragment_tokens(url)
-        if label in (
-            "an unlinked pull request",
-            "an unlinked issue",
-            "an unlinked ticket",
-            "an unlinked project item",
-        ):
+        if label in NOUN_PATH_SEGMENTS:
             # GitHub serves an issue and a pull request from either path, so
             # both are accepted for either spelling of the reference.
             #
@@ -564,10 +608,9 @@ def url_resolves(label: str, matched: str, urls: list[str]) -> bool:
             # key is the whole identifier, so the whole identifier is what a
             # URL has to carry.
             if key is None:
+                segments = NOUN_PATH_SEGMENTS[label]
                 for index, part in enumerate(lowered[:-1]):
-                    if part in ("issues", "issue", "pull", "pulls") and lowered[
-                        index + 1
-                    ] in digits:
+                    if part in segments and lowered[index + 1] in digits:
                         return True
             # A tracker that is not GitHub serves ``ABC-123`` as a path segment
             # of its own, under whatever word it likes -- ``/browse/ABC-123``,
@@ -670,7 +713,40 @@ def python_paths(paths: Iterable[Path]) -> list[Path]:
 #: names no review run. Measured over the 193 non-Python scanned files, this
 #: adds **zero** findings today, so it closes a spelling rather than widening
 #: the net -- the same test the tracker grammar had to pass.
-IDENTIFIER_SHAPED_TOKEN = re.compile(r"\b[A-Za-z][A-Za-z0-9]*(?:_[A-Za-z0-9]+)+\b")
+IDENTIFIER_SHAPED_TOKEN = re.compile(r"\b[A-Za-z][A-Za-z0-9_]*\b")
+#: A lower-to-upper case change: where one word of a camel-case name ends.
+LOWER_THEN_UPPER = re.compile(r"[a-z][A-Z]")
+#: Two or more capitals run into a digit, the other spelling of a constant
+#: that carries a number.
+CAPITALS_THEN_DIGIT = re.compile(r"[A-Z]{2,}\d")
+
+
+def looks_like_an_identifier(token: str) -> bool:
+    """Return whether ``token`` is a name someone wrote, rather than a word.
+
+    Three shapes count, and requiring only the first was too narrow: an
+    underscore, a lower-to-upper case change, and a run of capitals followed
+    by a digit. A name in camel case, and one spelled as capitals and digits
+    with nothing between them, were both invisible while the underscore was
+    mandatory.
+
+    **A hash is not an identifier, and that is the one exclusion.** A commit
+    hash in prose is letters and digits with a boundary between them, so it
+    satisfies the third shape by accident. The text pass already reports a
+    bare hash by name, having asked the repository whether it names a commit
+    here; reading it again here would report one thing twice and call it two
+    defects. Measured: without this exclusion the pass returns nine hashes
+    across three files and no identifiers at all.
+    """
+    if not any(character.isdigit() for character in token):
+        return False
+    if HASH_SHAPED.match(token):
+        return False
+    if "_" in token:
+        return True
+    if LOWER_THEN_UPPER.search(token):
+        return True
+    return bool(CAPITALS_THEN_DIGIT.search(token))
 
 
 def identifier_like_names(source: str) -> set[str]:
@@ -685,7 +761,7 @@ def identifier_like_names(source: str) -> set[str]:
     return {
         token
         for token in IDENTIFIER_SHAPED_TOKEN.findall(source)
-        if any(character.isdigit() for character in token)
+        if looks_like_an_identifier(token)
     }
 
 
@@ -725,6 +801,33 @@ def names_in(
     return found
 
 
+def normalize_link_label(label: str) -> str:
+    """Return a link label in the form CommonMark compares labels in.
+
+    Case is folded and any run of whitespace becomes one space, so a definition
+    written across two lines still matches the use that names it.
+    https://spec.commonmark.org/0.31.2/#matches
+    """
+    return LABEL_WHITESPACE.sub(" ", label.strip()).casefold()
+
+
+def link_definitions(body: str) -> dict[str, str]:
+    """Return every link reference definition in one document, by label.
+
+    A reference-style link puts its destination on another line, so a
+    line-by-line scan saw a reference with no URL beside it and reported a
+    citation that renders as a link on the page. The rule asks for a reference
+    a reader can follow, and a reader following a reference-style link lands on
+    the destination, so the definition counts.
+    """
+    found: dict[str, str] = {}
+    for line in body.split(chr(10)):
+        match = LINK_DEFINITION.match(line)
+        if match and URL_PATTERN.match(match.group(2)):
+            found.setdefault(normalize_link_label(match.group(1)), match.group(2))
+    return found
+
+
 def references_in(
     path: Path,
     root: Path,
@@ -744,13 +847,23 @@ def references_in(
     if python is None:
         python = path.suffix == ".py"
     body = path.read_text(encoding="utf-8", errors="replace")
+    definitions = link_definitions(body)
     for number, line in enumerate(body.split("\n"), start=1):
         # Found with the greedy pattern so the whole run is blanked, then
         # trimmed so what is matched against is the URL itself.
         urls = [trim_url(found) for found in URL_PATTERN.findall(line)]
+        # A reference-style link names its destination elsewhere in the
+        # document, so a label used on this line brings its definition along.
+        if definitions:
+            for label in LINK_REFERENCE_USE.findall(line):
+                destination = definitions.get(normalize_link_label(label))
+                if destination:
+                    urls.append(trim_url(destination))
         scanned = URL_PATTERN.sub(" ", line)
         for name, pattern in REVIEW_HISTORY_PATTERNS:
-            if name in PYTHON_ONLY_PATTERNS and not python:
+            # Excused only in the documents that define the review protocol,
+            # never by file type. See ``ROUND_CONCEPT_DOCUMENTS``.
+            if name in PYTHON_ONLY_PATTERNS and relative in ROUND_CONCEPT_DOCUMENTS:
                 continue
             for match in pattern.finditer(scanned):
                 matched = match.group(0)
@@ -1398,24 +1511,45 @@ def test_a_bare_pointer_in_a_non_python_file_is_reported(tmp_path: Path) -> None
         assert references_in(sample, tmp_path), name
 
 
-def test_the_anaphora_patterns_speak_only_for_python(tmp_path: Path) -> None:
+def test_the_anaphora_patterns_are_excused_by_document_not_by_file_type(
+    tmp_path: Path,
+) -> None:
     """A document that defines review runs may say which one it means.
 
-    Run everywhere, these report nine lines in the root agent instruction
-    files and six in the archived design record, every one of them prose
-    about the documented review loop and every one in a file this project
-    may not edit. A check that cannot pass is a check somebody turns off.
+    Run everywhere with no exception at all, these report 27 lines: prose about
+    the documented review loop in the root agent instruction files, in the
+    archived design record, in this repository's adoption notes and in the
+    Batch 1 brief. Two of those files are protected and this project may not
+    edit them, and a check that cannot pass is a check somebody turns off.
+
+    **The exception used to be the file type, and that was too wide.** Every
+    workflow, shell script and Markdown page in the repository was excused, so
+    a comment naming a numbered run produced no finding outside a module. The
+    excuse now names the five documents, which is what it was standing in for.
     """
     # Built rather than written: the anaphora this test is about is a finding
     # in this file, which is the point of the file.
     line = "# settled in the " + "previous " + "round" + "\n"
-    python = tmp_path / "a.py"
-    python.write_text(line, encoding="utf-8")
-    assert references_in(python, tmp_path)
-    for name in ("a.md", "a.yml", "a.txt"):
-        other = tmp_path / name
-        other.write_text(line, encoding="utf-8")
-        assert not references_in(other, tmp_path), name
+
+    # No file type is excused any more, Python included.
+    for name in ("a.py", "a.md", "a.yml", "a.txt", "a.js", "a.sh"):
+        sample = tmp_path / name
+        sample.write_text(line, encoding="utf-8")
+        assert references_in(sample, tmp_path), name
+
+    # The five named documents are, and they are named by path.
+    assert "CLAUDE.md" in ROUND_CONCEPT_DOCUMENTS
+    assert "docs/spec/specification.md" in ROUND_CONCEPT_DOCUMENTS
+    for relative in sorted(ROUND_CONCEPT_DOCUMENTS):
+        excused = tmp_path / relative
+        excused.parent.mkdir(parents=True, exist_ok=True)
+        excused.write_text(line, encoding="utf-8")
+        assert not references_in(excused, tmp_path), relative
+
+    # And every one of them is a file this repository actually holds, so the
+    # list cannot rot into an excuse for a path that no longer exists.
+    for relative in sorted(ROUND_CONCEPT_DOCUMENTS):
+        assert (REPO_ROOT / relative).is_file(), relative
 
 
 def test_a_commit_this_repository_holds_is_linked_and_one_it_does_not_is_not() -> None:
@@ -1797,3 +1931,67 @@ def test_the_identifier_pass_reads_a_file_with_no_syntax_tree(tmp_path: Path) ->
     module = tmp_path / "m.py"
     module.write_text('TEXT = "round ' + pieces[1] + '"\n', encoding="utf-8")
     assert not names_in(module, tmp_path)
+
+
+def test_an_identifier_without_an_underscore_is_still_an_identifier(
+    tmp_path: Path,
+) -> None:
+    """Camel case and capitals-plus-digits name a round as loudly as a snake.
+
+    Requiring an underscore read one spelling of a name and excused the other
+    two, so the same opaque constant was reported or not depending on how its
+    author had capitalised it.
+    """
+    number = "13"
+    camel = "review" + "Round" + number
+    capitals = "ROUND" + number
+    snake = "ROUND" + "_" + number + "_" + "ADULT"
+    for name in (camel, capitals, snake):
+        sample = tmp_path / "x.js"
+        sample.write_text("const " + name + " = 1;" + chr(10), encoding="utf-8")
+        assert names_in(sample, tmp_path), name
+
+    # A commit hash satisfies the capitals-and-digits shape by accident, and
+    # the text pass already owns it. Reading it here too would report one
+    # thing twice.
+    # Built from pieces: a hash written whole in this file is a finding in
+    # this file, which is the property the file exists to enforce.
+    for hashlike in ("db" + "69537", "e2019" + "2528"):
+        assert not looks_like_an_identifier(hashlike), hashlike
+
+    # A word with no digit names no run.
+    assert not looks_like_an_identifier("SOME_CONSTANT_NAME")
+
+
+def test_a_reference_style_link_resolves_the_reference_it_labels(
+    tmp_path: Path,
+) -> None:
+    """The destination sits on another line, and the reader still lands on it.
+
+    A line-by-line scan saw a reference with no URL beside it and reported a
+    citation that renders as a link on the page -- the scan refusing the very
+    form its own message asks an author to use.
+    """
+    sample = tmp_path / "doc.md"
+    url = "https://github.com/o/r/issues/27"
+    # The reference is built from pieces for the same reason: written whole,
+    # it would be a finding in this file.
+    reference = "issue" + " " + "27"
+    body = (
+        "# T" + chr(10) * 2
+        + "See [" + reference + "][ticket-ref] for context." + chr(10) * 2
+        + "[ticket-ref]: " + url + chr(10)
+    )
+    sample.write_text(body, encoding="utf-8")
+    assert not references_in(sample, tmp_path)
+
+    # The label is matched without case and across folded whitespace, which is
+    # what CommonMark specifies.
+    sample.write_text(body.replace("[ticket-ref]:", "[Ticket-Ref]:"), encoding="utf-8")
+    assert not references_in(sample, tmp_path)
+
+    # A label with no definition resolves nothing, so the reference stands.
+    sample.write_text(
+        body.replace("[ticket-ref]: ", "[other-ref]: "), encoding="utf-8"
+    )
+    assert references_in(sample, tmp_path)
