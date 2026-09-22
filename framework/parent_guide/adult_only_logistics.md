@@ -73,7 +73,11 @@ The reason matters more than the rule: a panicking child executes one rehearsed 
 
 ## Rehearse their plan once, calmly
 
-Your child makes an "if I get separated" card and learns a three-step plan. Your part is a single calm "what if" rehearsal, plus filling in any local-language line on the card and confirming its current wording. Keep it light; a drill teaches fear rather than the script.
+Your child makes an "if I get separated" card and learns a three-step plan.
+
+**Rehearse the plan once**, calmly; keep it light, because a drill teaches fear rather than the script.
+
+Then two jobs on the card itself. **Fill in any local-language line** and confirm its current wording. And **check the emergency numbers on a current official page and write the date you checked** -- your child writes the numbers themselves once you have.
 
 A rehearsed plan lowers a child's anxiety. It turns a vague fear into a known script.
 

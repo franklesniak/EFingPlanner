@@ -2965,8 +2965,10 @@ The adult's checklist of everything the child never touches. **Long-lead items f
    named that same day.**
 6. **Rehearse the child's getting-separated plan once, calmly.** The child owns the skill
    and the card; you own the safety planning. Your part is a single calm "what if"
-   rehearsal -- **not a scary drill** -- plus filling in any local-language line on their
-   card.
+   rehearsal -- **not a scary drill** -- plus the two card jobs: filling in any
+   local-language line and confirming its wording, and **checking the emergency numbers
+   on a current official page and writing the date checked**, after which the child
+   writes the numbers themselves.
 7. **Close with the standing phrase:** *"Verify on official sources close to travel."*
 
 **Privacy: this page tells adults to handle personal data; it must contain none.** No
@@ -3061,7 +3063,9 @@ skill and the card they carry.
    **"stay where you are."** The reason, stated plainly: *a panicking child executes one
    rehearsed rule; the child does not choose between two.*
 3. **Your part in the child's card:** rehearse it **once, calmly**, as a "what if". Fill in
-   any local-language line yourself and **confirm the current wording.**
+   any local-language line yourself and **confirm the current wording**, and **check the
+   emergency numbers on a current official page and write the date checked** -- the child
+   writes the numbers once you have.
 4. **The privacy exception, stated exactly** -- see the verbatim block in 9.4.
 5. **The child's plan, so you can rehearse it**, in its three steps. **Carry the numbers
    verify-framed and route the destination-specific numbers, terms and hazard notes to the

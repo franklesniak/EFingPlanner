@@ -69,4 +69,4 @@ That list is the named higher-risk areas rather than an exhaustive one. If a top
 
 ## Privacy
 
-A short reminder, with the full rules on the [privacy and safety page](../docs/privacy_and_safety.md): nothing personal goes in the repository or the kit, and a shared-documents folder is not a private vault either.
+A short reminder, with the full rules on the [privacy and safety page](../docs/privacy_and_safety.md). **Nothing personal goes in this repository at all.** Your family's copied-out kit is different: that is where the real work belongs, including pages like the Trip-Basics card that hold your airport and your travellers. What stays out of it is the **sensitive** set -- passport numbers, birthdates, confirmation numbers, payment details, exact booked dates -- and a shared-documents folder is not a private vault for those either.

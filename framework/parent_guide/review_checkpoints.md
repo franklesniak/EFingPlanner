@@ -93,7 +93,9 @@ Each has its own **what to consider** list. The review form checks whether the w
 
 ### Checkpoint 5 — Itinerary Review (Session 46)
 
-**What they bring:** what they're confident about, what they're unsure about, what you need to decide, what could be cut, the biggest trade-offs.
+**What they bring:** the day-by-day itinerary draft itself -- with the day cards behind it -- plus what they're confident about, what they're unsure about, what you need to decide, what could be cut, and the biggest trade-offs.
+
+The draft is the thing being reviewed. Pacing, transit, meals and rest cannot be judged from the summary alone.
 
 **What to consider:** pacing; transit time; meals; rest; booking needs; budget; safety; and practicality.
 
