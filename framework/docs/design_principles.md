@@ -30,6 +30,7 @@ Nothing in a session is decoration. Each repeated part of the page is there to s
 | Decision log | Records reasoning and prevents repeated decisions |
 | Source log | Builds research discipline and evidence tracking |
 | Final reflection | Builds the habit of reflecting on how the work went |
+| Carry-over tag | Names a planning move out loud so it can transfer past the trip; placed once, on the session that first introduces the move |
 
 If you are adding a mechanic to a session, say which row of that table it belongs to. If it belongs to none, it is probably decoration.
 

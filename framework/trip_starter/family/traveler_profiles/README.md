@@ -4,7 +4,7 @@
 
 ## What goes in this folder
 
-One finished profile for each traveler on your Trip-Basics roster. One traveler, one file.
+One finished profile for each traveler on your Trip-Basics roster, one traveler to one file -- if you did Session 02. That session is on the full Phases 0-2 path rather than the 13, so an empty folder is the right answer on the First Taste path.
 
 If six people are coming, six files live here when you are done. If two more join later, add two more files. Nothing else belongs in this folder.
 

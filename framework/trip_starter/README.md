@@ -14,7 +14,7 @@ This is the set of blank pages your family fills in. Every page here is empty on
 
 The kit grows as the project does. Some of these folders arrive later.
 
-- `family/` holds the pages your whole family owns. It is the part that is ready now: the [Trip-Basics card](family/trip_basics.md), the [current family travel assumptions](family/current_family_travel_assumptions.md), the [family trip goals](family/family_trip_goals.md), and one [traveler profile](family/traveler_profiles/README.md) per traveler.
+- `family/` holds the pages your whole family owns. It is the part that is ready now: the [Trip-Basics card](family/trip_basics.md), the [current family travel assumptions](family/current_family_travel_assumptions.md), the [family trip goals](family/family_trip_goals.md), and, if you did Session 02, one [traveler profile](family/traveler_profiles/README.md) per traveler. Session 02 is on the full Phases 0-2 path rather than the 13, so this folder is complete without profiles if you are on First Taste.
 - `logs/` holds your running records: the Source Log, the decision log, the question parking lot, and the cut list.
 - `research/` holds what you find out, in one folder per kind: cities, attractions, hotels, restaurants, and day cards.
 - `recommendations/` holds what you decide to recommend to the grown-ups.

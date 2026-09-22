@@ -117,7 +117,7 @@ A conditional-core session names its condition on the same line, in the built fo
 ## The rest of the strip
 
 - **Estimated time** defaults to 20-30 minutes.
-- **Parent involvement** is one of: none / independent work; 5-minute check-in; parent review after session; parent setup needed; co-working recommended; adult-owned.
+- **Parent involvement** is one of: none / independent work; 5-minute check-in; parent review after session; parent setup needed; co-working recommended; a grown-up stays nearby for this one; adult-owned. The nearby-adult value is a requirement rather than a suggestion, and Session 08 carries it because a filter reduces exposure without removing it.
 - **Planner skill** comes from: getting started; comparing choices; checking sources; ranking priorities; planning realistic time; making trade-offs; organizing information; revising a plan; self-control (knowing when to stop).
 - **Materials** names what the child needs in hand, with a relative link to each framework template it names.
 

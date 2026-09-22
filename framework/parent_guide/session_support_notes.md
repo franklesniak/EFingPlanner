@@ -149,7 +149,7 @@ Want a rough signal of how the executive-function side is going? The optional [e
 - Prep: a Budget Estimate page; a calculator is allowed.
 - Look for: a high/medium/low estimate for meals and hotel, checked against the band.
 - Coaching question: "Do the parts you chose fit our band?"
-- Pitfall: reaching for a real total. Flights stay off their check; keep it to two slices.
+- Pitfall: reaching for a real total. The cost of getting there stays off their check; keep it to two slices.
 
 ## Session 44: Backup Plans and Cut List
 

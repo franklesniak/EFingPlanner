@@ -7,7 +7,7 @@ The full version of the one-time setup. The short version is in the [quick-start
 ## The four setup actions (do these to begin)
 
 1. **Turn on a kid-safe search filter** on the device your child will use (for example, Google SafeSearch, lockable through Family Link). It reduces exposure but does not remove it, so plan to stay nearby for riskier research.
-2. **Fill in the [Trip-Basics card](../templates/trip_basics.md)** once: home airport and code, if you are flying, the destination, time zone or the time difference to it, maximum trip length, number of travelers, and the roster by relationship.
+2. **Fill in the [Trip-Basics card](../templates/trip_basics.md)** once: how you will travel, the home airport and its code if you are flying, the destination, time zone or the time difference to it, maximum trip length, number of travelers, and the roster by relationship.
 3. **Set a rough season window and rough budget band** on the [assumptions page](../templates/current_family_travel_assumptions.md). Both are "this can change" starting points. Express the band in kid-sized form (per-day or "this hotel tier"); keep the full trip total an adult number.
 4. **Choose AI: yes or no** (default no), and record the choice on the [assumptions page](../templates/current_family_travel_assumptions.md). If yes, commit to the adult-operated pattern in the [privacy and safety rules](../docs/privacy_and_safety.md), and your child does Session 09 before using any AI tool -- writing the yes/no down is what keeps that safety gate from being missed. Before you choose yes, read the [AI use rules](../docs/ai_use_rules.md) -- an adult checks the tool's current minimum-age and supervision policy first, and writes the date checked beside the choice.
 
