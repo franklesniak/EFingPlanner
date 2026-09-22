@@ -61,6 +61,9 @@ Keep the co-research guardrail on:
 - **Any video research** — the risks there are autoplay rabbit holes, recommendation drift, comments, and monetized links, none of which a content filter addresses
 - **Image search**, where place-name and nightlife queries can surface adult imagery with the filter on
 - Open neighbourhood browsing
+- **Nightlife and drinking-related topics**, which the privacy and safety page names explicitly
+
+That list is the named higher-risk areas rather than an exhaustive one. If a topic feels like it belongs on it, treat it as though it is.
 
 **This is not a ban on open research.** Learning to research the real web is the point of the project. It's a list of where you sit down next to them.
 

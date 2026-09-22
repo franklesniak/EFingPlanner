@@ -3017,7 +3017,9 @@ The adult's half of the budget teaching.
    mistakes the output for a real budget.
 2. **The controllable-slice split, and why flights sit on the side.** The child's
    controllable slices are hotels, food, activities, local transit and souvenirs. The
-   whole-trip total is **a separate adult sanity check.** Be honest about why: for a
+   adult's own figure -- their subtotal plus the fare times the traveler count -- is **a
+   partial floor and a separate adult check**, and not the trip's full cost:
+   insurance, intercity transport, entry costs and phone service all sit outside it. Be honest about why: for a
    multi-person long-haul trip the flights dominate everything. **Do not write a party size
    or an airport.**
 3. **What the adult supplies:** the controllable-slice band in kid-sized form; a rough
@@ -3533,7 +3535,9 @@ negotiable:
    cells. **No** real lodging name, address, phone number or personal detail.
 2. **The allowed rows are exactly five kinds:** where we are staying (name); its address;
    its phone number; a parent's phone number. Plus a blank line an adult fills **in the
-   local language**, and two emergency-phrase rows. **Plus two rows for the emergency numbers and the date an adult checked them** -- Session 49 and the safety guidance both tell the adult to write them on this card, so the card has to have somewhere to put them. Both are **blank in the framework**, like every other row.
+   local language**, and two emergency-phrase rows. **Plus two rows for the emergency numbers and the date they were checked.** Both are **blank in the framework**, like every other row.
+
+   **Say who fills each one, because three surfaces disagreed about it.** The **adult** checks the numbers on a current official page and writes the date; the **child** copies the checked numbers onto their own card, which is the point of it being their card. The adult's card jobs are therefore two: the local-language line, and the verification plus date.
 3. **The forbidden list must be printed on the card itself**, in the child's words *and* as
    a standing rule an adult can see at a glance: never a passport number, never a birthdate,
    never a confirmation number, never the home address. **Use the full forms** -- these are
@@ -3544,8 +3548,10 @@ negotiable:
    numbers **verify-framed.** **No number and no phrase appears in the framework blank.**
 6. **The simple plan, printed on the card as three steps**, exactly as Session 49 teaches
    them.
-7. **The adult's one job on this card** is filling in the local-language line and
-   **confirming its current wording.**
+7. **The adult has two jobs on this card:** filling in the local-language line and
+   **confirming its current wording**, and **checking the emergency numbers on a current
+   official page and writing the date checked.** The child writes the numbers themselves
+   once the adult has confirmed them.
 
 #### 9.4.6 One permitted edit to a Batch 1 file
 

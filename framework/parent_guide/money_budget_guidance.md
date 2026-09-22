@@ -12,7 +12,9 @@ What they are producing is a structural picture, and it stops short of a usable,
 
 ## Why flights sit on the side
 
-Your child's controllable slices are hotels, food, activities, local transit and souvenirs, and their subtotal covers those with flights excluded.
+Your child's controllable slices are hotels, food, activities, local transit and souvenirs, with flights excluded.
+
+**How many of those are in the subtotal depends on where they are.** At the first budget session they estimate **food and lodging only**, and the other three arrive later on the Core path. So an early check runs against a two-slice figure, and the floor it produces is correspondingly lower. Know which one you are looking at before you read anything into it.
 
 **Their band check compares matching units, not the subtotal.** The band you give them is a rate or a tier: per person per day, per day for the family, or a hotel tier. A subtotal is a whole-trip amount. Comparing the two would fail a perfectly good estimate on a unit mismatch, so their worksheet asks them to pull out the *matching piece* of their estimate and check that against the band. Give them the band in one of those three forms and the check works; give them a whole-trip number and it cannot.
 
