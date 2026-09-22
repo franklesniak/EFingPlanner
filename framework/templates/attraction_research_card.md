@@ -1,0 +1,32 @@
+<!-- markdownlint-disable MD013 -->
+
+# Attraction Research Card
+
+Use one card per attraction or experience you research. It keeps each place's facts in one spot, so when you rank them later you're comparing fairly instead of going from memory. Fill it in from trusted sources, and record each source in your Source Log.
+
+Before you look up the ticket price, write your guess in the row that asks for it. Then look it up and see how close you were. Being off is normal. That row is practice, not a test.
+
+| Prompt | Your answer |
+| --- | --- |
+| Name | |
+| City or area | |
+| Type (museum, park, temple or shrine, food, shopping, unique experience, rest) | |
+| Why it's interesting to me | |
+| Time needed (a rough guess in hours is fine) | |
+| Ticket or reservation needed? | |
+| My guess before I looked it up (ticket price or booking rule) | |
+| What I found when I checked (prices change, so write the date) | |
+| Best time of day? (check this again closer to the trip) | |
+| Nearby places I could group with it | |
+| Possible downside (crowded? far? tiring? costly?) | |
+| Review themes (what do lots of reviews say, not just one?) | |
+| Official website needed? | |
+| Source (also in my Source Log) | |
+| Date checked | |
+| Planning assumption (something I'm assuming a grown-up should check) | |
+| Why I'm using this assumption | |
+| What could change it? | |
+| Needs adult verification? (yes / no) | |
+| Final decision status (researching / must-do / strong maybe / only if nearby / skip or save for future) | |
+
+Two cards with real answers beat ten cards with blanks. "Ask an adult" and "not sure yet" are finished answers.
