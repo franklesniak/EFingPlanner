@@ -569,6 +569,46 @@ Core; a family that skips one reads past it. **Do not build a bypass link** -- t
 is the numbered order, and a bypass would quietly resolve a choice the text must keep
 open.
 
+### 4.1b Converting Session 15, the one built session that still leaks
+
+**This is the single edit that clears the destination grep for the whole
+repository**, and the brief would not be self-contained without it. Session 15 is
+already built, is on the First Taste path, and carries five destination leaks: the
+Materials hard link into the pack's major-cities reference, a Goal naming the
+country, two city names offered as suggestions, and a named anchor city in Parent
+Notes.
+
+**Session 15 routes nowhere. Do not give it an insert slot, a dedicated slot, or a
+Destination Notes pointer.** (`D-OPEN-0`.)
+
+The obvious readings all assume the session needs destination facts, and **the
+built contract says it does not** -- the insert contract lists Session 15 among the
+sessions that "need no destination facts and are fully neutral", and records its
+present state as a temporary exception for this batch to close. **The child already
+has two cities in hand**: Session 11 runs before it and produces region and map
+notes including a route shape, and a route shape names cities. Session 21, which
+Session 15 feeds, asks only for "your two cities". So nothing needs routing.
+
+**What to do, step by step:**
+
+1. **Delete the Materials link into the destination pack.** Materials keeps the
+   device, the two blank City Research Cards, and the Source Log.
+2. **Change the Goal to name no place:** research two cities of your destination,
+   one card each.
+3. **In Start Here and in Steps, send the child to their own Session 11 notes** --
+   open your region and map notes and choose two cities from them. **Name no city.**
+4. **In Parent Notes, replace the named-city anchor with the same idea stated
+   generally:** one city can be the anchor, and the child chooses the second.
+5. **Add no insert slot and no pointer to the pack.**
+6. **Remove Session 15 from the destination-leak exemption list**, and delete the
+   temporary-exception paragraph in the insert contract's README.
+7. **Run the equivalence read against the pre-conversion text**, so the converted
+   session still teaches what it taught.
+
+**The four other built sessions on that exemption list -- 21, 33, 44 and 53 --
+measure clean.** They are listed because nobody had checked them. **Verify and
+record; do not convert.** Then the exemption list is empty and can go.
+
 ### 4.2 Phases 3 to 5
 
 | # | Path under `framework/sessions/` | H1 title | Phase / position | Status |
