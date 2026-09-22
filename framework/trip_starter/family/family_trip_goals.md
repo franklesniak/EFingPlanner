@@ -29,6 +29,8 @@ Ask each traveler: *"What is one thing you'd love on this trip?"* Write one line
 | | |
 | | |
 | | |
+| | |
+| | |
 
 ## What I noticed
 

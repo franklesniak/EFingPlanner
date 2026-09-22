@@ -38,7 +38,7 @@ This is the supervision boundary the rest of the curriculum relies on. It is not
 - A grown-up operates the tool, on the grown-up's own account, with the child present.
 - Never the child alone, and never on an account belonging to the child.
 - AI is confined to three jobs: brainstorming questions, suggesting search terms, and tidying the child's own notes.
-- AI never supplies facts.
+- AI is never the source of a fact. It is never cited as one, and a fact is never accepted because AI said it. If a fact turns up in its output anyway, the Verification rules below apply: check it against a non-AI source, or take it out.
 - Session 09 comes before any session where AI could be used.
 - The adult records the AI choice at setup.
 
