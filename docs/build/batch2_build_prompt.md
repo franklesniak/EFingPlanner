@@ -1931,12 +1931,17 @@ Build a card for each stretch of the trip, so every day has a shape. **Fully neu
    It is not only a writing accommodation, though it does also serve a child who finds
    writing hard.
 
-**The card fields, the union of both lists:** Day number · Date if known or not decided
-yet · City · Sleep location · **Anchor activity** · Main goal · Morning · Lunch idea ·
+**The card fields, the union of both lists:** Day number · Roughly when -- a window, not
+a booked date · City · Sleep location · **Anchor activity** · Main goal · Morning · Lunch idea ·
 Afternoon · Dinner idea · Transit notes · Tickets/reservations · Estimated cost · **Energy
 level: Easy / Medium / Big day** · Backup idea · Source notes.
 
-**The "Date if known" field writes "not decided yet"**, never the banned placeholder token.
+**No day card ever asks for an exact booked travel date.** The privacy page is explicit:
+exact booked dates stay off **any** working page, paper or shared folder alike, alongside
+passport numbers and payment details. So the date field asks for a **window** -- "spring",
+"the second week", or "not decided yet" -- and never the banned placeholder token. The real
+dates are the adults' business, and this is the field where a child would otherwise write
+them down without anyone deciding to.
 
 **The page leads with the block card.** If it runs long, **the per-day variant is what
 compresses -- never the block default.** A page whose default gets squeezed by its own
@@ -2701,13 +2706,17 @@ many separate day cards before dates are firm is the heaviest work and the most 
 be invalidated. **This is trip realism**, and it also serves a child who finds writing
 hard. **Do not name a maximum trip-length number** when explaining it.
 
-**Rows, the union:** Day number; Date if known, or not decided yet; City / overnight city;
+**Rows, the union:** Day number; Roughly when (a window, not a booked date); City / overnight city;
 Sleep location; Main goal; Anchor activity; Morning; Lunch idea; Afternoon; Dinner idea;
 Transit notes; Tickets/reservations; Estimated cost (example only, re-check); Energy level
 (easy / medium / big day); Backup idea; Source notes.
 
 **Provide both shapes on the one page:** (a) the block card -- a header table for the
-city-stay plus a short per-day sub-row table; (b) the per-day card. **Label (a) the
+city-stay plus a per-day sub-row table; (b) the per-day card. **The sub-row table carries
+the fields that genuinely vary by day** -- anchor activity, transit, tickets, estimated
+cost, energy level and backup -- not just the meal slots. Session 45 copies the itinerary
+across one day at a time, so a block card that holds transit and cost only once per stay
+cannot feed it. **Label (a) the
 default, and if the page runs long, (b) is what compresses.** (`D-X-11`.)
 
 **Filenames:** `block_01.md`, `block_02.md` for block cards; `day_01.md`, `day_02.md` for
