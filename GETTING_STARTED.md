@@ -17,7 +17,7 @@ A set of Markdown worksheets ("sessions") a child fills in to plan a real family
 3. Do the [parent setup](framework/sessions/phase_00_setup/00_parent_setup.md) (Session 00): kid-safe filter on, fill in **your copies** of the [Trip-Basics card](framework/templates/trip_basics.md) and the [assumptions page](framework/templates/current_family_travel_assumptions.md), choose AI yes/no.
 4. Print [Session 01](framework/sessions/phase_00_setup/01_project_kickoff.md).
 5. Your child starts Session 01, following the [progress tracker](framework/student_guide/progress_tracker.md).
-5. Review together at Checkpoint 1, then decide whether to keep going.
+6. Review together at Checkpoint 1, then decide whether to keep going.
 
 The [roadmap](framework/PROJECT_ROADMAP.md) lists the full First Taste path.
 
