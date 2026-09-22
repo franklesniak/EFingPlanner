@@ -1,0 +1,81 @@
+<!-- markdownlint-disable MD013 -->
+
+# Adult-Only Logistics
+
+Everything on this page is yours. Your child never touches any of it.
+
+Long-lead items come first, because those are the ones that quietly set your earliest possible travel date.
+
+## Passports are an early task, not a readiness task
+
+A child's first passport takes time to get, and that constrains the earliest window you can travel in — which shapes the seasonal research your child is doing right now. If passports aren't sorted, start them before the trip feels real.
+
+There are age-based rules about who must appear in person, who must consent, and what proof is needed, and there are processing times that vary through the year. **All of that changes, and all of it has documented exceptions** — including for families where one parent can't attend. So don't take a rule from a blog, or from this page. Check the current requirements on the official government passport source and work from what it says today.
+
+These rules are **US-specific**. A family in another country swaps this whole section.
+
+## Using a travel agent is a real option
+
+Book directly or through an agent. Both are fine, and this page doesn't push either.
+
+Worth knowing: your child's binder is valuable either way. If you use an agent, it's your brief to them — it captures what your family actually wants, including cities, pace, must-haves, the rough budget band, and any accessibility or stamina needs. That's a better starting point than "somewhere nice for two weeks," and it's why the binder isn't wasted if you hand the booking to someone else.
+
+## The checklist
+
+- [ ] Passports
+- [ ] Entry requirements — verify the current rule on the official government source close to travel. If anyone is *selling* you a travel authorization, check that against the official source before paying; the destination specifics are in your destination pack
+- [ ] Visa or entry forms, if applicable
+- [ ] Flights
+- [ ] Hotels
+- [ ] Travel insurance — and for older travelers specifically, check medical and emergency-evacuation coverage. US health coverage generally does not work outside the United States. Verify with the official source and with the traveler's own insurer
+- [ ] Money and payment plan
+- [ ] Currency and ATM plan
+- [ ] Phone and internet
+- [ ] Health and medications
+- [ ] Medication rules, if relevant
+- [ ] Emergency contacts
+- [ ] Embassy or consulate awareness
+- [ ] Copies of documents
+- [ ] Meeting-point plan
+- [ ] Travel advisories
+- [ ] Weather alerts
+- [ ] Local natural-hazard awareness — see your destination pack
+- [ ] Timed tickets
+- [ ] Restaurant reservations
+- [ ] Transportation bookings
+
+## If an older or lower-mobility traveler is coming
+
+Three things go beyond stamina, and you verify them rather than your child:
+
+- **Step-free routing and station elevator availability** on the route you're actually planning
+- **Accessible lodging** — step-free access, and any room or bathroom needs
+- **Luggage handling** for anyone who shouldn't carry bags up stairs — forwarding services, porter help, or lockers
+
+Your child's job is to *flag* likely trouble spots: a stair-heavy transfer, a hilltop site, a station that may not have a lift. They notice and hand it to you. They don't research the fix.
+
+Write about this generically with your child — "an older adult" — rather than naming a relative.
+
+## The meeting-point rule
+
+One separation rule per outing, named to your child out loud each morning.
+
+The default is **"stay where you are"**, or move to the nearest safe, open spot. Use a meeting spot *instead* only when it's visible or right next to where you'll be that day, and only when you've named it that same morning.
+
+The reason matters more than the rule: a panicking child executes one rehearsed instruction. A child choosing between two does neither well.
+
+## Rehearse their plan once, calmly
+
+Your child makes an "if I get separated" card and learns a three-step plan. Your part is a single calm "what if" rehearsal — not a drill, not a lecture — plus filling in any local-language line on the card and confirming its current wording.
+
+A rehearsed plan lowers a child's anxiety. It turns a vague fear into a known script.
+
+Everything else on the safety side — insurance, advisories, emergency contacts, monitoring — stays with you.
+
+## The standing rule
+
+Verify on official sources close to travel.
+
+---
+
+This page holds no personal data, and it shouldn't. No document numbers, no example passport details, no names.

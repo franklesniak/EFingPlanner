@@ -1,0 +1,63 @@
+<!-- markdownlint-disable MD013 -->
+
+# Safety and Emergency Guidance
+
+Safety planning is yours. Insurance, advisories, emergency contacts, monitoring, medical and medication decisions, the whole plan — all adult-owned.
+
+Your child owns exactly one thing: a personal-safety skill, and the card they carry.
+
+That split is deliberate. A ten-year-old who has rehearsed what to do if they lose you in a crowded station is safer and calmer than one who hasn't, and giving them that doesn't hand them any of the rest.
+
+## The meeting-point rule
+
+One separation rule per outing, named to your child out loud each morning.
+
+The default is **"stay where you are"**, or move to the nearest safe, open spot, so you can find them. Replace it with "go to the meeting spot" **only** when the spot is visible or right next to where you'll be that day, and only when you've named it that same morning.
+
+Stated plainly: a panicking child executes one rehearsed rule. A child choosing between two does neither.
+
+## Your part in their card
+
+Your child makes an "if I get separated" card and carries it. You do three things:
+
+- **Rehearse it once, calmly**, as a "what if". Not a drill. Not a lecture. A rehearsed plan *lowers* anxiety, because it turns a vague fear into a known script — but only if the rehearsal itself is calm.
+- **Fill in any local-language line** on the card yourself, and confirm the current wording.
+- **Check any emergency number** on a current official page before it goes on the card, and write the date you checked.
+
+## The privacy exception, exactly
+
+The card may carry the **lodging name, address and phone number, and a parent's phone number** — the minimum needed to reunite.
+
+It may **never** carry passport numbers, birthdates, confirmation numbers, or your home address.
+
+It's a carry-in-pocket safety card, not trip data written down anywhere else. The full rules are on the [privacy and safety page](../docs/privacy_and_safety.md).
+
+## Their three-step plan, so you can rehearse it
+
+1. **Do what today's rule says.** One rule, named that morning.
+2. **Find a uniformed helper** — a transit worker, a shop or security worker with a nametag, a staffed shop that's bright and open late, or the local equivalent of a neighbourhood police post. An official post or a uniformed worker is the primary route, because a shop's help is voluntary.
+3. **Know the emergency numbers**, and know that an adult, a shop worker, or an official post can call them.
+
+Carry the numbers verify-framed. The destination-specific numbers, the local terms, and any local hazard notes are in your destination pack.
+
+## Monitoring, insurance, medical coverage
+
+One line each, because the detail belongs on one page rather than two: advisories and weather alerts are worth watching in the weeks before travel, and travel insurance — particularly medical and emergency-evacuation coverage for an older traveler — is on the [adult-only logistics checklist](adult_only_logistics.md).
+
+## The kid-safe filter is not a supervision plan
+
+State this to yourself honestly: a kid-safe search filter **reduces but does not eliminate** exposure, and it is not a substitute for co-research on riskier topics.
+
+Keep the co-research guardrail on:
+
+- The source-judging sessions
+- The food session
+- **Any video research** — the risks there are autoplay rabbit holes, recommendation drift, comments, and monetized links, none of which a content filter addresses
+- **Image search**, where place-name and nightlife queries can surface adult imagery with the filter on
+- Open neighbourhood browsing
+
+**This is not a ban on open research.** Learning to research the real web is the point of the project. It's a list of where you sit down next to them.
+
+## Privacy
+
+A short reminder rather than a second copy of the rules: nothing personal goes in the repository or the kit, and a shared-documents folder is not a private vault. See the [privacy and safety page](../docs/privacy_and_safety.md).
