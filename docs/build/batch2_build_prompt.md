@@ -2783,12 +2783,18 @@ pulling the child into a booking workflow.**
 
 ```markdown
 ## Session NN: Title
+
 - Role:
 - Prep:
 - Look for:
 - Coaching question:
 - Pitfall:
 ```
+
+**The blank line after the heading is part of the shape, not typography.** Without it
+the entry trips MD022 and MD032, and this repository lints the contents of `markdown`
+code fences as well as the files themselves -- so an inaccurate shape here would fail
+the gate twice: once in this brief, and again in every entry copied from it.
 
 **Add one entry per session this batch authors**, so every session has one: 16, 17, 18, 19,
 20, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 45,
