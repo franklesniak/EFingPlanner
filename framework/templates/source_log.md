@@ -22,5 +22,6 @@ One entry per source:
 | Useful for this question? (yes / sort of / no) | |
 | One other place I could check this | |
 | Verification source (if I checked it) | |
+| Date checked (the day you checked that other source) | |
 
 Tip: for facts that can change -- prices, hours, opening times, rules -- write "check again before booking" so a grown-up knows to re-check it close to travel.
