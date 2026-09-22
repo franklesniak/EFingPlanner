@@ -3808,7 +3808,7 @@ is incomplete and removing the rider would make the docs wrong in the other dire
 
   ```text
   grep -rwE 'Chicago|ORD|grandmother|uncle' framework/
-  grep -rnE '17[ -]?(day|night)s?' framework/
+  grep -rwE '17[ -]?(day|night)s?' framework/
   grep -rwE 'Japan|Tokyo|Kyoto|Osaka|Shinkansen' framework/
   grep -rn 'destinations/' framework/sessions/
   grep -rnE 'Section [0-9]' framework/
@@ -3824,10 +3824,17 @@ is incomplete and removing the rider would make the docs wrong in the other dire
   more**; if you need to check one, read it in context. The `AC-29-2` hook, when it is
   built, scopes the pattern the same way.
 
-  The first three must find nothing but the style law's own banning sentence and the `0.1.0`
-  changelog line. **The last two must find nothing at all.** A grep that prints
+  **Only the third command has permitted hits**, and they are exactly two: the style law's
+  own banning sentence, and the `0.1.0` changelog line. **The other four must find nothing
+  at all.** A grep that prints
   nothing because it was pointed at the wrong path is not a pass -- **confirm the command
   read the corpus you think it read.**
+
+  `-w` is used rather than a word-boundary escape for the reason the Batch 1 brief
+  records: `-w` is absent from POSIX but present in GNU and BSD grep, so it works on
+  Linux, macOS and Git Bash on Windows, while the escape is absent from POSIX *and*
+  from BSD grep. It also stops the trip-length pattern matching inside a longer
+  number such as `317 days`.
 
   **What you inherit, measured on the Batch 1 content branch rather than assumed.** Exactly
   three files under `framework/` carry a destination token when this batch starts:
