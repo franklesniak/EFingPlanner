@@ -236,6 +236,18 @@ PYTHON_ONLY_PATTERNS = frozenset(
 #: The key alternative is written first, because ``\d+`` would otherwise match
 #: nothing in ``ABC-123`` and leave the letters unread.
 TRACKER_IDENTIFIER = r"(?:[A-Za-z][A-Za-z0-9]*-\d+|\d+)"
+#: What may sit between the noun and the identifier. A space is the common
+#: form, a hash is the GitHub form, and a colon is the label form a tracker
+#: writes in a field or a heading. Accepting the colon closes a spelling and
+#: widens nothing: measured over the 235 scanned files, the colon form adds
+#: **zero** matches to what the whitespace-and-hash form already reports.
+#:
+#: A hyphen is deliberately not here. ``issue-690`` is a slug rather than a
+#: label, and accepting the hyphen would also accept compounds such as
+#: ``issue-tracker-1``. Measured, the hyphen form would add two matches in this
+#: repository, both a test's parameter id; that is a separate question from the
+#: one this pattern answers.
+TRACKER_SEPARATOR = r"\s*:?\s*#?\s*"
 
 REVIEW_HISTORY_PATTERNS = (
     ("a numbered review round", re.compile(r"(?i)\brounds?\s+\d+\b")),
@@ -253,11 +265,11 @@ REVIEW_HISTORY_PATTERNS = (
     ),
     (
         "an unlinked pull request",
-        re.compile(r"(?i)\b(?:PR|pull request)\s*#?\s*\d+\b"),
+        re.compile(r"(?i)\b(?:PR|pull request)" + TRACKER_SEPARATOR + r"\d+\b"),
     ),
     (
         "an unlinked issue",
-        re.compile(r"(?i)\bissues?\s*#?\s*" + TRACKER_IDENTIFIER + r"\b"),
+        re.compile(r"(?i)\bissues?" + TRACKER_SEPARATOR + TRACKER_IDENTIFIER + r"\b"),
     ),
     # The rule forbids "Ticket, issue, or project IDs that resolve only inside
     # a private or external tracker", and only one of those three words was
@@ -265,11 +277,11 @@ REVIEW_HISTORY_PATTERNS = (
     # this closes a spelling rather than widening the net.
     (
         "an unlinked ticket",
-        re.compile(r"(?i)\btickets?\s*#?\s*" + TRACKER_IDENTIFIER + r"\b"),
+        re.compile(r"(?i)\btickets?" + TRACKER_SEPARATOR + TRACKER_IDENTIFIER + r"\b"),
     ),
     (
         "an unlinked project item",
-        re.compile(r"(?i)\bprojects?\s*#?\s*" + TRACKER_IDENTIFIER + r"\b"),
+        re.compile(r"(?i)\bprojects?" + TRACKER_SEPARATOR + TRACKER_IDENTIFIER + r"\b"),
     ),
     # Two spellings, because neither covers the other. The numeric window
     # catches a bare identifier written with no context at all, which is the
@@ -543,11 +555,20 @@ def url_resolves(label: str, matched: str, urls: list[str]) -> bool:
         ):
             # GitHub serves an issue and a pull request from either path, so
             # both are accepted for either spelling of the reference.
-            for index, part in enumerate(lowered[:-1]):
-                if part in ("issues", "issue", "pull", "pulls") and lowered[
-                    index + 1
-                ] in digits:
-                    return True
+            #
+            # **Only when the reference has no key.** A keyed reference carries
+            # digits too, and reading them on their own let an unrelated issue
+            # of the same number stand in for it: a reference to a tracker key
+            # was suppressed by an unrelated GitHub record whose number matched
+            # the key's numeric tail and which never named the key itself. A
+            # key is the whole identifier, so the whole identifier is what a
+            # URL has to carry.
+            if key is None:
+                for index, part in enumerate(lowered[:-1]):
+                    if part in ("issues", "issue", "pull", "pulls") and lowered[
+                        index + 1
+                    ] in digits:
+                        return True
             # A tracker that is not GitHub serves ``ABC-123`` as a path segment
             # of its own, under whatever word it likes -- ``/browse/ABC-123``,
             # ``/issues/ABC-123``. The segment must equal the key: a key that
@@ -643,6 +664,31 @@ def python_paths(paths: Iterable[Path]) -> list[Path]:
     return [path for path in paths if path.suffix == ".py"]
 
 
+#: An identifier-shaped token in a file this scan cannot parse. The underscore
+#: is required, because it is what separates an identifier from an ordinary
+#: word, and so is a digit somewhere in the name, because a name with no digit
+#: names no review run. Measured over the 193 non-Python scanned files, this
+#: adds **zero** findings today, so it closes a spelling rather than widening
+#: the net -- the same test the tracker grammar had to pass.
+IDENTIFIER_SHAPED_TOKEN = re.compile(r"\b[A-Za-z][A-Za-z0-9]*(?:_[A-Za-z0-9]+)+\b")
+
+
+def identifier_like_names(source: str) -> set[str]:
+    """Return identifier-shaped tokens from a file with no syntax tree to read.
+
+    ``identifiers_of`` reads Python's tree, which is why it is exact and why it
+    has one language. A shell script, a workflow or a Markdown page holds names
+    too, and an opaque one there is the same defect it is in a module. This is
+    the text-level stand-in: every token that looks like an identifier and
+    carries a digit.
+    """
+    return {
+        token
+        for token in IDENTIFIER_SHAPED_TOKEN.findall(source)
+        if any(character.isdigit() for character in token)
+    }
+
+
 def names_in(
     path: Path, root: Path, exempt: dict[str, int] | None = None
 ) -> list[str]:
@@ -651,12 +697,18 @@ def names_in(
     ``exempt`` holds the names recorded for **this file**.
     A caller that passes nothing gets the rule unexempted, which is what the
     test that proves each exemption still occurs needs.
+
+    A Python file is read from its syntax tree, so a round number inside a
+    string literal stays with the text pass and is not reported twice. Every
+    other file has no tree to read, so its identifier-shaped tokens are taken
+    from the text.
     """
     found: list[str] = []
     budget = dict(exempt or {})
     relative = path.relative_to(root).as_posix()
-    source = path.read_text(encoding="utf-8")
-    for name in sorted(identifiers_of(source)):
+    source = path.read_text(encoding="utf-8", errors="replace")
+    names = identifiers_of(source) if path.suffix == ".py" else identifier_like_names(source)
+    for name in sorted(names):
         if budget.get(name):
             budget[name] -= 1
             continue
@@ -1047,7 +1099,10 @@ def test_no_hook_or_suite_names_the_review_run_in_an_identifier() -> None:
     all five are reported by this and by nothing else.
     """
     found: list[str] = []
-    for path in python_paths(scoped_paths()):
+    # Every scanned file, not only the Python ones. An opaque name in a shell
+    # script or a workflow is the same defect it is in a module, and the pass
+    # now has a reading for a file with no syntax tree.
+    for path in scoped_paths():
         relative = path.relative_to(REPO_ROOT).as_posix()
         found.extend(names_in(path, REPO_ROOT, exempt_names_for(relative)))
     assert not found, (
@@ -1714,3 +1769,31 @@ def test_every_declared_count_matches_what_the_scan_reports() -> None:
         reported = references_in(REPO_ROOT / name, REPO_ROOT)
         found = sum(1 for message in reported if message.endswith(repr(text)))
         assert found == count, (name, text, count, found)
+
+
+def test_the_identifier_pass_reads_a_file_with_no_syntax_tree(tmp_path: Path) -> None:
+    """An opaque name is the same defect outside a module as inside one.
+
+    The pass read Python only, because it reads a syntax tree and a shell
+    script has none. So a constant naming a review round was reported in a
+    module and excused one directory away in a workflow, and the corpus had
+    already grown past Python when this was found.
+    """
+    pieces = ("ROUND", "13", "ADULT")
+    name = "_".join(pieces)
+    for suffix in (".js", ".sh", ".yml", ".md"):
+        sample = tmp_path / ("x" + suffix)
+        sample.write_text("value = " + name + "\n", encoding="utf-8")
+        reported = names_in(sample, tmp_path)
+        assert any(message.endswith(repr(name)) for message in reported), suffix
+
+    # A name with no digit names no review run, so it stays unreported.
+    quiet = tmp_path / "quiet.js"
+    quiet.write_text("const SOME_CONSTANT_NAME = 1;\n", encoding="utf-8")
+    assert not names_in(quiet, tmp_path)
+
+    # A Python file still reads its tree, so a round number inside a string
+    # literal belongs to the text pass and is not reported twice here.
+    module = tmp_path / "m.py"
+    module.write_text('TEXT = "round ' + pieces[1] + '"\n', encoding="utf-8")
+    assert not names_in(module, tmp_path)

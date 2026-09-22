@@ -154,6 +154,7 @@ from __future__ import annotations
 
 import argparse
 import re
+import stat
 from collections.abc import Sequence
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -4640,6 +4641,30 @@ def display_name(path: Path, root: Path, fallback: str) -> str:
         return fallback
 
 
+def path_is_junction(path: Path) -> bool:
+    """Return whether ``path`` is a Windows junction, on any supported Python.
+
+    ``Path.is_junction()`` arrived in Python 3.12. ``CONTRIBUTING.md`` asks for
+    "a working Python 3 interpreter" and names no minimum, so on 3.10 or 3.11
+    this hook raised ``AttributeError`` before it read its first file. A guard
+    that refuses to run is not a guard.
+
+    Falling back to ``False`` would be worse than the crash, because it turns a
+    loud failure into a silent hole in a check this repository relies on to
+    reject link escapes. So the reparse tag is read directly, which is the same
+    question ``is_junction()`` asks. ``st_reparse_tag`` exists only on Windows,
+    and junctions exist only on Windows, so its absence is a real ``False``.
+    """
+    checker = getattr(path, "is_junction", None)
+    if checker is not None:
+        return bool(checker())
+    try:
+        tag = getattr(path.lstat(), "st_reparse_tag", None)
+    except (OSError, ValueError):
+        return False
+    return tag is not None and tag == getattr(stat, "IO_REPARSE_TAG_MOUNT_POINT", None)
+
+
 def guard_path(path: Path, root: Path, label: str) -> Violation | None:
     """Return a refusal for a path that is a link, or that resolves outside ``root``.
 
@@ -4653,7 +4678,7 @@ def guard_path(path: Path, root: Path, label: str) -> Violation | None:
     walk descends into directories, and a junction pointing at one of its own
     ancestors would otherwise make it descend forever.
     """
-    if path.is_symlink() or path.is_junction():
+    if path.is_symlink() or path_is_junction(path):
         return Violation(
             label,
             1,

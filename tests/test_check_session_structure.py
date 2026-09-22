@@ -4936,3 +4936,29 @@ def test_the_two_hooks_walk_a_comment_the_same_way() -> None:
         assert structure.strip_html_comments(line, state) == sibling.strip_html_comments(
             line, state
         ), line
+
+
+def test_the_junction_check_runs_without_is_junction(tmp_path: Path) -> None:
+    """``Path.is_junction()`` arrived in 3.12, and the hook must predate it.
+
+    ``CONTRIBUTING.md`` asks for "a working Python 3 interpreter" and names no
+    minimum, so on 3.10 or 3.11 ``guard_path`` raised ``AttributeError`` before
+    it read its first file. A guard that refuses to run is not a guard.
+
+    Falling back to ``False`` would be worse than the crash, so the fallback
+    reads the reparse tag instead. This test hides the method to take the
+    fallback, and a real file must still come back clean rather than raise.
+    """
+    hook = structure
+    sample = tmp_path / "real.md"
+    sample.write_text("# Title\n", encoding="utf-8")
+
+    assert hook.path_is_junction(sample) is False
+
+    class Stub:
+        def __init__(self, target): self._target = target
+        def lstat(self): return self._target.lstat()
+
+    # No ``is_junction`` attribute at all: the fallback path runs and a real
+    # file is not a junction.
+    assert hook.path_is_junction(Stub(sample)) is False
