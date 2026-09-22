@@ -361,7 +361,8 @@ project:
   only that a `You are here:` line exists.
 
   **None of the thirty-four sessions in this batch is on the First Taste path**, so every
-  one of them writes `Not a First Taste step.` -- six built sessions already do.
+  one of them writes `Not a First Taste step.` Five built sessions already do: 02, 06, 07,
+  08 and 11.
 - **A checkpoint appends a bold marker to the step label**, before `Previous:`. Built
   Checkpoint 1 is the model:
 
@@ -402,8 +403,12 @@ this batch**, so you do not choose them per session and the session strip and
   longer or multi-part.
 - **Parent involvement**, exactly one of: none / independent work, 5-minute check-in,
   parent review after session, parent setup needed, co-working recommended, adult-owned.
-- **Status**: Core / Recommended / Optional, with the checkpoint flagged where one
-  applies. The built form is `Core -- **Checkpoint 1** (a real review; parent-gated)`.
+- **Status**: the spec's vocabulary is Core / Recommended / Optional. **The built repo
+  adds a fourth label, `Conditional core`, and the built repo wins.** Session 09 is the
+  model: `Conditional core -- done **only if** your family opted into AI at setup (Session
+  00). If your family is AI-free (the default), **skip this session entirely.**` The label
+  is the machine-readable part; the condition follows it on the same line. A checkpoint is
+  flagged the same way: `Core -- **Checkpoint 1** (a real review; parent-gated)`.
 
 ### 2.4 The scaffolding gradient, and the three axes an author must not merge
 
@@ -991,7 +996,8 @@ applies, with these differences.
 Research a third candidate city in depth, if a third city keeps coming up.
 
 **Status is Conditional Core**, and the status line reads
-`Recommended -- becomes Core if a third city keeps coming up in your research`. It is
+`Conditional core -- becomes Core if a third city keeps coming up in your research`,
+following Session 09's built form. It is
 automatically promoted to Core later **only if** a third big city keeps surfacing in the
 child's research. **The parent is not asked to predict this at setup.** A parent who
 already knows the child is set on a third city may mark it Core early, but that is
@@ -2896,9 +2902,10 @@ not be rewritten.**
 00**, the six checkpoints (**14, 22, 27, 32, 46, 52**), and the co-research source-judging
 **Sessions 05 and 08.** Everything else is independent.
 
-**Status labels to carry:** 18, 36, 37 and 47 are Recommended by default and **auto-promote
-to Core later** if the need appears -- **the parent is never asked to forecast them at
-setup.**
+**Status labels to carry:** 18, 36, 37 and 47 are **`Conditional core`** and
+**auto-promote to Core later** if the need appears -- **the parent is never asked to
+forecast them at setup.** Use the same label here, in the session strips and in the
+roadmap, so the three surfaces can be compared by string.
 
 **This file does not replace the short Parent Notes inside each session.** It is the
 at-a-glance map.
@@ -3491,7 +3498,7 @@ a preceding line rather than as item 1, the way the built First Taste index does
 
 **Sessions 07, 09, 18, 36 and 37 are deliberately absent from this index.** 07 is
 Recommended. 09 is Core **only if the family opted into AI**, and then it is inserted right
-after Session 05 and must precede any AI use. 18, 36 and 37 start Recommended and
+after Session 05 and must precede any AI use. 18, 36 and 37 are `Conditional core` and
 **auto-promote to Core later** if the need appears -- **the parent is never asked to
 forecast them.** Render these as a short note under the index, exactly as the built First
 Taste index renders its Session 09 note.
@@ -3559,7 +3566,7 @@ from this table. (`D-item-7`.)
 | --- | --- | --- | --- | --- |
 | 16 | organizing information | 20-30 minutes | 5-minute check-in | Core |
 | 17 | organizing information | 20-30 minutes | none / independent work | Core |
-| 18 | organizing information | 20-30 minutes | none / independent work | Recommended |
+| 18 | organizing information | 20-30 minutes | none / independent work | Conditional core |
 | 19 | checking sources | 20-30 minutes | none / independent work | Core |
 | 20 | organizing information | 20-30 minutes | none / independent work | Core |
 | 22 | making trade-offs | 20-30 minutes for you, plus a 20-40 minute review with an adult | parent review after session | Core -- **Checkpoint 2** |
@@ -3575,8 +3582,8 @@ from this table. (`D-item-7`.)
 | 32 | making trade-offs | 20-30 minutes for you, plus a 20-40 minute review with an adult | parent review after session | Core -- **Checkpoint 4** |
 | 34 | comparing choices | 20-30 minutes | none / independent work | Core |
 | 35 | comparing choices | 20-30 minutes per sitting, several sittings | none / independent work | Core |
-| 36 | organizing information | 20-30 minutes | none / independent work | Recommended |
-| 37 | organizing information | 20-30 minutes | none / independent work | Recommended |
+| 36 | organizing information | 20-30 minutes | none / independent work | Conditional core |
+| 37 | organizing information | 20-30 minutes | none / independent work | Conditional core |
 | 38 | planning realistic time | 20-30 minutes | 5-minute check-in | Core |
 | 39 | revising a plan | 20-30 minutes | parent review after session | Core |
 | 40 | planning realistic time | 20-30 minutes | 5-minute check-in | Core |
@@ -3585,16 +3592,17 @@ from this table. (`D-item-7`.)
 | 43 | planning realistic time | 20-30 minutes | parent review after session | Core |
 | 45 | organizing information | several sittings; stop whenever you want | none / independent work | Core |
 | 46 | making trade-offs | 20-30 minutes for you, plus a 20-40 minute review with an adult | parent review after session | Core -- **Checkpoint 5** |
-| 47 | organizing information | 20-30 minutes | 5-minute check-in | Recommended |
+| 47 | organizing information | 20-30 minutes | 5-minute check-in | Conditional core |
 | 48 | organizing information | 20-30 minutes | parent review after session | Core |
 | 49 | self-control (knowing when to stop) | 20-30 minutes | co-working recommended | Core |
 | 50 | organizing information | several sittings; stop whenever you want | 5-minute check-in | Core |
 | 51 | organizing information | 20-30 minutes | 5-minute check-in | Core |
 | 52 | making trade-offs | 20-30 minutes for you, plus the family decision meeting | parent review after session | Core -- **Checkpoint 6** |
 
-**Two notes on that table.** Sessions 18, 36, 37 and 47 render as `Recommended`, with their
-auto-promotion condition in the adjacent line and the emphatic keep-it language for 47 in
-Parent Notes -- **never a compound status label.** And Session 51's planner skill is
+**Two notes on that table.** Sessions 18, 36, 37 and 47 render as `Conditional core`,
+which is the built repo's label rather than the spec's three-value vocabulary, with the
+auto-promotion condition following on the same line and the emphatic keep-it language for
+47 in Parent Notes -- **never a compound status label.** And Session 51's planner skill is
 `organizing information` because the closed vocabulary has no "making a recommendation"
 entry; **do not extend the vocabulary to fit.**
 
