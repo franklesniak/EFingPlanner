@@ -264,6 +264,14 @@ copy (`framework/docs/build_style_and_vocab.md:115`).
 Speak generically about people: "an older relative (for example a grandparent)", "each
 traveler", "a traveler with lower stamina".
 
+**How the family travels is a trip value too.** The Trip-Basics card holds it -- plane, car,
+train or another way -- so a built file never assumes a flight. Where a specification below
+says flight or airport for something every family does, word it for the family's way of
+getting there, or make it conditional on flying. Session 29's floor question, Session 40's
+arrival-day anchor and its Source Check, and Session 43's pacing check are such places. A
+line that is true for a family that flies, such as "Flights" on an adult's checklist, can
+stay, and so can the flights page (B3), which is about flying by design.
+
 ### 1.4 Reference hygiene and linking
 
 Relative links only. No absolute local paths. **No `Section NN` citations** -- built files
@@ -3583,8 +3591,8 @@ what the plan can be.**
 4. **How to use a constraint, as a three-step move:** name it; write it down where that
    kind of thing lives; then check your recommendation against it.
 5. **Say where each kind goes, because they do not all have the same home.** A settled
-   trip-wide limit is already written down: the Trip-Basics card holds the airport, the time
-   difference, the maximum trip length and who is coming, and the current travel
+   trip-wide limit is already written down: the Trip-Basics card holds how the family travels,
+   the time difference, the maximum trip length and who is coming, and the current travel
    assumptions page holds the budget band, the rough season, the trip shape and mobility
    needs such as how far anyone can walk. An unsure one that belongs to a
    single place goes in **that research card's** planning-assumption block, with what could
