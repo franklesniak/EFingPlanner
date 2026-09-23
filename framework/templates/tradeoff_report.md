@@ -6,7 +6,7 @@ This is the page where you compare two real options honestly and then say which 
 
 **You'll write three of these over the project**, one each time a big choice comes up: your season, which cities and route, and one about pacing, where you stay, or the budget. If your trip dates are already booked, the season one compares two ways to plan around them. Use a fresh copy of this page for each. One finished report isn't the finish line; it's the first of three.
 
-The columns are already drawn for you, and the example row shows the shape. Replace it with your own options. You're plugging into a comparison, not inventing one.
+The columns are already drawn for you, and the example row shows the shape. Replace it with your own options. You're plugging into a comparison, not inventing one. If a row doesn't fit your decision, like travel time when you're comparing seasons, leave it blank.
 
 **The decision I'm making:**
 

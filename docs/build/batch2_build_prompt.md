@@ -785,12 +785,13 @@ spec's continuation map calls this the capstone re-run. The child looks back at 
 Session 01 baseline and the reflection they wrote at the First Taste finish, and the
 Core/Full wording above applies. Say so on the page in one line.
 
-**Sessions 12, 14, 21, 33, 44 and 53 are the only built sessions in the batch whose Parent
-Notes change**; Session 33 gains the fare instruction above, Session 44 gains the Core-path
-line above, here the change adds a branch, keeps the existing instruction and corrects the
-build-state sentence named above, Sessions 12 and 14 each gain the one booked-dates line
-below, and Session 21's change is the one word named below. Session 14's Core-path report
-and the Session 15 addition change no Parent Notes.
+**Sessions 12, 14, 15, 21, 33, 44 and 53 are the only built sessions in the batch whose
+Parent Notes change**; Session 15's change is 4.1b's neutrality conversion, which states its
+named-city anchor generally; Session 33 gains the fare instruction above, Session 44 gains
+the Core-path line above, here the change adds a branch, keeps the existing instruction and
+corrects the build-state sentence named above, Sessions 12 and 14 each gain the one
+booked-dates line below, and Session 21's change is the one word named below. Session 14's
+Core-path report and Session 15's Core-path line change no Parent Notes.
 
 #### Session 14 — the season trade-off report on the Core path
 
@@ -842,10 +843,10 @@ season confirmation fills every place this brief asks for the season recommendat
 decision log's first entry (9.4.1), the kit's season shell (9.4.3), B1's Checkpoint 1
 section, B6's list of what exists early, binder tab 3 (Session 50, copied by E2), the
 presentation outline (Session 51 and A12), E1's binder list and evidence floor, Session 15's
-season-fit step, and Session 53's handoff. Each of those sections says so in place. The
-built Decision Record tip and the try-then-commit line in `time_and_effort.md` are worded
-for both paths, and the City Research Card's own row already reads "our Checkpoint 1
-season".
+season-fit step, the README and roadmap lines in F1 and F, and Session 53's handoff. Each
+of those sections says so in place. The built Decision Record tip and the try-then-commit
+line in `time_and_effort.md` are worded for both paths, and the City Research Card's own row
+already reads "our Checkpoint 1 season".
 
 #### Session 15 — cards toward the Core floor
 
@@ -2149,8 +2150,10 @@ All the spec's named examples live in the insert.
   of these become unbookable. **The fix is awareness, not forcing dates.** Say that
   plainly; it is the whole point of the session's placement.
 - **When the dates are already set, the list turns around.** Plenty of families start
-  after booking. Then every date-gated item is bookable now, so the watchlist becomes an
-  **act-early list**: the adults book those items first. Say this in one short paragraph;
+  after booking. Then no item waits on the family's dates, so the watchlist becomes an
+  **act-early list**: adults book each date-gated item as soon as its own booking window
+  opens, and "When adults should check" holds that opening date. Say this in one short
+  paragraph;
   the spec supports this "dates already fixed" start fully.
 - **Verify-framed categories, never memorized values.** Reservation systems, transit-card
   options, entry authorization and travel taxes all move. Re-check on an official source;
@@ -2838,7 +2841,8 @@ travel-window report.
 **Primary form: a pre-structured comparison table with the columns already drawn and one
 worked example row filled in**, so the child plugs in their options rather than inventing a
 comparison structure. **The worked row uses generic placeholders -- never the real
-destination.**
+destination.** Say on the page that a row that does not fit the decision can stay blank,
+such as travel time in the season report.
 
 **Fields, the templates section's list merged with Session 31's columns:** Decision
 question; Option A; Option B; Option C if needed; Pros; Cons; Cost effect (level, not a
@@ -3990,8 +3994,12 @@ before those later sessions are built". Retitle the index without "what is built
 drop the build-state framing from its note. Replace the status paragraph's build-state
 sentences with a pointer to this roadmap and `framework/CHANGELOG.md`, and link the Core
 Finish Line index. In the quick-start step, keep the link to the roadmap and drop the clause
-about what must happen before the later sessions are built. **The README states no build
-inventory of its own** -- that is `D-X-13`'s rule, applied to the front door.
+about what must happen before the later sessions are built. **Two more README lines name
+the Checkpoint 1 output.** In "What your child produces", write "a when-to-go call" where
+it now says "a when-to-go recommendation", as the roadmap and E1 do; a family whose dates
+are booked meets it with the season confirmation. In the index, Session 14's artifact
+becomes "Season recommendation or confirmation". **The README states no build inventory of
+its own** -- that is `D-X-13`'s rule, applied to the front door.
 
 **Mandatory honesty line, in substance:** *"This is the shortest route to a usable plan, but
 it is still most of the Core work -- about forty sessions to reach Checkpoint 5. What you
@@ -4129,7 +4137,9 @@ not checkpoints**, so the headline is unchanged; they are small beats shown bene
 
 **Other roadmap contents that must remain or be added:** the full phase overview; Core,
 Recommended and Optional labelling; the First Taste index, already built -- **do not
-re-derive it**; the Core Finish Line index; the "progress is real" acknowledgments; **the
+re-derive it**; its one change is Session 14's move note, which gains `, or confirm the
+season when the dates are booked` after `(when to go)`, while its "when-to-go call" already
+fits both paths; the Core Finish Line index; the "progress is real" acknowledgments; **the
 optional post-trip module, Session 54, listed separately as optional and post-trip**; the
 session list; artifacts by phase; review checkpoints; progress checklists; simple progress
 bars.
