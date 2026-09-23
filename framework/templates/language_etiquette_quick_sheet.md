@@ -20,9 +20,9 @@ Ask a grown-up to check the wording before you rely on it, and write the date yo
 | Please | | |
 | Yes | | |
 | No | | |
-| At a restaurant | | |
-| At a restaurant | | |
-| At a restaurant | | |
+| At a restaurant: ordering | | |
+| At a restaurant: asking for the bill | | |
+| At a restaurant: my own choice | | |
 
 ## Manners worth knowing
 

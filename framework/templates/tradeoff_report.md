@@ -23,6 +23,8 @@ The columns are already drawn for you, and the example row shows the shape. Repl
 | What we would miss, or what gets skipped | | | |
 | Does this still fit our budget band? | | | |
 | Sources (also in my Source Log) | | | |
+| What other source could check this? | | | |
+| Verification source (the one I actually used to check) | | | |
 | Date checked | | | |
 
 **My recommendation:**
