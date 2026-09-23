@@ -792,8 +792,7 @@ names are E1's, verbatim**, and the city names in parentheses are locators rathe
 entries of their own, for the reason E1 gives; a statement that the
 child still does the route trade-off later and still owns the route choice; and these two
 routing sentences: *"How each region feels different, how far your destination stretches,
-and why travel time between regions matters are in your pack's `[regions
-overview](../reference/regions_overview.md)`. Read it before you fill in your notes."* and
+and why travel time between regions matters are in your pack's `[regions overview](../reference/regions_overview.md)`. Read it before you fill in your notes."* and
 *"Two ways to shape
 a first trip are in your pack's `[major cities reference](../reference/major_cities.md)`.
 Read them as anchors to compare against, not as the answer."*
@@ -830,8 +829,7 @@ short line each on what travelling in it is like**, which is what lets the child
 and start the session's four-box season chart; the plain statement that these are
 patterns and **this year's exact dates must be confirmed**; and this routing sentence:
 *"The busy travel windows, the rainy and typhoon seasons, the cherry-blossom timing
-trap, and what stays with the grown-ups are in your pack's `[seasons, weather, and events
-reference](../reference/seasons_weather_events.md)`. Read them there."*
+trap, and what stays with the grown-ups are in your pack's `[seasons, weather, and events reference](../reference/seasons_weather_events.md)`. Read them there."*
 
 **Repeat none of those four here**, not even in short form, and do not restate the
 timing trap or the adult contingency note: that reference is their canonical home, the
@@ -952,10 +950,8 @@ says the same of `## Optional Extension`, which all 14 also carry.
 that dropped one would pass every gate in this repository and still be the first page in
 the corpus that does not behave like the others. Write all three into each of the five.
 **The two pointer sentences carry links, and the brief quotes them elsewhere without:**
-`## Finish and Quality Check` holds `Finished? Use the [Finish and Quality Check
-card](../../student_guide/finish_and_quality_check.md) in your student guide.` and
-`## If You Get Stuck` holds `Stuck? Use the [When I'm Stuck
-card](../../student_guide/when_im_stuck.md) in your student guide.`, with `../../` correct
+`## Finish and Quality Check` holds `Finished? Use the [Finish and Quality Check card](../../student_guide/finish_and_quality_check.md) in your student guide.` and
+`## If You Get Stuck` holds `Stuck? Use the [When I'm Stuck card](../../student_guide/when_im_stuck.md) in your student guide.`, with `../../` correct
 from a session file in any phase folder. Write the links; a pointer without one strands
 the child on the page it was meant to leave. A session may add its own sentence after the
 `Finished?` pointer, as Session 04 does, and the Optional Extension's opener and close
@@ -1001,11 +997,8 @@ repository's own structure check rejects. Carrying the built form is also what k
 Session 02 consistent with its three Phase 0 siblings and with the full Phases 0-2
 scaffold. Materials line, exact wording: *"Materials: your
 filled-in `[Trip-Basics card](../../templates/trip_basics.md)` (for the roster), the
-`[Traveler Profile template](../../templates/traveler_profile.md)`, the `[Family Interview
-template](../../templates/family_interview.md)`, the grown-ups' `[Current Family Travel
-Assumptions page](../../templates/current_family_travel_assumptions.md)` to read, and a
-pencil"*. First Steps instruction, exact wording: *"First, read the grown-ups' `[Current
-Family Travel Assumptions page](../../templates/current_family_travel_assumptions.md)`
+`[Traveler Profile template](../../templates/traveler_profile.md)`, the `[Family Interview template](../../templates/family_interview.md)`, the grown-ups' `[Current Family Travel Assumptions page](../../templates/current_family_travel_assumptions.md)` to read, and a
+pencil"*. First Steps instruction, exact wording: *"First, read the grown-ups' `[Current Family Travel Assumptions page](../../templates/current_family_travel_assumptions.md)`
 once. It says what the grown-ups already worked out -- the rough season, the rough trip
 shape, and any constraints they know about. A grown-up owns that page, so you read it,
 but you do not change it. Medical details stay with the grown-ups and off your pages."*
@@ -1204,8 +1197,7 @@ and 08 are the co-researched hands-on pair, and both keep the adult nearby even 
 Low-Bandwidth Parent Mode. Artifact: **Website comparison notes.** **Source Check is
 required.** Templates used: `website_notes.md`, `source_log.md`, `simple_citation.md`.
 Materials line, exact wording: *"a device with the kid-safe filter on, your destination
-pack's trusted starting sources list and its sample search terms, the `[Website Notes
-form](../../templates/website_notes.md)`, your Source Log"* — the two pack items in
+pack's trusted starting sources list and its sample search terms, the `[Website Notes form](../../templates/website_notes.md)`, your Source Log"* — the two pack items in
 plain text with **no link**, because the destination-leak rule forbids a `framework/` file
 from linking into `destinations/japan/`; the Website Notes form is a
 `framework/templates/` file, and it **does** get a relative link. D4 creates it and **this
@@ -1486,10 +1478,8 @@ that dropped one would pass every gate in this repository and still be the first
 the corpus that does not behave like the others; the canonical pointer wordings the built
 sessions use, **with their links, because that is how all fourteen built sessions write
 them and a pointer without one strands the child on the page it was meant to leave** --
-`## Finish and Quality Check` holds `Finished? Use the [Finish and Quality Check
-card](../../student_guide/finish_and_quality_check.md) in your student guide.` and
-`## If You Get Stuck` holds `Stuck? Use the [When I'm Stuck
-card](../../student_guide/when_im_stuck.md) in your student guide.`, with `../../`
+`## Finish and Quality Check` holds `Finished? Use the [Finish and Quality Check card](../../student_guide/finish_and_quality_check.md) in your student guide.` and
+`## If You Get Stuck` holds `Stuck? Use the [When I'm Stuck card](../../student_guide/when_im_stuck.md) in your student guide.`, with `../../`
 correct from a session file in any phase folder; **the exact
 order the skeleton above shows, and why it is not the order the archived matrix's
 wording suggests** -- the labelled parent strip is written exactly `**For parents:**`,
@@ -3202,9 +3192,7 @@ end) works and prints portrait.
   in it, so inventing one would contradict the block's own Role line and would be the
   only invented content on the map. Four bullets there is correct, and the qualified
   intro is what makes it read as correct rather than as missing.
-- Add one line directly after the intro paragraph: `Want a rough signal of how the
-  executive-function side is going? The optional [executive-function observation
-  aid](ef_observation_aid.md) is a private three-item note you keep to yourself.`
+- Add one line directly after the intro paragraph: `Want a rough signal of how the executive-function side is going? The optional [executive-function observation aid](ef_observation_aid.md) is a private three-item note you keep to yourself.`
 - Insert five new `## Session NN: Title` blocks in **numbered order**, matching the
   built field order and voice exactly — Session 02 between 01 and 03; Session 06 after
   05; `## Session 07: Library Research Plan (Recommended -- you can skip this one)`
@@ -3248,9 +3236,7 @@ end) works and prints portrait.
 **H6. `framework/parent_guide/time_and_effort.md` (edit).** Five changes.
 
 - Append one line at the end of the `## Is it worth it (versus casual involvement)`
-  section: `If you want a rough signal over time rather than a feeling, the optional
-  [executive-function observation aid](ef_observation_aid.md) takes about a minute, three
-  times across the project.`
+  section: `If you want a rough signal over time rather than a feeling, the optional [executive-function observation aid](ef_observation_aid.md) takes about a minute, three times across the project.`
 - **The adult-job list drops two items that assume a trip shape.** `## You are
   running two projects at once` reads *"doing the actual adult trip planning and
   booking -- flights, hotels, passports, insurance, reservations."* Replace that
@@ -3930,8 +3916,7 @@ navigation only:
 - Keep the built wording for colliding wants ("one person wants busy days, another wants
   calm"). No insert is needed; Session 03 is not in the contract.
 - Re-point Previous to Session 02; Next stays Session 04.
-- Add the template pointer in Materials and in the Workspace section: `[Family Trip
-  Goals and Input Summary](../../templates/family_trip_goals.md)`. **Change nothing
+- Add the template pointer in Materials and in the Workspace section: `[Family Trip Goals and Input Summary](../../templates/family_trip_goals.md)`. **Change nothing
   else.** Keep the Artifact line exactly as written today.
 - Preserve: the traveler poll and the relay fallback; the poll results as real evidence
   feeding city and attraction choices; the three-step "balancing what people want" move;
@@ -4067,8 +4052,7 @@ verification checklist"* -- which is exactly what D5 builds -- and nothing else 
 batch links to the form. Left alone it ships orphaned, and no family ever finds the page
 carrying the verification checklist, the recommendation boundary and the privacy rule.
 Two touches, and no more. **Materials**, which reads *"the adult's own AI tool, your
-Source Log"*, gains the form: *"the adult's own AI tool, your Source Log, the `[AI Notes
-form](../../templates/ai_notes.md)`"*. **`## Workspace`** gains one clause pointing at the
+Source Log"*, gains the form: *"the adult's own AI tool, your Source Log, the `[AI Notes form](../../templates/ai_notes.md)`"*. **`## Workspace`** gains one clause pointing at the
 same file. **The Source Log entry stays primary and its mapping is unchanged** -- the AI
 Notes form is the fuller record kept beside it, never a replacement for it. Do not add a
 third mention. **Do not reproduce the form's layout or its entry fields in the session**,

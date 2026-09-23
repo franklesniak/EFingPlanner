@@ -259,8 +259,7 @@ traveler", "a traveler with lower stamina".
 ### 1.4 Reference hygiene and linking
 
 Relative links only. No absolute local paths. **No `Section NN` citations** -- built files
-never cite spec section numbers (`AC-6-2`). Name-first: "see the `[When I'm Stuck
-card](../../student_guide/when_im_stuck.md)`", never "see Section 21.8".
+never cite spec section numbers (`AC-6-2`). Name-first: "see the `[When I'm Stuck card](../../student_guide/when_im_stuck.md)`", never "see Section 21.8".
 
 **Every relative link must resolve when the batch ships** (`AC-GLOBAL-3`). This is the
 rule that decides what a session writes when it needs a Batch 3 insert -- see section 3.
@@ -736,8 +735,10 @@ season and that backup**, reusing the reasons already written. It is the first o
 the template names. **When the family's dates are already booked**, Checkpoint 1 is the
 spec's understanding-and-confirmation beat, so the report compares **the booked window with
 the child's next-best window** on the family's goals: what the booked dates give, what they
-cost, and how the plan works around that cost. It is still the first report. **A First
-Taste child's page is unchanged**; First Taste is not measured against the floor.
+cost, and how the plan works around that cost. It is still the first report. **A family
+that continues after finishing First Taste writes this report as its first continuing
+step**, extending the Checkpoint 1 page it already finished. **A First Taste child's page is
+unchanged**; First Taste is not measured against the floor.
 
 #### Session 15 — cards toward the Core floor
 
@@ -3852,7 +3853,14 @@ First-Taste-only today, and it is a static page, so the two views are two sectio
 fixed order. **Keep the First Taste section first and as it is**, including its own count,
 because a First Taste child still uses it. **Add the Core/Full section after it**, headed
 for a family that keeps going past First Taste: the checkpoints line first, then the Core
-sessions grouped by phase, as check-off lines in the same form as the First Taste list.
+sessions grouped by phase, as check-off lines in the same form as the First Taste list. **The
+first check-off line is the Session 14 season report**, so a family continuing from First
+Taste writes it first. **Mark each Core line whose session is parent-gated or co-worked**,
+in the same form as the First Taste list's markers, taking which sessions those are from
+B7's rule, so the membership lives in one place. **Scope the existing "Which sessions need a
+grown-up" lists to the First Taste path**, and make its waiting rule point at a marked
+session, so a Core child is never told that the later checkpoints or Sessions 25 and 49 need
+no grown-up.
 
 **Why this one and not a percentage** -- say it in one line: it stays accurate even when
 sessions are skipped or the Core Finish Line is taken, and the six checkpoints map to the
