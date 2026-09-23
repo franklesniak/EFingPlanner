@@ -110,3 +110,9 @@ The draft is the thing being reviewed. Pacing, transit, meals and rest cannot be
 **What to consider:** the final recommendation; what you approve; what you want changed; what you'll verify or book; and which questions stay open.
 
 **Progress is real:** the family has *made a decision*.
+
+## Where to go next
+
+- [Coaching and support](coaching_and_support.md) -- the words for "needs more research", the most common hard verdict.
+- [Booking guidance](booking_guidance.md) -- what happens after a checkpoint approves something that needs booking.
+- [Session support notes](session_support_notes.md) -- each session built so far at a glance, Checkpoint 1 included.

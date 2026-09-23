@@ -71,3 +71,9 @@ That list names the known higher-risk areas. If another topic feels like it belo
 ## Privacy
 
 A short reminder, with the full rules on the [privacy and safety page](../docs/privacy_and_safety.md). **Nothing personal goes in this repository at all.** Your family's copied-out kit is different: that is where the real work belongs, including pages like the Trip-Basics card that hold your airport and your travellers. What stays out of it is the **sensitive** set: passport numbers, birthdates, confirmation numbers, payment details and exact booked dates. A shared-documents folder is not a private vault for those either.
+
+## Where to go next
+
+- [Adult-only logistics](adult_only_logistics.md) -- insurance, passports, and what to check for an older or lower-mobility traveler.
+- [Adult and child roles](adult_roles.md) -- why every safety decision stays with the adults.
+- [Privacy and safety](../docs/privacy_and_safety.md) -- the full rules on what never goes on a working page.

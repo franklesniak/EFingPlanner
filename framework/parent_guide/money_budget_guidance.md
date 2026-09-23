@@ -84,3 +84,9 @@ Children's fares are often lower than adults' on some transport systems. Treat i
 ---
 
 Every figure on this page is an example to re-check, with a date. There are no pinned amounts here, and there shouldn't be any in your child's work either.
+
+## Where to go next
+
+- [Flights from your home airport](flights_from_origin_guidance.md) -- the biggest cost, which stays on your own page.
+- [Booking guidance](booking_guidance.md) -- what gets booked in what order once the numbers settle.
+- [Coaching and support](coaching_and_support.md) -- scripts for the hard moments, including disagreeing without overriding.

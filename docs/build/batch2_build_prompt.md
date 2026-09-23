@@ -2914,6 +2914,11 @@ checked and dated.
 official government references are the *origin* layer, not the destination layer. Keep them
 labelled as such. **But never name the family's home airport or its code.**
 
+**Every new page in this group ends with a `## Where to go next` list.**
+`framework/templates/parent_guide_template.md` requires one on every parent-guide page except
+the quick-start and the session support notes: a few links to related pages, each followed
+by one clause saying what that page covers.
+
 #### B1 — `review_checkpoints.md`
 
 The adult's guide to running the checkpoints: Checkpoint 1 alone on First Taste, whose

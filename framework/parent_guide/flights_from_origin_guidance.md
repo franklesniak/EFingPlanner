@@ -51,3 +51,9 @@ Which one you land at can change arrival-day fatigue substantially: sometimes an
 ---
 
 Don't enter flight booking information anywhere in this repository or the kit.
+
+## Where to go next
+
+- [Booking guidance](booking_guidance.md) -- the order things get booked in, and the long leads.
+- [Money and budget guidance](money_budget_guidance.md) -- why flights sit outside your child's budget slices.
+- [Adult-only logistics](adult_only_logistics.md) -- passports, insurance and the rest of the adult list.

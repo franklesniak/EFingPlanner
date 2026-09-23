@@ -59,3 +59,9 @@ Write the acknowledgment on their **"My Calls" page**. That page exists so their
 ## Privacy
 
 Don't enter booking information, confirmation numbers or payment details anywhere in the repository or the kit. A shared-documents folder is not a private vault either. The same data stays off it that you'd keep off a public page.
+
+## Where to go next
+
+- [Adult-only logistics](adult_only_logistics.md) -- the full list of what your child never touches, long leads first.
+- [Coaching and support](coaching_and_support.md) -- what to say when you had to book before your child finished.
+- [Review checkpoints](review_checkpoints.md) -- how your child's recommendations reach you before anything is booked.
