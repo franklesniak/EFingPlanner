@@ -25,7 +25,10 @@ Markdown is read"):
    dates, not on today's date, means a second change on the same day passes
    without a redundant edit, and a check re-run on a later day cannot start
    failing. A renamed file's history is followed, including a rename made as a
-   copy and a later deletion.
+   copy and a later deletion, and a deletion followed by a restoration. The
+   field must also not be later than the latest commit date (UTC) of those
+   commits, unless it equals the base's own value: a future date would let
+   later edits skip the bump.
 2. If the file carries ``**Version:** <major>.<minor>.<YYYYMMDD>.<revision>``
    and its content changed, the ``<YYYYMMDD>`` segment must equal the field, and
    ``<revision>`` must follow the guide's convention against the published
@@ -286,20 +289,28 @@ def path_at(commit: str, later: str, path: str) -> str:
 
 
 def required_date(base: str, head: str, path: str, origin: str | None = None) -> dt.date | None:
-    """UTC author date of the newest PR commit that changed the file's content.
+    """UTC author date of the newest PR commit that changed the file's content."""
+    changes = content_changes(base, head, path, origin)
+    return max((authored for authored, _ in changes), default=None)
 
-    Every PR commit that touched the file is considered, merges included, and the
-    latest qualifying author date wins. Content is compared as rendered (see
-    `rendered()`). A non-merge commit qualifies when its content differs from its
-    parent's. A merge, of any number of parents, qualifies only when its content
-    differs from git's own clean merge of all its parents (see `clean_merge()`): an
-    automatic merge adds nothing, because each side's commits carry their own dates,
-    while a conflict resolution or an edit made during the merge is authored.
 
-    `origin` is the file's name on the base when the PR renamed it. A rename can be
-    made in two commits, a copy and a later deletion; the copy commit then shows the
-    file as added. So when a commit adds the file, the walk follows `origin` into the
-    parent, and the history before the copy counts. A parent without `origin` is skipped.
+def content_changes(base: str, head: str, path: str,
+                    origin: str | None = None) -> list[tuple[dt.date, dt.date]]:
+    """(author date, committer date), in UTC, of every PR commit that changed the file's content.
+
+    Every PR commit that touched the file is considered, merges included. Content is
+    compared as rendered (see `rendered()`). A non-merge commit qualifies when its
+    content differs from its parent's. A merge, of any number of parents, qualifies
+    only when its content differs from git's own clean merge of all its parents (see
+    `clean_merge()`): an automatic merge adds nothing, because each side's commits
+    carry their own dates, while a conflict resolution or an edit made during the merge
+    is authored.
+
+    `origin` is the file's name on the base, when the file existed there. A commit that
+    adds the file, as a copy or a restoration does, is followed into its parent under
+    `origin`, and a commit that lacks the file, as between a deletion and a restoration,
+    passes the name on to its parents. So the history before the copy or the deletion
+    still counts.
     """
     # Walk every PR commit children-first, carrying the file's name backwards: the head
     # knows it as `path`, and each parent's name comes from a rename-aware diff against
@@ -307,21 +318,23 @@ def required_date(base: str, head: str, path: str, origin: str | None = None) ->
     # commits on merged side branches, where the file may have its older name.
     head_sha = git("rev-parse", head).strip()
     names: dict[str, str | None] = {head_sha: path}
-    dates = []
-    log = git("log", "--topo-order", "--format=%H %aI %P", "%s..%s" % (base, head))
+    changes = []
+    log = git("log", "--topo-order", "--format=%H %aI %cI %P", "%s..%s" % (base, head))
     for row in log.splitlines():
-        sha, when, *parents = row.split(" ")
+        sha, authored_at, committed_at, *parents = row.split(" ")
         name = names.get(sha)
         if name is None:
             continue
         after = show(sha, name)
         if after is None:
+            for parent in parents:
+                names.setdefault(parent, path_in(parent, sha, name))   # absent here: pass the name on
             continue
         befores = []
         for parent in parents:
             own = path_in(parent, sha, name)
-            if own is None and origin not in (None, name):
-                own = origin   # added here, as by a copy: follow the base name the rename came from
+            if own is None and origin is not None:
+                own = origin   # added here, as by a copy or a restoration: follow the base name
             names.setdefault(parent, own)
             content = show(parent, own) if own else None
             befores.append(rendered(content or "", own or name))
@@ -331,8 +344,12 @@ def required_date(base: str, head: str, path: str, origin: str | None = None) ->
         else:
             authored = bool(befores) and all(b != rendered(after, name) for b in befores)
         if authored:
-            dates.append(dt.datetime.fromisoformat(when).astimezone(dt.timezone.utc).date())
-    return max(dates) if dates else None
+            changes.append((utc_date(authored_at), utc_date(committed_at)))
+    return changes
+
+
+def utc_date(stamp: str) -> dt.date:
+    return dt.datetime.fromisoformat(stamp).astimezone(dt.timezone.utc).date()
 
 
 def clean_merge(parents: list[str], path: str) -> str | None:
@@ -386,15 +403,29 @@ def check(base: str, head: str) -> list[str]:
                             "base version's date." % (path, base_value, value))
         if base_text is not None and old_path and rendered(base_text, old_path) == rendered(head_text, path):
             continue
-        need = required_date(merge_base, head, path, old_path)
-        if need is None:
+        changes = content_changes(merge_base, head, path, old_path)
+        need = max((authored for authored, _ in changes), default=None)
+        made = max((committed for _, committed in changes), default=None)
+        # The published baseline is the file on the base branch tip, not on the merge base,
+        # under the name it has there if the base branch renamed it after the fork.
+        published_path = path_at(merge_base, base, old_path) if old_path else None
+        published = show(base, published_path) if published_path else None
+        day = dt.date.fromisoformat(value)
+        date_is_wrong = True
+        if need is None or made is None:
             # Fail closed: the content differs from the base, so some commit changed it.
             problems.append("%s: its content changed, but no pull request commit could be found that "
                             "changed it, so the required date is unknown." % path)
-        elif dt.date.fromisoformat(value) < need:
+        elif day < need:
             problems.append("%s: Last Updated is %s, but this pull request changed its content in a "
                             "commit dated %s (UTC). Set it to %s or later." % (path, value, need, need))
-        date_is_stale = need is None or dt.date.fromisoformat(value) < need
+        elif day > made and value not in (base_value, field(published) if published is not None else None):
+            # A date later than the change would let later edits skip the bump. The base's own
+            # value is allowed, because this pull request did not set it.
+            problems.append("%s: Last Updated is %s, which is later than the last commit that changed its "
+                            "content, made on %s (UTC). Set it to %s." % (path, value, made, need))
+        else:
+            date_is_wrong = False
         head_version = version(head_text)
         if head_version is None:
             continue
@@ -403,12 +434,8 @@ def check(base: str, head: str) -> list[str]:
             problems.append("%s: the Version date segment is %s, but Last Updated is %s. They must match."
                             % (path, date, value))
         # The revision depends on the date, so it is checked only once both dates are right.
-        if date_is_stale or date != value.replace("-", ""):
+        if date_is_wrong or date != value.replace("-", ""):
             continue
-        # The published baseline is the file on the base branch tip, not on the merge base,
-        # under the name it has there if the base branch renamed it after the fork.
-        published_path = path_at(merge_base, base, old_path) if old_path else None
-        published = show(base, published_path) if published_path else None
         baseline = version(published) if published is not None else None
         if baseline is not None and baseline[:3] == head_version[:3]:
             expected, why = baseline[3] + 1, "the base branch already has %d.%d.%s.%d" % baseline

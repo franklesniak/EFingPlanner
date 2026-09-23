@@ -547,7 +547,11 @@ def test_moving_a_file_with_a_relative_link_needs_a_bump(repo: Repo) -> None:
     '<a HREF = "other.md">x</a>',
     '<p>\n<img alt="a" src=pic.png />\n</p>',
     '<picture><source srcset="dark.png 1x, dark2.png 2x"></picture>',
-], ids=["unquoted", "single-quoted", "uppercase-spaced", "in-a-block", "srcset"])
+    '<img srcset="data:image/png;base64,AAAA 1x, pic.png 2x">',
+    '<a href="#top" ping="https://example.com/p audit">top</a>',
+    '<div itemscope itemid="thing.md">x</div>',
+], ids=["unquoted", "single-quoted", "uppercase-spaced", "in-a-block", "srcset", "srcset-after-data-url", "ping",
+        "itemid"])
 def test_moving_a_file_with_a_relative_raw_html_reference_needs_a_bump(repo: Repo, raw: str) -> None:
     publish(repo, doc("2026-01-01", "Text.\n\n" + raw), "2026-01-01T12:00:00+00:00")
     (repo.root / "docs" / "sub").mkdir()
@@ -561,7 +565,8 @@ def test_moving_a_file_with_a_relative_raw_html_reference_needs_a_bump(repo: Rep
     "```html\n<img src=pic.png>\n```",                              # code shows the tag as text
     '<a title="see href=x.md" href="https://example.com/">x</a>',   # a lookalike inside a value
     "<!-- <img src=\"pic.png\"> -->",                               # a commented-out tag
-], ids=["code-block", "value-lookalike", "comment"])
+    '<img srcset="data:image/png;base64,AAAA 1x">',                 # a data URL keeps its comma
+], ids=["code-block", "value-lookalike", "comment", "srcset-data-url"])
 def test_raw_html_lookalikes_are_not_references(repo: Repo, body: str) -> None:
     publish(repo, doc("2026-01-01", "Text.\n\n" + body), "2026-01-01T12:00:00+00:00")
     (repo.root / "docs" / "sub").mkdir()
@@ -591,6 +596,41 @@ def test_edit_before_a_copy_then_delete_rename_sets_the_date(repo: Repo) -> None
     assert repo.git("diff", "--name-status", "-M", "main..HEAD").startswith("R")
     problems = run(repo)
     assert len(problems) == 1 and "docs/b.md" in problems[0] and "Set it to 2026-03-06" in problems[0]
+
+
+def test_edit_before_a_deletion_and_restoration_sets_the_date(repo: Repo) -> None:
+    repo.write("docs/a.md", doc("2026-03-05", "Edited."))
+    repo.commit("edit", "2026-03-06T10:00:00+00:00")
+    repo.git("rm", "-q", "docs/a.md")
+    repo.commit("delete", "2026-03-05T11:00:00+00:00")
+    repo.write("docs/a.md", doc("2026-03-05", "Edited."))
+    repo.commit("restore", "2026-03-05T12:00:00+00:00")
+    problems = run(repo)
+    assert len(problems) == 1 and "Set it to 2026-03-06" in problems[0]
+
+
+def test_date_later_than_the_change_fails(repo: Repo) -> None:
+    repo.write("docs/new.md", doc("2099-01-01", version="20990101"))
+    repo.commit("add", "2026-03-05T10:00:00+00:00")
+    problems = run(repo)
+    assert len(problems) == 1 and "later than the last commit" in problems[0] and "Set it to 2026-03-05" in problems[0]
+
+
+def test_amended_commit_may_carry_its_commit_day(repo: Repo) -> None:
+    # An amend keeps the author date but records a new commit date, the day the change was made.
+    repo.write("docs/a.md", doc("2026-03-06", "Changed."))
+    repo.git("add", "-A")
+    env = dict(os.environ, GIT_AUTHOR_DATE="2026-03-05T23:00:00+00:00", GIT_COMMITTER_DATE="2026-03-06T09:00:00+00:00")
+    subprocess.run(["git", "commit", "-q", "-m", "amended"], cwd=repo.root, env=env, check=True)
+    assert run(repo) == []
+
+
+def test_unchanged_later_base_date_is_allowed(repo: Repo) -> None:
+    # The base's own date was not set by this pull request, so a later value is not its error.
+    publish(repo, doc("2026-03-10"), "2026-03-10T08:00:00+00:00")
+    repo.write("docs/a.md", doc("2026-03-10", "An older change, rebased."))
+    repo.commit("rebased", "2026-03-05T10:00:00+00:00")
+    assert run(repo) == []
 
 
 def test_move_that_keeps_every_target_needs_no_bump(repo: Repo) -> None:
@@ -921,7 +961,7 @@ def test_changes_on_main_after_the_fork_are_not_the_prs(repo: Repo) -> None:
 def test_unattributable_content_change_fails_closed(repo: Repo, monkeypatch: Any) -> None:
     repo.write("docs/a.md", doc("2026-03-05", "Changed."))
     repo.commit("change", "2026-03-05T10:00:00+00:00")
-    monkeypatch.setattr(last_updated, "required_date", lambda base, head, path, origin=None: None)
+    monkeypatch.setattr(last_updated, "content_changes", lambda base, head, path, origin=None: [])
     problems = run(repo)
     assert len(problems) == 1 and "required date is unknown" in problems[0]
 

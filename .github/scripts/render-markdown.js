@@ -52,9 +52,12 @@ const VERSION = /^\*\*Version:\*\* (\d+\.\d+\.\d{8}\.\d+)[ \t]*$/;
 const FRONT_MATTER = /^---[ \t]*\r?\n(?:[^]*?\r?\n)?(?:---|\.\.\.)[ \t]*(?:\r?\n|$)/;
 const H1_LINE_LIMIT = 30;
 
-// HTML attributes whose values are URLs (HTML Living Standard, attributes index).
-const URL_ATTRIBUTES = new Set(['action', 'background', 'cite', 'data', 'formaction', 'href', 'longdesc',
-  'poster', 'src', 'srcset']);
+// HTML attributes whose values hold URLs (HTML Living Standard, attributes index), plus the
+// obsolete `background` and `longdesc`, which browsers still honor. `itemtype` is left out:
+// its URLs must be absolute.
+const URL_ATTRIBUTES = new Set([
+  'action', 'background', 'cite', 'data', 'formaction', 'href', 'itemid', 'longdesc', 'ping', 'poster', 'src', 'srcset',
+]);
 // A URL with a scheme, a root-relative or protocol-relative path, or only a query or fragment
 // does not depend on the document's directory.
 const NOT_RELATIVE = /^(?:[A-Za-z][A-Za-z0-9+.-]*:|\/|#|\?|$)/;
@@ -74,16 +77,52 @@ function resolveUrl(url, directory) {
   return '/' + path.posix.normalize(path.posix.join(directory, target)) + rest;
 }
 
-// A srcset value is a comma-separated list of candidates, each a URL and an optional descriptor.
+// A srcset value is a list of image candidates, split as the HTML Living Standard's "parse a
+// srcset attribute" does: a URL runs to the next whitespace, so a data URL keeps its comma;
+// commas at the URL's end close the candidate; otherwise descriptors run to the next comma
+// outside parentheses.
 function resolveSrcset(value, directory) {
-  return value.split(',').map((candidate) => {
-    const [url, ...descriptor] = candidate.trim().split(/\s+/);
-    return [resolveUrl(url, directory), ...descriptor].join(' ');
-  }).join(', ');
+  const candidates = [];
+  let at = 0;
+  while (at < value.length) {
+    at += /^[\s,]*/.exec(value.slice(at))[0].length;
+    if (at >= value.length) {
+      break;
+    }
+    let url = /^\S*/.exec(value.slice(at))[0];
+    at += url.length;
+    let descriptors = '';
+    const commas = /,+$/.exec(url);
+    if (commas) {
+      url = url.slice(0, url.length - commas[0].length);
+    } else {
+      const start = at;
+      let inParentheses = false;
+      while (at < value.length && !(value[at] === ',' && !inParentheses)) {
+        if (value[at] === '(') {
+          inParentheses = true;
+        } else if (value[at] === ')') {
+          inParentheses = false;
+        }
+        at++;
+      }
+      descriptors = value.slice(start, at).trim();
+      at++;
+    }
+    candidates.push(resolveUrl(url, directory) + (descriptors ? ' ' + descriptors : ''));
+  }
+  return candidates.join(', ');
 }
 
 function resolveAttribute(name, value, directory) {
-  return name === 'srcset' ? resolveSrcset(value, directory) : resolveUrl(value, directory);
+  if (name === 'srcset') {
+    return resolveSrcset(value, directory);
+  }
+  if (name === 'ping') {
+    // A set of space-separated URLs.
+    return value.trim().split(/\s+/).map((url) => resolveUrl(url, directory)).join(' ');
+  }
+  return resolveUrl(value, directory);
 }
 
 // A start tag with each URL attribute resolved and written as name="value".
