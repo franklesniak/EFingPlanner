@@ -123,7 +123,7 @@ Want a rough signal of how the executive-function side is going? The optional [e
 
 - Role: a real review -- genuinely use the recommendation in a family talk (parent-gated).
 - Prep: a Decision Record page.
-- Look for: a season pick with reasons and sources, plus questions for you.
+- Look for: a season pick and a backup, a season to be careful about, reasons and sources, plus questions for you.
 - Coaching question: "Why not your backup season?"
 - Pitfall: overriding silently. If you adjust it, say why -- their reasons still count.
 

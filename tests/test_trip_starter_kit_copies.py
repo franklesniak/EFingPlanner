@@ -15,7 +15,9 @@ the session sends them to.
 
 Each kit copy is its template plus a preamble that belongs only to the kit: copy
 it out before filling it in, and here is the blank it came from. Remove that
-preamble and the two files must be identical, byte for byte.
+preamble and the two files must match line for line, character for character.
+Line endings are not compared: ``.gitattributes`` stores every Markdown file
+with LF endings, so they cannot differ once committed.
 """
 
 from __future__ import annotations

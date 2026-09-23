@@ -63,7 +63,7 @@ Your AI notes and verification checklist -- what AI helped with, and where you c
 
 ## Stop Point
 
-You are done when you have used AI for one safe job (like brainstorming questions) and recorded it in your Source Log, including where you would check any fact it gave you.
+You are done when you have used AI for one safe job (like brainstorming questions), filled in your AI Notes page, and recorded the use in your Source Log. Every fact AI gave you is checked against a non-AI source, or taken out.
 
 ## Source Check
 

@@ -12,13 +12,13 @@ This is the set of blank pages your family fills in. Every page here is empty on
 
 ## What is in the kit
 
-The kit grows as the project does. Some of these folders arrive later.
+The kit grows as the project does. Today it holds only `family/`, and a later release adds the other four folders. Each folder below names the binder section that holds its work until then.
 
 - `family/` holds the pages your whole family owns. It is the part that is ready now: the [Trip-Basics card](family/trip_basics.md), the [current family travel assumptions](family/current_family_travel_assumptions.md), the [family trip goals](family/family_trip_goals.md), and, if you did Session 02, one [traveler profile](family/traveler_profiles/README.md) per traveler. Session 02 is on the full Phases 0-2 path rather than the 13, so this folder is complete without profiles if you are on First Taste.
-- `logs/` holds your running records: the Source Log, the decision log, the question parking lot, and the cut list.
-- `research/` holds what you find out, in one folder per kind: cities, attractions, hotels, restaurants, and day cards.
-- `recommendations/` holds what you decide to recommend to the grown-ups.
-- `outputs/` holds the finished pages, put in order at the very end.
+- `logs/` holds your running records: the Source Log, the decision log, the question parking lot, and the cut list. In the binder, each of the four is its own section.
+- `research/` holds what you find out, in one folder per kind: cities, attractions, hotels, restaurants, and day cards. In the binder, that is the research cards section.
+- `recommendations/` holds what you decide to recommend to the grown-ups. Until this folder arrives, a recommendation is a Decision Record in your decision log, as Checkpoint 1's is.
+- `outputs/` holds the finished pages, put in order at the very end. In the binder, that is the last step, when the tabs go in.
 
 Your `family/` folder is the "Start Here" section of your binder. The [binder card](../student_guide/how_to_use_this_binder.md) says how the sections work, and it is the page to follow: tabs come once, at the very end, so label the section now and make the tab later.
 

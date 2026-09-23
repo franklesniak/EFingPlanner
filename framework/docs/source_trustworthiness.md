@@ -44,9 +44,9 @@ A guidebook is the best orientation tool in this project. One evening with one b
 
 It is not a source for current facts. Find the publication year on the copyright page, say it out loud, and treat every price, opening time and rule in the book as something to confirm against an official source with the date checked. A library edition can be several years older still, which is fine for orientation and useless for hours.
 
-## The three questions that check a source
+## The three fields that record the check
 
-Judging a source finishes with checking it. Three short questions do that, and they are the same three fields the [citation style](citation_style.md) page defines and the printable form carries:
+Judging a source is the job of the quick trust test in [Session 05](../sessions/phase_01_research_skills/05_good_sources_bad_sources.md): who made it, why, and whether another source can check it. Checking the fact comes after, and three fields record it. They are the same three the [citation style](citation_style.md) page defines and the printable form carries:
 
 - What other source can check this?
 - Verification source

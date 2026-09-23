@@ -480,7 +480,9 @@ cannot branch on a runtime signal, so this batch builds the phase line:**
 | 7, 8 | **Lighter template.** Steps compress to a short ordered list; Workspace becomes a pointer to the card or page the child already uses |
 
 The readiness trigger is carried as a **parent note**, so a parent whose child fades
-early can move faster on their own side.
+early can move faster on their own side. **Word it as `framework/docs/design_principles.md`
+does:** the Finish and Quality Check closes every session, so doing it never counts against
+the child; the test is whether they needed the When I'm Stuck card or leaned on the Steps.
 
 **Record the cost, do not hide it:** a child who meets the trigger in Phase 5 has no
 lighter Phase 6 page to switch to, and meets the full template longer than they need.

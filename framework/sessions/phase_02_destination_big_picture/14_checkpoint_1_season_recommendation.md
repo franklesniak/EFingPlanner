@@ -56,7 +56,7 @@ Your Season recommendation report (your first decision-log entry): a season pick
 
 ## Stop Point
 
-You are done when you have a season pick with reasons and sources, and you have shared it with a grown-up. You do not need exact dates. A season and maybe some months is a complete recommendation.
+You are done when your Decision Record has a season pick, a backup, a season to be careful about, your reasons and sources, and your questions for the grown-ups. You have also shared it with a grown-up. You do not need exact dates. A season and maybe some months is a complete recommendation.
 
 ## Source Check
 

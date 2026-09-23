@@ -37,7 +37,7 @@ The opposite tail also needs a named path -- a bright, bored child abandons a pr
 
 - **Batch sessions freely,** including combining adjacent ones in a single sitting. The 20-30-minute target is a floor, not a cap.
 - **Skip the meta-cards** -- a confident planner does not need them each time.
-- **Reach the lighter template fast** -- the trigger is two sessions done without leaning on the written Steps or meta-cards, not a fixed phase.
+- **Reach the lighter template fast** -- the trigger is two sessions done without leaning on the written Steps or the When I'm Stuck card, not a fixed phase.
 - **Make the optional and harder versions their main path** ("challenge by choice") -- more cities, deeper research, the open weighted-scoring version.
 - **Keep identical:** the guardrails (budget, approved cities, pacing, safety, availability), the always-kept session anchors, and every safety/privacy rule. The mode changes pace and depth, never the rules.
 

@@ -6,7 +6,7 @@
 
 - **Status:** Active
 - **Owner:** Repository Maintainers
-- **Last Updated:** 2026-09-22
+- **Last Updated:** 2026-09-23
 - **Scope:** Why each session mechanic is there, which executive-function skills the curriculum trains, the honest limit on what transfer can be promised, the canonical carry-over tag wording and its one placement rule, and the scaffolding fade gradient with the readiness test that releases each stage. Parent-facing and builder-facing. A later batch authoring new sessions follows the tag rule and the gradient from here.
 - **Related:** [What executive function is](../parent_guide/what_is_executive_function.md), [Build style and vocabulary](build_style_and_vocab.md), [Project roadmap](../PROJECT_ROADMAP.md)
 
@@ -83,7 +83,7 @@ Support is heavy at the start and lifts as the child earns it. The gradient acro
 | 5 to 6 | You do, with check-ins |
 | 7 to 8 | You do |
 
-**The gradient moves on demonstrated readiness rather than on the calendar.** The test is what the child did: two consecutive sessions completed without *using* the meta sections and without *leaning on* the written Steps. Both verbs matter. The sections stay on the page at every stage, because the structure gate requires them and because a child who stops needing them one week may need them the next. What changes is whether the child reaches for them.
+**The gradient moves on demonstrated readiness rather than on the calendar.** The test is what the child did: two consecutive sessions completed without *needing* the When I'm Stuck card and without *leaning on* the written Steps. The Finish and Quality Check still closes every session, so doing it never counts against the child. The sections stay on the page at every stage, because the structure gate requires them and because a child who stops needing them one week may need them the next. What changes is whether the child reaches for them.
 
 If the two sessions do not come, the stage does not move. Going back a stage after a hard week is a normal adjustment rather than a setback.
 

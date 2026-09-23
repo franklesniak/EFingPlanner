@@ -60,7 +60,7 @@ Your quick trust test, used on two real sites, plus one trusted source added to 
 
 ## Stop Point
 
-You are done when you have run the three questions on two sites and written down which one you trust more and why. That is plenty for today.
+You are done when you have run the three questions on two sites, written down which one you trust more and why, and put that one in your Source Log. That is plenty for today.
 
 ## Source Check
 

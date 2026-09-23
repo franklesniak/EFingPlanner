@@ -68,7 +68,7 @@ Your traveler profiles, one per traveler, plus your family input notes from the 
 
 ## Stop Point
 
-You are done when every traveler you could reach has a profile. At least one profile comes from an interview you did yourself, if there was anyone you could talk to. Mark the rest "asked through a grown-up" or "not decided yet." That's enough for today.
+You are done when every traveler on your Trip-Basics card has a profile. At least one profile comes from an interview you did yourself, if there was anyone you could talk to. For a traveler you could not reach, fill in what you know and mark the rest "asked through a grown-up" or "not decided yet." That's enough for today.
 
 ## Source Check
 

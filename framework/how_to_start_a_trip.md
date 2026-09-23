@@ -2,7 +2,13 @@
 
 # How to Start a Trip
 
-Three steps get a family from this repository to a child working session one. Do them in order, once. The fourth section is not one of them: it is for later, when the same family plans another trip to the same place.
+Three steps get a family from this repository to a child working session one. Read the short privacy section first, then do the steps in order, once. The section after the steps is for later, when the same family plans another trip to the same place.
+
+## Before anything gets filled in
+
+Read [privacy and safety](docs/privacy_and_safety.md) once. It is short, and it is the single home for what never gets written down on a working page.
+
+The one reminder worth carrying from it now: a Google Docs folder is not a private vault. Passport numbers, birthdates, confirmation numbers, home address, payment details and exact booked dates stay off it, exactly as they stay off paper.
 
 ## 1. Copy the blank kit out
 
@@ -31,9 +37,3 @@ Print each session as you reach it rather than the whole set at once.
 Copy out a fresh starter kit and reuse the same destination pack. The facts have not moved, so nothing needs rebuilding. The child starts with new blanks and the pack they already know.
 
 Prices, hours and rules will have moved, though, so anything the old plan relied on gets checked again before anyone books.
-
-## Before anything gets filled in
-
-Read [privacy and safety](docs/privacy_and_safety.md) once. It is short, and it is the single home for what never gets written down on a working page.
-
-The one reminder worth carrying from it now: a Google Docs folder is not a private vault. Passport numbers, birthdates, confirmation numbers, home address, payment details and exact booked dates stay off it, exactly as they stay off paper.
