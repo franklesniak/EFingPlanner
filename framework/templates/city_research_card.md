@@ -20,6 +20,8 @@ Use one card per city or region. It keeps each place's facts together so you can
 | Sources (also in my Source Log) | |
 | Date checked | |
 | Planning assumption (something I'm assuming a grown-up should check) | |
+| Why I'm using this assumption | |
+| What could change it? | |
 | Needs adult verification? (yes / no) | |
 | Final decision status (researching / shortlist / skip / save for future) | |
 

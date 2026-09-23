@@ -6,11 +6,15 @@ This roadmap shows the paths through the project and where the honest stopping p
 
 For the child this project is designed for, **finishing First Taste is the expected, complete outcome** -- not a lesser starter. Continuing to the Core Finish Line or the full program is a genuine bonus, and nothing done in First Taste is ever redone.
 
-> **What is built right now:** this repository holds the complete **Phases 0-2** slice -- Session 00 through Checkpoint 1 -- plus its support files. The **First Taste** path below overlaps that slice rather than sitting inside it: its first eight numbered steps are sessions in Phases 0-2, and its last five -- Sessions 15, 21, 33, 44 and 53 -- are already-built sessions in later phases. The Core Finish Line and the full program are documented here but are built later. Those later batches begin once the Batch 0 gate has cleared -- either the child pilot passes, or the no-child fallback is recorded in writing. Those later batches also wait on the two built-slice checks this batch opened: an adult reads the converted pages against the Batch 0 originals, and an adult watches a child work the new sessions. Both are recorded as open in the framework changelog, and neither has been done.
+> **What is built right now** lives in the [curriculum changelog](CHANGELOG.md), which is the version history of these materials and the one file that changes every time something ships. This page describes the whole programme; the changelog says how much of it exists today.
+>
+> The Batch 0 gate **cleared** on the recorded no-child fallback, which is one of its two routes. What is still open is the thing that fallback stands in for: **no child has piloted this design.** The flag saying so is carried in [time and effort](parent_guide/time_and_effort.md), and it stays until a real pilot happens.
+>
+> Batch 1 opened two more checks on the Phases 0-2 slice: an adult reads the converted pages against the Batch 0 originals, and an adult watches a child work the new sessions. Both are recorded as open in the changelog, and neither has been done yet.
 
 ## Full Phases 0-2 path
 
-Every session this repository holds for Phases 0-2, in numbered order. The First Taste path below is a shorter route through the same slice, and the markers say which sessions it skips.
+Every session in Phases 0-2, in numbered order. The First Taste path below overlaps this list: its first eight numbered steps are sessions here, and the markers say which sessions it skips. Its last five -- Sessions 15, 21, 33, 44 and 53 -- are in later phases.
 
 - [00 Parent Setup](sessions/phase_00_setup/00_parent_setup.md) *(adult-owned)*
 - [01 Project Kickoff](sessions/phase_00_setup/01_project_kickoff.md)
