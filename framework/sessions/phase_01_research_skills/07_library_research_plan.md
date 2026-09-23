@@ -18,7 +18,7 @@ Build a short list of books worth borrowing, or a plan for one library trip.
 
 ## Start Here
 
-Open your [Library Book List](../../templates/library_book_list.md) and write one book you already wonder about in the first row. You've started.
+Open your [Library Book List](../../templates/library_book_list.md) and write your destination's name at the top. You've started.
 
 ## Steps
 
