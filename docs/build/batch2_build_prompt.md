@@ -76,9 +76,9 @@ way the precedence rule does.
 
 **The binder is where that third rule earns its keep.** The spec labels its binder contents
 "the 27", and two separate rulings in this batch make that number wrong -- one item is
-dropped as cancelled, and the tab mapping carries two entries the item list does not. So
+dropped as cancelled, and the tab mapping carries entries the item list does not. So
 **neither surface prints a total.** Section 9.5 states the rule that decides membership
-instead, and says in one line why the mapping holds two things the list does not. The one
+instead, and says in one line why the mapping holds things the list does not. The one
 count this batch does print is the Core Finish Line index's "about forty sessions"
 (section 9.6), which is load-bearing honesty rather than arithmetic: a tired parent must
 not read the name and expect a short project.
@@ -130,10 +130,14 @@ authored destination-concrete "for now."
 
 **Plus edits to already-built files**, which are deliverables too and are easy to forget
 because they create nothing: Session 15's conversion, the navigation re-point on Sessions
-15, 21, 33, 44 and 53, **path-aware content edits to Sessions 33, 44 and 53 (section
-4.1a)**, the insert/reference contract, the kit README,
+15, 21, 33, 44 and 53, **path-aware content edits to Sessions 14, 15, 21, 33, 44 and 53
+(section 4.1a)**, the insert/reference contract, the kit README,
 **`framework/templates/city_research_card.md`** (a two-row addition, see A6),
-**the Batch 1 neutrality riders listed in section 11**, and `framework/CHANGELOG.md`.
+**`framework/student_guide/progress_tracker.md`** (its Core/Full view, see F2), **the root
+`README.md`** (its build-state wording, see F1), **the existing
+`framework/parent_guide/session_support_notes.md` entries for the sessions this batch
+changes** (see section 10), **the Batch 1 neutrality riders listed in section 11**, and
+`framework/CHANGELOG.md`.
 
 **The 53 is the non-session count**, which is the number the spec's own grouping produces.
 The sessions are counted separately because they are authored in waves and reviewed as
@@ -435,7 +439,9 @@ this batch**, so you do not choose them per session and the session strip and
 - **Estimated time**: 20-30 minutes by default; synthesis and assembly sessions may be
   longer or multi-part.
 - **Parent involvement**, exactly one of: none / independent work, 5-minute check-in,
-  parent review after session, parent setup needed, co-working recommended, adult-owned.
+  parent review after session, parent setup needed, co-working recommended, adult-owned --
+  **or, for the six checkpoint sessions only, `parent review -- genuinely use the recommendation in a real family talk`**,
+  the value built Session 14 carries.
 - **Status**: the spec's vocabulary is Core / Recommended / Optional. **The built repo
   adds a fourth label, `Conditional core`, and the built repo wins.** Session 09 is the
   model: `Conditional core -- done **only if** your family opted into AI at setup (Session
@@ -607,10 +613,12 @@ checked**. That is the same verify-framing the rest of the curriculum uses, and 
 only form that keeps the page both printable and true.
 
 **Addition 2 -- the contract routes parent-facing files for the first time.**
-`adult_only_logistics.md`, `safety_emergency_guidance.md` and `money_budget_guidance.md`
-are each specified with destination-specific content, and each stays neutral. Their
-place-specific items route to the pack by generic name, and the contract gains a row for
-each so the routing is honest under `AC-29-1` rather than merely implied. (`D-X-2`.)
+`adult_only_logistics.md`, `safety_emergency_guidance.md`, `money_budget_guidance.md` and
+`flights_from_origin_guidance.md` are each specified with destination-specific content, and
+each stays neutral. Their place-specific items route to the pack by generic name, and the
+contract gains a row for each so the routing is honest under `AC-29-1` rather than merely
+implied. **The flight guide's row targets `airports_and_arrival_basics.md`**, the pack's
+airport basics file that B3 names. (`D-X-2`.)
 
 Write the note above the rows in the builder's voice, not the family's -- the contract is
 a builder-facing file.
@@ -662,9 +670,11 @@ open.
 re-point. That was wrong for three of them.** Sessions 33, 44 and 53 were authored for the
 First Taste path, and a Core/Full child now arrives at each of them through the numbered
 chain this batch builds. Re-pointing an arrow at a page whose text contradicts where the
-child actually is does not make the chain work.
+child actually is does not make the chain work. **Three earlier built sessions, 14, 15 and
+21, also need a Core-path addition**, because the Core evidence floor and the Core city set
+depend on them.
 
-**All three are added to the authorized edit scope.** Each edit is conditional or additive:
+**All six are added to the authorized edit scope.** Each edit is conditional or additive:
 **nothing a First Taste child reads today may change meaning for them.**
 
 #### Session 33 — the adult flight placeholder Session 39 depends on
@@ -712,8 +722,35 @@ Make the page path-aware on four points:
 | Parent Notes mandate the duration-neutral acknowledgment | **The duration-true, months-long form** for Core/Full; the duration-neutral form stays for First Taste |
 
 **Neither wording may be deleted.** Both paths end here, so the page carries both and says
-which is which. **This is the only built session in the batch whose Parent Notes change**,
-and the change is to add a branch, not to replace the existing instruction.
+which is which. **Sessions 33 and 53 are the only built sessions in the batch whose Parent
+Notes change**; Session 33 gains the fare instruction above, and here the change adds a
+branch and keeps the existing instruction. The Session 14, 15 and 21 additions
+below change no Parent Notes.
+
+#### Session 14 — the season trade-off report on the Core path
+
+The Core/Full evidence floor needs three trade-off reports, and the first is a season or
+travel-window trade-off. Built Checkpoint 1 already has the child choose a best season and a
+backup. **On the Core path, add one step: fill one Trade-Off Report comparing that best
+season and that backup**, reusing the reasons already written. It is the first of the three
+the template names. **A First Taste child's page is unchanged**; First Taste is not measured
+against the floor.
+
+#### Session 15 — cards toward the Core floor
+
+The floor needs at least five city or region cards, and Session 15 makes two. The spec's rule
+is "at 15, add city cards toward the Core floor (their two cards count)". **On the Core path,
+say that these two cards are the first of at least five**, and that Sessions 18 and 19 add the
+rest. This rides on the Session 15 conversion in 4.1b; it adds one Core-path line and changes
+nothing a First Taste child reads.
+
+#### Session 21 — compare the Core long-list
+
+Built Session 21 compares "your two City Research Cards". A Core/Full child arrives from
+Session 20 with a long-list of five to eight places. The spec's rule is "at 21, extend their
+comparison to the fuller long-list candidates". **On the Core path, extend the score table to
+the long-list candidates the child wants to keep in the running**, and say that the two
+cities already scored count. **The two-city First Taste steps stay word for word.**
 
 ### 4.1b Converting Session 15, the one built session that still leaks
 
@@ -883,8 +920,9 @@ Five checkpoints land in this batch. Every one of them includes:
 - **Do not let a checkpoint delay stall the child.** Point at the "what to do while you
   wait for an adult checkpoint" note on the
   `[When I'm Stuck card](../../student_guide/when_im_stuck.md)`. The outlets are: do an
-  Optional Extension, add to the question parking lot, grow the "things I can't wait to
-  see" page, or start the next independent session. **Do not add a "waiting" tracker.**
+  Optional Extension, add to the question parking lot, or grow the "things I can't wait to
+  see" page. **The next session waits until the review is done**, as the built card says.
+  **Do not add a "waiting" tracker.**
 
 **What each checkpoint's "progress is real" line names:**
 
@@ -1190,8 +1228,10 @@ child's own discovered option.
 - **Workspace:** at least two more City Research Cards, plus the Source Log.
 - **Artifact:** at least two additional city or region cards.
 - **Stop Point:** you are done when two more places have cards with a reason to go, one
-  memorable fact, and a source. The floor is **at least two alternatives** beyond the
-  City A / B / C deep-dives.
+  memorable fact, and a source, **and you have at least five city or region cards in
+  total** -- Session 15's two count, and so does a City C card. If you are short, add one
+  more alternative. The floor is **at least two alternatives** beyond the City A / B / C
+  deep-dives.
 - **Source Check:** required.
 
 ### Session 20: City Long-List
@@ -1253,10 +1293,11 @@ Starter ideas come from the Destination Notes **as options to research, not choi
 already made.**
 
 - **Artifact:** attraction cards.
-- **Stop Point:** you are done when you have at least two cards with a reason, a rough
-  time needed, one downside, and a source each. More cards can wait for another sitting.
-  **The Core floor is 10 attraction cards across the whole project, not in one sitting**,
-  and the minimum is success rather than a target to maximise.
+- **Stop Point:** you are done **for today** when you have at least two cards with a
+  reason, a rough time needed, one downside, and a source each. More cards can wait for
+  another sitting. **The attraction set is complete at 10 cards, across as many sittings as
+  it takes** -- that is the Core floor, and reaching it is success. Come back to this session
+  until you reach it, before Session 26 ranks them.
 - **Source Check: required, and this is the first designated predict-then-verify
   session.** The one-line ticket-price guess goes **on the source line of the card**, then
   the child checks the official site and notices the gap. Ungraded.
@@ -1317,9 +1358,11 @@ the timer and an adult nearby. **State plainly that this complements and does no
 the source-trust lesson**, and **do not write a per-platform setup guide.**
 
 - **Artifact:** a Review trust worksheet, as a Markdown table.
-- **Stop Point:** you are done when you have judged at least one review or video on the
-  worksheet, written who made it and what they might be selling, and named one thing you
-  will check somewhere else. Sitting two can be another day.
+- **Stop Point:** you are done **for today** when you have judged at least one review or
+  video on the worksheet, written who made it and what they might be selling, and named
+  one thing you will check somewhere else. Sitting two can be another day. **The session is
+  done when sitting two's worksheet rows are filled in as well** -- both sittings are
+  required.
 - **Source Check:** required, and it carries the **video citation form**.
 - **Named platforms are permitted** -- map, review and hotel-review services are tool
   names, not destination facts.
@@ -1445,7 +1488,9 @@ for genuinely preformatted content such as a single worked formula, and inline u
 blanks are allowed inside a worked-formula table cell.
 
 Then a plain **floor and ceiling check**: "Are there too few real days to be worth the
-long flight?" and "Is the total within your family's maximum trip length?"
+long flight?" and "Is the total within your family's maximum trip length?" **When the
+family's dates are already booked, the booked trip length is the ceiling**; the check is
+then whether the nights fit inside it.
 
 **What the session teaches:** arrival day is not a full sightseeing day; departure day is
 not a full sightseeing day; **jet lag matters**, made vivid using the **hours-ahead figure
@@ -1618,6 +1663,9 @@ Compare a few places to stay and say which neighbourhood fits the plan best.
 - **Stop Point:** you are done when your neighborhood comparison has at least two options
   filled in and you've circled the one you'd recommend, with one sentence saying why. One
   clear recommendation with a reason is enough; you do not need every cell filled.
+- **The third trade-off report.** The floor's third report is about pacing, where you stay,
+  or the budget. Write it here, on a fresh Trade-Off Report, **or** at Session 43 -- on
+  whichever of the two calls was harder. Write it once, at one of them.
 - **Source Check:** required. For each neighbourhood looked at, record what was learned,
   the site or book title, who made it, the link or page, and the date checked -- as new
   entries in the same Source Log started in Session 04.
@@ -1972,6 +2020,10 @@ All the spec's named examples live in the insert.
 - **Connect it to dates staying open.** The longer the family's dates stay open, the more
   of these become unbookable. **The fix is awareness, not forcing dates.** Say that
   plainly; it is the whole point of the session's placement.
+- **When the dates are already set, the list turns around.** Plenty of families start
+  after booking. Then every date-gated item is bookable now, so the watchlist becomes an
+  **act-early list**: the adults book those items first. Say this in one short paragraph;
+  the spec supports this "dates already fixed" start fully.
 - **Verify-framed categories, never memorized values.** Reservation systems, transit-card
   options, entry authorization and travel taxes all move. Re-check on an official source;
   never rely on a remembered figure.
@@ -2063,9 +2115,12 @@ Keep it warm and brief. Adults still own medication and any real medical decisio
 - **Workspace:** a short check-and-flag table -- one row per check, a yes/no, and a note --
   plus a small "flags for the adults" list.
 - **Artifact:** your pacing review.
-- **Stop Point:** you are done when you've gone through the checks once, marked at least
-  one day you'd make gentler, and written your list of flags for the adults. **Finding even
-  one thing to fix is a finished review.**
+- **Stop Point:** you are done when you've gone through the checks once, and either marked
+  at least one day you'd make gentler or written that every day passed the checks, and
+  you've written your list of flags for the adults. **Finding even one thing to fix is a
+  finished review, and so is a plan that passes every check.**
+- **The third trade-off report**, if you did not write it at Session 34: pacing is one of
+  its three subjects, so it can go here, on a fresh Trade-Off Report.
 - **Source Check:** required, light.
 
 **Do not:** name a relative; state hours of time difference; state a step count as a fact;
@@ -2289,7 +2344,9 @@ register.
 **1. The child makes an "if I get separated" card to carry.** It holds the **name, address
 and phone number of where you're staying** -- an adult writes a line in the local language
 so the child can show it to anyone -- a **parent's phone number**, and **two emergency
-phrases from the pack**: one meaning "please help" and one meaning "I'm lost, I got
+phrases from the pack**. **The lodging lines stay blank for an adult to fill in after
+booking.** Adults book after the Session 52 handoff, so at this session there is often no
+booked place yet, and a safety card must never carry a guess. The phrases themselves are: one meaning "please help" and one meaning "I'm lost, I got
 separated from my family", which is the phrase local speakers instantly recognize for
 exactly this situation. The adult who writes the local-language line confirms the current
 wording.
@@ -2326,14 +2383,16 @@ the page both printable and true. (`D-item-5`.)
 rehearsed plan *lowers* a child's anxiety by turning a vague fear into a known script. Put
 this instruction in `## Parent Notes`.
 
-- **Start Here, self-generated.** Suggestion: write the name of where you're staying at the
-  top of a blank card.
+- **Start Here, self-generated.** Suggestion: write "If I get separated" at the top of a
+  blank card.
 - **Workspace:** the readiness checklist as a checkbox list with a "who does this" column
   (you / ask adults), plus the card's own small table.
 - **Stop Point:** you are done when every line on your readiness checklist is either
-  checked or marked "ask adults to confirm", and your card is made and in your pocket.
-  You've also said the three-part plan out loud once with a grown-up. That's the whole
-  thing.
+  checked or marked "ask adults to confirm", and your card is made, with its lodging lines
+  marked for a grown-up to fill in after booking. You've also said the three-part plan out
+  loud once with a grown-up. That's the whole thing. The readiness checklist carries one
+  more adult line: **"Ask adults to fill in and check the card's lodging lines after
+  booking."**
 - **Source Check:** the conditional line **plus** the verify reminder: any emergency number
   or local rule the child writes on their card gets confirmed by an adult on a current
   official page, with the date noted.
@@ -2529,9 +2588,11 @@ reservation needed?; Best time of day?; Nearby places; Possible downside; Review
 Official website needed?; Source; Date checked; Planning assumption; **Why I am using this assumption**; **What could change it?**; Needs adult verification? (yes / no); Final decision status (researching / must-do /
 strong maybe / only if nearby / skip or save for future).
 
-**The predict-then-verify row is mandatory and lives on the source line.** Add a prompt row
-worded to keep it there -- for example `My guess before I looked it up`. Frame it ungraded:
-*"being off is normal."* **Add no new tracker.**
+**The predict-then-verify row is mandatory and lives on the source line.** It is two rows,
+with these exact labels, which the built template carries: `My guess at the ticket price,
+before I looked it up` and `What I found when I checked (prices change, so write the date)`.
+"The ticket-price row" below means these two. Frame the guess ungraded: *"being off is
+normal."* **Add no new tracker.**
 
 **The decision-status vocabulary must match Session 26's output categories exactly.**
 
@@ -2616,7 +2677,9 @@ restating it.
 
 The project's core reasoning artifact. **At least three are required** for the Core/Full
 evidence floor: a season or travel-window trade-off, a city or route trade-off, and an
-itinerary-pacing, hotel-location, or budget trade-off.
+itinerary-pacing, hotel-location, or budget trade-off. **Each has a sitting:** the season
+report at Checkpoint 1 (Session 14's Core-path step, section 4.1a), the route report at
+Session 31, and the third at Session 34 or Session 43, on whichever call was harder.
 
 **Primary form: a pre-structured comparison table with the columns already drawn and one
 worked example row filled in**, so the child plugs in their options rather than inventing a
@@ -3114,8 +3177,14 @@ the gate twice: once in this brief, and again in every entry copied from it.
 
 **Add one entry per session this batch authors**, so every session has one: 16, 17, 18, 19,
 20, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 45,
-46, 47, 48, 49, 50, 51, 52. **Sessions 15, 21, 33, 44 and 53 already have entries and must
-not be rewritten.**
+46, 47, 48, 49, 50, 51, 52. **Sessions 15, 21, 33, 44 and 53 already have entries. Do not
+rewrite them; update only what this batch changes in each session**, and keep each First
+Taste instruction as a branch. Three updates are known: Session 15's prep line (the major
+cities reference is gone after 4.1b; the child now chooses from their Session 11 notes),
+Session 44's pick line (on the Core path the child confirms the pick Session 26 already
+chose), and Session 53's acknowledgment line (duration-true for Core/Full,
+duration-neutral for First Taste). Check Sessions 21 and 33 against their 4.1a edits the
+same way.
 
 **Parent-gated versus independent must be visible.** Only these are parent-gated: **Session
 00**, the six checkpoints (**14, 22, 27, 32, 46, 52**), and the co-research source-judging
@@ -3127,7 +3196,10 @@ requirements keep video research with an adult, keep the kid-safe filter on, and
 `Parent involvement: co-working recommended`. A support-notes entry that files it under
 "everything else is independent" would tell a parent to step away at exactly the session
 whose online-safety guardrail requires them to stay. **Write Session 25's Role line as
-co-worked.** Every session not named in this paragraph is independent.
+co-worked.** **Session 49 is co-worked for the same kind of reason**: a grown-up rehearses
+the separation plan with the child, and its central-table value is `co-working
+recommended`. Write its Role line as co-worked too. Every session not named in this
+paragraph is independent.
 
 **Status labels to carry:** 18, 36, 37 and 47 are **`Conditional core`** and
 **auto-promote to Core later** if the need appears -- **the parent is never asked to
@@ -3574,7 +3646,8 @@ Defines "done". Audience: the family, mostly the adult, with the child able to r
    undecided, capped at about four or five total; day cards, with the **block card per
    city-stay the strong default**; **at least one food or restaurant note per major
    overnight city, only if the family does the food sessions**; **at least three trade-off
-   reports**; source log entries for major recommendations; an adult follow-up list.
+   reports**, written at Sessions 14, 31 and 34 or 43 (see A5); source log entries for major
+   recommendations; an adult follow-up list.
 7. **Scope note, mandatory.** These counts are the **Core Finish Line and Full** floor. **The
    First Taste path is deliberately thinner and is not measured against them.** A
    First-Taste plan is complete with one or two cities, a few days, a rough budget band, a
@@ -3616,10 +3689,11 @@ dropped -- each is required somewhere else in the design -- and **the list is no
 to absorb them.** (`D-X-7`.)
 
 **Print no total on either surface.** The spec labels its list "the 27" and that number is
-now wrong twice over -- once from the cancelled item, once from the two tab-only entries. A
+now wrong twice over -- once from the cancelled item, once from the tab-only entries. A
 count stated on two surfaces is a count that goes stale on one of them. **Name the rule
 instead:** this page holds the item list, `print_index.md` holds the organization, and the
-mapping carries two items the list does not, for the reason stated there.
+mapping also files the family's setup input, the adult's review forms and the summaries
+assembled from the rest, for the reason stated there.
 
 #### E2 — `framework/print_index.md`
 
@@ -3653,8 +3727,10 @@ Two jobs: the print order, and the **single canonical binder-tab scheme with its
    a competing organizing scheme anywhere.**
 
 **One sentence must appear beside the mapping**, so a reader who counts does not file a
-defect: the mapping carries the Trip-Basics card and the "My Calls" page, which the item
-list does not, because both are required in the binder by other parts of the design.
+defect: the mapping carries five entries the item list does not -- the Trip-Basics card,
+the kept Phase 1 research-skill artifacts, the "My Calls" page, the parent review forms,
+and the final recommendation summary -- because each is required in the binder by another
+part of the design. That sentence names the rule and prints no count.
 
 ---
 
@@ -3679,6 +3755,13 @@ index**, not a forward reference.
 **What it is:** the **ordered list of existing Core sessions** needed to reach the mini-plan
 at Checkpoint 5. **It introduces no new sessions; it is a reading order.** It sits at the
 front of the project, in this file, and is referenced from the root README.
+
+**The root README changes with it.** Its index heading says "(what is built now)" and its
+status paragraph says the repository holds only the First Taste slice; both become false
+when this batch ships. Retitle the index without "what is built now", replace the status
+sentence with a pointer to this roadmap and `framework/CHANGELOG.md`, and link the Core
+Finish Line index. **The README states no build inventory of its own** -- that is
+`D-X-13`'s rule, applied to the front door.
 
 **Mandatory honesty line, in substance:** *"This is the shortest route to a usable plan, but
 it is still most of the Core work -- about forty sessions to reach Checkpoint 5. What you
@@ -3756,6 +3839,12 @@ link and log the deferred link.
 at the top of the student progress tracker, **as a fill-in line**:
 `Checkpoints reached: ____ of 6`.
 
+**The tracker's Core/Full view.** `framework/student_guide/progress_tracker.md` is
+First-Taste-only today. Add a Core/Full section: the checkpoints line first, then the Core
+sessions grouped by phase, as check-off lines in the same form as the First Taste list.
+**Keep the First Taste section as it is**, including its own count, because a First Taste
+child still uses it.
+
 **Why this one and not a percentage** -- say it in one line: it stays accurate even when
 sessions are skipped or the Core Finish Line is taken, and the six checkpoints map to the
 six real decisions the family makes. Phase-level progress is secondary detail beneath it.
@@ -3809,17 +3898,17 @@ from this table. (`D-item-7`.)
 | 18 | organizing information | 20-30 minutes | none / independent work | Conditional core |
 | 19 | checking sources | 20-30 minutes | none / independent work | Core |
 | 20 | organizing information | 20-30 minutes | none / independent work | Core |
-| 22 | making trade-offs | 20-30 minutes for you, plus a 20-40 minute review with an adult | parent review after session | Core -- **Checkpoint 2** |
+| 22 | making trade-offs | 20-30 minutes for you, plus a 20-40 minute review with an adult | parent review -- genuinely use the recommendation in a real family talk | Core -- **Checkpoint 2** |
 | 23 | checking sources | 20-30 minutes (can be several sittings) | none / independent work | Core |
 | 24 | organizing information | 20-30 minutes | none / independent work | Core |
 | 25 | checking sources | 20-30 minutes (one sitting); the second sitting can be its own | co-working recommended | Core |
 | 26 | ranking priorities | 20-30 minutes | none / independent work | Core |
-| 27 | making trade-offs | 20-30 minutes for you, plus a 20-40 minute review with an adult | parent review after session | Core -- **Checkpoint 3** |
+| 27 | making trade-offs | 20-30 minutes for you, plus a 20-40 minute review with an adult | parent review -- genuinely use the recommendation in a real family talk | Core -- **Checkpoint 3** |
 | 28 | planning realistic time | 20-30 minutes | 5-minute check-in | Core |
 | 29 | planning realistic time | 20-30 minutes | none / independent work | Core |
 | 30 | checking sources | 20-30 minutes | none / independent work | Core |
 | 31 | making trade-offs | 20-30 minutes | parent review after session | Core |
-| 32 | making trade-offs | 20-30 minutes for you, plus a 20-40 minute review with an adult | parent review after session | Core -- **Checkpoint 4** |
+| 32 | making trade-offs | 20-30 minutes for you, plus a 20-40 minute review with an adult | parent review -- genuinely use the recommendation in a real family talk | Core -- **Checkpoint 4** |
 | 34 | comparing choices | 20-30 minutes | none / independent work | Core |
 | 35 | comparing choices | 20-30 minutes per sitting, several sittings | none / independent work | Core |
 | 36 | organizing information | 20-30 minutes | none / independent work | Conditional core |
@@ -3831,13 +3920,13 @@ from this table. (`D-item-7`.)
 | 42 | organizing information | 20-30 minutes | none / independent work | Core |
 | 43 | planning realistic time | 20-30 minutes | parent review after session | Core |
 | 45 | organizing information | several sittings; stop whenever you want | none / independent work | Core |
-| 46 | making trade-offs | 20-30 minutes for you, plus a 20-40 minute review with an adult | parent review after session | Core -- **Checkpoint 5** |
+| 46 | making trade-offs | 20-30 minutes for you, plus a 20-40 minute review with an adult | parent review -- genuinely use the recommendation in a real family talk | Core -- **Checkpoint 5** |
 | 47 | organizing information | 20-30 minutes | 5-minute check-in | Conditional core |
 | 48 | organizing information | 20-30 minutes | parent review after session | Core |
 | 49 | self-control (knowing when to stop) | 20-30 minutes | co-working recommended | Core |
 | 50 | organizing information | several sittings; stop whenever you want | 5-minute check-in | Core |
 | 51 | organizing information | 20-30 minutes | 5-minute check-in | Core |
-| 52 | making trade-offs | 20-30 minutes for you, plus the family decision meeting | parent review after session | Core -- **Checkpoint 6** |
+| 52 | making trade-offs | 20-30 minutes for you, plus the family decision meeting | parent review -- genuinely use the recommendation in a real family talk | Core -- **Checkpoint 6** |
 
 **Session 25's estimate follows a built precedent, and the pattern generalises.** Session
 15 writes `20-30 minutes (one card); a second card can be its own sitting` -- the shape is
@@ -3946,8 +4035,10 @@ is incomplete and removing the rider would make the docs wrong in the other dire
 
 ## Definition of done for THIS run
 
-- **Every file this brief names exists**, is meaningful -- no thin or placeholder files --
-  and is lint-clean, and **every relative link resolves.**
+- **Every deliverable in the table at the top of this brief, and every listed edit to an
+  already-built file, exists**, is meaningful -- no thin or placeholder files -- and is
+  lint-clean, and **every relative link resolves.** **Files named in the scope boundary
+  stay absent in this batch**; their absence is the expected state.
 - **Read the density caps and their counting rules from
   `framework/docs/build_style_and_vocab.md`, not from this brief**, and check every new
   child-facing file against them. This brief names which rules bite; the style law is where
