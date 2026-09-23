@@ -55,13 +55,17 @@ Each has its own **what to consider** list. The review form checks whether the w
 
 ### Checkpoint 1 — Season Recommendation (Session 14)
 
-**What they bring:** a season, a backup season, a season to be careful about, possible months, their reasons, their sources, and their questions for you. Those often include whether it fits school and work.
+**What they bring:** with open dates, a season, a backup season, a season to be careful about, possible months, their reasons, their sources, and their questions for you. Those often include whether it fits school and work.
 
 **Weighing the calendars is yours, not theirs.** Session 14 has them ask the question; you answer it.
 
 **What to consider:** weather; crowds; cost; major holidays; and how the season fits school and work schedules.
 
-**Progress is real:** the family now knows roughly *when*.
+**With the dates already booked,** Checkpoint 1 is a confirmation. They bring what the chosen season means for the trip and whether it fits, and they recommend no season, so there is no pick to adjust.
+
+**On the Core path,** they also bring their first Trade-Off Report: their best season against the backup or, with the dates booked, two ways to plan around the season's biggest challenge.
+
+**Progress is real:** the family now knows roughly *when*. With the dates booked, it now knows what its season means for the trip, and which challenge to plan around.
 
 ### Checkpoint 2 — City Shortlist (Session 22)
 
@@ -69,7 +73,7 @@ Each has its own **what to consider** list. The review form checks whether the w
 
 **Also yours to do here:** if you left the rough trip shape partly open at setup, firm it up now, including the exit city. The Phase 5 route work builds on it.
 
-**What to consider:** whether the travel scope is workable; how it fits your maximum trip length; **whether the other travellers appear in it at all**, which is what the poll connection is there to show; budget implications; safety and common sense; and anything it implies for international flights.
+**What to consider:** whether the travel scope is workable; how it fits your maximum trip length, or your booked trip length; **whether the other travellers appear in it at all**, which is what the poll connection is there to show; budget implications; safety and common sense; and anything it implies for international flights.
 
 **Progress is real:** the family now knows roughly *where*.
 
@@ -85,13 +89,15 @@ Each has its own **what to consider** list. The review form checks whether the w
 
 ### Checkpoint 4 — Route and Trip Length (Session 32)
 
-**What they bring:** total days, overnight cities, nights in each, travel days, a shorter backup version.
+**What they bring:** with open dates, total days, overnight cities, nights in each, travel days, and a shorter backup version.
 
 **Also yours to do here:** confirm or adjust the arrival and departure cities against current flight options. If they change, your child's route flexes. They move one block and keep the rest.
 
-**What to consider:** flights; the arrival and departure cities; how many hotel moves it involves; whether the transit is workable; how it fits your maximum trip length; budget implications; and the family schedule.
+**What to consider:** flights; the arrival and departure cities; how many hotel moves it involves; whether the transit is workable; how it fits your maximum trip length, or your booked trip length; budget implications; and the family schedule.
 
-**Progress is real:** the family now knows *when, where, and how long*. The trip is becoming concrete.
+**With the dates already booked,** the trip length is set. They bring how the booked days are split: the cities, the nights in each and the travel days, with no shorter backup version.
+
+**Progress is real:** the family now knows *when, where, and how long*. The trip is becoming concrete. With the dates booked, it now knows *where*, and how the booked days are split.
 
 ### Checkpoint 5 — Itinerary Review (Session 46)
 
