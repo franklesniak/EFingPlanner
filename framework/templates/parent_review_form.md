@@ -24,6 +24,8 @@ You don't have to be the expert. Your job is to model the process, not to know t
 
 Good enough means an adult could act on it. It doesn't mean finished, polished, or right.
 
+Some standards won't fit every checkpoint. Write "not needed here" beside those. When your dates are already booked, Checkpoint 1 is a confirmation, so read "recommend" as "explain": can they say what the chosen season means for the trip, and whether it fits?
+
 | Standard | Met / not yet | Note |
 | --- | --- | --- |
 | Sources — used reasonable sources and recorded them | | |

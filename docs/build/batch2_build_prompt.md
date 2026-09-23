@@ -832,8 +832,8 @@ checkpoint.
   and recommends no season. This page is the **season confirmation**: it goes on the same
   Decision Record page and is the first decision-log entry. On that page the child writes the
   booked season as the decision and skips the three option rows and My recommendation, as
-  the template's own note says. My reasons holds what the season means for the trip, and the
-  final family decision is the confirmed fit. On the Core path, the season
+  the template's booked-dates lines say. My reasons holds what the season means for the
+  trip, and the final family decision is the confirmed fit. On the Core path, the season
   report takes its booked-dates form above. Its Parent Notes gain one line: with the dates
   booked, the recommendation named above is the season confirmation, which the family talk
   uses to confirm the fit, with no pick to adjust.
@@ -841,12 +841,12 @@ checkpoint.
 No child is asked to recommend dates the family cannot change. **With the dates booked, the
 season confirmation fills every place this brief asks for the season recommendation:** the
 decision log's first entry (9.4.1), the kit's season shell (9.4.3), B1's Checkpoint 1
-section, B6's list of what exists early, binder tab 3 (Session 50, copied by E2), the
-presentation outline (Session 51 and A12), E1's binder list and evidence floor, Session 15's
-season-fit step, the README and roadmap lines in F1 and F, and Session 53's handoff. Each
-of those sections says so in place. The built Decision Record tip and the try-then-commit
-line in `time_and_effort.md` are worded for both paths, and the City Research Card's own row
-already reads "our Checkpoint 1 season".
+section, A11's review form, B6's list of what exists early, binder tab 3 (Session 50, copied
+by E2), the presentation outline (Session 51 and A12), E1's binder list and evidence floor,
+Session 15's season-fit step, the README and roadmap lines in F1 and F, and Session 53's
+handoff. Each of those sections says so in place. The built Decision Record tip and the
+try-then-commit line in `time_and_effort.md` are worded for both paths, and the City Research
+Card's own row already reads "our Checkpoint 1 season".
 
 #### Session 15 — cards toward the Core floor
 
@@ -3018,7 +3018,10 @@ qualify once.
    for travel time, meals, rest and energy); Safety boundaries (adult-owned items
    identified, not handled by the child); Budget awareness (costs estimated, unknowns
    marked); Flexibility (includes backup ideas or cut options); Clarity (adults can
-   understand the recommendation).
+   understand the recommendation). Under the grid, say that a standard which does not fit the
+   checkpoint is marked "not needed here", and that at Checkpoint 1 with the dates booked,
+   "recommend" reads as "explain what the chosen season means for the trip and whether it
+   fits".
 4. **Coaching questions to ask:** What source helped you most, and why? What would we lose
    if we chose this option? What would make this day tiring? What needs adult
    verification? If we had to shorten the trip, what would you cut first? Is this fact from
@@ -4094,13 +4097,14 @@ Optional line is done only if the family chooses it, as a Full family does.
 **Each First Taste session whose Core version asks for new work gets its own extension line,
 directly after that session:** Session 14's season report, Session 21's long-list
 comparison, Session 33's reminder that the grown-up has their own fare ready and, when a
-traveler comes for only part of the trip, the headcount note, Session 44's cut list with the Checkpoint 2 and 3 notes, and
-Session 53's capstone re-run (see 4.1a). **Label each extension line as for a
-family that finished First Taste first**, so a child who started on the Core path ticks it
-along with its session. A family continuing from First Taste ticks the sessions it already
-finished, then reads the rest the same way: it works the unticked Core lines and extension
-lines in numbered order, plus each conditional line whose condition holds and each
-Recommended or Optional line it chooses. It reaches each extension at its session's place.
+traveler comes for only part of the trip, the headcount note, Session 44's cut list with the
+Checkpoint 2 and 3 notes and its one-line pick check, and Session 53's capstone re-run
+(see 4.1a). **Label each extension line as for a family that finished First Taste first**,
+so a child who started on the Core path ticks it along with its session. A family
+continuing from First Taste ticks the sessions it already finished, then reads the rest the
+same way: it works the unticked Core lines and extension lines in numbered order, plus each
+conditional line whose condition holds and each Recommended or Optional line it chooses. It
+reaches each extension at its session's place.
 **Mark each line whose session is parent-gated or co-worked, or has a grown-up step**,
 in the same form as the First Taste list's markers, taking which sessions those are from
 B7's rule, so the membership lives in one place. A 5-minute check-in or a parent review
@@ -4369,7 +4373,10 @@ is incomplete and removing the rider would make the docs wrong in the other dire
   should not have started. Running a test is not editing one -- the rule against touching
   `tests/*` forbids changing it, not executing it. **If a kit copy legitimately needs to
   change, the template changes and the copy follows**; a Batch 2 author never edits the test
-  to accommodate a divergence.
+  to accommodate a divergence. **The one kit file this does not cover is
+  `outputs/final_reflection.md`**, which 9.4.4 makes the capstone form rather than a copy; the
+  test's map lists only the three `family/` blanks, so it neither checks that shell nor needs
+  an exemption for it.
 - **Write the changelog entry**, including every departure listed in section 11. A batch that
   built correctly and recorded nothing has left the next author to re-derive all of it.
 
