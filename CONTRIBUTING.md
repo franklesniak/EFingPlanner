@@ -222,7 +222,7 @@ See [`schemas/README.md`](schemas/README.md) for schema conventions and the cano
 This repository includes retained GitHub Actions workflows that run automatically:
 
 - **Pre-commit CI** (`.github/workflows/precommit-ci.yml`) - Runs the aggregate `pre-commit run --all-files` gate over every hook in `.pre-commit-config.yaml`.
-- **Auto-fix Pre-commit** (`.github/workflows/auto-fix-precommit.yml`) - Automatically commits pre-commit auto-fixes on Copilot-agent branches when the workflow conditions match.
+- **Auto-fix Pre-commit** (`.github/workflows/auto-fix-precommit.yml`) - Produces an untrusted fix preview on matching Copilot-agent branches. The workflow wrapper does not commit or push; review or reproduce the proposed fixes locally and run the required checks before committing them with the substantive change.
 - **Markdown Lint** (`.github/workflows/markdownlint.yml`) - Validates Markdown formatting and local links.
 <!-- template-sync: begin data-ci-reference-only -->
 - **Data CI** (`.github/workflows/data-ci.yml`) - Runs retained baseline placeholder, data-file, GitHub Actions, template-sync, and schema validation hooks.
