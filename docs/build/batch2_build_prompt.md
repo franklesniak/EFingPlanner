@@ -667,16 +667,16 @@ child actually is does not make the chain work.
 **All three are added to the authorized edit scope.** Each edit is conditional or additive:
 **nothing a First Taste child reads today may change meaning for them.**
 
-#### Session 33 — the adult flight placeholder Session 39 depends on
+#### Session 33 — the adult's own fare, ready before Session 39
 
-Session 39 is specified to keep "the adult-provided flight placeholder from Session 33" in
-the running total. **Built Session 33 has no flight content at all** -- it deliberately
-keeps flights off the child's check, which is correct under the controllable-slice rule.
-So the second pass currently depends on a value nothing creates.
+Session 39's adult sanity check adds a rough per-person fare, multiplied by the traveler
+count, to the child's subtotal. **Built Session 33 has no flight content at all** -- it
+deliberately keeps flights off the child's check, which is correct under the
+controllable-slice rule. So nothing yet tells the adult to have that fare ready.
 
 **The fix belongs in Session 33's Parent Notes, and nowhere else on the page.** Add a
-short instruction telling the adult to keep a rough per-person fare of their own, so the
-second pass has something to compare against.
+short instruction telling the adult to keep a rough per-person fare of their own, ready
+for their own sanity check at Session 39.
 
 **Do not add a workspace row for it.** An earlier draft of this brief said to, and that was
 wrong: the built `budget_estimate.md` states in as many words that flights are the
@@ -1825,7 +1825,7 @@ fit. **Fully neutral.**
   worksheet to replace.** **The child does not research or book flights.** Say this
   plainly.
 - The child's own check compares **matching units**: the piece of their estimate that matches the band's form, against the
-  controllable-slice band**; the adult's own check is a **partial floor**, not a whole-trip total: by Session 39 it adds airfare to all five slices, and it leaves intercity transport, insurance, entry costs and phone service outside. Earlier passes cover fewer slices still. Name it that way in the session, so nobody reads it as what the trip costs.
+  controllable-slice band; the adult's own check is a **partial floor**, not a whole-trip total: by Session 39 it adds airfare to all five slices, and it leaves intercity transport, insurance, entry costs and phone service outside. Earlier passes cover fewer slices still. Name it that way in the session, so nobody reads it as what the trip costs.
 - **If the honest estimate cannot fit the band in any workable window, "recommend we
   change the trip or wait" is a valid, successful result.** One warm line, framed as
   success.
@@ -2914,11 +2914,12 @@ labelled as such. **But never name the family's home airport or its code.**
 
 #### B1 — `review_checkpoints.md`
 
-The adult's guide to running all six checkpoints. **The blank form itself is
+The adult's guide to running the checkpoints: Checkpoint 1 alone on First Taste, and all
+six on Core and Full. **The blank form itself is
 `parent_review_form.md`; this page is the how and the why, and it must not duplicate the
 form's grid.**
 
-Content, in order: what a checkpoint is, and the six of them; **Checkpoints 1 to 5 are
+Content, in order: what a checkpoint is, and how many each path meets; **Checkpoints 1 to 5 are
 lightweight and asynchronous**, with the concrete menu and the line *"lightweight means
 low-ceremony and still real"*; **only Checkpoint 6 carries the full family-decision-meeting
 framing**; **don't let a delay stall the child**, with the "what to do while you wait"
@@ -2991,17 +2992,20 @@ Content, each as a short point-first paragraph or bullet:
 
 - **Adults choose flights.** The child learns flight basics only.
 - **Arrival city may affect the route. Departure city may affect the route.** Adults record
-  the provisional round-trip-versus-open-jaw shape and the likely arrival and departure
-  cities as the **rough trip shape** anchor at setup, so the child's route is built on it
-  from Phase 3 in **movable per-city blocks.** **Checkpoint 4 is where adults confirm or
-  adjust that shape against current flight options** -- it is not where the shape is first
-  revealed.
+  what they know at setup as the **rough trip shape** anchor: the likely arrival city and,
+  if known, the departure city and the round-trip-versus-open-jaw shape. **Recording only
+  the arrival city is a supported setup.** Core and Full adults settle the shape at
+  Checkpoint 2; First Taste never reaches Checkpoint 2, so its adults settle it before
+  booking flights. The child's route is built on it from Phase 3 in **movable per-city
+  blocks.** **Checkpoint 4 is where adults confirm or adjust that shape against current
+  flight options** -- it is not where the shape is first revealed.
 - **Open-jaw and multi-city flights may be useful.** Keep this a parent-only, plain one-line
   gloss.
 - **Arrival time affects first-day pacing. Layovers affect fatigue.**
 - **Plan the return leg, not just the arrival.** Book the trip home so there are one or two
-  recovery days at home before school or work resumes. Coming home is usually the harder
-  jet-lag direction. **A child landing the night before school starts is a classic,
+  recovery days at home before school or work resumes. One leg is usually the harder
+  jet-lag adjustment, and which one depends on the direction of travel, so tell adults to
+  work it out for their own trip. **A child landing the night before school starts is a classic,
   avoidable planning failure.**
 - **Where a destination city has more than one airport, which one you land at can change
   arrival-day fatigue a lot.** The specifics live in the pack's airport basics file -- name
@@ -3083,9 +3087,11 @@ skill and the card they carry.
 7. **Open-web and video exposure beyond the kid-safe filter.** State plainly that **a
    kid-safe search filter reduces but does not eliminate exposure and is not a substitute
    for adult co-research on riskier topics.** Keep the co-research guardrail on the
-   source-judging sessions, the food session, **any video research**, **image search**, and
-   open neighborhood browsing. **This is not a ban on open research** -- learning to research
-   is the point.
+   source-judging sessions, the food session, **any video research**, **image search**,
+   open neighborhood browsing, and **nightlife and drinking-related topics**, which the
+   privacy and safety page names. Say that the list names the known higher-risk areas, and
+   that a topic which feels like it belongs is treated as though it does. **This is not a
+   ban on open research** -- learning to research is the point.
 8. **A short privacy reminder plus a link** to the canonical privacy and safety page. Do not
    duplicate the full rules.
 
@@ -3101,7 +3107,11 @@ pulling the child into a booking workflow.**
    numbers.**
 2. **What the child hands you:** the reservation watchlist with its date-gated flag,
    cancellation note, source and adult-status column; plus the hotel comparison cards, the
-   neighborhood comparison, the day cards and the budget estimate.
+   neighborhood comparison, the day cards and the budget estimate. **Each arrives only once
+   the child has made it.** On First Taste, and early on the Core path, most of the list
+   does not exist yet. If booking comes first, the adult works from what does exist: the
+   season recommendation, the city shortlist once Checkpoint 2 has passed, and the rough
+   trip shape recorded at setup.
 3. **The three timelines collide, and that is expected.** The booking clock often forces a
    commitment before the child's curriculum-paced route is finished. That is handled by
    setting the rough trip shape early, and by the "we had to book before you finished"
@@ -3245,13 +3255,12 @@ Teach the one word the whole project runs on: **a constraint is something real t
 what the plan can be.**
 
 1. **The definition, in plain words**, plus the everyday version: a constraint is like the
-   size of your backpack. It does not tell you what to pack. It tells you how much fits.
+   size of your backpack. You choose what goes in, but the backpack decides how much fits.
 2. **The kinds of constraint this trip has**, each with one short line and a generic example
    -- **no family values anywhere:**
    - **Time** -- how many days the trip can be (it is on your Trip-Basics card), plus school
      and work calendars.
-   - **Money** -- your budget band, a rough signal for the parts you choose, not a
-     whole-trip total.
+   - **Money** -- your budget band, a rough signal for the parts you choose.
    - **People** -- how many travelers, and what each person can comfortably do. Write this
      generically -- *"an older relative, for example a grandparent"* -- **never a named
      person.**
@@ -3262,19 +3271,21 @@ what the plan can be.**
      date you checked.**
    - **Safety and what adults decide** -- some things are simply not the child's call.
 3. **Constraints are not the enemy.** They are what makes a plan possible, and they are why
-   a trade-off has two real sides. **A plan that ignores a constraint is not a braver plan;
-   it is a plan that breaks later.**
+   a trade-off has two real sides. **A plan that ignores a constraint just breaks later.**
 4. **How to use a constraint, as a three-step move:** name it; write it down where that
    kind of thing lives; then check your recommendation against it.
 5. **Say where each kind goes, because they do not all have the same home.** A settled
-   trip-wide limit is already on the Trip-Basics card. An unsure one that belongs to a
+   trip-wide limit is already written down: the Trip-Basics card holds the airport, the time
+   difference, the maximum trip length and who is coming, and the current travel
+   assumptions page holds the budget band, the rough season, the trip shape and mobility
+   needs such as how far anyone can walk. An unsure one that belongs to a
    single place goes in **that research card's** planning-assumption block, with what could
    change it and whether a grown-up must check it. **An unsure trip-wide one -- a budget or
    a date nobody has confirmed -- goes in the question parking lot**, because no card holds
    it and it is a question for an adult. Sending every constraint to the assumption block
    is wrong: that block lives on research cards, and the child cannot follow the method
    outside them. **When an assumption drives a decision, it moves to the decision log.**
-6. **Constraints change.** When one does, you **move a block** -- you do not start over.
+6. **Constraints change.** When one does, you **move one block** and keep the rest.
 7. **Carry-over tag**, one short line: where else do you meet constraints? A homework
    deadline, a chore before dinner, how much room is in your bag.
 
@@ -3550,9 +3561,10 @@ negotiable:
 
 1. **The blank card in `framework/` is completely empty of values.** Labelled rows, empty
    cells. **No** real lodging name, address, phone number or personal detail.
-2. **The allowed rows are exactly five kinds:** where we are staying (name); its address;
-   its phone number; a parent's phone number. Plus a blank line an adult fills **in the
-   local language**, and two emergency-phrase rows. **Plus two rows for the emergency numbers and the date they were checked.** Both are **blank in the framework**, like every other row.
+2. **The card has exactly these rows, and no others:** where we are staying (name); its
+   address; its phone number; a parent's phone number; a blank line an adult fills **in the
+   local language**; two emergency-phrase rows; and two rows for the emergency numbers and
+   the date they were checked. **Every row is blank in the framework.**
 
    **Say who fills each one, because three surfaces disagreed about it.** The **adult** checks the numbers on a current official page and writes the date; the **child** copies the checked numbers onto their own card, which is the point of it being their card. The adult's card jobs are therefore two: the local-language line, and the verification plus date.
 3. **The forbidden list must be printed on the card itself**, in the child's words *and* as
@@ -3935,7 +3947,9 @@ is incomplete and removing the rider would make the docs wrong in the other dire
   rewrite with its filename unchanged; Session 24's title form; the thirteenth template;
   Checkpoint 4's added Source Check; the flights page written generically; the cancelled
   binder item; the roadmap blockquote replaced by a changelog pointer; Session 49's added
-  contract row and the emergency-number framing; the contract's first parent-facing rows.
+  contract row and the emergency-number framing; the contract's first parent-facing rows;
+  and the flight placeholder dropped from Sessions 33 and 39, with the fare kept on the
+  adult's own page.
 - **The two designated hand-off sessions, 16 and 40**, so a later batch does not re-derive
   them and land them somewhere else.
 - **The lighter-template phase reading**, with its accepted cost.

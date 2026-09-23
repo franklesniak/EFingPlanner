@@ -4,7 +4,7 @@
 
 Your child stops at certain points and brings you a recommendation. That's a checkpoint. You look at the work, ask a few questions, and decide.
 
-**How many you will meet depends on the path.** On **First Taste**, Checkpoint 1 is the single milestone and the path finishes after it -- if that is where your family is, the one section below is the only one you need. On the **Core and Full** paths there are six, and the rest of this page covers them all.
+**How many you will meet depends on the path.** On **First Taste**, Checkpoint 1 is the single milestone and the path finishes after it. If that is where your family is, the one section below is the only one you need. On the **Core and Full** paths there are six, and the rest of this page covers them all.
 
 The blank form is the [parent review form](../templates/parent_review_form.md). This page is the how and the why; the form is what you fill in.
 
@@ -21,13 +21,13 @@ Any of these works:
 
 **Lightweight means low-ceremony, and the review still happens.** An adult reads the work and makes a decision. It never means skipping it: a checkpoint that does not happen removes the one thing that shows your child their work counts.
 
-**Only Checkpoint 6 is the family decision meeting** — the gathering, with your child presenting. Save that framing for the last one, so it lands.
+**Only Checkpoint 6 is the family decision meeting**: the gathering, with your child presenting. Save that framing for the last one, so it lands.
 
 ## Don't let a delay stall them
 
 Turn reviews around promptly. If you can't, your child has somewhere to go: the "what to do while you wait for an adult checkpoint" note on their [When I'm Stuck card](../student_guide/when_im_stuck.md). They can do an Optional Extension, add to the question parking lot, or grow their "things I can't wait to see" page.
 
-**The next session genuinely waits**, and that is the point rather than an inconvenience. Everything after a checkpoint is built on the decision you are about to make; letting a child run ahead means later work rests on a season, shortlist or route nobody approved.
+**The next session genuinely waits**, and that is on purpose. Everything after a checkpoint is built on the decision you are about to make; letting a child run ahead means later work rests on a season, shortlist or route nobody approved.
 
 What you don't want is a child sitting still because you were busy on Tuesday.
 
@@ -42,7 +42,7 @@ Pick one:
 
 A signature is optional. Initials or a "got it" is plenty.
 
-**"Needs more research" is the hard one**, and it's the most common of the hard ones. Said badly it reads as "you failed." The [coaching guide](coaching_and_support.md) has the script; use it rather than improvising, because this is the verdict most likely to end the project.
+**"Needs more research" is the hard one**, and it's the most common of the hard ones. Said badly it reads as "you failed." The [coaching guide](coaching_and_support.md) has the script. Use its words, because this is the verdict most likely to end the project.
 
 ## Write it in the decision log too
 
@@ -55,7 +55,7 @@ Each has its own **what to consider** list. The review form checks whether the w
 
 ### Checkpoint 1 — Season Recommendation (Session 14)
 
-**What they bring:** a season, a backup season, a season to be careful about, possible months, their reasons, their sources, and their questions for you -- which often include whether it fits school and work.
+**What they bring:** a season, a backup season, a season to be careful about, possible months, their reasons, their sources, and their questions for you. Those often include whether it fits school and work.
 
 **Weighing the calendars is yours, not theirs.** Session 14 has them ask the question; you answer it.
 
@@ -65,7 +65,7 @@ Each has its own **what to consider** list. The review form checks whether the w
 
 ### Checkpoint 2 — City Shortlist (Session 22)
 
-**What they bring:** likely overnight bases, possible day trips, places to skip, places to save for a future trip, with reasons and sources -- **and how the Session 03 traveler poll shaped it**, naming which traveler's "one thing you'd love" each choice makes room for.
+**What they bring:** likely overnight bases, possible day trips, places to skip, places to save for a future trip, with reasons and sources, **and how the Session 03 traveler poll shaped it**, naming which traveler's "one thing you'd love" each choice makes room for.
 
 **Also yours to do here:** if you left the rough trip shape partly open at setup, firm it up now, including the exit city. The Phase 5 route work builds on it.
 
@@ -77,7 +77,7 @@ Each has its own **what to consider** list. The review form checks whether the w
 
 **What they bring:** a must-do list, strong maybes, skips and save-for-futures, the biggest trade-offs.
 
-**Also yours to do here:** acknowledge the **one unconditional personal pick** your child made in Session 26. Session 27 opens with it, and it is a distinct action rather than part of the review -- they chose it knowing the three things that could block it, and this is where you say it stands.
+**Also yours to do here:** acknowledge the **one unconditional personal pick** your child made in Session 26. Session 27 opens with it, and it is a separate action from the review. They chose it knowing the three things that could block it, and this is where you say it stands.
 
 **What to consider:** variety; age appropriateness; cost; time realism; reservation needs; and whether it matches your family's pace.
 
@@ -87,7 +87,7 @@ Each has its own **what to consider** list. The review form checks whether the w
 
 **What they bring:** total days, overnight cities, nights in each, travel days, a shorter backup version.
 
-**Also yours to do here:** confirm or adjust the arrival and departure cities against current flight options. If they change, your child's route flexes — they move a block rather than starting over.
+**Also yours to do here:** confirm or adjust the arrival and departure cities against current flight options. If they change, your child's route flexes. They move one block and keep the rest.
 
 **What to consider:** flights; the arrival and departure cities; how many hotel moves it involves; whether the transit is workable; how it fits your maximum trip length; budget implications; and the family schedule.
 
@@ -95,13 +95,13 @@ Each has its own **what to consider** list. The review form checks whether the w
 
 ### Checkpoint 5 — Itinerary Review (Session 46)
 
-**What they bring:** the day-by-day itinerary draft itself -- with the day cards behind it -- plus what they're confident about, what they're unsure about, what you need to decide, what could be cut, and the biggest trade-offs.
+**What they bring:** the day-by-day itinerary draft itself, with the day cards behind it, plus what they're confident about, what they're unsure about, what you need to decide, what could be cut, and the biggest trade-offs.
 
 The draft is the thing being reviewed. Pacing, transit, meals and rest cannot be judged from the summary alone.
 
 **What to consider:** pacing; transit time; meals; rest; booking needs; budget; safety; and practicality.
 
-**Progress is real:** the family has a usable *day-by-day plan*. Stopping here is a finish, not a shortfall.
+**Progress is real:** the family has a usable *day-by-day plan*. Stopping here is a finish in its own right.
 
 ### Checkpoint 6 — Family Decision Meeting (Session 52)
 

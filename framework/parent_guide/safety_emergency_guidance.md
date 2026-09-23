@@ -15,7 +15,7 @@ One separation rule per outing, named to your child out loud each morning.
 
 **The default rule is one action: stay where you are**, so you can find them.
 
-Not "stay, or move somewhere safer" — that's two, and it asks a frightened child to judge which. If today's route has places a child shouldn't stand still in, name a **specific meeting spot** for that outing instead, one they can see from where you'll be, and name it that same morning. One rule per outing, either way.
+Not "stay, or move somewhere safer". That's two, and it asks a frightened child to judge which. If today's route has places a child shouldn't stand still in, name a **specific meeting spot** for that outing instead, one they can see from where they'll be, and name it that same morning. One rule per outing, either way.
 
 Stated plainly: a panicking child executes one rehearsed rule. A child choosing between two does neither.
 
@@ -23,7 +23,7 @@ Stated plainly: a panicking child executes one rehearsed rule. A child choosing 
 
 Your child makes an "if I get separated" card and carries it. You do three things:
 
-- **Rehearse it once, calmly**, as a "what if". Not a drill. Not a lecture. A rehearsed plan *lowers* anxiety, because it turns a vague fear into a known script — but only if the rehearsal itself is calm.
+- **Rehearse it once, calmly**, as a "what if". A calm rehearsal *lowers* anxiety, because it turns a vague fear into a known script.
 - **Fill in any local-language line** on the card yourself, and confirm the current wording.
 - **Check any emergency number** on a current official page before it goes on the card, and write the date you checked.
 
@@ -50,6 +50,7 @@ Carry the numbers verify-framed. The destination-specific numbers, the local ter
 
 One line each, because the detail belongs on a single page. Advisories and weather alerts are worth watching in the weeks before travel. Travel insurance, particularly medical and emergency-evacuation coverage for an older traveler, is on the [adult-only logistics checklist](adult_only_logistics.md).
 
+<!-- density-exempt: X-not-Y -- the build brief requires both statements in this section: a kid-safe filter reduces but does not eliminate exposure and is no substitute for co-research, and the list is not a ban on open research -->
 ## The kid-safe filter is not a supervision plan
 
 State this to yourself honestly: a kid-safe search filter **reduces but does not eliminate** exposure, and it is not a substitute for co-research on riskier topics.
@@ -63,10 +64,10 @@ Keep the co-research guardrail on:
 - Open neighbourhood browsing
 - **Nightlife and drinking-related topics**, which the privacy and safety page names explicitly
 
-That list is the named higher-risk areas rather than an exhaustive one. If a topic feels like it belongs on it, treat it as though it is.
+That list names the known higher-risk areas. If another topic feels like it belongs on it, treat it as though it is.
 
-**This is not a ban on open research.** Learning to research the real web is the point of the project. It's a list of where you sit down next to them.
+**This is not a ban on open research.** Learning to research the real web is the point of the project. The list tells you where to sit down next to them.
 
 ## Privacy
 
-A short reminder, with the full rules on the [privacy and safety page](../docs/privacy_and_safety.md). **Nothing personal goes in this repository at all.** Your family's copied-out kit is different: that is where the real work belongs, including pages like the Trip-Basics card that hold your airport and your travellers. What stays out of it is the **sensitive** set -- passport numbers, birthdates, confirmation numbers, payment details, exact booked dates -- and a shared-documents folder is not a private vault for those either.
+A short reminder, with the full rules on the [privacy and safety page](../docs/privacy_and_safety.md). **Nothing personal goes in this repository at all.** Your family's copied-out kit is different: that is where the real work belongs, including pages like the Trip-Basics card that hold your airport and your travellers. What stays out of it is the **sensitive** set: passport numbers, birthdates, confirmation numbers, payment details and exact booked dates. A shared-documents folder is not a private vault for those either.

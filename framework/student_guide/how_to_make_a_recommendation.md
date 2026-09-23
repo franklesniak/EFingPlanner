@@ -23,7 +23,7 @@ When you're comparing two real options, the [Trade-Off Report](../templates/trad
 
 ## Back it with a source
 
-Every reason should be able to say where it came from. You don't have to remember it — your Source Log entry is enough. If someone asks "how do you know?", that's your answer.
+Every reason should be able to say where it came from. You don't have to remember it. Your Source Log entry is enough. If someone asks "how do you know?", that's your answer.
 
 ## Say what you're not sure about
 
@@ -37,7 +37,7 @@ And this is worth saying plainly, because "a grown-up could act on it" can sound
 
 ## When grown-ups change it
 
-Sometimes they will. That doesn't mean your work was wrong — [What I decide](what_i_decide.md) explains why, and it's worth a re-read when it happens.
+Sometimes they will. That doesn't mean your work was wrong. [What I decide](what_i_decide.md) explains why, and it's worth a re-read when it happens.
 
 And sometimes the honest recommendation is "let's change this, or wait for a better time." That's real planning. You found something true and useful for your family. It still counts.
 

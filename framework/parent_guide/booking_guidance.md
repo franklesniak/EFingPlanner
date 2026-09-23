@@ -8,7 +8,7 @@ What gets booked, in what order, and how your child's work feeds it, without pul
 
 You own flights, bookings, payments, accounts, personal data, final hotel decisions, final restaurant reservations, and final ticket and timed-entry bookings.
 
-Nothing in this curriculum ever tells a child to book, reserve, buy, create an account, enter payment or passport data, submit an entry form, or handle a confirmation number. If you find something that reads that way, it's a defect — the design is that your child produces a list and you act on it.
+Nothing in this curriculum ever tells a child to book, reserve, buy, create an account, enter payment or passport data, submit an entry form, or handle a confirmation number. If you find something that reads that way, it's a defect. The design is that your child produces a list and you act on it.
 
 ## What your child hands you
 
@@ -20,13 +20,13 @@ Nothing in this curriculum ever tells a child to book, reserve, buy, create an a
 
 The watchlist is the one to read first, once it exists. It's built specifically so you can see what's on a clock.
 
-**If booking arrives before your child has got that far, work from what they have.** On First Taste, and early on the Core path, most of that list has not been made yet -- the hotel and neighbourhood comparisons come in Sessions 34 and 35, the day cards in 41, the watchlist in 42. What exists early is the **season recommendation**, the **city shortlist** once Checkpoint 2 has passed, and the **rough trip shape** you recorded at setup. That is enough to book flights and a first hotel against, and it is what the early-booking conversation in the coaching guide assumes you are holding.
+**If booking arrives before your child has got that far, work from what they have.** On First Taste, and early on the Core path, most of that list has not been made yet: the hotel and neighbourhood comparisons come in Sessions 34 and 35, the day cards in 41, the watchlist in 42. What exists early is the **season recommendation**, the **city shortlist** once Checkpoint 2 has passed, and the **rough trip shape** you recorded at setup. That is enough to book flights and a first hotel against, and it is what the early-booking conversation in the coaching guide assumes you are holding.
 
 ## Three timelines collide, and that's expected
 
 The booking clock often forces a commitment before your child's curriculum-paced route is finished. Flights get cheaper-then-dearer on their own schedule, lodging sells out on another, and a child working a session a week is on a third.
 
-This is handled two ways: you set the **rough trip shape** early, so their work is built on it rather than derailed by it, and you have the "we had to book before you finished" conversation when it comes. The [coaching guide](coaching_and_support.md) has the script. Don't improvise that one — it's the moment a child decides whether their work was real.
+This is handled two ways: you set the **rough trip shape** early, so their work is built on it rather than derailed by it, and you have the "we had to book before you finished" conversation when it comes. The [coaching guide](coaching_and_support.md) has the script. Don't improvise that one. It's the moment a child decides whether their work was real.
 
 ## Order, and the long leads
 
@@ -58,4 +58,4 @@ Write the acknowledgment on their **"My Calls" page**. That page exists so their
 
 ## Privacy
 
-Don't enter booking information, confirmation numbers or payment details anywhere in the repository or the kit. A shared-documents folder is not a private vault either — the same data stays off it that you'd keep off a public page.
+Don't enter booking information, confirmation numbers or payment details anywhere in the repository or the kit. A shared-documents folder is not a private vault either. The same data stays off it that you'd keep off a public page.

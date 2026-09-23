@@ -4,11 +4,11 @@
 
 A constraint is something real that limits what the plan can be.
 
-Think of the size of your backpack. It doesn't tell you what to pack. It tells you how much fits. That's a constraint.
+Think of the size of your backpack. You choose what goes in, but the backpack decides how much fits. That's a constraint.
 
 ## The kinds this trip has
 
-- **Time.** How many days the trip can be — that's on your Trip-Basics card. School and work calendars count too.
+- **Time.** How many days the trip can be. It's on your Trip-Basics card. School and work calendars count too.
 - **Money.** Your budget band. It's a rough signal for the parts you choose.
 - **People.** How many travelers, and what each one can comfortably do. Someone may tire faster. An older relative, for example a grandparent, might not manage a lot of stairs.
 - **Distance and travel time.** Getting between places costs hours. You can't spend those hours seeing things.
@@ -17,7 +17,7 @@ Think of the size of your backpack. It doesn't tell you what to pack. It tells y
 
 ## Constraints aren't the enemy
 
-They're what makes a plan possible. They're also why a trade-off has two real sides — if nothing limited you, there'd be nothing to trade.
+They're what makes a plan possible. They're also why a trade-off has two real sides. If nothing limited you, there would be nothing to trade.
 
 A plan that ignores a constraint just breaks later.
 
@@ -41,10 +41,10 @@ When an assumption starts driving a decision, it moves to your decision log.
 
 Dates move. Prices change. Someone joins the trip, or can't come after all.
 
-When a constraint changes, you move a block. You don't start over. Your plan is built in movable pieces for exactly this reason.
+When a constraint changes, you move one block and keep the rest. Your plan is built in movable pieces for exactly this reason.
 
 ## Where else you meet them
 
-Constraints aren't a travel thing. A homework deadline is one. So is a chore you have to finish before dinner, or how much room is left in your bag. Once you can name them, you start seeing them everywhere.
+Where else do you meet constraints? A homework deadline is one. So is a chore you have to finish before dinner, or how much room is left in your bag. Once you can name them, you start seeing them everywhere.
 
 For travel words you don't know, use the [travel glossary](travel_glossary.md).

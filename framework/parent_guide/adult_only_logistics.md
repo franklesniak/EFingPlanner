@@ -65,7 +65,7 @@ Write about this generically with your child: "an older adult".
 
 One separation rule per outing, named to your child out loud each morning.
 
-**The default rule is one action: stay where you are.** Not "stay or move" — one thing, rehearsed, that a frightened child can do without deciding anything.
+**The default rule is one action: stay where you are.** Not "stay or move": one thing, rehearsed, that a frightened child can do without deciding anything.
 
 If where you're going has spots a child shouldn't stand still in, that's your cue to name a **specific adjacent meeting spot** for that outing instead, one they can see from where they'll be. Either way they leave the hotel each morning holding exactly one instruction.
 
@@ -77,11 +77,11 @@ Your child makes an "if I get separated" card and learns a three-step plan.
 
 **Rehearse the plan once**, calmly; keep it light, because a drill teaches fear rather than the script.
 
-Then two jobs on the card itself. **Fill in any local-language line** and confirm its current wording. And **check the emergency numbers on a current official page and write the date you checked** -- your child writes the numbers themselves once you have.
+Then two jobs on the card itself. **Fill in any local-language line** and confirm its current wording. And **check the emergency numbers on a current official page and write the date you checked**. Your child writes the numbers themselves once you have.
 
 A rehearsed plan lowers a child's anxiety. It turns a vague fear into a known script.
 
-Everything else on the safety side — insurance, advisories, emergency contacts, monitoring — stays with you.
+Everything else on the safety side stays with you: insurance, advisories, emergency contacts and monitoring.
 
 ## The standing rule
 

@@ -4,7 +4,7 @@
 
 Your half of the budget lesson. Read this before your child's first budget session, because the most common way this goes wrong is a parent expecting the wrong output.
 
-## What your child is learning — and what they're not
+## What your child is learning, and what they're not
 
 They're learning **how trip costs are structured**: what the categories are, what's priced per person versus per room versus per group, what a buffer is, and whether the parts they chose fit the band you gave them.
 
@@ -16,13 +16,13 @@ Your child's controllable slices are hotels, food, activities, local transit and
 
 **How many of those are in the subtotal depends on where they are.** At the first budget session they estimate **food and lodging only**, and the other three arrive later on the Core path. So an early check runs against a two-slice figure, and the floor it produces is correspondingly lower. Know which one you are looking at before you read anything into it.
 
-**Their band check compares matching units, not the subtotal.** The band you give them is a rate or a tier: per person per day, per day for the family, or a hotel tier. A subtotal is a whole-trip amount. Comparing the two would fail a perfectly good estimate on a unit mismatch, so their worksheet asks them to pull out the *matching piece* of their estimate and check that against the band. Give them the band in one of those three forms and the check works; give them a whole-trip number and it cannot.
+**Their band check compares matching units.** The band you give them is a rate or a tier: per person per day, per day for the family, or a hotel tier. A subtotal is a whole-trip amount. Comparing the two would fail a perfectly good estimate on a unit mismatch, so their worksheet asks them to pull out the *matching piece* of their estimate and check that against the band. Give them the band in one of those three forms and the check works; give them a whole-trip number and it cannot.
 
-**Your** sanity check needs a number, and the first pass may not produce one -- Session 33 lets a child answer in **high / medium / low**, which is a complete answer and not a gap. If that is what you have, read the check qualitatively: does the tier they landed on sound like the band you set? Ask for a rough range only if you actually need the arithmetic.
+**Your** sanity check needs a number, and the first pass may not produce one. Session 33 lets a child answer in **high / medium / low**, which is a complete answer. If that is what you have, read the check qualitatively: does the tier they landed on sound like the band you set? Ask for a rough range only if you actually need the arithmetic.
 
 **When you do have numbers:** your check is their subtotal plus your per-person fare multiplied by the number of travelers. The subtotal is already a whole-party amount and the fare is not, so adding them raw understates the result for any family larger than one.
 
-**That figure is a floor, and it is worth knowing what it leaves out.** At the first budget session it leaves out three of the five slices -- activities, local transit and souvenirs -- on top of everything below, so it is a floor under a floor. Once the Core path has added those, the subtotal covers all five.
+**That figure is a floor, and it is worth knowing what it leaves out.** At the first budget session it leaves out three of the five slices: activities, local transit and souvenirs. That is on top of everything below, so it is a floor under a floor. Once the Core path has added those, the subtotal covers all five.
 
 **Outside it at every stage:** intercity transportation, travel insurance, any entry or visa costs, phone or data service, and anything else adult-owned. So treat the number as *are we in the right range*, and never as what the trip will cost.
 
@@ -53,7 +53,7 @@ The honest reason: for a multi-person long-haul trip, flights dominate everythin
 
 ## Rounding and calculators are always allowed
 
-Say so out loud, at the moment it comes up. An adult may do the arithmetic while the child does the reasoning — the reasoning is the lesson, and the arithmetic is a tax on it.
+Say so out loud, at the moment it comes up. An adult may do the arithmetic while the child does the reasoning. The reasoning is the lesson, and the arithmetic is a tax on it.
 
 This matters a lot for a child with dyscalculia or number anxiety, and it costs nothing for a child without.
 
@@ -67,11 +67,11 @@ A lodging category priced per person is the exception, and it skips the per-room
 
 You set the amount and hold the actual money. Your child plans how they might spend it.
 
-Keep it price-free: have them **look up** a current price. And don't add a page or a tracker for this — it's a line inside the budget work they already do.
+Keep it price-free: have them **look up** a current price. And don't add a page or a tracker for this. It's a line inside the budget work they already do.
 
 ## When the honest answer is no
 
-If the estimate can't fit the band in any workable window, **"I recommend we change the trip or wait for a better time" is a correct, successful result.** Not a failure, and not a sign the project didn't work.
+If the estimate can't fit the band in any workable window, **"I recommend we change the trip or wait for a better time" is a correct, successful result.**
 
 Receive it warmly. Your child just did the thing adults find hardest: they followed the numbers to a conclusion they didn't want.
 
