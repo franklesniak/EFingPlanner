@@ -231,9 +231,9 @@ def test_merging_main_in_adds_no_requirement(repo: Repo) -> None:
     assert run(repo) == []
 
 
-def test_a_merge_that_takes_one_side_unchanged_adds_no_date(repo: Repo, monkeypatch: Any) -> None:
-    # Git's history simplification normally hides such a merge; this pins the rule
-    # itself by handing required_date() the merge directly.
+def test_a_merge_that_takes_one_side_unchanged_adds_no_date(repo: Repo) -> None:
+    # The side branch edits a.md; the PR line edits another file; the merge takes a.md
+    # unchanged from the side. The date is the side commit's, never the merge's.
     repo.git("switch", "-q", "-c", "side", "main")
     repo.write("docs/a.md", doc("2026-03-04", "Changed on the side."))
     repo.commit("side edit", "2026-03-04T10:00:00+00:00")
@@ -241,11 +241,53 @@ def test_a_merge_that_takes_one_side_unchanged_adds_no_date(repo: Repo, monkeypa
     repo.write("docs/plain.md", "# No metadata\n\nPR text.\n")
     repo.commit("pr edit", "2026-03-05T10:00:00+00:00")
     repo.git("merge", "-q", "--no-ff", "-m", "merge side", "side", date="2026-03-07T10:00:00+00:00")
-    merge = repo.git("rev-parse", "HEAD").strip()
-    parents = repo.git("rev-parse", "HEAD^1", "HEAD^2").split()
-    entry = (merge, "2026-03-07T10:00:00+00:00", parents, "docs/a.md", "docs/a.md")
-    monkeypatch.setattr(last_updated, "history", lambda base, head, path: [entry])
-    assert last_updated.required_date("main", "HEAD", "docs/a.md") is None
+    required = last_updated.required_date("main", "HEAD", "docs/a.md")
+    assert required is not None and required.isoformat() == "2026-03-04"
+    assert run(repo) == []
+
+
+def test_clean_merge_across_a_rename_is_dated_by_the_side_edit(repo: Repo) -> None:
+    repo.git("mv", "docs/a.md", "docs/b.md")
+    repo.commit("rename", "2026-03-04T10:00:00+00:00")
+    repo.git("switch", "-q", "-c", "side", "main")
+    repo.write("docs/a.md", doc("2026-03-05", "Edited on the side."))
+    repo.commit("side edit", "2026-03-05T10:00:00+00:00")
+    repo.git("switch", "-q", "pr")
+    repo.git("merge", "-q", "--no-ff", "-m", "merge side", "side", date="2026-03-07T10:00:00+00:00")
+    assert "Edited on the side." in repo.git("show", "HEAD:docs/b.md")
+    assert run(repo) == []
+
+
+def test_activating_a_backslash_hard_break_is_content(repo: Repo) -> None:
+    bs = chr(92)
+    repo.write("docs/a.md", doc("2026-01-01", "Line one" + bs + " \nline two."))
+    repo.commit("base-ish", "2026-01-01T12:00:00+00:00")
+    repo.git("switch", "-q", "main")
+    repo.git("merge", "-q", "--ff-only", "pr")
+    repo.git("switch", "-q", "pr")
+    repo.write("docs/a.md", doc("2026-01-01", "Line one" + bs + "\nline two."))
+    repo.commit("activate the break", "2026-03-05T10:00:00+00:00")
+    problems = run(repo)
+    assert len(problems) == 1 and "Set it to 2026-03-05" in problems[0]
+
+
+def test_an_escaped_final_backslash_is_not_a_break(repo: Repo) -> None:
+    bs = chr(92)
+    repo.write("docs/a.md", doc("2026-01-01", "Path " + bs + bs + " \nline two."))
+    repo.commit("base-ish", "2026-01-01T12:00:00+00:00")
+    repo.git("switch", "-q", "main")
+    repo.git("merge", "-q", "--ff-only", "pr")
+    repo.git("switch", "-q", "pr")
+    repo.write("docs/a.md", doc("2026-01-01", "Path " + bs + bs + "\nline two."))
+    repo.commit("strip trailing space", "2026-03-05T10:00:00+00:00")
+    assert run(repo) == []
+
+
+def test_removing_the_field_fails(repo: Repo) -> None:
+    repo.write("docs/a.md", doc("2026-01-01", "Changed.").replace("- **Last Updated:** 2026-01-01\n", ""))
+    repo.commit("drop the field", "2026-03-05T10:00:00+00:00")
+    problems = run(repo)
+    assert len(problems) == 1 and "removed it" in problems[0]
 
 
 def test_non_ascii_and_spaced_paths_are_checked(repo: Repo) -> None:

@@ -24,16 +24,20 @@ on the head:
    failing.
 2. If the file carries ``**Version:** <major>.<minor>.<YYYYMMDD>.<revision>``,
    the ``<YYYYMMDD>`` segment must equal the field.
+3. If the base version carried the field and the head does not, the field was
+   removed, which fails.
 
 Mechanical changes
 ------------------
 The guide exempts changes that do not alter rendered content: line-ending
 normalization, end-of-file newline fixes and trailing-whitespace-only fixes. It
 also says the trailing-whitespace exemption does not apply to a Markdown hard
-line break (two or more trailing spaces), because that whitespace renders. So
-two versions of a file are compared after normalizing CRLF to LF, collapsing a
-trailing run of two or more spaces to exactly two, removing a shorter trailing
-run, and removing trailing blank lines. Equal after that means mechanical.
+line break (two or more trailing spaces, or a trailing backslash), because that
+whitespace renders. So two versions of a file are compared after normalizing
+CRLF to LF, collapsing a trailing run of two or more spaces to exactly two,
+marking whitespace that followed an unescaped final backslash, removing other
+trailing whitespace, and removing trailing blank lines. Equal after that means
+mechanical.
 
 What is not checked
 -------------------
@@ -61,7 +65,7 @@ LAST_UPDATED = re.compile(r"^- \*\*Last Updated:\*\* (\d{4}-\d{2}-\d{2})\s*$", r
 VERSION = re.compile(r"^\*\*Version:\*\* \d+\.\d+\.(\d{8})\.\d+\s*$", re.M)
 FENCE_OPEN = re.compile(r"^\s*(`{3,}|~{3,})(.*)$")
 FENCE_CLOSE = re.compile(r"^\s*(`{3,}|~{3,})[ \t]*$")
-STATUS = re.compile(r"^[ACDMRTUXB]\d*$")
+NO_BREAK = "\x00no-break"   # marks a final backslash that trailing whitespace kept from breaking
 
 
 class GitError(RuntimeError):
@@ -116,14 +120,23 @@ def outside_fences(text: str) -> str:
 def normalize(text: str) -> str:
     """Remove only the differences the style guide calls mechanical.
 
-    A hard line break is two or more spaces immediately before the line end
-    (CommonMark), so it is decided by those spaces alone: they become a two-space
-    marker, and any other trailing spaces or tabs are dropped.
+    CommonMark has two hard line breaks. Two or more spaces immediately before the
+    line end become a two-space marker. A backslash immediately before the line end is
+    the other; when an unescaped final backslash (an odd run of backslashes) was
+    followed by whitespace, that line did not break, so a marker keeps it distinct
+    from the breaking form. Any other trailing spaces or tabs are dropped.
     """
     lines = []
     for line in text.replace("\r\n", "\n").replace("\r", "\n").split("\n"):
         spaces = len(line) - len(line.rstrip(" "))
-        lines.append(line.rstrip(" \t") + ("  " if spaces >= 2 else ""))
+        stripped = line.rstrip(" \t")
+        backslashes = len(stripped) - len(stripped.rstrip("\\"))
+        if spaces >= 2:
+            lines.append(stripped + "  ")
+        elif backslashes % 2 == 1 and stripped != line:
+            lines.append(stripped + NO_BREAK)
+        else:
+            lines.append(stripped)
     while lines and lines[-1] == "":
         lines.pop()
     return "\n".join(lines)
@@ -142,9 +155,9 @@ def version_date(text: str) -> str | None:
 def name_status(tokens: list[str], i: int) -> tuple[str, str | None, str, int]:
     """Read one NUL-separated name-status entry at tokens[i]: (status, before, after, next index).
 
-    A rename carries the old and new paths. A copy carries its source and the new path,
-    but the new file did not exist before, so it is compared with nothing (before None).
-    `--follow` can report an added file as a copy of a similar one.
+    A rename carries the old and new paths. A copy, which git reports only when copy
+    detection is on, carries its source and the new path, but the new file did not
+    exist before, so it is compared with nothing (before None).
     """
     status = tokens[i]
     if status[0] == "R":
@@ -173,31 +186,22 @@ def changed_files(base: str, head: str) -> list[tuple[str | None, str]]:
     return out
 
 
-def history(base: str, head: str, path: str) -> list[tuple[str, str, list[str], str | None, str]]:
-    """(commit, author date, parents, path before, path after) for each PR commit that touched the file.
+def path_in(parent: str, commit: str, path: str) -> str | None:
+    """The name `parent` has for the file that `commit` calls `path`, or None if it has none.
 
-    Merge commits are included. `--diff-merges=first-parent` makes a merge list what it
-    changed relative to the pull request's own line; git's default history
-    simplification already drops a merge that took the file unchanged from one parent.
-    `--follow` tracks renames, and each entry carries that commit's own paths.
+    A rename-aware diff of the whole tree is used, because limiting the diff to `path`
+    would hide the old name and turn every rename into an addition.
     """
-    raw = git("log", "--follow", "--name-status", "-z", "-M", "--diff-merges=first-parent",
-              "--format=@@%H %aI %P", "%s..%s" % (base, head), "--", path)
-    tokens = [t.lstrip("\n") for t in raw.split("\0")]
-    tokens = [t for t in tokens if t]
-    out, header, i = [], None, 0
+    raw = git("diff", "--name-status", "-z", "-M", parent, commit)
+    tokens = [t for t in raw.split("\0") if t]
+    i = 0
     while i < len(tokens):
-        # Paths are consumed by name_status(), so only a header or a status reaches here.
-        if tokens[i].startswith("@@"):
-            fields = tokens[i][2:].split(" ")
-            header = (fields[0], fields[1], fields[2:])
-            i += 1
-            continue
-        if header is None or not STATUS.match(tokens[i]):
-            raise GitError("unexpected git log output near %r" % tokens[i][:60])
-        _, before, after, i = name_status(tokens, i)
-        out.append((header[0], header[1], header[2], before, after))
-    return out
+        status, before, after, i = name_status(tokens, i)
+        if after == path:
+            if status[0] in "AC":
+                return None
+            return before
+    return path   # unchanged between the two commits, so the parent has the same name
 
 
 def required_date(base: str, head: str, path: str) -> dt.date | None:
@@ -212,16 +216,27 @@ def required_date(base: str, head: str, path: str) -> dt.date | None:
     qualifies. When both sides follow the rule, both changed the `Last Updated` line,
     so such a merge conflicts, and resolving it is an authored change.
     """
+    # Walk every PR commit children-first, carrying the file's name backwards: the head
+    # knows it as `path`, and each parent's name comes from a rename-aware diff against
+    # its child, which is reliable because the two commits are adjacent. This reaches
+    # commits on merged side branches, where the file may have its older name.
+    head_sha = git("rev-parse", head).strip()
+    names: dict[str, str | None] = {head_sha: path}
     dates = []
-    for sha, when, parents, before_path, after_path in history(base, head, path):
-        after = show(sha, after_path)
+    log = git("log", "--topo-order", "--format=%H %aI %P", "%s..%s" % (base, head))
+    for row in log.splitlines():
+        sha, when, *parents = row.split(" ")
+        name = names.get(sha)
+        if name is None:
+            continue
+        after = show(sha, name)
         if after is None:
             continue
         befores = []
         for parent in parents:
-            content = show(parent, before_path) if before_path else None
-            if content is None and before_path and len(parents) > 1:
-                content = show(parent, after_path)
+            own = path_in(parent, sha, name)
+            names.setdefault(parent, own)
+            content = show(parent, own) if own else None
             befores.append(normalize(content or ""))
         if befores and all(b != normalize(after) for b in befores):
             dates.append(dt.datetime.fromisoformat(when).astimezone(dt.timezone.utc).date())
@@ -236,9 +251,12 @@ def check(base: str, head: str) -> list[str]:
         if head_text is None:
             continue
         value = field(head_text)
-        if value is None:
-            continue
         base_text = show(merge_base, old_path) if old_path else None
+        if value is None:
+            if base_text is not None and field(base_text) is not None:
+                problems.append("%s: the base version has a Last Updated field, and this pull request "
+                                "removed it. Restore it, with the date of the change." % path)
+            continue
         if base_text is not None and normalize(base_text) == normalize(head_text):
             continue
         need = required_date(merge_base, head, path)
