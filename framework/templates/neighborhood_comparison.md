@@ -18,6 +18,8 @@ Write the area names across the top, then fill down. If the grid gets too wide t
 | Approximate cost level (example only — re-check, with the date) | | | |
 | What we'd give up by staying here | | | |
 | Sources (also in my Source Log) | | | |
+| What other source could check this? | | | |
+| Verification source (the one I actually used to check) | | | |
 | Date checked | | | |
 
 **The one I'd recommend:**

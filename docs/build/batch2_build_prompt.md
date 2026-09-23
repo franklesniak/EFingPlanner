@@ -4,8 +4,8 @@
 
 - **Status:** Active
 - **Owner:** Repository Maintainers
-- **Last Updated:** 2026-09-22
-- **Scope:** The complete build instruction for Batch 2 of the EFingPlanner curriculum -- thirty-four sessions across Phases 3 to 8, thirteen templates, the parent apparatus, the rest of the trip-starter kit, the two binder deliverables, and the roadmap extension. It carries every Batch 2 requirement, every applicable acceptance criterion, and the adjudicated answer to every open question, so an authoring run never opens the archived specification. It does not cover Batches 0, 1, 3 or 4, and it is a build instruction rather than shipped curriculum.
+- **Last Updated:** 2026-09-23
+- **Scope:** The complete build instruction for Batch 2 of the EFingPlanner curriculum -- thirty-four sessions across Phases 3 to 8, thirteen templates, the parent apparatus, the rest of the trip-starter kit, the two binder deliverables, and the roadmap extension. It carries every Batch 2 requirement, every applicable acceptance criterion, and the adjudicated answer to every open question, so an authoring run works from this brief and consults the archived specification only for a detail the brief turns out to lack. It does not cover Batches 0, 1, 3 or 4, and it is a build instruction rather than shipped curriculum.
 - **Related:** [Build prompt directory guide](README.md), [Batch 1 build brief](batch1_build_prompt.md), [Build prompt template](_build_prompt_template.md), [Archived specification](../spec/specification.md)
 
 ## Source of truth
@@ -1982,8 +1982,9 @@ hotels.
 
 **Watchlist fields, the union of both lists, in the session's order:** Item · City · Why
 it may need booking · **Date-gated? (does holding a date matter?)** · Adult verification
-needed · **When adults should check** · Cancellation/flexibility note · Source · **Date
-checked** · Adult status. (`D-item-4`.)
+needed · **When adults should check** · Cancellation/flexibility note · Source · What other
+source could check this? · Verification source · **Date checked** · Adult status.
+(`D-item-4`.)
 
 - **Start Here, self-generated.** Suggestion: write the one thing you most don't want to
   miss at the top of a blank watchlist page.
@@ -2246,9 +2247,9 @@ seasons and their names come from the pack.
 - **Start Here, self-generated.** Suggestion: write "shoes" on a blank packing list. You'll
   wear them every day, so they're worth thinking about first.
 - **Artifact:** your draft packing list.
-- **Stop Point:** you are done when every category has at least one line, the season items
-  are on there, and the travel-documents and medication lines are marked for an adult. Then
-  hand it to an adult to check. **A draft is what's wanted here.**
+- **Stop Point:** you are done when every category you pack for has at least one item you
+  wrote in or ticked, the season items are on there, and the travel-documents and
+  medication lines are marked for an adult. Then hand it to an adult to check. **A draft is what's wanted here.**
 - **Source Check:** required, light. Record where you checked the usual weather for your
   season, with the date. **Frame the weather as usual, never as a forecast or a guarantee.**
 
@@ -2601,7 +2602,8 @@ into two tables if it would be too wide.
 of a cheaper place farther out; Near a useful station?; Neighborhood feel; Breakfast or
 easy food nearby; Lodging types available here; Room-count reality for our group;
 Approximate cost level (example only -- re-check, with the date); What we'd give up by
-staying here; Sources; Date checked.
+staying here; Sources; What other source could check this?; Verification source; Date
+checked.
 
 **Teach in one short line each, destination-neutrally**, and for lodging types write *"open
 your destination pack for the lodging types where you're going."* **Never list
@@ -2625,7 +2627,7 @@ destination.**
 question; Option A; Option B; Option C if needed; Pros; Cons; Cost effect (level, not a
 price); Time effect; Energy effect; Travel time (**read from a map tool's "Directions", not
 eyeballed**); What we would miss / what gets skipped; Recommendation; Reasons; Sources;
-Date checked.
+What other source could check this?; Verification source; Date checked.
 
 **Mandatory recurring budget-band check row:** *"Does this still fit our budget band?"* -- a
 quick gut-check, not a detailed budget.
@@ -2680,7 +2682,8 @@ never books.** Files under binder Tab 7.
 
 **Rows: the union, in Session 42's order** (`D-item-4`): Item; City; Why it may need
 booking; **Date-gated? (does holding a date matter?)**; Adult verification needed; When
-adults should check; Cancellation/flexibility note; Source; Date checked; Adult status.
+adults should check; Cancellation/flexibility note; Source; What other source could check
+this?; Verification source; Date checked; Adult status.
 
 **Teach the date-gating idea generically.** Concrete examples come from the pack and must
 **not** be written into this template.
@@ -2712,8 +2715,9 @@ Transit notes; Tickets/reservations; Estimated cost (example only, re-check); En
 (easy / medium / big day); Backup idea; Source notes.
 
 **Provide both shapes on the one page:** (a) the block card -- a header table for the
-city-stay plus a per-day sub-row table; (b) the per-day card. **The sub-row table carries
-the fields that genuinely vary by day** -- anchor activity, transit, tickets, estimated
+city-stay plus the per-day sub-rows, split into two tables that both carry the Day column so
+the page prints on portrait; (b) the per-day card. **The sub-row tables carry the
+fields that genuinely vary by day** -- anchor activity, transit, tickets, estimated
 cost, energy level and backup -- not just the meal slots. Session 45 copies the itinerary
 across one day at a time, so a block card that holds transit and cost only once per stay
 cannot feed it. **Label (a) the
@@ -2759,8 +2763,9 @@ etiquette points live in the pack; the page says *"open your destination pack's 
 and etiquette notes."* **No phrase in any language appears in this file.**
 
 **Phrase rows, label column in English, answer column blank:** Hello; Thank you; Excuse me;
-Please; Yes; No; Basic restaurant phrases (a few blank rows). Add a "how it sounds" column
-only if the table stays narrow enough to print.
+Please; Yes; No; and three restaurant rows, each naming what the phrase is for: At a
+restaurant: ordering; At a restaurant: asking for the bill; At a restaurant: my own choice.
+Add a "how it sounds" column only if the table stays narrow enough to print.
 
 **Etiquette prompts, phrased as neutral questions the pack answers:** How quiet are public
 transit and shared spaces?; Are shoes taken off indoors anywhere?; How does trash work
