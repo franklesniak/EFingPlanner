@@ -710,6 +710,11 @@ page -- confirm it still holds, and say so in one line. **It keeps its choose-no
 for a First Taste child**, who reaches Session 44 without having done Session 26. Both
 readings must be on the page, because both children read it.
 
+**On the Core path, step 2 starts from the skip and save-for-future notes from Checkpoints
+2 and 3**, which section 5.7 says seed the formal cut list. **A family continuing from First
+Taste adds those notes to the cut list it already made** when its numbered order reaches
+Session 44's extension line, and never starts over.
+
 #### Session 53 — written for a First Taste finisher
 
 Session 53 tells the child they made a **mini-plan**, that the fuller steps "are being built
@@ -728,10 +733,18 @@ Make the page path-aware on four points:
 | Parent Notes mandate the duration-neutral acknowledgment | **The duration-true, months-long form** for Core/Full; the duration-neutral form stays for First Taste |
 
 **Neither wording may be deleted.** Both paths end here, so the page carries both and says
-which is which. **Sessions 21, 33 and 53 are the only built sessions in the batch whose
-Parent Notes change**; Session 33 gains the fare instruction above, here the change adds a
-branch and keeps the existing instruction, and Session 21's change is the one word named
-below. The Session 14 and 15 additions below change no Parent Notes.
+which is which. With the dates booked, on either path, the handoff names the season
+confirmation where it now says "your season pick".
+
+**A child who finished First Taste does this page a second time, as the capstone.** The
+spec's continuation map calls this the capstone re-run. The child looks back at both the
+Session 01 baseline and the reflection they wrote at the First Taste finish, and the
+Core/Full wording above applies. Say so on the page in one line.
+
+**Sessions 21, 33 and 53 are the only built sessions in the batch whose Parent Notes
+change**; Session 33 gains the fare instruction above, here the change adds a branch and
+keeps the existing instruction, and Session 21's change is the one word named below. The
+Session 14 and 15 additions below change no Parent Notes.
 
 #### Session 14 — the season trade-off report on the Core path
 
@@ -759,10 +772,16 @@ Artifact and Stop Point.
   trip: the weather, crowds and events the chosen dates bring. The chart covers that season.
 - **Session 14:** with the dates booked, Checkpoint 1 is an understanding-and-confirmation
   beat. The child explains what the chosen season means for the trip and confirms the fit,
-  and recommends no season. On the Core path, the season report takes its booked-window form
-  above.
+  and recommends no season. This page is the **season confirmation**: it goes on the same
+  Decision Record page and is the first decision-log entry. On the Core path, the season
+  report takes its booked-window form above.
 
-No child is asked to recommend dates the family cannot change.
+No child is asked to recommend dates the family cannot change. **With the dates booked, the
+season confirmation fills every place this brief asks for the season recommendation:** the
+decision log's first entry (9.4.1), the kit's season shell (9.4.3), B1's Checkpoint 1
+section, binder tab 3 (Session 50, copied by E2), the presentation outline (Session 51 and
+A12), E1's binder list and evidence floor, and Session 53's handoff. Each of those sections
+says so in place.
 
 #### Session 15 — cards toward the Core floor
 
@@ -2465,7 +2484,7 @@ Put your whole project in order, tab by tab. **Fully neutral.**
 | --- | --- |
 | 1. Start Here | Cover page; Trip-Basics card; Traveler profiles; **Family trip goals**; Current family travel assumptions |
 | 2. Research Skills | The Phase 1 research-skill artifacts the family chose to keep, for example the trust test |
-| 3. Destination Overview | Season recommendation |
+| 3. Destination Overview | Season recommendation, or the season confirmation when the dates were booked |
 | 4. Cities and Route | City long-list; City shortlist and recommendation; Route recommendation; Trip-length recommendation; Transportation notes |
 | 5. Attractions and Food | Top attractions and experiences; Culture/history/nature/food/fun balance check; Restaurant and food shortlist, if the food sessions were done |
 | 6. Hotels and Budget | Hotel and neighborhood comparison summary; Budget estimate |
@@ -2524,14 +2543,16 @@ group, or just record it -- so the child can climb at their own pace. Both the
 accommodations and the ladder live canonically in
 `[the differentiation guide](../../parent_guide/differentiation.md)`; point there.
 
-**Outline contents:** Recommended season · Recommended length · Route · Top experiences ·
-Budget summary · Biggest trade-offs · Cut list · Questions for adults · Adult handoff.
+**Outline contents:** Recommended season, or the season confirmation when the dates were
+booked · Recommended length · Route · Top experiences · Budget summary · Biggest trade-offs ·
+Cut list · Questions for adults · Adult handoff.
 
 **The two-part structure** is the fuller form the outline may follow:
 
-- **Part 1, Recommendation:** when should we go? how long? which cities? what route? top
-  experiences? where might we stay? food highlights? rough budget estimate? biggest
-  trade-offs? what did we cut, and why?
+- **Part 1, Recommendation:** when should we go? (with the dates booked: what does our
+  season mean for the trip?) how long? which cities? what route? top experiences? where
+  might we stay? food highlights? rough budget estimate? biggest trade-offs? what did we
+  cut, and why?
 - **Part 2, Handoff:** what do adults still need to verify? decide? book? what questions
   remain open? which of the child's materials should adults use next?
 
@@ -2928,10 +2949,11 @@ delivered at Session 52.
 
 **Two parts, exactly as specified.**
 
-- **Part 1, Recommendation:** When should we go? How long should we go? Which cities should
-  we visit? What route should we take? What are the top experiences? Where might we stay?
-  What are the food highlights? What is the rough budget estimate? What are the biggest
-  trade-offs? What did we cut and why?
+- **Part 1, Recommendation:** When should we go? (With the dates booked: What does our
+  season mean for the trip?) How long should we go? Which cities should we visit? What
+  route should we take? What are the top experiences? Where might we stay? What are the
+  food highlights? What is the rough budget estimate? What are the biggest trade-offs? What
+  did we cut and why?
 - **Part 2, Handoff:** What adults still need to verify? What adults still need to decide?
   What adults need to book? What questions remain open? Which child-created materials should
   adults use next?
@@ -3004,6 +3026,9 @@ pointer; the four approval statuses and the optional-signature note, with "needs
 research" flagged as the most common hard verdict and pointed at the coaching scripts; that
 **each checkpoint decision is also written in the decision log**; and a short per-checkpoint
 section, six of them, each carrying its review list and its "progress is real" line.
+**Checkpoint 1's section also carries the booked-dates beat:** with the dates booked, the
+adult reviews the season confirmation from 4.1a, which explains what the chosen season
+means for the trip and confirms the fit.
 
 #### B2 — `adult_only_logistics.md`
 
@@ -3226,8 +3251,8 @@ the dates booked, a look-for line naming the explanation and the confirmed fit),
 cities reference is gone after 4.1b; the child now chooses from their Session 11 notes),
 Session 44's pick line (on the Core path the child confirms the pick Session 26 already
 chose), and Session 53's acknowledgment line (duration-true for Core/Full,
-duration-neutral for First Taste). Check Sessions 21 and 33 against their 4.1a edits the
-same way.
+duration-neutral for First Taste). Check Sessions 21 and 33, Session 44's cut-list step and
+Session 53's capstone re-run against their 4.1a edits the same way.
 
 **Parent-gated versus independent must be visible.** Only these are parent-gated: **Session
 00**, the six checkpoints (**14, 22, 27, 32, 46, 52**), and the co-research source-judging
@@ -3407,7 +3432,7 @@ it is introduced -- **introduce the tools one at a time, never all at once.**
 | File | Blank copy of | Introduced at | The one-line purpose |
 | --- | --- | --- | --- |
 | `logs/source_log.md` | `templates/source_log.md` | Session 04 | Record **where** each fact came from. One log for the whole trip; each source is one copy of the table |
-| `logs/decision_log.md` | `templates/decision_record.md` | Checkpoint 1, Session 14 -- its **first entry is the season recommendation** | Record decisions and the reasoning behind them. **Each of the six checkpoint decisions is recorded here.** A planning assumption that drives a decision **graduates here** from its card |
+| `logs/decision_log.md` | `templates/decision_record.md` | Checkpoint 1, Session 14 -- its **first entry is the season recommendation**, or the season confirmation when the dates were booked | Record decisions and the reasoning behind them. **Each of the six checkpoint decisions is recorded here.** A planning assumption that drives a decision **graduates here** from its card |
 | `logs/question_parking_lot.md` | `templates/question_parking_lot.md` | when the first tangent appears | Hold a tangent question so it doesn't derail the session. It supports the Stop Point |
 | `logs/cut_list.md` | `templates/cut_list.md` | Phase 7 as the formal tool, **fed by the earlier skip and save-for-future notes** from Checkpoints 2 and 3 | Track what was set aside and why |
 
@@ -3466,7 +3491,7 @@ recommendation shape.
 
 | File | Checkpoint | What it must prompt for |
 | --- | --- | --- |
-| `season_recommendation.md` | 1, Session 14 | season; backup season; season to be careful about; how it fits school and work schedules; weather; crowds; cost; major holidays |
+| `season_recommendation.md` | 1, Session 14 | season; backup season; season to be careful about; how it fits school and work schedules; weather; crowds; cost; major holidays. **With the dates booked, it prompts instead for the season confirmation:** what the chosen season brings (weather, crowds, events); what that means for the trip; the confirmed fit; questions for adults |
 | `city_shortlist.md` | 2, Session 22 | the shortlist; day trips; places skipped and why; travel realism; how it fits the maximum trip length **from the Trip-Basics card**; budget implications |
 | `top_experiences.md` | 3, Session 27 | must-do list; strong maybes; skip or save-for-future; biggest trade-offs; the budget-band check |
 | `route_and_trip_length.md` | 4, Session 32 | total days; nights per city; transit days; hotel moves; a shorter backup version; what adults confirm about the trip shape |
@@ -3517,9 +3542,10 @@ complete set of outputs; the later sections are a bonus.**
 | `adult_follow_up_questions.md` | What adults still need to verify, decide and book; open questions; which child-made materials adults should use next |
 | `final_reflection.md` | The capstone reflection, built from the baseline plus however many checkpoint reflections exist |
 
-**`final_reflection.md` must prompt for, at least:** what is different since the baseline;
-patterns across whatever checkpoint reflections the child did; how far off the **time**
-guesses were and whether guessing got closer with practice -- **the session-time loop in
+**`final_reflection.md` must prompt for, at least:** what is different since the baseline,
+and since the First Taste reflection for a child who wrote one; patterns across whatever
+checkpoint reflections the child did; how far off the **time** guesses were and whether
+guessing got closer with practice -- **the session-time loop in
 section 5.5b is what records them**, and this prompt is unanswerable without it; how close the budget estimate
 was **to the band, an anchor rather than real spending**; what was learned about planning;
 what was hard at first; what helped getting started; which research skill improved; what
@@ -3665,8 +3691,9 @@ Defines "done". Audience: the family, mostly the adult, with the child able to r
    meeting**, supported by the final Markdown output files.
 2. **Binder contents**, as a numbered list in exactly this order: Cover page; Traveler
    profiles; **Family trip goals**; Current family travel assumptions; Source log; Decision
-   log; Season recommendation; City long-list; City shortlist and recommendation; Route
-   recommendation; Trip-length recommendation; Top attractions and experiences;
+   log; Season recommendation (or the season confirmation, when the dates were booked); City
+   long-list; City shortlist and recommendation; Route recommendation; Trip-length
+   recommendation; Top attractions and experiences;
    Culture/history/nature/food/fun balance check; Hotel/neighborhood comparison summary;
    Restaurant and food shortlist (optional but recommended -- included if the family does
    the food sessions); Transportation notes; Reservation watchlist; Day-by-day itinerary;
@@ -3682,9 +3709,10 @@ Defines "done". Audience: the family, mostly the adult, with the child able to r
 6. **Minimum final evidence, framed as a floor that satisfies the evidence, not a target to
    maximize.** **Meeting the minimum is success.** For a child who finds writing hard, the
    **lightest accepted form of each artifact is the default path, not a special
-   accommodation.** The floor: one season recommendation; one city long-list; one city
-   shortlist; one route and trip-length recommendation; **at least five** city or region
-   research cards; **at least ten** attraction or experience research cards; hotel
+   accommodation.** The floor: one season recommendation, or one season confirmation when
+   the dates were booked; one city long-list; one city shortlist; one route and trip-length
+   recommendation; **at least five** city or region research cards; **at least ten**
+   attraction or experience research cards; hotel
    comparisons at least one per likely overnight base, two only where the base is genuinely
    undecided, capped at about four or five total; day cards, with the **block card per
    city-stay the strong default**; **at least one food or restaurant note per major
@@ -3892,9 +3920,12 @@ session table** -- Recommended, Optional, or the condition that makes it Core --
 family and a family whose condition promotes a session both find it in order.
 **Each First Taste session whose Core version asks for new work gets its own extension line,
 directly after that session:** Session 14's season report, Session 21's long-list
-comparison, and Session 33's adult fare row (see 4.1a). A family continuing from First
-Taste ticks the sessions it already finished and works the unticked lines in numbered
-order, so it reaches each extension at its session's place. **Mark each Core line whose session is parent-gated or co-worked**,
+comparison, Session 33's adult fare row, Session 44's cut list with the Checkpoint 2 and 3
+notes, and Session 53's capstone re-run (see 4.1a). **Label each extension line as for a
+family that finished First Taste first**, so a child who started on the Core path ticks it
+along with its session. A family continuing from First Taste ticks the sessions it already
+finished and works the unticked lines in numbered order, so it reaches each extension at its
+session's place. **Mark each Core line whose session is parent-gated or co-worked**,
 in the same form as the First Taste list's markers, taking which sessions those are from
 B7's rule, so the membership lives in one place. **Scope the existing "Which sessions need a
 grown-up" lists to the First Taste path**, and make its waiting rule point at a marked
