@@ -6,7 +6,7 @@
 
 - **Status:** Active
 - **Owner:** Repository Maintainers
-- **Last Updated:** 2026-09-22
+- **Last Updated:** 2026-09-23
 - **Scope:** The single canonical home for the citation rule in this curriculum: when a citation is required, the six citation forms with their exact field names, the three verification fields, and the note structure. Every built page that reproduces a form copies its field names from here. Builder-facing and parent-facing, and written to be read aloud to a child.
 - **Related:** [Simple citation forms](../templates/simple_citation.md), [Source log](../templates/source_log.md), [Source trustworthiness](source_trustworthiness.md)
 
@@ -21,6 +21,8 @@ A source line is short. It is a habit rather than a chore, and the forms below a
 ## When a citation is required
 
 Write a citation whenever an outside source was used. That means a book, a website, a map, a video, a review site, a person you asked, or an AI tool.
+
+Asking your own family is family input, and it needs no citation. That covers interviewing a traveler, polling the travelers, and asking a grown-up about your family's plans. The answers go on the session's own page.
 
 A review site is a website, so it uses the Website form. There is no separate form for reviews.
 

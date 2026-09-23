@@ -18,7 +18,7 @@ Compare your destination's seasons so you can recommend a good time to go.
 
 ## Start Here
 
-Draw one box for each season your Destination Notes list. Label each box. That is your season chart, started.
+Open your Season Comparison Chart. In its Season name row, write each season your Destination Notes list. That is your season chart, started.
 
 ## Steps
 

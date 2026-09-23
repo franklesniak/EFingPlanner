@@ -18,7 +18,7 @@ Make one profile for each traveler on your trip, and interview at least one of t
 
 ## Start Here
 
-Copy the traveler list off your Trip-Basics card onto a fresh page, one line each. You've started.
+Start a Traveler Profile page for the first traveler on your Trip-Basics card. Write who they are to you in its first box. You've started.
 
 ## Steps
 
@@ -72,7 +72,7 @@ You are done when every traveler you could reach has a profile. At least one pro
 
 ## Source Check
 
-No new sources needed unless you looked something up.
+No new sources needed unless you looked something up. The interview answers are family input, so they go on your profile and interview pages.
 
 ## Finish and Quality Check
 

@@ -123,7 +123,7 @@ A conditional-core session names its condition on the same line, in the built fo
 
 ## Writing the body
 
-**Start Here is a true micro-action**, ideally doable in under one minute. Opening a page and writing one word on it is the right size. A Start Here that needs a decision is too big.
+**Start Here is a true micro-action**, ideally doable in under one minute. Opening a page and writing one word on it is the right size. A Start Here that needs a decision is too big. When the session supplies a blank, the micro-action goes on that blank. A first mark on a spare sheet is work the child must copy across or lose.
 
 **An artifact-producing session carries the point-of-use accommodation line**, in the exemplar's form: *"You can say your answers to an adult who writes them, or draw them, if that's easier."*
 

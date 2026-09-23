@@ -20,7 +20,7 @@ Ask one question, answer it from two different websites, and work out which answ
 
 ## Start Here
 
-Write one question at the top of a fresh page. Pick one from the list below, or take one from your destination pack's sample search terms. You've started.
+Write one question in the first box of your Website Notes form. Pick one from the list below, or take one from your destination pack's sample search terms. You've started.
 
 ## Steps
 

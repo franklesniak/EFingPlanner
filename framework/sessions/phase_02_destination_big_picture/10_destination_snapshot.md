@@ -22,7 +22,7 @@ Make one snapshot page of the big facts about your destination.
 
 ## Start Here
 
-Write your destination's name at the top of a fresh page and draw a box for your snapshot. That is your start.
+Write your destination's name at the top of your Destination Snapshot page. That is your start.
 
 ## Steps
 

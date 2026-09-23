@@ -18,7 +18,7 @@ Recommend the best time for your family to visit your destination, and write it 
 
 ## Start Here
 
-Write "My season recommendation" at the top of a fresh page. You are starting your first recommendation.
+Open a Decision Record page and write "My season recommendation" in its Decision box. You are starting your first recommendation.
 
 ## Steps
 

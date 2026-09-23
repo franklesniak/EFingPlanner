@@ -18,7 +18,7 @@ Write down what would make this trip great for your family, and ask each travele
 
 ## Start Here
 
-Write one thing at the top of a fresh page: *One thing that makes any trip fun for me is...* Finish that sentence. You have started.
+Open your Family Trip Goals page. In its first box, finish this sentence: *One thing that makes any trip fun for me is...* You have started.
 
 ## Steps
 
