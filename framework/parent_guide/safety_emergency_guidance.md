@@ -44,7 +44,7 @@ It's a carry-in-pocket safety card, not trip data written down anywhere else. Th
 
 3. **Know the emergency numbers**, and know that an adult, a shop worker, or an official post can call them.
 
-Carry the numbers verify-framed. The destination-specific numbers, the local terms, and any local hazard notes are in your destination pack.
+Carry the numbers verify-framed. Your destination pack is where the destination-specific numbers, the local terms, and any local hazard notes belong. If your pack does not have them yet, take them from a current official source, such as the destination's official tourism or government site, and write the date you checked.
 
 ## Monitoring, insurance, medical coverage
 

@@ -2906,7 +2906,9 @@ pair:
 local hazard awareness, local emergency numbers, local luggage-forwarding services, local
 police-post equivalents, local lodging categories -- belong in the pack's adult-logistics
 reference, which these pages **name generically.** The contract gains a row for each page
-that needs pack facts, so the routing is on the record. (`D-X-2`.)
+that needs pack facts, so the routing is on the record. (`D-X-2`.) **Until a pack carries
+that file, each pointer also names what to do without it:** a current official source,
+checked and dated.
 
 **Origin-layer content is allowed and is US-specific by design.** Passport rules and
 official government references are the *origin* layer, not the destination layer. Keep them
@@ -2956,8 +2958,9 @@ The adult's checklist of everything the child never touches. **Long-lead items f
    "travel authorization" being sold as a scam warning worth checking -- **route the
    destination specifics to the pack**); Visa or entry forms if applicable; Flights; Hotels;
    **Travel insurance -- and for older travelers specifically, check medical and
-   emergency-evacuation coverage**, because US health coverage generally does not work
-   outside the United States (verify with the official source and the traveler's insurer);
+   emergency-evacuation coverage**, because US health coverage may pay little or nothing
+   outside the United States and plans differ (verify with the traveler's insurer and the
+   official source);
    Money and payment plan; Currency and ATM plan; Phone and internet; Health and
    medications; Medication rules if relevant; Emergency contacts; Embassy or consulate
    awareness; Copies of documents; **Meeting-point plan**; Travel advisories; Weather
@@ -3114,8 +3117,10 @@ pulling the child into a booking workflow.**
    neighborhood comparison, the day cards and the budget estimate. **Each arrives only once
    the child has made it.** On First Taste, and early on the Core path, most of the list
    does not exist yet. If booking comes first, the adult works from what does exist: the
-   season recommendation, the city shortlist once Checkpoint 2 has passed, and the rough
-   trip shape recorded at setup.
+   season recommendation, the city shortlist once Checkpoint 2 has passed (on First Taste,
+   the Session 21 city comparison once it is done), and the rough trip shape recorded at
+   setup, with the departure city and the round-trip-or-open-jaw call settled first if
+   setup left them open.
 3. **The three timelines collide, and that is expected.** The booking clock often forces a
    commitment before the child's curriculum-paced route is finished. That is handled by
    setting the rough trip shape early, and by the "we had to book before you finished"

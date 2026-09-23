@@ -20,7 +20,7 @@ Nothing in this curriculum ever tells a child to book, reserve, buy, create an a
 
 The watchlist is the one to read first, once it exists. It's built specifically so you can see what's on a clock.
 
-**If booking arrives before your child has got that far, work from what they have.** On First Taste, and early on the Core path, most of that list has not been made yet: the hotel and neighbourhood comparisons come in Sessions 34 and 35, the day cards in 41, the watchlist in 42. What exists early is the **season recommendation**, the **city shortlist** once Checkpoint 2 has passed, and the **rough trip shape** you recorded at setup. That is enough to book flights and a first hotel against, and it is what the early-booking conversation in the coaching guide assumes you are holding.
+**If booking arrives before your child has got that far, work from what they have.** On First Taste, and early on the Core path, most of that list has not been made yet: the hotel and neighbourhood comparisons come in Sessions 34 and 35, the day cards in 41, the watchlist in 42. What exists early is the **season recommendation**, the **city shortlist** once Checkpoint 2 has passed (on First Taste, the city comparison once Session 21 is done), and the **rough trip shape** you recorded at setup. If that shape still names only the arrival city, settle the departure city and round-trip or open-jaw yourself first, as the [flights page](flights_from_origin_guidance.md) says. Then it is enough to book flights and a first hotel against, and it is what the early-booking conversation in the coaching guide assumes you are holding.
 
 ## Three timelines collide, and that's expected
 

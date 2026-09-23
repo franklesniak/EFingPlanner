@@ -31,7 +31,7 @@ Worth knowing: your child's binder is valuable either way. If you use an agent, 
 - [ ] Visa or entry forms, if applicable
 - [ ] Flights
 - [ ] Hotels
-- [ ] Travel insurance, and for older travelers specifically, medical and emergency-evacuation coverage. US health coverage generally does not work outside the United States. Verify with the official source and with the traveler's own insurer
+- [ ] Travel insurance, and for older travelers specifically, medical and emergency-evacuation coverage. US health coverage may pay little or nothing outside the United States, and plans differ. Verify with the traveler's own insurer and with the official source
 - [ ] Money and payment plan
 - [ ] Currency and ATM plan
 - [ ] Phone and internet
@@ -43,7 +43,7 @@ Worth knowing: your child's binder is valuable either way. If you use an agent, 
 - [ ] Meeting-point plan
 - [ ] Travel advisories
 - [ ] Weather alerts
-- [ ] Local natural-hazard awareness: see your destination pack
+- [ ] Local natural-hazard awareness: see your destination pack, or a current official source for the destination if the pack does not cover it yet
 - [ ] Timed tickets
 - [ ] Restaurant reservations
 - [ ] Transportation bookings
@@ -54,7 +54,7 @@ Three things go beyond stamina, and they are yours to verify:
 
 - **Step-free routing and station elevator availability** on the route you're actually planning
 - **Accessible lodging** — step-free access, and any room or bathroom needs
-- **Luggage handling** for anyone who shouldn't carry bags up stairs: forwarding services, porter help, or lockers. Those are categories; **which ones exist where you are going, and what they are called, is in your destination pack's adult-logistics page**
+- **Luggage handling** for anyone who shouldn't carry bags up stairs: forwarding services, porter help, or lockers. Those are categories; **which ones exist where you are going, and what they are called, is in your destination pack's adult-logistics page**. If your pack does not have that page yet, ask your lodging, or check the official sites of the local transport operators
 
 Your child's job is to *flag* likely trouble spots: a stair-heavy transfer, a hilltop site, a station that may not have a lift. They notice and hand it to you. They don't research the fix.
 
