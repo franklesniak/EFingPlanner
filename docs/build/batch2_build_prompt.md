@@ -1802,8 +1802,7 @@ Compare a few real places to stay for one base, and say which you'd recommend. *
 neutral -- do not write the Destination Notes phrase.**
 
 **The card fields are the rows of the built `hotel_comparison_card.md` (A3), in its
-order**: the union of this session's list and the template's, because neither is a superset
-of the other.
+order.** A3 lists them in full.
 
 **Render as a two-column `Prompt | Your answer` table, one table per card. Do not build a
 seventeen-column grid.** (`D-X-10`.)
