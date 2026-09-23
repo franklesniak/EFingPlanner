@@ -5132,3 +5132,29 @@ def test_the_three_hooks_name_the_same_text_state_elements() -> None:
         None,
         None,
     ]
+
+
+def test_the_three_hooks_share_the_junction_check() -> None:
+    """One rule, three copies, and the copies are the same text.
+
+    The placeholder and readability hooks now walk their trees for links the
+    way this hook does, so each carries the fallback that reads a junction's
+    reparse tag on a Python older than ``Path.is_junction()``.
+    """
+    import importlib.util as _util
+    import inspect
+
+    sources = []
+    for name in (
+        "check-readability.py",
+        "check-session-structure.py",
+        "check-prohibited-placeholders.py",
+    ):
+        path = Path(__file__).resolve().parents[1] / ".github" / "scripts" / name
+        spec = _util.spec_from_file_location(f"junction_{name}", path)
+        assert spec is not None and spec.loader is not None
+        module = _util.module_from_spec(spec)
+        sys.modules[spec.name] = module
+        spec.loader.exec_module(module)
+        sources.append(inspect.getsource(module.path_is_junction))
+    assert sources[0] == sources[1] == sources[2]

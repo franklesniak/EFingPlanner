@@ -2002,3 +2002,75 @@ def test_comments_and_markers_the_page_reads_are_left_alone(
 ) -> None:
     """The over-application controls: a real comment still hides, a real marker exempts."""
     assert _find(document) == [], label
+
+
+def _make_link(kind: str, link: Path, target: Path) -> None:
+    """Create a symbolic link or a Windows junction, or skip the test."""
+    import os
+    import subprocess
+
+    if kind == "junction":
+        if os.name != "nt":
+            pytest.skip("a junction exists only on Windows")
+        subprocess.run(
+            ["cmd", "/c", "mklink", "/J", str(link), str(target)],
+            check=True,
+            capture_output=True,
+        )
+        return
+    try:
+        link.symlink_to(target, target_is_directory=target.is_dir())
+    except (OSError, NotImplementedError):  # pragma: no cover - platform
+        pytest.skip("this environment cannot create a symlink")
+
+
+@pytest.mark.parametrize(
+    ("label", "kind", "where", "target_is_dir"),
+    [
+        ("a symbolic link to a directory", "symlink", "framework/external", True),
+        ("a junction", "junction", "framework/external", True),
+        ("a link whose name is not Markdown", "symlink", "framework/notes.txt", False),
+        ("a scan root that is a link", "symlink", "framework", True),
+        ("a scan root that is a junction", "junction", "framework", True),
+    ],
+)
+def test_the_default_walk_refuses_every_link(
+    tmp_path: Path, capsys: Any, label: str, kind: str, where: str, target_is_dir: bool
+) -> None:
+    """Every link in the walk is refused by name, and nothing behind it is read.
+
+    ``rglob`` passed a linked directory in silence, because its name does not
+    end in ``.md``, so a whole linked subtree was never read and the run exited
+    zero after checking the file beside it. It descended into a junction, and
+    into a scan root that was a link, listing a directory outside the
+    repository before any file in it was refused.
+    """
+    hook = cast(Any, _placeholder_hook)
+    root = tmp_path / "repo"
+    (root / "docs").mkdir(parents=True)
+    (root / "docs" / "real.md").write_text("# T\n\nWords.\n", encoding="utf-8")
+    if where != "framework":
+        (root / "framework").mkdir()
+    outside = tmp_path / "outside"
+    outside.mkdir()
+    (outside / "hidden_note.md").write_text("# T\n\nTBD: here\n", encoding="utf-8")
+    target = outside if target_is_dir else outside / "hidden_note.md"
+    _make_link(kind, root / where, target)
+
+    assert hook.main([], root=root) == 1, label
+    printed = capsys.readouterr()
+    text = printed.out + printed.err
+    assert Path(where).name in text, label
+    assert "hidden_note" not in text, label
+
+
+def test_the_default_walk_passes_a_tree_with_no_link(tmp_path: Path) -> None:
+    """The over-application control: real files and real directories pass."""
+    hook = cast(Any, _placeholder_hook)
+    (tmp_path / "framework" / "nested").mkdir(parents=True)
+    (tmp_path / "framework" / "nested" / "real.md").write_text(
+        "# T\n\nWords.\n", encoding="utf-8"
+    )
+    (tmp_path / "framework" / "notes.txt").write_text("TBD: here\n", encoding="utf-8")
+    assert hook.main([], root=tmp_path) == 0
+    assert [path.name for path in hook.default_targets(tmp_path)] == ["real.md"]

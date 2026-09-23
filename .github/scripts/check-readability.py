@@ -89,6 +89,7 @@ import argparse
 import json
 import os
 import re
+import stat
 import sys
 import unicodedata
 from collections.abc import Iterable, Sequence
@@ -983,6 +984,20 @@ class FileScore:
         if self.warnings:
             return "warn"
         return "ok"
+
+
+class LinkRefusal(RuntimeError):
+    """Raised when a scanned tree holds a link, which this check refuses to follow."""
+
+    def __init__(self, entries: Sequence[str]) -> None:
+        super().__init__(
+            ", ".join(entries[:5])
+            + ": a symbolic link, a junction or an unreadable directory in the "
+            "scanned trees. This check reads only real files inside the "
+            "repository, and a link can point anywhere, so the run refuses "
+            "rather than scoring the rest. Replace the link with the file it "
+            "points at."
+        )
 
 
 class FileReadError(RuntimeError):
@@ -5557,6 +5572,95 @@ def has_adult_marker(text: str) -> bool:
     return AUDIENCE_ADULT_PATTERN.search(document_marker_text(text)) is not None
 
 
+#: The trees the default scan reads: each include glob up to its first
+#: wildcard. ``linked_entries`` walks these before any glob runs.
+DEFAULT_WALK_ROOTS = tuple(
+    dict.fromkeys(
+        re.match(r"[^*]*/", pattern).group(0).rstrip("/")
+        for pattern in DEFAULT_INCLUDE_GLOBS
+    )
+)
+
+
+def path_is_junction(path: Path) -> bool:
+    """Return whether ``path`` is a Windows junction, on any supported Python.
+
+    ``Path.is_junction()`` arrived in Python 3.12. ``CONTRIBUTING.md`` asks for
+    "a working Python 3 interpreter" and names no minimum, so on 3.10 or 3.11
+    a direct call raised ``AttributeError`` before the hook read its first file.
+    A guard that refuses to run is not a guard.
+
+    Falling back to ``False`` would be worse than the crash, because it turns a
+    loud failure into a silent hole in a check this repository relies on to
+    reject link escapes. So the reparse tag is read directly, which is the same
+    question ``is_junction()`` asks. ``st_reparse_tag`` exists only on Windows,
+    and junctions exist only on Windows, so its absence is a real ``False``.
+    """
+    checker = getattr(path, "is_junction", None)
+    if checker is not None:
+        return bool(checker())
+    try:
+        tag = getattr(path.lstat(), "st_reparse_tag", None)
+    except (OSError, ValueError):
+        return False
+    return tag is not None and tag == getattr(stat, "IO_REPARSE_TAG_MOUNT_POINT", None)
+
+
+def linked_ancestor(path: Path, root: Path) -> list[str]:
+    """Return the first link between ``root`` and ``path``, inclusive, or nothing.
+
+    A tree whose parent is a link is read through that link, and walking the
+    tree alone never sees it: with ``framework`` linked elsewhere, every tree
+    under it is outside the repository while each looks like an ordinary
+    directory.
+    """
+    try:
+        parts = path.relative_to(root).parts
+    except ValueError:
+        return []
+    for depth in range(1, len(parts) + 1):
+        step = root.joinpath(*parts[:depth])
+        if step.is_symlink() or path_is_junction(step):
+            return [step.relative_to(root).as_posix()]
+    return []
+
+
+def linked_entries(directory: Path, root: Path) -> list[str]:
+    """Return every link under ``directory``, as a path relative to ``root``.
+
+    ``directory`` itself counts when it is a link, and so does a directory that
+    cannot be listed. A glob answered only "what matched": it dropped a linked
+    Markdown file after ``resolve_candidate_path`` declined it, it never said
+    that a linked directory's subtree was left unread, and a Windows junction
+    was descended into. Every one of those runs reported success on the files
+    beside the link. So the trees are walked first, links are never followed,
+    and any link at all refuses the run. The session-structure hook walks its
+    tree the same way.
+    """
+
+    def label(path: Path) -> str:
+        try:
+            return path.relative_to(root).as_posix()
+        except ValueError:
+            return path.as_posix()
+
+    if directory.is_symlink() or path_is_junction(directory):
+        return [label(directory)]
+    if not directory.is_dir():
+        return []
+    try:
+        entries = sorted(directory.iterdir(), key=lambda entry: entry.name)
+    except OSError:
+        return [label(directory)]
+    found: list[str] = []
+    for entry in entries:
+        if entry.is_symlink() or path_is_junction(entry):
+            found.append(label(entry))
+        elif entry.is_dir():
+            found.extend(linked_entries(entry, root))
+    return found
+
+
 def default_paths(root: Path) -> list[Path]:
     """Return every child-facing Markdown file in the repository."""
     found: set[Path] = set()
@@ -5627,6 +5731,28 @@ def resolve_paths(path_arguments: Sequence[str], root: Path) -> list[tuple[Path,
 
     candidates: list[Path] = []
     in_scope: set[Path] | None = None
+    # A walk -- the default scan, or a directory argument, which selects from
+    # the default scan -- reads the default trees, so a link in them refuses
+    # the run before any glob follows it. A file named on the command line is
+    # read alone and needs no walk.
+    walked = [
+        Path(os.path.normpath(root / argument))
+        for argument in path_arguments
+    ]
+    if not path_arguments or any(candidate.is_dir() for candidate in walked):
+        trees = [root / base for base in DEFAULT_WALK_ROOTS] + [
+            candidate
+            for candidate in walked
+            if (candidate.is_dir() or path_is_junction(candidate))
+            and candidate.is_relative_to(root)
+        ]
+        refused: list[str] = []
+        for tree in trees:
+            # A link at or above the tree is refused before the tree is
+            # listed, so nothing behind it is read.
+            refused += linked_ancestor(tree, root) or linked_entries(tree, root)
+        if refused:
+            raise LinkRefusal(list(dict.fromkeys(refused)))
     if not path_arguments:
         candidates.extend(default_paths(root))
     else:
@@ -5816,7 +5942,7 @@ def main(argv: Sequence[str] | None = None, root: Path = REPO_ROOT) -> int:
 
     try:
         scores = scan_files(args.paths, root=root)
-    except FileReadError as error:
+    except (FileReadError, LinkRefusal) as error:
         print(error, file=sys.stderr)
         return 1
 

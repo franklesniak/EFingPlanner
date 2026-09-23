@@ -4755,8 +4755,8 @@ def path_is_junction(path: Path) -> bool:
 
     ``Path.is_junction()`` arrived in Python 3.12. ``CONTRIBUTING.md`` asks for
     "a working Python 3 interpreter" and names no minimum, so on 3.10 or 3.11
-    this hook raised ``AttributeError`` before it read its first file. A guard
-    that refuses to run is not a guard.
+    a direct call raised ``AttributeError`` before the hook read its first file.
+    A guard that refuses to run is not a guard.
 
     Falling back to ``False`` would be worse than the crash, because it turns a
     loud failure into a silent hole in a check this repository relies on to

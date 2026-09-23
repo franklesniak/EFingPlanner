@@ -246,7 +246,23 @@ TRACKER_IDENTIFIER = r"(?:[A-Za-z][A-Za-z0-9]*-\d+|\d+)"
 #: so the hash is a reference anyone can follow, not an opaque pointer. Only a
 #: full forty-character hash is excused, because Actions accepts nothing
 #: shorter as an immutable pin.
-ACTION_PIN_BEFORE = re.compile(r"(?<![\w./-])[A-Za-z0-9][A-Za-z0-9-]*/[A-Za-z0-9_.-]+(?:/[A-Za-z0-9_./-]+)?@\Z")
+#:
+#: **Only a pin that could resolve, and only where a workflow declares one.**
+#: The owner is a GitHub account name -- letters, digits and single hyphens,
+#: neither first nor last, at most 39 characters -- and the repository name is
+#: letters, digits, ``.``, ``_`` and ``-``, and is neither ``.`` nor ``..``. A
+#: name that breaks either rule names no repository GitHub could resolve the
+#: pin in. And the pin must be the value of a ``uses:`` key, which is where a
+#: workflow declares a dependency: the same characters in prose declare
+#: nothing, and a hash written after them is a commit like any other. Measured
+#: over the scanned files, all 31 pins this exempts are ``uses:`` values.
+#: https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsuses
+ACTION_PIN_BEFORE = re.compile(
+    r"(?<![\w-])uses\s*:\s*" "[\"']?"
+    r"[A-Za-z0-9](?:[A-Za-z0-9]|-(?=[A-Za-z0-9])){0,38}"
+    r"/(?!\.\.?[/@])[A-Za-z0-9_.-]{1,100}"
+    r"(?:/[A-Za-z0-9_.-]+)*@\Z"
+)
 #: A tracker noun sitting immediately in front of a hash, which means the
 #: reference belongs to that noun's pattern rather than to the bare one.
 TRACKER_NOUN_BEFORE = re.compile(
@@ -705,6 +721,10 @@ COMMENT_FRAGMENT_PREFIXES = (
 #: ``example.org`` are not here: they resolve on the public internet, and this
 #: suite's own samples use them to stand for a public tracker.
 #: https://www.iana.org/assignments/special-use-domain-names/
+#: One label of a DNS host name, after IDNA encoding: letters, digits and
+#: hyphens, one to 63 of them, with no hyphen first or last.
+#: https://www.rfc-editor.org/rfc/rfc1123#section-2.1
+DNS_LABEL = re.compile(r"[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?")
 NON_PUBLIC_NAMES = (
     "localhost",
     "invalid",
@@ -755,13 +775,30 @@ def url_is_public(url: str) -> bool:
     candidate as a path, so that form is read with ``http://`` in front, and
     ``www./issues/27`` then names the one-label host ``www``. A URL this
     cannot parse, or one with no host, names nothing public.
+
+    **The whole authority has to be well formed, not only the host name.**
+    ``urlsplit`` hands back a host name for ``github.com:bad`` and never says
+    that the port is not a number until ``.port`` is asked for, and it hands
+    back ``tracker..com`` as it stands. A browser refuses both, so neither is a
+    link anyone can follow. So the port must be a number from 1 to 65535, and
+    every label of the name, after IDNA encoding, must be a DNS label: letters,
+    digits and hyphens, one to 63 of them, with no hyphen first or last, and at
+    most 253 characters in all.
     https://docs.python.org/3/library/ipaddress.html#ipaddress.IPv4Address.is_global
+    https://docs.python.org/3/library/urllib.parse.html#urllib.parse.urlsplit
     https://www.rfc-editor.org/rfc/rfc6761
+    https://www.rfc-editor.org/rfc/rfc1123#section-2.1
     """
     if url[:4].lower() == "www.":
         url = "http://" + url
     parts = split_url(url)
     if parts is None or parts.scheme.lower() not in ("http", "https"):
+        return False
+    try:
+        port = parts.port
+    except ValueError:
+        return False
+    if port == 0:
         return False
     host = (parts.hostname or "").rstrip(".").lower()
     if not host:
@@ -770,8 +807,17 @@ def url_is_public(url: str) -> bool:
         return ipaddress.ip_address(host).is_global
     except ValueError:
         pass
-    labels = host.split(".")
-    if len(labels) < 2 or not any(character.isalpha() for character in labels[-1]):
+    try:
+        ascii_host = host.encode("idna").decode("ascii")
+    except UnicodeError:
+        return False
+    labels = ascii_host.split(".")
+    if (
+        len(ascii_host) > 253
+        or len(labels) < 2
+        or not all(DNS_LABEL.fullmatch(label) for label in labels)
+        or not any(character.isalpha() for character in labels[-1])
+    ):
         return False
     return not any(
         host == name or host.endswith("." + name) for name in NON_PUBLIC_NAMES
@@ -1126,7 +1172,9 @@ LIST_ITEM_START = re.compile(r"^\s*(?:(?:#|//|--|;)+\s*)?(?:\d{1,9}[.)]|[-*+])\s
 #: noun and the number.
 #: One pass, left to right, so an escaped or a decoded delimiter stays a
 #: character, as CommonMark keeps it. A delimiter becomes a space rather than
-#: nothing, so two words it separated stay two words. A code span's own
+#: nothing, so two words it separated stay two words. An underscore between two
+#: letters or digits is part of the word, because CommonMark never opens or
+#: closes emphasis there: ``my_action`` stays one name. A code span's own
 #: content is not kept apart: CommonMark prints a character reference there as
 #: it stands, and this decodes it, which can report more and never less.
 #: https://spec.commonmark.org/0.31.2/#entity-and-numeric-character-references
@@ -1134,7 +1182,8 @@ LIST_ITEM_START = re.compile(r"^\s*(?:(?:#|//|--|;)+\s*)?(?:\d{1,9}[.)]|[-*+])\s
 RENDERED_TEXT_PATTERN = re.compile(
     r"\\([!-/:-@\[-`{-~])"
     r"|(&(?:#[0-9]{1,7}|#[xX][0-9A-Fa-f]{1,6}|[A-Za-z][A-Za-z0-9]{1,31});)"
-    r"|</?[A-Za-z][A-Za-z0-9-]*(?:\s[^<>]*)?/?>|[*_~`]+"
+    r"|</?[A-Za-z][A-Za-z0-9-]*(?:\s[^<>]*)?/?>|[*~`]+"
+    r"|(?<![^\W_])_+|_+(?![^\W_])"
 )
 
 
@@ -3006,3 +3055,62 @@ def test_a_compound_word_is_not_a_review_round(tmp_path: Path) -> None:
         "# the " + noun + ", then the next",
     ):
         assert _reported(tmp_path, body, ".py"), body
+
+
+def test_a_url_authority_must_be_well_formed(tmp_path: Path) -> None:
+    """A host name ``urlsplit`` hands back is not proof of a link a browser opens.
+
+    ``urlsplit`` reads ``github.com`` out of ``github.com:bad`` and says nothing
+    of the port until it is asked, and it hands back ``tracker..com`` as it
+    stands. Neither opens in a browser, and each resolved the reference beside
+    it.
+    """
+    reference = "issue" + " " + "27"
+    path = "/o/r/issues/" + "27"
+    for authority in (
+        "github.com:bad",
+        "github.com:99999",
+        "github.com:0",
+        "tracker..com",
+        "-github.com",
+        "github-.com",
+        "git_hub.com",
+        "a" * 64 + ".com",
+        ("a" * 60 + ".") * 5 + "com",
+    ):
+        url = "https://" + authority + path
+        assert not url_is_public(url), authority
+        assert _reported(tmp_path, reference + " " + url), authority
+    for authority in ("github.com:443", "github.com", "xn--bcher-kva.example.com"):
+        assert url_is_public("https://" + authority + path), authority
+    assert url_is_public("https://b" + chr(252) + "cher.example.com" + path)
+
+
+def test_an_action_pin_is_excused_only_as_a_resolvable_uses_value(
+    tmp_path: Path,
+) -> None:
+    """A pin is a reference only where a workflow declares it, to a real name.
+
+    An owner that ends in a hyphen, or holds two in a row, is no GitHub
+    account, and a repository named ``..`` is none either, so no pin to them
+    resolves. And the same characters in prose declare no dependency: the hash
+    after them is a commit like any other.
+    """
+    full = ("0123456789" + "abcdef") * 2 + "01234567"
+    for body, suffix in (
+        ("- uses: invalid-/repo@" + full, ".yml"),
+        ("- uses: a--b/repo@" + full, ".yml"),
+        ("- uses: owner/..@" + full, ".yml"),
+        ("see invalid-/repo@" + full, ".yml"),
+        ("we pinned actions/checkout@" + full + " last week", ".md"),
+        ("# actions/checkout@" + full, ".py"),
+    ):
+        assert _reported(tmp_path, body, suffix), body
+    for body, suffix in (
+        ("      - uses: actions/checkout@" + full + " # v7.0.1", ".yml"),
+        ("  uses: 'actions/checkout@" + full + "'", ".yml"),
+        ('  uses: "owner/repo/.github/workflows/ci.yml@' + full + '"', ".yml"),
+        ("      - uses: my-org/my_action@" + full, ".md"),
+        ("uses: my-org/.github@" + full, ".yml"),
+    ):
+        assert not _reported(tmp_path, body, suffix), body

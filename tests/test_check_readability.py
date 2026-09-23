@@ -601,7 +601,7 @@ def test_resolve_paths_keeps_an_in_repository_path(tmp_path: Path) -> None:
 
 
 def test_scan_files_refuses_a_symlink_that_leaves_the_repository(tmp_path: Path) -> None:
-    """A symlink in a scanned tree cannot read a file outside the repository."""
+    """A symlink in a scanned tree refuses the run, and nothing behind it is read."""
     root = tmp_path / "repo"
     session_dir = root / "framework" / "sessions"
     session_dir.mkdir(parents=True)
@@ -617,14 +617,17 @@ def test_scan_files_refuses_a_symlink_that_leaves_the_repository(tmp_path: Path)
     except OSError:
         pytest.skip("this platform does not allow symlink creation")
 
-    scores = readability.scan_files([], root=root)
+    # **The run is refused, and the link is named.** This used to assert that
+    # the link was dropped and the ordinary file scored -- a run that reported
+    # success on the files beside a link it never read.
+    with pytest.raises(readability.LinkRefusal, match="link.md"):
+        readability.scan_files([], root=root)
 
-    # The positive control: the scan really ran and really found the ordinary
-    # file. Asserting only that the link is absent would pass on a scan that
-    # silently found nothing at all.
-    scored = {score.display_path for score in scores}
-    assert "framework/sessions/01_real.md" in scored
-    assert not any("link.md" in path for path in scored)
+    # The positive control: with the link gone, the scan really runs and
+    # really finds the ordinary file.
+    (session_dir / "link.md").unlink()
+    scored = {score.display_path for score in readability.scan_files([], root=root)}
+    assert scored == {"framework/sessions/01_real.md"}
 
 
 def _make_unreadable(monkeypatch: Any, name: str) -> None:
@@ -7281,3 +7284,110 @@ def test_a_text_state_tag_the_page_never_meets_is_scored_as_before(
     """The over-application controls: each is characters on the page, or modelled."""
     assert readability.text_state_failure(document, "x.md") is None, label
     assert readability.score_text(document, "x.md").status == "ok", label
+
+
+def _make_link(kind: str, link: Path, target: Path) -> None:
+    """Create a symbolic link or a Windows junction, or skip the test."""
+    import os
+    import subprocess
+
+    if kind == "junction":
+        if os.name != "nt":
+            pytest.skip("a junction exists only on Windows")
+        subprocess.run(
+            ["cmd", "/c", "mklink", "/J", str(link), str(target)],
+            check=True,
+            capture_output=True,
+        )
+        return
+    try:
+        link.symlink_to(target, target_is_directory=target.is_dir())
+    except (OSError, NotImplementedError):  # pragma: no cover - platform
+        pytest.skip("this environment cannot create a symlink")
+
+
+#: Forty-eight words of plain prose in short sentences, enough to be scored.
+LINK_TEST_PROSE = " ".join(["We plan the trip and pack the bags for the ride home."] * 4)
+
+
+@pytest.mark.parametrize(
+    ("label", "kind", "where", "target_is_dir", "arguments"),
+    [
+        ("a linked Markdown file", "symlink", "framework/sessions/linked.md", False, []),
+        ("a symbolic link to a directory", "symlink", "framework/sessions/extra", True, []),
+        ("a junction", "junction", "framework/sessions/extra", True, []),
+        ("a scanned tree that is a link", "symlink", "framework/templates", True, []),
+        ("a link reached through a directory argument", "symlink",
+         "framework/sessions/extra", True, ["framework/sessions"]),
+    ],
+)
+def test_a_link_in_the_scanned_trees_refuses_the_run(
+    tmp_path: Path,
+    capsys: Any,
+    label: str,
+    kind: str,
+    where: str,
+    target_is_dir: bool,
+    arguments: list[str],
+) -> None:
+    """A link is refused by name, and the run fails rather than scoring the rest.
+
+    The glob this walk used answered only "what matched": a linked Markdown
+    file was dropped after the resolver declined it, a linked directory's
+    subtree was never read, and a junction was descended into. Each run
+    scored the ordinary file beside the link and passed.
+    """
+    root = tmp_path / "repo"
+    (root / "framework" / "sessions").mkdir(parents=True)
+    (root / "framework" / "sessions" / "01_real.md").write_text(
+        LINK_TEST_PROSE, encoding="utf-8"
+    )
+    outside = tmp_path / "outside"
+    outside.mkdir()
+    (outside / "hidden_page.md").write_text(LINK_TEST_PROSE, encoding="utf-8")
+    target = outside if target_is_dir else outside / "hidden_page.md"
+    _make_link(kind, root / where, target)
+
+    assert readability.main(arguments, root=root) == 1, label
+    printed = capsys.readouterr()
+    assert Path(where).name in printed.err, label
+    assert "hidden_page" not in printed.out + printed.err, label
+
+
+def test_a_link_above_a_scanned_tree_refuses_the_run(tmp_path: Path, capsys: Any) -> None:
+    """A tree whose parent is a link is read through the link.
+
+    With ``framework`` itself linked elsewhere, ``framework/sessions`` is an
+    ordinary-looking directory outside the repository, and a walk that starts
+    at the tree never sees the link above it.
+    """
+    root = tmp_path / "repo"
+    root.mkdir()
+    outside = tmp_path / "outside"
+    (outside / "sessions").mkdir(parents=True)
+    (outside / "sessions" / "hidden_page.md").write_text(LINK_TEST_PROSE, encoding="utf-8")
+    _make_link("symlink", root / "framework", outside)
+    assert readability.main([], root=root) == 1
+    printed = capsys.readouterr()
+    assert "framework" in printed.err
+    assert "hidden_page" not in printed.out + printed.err
+
+
+def test_a_link_outside_the_scanned_trees_is_not_this_check_s_business(
+    tmp_path: Path,
+) -> None:
+    """The over-application control: only the trees the scan reads are walked.
+
+    A parent guide is adult-facing and never scored, so a link there is the
+    placeholder hook's to refuse, not this one's.
+    """
+    root = tmp_path / "repo"
+    (root / "framework" / "sessions").mkdir(parents=True)
+    (root / "framework" / "parent_guide").mkdir(parents=True)
+    (root / "framework" / "sessions" / "01_real.md").write_text(
+        LINK_TEST_PROSE, encoding="utf-8"
+    )
+    outside = tmp_path / "outside.md"
+    outside.write_text(LINK_TEST_PROSE, encoding="utf-8")
+    _make_link("symlink", root / "framework" / "parent_guide" / "linked.md", outside)
+    assert readability.main([], root=root) == 0

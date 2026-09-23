@@ -10,6 +10,7 @@ from __future__ import annotations
 import argparse
 import json
 import re
+import stat
 import sys
 from collections.abc import Iterable, Sequence
 from dataclasses import dataclass, field
@@ -2219,6 +2220,79 @@ def scan_files(path_arguments: Iterable[str | Path], root: Path = REPO_ROOT) -> 
     return violations
 
 
+def path_is_junction(path: Path) -> bool:
+    """Return whether ``path`` is a Windows junction, on any supported Python.
+
+    ``Path.is_junction()`` arrived in Python 3.12. ``CONTRIBUTING.md`` asks for
+    "a working Python 3 interpreter" and names no minimum, so on 3.10 or 3.11
+    a direct call raised ``AttributeError`` before the hook read its first file.
+    A guard that refuses to run is not a guard.
+
+    Falling back to ``False`` would be worse than the crash, because it turns a
+    loud failure into a silent hole in a check this repository relies on to
+    reject link escapes. So the reparse tag is read directly, which is the same
+    question ``is_junction()`` asks. ``st_reparse_tag`` exists only on Windows,
+    and junctions exist only on Windows, so its absence is a real ``False``.
+    """
+    checker = getattr(path, "is_junction", None)
+    if checker is not None:
+        return bool(checker())
+    try:
+        tag = getattr(path.lstat(), "st_reparse_tag", None)
+    except (OSError, ValueError):
+        return False
+    return tag is not None and tag == getattr(stat, "IO_REPARSE_TAG_MOUNT_POINT", None)
+
+
+def walk_scan_root(directory: Path, root: Path, found: list[Path]) -> None:
+    """Add every scan target under ``directory`` to ``found``, and every entry to refuse.
+
+    This replaces ``rglob``, which answered only "what matched". It passed a
+    symbolic link to a directory without a word, because the link's name does
+    not end in ``.md``, so a linked subtree was never read and the run still
+    passed. And it descended into a Windows junction, reading a directory
+    outside the repository before any file in it was refused. Here every link
+    -- a symbolic link or a junction, to a file or a directory, whatever its
+    name -- is offered for refusal and never followed, and a directory that
+    cannot be listed is offered too, because an unreadable directory is not an
+    empty one. ``resolve_candidate_path`` declines all three, and ``main``
+    refuses the run by name. The session-structure hook walks its tree the same
+    way.
+    """
+    try:
+        entries = sorted(directory.iterdir(), key=lambda entry: entry.name)
+    except OSError:
+        found.append(directory)
+        return
+    for entry in entries:
+        if entry.is_symlink() or path_is_junction(entry):
+            found.append(entry)
+            continue
+        relative_path = entry.relative_to(root)
+        if any(
+            (relative_path.as_posix() + "/").startswith(prefix)
+            for prefix in DEFAULT_SCAN_EXCLUDES
+        ):
+            continue
+        if entry.is_dir():
+            walk_scan_root(entry, root, found)
+            continue
+        # The suffix is compared in lower case, so a file named with an
+        # uppercase suffix is selected here as ``resolve_candidate_path``
+        # accepts it when the same file is named on the command line. The
+        # pre-commit hook's own ``files:`` regex is lowercase-only, and that
+        # is a separate repair.
+        if not entry.is_file() or entry.suffix.lower() != ".md":
+            continue
+        # **Ask the same scope question the resolver asks.** A changelog
+        # under a scan root is a designed exclusion rather than a problem,
+        # and offering it here meant the caller could not tell a path
+        # refused by design from one refused at the boundary.
+        if not is_scan_target(relative_path):
+            continue
+        found.append(entry)
+
+
 def default_targets(root: Path) -> list[Path]:
     """Return every Markdown file under the scan roots, for a run given none.
 
@@ -2234,42 +2308,21 @@ def default_targets(root: Path) -> list[Path]:
     found: list[Path] = []
     for name in SCAN_TARGET_ROOTS:
         directory = root / name
+        # A scan root that is itself a link is refused before anything is
+        # read through it. ``rglob`` followed it and listed the target first.
+        if directory.is_symlink() or path_is_junction(directory):
+            found.append(directory)
+            continue
         if not directory.is_dir():
             continue
-        for path in sorted(directory.rglob("*")):
-            # A symlink is not a file this scan may follow, and it is
-            # **offered rather than skipped** so the run refuses it by name.
-            # Skipping it left the empty-corpus guard unfired whenever one
-            # ordinary file sat beside it, so a committed symlink walked past
-            # the gate and the run reported success having never opened it.
-            # ``resolve_candidate_path`` declines it and ``main`` reports the
-            # refusal, which is the loud answer rather than the silent one.
-            if path.is_symlink():
-                if path.name.lower().endswith(".md"):
-                    found.append(path)
-                continue
-            # ``rglob("*.md")`` matches the suffix case-sensitively, so on a
-            # case-sensitive filesystem a file named with an uppercase suffix
-            # was never selected -- while ``resolve_candidate_path`` accepts it
-            # when the same file is named on the command line, so the two
-            # entry points disagreed about the same file. The pre-commit hook's
-            # own ``files:`` regex is lowercase-only for the same reason and is
-            # a separate repair.
-            if not path.is_file() or path.suffix.lower() != ".md":
-                continue
-            relative_path = path.relative_to(root)
-            if any(
-                relative_path.as_posix().startswith(prefix)
-                for prefix in DEFAULT_SCAN_EXCLUDES
-            ):
-                continue
-            # **Ask the same scope question the resolver asks.** A changelog
-            # under a scan root is a designed exclusion rather than a problem,
-            # and offering it here meant the caller could not tell a path
-            # refused by design from one refused at the boundary.
-            if not is_scan_target(relative_path):
-                continue
-            found.append(path)
+        # A symlink is not a file this scan may follow, and it is **offered
+        # rather than skipped** so the run refuses it by name. Skipping it left
+        # the empty-corpus guard unfired whenever one ordinary file sat beside
+        # it, so a committed link walked past the gate and the run reported
+        # success having never opened it.
+        root_found: list[Path] = []
+        walk_scan_root(directory, root, root_found)
+        found.extend(sorted(root_found))
     return found
 
 
@@ -2319,8 +2372,9 @@ def main(argv: Sequence[str] | None = None, root: Path = REPO_ROOT) -> int:
         # root -- and a scan that cannot read what it found must say so rather
         # than report a clean count of the rest.
         print(
-            "these paths were found by the default walk and cannot be read, so "
-            "this run refuses to report on them: " + ", ".join(refused[:5]),
+            "these paths were found by the default walk and are links, "
+            "unreadable directories or paths outside the repository, so this "
+            "run refuses to report on them: " + ", ".join(refused[:5]),
             file=sys.stderr,
         )
         return 1
