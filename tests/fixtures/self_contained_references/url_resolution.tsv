@@ -40,3 +40,9 @@ resolves	# blocked on #27 https://github.com/o/r/issues/27
 refuses	# blocked on #27, see https://example.com/releases/27
 resolves	# landed upstream in commit deadbee https://github.com/o/r/commit/deadbee0123
 refuses	# landed upstream in commit deadbee, see https://example.com/releases/deadbee
+refuses	# see issues 27 and 28 https://github.com/o/r/issues/27
+resolves	# see issues 27 and 28 https://github.com/o/r/issues/27 https://github.com/o/r/issues/28
+resolves	# tracked as GH-22 https://github.com/o/r/issues/22
+refuses	# tracked as GH-22, see https://github.com/o/r/issues/23
+refuses	# issue 27 https://github.com/o/r/issues/27/../28
+resolves	# issue 27 https://github.com/o/r/issues/./27

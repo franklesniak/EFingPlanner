@@ -26,3 +26,5 @@
 # settled in round-4
 # landed upstream in commit #abc1234
 # landed upstream in commit deadbee
+# fixed in PRs 22 and 23
+# tracked as GH-22 in the old tracker

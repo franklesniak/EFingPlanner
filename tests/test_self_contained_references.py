@@ -76,7 +76,9 @@ beside it:
 - *Which files.* Every file Git lists. A file Git calls text must decode as
   UTF-8 or the scan fails; a file Git calls binary is skipped; a link is
   refused. A file is Markdown when GitHub would render it as Markdown, by its
-  suffix in any case (``MARKDOWN_SUFFIXES``).
+  suffix in any case (``MARKDOWN_SUFFIXES``). Other markup GitHub renders --
+  reStructuredText, AsciiDoc, Org -- is read as plain text, so a comment in it
+  hides nothing from this scan; the repository holds none.
 - *What is a link.* A URL ``url_is_public()`` accepts, and nothing else. Only
   such a URL resolves a reference, and only such a URL is taken out of the
   text before the patterns read it (``blank_urls``).
@@ -279,9 +281,13 @@ TRACKER_IDENTIFIER = r"(?:[A-Za-z][A-Za-z0-9]*-\d+|\d+)"
 #: workflow declares a dependency: the same characters in prose declare
 #: nothing, and a hash written after them is a commit like any other. Measured
 #: over the scanned files, all 31 pins this exempts are ``uses:`` values.
+#: **The key starts its line**, after indentation and an optional list dash,
+#: as a YAML key does. Anywhere else -- ``this prose uses: owner/repo@...``, or
+#: a comment that quotes a step -- the same characters declare nothing. All 31
+#: pins in the corpus start their line this way.
 #: https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsuses
 ACTION_PIN_BEFORE = re.compile(
-    r"(?<![\w-])uses\s*:\s*" "[\"']?"
+    r"^[ \t]*(?:-[ \t]+)?uses[ \t]*:[ \t]*" "[\"']?"
     r"[A-Za-z0-9](?:[A-Za-z0-9]|-(?=[A-Za-z0-9])){0,38}"
     r"/(?!\.\.?[/@])[A-Za-z0-9_.-]{1,100}"
     r"(?:/[A-Za-z0-9_.-]+)*@\Z"
@@ -294,7 +300,7 @@ TRACKER_NOUN_BEFORE = re.compile(
     # reader cannot see
     # and is deliberately never resolvable by a URL, so letting the bare-hash
     # spelling claim it let an unrelated issue link excuse one.
-    r"(?i)(?:PR|pull request|issues?|tickets?|projects?|rounds?)\s*[:#]?\s*$"
+    r"(?i)(?:PRs?|pull requests?|issues?|tickets?|projects?|rounds?)\s*[:#]?\s*$"
 )
 TRACKER_SEPARATOR = r"\s*:?\s*#?\s*"
 #: The words that name a commit, as they stand in front of its hash: ``commit``
@@ -347,6 +353,17 @@ ORDINAL_DIGITS = r"\d+(?:st|nd|rd|th)"
 #: still a label, and the two numbered patterns read that form themselves.
 ROUND_NOUN_END = r"\b(?!-[A-Za-z])"
 
+#: More identifiers after the first, joined by a comma, ``and``, ``or`` or an
+#: ampersand. A noun followed by two numbers names two resources, and a link to
+#: the first does not link the second, so each one after the noun is read and
+#: each has to be linked. Measured: no noun in the corpus is followed by a list
+#: today.
+def tracker_list(identifier: str) -> str:
+    """Return a pattern for one identifier and any list of them after it."""
+    joiner = r"(?:\s*,\s*(?:and\s+|or\s+)?|\s+and\s+|\s+or\s+|\s*&\s*)#?\s*"
+    return identifier + "(?:" + joiner + identifier + ")*"
+
+
 REVIEW_HISTORY_PATTERNS = (
     (
         "a numbered review round",
@@ -393,7 +410,19 @@ REVIEW_HISTORY_PATTERNS = (
     ),
     (
         "an unlinked pull request",
-        re.compile(r"(?i)\b(?:PR|pull request)" + TRACKER_SEPARATOR + r"\d+\b"),
+        # The noun may be plural: the plural of either spelling names pull
+        # requests as surely as the singular does.
+        re.compile(
+            r"(?i)\b(?:PRs?|pull requests?)" + TRACKER_SEPARATOR + tracker_list(r"\d+") + r"\b"
+        ),
+    ),
+    (
+        "a GitHub shorthand reference",
+        # GitHub links ``GH-`` and a number to the issue or pull request of
+        # that number in the same repository, as it links a hash and a number:
+        # the same pointer in another spelling.
+        # https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/autolinked-references-and-urls#issues-and-pull-requests
+        re.compile(r"(?i)(?<![\w/-])GH-\d+\b"),
     ),
     # A hash and a number with no noun in front of it. Measured over the 235
     # scanned files, this reports five occurrences in two files and nothing
@@ -429,7 +458,9 @@ REVIEW_HISTORY_PATTERNS = (
     ),
     (
         "an unlinked issue",
-        re.compile(r"(?i)\bissues?" + TRACKER_SEPARATOR + TRACKER_IDENTIFIER + r"\b"),
+        re.compile(
+            r"(?i)\bissues?" + TRACKER_SEPARATOR + tracker_list(TRACKER_IDENTIFIER) + r"\b"
+        ),
     ),
     # The rule forbids "Ticket, issue, or project IDs that resolve only inside
     # a private or external tracker", and only one of those three words was
@@ -437,11 +468,15 @@ REVIEW_HISTORY_PATTERNS = (
     # this closes a spelling rather than widening the net.
     (
         "an unlinked ticket",
-        re.compile(r"(?i)\btickets?" + TRACKER_SEPARATOR + TRACKER_IDENTIFIER + r"\b"),
+        re.compile(
+            r"(?i)\btickets?" + TRACKER_SEPARATOR + tracker_list(TRACKER_IDENTIFIER) + r"\b"
+        ),
     ),
     (
         "an unlinked project item",
-        re.compile(r"(?i)\bprojects?" + TRACKER_SEPARATOR + TRACKER_IDENTIFIER + r"\b"),
+        re.compile(
+            r"(?i)\bprojects?" + TRACKER_SEPARATOR + tracker_list(TRACKER_IDENTIFIER) + r"\b"
+        ),
     ),
     # Two spellings, because neither covers the other. The numeric window
     # catches a bare identifier written with no context at all, which is the
@@ -859,10 +894,19 @@ def url_is_public(url: str) -> bool:
         return ipaddress.ip_address(host).is_global
     except ValueError:
         pass
+    # **Every question below is asked of the name a browser would look up.**
+    # IDNA maps full-width letters and the ideographic full stop to their
+    # ASCII forms, so ``tracker.`` followed by full-width ``invalid`` is the
+    # reserved ``tracker.invalid`` to a browser. The reserved-name test used
+    # to read the host as written, and let it through.
     try:
-        ascii_host = host.encode("idna").decode("ascii")
+        ascii_host = host.encode("idna").decode("ascii").rstrip(".").lower()
     except UnicodeError:
         return False
+    try:
+        return ipaddress.ip_address(ascii_host).is_global
+    except ValueError:
+        pass
     labels = ascii_host.split(".")
     if (
         len(ascii_host) > 253
@@ -872,12 +916,15 @@ def url_is_public(url: str) -> bool:
     ):
         return False
     return not any(
-        host == name or host.endswith("." + name) for name in NON_PUBLIC_NAMES
+        ascii_host == name or ascii_host.endswith("." + name)
+        for name in NON_PUBLIC_NAMES
     )
 
 
 def url_path_segments(url: str) -> list[str]:
-    """Return the path segments of one URL, in order, without its query."""
+    """Return the path segments of one URL, in order, as a browser resolves them."""
+    if url[:4].lower() == "www.":
+        url = "http://" + url
     parts = split_url(url)
     if parts is None:
         return []
@@ -888,7 +935,25 @@ def url_path_segments(url: str) -> list[str]:
     # reported as unlinked. Decoding is per segment rather than over the whole
     # path, so an encoded slash cannot invent a segment boundary that the URL
     # does not have.
-    return [unquote(part) for part in parts.path.split("/") if part]
+    #
+    # **And the path is resolved the way a browser resolves it.** For ``http``
+    # and ``https`` a backslash is a slash, ``.`` and its encoded ``%2e`` name
+    # the current segment, and ``..`` in any of its four spellings removes the
+    # one before it. Read as written, ``/issues/27/../28`` held ``issues`` and
+    # ``27`` side by side although the page it opens is the one for 28, and
+    # ``/issues/./27`` held them apart although it opens 27.
+    # https://url.spec.whatwg.org/#path-state
+    segments: list[str] = []
+    for part in parts.path.replace(chr(92), "/").split("/"):
+        segment = unquote(part)
+        if segment in ("", "."):
+            continue
+        if segment == "..":
+            if segments:
+                segments.pop()
+            continue
+        segments.append(segment)
+    return segments
 
 
 def url_fragment_tokens(url: str) -> list[str]:
@@ -912,6 +977,7 @@ def url_fragment_tokens(url: str) -> list[str]:
 #: URL carrying a number does not resolve a ticket that happens to share it.
 NOUN_PATH_SEGMENTS = {
     "an unlinked pull request": ("issues", "issue", "pull", "pulls"),
+    "a GitHub shorthand reference": ("issues", "issue", "pull", "pulls"),
     "an unlinked issue": ("issues", "issue", "pull", "pulls"),
     "a bare issue reference": ("issues", "issue", "pull", "pulls"),
     "an unlinked ticket": ("issues", "issue", "pull", "pulls", "tickets", "ticket"),
@@ -930,10 +996,17 @@ def url_resolves(label: str, matched: str, urls: list[str]) -> bool:
         return False
 
     digits = DIGITS_PATTERN.findall(matched)
-    # The key a non-GitHub tracker puts in its path, when the reference carries
-    # one. ``None`` when the reference carries a number and no key.
-    key_match = TRACKER_KEY_PATTERN.search(matched)
-    key = key_match.group(0).lower() if key_match else None
+    # The keys a non-GitHub tracker puts in its path, when the reference
+    # carries them, and the plain numbers it carries beside them. GitHub's
+    # ``GH-`` prefix is its own shorthand for a number, never a key. A reference that names
+    # several resolves only when every one of them is linked.
+    keys = (
+        []
+        if label == "a GitHub shorthand reference"
+        else [key.lower() for key in TRACKER_KEY_PATTERN.findall(matched)]
+    )
+    numbers = DIGITS_PATTERN.findall(TRACKER_KEY_PATTERN.sub(" ", matched) if keys else matched)
+    linked: set[str] = set()
     # A hash is read in either case above, so it is compared in one case here.
     matched_fold = matched.lower()
     for url in urls:
@@ -953,19 +1026,17 @@ def url_resolves(label: str, matched: str, urls: list[str]) -> bool:
             # the key's numeric tail and which never named the key itself. A
             # key is the whole identifier, so the whole identifier is what a
             # URL has to carry.
-            if key is None:
-                segments = NOUN_PATH_SEGMENTS[label]
-                for index, part in enumerate(lowered[:-1]):
-                    if part in segments and lowered[index + 1] in digits:
-                        return True
+            segments = NOUN_PATH_SEGMENTS[label]
+            for index, part in enumerate(lowered[:-1]):
+                if part in segments and lowered[index + 1] in numbers:
+                    linked.add(lowered[index + 1])
             # A tracker that is not GitHub serves ``ABC-123`` as a path segment
             # of its own, under whatever word it likes -- ``/browse/ABC-123``,
             # ``/issues/ABC-123``. The segment must equal the key: a key that
             # merely appears inside a longer segment is a different resource,
             # and this is the same whole-segment rule the digit branch above
             # applies to a number.
-            if key is not None and key in lowered:
-                return True
+            linked.update(key for key in keys if key in lowered)
         elif label in ("a bare review-comment id", "a review comment named by number"):
             # The id is served as its own path segment under ``comments`` and
             # written into the fragment that scrolls to it, where the host puts
@@ -997,6 +1068,9 @@ def url_resolves(label: str, matched: str, urls: list[str]) -> bool:
                     continue
                 if candidate.startswith(commit) or commit.startswith(candidate):
                     return True
+    if label in NOUN_PATH_SEGMENTS:
+        wanted = set(keys) | set(numbers)
+        return bool(wanted) and wanted <= linked
     return False
 
 #: Where one word of an identifier ends and the next begins: the underscore,
@@ -1028,32 +1102,26 @@ def identifiers_of(source: str) -> set[str]:
     this pass safe to run beside the text one: a round number inside a string
     literal is not an identifier, so it is reported once by the text pass
     rather than twice.
+
+    **Every string the tree holds is a name, except a constant's.** Python
+    keeps most names as ``Name`` nodes and some as plain strings on other
+    nodes: a function's name, an import's module and each alias, an
+    exception alias, a match capture, a keyword in a class pattern, a type
+    parameter. A list of those node types missed each one it did not name --
+    an imported module's path was the last -- so every string-valued field of
+    every node is read now. A ``Constant``'s value is text and belongs to the
+    text pass, and a ``TypeIgnore``'s tag is a comment; both are skipped. A
+    dotted name, such as a module path, is read one part at a time.
+    https://docs.python.org/3/library/ast.html#ast.iter_fields
     """
     found: set[str] = set()
     for node in ast.walk(ast.parse(source)):
-        if isinstance(node, ast.Name):
-            found.add(node.id)
-        elif isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)):
-            found.add(node.name)
-        elif isinstance(node, ast.arg):
-            found.add(node.arg)
-        elif isinstance(node, ast.Attribute):
-            found.add(node.attr)
-        elif isinstance(node, ast.keyword) and node.arg:
-            found.add(node.arg)
-        elif isinstance(node, ast.alias):
-            found.add(node.asname or node.name.split(".")[0])
-        elif isinstance(node, (ast.Global, ast.Nonlocal)):
-            found.update(node.names)
-        # The bindings the tree stores as a plain string rather than a Name:
-        # an exception alias, a match capture and its star or rest, and a
-        # type parameter. Each is a name the module binds.
-        elif isinstance(node, (ast.ExceptHandler, ast.MatchAs, ast.MatchStar)) and node.name:
-            found.add(node.name)
-        elif isinstance(node, ast.MatchMapping) and node.rest:
-            found.add(node.rest)
-        elif type(node).__name__ in ("TypeVar", "ParamSpec", "TypeVarTuple"):
-            found.add(getattr(node, "name"))
+        if isinstance(node, (ast.Constant, ast.TypeIgnore)):
+            continue
+        for _field, value in ast.iter_fields(node):
+            for item in value if isinstance(value, list) else (value,):
+                if isinstance(item, str):
+                    found.update(part for part in item.split(".") if part)
     return found
 
 
@@ -3335,3 +3403,126 @@ def test_a_markdown_suffix_is_read_in_any_case(tmp_path: Path) -> None:
         Path("a.PY"),
         Path("b.py"),
     ]
+
+
+def test_an_action_pin_is_excused_only_where_a_uses_key_starts_the_line(
+    tmp_path: Path,
+) -> None:
+    """A YAML key starts its line; the same words in prose declare nothing.
+
+    Unanchored, ``This prose uses: owner/repo@`` and a hash satisfied the pin
+    rule, and a comment quoting a step did too.
+    """
+    full = ("0123456789" + "abcdef") * 2 + "01234567"
+    for body, suffix in (
+        ("This prose uses: owner/repo@" + full, ".md"),
+        ("# note: this step uses: owner/repo@" + full, ".yml"),
+        ("run: echo uses: owner/repo@" + full, ".yml"),
+    ):
+        assert _reported(tmp_path, body, suffix), body
+    for body, suffix in (
+        ("      - uses: actions/checkout@" + full + " # v7.0.1", ".yml"),
+        ("    uses: actions/checkout@" + full, ".yml"),
+        ("  - uses: 'owner/repo@" + full + "'", ".yml"),
+        ("      - uses: actions/checkout@" + full, ".md"),
+    ):
+        assert not _reported(tmp_path, body, suffix), body
+
+
+def test_a_reserved_name_is_refused_in_any_spelling(tmp_path: Path) -> None:
+    """A browser looks up the IDNA form, so the reserved-name test reads it too.
+
+    Full-width letters and the ideographic full stop are the ASCII name once
+    IDNA maps them, so a reserved name spelled with them is still reserved.
+    """
+    reference = "issue" + " " + "27"
+    path = "/o/r/issues/" + "27"
+    full_width = "".join(chr(0xFF41 + ord(letter) - ord("a")) for letter in "invalid")
+    for host in (
+        "tracker." + full_width,
+        "tracker" + chr(0x3002) + "test",
+        "".join(chr(0xFF41 + ord(letter) - ord("a")) for letter in "localhost"),
+    ):
+        url = "https://" + host + path
+        assert not url_is_public(url), host
+        assert _reported(tmp_path, reference + " " + url), host
+    github = "".join(chr(0xFF41 + ord(letter) - ord("a")) for letter in "github")
+    assert url_is_public("https://" + github + ".com" + path)
+
+
+def test_every_name_the_syntax_tree_holds_is_read(tmp_path: Path) -> None:
+    """A name kept as a plain string on any node is still a name.
+
+    An imported module's path, an import's own name beside its alias, and a
+    keyword in a class pattern were never read, so a round's name in any of
+    them passed both passes.
+    """
+    name = "review" + "_round_" + "42"
+    for source in (
+        "from " + name + " import helper",
+        "from pkg." + name + ".sub import helper",
+        "import pkg." + name + " as short",
+        "from pkg import " + name + " as short",
+        "match value:\n    case Point(" + name + "=1):\n        pass",
+    ):
+        assert name in identifiers_of(source), source
+        sample = tmp_path / "mod.py"
+        sample.write_text(source + chr(10), encoding="utf-8")
+        assert names_in(sample, tmp_path), source
+    # A string constant is text, and stays with the text pass.
+    assert name not in identifiers_of("x = " + repr(name))
+
+
+def test_a_url_path_is_read_as_a_browser_resolves_it(tmp_path: Path) -> None:
+    """Dot segments and backslashes are resolved before a segment is compared.
+
+    A path that climbs out of one number with ``..`` into another opens the
+    second, and still held the noun and the first number side by side, so it
+    resolved a reference to the first. A path with a ``.`` between the noun and
+    its number opens that number, and held them apart, so a compliant link was
+    reported.
+    """
+    reference = "issue" + " " + "27"
+    base = "https://github.com/o/r/issues/"
+    for tail in ("27/../28", "27/%2e%2e/28", "27/.%2E/28", "27/..\\28"):
+        assert _reported(tmp_path, reference + " " + base + tail), tail
+    for tail in ("./27", "%2e/27", "27/", "x/../27"):
+        assert not _reported(tmp_path, reference + " " + base + tail), tail
+    assert url_path_segments(base + "27/../28") == ["o", "r", "issues", "28"]
+    assert url_path_segments("https://github.com/../o/r") == ["o", "r"]
+
+
+def test_a_plural_or_shorthand_noun_is_still_a_reference(tmp_path: Path) -> None:
+    """A plural noun and GitHub's ``GH-`` prefix are the same pointer in other spellings."""
+    number = "22"
+    for body in (
+        "# fixed in PRs " + number + " and 23",
+        "# see pull requests " + number,
+        "# tracked as GH-" + number,
+        "# tracked as gh-" + number,
+    ):
+        assert _reported(tmp_path, body, ".py"), body
+    link = " https://github.com/o/r/issues/" + number
+    assert not _reported(tmp_path, "# tracked as GH-" + number + link, ".py")
+    assert not _reported(tmp_path, "# see PRs " + number + link, ".py")
+    for body in ("# the org/GH-" + number + " path", "# a BGH-" + number + " part"):
+        assert not _reported(tmp_path, body, ".py"), body
+
+
+def test_every_identifier_after_one_noun_needs_its_own_link(tmp_path: Path) -> None:
+    """A link to the first of a list does not link the rest."""
+    first = "https://github.com/o/r/issues/" + "27"
+    second = "https://github.com/o/r/issues/" + "28"
+    for body in (
+        "# see issues " + "27 and 28 " + first,
+        "# see issue " + "27, 28 " + first,
+        "# see issues " + "27 & 28 " + first,
+        "# see tickets ABC-" + "1 and ABC-2 https://tracker.example.com/browse/ABC-1",
+    ):
+        assert _reported(tmp_path, body, ".py"), body
+    for body in (
+        "# see issues " + "27 and 28 " + first + " " + second,
+        "# see tickets ABC-" + "1 and ABC-2 https://tracker.example.com/browse/ABC-1"
+        + " https://tracker.example.com/browse/ABC-2",
+    ):
+        assert not _reported(tmp_path, body, ".py"), body
