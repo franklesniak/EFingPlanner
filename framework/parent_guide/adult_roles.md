@@ -31,3 +31,9 @@ Record both on the child's "My Calls" page, with a one-line adult acknowledgment
 ## What stays firmly adult-owned
 
 Money, booking, travel, insurance, safety, and any legal, health, or medical decision. If your trip leaves the country, passports and entry requirements are adult-owned too. When you change part of the plan, say so warmly and name what of theirs still stands -- "your work wasn't wrong" is the message. See the [coaching guide](coaching_and_support.md) for the scripts.
+
+## Where to go next
+
+- [Time and effort](time_and_effort.md) -- the third must-read: what this costs you, and how to lighten it.
+- [Coaching and support](coaching_and_support.md) -- scripts for when you change part of the plan, or your child wants to quit.
+- [What I Decide card](../student_guide/what_i_decide.md) -- your child's version of this same boundary.

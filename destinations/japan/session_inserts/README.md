@@ -7,7 +7,7 @@
 
 - **Status:** Active
 - **Owner:** Repository Maintainers
-- **Last Updated:** 2026-09-22
+- **Last Updated:** 2026-09-23
 - **Scope:** The destination-pack routing contract. It says which session pulls which insert, which reference files each session points to, what fields every insert slot has to supply, and what it takes to add a new destination pack. It holds routing rather than facts, so it carries no `Last reviewed` stamp.
 - **Related:** [Destination pack contents](../README.md)
 
@@ -15,7 +15,7 @@ This file is for whoever builds a destination pack or adds one. The pack's [cont
 
 ## The insert and reference contract
 
-A session that needs place facts writes the phrase *"open this session's Destination Notes."* This table is what that phrase resolves to. It is in session order.
+This table routes every session that needs place facts to the pack, in session order. The rule under the table says how each session writes its pointer.
 
 | Session | Insert it pulls (`session_inserts/`) | Reference file(s) it points to (`reference/`) |
 | --- | --- | --- |
@@ -52,7 +52,7 @@ Every field list below is written destination-neutrally, so this contract copies
 | Slot | Consuming session | Fields it must supply |
 | --- | --- | --- |
 | `10_snapshot_facts.md` | 10 Destination Snapshot | Capital; major land features; currency; main language. Not the time-difference figure -- that is a Trip-Basics card value. |
-| `11_regions_overview.md` | 11 Regions and Cities Overview | The main regions, named, so the child can start their region notes; then a pointer to the pack's regions reference for how each region feels different and for the geography instances the neutral session may not state -- your destination's shape and size, how weather differs by region, why travel time between regions matters -- and a pointer to the pack's major-cities reference for the route shapes. That regions reference is their canonical home; do not restate them in the slot. No trip shapes, no costs, no pinned travel times. |
+| `11_regions_overview.md` | 11 Regions and Cities Overview | The regions the pack plans a first trip around, named, with one line saying the destination has more, so the child can start their region notes; then a pointer to the pack's regions reference for how each region feels different and for the geography instances the neutral session may not state -- your destination's shape and size, how weather differs by region, why travel time between regions matters -- and a pointer to the pack's major-cities reference for the route shapes. That regions reference is their canonical home; do not restate them in the slot. No trip shapes, no costs, no pinned travel times. |
 | `12_seasons_and_events.md` | 12 Weather, Seasons, and Events | Each season the destination has, named, so the child can label a season chart, with one short line each on what traveling in it is like; then a pointer to the pack's seasons, weather and events reference for the rest -- the big-draw and busiest periods, the congestion windows named as categories to confirm this year, each seasonal hazard with its pacing consequence, and the adult-facing contingency note. That reference is their canonical home; do not restate them in the slot. No pinned dates, prices or forecasts. |
 | `16_18_candidate_cities.md` | 16-18 Deep-Dive Cities | Two to four first-trip candidate cities, each with a one-line draw, so the child can start a card per city; then a pointer to the pack's major-cities reference for the kid-magnet ideas and for anything whose opening or availability changes. That reference is their canonical home; do not restate them in the slot. Candidates to research, never a shortlist. |
 | `19_other_places_menu.md` | 19 Other Places Research | A menu of further candidate places beyond the deep-dive cities, each with a one-line draw, offered as options to research rather than as a shortlist. Where the pack's major-cities reference already carries that menu, point at it instead of copying it; that reference is their canonical home. |

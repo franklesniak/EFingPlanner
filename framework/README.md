@@ -57,7 +57,7 @@ Beyond the origin logistics layer, nothing in the framework assumes an origin co
 
 ## Where everything is
 
-- [How to start a trip](how_to_start_a_trip.md) is the four steps a family begins with.
+- [How to start a trip](how_to_start_a_trip.md) is what a family does first, in order.
 - [How to use Markdown files](docs/how_to_use_markdown_files.md) is for a reader who has not opened a Markdown file before.
 - [Project roadmap](PROJECT_ROADMAP.md) holds the three paths and the honest stopping points.
 - [Parent guide](parent_guide/README.md) and [student guide](student_guide/README.md) are the two reading toolkits.

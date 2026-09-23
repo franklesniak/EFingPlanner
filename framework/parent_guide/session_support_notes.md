@@ -99,7 +99,7 @@ Want a rough signal of how the executive-function side is going? The optional [e
 
 - Role: 5-minute check-in.
 - Prep: this session's Destination Notes, your destination pack's regions and major-cities references, and a map.
-- Look for: region and map notes naming the main regions, one way they differ, and one route shape.
+- Look for: region and map notes naming the regions the Destination Notes list, one way they differ, and one route shape.
 - Coaching question: "How long does it take to get from this one to that one?"
 - Pitfall: correcting an over-packed route now. Collecting comes first; the cutting comes later.
 

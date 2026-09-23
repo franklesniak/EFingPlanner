@@ -7,7 +7,7 @@
 
 - **Status:** Active
 - **Owner:** Repository Maintainers
-- **Last Updated:** 2026-09-22
+- **Last Updated:** 2026-09-23
 - **Scope:** The blank authoring skeleton for a child-facing curriculum session, with the rules a new session has to satisfy: the seven mandatory-core fields, the section order, the navigation line, the "For parents" strip, and the structure gate's floor. Builder-facing; a child never reads this page.
 - **Related:** [Build style and vocabulary](../docs/build_style_and_vocab.md), [Golden exemplar session](../sessions/phase_00_setup/04_start_a_source_log.md)
 
@@ -118,7 +118,7 @@ A conditional-core session names its condition on the same line, in the built fo
 
 - **Estimated time** defaults to 20-30 minutes.
 - **Parent involvement** is one of: none / independent work; 5-minute check-in; parent review after session; parent setup needed; co-working recommended; a grown-up stays nearby for this one; adult-operated; adult-owned. Two of these are requirements rather than suggestions. **A grown-up stays nearby** is Session 08's, because a filter reduces exposure without removing it. **Adult-operated** is Session 09's: the adult runs the tool, on the adult's account, with the child present. Neither may be softened to co-working recommended.
-- **Planner skill** comes from: getting started; comparing choices; checking sources; ranking priorities; planning realistic time; making trade-offs; organizing information; revising a plan; self-control (knowing when to stop).
+- **Planner skill** comes from a closed list: getting started; comparing choices; checking sources; ranking priorities; planning realistic time; making trade-offs; organizing information; revising a plan; self-control (knowing when to stop). Write the value your batch brief assigns, and when it assigns two, name both. Some sessions built before the list was closed carry other labels, such as *estimating* or *reflection*. Leave those as built, and do not copy one into a new session.
 - **Materials** names what the child needs in hand, with a relative link to each framework template it names. **A blank is linked; the child's own filled-in page is not.** "two blank City Research Cards" links the template, because the child needs to fetch one; "your two City Research Cards" names work they already have, and a link there would send them to an empty page. A running artifact the child keeps -- the Source Log -- is linked anyway, because a family may still be printing their first copy.
 
 ## Writing the body

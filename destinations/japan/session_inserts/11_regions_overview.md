@@ -6,7 +6,9 @@
 
 These are starting points, not answers. Use them to start your region notes.
 
-## The main regions
+## The regions this pack plans around
+
+This is a short list on purpose. It holds the regions a first family trip usually touches. Japan has more regions than these.
 
 - Kanto (around Tokyo)
 - Kansai (around Kyoto and Osaka)

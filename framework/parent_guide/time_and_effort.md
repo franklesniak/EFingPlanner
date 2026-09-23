@@ -95,3 +95,9 @@ The file checklist cannot tell you whether this is *usable* -- only a real child
 | **Success** | Signals (a)-(c) hold | Continue toward the Core Finish Line if you want more. |
 | **Partial** | The child can do it, but it is heavy, or only finishes with you doing the work | Lighten, don't quit: Low-Bandwidth Mode, micro-sessions, or make First Taste the whole project -- then re-decide. |
 | **Fail** | The child completes it but hates it, or only because you did the work | Pivot to casual involvement -- fold them into the real trip lightly. This is a designed, successful outcome, not an abandonment. |
+
+## Where to go next
+
+- [Differentiation](differentiation.md) -- lighter and deeper moves when the defaults do not fit your child.
+- [Coaching and support](coaching_and_support.md) -- scripts for the hard moments.
+- [EF observation aid](ef_observation_aid.md) -- three readings across the project that show a direction.

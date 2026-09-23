@@ -7,7 +7,7 @@
 
 - **Status:** Active
 - **Owner:** Repository Maintainers
-- **Last Updated:** 2026-09-22
+- **Last Updated:** 2026-09-23
 - **Scope:** The blank skeleton for a page in the parent guide, with the register rule that page has to be written in and the shape of a per-session support note. Builder-facing; a parent never reads this page.
 - **Related:** [Build style and vocabulary](../docs/build_style_and_vocab.md), [Session support notes](../parent_guide/session_support_notes.md)
 
@@ -43,7 +43,7 @@ One sentence saying what this page is for.
 - Another page in this guide -- one clause saying what it covers.
 ```
 
-Two or three point headings, whichever the page needs, and the closing pointer list is required. Give each point heading its own visible title; two headings reading the same words fail the duplicate-heading rule, and a heading written as a word in angle brackets renders blank and fails the inline-HTML rule.
+Use as many point headings as the page needs, within the length the register rule sets. The closing pointer list is required on every page except two, which have their own shape: the guide's quick-start, `README.md`, which is itself the list of where to go, and the session support notes, which use the per-session shape below. Give each point heading its own visible title; two headings reading the same words fail the duplicate-heading rule, and a heading written as a word in angle brackets renders blank and fails the inline-HTML rule.
 
 The block opens with the `markdownlint-disable` directive rather than with the H1, because it is copied out to become a whole new file and every built curriculum file carries that comment as line 1.
 

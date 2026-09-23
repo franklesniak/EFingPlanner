@@ -39,8 +39,8 @@ Ask yourself honestly: is your child actually excited, or is this mostly your id
 Only four things are genuine setup actions:
 
 1. Turn on a kid-safe search filter.
-2. Fill in the [Trip-Basics card](../templates/trip_basics.md).
-3. Set a rough season window and a rough budget band on the [assumptions page](../templates/current_family_travel_assumptions.md).
+2. Fill in your copy of the [Trip-Basics card](../trip_starter/family/trip_basics.md).
+3. Set a rough season window and a rough budget band on your copy of the [assumptions page](../trip_starter/family/current_family_travel_assumptions.md).
 4. Choose AI: yes or no (default no) -- record it on the assumptions page. Before you choose yes, read the [AI use rules](../docs/ai_use_rules.md).
 
 **Also start now if your trip leaves the country (it runs in the background):** kick off the child's passport check at travel.state.gov. It is a long-lead item that can set your earliest travel date and shapes the season research your child does next, so it should not wait. If your trip stays inside your own country, there is nothing to start here.

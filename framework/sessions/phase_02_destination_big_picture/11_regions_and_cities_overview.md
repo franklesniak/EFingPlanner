@@ -14,7 +14,7 @@ You are here: Phase 2 (Destination Big Picture). Not a First Taste step. Previou
 
 ## Goal
 
-Learn the main regions of your destination, and write down one route shape to compare your own ideas against.
+Learn the regions your Destination Notes list, and write down one route shape to compare your own ideas against.
 
 ## Start Here
 
@@ -54,7 +54,7 @@ You can say your answers to an adult who writes them, or draw them, if that's ea
 
 ## Artifact Created
 
-Your region and map notes: the main regions, one way they differ, and one route shape to compare against.
+Your region and map notes: the regions your Destination Notes list, one way they differ, and one route shape to compare against.
 
 ## Stop Point
 

@@ -40,3 +40,9 @@ The opposite tail also needs a named path -- a bright, bored child abandons a pr
 - **Reach the lighter template fast** -- the trigger is two sessions done without leaning on the written Steps or meta-cards, not a fixed phase.
 - **Make the optional and harder versions their main path** ("challenge by choice") -- more cities, deeper research, the open weighted-scoring version.
 - **Keep identical:** the guardrails (budget, approved cities, pacing, safety, availability), the always-kept session anchors, and every safety/privacy rule. The mode changes pace and depth, never the rules.
+
+## Where to go next
+
+- [Time and effort](time_and_effort.md) -- Low-Bandwidth Parent Mode, for when your own time and energy are short.
+- [Coaching and support](coaching_and_support.md) -- scripts for the hard moments.
+- [Session support notes](session_support_notes.md) -- each session at a glance, with its common pitfall.

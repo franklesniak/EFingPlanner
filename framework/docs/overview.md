@@ -38,7 +38,7 @@ All three sit under the provided-as-is banner at the top of [GETTING_STARTED](..
 
 ## Where to go next
 
-- [How to start a trip](../how_to_start_a_trip.md) for the four steps a family actually begins with.
+- [How to start a trip](../how_to_start_a_trip.md) for what a family does first, in order.
 - [The framework README](../README.md) for how the pieces fit together and what is reusable.
 - [Parent guide](../parent_guide/README.md) for the quick-start, the setup checklist and the coaching scripts.
 - [Student guide](../student_guide/README.md) for the child's own toolkit.

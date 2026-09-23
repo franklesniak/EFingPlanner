@@ -13,7 +13,7 @@ Each reference file and each session insert carries a `Last reviewed` date -- an
 - [Trusted starting sources](reference/trusted_starting_sources.md) -- where to research, by best use.
 - [Sample search terms](reference/sample_search_terms.md) -- good phrases to search.
 - [Seasons, weather, and events](reference/seasons_weather_events.md) -- when to go, and what to watch for.
-- [Regions overview](reference/regions_overview.md) -- how the main regions differ, and why that matters for planning.
+- [Regions overview](reference/regions_overview.md) -- how the regions this pack plans around differ, and why that matters for planning.
 - [Major cities](reference/major_cities.md) -- candidate places to research (not choices already made).
 - [Money basics](reference/money_basics.md) -- yen, cash culture, converting to dollars.
 - [Transportation basics](reference/transportation_basics.md) -- trains, IC cards, luggage, and the walking reality.
@@ -22,7 +22,7 @@ Each reference file and each session insert carries a `Last reviewed` date -- an
 
 - [Insert contract and add-a-destination checklist](session_inserts/README.md) -- which session pulls which insert, and what it takes to add a destination.
 - [Destination snapshot notes](session_inserts/10_snapshot_facts.md) -- the big facts for the snapshot session.
-- [Regions and cities notes](session_inserts/11_regions_overview.md) -- the main regions, for the regions session.
+- [Regions and cities notes](session_inserts/11_regions_overview.md) -- the regions this pack plans around, for the regions session.
 - [Weather and seasons notes](session_inserts/12_seasons_and_events.md) -- the four seasons, for the seasons session.
 - [Words and numbers you will meet](session_inserts/kid_glossary.md) -- Japan words, units, and one money example.
 
