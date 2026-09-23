@@ -25,8 +25,8 @@ still read the repository, and several instructions below send you into it.** Re
 -- the Definition of Done requires you to read them from that file and never from this
 brief. Read the golden exemplar
 `framework/sessions/phase_00_setup/04_start_a_source_log.md`, which every new session is
-drafted and checked against. Read the already-built sessions this batch touches -- 14, 15,
-21, 33, 44 and 53 -- because an edit is made against what a file actually says today, not
+drafted and checked against. Read the already-built sessions this batch touches -- 12, 14,
+15, 21, 33, 44 and 53 -- because an edit is made against what a file actually says today, not
 against what a brief remembers it saying.
 
 **What a `D-` label is.** Each one names a decision adjudicated before this brief was
@@ -136,7 +136,7 @@ authored destination-concrete "for now."
 
 **Plus edits to already-built files**, which are deliverables too and are easy to forget
 because they create nothing: Session 15's conversion, the navigation re-point on Sessions
-15, 21, 33, 44 and 53, **path-aware content edits to Sessions 14, 15, 21, 33, 44 and 53
+15, 21, 33, 44 and 53, **path-aware content edits to Sessions 12, 14, 15, 21, 33, 44 and 53
 (section 4.1a)**, the insert/reference contract, the kit README,
 **`framework/templates/city_research_card.md`** (a two-row addition, see A6),
 **`framework/student_guide/progress_tracker.md`** (its Core/Full view, see F2), **the root
@@ -744,8 +744,25 @@ spec's understanding-and-confirmation beat, so the report compares **the booked 
 the child's next-best window** on the family's goals: what the booked dates give, what they
 cost, and how the plan works around that cost. It is still the first report. **A family
 that continues after finishing First Taste writes this report when its numbered order
-reaches Session 14**, extending the Checkpoint 1 page it already finished. **A First Taste child's page is
-unchanged**; First Taste is not measured against the floor.
+reaches Session 14**, extending the Checkpoint 1 page it already finished. **A First Taste
+child's page gains only the booked-dates branch below**; First Taste is not measured
+against the floor.
+
+#### Sessions 12 and 14 — when the dates are already booked
+
+The spec's "dates already fixed" mode changes two built Phase 2 sessions, and neither
+carries it yet. **Add a booked-dates branch to each, on every path, and keep the
+open-dates wording beside it unchanged.** Put the branch in each session's Goal, Steps,
+Artifact and Stop Point.
+
+- **Session 12:** with the dates booked, the child learns what *their* season means for the
+  trip: the weather, crowds and events the chosen dates bring. The chart covers that season.
+- **Session 14:** with the dates booked, Checkpoint 1 is an understanding-and-confirmation
+  beat. The child explains what the chosen season means for the trip and confirms the fit,
+  and recommends no season. On the Core path, the season report takes its booked-window form
+  above.
+
+No child is asked to recommend dates the family cannot change.
 
 #### Session 15 — cards toward the Core floor
 
@@ -1009,10 +1026,11 @@ add a third.**
 
 | Session | The loop |
 | --- | --- |
-| **23**, first ticket-price lookup | Before looking up one attraction's ticket price, the child writes a **one-line guess** on the attraction card's source line, then checks it against the official site and notices the gap |
-| **30**, first transit-fact lookup | The same one-line guess on the same surface, before checking one train time between two of their cities against a current transit planner |
+| **23**, first ticket-price lookup | Before looking up one attraction's ticket price, the child writes a **one-line guess** in the attraction card's guess row, then checks it against the official site, writes what they found in the next row, and notices the gap |
+| **30**, first transit-fact lookup | The same one-line guess, on the session's source line, before checking one train time between two of their cities against a current transit planner |
 
-Both **reuse the existing source line and add no new tracker.** Both stay **ungraded**:
+Both **use a surface the child already has and add no new tracker**: the card's two rows at
+Session 23, and the session's source line at Session 30. Both stay **ungraded**:
 being off is normal. Never frame either as an accuracy test.
 
 ### 5.5b The session-time loop, and the sessions that carry it
@@ -1314,8 +1332,9 @@ already made.**
   it takes** -- that is the Core floor, and reaching it is success. Come back to this session
   until you reach it, before Session 24 checks the balance, so every card gets that check.
 - **Source Check: required, and this is the first designated predict-then-verify
-  session.** The one-line ticket-price guess goes **on the source line of the card**, then
-  the child checks the official site and notices the gap. Ungraded.
+  session.** The one-line ticket-price guess goes **in the card's guess row**, then the
+  child checks the official site, writes what they found in the next row, and notices the
+  gap. Ungraded.
 - **Cross-references:** Session 15 (the starred "can't wait to see" sights that feed
   this); the "things I can't wait to see" page, which is the single default motivation
   layer -- **attractions feed that same page and spawn no parallel artifact**; Session 24;
@@ -2603,12 +2622,13 @@ One card per attraction or experience. Filled copies live at
 42, 44.
 
 **Rows, in order:** Name; City/area; Type; Why it is interesting; Time needed; Ticket or
-reservation needed?; Best time of day?; Nearby places; Possible downside; Review themes;
+reservation needed?; My guess at the ticket price, before I looked it up; What I found when I
+checked (prices change, so write the date); Best time of day?; Nearby places; Possible downside; Review themes;
 Official website needed?; Source; Date checked; Planning assumption; **Why I am using this assumption**; **What could change it?**; Needs adult verification? (yes / no); Final decision status (researching / must-do /
 strong maybe / only if nearby / skip or save for future).
 
-**The predict-then-verify row is mandatory and lives on the source line.** It is two rows,
-with these exact labels, which the built template carries: `My guess at the ticket price,
+**The predict-then-verify row is mandatory and sits directly after `Ticket or reservation
+needed?`.** It is two rows, with these exact labels, which the built template carries: `My guess at the ticket price,
 before I looked it up` and `What I found when I checked (prices change, so write the date)`.
 "The ticket-price row" below means these two. Frame the guess ungraded: *"being off is
 normal."* **Add no new tracker.**
@@ -3196,11 +3216,13 @@ the gate twice: once in this brief, and again in every entry copied from it.
 
 **Add one entry per session this batch authors**, so every session has one: 16, 17, 18, 19,
 20, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 45,
-46, 47, 48, 49, 50, 51, 52. **Sessions 14, 15, 21, 33, 44 and 53 already have entries. Do not
+46, 47, 48, 49, 50, 51, 52. **Sessions 12, 14, 15, 21, 33, 44 and 53 already have entries. Do not
 rewrite them; update only what this batch changes in each session**, and keep each First
-Taste instruction as a branch. Four updates are known: Session 14's prep and look-for lines
+Taste instruction as a branch. Five updates are known: Session 12's look-for line (with the
+dates booked, notes on what the chosen season brings), Session 14's prep and look-for lines
 (on the Core path, a Trade-Off Report page, and a report comparing the best season with the
-backup, or the booked window with the next-best window when the dates are booked), Session 15's prep line (the major
+backup, or the booked window with the next-best window when the dates are booked; and, with
+the dates booked, a look-for line naming the explanation and the confirmed fit), Session 15's prep line (the major
 cities reference is gone after 4.1b; the child now chooses from their Session 11 notes),
 Session 44's pick line (on the Core path the child confirms the pick Session 26 already
 chose), and Session 53's acknowledgment line (duration-true for Core/Full,
@@ -3863,8 +3885,11 @@ part, and the top of the progress tracker's Core/Full section.
 First-Taste-only today, and it is a static page, so the two views are two sections in a
 fixed order. **Keep the First Taste section first and as it is**, including its own count,
 because a First Taste child still uses it. **Add the Core/Full section after it**, headed
-for a family that keeps going past First Taste: the checkpoints line first, then the Core
-sessions grouped by phase, as check-off lines in the same form as the First Taste list.
+for a family that keeps going past First Taste: the checkpoints line first, then **every
+session grouped by phase, in numbered order**, as check-off lines in the same form as the
+First Taste list. **Mark each line that is not Core with its path label from this brief's
+session table** -- Recommended, Optional, or the condition that makes it Core -- so a Full
+family and a family whose condition promotes a session both find it in order.
 **Each First Taste session whose Core version asks for new work gets its own extension line,
 directly after that session:** Session 14's season report, Session 21's long-list
 comparison, and Session 33's adult fare row (see 4.1a). A family continuing from First
@@ -4023,8 +4048,9 @@ is incomplete and removing the rider would make the docs wrong in the other dire
 - **The Batch 1 riders retired**, and the curriculum version bump that goes with them.
 - **The session-time loop's designated sessions** -- 16, 26, 35, 45, with the mid-project
   glance at 27 -- so a later batch does not re-derive them.
-- **The path-aware content edits to Sessions 33, 44 and 53**, each as one line saying what
-  a Core/Full reader now gets that a First Taste reader still gets unchanged.
+- **The content edits to built sessions in 4.1a**, each as one line saying what a Core/Full
+  reader, or a family whose dates are booked, now gets that the open-dates First Taste
+  reader still gets unchanged.
 - **`safety_and_emergency.md`** as a reference file this batch's routing obliges Batch 3 to
   write, since it was in no earlier scope list.
 
