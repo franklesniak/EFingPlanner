@@ -253,10 +253,13 @@ The sixth comes from Batch 2 (`I-2`) and the seventh from `B3-1`.
 
 ### The batch gate
 
-Batch 3 ends at the per-batch quality pass, which this run can perform: the validation
-gates in section 9, plus the human-review rows in section 7 that an adversarial review
-subagent stands in for under this project's recorded pilot deferral. **There is no
-child-run gate on this batch.** The design-validation gate was Batch 0's and it cleared on
+This run ends at the per-batch quality pass: the validation gates in section 9, and an
+adversarial review subagent's read of the pack against the human-review rows in section 7,
+with its findings fixed. That read is evidence, and it clears no human-review row. **Under
+the style guide's review-coverage rule, a person reads every file this batch creates or
+edits that a child or a parent reads.** Carry that read as an open human action in the
+build report and in the changelog. **Batch 3 is not finished until a person has read
+them.** **There is no child-run gate on this batch.** The design-validation gate was Batch 0's and it cleared on
 the recorded no-child fallback; nothing in this brief may write otherwise.
 
 ---
@@ -313,7 +316,8 @@ silent inline-code entry that reads like an oversight.
 
 ### 3.4 The contract's own counts change too
 
-When this batch ends, four passages in the contract describe a pack that no longer exists.
+When this batch ends, four passages in the contract describe a pack that no longer exists,
+and a fifth changes with the rows.
 Update each in the same pass as the link conversion. The paragraph that says every filename
 is inline code now says every filename is a link, because every target exists. The count
 of reference files is the number the finished table names. The four pack-state bullets
@@ -335,7 +339,7 @@ the archived record would not expect. The second group is settled here.
 | **I-1** | The adult-logistics reference is `adult_logistics_japan.md` | **`adult_logistics.md`** | Batch 1's contract registers the unsuffixed name, and Batch 2 corrected a scope list that carried the suffixed variant. A place-suffixed filename inside a place's own folder is redundant, and worse, it does not copy into a second pack. A pack author following the suffixed name would create a file no session routes to |
 | **I-2** | Session 49 needs no destination facts | It gets a row routing it to **`safety_and_emergency.md`** | Batch 2's `D-item-5`. The session's staying-found teaching rests on local institution types, emergency phrases and emergency numbers, all of which are destination facts. The file is new: the archived record's pack tree has no safety file at all |
 | **I-3** | The contract routes only child-facing session files | It also routes **parent-facing** files | Batch 2's `D-X-2`. `adult_only_logistics.md`, `safety_emergency_guidance.md`, `money_budget_guidance.md` and `flights_from_origin_guidance.md` each need destination-specific items, and each stays neutral, so the routing needs to be honest rather than implied. The flight guide's row targets `airports_and_arrival_basics.md`, as Batch 2's corrected Addition 2 says |
-| **I-4** | Sessions 16-18 pull `16_18_candidate_cities.md` | Unchanged, but the schema is fixed: **2-4 candidates, one-line draw each** | Batch 2's session contracts were written against exactly that schema and nothing more. A slot that supplies eight candidates with three paragraphs each breaks three sessions that were authored to it |
+| **I-4** | Sessions 16-18 pull `16_18_candidate_cities.md` | Unchanged, but the schema is fixed: **2-4 candidates, one-line draw each**, with the kid-magnet ideas reached through the slot's pointer to `major_cities.md` | Batch 2's session contracts were written against exactly that schema and nothing more. Batch 2's schema line also gives each city a few kid-magnet ideas. The Batch 1 contract row makes the major-cities reference their home, and the contract wins. A slot that supplies eight candidates with three paragraphs each breaks three sessions that were authored to it |
 | **I-5** | The separated note says to find a uniformed helper, and names shops and police posts as places to go | The child asks a helper who is right there and **never walks to one**; the only move is to a meeting spot that morning's rule named | Batch 2's Session 49 and the built safety guide. A child who walks toward help leaves the place the family is searching |
 
 **What each parent-facing row targets** (`I-3`). `adult_only_logistics.md`:
@@ -376,7 +380,8 @@ addition. If a later reader counts the tree and gets a smaller number, this row 
 ## 5. The seven reference files
 
 Every file opens with the `markdownlint-disable MD013` comment, an H1, and the
-`**Last reviewed:**` line, matching the built pack. Every file is destination-facing prose
+`**Last reviewed:**` line, matching the built pack. `adult_logistics.md` adds its audience
+marker after that comment (5.5). Every file is destination-facing prose
 that a child or an adult reads directly.
 
 **Register:** the built pack is written for a mixed audience and says which parts are the
@@ -427,7 +432,8 @@ Must carry:
   romanized text, and that menus and smaller signs often do not.
 - **Everyday phrases a visiting family actually uses**, written with a pronunciation
   guide a ten-year-old can read aloud. Greeting, thank you, excuse me, please, yes and no,
-  "do you speak English", "where is the bathroom", and how to ask for the bill. Keep the
+  "do you speak English", "where is the bathroom", how to order, and how to ask for the bill.
+  Keep the
   set small enough to learn.
 - **The translation rule and the which-sources-are-English guidance are already written,
   in `trusted_starting_sources.md`** under its own language note: translate to understand
@@ -506,8 +512,9 @@ Must carry:
 **What it is for:** Session 34 routes here by reference for the occupancy reality, and the
 adult-only logistics guide routes here by name under `I-3`.
 
-**Register: this file is adult-facing throughout.** Say so at the top. It is the one pack
-file a child has no task in.
+**Register: this file is adult-facing throughout.** Say so at the top, and put
+`<!-- audience: adult -->` on the line after the `markdownlint-disable` comment, so the
+readability gate skips it. It is the one pack file a child has no task in.
 
 Must carry:
 
@@ -544,10 +551,10 @@ Must carry:
   reading a stale "nothing is required" has been told something false about a legal
   requirement, and that is the worst case this rule exists to prevent -- worse than a
   stale price, because they cannot recover from it at the airport.
-  - **The scam warning stays, written so it cannot expire.** No third-party site sells a
-    government travel authorization. A site offering to sell one is not the official
-    source. An adult checks the official government page, and pays nobody else. That
-    holds whatever the current requirement turns out to be.
+  - **The scam warning stays, written so it cannot expire.** Fake or unofficial sites sell
+    travel authorizations, or charge to apply for one. Before paying anyone, an adult
+    checks the requirement and the official way to apply on the government's own page.
+    That holds whatever the current requirement turns out to be.
 - **A pointer to `access_and_pricing_watch.md`** for the whole fast-moving category.
 - **Luggage handling, by name.** The built adult-only logistics page sends parents here for
   which luggage services exist and what they are called. Name the ones that exist there,
@@ -558,8 +565,9 @@ Must carry:
 
 ### 5.6 `safety_and_emergency.md`
 
-**What it is for:** Session 49 routes here (`I-2`), and the parent-facing safety guidance
-routes here by name (`I-3`). **This file has two audiences and must mark which part is
+**What it is for:** Session 49 routes here (`I-2`), and two parent-facing pages route here
+by name (`I-3`): the safety guidance, and the adult-only logistics checklist for local
+hazards. **This file has two audiences and must mark which part is
 which**, because the child reads part of it and the adult owns the rest.
 
 **The child-facing part.** Short, calm, and reassuring. Two notes, both in the register the
@@ -603,10 +611,14 @@ example, not in a slot. What the child-facing part carries instead:
 than a listing, and that reconciling them is a Batch 4 item awaiting the owner's answer to
 `B3-2`.
 
-**The adult-facing part**, marked with its own heading:
+**The adult-facing part**, under the heading `## For parents`, which the readability gate
+reads as parent-facing. Put no sub-heading under it, because the gate ends the part at the
+next heading:
 
 - What stays adult-owned: advisories, monitoring, insurance, medical coverage, and
-  contacts. One clause each and a pointer, not a treatment.
+  contacts. One clause each, and a link to the adult-only logistics checklist,
+  `framework/parent_guide/adult_only_logistics.md`, which carries all five. Link it the way
+  `10_snapshot_facts.md` links the Trip-Basics card.
 - **Local natural hazards.** The built parent pages send adults here for them. Name
   earthquakes and the kind of official source that issues alerts, one clause each, and link
   `seasons_weather_events.md` for heat and typhoons.
@@ -740,6 +752,9 @@ pointer to `transportation_basics.md` for the rest.
 
 - **Name the modes and stop.** The stored-value card options, luggage forwarding, station
   lockers, pass value and route-planning tools all live in the reference. The slot points.
+  Batch 2's Session 30 calls naming a planner the insert's job. The contract row makes the
+  transport reference the planner's home, and the contract wins, so the slot's pointer is how
+  the child reaches it.
 - **Session 30 carries the second predict-then-verify anchor**, where the child guesses a
   train time between two of their cities before checking a current planner. The slot must
   therefore make clear that a route planner is the thing to check, without pinning any
@@ -846,9 +861,9 @@ the child will get wrong.
 | --- | --- | --- |
 | `AC-22-1` | human | The pack gives orientation, defines concepts, suggests research questions, points to trusted sources, and makes **no** final recommendations and no itinerary |
 | `AC-29-1` | human | Every slot the contract names exists and supplies its named fields; no orphan slots; every place-needing session is routed to something that exists |
-| `AC-29-2` | grep + human | No trip, origin or roster values anywhere in `destinations/` |
+| `AC-29-2` | grep + human | The grep half: no trip, origin or roster values anywhere in `destinations/`. The human half: a person confirms, by walking the contract and its add-a-destination checklist, that a second destination could be added and a fresh trip started without editing `framework/` or this pack, and that origin logistics stay labelled as the US-specific layer. Record anything that blocks it, such as the contract's open question on what a destination is, in section 8 |
 | `AC-16-1` | grep + human | The human half: cultural and etiquette content reads matter-of-fact, never marveling. **Bites `etiquette_basics.md` and `47_language_etiquette.md` hardest** |
-| `AC-21-3` | human | Adult-owned responsibilities clearly marked; legal, safety and current requirements never stated as fixed without a verify frame |
+| `AC-21-3` | human | Adult-owned responsibilities clearly marked; legal, safety and current requirements never stated as fixed without a verify frame; privacy warnings included, such as the lodging-card boundary in 5.6 |
 | Freshness | automatic | Every new reference file and every new slot carries a `**Last reviewed:** <month year>` line below its title |
 | `AC-GLOBAL-3` | automatic | Markdownlint passes except MD013 and MD034; MD040 and MD026 stay enabled and pass; **all relative links resolve** |
 | `AC-GLOBAL-4` | automatic | No trip data committed |
@@ -871,7 +886,8 @@ the child will get wrong.
 - **The contract conversion**: inline-code filenames became links, and the pack is now
   fully routed; the `B3-10` rows for slots 23, 42 and 47 changed; and any parent-facing
   row corrected under `I-3`.
-- **The edits to built files**: the transport file's arrival-day section (`B3-4`), the
+- **The edits to built files**: the transport file's arrival-day section (`B3-4`) and its
+  watch link (5.7), the
   glossary's new term and its full re-check (`B3-6`), the etiquette move out of `major_cities.md` (`B3-8`), the
   watch link beside the child-fare note in `money_basics.md` (`B3-9`), and the pack
   contents page.
@@ -886,6 +902,8 @@ the child will get wrong.
     owner rules the other way, the pack gains the numbers and this entry is what tells a
     later reader the question was asked rather than missed.
   - Any session that reads wrongly against a pack file, per the paragraph below.
+- **What is still owed to a human**: add the human read of every file this batch created or
+  edited that a child or a parent reads, as an open item in that section of the changelog.
 
 **Findings you cannot fix belong in this brief's own record, not in a framework edit.**
 This batch may not touch `framework/` beyond the changelog and the curriculum version line
@@ -900,17 +918,20 @@ wrong.
 
 ## 9. Validation gates and definition of done
 
-### Gates, all four, before every pull request
+### Gates, all five, before every pull request
 
 ```text
 pre-commit run --all-files
 npm run lint:md
 npm run lint:md:nested
 npm run lint:md:links
+python .github/scripts/check-readability.py
 ```
 
-**All four.** The link check is the one that gets skipped, and it is the one that catches
-a contract link converted before its target exists.
+**All five.** The link check is the one that gets skipped, and it is the one that catches
+a contract link converted before its target exists. The readability check is the one CI
+adds: it scores every pack reference and slot file as child-facing unless the file says
+otherwise.
 
 ### The batch's own checks
 
@@ -972,11 +993,11 @@ would miss finds the gap.
 
 ### Done when
 
-- All twenty-three files created or edited, each to its specification in sections 5 and 6.
+- All twenty-three files created or edited, each to its specification in this brief.
 - Every contract row routes to a file that exists, and every contract filename is a link,
   and the contract's counts, pack-state bullets and add-a-destination topics match the
   finished pack (section 3.4).
-- The four gates pass, and the batch's own checks return what section 9 says they should.
+- The five gates pass, and the batch's own checks return what section 9 says they should.
 - Every new file carries its freshness stamp, as the first line below its own title.
 - Slot 42's horizons carry their own checked month, separate from its `Last reviewed` stamp.
 - **The pack contents page lists all fifteen new files**, in its Reference files and
@@ -985,8 +1006,11 @@ would miss finds the gap.
   batch only linked or trimmed; the glossary's stamp moved only after every entry was
   re-checked.
 - An adversarial review subagent has read the pack's child-facing parts against rule 1.4
-  and `AC-3.1-1`, and its findings are fixed. This stands in for the human read under the
-  recorded pilot deferral; it does not replace it, and the deferral flag stays.
+  and `AC-3.1-1`, and its findings are fixed. That read is evidence for the human-review
+  rows and clears none of them.
+- The human read of every file this batch created or edited that a child or a parent reads
+  is recorded as an open human action, in the build report and in the changelog. The pilot
+  deferral flag stays.
 - `framework/CHANGELOG.md` carries the entry in section 8.
 - Pull requests merged through the project's review loop, CI green.
 
@@ -996,13 +1020,6 @@ would miss finds the gap.
 
 - **Build at the repository root.** Leave `docs/spec/` and the repository's template and CI
   infrastructure untouched.
-- **File scope.** This run may create and edit only the files named in section 2. A file
-  absent from that list does not get written. If the work seems to require one that is
-  absent, that is a finding for section 8, not a permission.
-- **Protected instruction files are never edited.** `.github/copilot-instructions.md`,
-  anything under `.github/instructions/` or `.cursor/rules/`, and the root agent files
-  (`AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `.hermes.md`). If a fix appears to require one,
-  stop and escalate.
 - **No secrets, no credentials, no tokens** in any file or any commit.
 - **The destination-leak rule is on for `framework/` and off for `destinations/`.** That is
   the whole point of the split. Naming Japan in a pack file is correct; naming it in a
@@ -1013,14 +1030,19 @@ would miss finds the gap.
 - **Every volatile fact is verify-framed**, per rule 1.2. This is the rule a reviewer will
   test most, because it is the one that decides whether the pack is worth shipping to
   anyone else.
+- **This batch's deliverables list is the in-scope table in section 2.** A file absent from
+  it is a finding for section 8, not a permission. If a fix appears to need a protected file,
+  stop and escalate.
+- **Never edit these files, in any batch:** `docs/spec/*`, `CLAUDE.md`, `AGENTS.md`, `GEMINI.md`, `.hermes.md`, `.github/copilot-instructions.md`, `.github/instructions/*`, `.cursor/rules/*`, or any other governance or agent-instruction file. This rule has no exceptions. A batch's deliverables list cannot override it.
+- **Create and edit only the files this batch's deliverables list names.** Creating a new file and editing an already-built file are both permitted, but only for a file the deliverables list above names. Batch 1 edits the eight shared sessions for the concrete-to-insert upgrade. Batch 4 edits already-shipped files in the closing whole-repo consistency pass. For a pass that spans many files, the deliverables list may name the scope -- for example, "every file built in Batches 0-4" -- instead of each filename. Touch no other file. In particular, do not touch the repository's template and CI infrastructure: `.github/workflows/*`, `.pre-commit-config.yaml`, `.markdownlint.jsonc`, `package.json`, `schemas/*`, and `tests/*`.
 
 ---
 
 ## Stop and hand off
 
 **Stop when section 9's "done when" list is satisfied.** Hand back: a short build report
-naming every file created and edited, the findings recorded under section 8 that Batch 4
-inherits, and the state of the contract -- specifically, that every row now routes to a
+naming every file created and edited, the files still owed a human read, the findings
+recorded under section 8 that Batch 4 inherits, and the state of the contract -- specifically, that every row now routes to a
 file that exists, which is the first moment in this project that has been true.
 
 **Do not proceed into Batch 4.** Batch 4 is the optional tier and the closing whole-repo
