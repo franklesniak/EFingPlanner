@@ -753,9 +753,16 @@ Make the page path-aware on five points:
 | Parent Notes mandate the duration-neutral acknowledgment | **The duration-true, months-long form** for Core/Full; the duration-neutral form stays for First Taste |
 | The reflection steps ask the First Taste questions, and the budget step reads the Session 33 estimate | The same steps plus three prompts: patterns across the checkpoint reflections, how far off the time guesses were (section 5.5b), and how close the Session 39 budget came to the band, as an anchor. The answers go on the kit's `outputs/final_reflection.md` |
 
-**Neither wording may be deleted.** Both paths end here, so the page carries both and says
-which is which. With the dates booked, on either path, the handoff names the season
-confirmation where it now says "your season pick".
+**Neither wording may be deleted, apart from the two build-state sentences below.** Both
+paths end here, so the page carries both and says which is which. With the dates booked, on
+either path, the handoff names the season confirmation where it now says "your season
+pick".
+
+**Two sentences on the page stop being true for every reader when this batch ships, so they
+change on both paths.** The Optional Extension says the fuller steps "are being built and
+will come later", and the Parent Notes say the roadmap tells "what has to happen before they
+are built". Both now say that the later sessions exist and that the roadmap lists them. A
+First Taste reader still learns that stopping here is a complete success.
 
 **A child who finished First Taste does this page a second time, as the capstone.** The
 spec's continuation map calls this the capstone re-run. The child looks back at both the
@@ -763,8 +770,9 @@ Session 01 baseline and the reflection they wrote at the First Taste finish, and
 Core/Full wording above applies. Say so on the page in one line.
 
 **Sessions 12, 14, 21, 33 and 53 are the only built sessions in the batch whose Parent
-Notes change**; Session 33 gains the fare instruction above, here the change adds a branch
-and keeps the existing instruction, Sessions 12 and 14 each gain the one booked-dates line
+Notes change**; Session 33 gains the fare instruction above, here the change adds a branch,
+keeps the existing instruction and corrects the build-state sentence named above, Sessions
+12 and 14 each gain the one booked-dates line
 below, and Session 21's change is the one word named below. Session 14's Core-path report
 and the Session 15 addition change no Parent Notes.
 
@@ -1368,10 +1376,10 @@ before the final meeting.
 
 Start attraction cards for the things you most want to do.
 
-**The card fields are exactly:** name; city/area; type; why it is interesting; time
-needed; ticket or reservation needed?; best time of day?; nearby places; possible
-downside; review themes; official website needed?; source; date checked; planning
-assumption; needs adult verification?; final decision status.
+**The card fields are the rows of the built `attraction_research_card.md` (A1), in its
+order.** That list includes the two ticket-price rows the Source Check below uses, the
+source-verification rows and the full planning-assumption block, so this session does not
+restate it.
 
 Starter ideas come from the Destination Notes **as options to research, not choices
 already made.**
@@ -1660,9 +1668,10 @@ Compare two routes and recommend one. **No destination facts.**
 and one worked example row filled in**, so the child plugs in their two routes rather than
 inventing a comparison structure or a weighting scheme.
 
-**The columns are exactly:** pros; cons; **travel time**, read from the map's "Directions"
-tool as taught in Session 28 and never eyeballed; energy level; cost level; what gets
-skipped; recommendation; sources. Plus the budget-band check, worded *"Does this route
+**The rows and closing lines are the built `tradeoff_report.md`'s (A5), in its order**,
+with the child's routes as the columns; A5 merges this session's list with the template's.
+**Travel time** is read from the map's "Directions" tool as taught in Session 28 and never
+eyeballed. Plus the budget-band check, worded *"Does this route
 still fit our rough budget band?"* with the reason that more cities and more hotel moves
 usually cost more.
 
@@ -1792,14 +1801,9 @@ fixed; state a price.
 Compare a few real places to stay for one base, and say which you'd recommend. **Fully
 neutral -- do not write the Destination Notes phrase.**
 
-**The card fields, in this order** -- the union of the session's list and the template's,
-because neither is a superset of the other:
-
-> Hotel name · City/neighborhood · Approximate nightly cost · Date checked · Room setup
-> question for adults · Distance to useful transit · Distance to planned sights ·
-> Breakfast available? · Easy breakfast nearby? · Cancellation/flexibility note, adults
-> verify · Review themes · Pros · Cons · Source · Planning assumption · Needs adult
-> verification? · Final decision status
+**The card fields are the rows of the built `hotel_comparison_card.md` (A3), in its
+order**: the union of this session's list and the template's, because neither is a superset
+of the other.
 
 **Render as a two-column `Prompt | Your answer` table, one table per card. Do not build a
 seventeen-column grid.** (`D-X-10`.)
@@ -1870,9 +1874,9 @@ cash only as a fixed fact.
 Turn your food wish list into a few real places or dining areas to suggest. **Conditional
 Core**, same rule and same open framing as Session 36.
 
-**The card fields:** Name or dining area · City/neighborhood · Type of food · Near which
-attraction or hotel? · Reservation needed? · **Cash-only?** · Review themes · Possible
-downside · Source · Date checked. Render as a two-column `Prompt | Your answer` card.
+**The card fields are the rows of the built `restaurant_research_card.md` (A2), in its
+order**, including **Cash-only?**, the source-verification rows and the planning-assumption
+block. Render as a two-column `Prompt | Your answer` card.
 
 **One spec instruction needs careful neutral handling.** The spec names a
 destination-specific review site. **It must not be named in the session.** Write it
@@ -3450,7 +3454,7 @@ template behind it is **a blank copy of that template**, plus the kit's copy-out
 and a **relative link back to the template.** It must not diverge from the template. No
 filled values. No example family. **A test in this repository already asserts this for the
 Batch 1 kit copies and has caught real drift**, so a divergence is a failing build, not a
-style note.
+style note. The one exception is `outputs/final_reflection.md`; see 9.4.4.
 
 **The three kit notes, required in substance:**
 
@@ -3582,6 +3586,12 @@ complete set of outputs; the later sections are a bonus.**
 | `binder_table_of_contents.md` | The assembled binder's contents in the canonical tab order. **`print_index.md` owns the canonical scheme -- this shell renders it, it does not redefine it** |
 | `adult_follow_up_questions.md` | What adults still need to verify, decide and book; open questions; which child-made materials adults should use next |
 | `final_reflection.md` | The capstone reflection, built from the baseline plus however many checkpoint reflections exist |
+
+**`final_reflection.md` is the one output shell that shares its name with a template, and it
+is not a copy of that template.** `templates/final_reflection.md` is the shorter page a First
+Taste child fills at Session 53. This shell is the capstone form, with the fuller prompt list
+below, so the kit-file pattern's blank-copy rule does not apply to it. Link the template from
+the shell as the First Taste form.
 
 **`final_reflection.md` must prompt for, at least:** what is different since the baseline,
 and since the First Taste reflection for a child who wrote one; patterns across whatever
@@ -3849,14 +3859,14 @@ and the mapping is the full list.**
 
 **The file exists and is built. Extend it; do not re-author it.**
 
-**Two things Batch 2 must fix or add.**
+**One thing Batch 2 keeps, and one it adds.**
 
-**First, the standing "what is built right now" blockquote goes.** It asserts the repository
-holds only the First Taste slice. Batch 1 falsified part of it; Batch 2 falsifies the rest;
-a Batch 3 would falsify it again. **Replace it with a pointer to
-`[the curriculum changelog](CHANGELOG.md)`**, which is the version history and the one file
-that is supposed to change every batch. A fact that must be corrected once per batch to stay
-true is a fact that will eventually not be corrected. (`D-X-13`.)
+**First, the standing "what is built right now" blockquote is already a pointer. Keep
+it.** It used to assert that the repository holds only the First Taste slice, which each
+batch falsified. It now sends the reader to `[the curriculum changelog](CHANGELOG.md)`, the
+one file that is supposed to change every batch, and the changelog records that change.
+**Add no build inventory to the blockquote.** A fact that must be corrected once per batch
+to stay true is a fact that will eventually not be corrected. (`D-X-13`.)
 
 **Second, "Beyond First Taste (built in later batches)" becomes the real Core Finish Line
 index**, not a forward reference.
@@ -3867,12 +3877,17 @@ index**, not a forward reference.
 at Checkpoint 5. **It introduces no new sessions; it is a reading order.** It sits at the
 front of the project, in this file, and is referenced from the root README.
 
-**The root README changes with it.** Its index heading says "(what is built now)" and its
-status paragraph says the repository holds only the First Taste slice; both become false
-when this batch ships. Retitle the index without "what is built now", replace the status
-sentence with a pointer to this roadmap and `framework/CHANGELOG.md`, and link the Core
-Finish Line index. **The README states no build inventory of its own** -- that is
-`D-X-13`'s rule, applied to the front door.
+**The root README changes with it.** Four places in it say how much is built, and all four
+become false when this batch ships. The index heading may still say "(what is built now)".
+The index note may call Phases 0-2 the built slice. The status paragraph says what the
+repository holds, and that the Core Finish Line and full program come in later batches. The
+quick-start step that ends the First Taste path says the roadmap tells "what has to happen
+before those later sessions are built". Retitle the index without "what is built now", and
+drop the build-state framing from its note. Replace the status paragraph's build-state
+sentences with a pointer to this roadmap and `framework/CHANGELOG.md`, and link the Core
+Finish Line index. In the quick-start step, keep the link to the roadmap and drop the clause
+about what must happen before the later sessions are built. **The README states no build
+inventory of its own** -- that is `D-X-13`'s rule, applied to the front door.
 
 **Mandatory honesty line, in substance:** *"This is the shortest route to a usable plan, but
 it is still most of the Core work -- about forty sessions to reach Checkpoint 5. What you
@@ -3959,6 +3974,9 @@ session grouped by phase, in numbered order**, as check-off lines in the same fo
 First Taste list. **Mark each line that is not Core with its path label from this brief's
 session table** -- Recommended, Optional, or the condition that makes it Core -- so a Full
 family and a family whose condition promotes a session both find it in order.
+**Say once, at the top of the section, how to read the labels:** an unmarked line is Core
+and is done in order; a conditional line is done when its condition holds; a Recommended or
+Optional line is done only if the family chooses it, as a Full family does.
 **Each First Taste session whose Core version asks for new work gets its own extension line,
 directly after that session:** Session 14's season report, Session 21's long-list
 comparison, Session 33's adult fare row and, when a traveler comes for only part of the
@@ -3966,8 +3984,10 @@ trip, the headcount note, Session 44's cut list with the Checkpoint 2 and 3 note
 Session 53's capstone re-run (see 4.1a). **Label each extension line as for a
 family that finished First Taste first**, so a child who started on the Core path ticks it
 along with its session. A family continuing from First Taste ticks the sessions it already
-finished and works the unticked lines in numbered order, so it reaches each extension at its
-session's place. **Mark each Core line whose session is parent-gated or co-worked**,
+finished, then reads the rest the same way: it works the unticked Core lines and extension
+lines in numbered order, plus each conditional line whose condition holds and each
+Recommended or Optional line it chooses. It reaches each extension at its session's place.
+**Mark each Core line whose session is parent-gated or co-worked**,
 in the same form as the First Taste list's markers, taking which sessions those are from
 B7's rule, so the membership lives in one place. **Scope the existing "Which sessions need a
 grown-up" lists to the First Taste path**, and make its waiting rule point at a marked
