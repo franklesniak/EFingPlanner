@@ -137,8 +137,9 @@ authored destination-concrete "for now."
 **Plus edits to already-built files**, which are deliverables too and are easy to forget
 because they create nothing: Session 15's conversion, the navigation re-point on Sessions
 15, 21, 33, 44 and 53, **path-aware content edits to Sessions 12, 14, 15, 21, 33, 44 and 53
-(section 4.1a)**, the insert/reference contract, the kit README,
-**`framework/templates/city_research_card.md`** (a two-row addition, see A6),
+(section 4.1a)**, the booked-start line in Session 00, the setup checklist and the
+assumptions page with its kit copy (section 4.1a), the insert/reference contract, the kit
+README, **`framework/templates/city_research_card.md`** (a two-row addition, see A6),
 **`framework/student_guide/progress_tracker.md`** (its Core/Full view, see F2), **the root
 `README.md`** (its build-state wording, see F1), **the existing
 `framework/parent_guide/session_support_notes.md` entries for the sessions this batch
@@ -681,11 +682,11 @@ child actually is does not make the chain work. **Three earlier built sessions, 
 21, also need a Core-path addition**, because the Core evidence floor and the Core city set
 depend on them.
 
-**All six are added to the authorized edit scope, with Session 12's booked-dates branch
-below.** Each edit is conditional or additive:
-**nothing a First Taste child reads today may change meaning for them.** **A Core-path
-addition that asks for new work also changes that session's Artifact and Stop Point on the
-Core path**, so the session is not done until the new work is.
+**All six are added to the authorized edit scope, with Session 12's booked-dates branch and
+Session 00's booked-start line below.** Each edit is conditional or additive: **nothing a
+First Taste child reads today may change meaning for them.** **A Core-path addition that
+asks for new work also changes that session's Artifact and Stop Point on the Core path**, so
+the session is not done until the new work is.
 
 #### Session 33 — the adult's own fare, ready before Session 39
 
@@ -830,15 +831,15 @@ checkpoint.
 - **Session 14:** with the dates booked, Checkpoint 1 is an understanding-and-confirmation
   beat. The child explains what the chosen season means for the trip and confirms the fit,
   and recommends no season. This page is the **season confirmation**: it goes on the same
-  Decision Record page and is the first decision-log entry. On that page the child writes the
-  booked season as the decision and skips the three option rows and My recommendation, as
-  the template's booked-dates lines say. My reasons holds what the season means for the
-  trip, and the final family decision is the confirmed fit. On the Core path, the season
-  report takes its booked-dates form above. Its Parent Notes gain one line: with the dates
-  booked, the recommendation named above is the season confirmation, which the family talk
-  uses to confirm the fit, with no pick to adjust. Its progress line in Steps takes the
-  booked form in 5.2's table: the family now knows what its season means for the trip, and
-  which challenge to plan around.
+  Decision Record page and is the first decision-log entry. On that page the child writes
+  "Confirming our season" as the decision and skips the three option rows and My
+  recommendation, as the template's booked-dates lines say. My reasons holds what the season
+  means for the trip, and the final family decision is the booked season, confirmed. On the
+  Core path, the season report takes its booked-dates form above. Its Parent Notes gain one
+  line: with the dates booked, the recommendation named above is the season confirmation,
+  which the family talk uses to confirm the fit, with no pick to adjust. Its progress line
+  in Steps takes the booked form in 5.2's table: the family now knows what its season means
+  for the trip, and which challenge to plan around.
 
 No child is asked to recommend dates the family cannot change. **With the dates booked, the
 season confirmation fills every place this brief asks for the season recommendation:** the
@@ -852,10 +853,21 @@ Card's own row already reads "our Checkpoint 1 season".
 
 **The booked trip length reaches later sessions the same way.** With the dates booked, the
 booked trip length is the total, and the child's nights plan splits it. Each of these says
-so in place: Session 29's purpose, check and Stop Point; Session 32 and its route shell
-(9.4.3); the adult reviews at Checkpoints 2 and 4, and the city-shortlist shell; B1's
-Checkpoint 4 section; the 5.2 progress table; binder tab 4 (Session 50, copied by E2); E1's
-binder list and evidence floor; and the presentation outline (Session 51 and A12).
+so in place: Session 29's purpose, check, teaching points, stamina steer, Stop Point and
+Optional Extension; Session 32 and its route shell (9.4.3); the adult reviews at Checkpoints
+2 and 4, and the city-shortlist shell; B1's Checkpoint 4 section; the 5.2 progress table;
+Session 43's pacing check; binder tab 4 (Session 50, copied by E2); E1's binder list and
+evidence floor; and the presentation outline (Session 51 and A12).
+
+#### Session 00 — a booked start is supported
+
+The spec's Session 00 names the booked-dates mode at the season-window step, and no built
+setup page says so yet. **Add one line to that step in Session 00 and in the setup
+checklist:** a family whose dates are already booked has a supported start, writes the
+booked season as its season window, and finds what changes on the later pages. **The
+assumptions page's season-window row gains "or, with your dates already booked, the booked
+season"**, and its kit copy follows the template. The page's rule against writing exact
+booked dates stands.
 
 #### Session 15 — cards toward the Core floor
 
@@ -1637,23 +1649,25 @@ read from the Trip-Basics card** -- write it as a card lookup and **never** writ
 specific hours figure, a home city, or a daylight-saving explanation into the session; for
 the first two or three days the body thinks it is the middle of the night when it is
 daytime there, so plan those days gently on purpose; **moving hotels uses time**;
-**one-night stays can be tiring**; **the trip cannot exceed the family's maximum trip
-length**, read from the card and never written as a number; **there is also a sensible
-minimum**, reasoned out rather than fixed -- count the travel days and the first
-jet-lagged day or two, subtract them, and see how few real days remain; **fewer places
-deeper versus more places faster.**
+**one-night stays can be tiring**; **with open dates, the trip cannot exceed the family's
+maximum trip length**, read from the card and never written as a number, and with the dates
+booked it is the booked length; **there is also a sensible minimum**, reasoned out rather
+than fixed -- count the travel days and the first jet-lagged day or two, subtract them, and
+see how few real days remain; **fewer places deeper versus more places faster.**
 
 **The date line, written as a conditional.** If the flight crosses it, a calendar day
 appears to vanish on the way out and comes back on the way home. Write it that way -- as
 something that may or may not apply to this trip -- so no destination and no direction of
 travel is named. (`D-OPEN-3`.)
 
-**The stamina steer.** **The maximum is a ceiling, not a target.** For a mixed-stamina
-party, lean the *recommendation* shorter and gentler than the max, read off each
-traveler's stamina on the Trip-Basics card and the traveler profiles. If the party
+**The stamina steer.** **The maximum is a ceiling, not a target.** With open dates, for a
+mixed-stamina party, lean the *recommendation* shorter and gentler than the max, read off
+each traveler's stamina on the Trip-Basics card and the traveler profiles. If the party
 includes a lower-stamina traveler, the recommended shape leans toward **fewer cities, more
-nights in each, and built-in rest or down days.** Keep it generic and unpinned, naming
-**no specific recommended day count**.
+nights in each, and built-in rest or down days.** Keep it generic and unpinned, naming **no
+specific recommended day count**. **With the dates booked, the length stays fixed**, so the
+steer works inside it: the same fewer cities, more nights in each, and rest or down days,
+within the booked trip.
 
 - **Workspace:** the "real days" worksheet plus a nights-per-city table.
 - **Artifact:** a Nights-per-city estimate.
@@ -1663,7 +1677,8 @@ nights in each, and built-in rest or down days.** Keep it generic and unpinned, 
 - **Source Check:** not required. Carry the heading with the no-research line plus one
   sentence pointing at the Trip-Basics card and the route notes.
 - **Optional Extension is pinned:** the open "reason out your own floor and ceiling"
-  version, for a child ready for it.
+  version, for a child ready for it. With the dates booked, it reasons out the floor alone,
+  since the booked length is fixed.
 - **Parent Notes** carries the "recovery day or two at home" note, which is an adult
   calendar matter rather than child content.
 
@@ -2219,12 +2234,14 @@ breaks?
 **Pacing that works for every traveler's stamina**, using the stamina notes from the
 traveler profiles. A lower-stamina traveler -- **"an older relative (for example a
 grandparent)", never a named relative** -- traveling for the family's full maximum trip
-length is an energy factor even with no mobility limits, and hot, humid weather makes it
-matter more. **Never a trip-length number.**
+length, or the full booked trip, is an energy factor even with no mobility limits, and hot,
+humid weather makes it matter more. **Never a trip-length number.**
 
 **Is the trip leaning too long or too packed for this party?** If a lower-stamina traveler
 is on the roster, the kinder shape is usually **shorter and gentler than the maximum** --
 fewer cities, more nights in each, and a rest day built in. **Name no fixed day count.**
+With the dates booked, the length stays, so the kinder shape is fewer cities, more nights in
+each and a rest day inside the booked trip.
 
 **Walking load and stair-heavy transfer days?** Some trips run a lot of steps a day, and
 some station transfers involve long walks and many stairs, with no guarantee of an

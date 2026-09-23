@@ -55,7 +55,7 @@ Each has its own **what to consider** list. The review form checks whether the w
 
 ### Checkpoint 1 — Season Recommendation (Session 14)
 
-**What they bring:** a season, a backup season, a season to be careful about, possible months, their reasons, their sources, and their questions for you. Those often include whether it fits school and work.
+**What they bring:** with open dates, a season, a backup season, a season to be careful about, possible months, their reasons, their sources, and their questions for you. Those often include whether it fits school and work.
 
 **Weighing the calendars is yours, not theirs.** Session 14 has them ask the question; you answer it.
 
@@ -89,7 +89,7 @@ Each has its own **what to consider** list. The review form checks whether the w
 
 ### Checkpoint 4 — Route and Trip Length (Session 32)
 
-**What they bring:** total days, overnight cities, nights in each, travel days, a shorter backup version.
+**What they bring:** with open dates, total days, overnight cities, nights in each, travel days, and a shorter backup version.
 
 **Also yours to do here:** confirm or adjust the arrival and departure cities against current flight options. If they change, your child's route flexes. They move one block and keep the rest.
 
