@@ -33,7 +33,7 @@ Agents MUST apply the [shared decision process](.github/copilot-instructions.md#
 
 Shared project `CLAUDE.md` files MUST NOT contain active `@path` imports. Keep shared instructions within reviewed repository files and use ordinary Markdown links for navigation. Literal import examples in inline code or fenced code blocks and ordinary `@claude` or `@codex` command mentions remain permitted. Retained instruction-contract validation checks cataloged Claude files; it does not discover every unlisted instruction surface.
 
-The repository MUST NOT track any file whose exact basename is `CLAUDE.local.md`, including casing variants at the root or in nested directories. Personal untracked local memory remains permitted. The tracked-file check inspects Git index names without reading local-memory contents; it does not govern user, global, or organization instructions. Ignore rules do not replace this check, and the check does not require baseline configuration.
+The repository MUST NOT track any file whose exact basename is `CLAUDE.local.md`, including casing variants at the root or in nested directories. Personal untracked local memory remains permitted.
 
 ## Protected Instruction Files
 
@@ -51,9 +51,7 @@ During downstream template adoption and stack selection, perform non-protected c
   - Respect allowlisted file access boundaries; reject path traversal and symlink escapes.
 
 - **Pre-commit and validation**
-  <!-- template-sync: begin baseline-reference-only -->
   - Run `pre-commit run --all-files` before every commit.
-  <!-- template-sync: end baseline-reference-only -->
   - Include all auto-fixes in the same commit as the related change.
   - Do not push code when pre-commit or required validation checks are failing; fix issues and re-run until the checks pass.
   - Use the repository's existing validation commands as needed:
@@ -64,9 +62,7 @@ During downstream template adoption and stack selection, perform non-protected c
     <!-- template-sync: begin schema-reference-only -->
     - `pytest tests/test_schema_examples.py -v` (after any schema or schema-example change)
     <!-- template-sync: end schema-reference-only -->
-  <!-- template-sync: begin baseline-reference-only -->
   - The `pre-commit run --all-files` command exercises the active hooks configured in [`.pre-commit-config.yaml`](.pre-commit-config.yaml), the authoritative list of active hooks.
-  <!-- template-sync: end baseline-reference-only -->
   <!-- template-sync: begin json-reference-only -->
   - Retained JSON checks include strict JSON syntax (`check-json`).
   <!-- template-sync: end json-reference-only -->
@@ -78,9 +74,7 @@ During downstream template adoption and stack selection, perform non-protected c
   <!-- template-sync: begin schema-reference-only -->
   - Retained schema checks include JSON Schema validation (`check-jsonschema`) and schema self-validation (`check-metaschema`).
   <!-- template-sync: end schema-reference-only -->
-  <!-- template-sync: begin github-data-ci-reference-only -->
   - When both `baseline` and `github-actions` are retained, the dedicated [`.github/workflows/data-ci.yml`](.github/workflows/data-ci.yml) workflow re-runs retained data-file hooks so adopted data-file enforcement can be required via branch protection.
-  <!-- template-sync: end github-data-ci-reference-only -->
   - Retained data-file authoring guidance lives in the matching module docs.
   <!-- template-sync: begin json-reference-only -->
   - JSON guidance: [`.github/instructions/json.instructions.md`](.github/instructions/json.instructions.md).

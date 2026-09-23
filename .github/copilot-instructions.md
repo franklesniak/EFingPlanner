@@ -31,9 +31,6 @@ Instruction files, style guides, and the retained instruction-contract catalog a
 - Cursor project rules under `.cursor/rules/`
 - Modular instruction files under `.github/instructions/`
 - The retained instruction-contract catalog: `.template-sync/instruction-contracts.yml`
-<!-- template-sync: begin github-actions-only -->
-- The retained workflow security contract: `.github/workflow-security-contract.yml`
-<!-- template-sync: end github-actions-only -->
 
 Agents **MUST NOT** create, edit, delete, rename, or otherwise change these protected governance files unless the repository owner or maintainer has directly and explicitly authorized the specific protected-content change in the current task. Implied consent is insufficient.
 
@@ -123,15 +120,11 @@ In addition to formatting, linting, trailing-whitespace, and end-of-file fixes, 
 - Worked-example schema validation uses `check-jsonschema` for valid example data under `schemas/examples/example-config/valid/` against `schemas/example-config.schema.json`, and uses `check-metaschema` to self-validate `schemas/example-config.schema.json`.
 <!-- template-sync: end schema-reference-only -->
 
-<!-- template-sync: begin baseline-reference-only -->
 `.pre-commit-config.yaml` is the authoritative list of active hooks. Do **not** rely on a hardcoded total hook count when describing the validation model; consult `.pre-commit-config.yaml` directly to see which hooks are wired up. For the policy and rationale behind which real load-bearing configuration files receive built-in schema validation, see the **Built-in Schema Validation for Real Load-Bearing Configuration Files** ADR in [`.github/TEMPLATE_DESIGN_DECISIONS.md`](https://github.com/franklesniak/copilot-repo-template/blob/HEAD/.github/TEMPLATE_DESIGN_DECISIONS.md).
-<!-- template-sync: end baseline-reference-only -->
 
 Prettier is **opt-in** and is **not** part of the default data-file toolchain. (This framing has been re-verified against the built-in schema validation ADR and remains correct.)
 
-<!-- template-sync: begin github-data-ci-reference-only -->
 When both `baseline` and `github-actions` are retained, the dedicated [`.github/workflows/data-ci.yml`](workflows/data-ci.yml) workflow re-runs the repository's retained data-file pre-commit hooks (JSON, TOML, YAML, and GitHub Actions checks plus the retained schema-validation alias hooks) so retained data-file enforcement can be required via branch protection independent of language-specific CI jobs. That workflow file is the authoritative list of the hooks it executes.
-<!-- template-sync: end github-data-ci-reference-only -->
 
 <!-- template-sync: begin yaml-reference-only -->
 When YAML style validation is retained, the dedicated data-file workflow or
@@ -199,7 +192,7 @@ For the rationale, see the **Workflow Version Pinning and Dependabot Coherence**
 
 ### Action versions in `uses:` references
 
-- Third-party action versions **MUST** remain directly visible in `uses:` references (for example, `actions/checkout`, `actions/setup-node`) so Dependabot's `github-actions` ecosystem can update them.
+- Third-party action versions **MUST** remain directly visible in `uses:` references (for example, `actions/checkout@<40-character-SHA> # vX.Y.Z`, `actions/setup-node@<40-character-SHA> # vX.Y.Z`) so Dependabot's `github-actions` ecosystem can update them.
 - Repeated `uses:` references to the same action across jobs and steps are acceptable when each occurrence is a normal Dependabot-managed `uses:` reference. Dependabot updates each `uses:` line directly.
 - Do **NOT** store an action version in a workflow-level `env:` variable, unmanaged comment, cache key, file path, shell literal, manually constructed image tag, or any other secondary location as a mirror of a `uses:` version. The `uses:` line **MUST** be the only authoritative source for the action version because Dependabot rewrites `uses:` references and will leave unrelated literals stale.
 - Do **NOT** copy a Dependabot-managed action version into secondary workflow locations that Dependabot will not reliably rewrite (for example, cache keys, file paths, shell commands, manually constructed image tags, or comments presented as authoritative version state).
@@ -228,7 +221,7 @@ The two categories are **not** symmetric, and the difference is the entire point
 
 Action wrapper versions and the tool versions they install are **separate pins** that travel through different channels:
 
-- `actions/setup-node` is the setup action version (managed by Dependabot via `uses:`).
+- `actions/setup-node@<40-character-SHA> # vX.Y.Z` is the setup action version (managed by Dependabot via `uses:`).
 - The `node-version` input's value is the Node.js version installed by that setup action (not managed by Dependabot; manually maintained).
 
 Both pins exist in the same workflow step, but they update on different cadences and through different mechanisms. Do not conflate them.
