@@ -829,7 +829,10 @@ checkpoint.
 - **Session 14:** with the dates booked, Checkpoint 1 is an understanding-and-confirmation
   beat. The child explains what the chosen season means for the trip and confirms the fit,
   and recommends no season. This page is the **season confirmation**: it goes on the same
-  Decision Record page and is the first decision-log entry. On the Core path, the season
+  Decision Record page and is the first decision-log entry. On that page the child writes the
+  booked season as the decision and skips the three option rows and My recommendation, as
+  the template's own note says. My reasons holds what the season means for the trip, and the
+  final family decision is the confirmed fit. On the Core path, the season
   report takes its booked-dates form above. Its Parent Notes gain one line: with the dates
   booked, the recommendation named above is the season confirmation, which the family talk
   uses to confirm the fit, with no pick to adjust.

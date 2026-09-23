@@ -18,4 +18,6 @@ Use one Decision Record for each big choice. Keep them all in one place. Togethe
 | Does a grown-up need to decide or verify anything? | |
 | Final family decision | |
 
+**Already decided?** Sometimes a choice is made before you get to it, like trip dates that are already booked. Write what was decided in the first row. Skip the three option rows and "My recommendation". Use "My reasons" to say what it means for our plan.
+
 Tip: your first record is your season from Checkpoint 1. Keep the records in order. Then you can see how the plan grew.
