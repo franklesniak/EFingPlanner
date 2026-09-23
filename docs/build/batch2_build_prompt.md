@@ -722,10 +722,10 @@ Make the page path-aware on four points:
 | Parent Notes mandate the duration-neutral acknowledgment | **The duration-true, months-long form** for Core/Full; the duration-neutral form stays for First Taste |
 
 **Neither wording may be deleted.** Both paths end here, so the page carries both and says
-which is which. **Sessions 33 and 53 are the only built sessions in the batch whose Parent
-Notes change**; Session 33 gains the fare instruction above, and here the change adds a
-branch and keeps the existing instruction. The Session 14, 15 and 21 additions
-below change no Parent Notes.
+which is which. **Sessions 21, 33 and 53 are the only built sessions in the batch whose
+Parent Notes change**; Session 33 gains the fare instruction above, here the change adds a
+branch and keeps the existing instruction, and Session 21's change is the one word named
+below. The Session 14 and 15 additions below change no Parent Notes.
 
 #### Session 14 — the season trade-off report on the Core path
 
@@ -733,8 +733,11 @@ The Core/Full evidence floor needs three trade-off reports, and the first is a s
 travel-window trade-off. Built Checkpoint 1 already has the child choose a best season and a
 backup. **On the Core path, add one step: fill one Trade-Off Report comparing that best
 season and that backup**, reusing the reasons already written. It is the first of the three
-the template names. **A First Taste child's page is unchanged**; First Taste is not measured
-against the floor.
+the template names. **When the family's dates are already booked**, Checkpoint 1 is the
+spec's understanding-and-confirmation beat, so the report compares **the booked window with
+the child's next-best window** on the family's goals: what the booked dates give, what they
+cost, and how the plan works around that cost. It is still the first report. **A First
+Taste child's page is unchanged**; First Taste is not measured against the floor.
 
 #### Session 15 — cards toward the Core floor
 
@@ -750,7 +753,10 @@ Built Session 21 compares "your two City Research Cards". A Core/Full child arri
 Session 20 with a long-list of five to eight places. The spec's rule is "at 21, extend their
 comparison to the fuller long-list candidates". **On the Core path, extend the score table to
 the long-list candidates the child wants to keep in the running**, and say that the two
-cities already scored count. **The two-city First Taste steps stay word for word.**
+cities already scored count. **The two-city First Taste steps stay word for word.** In
+Parent Notes, change "This is the first real trade-off report" to **"This is a real
+trade-off report"**: on the Core path the Session 14 report comes first, and the sentence
+is then true on every path.
 
 ### 4.1b Converting Session 15, the one built session that still leaks
 
@@ -1297,7 +1303,7 @@ already made.**
   reason, a rough time needed, one downside, and a source each. More cards can wait for
   another sitting. **The attraction set is complete at 10 cards, across as many sittings as
   it takes** -- that is the Core floor, and reaching it is success. Come back to this session
-  until you reach it, before Session 26 ranks them.
+  until you reach it, before Session 24 checks the balance, so every card gets that check.
 - **Source Check: required, and this is the first designated predict-then-verify
   session.** The one-line ticket-price guess goes **on the source line of the card**, then
   the child checks the official site and notices the gap. Ungraded.
@@ -1519,8 +1525,8 @@ nights in each, and built-in rest or down days.** Keep it generic and unpinned, 
 - **Workspace:** the "real days" worksheet plus a nights-per-city table.
 - **Artifact:** a Nights-per-city estimate.
 - **Stop Point:** you are done when each overnight place has a number of nights, and your
-  total sits between your floor and your family's maximum. "Not sure yet" on one place is
-  fine.
+  total sits between your floor and your ceiling: your family's maximum, or the booked trip
+  length when the dates are already booked. "Not sure yet" on one place is fine.
 - **Source Check:** not required. Carry the heading with the no-research line plus one
   sentence pointing at the Trip-Basics card and the route notes.
 - **Optional Extension is pinned:** the open "reason out your own floor and ceiling"
@@ -1594,7 +1600,7 @@ deeper versus more cities faster.** (`D-OPEN-5`.)
 - **Optional Extension is pinned:** free-form weighted reasoning -- assigning their own
   importance weights and arguing the trade-off in prose -- for a child ready for it.
 
-**Formative check.** After this, the **first trade-off report**, the parent asks *"Walk me
+**Formative check.** After this, the **route trade-off report**, the parent asks *"Walk me
 through how you weighed this option against that one."* Put it in Parent Notes and in the
 parent session-support entry, as a quick spoken prompt and **never a graded test.**
 
@@ -2344,9 +2350,10 @@ register.
 **1. The child makes an "if I get separated" card to carry.** It holds the **name, address
 and phone number of where you're staying** -- an adult writes a line in the local language
 so the child can show it to anyone -- a **parent's phone number**, and **two emergency
-phrases from the pack**. **The lodging lines stay blank for an adult to fill in after
-booking.** Adults book after the Session 52 handoff, so at this session there is often no
-booked place yet, and a safety card must never carry a guess. The phrases themselves are: one meaning "please help" and one meaning "I'm lost, I got
+phrases from the pack**. **If an adult has already booked and checked the lodging, the
+adult fills in the lodging lines now.** Otherwise **they stay blank for an adult to fill in
+after booking**: many families book after the Session 52 handoff, though some book before
+starting or during the project, and a safety card must never carry a guess. The phrases themselves are: one meaning "please help" and one meaning "I'm lost, I got
 separated from my family", which is the phrase local speakers instantly recognize for
 exactly this situation. The adult who writes the local-language line confirms the current
 wording.
@@ -2389,10 +2396,10 @@ this instruction in `## Parent Notes`.
   (you / ask adults), plus the card's own small table.
 - **Stop Point:** you are done when every line on your readiness checklist is either
   checked or marked "ask adults to confirm", and your card is made, with its lodging lines
-  marked for a grown-up to fill in after booking. You've also said the three-part plan out
-  loud once with a grown-up. That's the whole thing. The readiness checklist carries one
-  more adult line: **"Ask adults to fill in and check the card's lodging lines after
-  booking."**
+  filled in by a grown-up or marked for a grown-up to fill in after booking. You've also
+  said the three-part plan out loud once with a grown-up. That's the whole thing. The
+  readiness checklist carries one more adult line: **"If the card's lodging lines are still
+  blank, ask adults to fill them in and check them after booking."**
 - **Source Check:** the conditional line **plus** the verify reminder: any emergency number
   or local rule the child writes on their card gets confirmed by an adult on a current
   official page, with the date noted.
@@ -3177,9 +3184,11 @@ the gate twice: once in this brief, and again in every entry copied from it.
 
 **Add one entry per session this batch authors**, so every session has one: 16, 17, 18, 19,
 20, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 45,
-46, 47, 48, 49, 50, 51, 52. **Sessions 15, 21, 33, 44 and 53 already have entries. Do not
+46, 47, 48, 49, 50, 51, 52. **Sessions 14, 15, 21, 33, 44 and 53 already have entries. Do not
 rewrite them; update only what this batch changes in each session**, and keep each First
-Taste instruction as a branch. Three updates are known: Session 15's prep line (the major
+Taste instruction as a branch. Four updates are known: Session 14's prep and look-for lines
+(on the Core path, a Trade-Off Report page, and a report comparing the best season with the
+backup, or the booked window with the next-best window when the dates are booked), Session 15's prep line (the major
 cities reference is gone after 4.1b; the child now chooses from their Session 11 notes),
 Session 44's pick line (on the Core path the child confirms the pick Session 26 already
 chose), and Session 53's acknowledgment line (duration-true for Core/Full,
@@ -3727,10 +3736,9 @@ Two jobs: the print order, and the **single canonical binder-tab scheme with its
    a competing organizing scheme anywhere.**
 
 **One sentence must appear beside the mapping**, so a reader who counts does not file a
-defect: the mapping carries five entries the item list does not -- the Trip-Basics card,
-the kept Phase 1 research-skill artifacts, the "My Calls" page, the parent review forms,
-and the final recommendation summary -- because each is required in the binder by another
-part of the design. That sentence names the rule and prints no count.
+defect. It states the rule and no count or member list: **the mapping also files entries
+the item list does not name, because other parts of the design require them in the binder,
+and the mapping is the full list.**
 
 ---
 
@@ -3835,15 +3843,16 @@ link and log the deferred link.
 
 #### F2 — the "Checkpoints reached" line
 
-**This is the headline progress signal for the Core/Full view.** Put it in the roadmap and
-at the top of the student progress tracker, **as a fill-in line**:
-`Checkpoints reached: ____ of 6`.
+**This is the headline progress signal for the Core/Full view.** Put it, **as a fill-in
+line**, `Checkpoints reached: ____ of 6`, in two places: the roadmap's "Beyond First Taste"
+part, and the top of the progress tracker's Core/Full section.
 
 **The tracker's Core/Full view.** `framework/student_guide/progress_tracker.md` is
-First-Taste-only today. Add a Core/Full section: the checkpoints line first, then the Core
+First-Taste-only today, and it is a static page, so the two views are two sections in a
+fixed order. **Keep the First Taste section first and as it is**, including its own count,
+because a First Taste child still uses it. **Add the Core/Full section after it**, headed
+for a family that keeps going past First Taste: the checkpoints line first, then the Core
 sessions grouped by phase, as check-off lines in the same form as the First Taste list.
-**Keep the First Taste section as it is**, including its own count, because a First Taste
-child still uses it.
 
 **Why this one and not a percentage** -- say it in one line: it stays accurate even when
 sessions are skipped or the Core Finish Line is taken, and the six checkpoints map to the
@@ -3853,9 +3862,10 @@ six real decisions the family makes. Phase-level progress is secondary detail be
 **The path-view rule is load-bearing.** The "First Taste sessions: N of 13" headline belongs
 to the First Taste view; **"Checkpoints reached" belongs to the Core/Full view** and applies
 only if the family continues past First Taste. **A First Taste finisher must never open
-their page and read a headline saying they are one-sixth done.** Both views render from the
-canonical lists; neither is separately maintained. When the family continues, the view
-switches with the thirteen done sessions pre-checked.
+their page and read a headline saying they are one-sixth done.** The fixed order keeps that
+true: the page opens on the First Taste section. Both views render from the canonical lists;
+neither is separately maintained. When the family continues, the child moves to the
+Core/Full section and ticks the thirteen sessions they already finished.
 
 **Progress-bar form, where one is used:** a plain text bar such as
 `Phase 3 Progress: [####------] 4/10`, inside a `text`-tagged fence. **No badges.**
@@ -4037,8 +4047,9 @@ is incomplete and removing the rider would make the docs wrong in the other dire
 
 - **Every deliverable in the table at the top of this brief, and every listed edit to an
   already-built file, exists**, is meaningful -- no thin or placeholder files -- and is
-  lint-clean, and **every relative link resolves.** **Files named in the scope boundary
-  stay absent in this batch**; their absence is the expected state.
+  lint-clean, and **every relative link resolves.** **This batch creates and changes none of
+  the files the scope boundary names**; one that already exists, such as the root
+  `CONTRIBUTING.md`, stays as it is.
 - **Read the density caps and their counting rules from
   `framework/docs/build_style_and_vocab.md`, not from this brief**, and check every new
   child-facing file against them. This brief names which rules bite; the style law is where
