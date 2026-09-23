@@ -12,7 +12,8 @@ What is checked
 ---------------
 For each `.md` or `.mdc` file that the pull request adds, modifies or renames,
 and that carries a metadata bullet of the form ``- **Last Updated:** YYYY-MM-DD``
-on the head:
+on the head (read from the parsed document, so an example in a code block, an
+HTML block or a comment is never taken for it; see "How Markdown is read"):
 
 1. If the file's content changed (see "Mechanical changes" below), the field
    must be on or after the latest UTC author date among the pull request's
@@ -37,11 +38,19 @@ The guide exempts changes that do not alter rendered content: line-ending
 normalization, end-of-file newline fixes and trailing-whitespace-only fixes. It
 also says the trailing-whitespace exemption does not apply to a Markdown hard
 line break (two or more trailing spaces, or a trailing backslash), because that
-whitespace renders. So two versions of a file are compared after normalizing
-CRLF to LF, collapsing a trailing run of two or more spaces to exactly two,
-marking whitespace that followed an unescaped final backslash, removing other
-trailing whitespace, and removing trailing blank lines. Equal after that means
-mechanical.
+whitespace renders. So both versions of a file are rendered, and the output is
+compared after trailing whitespace is removed from each output line. Equal
+output means mechanical. A hard line break renders as `<br />`, so adding or
+removing one still counts. Trailing spaces that CommonMark does not render as a
+break, such as at the end of a paragraph, after a heading or inside a code
+block, do not count.
+
+How Markdown is read
+--------------------
+`render-markdown.js`, next to this script, parses and renders Markdown with
+markdown-it in CommonMark mode, the parser `lint-nested-markdown.js` already
+uses. It runs as one Node process for the whole run, so the check needs Node
+and the repository's `node_modules` (`npm ci`).
 
 What is not checked
 -------------------
@@ -53,29 +62,34 @@ Usage
 -----
     python .github/scripts/check-last-updated.py --base <base-commit> [--head <commit>]
 
-Exit status: 0 when every in-scope file passes, 1 when any fails, 2 on a usage
-or git error. A git error is never reported as a pass.
+Exit status: 0 when every in-scope file passes, 1 when any fails, 2 on a usage,
+git or renderer error. An error is never reported as a pass.
 """
 
 from __future__ import annotations
 
 import argparse
 import datetime as dt
+import json
 import os
-import re
 import subprocess
 import sys
+from typing import Any, cast
 
-LAST_UPDATED = re.compile(r"^- \*\*Last Updated:\*\* (\d{4}-\d{2}-\d{2})\s*$", re.M)
-VERSION = re.compile(r"^\*\*Version:\*\* \d+\.\d+\.(\d{8})\.\d+\s*$", re.M)
-FENCE_OPEN = re.compile(r"^ {0,3}(`{3,}|~{3,})(.*)$")
-FENCE_CLOSE = re.compile(r"^ {0,3}(`{3,}|~{3,})[ \t]*$")
-COMMENT_OPEN = re.compile(r"^ {0,3}<!--")
-NO_BREAK = "\x00no-break"   # marks a final backslash that trailing whitespace kept from breaking
+NODE = "node"
+HELPER = os.path.join(os.path.dirname(os.path.abspath(__file__)), "render-markdown.js")
 
 
-class GitError(RuntimeError):
-    """A git command failed; the caller must not treat this as a pass."""
+class CheckError(RuntimeError):
+    """A tool the check depends on failed; the caller must not treat this as a pass."""
+
+
+class GitError(CheckError):
+    """A git command failed."""
+
+
+class RenderError(CheckError):
+    """The Markdown renderer failed or gave an answer that is not usable."""
 
 
 def git(*args: str) -> str:
@@ -106,78 +120,79 @@ def show(commit: str, path: str) -> str | None:
     return git("show", "%s:%s" % (commit, path))
 
 
-def outside_fences(text: str) -> str:
-    """Blank out fenced blocks so an example metadata block is never read as the real one.
+class Renderer:
+    """Markdown rendered by `render-markdown.js`, through one Node process for the whole run.
 
-    Follows CommonMark's fence rules: a fence line has at most three leading spaces; a
-    fence opens with three or more backticks or tildes (a backtick fence's info string
-    may not contain a backtick) and closes only on the same character, at least as
-    long, followed by nothing but spaces or tabs.
-    So a four-backtick fence around a triple-backtick example, which the docs guide
-    prescribes, stays one fence.
-
-    HTML comment blocks are blanked too, because they render nothing: outside a fence,
-    a line starting with up to three spaces and `<!--` opens one, and the line that
-    contains `-->` closes it (CommonMark's HTML block condition 2).
+    Each answer holds the rendered HTML (`html`), the `Last Updated` field
+    (`lastUpdated`) and the `Version` date segment (`version`); see the helper for
+    exactly what each one means. Answers are cached by text. Any failure raises
+    RenderError, so a renderer problem can never read as "mechanical" or "no field".
     """
-    out, fence, comment = [], None, False
-    for line in text.split("\n"):
-        if comment:
-            out.append("")
-            comment = "-->" not in line
-            continue
-        if fence is None:
-            if COMMENT_OPEN.match(line):
-                out.append("")
-                comment = "-->" not in line.split("<!--", 1)[1]
-                continue
-            m = FENCE_OPEN.match(line)
-            if m and not (m.group(1)[0] == "`" and "`" in m.group(2)):
-                fence = (m.group(1)[0], len(m.group(1)))
-                out.append("")
-            else:
-                out.append(line)
-            continue
-        m = FENCE_CLOSE.match(line)
-        if m and m.group(1)[0] == fence[0] and len(m.group(1)) >= fence[1]:
-            fence = None
-        out.append("")
-    return "\n".join(out)
+
+    def __init__(self) -> None:
+        self.process: subprocess.Popen[str] | None = None
+        self.cache: dict[str, dict[str, Any]] = {}
+
+    def __call__(self, text: str) -> dict[str, Any]:
+        if text not in self.cache:
+            self.cache[text] = self.ask(text)
+        return self.cache[text]
+
+    def ask(self, text: str) -> dict[str, Any]:
+        if self.process is None:
+            try:
+                self.process = subprocess.Popen([NODE, HELPER], stdin=subprocess.PIPE, stdout=subprocess.PIPE,
+                                                text=True, encoding="utf-8", errors="surrogateescape")
+            except OSError as exc:
+                raise RenderError("cannot start %s %s: %s" % (NODE, HELPER, exc)) from exc
+        assert self.process.stdin is not None and self.process.stdout is not None
+        try:
+            # ensure_ascii escapes everything else, including undecodable bytes carried as surrogates.
+            self.process.stdin.write(json.dumps(text, ensure_ascii=True) + "\n")
+            self.process.stdin.flush()
+            line = self.process.stdout.readline()
+        except OSError as exc:
+            raise RenderError("%s: %s" % (HELPER, exc)) from exc
+        if not line:
+            raise RenderError("%s stopped without an answer (exit status %s)" % (HELPER, self.process.poll()))
+        try:
+            answer = json.loads(line)
+        except ValueError as exc:
+            raise RenderError("%s gave an answer that is not JSON: %s" % (HELPER, exc)) from exc
+        # Every key must be present: a missing `lastUpdated` must not read as "no field".
+        if not (isinstance(answer, dict) and {"html", "lastUpdated", "version"} <= set(answer)
+                and isinstance(answer["html"], str)
+                and all(answer[k] is None or isinstance(answer[k], str) for k in ("lastUpdated", "version"))):
+            raise RenderError("%s gave an unexpected answer: %.200r" % (HELPER, answer))
+        return answer
+
+    def close(self) -> None:
+        if self.process is not None:
+            if self.process.stdin is not None:
+                self.process.stdin.close()
+            self.process.wait()
+            self.process = None
 
 
-def normalize(text: str) -> str:
-    """Remove only the differences the style guide calls mechanical.
+render = Renderer()
 
-    CommonMark has two hard line breaks. Two or more spaces immediately before the
-    line end become a two-space marker. A backslash immediately before the line end is
-    the other; when an unescaped final backslash (an odd run of backslashes) was
-    followed by whitespace, that line did not break, so a marker keeps it distinct
-    from the breaking form. Any other trailing spaces or tabs are dropped.
+
+def rendered(text: str) -> str:
+    """The text as CommonMark renders it, with trailing whitespace removed from each line.
+
+    Two versions with equal output differ only mechanically: in line endings, the
+    end-of-file newline, or trailing whitespace that renders nothing. A hard line break
+    renders as `<br />`, so removing or adding one is still a content change.
     """
-    lines = []
-    for line in text.replace("\r\n", "\n").replace("\r", "\n").split("\n"):
-        spaces = len(line) - len(line.rstrip(" "))
-        stripped = line.rstrip(" \t")
-        backslashes = len(stripped) - len(stripped.rstrip("\\"))
-        if spaces >= 2 and stripped:
-            lines.append(stripped + "  ")
-        elif backslashes % 2 == 1 and stripped != line:
-            lines.append(stripped + NO_BREAK)
-        else:
-            lines.append(stripped)
-    while lines and lines[-1] == "":
-        lines.pop()
-    return "\n".join(lines)
+    return cast(str, render(text)["html"])
 
 
 def field(text: str) -> str | None:
-    m = LAST_UPDATED.search(outside_fences(text))
-    return m.group(1) if m else None
+    return cast("str | None", render(text)["lastUpdated"])
 
 
 def version_date(text: str) -> str | None:
-    m = VERSION.search(outside_fences(text))
-    return m.group(1) if m else None
+    return cast("str | None", render(text)["version"])
 
 
 def name_status(tokens: list[str], i: int) -> tuple[str, str | None, str, int]:
@@ -237,13 +252,12 @@ def required_date(base: str, head: str, path: str) -> dt.date | None:
     """UTC author date of the newest PR commit that changed the file's content.
 
     Every PR commit that touched the file is considered, merges included, and the
-    latest qualifying author date wins. A non-merge commit qualifies when its content
-    differs from its parent's. A two-parent merge qualifies only when its content
-    differs from git's own clean merge of the two parents, recomputed with
-    `git merge-tree`: an automatic merge adds nothing, because each side's commits
-    carry their own dates, while a conflict resolution or an edit made during the
-    merge is authored. A merge with more than two parents qualifies when its content
-    differs from every parent's.
+    latest qualifying author date wins. Content is compared as rendered (see
+    `rendered()`). A non-merge commit qualifies when its content differs from its
+    parent's. A merge, of any number of parents, qualifies only when its content
+    differs from git's own clean merge of all its parents (see `clean_merge()`): an
+    automatic merge adds nothing, because each side's commits carry their own dates,
+    while a conflict resolution or an edit made during the merge is authored.
     """
     # Walk every PR commit children-first, carrying the file's name backwards: the head
     # knows it as `path`, and each parent's name comes from a rename-aware diff against
@@ -266,12 +280,12 @@ def required_date(base: str, head: str, path: str) -> dt.date | None:
             own = path_in(parent, sha, name)
             names.setdefault(parent, own)
             content = show(parent, own) if own else None
-            befores.append(normalize(content or ""))
+            befores.append(rendered(content or ""))
         if len(parents) >= 2:
             automatic = clean_merge(parents, name)
-            authored = normalize(automatic or "") != normalize(after)
+            authored = rendered(automatic or "") != rendered(after)
         else:
-            authored = bool(befores) and all(b != normalize(after) for b in befores)
+            authored = bool(befores) and all(b != rendered(after) for b in befores)
         if authored:
             dates.append(dt.datetime.fromisoformat(when).astimezone(dt.timezone.utc).date())
     return max(dates) if dates else None
@@ -325,7 +339,7 @@ def check(base: str, head: str) -> list[str]:
         if base_value is not None and dt.date.fromisoformat(value) < dt.date.fromisoformat(base_value):
             problems.append("%s: Last Updated moved back from %s to %s. It must not be earlier than the "
                             "base version's date." % (path, base_value, value))
-        if base_text is not None and normalize(base_text) == normalize(head_text):
+        if base_text is not None and rendered(base_text) == rendered(head_text):
             continue
         need = required_date(merge_base, head, path)
         if need is None:
@@ -353,9 +367,11 @@ def main(argv: list[str] | None = None) -> int:
             stream.reconfigure(errors="backslashreplace")
     try:
         problems = check(args.base, args.head)
-    except GitError as exc:
+    except CheckError as exc:
         print("error: %s" % exc, file=sys.stderr)
         return 2
+    finally:
+        render.close()
     for p in problems:
         print(p)
     if problems:

@@ -425,6 +425,101 @@ def test_whitespace_only_line_losing_its_spaces_is_mechanical(repo: Repo) -> Non
     assert run(repo) == []
 
 
+def test_spaces_at_the_end_of_the_file_are_not_a_hard_break(repo: Repo) -> None:
+    # No final newline: the spaces are not before a line ending, so nothing breaks.
+    repo.write("docs/a.md", doc("2026-01-01", "Last line")[:-1] + "  ")
+    repo.commit("base-ish", "2026-01-01T12:00:00+00:00")
+    repo.git("switch", "-q", "main")
+    repo.git("merge", "-q", "--ff-only", "pr")
+    repo.git("switch", "-q", "pr")
+    repo.write("docs/a.md", doc("2026-01-01", "Last line")[:-1])
+    repo.commit("strip", "2026-03-05T10:00:00+00:00")
+    assert run(repo) == []
+
+
+@pytest.mark.parametrize("before, after", [
+    ("Para.  \n\nNext.", "Para.\n\nNext."),                      # end of a paragraph
+    ("## Heading  \n\nText.", "## Heading\n\nText."),            # after an ATX heading
+    ("```text\ncode  \nmore\n```", "```text\ncode\nmore\n```"),  # inside a code block
+    ("Intro  \n- item", "Intro\n- item"),                        # before a list item
+], ids=["paragraph-end", "heading", "code-block", "before-list-item"])
+def test_spaces_that_do_not_render_a_break_are_mechanical(repo: Repo, before: str, after: str) -> None:
+    repo.write("docs/a.md", doc("2026-01-01", before))
+    repo.commit("base-ish", "2026-01-01T12:00:00+00:00")
+    repo.git("switch", "-q", "main")
+    repo.git("merge", "-q", "--ff-only", "pr")
+    repo.git("switch", "-q", "pr")
+    repo.write("docs/a.md", doc("2026-01-01", after))
+    repo.commit("strip", "2026-03-05T10:00:00+00:00")
+    assert run(repo) == []
+
+
+@pytest.mark.parametrize("block", [
+    "<div>\n- **Last Updated:** 2000-01-01\n</div>",
+    "<pre>\n- **Last Updated:** 2000-01-01\n</pre>",
+    "> - **Last Updated:** 2000-01-01",
+    "- Outer\n  - **Last Updated:** 2000-01-01",
+    "* **Last Updated:** 2000-01-01",
+    "> > **Last Updated:** 2000-01-01",
+    "- Note\n  **Last Updated:** 2000-01-01",
+], ids=["div-block", "pre-block", "block-quote", "nested-list", "star-bullet", "paragraph-at-list-depth",
+        "continuation-line"])
+def test_field_like_line_outside_a_top_level_dash_item_is_not_the_field(repo: Repo, block: str) -> None:
+    repo.write("docs/plain.md", "# No metadata\n\n" + block + "\n\nText changed.\n")
+    repo.commit("example only", "2026-03-05T10:00:00+00:00")
+    assert run(repo) == []
+
+
+def test_version_line_inside_a_block_quote_is_not_the_version(repo: Repo) -> None:
+    repo.write("docs/a.md", doc("2026-03-05", "> **Version:** 1.0.20000101.0\n\nChanged."))
+    repo.commit("edit", "2026-03-05T10:00:00+00:00")
+    assert run(repo) == []
+
+
+def test_version_line_in_a_later_paragraph_line_is_read(repo: Repo) -> None:
+    repo.write("docs/a.md", doc("2026-03-05", "Intro line.\n**Version:** 1.0.20000101.0\n\nChanged."))
+    repo.commit("edit", "2026-03-05T10:00:00+00:00")
+    problems = run(repo)
+    assert len(problems) == 1 and "Version date segment is 20000101" in problems[0]
+
+
+def fresh_renderer(monkeypatch: Any, **overrides: str) -> None:
+    for name, value in overrides.items():
+        monkeypatch.setattr(last_updated, name, value)
+    monkeypatch.setattr(last_updated, "render", last_updated.Renderer())
+
+
+def test_missing_renderer_helper_is_exit_2(repo: Repo, monkeypatch: Any, tmp_path_factory: Any) -> None:
+    repo.write("docs/a.md", doc("2026-03-05", "Changed."))
+    repo.commit("edit", "2026-03-05T10:00:00+00:00")
+    fresh_renderer(monkeypatch, HELPER=str(tmp_path_factory.mktemp("helper") / "missing.js"))
+    assert last_updated.main(["--base", "main"]) == 2
+
+
+def test_missing_node_is_exit_2(repo: Repo, monkeypatch: Any) -> None:
+    repo.write("docs/a.md", doc("2026-03-05", "Changed."))
+    repo.commit("edit", "2026-03-05T10:00:00+00:00")
+    fresh_renderer(monkeypatch, NODE="node-that-does-not-exist")
+    assert last_updated.main(["--base", "main"]) == 2
+
+
+@pytest.mark.parametrize("reply", [
+    b"JSON.stringify({ html: 'x', version: null }) + '\\n'",                        # `lastUpdated` missing
+    b"JSON.stringify({ html: 'x', lastUpdated: 20260305, version: null }) + '\\n'",  # not a string
+    b"'not json\\n'",
+    b"process.exit(3)",                                                              # no answer at all
+], ids=["missing-key", "wrong-type", "not-json", "no-answer"])
+def test_unusable_renderer_answer_is_exit_2(repo: Repo, monkeypatch: Any, tmp_path_factory: Any, reply: bytes) -> None:
+    # A helper that forgets `lastUpdated`, for example, must not make every file look field-less.
+    fake = tmp_path_factory.mktemp("helper") / "fake.js"
+    fake.write_bytes(b"require('readline').createInterface({ input: process.stdin }).on('line', () => "
+                     b"process.stdout.write(" + reply + b"));\n")
+    repo.write("docs/a.md", doc("2026-01-01", "Changed."))
+    repo.commit("edit", "2026-03-05T10:00:00+00:00")
+    fresh_renderer(monkeypatch, HELPER=str(fake))
+    assert last_updated.main(["--base", "main"]) == 2
+
+
 def test_four_space_fence_line_does_not_close_a_fence(repo: Repo) -> None:
     inner = "```text\n    ```\n- **Last Updated:** 2000-01-01\n```\n"
     repo.write("docs/plain.md", "# No metadata\n\n" + inner)
