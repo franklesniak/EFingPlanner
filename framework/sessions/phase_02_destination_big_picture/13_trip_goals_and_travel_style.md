@@ -18,7 +18,7 @@ Decide what kind of trip your family wants, so your choices later fit your style
 
 ## Start Here
 
-On the first row of your Travel Style Worksheet, circle **busy** or **relaxed**, whichever sounds more like your family. That is your first style choice.
+On the first row of your Travel Style Worksheet, circle **busy days**, **relaxed days** or **somewhere between**, whichever sounds most like your family. That is your first style choice.
 
 ## Steps
 

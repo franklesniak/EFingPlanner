@@ -67,7 +67,7 @@ You are done when you have used AI for one safe job (like brainstorming question
 
 ## Source Check
 
-Record the AI use in your Source Log, mapping it onto the usual fields: **Source type** = "AI tool"; **Title** = the tool's name; **What I learned** = your prompt and what it helped with; **One other place I could check** = the non-AI source you used to check any fact. Add today's date.
+Record the AI use in your Source Log, mapping it onto the usual fields: **Source type** = "AI tool"; **Title** = the tool's name; **What I learned** = your prompt and what it helped with; **Date checked** = today's date. For each fact you checked, write the non-AI source in **Verification source** and the day you checked it in the last **Date checked** box.
 
 ## Finish and Quality Check
 

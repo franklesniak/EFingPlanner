@@ -38,7 +38,7 @@ You're going to practice on one real fact about the place you are going.
    - **Author or organization** -- who made it (a museum, a tourism office, a writer). Write "not listed" if you can't find it.
    - **Web address or book page** -- the link, or the book page.
    - **Date checked** -- today's date.
-4. Add one more thing good planners do: write down **one other place you could check the same fact.** That's your "verification source." You don't have to check it right now. Just name where you *could*.
+4. Add one more thing good planners do: write down **one other place you could check the same fact.** That goes in the **One other place I could check this** box. You don't have to check it right now. Just name where you *could*.
 
 You just tracked your first source. Now you can find that fact again later, and so can a grown-up.
 
@@ -85,7 +85,7 @@ Stuck? Use the [When I'm Stuck card](../../student_guide/when_im_stuck.md) in yo
 
 ## Optional Extension
 
-If you have extra energy, look up the *same* fact in your "one other place" and see if the two sources agree. If they don't, that's interesting. Write a note about it. If not, you are done.
+If you have extra energy, look up the *same* fact in your "one other place" and see if the two sources agree. Then write it in your Source Log's **Verification source** box, with today's date in the box under it. If they don't agree, that's interesting. Write a note about it. If not, you are done.
 
 ## Parent Notes
 
