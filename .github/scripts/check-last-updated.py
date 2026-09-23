@@ -12,8 +12,9 @@ What is checked
 ---------------
 For each `.md` or `.mdc` file that the pull request adds, modifies or renames,
 and that carries a metadata bullet of the form ``- **Last Updated:** YYYY-MM-DD``
-on the head (read from the parsed document, so an example in a code block, an
-HTML block or a comment is never taken for it; see "How Markdown is read"):
+in its metadata header block on the head (found where the guide's placement
+rules put the block, so an example elsewhere is never taken for it; see "How
+Markdown is read"):
 
 1. If the file's content changed (see "Mechanical changes" below), the field
    must be on or after the latest UTC author date among the pull request's
@@ -24,10 +25,13 @@ HTML block or a comment is never taken for it; see "How Markdown is read"):
    dates, not on today's date, means a second change on the same day passes
    without a redundant edit, and a check re-run on a later day cannot start
    failing.
-2. If the file carries ``**Version:** <major>.<minor>.<YYYYMMDD>.<revision>``,
-   the ``<YYYYMMDD>`` segment must equal the field.
+2. If the file carries ``**Version:** <major>.<minor>.<YYYYMMDD>.<revision>``
+   and its content changed, the ``<YYYYMMDD>`` segment must equal the field, and
+   ``<revision>`` must follow the guide's convention against the published
+   baseline, the file on the base branch tip: ``N + 1`` when the baseline has the
+   same ``<major>.<minor>.<YYYYMMDD>`` at revision ``N``, otherwise ``0``.
 3. If the base version carried the field and the head does not, the field was
-   removed, which fails.
+   removed or moved out of the metadata header block, which fails.
 4. The field must not be earlier than the base version's field. A rebased or
    cherry-picked commit can keep an old author date; the field still may not
    move backwards.
@@ -43,14 +47,19 @@ compared after trailing whitespace is removed from each output line. Equal
 output means mechanical. A hard line break renders as `<br />`, so adding or
 removing one still counts. Trailing spaces that CommonMark does not render as a
 break, such as at the end of a paragraph, after a heading or inside a code
-block, do not count.
+block, do not count. Relative link and image targets are compared as repository
+paths, resolved from each version's own directory, so moving a file to another
+directory changes its content exactly when a relative reference now points
+somewhere else.
 
 How Markdown is read
 --------------------
 `render-markdown.js`, next to this script, parses and renders Markdown with
-markdown-it in CommonMark mode, the parser `lint-nested-markdown.js` already
-uses. It runs as one Node process for the whole run, so the check needs Node
-and the repository's `node_modules` (`npm ci`).
+markdown-it in CommonMark mode. `lint-nested-markdown.js` uses the same library,
+with its default preset. The helper also finds the metadata header block where
+the guide's placement rules put it and reads the fields from there. It runs as
+one Node process for the whole run, so the check needs Node and the
+repository's `node_modules` (`npm ci`).
 
 What is not checked
 -------------------
@@ -72,6 +81,8 @@ import argparse
 import datetime as dt
 import json
 import os
+import posixpath
+import re
 import subprocess
 import sys
 from typing import Any, cast
@@ -177,22 +188,49 @@ class Renderer:
 render = Renderer()
 
 
-def rendered(text: str) -> str:
-    """The text as CommonMark renders it, with trailing whitespace removed from each line.
+REFERENCE = re.compile(r"""\b(href|src)=("[^"]*"|'[^']*')""")
+NOT_RELATIVE = re.compile(r"^(?:[A-Za-z][A-Za-z0-9+.-]*:|/|#|\?|$)")
+
+
+def rendered(text: str, path: str) -> str:
+    """The text as CommonMark renders it at `path`, with trailing whitespace removed from each line.
 
     Two versions with equal output differ only mechanically: in line endings, the
     end-of-file newline, or trailing whitespace that renders nothing. A hard line break
     renders as `<br />`, so removing or adding one is still a content change.
+
+    Every relative `href` and `src` is rewritten to a path from the repository root,
+    resolved from the directory of `path`, so a relative reference compares by the file
+    it points to. Moving a file therefore changes its content exactly when one of its
+    references now points somewhere else. URLs with a scheme, root-relative paths and
+    fragment-only or query-only links do not depend on the file's directory and are
+    kept as they are.
     """
-    return cast(str, render(text)["html"])
+    directory = posixpath.dirname(path)
+
+    def resolve(m: re.Match[str]) -> str:
+        quote, url = m.group(2)[0], m.group(2)[1:-1]
+        if NOT_RELATIVE.match(url):
+            return m.group(0)
+        cut = min([i for i in (url.find("?"), url.find("#")) if i >= 0], default=len(url))
+        target, rest = url[:cut], url[cut:]
+        return "%s=%s/%s%s%s" % (m.group(1), quote, posixpath.normpath(posixpath.join(directory, target)),
+                                 rest, quote)
+
+    return REFERENCE.sub(resolve, cast(str, render(text)["html"]))
 
 
 def field(text: str) -> str | None:
     return cast("str | None", render(text)["lastUpdated"])
 
 
-def version_date(text: str) -> str | None:
-    return cast("str | None", render(text)["version"])
+def version(text: str) -> tuple[int, int, str, int] | None:
+    """(major, minor, YYYYMMDD, revision) from the metadata header's Version line, or None."""
+    value = cast("str | None", render(text)["version"])
+    if value is None:
+        return None
+    major, minor, date, revision = value.split(".")
+    return int(major), int(minor), date, int(revision)
 
 
 def name_status(tokens: list[str], i: int) -> tuple[str, str | None, str, int]:
@@ -280,12 +318,12 @@ def required_date(base: str, head: str, path: str) -> dt.date | None:
             own = path_in(parent, sha, name)
             names.setdefault(parent, own)
             content = show(parent, own) if own else None
-            befores.append(rendered(content or ""))
+            befores.append(rendered(content or "", own or name))
         if len(parents) >= 2:
             automatic = clean_merge(parents, name)
-            authored = rendered(automatic or "") != rendered(after)
+            authored = rendered(automatic or "", name) != rendered(after, name)
         else:
-            authored = bool(befores) and all(b != rendered(after) for b in befores)
+            authored = bool(befores) and all(b != rendered(after, name) for b in befores)
         if authored:
             dates.append(dt.datetime.fromisoformat(when).astimezone(dt.timezone.utc).date())
     return max(dates) if dates else None
@@ -332,14 +370,15 @@ def check(base: str, head: str) -> list[str]:
         base_text = show(merge_base, old_path) if old_path else None
         if value is None:
             if base_text is not None and field(base_text) is not None:
-                problems.append("%s: the base version has a Last Updated field, and this pull request "
-                                "removed it. Restore it, with the date of the change." % path)
+                problems.append("%s: the base version has a Last Updated field in its metadata header block, "
+                                "and this pull request removed it or moved it out of that block. Restore it, "
+                                "with the date of the change." % path)
             continue
         base_value = field(base_text) if base_text is not None else None
         if base_value is not None and dt.date.fromisoformat(value) < dt.date.fromisoformat(base_value):
             problems.append("%s: Last Updated moved back from %s to %s. It must not be earlier than the "
                             "base version's date." % (path, base_value, value))
-        if base_text is not None and rendered(base_text) == rendered(head_text):
+        if base_text is not None and old_path and rendered(base_text, old_path) == rendered(head_text, path):
             continue
         need = required_date(merge_base, head, path)
         if need is None:
@@ -349,10 +388,28 @@ def check(base: str, head: str) -> list[str]:
         elif dt.date.fromisoformat(value) < need:
             problems.append("%s: Last Updated is %s, but this pull request changed its content in a "
                             "commit dated %s (UTC). Set it to %s or later." % (path, value, need, need))
-        vd = version_date(head_text)
-        if vd is not None and vd != value.replace("-", ""):
+        date_is_stale = need is None or dt.date.fromisoformat(value) < need
+        head_version = version(head_text)
+        if head_version is None:
+            continue
+        major, minor, date, revision = head_version
+        if date != value.replace("-", ""):
             problems.append("%s: the Version date segment is %s, but Last Updated is %s. They must match."
-                            % (path, vd, value))
+                            % (path, date, value))
+        # The revision depends on the date, so it is checked only once both dates are right.
+        if date_is_stale or date != value.replace("-", ""):
+            continue
+        # The published baseline is the file on the base branch tip, not on the merge base.
+        published = show(base, old_path) if old_path else None
+        baseline = version(published) if published is not None else None
+        if baseline is not None and baseline[:3] == head_version[:3]:
+            expected, why = baseline[3] + 1, "the base branch already has %d.%d.%s.%d" % baseline
+        else:
+            expected, why = 0, ("the base branch has %d.%d.%s.%d" % baseline if baseline
+                                else "the base branch has no Version for this file")
+        if revision != expected:
+            problems.append("%s: Version is %d.%d.%s.%d, but %s, so the revision must be %d."
+                            % (path, major, minor, date, revision, why, expected))
     return problems
 
 

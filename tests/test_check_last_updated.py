@@ -29,8 +29,8 @@ SPEC.loader.exec_module(_module)
 last_updated = cast(Any, _module)
 
 
-def doc(date: str, body: str = "Body text.", version: str | None = None) -> str:
-    version_line = f"\n**Version:** 1.0.{version}.0\n" if version else ""
+def doc(date: str, body: str = "Body text.", version: str | None = None, revision: int = 0, minor: int = 0) -> str:
+    version_line = f"\n**Version:** 1.{minor}.{version}.{revision}\n" if version else ""
     return (
         f"# Title\n{version_line}\n## Metadata\n\n- **Status:** Active\n- **Owner:** Maintainers\n"
         f"- **Last Updated:** {date}\n- **Scope:** Test.\n\n{body}\n"
@@ -462,11 +462,172 @@ def test_spaces_that_do_not_render_a_break_are_mechanical(repo: Repo, before: st
     "* **Last Updated:** 2000-01-01",
     "> > **Last Updated:** 2000-01-01",
     "- Note\n  **Last Updated:** 2000-01-01",
+    "- Note\n\n  **Last Updated:** 2000-01-01",
 ], ids=["div-block", "pre-block", "block-quote", "nested-list", "star-bullet", "paragraph-at-list-depth",
-        "continuation-line"])
+        "continuation-line", "second-paragraph"])
 def test_field_like_line_outside_a_top_level_dash_item_is_not_the_field(repo: Repo, block: str) -> None:
     repo.write("docs/plain.md", "# No metadata\n\n" + block + "\n\nText changed.\n")
     repo.commit("example only", "2026-03-05T10:00:00+00:00")
+    assert run(repo) == []
+
+
+def publish(repo: Repo, text: str, date: str, path: str = "docs/a.md") -> None:
+    """Commit `text` on the pr branch and fast-forward main to it: the published baseline."""
+    repo.write(path, text)
+    repo.commit("publish", date)
+    repo.git("switch", "-q", "main")
+    repo.git("merge", "-q", "--ff-only", "pr")
+    repo.git("switch", "-q", "pr")
+
+
+def test_example_bullet_later_in_the_body_is_not_the_field(repo: Repo) -> None:
+    repo.write("docs/plain.md", "# No metadata\n\nIntro changed.\n\n- **Last Updated:** 2000-01-01\n")
+    repo.commit("edit", "2026-03-05T10:00:00+00:00")
+    assert run(repo) == []
+
+
+def test_real_block_after_front_matter_without_an_h1_is_found(repo: Repo) -> None:
+    rule = "---\ndescription: Test rule.\n---\n- **Status:** Active\n- **Last Updated:** 2026-01-01\n\n%s\n"
+    publish(repo, rule % "Body.", "2026-01-01T12:00:00+00:00", "docs/rule.mdc")
+    repo.write("docs/rule.mdc", rule % "Body changed.")
+    repo.commit("edit", "2026-03-05T10:00:00+00:00")
+    problems = run(repo)
+    assert len(problems) == 1 and "docs/rule.mdc" in problems[0] and "Set it to 2026-03-05" in problems[0]
+
+
+def test_block_at_the_top_of_a_body_without_an_h1_is_found(repo: Repo) -> None:
+    text = "<!-- markdownlint-disable MD013 -->\n\n- **Status:** Active\n- **Last Updated:** 2026-01-01\n\n%s\n"
+    publish(repo, text % "Body.", "2026-01-01T12:00:00+00:00")
+    repo.write("docs/a.md", text % "Body changed.")
+    repo.commit("edit", "2026-03-05T10:00:00+00:00")
+    problems = run(repo)
+    assert len(problems) == 1 and "Set it to 2026-03-05" in problems[0]
+
+
+def test_h1_after_line_30_does_not_move_the_block(repo: Repo) -> None:
+    # The guide looks after the H1 only when it starts in the first 30 lines of the body.
+    text = ("- **Status:** Active\n- **Last Updated:** 2026-01-01\n" + "\n" * 30
+            + "# Title\n\n- **Last Updated:** 2000-01-01\n\n%s\n")
+    publish(repo, text % "Body.", "2026-01-01T12:00:00+00:00")
+    repo.write("docs/a.md", text % "Body changed.")
+    repo.commit("edit", "2026-03-05T10:00:00+00:00")
+    problems = run(repo)
+    assert len(problems) == 1 and "Last Updated is 2026-01-01" in problems[0]
+
+
+def test_block_moved_below_the_introduction_is_reported(repo: Repo) -> None:
+    repo.write("docs/a.md", doc("2026-03-05").replace("# Title\n", "# Title\n\nIntroduction.\n"))
+    repo.commit("move the block", "2026-03-05T10:00:00+00:00")
+    problems = run(repo)
+    assert len(problems) == 1 and "moved it out of that block" in problems[0]
+
+
+def test_comment_between_the_h1_and_the_block_is_skipped(repo: Repo) -> None:
+    repo.write("docs/a.md", doc("2026-01-01", "Changed.").replace("## Metadata", "<!-- note -->\n\n## Metadata"))
+    repo.commit("edit", "2026-03-05T10:00:00+00:00")
+    problems = run(repo)
+    assert len(problems) == 1 and "Set it to 2026-03-05" in problems[0]
+
+
+LINKED = "See [other](%sother.md), ![pic](%spic.png), [site](https://example.com/x.md), [top](#top) and [root](/README.md)."
+
+
+def test_moving_a_file_with_a_relative_link_needs_a_bump(repo: Repo) -> None:
+    publish(repo, doc("2026-01-01", LINKED % ("", "")), "2026-01-01T12:00:00+00:00")
+    (repo.root / "docs" / "sub").mkdir()
+    repo.git("mv", "docs/a.md", "docs/sub/a.md")
+    repo.commit("move", "2026-03-05T10:00:00+00:00")
+    problems = run(repo)
+    assert len(problems) == 1 and "docs/sub/a.md" in problems[0] and "Set it to 2026-03-05" in problems[0]
+
+
+def test_move_that_keeps_every_target_needs_no_bump(repo: Repo) -> None:
+    publish(repo, doc("2026-01-01", LINKED % ("", "")), "2026-01-01T12:00:00+00:00")
+    (repo.root / "docs" / "sub").mkdir()
+    repo.git("mv", "docs/a.md", "docs/sub/a.md")
+    repo.write("docs/sub/a.md", doc("2026-01-01", LINKED % ("../", "../")))
+    repo.commit("move and keep targets", "2026-03-05T10:00:00+00:00")
+    assert "R" in repo.git("diff", "--name-status", "-M", "main..HEAD")
+    assert run(repo) == []
+
+
+def test_move_without_relative_references_needs_no_bump(repo: Repo) -> None:
+    body = "See [site](https://example.com/x.md), [top](#top), [query](?tab=1) and [root](/README.md)."
+    publish(repo, doc("2026-01-01", body), "2026-01-01T12:00:00+00:00")
+    (repo.root / "docs" / "sub").mkdir()
+    repo.git("mv", "docs/a.md", "docs/sub/a.md")
+    repo.commit("move", "2026-03-05T10:00:00+00:00")
+    assert run(repo) == []
+
+
+def test_same_day_edit_needs_the_next_revision(repo: Repo) -> None:
+    publish(repo, doc("2026-03-05", version="20260305"), "2026-03-05T08:00:00+00:00")
+    repo.write("docs/a.md", doc("2026-03-05", "Changed.", version="20260305"))
+    repo.commit("edit", "2026-03-05T10:00:00+00:00")
+    problems = run(repo)
+    assert len(problems) == 1 and "already has 1.0.20260305.0, so the revision must be 1" in problems[0]
+    repo.write("docs/a.md", doc("2026-03-05", "Changed.", version="20260305", revision=1))
+    repo.commit("next revision", "2026-03-05T10:05:00+00:00")
+    assert run(repo) == []
+
+
+def test_next_day_edit_resets_the_revision(repo: Repo) -> None:
+    publish(repo, doc("2026-03-04", version="20260304", revision=2), "2026-03-04T08:00:00+00:00")
+    repo.write("docs/a.md", doc("2026-03-05", "Changed.", version="20260305", revision=3))
+    repo.commit("edit", "2026-03-05T10:00:00+00:00")
+    problems = run(repo)
+    assert len(problems) == 1 and "so the revision must be 0" in problems[0]
+    repo.write("docs/a.md", doc("2026-03-05", "Changed.", version="20260305"))
+    repo.commit("reset", "2026-03-05T10:05:00+00:00")
+    assert run(repo) == []
+
+
+def test_minor_change_resets_the_revision(repo: Repo) -> None:
+    publish(repo, doc("2026-03-05", version="20260305", revision=1), "2026-03-05T08:00:00+00:00")
+    repo.write("docs/a.md", doc("2026-03-05", "Changed.", version="20260305", minor=1))
+    repo.commit("edit", "2026-03-05T10:00:00+00:00")
+    assert run(repo) == []
+
+
+def test_new_file_version_starts_at_revision_zero(repo: Repo) -> None:
+    repo.write("docs/new.md", doc("2026-03-05", version="20260305", revision=1))
+    repo.commit("add", "2026-03-05T10:00:00+00:00")
+    problems = run(repo)
+    assert len(problems) == 1 and "no Version for this file, so the revision must be 0" in problems[0]
+
+
+def test_published_baseline_is_the_base_branch_tip(repo: Repo) -> None:
+    publish(repo, doc("2026-03-05", version="20260305"), "2026-03-05T08:00:00+00:00")
+    repo.git("switch", "-q", "main")
+    repo.write("docs/a.md", doc("2026-03-05", "Main's change.", version="20260305", revision=1))
+    repo.commit("main publishes revision 1", "2026-03-05T09:00:00+00:00")
+    repo.git("switch", "-q", "pr")
+    repo.write("docs/a.md", doc("2026-03-05", "The PR's change.", version="20260305", revision=1))
+    repo.commit("pr also picks revision 1", "2026-03-05T10:00:00+00:00")
+    problems = run(repo)
+    assert len(problems) == 1 and "already has 1.0.20260305.1, so the revision must be 2" in problems[0]
+
+
+def test_stale_date_is_reported_before_the_revision(repo: Repo) -> None:
+    # Once the date is bumped, the revision resets to 0, so asking for N + 1 now would mislead.
+    publish(repo, doc("2026-03-04", version="20260304"), "2026-03-04T08:00:00+00:00")
+    repo.write("docs/a.md", doc("2026-03-04", "Changed.", version="20260304"))
+    repo.commit("edit", "2026-03-05T10:00:00+00:00")
+    problems = run(repo)
+    assert len(problems) == 1 and "Set it to 2026-03-05" in problems[0]
+
+
+def test_version_date_mismatch_is_reported_alone(repo: Repo) -> None:
+    repo.write("docs/a.md", doc("2026-03-05", "New.", version="20260304", revision=1))
+    repo.commit("change", "2026-03-05T10:00:00+00:00")
+    problems = run(repo)
+    assert len(problems) == 1 and "Version date segment is 20260304" in problems[0]
+
+
+def test_mechanical_change_does_not_need_a_new_revision(repo: Repo) -> None:
+    publish(repo, doc("2026-03-05", version="20260305"), "2026-03-05T08:00:00+00:00")
+    repo.write("docs/a.md", doc("2026-03-05", "Body text. ", version="20260305"))
+    repo.commit("whitespace", "2026-03-05T10:00:00+00:00")
     assert run(repo) == []
 
 
@@ -476,11 +637,10 @@ def test_version_line_inside_a_block_quote_is_not_the_version(repo: Repo) -> Non
     assert run(repo) == []
 
 
-def test_version_line_in_a_later_paragraph_line_is_read(repo: Repo) -> None:
-    repo.write("docs/a.md", doc("2026-03-05", "Intro line.\n**Version:** 1.0.20000101.0\n\nChanged."))
+def test_version_line_outside_the_header_is_not_the_version(repo: Repo) -> None:
+    repo.write("docs/a.md", doc("2026-03-05", "**Version:** 1.0.20000101.0\n\nChanged."))
     repo.commit("edit", "2026-03-05T10:00:00+00:00")
-    problems = run(repo)
-    assert len(problems) == 1 and "Version date segment is 20000101" in problems[0]
+    assert run(repo) == []
 
 
 def fresh_renderer(monkeypatch: Any, **overrides: str) -> None:

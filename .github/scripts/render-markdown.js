@@ -13,11 +13,19 @@
  *                trailing blank lines removed. Two versions of a document whose
  *                html is equal differ only in ways that do not render, which is
  *                what the documentation style guide calls mechanical.
- *   lastUpdated  YYYY-MM-DD from a top-level `- **Last Updated:** YYYY-MM-DD`
- *                list item, or null. Text in code blocks, HTML blocks, comments,
- *                block quotes and nested lists is never read.
- *   version      YYYYMMDD from a `**Version:** <major>.<minor>.<YYYYMMDD>.<revision>`
- *                line of a top-level paragraph, or null.
+ *   lastUpdated  YYYY-MM-DD from the `- **Last Updated:** YYYY-MM-DD` item of the
+ *                metadata header block, or null.
+ *   version      the whole `**Version:** <major>.<minor>.<YYYYMMDD>.<revision>`
+ *                value from the line directly after the H1, or null.
+ *
+ * The metadata header block is found where the documentation style guide's
+ * "Placement Rules for the Tier 1 Metadata Header Block" put it, after any YAML
+ * front matter: directly after an H1 that starts in the first 30 lines of the
+ * body (past one optional `**Version:**` line and an optional `## Metadata`
+ * heading), or else at the top of the body. HTML comment blocks, such as the
+ * `<!-- markdownlint-disable MD013 -->` directive, are skipped at those places,
+ * because they render nothing. A metadata-like list anywhere else, such as an
+ * example later in the body, is never read.
  *
  * Trailing whitespace is trimmed from the output because the guide exempts
  * trailing-whitespace fixes; a real hard line break still renders as <br />.
@@ -31,44 +39,100 @@ const MarkdownIt = require('markdown-it');
 
 const md = new MarkdownIt('commonmark');
 const LAST_UPDATED = /^\*\*Last Updated:\*\* (\d{4}-\d{2}-\d{2})[ \t]*$/;
-const VERSION = /^\*\*Version:\*\* \d+\.\d+\.(\d{8})\.\d+[ \t]*$/;
+const VERSION = /^\*\*Version:\*\* (\d+\.\d+\.\d{8}\.\d+)[ \t]*$/;
+const FRONT_MATTER = /^---[ \t]*\r?\n(?:[^]*?\r?\n)?(?:---|\.\.\.)[ \t]*(?:\r?\n|$)/;
+const H1_LINE_LIMIT = 30;
+
+// The document's top-level blocks, each with the tokens inside it.
+function topLevelBlocks(tokens) {
+  const blocks = [];
+  for (let i = 0; i < tokens.length; i++) {
+    const open = tokens[i];
+    let end = i;
+    if (open.nesting === 1) {
+      while (!(tokens[end].level === 0 && tokens[end].nesting === -1)) {
+        end++;
+      }
+    }
+    blocks.push({ open, inner: tokens.slice(i + 1, end) });
+    i = end;
+  }
+  return blocks;
+}
+
+function isComment(block) {
+  return block !== undefined && block.open.type === 'html_block' && block.open.content.trimStart().startsWith('<!--');
+}
+
+function isHeading(block, tag) {
+  return block !== undefined && block.open.type === 'heading_open' && block.open.tag === tag;
+}
+
+// The first line of a paragraph block, or null for any other block.
+function paragraphLine(block) {
+  if (block === undefined || block.open.type !== 'paragraph_open') {
+    return null;
+  }
+  return block.inner[0].content.split('\n')[0];
+}
+
+// Last Updated from a top-level `-` list: the first paragraph line of each item.
+function listField(block) {
+  if (block === undefined || block.open.type !== 'bullet_list_open' || block.open.markup !== '-') {
+    return null;
+  }
+  for (let i = 0; i < block.inner.length; i++) {
+    const token = block.inner[i];
+    // list_item_open (level 1), paragraph_open (level 2), inline (level 3).
+    if (token.type === 'inline' && token.level === 3 && block.inner[i - 2].type === 'list_item_open') {
+      const m = LAST_UPDATED.exec(token.content.split('\n')[0]);
+      if (m) {
+        return m[1];
+      }
+    }
+  }
+  return null;
+}
+
+function metadata(tokens) {
+  const blocks = topLevelBlocks(tokens);
+  let at = blocks.findIndex((b) => isHeading(b, 'h1') && b.open.map[0] < H1_LINE_LIMIT);
+  let version = null;
+  if (at >= 0) {
+    at++;
+    while (isComment(blocks[at])) {
+      at++;
+    }
+    const m = VERSION.exec(paragraphLine(blocks[at]) || '');
+    if (m && blocks[at].inner[0].content.indexOf('\n') < 0) {
+      version = m[1];
+      at++;
+    }
+    while (isComment(blocks[at])) {
+      at++;
+    }
+    if (isHeading(blocks[at], 'h2') && blocks[at].inner[0].content.trim() === 'Metadata') {
+      at++;
+    }
+  } else {
+    at = 0;
+  }
+  while (isComment(blocks[at])) {
+    at++;
+  }
+  return { lastUpdated: listField(blocks[at]), version };
+}
 
 function describe(text) {
   const tokens = md.parse(text, {});
-  let lastUpdated = null;
-  let version = null;
-  tokens.forEach((token, i) => {
-    if (token.type !== 'inline') {
-      return;
-    }
-    const lines = token.content.split('\n');
-    // A top-level `-` list item's first paragraph: bullet_list_open (level 0),
-    // list_item_open (level 1), paragraph_open (level 2), inline (level 3).
-    const item = tokens[i - 2];
-    if (lastUpdated === null && token.level === 3 && item && item.type === 'list_item_open'
-        && item.markup === '-') {
-      const m = LAST_UPDATED.exec(lines[0]);
-      if (m) {
-        lastUpdated = m[1];
-      }
-    }
-    // A top-level paragraph: paragraph_open (level 0), inline (level 1).
-    if (version === null && token.level === 1 && tokens[i - 1].type === 'paragraph_open') {
-      for (const line of lines) {
-        const m = VERSION.exec(line);
-        if (m) {
-          version = m[1];
-          break;
-        }
-      }
-    }
-  });
   const html = md.renderer.render(tokens, md.options, {})
     .split('\n')
     .map((line) => line.replace(/[ \t]+$/, ''))
     .join('\n')
     .replace(/\n+$/, '');
-  return { html, lastUpdated, version };
+  const frontMatter = FRONT_MATTER.exec(text);
+  const body = frontMatter ? md.parse(text.slice(frontMatter[0].length), {}) : tokens;
+  return { html, ...metadata(body) };
 }
 
 const input = readline.createInterface({ input: process.stdin, crlfDelay: Infinity });
