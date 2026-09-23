@@ -169,6 +169,23 @@ def test_version_date_must_match_last_updated(repo: Repo) -> None:
     assert len(problems) == 1 and "Version" in problems[0]
 
 
+def test_rewrite_below_the_rename_threshold_is_a_new_file_dated_by_its_move(repo: Repo) -> None:
+    # git reports a rename that keeps too little content as a deletion and an addition. With
+    # honest dates the addition is the newest change, so its date is required.
+    old_body = "\n\n".join("Old paragraph %d says something." % i for i in range(40))
+    new_body = "\n\n".join("New paragraph %d says something else entirely." % i for i in range(40))
+    publish(repo, doc("2026-01-01", old_body), "2026-01-01T12:00:00+00:00")
+    repo.write("docs/a.md", doc("2026-03-06", old_body + "\n\nAn edit."))
+    repo.commit("edit", "2026-03-06T10:00:00+00:00")
+    repo.git("mv", "docs/a.md", "docs/b.md")
+    repo.write("docs/b.md", doc("2026-03-06", new_body))
+    repo.commit("rename and rewrite", "2026-03-07T10:00:00+00:00")
+    changed = repo.git("diff", "--name-status", "-M", "main", "HEAD", "--", "docs")
+    assert "D\tdocs/a.md" in changed and "A\tdocs/b.md" in changed   # below git's threshold
+    problems = run(repo)
+    assert len(problems) == 1 and "docs/b.md" in problems[0] and "Set it to 2026-03-07" in problems[0]
+
+
 def test_pure_rename_needs_no_bump(repo: Repo) -> None:
     repo.git("mv", "docs/a.md", "docs/b.md")
     repo.commit("rename", "2026-03-05T10:00:00+00:00")
@@ -619,9 +636,10 @@ def test_moving_a_file_with_a_relative_link_needs_a_bump(repo: Repo) -> None:
     # In an HTML block the tag reaches the browser as written, and it reads srcset despite the
     # missing space; the helper's attribute grammar stops at it.
     '<div>\n<img src="/abs.png"srcset="pic.png 1x">\n</div>',
+    '<a href="&nbsp;https://example.com/x.md">x</a>',   # the URL parser keeps a leading U+00A0
 ], ids=["unquoted", "single-quoted", "uppercase-spaced", "in-a-block", "srcset", "srcset-after-data-url", "ping",
         "itemid", "imagesrcset", "xlink-href", "style-attribute", "style-element", "srcdoc", "meta-refresh",
-        "event-handler", "unread-attribute"])
+        "event-handler", "unread-attribute", "nbsp-before-scheme"])
 def test_moving_a_file_with_a_relative_raw_html_reference_needs_a_bump(repo: Repo, raw: str) -> None:
     publish(repo, doc("2026-01-01", "Text.\n\n" + raw), "2026-01-01T12:00:00+00:00")
     (repo.root / "docs" / "sub").mkdir()
@@ -636,7 +654,12 @@ def test_moving_a_file_with_a_relative_raw_html_reference_needs_a_bump(repo: Rep
     '<a title="see href=x.md" href="https://example.com/">x</a>',   # a lookalike inside a value
     "<!-- <img src=\"pic.png\"> -->",                               # a commented-out tag
     '<img srcset="data:image/png;base64,AAAA 1x">',                 # a data URL keeps its comma
-], ids=["code-block", "value-lookalike", "comment", "srcset-data-url"])
+    '<a href="ht&#10;tps://example.com/x.md">x</a>',                # the URL parser drops a newline
+    '<a href="\\x.md">x</a>',                                       # a browser reads \ as /
+    '<img srcset="https://example.com/a.png&nbsp;,pic.png 2x">',    # U+00A0 does not split candidates
+    '<a href="/x.md" ping="https://example.com/p&nbsp;q.md">x</a>', # nor ping URLs
+], ids=["code-block", "value-lookalike", "comment", "srcset-data-url", "newline-in-scheme", "backslash-root",
+        "srcset-nbsp", "ping-nbsp"])
 def test_raw_html_lookalikes_are_not_references(repo: Repo, body: str) -> None:
     publish(repo, doc("2026-01-01", "Text.\n\n" + body), "2026-01-01T12:00:00+00:00")
     (repo.root / "docs" / "sub").mkdir()
@@ -668,6 +691,42 @@ def test_move_that_keeps_every_url_attribute_target_needs_no_bump(repo: Repo, ra
     repo.write("docs/sub/a.md", doc("2026-01-01", "Text.\n\n" + raw.replace("{up}", "../")))
     repo.commit("move and keep targets", "2026-03-05T10:00:00+00:00")
     assert run(repo) == []
+
+
+def test_attribute_after_a_non_ascii_space_is_not_read_as_a_url(repo: Repo) -> None:
+    # A browser separates attributes only with ASCII whitespace, so after U+00A0 the name is
+    # " src", not src; its value is text, and changing it is a content change.
+    raw = '<div>\n<img alt="x" src="{up}pic.png">\n</div>'
+    publish(repo, doc("2026-01-01", "Text.\n\n" + raw.replace("{up}", "")), "2026-01-01T12:00:00+00:00")
+    (repo.root / "docs" / "sub").mkdir()
+    repo.git("mv", "docs/a.md", "docs/sub/a.md")
+    repo.write("docs/sub/a.md", doc("2026-01-01", "Text.\n\n" + raw.replace("{up}", "../")))
+    repo.commit("move and edit the value", "2026-03-05T10:00:00+00:00")
+    problems = run(repo)
+    assert len(problems) == 1 and "Set it to 2026-03-05" in problems[0]
+
+
+def test_visible_text_after_a_comment_is_not_skipped(repo: Repo) -> None:
+    # The comment block renders "Visible introduction", so the list after it is not at the top
+    # of the body, and this page has no metadata block.
+    listed = ("<!-- note -->Visible introduction\n\n- **Status:** Active\n- **Owner:** Maintainers\n"
+              "- **Last Updated:** 2000-01-01\n- **Scope:** Example.\n\n%s\n")
+    publish(repo, listed % "Text.", "2026-01-01T12:00:00+00:00", "docs/plain.md")
+    repo.write("docs/plain.md", listed % "Text changed.")
+    repo.commit("edit", "2026-03-05T10:00:00+00:00")
+    assert run(repo) == []
+
+
+@pytest.mark.parametrize("comments", ["<!-- one --> <!-- two -->", "<!-->", "<!--->"],
+                         ids=["two-on-a-line", "empty", "empty-dash"])
+def test_a_block_of_only_comments_is_skipped(repo: Repo, comments: str) -> None:
+    text = (comments + "\n\n- **Status:** Active\n- **Owner:** Maintainers\n- **Last Updated:** 2026-01-01\n"
+            "- **Scope:** Test.\n\n%s\n")
+    publish(repo, text % "Body.", "2026-01-01T12:00:00+00:00")
+    repo.write("docs/a.md", text % "Body changed.")
+    repo.commit("edit", "2026-03-05T10:00:00+00:00")
+    problems = run(repo)
+    assert len(problems) == 1 and "Set it to 2026-03-05" in problems[0]
 
 
 def test_moving_html_the_helper_fully_resolves_needs_no_bump(repo: Repo) -> None:

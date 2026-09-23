@@ -29,7 +29,10 @@ Markdown is read"):
    dates, not on today's date, means a second change on the same day passes
    without a redundant edit, and a check re-run on a later day cannot start
    failing. A renamed file's history is followed, including a rename made as a
-   copy and a later deletion, and a deletion followed by a restoration. The
+   copy and a later deletion, and a deletion followed by a restoration. A rename
+   is what git's rename detection reports, which keeps at least half of the
+   content by default; a file rewritten below that counts as a new file, whose
+   history starts at the commit that added it. The
    field must also not be later than the latest commit date (UTC) of those
    commits, unless it equals the base's own value: a future date would let
    later edits skip the bump.
@@ -78,6 +81,9 @@ What is not checked
 Files without the metadata bullet, deleted files, and anything outside the pull
 request's own commits. The check does not judge which content is "meaningful":
 any non-mechanical change requires the bump, which is what the guide says.
+Author dates are trusted, because whoever makes a commit sets them: a backdated
+commit can satisfy the check, including one that rewrites a file below git's
+rename threshold. The check is a drift guard, not a trust boundary.
 
 Usage
 -----

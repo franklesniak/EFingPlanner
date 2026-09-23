@@ -83,16 +83,22 @@ const PLAIN_ATTRIBUTE_PREFIX = /^(?:aria|data)-/;
 // Elements whose content or effect can hold URLs the helper does not parse: CSS, scripts, a
 // `<base>` that changes how every relative URL resolves, and a `<meta>` refresh.
 const DIRECTORY_BOUND_ELEMENTS = new Set(['base', 'meta', 'script', 'style']);
-// A URL with a scheme, a root-relative or protocol-relative path, or only a query or fragment
-// does not depend on the document's directory.
-const NOT_RELATIVE = /^(?:[A-Za-z][A-Za-z0-9+.-]*:|\/|#|\?|$)/;
+// A URL with a scheme, a root-relative or protocol-relative path (a browser reads `\` as `/`),
+// or only a query or fragment does not depend on the document's directory.
+const NOT_RELATIVE = /^(?:[A-Za-z][A-Za-z0-9+.-]*:|[\\/]|#|\?|$)/;
 // Raw HTML pieces: a comment, or a start tag whose quoted values may hold `>`.
 const COMMENT_OR_TAG = /<!--[^]*?-->|<[A-Za-z][A-Za-z0-9-]*(?:[^>"']|"[^"]*"|'[^']*')*>/g;
+// A whole HTML comment, including the empty forms `<!-->` and `<!--->` (CommonMark 0.31.2).
+const COMMENT = /<!--(?:-?>|[^]*?-->)/g;
 // One attribute inside a start tag, from the current position (CommonMark 0.31.2, raw HTML).
-const ATTRIBUTE = /(\s+)([A-Za-z_:][A-Za-z0-9_.:-]*)(?:(\s*=\s*)("[^"]*"|'[^']*'|[^\s"'=<>`]+))?/y;
+// White space here, as everywhere below, is ASCII whitespace, which is what HTML and URL
+// parsing use; JavaScript's `\s` and `trim()` also take in U+00A0 and other Unicode spaces.
+const ATTRIBUTE = /([\t\n\f\r ]+)([A-Za-z_:][A-Za-z0-9_.:-]*)(?:([\t\n\f\r ]*=[\t\n\f\r ]*)("[^"]*"|'[^']*'|[^\t\n\f\r "'=<>`]+))?/y;
 
 function resolveUrl(url, directory) {
-  const trimmed = url.trim();
+  // The URL Standard strips leading and trailing C0 controls and spaces, and removes every
+  // ASCII tab and newline inside the input, before it looks for a scheme.
+  const trimmed = url.replace(/^[\u0000- ]+|[\u0000- ]+$/g, '').replace(/[\t\n\r]/g, '');
   if (NOT_RELATIVE.test(trimmed)) {
     return url;
   }
@@ -110,11 +116,11 @@ function resolveSrcset(value, directory) {
   const candidates = [];
   let at = 0;
   while (at < value.length) {
-    at += /^[\s,]*/.exec(value.slice(at))[0].length;
+    at += /^[\t\n\f\r ,]*/.exec(value.slice(at))[0].length;
     if (at >= value.length) {
       break;
     }
-    let url = /^\S*/.exec(value.slice(at))[0];
+    let url = /^[^\t\n\f\r ]*/.exec(value.slice(at))[0];
     at += url.length;
     let descriptors = '';
     const commas = /,+$/.exec(url);
@@ -131,7 +137,7 @@ function resolveSrcset(value, directory) {
         }
         at++;
       }
-      descriptors = value.slice(start, at).trim();
+      descriptors = value.slice(start, at).replace(/^[\t\n\f\r ]+|[\t\n\f\r ]+$/g, '');
       at++;
     }
     candidates.push(resolveUrl(url, directory) + (descriptors ? ' ' + descriptors : ''));
@@ -144,8 +150,8 @@ function resolveAttribute(name, value, directory) {
     return resolveSrcset(value, directory);
   }
   if (name === 'ping') {
-    // A set of space-separated URLs.
-    return value.trim().split(/\s+/).map((url) => resolveUrl(url, directory)).join(' ');
+    // A set of URLs separated by ASCII whitespace.
+    return value.split(/[\t\n\f\r ]+/).filter((url) => url !== '').map((url) => resolveUrl(url, directory)).join(' ');
   }
   return resolveUrl(value, directory);
 }
@@ -175,7 +181,7 @@ function canonicalTag(tag, directory) {
     at = ATTRIBUTE.lastIndex;
   }
   const rest = tag.slice(at);
-  bound = bound || !/^\s*\/?>$/.test(rest);
+  bound = bound || !/^[\t\n\f\r ]*\/?>$/.test(rest);
   return out + (bound ? ' data-directory="' + directory + '"' : '') + rest;
 }
 
@@ -215,8 +221,11 @@ function topLevelBlocks(tokens) {
   return blocks;
 }
 
+// An HTML block that renders nothing: only whole comments and white space. Text after a
+// comment's `-->` on the same line belongs to the block and renders, so it does not count.
 function isComment(block) {
-  return block !== undefined && block.open.type === 'html_block' && block.open.content.trimStart().startsWith('<!--');
+  return block !== undefined && block.open.type === 'html_block' &&
+    /^[\t\n\f\r ]*$/.test(block.open.content.replace(COMMENT, ''));
 }
 
 function isHeading(block, tag) {
