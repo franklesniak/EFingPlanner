@@ -679,7 +679,8 @@ child actually is does not make the chain work. **Three earlier built sessions, 
 21, also need a Core-path addition**, because the Core evidence floor and the Core city set
 depend on them.
 
-**All six are added to the authorized edit scope.** Each edit is conditional or additive:
+**All six are added to the authorized edit scope, with Session 12's booked-dates branch
+below.** Each edit is conditional or additive:
 **nothing a First Taste child reads today may change meaning for them.**
 
 #### Session 33 — the adult flight placeholder Session 39 depends on
@@ -697,6 +698,20 @@ split. A First Taste child whose parent skips the row loses nothing, because Fir
 never reaches Session 39. **For a family continuing from First Taste, the grown-up fills the
 row when the numbered order reaches Session 33's extension line**, before Session 39.
 
+**The spec's other Core-only Session 33 topics already have homes.** The currency and cash
+notes are routed from Session 38 to the destination pack's money basics page. The
+group-size thread runs through Sessions 30, 34 and 36, which a continuing family reaches
+unticked. The spec's which-slice-is-biggest visual needs a flight line on the child's own
+worksheet, which the controllable-slice rule removes, so it is not built. The built budget
+template names flights as the biggest cost in words instead. Section 11 records the
+departure.
+
+**On the Core path, add one optional micro-task**, shown only when the Session 02 profiles
+mark a traveler as coming for only part of the trip. The child jots how many people are
+present on which days, and what that changes: room count (Sessions 34 and 35), train seats
+on each leg (Session 30), and restaurant table size (Session 36). A family continuing from
+First Taste meets it on Session 33's extension line.
+
 #### Session 44 — the personal pick, now chosen at Session 26
 
 Built Session 44 step 3 tells the child to choose the single thing they most want, shows
@@ -709,6 +724,11 @@ makes it not one choice.
 page -- confirm it still holds, and say so in one line. **It keeps its choose-now behaviour
 for a First Taste child**, who reaches Session 44 without having done Session 26. Both
 readings must be on the page, because both children read it.
+
+**On the Core path, Start Here, step 1 and the Materials line start from the must-do list on
+the My Calls page**, which Session 26 formed and Checkpoint 3 acknowledged. The child
+re-reads it as the list the plan protects, and makes no new one. The First Taste wording,
+which builds the list from the starred sights, stays for a First Taste child.
 
 **On the Core path, step 2 starts from the skip and save-for-future notes from Checkpoints
 2 and 3**, which section 5.7 says seed the formal cut list. **A family continuing from First
@@ -723,7 +743,7 @@ because "First Taste is a few-weeks project". **Every one of those is false for 
 child arriving from Session 52**, who has just finished the months-long project and the
 sessions that were "coming later".
 
-Make the page path-aware on four points:
+Make the page path-aware on five points:
 
 | What it says now | What a Core/Full reader needs |
 | --- | --- |
@@ -731,6 +751,7 @@ Make the page path-aware on four points:
 | "Those fuller steps are being built and will come later" | They are built, and this child did them |
 | Handoff lists First Taste artifacts | The full binder from Session 50 |
 | Parent Notes mandate the duration-neutral acknowledgment | **The duration-true, months-long form** for Core/Full; the duration-neutral form stays for First Taste |
+| The reflection steps ask the First Taste questions, and the budget step reads the Session 33 estimate | The same steps plus three prompts: patterns across the checkpoint reflections, how far off the time guesses were (section 5.5b), and how close the Session 39 budget came to the band, as an anchor. The answers go on the kit's `outputs/final_reflection.md` |
 
 **Neither wording may be deleted.** Both paths end here, so the page carries both and says
 which is which. With the dates booked, on either path, the handoff names the season
@@ -741,10 +762,11 @@ spec's continuation map calls this the capstone re-run. The child looks back at 
 Session 01 baseline and the reflection they wrote at the First Taste finish, and the
 Core/Full wording above applies. Say so on the page in one line.
 
-**Sessions 21, 33 and 53 are the only built sessions in the batch whose Parent Notes
-change**; Session 33 gains the fare instruction above, here the change adds a branch and
-keeps the existing instruction, and Session 21's change is the one word named below. The
-Session 14 and 15 additions below change no Parent Notes.
+**Sessions 12, 14, 21, 33 and 53 are the only built sessions in the batch whose Parent
+Notes change**; Session 33 gains the fare instruction above, here the change adds a branch
+and keeps the existing instruction, Sessions 12 and 14 each gain the one booked-dates line
+below, and Session 21's change is the one word named below. Session 14's Core-path report
+and the Session 15 addition change no Parent Notes.
 
 #### Session 14 — the season trade-off report on the Core path
 
@@ -753,9 +775,11 @@ travel-window trade-off. Built Checkpoint 1 already has the child choose a best 
 backup. **On the Core path, add one step: fill one Trade-Off Report comparing that best
 season and that backup**, reusing the reasons already written. It is the first of the three
 the template names. **When the family's dates are already booked**, Checkpoint 1 is the
-spec's understanding-and-confirmation beat, so the report compares **the booked window with
-the child's next-best window** on the family's goals: what the booked dates give, what they
-cost, and how the plan works around that cost. It is still the first report. **A family
+spec's understanding-and-confirmation beat, so the report compares **two ways to plan
+around the booked season's biggest challenge**, taken from the child's Session 12 chart: for
+example, a hot, rainy or crowded stretch. It weighs what each way gives and costs on the
+family's goals, and recommends one. It is still the first report, and it needs no research
+beyond that chart. **A family
 that continues after finishing First Taste writes this report when its numbered order
 reaches Session 14**, extending the Checkpoint 1 page it already finished. **A First Taste
 child's page gains only the booked-dates branch below**; First Taste is not measured
@@ -765,16 +789,24 @@ against the floor.
 
 The spec's "dates already fixed" mode changes two built Phase 2 sessions, and neither
 carries it yet. **Add a booked-dates branch to each, on every path, and keep the
-open-dates wording beside it unchanged.** Put the branch in each session's Goal, Steps,
-Artifact and Stop Point.
+open-dates wording beside it unchanged.** Put the branch in every field that asks for or
+assumes a season pick, adult-facing as well as child-facing. In Session 12, those are the
+Goal, Steps, Artifact, Stop Point, Optional Extension and Parent Notes. In Session 14, they
+are the Goal, Start Here, Steps, Artifact, Stop Point, Source Check, Optional Extension and
+Parent Notes. Session 14's "For parents" strip keeps the value it shares with every
+checkpoint.
 
 - **Session 12:** with the dates booked, the child learns what *their* season means for the
-  trip: the weather, crowds and events the chosen dates bring. The chart covers that season.
+  trip: the weather, crowds and events the chosen dates bring. The chart covers that season,
+  and marks the challenge the family most needs to plan around. Its Parent Notes gain one
+  line: with the dates booked, the chart feeds the season confirmation.
 - **Session 14:** with the dates booked, Checkpoint 1 is an understanding-and-confirmation
   beat. The child explains what the chosen season means for the trip and confirms the fit,
   and recommends no season. This page is the **season confirmation**: it goes on the same
   Decision Record page and is the first decision-log entry. On the Core path, the season
-  report takes its booked-window form above.
+  report takes its booked-dates form above. Its Parent Notes gain one line: with the dates
+  booked, the recommendation named above is the season confirmation, which the family talk
+  uses to confirm the fit, with no pick to adjust.
 
 No child is asked to recommend dates the family cannot change. **With the dates booked, the
 season confirmation fills every place this brief asks for the season recommendation:** the
@@ -2264,9 +2296,12 @@ anchors never fade.
 
 Build a one-page sheet of words and manners you can carry and use.
 
-**Status: Conditional Core**, and this one needs care. The spec is emphatic that it is one
-of the highest-payoff, most enjoyable sessions in the project, and that a family should be
-reluctant to drop it. It is conditional only so the Core count stays fixed.
+**Status: Conditional Core**, and this one needs care. The status line reads
+`Conditional core -- becomes Core if your family wants the language and etiquette quick sheet in the binder`,
+following Session 09's built form. The spec is emphatic that it is one of the
+highest-payoff, most enjoyable sessions in the project, and that a family should be
+reluctant to drop it. It is conditional only so the Core count stays fixed, and so a family
+that must leave the quick sheet out of the binder still can.
 
 **Render the status plainly and put the emphasis in the adjacent line.** The status label
 stays machine-readable and identical across all three surfaces -- the roadmap,
@@ -3243,16 +3278,22 @@ the gate twice: once in this brief, and again in every entry copied from it.
 20, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 45,
 46, 47, 48, 49, 50, 51, 52. **Sessions 12, 14, 15, 21, 33, 44 and 53 already have entries. Do not
 rewrite them; update only what this batch changes in each session**, and keep each First
-Taste instruction as a branch. Five updates are known: Session 12's look-for line (with the
-dates booked, notes on what the chosen season brings), Session 14's prep and look-for lines
-(on the Core path, a Trade-Off Report page, and a report comparing the best season with the
-backup, or the booked window with the next-best window when the dates are booked; and, with
-the dates booked, a look-for line naming the explanation and the confirmed fit), Session 15's prep line (the major
-cities reference is gone after 4.1b; the child now chooses from their Session 11 notes),
-Session 44's pick line (on the Core path the child confirms the pick Session 26 already
-chose), and Session 53's acknowledgment line (duration-true for Core/Full,
-duration-neutral for First Taste). Check Sessions 21 and 33, Session 44's cut-list step and
-Session 53's capstone re-run against their 4.1a edits the same way.
+Taste instruction as a branch. Five updates are known: Session 12's look-for and
+coaching-question lines (with the dates booked, notes on what the chosen season brings, and
+a question such as "What will our season be like, and what should we plan around?"),
+Session 14's role, prep, look-for, coaching-question and pitfall lines (on the Core path, a
+Trade-Off Report page, and a report comparing the best season with the backup, or two ways
+to plan around the booked season's biggest challenge when the dates are booked; and, with
+the dates booked, a role line that uses the season confirmation in the family talk, a
+look-for line naming the explanation and the confirmed fit, a coaching question such as
+"What will our season change about the plan?", and a pitfall line against treating the
+confirmation as a formality), Session 15's prep line (the major cities reference is gone
+after 4.1b; the child now chooses from their Session 11 notes), Session 44's prep, look-for
+and pick lines (on the Core path, the My Calls page replaces the starred sights, the must-do
+list is the one Session 26 made, and the child confirms the pick Session 26 already chose),
+and Session 53's acknowledgment line (duration-true for Core/Full, duration-neutral for
+First Taste). Check Sessions 21 and 33, Session 44's cut-list step and Session 53's capstone
+re-run and Core reflection prompts against their 4.1a edits the same way.
 
 **Parent-gated versus independent must be visible.** Only these are parent-gated: **Session
 00**, the six checkpoints (**14, 22, 27, 32, 46, 52**), and the co-research source-judging
@@ -3270,9 +3311,9 @@ recommended`. Write its Role line as co-worked too. Every session not named in t
 paragraph is independent.
 
 **Status labels to carry:** 18, 36, 37 and 47 are **`Conditional core`** and
-**auto-promote to Core later** if the need appears -- **the parent is never asked to
-forecast them at setup.** Use the same label here, in the session strips and in the
-roadmap, so the three surfaces can be compared by string.
+**auto-promote to Core later**, each on the condition its own session entry states --
+**the parent is never asked to forecast them at setup.** Use the same label here, in the
+session strips and in the roadmap, so the three surfaces can be compared by string.
 
 **This file does not replace the short Parent Notes inside each session.** It is the
 at-a-glance map.
@@ -3892,9 +3933,9 @@ a preceding line rather than as item 1, the way the built First Taste index does
 **Sessions 07, 09, 18, 36 and 37 are deliberately absent from this index.** 07 is
 Recommended. 09 is Core **only if the family opted into AI**, and then it is inserted right
 after Session 05 and must precede any AI use. 18, 36 and 37 are `Conditional core` and
-**auto-promote to Core later** if the need appears -- **the parent is never asked to
-forecast them.** Render these as a short note under the index, exactly as the built First
-Taste index renders its Session 09 note.
+**auto-promote to Core later**, each on the condition its own session entry states --
+**the parent is never asked to forecast them.** Render these as a short note under the
+index, exactly as the built First Taste index renders its Session 09 note.
 
 **After Checkpoint 5**, the remaining Core sessions are **48, 49, 50, 51, 52 and 53**, plus
 the conditional 47. **Name them as the continuation, not as unfinished work.**
@@ -3920,8 +3961,9 @@ session table** -- Recommended, Optional, or the condition that makes it Core --
 family and a family whose condition promotes a session both find it in order.
 **Each First Taste session whose Core version asks for new work gets its own extension line,
 directly after that session:** Session 14's season report, Session 21's long-list
-comparison, Session 33's adult fare row, Session 44's cut list with the Checkpoint 2 and 3
-notes, and Session 53's capstone re-run (see 4.1a). **Label each extension line as for a
+comparison, Session 33's adult fare row and, when a traveler comes for only part of the
+trip, the headcount note, Session 44's cut list with the Checkpoint 2 and 3 notes, and
+Session 53's capstone re-run (see 4.1a). **Label each extension line as for a
 family that finished First Taste first**, so a child who started on the Core path ticks it
 along with its session. A family continuing from First Taste ticks the sessions it already
 finished and works the unticked lines in numbered order, so it reaches each extension at its
@@ -4072,7 +4114,9 @@ is incomplete and removing the rider would make the docs wrong in the other dire
   rewrite with its filename unchanged; Session 24's title form; the thirteenth template;
   Checkpoint 4's added Source Check; the flights page written generically; the cancelled
   binder item; the roadmap blockquote replaced by a changelog pointer; Session 49's added
-  contract row and the emergency-number framing; the contract's first parent-facing rows.
+  contract row and the emergency-number framing; the contract's first parent-facing rows;
+  the child's flight placeholder line, which stays off the child's worksheet under the
+  controllable-slice rule; and the which-slice-is-biggest visual that needed it.
 - **The two designated hand-off sessions, 16 and 40**, so a later batch does not re-derive
   them and land them somewhere else.
 - **The lighter-template phase reading**, with its accepted cost.
