@@ -152,6 +152,46 @@ def test_file_without_metadata_is_ignored(repo: Repo) -> None:
     assert run(repo) == []
 
 
+@pytest.mark.parametrize("path", ["docs/a.md", "docs/new.md"], ids=["modified", "added"])
+def test_file_already_on_the_base_branch_tip_passes(repo: Repo, path: str) -> None:
+    # The pull request re-makes a change main already has, later; the file adds nothing to the
+    # merge, so neither its later date nor its repeated Version is a problem.
+    edited = doc("2026-03-05", "Edited.", version="20260305")
+    repo.git("switch", "-q", "main")
+    repo.write(path, edited)
+    repo.commit("change on main", "2026-03-05T10:00:00+00:00")
+    repo.git("switch", "-q", "pr")
+    repo.write(path, edited)
+    repo.commit("same change, later", "2026-03-07T10:00:00+00:00")
+    assert run(repo) == []
+
+
+def test_mechanical_change_passes_after_the_base_branch_moved(repo: Repo) -> None:
+    # main changed the file after the fork, so the head no longer equals the tip; the pull
+    # request's own change is trailing whitespace only, which needs no bump.
+    repo.git("switch", "-q", "main")
+    repo.write("docs/a.md", doc("2026-03-04", "Changed on main."))
+    repo.commit("change on main", "2026-03-04T10:00:00+00:00")
+    repo.git("switch", "-q", "pr")
+    repo.write("docs/a.md", doc("2026-01-01").replace("Body text.", "Body text. "))
+    repo.commit("whitespace", "2026-03-05T10:00:00+00:00")
+    assert run(repo) == []
+
+
+def test_impossible_calendar_date_is_reported_by_file(repo: Repo) -> None:
+    repo.write("docs/a.md", doc("2026-02-30", "Changed."))
+    repo.commit("change", "2026-03-05T10:00:00+00:00")
+    problems = run(repo)
+    assert len(problems) == 1 and "docs/a.md" in problems[0] and "not a real calendar date" in problems[0]
+
+
+def test_impossible_base_date_does_not_stop_the_check(repo: Repo) -> None:
+    publish(repo, doc("2026-02-30", "Body."), "2026-01-01T12:00:00+00:00")
+    repo.write("docs/a.md", doc("2026-03-05", "Changed."))
+    repo.commit("change", "2026-03-05T10:00:00+00:00")
+    assert run(repo) == []
+
+
 def test_new_file_with_stale_date_fails_and_current_date_passes(repo: Repo) -> None:
     repo.write("docs/new.md", doc("2026-02-01"))
     repo.commit("add", "2026-03-05T10:00:00+00:00")

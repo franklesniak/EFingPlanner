@@ -47,6 +47,11 @@ Markdown is read"):
 4. The field must not be earlier than the base version's field. A rebased or
    cherry-picked commit can keep an old author date; the field still may not
    move backwards.
+5. The field must be a real calendar date; ``2026-02-30`` is reported as such.
+
+A file whose rendered content already equals the base branch tip's (under its
+name there) is skipped: it adds nothing to the merge, as when the pull request
+repeats a change that has already landed.
 
 Mechanical changes
 ------------------
@@ -362,6 +367,19 @@ def content_changes(base: str, head: str, path: str,
     return changes
 
 
+def calendar_date(value: str | None) -> dt.date | None:
+    """The field's date, or None when there is none or it is not a real calendar date.
+
+    The helper checks only the YYYY-MM-DD shape, so a value such as 2026-02-30 reaches here.
+    """
+    if value is None:
+        return None
+    try:
+        return dt.date.fromisoformat(value)
+    except ValueError:
+        return None
+
+
 def utc_date(stamp: str) -> dt.date:
     return dt.datetime.fromisoformat(stamp).astimezone(dt.timezone.utc).date()
 
@@ -405,6 +423,13 @@ def check(base: str, head: str) -> list[str]:
         head_text = show(head, path)
         if head_text is None:
             continue
+        # The published baseline is the file on the base branch tip, not on the merge base,
+        # under the name it has there if the base branch renamed it after the fork. An added
+        # file is looked for at its own path, since the base branch may have added it too.
+        published_path = path_at(merge_base, base, old_path) if old_path else path
+        published = show(base, published_path)
+        if published is not None and rendered(published, published_path) == rendered(head_text, path):
+            continue   # the base branch already has this content, so the file adds nothing to the merge
         value = field(head_text)
         base_text = show(merge_base, old_path) if old_path else None
         if value is None:
@@ -413,8 +438,14 @@ def check(base: str, head: str) -> list[str]:
                                 "and this pull request removed it or moved it out of that block. Restore it, "
                                 "with the date of the change." % path)
             continue
+        day = calendar_date(value)
+        if day is None:
+            problems.append("%s: Last Updated is %s, which is not a real calendar date. Set it to the UTC date of "
+                            "the change." % (path, value))
+            continue   # every other rule needs the date
         base_value = field(base_text) if base_text is not None else None
-        if base_value is not None and dt.date.fromisoformat(value) < dt.date.fromisoformat(base_value):
+        base_day = calendar_date(base_value)
+        if base_day is not None and day < base_day:
             problems.append("%s: Last Updated moved back from %s to %s. It must not be earlier than the "
                             "base version's date." % (path, base_value, value))
         if base_text is not None and old_path and rendered(base_text, old_path) == rendered(head_text, path):
@@ -422,11 +453,6 @@ def check(base: str, head: str) -> list[str]:
         changes = content_changes(merge_base, head, path, old_path)
         need = max((authored for authored, _ in changes), default=None)
         made = max((committed for _, committed in changes), default=None)
-        # The published baseline is the file on the base branch tip, not on the merge base,
-        # under the name it has there if the base branch renamed it after the fork.
-        published_path = path_at(merge_base, base, old_path) if old_path else None
-        published = show(base, published_path) if published_path else None
-        day = dt.date.fromisoformat(value)
         date_is_wrong = True
         if need is None or made is None:
             # Fail closed: the content differs from the base, so some commit changed it.
