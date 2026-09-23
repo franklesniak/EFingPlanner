@@ -61,6 +61,7 @@ from __future__ import annotations
 
 import argparse
 import datetime as dt
+import os
 import re
 import subprocess
 import sys
@@ -69,6 +70,7 @@ LAST_UPDATED = re.compile(r"^- \*\*Last Updated:\*\* (\d{4}-\d{2}-\d{2})\s*$", r
 VERSION = re.compile(r"^\*\*Version:\*\* \d+\.\d+\.(\d{8})\.\d+\s*$", re.M)
 FENCE_OPEN = re.compile(r"^ {0,3}(`{3,}|~{3,})(.*)$")
 FENCE_CLOSE = re.compile(r"^ {0,3}(`{3,}|~{3,})[ \t]*$")
+COMMENT_OPEN = re.compile(r"^ {0,3}<!--")
 NO_BREAK = "\x00no-break"   # marks a final backslash that trailing whitespace kept from breaking
 
 
@@ -77,9 +79,17 @@ class GitError(RuntimeError):
 
 
 def git(*args: str) -> str:
-    result = subprocess.run(["git", *args], capture_output=True, text=True, encoding="utf-8")
-    if result.returncode != 0:
-        raise GitError("git %s: %s" % (" ".join(args), result.stderr.strip()))
+    """Run git and return its output, or raise GitError.
+
+    Output is decoded as UTF-8 with `surrogateescape`, so bytes that are not UTF-8 (Linux
+    allows them in names and files) round-trip instead of failing. A decoding failure can
+    otherwise leave stdout empty or raise outside this function, and an empty result would
+    read as "file absent". Missing stdout is therefore an error too.
+    """
+    result = subprocess.run(["git", *args], capture_output=True, text=True, encoding="utf-8",
+                            errors="surrogateescape")
+    if result.returncode != 0 or result.stdout is None:
+        raise GitError("git %s: %s" % (" ".join(args), (result.stderr or "").strip()))
     return result.stdout
 
 
@@ -105,10 +115,22 @@ def outside_fences(text: str) -> str:
     long, followed by nothing but spaces or tabs.
     So a four-backtick fence around a triple-backtick example, which the docs guide
     prescribes, stays one fence.
+
+    HTML comment blocks are blanked too, because they render nothing: outside a fence,
+    a line starting with up to three spaces and `<!--` opens one, and the line that
+    contains `-->` closes it (CommonMark's HTML block condition 2).
     """
-    out, fence = [], None
+    out, fence, comment = [], None, False
     for line in text.split("\n"):
+        if comment:
+            out.append("")
+            comment = "-->" not in line
+            continue
         if fence is None:
+            if COMMENT_OPEN.match(line):
+                out.append("")
+                comment = "-->" not in line.split("<!--", 1)[1]
+                continue
             m = FENCE_OPEN.match(line)
             if m and not (m.group(1)[0] == "`" and "`" in m.group(2)):
                 fence = (m.group(1)[0], len(m.group(1)))
@@ -137,7 +159,7 @@ def normalize(text: str) -> str:
         spaces = len(line) - len(line.rstrip(" "))
         stripped = line.rstrip(" \t")
         backslashes = len(stripped) - len(stripped.rstrip("\\"))
-        if spaces >= 2:
+        if spaces >= 2 and stripped:
             lines.append(stripped + "  ")
         elif backslashes % 2 == 1 and stripped != line:
             lines.append(stripped + NO_BREAK)
@@ -187,8 +209,9 @@ def changed_files(base: str, head: str) -> list[tuple[str | None, str]]:
         status, before, after, i = name_status(tokens, i)
         if status[0] == "R":
             out.append((before, after))
-        elif status[0] in "AMC":
-            out.append((before if status[0] == "M" else None, after))
+        elif status[0] in "AMCT":
+            # T is a type change, such as a file replaced by a symlink: still checked.
+            out.append((before if status[0] in "MT" else None, after))
     return out
 
 
@@ -244,8 +267,8 @@ def required_date(base: str, head: str, path: str) -> dt.date | None:
             names.setdefault(parent, own)
             content = show(parent, own) if own else None
             befores.append(normalize(content or ""))
-        if len(parents) == 2:
-            automatic = clean_merge(parents[0], parents[1], name)
+        if len(parents) >= 2:
+            automatic = clean_merge(parents, name)
             authored = normalize(automatic or "") != normalize(after)
         else:
             authored = bool(befores) and all(b != normalize(after) for b in befores)
@@ -254,18 +277,34 @@ def required_date(base: str, head: str, path: str) -> dt.date | None:
     return max(dates) if dates else None
 
 
-def clean_merge(first: str, second: str, path: str) -> str | None:
-    """The file as git's own merge of two commits writes it, conflict markers included.
+def clean_merge(parents: list[str], path: str) -> str | None:
+    """The file as git's own merge of the parents writes it, conflict markers included.
 
+    The parents are merged in order, one at a time, as git's octopus strategy does.
     `git merge-tree --write-tree` exits 0 for a clean merge and 1 when there are
     conflicts, printing the resulting tree either way; anything else is a git error.
+    Between steps, the intermediate tree is recorded with `git commit-tree` as an
+    unreferenced commit, so the next step has a commit to merge against. No branch or
+    ref changes, and a fixed identity is supplied because CI runners configure none.
     """
-    result = subprocess.run(["git", "merge-tree", "--write-tree", first, second],
-                            capture_output=True, text=True, encoding="utf-8")
-    if result.returncode not in (0, 1):
-        raise GitError("git merge-tree: %s" % result.stderr.strip())
-    tree = result.stdout.split("\n", 1)[0].strip()
-    return show(tree, path)
+    env = dict(os.environ, GIT_AUTHOR_NAME="check-last-updated", GIT_AUTHOR_EMAIL="check@localhost",
+               GIT_COMMITTER_NAME="check-last-updated", GIT_COMMITTER_EMAIL="check@localhost")
+    current, tree = parents[0], None
+    for index, other in enumerate(parents[1:], start=1):
+        result = subprocess.run(["git", "merge-tree", "--write-tree", current, other],
+                                capture_output=True, text=True, encoding="utf-8", errors="surrogateescape")
+        if result.returncode not in (0, 1) or result.stdout is None:
+            raise GitError("git merge-tree: %s" % (result.stderr or "").strip())
+        tree = result.stdout.split("\n", 1)[0].strip()
+        if index < len(parents) - 1:
+            step = subprocess.run(["git", "commit-tree", tree, "-p", current, "-p", other,
+                                   "-m", "check-last-updated: temporary merge step"],
+                                  capture_output=True, text=True, encoding="utf-8",
+                                  errors="surrogateescape", env=env)
+            if step.returncode != 0 or step.stdout is None:
+                raise GitError("git commit-tree: %s" % (step.stderr or "").strip())
+            current = step.stdout.strip()
+    return show(tree, path) if tree else None
 
 
 def check(base: str, head: str) -> list[str]:
@@ -308,6 +347,10 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--base", required=True, help="the pull request's base commit")
     parser.add_argument("--head", default="HEAD", help="the pull request's head commit (default HEAD)")
     args = parser.parse_args(argv)
+    # A name holding bytes that are not UTF-8 is carried as surrogates; print it escaped.
+    for stream in (sys.stdout, sys.stderr):
+        if hasattr(stream, "reconfigure"):
+            stream.reconfigure(errors="backslashreplace")
     try:
         problems = check(args.base, args.head)
     except GitError as exc:

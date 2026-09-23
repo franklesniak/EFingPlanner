@@ -315,6 +315,116 @@ def test_octopus_merge_taking_one_side_unchanged_adds_no_date(repo: Repo) -> Non
     assert run(repo) == []
 
 
+def octopus_sides(repo: Repo, field: str) -> str:
+    """Two side branches edit separate paragraphs of docs/a.md; returns their body."""
+    body = "\n".join(["Para one."] + ["filler %d" % i for i in range(12)] + ["Para two."]
+                     + ["more %d" % i for i in range(12)] + ["Para three."])
+    repo.write("docs/a.md", doc("2026-01-01", body))
+    repo.commit("base-ish", "2026-01-01T12:00:00+00:00")
+    repo.git("switch", "-q", "main")
+    repo.git("merge", "-q", "--ff-only", "pr")
+    repo.git("switch", "-q", "-c", "side1", "main")
+    repo.write("docs/a.md", doc(field, body.replace("Para one.", "Para one, side one.")))
+    repo.commit("side one", "2026-03-05T09:00:00+00:00")
+    repo.git("switch", "-q", "-c", "side2", "main")
+    repo.write("docs/a.md", doc(field, body.replace("Para three.", "Para three, side two.")))
+    repo.commit("side two", "2026-03-05T10:00:00+00:00")
+    repo.git("switch", "-q", "pr")
+    return body
+
+
+def test_automatic_octopus_merge_is_dated_by_the_side_edits(repo: Repo) -> None:
+    octopus_sides(repo, "2026-01-01")
+    repo.git("merge", "-q", "--no-ff", "-m", "octopus", "side1", "side2", date="2026-03-06T10:00:00+00:00")
+    text = repo.git("show", "HEAD:docs/a.md")
+    assert "Para one, side one." in text and "Para three, side two." in text
+    problems = run(repo)
+    assert len(problems) == 1 and "Set it to 2026-03-05" in problems[0]
+
+
+def test_octopus_check_needs_no_git_identity(repo: Repo, monkeypatch: Any, tmp_path_factory: Any) -> None:
+    # CI runners configure no user name or email; the temporary merge steps must not need one.
+    octopus_sides(repo, "2026-03-05")
+    repo.git("merge", "-q", "--no-ff", "-m", "octopus", "side1", "side2", date="2026-03-06T10:00:00+00:00")
+    empty = tmp_path_factory.mktemp("config") / "gitconfig"
+    empty.write_bytes(b"")
+    monkeypatch.setenv("GIT_CONFIG_GLOBAL", str(empty))
+    monkeypatch.setenv("GIT_CONFIG_NOSYSTEM", "1")
+    for name in ("GIT_AUTHOR_NAME", "GIT_AUTHOR_EMAIL", "GIT_COMMITTER_NAME", "GIT_COMMITTER_EMAIL", "EMAIL"):
+        monkeypatch.delenv(name, raising=False)
+    repo.git("config", "--unset", "user.name")
+    repo.git("config", "--unset", "user.email")
+    repo.git("config", "user.useConfigOnly", "true")
+    assert run(repo) == []
+
+
+def test_octopus_merge_with_its_own_edit_is_dated_by_the_merge(repo: Repo) -> None:
+    body = octopus_sides(repo, "2026-03-05")
+    repo.git("merge", "-q", "--no-ff", "--no-commit", "side1", "side2")
+    edited = body.replace("Para one.", "Para one, side one.").replace("Para three.", "Para three, side two.")
+    repo.write("docs/a.md", doc("2026-03-05", edited.replace("Para two.", "Para two, edited in the merge.")))
+    repo.git("add", "-A")
+    repo.git("commit", "-q", "-m", "octopus with an edit", date="2026-03-06T10:00:00+00:00")
+    assert len(repo.git("rev-parse", "HEAD^@").split()) == 3
+    problems = run(repo)
+    assert len(problems) == 1 and "Set it to 2026-03-06" in problems[0]
+
+
+def test_replacing_a_file_with_a_symlink_reports_the_removed_field(repo: Repo) -> None:
+    # Built with plumbing, because creating a symlink on Windows needs extra privileges.
+    blob = subprocess.run(["git", "hash-object", "-w", "--stdin"], cwd=repo.root, input="elsewhere.md",
+                          capture_output=True, text=True, check=True).stdout.strip()
+    repo.git("update-index", "--cacheinfo", "120000,%s,docs/a.md" % blob)
+    repo.git("commit", "-q", "-m", "replace with a symlink", date="2026-03-05T10:00:00+00:00")
+    assert repo.git("diff", "--name-status", "main..HEAD").startswith("T")
+    problems = run(repo)
+    assert len(problems) == 1 and "docs/a.md" in problems[0] and "removed it" in problems[0]
+
+
+def test_commented_out_field_is_not_the_real_field(repo: Repo) -> None:
+    commented = "<!--\n- **Last Updated:** 2000-01-01\n-->\n"
+    repo.write("docs/plain.md", "# No metadata\n\n" + commented + "\nText.\n")
+    repo.commit("comment", "2026-01-01T12:00:00+00:00")
+    repo.git("switch", "-q", "main")
+    repo.git("merge", "-q", "--ff-only", "pr")
+    repo.git("switch", "-q", "pr")
+    repo.write("docs/plain.md", "# No metadata\n\n" + commented + "\nText changed.\n")
+    repo.commit("edit", "2026-03-05T10:00:00+00:00")
+    assert run(repo) == []
+
+
+def test_real_field_after_a_one_line_comment_is_still_found(repo: Repo) -> None:
+    repo.write("docs/a.md", "<!-- markdownlint-disable MD013 -->\n" + doc("2026-01-01", "Changed."))
+    repo.commit("edit", "2026-03-05T10:00:00+00:00")
+    problems = run(repo)
+    assert len(problems) == 1 and "Set it to 2026-03-05" in problems[0]
+
+
+def test_fence_line_inside_a_comment_does_not_open_a_fence(repo: Repo) -> None:
+    repo.write("docs/a.md", "<!--\n```\n-->\n" + doc("2026-01-01", "Changed."))
+    repo.commit("edit", "2026-03-05T10:00:00+00:00")
+    problems = run(repo)
+    assert len(problems) == 1 and "Set it to 2026-03-05" in problems[0]
+
+
+def test_comment_marker_inside_a_fence_does_not_open_a_comment(repo: Repo) -> None:
+    repo.write("docs/a.md", "```html\n<!--\n```\n\n" + doc("2026-01-01", "Changed."))
+    repo.commit("edit", "2026-03-05T10:00:00+00:00")
+    problems = run(repo)
+    assert len(problems) == 1 and "Set it to 2026-03-05" in problems[0]
+
+
+def test_whitespace_only_line_losing_its_spaces_is_mechanical(repo: Repo) -> None:
+    repo.write("docs/a.md", doc("2026-01-01", "Para.\n  \nNext."))
+    repo.commit("base-ish", "2026-01-01T12:00:00+00:00")
+    repo.git("switch", "-q", "main")
+    repo.git("merge", "-q", "--ff-only", "pr")
+    repo.git("switch", "-q", "pr")
+    repo.write("docs/a.md", doc("2026-01-01", "Para.\n\nNext."))
+    repo.commit("strip", "2026-03-05T10:00:00+00:00")
+    assert run(repo) == []
+
+
 def test_four_space_fence_line_does_not_close_a_fence(repo: Repo) -> None:
     inner = "```text\n    ```\n- **Last Updated:** 2000-01-01\n```\n"
     repo.write("docs/plain.md", "# No metadata\n\n" + inner)
@@ -352,6 +462,28 @@ def test_filename_with_a_leading_colon_is_read_literally(repo: Repo) -> None:
     head = commit_with(doc("2026-01-01", "Changed."), "edit colon file", "2026-03-05T10:00:00+00:00", base)
     problems = last_updated.check("main", head)
     assert len(problems) == 1 and ":foo.md" in problems[0] and "Set it to 2026-03-05" in problems[0]
+
+
+def test_file_with_non_utf8_bytes_is_still_checked(repo: Repo) -> None:
+    stale = doc("2026-01-01", "Caf\x00 changed.").encode("utf-8").replace(b"\x00", b"\xe9")
+    (repo.root / "docs" / "a.md").write_bytes(stale)
+    repo.commit("latin-1 byte", "2026-03-05T10:00:00+00:00")
+    problems = run(repo)
+    assert len(problems) == 1 and "Set it to 2026-03-05" in problems[0]
+
+
+@pytest.mark.skipif(os.name == "nt", reason="Windows cannot pass a non-UTF-8 filename to git")
+def test_non_utf8_filename_is_still_checked(repo: Repo) -> None:
+    name = b"docs/caf\xe9.md"
+    (repo.root / os.fsdecode(name)).write_bytes(doc("2026-01-01").encode("utf-8"))
+    repo.commit("add", "2026-01-01T12:00:00+00:00")
+    repo.git("switch", "-q", "main")
+    repo.git("merge", "-q", "--ff-only", "pr")
+    repo.git("switch", "-q", "pr")
+    (repo.root / os.fsdecode(name)).write_bytes(doc("2026-01-01", "Changed.").encode("utf-8"))
+    repo.commit("edit", "2026-03-05T10:00:00+00:00")
+    problems = run(repo)
+    assert len(problems) == 1 and "Set it to 2026-03-05" in problems[0]
 
 
 def test_removing_the_field_fails(repo: Repo) -> None:
