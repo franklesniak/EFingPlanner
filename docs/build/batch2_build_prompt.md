@@ -2707,6 +2707,10 @@ four statuses as a lesser outcome; use "executive meeting".
 
 **Source-verification rows** belong on any template that records research: *"What other source can check this?"*, *"Verification source"*, *"Date checked"*.
 
+**The thirteen templates are built.** Each entry below describes its built template row for
+row; if the two ever differ, follow the built template and record the difference in your
+build report.
+
 #### A1 — `attraction_research_card.md`
 
 One card per attraction or experience. Filled copies live at
@@ -2716,7 +2720,7 @@ One card per attraction or experience. Filled copies live at
 **Rows, in order:** Name; City/area; Type; Why it is interesting; Time needed; Ticket or
 reservation needed?; My guess at the ticket price, before I looked it up; What I found when I
 checked (prices change, so write the date); Best time of day?; Nearby places; Possible downside; Review themes;
-Official website needed?; Source; Date checked; Planning assumption; **Why I am using this assumption**; **What could change it?**; Needs adult verification? (yes / no); Final decision status (researching / must-do /
+Official website needed?; Source; What other source could check this?; Verification source; Date checked; Planning assumption; **Why I am using this assumption**; **What could change it?**; Needs adult verification? (yes / no); Final decision status (researching / must-do /
 strong maybe / only if nearby / skip or save for future).
 
 **The predict-then-verify row is mandatory and sits directly after `Ticket or reservation
@@ -2738,7 +2742,7 @@ ever implying the child is behind.**
 
 **Rows, in order:** Name or dining area; City/neighborhood; Type of food; Near which
 attraction or hotel?; Reservation needed?; Cash-only?; Review themes; Possible downside;
-Source; Date checked. **Add**, to match the other research cards, the full five-prompt block: Planning assumption; **Why I am using this assumption**; **What could change it?**; Needs adult verification? (yes / no); Final decision status.
+Source; What other source could check this?; Verification source; Date checked. **Add**, to match the other research cards, the full five-prompt block: Planning assumption; **Why I am using this assumption**; **What could change it?**; Needs adult verification? (yes / no); Final decision status.
 
 **Mandatory teaching line:** *"Not every meal needs to be famous."* It may sit as the
 card's closing tip or a short lead line.
@@ -2762,7 +2766,9 @@ One card per hotel option. Consumed by Session 35, set up by Session 34.
 re-check, with the date); Date checked; Room setup question for adults; Distance to useful
 transit; Distance to planned sights; Nearby sights; Breakfast available?; Easy breakfast
 nearby?; Cancellation/flexibility note (adults verify); Review themes; Pros; Cons; Sources;
-Planning assumption; **Why I am using this assumption**; **What could change it?**; Needs adult verification? (yes / no); Final decision status.
+What other source could check this?; Verification source; Planning assumption; **Why I am
+using this assumption**; **What could change it?**; Needs adult verification? (yes / no);
+Final decision status; If I'm recommending this one, why?
 
 **Printability is a real constraint: 1-2 pages.** If it runs long, **Pros, Cons and Review
 themes compress first**; the cost, date-checked, verification and decision-status rows
@@ -2811,6 +2817,9 @@ evidence floor: a season or travel-window trade-off, a city or route trade-off, 
 itinerary-pacing, hotel-location, or budget trade-off. **Each has a sitting:** the season
 report at Checkpoint 1 (Session 14's Core-path step, section 4.1a), the route report at
 Session 31, and the third at Session 34 or Session 43, on whichever call was harder.
+**With the dates booked, the first report takes 4.1a's booked-dates form:** two ways to plan
+around the booked season's biggest challenge. It still counts as the season or
+travel-window report.
 
 **Primary form: a pre-structured comparison table with the columns already drawn and one
 worked example row filled in**, so the child plugs in their options rather than inventing a

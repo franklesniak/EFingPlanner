@@ -61,6 +61,10 @@ Each has its own **what to consider** list. The review form checks whether the w
 
 **What to consider:** weather; crowds; cost; major holidays; and how the season fits school and work schedules.
 
+**With the dates already booked,** Checkpoint 1 is a confirmation. They bring what the chosen season means for the trip and whether it fits, and they recommend no season, so there is no pick to adjust.
+
+**On the Core path,** they also bring their first Trade-Off Report: their best season against the backup or, with the dates booked, two ways to plan around the season's biggest challenge.
+
 **Progress is real:** the family now knows roughly *when*.
 
 ### Checkpoint 2 — City Shortlist (Session 22)
