@@ -34,6 +34,19 @@ the gap here so the next run does not repeat the lookup.
   reference file it writes. Read it before
   drafting anything. Where this brief and the contract disagree about a slot's fields,
   the contract wins and the disagreement is a defect in this brief worth recording.
+- **The style law is `framework/docs/build_style_and_vocab.md`.** Load it before drafting,
+  as it asks. Its voice, contraction, density, banned-word and agreed-label rules bind every
+  file this batch writes. This brief does not restate their numbers; read them there.
+
+## Before you start: what must already exist
+
+This batch runs after Batch 1 and Batch 2 have merged, and it builds on what they left.
+Check that these exist before writing anything: the routing contract
+`destinations/japan/session_inserts/README.md`, the glossary and the three built slots
+beside it, `regions_overview.md`, `framework/README.md` with its curriculum version line,
+and Batch 2's sessions with the contract rows it adds for Session 49 and the four parent
+pages. **If one is missing, an earlier batch has not merged.** Stop and report it as a
+blocker; do not build it here.
 
 ## Build track
 
@@ -181,7 +194,7 @@ the division-of-labour rule and section 5 names the specific overlaps that alrea
 | B | New `destinations/japan/session_inserts/` slot files | **8** |
 | C | Edit: `destinations/japan/session_inserts/README.md`, the routing contract | 1 |
 | D | Edit: `destinations/japan/README.md`, the pack contents page | 1 |
-| E | Edit: `destinations/japan/reference/transportation_basics.md` (`B3-4`) | 1 |
+| E | Edit: `destinations/japan/reference/transportation_basics.md` (`B3-4`, 6.4) | 1 |
 | F | Edit: `destinations/japan/session_inserts/kid_glossary.md` (`B3-6`) | 1 |
 | G | Edit: `destinations/japan/reference/major_cities.md` (`B3-8`) | 1 |
 | H | Edit: `destinations/japan/reference/money_basics.md` (`B3-9`) | 1 |
@@ -215,12 +228,12 @@ documentation policy requires that field bumped in the same commit that changes 
 document's rendered content. They are the routing contract and `framework/CHANGELOG.md`.
 Bump both.
 
-**`Last reviewed` is a different field.** Three built pack files only lose a section or
-gain a link here: the transport, money and major-cities files. Their stamps say when a
-person last checked the facts, and trimming or linking checks nothing, so **leave those
-three stamps alone.** **The glossary is the exception** (`B3-6`), because it gains a
-definition. Re-check every glossary entry against a current source, then set its stamp to
-the month of that check. The currency example keeps its own month unless its figure is
+**`Last reviewed` is a different field.** Two built pack files only lose a section or gain
+a link here: the money and major-cities files. Their stamps say when a person last checked
+the facts, and trimming or linking checks nothing, so **leave those two stamps alone.**
+**The glossary and the transport file are the exceptions** (`B3-6`, 6.4), because each
+gains content: a definition, and a named planner. Re-check every entry in each against a
+current source, then set its stamp to the month of that check. The currency example keeps its own month unless its figure is
 re-checked too.
 
 The seven reference files are `airports_and_arrival_basics.md`, `language_basics.md`,
@@ -247,7 +260,7 @@ The sixth comes from Batch 2 (`I-2`) and the seventh from `B3-1`.
 - **A second destination pack.** The reusability claim is tested by the contract being
   fillable, not by filling it twice.
 - **`CONTRIBUTING.md`.** Optional and aspirational, adjudicated in Batch 4.
-- **Re-reviewing or re-dating any built pack file other than the glossary** (section 2).
+- **Re-reviewing or re-dating any built pack file other than the glossary and the transport file** (section 2).
   Bumping a `Last reviewed` line you did not otherwise change is a false claim that someone
   re-checked the facts.
 
@@ -349,8 +362,8 @@ the archived record would not expect. The second group is settled here.
 `flights_from_origin_guidance.md`: `airports_and_arrival_basics.md`. Batch 2's Group B
 lists the safety items under the adult-logistics reference; this batch puts them in the
 safety file `I-2` created, and `adult_logistics.md` points there. When this batch edits the
-contract, it corrects a parent-facing row that names another file, or adds one that is
-missing, and records it in section 8.
+contract, it corrects a parent-facing row that names another file, and records it in
+section 8. A missing row is the blocker named under "Before you start".
 
 ### 4.2 Questions this batch settles
 
@@ -363,9 +376,9 @@ judgment only the owner can make.
 | **B3-1** | The archived record asks for a short "access and pricing watch" checklist in the pack, cross-linked from three places and carrying its own freshness stamp. The built pack README carries a prose note covering the same categories. Is the note the watch? | **No. The watch gets its own file, `access_and_pricing_watch.md`**, and the pack README's note keeps its place as the short framing and links to it | Three things are asked of the watch that the note cannot do. It must be cross-linked *to* from the reservation, transit and budget surfaces, and a link into the middle of a README section is the kind of pointer that rots. It must carry its own `Last reviewed` stamp, and the README carries none. And it must list categories in a form a reader can work down before travel, which is a checklist rather than a paragraph. **This makes seven new reference files, not six** -- the count in section 2 includes it |
 | **B3-2** | Batch 2 rules that no built page prints an emergency number. Three other sentences put the numbers in the pack: Session 49's "**the pack has them**", Group B's "local emergency numbers ... belong in the pack's adult-logistics reference", and the built safety guide's "Your destination pack is where the destination-specific numbers ... belong". Which binds the pack? | **The stricter one. No file this batch writes prints an emergency number.** The pack names the official source the numbers come from, and says who can place the call. **The conflict is recorded as an open question for the owner**, not resolved by this brief | All of these sentences are merged, and they do not agree. An earlier draft of this brief resolved it by reading -- deciding "built page" must have meant framework pages -- and that is narrowing a safety rule on an inference. The safe reading costs little: the adult is already required to get the number from a current official page rather than from the pack, so a pack that routes to that page serves the instruction. **What the owner must decide** is whether those three sentences should say the pack names where to find the numbers. That is a Batch 4 edit to a merged brief and a built guide, outside this batch's scope. Until then, the built guide's own fallback applies: an adult takes the numbers from a current official source and dates the check |
 | **B3-3** | Where does the bathing-custom content live: `etiquette_basics.md`, the `47_language_etiquette.md` slot, or both? | **`etiquette_basics.md` carries it. The slot names it in one line and points there** | Section 3.2's rule, applied. The custom has rules of its own and an adult-owned age judgment attached, which is reference depth. A child mid-Session-47 needs to know it exists and that the pack explains it |
-| **B3-4** | The built `transportation_basics.md` already has a "Getting there and the arrival day" section. Does `airports_and_arrival_basics.md` duplicate it or replace it? | **Neither. The airport file takes the arrival-day material and the transport file's section becomes a pointer** | One fact, one home. The arrival-day content is airport content that landed early because the airport file did not exist yet. Moving it is an edit to a built file, so it is named here explicitly: the transport file's section is reduced to a one-clause reminder plus a link, per the reader-economy rule |
+| **B3-4** | The built `transportation_basics.md` already has a "Getting there and the arrival day" section. Does `airports_and_arrival_basics.md` duplicate it or replace it? | **Neither. The airport file takes the airport-to-city and settling-in lines, the origin-relative lines are dropped (5.1), and the transport file's section becomes a pointer** | One fact, one home. The arrival-day content is airport content that landed early because the airport file did not exist yet. Moving it is an edit to a built file, so it is named here explicitly: the transport file's section is reduced to a one-clause reminder plus a link, per the reader-economy rule |
 | **B3-5** | The built `major_cities.md` already carries "Other places people research" and "Fun things to consider". Do `19_other_places_menu.md` and `23_attraction_ideas.md` duplicate them? | **No. Both slots name a short set and point at `major_cities.md` for the rest** | The contract already says this for slot 19 in as many words. Slot 23 takes the same treatment for the same reason. What the slots add is the framing each session needs, which the reference does not carry |
-| **B3-6** | Does this batch extend `kid_glossary.md` with the new terms its files introduce (such as `sento`)? | **Yes, and it is an edit to a built file, so it is in scope and listed** | The glossary is the child's route to any destination word they meet. A slot that uses `takkyubin` while the glossary does not define it has left a ten-year-old with an unglossed word. Check each term before adding: the built glossary already has ryokan, takkyubin, koban, konbini, goshuin and onsen. Adding a term means re-checking the whole glossary before its stamp moves (section 2) |
+| **B3-6** | Does this batch extend `kid_glossary.md` with the new terms its files introduce (such as `sento`)? | **Yes, and it is an edit to a built file, so it is in scope and listed.** The same edit adds a link from the glossary to the generic `framework/student_guide/travel_glossary.md`, the cross-link the archived record asks for. The framework page names the pack in words only, so this is the one direction a link can run | The glossary is the child's route to any destination word they meet. A slot that uses `takkyubin` while the glossary does not define it has left a ten-year-old with an unglossed word. Check each term before adding: the built glossary already has ryokan, takkyubin, koban, konbini, goshuin and onsen. Adding a term means re-checking the whole glossary before its stamp moves (section 2) |
 | **B3-8** | The built `major_cities.md` already states the shoe-removal and photography guidance that `etiquette_basics.md` must carry, and already carries the attraction menu that `23_attraction_ideas.md` must supply. Two homes, or one? | **One. `major_cities.md` is added to scope**, its etiquette section becomes a pointer to `etiquette_basics.md`, and its attraction menu **stays** as the canonical menu that slot 23 points at | The same treatment `B3-4` gives the arrival day, for the same reason. The direction differs per fact: etiquette moves out, because `etiquette_basics.md` is the canonical home the contract routes Session 47 to; the attraction menu stays, because the contract already routes slot 19 to this reference for exactly that list and moving it would break a built route |
 | **B3-9** | The built `money_basics.md` already carries the per-person and per-room split, the child-fare note and the moving taxes. Does `adult_logistics.md` restate them? | **No, and `money_basics.md` is added to scope** for one edit: the link to `access_and_pricing_watch.md` goes beside its child-fare note, which is the budget surface the archived record names | Restating them would give three dated pages the same facts. The record asks for the watch to be cross-linked from the budget surface, and the budget surface is this file, not `adult_logistics.md`, which carries no child-fare note |
 | **B3-10** | `B3-8` has slot 23 point at `major_cities.md`, 5.7 has slot 42 point at `access_and_pricing_watch.md`, and 6.8 has slot 47 point at `money_basics.md`. None of them is in the slot's contract row. Are those undocumented routes? | **They would be, so each row gains its file.** Slot 23's Reference column becomes `food_basics.md`, `major_cities.md`; slot 42's becomes `access_and_pricing_watch.md`; slot 47's becomes `language_basics.md`, `etiquette_basics.md`, `money_basics.md` | `AC-29-1` asks that no fact reach a child by a route the contract does not carry. A slot pointing somewhere the row does not name is exactly that. Slot 23's row keeps `food_basics.md`, which is why it exists: food-type attractions. The watch lists categories and no examples, so slot 42 still owns its examples outright |
@@ -417,8 +430,13 @@ Must carry:
 - **The luggage connection:** forwarding and coin lockers change what an arrival day can
   hold. One clause and a link to `transportation_basics.md`, which is their home.
 
-**Moved in from `transportation_basics.md`:** its "Getting there and the arrival day"
-section, per `B3-4`. Reduce that section to a one-clause reminder and a link.
+**Moved in from `transportation_basics.md`:** the airport-to-city and settling-in lines of
+its "Getting there and the arrival day" section, per `B3-4`. Do not move its
+origin-relative lines: where the trip starts, the size of the time change, and how many days
+feel jet-lagged. The time difference is a Trip-Basics card value, and the framework's pacing
+sessions carry the jet-lag planning. Point at the Trip-Basics card instead, the way
+`10_snapshot_facts.md` does. Reduce the transport file's section to a one-clause reminder
+and a link.
 
 ### 5.2 `language_basics.md`
 
@@ -506,6 +524,10 @@ Must carry:
   rather than consolation prizes, and the pack is where that gets said.
 - **No restaurant recommendations and no prices.** The contract states this for the slot
   and it binds the reference too.
+- **A pointer to the local review site** that `trusted_starting_sources.md` names. The built
+  restaurant card tells the child the pack may point to one. Say it is often in another
+  language, a grown-up helps, and skipping it is fine, and link the sources file rather than
+  restating it.
 
 ### 5.5 `adult_logistics.md`
 
@@ -531,8 +553,9 @@ Must carry:
   categories: what a traditional inn involves (tatami-mat rooms, futon bedding and a yukata
   robe; commonly shared or hot-spring baths and set meal times, which vary by inn, so an
   adult checks the one they book; and per-person pricing, which `money_basics.md` carries,
-  so point at it), what apartment-style and licensed rental lodging involves, and what a
-  family hotel offers.
+  so point at it), what an apartment-style or family hotel offers a larger party, and what a
+  licensed vacation rental involves: an adult checks that the property is currently licensed
+  or registered before booking, and the page names no rental operator.
 - **Booking-lead reality as a category**, not a calendar: peak periods book out far ahead
   at high prices, and adults book early. Point at `seasons_weather_events.md` for which
   periods those are.
@@ -697,6 +720,9 @@ and for anything whose opening or availability changes.
   name the anchor and the session never does. So this slot must actually mark which
   candidate is the first-trip anchor, or Session 16 points at an absent fact.
 - **Stay at two to four** (`I-4`). Three sessions were authored against that range.
+- **The record's candidates** (`B3-7`): Tokyo as the first-trip anchor, and Kyoto and Osaka
+  as the other deep-dive candidates. Write them as candidates to research, with the anchor
+  marked.
 
 ### 6.2 `19_other_places_menu.md`
 
@@ -755,6 +781,11 @@ pointer to `transportation_basics.md` for the rest.
   Batch 2's Session 30 calls naming a planner the insert's job. The contract row makes the
   transport reference the planner's home, and the contract wins, so the slot's pointer is how
   the child reaches it.
+  The built reference names no planner; it says to use a map's Directions tool. So add one
+  line to it naming a current transit planner, such as the archived record's examples,
+  Jorudan or NAVITIME, and telling the reader to check that it still works. Never name a
+  discontinued planner as live. The transport file then gains content, so section 2's stamp
+  exception covers it.
 - **Session 30 carries the second predict-then-verify anchor**, where the child guesses a
   train time between two of their cities before checking a current planner. The slot must
   therefore make clear that a route planner is the thing to check, without pinning any
@@ -765,8 +796,14 @@ pointer to `transportation_basics.md` for the rest.
 Consumed by Session 34. **Fields:** the lodging categories a family chooses among, one
 line each; then a pointer to `adult_logistics.md` for the occupancy reality.
 
-- **Categories the child can sort:** the business or family hotel, the traditional inn,
-  apartment-style and licensed rental lodging, and the hostel or guesthouse.
+- **Categories the child can sort, from the record's list** (`B3-7`): the Western-style
+  hotel, the business hotel, the traditional inn, the apartment-style or family hotel, and
+  the licensed vacation rental, plus the hostel or guesthouse. Session 34 tells the child
+  that one category often fits a larger group and another is priced differently from a
+  per-room hotel, and sends them here for the names. So the apartment-style or family
+  hotel's line says it often lets a larger family share one space, and the traditional
+  inn's line says it is priced differently from a per-room hotel. The adult-logistics page
+  carries the why.
 - **One line each, and no prices and no named properties.**
 - **The occupancy reality is pointed at, not explained** (section 3.2). It is the clearest
   case in the batch of a fact with one home.
@@ -783,6 +820,10 @@ recommendations, no prices.
   framing.
 - **Both sessions are conditional**, so the slot must read as complete for a family that
   does 36 and skips 37, and the other way round.
+- **The record's food list is the floor** (`B3-7`): ramen, sushi, udon and soba, tempura,
+  okonomiyaki, convenience-store breakfasts and snacks, department-store food halls, station
+  food, street-food areas where they fit, regional specialties, and izakaya-style dining with
+  an adult's review. Batch 2 says every food Session 36 needs lives in this slot.
 
 ### 6.7 `42_reservation_examples.md`
 
@@ -797,6 +838,10 @@ categories to re-check rather than current values. No release dates, no prices.
   the moment they open, some are lotteries. **What is banned is a release date or a pinned
   window**, not the horizon itself. Session 42 teaches date gating, and a slot carrying
   only gate shapes leaves the child with no sense of how far ahead anything happens.
+- **Carry the record's four named examples** (`B3-7`): the Ghibli Museum, Tokyo Disney,
+  teamLab as an operator (6.3), and Super Nintendo World at Universal Studios Japan. Batch 2
+  says all of them live in this slot. Give each its coarse horizon and gate shape. Replace
+  one that has closed, moved or dropped its gate with a current one of the same kind.
 - **The horizons carry a checked month of their own.** This slot owns them outright, so the
   contract's rule applies: a volatile fact in the slot carries the month the pack last
   stood behind it. Write one line beside the examples, such as
@@ -868,7 +913,10 @@ the child will get wrong.
 | `AC-GLOBAL-3` | automatic | Markdownlint passes except MD013 and MD034; MD040 and MD026 stay enabled and pass; **all relative links resolve** |
 | `AC-GLOBAL-4` | automatic | No trip data committed |
 | `AC-GLOBAL-5` | human | All Markdown meaningful and non-thin; no stub slots |
+| `AC-GLOBAL-1` | automatic | Every file this batch's scope table and the contract name exists |
+| `AC-GLOBAL-2` | automatic | No placeholder-only file in `destinations/` |
 | `AC-GLOBAL-6` | human | No copyrighted guidebook content. **This bites here:** a pack describing attractions and food is the batch most likely to reproduce someone's guidebook. Write from category knowledge and point at official sources |
+| `AC-10.3-1` | grep-assisted | No pack file cites the archived record's section numbers; concepts are named and linked. The two reference-hygiene greps in section 9 find nothing |
 | `AC-3.1-1` | human | Child-read parts on target for reading level; warm and non-othering |
 | Reader economy | human | No fact has two homes. Each new file's overlap with its built neighbour is a pointer, not a restatement |
 
@@ -886,9 +934,9 @@ the child will get wrong.
 - **The contract conversion**: inline-code filenames became links, and the pack is now
   fully routed; the `B3-10` rows for slots 23, 42 and 47 changed; and any parent-facing
   row corrected under `I-3`.
-- **The edits to built files**: the transport file's arrival-day section (`B3-4`) and its
-  watch link (5.7), the
-  glossary's new term and its full re-check (`B3-6`), the etiquette move out of `major_cities.md` (`B3-8`), the
+- **The edits to built files**: the transport file's arrival-day section (`B3-4`), its
+  watch link (5.7), and its named planner and full re-check (6.4), the
+  glossary's new term, its link to the travel glossary, and its full re-check (`B3-6`), the etiquette move out of `major_cities.md` (`B3-8`), the
   watch link beside the child-fare note in `money_basics.md` (`B3-9`), and the pack
   contents page.
 - **The version.** This batch adds fifteen destination files, and the changelog's own
@@ -938,6 +986,8 @@ otherwise.
 ```text
 grep -rwE 'Chicago|ORD|grandmother|uncle' destinations/
 grep -rwE '17[ -]?(day|night)s?' destinations/
+grep -rniE 'sections? [0-9]' destinations/
+grep -rn '§' destinations/
 grep -rn '`[a-z_0-9]*\.md`' destinations/japan/session_inserts/README.md
 ```
 
@@ -965,7 +1015,8 @@ done
 [ "$seen" -gt 0 ] || echo "NO PACK FILES FOUND -- run this from the repo root."
 ```
 
-The first two find nothing. The third lists filenames still written as inline code in the
+The first four find nothing; the third and fourth are Batch 1's reference-hygiene greps,
+scoped to the pack. The fifth lists filenames still written as inline code in the
 contract, and after this batch it should be empty (section 3.3). **The stamp loop prints
 nothing on a correct tree.** Each line it prints names a file, and says whether the stamp
 is missing, malformed or misplaced, or whether the label appears more or less than once.
@@ -998,13 +1049,15 @@ would miss finds the gap.
   and the contract's counts, pack-state bullets and add-a-destination topics match the
   finished pack (section 3.4).
 - The five gates pass, and the batch's own checks return what section 9 says they should.
+- Every new or edited pack file is checked against the style law's rules, read from that
+  file, and its pronoun QA grep has been run over `destinations/` and its output read.
 - Every new file carries its freshness stamp, as the first line below its own title.
 - Slot 42's horizons carry their own checked month, separate from its `Last reviewed` stamp.
 - **The pack contents page lists all fifteen new files**, in its Reference files and
   Session inserts lists, each with a one-line description.
 - **`Last Updated` is bumped** in the routing contract and in `framework/CHANGELOG.md`, in the same commit that changes them -- and **no `Last reviewed` stamp was bumped** on a built pack file this
-  batch only linked or trimmed; the glossary's stamp moved only after every entry was
-  re-checked.
+  batch only linked or trimmed; the glossary's and the transport file's stamps moved only
+  after every entry was re-checked.
 - An adversarial review subagent has read the pack's child-facing parts against rule 1.4
   and `AC-3.1-1`, and its findings are fixed. That read is evidence for the human-review
   rows and clears none of them.
@@ -1020,6 +1073,20 @@ would miss finds the gap.
 
 - **Build at the repository root.** Leave `docs/spec/` and the repository's template and CI
   infrastructure untouched.
+- **Never:** real personal info, passport or confirmation numbers, payment or booking
+  workflows, asking the child to book anything, placeholder-only files, fake completed
+  itineraries or recommendations, copyrighted guidebook text, shipped or generated PDFs or
+  PDF tooling, build tools, package managers, external images, or inline HTML.
+  **HTML *comments* are not inline HTML and are expected:** every built curriculum file
+  opens with a `markdownlint-disable` comment, and the audience and no-source-check markers
+  are comments too. The ban is on rendered HTML elements.
+- **Tone:** child-facing text at reading level, warm and non-othering; cultural and etiquette
+  content matter-of-fact, never marveling. **No points, badges, levels, or "mission
+  unlocked."**
+- **Lint:** markdownlint clean except MD013 and MD034; **MD040 and MD026 stay enabled** --
+  every fence declares a language, no heading ends in `:` or `?`. Reuse the repository's
+  committed `.markdownlint.jsonc`; **do not add a second config.** Run
+  `pre-commit run --all-files` and fix issues before finishing.
 - **No secrets, no credentials, no tokens** in any file or any commit.
 - **The destination-leak rule is on for `framework/` and off for `destinations/`.** That is
   the whole point of the split. Naming Japan in a pack file is correct; naming it in a
