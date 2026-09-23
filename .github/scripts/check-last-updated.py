@@ -15,10 +15,13 @@ and that carries a metadata bullet of the form ``- **Last Updated:** YYYY-MM-DD`
 on the head:
 
 1. If the file's content changed (see "Mechanical changes" below), the field
-   must be on or after the UTC author date of the newest non-merge commit in the
-   pull request that changed the file's content. Keying on the commit date, not
-   on today's date, means a second change on the same day passes without a
-   redundant edit, and a check re-run on a later day cannot start failing.
+   must be on or after the latest UTC author date among the pull request's
+   commits that changed the file's content, merges included. A merge counts only
+   when its content differs from every parent, meaning someone wrote new content
+   while merging; merging the base branch in adds nothing. Keying on commit
+   dates, not on today's date, means a second change on the same day passes
+   without a redundant edit, and a check re-run on a later day cannot start
+   failing.
 2. If the file carries ``**Version:** <major>.<minor>.<YYYYMMDD>.<revision>``,
    the ``<YYYYMMDD>`` segment must equal the field.
 
