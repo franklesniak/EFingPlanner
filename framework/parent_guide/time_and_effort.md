@@ -12,7 +12,7 @@ At 2-4 sessions a week:
 - The **Core Finish Line** (a full, usable plan at Checkpoint 5) takes roughly **3-4 months.**
 - The **full program** takes roughly **4-6 months.**
 
-Plan on about **1-2 hours of setup** up front, **more hands-on time in the first several weeks** (often 20-40 minutes of co-working per early session), then much lighter check-ins later. Every child is different, and exact travel dates stay flexible.
+Plan on about **1-2 hours of setup** up front, **more hands-on time in the first several weeks** (often 20-40 minutes of co-working per early session), then much lighter check-ins later. Every child is different, and exact travel dates can stay flexible until you book them.
 
 ## You are running two projects at once
 

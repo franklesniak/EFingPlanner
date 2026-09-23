@@ -3557,9 +3557,10 @@ duplicate:
 **The kit-file pattern, set by Batch 1 -- follow it exactly.** A kit file that has a
 template behind it is **a blank copy of that template**, plus the kit's copy-out reminder
 and a **relative link back to the template.** It must not diverge from the template. No
-filled values. No example family. **A test in this repository already asserts this for the
-Batch 1 kit copies and has caught real drift**, so a divergence is a failing build, not a
-style note. The one exception is `outputs/final_reflection.md`; see 9.4.4.
+filled values. No example family. **A test that arrives with Batch 1's pull request (#35)
+asserts this for the Batch 1 kit copies, and it has caught real drift**, so a divergence is a
+failing build, not a style note. This batch's own copies are checked by reading, as the
+Definition of Done says. The one exception is `outputs/final_reflection.md`; see 9.4.4.
 
 **The three kit notes, required in substance:**
 
@@ -4367,16 +4368,17 @@ is incomplete and removing the rider would make the docs wrong in the other dire
 - **Confirm the five re-pointed built sessions** -- 15, 21, 33, 44, 53 -- still carry their
   First Taste position markers, and that the thirteen-session First Taste chain still reads
   end to end on its italic lines.
-- **Confirm the kit copies still equal their templates**, by running
-  `pytest tests/test_trip_starter_kit_copies.py` rather than reading the files. **That test
-  arrives with Batch 1**, so if it is not there, Batch 1 has not merged and this batch
-  should not have started. Running a test is not editing one -- the rule against touching
-  `tests/*` forbids changing it, not executing it. **If a kit copy legitimately needs to
-  change, the template changes and the copy follows**; a Batch 2 author never edits the test
-  to accommodate a divergence. **The one kit file this does not cover is
-  `outputs/final_reflection.md`**, which 9.4.4 makes the capstone form rather than a copy; the
-  test's map lists only the three `family/` blanks, so it neither checks that shell nor needs
-  an exemption for it.
+- **Confirm the kit copies still equal their templates.** Batch 1's pull request (#35) adds
+  `tests/test_trip_starter_kit_copies.py`, which checks the three `family/` copies against
+  their templates, so run `pytest tests/test_trip_starter_kit_copies.py` rather than reading
+  those files. **If the test file is missing, Batch 1's pull request has not merged**, and
+  this batch should not have started. Running a test is not editing one -- the rule against
+  touching `tests/*` forbids changing it, not executing it. **The test does not cover the kit
+  copies this batch makes**, such as the blank logs in 9.4.1, so compare each of those with
+  its template by reading, under 9.4's kit-file pattern. **If a kit copy legitimately needs
+  to change, the template changes and the copy follows**; a Batch 2 author never edits the
+  test to accommodate a divergence. **The one kit file none of this covers is
+  `outputs/final_reflection.md`**, which 9.4.4 makes the capstone form rather than a copy.
 - **Write the changelog entry**, including every departure listed in section 11. A batch that
   built correctly and recorded nothing has left the next author to re-derive all of it.
 
