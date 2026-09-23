@@ -446,7 +446,9 @@ this batch**, so you do not choose them per session and the session strip and
 - **Parent involvement**, exactly one of: none / independent work, 5-minute check-in,
   parent review after session, parent setup needed, co-working recommended, adult-owned --
   **or, for the six checkpoint sessions only, `parent review -- genuinely use the recommendation in a real family talk`**,
-  the value built Session 14 carries.
+  the value built Session 14 carries. **The value is the machine-readable part.** One short
+  clause may follow it, after a semicolon, to name the grown-up's one step, as built
+  Sessions 33 and 44 do; section 10 uses that form for Session 26.
 - **Status**: the spec's vocabulary is Core / Recommended / Optional. **The built repo
   adds a fourth label, `Conditional core`, and the built repo wins.** Session 09 is the
   model: `Conditional core -- done **only if** your family opted into AI at setup (Session
@@ -3322,7 +3324,9 @@ step without being gated as a whole.** Session 09 is adult-operated: a grown-up 
 tool, as its built entry says. Session 26 ends with the one unconditional pick, which a
 grown-up helps choose after showing the three blocks, as built Session 44 does on the First
 Taste path. Write Session 26's Role line the way Session 44's is written. Every session not
-named in this paragraph is independent.
+named in this paragraph is independent: the child can do it without a grown-up there. That
+includes a session whose section 10 value is a 5-minute check-in or a parent review after
+the session, because neither stops the child; its Role line still carries that value.
 
 **Status labels to carry:** 18, 36, 37 and 47 are **`Conditional core`** and
 **auto-promote to Core later**, each on the condition its own session entry states --
@@ -4001,8 +4005,10 @@ lines in numbered order, plus each conditional line whose condition holds and ea
 Recommended or Optional line it chooses. It reaches each extension at its session's place.
 **Mark each line whose session is parent-gated or co-worked, or has a grown-up step**,
 in the same form as the First Taste list's markers, taking which sessions those are from
-B7's rule, so the membership lives in one place. **Scope the existing "Which sessions need a
-grown-up" lists to the First Taste path**, and make its waiting rule point at a marked
+B7's rule, so the membership lives in one place. A 5-minute check-in or a parent review
+after the session gets no marker, because the child does not wait for it; the built First
+Taste list follows the same rule. **Scope the existing "Which sessions need a grown-up"
+lists to the First Taste path**, and make its waiting rule point at a marked
 session, so a Core child is never told that the later checkpoints or Sessions 25 and 49 need
 no grown-up.
 
