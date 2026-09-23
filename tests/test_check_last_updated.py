@@ -549,8 +549,12 @@ def test_unrelated_histories_merge_is_checked(repo: Repo) -> None:
     assert run(repo) == []
 
 
-def test_entity_encoded_absolute_url_is_not_relative(repo: Repo) -> None:
-    raw = '<a href="https&#58;//example.com/x.md">x</a>'
+@pytest.mark.parametrize("raw", [
+    '<a href="https&#58;//example.com/x.md">x</a>',
+    '<a href="https&#58//example.com/x.md">x</a>',      # a numeric reference decodes without its semicolon
+    '<a href="https&#x3a;//example.com/x.md">x</a>',
+], ids=["decimal", "no-semicolon", "hex"])
+def test_entity_encoded_absolute_url_is_not_relative(repo: Repo, raw: str) -> None:
     publish(repo, doc("2026-01-01", "Text.\n\n" + raw), "2026-01-01T12:00:00+00:00")
     (repo.root / "docs" / "sub").mkdir()
     repo.git("mv", "docs/a.md", "docs/sub/a.md")
@@ -604,8 +608,20 @@ def test_moving_a_file_with_a_relative_link_needs_a_bump(repo: Repo) -> None:
     '<img srcset="data:image/png;base64,AAAA 1x, pic.png 2x">',
     '<a href="#top" ping="https://example.com/p audit">top</a>',
     '<div itemscope itemid="thing.md">x</div>',
+    '<link rel="preload" as="image" href="/abs.png" imagesrcset="pic.png 1x">',
+    '<svg><image xlink:href="pic.png" /></svg>',
+    # The helper parses none of these, so each ties the tag to the file's directory.
+    '<span style="background-image: url(pic.png)">x</span>',
+    '<style>\n.x { background: url(pic.png); }\n</style>',
+    '<iframe srcdoc="&lt;img src=pic.png&gt;"></iframe>',
+    '<meta http-equiv="refresh" content="0; url=other.md">',
+    '<a href="/abs.md" onclick="location = \'other.md\'">x</a>',
+    # In an HTML block the tag reaches the browser as written, and it reads srcset despite the
+    # missing space; the helper's attribute grammar stops at it.
+    '<div>\n<img src="/abs.png"srcset="pic.png 1x">\n</div>',
 ], ids=["unquoted", "single-quoted", "uppercase-spaced", "in-a-block", "srcset", "srcset-after-data-url", "ping",
-        "itemid"])
+        "itemid", "imagesrcset", "xlink-href", "style-attribute", "style-element", "srcdoc", "meta-refresh",
+        "event-handler", "unread-attribute"])
 def test_moving_a_file_with_a_relative_raw_html_reference_needs_a_bump(repo: Repo, raw: str) -> None:
     publish(repo, doc("2026-01-01", "Text.\n\n" + raw), "2026-01-01T12:00:00+00:00")
     (repo.root / "docs" / "sub").mkdir()
@@ -629,8 +645,49 @@ def test_raw_html_lookalikes_are_not_references(repo: Repo, body: str) -> None:
     assert run(repo) == []
 
 
-def test_move_that_keeps_every_srcset_target_needs_no_bump(repo: Repo) -> None:
-    raw = '<picture><source srcset="%sdark.png 1x, %sdark2.png 2x"><img src="%spic.png"></picture>'
+@pytest.mark.parametrize("raw", [
+    "<img src={up}pic.png>",
+    "<img src='{up}pic.png'>",
+    '<a href="{up}x.md" ping="{up}p https://example.com/q">x</a>',
+    '<div itemscope itemid="{up}thing.md">x</div>',
+    '<blockquote cite="{up}source.md">q</blockquote>',
+    '<object data="{up}file.pdf"></object>',
+    '<form action="{up}f"><button formaction="{up}g">b</button></form>',
+    '<video poster="{up}poster.png"></video>',
+    '<table background="{up}bg.png"><tr><td>x</td></tr></table>',
+    '<img src="/a.png" alt="a" longdesc="{up}d.md">',
+    '<svg><image xlink:href="{up}pic.png" /></svg>',
+], ids=["unquoted", "single-quoted", "href-and-ping", "itemid", "cite", "data", "action-and-formaction", "poster",
+        "background", "longdesc", "xlink-href"])
+def test_move_that_keeps_every_url_attribute_target_needs_no_bump(repo: Repo, raw: str) -> None:
+    # Each URL attribute is resolved, so a move that keeps its target is mechanical. Were one not
+    # resolved, it would tie the tag to the directory, and the move would need a bump.
+    publish(repo, doc("2026-01-01", "Text.\n\n" + raw.replace("{up}", "")), "2026-01-01T12:00:00+00:00")
+    (repo.root / "docs" / "sub").mkdir()
+    repo.git("mv", "docs/a.md", "docs/sub/a.md")
+    repo.write("docs/sub/a.md", doc("2026-01-01", "Text.\n\n" + raw.replace("{up}", "../")))
+    repo.commit("move and keep targets", "2026-03-05T10:00:00+00:00")
+    assert run(repo) == []
+
+
+def test_moving_html_the_helper_fully_resolves_needs_no_bump(repo: Repo) -> None:
+    # Every attribute here is a resolved URL or one that never holds a URL, so nothing is tied
+    # to the directory, and every URL is absolute or a fragment.
+    body = ('<a id="top"></a>\n\n<img src="/abs.png" alt="A" width="10" class="x" data-note="y" aria-label="z">\n\n'
+            '<details open><summary>More</summary>Text.</details>\n\n<a href="#top" title="Top">up</a><br>')
+    publish(repo, doc("2026-01-01", "Text.\n\n" + body), "2026-01-01T12:00:00+00:00")
+    (repo.root / "docs" / "sub").mkdir()
+    repo.git("mv", "docs/a.md", "docs/sub/a.md")
+    repo.commit("move", "2026-03-05T10:00:00+00:00")
+    assert run(repo) == []
+
+
+@pytest.mark.parametrize("raw", [
+    '<picture><source srcset="%sdark.png 1x, %sdark2.png 2x"><img src="%spic.png"></picture>',
+    '<link rel="preload" as="image" imagesrcset="%sdark.png 1x, %sdark2.png 2x" href="%spic.png">',
+    '<IMG SRC="%sdark.png" ALT="x"><A HREF="%sdark2.png">x</A><img src="%spic.png">',   # names are case-insensitive
+], ids=["srcset", "imagesrcset", "uppercase-names"])
+def test_move_that_keeps_every_srcset_target_needs_no_bump(repo: Repo, raw: str) -> None:
     publish(repo, doc("2026-01-01", "Text.\n\n" + raw % ("", "", "")), "2026-01-01T12:00:00+00:00")
     (repo.root / "docs" / "sub").mkdir()
     repo.git("mv", "docs/a.md", "docs/sub/a.md")

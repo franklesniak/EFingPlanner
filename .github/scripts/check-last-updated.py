@@ -59,7 +59,10 @@ break, such as at the end of a paragraph, after a heading or inside a code
 block, do not count. Relative references, in Markdown links and images and in
 the URL attributes of raw HTML tags, are compared as repository paths, resolved
 from each version's own directory, so moving a file to another directory changes
-its content exactly when a relative reference now points somewhere else.
+its content exactly when a relative reference now points somewhere else. Raw HTML
+that may hold a URL the helper does not parse, such as a `style` attribute or a
+`<style>` element, is tied to the file's directory instead, so moving that file
+counts as a content change.
 
 How Markdown is read
 --------------------

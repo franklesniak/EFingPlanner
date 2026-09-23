@@ -18,9 +18,14 @@
  *                root, resolved from the directory of `path`. So a relative
  *                reference compares by the file it points to, and moving a file
  *                changes its html exactly when a reference now points elsewhere.
- *                Raw HTML URL attributes are also written in one form (lowercase
- *                name, double-quoted value). HTML comments and text are left as
- *                they are.
+ *                Raw HTML URL attributes are decoded by the HTML spec's
+ *                attribute-value rules and written in one form (lowercase name,
+ *                double-quoted value). A raw HTML tag the helper cannot fully
+ *                resolve (a `base`, `meta`, `script` or `style` element, or an
+ *                attribute that is neither a URL attribute nor one that never
+ *                holds a URL, such as `style` or `srcdoc`) is tied to the
+ *                directory of `path`, so a move changes its html. HTML comments
+ *                and text are left as they are.
  *   lastUpdated  YYYY-MM-DD from the `- **Last Updated:** YYYY-MM-DD` item of the
  *                metadata header block, or null.
  *   version      the whole `**Version:** <major>.<minor>.<YYYYMMDD>.<revision>`
@@ -46,6 +51,7 @@ const path = require('path');
 const readline = require('readline');
 const MarkdownIt = require('markdown-it');
 const YAML = require('yaml');
+const { decodeHTMLAttribute } = require('entities');
 
 const md = new MarkdownIt('commonmark');
 const LAST_UPDATED = /^\*\*Last Updated:\*\* (\d{4}-\d{2}-\d{2})[ \t]*$/;
@@ -54,15 +60,29 @@ const FRONT_MATTER = /^---[ \t]*\r?\n(?:[^]*?\r?\n)?(?:---|\.\.\.)[ \t]*(?:\r?\n
 const H1_LINE_LIMIT = 30;
 // The metadata header block's required fields beside Last Updated (the docs guide's Tier 1 list).
 const REQUIRED_FIELDS = ['Status', 'Owner', 'Scope'];
-// A character reference, decoded before a raw HTML attribute value is classified, as a browser does.
-const CHARACTER_REFERENCE = /&(?:#[0-9]+|#[xX][0-9a-fA-F]+|[A-Za-z][A-Za-z0-9]*);/g;
-
 // HTML attributes whose values hold URLs (HTML Living Standard, attributes index), plus the
-// obsolete `background` and `longdesc`, which browsers still honor. `itemtype` is left out:
-// its URLs must be absolute.
+// obsolete `background` and `longdesc`, which browsers still honor, and SVG's `xlink:href`.
+// `itemtype` is left out: its URLs must be absolute.
 const URL_ATTRIBUTES = new Set([
-  'action', 'background', 'cite', 'data', 'formaction', 'href', 'itemid', 'longdesc', 'ping', 'poster', 'src', 'srcset',
+  'action', 'background', 'cite', 'data', 'formaction', 'href', 'imagesrcset', 'itemid', 'longdesc', 'ping', 'poster',
+  'src', 'srcset', 'xlink:href',
 ]);
+// Attributes whose values never hold a URL. Any other attribute, such as `style`, `srcdoc`,
+// `content` or an event handler, may hold one the helper does not parse, so it ties the tag to
+// the document's directory (see canonicalTag).
+const PLAIN_ATTRIBUTES = new Set([
+  'abbr', 'align', 'alt', 'as', 'async', 'autoplay', 'border', 'cellpadding', 'cellspacing', 'charset', 'checked',
+  'class', 'color', 'cols', 'colspan', 'controls', 'coords', 'crossorigin', 'datetime', 'decoding', 'default', 'defer',
+  'dir', 'disabled', 'download', 'fetchpriority', 'headers', 'height', 'hidden', 'hreflang', 'id', 'imagesizes',
+  'integrity', 'itemprop', 'itemscope', 'itemtype', 'kind', 'label', 'lang', 'loading', 'loop', 'media', 'muted', 'name',
+  'nowrap', 'open', 'playsinline', 'preload', 'referrerpolicy', 'rel', 'reversed', 'role', 'rows', 'rowspan', 'scope',
+  'sizes', 'span', 'srclang', 'start', 'summary', 'tabindex', 'target', 'title', 'type', 'usemap', 'valign', 'value',
+  'width',
+]);
+const PLAIN_ATTRIBUTE_PREFIX = /^(?:aria|data)-/;
+// Elements whose content or effect can hold URLs the helper does not parse: CSS, scripts, a
+// `<base>` that changes how every relative URL resolves, and a `<meta>` refresh.
+const DIRECTORY_BOUND_ELEMENTS = new Set(['base', 'meta', 'script', 'style']);
 // A URL with a scheme, a root-relative or protocol-relative path, or only a query or fragment
 // does not depend on the document's directory.
 const NOT_RELATIVE = /^(?:[A-Za-z][A-Za-z0-9+.-]*:|\/|#|\?|$)/;
@@ -120,7 +140,7 @@ function resolveSrcset(value, directory) {
 }
 
 function resolveAttribute(name, value, directory) {
-  if (name === 'srcset') {
+  if (name === 'srcset' || name === 'imagesrcset') {
     return resolveSrcset(value, directory);
   }
   if (name === 'ping') {
@@ -130,9 +150,13 @@ function resolveAttribute(name, value, directory) {
   return resolveUrl(value, directory);
 }
 
-// A start tag with each URL attribute resolved and written as name="value".
+// A start tag with each URL attribute resolved and written as name="value". Values are decoded
+// by the HTML spec's attribute-value rules first, as a browser decodes them. A tag the helper
+// cannot fully resolve (a directory-bound element, an attribute outside both lists, or text it
+// cannot read as attributes) is tied to the document's directory, so moving the file changes it.
 function canonicalTag(tag, directory) {
   const name = /^<[A-Za-z][A-Za-z0-9-]*/.exec(tag)[0];
+  let bound = DIRECTORY_BOUND_ELEMENTS.has(name.slice(1).toLowerCase());
   let out = name;
   let at = name.length;
   ATTRIBUTE.lastIndex = at;
@@ -141,15 +165,18 @@ function canonicalTag(tag, directory) {
     const attribute = m[2].toLowerCase();
     if (m[4] !== undefined && URL_ATTRIBUTES.has(attribute)) {
       const quoted = m[4][0] === '"' || m[4][0] === "'";
-      const raw = quoted ? m[4].slice(1, -1) : m[4];
-      const value = raw.replace(CHARACTER_REFERENCE, (ref) => md.utils.unescapeAll(ref));
+      const value = decodeHTMLAttribute(quoted ? m[4].slice(1, -1) : m[4]);
       out += ' ' + attribute + '="' + resolveAttribute(attribute, value, directory).replace(/"/g, '&quot;') + '"';
     } else {
+      bound = bound || !(URL_ATTRIBUTES.has(attribute) || PLAIN_ATTRIBUTES.has(attribute) ||
+        PLAIN_ATTRIBUTE_PREFIX.test(attribute));
       out += m[0];
     }
     at = ATTRIBUTE.lastIndex;
   }
-  return out + tag.slice(at);
+  const rest = tag.slice(at);
+  bound = bound || !/^\s*\/?>$/.test(rest);
+  return out + (bound ? ' data-directory="' + directory + '"' : '') + rest;
 }
 
 function canonicalHtml(html, directory) {
