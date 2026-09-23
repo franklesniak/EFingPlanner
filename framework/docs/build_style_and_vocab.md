@@ -6,7 +6,7 @@
 
 - **Status:** Active
 - **Owner:** Repository Maintainers
-- **Last Updated:** 2026-09-22
+- **Last Updated:** 2026-09-23
 - **Scope:** Builder-facing voice, vocabulary, banned-word, and lint conventions for authoring and editing the EFingPlanner curriculum batches. Not part of the child's or parent's reading path.
 
 This file is for whoever *builds* the curriculum, not for the child or parent. It is not part of the child's reading path. Load it before authoring or editing any batch so voice, vocabulary, banned words, and lint conventions stay constant across work sessions. The archived spec at `../../docs/spec/specification.md` is the original design record -- but once curriculum files exist, the built repository supersedes the spec on any conflict; this file is the short, load-before-each-batch digest of the rules that keep the built files consistent.
@@ -112,7 +112,7 @@ Never state entry, visa, passport, insurance, rail-pass, or medication rules, pr
 
 ## Canonical concept Names and their built-file homes (name-first, never "Section NN")
 
-Built files reference concepts by **Name** and link to the built-file home below. Built files must **not** cite the archived spec's section numbers.
+Built files reference concepts by **Name** and link to the built-file home below. An instruction to fill in a family page links the trip starter kit's copy instead, because the filled page lives in the kit. Built files must **not** cite the archived spec's section numbers.
 
 | Name | One-line meaning | Built-file home |
 | --- | --- | --- |
