@@ -75,4 +75,4 @@ Check what your season actually looks like where you're going this year — seas
 | Winter | Warmer clothing |
 | A rainy or storm season | Check what the weather actually needs, and when |
 
-When your list is done, hand it to a grown-up to look over. Every category having at least one line is a finished draft.
+When your list is done, hand it to a grown-up to look over. It's a finished draft when each category you pack for has at least one thing you wrote in or ticked, your season's items are on it, and the travel-documents and medication lines stay marked for a grown-up. Those two aren't yours to fill.

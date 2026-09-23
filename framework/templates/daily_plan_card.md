@@ -22,14 +22,23 @@ Save these as `block_01.md`, `block_02.md`, and so on.
 | Roughly when (a window, not a booked date) | |
 | Source notes | |
 
-| Day | Anchor activity | Morning | Lunch idea | Afternoon | Dinner idea | Transit notes | Tickets or reservations to flag | Estimated cost (an example to re-check) | Energy level (easy / medium / big day) | Backup idea |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| | | | | | | | | | | |
-| | | | | | | | | | | |
-| | | | | | | | | | | |
-| | | | | | | | | | | |
+The day rows come in two tables, so the page still prints. The **Day** column is the same in both — use the same day numbers, row for row.
 
-Number the Day column yourself, and add rows for as many days as the stay lasts — a four-night stay needs four rows, and a long one can carry on to a second sheet. Each day gets its own row for transit, tickets, cost and a backup, because those really do change day to day — and Session 45 copies them across one day at a time. If the table is too wide to print, split it: days and activities on one page, transit and tickets and cost on another.
+| Day | Anchor activity | Morning | Lunch idea | Afternoon | Dinner idea |
+| --- | --- | --- | --- | --- | --- |
+| | | | | | |
+| | | | | | |
+| | | | | | |
+| | | | | | |
+
+| Day | Transit notes | Tickets or reservations to flag | Estimated cost (an example to re-check) | Energy level (easy / medium / big day) | Backup idea |
+| --- | --- | --- | --- | --- | --- |
+| | | | | | |
+| | | | | | |
+| | | | | | |
+| | | | | | |
+
+Number the Day column yourself. Give each night of the stay a row, starting with the day you arrive. On the last stay of the trip, add one more row for the day you head home — nothing comes after it to hold that day. Add rows as you need them, and keep the two tables matching; a long stay can carry on to a second sheet. Each day gets its own row for transit, tickets, cost and a backup, because those really do change day to day — and Session 45 copies them across one day at a time.
 
 Mark your first day **easy**. Getting from the airport to where you're staying is a real chunk of that day, and you'll be tired. Often day two is easy too.
 
