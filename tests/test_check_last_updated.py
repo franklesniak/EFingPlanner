@@ -283,6 +283,77 @@ def test_an_escaped_final_backslash_is_not_a_break(repo: Repo) -> None:
     assert run(repo) == []
 
 
+def test_clean_merge_combining_both_sides_edits_adds_no_requirement(repo: Repo) -> None:
+    body = "\n".join(["Para one."] + ["filler %d" % i for i in range(12)] + ["Para two."])
+    repo.write("docs/a.md", doc("2026-01-01", body))
+    repo.commit("base-ish", "2026-01-01T12:00:00+00:00")
+    repo.git("switch", "-q", "main")
+    repo.git("merge", "-q", "--ff-only", "pr")
+    repo.git("switch", "-q", "pr")
+    repo.write("docs/a.md", doc("2026-03-05", body.replace("Para one.", "Para one, edited.")))
+    repo.commit("pr edit", "2026-03-05T10:00:00+00:00")
+    repo.git("switch", "-q", "main")
+    repo.write("docs/a.md", doc("2026-01-01", body.replace("Para two.", "Para two, edited on main.")))
+    repo.commit("main edit", "2026-03-05T11:00:00+00:00")
+    repo.git("switch", "-q", "pr")
+    repo.git("merge", "-q", "--no-ff", "-m", "merge main", "main", date="2026-03-06T10:00:00+00:00")
+    text = repo.git("show", "HEAD:docs/a.md")
+    assert "Para one, edited." in text and "Para two, edited on main." in text
+    assert run(repo) == []
+
+
+def test_octopus_merge_taking_one_side_unchanged_adds_no_date(repo: Repo) -> None:
+    repo.git("switch", "-q", "-c", "side1", "main")
+    repo.write("docs/a.md", doc("2026-03-04", "Changed on side one."))
+    repo.commit("side one", "2026-03-04T10:00:00+00:00")
+    repo.git("switch", "-q", "-c", "side2", "main")
+    repo.write("docs/other.md", "# Other\n\nSide two.\n")
+    repo.commit("side two", "2026-03-04T11:00:00+00:00")
+    repo.git("switch", "-q", "pr")
+    repo.git("merge", "-q", "--no-ff", "-m", "octopus", "side1", "side2", date="2026-03-07T10:00:00+00:00")
+    assert len(repo.git("rev-parse", "HEAD^@").split()) == 3
+    assert run(repo) == []
+
+
+def test_four_space_fence_line_does_not_close_a_fence(repo: Repo) -> None:
+    inner = "```text\n    ```\n- **Last Updated:** 2000-01-01\n```\n"
+    repo.write("docs/plain.md", "# No metadata\n\n" + inner)
+    repo.commit("indented fence line", "2026-03-05T10:00:00+00:00")
+    assert run(repo) == []
+
+
+def test_field_may_not_move_back_behind_the_base(repo: Repo) -> None:
+    repo.write("docs/a.md", doc("2026-09-23"))
+    repo.commit("newer base", "2026-09-23T12:00:00+00:00")
+    repo.git("switch", "-q", "main")
+    repo.git("merge", "-q", "--ff-only", "pr")
+    repo.git("switch", "-q", "pr")
+    repo.write("docs/a.md", doc("2026-03-05", "Old change, rebased."))
+    repo.commit("rebased old commit", "2026-03-05T10:00:00+00:00")
+    problems = run(repo)
+    assert len(problems) == 1 and "moved back from 2026-09-23 to 2026-03-05" in problems[0]
+
+
+def test_filename_with_a_leading_colon_is_read_literally(repo: Repo) -> None:
+    # Built with plumbing, because a leading colon is not a legal Windows filename.
+    def commit_with(text: str, message: str, date: str, parent: str) -> str:
+        blob = subprocess.run(["git", "hash-object", "-w", "--stdin"], cwd=repo.root, input=text,
+                              capture_output=True, text=True, check=True).stdout.strip()
+        base_tree = repo.git("rev-parse", parent + "^{tree}").strip()
+        listing = repo.git("ls-tree", "-z", base_tree)
+        entries = [e for e in listing.split("\0") if e and not e.endswith("\t:foo.md")]
+        entries.append("100644 blob %s\t:foo.md" % blob)
+        tree = subprocess.run(["git", "mktree", "-z"], cwd=repo.root, input="\0".join(entries) + "\0",
+                              capture_output=True, text=True, check=True).stdout.strip()
+        return repo.git("commit-tree", tree, "-p", parent, "-m", message, date=date).strip()
+
+    base = commit_with(doc("2026-01-01"), "add colon file", "2026-01-01T12:00:00+00:00", "main")
+    repo.git("update-ref", "refs/heads/main", base)
+    head = commit_with(doc("2026-01-01", "Changed."), "edit colon file", "2026-03-05T10:00:00+00:00", base)
+    problems = last_updated.check("main", head)
+    assert len(problems) == 1 and ":foo.md" in problems[0] and "Set it to 2026-03-05" in problems[0]
+
+
 def test_removing_the_field_fails(repo: Repo) -> None:
     repo.write("docs/a.md", doc("2026-01-01", "Changed.").replace("- **Last Updated:** 2026-01-01\n", ""))
     repo.commit("drop the field", "2026-03-05T10:00:00+00:00")

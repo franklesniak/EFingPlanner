@@ -17,8 +17,9 @@ on the head:
 1. If the file's content changed (see "Mechanical changes" below), the field
    must be on or after the latest UTC author date among the pull request's
    commits that changed the file's content, merges included. A merge counts only
-   when its content differs from every parent, meaning someone wrote new content
-   while merging; merging the base branch in adds nothing. Keying on commit
+   when its content differs from git's own clean merge of its parents, meaning
+   someone wrote new content or resolved a conflict while merging; an automatic
+   merge, such as merging the base branch in, adds nothing. Keying on commit
    dates, not on today's date, means a second change on the same day passes
    without a redundant edit, and a check re-run on a later day cannot start
    failing.
@@ -26,6 +27,9 @@ on the head:
    the ``<YYYYMMDD>`` segment must equal the field.
 3. If the base version carried the field and the head does not, the field was
    removed, which fails.
+4. The field must not be earlier than the base version's field. A rebased or
+   cherry-picked commit can keep an old author date; the field still may not
+   move backwards.
 
 Mechanical changes
 ------------------
@@ -63,8 +67,8 @@ import sys
 
 LAST_UPDATED = re.compile(r"^- \*\*Last Updated:\*\* (\d{4}-\d{2}-\d{2})\s*$", re.M)
 VERSION = re.compile(r"^\*\*Version:\*\* \d+\.\d+\.(\d{8})\.\d+\s*$", re.M)
-FENCE_OPEN = re.compile(r"^\s*(`{3,}|~{3,})(.*)$")
-FENCE_CLOSE = re.compile(r"^\s*(`{3,}|~{3,})[ \t]*$")
+FENCE_OPEN = re.compile(r"^ {0,3}(`{3,}|~{3,})(.*)$")
+FENCE_CLOSE = re.compile(r"^ {0,3}(`{3,}|~{3,})[ \t]*$")
 NO_BREAK = "\x00no-break"   # marks a final backslash that trailing whitespace kept from breaking
 
 
@@ -83,10 +87,11 @@ def show(commit: str, path: str) -> str | None:
     """Return the file at a commit, or None when the path is not in that commit.
 
     Absence is decided by `git ls-tree`, which prints nothing for a path that is not
-    in the tree and fails for a bad commit. Any failure, of either command, raises
-    GitError, so an unexpected git error can never be read as "file absent".
+    in the tree and fails for a bad commit. The path is passed with `:(literal)`, so a
+    name such as `:foo.md` is never read as pathspec magic. Any failure, of either
+    command, raises GitError, so an unexpected git error can never be read as "file absent".
     """
-    if not git("ls-tree", commit, "--", path).strip():
+    if not git("ls-tree", commit, "--", ":(literal)" + path).strip():
         return None
     return git("show", "%s:%s" % (commit, path))
 
@@ -94,9 +99,10 @@ def show(commit: str, path: str) -> str | None:
 def outside_fences(text: str) -> str:
     """Blank out fenced blocks so an example metadata block is never read as the real one.
 
-    Follows CommonMark's fence rules: a fence opens with three or more backticks or
-    tildes (a backtick fence's info string may not contain a backtick) and closes only
-    on the same character, at least as long, followed by nothing but spaces or tabs.
+    Follows CommonMark's fence rules: a fence line has at most three leading spaces; a
+    fence opens with three or more backticks or tildes (a backtick fence's info string
+    may not contain a backtick) and closes only on the same character, at least as
+    long, followed by nothing but spaces or tabs.
     So a four-backtick fence around a triple-backtick example, which the docs guide
     prescribes, stays one fence.
     """
@@ -209,12 +215,12 @@ def required_date(base: str, head: str, path: str) -> dt.date | None:
 
     Every PR commit that touched the file is considered, merges included, and the
     latest qualifying author date wins. A non-merge commit qualifies when its content
-    differs from its parent's. A merge qualifies only when its content differs from
-    every parent's, meaning someone wrote new content while merging; a merge that took
-    the content from one side adds nothing, because that side's commits carry their
-    own dates. A clean merge that combines edits to the same file from both sides also
-    qualifies. When both sides follow the rule, both changed the `Last Updated` line,
-    so such a merge conflicts, and resolving it is an authored change.
+    differs from its parent's. A two-parent merge qualifies only when its content
+    differs from git's own clean merge of the two parents, recomputed with
+    `git merge-tree`: an automatic merge adds nothing, because each side's commits
+    carry their own dates, while a conflict resolution or an edit made during the
+    merge is authored. A merge with more than two parents qualifies when its content
+    differs from every parent's.
     """
     # Walk every PR commit children-first, carrying the file's name backwards: the head
     # knows it as `path`, and each parent's name comes from a rename-aware diff against
@@ -238,9 +244,28 @@ def required_date(base: str, head: str, path: str) -> dt.date | None:
             names.setdefault(parent, own)
             content = show(parent, own) if own else None
             befores.append(normalize(content or ""))
-        if befores and all(b != normalize(after) for b in befores):
+        if len(parents) == 2:
+            automatic = clean_merge(parents[0], parents[1], name)
+            authored = normalize(automatic or "") != normalize(after)
+        else:
+            authored = bool(befores) and all(b != normalize(after) for b in befores)
+        if authored:
             dates.append(dt.datetime.fromisoformat(when).astimezone(dt.timezone.utc).date())
     return max(dates) if dates else None
+
+
+def clean_merge(first: str, second: str, path: str) -> str | None:
+    """The file as git's own merge of two commits writes it, conflict markers included.
+
+    `git merge-tree --write-tree` exits 0 for a clean merge and 1 when there are
+    conflicts, printing the resulting tree either way; anything else is a git error.
+    """
+    result = subprocess.run(["git", "merge-tree", "--write-tree", first, second],
+                            capture_output=True, text=True, encoding="utf-8")
+    if result.returncode not in (0, 1):
+        raise GitError("git merge-tree: %s" % result.stderr.strip())
+    tree = result.stdout.split("\n", 1)[0].strip()
+    return show(tree, path)
 
 
 def check(base: str, head: str) -> list[str]:
@@ -257,6 +282,10 @@ def check(base: str, head: str) -> list[str]:
                 problems.append("%s: the base version has a Last Updated field, and this pull request "
                                 "removed it. Restore it, with the date of the change." % path)
             continue
+        base_value = field(base_text) if base_text is not None else None
+        if base_value is not None and dt.date.fromisoformat(value) < dt.date.fromisoformat(base_value):
+            problems.append("%s: Last Updated moved back from %s to %s. It must not be earlier than the "
+                            "base version's date." % (path, base_value, value))
         if base_text is not None and normalize(base_text) == normalize(head_text):
             continue
         need = required_date(merge_base, head, path)
