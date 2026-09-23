@@ -38,3 +38,5 @@ resolves	# tracked as project 42 https://tracker.example.com/projects/42
 refuses	# tracked as project 42, see https://tracker.example.com/tickets/42
 resolves	# blocked on #27 https://github.com/o/r/issues/27
 refuses	# blocked on #27, see https://example.com/releases/27
+resolves	# landed upstream in commit deadbee https://github.com/o/r/commit/deadbee0123
+refuses	# landed upstream in commit deadbee, see https://example.com/releases/deadbee

@@ -24,3 +24,5 @@
 # settled in the twenty-first round
 # settled in round thirteen
 # settled in round-4
+# landed upstream in commit #abc1234
+# landed upstream in commit deadbee

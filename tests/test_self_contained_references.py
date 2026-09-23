@@ -68,6 +68,29 @@ inside a string literal a test *feeds to a hook* is reported like any other --
 which is the conservative direction, and is why the samples are data. The text
 pass also cannot tell a synthetic hash written as a fixture from a real commit,
 which is what every text-pass exemption is about.
+
+**What this reads, class by class.** Each question has one answer, in one
+place, so a finding against it is a change to that place and not a new rule
+beside it:
+
+- *Which files.* Every file Git lists. A file Git calls text must decode as
+  UTF-8 or the scan fails; a file Git calls binary is skipped; a link is
+  refused. A file is Markdown when GitHub would render it as Markdown, by its
+  suffix in any case (``MARKDOWN_SUFFIXES``).
+- *What is a link.* A URL ``url_is_public()`` accepts, and nothing else. Only
+  such a URL resolves a reference, and only such a URL is taken out of the
+  text before the patterns read it (``blank_urls``).
+- *Which words name a reference.* The nouns and number shapes in
+  ``REVIEW_HISTORY_PATTERNS``, which is a closed list: the pointer shapes this
+  repository's review history has produced. A reference named by any other
+  word -- a build, a workflow run, a milestone -- is not read. A new noun is
+  added to the list, with a fixture line, when one appears.
+- *What a Markdown page prints.* A comment is split out, a character
+  reference is decoded, a backslash escape and the inline delimiters are
+  dropped, and a line is also read joined to the next. This is the one class
+  a Markdown renderer would answer exactly, and the scan does not use one.
+  Whether the gates should read markdown-it's output is an open question:
+  https://github.com/franklesniak/EFingPlanner/issues/27
 """
 
 from __future__ import annotations
@@ -274,6 +297,17 @@ TRACKER_NOUN_BEFORE = re.compile(
     r"(?i)(?:PR|pull request|issues?|tickets?|projects?|rounds?)\s*[:#]?\s*$"
 )
 TRACKER_SEPARATOR = r"\s*:?\s*#?\s*"
+#: The words that name a commit, as they stand in front of its hash: ``commit``
+#: or ``commits``, which may carry ``hash``, ``sha`` or ``id``, and ``sha``.
+COMMIT_NOUN = r"\b(?:commits?(?:\s+(?:hash|sha|id))?|sha)\s*:?\s*#?\s*"
+#: A commit noun directly in front of a hash, which means the hash belongs to
+#: the noun's pattern rather than to the bare one, and is reported once.
+COMMIT_NOUN_BEFORE = re.compile(r"(?i)" + COMMIT_NOUN + r"\Z")
+#: The hash at the end of a commit reference, pulled back out of the match so
+#: Git and a URL can be asked about it.
+COMMIT_TOKEN = re.compile(r"[0-9a-fA-F]{7,40}\Z")
+#: The two patterns that name a commit, and so the two a commit resolves.
+COMMIT_LABELS = ("a bare commit hash", "a commit named by its noun")
 
 #: The numbers a review round is named by, as words, from one to ninety-nine.
 #: The loop this repository documents runs up to eighty rounds, and a list
@@ -455,6 +489,25 @@ REVIEW_HISTORY_PATTERNS = (
             r"[0-9a-f]{7,40}\b(?![\-0-9a-f])"
         ),
     ),
+    (
+        "a commit named by its noun",
+        # **The noun settles what the bare pattern has to guess.** The bare
+        # pattern refuses a hash after a hash sign, where a colour stands, and
+        # one with no digit, where a word stands, and both refusals are right
+        # for a run of characters on its own. After ``commit`` or ``sha`` the
+        # run is a commit whatever its shape, so a hash after a hash sign and
+        # a hash with no digit are both read here. A hyphen after the run still
+        # marks a longer token, such as a UUID. **A run of one repeated
+        # character is a placeholder**, not a commit anyone could cite: the
+        # worked examples in ``TEMPLATE_UPDATE_PROCEDURE.md`` write forty of
+        # one digit or letter after the word, and Git itself writes forty
+        # zeros for "no commit". Measured: those are the only four runs after
+        # a commit noun in the corpus.
+        re.compile(
+            r"(?i)" + COMMIT_NOUN
+            + r"(?!(?P<same>[0-9a-f])(?P=same)*\b)[0-9a-f]{7,40}\b(?!-)"
+        ),
+    ),
 )
 
 #: A reference inside a URL resolves. The URL is removed before the scan, and a
@@ -620,11 +673,10 @@ def resolves_in_this_repository(label: str, matched: str, root: Path) -> bool:
     hash-number shorthand, so that shape has no exemption at all; see the note
     above the patterns for why the one it used to have was removed.
     """
-    return (
-        label == "a bare commit hash"
-        and bool(HASH_SHAPED.match(matched))
-        and commit_exists(matched, root)
-    )
+    if label not in COMMIT_LABELS:
+        return False
+    token = COMMIT_TOKEN.search(matched)
+    return token is not None and commit_exists(token.group(0), root)
 
 
 def trim_url(url: str) -> str:
@@ -930,17 +982,20 @@ def url_resolves(label: str, matched: str, urls: list[str]) -> bool:
                     for prefix in COMMENT_FRAGMENT_PREFIXES:
                         if token.lower() == prefix + identifier:
                             return True
-        elif label == "a bare commit hash":
+        elif label in COMMIT_LABELS:
             # A URL may carry the full forty characters where the prose wrote
             # seven, or the other way about, so a prefix either way counts --
-            # but only in a path the host serves a commit from.
+            # but only in a path the host serves a commit from. A commit named
+            # by its noun is compared by the hash after the noun.
+            token = COMMIT_TOKEN.search(matched)
+            commit = token.group(0).lower() if token else matched_fold
             for index, part in enumerate(lowered[:-1]):
                 if part not in ("commit", "commits"):
                     continue
                 candidate = lowered[index + 1]
                 if not HEX_RUN.match(candidate):
                     continue
-                if candidate.startswith(matched_fold) or matched_fold.startswith(candidate):
+                if candidate.startswith(commit) or commit.startswith(candidate):
                     return True
     return False
 
@@ -1009,7 +1064,7 @@ def python_paths(paths: Iterable[Path]) -> list[Path]:
     a shell script raises ``SyntaxError`` from ``ast.parse`` -- which is how
     this was found, the first time the corpus grew past Python.
     """
-    return [path for path in paths if path.suffix == ".py"]
+    return [path for path in paths if path.suffix.lower() == ".py"]
 
 
 #: An identifier-shaped token in a file this scan cannot parse. The underscore
@@ -1085,9 +1140,10 @@ def names_in(
     A Python file is read from its syntax tree, so a round number inside a
     string literal stays with the text pass and is not reported twice. Every
     other file has no tree to read, so its identifier-shaped tokens are taken
-    from the text -- with every URL blanked first, as the text pass blanks
-    them. A path such as ``/review_round_42`` is part of a link, and the link
-    is the form the rule asks for.
+    from the text -- with every public URL blanked first, as the text pass
+    blanks them. A path such as ``/review_round_42`` in a public link is part
+    of the link, and the link is the form the rule asks for; in a URL no
+    reader can reach, it is a name like any other.
     """
     found: list[str] = []
     budget = dict(exempt or {})
@@ -1095,7 +1151,7 @@ def names_in(
     source = path.read_text(encoding="utf-8", errors="replace")
     names = (
         identifiers_of(source)
-        if path.suffix == ".py"
+        if path.suffix.lower() == ".py"
         else identifier_like_names(blank_urls(source)[0])
     )
     for name in sorted(names):
@@ -1119,7 +1175,18 @@ def names_in(
 #: Markdown is not on the rendered page, so a URL written inside one is no link
 #: a reader can follow. In every other file this scan reads, ``<!--`` is only
 #: characters.
-MARKDOWN_SUFFIXES = frozenset({".md", ".mdc"})
+#:
+#: **Every suffix GitHub renders as Markdown, in any case.** GitHub's markup
+#: library matches ``md``, ``mkd``, ``mkdn``, ``mdwn``, ``mdown``,
+#: ``markdown``, ``mdx`` and ``litcoffee`` case-insensitively, so a
+#: ``README.MD`` renders exactly as a ``README.md`` does. Compared as written,
+#: that file skipped every Markdown rule here, and a URL hidden in its comment
+#: resolved a reference the page shows. ``.mdc`` is here because the
+#: documentation guide governs it. Every suffix is compared in lower case.
+#: https://github.com/github/markup/blob/master/lib/github/markup/markdown.rb
+MARKDOWN_SUFFIXES = frozenset(
+    {".md", ".mkd", ".mkdn", ".mdwn", ".mdown", ".markdown", ".mdx", ".litcoffee", ".mdc"}
+)
 
 
 def split_comments(line: str, in_comment: bool) -> tuple[str, str, bool]:
@@ -1205,7 +1272,7 @@ def rendered_text(text: str) -> str:
 
 
 def blank_urls(text: str) -> tuple[str, list[str]]:
-    """Return ``text`` with each URL blanked, and the URLs, trimmed.
+    """Return ``text`` with each public URL blanked, and those URLs, trimmed.
 
     Found with the greedy pattern so the whole run is blanked, then trimmed
     so what is matched against is the URL itself. **Blank the trimmed URL,
@@ -1214,6 +1281,13 @@ def blank_urls(text: str) -> tuple[str, list[str]]:
     too, and blanking the whole match took that word out of the line -- so
     the reference the word belonged to went unread. What ``trim_url`` gives
     back is prose and stays.
+
+    **Only a URL ``url_is_public()`` accepts is a link, here as everywhere.**
+    Blanking every candidate hid what a non-public one held: a name such as
+    ``review_round_42`` in the path of a ``localhost`` URL was neither blanked
+    as a link a reader can follow nor read as the identifier it is. One test
+    now decides both what resolves a reference and what is taken out of the
+    text, so any other candidate stays in the text and is read like it.
     """
     urls = []
     pieces = []
@@ -1221,6 +1295,8 @@ def blank_urls(text: str) -> tuple[str, list[str]]:
     for spotted in URL_PATTERN.finditer(text):
         whole = spotted.group(0)
         trimmed = trim_url(whole)
+        if not url_is_public(trimmed):
+            continue
         urls.append(trimmed)
         pieces.append(text[cursor : spotted.start()])
         pieces.append(" ")
@@ -1265,7 +1341,7 @@ def references_in(
     budget = dict(exempt or {})
     relative = path.relative_to(root).as_posix()
     if python is None:
-        python = path.suffix == ".py"
+        python = path.suffix.lower() == ".py"
     body = path.read_text(encoding="utf-8", errors="replace")
 
     def report(number: int, scanned: str, urls: list[str], seam: int = -1) -> None:
@@ -1279,6 +1355,11 @@ def references_in(
                     scanned[: match.start()]
                 ):
                     # Carried a noun, so the noun's own pattern reports it.
+                    continue
+                if name == "a bare commit hash" and COMMIT_NOUN_BEFORE.search(
+                    scanned[: match.start()]
+                ):
+                    # The same, for a hash with the word for it in front.
                     continue
                 if budget.get(matched):
                     # Consumed once, so the next occurrence is reported.
@@ -1303,7 +1384,7 @@ def references_in(
     readings: list[tuple[tuple[str, list[str]], tuple[str, list[str]]]] = []
     in_comment = False
     for line in lines:
-        markdown = path.suffix in MARKDOWN_SUFFIXES
+        markdown = path.suffix.lower() in MARKDOWN_SUFFIXES
         if markdown:
             shown, hidden, in_comment = split_comments(line, in_comment)
         else:
@@ -1414,6 +1495,17 @@ def tracked_text_files() -> list[Path]:
     an empty list: an empty corpus that reports success is the failure this
     whole module is about, and a swallowed error is how a corpus comes to be
     empty.
+
+    **Git also says which files are text, and a text file that does not decode
+    fails the scan.** Every file used to be tried as UTF-8 and one that failed
+    was dropped in silence, so a Markdown page saved in another encoding left
+    the corpus and the scan passed without reading it. ``--eol`` reports, per
+    file, whether Git's own detection finds binary content (``w/-text``) and
+    whether the attributes declare the file binary (``-text``, which the
+    ``binary`` macro in ``.gitattributes`` sets for images). Those files are
+    not text and are skipped. Every other file must decode, or it is named.
+    A file deleted from the working tree has nothing to read and is skipped.
+    https://git-scm.com/docs/git-ls-files#Documentation/git-ls-files.txt---eol
     """
     completed = subprocess.run(
         [
@@ -1422,6 +1514,7 @@ def tracked_text_files() -> list[Path]:
             str(REPO_ROOT),
             "ls-files",
             "-z",
+            "--eol",
             "--cached",
             "--others",
             "--exclude-standard",
@@ -1434,16 +1527,27 @@ def tracked_text_files() -> list[Path]:
             "has no corpus and must not report success: "
             + completed.stderr.decode("utf-8", "replace").strip()
         )
-    names = [
-        name for name in completed.stdout.decode("utf-8").split(chr(0)) if name
+    entries = [
+        entry for entry in completed.stdout.decode("utf-8").split(chr(0)) if entry
     ]
-    assert names, "git listed no file at all, so this scan has nothing to read"
+    assert entries, "git listed no file at all, so this scan has nothing to read"
+    names: list[str] = []
+    binary: set[str] = set()
+    for entry in entries:
+        # ``i/<index> w/<worktree> attr/<attributes>`` and a tab, then the path.
+        info, _, name = entry.partition(chr(9))
+        fields = info.split()
+        worktree = next((field for field in fields if field.startswith("w/")), "w/")
+        attributes = info.split("attr/", 1)[1].split() if "attr/" in info else []
+        names.append(name)
+        if worktree == "w/-text" or "-text" in attributes:
+            binary.add(name)
     kept: list[str] = []
     undecodable: list[str] = []
     escaping: list[str] = []
     resolved_root = REPO_ROOT.resolve()
     for name in names:
-        if name in GENERATED_FILES or name in SCAN_DATA_FILES:
+        if name in GENERATED_FILES or name in SCAN_DATA_FILES or name in binary:
             continue
         path = REPO_ROOT / name
         # **A path Git lists is not automatically a path inside the checkout.**
@@ -1455,6 +1559,9 @@ def tracked_text_files() -> list[Path]:
         # rules require of every file-reading tool here.
         if path.is_symlink():
             escaping.append(name)
+            continue
+        if not path.exists():
+            # Deleted from the working tree and not yet from the index.
             continue
         try:
             resolved = path.resolve(strict=True)
@@ -1474,6 +1581,12 @@ def tracked_text_files() -> list[Path]:
     assert not escaping, (
         "these tracked paths are symlinks or resolve outside the repository, "
         "so this scan refuses to read them: %s" % escaping[:5]
+    )
+    assert not undecodable, (
+        "Git reads these files as text and they do not decode as UTF-8, so "
+        "this scan cannot read them and will not pass without them. Save each "
+        "as UTF-8, or mark a real binary file binary in .gitattributes: %s"
+        % undecodable[:5]
     )
     assert kept, (
         "git listed %d file(s) and none of them read as UTF-8 text, so either "
@@ -3114,3 +3227,111 @@ def test_an_action_pin_is_excused_only_as_a_resolvable_uses_value(
         ("uses: my-org/.github@" + full, ".yml"),
     ):
         assert not _reported(tmp_path, body, suffix), body
+
+
+def test_only_a_public_url_hides_what_it_holds(tmp_path: Path) -> None:
+    """A URL no reader can reach is text, and a name in it is read.
+
+    Every URL candidate used to be blanked before either pass read the line,
+    while only a public one could resolve a reference. So a round's name in
+    the path of a ``localhost`` URL was neither a followable link nor a name
+    the identifier pass saw. A public URL still hides its path.
+    """
+    name = "review" + "_round_" + "42"
+    for host, reported in (
+        ("localhost", True),
+        ("tracker.example.invalid", True),
+        ("10.0.0.5", True),
+        ("example.com", False),
+        ("github.com", False),
+    ):
+        sample = tmp_path / "doc.yml"
+        sample.write_text("see https://" + host + "/" + name + chr(10), encoding="utf-8")
+        assert bool(names_in(sample, tmp_path)) is reported, host
+    assert blank_urls("see http://localhost/x here") == ("see http://localhost/x here", [])
+    assert blank_urls("see https://github.com/x here") == ("see   here", ["https://github.com/x"])
+
+
+def test_a_text_file_that_does_not_decode_fails_the_scan() -> None:
+    """Git reads it as text, so dropping it would pass a file nobody read.
+
+    A binary file -- one Git's own detection finds binary, or one the
+    attributes declare binary -- is not text and is left out. The probes are
+    untracked files in this checkout, which the scan lists as it lists a file
+    written but not yet staged.
+    """
+    text_probe = REPO_ROOT / "_probe_undecodable.md"
+    binary_probe = REPO_ROOT / "_probe_binary.dat"
+    declared_probe = REPO_ROOT / "_probe_declared.png"
+    probes = (text_probe, binary_probe, declared_probe)
+    try:
+        binary_probe.write_bytes(b"a" + bytes([0]) + b"b")
+        declared_probe.write_bytes(b"caf" + bytes([233]) + chr(10).encode())
+        names = {path.name for path in tracked_text_files()}
+        assert binary_probe.name not in names and declared_probe.name not in names
+
+        text_probe.write_bytes(b"caf" + bytes([233]) + chr(10).encode())
+        with pytest.raises(AssertionError) as raised:
+            tracked_text_files()
+        assert text_probe.name in str(raised.value), raised.value
+        assert "do not decode" in str(raised.value), raised.value
+    finally:
+        for path in probes:
+            if path.exists():
+                path.unlink()
+
+
+def test_a_commit_named_by_its_noun_is_reported_in_any_shape(tmp_path: Path) -> None:
+    """``commit`` in front of a hash settles what the bare pattern has to guess.
+
+    The bare pattern refuses a hash after a hash sign and one with no digit,
+    and both refusals are right for a run of characters on its own. After the
+    noun, each is a commit, and neither was read. A run of one repeated
+    character is a placeholder in a worked example, and stays quiet.
+    """
+    letters = "dead" + "bee"
+    mixed = "abc" + "1234"
+    for body in (
+        "# landed upstream in commit #" + mixed,
+        "# landed upstream in commit " + letters,
+        "# landed upstream in commit hash " + letters,
+        "# landed upstream at sha: " + letters,
+        "# landed upstream in commits " + mixed + " and more",
+    ):
+        assert _reported(tmp_path, body, ".py"), body
+    # Reported once, not once by each pattern.
+    sample = tmp_path / "doc.py"
+    sample.write_text("# landed upstream in commit " + mixed + chr(10), encoding="utf-8")
+    assert len(references_in(sample, tmp_path)) == 1
+    for body in (
+        "# landed upstream in commit " + letters
+        + " https://github.com/o/r/commit/" + letters + "0123",
+        "# a commit message said so",
+        "# commit " + "550e" + "8400" + "-e29b-41d4-a716-446655440000",
+        "# the base is commit " + "d" * 40 + " in this worked example",
+        "# the range head SHA: " + "2" * 40,
+    ):
+        assert not _reported(tmp_path, body, ".py"), body
+
+
+def test_a_markdown_suffix_is_read_in_any_case(tmp_path: Path) -> None:
+    """GitHub renders ``README.MD`` as it renders ``README.md``.
+
+    Compared as written, an uppercase suffix skipped every Markdown rule, so a
+    URL hidden in a comment resolved a reference the page shows, and a
+    character reference went undecoded. So did every other suffix GitHub
+    renders as Markdown.
+    """
+    reference = "issue" + " " + "27"
+    hidden = reference + " <!-- https://github.com/o/r/issues/27 -->"
+    for name in ("doc.MD", "doc.Md", "doc.markdown", "doc.MDX", "doc.mkd"):
+        sample = tmp_path / name
+        sample.write_text(hidden + chr(10), encoding="utf-8")
+        assert references_in(sample, tmp_path), name
+    sample = tmp_path / "doc.txt"
+    sample.write_text(hidden + chr(10), encoding="utf-8")
+    assert not references_in(sample, tmp_path), "outside Markdown a comment hides nothing"
+    assert python_paths([Path("a.PY"), Path("b.py"), Path("c.md")]) == [
+        Path("a.PY"),
+        Path("b.py"),
+    ]
