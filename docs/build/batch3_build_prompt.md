@@ -513,9 +513,9 @@ Must carry:
   conveyor-belt sushi place, the noodle shop, the department-store food hall, the
   convenience store as a genuine and good option, the izakaya and what makes it an
   adult-evening place, and the set-meal restaurant.
-- **How ordering commonly works**, including ticket machines, plastic or photo menus, and
-  that many places are cash-preferring. Point at `money_basics.md` for the cash culture
-  rather than restating it.
+- **How ordering commonly works**, including ticket machines and plastic or photo menus.
+  For how people pay, point at `money_basics.md`, which carries the cash norms; do not state
+  them here.
 - **Planning around dietary needs and group seating**, which is the practical thing a
   family with a mixed party has to solve. Keep it category-level: what to check, and that
   checking is done in advance for anything that matters.
@@ -888,7 +888,7 @@ the child will get wrong.
   | Trash norms | One line on how rubbish is handled |
   | Respect at religious or historic sites | One line, matter-of-fact |
   | **No tipping, where that applies** | One line. **This is a category an author drops**, because it is an absence rather than a rule, and a US family will otherwise tip |
-  | **Cash and payment awareness** | One clause and a pointer to `money_basics.md`, which is the canonical home of the cash culture. Say that many small places may take only cash, that the family plans to carry some, and that adults handle getting it |
+  | **Cash and payment awareness** | One clause that how people pay is worth checking before the trip and that adults handle getting cash, with a pointer to `money_basics.md`, which carries the current cash norms and answers the quick sheet's cash question |
   | Local signs and instructions, including photo limits | One line, plus: ask before photographing people |
   | Public-bathing etiquette, if the family may visit one | One line and a pointer to `etiquette_basics.md` (`B3-3`) |
 
@@ -910,11 +910,11 @@ the child will get wrong.
 | `AC-16-1` | grep + human | The human half: cultural and etiquette content reads matter-of-fact, never marveling. **Bites `etiquette_basics.md` and `47_language_etiquette.md` hardest** |
 | `AC-21-3` | human | Adult-owned responsibilities clearly marked; legal, safety and current requirements never stated as fixed without a verify frame; privacy warnings included, such as the lodging-card boundary in 5.6 |
 | Freshness | automatic | Every new reference file and every new slot carries a `**Last reviewed:** <month year>` line below its title |
-| `AC-GLOBAL-3` | automatic | Markdownlint passes except MD013 and MD034; MD040 and MD026 stay enabled and pass; **all relative links resolve** |
-| `AC-GLOBAL-4` | automatic | No trip data committed |
+| `AC-GLOBAL-3` | automatic | Markdownlint passes under the committed config, which turns off MD013, MD034, MD036 and MD041; MD040 and MD026 stay enabled and pass; **all relative links resolve** |
+| `AC-GLOBAL-4` | grep + human | No trip data committed: no booked date, hotel name, address, phone number, confirmation number, or passport or payment detail. The trip-data greps in section 9 find nothing, and the builder's own read of every new and edited pack file for the rest is recorded in the build report |
 | `AC-GLOBAL-5` | human | All Markdown meaningful and non-thin; no stub slots |
-| `AC-GLOBAL-1` | automatic | Every file this batch's scope table and the contract name exists |
-| `AC-GLOBAL-2` | automatic | No placeholder-only file in `destinations/` |
+| `AC-GLOBAL-1` | automatic | Every file this batch's scope table and the contract name exists; the link check proves it, once every contract filename and contents-page entry is a link |
+| `AC-GLOBAL-2` | automatic | No placeholder-only file in `destinations/`; pre-commit's prohibited-placeholder hook covers the tree, and `AC-GLOBAL-5`'s read covers a thin file |
 | `AC-GLOBAL-6` | human | No copyrighted guidebook content. **This bites here:** a pack describing attractions and food is the batch most likely to reproduce someone's guidebook. Write from category knowledge and point at official sources |
 | `AC-10.3-1` | grep-assisted | No pack file cites the archived record's section numbers; concepts are named and linked. The two reference-hygiene greps in section 9 find nothing |
 | `AC-3.1-1` | human | Child-read parts on target for reading level; warm and non-othering |
@@ -986,6 +986,9 @@ otherwise.
 ```text
 grep -rwE 'Chicago|ORD|grandmother|uncle' destinations/
 grep -rwE '17[ -]?(day|night)s?' destinations/
+grep -rnE '[0-9]{4}-[0-9]{2}-[0-9]{2}|[0-9]{1,2}/[0-9]{1,2}/[0-9]{2,4}' destinations/ | grep -v 'Last Updated:'
+grep -rnE '(^|[^0-9,.])[0-9]{6,}|[0-9]{1,4}[- ][0-9]{2,4}[- ][0-9]{3,4}' destinations/
+grep -rniE 'confirmation (number|code)|passport (number|no)|card number|booking (reference|number)|reservation (number|code)' destinations/
 grep -rniE 'sections? [0-9]' destinations/
 grep -rn '§' destinations/
 grep -rn '`[a-z_0-9]*\.md`' destinations/japan/session_inserts/README.md
@@ -1015,9 +1018,13 @@ done
 [ "$seen" -gt 0 ] || echo "NO PACK FILES FOUND -- run this from the repo root."
 ```
 
-The first four find nothing; the third and fourth are Batch 1's reference-hygiene greps,
-scoped to the pack. The fifth lists filenames still written as inline code in the
-contract, and after this batch it should be empty (section 3.3). **The stamp loop prints
+Every command but the last finds nothing on a correct tree. The third to fifth are the
+trip-data greps: dates written as numbers, long or grouped digit runs such as phone,
+passport, confirmation or card numbers, and the labels those numbers carry. The date grep
+drops `Last Updated:` lines, which are document metadata. The sixth and seventh are
+Batch 1's reference-hygiene greps, scoped to the pack. The last lists filenames still
+written as inline code in the contract, and after this batch it should be empty
+(section 3.3). **The stamp loop prints
 nothing on a correct tree.** Each line it prints names a file, and says whether the stamp
 is missing, malformed or misplaced, or whether the label appears more or less than once.
 
@@ -1049,6 +1056,9 @@ would miss finds the gap.
   and the contract's counts, pack-state bullets and add-a-destination topics match the
   finished pack (section 3.4).
 - The five gates pass, and the batch's own checks return what section 9 says they should.
+- The trip-data greps find nothing, and the builder's own read for booked dates written in
+  words, property names and addresses, which no grep reaches, is recorded in the build
+  report.
 - Every new or edited pack file is checked against the style law's rules, read from that
   file, and its pronoun QA grep has been run over `destinations/` and its output read.
 - Every new file carries its freshness stamp, as the first line below its own title.
@@ -1083,8 +1093,10 @@ would miss finds the gap.
 - **Tone:** child-facing text at reading level, warm and non-othering; cultural and etiquette
   content matter-of-fact, never marveling. **No points, badges, levels, or "mission
   unlocked."**
-- **Lint:** markdownlint clean except MD013 and MD034; **MD040 and MD026 stay enabled** --
-  every fence declares a language, no heading ends in `:` or `?`. Reuse the repository's
+- **Lint:** markdownlint clean under the committed config, which turns off MD013, MD034, MD036
+  and MD041; **MD040 and MD026 stay enabled** -- every fence declares a language, and no
+  heading ends in punctuation: MD026 flags `.`, `,`, `;`, `:` and `!` by default, and the
+  style law also rules out `?`. Reuse the repository's
   committed `.markdownlint.jsonc`; **do not add a second config.** Run
   `pre-commit run --all-files` and fix issues before finishing.
 - **No secrets, no credentials, no tokens** in any file or any commit.
@@ -1099,7 +1111,9 @@ would miss finds the gap.
   anyone else.
 - **This batch's deliverables list is the in-scope table in section 2.** A file absent from
   it is a finding for section 8, not a permission. If a fix appears to need a protected file,
-  stop and escalate.
+  stop and escalate. Under the repository's protected-file rule, only the owner or a
+  maintainer can authorize that change, directly and for that change, and this run does not
+  make it.
 - **Never edit these files, in any batch:** `docs/spec/*`, `CLAUDE.md`, `AGENTS.md`, `GEMINI.md`, `.hermes.md`, `.github/copilot-instructions.md`, `.github/instructions/*`, `.cursor/rules/*`, or any other governance or agent-instruction file. This rule has no exceptions. A batch's deliverables list cannot override it.
 - **Create and edit only the files this batch's deliverables list names.** Creating a new file and editing an already-built file are both permitted, but only for a file the deliverables list above names. Batch 1 edits the eight shared sessions for the concrete-to-insert upgrade. Batch 4 edits already-shipped files in the closing whole-repo consistency pass. For a pass that spans many files, the deliverables list may name the scope -- for example, "every file built in Batches 0-4" -- instead of each filename. Touch no other file. In particular, do not touch the repository's template and CI infrastructure: `.github/workflows/*`, `.pre-commit-config.yaml`, `.markdownlint.jsonc`, `package.json`, `schemas/*`, and `tests/*`.
 
