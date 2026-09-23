@@ -1,7 +1,7 @@
 <!-- markdownlint-disable MD013 -->
 # Repository Copilot Instructions (Repo-Wide Constitution)
 
-**Version:** 1.6.20260923.0
+**Version:** 1.6.20260923.1
 
 ## Metadata
 
@@ -496,7 +496,7 @@ Agents MUST retrieve each submitted review body and reconcile its declared count
 
 An observation with a parse, transport, authentication, rate-limit, tool, shape, or pagination failure MUST NOT count as a successful empty poll or reset a successful count. Surface the actual error. Within that failed cycle, allow at most one retry per failed source and one replacement observation through an alternate authenticated source; these recovery reads can be immediate. If recovery cannot establish the needed observation, pause the affected gate as unknown. A successful source can expose a finding for immediate work while another source fails, but it cannot prove a complete clean inventory.
 
-Agents MUST keep a maximum of eight review rounds and six hours per loop invocation. Reaching either bound pauses the loop without success. On explicit resume, recover input identities, scoped authority, findings, fix reachability, both request states, and retry counters before acting. Finish authorized paused fixes and reconcile pending operations before new requests. Invocation bounds may restart on owner resume; same-input retry history MUST NOT reset to evade exhaustion. Continue safe independent work before a real authority or capability boundary; historical exceptions never transfer authority.
+Agents MUST keep a maximum of eighty review rounds and eight days per loop invocation. Reaching either bound pauses the loop without success. On explicit resume, recover input identities, scoped authority, findings, fix reachability, both request states, and retry counters before acting. Finish authorized paused fixes and reconcile pending operations before new requests. Invocation bounds may restart on owner resume; same-input retry history MUST NOT reset to evade exhaustion. Continue safe independent work before a real authority or capability boundary; historical exceptions never transfer authority.
 
 ### CI diagnosis and completion
 
