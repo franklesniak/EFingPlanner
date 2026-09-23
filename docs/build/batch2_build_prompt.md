@@ -836,7 +836,9 @@ checkpoint.
   trip, and the final family decision is the confirmed fit. On the Core path, the season
   report takes its booked-dates form above. Its Parent Notes gain one line: with the dates
   booked, the recommendation named above is the season confirmation, which the family talk
-  uses to confirm the fit, with no pick to adjust.
+  uses to confirm the fit, with no pick to adjust. Its progress line in Steps takes the
+  booked form in 5.2's table: the family now knows what its season means for the trip, and
+  which challenge to plan around.
 
 No child is asked to recommend dates the family cannot change. **With the dates booked, the
 season confirmation fills every place this brief asks for the season recommendation:** the
@@ -848,16 +850,23 @@ handoff. Each of those sections says so in place. The built Decision Record tip 
 try-then-commit line in `time_and_effort.md` are worded for both paths, and the City Research
 Card's own row already reads "our Checkpoint 1 season".
 
+**The booked trip length reaches later sessions the same way.** With the dates booked, the
+booked trip length is the total, and the child's nights plan splits it. Each of these says
+so in place: Session 29's purpose, check and Stop Point; Session 32 and its route shell
+(9.4.3); the adult reviews at Checkpoints 2 and 4, and the city-shortlist shell; B1's
+Checkpoint 4 section; the 5.2 progress table; binder tab 4 (Session 50, copied by E2); E1's
+binder list and evidence floor; and the presentation outline (Session 51 and A12).
+
 #### Session 15 — cards toward the Core floor
 
 The floor needs at least five city or region cards, and Session 15 makes two. The spec's rule
 is "at 15, add city cards toward the Core floor (their two cards count)". **On the Core path,
 say that these two cards are the first of at least five**, and that Sessions 18 and 19 add the
-rest. This rides on the Session 15 conversion in 4.1b; it adds one Core-path line and changes
-nothing a First Taste child reads. **In step 5, write "our Checkpoint 1 season" where it now
-says "the season you recommended at Checkpoint 1"**, as the City Research Card's own row
-does. The meaning is the same for an open-dates child, and the step is then true for a
-family whose dates were booked.
+rest. This rides on the Session 15 conversion in 4.1b; it adds one Core-path line, and
+everything a First Taste child reads keeps its meaning. **In step 5, write "our Checkpoint 1
+season" where it now says "the season you recommended at Checkpoint 1"**, as the City
+Research Card's own row does. The meaning is the same for an open-dates child, and the step
+is then true for a family whose dates were booked.
 
 #### Session 21 — compare the Core long-list
 
@@ -1049,9 +1058,10 @@ Five checkpoints land in this batch. Every one of them includes:
 
 | After | The family now knows |
 | --- | --- |
+| Checkpoint 1 (14) | Roughly **when**. With the dates booked: **what the season means for the trip**, and which challenge to plan around |
 | Checkpoint 2 (22) | The rough **where** |
 | Checkpoint 3 (27) | The **top experiences** |
-| Checkpoint 4 (32) | **When, where, and how long.** The trip is becoming concrete |
+| Checkpoint 4 (32) | **When, where, and how long.** The trip is becoming concrete. With the dates booked: **where**, and how the booked days are split |
 | Checkpoint 5 (46) | A usable **day-by-day plan** |
 | Checkpoint 6 (52) | **A family decision** |
 
@@ -1389,9 +1399,9 @@ thing you'd love" the shortlist makes room for; trade-offs. Plus the budget-band
 - **Artifact:** a City shortlist recommendation, recorded as a decision-log entry.
 - **Source Check:** required. Sources are an explicit element of the recommendation.
 
-**Adult review considers:** realistic travel scope; **the family's maximum trip length,
-read from the Trip-Basics card**; family interest; budget implications; safety and common
-sense; international flight implications.
+**Adult review considers:** realistic travel scope; **the family's maximum trip length, read
+from the Trip-Basics card, or the booked trip length when the dates are booked**; family
+interest; budget implications; safety and common sense; international flight implications.
 
 **A Checkpoint 2 extra that Phase 5 depends on.** If the Rough Trip Shape was left partly
 open at setup -- arrival city only -- **adults firm up the shape and the exit city here**,
@@ -1599,7 +1609,8 @@ restate it.
 
 ### Session 29: How Long to Stay
 
-Work out how many nights each place needs, and how long the whole trip should be.
+Work out how many nights each place needs, and how long the whole trip should be. With the
+dates booked, the length is set, and the work is sharing it out.
 
 **The title drops the spec's question mark** (`D-OPEN-8`); the filename does not change.
 **No destination facts** -- and this session's spec content is unusually dense with origin
@@ -1614,10 +1625,11 @@ Give the concrete template first:
 for genuinely preformatted content such as a single worked formula, and inline underscore
 blanks are allowed inside a worked-formula table cell.
 
-Then a plain **floor and ceiling check**: "Are there too few real days to be worth the
-long flight?" and "Is the total within your family's maximum trip length?" **When the
-family's dates are already booked, the booked trip length is the ceiling**; the check is
-then whether the nights fit inside it.
+Then a plain **floor and ceiling check**: "Are there too few real days to be worth the long
+flight?" and "Is the total within your family's maximum trip length?" **When the family's
+dates are already booked, the booked trip length is the total.** The child splits it into
+nights per city, and the floor question becomes whether the booked days leave enough "real
+days" for the places chosen; if they do not, the answer is fewer places.
 
 **What the session teaches:** arrival day is not a full sightseeing day; departure day is
 not a full sightseeing day; **jet lag matters**, made vivid using the **hours-ahead figure
@@ -1646,8 +1658,8 @@ nights in each, and built-in rest or down days.** Keep it generic and unpinned, 
 - **Workspace:** the "real days" worksheet plus a nights-per-city table.
 - **Artifact:** a Nights-per-city estimate.
 - **Stop Point:** you are done when each overnight place has a number of nights, and your
-  total sits between your floor and your ceiling: your family's maximum, or the booked trip
-  length when the dates are already booked. "Not sure yet" on one place is fine.
+  total sits between your floor and your family's maximum. When the dates are already
+  booked, your nights cover the booked trip instead. "Not sure yet" on one place is fine.
 - **Source Check:** not required. Carry the heading with the no-research line plus one
   sentence pointing at the Trip-Basics card and the route notes.
 - **Optional Extension is pinned:** the open "reason out your own floor and ceiling"
@@ -1731,22 +1743,26 @@ reports.
 
 ### Session 32: Checkpoint 4 Route and Trip Length
 
-Recommend the route and how long the trip should be. **No destination facts.**
+Recommend the route and how long the trip should be; with the dates booked, how to use the
+booked days. **No destination facts.**
 
 **The child recommends:** total number of days; overnight cities; number of nights in each
 city; major travel days; **a backup shorter version**; reasons; trade-offs. Plus the
-budget-band check.
+budget-band check. **With the dates booked, the total is the booked trip length.** The child
+recommends the cities, the nights in each and the travel days within it, and leaves out the
+shorter backup version, which a booked family cannot use. That split is the **nights plan**,
+and it stands wherever this brief names the trip-length recommendation.
 
 - **Artifact:** a Route and trip-length recommendation, recorded as a decision-log entry.
 - **Stop Point:** you are done when your recommendation names the cities, the nights in
-  each, the travel days, a shorter backup version, and your reasons, and you have brought
-  it to a grown-up.
+  each, the travel days, a shorter backup version, and your reasons, and you have brought it
+  to a grown-up. With the dates booked, leave out the shorter backup version.
 - **Source Check: required.** The spec's Checkpoint 4 review list omits Sources where
   Checkpoints 2 and 3 name them; this batch adds it, so all three match. (`D-OPEN-15`.)
 
 **Adult review considers:** flights; **arrival and departure city**; hotel moves; transit
-realism; **the family's maximum trip length, read from the Trip-Basics card**; budget
-implications; family schedule.
+realism; **the family's maximum trip length, read from the Trip-Basics card, or the booked
+trip length when the dates are booked**; budget implications; family schedule.
 
 **The arrival and departure beat is a confirmation, not a first reveal.** The Rough Trip
 Shape was recorded provisionally at setup and the child's route was built on it in movable
@@ -2573,7 +2589,7 @@ Put your whole project in order, tab by tab. **Fully neutral.**
 | 1. Start Here | Cover page; Trip-Basics card; Traveler profiles; **Family trip goals**; Current family travel assumptions |
 | 2. Research Skills | The Phase 1 research-skill artifacts the family chose to keep, for example the trust test |
 | 3. Destination Overview | Season recommendation, or the season confirmation when the dates were booked |
-| 4. Cities and Route | City long-list; City shortlist and recommendation; Route recommendation; Trip-length recommendation; Transportation notes |
+| 4. Cities and Route | City long-list; City shortlist and recommendation; Route recommendation; Trip-length recommendation, or the nights plan when the dates were booked; Transportation notes |
 | 5. Attractions and Food | Top attractions and experiences; Culture/history/nature/food/fun balance check; Restaurant and food shortlist, if the food sessions were done |
 | 6. Hotels and Budget | Hotel and neighborhood comparison summary; Budget estimate |
 | 7. Itinerary | Day-by-day itinerary; Reservation watchlist; Backup plans; Cut list or "save for future trip" list |
@@ -2632,15 +2648,16 @@ accommodations and the ladder live canonically in
 `[the differentiation guide](../../parent_guide/differentiation.md)`; point there.
 
 **Outline contents:** Recommended season, or the season confirmation when the dates were
-booked · Recommended length · Route · Top experiences · Budget summary · Biggest trade-offs ·
-Cut list · Questions for adults · Adult handoff.
+booked · Recommended length, or the nights plan when the dates were booked · Route · Top
+experiences · Budget summary · Biggest trade-offs · Cut list · Questions for adults · Adult
+handoff.
 
 **The two-part structure** is the fuller form the outline may follow:
 
 - **Part 1, Recommendation:** when should we go? (with the dates booked: what does our
-  season mean for the trip?) how long? which cities? what route? top experiences? where
-  might we stay? food highlights? rough budget estimate? biggest trade-offs? what did we
-  cut, and why?
+  season mean for the trip?) how long? (with the dates booked: how do we use our booked
+  days?) which cities? what route? top experiences? where might we stay? food highlights?
+  rough budget estimate? biggest trade-offs? what did we cut, and why?
 - **Part 2, Handoff:** what do adults still need to verify? decide? book? what questions
   remain open? which of the child's materials should adults use next?
 
@@ -2907,7 +2924,9 @@ adults should check; Cancellation/flexibility note; Source; What other source co
 this?; Verification source; Date checked; Adult status.
 
 **Teach the date-gating idea generically.** Concrete examples come from the pack and must
-**not** be written into this template.
+**not** be written into this template. **Carry Session 42's booked-dates turn on the page:**
+with the dates set, the list is an act-early list, and "When adults should check" holds each
+item's booking-open date.
 
 **Categories the child may flag, written neutrally:** popular museums; theme parks; special
 restaurants; tours; long-distance trains if applicable; timed tickets; hotels.
@@ -2977,7 +2996,8 @@ version.
 
 **Status rendering:** plain status label, with the "a session to keep" emphasis in the
 adjacent line. **Identical to the label used in the roadmap and the support notes.**
-(`D-X-12`.)
+(`D-X-12`.) The condition follows the label on the same line, word for word as in Session
+47's entry.
 
 **The framework template is a blank, destination-neutral shell.** The actual phrases and
 etiquette points live in the pack; the page says *"open your destination pack's language
@@ -3051,10 +3071,10 @@ delivered at Session 52.
 **Two parts, exactly as specified.**
 
 - **Part 1, Recommendation:** When should we go? (With the dates booked: What does our
-  season mean for the trip?) How long should we go? Which cities should we visit? What
-  route should we take? What are the top experiences? Where might we stay? What are the
-  food highlights? What is the rough budget estimate? What are the biggest trade-offs? What
-  did we cut and why?
+  season mean for the trip?) How long should we go? (With the dates booked: How do we use
+  our booked days?) Which cities should we visit? What route should we take? What are the
+  top experiences? Where might we stay? What are the food highlights? What is the rough
+  budget estimate? What are the biggest trade-offs? What did we cut and why?
 - **Part 2, Handoff:** What adults still need to verify? What adults still need to decide?
   What adults need to book? What questions remain open? Which child-created materials should
   adults use next?
@@ -3103,6 +3123,10 @@ pair:
 > **Right:** *"Sit with them for the first few sessions. If the child is doing fine on
 > their own, you can step back."*
 
+**B1 to B6 are built.** Each entry below says what its built page must carry; if the two
+ever differ, follow the built page and record the difference in your build report. B7
+extends a built file, as its entry says.
+
 **All six new pages are destination-neutral.** Destination-specific adult logistics --
 local hazard awareness, local emergency numbers, local luggage-forwarding services, local
 police-post equivalents, local lodging categories -- belong in the pack's adult-logistics
@@ -3132,8 +3156,12 @@ research" flagged as the most common hard verdict and pointed at the coaching sc
 **each checkpoint decision is also written in the decision log**; and a short per-checkpoint
 section, six of them, each carrying its review list and its "progress is real" line.
 **Checkpoint 1's section also carries the booked-dates beat:** with the dates booked, the
-adult reviews the season confirmation from 4.1a, which explains what the chosen season
-means for the trip and confirms the fit.
+adult reviews the season confirmation from 4.1a, which explains what the chosen season means
+for the trip and confirms the fit. **Checkpoint 4's section carries one too:** with the
+dates booked, the adult reviews the nights plan, which splits the booked days with no
+shorter backup version. Each progress line takes its booked-dates form from the 5.2 table
+where the table gives one, and on the Core path Checkpoint 1's section also names the first
+Trade-Off Report.
 
 #### B2 — `adult_only_logistics.md`
 
@@ -3454,6 +3482,10 @@ the reading load.
 are derived, following the Batch 1 precedent for spec-silent files, and **they are the
 requirement for this build.** (`D-X-5`.)
 
+**Both pages are built to these requirements.** Each entry below says what its built page
+must carry; if the two ever differ, follow the built page and record the difference in your
+build report.
+
 **The boundary against the pages that already own adjacent material, stated so the build
 risk of duplication does not land:** `what_is_a_constraint.md` defines the idea and gives
 the child words for it; `planner_mindset.md` keeps the disposition; `what_i_decide.md`
@@ -3643,9 +3675,9 @@ recommendation shape.
 | File | Checkpoint | What it must prompt for |
 | --- | --- | --- |
 | `season_recommendation.md` | 1, Session 14 | season; backup season; season to be careful about; possible months; reasons; sources; **the child's questions for the adults, including whether it fits school and work** -- the shell prompts for the question, because weighing the calendars is the adult's job. **With the dates booked, it prompts instead for the season confirmation:** what the chosen season brings (weather, crowds, events); what that means for the trip; the confirmed fit; questions for adults |
-| `city_shortlist.md` | 2, Session 22 | the shortlist; day trips; places skipped and why; travel realism; how it fits the maximum trip length **from the Trip-Basics card**; budget implications; **and whose "one thing you'd love" from the Session 03 poll each choice makes room for** |
+| `city_shortlist.md` | 2, Session 22 | the shortlist; day trips; places skipped and why; travel realism; how it fits the maximum trip length **from the Trip-Basics card**, or the booked trip length when the dates are booked; budget implications; **and whose "one thing you'd love" from the Session 03 poll each choice makes room for** |
 | `top_experiences.md` | 3, Session 27 | must-do list; strong maybes; skip or save-for-future; biggest trade-offs; the budget-band check |
-| `route_and_trip_length.md` | 4, Session 32 | total days; nights per city; transit days; hotel moves; a shorter backup version; what adults confirm about the trip shape |
+| `route_and_trip_length.md` | 4, Session 32 | total days; nights per city; transit days; hotel moves; a shorter backup version; what adults confirm about the trip shape. **With the dates booked, it prompts instead for the nights plan:** nights per city within the booked trip; transit days; hotel moves; what adults confirm about the trip shape; no shorter backup version |
 | `itinerary_review.md` | 5, Session 46 | day-by-day plan; pacing; transit; meals; rest; budget; booking watchlist. **Carries the Core Finish Line sentence from section 5.1, word for word** |
 | `final_recommendation.md` | 6, Session 52 | the final recommendation; what adults approve; what changes; what adults will verify and book; remaining open questions |
 
@@ -3856,12 +3888,12 @@ Defines "done". Audience: the family, mostly the adult, with the child able to r
    profiles; **Family trip goals**; Current family travel assumptions; Source log; Decision
    log; Season recommendation (or the season confirmation, when the dates were booked); City
    long-list; City shortlist and recommendation; Route recommendation; Trip-length
-   recommendation; Top attractions and experiences;
-   Culture/history/nature/food/fun balance check; Hotel/neighborhood comparison summary;
-   Restaurant and food shortlist (optional but recommended -- included if the family does
-   the food sessions); Transportation notes; Reservation watchlist; Day-by-day itinerary;
-   Budget estimate; Packing list; Language and etiquette quick sheet (optional but
-   recommended -- included if the family does that session); Readiness checklist; Backup
+   recommendation (or the nights plan, when the dates were booked); Top attractions and
+   experiences; Culture/history/nature/food/fun balance check; Hotel/neighborhood comparison
+   summary; Restaurant and food shortlist (optional but recommended -- included if the
+   family does the food sessions); Transportation notes; Reservation watchlist; Day-by-day
+   itinerary; Budget estimate; Packing list; Language and etiquette quick sheet (optional
+   but recommended -- included if the family does that session); Readiness checklist; Backup
    plans; Cut list or "save for future trip" list; Adult follow-up questions; Final
    reflection.
 3. **Final output files** -- the seven `outputs/` shells, named, with one line each.
@@ -3874,11 +3906,11 @@ Defines "done". Audience: the family, mostly the adult, with the child able to r
    **lightest accepted form of each artifact is the default path, not a special
    accommodation.** The floor: one season recommendation, or one season confirmation when
    the dates were booked; one city long-list; one city shortlist; one route and trip-length
-   recommendation; **at least five** city or region research cards; **at least ten**
-   attraction or experience research cards; hotel
-   comparisons at least one per likely overnight base, two only where the base is genuinely
-   undecided, capped at about four or five total; day cards, with the **block card per
-   city-stay the strong default**; **at least one food or restaurant note per major
+   recommendation, or one route and nights plan when the dates were booked; **at least
+   five** city or region research cards; **at least ten** attraction or experience research
+   cards; hotel comparisons at least one per likely overnight base, two only where the base
+   is genuinely undecided, capped at about four or five total; day cards, with the **block
+   card per city-stay the strong default**; **at least one food or restaurant note per major
    overnight city, only if the family does the food sessions**; **at least three trade-off
    reports**, written at Sessions 14, 31 and 34 or 43 (see A5); source log entries for major
    recommendations; an adult follow-up list.
@@ -4131,8 +4163,9 @@ Core/Full section and ticks the thirteen sessions they already finished.
 **Progress-bar form, where one is used:** a plain text bar such as
 `Phase 3 Progress: [####------] 4/10`, inside a `text`-tagged fence. **No badges.**
 
-**Add the six "progress is real" acknowledgments** so every checkpoint carries one, using the
-table in section 5.2. The built file currently has only Checkpoint 1 plus a parenthetical.
+**Add the six "progress is real" acknowledgments** so every checkpoint carries one, using
+the table in section 5.2. The built file currently has only Checkpoint 1 plus a
+parenthetical. Give its Checkpoint 1 line the table's booked-dates form, too.
 
 **Optional mini-milestones, clearly not checkpoints.** The stretch from Checkpoint 4 to
 Checkpoint 5 runs about fourteen sessions with no checkpoint. Add a couple of lightweight
@@ -4250,16 +4283,19 @@ is incomplete and removing the rider would make the docs wrong in the other dire
 
 **The entry must record, at minimum:**
 
-- What was added -- the sessions by phase, the thirteen templates, the parent apparatus, the
-  student-guide pages, the rest of the kit, the two binder deliverables.
+- What was added -- the sessions by phase, B7's support notes, the rest of the kit and the
+  two binder deliverables. The thirteen templates and the parent and student-guide pages
+  already have entries, so record only what this build changes in them.
 - **Every departure from the archived spec**, each in one line that says what the spec asked
   for and what was built instead. At minimum: Session 30's retitle; Session 29's title
   rewrite with its filename unchanged; Session 24's title form; the thirteenth template;
   Checkpoint 4's added Source Check; the flights page written generically; the cancelled
   binder item; the roadmap blockquote replaced by a changelog pointer; Session 49's added
   contract row and the emergency-number framing; the contract's first parent-facing rows;
-  the flight placeholder dropped from Sessions 33 and 39, with the fare kept on the adult's
-  own page; and the which-slice-is-biggest visual that needed it.
+  the checkpoint wait: the next session waits for the adult's review, as the built When I'm
+  Stuck card already says, and the spec's outlet of starting that session's independent work
+  is gone; the flight placeholder dropped from Sessions 33 and 39, with the fare kept on the
+  adult's own page; and the which-slice-is-biggest visual that needed it.
 - **The two designated hand-off sessions, 16 and 40**, so a later batch does not re-derive
   them and land them somewhere else.
 - **The lighter-template phase reading**, with its accepted cost.
