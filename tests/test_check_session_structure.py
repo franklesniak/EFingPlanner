@@ -2174,7 +2174,7 @@ def test_a_shape_that_is_not_condition_seven_leaves_the_heading_below_it(
 
 
 def test_a_fence_after_a_paragraph_that_starts_with_a_tag_still_opens() -> None:
-    """A negative control, restating the sibling hook's round-eight control.
+    """A negative control, restating the same control in the sibling hook.
 
     A paragraph is open, so the tag opens no block, so the backticks under it
     are a fence and the heading inside it is an example.
@@ -3525,7 +3525,7 @@ def test_an_opener_line_belongs_to_the_run_it_opens() -> None:
     """``<script>`` and its marker on one line, the closer two lines down.
 
     ``html.parser`` reports no comment there, so the offline marker is script
-    data and grants no exemption. Round eight closed the run that opens and
+    data and grants no exemption. An earlier fix closed the run that opens and
     closes on one line; this is the branch with no closer on its line.
     """
     assert structure.raw_text_run_state("<script><!-- x -->", None, True) == (

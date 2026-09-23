@@ -73,6 +73,8 @@ which is what every text-pass exemption is about.
 from __future__ import annotations
 
 import ast
+import html
+import ipaddress
 import re
 import subprocess
 from collections.abc import Iterable
@@ -195,51 +197,16 @@ def exempt_names() -> tuple[tuple[str, str, int, str], ...]:
     )
 
 
-#: Which files a pattern speaks for. **The anaphora patterns are Python-only,
-#: and that is measured rather than assumed.** They name a position in a
-#: sequence -- a determiner in front of the word for a review run -- which
-#: resolves nowhere in a code comment and resolves perfectly well in a
-#: document that *defines* review runs. The spellings are in the fixture file,
-#: not here, for the reason this module gives about its own samples.
-#: Run over every tracked text file they report 9 lines in the root
-#: agent instruction files and 6 in the archived design record, every one of
-#: them prose about the documented review loop, and every one of them in a file
-#: this project is not allowed to edit. A check that cannot pass is a check
-#: somebody turns off.
-#:
-#: The four pointer patterns speak everywhere. A bare number or hash resolves
-#: nowhere in any file type, which is the whole rule.
-#: The documents that discuss a review round as a **concept** rather than
-#: pointing at one. Four define or describe the review protocol itself, and the
-#: fifth is this repository's record of adopting the template. A rule telling a
-#: reader to process the comments from whichever review came before is the rule
-#: itself, not a reference to one conversation.
-#:
-#: **This list replaced a file-type gate.** The three patterns below ran on
-#: Python files only, which excused every workflow, shell script and Markdown
-#: page, so a comment saying something was fixed in a numbered round produced no
-#: finding outside a module. Measured, dropping the gate reports 27 occurrences
-#: and every one of them is inside these five documents, so the file type was
-#: standing in for a list that can simply be written down. Two of the five are
-#: protected instruction files this project may not edit, which is a second
-#: reason the exception belongs here rather than in them.
-ROUND_CONCEPT_DOCUMENTS = frozenset(
-    {
-        "AGENTS.md",
-        "CLAUDE.md",
-        "_ADOPTION-DIFFICULTIES.md",
-        "docs/build/batch1_build_prompt.md",
-        "docs/spec/specification.md",
-    }
-)
-ROUND_CONCEPT_PATTERNS = frozenset(
-    {
-        "a numbered review round",
-        "a review round named by position",
-        "review rounds named by position",
-        "a review round named by its ordinal",
-    }
-)
+#: **Every pattern speaks for every file.** A few documents discuss a review
+#: round as a *concept* rather than pointing at one -- the instruction files
+#: that define the review loop, the adoption journal whose entries are its
+#: rounds, the Batch 1 brief and the archived design record's version history.
+#: Those uses are recorded one by one in the exemption fixture, each with its
+#: count and its reason, the way every other exemption is. They used to be
+#: excused by document, which excused every future sentence in those files as
+#: well: a new sentence naming a review run by its position, added to one of
+#: them, produced no finding while the same sentence was reported anywhere
+#: else.
 
 #: Each pattern is one way of pointing out of the repository, with the name a
 #: failure message gives it. ``the second pass`` and ``the first pass`` name
@@ -292,19 +259,73 @@ TRACKER_NOUN_BEFORE = re.compile(
 )
 TRACKER_SEPARATOR = r"\s*:?\s*#?\s*"
 
+#: The numbers a review round is named by, as words, from one to ninety-nine.
+#: The loop this repository documents runs up to eighty rounds, and a list
+#: of ordinals that stopped at twelve let every later one through. Built from the
+#: parts the words are built from rather than typed out, so no word is missed:
+#: a unit, a teen, a ten, or a ten and a unit joined by a hyphen or a space.
+_UNIT_WORDS = ("one", "two", "three", "four", "five", "six", "seven", "eight", "nine")
+_UNIT_ORDINALS = (
+    "first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eighth", "ninth",
+)
+_TEEN_WORDS = (
+    "ten", "eleven", "twelve", "thirteen", "fourteen",
+    "fifteen", "sixteen", "seventeen", "eighteen", "nineteen",
+)
+_TEEN_ORDINALS = (
+    "tenth", "eleventh", "twelfth", "thirteenth", "fourteenth",
+    "fifteenth", "sixteenth", "seventeenth", "eighteenth", "nineteenth",
+)
+_TEN_WORDS = ("twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety")
+_TEN_ORDINALS = (
+    "twentieth", "thirtieth", "fortieth", "fiftieth",
+    "sixtieth", "seventieth", "eightieth", "ninetieth",
+)
+NUMBER_WORDS = (
+    "(?:(?:" + "|".join(_TEN_WORDS) + r")(?:[ -](?:" + "|".join(_UNIT_WORDS) + "))?"
+    + "|" + "|".join(_TEEN_WORDS + _UNIT_WORDS) + ")"
+)
+ORDINAL_WORDS = (
+    "(?:(?:" + "|".join(_TEN_WORDS) + r")[ -](?:" + "|".join(_UNIT_ORDINALS) + ")"
+    + "|" + "|".join(_TEN_ORDINALS + _TEEN_ORDINALS + _UNIT_ORDINALS) + ")"
+)
+#: A number written with an ordinal suffix, as ``13th`` or ``21st``.
+ORDINAL_DIGITS = r"\d+(?:st|nd|rd|th)"
+#: Where the noun ends. ``round`` joined to a word by a hyphen is part of a
+#: compound -- a round trip, a round robin -- and names no review, so the
+#: patterns that end at the noun stop short of one. A hyphen before a number is
+#: still a label, and the two numbered patterns read that form themselves.
+ROUND_NOUN_END = r"\b(?!-[A-Za-z])"
+
 REVIEW_HISTORY_PATTERNS = (
     (
         "a numbered review round",
-        # The noun may carry the word ``review``, may be joined by label
-        # punctuation or a hash rather than a space, and each spelling names
-        # the same unreachable thing.
-        re.compile(r"(?i)\b(?:review\s+)?rounds?(?:\s*[:#]\s*|\s+)\d+\b"),
+        # The noun may carry the word ``review``, and may be joined by label
+        # punctuation, a hash or a hyphen rather than a space, since a
+        # hyphenated label is a label too. Each spelling names the same
+        # unreachable thing.
+        re.compile(r"(?i)\b(?:review\s+)?rounds?(?:\s*[:#]\s*|\s+|-)\d+\b"),
+    ),
+    (
+        "a review round numbered in words",
+        # The same shape with the number spelled out. After an article the
+        # words are no number at all -- ``a round one`` is a round number,
+        # not a review -- so an article in front excuses the match.
+        re.compile(
+            r"(?i)(?<!\ba )(?<!\ban )\b(?:review\s+)?rounds?(?:\s*[:#]\s*|\s+|-)"
+            + NUMBER_WORDS
+            + r"\b"
+        ),
     ),
     (
         "a review round named by its ordinal",
         re.compile(
-            r"(?i)\b(?:first|second|third|fourth|fifth|sixth|seventh|eighth"
-            r"|ninth|tenth|eleventh|twelfth|final)\s+(?:review\s+)?rounds?\b"
+            r"(?i)\b(?:"
+            + ORDINAL_WORDS
+            + "|"
+            + ORDINAL_DIGITS
+            + r"|final)\s+(?:review\s+)?rounds?"
+            + ROUND_NOUN_END
         ),
     ),
     (
@@ -312,12 +333,13 @@ REVIEW_HISTORY_PATTERNS = (
         re.compile(
             r"(?i)\b(?:this|that|the|an|another|each|every|one|last|next"
             r"|previous|earlier|later|prior|following|preceding|same)"
-            r"\s+(?:review\s+)?rounds?\b"
+            r"\s+(?:review\s+)?rounds?"
+            + ROUND_NOUN_END
         ),
     ),
     (
         "review rounds named by position",
-        re.compile(r"(?i)\b(?:these|those|both|other)\s+rounds\b"),
+        re.compile(r"(?i)\b(?:these|those|both|other)\s+rounds" + ROUND_NOUN_END),
     ),
     (
         "an unlinked pull request",
@@ -447,7 +469,16 @@ REVIEW_HISTORY_PATTERNS = (
 #: line, so a clearly linked reference was reported as unlinked and the text
 #: of the URL was then searched for references of its own.
 #: https://datatracker.ietf.org/doc/html/rfc3986#section-3.1
-URL_PATTERN = re.compile(r"(?i)(?:https?://|www\.)\S+")
+#:
+#: **A URL begins a token.** A scheme or a ``www.`` written straight after a
+#: letter, a digit, or a character a scheme, a host or a path may hold -- ``+``,
+#: ``.``, ``-``, ``/``, ``@`` -- is the tail of some other token and no link at
+#: all: ``nothttps://...`` and ``xwww.github.com/...`` named a destination
+#: nobody can follow, and each resolved a reference. Everything else may stand
+#: in front of one: a space, a line start, a bracket, a quote, ``=`` and the
+#: emphasis delimiters, which is where GitHub recognizes an autolink.
+#: https://github.github.com/gfm/#autolinks-extension-
+URL_PATTERN = re.compile(r"(?i)(?<![^\W_])(?<![+./@-])(?:https?://|www\.)\S+")
 DIGITS_PATTERN = re.compile(r"\d+")
 #: The key inside a tracker reference, pulled back out of the match so a URL
 #: can be asked whether it names the same thing. The shape is the one
@@ -665,9 +696,26 @@ COMMENT_FRAGMENT_PREFIXES = (
 )
 
 
-#: A scheme-less ``www.`` candidate that names something after the prefix.
-#: ``www.`` alone, or followed straight by a slash, names no host.
-WWW_HOST = re.compile(r"(?i)^www\.[^/.\s]+")
+#: The host names no reader on the public internet can reach, each reserved
+#: by its own registry entry: ``localhost``, ``invalid``, ``test`` and the bare
+#: ``example`` name (RFC 6761), ``local`` (RFC 6762), ``onion`` (RFC 7686),
+#: ``alt`` (RFC 9476), ``internal`` (reserved by ICANN for private use), and
+#: all of ``arpa``, which holds infrastructure names such as ``home.arpa``
+#: (RFC 8375) rather than pages. ``example.com``, ``example.net`` and
+#: ``example.org`` are not here: they resolve on the public internet, and this
+#: suite's own samples use them to stand for a public tracker.
+#: https://www.iana.org/assignments/special-use-domain-names/
+NON_PUBLIC_NAMES = (
+    "localhost",
+    "invalid",
+    "test",
+    "example",
+    "local",
+    "onion",
+    "alt",
+    "internal",
+    "arpa",
+)
 
 
 def split_url(url: str) -> SplitResult | None:
@@ -688,32 +736,46 @@ def split_url(url: str) -> SplitResult | None:
         return None
 
 
-def url_has_host(url: str) -> bool:
-    """Return whether an ``http`` or ``https`` URL names a host.
+def url_is_public(url: str) -> bool:
+    """Return whether a URL names a host a reader on the public internet can reach.
 
-    ``urlsplit`` happily returns path segments for ``https:///issues/27``,
-    which carries a scheme, no host at all, and a path that looks exactly like
-    the one a real reference would have. So a malformed destination resolved a
-    reference that nothing could follow -- the check reading the shape of a URL
-    and never asking whether it pointed anywhere.
+    The rule accepts a public reference that is clearly linked, so a URL
+    resolves a reference only when anyone could follow it. Earlier fixes each
+    closed one shape of a URL nobody can follow -- one that cannot be parsed,
+    one with no host, ``www.`` with nothing after it -- and a reviewer then
+    found the next: ``http://localhost/issues/27``. This asks the whole
+    question once.
 
-    A scheme this function does not know is left alone: only ``http`` and
-    ``https`` are required to be followed, and those are the only two
-    ``URL_PATTERN`` matches.
+    A host is public when it is an IP address the ``ipaddress`` module calls
+    global, or a domain name of two or more labels whose last label holds a
+    letter and that is not, and does not end in, one of ``NON_PUBLIC_NAMES``.
+    So loopback, private and link-local addresses fail, and so do a
+    single-label intranet name, a numeric shorthand such as ``127.1``, and
+    ``tracker.example.invalid``. ``urlsplit`` reads a scheme-less ``www.``
+    candidate as a path, so that form is read with ``http://`` in front, and
+    ``www./issues/27`` then names the one-label host ``www``. A URL this
+    cannot parse, or one with no host, names nothing public.
+    https://docs.python.org/3/library/ipaddress.html#ipaddress.IPv4Address.is_global
+    https://www.rfc-editor.org/rfc/rfc6761
     """
+    if url[:4].lower() == "www.":
+        url = "http://" + url
     parts = split_url(url)
-    if parts is None:
+    if parts is None or parts.scheme.lower() not in ("http", "https"):
         return False
-    if parts.scheme in ("http", "https"):
-        return bool(parts.hostname)
-    if not parts.scheme and url[:4].lower() == "www.":
-        # ``URL_PATTERN`` accepts a scheme-less ``www.`` form, and
-        # ``urlsplit`` reads the whole thing as a path, so there is no
-        # authority for the test above to look at. Asked for a host,
-        # ``www./issues/27`` offered none and the path was then compared as
-        # though it were a real destination.
-        return bool(WWW_HOST.match(url))
-    return True
+    host = (parts.hostname or "").rstrip(".").lower()
+    if not host:
+        return False
+    try:
+        return ipaddress.ip_address(host).is_global
+    except ValueError:
+        pass
+    labels = host.split(".")
+    if len(labels) < 2 or not any(character.isalpha() for character in labels[-1]):
+        return False
+    return not any(
+        host == name or host.endswith("." + name) for name in NON_PUBLIC_NAMES
+    )
 
 
 def url_path_segments(url: str) -> list[str]:
@@ -777,7 +839,7 @@ def url_resolves(label: str, matched: str, urls: list[str]) -> bool:
     # A hash is read in either case above, so it is compared in one case here.
     matched_fold = matched.lower()
     for url in urls:
-        if not url_has_host(url):
+        if not url_is_public(url):
             continue
         parts = url_path_segments(url)
         lowered = [part.lower() for part in parts]
@@ -977,13 +1039,19 @@ def names_in(
     A Python file is read from its syntax tree, so a round number inside a
     string literal stays with the text pass and is not reported twice. Every
     other file has no tree to read, so its identifier-shaped tokens are taken
-    from the text.
+    from the text -- with every URL blanked first, as the text pass blanks
+    them. A path such as ``/review_round_42`` is part of a link, and the link
+    is the form the rule asks for.
     """
     found: list[str] = []
     budget = dict(exempt or {})
     relative = path.relative_to(root).as_posix()
     source = path.read_text(encoding="utf-8", errors="replace")
-    names = identifiers_of(source) if path.suffix == ".py" else identifier_like_names(source)
+    names = (
+        identifiers_of(source)
+        if path.suffix == ".py"
+        else identifier_like_names(blank_urls(source)[0])
+    )
     for name in sorted(names):
         if budget.get(name):
             budget[name] -= 1
@@ -1049,6 +1117,44 @@ def split_comments(line: str, in_comment: bool) -> tuple[str, str, bool]:
 LIST_ITEM_START = re.compile(r"^\s*(?:(?:#|//|--|;)+\s*)?(?:\d{1,9}[.)]|[-*+])\s")
 
 
+#: What a Markdown page prints differently from its source, in the three ways
+#: a reference can hide in. A character reference prints as the character it
+#: names, so the numeric reference to the hash sign prints a hash. A backslash
+#: before ASCII punctuation is dropped and the punctuation printed. And the
+#: inline delimiters print as nothing: emphasis, strikethrough, a code span's
+#: backticks and an inline HTML tag, so a noun and a bold number read as the
+#: noun and the number.
+#: One pass, left to right, so an escaped or a decoded delimiter stays a
+#: character, as CommonMark keeps it. A delimiter becomes a space rather than
+#: nothing, so two words it separated stay two words. A code span's own
+#: content is not kept apart: CommonMark prints a character reference there as
+#: it stands, and this decodes it, which can report more and never less.
+#: https://spec.commonmark.org/0.31.2/#entity-and-numeric-character-references
+#: https://spec.commonmark.org/0.31.2/#backslash-escapes
+RENDERED_TEXT_PATTERN = re.compile(
+    r"\\([!-/:-@\[-`{-~])"
+    r"|(&(?:#[0-9]{1,7}|#[xX][0-9A-Fa-f]{1,6}|[A-Za-z][A-Za-z0-9]{1,31});)"
+    r"|</?[A-Za-z][A-Za-z0-9-]*(?:\s[^<>]*)?/?>|[*_~`]+"
+)
+
+
+def rendered_text(text: str) -> str:
+    """Return a line of Markdown the way the page prints its characters.
+
+    ``text`` has had its URLs blanked already, so nothing here reaches inside
+    one. See ``RENDERED_TEXT_PATTERN``.
+    """
+
+    def replace(match: re.Match[str]) -> str:
+        if match.group(1) is not None:
+            return match.group(1)
+        if match.group(2) is not None:
+            return html.unescape(match.group(2))
+        return " "
+
+    return RENDERED_TEXT_PATTERN.sub(replace, text)
+
+
 def blank_urls(text: str) -> tuple[str, list[str]]:
     """Return ``text`` with each URL blanked, and the URLs, trimmed.
 
@@ -1089,7 +1195,8 @@ def references_in(
     which is what the test that proves each exemption still occurs needs.
 
     Each line is read as two texts in a Markdown file: what the page shows,
-    and what an HTML comment hides. A URL the page shows resolves a reference
+    in the characters the page prints (``rendered_text``), and what an HTML
+    comment hides, as the source spells it. A URL the page shows resolves a reference
     in either. A URL a comment hides resolves only a reference that is hidden
     too: a reader of the page cannot follow it, while a reader of the source
     sees the reference and the URL together. Every other file is one text.
@@ -1114,10 +1221,6 @@ def references_in(
 
     def report(number: int, scanned: str, urls: list[str], seam: int = -1) -> None:
         for name, pattern in REVIEW_HISTORY_PATTERNS:
-            # Excused only in the documents that define the review protocol,
-            # never by file type. See ``ROUND_CONCEPT_DOCUMENTS``.
-            if name in ROUND_CONCEPT_PATTERNS and relative in ROUND_CONCEPT_DOCUMENTS:
-                continue
             for match in pattern.finditer(scanned):
                 if seam != -1 and not match.start() < seam < match.end() - 1:
                     # Across a line break, only what crosses it is new.
@@ -1151,11 +1254,14 @@ def references_in(
     readings: list[tuple[tuple[str, list[str]], tuple[str, list[str]]]] = []
     in_comment = False
     for line in lines:
-        if path.suffix in MARKDOWN_SUFFIXES:
+        markdown = path.suffix in MARKDOWN_SUFFIXES
+        if markdown:
             shown, hidden, in_comment = split_comments(line, in_comment)
         else:
             shown, hidden = line, ""
         shown_text, shown_urls = blank_urls(shown)
+        if markdown:
+            shown_text = rendered_text(shown_text)
         hidden_text, hidden_urls = blank_urls(hidden)
         readings.append(((shown_text, shown_urls), (hidden_text, shown_urls + hidden_urls)))
 
@@ -1174,7 +1280,6 @@ def references_in(
             if above and below:
                 report(number, above + " " + below, above_urls + below_urls, len(above))
     return found
-
 
 
 def exempt_texts_for(relative: str) -> dict[str, int]:
@@ -1873,45 +1978,34 @@ def test_a_bare_pointer_in_a_non_python_file_is_reported(tmp_path: Path) -> None
         assert references_in(sample, tmp_path), name
 
 
-def test_the_anaphora_patterns_are_excused_by_document_not_by_file_type(
+def test_a_concept_document_is_excused_only_for_what_it_records(
     tmp_path: Path,
 ) -> None:
-    """A document that defines review runs may say which one it means.
+    """A document that defines review runs keeps its recorded uses, and no more.
 
-    Run everywhere with no exception at all, these report 27 lines: prose about
-    the documented review loop in the root agent instruction files, in the
-    archived design record, in this repository's adoption notes and in the
-    Batch 1 brief. Two of those files are protected and this project may not
-    edit them, and a check that cannot pass is a check somebody turns off.
-
-    **The exception used to be the file type, and that was too wide.** Every
-    workflow, shell script and Markdown page in the repository was excused, so
-    a comment naming a numbered run produced no finding outside a module. The
-    excuse now names the five documents, which is what it was standing in for.
+    The exception used to be the file type, and then the document. Both were
+    too wide: every sentence added later to an excused document was excused
+    too. The conceptual uses are now rows in the exemption fixture, counted,
+    so a new sentence in the same document is reported like one anywhere else.
     """
     # Built rather than written: the anaphora this test is about is a finding
     # in this file, which is the point of the file.
     line = "# settled in the " + "previous " + "round" + "\n"
 
-    # No file type is excused any more, Python included.
-    for name in ("a.py", "a.md", "a.yml", "a.txt", "a.js", "a.sh"):
+    # No file type and no document is excused by name, Python included.
+    for name in ("a.py", "a.md", "a.yml", "a.txt", "a.js", "a.sh", "AGENTS.md", "CLAUDE.md"):
         sample = tmp_path / name
         sample.write_text(line, encoding="utf-8")
         assert references_in(sample, tmp_path), name
 
-    # The five named documents are, and they are named by path.
-    assert "CLAUDE.md" in ROUND_CONCEPT_DOCUMENTS
-    assert "docs/spec/specification.md" in ROUND_CONCEPT_DOCUMENTS
-    for relative in sorted(ROUND_CONCEPT_DOCUMENTS):
-        excused = tmp_path / relative
-        excused.parent.mkdir(parents=True, exist_ok=True)
-        excused.write_text(line, encoding="utf-8")
-        assert not references_in(excused, tmp_path), relative
-
-    # And every one of them is a file this repository actually holds, so the
-    # list cannot rot into an excuse for a path that no longer exists.
-    for relative in sorted(ROUND_CONCEPT_DOCUMENTS):
-        assert (REPO_ROOT / relative).is_file(), relative
+    # A recorded conceptual use is excused as many times as it is recorded, and
+    # one more occurrence of the same words is reported.
+    recorded = exempt_texts_for("CLAUDE.md")
+    assert recorded, "the fixture records the loop document's conceptual uses"
+    occurrence, count = sorted(recorded.items())[0]
+    sample = tmp_path / "CLAUDE.md"
+    sample.write_text(("x " + occurrence + "\n") * (count + 1), encoding="utf-8")
+    assert len(references_in(sample, tmp_path, recorded)) == 1
 
 
 def test_a_commit_this_repository_holds_is_linked_and_one_it_does_not_is_not() -> None:
@@ -2725,3 +2819,190 @@ def test_a_url_a_comment_hides_resolves_only_what_the_comment_holds(
         sample = tmp_path / ("doc" + suffix)
         sample.write_text(body, encoding="utf-8")
         assert bool(references_in(sample, tmp_path)) is reported, body
+
+
+def _reported(tmp_path: Path, body: str, suffix: str = ".md") -> bool:
+    """Return whether the scan reports anything in one document."""
+    sample = tmp_path / ("doc" + suffix)
+    sample.write_text(body + chr(10), encoding="utf-8")
+    return bool(references_in(sample, tmp_path))
+
+
+def test_a_url_must_name_a_host_the_public_can_reach(tmp_path: Path) -> None:
+    """A link nobody outside can follow resolves nothing.
+
+    Loopback, private and link-local addresses, a single-label intranet name,
+    a numeric shorthand, and the names reserved for private or special use
+    each named a destination only its author could open, and each resolved
+    the reference beside it. A documentation domain such as ``example.com``
+    still resolves: it is on the public internet, and the samples in this
+    suite use it for a public tracker.
+    """
+    reference = "issue" + " " + "27"
+    path = "/issues/" + "27"
+    for host in (
+        "localhost",
+        "127.0.0.1",
+        "[::1]",
+        "10.0.0.5",
+        "169.254.1.1",
+        "intranet",
+        "127.1",
+        "2130706433",
+        "foo.localhost",
+        "tracker.example.invalid",
+        "tracker.test",
+        "git.local",
+        "git.internal",
+        "tracker.home.arpa",
+        "tracker.example",
+    ):
+        assert _reported(tmp_path, reference + " http://" + host + path), host
+        assert not url_is_public("http://" + host + path), host
+    for url in (
+        "https://github.com/o/r" + path,
+        "http://8.8.8.8" + path,
+        "https://github.com.:443/o/r" + path,
+        "www.github.com/o/r" + path,
+    ):
+        assert not _reported(tmp_path, reference + " " + url), url
+        assert url_is_public(url), url
+    assert url_is_public("https://tracker.example.com/browse/ABC-123")
+    assert not url_is_public("ftp://github.com/o/r" + path)
+
+
+def test_a_url_begins_a_token(tmp_path: Path) -> None:
+    """A scheme or ``www.`` inside a longer token is no link.
+
+    ``nothttps://`` and ``xwww.`` are the tails of other words, so their path
+    resolved a reference that no reader can follow. What may stand in front of
+    a real one -- a bracket, a quote, ``=`` or an emphasis delimiter -- still
+    lets it resolve.
+    """
+    reference = "issue" + " " + "27"
+    tail = "github.com/o/r/issues/" + "27"
+    url = "https://" + tail
+    for body in (
+        reference + " not" + url,
+        reference + " x" + "www." + tail,
+        reference + " git+" + url,
+        reference + " path/" + "www." + tail,
+        reference + " mail@" + "www." + tail,
+    ):
+        assert _reported(tmp_path, body), body
+    for body in (
+        reference + " (" + url + ")",
+        reference + " <" + url + ">",
+        "[" + reference + "](" + url + ")",
+        reference + ' "' + url + '"',
+        reference + " _" + url + "_",
+        reference + " url=" + url,
+    ):
+        assert not _reported(tmp_path, body), body
+
+
+def test_a_round_is_read_in_every_spelling_of_its_number(tmp_path: Path) -> None:
+    """Digits, an ordinal suffix, and the words, up past the loop's limit.
+
+    The ordinal list stopped at twelve and read no suffix, while the loop
+    this repository documents runs to eighty rounds. After an article the
+    words are no number -- ``a round one`` is a round number -- so that shape
+    stays quiet.
+    """
+    noun = "round"
+    for before, after in (
+        ("fixed in the 13th review ", ""),
+        ("fixed in the 22nd ", ""),
+        ("fixed in the 1st ", ""),
+        ("fixed in the thirteenth ", ""),
+        ("fixed in the twenty-first ", ""),
+        ("fixed in the eightieth ", ""),
+        ("fixed in the ninety ninth ", ""),
+        ("fixed in ", " thirteen"),
+        ("fixed in ", " forty-two"),
+        ("fixed in ", "-4"),
+        ("fixed in ", "-eight"),
+        ("fixed in the review ", " twelve"),
+    ):
+        assert _reported(tmp_path, "# " + before + noun + after, ".py"), before + after
+    for body in (
+        "# the number is exact rather than a " + noun + " one",
+        "# an ordinary " + noun + " trip",
+        "# the fourteenth of the month",
+    ):
+        assert not _reported(tmp_path, body, ".py"), body
+
+
+def test_a_markdown_page_is_read_as_it_prints(tmp_path: Path) -> None:
+    """A reference spelled with markup the page prints away is still a reference.
+
+    A character reference prints as its character, a backslash before
+    punctuation prints the punctuation, and emphasis, strikethrough, code
+    backticks and an inline tag print as nothing. So each spelling below puts
+    an opaque reference on the page, and each passed. Outside Markdown the
+    source is what a reader reads, and nothing is decoded.
+    """
+    number = "27"
+    hash_sign = "&#" + "35;"
+    for body in (
+        "fixed upstream in " + hash_sign + number,
+        "fixed upstream in &#x" + "23;" + number,
+        "see issue &#" + "50;&#" + "55;",
+        "see issue&nbsp;" + number,
+        "see issue **" + number + "**",
+        "see *issue* " + number,
+        "see ~~issue~~ " + number,
+        "see issue `" + number + "`",
+        "see issue <b>" + number + "</b>",
+        "fixed in round &#" + "49;&#" + "51;",
+    ):
+        assert _reported(tmp_path, body), body
+    url = "https://github.com/o/my_repo/issues/" + number
+    for body, suffix in (
+        ("a &#" + "42; star", ".md"),
+        ("see \\" + hash_sign + number, ".md"),
+        ("see issue **" + number + "** " + url, ".md"),
+        ("# fixed upstream in " + hash_sign + number, ".py"),
+    ):
+        assert not _reported(tmp_path, body, suffix), body
+
+
+def test_a_url_path_is_not_read_as_an_identifier(tmp_path: Path) -> None:
+    """A link is the form the rule asks for, so its path names nothing.
+
+    Outside Python the identifier pass reads tokens from the text, and it read
+    a name out of a link's path, so a file that cited its source failed.
+    The same name outside a link is still reported.
+    """
+    name = "review" + "_round_" + "42"
+    for suffix in (".yml", ".md", ".sh"):
+        sample = tmp_path / ("doc" + suffix)
+        sample.write_text("see https://example.com/" + name + chr(10), encoding="utf-8")
+        assert names_in(sample, tmp_path) == [], suffix
+        sample.write_text("key: " + name + chr(10), encoding="utf-8")
+        assert names_in(sample, tmp_path), suffix
+
+
+def test_a_compound_word_is_not_a_review_round(tmp_path: Path) -> None:
+    """``round`` joined to a word by a hyphen is part of a compound.
+
+    The brief merged from ``main`` describes the trip's shape as the one
+    that is a return journey versus an open-jaw one, written with the
+    determiner, the noun and a hyphen, and the position pattern read that as
+    a review. A hyphen before a number, or before a number word, is still a
+    label.
+    """
+    noun = "round"
+    for body in (
+        "# settle the " + noun + "-trip-versus-open-jaw shape",
+        "# every " + noun + "-robin schedule",
+        "# the first " + noun + "-trip fare",
+        "# both " + noun + "s-trip prices",
+    ):
+        assert not _reported(tmp_path, body, ".py"), body
+    for body in (
+        "# the " + noun + "-4 fix",
+        "# the " + noun + "-eight control",
+        "# the " + noun + ", then the next",
+    ):
+        assert _reported(tmp_path, body, ".py"), body

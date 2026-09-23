@@ -5,11 +5,16 @@
 #
 # Install with:  python -m pip install -r requirements-dev.txt
 #
-# The first three match the install line in
-# .github/workflows/markdownlint.yml, which is what CI runs. The fourth
-# is a superset of it: CI runs the schema checks through their
-# pre-commit hook, which brings its own copy, and a local pytest run
-# has no such hook to borrow from.
+# CI installs these in two workflows, and this file is the union of
+# both, so one local install runs every suite:
+#
+# - .github/workflows/markdownlint.yml installs pytest, jsonschema and
+#   PyYAML.
+# - .github/workflows/data-ci.yml installs the same three and
+#   check-jsonschema, for the schema example tests.
+#
+# check-jsonschema has no version here. data-ci.yml installs the version
+# that .pre-commit-config.yaml pins, and that pin is the one to change.
 
 pytest
 jsonschema>=4.18.0

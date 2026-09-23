@@ -28,3 +28,28 @@ text	_ADOPTION-DIFFICULTIES.md	PR #5	38	this repository's own pull request 5, na
 text	_TODO-repo-init.md	issue #8	1	this repository's own issue 8, named beside the commit that closed it; GitHub renders it as a link
 text	.github/ISSUE_TEMPLATE/feature_request.yml	#123	2	the issue form teaches a contributor how to reference an issue, so the hash and number are the lesson rather than a reference this repository makes
 text	tests/test_check_readability.py	#1	3	a negative control: the readability scan must read a hash and a digit as a word a child reads rather than as a heading, so the test says it three times
+text	AGENTS.md	eightieth round	1	the review loop's definition in a protected instruction file: the loop's limit and its rounds as a concept, not one review
+text	AGENTS.md	rounds:  80	1	the review loop's definition in a protected instruction file: the loop's limit and its rounds as a concept, not one review
+text	CLAUDE.md	eightieth round	1	the review loop's definition in a protected instruction file: the loop's limit and its rounds as a concept, not one review
+text	CLAUDE.md	every round	1	the review loop's definition in a protected instruction file: the loop's limit and its rounds as a concept, not one review
+text	CLAUDE.md	rounds:  80	1	the review loop's definition in a protected instruction file: the loop's limit and its rounds as a concept, not one review
+text	CLAUDE.md	the  Round	1	the review loop's definition in a protected instruction file: the loop's limit and its rounds as a concept, not one review
+text	_ADOPTION-DIFFICULTIES.md	The round	2	the adoption journal: each entry heading names the review of pull request 5 it records, so a round named here is an entry in this file
+text	_ADOPTION-DIFFICULTIES.md	previous review round	1	the adoption journal: each entry heading names the review of pull request 5 it records, so a round named here is an entry in this file
+text	_ADOPTION-DIFFICULTIES.md	round 1	1	the adoption journal: each entry heading names the review of pull request 5 it records, so a round named here is an entry in this file
+text	_ADOPTION-DIFFICULTIES.md	round 3	2	the adoption journal: each entry heading names the review of pull request 5 it records, so a round named here is an entry in this file
+text	_ADOPTION-DIFFICULTIES.md	round-3	2	the adoption journal: each entry heading names the review of pull request 5 it records, so a round named here is an entry in this file
+text	_ADOPTION-DIFFICULTIES.md	round-4	3	the adoption journal: each entry heading names the review of pull request 5 it records, so a round named here is an entry in this file
+text	_ADOPTION-DIFFICULTIES.md	the round	3	the adoption journal: each entry heading names the review of pull request 5 it records, so a round named here is an entry in this file
+text	docs/build/batch1_build_prompt.md	the round	2	the Batch 1 brief describing its own revision process, not one review
+text	docs/build/batch1_build_prompt.md	this round	2	the Batch 1 brief describing its own revision process, not one review
+text	docs/spec/specification.md	earlier rounds	1	the archived design record naming its own revision rounds, which its version history lists one by one
+text	docs/spec/specification.md	eighth round	1	the archived design record naming its own revision rounds, which its version history lists one by one
+text	docs/spec/specification.md	ninth round	1	the archived design record naming its own revision rounds, which its version history lists one by one
+text	docs/spec/specification.md	prior rounds	1	the archived design record naming its own revision rounds, which its version history lists one by one
+text	docs/spec/specification.md	round-8	1	the archived design record naming its own revision rounds, which its version history lists one by one
+text	docs/spec/specification.md	round-9	1	the archived design record naming its own revision rounds, which its version history lists one by one
+text	docs/spec/specification.md	seventh round	1	the archived design record naming its own revision rounds, which its version history lists one by one
+text	docs/spec/specification.md	sixth round	1	the archived design record naming its own revision rounds, which its version history lists one by one
+text	docs/spec/specification.md	the round	3	the archived design record naming its own revision rounds, which its version history lists one by one
+text	docs/spec/specification.md	this round	1	the archived design record naming its own revision rounds, which its version history lists one by one
