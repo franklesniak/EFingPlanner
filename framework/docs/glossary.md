@@ -34,7 +34,7 @@ This page is distinct from both of those. It defines no travel words and no dest
 - **[Carry-over tag](design_principles.md)** -- the short callout that names a planning move the child just used and asks where else it would work. It appears only on the session that first introduces that move.
 - **Checkpoint** -- a session where an adult reviews the work before the project moves on.
 - **[Trip-Basics card](../templates/trip_basics.md)** -- the family-owned card holding the few facts about this family and this trip. The sessions point at it instead of guessing.
-- **[Budget band](../templates/current_family_travel_assumptions.md)** -- a rough not-to-exceed signal in a form a child can use, per day and per person or by hotel tier. The full trip total stays an adult number.
+- **[Budget band](../templates/current_family_travel_assumptions.md)** -- a rough not-to-exceed signal in a form a child can use: per person per day, per day for the family, or a hotel tier. The full trip total stays an adult number.
 - **[Rough trip shape](../templates/current_family_travel_assumptions.md)** -- the adults' provisional call on the shape of the trip: in and out of the same place, in one place and out of another, or one base to travel from. It also names the likely arrival and departure places.
 - **Planning assumption** -- a starting point the adults set that can still change, recorded so the child is planning against something real.
 - **Trade-off report** -- the child's written account of what they gave up to get something else, which is the actual work a scoring grid is there to support.

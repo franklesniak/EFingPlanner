@@ -44,7 +44,7 @@ Now do the work:
 
 **Guidebooks get out of date.** They're great for getting oriented and great for ideas. They aren't current. Opening hours, prices, access rules and even the names of attractions change after a book is printed. So check the publication year, and check anything that matters against an official source. Write the date you checked it beside the fact. That's the same move you'll use for video and for AI: get oriented first, then verify the facts. A library copy is often older than the one on a store shelf, so this check matters most on the free path.
 
-**Do not copy the source's words.** Write your notes in your own words. A short line you quote for a citation is fine. Copying pages, copying maps, or typing out long chunks is never okay, and it stops you learning anything.
+**Do not copy the source's words.** Write your notes in your own words. A short line you quote for a citation is fine. Copying pages or typing out long chunks is never okay, and it stops you learning anything.
 
 You only need one source today. Comparing two sources on the same question is Session 08's job.
 

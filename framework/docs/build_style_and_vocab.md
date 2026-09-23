@@ -119,7 +119,7 @@ Built files reference concepts by **Name** and link to the built-file home below
 | Verify-Don't-Trust | Prefer official/current sources; never treat volatile facts as fixed | `framework/docs/source_trustworthiness.md` |
 | Your-Work-Wasn't-Wrong | Adults may change the plan; the child's work still counts | parent guide when-plans-change content |
 | Trip-Basics card | Family-owned config (home airport, party size, max trip length, roster) kept out of framework files | `framework/templates/trip_basics.md` |
-| Budget Band (kid-graspable) | A rough not-to-exceed signal, per-day/per-person or by hotel tier | `framework/templates/current_family_travel_assumptions.md` |
+| Budget Band (kid-graspable) | A rough not-to-exceed signal: per person per day, per day for the family, or a hotel tier | `framework/templates/current_family_travel_assumptions.md` |
 | Rough Trip Shape | Provisional adult call on the shape of the trip -- in and out of the same place, in one place and out of another, or one base -- plus the likely arrival and departure places | `framework/templates/current_family_travel_assumptions.md` |
 | Lighter Rubric (3-criteria) | The simplified scoring option offered wherever weighted scoring appears | `framework/templates/scoring_rubric.md` |
 | Core Finish Line | Shortest route to a usable plan (Checkpoint 5) | `framework/PROJECT_ROADMAP.md` index |
