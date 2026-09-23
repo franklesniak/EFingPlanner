@@ -77,7 +77,7 @@ Your child makes an "if I get separated" card and learns a three-step plan.
 
 **Rehearse the plan once**, calmly; keep it light, because a drill teaches fear rather than the script.
 
-Then two jobs on the card itself. **Fill in any local-language line** and confirm its current wording. And **check the emergency numbers on a current official page and write the date you checked**. Your child writes the numbers themselves once you have.
+Then three jobs on the card itself. **Fill in the lodging lines** once the lodging is booked and checked. **Fill in any local-language line** and confirm its current wording. And **check the emergency numbers on a current official page and write the date you checked**. Your child writes the numbers themselves once you have.
 
 A rehearsed plan lowers a child's anxiety. It turns a vague fear into a known script.
 

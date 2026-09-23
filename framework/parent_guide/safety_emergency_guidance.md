@@ -21,9 +21,10 @@ Stated plainly: a panicking child executes one rehearsed rule. A child choosing 
 
 ## Your part in their card
 
-Your child makes an "if I get separated" card and carries it. You do three things:
+Your child makes an "if I get separated" card and carries it. You do four things:
 
 - **Rehearse it once, calmly**, as a "what if". A calm rehearsal *lowers* anxiety, because it turns a vague fear into a known script.
+- **Fill in the lodging lines** on the card once the lodging is booked and checked.
 - **Fill in any local-language line** on the card yourself, and confirm the current wording.
 - **Check any emergency number** on a current official page before it goes on the card, and write the date you checked.
 
