@@ -18,4 +18,4 @@ Use one Decision Record for each big choice. Keep them all in one place. Togethe
 | Does a grown-up need to decide or verify anything? | |
 | Final family decision | |
 
-Tip: your first record is the season you recommend at Checkpoint 1. Keep the records in order. Then you can see how the plan grew.
+Tip: your first record is your season from Checkpoint 1. Keep the records in order. Then you can see how the plan grew.

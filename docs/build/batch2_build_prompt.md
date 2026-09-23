@@ -736,6 +736,11 @@ page -- confirm it still holds, and say so in one line. **It keeps its choose-no
 for a First Taste child**, who reaches Session 44 without having done Session 26. Both
 readings must be on the page, because both children read it.
 
+**Its adult-facing lines follow the same split.** The Parent Notes gain one Core-path line:
+the pick was chosen at Session 26 and acknowledged at Checkpoint 3, so confirm it still holds
+and do not run the choice again. The strip's clause gains a Core-path ending:
+`5-minute check-in; help co-choose the one unconditional pick, or confirm it on the Core path`.
+
 **On the Core path, Start Here, step 1 and the Materials line start from the must-do list on
 the My Calls page**, which Session 26 formed and Checkpoint 3 acknowledged. The child
 re-reads it as the list the plan protects, and makes no new one. The First Taste wording,
@@ -780,10 +785,10 @@ spec's continuation map calls this the capstone re-run. The child looks back at 
 Session 01 baseline and the reflection they wrote at the First Taste finish, and the
 Core/Full wording above applies. Say so on the page in one line.
 
-**Sessions 12, 14, 21, 33 and 53 are the only built sessions in the batch whose Parent
-Notes change**; Session 33 gains the fare instruction above, here the change adds a branch,
-keeps the existing instruction and corrects the build-state sentence named above, Sessions
-12 and 14 each gain the one booked-dates line
+**Sessions 12, 14, 21, 33, 44 and 53 are the only built sessions in the batch whose Parent
+Notes change**; Session 33 gains the fare instruction above, Session 44 gains the Core-path
+line above, here the change adds a branch, keeps the existing instruction and corrects the
+build-state sentence named above, Sessions 12 and 14 each gain the one booked-dates line
 below, and Session 21's change is the one word named below. Session 14's Core-path report
 and the Session 15 addition change no Parent Notes.
 
@@ -832,9 +837,12 @@ checkpoint.
 No child is asked to recommend dates the family cannot change. **With the dates booked, the
 season confirmation fills every place this brief asks for the season recommendation:** the
 decision log's first entry (9.4.1), the kit's season shell (9.4.3), B1's Checkpoint 1
-section, binder tab 3 (Session 50, copied by E2), the presentation outline (Session 51 and
-A12), E1's binder list and evidence floor, and Session 53's handoff. Each of those sections
-says so in place.
+section, B6's list of what exists early, binder tab 3 (Session 50, copied by E2), the
+presentation outline (Session 51 and A12), E1's binder list and evidence floor, Session 15's
+season-fit step, and Session 53's handoff. Each of those sections says so in place. The
+built Decision Record tip and the try-then-commit line in `time_and_effort.md` are worded
+for both paths, and the City Research Card's own row already reads "our Checkpoint 1
+season".
 
 #### Session 15 — cards toward the Core floor
 
@@ -842,7 +850,10 @@ The floor needs at least five city or region cards, and Session 15 makes two. Th
 is "at 15, add city cards toward the Core floor (their two cards count)". **On the Core path,
 say that these two cards are the first of at least five**, and that Sessions 18 and 19 add the
 rest. This rides on the Session 15 conversion in 4.1b; it adds one Core-path line and changes
-nothing a First Taste child reads.
+nothing a First Taste child reads. **In step 5, write "our Checkpoint 1 season" where it now
+says "the season you recommended at Checkpoint 1"**, as the City Research Card's own row
+does. The meaning is the same for an open-dates child, and the step is then true for a
+family whose dates were booked.
 
 #### Session 21 — compare the Core long-list
 
@@ -3301,7 +3312,8 @@ pulling the child into a booking workflow.**
    neighborhood comparison, the day cards and the budget estimate. **Each arrives only once
    the child has made it.** On First Taste, and early on the Core path, most of the list
    does not exist yet. If booking comes first, the adult works from what does exist: the
-   season recommendation, the city shortlist once Checkpoint 2 has passed (on First Taste,
+   season recommendation (or, with the dates booked, the season confirmation), the city
+   shortlist once Checkpoint 2 has passed (on First Taste,
    the Session 21 city comparison once it is done), and the rough trip shape recorded at
    setup, with the departure city and the round-trip-or-open-jaw call settled first if
    setup left them open.
@@ -3360,9 +3372,10 @@ the dates booked, a role line that uses the season confirmation in the family ta
 look-for line naming the explanation and the confirmed fit, a coaching question such as
 "What will our season change about the plan?", and a pitfall line against treating the
 confirmation as a formality), Session 15's prep line (the major cities reference is gone
-after 4.1b; the child now chooses from their Session 11 notes), Session 44's prep, look-for
-and pick lines (on the Core path, the My Calls page replaces the starred sights, the must-do
-list is the one Session 26 made, and the child confirms the pick Session 26 already chose),
+after 4.1b; the child now chooses from their Session 11 notes), Session 44's role, prep and
+look-for lines (on the Core path, the role is to confirm the pick Session 26 already chose,
+the My Calls page replaces the starred sights, and the must-do list is the one Session 26
+made),
 and Session 53's acknowledgment line (duration-true for Core/Full, duration-neutral for
 First Taste). Check Sessions 21 and 33, Session 44's cut-list step and Session 53's capstone
 re-run and Core reflection prompts against their 4.1a edits the same way.

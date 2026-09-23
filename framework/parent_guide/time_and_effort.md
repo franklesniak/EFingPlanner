@@ -26,7 +26,7 @@ The front of the project is the hands-on part. Early sessions need real co-worki
 
 ## Try-then-commit
 
-You do not have to commit to the whole project to start. Do Phases 0-2, reach Checkpoint 1 (a real season recommendation), then decide whether to keep going. Stopping at any checkpoint still leaves something real.
+You do not have to commit to the whole project to start. Do Phases 0-2, reach Checkpoint 1 (a real season recommendation, or a season confirmation if your dates are already booked), then decide whether to keep going. Stopping at any checkpoint still leaves something real.
 
 ## Low-Bandwidth Parent Mode
 
