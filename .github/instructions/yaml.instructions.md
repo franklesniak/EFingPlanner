@@ -336,7 +336,7 @@ The following step sequence uses Bash for the verification step. It reads the sa
 
 Non-compliant cases include a file containing `24`, `24.x`, `>=24`, `lts/*`, or `24.18.0-rc.1`; both setup inputs; a check of another field; a missing equality check; or verification after `npm ci`. Correct the source or verification before dependent work.
 
-Instruction contracts and focused example tests protect this guidance. They do not validate every downstream workflow or prove agent compliance. When a repository retains a toolchain inventory scanner, its selected-file parsing MUST agree with the action. The inventory does not replace checks of tracked provenance, exactness, or verification ordering. This rule does not require retaining an optional scanner or its module.
+When a repository retains a toolchain inventory scanner, its selected-file parsing MUST agree with the action. The inventory does not replace checks of tracked provenance, exactness, or verification ordering. This rule does not require retaining an optional scanner or its module.
 
 ## GitHub Actions Documentation Comment URLs
 
