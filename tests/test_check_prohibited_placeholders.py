@@ -1935,3 +1935,70 @@ def test_the_count_reports_files_read_rather_than_offered(tmp_path: Path) -> Non
     names = [path.name for path in hook.default_targets(tmp_path)]
     assert names == ["real.md"], names
     assert hook.main([], root=tmp_path) == 0
+
+
+@pytest.mark.parametrize(
+    ("label", "document"),
+    [
+        ("a comment below an inline textarea", "Intro <textarea>\n\n<!-- TBD -->\n"),
+        ("a comment on the same line", "Intro <script> <!-- TBD -->\n"),
+        ("a comment below an inline plaintext", "Intro <plaintext>\n\n<!-- TBD -->\n"),
+        (
+            "a comment below a tag part way along a raw HTML line",
+            "<div><textarea>\n\n<!-- TBD -->\n",
+        ),
+    ],
+)
+def test_a_comment_after_a_text_state_tag_hides_no_placeholder(
+    label: str, document: str
+) -> None:
+    """The page reads everything after such a tag as the element's content.
+
+    ``Intro <textarea>`` is inline raw HTML, so Markdown opens no block and
+    this hook's block model opened no run -- while the browser enters the
+    textarea at the tag and prints the comment below it as text. The hook
+    now reads the file whole from such a tag on.
+    """
+    assert [violation.matched_text for violation in _find(document)] == ["TBD"], label
+
+
+@pytest.mark.parametrize(
+    ("label", "document"),
+    [
+        ("inside a script block", "<script>\nTBD <!-- ALLOW-TBD: example -->\n</script>\n"),
+        ("after an inline script", "Intro <script> TBD <!-- ALLOW-TBD: example -->\n"),
+    ],
+)
+def test_an_allow_marker_inside_raw_text_exempts_nothing(label: str, document: str) -> None:
+    """A marker the page prints as text is no comment, so it exempts nothing.
+
+    Two placeholders are reported, and both are right: the one the marker
+    was meant to excuse, and the one spelled inside the marker's own words,
+    which are text here like everything else in the element.
+    """
+    assert [violation.matched_text for violation in _find(document)] == [
+        "TBD",
+        "TBD",
+    ], label
+
+
+@pytest.mark.parametrize(
+    ("label", "document"),
+    [
+        ("a code span", "Use `<script>` here.\n\n<!-- TBD -->\n"),
+        ("a backslash escape", "Use \\<script> here.\n\n<!-- TBD -->\n"),
+        ("a comment", "<!-- a <script> note -->\n\n<!-- TBD -->\n"),
+        ("a comment open from above", "<!-- a\n<script>\n-->\n\n<!-- TBD -->\n"),
+        ("a block that closes", "<script>\n</script>\n\n<!-- TBD -->\n"),
+        ("a marker before the tag", "<!-- ALLOW-TBD: example --> TBD Intro <script>\n"),
+        (
+            "a marker after the element closes",
+            "<script></script> TBD <!-- ALLOW-TBD: example -->\n",
+        ),
+    ],
+)
+def test_comments_and_markers_the_page_reads_are_left_alone(
+    label: str, document: str
+) -> None:
+    """The over-application controls: a real comment still hides, a real marker exempts."""
+    assert _find(document) == [], label

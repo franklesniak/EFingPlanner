@@ -447,6 +447,26 @@ RAW_TEXT_RUNS = tuple(
     (COMMENT_RUN, re.compile(r"^ {0,3}<!--"), re.compile(r"-->")),
 )
 RAW_TEXT_CLOSERS = {key: closer for key, _, closer in RAW_TEXT_RUNS}
+#: The start tags that switch the page's tokenizer into a state it leaves only
+#: at a matching end tag, or never: the eight raw-text names above, and
+#: ``plaintext``, whose state has no way out at all. ``RAW_TEXT_RUNS`` models
+#: one of these only where it opens an HTML block at the start of a line.
+#: Written anywhere else -- after words on a paragraph line, in a heading or a
+#: table cell, or part way along a raw HTML line -- the tag still reaches the
+#: page, the browser still enters the state, and everything after it is data:
+#: headings, prose and comments alike. Markdown does not know that and goes on
+#: emitting headings below it. That position is not modelled here. Each hook
+#: takes its own safe direction there instead, and says which in the place it
+#: asks. ``noscript`` stays out for the reason given above. Kept identical to
+#: the constant in the sibling hooks.
+#: https://html.spec.whatwg.org/multipage/parsing.html#parsing-main-inbody
+#: https://html.spec.whatwg.org/multipage/parsing.html#plaintext-state
+TEXT_STATE_ELEMENT_NAMES = RAW_TEXT_ELEMENT_NAMES + ("plaintext",)
+#: A start tag's name as the page's tokenizer reads it: a letter after the
+#: ``<``, then everything up to whitespace, a ``/`` or a ``>``. An end tag
+#: begins ``</`` and does not match.
+#: https://html.spec.whatwg.org/multipage/parsing.html#tag-name-state
+START_TAG_NAME_PATTERN = re.compile(r"<([A-Za-z][^\t\n\f\r />]*)")
 #: HTML5's tag-state machine, entered where a tag's name has just ended.
 #: ``html_tag_close_state`` names its states as the standard names them and
 #: hands the state back, because a tag may end on a line below the one it
@@ -3355,6 +3375,20 @@ def raw_text_run_boundary(
     return None, None, -1
 
 
+def text_state_start_tag(text: str, index: int) -> str | None:
+    """Return the element name when a start tag at ``index`` opens a text state.
+
+    ``None`` for an end tag, for every other element, and where the text at
+    ``index`` is no tag at all. The name is compared in lower case, because
+    the tokenizer folds it. Kept identical to the helper in the sibling hooks.
+    """
+    match = START_TAG_NAME_PATTERN.match(text, index)
+    if match is None:
+        return None
+    name = match.group(1).lower()
+    return name if name in TEXT_STATE_ELEMENT_NAMES else None
+
+
 def raw_text_run_holds_text(run: str | None) -> bool:
     """Return whether a line inside ``run`` carries text rather than markup.
 
@@ -3483,6 +3517,7 @@ def raw_html_comment_spans(
     is_in_comment: bool,
     open_tag: str | None = None,
     in_bogus_run: bool = False,
+    text_state_tags: list[str] | None = None,
 ) -> tuple[str, bool, str | None, bool]:
     """Return the HTML comment text on one line of a raw HTML block.
 
@@ -3516,6 +3551,12 @@ def raw_html_comment_spans(
     spans: list[str] = []
     index = 0
 
+    # ``text_state_tags``, when a list is passed, receives the name of every
+    # start tag on this line that opens a text state. The line is raw HTML, so
+    # the page's tokenizer reads every ``<`` and a letter it meets outside a
+    # comment and outside another tag as a start tag, however CommonMark would
+    # spell it. A run that opens at the start of the line is modelled by
+    # ``raw_text_run_boundary`` and never reaches this walk.
     if in_bogus_run:
         # A run that ends at the next ``>`` was left open on the line above:
         # a bogus comment, or a tag too malformed for the grammar above to
@@ -3567,6 +3608,10 @@ def raw_html_comment_spans(
             continue
 
         if line[index] == "<":
+            if text_state_tags is not None:
+                name = text_state_start_tag(line, index)
+                if name is not None:
+                    text_state_tags.append(name)
             # A processing instruction, a declaration and a CDATA section are
             # raw HTML whose content is characters, exactly as they are in the
             # Markdown inline walk -- this is the same helper
@@ -3635,6 +3680,7 @@ def raw_html_comment_spans(
 def scan_paragraph_inlines(
     lines: Sequence[ParagraphLine],
     skips: dict[int, tuple[tuple[int, int], ...]] | None,
+    text_state_tags: list[tuple[int, str]] | None = None,
 ) -> tuple[list[str], list[tuple[int, int, int]]]:
     """Walk one paragraph left to right, one context at a time.
 
@@ -3672,6 +3718,11 @@ def scan_paragraph_inlines(
     backslash escape. A line indented four spaces past its container is code
     rather than a paragraph, so nothing on it is read at all. Kept in step with
     ``scan_inline_run`` in ``.github/scripts/check-session-structure.py``.
+
+    ``text_state_tags``, when a list is passed, receives ``(row, name)`` for
+    every raw HTML start tag the walk consumes that opens a text state; see
+    ``TEXT_STATE_ELEMENT_NAMES``. Only the pass with the link model is given
+    one.
     https://spec.commonmark.org/0.31.2/#code-spans
     https://spec.commonmark.org/0.31.2/#links
     https://spec.commonmark.org/0.31.2/#autolinks
@@ -3802,17 +3853,20 @@ def scan_paragraph_inlines(
                     index = autolink.end()
                     continue
                 tag = INLINE_HTML_TAG_PATTERN.match(line, index)
-                if tag is not None:
-                    index = tag.end()
-                    continue
-                # A tag that does not close on this line is not finished: it
-                # closes on a later line of the same paragraph, the way a
-                # comment and the other raw HTML runs already do here.
-                # Reading only this line left a backtick inside a multiline
-                # attribute standing as text, and it then paired with a
-                # backtick below and masked a real comment.
-                tag_row, tag_index = following_tag_end(lines, row, index)
+                if tag is None:
+                    # A tag that does not close on this line is not finished:
+                    # it closes on a later line of the same paragraph, the
+                    # way a comment and the other raw HTML runs already do
+                    # here. Reading only this line left a backtick inside a
+                    # multiline attribute standing as text, and it then
+                    # paired with a backtick below and masked a real comment.
+                    tag_row, tag_index = following_tag_end(lines, row, index)
+                else:
+                    tag_row, tag_index = row, tag.end()
                 if tag_row != -1:
+                    name = text_state_start_tag(line, index)
+                    if text_state_tags is not None and name is not None:
+                        text_state_tags.append((row, name))
                     row, index = tag_row, tag_index
                     continue
 
@@ -3908,7 +3962,9 @@ def paragraph_metadata_skips(
 
 
 def paragraph_inlines(
-    lines: Sequence[ParagraphLine], defined_labels: frozenset[str]
+    lines: Sequence[ParagraphLine],
+    defined_labels: frozenset[str],
+    text_state_tags: list[tuple[int, str]] | None = None,
 ) -> tuple[list[str], list[tuple[int, int]], list[tuple[int, int]]]:
     """Return a paragraph's comment text per line, its code spans and its metadata.
 
@@ -3928,7 +3984,7 @@ def paragraph_inlines(
     metadata is.
     """
     skips = paragraph_metadata_skips(lines, defined_labels)
-    comments, code_spans = scan_paragraph_inlines(lines, skips)
+    comments, code_spans = scan_paragraph_inlines(lines, skips, text_state_tags)
     return (
         comments,
         [
@@ -3969,6 +4025,10 @@ class DocumentInlines:
     code_spans: tuple[tuple[int, int], ...]
     comment_lines: tuple[str, ...]
     metadata: tuple[tuple[int, int], ...]
+    #: ``(line number, element name)`` for every start tag the page meets that
+    #: opens a text state where this walk does not model one. See
+    #: ``TEXT_STATE_ELEMENT_NAMES`` and ``scan_files``.
+    text_state_tags: tuple[tuple[int, str], ...] = ()
 
 
 def scan_document_inlines(text: str) -> DocumentInlines:
@@ -4024,6 +4084,7 @@ def scan_document_inlines(text: str) -> DocumentInlines:
     open_tag: str | None = None
     in_bogus_run = False
     offset = 0
+    text_state_tags: list[tuple[int, str]] = []
 
     def close_paragraph() -> None:
         nonlocal paragraph, rows, previous_path
@@ -4154,14 +4215,16 @@ def scan_document_inlines(text: str) -> DocumentInlines:
             # walk instead read a real comment as an image title, a code span
             # or a link destination, and an adult-facing document was scored by
             # the child gate.
+            names: list[str] = []
             (
                 comment_lines[number],
                 is_in_comment,
                 open_tag,
                 in_bogus_run,
             ) = raw_html_comment_spans(
-                fence_line.content, is_in_comment, open_tag, in_bogus_run
+                fence_line.content, is_in_comment, open_tag, in_bogus_run, names
             )
+            text_state_tags.extend((number + 1, name) for name in names)
             close_paragraph()
             paragraph_open = False
             continue
@@ -4280,9 +4343,11 @@ def scan_document_inlines(text: str) -> DocumentInlines:
     spans: list[tuple[int, int]] = []
     metadata: list[tuple[int, int]] = []
     for run_lines, run_rows in runs:
+        found: list[tuple[int, str]] = []
         comments, code_spans, run_metadata = paragraph_inlines(
-            run_lines, defined_labels
+            run_lines, defined_labels, found
         )
+        text_state_tags.extend((run_rows[row] + 1, name) for row, name in found)
         spans.extend(code_spans)
         metadata.extend(run_metadata)
         for row, comment in zip(run_rows, comments, strict=True):
@@ -4293,7 +4358,11 @@ def scan_document_inlines(text: str) -> DocumentInlines:
             comment_lines[row] += comment
 
     return DocumentInlines(
-        tuple(fenced), tuple(spans), tuple(comment_lines), tuple(sorted(metadata))
+        tuple(fenced),
+        tuple(spans),
+        tuple(comment_lines),
+        tuple(sorted(metadata)),
+        tuple(sorted(text_state_tags)),
     )
 
 
@@ -5431,6 +5500,38 @@ def score_text(text: str, display_path: str) -> FileScore:
     )
 
 
+def text_state_failure(text: str, display_path: str) -> FileScore | None:
+    """Return a failing score when the page hides prose this module cannot see.
+
+    A text-state tag the walk does not model -- ``Intro <script>`` on a
+    paragraph line, say -- makes the page read every line after it as data,
+    so the prose this module would score is not the prose a child reads, and
+    an audience marker below it is no comment at all. Scoring the document
+    anyway could pass invisible text or skip a child-facing page on a marker
+    the page never carries. The safe direction is to fail the file and say
+    why, and it is taken before the audience marker is asked. ``None`` when
+    the document holds no such tag. See ``TEXT_STATE_ELEMENT_NAMES``.
+    """
+    tags = scan_document_inlines(normalize_line_endings(text)).text_state_tags
+    if not tags:
+        return None
+    return FileScore(
+        display_path=display_path,
+        words=0,
+        sentences=0,
+        syllables=0,
+        grade=0.0,
+        words_per_sentence=0.0,
+        failures=tuple(
+            f"line {number}: a <{name}> tag opens an element that holds "
+            "everything after it, up to its closing tag or to the end of the "
+            "file, so this check cannot score what a child reads. Remove the "
+            f"tag, or write it as `<{name}>` inside backticks."
+            for number, name in tags
+        ),
+    )
+
+
 def is_excluded_path(display_path: str) -> bool:
     """Return ``True`` when a path is adult-facing or builder-facing by location."""
     normalized = display_path.replace("\\", "/")
@@ -5592,6 +5693,11 @@ def scan_files(path_arguments: Sequence[str], root: Path = REPO_ROOT) -> list[Fi
             # caught it: a file that is not valid UTF-8 crashed the run with a
             # traceback instead of reporting one unreadable file.
             raise FileReadError(display_path, error) from error
+
+        failure = text_state_failure(text, display_path)
+        if failure is not None:
+            scores.append(failure)
+            continue
 
         if has_adult_marker(text):
             continue

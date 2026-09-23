@@ -21,7 +21,9 @@ rule enforced by re-reading holds until the next commit.
 **What to write instead.** Say what the code does, or what the test asserts.
 ``# ...: a table ends with its container (400...)`` becomes ``# A table ends
 with its container``. Where a number genuinely has to be cited, put the whole
-URL on the same line and the reference is read as linked.
+URL on the same line and the reference is read as linked. A reference-style
+link does not count, because its URL is on another line: this scan does not
+follow a label to its definition, and a test below says why.
 
 **Names as well as prose.** The first version of this module read text alone,
 and it said so: a round number spelled inside a Python identifier is not prose
@@ -999,6 +1001,80 @@ def names_in(
     return found
 
 
+#: The file types in which an HTML comment hides what it holds. A comment in
+#: Markdown is not on the rendered page, so a URL written inside one is no link
+#: a reader can follow. In every other file this scan reads, ``<!--`` is only
+#: characters.
+MARKDOWN_SUFFIXES = frozenset({".md", ".mdc"})
+
+
+def split_comments(line: str, in_comment: bool) -> tuple[str, str, bool]:
+    """Return a Markdown line's shown text, its comment text, and the state below.
+
+    Each text keeps the line's length with the other one blanked, so a word
+    on either side of a comment stays a separate word. A comment that does not
+    close on the line runs on to the next, which is why the state is handed
+    back. This reads only the delimiters: a ``<!--`` inside a code span is
+    counted as a comment too, which can only make a URL hide and so report
+    more, never less.
+    <https://spec.commonmark.org/0.31.2/#html-blocks>
+    """
+    shown = list(line)
+    hidden = [" "] * len(line)
+    index = 0
+    while index < len(line):
+        if not in_comment:
+            start = line.find("<!--", index)
+            if start == -1:
+                break
+            in_comment = True
+            index = start
+            continue
+        end = line.find("-->", index + len("<!--") if line.startswith("<!--", index) else index)
+        stop = len(line) if end == -1 else end + len("-->")
+        for position in range(index, stop):
+            hidden[position] = line[position]
+            shown[position] = " "
+        if end == -1:
+            break
+        in_comment = False
+        index = stop
+    return "".join(shown), "".join(hidden), in_comment
+
+
+#: A line that begins a list item -- a bullet, or a number and a full stop or
+#: a closing parenthesis -- after any comment marker a source file puts in
+#: front of it. Two such lines one above the other are two items, not one
+#: sentence wrapped over two lines.
+LIST_ITEM_START = re.compile(r"^\s*(?:(?:#|//|--|;)+\s*)?(?:\d{1,9}[.)]|[-*+])\s")
+
+
+def blank_urls(text: str) -> tuple[str, list[str]]:
+    """Return ``text`` with each URL blanked, and the URLs, trimmed.
+
+    Found with the greedy pattern so the whole run is blanked, then trimmed
+    so what is matched against is the URL itself. **Blank the trimmed URL,
+    not the greedy match.** ``URL_PATTERN`` runs to the next space, so an
+    autolink with prose against its closing bracket matched the word after it
+    too, and blanking the whole match took that word out of the line -- so
+    the reference the word belonged to went unread. What ``trim_url`` gives
+    back is prose and stays.
+    """
+    urls = []
+    pieces = []
+    cursor = 0
+    for spotted in URL_PATTERN.finditer(text):
+        whole = spotted.group(0)
+        trimmed = trim_url(whole)
+        urls.append(trimmed)
+        pieces.append(text[cursor : spotted.start()])
+        pieces.append(" ")
+        pieces.append(whole[len(trimmed) :])
+        cursor = spotted.end()
+    pieces.append(text[cursor:])
+    return "".join(pieces), urls
+
+
 def references_in(
     path: Path,
     root: Path,
@@ -1011,6 +1087,23 @@ def references_in(
     ``exempt`` holds the matched texts recorded for **this file** in
     the exemption fixture. A caller that passes nothing gets the rule unexempted,
     which is what the test that proves each exemption still occurs needs.
+
+    Each line is read as two texts in a Markdown file: what the page shows,
+    and what an HTML comment hides. A URL the page shows resolves a reference
+    in either. A URL a comment hides resolves only a reference that is hidden
+    too: a reader of the page cannot follow it, while a reader of the source
+    sees the reference and the URL together. Every other file is one text.
+
+    **A reference may be hard-wrapped.** ``See issue`` at the end of one line
+    and ``27 for details`` at the start of the next are one sentence on the
+    page, and each line alone holds half of it. So each pair of neighbouring
+    lines is read across the line break as well, and a match is reported
+    there only when it crosses it -- on the first of the two lines, with the
+    URLs of both. Which line breaks are soft is a question for a Markdown
+    model this scan deliberately does not have, so every break between two
+    lines with text on them is read, with one exception: two lines that each
+    begin a list item are two items. Reading more breaks than the page joins
+    can report more and never less.
     """
     found: list[str] = []
     budget = dict(exempt or {})
@@ -1018,34 +1111,17 @@ def references_in(
     if python is None:
         python = path.suffix == ".py"
     body = path.read_text(encoding="utf-8", errors="replace")
-    for number, line in enumerate(body.split("\n"), start=1):
-        # Found with the greedy pattern so the whole run is blanked, then
-        # trimmed so what is matched against is the URL itself.
-        # **Blank the trimmed URL, not the greedy match.** ``URL_PATTERN``
-        # runs to the next space, so an autolink with prose against its
-        # closing bracket matched the word after it too, and blanking the
-        # whole match took that word out of the line -- so the reference the
-        # word belonged to went unread. What ``trim_url`` gives back is
-        # prose and stays.
-        urls = []
-        pieces = []
-        cursor = 0
-        for spotted in URL_PATTERN.finditer(line):
-            whole = spotted.group(0)
-            trimmed = trim_url(whole)
-            urls.append(trimmed)
-            pieces.append(line[cursor : spotted.start()])
-            pieces.append(" ")
-            pieces.append(whole[len(trimmed) :])
-            cursor = spotted.end()
-        pieces.append(line[cursor:])
-        scanned = "".join(pieces)
+
+    def report(number: int, scanned: str, urls: list[str], seam: int = -1) -> None:
         for name, pattern in REVIEW_HISTORY_PATTERNS:
             # Excused only in the documents that define the review protocol,
             # never by file type. See ``ROUND_CONCEPT_DOCUMENTS``.
             if name in ROUND_CONCEPT_PATTERNS and relative in ROUND_CONCEPT_DOCUMENTS:
                 continue
             for match in pattern.finditer(scanned):
+                if seam != -1 and not match.start() < seam < match.end() - 1:
+                    # Across a line break, only what crosses it is new.
+                    continue
                 matched = match.group(0)
                 if name == "a bare issue reference" and TRACKER_NOUN_BEFORE.search(
                     scanned[: match.start()]
@@ -1068,7 +1144,37 @@ def references_in(
                     # A pinned action: GitHub resolves it in the named repository.
                     continue
                 found.append(f"{relative}:{number}: {name}: {matched!r}")
+
+    # Per line: the shown text and the URLs that resolve it, then the hidden
+    # text and the URLs that resolve that.
+    lines = body.split("\n")
+    readings: list[tuple[tuple[str, list[str]], tuple[str, list[str]]]] = []
+    in_comment = False
+    for line in lines:
+        if path.suffix in MARKDOWN_SUFFIXES:
+            shown, hidden, in_comment = split_comments(line, in_comment)
+        else:
+            shown, hidden = line, ""
+        shown_text, shown_urls = blank_urls(shown)
+        hidden_text, hidden_urls = blank_urls(hidden)
+        readings.append(((shown_text, shown_urls), (hidden_text, shown_urls + hidden_urls)))
+
+    for number, texts in enumerate(readings, start=1):
+        for scanned, urls in texts:
+            report(number, scanned, urls)
+    for number in range(1, len(readings)):
+        if LIST_ITEM_START.match(lines[number - 1]) and LIST_ITEM_START.match(
+            lines[number]
+        ):
+            continue
+        for side in (0, 1):
+            above, above_urls = readings[number - 1][side]
+            below, below_urls = readings[number][side]
+            above, below = above.rstrip(), below.lstrip()
+            if above and below:
+                report(number, above + " " + below, above_urls + below_urls, len(above))
     return found
+
 
 
 def exempt_texts_for(relative: str) -> dict[str, int]:
@@ -1405,7 +1511,8 @@ def test_no_hook_or_suite_cites_the_review_run_that_wrote_it() -> None:
     assert not found, (
         "these references resolve only inside a review conversation this "
         "repository does not hold; say what the code does or what the test "
-        "asserts instead, or cite the whole URL on the same line:\n"
+        "asserts instead, or cite the whole URL on the same line (a "
+        "reference-style link's definition on another line does not count):\n"
         + "\n".join(found)
     )
 
@@ -2307,6 +2414,32 @@ def test_a_commit_must_be_reachable_and_not_merely_held(tmp_path: Path) -> None:
         "not have it, and GitHub would not render a link to it"
     )
 
+    # **Reachable from any ref, not only from HEAD.** A commit that only a
+    # live side branch holds, and one that only a tag holds, are both in a
+    # full clone, and GitHub renders a link to either. Asking whether HEAD
+    # reaches the commit refused both.
+    git("checkout", "--quiet", "-b", "side")
+    (tmp_path / "side.txt").write_text("side" + chr(10), encoding="utf-8")
+    git("add", "side.txt")
+    git("commit", "--quiet", "-m", "side")
+    on_side = git("rev-parse", "HEAD")
+    git("checkout", "--quiet", "-b", "release", "main")
+    (tmp_path / "release.txt").write_text("release" + chr(10), encoding="utf-8")
+    git("add", "release.txt")
+    git("commit", "--quiet", "-m", "release")
+    tagged = git("rev-parse", "HEAD")
+    git("tag", "v1", tagged)
+    git("checkout", "--quiet", "main")
+    git("branch", "--quiet", "-D", "release")
+    assert commit_exists(on_side[:10], tmp_path), (
+        "a commit a live side branch holds must resolve"
+    )
+    assert commit_exists(tagged[:10], tmp_path), (
+        "a commit only a tag holds must resolve"
+    )
+    # And the dangling commit is still refused with those refs in place.
+    assert not commit_exists(orphaned[:10], tmp_path)
+
 
 def test_a_url_this_cannot_parse_reports_rather_than_crashes(tmp_path: Path) -> None:
     """Every scanned file is untrusted input, so a parse failure is an answer.
@@ -2424,15 +2557,24 @@ def test_a_reference_style_link_is_reported_and_why(tmp_path: Path) -> None:
     reference = "issue" + " " + "27"
     url = "https://github.com/o/r/issues/27"
 
-    sample.write_text(
-        "# T" + chr(10) * 2
-        + "See [" + reference + "][ref] here." + chr(10) * 2
-        + "[ref]: " + url + chr(10),
-        encoding="utf-8",
-    )
-    assert references_in(sample, tmp_path), (
-        "a reference-style link is reported; the remedy is an inline URL"
-    )
+    # Every form a definition may take is reported alike: a title changes
+    # nothing, because no definition is read at all.
+    for definition in (
+        "[ref]: " + url,
+        "[ref]: " + url + ' "Issue details"',
+        "[ref]: <" + url + "> 'Issue details'",
+        "[ref]: " + url + " (Issue details)",
+    ):
+        sample.write_text(
+            "# T" + chr(10) * 2
+            + "See [" + reference + "][ref] here." + chr(10) * 2
+            + definition + chr(10),
+            encoding="utf-8",
+        )
+        assert references_in(sample, tmp_path), (
+            "a reference-style link is reported; the remedy is an inline URL",
+            definition,
+        )
 
     # The remedy, on one line, resolves it.
     sample.write_text(
@@ -2519,3 +2661,67 @@ def test_a_percent_encoded_segment_is_the_segment_it_encodes(tmp_path: Path) -> 
 
     # Decoding is per segment, so an encoded slash cannot invent a boundary.
     assert url_path_segments("https://example.com/a%2Fb/c") == ["a/b", "c"]
+
+
+def test_a_reference_wrapped_over_two_lines_is_read_across_the_break(
+    tmp_path: Path,
+) -> None:
+    """A noun at the end of one line and its number at the start of the next.
+
+    The page joins the two lines into one sentence, and a comment wrapped in
+    a source file reads as one too, so each line alone held half of the
+    reference and neither was reported. Neighbouring lines are now read
+    across the break as well. A blank line still ends the sentence, and two
+    list items are two items.
+    """
+    noun = "issue"
+    number = "27"
+    url = "https://github.com/o/r/issues/" + number
+    newline = chr(10)
+    for suffix, body, reported in (
+        (".md", "See " + noun + newline + number + " for details." + newline, True),
+        (".py", "# fixed in " + noun + newline + "# " + number + " upstream" + newline, True),
+        (".md", "See " + noun + newline + number + " " + url + newline, False),
+        (".md", "See " + noun + " " + url + newline + number + " again" + newline, False),
+        (".md", "See " + noun + newline * 2 + number + " for details." + newline, False),
+        (".md", "1. Read the " + noun + newline + "2. Write the notes" + newline, False),
+        (".py", "# 2. early-stage " + noun + "s" + newline + "# 3. templates" + newline, False),
+    ):
+        sample = tmp_path / ("doc" + suffix)
+        sample.write_text(body, encoding="utf-8")
+        assert bool(references_in(sample, tmp_path)) is reported, body
+
+    # A reference on one line is reported once, not again across the break.
+    sample = tmp_path / "doc.md"
+    sample.write_text(
+        "See " + noun + " " + number + newline + "more text" + newline,
+        encoding="utf-8",
+    )
+    assert len(references_in(sample, tmp_path)) == 1
+
+
+def test_a_url_a_comment_hides_resolves_only_what_the_comment_holds(
+    tmp_path: Path,
+) -> None:
+    """A reader of the page cannot follow a link that an HTML comment hides.
+
+    So a URL inside a comment no longer resolves a reference the page shows.
+    It still resolves a reference inside a comment, because a reader of the
+    source sees the two together, and a URL the page shows resolves a hidden
+    reference as it always did. Outside Markdown a comment delimiter is only
+    characters, and nothing changes.
+    """
+    reference = "issue" + " " + "27"
+    url = "https://github.com/o/r/issues/27"
+    newline = chr(10)
+    for suffix, body, reported in (
+        (".md", "See " + reference + " <!-- " + url + " -->" + newline, True),
+        (".md", "See " + reference + " <!-- a note" + newline + url + " -->" + newline, True),
+        (".md", "<!-- see " + reference + " " + url + " -->" + newline, False),
+        (".md", "<!-- see " + reference + " --> " + url + newline, False),
+        (".md", "See " + reference + " " + url + newline, False),
+        (".py", "# See " + reference + " <!-- " + url + " -->" + newline, False),
+    ):
+        sample = tmp_path / ("doc" + suffix)
+        sample.write_text(body, encoding="utf-8")
+        assert bool(references_in(sample, tmp_path)) is reported, body

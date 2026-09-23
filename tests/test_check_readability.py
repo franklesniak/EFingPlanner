@@ -7217,3 +7217,67 @@ def test_the_two_hooks_bound_an_inline_target_alike() -> None:
         assert readability.inline_link_end(target, 0) == other.inline_link_end(
             target, 0
         ), target
+
+
+#: Forty-eight words of plain prose in short sentences, enough to be scored
+#: and well inside every limit.
+TEXT_STATE_PROSE = " ".join(
+    ["We plan the trip and pack the bags for the ride home."] * 4
+)
+
+
+@pytest.mark.parametrize(
+    ("label", "document"),
+    [
+        (
+            "an adult marker below an inline script",
+            f"Intro <script>\n\n{ADULT_MARKER}\n\n{TEXT_STATE_PROSE}\n",
+        ),
+        (
+            "prose below an inline style",
+            f"Intro <style>\n\n{TEXT_STATE_PROSE}\n",
+        ),
+        (
+            "a textarea part way along a raw HTML line",
+            f"<div><textarea>\n\n{ADULT_MARKER}\n\n{TEXT_STATE_PROSE}\n",
+        ),
+        (
+            "a plaintext element",
+            f"{TEXT_STATE_PROSE}\n\nIntro <plaintext>\n\n{ADULT_MARKER}\n",
+        ),
+    ],
+)
+def test_a_text_state_tag_fails_the_file(tmp_path: Path, label: str, document: str) -> None:
+    """The page reads everything after such a tag as the element's content.
+
+    So the prose below it is not prose a child reads, and an audience marker
+    below it is text rather than a comment. The first document was skipped as
+    adult-facing before, on a marker the page never carries, and the others
+    were scored on text the page does not paint. The file now fails, and says
+    why, before the audience marker is asked.
+    """
+    session_dir = tmp_path / "framework" / "sessions"
+    session_dir.mkdir(parents=True)
+    (session_dir / "one.md").write_text(document, encoding="utf-8")
+    scores = readability.scan_files([], root=tmp_path)
+    assert [score.status for score in scores] == ["fail"], label
+    assert "opens an element that holds everything after it" in scores[0].failures[0]
+    assert readability.main([], root=tmp_path) == 1
+
+
+@pytest.mark.parametrize(
+    ("label", "document"),
+    [
+        ("a code span", f"Use `<script>` in the lesson.\n\n{TEXT_STATE_PROSE}\n"),
+        ("a backslash escape", f"Use \\<script> here.\n\n{TEXT_STATE_PROSE}\n"),
+        ("a comment", f"<!-- a <script> note -->\n\n{TEXT_STATE_PROSE}\n"),
+        ("a block the walk models", f"<script>\n</script>\n\n{TEXT_STATE_PROSE}\n"),
+        ("an image's alt text", f"![a <script>](picture.png)\n\n{TEXT_STATE_PROSE}\n"),
+    ],
+)
+def test_a_text_state_tag_the_page_never_meets_is_scored_as_before(
+    label: str, document: str
+) -> None:
+    """The over-application controls: each is characters on the page, or modelled."""
+    assert readability.text_state_failure(document, "x.md") is None, label
+    assert readability.score_text(document, "x.md").status == "ok", label

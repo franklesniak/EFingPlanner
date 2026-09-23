@@ -4962,3 +4962,173 @@ def test_the_junction_check_runs_without_is_junction(tmp_path: Path) -> None:
     # No ``is_junction`` attribute at all: the fallback path runs and a real
     # file is not a junction.
     assert hook.path_is_junction(Stub(sample)) is False
+
+
+# ---------------------------------------------------------------------------
+# A text-state tag where the scan models none
+# ---------------------------------------------------------------------------
+
+#: The words every text-state report carries, so a test can find the report
+#: without matching the whole sentence.
+TEXT_STATE_REPORT = "opens an element that holds everything after it"
+
+
+def _text_state_lines(document: str) -> list[int]:
+    """Return the lines on which the check reports a text-state tag."""
+    return [
+        violation.line_number
+        for violation in structure.check_text(
+            document, "07_a_session.md", "07_a_session.md"
+        )
+        if TEXT_STATE_REPORT in violation.message
+    ]
+
+
+@pytest.mark.parametrize(
+    ("label", "line"),
+    [
+        ("after words on a paragraph line", "Intro <script>"),
+        ("a style element", "Intro <style>"),
+        ("a textarea element", "Intro <textarea>"),
+        ("a title element", "Intro <title>"),
+        ("an xmp element", "Intro <xmp>"),
+        ("an iframe element", "Intro <iframe>"),
+        ("a noembed element", "Intro <noembed>"),
+        ("a noframes element", "Intro <noframes>"),
+        ("a plaintext element", "Intro <plaintext>"),
+        ("a plaintext element on its own line", "<plaintext>"),
+        ("in capitals", "Intro <SCRIPT>"),
+        ("with an attribute", 'Intro <script type="text/plain">'),
+        ("closed on the same line", "Intro <script></script>"),
+        ("across a line ending", 'Intro <script\ntype="text/plain">'),
+        ("in link text", "See [a <script>](page.md) here."),
+        ("in a list item", "- Intro <script>"),
+        ("in a blockquote", "> Intro <script>"),
+        ("in a heading", "## Notes <script>"),
+        ("in a table cell", "| a | b |\n| --- | --- |\n| x <script> | y |"),
+        ("after a closed comment", "Intro <!-- a note --> <script>"),
+        ("part way along a raw HTML line", "<div><script>"),
+        ("after a raw-text element closes", "<script></script><style>"),
+    ],
+)
+def test_a_text_state_tag_the_scan_does_not_model_is_reported(
+    label: str, line: str
+) -> None:
+    """The page reads everything after such a tag as the element's content.
+
+    CommonMark passes ``Intro <script>`` through as inline raw HTML and opens
+    no block, so Markdown goes on writing headings below it -- and the browser
+    enters script data at the tag and shows none of them. The scan models the
+    block form only, so a heading it counted below one of these could be a
+    heading the page never shows, and a marker it read could be text. It
+    reports the tag instead, which is the one answer here the page cannot
+    contradict. Measured against markdown-it 14.3.0 read by ``html.parser``.
+    <https://html.spec.whatwg.org/multipage/parsing.html#parsing-main-inbody>
+    """
+    assert _text_state_lines(build_session(extra=line)), label
+
+
+def test_a_heading_or_a_marker_below_an_inline_tag_cannot_pass() -> None:
+    """Both documents passed before, one on a heading and one on a marker.
+
+    The first counted a ``## Goal`` the page shows as script data. The second
+    read a Source Check exemption inside a textarea, which the page prints as
+    text and never reads as a comment.
+    """
+    goal_below = "# Session 07: A Session\n\nIntro <script>\n\n## Goal\n\nWords here.\n"
+    assert _text_state_lines(goal_below) == [3]
+    marker_below = build_session(
+        sections=(
+            "Goal",
+            "Start Here",
+            "Steps",
+            "Workspace",
+            "Artifact Created",
+            "Stop Point",
+        ),
+        markers="Intro <textarea>\n\n" + OFFLINE_MARKER,
+    )
+    assert _text_state_lines(marker_below) == [2]
+
+
+@pytest.mark.parametrize(
+    ("label", "line"),
+    [
+        ("a code span", "Use `<script>` in the lesson."),
+        ("a code span across a line ending", "Use `a b\nc <script>` d."),
+        ("a backslash escape", "Intro \\<script>"),
+        ("a character reference", "Intro &lt;script>"),
+        ("an autolink", "Intro <script:example>"),
+        ("no closing bracket", "Intro <script"),
+        ("a link destination", "See [a](<script>) here."),
+        ("an image's alt text", "![a <script>](picture.png)"),
+        ("a comment", "Intro <!-- a <script> note --> words"),
+        ("a comment on a raw HTML line", "<div><!-- <script> -->"),
+        ("an attribute value", '<div title="<script>">'),
+        ("a fenced example", "```\nIntro <script>\n```"),
+        ("an indented code block", "    Intro <script>"),
+        ("an element whose content depends on scripting", "Intro <noscript>"),
+        ("a longer name", "Intro <scripts>"),
+        ("an end tag", "Intro </script>"),
+        ("a block the scan models", "<script>\n</script>"),
+    ],
+)
+def test_a_text_state_tag_the_page_never_meets_is_not_reported(
+    label: str, line: str
+) -> None:
+    """The over-application controls: each is characters on the page, or modelled.
+
+    A lesson may write ``<script>`` in backticks, and the lint this repository
+    runs allows that. Reporting it -- or blanking the document below it, which
+    the rejected line-local search did -- would fail a session that is fine.
+    """
+    assert check(build_session(extra=line)) == [], label
+
+
+def test_the_three_hooks_name_the_same_text_state_elements() -> None:
+    """One rule, three copies, asked the same questions."""
+    import importlib.util as _util
+
+    spellings = (
+        "<script>",
+        "<SCRIPT >",
+        "<script/",
+        "<plaintext>",
+        "<textarea\n",
+        "<noscript>",
+        "<scripts>",
+        "</script>",
+        "<script:x>",
+        "words",
+    )
+    answers = []
+    for name in (
+        "check-readability.py",
+        "check-session-structure.py",
+        "check-prohibited-placeholders.py",
+    ):
+        path = Path(__file__).resolve().parents[1] / ".github" / "scripts" / name
+        spec = _util.spec_from_file_location(f"text_state_{name}", path)
+        assert spec is not None and spec.loader is not None
+        module = _util.module_from_spec(spec)
+        sys.modules[spec.name] = module
+        spec.loader.exec_module(module)
+        answers.append(
+            (
+                module.TEXT_STATE_ELEMENT_NAMES,
+                [module.text_state_start_tag(text, 0) for text in spellings],
+            )
+        )
+    assert answers[0] == answers[1] == answers[2]
+    assert answers[0][1] == [
+        "script",
+        "script",
+        "script",
+        "plaintext",
+        "textarea",
+        None,
+        None,
+        None,
+        None,
+        None,
+    ]

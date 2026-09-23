@@ -324,6 +324,26 @@ RAW_TEXT_RUNS = tuple(
     (COMMENT_RUN, re.compile(r"^ {0,3}<!--"), re.compile(r"-->")),
 )
 RAW_TEXT_CLOSERS = {key: closer for key, _, closer in RAW_TEXT_RUNS}
+#: The start tags that switch the page's tokenizer into a state it leaves only
+#: at a matching end tag, or never: the eight raw-text names above, and
+#: ``plaintext``, whose state has no way out at all. ``RAW_TEXT_RUNS`` models
+#: one of these only where it opens an HTML block at the start of a line.
+#: Written anywhere else -- after words on a paragraph line, in a heading or a
+#: table cell, or part way along a raw HTML line -- the tag still reaches the
+#: page, the browser still enters the state, and everything after it is data:
+#: headings, prose and comments alike. Markdown does not know that and goes on
+#: emitting headings below it. That position is not modelled here. Each hook
+#: takes its own safe direction there instead, and says which in the place it
+#: asks. ``noscript`` stays out for the reason given above. Kept identical to
+#: the constant in the sibling hooks.
+#: https://html.spec.whatwg.org/multipage/parsing.html#parsing-main-inbody
+#: https://html.spec.whatwg.org/multipage/parsing.html#plaintext-state
+TEXT_STATE_ELEMENT_NAMES = RAW_TEXT_ELEMENT_NAMES + ("plaintext",)
+#: A start tag's name as the page's tokenizer reads it: a letter after the
+#: ``<``, then everything up to whitespace, a ``/`` or a ``>``. An end tag
+#: begins ``</`` and does not match.
+#: https://html.spec.whatwg.org/multipage/parsing.html#tag-name-state
+START_TAG_NAME_PATTERN = re.compile(r"<([A-Za-z][^\t\n\f\r />]*)")
 #: HTML5's tag-state machine, entered where a tag's name has just ended.
 #: ``html_tag_close_state`` names its states as the standard names them and
 #: hands the state back, because a tag may end on a line below the one it
@@ -1622,6 +1642,20 @@ def raw_text_run_boundary(
     return None, None, -1
 
 
+def text_state_start_tag(text: str, index: int) -> str | None:
+    """Return the element name when a start tag at ``index`` opens a text state.
+
+    ``None`` for an end tag, for every other element, and where the text at
+    ``index`` is no tag at all. The name is compared in lower case, because
+    the tokenizer folds it. Kept identical to the helper in the sibling hooks.
+    """
+    match = START_TAG_NAME_PATTERN.match(text, index)
+    if match is None:
+        return None
+    name = match.group(1).lower()
+    return name if name in TEXT_STATE_ELEMENT_NAMES else None
+
+
 def raw_text_run_holds_text(run: str | None) -> bool:
     """Return whether a line inside ``run`` carries text rather than markup.
 
@@ -1632,6 +1666,71 @@ def raw_text_run_holds_text(run: str | None) -> bool:
     Kept identical to the helper in the sibling hooks.
     """
     return run is not None and run != COMMENT_RUN
+
+
+def text_state_tag_column(line: str, is_in_comment: bool) -> int:
+    """Return where the first text-state start tag on a line begins, or -1.
+
+    This hook reads no inline Markdown but comments, so the search is the
+    line's own. A comment -- one open from above, or one that opens here --
+    holds no tag. A backslash in front of the ``<`` escapes it. A code span
+    that opens and closes on the line prints its characters rather than
+    making a tag. A code span that closes on a later line is not seen, and a
+    tag inside one is then counted, and so is one in an indented code block,
+    which reads more of the file as text: the direction this hook errs in.
+    See ``TEXT_STATE_ELEMENT_NAMES``.
+    """
+    index = 0
+    while index < len(line):
+        if is_in_comment:
+            comment_end = line.find("-->", index)
+            if comment_end == -1:
+                return -1
+            index = comment_end + len("-->")
+            is_in_comment = False
+            continue
+        if line.startswith("<!--", index):
+            index += len("<!--")
+            is_in_comment = True
+            continue
+        character = line[index]
+        if character == "\\":
+            index += 2
+            continue
+        if character == "`":
+            run_end = index
+            while run_end < len(line) and line[run_end] == "`":
+                run_end += 1
+            closer = closing_backtick_run(line, run_end, run_end - index)
+            index = run_end if closer == -1 else closer
+            continue
+        if character == "<" and text_state_start_tag(line, index) is not None:
+            return index
+        index += 1
+    return -1
+
+
+def closing_backtick_run(line: str, start: int, length: int) -> int:
+    """Return the end of the next backtick run of exactly ``length``, or -1.
+
+    A code span closes on a run of the same length and on no other, so a run
+    of two is not closed by a run of three. Scanning run by run rather than
+    searching for the substring is what keeps that true. Kept identical to the
+    helper in the sibling hooks.
+    <https://spec.commonmark.org/0.31.2/#code-spans>
+    """
+    index = start
+    while index < len(line):
+        if line[index] != "`":
+            index += 1
+            continue
+        run_end = index
+        while run_end < len(line) and line[run_end] == "`":
+            run_end += 1
+        if run_end - index == length:
+            return run_end
+        index = run_end
+    return -1
 
 
 def starts_a_block(
@@ -1845,6 +1944,9 @@ def find_violations_in_text(text: str, display_path: str) -> list[Violation]:
     previous_content = ""
     previous_container: tuple[Container, ...] = ()
     raw_text: str | None = None
+    # Set at a text-state start tag this hook does not model, and never
+    # cleared: from that tag to the end of the file every line is read whole.
+    text_state_open = False
 
     for line_number, raw_line in enumerate(normalize_line_endings(text).split("\n"), start=1):
         above_content, above_container = previous_content, previous_container
@@ -1969,17 +2071,25 @@ def find_violations_in_text(text: str, display_path: str) -> list[Violation]:
             # -- they ask whether the run's characters are markup, and this one
             # asks whether they are a comment.
             in_raw_text = False
+        # Where the part of this line that is markup rather than an element's
+        # text begins and ends. An ALLOW-TBD marker counts only there: inside
+        # a raw-text element it is text the page prints or drops, and no
+        # comment at all.
+        markup_start = 0
+        markup_end = len(raw_line)
         if in_raw_text:
             # The line is a raw-text element's content, which the page
             # displays as it stands. A comment-shaped run there opens no
             # comment and hides no placeholder, so the line is read whole.
             commentless_line = raw_line
             comment_opened_here = False
+            markup_start = len(raw_line)
         elif run_released_the_line:
             # The run held the head of the line and released the tail, so only
             # the tail is read for comments -- and no comment can be open
             # coming in, because a run opens only at the start of a line.
             split = len(raw_line) - len(block_content) + raw_text_end
+            markup_start = split
             tail, is_in_html_comment, comment_opened_here = strip_html_comments(
                 raw_line[split:], False
             )
@@ -1988,6 +2098,27 @@ def find_violations_in_text(text: str, display_path: str) -> list[Violation]:
             commentless_line, is_in_html_comment, comment_opened_here = (
                 strip_html_comments(raw_line, is_in_html_comment)
             )
+        if not text_state_open:
+            column = text_state_tag_column(
+                raw_line[markup_start:],
+                was_in_html_comment and not run_released_the_line,
+            )
+            if column != -1:
+                markup_end = markup_start + column
+                text_state_open = True
+        else:
+            markup_end = 0
+        if text_state_open:
+            # A text-state tag this hook does not model: ``Intro <textarea>``
+            # on a paragraph line, or a ``<script>`` part way along a raw HTML
+            # line. The page reads everything after it as text, so no comment
+            # below it hides a placeholder. Following the element to its end
+            # tag would mean knowing which end tags are code-span text, and
+            # this hook does not read code spans, so the file is read whole
+            # from the tag on: the direction this hook errs in.
+            commentless_line = raw_line
+            is_in_html_comment = False
+            comment_opened_here = False
         if comment_opened_here:
             # A line CommonMark reads as raw HTML holds no inline content, so a
             # comment opening on one is the block kind. Everywhere else the
@@ -2048,7 +2179,7 @@ def find_violations_in_text(text: str, display_path: str) -> list[Violation]:
         previous_content = block_content
         previous_container = block_line.containment_path
 
-        if ALLOW_TBD_PATTERN.search(raw_line):
+        if ALLOW_TBD_PATTERN.search(raw_line[markup_start:markup_end]):
             continue
 
         if is_allowed_label_line(commentless_line):

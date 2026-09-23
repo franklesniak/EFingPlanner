@@ -475,6 +475,26 @@ RAW_TEXT_RUNS = tuple(
     (COMMENT_RUN, re.compile(r"^ {0,3}<!--"), re.compile(r"-->")),
 )
 RAW_TEXT_CLOSERS = {key: closer for key, _, closer in RAW_TEXT_RUNS}
+#: The start tags that switch the page's tokenizer into a state it leaves only
+#: at a matching end tag, or never: the eight raw-text names above, and
+#: ``plaintext``, whose state has no way out at all. ``RAW_TEXT_RUNS`` models
+#: one of these only where it opens an HTML block at the start of a line.
+#: Written anywhere else -- after words on a paragraph line, in a heading or a
+#: table cell, or part way along a raw HTML line -- the tag still reaches the
+#: page, the browser still enters the state, and everything after it is data:
+#: headings, prose and comments alike. Markdown does not know that and goes on
+#: emitting headings below it. That position is not modelled here. Each hook
+#: takes its own safe direction there instead, and says which in the place it
+#: asks. ``noscript`` stays out for the reason given above. Kept identical to
+#: the constant in the sibling hooks.
+#: https://html.spec.whatwg.org/multipage/parsing.html#parsing-main-inbody
+#: https://html.spec.whatwg.org/multipage/parsing.html#plaintext-state
+TEXT_STATE_ELEMENT_NAMES = RAW_TEXT_ELEMENT_NAMES + ("plaintext",)
+#: A start tag's name as the page's tokenizer reads it: a letter after the
+#: ``<``, then everything up to whitespace, a ``/`` or a ``>``. An end tag
+#: begins ``</`` and does not match.
+#: https://html.spec.whatwg.org/multipage/parsing.html#tag-name-state
+START_TAG_NAME_PATTERN = re.compile(r"<([A-Za-z][^\t\n\f\r />]*)")
 #: HTML5's tag-state machine, entered where a tag's name has just ended.
 #: ``html_tag_close_state`` names its states as the standard names them and
 #: hands the state back, because a tag may end on a line below the one it
@@ -1006,6 +1026,12 @@ class DocumentScan:
     content_lines: tuple[str, ...]
     marker_lines: tuple[str, ...]
     worksheet_fences: tuple[int, ...]
+    #: ``(line number, element name)`` for every start tag the page meets that
+    #: opens a text state where this scan does not model one. Below such a tag
+    #: the page shows none of the headings or comments ``content_lines`` and
+    #: ``marker_lines`` hold, so ``check_text`` reports the tag rather than
+    #: trusting either. See ``TEXT_STATE_ELEMENT_NAMES``.
+    text_state_tags: tuple[tuple[int, str], ...] = ()
 
     @property
     def text(self) -> str:
@@ -2168,6 +2194,7 @@ def raw_html_comment_spans(
     is_in_comment: bool,
     open_tag: str | None = None,
     in_bogus_run: bool = False,
+    text_state_tags: list[str] | None = None,
 ) -> tuple[str, bool, str | None, bool]:
     """Return the HTML comment text on one line of a raw HTML block.
 
@@ -2200,6 +2227,12 @@ def raw_html_comment_spans(
     spans: list[str] = []
     index = 0
 
+    # ``text_state_tags``, when a list is passed, receives the name of every
+    # start tag on this line that opens a text state. The line is raw HTML, so
+    # the page's tokenizer reads every ``<`` and a letter it meets outside a
+    # comment and outside another tag as a start tag, however CommonMark would
+    # spell it. A run that opens at the start of the line is modelled by
+    # ``raw_text_run_boundary`` and never reaches this walk.
     if in_bogus_run:
         # A run that ends at the next ``>`` was left open on the line above:
         # a bogus comment, or a tag too malformed for the grammar above to
@@ -2251,6 +2284,10 @@ def raw_html_comment_spans(
             continue
 
         if line[index] == "<":
+            if text_state_tags is not None:
+                name = text_state_start_tag(line, index)
+                if name is not None:
+                    text_state_tags.append(name)
             # A processing instruction, a declaration and a CDATA section are
             # raw HTML whose content is characters, exactly as they are in the
             # Markdown inline walk -- this is the same helper
@@ -2855,6 +2892,20 @@ def raw_text_run_boundary(
     return None, None, -1
 
 
+def text_state_start_tag(text: str, index: int) -> str | None:
+    """Return the element name when a start tag at ``index`` opens a text state.
+
+    ``None`` for an end tag, for every other element, and where the text at
+    ``index`` is no tag at all. The name is compared in lower case, because
+    the tokenizer folds it. Kept identical to the helper in the sibling hooks.
+    """
+    match = START_TAG_NAME_PATTERN.match(text, index)
+    if match is None:
+        return None
+    name = match.group(1).lower()
+    return name if name in TEXT_STATE_ELEMENT_NAMES else None
+
+
 def raw_text_run_holds_text(run: str | None) -> bool:
     """Return whether a line inside ``run`` carries text rather than markup.
 
@@ -2871,6 +2922,7 @@ def scan_inline_run(
     contents: Sequence[str],
     is_in_comment: bool,
     skips: dict[int, tuple[tuple[int, int], ...]] | None,
+    text_state_tags: list[tuple[int, str]] | None = None,
 ) -> tuple[list[str], bool, list[tuple[int, int, int]]]:
     """Walk one run of document text left to right, one context at a time.
 
@@ -2906,6 +2958,14 @@ def scan_inline_run(
     document defines; this walk knows neither, and running it in both passes
     masked that marker. Over-skipping in the first pass costs at worst a code
     span the walk does not find, which masks less rather than more.
+
+    ``text_state_tags``, when a list is passed, receives ``(row, name)`` for
+    every raw HTML start tag the walk consumes that opens a text state. The
+    walk reaches a tag only where CommonMark reads one -- outside a code span,
+    an escape, an autolink, a comment and link metadata -- so a lesson that
+    writes ``<script>`` in backticks names no tag here, while ``Intro
+    <script>`` does. Only the second pass is given a list, because only the
+    second pass has the whole link model.
     <https://spec.commonmark.org/0.31.2/#links>
     """
     spans: list[list[str]] = [[] for _ in contents]
@@ -3034,16 +3094,20 @@ def scan_inline_run(
                 index = autolink.end()
                 continue
             tag = INLINE_HTML_TAG_PATTERN.match(line, index)
-            if tag is not None:
-                index = tag.end()
-                continue
-            # A tag that does not close on this line closes on a later line
-            # of the same run, the way a comment and the other raw HTML runs
-            # already do here. Reading only this line left a backtick inside
-            # a multiline attribute standing as text, and it then paired with
-            # a backtick below and masked a real comment.
-            tag_row, tag_index = following_tag_end(contents, row, index)
+            if tag is None:
+                # A tag that does not close on this line closes on a later
+                # line of the same run, the way a comment and the other raw
+                # HTML runs already do here. Reading only this line left a
+                # backtick inside a multiline attribute standing as text, and
+                # it then paired with a backtick below and masked a real
+                # comment.
+                tag_row, tag_index = following_tag_end(contents, row, index)
+            else:
+                tag_row, tag_index = row, tag.end()
             if tag_row != -1:
+                name = text_state_start_tag(line, index)
+                if text_state_tags is not None and name is not None:
+                    text_state_tags.append((row, name))
                 row, index = tag_row, tag_index
                 continue
 
@@ -3067,7 +3131,10 @@ def code_span_masked_lines(contents: Sequence[str], is_in_comment: bool) -> list
 
 
 def text_marker_spans(
-    contents: Sequence[str], is_in_comment: bool, defined_labels: frozenset[str]
+    contents: Sequence[str],
+    is_in_comment: bool,
+    defined_labels: frozenset[str],
+    text_state_tags: list[tuple[int, str]] | None = None,
 ) -> tuple[list[str], bool]:
     """Return the comment text on each line of one run of document text.
 
@@ -3148,7 +3215,9 @@ def text_marker_spans(
                     (low - starts[row], high - starts[row]),
                 )
 
-    spans, is_in_comment, _ = scan_inline_run(contents, is_in_comment, skips)
+    spans, is_in_comment, _ = scan_inline_run(
+        contents, is_in_comment, skips, text_state_tags
+    )
     return spans, is_in_comment
 
 
@@ -3538,7 +3607,10 @@ def collect_reference_labels(
     return frozenset(labels)
 
 
-def collect_marker_lines(sources: Sequence[MarkerSource]) -> tuple[str, ...]:
+def collect_marker_lines(
+    sources: Sequence[MarkerSource],
+    text_state_tags: list[tuple[int, str]] | None = None,
+) -> tuple[str, ...]:
     """Return, for each line, the text CommonMark reads there as an HTML comment.
 
     The two Source Check exemption markers *are* comments and nothing else is
@@ -3559,6 +3631,10 @@ def collect_marker_lines(sources: Sequence[MarkerSource]) -> tuple[str, ...]:
     one ends the paragraph a code span would have needed to close in. Every
     other block start ends it too, which is what ``starts_a_block`` records as
     the document is walked.
+
+    ``text_state_tags``, when a list is passed, receives ``(row, name)`` for
+    every start tag the walks below meet that opens a text state, with ``row``
+    counted from the first source. See ``TEXT_STATE_ELEMENT_NAMES``.
     """
     # The walk's own ``starts_a_block`` answer travels on every source, and a
     # label collector that ignored it held a paragraph open across a container
@@ -3588,11 +3664,14 @@ def collect_marker_lines(sources: Sequence[MarkerSource]) -> tuple[str, ...]:
             continue
 
         if kind == MARKER_SOURCE_RAW_HTML:
+            names: list[str] = []
             span, is_in_comment, open_tag, in_bogus_run = (
                 raw_html_comment_spans(
-                    content, is_in_comment, open_tag, in_bogus_run
+                    content, is_in_comment, open_tag, in_bogus_run, names
                 )
             )
+            if text_state_tags is not None:
+                text_state_tags.extend((row, name) for name in names)
             markers.append(span)
             row += 1
             continue
@@ -3610,9 +3689,12 @@ def collect_marker_lines(sources: Sequence[MarkerSource]) -> tuple[str, ...]:
             # nothing written in them is either.
             cell_spans: list[str] = []
             for _, cell in table_row_cells(content)[: table_rows[row]]:
+                found: list[tuple[int, str]] = []
                 spans, is_in_comment = text_marker_spans(
-                    [cell], is_in_comment, defined_labels
+                    [cell], is_in_comment, defined_labels, found
                 )
+                if text_state_tags is not None:
+                    text_state_tags.extend((row, name) for _, name in found)
                 cell_spans.extend(spans)
             markers.append("".join(cell_spans))
             open_tag = None
@@ -3632,7 +3714,12 @@ def collect_marker_lines(sources: Sequence[MarkerSource]) -> tuple[str, ...]:
         ):
             end += 1
         run = [sources[position][1] for position in range(row, end)]
-        spans, is_in_comment = text_marker_spans(run, is_in_comment, defined_labels)
+        found = []
+        spans, is_in_comment = text_marker_spans(
+            run, is_in_comment, defined_labels, found
+        )
+        if text_state_tags is not None:
+            text_state_tags.extend((row + offset, name) for offset, name in found)
         markers.extend(spans)
         row = end
 
@@ -4034,10 +4121,13 @@ def scan_document(text: str) -> DocumentScan:
     if active_fence is not None and fence_holds_worksheet(buffer):
         worksheet_fences.append(fence_start)
 
+    text_state_tags: list[tuple[int, str]] = []
+    marker_lines = collect_marker_lines(tuple(marker_sources), text_state_tags)
     return DocumentScan(
         tuple(content_lines),
-        collect_marker_lines(tuple(marker_sources)),
+        marker_lines,
         tuple(worksheet_fences),
+        tuple((row + 1, name) for row, name in text_state_tags),
     )
 
 
@@ -4538,6 +4628,25 @@ def check_text(text: str, display_path: str, file_name: str) -> list[Violation]:
                     f'section "## {heading.title}" is empty.',
                 )
             )
+
+    # This checker's safe direction, taken where its model stops. A text-state
+    # tag the scan does not model hides every heading and every comment below
+    # it on the page, so neither the section list above nor the exemption
+    # search can be trusted -- and a session that passed them would have
+    # passed on a page that shows neither. The tag is reported instead.
+    for number, name in scan.text_state_tags:
+        violations.append(
+            Violation(
+                display_path,
+                number,
+                f"a <{name}> tag here opens an element that holds everything "
+                "after it, up to its closing tag or to the end of the file. "
+                "Markdown still builds the headings below it, but the browser "
+                "does not show them, so this check cannot see what a child "
+                f"sees. Remove the tag, or write it as `<{name}>` inside "
+                "backticks.",
+            )
+        )
 
     for number in scan.worksheet_fences:
         violations.append(
