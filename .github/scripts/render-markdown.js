@@ -4,15 +4,23 @@
  * Render Markdown for the Last Updated check
  *
  * check-last-updated.py uses this helper so that its decisions follow a real
- * CommonMark parser instead of hand-written rules. It reads one JSON string per
- * line on stdin, a Markdown document, and writes one JSON object per line on
- * stdout:
+ * CommonMark parser instead of hand-written rules. It reads one JSON object per
+ * line on stdin, `{"text": <Markdown document>, "path": <its repository path>}`,
+ * and writes one JSON object per line on stdout:
  *
  *   html         the document rendered with markdown-it in CommonMark mode, with
  *                trailing spaces and tabs removed from each output line and
  *                trailing blank lines removed. Two versions of a document whose
  *                html is equal differ only in ways that do not render, which is
- *                what the documentation style guide calls mechanical.
+ *                what the documentation style guide calls mechanical. Every
+ *                relative URL, in a Markdown link or image or in a URL attribute
+ *                of a raw HTML tag, is rewritten to a path from the repository
+ *                root, resolved from the directory of `path`. So a relative
+ *                reference compares by the file it points to, and moving a file
+ *                changes its html exactly when a reference now points elsewhere.
+ *                Raw HTML URL attributes are also written in one form (lowercase
+ *                name, double-quoted value). HTML comments and text are left as
+ *                they are.
  *   lastUpdated  YYYY-MM-DD from the `- **Last Updated:** YYYY-MM-DD` item of the
  *                metadata header block, or null.
  *   version      the whole `**Version:** <major>.<minor>.<YYYYMMDD>.<revision>`
@@ -34,6 +42,7 @@
  *   node .github/scripts/render-markdown.js < requests.jsonl
  */
 
+const path = require('path');
 const readline = require('readline');
 const MarkdownIt = require('markdown-it');
 
@@ -42,6 +51,80 @@ const LAST_UPDATED = /^\*\*Last Updated:\*\* (\d{4}-\d{2}-\d{2})[ \t]*$/;
 const VERSION = /^\*\*Version:\*\* (\d+\.\d+\.\d{8}\.\d+)[ \t]*$/;
 const FRONT_MATTER = /^---[ \t]*\r?\n(?:[^]*?\r?\n)?(?:---|\.\.\.)[ \t]*(?:\r?\n|$)/;
 const H1_LINE_LIMIT = 30;
+
+// HTML attributes whose values are URLs (HTML Living Standard, attributes index).
+const URL_ATTRIBUTES = new Set(['action', 'background', 'cite', 'data', 'formaction', 'href', 'longdesc',
+  'poster', 'src', 'srcset']);
+// A URL with a scheme, a root-relative or protocol-relative path, or only a query or fragment
+// does not depend on the document's directory.
+const NOT_RELATIVE = /^(?:[A-Za-z][A-Za-z0-9+.-]*:|\/|#|\?|$)/;
+// Raw HTML pieces: a comment, or a start tag whose quoted values may hold `>`.
+const COMMENT_OR_TAG = /<!--[^]*?-->|<[A-Za-z][A-Za-z0-9-]*(?:[^>"']|"[^"]*"|'[^']*')*>/g;
+// One attribute inside a start tag, from the current position (CommonMark 0.31.2, raw HTML).
+const ATTRIBUTE = /(\s+)([A-Za-z_:][A-Za-z0-9_.:-]*)(?:(\s*=\s*)("[^"]*"|'[^']*'|[^\s"'=<>`]+))?/y;
+
+function resolveUrl(url, directory) {
+  const trimmed = url.trim();
+  if (NOT_RELATIVE.test(trimmed)) {
+    return url;
+  }
+  const cut = trimmed.search(/[?#]/);
+  const target = cut < 0 ? trimmed : trimmed.slice(0, cut);
+  const rest = cut < 0 ? '' : trimmed.slice(cut);
+  return '/' + path.posix.normalize(path.posix.join(directory, target)) + rest;
+}
+
+// A srcset value is a comma-separated list of candidates, each a URL and an optional descriptor.
+function resolveSrcset(value, directory) {
+  return value.split(',').map((candidate) => {
+    const [url, ...descriptor] = candidate.trim().split(/\s+/);
+    return [resolveUrl(url, directory), ...descriptor].join(' ');
+  }).join(', ');
+}
+
+function resolveAttribute(name, value, directory) {
+  return name === 'srcset' ? resolveSrcset(value, directory) : resolveUrl(value, directory);
+}
+
+// A start tag with each URL attribute resolved and written as name="value".
+function canonicalTag(tag, directory) {
+  const name = /^<[A-Za-z][A-Za-z0-9-]*/.exec(tag)[0];
+  let out = name;
+  let at = name.length;
+  ATTRIBUTE.lastIndex = at;
+  let m;
+  while ((m = ATTRIBUTE.exec(tag)) !== null) {
+    const attribute = m[2].toLowerCase();
+    if (m[4] !== undefined && URL_ATTRIBUTES.has(attribute)) {
+      const quoted = m[4][0] === '"' || m[4][0] === "'";
+      const value = quoted ? m[4].slice(1, -1) : m[4];
+      out += ' ' + attribute + '="' + resolveAttribute(attribute, value, directory).replace(/"/g, '&quot;') + '"';
+    } else {
+      out += m[0];
+    }
+    at = ATTRIBUTE.lastIndex;
+  }
+  return out + tag.slice(at);
+}
+
+function canonicalHtml(html, directory) {
+  return html.replace(COMMENT_OR_TAG, (piece) => (piece.startsWith('<!--') ? piece : canonicalTag(piece, directory)));
+}
+
+// Resolve relative references in Markdown links, images and raw HTML, in place.
+function resolveReferences(tokens, directory) {
+  for (const token of tokens) {
+    if (token.type === 'link_open' || token.type === 'image') {
+      const attribute = token.type === 'link_open' ? 'href' : 'src';
+      token.attrSet(attribute, resolveUrl(token.attrGet(attribute), directory));
+    } else if (token.type === 'html_block' || token.type === 'html_inline') {
+      token.content = canonicalHtml(token.content, directory);
+    }
+    if (token.children) {
+      resolveReferences(token.children, directory);
+    }
+  }
+}
 
 // The document's top-level blocks, each with the tokens inside it.
 function topLevelBlocks(tokens) {
@@ -123,8 +206,9 @@ function metadata(tokens) {
   return { lastUpdated: listField(blocks[at]), version };
 }
 
-function describe(text) {
+function describe(text, filePath) {
   const tokens = md.parse(text, {});
+  resolveReferences(tokens, path.posix.dirname(filePath));
   const html = md.renderer.render(tokens, md.options, {})
     .split('\n')
     .map((line) => line.replace(/[ \t]+$/, ''))
@@ -137,5 +221,6 @@ function describe(text) {
 
 const input = readline.createInterface({ input: process.stdin, crlfDelay: Infinity });
 input.on('line', (line) => {
-  process.stdout.write(JSON.stringify(describe(JSON.parse(line))) + '\n');
+  const request = JSON.parse(line);
+  process.stdout.write(JSON.stringify(describe(request.text, request.path)) + '\n');
 });

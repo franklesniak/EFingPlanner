@@ -24,11 +24,13 @@ Markdown is read"):
    merge, such as merging the base branch in, adds nothing. Keying on commit
    dates, not on today's date, means a second change on the same day passes
    without a redundant edit, and a check re-run on a later day cannot start
-   failing.
+   failing. A renamed file's history is followed, including a rename made as a
+   copy and a later deletion.
 2. If the file carries ``**Version:** <major>.<minor>.<YYYYMMDD>.<revision>``
    and its content changed, the ``<YYYYMMDD>`` segment must equal the field, and
    ``<revision>`` must follow the guide's convention against the published
-   baseline, the file on the base branch tip: ``N + 1`` when the baseline has the
+   baseline, the file on the base branch tip (under its new name if the base
+   branch renamed it after the fork): ``N + 1`` when the baseline has the
    same ``<major>.<minor>.<YYYYMMDD>`` at revision ``N``, otherwise ``0``.
 3. If the base version carried the field and the head does not, the field was
    removed or moved out of the metadata header block, which fails.
@@ -47,10 +49,10 @@ compared after trailing whitespace is removed from each output line. Equal
 output means mechanical. A hard line break renders as `<br />`, so adding or
 removing one still counts. Trailing spaces that CommonMark does not render as a
 break, such as at the end of a paragraph, after a heading or inside a code
-block, do not count. Relative link and image targets are compared as repository
-paths, resolved from each version's own directory, so moving a file to another
-directory changes its content exactly when a relative reference now points
-somewhere else.
+block, do not count. Relative references, in Markdown links and images and in
+the URL attributes of raw HTML tags, are compared as repository paths, resolved
+from each version's own directory, so moving a file to another directory changes
+its content exactly when a relative reference now points somewhere else.
 
 How Markdown is read
 --------------------
@@ -81,8 +83,6 @@ import argparse
 import datetime as dt
 import json
 import os
-import posixpath
-import re
 import subprocess
 import sys
 from typing import Any, cast
@@ -134,22 +134,23 @@ def show(commit: str, path: str) -> str | None:
 class Renderer:
     """Markdown rendered by `render-markdown.js`, through one Node process for the whole run.
 
-    Each answer holds the rendered HTML (`html`), the `Last Updated` field
-    (`lastUpdated`) and the `Version` date segment (`version`); see the helper for
-    exactly what each one means. Answers are cached by text. Any failure raises
-    RenderError, so a renderer problem can never read as "mechanical" or "no field".
+    Each answer holds the rendered HTML (`html`), with relative references resolved
+    from the document's path, the `Last Updated` field (`lastUpdated`) and the whole
+    `Version` value (`version`); see the helper for exactly what each one means.
+    Answers are cached by text and path. Any failure raises RenderError, so a renderer
+    problem can never read as "mechanical" or "no field".
     """
 
     def __init__(self) -> None:
         self.process: subprocess.Popen[str] | None = None
-        self.cache: dict[str, dict[str, Any]] = {}
+        self.cache: dict[tuple[str, str], dict[str, Any]] = {}
 
-    def __call__(self, text: str) -> dict[str, Any]:
-        if text not in self.cache:
-            self.cache[text] = self.ask(text)
-        return self.cache[text]
+    def __call__(self, text: str, path: str = "") -> dict[str, Any]:
+        if (text, path) not in self.cache:
+            self.cache[(text, path)] = self.ask(text, path)
+        return self.cache[(text, path)]
 
-    def ask(self, text: str) -> dict[str, Any]:
+    def ask(self, text: str, path: str) -> dict[str, Any]:
         if self.process is None:
             try:
                 self.process = subprocess.Popen([NODE, HELPER], stdin=subprocess.PIPE, stdout=subprocess.PIPE,
@@ -159,7 +160,7 @@ class Renderer:
         assert self.process.stdin is not None and self.process.stdout is not None
         try:
             # ensure_ascii escapes everything else, including undecodable bytes carried as surrogates.
-            self.process.stdin.write(json.dumps(text, ensure_ascii=True) + "\n")
+            self.process.stdin.write(json.dumps({"text": text, "path": path}, ensure_ascii=True) + "\n")
             self.process.stdin.flush()
             line = self.process.stdout.readline()
         except OSError as exc:
@@ -188,36 +189,17 @@ class Renderer:
 render = Renderer()
 
 
-REFERENCE = re.compile(r"""\b(href|src)=("[^"]*"|'[^']*')""")
-NOT_RELATIVE = re.compile(r"^(?:[A-Za-z][A-Za-z0-9+.-]*:|/|#|\?|$)")
-
-
 def rendered(text: str, path: str) -> str:
     """The text as CommonMark renders it at `path`, with trailing whitespace removed from each line.
 
     Two versions with equal output differ only mechanically: in line endings, the
     end-of-file newline, or trailing whitespace that renders nothing. A hard line break
-    renders as `<br />`, so removing or adding one is still a content change.
-
-    Every relative `href` and `src` is rewritten to a path from the repository root,
-    resolved from the directory of `path`, so a relative reference compares by the file
-    it points to. Moving a file therefore changes its content exactly when one of its
-    references now points somewhere else. URLs with a scheme, root-relative paths and
-    fragment-only or query-only links do not depend on the file's directory and are
-    kept as they are.
+    renders as `<br />`, so removing or adding one is still a content change. Relative
+    references, in Markdown and in raw HTML, are resolved from the directory of `path`,
+    so moving a file changes its content exactly when one of them now points somewhere
+    else.
     """
-    directory = posixpath.dirname(path)
-
-    def resolve(m: re.Match[str]) -> str:
-        quote, url = m.group(2)[0], m.group(2)[1:-1]
-        if NOT_RELATIVE.match(url):
-            return m.group(0)
-        cut = min([i for i in (url.find("?"), url.find("#")) if i >= 0], default=len(url))
-        target, rest = url[:cut], url[cut:]
-        return "%s=%s/%s%s%s" % (m.group(1), quote, posixpath.normpath(posixpath.join(directory, target)),
-                                 rest, quote)
-
-    return REFERENCE.sub(resolve, cast(str, render(text)["html"]))
+    return cast(str, render(text, path)["html"])
 
 
 def field(text: str) -> str | None:
@@ -286,7 +268,24 @@ def path_in(parent: str, commit: str, path: str) -> str | None:
     return path   # unchanged between the two commits, so the parent has the same name
 
 
-def required_date(base: str, head: str, path: str) -> dt.date | None:
+def path_at(commit: str, later: str, path: str) -> str:
+    """The name `later` has for the file that `commit` calls `path`.
+
+    A rename-aware diff of the whole tree is used, as in `path_in()`, so a rename on the
+    way from `commit` to `later` gives the new name. Otherwise the name is unchanged;
+    if `later` deleted the file, `show()` finds nothing there.
+    """
+    raw = git("diff", "--name-status", "-z", "-M", commit, later)
+    tokens = [t for t in raw.split("\0") if t]
+    i = 0
+    while i < len(tokens):
+        status, before, after, i = name_status(tokens, i)
+        if before == path and status[0] == "R":
+            return after
+    return path
+
+
+def required_date(base: str, head: str, path: str, origin: str | None = None) -> dt.date | None:
     """UTC author date of the newest PR commit that changed the file's content.
 
     Every PR commit that touched the file is considered, merges included, and the
@@ -296,6 +295,11 @@ def required_date(base: str, head: str, path: str) -> dt.date | None:
     differs from git's own clean merge of all its parents (see `clean_merge()`): an
     automatic merge adds nothing, because each side's commits carry their own dates,
     while a conflict resolution or an edit made during the merge is authored.
+
+    `origin` is the file's name on the base when the PR renamed it. A rename can be
+    made in two commits, a copy and a later deletion; the copy commit then shows the
+    file as added. So when a commit adds the file, the walk follows `origin` into the
+    parent, and the history before the copy counts. A parent without `origin` is skipped.
     """
     # Walk every PR commit children-first, carrying the file's name backwards: the head
     # knows it as `path`, and each parent's name comes from a rename-aware diff against
@@ -316,6 +320,8 @@ def required_date(base: str, head: str, path: str) -> dt.date | None:
         befores = []
         for parent in parents:
             own = path_in(parent, sha, name)
+            if own is None and origin not in (None, name):
+                own = origin   # added here, as by a copy: follow the base name the rename came from
             names.setdefault(parent, own)
             content = show(parent, own) if own else None
             befores.append(rendered(content or "", own or name))
@@ -380,7 +386,7 @@ def check(base: str, head: str) -> list[str]:
                             "base version's date." % (path, base_value, value))
         if base_text is not None and old_path and rendered(base_text, old_path) == rendered(head_text, path):
             continue
-        need = required_date(merge_base, head, path)
+        need = required_date(merge_base, head, path, old_path)
         if need is None:
             # Fail closed: the content differs from the base, so some commit changed it.
             problems.append("%s: its content changed, but no pull request commit could be found that "
@@ -399,8 +405,10 @@ def check(base: str, head: str) -> list[str]:
         # The revision depends on the date, so it is checked only once both dates are right.
         if date_is_stale or date != value.replace("-", ""):
             continue
-        # The published baseline is the file on the base branch tip, not on the merge base.
-        published = show(base, old_path) if old_path else None
+        # The published baseline is the file on the base branch tip, not on the merge base,
+        # under the name it has there if the base branch renamed it after the fork.
+        published_path = path_at(merge_base, base, old_path) if old_path else None
+        published = show(base, published_path) if published_path else None
         baseline = version(published) if published is not None else None
         if baseline is not None and baseline[:3] == head_version[:3]:
             expected, why = baseline[3] + 1, "the base branch already has %d.%d.%s.%d" % baseline

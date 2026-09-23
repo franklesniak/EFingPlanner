@@ -541,6 +541,58 @@ def test_moving_a_file_with_a_relative_link_needs_a_bump(repo: Repo) -> None:
     assert len(problems) == 1 and "docs/sub/a.md" in problems[0] and "Set it to 2026-03-05" in problems[0]
 
 
+@pytest.mark.parametrize("raw", [
+    "<img src=pic.png>",
+    "<img src='pic.png'>",
+    '<a HREF = "other.md">x</a>',
+    '<p>\n<img alt="a" src=pic.png />\n</p>',
+    '<picture><source srcset="dark.png 1x, dark2.png 2x"></picture>',
+], ids=["unquoted", "single-quoted", "uppercase-spaced", "in-a-block", "srcset"])
+def test_moving_a_file_with_a_relative_raw_html_reference_needs_a_bump(repo: Repo, raw: str) -> None:
+    publish(repo, doc("2026-01-01", "Text.\n\n" + raw), "2026-01-01T12:00:00+00:00")
+    (repo.root / "docs" / "sub").mkdir()
+    repo.git("mv", "docs/a.md", "docs/sub/a.md")
+    repo.commit("move", "2026-03-05T10:00:00+00:00")
+    problems = run(repo)
+    assert len(problems) == 1 and "Set it to 2026-03-05" in problems[0]
+
+
+@pytest.mark.parametrize("body", [
+    "```html\n<img src=pic.png>\n```",                              # code shows the tag as text
+    '<a title="see href=x.md" href="https://example.com/">x</a>',   # a lookalike inside a value
+    "<!-- <img src=\"pic.png\"> -->",                               # a commented-out tag
+], ids=["code-block", "value-lookalike", "comment"])
+def test_raw_html_lookalikes_are_not_references(repo: Repo, body: str) -> None:
+    publish(repo, doc("2026-01-01", "Text.\n\n" + body), "2026-01-01T12:00:00+00:00")
+    (repo.root / "docs" / "sub").mkdir()
+    repo.git("mv", "docs/a.md", "docs/sub/a.md")
+    repo.commit("move", "2026-03-05T10:00:00+00:00")
+    assert run(repo) == []
+
+
+def test_move_that_keeps_every_srcset_target_needs_no_bump(repo: Repo) -> None:
+    raw = '<picture><source srcset="%sdark.png 1x, %sdark2.png 2x"><img src="%spic.png"></picture>'
+    publish(repo, doc("2026-01-01", "Text.\n\n" + raw % ("", "", "")), "2026-01-01T12:00:00+00:00")
+    (repo.root / "docs" / "sub").mkdir()
+    repo.git("mv", "docs/a.md", "docs/sub/a.md")
+    repo.write("docs/sub/a.md", doc("2026-01-01", "Text.\n\n" + raw % ("../", "../", "../")))
+    repo.commit("move and keep targets", "2026-03-05T10:00:00+00:00")
+    assert run(repo) == []
+
+
+def test_edit_before_a_copy_then_delete_rename_sets_the_date(repo: Repo) -> None:
+    # A reordering rebase can leave later commits with earlier author dates.
+    repo.write("docs/a.md", doc("2026-03-05", "Edited."))
+    repo.commit("edit", "2026-03-06T10:00:00+00:00")
+    repo.write("docs/b.md", doc("2026-03-05", "Edited."))
+    repo.commit("copy", "2026-03-05T11:00:00+00:00")
+    repo.git("rm", "-q", "docs/a.md")
+    repo.commit("delete", "2026-03-05T12:00:00+00:00")
+    assert repo.git("diff", "--name-status", "-M", "main..HEAD").startswith("R")
+    problems = run(repo)
+    assert len(problems) == 1 and "docs/b.md" in problems[0] and "Set it to 2026-03-06" in problems[0]
+
+
 def test_move_that_keeps_every_target_needs_no_bump(repo: Repo) -> None:
     publish(repo, doc("2026-01-01", LINKED % ("", "")), "2026-01-01T12:00:00+00:00")
     (repo.root / "docs" / "sub").mkdir()
@@ -622,6 +674,33 @@ def test_version_date_mismatch_is_reported_alone(repo: Repo) -> None:
     repo.commit("change", "2026-03-05T10:00:00+00:00")
     problems = run(repo)
     assert len(problems) == 1 and "Version date segment is 20260304" in problems[0]
+
+
+def test_published_baseline_follows_a_base_branch_rename(repo: Repo) -> None:
+    publish(repo, doc("2026-03-05", version="20260305"), "2026-03-05T08:00:00+00:00")
+    repo.git("switch", "-q", "main")
+    repo.git("mv", "docs/a.md", "docs/renamed.md")
+    repo.commit("main renames the file", "2026-03-05T09:00:00+00:00")
+    repo.git("switch", "-q", "pr")
+    repo.write("docs/a.md", doc("2026-03-05", "Changed.", version="20260305"))
+    repo.commit("edit under the old name", "2026-03-05T10:00:00+00:00")
+    problems = run(repo)
+    assert len(problems) == 1 and "already has 1.0.20260305.0, so the revision must be 1" in problems[0]
+    repo.write("docs/a.md", doc("2026-03-05", "Changed.", version="20260305", revision=1))
+    repo.commit("next revision", "2026-03-05T10:05:00+00:00")
+    assert run(repo) == []
+
+
+def test_base_branch_deletion_leaves_no_published_baseline(repo: Repo) -> None:
+    publish(repo, doc("2026-03-05", version="20260305"), "2026-03-05T08:00:00+00:00")
+    repo.git("switch", "-q", "main")
+    repo.git("rm", "-q", "docs/a.md")
+    repo.commit("main deletes the file", "2026-03-05T09:00:00+00:00")
+    repo.git("switch", "-q", "pr")
+    repo.write("docs/a.md", doc("2026-03-05", "Changed.", version="20260305", revision=1))
+    repo.commit("edit", "2026-03-05T10:00:00+00:00")
+    problems = run(repo)
+    assert len(problems) == 1 and "no Version for this file, so the revision must be 0" in problems[0]
 
 
 def test_mechanical_change_does_not_need_a_new_revision(repo: Repo) -> None:
@@ -842,7 +921,7 @@ def test_changes_on_main_after_the_fork_are_not_the_prs(repo: Repo) -> None:
 def test_unattributable_content_change_fails_closed(repo: Repo, monkeypatch: Any) -> None:
     repo.write("docs/a.md", doc("2026-03-05", "Changed."))
     repo.commit("change", "2026-03-05T10:00:00+00:00")
-    monkeypatch.setattr(last_updated, "required_date", lambda base, head, path: None)
+    monkeypatch.setattr(last_updated, "required_date", lambda base, head, path, origin=None: None)
     problems = run(repo)
     assert len(problems) == 1 and "required date is unknown" in problems[0]
 
