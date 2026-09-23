@@ -32,7 +32,7 @@ Want a rough signal of how the executive-function side is going? The optional [e
 ## Session 03: What Makes a Good Trip
 
 - Role: 5-minute check-in; help make far-away travelers reachable.
-- Prep: a blank Family Trip Goals and Input Summary page.
+- Prep: your copy of the Family Trip Goals and Input Summary page, from the trip starter kit.
 - Look for: family goals, at least one poll answer, and a "how I balanced it" line.
 - Coaching question: "Whose 'one thing' did you make room for?"
 - Pitfall: letting a scheduling gap stall the poll. Relay it yourself if needed.

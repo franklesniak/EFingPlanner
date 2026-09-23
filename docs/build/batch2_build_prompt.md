@@ -409,9 +409,9 @@ project:
   Session 53 uses the same slot for `**This is your finish line.**`, so the slot is for
   whatever makes the page different from an ordinary session -- **not a second status
   label**, which already lives in the parent strip.
-- **The parent strip is written exactly `**For parents:**`**, directly under the
-  navigation line and above `## Goal`, rendering as a short one-field-per-line list
-  rather than a faux table. `AC-15-3`'s "child's action before parent-facing meta" is
+- **The parent strip is written exactly `**For parents:**`**, after the navigation line
+  and any italic routing line under it (section 4.1), and above `## Goal`, rendering as a
+  short one-field-per-line list rather than a faux table. `AC-15-3`'s "child's action before parent-facing meta" is
   satisfied by that section order, not by pushing the strip below `## Steps`.
   **Do not reorder it.**
 - **Every session in this batch produces an artifact**, so every session carries the

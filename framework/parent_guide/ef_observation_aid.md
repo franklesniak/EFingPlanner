@@ -59,6 +59,6 @@ The whole point of this curriculum is executive-function practice, and practice 
 
 ## Where to go next
 
-- [What is executive function](what_is_executive_function.md) -- what the four skills are, and what this curriculum can and cannot claim about them.
+- [What is executive function](what_is_executive_function.md) -- the everyday skills behind this project, and what this curriculum can and cannot claim about them.
 - [Time and effort](time_and_effort.md) -- what to expect before you commit, and the pilot deferral this batch still carries.
 - [Design principles](../docs/design_principles.md) -- which session mechanic supports which skill.

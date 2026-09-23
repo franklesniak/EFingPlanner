@@ -6,7 +6,7 @@
 
 This pack holds stable, orienting facts about Japan for the planner to use as **starting points, not answers.** It does not recommend a trip, pre-pick cities, or give an itinerary -- that is the child's job. Everything here is meant to be confirmed against official sources close to travel.
 
-Each reference file and each session insert carries a `Last reviewed` date -- an honesty stamp saying when one family last looked, not a promise anyone is keeping it current. The two contents pages do not carry one, because they hold no facts to go stale.
+Each reference file and each session insert carries a `Last reviewed` date: the month the page was written or last checked against its sources. Nobody promises to keep it current, and the date does not mean a person has read the page. The two contents pages do not carry one, because they hold no facts to go stale.
 
 ## Reference files
 

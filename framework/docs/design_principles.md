@@ -87,4 +87,4 @@ Support is heavy at the start and lifts as the child earns it. The gradient acro
 
 If the two sessions do not come, the stage does not move. Going back a stage after a hard week is a normal adjustment rather than a setback.
 
-**The anchors never fade.** The seven mandatory-core session fields stay on every session at every stage: Goal, Start Here, Steps, Workspace, Artifact Created, Stop Point, and Source Check where the session has a research step. A lighter session is lighter in its meta sections and its step detail. It is never missing an anchor.
+**The anchors never fade.** The seven mandatory-core session fields stay on every session at every stage: Goal, Start Here, Steps, Workspace, Artifact Created, Stop Point, and Source Check where the session has a research step. A lighter session is lighter in its Steps and Workspace, and its Start Here may be the child's own. Its meta sections stay the same short pointers every session carries. It is never missing an anchor.

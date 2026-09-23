@@ -10,7 +10,7 @@ You are here: Phase 0 (Setup), First Taste step 2 of 13. Previous: [02 Family Tr
 - Planner skill: organizing what people want
 - Estimated time: 20-30 minutes
 - Parent involvement: 5-minute check-in; helps if travelers are reachable to ask
-- Materials: your binder, a pencil, the [Family Trip Goals and Input Summary](../../templates/family_trip_goals.md)
+- Materials: your binder, a pencil, your copy of the [Family Trip Goals and Input Summary](../../trip_starter/family/family_trip_goals.md)
 
 ## Goal
 
@@ -45,7 +45,7 @@ Balancing what people want is the same kind of trade-off move you will use later
 
 ## Workspace
 
-Use your binder pages for your own answers, the poll answers (one line per person), and your one "how I balanced it" line. The blank [Family Trip Goals and Input Summary](../../templates/family_trip_goals.md) page holds all three.
+Use your binder pages for your own answers, the poll answers (one line per person), and your one "how I balanced it" line. Your copy of the [Family Trip Goals and Input Summary](../../trip_starter/family/family_trip_goals.md) page holds all three.
 
 You can say your answers to an adult who writes them, or draw them, if that is easier.
 
