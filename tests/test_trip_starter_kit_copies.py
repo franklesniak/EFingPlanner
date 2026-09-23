@@ -22,6 +22,7 @@ with LF endings, so they cannot differ once committed.
 
 from __future__ import annotations
 
+import re
 from pathlib import Path
 
 import pytest
@@ -84,6 +85,30 @@ def test_the_kit_copy_is_its_template_plus_the_kit_preamble(stem: str) -> None:
         f"{template.relative_to(REPO_ROOT).as_posix()}. Edit both, or edit the "
         "template and copy it across. The kit README's own rule says two copies "
         "drift apart and then nobody knows which one is right."
+    )
+
+
+@pytest.mark.parametrize("stem", sorted(MIRRORED_BLANKS))
+def test_the_kit_preamble_links_the_template_it_came_from(stem: str) -> None:
+    """The mirror check strips the preamble's link, so this test checks it.
+
+    A kit copy whose preamble linked a different blank would pass the mirror
+    check and send a family to the wrong page.
+    """
+    copy = REPO_ROOT / MIRRORED_BLANKS[stem]
+    lines = [
+        line
+        for line in copy.read_text(encoding="utf-8").split("\n")
+        if line.startswith(PREAMBLE_SECOND_PREFIX)
+    ]
+    assert len(lines) == 1, f"expected one provenance line, found {len(lines)}"
+    match = re.search(r"\]\(([^)\s]+)\)", lines[0])
+    assert match, f"no link in {lines[0]!r}"
+    linked = (copy.parent / match.group(1)).resolve()
+    expected = (REPO_ROOT / "framework" / "templates" / f"{stem}.md").resolve()
+    assert linked == expected, (
+        f"{MIRRORED_BLANKS[stem]} says it was copied from {match.group(1)}, "
+        f"but its template is framework/templates/{stem}.md."
     )
 
 

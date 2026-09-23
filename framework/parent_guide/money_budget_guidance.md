@@ -28,7 +28,7 @@ Your child's controllable slices are hotels, food, activities, local transit and
 
 **Keep your getting-there number on your own page.** Their budget worksheet says in as many words that getting there is the grown-ups' number and that there is nothing to fill in there. That wording is deliberate. A jotted line in this guide, or anywhere you keep trip notes, is all it needs to be.
 
-The honest reason: for a multi-person long-haul trip, flights dominate everything. They can run several times the entire rest of the trip put together. Put that in front of a ten-year-old as one line item and the rest of their careful work looks like rounding error. It isn't, and the split is what keeps it from looking that way.
+The honest reasons: getting there is adult-owned, like the booking itself, and it can be large. For a multi-person long-haul trip, flights dominate everything. They can run several times the entire rest of the trip put together. Put that in front of a ten-year-old as one line item and the rest of their careful work looks like rounding error. It isn't, and the split is what keeps it from looking that way.
 
 ## What you supply
 
