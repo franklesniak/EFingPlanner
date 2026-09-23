@@ -681,7 +681,9 @@ depend on them.
 
 **All six are added to the authorized edit scope, with Session 12's booked-dates branch
 below.** Each edit is conditional or additive:
-**nothing a First Taste child reads today may change meaning for them.**
+**nothing a First Taste child reads today may change meaning for them.** **A Core-path
+addition that asks for new work also changes that session's Artifact and Stop Point on the
+Core path**, so the session is not done until the new work is.
 
 #### Session 33 — the adult flight placeholder Session 39 depends on
 
@@ -787,7 +789,9 @@ spec's understanding-and-confirmation beat, so the report compares **two ways to
 around the booked season's biggest challenge**, taken from the child's Session 12 chart: for
 example, a hot, rainy or crowded stretch. It weighs what each way gives and costs on the
 family's goals, and recommends one. It is still the first report, and it needs no research
-beyond that chart. **A family
+beyond that chart. **On the Core path, the report is part of the Artifact and the Stop
+Point**: the child is done when the season decision is shared and the report is filled, in
+either form. **A family
 that continues after finishing First Taste writes this report when its numbered order
 reaches Session 14**, extending the Checkpoint 1 page it already finished. **A First Taste
 child's page gains only the booked-dates branch below**; First Taste is not measured
@@ -837,11 +841,12 @@ Built Session 21 compares "your two City Research Cards". A Core/Full child arri
 Session 20 with a long-list of five to eight places. The spec's rule is "at 21, extend their
 comparison to the fuller long-list candidates". **On the Core path, extend the score table to
 the long-list candidates the child wants to keep in the running**, and say that the two
-cities already scored count. **The two-city First Taste steps stay word for word.** In
-Parent Notes, change "This is the first real trade-off report" to **"This is a real
-trade-off report"**: on the Core path the Session 14 report comes first, and the sentence
-is then true on every path. **A family continuing from First Taste extends Session 21 when
-its numbered order reaches it**, after Session 20 has built the long-list.
+cities already scored count. On the Core path, the Artifact and the Stop Point cover every
+candidate the child keeps in the running. **The two-city First Taste steps stay word for
+word.** In Parent Notes, change "This is the first real trade-off report" to **"This is a
+real trade-off report"**: on the Core path the Session 14 report comes first, and the
+sentence is then true on every path. **A family continuing from First Taste extends Session
+21 when its numbered order reaches it**, after Session 20 has built the long-list.
 
 ### 4.1b Converting Session 15, the one built session that still leaks
 
@@ -1484,9 +1489,11 @@ this is presented.
   columns. If the child has many attractions, **split into several small tables rather
   than one wide grid.** Any worked example row uses unnamed placeholders, never a real
   place. (`D-OPEN-5`.)
-- **Artifact:** a ranked attraction list.
+- **Artifact:** a ranked attraction list, and the one personal pick on the My Calls page.
 - **Stop Point:** you are done when every attraction sits in one of the four groups and
-  your must-do list is short enough to read in one breath. **Scores inform the choice;
+  your must-do list is short enough to read in one breath. You also need your one personal
+  pick on your My Calls page, chosen with a grown-up. If you chose it at Session 44, confirm
+  it in one line. **Scores inform the choice;
   they do not make it.**
 - **Source Check:** not required. Carry the heading with the no-research line plus one
   sentence: the scores come from the cards you already made.
@@ -3310,8 +3317,12 @@ requirements keep video research with an adult, keep the kid-safe filter on, and
 whose online-safety guardrail requires them to stay. **Write Session 25's Role line as
 co-worked.** **Session 49 is co-worked for the same kind of reason**: a grown-up rehearses
 the separation plan with the child, and its central-table value is `co-working
-recommended`. Write its Role line as co-worked too. Every session not named in this
-paragraph is independent.
+recommended`. Write its Role line as co-worked too. **Two more sessions have one grown-up
+step without being gated as a whole.** Session 09 is adult-operated: a grown-up runs the AI
+tool, as its built entry says. Session 26 ends with the one unconditional pick, which a
+grown-up helps choose after showing the three blocks, as built Session 44 does on the First
+Taste path. Write Session 26's Role line the way Session 44's is written. Every session not
+named in this paragraph is independent.
 
 **Status labels to carry:** 18, 36, 37 and 47 are **`Conditional core`** and
 **auto-promote to Core later**, each on the condition its own session entry states --
@@ -3969,10 +3980,12 @@ First-Taste-only today, and it is a static page, so the two views are two sectio
 fixed order. **Keep the First Taste section first and as it is**, including its own count,
 because a First Taste child still uses it. **Add the Core/Full section after it**, headed
 for a family that keeps going past First Taste: the checkpoints line first, then **every
-session grouped by phase, in numbered order**, as check-off lines in the same form as the
-First Taste list. **Mark each line that is not Core with its path label from this brief's
-session table** -- Recommended, Optional, or the condition that makes it Core -- so a Full
-family and a family whose condition promotes a session both find it in order.
+session from 01 to 53, grouped by phase, in numbered order**, as check-off lines in the same
+form as the First Taste list. **Mark each line that is not Core with its path label from
+this brief's session table** -- Recommended, Optional, or the condition that makes it
+Core -- so a Full family and a family whose condition promotes a session both find it in
+order. Session 54, the optional post-trip module, joins the tracker when Batch 4 builds it;
+until then the roadmap lists it separately, without a link, under F1's rule.
 **Say once, at the top of the section, how to read the labels:** an unmarked line is Core
 and is done in order; a conditional line is done when its condition holds; a Recommended or
 Optional line is done only if the family chooses it, as a Full family does.
@@ -3986,7 +3999,7 @@ along with its session. A family continuing from First Taste ticks the sessions 
 finished, then reads the rest the same way: it works the unticked Core lines and extension
 lines in numbered order, plus each conditional line whose condition holds and each
 Recommended or Optional line it chooses. It reaches each extension at its session's place.
-**Mark each Core line whose session is parent-gated or co-worked**,
+**Mark each line whose session is parent-gated or co-worked, or has a grown-up step**,
 in the same form as the First Taste list's markers, taking which sessions those are from
 B7's rule, so the membership lives in one place. **Scope the existing "Which sessions need a
 grown-up" lists to the First Taste path**, and make its waiting rule point at a marked
@@ -4051,7 +4064,7 @@ from this table. (`D-item-7`.)
 | 23 | checking sources | 20-30 minutes (can be several sittings) | none / independent work | Core |
 | 24 | organizing information | 20-30 minutes | none / independent work | Core |
 | 25 | checking sources | 20-30 minutes (one sitting); the second sitting can be its own | co-working recommended | Core |
-| 26 | ranking priorities | 20-30 minutes | none / independent work | Core |
+| 26 | ranking priorities | 20-30 minutes | 5-minute check-in; help co-choose the one unconditional pick | Core |
 | 27 | making trade-offs | 20-30 minutes for you, plus a 20-40 minute review with an adult | parent review -- genuinely use the recommendation in a real family talk | Core -- **Checkpoint 3** |
 | 28 | planning realistic time | 20-30 minutes | 5-minute check-in | Core |
 | 29 | planning realistic time | 20-30 minutes | none / independent work | Core |
