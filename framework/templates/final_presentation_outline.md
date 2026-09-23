@@ -20,8 +20,8 @@ If you want to work up to it, [the differentiation guide](../parent_guide/differ
 
 | Question | My one line |
 | --- | --- |
-| When should we go? | |
-| How long should we go? | |
+| When should we go? (With the dates booked: What does our season mean for the trip?) | |
+| How long should we go? (With the dates booked: How do we use our booked days?) | |
 | Which cities should we visit? | |
 | What route should we take? | |
 | What are the top experiences? | |
