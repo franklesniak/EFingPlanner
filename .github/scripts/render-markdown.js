@@ -45,12 +45,17 @@
 const path = require('path');
 const readline = require('readline');
 const MarkdownIt = require('markdown-it');
+const YAML = require('yaml');
 
 const md = new MarkdownIt('commonmark');
 const LAST_UPDATED = /^\*\*Last Updated:\*\* (\d{4}-\d{2}-\d{2})[ \t]*$/;
 const VERSION = /^\*\*Version:\*\* (\d+\.\d+\.\d{8}\.\d+)[ \t]*$/;
 const FRONT_MATTER = /^---[ \t]*\r?\n(?:[^]*?\r?\n)?(?:---|\.\.\.)[ \t]*(?:\r?\n|$)/;
 const H1_LINE_LIMIT = 30;
+// The metadata header block's required fields beside Last Updated (the docs guide's Tier 1 list).
+const REQUIRED_FIELDS = ['Status', 'Owner', 'Scope'];
+// A character reference, decoded before a raw HTML attribute value is classified, as a browser does.
+const CHARACTER_REFERENCE = /&(?:#[0-9]+|#[xX][0-9a-fA-F]+|[A-Za-z][A-Za-z0-9]*);/g;
 
 // HTML attributes whose values hold URLs (HTML Living Standard, attributes index), plus the
 // obsolete `background` and `longdesc`, which browsers still honor. `itemtype` is left out:
@@ -136,7 +141,8 @@ function canonicalTag(tag, directory) {
     const attribute = m[2].toLowerCase();
     if (m[4] !== undefined && URL_ATTRIBUTES.has(attribute)) {
       const quoted = m[4][0] === '"' || m[4][0] === "'";
-      const value = quoted ? m[4].slice(1, -1) : m[4];
+      const raw = quoted ? m[4].slice(1, -1) : m[4];
+      const value = raw.replace(CHARACTER_REFERENCE, (ref) => md.utils.unescapeAll(ref));
       out += ' ' + attribute + '="' + resolveAttribute(attribute, value, directory).replace(/"/g, '&quot;') + '"';
     } else {
       out += m[0];
@@ -198,22 +204,48 @@ function paragraphLine(block) {
   return block.inner[0].content.split('\n')[0];
 }
 
-// Last Updated from a top-level `-` list: the first paragraph line of each item.
+// Last Updated from a top-level `-` list: the first paragraph line of each item. The list is
+// the metadata header block only when it also carries every required field; a list that does
+// not is ordinary content, even if one of its lines looks like the field.
 function listField(block) {
   if (block === undefined || block.open.type !== 'bullet_list_open' || block.open.markup !== '-') {
     return null;
   }
+  const lines = [];
   for (let i = 0; i < block.inner.length; i++) {
     const token = block.inner[i];
     // list_item_open (level 1), paragraph_open (level 2), inline (level 3).
     if (token.type === 'inline' && token.level === 3 && block.inner[i - 2].type === 'list_item_open') {
-      const m = LAST_UPDATED.exec(token.content.split('\n')[0]);
-      if (m) {
-        return m[1];
-      }
+      lines.push(token.content.split('\n')[0]);
+    }
+  }
+  if (!REQUIRED_FIELDS.every((name) => lines.some((line) => line.startsWith('**' + name + ':**')))) {
+    return null;
+  }
+  for (const line of lines) {
+    const m = LAST_UPDATED.exec(line);
+    if (m) {
+      return m[1];
     }
   }
   return null;
+}
+
+// The length of the YAML front matter at the start of `text`, or 0. A leading thematic break
+// followed by a later one looks the same, so the block counts only when it parses as a YAML
+// mapping.
+function frontMatterLength(text) {
+  const m = FRONT_MATTER.exec(text);
+  if (!m) {
+    return 0;
+  }
+  const inner = m[0].replace(/^---[ \t]*\r?\n/, '').replace(/(?:---|\.\.\.)[ \t]*(?:\r?\n)?$/, '');
+  try {
+    const data = YAML.parse(inner);
+    return data !== null && typeof data === 'object' && !Array.isArray(data) ? m[0].length : 0;
+  } catch (error) {
+    return 0;
+  }
 }
 
 function metadata(tokens) {
@@ -253,8 +285,8 @@ function describe(text, filePath) {
     .map((line) => line.replace(/[ \t]+$/, ''))
     .join('\n')
     .replace(/\n+$/, '');
-  const frontMatter = FRONT_MATTER.exec(text);
-  const body = frontMatter ? md.parse(text.slice(frontMatter[0].length), {}) : tokens;
+  const skip = frontMatterLength(text);
+  const body = skip ? md.parse(text.slice(skip), {}) : tokens;
   return { html, ...metadata(body) };
 }
 

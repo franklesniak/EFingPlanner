@@ -158,11 +158,13 @@ jobs:
           echo "::error::Markdown and toolchain checks failed. Check the logs above for details."
           exit 1
 
-  # Every Markdown file that carries the metadata header block must bump its
-  # `Last Updated` field in the commit that changes its content (docs guide,
-  # "Synchronizing `Last Updated` and `Version` on Content Changes"). Review
-  # kept catching this by hand, sixteen times across seven pull requests, so it
-  # is enforced here. The check needs the pull request's own commits and their
+  # The docs guide ("Synchronizing `Last Updated` and `Version` on Content
+  # Changes") asks every Markdown file with the metadata header block to bump
+  # its `Last Updated` field when its content changes. Review kept catching
+  # misses by hand, sixteen times across seven pull requests, so this job
+  # checks the pull request's head: each such file's field must match the
+  # newest pull request commit that changed its content (see the script's
+  # docstring for the full contract). The check needs the pull request's own commits and their
   # author dates, so this job runs only on pull requests, checks out the head
   # commit rather than the synthetic merge commit, and fetches full history.
   # It runs the branch's own script with a read-only token and no persisted

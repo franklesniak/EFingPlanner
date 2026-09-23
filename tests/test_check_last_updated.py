@@ -454,15 +454,19 @@ def test_spaces_that_do_not_render_a_break_are_mechanical(repo: Repo, before: st
     assert run(repo) == []
 
 
+# The other required fields, so that only the structure under test keeps the line from being the field.
+REQUIRED = "- **Status:** Active\n- **Owner:** Maintainers\n- **Scope:** Test.\n"
+
+
 @pytest.mark.parametrize("block", [
-    "<div>\n- **Last Updated:** 2000-01-01\n</div>",
-    "<pre>\n- **Last Updated:** 2000-01-01\n</pre>",
-    "> - **Last Updated:** 2000-01-01",
-    "- Outer\n  - **Last Updated:** 2000-01-01",
-    "* **Last Updated:** 2000-01-01",
-    "> > **Last Updated:** 2000-01-01",
-    "- Note\n  **Last Updated:** 2000-01-01",
-    "- Note\n\n  **Last Updated:** 2000-01-01",
+    "<div>\n" + REQUIRED + "- **Last Updated:** 2000-01-01\n</div>",
+    "<pre>\n" + REQUIRED + "- **Last Updated:** 2000-01-01\n</pre>",
+    "".join("> " + line + "\n" for line in (REQUIRED + "- **Last Updated:** 2000-01-01").split("\n")),
+    REQUIRED + "- Outer\n  - **Last Updated:** 2000-01-01",
+    REQUIRED.replace("- ", "* ") + "* **Last Updated:** 2000-01-01",
+    REQUIRED + "\n> > **Last Updated:** 2000-01-01",
+    REQUIRED + "- Note\n  **Last Updated:** 2000-01-01",
+    REQUIRED + "- Note\n\n  **Last Updated:** 2000-01-01",
 ], ids=["div-block", "pre-block", "block-quote", "nested-list", "star-bullet", "paragraph-at-list-depth",
         "continuation-line", "second-paragraph"])
 def test_field_like_line_outside_a_top_level_dash_item_is_not_the_field(repo: Repo, block: str) -> None:
@@ -487,7 +491,7 @@ def test_example_bullet_later_in_the_body_is_not_the_field(repo: Repo) -> None:
 
 
 def test_real_block_after_front_matter_without_an_h1_is_found(repo: Repo) -> None:
-    rule = "---\ndescription: Test rule.\n---\n- **Status:** Active\n- **Last Updated:** 2026-01-01\n\n%s\n"
+    rule = "---\ndescription: Test rule.\n---\n- **Status:** Active\n- **Owner:** Maintainers\n- **Last Updated:** 2026-01-01\n- **Scope:** Test.\n\n%s\n"
     publish(repo, rule % "Body.", "2026-01-01T12:00:00+00:00", "docs/rule.mdc")
     repo.write("docs/rule.mdc", rule % "Body changed.")
     repo.commit("edit", "2026-03-05T10:00:00+00:00")
@@ -496,7 +500,7 @@ def test_real_block_after_front_matter_without_an_h1_is_found(repo: Repo) -> Non
 
 
 def test_block_at_the_top_of_a_body_without_an_h1_is_found(repo: Repo) -> None:
-    text = "<!-- markdownlint-disable MD013 -->\n\n- **Status:** Active\n- **Last Updated:** 2026-01-01\n\n%s\n"
+    text = "<!-- markdownlint-disable MD013 -->\n\n- **Status:** Active\n- **Owner:** Maintainers\n- **Last Updated:** 2026-01-01\n- **Scope:** Test.\n\n%s\n"
     publish(repo, text % "Body.", "2026-01-01T12:00:00+00:00")
     repo.write("docs/a.md", text % "Body changed.")
     repo.commit("edit", "2026-03-05T10:00:00+00:00")
@@ -504,9 +508,59 @@ def test_block_at_the_top_of_a_body_without_an_h1_is_found(repo: Repo) -> None:
     assert len(problems) == 1 and "Set it to 2026-03-05" in problems[0]
 
 
+def test_leading_thematic_break_is_not_front_matter(repo: Repo) -> None:
+    # A document may open with a thematic break and have another later; only YAML is front matter.
+    text = "---\n" + doc("2026-01-01", "%s") + "\n---\n\nMore.\n"
+    publish(repo, text % "Body.", "2026-01-01T12:00:00+00:00")
+    repo.write("docs/a.md", text % "Body changed.")
+    repo.commit("edit", "2026-03-05T10:00:00+00:00")
+    problems = run(repo)
+    assert len(problems) == 1 and "Set it to 2026-03-05" in problems[0]
+
+
+def test_prose_between_thematic_breaks_is_not_front_matter(repo: Repo) -> None:
+    # "Intro." parses as a YAML string, not a mapping, so both breaks stay in the body. The list
+    # after them is then not at the top of the body, where a block without an H1 must be.
+    meta = "- **Status:** Active\n- **Owner:** Maintainers\n- **Last Updated:** 2026-01-01\n- **Scope:** Test.\n\n%s\n"
+    text = "---\n\nIntro.\n\n---\n\n" + meta
+    publish(repo, text % "Body.", "2026-01-01T12:00:00+00:00")
+    repo.write("docs/a.md", text % "Body changed.")
+    repo.commit("edit", "2026-03-05T10:00:00+00:00")
+    assert run(repo) == []
+
+
+def test_list_without_the_required_fields_is_not_the_block(repo: Repo) -> None:
+    listed = "# No metadata\n\n- **Status:** Active\n- **Last Updated:** 2000-01-01\n\n%s\n"
+    publish(repo, listed % "Text.", "2026-01-01T12:00:00+00:00", "docs/plain.md")
+    repo.write("docs/plain.md", listed % "Text changed.")
+    repo.commit("edit", "2026-03-05T10:00:00+00:00")
+    assert run(repo) == []
+
+
+def test_unrelated_histories_merge_is_checked(repo: Repo) -> None:
+    repo.write("docs/a.md", doc("2026-03-05", "Changed."))
+    repo.commit("edit", "2026-03-05T10:00:00+00:00")
+    repo.git("switch", "-q", "--orphan", "other")   # starts with an empty index and tree
+    repo.write("docs/other.md", doc("2026-03-05", "Other."))   # added by a root commit, so it needs its date
+    repo.commit("other root", "2026-03-05T11:00:00+00:00")
+    repo.git("switch", "-q", "pr")
+    repo.git("merge", "-q", "--no-ff", "--allow-unrelated-histories", "-m", "merge other", "other",
+             date="2026-03-06T10:00:00+00:00")
+    assert run(repo) == []
+
+
+def test_entity_encoded_absolute_url_is_not_relative(repo: Repo) -> None:
+    raw = '<a href="https&#58;//example.com/x.md">x</a>'
+    publish(repo, doc("2026-01-01", "Text.\n\n" + raw), "2026-01-01T12:00:00+00:00")
+    (repo.root / "docs" / "sub").mkdir()
+    repo.git("mv", "docs/a.md", "docs/sub/a.md")
+    repo.commit("move", "2026-03-05T10:00:00+00:00")
+    assert run(repo) == []
+
+
 def test_h1_after_line_30_does_not_move_the_block(repo: Repo) -> None:
     # The guide looks after the H1 only when it starts in the first 30 lines of the body.
-    text = ("- **Status:** Active\n- **Last Updated:** 2026-01-01\n" + "\n" * 30
+    text = ("- **Status:** Active\n- **Owner:** Maintainers\n- **Last Updated:** 2026-01-01\n- **Scope:** Test.\n" + "\n" * 30
             + "# Title\n\n- **Last Updated:** 2000-01-01\n\n%s\n")
     publish(repo, text % "Body.", "2026-01-01T12:00:00+00:00")
     repo.write("docs/a.md", text % "Body changed.")

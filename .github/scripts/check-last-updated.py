@@ -1,12 +1,16 @@
 """Check that a pull request bumps `Last Updated` on every Markdown file it changes.
 
 The documentation style guide (`.github/instructions/docs.instructions.md`,
-"Synchronizing `Last Updated` and `Version` on Content Changes") already makes
-this a MUST: a commit that changes the rendered content or meaning of a
-document carrying the metadata header block bumps its `Last Updated` field to
-that commit's UTC date, and any `**Version:**` date segment follows it. The
-rule was being missed often enough -- sixteen review findings across seven pull
-requests -- that it is enforced here instead of left to reviewers.
+"Synchronizing `Last Updated` and `Version` on Content Changes") makes this a
+MUST: a commit that changes the rendered content or meaning of a document
+carrying the metadata header block bumps its `Last Updated` field to that
+commit's UTC date, and any `**Version:**` date segment follows it. The rule was
+being missed often enough -- sixteen review findings across seven pull
+requests -- that a check now guards it. The check judges the pull request's
+head, as the guide's finalization point does, rather than each commit: the
+head's field must match the newest pull request commit that changed the
+content, as "What is checked" below states exactly. An earlier commit that
+skipped the bump passes once a later one makes it.
 
 What is checked
 ---------------
@@ -321,7 +325,7 @@ def content_changes(base: str, head: str, path: str,
     changes = []
     log = git("log", "--topo-order", "--format=%H %aI %cI %P", "%s..%s" % (base, head))
     for row in log.splitlines():
-        sha, authored_at, committed_at, *parents = row.split(" ")
+        sha, authored_at, committed_at, *parents = row.split()   # a root commit has no parents
         name = names.get(sha)
         if name is None:
             continue
@@ -342,7 +346,8 @@ def content_changes(base: str, head: str, path: str,
             automatic = clean_merge(parents, name)
             authored = rendered(automatic or "", name) != rendered(after, name)
         else:
-            authored = bool(befores) and all(b != rendered(after, name) for b in befores)
+            # A root commit, as on an unrelated history, has no parent, so it adds the file.
+            authored = all(b != rendered(after, name) for b in befores or [rendered("", name)])
         if authored:
             changes.append((utc_date(authored_at), utc_date(committed_at)))
     return changes
@@ -366,7 +371,9 @@ def clean_merge(parents: list[str], path: str) -> str | None:
                GIT_COMMITTER_NAME="check-last-updated", GIT_COMMITTER_EMAIL="check@localhost")
     current, tree = parents[0], None
     for index, other in enumerate(parents[1:], start=1):
-        result = subprocess.run(["git", "merge-tree", "--write-tree", current, other],
+        # --allow-unrelated-histories: the merge already exists, so recompute it even when its
+        # parents share no history, as `git merge --allow-unrelated-histories` made it.
+        result = subprocess.run(["git", "merge-tree", "--write-tree", "--allow-unrelated-histories", current, other],
                                 capture_output=True, text=True, encoding="utf-8", errors="surrogateescape")
         if result.returncode not in (0, 1) or result.stdout is None:
             raise GitError("git merge-tree: %s" % (result.stderr or "").strip())
