@@ -4,9 +4,9 @@
 
 This is the page where you compare two real options honestly and then say which one you'd pick. Every option costs you something — that's what a trade-off is, and naming it out loud is the whole skill.
 
-**You'll write three of these over the project**, one each time a big choice comes up: when to go, which cities and route, and one about pacing, where you stay, or the budget. Use a fresh copy of this page for each. One finished report isn't the finish line; it's the first of three.
+**You'll write three of these over the project**, one each time a big choice comes up: your season, which cities and route, and one about pacing, where you stay, or the budget. If your trip dates are already booked, the season one compares two ways to plan around them. Use a fresh copy of this page for each. One finished report isn't the finish line; it's the first of three.
 
-The columns are already drawn for you, and the example row shows the shape. Replace it with your own options. You're plugging into a comparison, not inventing one.
+The columns are already drawn for you, and the example row shows the shape. Replace it with your own options. You're plugging into a comparison, not inventing one. If a row doesn't fit your decision, like travel time when you're comparing seasons, leave it blank.
 
 **The decision I'm making:**
 
@@ -23,6 +23,8 @@ The columns are already drawn for you, and the example row shows the shape. Repl
 | What we would miss, or what gets skipped | | | |
 | Does this still fit our budget band? | | | |
 | Sources (also in my Source Log) | | | |
+| What other source could check this? | | | |
+| Verification source (the one I actually used to check) | | | |
 | Date checked | | | |
 
 **My recommendation:**
@@ -30,6 +32,8 @@ The columns are already drawn for you, and the example row shows the shape. Repl
 **My reasons (two or three, each tied to something I found):**
 
 **What we give up by choosing it:**
+
+**What a grown-up still needs to check or decide:**
 
 Travel time is the one people get wrong most. Two places can look close on a map and take hours by train, or look far apart and be a quick ride. Use the "Directions" tool and trust the time, not your eyes.
 

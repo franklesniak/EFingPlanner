@@ -18,4 +18,6 @@ Use one Decision Record for each big choice. Keep them all in one place. Togethe
 | Does a grown-up need to decide or verify anything? | |
 | Final family decision | |
 
-Tip: your first record is the season you recommend at Checkpoint 1. Keep the records in order. Then you can see how the plan grew.
+Tip: your first record is your season from Checkpoint 1. Keep the records in order. Then you can see how the plan grew.
+
+If your trip dates are already booked, that first record confirms your season. In the "Decision" row, write "Confirming our season". Skip the three option rows and "My recommendation". Use "My reasons" to say what the season means for your trip. In "Final family decision", write the booked season and that your family confirmed it.

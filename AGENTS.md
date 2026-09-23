@@ -1,7 +1,7 @@
 <!-- markdownlint-disable MD013 -->
 # Agent Instructions for OpenAI Codex CLI
 
-**Version:** 1.5.20260923.0
+**Version:** 1.5.20260923.1
 
 ## Metadata
 
@@ -226,8 +226,8 @@ When the PR owner explicitly asks Codex to drive multiple review rounds inside a
 
 When the optional review cycle is used, retain these finite safety limits:
 
-- **Maximum rounds:** 8 review iterations per cycle invocation. After the eighth round, PAUSE and ask the user to confirm whether to continue.
-- **Wall-clock timeout:** 6 hours from cycle start. If the timeout is reached, PAUSE and ask the user to confirm whether to continue.
+- **Maximum rounds:** 80 review iterations per cycle invocation. After the eightieth round, PAUSE and ask the user to confirm whether to continue.
+- **Wall-clock timeout:** 8 days from cycle start. If the timeout is reached, PAUSE and ask the user to confirm whether to continue.
 - **Recovery and disposition:** Track native identities, current finding text, and evidence. On explicit resume, recover both service states, authority, input, fix reachability, and retry counters before acting. Finish authorized paused work; do not reset a same-input retry budget or blindly request new reviews.
 
 ### Fallbacks for unsupported plugin capabilities

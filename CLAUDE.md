@@ -1,7 +1,7 @@
 <!-- markdownlint-disable MD013 -->
 # Agent Instructions for Claude Code
 
-**Version:** 1.7.20260923.0
+**Version:** 1.7.20260923.1
 
 ## Metadata
 
@@ -301,12 +301,12 @@ When all intended fixes are reachable, reconcile older in-flight requests and ap
 
 ### Safety limits
 
-- **Maximum rounds:** 8 review iterations per loop invocation. After the eighth round, **PAUSE** regardless of outcome and post:
+- **Maximum rounds:** 80 review iterations per loop invocation. After the eightieth round, **PAUSE** regardless of outcome and post:
 
-  `Review loop paused: reached maximum of 8 review rounds. Post "@claude resume review loop" to continue.`
-- **Wall-clock timeout:** 6 hours from loop start. If the timeout is reached, **PAUSE** and post:
+  `Review loop paused: reached maximum of 80 review rounds. Post "@claude resume review loop" to continue.`
+- **Wall-clock timeout:** 8 days from loop start. If the timeout is reached, **PAUSE** and post:
 
-  `Review loop paused: 6-hour timeout reached. Post "@claude resume review loop" to continue.`
+  `Review loop paused: 8-day timeout reached. Post "@claude resume review loop" to continue.`
 - **Disposition reuse:** Track native IDs, current text, input, and closure evidence. Recheck edited findings and applicable fixes. A seen ID or resolved flag does not justify skipping a finding.
 - **Active polling required:** Every review-wait cycle **MUST** be driven by the explicit timed poll loop described in step 2. Passive waiting for webhook delivery alone is **not** permitted — the poll loop ensures that pause and timeout behavior is reached deterministically even if webhook delivery does not occur.
   - **Poller liveness.** The poll loop **MUST** distinguish "successfully observed no new event" from "could not determine event state," and **MUST** surface the latter as a visible, self-describing failure in the session transcript, for example `cycle K failed: reviews endpoint returned HTTP 403` (where `K` is the cycle-attempt counter, **not** the `M/10` confirmed-successful counter), rather than as a "no event" reading. Parser exceptions, tool errors, non-2xx responses, authentication failures, rate-limit responses, and unexpected response shapes **MUST NOT** be suppressed into fallback values such as `0` or `[]` unless those values are explicitly logged as an error path and the cycle is **not** counted as a confirmed-successful no-review poll.

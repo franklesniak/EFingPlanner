@@ -9,6 +9,7 @@ docs/spec/
 .venv/
 __pycache__/
 build/
+!docs/build/
 coverage/
 dist/
 htmlcov/
