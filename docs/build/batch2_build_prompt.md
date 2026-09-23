@@ -3012,8 +3012,8 @@ Content, each as a short point-first paragraph or bullet:
   work it out for their own trip. **A child landing the night before school starts is a classic,
   avoidable planning failure.**
 - **Where a destination city has more than one airport, which one you land at can change
-  arrival-day fatigue a lot.** The specifics live in the pack's airport basics file -- name
-  it generically.
+  arrival-day fatigue a lot.** The specifics belong in the pack's airport basics file -- name
+  it generically, with the Group B fallback until the pack has it.
 - **First night hotel needs adult planning. Flight prices change.**
 - **Date-gating.** The longer dates stay open, the more date-gated items can sell out --
   connect the flight and date decision to the reservation watchlist once the child has made
