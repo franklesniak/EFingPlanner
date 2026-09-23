@@ -792,10 +792,10 @@ names are E1's, verbatim**, and the city names in parentheses are locators rathe
 entries of their own, for the reason E1 gives; a statement that the
 child still does the route trade-off later and still owns the route choice; and these two
 routing sentences: *"How each region feels different, how far your destination stretches,
-and why travel time between regions matters are in your pack's [regions
-overview](../reference/regions_overview.md). Read it before you fill in your notes."* and
+and why travel time between regions matters are in your pack's `[regions
+overview](../reference/regions_overview.md)`. Read it before you fill in your notes."* and
 *"Two ways to shape
-a first trip are in your pack's [major cities reference](../reference/major_cities.md).
+a first trip are in your pack's `[major cities reference](../reference/major_cities.md)`.
 Read them as anchors to compare against, not as the answer."*
 
 **Repeat none of it here** — not the one-line-each character sketches, not the
@@ -830,8 +830,8 @@ short line each on what travelling in it is like**, which is what lets the child
 and start the session's four-box season chart; the plain statement that these are
 patterns and **this year's exact dates must be confirmed**; and this routing sentence:
 *"The busy travel windows, the rainy and typhoon seasons, the cherry-blossom timing
-trap, and what stays with the grown-ups are in your pack's [seasons, weather, and events
-reference](../reference/seasons_weather_events.md). Read them there."*
+trap, and what stays with the grown-ups are in your pack's `[seasons, weather, and events
+reference](../reference/seasons_weather_events.md)`. Read them there."*
 
 **Repeat none of those four here**, not even in short form, and do not restate the
 timing trap or the adult contingency note: that reference is their canonical home, the
@@ -1000,12 +1000,12 @@ omission an earlier draft of this item permitted would have shipped a Batch 1 fi
 repository's own structure check rejects. Carrying the built form is also what keeps
 Session 02 consistent with its three Phase 0 siblings and with the full Phases 0-2
 scaffold. Materials line, exact wording: *"Materials: your
-filled-in [Trip-Basics card](../../templates/trip_basics.md) (for the roster), the
-[Traveler Profile template](../../templates/traveler_profile.md), the [Family Interview
-template](../../templates/family_interview.md), the grown-ups' [Current Family Travel
-Assumptions page](../../templates/current_family_travel_assumptions.md) to read, and a
-pencil"*. First Steps instruction, exact wording: *"First, read the grown-ups' [Current
-Family Travel Assumptions page](../../templates/current_family_travel_assumptions.md)
+filled-in `[Trip-Basics card](../../templates/trip_basics.md)` (for the roster), the
+`[Traveler Profile template](../../templates/traveler_profile.md)`, the `[Family Interview
+template](../../templates/family_interview.md)`, the grown-ups' `[Current Family Travel
+Assumptions page](../../templates/current_family_travel_assumptions.md)` to read, and a
+pencil"*. First Steps instruction, exact wording: *"First, read the grown-ups' `[Current
+Family Travel Assumptions page](../../templates/current_family_travel_assumptions.md)`
 once. It says what the grown-ups already worked out -- the rough season, the rough trip
 shape, and any constraints they know about. A grown-up owns that page, so you read it,
 but you do not change it. Medical details stay with the grown-ups and off your pages."*
@@ -1075,7 +1075,7 @@ the one that did not.
 (create).** Phase 1, **Core**, planner skill *checking sources*, 20–30 minutes, parent
 involvement *5-minute check-in* (an adult may need to fetch the library book).
 Materials: a guidebook (a library copy is perfect) or one reputable travel website,
-the [Book Notes form](../../templates/book_notes.md), the Source Log, a pencil.
+the `[Book Notes form](../../templates/book_notes.md)`, the Source Log, a pencil.
 Artifact: **Book notes page.** **Source Check is required.** Templates used:
 `book_notes.md`, `source_log.md`, `simple_citation.md`. Must contain:
 
@@ -1204,8 +1204,8 @@ and 08 are the co-researched hands-on pair, and both keep the adult nearby even 
 Low-Bandwidth Parent Mode. Artifact: **Website comparison notes.** **Source Check is
 required.** Templates used: `website_notes.md`, `source_log.md`, `simple_citation.md`.
 Materials line, exact wording: *"a device with the kid-safe filter on, your destination
-pack's trusted starting sources list and its sample search terms, the [Website Notes
-form](../../templates/website_notes.md), your Source Log"* — the two pack items in
+pack's trusted starting sources list and its sample search terms, the `[Website Notes
+form](../../templates/website_notes.md)`, your Source Log"* — the two pack items in
 plain text with **no link**, because the destination-leak rule forbids a `framework/` file
 from linking into `destinations/japan/`; the Website Notes form is a
 `framework/templates/` file, and it **does** get a relative link. D4 creates it and **this
@@ -1405,7 +1405,7 @@ this form's two halves. Do not duplicate Session 09's Source Log mapping on this
 **D6. `framework/templates/simple_citation.md` (create).** The **printable child-facing
 form**, not the explanation (OQ-11). H1; one short how-to-use paragraph in the form
 `source_log.md` already uses, ending with one pointer line: *"Why each field is there is
-in the [citation style page](../docs/citation_style.md)."* Then five sub-sections, one
+in the `[citation style page](../docs/citation_style.md)`."* Then five sub-sections, one
 per source kind (website, book, map, video, AI), each a two-column table with the header
 pair `Prompt | Your answer`, the canonical field names in the Prompt cells and empty
 answer cells. Then one final table with the three verification prompts. **No other
@@ -1842,7 +1842,7 @@ rather than two; and `## Cities, and
 two ways to shape a
 first trip` — **three sentences maximum**, then the link: *"The candidate cities, and two
 ways to shape a
-first trip, are in the [major cities reference](major_cities.md)."* Do not summarise
+first trip, are in the `[major cities reference](major_cities.md)`."* Do not summarise
 either trip shape and do not name them. Apply the destination-files rule: give
 orientation, define basic concepts, suggest research questions, point to trusted
 sources; avoid final recommendations, complete itineraries, and fixed prices or rules.
@@ -2321,7 +2321,7 @@ others:
   `framework/parent_guide/setup_checklist.md` step 4. Both already name the
   adult-operated pattern and link `privacy_and_safety.md` for it. Each keeps its own
   wording, its own voice and its existing privacy link, and each gains one clause --
-  *"Before you choose yes, read the [AI use rules](PATH) -- an adult checks the tool's
+  *"Before you choose yes, read the `[AI use rules](PATH)` -- an adult checks the tool's
   current minimum-age and supervision policy first, and writes the date checked beside
   the choice."* -- where `PATH` is `../../docs/ai_use_rules.md` from the session and
   `../docs/ai_use_rules.md` from the parent guide.
@@ -2330,7 +2330,7 @@ others:
   pattern and links nothing, and it is the shortest route into the program: a parent who
   follows only that list opts in without ever meeting the check. Append one sentence to
   that step and change nothing else on the line: *"Before you choose yes, read the
-  [AI use rules](../docs/ai_use_rules.md)."* **It gets the short form on purpose.** That
+  `[AI use rules](../docs/ai_use_rules.md)`."* **It gets the short form on purpose.** That
   page is the quick-start, one line per action and one screen long; H3 below protects
   that budget for a tired parent, and the page already sends the reader on with *"Full
   detail is in the setup checklist."* The trigger and the route are what this surface
@@ -3975,8 +3975,8 @@ voice. If the conversion changes its reading level or warmth, the conversion is 
 
 | Line | Current text | Neutral replacement |
 | --- | --- | --- |
-| Materials | "a device with a kid-safe filter on, the [trusted starting sources list](../../../destinations/japan/reference/trusted_starting_sources.md), your Source Log" | "a device with a kid-safe filter on, your destination pack's trusted starting sources list, your Source Log" — plain text, **no link** |
-| Start Here | "Open the [trusted starting sources list](../../../destinations/japan/…) and read just the first two names on it." | "Open your destination pack's trusted starting sources list and read just the first two names on it. That is your start." |
+| Materials | "a device with a kid-safe filter on, the `[trusted starting sources list](../../../destinations/japan/reference/trusted_starting_sources.md)`, your Source Log" | "a device with a kid-safe filter on, your destination pack's trusted starting sources list, your Source Log" — plain text, **no link** |
+| Start Here | "Open the `[trusted starting sources list](../../../destinations/japan/…)` and read just the first two names on it." | "Open your destination pack's trusted starting sources list and read just the first two names on it. That is your start." |
 | Goal | "practice it on a real Japan travel site" | "Learn a quick way to tell if a website can be trusted, and practice it on a real travel site about your destination." |
 | Practice step 1 | "one **official** Japan travel site (for example, the Japan National Tourism Organization) and one **random** travel blog about Japan" | "Open one **official** tourism site for your destination (your destination pack's trusted starting sources list names them) and one **random** travel blog about the same place." |
 | Optional extension | "(The official page may be in Japanese -- use 'translate this page' …)" | "(The official page may be in the local language -- use 'translate this page' to *understand* it, but check anything important against an English official source or a grown-up.)" — only `in Japanese` changes; the rest of the sentence, word order included, stays as built |
@@ -4067,8 +4067,8 @@ verification checklist"* -- which is exactly what D5 builds -- and nothing else 
 batch links to the form. Left alone it ships orphaned, and no family ever finds the page
 carrying the verification checklist, the recommendation boundary and the privacy rule.
 Two touches, and no more. **Materials**, which reads *"the adult's own AI tool, your
-Source Log"*, gains the form: *"the adult's own AI tool, your Source Log, the [AI Notes
-form](../../templates/ai_notes.md)"*. **`## Workspace`** gains one clause pointing at the
+Source Log"*, gains the form: *"the adult's own AI tool, your Source Log, the `[AI Notes
+form](../../templates/ai_notes.md)`"*. **`## Workspace`** gains one clause pointing at the
 same file. **The Source Log entry stays primary and its mapping is unchanged** -- the AI
 Notes form is the fuller record kept beside it, never a replacement for it. Do not add a
 third mention. **Do not reproduce the form's layout or its entry fields in the session**,
@@ -4126,10 +4126,10 @@ error, corrected in the extract.)
 
 | Line | Current text | Where it goes / neutral replacement |
 | --- | --- | --- |
-| Materials | "[seasons reference](../../../destinations/japan/reference/seasons_weather_events.md)" | "this session's Destination Notes and your destination pack's seasons reference" — **no hard link** |
+| Materials | "`[seasons reference](../../../destinations/japan/reference/seasons_weather_events.md)`" | "this session's Destination Notes and your destination pack's seasons reference" — **no hard link** |
 | Goal | "Compare Japan's four seasons" | "Compare your destination's seasons" |
 | Steps intro, first sentence | "Japan has four clear seasons, and each one feels different." | "Open this session's Destination Notes. Your destination's seasons each feel different." |
-| Steps intro, last sentence — **the second hard link** | "Use the [seasons reference](../../../destinations/japan/reference/seasons_weather_events.md) and a trusted source, and record what you use." | "Use your Destination Notes and a trusted source, and record what you use." — **no hard link**. The middle sentence ("Your job is to compare them, not to pick the 'perfect' one.") is already neutral; keep it verbatim. |
+| Steps intro, last sentence — **the second hard link** | "Use the `[seasons reference](../../../destinations/japan/reference/seasons_weather_events.md)` and a trusted source, and record what you use." | "Use your Destination Notes and a trusted source, and record what you use." — **no hard link**. The middle sentence ("Your job is to compare them, not to pick the 'perfect' one.") is already neutral; keep it verbatim. |
 | Step 1 parenthetical | the four-season description | → **the pack's seasons reference, which already carries it.** The insert names the seasons and gives one short line each, per A4, so the child can label the season chart. Nothing is lost and no second fact page is written. |
 | Special-things list | cherry blossoms, fall colors, rainy season, summer heat, typhoon season, Golden Week / Obon / New Year | → **the pack's seasons reference, which already carries every one of them**, in its "Things to watch for" and "Busy travel windows" sections. The insert routes there and repeats none of them. Session keeps the generic instruction: "Add the special things your Destination Notes flag. These are patterns, but you must **check this year's exact dates** -- they move." |
 | Cherry-blossom note | the whole "A note about cherry blossoms" paragraph | → **the pack's seasons reference, whose "cherry-blossom timing trap" section already carries it**, and more fully than the session does. The session may keep a one-clause generic reminder that some timing cannot be pinned even by verifying, pointing to the Destination Notes. |
@@ -4261,7 +4261,7 @@ either sends a child to Session 10 without the opt-in safety lesson.
 **Four of the five are additions. Session 05's is not.** That session already carries an
 italic line there today, the only one in the tree sitting directly under a navigation
 line, reading *"If your family chose to use AI, do
-[Session 09](09_ai_as_helper_not_boss.md) right after this one, before you use any AI
+`[Session 09](09_ai_as_helper_not_boss.md)` right after this one, before you use any AI
 tool."* Session 05's block below **rewrites that line and adds a second one above it**, so
 Session 05 ends with two italic lines and not three. Rewrite the existing line; do not
 append a third beside it.

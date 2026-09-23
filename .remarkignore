@@ -8,7 +8,7 @@ docs/spec/
 .terraform/
 .venv/
 __pycache__/
-build/
+/build/
 coverage/
 dist/
 htmlcov/

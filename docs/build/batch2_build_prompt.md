@@ -240,7 +240,7 @@ and 32 detail -- are annotations and must be **stripped**.
 
 Write a fill-in blank pointing at the card instead:
 
-> your family's maximum trip length (from your [Trip-Basics card](../../templates/trip_basics.md))
+> your family's maximum trip length (from your `[Trip-Basics card](../../templates/trip_basics.md)`)
 
 **The path is `../../templates/trip_basics.md`, and it is worth being exact about**,
 because two files carry that name. The blank lives in `framework/templates/`; the copy the
@@ -255,8 +255,8 @@ traveler", "a traveler with lower stamina".
 ### 1.4 Reference hygiene and linking
 
 Relative links only. No absolute local paths. **No `Section NN` citations** -- built files
-never cite spec section numbers (`AC-6-2`). Name-first: "see the [When I'm Stuck
-card](../../student_guide/when_im_stuck.md)", never "see Section 21.8".
+never cite spec section numbers (`AC-6-2`). Name-first: "see the `[When I'm Stuck
+card](../../student_guide/when_im_stuck.md)`", never "see Section 21.8".
 
 **Every relative link must resolve when the batch ships** (`AC-GLOBAL-3`). This is the
 rule that decides what a session writes when it needs a Batch 3 insert -- see section 3.
@@ -877,12 +877,12 @@ Five checkpoints land in this batch. Every one of them includes:
   *"How's this going for you -- want to go lighter or deeper?"* Lighter routes to
   Low-Bandwidth Parent Mode and the lighter forms; deeper routes to High-Engagement Mode,
   which in this repository is folded into
-  [the differentiation guide](../../parent_guide/differentiation.md). Link there by name.
+  `[the differentiation guide](../../parent_guide/differentiation.md)`. Link there by name.
 - **Do not conflate** the episodic reflection, which looks *back* at the stretch just
   finished, with the carry-over tag, which looks *outward* to other situations.
 - **Do not let a checkpoint delay stall the child.** Point at the "what to do while you
   wait for an adult checkpoint" note on the
-  [When I'm Stuck card](../../student_guide/when_im_stuck.md). The outlets are: do an
+  `[When I'm Stuck card](../../student_guide/when_im_stuck.md)`. The outlets are: do an
   Optional Extension, add to the question parking lot, grow the "things I can't wait to
   see" page, or start the next independent session. **Do not add a "waiting" tracker.**
 
@@ -1422,7 +1422,7 @@ back-and-forth train time?
 child can do it alone. If the child finds maps hard even with it, the differentiation
 guide applies -- co-read the map together, use "Directions" for train times, or sketch a
 simple left-to-right line of the cities in trip order. Link to
-[the differentiation guide](../../parent_guide/differentiation.md).
+`[the differentiation guide](../../parent_guide/differentiation.md)`.
 
 **Movable blocks:** remind in one clause with a link back to Session 15's note. Do not
 restate it.
@@ -2299,7 +2299,7 @@ wording.
 > phone number -- the minimum needed to reunite -- and **never** passport numbers,
 > birthdates, confirmation numbers, or the home address. It is a carry-in-pocket safety
 > card, not trip data committed anywhere. Link
-> [the privacy and safety page](../../docs/privacy_and_safety.md).
+> `[the privacy and safety page](../../docs/privacy_and_safety.md)`.
 
 **2. The child learns the simple plan.**
 
@@ -2425,7 +2425,7 @@ Checkpoint 6; only the delivery format flexes.**
 Also offer the gentle **rehearsal ladder** -- one parent, then a couple of adults, then the
 group, or just record it -- so the child can climb at their own pace. Both the
 accommodations and the ladder live canonically in
-[the differentiation guide](../../parent_guide/differentiation.md); point there.
+`[the differentiation guide](../../parent_guide/differentiation.md)`; point there.
 
 **Outline contents:** Recommended season · Recommended length · Route · Top experiences ·
 Budget summary · Biggest trade-offs · Cut list · Questions for adults · Adult handoff.
@@ -3667,7 +3667,7 @@ list does not, because both are required in the binder by other parts of the des
 **First, the standing "what is built right now" blockquote goes.** It asserts the repository
 holds only the First Taste slice. Batch 1 falsified part of it; Batch 2 falsifies the rest;
 a Batch 3 would falsify it again. **Replace it with a pointer to
-[the curriculum changelog](CHANGELOG.md)**, which is the version history and the one file
+`[the curriculum changelog](CHANGELOG.md)`**, which is the version history and the one file
 that is supposed to change every batch. A fact that must be corrected once per batch to stay
 true is a fact that will eventually not be corrected. (`D-X-13`.)
 
