@@ -38,6 +38,12 @@ It is self-contained, as `docs/build/README.md` requires of every build brief. T
 working artifacts those adjudications were drafted in are agent-local and are never
 committed, so do not look for them and do not treat their absence as a missing input.
 
+**What a link in backticks is.** When this brief gives a link in backticks as text to write
+into a built file, such as `[Website Notes form](../../templates/website_notes.md)`, write
+it there as a live link, without the backticks. It is shown as code because its relative
+path resolves from the built file's folder; from this brief it would be a broken link. A
+backticked link in a "Current text" column only quotes what that file says today.
+
 **What an `OQ-n` label is.** Each one names an open question that was adjudicated before
 this brief was drafted. The label is a provenance tag, not a lookup: every instruction that
 carries one states that question's outcome in the same sentence or the same deliverable, so

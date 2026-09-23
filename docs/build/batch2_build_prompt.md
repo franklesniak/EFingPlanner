@@ -37,6 +37,12 @@ meet a label whose outcome you cannot read off the text around it, that is a def
 this brief -- record it in your build report and follow the surrounding instruction,
 which binds on its own.
 
+**What a link in backticks is.** When this brief gives a link in backticks as text to write
+into a built file, such as `[Trip-Basics card](../../templates/trip_basics.md)`, write it
+there as a live link, without the backticks. It is shown as code because its relative path
+resolves from the built file's folder; from this brief it would be a broken link. A
+backticked link quoted as a file's current text only shows what that file says today.
+
 **Nothing in this brief is an open question.** Thirty-eight were raised against Batch 2
 and all thirty-eight are closed. Where the archived spec and this brief disagree, this
 brief is right and the spec is the archived design record; the recording mechanism for
@@ -688,7 +694,8 @@ instruction and one optional workspace row where **an adult writes their rough p
 fare beside the child's estimate**, labelled as the grown-ups' number. **The child never
 researches it and never sums it into their own subtotal** -- that is the whole point of the
 split. A First Taste child whose parent skips the row loses nothing, because First Taste
-never reaches Session 39.
+never reaches Session 39. **For a family continuing from First Taste, the grown-up fills the
+row when the numbered order reaches Session 33's extension line**, before Session 39.
 
 #### Session 44 — the personal pick, now chosen at Session 26
 
@@ -757,7 +764,8 @@ the long-list candidates the child wants to keep in the running**, and say that 
 cities already scored count. **The two-city First Taste steps stay word for word.** In
 Parent Notes, change "This is the first real trade-off report" to **"This is a real
 trade-off report"**: on the Core path the Session 14 report comes first, and the sentence
-is then true on every path.
+is then true on every path. **A family continuing from First Taste extends Session 21 when
+its numbered order reaches it**, after Session 20 has built the long-list.
 
 ### 4.1b Converting Session 15, the one built session that still leaks
 
@@ -1417,7 +1425,9 @@ The promise is that a parent shows the three blocks -- cost, bookability, and sa
 feasibility for every traveler -- **before** the child commits. Session 26 forms the
 must-do list and ends with the pick; Session 27 opens with the adults' acknowledgement.
 One session cannot hold the choice, the conversation that must precede it, and the
-acknowledgement that must follow it. (`D-OPEN-6`.)
+acknowledgement that must follow it. (`D-OPEN-6`.) **A family continuing from First Taste
+already made the pick at Session 44.** Here the child confirms, in one line, that it still
+holds, and Session 27 acknowledges it, so the pick stays one choice.
 
 ### Session 27: Checkpoint 3 Top Experiences
 
@@ -3854,10 +3864,12 @@ First-Taste-only today, and it is a static page, so the two views are two sectio
 fixed order. **Keep the First Taste section first and as it is**, including its own count,
 because a First Taste child still uses it. **Add the Core/Full section after it**, headed
 for a family that keeps going past First Taste: the checkpoints line first, then the Core
-sessions grouped by phase, as check-off lines in the same form as the First Taste list. **The
-Session 14 season report gets its own line, directly after Session 14.** A family
-continuing from First Taste ticks the sessions it already finished and works the unticked
-lines in numbered order, so it reaches the report at Session 14's place. **Mark each Core line whose session is parent-gated or co-worked**,
+sessions grouped by phase, as check-off lines in the same form as the First Taste list.
+**Each First Taste session whose Core version asks for new work gets its own extension line,
+directly after that session:** Session 14's season report, Session 21's long-list
+comparison, and Session 33's adult fare row (see 4.1a). A family continuing from First
+Taste ticks the sessions it already finished and works the unticked lines in numbered
+order, so it reaches each extension at its session's place. **Mark each Core line whose session is parent-gated or co-worked**,
 in the same form as the First Taste list's markers, taking which sessions those are from
 B7's rule, so the membership lives in one place. **Scope the existing "Which sessions need a
 grown-up" lists to the First Taste path**, and make its waiting rule point at a marked
