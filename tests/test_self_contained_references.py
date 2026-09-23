@@ -271,6 +271,13 @@ TRACKER_IDENTIFIER = r"(?:[A-Za-z][A-Za-z0-9]*-\d+|\d+)"
 #: ``issue-tracker-1``. Measured, the hyphen form would add two matches in this
 #: repository, both a test's parameter id; that is a separate question from the
 #: one this pattern answers.
+#: A pinned GitHub Action, ``owner/repo@`` or ``owner/repo/path@``, directly in
+#: front of a hash. GitHub Actions resolves that pin in the named repository,
+#: and the repository's YAML guide requires every action to be pinned this way,
+#: so the hash is a reference anyone can follow, not an opaque pointer. Only a
+#: full forty-character hash is excused, because Actions accepts nothing
+#: shorter as an immutable pin.
+ACTION_PIN_BEFORE = re.compile(r"(?<![\w./-])[A-Za-z0-9][A-Za-z0-9-]*/[A-Za-z0-9_.-]+(?:/[A-Za-z0-9_./-]+)?@\Z")
 #: A tracker noun sitting immediately in front of a hash, which means the
 #: reference belongs to that noun's pattern rather than to the bare one.
 TRACKER_NOUN_BEFORE = re.compile(
@@ -727,7 +734,9 @@ def url_fragment_tokens(url: str) -> list[str]:
     parts = split_url(url)
     if parts is None:
         return []
-    return [part for part in FRAGMENT_SEPARATORS.split(parts.fragment) if part]
+    # Decoded after the split, as path segments are, so an encoded separator
+    # cannot invent a token boundary and an encoded digit is still the digit.
+    return [unquote(part) for part in FRAGMENT_SEPARATORS.split(parts.fragment) if part]
 
 
 #: The path segments a host serves each kind of reference from. GitHub serves
@@ -869,6 +878,17 @@ def identifiers_of(source: str) -> set[str]:
             found.add(node.arg)
         elif isinstance(node, ast.alias):
             found.add(node.asname or node.name.split(".")[0])
+        elif isinstance(node, (ast.Global, ast.Nonlocal)):
+            found.update(node.names)
+        # The bindings the tree stores as a plain string rather than a Name:
+        # an exception alias, a match capture and its star or rest, and a
+        # type parameter. Each is a name the module binds.
+        elif isinstance(node, (ast.ExceptHandler, ast.MatchAs, ast.MatchStar)) and node.name:
+            found.add(node.name)
+        elif isinstance(node, ast.MatchMapping) and node.rest:
+            found.add(node.rest)
+        elif type(node).__name__ in ("TypeVar", "ParamSpec", "TypeVarTuple"):
+            found.add(getattr(node, "name"))
     return found
 
 
@@ -888,7 +908,10 @@ def python_paths(paths: Iterable[Path]) -> list[Path]:
 #: names no review run. Measured over the 193 non-Python scanned files, this
 #: adds **zero** findings today, so it closes a spelling rather than widening
 #: the net -- the same test the tracker grammar had to pass.
-IDENTIFIER_SHAPED_TOKEN = re.compile(r"\b[A-Za-z][A-Za-z0-9_]*\b")
+#: Leading underscores belong to the name, so a private-style key or variable is
+#: read as well. Measured over the tracked non-Python files, allowing them adds
+#: no token today.
+IDENTIFIER_SHAPED_TOKEN = re.compile(r"(?<![A-Za-z0-9_])_*[A-Za-z][A-Za-z0-9_]*\b")
 #: A lower-to-upper case change: where one word of a camel-case name ends.
 LOWER_THEN_UPPER = re.compile(r"[a-z][A-Z]")
 #: Two or more capitals run into a digit, the other spelling of a constant
@@ -1036,6 +1059,13 @@ def references_in(
                 if url_resolves(name, matched, urls):
                     continue
                 if resolves_in_this_repository(name, matched, root):
+                    continue
+                if (
+                    name == "a bare commit hash"
+                    and len(matched) == 40
+                    and ACTION_PIN_BEFORE.search(scanned[: match.start()])
+                ):
+                    # A pinned action: GitHub resolves it in the named repository.
                     continue
                 found.append(f"{relative}:{number}: {name}: {matched!r}")
     return found
@@ -1424,6 +1454,53 @@ def test_every_fixture_line_is_a_reference_this_scan_reports(tmp_path: Path) -> 
         "reports them, so the pattern each one stands for has stopped "
         "matching:\n" + "\n".join(unreported)
     )
+
+
+def test_a_fragment_token_is_decoded_after_it_is_split() -> None:
+    """An encoded fragment names the same anchor; an encoded separator stays inside its token."""
+    # The expected token is built from pieces, because this module scans itself.
+    expected = "issuecomment-" + "4" + "2"
+    assert url_fragment_tokens("https://github.com/o/r/pull/1#issuecomment-%34%32") == [expected]
+    assert url_fragment_tokens("https://example.com/#a%2Fb") == ["a/b"]
+
+
+def test_string_valued_bindings_are_identifiers() -> None:
+    """Names the tree stores as strings are still names the module binds."""
+    source = chr(10).join([
+        "def f():",
+        "    global g_name_1",
+        "    try:",
+        "        pass",
+        "    except Exception as e_name_2:",
+        "        pass",
+        "    match {}:",
+        "        case {'k': v_name_3, **r_name_4}:",
+        "            pass",
+        "        case [*s_name_5]:",
+        "            pass",
+        "",
+    ])
+    found = identifiers_of(source)
+    for name in ("g_name_1", "e_name_2", "v_name_3", "r_name_4", "s_name_5"):
+        assert name in found, name
+
+
+def test_a_leading_underscore_is_part_of_an_identifier() -> None:
+    """A private-style name in a non-Python file is read with its underscores."""
+    assert "_NAME_42" in identifier_like_names("key: _NAME_42" + chr(10))
+
+
+def test_a_pinned_action_is_resolved_and_a_loose_hash_is_not(tmp_path: Path) -> None:
+    """``owner/repo@`` with a full hash is a pin GitHub resolves; the same hash alone is not."""
+    # Built from a short piece, so no long hexadecimal run sits in this file.
+    full = "ab12" * 10
+    sample = tmp_path / "workflow.yml"
+    sample.write_text(f"      - uses: actions/checkout@{full} # v7.0.1\n", encoding="utf-8")
+    assert references_in(sample, tmp_path) == []
+    sample.write_text(f"      - uses: actions/checkout@{full[:12]} # v7.0.1\n", encoding="utf-8")
+    assert references_in(sample, tmp_path), "a short pin is not an immutable pin, so it is still reported"
+    sample.write_text(f"The change is {full}.\n", encoding="utf-8")
+    assert references_in(sample, tmp_path), "a hash with no repository in front of it is still reported"
 
 
 def test_every_pattern_is_exercised_by_a_fixture_line(tmp_path: Path) -> None:
