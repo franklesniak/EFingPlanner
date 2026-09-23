@@ -56,7 +56,9 @@ import sys
 
 LAST_UPDATED = re.compile(r"^- \*\*Last Updated:\*\* (\d{4}-\d{2}-\d{2})\s*$", re.M)
 VERSION = re.compile(r"^\*\*Version:\*\* \d+\.\d+\.(\d{8})\.\d+\s*$", re.M)
-FENCE = re.compile(r"^\s*(```|~~~)")
+FENCE_OPEN = re.compile(r"^\s*(`{3,}|~{3,})(.*)$")
+FENCE_CLOSE = re.compile(r"^\s*(`{3,}|~{3,})[ \t]*$")
+STATUS = re.compile(r"^[ACDMRTUXB]\d*$")
 
 
 class GitError(RuntimeError):
@@ -71,31 +73,54 @@ def git(*args: str) -> str:
 
 
 def show(commit: str, path: str) -> str | None:
-    """Return the file at a commit, or None when it does not exist there."""
-    result = subprocess.run(["git", "show", "%s:%s" % (commit, path)],
-                            capture_output=True, text=True, encoding="utf-8")
-    return result.stdout if result.returncode == 0 else None
+    """Return the file at a commit, or None when the path is not in that commit.
+
+    Absence is decided by `git ls-tree`, which prints nothing for a path that is not
+    in the tree and fails for a bad commit. Any failure, of either command, raises
+    GitError, so an unexpected git error can never be read as "file absent".
+    """
+    if not git("ls-tree", commit, "--", path).strip():
+        return None
+    return git("show", "%s:%s" % (commit, path))
 
 
 def outside_fences(text: str) -> str:
-    """Blank out fenced blocks so an example metadata block is never read as the real one."""
-    out, fenced = [], False
+    """Blank out fenced blocks so an example metadata block is never read as the real one.
+
+    Follows CommonMark's fence rules: a fence opens with three or more backticks or
+    tildes (a backtick fence's info string may not contain a backtick) and closes only
+    on the same character, at least as long, followed by nothing but spaces or tabs.
+    So a four-backtick fence around a triple-backtick example, which the docs guide
+    prescribes, stays one fence.
+    """
+    out, fence = [], None
     for line in text.split("\n"):
-        if FENCE.match(line):
-            fenced = not fenced
-            out.append("")
+        if fence is None:
+            m = FENCE_OPEN.match(line)
+            if m and not (m.group(1)[0] == "`" and "`" in m.group(2)):
+                fence = (m.group(1)[0], len(m.group(1)))
+                out.append("")
+            else:
+                out.append(line)
             continue
-        out.append("" if fenced else line)
+        m = FENCE_CLOSE.match(line)
+        if m and m.group(1)[0] == fence[0] and len(m.group(1)) >= fence[1]:
+            fence = None
+        out.append("")
     return "\n".join(out)
 
 
 def normalize(text: str) -> str:
-    """Remove only the differences the style guide calls mechanical."""
+    """Remove only the differences the style guide calls mechanical.
+
+    A hard line break is two or more spaces immediately before the line end
+    (CommonMark), so it is decided by those spaces alone: they become a two-space
+    marker, and any other trailing spaces or tabs are dropped.
+    """
     lines = []
     for line in text.replace("\r\n", "\n").replace("\r", "\n").split("\n"):
-        stripped = line.rstrip(" \t")
-        trailing = line[len(stripped):]
-        lines.append(stripped + ("  " if trailing.count(" ") >= 2 and "\t" not in trailing else ""))
+        spaces = len(line) - len(line.rstrip(" "))
+        lines.append(line.rstrip(" \t") + ("  " if spaces >= 2 else ""))
     while lines and lines[-1] == "":
         lines.pop()
     return "\n".join(lines)
@@ -111,67 +136,93 @@ def version_date(text: str) -> str | None:
     return m.group(1) if m else None
 
 
+def name_status(tokens: list[str], i: int) -> tuple[str, str | None, str, int]:
+    """Read one NUL-separated name-status entry at tokens[i]: (status, before, after, next index).
+
+    A rename carries the old and new paths. A copy carries its source and the new path,
+    but the new file did not exist before, so it is compared with nothing (before None).
+    `--follow` can report an added file as a copy of a similar one.
+    """
+    status = tokens[i]
+    if status[0] == "R":
+        return status, tokens[i + 1], tokens[i + 2], i + 3
+    if status[0] == "C":
+        return status, None, tokens[i + 2], i + 3
+    return status, tokens[i + 1], tokens[i + 1], i + 2
+
+
 def changed_files(base: str, head: str) -> list[tuple[str | None, str]]:
-    """(path on base or None, path on head) for each added, modified or renamed Markdown file."""
-    out = []
-    raw = git("diff", "--name-status", "-M", "%s..%s" % (base, head), "--", "*.md", "*.mdc")
-    for line in raw.splitlines():
-        parts = line.split("\t")
-        status = parts[0]
-        if status.startswith("R"):
-            out.append((parts[1], parts[2]))
-        elif status[0] in "AM":
-            out.append((parts[1] if status[0] == "M" else None, parts[1]))
+    """(path on base or None, path on head) for each added, modified or renamed Markdown file.
+
+    `-z` makes git print every path verbatim, NUL-separated. Without it, git quotes and
+    escapes names with non-ASCII bytes, tabs, quotes or backslashes, and a quoted name
+    passed back to git matches nothing, so the file would be skipped.
+    """
+    raw = git("diff", "--name-status", "-z", "-M", "%s..%s" % (base, head), "--", "*.md", "*.mdc")
+    tokens = [t for t in raw.split("\0") if t]
+    out, i = [], 0
+    while i < len(tokens):
+        status, before, after, i = name_status(tokens, i)
+        if status[0] == "R":
+            out.append((before, after))
+        elif status[0] in "AMC":
+            out.append((before if status[0] == "M" else None, after))
     return out
 
 
-def history(base: str, head: str, path: str, merges: bool) -> list[tuple[str, str, str | None, str]]:
-    """(commit, author date, path before, path after) for each PR commit that touched the file, newest first.
+def history(base: str, head: str, path: str) -> list[tuple[str, str, list[str], str | None, str]]:
+    """(commit, author date, parents, path before, path after) for each PR commit that touched the file.
 
-    `--follow` tracks renames, and `--name-status` gives each commit's own paths, so a
-    commit made before a rename is compared under the name the file had then.
+    Merge commits are included. `--diff-merges=first-parent` makes a merge list what it
+    changed relative to the pull request's own line; git's default history
+    simplification already drops a merge that took the file unchanged from one parent.
+    `--follow` tracks renames, and each entry carries that commit's own paths.
     """
-    args = ["log", "--follow", "--name-status", "-M", "--format=@@%H %aI"]
-    # A merge commit prints no file list unless asked; first-parent shows what it changed
-    # relative to the pull request's own line, which is the change this check needs.
-    args.append("--diff-merges=first-parent" if merges else "--no-merges")
-    raw = git(*args, "%s..%s" % (base, head), "--", path)
-    out, commit = [], None
-    for line in raw.splitlines():
-        if line.startswith("@@"):
-            commit = line[2:].split(" ", 1)
-        elif line.strip() and commit:
-            parts = line.split("\t")
-            if parts[0].startswith("R"):
-                before, after = parts[1], parts[2]
-            elif parts[0].startswith("C"):
-                # `--follow` can report a new file as a copy of a similar one. The file did not
-                # exist before this commit, so it is compared with nothing, like an added file.
-                before, after = None, parts[2]
-            else:
-                before, after = parts[1], parts[1]
-            out.append((commit[0], commit[1], before, after))
-            commit = None
+    raw = git("log", "--follow", "--name-status", "-z", "-M", "--diff-merges=first-parent",
+              "--format=@@%H %aI %P", "%s..%s" % (base, head), "--", path)
+    tokens = [t.lstrip("\n") for t in raw.split("\0")]
+    tokens = [t for t in tokens if t]
+    out, header, i = [], None, 0
+    while i < len(tokens):
+        # Paths are consumed by name_status(), so only a header or a status reaches here.
+        if tokens[i].startswith("@@"):
+            fields = tokens[i][2:].split(" ")
+            header = (fields[0], fields[1], fields[2:])
+            i += 1
+            continue
+        if header is None or not STATUS.match(tokens[i]):
+            raise GitError("unexpected git log output near %r" % tokens[i][:60])
+        _, before, after, i = name_status(tokens, i)
+        out.append((header[0], header[1], header[2], before, after))
     return out
 
 
 def required_date(base: str, head: str, path: str) -> dt.date | None:
     """UTC author date of the newest PR commit that changed the file's content.
 
-    Non-merge commits are searched first. A change that arrived only through a merge
-    commit (for example, a conflict resolution) falls back to the merge commit, so a
-    content change is never left without a required date.
+    Every PR commit that touched the file is considered, merges included, and the
+    latest qualifying author date wins. A non-merge commit qualifies when its content
+    differs from its parent's. A merge qualifies only when its content differs from
+    every parent's, meaning someone wrote new content while merging; a merge that took
+    the content from one side adds nothing, because that side's commits carry their
+    own dates. A clean merge that combines edits to the same file from both sides also
+    qualifies. When both sides follow the rule, both changed the `Last Updated` line,
+    so such a merge conflicts, and resolving it is an authored change.
     """
-    for merges in (False, True):
-        for sha, when, before_path, after_path in history(base, head, path, merges):
-            parent = git("rev-parse", sha + "^").strip()
-            after = show(sha, after_path)
-            before = show(parent, before_path) if before_path else None
-            if after is None:
-                continue
-            if normalize(before or "") != normalize(after):
-                return dt.datetime.fromisoformat(when).astimezone(dt.timezone.utc).date()
-    return None
+    dates = []
+    for sha, when, parents, before_path, after_path in history(base, head, path):
+        after = show(sha, after_path)
+        if after is None:
+            continue
+        befores = []
+        for parent in parents:
+            content = show(parent, before_path) if before_path else None
+            if content is None and before_path and len(parents) > 1:
+                content = show(parent, after_path)
+            befores.append(normalize(content or ""))
+        if befores and all(b != normalize(after) for b in befores):
+            dates.append(dt.datetime.fromisoformat(when).astimezone(dt.timezone.utc).date())
+    return max(dates) if dates else None
 
 
 def check(base: str, head: str) -> list[str]:

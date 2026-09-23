@@ -206,6 +206,122 @@ def test_change_made_only_in_a_merge_commit_is_dated_by_that_merge(repo: Repo) -
     assert run(repo) == []
 
 
+def test_a_later_merge_edit_beats_an_earlier_normal_edit(repo: Repo) -> None:
+    repo.write("docs/a.md", doc("2026-03-05", "First edit."))
+    repo.commit("edit", "2026-03-05T10:00:00+00:00")
+    repo.git("switch", "-q", "-c", "side", "main")
+    repo.write("docs/plain.md", "# No metadata\n\nSide text.\n")
+    repo.commit("side", "2026-03-05T11:00:00+00:00")
+    repo.git("switch", "-q", "pr")
+    repo.git("merge", "-q", "--no-ff", "--no-commit", "side")
+    repo.write("docs/a.md", doc("2026-03-05", "Edited again in the merge."))
+    repo.commit("merge with an edit", "2026-03-06T10:00:00+00:00")
+    problems = run(repo)
+    assert len(problems) == 1 and "Set it to 2026-03-06" in problems[0]
+
+
+def test_merging_main_in_adds_no_requirement(repo: Repo) -> None:
+    repo.write("docs/a.md", doc("2026-03-05", "PR edit."))
+    repo.commit("pr edit", "2026-03-05T10:00:00+00:00")
+    repo.git("switch", "-q", "main")
+    repo.write("docs/plain.md", "# No metadata\n\nMain moved on.\n")
+    repo.commit("main change", "2026-03-06T10:00:00+00:00")
+    repo.git("switch", "-q", "pr")
+    repo.git("merge", "-q", "--no-ff", "-m", "merge main", "main", date="2026-03-07T10:00:00+00:00")
+    assert run(repo) == []
+
+
+def test_a_merge_that_takes_one_side_unchanged_adds_no_date(repo: Repo, monkeypatch: Any) -> None:
+    # Git's history simplification normally hides such a merge; this pins the rule
+    # itself by handing required_date() the merge directly.
+    repo.git("switch", "-q", "-c", "side", "main")
+    repo.write("docs/a.md", doc("2026-03-04", "Changed on the side."))
+    repo.commit("side edit", "2026-03-04T10:00:00+00:00")
+    repo.git("switch", "-q", "pr")
+    repo.write("docs/plain.md", "# No metadata\n\nPR text.\n")
+    repo.commit("pr edit", "2026-03-05T10:00:00+00:00")
+    repo.git("merge", "-q", "--no-ff", "-m", "merge side", "side", date="2026-03-07T10:00:00+00:00")
+    merge = repo.git("rev-parse", "HEAD").strip()
+    parents = repo.git("rev-parse", "HEAD^1", "HEAD^2").split()
+    entry = (merge, "2026-03-07T10:00:00+00:00", parents, "docs/a.md", "docs/a.md")
+    monkeypatch.setattr(last_updated, "history", lambda base, head, path: [entry])
+    assert last_updated.required_date("main", "HEAD", "docs/a.md") is None
+
+
+def test_non_ascii_and_spaced_paths_are_checked(repo: Repo) -> None:
+    repo.write("docs/café guide.md", doc("2026-01-01"))
+    repo.commit("add", "2026-01-01T12:00:00+00:00")
+    repo.git("switch", "-q", "main")
+    repo.git("merge", "-q", "--ff-only", "pr")
+    repo.git("switch", "-q", "pr")
+    repo.write("docs/café guide.md", doc("2026-01-01", "Changed."))
+    repo.commit("edit", "2026-03-05T10:00:00+00:00")
+    problems = run(repo)
+    assert len(problems) == 1 and "café guide.md" in problems[0] and "Set it to 2026-03-05" in problems[0]
+
+
+def test_example_in_a_longer_outer_fence_is_not_the_real_field(repo: Repo) -> None:
+    nested = "````markdown\n```text\n- **Last Updated:** 2000-01-01\n```\n````\n"
+    repo.write("docs/plain.md", "# No metadata\n\n" + nested)
+    repo.commit("nested example", "2026-03-05T10:00:00+00:00")
+    assert run(repo) == []
+
+
+def test_real_field_after_a_nested_fence_is_still_found(repo: Repo) -> None:
+    nested = "````markdown\n```text\nexample\n```\n````\n"
+    repo.write("docs/a.md", doc("2026-01-01", nested + "\nChanged."))
+    repo.commit("edit", "2026-03-05T10:00:00+00:00")
+    problems = run(repo)
+    assert len(problems) == 1 and "Set it to 2026-03-05" in problems[0]
+
+
+def test_tab_then_two_spaces_is_a_hard_break(repo: Repo) -> None:
+    repo.write("docs/a.md", doc("2026-01-01", "Line one\t  \nline two."))
+    repo.commit("base-ish", "2026-01-01T12:00:00+00:00")
+    repo.git("switch", "-q", "main")
+    repo.git("merge", "-q", "--ff-only", "pr")
+    repo.git("switch", "-q", "pr")
+    repo.write("docs/a.md", doc("2026-01-01", "Line one\nline two."))
+    repo.commit("drop hard break", "2026-03-05T10:00:00+00:00")
+    problems = run(repo)
+    assert len(problems) == 1 and "Set it to 2026-03-05" in problems[0]
+
+
+def test_spaces_then_a_final_tab_are_not_a_hard_break(repo: Repo) -> None:
+    # CommonMark needs the spaces immediately before the line end; a tab after them breaks that.
+    repo.write("docs/a.md", doc("2026-01-01", "Line one  \t\nline two."))
+    repo.commit("base-ish", "2026-01-01T12:00:00+00:00")
+    repo.git("switch", "-q", "main")
+    repo.git("merge", "-q", "--ff-only", "pr")
+    repo.git("switch", "-q", "pr")
+    repo.write("docs/a.md", doc("2026-01-01", "Line one\nline two."))
+    repo.commit("strip trailing whitespace", "2026-03-05T10:00:00+00:00")
+    assert run(repo) == []
+
+
+def test_outer_fence_stays_open_after_an_inner_fence_closes(repo: Repo) -> None:
+    nested = "````markdown\n```text\nexample\n```\n- **Last Updated:** 2000-01-01\n````\n"
+    repo.write("docs/plain.md", "# No metadata\n\n" + nested)
+    repo.commit("nested example", "2026-03-05T10:00:00+00:00")
+    assert run(repo) == []
+
+
+def test_exact_copy_of_an_existing_file_is_dated_by_its_commit(repo: Repo) -> None:
+    repo.write("docs/copy.md", doc("2026-01-01"))
+    repo.commit("copy a.md", "2026-01-01T13:00:00+00:00")
+    assert run(repo) == []
+    repo.write("docs/copy.md", doc("2026-01-01", "Now changed."))
+    repo.commit("edit the copy", "2026-03-05T10:00:00+00:00")
+    problems = run(repo)
+    assert len(problems) == 1 and "Set it to 2026-03-05" in problems[0]
+
+
+def test_lone_trailing_tab_is_mechanical(repo: Repo) -> None:
+    repo.write("docs/a.md", doc("2026-01-01").replace("Body text.", "Body text.\t"))
+    repo.commit("tab", "2026-03-05T10:00:00+00:00")
+    assert run(repo) == []
+
+
 def test_example_metadata_inside_a_fence_is_not_the_real_field(repo: Repo) -> None:
     fenced = "```text\n- **Last Updated:** 2000-01-01\n```\n"
     repo.write("docs/plain.md", "# No metadata\n\n" + fenced)
@@ -229,6 +345,30 @@ def test_unattributable_content_change_fails_closed(repo: Repo, monkeypatch: Any
     monkeypatch.setattr(last_updated, "required_date", lambda base, head, path: None)
     problems = run(repo)
     assert len(problems) == 1 and "required date is unknown" in problems[0]
+
+
+def test_show_returns_none_only_for_a_missing_path(repo: Repo) -> None:
+    assert last_updated.show("HEAD", "docs/no-such-file.md") is None
+    assert "Last Updated" in last_updated.show("HEAD", "docs/a.md")
+
+
+def test_show_raises_on_a_git_failure_instead_of_reporting_absent(repo: Repo) -> None:
+    with pytest.raises(last_updated.GitError):
+        last_updated.show("0" * 40, "docs/a.md")
+
+
+def test_show_propagates_a_failing_git_show(repo: Repo, monkeypatch: Any) -> None:
+    # Failure injection: the path exists, so ls-tree succeeds, and only `git show` fails.
+    real_git = last_updated.git
+
+    def failing_show(*args: str) -> str:
+        if args and args[0] == "show":
+            raise last_updated.GitError("injected git show failure")
+        return cast(str, real_git(*args))
+
+    monkeypatch.setattr(last_updated, "git", failing_show)
+    with pytest.raises(last_updated.GitError):
+        last_updated.show("HEAD", "docs/a.md")
 
 
 def test_git_error_is_exit_2_never_a_pass(repo: Repo) -> None:
