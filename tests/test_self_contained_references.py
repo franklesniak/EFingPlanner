@@ -81,7 +81,11 @@ beside it:
   hides nothing from this scan; the repository holds none.
 - *What is a link.* A URL ``url_is_public()`` accepts, and nothing else. Only
   such a URL resolves a reference, and only such a URL is taken out of the
-  text before the patterns read it (``blank_urls``).
+  text before the patterns read it (``blank_urls``). A full hash pinned by a
+  workflow's ``uses:`` key resolves in the repository it names
+  (``ACTION_PIN_BEFORE``). A ``uses`` key inside a flow mapping, written in
+  braces on one line, is not read, and its pin is reported; the repository
+  holds none.
 - *Which words name a reference.* The nouns, separators and number shapes
   in ``REVIEW_HISTORY_PATTERNS``, which is a closed list: the pointer shapes
   this repository's review history has produced. A reference named by any
@@ -296,10 +300,12 @@ TRACKER_IDENTIFIER = r"(?:[A-Za-z][A-Za-z0-9]*-\d+|\d+)"
 #: **The key starts its line**, after indentation and an optional list dash,
 #: as a YAML key does. Anywhere else -- ``this prose uses: owner/repo@...``, or
 #: a comment that quotes a step -- the same characters declare nothing. All 31
-#: pins in the corpus start their line this way.
+#: pins in the corpus start their line this way. **The key may be quoted**, in
+#: matching single or double quotes, because YAML lets any key be, and a
+#: quoted ``uses`` declares the same step.
 #: https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsuses
 ACTION_PIN_BEFORE = re.compile(
-    r"^[ \t]*(?:-[ \t]+)?uses[ \t]*:[ \t]*" "[\"']?"
+    r"^[ \t]*(?:-[ \t]+)?(?:uses|\"uses\"|'uses')[ \t]*:[ \t]*" "[\"']?"
     r"[A-Za-z0-9](?:[A-Za-z0-9]|-(?=[A-Za-z0-9])){0,38}"
     r"/(?!\.\.?[/@])[A-Za-z0-9_.-]{1,100}"
     r"(?:/[A-Za-z0-9_.-]+)*@\Z"
@@ -838,6 +844,14 @@ COMMENT_FRAGMENT_PREFIXES = (
 #: hyphens, one to 63 of them, with no hyphen first or last.
 #: https://www.rfc-editor.org/rfc/rfc1123#section-2.1
 DNS_LABEL = re.compile(r"[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?")
+#: A last label a browser reads as a number: decimal digits, or ``0x`` and
+#: hexadecimal digits. A host that ends in one is an IPv4 address in some
+#: spelling, or no valid host at all, and never a name. ``ipaddress`` reads
+#: only the four-part decimal form, which is judged before this, so every
+#: other host that ends in a number is refused. ``127.0.0x1`` is loopback to
+#: a browser, and it passed as a name because its last label holds a letter.
+#: https://url.spec.whatwg.org/#ends-in-a-number-checker
+ENDS_IN_A_NUMBER = re.compile(r"[0-9]+|0x[0-9a-f]*")
 NON_PUBLIC_NAMES = (
     "localhost",
     "invalid",
@@ -906,7 +920,8 @@ def url_is_public(url: str) -> bool:
     global, or a domain name of two or more labels whose last label holds a
     letter and that is not, and does not end in, one of ``NON_PUBLIC_NAMES``.
     So loopback, private and link-local addresses fail, and so do a
-    single-label intranet name, a numeric shorthand such as ``127.1``, and
+    single-label intranet name, a host that ends in a number in any
+    spelling, such as ``127.1`` or ``127.0.0x1``, and
     ``tracker.example.invalid``. The URL is read in ``browser_form()``, so a
     scheme-less ``www.`` candidate has ``http://`` in front and
     ``www./issues/27`` names the one-label host ``www``, and a backslash in the
@@ -971,6 +986,7 @@ def url_is_public(url: str) -> bool:
         or len(labels) < 2
         or not all(DNS_LABEL.fullmatch(label) for label in labels)
         or not any(character.isalpha() for character in labels[-1])
+        or ENDS_IN_A_NUMBER.fullmatch(labels[-1])
     ):
         return False
     return not any(
@@ -1000,6 +1016,12 @@ def url_path_segments(url: str) -> list[str]:
     # ``27`` side by side although the page it opens is the one for 28, and
     # ``/issues/./27`` held them apart although it opens 27.
     # https://url.spec.whatwg.org/#path-state
+    #
+    # **An empty segment is dropped, as GitHub drops it.** The URL Standard
+    # keeps ``/issues//27`` apart from ``/issues/27``, but GitHub routes both
+    # to the same issue, and the same holds for a pull request and a commit:
+    # checked against this repository. So a doubled slash does not unlink a
+    # reference, while ``/issues/x/27``, whose words sit apart, still does.
     segments: list[str] = []
     for part in parts.path.split("/"):
         segment = unquote(part)
@@ -1145,8 +1167,12 @@ def url_resolves(label: str, matched: str, urls: list[str]) -> bool:
 #: a lower-to-upper case change, and either side of a run of digits. So a name
 #: holding a round number and a word reads as ``["ROUND", "13", "ADULT"]`` and
 #: the patterns above read it as the sentence it abbreviates.
+#: **A letter is any letter, as it is in a Python name.** A digit joined to
+#: ``é`` was not a boundary when a letter meant ``A`` to ``Z``, so a name
+#: ending in a round number and an accented letter read as one word, and the
+#: number was never read.
 IDENTIFIER_WORD_BOUNDARY = re.compile(
-    r"_+|(?<=[a-z])(?=[A-Z])|(?<=[A-Za-z])(?=\d)|(?<=\d)(?=[A-Za-z])"
+    r"_+|(?<=[a-z])(?=[A-Z])|(?<=[^\W\d_])(?=\d)|(?<=\d)(?=[^\W\d_])"
 )
 #: The one rule the identifier pass carries alone. A name spelled ``R`` and a
 #: numeral abbreviates a round, and the same two characters in a sentence
@@ -1212,7 +1238,11 @@ def python_paths(paths: Iterable[Path]) -> list[Path]:
 #: Leading underscores belong to the name, so a private-style key or variable is
 #: read as well. Measured over the tracked non-Python files, allowing them adds
 #: no token today.
-IDENTIFIER_SHAPED_TOKEN = re.compile(r"(?<![A-Za-z0-9_])_*[A-Za-z][A-Za-z0-9_]*\b")
+#: **Identifier characters are Unicode's, as they are in Python and YAML.** The
+#: token was ASCII and ended at ``\b``, which reads any letter as a word
+#: character, so a name with ``é`` after its digits had no end the pattern
+#: accepted and yielded no token at all.
+IDENTIFIER_SHAPED_TOKEN = re.compile(r"(?<!\w)_*[^\W\d_]\w*")
 #: A lower-to-upper case change: where one word of a camel-case name ends.
 LOWER_THEN_UPPER = re.compile(r"[a-z][A-Z]")
 #: Two or more capitals run into a digit, the other spelling of a constant
@@ -3979,3 +4009,111 @@ def test_a_file_declared_text_must_decode() -> None:
     finally:
         if probe.exists():
             probe.unlink()
+
+
+def test_a_host_that_ends_in_a_number_is_an_address_or_nothing(tmp_path: Path) -> None:
+    """A browser reads a host whose last label is a number as an IPv4 address.
+
+    ``ipaddress`` reads only the four-part decimal form, and a last label of
+    ``0x`` and hexadecimal digits holds a letter, so ``127.0.0x1`` passed as a
+    public name although a browser opens loopback there. A host that ends in a
+    number and is not a plain address is now refused, in every spelling.
+    """
+    reference = "issue" + " " + "27"
+    tail = "/o/r/issues/27"
+    for host in ("127.0.0x1", "127.0.0.0x1", "github.0x1", "10.0.0X1", "8.8.8.0x8"):
+        url = "https://" + host + tail
+        assert not url_is_public(url), host
+        assert _reported(tmp_path, reference + " " + url), host
+    for host in ("github.com", "1.1.1.1", "tracker.0x1z"):
+        assert url_is_public("https://" + host + tail), host
+
+
+def test_a_doubled_slash_is_read_as_github_reads_it(tmp_path: Path) -> None:
+    """A documented reading, pinned: an empty path segment is dropped.
+
+    The URL Standard keeps a doubled slash, and GitHub routes ``/issues//27``
+    to the same issue as ``/issues/27``. The scan reads the path as GitHub
+    does, so the link resolves; words that sit apart still do not.
+    """
+    reference = "issue" + " " + "27"
+    assert url_path_segments("https://github.com/o/r/issues//27") == ["o", "r", "issues", "27"]
+    assert not _reported(tmp_path, reference + " https://github.com/o/r/issues//27")
+    assert _reported(tmp_path, reference + " https://github.com/o/r/issues/x/27")
+
+
+def test_an_identifier_is_read_with_the_letters_python_allows(tmp_path: Path) -> None:
+    """A name may hold any letter, and a digit next to one still ends a word.
+
+    With ASCII letters only, ``\\b`` found no end to a name whose digits met
+    an accented letter, so a file with no syntax tree gave no token. The word
+    splitter did not split a digit from that letter either, so a Python name
+    read as one word, and its round number was never read.
+    """
+    accent = chr(0xE9)
+    name = "review" + "_round_42"
+    for text, suffix in (
+        (name + accent + ": 1", ".yml"),
+        (accent + name + ": 1", ".yml"),
+        (name + accent + " = 1", ".py"),
+    ):
+        sample = tmp_path / ("a" + suffix)
+        sample.write_text(text + chr(10), encoding="utf-8")
+        assert names_in(sample, tmp_path), text
+    assert name_words(name + accent).split() == ["review", "round", "42", accent]
+    quiet = tmp_path / "b.yml"
+    quiet.write_text("caf" + accent + "_menu_2: 1" + chr(10), encoding="utf-8")
+    assert not names_in(quiet, tmp_path)
+
+
+def test_a_quoted_uses_key_declares_a_pin(tmp_path: Path) -> None:
+    """YAML lets any key be quoted, and a quoted ``uses`` declares the step.
+
+    The pin rule wanted the bare word, so a valid step with a quoted key had
+    its pinned hash reported as opaque. The quotes must match.
+    """
+    full = ("0123456789" + "abcdef") * 2 + "01234567"
+    for key in (chr(34) + "uses" + chr(34), "'uses'"):
+        assert not _reported(tmp_path, "      - " + key + ": actions/checkout@" + full, ".yml"), key
+    for key in (chr(34) + "uses'", "'uses" + chr(34)):
+        assert _reported(tmp_path, "      - " + key + ": actions/checkout@" + full, ".yml"), key
+
+
+def test_a_uses_key_in_a_flow_mapping_is_not_read(tmp_path: Path) -> None:
+    """A documented limit, pinned: a ``uses`` key inside braces is not read.
+
+    The pin rule reads a key that starts its line, which is what keeps prose
+    out of it. A flow mapping puts the key after a brace, so its pin is
+    reported, and the step is written in block form instead. The module
+    docstring states this; if this test starts to fail, the limit has gone,
+    and the docstring must say so.
+    """
+    full = ("0123456789" + "abcdef") * 2 + "01234567"
+    assert _reported(tmp_path, "      - {uses: actions/checkout@" + full + "}", ".yml")
+
+
+def test_the_workflow_runs_the_scan_while_its_fixtures_exist() -> None:
+    """The only enforcement must not skip because the thing it runs is gone.
+
+    The step was skipped when the test module or the compat module was
+    missing, and a skipped step passes the job. It is keyed on the fixture
+    directory now, which the manifest prunes with the module, so a deleted or
+    renamed module leaves the fixtures behind and the step fails.
+    """
+    import yaml
+
+    workflow = yaml.safe_load(
+        (REPO_ROOT / ".github" / "workflows" / "markdownlint.yml").read_text(encoding="utf-8")
+    )
+    steps = [
+        step
+        for job in workflow["jobs"].values()
+        for step in job.get("steps", [])
+        if step.get("id") == "test-self-contained"
+    ]
+    assert len(steps) == 1, steps
+    condition = steps[0].get("if", "")
+    assert "tests/fixtures/self_contained_references/**" in condition, condition
+    assert THIS_MODULE not in condition, condition
+    assert "_pytest_compat" not in condition, condition
+    assert THIS_MODULE in steps[0]["run"], steps[0]["run"]

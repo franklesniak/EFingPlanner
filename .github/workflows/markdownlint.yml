@@ -180,11 +180,16 @@ jobs:
       # number or a bare commit hash and every required check would stay
       # green. This suite is the only enforcement the self-containment scan
       # has, so it is the one that most needed wiring.
+      # **Keyed on the scan's fixture directory, not on the test module.**
+      # The manifest prunes the two together, so an adoption without them
+      # still skips this step. Keyed on the module, deleting or renaming it,
+      # or `tests/_pytest_compat.py`, skipped the only enforcement and the
+      # job passed. Now the fixtures stay behind and the step fails. The scan
+      # asserts that the three hook suites above are present, so their own
+      # steps keep their guards.
       - name: Check references resolve inside this repository
         id: test-self-contained
-        if: >-
-          hashFiles('tests/test_self_contained_references.py') != '' &&
-          hashFiles('tests/_pytest_compat.py') != ''
+        if: hashFiles('tests/fixtures/self_contained_references/**') != ''
         continue-on-error: true
         run: pytest tests/test_self_contained_references.py -v
 
