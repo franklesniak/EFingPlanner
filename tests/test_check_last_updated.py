@@ -178,6 +178,43 @@ def test_mechanical_change_passes_after_the_base_branch_moved(repo: Repo) -> Non
     assert run(repo) == []
 
 
+def test_metadata_the_base_branch_added_after_the_fork_is_reported(repo: Repo) -> None:
+    # main gives docs/plain.md a metadata block; the PR edits its body. They merge cleanly, and
+    # the merged file would keep main's older date over the PR's newer content.
+    repo.git("switch", "-q", "main")
+    repo.write("docs/plain.md", doc("2026-03-04", "Text."))
+    repo.commit("add metadata on main", "2026-03-04T10:00:00+00:00")
+    repo.git("switch", "-q", "pr")
+    repo.write("docs/plain.md", "# No metadata\n\nText changed.\n")
+    repo.commit("edit the body", "2026-03-05T10:00:00+00:00")
+    problems = run(repo)
+    assert len(problems) == 1 and "docs/plain.md" in problems[0] and "has added a Last Updated field" in problems[0]
+
+
+def test_wrong_shape_date_in_a_new_file_is_reported(repo: Repo) -> None:
+    repo.write("docs/new.md", doc("2026-03-05").replace("2026-03-05", "2026/03/05"))
+    repo.commit("add", "2026-03-05T10:00:00+00:00")
+    problems = run(repo)
+    assert len(problems) == 1 and "docs/new.md" in problems[0] and "YYYY-MM-DD form" in problems[0]
+
+
+def test_version_too_long_to_read_is_reported(repo: Repo) -> None:
+    huge = doc("2026-03-05", "Changed.", version="20260305").replace(".20260305.0", ".20260305." + "9" * 5000)
+    repo.write("docs/a.md", huge)
+    repo.commit("change", "2026-03-05T10:00:00+00:00")
+    problems = run(repo)
+    assert len(problems) == 1 and "docs/a.md" in problems[0] and "cannot be read as numbers" in problems[0]
+
+
+def test_unreadable_base_version_does_not_stop_the_check(repo: Repo) -> None:
+    # main's copy carries a Version too long to read; the PR's own Version is judged as if main had none.
+    huge = doc("2026-01-01", "Body.", version="20260101").replace(".20260101.0", ".20260101." + "9" * 5000)
+    publish(repo, huge, "2026-01-01T12:00:00+00:00")
+    repo.write("docs/a.md", doc("2026-03-05", "Changed.", version="20260305"))
+    repo.commit("change", "2026-03-05T10:00:00+00:00")
+    assert run(repo) == []
+
+
 def test_impossible_calendar_date_is_reported_by_file(repo: Repo) -> None:
     repo.write("docs/a.md", doc("2026-02-30", "Changed."))
     repo.commit("change", "2026-03-05T10:00:00+00:00")
@@ -767,6 +804,49 @@ def test_a_block_of_only_comments_is_skipped(repo: Repo, comments: str) -> None:
     repo.commit("edit", "2026-03-05T10:00:00+00:00")
     problems = run(repo)
     assert len(problems) == 1 and "Set it to 2026-03-05" in problems[0]
+
+
+@pytest.mark.parametrize("raw", [
+    '<a href="%2e%2e/shared.md">x</a>',
+    '<a href="%2E%2e/shared.md">x</a>',
+    '<a href="..\\shared.md">x</a>',
+    '<a href="../../../shared.md">x</a>',
+], ids=["percent-dots", "percent-dots-mixed-case", "backslash", "above-the-root"])
+def test_url_path_rules_keep_a_target_across_a_sibling_move(repo: Repo, raw: str) -> None:
+    # From docs/ and from other/, each reference resolves to /shared.md under the URL Standard's
+    # path rules, so moving the file between the two needs no bump.
+    publish(repo, doc("2026-01-01", "Text.\n\n" + raw), "2026-01-01T12:00:00+00:00")
+    (repo.root / "other").mkdir()
+    repo.git("mv", "docs/a.md", "other/a.md")
+    repo.commit("move", "2026-03-05T10:00:00+00:00")
+    assert run(repo) == []
+
+
+SLASH = chr(92)   # a backslash, built so no escaping layer can change it
+
+
+@pytest.mark.parametrize("before, after", [
+    ('<a href="ht&#10;tps://a.example/x.md">x</a>', '<a href="ht&#10;tps://b.example/x.md">x</a>'),
+    ('<a href="' + SLASH * 2 + "a.example" + SLASH + 'x.md">x</a>',
+     '<a href="' + SLASH * 2 + "b.example" + SLASH + 'x.md">x</a>'),
+], ids=["newline-in-scheme", "backslash-host"])
+def test_changing_the_host_of_an_absolute_reference_is_content(repo: Repo, before: str, after: str) -> None:
+    # A browser reads both forms as absolute URLs, so the host is part of what the page links to.
+    publish(repo, doc("2026-01-01", "Text.\n\n" + before), "2026-01-01T12:00:00+00:00")
+    repo.write("docs/a.md", doc("2026-01-01", "Text.\n\n" + after))
+    repo.commit("change the host", "2026-03-05T10:00:00+00:00")
+    problems = run(repo)
+    assert len(problems) == 1 and "Set it to 2026-03-05" in problems[0]
+
+
+def test_directory_name_with_a_hash_stays_part_of_the_path(repo: Repo) -> None:
+    # "c#1" is a directory name, not a URL fragment, so the move into its subfolder keeps the target.
+    publish(repo, doc("2026-01-01", "Text.\n\n[x](x.md)"), "2026-01-01T12:00:00+00:00", "docs/c#1/a.md")
+    (repo.root / "docs" / "c#1" / "sub").mkdir()
+    repo.git("mv", "docs/c#1/a.md", "docs/c#1/sub/a.md")
+    repo.write("docs/c#1/sub/a.md", doc("2026-01-01", "Text.\n\n[x](../x.md)"))
+    repo.commit("move and keep the target", "2026-03-05T10:00:00+00:00")
+    assert run(repo) == []
 
 
 def test_moving_html_the_helper_fully_resolves_needs_no_bump(repo: Repo) -> None:

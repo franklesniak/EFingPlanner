@@ -27,7 +27,8 @@
  *                directory of `path`, so a move changes its html. HTML comments
  *                and text are left as they are.
  *   lastUpdated  YYYY-MM-DD from the `- **Last Updated:** YYYY-MM-DD` item of the
- *                metadata header block, or null.
+ *                metadata header block, or the item's value as written when it
+ *                has another shape (so the check can report it), or null.
  *   version      the whole `**Version:** <major>.<minor>.<YYYYMMDD>.<revision>`
  *                value from the line directly after the H1, or null.
  *
@@ -55,6 +56,7 @@ const { decodeHTMLAttribute } = require('entities');
 
 const md = new MarkdownIt('commonmark');
 const LAST_UPDATED = /^\*\*Last Updated:\*\* (\d{4}-\d{2}-\d{2})[ \t]*$/;
+const LAST_UPDATED_ITEM = /^\*\*Last Updated:\*\*[ \t]*(.*?)[ \t]*$/;
 const VERSION = /^\*\*Version:\*\* (\d+\.\d+\.\d{8}\.\d+)[ \t]*$/;
 const FRONT_MATTER = /^---[ \t]*\r?\n(?:[^]*?\r?\n)?(?:---|\.\.\.)[ \t]*(?:\r?\n|$)/;
 const H1_LINE_LIMIT = 30;
@@ -83,9 +85,11 @@ const PLAIN_ATTRIBUTE_PREFIX = /^(?:aria|data)-/;
 // Elements whose content or effect can hold URLs the helper does not parse: CSS, scripts, a
 // `<base>` that changes how every relative URL resolves, and a `<meta>` refresh.
 const DIRECTORY_BOUND_ELEMENTS = new Set(['base', 'meta', 'script', 'style']);
-// A URL with a scheme, a root-relative or protocol-relative path (a browser reads `\` as `/`),
-// or only a query or fragment does not depend on the document's directory.
-const NOT_RELATIVE = /^(?:[A-Za-z][A-Za-z0-9+.-]*:|[\\/]|#|\?|$)/;
+// A URL with a scheme, a root-relative or protocol-relative path, or only a query or fragment
+// does not depend on the document's directory.
+const NOT_RELATIVE = /^(?:[A-Za-z][A-Za-z0-9+.-]*:|\/|#|\?|$)/;
+// The base every relative reference resolves against; the host only makes it a full URL.
+const BASE_ORIGIN = 'https://repository.invalid';
 // Raw HTML pieces: a comment, or a start tag whose quoted values may hold `>`.
 const COMMENT_OR_TAG = /<!--[^]*?-->|<[A-Za-z][A-Za-z0-9-]*(?:[^>"']|"[^"]*"|'[^']*')*>/g;
 // A whole HTML comment, including the empty forms `<!-->` and `<!--->` (CommonMark 0.31.2).
@@ -96,16 +100,26 @@ const COMMENT = /<!--(?:-?>|[^]*?-->)/g;
 const ATTRIBUTE = /([\t\n\f\r ]+)([A-Za-z_:][A-Za-z0-9_.:-]*)(?:([\t\n\f\r ]*=[\t\n\f\r ]*)("[^"]*"|'[^']*'|[^\t\n\f\r "'=<>`]+))?/y;
 
 function resolveUrl(url, directory) {
-  // The URL Standard strips leading and trailing C0 controls and spaces, and removes every
-  // ASCII tab and newline inside the input, before it looks for a scheme.
-  const trimmed = url.replace(/^[\u0000- ]+|[\u0000- ]+$/g, '').replace(/[\t\n\r]/g, '');
+  // The URL Standard strips leading and trailing C0 controls and spaces before it looks for
+  // a scheme; it also removes ASCII tabs and newlines inside, which the parse below does.
+  const trimmed = url.replace(/^[\u0000-\u0020]+|[\u0000-\u0020]+$/g, '');
   if (NOT_RELATIVE.test(trimmed)) {
     return url;
   }
   const cut = trimmed.search(/[?#]/);
   const target = cut < 0 ? trimmed : trimmed.slice(0, cut);
   const rest = cut < 0 ? '' : trimmed.slice(cut);
-  return '/' + path.posix.normalize(path.posix.join(directory, target)) + rest;
+  // Resolve by the URL Standard's path rules, as a browser does: `%2e` segments are dots, `\`
+  // is `/`, and `..` stops at the root. Each directory name is encoded so that a `#` or `?` in
+  // it stays part of the path. A target the parser reads as absolute, such as `\\host\x` or a
+  // scheme split by a newline, keeps its whole URL, so a change of host is still a change.
+  const folder = directory === '.' ? '' : directory.split('/').map(encodeURIComponent).join('/') + '/';
+  try {
+    const resolved = new URL(target, BASE_ORIGIN + '/' + folder);
+    return (resolved.origin === BASE_ORIGIN ? resolved.pathname : resolved.href) + rest;
+  } catch (error) {
+    return '/' + folder + target + rest;   // unreadable as a URL: tie it to the directory
+  }
 }
 
 // A srcset value is a list of image candidates, split as the HTML Living Standard's "parse a
@@ -260,6 +274,14 @@ function listField(block) {
   }
   for (const line of lines) {
     const m = LAST_UPDATED.exec(line);
+    if (m) {
+      return m[1];
+    }
+  }
+  // A Last Updated item of another shape is still the block's field: return it as written, so
+  // the check reports it instead of reading the block as having no field.
+  for (const line of lines) {
+    const m = LAST_UPDATED_ITEM.exec(line);
     if (m) {
       return m[1];
     }

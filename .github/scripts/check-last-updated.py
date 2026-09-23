@@ -47,7 +47,13 @@ Markdown is read"):
 4. The field must not be earlier than the base version's field. A rebased or
    cherry-picked commit can keep an old author date; the field still may not
    move backwards.
-5. The field must be a real calendar date; ``2026-02-30`` is reported as such.
+5. The field must be a real calendar date in ``YYYY-MM-DD`` form. An impossible
+   date such as ``2026-02-30``, and a ``Last Updated`` item of another shape in
+   the block, such as ``2026/03/05``, are reported. So is a Version value too
+   long to read as numbers.
+6. If the head's file has no field but the base branch tip's copy has one, the
+   base branch added the block after the fork. When the pull request changes the
+   file's content, it is reported: merge the base branch in, then set the field.
 
 A file whose rendered content already equals the base branch tip's (under its
 name there) is skipped: it adds nothing to the merge, as when the pull request
@@ -66,7 +72,8 @@ removing one still counts. Trailing spaces that CommonMark does not render as a
 break, such as at the end of a paragraph, after a heading or inside a code
 block, do not count. Relative references, in Markdown links and images and in
 the URL attributes of raw HTML tags, are compared as repository paths, resolved
-from each version's own directory, so moving a file to another directory changes
+from each version's own directory by the URL Standard's path rules (as a browser
+resolves them), so moving a file to another directory changes
 its content exactly when a relative reference now points somewhere else. Raw HTML
 that may hold a URL the helper does not parse, such as a `style` attribute or a
 `<style>` element, is tied to the file's directory instead, so moving that file
@@ -376,7 +383,7 @@ def calendar_date(value: str | None) -> dt.date | None:
         return None
     try:
         return dt.date.fromisoformat(value)
-    except ValueError:
+    except ValueError:   # 2026-02-30, or a value of another shape such as 2026/03/05
         return None
 
 
@@ -437,11 +444,18 @@ def check(base: str, head: str) -> list[str]:
                 problems.append("%s: the base version has a Last Updated field in its metadata header block, "
                                 "and this pull request removed it or moved it out of that block. Restore it, "
                                 "with the date of the change." % path)
+            elif (published is not None and field(published) is not None
+                  and (base_text is None or rendered(base_text, old_path or path) != rendered(head_text, path))):
+                # The base branch added the block after the fork; a clean merge would keep its
+                # older date over this pull request's newer content.
+                problems.append("%s: the base branch has added a Last Updated field to this file since this pull "
+                                "request forked, and this pull request changes its content. Merge the base branch "
+                                "in, then set the field to the date of the change." % path)
             continue
         day = calendar_date(value)
         if day is None:
-            problems.append("%s: Last Updated is %s, which is not a real calendar date. Set it to the UTC date of "
-                            "the change." % (path, value))
+            problems.append("%s: Last Updated reads %r, which is not a real calendar date in YYYY-MM-DD form. Set "
+                            "it to the UTC date of the change." % (path, value))
             continue   # every other rule needs the date
         base_value = field(base_text) if base_text is not None else None
         base_day = calendar_date(base_value)
@@ -468,7 +482,12 @@ def check(base: str, head: str) -> list[str]:
                             "content, made on %s (UTC). Set it to %s." % (path, value, made, need))
         else:
             date_is_wrong = False
-        head_version = version(head_text)
+        try:
+            head_version = version(head_text)
+        except ValueError:   # a component too long for int(), past Python's digit limit
+            problems.append("%s: its Version value cannot be read as numbers. Write it as "
+                            "<major>.<minor>.<YYYYMMDD>.<revision>, each part a short whole number." % path)
+            continue
         if head_version is None:
             continue
         major, minor, date, revision = head_version
@@ -478,7 +497,10 @@ def check(base: str, head: str) -> list[str]:
         # The revision depends on the date, so it is checked only once both dates are right.
         if date_is_wrong or date != value.replace("-", ""):
             continue
-        baseline = version(published) if published is not None else None
+        try:
+            baseline = version(published) if published is not None else None
+        except ValueError:
+            baseline = None   # an unreadable Version on the base branch counts as none
         if baseline is not None and baseline[:3] == head_version[:3]:
             expected, why = baseline[3] + 1, "the base branch already has %d.%d.%s.%d" % baseline
         else:
