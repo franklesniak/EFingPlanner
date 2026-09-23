@@ -136,7 +136,7 @@ template_sync:
       default_decision: SKIP
     - path: tests/test_materialize_downstream_adoption.py
       reason: >-
-        Seven module-level constants were renamed from upstream-tracker issue
+        Five module-level constants were renamed from upstream-tracker issue
         numbers to repository-observable behavior names, because the
         Repository Self-Containment rule in .github/copilot-instructions.md
         forbids an identifier that resolves only inside an external tracker.

@@ -82,15 +82,21 @@ beside it:
 - *What is a link.* A URL ``url_is_public()`` accepts, and nothing else. Only
   such a URL resolves a reference, and only such a URL is taken out of the
   text before the patterns read it (``blank_urls``).
-- *Which words name a reference.* The nouns and number shapes in
-  ``REVIEW_HISTORY_PATTERNS``, which is a closed list: the pointer shapes this
-  repository's review history has produced. A reference named by any other
-  word -- a build, a workflow run, a milestone -- is not read. A new noun is
-  added to the list, with a fixture line, when one appears.
+- *Which words name a reference.* The nouns, separators and number shapes
+  in ``REVIEW_HISTORY_PATTERNS``, which is a closed list: the pointer shapes
+  this repository's review history has produced. A reference named by any
+  other word -- a build, a workflow run, a milestone -- is not read, and
+  neither is a known noun joined to its number by a word, as in ``issue
+  number`` and a number. A new noun or separator is added to the list, with a
+  fixture line, when one appears.
 - *What a Markdown page prints.* A comment is split out, a character
   reference is decoded, a backslash escape and the inline delimiters are
-  dropped, and a line is also read joined to the next. This is the one class
-  a Markdown renderer would answer exactly, and the scan does not use one.
+  dropped, and a paragraph is also read joined across its line breaks. A URL
+  in a comment resolves nothing, so text read as a comment by mistake can
+  only report more. In every file, one kind of break is left unread: a block
+  comment's ``*`` at the start of each line looks like a list item, so two
+  such lines are read as two items. This is the one class a Markdown
+  renderer would answer exactly, and the scan does not use one.
   Whether the gates should read markdown-it's output is an open question:
   https://github.com/franklesniak/EFingPlanner/issues/27
 """
@@ -98,11 +104,12 @@ beside it:
 from __future__ import annotations
 
 import ast
+import bisect
 import html
 import ipaddress
 import re
 import subprocess
-from collections.abc import Iterable
+from collections.abc import Callable, Iterable
 from pathlib import Path
 from urllib.parse import SplitResult, unquote, urlsplit
 
@@ -176,6 +183,13 @@ def exemption_rows() -> tuple[tuple[str, str, str, int, str], ...]:
     A row with the wrong number of fields raises rather than being skipped: a
     loader that drops what it cannot read turns an exemption file into an empty
     one and reports success on a scan that enforced nothing.
+
+    **Only text is exempt; an identifier never is.** The name pass reads each
+    identifier once, however often a file uses it, so a count could not be
+    spent one occurrence at a time: a row for one use of a name excused every
+    other use in that file. No row ever named an identifier, and the tracker
+    constants that could have needed one were renamed instead. So a row of
+    any other kind raises, and a name that names a review run is renamed.
     """
     text = EXEMPTIONS.read_text(encoding="utf-8")
     rows: list[tuple[str, str, str, int, str]] = []
@@ -189,10 +203,11 @@ def exemption_rows() -> tuple[tuple[str, str, str, int, str], ...]:
                 "every row is kind, path, occurrence, count, reason"
             )
         kind, path, occurrence, count, reason = fields
-        if kind not in ("text", "name"):
+        if kind != "text":
             raise AssertionError(
-                f"{EXEMPTIONS.name}:{number} names the kind {kind!r}; "
-                "it is 'text' or 'name'"
+                f"{EXEMPTIONS.name}:{number} names the kind {kind!r}; the "
+                "only kind is 'text'. An identifier that names a review run is "
+                "renamed, never exempted"
             )
         if not count.isdigit() or int(count) < 1:
             raise AssertionError(
@@ -212,13 +227,6 @@ def exempt_texts() -> tuple[tuple[str, str, int, str], ...]:
     """Return the text exemptions as ``(path, occurrence, count, reason)``."""
     return tuple(
         (p, o, c, r) for kind, p, o, c, r in exemption_rows() if kind == "text"
-    )
-
-
-def exempt_names() -> tuple[tuple[str, str, int, str], ...]:
-    """Return the name exemptions as ``(path, occurrence, count, reason)``."""
-    return tuple(
-        (p, o, c, r) for kind, p, o, c, r in exemption_rows() if kind == "name"
     )
 
 
@@ -300,7 +308,7 @@ TRACKER_NOUN_BEFORE = re.compile(
     # reader cannot see
     # and is deliberately never resolvable by a URL, so letting the bare-hash
     # spelling claim it let an unrelated issue link excuse one.
-    r"(?i)(?:PRs?|pull requests?|issues?|tickets?|projects?|rounds?)\s*[:#]?\s*$"
+    r"(?i)(?:PRs?|pull\s+requests?|issues?|tickets?|projects?|rounds?)\s*[:#]?\s*$"
 )
 TRACKER_SEPARATOR = r"\s*:?\s*#?\s*"
 #: The words that name a commit, as they stand in front of its hash: ``commit``
@@ -411,9 +419,13 @@ REVIEW_HISTORY_PATTERNS = (
     (
         "an unlinked pull request",
         # The noun may be plural: the plural of either spelling names pull
-        # requests as surely as the singular does.
+        # requests as surely as the singular does. Its two words are joined
+        # by any run of white space, as every other two-word noun here is.
+        # A single typed space missed emphasis on one word, which the page
+        # prints as nothing and this reads as a space, a doubled space, a
+        # tab and a no-break space.
         re.compile(
-            r"(?i)\b(?:PRs?|pull requests?)" + TRACKER_SEPARATOR + tracker_list(r"\d+") + r"\b"
+            r"(?i)\b(?:PRs?|pull\s+requests?)" + TRACKER_SEPARATOR + tracker_list(r"\d+") + r"\b"
         ),
     ),
     (
@@ -686,10 +698,20 @@ def commit_exists(token: str, root: Path) -> bool:
          "--count=1", "--format=%(refname)"],
         capture_output=True,
     )
-    return (
-        reachable.returncode == 0
-        and bool(reachable.stdout.strip())
+    if reachable.returncode == 0 and reachable.stdout.strip():
+        return True
+    # **And from HEAD, which is not a ref.** A checkout of an exact commit
+    # leaves HEAD detached, and ``for-each-ref`` reads refs alone. So a commit
+    # that only the checked-out history held read as dangling: a merge checked
+    # before it is pushed, or any checkout of a hash, failed the tests that
+    # ask about the current commit. Whoever holds that checkout holds the
+    # commit, as a clone of it would.
+    # https://git-scm.com/docs/git-merge-base#Documentation/git-merge-base.txt---is-ancestor
+    ancestor = subprocess.run(
+        ["git", "-C", str(root), "merge-base", "--is-ancestor", token, "HEAD"],
+        capture_output=True,
     )
+    return ancestor.returncode == 0
 
 
 def resolves_in_this_repository(label: str, matched: str, root: Path) -> bool:
@@ -843,6 +865,29 @@ def split_url(url: str) -> SplitResult | None:
         return None
 
 
+def browser_form(url: str) -> str:
+    """Return ``url`` in the form a browser parses, before it is split.
+
+    A scheme-less ``www.`` candidate gets ``http://`` in front. For ``http``
+    and ``https``, a backslash before the query or the fragment is a slash --
+    in the authority as well as in the path. So in ``localhost``, a backslash,
+    ``@github.com`` and a path, the backslash ends the authority, the host is
+    ``localhost``, and the rest is path. ``urlsplit`` reads the characters as
+    written and found ``github.com`` after the ``@``, so a host nobody outside
+    can reach passed as a public link. The host, the path and the fragment are
+    each read from what this returns, so the three cannot disagree.
+    https://url.spec.whatwg.org/#authority-state
+    """
+    if url[:4].lower() == "www.":
+        url = "http://" + url
+    scheme, colon, rest = url.partition(":")
+    if not colon or scheme.lower() not in ("http", "https"):
+        return url
+    ends = [index for index in (rest.find("?"), rest.find("#")) if index != -1]
+    cut = min(ends, default=len(rest))
+    return scheme + colon + rest[:cut].replace(chr(92), "/") + rest[cut:]
+
+
 def url_is_public(url: str) -> bool:
     """Return whether a URL names a host a reader on the public internet can reach.
 
@@ -858,10 +903,11 @@ def url_is_public(url: str) -> bool:
     letter and that is not, and does not end in, one of ``NON_PUBLIC_NAMES``.
     So loopback, private and link-local addresses fail, and so do a
     single-label intranet name, a numeric shorthand such as ``127.1``, and
-    ``tracker.example.invalid``. ``urlsplit`` reads a scheme-less ``www.``
-    candidate as a path, so that form is read with ``http://`` in front, and
-    ``www./issues/27`` then names the one-label host ``www``. A URL this
-    cannot parse, or one with no host, names nothing public.
+    ``tracker.example.invalid``. The URL is read in ``browser_form()``, so a
+    scheme-less ``www.`` candidate has ``http://`` in front and
+    ``www./issues/27`` names the one-label host ``www``, and a backslash in the
+    authority ends it. A URL this cannot parse, or one with no host, names
+    nothing public.
 
     **The whole authority has to be well formed, not only the host name.**
     ``urlsplit`` hands back a host name for ``github.com:bad`` and never says
@@ -876,9 +922,7 @@ def url_is_public(url: str) -> bool:
     https://www.rfc-editor.org/rfc/rfc6761
     https://www.rfc-editor.org/rfc/rfc1123#section-2.1
     """
-    if url[:4].lower() == "www.":
-        url = "http://" + url
-    parts = split_url(url)
+    parts = split_url(browser_form(url))
     if parts is None or parts.scheme.lower() not in ("http", "https"):
         return False
     try:
@@ -923,9 +967,7 @@ def url_is_public(url: str) -> bool:
 
 def url_path_segments(url: str) -> list[str]:
     """Return the path segments of one URL, in order, as a browser resolves them."""
-    if url[:4].lower() == "www.":
-        url = "http://" + url
-    parts = split_url(url)
+    parts = split_url(browser_form(url))
     if parts is None:
         return []
     # **Each segment is decoded before it is compared.** A destination may
@@ -937,14 +979,15 @@ def url_path_segments(url: str) -> list[str]:
     # does not have.
     #
     # **And the path is resolved the way a browser resolves it.** For ``http``
-    # and ``https`` a backslash is a slash, ``.`` and its encoded ``%2e`` name
-    # the current segment, and ``..`` in any of its four spellings removes the
-    # one before it. Read as written, ``/issues/27/../28`` held ``issues`` and
+    # and ``https`` a backslash is a slash, which ``browser_form()`` has
+    # written already; ``.`` and its encoded ``%2e`` name the current segment;
+    # and ``..`` in any of its four spellings removes the one before it. Read
+    # as written, ``/issues/27/../28`` held ``issues`` and
     # ``27`` side by side although the page it opens is the one for 28, and
     # ``/issues/./27`` held them apart although it opens 27.
     # https://url.spec.whatwg.org/#path-state
     segments: list[str] = []
-    for part in parts.path.replace(chr(92), "/").split("/"):
+    for part in parts.path.split("/"):
         segment = unquote(part)
         if segment in ("", "."):
             continue
@@ -958,7 +1001,7 @@ def url_path_segments(url: str) -> list[str]:
 
 def url_fragment_tokens(url: str) -> list[str]:
     """Return the fragment of one URL, cut where a host joins its pieces."""
-    parts = split_url(url)
+    parts = split_url(browser_form(url))
     if parts is None:
         return []
     # Decoded after the split, as path segments are, so an encoded separator
@@ -1196,14 +1239,10 @@ def identifier_like_names(source: str) -> set[str]:
     }
 
 
-def names_in(
-    path: Path, root: Path, exempt: dict[str, int] | None = None
-) -> list[str]:
+def names_in(path: Path, root: Path) -> list[str]:
     """Return one message per identifier in ``path`` that names a review run.
 
-    ``exempt`` holds the names recorded for **this file**.
-    A caller that passes nothing gets the rule unexempted, which is what the
-    test that proves each exemption still occurs needs.
+    No identifier is exempt: ``exemption_rows()`` says why.
 
     A Python file is read from its syntax tree, so a round number inside a
     string literal stays with the text pass and is not reported twice. Every
@@ -1214,7 +1253,6 @@ def names_in(
     reader can reach, it is a name like any other.
     """
     found: list[str] = []
-    budget = dict(exempt or {})
     relative = path.relative_to(root).as_posix()
     source = path.read_text(encoding="utf-8", errors="replace")
     names = (
@@ -1223,9 +1261,6 @@ def names_in(
         else identifier_like_names(blank_urls(source)[0])
     )
     for name in sorted(names):
-        if budget.get(name):
-            budget[name] -= 1
-            continue
         words = name_words(name)
         for label, pattern in REVIEW_HISTORY_PATTERNS:
             if pattern.search(words) or pattern.search(name):
@@ -1263,9 +1298,12 @@ def split_comments(line: str, in_comment: bool) -> tuple[str, str, bool]:
     Each text keeps the line's length with the other one blanked, so a word
     on either side of a comment stays a separate word. A comment that does not
     close on the line runs on to the next, which is why the state is handed
-    back. This reads only the delimiters: a ``<!--`` inside a code span is
-    counted as a comment too, which can only make a URL hide and so report
-    more, never less.
+    back. This reads only the delimiters. A ``<!--`` that the page prints as
+    characters -- in a code span, in a fenced block, after a backslash -- is
+    read as a comment too, and so is everything after it up to the next
+    ``-->``. That can report more and never less, because a URL a comment hides
+    resolves nothing: text read as hidden by mistake is still resolved only by
+    a URL the page shows. ``references_in()`` says why.
     <https://spec.commonmark.org/0.31.2/#html-blocks>
     """
     shown = list(line)
@@ -1296,6 +1334,16 @@ def split_comments(line: str, in_comment: bool) -> tuple[str, str, bool]:
 #: front of it. Two such lines one above the other are two items, not one
 #: sentence wrapped over two lines.
 LIST_ITEM_START = re.compile(r"^\s*(?:(?:#|//|--|;)+\s*)?(?:\d{1,9}[.)]|[-*+])\s")
+
+#: What starts a line without being a word of the sentence it continues: the
+#: comment marker a source file puts in front of every line of a comment --
+#: the markers ``LIST_ITEM_START`` knows, and ``#:`` -- or a Markdown quote
+#: marker. A sentence wrapped in either carries one at the start of each line
+#: after the first, between the last word above and the first word below, so
+#: ``See pull`` over ``request 27`` in a comment was read with a marker in
+#: the middle and never matched. A line that holds nothing but a marker is a
+#: blank line, and ends the paragraph as a blank line does.
+CONTINUATION_MARKER = re.compile(r"^\s*(?:(?:#:?|//|--|;|>)\s*)*")
 
 
 #: What a Markdown page prints differently from its source, in the three ways
@@ -1389,21 +1437,29 @@ def references_in(
 
     Each line is read as two texts in a Markdown file: what the page shows,
     in the characters the page prints (``rendered_text``), and what an HTML
-    comment hides, as the source spells it. A URL the page shows resolves a reference
-    in either. A URL a comment hides resolves only a reference that is hidden
-    too: a reader of the page cannot follow it, while a reader of the source
-    sees the reference and the URL together. Every other file is one text.
+    comment hides, as the source spells it. A URL the page shows resolves a
+    reference in either. **A URL a comment hides resolves nothing.** A reader of
+    the page cannot follow it, and which text is hidden is read from the
+    delimiters alone (``split_comments``). A hidden URL used to resolve a hidden
+    reference, and a ``<!--`` in a code span then turned visible text into
+    hidden text that a genuinely hidden URL resolved. Now a misread comment can
+    only report more. To link a reference inside a comment, write the URL in
+    place of the number. Every other file is one text.
 
-    **A reference may be hard-wrapped.** ``See issue`` at the end of one line
-    and ``27 for details`` at the start of the next are one sentence on the
-    page, and each line alone holds half of it. So each pair of neighbouring
-    lines is read across the line break as well, and a match is reported
-    there only when it crosses it -- on the first of the two lines, with the
-    URLs of both. Which line breaks are soft is a question for a Markdown
-    model this scan deliberately does not have, so every break between two
-    lines with text on them is read, with one exception: two lines that each
-    begin a list item are two items. Reading more breaks than the page joins
-    can report more and never less.
+    **A reference may be hard-wrapped, over any number of lines.** ``See
+    issue`` at the end of one line and ``27 for details`` at the start of the
+    next are one sentence on the page, and each line alone holds half of it.
+    Reading each pair of lines closed that and left a reference spread over
+    three lines unread, because no pair held all of it. So each run of
+    neighbouring lines with text on them is read joined, as one paragraph,
+    and a match is reported there only when it crosses a line break -- on the
+    first line it touches, with the URLs of every line it spans. A comment or
+    quote marker at the start of a following line (``CONTINUATION_MARKER``) is
+    not a word of the sentence and is left out of the join. Which line breaks
+    are soft is a question for a Markdown model this scan deliberately does
+    not have, so every break between two lines with text on them is read,
+    with one exception: two lines that each begin a list item are two items.
+    Reading more breaks than the page joins can report more and never less.
     """
     found: list[str] = []
     budget = dict(exempt or {})
@@ -1412,12 +1468,17 @@ def references_in(
         python = path.suffix.lower() == ".py"
     body = path.read_text(encoding="utf-8", errors="replace")
 
-    def report(number: int, scanned: str, urls: list[str], seam: int = -1) -> None:
+    def report(
+        scanned: str,
+        where: Callable[[re.Match[str]], tuple[int, list[str]] | None],
+    ) -> None:
         for name, pattern in REVIEW_HISTORY_PATTERNS:
             for match in pattern.finditer(scanned):
-                if seam != -1 and not match.start() < seam < match.end() - 1:
+                located = where(match)
+                if located is None:
                     # Across a line break, only what crosses it is new.
                     continue
+                number, urls = located
                 matched = match.group(0)
                 if name == "a bare issue reference" and TRACKER_NOUN_BEFORE.search(
                     scanned[: match.start()]
@@ -1460,23 +1521,67 @@ def references_in(
         shown_text, shown_urls = blank_urls(shown)
         if markdown:
             shown_text = rendered_text(shown_text)
-        hidden_text, hidden_urls = blank_urls(hidden)
-        readings.append(((shown_text, shown_urls), (hidden_text, shown_urls + hidden_urls)))
+        # A hidden URL is still taken out of the hidden text, so its path is
+        # not read as a reference, and it resolves nothing.
+        hidden_text, _hidden_urls = blank_urls(hidden)
+        readings.append(((shown_text, shown_urls), (hidden_text, shown_urls)))
+
+    def on_line(number: int, urls: list[str]) -> Callable[
+        [re.Match[str]], tuple[int, list[str]]
+    ]:
+        return lambda _match: (number, urls)
 
     for number, texts in enumerate(readings, start=1):
         for scanned, urls in texts:
-            report(number, scanned, urls)
-    for number in range(1, len(readings)):
-        if LIST_ITEM_START.match(lines[number - 1]) and LIST_ITEM_START.match(
-            lines[number]
-        ):
-            continue
-        for side in (0, 1):
-            above, above_urls = readings[number - 1][side]
-            below, below_urls = readings[number][side]
-            above, below = above.rstrip(), below.lstrip()
-            if above and below:
-                report(number, above + " " + below, above_urls + below_urls, len(above))
+            report(scanned, on_line(number, urls))
+
+    def across(run: list[int], side: int) -> None:
+        """Read one run of lines joined, for what crosses a break in it."""
+        pieces: list[str] = []
+        starts: list[int] = []
+        offset = 0
+        for position, index in enumerate(run):
+            text = readings[index][side][0]
+            if position:
+                text = CONTINUATION_MARKER.sub("", text)
+                offset += 1
+            text = text.rstrip()
+            starts.append(offset)
+            pieces.append(text)
+            offset += len(text)
+
+        def where(match: re.Match[str]) -> tuple[int, list[str]] | None:
+            first = bisect.bisect_right(starts, match.start()) - 1
+            last = bisect.bisect_right(starts, match.end() - 1) - 1
+            if first == last:
+                return None
+            spanned = run[first : last + 1]
+            urls = [url for line in spanned for url in readings[line][side][1]]
+            return run[first] + 1, urls
+
+        report(" ".join(pieces), where)
+
+    for side in (0, 1):
+        run: list[int] = []
+        for index in range(len(readings) + 1):
+            words = (
+                CONTINUATION_MARKER.sub("", readings[index][side][0]).strip()
+                if index < len(readings)
+                else ""
+            )
+            if (
+                words
+                and run
+                and not (
+                    LIST_ITEM_START.match(lines[index - 1])
+                    and LIST_ITEM_START.match(lines[index])
+                )
+            ):
+                run.append(index)
+                continue
+            if len(run) > 1:
+                across(run, side)
+            run = [index] if words else []
     return found
 
 
@@ -1486,15 +1591,6 @@ def exempt_texts_for(relative: str) -> dict[str, int]:
     for name, text, count, _reason in exempt_texts():
         if name == relative:
             budget[text] = budget.get(text, 0) + count
-    return budget
-
-
-def exempt_names_for(relative: str) -> dict[str, int]:
-    """Return how many occurrences of each identifier are exempt in one file."""
-    budget: dict[str, int] = {}
-    for path, identifier, count, _reason in exempt_names():
-        if path == relative:
-            budget[identifier] = budget.get(identifier, 0) + count
     return budget
 
 
@@ -1570,8 +1666,12 @@ def tracked_text_files() -> list[Path]:
     the corpus and the scan passed without reading it. ``--eol`` reports, per
     file, whether Git's own detection finds binary content (``w/-text``) and
     whether the attributes declare the file binary (``-text``, which the
-    ``binary`` macro in ``.gitattributes`` sets for images). Those files are
-    not text and are skipped. Every other file must decode, or it is named.
+    ``binary`` macro in ``.gitattributes`` sets for images). A file whose
+    content is binary is skipped. **A declaration alone does not skip a file
+    that decodes.** One line in ``.gitattributes`` would otherwise take a
+    Markdown page out of the corpus with nothing reported. So a file declared
+    binary is read when it decodes as UTF-8 and skipped when it does not.
+    Every other file must decode, or it is named.
     A file deleted from the working tree has nothing to read and is skipped.
     https://git-scm.com/docs/git-ls-files#Documentation/git-ls-files.txt---eol
     """
@@ -1601,6 +1701,7 @@ def tracked_text_files() -> list[Path]:
     assert entries, "git listed no file at all, so this scan has nothing to read"
     names: list[str] = []
     binary: set[str] = set()
+    declared_binary: set[str] = set()
     for entry in entries:
         # ``i/<index> w/<worktree> attr/<attributes>`` and a tab, then the path.
         info, _, name = entry.partition(chr(9))
@@ -1608,8 +1709,10 @@ def tracked_text_files() -> list[Path]:
         worktree = next((field for field in fields if field.startswith("w/")), "w/")
         attributes = info.split("attr/", 1)[1].split() if "attr/" in info else []
         names.append(name)
-        if worktree == "w/-text" or "-text" in attributes:
+        if worktree == "w/-text":
             binary.add(name)
+        elif "-text" in attributes:
+            declared_binary.add(name)
     kept: list[str] = []
     undecodable: list[str] = []
     escaping: list[str] = []
@@ -1643,7 +1746,8 @@ def tracked_text_files() -> list[Path]:
             path.read_text(encoding="utf-8")
         except (OSError, UnicodeDecodeError):
             # A ValueError, so ``except OSError`` alone would let it through.
-            undecodable.append(name)
+            if name not in declared_binary:
+                undecodable.append(name)
             continue
         kept.append(name)
     assert not escaping, (
@@ -1672,9 +1776,7 @@ def exempt_paths() -> set[str]:
     other file, with the one recorded occurrence skipped; naming it here says
     only that somebody wrote a reason down for something inside it.
     """
-    return {name for name, _text, _count, _reason in exempt_texts()} | {
-        name for name, _ident, _count, _reason in exempt_names()
-    }
+    return {name for name, _text, _count, _reason in exempt_texts()}
 
 
 def scoped_paths() -> list[Path]:
@@ -1772,15 +1874,8 @@ def test_every_exempt_occurrence_still_occurs() -> None:
             f"is {reason}, and the scan now reports {found}. Correct the count, "
             "or delete the entry if the reason has gone."
         )
-    for name, identifier, count, reason in exempt_names():
-        assert name in tracked, f"{name} is named in an exemption and is not tracked"
-        reported = names_in(REPO_ROOT / name, REPO_ROOT)
-        found = sum(1 for message in reported if message.endswith(repr(identifier)))
-        assert found == count, (
-            f"{name} is exempt for {count} occurrence(s) of {identifier!r} "
-            f"because it is {reason}, and the scan now reports {found}. Correct "
-            "the count, or delete the entry if the reason has gone."
-        )
+
+
 def url_resolution_rows() -> list[tuple[str, str]]:
     """Return the recorded URL cases as ``(verdict, line)``."""
     text = URL_RESOLUTION_CASES.read_text(encoding="utf-8")
@@ -1866,8 +1961,7 @@ def test_no_hook_or_suite_names_the_review_run_in_an_identifier() -> None:
     # script or a workflow is the same defect it is in a module, and the pass
     # now has a reading for a file with no syntax tree.
     for path in scoped_paths():
-        relative = path.relative_to(REPO_ROOT).as_posix()
-        found.extend(names_in(path, REPO_ROOT, exempt_names_for(relative)))
+        found.extend(names_in(path, REPO_ROOT))
     assert not found, (
         "these identifiers name a review conversation this repository does "
         "not hold; name the behaviour the value stands for instead:\n"
@@ -2081,7 +2175,7 @@ def test_the_scope_failure_says_how_much_it_did_collect() -> None:
 
 
 @pytest.mark.parametrize(
-    "name,occurrence,count,reason", list(exempt_texts()) + list(exempt_names())
+    "name,occurrence,count,reason", list(exempt_texts())
 )
 def test_each_exemption_names_a_path_an_occurrence_and_a_reason(
     name: str, occurrence: str, count: int, reason: str
@@ -2096,9 +2190,7 @@ def test_each_exemption_names_a_path_an_occurrence_and_a_reason(
 def test_no_two_exemptions_are_the_same_entry() -> None:
     """A duplicate entry is one nobody would notice going stale."""
     texts = [(name, text) for name, text, _c, _r in exempt_texts()]
-    names = [(name, identifier) for name, identifier, _c, _r in exempt_names()]
     assert len(set(texts)) == len(texts), texts
-    assert len(set(names)) == len(names), names
 
 
 def test_trim_url_follows_the_published_rule() -> None:
@@ -3024,24 +3116,33 @@ def test_a_reference_wrapped_over_two_lines_is_read_across_the_break(
     assert len(references_in(sample, tmp_path)) == 1
 
 
-def test_a_url_a_comment_hides_resolves_only_what_the_comment_holds(
-    tmp_path: Path,
-) -> None:
+def test_a_url_a_comment_hides_resolves_nothing(tmp_path: Path) -> None:
     """A reader of the page cannot follow a link that an HTML comment hides.
 
-    So a URL inside a comment no longer resolves a reference the page shows.
-    It still resolves a reference inside a comment, because a reader of the
-    source sees the two together, and a URL the page shows resolves a hidden
-    reference as it always did. Outside Markdown a comment delimiter is only
-    characters, and nothing changes.
+    So a URL inside a comment resolves no reference, shown or hidden. It used
+    to resolve a reference inside a comment, because a reader of the source
+    sees the two together. But which text is hidden is read from the
+    delimiters alone, and a ``<!--`` in a code span, in a fenced block or
+    after a backslash is printed, not hidden: the visible text after it was
+    read as hidden, and a genuinely hidden URL resolved it. A URL the page
+    shows still resolves a hidden reference, and a URL written in place of
+    the number leaves nothing to resolve. Outside Markdown a comment delimiter
+    is only characters, and nothing changes.
     """
     reference = "issue" + " " + "27"
     url = "https://github.com/o/r/issues/27"
     newline = chr(10)
+    tick = chr(96)
+    fence = tick * 3 + newline + "<!--" + newline + tick * 3 + newline
     for suffix, body, reported in (
         (".md", "See " + reference + " <!-- " + url + " -->" + newline, True),
         (".md", "See " + reference + " <!-- a note" + newline + url + " -->" + newline, True),
-        (".md", "<!-- see " + reference + " " + url + " -->" + newline, False),
+        (".md", "<!-- see " + reference + " " + url + " -->" + newline, True),
+        (".md", tick + "<!--" + tick + " See " + reference + " <!-- " + url + " -->" + newline, True),
+        (".md", tick + "<!--" + tick + " See issue" + newline + "27 <!-- " + url + " -->" + newline, True),
+        (".md", fence + "See " + reference + " <!-- " + url + " -->" + newline, True),
+        (".md", chr(92) + "<!-- See " + reference + " <!-- " + url + " -->" + newline, True),
+        (".md", "<!-- see " + url + " -->" + newline, False),
         (".md", "<!-- see " + reference + " --> " + url + newline, False),
         (".md", "See " + reference + " " + url + newline, False),
         (".py", "# See " + reference + " <!-- " + url + " -->" + newline, False),
@@ -3324,7 +3425,8 @@ def test_a_text_file_that_does_not_decode_fails_the_scan() -> None:
     """Git reads it as text, so dropping it would pass a file nobody read.
 
     A binary file -- one Git's own detection finds binary, or one the
-    attributes declare binary -- is not text and is left out. The probes are
+    attributes declare binary that does not decode -- is not text and is left
+    out. The probes are
     untracked files in this checkout, which the scan lists as it lists a file
     written but not yet staged.
     """
@@ -3526,3 +3628,205 @@ def test_every_identifier_after_one_noun_needs_its_own_link(tmp_path: Path) -> N
         + " https://tracker.example.com/browse/ABC-2",
     ):
         assert not _reported(tmp_path, body, ".py"), body
+
+
+def test_a_commit_a_detached_head_holds_is_reachable(tmp_path: Path) -> None:
+    """A checkout of an exact commit holds that commit, though no ref names it.
+
+    ``for-each-ref`` reads refs alone, and a detached HEAD is not one. So a
+    merge checked before it was pushed read its own commit as dangling, and
+    the tests that ask about the current commit failed there. A commit that
+    HEAD has left is refused again.
+    """
+
+    def git(*arguments: str) -> str:
+        return subprocess.run(
+            ["git", "-C", str(tmp_path), *arguments],
+            capture_output=True, text=True, check=True,
+        ).stdout.strip()
+
+    git("init", "--quiet", "-b", "main")
+    git("config", "user.email", "test@example.invalid")
+    git("config", "user.name", "Test")
+    git("config", "commit.gpgsign", "false")
+    (tmp_path / "first.txt").write_text("one" + chr(10), encoding="utf-8")
+    git("add", "first.txt")
+    git("commit", "--quiet", "-m", "first")
+    git("checkout", "--quiet", "--detach")
+    (tmp_path / "second.txt").write_text("two" + chr(10), encoding="utf-8")
+    git("add", "second.txt")
+    git("commit", "--quiet", "-m", "second")
+    detached = git("rev-parse", "HEAD")
+    assert git("for-each-ref", "--contains", detached) == "", (
+        "no ref may hold the detached commit, or this test proves nothing"
+    )
+    assert commit_exists(detached[:10], tmp_path), (
+        "the commit a detached HEAD holds must resolve"
+    )
+    git("checkout", "--quiet", "main")
+    assert not commit_exists(detached[:10], tmp_path), (
+        "once HEAD has left it, the commit is dangling and must not resolve"
+    )
+
+
+def test_a_backslash_in_the_authority_ends_it(tmp_path: Path) -> None:
+    """A browser reads a backslash in an ``http`` authority as a slash.
+
+    So in ``localhost``, a backslash and ``@github.com``, the host is
+    ``localhost`` and the rest is path. ``urlsplit`` found ``github.com``
+    after the ``@``, and a link nobody outside can follow resolved a
+    reference. The query and the fragment keep their backslashes, as a
+    browser keeps them.
+    """
+    backslash = chr(92)
+    reference = "issue" + " " + "27"
+    local = "https://localhost" + backslash + "@github.com/o/r/issues/27"
+    assert not url_is_public(local)
+    assert _reported(tmp_path, reference + " " + local)
+    public = "https://github.com" + backslash + "o/r/issues/27"
+    assert url_is_public(public)
+    assert not _reported(tmp_path, reference + " " + public)
+    tail = "?q=" + backslash + "#f" + backslash
+    assert browser_form("https://h" + backslash + "p" + tail) == "https://h/p" + tail
+    assert browser_form("www.github.com" + backslash + "o") == "http://www.github.com/o"
+
+
+def test_an_identifier_is_renamed_and_never_exempted(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """A row may exempt text only; a name that names a review run is renamed.
+
+    The name pass reads each identifier once, however often a file uses it,
+    so a counted row for one use excused every other use as well. No row ever
+    named an identifier, so the kind is refused rather than counted.
+    """
+    tab = chr(9)
+    newline = chr(10)
+    name = "review" + "_round_42"
+    fake = tmp_path / "exemptions.tsv"
+    fake.write_text(
+        tab.join(("name", "a.py", name, "1", "a declared name")) + newline,
+        encoding="utf-8",
+    )
+    monkeypatch.setitem(globals(), "EXEMPTIONS", fake)
+    with pytest.raises(AssertionError) as raised:
+        exemption_rows()
+    assert "renamed" in str(raised.value), raised.value
+    sample = tmp_path / "a.py"
+    sample.write_text(
+        name + " = 1" + newline + "print(" + name + ")" + newline, encoding="utf-8"
+    )
+    assert len(names_in(sample, tmp_path)) == 1
+
+
+def test_a_reference_wrapped_over_many_lines_is_read_whole(tmp_path: Path) -> None:
+    """A paragraph is read joined, however many line breaks a reference crosses.
+
+    Pairs of lines left a reference spread over three unread, because no pair
+    held all of it. A comment or quote marker at the start of a following line
+    is not a word of the sentence, and it stood between the two halves of
+    one. Only the URLs of the lines a match spans resolve it, and a line that
+    holds nothing but a marker ends the paragraph, as a blank line does.
+    """
+    newline = chr(10)
+    url = "https://github.com/o/r/pull/27"
+    split = "See pull" + newline + "request" + newline + "27 for details."
+    for suffix, body, reported in (
+        (".md", split, True),
+        (".md", split + " " + url, False),
+        (".md", "See pull " + url + newline + "request" + newline + "27 again.", False),
+        (".md", "See " + url + newline + "See pull" + newline + "request 27", True),
+        (".md", "See pull" + newline + "request" + newline * 2 + "27 for details.", False),
+        (".py", "# See pull" + newline + "# request 27", True),
+        (".py", "#: See pull" + newline + "#: request 27", True),
+        (".js", "// See pull" + newline + "// request 27", True),
+        (".md", "> See pull" + newline + "> request 27", True),
+        (".py", "# See issue" + newline + "#" + newline + "# 27 later", False),
+    ):
+        sample = tmp_path / ("doc" + suffix)
+        sample.write_text(body + newline, encoding="utf-8")
+        assert bool(references_in(sample, tmp_path)) is reported, body
+    sample = tmp_path / "doc.md"
+    sample.write_text(split + newline, encoding="utf-8")
+    located = [message.split(": ", 1)[0] for message in references_in(sample, tmp_path)]
+    assert located == ["doc.md:1"], located
+
+
+def test_the_two_words_of_pull_request_may_be_parted_by_any_space(
+    tmp_path: Path,
+) -> None:
+    """``pull`` and ``request`` are one noun, whatever white space parts them.
+
+    The pattern joined them with one typed space, while every other two-word
+    noun here takes any run of white space. So emphasis on one of the words,
+    which the page prints as nothing and this scan reads as a space, hid the
+    reference, and so did a doubled space, a tab and a no-break space.
+    """
+    number = "27"
+    url = "https://github.com/o/r/pull/" + number
+    for body, suffix in (
+        ("See pull **request** " + number, ".md"),
+        ("See **pull** request " + number, ".md"),
+        ("See pull&nbsp;request " + number, ".md"),
+        ("# See pull  request " + number, ".py"),
+        ("# See pull" + chr(9) + "request " + number, ".py"),
+    ):
+        assert _reported(tmp_path, body, suffix), body
+        assert not _reported(tmp_path, body + " " + url, suffix), body
+    sample = tmp_path / "doc.py"
+    sample.write_text("# See pull  request #" + number + chr(10), encoding="utf-8")
+    assert len(references_in(sample, tmp_path)) == 1
+
+
+def test_a_block_comment_star_is_read_as_a_list_item(tmp_path: Path) -> None:
+    """A documented limit, pinned: a ``*`` at the start of two lines is two items.
+
+    A JavaScript block comment puts a ``*`` in front of each line, and a
+    Markdown list puts one in front of each item. The scan cannot tell them
+    apart without knowing the language, so a reference wrapped across two
+    such lines is not read. The module docstring states this; if this test
+    starts to fail, the limit has gone, and the docstring must say so.
+    """
+    newline = chr(10)
+    sample = tmp_path / "doc.js"
+    sample.write_text(
+        "/**" + newline + " * See pull" + newline + " * request 27" + newline + " */"
+        + newline,
+        encoding="utf-8",
+    )
+    assert references_in(sample, tmp_path) == []
+    sample.write_text("// See pull" + newline + "// request 27" + newline, encoding="utf-8")
+    assert references_in(sample, tmp_path)
+
+
+def test_a_noun_joined_to_its_number_by_a_word_is_not_read(tmp_path: Path) -> None:
+    """A documented limit, pinned: the separators are a closed list too.
+
+    A noun joined to its number by the word ``number`` names the same issue,
+    and the scan reads only the separators this repository's review history
+    has produced. The module docstring states this; if this test starts to
+    fail, a separator was added, and the docstring must say so.
+    """
+    number = "27"
+    assert not _reported(tmp_path, "See issue number " + number + ".")
+    assert _reported(tmp_path, "See issue " + number + ".")
+
+
+def test_a_file_declared_binary_is_read_when_it_decodes() -> None:
+    """One line in ``.gitattributes`` does not take a text file out of the corpus.
+
+    A file whose content Git finds binary is skipped. A file the attributes
+    declare binary was skipped too, so a declaration alone could remove a
+    Markdown page from this scan with nothing reported. Such a file is now
+    read when it decodes, and skipped when it does not, as an image does not.
+    The probe is an untracked file in this checkout, which ``.gitattributes``
+    declares binary by its suffix.
+    """
+    probe = REPO_ROOT / "_probe_declared_text.png"
+    try:
+        probe.write_bytes(b"plain text" + chr(10).encode())
+        names = {path.name for path in tracked_text_files()}
+        assert probe.name in names
+    finally:
+        if probe.exists():
+            probe.unlink()
