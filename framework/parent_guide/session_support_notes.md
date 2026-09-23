@@ -59,7 +59,7 @@ Want a rough signal of how the executive-function side is going? The optional [e
 - Prep: a guidebook (a library copy is perfect) or one reputable travel website; a blank Book Notes form.
 - Look for: a book notes page with three places, one reason each, and the source they came from.
 - Coaching question: "Which of your three places surprised you?"
-- Pitfall: reading it cover to cover. Using the contents page and the index is the skill here.
+- Pitfall: reading the whole source from start to finish, when finding the way in is the skill here: a book's contents page and index, or a website's section menu and search box.
 
 ## Session 07: Library Research Plan (Recommended -- you can skip this one)
 

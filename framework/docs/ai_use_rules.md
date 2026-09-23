@@ -6,7 +6,7 @@
 
 - **Status:** Active
 - **Owner:** Repository Maintainers
-- **Last Updated:** 2026-09-22
+- **Last Updated:** 2026-09-23
 - **Scope:** The single canonical home for the AI rules in this curriculum: the AI-free default, the adult-operated pattern, the before-you-opt-in age and supervision check, the three jobs AI may do, the jobs it may never do, the AI-privacy prohibitions, and the verification rules. Parent-facing, with rules a child can read. Every other surface that mentions the AI choice points here instead of restating these rules.
 - **Related:** [Privacy and safety](privacy_and_safety.md), [Session 09: AI as Helper, Not Boss](../sessions/phase_01_research_skills/09_ai_as_helper_not_boss.md), [AI notes form](../templates/ai_notes.md)
 
@@ -38,7 +38,7 @@ This is the supervision boundary the rest of the curriculum relies on. It is not
 - A grown-up operates the tool, on the grown-up's own account, with the child present.
 - Never the child alone, and never on an account belonging to the child.
 - AI is confined to three jobs: brainstorming questions, suggesting search terms, and tidying the child's own notes.
-- AI is never the source of a fact. It is never cited as one, and a fact is never accepted because AI said it. If a fact turns up in its output anyway, the Verification rules below apply: check it against a non-AI source, or take it out.
+- AI is never the source of a fact, and a fact is never accepted because AI said it. Each use still goes in the Source Log, on the [AI form](citation_style.md#ai), as a record of what AI helped with. That entry is not evidence for a fact: only the non-AI source written in its verification fields can support one. If a fact turns up in AI's output anyway, the Verification rules below apply: check it against a non-AI source, or take it out.
 - Session 09 comes before any session where AI could be used.
 - The adult records the AI choice at setup.
 

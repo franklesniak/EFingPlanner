@@ -33,7 +33,7 @@ Every move below comes in two forms. Use the form that matches what you picked.
 1. **Find your way in.** In a book, read the table of contents. On a website, open its own section menu. Either one tells you what parts the source has.
 2. **Look one thing up.** In a book, use the index at the back: it lists places and topics in alphabetical order, with the page each one is on. On a website, use its search box. Try a place name you already know.
 3. **Skim first.** Read headings, captions and the first line of each part before you read anything closely. Skimming tells you which two pages are worth your time.
-4. **Write down where you found it.** From a book, the page number. From a website, the page title and its web address. Do it as you go. Finding a fact again later is much harder than writing the page number down now.
+4. **Write down where you found it.** From a book, the page number. From a website, the page title and its web address. Do it as you go. Finding a fact again later is much harder than writing this down now.
 5. **Check how recent it is.** A book prints its publication year on one of the first pages. A website often says when the page was last updated. "Not stated" is a real answer, so write that. When you can choose, pick the source that tells you.
 
 Now do the work:
@@ -50,7 +50,7 @@ You only need one source today. Comparing two sources on the same question is Se
 
 **Book citation form:** book title, author or publisher, page number, date I used it. The other five forms are on the [simple citation page](../../templates/simple_citation.md).
 
-> **Carry-over tag:** You just used the move "find your way around a long source by its contents page and its index, instead of reading all of it." Where else could you use it -- homework, a chore, a big school project?
+> **Carry-over tag:** You just used the move "find your way around a long source by its list of parts and its index or search box, instead of reading all of it." Where else could you use it -- homework, a chore, a big school project?
 
 ## Workspace
 
@@ -84,4 +84,4 @@ If you have extra energy, use the index or the search box to look up one of your
 
 ## Parent Notes
 
-The only setup here is getting a source into the house, and a library hold or a free travel site both count. Say out loud that the free path is the normal path; a child who thinks the good version costs money will quietly opt out. Watch for one thing while your child works: do they write the page number down as they go, or do they plan to find it again later? That habit is what this session is buying. The publication-year check is the other half, and it is worth asking about, because a book that looks authoritative is the easiest kind of source to over-trust.
+The only setup here is getting a source into the house, and a library hold or a free travel site both count. Say out loud that the free path is the normal path; a child who thinks the good version costs money will quietly opt out. Watch for one thing while your child works: do they write down where they found each place as they go (the page number in a book, or the page title and web address on a website), or do they plan to find it again later? That habit is what this session is buying. The how-recent check is the other half: a book's publication year, or the date the website says the page was last updated, where "not stated" is a fine answer. It is worth asking about, because a source that looks authoritative is the easiest kind to over-trust.

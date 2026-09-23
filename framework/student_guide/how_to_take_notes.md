@@ -21,7 +21,7 @@ Read the sentence. Look away from the page. Then write what it said.
 
 That sounds like a small trick, and it does two jobs at once. It proves you understood the sentence, because you can't say it your own way if you didn't. It also keeps you clear of copying a book, which isn't note-taking and isn't your work.
 
-If a wording is so good you want to keep it exactly, put quotation marks around it and write down the page number. That's a quote, and a quote is allowed when you say it's one.
+If a wording is so good you want to keep it exactly, put quotation marks around it and write down where it came from: a book's page number, or the web address. That's a quote, and a quote is allowed when you say it's one.
 
 ## Where each part goes
 
