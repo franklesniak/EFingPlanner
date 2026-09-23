@@ -25,9 +25,9 @@ still read the repository, and several instructions below send you into it.** Re
 -- the Definition of Done requires you to read them from that file and never from this
 brief. Read the golden exemplar
 `framework/sessions/phase_00_setup/04_start_a_source_log.md`, which every new session is
-drafted and checked against. Read the five already-built later-phase sessions this batch
-touches -- 15, 21, 33, 44 and 53 -- because an edit is made against what a file actually
-says today, not against what a brief remembers it saying.
+drafted and checked against. Read the already-built sessions this batch touches -- 14, 15,
+21, 33, 44 and 53 -- because an edit is made against what a file actually says today, not
+against what a brief remembers it saying.
 
 **What a `D-` label is.** Each one names a decision adjudicated before this brief was
 drafted. The label is a provenance tag, not a lookup: every instruction carrying one
@@ -736,8 +736,8 @@ the template names. **When the family's dates are already booked**, Checkpoint 1
 spec's understanding-and-confirmation beat, so the report compares **the booked window with
 the child's next-best window** on the family's goals: what the booked dates give, what they
 cost, and how the plan works around that cost. It is still the first report. **A family
-that continues after finishing First Taste writes this report as its first continuing
-step**, extending the Checkpoint 1 page it already finished. **A First Taste child's page is
+that continues after finishing First Taste writes this report when its numbered order
+reaches Session 14**, extending the Checkpoint 1 page it already finished. **A First Taste child's page is
 unchanged**; First Taste is not measured against the floor.
 
 #### Session 15 — cards toward the Core floor
@@ -2125,7 +2125,8 @@ Keep it warm and brief. Adults still own medication and any real medical decisio
 - **Stop Point:** you are done when you've gone through the checks once, and either marked
   at least one day you'd make gentler or written that every day passed the checks, and
   you've written your list of flags for the adults. **Finding even one thing to fix is a
-  finished review, and so is a plan that passes every check.**
+  finished review, and so is a plan that passes every check.** If you did not write the
+  third trade-off report at Session 34, you are done only once it is written here too.
 - **The third trade-off report**, if you did not write it at Session 34: pacing is one of
   its three subjects, so it can go here, on a fresh Trade-Off Report.
 - **Source Check:** required, light.
@@ -3854,8 +3855,9 @@ fixed order. **Keep the First Taste section first and as it is**, including its 
 because a First Taste child still uses it. **Add the Core/Full section after it**, headed
 for a family that keeps going past First Taste: the checkpoints line first, then the Core
 sessions grouped by phase, as check-off lines in the same form as the First Taste list. **The
-first check-off line is the Session 14 season report**, so a family continuing from First
-Taste writes it first. **Mark each Core line whose session is parent-gated or co-worked**,
+Session 14 season report gets its own line, directly after Session 14.** A family
+continuing from First Taste ticks the sessions it already finished and works the unticked
+lines in numbered order, so it reaches the report at Session 14's place. **Mark each Core line whose session is parent-gated or co-worked**,
 in the same form as the First Taste list's markers, taking which sessions those are from
 B7's rule, so the membership lives in one place. **Scope the existing "Which sessions need a
 grown-up" lists to the First Taste path**, and make its waiting rule point at a marked
