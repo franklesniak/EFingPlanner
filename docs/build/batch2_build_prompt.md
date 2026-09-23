@@ -2914,8 +2914,9 @@ labelled as such. **But never name the family's home airport or its code.**
 
 #### B1 — `review_checkpoints.md`
 
-The adult's guide to running the checkpoints: Checkpoint 1 alone on First Taste, and all
-six on Core and Full. **The blank form itself is
+The adult's guide to running the checkpoints: Checkpoint 1 alone on First Taste, whose
+sessions carry on after it to Session 53, and all six on Core and Full. **The blank form
+itself is
 `parent_review_form.md`; this page is the how and the why, and it must not duplicate the
 form's grid.**
 
@@ -3012,7 +3013,10 @@ Content, each as a short point-first paragraph or bullet:
   it generically.
 - **First night hotel needs adult planning. Flight prices change.**
 - **Date-gating.** The longer dates stay open, the more date-gated items can sell out --
-  connect the flight and date decision to the reservation watchlist.
+  connect the flight and date decision to the reservation watchlist once the child has made
+  it (Session 42, Core path). Before then, and on First Taste, send adults to what the child
+  has already named: the "things I can't wait to see" page and, on the Core path, each
+  attraction card's "Ticket or reservation needed?" row.
 - **Peak-season lodging books out months ahead.**
 - **The peak-bloom timing trap, booking-side and adult-owned.** You cannot reliably book
   months ahead to hit an exact natural peak -- it shifts year to year and forecasts firm up
@@ -3230,7 +3234,9 @@ each one.** Session pages point here rather than re-teaching the move.
 2. **The four-part shape, as a small numbered list the child can copy:** (a) **What I
    recommend** -- one sentence; (b) **Why** -- two or three reasons, each tied to something
    you found; (c) **What we give up** -- the honest trade-off; (d) **What a grown-up still
-   needs to check or decide.**
+   needs to check or decide.** **Say that each session's Stop Point decides which parts its
+   checkpoint requires**, and invite part (c) as one extra line where a session leaves it
+   optional.
 3. **Back it with a source.** Every reason should be able to name where it came from -- your
    Source Log entry is enough.
 4. **Say what you are not sure about.** *"I'm not sure yet"* and *"a grown-up should check

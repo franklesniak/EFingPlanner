@@ -40,7 +40,7 @@ Which one you land at can change arrival-day fatigue substantially: sometimes an
 
 ## Dates, and what they cost you
 
-**Date-gating.** Some attractions can only be reserved once you commit to a date. The longer your dates stay open, the more of them quietly become unbookable. Your child's reservation watchlist flags which items are on that clock. Use it when you decide how long to hold off.
+**Date-gating.** Some attractions can only be reserved once you commit to a date. The longer your dates stay open, the more of them quietly become unbookable. Once your child has made the reservation watchlist, in Session 42 on the Core path, it flags which items are on that clock. Use it when you decide how long to hold off. Before then, and on First Taste, check the booking rules yourself for what your child has already named: their "things I can't wait to see" page and, on the Core path, the "Ticket or reservation needed?" row on each attraction card.
 
 **Peak-season lodging books out months ahead**, and prices run high. Peak season rewards committing early.
 

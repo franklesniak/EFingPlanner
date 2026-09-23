@@ -4,7 +4,7 @@
 
 Your child stops at certain points and brings you a recommendation. That's a checkpoint. You look at the work, ask a few questions, and decide.
 
-**How many you will meet depends on the path.** On **First Taste**, Checkpoint 1 is the single milestone and the path finishes after it. If that is where your family is, the one section below is the only one you need. On the **Core and Full** paths there are six, and the rest of this page covers them all.
+**How many you will meet depends on the path.** On **First Taste**, Checkpoint 1 is the only checkpoint, and the path carries on after it to Session 53; the [roadmap](../PROJECT_ROADMAP.md) lists the sessions in between. If that is your family's path, the Checkpoint 1 section below is the only one you need. On the **Core and Full** paths there are six, and the rest of this page covers them all.
 
 The blank form is the [parent review form](../templates/parent_review_form.md). This page is the how and the why; the form is what you fill in.
 

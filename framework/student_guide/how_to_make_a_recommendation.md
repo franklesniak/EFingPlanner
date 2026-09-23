@@ -2,7 +2,7 @@
 
 # How to Make a Recommendation
 
-This is the move every checkpoint asks you for. It's short on purpose. Read it again right before each one.
+Every checkpoint asks you for a recommendation. This page shows its whole shape. It's short on purpose. Read it again right before each one.
 
 ## What a recommendation is
 
@@ -17,7 +17,7 @@ Copy this shape. It works for a season, a city, a route, a hotel, or a whole pla
 3. **What we give up.** The honest trade-off. Every choice has one.
 4. **What a grown-up still needs to check or decide.**
 
-Part 3 is the one people skip. Don't. Naming what you're giving up is what makes the rest believable.
+Your session's Stop Point says which parts each checkpoint needs. Part 3 is the one people skip. Even where it's optional, one line for it is worth writing. Naming what you're giving up is what makes the rest believable.
 
 When you're comparing two real options, the [Trade-Off Report](../templates/tradeoff_report.md) is the page that holds all four parts for you. Use it rather than rebuilding the comparison here.
 

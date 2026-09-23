@@ -32,7 +32,7 @@ This is handled two ways: you set the **rough trip shape** early, so their work 
 
 - **Passports are the longest lead.** Start them first.
 - **Peak-season lodging sells out months ahead.**
-- **Date-gated tickets open on their own schedule.** Your child's watchlist flags which.
+- **Date-gated tickets open on their own schedule.** Once it exists, your child's watchlist flags which.
 - **Flight prices climb** as dates approach.
 - **Book refundable where you can.** It's the cheapest insurance against a plan that's still moving.
 
