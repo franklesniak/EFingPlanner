@@ -96,7 +96,7 @@ Pre-commit hooks are NOT optional. They enforce:
 
 1. Pull the latest branch
 2. Run pre-commit checks locally and review the fixes
-3. Add the fixes to commit history before pushing again: prefer amending the commit(s) that introduced the failures, or include the fixes in your next substantive commit on the same branch, rather than landing a standalone formatting-only or lint-only commit (see "What Not to Do" below). For `copilot/**` branches, the auto-fix workflow described under "Auto-Fix Workflow (Safety Net for Copilot Branches)" will normally apply these fixes automatically.
+3. Add the fixes to commit history before pushing again: prefer amending the commit(s) that introduced the failures, or include the fixes in your next substantive commit on the same branch, rather than landing a standalone formatting-only or lint-only commit (see "What Not to Do" below). For `copilot/**` branches, the optional workflow described under "Auto-Fix Workflow (Safety Net for Copilot Branches)" generates an untrusted fix preview for local review and application.
 4. Push again (force-push if you amended or rebased earlier commits)
 
 **CI is a safety net, not a substitute for local checks.**
@@ -168,19 +168,23 @@ If you encounter issues:
 
 ### Auto-Fix Workflow (Safety Net for Copilot Branches)
 
-This repository includes an auto-fix workflow (`.github/workflows/auto-fix-precommit.yml`) that automatically runs pre-commit hooks and commits fixes for `copilot/**` branches. This serves as a safety net when the Copilot Coding Agent pushes code that fails pre-commit checks.
+This repository includes an optional pre-commit fix-preview workflow (`.github/workflows/auto-fix-precommit.yml`) for `copilot/**` branches. It runs candidate hooks with read-only repository permissions and no persisted checkout credential. The workflow wrapper generates proposed fixes and does not commit or push them.
 
 **How it works:**
 
 - Triggers only on `push` events to `copilot/**` branches
-- Only runs when the pusher is `copilot-swe-agent[bot]` (prevents infinite loops)
-- Automatically commits any auto-fixes with message `chore: Apply pre-commit auto-fixes [automated]`
-- Uses `github-actions[bot]` identity for commits
+- Only runs when the pusher is `copilot-swe-agent[bot]`; this filter scopes the feature and is not a trust boundary
+- Configures the capture code to reject tracked patches over 8 MiB and status output over 1 MiB, and retains the untrusted preview with run/head information for three days
+- Lists untracked outputs separately; reproduce those outputs locally instead of assuming the patch includes them
+- Retains the native pre-commit exit and reports hook failure after capturing the preview
 
 **Important notes:**
 
 - This is a **safety net**, not a substitute for running pre-commit locally
 - Agents should still try to run pre-commit checks before pushing when possible
+- Review or reproduce the untrusted fixes locally, include them with the substantive change, and run all required checks on the resulting commit
+- Hooks and capture share a runner, so capture limits and provenance are candidate-produced checks, not independent guarantees against hostile hooks
+- The preview is not an acceptance oracle and MUST NOT be automatically consumed by privileged code; `precommit-ci.yml` remains the required final-head enforcement
 - The workflow only applies to `copilot/**` branches—human branches are not affected
 - Manual intervention may still be required for issues that cannot be auto-fixed
 
@@ -399,7 +403,7 @@ For each distinct real finding, agents MUST complete these steps in order. Do no
 6. Select the highest-supported eligible option. Resolve technical ties with primary evidence, a focused test, or bounded independent review. If equally safe and correct options remain, choose the simpler reversible option within authority. A small margin, general uncertainty, recent provenance, adjacent deferral, available prompt tool, or cumbersome documented fallback alone is not a reason to ask the owner. Ask only for a decisive owner preference, new authority, or an explicit scope or intended-outcome change; continue independent work while that answer is pending.
 7. Record the complete evaluation before editing. For a PR finding, publish it on the native thread or an attributable PR comment. Apply the [local selected-action writing rule](#selected-action-writing-rule). Include source links and relevant commands, results, and environment details. For non-review findings or work before a PR exists, the existing task decision record is sufficient.
 8. Check protected-file content authority separately from branch placement authority. Keep the selected option fixed. Implement already-authorized work without repeated approval. Test the fix, retain native failure exits, run required checks before committing, and audit every outgoing commit and path. Record the resulting PR-head SHA and fix reachability after placement.
-9. Read the full applicable style guide before evaluating prevention. Implement an in-scope authorized guide change. Otherwise, post a ready-to-file issue prompt in a Markdown code fence with the proposed rule, rationale, scope, acceptance tests, and narrow authorization question. For a GitHub PR finding, post an inline finding's prompt in the same native review thread. For a GitHub body-only finding, post its prompt as a standalone PR comment that records its synthetic finding key, source review identity, reviewed commit, and location when available. Record the prompt comment's native identity and keep the secondary guide action pending until it has an attributable disposition. Do not change a protected guide without authority; continue independent work.
+9. Read the full applicable style guide before evaluating prevention. If the evaluation finds that no guide change is warranted, record that determination and its reason; no prompt is required. When a guide change is warranted, implement an in-scope authorized guide change. Otherwise, post a ready-to-file issue prompt in a Markdown code fence with the proposed rule, rationale, scope, acceptance tests, and narrow authorization question. For a GitHub PR finding, post an inline finding's prompt in the same native review thread. For a GitHub body-only finding, post its prompt as a standalone PR comment that records its synthetic finding key, source review identity, reviewed commit, and location when available. Record the prompt comment's native identity and keep the secondary guide action pending until it has an attributable disposition. Do not change a protected guide without authority; continue independent work.
 10. Reply with implementation or refutation evidence. Resolve the native thread when the finding is complete and no pending guide action requires it to stay open. Close body-only findings by attributable disposition. A resolved flag is not proof. If resolution tooling is absent, identify the manual action; do not claim it occurred. Remove temporary processing reactions when supported.
 
 After a real fix and before closing the finding or requesting another review, agents MUST perform a bounded search for the same root cause in relevant helpers and callers, copies of the same policy or configuration, and retained platform or module variants. Record the searched paths or symbols and the result. A materially different concern needs its own finding and decision; discovery does not expand task or protected-content authority. A bounded search does not establish the absence of unrelated defects.
