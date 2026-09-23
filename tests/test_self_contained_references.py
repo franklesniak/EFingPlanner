@@ -95,8 +95,12 @@ beside it:
   in a comment resolves nothing, so text read as a comment by mistake can
   only report more. In every file, one kind of break is left unread: a block
   comment's ``*`` at the start of each line looks like a list item, so two
-  such lines are read as two items. This is the one class a Markdown
-  renderer would answer exactly, and the scan does not use one.
+  such lines are read as two items. And a URL written inside an HTML tag's
+  attribute, or as a link's title, is read as a link although the page shows
+  none there; the repository holds no such URL. markdownlint's ``MD033``
+  already refuses the tag in the Markdown files it lints. This is the one
+  class a Markdown renderer would answer exactly, and the scan does not use
+  one.
   Whether the gates should read markdown-it's output is an open question:
   https://github.com/franklesniak/EFingPlanner/issues/27
 """
@@ -931,7 +935,7 @@ def url_is_public(url: str) -> bool:
         return False
     if port == 0:
         return False
-    host = (parts.hostname or "").rstrip(".").lower()
+    host = (parts.hostname or "").lower()
     if not host:
         return False
     try:
@@ -943,10 +947,20 @@ def url_is_public(url: str) -> bool:
     # ASCII forms, so ``tracker.`` followed by full-width ``invalid`` is the
     # reserved ``tracker.invalid`` to a browser. The reserved-name test used
     # to read the host as written, and let it through.
+    #
+    # **One root dot, and no other empty label.** A name may end in the dot
+    # of the DNS root, as ``github.com.`` does, and still be the same name.
+    # Stripping every trailing dot also accepted ``github.com..``, whose empty
+    # label no resolver looks up. The IDNA codec allows the one root dot, in
+    # any of its spellings, and refuses every other empty label, so the host
+    # goes to it whole and only that one dot is taken off after.
+    # https://www.rfc-editor.org/rfc/rfc1034#section-3.1
     try:
-        ascii_host = host.encode("idna").decode("ascii").rstrip(".").lower()
+        ascii_host = host.encode("idna").decode("ascii").lower()
     except UnicodeError:
         return False
+    if ascii_host.endswith("."):
+        ascii_host = ascii_host[:-1]
     try:
         return ipaddress.ip_address(ascii_host).is_global
     except ValueError:
@@ -1056,6 +1070,13 @@ def url_resolves(label: str, matched: str, urls: list[str]) -> bool:
         if not url_is_public(url):
             continue
         parts = url_path_segments(url)
+        # **A route word is read as written; an identifier in its own
+        # case.** A path is case-sensitive, and GitHub answers a route word in
+        # capitals, such as ``ISSUES``, with a missing page, so folding it let
+        # a link to no page resolve a reference. A hash is read in either case,
+        # as Git and GitHub read it, and a tracker key in either case, as the
+        # prose may write it; those are compared folded.
+        # https://www.rfc-editor.org/rfc/rfc3986#section-6.2.2.1
         lowered = [part.lower() for part in parts]
         fragments = url_fragment_tokens(url)
         if label in NOUN_PATH_SEGMENTS:
@@ -1070,9 +1091,9 @@ def url_resolves(label: str, matched: str, urls: list[str]) -> bool:
             # key is the whole identifier, so the whole identifier is what a
             # URL has to carry.
             segments = NOUN_PATH_SEGMENTS[label]
-            for index, part in enumerate(lowered[:-1]):
-                if part in segments and lowered[index + 1] in numbers:
-                    linked.add(lowered[index + 1])
+            for index, part in enumerate(parts[:-1]):
+                if part in segments and parts[index + 1] in numbers:
+                    linked.add(parts[index + 1])
             # A tracker that is not GitHub serves ``ABC-123`` as a path segment
             # of its own, under whatever word it likes -- ``/browse/ABC-123``,
             # ``/issues/ABC-123``. The segment must equal the key: a key that
@@ -1090,11 +1111,15 @@ def url_resolves(label: str, matched: str, urls: list[str]) -> bool:
             # the digit run inside the match rather than the match itself.
             for identifier in digits or [matched]:
                 for index, part in enumerate(parts):
-                    if part == identifier and index and lowered[index - 1] == "comments":
+                    if part == identifier and index and parts[index - 1] == "comments":
                         return True
+                # **As written, in its case.** A fragment names an element
+                # by its id, and an id is case-sensitive: an anchor in
+                # capitals opens the page and scrolls to no comment.
+                # https://html.spec.whatwg.org/multipage/browsing-the-web.html#find-a-potential-indicated-element
                 for token in fragments:
                     for prefix in COMMENT_FRAGMENT_PREFIXES:
-                        if token.lower() == prefix + identifier:
+                        if token == prefix + identifier:
                             return True
         elif label in COMMIT_LABELS:
             # A URL may carry the full forty characters where the prose wrote
@@ -1103,7 +1128,7 @@ def url_resolves(label: str, matched: str, urls: list[str]) -> bool:
             # by its noun is compared by the hash after the noun.
             token = COMMIT_TOKEN.search(matched)
             commit = token.group(0).lower() if token else matched_fold
-            for index, part in enumerate(lowered[:-1]):
+            for index, part in enumerate(parts[:-1]):
                 if part not in ("commit", "commits"):
                     continue
                 candidate = lowered[index + 1]
@@ -1490,10 +1515,6 @@ def references_in(
                 ):
                     # The same, for a hash with the word for it in front.
                     continue
-                if budget.get(matched):
-                    # Consumed once, so the next occurrence is reported.
-                    budget[matched] -= 1
-                    continue
                 if url_resolves(name, matched, urls):
                     continue
                 if resolves_in_this_repository(name, matched, root):
@@ -1504,6 +1525,15 @@ def references_in(
                     and ACTION_PIN_BEFORE.search(scanned[: match.start()])
                 ):
                     # A pinned action: GitHub resolves it in the named repository.
+                    continue
+                # **An exemption is spent only on an occurrence that nothing
+                # else resolves.** Spent first, it went to a linked occurrence
+                # earlier in the file, and the occurrence it was written for
+                # was reported: the same two lines passed in one order and
+                # failed in the other. The test that proves each row still
+                # occurs counts unresolved occurrences, so the two now agree.
+                if budget.get(matched):
+                    budget[matched] -= 1
                     continue
                 found.append(f"{relative}:{number}: {name}: {matched!r}")
 
@@ -1666,12 +1696,14 @@ def tracked_text_files() -> list[Path]:
     the corpus and the scan passed without reading it. ``--eol`` reports, per
     file, whether Git's own detection finds binary content (``w/-text``) and
     whether the attributes declare the file binary (``-text``, which the
-    ``binary`` macro in ``.gitattributes`` sets for images). A file whose
-    content is binary is skipped. **A declaration alone does not skip a file
-    that decodes.** One line in ``.gitattributes`` would otherwise take a
-    Markdown page out of the corpus with nothing reported. So a file declared
-    binary is read when it decodes as UTF-8 and skipped when it does not.
-    Every other file must decode, or it is named.
+    ``binary`` macro in ``.gitattributes`` sets for images). **A
+    declaration decides where there is one.** A file declared text must
+    decode: Git's content check calls a UTF-16 page binary, and skipping it
+    took a Markdown file the attributes call text out of the corpus with
+    nothing reported. A file declared binary is read when it decodes as UTF-8
+    and skipped when it does not, so one line in ``.gitattributes`` cannot
+    remove a page either. With no declaration, the content check decides.
+    Every file that is not skipped must decode, or it is named.
     A file deleted from the working tree has nothing to read and is skipped.
     https://git-scm.com/docs/git-ls-files#Documentation/git-ls-files.txt---eol
     """
@@ -1709,7 +1741,9 @@ def tracked_text_files() -> list[Path]:
         worktree = next((field for field in fields if field.startswith("w/")), "w/")
         attributes = info.split("attr/", 1)[1].split() if "attr/" in info else []
         names.append(name)
-        if worktree == "w/-text":
+        # Git writes ``text`` for a path declared text, and for one given
+        # only an ``eol``, which implies it.
+        if worktree == "w/-text" and "text" not in attributes:
             binary.add(name)
         elif "-text" in attributes:
             declared_binary.add(name)
@@ -3827,6 +3861,121 @@ def test_a_file_declared_binary_is_read_when_it_decodes() -> None:
         probe.write_bytes(b"plain text" + chr(10).encode())
         names = {path.name for path in tracked_text_files()}
         assert probe.name in names
+    finally:
+        if probe.exists():
+            probe.unlink()
+
+
+def test_a_host_keeps_one_root_dot_and_no_other_empty_label(tmp_path: Path) -> None:
+    """A name may end in the root's dot once; a second dot is an empty label.
+
+    Every trailing dot used to be stripped, so ``github.com`` with two dots
+    after it passed as ``github.com``, although no resolver looks up a name
+    with an empty label. One root dot, in any of its spellings, is still the
+    same name.
+    """
+    reference = "issue" + " " + "27"
+    tail = "/o/r/issues/27"
+    full_stop = chr(0x3002)
+    for host in ("github.com..", "github.com." + full_stop, "github..com", ".github.com"):
+        url = "https://" + host + tail
+        assert not url_is_public(url), host
+        assert _reported(tmp_path, reference + " " + url), host
+    for host in ("github.com.", "github.com" + full_stop, "github.com.:443"):
+        url = "https://" + host + tail
+        assert url_is_public(url), host
+        assert not _reported(tmp_path, reference + " " + url), host
+
+
+def test_a_comment_anchor_is_read_in_its_own_case(tmp_path: Path) -> None:
+    """A fragment names an element by its id, and an id is case-sensitive.
+
+    An anchor in capitals opens the page and scrolls to no comment, so it does
+    not link the comment. It was compared folded, and resolved the reference.
+    """
+    identifier = "4111" + "993843"
+    reference = "review comment " + identifier
+    page = "https://github.com/o/r/pull/1#"
+    for prefix in ("ISSUECOMMENT-", "IssueComment-", "Discussion_r"):
+        assert _reported(tmp_path, reference + " " + page + prefix + identifier), prefix
+    for prefix in ("issuecomment-", "discussion_r"):
+        assert not _reported(tmp_path, reference + " " + page + prefix + identifier), prefix
+
+
+def test_a_route_word_is_read_in_its_own_case(tmp_path: Path) -> None:
+    """A path is case-sensitive, and GitHub has no page at ``ISSUES``.
+
+    The route words were compared folded, so a link to a missing page
+    resolved a reference. A hash and a tracker key are still read in either
+    case, as Git and a tracker read them.
+    """
+    number = "27"
+    issue = "issue " + number
+    assert _reported(tmp_path, issue + " https://github.com/o/r/ISSUES/" + number)
+    assert _reported(tmp_path, issue + " https://github.com/o/r/Pull/" + number)
+    assert not _reported(tmp_path, issue + " https://github.com/o/r/issues/" + number)
+    commit = "commit " + "dead" + "bee"
+    assert _reported(tmp_path, commit + " https://github.com/o/r/COMMIT/deadbee0123")
+    assert not _reported(tmp_path, commit + " https://github.com/o/r/commit/DEADBEE0123")
+    identifier = "4111" + "993843"
+    comment = "review comment " + identifier
+    assert _reported(tmp_path, comment + " https://github.com/o/r/pull/1/COMMENTS/" + identifier)
+    assert not _reported(tmp_path, comment + " https://github.com/o/r/pull/1/comments/" + identifier)
+    key = "ABC-" + "123"
+    assert not _reported(
+        tmp_path, "ticket " + key + " https://tracker.example.com/browse/" + key.lower()
+    )
+
+
+def test_an_exemption_is_spent_only_where_nothing_else_resolves(tmp_path: Path) -> None:
+    """A row is spent on the occurrence it was written for, in any order.
+
+    It was spent before the URLs were asked, so a linked occurrence earlier
+    in the file took it, and the unlinked one the row was written for was
+    reported. The same two lines passed in the other order.
+    """
+    reference = "issue" + " " + "27"
+    linked = reference + " https://github.com/o/r/issues/27"
+    newline = chr(10)
+    sample = tmp_path / "doc.md"
+    for body in (linked + newline * 2 + reference, reference + newline * 2 + linked):
+        sample.write_text(body + newline, encoding="utf-8")
+        assert references_in(sample, tmp_path) != [], body
+        assert references_in(sample, tmp_path, {reference: 1}) == [], body
+
+
+def test_a_url_in_a_tag_attribute_is_read_as_a_link(tmp_path: Path) -> None:
+    """A documented limit, pinned: an attribute or a link title holds a link.
+
+    The page shows no link for a URL in a ``data-`` attribute or in a link's
+    title, and the scan reads one there all the same, because it collects
+    URLs before it takes tags out. The module docstring states this; if this
+    test starts to fail, the limit has gone, and the docstring must say so.
+    """
+    reference = "issue" + " " + "27"
+    url = "https://github.com/o/r/issues/27"
+    assert not _reported(tmp_path, reference + ' <span data-source="' + url + '">text</span>')
+    assert not _reported(
+        tmp_path, "[text](https://example.com/a " + chr(34) + url + chr(34) + ") " + reference
+    )
+    assert _reported(tmp_path, reference + " <span>text</span>")
+
+
+def test_a_file_declared_text_must_decode() -> None:
+    """A declaration decides where there is one, and ``text`` means text.
+
+    Git's content check calls a UTF-16 page binary, and the attributes call
+    every Markdown file text. The content check won, and the page left the
+    corpus with nothing reported. The probe is an untracked file in this
+    checkout, which ``.gitattributes`` declares text by its suffix.
+    """
+    probe = REPO_ROOT / "_probe_utf16.md"
+    try:
+        probe.write_bytes("See the notes".encode("utf-16") + chr(10).encode("utf-16-le"))
+        with pytest.raises(AssertionError) as raised:
+            tracked_text_files()
+        assert probe.name in str(raised.value), raised.value
+        assert "do not decode" in str(raised.value), raised.value
     finally:
         if probe.exists():
             probe.unlink()

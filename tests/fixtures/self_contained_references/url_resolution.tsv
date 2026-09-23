@@ -48,3 +48,6 @@ refuses	# issue 27 https://github.com/o/r/issues/27/../28
 resolves	# issue 27 https://github.com/o/r/issues/./27
 refuses	# issue 27 https://localhost\@github.com/issues/27
 resolves	# issue 27 https://github.com\o/r/issues/27
+refuses	# issue 27 https://github.com../o/r/issues/27
+resolves	# issue 27 https://github.com./o/r/issues/27
+refuses	# issue 27 https://github.com/o/r/ISSUES/27
