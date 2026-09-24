@@ -10,7 +10,7 @@ You are here: Phase 3 (Choose Places). Not a First Taste step. Previous: [17 Dee
 - Planner skill: organizing information
 - Estimated time: 20-30 minutes
 - Parent involvement: none / independent work
-- Materials: this session's Destination Notes, a device with the kid-safe filter on, your City A and City B cards, any other city card you started in Session 15, a blank [City Research Card](../../templates/city_research_card.md) only if City C doesn't have a card yet, your [Source Log](../../templates/source_log.md)
+- Materials: this session's Destination Notes, a device with the kid-safe filter on, your City A and City B cards, any other city card you started in Session 15, your season from Checkpoint 1, a blank [City Research Card](../../templates/city_research_card.md) only if City C doesn't have a card yet, your [Source Log](../../templates/source_log.md)
 
 ## Goal
 

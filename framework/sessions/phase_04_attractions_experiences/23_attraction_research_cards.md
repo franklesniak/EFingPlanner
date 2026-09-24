@@ -10,7 +10,7 @@ You are here: Phase 4 (Attractions and Experiences). Not a First Taste step. Pre
 - Planner skill: checking sources
 - Estimated time: 20-30 minutes (can be several sittings)
 - Parent involvement: none / independent work
-- Materials: this session's Destination Notes, a device with the kid-safe filter on, blank [Attraction Research Cards](../../templates/attraction_research_card.md), the City Research Cards for the places on your shortlist, with their starred sights, your "things I can't wait to see" page, your My Calls page if you're continuing from First Taste, your [Source Log](../../templates/source_log.md)
+- Materials: this session's Destination Notes, a device with the kid-safe filter on, blank [Attraction Research Cards](../../templates/attraction_research_card.md), your city shortlist from Checkpoint 2, the City Research Cards for the places on it, with their starred sights, your "things I can't wait to see" page, your My Calls page if you're continuing from First Taste, your [Source Log](../../templates/source_log.md)
 
 ## Goal
 

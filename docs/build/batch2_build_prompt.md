@@ -1170,7 +1170,7 @@ add a third.**
 | Session | The loop |
 | --- | --- |
 | **23**, first ticket-price lookup | Before looking up one attraction's ticket price, the child writes a **one-line guess** in the attraction card's guess row, then checks it against the official site, writes what they found in the next row, and notices the gap |
-| **30**, first transit-fact lookup | The same one-line guess, on the session's source line, before checking one train time between two of their cities against a current transit planner. Where no train runs between them, the guess is the travel time for the family's own way of getting around, checked in the map's Directions. On a one-base trip, the guess is one of the trips Session 28 timed |
+| **30**, first transit-fact lookup | The same one-line guess, on the session's source line, before checking one trip the Session 28 notes do not already hold, such as one must-do to another in the same city, against a current transit planner. Where the family will not ride trains or buses there, the guess is the time for its own way of getting around, checked in the map's Directions. Session 28 already times every hop between places, so a guess at one of those would be recall |
 
 Both **use a surface the child already has and add no new tracker**: the card's two rows at
 Session 23, and the session's source line at Session 30. Both stay **ungraded**:
@@ -1462,9 +1462,9 @@ Notes, and keep open-jaw reasoning out of the child's text entirely.
 **The ranges are a guide for the usual trip.** The built assumptions page offers a
 one-base trip shape, and built Session 21 lets a child recommend one city, so a one-base
 shortlist with no day trips is a finished checkpoint. Phase 5 then works from that base:
-Session 28 times the trips from the arrival place to the base and from the base to the
-must-dos, Session 30's guess uses one of those trips, and Session 31 compares two ways to
-use that base: fewer must-dos with more free time, against more must-dos, seen faster.
+Session 28 times the trips between the base and the arrival and departure places, and from
+the base to the must-dos. Session 30's guess is a trip Session 28 did not time, and
+Session 31 compares two ways to use that base: fewer must-dos with more free time, against more must-dos, seen faster.
 
 **The second early real win.** Adults should actually use the child's city shortlist in a
 family conversation here, so the child sees their research shaping the trip again well
@@ -1771,10 +1771,11 @@ purchases.**
 - **Stop Point:** you are done when you can say how you would get between your places, and
   you have listed at least two things a grown-up needs to check before booking.
 - **Source Check: required, and this is the second designated predict-then-verify
-  session.** The one-line guess at a train time between two of the child's cities goes on
-  the source line, then the child checks it against a current transit planner and notices
-  the gap. Ungraded. Where no train runs between them, the child guesses and checks the
-  travel time for the family's own way of getting around, in the map's Directions.
+  session.** The one-line guess at a trip the Session 28 notes do not hold, such as one
+  must-do to another in the same city, goes on the source line. The child then checks it
+  against a current transit planner and notices the gap. Ungraded. Where the family will
+  not ride trains or buses there, the child guesses and checks the time for its own way of
+  getting around, in the map's Directions.
 
 ### Session 31: Route Trade-Off Report
 
@@ -1843,6 +1844,10 @@ options; if it changes, the child's route flexes by moving a block rather than b
 rebuilt. **Open-jaw stays a parent-only concept** -- Parent Notes and the parent guide
 only, never the child's text. The child-facing beat is the movable-blocks reminder and the
 "your work wasn't wrong" message, each as a one-clause reminder plus a link.
+
+**A changed place is recorded as Approved with changes.** Before the next session, the
+child times the new first or last leg with Directions and fixes the travel days and
+nights. If the change alters which route works best, the adult picks Needs more research.
 
 ### Navigation chain, Phases 3 to 5
 
