@@ -32,7 +32,7 @@ Fill in the shortlist table in the Workspace, in this order:
 4. **Save for a future trip.** Name the places you'd love to see someday. These notes help later, when you make your cut list.
 5. **Reasons.** Give two or three, and tie each one to something you found.
 6. **Sources.** Say where your reasons came from, using your Source Log.
-7. **Who it makes room for.** Look back at the poll on your Family Trip Goals page. Which traveler's "one thing you'd love" does your shortlist make room for?
+7. **Who it makes room for.** Look back at the poll on your Family Trip Goals page, and go through every traveler's "one thing you'd love". Whose does your shortlist make room for? Name anyone it leaves out, too.
 8. **Trade-offs.** What does the family give up by choosing these places?
 9. **Budget-band check.** Does this still fit our rough budget band? A gut feeling is enough here. More cities usually cost more.
 
@@ -56,7 +56,7 @@ Your city shortlist:
 | Save for a future trip | |
 | My reasons | |
 | My sources (from my Source Log) | |
-| Whose "one thing you'd love" this makes room for | |
+| Whose "one thing you'd love" this makes room for, and anyone it leaves out | |
 | Trade-offs (what we give up) | |
 | Does this still fit our rough budget band? | |
 | What a grown-up still needs to check or decide | |

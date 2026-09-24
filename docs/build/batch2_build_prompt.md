@@ -1465,7 +1465,8 @@ Recommend a short list of places, and take it to the grown-ups. **No destination
 family's rough trip shape is one base; up to 3 possible day trips, or none when no place is
 close enough; places to skip this time; places to save for a future trip; reasons; sources;
 **how the traveler poll from Session 03 shaped these choices** -- which travelers' "one
-thing you'd love" the shortlist makes room for; trade-offs. Plus the budget-band check.
+thing you'd love" the shortlist makes room for, and anyone it leaves out; trade-offs. Plus
+the budget-band check.
 
 - **Artifact:** a City shortlist recommendation, recorded as a decision-log entry.
 - **Source Check:** required. Sources are an explicit element of the recommendation.
@@ -1763,8 +1764,9 @@ within the booked trip.
 
 - **Workspace:** the "real days" worksheet plus a nights-per-city table.
 - **Artifact:** a Nights-per-city estimate.
-- **Stop Point:** you are done when each overnight place has a number of nights, and your
-  total sits between your floor and your family's maximum. When the dates are already
+- **Stop Point:** you are done when the real-days formula is filled in, with any ½ or
+  flight-day marks, each overnight place has a number of nights, and your total sits between
+  your floor and your family's maximum. When the dates are already
   booked, your nights cover the booked trip instead. "Not sure yet" on one place is fine.
 - **Source Check:** not required. Carry the heading with the no-research line plus one
   sentence pointing at the Trip-Basics card and the route notes.
@@ -1864,9 +1866,10 @@ shorter backup version, which a booked family cannot use. That split is the **ni
 and it stands wherever this brief names the trip-length recommendation.
 
 - **Artifact:** a Route and trip-length recommendation, recorded as a decision-log entry.
-- **Stop Point:** you are done when your recommendation names the cities, the nights in
-  each, the travel days, a shorter backup version, and your reasons, and you have brought it
-  to a grown-up. With the dates booked, leave out the shorter backup version.
+- **Stop Point:** you are done when every row of the recommendation table is filled in --
+  the cities, the nights in each, the travel days, a shorter backup version, reasons,
+  trade-offs, sources and the budget-band check -- and you have brought it to a grown-up.
+  With the dates booked, leave out the shorter backup version.
 - **Source Check: required.** The spec's Checkpoint 4 review list omits Sources where
   Checkpoints 2 and 3 name them; this batch adds it, so all three match. (`D-OPEN-15`.)
 
