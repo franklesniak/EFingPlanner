@@ -1364,13 +1364,16 @@ Notes name the anchor; the session never does.**
 ### Session 17: Deep-Dive City B
 
 Take the second candidate city to full depth on its own card -- again, **the card Session
-15 started**, not a new one. Everything in Session 16 applies, with these differences.
+15 started**, not a new one. **City B is the Session 15 card that did not become City A**,
+usually the city the child chose. When City A got a new card in Session 16, the child picks
+one of the two, and the other can become City C. Everything in Session 16 applies, with
+these differences.
 
 - **Start Here** is an ordinary micro-action. The hand-off already happened in 16.
 - **Steps** carry the same five required provisions. **Vary the sentence shapes from
   Session 16.** The style guide forbids repeating the same contrast shape in consecutive
   sessions, and a density gate reads 16, 17 and 18 as one family. Give 17 its own
-  emphasis: **this is the city the child chose**, so lean on comparing against City A
+  emphasis: **this is usually the city the child chose**, so lean on comparing against City A
   rather than restating how a card works.
 - **Artifact:** the City Research Card for City B, now at full depth.
 
@@ -1390,9 +1393,9 @@ optional. **Frame the condition as an open family choice, never as resolved.**
 this session is the choice you make when a third place will not leave you alone.
 
 **City C keeps one card too.** If Session 15 already started a card for it -- its optional
-third card, or an original card that did not become City A -- the child deepens that card,
-as Session 16 does. A blank card starts only when City C has none. Session 19 likewise
-starts cards only for places that have none, so every place keeps one card.
+third card, or an original card that did not become City A or City B -- the child deepens
+that card, as Session 16 does. A blank card starts only when City C has none. Session 19
+likewise starts cards only for places that have none, so every place keeps one card.
 
 - **Artifact:** a City Research Card for City C.
 - **Cross-references:** Sessions 16 and 17; Session 19, where a place that is not a
@@ -1614,8 +1617,9 @@ acknowledgement that must follow it. (`D-OPEN-6`.) **A family continuing from Fi
 already made the pick at Session 44.** Here the child confirms, in one line, that it still
 holds, and Session 27 acknowledges it, so the pick stays one choice. Checkpoint 2 keeps the
 pick's place on the shortlist, and Session 23 gives the pick a card. Only the three blocks
-can change it. If one does, a grown-up says which, and the child chooses a new pick with
-them in Session 26, the way a Core-path pick is chosen.
+can change it. If one does, a grown-up says which, Session 23 makes no card for it, and the
+child chooses a new pick from their attraction cards with a grown-up in Session 26, the
+way a Core-path pick is chosen.
 
 ### Session 27: Checkpoint 3 Top Experiences
 

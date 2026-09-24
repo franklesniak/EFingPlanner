@@ -32,7 +32,7 @@ You have a stack of attraction cards. Now you decide which ones matter most. Sco
 6. **Write your must-do list on your My Calls page.** Which attractions make the must-do list is your call. You make it inside the cities your family approved, the budget band, and the pacing and safety rules. If a grown-up ever has to change one, they'll tell you why.
 7. **Choose your one special pick.** Pick the single thing you most want to do on the whole trip. Choose it *with a grown-up*, who first shows you the only three things that could change it: it costs more than the budget band, it can't be booked, or it isn't safe or doable for everyone in the group. A grown-up vote can't take this one away. Write it on your My Calls page. At Checkpoint 3, the grown-ups will tell you it stands.
 
-Continuing from First Taste? You already chose your special pick in Session 44. Check that it still holds, and write one line on your My Calls page saying so. If a grown-up tells you one of the three things now stops it, choose a new pick with them, the same way as step 7.
+Continuing from First Taste? You already chose your special pick in Session 44. Check that it still holds, and write one line on your My Calls page saying so. If a grown-up tells you one of the three things stops it, choose a new pick with them from your attraction cards, the same way as step 7.
 
 Your skip and save-for-future notes are worth keeping. You'll use them again at Checkpoint 3.
 

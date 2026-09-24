@@ -10,7 +10,7 @@ You are here: Phase 4 (Attractions and Experiences). Not a First Taste step. Pre
 - Planner skill: checking sources
 - Estimated time: 20-30 minutes (one sitting); the second sitting can be its own
 - Parent involvement: co-working recommended
-- Materials: a device with the kid-safe filter on, a grown-up nearby for any video, a timer, your attraction cards, your [Source Log](../../templates/source_log.md), the [simple citation forms](../../templates/simple_citation.md) page for the Video form
+- Materials: a device with the kid-safe filter on, a grown-up nearby for the whole session (and beside you for any video), a timer, your attraction cards, your [Source Log](../../templates/source_log.md), the [simple citation forms](../../templates/simple_citation.md) page for the Video form
 
 ## Goal
 
@@ -31,11 +31,11 @@ Reviews, travel blogs and videos can help you choose what to do. They can also s
 3. **Look for what many reviews say.** One review is one person's day. Read several, and look for the themes that keep coming up. The star score alone tells you very little.
 4. **Remember who the trip is for.** Famous and best for our family can be two different things.
 
-Now practice. Find one review, blog post or video about the place you picked, with a grown-up beside you for any video. Fill in the sitting one table in the Workspace.
+Now practice. With a grown-up nearby, find one review, blog post or video about the place you picked. For a video, the grown-up sits beside you. Fill in the sitting one table in the Workspace.
 
 ### Sitting two: why reviews can steer you wrong
 
-If this is a new day, set your timer for 20 minutes first.
+If this is a new day, set your timer for 20 minutes first, and ask a grown-up to stay nearby again.
 
 Here are seven reasons a review can mislead you:
 
@@ -119,7 +119,7 @@ If you have extra energy, pick one of your attraction cards and fill its Review 
 
 ## Parent Notes
 
-Stay nearby for this session, and alongside for any video. A kid-safe filter reduces exposure without removing it, and video brings autoplay, recommendation drift, comments and paid links; the [privacy and safety page](../../docs/privacy_and_safety.md) has the full rule. The habits in the video section are general ones. Your family's own settings on any given site are yours to set up.
+Stay nearby for both sittings, and alongside for any video. A kid-safe filter reduces exposure without removing it, and video brings autoplay, recommendation drift, comments and paid links; the [privacy and safety page](../../docs/privacy_and_safety.md) has the full rule. The habits in the video section are general ones. Your family's own settings on any given site are yours to set up.
 
 Both sittings are required. Splitting them keeps each one short, and the second one carries the reasons reviews mislead, which is what makes the first sitting's moves stick.
 
