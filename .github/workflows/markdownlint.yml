@@ -180,19 +180,23 @@ jobs:
       # number or a bare commit hash and every required check would stay
       # green. This suite is the only enforcement the self-containment scan
       # has, so it is the one that most needed wiring.
-      # **Keyed on the scan's fixture directory, not on the test module.**
-      # The manifest prunes the two together, so an adoption without them
-      # still skips this step. Keyed on the module, deleting or renaming it,
-      # or `tests/_pytest_compat.py`, skipped the only enforcement and the
-      # job passed. Now the fixtures stay behind and the step fails. The scan
+      # **It always runs, and it fails the job itself.** A condition on a
+      # file let the step skip, and a skipped step passed the job: keyed on
+      # the module, deleting it skipped the gate; keyed on the fixtures,
+      # deleting both did. So there is no condition, and deleting or renaming
+      # the scan fails the step, because pytest finds no file to run. An
+      # adoption without the `python` module prunes the scan, and the
+      # template-sync block round this step removes it with the scan. The
+      # step is the last check, so it needs no `continue-on-error` for the
+      # checks above to run, and its own failure fails the job. The scan
       # asserts that the three hook suites above are present, so their own
       # steps keep their guards. It reads Markdown through markdown-it, from
       # the packages `npm ci` installs above, and fails if they are missing.
+      # template-sync: begin python-only
       - name: Check references resolve inside this repository
         id: test-self-contained
-        if: hashFiles('tests/fixtures/self_contained_references/**') != ''
-        continue-on-error: true
         run: pytest tests/test_self_contained_references.py -v
+      # template-sync: end python-only
 
       - name: Check validation results
         if: >-
@@ -206,8 +210,7 @@ jobs:
           steps.test-toolchain.outcome == 'failure' ||
           steps.test-structure.outcome == 'failure' ||
           steps.lint-structure.outcome == 'failure' ||
-          steps.test-placeholders.outcome == 'failure' ||
-          steps.test-self-contained.outcome == 'failure'
+          steps.test-placeholders.outcome == 'failure'
         run: |
           echo "::error::Markdown and toolchain checks failed. Check the logs above for details."
           exit 1
