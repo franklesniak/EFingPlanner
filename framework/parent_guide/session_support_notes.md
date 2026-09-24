@@ -177,7 +177,7 @@ Want a rough signal of how the executive-function side is going? The optional [e
 
 - Role: Independent.
 - Prep: a blank City Long-List page; all the city research cards.
-- Look for: a city long-list with a row for every place researched, each marked keep, maybe or no.
+- Look for: a city long-list with a row for every place researched, each marked keep, maybe or no, with a few words on why beside each no.
 - Coaching question: "Why did this one get a no?"
 - Pitfall: asking for more places to reach five. The range is a target, and a shorter list is still complete.
 
@@ -209,13 +209,13 @@ Want a rough signal of how the executive-function side is going? The optional [e
 
 - Role: Independent.
 - Prep: the attraction cards.
-- Look for: a balance chart with every card in a category, and one kind of day to add more of, or a note that the mix looks right.
+- Look for: a balance chart with every card in a category or on the odd-ones-out line, and one kind of day to add more of, or a note that the mix looks right.
 - Coaching question: "Which kind of day would you like more of?"
 - Pitfall: fixing a lopsided chart now. Noticing is the job, and Session 26 uses it.
 
 ## Session 25: Review Reviews Carefully
 
-- Role: Co-worked: co-working recommended. Stay nearby the whole time, and sit alongside for any video.
+- Role: Co-worked: co-working recommended. Stay nearby the whole time, and sit alongside for any video. Each sitting sets its timer for 20 minutes at its start, even on the same day.
 - Prep: a device with the filter on; a timer; the attraction cards; the Video form on the simple citation forms page.
 - Look for: a review trust worksheet with both sittings filled in, each source marked with who made it and what they might be selling, and one thing your child will check somewhere else.
 - Coaching question: "Who made this, and what are they selling?"
@@ -241,7 +241,7 @@ Want a rough signal of how the executive-function side is going? The optional [e
 
 - Role: Independent, with a 5-minute check-in.
 - Prep: a device with a map app and the filter on; the city shortlist; the assumptions page, for the arrival and departure places; the city card for any whole region on the shortlist; the Checkpoint 3 must-do list, for a trip with one base.
-- Look for: route map notes with travel times between places, including the two end legs (where the family arrives to the overnight place it visits first, and the one it visits last to where it leaves, each skipped when the two places are the same or not yet set), day trips and overnight stays marked, and a left-to-right sketch.
+- Look for: route map notes with travel times between places, including the two end legs (where the family arrives to the overnight place it visits first, and the one it visits last to where it leaves, each skipped when the two places are the same or not yet set), the times from the base to each must-do on a trip with one base, day trips and overnight stays marked, and a left-to-right sketch.
 - Coaching question: "Which two places look close but take longest to reach?"
 - Pitfall: judging distance by eye. The Directions time is the answer.
 
@@ -295,9 +295,9 @@ Want a rough signal of how the executive-function side is going? The optional [e
 
 ## Session 35: Hotel Comparison
 
-- Role: Independent. Your child stops at any sign-in screen and fetches you.
+- Role: Independent. Your child stops at any sign-in screen and fetches you. Each sitting sets its timer for 20 minutes at its start, even on the same day.
 - Prep: blank Hotel Comparison Cards; the neighborhood comparison; the route and nights approved at Checkpoint 4, with the route map notes; the city card for any region on the route, for its town; a timer or clock.
-- Look for: at least one hotel comparison card per overnight base on the route and nights approved at Checkpoint 4, each with its cost per room and the date found and its planning assumption rows filled in, a recommendation for each, about four or five cards at most, and a minutes guess for the sitting.
+- Look for: at least one hotel comparison card per overnight base on the route and nights approved at Checkpoint 4, each with its cost per room and the date found and its planning assumption rows filled in, a recommendation for each, about four or five cards at most, and a minutes guess with the time taken for each sitting.
 - Coaching question: "Why this one for this city?"
 - Pitfall: asking for more cards. One card per base is a finished job.
 
@@ -343,7 +343,7 @@ Want a rough signal of how the executive-function side is going? The optional [e
 
 ## Session 41: Build Day Cards
 
-- Role: Independent. Lighter page: read the Steps with your child until they manage two sessions in a row without the When I'm Stuck card or leaning on the Steps. Start Here, the Stop Point, the artifact and the Source Check always stay.
+- Role: Independent. Lighter page: read the Steps with your child until they manage two sessions in a row without the When I'm Stuck card or leaning on the Steps. Start Here, the Stop Point, the artifact and the Source Check always stay. Each sitting sets its timer for 20 minutes at its start, even on the same day.
 - Prep: blank Daily Plan Cards; the day rules; the route and nights approved at Checkpoint 4, with the route map notes; the city card for any region on the route, for its town; the hotel and attraction cards; the My Calls page, for the must-do list and its order; the Checkpoint 1 season; the assumptions page, for the arrival and departure places; a device with a map app; a timer.
 - Look for: one block daily plan card per city-stay on the route and nights approved at Checkpoint 4, with a main goal, and an anchor, transit notes and an energy level for each day; the first and last days set by the Session 40 rules, with the day home as its own row.
 - Coaching question: "Which day would you swap if it rained?"
@@ -375,9 +375,9 @@ Want a rough signal of how the executive-function side is going? The optional [e
 
 ## Session 45: Full Itinerary Draft
 
-- Role: Independent. Lighter page: read the Steps with your child until they manage two sessions in a row without the When I'm Stuck card or leaning on the Steps. Start Here, the Stop Point, the artifact and the Source Check always stay.
+- Role: Independent. Lighter page: read the Steps with your child until they manage two sessions in a row without the When I'm Stuck card or leaning on the Steps. Start Here, the Stop Point, the artifact and the Source Check always stay. Each sitting sets its timer for 20 minutes at its start, even on the same day.
 - Prep: the daily plan cards, the pacing review, the backup plans and cut list, the reservation watchlist and the budget summary; the route and nights approved at Checkpoint 4, with the route map notes and the Session 29 formula; the city card for any region on the route, for its town; the assumptions page; the pages with the earlier minutes guesses; the Trip-Basics card, for the trip length; a device with a map app; a timer.
-- Look for: a row for every day, including a travel row for each flight day, each with at least an overnight city and a main activity, and a minutes guess for each sitting.
+- Look for: a row for every day, including a travel row for each flight day, each with at least an overnight city and a main activity, and a minutes guess with the time taken for each sitting.
 - Coaching question: "Which day are you most looking forward to?"
 - Pitfall: asking for a polished draft. A plan with gaps is still a plan.
 
@@ -385,7 +385,7 @@ Want a rough signal of how the executive-function side is going? The optional [e
 
 - Role: Parent-gated: parent review; use the recommendation in a family talk. Review the draft itself. Lighter page: read the Steps with your child until they manage two sessions in a row without the When I'm Stuck card or leaning on the Steps. Start Here, the Stop Point, the artifact and the Source Check always stay.
 - Prep: a Decision Record page; the route map notes and a device with a map app, in case your answer moves where the trip arrives or leaves.
-- Look for: the itinerary draft and its daily plan cards in front of you, with the five answers and the reasons.
+- Look for: the itinerary draft and its daily plan cards in front of you, with the five answers and the reasons; then your choice of the four written down, and in your child's decision log.
 - Coaching question: "Which day would you make gentler first?"
 - Pitfall: treating a stop here as second best. Checkpoint 5 is the Core Finish Line, a full finish.
 
@@ -415,7 +415,7 @@ Want a rough signal of how the executive-function side is going? The optional [e
 
 ## Session 50: Final Binder Assembly
 
-- Role: Independent, with a 5-minute check-in. Lighter page: read the Steps with your child until they manage two sessions in a row without the When I'm Stuck card or leaning on the Steps. Start Here, the Stop Point, the artifact and the Source Check always stay.
+- Role: Independent, with a 5-minute check-in. Lighter page: read the Steps with your child until they manage two sessions in a row without the When I'm Stuck card or leaning on the Steps. Start Here, the Stop Point, the artifact and the Source Check always stay. Each sitting sets its timer for 20 minutes at its start, even on the same day.
 - Prep: tab dividers; the print index; the Trip-Basics card, for whether the dates were booked; a timer.
 - Look for: all eleven tabs in order, each with its pages or a line saying why it's empty, and each ticked on the checklist.
 - Coaching question: "Which tab would you show a visitor first?"
