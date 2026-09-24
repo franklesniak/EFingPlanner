@@ -8,7 +8,7 @@ This is your Checkpoint 5 page, from [Session 46](../../sessions/phase_07_itiner
 
 **This is the Core Finish Line.** You could stop here and still have a usable plan. You know when to go, where, how long, a day-by-day plan, a rough budget, and what adults need to book. Everything after this is a bonus.
 
-Bring this page to a grown-up with your itinerary draft and its daily plan cards. They need the draft itself to judge the days. "Not sure yet" and "ask an adult" are complete answers in any row.
+Bring this page to a grown-up with your itinerary draft, its daily plan cards and your Session 39 budget summary, with its band sentence. They need the draft itself to judge the days. "Not sure yet" and "ask an adult" are complete answers in any row.
 
 ## How the plan works
 
