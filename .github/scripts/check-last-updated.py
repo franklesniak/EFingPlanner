@@ -28,14 +28,14 @@ Markdown is read"):
    merge, such as merging the base branch in, adds nothing. Keying on commit
    dates, not on today's date, means a second change on the same day passes
    without a redundant edit, and a check re-run on a later day cannot start
-   failing. A renamed file's history is followed, including a rename made as a
-   copy and a later deletion, and a deletion followed by a restoration. A rename
-   is what git's rename detection reports, which keeps at least half of the
-   content by default; a file rewritten below that counts as a new file, whose
-   history starts at the commit that added it. The
-   field must also not be later than the latest commit date (UTC) of those
-   commits, unless it equals the base's own value: a future date would let
-   later edits skip the bump.
+   failing. A renamed file's history is followed under each earlier name,
+   including a rename made as a copy and a later deletion, a deletion followed
+   by a restoration, and a rename made in a merge commit. A rename is what git's
+   rename detection reports, which keeps at least half of the content by
+   default; a file rewritten below that counts as a new file, whose history
+   starts at the commit that added it. The field must also not be later than
+   the latest commit date (UTC) of those commits, unless it equals the base's
+   own value: a future date would let later edits skip the bump.
 2. If the file carries ``**Version:** <major>.<minor>.<YYYYMMDD>.<revision>``
    and its content changed, the ``<YYYYMMDD>`` segment must equal the field, and
    ``<revision>`` must follow the guide's convention against the published
@@ -73,11 +73,12 @@ break, such as at the end of a paragraph, after a heading or inside a code
 block, do not count. Relative references, in Markdown links and images and in
 the URL attributes of raw HTML tags, are compared as repository paths, resolved
 from each version's own directory by the URL Standard's path rules (as a browser
-resolves them), so moving a file to another directory changes
-its content exactly when a relative reference now points somewhere else. Raw HTML
-that may hold a URL the helper does not parse, such as a `style` attribute or a
-`<style>` element, is tied to the file's directory instead, so moving that file
-counts as a content change.
+resolves them), so moving a file to another directory changes its content
+exactly when a relative reference now points somewhere else. Every URL is first
+cleaned as the URL Standard's parser cleans it: white space around it, and tabs
+and newlines inside it, are dropped. Raw HTML that may hold a URL the helper
+does not parse, such as a `style` attribute or a `<style>` element, is tied to
+the file's directory instead, so moving that file counts as a content change.
 
 How Markdown is read
 --------------------
@@ -327,15 +328,17 @@ def content_changes(base: str, head: str, path: str,
     compared as rendered (see `rendered()`). A non-merge commit qualifies when its
     content differs from its parent's. A merge, of any number of parents, qualifies
     only when its content differs from git's own clean merge of all its parents (see
-    `clean_merge()`): an automatic merge adds nothing, because each side's commits
-    carry their own dates, while a conflict resolution or an edit made during the merge
-    is authored.
+    `clean_merge()`), read under the name that clean merge gives the file, since the
+    merge commit may rename it: an automatic merge adds nothing, because each side's
+    commits carry their own dates, while a conflict resolution or an edit made during
+    the merge is authored.
 
-    `origin` is the file's name on the base, when the file existed there. A commit that
-    adds the file, as a copy or a restoration does, is followed into its parent under
-    `origin`, and a commit that lacks the file, as between a deletion and a restoration,
-    passes the name on to its parents. So the history before the copy or the deletion
-    still counts.
+    `origin` is the file's name on the base, when the file existed there. Where the diff
+    against the child loses the file, as at a copy or a restoration, the parent's name is
+    the one a rename-aware diff from the base gives `origin`, so a rename made before the
+    copy is followed too. A commit that lacks the file, as between a deletion and a
+    restoration, passes the name on to its parents. So the history before the copy or the
+    deletion still counts, under each earlier name.
     """
     # Walk every PR commit children-first, carrying the file's name backwards: the head
     # knows it as `path`, and each parent's name comes from a rename-aware diff against
@@ -353,19 +356,24 @@ def content_changes(base: str, head: str, path: str,
         after = show(sha, name)
         if after is None:
             for parent in parents:
-                names.setdefault(parent, path_in(parent, sha, name))   # absent here: pass the name on
+                carried = path_in(parent, sha, name)   # absent here: pass the name on
+                if origin is not None and (carried is None or show(parent, carried) is None):
+                    carried = path_at(base, parent, origin)   # the name came from a restoration: find the file again
+                names.setdefault(parent, carried)
             continue
         befores = []
         for parent in parents:
             own = path_in(parent, sha, name)
             if own is None and origin is not None:
-                own = origin   # added here, as by a copy or a restoration: follow the base name
+                own = path_at(base, parent, origin)   # added here, as by a copy: the base file's name in the parent
             names.setdefault(parent, own)
             content = show(parent, own) if own else None
             befores.append(rendered(content or "", own or name))
         if len(parents) >= 2:
-            automatic = clean_merge(parents, name)
-            authored = rendered(automatic or "", name) != rendered(after, name)
+            tree = clean_merge(parents)
+            own = path_in(tree, sha, name)   # the merge commit itself may rename the file
+            automatic = show(tree, own) if own else None
+            authored = rendered(automatic or "", own or name) != rendered(after, name)
         else:
             # A root commit, as on an unrelated history, has no parent, so it adds the file.
             authored = all(b != rendered(after, name) for b in befores or [rendered("", name)])
@@ -391,8 +399,8 @@ def utc_date(stamp: str) -> dt.date:
     return dt.datetime.fromisoformat(stamp).astimezone(dt.timezone.utc).date()
 
 
-def clean_merge(parents: list[str], path: str) -> str | None:
-    """The file as git's own merge of the parents writes it, conflict markers included.
+def clean_merge(parents: list[str]) -> str:
+    """The tree of git's own merge of the parents, conflict markers included.
 
     The parents are merged in order, one at a time, as git's octopus strategy does.
     `git merge-tree --write-tree` exits 0 for a clean merge and 1 when there are
@@ -403,7 +411,7 @@ def clean_merge(parents: list[str], path: str) -> str | None:
     """
     env = dict(os.environ, GIT_AUTHOR_NAME="check-last-updated", GIT_AUTHOR_EMAIL="check@localhost",
                GIT_COMMITTER_NAME="check-last-updated", GIT_COMMITTER_EMAIL="check@localhost")
-    current, tree = parents[0], None
+    current, tree = parents[0], ""
     for index, other in enumerate(parents[1:], start=1):
         # --allow-unrelated-histories: the merge already exists, so recompute it even when its
         # parents share no history, as `git merge --allow-unrelated-histories` made it.
@@ -420,7 +428,7 @@ def clean_merge(parents: list[str], path: str) -> str | None:
             if step.returncode != 0 or step.stdout is None:
                 raise GitError("git commit-tree: %s" % (step.stderr or "").strip())
             current = step.stdout.strip()
-    return show(tree, path) if tree else None
+    return tree
 
 
 def check(base: str, head: str) -> list[str]:

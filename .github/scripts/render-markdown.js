@@ -18,14 +18,19 @@
  *                root, resolved from the directory of `path`. So a relative
  *                reference compares by the file it points to, and moving a file
  *                changes its html exactly when a reference now points elsewhere.
- *                Raw HTML URL attributes are decoded by the HTML spec's
+ *                Every URL is first cleaned as the URL Standard's parser cleans
+ *                it: white space around it, and tabs and newlines inside it, are
+ *                dropped. Raw HTML URL attributes are decoded by the HTML spec's
  *                attribute-value rules and written in one form (lowercase name,
- *                double-quoted value). A raw HTML tag the helper cannot fully
- *                resolve (a `base`, `meta`, `script` or `style` element, or an
- *                attribute that is neither a URL attribute nor one that never
- *                holds a URL, such as `style` or `srcdoc`) is tied to the
- *                directory of `path`, so a move changes its html. HTML comments
- *                and text are left as they are.
+ *                double-quoted value escaped as markdown-it escapes its own
+ *                attributes, so no two values are written alike). A directory
+ *                name byte that is not UTF-8 is written as %XX, as in the file's
+ *                URL. A raw HTML tag the helper cannot fully resolve (a `base`,
+ *                `meta`, `script` or `style` element, or an attribute that is
+ *                neither a URL attribute nor one that never holds a URL, such as
+ *                `style` or `srcdoc`) is tied to the directory of `path`, so a
+ *                move changes its html. HTML comments and text are left as they
+ *                are.
  *   lastUpdated  YYYY-MM-DD from the `- **Last Updated:** YYYY-MM-DD` item of the
  *                metadata header block, or the item's value as written when it
  *                has another shape (so the check can report it), or null.
@@ -55,6 +60,9 @@ const YAML = require('yaml');
 const { decodeHTMLAttribute } = require('entities');
 
 const md = new MarkdownIt('commonmark');
+// markdown-it's renderer escapes every attribute value it writes with this: `&`, `<`, `>` and
+// `"`. Because `&` is escaped too, each value the helper writes reads back as one string only.
+const { escapeHtml } = md.utils;
 const LAST_UPDATED = /^\*\*Last Updated:\*\* (\d{4}-\d{2}-\d{2})[ \t]*$/;
 const LAST_UPDATED_ITEM = /^\*\*Last Updated:\*\*[ \t]*(.*?)[ \t]*$/;
 const VERSION = /^\*\*Version:\*\* (\d+\.\d+\.\d{8}\.\d+)[ \t]*$/;
@@ -99,12 +107,23 @@ const COMMENT = /<!--(?:-?>|[^]*?-->)/g;
 // parsing use; JavaScript's `\s` and `trim()` also take in U+00A0 and other Unicode spaces.
 const ATTRIBUTE = /([\t\n\f\r ]+)([A-Za-z_:][A-Za-z0-9_.:-]*)(?:([\t\n\f\r ]*=[\t\n\f\r ]*)("[^"]*"|'[^']*'|[^\t\n\f\r "'=<>`]+))?/y;
 
+// Python carries each byte of a name that is not UTF-8 as a lone surrogate, U+DC80 to U+DCFF
+// (PEP 383), and encodeURIComponent() throws on one. Such a byte is written as %XX, as it is in
+// the file's URL. The `u` flag keeps a valid surrogate pair, such as an emoji, whole.
+const ESCAPED_BYTE = /([\uDC80-\uDCFF])/u;
+
+function encodeName(name) {
+  return name.split(ESCAPED_BYTE).map((part, i) => (i % 2 === 1
+    ? '%' + (part.charCodeAt(0) - 0xDC00).toString(16).toUpperCase()
+    : encodeURIComponent(part))).join('');
+}
+
 function resolveUrl(url, directory) {
-  // The URL Standard strips leading and trailing C0 controls and spaces before it looks for
-  // a scheme; it also removes ASCII tabs and newlines inside, which the parse below does.
-  const trimmed = url.replace(/^[\u0000-\u0020]+|[\u0000-\u0020]+$/g, '');
+  // Before it looks for a scheme, the URL Standard's parser strips leading and trailing C0
+  // controls and spaces, and removes every ASCII tab and newline. Every URL is compared so.
+  const trimmed = url.replace(/^[\u0000-\u0020]+|[\u0000-\u0020]+$/g, '').replace(/[\t\n\r]/g, '');
   if (NOT_RELATIVE.test(trimmed)) {
-    return url;
+    return trimmed;
   }
   const cut = trimmed.search(/[?#]/);
   const target = cut < 0 ? trimmed : trimmed.slice(0, cut);
@@ -113,7 +132,7 @@ function resolveUrl(url, directory) {
   // is `/`, and `..` stops at the root. Each directory name is encoded so that a `#` or `?` in
   // it stays part of the path. A target the parser reads as absolute, such as `\\host\x` or a
   // scheme split by a newline, keeps its whole URL, so a change of host is still a change.
-  const folder = directory === '.' ? '' : directory.split('/').map(encodeURIComponent).join('/') + '/';
+  const folder = directory === '.' ? '' : directory.split('/').map(encodeName).join('/') + '/';
   try {
     const resolved = new URL(target, BASE_ORIGIN + '/' + folder);
     return (resolved.origin === BASE_ORIGIN ? resolved.pathname : resolved.href) + rest;
@@ -186,7 +205,7 @@ function canonicalTag(tag, directory) {
     if (m[4] !== undefined && URL_ATTRIBUTES.has(attribute)) {
       const quoted = m[4][0] === '"' || m[4][0] === "'";
       const value = decodeHTMLAttribute(quoted ? m[4].slice(1, -1) : m[4]);
-      out += ' ' + attribute + '="' + resolveAttribute(attribute, value, directory).replace(/"/g, '&quot;') + '"';
+      out += ' ' + attribute + '="' + escapeHtml(resolveAttribute(attribute, value, directory)) + '"';
     } else {
       bound = bound || !(URL_ATTRIBUTES.has(attribute) || PLAIN_ATTRIBUTES.has(attribute) ||
         PLAIN_ATTRIBUTE_PREFIX.test(attribute));
@@ -196,7 +215,7 @@ function canonicalTag(tag, directory) {
   }
   const rest = tag.slice(at);
   bound = bound || !/^[\t\n\f\r ]*\/?>$/.test(rest);
-  return out + (bound ? ' data-directory="' + directory + '"' : '') + rest;
+  return out + (bound ? ' data-directory="' + escapeHtml(directory) + '"' : '') + rest;
 }
 
 function canonicalHtml(html, directory) {

@@ -849,6 +849,66 @@ def test_directory_name_with_a_hash_stays_part_of_the_path(repo: Repo) -> None:
     assert run(repo) == []
 
 
+@pytest.mark.parametrize("before, after", [
+    ('<a href=" https://example.com/x.md ">x</a>', '<a href="https://example.com/x.md">x</a>'),
+    ('<a href="https://exa&#10;mple.com/x.md">x</a>', '<a href="https://example.com/x.md">x</a>'),
+    ('<a href="&#9;#top">x</a>', '<a href="#top">x</a>'),
+], ids=["spaces-around-an-absolute-url", "newline-inside-an-absolute-url", "tab-before-a-fragment"])
+def test_white_space_the_url_parser_drops_is_mechanical(repo: Repo, before: str, after: str) -> None:
+    # The URL Standard's parser strips leading and trailing C0 controls and spaces, and removes
+    # every ASCII tab and newline, so each pair links to the same URL.
+    publish(repo, doc("2026-01-01", "Text.\n\n" + before), "2026-01-01T12:00:00+00:00")
+    repo.write("docs/a.md", doc("2026-01-01", "Text.\n\n" + after))
+    repo.commit("tidy the URL", "2026-03-05T10:00:00+00:00")
+    assert run(repo) == []
+
+
+def test_url_holding_an_escaped_reference_is_not_the_character(repo: Repo) -> None:
+    # `&amp;quot;` decodes to the text `&quot;`, and `&quot;` to `"`: two different URLs, which
+    # must not be written alike.
+    publish(repo, doc("2026-01-01", 'Text.\n\n<a href="https://example.com/x&amp;quot;y">x</a>'),
+            "2026-01-01T12:00:00+00:00")
+    repo.write("docs/a.md", doc("2026-01-01", 'Text.\n\n<a href="https://example.com/x&quot;y">x</a>'))
+    repo.commit("change the target", "2026-03-05T10:00:00+00:00")
+    problems = run(repo)
+    assert len(problems) == 1 and "Set it to 2026-03-05" in problems[0]
+
+
+def plumbed_commit(repo: Repo, files: dict[str, str], message: str, date: str, parent: str) -> str:
+    """A commit holding exactly `files`, built with plumbing, for names Windows cannot create."""
+    def tree(entries: dict[str, str]) -> str:
+        folders: dict[str, dict[str, str]] = {}
+        lines = []
+        for name, text in entries.items():
+            folder, _, rest = name.partition("/")
+            if rest:
+                folders.setdefault(folder, {})[rest] = text
+            else:
+                blob = subprocess.run(["git", "hash-object", "-w", "--stdin"], cwd=repo.root, input=text,
+                                      capture_output=True, text=True, check=True).stdout.strip()
+                lines.append("100644 blob %s\t%s" % (blob, name))
+        lines += ["040000 tree %s\t%s" % (tree(inner), folder) for folder, inner in folders.items()]
+        return subprocess.run(["git", "mktree", "-z"], cwd=repo.root, input="\0".join(lines) + "\0",
+                              capture_output=True, text=True, check=True).stdout.strip()
+
+    return repo.git("commit-tree", tree(files), "-p", parent, "-m", message, date=date).strip()
+
+
+def test_directory_name_holding_a_quote_cannot_spell_an_attribute(repo: Repo) -> None:
+    # A tag tied to its directory records the directory in an attribute. Written unescaped, the
+    # name `docs/p" data-directory="docs` reads as two attributes, and the tag the move adds one
+    # to would look unchanged.
+    tag = '<span style="s"%s>x</span>'
+    base = plumbed_commit(repo, {'docs/p" data-directory="docs/a.md': doc("2026-01-01", "Text.\n\n" + tag % "")},
+                          "add", "2026-01-01T12:00:00+00:00", "main")
+    repo.git("update-ref", "refs/heads/main", base)
+    head = plumbed_commit(repo, {"docs/a.md": doc("2026-01-01", "Text.\n\n" + tag % ' data-directory="docs/p"')},
+                          "move and add an attribute", "2026-03-05T10:00:00+00:00", base)
+    assert repo.git("diff", "--name-status", "-M", base, head).startswith("R")
+    problems = last_updated.check("main", head)
+    assert len(problems) == 1 and "docs/a.md" in problems[0] and "Set it to 2026-03-05" in problems[0]
+
+
 def test_moving_html_the_helper_fully_resolves_needs_no_bump(repo: Repo) -> None:
     # Every attribute here is a resolved URL or one that never holds a URL, so nothing is tied
     # to the directory, and every URL is absolute or a fragment.
@@ -897,6 +957,47 @@ def test_edit_before_a_deletion_and_restoration_sets_the_date(repo: Repo) -> Non
     repo.commit("restore", "2026-03-05T12:00:00+00:00")
     problems = run(repo)
     assert len(problems) == 1 and "Set it to 2026-03-06" in problems[0]
+
+
+@pytest.mark.parametrize("copy", [True, False], ids=["copy-then-delete", "delete-then-restore"])
+def test_edit_under_a_middle_name_sets_the_date(repo: Repo, copy: bool) -> None:
+    # a.md becomes b.md and is edited, then becomes c.md in two backdated steps. The final diff
+    # shows a.md -> c.md, but the edit was made under b.md, so the walk must follow that name.
+    repo.git("mv", "docs/a.md", "docs/b.md")
+    repo.commit("rename", "2026-03-04T10:00:00+00:00")
+    repo.write("docs/b.md", doc("2026-03-05", "Edited."))
+    repo.commit("edit", "2026-03-06T10:00:00+00:00")
+    if copy:
+        repo.write("docs/c.md", doc("2026-03-05", "Edited."))
+        repo.commit("copy", "2026-03-05T11:00:00+00:00")
+        repo.git("rm", "-q", "docs/b.md")
+        repo.commit("delete", "2026-03-05T12:00:00+00:00")
+    else:
+        repo.git("rm", "-q", "docs/b.md")
+        repo.commit("delete", "2026-03-05T11:00:00+00:00")
+        repo.write("docs/c.md", doc("2026-03-05", "Edited."))
+        repo.commit("restore as c.md", "2026-03-05T12:00:00+00:00")
+    assert repo.git("diff", "--name-status", "-M", "main..HEAD").startswith("R")
+    problems = run(repo)
+    assert len(problems) == 1 and "docs/c.md" in problems[0] and "Set it to 2026-03-06" in problems[0]
+
+
+def test_move_made_in_a_merge_commit_is_not_a_content_change(repo: Repo) -> None:
+    # The merge commit moves the file and keeps its link's target. git's own merge of the parents
+    # has the file under its old name, so the two are compared there, each at its own path.
+    repo.write("docs/a.md", doc("2026-03-05", "See [x](x.md). Edited."))
+    repo.commit("edit", "2026-03-05T09:00:00+00:00")
+    repo.git("switch", "-q", "-c", "side", "main")
+    repo.write("docs/plain.md", "# No metadata\n\nSide text.\n")
+    repo.commit("side", "2026-03-04T09:00:00+00:00")
+    repo.git("switch", "-q", "pr")
+    repo.git("merge", "-q", "--no-ff", "--no-commit", "side")
+    repo.git("rm", "-q", "docs/a.md")
+    repo.write("docs/sub/a.md", doc("2026-03-05", "See [x](../x.md). Edited."))
+    repo.commit("merge the side and move the file", "2026-03-07T09:00:00+00:00")
+    assert len(repo.git("rev-parse", "HEAD^@").split()) == 2
+    assert "R" in repo.git("diff", "--name-status", "-M", "HEAD^1", "HEAD")
+    assert run(repo) == []
 
 
 def test_date_later_than_the_change_fails(repo: Repo) -> None:
@@ -1137,17 +1238,30 @@ def test_file_with_non_utf8_bytes_is_still_checked(repo: Repo) -> None:
 
 
 @pytest.mark.skipif(os.name == "nt", reason="Windows cannot pass a non-UTF-8 filename to git")
-def test_non_utf8_filename_is_still_checked(repo: Repo) -> None:
-    name = b"docs/caf\xe9.md"
-    (repo.root / os.fsdecode(name)).write_bytes(doc("2026-01-01").encode("utf-8"))
+@pytest.mark.parametrize("name", [b"docs/caf" + bytes([0xE9]) + b".md", b"docs/caf" + bytes([0xE9]) + b"/a.md"],
+                         ids=["in-the-file-name", "in-a-directory-name"])
+def test_non_utf8_filename_is_still_checked(repo: Repo, name: bytes) -> None:
+    # The relative link makes the helper encode the directory's name.
+    target = repo.root / os.fsdecode(name)
+    target.parent.mkdir(exist_ok=True)
+    target.write_bytes(doc("2026-01-01", "See [x](x.md).").encode("utf-8"))
     repo.commit("add", "2026-01-01T12:00:00+00:00")
     repo.git("switch", "-q", "main")
     repo.git("merge", "-q", "--ff-only", "pr")
     repo.git("switch", "-q", "pr")
-    (repo.root / os.fsdecode(name)).write_bytes(doc("2026-01-01", "Changed.").encode("utf-8"))
+    target.write_bytes(doc("2026-01-01", "See [x](x.md). Changed.").encode("utf-8"))
     repo.commit("edit", "2026-03-05T10:00:00+00:00")
     problems = run(repo)
     assert len(problems) == 1 and "Set it to 2026-03-05" in problems[0]
+
+
+@pytest.mark.parametrize("directory, encoded", [
+    ("docs/caf" + chr(0xDCE9), "docs/caf%E9"),      # a byte that is not UTF-8, as Python carries it (PEP 383)
+    ("docs/" + chr(0x1F480), "docs/%F0%9F%92%80"),  # an emoji, whose second UTF-16 half lies in the same range
+], ids=["non-utf8-byte", "emoji"])
+def test_link_resolves_from_a_directory_of_any_name(directory: str, encoded: str) -> None:
+    # A browser reads the file at a URL that writes such a byte as %XX, and resolves the link from there.
+    assert last_updated.rendered("[x](x.md)\n", directory + "/a.md") == '<p><a href="/%s/x.md">x</a></p>' % encoded
 
 
 def test_removing_the_field_fails(repo: Repo) -> None:
