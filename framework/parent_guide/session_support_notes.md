@@ -319,8 +319,8 @@ Want a rough signal of how the executive-function side is going? The optional [e
 
 ## Session 38: Daily Cost Estimates
 
-- Role: Independent, with a 5-minute check-in.
-- Prep: the budget estimate page from Session 33; the attraction cards and transportation notes; the destination pack's money basics page; the Trip-Basics card, for the number of travelers; a calculator.
+- Role: Independent, with a 5-minute check-in; beforehand, tell your child the souvenir amount for one ordinary day.
+- Prep: your souvenir amount for one ordinary day, as a rough, kid-sized figure; the budget estimate page from Session 33; the attraction cards and transportation notes; the destination pack's money basics page; the Trip-Basics card, for the number of travelers; a calculator.
 - Look for: a daily cost table with a low, a medium and a high guess on each row, or "ask an adult" where your child hit a wall, and the total row added up.
 - Coaching question: "Which cost surprised you most?"
 - Pitfall: asking for exact numbers. Rough guesses are the point, and you may do the arithmetic.
@@ -336,7 +336,7 @@ Want a rough signal of how the executive-function side is going? The optional [e
 ## Session 40: Realistic Day Planning
 
 - Role: Independent, with a 5-minute check-in. This is the Phase 7 hand-off: your child sets up the whole session. Lighter page: read the Steps with your child until they manage two sessions in a row without the When I'm Stuck card or leaning on the Steps. Start Here, the Stop Point, the artifact and the Source Check always stay.
-- Prep: the destination pack's airports and arrival page, or the official airport or transport site; the route and nights approved at Checkpoint 4, with the route map notes; the My Calls page; the Trip-Basics card and the assumptions page, for the journey and the arrival and departure places; a device with a map app.
+- Prep: the destination pack's airports and arrival page, or the official airport or transport site; the route and nights approved at Checkpoint 4, with the route map notes; the My Calls page; the Trip-Basics card, for how the family gets there; the Session 29 formula, for its ½ marks, which show a short journey; the assumptions page, for the arrival and departure places; a device with a map app.
 - Look for: a short list of day rules, with first-day and last-day rules that fit the journey (a long one takes most of the day, a short one about half), and a star by the rule your child would break first.
 - Coaching question: "How did you decide how to set this session up?" This is the Phase 7 formative check.
 - Pitfall: setting it up for them. If they freeze, point at the suggestion on the page.
@@ -360,8 +360,8 @@ Want a rough signal of how the executive-function side is going? The optional [e
 ## Session 43: Rest Days, Jet Lag, and Pacing
 
 - Role: Independent; parent review after the session. Lighter page: read the Steps with your child until they manage two sessions in a row without the When I'm Stuck card or leaning on the Steps. Start Here, the Stop Point, the artifact and the Source Check always stay.
-- Prep: the daily plan cards; the My Calls page; the attraction cards, if the special pick hits a block; the traveler profiles; the Trip-Basics card; the Checkpoint 1 season; the destination pack's transportation basics page.
-- Look for: a pacing review with each check marked yes or no, the days to make gentler, and flags for you. The third trade-off report too, if it wasn't written at Session 34.
+- Prep: the daily plan cards; the Session 40 day rules; the My Calls page; the attraction cards, if the special pick hits a block; the traveler profiles; the Trip-Basics card; the Checkpoint 1 season; the destination pack's transportation basics page.
+- Look for: a pacing review with each check marked yes or no, the days to make gentler or a line saying every day passed, and flags for you. The third trade-off report too, if it wasn't written at Session 34.
 - Coaching question: "Which day would wear out our most tired traveler?"
 - Pitfall: asking your child to solve an accessibility flag. They flag it; you check it and solve it.
 
@@ -377,7 +377,7 @@ Want a rough signal of how the executive-function side is going? The optional [e
 
 - Role: Independent. Lighter page: read the Steps with your child until they manage two sessions in a row without the When I'm Stuck card or leaning on the Steps. Start Here, the Stop Point, the artifact and the Source Check always stay. Each sitting sets its timer for 20 minutes at its start, even on the same day.
 - Prep: the daily plan cards, the pacing review, the backup plans and cut list, the reservation watchlist and the budget summary; the route and nights approved at Checkpoint 4, with the route map notes and the Session 29 formula; the city card for any region on the route, for its town; the assumptions page; the pages with the earlier minutes guesses; the Trip-Basics card, for the trip length; a device with a map app; a timer.
-- Look for: a row for every day, including a travel row for each flight day, each with at least an overnight city and a main activity; the first and last days with their travel legs, the gentler days copied that way, nothing from the cut list, and any looked-up travel time in the route map notes; and a minutes guess with the time taken for each sitting.
+- Look for: a row for every day, including a travel row for each flight day, each with at least an overnight city and a main activity; the first and last days with their travel legs once the places are written down, the gentler days copied that way, nothing from the cut list, and any looked-up travel time in the route map notes; and a minutes guess with the time taken for each sitting.
 - Coaching question: "Which day are you most looking forward to?"
 - Pitfall: asking for a polished draft. A plan with gaps is still a plan.
 
