@@ -1027,10 +1027,14 @@ class DocumentScan:
     marker_lines: tuple[str, ...]
     worksheet_fences: tuple[int, ...]
     #: ``(line number, element name)`` for every start tag the page meets that
-    #: opens a text state where this scan does not model one. Below such a tag
-    #: the page shows none of the headings or comments ``content_lines`` and
-    #: ``marker_lines`` hold, so ``check_text`` reports the tag rather than
-    #: trusting either. See ``TEXT_STATE_ELEMENT_NAMES``.
+    #: opens a text state where this scan does not model one. Below such a tag,
+    #: up to the element's end tag, the page shows none of the headings or
+    #: comments ``content_lines`` and ``marker_lines`` hold, so ``check_text``
+    #: reports the tag rather than trusting either. **A tag whose element
+    #: closes is reported too**, as a documented limit: the end tag the page
+    #: meets cannot be told from one in a code span without a model this scan
+    #: does not have, and markdownlint's ``MD033`` refuses the tag first. See
+    #: ``TEXT_STATE_ELEMENT_NAMES``.
     text_state_tags: tuple[tuple[int, str], ...] = ()
 
     @property

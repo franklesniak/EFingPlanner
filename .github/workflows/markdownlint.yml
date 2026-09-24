@@ -186,7 +186,8 @@ jobs:
       # or `tests/_pytest_compat.py`, skipped the only enforcement and the
       # job passed. Now the fixtures stay behind and the step fails. The scan
       # asserts that the three hook suites above are present, so their own
-      # steps keep their guards.
+      # steps keep their guards. It reads Markdown through markdown-it, from
+      # the packages `npm ci` installs above, and fails if they are missing.
       - name: Check references resolve inside this repository
         id: test-self-contained
         if: hashFiles('tests/fixtures/self_contained_references/**') != ''

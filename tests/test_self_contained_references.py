@@ -93,31 +93,36 @@ beside it:
   neither is a known noun joined to its number by a word, as in ``issue
   number`` and a number. A new noun or separator is added to the list, with a
   fixture line, when one appears.
-- *What a Markdown page prints.* A comment is split out, a character
-  reference is decoded, a backslash escape and the inline delimiters are
-  dropped, and a paragraph is also read joined across its line breaks. A URL
-  in a comment resolves nothing, so text read as a comment by mistake can
-  only report more. In every file, one kind of break is left unread: a block
-  comment's ``*`` at the start of each line looks like a list item, so two
-  such lines are read as two items. And a URL written inside an HTML tag's
-  attribute, or as a link's title, is read as a link although the page shows
-  none there; the repository holds no such URL. markdownlint's ``MD033``
-  already refuses the tag in the Markdown files it lints. This is the one
-  class a Markdown renderer would answer exactly, and the scan does not use
-  one.
-  Whether the gates should read markdown-it's output is an open question:
+- *What a Markdown page prints.* markdown-it's answer, line by line
+  (``printed_markdown``): the characters the page prints from each line,
+  the text of a comment on it, and the link destinations written on it. So
+  markup prints nothing where it forms markup and prints as itself where it
+  does not, a character reference prints its character, a code span its
+  content, and a tag's attributes and a link's title print nothing and link
+  nothing; an ``a`` tag's ``href`` is a link. A paragraph is also read
+  joined across its line breaks, and a URL in a comment resolves nothing.
+  GitHub renders with its own parser, and two differences are known: a
+  strikethrough between single tildes, which GitHub prints and markdown-it
+  leaves as tildes, and footnotes, which markdown-it leaves as text. In every
+  file, one kind of break is left unread: a block comment's ``*`` at the
+  start of each line looks like a list item, so two such lines are read as
+  two items. The curriculum hooks still read Markdown by hand; whether they
+  should read markdown-it's output is an open question:
   https://github.com/franklesniak/EFingPlanner/issues/27
 """
 
 from __future__ import annotations
 
 import ast
+import atexit
 import bisect
-import html
 import ipaddress
+import json
 import re
+import shutil
 import subprocess
 from collections.abc import Callable, Iterable
+from typing import Any
 from pathlib import Path
 from urllib.parse import SplitResult, unquote, urlsplit
 
@@ -146,6 +151,7 @@ REQUIRED_MEMBERS = (
     "tests/test_check_session_structure.py",
     "tests/test_check_prohibited_placeholders.py",
     THIS_MODULE,
+    "tests/printed_markdown.mjs",
 )
 
 #: The occurrences the rule is **not** enforced on, read from a file outside
@@ -1356,47 +1362,6 @@ MARKDOWN_SUFFIXES = frozenset(
 )
 
 
-def split_comments(line: str, in_comment: bool) -> tuple[str, str, bool]:
-    """Return a Markdown line's shown text, its comment text, and the state below.
-
-    **The shown text leaves each comment out, because a comment prints
-    nothing and takes no width.** Blanked to spaces, a comment inside a word
-    split it, so ``is``, a comment and ``sue`` read as two words while the
-    page prints one. The hidden text keeps the line's length with the shown
-    part blanked, so the words of two comments stay apart. A comment that does not
-    close on the line runs on to the next, which is why the state is handed
-    back. This reads only the delimiters. A ``<!--`` that the page prints as
-    characters -- in a code span, in a fenced block, after a backslash -- is
-    read as a comment too, and so is everything after it up to the next
-    ``-->``. That can report more and never less, because a URL a comment hides
-    resolves nothing: text read as hidden by mistake is still resolved only by
-    a URL the page shows. ``references_in()`` says why.
-    <https://spec.commonmark.org/0.31.2/#html-blocks>
-    """
-    shown: list[str] = []
-    hidden = [" "] * len(line)
-    index = 0
-    while index < len(line):
-        if not in_comment:
-            start = line.find("<!--", index)
-            if start == -1:
-                shown.append(line[index:])
-                break
-            shown.append(line[index:start])
-            in_comment = True
-            index = start
-            continue
-        end = line.find("-->", index + len("<!--") if line.startswith("<!--", index) else index)
-        stop = len(line) if end == -1 else end + len("-->")
-        for position in range(index, stop):
-            hidden[position] = line[position]
-        if end == -1:
-            break
-        in_comment = False
-        index = stop
-    return "".join(shown), "".join(hidden), in_comment
-
-
 #: A line that begins a list item -- a bullet, or a number and a full stop or
 #: a closing parenthesis -- after any comment marker a source file puts in
 #: front of it. Two such lines one above the other are two items, not one
@@ -1414,54 +1379,108 @@ LIST_ITEM_START = re.compile(r"^\s*(?:(?:#|//|--|;)+\s*)?(?:\d{1,9}[.)]|[-*+])\s
 CONTINUATION_MARKER = re.compile(r"^\s*(?:(?:#:?|//|--|;|>)\s*)*")
 
 
-#: What a Markdown page prints differently from its source, in the three ways
-#: a reference can hide in. A character reference prints as the character it
-#: names, so the numeric reference to the hash sign prints a hash. A backslash
-#: before ASCII punctuation is dropped and the punctuation printed. And the
-#: inline delimiters print as nothing: emphasis, strikethrough, a code span's
-#: backticks and an inline HTML tag, so a noun and a bold number read as the
-#: noun and the number.
-#: One pass, left to right, so an escaped or a decoded delimiter stays a
-#: character, as CommonMark keeps it. **Markup prints nothing, so it takes no
-#: width.** A delimiter or a tag used to become a space, so bold on the middle
-#: letters of a word split it into three, and the reference it spelled was
-#: missed. Two words that markup separates have a space between them in the
-#: source, and that space stays. Only ``<br>`` prints a break, and it reads as
-#: a space, as a line break does. A block tag between two words joins them
-#: here, which can report more and never less. An underscore between two
-#: letters or digits is part of the word, because CommonMark never opens or
-#: closes emphasis there: ``my_action`` stays one name. A code span's own
-#: content is not kept apart: CommonMark prints a character reference there as
-#: it stands, and this decodes it, which can report more and never less.
-#: https://spec.commonmark.org/0.31.2/#entity-and-numeric-character-references
-#: https://spec.commonmark.org/0.31.2/#backslash-escapes
-RENDERED_TEXT_PATTERN = re.compile(
-    r"\\([!-/:-@\[-`{-~])"
-    r"|(&(?:#[0-9]{1,7}|#[xX][0-9A-Fa-f]{1,6}|[A-Za-z][A-Za-z0-9]{1,31});)"
-    r"|(</?[A-Za-z][A-Za-z0-9-]*(?:\s[^<>]*)?/?>)|[*~`]+"
-    r"|(?<![^\W_])_+|_+(?![^\W_])"
-)
-#: The one tag that prints a break inside a line.
-LINE_BREAK_TAG = re.compile(r"(?i)<br\b")
+#: **Markdown is read as markdown-it prints it.** ``printed_markdown.mjs``,
+#: beside this module, parses each Markdown file with markdown-it in
+#: CommonMark mode, with GitHub's tables and strikethrough, and hands back,
+#: line by line, what the page prints, what a comment hides and which link
+#: destinations are written there. Hand-written rules answered this before,
+#: one case at a time: character references and escapes, underscores inside
+#: words, a comment opener in code, markup inside a word. The last of them
+#: deleted every marker, so a marker that formed no markup went too, and a
+#: word the page prints whole with a star in it was read as a commit hash the
+#: page never shows. Each was a rule the parser already has. One Node process
+#: serves the whole session.
+#: https://spec.commonmark.org/0.31.2/
+MARKDOWN_READER = Path(__file__).resolve().parent / "printed_markdown.mjs"
+#: The command that runs it. A test replaces it to prove the failure it names.
+NODE_COMMAND = "node"
+_markdown_reader: subprocess.Popen[str] | None = None
+_printed: dict[str, tuple[list[tuple[str, str, list[str]]], list[int]]] = {}
 
 
-def rendered_text(text: str) -> str:
-    """Return a line of Markdown the way the page prints its characters.
+def _close_markdown_reader() -> None:
+    """Let the reader end with the session, rather than be killed with it."""
+    if _markdown_reader is not None and _markdown_reader.poll() is None:
+        assert _markdown_reader.stdin is not None
+        _markdown_reader.stdin.close()
+        try:
+            _markdown_reader.wait(timeout=10)
+        except subprocess.TimeoutExpired:
+            _markdown_reader.kill()
 
-    ``text`` has had its URLs blanked already, so nothing here reaches inside
-    one. See ``RENDERED_TEXT_PATTERN``.
+
+atexit.register(_close_markdown_reader)
+
+
+def _ask_markdown_reader(text: str) -> dict[str, Any]:
+    """Send one document to the reader, starting it first if it is not running.
+
+    **Without Node.js, or without markdown-it, the scan fails and says so.**
+    Skipping would pass every Markdown file unread. The workflow that runs
+    this suite installs both before it.
     """
+    global _markdown_reader
+    if _markdown_reader is None or _markdown_reader.poll() is not None:
+        node = shutil.which(NODE_COMMAND)
+        if node is None:
+            raise AssertionError(
+                f"{NODE_COMMAND!r} was not found. This scan reads Markdown through "
+                f"{MARKDOWN_READER.name}, which needs Node.js: install Node.js and "
+                "run `npm ci` in the repository root."
+            )
+        _markdown_reader = subprocess.Popen(
+            [node, str(MARKDOWN_READER)],
+            stdin=subprocess.PIPE,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+            encoding="utf-8",
+            cwd=REPO_ROOT,
+        )
+    assert _markdown_reader.stdin is not None and _markdown_reader.stdout is not None
+    try:
+        _markdown_reader.stdin.write(json.dumps({"text": text}) + "\n")
+        _markdown_reader.stdin.flush()
+        answer = _markdown_reader.stdout.readline()
+    except OSError:
+        answer = ""
+    if not answer:
+        _markdown_reader.wait(timeout=10)
+        error = _markdown_reader.stderr.read() if _markdown_reader.stderr else ""
+        raise AssertionError(
+            f"{MARKDOWN_READER.name} stopped without an answer, so no Markdown "
+            "file can be read. Run `npm ci` in the repository root so that "
+            "markdown-it is installed. It said: " + error.strip()[-600:]
+        )
+    return json.loads(answer)
 
-    def replace(match: re.Match[str]) -> str:
-        if match.group(1) is not None:
-            return match.group(1)
-        if match.group(2) is not None:
-            return html.unescape(match.group(2))
-        if match.group(3) is not None and LINE_BREAK_TAG.match(match.group(3)):
-            return " "
-        return ""
 
-    return RENDERED_TEXT_PATTERN.sub(replace, text)
+def printed_markdown(text: str) -> list[tuple[str, str, list[str]]]:
+    """Return, for each line of a Markdown document, what the page prints there.
+
+    Each entry is ``(printed, hidden, destinations)``: the characters the page
+    shows from that line, the text of an HTML comment on it, and the link
+    destinations written on it. See ``MARKDOWN_READER``.
+    """
+    cached = _printed.get(text)
+    if cached is None:
+        answer = _ask_markdown_reader(text)
+        cached = (
+            [(line[0], line[1], list(line[2])) for line in answer["lines"]],
+            list(answer["unmapped"]),
+        )
+        _printed[text] = cached
+    return cached[0]
+
+
+def unmapped_markdown_lines(text: str) -> list[int]:
+    """Return the first line of each inline run the reader could not place.
+
+    Such a run is read as its source lines stand, which can report more and
+    never less; a test holds the corpus to none.
+    """
+    printed_markdown(text)
+    return _printed[text][1]
 
 
 def blank_urls(text: str) -> tuple[str, list[str]]:
@@ -1512,16 +1531,13 @@ def references_in(
     the exemption fixture. A caller that passes nothing gets the rule unexempted,
     which is what the test that proves each exemption still occurs needs.
 
-    Each line is read as two texts in a Markdown file: what the page shows,
-    in the characters the page prints (``rendered_text``), and what an HTML
-    comment hides, as the source spells it. A URL the page shows resolves a
-    reference in either. **A URL a comment hides resolves nothing.** A reader of
-    the page cannot follow it, and which text is hidden is read from the
-    delimiters alone (``split_comments``). A hidden URL used to resolve a hidden
-    reference, and a ``<!--`` in a code span then turned visible text into
-    hidden text that a genuinely hidden URL resolved. Now a misread comment can
-    only report more. To link a reference inside a comment, write the URL in
-    place of the number. Every other file is one text.
+    Each line is read as two texts in a Markdown file: what the page prints
+    from it, and what an HTML comment on it hides, as markdown-it reads the
+    page (``printed_markdown``). A URL the page shows resolves a reference in
+    either, and so does a link destination written on the line. **A URL a
+    comment hides resolves nothing.** A reader of the page cannot follow it.
+    To link a reference inside a comment, write the URL in place of the
+    number. Every other file is one text, its lines as they stand.
 
     **A reference may be hard-wrapped, over any number of lines.** ``See
     issue`` at the end of one line and ``27 for details`` at the start of the
@@ -1593,16 +1609,17 @@ def references_in(
     # text and the URLs that resolve that.
     lines = body.split("\n")
     readings: list[tuple[tuple[str, list[str]], tuple[str, list[str]]]] = []
-    in_comment = False
-    for line in lines:
-        markdown = path.suffix.lower() in MARKDOWN_SUFFIXES
-        if markdown:
-            shown, hidden, in_comment = split_comments(line, in_comment)
-        else:
-            shown, hidden = line, ""
+    printed = (
+        printed_markdown(body) if path.suffix.lower() in MARKDOWN_SUFFIXES else None
+    )
+    for number, line in enumerate(lines):
+        shown, hidden, destinations = (
+            printed[number] if printed is not None else (line, "", [])
+        )
         shown_text, shown_urls = blank_urls(shown)
-        if markdown:
-            shown_text = rendered_text(shown_text)
+        # A link's destination is not printed, and it is a URL written on
+        # this line all the same.
+        shown_urls = shown_urls + destinations
         # A hidden URL is still taken out of the hidden text, so its path is
         # not read as a reference, and it resolves nothing.
         hidden_text, _hidden_urls = blank_urls(hidden)
@@ -3768,10 +3785,10 @@ def test_a_backslash_in_the_authority_ends_it(tmp_path: Path) -> None:
     reference = "issue" + " " + "27"
     local = "https://localhost" + backslash + "@github.com/o/r/issues/27"
     assert not url_is_public(local)
-    assert _reported(tmp_path, reference + " " + local)
+    assert _reported(tmp_path, "# " + reference + " " + local, ".py")
     public = "https://github.com" + backslash + "o/r/issues/27"
     assert url_is_public(public)
-    assert not _reported(tmp_path, reference + " " + public)
+    assert not _reported(tmp_path, "# " + reference + " " + public, ".py")
     tail = "?q=" + backslash + "#f" + backslash
     assert browser_form("https://h" + backslash + "p" + tail) == "https://h/p" + tail
     assert browser_form("www.github.com" + backslash + "o") == "http://www.github.com/o"
@@ -3996,21 +4013,21 @@ def test_an_exemption_is_spent_only_where_nothing_else_resolves(tmp_path: Path) 
         assert references_in(sample, tmp_path, {reference: 1}) == [], body
 
 
-def test_a_url_in_a_tag_attribute_is_read_as_a_link(tmp_path: Path) -> None:
-    """A documented limit, pinned: an attribute or a link title holds a link.
+def test_a_tag_attribute_or_a_link_title_links_nothing(tmp_path: Path) -> None:
+    """The page shows no link for a URL in a tag's attribute or a link's title.
 
-    The page shows no link for a URL in a ``data-`` attribute or in a link's
-    title, and the scan reads one there all the same, because it collects
-    URLs before it takes tags out. The module docstring states this; if this
-    test starts to fail, the limit has gone, and the docstring must say so.
+    The scan used to collect URLs before it took tags out, and it read both as
+    links; that was a documented limit. Read as markdown-it prints the page,
+    neither prints, so neither resolves anything. An ``a`` tag's ``href`` is a
+    link, and still resolves the reference beside it.
     """
     reference = "issue" + " " + "27"
     url = "https://github.com/o/r/issues/27"
-    assert not _reported(tmp_path, reference + ' <span data-source="' + url + '">text</span>')
-    assert not _reported(
+    assert _reported(tmp_path, reference + ' <span data-source="' + url + '">text</span>')
+    assert _reported(
         tmp_path, "[text](https://example.com/a " + chr(34) + url + chr(34) + ") " + reference
     )
-    assert _reported(tmp_path, reference + " <span>text</span>")
+    assert not _reported(tmp_path, '<a href="' + url + '">' + reference + "</a>")
 
 
 def test_a_file_declared_text_must_decode() -> None:
@@ -4186,8 +4203,8 @@ def test_markup_inside_a_word_takes_no_width(tmp_path: Path) -> None:
         "See issue<br>" + number.strip(),
     ):
         assert _reported(tmp_path, text), text
-    assert rendered_text("a**b**c and *d* e") == "abc and d e"
-    assert rendered_text("a<br>b") == "a b"
+    assert printed_markdown("a**b**c and *d* e")[0][0] == "abc and d e"
+    assert printed_markdown("a<br>b")[0][0] == "a b"
 
 
 def test_a_comment_inside_a_word_takes_no_width(tmp_path: Path) -> None:
@@ -4198,7 +4215,8 @@ def test_a_comment_inside_a_word_takes_no_width(tmp_path: Path) -> None:
     """
     number = " 27"
     assert _reported(tmp_path, "See is<!-- x -->sue" + number)
-    assert split_comments("is<!-- x -->sue", False)[0] == "issue"
+    printed = printed_markdown("is<!-- x -->sue")[0]
+    assert (printed[0], printed[1].strip()) == ("issue", "x")
     assert _reported(tmp_path, "<!-- see issue" + number + " -->")
 
 
@@ -4221,3 +4239,103 @@ def test_a_two_word_noun_may_be_joined_by_a_hyphen(tmp_path: Path) -> None:
     sample = tmp_path / "doc.md"
     sample.write_text("See pull-request #" + number + chr(10), encoding="utf-8")
     assert len(references_in(sample, tmp_path)) == 1
+
+
+def test_a_marker_that_forms_no_markup_prints_as_itself(tmp_path: Path) -> None:
+    """A star, a backtick or a tilde with no partner is a character on the page.
+
+    The hand-written reading deleted every marker, so ``de``, a lone star and
+    ``ad1bee`` read as one word and was reported as a commit hash the page
+    never shows. markdown-it pairs markers as CommonMark does, so a marker
+    that forms markup prints nothing, and one that forms none prints as itself.
+    """
+    for marker in ("*", chr(96), "~~", "_"):
+        text = "Landed in commit de" + marker + "ad1bee."
+        assert not _reported(tmp_path, text), text
+        assert printed_markdown(text)[0][0] == text, text
+    assert _reported(tmp_path, "See is**su**e 27.")
+
+
+def test_each_printed_character_is_read_on_its_own_line(tmp_path: Path) -> None:
+    """The reader places what the page prints on the line it was written on.
+
+    A finding names its line, and a URL resolves a reference on the lines it
+    shares with it, so the place matters as much as the text: a code span, a
+    comment and a link can each run over a line break.
+    """
+    newline = chr(10)
+    tick = chr(96)
+    sample = tmp_path / "doc.md"
+    sample.write_text(
+        "First line." + newline + "See " + tick + "code" + newline + "span" + tick
+        + " and issue" + newline + "27 now." + newline,
+        encoding="utf-8",
+    )
+    located = [message.split(": ", 1)[0] for message in references_in(sample, tmp_path)]
+    assert located == ["doc.md:3"], located
+    printed = printed_markdown("a " + tick + "b" + newline + "c" + tick + " d")
+    assert [line[0] for line in printed] == ["a b", "c d"]
+    comment = printed_markdown("a <!-- b" + newline + "c --> d")
+    assert [line[1].strip() for line in comment] == ["b", "c"]
+    url = "https://github.com/o/r/issues/27"
+    linked = "See [the issue" + newline + "27](" + url + ") now."
+    assert printed_markdown(linked)[1][2] == [url]
+    assert not _reported(tmp_path, linked)
+    definition = "[ref]: " + url + " " + chr(34) + "issue" + " 27" + chr(34)
+    assert printed_markdown(definition)[0][0] == definition
+    assert not _reported(tmp_path, definition)
+
+
+def test_a_table_cell_is_read_apart_from_its_neighbour(tmp_path: Path) -> None:
+    """Two cells of a row are two places on the page, not one sentence."""
+    newline = chr(10)
+    head = "| a | b |" + newline + "| --- | --- |" + newline
+    assert not _reported(tmp_path, head + "| issue | 27 |")
+    assert _reported(tmp_path, head + "| issue " + "27 | x |")
+
+
+def test_a_single_tilde_strikethrough_is_a_known_difference(tmp_path: Path) -> None:
+    """A documented limit, pinned: GitHub strikes text between single tildes.
+
+    markdown-it strikes text only between double tildes, so it prints single
+    tildes as characters, and a reference split by them is not read. The
+    module docstring states this; if this test starts to fail, the difference
+    has gone, and the docstring must say so.
+    """
+    assert not _reported(tmp_path, "See is~su~e 27.")
+    assert _reported(tmp_path, "See is~~su~~e 27.")
+
+
+def test_the_reader_places_every_line_of_the_corpus() -> None:
+    """Every Markdown file in scope is read line for line, and none falls back.
+
+    A run the reader cannot place is read as its source lines stand, which can
+    report more and never less. None is expected, so one is a change to look at.
+    """
+    for path in scoped_paths():
+        if path.suffix.lower() not in MARKDOWN_SUFFIXES:
+            continue
+        text = path.read_text(encoding="utf-8")
+        assert len(printed_markdown(text)) == len(text.split(chr(10))), path
+        assert unmapped_markdown_lines(text) == [], path
+
+
+def test_the_scan_fails_when_the_markdown_reader_cannot_run(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """Without Node.js or markdown-it the scan fails and says what to install.
+
+    Skipping would pass every Markdown file unread, which is the failure this
+    module exists to prevent.
+    """
+    sample = tmp_path / "doc.md"
+    sample.write_text("Words." + chr(10), encoding="utf-8")
+    monkeypatch.setitem(globals(), "_markdown_reader", None)
+    monkeypatch.setitem(globals(), "_printed", {})
+    monkeypatch.setitem(globals(), "NODE_COMMAND", "node-" + "absent-for-this-test")
+    with pytest.raises(AssertionError, match="npm ci"):
+        references_in(sample, tmp_path)
+    monkeypatch.setitem(globals(), "NODE_COMMAND", "node")
+    monkeypatch.setitem(globals(), "MARKDOWN_READER", tmp_path / "absent.mjs")
+    with pytest.raises(AssertionError, match="stopped without an answer"):
+        references_in(sample, tmp_path)

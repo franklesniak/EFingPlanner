@@ -5519,13 +5519,21 @@ def text_state_failure(text: str, display_path: str) -> FileScore | None:
     """Return a failing score when the page hides prose this module cannot see.
 
     A text-state tag the walk does not model -- ``Intro <script>`` on a
-    paragraph line, say -- makes the page read every line after it as data,
-    so the prose this module would score is not the prose a child reads, and
-    an audience marker below it is no comment at all. Scoring the document
-    anyway could pass invisible text or skip a child-facing page on a marker
-    the page never carries. The safe direction is to fail the file and say
-    why, and it is taken before the audience marker is asked. ``None`` when
-    the document holds no such tag. See ``TEXT_STATE_ELEMENT_NAMES``.
+    paragraph line, say -- makes the page read what follows it as data, up to
+    the element's end tag or to the end of the file, so the prose this module
+    would score is not the prose a child reads, and an audience marker below
+    it is no comment at all. Scoring the document anyway could pass invisible
+    text or skip a child-facing page on a marker the page never carries. The
+    safe direction is to fail the file and say why, and it is taken before the
+    audience marker is asked. ``None`` when the document holds no such tag.
+    See ``TEXT_STATE_ELEMENT_NAMES``.
+
+    **An element that closes fails the file too, and that is a documented
+    limit.** ``Intro <script></script> words`` leaves prose the page shows
+    after the end tag. Finding that end tag means telling one the page meets
+    from one written in a code span, which is the model this module does not
+    have. markdownlint's ``MD033`` refuses the tag in every Markdown file it
+    lints, so a writer meets that error before this one.
     """
     tags = scan_document_inlines(normalize_line_endings(text)).text_state_tags
     if not tags:

@@ -502,6 +502,11 @@ template_manifest:
       requires_all:
         - markdown
         - python
+    # The Node program the scan reads Markdown through, which goes with it.
+    - pattern: 'tests/printed_markdown.mjs'
+      requires_all:
+        - markdown
+        - python
     # The Python packages the repository's own checks are installed from.
     - pattern: 'requirements-dev.txt'
       requires_all:

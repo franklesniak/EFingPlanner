@@ -2112,11 +2112,15 @@ def find_violations_in_text(text: str, display_path: str) -> list[Violation]:
         if text_state_open:
             # A text-state tag this hook does not model: ``Intro <textarea>``
             # on a paragraph line, or a ``<script>`` part way along a raw HTML
-            # line. The page reads everything after it as text, so no comment
-            # below it hides a placeholder. Following the element to its end
-            # tag would mean knowing which end tags are code-span text, and
-            # this hook does not read code spans, so the file is read whole
-            # from the tag on: the direction this hook errs in.
+            # line. The page reads what follows it as text, up to the
+            # element's end tag, so no comment there hides a placeholder.
+            # Following the element to its end tag would mean knowing which
+            # end tags are code-span text, and this hook does not read code
+            # spans, so the file is read whole from the tag on: the direction
+            # this hook errs in. **An element that closes is read whole too**,
+            # so a placeholder in a comment below its end tag is reported. That
+            # is a documented limit, and markdownlint's ``MD033`` refuses the
+            # tag in every Markdown file it lints, before this hook runs.
             commentless_line = raw_line
             is_in_html_comment = False
             comment_opened_here = False

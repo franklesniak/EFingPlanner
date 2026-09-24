@@ -7435,3 +7435,18 @@ def test_a_directory_argument_walks_only_the_trees_the_scan_reads(
     printed = capsys.readouterr()
     assert "extra" in printed.err
     assert "hidden_page" not in printed.out + printed.err
+
+
+def test_a_closed_inline_text_state_element_still_fails_the_file(tmp_path: Path) -> None:
+    """A documented limit, pinned: an element that closes fails the file too.
+
+    ``Intro <script></script>`` leaves prose the page shows after the end tag,
+    and this module fails the file all the same, because telling the end tag
+    the page meets from one in a code span is a model it does not have.
+    markdownlint refuses the tag first. If this test starts to fail, the limit
+    has gone, and ``text_state_failure`` must say so.
+    """
+    document = f"Intro <script></script> words after.\n\n{TEXT_STATE_PROSE}\n"
+    failure = readability.text_state_failure(document, "x.md")
+    assert failure is not None
+    assert failure.status == "fail"

@@ -2074,3 +2074,16 @@ def test_the_default_walk_passes_a_tree_with_no_link(tmp_path: Path) -> None:
     (tmp_path / "framework" / "notes.txt").write_text("TBD: here\n", encoding="utf-8")
     assert hook.main([], root=tmp_path) == 0
     assert [path.name for path in hook.default_targets(tmp_path)] == ["real.md"]
+
+
+def test_a_closed_inline_text_state_element_is_still_read_whole() -> None:
+    """A documented limit, pinned: an element that closes is read whole too.
+
+    The page shows the comment below ``</textarea>`` as a comment, and this
+    hook reads it as text, because it does not follow the element to its end
+    tag. So the placeholder in it is reported. markdownlint refuses the tag
+    first. If this test starts to fail, the limit has gone, and the comment
+    in the hook must say so.
+    """
+    document = "Intro <textarea></textarea> words.\n\n<!-- TBD -->\n"
+    assert [violation.matched_text for violation in _find(document)] == ["TBD"]
