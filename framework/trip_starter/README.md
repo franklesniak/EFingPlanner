@@ -37,7 +37,7 @@ A link that leaves the kit, like the one to the binder card, opens a page in thi
 
 ## Nothing here is filled in
 
-Each blank page has headings and fill-in spaces, and that is all. There are no example answers, no pretend decisions, and no sample family anywhere in the kit. What you write is the first thing on the page.
+Each blank page has headings and fill-in spaces, and that is all. Every answer and every decision in the kit starts empty, and the only family in it will be yours. What you write is the first thing on the page.
 
 ## Keep it private
 

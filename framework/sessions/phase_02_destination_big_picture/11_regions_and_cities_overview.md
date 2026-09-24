@@ -31,7 +31,7 @@ Four things matter here, and all four come back later:
 3. **Travel time matters.** Every hour spent getting somewhere is an hour not spent there. Distance on a map is only half the answer, because how you travel changes the time as much as the distance does.
 4. **A first trip cannot include everything.** That's normal. Choosing a few places well beats rushing through many.
 
-**Your facts come from the pack.** The regions and the region names are destination facts, so they're not in this session. When you need them, open this session's Destination Notes.
+**Your facts come from the pack.** The regions and the region names are destination facts, so the pack keeps them. When you need them, open this session's Destination Notes.
 
 Do this now:
 

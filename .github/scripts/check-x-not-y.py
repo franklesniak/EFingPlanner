@@ -36,18 +36,32 @@ reference and backslash escape as its character, and each code span as
 ``‹code›``, because code is not prose. A line break, soft or hard, is a line
 break. The patterns also skip a literal ``*`` and a run of ``_`` at a word's
 edge, such as a blank to fill in. A paragraph is joined before it is split
-into sentences, because Markdown renders a soft line break as a space. The
-candidate, and its key, is the sentence as the page prints it, with every
-sentence its test reads: a fragment (``Not a failure.``) and a short negation
-are keyed with the claim before them, and a release (``You do not have to
-...``) with the sentence after it, which decides whether it counts. A
-paragraph pairs with the one before it only inside the same container: the
-page, one block quote or one list item. A comment between two paragraphs does
-not part them. ``No.`` ends a sentence unless a number follows it. Text above
-a page's first ``##`` heading is not a ``##`` section, so only the file cap
-reaches it. Each ``##`` heading starts its own section, even when two share a
-title. A child session's "For parents" strip and ``## Parent Notes`` are
-parent-facing regions, but the file cap follows the file's own register.
+into sentences, because Markdown renders a soft line break as a space. A
+sentence ends at ``.``, ``!`` or ``?`` when the next letter or digit is not
+lower case, whatever stands before it (a quotation mark, a bullet, an emoji)
+and in any script; ``No.`` ends a sentence unless a number follows it.
+
+Every sentence that holds a negation word is a candidate when a claim sits
+next to it: another sentence in its paragraph, or in the paragraph it pairs
+with. The negation words are ``not``, ``never``, ``no``, ``nor``, ``none``,
+``nothing``, ``nobody``, ``no one``, ``nowhere``, ``neither``, ``cannot``,
+``without`` and ``n't``. A sentence with no neighbor is a candidate when a
+pattern reads a contrast inside it: ``X, not Y``, ``X rather than Y``, a
+negation before or after a semicolon, a colon or a dash, and the other forms
+in ``INLINE_PATTERNS``. The patterns only name the candidate's kind; the
+recorded judgment decides whether it counts, so no negation escapes the count
+because its shape is new. The candidate, and its key, is the sentence as the
+page prints it, with every sentence its test reads: a fragment (``Not a
+failure.``) and a negation after a claim are keyed with the claim before them,
+a negation that opens a paragraph with the claim after it, and a release
+(``You do not have to ...``) with both, because the sentence after it decides
+whether it counts. A paragraph pairs with the one before it only inside the
+same container: the page, one block quote or one list item. A comment between
+two paragraphs does not part them. Text above a page's first ``##`` heading is
+not a ``##`` section, so only the file cap reaches it. Each ``##`` heading
+starts its own section, even when two share a title. A child session's "For
+parents" strip and ``## Parent Notes`` are parent-facing regions, but the file
+cap follows the file's own register.
 
 A ``<!-- density-exempt: X, not Y -- <reason> -->`` marker covers the block
 directly below it: one paragraph, one whole list (a loose list included), one
@@ -84,8 +98,9 @@ and a page's entries follow the page.
 (not empty). It holds the trip starter kit's pages, which are copies of
 child-facing templates (``tests/test_trip_starter_kit_copies.py`` keeps them
 in step) and so take no marker of their own. A data file that is missing is
-read as empty; one that cannot be read, is not JSON, or holds an entry of
-another shape or value stops the run.
+read as empty; one that cannot be read, is not JSON, repeats a key in any
+object, holds ``NaN`` or ``Infinity``, or holds an entry of another shape or
+value stops the run.
 
 A page's register comes from its ``<!-- audience: parent -->`` or
 ``<!-- audience: builder -->`` marker, then from ``x-not-y-registers.json``,
@@ -209,6 +224,10 @@ INLINE_PATTERNS = {
     # `Choose the map (not the list).`: the rejected alternative in parentheses.
     "paren-not": re.compile(r"\(\s*(?:and\s+|but\s+|or\s+)?(?:not|never)\b", re.IGNORECASE),
 }
+#: A joiner between two clauses of one sentence: a semicolon, a colon, or a
+#: spaced or unspaced dash. The patterns above read a negation after one;
+#: `not-then-joiner` reads one before it: `Do not pick the list; choose the map.`
+CLAUSE_JOINER = r"(?:[;:]|\s--\s|\s?[—–]\s?)"
 #: A sentence that opens with Not/Never: the fragment form, when it follows a claim.
 FRAGMENT_RE = re.compile(r"^[\"'“‘*_(]*(?:Not|Never)\b")
 #: A release frees the reader from an obligation: `You do not have to fill every
@@ -222,9 +241,18 @@ RELEASE_RE = re.compile(
 )
 #: A bare "instead" (not "instead of") closes a two-sentence rejection.
 BARE_INSTEAD_RE = re.compile(r"\binstead\b(?!\s+of\b)", re.IGNORECASE)
-#: Straight and curly apostrophes both spell a contraction: `don't`, `don’t`;
-#: `cannot` is the one negation English writes as a single word.
-NEGATION_RE = re.compile(r"\b(?:not|never|no|cannot)\b|n['’]t\b", re.IGNORECASE)
+#: Every negation word the tests read: `not`, `never`, `no`, `nor`, the
+#: negative pronouns and adverbs (`none`, `nothing`, `nobody`, `no one`,
+#: `nowhere`, `neither`), `cannot`, the one negation English writes as a single
+#: word, and `n't` with a straight or a curly apostrophe.
+NEGATION_WORDS = (r"\b(?:not|never|no|nor|none|nothing|nobody|nowhere|neither|cannot)\b|\bno[ -]one\b"
+                  r"|n['’]t\b")
+NEGATION_RE = re.compile(NEGATION_WORDS, re.IGNORECASE)
+#: A sentence that holds any of these, `without` included, is a candidate when a
+#: claim sits next to it. No pattern decides that; the recorded judgment does.
+CANDIDATE_NEGATION_RE = re.compile(NEGATION_WORDS + r"|\bwithout\b", re.IGNORECASE)
+INLINE_PATTERNS["not-then-joiner"] = re.compile(
+    r"(?:" + NEGATION_WORDS + r")[^;:—–]*?" + CLAUSE_JOINER + r"\s*\S", re.IGNORECASE)
 #: Quotation marks, emphasis and brackets that can open a sentence.
 OPENERS = r"[\"'“‘*_(]*"
 #: Negation in the first words of a sentence: the opening of the banned shape.
@@ -263,12 +291,24 @@ ATTRIBUTION_RE = re.compile(r"^[*_]*(?:—|―|--)\s*\w")
 #: Closing quotation marks, brackets and emphasis that can follow a sentence's
 #: last punctuation. They stay with the sentence they close.
 CLOSERS = "[\"'”’)\\]*_]"
-#: A sentence break: the whitespace after `.`, `!` or `?` and up to three
-#: closers, before a capital or a digit. Only the whitespace is consumed.
-SENTENCE_SPLIT_RE = re.compile(
-    "(?:" + "|".join("(?<=[.!?]" + CLOSERS * n + ")" for n in range(4)) + ")"
-    + r"\s+(?=[\"'“‘(*_\[]*[A-Z0-9])"
+#: A possible sentence break: the whitespace after `.`, `!` or `?` and up to
+#: three closers. Only the whitespace is consumed. `starts_sentence()` decides.
+SENTENCE_BREAK_RE = re.compile(
+    "(?:" + "|".join("(?<=[.!?]" + CLOSERS * n + ")" for n in range(4)) + ")" + r"\s+"
 )
+
+
+def starts_sentence(text: str, at: int) -> bool:
+    """True when a sentence can start at `at`: the first letter or digit there is not lower case.
+
+    Quotation marks, brackets, emphasis, bullets and emoji before it are
+    skipped, so `✅ Look it up.`, `«Look.»` and `Élodie calls.` start sentences,
+    in any script. A lower-case word (`e.g. kyoto`, `5 p.m. on Monday`) does not.
+    """
+    for ch in text[at:]:
+        if ch.isalnum():
+            return not ch.islower()
+    return False
 #: Abbreviations that always lead into more words: a sentence never ends on one.
 #: `etc.`, `a.m.` and `p.m.` can end a sentence, so a capital after them starts
 #: a new one: `It isn't at 5 p.m. It's at 6 p.m.` is two sentences. `St.` and
@@ -303,7 +343,8 @@ def sentence_spans(text: str) -> list[tuple[int, int]]:
     """Return the (start, end) of each sentence in text, keeping common abbreviations whole."""
     spans: list[tuple[int, int]] = []
     start = 0
-    for m in [*SENTENCE_SPLIT_RE.finditer(text), None]:
+    breaks = [m for m in SENTENCE_BREAK_RE.finditer(text) if starts_sentence(text, m.end())]
+    for m in [*breaks, None]:
         end = m.start() if m else len(text)
         before = text[spans[-1][0]:spans[-1][1]].rstrip() if spans else ""
         if spans and (ABBREV_RE.search(before)
@@ -794,6 +835,7 @@ def find_candidates(rel: str, prose: list[ProseLine],
             pprev = plain(prev) if prev is not None else None
             pnxt = plain(nxt) if nxt is not None else None
             pats = [name for name, rx in INLINE_PATTERNS.items() if rx.search(ps)]
+            joined = joined_banned_patterns(ps)
             if FRAGMENT_RE.match(ps) and prev is not None:
                 pats.append("fragment")
             if pats:
@@ -801,11 +843,13 @@ def find_candidates(rel: str, prose: list[ProseLine],
                 # judgment reopens when any of them changes. A fragment counts
                 # only when it follows a claim, so the claim is part of it.
                 add(pl, "device", pats, prev + ARROW + s if "fragment" in pats else s, ctx)
-            words = len(s.split())
             if not pats:
+                # Any other sentence with a negation word, and a claim next to
+                # it, is a candidate of the split kind, whatever its length or
+                # shape: the judgment says whether it counts, and as what.
                 split_pats = []
-                if NEGATION_RE.search(ps) and words <= 14 and prev is not None and not FRAGMENT_RE.match(ps):
-                    split_pats.append("short-negation-after-claim")
+                if CANDIDATE_NEGATION_RE.search(ps) and prev is not None:
+                    split_pats.append("negation-after-claim")
                 if BARE_INSTEAD_RE.search(ps) and pprev is not None and NEGATION_RE.search(pprev):
                     split_pats.append("negation-then-instead")
                 if split_pats and prev is not None:
@@ -818,12 +862,11 @@ def find_candidates(rel: str, prose: list[ProseLine],
                                 prev + ARROW + s + ARROW + nxt, ctx)
                         else:
                             add(pl, "split", split_pats, prev + ARROW + s, ctx)
-                elif (prev is None and nxt is not None and NEGATION_RE.search(ps) and words <= 14
-                      and not FRAGMENT_RE.match(ps)):
-                    # The negation opens the paragraph and the claim follows.
+                elif prev is None and nxt is not None and CANDIDATE_NEGATION_RE.search(ps):
+                    # The negation opens the paragraph and the claim follows,
+                    # `Never guess. Look it up.` included.
                     add(pl, "split", ["negation-before-claim"], s + ARROW + nxt, ctx)
                     opened_pairs.add(g)
-            joined = joined_banned_patterns(ps)
             if joined:
                 add(pl, "banned", joined, s, ctx)
             if pnxt is not None:
@@ -892,13 +935,34 @@ JUDGMENT_KEY_RE = re.compile(r"^(?:device|split|banned)\|.+\|[1-9][0-9]*(?:\|(?:
                              re.DOTALL)
 
 
+def unique_object(pairs: list[tuple[str, Any]]) -> dict:
+    """Build a JSON object, refusing a key it already holds.
+
+    `json.loads()` keeps the last of two equal keys, so a second judgment for
+    one candidate would silently replace the first. RFC 8259 leaves duplicate
+    names to the reader; this reader refuses them, at every level.
+    """
+    out: dict = {}
+    for key, value in pairs:
+        if key in out:
+            raise ValueError(f"duplicate key {key!r}")
+        out[key] = value
+    return out
+
+
+def refuse_constant(name: str) -> Any:
+    """Refuse `NaN`, `Infinity` and `-Infinity`, which JSON (RFC 8259) does not allow."""
+    raise ValueError(f"{name} is not JSON")
+
+
 def load_json(path: Path | None) -> Any:
     """Load a data file; a missing one is empty. Any other failure raises DataError."""
     if path is None or not path.exists():
         return {}
     try:
-        return json.loads(path.read_text(encoding="utf-8"))
-    except (OSError, ValueError) as exc:  # ValueError covers bad UTF-8 and bad JSON
+        return json.loads(path.read_text(encoding="utf-8"), object_pairs_hook=unique_object,
+                          parse_constant=refuse_constant)
+    except (OSError, ValueError) as exc:  # ValueError covers bad UTF-8, bad JSON and duplicate keys
         raise DataError(f"{path.name}: {exc}") from exc
 
 

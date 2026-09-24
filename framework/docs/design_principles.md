@@ -13,7 +13,7 @@
 
 ## Every mechanic has a job
 
-Nothing in a session is decoration. Each repeated part of the page is there to support one executive-function move, and the table below is the whole list.
+Everything in a session earns its place. Each repeated part of the page is there to support one executive-function move, and the table below is the whole list.
 
 | Mechanic | What it is for |
 | --- | --- |
@@ -43,7 +43,7 @@ The curriculum trains three executive-function skills, and it trains them on pur
 - **Cognitive flexibility** is shifting and adapting when something changes. It is supported by the trade-off reports, the backup plans, and the repeated message that plans can change when facts change.
 - **Inhibitory control**, or self-control, is resisting distraction, not over-researching, and sticking to the stop point. It is supported by the timer, the stop point, "good enough is good enough," and the question parking lot.
 
-Those are the adult names for them. Child-facing text says "self-control" or "knowing when to stop," and never uses the clinical vocabulary.
+Those are the adult names for them, and they stay on adult pages. For the third, child-facing text says "self-control" or "knowing when to stop."
 
 ## The fourth skill underneath
 

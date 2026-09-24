@@ -45,6 +45,8 @@ Most sessions you can do on your own. Only a few need a grown-up first:
 - **Need a grown-up:** Session 00 (setup, grown-ups only), Session 05 (do it together), Session 07 (only if you do the library session -- a grown-up opens the catalog or drives you), Session 08 (a grown-up stays nearby while you search the web), Session 09 (only if your family uses AI -- a grown-up runs the AI tool, on their account, with you there), Checkpoint 1 (a grown-up reviews it), and Session 44 (co-choose your one special pick with a grown-up).
 - **On your own:** everything else.
 
+<!-- density-exempt: X, not Y -- standing rules a child obeys, in wording the batch 1 brief (H7) fixes, and the gap line spec 13.3.1 requires on the tracker -->
+
 So when a grown-up is busy, keep going **in order** on the next session -- unless that next session needs a grown-up (Session 05, Session 07 if you are doing it, Session 08, Session 09 for AI families, Checkpoint 1, or Session 44's special-pick step). Do those *with* a grown-up: pause there until one is free, and do not skip past them -- except Session 07, which you can skip if no grown-up is free, going straight on to Session 08. **A gap of a week or two is normal -- you do not start over.**
 
 ## What to do while you wait for a grown-up

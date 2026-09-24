@@ -29,6 +29,7 @@ Two different cases:
 Name the one specific gap, size the redo to one session, frame it as the checkpoint working, and end on what already stands.
 
 **"We had to book before you finished"** (the timeline collision):
+<!-- density-exempt: X, not Y -- the spec's timeline-collision script, the Your-Work-Wasn't-Wrong Named concept in a parent's words (specification line 3934) -->
 > "We had to lock the bookings before you finished, because prices were climbing -- that's how trips work, and it doesn't mean your planning was wrong. Here's what's still yours to decide inside the dates we booked."
 
 **Honoring the child's calls** (even when you'd have chosen differently):

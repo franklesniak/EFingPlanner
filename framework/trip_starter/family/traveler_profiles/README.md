@@ -27,6 +27,7 @@ If two travelers share a role, add a number, the way the first example does. You
 
 ## Keep private details out
 
+<!-- density-exempt: X, not Y -- privacy rule: each traveler is written by relationship or role and never by name (batch 1 brief G4) -->
 Write each traveler by relationship or role. A profile never needs a name.
 
 Medical specifics stay with the adults and go on no page at all. Write what someone needs designed around, and leave the reason with the adults. The full rules are on one page: [privacy and safety](../../../docs/privacy_and_safety.md).

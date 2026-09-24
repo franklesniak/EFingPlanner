@@ -15,7 +15,7 @@ It opens in any web browser, in any text editor, and in Google Docs. On the webs
 
 Plain text was chosen for four reasons that matter to a family using this.
 
-- **One source of truth.** A page exists once. There is no document and separate export to keep in step.
+- **One source of truth.** A page exists once, and every copy you print or paste comes straight from that one file.
 - **It prints.** Any browser prints a page, and a library printer handles it.
 - **It copies.** Select a page, paste it into a Google Doc, and the headings and tables come with it.
 - **No build step.** The repository ships no PDFs and generates nothing. What you see is the file.

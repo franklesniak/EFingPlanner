@@ -41,6 +41,8 @@ A quick, honest self-check before you commit weeks or months:
 - Do I myself find getting-started or following-through hard?
 - Is right now an unusually hard season for our family?
 
+<!-- density-exempt: X, not Y -- the spec (specification line 3680) requires both contrasts in this self-check's routing answer: parking it is a respected outcome, not a failure, and a parent does not have to be the source-evaluation expert -->
+
 If it is a lot right now, that is fine -- use the try-then-commit on-ramp (do Phases 0-2, reach Checkpoint 1, then decide), lighten the load (see [time and effort](time_and_effort.md)), or park it for later. Parking it is a respected outcome, not a failure. If two adults will coach, agree who owns the day-to-day coaching stance. And you do not have to be the source-evaluation expert -- you and your child can look things up together.
 
 ## The buy-in gut-check

@@ -110,7 +110,7 @@ Write the line scoped to the path it describes. An unqualified shortcut written 
 
 ## The status values
 
-Four classifications, not three: **Core**, **Conditional core**, **Recommended**, **Optional**.
+There are four classifications, and Conditional core is the easy one to miss: **Core**, **Conditional core**, **Recommended**, **Optional**.
 
 <!-- density-exempt: X, not Y -- the batch 1 brief requires the built form "and never by citing a spec section number", which the reference-hygiene rule forbids -->
 A conditional-core session names its condition on the same line, in the built form `Status: Conditional core -- done **only if** ...`, and never by citing a spec section number. Built files reference concepts by Name and relative link. The structure gate requires a `Status` bullet and never reads its value, so a session flattened into Core or Recommended passes every gate in this repository while moving in or out of a Core baseline the design record fixes on purpose.
@@ -118,9 +118,9 @@ A conditional-core session names its condition on the same line, in the built fo
 ## The rest of the strip
 
 - **Estimated time** defaults to 20-30 minutes.
-- **Parent involvement** is one of: none / independent work; 5-minute check-in; parent review after session; parent setup needed; co-working recommended; a grown-up stays nearby for this one; adult-operated; adult-owned. Two of these are requirements. **A grown-up stays nearby** is Session 08's, because a filter reduces exposure without removing it. **Adult-operated** is Session 09's: the adult runs the tool, on the adult's account, with the child present. Neither may be softened to co-working recommended.
+- **Parent involvement** is one of: none / independent work; 5-minute check-in; parent review after session; parent setup needed; co-working recommended; a grown-up stays nearby for this one; adult-operated; adult-owned. Two of these are requirements. **A grown-up stays nearby** is Session 08's, because a filter reduces exposure without removing it. **Adult-operated** is Session 09's: the adult runs the tool, on the adult's account, with the child present. Keep both at full strength, because co-working recommended in place of either one would drop a requirement.
 - **Planner skill** comes from a closed list: getting started; comparing choices; checking sources; ranking priorities; planning realistic time; making trade-offs; organizing information; revising a plan; self-control (knowing when to stop). Write the value your batch brief assigns, and when it assigns two, name both. Some sessions built before the list was closed carry other labels, such as *estimating* or *reflection*. Leave those as built, and do not copy one into a new session.
-- **Materials** names what the child needs in hand, with a relative link to each framework template it names. **A blank is linked; the child's own filled-in page is not.** "two blank City Research Cards" links the template, because the child needs to fetch one; "your two City Research Cards" names work they already have, and a link there would send them to an empty page. A running artifact the child keeps -- the Source Log -- is linked anyway, because a family may still be printing their first copy. A setup page a grown-up filled in, such as the Trip-Basics card or the assumptions page, is linked too: it is a canonical concept, and the style law links every concept Name to its home.
+- **Materials** names what the child needs in hand, with a relative link to each framework template it names. **Link a blank, and leave the child's own filled-in page unlinked.** "two blank City Research Cards" links the template, because the child needs to fetch one; "your two City Research Cards" names work they already have, and a link there would send them to an empty page. A running artifact the child keeps -- the Source Log -- is linked anyway, because a family may still be printing their first copy. A setup page a grown-up filled in, such as the Trip-Basics card or the assumptions page, is linked too: it is a canonical concept, and the style law links every concept Name to its home.
 
 ## Writing the body
 

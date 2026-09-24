@@ -12,7 +12,7 @@ Executive function is the set of brain skills a person uses to run themselves. F
 - **Staying organized**, so the thing you need is where you can find it.
 - **Being flexible**, so a plan that stops working gets changed instead of abandoned.
 
-These skills develop on their own schedule, and that schedule is not the same as a child's reading age or their intelligence. A child who reads two grades ahead can still need a nudge to start every single time.
+These skills develop on their own schedule, which can run ahead of or behind a child's reading age, however bright the child is. A child who reads two grades ahead can still need a nudge to start every single time.
 
 ## Why it matters past this trip
 

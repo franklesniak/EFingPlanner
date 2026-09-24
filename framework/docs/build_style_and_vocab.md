@@ -28,6 +28,7 @@ Three acceptance-criteria matrices exist in the archived design record. They ren
 
 **`framework/sessions/phase_00_setup/04_start_a_source_log.md` (Session 04, Start a Source Log) is the exemplar session.** It was authored first and edited to reference quality: full seven-field scaffold, warm on-tone voice, fourth-to-sixth-grade reading level, and a true under-one-minute micro-action Start Here. Every other session -- in this batch and every later one -- is drafted against it and checked against it in the per-batch quality pass. When in doubt about tone, length, or structure, open Session 04 and match it.
 
+<!-- density-exempt: X, not Y -- a rule on how many contrasts Session 04 may hold, so contrasts are its own subject matter -->
 A note for whoever edits it next: Session 04 already holds two `X, not Y` contrasts, which is the whole child-facing allowance, so a third would put the registered exemplar over the cap it exists to demonstrate. Reshape a contrast that is already there rather than adding one.
 
 ## The seven mandatory-core session fields
@@ -42,6 +43,7 @@ Every child-facing session has these seven. They are the **mandatory core**, whi
 6. Stop Point (says exactly when the child is done)
 7. Source Check (only when the session has a research step)
 
+<!-- density-exempt: X, not Y -- wording the batch 1 brief fixes for this paragraph, the mandatory-core replacement and the sentences it keeps as they stand -->
 Everything else sits outside that mandatory core, and three of the four are not therefore optional. Finish and Quality Check, If You Get Stuck and Optional Extension are carried by every child session and render as short one-line pointers by default; a pointer counts the same as full text. Parent Notes is the one genuinely optional section, and an omitted Parent Notes is correct as it stands. Put the child's action (Goal, Start Here, Steps) first; group parent-facing meta into the labeled "For parents" strip near the top.
 
 ## Navigation line rendering
@@ -103,7 +105,8 @@ Neither of those announces a divergence from a path, which is why the divergence
 
 ## Verify-don't-trust (applies to every travel fact)
 
-Never state entry, visa, passport, insurance, rail-pass, or medication rules, prices, opening hours, closures, or ticketing rules as fixed facts. Use "check with official sources close to travel," "record the date you checked," and "adults verify before booking." Name seasons and categories (a national holiday week, a rainy season, a typhoon season) as things to confirm this year, never as pinned dates. Refer to "the operator's current venues" (they change); a venue pinned by name today may have closed before the family books. Any currency figure is an example to re-check and date.
+<!-- density-exempt: X, not Y -- the Verify-Don't-Trust rule, a Named concept, in the wording the batch 1 brief fixes for this section -->
+Never state entry, visa, passport, insurance, rail-pass, or medication rules, prices, opening hours, closures, or ticketing rules as fixed facts. Use "check with official sources close to travel," "record the date you checked," and "adults verify before booking." Name seasons and categories (a national holiday week, a rainy season, a typhoon season) as things to confirm this year, never as pinned dates. Refer to "the operator's current venues" (they change); a venue pinned by name today may have closed before the family books. Any currency figure is an example to re-check and date, never a hard-coded rate.
 
 ## Agreed labels (use these exact terms everywhere)
 
@@ -159,7 +162,7 @@ So the idea stays and the token changes. Use these words in built pages:
 
 Three rules go with that:
 
-1. **Never treat the blank as a failure.** Wherever a worksheet can plausibly come back empty, the surrounding text should say so out loud: leaving it open is a finished answer.
+1. **Treat the blank as a valid answer.** Wherever a worksheet can plausibly come back empty, the surrounding text should say so out loud: leaving it open is a finished answer.
 2. **Inline underscore blanks (`______`) are fine** and do not trip the hook. The main fill-in space of a worksheet is still an empty table cell.
 3. **The literal token is available only under suppression.** Where a built page must show the software token -- for example, teaching an older child what they will see in a real project plan -- write it with an inline suppression comment on the same line stating why, in the form `<!-- ALLOW-TBD: <reason> -->`. Expect this to be rare; prefer the plain words above. <!-- ALLOW-TBD: naming the banned token is unavoidable when documenting the rule that bans it -->
 

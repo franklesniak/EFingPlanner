@@ -21,6 +21,8 @@ Only the first two layers live in this repository. The third one is yours, and i
 
 **Curriculum version: 0.2.0.** What changed between revisions is in the [curriculum changelog](CHANGELOG.md).
 
+<!-- density-exempt: X, not Y -- this is the which-is-which tag the batch 1 brief and the spec require wherever the two logs meet, a rule about telling two named logs apart, and it carries the privacy rule that a family's decision log is never committed -->
+
 Which log is which: the curriculum changelog is the version history of these reusable materials, and it is committed here. A **decision log** is a record of one family's trip decisions, it lives in their own binder or Docs folder, and it is never committed. If you are using the curriculum, the decision log is yours and the changelog is not.
 
 ## What "reusable" means here

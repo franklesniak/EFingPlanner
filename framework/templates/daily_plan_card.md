@@ -4,6 +4,8 @@
 
 **Build these only after your route and trip length are settled** — that's Checkpoint 4. Day cards built before then usually have to be redone, and that's a lot of work to lose.
 
+<!-- density-exempt: X, not Y -- privacy rule: exact booked travel dates stay off every working page (the privacy page, and the batch 2 brief's day-card rule), so the card names what to write in their place -->
+
 **Don't write exact booked travel dates on this card.** Use the day number, or a broad window like "spring" or "the second week", or "not decided yet". Exact dates are the grown-ups' business and they stay off working pages — on paper and in a shared folder alike.
 
 ## The block card (start here — this is the default)

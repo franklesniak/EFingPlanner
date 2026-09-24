@@ -13,6 +13,7 @@ This is a private note you keep for yourself. It takes about a minute, three tim
 
 ## What the three items are, and what they are not
 
+<!-- density-exempt: X, not Y -- the batch 1 brief (H4) requires the page to say the items are everyday behaviors and not a one-to-one measurement of the three skills -->
 The three items below are everyday behaviors you can see from across the room. They are not a one-to-one measurement of the three core executive-function skills, and this page does not claim they are.
 
 The canonical three are **working memory**, **cognitive flexibility** and **inhibitory control**, and they are defined in [design principles](../docs/design_principles.md). A three-item home note cannot see cognitive flexibility at all, so nothing here stands in for it. What you are watching is the visible surface: getting started, sustaining effort, and knowing when to stop.

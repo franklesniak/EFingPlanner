@@ -24,6 +24,7 @@ Your child's controllable slices are hotels, food, activities, local transit and
 
 **That figure is a floor, and it is worth knowing what it leaves out.** At the first budget session it leaves out three of the five slices: activities, local transit and souvenirs. That is on top of everything below, so it is a floor under a floor. Once the Core path has added those, the subtotal covers all five.
 
+<!-- density-exempt: X, not Y -- the floor warning the batch 2 brief requires (B4 item 2): adult costs sit outside the figure, and it is not the trip's full cost -->
 **Outside it at every stage:** intercity transportation, travel insurance, any entry or visa costs, phone or data service, and anything else adult-owned. So treat the number as *are we in the right range*, and never as what the trip will cost.
 
 **Keep your getting-there number on your own page.** Their budget worksheet says in as many words that getting there is the grown-ups' number and that there is nothing to fill in there. That wording is deliberate. A jotted line in this guide, or anywhere you keep trip notes, is all it needs to be.
@@ -83,6 +84,7 @@ Children's fares are often lower than adults' on some transport systems. Treat i
 
 ---
 
+<!-- density-exempt: X, not Y -- the page's closing line, which the batch 2 brief (B4) gives in bold: every figure is an example to re-check, with a date, and there are no pinned amounts -->
 Every figure on this page is an example to re-check, with a date. There are no pinned amounts here, and there shouldn't be any in your child's work either.
 
 ## Where to go next

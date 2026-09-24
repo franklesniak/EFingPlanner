@@ -19,13 +19,13 @@ This repository has two change trails, and they are not the same thing.
 | **This file** | Revisions of the reusable curriculum itself: sessions added, wording fixed, conventions changed | `framework/CHANGELOG.md` (committed) | Builders, and anyone reusing the curriculum |
 | **Decision log** | One family's trip: what they decided, when, and why | Your private binder or Docs folder (never committed) | The child and the adults on that trip |
 
-If you are a family using the curriculum, the decision log is yours and this file is not. If you are rebuilding, extending, or adopting the curriculum, this file tells you what changed between revisions.
+If you are a family using the curriculum, the decision log is yours, and you can leave this file to the builders and reusers. If you are rebuilding, extending, or adopting the curriculum, this file tells you what changed between revisions.
 
 ## Versioning
 
 The curriculum carries its own version, separate from the archived design spec's version.
 
-- **`0.x`** means the deliverable inventory is still incomplete. The sessions that exist are written to be runnable, and the set is not whole. Runnable is not the same as validated: no child has piloted any of it yet, and only a real child can establish that. See "What is still owed to a human" below.
+- **`0.x`** means the deliverable inventory is still incomplete. The sessions that exist are written to be runnable, and the set is not whole. Validation is a further claim that only a real child can establish, and every session so far is unpiloted. See "What is still owed to a human" below.
 - **`1.0.0`** is reached when the full deliverable inventory exists and the whole-repo consistency pass has run.
 - The **minor** number moves when sessions, templates, guides, or destination files are added or restructured. The **patch** number moves for wording, link, and consistency fixes that change no structure.
 
@@ -102,7 +102,7 @@ The First Taste slice: the shortest path that still produces a usable mini-plan.
 
 ### Added
 
-- Fifteen sessions covering Phase 0 setup through the closing reflection, in the intended First Taste path order. That order is designed intent, not a piloted result -- no child has walked it yet. See "What is still owed to a human" below.
+- Fifteen sessions covering Phase 0 setup through the closing reflection, in the intended First Taste path order. That order is designed intent, and it stays unpiloted until a child walks it. See "What is still owed to a human" below.
 - The student guide, the parent guide, and the blank templates those sessions use.
 - The Japan reference pack, and the root start surfaces (`README.md`, `GETTING_STARTED.md`) with the verify-don't-trust banner.
 - `framework/PROJECT_ROADMAP.md` with the First Taste index up front.
@@ -119,4 +119,4 @@ These items cannot be closed by editing files. They are recorded here so they ar
 
 - **Run the Batch 0 usability pilot with an actual child (roughly ten years old), then remove the deferral flag** from [time and effort](parent_guide/time_and_effort.md). Check the three documented signals: an unaided start, reaching Checkpoint 1 mostly independently, and a coaching load that matches the estimate. A failed pilot means fixing the Phase 0-2 sessions and re-piloting before relying on later material.
 - **Run the two "verify the built slice" checks, once Batch 1 exists.** This repository builds the **Full / OER Build**, and that track sets two checks at the gate after the first vertical slice. **Check 1:** an adult reads the upgraded neutral-skeleton and insert pages against the Batch 0 concrete pages, and confirms they say the same thing. Those Batch 0 pages are the baseline, not a validated reference: they are unpiloted too, under the same deferral. **Check 2:** an adult watches the child work the new sessions 02, 06, 07, 08 and 11, as the child reaches them, and fixes what the child struggles with before the Phase 3-8 sessions are built. Batch 1 has now created those pages and sessions. The automated equivalence read that is check 1's evidence was run during the build, and its result is in the build report; check 1 stays open until an adult accepts that result or performs the read, because the build that wrote both sides of the comparison also ran it. Check 2 has not been run; it needs a real child. **Nothing stands in for check 2.** It needs a real child, and no review pass replaces one.
-- **Read every child-facing and parent-facing file this batch created or edited, as a person.** The review-coverage policy above is full coverage. It samples nothing, and no file has yet been read by a person. Each has been written and checked by the build that wrote it, which is not the same thing and cannot stand in for it. This is separate from the two slice checks above: those ask whether the converted pages still say what the originals said and whether a child can work the new ones. This one asks whether each page is fit to put in front of a child at all. It stays open until an adult has read them.
+- **Read every child-facing and parent-facing file this batch created or edited, as a person.** The review-coverage policy above is full coverage: every one of those files gets a person's read, and every one is still waiting for it. The build that wrote each file has also checked it, and the person's read is owed on top of that check. This is separate from the two slice checks above: those ask whether the converted pages still say what the originals said and whether a child can work the new ones. This one asks whether each page is fit to put in front of a child at all. It stays open until an adult has read them.

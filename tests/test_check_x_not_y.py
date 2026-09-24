@@ -1040,3 +1040,123 @@ def test_another_device_is_not_a_problem() -> None:
 def test_a_misspelled_name_fails_the_run(tmp_path: Path, capsys: Any) -> None:
     root = repo_with(tmp_path, "## A\n\n<!-- density-exempt: X not Y -- required -->\nIt is a map, not a list.\n")
     assert run(root, judge_all(root), capsys) == 1
+
+
+# ---------------------------------------------------------------------------
+# Negation words and where they sit
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.parametrize(("page", "text"), [
+    ("Never guess. Look it up.", "Never guess. → Look it up."),
+    ("Not a list. Use a map.", "Not a list. → Use a map."),
+    ("No. Use the map.", "No. → Use the map."),
+    ("Nothing is booked yet. Your plan is a draft.", "Nothing is booked yet. → Your plan is a draft."),
+    ("None of this is final. It is a draft.", "None of this is final. → It is a draft."),
+    ("Nobody books alone. A grown-up books.", "Nobody books alone. → A grown-up books."),
+    ("No one books alone. A grown-up books.", "No one books alone. → A grown-up books."),
+    ("Neither city is wrong. Both are fine.", "Neither city is wrong. → Both are fine."),
+    ("It goes nowhere. Keep it in the binder.", "It goes nowhere. → Keep it in the binder."),
+])
+def test_an_opening_negation_before_its_recast_is_a_split_candidate(page: str, text: str) -> None:
+    assert ("split", text) in kinds(page)
+
+
+@pytest.mark.parametrize("sentence", [
+    "Do not pick the list; choose the map.",
+    "Never guess; check the source.",
+    "Do not pick the list: choose the map.",
+    "Never guess -- check the source.",
+    "Never guess — check the source.",
+    "Nothing here is final; it is a draft.",
+])
+def test_a_negation_before_a_joiner_is_a_candidate(sentence: str) -> None:
+    found = candidates(sentence)
+    assert [(c.kind, c.text) for c in found if "not-then-joiner" in c.patterns] == [("device", sentence)]
+
+
+def test_a_comma_is_not_a_joiner_for_a_negation_before_it() -> None:
+    assert kinds("If you don't know, ask an adult.") == []
+
+
+NEGATION_FORMS = ["not", "never", "no", "nor", "none", "nothing", "nobody", "no one", "nowhere", "neither",
+                  "cannot", "n't", "without"]
+NEGATION_SENTENCES = {
+    "not": "It is not the list.", "never": "It never was the list.", "no": "It has no list.",
+    "nor": "Nor is it the list.", "none": "None of it is the list.", "nothing": "Nothing here is the list.",
+    "nobody": "Nobody wants the list.", "no one": "No one wants the list.", "nowhere": "The list goes nowhere.",
+    "neither": "Neither one is the list.", "cannot": "It cannot be the list.", "n't": "It isn't the list.",
+    "without": "It works without the list.",
+}
+
+
+@pytest.mark.parametrize("word", NEGATION_FORMS)
+def test_every_negation_word_next_to_a_claim_is_a_candidate(word: str) -> None:
+    negation = NEGATION_SENTENCES[word]
+    after = [c.text for c in candidates("Choose the map. " + negation)]
+    before = [c.text for c in candidates(negation + " Choose the map.")]
+    assert "Choose the map. → " + negation in after
+    assert negation + " → Choose the map." in before
+
+
+def test_a_long_negation_sentence_next_to_a_claim_is_a_candidate() -> None:
+    long = ("AI may help you brainstorm or organize your notes for a session, and it is never the source of a fact "
+            "you write down in your plan.")
+    assert ("split", "Use two sources. → " + long) in kinds("Use two sources. " + long)
+
+
+def test_a_negation_sentence_with_no_claim_beside_it_is_not_a_candidate() -> None:
+    assert kinds("- Do not share your address.\n- Keep your plan in the binder.") == []
+
+
+# ---------------------------------------------------------------------------
+# Where a sentence starts
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.parametrize(("text", "sentences"), [
+    ("Do not guess. ✅ Look it up.", ["Do not guess.", "✅ Look it up."]),
+    ("It's not a toy. Élodie calls it a tool.", ["It's not a toy.", "Élodie calls it a tool."]),
+    ("It isn't a toy. Ōsaka is next.", ["It isn't a toy.", "Ōsaka is next."]),
+    ("Do not guess. «Look it up.»", ["Do not guess.", "«Look it up.»"]),
+    ("Do not guess. ¿Why not?", ["Do not guess.", "¿Why not?"]),
+    ("Do not guess. • Look it up.", ["Do not guess.", "• Look it up."]),
+    ("Pick a city, e.g. kyoto.", ["Pick a city, e.g. kyoto."]),
+    ("Meet at 5 p.m. on Monday.", ["Meet at 5 p.m. on Monday."]),
+    ("Done. 🙂 and then some.", ["Done. 🙂 and then some."]),
+])
+def test_a_sentence_starts_at_any_letter_that_is_not_lower_case(text: str, sentences: list[str]) -> None:
+    assert cx.split_sentences(text) == sentences
+
+
+def test_a_negation_before_an_emoji_sentence_is_a_candidate() -> None:
+    assert ("split", "Do not guess. → ✅ Look it up.") in kinds("Do not guess. ✅ Look it up.")
+
+
+# ---------------------------------------------------------------------------
+# JSON the data files may not hold
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.parametrize(("judgments", "message"), [
+    ('{"framework/templates/a.md": {"device|It is a map, not a list.|1": {"line": 3, "judgment": "device", '
+     '"reason": "x"}, "device|It is a map, not a list.|1": {"line": 3, "judgment": "no", "reason": "y"}}}',
+     "duplicate key 'device|It is a map, not a list.|1'"),
+    ('{"framework/templates/a.md": {}, "framework/templates/a.md": {}}', "duplicate key 'framework/templates/a.md'"),
+    ('{"framework/templates/a.md": {"device|It is a map, not a list.|1": {"line": 3, "line": 4, '
+     '"judgment": "no", "reason": "y"}}}', "duplicate key 'line'"),
+    ('{"framework/templates/a.md": {"device|It is a map, not a list.|1": {"line": NaN, "judgment": "no", '
+     '"reason": "y"}}}', "NaN is not JSON"),
+])
+def test_a_duplicate_key_or_a_constant_json_does_not_allow_stops_the_run(tmp_path: Path, capsys: Any,
+                                                                            judgments: str, message: str) -> None:
+    code, err = data_run(tmp_path, capsys, judgments=judgments)
+    assert code == 2
+    assert message in err
+
+
+def test_a_duplicate_key_in_the_registers_file_stops_the_run(tmp_path: Path, capsys: Any) -> None:
+    registers = '{"framework/templates/a.md": {"register": "builder", "basis": "x", "register": "child"}}'
+    code, err = data_run(tmp_path, capsys, registers=registers)
+    assert code == 2
+    assert "duplicate key 'register'" in err

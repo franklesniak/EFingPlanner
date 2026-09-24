@@ -36,10 +36,12 @@ If the tool's current policy does not allow the use you had in mind, the answer 
 
 This is the supervision boundary the rest of the curriculum relies on. It is not optional for a family that opted in.
 
+<!-- density-exempt: X, not Y -- the adult-operated pattern, a supervision and verification safety rule: the batch 1 brief (F6) and spec 20.1 require its bullets, and the fourth adds how an AI use is logged -->
+
 - A grown-up operates the tool, on the grown-up's own account, with the child present.
 - Never the child alone, and never on an account belonging to the child.
 - AI is confined to three jobs: brainstorming questions, suggesting search terms, and tidying the child's own notes.
-- AI is never the source of a fact, and a fact is never accepted because AI said it. Each use still goes in the Source Log, on the [AI form](citation_style.md#ai), as a record of what AI helped with. That entry is not evidence for a fact: only the non-AI source written in its verification fields can support one. If a fact turns up in AI's output anyway, the Verification rules below apply: check it against a non-AI source, or take it out.
+- AI is never the source of a fact, and a fact is never accepted because AI said it. Each use still goes in the Source Log, on the [AI form](citation_style.md#ai), as a record of what AI helped with. Only the non-AI source written in that entry's verification fields can support a fact. If a fact turns up in AI's output anyway, the Verification rules below apply: check it against a non-AI source, or take it out.
 - Session 09 comes before any session where AI could be used.
 - The adult records the AI choice at setup.
 
@@ -51,9 +53,11 @@ Three jobs, and these three only.
 2. **Suggesting search terms.** Words to type into a search box, which the child then searches for themselves.
 3. **Tidying and organizing the child's own notes.** This covers summarizing notes the child wrote and arranging them into a comparison.
 
-All three run on material the child already has. None of them is a way to find something out.
+All three run on material the child already has. Finding something new out always takes a non-AI source.
 
 ## What AI may not do
+
+<!-- density-exempt: X, not Y -- the batch 1 brief's (F6) required list of what AI may not do, with its fixed wording on the child's recommendation, and the safety statement that the listed decisions are the adults' -->
 
 - **It may not be the only source** for anything that ends up in the plan.
 - **It may not draft or produce the child's recommendation**, even from the child's own notes. The recommendation is the child's work, and handing that job to a tool removes the one thing this whole project is for.
