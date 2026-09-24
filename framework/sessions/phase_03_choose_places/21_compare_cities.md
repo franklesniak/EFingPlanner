@@ -14,7 +14,7 @@ You are here: Phase 3 (Choose Places), First Taste step 10 of 13. Previous: [20 
 - Planner skill: comparing choices; making trade-offs
 - Estimated time: 20-30 minutes
 - Parent involvement: 5-minute check-in
-- Materials: your two City Research Cards, a [Scoring Rubric page](../../templates/scoring_rubric.md), and on the Core path your City Long-List from Session 20 and the cards for every place you keep in the running
+- Materials: your two City Research Cards, your Family Trip Goals page from Session 03 (for the poll), your family's [current travel assumptions](../../templates/current_family_travel_assumptions.md) page (for the budget band), a [Scoring Rubric page](../../templates/scoring_rubric.md), and on the Core path your City Long-List from Session 20 and the cards for every place you keep in the running
 
 ## Goal
 
