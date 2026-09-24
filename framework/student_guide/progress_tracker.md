@@ -111,7 +111,7 @@ How to read the lines:
 - [ ] [34 Neighborhoods and Hotel Location](../sessions/phase_06_lodging_food_budget/34_neighborhoods_and_hotel_location.md) *(a grown-up stays nearby if you search beyond the Destination Notes and official city sites, and beside you for an image search)*
 - [ ] [35 Hotel Comparison](../sessions/phase_06_lodging_food_budget/35_hotel_comparison.md) *(more than one sitting)*
 - [ ] [36 Food Research](../sessions/phase_06_lodging_food_budget/36_food_research.md) *(Conditional core: only if your family wants the restaurant and food shortlist in the binder; a grown-up stays nearby if you search beyond the Destination Notes, and beside you for an image search)*
-- [ ] [37 Restaurant Shortlist](../sessions/phase_06_lodging_food_budget/37_restaurant_shortlist.md) *(Conditional core: only if your family wants the restaurant and food shortlist in the binder; a grown-up stays nearby if you search beyond the Destination Notes, and beside you for an image search)*
+- [ ] [37 Restaurant Shortlist](../sessions/phase_06_lodging_food_budget/37_restaurant_shortlist.md) *(Conditional core: only if your family wants the restaurant and food shortlist in the binder; more than one sitting; a grown-up stays nearby if you search beyond the Destination Notes, and beside you for an image search)*
 - [ ] [38 Daily Cost Estimates](../sessions/phase_06_lodging_food_budget/38_daily_cost_estimates.md)
 - [ ] [39 Budget Review, Second Pass](../sessions/phase_06_lodging_food_budget/39_budget_review_second_pass.md) *(before you start: a grown-up tells you how many rooms each city needs)*
 
