@@ -9,10 +9,17 @@
  * writes one JSON object per line on stdout:
  *
  *   lines     one entry per line of the document, as the text splits on
- *             "\n": [printed, hidden, destinations]. printed is what the page
- *             shows from that line; hidden is the text of an HTML comment on
- *             it; destinations are the link targets written on it, for an
- *             inline link, an image and an HTML "a" tag.
+ *             "\n": [printed, hidden, destinations, unlinked]. printed is
+ *             what the page shows from that line; hidden is the text of an
+ *             HTML comment on it; destinations are the link targets written
+ *             on it, for an inline link, an image and an HTML "a" tag; and
+ *             unlinked holds [start, end] ranges of printed that the page
+ *             shows as text a reader cannot follow: a code span, a fenced or
+ *             indented code block, an image's alternative text and raw HTML
+ *             text. A URL there is a URL written out, and no link.
+ *   fences    [info, first, content] for each fenced code block: the first
+ *             word of its info string, in lower case, the line its content
+ *             starts on, and the content itself.
  *   unmapped  the first line of every inline run whose characters this
  *             program could not place on their lines. Such a run is given
  *             its source lines as they stand, which reads more, never less.
@@ -47,8 +54,19 @@ function readDocument(text) {
   const destinations = source.map(() => []);
   const unmapped = [];
 
+  const unlinked = source.map(() => []);
+  const fences = [];
   const print = (line, characters) => {
     if (line < source.length) printed[line] = (printed[line] ?? '') + characters;
+  };
+  // A range counts code points, as Python indexes a string; a JavaScript
+  // length counts UTF-16 units, and a character outside the Basic
+  // Multilingual Plane is two of them.
+  const printUnlinked = (line, characters) => {
+    if (line >= source.length) return;
+    const start = [...(printed[line] ?? '')].length;
+    print(line, characters);
+    unlinked[line].push([start, start + [...characters].length]);
   };
   const cover = (from, to) => {
     for (let line = from; line < Math.min(to, source.length); line += 1) {
@@ -97,7 +115,7 @@ function readDocument(text) {
         index = close + 3;
       }
       for (const tag of shown.match(TAG) ?? []) tagInto(tag, line);
-      print(line, md.utils.unescapeAll(shown.replace(TAG, (tag) => (LINE_BREAK_TAG.test(tag) ? ' ' : ''))));
+      printUnlinked(line, md.utils.unescapeAll(shown.replace(TAG, (tag) => (LINE_BREAK_TAG.test(tag) ? ' ' : ''))));
     });
   };
 
@@ -114,6 +132,9 @@ function readDocument(text) {
     // Inside an autolink the printed text is the URL itself, which the page
     // shows as a link: it is a destination, and it prints as a space.
     let inAutolink = false;
+    // An image's alternative text is printed where the image fails, and it
+    // is no link.
+    let inImage = false;
     const find = (needle) => {
       const at = content.indexOf(needle, cursor);
       if (at === -1) throw new Unmapped();
@@ -155,6 +176,8 @@ function readDocument(text) {
             if (inAutolink) {
               destinations[lineAt(at)].push(child.content);
               print(lineAt(at), ' ');
+            } else if (inImage) {
+              printUnlinked(lineAt(at), child.content);
             } else {
               print(lineAt(at), child.content);
             }
@@ -182,7 +205,7 @@ function readDocument(text) {
             if (close === -1) throw new Unmapped();
             let at = open + child.markup.length;
             for (const part of content.slice(at, close).split('\n')) {
-              print(lineAt(at), part);
+              printUnlinked(lineAt(at), part);
               at += part.length + 1;
             }
             cursor = close + child.markup.length;
@@ -220,7 +243,9 @@ function readDocument(text) {
             cursor = find('![') + 2;
             // The alternative text is read, as the page shows it when the
             // image does not load: reading it can report more, never less.
+            inImage = true;
             walk(child.children ?? []);
+            inImage = false;
             cursor = find(']') + 1;
             afterLabel();
             break;
@@ -237,6 +262,7 @@ function readDocument(text) {
       for (let line = first; line <= first + breaks.length && line < source.length; line += 1) {
         printed[line] = source[line];
         destinations[line] = [];
+        unlinked[line] = [];
       }
     }
   };
@@ -270,17 +296,19 @@ function readDocument(text) {
       inlineRun(token, from);
     } else if (token.type === 'fence') {
       cover(from, to);
-      token.content.replace(/\n$/, '').split('\n').forEach((part, offset) => print(from + 1 + offset, part));
+      const parts = token.content.replace(/\n$/, '').split('\n');
+      parts.forEach((part, offset) => printUnlinked(from + 1 + offset, part));
+      fences.push([token.info.trim().split(/\s+/)[0].toLowerCase(), from + 1, token.content]);
     } else if (token.type === 'code_block') {
       cover(from, to);
-      token.content.replace(/\n$/, '').split('\n').forEach((part, offset) => print(from + offset, part));
+      token.content.replace(/\n$/, '').split('\n').forEach((part, offset) => printUnlinked(from + offset, part));
     } else if (token.type === 'html_block') {
       cover(from, to);
       htmlLines(token.content.replace(/\n$/, '').split('\n'), from);
     }
   }
-  const lines = source.map((raw, line) => [printed[line] ?? raw, hidden[line], destinations[line]]);
-  return { lines, unmapped };
+  const lines = source.map((raw, line) => [printed[line] ?? raw, hidden[line], destinations[line], unlinked[line]]);
+  return { lines, unmapped, fences };
 }
 
 const input = createInterface({ input: process.stdin, crlfDelay: Infinity });

@@ -81,26 +81,35 @@ beside it:
   hides nothing from this scan; the repository holds none.
 - *What is a link.* A URL ``url_is_public()`` accepts, and nothing else. Only
   such a URL resolves a reference, and only such a URL is taken out of the
-  text before the patterns read it (``blank_urls``). A full hash pinned by a
-  workflow's ``uses:`` key resolves in the repository it names
-  (``ACTION_PIN_BEFORE``). A ``uses`` key inside a flow mapping, written in
-  braces on one line, is not read, and its pin is reported; the repository
-  holds none.
+  text before the patterns read it (``blank_urls``). A full hash an action
+  pin declares resolves in the repository the pin names, where YAML declares
+  it: as the value of a ``uses`` key, read by a YAML parser, in a YAML file or
+  in a fenced YAML example in Markdown (``declared_action_pins``). The same
+  characters anywhere else declare nothing.
 - *Which words name a reference.* The nouns, separators and number shapes
   in ``REVIEW_HISTORY_PATTERNS``, which is a closed list: the pointer shapes
   this repository's review history has produced. A reference named by any
   other word -- a build, a workflow run, a milestone -- is not read, and
   neither is a known noun joined to its number by a word, as in ``issue
   number`` and a number. A new noun or separator is added to the list, with a
-  fixture line, when one appears.
+  fixture line, when one appears. In a stylesheet's declaration, and in a
+  fenced stylesheet example, a hash and three, four, six or eight digits is
+  a colour and no reference (``COLOUR_VALUE_BEFORE``). A colour anywhere
+  else -- a JSON theme, a script -- is read as the issue reference it looks
+  like, and a file that holds one records it in the exemption fixture; the
+  repository holds none.
 - *What a Markdown page prints.* markdown-it's answer, line by line
   (``printed_markdown``): the characters the page prints from each line,
-  the text of a comment on it, and the link destinations written on it. So
+  the text of a comment on it, the link destinations written on it, and
+  which printed characters are no link. So
   markup prints nothing where it forms markup and prints as itself where it
   does not, a character reference prints its character, a code span its
   content, and a tag's attributes and a link's title print nothing and link
-  nothing; an ``a`` tag's ``href`` is a link. A paragraph is also read
-  joined across its line breaks, and a URL in a comment resolves nothing.
+  nothing; an ``a`` tag's ``href`` is a link. **A URL the page shows as text
+  links nothing**: in a code span, a code block, an image's alternative text
+  or raw HTML text, it is taken out of the text and resolves no reference.
+  A paragraph is also read joined across its line breaks, and a URL in a
+  comment resolves nothing.
   GitHub renders with its own parser, and two differences are known: a
   strikethrough between single tildes, which GitHub prints and markdown-it
   leaves as tildes, and footnotes, which markdown-it leaves as text. In every
@@ -125,6 +134,8 @@ from collections.abc import Callable, Iterable
 from typing import Any
 from pathlib import Path
 from urllib.parse import SplitResult, unquote, urlsplit
+
+import yaml
 
 from tests._pytest_compat import pytest
 
@@ -287,35 +298,38 @@ TRACKER_IDENTIFIER = r"(?:[A-Za-z][A-Za-z0-9]*-\d+|\d+)"
 #: ``issue-tracker-1``. Measured, the hyphen form would add two matches in this
 #: repository, both a test's parameter id; that is a separate question from the
 #: one this pattern answers.
-#: A pinned GitHub Action, ``owner/repo@`` or ``owner/repo/path@``, directly in
-#: front of a hash. GitHub Actions resolves that pin in the named repository,
-#: and the repository's YAML guide requires every action to be pinned this way,
-#: so the hash is a reference anyone can follow, not an opaque pointer. Only a
-#: full forty-character hash is excused, because Actions accepts nothing
-#: shorter as an immutable pin.
-#:
-#: **Only a pin that could resolve, and only where a workflow declares one.**
-#: The owner is a GitHub account name -- letters, digits and single hyphens,
-#: neither first nor last, at most 39 characters -- and the repository name is
-#: letters, digits, ``.``, ``_`` and ``-``, and is neither ``.`` nor ``..``. A
-#: name that breaks either rule names no repository GitHub could resolve the
-#: pin in. And the pin must be the value of a ``uses:`` key, which is where a
-#: workflow declares a dependency: the same characters in prose declare
-#: nothing, and a hash written after them is a commit like any other. Measured
-#: over the scanned files, all 31 pins this exempts are ``uses:`` values.
-#: **The key starts its line**, after indentation and an optional list dash,
-#: as a YAML key does. Anywhere else -- ``this prose uses: owner/repo@...``, or
-#: a comment that quotes a step -- the same characters declare nothing. All 31
-#: pins in the corpus start their line this way. **The key may be quoted**, in
-#: matching single or double quotes, because YAML lets any key be, and a
-#: quoted ``uses`` declares the same step.
+#: A GitHub Action pinned to a full commit: an owner, a repository, an optional
+#: path, ``@`` and forty hexadecimal characters. GitHub Actions resolves that
+#: pin in the named repository, and the repository's YAML guide requires every
+#: action to be pinned this way, so the hash is a reference anyone can follow,
+#: not an opaque pointer. Only a full hash counts, because Actions accepts
+#: nothing shorter as an immutable pin. The owner is a GitHub account name --
+#: letters, digits and single hyphens, neither first nor last, at most 39
+#: characters -- and the repository name is letters, digits, ``.``, ``_`` and
+#: ``-``, and is neither ``.`` nor ``..``: a name that breaks either rule names
+#: no repository GitHub could resolve the pin in. Where a pin is declared is
+#: ``declared_action_pins``'s question.
 #: https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsuses
-ACTION_PIN_BEFORE = re.compile(
-    r"^[ \t]*(?:-[ \t]+)?(?:uses|\"uses\"|'uses')[ \t]*:[ \t]*" "[\"']?"
+ACTION_PIN = re.compile(
     r"[A-Za-z0-9](?:[A-Za-z0-9]|-(?=[A-Za-z0-9])){0,38}"
     r"/(?!\.\.?[/@])[A-Za-z0-9_.-]{1,100}"
-    r"(?:/[A-Za-z0-9_.-]+)*@\Z"
+    r"(?:/[A-Za-z0-9_.-]+)*@[0-9a-fA-F]{40}"
 )
+#: The files a YAML parser reads, and the info strings of a fenced example in
+#: Markdown that it reads.
+YAML_SUFFIXES = frozenset({".yml", ".yaml"})
+YAML_FENCE_INFO = frozenset({"yaml", "yml"})
+#: The files that are stylesheets, and the info strings of a fenced stylesheet
+#: example in Markdown. In a stylesheet's declaration, a hash and three, four,
+#: six or eight digits is a colour, and names no issue.
+#: https://www.w3.org/TR/css-color-4/#hex-notation
+STYLESHEET_SUFFIXES = frozenset({".css", ".scss", ".sass", ".less"})
+STYLESHEET_FENCE_INFO = frozenset({"css", "scss", "sass", "less"})
+#: A declaration's value, up to the hash: a property or a variable, a colon,
+#: and value text with no comment opened in it and no end of the declaration.
+#: A declaration starts its line or follows ``;`` or ``{``, so a comment's
+#: words before a colon are no property.
+COLOUR_VALUE_BEFORE = re.compile(r"(?:^|[;{])[ \t]*[-$@\w]+[ \t]*:(?:(?!/\*|//)[^;{}])*\Z")
 #: A tracker noun sitting immediately in front of a hash, which means the
 #: reference belongs to that noun's pattern rather than to the bare one.
 TRACKER_NOUN_BEFORE = re.compile(
@@ -416,22 +430,26 @@ REVIEW_HISTORY_PATTERNS = (
             + ORDINAL_WORDS
             + "|"
             + ORDINAL_DIGITS
-            + r"|final)\s+(?:review\s+)?rounds?"
+            + r"|final)(?:\s+|-)(?:review(?:\s+|-))?rounds?"
             + ROUND_NOUN_END
         ),
     ),
     (
         "a review round named by position",
+        # **A hyphen may join the words**, as a YAML key, a CSS class and a
+        # command-line flag join them, and the name places the run as the
+        # sentence does. This and the ordinal pattern read that spelling;
+        # ``ROUND_NOUN_END`` still stops at a hyphen after the noun.
         re.compile(
             r"(?i)\b(?:this|that|the|an|another|each|every|one|last|next"
             r"|previous|earlier|later|prior|following|preceding|same)"
-            r"\s+(?:review\s+)?rounds?"
+            r"(?:\s+|-)(?:review(?:\s+|-))?rounds?"
             + ROUND_NOUN_END
         ),
     ),
     (
         "review rounds named by position",
-        re.compile(r"(?i)\b(?:these|those|both|other)\s+rounds" + ROUND_NOUN_END),
+        re.compile(r"(?i)\b(?:these|those|both|other)(?:\s+|-)rounds" + ROUND_NOUN_END),
     ),
     (
         "an unlinked pull request",
@@ -1060,6 +1078,15 @@ def url_fragment_tokens(url: str) -> list[str]:
     return [unquote(part) for part in FRAGMENT_SEPARATORS.split(parts.fragment) if part]
 
 
+#: The noun patterns that read a tracker key, and so read ``GH-`` and a number
+#: after the noun. A shorthand inside one of their matches is that noun's
+#: reference, and is reported once, by the noun's pattern, as a hash after a
+#: noun is.
+KEYED_NOUN_PATTERNS = tuple(
+    pattern
+    for label, pattern in REVIEW_HISTORY_PATTERNS
+    if label in ("an unlinked issue", "an unlinked ticket", "an unlinked project item")
+)
 #: The path segments a host serves each kind of reference from. GitHub serves
 #: an issue and a pull request from either of its two, so both are accepted for
 #: either spelling. A tracker that is not GitHub serves a ticket and a project
@@ -1091,15 +1118,23 @@ def url_resolves(label: str, matched: str, urls: list[str]) -> bool:
 
     digits = DIGITS_PATTERN.findall(matched)
     # The keys a non-GitHub tracker puts in its path, when the reference
-    # carries them, and the plain numbers it carries beside them. GitHub's
-    # ``GH-`` prefix is its own shorthand for a number, never a key. A reference that names
-    # several resolves only when every one of them is linked.
-    keys = (
-        []
-        if label == "a GitHub shorthand reference"
-        else [key.lower() for key in TRACKER_KEY_PATTERN.findall(matched)]
+    # carries them, and the plain numbers it carries beside them. A reference
+    # that names several resolves only when every one of them is linked.
+    # **GitHub's ``GH-`` prefix is its own shorthand for a number, never a
+    # key, after a noun as well.** Read as a key there, it wanted a path
+    # segment GitHub never serves, so a line the shorthand's own pattern let
+    # pass was reported by the noun's.
+    keys = [
+        key.lower()
+        for key in TRACKER_KEY_PATTERN.findall(matched)
+        if not key.lower().startswith("gh-")
+    ]
+    numbers = DIGITS_PATTERN.findall(
+        TRACKER_KEY_PATTERN.sub(
+            lambda key: key.group(0) if key.group(0).lower().startswith("gh-") else " ",
+            matched,
+        )
     )
-    numbers = DIGITS_PATTERN.findall(TRACKER_KEY_PATTERN.sub(" ", matched) if keys else matched)
     linked: set[str] = set()
     # A hash is read in either case above, so it is compared in one case here.
     matched_fold = matched.lower()
@@ -1160,9 +1195,12 @@ def url_resolves(label: str, matched: str, urls: list[str]) -> bool:
                             return True
         elif label in COMMIT_LABELS:
             # A URL may carry the full forty characters where the prose wrote
-            # seven, or the other way about, so a prefix either way counts --
-            # but only in a path the host serves a commit from. A commit named
-            # by its noun is compared by the hash after the noun.
+            # seven, so the prose's hash may be a prefix of the URL's -- but
+            # only in a path the host serves a commit from. **Not the other
+            # way about.** A shorter hash in the URL may name another commit
+            # that shares its prefix, so it cannot vouch for the characters
+            # the prose adds. A commit named by its noun is compared by the
+            # hash after the noun.
             token = COMMIT_TOKEN.search(matched)
             commit = token.group(0).lower() if token else matched_fold
             for index, part in enumerate(parts[:-1]):
@@ -1171,7 +1209,7 @@ def url_resolves(label: str, matched: str, urls: list[str]) -> bool:
                 candidate = lowered[index + 1]
                 if not HEX_RUN.match(candidate):
                     continue
-                if candidate.startswith(commit) or commit.startswith(candidate):
+                if candidate.startswith(commit):
                     return True
     if label in NOUN_PATH_SEGMENTS:
         wanted = set(keys) | set(numbers)
@@ -1246,8 +1284,11 @@ def python_paths(paths: Iterable[Path]) -> list[Path]:
 
 #: An identifier-shaped token in a file this scan cannot parse. The underscore
 #: is required, because it is what separates an identifier from an ordinary
-#: word, and so is a digit somewhere in the name, because a name with no digit
-#: names no review run. Measured over the 193 non-Python scanned files, this
+#: word. **A digit is not.** A name can place a review run by position alone,
+#: as a position word and the noun do, and the syntax-tree reading reports such
+#: a name in a module, so the same name in a YAML key or a script passed;
+#: without the digit, the scan still reports nothing new. Measured over the 193
+#: non-Python scanned files, this
 #: adds **zero** findings today, so it closes a spelling rather than widening
 #: the net -- the same test the tracker grammar had to pass.
 #: Leading underscores belong to the name, so a private-style key or variable is
@@ -1282,8 +1323,6 @@ def looks_like_an_identifier(token: str) -> bool:
     defects. Measured: without this exclusion the pass returns nine hashes
     across three files and no identifiers at all.
     """
-    if not any(character.isdigit() for character in token):
-        return False
     if HASH_SHAPED.match(token):
         return False
     if "_" in token:
@@ -1299,8 +1338,8 @@ def identifier_like_names(source: str) -> set[str]:
     ``identifiers_of`` reads Python's tree, which is why it is exact and why it
     has one language. A shell script, a workflow or a Markdown page holds names
     too, and an opaque one there is the same defect it is in a module. This is
-    the text-level stand-in: every token that looks like an identifier and
-    carries a digit.
+    the text-level stand-in: every token that looks like an identifier, with
+    or without a digit, as ``identifiers_of`` reads every name.
     """
     return {
         token
@@ -1395,7 +1434,7 @@ MARKDOWN_READER = Path(__file__).resolve().parent / "printed_markdown.mjs"
 #: The command that runs it. A test replaces it to prove the failure it names.
 NODE_COMMAND = "node"
 _markdown_reader: subprocess.Popen[str] | None = None
-_printed: dict[str, tuple[list[tuple[str, str, list[str]]], list[int]]] = {}
+_printed: dict[str, dict[str, Any]] = {}
 
 
 def _close_markdown_reader() -> None:
@@ -1455,22 +1494,51 @@ def _ask_markdown_reader(text: str) -> dict[str, Any]:
     return json.loads(answer)
 
 
-def printed_markdown(text: str) -> list[tuple[str, str, list[str]]]:
-    """Return, for each line of a Markdown document, what the page prints there.
-
-    Each entry is ``(printed, hidden, destinations)``: the characters the page
-    shows from that line, the text of an HTML comment on it, and the link
-    destinations written on it. See ``MARKDOWN_READER``.
-    """
+def _read_markdown(text: str) -> dict[str, Any]:
+    """Return the reader's whole answer for one document, asking it once."""
     cached = _printed.get(text)
     if cached is None:
         answer = _ask_markdown_reader(text)
-        cached = (
-            [(line[0], line[1], list(line[2])) for line in answer["lines"]],
-            list(answer["unmapped"]),
-        )
+        cached = {
+            "lines": [
+                (
+                    line[0],
+                    line[1],
+                    list(line[2]),
+                    [(start, end) for start, end in line[3]],
+                )
+                for line in answer["lines"]
+            ],
+            "unmapped": list(answer["unmapped"]),
+            "fences": [
+                (info, first, content) for info, first, content in answer["fences"]
+            ],
+        }
         _printed[text] = cached
-    return cached[0]
+    return cached
+
+
+def printed_markdown(
+    text: str,
+) -> list[tuple[str, str, list[str], list[tuple[int, int]]]]:
+    """Return, for each line of a Markdown document, what the page prints there.
+
+    Each entry is ``(printed, hidden, destinations, unlinked)``: the characters
+    the page shows from that line, the text of an HTML comment on it, the link
+    destinations written on it, and the ranges of the printed characters that
+    are no link -- a code span, a code block, an image's alternative text and
+    raw HTML text. See ``MARKDOWN_READER``.
+    """
+    return _read_markdown(text)["lines"]
+
+
+def markdown_fences(text: str) -> list[tuple[str, int, str]]:
+    """Return ``(info, first, content)`` for each fenced code block.
+
+    ``info`` is the first word of the info string, in lower case, and
+    ``first`` is the line the content starts on, counted from zero.
+    """
+    return _read_markdown(text)["fences"]
 
 
 def unmapped_markdown_lines(text: str) -> list[int]:
@@ -1479,12 +1547,20 @@ def unmapped_markdown_lines(text: str) -> list[int]:
     Such a run is read as its source lines stand, which can report more and
     never less; a test holds the corpus to none.
     """
-    printed_markdown(text)
-    return _printed[text][1]
+    return _read_markdown(text)["unmapped"]
 
 
-def blank_urls(text: str) -> tuple[str, list[str]]:
+def blank_urls(
+    text: str, unlinked: Iterable[tuple[int, int]] = ()
+) -> tuple[str, list[str]]:
     """Return ``text`` with each public URL blanked, and those URLs, trimmed.
+
+    **A URL the page shows as text is blanked and returns nothing.**
+    ``unlinked`` holds the ranges of a printed Markdown line that are no link:
+    a code span, a code block, an image's alternative text and raw HTML text.
+    The rule asks for a reference that is clearly linked, and markdown-it knows
+    which printed text is a link; a URL in a code span was read from the
+    printed text like any other, and resolved the reference beside it.
 
     Found with the greedy pattern so the whole run is blanked, then trimmed
     so what is matched against is the URL itself. **Blank the trimmed URL,
@@ -1504,18 +1580,83 @@ def blank_urls(text: str) -> tuple[str, list[str]]:
     urls = []
     pieces = []
     cursor = 0
+    ranges = list(unlinked)
     for spotted in URL_PATTERN.finditer(text):
         whole = spotted.group(0)
         trimmed = trim_url(whole)
         if not url_is_public(trimmed):
             continue
-        urls.append(trimmed)
+        if not any(start <= spotted.start() < end for start, end in ranges):
+            urls.append(trimmed)
         pieces.append(text[cursor : spotted.start()])
         pieces.append(" ")
         pieces.append(whole[len(trimmed) :])
         cursor = spotted.end()
     pieces.append(text[cursor:])
     return "".join(pieces), urls
+
+
+def declared_action_pins(text: str) -> dict[int, set[str]]:
+    """Return the hash of each action pin a YAML document declares, by line.
+
+    **A pin is excused where YAML declares it, and nowhere else.** A pattern
+    that read ``uses:`` at the start of a line excused the same characters in
+    a text file, in a YAML block scalar and in a Markdown line outside any
+    example, and none of those declares a dependency. A YAML parser reads the
+    value of every ``uses`` key, in every spelling YAML allows -- a quoted key,
+    a flow mapping -- and reads a block scalar as the text it is. A document
+    that does not parse declares nothing, so its hashes are reported. The key
+    is the line the value starts on, counted from zero. Measured: the 31 pins
+    the corpus holds are all read this way, 17 in YAML files and 14 in fenced
+    examples.
+    https://pyyaml.org/wiki/PyYAMLDocumentation
+    """
+    try:
+        documents = list(yaml.compose_all(text, Loader=yaml.SafeLoader))
+    except yaml.YAMLError:
+        return {}
+    declared: dict[int, set[str]] = {}
+    stack: list[yaml.Node] = [node for node in documents if node is not None]
+    seen: set[int] = set()
+    while stack:
+        node = stack.pop()
+        if id(node) in seen:
+            # An alias shares its anchor's node, and may hold itself.
+            continue
+        seen.add(id(node))
+        if isinstance(node, yaml.MappingNode):
+            for key, value in node.value:
+                if (
+                    isinstance(key, yaml.ScalarNode)
+                    and key.value == "uses"
+                    and isinstance(value, yaml.ScalarNode)
+                    and ACTION_PIN.fullmatch(value.value)
+                ):
+                    hashes = declared.setdefault(value.start_mark.line, set())
+                    hashes.add(value.value.rsplit("@", 1)[1])
+                stack.extend((key, value))
+        elif isinstance(node, yaml.SequenceNode):
+            stack.extend(node.value)
+    return declared
+
+
+def lines_outside_a_comment(text: str) -> set[int]:
+    """Return the lines of a stylesheet that do not start inside a comment.
+
+    A block comment may run over several lines, and a line inside one is
+    read as a comment even when it looks like a declaration. Counted from
+    zero.
+    """
+    outside: set[int] = set()
+    inside = False
+    for number, line in enumerate(text.split("\n")):
+        if not inside:
+            outside.add(number)
+        at = line.find("*/" if inside else "/*")
+        while at != -1:
+            inside = not inside
+            at = line.find("*/" if inside else "/*", at + 2)
+    return outside
 
 
 def references_in(
@@ -1583,16 +1724,30 @@ def references_in(
                 ):
                     # The same, for a hash with the word for it in front.
                     continue
+                if name == "a GitHub shorthand reference" and any(
+                    noun.start() <= match.start() and match.end() <= noun.end()
+                    for noun_pattern in KEYED_NOUN_PATTERNS
+                    for noun in noun_pattern.finditer(scanned)
+                ):
+                    # The same, for a shorthand a noun's pattern reads.
+                    continue
+                if (
+                    name == "a bare issue reference"
+                    and number in colour_lines
+                    and len(matched) - 1 in (3, 4, 6, 8)
+                    and COLOUR_VALUE_BEFORE.search(scanned[: match.start()])
+                ):
+                    # A colour in a stylesheet's declaration.
+                    continue
                 if url_resolves(name, matched, urls):
                     continue
                 if resolves_in_this_repository(name, matched, root):
                     continue
-                if (
-                    name == "a bare commit hash"
-                    and len(matched) == 40
-                    and ACTION_PIN_BEFORE.search(scanned[: match.start()])
+                if name == "a bare commit hash" and matched in pins_on_line.get(
+                    number, ()
                 ):
-                    # A pinned action: GitHub resolves it in the named repository.
+                    # A pin YAML declares on this line: GitHub resolves it in
+                    # the repository it names.
                     continue
                 # **An exemption is spent only on an occurrence that nothing
                 # else resolves.** Spent first, it went to a linked occurrence
@@ -1612,11 +1767,31 @@ def references_in(
     printed = (
         printed_markdown(body) if path.suffix.lower() in MARKDOWN_SUFFIXES else None
     )
+    # What the file type makes of each line: the hashes an action pin declares
+    # there, in a YAML file or a fenced YAML example; and whether it is
+    # stylesheet code, where a colour is written, in a stylesheet or a fenced
+    # stylesheet example, outside a comment.
+    pins_on_line: dict[int, set[str]] = {}
+    colour_lines: set[int] = set()
+    if path.suffix.lower() in YAML_SUFFIXES:
+        for line, hashes in declared_action_pins(body).items():
+            pins_on_line[line + 1] = hashes
+    if path.suffix.lower() in STYLESHEET_SUFFIXES:
+        colour_lines.update(line + 1 for line in lines_outside_a_comment(body))
+    if printed is not None:
+        for info, first, content in markdown_fences(body):
+            if info in YAML_FENCE_INFO:
+                for line, hashes in declared_action_pins(content).items():
+                    pins_on_line[first + 1 + line] = hashes
+            elif info in STYLESHEET_FENCE_INFO:
+                colour_lines.update(
+                    first + 1 + line for line in lines_outside_a_comment(content)
+                )
     for number, line in enumerate(lines):
-        shown, hidden, destinations = (
-            printed[number] if printed is not None else (line, "", [])
+        shown, hidden, destinations, unlinked = (
+            printed[number] if printed is not None else (line, "", [], [])
         )
-        shown_text, shown_urls = blank_urls(shown)
+        shown_text, shown_urls = blank_urls(shown, unlinked)
         # A link's destination is not printed, and it is a URL written on
         # this line all the same.
         shown_urls = shown_urls + destinations
@@ -2802,7 +2977,7 @@ def test_the_identifier_pass_reads_a_file_with_no_syntax_tree(tmp_path: Path) ->
         reported = names_in(sample, tmp_path)
         assert any(message.endswith(repr(name)) for message in reported), suffix
 
-    # A name with no digit names no review run, so it stays unreported.
+    # A name built from no word of a review run stays unreported.
     quiet = tmp_path / "quiet.js"
     quiet.write_text("const SOME_CONSTANT_NAME = 1;\n", encoding="utf-8")
     assert not names_in(quiet, tmp_path)
@@ -2840,8 +3015,9 @@ def test_an_identifier_without_an_underscore_is_still_an_identifier(
     for hashlike in ("db" + "69537", "e2019" + "2528"):
         assert not looks_like_an_identifier(hashlike), hashlike
 
-    # A word with no digit names no run.
-    assert not looks_like_an_identifier("SOME_CONSTANT_NAME")
+    # A name with no digit is a name all the same; the patterns decide
+    # whether it names a run, as they do for a name in a module.
+    assert looks_like_an_identifier("SOME_CONSTANT_NAME")
 
 
 def test_a_hexadecimal_run_after_a_hash_sign_is_not_a_commit(tmp_path: Path) -> None:
@@ -3228,9 +3404,11 @@ def test_a_url_a_comment_hides_resolves_nothing(tmp_path: Path) -> None:
     delimiters alone, and a ``<!--`` in a code span, in a fenced block or
     after a backslash is printed, not hidden: the visible text after it was
     read as hidden, and a genuinely hidden URL resolved it. A URL the page
-    shows still resolves a hidden reference, and a URL written in place of
-    the number leaves nothing to resolve. Outside Markdown a comment delimiter
-    is only characters, and nothing changes.
+    shows as a link still resolves a hidden reference, and a URL written in
+    place of the number leaves nothing to resolve. A comment that opens its
+    line opens an HTML block, and a URL after it on that line is raw HTML
+    text, which links nothing. Outside Markdown a comment delimiter is only
+    characters, and nothing changes.
     """
     reference = "issue" + " " + "27"
     url = "https://github.com/o/r/issues/27"
@@ -3246,7 +3424,8 @@ def test_a_url_a_comment_hides_resolves_nothing(tmp_path: Path) -> None:
         (".md", fence + "See " + reference + " <!-- " + url + " -->" + newline, True),
         (".md", chr(92) + "<!-- See " + reference + " <!-- " + url + " -->" + newline, True),
         (".md", "<!-- see " + url + " -->" + newline, False),
-        (".md", "<!-- see " + reference + " --> " + url + newline, False),
+        (".md", "<!-- see " + reference + " --> " + url + newline, True),
+        (".md", "Text <!-- see " + reference + " --> " + url + newline, False),
         (".md", "See " + reference + " " + url + newline, False),
         (".py", "# See " + reference + " <!-- " + url + " -->" + newline, False),
     ):
@@ -3474,7 +3653,7 @@ def test_a_url_authority_must_be_well_formed(tmp_path: Path) -> None:
 def test_an_action_pin_is_excused_only_as_a_resolvable_uses_value(
     tmp_path: Path,
 ) -> None:
-    """A pin is a reference only where a workflow declares it, to a real name.
+    """A pin is a reference only where YAML declares it, to a real name.
 
     An owner that ends in a hyphen, or holds two in a row, is no GitHub
     account, and a repository named ``..`` is none either, so no pin to them
@@ -3495,7 +3674,11 @@ def test_an_action_pin_is_excused_only_as_a_resolvable_uses_value(
         ("      - uses: actions/checkout@" + full + " # v7.0.1", ".yml"),
         ("  uses: 'actions/checkout@" + full + "'", ".yml"),
         ('  uses: "owner/repo/.github/workflows/ci.yml@' + full + '"', ".yml"),
-        ("      - uses: my-org/my_action@" + full, ".md"),
+        (
+            chr(96) * 3 + "yaml" + chr(10) + "      - uses: my-org/my_action@" + full
+            + chr(10) + chr(96) * 3,
+            ".md",
+        ),
         ("uses: my-org/.github@" + full, ".yml"),
     ):
         assert not _reported(tmp_path, body, suffix), body
@@ -3610,26 +3793,46 @@ def test_a_markdown_suffix_is_read_in_any_case(tmp_path: Path) -> None:
     ]
 
 
-def test_an_action_pin_is_excused_only_where_a_uses_key_starts_the_line(
+def test_an_action_pin_is_excused_only_where_yaml_declares_it(
     tmp_path: Path,
 ) -> None:
-    """A YAML key starts its line; the same words in prose declare nothing.
+    """A pin is excused where a YAML parser reads it as a ``uses`` value.
 
-    Unanchored, ``This prose uses: owner/repo@`` and a hash satisfied the pin
-    rule, and a comment quoting a step did too.
+    A pattern that read ``uses:`` at the start of a line excused the same
+    characters in a text file, in a block scalar and in a Markdown line
+    outside any example, and none of those declares a dependency. Prose that
+    quotes a step declares nothing either. A YAML file and a fenced YAML
+    example declare their pins, on the lines that hold them.
     """
+    fence = chr(96) * 3
+    newline = chr(10)
     full = ("0123456789" + "abcdef") * 2 + "01234567"
+    pin = "owner/repo@" + full
     for body, suffix in (
-        ("This prose uses: owner/repo@" + full, ".md"),
-        ("# note: this step uses: owner/repo@" + full, ".yml"),
-        ("run: echo uses: owner/repo@" + full, ".yml"),
+        ("This prose uses: " + pin, ".md"),
+        ("uses: " + pin, ".md"),
+        ("uses: " + pin, ".txt"),
+        ("# note: this step uses: " + pin, ".yml"),
+        ("run: echo uses: " + pin, ".yml"),
+        ("run: |" + newline + "  uses: " + pin, ".yml"),
+        ("with:" + newline + "  ref: " + pin, ".yml"),
+        ("uses: " + pin + newline + "broken: [", ".yml"),
+        ("- uses: " + pin + newline + "# " + pin, ".yml"),
+        ("    - uses: " + pin, ".md"),
+        (fence + "text" + newline + "uses: " + pin + newline + fence, ".md"),
+        (fence + "yaml" + newline + "run: |" + newline + "  uses: " + pin + newline + fence, ".md"),
     ):
         assert _reported(tmp_path, body, suffix), body
     for body, suffix in (
         ("      - uses: actions/checkout@" + full + " # v7.0.1", ".yml"),
-        ("    uses: actions/checkout@" + full, ".yml"),
-        ("  - uses: 'owner/repo@" + full + "'", ".yml"),
-        ("      - uses: actions/checkout@" + full, ".md"),
+        ("    uses: actions/checkout@" + full, ".yaml"),
+        ("  - uses: '" + pin + "'", ".yml"),
+        (fence + "yaml" + newline + "      - uses: actions/checkout@" + full + newline + fence, ".md"),
+        (
+            "- A step:" + newline + newline + "  " + fence + "YML" + newline + "  - uses: " + pin
+            + newline + "  " + fence,
+            ".md",
+        ),
     ):
         assert not _reported(tmp_path, body, suffix), body
 
@@ -4109,7 +4312,8 @@ def test_a_quoted_uses_key_declares_a_pin(tmp_path: Path) -> None:
     """YAML lets any key be quoted, and a quoted ``uses`` declares the step.
 
     The pin rule wanted the bare word, so a valid step with a quoted key had
-    its pinned hash reported as opaque. The quotes must match.
+    its pinned hash reported as opaque. Quotes that do not match are no YAML,
+    and declare nothing.
     """
     full = ("0123456789" + "abcdef") * 2 + "01234567"
     for key in (chr(34) + "uses" + chr(34), "'uses'"):
@@ -4118,17 +4322,16 @@ def test_a_quoted_uses_key_declares_a_pin(tmp_path: Path) -> None:
         assert _reported(tmp_path, "      - " + key + ": actions/checkout@" + full, ".yml"), key
 
 
-def test_a_uses_key_in_a_flow_mapping_is_not_read(tmp_path: Path) -> None:
-    """A documented limit, pinned: a ``uses`` key inside braces is not read.
+def test_a_uses_key_in_a_flow_mapping_declares_a_pin(tmp_path: Path) -> None:
+    """A step written in braces on one line declares its pin, as a block does.
 
-    The pin rule reads a key that starts its line, which is what keeps prose
-    out of it. A flow mapping puts the key after a brace, so its pin is
-    reported, and the step is written in block form instead. The module
-    docstring states this; if this test starts to fail, the limit has gone,
-    and the docstring must say so.
+    The pin rule read a key that started its line, so a flow mapping's pin was
+    reported, and that was recorded as a limit. A YAML parser reads both forms
+    alike.
     """
     full = ("0123456789" + "abcdef") * 2 + "01234567"
-    assert _reported(tmp_path, "      - {uses: actions/checkout@" + full + "}", ".yml")
+    assert not _reported(tmp_path, "      - {uses: actions/checkout@" + full + "}", ".yml")
+    assert declared_action_pins("- {uses: actions/checkout@" + full + "}") == {0: {full}}
 
 
 def test_the_workflow_runs_the_scan_while_its_fixtures_exist() -> None:
@@ -4139,8 +4342,6 @@ def test_the_workflow_runs_the_scan_while_its_fixtures_exist() -> None:
     directory now, which the manifest prunes with the module, so a deleted or
     renamed module leaves the fixtures behind and the step fails.
     """
-    import yaml
-
     workflow = yaml.safe_load(
         (REPO_ROOT / ".github" / "workflows" / "markdownlint.yml").read_text(encoding="utf-8")
     )
@@ -4339,3 +4540,177 @@ def test_the_scan_fails_when_the_markdown_reader_cannot_run(
     monkeypatch.setitem(globals(), "MARKDOWN_READER", tmp_path / "absent.mjs")
     with pytest.raises(AssertionError, match="stopped without an answer"):
         references_in(sample, tmp_path)
+
+
+def test_a_url_the_page_shows_as_text_links_nothing(tmp_path: Path) -> None:
+    """A URL in code, in alternative text or in raw HTML text is no link.
+
+    The rule asks for a reference that is clearly linked, and markdown-it
+    knows which printed text is a link. A URL in a code span was read from the
+    printed text like any other, and resolved the reference beside it,
+    although a reader cannot follow it. The URL is still taken out of the text.
+    """
+    tick = chr(96)
+    newline = chr(10)
+    reference = "issue" + " " + "27"
+    url = "https://github.com/o/r/issues/" + "27"
+    for body in (
+        "See " + reference + " " + tick + url + tick,
+        tick * 3 + newline + reference + " " + url + newline + tick * 3,
+        tick * 3 + "text" + newline + reference + " " + url + newline + tick * 3,
+        "    " + reference + " " + url,
+        "![" + reference + " " + url + "](picture.png)",
+        "<p>" + reference + " " + url + "</p>",
+    ):
+        assert _reported(tmp_path, body), body
+    for body in (
+        "See " + reference + " " + url,
+        "See " + reference + " <" + url + ">",
+        "See [" + reference + "](" + url + ")",
+        "See " + reference + " [" + tick + url + tick + "](" + url + ")",
+        "<p><a href=" + chr(34) + url + chr(34) + ">" + reference + "</a></p>",
+        # A range counts code points, so two characters outside the Basic
+        # Multilingual Plane in front of the code leave the URL after it linked.
+        reference + " " + chr(0x1F642) * 2 + " " + tick + "x" + tick + " " + url,
+    ):
+        assert not _reported(tmp_path, body), body
+    printed = printed_markdown("a " + tick + url + tick + " b")[0]
+    assert printed[3] == [(2, 2 + len(url))]
+    assert blank_urls(printed[0], printed[3]) == ("a   b", [])
+
+
+def test_a_name_without_a_digit_is_read_for_its_position(tmp_path: Path) -> None:
+    """A name that places a review run by position needs no number.
+
+    The text-level stand-in for the syntax tree required a digit, so a YAML
+    key or a script's name built from a position word and the noun passed,
+    while the same name in a module was reported. A hyphen joins those words
+    in a YAML key or a CSS class, and the text pass reads that spelling too.
+    """
+    for name, suffix in (
+        ("previous" + "_round", ".yml"),
+        ("final" + "Review" + "Round", ".js"),
+        ("next" + "_review_" + "round", ".yml"),
+        ("last" + "Round", ".sh"),
+        ("previous" + "_round", ".md"),
+    ):
+        sample = tmp_path / ("x" + suffix)
+        sample.write_text("value = " + name + chr(10), encoding="utf-8")
+        reported = names_in(sample, tmp_path)
+        assert any(message.endswith(repr(name)) for message in reported), name
+    module = tmp_path / "m.py"
+    module.write_text("previous" + "_round = 1" + chr(10), encoding="utf-8")
+    assert names_in(module, tmp_path)
+    for text, suffix in (
+        ("previous" + "-round: yes", ".yml"),
+        ("second" + "-round: yes", ".yml"),
+        (".previous" + "-review-" + "round { }", ".css"),
+        ("both" + "-rounds: yes", ".yml"),
+    ):
+        assert _reported(tmp_path, text, suffix), text
+    quiet = tmp_path / "quiet.yml"
+    quiet.write_text(
+        "round" + "-trip: 1" + chr(10) + "SOME_CONSTANT_NAME: 2" + chr(10), encoding="utf-8"
+    )
+    assert not names_in(quiet, tmp_path)
+    assert not references_in(quiet, tmp_path)
+
+
+def test_a_shorter_commit_url_does_not_vouch_for_a_longer_hash(tmp_path: Path) -> None:
+    """A URL must carry at least as much of the hash as the prose does.
+
+    A shorter hash in the URL may name another commit that shares its prefix,
+    so the characters the prose added were accepted unseen.
+    """
+    full = ("0123456789" + "abcdef") * 2 + "01234567"
+    base = "https://github.com/o/r/commit/"
+    for prose, linked, reported in (
+        (full, full[:7], True),
+        (full[:12], full[:7], True),
+        (full[:7], full, False),
+        (full, full, False),
+        (full[:7], full[:7], False),
+    ):
+        body = "# landed upstream in commit " + prose + " " + base + linked
+        assert _reported(tmp_path, body, ".py") is reported, (len(prose), len(linked))
+
+
+def test_a_colour_in_a_stylesheet_is_no_issue_reference(tmp_path: Path) -> None:
+    """A hash and digits in a stylesheet's declaration is a colour.
+
+    The corpus is every tracked text file, so the first stylesheet would have
+    failed the gate on its colours. The declaration decides, not the digits
+    alone: a comment in a stylesheet is read as before, and so is the same
+    text in any other file.
+    """
+    fence = chr(96) * 3
+    newline = chr(10)
+
+    def colour(digits: str) -> str:
+        return chr(35) + digits
+
+    for body, suffix in (
+        ("body { color: " + colour("123456") + "; }", ".css"),
+        (".a {" + newline + "  border: 1px solid " + colour("333") + ";" + newline + "}", ".css"),
+        (":root { --brand: " + colour("1234") + "; }", ".css"),
+        ("$brand: " + colour("12345678") + ";", ".scss"),
+        ("@brand: " + colour("123") + ";", ".less"),
+        ("a { background: linear-gradient(" + colour("123") + ", " + colour("456") + "); }", ".CSS"),
+        (fence + "css" + newline + "a { color: " + colour("123456") + "; }" + newline + fence, ".md"),
+    ):
+        assert not _reported(tmp_path, body, suffix), body
+    for body, suffix in (
+        ("/* see " + colour("1234") + " */", ".css"),
+        ("a { color: red; } /* old: " + colour("123") + " */", ".css"),
+        ("/*" + newline + "  color: " + colour("1234") + " was the tracker" + newline + "*/", ".css"),
+        ("a { color: " + colour("12345") + "; }", ".css"),
+        ("$brand: red; // see " + colour("1234"), ".scss"),
+        ("color: " + colour("123456"), ".md"),
+        ("color: " + colour("123456"), ".txt"),
+        (fence + "css" + newline + "/* see " + colour("1234") + " */" + newline + fence, ".md"),
+    ):
+        assert _reported(tmp_path, body, suffix), body
+
+
+def test_gh_shorthand_after_a_noun_is_the_number_it_names(tmp_path: Path) -> None:
+    """``GH-`` and a number after an issue noun is still GitHub's shorthand.
+
+    The shorthand's own pattern read it as a number, and the noun's pattern
+    read it as a tracker key, which wanted a path segment GitHub never serves.
+    So a line the shorthand's pattern let pass was reported by the noun's.
+    """
+    shorthand = "GH" + "-27"
+    key = "ABC" + "-1"
+    github = "https://github.com/o/r/issues/"
+    tracker = "https://tracker.example.com/browse/"
+    for body in (
+        "See issue " + shorthand + " " + github + "27",
+        "See issues " + shorthand + " and " + key + " " + github + "27 " + tracker + key,
+    ):
+        assert not _reported(tmp_path, body), body
+    for body in (
+        "See issue " + shorthand + " " + github + "28",
+        "See issue " + shorthand + " " + tracker + shorthand,
+        "See issues " + shorthand + " and " + key + " " + github + "27",
+    ):
+        assert _reported(tmp_path, body), body
+
+
+def test_a_shorthand_a_noun_reads_is_reported_once(tmp_path: Path) -> None:
+    """``GH-`` and a number inside a noun's match is that noun's reference.
+
+    The shorthand's pattern and the noun's both reported it, so one reference
+    was two findings, and an exemption for it needed two rows. After a noun
+    that reads no key, the shorthand's pattern is the one that reads it.
+    """
+    shorthand = "GH" + "-27"
+    sample = tmp_path / "doc.md"
+    for body, label in (
+        ("See issue " + shorthand, "an unlinked issue"),
+        ("See tickets " + "ABC" + "-1 and " + shorthand, "an unlinked ticket"),
+        ("See PR " + shorthand, "a GitHub shorthand reference"),
+        ("See " + shorthand, "a GitHub shorthand reference"),
+    ):
+        sample.write_text(body + chr(10), encoding="utf-8")
+        reported = references_in(sample, tmp_path)
+        assert len(reported) == 1 and (": " + label + ": ") in reported[0], (body, reported)
