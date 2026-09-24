@@ -10,7 +10,7 @@ You are here: Phase 6 (Lodging, Food, and Budget). Not a First Taste step. Previ
 - Planner skill: comparing choices
 - Estimated time: 20-30 minutes per sitting, several sittings
 - Parent involvement: none / independent work
-- Materials: a device with the kid-safe filter on, blank [Hotel Comparison Cards](../../templates/hotel_comparison_card.md), your neighborhood comparison from Session 34, the route your family approved at Checkpoint 4, your route map notes from Session 28, your [Source Log](../../templates/source_log.md)
+- Materials: a device with the kid-safe filter on, blank [Hotel Comparison Cards](../../templates/hotel_comparison_card.md), your neighborhood comparison from Session 34, the route your family approved at Checkpoint 4, your route map notes from Session 28, the City Research Card for any region on your route (for its town), your [Source Log](../../templates/source_log.md), a timer or clock
 
 ## Goal
 

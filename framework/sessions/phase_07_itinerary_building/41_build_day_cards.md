@@ -10,7 +10,7 @@ You are here: Phase 7 (Itinerary Building). Not a First Taste step. Previous: [4
 - Planner skill: planning realistic time
 - Estimated time: several sittings; stop whenever you want
 - Parent involvement: none / independent work
-- Materials: blank [Daily Plan Cards](../../templates/daily_plan_card.md), your day rules from Session 40, your route and nights from Checkpoint 4, your hotel comparison cards, your attraction cards, your My Calls page (your must-do list, and its order if you wrote one), your "things I can't wait to see" page, your route map notes from Session 28, your restaurant cards if you made them, your [Source Log](../../templates/source_log.md)
+- Materials: blank [Daily Plan Cards](../../templates/daily_plan_card.md), your day rules from Session 40, your route and nights from Checkpoint 4, your hotel comparison cards, your attraction cards, your My Calls page (your must-do list, and its order if you wrote one), your "things I can't wait to see" page, your route map notes from Session 28, the City Research Card for any region on your route (for its town), your season from Checkpoint 1 (for "roughly when"), your family's [current travel assumptions](../../templates/current_family_travel_assumptions.md) page (for the arrival and departure places), your restaurant cards if you made them, any day cards from an earlier sitting, a device with a map app or map website (kid-safe filter on), your [Source Log](../../templates/source_log.md), a timer
 
 ## Goal
 

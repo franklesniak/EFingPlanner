@@ -10,7 +10,7 @@ You are here: Phase 8 (Readiness and Final). Not a First Taste step. Previous: [
 - Planner skill: organizing information
 - Estimated time: 20-30 minutes
 - Parent involvement: 5-minute check-in
-- Materials: this session's Destination Notes, a blank [Language and Etiquette Quick Sheet](../../templates/language_etiquette_quick_sheet.md), your [Source Log](../../templates/source_log.md), a pencil
+- Materials: this session's Destination Notes, a blank [Language and Etiquette Quick Sheet](../../templates/language_etiquette_quick_sheet.md), your [Source Log](../../templates/source_log.md), a pencil, and a phone if you want a photo version
 
 ## Goal
 

@@ -10,7 +10,7 @@ You are here: Phase 8 (Readiness and Final). Not a First Taste step. **This is C
 - Planner skill: making trade-offs
 - Estimated time: 20-30 minutes for the child, plus the family decision meeting
 - Parent involvement: parent review -- genuinely use the recommendation in a real family talk
-- Materials: your presentation outline from Session 51, your assembled binder, your [Source Log](../../templates/source_log.md), a [Decision Record page](../../templates/decision_record.md)
+- Materials: your presentation outline from Session 51, your assembled binder, your route map notes from Session 28 and a device with a map app or map website (kid-safe filter on) (in case a change moves where you arrive or leave), your [Source Log](../../templates/source_log.md), a [Decision Record page](../../templates/decision_record.md)
 
 ## Goal
 
@@ -79,7 +79,7 @@ You are done when your packet gives your reasons, the family has picked one of t
 
 Before you start Session 53:
 
-- **Approved with changes:** write the changes into your packet and your Decision Record.
+- **Approved with changes:** write the changes into your packet and your Decision Record. If the change moves where you arrive or leave, re-time that leg with the map's Directions, and fix your travel days and nights.
 - **Needs more research:** do that one piece, and bring it back.
 - **Park this decision for later:** that's your result, so you can go on to Session 53.
 
@@ -108,6 +108,8 @@ This is the one checkpoint with the full family decision meeting: the whole part
 **What to consider:** the final recommendation; what you approve; what you want changed; what you will verify or book; and which questions stay open.
 
 **The handoff is all yours.** Flights or other travel, hotels, reservations, passport and entry, travel insurance, the final budget, safety and emergency planning, and the final booking tasks are adult-owned. Your child's job ends at handing them over clearly. The [booking guidance](../../parent_guide/booking_guidance.md) page covers what comes next, including telling your child what changed after booking, and why.
+
+**A changed first or last place.** If your change moves where the trip arrives or leaves, your child re-times that leg and fixes the travel days and nights; that is Approved with changes. If it changes which route works best, the answer is Needs more research.
 
 **Your answer.** Pick one of the four and write it in the decision log too. "Park this decision for later" is a respected, honest outcome, and it deserves the same warmth as the other three. "Needs more research" is the hard one to deliver; the [coaching guide](../../parent_guide/coaching_and_support.md) has the words.
 

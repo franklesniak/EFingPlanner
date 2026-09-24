@@ -10,7 +10,7 @@ You are here: Phase 7 (Itinerary Building). Not a First Taste step. **This is Ch
 - Planner skill: making trade-offs
 - Estimated time: 20-30 minutes for the child, plus a 20-40 minute review with you
 - Parent involvement: parent review -- genuinely use the recommendation in a real family talk
-- Materials: your full itinerary draft and the day cards behind it, your reservation watchlist, your budget summary, your cut list, your [Source Log](../../templates/source_log.md), a [Decision Record page](../../templates/decision_record.md)
+- Materials: your full itinerary draft and the day cards behind it, your reservation watchlist, your budget summary, your cut list, your route map notes from Session 28 and a device with a map app or map website (kid-safe filter on) (in case a change moves where you arrive or leave), your [Source Log](../../templates/source_log.md), a [Decision Record page](../../templates/decision_record.md)
 
 ## Goal
 
@@ -64,7 +64,7 @@ You are done when your draft is in front of a grown-up, your review packet has a
 
 Before you start the next session:
 
-- **Approved with changes:** write the changes into your itinerary draft and your Decision Record.
+- **Approved with changes:** write the changes into your itinerary draft and your Decision Record. If the change moves where you arrive or leave, re-time that leg with the map's Directions, and fix your travel days and nights.
 - **Needs more research:** do that one piece, and bring it back.
 - **Park this decision for later:** wait until your family comes back to it.
 
@@ -97,6 +97,8 @@ This checkpoint is lightweight and asynchronous, like Checkpoints 2 to 4. One ac
 **Questions to ask:** "Which day would you make gentler first?" and "What would you cut if everyone was tired?" The [parent review form](../../templates/parent_review_form.md) has the full set of coaching questions and the good-enough standards; [review checkpoints](../../parent_guide/review_checkpoints.md) explains how to run each one.
 
 **What to avoid:** adding your own favorite sights, rewriting the days in adult language, or asking for a finished polish. The review form lists the rest.
+
+**A changed first or last place.** If your change moves where the trip arrives or leaves, your child re-times that leg and fixes the travel days and nights before the next session; that is Approved with changes. If it changes which route works best, the answer is Needs more research.
 
 **Your answer.** Pick one of the four and write it in the decision log too, so the checkpoints and the log tell the same story. "Needs more research" is the hard one to deliver; the [coaching guide](../../parent_guide/coaching_and_support.md) has the words.
 

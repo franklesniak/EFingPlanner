@@ -10,7 +10,7 @@ You are here: Phase 8 (Readiness and Final). Not a First Taste step. Previous: [
 - Planner skill: organizing information
 - Estimated time: 20-30 minutes
 - Parent involvement: 5-minute check-in
-- Materials: your assembled binder from Session 50, your [Trip-Basics card](../../templates/trip_basics.md) (for the trip length), a blank [Final Presentation Outline](../../templates/final_presentation_outline.md), your [Source Log](../../templates/source_log.md)
+- Materials: your assembled binder from Session 50, your [Trip-Basics card](../../templates/trip_basics.md) (for the trip length), a blank [Final Presentation Outline](../../templates/final_presentation_outline.md), your route map notes from Session 28 and a device with a map app or map website (kid-safe filter on) (in case a grown-up has changed where you arrive or leave), your [Source Log](../../templates/source_log.md)
 
 ## Goal
 
@@ -24,7 +24,7 @@ Decide your first move, then make it. A suggestion: write the one sentence you m
 
 Your presentation is about 5 to 10 minutes long. Part 1 says what you recommend. Part 2 hands the rest over to the grown-ups.
 
-1. Fill in Part 1 of your outline: when to go, how long, which cities and what route, the top experiences, where you might stay, food highlights, a rough budget, the biggest trade-offs, and what you cut and why. If your dates were already booked, say what your season means for the trip, and how you'd use the booked days. The booked trip length is on your Trip-Basics card's maximum row. With one base, your route is getting there and back, plus your trips out from the base to your approved must-dos.
+1. Has a grown-up changed where you arrive or leave since Checkpoint 5? Then re-time that leg with the map's Directions, and fix your travel days and nights in your itinerary draft. Fill in Part 1 of your outline: when to go, how long, which cities and what route, the top experiences, where you might stay, food highlights, a rough budget, the biggest trade-offs, and what you cut and why. If your dates were already booked, say what your season means for the trip, and how you'd use the booked days. The booked trip length is on your Trip-Basics card's maximum row. With one base, your route is getting there and back, plus your trips out from the base to your approved must-dos.
 2. Fill in Part 2: what the grown-ups still need to check, decide and book, the questions that are still open, and which of your pages they should use next.
 3. Pick how you'll present, and circle it at the bottom of the outline.
 
@@ -66,7 +66,7 @@ Stuck? Use the [When I'm Stuck card](../../student_guide/when_im_stuck.md) in yo
 
 ## Optional Extension
 
-If you have extra energy, run through your outline once out loud, and time it. If not, you are done.
+If you have extra energy, run through your outline once out loud, and time it with a timer or clock. If not, you are done.
 
 ## Parent Notes
 

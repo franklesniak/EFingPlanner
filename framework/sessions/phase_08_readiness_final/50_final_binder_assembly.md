@@ -10,7 +10,7 @@ You are here: Phase 8 (Readiness and Final). Not a First Taste step. Previous: [
 - Planner skill: organizing information
 - Estimated time: several sittings; stop whenever you want
 - Parent involvement: 5-minute check-in
-- Materials: your whole project folder or binder, your [Trip-Basics card](../../templates/trip_basics.md) (for whether your dates were booked), eleven tab dividers or eleven sheets to use as dividers, a pen, and anything you'd like for decorating the cover and the dividers
+- Materials: your whole project folder or binder, your [Trip-Basics card](../../templates/trip_basics.md) (for whether your dates were booked), eleven tab dividers or eleven sheets to use as dividers, a pen, a timer, and anything you'd like for decorating the cover and the dividers
 
 ## Goal
 

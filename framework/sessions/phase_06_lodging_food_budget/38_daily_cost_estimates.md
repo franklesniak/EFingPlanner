@@ -10,7 +10,7 @@ You are here: Phase 6 (Lodging, Food, and Budget). Not a First Taste step. Previ
 - Planner skill: planning realistic time
 - Estimated time: 20-30 minutes
 - Parent involvement: 5-minute check-in
-- Materials: your destination pack's money basics page, your [Budget Estimate page](../../templates/budget_estimate.md) from Session 33, your attraction cards and transportation notes, your [Trip-Basics card](../../templates/trip_basics.md) (for the number of travelers), your [Source Log](../../templates/source_log.md), a calculator (allowed)
+- Materials: a device with the kid-safe filter on, your destination pack's money basics page, your [Budget Estimate page](../../templates/budget_estimate.md) from Session 33, your attraction cards and transportation notes, your [Trip-Basics card](../../templates/trip_basics.md) (for the number of travelers), your [Source Log](../../templates/source_log.md), a calculator (allowed)
 
 ## Goal
 
@@ -82,7 +82,7 @@ Stuck? Use the [When I'm Stuck card](../../student_guide/when_im_stuck.md) in yo
 
 ## Optional Extension
 
-If you have extra energy, make a second table for the busiest day on your route, a moving day or a big ticket day. Give every row a low, a medium and a high guess, as in your first table. Then see how it compares with your ordinary day. If not, you are done.
+If you have extra energy, make a second table for a day you change cities, or a day with a big ticket. Your approved route from Checkpoint 4 and your attraction cards show which. Give every row a low, a medium and a high guess, as in your first table. Then see how it compares with your ordinary day. If not, you are done.
 
 ## Parent Notes
 

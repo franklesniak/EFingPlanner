@@ -10,7 +10,7 @@ You are here: Phase 7 (Itinerary Building). Not a First Taste step. Previous: [4
 - Planner skill: organizing information
 - Estimated time: 20-30 minutes
 - Parent involvement: none / independent work
-- Materials: this session's Destination Notes, a device with the kid-safe filter on, your day cards from Session 41, a blank [Reservation Watchlist](../../templates/reservation_watchlist.md), your [Source Log](../../templates/source_log.md)
+- Materials: this session's Destination Notes, a device with the kid-safe filter on, your day cards from Session 41, your My Calls page (your must-do list and special pick), your [Trip-Basics card](../../templates/trip_basics.md) (for whether your dates are booked), a blank [Reservation Watchlist](../../templates/reservation_watchlist.md), your [Source Log](../../templates/source_log.md)
 
 ## Goal
 

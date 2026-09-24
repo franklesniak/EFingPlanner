@@ -100,7 +100,7 @@ Stuck? Use the [When I'm Stuck card](../../student_guide/when_im_stuck.md) in yo
 
 ## Optional Extension
 
-If you have extra energy, ask a grown-up to name a pretend meeting spot for one of your planned outings, and say where you'd wait. If not, you are done.
+If you have extra energy, ask a grown-up to name a pretend meeting spot for one outing on your day cards, and say where you'd wait. If not, you are done.
 
 ## Parent Notes
 
