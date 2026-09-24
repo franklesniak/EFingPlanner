@@ -14,7 +14,7 @@ You are here: Phase 7 (Itinerary Building), First Taste step 12 of 13. Previous:
 - Planner skill: prioritizing; knowing when to stop; flexible thinking
 - Estimated time: 20-30 minutes
 - Parent involvement: 5-minute check-in; help co-choose the one unconditional pick, or confirm it on the Core path
-- Materials: your City Research Cards (starred sights), a [Cut List page](../../templates/cut_list.md), a [Backup Plan page](../../templates/backup_plan.md), and a My Calls page (a blank sheet -- start one if you do not have it yet). On the Core path, your My Calls page, with its must-do list and special pick, takes the place of the starred sights, and you bring the skip and save-for-future notes from Checkpoints 2 and 3 and your route map notes from Session 28.
+- Materials: your City Research Cards (starred sights), a [Cut List page](../../templates/cut_list.md), a [Backup Plan page](../../templates/backup_plan.md), and a My Calls page (a blank sheet -- start one if you do not have it yet). On the Core path, your My Calls page, with its must-do list and special pick, takes the place of the starred sights, and you bring the skip and save-for-future notes from Checkpoints 2 and 3 and your route map notes from Session 28, with a device with a map app or map website (kid-safe filter on) if a swap needs a new travel time.
 
 ## Goal
 

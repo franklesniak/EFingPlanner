@@ -10,7 +10,7 @@ You are here: Phase 7 (Itinerary Building). Not a First Taste step. Previous: [4
 - Planner skill: planning realistic time
 - Estimated time: 20-30 minutes
 - Parent involvement: parent review after session
-- Materials: your day cards from Session 41, your must-do list on your My Calls page, your traveler profiles, your [Trip-Basics card](../../templates/trip_basics.md) (for the time difference, and the maximum or booked trip length), your season from Checkpoint 1 (for hot weather), your destination pack's transportation basics page, a device with the kid-safe filter on if you check an official site, your [Source Log](../../templates/source_log.md); a blank [Trade-Off Report](../../templates/tradeoff_report.md) if the third report goes here
+- Materials: your day cards from Session 41, your must-do list on your My Calls page, your attraction cards (if your special pick hits a block), your traveler profiles, your [Trip-Basics card](../../templates/trip_basics.md) (for the time difference, and the maximum or booked trip length), your season from Checkpoint 1 (for hot weather), your destination pack's transportation basics page, a device with the kid-safe filter on if you check an official site, your [Source Log](../../templates/source_log.md); a blank [Trade-Off Report](../../templates/tradeoff_report.md) if the third report goes here
 
 ## Goal
 
