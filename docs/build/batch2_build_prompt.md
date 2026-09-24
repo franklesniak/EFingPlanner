@@ -893,8 +893,8 @@ booked dates stands.
 
 The floor needs at least five city or region cards, and Session 15 makes two. The spec's rule
 is "at 15, add city cards toward the Core floor (their two cards count)". **On the Core path,
-say that these two cards are the first of at least five**, and that Sessions 18 and 19 add the
-rest. This rides on the Session 15 conversion in 4.1b; it adds one Core-path line, and
+say that these two cards are the first of at least five**, that an optional third card
+started here counts too, and that later Phase 3 sessions add the rest. This rides on the Session 15 conversion in 4.1b; it adds one Core-path line, and
 everything a First Taste child reads keeps its meaning. **In step 5, write "our Checkpoint 1
 season" where it now says "the season you recommended at Checkpoint 1"**, as the City
 Research Card's own row does. The meaning is the same for an open-dates child, and the step
@@ -1319,8 +1319,8 @@ started for it.
 **This session does not open a new card.** Session 15 produces two City Research Cards, and
 those two cities are the ones this session and Session 17 deep-dive, so a second card for
 the same city would duplicate a canonical artifact and break the kit's one-file-per-city
-rule. **Create a card here only if the child's anchor is not one of Session 15's two** --
-which can happen, since Session 15 lets them choose. Say it to the child plainly: you are
+rule. **Create a card here only if the child's anchor has no card from Session 15** -- its two,
+or an optional third -- which can happen, since Session 15 lets them choose. Say it to the child plainly: you are
 going deeper on a page you already started, and that is what "extend, don't redo" means.
 
 **This session carries two designated loops: the Phase 3 Start Here hand-off, and the
@@ -1383,6 +1383,11 @@ optional. **Frame the condition as an open family choice, never as resolved.**
 **The opening must make skipping legitimate:** two cities is a complete job, and doing
 this session is the choice you make when a third place will not leave you alone.
 
+**City C keeps one card too.** If Session 15 already started a card for it -- its optional
+third card, or an original card that did not become City A -- the child deepens that card,
+as Session 16 does. A blank card starts only when City C has none. Session 19 likewise
+starts cards only for places that have none, so every place keeps one card.
+
 - **Artifact:** a City Research Card for City C.
 - **Cross-references:** Sessions 16 and 17; Session 19, where a place that is not a
   deep-dive candidate goes instead.
@@ -1405,8 +1410,8 @@ child's own discovered option.
 - **Artifact:** at least two additional city or region cards.
 - **Stop Point:** you are done when two more places have cards with a reason to go, one
   memorable fact, and a source, **and you have at least five city or region cards in
-  total** -- Session 15's two count, and so do a new City A card from Session 16 and a
-  City C card. If you are short, add one
+  total** -- every city or region card made so far counts, one per place, whichever
+  session made it. If you are short, add one
   more alternative. The floor is **at least two alternatives** beyond the City A / B / C
   deep-dives.
 - **Source Check:** required.

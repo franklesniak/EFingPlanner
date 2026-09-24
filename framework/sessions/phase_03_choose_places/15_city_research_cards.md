@@ -52,7 +52,7 @@ You can say your answers to an adult who writes them, or draw them, if that's ea
 
 Two City Research Cards, each with sights, a memorable fact, downsides, season fit, and sources.
 
-On the Core path, these two cards are the first of at least five. Sessions 18 and 19 add the rest.
+On the Core path, these two cards are the first of at least five. A third card you start today counts too, and later sessions add the rest.
 
 ## Stop Point
 

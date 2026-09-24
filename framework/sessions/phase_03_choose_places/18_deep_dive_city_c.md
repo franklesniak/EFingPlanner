@@ -10,7 +10,7 @@ You are here: Phase 3 (Choose Places). Not a First Taste step. Previous: [17 Dee
 - Planner skill: organizing information
 - Estimated time: 20-30 minutes
 - Parent involvement: none / independent work
-- Materials: this session's Destination Notes, a device with the kid-safe filter on, a blank [City Research Card](../../templates/city_research_card.md), your City A and City B cards, your [Source Log](../../templates/source_log.md)
+- Materials: this session's Destination Notes, a device with the kid-safe filter on, your City A and City B cards, any other city card you started in Session 15, a blank [City Research Card](../../templates/city_research_card.md) only if City C doesn't have a card yet, your [Source Log](../../templates/source_log.md)
 
 ## Goal
 
@@ -18,7 +18,7 @@ If a third big city keeps coming up in your research, give it its own full card.
 
 ## Start Here
 
-Ask yourself one question: is there a third city I keep coming back to? If yes, write its name at the top of a blank City Research Card. If no, you're done with this session.
+Ask yourself one question: is there a third city I keep coming back to? If no, you're done with this session. If yes, look through the cards you started in Session 15. If one is for that city, circle a blank row on it. If not, write the city's name at the top of a blank City Research Card.
 
 ## Steps
 
@@ -38,7 +38,7 @@ Is your extra place a smaller town, a region, or a day-trip spot? Then it belong
 
 ## Workspace
 
-Use one new City Research Card for City C, with your City A and City B cards nearby, plus your Source Log.
+Use City C's card, the one you started in Session 15 or a new one, with your City A and City B cards nearby, plus your Source Log.
 
 You can say your answers to an adult who writes them, or draw them, if that's easier.
 
