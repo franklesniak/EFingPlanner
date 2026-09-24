@@ -54,6 +54,7 @@ from template_sync_materialization_helpers import (  # noqa: E402
     MismatchedInlineBlockError,
     MissingExpectedInlineBlockError,
     NestedInlineBlockError,
+    collect_live_inline_block_spans,
     UnclosedInlineBlockError,
     UnknownInlineBlockMarkerError,
     UnmatchedInlineBlockEndError,
@@ -124,6 +125,7 @@ GITHUB_ACTIONS_SHARED_SURFACE_TOKENS = {
 PYTHON_INLINE_BLOCK_COUNTS = {
     ".pre-commit-config.yaml": 1,
     ".github/dependabot.yml": 2,
+    ".github/workflows/markdownlint.yml": 1,
 }
 PYTHON_INLINE_MARKER_BEGIN = "# template-sync: begin python-only"
 PYTHON_INLINE_MARKER_END = "# template-sync: end python-only"
@@ -2789,6 +2791,52 @@ def test_procedure_registers_reference_only_marker_family() -> None:
         assert marker_name in procedure_text
     for relative_path in REFERENCE_ONLY_MANIFEST_PATTERNS:
         assert relative_path in procedure_text
+
+
+#: A line of the procedure's inventory that opens one family's list of files.
+PROCEDURE_INVENTORY_HEADING = re.compile(r"^The current (?P<families>.+) inline blocks? lives? in:$")
+
+
+def _procedure_inventory() -> dict[str, set[str]]:
+    """Return, for each inline family, the paths the procedure's inventory names."""
+    named: dict[str, set[str]] = {}
+    families: list[str] = []
+    for line in PROCEDURE_PATH.read_text(encoding="utf-8").splitlines():
+        heading = PROCEDURE_INVENTORY_HEADING.match(line)
+        if heading is not None:
+            families = re.findall(r"`([a-z0-9-]+-only)`", heading.group("families"))
+            continue
+        if line.startswith("- ") and families:
+            for family in families:
+                named.setdefault(family, set()).update(re.findall(r"`([^`]+)`", line))
+        elif line.strip():
+            families = []
+    return named
+
+
+def test_procedure_inline_block_inventory_names_every_file_that_holds_a_block() -> None:
+    """Each file that holds a live inline block is named under its family.
+
+    The inventory is kept by hand, and a block added in one file was missing
+    from its family's list, so a downstream repository following the
+    procedure to find what a module's exclusion strips would miss it. Every
+    tracked file is read with the marker semantics the materializer uses, so a
+    marker inside a fenced example is not a block.
+    """
+    named = _procedure_inventory()
+    missing: list[str] = []
+    for relative_path in _git_tracked_paths(REPO_ROOT):
+        path = REPO_ROOT / relative_path
+        try:
+            text = path.read_text(encoding="utf-8")
+        except (OSError, UnicodeDecodeError):
+            continue
+        if "template-sync:" not in text:
+            continue
+        for span in collect_live_inline_block_spans(text, relative_path=relative_path):
+            if relative_path not in named.get(span.marker_name, set()):
+                missing.append(f"{span.marker_name}: {relative_path}")
+    assert not missing, "the procedure's inventory does not name:\n" + "\n".join(sorted(set(missing)))
 
 
 def test_procedure_inline_block_inventory_documents_registered_families() -> None:

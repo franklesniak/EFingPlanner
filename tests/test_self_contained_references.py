@@ -81,7 +81,10 @@ beside it:
   hides nothing from this scan; the repository holds none.
 - *What is a link.* A URL ``url_is_public()`` accepts, and nothing else. Only
   such a URL resolves a reference, and only such a URL is taken out of the
-  text before the patterns read it (``blank_urls``). A full hash an action
+  text before the patterns read it (``blank_urls``). Its host is the one the
+  WHATWG parser a browser uses reads, asked of Node through the Markdown
+  reader for a URL in any file (``browser_host``); the scan judges only
+  whether that host is public. A full hash an action
   pin declares resolves in the repository the pin names, where GitHub reads
   the pin: a ``uses`` key of a job or a step, read by a YAML parser, in a
   workflow in ``.github/workflows`` or in an action's ``action.yml``, and in
@@ -912,14 +915,6 @@ COMMENT_FRAGMENT_PREFIXES = (
 #: hyphens, one to 63 of them, with no hyphen first or last.
 #: https://www.rfc-editor.org/rfc/rfc1123#section-2.1
 DNS_LABEL = re.compile(r"[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?")
-#: A last label a browser reads as a number: decimal digits, or ``0x`` and
-#: hexadecimal digits. A host that ends in one is an IPv4 address in some
-#: spelling, or no valid host at all, and never a name. ``ipaddress`` reads
-#: only the four-part decimal form, which is judged before this, so every
-#: other host that ends in a number is refused. ``127.0.0x1`` is loopback to
-#: a browser, and it passed as a name because its last label holds a letter.
-#: https://url.spec.whatwg.org/#ends-in-a-number-checker
-ENDS_IN_A_NUMBER = re.compile(r"[0-9]+|0x[0-9a-f]*")
 NON_PUBLIC_NAMES = (
     "localhost",
     "invalid",
@@ -974,6 +969,31 @@ def browser_form(url: str) -> str:
     return scheme + colon + rest[:cut].replace(chr(92), "/") + rest[cut:]
 
 
+def is_public_address(address: ipaddress.IPv4Address | ipaddress.IPv6Address) -> bool:
+    """Return whether an address is one host on the public internet.
+
+    ``is_global`` is the registry's answer, and it is not the whole one. A
+    multicast address names a group of receivers, not a host, and
+    ``ipaddress`` calls ``224.0.0.1`` and ``ff0e::1`` global. For IPv6, only
+    the global unicast block, ``2000::/3``, holds public hosts: a site-local
+    address, ``fec0::/10``, and one translated from IPv4, ``64:ff9b::/96``,
+    are called global too, and neither is a host anyone outside can reach by
+    that address. An IPv4 address written in IPv6's mapped form is the IPv4
+    address, and is judged as one.
+    https://www.iana.org/assignments/ipv6-address-space/
+    https://docs.python.org/3/library/ipaddress.html#ipaddress.IPv4Address.is_global
+    """
+    if address.version == 6 and address.ipv4_mapped is not None:
+        return is_public_address(address.ipv4_mapped)
+    if address.is_multicast or not address.is_global:
+        return False
+    return address.version == 4 or address in GLOBAL_UNICAST_IPV6
+
+
+#: The IPv6 block IANA allocates for global unicast addresses.
+GLOBAL_UNICAST_IPV6 = ipaddress.IPv6Network("2000::/3")
+
+
 def url_is_public(url: str) -> bool:
     """Return whether a URL names a host a reader on the public internet can reach.
 
@@ -984,95 +1004,51 @@ def url_is_public(url: str) -> bool:
     found the next: ``http://localhost/issues/27``. This asks the whole
     question once.
 
-    A host is public when it is an IP address the ``ipaddress`` module calls
-    global, or a domain name of two or more labels whose last label holds a
-    letter and that is not, and does not end in, one of ``NON_PUBLIC_NAMES``.
-    So loopback, private and link-local addresses fail, and so do a
-    single-label intranet name, a host that ends in a number in any
-    spelling, such as ``127.1`` or ``127.0.0x1``, and
-    ``tracker.example.invalid``. The URL is read in ``browser_form()``, so a
-    scheme-less ``www.`` candidate has ``http://`` in front and
-    ``www./issues/27`` names the one-label host ``www``, and a backslash in the
-    authority ends it. A URL this cannot parse, or one with no host, names
-    nothing public.
+    **The host is the one a browser reads** (``browser_host``). Python's
+    parsers answered that question for years of findings -- a port that is not
+    a number, a zone in an IPv6 address, a percent escape in a name, IDNA 2003
+    where browsers use UTS 46 -- each one a place where the scan and a browser
+    disagreed. The WHATWG parser is the browser's own answer, so each of those
+    is its answer now. The scan keeps only the question of what is public.
 
-    **The whole authority has to be well formed, not only the host name.**
-    ``urlsplit`` hands back a host name for ``github.com:bad`` and never says
-    that the port is not a number until ``.port`` is asked for, and it hands
-    back ``tracker..com`` as it stands. A browser refuses both, so neither is a
-    link anyone can follow. So the port must be a number from 1 to 65535, and
-    every label of the name, after IDNA encoding, must be a DNS label: letters,
-    digits and hyphens, one to 63 of them, with no hyphen first or last, and at
-    most 253 characters in all.
-    https://docs.python.org/3/library/ipaddress.html#ipaddress.IPv4Address.is_global
-    https://docs.python.org/3/library/urllib.parse.html#urllib.parse.urlsplit
+    A host is public when it is one host on the public internet
+    (``is_public_address``) or a domain name of two or more labels whose last
+    label holds a letter, whose every label is a DNS label -- letters, digits
+    and hyphens, one to 63 of them, with no hyphen first or last -- of at most
+    253 characters in all, and which is not, and does not end in, one of
+    ``NON_PUBLIC_NAMES``. The port must not be 0. The URL is read in
+    ``browser_form()``, so a scheme-less ``www.`` candidate has ``http://`` in
+    front.
+    https://url.spec.whatwg.org/#host-parsing
     https://www.rfc-editor.org/rfc/rfc6761
     https://www.rfc-editor.org/rfc/rfc1123#section-2.1
     """
-    parts = split_url(browser_form(url))
-    if parts is None or parts.scheme.lower() not in ("http", "https"):
+    parsed = browser_host(browser_form(url))
+    if parsed is None:
         return False
+    protocol, host, port = parsed
+    if protocol not in ("http:", "https:") or port == "0" or not host:
+        return False
+    if host.startswith("["):
+        return is_public_address(ipaddress.IPv6Address(host[1:-1]))
     try:
-        port = parts.port
-    except ValueError:
-        return False
-    if port == 0:
-        return False
-    host = (parts.hostname or "").lower()
-    if not host:
-        return False
-    # **A bracketed host is an IPv6 address with no zone, and nothing else.**
-    # The WHATWG parser a browser uses refuses a zone identifier, such as
-    # ``%25eth0``, and any other text between the brackets, such as ``v1.``
-    # and a name; ``urlsplit`` and ``ipaddress`` accept both, so each named a
-    # public host no reader could reach.
-    # https://url.spec.whatwg.org/#concept-ipv6-parser
-    if parts.netloc.rpartition("@")[2].startswith("["):
-        try:
-            address = ipaddress.IPv6Address(host)
-        except ValueError:
-            return False
-        return address.scope_id is None and address.is_global
-    try:
-        return ipaddress.ip_address(host).is_global
+        return is_public_address(ipaddress.IPv4Address(host))
     except ValueError:
         pass
-    # **Every question below is asked of the name a browser would look up.**
-    # IDNA maps full-width letters and the ideographic full stop to their
-    # ASCII forms, so ``tracker.`` followed by full-width ``invalid`` is the
-    # reserved ``tracker.invalid`` to a browser. The reserved-name test used
-    # to read the host as written, and let it through.
-    #
     # **One root dot, and no other empty label.** A name may end in the dot
-    # of the DNS root, as ``github.com.`` does, and still be the same name.
-    # Stripping every trailing dot also accepted ``github.com..``, whose empty
-    # label no resolver looks up. The IDNA codec allows the one root dot, in
-    # any of its spellings, and refuses every other empty label, so the host
-    # goes to it whole and only that one dot is taken off after.
+    # of the DNS root, as ``github.com.`` does, and still be the same name;
+    # ``github.com..`` has an empty label no resolver looks up.
     # https://www.rfc-editor.org/rfc/rfc1034#section-3.1
-    try:
-        ascii_host = host.encode("idna").decode("ascii").lower()
-    except UnicodeError:
-        return False
-    if ascii_host.endswith("."):
-        ascii_host = ascii_host[:-1]
-    try:
-        return ipaddress.ip_address(ascii_host).is_global
-    except ValueError:
-        pass
-    labels = ascii_host.split(".")
+    name = host[:-1] if host.endswith(".") else host
+    labels = name.split(".")
     if (
-        len(ascii_host) > 253
+        len(name) > 253
         or len(labels) < 2
         or not all(DNS_LABEL.fullmatch(label) for label in labels)
         or not any(character.isalpha() for character in labels[-1])
-        or ENDS_IN_A_NUMBER.fullmatch(labels[-1])
     ):
         return False
-    return not any(
-        ascii_host == name or ascii_host.endswith("." + name)
-        for name in NON_PUBLIC_NAMES
-    )
+    return not any(name == other or name.endswith("." + other) for other in NON_PUBLIC_NAMES)
 
 
 def url_path_segments(url: str) -> list[str]:
@@ -1512,20 +1488,25 @@ atexit.register(_close_markdown_reader)
 
 
 def _ask_markdown_reader(text: str) -> dict[str, Any]:
-    """Send one document to the reader, starting it first if it is not running.
+    """Send one document to the reader."""
+    return _ask_reader({"text": text})
+
+
+def _ask_reader(request: dict[str, Any]) -> dict[str, Any]:
+    """Send one request to the reader, starting it first if it is not running.
 
     **Without Node.js, or without markdown-it, the scan fails and says so.**
-    Skipping would pass every Markdown file unread. The workflow that runs
-    this suite installs both before it.
+    Skipping would pass every Markdown file unread, and every URL's host
+    unjudged. The workflow that runs this suite installs both before it.
     """
     global _markdown_reader
     if _markdown_reader is None or _markdown_reader.poll() is not None:
         node = shutil.which(NODE_COMMAND)
         if node is None:
             raise AssertionError(
-                f"{NODE_COMMAND!r} was not found. This scan reads Markdown through "
-                f"{MARKDOWN_READER.name}, which needs Node.js: install Node.js and "
-                "run `npm ci` in the repository root."
+                f"{NODE_COMMAND!r} was not found. This scan reads Markdown, and every "
+                f"URL's host, through {MARKDOWN_READER.name}, which needs Node.js: "
+                "install Node.js and run `npm ci` in the repository root."
             )
         _markdown_reader = subprocess.Popen(
             [node, str(MARKDOWN_READER)],
@@ -1538,7 +1519,7 @@ def _ask_markdown_reader(text: str) -> dict[str, Any]:
         )
     assert _markdown_reader.stdin is not None and _markdown_reader.stdout is not None
     try:
-        _markdown_reader.stdin.write(json.dumps({"text": text}) + "\n")
+        _markdown_reader.stdin.write(json.dumps(request) + "\n")
         _markdown_reader.stdin.flush()
         answer = _markdown_reader.stdout.readline()
     except OSError:
@@ -1548,10 +1529,30 @@ def _ask_markdown_reader(text: str) -> dict[str, Any]:
         error = _markdown_reader.stderr.read() if _markdown_reader.stderr else ""
         raise AssertionError(
             f"{MARKDOWN_READER.name} stopped without an answer, so no Markdown "
-            "file can be read. Run `npm ci` in the repository root so that "
+            "file can be read and no URL's host judged. Run `npm ci` in the "
+            "repository root so that "
             "markdown-it is installed. It said: " + error.strip()[-600:]
         )
     return json.loads(answer)
+
+
+def browser_host(url: str) -> tuple[str, str, str] | None:
+    """Return ``(protocol, hostname, port)`` as a browser's URL parser reads ``url``.
+
+    The reader answers with Node's ``URL``, the WHATWG parser browsers share,
+    for a URL in any file: a percent escape in a name is decoded, a numeric
+    IPv4 host is read in every spelling a browser reads, a name is mapped as
+    UTS 46 maps it, and a zone in an IPv6 address, a port that is not a number
+    and anything else a browser refuses give ``None``. Each URL is asked once.
+    https://url.spec.whatwg.org/#concept-basic-url-parser
+    """
+    if url not in _browser_hosts:
+        found = _ask_reader({"urls": [url]})["hosts"][0]
+        _browser_hosts[url] = (found[0], found[1], found[2]) if found is not None else None
+    return _browser_hosts[url]
+
+
+_browser_hosts: dict[str, tuple[str, str, str] | None] = {}
 
 
 def _read_markdown(text: str) -> dict[str, Any]:
@@ -1703,8 +1704,8 @@ def declared_action_pins(text: str, *, fragment: bool = False) -> dict[int, set[
     own -- declares nothing, and reading every one let a YAML file hide a
     hash. A YAML parser reads the document, so a quoted key and a flow
     mapping count, and a block scalar is text. A document that does not parse
-    declares nothing, so its hashes are reported. The key is the line the
-    value starts on, counted from zero.
+    declares nothing, so its hashes are reported. The key is each line the
+    hash is written on, counted from zero.
 
     ``fragment`` reads a fenced example in Markdown, which may show part of a
     workflow: a list of steps, one step, or a job's ``steps`` alone. Measured:
@@ -1742,8 +1743,15 @@ def declared_action_pins(text: str, *, fragment: bool = False) -> dict[int, set[
                     and isinstance(value, yaml.ScalarNode)
                     and ACTION_PIN.fullmatch(value.value)
                 ):
-                    hashes = declared.setdefault(value.start_mark.line, set())
-                    hashes.add(value.value.rsplit("@", 1)[1])
+                    # **On the line the hash is written on.** A block scalar
+                    # starts on its key's line, ``uses: >-``, and holds its
+                    # text on the lines below, so the start mark named a line
+                    # the hash is not on, and the hash was reported there.
+                    pin_hash = value.value.rsplit("@", 1)[1]
+                    written = text[value.start_mark.index : value.end_mark.index]
+                    for found in re.finditer(re.escape(pin_hash), written):
+                        line = value.start_mark.line + written.count("\n", 0, found.start())
+                        declared.setdefault(line, set()).add(pin_hash)
                 if role == "jobs":
                     child = "job"
                 elif name == "steps" and role in ("job", "runs", "fragment"):
@@ -1756,24 +1764,26 @@ def declared_action_pins(text: str, *, fragment: bool = False) -> dict[int, set[
     return declared
 
 
-def stylesheet_code(line: str, in_comment: bool) -> tuple[str, bool]:
+def stylesheet_code(line: str, state: tuple[bool, str]) -> tuple[str, tuple[bool, str]]:
     """Return a stylesheet line with its strings and comments blanked.
 
-    Also return whether a block comment is still open where the line ends;
-    ``in_comment`` says whether one was open where it starts. **A colour is a
-    token of the stylesheet's code.** A hash and digits in a string, such as a
-    ``content`` value, is text a reader sees, and the declaration pattern read
-    it as a colour; and a comment opener inside a string opened a comment for
-    the tracker, which then read the next line's colour as a comment's
-    reference. A string ends at its closing quote or at the end of its line,
-    and a backslash escapes the character after it. ``//`` starts a comment
-    to the end of the line, as it does in Sass and Less; in plain CSS that
-    reports a colour after it, which is the safe direction.
+    ``state`` is ``(in_comment, quote)`` where the line starts, and the state
+    where it ends comes back with the code. **A colour is a token of the
+    stylesheet's code.** A hash and digits in a string, such as a ``content``
+    value, is text a reader sees, and the declaration pattern read it as a
+    colour; and a comment opener inside a string opened a comment for the
+    tracker, which then read the next line's colour as a comment's reference.
+    A string ends at its closing quote or at the end of its line, unless a
+    backslash ends the line, which continues the string on the next one; a
+    backslash escapes the character after it. ``//`` starts a comment to the
+    end of the line, as it does in Sass and Less; in plain CSS that reports a
+    colour after it, which is the safe direction.
     https://www.w3.org/TR/css-syntax-3/#consume-string-token
     """
+    in_comment, quote = state
     out: list[str] = []
-    quote = ""
     index = 0
+    continued = False
     while index < len(line):
         pair = line[index : index + 2]
         character = line[index]
@@ -1787,6 +1797,7 @@ def stylesheet_code(line: str, in_comment: bool) -> tuple[str, bool]:
                 index += 1
         elif quote:
             if character == "\\":
+                continued = len(pair) == 1
                 out.append(" " * len(pair))
                 index += len(pair)
             else:
@@ -1808,23 +1819,44 @@ def stylesheet_code(line: str, in_comment: bool) -> tuple[str, bool]:
         else:
             out.append(character)
             index += 1
-    return "".join(out), in_comment
+    return "".join(out), (in_comment, quote if continued else "")
 
 
-def comments_open_by_line(text: str) -> list[bool]:
-    """Return, for each line of a stylesheet, whether it starts in a comment."""
-    opened: list[bool] = []
-    in_comment = False
+def stylesheet_context(
+    text: str, *, indented: bool = False
+) -> list[tuple[tuple[bool, str], str]]:
+    """Return, for each line of a stylesheet, what it starts inside.
+
+    Each entry is the ``stylesheet_code`` state at the line's start and the
+    code of the declaration still open there, from the last ``;``, ``{`` or
+    ``}`` before it. **A declaration may run over several lines**, as
+    ``color:`` above its value does, and read one line at a time its colour
+    was a bare issue number. In Sass's indented syntax, ``indented``, a line's
+    end ends its declaration.
+    """
+    context: list[tuple[tuple[bool, str], str]] = []
+    state: tuple[bool, str] = (False, "")
+    open_declaration = ""
     for line in text.split("\n"):
-        opened.append(in_comment)
-        _code, in_comment = stylesheet_code(line, in_comment)
-    return opened
+        context.append((state, open_declaration))
+        code, state = stylesheet_code(line, state)
+        boundary = max(code.rfind(";"), code.rfind("{"), code.rfind("}"))
+        if indented:
+            open_declaration = ""
+        elif boundary != -1:
+            open_declaration = code[boundary + 1 :] + " "
+        else:
+            open_declaration = open_declaration + code + " "
+    return context
 
 
-def is_a_colour(line: str, start: int, in_comment: bool) -> bool:
+def is_a_colour(
+    line: str, start: int, state: tuple[bool, str], open_declaration: str
+) -> bool:
     """Return whether the hash at ``start`` is a colour in a declaration's value."""
-    code, _open = stylesheet_code(line, in_comment)
-    return code[start : start + 1] == "#" and bool(COLOUR_VALUE_BEFORE.search(code[:start]))
+    code, _after = stylesheet_code(line, state)
+    before = open_declaration + code[:start]
+    return code[start : start + 1] == "#" and bool(COLOUR_VALUE_BEFORE.search(before))
 
 
 def references_in(
@@ -1903,7 +1935,7 @@ def references_in(
                     name == "a bare issue reference"
                     and number in stylesheet_lines
                     and len(matched) - 1 in (3, 4, 6, 8)
-                    and is_a_colour(scanned, match.start(), stylesheet_lines[number])
+                    and is_a_colour(scanned, match.start(), *stylesheet_lines[number])
                 ):
                     # A colour in a stylesheet's declaration.
                     continue
@@ -1938,23 +1970,25 @@ def references_in(
     # What the file type makes of each line: the hashes an action pin declares
     # there, in a workflow, an action's metadata or a fenced YAML example; and,
     # for a line of a stylesheet or a fenced stylesheet example, where a colour
-    # is written, whether it starts inside a comment.
+    # is written, what comment, string and declaration it starts inside.
     pins_on_line: dict[int, set[str]] = {}
-    stylesheet_lines: dict[int, bool] = {}
+    stylesheet_lines: dict[int, tuple[tuple[bool, str], str]] = {}
     if path.suffix.lower() in YAML_SUFFIXES and reads_action_pins(relative):
         for line, hashes in declared_action_pins(body).items():
             pins_on_line[line + 1] = hashes
     if path.suffix.lower() in STYLESHEET_SUFFIXES:
-        for line, opened in enumerate(comments_open_by_line(body)):
-            stylesheet_lines[line + 1] = opened
+        indented = path.suffix.lower() == ".sass"
+        for line, context in enumerate(stylesheet_context(body, indented=indented)):
+            stylesheet_lines[line + 1] = context
     if printed is not None:
         for info, first, content in markdown_fences(body):
             if info in YAML_FENCE_INFO:
                 for line, hashes in declared_action_pins(content, fragment=True).items():
                     pins_on_line[first + 1 + line] = hashes
             elif info in STYLESHEET_FENCE_INFO:
-                for line, opened in enumerate(comments_open_by_line(content)):
-                    stylesheet_lines[first + 1 + line] = opened
+                indented = info == "sass"
+                for line, context in enumerate(stylesheet_context(content, indented=indented)):
+                    stylesheet_lines[first + 1 + line] = context
     links = markdown_links(body) if printed is not None else None
     for number, line in enumerate(lines):
         shown, hidden = printed[number][:2] if printed is not None else (line, "")
@@ -4454,16 +4488,17 @@ def test_a_host_that_ends_in_a_number_is_an_address_or_nothing(tmp_path: Path) -
 
     ``ipaddress`` reads only the four-part decimal form, and a last label of
     ``0x`` and hexadecimal digits holds a letter, so ``127.0.0x1`` passed as a
-    public name although a browser opens loopback there. A host that ends in a
-    number and is not a plain address is now refused, in every spelling.
+    public name although a browser opens loopback there. The host is now the
+    one a browser reads, so such a host is the address it spells, judged as
+    that address, or nothing: ``8.8.8.0x8`` is ``8.8.8.8`` to a browser.
     """
     reference = "issue" + " " + "27"
     tail = "/o/r/issues/27"
-    for host in ("127.0.0x1", "127.0.0.0x1", "github.0x1", "10.0.0X1", "8.8.8.0x8"):
+    for host in ("127.0.0x1", "127.0.0.0x1", "github.0x1", "10.0.0X1"):
         url = "https://" + host + tail
         assert not url_is_public(url), host
         assert _reported(tmp_path, reference + " " + url), host
-    for host in ("github.com", "1.1.1.1", "tracker.0x1z"):
+    for host in ("github.com", "1.1.1.1", "tracker.0x1z", "8.8.8.0x8"):
         assert url_is_public("https://" + host + tail), host
 
 
@@ -4742,9 +4777,15 @@ def test_the_scan_fails_when_the_markdown_reader_cannot_run(
     sample.write_text("Words." + chr(10), encoding="utf-8")
     monkeypatch.setitem(globals(), "_markdown_reader", None)
     monkeypatch.setitem(globals(), "_printed", {})
+    monkeypatch.setitem(globals(), "_browser_hosts", {})
     monkeypatch.setitem(globals(), "NODE_COMMAND", "node-" + "absent-for-this-test")
     with pytest.raises(AssertionError, match="npm ci"):
         references_in(sample, tmp_path)
+    # A code file's URL is judged by the same reader, so it fails the same way.
+    code = tmp_path / "doc.py"
+    code.write_text("# See https://github.com/o/r" + chr(10), encoding="utf-8")
+    with pytest.raises(AssertionError, match="npm ci"):
+        references_in(code, tmp_path)
     monkeypatch.setitem(globals(), "NODE_COMMAND", "node")
     monkeypatch.setitem(globals(), "MARKDOWN_READER", tmp_path / "absent.mjs")
     with pytest.raises(AssertionError, match="stopped without an answer"):
@@ -5006,9 +5047,9 @@ def test_a_hash_in_a_stylesheet_string_is_no_colour(tmp_path: Path) -> None:
         (".x { content: " + quote + "a;b" + quote + "; color: " + colour("123456") + "; }", ".css"),
     ):
         assert not _reported(tmp_path, body, suffix), body
-    assert stylesheet_code("a: " + quote + "x" + quote + " /* y */ " + colour("123"), False) == (
+    assert stylesheet_code("a: " + quote + "x" + quote + " /* y */ " + colour("123"), (False, "")) == (
         "a:" + " " * 13 + colour("123"),
-        False,
+        (False, ""),
     )
 
 
@@ -5214,3 +5255,109 @@ def test_a_name_in_a_url_that_links_nothing_is_read(tmp_path: Path) -> None:
     sample = tmp_path / "doc.txt"
     sample.write_text("See " + tick + url + tick + chr(10), encoding="utf-8")
     assert not names_in(sample, tmp_path)
+
+
+def test_a_host_is_the_one_a_browser_reads(tmp_path: Path) -> None:
+    """The WHATWG parser a browser uses decides the host, for a URL in any file.
+
+    A percent escape in a name is decoded by a browser, so ``github%2ecom``
+    is ``github.com`` and the link opens the issue; the scan sent the escape
+    to its own checks and refused the host. And IDNA 2003, which Python's
+    codec follows, drops a zero-width joiner and accepts a label of digits in
+    another script, where a browser's UTS 46 refuses both, so the scan
+    accepted hosts no browser opens.
+    """
+    reference = "issue" + " " + "27"
+    tail = "/o/r/issues/27"
+    for host in ("github%2ecom", "github%2Ecom", "git%68ub.com", "%67ithub.com"):
+        url = "https://" + host + tail
+        assert url_is_public(url), host
+        assert not _reported(tmp_path, "See [" + reference + "](" + url + ")"), host
+        assert not _reported(tmp_path, "# See " + reference + " " + url, ".py"), host
+    for host in (
+        "a" + chr(0x200D) + "b.com",
+        "a" + chr(0x200C) + "b.com",
+        chr(0x0661) + chr(0x0662) + ".com",
+        "github%00.com",
+    ):
+        url = "https://" + host + tail
+        assert not url_is_public(url), repr(host)
+        assert _reported(tmp_path, reference + " " + url), repr(host)
+    assert browser_host("https://github%2ecom" + tail) == ("https:", "github.com", "")
+    assert browser_host("https://[2606:4700:4700::1111%25eth0]" + tail) is None
+
+
+def test_a_multicast_or_unroutable_address_is_no_public_host(tmp_path: Path) -> None:
+    """``is_global`` is the registry's answer, and not the whole of the rule's.
+
+    ``ipaddress`` calls a multicast address global, and a multicast address
+    names a group of receivers, not a host. It also calls an IPv6 site-local
+    address and one translated from IPv4 global, and only the global unicast
+    block holds public hosts.
+    """
+    reference = "issue" + " " + "27"
+    tail = "/o/r/issues/27"
+    for host in (
+        "224.0.0.1",
+        "239.255.255.250",
+        "[ff0e::1]",
+        "[ff02::1]",
+        "[fec0::1]",
+        "[64:ff9b::a00:1]",
+        "[64:ff9b::808:808]",
+        "[::ffff:10.0.0.1]",
+        "[::ffff:224.0.0.1]",
+    ):
+        url = "http://" + host + tail
+        assert not url_is_public(url), host
+        assert _reported(tmp_path, reference + " " + url), host
+    for host in ("1.1.1.1", "[2606:4700:4700::1111]", "[2001:4860:4860::8888]", "[::ffff:8.8.8.8]"):
+        assert url_is_public("https://" + host + tail), host
+
+
+def test_a_colour_declaration_may_run_over_lines(tmp_path: Path) -> None:
+    """A declaration is read from its property to its end, over line breaks.
+
+    ``color:`` on one line and its value on the next is one declaration, and
+    read one line at a time the colour was a bare issue number. A string a
+    backslash continues onto the next line is still a string there.
+    """
+    fence = chr(96) * 3
+    newline = chr(10)
+    quote = chr(34)
+
+    def colour(digits: str) -> str:
+        return chr(35) + digits
+
+    for body, suffix in (
+        (".x { color:" + newline + "  " + colour("123456") + "; }", ".css"),
+        ("a {" + newline + "  background:" + newline + "    url(a.png)" + newline + "    " + colour("333") + ";" + newline + "}", ".css"),
+        ("$brand:" + newline + "  " + colour("1234") + ";", ".scss"),
+        (fence + "css" + newline + ".x {" + newline + "  color:" + newline + "  " + colour("123") + ";" + newline + "}" + newline + fence, ".md"),
+    ):
+        assert not _reported(tmp_path, body, suffix), body
+    for body, suffix in (
+        (".x { color: red; }" + newline + colour("1234"), ".css"),
+        ("/* note:" + newline + "  " + colour("1234") + " */", ".css"),
+        (".x { content: " + quote + "a" + chr(92) + newline + "  " + colour("123") + quote + "; }", ".css"),
+        ("$brand:" + newline + "  " + colour("1234"), ".sass"),
+    ):
+        assert _reported(tmp_path, body, suffix), body
+
+
+def test_a_pin_in_a_block_scalar_is_read_on_the_line_of_its_hash(tmp_path: Path) -> None:
+    """A folded ``uses`` value holds its pin on the line below its key.
+
+    The pin was mapped to the line the scalar starts on, which is the key's,
+    and the hash, read on the next line, was reported although the workflow
+    declares it.
+    """
+    newline = chr(10)
+    full = ("0123456789" + "abcdef") * 2 + "01234567"
+    pin = "owner/repo@" + full
+    step = "- uses: >-" + newline + "    " + pin
+    assert not _reported_at(tmp_path, WORKFLOW, _workflow(step))
+    assert declared_action_pins(step, fragment=True) == {1: {full}}
+    # A literal block keeps its line break, and a pin with one is no pin.
+    literal = "- uses: |" + newline + "    " + pin
+    assert _reported_at(tmp_path, WORKFLOW, _workflow(literal))

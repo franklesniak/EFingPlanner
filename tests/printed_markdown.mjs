@@ -6,7 +6,10 @@
  * rules of its own, what a Markdown page prints, because each hand-written
  * rule for that question was followed by the next case it missed. It reads
  * one JSON object per line on stdin, {"text": <a Markdown document>}, and
- * writes one JSON object per line on stdout:
+ * writes one JSON object per line on stdout. It also answers {"urls": [...]}
+ * with {"hosts": [...]}: for each URL, [protocol, hostname, port] as the
+ * WHATWG parser a browser uses reads it, or null when a browser refuses it.
+ * For a document:
  *
  *   lines     one entry per line of the document, as the text splits on
  *             "\n": [printed, hidden, destinations, bare]. printed is what
@@ -391,9 +394,21 @@ function readDocument(text) {
   return { lines, unmapped, fences };
 }
 
+// A URL as the WHATWG parser a browser uses reads it: its scheme, its host
+// and its port, or null when a browser refuses it.
+const hostOf = (url) => {
+  try {
+    const parsed = new URL(url);
+    return [parsed.protocol, parsed.hostname, parsed.port];
+  } catch {
+    return null;
+  }
+};
+
 const input = createInterface({ input: process.stdin, crlfDelay: Infinity });
 input.on('line', (line) => {
   if (!line.trim()) return;
-  const { text } = JSON.parse(line);
-  process.stdout.write(JSON.stringify(readDocument(text)) + '\n');
+  const request = JSON.parse(line);
+  const answer = 'urls' in request ? { hosts: request.urls.map(hostOf) } : readDocument(request.text);
+  process.stdout.write(JSON.stringify(answer) + '\n');
 });

@@ -976,6 +976,7 @@ The current `markdown-reference-only`, `powershell-reference-only`, `python-refe
 - `.cursor/rules/repository-instructions.mdc`, `.hermes.md`, `AGENTS.md`, `CLAUDE.md`, and `GEMINI.md` for removable optional-stack references in protected agent entry-point summaries.
 - `README.md` and `CONTRIBUTING.md` for removable optional-stack references in shared baseline contributor-facing documentation.
 - `.github/pull_request_template.md` for removable Python, PowerShell, and schema checklist sections in the retained PR template.
+- `.github/instructions/yaml.instructions.md` for the related JSON guidance link in the protected YAML guide.
 
 The current `github-actions-reference-only` inline blocks live in:
 
@@ -988,9 +989,10 @@ The current `github-platform-reference-only` inline blocks live in:
 - `OPTIONAL_CONFIGURATIONS.md` for GitHub Dependabot optional configuration guidance.
 - `schemas/README.md` for GitHub Dependabot built-in schema validation guidance.
 
-The current `template-sync-support-reference-only` inline block lives in:
+The current `template-sync-support-reference-only` inline blocks live in:
 
 - `README.md` for the optional `.template-sync/` and `schemas/template-sync-*.schema.json` surface rows, which are removed when `template-sync-support` is excluded.
+- `CONTRIBUTING.md` for the Template-Sync Validation section, which is removed when `template-sync-support` is excluded.
 
 The current `data-ci-reference-only` inline block lives in:
 
@@ -1001,10 +1003,11 @@ The current `azure-devops-guide-reference-only` inline blocks live in:
 
 - `README.md`, `CONTRIBUTING.md`, `OPTIONAL_CONFIGURATIONS.md`, `COPILOT_CHAT_PROMPTS.md`, `docs/PR_REVIEW_PROMPTS.md`, and `schemas/README.md` for optional links to `docs/azure-devops-support.md`, retained when any of `azure-devops-platform`, `azure-pipelines`, or `azure-devops-collaboration` is adopted and removed only when all three are excluded.
 
-The current `python-only` inline block lives in:
+The current `python-only` inline blocks live in:
 
 - `.pre-commit-config.yaml` for the `black` and `ruff-check` Python project hooks.
 - `.github/dependabot.yml` for the `pip` ecosystem header line and update block.
+- `.github/workflows/markdownlint.yml` for the step that runs the self-containment scan, `tests/test_self_contained_references.py`.
 
 The current `markdown-only` inline block lives in:
 
@@ -1050,7 +1053,7 @@ The current `terraform-only` inline blocks live in:
 - `.github/workflows/auto-fix-precommit.yml` for the Terraform and TFLint setup steps required only when those hooks are retained.
 - `.azuredevops/pipelines/precommit.yml` for the Terraform and TFLint setup steps required only when those hooks are retained.
 
-After stripping `python-only` blocks, a downstream repository that excludes `python` should be able to run `pre-commit run --all-files` without retaining Python project formatters or linters such as Black and Ruff, and its Dependabot configuration should not retain the `pip` ecosystem.
+After stripping `python-only` blocks, a downstream repository that excludes `python` should be able to run `pre-commit run --all-files` without retaining Python project formatters or linters such as Black and Ruff, its Dependabot configuration should not retain the `pip` ecosystem, and its Markdown workflow should not run the self-containment scan that the `python` module ships.
 
 After stripping `markdown-only` blocks, a downstream repository that excludes `markdown` should be able to run `pre-commit run --all-files` without installing Node.js or markdownlint.
 

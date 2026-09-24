@@ -296,6 +296,10 @@ template_manifest:
       requires_all:
         - markdown
         - github-actions
+      notes: >-
+        Contains a Python-only inline block for the step that runs the
+        self-containment scan, which the python module ships. Remove the
+        delimited step when the python module is excluded.
     - pattern: '.github/workflows/toolchain-eol.yml'
       requires_all:
         - markdown
