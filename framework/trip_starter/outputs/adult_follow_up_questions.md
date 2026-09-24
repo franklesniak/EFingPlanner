@@ -41,18 +41,18 @@ This page gathers what the grown-ups still need to do. Collect it from the "what
 
 If your family stopped at Checkpoint 5, leave this part blank. The lists above are a complete handoff.
 
-Your handoff list from the family decision meeting:
+Copy your handoff list from the family decision meeting in Session 52, one item to a row:
 
 | Handed over to the grown-ups | Who does it next |
 | --- | --- |
-| Flights, or however we're getting there | |
-| Hotels | |
-| Reservations | |
-| Passport and entry | |
-| Travel insurance | |
-| Final budget | |
-| Safety and emergency planning | |
-| Final booking tasks | |
+| | |
+| | |
+| | |
+| | |
+| | |
+| | |
+| | |
+| | |
 
 | Prompt | Your answer |
 | --- | --- |

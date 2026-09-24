@@ -85,11 +85,6 @@ Session 00 (adult-only setup) comes first. Then, in order:
 - After **Checkpoint 5**, a usable *day-by-day plan*.
 - After **Checkpoint 6**, *a family decision*.
 
-Two small wins sit between Checkpoints 4 and 5, where the path runs longest without a checkpoint. They leave the checkpoint count as it is.
-
-- After the first budget pass, Session 33: you now know roughly what this trip costs.
-- After the hotel comparison, Session 35: you now know where you might stay.
-
 ## Beyond First Taste: the Core Finish Line
 
 If your child finishes First Taste and wants more, they continue toward the **Core Finish Line**, the shortest route to a usable, day-by-day plan, reached at **Checkpoint 5**.
@@ -105,6 +100,11 @@ It stays accurate when sessions are skipped or the family stops at the Core Fini
 ```text
 Phase ___ Progress: [###-------] ___ of ___
 ```
+
+Two small wins sit between Checkpoints 4 and 5, where the path runs longest without a checkpoint. They leave the checkpoint count as it is.
+
+- After the first budget pass, Session 33: you now know roughly what the parts you plan will cost.
+- After the hotel comparison, Session 35: you now know where you might stay.
 
 The day-to-day check-off lists for both paths are on the [progress tracker](student_guide/progress_tracker.md).
 

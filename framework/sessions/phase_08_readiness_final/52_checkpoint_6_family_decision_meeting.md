@@ -52,6 +52,8 @@ Your final recommendation packet:
 | Questions that are still open | |
 | Approval status (a grown-up circles one: Approved / Approved with changes / Needs more research / Park this decision for later) | |
 
+Keeping your work in the trip starter kit? Its [final recommendation page](../../trip_starter/recommendations/final_recommendation.md) has room for everything in this table, so you can fill it in there.
+
 Your handoff list:
 
 | Handed over to the grown-ups | Who does it next |
@@ -65,7 +67,7 @@ Your handoff list:
 | Safety and emergency planning | |
 | Final booking tasks | |
 
-Keeping your work in the trip starter kit? Its [final recommendation page](../../trip_starter/recommendations/final_recommendation.md) has room for everything in this table, so you can fill it in there.
+Keeping your work in the kit? Your handoff list also goes on its [adult follow-up questions page](../../trip_starter/outputs/adult_follow_up_questions.md).
 
 Then fill your Decision Record. Write "Our final recommendation" in its Decision box. Your recommendation goes in **My recommendation**, and your reasons, sources and trade-offs go in their own rows. When the family decides, write their answer in **Final family decision**. That record is your decision-log entry.
 

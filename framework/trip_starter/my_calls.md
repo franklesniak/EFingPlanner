@@ -10,7 +10,7 @@ Your calls live inside some limits: the cities your family approved, the budget 
 
 ## My must-do picks
 
-You choose which attractions make your must-do list, in Session 26. The grown-ups honor your picks. Sometimes a grown-up will need to change one of them, because of a rule or because the whole group has to agree. If that happens, they'll tell you why. Your choices still mattered, and they still count.
+You choose which attractions make your must-do list, in Session 26, or in Session 44 on the First Taste path. The grown-ups honor your picks. Sometimes a grown-up will need to change one of them, because of a rule or because the whole group has to agree. If that happens, they'll tell you why. Your choices still mattered, and they still count.
 
 | My must-do pick | Grown-up's "got it" |
 | --- | --- |

@@ -99,11 +99,11 @@ These counts are the floor for the **Core Finish Line and the full program**. Th
 
 ## Trade-off reports, sources and decisions
 
-- **Trade-off reports:** at least three, each on a [Trade-Off Report](templates/tradeoff_report.md) page.
+- **Trade-off reports:** each on a [Trade-Off Report](templates/tradeoff_report.md) page; the floor above says how many.
 - **Source log:** every major recommendation points to its entries on the [Source Log](templates/source_log.md), with the date each source was checked.
 - **Decision log:** every checkpoint decision has a [Decision Record](templates/decision_record.md) in the decision log.
 
-## A binder you'd be proud to present
+## A binder ready to present
 
 A finished binder is:
 

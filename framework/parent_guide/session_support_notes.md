@@ -4,7 +4,7 @@
 
 A short, parent-facing overview of each session built so far -- your role, what to prep, the artifact to look for, a coaching question on the sessions the child does, and a common pitfall. This does not replace the Parent Notes inside each session; it is the at-a-glance map.
 
-**Whether you need to be there.** A Role line marked *parent-gated* is a session your child waits for you on. *Co-worked* marks one you sit through with them. Any other session is one your child can do on their own, apart from any single step its Role line gives you. A 5-minute check-in or a review after the session never holds them up.
+**Whether you need to be there.** A Role line marked *parent-gated* is a session your child waits for you on. *Co-worked* marks one you sit through with them. Any other session is one your child can do on their own, apart from any single step its Role line gives you. A Role line that recommends co-working without that mark still lets your child go ahead. A 5-minute check-in or a review after the session never holds them up.
 
 **Formative checks.** A few entries name a formative check: a quick spoken prompt that shows whether a skill is growing. It is never a graded test. If your child can't yet show their reasoning, turn support up before the next phase begins. It is a different thing from the checkpoint reflection, which looks back at the stretch just finished.
 
@@ -14,7 +14,7 @@ Want a rough signal of how the executive-function side is going? The optional [e
 
 ## Session 00: Parent Setup (adult-only)
 
-- Role: do the setup; the child does not do this session.
+- Role: do the setup; the child does not do this session (parent-gated).
 - Prep: kid-safe filter, Trip-Basics card, assumptions page, AI choice, start passports if your trip leaves the country.
 - Look for: your four setup actions done, the passport check kicked off if your trip leaves the country, and Session 01 printed.
 - Pitfall: over-deciding up front. Use the fastest-safe-start defaults and move on.
@@ -82,7 +82,7 @@ Want a rough signal of how the executive-function side is going? The optional [e
 - Role: a grown-up stays nearby for this one (parent-gated) -- required, not a suggestion, and it holds in Low-Bandwidth Parent Mode too. A filter reduces exposure without removing it.
 - Prep: a device with the kid-safe filter on; your destination pack's trusted starting sources and its sample search terms; a blank Website Notes form.
 - Look for: website comparison notes with one question, two sources, and a call on which is more useful.
-- Coaching question: "What made the one you trusted less feel less trustworthy?" Formative check, afterward: ask your child to talk you through judging one real page.
+- Coaching question: "What made the one you trusted less feel less trustworthy?" Formative check, afterward: ask your child to talk you through judging one page they found.
 - Pitfall: treating it as a solo session. A filter reduces exposure but does not remove it.
 
 ## Session 09: AI as Helper, Not Boss (only if your family uses AI)

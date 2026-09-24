@@ -10,7 +10,8 @@ This is your Checkpoint 6 page, from [Session 52](../../sessions/phase_08_readin
 | --- | --- |
 | My final recommendation, in one sentence | |
 | My reasons | |
-| What we'd give up with this plan | |
+| Other options I thought about | |
+| What we would give up with this plan | |
 | My sources, with the date I checked each | |
 | What the grown-ups approve | |
 | What changes | |

@@ -6,12 +6,14 @@ This part of your kit holds your finished pages. You put them together near the 
 
 ## The finished pages
 
-- [Final itinerary](final_itinerary.md): your day-by-day plan, put together from your day cards.
-- [Executive summary](executive_summary.md): your whole recommendation on one page.
-- [Family presentation](family_presentation.md): what you present at the family decision meeting.
-- [Binder table of contents](binder_table_of_contents.md): what's behind each tab of your binder.
-- [Adult follow-up questions](adult_follow_up_questions.md): what the grown-ups still need to check, decide and book.
-- [Final reflection](final_reflection.md): your look back at the whole project.
+- [Final itinerary](final_itinerary.md): your day-by-day plan. Fill it in after Checkpoint 5.
+- [Executive summary](executive_summary.md): your plan on one page. Fill it in after Checkpoint 5.
+- [Adult follow-up questions](adult_follow_up_questions.md): what the grown-ups still need to do. Fill it in after Checkpoint 5.
+- [Binder table of contents](binder_table_of_contents.md): what's behind each tab. Fill it in at Session 50.
+- [Family presentation](family_presentation.md): what you say at the family decision meeting, in Session 52.
+- [Final reflection](final_reflection.md): your look back at the project, in Session 53.
+
+If you go on past Checkpoint 5, the first three pages each get one more part at the family decision meeting.
 
 ## Summarize forward
 

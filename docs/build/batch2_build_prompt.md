@@ -4237,8 +4237,8 @@ parenthetical. Give its Checkpoint 1 line the table's booked-dates form, too.
 
 **Optional mini-milestones, clearly not checkpoints.** The stretch from Checkpoint 4 to
 Checkpoint 5 runs about fourteen sessions with no checkpoint. Add a couple of lightweight
-named wins in that stretch -- after the first budget pass, *"you now know roughly what this
-trip costs"*; after the hotel comparison, *"you now know where you might stay"*. **These are
+named wins in that stretch -- after the first budget pass, *"you now know roughly what the
+parts you plan will cost"* (the child's slices, never the trip's total, as B4 requires); after the hotel comparison, *"you now know where you might stay"*. **These are
 not checkpoints**, so the headline is unchanged; they are small beats shown beneath it.
 
 **Other roadmap contents that must remain or be added:** the full phase overview; Core,

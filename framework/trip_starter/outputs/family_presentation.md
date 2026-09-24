@@ -15,7 +15,7 @@ This whole page comes after Checkpoint 5. If your family stopped at the Core Fin
 | Prompt | Your answer |
 | --- | --- |
 | How I presented (live / practiced first / from notes / a video / the binder with a summary) | |
-| Anything I'd do the same way next time | |
+| Anything I would do the same way next time | |
 
 ### Part 1: What I recommend
 

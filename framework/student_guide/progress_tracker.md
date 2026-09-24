@@ -131,7 +131,7 @@ How to read the lines:
 - [ ] [51 Final Presentation](../sessions/phase_08_readiness_final/51_final_presentation.md)
 - [ ] [52 Checkpoint 6 Family Decision Meeting](../sessions/phase_08_readiness_final/52_checkpoint_6_family_decision_meeting.md) *(Checkpoint 6: the family decision meeting, with the grown-ups)*
 - [ ] [53 Reflection and Handoff](../sessions/phase_08_readiness_final/53_reflection_and_handoff.md) *(finish line)*
-  - [ ] *Finished First Taste first?* Do this page again as your capstone, on the final reflection page in your kit.
+  - [ ] *Finished First Taste first?* Do this page again as your capstone, the last step that closes the whole project, on the final reflection page in your kit.
 
 Stopping at Checkpoint 5, the Core Finish Line, is a complete success, and so is going all the way to Session 53.
 

@@ -52,7 +52,7 @@ With your dates booked, your chart covers your booked season, with the challenge
 
 You are done when every season on your chart has a few notes and you have marked at least one busy window to be careful about. You do not need exact dates today: "check this year" is the right answer.
 
-With your dates booked, you're done when your booked season has a few notes on its weather, crowds and events, and you've marked the challenge to plan around. "Ask an adult" is a fine answer in any box.
+With your dates booked, you are done when your booked season has a few notes on its weather, crowds and events, and you've marked the challenge to plan around. "Ask an adult" is a fine answer in any box.
 
 ## Source Check
 

@@ -13,7 +13,7 @@ This part of your kit holds your checkpoint recommendations. At each checkpoint,
 - [Itinerary review](itinerary_review.md): Checkpoint 5, in Session 46.
 - [Final recommendation](final_recommendation.md): Checkpoint 6, in Session 52.
 
-Each checkpoint session has a table with the same kind of prompts. Fill in the session's table or the page here, whichever you're using. You only need one of them.
+Each checkpoint session has a table with the same kind of prompts. If you keep the kit, the page here is your recommendation's home. If you work on paper from the session, its table is. Fill in only one of the two.
 
 Each page follows the four parts on the [How to Make a Recommendation](../../student_guide/how_to_make_a_recommendation.md) card: what you recommend, why, what it costs you, and what a grown-up still needs to check or decide.
 
@@ -23,7 +23,7 @@ When the grown-ups decide, write a Decision Record for the checkpoint in your [d
 
 ## One artifact, one home
 
-Each recommendation lives on its own page here. Near the end, the finished pages in `outputs/` carry the short version forward from these pages. Keep one copy of each recommendation, so you always know which one is right.
+Each recommendation lives in one place: its page here, or its session's table if you work on paper. Near the end, the finished pages in `outputs/` carry the short version forward from these pages. Keep one copy of each recommendation, so you always know which one is right.
 
 A link that leaves the kit opens a page in the repository. In a printed or pasted copy, find that page there.
 

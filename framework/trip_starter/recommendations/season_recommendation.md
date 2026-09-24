@@ -16,7 +16,7 @@ This is your Checkpoint 1 page, from [Session 14](../../sessions/phase_02_destin
 | A season to be careful about, and why | |
 | Possible months, if any | |
 | My reasons | |
-| What we'd give up with this season | |
+| What we would give up with this season | |
 | My sources, with the date I checked each | |
 | My questions for the grown-ups, like whether it fits school and work | |
 | What a grown-up still needs to check, decide or book | |
@@ -26,7 +26,7 @@ This is your Checkpoint 1 page, from [Session 14](../../sessions/phase_02_destin
 
 | Prompt | Your answer |
 | --- | --- |
-| The season we're confirming | |
+| The season we are confirming | |
 | What it brings: the weather, the crowds and the events | |
 | What that means for our trip | |
 | The challenge we most need to plan around | |

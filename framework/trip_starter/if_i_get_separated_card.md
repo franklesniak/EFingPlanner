@@ -10,13 +10,13 @@ You make this card in [Session 49](../sessions/phase_08_readiness_final/49_trave
 
 | On my card | Who writes it | What goes here |
 | --- | --- | --- |
-| Where we're staying (name) | A grown-up, once the lodging is booked and checked | |
+| Where we are staying (name) | A grown-up, once the lodging is booked and checked | |
 | Its address | A grown-up, once the lodging is booked and checked | |
 | Its phone number | A grown-up, once the lodging is booked and checked | |
 | A parent's phone number | Me | |
-| Where we're staying, in the local language | A grown-up, who checks the wording | |
-| Emergency phrase that means "please help" | Me, from my destination pack, and a grown-up checks it | |
-| Emergency phrase that means "I'm lost, I got separated from my family" | Me, from my destination pack, and a grown-up checks it | |
+| Where we are staying, in the local language | A grown-up, who checks the wording | |
+| Emergency phrase that means "please help" | Me, from my destination pack, or a grown-up finds it; a grown-up checks it | |
+| Emergency phrase that means "I'm lost, I got separated from my family" | Me, from my destination pack, or a grown-up finds it; a grown-up checks it | |
 | Emergency number, and the date a grown-up checked it | Me, after a grown-up checks it on a current official page | |
 | Second emergency number, and the date a grown-up checked it | Me, after a grown-up checks it on a current official page | |
 
@@ -29,7 +29,7 @@ Never a passport number. Never a birthdate. Never a confirmation number. Never t
 <!-- density-exempt: X, not Y -- the card's privacy exception is the brief's verbatim safety statement, printed as the standing rule an adult reads at a glance -->
 > **For the grown-ups: the privacy exception, stated exactly.** The child's "if I get separated" card is **not** an exception to the privacy rules: it may carry the **lodging name, address and phone number, and a parent's phone number** -- the minimum needed to reunite -- but **never** passport numbers, birthdates, confirmation numbers, or the home address. It is a carry-in-pocket safety card, **not** trip data committed anywhere.
 
-The filled card stays in your pocket. It's never saved into a shared folder or this repository, never photographed into a shared tool or an AI tool, and never posted. The rules are on the [privacy and safety](../docs/privacy_and_safety.md) page.
+The filled card stays in your pocket. It is never saved into a shared folder or this repository, never photographed into a shared tool or an AI tool, and never posted. The rules are on the [privacy and safety](../docs/privacy_and_safety.md) page.
 
 ## My plan, in three steps
 

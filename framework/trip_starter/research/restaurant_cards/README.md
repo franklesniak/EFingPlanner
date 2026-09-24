@@ -6,7 +6,7 @@
 
 One filled Restaurant Research Card for each place or area to eat, one card to a file. You make them in Session 37, from the food wish list you wrote in Session 36.
 
-The food sessions are your family's choice. If your family skipped them, this folder stays empty, and your kit is complete without it. If you did them, one card for each city where you'll sleep is enough. A dining area counts as a card.
+The food sessions are your family's choice. If your family skipped them, this folder stays empty, and your kit is complete without it. If you did them, Session 37 says how many cards are enough. A dining area counts as a card.
 
 ## Where the blank comes from
 

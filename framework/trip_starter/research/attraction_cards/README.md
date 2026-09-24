@@ -6,7 +6,7 @@
 
 One filled Attraction Research Card for each attraction or experience you research, one card to a file. You start them in Session 23. Session 25 helps you judge the reviews you find, and Session 26 sorts every card into a group.
 
-The attraction set is complete at ten cards, across as many sittings as it takes. Two cards in a sitting is a finished day.
+Session 23 says how many cards make the set complete. It can take several sittings, and two cards in a sitting is a finished day.
 
 ## Where the blank comes from
 

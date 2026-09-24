@@ -10,6 +10,7 @@ This is your Checkpoint 4 page, from [Session 32](../../sessions/phase_05_route_
 | --- | --- |
 | What I recommend, in one sentence | |
 | Total number of days (with booked dates: the booked trip length) | |
+| The other route I compared in Session 31 | |
 | Overnight cities | |
 | Nights in each city | |
 | Travel days: the days mostly spent getting to the next place | |

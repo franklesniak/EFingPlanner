@@ -8,7 +8,7 @@ Your Daily Plan Cards, one card to a file. You make them in Session 41.
 
 Make them only after Checkpoint 4, once the grown-ups have settled your route and how long the trip is. Cards made before that usually have to be redone.
 
-The **block card** is the one to make: one card for each city-stay, with a row for each day you sleep there. So one card can cover several days. A trip with one base has one block card. Per-day cards are extra, and only worth making once the dates and travel plans are firm.
+The **block card** is the one to make: one card for each city-stay, with a row for each day in it. So one card can cover several days. A trip with one base has one block card. Per-day cards are extra, and only worth making once the dates and travel plans are firm.
 
 ## Where the blank comes from
 

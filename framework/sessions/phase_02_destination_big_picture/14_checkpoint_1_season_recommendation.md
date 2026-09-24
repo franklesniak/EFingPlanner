@@ -68,9 +68,9 @@ On the Core path, your filled-in Trade-Off Report is part of it too.
 
 You are done when your Decision Record has a season pick, a backup, a season to be careful about, your reasons and sources, and your questions for the grown-ups. You have also shared it with a grown-up. You do not need exact dates. A season and maybe some months is a complete recommendation.
 
-With your dates booked, you're done when your Decision Record says what your season means for the trip and whether it fits, with your sources and your questions, and you've shared it with a grown-up.
+With your dates booked, you are done when your Decision Record says what your season means for the trip and whether it fits, with your sources and your questions, and you've shared it with a grown-up.
 
-On the Core path, you're done when your Trade-Off Report is filled in too, in whichever form fits your dates. "Not sure yet" is fine in any row.
+On the Core path, you are done when your Trade-Off Report is filled in too, in whichever form fits your dates. "Not sure yet" is fine in any row.
 
 ## Source Check
 
@@ -86,7 +86,7 @@ Stuck? Use the [When I'm Stuck card](../../student_guide/when_im_stuck.md) in yo
 
 ## Optional Extension
 
-If you have extra energy, write one line about *why* you did not pick your backup season. Explaining a choice you did *not* make is a planner skill. With your dates booked, write one line about the season you'd pick for a future trip, and why. If not, you are done.
+If you have extra energy, write one line about *why* you did not pick your backup season. Explaining a choice you did *not* make is a planner skill. With your dates booked, write one line about a season you might pick for a future trip, and why. If not, you are done.
 
 ## Parent Notes
 

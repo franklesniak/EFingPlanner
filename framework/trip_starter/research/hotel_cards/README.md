@@ -6,7 +6,7 @@
 
 One filled Hotel Comparison Card for each place you might stay, one card to a file. You make them in Session 35, after you compare neighborhoods in Session 34.
 
-You need at least one card for each place you'll sleep overnight. Make two for a place only when it's still undecided and there are enough options to compare. Four or five cards for the whole trip is plenty.
+Session 35 says how many cards are enough.
 
 ## Where the blank comes from
 

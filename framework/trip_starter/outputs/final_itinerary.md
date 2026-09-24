@@ -25,7 +25,7 @@ Copy this part once for each block card, in trip order. A trip with one base has
 | --- | --- |
 | Stay number and city | |
 | Nights here | |
-| Where we'd stay (an area) | |
+| Where we would stay (an area) | |
 | Main goal for this stay | |
 
 The day rows come in two tables, so the page still prints. Use the same day numbers in both.
@@ -48,7 +48,7 @@ The day rows come in two tables, so the page still prints. Use the same day numb
 
 Copy these from your route notes. With one base, write "one base" here, and add the trips you take from it.
 
-| From | To | How we'd travel | About how long |
+| From | To | How we would travel | About how long |
 | --- | --- | --- | --- |
 | | | | |
 | | | | |
@@ -73,7 +73,7 @@ Copy the items from your reservation watchlist. The grown-ups book every one of 
 
 ## Still open
 
-| What's still open | Who decides |
+| What is still open | Who decides |
 | --- | --- |
 | | |
 | | |

@@ -22,12 +22,12 @@ Bring this page to a grown-up with your itinerary draft and its day cards. They 
 | Budget: does it still fit our rough budget band? | |
 | Booking watchlist: what the grown-ups need to book | |
 
-## What I'm bringing to the review
+## What I bring to the review
 
 | Prompt | Your answer |
 | --- | --- |
-| What I'm confident about | |
-| What I'm unsure about | |
+| What I am confident about | |
+| What I am unsure about | |
 | What the grown-ups need to decide | |
 | What could be cut if we need to | |
 | The biggest trade-offs | |

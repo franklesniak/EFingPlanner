@@ -4,7 +4,7 @@
 
 Copy this page out of the repository before you fill it in. Do not commit your filled-in work to a public repository.
 
-This is your Checkpoint 2 page, from [Session 22](../../sessions/phase_03_choose_places/22_checkpoint_2_city_shortlist.md). You pick the few places you'd plan the trip around, then a grown-up reviews your choice with you. "Not sure yet" and "ask an adult" are complete answers in any row.
+This is your Checkpoint 2 page, from [Session 22](../../sessions/phase_03_choose_places/22_checkpoint_2_city_shortlist.md). You pick the few places to plan the trip around, then a grown-up reviews your choice with you. "Not sure yet" and "ask an adult" are complete answers in any row.
 
 | Prompt | Your answer |
 | --- | --- |
