@@ -79,8 +79,8 @@ You are done when your packet gives your reasons, the family has picked one of t
 
 Before you start Session 53:
 
-- **Approved with changes:** write the changes into your packet and your decision log.
-- **Needs more research:** do that one piece and bring it back.
+- **Approved with changes:** write the changes into your packet and your Decision Record.
+- **Needs more research:** do that one piece, and bring it back.
 - **Park this decision for later:** that's your result, so you can go on to Session 53.
 
 ## Source Check

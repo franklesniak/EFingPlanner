@@ -64,9 +64,9 @@ You are done when your draft is in front of a grown-up, your review packet has a
 
 Before you start the next session:
 
-- **Approved with changes:** write the changes into your itinerary draft and your decision log.
-- **Needs more research:** do that one piece and bring it back.
-- **Park this decision for later:** the next session waits too, until your family comes back to the decision.
+- **Approved with changes:** write the changes into your itinerary draft and your Decision Record.
+- **Needs more research:** do that one piece, and bring it back.
+- **Park this decision for later:** wait until your family comes back to it.
 
 ## Source Check
 
