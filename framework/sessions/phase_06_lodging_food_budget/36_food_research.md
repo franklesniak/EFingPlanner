@@ -10,7 +10,7 @@ You are here: Phase 6 (Lodging, Food, and Budget). Not a First Taste step. Previ
 - Planner skill: organizing information
 - Estimated time: 20-30 minutes
 - Parent involvement: none / independent work; stay nearby for any search beyond the Destination Notes
-- Materials: this session's Destination Notes, a device with the kid-safe filter on, a grown-up nearby if you search beyond the Destination Notes (beside you for an image search), your [Trip-Basics card](../../templates/trip_basics.md) (for the number of travelers), the route your family approved at Checkpoint 4, your [Source Log](../../templates/source_log.md), a pencil
+- Materials: this session's Destination Notes, a device with the kid-safe filter on, a grown-up nearby if you search beyond the Destination Notes (beside you for an image search), your [Trip-Basics card](../../templates/trip_basics.md) (for the number of travelers), your part-trip note from Session 33 (if you made one), the route your family approved at Checkpoint 4, your [Source Log](../../templates/source_log.md), a pencil
 
 ## Goal
 
@@ -32,7 +32,7 @@ A good food plan is a mix. Plan a few special meals, the ones you'd look forward
 1. **Read your Destination Notes.** They name foods to try and the kinds of places people eat. Everything there is an idea to look into, and you pick what goes on your list. Stick to what you could find in the places on the route the grown-ups approved at Checkpoint 4. If you search beyond your Destination Notes, have a grown-up nearby, and beside you for an image search.
 2. **Fill in your food wish list** in the Workspace. Add a few foods or kinds of meals.
 3. **Mark each one.** Is it a special meal, an easy meal, or a "wherever we are" meal?
-4. **Check your group size.** Look at the number of travelers on your Trip-Basics card. If your group is bigger than about four, many small places can't seat everyone together. Some won't take a big group's reservation, either. So look for places that can seat a group, or plan to split into two tables. A group of two or three can skip this step.
+4. **Check your group size.** Look at the number of travelers on your Trip-Basics card. If your Session 33 note says someone is with you for only part of the trip, count the biggest group you'll have. If your group is bigger than about four, many small places can't seat everyone together. Some won't take a big group's reservation, either. So look for places that can seat a group, or plan to split into two tables. A group of two or three can skip this step.
 5. **Write the source** for each idea, so you can find it again.
 
 **Eating safely on the trip:**

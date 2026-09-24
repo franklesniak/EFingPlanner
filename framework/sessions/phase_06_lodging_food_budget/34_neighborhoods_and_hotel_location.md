@@ -10,7 +10,7 @@ You are here: Phase 6 (Lodging, Food, and Budget). Not a First Taste step. Previ
 - Planner skill: comparing choices
 - Estimated time: 20-30 minutes
 - Parent involvement: none / independent work; stay nearby for any search beyond the Destination Notes and official city sites
-- Materials: this session's Destination Notes, a device with the kid-safe filter on, a grown-up nearby if you search beyond the Destination Notes and official city sites (beside you for an image search), a blank [Neighborhood Comparison page](../../templates/neighborhood_comparison.md), the route your family approved at Checkpoint 4, your route map notes from Session 28, the City Research Card for any region on your route (for its town), a guidebook if you have one, your [Trip-Basics card](../../templates/trip_basics.md) (for the number of travelers), your [Source Log](../../templates/source_log.md), and a [Scoring Rubric page](../../templates/scoring_rubric.md) if your child wants to score; a blank [Trade-Off Report](../../templates/tradeoff_report.md) only if the third report goes here
+- Materials: this session's Destination Notes, a device with the kid-safe filter on, a grown-up nearby if you search beyond the Destination Notes and official city sites (beside you for an image search), a blank [Neighborhood Comparison page](../../templates/neighborhood_comparison.md), the route your family approved at Checkpoint 4, your route map notes from Session 28, the City Research Card for any region on your route (for its town), a guidebook if you have one, your [Trip-Basics card](../../templates/trip_basics.md) (for the number of travelers), your part-trip note from Session 33 (if you made one), your [Source Log](../../templates/source_log.md), and a [Scoring Rubric page](../../templates/scoring_rubric.md) if your child wants to score; a blank [Trade-Off Report](../../templates/tradeoff_report.md) only if the third report goes here
 
 ## Goal
 
@@ -33,7 +33,7 @@ Where you sleep shapes every day of the trip. You walk out of that door each mor
    - Staying near a useful station or stop can be worth a lot.
    - How an area feels matters, because you'll walk it every day.
    - Breakfast nearby saves a slow, hungry start.
-5. **Check the room count.** Look at the number of travelers on your Trip-Basics card. Rooms in some places are smaller than at home, and many cap how many people can sleep in one. There can be special rules for how children are counted, too. Rooms that connect, or that sleep four, can be hard to find. So if your group is bigger than about four, plan on more rooms than you'd guess. Write "ask an adult" in the room-count row. Grown-ups check this for each place and decide the room count.
+5. **Check the room count.** Look at the number of travelers on your Trip-Basics card. Rooms in some places are smaller than at home, and many cap how many people can sleep in one. There can be special rules for how children are counted, too. Rooms that connect, or that sleep four, can be hard to find. So if your group is bigger than about four, plan on more rooms than you'd guess. Write "ask an adult" in the room-count row. If your Session 33 note says someone is with you for only part of the trip, write beside it which nights they're there. Grown-ups check this for each place and decide the room count.
 6. **Want to score the areas?** Your Scoring Rubric page has a lighter three-question table beside the full one. Use whichever fits you.
 7. **Circle your pick.** Circle the area you'd recommend, and write one sentence saying why.
 
@@ -53,7 +53,7 @@ Your Neighborhood Comparison: two or three areas side by side, with the one you'
 
 ## Stop Point
 
-You are done when your neighborhood comparison has at least two areas filled in, its room-count row says "ask an adult", and you've circled the one you'd recommend, with one sentence saying why. One clear pick with a reason is enough. You don't need every box filled, and "ask an adult" is a fine answer. If you chose to write your third trade-off report here, you're done when that report is filled in too.
+You are done when your neighborhood comparison has at least two areas filled in, its room-count row says "ask an adult", with the nights from your Session 33 note if you made one, and you've circled the one you'd recommend, with one sentence saying why. One clear pick with a reason is enough. You don't need every box filled, and "ask an adult" is a fine answer. If you chose to write your third trade-off report here, you're done when that report is filled in too.
 
 ## Source Check
 

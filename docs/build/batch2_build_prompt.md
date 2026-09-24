@@ -743,9 +743,11 @@ nightly price for all the overnight cities, multiplies it by every night in the 
 
 **On the Core path, add one optional micro-task**, shown only when the Session 02 profiles
 mark a traveler as coming for only part of the trip. The child jots how many people are
-present on which days, and what that changes: room count (Sessions 34 and 35), train seats
-on each leg (Session 30), and restaurant table size (Session 36). A family continuing from
-First Taste meets it on Session 33's extension line.
+present on which days, and what that changes: room count (Sessions 34, 35 and 39),
+restaurant table size (Sessions 36 and 37), and train seats on each leg, which the grown-ups
+book. Each of those sessions reads the note where it applies: rooms on the nights that
+traveler is there, and table size on those days. A family continuing from First Taste
+meets it on Session 33's extension line.
 
 #### Session 44 — the personal pick, now chosen at Session 26
 

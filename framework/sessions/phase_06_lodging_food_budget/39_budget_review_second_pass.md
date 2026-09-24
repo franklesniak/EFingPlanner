@@ -10,7 +10,7 @@ You are here: Phase 6 (Lodging, Food, and Budget). Not a First Taste step. Previ
 - Planner skill: revising a plan
 - Estimated time: 20-30 minutes
 - Parent involvement: parent review after session
-- Materials: your [Budget Estimate page](../../templates/budget_estimate.md) from Session 33 and a blank one for this pass, your daily cost table from Session 38, your hotel comparison cards, your route and nights from Checkpoint 4, your route map notes from Session 28, the City Research Card for any region on your route (for its town), your My Calls page (for your special pick), your attraction cards (if your special pick hits a block), your [Trip-Basics card](../../templates/trip_basics.md) (for the number of travelers), your family's [current travel assumptions](../../templates/current_family_travel_assumptions.md) page (for the budget band), your [Source Log](../../templates/source_log.md), a calculator (allowed)
+- Materials: your [Budget Estimate page](../../templates/budget_estimate.md) from Session 33 and a blank one for this pass, your daily cost table from Session 38, your hotel comparison cards, your route and nights from Checkpoint 4, your route map notes from Session 28, the City Research Card for any region on your route (for its town), your My Calls page (for your special pick), your attraction cards (if your special pick hits a block), your part-trip note from Session 33 (if you made one), your [Trip-Basics card](../../templates/trip_basics.md) (for the number of travelers), your family's [current travel assumptions](../../templates/current_family_travel_assumptions.md) page (for the budget band), your [Source Log](../../templates/source_log.md), a calculator (allowed)
 
 ## Goal
 
@@ -26,7 +26,7 @@ Your first budget was a quick guess with two slices. Now you know your route, yo
 
 Round to easy numbers. A calculator is always fine, and a grown-up can do the math while you do the thinking.
 
-1. **Hotels, city by city.** Fill in the hotel table in the Workspace, one row per overnight city. If a stop on your route is a region, use the town on its card from Session 21. If that card names no town, use the one you picked in Session 28. Use your nights from Checkpoint 4 and the cost per room from the card you recommended. If that card's cost row is empty, fill it in first, or ask an adult. A grown-up tells you how many rooms.
+1. **Hotels, city by city.** Fill in the hotel table in the Workspace, one row per overnight city. If a stop on your route is a region, use the town on its card from Session 21. If that card names no town, use the one you picked in Session 28. Use your nights from Checkpoint 4 and the cost per room from the card you recommended. If that card's cost row is empty, fill it in first, or ask an adult. A grown-up tells you how many rooms. If your Session 33 note says the number of us changes during a stay, give that city one row for each room count, with its own nights.
 2. **Food.** Take the medium food guess from your Session 38 table, and multiply it by the total days in your Checkpoint 4 plan. Write it on your blank Budget Estimate page, which is your page for this pass. That guess already covers everyone, so on its Food row, cross out "per person" and "x ____ people".
 3. **The other slices.** Do the same for local transit, activities and souvenirs. Fill in the rows on that page that said "later". They're yours now. In each one's "How to figure it" box, write "per day x ____ days". On the activities row, cross out "per ticket x ____ people" first. Your long-distance rides from Session 38 stay out of your subtotal, because the grown-ups price those.
 4. **Add it up.** Your subtotal is what the parts you chose come to. The whole trip costs more than that, and the grown-ups work out the rest on their own page.
@@ -66,7 +66,7 @@ Your updated budget summary: a hotel line for each city, the other slices, and o
 
 ## Stop Point
 
-You are done when your budget summary matches the route the grown-ups approved at Checkpoint 4, your subtotal is added up, you've checked the matching piece against your band, and you've written one sentence about whether the parts you chose fit. If they don't, say what you'd change. "It doesn't fit, so I'd cut ___" is a finished, good answer. If your special pick hit a block, you've chosen a new one from your attraction cards with a grown-up. "Ask an adult" is fine in any row you can't fill.
+You are done when your budget summary matches the route the grown-ups approved at Checkpoint 4, your subtotal is added up, you've checked the matching piece against your band, and you've written one sentence about whether the parts you chose fit. If they don't, say what you'd change. "It doesn't fit, so I'd cut ___" is a finished, good answer. If the number of us changes during a stay, that city has a row for each room count. If your special pick hit a block, you've chosen a new one from your attraction cards with a grown-up. "Ask an adult" is fine in any row you can't fill.
 
 ## Source Check
 

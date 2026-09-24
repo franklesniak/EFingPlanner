@@ -10,7 +10,7 @@ You are here: Phase 6 (Lodging, Food, and Budget). Not a First Taste step. Previ
 - Planner skill: comparing choices
 - Estimated time: 20-30 minutes per sitting, several sittings
 - Parent involvement: none / independent work
-- Materials: a device with the kid-safe filter on, blank [Hotel Comparison Cards](../../templates/hotel_comparison_card.md), your neighborhood comparison from Session 34, the route your family approved at Checkpoint 4, your route map notes from Session 28, the City Research Card for any region on your route (for its town), your [Source Log](../../templates/source_log.md), a timer and a clock
+- Materials: a device with the kid-safe filter on, blank [Hotel Comparison Cards](../../templates/hotel_comparison_card.md), your neighborhood comparison from Session 34, the route your family approved at Checkpoint 4, your route map notes from Session 28, the City Research Card for any region on your route (for its town), your part-trip note from Session 33 (if you made one), your [Source Log](../../templates/source_log.md), a timer and a clock
 
 ## Goal
 
@@ -26,7 +26,7 @@ In Session 34 you picked an area. Now you look at a few real places to stay, one
 
 1. **Decide how many cards you need.** Make at least one card for each city where you'll sleep overnight on your approved route. A trip with one base needs only one or two cards. If a stop on your route is a region, use the town on its card from Session 21. If that card names no town, use the one you picked in Session 28. Make two for a city only if you still can't decide between places there, and there are enough good places to compare. If one place is already the obvious choice, one card is enough. About four or five cards for the whole trip is plenty, counting the cards from every sitting so far.
 2. **Find a place to stay.** Look in the area you circled in Session 34. Before you start a new card, check that you don't already have one for that place. For a city you didn't compare there, a grown-up can suggest an area. Use the place's own website, or a hotel search site a grown-up says is okay.
-3. **Fill in the card from top to bottom.** Write the cost **per room**, as an example to check again, with the date you found it. Ask the grown-ups the room-setup question, since they decide how many rooms you need. For review themes, look for what lots of reviews agree on, the way you learned in Session 25.
+3. **Fill in the card from top to bottom.** Write the cost **per room**, as an example to check again, with the date you found it. Ask the grown-ups the room-setup question, since they decide how many rooms you need. If your Session 33 note says someone is with you for only part of the trip, tell them which nights. For review themes, look for what lots of reviews agree on, the way you learned in Session 25.
 4. **Fill in the planning assumption rows.** Write what you're assuming, why, what could change it, and whether a grown-up needs to check it.
 5. **Pick one for each city.** In each card's decision row, mark the one you'd recommend. Write one sentence saying why.
 
@@ -46,7 +46,7 @@ Your Hotel Comparison Cards, with the one you'd recommend for each city.
 
 ## Stop Point
 
-You are done when you have at least one card for each city where you'll sleep overnight on your approved route. Each card has its cost per room with the date you found it, and its planning assumption rows filled in. You've written which one you'd recommend for each city and why. If one option was already obvious, one card for that city is enough. Four or five cards for the whole trip is plenty. "Ask an adult" is a fine answer in any row.
+You are done when you have at least one card for each city where you'll sleep overnight on your approved route. Each card has its cost per room with the date you found it, and its planning assumption rows filled in. If you made a part-trip note in Session 33, each card's room-setup row says which nights. You've written which one you'd recommend for each city and why. If one option was already obvious, one card for that city is enough. Four or five cards for the whole trip is plenty. "Ask an adult" is a fine answer in any row.
 
 At the end of each sitting, check the clock. Write how many minutes the sitting took next to your guess. Being off is normal, and noticing the gap is the practice.
 

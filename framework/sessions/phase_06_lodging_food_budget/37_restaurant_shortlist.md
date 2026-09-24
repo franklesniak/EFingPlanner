@@ -10,7 +10,7 @@ You are here: Phase 6 (Lodging, Food, and Budget). Not a First Taste step. Previ
 - Planner skill: organizing information
 - Estimated time: 20-30 minutes
 - Parent involvement: none / independent work; stay nearby for any search beyond the Destination Notes
-- Materials: this session's Destination Notes, a device with the kid-safe filter on, a grown-up nearby if you search beyond the Destination Notes (beside you for an image search), your food wish list from Session 36, any restaurant cards from an earlier sitting, blank [Restaurant Research Cards](../../templates/restaurant_research_card.md), your hotel comparison cards from Session 35, your must-do list on your My Calls page, the route your family approved at Checkpoint 4, your [Trip-Basics card](../../templates/trip_basics.md) (for the number of travelers), your [Source Log](../../templates/source_log.md)
+- Materials: this session's Destination Notes, a device with the kid-safe filter on, a grown-up nearby if you search beyond the Destination Notes (beside you for an image search), your food wish list from Session 36, any restaurant cards from an earlier sitting, blank [Restaurant Research Cards](../../templates/restaurant_research_card.md), your hotel comparison cards from Session 35, your must-do list on your My Calls page, the route your family approved at Checkpoint 4, your [Trip-Basics card](../../templates/trip_basics.md) (for the number of travelers), your part-trip note from Session 33 (if you made one), your [Source Log](../../templates/source_log.md)
 
 ## Goal
 
@@ -34,7 +34,7 @@ A card can be about one place to eat, or about a whole area with lots of places 
 
 Your Destination Notes may point to a local review site. Sites like that can be great, but they may be in another language. So ask an adult to help, and it's fine to skip it.
 
-Look at the number of travelers on your Trip-Basics card. If your group is bigger than about four, add a seating note to each card. Can this place seat all of you, or would you split into two tables?
+Look at the number of travelers on your Trip-Basics card. If your Session 33 note says someone is with you for only part of the trip, count the group on the days you'll be in each card's city. If the group is bigger than about four, add a seating note to the card. Can this place seat all of you, or would you split into two tables?
 
 ## Workspace
 
@@ -48,7 +48,7 @@ Your Restaurant Research Cards and dining-area list: at least one place or area 
 
 ## Stop Point
 
-You are done when you have at least one card for each main city where you'll sleep overnight, with its planning assumption rows filled in. If your group is bigger than about four, each card has a seating note. An area full of places to eat counts as a card. If you're unsure whether a place needs a reservation, write "ask an adult". That's a finished answer.
+You are done when you have at least one card for each main city where you'll sleep overnight, with its planning assumption rows filled in. Each card whose group is bigger than about four has a seating note. An area full of places to eat counts as a card. If you're unsure whether a place needs a reservation, write "ask an adult". That's a finished answer.
 
 ## Source Check
 
