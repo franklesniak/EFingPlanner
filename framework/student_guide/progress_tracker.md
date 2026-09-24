@@ -49,7 +49,7 @@ How to read the lines:
 - A *Recommended* line is done only if your family chooses it.
 - A line that names a grown-up is one to do with a grown-up.
 - A line that says *before you start* needs one answer from a grown-up first. Once you have it, you can do the session on your own.
-- A line marked *more than one sitting* gets its tick only when the whole session is finished. If its Stop Point says you are done for today, wait.
+- A line marked *more than one sitting* gets its tick only when the whole session is finished. If its Stop Point says you are done for today, you've made today's part, so wait to tick it.
 - A line under a session that starts *Finished First Taste first?* is extra work for that session on the Core path. If you started on the Core path, tick it along with its session.
 
 ### Phase 0 (Setup)

@@ -224,7 +224,7 @@ Want a rough signal of how the executive-function side is going? The optional [e
 ## Session 26: Rank Attractions
 
 - Role: 5-minute check-in; help co-choose the one unconditional pick, after you show the three blocks. A family continuing from First Taste confirms the pick from Session 44 in one line. If a block now stops it, your child chooses a new one with you, from their attraction cards.
-- Prep: a Scoring Rubric page, for spare copies of the lighter table; extra copies of the session's own fuller table, which you print again or your child copies the questions from; a blank My Calls page from the trip starter kit; the City A card, for the anchor city.
+- Prep: a Scoring Rubric page, for spare copies of the lighter table; extra copies of the session's own fuller table, which you print again or your child copies the questions from; a blank My Calls page from the trip starter kit; the City A card, for the anchor city; a clock or timer, for the minutes guess.
 - Look for: every attraction in one of the four groups, a must-do list short enough to read in one breath, the special pick on the My Calls page and on the must-do list, and a minutes guess with the time taken.
 - Coaching question: "Which must-do would you keep if you could keep only one?"
 - Pitfall: letting the scores decide. Scores inform the choice, and your child makes it.
@@ -232,7 +232,7 @@ Want a rough signal of how the executive-function side is going? The optional [e
 ## Session 27: Checkpoint 3 Top Experiences
 
 - Role: Parent-gated: parent review; use the recommendation in a family talk. Open by telling your child their special pick stands, and initial it on the My Calls page.
-- Prep: a Decision Record page; the My Calls page; the assumptions page, for the budget band.
+- Prep: a Decision Record page; the My Calls page; the assumptions page, for the budget band; the City A card and the Session 26 scoring tables, for the optional look back at the minutes guesses.
 - Look for: the must-dos, strong maybes (with the only-if-nearby ones marked "if nearby"), skip and save notes, reasons, trade-offs, sources and a budget-band check, plus the minutes-guess glance on the reflection line. The checkpoint finishes on Approved, or on Approved with changes once they're written in. The other two answers leave it open, and they're still normal results.
 - Coaching question: "Which must-do would you give up first, and why?"
 - Pitfall: swapping in your own favorites. The must-do list is your child's call.
@@ -256,8 +256,8 @@ Want a rough signal of how the executive-function side is going? The optional [e
 ## Session 30: Trains, Transit, and Travel Cards
 
 - Role: Independent.
-- Prep: this session's Destination Notes; the route map notes; the Trip-Basics card, for the number of travelers; the Checkpoint 3 must-do list.
-- Look for: transportation notes with each way of getting around, what it's for, and at least two things for a grown-up to check. A travel-time guess in a new Source Log entry, for a trip the route map notes lack, such as one must-do to another in the same city. It is checked in a current transit planner, or in Directions if the family won't ride trains or buses there.
+- Prep: this session's Destination Notes; the route map notes; the Trip-Basics card, for the number of travelers; the Checkpoint 3 must-do list and strong maybes; the attraction cards.
+- Look for: transportation notes with each way of getting around, what it's for, and at least two things for a grown-up to check. A travel-time guess in a new Source Log entry, for a trip the route map notes lack, such as one must-do to another in the same city, or to a strong maybe or any carded attraction. It is checked in a current transit planner, or in Directions if the family won't ride trains or buses there.
 - Coaching question: "How close was your travel-time guess?"
 - Pitfall: buying a pass on assumption. A pass's value depends on the exact route, so compare it with single tickets.
 
