@@ -106,7 +106,7 @@ This checkpoint is lightweight and asynchronous. One accountable adult can revie
 
 **Your own job here.** If you left the rough trip shape partly open at setup, with only the arrival place written down, firm it up now, including the departure place. The route work in Sessions 28 to 32 builds on it. Keep the reasoning about the trip's shape between the adults; your child only needs the arrival and departure places once they are settled.
 
-**A First Taste pick.** If your child chose their one special pick in Session 44, keep its place on the shortlist. Only the three blocks can change that pick: cost, bookability, and safety or feasibility for everyone. If one applies, tell your child which one. They choose a new pick with you in Session 26.
+**A First Taste pick.** If your child chose their one special pick in Session 44, keep its place on the shortlist. Only the three blocks can change that pick: cost, bookability, and safety or feasibility for everyone. If one applies, tell your child which one, so Session 23 makes no card for it. They choose a new pick from their attraction cards with you in Session 26.
 
 **Use it in a family talk.** Take the shortlist into a family conversation and plan from it. Seeing their research shape the trip a second time, well before the final meeting, is what keeps a child going through the long middle of the project.
 

@@ -14,7 +14,7 @@ You are here: Phase 3 (Choose Places). Not a First Taste step. Previous: [16 Dee
 
 ## Goal
 
-Take City B, the city you chose, to full depth, and see how it stacks up against City A.
+Take City B to full depth, and see how it stacks up against City A.
 
 ## Start Here
 
@@ -22,7 +22,7 @@ Lay your City B card next to your City A card. Circle one row on City B that's s
 
 ## Steps
 
-City B is the second card you started in Session 15, the one you picked yourself. Today you fill it in the rest of the way. You already know how the card works from City A, so this time the interesting question is what makes City B different.
+City B is your other Session 15 card, the one that isn't City A. Usually that's the city you picked yourself. If City A got a new card in Session 16, both Session 15 cards are still open, so pick the one you're more curious about. The other can still become City C. Today you fill it in the rest of the way. You already know how the card works from City A, so this time the interesting question is what makes City B different.
 
 Open this session's Destination Notes and look for City B. If it's on the list, read its one line. If you found City B on your own, that's fine too. Your own sources carry it. Either way, treat anything the Notes suggest as a lead worth checking.
 
@@ -69,4 +69,4 @@ If you have extra energy, pick the row where City A and City B are most alike. F
 
 ## Parent Notes
 
-City B is your child's own pick, so let the comparison with City A be theirs too. If they ask which city is better, turn it back to them: "What did you find?" The formal comparison comes in Session 21, so today a margin note is plenty. A child who used the same source for both cities has missed the point of step 2; ask where else they could look.
+City B is usually your child's own pick. Either way, let the comparison with City A be theirs. If they ask which city is better, turn it back to them: "What did you find?" The formal comparison comes in Session 21, so today a margin note is plenty. A child who used the same source for both cities has missed the point of step 2; ask where else they could look.
