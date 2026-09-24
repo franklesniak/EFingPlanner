@@ -17,6 +17,8 @@ Keep these nearby for the moment you need them:
 - [Finish and Quality Check](finish_and_quality_check.md) -- a quick self-check to wrap up each session.
 - [How to Make a Recommendation](how_to_make_a_recommendation.md) -- the four parts of a recommendation a grown-up can act on. Re-read it before each checkpoint; it is short on purpose.
 - [What Is a Constraint?](what_is_a_constraint.md) -- the word the whole project runs on, and how to use one in your work.
-- [Travel Glossary](travel_glossary.md) -- travel and Japan words, explained simply.
+- [Travel Glossary](travel_glossary.md) -- travel words, explained simply.
+- [How to Take Notes](how_to_take_notes.md) -- how to write a note you can use later: the fact, why it matters for your trip, where it came from, and the question to ask next.
+- [How to Use This Binder](how_to_use_this_binder.md) -- where your pages live, what to print when, and how to keep weeks or months of work safe.
 
 Remember: your job is to make a thoughtful, sourced recommendation the grown-ups can use. You are a real planner, and finishing your First Taste plan is a real success.

@@ -2,9 +2,11 @@
 
 # Session 05: Good Sources, Bad Sources
 
-You are here: Phase 1 (Research Skills), First Taste step 4 of 13. Previous: [04 Start a Source Log](../phase_00_setup/04_start_a_source_log.md) | Next: [09 AI as Helper, Not Boss](09_ai_as_helper_not_boss.md) if your family opted into AI, then [10 Destination Snapshot](../phase_02_destination_big_picture/10_destination_snapshot.md) (AI-free families go straight to 10).
+You are here: Phase 1 (Research Skills), First Taste step 4 of 13. Previous: [04 Start a Source Log](../phase_00_setup/04_start_a_source_log.md) | Next: [06 Book Research With a Guidebook](06_book_research_guidebook.md)
 
-*If your family chose to use AI, do [Session 09](09_ai_as_helper_not_boss.md) right after this one, before you use any AI tool.*
+*On the First Taste path, go straight to [10 Destination Snapshot](../phase_02_destination_big_picture/10_destination_snapshot.md). Sessions 06, 07, and 08 are not among the 13. **If your family uses AI, do [09 AI as Helper, Not Boss](09_ai_as_helper_not_boss.md) first** -- it comes right after this session and before Session 10.*
+
+*If your family chose to use AI, do [09 AI as Helper, Not Boss](09_ai_as_helper_not_boss.md) before you use any AI tool.*
 
 **For parents:**
 
@@ -12,15 +14,15 @@ You are here: Phase 1 (Research Skills), First Taste step 4 of 13. Previous: [04
 - Planner skill: checking sources
 - Estimated time: 20-30 minutes
 - Parent involvement: co-working recommended (do this one together)
-- Materials: a device with a kid-safe filter on, the [trusted starting sources list](../../../destinations/japan/reference/trusted_starting_sources.md), your Source Log
+- Materials: a device with a kid-safe filter on, your destination pack's trusted starting sources list, your [Source Log](../../templates/source_log.md)
 
 ## Goal
 
-Learn a quick way to tell if a website can be trusted, and practice it on a real Japan travel site.
+Learn a quick way to tell if a website can be trusted, and practice it on a real travel site about your destination.
 
 ## Start Here
 
-Open the [trusted starting sources list](../../../destinations/japan/reference/trusted_starting_sources.md) and read just the first two names on it. That is your start.
+Open your destination pack's trusted starting sources list and read just the first two names on it. That is your start.
 
 ## Steps
 
@@ -34,7 +36,7 @@ Not every website is equally good. Some are careful and official. Some are tryin
 
 Now practice with a grown-up:
 
-1. Open one **official** Japan travel site (for example, the Japan National Tourism Organization) and one **random** travel blog about Japan.
+1. Open one **official** tourism site for your destination (your destination pack's trusted starting sources list names them) and one **random** travel blog about the same place.
 2. Run the three questions on each. Which one would you trust more for facts like opening hours or rules? Why?
 3. Add the better source to your Source Log with today's date.
 
@@ -58,11 +60,11 @@ Your quick trust test, used on two real sites, plus one trusted source added to 
 
 ## Stop Point
 
-You are done when you have run the three questions on two sites and written down which one you trust more and why. That is plenty for today.
+You are done when you have run the three questions on two sites, written down which one you trust more and why, and put that one in your Source Log. That is plenty for today.
 
 ## Source Check
 
-Record the trusted site you kept in your Source Log: title, who made it, the web address, and today's date. Now that you know the trust test, also fill in the two boxes you left blank in Session 04: **Trust level** (high / medium / low, from the trust test) and **how useful** the source was. This is the lesson that teaches them.
+Record the trusted site you kept in your Source Log: title, who made it, the web address, and today's date. Now that you know the trust test, also fill in the two boxes you left blank in Session 04: **Trust level** (high / medium / low, from the trust test) and **Useful for this question?** (yes / sort of / no). This is the lesson that teaches them.
 
 ## Finish and Quality Check
 
@@ -77,8 +79,10 @@ Stuck? Use the [When I'm Stuck card](../../student_guide/when_im_stuck.md) in yo
 If you have extra energy (or when you continue past First Taste), try the **deeper trust check** on another day:
 
 - Ask more questions: When was it written or updated? Is this fact or opinion? Is it the right kind of source for this question?
-- **Lateral reading:** when you are unsure about a site, open a new tab and see what other trusted sites say about *who made it*. That is what professional fact-checkers do.
-- **Primary vs. secondary:** a museum's own website is a primary source; a blog about the museum is secondary. For facts like hours and rules, prefer the primary source. (The official page may be in Japanese -- use "translate this page" to *understand* it, but check anything important against an English official source or a grown-up.)
+- **Lateral reading:** when you are unsure about a site, look the site itself up in a new tab, the way professional fact-checkers do. The whole move is in [Judging How Much to Trust a Source](../../docs/source_trustworthiness.md).
+- **Primary vs. secondary:** for facts like hours and rules, prefer the source the fact comes from. The difference is explained in [Judging How Much to Trust a Source](../../docs/source_trustworthiness.md).
+
+(The official page may be in the local language -- use "translate this page" to *understand* it, but check anything important against an English official source or a grown-up.)
 
 ## Parent Notes
 

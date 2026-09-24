@@ -10,7 +10,7 @@ You are here: Phase 0 (Setup), First Taste step 3 of 13. Previous: [03 What Make
 - Planner skill: checking sources (tracking where a fact came from)
 - Estimated time: 20-30 minutes
 - Parent involvement: 5-minute check-in
-- Materials: your Source Log page, a pencil, and one thing to look up (a book or a website)
+- Materials: your [Source Log](../../templates/source_log.md) page, a pencil, and one thing to look up (a book or a website)
 
 (For an at-a-glance version, see the matching entry in [the parent session notes](../../parent_guide/session_support_notes.md); the Parent Notes below have the full detail.)
 
@@ -28,17 +28,17 @@ If you don't have a Source Log page yet, copy the blank [Source Log template](..
 
 A source is where a fact comes from. It could be a website, a book, a map, a video, or a person. Good planners always know *where* a fact came from, so they can trust it and check it later.
 
-You're going to practice on one real fact about Japan.
+You're going to practice on one real fact about the place you are going.
 
-1. Pick one small thing you're curious about. For example: "What is the capital of Japan?" or "What is a bullet train called?"
+1. Pick one small thing you're curious about. For example: "What is the capital city?" or "What money do they use?"
 2. Look it up in **one** place: a book you have, or a website an adult says is okay.
 3. In your Source Log, fill in one entry about what you used:
    - **What I learned** -- the fact, in your own words.
-   - **Title** -- the name of the website or book.
+   - **Title** -- the name of the book, or the website's name and the page's title.
    - **Author or organization** -- who made it (a museum, a tourism office, a writer). Write "not listed" if you can't find it.
-   - **Web address or page number** -- the link, or the book page.
+   - **Web address or book page** -- the link, or the book page.
    - **Date checked** -- today's date.
-4. Add one more thing good planners do: write down **one other place you could check the same fact.** That's your "verification source." You don't have to check it right now. Just name where you *could*.
+4. Add one more thing good planners do: write down **one other place you could check the same fact.** That goes in the **One other place I could check this** box. You don't have to check it right now. Just name where you *could*.
 
 You just tracked your first source. Now you can find that fact again later, and so can a grown-up.
 
@@ -56,12 +56,12 @@ Fill in your first entry here (or on your Source Log page):
 | --- | --- |
 | What I learned | |
 | Title | |
-| Author/org | |
-| Web address or page number | |
+| Author or organization | |
+| Web address or book page | |
 | Date checked | |
 | One other place I could check this | |
 
-Your Source Log template has a few more boxes than the ones above: *source type*, *why it matters*, *trust level*, and *how useful*. You'll learn about *trust level* and *how useful* in Session 05, so leave those two blank for now (fill *source type* and *why it matters* only if you want). The boxes above are a complete first entry.
+Your Source Log template has a few more boxes than the ones above, including *source type*, *why it matters*, *trust level*, and *useful for this question*. You'll learn about *trust level* and *useful for this question* in Session 05, so leave those two blank for now (fill *source type* and *why it matters* only if you want). The boxes above are a complete first entry.
 
 ## Artifact Created
 
@@ -69,7 +69,7 @@ Your first Source Log entry: one fact, with where it came from and where you cou
 
 ## Stop Point
 
-You are done when your Source Log has today's date and one entry with the boxes above filled in. (The extra template boxes like *trust level* and *how useful* wait for Session 05.) One good entry is enough. You don't need to look up more facts today.
+You are done when your Source Log has today's date and one entry with the boxes above filled in. (The extra template boxes like *trust level* and *useful for this question* wait for Session 05.) One good entry is enough. You don't need to look up more facts today.
 
 ## Source Check
 
@@ -85,7 +85,7 @@ Stuck? Use the [When I'm Stuck card](../../student_guide/when_im_stuck.md) in yo
 
 ## Optional Extension
 
-If you have extra energy, look up the *same* fact in your "one other place" and see if the two sources agree. If they don't, that's interesting. Write a note about it. If not, you are done.
+If you have extra energy, look up the *same* fact in your "one other place" and see if the two sources agree. Then write it in your Source Log's **Verification source** box, with today's date in the box under it. If they don't agree, that's interesting. Write a note about it. If not, you are done.
 
 ## Parent Notes
 

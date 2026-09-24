@@ -12,11 +12,11 @@ The trip is the hook; the real subject is *executive function*: getting started,
 
 A thoughtful, sourced mini-plan the family can actually use: a when-to-go recommendation, one or two cities, a short must-see list, a rough budget check, and their own special pick -- plus a source log and a decision log showing their reasoning. Adults review, adjust, verify, and do the real booking.
 
-## The recommended default: one family, one trip
+## How a destination fits in
 
-Most families should build and run the **Lean path** -- one family, one trip, with the Japan facts written straight into the sessions. That is the whole project for the common case. A larger "Full" build (reusing the curriculum for other destinations, or publishing it as an open educational resource) is an optional extension, not the front door.
+One [destination pack](destinations/japan/README.md) ships with this repository, and you do not have to choose a build. The Phases 0-2 sessions carry no facts about any particular place. Where a session needs one, it sends the child to the pack. Some sessions say "open this session's Destination Notes," and the matching insert in the pack supplies the fact. Others name a reference page in the same pack, where the longer facts live.
 
-**Which kind of "reuse" you actually need:** another US family doing Japan needs only their own [Trip-Basics card](framework/templates/trip_basics.md) (airport, party size, trip length, roster) -- near-zero cost, and the real reuse goal. Rebuilding for a *different destination* is the only thing the heavier machinery is for, and it does nothing for your own trip. They are not the same feature.
+**Which kind of "reuse" you actually need:** another US family doing Japan needs only their own two setup pages: the [Trip-Basics card](framework/templates/trip_basics.md) (airport, party size, trip length, roster) and the [Current Family Travel Assumptions page](framework/templates/current_family_travel_assumptions.md) (season window, budget band, AI choice, rough trip shape, constraints), both filled in at Session 00 and both read by later sessions -- near-zero cost, and the real reuse goal. Rebuilding for a *different destination* is the only thing the heavier machinery is for. They are not the same feature.
 
 ## What success looks like
 
@@ -31,15 +31,16 @@ This is a set of worksheets a child fills in. The normal way to use it is to **p
 Quick-start:
 
 1. Read [GETTING_STARTED.md](GETTING_STARTED.md).
-2. Do the parent setup (Session 00).
-3. Print the first sessions.
-4. Start Session 01.
-5. Review at Checkpoint 1 -- then decide whether to keep going (the try-then-commit on-ramp: you do not have to commit to the whole project to start).
-6. Finish the First Taste path at Session 53 -- a real, usable mini-plan and a complete stopping point. (The [roadmap](framework/PROJECT_ROADMAP.md) already maps the fuller path toward the Core Finish Line, and says what has to happen before those later sessions are built.)
+2. Copy the [trip starter kit](framework/trip_starter/README.md) out of this repository. Your filled-in pages live in your copy, never here.
+3. Do the parent setup (Session 00).
+4. Print the first sessions.
+5. Start Session 01.
+6. Review at Checkpoint 1 -- then decide whether to keep going (the try-then-commit on-ramp: you do not have to commit to the whole project to start).
+7. Finish the First Taste path at Session 53 -- a real, usable mini-plan and a complete stopping point. (The [roadmap](framework/PROJECT_ROADMAP.md) already maps the fuller path toward the Core Finish Line, and says what has to happen before those later sessions are built.)
 
-## First Taste session index (what is built now)
+## First Taste session index (the short path)
 
-Session 00 is adult-only setup; the child does the First Taste sessions listed below, ending at Session 53 (a subset, not every number in between). This slice is the pilotable First Taste path.
+Session 00 is adult-only setup; the child does the First Taste sessions listed below, ending at Session 53 (a subset, not every number in between). This table is the First Taste path. Its first eight numbered steps sit inside the built Phases 0-2 slice, and its last five -- Sessions 15, 21, 33, 44 and 53 -- are already-built sessions in later phases.
 
 | # | Session | Status | Time | Artifact |
 | --- | --- | --- | --- | --- |
@@ -61,7 +62,7 @@ Session 00 is adult-only setup; the child does the First Taste sessions listed b
 
 ## How the repository is organized
 
-Three layers (this is Full-Build detail a one-trip family can skip):
+Three layers (this is how the pages fit together):
 
 - `framework/` -- the reusable curriculum: sessions, templates, and the student and parent guides. No trip data.
 - `destinations/japan/` -- the Japan knowledge pack: stable reference facts.
@@ -75,7 +76,7 @@ Three layers (this is Full-Build detail a one-trip family can skip):
 
 ## Status
 
-Early. This repository currently holds the **First Taste** curriculum slice (the sessions above) and its support files, built for a design-validation pilot with a real child. The Core Finish Line and full program are documented in the design record and are built in later batches, which begin once the Batch 0 gate has cleared — either the child pilot passes, or the no-child fallback is recorded in writing.
+Early. What is built right now lives in the [curriculum changelog](framework/CHANGELOG.md), the one file that changes every time something ships; the [roadmap](framework/PROJECT_ROADMAP.md) describes the whole program. The **First Taste** path in the table above starts in the Phases 0-2 slice and finishes in five already-built later-phase sessions. The Batch 0 gate cleared on the recorded no-child fallback, and no child has piloted this design yet. Two checks on the Phases 0-2 slice are still open: an adult reads the converted pages against the Batch 0 originals, and an adult watches a child work the new sessions. Building the Phase 3-8 sessions waits for both; the templates and guides for those phases have already landed.
 
 - The authoritative design is [docs/spec/specification.md](docs/spec/specification.md) -- an archived design record. Once the curriculum is built, the built repository supersedes the spec on any conflict.
 

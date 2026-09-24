@@ -10,9 +10,9 @@ They're learning **how trip costs are structured**: what the categories are, wha
 
 What they are producing is a structural picture, and it stops short of a usable, bookable trip budget. Say that plainly to yourself now, so neither of you mistakes the output for one later.
 
-## Why flights sit on the side
+## Why getting there sits on the side
 
-Your child's controllable slices are hotels, food, activities, local transit and souvenirs, with flights excluded.
+Your child's controllable slices are hotels, food, activities, local transit and souvenirs, with the cost of getting there excluded.
 
 **How many of those are in the subtotal depends on where they are.** At the first budget session they estimate **food and lodging only**, and the other three arrive later on the Core path. So an early check runs against a two-slice figure, and the floor it produces is correspondingly lower. Know which one you are looking at before you read anything into it.
 
@@ -20,20 +20,20 @@ Your child's controllable slices are hotels, food, activities, local transit and
 
 **Your** sanity check needs a number, and the first pass may not produce one. Session 33 lets a child answer in **high / medium / low**, which is a complete answer. If that is what you have, read the check qualitatively: does the tier they landed on sound like the band you set? Ask for a rough range only if you actually need the arithmetic.
 
-**When you do have numbers:** your check is their subtotal plus your per-person fare multiplied by the number of travelers. The subtotal is already a whole-party amount and the fare is not, so adding them raw understates the result for any family larger than one.
+**When you do have numbers:** your check is their subtotal plus your cost of getting there for the whole party. If you fly or take the train, that is a per-person fare multiplied by the number of travelers: the subtotal is already a whole-party amount and a fare is not, so adding a fare raw understates the result for any family larger than one. If you drive, it is the drive's own fuel and tolls.
 
 **That figure is a floor, and it is worth knowing what it leaves out.** At the first budget session it leaves out three of the five slices: activities, local transit and souvenirs. That is on top of everything below, so it is a floor under a floor. Once the Core path has added those, the subtotal covers all five.
 
 **Outside it at every stage:** intercity transportation, travel insurance, any entry or visa costs, phone or data service, and anything else adult-owned. So treat the number as *are we in the right range*, and never as what the trip will cost.
 
-**Keep your fare number on your own page.** Their budget worksheet says in as many words that flights are the grown-ups' number and that there is nothing to fill in there. That wording is deliberate. A jotted line in this guide, or anywhere you keep trip notes, is all it needs to be.
+**Keep your getting-there number on your own page.** Their budget worksheet says in as many words that getting there is the grown-ups' number and that there is nothing to fill in there. That wording is deliberate. A jotted line in this guide, or anywhere you keep trip notes, is all it needs to be.
 
-The honest reason: for a multi-person long-haul trip, flights dominate everything. They can run several times the entire rest of the trip put together. Put that in front of a ten-year-old as one line item and the rest of their careful work looks like rounding error. It isn't, and the split is what keeps it from looking that way.
+The honest reasons: getting there is adult-owned, like the booking itself, and it can be large. For a multi-person long-haul trip, flights dominate everything. They can run several times the entire rest of the trip put together. Put that in front of a ten-year-old as one line item and the rest of their careful work looks like rounding error. It isn't, and the split is what keeps it from looking that way.
 
 ## What you supply
 
 - **The controllable-slice band**, in a form a child can hold: a rough per-person per-day figure, a per-day figure for the family, or a hotel tier
-- **A rough per-person fare**, which your child never researches and never writes down
+- **A rough cost of getting there** (a per-person fare, if you fly or take the train), which your child never researches and never writes down
 - **The final budget**, later
 
 ## The teaching points worth reinforcing
@@ -84,3 +84,9 @@ Children's fares are often lower than adults' on some transport systems. Treat i
 ---
 
 Every figure on this page is an example to re-check, with a date. There are no pinned amounts here, and there shouldn't be any in your child's work either.
+
+## Where to go next
+
+- [Flights from your home airport](flights_from_origin_guidance.md) -- if you fly, the biggest cost, which stays on your own page.
+- [Booking guidance](booking_guidance.md) -- what gets booked in what order once the numbers settle.
+- [Coaching and support](coaching_and_support.md) -- scripts for the hard moments, including disagreeing without overriding.

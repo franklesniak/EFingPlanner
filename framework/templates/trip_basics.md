@@ -10,13 +10,20 @@ Fill in:
 
 | Prompt | Your answer |
 | --- | --- |
-| Home airport | |
-| Airport code | |
-| Home time zone, or hours ahead to the destination | |
+| Destination (the place the grown-ups picked) | |
+| How you will travel (plane / car / train / another way) | |
+| Home airport, if you are flying | |
+| Airport code, if you are flying | |
+| Time difference to the destination, in hours ahead or behind (a grown-up looks this up) | |
+| Home time zone, if you want to write it down too | |
 | Maximum trip length (in days) | |
 | Number of travelers (write "not decided yet" if you are unsure) | |
 
-For the time zone, a grown-up does the looking up. They find how many hours ahead Japan is right now. Then they write it here. The gap is not the same for every US time zone. It also shifts with daylight saving. So check today's figure.
+A grown-up writes the destination here. The name is on the front of your destination pack.
+
+If you are not flying, the travel row is where that goes: by car, by train, or another way.
+
+For the time zone, a grown-up does the looking up. They find how many hours ahead of or behind home your destination is right now. Then they write it here. The gap is not the same for every US time zone. It also shifts with daylight saving. So check today's figure. Some destinations have more than one time zone. Then the grown-up writes the gap for the place you will probably arrive in, or writes a range.
 
 Traveler roster: write each traveler by relationship, not by private details. For example, you could write: a parent, a parent, a grandparent. You could also write: an aunt or another adult relative, the child planner, and anyone else who is coming.
 

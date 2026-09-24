@@ -11,9 +11,9 @@ One entry per source:
 | Prompt | Your answer |
 | --- | --- |
 | Source number | |
-| Date checked | |
-| Source type (website / book / map / video / person / other) | |
-| Title | |
+| Date checked (the day you used this source) | |
+| Source type (website / book / map / video / AI tool / person / other) | |
+| Title (a website: its name and the page's title) | |
 | Author or organization | |
 | Web address or book page | |
 | What I learned | |
@@ -22,5 +22,6 @@ One entry per source:
 | Useful for this question? (yes / sort of / no) | |
 | One other place I could check this | |
 | Verification source (if I checked it) | |
+| Date checked (the day you checked that other source) | |
 
 Tip: for facts that can change -- prices, hours, opening times, rules -- write "check again before booking" so a grown-up knows to re-check it close to travel.

@@ -24,7 +24,7 @@ Write the word "Food" and the word "Hotel" on your Budget Estimate page. Those a
 
 Every trip is made of cost categories. You don't need exact numbers. You're learning how trip money is split up, and checking whether the parts *you* choose fit.
 
-1. **Meet the categories** (just read these once): flights, hotels, food, local transit, long-distance trains, activities and tickets, souvenirs, and a buffer for surprises.
+1. **Meet the categories** (just read these once): getting there, hotels, food, local transit, longer journeys once you are there, activities and tickets, souvenirs, and a buffer for surprises.
 2. **Estimate two of them** with simple **high / medium / low** guesses (a grown-up can help you find rough numbers, and you can use a calculator):
    - **Meals:** about how much per person, per day? (high / medium / low)
    - **Hotel:** about how much per night, per room? (high / medium / low) (If you kept two cities in Session 21, guess a hotel for each. Your plan pays for both.)
@@ -76,4 +76,4 @@ If you have extra energy, estimate a third slice like activities or souvenirs. Y
 
 ## Parent Notes
 
-Keep this light -- two slices (meals and hotel), checked against a kid-sized band. Flights are the biggest real cost, but they are adult-owned and dominate the total, so they stay *off* your child's check here; the lesson is how costs are structured and whether *their* choices fit, not a real bookable total. Supply the band in kid-sized form (per-day or "this hotel tier"). A calculator is always allowed, and you may do the arithmetic while your child does the reasoning -- this matters for a child with number anxiety. Keep all figures verify-framed; nothing here is a fixed price.
+Keep this light -- two slices (meals and hotel), checked against a kid-sized band. Getting there is adult-owned, so it stays *off* your child's check here, and when it is a long flight it can outweigh everything else; the lesson is how costs are structured and whether *their* choices fit, not a real bookable total. Supply the band in kid-sized form (per person per day, per day for the family, or "this hotel tier"). A calculator is always allowed, and you may do the arithmetic while your child does the reasoning -- this matters for a child with number anxiety. Keep all figures verify-framed; nothing here is a fixed price.
