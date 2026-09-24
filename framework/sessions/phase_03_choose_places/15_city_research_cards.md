@@ -12,7 +12,7 @@ You are here: Phase 3 (Choose Places), First Taste step 9 of 13. Previous: [14 C
 - Planner skill: organizing information; researching
 - Estimated time: 20-30 minutes (one card); a second card can be its own sitting
 - Parent involvement: 5-minute check-in
-- Materials: a device with the kid-safe filter on, two blank [City Research Cards](../../templates/city_research_card.md), your [Source Log](../../templates/source_log.md), and on the Core path your region and map notes from Session 11
+- Materials: a device with the kid-safe filter on, two blank [City Research Cards](../../templates/city_research_card.md), your [Source Log](../../templates/source_log.md), your season from Checkpoint 1, and on the Core path your region and map notes from Session 11
 
 ## Goal
 

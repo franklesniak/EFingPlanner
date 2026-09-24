@@ -10,7 +10,7 @@ You are here: Phase 5 (Route, Length, and Transportation). Not a First Taste ste
 - Planner skill: checking sources
 - Estimated time: 20-30 minutes
 - Parent involvement: none / independent work
-- Materials: this session's Destination Notes, a device with the kid-safe filter on, your route map notes from Session 28, your [Trip-Basics card](../../templates/trip_basics.md) (for the number of travelers), your [Source Log](../../templates/source_log.md)
+- Materials: this session's Destination Notes, a device with the kid-safe filter on, your route map notes from Session 28, your must-do list from Checkpoint 3, your [Trip-Basics card](../../templates/trip_basics.md) (for the number of travelers), your [Source Log](../../templates/source_log.md)
 
 ## Goal
 
@@ -47,7 +47,7 @@ Every place has its own ways of getting around. Your Destination Notes name the 
 
 Now fill in the notes table in the Workspace, one row for each way of getting around you might use.
 
-**Guess, then check.** Pick two cities from your route. On a trip with one base, pick one of the trips you timed in Session 28. In a new Source Log entry, write your guess for the train time between them in the **What I learned** box: "My guess: ___." If no train runs between them, guess the travel time for the way your family will go. Then check a train time in a current transit planner, or any other trip in your map's Directions. Add what you found and the date. How close were you? Being off is normal, and your [planner mindset card](../../student_guide/planner_mindset.md) says why that's fine.
+**Guess, then check.** Pick a trip your route map notes don't have yet, such as from one of your must-dos to another in the same city. In a new Source Log entry, write your guess for how long it takes by train or bus in the **What I learned** box: "My guess: ___." If your family won't ride trains or buses there, guess the time for the way you'll go. Then check it in a current transit planner, or in your map's Directions. Add what you found and the date. How close were you? Being off is normal, and your [planner mindset card](../../student_guide/planner_mindset.md) says why that's fine.
 
 ## Workspace
 
