@@ -2,7 +2,7 @@
 
 # Session 12: Weather, Seasons, and Events
 
-You are here: Phase 2 (Destination Big Picture), First Taste step 6 of 13. Previous: [10 Destination Snapshot](10_destination_snapshot.md) | Next: [13 Trip Goals and Travel Style](13_trip_goals_and_travel_style.md)
+You are here: Phase 2 (Destination Big Picture), First Taste step 6 of 13. Previous: [11 Regions and Cities Overview](11_regions_and_cities_overview.md) | Next: [13 Trip Goals and Travel Style](13_trip_goals_and_travel_style.md)
 
 **For parents:**
 
@@ -10,53 +10,47 @@ You are here: Phase 2 (Destination Big Picture), First Taste step 6 of 13. Previ
 - Planner skill: comparing choices
 - Estimated time: 20-30 minutes
 - Parent involvement: 5-minute check-in
-- Materials: a device with the kid-safe filter on, the [seasons reference](../../../destinations/japan/reference/seasons_weather_events.md), your Source Log
+- Materials: a device with the kid-safe filter on, this session's Destination Notes and your destination pack's seasons reference, a blank [Season Comparison Chart](../../templates/season_comparison_chart.md), your [Source Log](../../templates/source_log.md)
 
 ## Goal
 
-Compare Japan's four seasons so you can recommend a good time to go.
+Compare your destination's seasons so you can recommend a good time to go.
 
 ## Start Here
 
-Draw four boxes on a page and label them Spring, Summer, Fall, and Winter. That is your season chart, started.
+Open your Season Comparison Chart. In its Season name row, write each season your Destination Notes list. That is your season chart, started.
 
 ## Steps
 
-Japan has four clear seasons, and each one feels different. Your job is to compare them, not to pick the "perfect" one. Use the [seasons reference](../../../destinations/japan/reference/seasons_weather_events.md) and a trusted source, and record what you use.
+Open this session's Destination Notes. Your destination's seasons each feel different. Your job is to compare them, not to pick the "perfect" one. Use your Destination Notes and a trusted source, and record what you use.
 
 For each season, jot a few notes:
 
-1. **Weather:** what is it like? (Spring is mild with cherry blossoms; summer is hot and humid; fall is cool with colorful leaves; winter is cold, with snow in the north.)
+1. **Weather:** what is it like?
 2. **Crowds and cost:** busier, more popular times usually cost more.
 3. **School and work:** does this season fit your family's calendar? (Ask a grown-up.)
 
-Now add the special things to watch for. These are patterns, but you must **check this year's exact dates** -- they move:
+Now open your destination pack's seasons reference. Your Destination Notes give you the pointer to it. Add the busy windows and the special things it names to your chart. These are patterns, but you must **check this year's exact dates** -- they move.
 
-- **Cherry blossoms** (spring) and **fall colors** (autumn) are big draws.
-- **Rainy season** is roughly June for most of Japan.
-- **Summer heat and humidity** are real -- it can be a health concern on long walking days, for you and for anyone who tires more easily. Plan summer days gently, with water.
-- **Typhoon season** runs roughly from late spring (around May) through autumn, with a peak in late summer and early autumn -- so it matters for late-spring and summer trips too, not just fall. A grown-up watches the forecast.
-- **Busy travel windows** (crowds and higher prices; confirm this year's dates): Golden Week (roughly late April into early May), Obon (roughly mid-August), and the New Year period (roughly late December into early January, when many places also close).
-
-**A note about cherry blossoms:** you can plan for the *season*, but no one can promise the exact peak week months ahead -- it shifts year to year and forecasts only firm up in late winter. That is normal. Grown-ups book on the usual averages and keep plans flexible. You do not have to control the exact day.
+Some timing cannot be pinned even after you check. That same reference says which of your destination's patterns work that way.
 
 ## Workspace
 
-Use your four-box season chart for the notes, and your Source Log for what you looked up.
+Use your [Season Comparison Chart](../../templates/season_comparison_chart.md) for the notes, and your Source Log for what you looked up.
 
 You can say your answers to an adult who writes them, or draw them, if that is easier.
 
 ## Artifact Created
 
-Your Season comparison chart -- four seasons with weather, crowds and cost, calendar fit, and the special things to watch for.
+Your Season comparison chart -- every season your Destination Notes list, with weather, crowds and cost, calendar fit, and the special things to watch for.
 
 ## Stop Point
 
-You are done when all four seasons have a few notes and you have marked at least one busy window to be careful about. You do not need exact dates today -- "check this year" is the right answer.
+You are done when every season on your chart has a few notes and you have marked at least one busy window to be careful about. You do not need exact dates today: "check this year" is the right answer.
 
 ## Source Check
 
-Record your seasons source in your Source Log, with today's date. Remember: dates and prices change, so note that they must be re-checked close to travel.
+Your Destination Notes and your pack's seasons reference are both sources. Log each one in your Source Log, with its title and today's date. The trusted source you used outside the pack gets its own entry too. Remember: dates and prices change, so note that they must be re-checked close to travel.
 
 ## Finish and Quality Check
 
@@ -72,4 +66,4 @@ If you have extra energy, add a "best guess so far" note at the bottom: which se
 
 ## Parent Notes
 
-This feeds the Checkpoint 1 season recommendation. Keep everything verify-framed -- the congestion windows and rainy/typhoon seasons are stable *patterns*, but exact dates, prices, and forecasts must be confirmed this year. The summer-heat note matters for a multi-generational party; it connects forward to the pacing review later. If snow or the north is not on your radar, the winter details can stay light.
+This feeds the Checkpoint 1 season recommendation. Keep everything verify-framed -- the busy windows and seasonal patterns your destination pack lists are stable *patterns*, but exact dates, prices, and forecasts must be confirmed this year. Where the pack flags a season as hard on comfort or health, that matters for a multi-generational party; it connects forward to the pacing review later. Where the pack flags a pattern that can close things for a day or two, treat it as a reshuffle-the-days risk rather than a spoiled afternoon. Seasons your family will not travel in can stay light.

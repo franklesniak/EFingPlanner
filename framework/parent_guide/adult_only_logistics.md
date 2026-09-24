@@ -14,7 +14,7 @@ Long-lead items come first, because those are the ones that quietly set your ear
 
 A child's first passport takes time to get, and that constrains the earliest window you can travel in, which shapes the seasonal research your child is doing right now. If passports aren't sorted, start them before the trip feels real.
 
-There are age-based rules about who must appear in person, who must consent, and what proof is needed, and there are processing times that vary through the year. **All of that changes, and all of it has documented exceptions**, including for families where one parent can't attend. So don't take a rule from a blog, or from this page. Check the current requirements on the official government passport source and work from what it says today.
+There are age-based rules about who must appear in person, who must consent, and what proof is needed, and there are processing times that vary through the year. **All of that changes, and all of it has documented exceptions**, including for families where one parent can't attend. So don't take a rule from a blog, or from this page. Check the current requirements on the official government passport source, write the date you checked, and work from what it says today.
 
 These rules are **US-specific**. A family in another country swaps this whole section.
 
@@ -85,8 +85,14 @@ Everything else on the safety side stays with you: insurance, advisories, emerge
 
 ## The standing rule
 
-Verify on official sources close to travel.
+Verify on official sources close to travel. For every item on this page you check, write the date you checked.
 
 ---
 
 This page holds no personal data, and it shouldn't. No document numbers, no example passport details, no names.
+
+## Where to go next
+
+- [Booking guidance](booking_guidance.md) -- what gets booked in what order, and what your child hands you.
+- [Flights from your home airport](flights_from_origin_guidance.md) -- how your arrival place and arrival time shape your child's route.
+- [Safety and emergency guidance](safety_emergency_guidance.md) -- your part in your child's separation card, and what it may carry.

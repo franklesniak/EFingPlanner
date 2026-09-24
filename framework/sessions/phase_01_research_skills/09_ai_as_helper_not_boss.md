@@ -2,7 +2,9 @@
 
 # Session 09: AI as Helper, Not Boss
 
-You are here: Phase 1 (Research Skills), First Taste **AI opt-in add-on**. Do this right after Session 05 and before you use any AI tool. Previous: [05 Good Sources, Bad Sources](05_good_sources_bad_sources.md) | Next: [10 Destination Snapshot](../phase_02_destination_big_picture/10_destination_snapshot.md)
+You are here: Phase 1 (Research Skills), **AI opt-in add-on** -- not a numbered step. Do this before you use any AI tool. Previous: [08 Web Research Practice](08_web_research_practice.md) | Next: [10 Destination Snapshot](../phase_02_destination_big_picture/10_destination_snapshot.md)
+
+*On the First Taste path, do this one right after [05 Good Sources, Bad Sources](05_good_sources_bad_sources.md).*
 
 **For parents:**
 
@@ -10,13 +12,13 @@ You are here: Phase 1 (Research Skills), First Taste **AI opt-in add-on**. Do th
 - Planner skill: checking sources
 - Estimated time: 20-30 minutes
 - Parent involvement: adult-operated (a grown-up runs the tool, on the grown-up's account, with the child present)
-- Materials: the adult's own AI tool, your Source Log
+- Materials: the adult's own AI tool, your [Source Log](../../templates/source_log.md), the [AI Notes form](../../templates/ai_notes.md)
 
 *Every family already learned "what AI is and is not" in Session 05. This session is only for families who will actually use an AI tool.*
 
 ## Goal
 
-Learn the safe way to use AI as a helper -- never as the boss of your facts.
+Learn the safe way to use AI as a helper, never as the boss of your facts.
 
 ## Start Here
 
@@ -28,14 +30,14 @@ If your family uses AI, a grown-up runs it, on the grown-up's own account, with 
 
 **AI may help you:**
 
-1. Brainstorm questions to research ("What should I find out about Kyoto?").
+1. Brainstorm questions to research ("What should I find out about one place we might visit?").
 2. Suggest search terms.
 3. Tidy or organize *your own* notes.
 
 **AI may not:**
 
-1. Be your only source -- always check its facts against a real, non-AI source.
-2. Give you facts to trust without checking -- AI can make up things that sound right.
+1. Be your only source. Always check its facts against a real, non-AI source.
+2. Give you facts to trust without checking. AI can make up things that sound right.
 3. Decide anything about passports, entry, safety, medical questions, money, or booking. Those are for the adults.
 
 **Privacy rule:** never put family or personal details into AI -- no names, addresses, dates, or booking details, and **no photos or scans of your filled-in pages.** If you want AI's help with your work, a grown-up retypes the question without the personal parts.
@@ -45,13 +47,13 @@ If your family uses AI, a grown-up runs it, on the grown-up's own account, with 
 Safe example a grown-up can type:
 
 ```text
-I am helping plan a family trip to Japan. Give me five questions a kid planner
-should research about Kyoto. Do not make the decision for me.
+I am helping plan a family trip. Give me five questions a kid planner
+should research about one place we are considering. Do not make the decision for me.
 ```
 
 ## Workspace
 
-Use your Source Log for the AI entry, and scratch paper for any questions or search terms the tool suggested.
+Use your Source Log for the AI entry, the [AI Notes form](../../templates/ai_notes.md) for the fuller record beside it, and scratch paper for any questions or search terms the tool suggested.
 
 You can say your answers to an adult who writes them, or draw them, if that is easier.
 
@@ -61,11 +63,11 @@ Your AI notes and verification checklist -- what AI helped with, and where you c
 
 ## Stop Point
 
-You are done when you have used AI for one safe job (like brainstorming questions) and recorded it in your Source Log, including where you would check any fact it gave you.
+You are done when you have used AI for one safe job (like brainstorming questions), filled in your AI Notes page, and recorded the use in your Source Log. Every fact AI gave you is checked against a non-AI source, or taken out.
 
 ## Source Check
 
-Record the AI use in your Source Log, mapping it onto the usual fields: **Source type** = "AI tool"; **Title** = the tool's name; **What I learned** = your prompt and what it helped with; **One other place I could check** = the non-AI source you used to check any fact. Add today's date.
+Record the AI use in your Source Log, mapping it onto the usual fields: **Source type** = "AI tool"; **Title** = the tool's name; **What I learned** = your prompt and what it helped with; **Date checked** = today's date. For each fact you checked, write the non-AI source in **Verification source** and the day you checked it in the last **Date checked** box.
 
 ## Finish and Quality Check
 

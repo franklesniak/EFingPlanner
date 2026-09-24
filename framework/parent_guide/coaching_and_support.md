@@ -29,7 +29,7 @@ Two different cases:
 Name the one specific gap, size the redo to one session, frame it as the checkpoint working, and end on what already stands.
 
 **"We had to book before you finished"** (the timeline collision):
-> "We had to lock the flights before you finished, because prices were climbing -- that's how trips work, and it doesn't mean your planning was wrong. Here's what's still yours to decide inside the dates we booked."
+> "We had to lock the bookings before you finished, because prices were climbing -- that's how trips work, and it doesn't mean your planning was wrong. Here's what's still yours to decide inside the dates we booked."
 
 **Honoring the child's calls** (even when you'd have chosen differently):
 > "You chose the aquarium over a third temple. That's your call, and we'll make it work."
@@ -42,12 +42,12 @@ You set the guardrails (budget, approved cities, pacing, safety, availability), 
 A group vote does not override this one. Set it up to be keepable: co-choose an affordable, bookable, everyone-can-do-it pick, and show the three blocks before your child commits. If another adult challenges a pick in front of the child, do not relitigate on the spot -- name the rule ("that's their call; if it needs to change, we owe them the reason") and take it offline. Brief the other travelers in advance that the child owns certain calls.
 
 **The "here's how your plan shaped what we booked" reveal** (after booking):
-> "Want to see how your plan turned into our real trip? You recommended Kyoto for three nights -- here's our Kyoto hotel, three nights. Your must-do aquarium is on Day 4."
+> "Want to see how your plan turned into our real trip? You recommended three nights in the place you picked -- here's our hotel there, three nights. Your must-do aquarium is on Day 4."
 
 Five minutes showing this, concretely, is the strongest answer to "was my advisory work real?" -- far stronger than reassurance. Where you changed something, say why.
 
 **Naming the fixed family decision warmly:**
-> "Two things the grown-ups picked: that we're going, and that it's Japan. The planning -- which places, the must-dos, the order of your days, your one special pick -- is really yours."
+> "Two things the grown-ups picked: that we're going, and where. The planning -- which places, the must-dos, the order of your days, your one special pick -- is really yours."
 
 **The finish acknowledgment** (Session 53). First Taste is a few-weeks project, so use the duration-true, non-overclaiming form:
 > "You finished a real project, start to finish, and made a real mini-plan we can actually use. That's a big deal."
@@ -62,3 +62,9 @@ Five minutes showing this, concretely, is the strongest answer to "was my adviso
 - **Interview/poll reachability.** If a traveler is hard to reach, ask by text, ask asynchronously, or relay the question yourself and bring the answer back. Your child can also poll whoever is around and mark the rest "asked through a grown-up." Never let a schedule stall a session.
 - **Small party or single parent.** A party of two -- one parent and the child -- is a normal way to run this. The interview and poll become interviewing the one other traveler (you), plus optionally a remote relative by relay. A one-on-one interview is a strong relatedness moment, not a lesser version.
 - **Other siblings.** It is fine for this to be one child's project. A sibling can have a small helper role, their own "things I can't wait to see" page, or be a reviewer at the family meeting. If two children both want to plan, split the cities or alternate sessions, and give each their own picks -- keep any comparison cooperative, never scored.
+
+## Where to go next
+
+- [Differentiation](differentiation.md) -- concrete lighter moves when a session is too much for your child.
+- [Time and effort](time_and_effort.md) -- Low-Bandwidth Parent Mode, for when your own time and energy are short.
+- [Adult and child roles](adult_roles.md) -- which decisions stay yours when you change part of the plan.

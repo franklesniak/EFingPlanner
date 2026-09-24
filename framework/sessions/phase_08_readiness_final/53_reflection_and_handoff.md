@@ -29,7 +29,7 @@ You made a mini-plan for a real trip. Before you hand it over, take a few minute
 3. **What did you learn about planning?**
 4. **What was hard at first, and what helped you get started?**
 5. **What are you proud of?**
-6. **What are the grown-ups taking over now?** (Booking, flights, money, and safety are theirs.)
+6. **What are the grown-ups taking over now?** (Booking, getting there, money, and safety are theirs.)
 7. **Bridging prompt:** name one planning move you used here, like "start with one tiny step," "track where a fact came from," or "stop when it's good enough." Where else could you use that same move -- homework, a chore, a big school project?
 
 These are the same planning moves people use for homework, chores, and any big project. The way to carry them over is to *notice* the move and use it on purpose somewhere else.

@@ -25,4 +25,4 @@ Use one card per city or region. It keeps each place's facts together so you can
 | Needs adult verification? (yes / no) | |
 | Final decision status (researching / shortlist / skip / save for future) | |
 
-Remember: each card is a movable block. If a grown-up later changes which city you fly into or out of, you move a block -- you do not start over.
+Remember: each card is a movable block. If a grown-up later changes which city you arrive in or leave from, you move a block -- you do not start over.

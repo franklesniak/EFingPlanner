@@ -10,7 +10,7 @@ You do not have to read all of this before you start. This page is the quick-sta
 
 And the most important rule: **this is meant to be a positive experience you share. If it ever becomes a source of conflict, the relationship matters more than the project.** Pausing, shrinking to a short First Taste, or stopping are all successes, not failures.
 
-*New to the term "executive function"? It is the set of brain skills for getting started, sticking with a task, knowing when to stop, staying organized, and being flexible. This project builds them by having your child plan a real trip.*
+*New to the term "executive function"? It is the set of brain skills for getting started, sticking with a task, knowing when to stop, staying organized, and being flexible. This project builds them by having your child plan a real trip. Read [what executive function is](what_is_executive_function.md) for the one-page version.*
 
 ## The three must-reads
 
@@ -35,7 +35,7 @@ You do not need these at the start. Each one is written for the moment its task 
 
 ## Is this realistic for me right now
 
-A quick, honest self-check before you commit months:
+A quick, honest self-check before you commit weeks or months:
 
 - Do I have a little time for the first few weeks (the hands-on part)?
 - Do I myself find getting-started or following-through hard?
@@ -45,17 +45,17 @@ If it is a lot right now, that is fine -- use the try-then-commit on-ramp (do Ph
 
 ## The buy-in gut-check
 
-Ask yourself honestly: is your child actually excited, or is this mostly your idea? Lukewarm is okay. If they are lukewarm, do not push -- spark it: show them a few genuinely exciting things about Japan (just for fun), have a short "why we're excited" chat, and feed it into their "things I can't wait to see" page. Then decide at Checkpoint 1 whether to keep going.
+Ask yourself honestly: is your child actually excited, or is this mostly your idea? Lukewarm is okay. If they are lukewarm, do not push -- spark it: show them a few genuinely exciting things about your destination (just for fun; the destination pack is a good place to start), have a short "why we're excited" chat, and feed it into their "things I can't wait to see" page. Then decide at Checkpoint 1 whether to keep going.
 
 ## If you're not sure, do exactly this (fastest safe start)
 
 Only four things are genuine setup actions:
 
 1. Turn on a kid-safe search filter.
-2. Fill in the [Trip-Basics card](../templates/trip_basics.md).
-3. Set a rough season window and a rough budget band on the [assumptions page](../templates/current_family_travel_assumptions.md).
-4. Choose AI: yes or no (default no) -- record it on the assumptions page.
+2. Fill in your copy of the [Trip-Basics card](../trip_starter/family/trip_basics.md).
+3. Set a rough season window and a rough budget band on your copy of the [assumptions page](../trip_starter/family/current_family_travel_assumptions.md).
+4. Choose AI: yes or no (default no) -- record it on the assumptions page. Before you choose yes, read the [AI use rules](../docs/ai_use_rules.md).
 
-**Also start now (it runs in the background):** kick off the child's passport check at travel.state.gov. It is a long-lead item that can set your earliest travel date and shapes the season research your child does next, so it should not wait.
+**Also start now if your trip leaves the country (it runs in the background):** kick off the child's passport check at travel.state.gov. It is a long-lead item that can set your earliest travel date and shapes the season research your child does next, so it should not wait. If your trip stays inside your own country, there is nothing to start here.
 
 Everything else has a default and can wait. You do not decide the "City C," food, or language sessions now -- they promote themselves later only if your child's research keeps surfacing them. Full detail is in the [setup checklist](setup_checklist.md).
