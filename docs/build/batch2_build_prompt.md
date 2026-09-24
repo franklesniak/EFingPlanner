@@ -3713,7 +3713,7 @@ duplicate:
 **The kit-file pattern, set by Batch 1 -- follow it exactly.** A kit file that has a
 template behind it is **a blank copy of that template**, plus the kit's copy-out reminder
 and a **relative link back to the template.** It must not diverge from the template. No
-filled values. No example family. **A test that arrives with Batch 1's pull request (#35)
+filled values. No example family. **A test that arrives with Batch 1's [pull request #35](https://github.com/franklesniak/EFingPlanner/pull/35)
 asserts this for the Batch 1 kit copies, and it has caught real drift**, so a divergence is a
 failing build, not a style note. This batch's own copies are checked by reading, as the
 Definition of Done says. The one exception is `outputs/final_reflection.md`; see 9.4.4.
@@ -4528,7 +4528,7 @@ is incomplete and removing the rider would make the docs wrong in the other dire
 - **Confirm the five re-pointed built sessions** -- 15, 21, 33, 44, 53 -- still carry their
   First Taste position markers, and that the thirteen-session First Taste chain still reads
   end to end on its italic lines.
-- **Confirm the kit copies still equal their templates.** Batch 1's pull request (#35) adds
+- **Confirm the kit copies still equal their templates.** Batch 1's [pull request #35](https://github.com/franklesniak/EFingPlanner/pull/35) adds
   `tests/test_trip_starter_kit_copies.py`, which checks the three `family/` copies against
   their templates, so run `pytest tests/test_trip_starter_kit_copies.py` rather than reading
   those files. **If the test file is missing, Batch 1's pull request has not merged**, and

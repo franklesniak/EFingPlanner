@@ -32,7 +32,7 @@ SCRIPT_DIR = SCRIPT_PATH.parent
 NESTED_MARKDOWN_LINT_PATH = REPO_ROOT / ".github" / "scripts" / "lint-nested-markdown.js"
 SOURCE_REPO = "https://github.com/franklesniak/copilot-repo-template.git"
 FULL_SHA = "0123456789abcdef0123456789abcdef01234567"
-ISSUE_692_NO_PYTHON_MODULES = (
+MODULES_WITHOUT_PYTHON = (
     "baseline",
     "agent-instructions",
     "github-platform",
@@ -42,8 +42,8 @@ ISSUE_692_NO_PYTHON_MODULES = (
     "markdown",
     "powershell",
 )
-GITHUB_POWERSHELL_PROFILE_MODULES = ISSUE_692_NO_PYTHON_MODULES
-ISSUE_693_PARTIAL_DOC_MODULES = ISSUE_692_NO_PYTHON_MODULES
+GITHUB_POWERSHELL_PROFILE_MODULES = MODULES_WITHOUT_PYTHON
+PARTIAL_DOC_MODULES = MODULES_WITHOUT_PYTHON
 FULL_TEMPLATE_MODULES = (
     "baseline",
     "git-lfs",
@@ -147,7 +147,7 @@ OPTIONAL_STACK_INLINE_MARKERS: dict[str, tuple[str, ...]] = {
 }
 DEPENDABOT_NO_PYTHON_ECOSYSTEMS = {"github-actions", "npm", "pre-commit"}
 DEPENDABOT_FULL_ECOSYSTEMS = DEPENDABOT_NO_PYTHON_ECOSYSTEMS | {"pip"}
-ISSUE_693_BASELINE_DOCS = ("README.md", "CONTRIBUTING.md")
+BASELINE_DOCS = ("README.md", "CONTRIBUTING.md")
 # Base module set with no data-file modules (json, yaml, schema) and no
 # template-sync-support, used to exercise the OR-group data-ci-reference-only and
 # the single-module template-sync-support-reference-only blocks.
@@ -167,7 +167,7 @@ TEMPLATE_SYNC_SUPPORT_README_REFERENCES = (
     "schemas/template-sync-",
     "validate_downstream_adoption.py",
 )
-ISSUE_693_EXCLUDED_DOC_REFERENCES: dict[str, tuple[str, ...]] = {
+EXCLUDED_DOC_REFERENCES: dict[str, tuple[str, ...]] = {
     "README.md": (
         "pyproject.toml",
         ".github/workflows/python-ci.yml",
@@ -213,7 +213,7 @@ ISSUE_693_EXCLUDED_DOC_REFERENCES: dict[str, tuple[str, ...]] = {
         "TFLint",
     ),
 }
-ISSUE_693_RETAINED_DOC_REFERENCES: dict[str, tuple[str, ...]] = {
+RETAINED_DOC_REFERENCES: dict[str, tuple[str, ...]] = {
     "README.md": (
         "npm run lint:md",
         "Invoke-Pester -Path tests/ -Output Detailed",
@@ -3687,7 +3687,7 @@ def test_materialized_github_powershell_profile_records_protected_guide_waivers(
 
 
 @pytest.mark.slow
-@pytest.mark.parametrize("relative_path", ISSUE_693_BASELINE_DOCS)
+@pytest.mark.parametrize("relative_path", BASELINE_DOCS)
 def test_materialized_partial_adoption_strips_shared_baseline_doc_stale_references(
     tmp_path: Path,
     relative_path: str,
@@ -3697,7 +3697,7 @@ def test_materialized_partial_adoption_strips_shared_baseline_doc_stale_referenc
     target_root.mkdir()
     module_args = [
         argument
-        for module_name in ISSUE_693_PARTIAL_DOC_MODULES
+        for module_name in PARTIAL_DOC_MODULES
         for argument in ("--included-module", module_name)
     ]
 
@@ -3721,9 +3721,9 @@ def test_materialized_partial_adoption_strips_shared_baseline_doc_stale_referenc
     assert generated_path.is_file(), result.stdout
     generated_text = read_file(generated_path)
 
-    for retained_token in ISSUE_693_RETAINED_DOC_REFERENCES[relative_path]:
+    for retained_token in RETAINED_DOC_REFERENCES[relative_path]:
         assert retained_token in generated_text, f"{relative_path}: {retained_token}"
-    for excluded_token in ISSUE_693_EXCLUDED_DOC_REFERENCES[relative_path]:
+    for excluded_token in EXCLUDED_DOC_REFERENCES[relative_path]:
         assert excluded_token not in generated_text, f"{relative_path}: {excluded_token}"
 
     subprocess.run(
@@ -3734,7 +3734,7 @@ def test_materialized_partial_adoption_strips_shared_baseline_doc_stale_referenc
         stderr=subprocess.PIPE,
         text=True,
     )
-    report_result = run_excluded_module_report(target_root, ISSUE_693_PARTIAL_DOC_MODULES)
+    report_result = run_excluded_module_report(target_root, PARTIAL_DOC_MODULES)
 
     assert report_result.returncode == 0, report_result.stderr
     matched_report_row = False
@@ -4083,7 +4083,7 @@ def test_materialized_no_python_adoption_prunes_dependabot_pip_ecosystem(
     target_root.mkdir()
     module_args = [
         argument
-        for module_name in ISSUE_692_NO_PYTHON_MODULES
+        for module_name in MODULES_WITHOUT_PYTHON
         for argument in ("--included-module", module_name)
     ]
 
@@ -4120,7 +4120,7 @@ def test_materialized_no_python_adoption_prunes_dependabot_pip_ecosystem(
         stderr=subprocess.PIPE,
         text=True,
     )
-    report_result = run_excluded_module_report(target_root, ISSUE_692_NO_PYTHON_MODULES)
+    report_result = run_excluded_module_report(target_root, MODULES_WITHOUT_PYTHON)
 
     assert report_result.returncode == 0, report_result.stderr
     assert "dependabot-ecosystem.stale | required_cleanup | python |" not in report_result.stdout
