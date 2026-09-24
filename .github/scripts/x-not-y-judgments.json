@@ -293,6 +293,11 @@
       "judgment": "no",
       "reason": "a prohibition with its one temporary exception; it rejects no alternative to a claim"
     },
+    "device|Keep volatile facts -- prices, hours, entry rules -- as \"verify on official sources,\" never fixed.|1": {
+      "line": 99,
+      "judgment": "device",
+      "reason": "X, never Y: keep volatile facts as \"verify on official sources,\" never fixed"
+    },
     "device|The test is the assumption and not this pair of names -- any slot whose field only makes sense for a country is bound by the same undecided question, named here or not.|1": {
       "line": 100,
       "judgment": "device",
@@ -325,6 +330,11 @@
     }
   },
   "destinations/japan/session_inserts/kid_glossary.md": {
+    "device|Takkyubin -- luggage forwarding: your bags are sent ahead so you do not carry them on stairs.|1": {
+      "line": 18,
+      "judgment": "no",
+      "reason": "a glossary definition with a purpose clause (so you do not carry them); it rejects no alternative to a claim"
+    },
     "device|(Example only, from July 2026 and not re-checked since: it took very roughly 150-160 yen to make 1 US dollar, so 100 yen was worth a bit more than half a US dollar.|1": {
       "line": 27,
       "judgment": "no",
@@ -341,6 +351,11 @@
       "line": 11,
       "judgment": "device",
       "reason": "fragment \"Not part of the child's or parent's reading path.\" after the audience claim"
+    },
+    "device|This repository has two change trails, and they are not the same thing.|1": {
+      "line": 15,
+      "judgment": "no",
+      "reason": "a table intro stating the two trails differ; it names no alternative it rejects in favor of a claim"
     },
     "split|‹code› means the deliverable inventory is still incomplete. → The sessions that exist are written to be runnable, and the set is not whole.|1": {
       "line": 28,
@@ -391,6 +406,11 @@
       "line": 65,
       "judgment": "no",
       "reason": "a status fact (the gate has not been run with a child); it rejects no alternative"
+    },
+    "device|Recorded two build conventions in the style guide so later batches stay consistent: the neutral-pronoun rule (a generic child is \"your child\" / \"the child\" / \"they\"; child-facing text stays second-person \"you\"), and the vocabulary that replaces the spec's placeholder-token teaching concept in built pages (\"not decided yet\" / \"ask an adult\").|1": {
+      "line": 66,
+      "judgment": "no",
+      "reason": "a changelog fact; \"not decided yet\" is quoted vocabulary"
     },
     "device|Punctuation carried the change wherever it could, so a reuser diffing these pages mostly sees sentence breaks and colons rather than rewritten instructions.|1": {
       "line": 67,
@@ -516,6 +536,11 @@
       "line": 94,
       "judgment": "device",
       "reason": "X but not Y: names them but does not link to them"
+    },
+    "device|The Japan reference pack, and the root start surfaces ( ‹code› , ‹code› ) with the verify-don't-trust banner.|1": {
+      "line": 107,
+      "judgment": "no",
+      "reason": "a changelog list item; \"verify-don't-trust\" is the banner's name"
     },
     "split|Fenced underscore blocks were replaced by two-column ‹code› tables for single-record forms, and by narrow criteria-by-option grids for scoring and comparison worksheets. → Tables print as bordered boxes to handwrite in, become editable cells when a page is copied into Google Docs, and reflow on a phone screen, none of which a fenced block does.|1": {
       "line": 112,
@@ -711,6 +736,11 @@
       "judgment": "no",
       "reason": "a fact about where origin assumptions live; it rejects no alternative"
     },
+    "device|How to use Markdown files is for a reader who has not opened a Markdown file before.|1": {
+      "line": 64,
+      "judgment": "no",
+      "reason": "a navigation line naming the page and its audience (a condition); it rejects no alternative"
+    },
     "split|Send a family to the pack for where they are going. → This page holds no facts about any destination, by design.|1": {
       "line": 70,
       "judgment": "no",
@@ -797,6 +827,11 @@
       "line": 44,
       "judgment": "no",
       "reason": "an AI rule followed by a logging instruction (each use still goes in the Source Log); the second does not recast the first"
+    },
+    "device|It may not be the only source for anything that ends up in the plan.|1": {
+      "line": 62,
+      "judgment": "no",
+      "reason": "a prohibition on AI's role; it rejects no alternative to a claim"
     },
     "split|It may not draft or produce the child's recommendation, even from the child's own notes. → The recommendation is the child's work, and handing that job to a tool removes the one thing this whole project is for.|1": {
       "line": 63,
@@ -899,6 +934,11 @@
       "line": 61,
       "judgment": "no",
       "reason": "\"instead of it\" describes what the skip line offers; nothing is rejected"
+    },
+    "device|Neither of those announces a divergence from a path, which is why the divergence rule above does not reach them.|1": {
+      "line": 64,
+      "judgment": "no",
+      "reason": "a scope explanation of why the divergence rule does not apply; it rejects no alternative"
     },
     "device|Warm, not flat; professional, not corporate; plain, not gushing.|1": {
       "line": 70,
@@ -1159,6 +1199,11 @@
       "line": 101,
       "judgment": "device",
       "reason": "not \"Adult Executives.\" (under the line-91 marker)"
+    },
+    "device|No exotic/othering framing of the destination or its culture.|1": {
+      "line": 102,
+      "judgment": "no",
+      "reason": "a prohibition in the banned-framing list; it rejects no alternative to a claim"
     },
     "device|The archived spec's trip-basics build rule lists the exact tokens the leak-check greps for; keep this file and every session clear of them. → Never copy the spec's parenthetical \"this family\" annotations into a built file.|1": {
       "line": 103,
@@ -1436,6 +1481,11 @@
       "judgment": "device",
       "reason": "fragment \"Not an 'executive meeting.'\" after the definition (the agreed label's own contrast in the style law's Agreed labels list)"
     },
+    "device|Decision log -- the record of what was decided, when, and why, so a decision is not re-argued three weeks later.|1": {
+      "line": 28,
+      "judgment": "no",
+      "reason": "a glossary definition with a purpose clause; it rejects no alternative to a claim"
+    },
     "device|\"Things I can't wait to see\" page -- the child's running excitement list, started in the first session and fed all the way through.|1": {
       "line": 32,
       "judgment": "no",
@@ -1564,6 +1614,11 @@
       "line": 36,
       "judgment": "no",
       "reason": "the honest transfer caveat as a label in the \"What this is not\" list; it states a limit, not an alternative"
+    },
+    "device|How to use Markdown files if you have not opened one of these files before.|1": {
+      "line": 46,
+      "judgment": "no",
+      "reason": "a navigation line with a condition (if you have not opened one); it rejects no alternative"
     }
   },
   "framework/docs/privacy_and_safety.md": {
@@ -1621,6 +1676,11 @@
       "line": 40,
       "judgment": "no",
       "reason": "an instruction (retype the question without the personal parts); it rejects no alternative to the claim before it"
+    },
+    "device|AI conversations may be stored by the provider, so treat them as not private.|1": {
+      "line": 41,
+      "judgment": "no",
+      "reason": "a privacy caution with its reason; it names no alternative claim"
     },
     "device|This repository is public and holds no trip data -- only the reusable curriculum, guides, blank templates, and the destination reference pack.|1": {
       "line": 46,
@@ -1860,6 +1920,11 @@
       "judgment": "no",
       "reason": "a coverage caveat (may pay little or nothing abroad); it rejects no alternative"
     },
+    "device|Local natural-hazard awareness: see your destination pack, or a current official source for the destination if the pack does not cover it yet, with the date you checked|1": {
+      "line": 46,
+      "judgment": "no",
+      "reason": "a checklist item with a condition (if the pack does not cover it yet)"
+    },
     "banned|Luggage handling for anyone who shouldn't carry bags up stairs: forwarding services, porter help, or lockers. → Those are categories; which ones exist where you are going, and what they are called, is in your destination pack's adult-logistics page.|1": {
       "line": 57,
       "judgment": "no",
@@ -1934,60 +1999,70 @@
     }
   },
   "framework/parent_guide/booking_guidance.md": {
+    "device|What gets booked, in what order, and how your child's work feeds it, without pulling them into a booking workflow at any point.|1": {
+      "line": 6,
+      "judgment": "device",
+      "reason": "X without Y: your child's work feeds the booking, without pulling them into a booking workflow"
+    },
     "split|You own flights, bookings, payments, accounts, personal data, final hotel decisions, final restaurant reservations, and final ticket and timed-entry bookings. → Nothing in this curriculum ever tells a child to book, reserve, buy, create an account, enter payment or passport data, submit an entry form, or handle a confirmation number.|1": {
-      "line": 11,
+      "line": 12,
       "judgment": "split",
       "reason": "you own flights, bookings, payments / nothing in this curriculum ever tells a child to book, reserve or buy (same act, the rejected owner named)"
     },
     "device|On First Taste, and early on the Core path, most of that list has not been made yet: the hotel and neighborhood comparisons come in Sessions 34 and 35, the day cards in 41, the watchlist in 42.|1": {
-      "line": 23,
+      "line": 24,
       "judgment": "no",
       "reason": "a status note (most of that list has not been made yet) followed by its schedule; it rejects no alternative"
     },
     "banned|Don't improvise that one. → It's the moment a child decides whether their work was real.|1": {
-      "line": 29,
+      "line": 30,
       "judgment": "no",
       "reason": "the second sentence gives a reason; it corrects nothing"
     },
     "split|The coaching guide has the script. → Don't improvise that one.|1": {
-      "line": 29,
+      "line": 30,
       "judgment": "no",
       "reason": "instruction"
     },
     "device|Each of those is a category to verify, not a number to memorize.|1": {
-      "line": 39,
+      "line": 40,
       "judgment": "device",
       "reason": "a category to verify, not a number to memorize"
     },
     "split|No endorsement either way. → Your child's binder works as a brief to an agent just as well as it works as your own planning file.|1": {
-      "line": 43,
+      "line": 44,
       "judgment": "no",
       "reason": "a fragment after a heading, not after a claim; rejects no alternative"
     },
     "device|That note is a flag, not a fact.|1": {
-      "line": 47,
+      "line": 48,
       "judgment": "device",
       "reason": "a flag, not a fact (a bold sentence; bold exempts no device)"
     },
     "device|That's normal and expected. → Never silently.|1": {
-      "line": 54,
+      "line": 55,
       "judgment": "device",
       "reason": "fragment after a claim: never silently (the spec's transparency obligation, bold in the batch 2 brief)"
     },
     "device|It can be blocked for exactly three reasons: it costs more than the budget band, it can't be booked or has no availability, or it isn't safe and physically manageable for every traveler. → Never by group vote.|1": {
-      "line": 56,
+      "line": 57,
       "judgment": "device",
       "reason": "fragment \"Never by group vote.\" after the claim (owned-decision rule)"
     },
     "device|It can be blocked for exactly three reasons: it costs more than the budget band, it can't be booked or has no availability, or it isn't safe and physically manageable for every traveler.|1": {
-      "line": 56,
+      "line": 57,
       "judgment": "no",
       "reason": "the three blocking reasons are a list, not a rejected alternative"
     },
     "split|Don't enter booking information, confirmation numbers or payment details anywhere in the repository or the kit. → A shared-documents folder is not a private vault either.|1": {
-      "line": 62,
+      "line": 63,
       "judgment": "no",
       "reason": "privacy fact"
+    },
+    "device|Adult-only logistics -- the full list of what your child never touches, long leads first.|1": {
+      "line": 67,
+      "judgment": "no",
+      "reason": "a navigation line describing the linked page; it rejects no alternative"
     }
   },
   "framework/parent_guide/coaching_and_support.md": {
@@ -2000,6 +2075,11 @@
       "line": 16,
       "judgment": "device",
       "reason": "a respected outcome, not a failure"
+    },
+    "device|Disagreeing without overriding:|1": {
+      "line": 23,
+      "judgment": "no",
+      "reason": "a script label (heading) for the quoted script that follows"
     },
     "banned|One thing needs checking -- the hotel distances aren't verified yet. → That's one session of work, and everything else stands.|1|quotation block quote": {
       "line": 27,
@@ -2210,6 +2290,11 @@
       "judgment": "no",
       "reason": "a scale anchor describing the low end; it rejects no alternative"
     },
+    "device|Three times, and no more.|1": {
+      "line": 39,
+      "judgment": "no",
+      "reason": "a limit introducing the list of three recording times; it names no rejected alternative"
+    },
     "device|At the start, after your child has worked their first two or three sessions. → Not before: every anchor under The three items asks how often something happened across sessions, and before the first one there is nothing to count.|1": {
       "line": 41,
       "judgment": "device",
@@ -2224,6 +2309,11 @@
       "line": 59,
       "judgment": "device",
       "reason": "rather than proof"
+    },
+    "device|What is executive function -- the everyday skills behind this project, and what this curriculum can and cannot claim about them.|1": {
+      "line": 63,
+      "judgment": "no",
+      "reason": "a navigation line; \"can and cannot claim\" is an idiom"
     }
   },
   "framework/parent_guide/flights_from_origin_guidance.md": {
@@ -2281,6 +2371,11 @@
       "line": 48,
       "judgment": "no",
       "reason": "fact"
+    },
+    "device|Don't enter flight booking information anywhere in this repository or the kit.|1": {
+      "line": 54,
+      "judgment": "no",
+      "reason": "a privacy prohibition; it rejects no alternative to a claim"
     }
   },
   "framework/parent_guide/money_budget_guidance.md": {
@@ -2323,6 +2418,11 @@
       "line": 32,
       "judgment": "no",
       "reason": "states a fact (\"It isn't\"); PR #38's verification made the same call on this line"
+    },
+    "device|A rough cost of getting there (a per-person fare, if you fly or take the train), which your child never researches and never writes down|1": {
+      "line": 37,
+      "judgment": "no",
+      "reason": "a list item under What you supply stating a role boundary; the sentence makes no claim it contrasts"
     },
     "split|The reasoning is the lesson, and the arithmetic is a tax on it. → This matters a lot for a child with dyscalculia or number anxiety, and it costs nothing for a child without.|1": {
       "line": 59,
@@ -2373,6 +2473,11 @@
       "line": 88,
       "judgment": "split",
       "reason": "every figure is an example to re-check / there are no pinned amounts here (the brief's closing line)"
+    },
+    "device|Coaching and support -- scripts for the hard moments, including disagreeing without overriding.|1": {
+      "line": 94,
+      "judgment": "no",
+      "reason": "a navigation line naming the script heading \"disagreeing without overriding\""
     }
   },
   "framework/parent_guide/review_checkpoints.md": {
@@ -2493,6 +2598,11 @@
       "judgment": "device",
       "reason": "the canonical kid-safe filter caveat: reduces but does not eliminate; not a substitute (safety)"
     },
+    "device|Any video research — the risks there are autoplay rabbit holes, recommendation drift, comments, and monetized links, none of which a content filter addresses|1": {
+      "line": 63,
+      "judgment": "no",
+      "reason": "a list item stating a filter's limit (none of which a content filter addresses)"
+    },
     "split|If another topic feels like it belongs on it, treat it as though it is. → This is not a ban on open research.|1": {
       "line": 70,
       "judgment": "split",
@@ -2507,9 +2617,29 @@
       "line": 74,
       "judgment": "no",
       "reason": "a privacy rule; it rejects no alternative to a claim"
+    },
+    "device|Privacy and safety -- the full rules on what never goes on a working page.|1": {
+      "line": 80,
+      "judgment": "no",
+      "reason": "a navigation line describing the linked page; it rejects no alternative"
     }
   },
   "framework/parent_guide/session_support_notes.md": {
+    "device|Role: do the setup; the child does not do this session.|1": {
+      "line": 11,
+      "judgment": "device",
+      "reason": "X; not Y: you do the setup; the child does not do this session"
+    },
+    "device|Look for: a cover page, the start of a \"things I can't wait to see\" page, and a baseline reflection.|1": {
+      "line": 20,
+      "judgment": "no",
+      "reason": "a look-for list; \"things I can't wait to see\" is a quoted page name"
+    },
+    "device|Role: 5-minute check-in; relay the interview question to any traveler your child cannot reach.|1": {
+      "line": 26,
+      "judgment": "no",
+      "reason": "a role note with a condition (any traveler your child cannot reach)"
+    },
     "device|Pitfall: recording the fact but not the source.|1": {
       "line": 46,
       "judgment": "no",
@@ -2544,6 +2674,16 @@
       "line": 122,
       "judgment": "no",
       "reason": "reassurance"
+    },
+    "device|Coaching question: \"Why not your backup season?\"|1": {
+      "line": 129,
+      "judgment": "no",
+      "reason": "a quoted coaching question; it rejects no alternative in the page's own voice"
+    },
+    "device|Coaching question: \"Which sight can you not wait to see?\"|1": {
+      "line": 137,
+      "judgment": "no",
+      "reason": "a quoted coaching question; \"can you not wait\" is an idiom"
     }
   },
   "framework/parent_guide/setup_checklist.md": {
@@ -2598,6 +2738,11 @@
       "line": 33,
       "judgment": "device",
       "reason": "a designed choice, not a corner cut"
+    },
+    "device|Use the coaching scripts as-is, so you have nothing to improvise.|1": {
+      "line": 37,
+      "judgment": "no",
+      "reason": "an instruction with its reason (so you have nothing to improvise)"
     },
     "banned|Do not over-claim -- these skills are real practice, but transfer to homework and chores is not guaranteed without deliberate bridging.|1": {
       "line": 47,
@@ -2688,6 +2833,11 @@
       "line": 93,
       "judgment": "no",
       "reason": "a status caveat (no ten-year-old has walked the sessions yet); it rejects no alternative to a claim"
+    },
+    "device|Differentiation -- lighter and deeper moves when the defaults do not fit your child.|1": {
+      "line": 105,
+      "judgment": "no",
+      "reason": "a navigation line with a condition (when the defaults do not fit)"
     }
   },
   "framework/parent_guide/what_is_executive_function.md": {
@@ -2695,6 +2845,11 @@
       "line": 9,
       "judgment": "no",
       "reason": "description; no alternative named"
+    },
+    "device|Knowing when to stop, which includes stopping a task that is finished and stopping one that is going nowhere.|1": {
+      "line": 11,
+      "judgment": "no",
+      "reason": "a list item naming one executive-function skill; \"going nowhere\" is an idiom describing a task, and it rejects no alternative to a claim"
     },
     "device|Being flexible, so a plan that stops working gets changed instead of abandoned.|1": {
       "line": 13,
@@ -2730,6 +2885,11 @@
       "line": 39,
       "judgment": "no",
       "reason": "two instructions; the second is not an alternative to the first"
+    },
+    "device|EF observation aid -- three readings that show a direction, and what they cannot tell you.|1": {
+      "line": 50,
+      "judgment": "no",
+      "reason": "link-list description of a page's contents; \"what they cannot tell you\" names a limit the page covers, not a rejected alternative"
     }
   },
   "framework/sessions/phase_00_setup/00_parent_setup.md": {
@@ -2810,6 +2970,11 @@
       "judgment": "no",
       "reason": "states a fact (why the session is skipped), rejects no alternative"
     },
+    "device|Travel party: ______ (from your Trip-Basics card; \"not decided yet\" is fine for anyone unsure).|1": {
+      "line": 38,
+      "judgment": "no",
+      "reason": "a fill-in form line; \"not decided yet\" is a quoted placeholder value allowed for unsure travelers"
+    },
     "split|Start a \"things I can't wait to see\" page. → Any time something about your destination sounds exciting, add it here.|1": {
       "line": 41,
       "judgment": "no",
@@ -2825,6 +2990,11 @@
       "judgment": "device",
       "reason": "these two are yours to make / there is no blank to print"
     },
+    "device|Your trip planner cover page, the start of your \"things I can't wait to see\" page, and your baseline reflection.|1": {
+      "line": 58,
+      "judgment": "no",
+      "reason": "an artifact list; \"things I can't wait to see\" is a quoted page title (a Name)"
+    },
     "banned|You do not need to decorate it perfectly. → You can add to the \"Make It Yours\" cover any time.|1": {
       "line": 62,
       "judgment": "no",
@@ -2834,6 +3004,11 @@
       "line": 62,
       "judgment": "no",
       "reason": "release, then a permission; the next sentence does not recast what the cover is"
+    },
+    "device|No new sources needed unless you looked something up.|1": {
+      "line": 66,
+      "judgment": "no",
+      "reason": "a conditional release (unless you looked something up); it rejects no alternative to a claim"
     },
     "split|If you have extra energy, decorate your cover or add three more things to your \"things I can't wait to see\" page. → If not, you are done.|1": {
       "line": 78,
@@ -3022,6 +3197,11 @@
       "line": 29,
       "judgment": "no",
       "reason": "a negative-quantifier claim that introduces the kinds of sites; it rejects no named alternative"
+    },
+    "device|What AI is and is not (every planner learns this, even if your family does not use AI):|1": {
+      "line": 43,
+      "judgment": "no",
+      "reason": "a list introduction with a condition (even if your family does not use AI); it rejects no alternative to a claim"
     },
     "split|AI can make up facts that sound right. → It is not always correct.|1": {
       "line": 47,
@@ -3241,6 +3421,11 @@
       "judgment": "device",
       "reason": "fragment after a claim (supervision rule)"
     },
+    "device|AI may not:|1": {
+      "line": 38,
+      "judgment": "no",
+      "reason": "a list introduction to prohibitions; it names no alternative"
+    },
     "split|Give you facts to trust without checking. → AI can make up things that sound right.|1": {
       "line": 41,
       "judgment": "no",
@@ -3414,6 +3599,11 @@
       "judgment": "no",
       "reason": "reassurance, rejects no alternative"
     },
+    "device|No new sources needed unless you looked something up.|1": {
+      "line": 56,
+      "judgment": "no",
+      "reason": "a conditional release (unless you looked something up); it rejects no alternative to a claim"
+    },
     "split|If you have extra energy, ask one other traveler which way they lean on two of the pairs, and note where you agree or differ. → If not, you are done.|1": {
       "line": 68,
       "judgment": "no",
@@ -3549,6 +3739,16 @@
     }
   },
   "framework/sessions/phase_07_itinerary_building/44_backup_plans_and_cut_list.md": {
+    "device|Materials: your City Research Cards (starred sights), a Cut List page, a Backup Plan page, and a My Calls page (a blank sheet -- start one if you do not have it yet)|1": {
+      "line": 13,
+      "judgment": "no",
+      "reason": "a materials list; \"if you do not have it yet\" is a condition"
+    },
+    "device|Finish your must-see list, set aside what doesn't fit, and make a couple of backup plans.|1": {
+      "line": 17,
+      "judgment": "no",
+      "reason": "a goal instruction; \"what doesn't fit\" describes the items to set aside, not a rejected alternative"
+    },
     "split|(Didn't star any? → Look at all the top sights on those cards and circle your favorite instead.)|1": {
       "line": 21,
       "judgment": "no",
@@ -3573,6 +3773,11 @@
       "line": 28,
       "judgment": "no",
       "reason": "no rejection"
+    },
+    "device|Why it may not fit (too far, too costly, too little time).|1": {
+      "line": 31,
+      "judgment": "no",
+      "reason": "a worksheet prompt label listing reasons a sight may not fit; it rejects no alternative to a claim"
     },
     "split|Save for a future trip? → Yes / no.|1": {
       "line": 32,
@@ -3635,6 +3840,11 @@
       "line": 28,
       "judgment": "device",
       "reason": "not being exactly right"
+    },
+    "device|No new sources needed unless you looked something up.|1": {
+      "line": 55,
+      "judgment": "no",
+      "reason": "a conditional release (unless you looked something up); it rejects no alternative to a claim"
     },
     "split|If you want to keep going, there's more a planner can do: more cities, a day-by-day plan, food research, and more. → Those fuller steps are being built and will come later; for now, finishing here is a complete success, and nothing you did gets redone when they come.|1": {
       "line": 67,
@@ -3733,6 +3943,11 @@
       "line": 22,
       "judgment": "no",
       "reason": "a second benefit of own words; \"isn't note-taking and isn't your work\" describes the copying avoided and pairs no claim with a rejected alternative"
+    },
+    "device|Your four parts don't all live in the same place.|1": {
+      "line": 28,
+      "judgment": "no",
+      "reason": "a fact introducing where each part goes; it names no claim that the negation is rejected in favor of"
     },
     "split|Splitting them up feels odd for about a week. → Then you'll find you can answer \"where did that come from?\" without reading everything again.|1": {
       "line": 34,
@@ -3900,6 +4115,11 @@
       "judgment": "device",
       "reason": "keep your momentum / without racing ahead"
     },
+    "device|Grow your \"things I can't wait to see\" page.|1": {
+      "line": 58,
+      "judgment": "no",
+      "reason": "an instruction; \"things I can't wait to see\" is a quoted page title (a Name)"
+    },
     "device|That is your choice -- not a rule.|1": {
       "line": 70,
       "judgment": "device",
@@ -4005,6 +4225,11 @@
       "judgment": "device",
       "reason": "keep your momentum / without racing ahead"
     },
+    "device|Grow your \"things I can't wait to see\" page.|1": {
+      "line": 34,
+      "judgment": "no",
+      "reason": "an instruction; \"things I can't wait to see\" is a quoted page title (a Name)"
+    },
     "split|If you see something that seems wrong or makes you uncomfortable, close the page and tell a grown-up. → You are never in trouble for that.|1": {
       "line": 38,
       "judgment": "no",
@@ -4016,6 +4241,11 @@
       "line": 5,
       "judgment": "device",
       "reason": "fragment after a claim (supervision rule, safety)"
+    },
+    "device|AI has three jobs on this project, and no others:|1": {
+      "line": 21,
+      "judgment": "no",
+      "reason": "a list introduction stating an exclusive limit (three jobs and no others); \"others\" names no alternative"
     },
     "split|For a major recommendation, use at least two non-AI sources. → AI may help you brainstorm or organize, and it is never the source of a fact.|1": {
       "line": 42,
@@ -4384,6 +4614,11 @@
       "judgment": "no",
       "reason": "names the actor (the grown-ups); the second half says how the rows are marked, not what they are (as recorded)"
     },
+    "device|Check what your season actually looks like where you're going this year — seasons don't behave the same everywhere, and they shift.|1": {
+      "line": 68,
+      "judgment": "no",
+      "reason": "an instruction with its reason after the dash (seasons vary by place and shift); it rejects no alternative to a claim"
+    },
     "split|It's a finished draft when each category you pack for has at least one thing you wrote in or ticked, your season's items are on it, and the travel-documents and medication lines stay marked for a grown-up. → Those two aren't yours to fill.|1": {
       "line": 78,
       "judgment": "no",
@@ -4450,6 +4685,21 @@
       "line": 66,
       "judgment": "device",
       "reason": "correct rather than an oversight"
+    },
+    "device|No destination facts anywhere on the page.|1": {
+      "line": 71,
+      "judgment": "no",
+      "reason": "a builder checklist prohibition; it rejects no alternative to a claim"
+    },
+    "device|No trip, origin or roster values.|1": {
+      "line": 72,
+      "judgment": "no",
+      "reason": "a builder checklist prohibition; it rejects no alternative to a claim"
+    },
+    "device|No heading ends in ‹code› or ‹code› .|1": {
+      "line": 75,
+      "judgment": "no",
+      "reason": "a builder checklist rule about heading endings; it rejects no alternative to a claim"
     }
   },
   "framework/templates/parent_review_form.md": {

@@ -27,7 +27,12 @@ breaks, comments and link reference definitions are not, wherever they sit, in
 a list item or a block quote included. Block quotes are read like prose; a
 quotation block quote, such as a coaching script, is judged "no". A block
 quote is a quotation when quotation marks, double or single, enclose it, or
-when it carries a named attribution line.
+when it carries a named attribution line. An HTML block that shows text is
+read like a paragraph when all it hides is comments, processing instructions,
+declarations or CDATA sections (``<!-- note --> Choose the map.``), as
+GitHub's renderer shows it: its text as written, with character references
+decoded. One that shows text next to an HTML tag is not read; the report names
+it (UNREAD HTML), and it fails the run, as markdownlint's MD033 fails the tag.
 
 The tests read the text each paragraph prints, as markdown-it gives it: no
 emphasis marks, a link's label without its destination (an inline link or a
@@ -45,10 +50,14 @@ Every sentence that holds a negation word is a candidate when a claim sits
 next to it: another sentence in its paragraph, or in the paragraph it pairs
 with. The negation words are ``not``, ``never``, ``no``, ``nor``, ``none``,
 ``nothing``, ``nobody``, ``no one``, ``nowhere``, ``neither``, ``cannot``,
-``without`` and ``n't``. A sentence with no neighbor is a candidate when a
-pattern reads a contrast inside it: ``X, not Y``, ``X rather than Y``, a
+``without`` and ``n't``. A sentence with no neighbor, such as a list item on
+its own, is a candidate too, keyed alone, because it can hold its claim and
+its rejection together (``A filter reduces exposure without removing it.``).
+So every sentence that holds a negation word is a candidate. A pattern that
+reads a contrast inside a sentence (``X, not Y``, ``X rather than Y``, a
 negation before or after a semicolon, a colon or a dash, and the other forms
-in ``INLINE_PATTERNS``. The patterns only name the candidate's kind; the
+in ``INLINE_PATTERNS``) makes it the device kind. The patterns only name the
+candidate's kind; the
 recorded judgment decides whether it counts, so no negation escapes the count
 because its shape is new. The candidate, and its key, is the sentence as the
 page prints it, with every sentence its test reads: a fragment (``Not a
@@ -68,9 +77,10 @@ directly below it: one paragraph, one whole list (a loose list included), one
 block quote, or, above a heading, that heading's section. Another comment
 between the marker and its block is skipped. It exempts the instances and
 split negations it covers. The device is named ``X, not Y``; the old
-``X-not-Y`` and ``x-not-y`` are read too. A marker that gives no reason, or
-that names the device in any other spelling (``X not Y``, ``xnoty``), exempts
-nothing, and the report names it.
+``X-not-Y`` and ``x-not-y`` are read too. A marker that gives no reason, that
+names the device in any other spelling (``X not Y``, ``xnoty``), or that
+shares its lines with text the page shows, exempts nothing, and the report
+names it.
 
 Human judgments
 ---------------
@@ -109,8 +119,8 @@ child-facing trees the readability check scores. A page none of these reaches
 is UNDETERMINED.
 
 Exit code: 0 when every page is within its caps or marked exempt, with no
-banned shape, no undetermined register, no unjudged candidate and no marker
-problem; 1 otherwise; 2 when REPO_ROOT has no ``framework/`` directory, or when
+banned shape, no undetermined register, no unjudged candidate, no marker
+problem and no unread HTML block; 1 otherwise; 2 when REPO_ROOT has no ``framework/`` directory, or when
 a data file stops the run, which the message names; 3 when the Markdown reader
 cannot run, or a page cannot be read (not UTF-8, say), which the message
 names.
@@ -125,6 +135,7 @@ from __future__ import annotations
 
 import argparse
 import atexit
+import html
 import json
 import re
 import subprocess
@@ -162,6 +173,14 @@ PREAMBLE = "(preamble)"
 TASK_BOX_RE = re.compile(r"^\[[ xX]\]\s+")
 #: An HTML block that holds only comments.
 COMMENT_BLOCK_RE = re.compile(r"^\s*(?:<!--.*?-->\s*)+$", re.DOTALL)
+#: What a browser hides in an HTML block: a comment, a processing instruction
+#: (`<?x ?>`), a declaration (`<!X ...>`) and a CDATA section. Text after one is
+#: shown, as GitHub's renderer shows it.
+HIDDEN_HTML_RE = re.compile(r"<!--.*?-->|<\?.*?\?>|<!\[CDATA\[.*?\]\]>|<![A-Za-z][^>]*>", re.DOTALL)
+#: A start or end tag. The recount does not read HTML elements as a browser
+#: does (markdownlint's MD033 rejects them), so a block that shows text next to
+#: one is reported rather than read.
+HTML_TAG_RE = re.compile(r"</?[A-Za-z][A-Za-z0-9-]*(?:\s[^>]*)?/?>")
 AUDIENCE_RE = re.compile(r"<!--\s*audience:\s*(adult|parent|builder)\b", re.IGNORECASE)
 PARENT_STRIP_RE = re.compile(r"^\s*\*\*For parents:?\*\*", re.IGNORECASE)
 PARENT_SECTION_RE = re.compile(
@@ -446,6 +465,9 @@ class Page:
     sections: list[str]
     heading_lines: dict[int, tuple[int, str]]
     audience: str | None
+    #: The first line of each HTML block that shows text next to a tag, which the
+    #: recount cannot read; each fails the run.
+    unread_html: list[int] = field(default_factory=list)
 
 
 @dataclass
@@ -458,6 +480,7 @@ class FileReport:
     sections: list[str] = field(default_factory=list)
     candidates: list[Candidate] = field(default_factory=list)
     markers: list[Marker] = field(default_factory=list)
+    unread_html: list[int] = field(default_factory=list)
 
 
 # ---------------------------------------------------------------------------
@@ -566,6 +589,7 @@ def parse_text(text: str) -> Page:
     source = text.split("\n")
     prose: list[ProseLine] = []
     markers: list[Marker] = []
+    unread: list[int] = []
     marker_blocks: list[int] = []
     sections: list[str] = [PREAMBLE]
     heading_lines: dict[int, tuple[int, str]] = {}
@@ -581,17 +605,41 @@ def parse_text(text: str) -> Page:
         kind = block["type"]
         if kind == "html_block":
             content = block.get("content") or ""
+            am = AUDIENCE_RE.search(content)
+            if am and audience is None:
+                audience = am.group(1).lower()
             if COMMENT_BLOCK_RE.match(content):
                 # Markers are read only from a block of comments, so an example
                 # shown in a code span or a fence never counts.
                 for mm in EXEMPT_MARKER_RE.finditer(content):
                     markers.append(parse_marker(block["start"], mm.group("body")))
                     marker_blocks.append(index)
-                am = AUDIENCE_RE.search(content)
-                if am and audience is None:
-                    audience = am.group(1).lower()
                 continue
-            follows = False
+            # The block shows text: what is left once the hidden parts are gone,
+            # one line per source line, with character references decoded.
+            shown = HIDDEN_HTML_RE.sub(lambda m: "\n" * m.group(0).count("\n"), content.rstrip("\n"))
+            for mm in EXEMPT_MARKER_RE.finditer(content):
+                # A marker with text on its own lines covers nothing below it.
+                marker = parse_marker(block["start"] + content.count("\n", 0, mm.start()), mm.group("body"))
+                if XNOTY_LOOKALIKE_RE.match(marker.device) or marker.device in XNOTY_DEVICE_NAMES:
+                    marker.applies = False
+                    marker.problem = "text shares its lines; put the marker on a line of its own"
+                    markers.append(marker)
+                    marker_blocks.append(index)
+            if not shown.strip():
+                follows = False
+                continue
+            if HTML_TAG_RE.search(shown):
+                unread.append(block["start"])
+                follows = False
+                continue
+            lines = html.unescape(shown).replace("\u00a0", " ").split("\n")
+            paragraph += 1
+            for offset, line in enumerate(lines):
+                prose.append(ProseLine(block["start"] + offset, line, section, region, block.get("quote") is not None,
+                                       paragraph, section_index, container=tuple(block.get("path") or ()),
+                                       follows=follows and offset == 0))
+            follows = True
             continue
         if kind == "heading":
             level = block["level"]
@@ -628,7 +676,7 @@ def parse_text(text: str) -> Page:
         follows = True
     for marker, index in zip(markers, marker_blocks):
         marker_scope(marker, blocks, index, heading_lines, source)
-    return Page(prose, markers, sections, heading_lines, audience)
+    return Page(prose, markers, sections, heading_lines, audience, unread)
 
 
 def marker_scope(marker: Marker, blocks: list[dict[str, Any]], index: int,
@@ -867,6 +915,12 @@ def find_candidates(rel: str, prose: list[ProseLine],
                     # `Never guess. Look it up.` included.
                     add(pl, "split", ["negation-before-claim"], s + ARROW + nxt, ctx)
                     opened_pairs.add(g)
+                elif prev is None and nxt is None and CANDIDATE_NEGATION_RE.search(ps):
+                    # A sentence with no neighbor, a list item on its own
+                    # included, can hold its claim and its rejection together
+                    # (`A filter reduces exposure without removing it.`), so it
+                    # is a candidate too, keyed alone.
+                    add(pl, "device", ["negation-alone"], s, ctx)
             if joined:
                 add(pl, "banned", joined, s, ctx)
             if pnxt is not None:
@@ -1057,7 +1111,7 @@ def scan(root: Path, judgments: dict, registers: dict) -> list[FileReport]:
             raise ReadError(f"{rel}: {exc}", exc.setup) from exc
         register, basis = resolve_register(rel, page.audience, registers)
         raw_lines = text.split("\n")
-        rep = FileReport(rel, register, basis, page.sections, [], page.markers)
+        rep = FileReport(rel, register, basis, page.sections, [], page.markers, page.unread_html)
         file_j = judgments.get(rel, {})
         for c in find_candidates(rel, page.prose, raw_lines):
             j = file_j.get(c.key)
@@ -1151,6 +1205,7 @@ def summarize(rep: FileReport) -> dict:
                      "scope": m.scope_desc, "problem": m.problem}
                     for m in rep.markers],
         "marker_problems": len([m for m in rep.markers if m.problem]),
+        "unread_html": list(rep.unread_html),
     }
 
 
@@ -1158,7 +1213,7 @@ TOTAL_KEYS = (
     "files", "candidates", "rejected_candidates", "unjudged_candidates", "undetermined_registers",
     "true_instances", "counted_instances", "exempted_instances", "files_over", "files_exempt",
     "sections_over", "sections_exempt", "split_negations", "split_negations_counted",
-    "files_over_split_limit", "banned_shapes", "marker_problems",
+    "files_over_split_limit", "banned_shapes", "marker_problems", "unread_html_blocks",
 )
 
 
@@ -1192,8 +1247,9 @@ def print_report(reports: list[FileReport], only_problems: bool) -> dict:
         totals["files_over_split_limit"] += s["split_status"] == "OVER"
         totals["banned_shapes"] += len(s["banned"])
         totals["marker_problems"] += s["marker_problems"]
+        totals["unread_html_blocks"] += len(s["unread_html"])
         problem = (s["status"] == "OVER" or s["split_status"] == "OVER" or s["banned"] or s["unjudged"]
-                   or s["register"] == "undetermined" or sec_over or s["marker_problems"])
+                   or s["register"] == "undetermined" or sec_over or s["marker_problems"] or s["unread_html"])
         if only_problems and not problem:
             continue
         print(s["file"])
@@ -1221,6 +1277,9 @@ def print_report(reports: list[FileReport], only_problems: bool) -> dict:
             print(f"    BANNED line {b['line']}: {b['text']}")
         if s["unjudged"]:
             print(f"    UNJUDGED candidates: {s['unjudged']} (run with --unjudged)")
+        for line in s["unread_html"]:
+            print(f"    UNREAD HTML line {line}: an HTML block shows text next to a tag, which the recount"
+                  " cannot read; write it as Markdown")
     print()
     print("TOTALS")
     for k in TOTAL_KEYS:
@@ -1249,7 +1308,7 @@ def failing(totals: dict) -> bool:
     """True when the totals show any page outside the rule."""
     return bool(totals["unjudged_candidates"] or totals["undetermined_registers"] or totals["files_over"]
                 or totals["sections_over"] or totals["files_over_split_limit"] or totals["banned_shapes"]
-                or totals["marker_problems"])
+                or totals["marker_problems"] or totals["unread_html_blocks"])
 
 
 def main(argv: list[str] | None = None) -> int:

@@ -2,6 +2,7 @@
 
 # Booking Guidance
 
+<!-- density-exempt: X, not Y -- the batch 2 brief's (B6) opening line for this page, whose bold boundary is that the child is never pulled into a booking workflow -->
 What gets booked, in what order, and how your child's work feeds it, without pulling them into a booking workflow at any point.
 
 ## The boundary

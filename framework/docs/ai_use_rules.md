@@ -83,4 +83,4 @@ Two rules, and they are the reason the AI-literacy lesson is core for everyone.
 - If AI gives a fact you want to use, verify it with a non-AI source or remove it.
 - For major recommendations, use at least two non-AI sources. AI may help brainstorm or organize, but it cannot be the only source. Verify facts with non-AI official sources.
 
-An AI answer that cannot be confirmed stays a lead, and an unconfirmed lead does not go into the plan.
+An AI answer stays a lead until the checks above confirm it, and a lead goes into the plan only once they do.

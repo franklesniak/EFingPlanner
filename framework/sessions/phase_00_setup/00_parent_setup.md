@@ -10,7 +10,7 @@ You are here: Phase 0 (Setup). This session is **adult-only** -- the child start
 
 - Status: Core (adult-only setup)
 - Estimated time: about 1-2 hours, once
-- Parent involvement: adult-owned; the child does not do this session
+- Parent involvement: adult-owned; this session is yours, and your child starts at Session 01
 - Materials: this checklist, and your copies of the [Trip-Basics card](../../trip_starter/family/trip_basics.md) and the [Family Travel Assumptions page](../../trip_starter/family/current_family_travel_assumptions.md) from the trip starter kit
 
 This is the one setup you do before your child begins. Most of it is quick. The full, detailed version lives in the [setup checklist](../../parent_guide/setup_checklist.md); this session is the short in-order version.

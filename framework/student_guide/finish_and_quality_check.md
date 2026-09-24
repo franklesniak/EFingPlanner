@@ -7,7 +7,7 @@ Use this quick card to wrap up any session. It is a quick self-check, **not a gr
 ## Finish check (am I done?)
 
 - [ ] I made the artifact this session asked for.
-- [ ] I reached the Stop Point (I do not have to do more).
+- [ ] I reached the Stop Point (that's enough work for today).
 - [ ] I checked off this session on my [progress tracker](progress_tracker.md).
 - [ ] Any extra questions went into my [question parking lot](../templates/question_parking_lot.md).
 

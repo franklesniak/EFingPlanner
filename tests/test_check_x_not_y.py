@@ -97,7 +97,8 @@ def test_headings_are_never_counted() -> None:
 
 
 def test_a_thematic_break_is_not_prose() -> None:
-    assert kinds("One line.\n\n---\n\nDo not copy it.") == []
+    # The break parts the two paragraphs, so the negation stands alone.
+    assert kinds("One line.\n\n---\n\nDo not copy it.") == [("device", "Do not copy it.")]
 
 
 # ---------------------------------------------------------------------------
@@ -122,7 +123,8 @@ def test_each_listed_form_is_a_device_candidate(sentence: str) -> None:
 
 def test_a_fragment_counts_only_after_a_claim() -> None:
     assert [k for k, _ in kinds("Break a rule gently. Not a failure.")] == ["device"]
-    assert kinds("Not every station has an elevator.") == []
+    (alone,) = candidates("Not every station has an elevator.")
+    assert "fragment" not in alone.patterns
 
 
 def test_emphasis_does_not_hide_a_contrast() -> None:
@@ -169,7 +171,7 @@ def test_the_banned_shape_joined_into_one_sentence_is_a_candidate(sentence: str)
 
 
 def test_a_condition_joined_to_a_claim_is_not_the_banned_shape() -> None:
-    assert [k for k, _ in kinds("If some travelers are not reachable yet, that is fine.")] == []
+    assert "banned" not in [k for k, _ in kinds("If some travelers are not reachable yet, that is fine.")]
 
 
 def test_a_curly_apostrophe_negation_is_a_split_candidate() -> None:
@@ -475,11 +477,11 @@ def test_a_marker_over_two_lines_is_read() -> None:
 
 
 def test_a_block_quote_under_a_lead_in_line_is_its_own_block() -> None:
-    assert kinds("**Plan A is off.**\n> Don't worry about it.") == []
+    assert kinds("**Plan A is off.**\n> Don't worry about it.") == [("device", "Don't worry about it.")]
 
 
 def test_a_pair_does_not_reach_across_the_edge_of_a_block_quote() -> None:
-    assert kinds("> Your job is to map it.\n\nMapping is not choosing.") == []
+    assert kinds("> Your job is to map it.\n\nMapping is not choosing.") == [("device", "Mapping is not choosing.")]
 
 
 @pytest.mark.parametrize(("text", "suffix"), [
@@ -925,7 +927,7 @@ def test_no_pair_crosses_the_edge_of_a_list_or_an_item(page: str) -> None:
 
 
 def test_two_block_quotes_stay_apart() -> None:
-    assert kinds("> It isn't a toy.\n\n> It's a tool.") == []
+    assert kinds("> It isn't a toy.\n\n> It's a tool.") == [("device", "It isn't a toy.")]
     (found,) = candidates('> "Look first.\n\n> Choose the map, not the list."')
     assert found.key.endswith("|1|block quote")
 
@@ -1076,7 +1078,8 @@ def test_a_negation_before_a_joiner_is_a_candidate(sentence: str) -> None:
 
 
 def test_a_comma_is_not_a_joiner_for_a_negation_before_it() -> None:
-    assert kinds("If you don't know, ask an adult.") == []
+    (found,) = candidates("If you don't know, ask an adult.")
+    assert "not-then-joiner" not in found.patterns
 
 
 NEGATION_FORMS = ["not", "never", "no", "nor", "none", "nothing", "nobody", "no one", "nowhere", "neither",
@@ -1105,8 +1108,66 @@ def test_a_long_negation_sentence_next_to_a_claim_is_a_candidate() -> None:
     assert ("split", "Use two sources. → " + long) in kinds("Use two sources. " + long)
 
 
-def test_a_negation_sentence_with_no_claim_beside_it_is_not_a_candidate() -> None:
-    assert kinds("- Do not share your address.\n- Keep your plan in the binder.") == []
+@pytest.mark.parametrize("page", [
+    "A filter reduces exposure without removing it.",
+    "- A filter reduces exposure without removing it.",
+    "> A filter reduces exposure without removing it.",
+    "Intro.\n\n- A filter reduces exposure without removing it.\n- Keep the list.",
+    "One line.\n\n---\n\nA filter reduces exposure without removing it.",
+])
+def test_a_negation_sentence_with_no_neighbor_is_a_candidate_keyed_alone(page: str) -> None:
+    found = [(c.kind, c.text) for c in candidates(page) if "without" in c.text]
+    assert found == [("device", "A filter reduces exposure without removing it.")]
+
+
+@pytest.mark.parametrize("word", NEGATION_FORMS)
+def test_every_negation_word_in_a_sentence_alone_is_a_candidate(word: str) -> None:
+    assert kinds("- " + NEGATION_SENTENCES[word]) == [("device", NEGATION_SENTENCES[word])]
+
+
+@pytest.mark.parametrize("page", ["## A filter without a guard", "| A filter without a guard |\n| --- |"])
+def test_a_heading_or_a_table_cell_is_still_not_prose(page: str) -> None:
+    assert kinds(page) == []
+
+
+# ---------------------------------------------------------------------------
+# Text an HTML block shows
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.parametrize(("page", "line"), [
+    ("<!-- note --> Choose the map, not the list.", 1),
+    ("<!-- note\ncontinues --> Choose the map, not the list.", 2),
+    ("<!-- a --><!-- b --> Choose the map, not the list.", 1),
+    ("<?x y?> Choose the map, not the list.", 1),
+    ("<!X decl> Choose the map, not the list.", 1),
+    ("<![CDATA[x]]> Choose the map, not the list.", 1),
+    ("Intro.\n\n<!-- note --> Choose the map, not the list.", 3),
+])
+def test_text_after_what_an_html_block_hides_is_read(page: str, line: int) -> None:
+    assert [(c.kind, c.text, c.lineno) for c in candidates(page)] == [
+        ("device", "Choose the map, not the list.", line)]
+
+
+def test_text_an_html_block_shows_is_read_with_its_references_decoded() -> None:
+    assert kinds("<!-- note --> Choose the map&#44; not the list.") == [("device", "Choose the map, not the list.")]
+
+
+def test_an_html_block_that_shows_text_next_to_a_tag_fails_the_run(tmp_path: Path, capsys: Any) -> None:
+    root = repo_with(tmp_path, "## A\n\n<div>Choose the map, not the list.</div>\n")
+    assert cx.parse_text("<div>Choose the map, not the list.</div>").unread_html == [1]
+    code = cx.main([str(root), "--judgments", str(tmp_path / "none.json"), "--registers", str(tmp_path / "none.json")])
+    assert code == 1
+    assert "UNREAD HTML line 3" in capsys.readouterr().out
+
+
+def test_a_marker_that_shares_its_line_with_text_exempts_nothing_and_is_named() -> None:
+    page = cx.parse_text("<!-- density-exempt: X, not Y -- required --> Choose the map, not the list.")
+    assert [(m.applies, m.problem != "") for m in page.markers] == [(False, True)]
+
+
+def test_a_block_of_comments_still_shows_nothing() -> None:
+    assert kinds("<!-- a note -->\n<!-- another -->") == []
 
 
 # ---------------------------------------------------------------------------
