@@ -19,7 +19,11 @@ This is your Checkpoint 6 page, from [Session 52](../../sessions/phase_08_readin
 | Questions that are still open | |
 | Approval status (a grown-up circles one: Approved / Approved with changes / Needs more research / Park this decision for later) | |
 
-If the answer is Approved with changes, put the changes on this page and in your decision log first. If it's Needs more research, do that one piece before Session 53. If it's Park this decision for later, that's your result, and you can go on to Session 53. Any of the four is a result that counts.
+Any of the four is a result that counts. Before you start Session 53:
+
+- **Approved with changes:** write the changes on this page and in your Decision Record.
+- **Needs more research:** do that one piece, and bring it back.
+- **Park this decision for later:** that's your result, so you can go on to Session 53.
 
 ## Your progress is real
 

@@ -36,7 +36,7 @@ This is your Checkpoint 1 page, from [Session 14](../../sessions/phase_02_destin
 | What a grown-up still needs to check, decide or book | |
 | Approval status (a grown-up circles one: Approved / Approved with changes / Needs more research / Park this decision for later) | |
 
-If the answer is Approved with changes, put the changes on this page and in your decision log first.
+If the answer is Approved with changes, write the changes on this page and in your Decision Record.
 
 ## Your progress is real
 

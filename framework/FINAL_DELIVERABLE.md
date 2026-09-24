@@ -46,7 +46,7 @@ This page holds the item list, and the [print index](print_index.md) holds the o
 The kit's `outputs/` folder holds the finished pages, summarized forward from the rest of the work. Each has one job:
 
 - [Outputs README](trip_starter/outputs/README.md): how the finished pages work, and what stays off them.
-- [Final itinerary](trip_starter/outputs/final_itinerary.md): the day-by-day plan, compiled from the day cards.
+- [Final itinerary](trip_starter/outputs/final_itinerary.md): the day-by-day plan, compiled from the Daily Plan Cards.
 - [Executive summary](trip_starter/outputs/executive_summary.md): the whole recommendation on one page.
 - [Family presentation](trip_starter/outputs/family_presentation.md): the presentation as given at the family decision meeting.
 - [Binder table of contents](trip_starter/outputs/binder_table_of_contents.md): the binder's pages, in the print index's tab order.

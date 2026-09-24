@@ -9,8 +9,8 @@ This is your Checkpoint 4 page, from [Session 32](../../sessions/phase_05_route_
 | Prompt | Your answer |
 | --- | --- |
 | What I recommend, in one sentence | |
-| Total number of days (with booked dates: the booked trip length) | |
-| The other route I compared in Session 31 | |
+| Total number of days (with booked dates: the booked trip length, from the maximum row of our [Trip-Basics card](../family/trip_basics.md)) | |
+| The other option I compared in Session 31 (another route, or another way to use one base) | |
 | Overnight cities | |
 | Nights in each city | |
 | Travel days: the days mostly spent getting to the next place | |
@@ -26,7 +26,11 @@ This is your Checkpoint 4 page, from [Session 32](../../sessions/phase_05_route_
 
 If the grown-ups change where you arrive or leave, you move one block of your plan and keep the rest. Your work still counts.
 
-If the answer is Approved with changes, put the changes on this page and in your decision log first. If it's Needs more research, do that one piece before the next session. If it's Park this decision for later, the next session waits until your family comes back to it.
+Before you start the next session:
+
+- **Approved with changes:** write the changes on this page and in your Decision Record.
+- **Needs more research:** do that one piece, and bring it back.
+- **Park this decision for later:** wait until your family comes back to it.
 
 ## Your progress is real
 

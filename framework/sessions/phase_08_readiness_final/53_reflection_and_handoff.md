@@ -12,7 +12,7 @@ You are here: Phase 8 (Readiness and Final), First Taste step 13 of 13. **This i
 - Planner skill: reflection; knowing when to stop
 - Estimated time: 20-30 minutes
 - Parent involvement: co-working recommended; deliver the finish acknowledgment warmly
-- Materials: your baseline reflection from Session 01, your budget estimate from Session 33, a [Final Reflection page](../../templates/final_reflection.md). On the Core path, also your assembled binder from Session 50, your checkpoint reflections, your minutes guesses, and your budget summary from Session 39, plus your First Taste reflection if this is your capstone re-run.
+- Materials: your baseline reflection from Session 01, your budget estimate from Session 33, a [Final Reflection page](../../templates/final_reflection.md). On the Core path, also the [final reflection page](../../trip_starter/outputs/final_reflection.md) in your trip starter kit, your assembled binder from Session 50, your checkpoint reflections, your minutes guesses, your ticket-price and travel-time guesses from Sessions 23 and 30, your budget summary from Session 39, your family's [current travel assumptions](../../templates/current_family_travel_assumptions.md) page (for the budget band), plus your First Taste reflection if this is your capstone re-run.
 
 ## Goal
 

@@ -25,7 +25,11 @@ This is your Checkpoint 2 page, from [Session 22](../../sessions/phase_03_choose
 
 Your skip and save-for-future notes will help later, when you make your cut list.
 
-If the answer is Approved with changes, put the changes on this page and in your decision log first. If it's Needs more research, do that one piece before the next session. If it's Park this decision for later, the next session waits until your family comes back to it.
+Before you start the next session:
+
+- **Approved with changes:** write the changes on this page and in your Decision Record.
+- **Needs more research:** do that one piece, and bring it back.
+- **Park this decision for later:** wait until your family comes back to it.
 
 ## Your progress is real
 
