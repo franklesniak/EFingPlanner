@@ -10,7 +10,7 @@ You are here: Phase 7 (Itinerary Building). Not a First Taste step. Previous: [3
 - Planner skill: planning realistic time
 - Estimated time: 20-30 minutes
 - Parent involvement: 5-minute check-in
-- Materials: your destination pack's airports and arrival page, your route and nights from Checkpoint 4, your route map notes from Session 28, your must-do list on your My Calls page, your [Trip-Basics card](../../templates/trip_basics.md) (for how your family gets there), your Session 29 formula (for its ½ marks), or a grown-up who can tell you how long the trips there and home take, your family's [current travel assumptions](../../templates/current_family_travel_assumptions.md) page (for the arrival and departure places), a device with a map app or map website (kid-safe filter on), your [Source Log](../../templates/source_log.md), a blank page
+- Materials: your destination pack's airports and arrival page, your route and nights from Checkpoint 4, your route map notes from Session 28, your must-do list on your My Calls page, your strong maybes from Checkpoint 3 (for the ones marked "if nearby"), your [Trip-Basics card](../../templates/trip_basics.md) (for how your family gets there), your Session 29 formula (for its ½ marks), or a grown-up who can tell you how long the trips there and home take, your family's [current travel assumptions](../../templates/current_family_travel_assumptions.md) page (for the arrival and departure places), a device with a map app or map website (kid-safe filter on), your [Source Log](../../templates/source_log.md), a blank page
 
 ## Goal
 
