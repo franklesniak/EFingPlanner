@@ -10,7 +10,7 @@ You are here: Phase 4 (Attractions and Experiences). Not a First Taste step. Pre
 - Planner skill: ranking priorities
 - Estimated time: 20-30 minutes
 - Parent involvement: 5-minute check-in; help co-choose the one unconditional pick
-- Materials: your attraction cards, your balance chart from Session 24, a [Scoring Rubric page](../../templates/scoring_rubric.md) for spare copies of the lighter table, and a [My Calls page](../../trip_starter/my_calls.md) from your trip starter kit (copy one out if you don't have it yet)
+- Materials: your attraction cards, your balance chart from Session 24, a [Scoring Rubric page](../../templates/scoring_rubric.md) for spare copies of the lighter table, or extra copies of this page's fuller table if you use that one, and a [My Calls page](../../trip_starter/my_calls.md) from your trip starter kit (copy one out if you don't have it yet)
 
 (For an at-a-glance version, see the matching entry in [the parent session notes](../../parent_guide/session_support_notes.md); the Parent Notes below have the full detail.)
 
@@ -40,7 +40,7 @@ Your skip and save-for-future notes are worth keeping. You'll use them again at 
 
 ## Workspace
 
-Use one of these tables. Each holds three attractions, so start a fresh copy for the next three.
+Use one of these tables. Each holds three attractions, so start a fresh copy for the next three. The Scoring Rubric page has spare copies of the lighter one. For the fuller one, ask a grown-up to print it again, or copy its questions onto a blank sheet. The Scoring Rubric's fuller table asks different questions, so keep to these.
 
 The lighter version:
 

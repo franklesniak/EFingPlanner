@@ -128,7 +128,7 @@ A conditional-core session names its condition on the same line, in the built fo
 
 **An artifact-producing session carries the point-of-use accommodation line**, in the exemplar's form: *"You can say your answers to an adult who writes them, or draw them, if that's easier."*
 
-**Artifact Created names the artifact.** A named artifact keeps the capital the batch brief gives its first word, even mid-sentence: *Your Season recommendation report*, *Your Route and trip-length recommendation*. A generic one stays lower case, as in *Your attraction cards*. A template's own title keeps the template's case, as in *Your Trade-Off Report*.
+**Artifact Created names the artifact.** A named artifact keeps the capital the batch brief gives its first word, even mid-sentence: *Your Season recommendation report*, *Your Route and trip-length recommendation*. A generic one stays lower case, as in *Your attraction cards*. A template's own title keeps the template's case, as in *Your Trade-Off Report*. The capital is for the Artifact Created line. Other mentions, such as a Workspace label or the words a Start Here puts in a Decision box, stay lower case, as built Session 14 writes *My season recommendation*.
 
 **Worksheet fill-ins are two-column `Prompt | Your answer` Markdown tables**, never fenced underscore blocks. The empty answer cell is the fill-in space. Comparison grids stay narrow enough to print on portrait letter or A4. The structure gate rejects a fenced block used as a worksheet fill-in.
 

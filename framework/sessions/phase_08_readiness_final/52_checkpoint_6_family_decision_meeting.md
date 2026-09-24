@@ -10,7 +10,7 @@ You are here: Phase 8 (Readiness and Final). Not a First Taste step. **This is C
 - Planner skill: making trade-offs
 - Estimated time: 20-30 minutes for the child, plus the family decision meeting
 - Parent involvement: parent review -- genuinely use the recommendation in a real family talk
-- Materials: your Final Presentation Outline from Session 51, your assembled binder, your [Source Log](../../templates/source_log.md), a [Decision Record page](../../templates/decision_record.md)
+- Materials: your presentation outline from Session 51, your assembled binder, your [Source Log](../../templates/source_log.md), a [Decision Record page](../../templates/decision_record.md)
 
 (For an at-a-glance version, see the matching entry in [the parent session notes](../../parent_guide/session_support_notes.md); the Parent Notes below have the full detail.)
 
@@ -40,7 +40,7 @@ Waiting for the meeting? Session 53 waits for it too. Your [When I'm Stuck card]
 
 ## Workspace
 
-Your final recommendation packet:
+Your final recommendation packet. Your Decision Record page and your presentation outline ask different questions, so this table has its own rows:
 
 | Prompt | Your answer |
 | --- | --- |
