@@ -91,7 +91,7 @@ Each has its own **what to consider** list. The review form checks whether the w
 
 **What they bring:** with open dates, total days, overnight cities, nights in each, travel days, and a shorter backup version.
 
-**Also yours to do here:** confirm or adjust the arrival and departure places against current flight options, or against however your family is getting there. If they change, your child's route flexes. They move one block and keep the rest.
+**Also yours to do here:** confirm or adjust the arrival and departure places against current flight options, or against however your family is getting there. If they change, your child's route flexes. They move one block and keep the rest, then re-time the new first or last hop and fix the travel days and nights. A changed first or last place makes your answer "Approved with changes". Make it "Needs more research" if the change alters which route works best.
 
 **What to consider:** flights, if you fly; the arrival and departure places; how many hotel moves it involves; whether the transit is workable; how it fits your maximum trip length, or your booked trip length; budget implications; and the family schedule.
 
@@ -105,6 +105,8 @@ Each has its own **what to consider** list. The review form checks whether the w
 
 The draft is the thing being reviewed. Pacing, transit, meals and rest cannot be judged from the summary alone.
 
+**If the first or last place has changed since Checkpoint 4,** the draft's first and last days carry the wrong travel legs. Answer "Approved with changes", so your child re-times those days and fixes the travel days and nights. Make it "Needs more research" if the change alters which route works best.
+
 **What to consider:** pacing; transit time; meals; rest; booking needs; budget; safety; and practicality.
 
 **Progress is real:** the family has a usable *day-by-day plan*. Stopping here is a finish in its own right.
@@ -114,6 +116,8 @@ The draft is the thing being reviewed. Pacing, transit, meals and rest cannot be
 **What they bring:** the final recommendation, and the handoff list of what adults verify, decide and book.
 
 **What to consider:** the final recommendation; what you approve; what you want changed; what you'll verify or book; and which questions stay open.
+
+**If the first or last place changes at the meeting,** the same two answers apply. "Approved with changes" covers re-timing the first or last day. "Needs more research" fits a change that alters which route works best, and your child does that piece before Session 53.
 
 **Progress is real:** the family has *made a decision*.
 

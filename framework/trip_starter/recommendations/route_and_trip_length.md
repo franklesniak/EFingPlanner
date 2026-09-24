@@ -24,7 +24,7 @@ This is your Checkpoint 4 page, from [Session 32](../../sessions/phase_05_route_
 | What a grown-up still needs to check, decide or book | |
 | Approval status (a grown-up circles one: Approved / Approved with changes / Needs more research / Park this decision for later) | |
 
-If the grown-ups change where you arrive or leave, you move one block of your plan and keep the rest. Your work still counts.
+If the grown-ups change where you arrive or leave, you move one block of your plan and keep the rest. Then time the new first or last hop with Directions, and fix your travel days and nights to match. Your work still counts.
 
 Before you start the next session:
 
