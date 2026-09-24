@@ -1,4 +1,5 @@
 <!-- markdownlint-disable MD013 -->
+<!-- audience: parent -- also builder-facing; measured at the stricter parent cap -->
 
 # Design Principles
 
@@ -85,6 +86,6 @@ Support is heavy at the start and lifts as the child earns it. The gradient acro
 
 **The gradient moves on demonstrated readiness rather than on the calendar.** The test is what the child did: two consecutive sessions completed without *needing* the When I'm Stuck card and without *leaning on* the written Steps. The Finish and Quality Check still closes every session, so doing it never counts against the child. The sections stay on the page at every stage, because the structure gate requires them and because a child who stops needing them one week may need them the next. What changes is whether the child reaches for them.
 
-If the two sessions do not come, the stage does not move. Going back a stage after a hard week is a normal adjustment rather than a setback.
+If the two sessions do not come, the stage does not move. Going back a stage after a hard week is a normal adjustment.
 
-**The anchors never fade.** The seven mandatory-core session fields stay on every session at every stage: Goal, Start Here, Steps, Workspace, Artifact Created, Stop Point, and Source Check where the session has a research step. A lighter session is lighter in its Steps and Workspace, and its Start Here may be the child's own. Its meta sections stay the same short pointers every session carries. It is never missing an anchor.
+**The anchors never fade.** The seven mandatory-core session fields stay on every session at every stage: Goal, Start Here, Steps, Workspace, Artifact Created, Stop Point, and Source Check where the session has a research step. A lighter session is lighter in its Steps and Workspace, and its Start Here may be the child's own. Its meta sections stay the same short pointers every session carries, so every anchor stays in place.

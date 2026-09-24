@@ -44,7 +44,7 @@ Now practice with a grown-up:
 
 - AI can make up facts that sound right. It is not always correct.
 - AI is never your only source. Always check it against a real source.
-- AI never decides legal, safety, entry, medical, money, or booking questions. Those are for the adults.
+- Legal, safety, entry, medical, money, and booking questions are for the adults.
 
 Tracking *who said it* is the same move you started in Session 04 -- you are getting good at it.
 

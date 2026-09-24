@@ -4,7 +4,7 @@
 
 Use one card per place you might stay, so you can compare options fairly instead of going on the first one you saw. **You compare. The adults book.**
 
-You don't need one of these for every hotel that exists. Do at least one card for each place you might sleep overnight. Do two only when that base is still genuinely undecided and there are enough real options to compare. Where one option is already obvious, one card is enough. Four or five cards for the whole trip is plenty — that's a finished job, not the low end of one. This can be split across several sittings.
+You don't need one of these for every hotel that exists. Do at least one card for each place you might sleep overnight. Do two only when that base is still genuinely undecided and there are enough real options to compare. Where one option is already obvious, one card is enough. Four or five cards for the whole trip is a finished job. This can be split across several sittings.
 
 | Prompt | Your answer |
 | --- | --- |
@@ -34,6 +34,6 @@ You don't need one of these for every hotel that exists. Do at least one card fo
 
 The cost row is **per room**, not the whole night's lodging. If your family needs two rooms, the night costs about twice that. Keep it per room so two hotels can be compared fairly, and let a grown-up do the multiplying.
 
-**About room counts.** Rooms in some places are smaller than the ones you're used to, and they often cap how many people can stay in one room. Connecting rooms and true four-person rooms can be uncommon. So a bigger family may need more rooms than you'd expect. That's a thing to check for each hotel, not a price — and it's one reason room count and booking are adult decisions, and why this card says "per room."
+**About room counts.** Rooms in some places are smaller than the ones you're used to, and they often cap how many people can stay in one room. Connecting rooms and true four-person rooms can be uncommon. So a bigger family may need more rooms than you'd expect. Check it for each hotel. It's one reason a grown-up decides the room count and does the booking, and why this card says "per room."
 
 If this card runs past two pages, shorten Pros, Cons and Review themes first. Keep the cost, the date you checked, the verification row and the decision status — those are what make the card honest.

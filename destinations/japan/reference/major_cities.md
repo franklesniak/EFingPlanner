@@ -31,10 +31,10 @@ Both are just starting points to compare. Weigh each one against your family's s
 ## Fun things to consider (research, not pre-chosen)
 
 - Big draws: a Ghibli museum or park, Tokyo Disney, and Pokemon Centers. Universal Studios Japan has Super Nintendo World. These are ideas to research rather than a current list -- check which are open now, and what a visit involves. You could also look at teamLab's current venues -- check which ones are open now. Nara is known for its deer.
-- Small everyday treats count too. Famous is not the only good. You could ride the Shinkansen itself. You could try conveyor-belt sushi. There are gachapon capsule-toy machines, and vending machines are everywhere. There are arcades, themed cafes, and a big aquarium. You can collect goshuin stamps at shrines and temples. Visit first, and be respectful.
+- Small everyday treats count too. You could ride the Shinkansen itself. You could try conveyor-belt sushi. There are gachapon capsule-toy machines, and vending machines are everywhere. There are arcades, themed cafes, and a big aquarium. You can collect goshuin stamps at shrines and temples. Visit first, and be respectful.
 
 ## A note on culture and etiquette
 
 In Japan you take your shoes off at the door of many homes. You do it at some restaurants too. A small nod or bow is a normal, friendly hello. People do not expect a visitor to get it all right.
 
-Some private areas limit photos. Parts of Kyoto's Gion are one example. Watch for posted signs, and do what they say. Treat all of this as things to check and be kind about. They are not rules to stress over.
+Some private areas limit photos. Parts of Kyoto's Gion are one example. Watch for posted signs, and do what they say. Treat all of this as things to check and be kind about. Which one would you like to try first?

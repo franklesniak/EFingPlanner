@@ -14,7 +14,7 @@ If you like strong structure and tabbing things as you go makes you happy, go ah
 
 ## The six sections you keep
 
-Six things run the whole length of the project. They're six labelled sections inside your one notebook, so you keep one thing in rough order instead of six separate piles.
+Six things run the whole length of the project. They're six labelled sections inside your one notebook, so everything stays in one place.
 
 - **Start Here.** Your [Trip-Basics card](../templates/trip_basics.md), the [assumptions page](../templates/current_family_travel_assumptions.md), your [trip goals](../templates/family_trip_goals.md), and, if you did Session 02, your [traveler profiles](../templates/traveler_profile.md). Session 02 is on the full Phases 0-2 path rather than the 13, so this section is complete without profiles if you are on First Taste. This one is filled in first and barely changes after that.
 - **[Source Log](../templates/source_log.md).** One copy of the table for every source you use. This is the one that makes your recommendation believable.
@@ -31,7 +31,7 @@ Print or copy each session when you reach it. Don't print the whole project at o
 
 Printing everything up front looks organized and doesn't help. Pages get lost, sessions change, and a stack of forty blank pages is discouraging to look at.
 
-Printing a whole phase at a time is a fine middle path if the printer is in someone else's house. Just don't run the whole project.
+Printing a whole phase at a time is a fine middle path if the printer is in someone else's house.
 
 ## Your one what's-next page
 

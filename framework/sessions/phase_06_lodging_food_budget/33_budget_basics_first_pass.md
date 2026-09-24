@@ -22,7 +22,7 @@ Write the word "Food" and the word "Hotel" on your Budget Estimate page. Those a
 
 ## Steps
 
-Every trip is made of cost categories. You don't need exact numbers. You're learning how trip money is split up, and checking whether the parts *you* choose fit.
+Every trip is made of cost categories. You're learning how trip money is split up, and checking whether the parts *you* choose fit. Rough numbers work fine for that.
 
 1. **Meet the categories** (just read these once): getting there, hotels, food, local transit, longer journeys once you are there, activities and tickets, souvenirs, and a buffer for surprises.
 2. **Estimate two of them** with simple **high / medium / low** guesses (a grown-up can help you find rough numbers, and you can use a calculator):
@@ -42,7 +42,7 @@ Every trip is made of cost categories. You don't need exact numbers. You're lear
    - Band is **per day for the family**? Add your **meals for everyone per day** (meals per person x your travelers) to your **hotel for one night, all your rooms** (hotel per night x rooms). Then check that daily total against the band.
    - Band is a **hotel tier**? Check your **hotel-per-night** pick against that tier. Circle **fits** or **too high** for the part you checked.
 
-**Remember:** your first guesses will probably be off. Everyone's are, even grown-ups'. Being off is normal. The point is to practice estimating and checking. Being exactly right isn't the goal. (See your [planner mindset card](../../student_guide/planner_mindset.md).)
+**Remember:** your first guesses will probably be off. Everyone's are, even grown-ups'. Being off is normal. The point is to practice estimating and checking. Each check makes your next guess a little closer. (See your [planner mindset card](../../student_guide/planner_mindset.md).)
 
 ## Workspace
 
@@ -72,7 +72,7 @@ Stuck? Use the [When I'm Stuck card](../../student_guide/when_im_stuck.md) in yo
 
 ## Optional Extension
 
-If you have extra energy, estimate a third slice like activities or souvenirs. You can also do this when you continue past First Taste. Or plan your own "spending money." Did a grown-up give you an amount? Then look up what a small treat costs. Do not guess. See how many you could get.
+If you have extra energy, estimate a third slice like activities or souvenirs. You can also do this when you continue past First Taste. Or plan your own "spending money." Did a grown-up give you an amount? Then look up what a small treat costs. How many could you get?
 
 ## Parent Notes
 

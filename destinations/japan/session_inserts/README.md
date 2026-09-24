@@ -64,17 +64,17 @@ Every field list below is written destination-neutrally, so this contract copies
 | `47_language_etiquette.md` | 47 Language and Etiquette | A short set of everyday phrases; the etiquette points a visiting family actually meets; any custom with rules of its own (bathing, photography, sacred sites), described matter-of-factly and never as something the child will get wrong. |
 | `kid_glossary.md` | Child travel glossary, all sessions | The destination words a child meets on signs, on menus and on trains, one line each; the units the destination uses (temperature, distance, time format) with a kid-sized conversion for each; one currency example, labeled an example to re-check and carrying the month the pack last stood behind the figure, which is normally older than this file's own `Last reviewed` line. |
 
-Every slot file also carries a `**Last reviewed:** <month year>` line directly below its title -- for example, `**Last reviewed:** September 2026`. Re-checking is optional upkeep, not a maintenance promise.
+Every slot file also carries a `**Last reviewed:** <month year>` line directly below its title -- for example, `**Last reviewed:** September 2026`. Re-checking is optional upkeep.
 
 ### How a slot divides from its reference
 
-Nine of the twelve slots sit beside a reference file in the contract table above, and the division between the two is a rule rather than a judgment call. The insert supplies only what the session's own page needs in hand: the enumeration a child fills a worksheet from. Everything else belongs to the reference, and so does every volatile fact: availability, current tools, rules that change, anything the pack itself tells a reader to check rather than memorize. Say so in the slot with a pointer. Where the two ever disagree, the reference wins.
+Nine of the twelve slots sit beside a reference file in the contract table above, and a fixed rule divides the two, so every author splits them the same way. The insert supplies only what the session's own page needs in hand: the enumeration a child fills a worksheet from. Everything else belongs to the reference, and so does every volatile fact: availability, current tools, rules that change, anything the pack itself tells a reader to check rather than memorize. Say so in the slot with a pointer. Where the two ever disagree, the reference wins.
 
 The reason is mechanical. Both files carry their own `Last reviewed` line, so a fact written into both is stamped twice and re-checked once, and the session then meets two freshness claims with one piece of upkeep behind them.
 
 Three slots have no reference file in the contract at all, and those three own their fields outright: `10_snapshot_facts.md`, `42_reservation_examples.md` and `kid_glossary.md`. Where a slot owns its fields outright it is the canonical home, and a volatile fact written there carries the date the pack last stood behind it. It never carries the slot's own `Last reviewed` stamp, which is the month the page was authored and would assert a check nobody made.
 
-The field lists are a floor rather than a ceiling. The batch that writes a slot may find it needs one more field, and should add that field to the table above in the same pass. What it may not do is ship a slot with fewer fields than its row names, or leave a row with no fields at all.
+The field lists are the minimum, and an author may add to them. The batch that writes a slot may find it needs one more field, and should add that field to the table above in the same pass. What it may not do is ship a slot with fewer fields than its row names, or leave a row with no fields at all.
 
 Dividing a row later means editing the row, in the same pass that writes the reference file. Narrow the row first, in the change that writes the reference file, then build the slot to the row as it now stands. Record the narrowing in the curriculum changelog, the way every other contract departure is recorded. Do not narrow a row without writing its reference file in the same pass: a row stripped of a field whose new home does not exist yet routes the child nowhere.
 

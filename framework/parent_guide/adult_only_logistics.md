@@ -56,11 +56,11 @@ Three things go beyond stamina, and they are yours to verify:
 - **Accessible lodging** — step-free access, and any room or bathroom needs
 - **Luggage handling** for anyone who shouldn't carry bags up stairs: forwarding services, porter help, or lockers. Those are categories; **which ones exist where you are going, and what they are called, is in your destination pack's adult-logistics page**. If your pack does not have that page yet, check the official sites of the local transport operators, or ask your lodging, and write the date you checked
 
-Your child's job is to *flag* likely trouble spots: a stair-heavy transfer, a hilltop site, a station that may not have a lift. They notice and hand it to you. They don't research the fix.
+Your child's job is to *flag* likely trouble spots: a stair-heavy transfer, a hilltop site, a station that may not have a lift. They notice and hand it to you, and you research the fix.
 
 Write about this generically with your child: "an older adult".
 
-<!-- density-exempt: X-not-Y -- the separation default and the carry-card boundary are stated as contrasts because in both cases the wrong version is the intuitive one -->
+<!-- density-exempt: X, not Y -- the separation default and the carry-card boundary are stated as contrasts because in both cases the wrong version is the intuitive one -->
 ## The meeting-point rule
 
 One separation rule per outing, named to your child out loud each morning.

@@ -26,7 +26,7 @@ The watchlist is the one to read first, once it exists. It's built specifically 
 
 The booking clock often forces a commitment before your child's curriculum-paced route is finished. Flights get cheaper-then-dearer on their own schedule, lodging sells out on another, and a child working a session a week is on a third.
 
-This is handled two ways: you set the **rough trip shape** early, so their work is built on it rather than derailed by it, and you have the "we had to book before you finished" conversation when it comes. The [coaching guide](coaching_and_support.md) has the script. Don't improvise that one. It's the moment a child decides whether their work was real.
+This is handled two ways: you set the **rough trip shape** early, so their work is built on it from the start, and you have the "we had to book before you finished" conversation when it comes. The [coaching guide](coaching_and_support.md) has the script. Don't improvise that one. It's the moment a child decides whether their work was real.
 
 ## Order, and the long leads
 
@@ -50,7 +50,7 @@ Your child writes a cancellation note on a card. **That note is a flag, not a fa
 
 You will change parts of the plan: prices, availability, safety, schedules, booking rules. That's normal and expected.
 
-**Never silently.** An owned pick is reshaped only with a stated reason.
+**An owned pick is reshaped only with a stated reason.**
 
 And the one unconditional personal pick is different from everything else. It can be blocked for exactly three reasons: it costs more than the budget band, it can't be booked or has no availability, or it isn't safe and physically manageable for every traveler. **Never by group vote.** If one of those three applies, tell your child which one.
 

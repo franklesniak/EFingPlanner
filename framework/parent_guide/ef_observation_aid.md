@@ -6,10 +6,10 @@ This is a private note you keep for yourself. It takes about a minute, three tim
 
 ## Four guardrails, before anything else
 
-- **Keep it private.** Your child does not see a score, ever. This is your own notebook rather than feedback to them, and a number handed to a child becomes a grade the moment they read it. Put no personal data on it.
+- **Keep it private.** Your child does not see a score, ever. This is your own notebook, and a number handed to a child becomes a grade the moment they read it. Put no personal data on it.
 - **Noticing, not grading.** This is a rough home signal for you. It is not an assessment of your child, and it measures nothing about their ability.
 - **Not diagnostic or clinical.** Three lines on a page cannot diagnose anything, and nothing here substitutes for a professional evaluation. If something worries you, that is a conversation to have with someone qualified.
-- **Optional, and a complement.** Your child writes their own baseline reflection at the start and their own final reflection at the end. Those are the record that matters. This aid adds a second angle rather than standing in for either of them.
+- **Optional, and a complement.** Your child writes their own baseline reflection at the start and their own final reflection at the end. Those are the record that matters. This aid adds your angle beside theirs.
 
 ## What the three items are, and what they are not
 

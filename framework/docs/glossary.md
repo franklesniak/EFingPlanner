@@ -1,4 +1,5 @@
 <!-- markdownlint-disable MD013 -->
+<!-- audience: parent -->
 
 # Framework Glossary
 
@@ -16,6 +17,8 @@ This page is distinct from both of those. It defines no travel words and no dest
 
 ## Terms
 
+<!-- density-exempt: X, not Y -- two entries are defined by their contrast: the agreed label "family decision meeting (not executive meeting)" from the style law's Agreed labels list, and the Named concept Verify-Don't-Trust (never treat volatile facts as fixed) -->
+
 - **Family decision meeting** -- the sit-down where the child presents a recommendation and the adults decide. Not an "executive meeting."
 - **Adult reviewers** -- the adults who read the child's work, ask questions, and make the final bookings.
 - **[Core Finish Line](../PROJECT_ROADMAP.md)** -- the shortest route to a usable plan, ending at Checkpoint 5.
@@ -27,13 +30,13 @@ This page is distinct from both of those. It defines no travel words and no dest
 - **[Cut list](../templates/cut_list.md)** -- the things the child chose to leave out, kept on purpose so the choosing is visible.
 - **[Research cards](../templates/city_research_card.md)** -- one page per candidate place, so two candidates can be compared side by side.
 - **"Things I can't wait to see" page** -- the child's running excitement list, started in the first session and fed all the way through.
-- **"Make It Yours" zone** -- the part of a session where the child's own taste decides, rather than the research.
+- **"Make It Yours" zone** -- the part of a session where the child's own taste decides.
 - **"My Calls" page** -- where the decisions that are the child's own are written down, with an adult's one-line acknowledgment beside each, so the authority is visible.
 - **Start Here** -- the micro-action that opens every session, small enough to finish in under a minute.
-- **Stop Point** -- the line that says exactly when the child is done, so "done" is a fact rather than a feeling.
+- **Stop Point** -- the line that says exactly when the child is done. It leaves no guesswork.
 - **[Carry-over tag](design_principles.md)** -- the short callout that names a planning move the child just used and asks where else it would work. It appears only on the session that first introduces that move.
 - **Checkpoint** -- a session where an adult reviews the work before the project moves on.
-- **[Trip-Basics card](../templates/trip_basics.md)** -- the family-owned card holding the few facts about this family and this trip. The sessions point at it instead of guessing.
+- **[Trip-Basics card](../templates/trip_basics.md)** -- the family-owned card holding the few facts about this family and this trip. Each session sends the child to it for those facts.
 - **[Budget band](../templates/current_family_travel_assumptions.md)** -- a rough not-to-exceed signal in a form a child can use: per person per day, per day for the family, or a hotel tier. The full trip total stays an adult number.
 - **[Rough trip shape](../templates/current_family_travel_assumptions.md)** -- the adults' provisional call on the shape of the trip: in and out of the same place, in one place and out of another, or one base to travel from. It also names the likely arrival and departure places.
 - **Planning assumption** -- a starting point the adults set that can still change, recorded so the child is planning against something real.

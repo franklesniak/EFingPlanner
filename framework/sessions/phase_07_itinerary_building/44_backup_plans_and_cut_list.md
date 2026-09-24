@@ -29,7 +29,7 @@ A good planner can't fit everything. And that's fine. Knowing what to keep, what
    - Place or activity.
    - Why it sounded interesting.
    - Why it may not fit (too far, too costly, too little time).
-   - Save for a future trip? Yes / no. Cutting something isn't losing it: "save for a future trip" keeps it for later.
+   - Save for a future trip? Yes / no. A "yes" keeps it for later.
 3. **Choose your one special pick.** Pick the **single** thing you most want on this trip. Choose it *with a grown-up*, who will show you the only three things that could change it first: it costs more than the budget band, it can't be booked, or it isn't safe or doable for everyone in the group. A grown-up vote can't take this one away. Write it on your **My Calls** page and have a grown-up initial it. (Your My Calls page is a fresh sheet for the choices that are yours. Start one now if you don't have it yet. It's where your [owned decisions](../../student_guide/what_i_decide.md) get a grown-up's "got it.")
 4. **Make two backup plans** on a [Backup Plan page](../../templates/backup_plan.md) for common problems:
    - **Rainy day** -- what could you do instead?

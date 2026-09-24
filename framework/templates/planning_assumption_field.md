@@ -2,9 +2,9 @@
 
 # Planning Assumption (a card field, not a page)
 
-**This isn't a page you keep.** It's the small block of questions that sits on your city, attraction, and hotel cards. When an assumption actually drives a decision, it moves into your decision log.
+**This is a small block of questions on your city, attraction, and hotel cards.** When an assumption actually drives a decision, it moves into your decision log.
 
-There's no assumptions list to keep. Don't start one. You already keep five things: your Source Log, your research cards, your decision log, your question parking lot, and your cut list. This isn't a sixth.
+There's no assumptions list to keep. Don't start one. You already keep five things: your Source Log, your research cards, your decision log, your question parking lot, and your cut list. Which one does a used assumption move into?
 
 An assumption is something you treat as true so you can keep going. Nobody has checked it yet. "It's probably open on a Monday" is one. Write it down. That's what stops it turning into a fact when you weren't looking.
 

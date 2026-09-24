@@ -1,4 +1,5 @@
 <!-- markdownlint-disable MD013 -->
+<!-- audience: parent -->
 
 # Privacy and Safety
 
@@ -6,8 +7,8 @@
 
 - **Status:** Active
 - **Owner:** Repository Maintainers
-- **Last Updated:** 2026-09-22
-- **Scope:** The single, canonical home for the EFingPlanner privacy and safety rules -- data that is never recorded, child online-safety rules, the kid-safe-filter caveat, AI-privacy rules, public-repo/private-work separation, and work backup. Other files carry a short reminder and link here instead of repeating these rules. Where a rule is written out in full at the point a child or an adult acts on it, that repetition is deliberate and required.
+- **Last Updated:** 2026-09-24
+- **Scope:** The single, canonical home for the EFingPlanner privacy and safety rules -- data that is never recorded, child online-safety rules, the kid-safe-filter caveat, AI-privacy rules, public-repo/private-work separation, and work backup. Other files carry a short reminder and link here. Where a rule is written out in full at the point a child or an adult acts on it, that repetition is deliberate and required.
 
 This is the single home for the privacy and safety rules. Other files carry a short reminder and link here rather than repeating them, with one deliberate exception: where a rule is written out in full at the point a child or an adult acts on it, the full copy is required and must not be reduced to a pointer.
 

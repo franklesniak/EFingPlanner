@@ -141,6 +141,15 @@ jobs:
         continue-on-error: true
         run: python .github/scripts/check-session-structure.py
 
+      # The `X, not Y` recount (.github/scripts/check-x-not-y.py) is a tool,
+      # not a gate: its page scan needs a human judgment for every new
+      # candidate sentence, so CI runs only its unit tests. Run the scan by
+      # hand before a review; the PR that adds pages judges their candidates.
+      - name: Check X, not Y recount unit tests
+        id: test-x-not-y
+        continue-on-error: true
+        run: pytest tests/test_check_x_not_y.py -v
+
       - name: Check validation results
         if: >-
           steps.lint-outer.outcome == 'failure' ||
@@ -152,7 +161,8 @@ jobs:
           steps.lint-readability.outcome == 'failure' ||
           steps.test-toolchain.outcome == 'failure' ||
           steps.test-structure.outcome == 'failure' ||
-          steps.lint-structure.outcome == 'failure'
+          steps.lint-structure.outcome == 'failure' ||
+          steps.test-x-not-y.outcome == 'failure'
         run: |
           echo "::error::Markdown and toolchain checks failed. Check the logs above for details."
           exit 1

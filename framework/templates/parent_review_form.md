@@ -1,4 +1,5 @@
 <!-- markdownlint-disable MD013 -->
+<!-- audience: parent -- a parent fills this form in at each checkpoint -->
 
 # Parent Review Form
 
@@ -81,6 +82,7 @@ Ask if they want to. Skipping it is fine, and a drawing is just as good an answe
 - Taking over the fun research decisions
 - Letting them handle bookings, payments, accounts, or private data
 
+<!-- density-exempt: X, not Y -- praise the move, not the mind, with its "not you're so smart" example, is the spec's praise calibration pair (specification line 3471) -->
 Praise the move, not the mind. "You checked a second source." "You stopped at the stop point." Not "you're so smart" — that one quietly teaches that being right is the point.
 
 ## Reviewed by

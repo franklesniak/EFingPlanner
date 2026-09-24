@@ -21,6 +21,7 @@ Complete the one-time setup -- safety filter, the Trip-Basics and assumptions pa
 
 ## Start Here
 
+<!-- density-exempt: X, not Y -- the kid-safe filter caveat is the spec's standalone safety rule (specification line 4245), and it is stated as the contrast it guards against -->
 Turn on a kid-safe search filter on the device your child will use (for example, Google SafeSearch, lockable through Family Link). That one action is your start. It reduces exposure but does not remove it, so plan to stay nearby for the riskier research.
 
 ## Steps
@@ -42,7 +43,7 @@ You work from this checklist and your copies of the [Trip-Basics card](../../tri
 
 - Skim the [parent quick-start](../../parent_guide/README.md) -- the three must-reads before you begin: the setup checklist, the adult-and-child roles, and the honest time-and-effort reality.
 - Read the [privacy and safety rules](../../docs/privacy_and_safety.md) once. Off every working page: passport numbers, birthdates, confirmation numbers, your home address, and payment details -- and use vague travel dates ("spring," "not decided yet") instead of exact booked dates. Keep hotel names off anything public.
-- Print [Session 01](01_project_kickoff.md) and the child's first pages. Print or copy each session as you reach it -- not the whole set at once.
+- Print [Session 01](01_project_kickoff.md) and the child's first pages. Print or copy each session only when you reach it.
 - Gather a guidebook (a library copy is perfect) or a couple of reputable travel websites. Nothing needs to be bought.
 - **Check passports early, if your trip leaves the country.** A child's first passport is a long-lead item and can set the earliest date you could travel, and children's applications follow their own rules. Confirm the current child-passport requirements and processing times with the official US source at travel.state.gov, since these can change. Note the date you checked and that source (the same verify-don't-trust habit your child is learning), since the rules and times can shift before you book. This shapes the season research your child will do, so start it now. If your trip stays inside your own country, no passport is needed for it and this item is already done.
 - Record a **rough trip shape** on the assumptions page if you can: in and out of the same place, in one place and out of another, or one base you stay at and travel from, and the likely arrival place. If you have never been to your destination, naming just the arrival place is a fine answer -- leave the rest open and firm it up later on the full Core path (by the City Shortlist checkpoint). For the First Taste, leaving it open is fine.
@@ -58,7 +59,8 @@ Ask yourself honestly: is your child actually excited, or is this mostly your id
 
 ## How to help without taking over
 
-Sit with your child for the early sessions, especially the source-judging ones (05). Coach; do not do the work for them. Praise the move ("you checked a second source"), not the mind ("you're so smart"). Schedule sessions when your child is rested and fed. If frustration rises, point them to the [When I'm Stuck card](../../student_guide/when_im_stuck.md) and take a break. If a task is too much, the [differentiation guide](../../parent_guide/differentiation.md) has concrete lighter moves.
+<!-- density-exempt: X, not Y -- praise the move, not the mind is the spec's praise calibration pair (specification line 3471) -->
+Sit with your child for the early sessions, especially the source-judging ones (05). Coach, and let your child do the work. Praise the move ("you checked a second source"), not the mind ("you're so smart"). Schedule sessions when your child is rested and fed. If frustration rises, point them to the [When I'm Stuck card](../../student_guide/when_im_stuck.md) and take a break. If a task is too much, the [differentiation guide](../../parent_guide/differentiation.md) has concrete lighter moves.
 
 ## What not to record
 

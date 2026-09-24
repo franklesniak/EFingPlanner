@@ -1,4 +1,5 @@
 <!-- markdownlint-disable MD013 -->
+<!-- audience: parent -->
 
 # AI Use Rules
 
@@ -6,7 +7,7 @@
 
 - **Status:** Active
 - **Owner:** Repository Maintainers
-- **Last Updated:** 2026-09-23
+- **Last Updated:** 2026-09-24
 - **Scope:** The single canonical home for the AI rules in this curriculum: the AI-free default, the adult-operated pattern, the before-you-opt-in age and supervision check, the three jobs AI may do, the jobs it may never do, the AI-privacy prohibitions, and the verification rules. Parent-facing, with rules a child can read. Every other surface that mentions the AI choice points here instead of restating these rules.
 - **Related:** [Privacy and safety](privacy_and_safety.md), [Session 09: AI as Helper, Not Boss](../sessions/phase_01_research_skills/09_ai_as_helper_not_boss.md), [AI notes form](../templates/ai_notes.md)
 
@@ -76,4 +77,4 @@ Two rules, and they are the reason the AI-literacy lesson is core for everyone.
 - If AI gives a fact you want to use, verify it with a non-AI source or remove it.
 - For major recommendations, use at least two non-AI sources. AI may help brainstorm or organize, but it cannot be the only source. Verify facts with non-AI official sources.
 
-An AI answer that cannot be confirmed is not a finding. It is a lead, and an unconfirmed lead does not go into the plan.
+An AI answer that cannot be confirmed stays a lead, and an unconfirmed lead does not go into the plan.

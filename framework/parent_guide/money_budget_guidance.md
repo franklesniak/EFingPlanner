@@ -79,7 +79,7 @@ Three things worth saying, in your own words. **Name what they found**, not what
 
 ## One optional, verify-framed note
 
-Children's fares are often lower than adults' on some transport systems. Treat it as something to verify for current ages and amounts on an official source, with the date you checked. Don't state a rule or a fraction; the destination-specific source is in your pack.
+Children's fares are often lower than adults' on some transport systems. Treat it as something to verify for current ages and amounts on an official source, with the date you checked; the destination-specific source is in your pack.
 
 ---
 

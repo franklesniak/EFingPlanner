@@ -4,7 +4,7 @@
 
 **Status: Conditional core** -- becomes Core if your family wants the language and etiquette quick sheet in the binder. This one is worth keeping. It's one of the most useful and most fun sessions in the whole project, and you'll use this sheet more than almost anything else you make.
 
-Build this **for your own pocket**. It isn't just a binder page. It's a tool you'll use on the trip. You'll say hello and thank you with it, order food, and read signs while you're standing there. Make it small enough to carry, or photograph it on a phone.
+Build this **for your own pocket**, as a tool you'll use on the trip. You'll say hello and thank you with it, order food, and read signs while you're standing there. Make it small enough to carry, or photograph it on a phone.
 
 Open your destination pack's language and etiquette notes and fill this in from there. The words themselves live in the pack, because they're different everywhere.
 

@@ -2,9 +2,9 @@
 
 # Budget Estimate
 
-This page helps you see how trip money is split up, and whether the parts *you* choose fit your family's budget band. It doesn't make a bookable total. The grown-ups own the numbers that get booked. Rounding is always allowed, and so is a calculator. A grown-up may do the math while you do the thinking.
+This page helps you see how trip money is split up, and whether the parts *you* choose fit your family's budget band. The grown-ups own the numbers that get booked. Rounding is always allowed, and so is a calculator. A grown-up may do the math while you do the thinking.
 
-All numbers here are estimates you look up and re-check -- never a fixed price. Write the date beside anything you look up.
+All numbers here are estimates you look up and check again. What day did you look each one up? Write that date beside it.
 
 **The parts your choices drive.** For **First Taste**, fill in **Hotel** and **Food**. That matches Session 33. Did your Session 21 recommendation keep **two cities**? Then estimate a hotel for **each** one. Fill in the second-city hotel row too, since your plan pays for both. The other rows are marked *(later)*: they belong to the fuller Core path, so leave them blank for the pilot.
 
@@ -32,4 +32,4 @@ The subtotal above shows how the parts you choose add up. The whole-trip total s
 
 Allowed answers anywhere: low / medium / high, "not sure yet," "ask an adult."
 
-What this teaches: how trip money is split into categories. It also shows whether the parts you chose fit your band. It's not the final total. Getting there and the rest of the grown-ups' costs are kept on their own page. Adults still own the budget and the booking.
+What this teaches: how trip money is split into categories. It also shows whether the parts you chose fit your band. Getting there and the rest of the grown-ups' costs are kept on their own page. Adults still own the budget and the booking.

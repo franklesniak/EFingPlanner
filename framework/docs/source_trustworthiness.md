@@ -1,8 +1,9 @@
 <!-- markdownlint-disable MD013 -->
+<!-- audience: parent -->
 
 # Judging How Much to Trust a Source
 
-This page is for the adult, and most of it can be read aloud to the child. It is the canonical home for three things the sessions point at rather than re-teach: the current-information rule, lateral reading, and the difference between a primary and a secondary source.
+This page is for the adult, and most of it can be read aloud to the child. It is the canonical home for three things the sessions point to: the current-information rule, lateral reading, and the difference between a primary and a secondary source.
 
 Nothing here names a place. The destination pack carries the list of which sources are worth starting from for one particular destination, and which of them publish in English.
 
@@ -16,7 +17,7 @@ Different kinds of source are good at different jobs. None of them is good at ev
 - **Official railway and transit sources.** Where a destination has them, the operator's own page beats any summary of it.
 - **Guidebooks.** Excellent for orientation. Check the publication year, and verify anything current against an official source.
 - **Library books.** Free, and often older than the bookshop edition, so the year check matters more.
-- **Travel websites.** Useful for ideas and for what a place is like. Not a source for a rule.
+- **Travel websites.** Useful for ideas and for what a place is like, so check any rule it states against an official source.
 - **Blogs.** One person's trip. Good for the feel of somewhere, weak on anything that changes.
 - **Influencers.** Often paid, often out of date, and always selling something. Treat as a tip to check, never as an answer.
 - **Video and travel vloggers.** Often the first place a child looks, so it gets its own rules: turn autoplay off, set a timer, and treat every fact in the video as unchecked until an official source agrees. Comments and recommended videos are not part of the research.
@@ -73,7 +74,7 @@ Never write one of those into a plan as a settled fact. Write it with three habi
 
 Seasons work the same way. Name the category rather than the date: a busy holiday week, a rainy season, a storm season. Which weeks they fall in is a thing to confirm for the year the family is traveling.
 
-Some destinations have a whole category of fast-changing rules, and the pack will say so. Treat that category as "re-check close to travel" rather than "set it once."
+Some destinations have a whole category of fast-changing rules, and the pack will say so. Treat that category as "re-check close to travel."
 
 ## When the source is not in English
 
@@ -84,4 +85,4 @@ Everything in this project is written in English, and plenty of the best sources
 3. Translation tools and AI can translate things wrongly. Anything that matters gets checked against an official English source, or confirmed with an adult.
 4. When in doubt, ask an adult.
 
-Which sources for a destination publish in English, and which do not, is in that destination's pack rather than here.
+Each destination pack says which of its sources publish in English.

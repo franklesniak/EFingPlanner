@@ -41,7 +41,7 @@ Want a rough signal of how the executive-function side is going? The optional [e
 
 - Role: a real 5-minute look -- this habit carries the project.
 - Prep: a Source Log page.
-- Look for: one complete entry showing *where* the fact came from, not just the fact.
+- Look for: one complete entry that shows *where* the fact came from, as well as the fact.
 - Coaching question: "Where could you check that same fact?"
 - Pitfall: recording the fact but not the source. Praise the move, not the cleverness.
 
@@ -77,7 +77,7 @@ Want a rough signal of how the executive-function side is going? The optional [e
 - Prep: a device with the kid-safe filter on; your destination pack's trusted starting sources and its sample search terms; a blank Website Notes form.
 - Look for: website comparison notes with one question, two sources, and a call on which is more useful.
 - Coaching question: "What made the one you trusted less feel less trustworthy?"
-- Pitfall: treating it as a solo session. A filter reduces exposure but does not remove it.
+- Pitfall: treating it as a solo session, when a filter still lets some things through.
 
 ## Session 09: AI as Helper, Not Boss (only if your family uses AI)
 

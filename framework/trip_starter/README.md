@@ -31,7 +31,7 @@ Every page has exactly one home. If you can never remember where something goes,
 - Work in progress lives in the `research/`, `logs/`, or `recommendations/` part of your copy.
 - The final version, in order, lives in the `outputs/` part of your copy.
 
-Work is summarized forward, not copied sideways. When a page feeds a later page, carry the short version forward. Do not keep two copies of the same thing in two folders. Two copies drift apart, and then you do not know which one is right.
+Work is summarized forward. When a page feeds a later page, carry the short version forward. Do not keep two copies of the same thing in two folders. Two copies drift apart, and then you do not know which one is right.
 
 A link that leaves the kit, like the one to the binder card, opens a page in this repository. In a printed or pasted copy, find that page here.
 

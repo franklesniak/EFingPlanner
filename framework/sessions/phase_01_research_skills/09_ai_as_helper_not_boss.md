@@ -26,6 +26,7 @@ Say the rule out loud with a grown-up: *"AI helps me think. It never decides fac
 
 ## Steps
 
+<!-- density-exempt: X, not Y -- the supervision rule (a grown-up runs the AI tool, never the child alone) is a safety rule -->
 If your family uses AI, a grown-up runs it, on the grown-up's own account, with you right there. Never on your own. AI is a helper for a few safe jobs only.
 
 **AI may help you:**

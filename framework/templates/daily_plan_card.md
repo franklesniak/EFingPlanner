@@ -67,4 +67,4 @@ Save these as `day_01.md`, `day_02.md`, and so on.
 | Backup idea | |
 | Source notes | |
 
-Your plan is built in movable blocks, one per place. If a grown-up later changes which city you fly into or out of, your plan just flexes — you move a block, you don't start over. Nothing you wrote gets wasted.
+Your plan is built in movable blocks, one per place. If a grown-up later changes which city you fly into or out of, you move a block and keep the rest. Nothing you wrote gets wasted.

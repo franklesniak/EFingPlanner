@@ -7,7 +7,7 @@
 
 - **Status:** Active
 - **Owner:** Repository Maintainers
-- **Last Updated:** 2026-09-23
+- **Last Updated:** 2026-09-24
 - **Scope:** The blank authoring skeleton for a child-facing curriculum session, with the rules a new session has to satisfy: the seven mandatory-core fields, the section order, the navigation line, the "For parents" strip, and the structure gate's floor. Builder-facing; a child never reads this page.
 - **Related:** [Build style and vocabulary](../docs/build_style_and_vocab.md), [Golden exemplar session](../sessions/phase_00_setup/04_start_a_source_log.md)
 
@@ -53,7 +53,7 @@ You are here: Phase N (Phase Name), First Taste step K of 13. Previous: [previou
 ## Parent Notes
 ```
 
-The skeleton opens with the `markdownlint-disable` directive rather than with the H1, because every built curriculum file carries that comment as line 1. A skeleton that started at the title would teach its own absence, and the next author would have to remember an addition this page never showed them.
+The skeleton opens with the `markdownlint-disable` directive, because every built curriculum file carries that comment as line 1. A skeleton that started at the title would teach its own absence, and the next author would have to remember an addition this page never showed them.
 
 ## The seven mandatory-core fields
 
@@ -74,13 +74,13 @@ The canonical pointer wordings, with their links, are:
 
 `../../` is correct from a session file in any phase folder. Write the links; a pointer without one strands the child on the page it was meant to leave. A session may add its own sentence after the `Finished?` pointer, as Session 04 does. The Optional Extension's opener and its close vary on purpose, and the style law records which sessions vary them and why, so read that rule before normalizing anything.
 
-"Every child session" is the qualifier, and it is measured rather than decorative. An adult-only session carries none of this choreography: `00_parent_setup.md` has no `## Finish and Quality Check`, because no child ever works it. Do not add one.
+"Every child session" is the qualifier, and it was measured across the built sessions. An adult-only session carries none of this choreography: `00_parent_setup.md` has no `## Finish and Quality Check`, because no child ever works it. Do not add one.
 
 ## The section order, and why it is this one
 
-The order at the top of a session is: the navigation line, then any italic routing lines the section below permits, then the labelled parent strip, then `## Goal`. The strip is written exactly `**For parents:**` and renders as a short one-field-per-line list rather than a faux table. **The routing lines come between the two**, which is where every built session puts them; an earlier wording put the strip directly under the navigation line and left a session that needs a routing note with two rules it could not both follow, so an author could have misplaced a load-bearing route or deleted it to satisfy the template. The child's own sections lead the body, and `## Parent Notes` comes last.
+The order at the top of a session is: the navigation line, then any italic routing lines the section below permits, then the labelled parent strip, then `## Goal`. The strip is written exactly `**For parents:**` and renders as a short list, one field per line. **The routing lines come between the two**, which is where every built session puts them; an earlier wording put the strip directly under the navigation line and left a session that needs a routing note with two rules it could not both follow, so an author could have misplaced a load-bearing route or deleted it to satisfy the template. The child's own sections lead the body, and `## Parent Notes` comes last.
 
-Every built session is laid out that way, and the built repository wins on conflict, so the acceptance criterion asking for the child's action before parent-facing meta is satisfied by that section order rather than by pushing the five-field strip below `## Steps`. The style law asks for both halves in one sentence: the child's action first, and the parent meta grouped into the labelled strip near the top. Do not reorder the strip, here or in any session.
+Every built session is laid out that way, and the built repository wins on conflict, so that section order satisfies the acceptance criterion asking for the child's action before parent-facing meta, and the five-field strip stays near the top. The style law asks for both halves in one sentence: the child's action first, and the parent meta grouped into the labelled strip near the top. Do not reorder the strip, here or in any session.
 
 ## The H1 and the navigation line
 
@@ -112,12 +112,12 @@ Write the line scoped to the path it describes. An unqualified shortcut written 
 
 Four classifications, not three: **Core**, **Conditional core**, **Recommended**, **Optional**.
 
-A conditional-core session names its condition on the same line, in the built form `Status: Conditional core -- done **only if** ...`, and never by citing a spec section number. Built files reference concepts by Name and relative link. The structure gate requires a `Status` bullet and never reads its value, so a session flattened into Core or Recommended passes every gate in this repository while moving in or out of a Core baseline the design record fixes on purpose.
+A conditional-core session names its condition on the same line, in the built form `Status: Conditional core -- done **only if** ...`. Built files reference concepts by Name and relative link. The structure gate requires a `Status` bullet and never reads its value, so a session flattened into Core or Recommended passes every gate in this repository while moving in or out of a Core baseline the design record fixes on purpose.
 
 ## The rest of the strip
 
 - **Estimated time** defaults to 20-30 minutes.
-- **Parent involvement** is one of: none / independent work; 5-minute check-in; parent review after session; parent setup needed; co-working recommended; a grown-up stays nearby for this one; adult-operated; adult-owned. Two of these are requirements rather than suggestions. **A grown-up stays nearby** is Session 08's, because a filter reduces exposure without removing it. **Adult-operated** is Session 09's: the adult runs the tool, on the adult's account, with the child present. Neither may be softened to co-working recommended.
+- **Parent involvement** is one of: none / independent work; 5-minute check-in; parent review after session; parent setup needed; co-working recommended; a grown-up stays nearby for this one; adult-operated; adult-owned. Two of these are requirements. **A grown-up stays nearby** is Session 08's, because a filter reduces exposure without removing it. **Adult-operated** is Session 09's: the adult runs the tool, on the adult's account, with the child present. Neither may be softened to co-working recommended.
 - **Planner skill** comes from a closed list: getting started; comparing choices; checking sources; ranking priorities; planning realistic time; making trade-offs; organizing information; revising a plan; self-control (knowing when to stop). Write the value your batch brief assigns, and when it assigns two, name both. Some sessions built before the list was closed carry other labels, such as *estimating* or *reflection*. Leave those as built, and do not copy one into a new session.
 - **Materials** names what the child needs in hand, with a relative link to each framework template it names. **A blank is linked; the child's own filled-in page is not.** "two blank City Research Cards" links the template, because the child needs to fetch one; "your two City Research Cards" names work they already have, and a link there would send them to an empty page. A running artifact the child keeps -- the Source Log -- is linked anyway, because a family may still be printing their first copy. A setup page a grown-up filled in, such as the Trip-Basics card or the assumptions page, is linked too: it is a canonical concept, and the style law links every concept Name to its home.
 

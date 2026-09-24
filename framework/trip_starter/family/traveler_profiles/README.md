@@ -29,7 +29,7 @@ If two travelers share a role, add a number, the way the first example does. You
 
 Write each traveler by relationship or role. A profile never needs a name.
 
-Medical specifics stay with the adults and go on no page at all. Write what someone needs designed around. Do not write why. The full rules are on one page: [privacy and safety](../../../docs/privacy_and_safety.md).
+Medical specifics stay with the adults and go on no page at all. Write what someone needs designed around, and leave the reason with the adults. The full rules are on one page: [privacy and safety](../../../docs/privacy_and_safety.md).
 
 ## An open answer is a complete answer
 

@@ -40,7 +40,7 @@ Do this now:
 3. Follow the other pointer to your destination pack's major-cities reference and read the route shapes there. Copy **one** of them onto your notes. Read it as an anchor to compare your own ideas against, and not as the answer. You haven't chosen anything yet.
 4. Mark anything you want to check later. Travel times change, and the pack tells you which facts to confirm close to the trip.
 
-> You do not need to memorize this. Your job is to understand enough geography to make better travel decisions.
+> Your job is to understand enough geography to make better travel decisions.
 
 Researching a place does not mean choosing it. You're collecting options now. The route is still yours to build later, and the trade-offs that go with it are still yours to make.
 
@@ -78,4 +78,4 @@ If you have extra energy, pick the region that sounds least interesting to you a
 
 ## Parent Notes
 
-The point of this session is scale, and scale is the thing kids most often get wrong on a first trip. If your child's notes imply four regions in five days, do not correct it yet; Session 11 is for collecting, and the trade-off sessions do the cutting. Ask one question instead: "how long does it take to get from this one to that one?" That question is what makes the route shapes on the pack's cities page mean something. A map on the table, or a finger traced along a printed one, does more here than any amount of reading.
+The point of this session is scale, and scale is the thing kids most often get wrong on a first trip. If your child's notes imply four regions in five days, leave the cutting to the trade-off sessions; Session 11 is for collecting. Ask one question: "how long does it take to get from this one to that one?" That question is what makes the route shapes on the pack's cities page mean something. A map on the table, or a finger traced along a printed one, does more here than any amount of reading.
