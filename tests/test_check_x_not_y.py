@@ -152,6 +152,85 @@ def test_candidate_keys_hold_kind_text_and_occurrence() -> None:
     ]
 
 
+@pytest.mark.parametrize(
+    "sentence",
+    [
+        "It's not a toy; it's a tool.",
+        "It's not a toy, it's a tool.",
+        "It isn't a test: it's practice.",
+        "It isn't a test -- it's practice.",
+        "It isn't a test — it's practice.",
+        "This does not replace the notes; it is the map.",
+        "If you're stuck, it's not a failure; it's a signal.",
+    ],
+)
+def test_the_banned_shape_joined_into_one_sentence_is_a_candidate(sentence: str) -> None:
+    assert ("banned", sentence) in kinds(sentence)
+
+
+def test_a_condition_joined_to_a_claim_is_not_the_banned_shape() -> None:
+    assert [k for k, _ in kinds("If some travelers are not reachable yet, that is fine.")] == []
+
+
+def test_a_curly_apostrophe_negation_is_a_split_candidate() -> None:
+    found = kinds("You move a block. You don’t start over.")
+    assert ("split", "You move a block. → You don’t start over.") in found
+
+
+def test_cannot_is_a_negation() -> None:
+    found = kinds("Look it up. You cannot guess it.")
+    assert ("split", "Look it up. → You cannot guess it.") in found
+
+
+def test_opening_words_read_both_apostrophes_alike() -> None:
+    assert cx.opening_words("It’s a tool.") == cx.opening_words("It's a tool.") == ["it's", "a"]
+
+
+def test_a_pair_whose_two_sentences_both_negate_is_one_candidate() -> None:
+    found = kinds("You do not need a plan. You do not need a map.")
+    assert [k for k, _ in found].count("split") == 1
+
+
+def test_a_sentence_wrapped_over_two_lines_is_read_whole() -> None:
+    found = candidates("One line.\nChoose the map rather\nthan the list.")
+    assert [(c.kind, c.text, c.lineno) for c in found] == [
+        ("device", "Choose the map rather than the list.", 2),
+    ]
+
+
+def test_a_block_quote_under_a_lead_in_line_is_its_own_block() -> None:
+    assert kinds("**Plan A is off.**\n> Don't worry about it.") == []
+
+
+def test_a_pair_does_not_reach_across_the_edge_of_a_block_quote() -> None:
+    assert kinds("> Your job is to map it.\n\nMapping is not choosing.") == []
+
+
+@pytest.mark.parametrize(("text", "suffix"), [
+    ("Choose the map, not the list.", ""),
+    ("> Choose the map, not the list.", "|block quote"),
+    ('> "Choose the map, not the list."', "|quotation block quote"),
+    ('> "Look first. Choose the map, not the list."', "|quotation block quote"),
+    ("> Choose the map, not the list.\n>\n> — A parent", "|quotation block quote"),
+])
+def test_a_key_carries_the_quotation_context(text: str, suffix: str) -> None:
+    (found,) = candidates(text)
+    assert found.key.endswith("|1" + suffix)
+
+
+@pytest.mark.parametrize("after", [
+    "> Look first. Choose the map, not the list. Then go.",
+    "Look first. Choose the map, not the list. Then go.",
+])
+def test_a_judgment_does_not_follow_a_sentence_out_of_a_quotation(tmp_path: Path, after: str) -> None:
+    # The middle sentence reads the same with or without the quotation marks.
+    write(tmp_path, "framework/templates/a.md", '## A\n\n> "Look first. Choose the map, not the list. Then go."\n')
+    judged = judge_all(tmp_path, "no")
+    write(tmp_path, "framework/templates/a.md", "## A\n\n" + after + "\n")
+    (rep,) = cx.scan(tmp_path, judged, {})
+    assert [c.judgment for c in rep.candidates] == [None]
+
+
 # ---------------------------------------------------------------------------
 # Markers
 # ---------------------------------------------------------------------------
@@ -204,6 +283,27 @@ def test_stacked_markers_cover_the_same_list() -> None:
     assert (second.scope_start, second.scope_end) == (4, 5)
 
 
+def test_a_marker_covers_a_whole_loose_list() -> None:
+    text = "\n".join([
+        "<!-- density-exempt: X, not Y -- required -->",
+        "- first item",
+        "",
+        "- second item",
+        "",
+        "  more of the second item",
+        "",
+        "After the list.",
+    ])
+    (mk,) = scoped(text)
+    assert (mk.scope_start, mk.scope_end) == (2, 6)
+
+
+def test_a_marker_over_a_list_stops_where_another_list_starts() -> None:
+    text = "<!-- density-exempt: X, not Y -- required -->\n- first item\n\n1. a new list"
+    (mk,) = scoped(text)
+    assert (mk.scope_start, mk.scope_end) == (2, 2)
+
+
 @pytest.mark.parametrize(("device", "applies"), [
     ("X, not Y", True),
     ("X-not-Y", True),
@@ -214,6 +314,21 @@ def test_stacked_markers_cover_the_same_list() -> None:
 def test_only_x_not_y_markers_apply(device: str, applies: bool) -> None:
     (mk,) = scoped(f"<!-- density-exempt: {device} -- a reason -->\nText.")
     assert mk.applies is applies
+
+
+@pytest.mark.parametrize("marker", [
+    "<!-- density-exempt: X, not Y --  -->",
+    "<!-- density-exempt: X, not Y -->",
+])
+def test_a_marker_without_a_reason_exempts_nothing(marker: str) -> None:
+    (mk,) = scoped(marker + "\nIt is a map, not a list.")
+    assert mk.applies is False
+    assert mk.problem
+
+
+def test_a_marker_without_a_reason_fails_the_run(tmp_path: Path, capsys: Any) -> None:
+    root = repo_with(tmp_path, "## A\n\n<!-- density-exempt: X, not Y --  -->\nIt is a map, not a list.\n")
+    assert run(root, judge_all(root), capsys) == 1
 
 
 # ---------------------------------------------------------------------------
@@ -372,9 +487,20 @@ def test_the_judgments_file_is_well_formed() -> None:
         for key, entry in entries.items():
             kind, _, rest = key.partition("|")
             assert kind in ("device", "split", "banned")
+            for context in ("|block quote", "|quotation block quote"):
+                rest = rest.removesuffix(context)
             assert rest.rsplit("|", 1)[1].isdigit()
             assert entry["judgment"] in cx.VALID_JUDGMENTS
             assert entry["reason"]
+
+
+@pytest.mark.parametrize("path", [cx.DEFAULT_JUDGMENTS, cx.DEFAULT_REGISTERS])
+def test_a_data_file_uses_two_space_indentation_and_no_comment_keys(path: Path) -> None:
+    raw = path.read_text(encoding="utf-8")
+    data = json.loads(raw)
+    assert raw == json.dumps(data, indent=2, ensure_ascii=False) + "\n"
+    assert not [k for k in data if k.startswith("_")]
+    assert list(data) == sorted(data)
 
 
 def test_the_registers_file_is_well_formed() -> None:

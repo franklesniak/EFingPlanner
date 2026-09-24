@@ -75,6 +75,6 @@ The rest of this project's privacy rules live on one page. The public-repository
 Two rules, and they are the reason the AI-literacy lesson is core for everyone.
 
 - If AI gives a fact you want to use, verify it with a non-AI source or remove it.
-- For major recommendations, use at least two non-AI sources. AI may help brainstorm or organize, but it cannot be the only source. Verify facts with non-AI official sources.
+- For major recommendations, use at least two non-AI sources. AI may help brainstorm or organize alongside them. Verify facts with non-AI official sources.
 
 An AI answer that cannot be confirmed stays a lead, and an unconfirmed lead does not go into the plan.

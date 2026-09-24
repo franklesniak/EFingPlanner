@@ -83,7 +83,7 @@ The file checklist cannot tell you whether this is *usable* -- only a real child
 
 **If no ten-year-old is available.** Do not silently skip the gate. Either run a read-aloud walkthrough of the First Taste sessions with any available person, checking signals (a)-(c), **or** carry this flag forward, in writing: *"Usability pilot deferred -- design unvalidated; pilot before relying on the full apparatus."*
 
-> **Flag carried forward -- recorded 2026-09-13.** This curriculum's own First Taste pilot has **not** been run with a child. The gate is not skipped; it is deferred, and the flag above is carried in writing:
+> **Flag carried forward -- recorded 2026-09-13.** This curriculum's own First Taste pilot has **not** been run with a child. The gate is deferred, and the flag above is carried in writing:
 >
 > *"Usability pilot deferred -- design unvalidated; pilot before relying on the full apparatus."*
 >

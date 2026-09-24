@@ -22,22 +22,42 @@ How it counts
 The counting rules are the style law's ("How to count any density device").
 Code spans, fenced blocks, table rows, headings, thematic breaks, and lines
 holding only an HTML comment are skipped. Block quotes are read like prose; a
-quotation block quote, such as a coaching script, is judged "no". Text above
-a page's first ``##`` heading is not a ``##`` section, so only the file cap
-reaches it. A child session's "For parents" strip and ``## Parent Notes`` are
-parent-facing regions, but the file cap follows the file's own register.
+quotation block quote, such as a coaching script, is judged "no". A paragraph
+is joined before it is split into sentences, because Markdown renders a soft
+line break as a space. Text above a page's first ``##`` heading is not a
+``##`` section, so only the file cap reaches it. A child session's "For
+parents" strip and ``## Parent Notes`` are parent-facing regions, but the
+file cap follows the file's own register.
 
 A ``<!-- density-exempt: X, not Y -- <reason> -->`` marker covers the block
-directly below it: one paragraph, one whole list, or, above a heading, that
-heading's section. It exempts the instances and split negations it covers.
+directly below it: one paragraph, one whole list (a loose list included), or,
+above a heading, that heading's section. It exempts the instances and split
+negations it covers. A marker that gives no reason exempts nothing, and the
+report names it.
 
 Human judgments
 ---------------
 Regular expressions find *candidates* only. Whether a candidate is a true
 instance is a human judgment, recorded in ``x-not-y-judgments.json`` beside
-this script and keyed by file, kind and sentence text. An unchanged sentence
-keeps its judgment when it moves. A new or changed sentence is reported as
-UNJUDGED; list those with ``--unjudged`` and add a judgment for each.
+this script. An unchanged sentence keeps its judgment when it moves. A new or
+changed sentence is reported as UNJUDGED; list those with ``--unjudged`` and
+add a judgment for each.
+
+The data files are strict JSON with 2-space indentation and no comment keys;
+this docstring documents them. ``x-not-y-judgments.json`` maps each page path
+to its judgments. A judgment's key is ``<kind>|<sentence text>|<occurrence>``,
+with ``|block quote`` or ``|quotation block quote`` added for a sentence inside
+one, so a sentence that moves into or out of a quotation is judged again. Each
+entry holds ``line`` (where the sentence stood when last checked; for reading
+only), ``judgment`` and ``reason``. The judgment is ``device`` (a true `X, not
+Y` instance), ``split`` (a split negation), ``banned`` (the banned shape) or
+``no``. Pages are sorted by path, and a page's entries follow the page.
+
+``x-not-y-registers.json`` maps a page path to its ``register`` (``child``,
+``parent`` or ``builder``) and the ``basis`` for it. It holds the trip starter
+kit's pages, which are copies of child-facing templates
+(``tests/test_trip_starter_kit_copies.py`` keeps them in step) and so take no
+marker of their own.
 
 A page's register comes from its ``<!-- audience: parent -->`` or
 ``<!-- audience: builder -->`` marker, then from ``x-not-y-registers.json``,
@@ -46,8 +66,9 @@ child-facing trees the readability check scores. A page none of these reaches
 is UNDETERMINED.
 
 Exit code: 0 when every page is within its caps or marked exempt, with no
-banned shape, no undetermined register and no unjudged candidate; 1
-otherwise; 2 when REPO_ROOT has no ``framework/`` directory.
+banned shape, no undetermined register, no unjudged candidate and no marker
+without a reason; 1 otherwise; 2 when REPO_ROOT has no ``framework/``
+directory.
 
 The script is a tool, not a gate: no workflow or hook runs it over the pages.
 Standard library only.
@@ -93,14 +114,17 @@ THEMATIC_BREAK_RE = re.compile(r"^ {0,3}(?:(?:-\s*){3,}|(?:\*\s*){3,}|(?:_\s*){3
 HTML_COMMENT_RE = re.compile(r"<!--.*?-->")
 CODE_SPAN_RE = re.compile(r"(`+)(?:(?!\1).)+?\1")
 LIST_MARKER_RE = re.compile(r"^\s*(?:[-*+]|\d{1,9}[.)])\s+(?:\[[ xX]\]\s+)?")
+#: A list item's opening, for finding where a list ends.
+LIST_ITEM_RE = re.compile(r"^(?P<indent> {0,12})(?P<bullet>[-*+]|\d{1,9}(?P<delim>[.)]))(?: {1,4}|$)")
 AUDIENCE_RE = re.compile(r"<!--\s*audience:\s*(adult|parent|builder)\b", re.IGNORECASE)
 PARENT_STRIP_RE = re.compile(r"^\s*\*\*For parents:?\*\*", re.IGNORECASE)
 PARENT_SECTION_RE = re.compile(
     r"^(?:Parent Notes?|For Parents?|Notes? for Parents?)$", re.IGNORECASE
 )
-EXEMPT_MARKER_RE = re.compile(
-    r"<!--\s*density-exempt:\s*(?P<device>.*?)\s+--\s+(?P<reason>.*?)-->", re.DOTALL
-)
+#: A `density-exempt` marker. Its body is `<device> -- <reason>`; a body with
+#: no reason is still read, so that the report can name it.
+EXEMPT_MARKER_RE = re.compile(r"<!--\s*density-exempt:(?P<body>.*?)-->", re.DOTALL)
+MARKER_BODY_RE = re.compile(r"^\s*(?P<device>.*?)\s+--(?P<reason>.*)$", re.DOTALL)
 #: The device name a marker must use. `X-not-Y` and `x-not-y` are read too, so
 #: an old marker still counts, but the style law names the device `X, not Y`.
 XNOTY_DEVICE_RE = re.compile(r"^x\s*[,-]?\s*not\s*[,-]?\s*y$", re.IGNORECASE)
@@ -113,7 +137,7 @@ XNOTY_DEVICE_RE = re.compile(r"^x\s*[,-]?\s*not\s*[,-]?\s*y$", re.IGNORECASE)
 # negated verb ("do not", "it isn't", "they're not").
 CLAUSE_NEG = (
     r"(?:not|never"
-    r"|(?:(?:it|they|that|this|you|we)\s+)?(?:is|are|do|does|did|can|will|should)\s+not"
+    r"|(?:(?:it|they|that|this|you|we)\s+)?(?:(?:is|are|do|does|did|will|should)\s+|can\s*)not"
     r"|(?:(?:it|they|that|this|you|we)\s+)?(?:don|doesn|didn|isn|aren|can|won|shouldn)['’]t"
     r"|(?:it|that)['’]s\s+not|(?:they|you|we)['’]re\s+not"
     r"|(?:it|they|this|that|you|we)\s+never)\b"
@@ -126,12 +150,12 @@ INLINE_PATTERNS = {
     "dash-not": re.compile(r"(?:\s--\s*|\s?[—–]\s?)(?:and\s+)?" + CLAUSE_NEG, re.IGNORECASE),
     "semi-colon-not": re.compile(r"[;:]\s*" + CLAUSE_NEG, re.IGNORECASE),
     "comma-clause-not": re.compile(
-        r",\s*(?:it|they|this|that|you|we)\s+(?:(?:do|does|did|is|are|was|were|can|will)\s+not\b"
+        r",\s*(?:it|they|this|that|you|we)\s+(?:(?:(?:do|does|did|is|are|was|were|will)\s+|can\s*)not\b"
         r"|(?:don|doesn|didn|isn|aren|wasn|weren|can|won)['’]t\b)",
         re.IGNORECASE,
     ),
     "but-not": re.compile(
-        r"\bbut\s+(?:(?:it|they|this|that|you|we)\s+)?(?:(?:does|do|did|is|are|can|will)\s+not\b"
+        r"\bbut\s+(?:(?:it|they|this|that|you|we)\s+)?(?:(?:(?:does|do|did|is|are|will)\s+|can\s*)not\b"
         r"|(?:doesn|don|didn|isn|aren|can|won)['’]t\b|not\b|never\b)",
         re.IGNORECASE,
     ),
@@ -144,14 +168,18 @@ INLINE_PATTERNS = {
 FRAGMENT_RE = re.compile(r"^[\"'“‘*_(]*(?:Not|Never)\b")
 #: A bare "instead" (not "instead of") closes a two-sentence rejection.
 BARE_INSTEAD_RE = re.compile(r"\binstead\b(?!\s+of\b)", re.IGNORECASE)
-NEGATION_RE = re.compile(r"\b(?:not|never|no)\b|n't\b", re.IGNORECASE)
+#: Straight and curly apostrophes both spell a contraction: `don't`, `don’t`;
+#: `cannot` is the one negation English writes as a single word.
+NEGATION_RE = re.compile(r"\b(?:not|never|no|cannot)\b|n['’]t\b", re.IGNORECASE)
+#: Quotation marks, emphasis and brackets that can open a sentence.
+OPENERS = r"[\"'“‘*_(]*"
 #: Negation in the first words of a sentence: the opening of the banned shape.
 LEADING_NEG_RE = re.compile(
-    r"^[\"'“*_(]*(?P<subj>[A-Za-z]+)(?:'s|'re|’s|’re)?"
+    "^" + OPENERS + r"(?P<subj>[A-Za-z]+)(?:'s|'re|’s|’re)?"
     r"(?:\s+(?:is|are|was|were|does|do|did|has|have|can|will|would|should))?"
     r"\s*(?:not\b|n't\b|n’t\b|never\b)",
 )
-SUBJECT_RE = re.compile(r"^[\"'“*_(]*(?P<subj>[A-Za-z]+)")
+SUBJECT_RE = re.compile("^" + OPENERS + r"(?P<subj>[A-Za-z]+)")
 #: A negated main verb anywhere in a sentence ("is not", "doesn't").
 NEG_VERB_RE = re.compile(
     r"\b(?:is|are|was|were|does|do|did)\s+(?:not|never)\b"
@@ -161,9 +189,23 @@ NEG_VERB_RE = re.compile(
 #: A sentence that restates a subject with a pronoun and a verb: the second
 #: half of "It's not X. It's Y."
 PRONOUN_CLAIM_RE = re.compile(
-    r"^[\"'“*_(]*(?:It|They|This|That|These|Those)"
+    "^" + OPENERS + r"(?:It|They|This|That|These|Those)"
     r"(?:['’]s|['’]re|\s+(?:is|are|was|were|does|do|just|only|\w+s)\b)",
 )
+#: Where the two halves of a joined banned shape meet: `It's not a toy; it's a
+#: tool.` joins them with a semicolon, and a colon, a comma or a dash does too.
+JOINER_RE = re.compile(r"\s*[;:,]\s+|\s+--\s+|\s*[—–]\s*")
+#: A clause that opens with one of these is a condition or a time, not a claim.
+SUBORDINATE_RE = re.compile(
+    "^" + OPENERS + r"(?:if|when|whenever|while|because|since|unless|until|although|though"
+    r"|once|before|after|as|where|wherever|whether|even)\b",
+    re.IGNORECASE,
+)
+#: A block quote is a quotation when quotation marks enclose it, or when it
+#: carries a named attribution line such as `— A parent`.
+QUOTE_OPEN_RE = re.compile(r"^[*_]*[\"“]")
+QUOTE_CLOSE_RE = re.compile(r"[\"”][*_]*$")
+ATTRIBUTION_RE = re.compile(r"^[*_]*(?:—|―|--)\s*\w")
 
 SENTENCE_SPLIT_RE = re.compile(r"(?<=[.!?])[\"'”’)\]*_]*\s+(?=[\"'“‘(*_\[]*[A-Z0-9])")
 ABBREV_RE = re.compile(r"\b(?:e\.g|i\.e|etc|vs|p\.m|a\.m|Dr|Mr|Mrs|Ms|St|No)\.$")
@@ -195,6 +237,12 @@ def normalize_subject(word: str) -> str:
     return "it" if word == "its" else word
 
 
+def opening_words(sentence: str) -> list[str]:
+    """Return a sentence's first two words in lower case, with straight apostrophes."""
+    text = sentence.lower().replace("*", "").replace("’", "'")
+    return re.findall(r"[a-z']+", text)[:2]
+
+
 # ---------------------------------------------------------------------------
 # Data model
 # ---------------------------------------------------------------------------
@@ -220,10 +268,11 @@ class Marker:
     lineno: int
     device: str
     reason: str
-    applies: bool  # the device is `X, not Y`
+    applies: bool  # the device is `X, not Y` and the marker gives a reason
     scope_start: int = 0
     scope_end: int = 0
     scope_desc: str = ""
+    problem: str = ""  # why a marker that names `X, not Y` exempts nothing
 
 
 @dataclass
@@ -238,6 +287,7 @@ class Candidate:
     patterns: list[str]
     text: str
     blockquote: bool
+    context: str = ""  # "", "block quote" or "quotation block quote"
     key: str = ""
     judgment: str | None = None
     reason: str = ""
@@ -283,6 +333,36 @@ def strip_bq(line: str) -> tuple[str, bool]:
         line = line[m.end():]
 
 
+def list_item(line: str) -> tuple[int, str, int] | None:
+    """Return (indent, marker kind, content column) when a line opens a list item.
+
+    The marker kind is the bullet character, or `ordered.` or `ordered)`: two
+    items belong to one list only when they share it.
+    """
+    content, _ = strip_bq(line)
+    if THEMATIC_BREAK_RE.match(content):
+        return None
+    m = LIST_ITEM_RE.match(content)
+    if not m:
+        return None
+    kind = "ordered" + m.group("delim") if m.group("delim") else m.group("bullet")
+    return len(m.group("indent")), kind, m.end()
+
+
+def parse_marker(lineno: int, body: str) -> Marker:
+    """Read one marker body, `<device> -- <reason>`.
+
+    The style law asks a marker to say why, so a marker that names `X, not Y`
+    and gives no reason exempts nothing, and the report names it.
+    """
+    m = MARKER_BODY_RE.match(body)
+    device = normalize_space(m.group("device") if m else body)
+    reason = normalize_space((m.group("reason") or "") if m else "")
+    names_device = bool(XNOTY_DEVICE_RE.match(device))
+    problem = "no reason after ' -- '" if names_device and not reason else ""
+    return Marker(lineno, device, reason, names_device and bool(reason), problem=problem)
+
+
 def parse_text(text: str) -> Page:
     """Parse one page into prose lines, markers, sections and headings."""
     lines = text.split("\n")
@@ -298,6 +378,7 @@ def parse_text(text: str) -> Page:
     in_table = False
     paragraph = 0
     prev_blank = True
+    prev_quoted = False
 
     i = 0
     n = len(lines)
@@ -330,9 +411,7 @@ def parse_text(text: str) -> Page:
             continue
         if COMMENT_ONLY_RE.match(raw):
             for mm in EXEMPT_MARKER_RE.finditer(raw):
-                dev = normalize_space(mm.group("device"))
-                markers.append(Marker(lineno, dev, normalize_space(mm.group("reason")),
-                                      bool(XNOTY_DEVICE_RE.match(dev))))
+                markers.append(parse_marker(lineno, mm.group("body")))
             am = AUDIENCE_RE.search(raw)
             if am and audience is None:
                 audience = am.group(1).lower()
@@ -384,9 +463,12 @@ def parse_text(text: str) -> Page:
         text_line = HTML_COMMENT_RE.sub("", text_line)
         is_item = bool(LIST_MARKER_RE.match(text_line))
         text_line = LIST_MARKER_RE.sub("", text_line)
-        if prev_blank or is_item:
+        # A block quote interrupts a paragraph, as CommonMark reads it, so a
+        # bold lead-in line and the quotation under it are two blocks.
+        if prev_blank or is_item or (quoted and not prev_quoted):
             paragraph += 1
         prev_blank = False
+        prev_quoted = quoted
         prose.append(ProseLine(lineno, normalize_space(text_line), section, region, quoted,
                                paragraph, is_item))
 
@@ -399,9 +481,11 @@ def marker_scope(marker: Marker, raw_lines: list[str],
 
     The block is one paragraph or one whole list (the run of non-blank lines
     that starts on the first line after the marker that is neither blank nor
-    another comment, so two markers can be stacked). Above a heading, the
-    block is that heading's section, up to the next heading of the same or a
-    higher level.
+    another comment, so two markers can be stacked). A list goes on past a
+    blank line while the next line is another item of the same list or is
+    indented under an item, as in a loose list. Above a heading, the block is
+    that heading's section, up to the next heading of the same or a higher
+    level.
     """
     lines_total = len(raw_lines)
     first = marker.lineno + 1
@@ -418,9 +502,27 @@ def marker_scope(marker: Marker, raw_lines: list[str],
         marker.scope_start, marker.scope_end = first, end
         marker.scope_desc = f"section '{heading_lines[first][1]}' (lines {first}-{end})"
         return
-    end = first
-    while end + 1 <= lines_total and raw_lines[end].strip() and (end + 1) not in heading_lines:
-        end += 1
+    def run_end(start: int) -> int:
+        end = start
+        while end + 1 <= lines_total and raw_lines[end].strip() and (end + 1) not in heading_lines:
+            end += 1
+        return end
+
+    end = run_end(first)
+    top = list_item(raw_lines[first - 1]) if first <= lines_total else None
+    while top is not None:
+        nxt = end + 1
+        while nxt <= lines_total and not raw_lines[nxt - 1].strip():
+            nxt += 1
+        if nxt == end + 1 or nxt > lines_total or nxt in heading_lines:
+            break
+        content, _ = strip_bq(raw_lines[nxt - 1])
+        item = list_item(raw_lines[nxt - 1])
+        same_list = item is not None and item[0] == top[0] and item[1] == top[1]
+        indented = len(content) - len(content.lstrip(" ")) >= top[2]
+        if not (same_list or indented):
+            break
+        end = run_end(nxt)
     marker.scope_start, marker.scope_end = first, end
     marker.scope_desc = f"next block (lines {first}-{end})"
 
@@ -445,9 +547,12 @@ def adjacent(a: list[ProseLine], b: list[ProseLine], raw_lines: list[str] | None
     """True when plain paragraph b directly follows plain paragraph a in one section.
 
     A split negation or a banned pair can straddle a paragraph break. Only
-    plain paragraphs pair up this way: consecutive list items are separate points.
+    plain paragraphs pair up this way: consecutive list items are separate
+    points, and a block quote is a separate box from the prose around it.
     """
     if raw_lines is None or a[0].item or b[0].item:
+        return False
+    if a[-1].blockquote != b[0].blockquote:
         return False
     if a[-1].section != b[0].section or a[-1].region != b[0].region:
         return False
@@ -455,27 +560,148 @@ def adjacent(a: list[ProseLine], b: list[ProseLine], raw_lines: list[str] | None
     return all(not line.strip() for line in between)
 
 
+def paragraph_sentences(para: list[ProseLine]) -> list[tuple[str, ProseLine]]:
+    """Split one paragraph into sentences, each with the prose line it starts on.
+
+    Markdown renders a soft line break as a space, so a sentence can run over
+    several source lines. The paragraph is joined before it is split.
+    """
+    text = ""
+    starts: list[tuple[int, ProseLine]] = []
+    for pl in para:
+        if not pl.text:
+            continue
+        if text:
+            text += " "
+        starts.append((len(text), pl))
+        text += pl.text
+    out: list[tuple[str, ProseLine]] = []
+    pos = 0
+    for s in split_sentences(text):
+        at = text.find(s, pos)
+        at = pos if at < 0 else at
+        line = starts[0][1]
+        for offset, pl in starts:
+            if offset > at:
+                break
+            line = pl
+        out.append((s, line))
+        pos = at + len(s)
+    return out
+
+
+def quote_contexts(paras: list[list[ProseLine]], raw_lines: list[str] | None) -> list[str]:
+    """Return each paragraph's quotation context, which a judgment depends on.
+
+    The context is "" for ordinary prose, "block quote" for a callout, and
+    "quotation block quote" when the whole block quote sits inside quotation
+    marks or carries a named attribution, as the style law's counting bullet
+    defines a quotation.
+    """
+    out = [""] * len(paras)
+    i = 0
+    while i < len(paras):
+        if not paras[i][0].blockquote:
+            i += 1
+            continue
+        j = i
+        while (raw_lines is not None and j + 1 < len(paras) and paras[j + 1][0].blockquote
+               and all(strip_bq(line)[1] for line in raw_lines[paras[j][-1].lineno:paras[j + 1][0].lineno - 1])):
+            j += 1
+        block = paras[i:j + 1]
+        joined = " ".join(pl.text for para in block for pl in para if pl.text)
+        quotation = bool(QUOTE_OPEN_RE.search(joined) and QUOTE_CLOSE_RE.search(joined)) or any(
+            ATTRIBUTION_RE.match(para[0].text) for para in block)
+        for k in range(i, j + 1):
+            out[k] = "quotation block quote" if quotation else "block quote"
+        i = j + 1
+    return out
+
+
+def banned_patterns(first: str, second: str, joined: bool = False) -> list[str]:
+    """Return the patterns that read `first` then `second` as the banned shape.
+
+    `first` is a negated sentence and `second` the claim after it: two
+    sentences, or, when `joined` is true, the two halves of one sentence.
+    """
+    if joined:
+        # The second half of a joined sentence opens in lower case.
+        second = second[:1].upper() + second[1:]
+    pats = []
+    lm = LEADING_NEG_RE.match(first)
+    sm = SUBJECT_RE.match(second)
+    second_positive = not NEGATION_RE.search(second.split(",")[0][:40])
+    if (lm and sm and second_positive
+            and normalize_subject(sm.group("subj")) == normalize_subject(lm.group("subj"))):
+        pats.append("neg-then-same-subject")
+    if (NEG_VERB_RE.search(first) and PRONOUN_CLAIM_RE.match(second) and second_positive
+            and len(first.split()) <= 25):
+        pats.append("neg-then-pronoun-claim")
+    f_open = opening_words(first)
+    if (len(f_open) == 2 and f_open == opening_words(second) and NEG_VERB_RE.search(first)
+            and second_positive and "neg-then-same-subject" not in pats):
+        pats.append("neg-then-same-opening")
+    return pats
+
+
+def joined_banned_patterns(sentence: str) -> list[str]:
+    """Return the patterns that read one sentence as the joined banned shape.
+
+    `It's not a toy; it's a tool.` is one sentence, so the pair test never
+    sees it. Each joiner is tried in turn as the point where the halves meet.
+    """
+    joiners = list(JOINER_RE.finditer(sentence))
+    for m in joiners:
+        negs = [n for n in NEGATION_RE.finditer(sentence) if n.end() <= m.start()]
+        second = sentence[m.end():]
+        if not negs or not second:
+            continue
+        # The first half is the clause that holds the negation: it opens
+        # after the last joiner before that negation.
+        start = max((j.end() for j in joiners if j.end() <= negs[-1].start()), default=0)
+        first = sentence[start:m.start()]
+        if SUBORDINATE_RE.match(first):
+            # `If it's not ready, that's fine.` is a condition, not a claim.
+            continue
+        pats = banned_patterns(first, second, joined=True)
+        if pats:
+            return ["joined-" + p for p in pats]
+    return []
+
+
 def find_candidates(rel: str, prose: list[ProseLine],
                     raw_lines: list[str] | None = None) -> list[Candidate]:
-    """Return every candidate device, split negation and banned pair in a page."""
+    """Return every candidate device, split negation and banned shape in a page."""
     cands: list[Candidate] = []
     paras = paragraphs(prose)
-    para_sents = [[(s, pl) for pl in para for s in split_sentences(pl.text)] for para in paras]
+    para_sents = [paragraph_sentences(para) for para in paras]
+    contexts = quote_contexts(paras, raw_lines)
+
+    def add(pl: ProseLine, kind: str, pats: list[str], text: str, context: str) -> None:
+        cands.append(Candidate(rel, pl.lineno, pl.section, pl.region, kind, pats, text,
+                               pl.blockquote, context))
+
+    # Sentences are numbered across the page, so a pair can be named by where
+    # it starts. `opened_pairs` holds each pair already flagged from its first
+    # sentence, so a pair whose two sentences both negate is flagged once.
+    opened_pairs: set[int] = set()
+    g = -1
     for pi, para in enumerate(paras):
         sents = para_sents[pi]
+        ctx = contexts[pi]
         before = (para_sents[pi - 1][-1][0] if pi > 0 and para_sents[pi - 1]
                   and adjacent(paras[pi - 1], para, raw_lines) else None)
         after = (para_sents[pi + 1][0][0] if pi + 1 < len(paras) and para_sents[pi + 1]
                  and adjacent(para, paras[pi + 1], raw_lines) else None)
         for idx, (s, pl) in enumerate(sents):
+            g += 1
             # Emphasis never changes what a sentence says.
             probe = s.replace("*", "")
             pats = [name for name, rx in INLINE_PATTERNS.items() if rx.search(probe)]
             if FRAGMENT_RE.match(s) and (idx > 0 or before is not None):
                 pats.append("fragment")
             if pats:
-                cands.append(Candidate(rel, pl.lineno, pl.section, pl.region, "device", pats, s,
-                                       pl.blockquote))
+                add(pl, "device", pats, s, ctx)
             prev = sents[idx - 1][0] if idx > 0 else before
             nxt = sents[idx + 1][0] if idx + 1 < len(sents) else after
             words = len(s.split())
@@ -486,36 +712,29 @@ def find_candidates(rel: str, prose: list[ProseLine],
                 if BARE_INSTEAD_RE.search(s) and prev is not None and NEGATION_RE.search(prev):
                     split_pats.append("negation-then-instead")
                 if split_pats and prev is not None:
-                    cands.append(Candidate(rel, pl.lineno, pl.section, pl.region, "split",
-                                           split_pats, prev + ARROW + s, pl.blockquote))
+                    if g - 1 not in opened_pairs:
+                        add(pl, "split", split_pats, prev + ARROW + s, ctx)
                 elif (prev is None and nxt is not None and NEGATION_RE.search(s) and words <= 14
                       and not FRAGMENT_RE.match(s)):
                     # The negation opens the paragraph and the claim follows.
-                    cands.append(Candidate(rel, pl.lineno, pl.section, pl.region, "split",
-                                           ["negation-before-claim"], s + ARROW + nxt, pl.blockquote))
+                    add(pl, "split", ["negation-before-claim"], s + ARROW + nxt, ctx)
+                    opened_pairs.add(g)
+            joined = joined_banned_patterns(s)
+            if joined:
+                add(pl, "banned", joined, s, ctx)
             if nxt is not None:
-                bpats = []
-                lm = LEADING_NEG_RE.match(s)
-                sm = SUBJECT_RE.match(nxt)
-                next_positive = not NEGATION_RE.search(nxt.split(",")[0][:40])
-                if (lm and sm and next_positive
-                        and normalize_subject(sm.group("subj")) == normalize_subject(lm.group("subj"))):
-                    bpats.append("neg-then-same-subject")
-                if NEG_VERB_RE.search(s) and PRONOUN_CLAIM_RE.match(nxt) and next_positive and words <= 25:
-                    bpats.append("neg-then-pronoun-claim")
-                s_open = re.findall(r"[a-z']+", s.lower().replace("*", ""))[:2]
-                n_open = re.findall(r"[a-z']+", nxt.lower().replace("*", ""))[:2]
-                if (len(s_open) == 2 and s_open == n_open and NEG_VERB_RE.search(s) and next_positive
-                        and "neg-then-same-subject" not in bpats):
-                    bpats.append("neg-then-same-opening")
+                bpats = banned_patterns(s, nxt)
                 if bpats:
-                    cands.append(Candidate(rel, pl.lineno, pl.section, pl.region, "banned",
-                                           bpats, s + ARROW + nxt, pl.blockquote))
-    seen: dict[tuple[str, str], int] = {}
+                    add(pl, "banned", bpats, s + ARROW + nxt, ctx)
+    seen: dict[tuple[str, str, str], int] = {}
     for c in cands:
-        base = (c.kind, normalize_space(c.text))
+        base = (c.kind, normalize_space(c.text), c.context)
         seen[base] = seen.get(base, 0) + 1
         c.key = f"{c.kind}|{normalize_space(c.text)}|{seen[base]}"
+        if c.context:
+            # A judgment made inside a quotation must not follow the sentence
+            # out of it, so the context is part of the key.
+            c.key += f"|{c.context}"
     return cands
 
 
@@ -559,11 +778,10 @@ VALID_JUDGMENTS = {"device", "split", "banned", "no"}
 
 
 def load_json(path: Path | None) -> dict:
-    """Load a data file, dropping keys that start with an underscore."""
+    """Load a data file. Its shape is documented at the top of this script."""
     if path is None or not path.exists():
         return {}
-    data = json.loads(path.read_text(encoding="utf-8"))
-    return {k: v for k, v in data.items() if not k.startswith("_")}
+    return json.loads(path.read_text(encoding="utf-8"))
 
 
 def page_paths(root: Path) -> list[Path]:
@@ -680,8 +898,10 @@ def summarize(rep: FileReport) -> dict:
         "unjudged": len(unjudged),
         "candidates": len(rep.candidates),
         "rejected": len([c for c in rep.candidates if c.judgment == "no"]),
-        "markers": [{"line": m.lineno, "device": m.device, "applies": m.applies, "scope": m.scope_desc}
+        "markers": [{"line": m.lineno, "device": m.device, "reason": m.reason, "applies": m.applies,
+                     "scope": m.scope_desc, "problem": m.problem}
                     for m in rep.markers],
+        "marker_problems": len([m for m in rep.markers if m.problem]),
     }
 
 
@@ -689,7 +909,7 @@ TOTAL_KEYS = (
     "files", "candidates", "rejected_candidates", "unjudged_candidates", "undetermined_registers",
     "true_instances", "counted_instances", "exempted_instances", "files_over", "files_exempt",
     "sections_over", "sections_exempt", "split_negations", "split_negations_counted",
-    "files_over_split_limit", "banned_shapes",
+    "files_over_split_limit", "banned_shapes", "markers_without_reason",
 )
 
 
@@ -722,8 +942,9 @@ def print_report(reports: list[FileReport], only_problems: bool) -> dict:
         totals["split_negations_counted"] += s["splits_counted"]
         totals["files_over_split_limit"] += s["split_status"] == "OVER"
         totals["banned_shapes"] += len(s["banned"])
+        totals["markers_without_reason"] += s["marker_problems"]
         problem = (s["status"] == "OVER" or s["split_status"] == "OVER" or s["banned"] or s["unjudged"]
-                   or s["register"] == "undetermined" or sec_over)
+                   or s["register"] == "undetermined" or sec_over or s["marker_problems"])
         if only_problems and not problem:
             continue
         print(s["file"])
@@ -742,7 +963,10 @@ def print_report(reports: list[FileReport], only_problems: bool) -> dict:
             print(f"    {label[:56]:<56} {r['register']:<14} {r['counted']}/{cap}"
                   f" (true {r['raw']}) {r['status']}{lines}")
         for m in s["markers"]:
-            tag = "applies" if m["applies"] else "other device"
+            if m["problem"]:
+                tag = f"EXEMPTS NOTHING ({m['problem']})"
+            else:
+                tag = "applies" if m["applies"] else "other device"
             print(f"    marker line {m['line']} [{m['device']}] {tag}: {m['scope']}")
         for b in s["banned"]:
             print(f"    BANNED line {b['line']}: {b['text']}")
@@ -766,7 +990,7 @@ def dump_candidates(reports: list[FileReport], unjudged_only: bool) -> None:
             if unjudged_only and c.judgment in VALID_JUDGMENTS:
                 continue
             ex = f" [marker {c.exempt_by}]" if c.exempt_by else ""
-            bq = " [block quote]" if c.blockquote else ""
+            bq = f" [{c.context}]" if c.context else ""
             print(f"{rep.path}:{c.lineno} {c.kind} {','.join(c.patterns)} ({c.section} / {c.region})"
                   f"{bq}{ex} => {c.judgment}")
             print(f"    KEY {c.key}")
@@ -775,7 +999,8 @@ def dump_candidates(reports: list[FileReport], unjudged_only: bool) -> None:
 def failing(totals: dict) -> bool:
     """True when the totals show any page outside the rule."""
     return bool(totals["unjudged_candidates"] or totals["undetermined_registers"] or totals["files_over"]
-                or totals["sections_over"] or totals["files_over_split_limit"] or totals["banned_shapes"])
+                or totals["sections_over"] or totals["files_over_split_limit"] or totals["banned_shapes"]
+                or totals["markers_without_reason"])
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -802,7 +1027,7 @@ def main(argv: list[str] | None = None) -> int:
         return 0
     result = print_report(reports, args.only_problems)
     if args.json:
-        args.json.write_text(json.dumps(result, indent=1, ensure_ascii=False) + "\n",
+        args.json.write_text(json.dumps(result, indent=2, ensure_ascii=False) + "\n",
                              encoding="utf-8", newline="\n")
     return 1 if failing(result["totals"]) else 0
 

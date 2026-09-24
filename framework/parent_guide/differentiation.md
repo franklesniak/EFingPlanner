@@ -2,7 +2,7 @@
 
 # Differentiation (Designing for the Planner Who Finds Planning Hard)
 
-This project is built for the child who finds planning hard -- so these are not exotic accommodations, they are the moves you reach for when the defaults are still too much. Turn here whenever a session is a struggle. (For your own capacity, see Low-Bandwidth Parent Mode in [time and effort](time_and_effort.md).)
+This project is built for the child who finds planning hard, so the moves on this page are everyday tools: reach for them whenever the defaults are still too much. Turn here whenever a session is a struggle. (For your own capacity, see Low-Bandwidth Parent Mode in [time and effort](time_and_effort.md).)
 
 ## Concrete moves
 
@@ -33,7 +33,7 @@ This project is built for the child who finds planning hard -- so these are not 
 
 ## For the eager, capable, fast child (High-Engagement Mode)
 
-The opposite tail also needs a named path -- a bright, bored child abandons a project that reads as beneath them. This is not a separate, harder curriculum; it is permission to move faster and deeper through the same one:
+The opposite tail also needs a named path -- a bright, bored child abandons a project that reads as beneath them. Your child keeps the same curriculum and gets permission to move through it faster and deeper:
 
 - **Batch sessions freely,** including combining adjacent ones in a single sitting. The 20-30-minute target is a floor, not a cap.
 - **Skip the When I'm Stuck card** -- a confident planner often won't need it. The Finish and Quality Check still closes every session, because it is where they check the artifact, the Stop Point, their sources and the tracker.
