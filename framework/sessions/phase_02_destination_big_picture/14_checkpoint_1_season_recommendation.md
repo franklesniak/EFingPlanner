@@ -26,13 +26,13 @@ You have compared the seasons. Now you make a recommendation the grown-ups will 
 
 On a [Decision Record page](../../templates/decision_record.md), write:
 
-1. **Best season** for the trip, in your opinion.
-2. **Backup season** (your second choice).
-3. **A season or time to be careful about**, and why (for example, a rainy or very crowded window).
-4. **Possible months**, if your research points to any. "Not sure yet" is okay.
-5. **Your reasons** -- two or three sentences. This is the important part.
-6. **Your sources** -- from your Source Log.
-7. **Questions for the grown-ups** (for example, "Does this fit school and work?").
+1. **Best season** for the trip, in your opinion. Write it in the **Option 1** row and again in **My recommendation**.
+2. **Backup season** (your second choice), in the **Option 2** row.
+3. **A season or time to be careful about**, and why (for example, a rainy or very crowded window), in the **Option 3** row.
+4. **Possible months**, if your research points to any, in **My recommendation** after your season. "Not sure yet" is okay.
+5. **Your reasons** -- two or three sentences, in **My reasons**. This is the important part.
+6. **Your sources** -- from your Source Log, in **Evidence / sources**.
+7. **Questions for the grown-ups** (for example, "Does this fit school and work?"), in the **Does a grown-up need to decide or verify anything?** row.
 
 Then bring it to a grown-up for a family talk. They will weigh school and work schedules, weather, crowds, cost, and holidays. They may agree, or adjust it with you. Either way, your work shaped the decision.
 

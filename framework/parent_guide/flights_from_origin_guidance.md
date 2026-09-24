@@ -8,19 +8,19 @@ This page is written generically. Your family's actual home airport and its code
 
 Your child copies both onto their binder cover in Session 01, and that is intended: the binder is a private working copy. What the rule forbids is a real value written into the reusable curriculum, which is what this page is.
 
-## Your arrival city shapes their route
+## Your arrival place shapes their route
 
-Record what you actually know at setup as the **rough trip shape**: the likely arrival city, and, if you know them, the departure city and whether you're flying round-trip or into one city and out of another.
+Record what you actually know at setup as the **rough trip shape**: the likely arrival place, and, if you know them, the departure place and whether you're flying round-trip or into one place and out of another.
 
-**Recording only the arrival city is a supported setup**, and for a family who has never researched the destination it is the honest one. Do not invent an anchor to fill a field.
+**Recording only the arrival place is a supported setup**, and for a family who has never researched the destination it is the honest one. Do not invent an anchor to fill a field.
 
-**Where it gets settled depends on your path.** On **Core and Full**, Checkpoint 2 is the point, which is where the setup checklist expects it. **First Taste never reaches Checkpoint 2**, so there is no built moment that forces it. Settle the departure city and the trip shape yourself before you book the flights, since booking is the real deadline either way. Your child builds their route on it from Phase 3 onward, in movable per-city blocks.
+**Where it gets settled depends on your path.** On **Core and Full**, Checkpoint 2 is the point, which is where the setup checklist expects it. **First Taste never reaches Checkpoint 2**, so there is no built moment that forces it. Settle the departure place and the trip shape yourself before you book the flights, since booking is the real deadline either way. Your child builds their route on it from Phase 3 onward, in movable per-city blocks.
 
 **Checkpoint 4 is where you confirm or adjust that shape** against real flight options. It is not where you reveal it for the first time. If it changes there, your child moves one block and keeps the rest, which only works if the shape existed from the start.
 
 Flying into one city and out of another is called an **open-jaw** ticket, and a route through several is a **multi-city** one. Both can save real backtracking. You will meet the term on your [current travel assumptions](../templates/current_family_travel_assumptions.md) page, which is why it is named here.
 
-Keep it parent-side. Your child works from the recorded arrival and departure cities and doesn't need the concept.
+Keep it parent-side. Your child works from the recorded arrival and departure places and doesn't need the concept.
 
 ## Arrival time and layovers
 

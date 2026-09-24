@@ -34,7 +34,7 @@ You're going to practice on one real fact about the place you are going.
 2. Look it up in **one** place: a book you have, or a website an adult says is okay.
 3. In your Source Log, fill in one entry about what you used:
    - **What I learned** -- the fact, in your own words.
-   - **Title** -- the name of the website or book.
+   - **Title** -- the name of the book, or the website's name and the page's title.
    - **Author or organization** -- who made it (a museum, a tourism office, a writer). Write "not listed" if you can't find it.
    - **Web address or book page** -- the link, or the book page.
    - **Date checked** -- today's date.

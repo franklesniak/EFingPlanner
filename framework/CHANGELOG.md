@@ -6,7 +6,7 @@
 
 - **Status:** Active
 - **Owner:** Repository Maintainers
-- **Last Updated:** 2026-09-23
+- **Last Updated:** 2026-09-24
 - **Scope:** Version history for the reusable curriculum in `framework/` (and the destination packs that plug into it). Builder- and reuser-facing. Not part of the child's or parent's reading path.
 
 ## Which log is this
@@ -80,6 +80,7 @@ Batch 1: the complete Phases 0-2 slice -- Session 00 through Checkpoint 1.
 - **Three carry-over tags were placed, and the moves they claim are recorded here so a later batch does not claim them again.** The placement rule puts a tag on the session that *first* introduces a transferable move, and only there, so the claim has to be written down somewhere a later author reads. Session 06 claims finding your way around a long source by its contents page and index; Session 08 claims asking the same question in two places and seeing whether the answers agree; Session 11 claims getting the shape of something big before choosing a part of it. With Sessions 01 and 04, that is five tags across nineteen child sessions.
 
 - **Session 14 (Checkpoint 1) has no destination-notes slot.** The archived design record listed Session 14 among the Batch 1 insert slots, but the insert/reference contract routes none to it and names Session 14 as fully neutral. Checkpoint 1 uses the child's own season chart from Session 12. The contract is authoritative, and the author who finishes the pack inherits a table of 19 rows rather than 17.
+- **Session 33 left the insert/reference contract.** The brief routed Sessions 33 and 38 to the pack's money reference in one row. The built Session 33 works in the family's home-currency band, with a grown-up helping find the rough numbers, and has no pointer into the pack, and the Batch 2 brief routes the currency and cash notes through Session 38 alone. So the row now names Session 38, Session 33 joins the sessions that need no destination facts, and the table keeps its 19 rows.
 - **The merged family trip goals page is authoritative.** The archived tree listed the family trip goals page and the family input summary as separate files. The built repository merged them into one page in Batch 0, and that merged page stays the one canonical blank.
 - **Acceptance-criteria numbering:** the combined archive matrix numbering is canonical for this build. A quoted Lean or Full/OER companion ID must name its matrix. Recorded in the [build style and vocabulary](docs/build_style_and_vocab.md) guide.
 - **Human-review coverage is set at full coverage, and it has not happened yet** -- the policy is that every file a batch creates or edits which a child or a parent reads is human-edited rather than sampled, and the Full Build's sampling fallback is not adopted. No file in this batch has been read by a person. The policy is recorded here; the reading itself is an open action in "What is still owed to a human" below.

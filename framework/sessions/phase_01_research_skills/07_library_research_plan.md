@@ -68,7 +68,7 @@ You are done when your list names at least one book from two or three of the fiv
 
 ## Source Check
 
-Record what you actually used. **If you searched the catalog**, a search is a look-up, so put the library catalog in your Source Log with today's date. **If you asked a librarian instead**, record that and not a catalog you never opened. If you did both, record both. The source type is a person. Write "a librarian" and which library it was, like "our city library" or "the school library." You do not need their name, and you do not need the branch. When you actually borrow a book, that book gets its own entry, with its title, its author or publisher, and the pages you used.
+Record what you actually used. **If you searched the catalog**, a search is a look-up, so the catalog gets an entry: **Source type** = "website"; **Title** = the catalog's name and the page you searched; **Author or organization** = the library; **Web address or book page** = the catalog's web address; **Date checked** = today's date. **If you asked a librarian instead**, record that and not a catalog you never opened: **Source type** = "person"; **Title** = "a librarian"; **Author or organization** = which library it was, like "our city library" or "the school library"; **What I learned** = what they told you; **Date checked** = today's date. You do not need their name, and you do not need the branch. If you did both, record both. When you actually borrow a book, that book gets its own entry, with its title, its author or publisher, the pages you used, and the date you used it.
 
 ## Finish and Quality Check
 

@@ -94,5 +94,5 @@ This page holds no personal data, and it shouldn't. No document numbers, no exam
 ## Where to go next
 
 - [Booking guidance](booking_guidance.md) -- what gets booked in what order, and what your child hands you.
-- [Flights from your home airport](flights_from_origin_guidance.md) -- how your arrival city and arrival time shape your child's route.
+- [Flights from your home airport](flights_from_origin_guidance.md) -- how your arrival place and arrival time shape your child's route.
 - [Safety and emergency guidance](safety_emergency_guidance.md) -- your part in your child's separation card, and what it may carry.

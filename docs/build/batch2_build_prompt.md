@@ -4,7 +4,7 @@
 
 - **Status:** Active
 - **Owner:** Repository Maintainers
-- **Last Updated:** 2026-09-23
+- **Last Updated:** 2026-09-24
 - **Scope:** The complete build instruction for Batch 2 of the EFingPlanner curriculum -- thirty-four sessions across Phases 3 to 8, thirteen templates, the parent apparatus, the rest of the trip-starter kit, the two binder deliverables, and the roadmap extension. It carries every Batch 2 requirement, every applicable acceptance criterion, and the adjudicated answer to every open question, so an authoring run works from this brief and consults the archived specification only for a detail the brief turns out to lack. It does not cover Batches 0, 1, 3 or 4, and it is a build instruction rather than shipped curriculum.
 - **Related:** [Build prompt directory guide](README.md), [Batch 1 build brief](batch1_build_prompt.md), [Build prompt template](_build_prompt_template.md), [Archived specification](../spec/specification.md)
 
@@ -1146,7 +1146,7 @@ researches is **one movable block**. The child-facing note already lives in buil
   relative link back to Session 15's note -- not an abbreviated re-explanation, which is
   the worst of both.
 - **Keep the flight reasoning parent-only.** Round-trip versus open-jaw is a parent
-  concept. The child works only with recorded arrival and departure cities and their
+  concept. The child works only with recorded arrival and departure places and their
   movable blocks.
 
 ### 5.5 Predict-then-verify
@@ -1435,7 +1435,7 @@ from the Trip-Basics card, or the booked trip length when the dates are booked**
 interest; budget implications; safety and common sense; international flight implications.
 
 **A Checkpoint 2 extra that Phase 5 depends on.** If the Rough Trip Shape was left partly
-open at setup -- arrival city only -- **adults firm up the shape and the exit city here**,
+open at setup -- arrival place only -- **adults firm up the shape and the departure place here**,
 before the Phase 5 route work builds on it. This is an adult action: put it in Parent
 Notes, and keep open-jaw reasoning out of the child's text entirely.
 
@@ -1794,7 +1794,7 @@ and it stands wherever this brief names the trip-length recommendation.
 - **Source Check: required.** The spec's Checkpoint 4 review list omits Sources where
   Checkpoints 2 and 3 name them; this batch adds it, so all three match. (`D-OPEN-15`.)
 
-**Adult review considers:** flights; **arrival and departure city**; hotel moves; transit
+**Adult review considers:** flights; **arrival and departure place**; hotel moves; transit
 realism; **the family's maximum trip length, read from the Trip-Basics card, or the booked
 trip length when the dates are booked**; budget implications; family schedule.
 
@@ -3268,10 +3268,10 @@ family's actual airport and code live on the Trip-Basics card and **must not app
 Content, each as a short point-first paragraph or bullet:
 
 - **Adults choose flights.** The child learns flight basics only.
-- **Arrival city may affect the route. Departure city may affect the route.** Adults record
-  what they know at setup as the **rough trip shape** anchor: the likely arrival city and,
-  if known, the departure city and the round-trip-versus-open-jaw shape. **Recording only
-  the arrival city is a supported setup.** Core and Full adults settle the shape at
+- **Arrival place may affect the route. Departure place may affect the route.** Adults record
+  what they know at setup as the **rough trip shape** anchor: the likely arrival place and,
+  if known, the departure place and the round-trip-versus-open-jaw shape. **Recording only
+  the arrival place is a supported setup.** Core and Full adults settle the shape at
   Checkpoint 2; First Taste never reaches Checkpoint 2, so its adults settle it before
   booking flights. The child's route is built on it from Phase 3 in **movable per-city
   blocks.** **Checkpoint 4 is where adults confirm or adjust that shape against current
@@ -3394,7 +3394,7 @@ pulling the child into a booking workflow.**
    season recommendation (or, with the dates booked, the season confirmation), the city
    shortlist once Checkpoint 2 has passed (on First Taste,
    the Session 21 city comparison once it is done), and the rough trip shape recorded at
-   setup, with the departure city and the round-trip-or-open-jaw call settled first if
+   setup, with the departure place and the round-trip-or-open-jaw call settled first if
    setup left them open.
 3. **The three timelines collide, and that is expected.** The booking clock often forces a
    commitment before the child's curriculum-paced route is finished. That is handled by

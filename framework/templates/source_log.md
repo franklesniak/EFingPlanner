@@ -11,9 +11,9 @@ One entry per source:
 | Prompt | Your answer |
 | --- | --- |
 | Source number | |
-| Date checked | |
+| Date checked (the day you used this source) | |
 | Source type (website / book / map / video / AI tool / person / other) | |
-| Title | |
+| Title (a website: its name and the page's title) | |
 | Author or organization | |
 | Web address or book page | |
 | What I learned | |
