@@ -125,7 +125,7 @@ GITHUB_ACTIONS_SHARED_SURFACE_TOKENS = {
 PYTHON_INLINE_BLOCK_COUNTS = {
     ".pre-commit-config.yaml": 1,
     ".github/dependabot.yml": 2,
-    ".github/workflows/markdownlint.yml": 1,
+    ".github/workflows/markdownlint.yml": 2,
 }
 PYTHON_INLINE_MARKER_BEGIN = "# template-sync: begin python-only"
 PYTHON_INLINE_MARKER_END = "# template-sync: end python-only"

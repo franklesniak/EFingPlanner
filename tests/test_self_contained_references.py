@@ -123,8 +123,15 @@ beside it:
   image's alternative text -- over the characters written there, markup and
   character references included, to the next space or ``<``; and in an HTML
   block's text, with its character references decoded, outside an ``a``,
-  ``code``, ``pre`` or ``kbd`` element. Each rule was checked against
-  GitHub's own renderer. A URL the page shows anywhere else is taken out of
+  ``code``, ``pre`` or ``kbd`` element, over each text node of the parsed
+  page to the next space. GitHub writes the nine tags GFM's tagfilter names,
+  ``script`` and ``textarea`` among them, as text, so what they hold is read
+  and linked like any other HTML. A bare URL inside a raw ``a`` tag in a
+  paragraph is linked on its own. **A relative destination resolves
+  nothing**: GitHub resolves ``/``, ``./``, ``../`` and a bare path in a
+  repository file against the repository, and ``#`` on the page, so none of
+  them opens a tracker. Each rule was checked against GitHub's own renderer
+  or its documentation. A URL the page shows anywhere else is taken out of
   the text and resolves no reference.
   A paragraph is also read joined across its line breaks, and a URL in a
   comment resolves nothing.
@@ -154,7 +161,8 @@ import json
 import re
 import shutil
 import subprocess
-from collections.abc import Callable, Collection, Iterable
+from collections import Counter
+from collections.abc import Callable, Iterable
 from typing import Any
 from pathlib import Path
 from urllib.parse import SplitResult, unquote, urlsplit
@@ -1424,7 +1432,11 @@ def names_in(path: Path, root: Path) -> list[str]:
     was blanked of every public URL, so a name in a URL in a code span or a
     comment -- which the text pass reads as text, not as a link -- was never
     read at all. Each line now keeps every URL except the ones the reader says
-    link there (``markdown_links``).
+    link there, **one copy for each time it links, as the source spells it,
+    on the line it is written on** (``markdown_link_spellings``). Matched by
+    its decoded value, a linked URL also blanked an unlinked copy of itself on
+    the line, and a destination the source spells with a character reference,
+    or writes on the line after its label, was not blanked at all.
     """
     found: list[str] = []
     relative = path.relative_to(root).as_posix()
@@ -1432,10 +1444,10 @@ def names_in(path: Path, root: Path) -> list[str]:
     if path.suffix.lower() == ".py":
         names = identifiers_of(source)
     elif path.suffix.lower() in MARKDOWN_SUFFIXES:
-        links = markdown_links(source)
+        spellings = markdown_link_spellings(source)
         names = identifier_like_names(
             "\n".join(
-                blank_urls(line, set(links[number]))[0]
+                blank_urls(line, spellings[number])[0]
                 for number, line in enumerate(source.split("\n"))
             )
         )
@@ -1598,7 +1610,7 @@ def _read_markdown(text: str) -> dict[str, Any]:
         answer = _ask_markdown_reader(text)
         cached = {
             "lines": [
-                (line[0], line[1], list(line[2]), list(line[3]))
+                (line[0], line[1], list(line[2]), list(line[3]), list(line[4]))
                 for line in answer["lines"]
             ],
             "unmapped": list(answer["unmapped"]),
@@ -1610,14 +1622,17 @@ def _read_markdown(text: str) -> dict[str, Any]:
     return cached
 
 
-def printed_markdown(text: str) -> list[tuple[str, str, list[str], list[str]]]:
+def printed_markdown(
+    text: str,
+) -> list[tuple[str, str, list[str], list[str], list[str]]]:
     """Return, for each line of a Markdown document, what the page prints there.
 
-    Each entry is ``(printed, hidden, destinations, bare)``: the characters the
-    page shows from that line, the text of an HTML comment on it, the
-    destinations of the links whose text is on it, decoded as the page
-    decodes them, and each bare URL GitHub links on it, as written. See
-    ``MARKDOWN_READER``.
+    Each entry is ``(printed, hidden, destinations, bare, written)``: the
+    characters the page shows from that line, the text of an HTML comment on
+    it, the destinations of the links whose text is on it, decoded as the page
+    decodes them, each bare URL GitHub links on it, as written, and the source
+    spelling of each destination that links and is written on it, once for
+    each time. See ``MARKDOWN_READER``.
     """
     return _read_markdown(text)["lines"]
 
@@ -1641,7 +1656,7 @@ def markdown_links(text: str) -> list[list[str]]:
     https://docs.github.com/en/rest/markdown/markdown
     """
     links: list[list[str]] = []
-    for _printed, _hidden, destinations, bare in printed_markdown(text):
+    for _printed, _hidden, destinations, bare, _written in printed_markdown(text):
         found: list[str] = []
         for written in bare:
             url = trim_url(written, MARKDOWN_BARE_CLOSERS)
@@ -1649,6 +1664,23 @@ def markdown_links(text: str) -> list[list[str]]:
                 found.append(url)
         links.append(found + destinations)
     return links
+
+
+def markdown_link_spellings(text: str) -> list[list[str]]:
+    """Return, for each line, each URL that links there as the source writes it.
+
+    One entry for each time it is written, so a caller can blank the linked
+    copies of a URL and read an unlinked copy of the same URL on the line. A
+    bare URL is trimmed as ``markdown_links`` trims it; a destination is its
+    source spelling, which a character reference or an escape can make
+    differ from the destination the page links.
+    """
+    spellings: list[list[str]] = []
+    for _printed, _hidden, _destinations, bare, written in printed_markdown(text):
+        found = [trim_url(url, MARKDOWN_BARE_CLOSERS) for url in bare]
+        found.extend(written)
+        spellings.append([url for url in found if url_is_public(url)])
+    return spellings
 
 
 def markdown_fences(text: str) -> list[tuple[str, int, str]]:
@@ -1670,7 +1702,7 @@ def unmapped_markdown_lines(text: str) -> list[int]:
 
 
 def blank_urls(
-    text: str, links: Collection[str] | None = None
+    text: str, links: Iterable[str] | None = None
 ) -> tuple[str, list[str]]:
     """Return ``text`` with each public URL blanked, and those URLs, trimmed.
 
@@ -1679,7 +1711,10 @@ def blank_urls(
     its path would otherwise be read as prose, and takes its links from the
     reader. ``links``, when given, limits the blanking to the URLs in it: the
     identifier pass reads a Markdown file's source, where a URL that links
-    nothing -- in code, in a comment -- is text like any other.
+    nothing -- in code, in a comment -- is text like any other. **Each entry
+    blanks one copy**, so a URL written twice on a line, linked once and once
+    in code, keeps its unlinked copy: matched by value, one link took both,
+    and a name in the code copy was never read.
 
     Found with the greedy pattern so the whole run is blanked, then trimmed
     so what is matched against is the URL itself. **Blank the trimmed URL,
@@ -1699,13 +1734,16 @@ def blank_urls(
     urls = []
     pieces = []
     cursor = 0
+    remaining = None if links is None else Counter(links)
     for spotted in URL_PATTERN.finditer(text):
         whole = spotted.group(0)
         trimmed = trim_url(whole)
         if not url_is_public(trimmed):
             continue
-        if links is not None and trimmed not in links:
-            continue
+        if remaining is not None:
+            if remaining[trimmed] < 1:
+                continue
+            remaining[trimmed] -= 1
         urls.append(trimmed)
         pieces.append(text[cursor : spotted.start()])
         pieces.append(" ")
@@ -4642,7 +4680,10 @@ def test_the_workflow_runs_the_scan_unconditionally() -> None:
     job itself. An adoption without the ``python`` module prunes the scan, so
     the step sits in a template-sync block for that module, which removes it
     with the scan; and the result step does not name it, so nothing is left
-    naming a step that is gone.
+    naming a step that is gone. **The comment above the step is in the block
+    too**, and the checkout's full-history fetch, which only the scan needs,
+    has a block of its own: outside them, a pruned workflow kept a comment on
+    a suite it no longer ran, and a fetch nothing needed.
     """
     path = REPO_ROOT / ".github" / "workflows" / "markdownlint.yml"
     text = path.read_text(encoding="utf-8")
@@ -4660,8 +4701,16 @@ def test_the_workflow_runs_the_scan_unconditionally() -> None:
     assert THIS_MODULE in step["run"], step["run"]
     begin = "# template-sync: begin python-only"
     end = "# template-sync: end python-only"
-    block = text[text.index(begin) : text.index(end)]
-    assert "id: test-self-contained" in block, block
+    pieces = text.split(begin)
+    blocks = [piece.split(end, 1)[0] for piece in pieces[1:]]
+    outside = pieces[0] + "".join(piece.split(end, 1)[1] for piece in pieces[1:])
+    step_blocks = [block for block in blocks if "id: test-self-contained" in block]
+    assert len(step_blocks) == 1, blocks
+    assert "the only enforcement the self-containment scan" in step_blocks[0]
+    assert "self-containment" not in outside, "every comment on the scan is in a block"
+    checkout = workflow["jobs"]["markdownlint"]["steps"][0]
+    assert checkout["with"].get("fetch-depth") == 0, checkout
+    assert "fetch-depth" not in outside.split("jobs:", 1)[1].split("last-updated:", 1)[0]
     assert text.count("test-self-contained") == 1, "only the step itself names it"
 
 
@@ -5655,3 +5704,107 @@ def test_a_bracketed_host_links_only_from_raw_html(tmp_path: Path) -> None:
     assert not _reported(tmp_path, '<a href="' + url + '">' + reference + "</a>")
     # A bracket elsewhere is escaped too, and the URL still opens.
     assert not _reported(tmp_path, "[x](https://github.com/o/r/issues/27?q=[a]) " + reference)
+
+
+def _names(tmp_path: Path, body: str) -> list[str]:
+    """Return what the identifier pass reports in one Markdown document."""
+    sample = tmp_path / "doc.md"
+    sample.write_text(body + chr(10), encoding="utf-8")
+    return names_in(sample, tmp_path)
+
+
+def test_a_linked_url_blanks_only_the_copies_that_link(tmp_path: Path) -> None:
+    """A URL linked once and written again in code or a comment keeps that copy.
+
+    The identifier pass blanked every URL on a line whose value was among the
+    line's links, so a name in an unlinked copy of a linked URL was never read.
+    It now blanks one copy for each time the URL links there, as the source
+    spells it, on the line the source writes it. So a destination written with
+    a character reference, or on the line after its label, is blanked too, and
+    the name in its path, which a reader follows as a link, is not reported.
+    """
+    name = "review" + "_round_42"
+    url = "https://example.com/" + name
+    tick = chr(96)
+    newline = chr(10)
+    for body in (
+        "[x](" + url + ") and " + tick + url + tick,
+        "[x](" + url + ") <!-- " + url + " -->",
+        tick + url + tick + " and [x](" + url + ")",
+    ):
+        assert _names(tmp_path, body), body
+    for body in (
+        "[x](" + url + ")",
+        "[x](" + url + ") and [y](" + url + ")",
+        "[x](https://example.com/a&amp;" + name + ")",
+        "[x](" + newline + url + ")",
+        "<" + url + ">",
+        '<a href="' + url + '">x</a>',
+    ):
+        assert not _names(tmp_path, body), body
+
+
+def test_a_relative_destination_resolves_nothing(tmp_path: Path) -> None:
+    """A relative link in a repository file opens the repository, not a tracker.
+
+    GitHub resolves a link in a repository file against the repository: its
+    documentation says a link starting with ``/`` is relative to the
+    repository root, and ``./``, ``../`` and a bare path are relative to the
+    file. So ``/o/r/issues/27`` in a file opens a file path, not the issue,
+    and a fragment is an anchor on the page. A link that starts with ``//``
+    starts with ``/`` too. Each is reported until it is written as a whole
+    URL, which is also what the Markdown guide asks for.
+    https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-readmes
+    """
+    reference = "issue" + " " + "27"
+    for destination in ("/o/r/issues/27", "./issues/27", "../issues/27", "issues/27",
+                        "#" + "27", "//github.com/o/r/issues/27"):
+        assert _reported(tmp_path, "[" + reference + "](" + destination + ")"), destination
+    assert not _reported(tmp_path, "[" + reference + "](https://github.com/o/r/issues/27)")
+
+
+def test_a_filtered_tag_is_text_as_github_writes_it(tmp_path: Path) -> None:
+    """GFM's tagfilter writes nine tags as text, and what they hold is HTML.
+
+    Measured through GitHub's Markdown API: ``<script>``, ``<textarea>`` and
+    the seven others print as text, their contents print as ordinary HTML, and
+    a URL there links. So a reference beside its URL there is resolved, as a
+    reader sees it. In an HTML block GitHub finds a bare URL in each text node
+    of the parsed page, so the URL runs on through a filtered tag, through
+    ``&lt;``, and through an end tag that closes nothing, and the link it
+    makes names no issue.
+    """
+    reference = "issue" + " " + "27"
+    url = "https://github.com/o/r/issues/27"
+    newline = chr(10)
+    for name in ("script", "style", "textarea", "title", "xmp", "iframe", "noembed",
+                 "noframes", "plaintext"):
+        block = "<" + name + ">" + newline + reference + " " + url + newline + "</" + name + ">"
+        assert not _reported(tmp_path, block), name
+    assert printed_markdown("Text <script>x</script> end.")[0][0] == "Text <script>x</script> end."
+    for tail in ("</script> tail", "</b>x", "&lt;x", "<script>x"):
+        body = "<div>" + newline + reference + " " + url + tail + newline + "</div>"
+        assert _reported(tmp_path, body), tail
+    # The control: an element that closes ends the text node, and the URL.
+    assert not _reported(tmp_path, "<div><b>" + url + "</b>x " + reference + "</div>")
+
+
+def test_a_bare_url_inside_a_raw_anchor_links_on_its_own(tmp_path: Path) -> None:
+    """GitHub links a bare URL inside a raw ``a`` tag, and closes the open link there.
+
+    Measured through GitHub's Markdown API: in a paragraph,
+    ``<a href="X">see URL</a>`` renders ``see`` linked to ``X`` and the URL
+    linked to itself, because the page's parser closes the open link where
+    the autolinked one starts. So the URL resolves the reference it names, and
+    text after it, on a later line, is no longer the open link's.
+    """
+    reference = "issue" + " " + "27"
+    url = "https://github.com/o/r/issues/27"
+    quote = chr(34)
+    newline = chr(10)
+    anchor = "<a href=" + quote + "https://example.com/x" + quote + ">see " + url + "</a> " + reference
+    assert not _reported(tmp_path, anchor)
+    later = "<a href=" + quote + url + quote + ">see https://example.com/y" + newline + reference + "</a>"
+    assert _reported(tmp_path, later)
+    # The control: with no URL inside, the anchor's text is its own.
+    assert not _reported(tmp_path, "<a href=" + quote + url + quote + ">see" + newline + reference + "</a>")

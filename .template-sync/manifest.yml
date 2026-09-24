@@ -298,8 +298,10 @@ template_manifest:
         - github-actions
       notes: >-
         Contains a Python-only inline block for the step that runs the
-        self-containment scan, which the python module ships. Remove the
-        delimited step when the python module is excluded.
+        self-containment scan, which the python module ships, with the
+        comment above it, and a second for the checkout's full-history fetch,
+        which only the scan needs. Remove both delimited blocks when the
+        python module is excluded.
     - pattern: '.github/workflows/toolchain-eol.yml'
       requires_all:
         - markdown

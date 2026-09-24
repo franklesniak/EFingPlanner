@@ -1007,7 +1007,7 @@ The current `python-only` inline blocks live in:
 
 - `.pre-commit-config.yaml` for the `black` and `ruff-check` Python project hooks.
 - `.github/dependabot.yml` for the `pip` ecosystem header line and update block.
-- `.github/workflows/markdownlint.yml` for the step that runs the self-containment scan, `tests/test_self_contained_references.py`.
+- `.github/workflows/markdownlint.yml` for the step that runs the self-containment scan, `tests/test_self_contained_references.py`, with the comment above it, and for the checkout's full-history fetch, which only the scan needs.
 
 The current `markdown-only` inline block lives in:
 

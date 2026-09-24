@@ -30,14 +30,17 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
+          # template-sync: begin python-only
           # The self-containment suite asks Git whether a short hash written in
           # a Markdown file names a commit here, because that is the question
           # GitHub answers when it decides whether to render it as a link. The
           # action fetches only the triggering commit by default, so in CI that
           # question came back "no" for every older commit and the step would
-          # have reported a reference a reader can click.
+          # have reported a reference a reader can click. Only the scan asks,
+          # so an adoption without the `python` module drops the fetch with it.
           # https://github.com/actions/checkout#usage
           fetch-depth: 0
+          # template-sync: end python-only
 
       - name: Setup Node.js
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
@@ -176,6 +179,7 @@ jobs:
         continue-on-error: true
         run: pytest tests/test_check_prohibited_placeholders.py -v
 
+      # template-sync: begin python-only
       # A repository-wide rule enforced only by a test nothing runs is a rule
       # in name: a later comment could point at a review round, an issue
       # number or a bare commit hash and every required check would stay
@@ -187,13 +191,14 @@ jobs:
       # deleting both did. So there is no condition, and deleting or renaming
       # the scan fails the step, because pytest finds no file to run. An
       # adoption without the `python` module prunes the scan, and the
-      # template-sync block round this step removes it with the scan. The
-      # step is the last check, so it needs no `continue-on-error` for the
+      # template-sync block round this step and this comment removes both
+      # with it; a second block removes the checkout's full-history fetch,
+      # which only the scan needs. The step is the last check, so it needs no
+      # `continue-on-error` for the
       # checks above to run, and its own failure fails the job. The scan
       # asserts that the three hook suites above are present, so their own
       # steps keep their guards. It reads Markdown through markdown-it, from
       # the packages `npm ci` installs above, and fails if they are missing.
-      # template-sync: begin python-only
       - name: Check references resolve inside this repository
         id: test-self-contained
         run: pytest tests/test_self_contained_references.py -v

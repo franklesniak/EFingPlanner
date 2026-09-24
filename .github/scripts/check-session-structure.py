@@ -430,6 +430,18 @@ RAW_HTML_RUN_PATTERNS = (
 #: renderer passes through untouched and an HTML parser then reads as one
 #: token each.
 #:
+#: **GitHub's page differs here, and this reads a browser's.** GFM's
+#: tagfilter writes the ``<`` of ``script``, ``style``, ``textarea``,
+#: ``title``, ``xmp``, ``iframe``, ``noembed``, ``noframes`` and
+#: ``plaintext`` as ``&lt;``, so on GitHub none of them opens an element: the
+#: tag prints as text, and what it holds is ordinary HTML, where a comment is
+#: a comment. Measured through GitHub's Markdown API. The hooks keep a
+#: browser's reading, which is the one the style guide describes, and it can
+#: part from GitHub's page only in a Markdown file that writes one of these
+#: tags, which markdownlint's ``MD033`` refuses before any hook runs. Kept
+#: identical in the sibling hooks.
+#: https://github.github.com/gfm/#disallowed-raw-html-extension-
+#:
 #: Each opener is anchored at the start of the line, because these are the
 #: *block* forms: HTML block conditions 1, 3, 4 and 5 all begin a line. A run
 #: that opens part way along a line of prose is inline raw HTML and is a

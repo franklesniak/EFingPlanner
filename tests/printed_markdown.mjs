@@ -12,14 +12,19 @@
  * For a document:
  *
  *   lines     one entry per line of the document, as the text splits on
- *             "\n": [printed, hidden, destinations, bare]. printed is what
+ *             "\n": [printed, hidden, destinations, bare, written]. printed is what
  *             the page shows from that line; hidden is the text of an HTML
  *             comment on it; destinations are the targets of the links whose
  *             content is on it -- an inline link or an HTML "a" tag, on each
  *             line where the link's text, code or image stands, and on no
  *             line when the link shows nothing -- decoded as the page decodes
- *             them; and bare holds each bare URL GitHub links on it, as
- *             written, before the prose around it is trimmed off.
+ *             them; bare holds each bare URL GitHub links on it, as
+ *             written, before the prose around it is trimmed off; and
+ *             written holds, once for each time it is written there, the
+ *             source spelling of each destination that links and is written
+ *             on the line -- a Markdown link's, an autolink's or an "a" tag's
+ *             "href" -- so a caller can tell a linked copy of a URL from an
+ *             unlinked copy of the same URL on one line.
  *   fences    [info, first, content] for each fenced code block: the first
  *             word of its info string, in lower case, the line its content
  *             starts on, and the content itself.
@@ -53,6 +58,18 @@
  * empty link, and an "a" start tag closes an open one. A character reference
  * in raw HTML is decoded as GitHub's renderer decodes it there: a name only
  * with its ";", and a number with or without one.
+ *
+ * GitHub filters nine tags before a browser sees them (GFM's tagfilter):
+ * "title", "textarea", "style", "xmp", "iframe", "noembed", "noframes",
+ * "script" and "plaintext" have their "<" written as "&lt;". So none of them
+ * opens an element on the page: the tag prints as text, and what it holds is
+ * ordinary HTML, printed, with its URLs linked. In an HTML block GitHub finds a
+ * bare URL in each text node of the parsed page, so a URL runs on through a
+ * filtered tag, through a "<" written as "&lt;", and through an end tag that
+ * closes nothing, and stops at white space. In a paragraph a URL stops at "<",
+ * and a bare URL inside a raw "a" tag is linked on its own: the page closes the
+ * open link where the new one starts. Measured through GitHub's Markdown API.
+ * https://github.github.com/gfm/#disallowed-raw-html-extension-
  *
  * Where markdown-it and GitHub's renderer part, the reader follows GitHub, as
  * the repository's hooks do. GitHub reads a declaration by an older CommonMark
@@ -104,6 +121,13 @@ refuseWhere(md.inline.ruler, 'html_inline', (state) =>
 const REFERENCE = /&(?:#[0-9]+;?|#[xX][0-9A-Fa-f]+;?|[A-Za-z][A-Za-z0-9]*;)/g;
 // The elements of HTML text GitHub links no URL in.
 const QUIET_ELEMENTS = new Set(['a', 'code', 'pre', 'kbd']);
+// The tags GFM's tagfilter writes as text, "<" as "&lt;".
+const FILTERED_TAGS = new Set(['title', 'textarea', 'style', 'xmp', 'iframe', 'noembed', 'noframes', 'script', 'plaintext']);
+// The elements that hold nothing, so a start tag opens none.
+const VOID_ELEMENTS = new Set(['area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'link', 'meta', 'param', 'source', 'track', 'wbr']);
+// A bare URL in a text node of an HTML block: it runs to white space, since a
+// "<" there is a character of the text.
+const BARE_URL_IN_TEXT = /(?<![\p{L}\p{N}+.\/@-])(?:https?:\/\/|www\.)\S*/giu;
 // A bare URL as the scan's own pattern starts one, running to the next space
 // or "<" as GitHub's autolink extension runs one.
 const BARE_URL = /(?<![\p{L}\p{N}+.\/@-])(?:https?:\/\/|www\.)[^\s<]*/giu;
@@ -132,7 +156,7 @@ const BRACKETED_HOST = /^(?:https?:\/\/)\[/i;
 const linksBare = (url) => !BRACKETED_HOST.test(url);
 
 // Every bare URL GitHub links in a line read as plain text, as written.
-const bareIn = (line) => [...line.matchAll(BARE_URL)].map((match) => match[0]).filter(linksBare);
+const bareIn = (line, pattern = BARE_URL) => [...line.matchAll(pattern)].map((match) => match[0]).filter(linksBare);
 
 // Raw HTML text, or an attribute value, with its character references decoded
 // as GitHub's renderer decodes them, and nothing else: a backslash is a
@@ -158,6 +182,7 @@ const readTag = (text, start) => {
     closing,
     selfClosing: false,
     attributes: new Map(),
+    valuesAt: new Map(),
     end: -1,
   };
   for (;;) {
@@ -184,21 +209,26 @@ const readTag = (text, start) => {
     const name = text.slice(nameAt, at).toLowerCase();
     while (at < text.length && TAG_SPACE.test(text[at])) at += 1;
     let value = '';
+    let valueAt = at;
     if (text[at] === '=') {
       at += 1;
       while (at < text.length && TAG_SPACE.test(text[at])) at += 1;
+      valueAt = at;
       if (text[at] === '"' || text[at] === "'") {
+        valueAt = at + 1;
         const close = text.indexOf(text[at], at + 1);
         if (close === -1) return null;
         value = text.slice(at + 1, close);
         at = close + 1;
       } else {
-        const valueAt = at;
         while (at < text.length && !UNQUOTED_VALUE_END.test(text[at])) at += 1;
         value = text.slice(valueAt, at);
       }
     }
-    if (!tag.attributes.has(name)) tag.attributes.set(name, value);
+    if (!tag.attributes.has(name)) {
+      tag.attributes.set(name, value);
+      tag.valuesAt.set(name, valueAt);
+    }
   }
 };
 
@@ -229,6 +259,12 @@ function readDocument(text) {
   const hidden = new Array(source.length).fill('');
   const destinations = source.map(() => []);
   const bare = source.map(() => []);
+  const written = source.map(() => []);
+  // The source spelling of a destination that links, on the line it is
+  // written on, once for each time it is written there.
+  const spell = (line, spelling) => {
+    if (line < source.length) written[line].push(spelling);
+  };
   const plain = new Array(source.length).fill(false);
   const unmapped = [];
 
@@ -256,10 +292,20 @@ function readDocument(text) {
   // line where its content stands, text a reader sees or an image, and
   // shown(line) is told of every such line, for a link the run sits inside.
   const readHtml = (text, lineOf, shown = () => {}) => {
+    // The open "a" tag: its destination, where its href is written, and
+    // whether its content has been seen, which is when its href links.
     let anchor = null;
-    let quiet = 0;
+    // The elements open on the page, innermost last. An end tag that closes
+    // none of them is dropped by the page's parser, so it ends no text node.
+    const open = [];
     const content = (line) => {
-      if (anchor !== null) link(anchor, line, line);
+      if (anchor !== null) {
+        link(anchor.href, line, line);
+        if (!anchor.spelled) {
+          spell(anchor.line, anchor.written);
+          anchor.spelled = true;
+        }
+      }
       shown(line);
     };
     const hide = (from, to) => {
@@ -269,16 +315,39 @@ function readDocument(text) {
         at += part.length + 1;
       }
     };
+    // The text of the current text node on its current line, not yet read
+    // for bare URLs, and whether a quiet element holds it.
+    // A "<" or ">" in such a URL is text, and GitHub writes it as "&lt;" or
+    // "&gt;", so it is given back that way: the scan's trimming reads a bare
+    // "<" as the end of an autolink.
+    let node = null;
+    const endNode = () => {
+      if (node !== null && !node.quiet) {
+        for (const url of bareIn(node.text, BARE_URL_IN_TEXT)) {
+          bare[node.line].push(url.replace(/</g, '&lt;').replace(/>/g, '&gt;'));
+        }
+      }
+      node = null;
+    };
+    const quiet = () => open.some((name) => QUIET_ELEMENTS.has(name));
     const textBetween = (from, to) => {
       let at = from;
-      for (const part of text.slice(from, to).split('\n')) {
+      text.slice(from, to).split('\n').forEach((part, index) => {
         const line = lineOf(at);
         const decoded = decodeHtml(part);
         print(line, decoded);
-        if (quiet === 0) bare[line].push(...bareIn(decoded));
+        if (index > 0 || (node !== null && node.line !== line)) endNode();
+        if (node === null) node = { line, text: '', quiet: quiet() };
+        node.text += decoded;
         if (VISIBLE.test(decoded)) content(line);
         at += part.length + 1;
-      }
+      });
+    };
+    const closeTo = (name) => {
+      const index = open.lastIndexOf(name);
+      if (index === -1) return false;
+      open.length = index;
+      return true;
     };
     let from = 0;
     for (let at = text.indexOf('<'); at !== -1; at = text.indexOf('<', at + 1)) {
@@ -287,6 +356,7 @@ function readDocument(text) {
       if (text.startsWith('<!--', at)) {
         const [textEnd, commentStop] = commentEnd(text, at) ?? [text.length, text.length];
         textBetween(from, at);
+        endNode();
         hide(at + 4, textEnd);
         end = commentStop;
       } else if (text.startsWith('</>', at)) {
@@ -297,25 +367,47 @@ function readDocument(text) {
         // comment to the browser, running to the next ">".
         const close = text.indexOf('>', at);
         textBetween(from, at);
+        endNode();
         hide(at + 2, close === -1 ? text.length : close);
         end = close === -1 ? text.length : close + 1;
       } else {
         const tag = readTag(text, at);
-        if (tag !== null) {
+        if (tag !== null && !FILTERED_TAGS.has(tag.name)) {
           textBetween(from, at);
           const line = lineOf(at);
-          if (tag.name === 'br' && !tag.closing) print(line, ' ');
-          if (tag.name === 'a') anchor = destinationOf(tag);
-          if (QUIET_ELEMENTS.has(tag.name) && !tag.selfClosing) {
-            quiet = tag.closing ? Math.max(0, quiet - 1) : quiet + 1;
+          if (tag.closing) {
+            // An end tag that closes nothing is dropped, and the text on
+            // either side of it is one text node.
+            if (closeTo(tag.name)) endNode();
+            if (tag.name === 'a') anchor = null;
+            if (tag.name === 'br') {
+              endNode();
+              print(line, ' ');
+            }
+          } else {
+            endNode();
+            if (tag.name === 'br') print(line, ' ');
+            if (tag.name === 'a') {
+              // An "a" start tag closes an open one.
+              closeTo('a');
+              const href = destinationOf(tag);
+              anchor = href === null ? null : {
+                href,
+                written: tag.attributes.get('href'),
+                line: lineOf(at + tag.valuesAt.get('href')),
+                spelled: false,
+              };
+            }
+            if (!tag.selfClosing && !VOID_ELEMENTS.has(tag.name)) open.push(tag.name);
+            if (tag.name === 'img') content(line);
           }
-          if (tag.name === 'img' && !tag.closing) content(line);
           end = tag.end;
         }
       }
       if (end !== -1) from = end;
     }
     textBetween(from, text.length);
+    endNode();
   };
 
   const inlineRun = (token, first) => {
@@ -339,12 +431,19 @@ function readDocument(text) {
     // shows something, which are all the lines its destination is given to;
     // both stay null for a label that shows nothing.
     let label = null;
-    // The destination of the "a" tag this run has opened.
+    // The "a" tag this run has opened: its destination, where its href is
+    // written, and whether its content has been seen.
     let anchor = null;
     // Content a reader sees stands on these lines: the open "a" tag's
     // destination is given to them, and the open label covers them.
     const standsOn = (from, to) => {
-      if (anchor !== null) link(anchor, from, to);
+      if (anchor !== null) {
+        link(anchor.href, from, to);
+        if (!anchor.spelled) {
+          spell(anchor.line, anchor.written);
+          anchor.spelled = true;
+        }
+      }
       if (label !== null) {
         label.first = label.first === null ? from : Math.min(label.first, from);
         label.last = label.last === null ? to : Math.max(label.last, to);
@@ -363,14 +462,23 @@ function readDocument(text) {
       return at;
     };
     // The bare URLs that start in plain text between from and to, each run
-    // over the characters written after it.
+    // over the characters written after it. GitHub links one inside an open
+    // "a" tag on its own, and the page's parser then closes the open link
+    // where the new one starts: the text before the URL is the open link's,
+    // and the text after it is no link's. Returns where the first URL starts,
+    // or to when there is none.
     const findBare = (from, to) => {
       const pattern = new RegExp(BARE_URL.source, BARE_URL.flags);
       pattern.lastIndex = Math.max(from, bareEnd);
+      let first = to;
       for (let match = pattern.exec(content); match && match.index < to; match = pattern.exec(content)) {
-        if (linksBare(match[0])) bare[lineAt(match.index)].push(match[0]);
+        if (linksBare(match[0])) {
+          bare[lineAt(match.index)].push(match[0]);
+          if (first === to) first = match.index;
+        }
         bareEnd = match.index + match[0].length;
       }
+      return first;
     };
     // After a link's or an image's closing bracket: an inline destination is
     // a URL written in the source; a reference label points elsewhere. A
@@ -382,7 +490,12 @@ function readDocument(text) {
         const start = skipBlank(cursor + 1);
         const target = md.helpers.parseLinkDestination(content, start, content.length);
         if (!target.ok) throw new Unmapped();
-        if (target.str && shown !== null && shown.first !== null) link(githubHref(target.str), shown.first, shown.last);
+        if (target.str && shown !== null && shown.first !== null) {
+          link(githubHref(target.str), shown.first, shown.last);
+          // As written, on the line it is written on.
+          const writtenAs = content.slice(start, target.pos);
+          spell(lineAt(start), writtenAs.startsWith('<') && writtenAs.endsWith('>') ? writtenAs.slice(1, -1) : writtenAs);
+        }
         let at = skipBlank(target.pos);
         if (at < content.length && content[at] !== ')') {
           const title = md.helpers.parseLinkTitle(content, at, content.length);
@@ -404,10 +517,19 @@ function readDocument(text) {
             if (inAutolink) {
               destinations[lineAt(at)].push(githubHref(child.content));
               print(lineAt(at), ' ');
+              // As written: between the autolink's "<" and ">".
+              spell(lineAt(at), content.slice(cursor, content.indexOf('>', cursor)));
             } else {
               print(lineAt(at), child.content);
-              if (!inImage && label === null) findBare(at, at + child.content.length);
-              if (VISIBLE.test(child.content)) standsOn(lineAt(at), lineAt(at));
+              const end = at + child.content.length;
+              const url = !inImage && label === null ? findBare(at, end) : end;
+              // Before a bare URL the text is the open anchor's; the URL
+              // closes the anchor, and its own link is the bare URL.
+              if (VISIBLE.test(content.slice(at, url))) standsOn(lineAt(at), lineAt(at));
+              if (url < end) {
+                anchor = null;
+                if (VISIBLE.test(content.slice(url, end))) standsOn(lineAt(at), lineAt(at));
+              }
             }
             cursor = at + child.content.length;
             break;
@@ -455,9 +577,25 @@ function readDocument(text) {
                 position += part.length + 1;
               }
               readHtml(child.content.slice(stop), (offset) => lineAt(at + stop + offset), (line) => standsOn(line, line));
+            } else if (tag !== null && FILTERED_TAGS.has(tag.name)) {
+              // GFM's tagfilter writes the tag as text, and the page prints it.
+              let position = at;
+              for (const part of child.content.split('\n')) {
+                print(lineAt(position), part);
+                if (VISIBLE.test(part)) standsOn(lineAt(position), lineAt(position));
+                position += part.length + 1;
+              }
             } else if (tag !== null) {
               if (tag.name === 'br' && !tag.closing) print(lineAt(at), ' ');
-              if (tag.name === 'a') anchor = destinationOf(tag);
+              if (tag.name === 'a') {
+                const href = destinationOf(tag);
+                anchor = href === null ? null : {
+                  href,
+                  written: tag.attributes.get('href'),
+                  line: lineAt(at + tag.valuesAt.get('href')),
+                  spelled: false,
+                };
+              }
               if (tag.name === 'img' && !tag.closing) standsOn(lineAt(at), lineAt(at));
             } else {
               // A declaration, a processing instruction or a CDATA section,
@@ -509,6 +647,7 @@ function readDocument(text) {
         printed[line] = source[line];
         destinations[line] = [];
         bare[line] = [];
+        written[line] = [];
         plain[line] = true;
       }
     }
@@ -563,8 +702,8 @@ function readDocument(text) {
   }
   // A line given as it stands is read as plain text, bare URLs and all.
   const lines = source.map((raw, line) => {
-    if (printed[line] === null || plain[line]) return [raw, hidden[line], destinations[line], bareIn(raw)];
-    return [printed[line], hidden[line], destinations[line], bare[line]];
+    if (printed[line] === null || plain[line]) return [raw, hidden[line], destinations[line], bareIn(raw), []];
+    return [printed[line], hidden[line], destinations[line], bare[line], written[line]];
   });
   return { lines, unmapped, fences };
 }
