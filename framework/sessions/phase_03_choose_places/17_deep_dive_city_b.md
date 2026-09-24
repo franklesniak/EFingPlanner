@@ -49,7 +49,7 @@ Your City Research Card for City B, now at full depth.
 
 ## Stop Point
 
-You are done when City B's card has its top sights, one memorable fact, at least one downside, a season-fit note, and at least one dated source. You don't have to fill every line perfectly. "Ask an adult" or "not sure yet" are fine answers.
+You are done when City B's card has its top sights, one memorable fact, at least one downside, a season-fit note, and at least one dated source you didn't use for City A. You don't have to fill every line perfectly. "Ask an adult" or "not sure yet" are fine answers.
 
 ## Source Check
 
