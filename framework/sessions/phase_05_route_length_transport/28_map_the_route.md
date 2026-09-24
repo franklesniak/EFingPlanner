@@ -31,14 +31,14 @@ Here's how to read the map for trip planning:
 
 Maps are tricky at first, and "how near is near?" is a hard question for everyone. The travel time answers it.
 
-1. **Find every place on your shortlist**, one dot at a time.
-2. **Check the travel time** between each pair of places that sit near each other. Use **Directions**, and write each time in the Workspace table.
+1. **Find every place on your shortlist**, one dot at a time. If a place is a whole region, pick the town in it where you'd sleep or spend the day, and use that town's dot. A grown-up can help you choose.
+2. **Check the travel time for each hop your trip might make.** That means each overnight place to the next, and each base to each day trip. Include pairs that look far apart. On a trip with one base and no day trips, time the trip from where you arrive to your base, and from your base to your must-dos. Use **Directions**, and write each time in the Workspace table. Add rows if you need more.
 3. **Answer five questions**, using travel time every time:
-   - Which places are close together, a short train ride apart?
+   - Which places are close together, a short ride apart?
    - Which places are far apart?
    - Which work as **day trips**, close enough to visit and come back the same day?
    - Which need **overnight stays**?
-   - Would this route make us **crisscross** too much, with lots of long back-and-forth train rides?
+   - Would this route make us **crisscross** too much, with lots of long back-and-forth rides?
 4. **Sketch your route.** Draw your cities as dots on a line from left to right, in the order you'd visit them. Start where your family arrives, and end where you leave, if the grown-ups have written those places down. Write the travel time on each line between dots.
 
 Each city is still a movable block, as [Session 15](../phase_03_choose_places/15_city_research_cards.md) explained, so your sketch can change later by moving one block.

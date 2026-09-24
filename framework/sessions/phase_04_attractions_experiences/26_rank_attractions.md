@@ -79,7 +79,7 @@ Your ranked attraction list, sorted into the four groups, and your one special p
 
 You are done when every attraction sits in one of the four groups and your must-do list is short enough to read in one breath. You also need your one special pick on your My Calls page, chosen with a grown-up. If you chose it at Session 44, confirm it in one line. "Strong maybe" is a fine place for any attraction you're unsure about. The scores helped, and the choice is yours.
 
-Then check the clock, and write how many minutes the session took next to your guess. Compare it with your guess from Session 16. Being off is normal either way.
+Then check the clock, and write how many minutes the session took next to your guess. How far off was your guess? Compare that gap with your gap from Session 16. Being off is normal either way.
 
 ## Source Check
 
@@ -105,4 +105,4 @@ The must-do list is your child's owned decision. Within the approved cities, the
 
 Weighted scoring stalls some ten-year-olds, and the lighter three-question version is a full answer. Let your child choose the version.
 
-The minutes guess returns from Session 16. It's estimating practice, and Checkpoint 3 takes one quick look back at both guesses.
+The minutes guess returns from Session 16. It's estimating practice, and Checkpoint 3 takes one quick look back at both gaps.

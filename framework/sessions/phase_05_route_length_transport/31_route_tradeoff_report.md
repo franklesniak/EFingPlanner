@@ -24,7 +24,7 @@ On a fresh Trade-Off Report page, write "Which route should we take?" as the dec
 
 This is your route trade-off, one of the three trade-off reports you'll write in the project. The table on your Trade-Off Report page is already drawn, with an example row at the top. You plug in your own two routes.
 
-1. **Choose two routes to compare.** Route 1 can be the plan you have now. Route 2 should be a different shape. One classic pair is fewer cities with more nights in each, against more cities, seen faster.
+1. **Choose two routes to compare.** Route 1 can be the plan you have now. Route 2 should be a different shape. One classic pair is fewer cities with more nights in each, against more cities, seen faster. On a one-base trip, compare staying at one base with splitting your stay between two.
 2. **Put one route in each column.** Route 1 goes under Option A and Route 2 under Option B. Write which cities each route includes. The example row shows the shape: "Route 1: City A + City B" and "Route 2: City A + City C".
 3. **Fill every row for both routes.** Go down the page: pros, cons, cost effect, time effect, energy effect, and what you'd miss. For cost, write higher, about the same, or lower. You don't need prices.
 4. **Use travel times from Directions.** Copy them from your route map notes. They came from the map's Directions in Session 28, so they're better than a guess from the map picture.

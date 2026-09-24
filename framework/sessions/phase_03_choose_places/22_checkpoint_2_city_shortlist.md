@@ -26,8 +26,8 @@ This is your second checkpoint. You've researched a lot of places, and now you p
 
 Fill in the shortlist table in the Workspace, in this order:
 
-1. **Overnight bases.** Choose 2 to 4 places where you'd sleep. Take them from your long-list and your Session 21 comparison.
-2. **Day trips.** Choose 1 to 3 places you could visit and come back from on the same day.
+1. **Overnight bases.** Choose 2 to 4 places where you'd sleep. If your family plans one base to stay at and travel from, one is enough. Take them from your long-list and your Session 21 comparison.
+2. **Day trips.** Choose up to 3 places you could visit and come back from on the same day. If none is close enough, write "none".
 3. **Skip this time.** Name the places you're setting aside for this trip.
 4. **Save for a future trip.** Name the places you'd love to see someday. These notes help later, when you make your cut list.
 5. **Reasons.** Give two or three, and tie each one to something you found.
@@ -48,8 +48,8 @@ Your city shortlist:
 
 | Prompt | Your answer |
 | --- | --- |
-| Overnight bases (2 to 4) | |
-| Day trips (1 to 3) | |
+| Overnight bases (2 to 4, or 1 for a one-base trip) | |
+| Day trips (up to 3, or none) | |
 | Skip this time | |
 | Save for a future trip | |
 | My reasons | |
@@ -72,7 +72,7 @@ Your City shortlist recommendation, recorded as a decision-log entry.
 
 ## Stop Point
 
-You are done when your shortlist table is filled in and you've shared it with a grown-up. When they decide, write their answer in your Decision Record. "Not sure yet" and "ask an adult" are fine answers in any row, and any of the four answers finishes the checkpoint. If the answer is Needs more research, do that one piece and bring it back before you start the next session.
+You are done when your shortlist table is filled in and you've shared it with a grown-up. When they decide, write their answer in your Decision Record. "Not sure yet" and "ask an adult" are fine answers in any row, and any of the four answers finishes the checkpoint. If the answer is Needs more research, do that one piece and bring it back before you start the next session. If it's Park this decision for later, the next session waits too, until your family comes back to the decision.
 
 ## Source Check
 

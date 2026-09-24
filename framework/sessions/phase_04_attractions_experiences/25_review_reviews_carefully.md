@@ -97,7 +97,7 @@ Your Review trust worksheet, with both sittings filled in.
 
 ## Stop Point
 
-You are done for today when you've judged at least one review or video on the worksheet, written who made it and what they might be selling, and named one thing you'll check somewhere else. Sitting two can be another day. The session is finished when sitting two's rows are filled in as well. "Not sure" is a fine answer in any row.
+You are done for today when you've judged at least one review, blog or video on the worksheet, written who made it and what they might be selling, and named one thing you'll check somewhere else. Sitting two can be another day. The session is finished when sitting two's rows are filled in as well. "Not sure" is a fine answer in any row.
 
 ## Source Check
 
