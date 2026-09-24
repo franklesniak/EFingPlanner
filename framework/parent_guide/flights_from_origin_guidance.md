@@ -44,7 +44,7 @@ Which one you land at can change arrival-day fatigue substantially: sometimes an
 
 **Peak-season lodging books out months ahead**, and prices run high. Peak season rewards committing early.
 
-**The peak-bloom trap.** If you're aiming for a natural peak, whether bloom, colour, or a seasonal event, you can't reliably book months ahead and hit it. The timing shifts year to year and forecasts only firm up weeks before. Lock flights and lodging on historical averages, keep the day-by-day plan flexible, book refundable where you can, and chase the front if the peak slips. Your child's seasons work carries the child-facing version of this; the booking decisions are yours.
+**The peak-bloom trap.** If you're aiming for a natural peak, whether bloom, color, or a seasonal event, you can't reliably book months ahead and hit it. The timing shifts year to year and forecasts only firm up weeks before. Lock flights and lodging on historical averages, keep the day-by-day plan flexible, book refundable where you can, and chase the front if the peak slips. Your child's seasons work carries the child-facing version of this; the booking decisions are yours.
 
 **Flight prices change.** First-night lodging needs planning before you land.
 

@@ -73,7 +73,7 @@ Each has its own **what to consider** list. The review form checks whether the w
 
 **Also yours to do here:** if you left the rough trip shape partly open at setup, firm it up now, including the exit city. The Phase 5 route work builds on it.
 
-**What to consider:** whether the travel scope is workable; how it fits your maximum trip length, or your booked trip length; **whether the other travellers appear in it at all**, which is what the poll connection is there to show; budget implications; safety and common sense; and anything it implies for international flights.
+**What to consider:** whether the travel scope is workable; how it fits your maximum trip length, or your booked trip length; **whether the other travelers appear in it at all**, which is what the poll connection is there to show; budget implications; safety and common sense; and anything it implies for international flights.
 
 **Progress is real:** the family now knows roughly *where*.
 

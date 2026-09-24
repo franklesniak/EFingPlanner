@@ -82,7 +82,7 @@ Want a rough signal of how the executive-function side is going? The optional [e
 ## Session 09: AI as Helper, Not Boss (only if your family uses AI)
 
 - Role: adult-operated -- you run the tool, on your account, with the child present.
-- Prep: your AI tool; verify its current minimum-age policy first; a blank AI Notes form.
+- Prep: your AI tool; verify its current minimum-age policy first, and write the date you checked; a blank AI Notes form.
 - Look for: an AI notes page recording one safe AI use (like brainstorming), with the use also logged in the Source Log.
 - Coaching question: "Where would you check a fact the AI gave you?"
 - Pitfall: letting AI supply facts. It brainstorms and organizes; it never decides facts.

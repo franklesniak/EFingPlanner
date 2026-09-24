@@ -71,7 +71,7 @@ Never write one of those into a plan as a settled fact. Write it with three habi
 - "Adults must verify before booking."
 - "Requirements can change."
 
-Seasons work the same way. Name the category rather than the date: a busy holiday week, a rainy season, a storm season. Which weeks they fall in is a thing to confirm for the year the family is travelling.
+Seasons work the same way. Name the category rather than the date: a busy holiday week, a rainy season, a storm season. Which weeks they fall in is a thing to confirm for the year the family is traveling.
 
 Some destinations have a whole category of fast-changing rules, and the pack will say so. Treat that category as "re-check close to travel" rather than "set it once."
 

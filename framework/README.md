@@ -36,16 +36,16 @@ Two bounds sit on that promise today. They clear on different events, so neither
 
 Two different things both get called reuse, and they cost very different amounts.
 
-- **Parameter reuse.** Another family with the same origin assumptions, travelling to the same destination, fills in only the two pages that configure a family. Those are the Trip-Basics card and the Current Family Travel Assumptions page, which Session 00 sets with that family's season window, budget band, AI choice, rough trip shape and constraints, and which Session 13 reads the budget band from. Near-zero cost, and it is the reuse most families are after. "The same origin assumptions" is carrying weight in that sentence: the origin logistics layer below lists what a family travelling from somewhere else swaps.
+- **Parameter reuse.** Another family with the same origin assumptions, traveling to the same destination, fills in only the two pages that configure a family. Those are the Trip-Basics card and the Current Family Travel Assumptions page, which Session 00 sets with that family's season window, budget band, AI choice, rough trip shape and constraints, and which Session 13 reads the budget band from. Near-zero cost, and it is the reuse most families are after. "The same origin assumptions" is carrying weight in that sentence: the origin logistics layer below lists what a family traveling from somewhere else swaps.
 - **Destination reuse.** Another place needs a whole new destination pack: its reference facts, its session inserts, its word list. That is a project rather than an edit, and it is the only thing the heavier machinery exists for.
 
 One further boundary belongs beside that promise. Everything here assumes English-literate adults and a child who reads English or is read to in English. Every session, worksheet, template and guide is written in English, and nothing in this repository translates them. A family who does not read English, or a child who does not read and has nobody to read to them, needs translation and reading support this project does not build and does not plan to.
 
 ## The origin logistics layer
 
-A fourth thing this repository names but does not build separately: the **origin logistics layer**. Passport rules, the home airport, the U.S. Department of State reference, and the currency the budget pages are written in all assume a family travelling from the United States.
+A fourth thing this repository names but does not build separately: the **origin logistics layer**. Passport rules, the home airport, the U.S. Department of State reference, and the currency the budget pages are written in all assume a family traveling from the United States.
 
-A family travelling from elsewhere swaps three things in the framework:
+A family traveling from elsewhere swaps three things in the framework:
 
 - The passport authority named in Session 00 and in the parent guide.
 - The home-airport and time-zone fields on the Trip-Basics card, together with the two sentences of adult help beside them, which name US time zones and daylight saving.

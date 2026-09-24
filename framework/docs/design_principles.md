@@ -6,7 +6,7 @@
 
 - **Status:** Active
 - **Owner:** Repository Maintainers
-- **Last Updated:** 2026-09-23
+- **Last Updated:** 2026-09-24
 - **Scope:** Why each session mechanic is there, which executive-function skills the curriculum trains, the honest limit on what transfer can be promised, the canonical carry-over tag wording and its one placement rule, and the scaffolding fade gradient with the readiness test that releases each stage. Parent-facing and builder-facing. A later batch authoring new sessions follows the tag rule and the gradient from here.
 - **Related:** [What executive function is](../parent_guide/what_is_executive_function.md), [Build style and vocabulary](build_style_and_vocab.md), [Project roadmap](../PROJECT_ROADMAP.md)
 
@@ -58,7 +58,7 @@ The claim this curriculum makes, in its own words:
 
 That wording is deliberate, and it replaces the stronger claim that these skills transfer.
 
-The honest caveat, which belongs beside the claim wherever the claim appears: transfer research is mixed. Practising a skill in one setting does not reliably produce it in another. What raises the odds is explicit, repeated bridging, which means naming the shared move out loud at the moment the child uses it. So the bridging is the design, and a generalized payoff is not something to promise a parent.
+The honest caveat, which belongs beside the claim wherever the claim appears: transfer research is mixed. Practicing a skill in one setting does not reliably produce it in another. What raises the odds is explicit, repeated bridging, which means naming the shared move out loud at the moment the child uses it. So the bridging is the design, and a generalized payoff is not something to promise a parent.
 
 ## The carry-over tag
 

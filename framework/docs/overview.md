@@ -32,7 +32,7 @@ The [project roadmap](../PROJECT_ROADMAP.md) has the paths and the stopping poin
 
 - **Not a maintained product.** One family wrote it and nobody is on call.
 - **Not booking advice, travel advice or legal advice.** Entry rules, prices, hours and safety information change, and an adult verifies anything they rely on against an official source before acting on it.
-- **Not a promise that the skills transfer.** Practising a planning move here makes it more likely to show up in homework or a school project, especially when an adult names the move out loud. It is not a guarantee, and this project does not sell one.
+- **Not a promise that the skills transfer.** Practicing a planning move here makes it more likely to show up in homework or a school project, especially when an adult names the move out loud. It is not a guarantee, and this project does not sell one.
 
 All three sit under the provided-as-is banner at the top of [GETTING_STARTED](../../GETTING_STARTED.md), which is worth one read before you begin.
 

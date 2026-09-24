@@ -6,7 +6,7 @@ This roadmap shows the paths through the project and where the honest stopping p
 
 For the child this project is designed for, **finishing First Taste is the expected, complete outcome** -- not a lesser starter. Continuing to the Core Finish Line or the full program is a genuine bonus, and nothing done in First Taste is ever redone.
 
-> **What is built right now** lives in the [curriculum changelog](CHANGELOG.md), which is the version history of these materials and the one file that changes every time something ships. This page describes the whole programme; the changelog says how much of it exists today.
+> **What is built right now** lives in the [curriculum changelog](CHANGELOG.md), which is the version history of these materials and the one file that changes every time something ships. This page describes the whole program; the changelog says how much of it exists today.
 >
 > The Batch 0 gate **cleared** on the recorded no-child fallback, which is one of its two routes. What is still open is the thing that fallback stands in for: **no child has piloted this design.** The flag saying so is carried in [time and effort](parent_guide/time_and_effort.md), and it stays until a real pilot happens.
 >

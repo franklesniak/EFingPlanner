@@ -6,7 +6,7 @@
 
 - **Status:** Active
 - **Owner:** Repository Maintainers
-- **Last Updated:** 2026-09-23
+- **Last Updated:** 2026-09-24
 - **Scope:** The single canonical home for the citation rule in this curriculum: when a citation is required, the six citation forms with their exact field names, the three verification fields, and the note structure. Every built page that reproduces a form copies its field names from here. Builder-facing and parent-facing, and written to be read aloud to a child.
 - **Related:** [Simple citation forms](../templates/simple_citation.md), [Source log](../templates/source_log.md), [Source trustworthiness](source_trustworthiness.md)
 
@@ -27,6 +27,8 @@ Asking your own family is family input, and it needs no citation. That covers in
 A review site is a website, so it uses the Website form. There is no separate form for reviews.
 
 A session with no research step is never asked for a citation. If nothing was looked up, there is nothing to record, and an empty Source Log for that session is correct.
+
+A site you open only to judge whether a source can be trusted, and take no fact from, needs no citation either. That covers the travel blog you set aside in Session 05's trust test, and a page you open to look a site up in lateral reading.
 
 ## The six forms
 

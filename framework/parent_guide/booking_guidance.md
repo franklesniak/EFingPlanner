@@ -20,7 +20,7 @@ Nothing in this curriculum ever tells a child to book, reserve, buy, create an a
 
 The watchlist is the one to read first, once it exists. It's built specifically so you can see what's on a clock.
 
-**If booking arrives before your child has got that far, work from what they have.** On First Taste, and early on the Core path, most of that list has not been made yet: the hotel and neighbourhood comparisons come in Sessions 34 and 35, the day cards in 41, the watchlist in 42. What exists early is the **season recommendation** (with your dates already booked, the season confirmation), the **city shortlist** once Checkpoint 2 has passed (on First Taste, the city comparison once Session 21 is done), and the **rough trip shape** you recorded at setup. If that shape still names only the arrival city, settle the departure city and round-trip or open-jaw yourself first, as the [flights page](flights_from_origin_guidance.md) says. Then it is enough to book flights and a first hotel against, and it is what the early-booking conversation in the coaching guide assumes you are holding.
+**If booking arrives before your child has got that far, work from what they have.** On First Taste, and early on the Core path, most of that list has not been made yet: the hotel and neighborhood comparisons come in Sessions 34 and 35, the day cards in 41, the watchlist in 42. What exists early is the **season recommendation** (with your dates already booked, the season confirmation), the **city shortlist** once Checkpoint 2 has passed (on First Taste, the city comparison once Session 21 is done), and the **rough trip shape** you recorded at setup. If that shape still names only the arrival city, settle the departure city and round-trip or open-jaw yourself first, as the [flights page](flights_from_origin_guidance.md) says. Then it is enough to book flights and a first hotel against, and it is what the early-booking conversation in the coaching guide assumes you are holding.
 
 ## Three timelines collide, and that's expected
 
@@ -36,7 +36,7 @@ This is handled two ways: you set the **rough trip shape** early, so their work 
 - **Flight prices climb** as dates approach.
 - **Book refundable where you can.** It's the cheapest insurance against a plan that's still moving.
 
-Each of those is a category to verify, not a number to memorize. Check current windows and rules yourself; they change.
+Each of those is a category to verify, not a number to memorize. Check current windows and rules yourself, and write the date you checked; they change.
 
 ## Agent or direct — both fine
 
@@ -44,7 +44,7 @@ No endorsement either way. Your child's binder works as a brief to an agent just
 
 ## Cancellation rules are yours to verify
 
-Your child writes a cancellation note on a card. **That note is a flag, not a fact.** Check every cancellation rule yourself before you rely on it.
+Your child writes a cancellation note on a card. **That note is a flag, not a fact.** Check every cancellation rule yourself before you rely on it, and write the date you checked.
 
 ## After you book, tell them what changed and why
 
