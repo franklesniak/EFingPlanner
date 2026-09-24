@@ -49,7 +49,9 @@ Your Daily Plan Cards: one block card for each city-stay, with a row for each da
 
 ## Stop Point
 
-You are done when every city-stay on your approved route has one card, each card has a main goal, and each day has its anchor, its transit notes and an energy level. Day one follows your first-day rule, and the day home has its own row, following your last-day rule. Any travel time you had to look up is in your route map notes. One card per city-stay is the finished shape. Per-day cards are extra, and only worth doing once the dates are firm. You can stop between sittings as often as you like, and "not decided yet" is fine in any box.
+You are done for today whenever you stop between sittings, with your cards saved in order.
+
+The session is finished when every city-stay on your approved route has one card, each card has a main goal, and each day has its anchor, its transit notes and an energy level. Day one follows your first-day rule, and the day home has its own row, following your last-day rule. Any travel time you had to look up is in your route map notes. One card per city-stay is the finished shape. Per-day cards are extra, and only worth doing once the dates are firm. "Not decided yet" is fine in any box.
 
 ## Source Check
 

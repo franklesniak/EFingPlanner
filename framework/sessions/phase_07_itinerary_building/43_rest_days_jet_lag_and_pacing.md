@@ -10,7 +10,7 @@ You are here: Phase 7 (Itinerary Building). Not a First Taste step. Previous: [4
 - Planner skill: planning realistic time
 - Estimated time: 20-30 minutes
 - Parent involvement: parent review after session
-- Materials: your day cards from Session 41, your must-do list on your My Calls page, your attraction cards (if your special pick hits a block), your traveler profiles, your [Trip-Basics card](../../templates/trip_basics.md) (for the time difference, and the maximum or booked trip length), your season from Checkpoint 1 (for hot weather), your destination pack's transportation basics page, a device with the kid-safe filter on if you check an official site, your [Source Log](../../templates/source_log.md); a blank [Trade-Off Report](../../templates/tradeoff_report.md) if the third report goes here
+- Materials: your day cards from Session 41, your day rules from Session 40, your must-do list on your My Calls page, your attraction cards (if your special pick hits a block), your traveler profiles, your [Trip-Basics card](../../templates/trip_basics.md) (for the time difference, and the maximum or booked trip length), your season from Checkpoint 1 (for hot weather), your destination pack's transportation basics page, a device with the kid-safe filter on if you check an official site, your [Source Log](../../templates/source_log.md); a blank [Trade-Off Report](../../templates/tradeoff_report.md) if the third report goes here
 
 ## Goal
 
@@ -26,7 +26,7 @@ A plan can look great on paper and still be too much on the day. This session ch
 
 1. Lay out your day cards in order.
 2. Go down the checks in the Workspace, one row at a time. Mark yes or no, and add a short note.
-3. For any day that needs it, write one way to make it gentler. You could move a big thing, add a break, or swap in a rest day.
+3. For any day that needs it, write one way to make it gentler. You could move a big thing, add a break, or swap in a rest day. If every day passes, write that.
 4. Write your flags for the adults.
 
 **Everyone's energy.** Look at the stamina notes on the traveler profiles. An older relative, for example a grandparent, may tire more easily on a long trip, even with no trouble walking. Hot, sticky weather makes that matter more. If someone like that is coming, a kinder plan is usually shorter and gentler than your family's maximum trip length on your Trip-Basics card: fewer cities, more nights in each, and a rest day built in. If your dates are booked, that row holds the booked trip length. Keep it, and make the same changes inside it.
@@ -57,7 +57,7 @@ Your pacing checks:
 | Too many long travel days? (One base? Count long rides from your base to your approved must-dos.) | | |
 | Is the first day too busy? | | |
 | With a big time change, are the first two or three days gentle? | | |
-| Does the last day leave time to pack and start the trip home? (A long journey home takes most of the day; a trip of a few hours, about half.) | | |
+| Does the last day leave time to pack and start the trip home? (Your last-day rule from Session 40 says how much.) | | |
 | Big days back to back? | | |
 | Enough breaks? | | |
 | Too long or too packed for a traveler who tires easily? | | |

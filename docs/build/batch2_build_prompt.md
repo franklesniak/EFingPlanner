@@ -4328,8 +4328,8 @@ from this table. (`D-item-7`.)
 | 35 | comparing choices | 20-30 minutes per sitting, several sittings | none / independent work | Core |
 | 36 | organizing information | 20-30 minutes | none / independent work; stay nearby for any search beyond the Destination Notes | Conditional core |
 | 37 | organizing information | 20-30 minutes | none / independent work; stay nearby for any search beyond the Destination Notes | Conditional core |
-| 38 | planning realistic time | 20-30 minutes | 5-minute check-in | Core |
-| 39 | revising a plan | 20-30 minutes | parent review after session | Core |
+| 38 | planning realistic time | 20-30 minutes | 5-minute check-in; beforehand, tell your child the souvenir amount for one day | Core |
+| 39 | revising a plan | 20-30 minutes | parent review after session; beforehand, tell your child how many rooms each overnight city needs | Core |
 | 40 | planning realistic time | 20-30 minutes | 5-minute check-in | Core |
 | 41 | planning realistic time | several sittings; stop whenever you want | none / independent work | Core |
 | 42 | organizing information | 20-30 minutes | none / independent work | Core |

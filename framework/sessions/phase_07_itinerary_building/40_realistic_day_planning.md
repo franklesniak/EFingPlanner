@@ -10,7 +10,7 @@ You are here: Phase 7 (Itinerary Building). Not a First Taste step. Previous: [3
 - Planner skill: planning realistic time
 - Estimated time: 20-30 minutes
 - Parent involvement: 5-minute check-in
-- Materials: your destination pack's airports and arrival page, your route and nights from Checkpoint 4, your route map notes from Session 28, your must-do list on your My Calls page, your [Trip-Basics card](../../templates/trip_basics.md) (for how your family gets there), your family's [current travel assumptions](../../templates/current_family_travel_assumptions.md) page (for the arrival and departure places), a device with a map app or map website (kid-safe filter on), your [Source Log](../../templates/source_log.md), a blank page
+- Materials: your destination pack's airports and arrival page, your route and nights from Checkpoint 4, your route map notes from Session 28, your must-do list on your My Calls page, your [Trip-Basics card](../../templates/trip_basics.md) (for how your family gets there), your Session 29 formula (for its ½ marks), your family's [current travel assumptions](../../templates/current_family_travel_assumptions.md) page (for the arrival and departure places), a device with a map app or map website (kid-safe filter on), your [Source Log](../../templates/source_log.md), a blank page
 
 ## Goal
 
@@ -35,7 +35,7 @@ Planners who make good days use a few simple rules. Here are the ones that work:
 - Have a **backup** in case something is closed or rained out.
 - **Do not pack too much into one day.**
 
-**The first day has its own rule.** Its anchor is getting from where you arrive to where you're staying, and settling in. How much of the day that takes depends on the journey, which your Trip-Basics card shows. After a long journey, arriving at an airport, a station or the end of a long drive takes a big chunk of the day, and you'll be tired, too. So mark day one Easy, and often day two as well. If getting there takes only a few hours, arriving takes about half the day. Then plan one light activity for the other half.
+**The first day has its own rule.** Its anchor is getting from where you arrive to where you're staying, and settling in. How much of the day that takes depends on the journey. Your Session 29 formula shows which kind yours is: a ½ written over its 1s means getting there takes only a few hours. After a long journey, arriving at an airport, a station or the end of a long drive takes a big chunk of the day, and you'll be tired, too. So mark day one Easy, and often day two as well. If getting there takes only a few hours, arriving takes about half the day. Then plan one light activity for the other half.
 
 **The last day has a rule too.** Its anchor is getting from your last overnight place to where you leave from, once a grown-up has set that place. After a long journey home, that takes most of the day; after a short one, about half. Write it next to your first-day rule. Your destination pack's airports and arrival page helps you find how long the trip into the city takes. If your pack doesn't have that page yet, a grown-up can help you check the airport's or station's own website. The grown-ups book that ride.
 

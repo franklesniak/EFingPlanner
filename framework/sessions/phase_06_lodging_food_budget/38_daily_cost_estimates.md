@@ -9,7 +9,7 @@ You are here: Phase 6 (Lodging, Food, and Budget). Not a First Taste step. Previ
 - Status: Core
 - Planner skill: planning realistic time
 - Estimated time: 20-30 minutes
-- Parent involvement: 5-minute check-in
+- Parent involvement: 5-minute check-in; beforehand, tell your child the souvenir amount for one day
 - Materials: a device with the kid-safe filter on, your destination pack's money basics page, your [Budget Estimate page](../../templates/budget_estimate.md) from Session 33, your attraction cards and transportation notes, your [Trip-Basics card](../../templates/trip_basics.md) (for the number of travelers), your [Source Log](../../templates/source_log.md), a calculator (allowed)
 
 ## Goal
@@ -36,7 +36,7 @@ Round to easy numbers first. A calculator is always fine, and a grown-up can do 
 2. **Local transit.** How will you get around inside the city on an ordinary day? Your transportation notes from Session 30 help here.
 3. **Activities.** What might one day's tickets cost? Look at the ticket rows on your attraction cards. If a card's ticket row is empty, fill it in first, or write "ask an adult".
 4. **Long-distance transit.** Only fill this in for a day when you move to a new city. On other days, write "not today". The grown-ups add these longer rides to the budget on their own page.
-5. **Souvenirs.** What might you spend on small things? A grown-up sets the amount.
+5. **Souvenirs.** What might you spend on small things? A grown-up sets the amount and tells you before you start.
 6. **Unknown / ask adult.** Anything you can't estimate goes in this row. Name the cost, and write "ask adult" in its boxes. That's a finished answer, not a gap.
 7. **Add each column** to get a low, a medium and a high total for one day.
 
@@ -86,7 +86,7 @@ If you have extra energy, make a second table for a day you change cities, or a 
 
 ## Parent Notes
 
-A five-minute check-in is enough. Look for three guesses on each row and a sensible "ask an adult" where your child hit a wall. That row is a complete answer.
+Before the session, tell your child the souvenir amount for one ordinary day, as a rough, kid-sized figure. After that, a five-minute check-in is enough. Look for three guesses on each row and a sensible "ask an adult" where your child hit a wall. That row is a complete answer.
 
 Your child is estimating the slices they control: food, local transit, activities and souvenirs, with lodging joining at Session 39. The long-distance row is a flag for you: getting between cities stays on your own page, outside their subtotal. The cost of getting there stays on your own page, as the [money and budget guidance](../../parent_guide/money_budget_guidance.md) explains. Rounding and a calculator are always allowed, and you may do the arithmetic while your child does the reasoning.
 

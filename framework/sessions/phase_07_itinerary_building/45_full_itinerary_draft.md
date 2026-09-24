@@ -28,7 +28,7 @@ Today's plan is built from work you already did. Every box comes from a card or 
 
 1. Go through your day cards in order, one day at a time. Every day of the trip gets a row. Your total days come from your Checkpoint 4 plan, or, if your dates are booked, from your Trip-Basics card's maximum row. That total already counts any flight day. Each "- 1 flight day" you wrote on your Session 29 formula is a date spent in the air, so give it its own row marked "travel".
 2. For each day, copy its row into the two tables in the Workspace. Use the same day number in both. If a stop on your route is a region, use the town on its card from Session 21. If that card names no town, use the one you picked in Session 28.
-3. The first day and the last day each carry their travel leg: from where you arrive to your first overnight place, and from your last one to where you leave from. Where your pacing review made a day gentler, copy the gentler version. Leave out anything on your cut list. Transit comes from your day cards. If your route map notes from Session 28 don't have a travel time you need, check it with the map's Directions and add it to your notes. Booking notes come from your reservation watchlist, and costs from your cards and your Session 39 budget summary. Take the backup for each day from your day card or your backup plans. If a box you need is empty on the card, fill it on the card first if you can, then copy it.
+3. The first day and the last day each carry their travel leg: from where you arrive to your first overnight place, and from your last one to where you leave from. Add each leg once a grown-up has written its place down. Where your pacing review made a day gentler, copy the gentler version. Leave out anything on your cut list. Transit comes from your day cards. If your route map notes from Session 28 don't have a travel time you need, check it with the map's Directions and add it to your notes. Booking notes come from your reservation watchlist, and costs from your cards and your Session 39 budget summary. Take the backup for each day from your day card or your backup plans. If a box you need is empty on the card, fill it on the card first if you can, then copy it.
 4. Stop between sittings whenever you like. Pick up at the next day.
 
 A day with only its city and its main activity filled in already works as a plan. A blank meals box is fine, and so is "ask an adult". Your draft makes sense even with gaps, so a family could follow it today.
@@ -59,9 +59,9 @@ Your full itinerary draft: one row for every day of the trip, copied forward fro
 
 ## Stop Point
 
-You are done when every day in your route has a row, including a travel row for each flight day, and each row has at least an overnight city and a main activity. The first and last days carry their travel legs, the days your pacing review made gentler are copied that way, and nothing on your cut list is in. Any travel time you had to look up is in your route map notes. Blank boxes are fine. A plan with gaps is still a plan, and you don't have to finish it in one sitting.
+You are done for today when you stop at the end of a day's row and write how many minutes this sitting took next to your guess. Being off is normal.
 
-At the end of each sitting, check the clock. Write how many minutes it took next to your guess. Being off is normal. Then look back at Sessions 16, 26 and 35. Is the gap between your guess and your time smaller now than it was then?
+The session is finished when every day in your route has a row. That includes a travel row for each flight day. Each row has at least an overnight city and a main activity. The first and last days carry their travel legs, once a grown-up has written those places down. Days your pacing review made gentler are copied that way, and nothing on your cut list is in. Any travel time you had to look up is in your route map notes. Blank boxes are fine, and a plan with gaps is still a plan. When it's finished, look back at Sessions 16, 26 and 35. Is the gap between your guess and your time smaller now than it was then?
 
 ## Source Check
 
