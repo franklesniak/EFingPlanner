@@ -71,7 +71,7 @@ Each has its own **what to consider** list. The review form checks whether the w
 
 **What they bring:** likely overnight bases, possible day trips, places to skip, places to save for a future trip, with reasons and sources, **and how the Session 03 traveler poll shaped it**, naming which traveler's "one thing you'd love" each choice makes room for.
 
-**Also yours to do here:** if you left the rough trip shape partly open at setup, firm it up now, including the departure place. The Phase 5 route work builds on it. If your family is continuing from First Taste, keep the place of your child's special pick on the shortlist. Only the three blocks can change the pick. If one applies, tell your child which one, and they choose a new pick with you in Session 26.
+**Also yours to do here:** if you left the rough trip shape partly open at setup, firm it up now, including the departure place. The Phase 5 route work builds on it. If your family is continuing from First Taste, keep the place of your child's special pick on the shortlist. Only the three blocks can change the pick. If one applies, tell your child which one, so Session 23 makes no card for it. They choose a new pick from their attraction cards with you in Session 26.
 
 **What to consider:** whether the travel scope is workable; how it fits your maximum trip length, or your booked trip length; **whether the other travelers appear in it at all**, which is what the poll connection is there to show; budget implications; safety and common sense; and anything it implies for getting there, such as international flights if you fly.
 
@@ -81,7 +81,7 @@ Each has its own **what to consider** list. The review form checks whether the w
 
 **What they bring:** a must-do list, strong maybes, skips and save-for-futures, the biggest trade-offs.
 
-**Also yours to do here:** acknowledge the **one unconditional personal pick** your child made in Session 26. Session 27 opens with it, and it is a separate action from the review. They chose it knowing the three things that could block it, and this is where you say it stands.
+**Also yours to do here:** acknowledge the **one unconditional personal pick** from Session 26 (for a family continuing from First Taste, the Session 44 pick your child confirmed there). Session 27 opens with it, and it is a separate action from the review. They chose it knowing the three things that could block it, and this is where you say it stands.
 
 **What to consider:** variety; age appropriateness; cost; time realism; reservation needs; and whether it matches your family's pace.
 

@@ -3511,7 +3511,7 @@ look-for line naming the explanation and the confirmed fit, a coaching question 
 "What will our season change about the plan?", and a pitfall line against treating the
 confirmation as a formality), Session 15's prep line (the major cities reference is gone
 after 4.1b; the child now chooses from their Session 11 notes), Session 44's role, prep and
-look-for lines (on the Core path, the role is to confirm the pick Session 26 already chose,
+look-for lines (on the Core path, the role is to confirm the pick Session 26 settled,
 the My Calls page replaces the starred sights, and the must-do list is the one Session 26
 made),
 and Session 53's acknowledgment line (duration-true for Core/Full, duration-neutral for

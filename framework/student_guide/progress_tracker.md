@@ -104,10 +104,10 @@ How to read the lines:
 
 - [ ] [33 Budget Basics, First Pass](../sessions/phase_06_lodging_food_budget/33_budget_basics_first_pass.md)
   - [ ] *Finished First Taste first?* Ask a grown-up to have their own cost of getting there ready for Session 39. If a traveler comes for only part of the trip, jot down who is there on which days.
-- [ ] [34 Neighborhoods and Hotel Location](../sessions/phase_06_lodging_food_budget/34_neighborhoods_and_hotel_location.md)
+- [ ] [34 Neighborhoods and Hotel Location](../sessions/phase_06_lodging_food_budget/34_neighborhoods_and_hotel_location.md) *(a grown-up stays nearby if you search beyond the Destination Notes and official city sites, and beside you for an image search)*
 - [ ] [35 Hotel Comparison](../sessions/phase_06_lodging_food_budget/35_hotel_comparison.md)
-- [ ] [36 Food Research](../sessions/phase_06_lodging_food_budget/36_food_research.md) *(Conditional core: only if your family wants the restaurant and food shortlist in the binder)*
-- [ ] [37 Restaurant Shortlist](../sessions/phase_06_lodging_food_budget/37_restaurant_shortlist.md) *(Conditional core: only if your family wants the restaurant and food shortlist in the binder)*
+- [ ] [36 Food Research](../sessions/phase_06_lodging_food_budget/36_food_research.md) *(Conditional core: only if your family wants the restaurant and food shortlist in the binder; a grown-up stays nearby if you search beyond the Destination Notes, and beside you for an image search)*
+- [ ] [37 Restaurant Shortlist](../sessions/phase_06_lodging_food_budget/37_restaurant_shortlist.md) *(Conditional core: only if your family wants the restaurant and food shortlist in the binder; a grown-up stays nearby if you search beyond the Destination Notes, and beside you for an image search)*
 - [ ] [38 Daily Cost Estimates](../sessions/phase_06_lodging_food_budget/38_daily_cost_estimates.md)
 - [ ] [39 Budget Review, Second Pass](../sessions/phase_06_lodging_food_budget/39_budget_review_second_pass.md)
 
