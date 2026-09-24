@@ -10,7 +10,7 @@ You are here: Phase 6 (Lodging, Food, and Budget). Not a First Taste step. Previ
 - Planner skill: comparing choices
 - Estimated time: 20-30 minutes
 - Parent involvement: none / independent work
-- Materials: this session's Destination Notes, a device with the kid-safe filter on, a blank [Neighborhood Comparison page](../../templates/neighborhood_comparison.md), the route your family approved at Checkpoint 4, your [Trip-Basics card](../../templates/trip_basics.md) (for the number of travelers), your [Source Log](../../templates/source_log.md), and a [Scoring Rubric page](../../templates/scoring_rubric.md) if your child wants to score; a blank [Trade-Off Report](../../templates/tradeoff_report.md) only if the third report goes here
+- Materials: this session's Destination Notes, a device with the kid-safe filter on, a blank [Neighborhood Comparison page](../../templates/neighborhood_comparison.md), the route your family approved at Checkpoint 4, your route map notes from Session 28, your [Trip-Basics card](../../templates/trip_basics.md) (for the number of travelers), your [Source Log](../../templates/source_log.md), and a [Scoring Rubric page](../../templates/scoring_rubric.md) if your child wants to score; a blank [Trade-Off Report](../../templates/tradeoff_report.md) only if the third report goes here
 
 (For an at-a-glance version, see the matching entry in [the parent session notes](../../parent_guide/session_support_notes.md); the Parent Notes below have the full detail.)
 
@@ -41,7 +41,7 @@ Where you sleep shapes every day of the trip. You walk out of that door each mor
 
 You compare, and the grown-ups decide where the family stays. They also check that the area is safe and book the rooms.
 
-**The third trade-off report.** Your project needs three trade-off reports. The third is about pacing, where you stay, or the budget. Did choosing an area feel like a hard call? Then write it here, on a fresh Trade-Off Report. If not, it waits for Session 43, which looks at pacing. You write it once, at one of the two.
+**The third Trade-Off Report.** Your project needs three trade-off reports. The third is about pacing, where you stay, or the budget. Did choosing an area feel like a hard call? Then write it here, on a fresh Trade-Off Report. If not, it waits for Session 43, which looks at pacing. You write it once, at one of the two.
 
 ## Workspace
 
@@ -51,11 +51,11 @@ You can say your answers to an adult who writes them, or draw them, if that's ea
 
 ## Artifact Created
 
-Your neighborhood comparison: two or three areas side by side, with the one you'd recommend circled.
+Your Neighborhood Comparison: two or three areas side by side, with the one you'd recommend circled.
 
 ## Stop Point
 
-You are done when your neighborhood comparison has at least two areas filled in and you've circled the one you'd recommend, with one sentence saying why. One clear pick with a reason is enough. You don't need every box filled, and "ask an adult" is a fine answer. If you chose to write your third trade-off report here, you're done when that report is filled in too.
+You are done when your Neighborhood Comparison has at least two areas filled in and you've circled the one you'd recommend, with one sentence saying why. One clear pick with a reason is enough. You don't need every box filled, and "ask an adult" is a fine answer. If you chose to write your third Trade-Off Report here, you're done when that report is filled in too.
 
 ## Source Check
 
@@ -71,7 +71,7 @@ Stuck? Use the [When I'm Stuck card](../../student_guide/when_im_stuck.md) in yo
 
 ## Optional Extension
 
-If you have extra energy and your route has another base, do a second Neighborhood Comparison page for it. If not, you are done.
+If you have extra energy and your route has another base, do a second Neighborhood Comparison page for it. Circle your pick there too, with one sentence saying why. If not, you are done.
 
 ## Parent Notes
 
