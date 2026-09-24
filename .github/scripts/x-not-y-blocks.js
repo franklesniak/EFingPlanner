@@ -21,6 +21,11 @@
  *            Block quotes are numbered from 0 in document order.
  *   list     the number of the innermost list around the block, or null.
  *   item     true for the first block of a list item.
+ *   path     every block quote and list item around the block, outermost
+ *            first, as `q<n>` and `i<n>`, each numbered from 0 in document
+ *            order. Two blocks with the same path sit in the same container,
+ *            so the recount pairs no paragraphs across a container's edge: a
+ *            list's edge is its first item's start and its last item's end.
  *   level    a heading's level, 1 to 6.
  *   content  a paragraph's or a heading's inline source, less the block quote
  *            prefixes, list markers and indentation around it, one source line
@@ -135,8 +140,10 @@ function readBlocks(text) {
   const blocks = [];
   const quotes = [];
   const lists = [];
+  const path = [];
   let nextQuote = 0;
   let nextList = 0;
+  let nextItem = 0;
   let itemOpen = false;
   const top = (stack) => (stack.length ? stack[stack.length - 1] : null);
   const add = (token, fields) => {
@@ -146,6 +153,7 @@ function readBlocks(text) {
       quote: top(quotes),
       list: top(lists),
       item: itemOpen,
+      path: [...path],
       ...fields,
     });
     itemOpen = false;
@@ -155,10 +163,12 @@ function readBlocks(text) {
       case 'blockquote_open':
         add(token, { type: 'blockquote' });
         quotes.push(nextQuote);
+        path.push(`q${nextQuote}`);
         nextQuote += 1;
         break;
       case 'blockquote_close':
         quotes.pop();
+        path.pop();
         break;
       case 'bullet_list_open':
       case 'ordered_list_open': {
@@ -175,6 +185,11 @@ function readBlocks(text) {
         break;
       case 'list_item_open':
         itemOpen = true;
+        path.push(`i${nextItem}`);
+        nextItem += 1;
+        break;
+      case 'list_item_close':
+        path.pop();
         break;
       case 'paragraph_open': {
         const inline = tokens[index + 1];

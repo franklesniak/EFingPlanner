@@ -37,20 +37,26 @@ reference and backslash escape as its character, and each code span as
 break. The patterns also skip a literal ``*`` and a run of ``_`` at a word's
 edge, such as a blank to fill in. A paragraph is joined before it is split
 into sentences, because Markdown renders a soft line break as a space. The
-candidate, and its key, is the sentence as the page prints it. A comment
-between two paragraphs does not part them. A release (``You do not have to
-...``) is keyed with the sentence after it, which decides whether it counts.
-Text above a page's first ``##`` heading is not a ``##`` section, so only the
-file cap reaches it. Each ``##`` heading starts its own section, even when two
-share a title. A child session's "For parents" strip and ``## Parent Notes``
-are parent-facing regions, but the file cap follows the file's own register.
+candidate, and its key, is the sentence as the page prints it, with every
+sentence its test reads: a fragment (``Not a failure.``) and a short negation
+are keyed with the claim before them, and a release (``You do not have to
+...``) with the sentence after it, which decides whether it counts. A
+paragraph pairs with the one before it only inside the same container: the
+page, one block quote or one list item. A comment between two paragraphs does
+not part them. ``No.`` ends a sentence unless a number follows it. Text above
+a page's first ``##`` heading is not a ``##`` section, so only the file cap
+reaches it. Each ``##`` heading starts its own section, even when two share a
+title. A child session's "For parents" strip and ``## Parent Notes`` are
+parent-facing regions, but the file cap follows the file's own register.
 
 A ``<!-- density-exempt: X, not Y -- <reason> -->`` marker covers the block
 directly below it: one paragraph, one whole list (a loose list included), one
 block quote, or, above a heading, that heading's section. Another comment
 between the marker and its block is skipped. It exempts the instances and
-split negations it covers. A marker that gives no reason exempts nothing, and
-the report names it.
+split negations it covers. The device is named ``X, not Y``; the old
+``X-not-Y`` and ``x-not-y`` are read too. A marker that gives no reason, or
+that names the device in any other spelling (``X not Y``, ``xnoty``), exempts
+nothing, and the report names it.
 
 Human judgments
 ---------------
@@ -61,20 +67,25 @@ changed sentence is reported as UNJUDGED; list those with ``--unjudged`` and
 add a judgment for each.
 
 The data files are strict JSON with 2-space indentation and no comment keys;
-this docstring documents them. ``x-not-y-judgments.json`` maps each page path
-to its judgments. A judgment's key is ``<kind>|<sentence text>|<occurrence>``,
-where the text is what the page prints, with ``|block quote`` or ``|quotation
-block quote`` added for a sentence inside one, so a sentence that moves into or
-out of a quotation is judged again. Each entry holds ``line`` (where the sentence stood when last checked; for reading
-only), ``judgment`` and ``reason``. The judgment is ``device`` (a true `X, not
-Y` instance), ``split`` (a split negation), ``banned`` (the banned shape) or
-``no``. Pages are sorted by path, and a page's entries follow the page.
+this docstring documents them, and the script checks each one as it loads it.
+``x-not-y-judgments.json`` maps each page path (a ``.md`` path) to its
+judgments. A judgment's key is ``<kind>|<sentence text>|<occurrence>``, where
+the text is what the page prints (sentences joined by `` → ``), with ``|block
+quote`` or ``|quotation block quote`` added for a sentence inside one, so a
+sentence that moves into or out of a quotation is judged again. Each entry
+holds exactly ``line`` (where the sentence stood when last checked, a whole
+number from 1; for reading only), ``judgment`` and ``reason`` (not empty). The
+judgment is ``device`` (a true `X, not Y` instance), ``split`` (a split
+negation), ``banned`` (the banned shape) or ``no``. Pages are sorted by path,
+and a page's entries follow the page.
 
-``x-not-y-registers.json`` maps a page path to its ``register`` (``child``,
-``parent`` or ``builder``) and the ``basis`` for it. It holds the trip starter
-kit's pages, which are copies of child-facing templates
-(``tests/test_trip_starter_kit_copies.py`` keeps them in step) and so take no
-marker of their own.
+``x-not-y-registers.json`` maps a page path (a ``.md`` path) to exactly a
+``register`` (``child``, ``parent`` or ``builder``) and the ``basis`` for it
+(not empty). It holds the trip starter kit's pages, which are copies of
+child-facing templates (``tests/test_trip_starter_kit_copies.py`` keeps them
+in step) and so take no marker of their own. A data file that is missing is
+read as empty; one that cannot be read, is not JSON, or holds an entry of
+another shape or value stops the run.
 
 A page's register comes from its ``<!-- audience: parent -->`` or
 ``<!-- audience: builder -->`` marker, then from ``x-not-y-registers.json``,
@@ -84,9 +95,10 @@ is UNDETERMINED.
 
 Exit code: 0 when every page is within its caps or marked exempt, with no
 banned shape, no undetermined register, no unjudged candidate and no marker
-without a reason; 1 otherwise; 2 when REPO_ROOT has no ``framework/``
-directory; 3 when the Markdown reader cannot run or cannot read a page, which
-the report names.
+problem; 1 otherwise; 2 when REPO_ROOT has no ``framework/`` directory, or when
+a data file stops the run, which the message names; 3 when the Markdown reader
+cannot run, or a page cannot be read (not UTF-8, say), which the message
+names.
 
 The script is a tool, not a gate: no workflow or hook runs it over the pages.
 It reads each page with markdown-it, through ``x-not-y-blocks.js`` beside it
@@ -144,9 +156,13 @@ PARENT_SECTION_RE = re.compile(
 #: no reason is still read, so that the report can name it.
 EXEMPT_MARKER_RE = re.compile(r"<!--\s*density-exempt:(?P<body>.*?)-->", re.DOTALL)
 MARKER_BODY_RE = re.compile(r"^\s*(?P<device>.*?)\s+--(?P<reason>.*)$", re.DOTALL)
-#: The device name a marker must use. `X-not-Y` and `x-not-y` are read too, so
-#: an old marker still counts, but the style law names the device `X, not Y`.
-XNOTY_DEVICE_RE = re.compile(r"^x\s*[,-]?\s*not\s*[,-]?\s*y$", re.IGNORECASE)
+#: The device names a marker may use: the style law's `X, not Y`, and the old
+#: `X-not-Y` and `x-not-y`, so an old marker still counts. No other spelling
+#: exempts anything.
+XNOTY_DEVICE_NAMES = ("X, not Y", "X-not-Y", "x-not-y")
+#: A name that looks like the device's in another spelling (`X not Y`, `xnoty`,
+#: `X, not-y`). Such a marker exempts nothing, and the report names it.
+XNOTY_LOOKALIKE_RE = re.compile(r"^x\s*[,-]?\s*not\s*[,-]?\s*y$", re.IGNORECASE)
 
 # ---------------------------------------------------------------------------
 # Candidate patterns
@@ -163,14 +179,19 @@ NEG_AUX = (
     r"|(?:is|are|was|were|does|do|did|has|have|had|could|would|should|must|might|need)n['’]t"
     r"|(?:can|won|shan)['’]t|cannot)"
 )
+#: A verb contracted onto its subject: `it's`, `they're`, `I'm`, `we've`,
+#: `you'd`, `it'll`, with a straight or a curly apostrophe.
+CONTRACTION = r"['’](?:s|re|m|ve|d|ll)"
 #: A short subject before a negated verb: "it isn't", "you can't".
-SUBJ = r"(?:it|they|that|this|you|we|he|she|i)"
-# A negation that opens a clause: "not", "never", or a short subject plus a
-# negated verb ("do not", "it isn't", "they're not").
-CLAUSE_NEG = (
-    r"(?:not|never|(?:" + SUBJ + r"\s+)?" + NEG_AUX
-    + r"|(?:it|that)['’]s\s+not|(?:they|you|we)['’]re\s+not|" + SUBJ + r"\s+never)\b"
-)
+SUBJ = r"(?:it|they|that|this|these|those|there|you|we|he|she|i)"
+#: A subject and its negated verb, in every spelling the tests read: `it is
+#: not`, `it isn't`, `it's not`, `I'm not`, `we've never`, `you'll never` and
+#: `it never`. One pattern serves every test that reads a subject, so a
+#: contraction one test reads, every test reads.
+SUBJ_NEG = SUBJ + r"(?:\s+" + NEG_AUX + r"|" + CONTRACTION + r"\s+(?:not|never)|\s+never)"
+# A negation that opens a clause: "not", "never", a negated verb ("do not"),
+# or a subject and its negated verb ("it isn't", "they're not", "I'm not").
+CLAUSE_NEG = r"(?:not|never|" + NEG_AUX + r"|" + SUBJ_NEG + r")\b"
 
 # Inline forms of the device. Each match is a *candidate* only.
 INLINE_PATTERNS = {
@@ -178,11 +199,12 @@ INLINE_PATTERNS = {
     "comma-never": re.compile(r",\s*(?:and\s+|but\s+)?never\b", re.IGNORECASE),
     "dash-not": re.compile(r"(?:\s--\s*|\s?[—–]\s?)(?:and\s+)?" + CLAUSE_NEG, re.IGNORECASE),
     "semi-colon-not": re.compile(r"[;:]\s*" + CLAUSE_NEG, re.IGNORECASE),
-    "comma-clause-not": re.compile(r",\s*" + SUBJ + r"\s+" + NEG_AUX + r"\b", re.IGNORECASE),
-    "but-not": re.compile(r"\bbut\s+(?:" + SUBJ + r"\s+)?(?:" + NEG_AUX + r"|not|never)\b", re.IGNORECASE),
+    "comma-clause-not": re.compile(r",\s*" + SUBJ_NEG + r"\b", re.IGNORECASE),
+    "but-not": re.compile(r"\bbut\s+(?:" + SUBJ_NEG + r"|" + NEG_AUX + r"|not|never)\b", re.IGNORECASE),
     "rather-than": re.compile(r"\brather than\b", re.IGNORECASE),
     "instead-of": re.compile(r"\binstead of\b", re.IGNORECASE),
-    "not-but": re.compile(r"\bnot\b(?:(?![.;:!?]).){1,90}?\bbut\b", re.IGNORECASE),
+    # `not X but Y`, also with the negation contracted: `isn't X but Y`.
+    "not-but": re.compile(r"(?:\bnot\b|n['’]t\b)(?:(?![.;:!?]).){1,90}?\bbut\b", re.IGNORECASE),
     "and-not": re.compile(r"\b(?:and|or)\s+not\b", re.IGNORECASE),
     # `Choose the map (not the list).`: the rejected alternative in parentheses.
     "paren-not": re.compile(r"\(\s*(?:and\s+|but\s+|or\s+)?(?:not|never)\b", re.IGNORECASE),
@@ -195,7 +217,7 @@ FRAGMENT_RE = re.compile(r"^[\"'“‘*_(]*(?:Not|Never)\b")
 RELEASE_RE = re.compile(
     r"\b(?:do|does|did)\s+not\s+(?:have|need)\s+to\b|\b(?:don|doesn|didn)['’]t\s+(?:have|need)\s+to\b"
     r"|\bno need to\b|\bneed(?:n['’]t|\s+not)\b"
-    r"|\b(?:is|are|isn['’]t|aren['’]t)\s+(?:not\s+)?(?:required|needed)\b",
+    r"|(?:\b(?:is|are|isn['’]t|aren['’]t)|['’](?:s|re))\s+(?:not\s+)?(?:required|needed)\b",
     re.IGNORECASE,
 )
 #: A bare "instead" (not "instead of") closes a two-sentence rejection.
@@ -207,9 +229,9 @@ NEGATION_RE = re.compile(r"\b(?:not|never|no|cannot)\b|n['’]t\b", re.IGNORECAS
 OPENERS = r"[\"'“‘*_(]*"
 #: Negation in the first words of a sentence: the opening of the banned shape.
 LEADING_NEG_RE = re.compile(
-    "^" + OPENERS + r"(?P<subj>[A-Za-z]+)(?:'s|'re|’s|’re)?"
+    "^" + OPENERS + r"(?P<subj>[A-Za-z]+)(?:" + CONTRACTION + ")?"
     r"(?:\s+" + AUX + ")?"
-    r"\s*(?:not\b|n't\b|n’t\b|never\b)"
+    r"\s*(?:not\b|n['’]t\b|never\b)"
     # `can't`, `won't` and `shan't` do not spell their verb before `n't`.
     r"|^" + OPENERS + r"(?P<subj2>[A-Za-z]+)\s+(?:can|won|shan)['’]t\b",
 )
@@ -220,7 +242,7 @@ NEG_VERB_RE = re.compile(r"\b" + NEG_AUX + r"\b", re.IGNORECASE)
 #: half of "It's not X. It's Y."
 PRONOUN_CLAIM_RE = re.compile(
     "^" + OPENERS + r"(?:It|They|This|That|These|Those)"
-    r"(?:['’]s|['’]re|\s+(?:is|are|was|were|does|do|just|only|\w+s)\b)",
+    r"(?:" + CONTRACTION + r"|\s+(?:is|are|was|were|does|do|just|only|\w+s)\b)",
 )
 #: Where the two halves of a joined banned shape meet: `It's not a toy; it's a
 #: tool.` joins them with a semicolon, and a colon, a comma or a dash does too.
@@ -249,8 +271,13 @@ SENTENCE_SPLIT_RE = re.compile(
 )
 #: Abbreviations that always lead into more words: a sentence never ends on one.
 #: `etc.`, `a.m.` and `p.m.` can end a sentence, so a capital after them starts
-#: a new one: `It isn't at 5 p.m. It's at 6 p.m.` is two sentences.
-ABBREV_RE = re.compile(r"\b(?:e\.g|i\.e|vs|Dr|Mr|Mrs|Ms|St|No)\.$")
+#: a new one: `It isn't at 5 p.m. It's at 6 p.m.` is two sentences. `St.` and
+#: `Dr.` are read as titles (`St. Louis`, `Dr. Kim`); a street name such as
+#: `Main St.` at a sentence's end joins the next sentence, which no page has.
+ABBREV_RE = re.compile(r"\b(?:e\.g|i\.e|vs|Dr|Mr|Mrs|Ms|St)\.$")
+#: `No.` leads into a number (`bus No. 5`); anywhere else it is the answer
+#: "No." and ends its sentence: `No. Use the map.` is two sentences.
+NUMBER_ABBREV_RE = re.compile(r"\bNo\.$")
 #: A literal `*`, or a run of `_` at a word's edge, left in printed text: an
 #: escaped `\*` or a blank to fill in. An underscore inside a word stays.
 EMPHASIS_RE = re.compile(r"\*+|(?<![A-Za-z0-9])_+|_+(?![A-Za-z0-9])")
@@ -278,7 +305,9 @@ def sentence_spans(text: str) -> list[tuple[int, int]]:
     start = 0
     for m in [*SENTENCE_SPLIT_RE.finditer(text), None]:
         end = m.start() if m else len(text)
-        if spans and ABBREV_RE.search(text[spans[-1][0]:spans[-1][1]].rstrip()):
+        before = text[spans[-1][0]:spans[-1][1]].rstrip() if spans else ""
+        if spans and (ABBREV_RE.search(before)
+                      or (NUMBER_ABBREV_RE.search(before) and text[start:start + 1].isdigit())):
             spans[-1] = (spans[-1][0], end)
         else:
             spans.append((start, end))
@@ -298,10 +327,7 @@ def split_sentences(text: str) -> list[str]:
 
 def normalize_subject(word: str) -> str:
     """Return a sentence subject in lower case, without a contracted verb."""
-    word = word.lower()
-    for suffix in ("'s", "’s", "'re", "’re"):
-        if word.endswith(suffix):
-            word = word[: -len(suffix)]
+    word = re.sub(CONTRACTION + "$", "", word.lower())
     return "it" if word == "its" else word
 
 
@@ -329,9 +355,10 @@ class ProseLine:
     region: str  # "main", "for-parents strip" or "parent notes"
     blockquote: bool
     paragraph: int
-    item: bool = False  # the line opens a list item
     section_index: int = 0  # 0 above the first `##`, then 1, 2, ... per `##` heading
-    quote_id: int | None = None  # the block quote the line sits in, numbered in page order
+    #: Every block quote (`q<n>`) and list item (`i<n>`) around the line,
+    #: outermost first. `()` is the page itself.
+    container: tuple[str, ...] = ()
     follows: bool = False  # the line opens a paragraph that only comments part from the one before
 
 
@@ -471,13 +498,18 @@ def parse_marker(lineno: int, body: str) -> Marker:
     """Read one marker body, `<device> -- <reason>`.
 
     The style law asks a marker to say why, so a marker that names `X, not Y`
-    and gives no reason exempts nothing, and the report names it.
+    and gives no reason exempts nothing, and the report names it. So does a
+    marker that names the device in a spelling the law does not use.
     """
     m = MARKER_BODY_RE.match(body)
     device = normalize_space(m.group("device") if m else body)
     reason = normalize_space((m.group("reason") or "") if m else "")
-    names_device = bool(XNOTY_DEVICE_RE.match(device))
-    problem = "no reason after ' -- '" if names_device and not reason else ""
+    names_device = device in XNOTY_DEVICE_NAMES
+    problem = ""
+    if names_device and not reason:
+        problem = "no reason after ' -- '"
+    elif not names_device and XNOTY_LOOKALIKE_RE.match(device):
+        problem = "device name is not `X, not Y`"
     return Marker(lineno, device, reason, names_device and bool(reason), problem=problem)
 
 
@@ -550,8 +582,8 @@ def parse_text(text: str) -> Page:
         paragraph += 1
         for offset, line in enumerate(lines):
             prose.append(ProseLine(block["start"] + offset, line, section, region, block.get("quote") is not None,
-                                   paragraph, bool(block.get("item")) and offset == 0, section_index,
-                                   quote_id=block.get("quote"), follows=follows and offset == 0))
+                                   paragraph, section_index, container=tuple(block.get("path") or ()),
+                                   follows=follows and offset == 0))
         follows = True
     for marker, index in zip(markers, marker_blocks):
         marker_scope(marker, blocks, index, heading_lines, source)
@@ -612,17 +644,18 @@ def paragraphs(prose: list[ProseLine]) -> list[list[ProseLine]]:
 
 
 def adjacent(a: list[ProseLine], b: list[ProseLine], raw_lines: list[str] | None) -> bool:
-    """True when plain paragraph b directly follows plain paragraph a in one section.
+    """True when paragraph b directly follows paragraph a in one container and one section.
 
-    A split negation or a banned pair can straddle a paragraph break. Only
-    plain paragraphs pair up this way: consecutive list items are separate
-    points, and a block quote is a separate box from the prose around it. A
-    comment, such as a `density-exempt` marker, is not rendered, so it does
-    not part two paragraphs, even when it runs over several lines.
+    A split negation or a banned pair can straddle a paragraph break, but not a
+    container's edge. The container is the page itself, one block quote or one
+    list item, with everything around it: consecutive list items are separate
+    points, a block quote is a separate box, and a list, even a loose one whose
+    item runs on in a second paragraph, is apart from the prose around it. Two
+    paragraphs of one list item do pair. A comment, such as a `density-exempt`
+    marker, is not rendered, so it does not part two paragraphs, even when it
+    runs over several lines.
     """
-    if raw_lines is None or a[0].item or b[0].item:
-        return False
-    if a[-1].quote_id != b[0].quote_id:
+    if raw_lines is None or a[-1].container != b[0].container:
         return False
     if a[-1].section_index != b[0].section_index or a[-1].region != b[0].region:
         return False
@@ -650,25 +683,29 @@ def quote_contexts(paras: list[list[ProseLine]], raw_lines: list[str] | None) ->
     The context is "" for ordinary prose, "block quote" for a callout, and
     "quotation block quote" when the whole block quote sits inside quotation
     marks or carries a named attribution, as the style law's counting bullet
-    defines a quotation.
+    defines a quotation. A block quote's text is every paragraph inside it,
+    those in a list or a block quote within it included, and a paragraph inside
+    any block quote that is a quotation is quoted.
     """
-    out = [""] * len(paras)
-    i = 0
-    while i < len(paras):
-        quote = paras[i][0].quote_id
-        if quote is None:
-            i += 1
-            continue
-        j = i
-        while raw_lines is not None and j + 1 < len(paras) and paras[j + 1][0].quote_id == quote:
-            j += 1
-        texts = [normalize_space(paragraph_text(para)) for para in paras[i:j + 1]]
+    quotes: dict[str, list[int]] = {}
+    for index, para in enumerate(paras):
+        for part in para[0].container:
+            if part.startswith("q"):
+                quotes.setdefault(part, []).append(index)
+    quotation: set[str] = set()
+    for quote, members in quotes.items():
+        texts = [normalize_space(paragraph_text(paras[k])) for k in members]
         joined = " ".join(t for t in texts if t)
-        quotation = bool(QUOTE_OPEN_RE.search(joined) and QUOTE_CLOSE_RE.search(joined)) or any(
-            ATTRIBUTION_RE.match(t) for t in texts)
-        for k in range(i, j + 1):
-            out[k] = "quotation block quote" if quotation else "block quote"
-        i = j + 1
+        if (QUOTE_OPEN_RE.search(joined) and QUOTE_CLOSE_RE.search(joined)) or any(
+                ATTRIBUTION_RE.match(t) for t in texts):
+            quotation.add(quote)
+    out = []
+    for para in paras:
+        inside = [part for part in para[0].container if part.startswith("q")]
+        if not inside:
+            out.append("")
+        else:
+            out.append("quotation block quote" if quotation.intersection(inside) else "block quote")
     return out
 
 
@@ -757,10 +794,13 @@ def find_candidates(rel: str, prose: list[ProseLine],
             pprev = plain(prev) if prev is not None else None
             pnxt = plain(nxt) if nxt is not None else None
             pats = [name for name, rx in INLINE_PATTERNS.items() if rx.search(ps)]
-            if FRAGMENT_RE.match(ps) and (idx > 0 or before is not None):
+            if FRAGMENT_RE.match(ps) and prev is not None:
                 pats.append("fragment")
             if pats:
-                add(pl, "device", pats, s, ctx)
+                # A candidate's text holds every sentence its test reads, so a
+                # judgment reopens when any of them changes. A fragment counts
+                # only when it follows a claim, so the claim is part of it.
+                add(pl, "device", pats, prev + ARROW + s if "fragment" in pats else s, ctx)
             words = len(s.split())
             if not pats:
                 split_pats = []
@@ -841,11 +881,78 @@ def region_register(file_register: str, region: str) -> str:
 VALID_JUDGMENTS = {"device", "split", "banned", "no"}
 
 
-def load_json(path: Path | None) -> dict:
-    """Load a data file. Its shape is documented at the top of this script."""
+class DataError(Exception):
+    """A data file cannot be used: it cannot be read, is not JSON, or holds an
+    entry of another shape or value than the top of this script documents."""
+
+
+#: A judgment's key: `<kind>|<sentence text>|<occurrence>`, with the quotation
+#: context after it for a sentence in a block quote.
+JUDGMENT_KEY_RE = re.compile(r"^(?:device|split|banned)\|.+\|[1-9][0-9]*(?:\|(?:quotation )?block quote)?$",
+                             re.DOTALL)
+
+
+def load_json(path: Path | None) -> Any:
+    """Load a data file; a missing one is empty. Any other failure raises DataError."""
     if path is None or not path.exists():
         return {}
-    return json.loads(path.read_text(encoding="utf-8"))
+    try:
+        return json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, ValueError) as exc:  # ValueError covers bad UTF-8 and bad JSON
+        raise DataError(f"{path.name}: {exc}") from exc
+
+
+def is_page_path(key: Any) -> bool:
+    """True for a data file's page key: a repository path to a `.md` file."""
+    return isinstance(key, str) and key.endswith(".md") and not key.startswith(("/", "../"))
+
+
+def is_text(value: Any) -> bool:
+    """True for a string that holds more than white space."""
+    return isinstance(value, str) and bool(value.strip())
+
+
+def load_registers(path: Path | None) -> dict:
+    """Load `x-not-y-registers.json` and check every entry, so no typo sets a register."""
+    data = load_json(path)
+    name = path.name if path else "registers"
+    if not isinstance(data, dict):
+        raise DataError(f"{name}: the file must hold one object of pages")
+    for rel, entry in data.items():
+        where = f"{name}: {rel!r}"
+        if not is_page_path(rel):
+            raise DataError(f"{where} is not a .md page path")
+        if not isinstance(entry, dict) or set(entry) != {"register", "basis"}:
+            raise DataError(f"{where} must hold exactly `register` and `basis`")
+        if entry["register"] not in FILE_CAP:
+            raise DataError(f"{where}: register {entry['register']!r} is not child, parent or builder")
+        if not is_text(entry["basis"]):
+            raise DataError(f"{where}: the basis is empty")
+    return data
+
+
+def load_judgments(path: Path | None) -> dict:
+    """Load `x-not-y-judgments.json` and check every entry, so no typo passes as a judgment."""
+    data = load_json(path)
+    name = path.name if path else "judgments"
+    if not isinstance(data, dict):
+        raise DataError(f"{name}: the file must hold one object of pages")
+    for rel, entries in data.items():
+        if not is_page_path(rel) or not isinstance(entries, dict):
+            raise DataError(f"{name}: {rel!r} must be a .md page path that maps to its judgments")
+        for key, entry in entries.items():
+            where = f"{name}: {rel}: {key[:80]!r}"
+            if not JUDGMENT_KEY_RE.match(key):
+                raise DataError(f"{where} is not a key of the form <kind>|<sentence text>|<occurrence>")
+            if not isinstance(entry, dict) or set(entry) != {"line", "judgment", "reason"}:
+                raise DataError(f"{where} must hold exactly `line`, `judgment` and `reason`")
+            if type(entry["line"]) is not int or entry["line"] < 1:
+                raise DataError(f"{where}: the line must be a whole number from 1")
+            if entry["judgment"] not in VALID_JUDGMENTS:
+                raise DataError(f"{where}: judgment {entry['judgment']!r} is not device, split, banned or no")
+            if not is_text(entry["reason"]):
+                raise DataError(f"{where}: the reason is empty")
+    return data
 
 
 def page_paths(root: Path) -> list[Path]:
@@ -868,9 +975,18 @@ def page_paths(root: Path) -> list[Path]:
 def scan(root: Path, judgments: dict, registers: dict) -> list[FileReport]:
     """Parse, match and judge every page under the scan roots."""
     reports: list[FileReport] = []
-    for path in page_paths(root):
+    try:
+        paths = page_paths(root)
+    except OSError as exc:
+        raise ReadError(f"cannot list the pages: {exc}") from exc
+    for path in paths:
         rel = path.relative_to(root).as_posix()
-        text = path.read_text(encoding="utf-8")
+        # Every read goes through ReadError, so a page that cannot be read (not
+        # UTF-8, or not readable) stops the run and is named.
+        try:
+            text = path.read_text(encoding="utf-8")
+        except (OSError, UnicodeDecodeError) as exc:
+            raise ReadError(f"{rel}: {exc}") from exc
         try:
             page = parse_text(text)
         except ReadError as exc:
@@ -978,7 +1094,7 @@ TOTAL_KEYS = (
     "files", "candidates", "rejected_candidates", "unjudged_candidates", "undetermined_registers",
     "true_instances", "counted_instances", "exempted_instances", "files_over", "files_exempt",
     "sections_over", "sections_exempt", "split_negations", "split_negations_counted",
-    "files_over_split_limit", "banned_shapes", "markers_without_reason",
+    "files_over_split_limit", "banned_shapes", "marker_problems",
 )
 
 
@@ -1011,7 +1127,7 @@ def print_report(reports: list[FileReport], only_problems: bool) -> dict:
         totals["split_negations_counted"] += s["splits_counted"]
         totals["files_over_split_limit"] += s["split_status"] == "OVER"
         totals["banned_shapes"] += len(s["banned"])
-        totals["markers_without_reason"] += s["marker_problems"]
+        totals["marker_problems"] += s["marker_problems"]
         problem = (s["status"] == "OVER" or s["split_status"] == "OVER" or s["banned"] or s["unjudged"]
                    or s["register"] == "undetermined" or sec_over or s["marker_problems"])
         if only_problems and not problem:
@@ -1069,7 +1185,7 @@ def failing(totals: dict) -> bool:
     """True when the totals show any page outside the rule."""
     return bool(totals["unjudged_candidates"] or totals["undetermined_registers"] or totals["files_over"]
                 or totals["sections_over"] or totals["files_over_split_limit"] or totals["banned_shapes"]
-                or totals["markers_without_reason"])
+                or totals["marker_problems"])
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -1091,7 +1207,12 @@ def main(argv: list[str] | None = None) -> int:
         print(f"error: {root} has no framework/ directory", file=sys.stderr)
         return 2
     try:
-        reports = scan(root, load_json(args.judgments), load_json(args.registers))
+        judgments, registers = load_judgments(args.judgments), load_registers(args.registers)
+    except DataError as exc:
+        print(f"error: cannot use a data file: {exc}", file=sys.stderr)
+        return 2
+    try:
+        reports = scan(root, judgments, registers)
     except ReadError as exc:
         hint = (" The recount reads pages with markdown-it, so it needs Node.js and the repository's node_modules"
                 " (run `npm ci`)." if exc.setup else "")

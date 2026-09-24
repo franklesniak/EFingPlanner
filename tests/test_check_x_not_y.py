@@ -795,3 +795,248 @@ def test_the_registers_file_is_well_formed() -> None:
         assert rel.endswith(".md")
         assert entry["register"] in cx.FILE_CAP
         assert entry["basis"]
+
+
+def test_the_data_files_pass_the_checks_the_script_runs_on_them() -> None:
+    assert cx.load_judgments(cx.DEFAULT_JUDGMENTS)
+    assert cx.load_registers(cx.DEFAULT_REGISTERS)
+
+
+def data_run(tmp_path: Path, capsys: Any, judgments: str | None = None, registers: str | None = None) -> tuple[int, str]:
+    """Run main() on one child page, with data files written as given; return the exit code and stderr."""
+    write(tmp_path, "framework/templates/a.md", "## A\n\nIt is a map, not a list.\n")
+    jpath, rpath = tmp_path / "judgments.json", tmp_path / "registers.json"
+    jpath.write_text(judgments if judgments is not None else json.dumps(judge_all(tmp_path)), encoding="utf-8")
+    rpath.write_text(registers if registers is not None else "{}", encoding="utf-8")
+    code = cast(int, cx.main([str(tmp_path), "--judgments", str(jpath), "--registers", str(rpath)]))
+    return code, capsys.readouterr().err
+
+
+@pytest.mark.parametrize(("registers", "message"), [
+    ('{"framework/templates/a.md": {"register": "chil", "basis": "x"}}', "register 'chil'"),
+    ('{"framework/templates/a.md": {"register": "child"}}', "exactly `register` and `basis`"),
+    ('{"framework/templates/a.md": {"regsiter": "parent", "basis": "x"}}', "exactly `register` and `basis`"),
+    ('{"framework/templates/a.md": "child"}', "exactly `register` and `basis`"),
+    ('{"framework/templates/a.md": {"register": "child", "basis": " "}}', "the basis is empty"),
+    ('{"framework/templates/a": {"register": "child", "basis": "x"}}', "is not a .md page path"),
+    ('["framework/templates/a.md"]', "one object of pages"),
+    ('{"framework/templates/a.md": ', "registers.json"),
+])
+def test_a_registers_entry_the_script_cannot_use_stops_the_run(tmp_path: Path, capsys: Any, registers: str,
+                                                                 message: str) -> None:
+    code, err = data_run(tmp_path, capsys, registers=registers)
+    assert code == 2
+    assert message in err
+
+
+@pytest.mark.parametrize(("entry", "message"), [
+    ('{"line": 3, "judgment": "devcie", "reason": "x"}', "judgment 'devcie'"),
+    ('{"line": 3, "judgment": "device", "reason": ""}', "the reason is empty"),
+    ('{"line": 0, "judgment": "device", "reason": "x"}', "a whole number from 1"),
+    ('{"line": "3", "judgment": "device", "reason": "x"}', "a whole number from 1"),
+    ('{"line": 3, "judgment": "device"}', "exactly `line`, `judgment` and `reason`"),
+    ('"device"', "exactly `line`, `judgment` and `reason`"),
+])
+def test_a_judgment_the_script_cannot_use_stops_the_run(tmp_path: Path, capsys: Any, entry: str,
+                                                         message: str) -> None:
+    judgments = '{"framework/templates/a.md": {"device|It is a map, not a list.|1": %s}}' % entry
+    code, err = data_run(tmp_path, capsys, judgments=judgments)
+    assert code == 2
+    assert message in err
+
+
+def test_a_judgment_key_of_another_form_stops_the_run(tmp_path: Path, capsys: Any) -> None:
+    judgments = '{"framework/templates/a.md": {"It is a map, not a list.": {"line": 3, "judgment": "no", "reason": "x"}}}'
+    code, err = data_run(tmp_path, capsys, judgments=judgments)
+    assert code == 2
+    assert "<kind>|<sentence text>|<occurrence>" in err
+
+
+def test_data_files_the_script_can_use_pass(tmp_path: Path, capsys: Any) -> None:
+    registers = '{"framework/templates/a.md": {"register": "parent", "basis": "test"}}'
+    assert data_run(tmp_path, capsys, registers=registers)[0] == 0
+
+
+def test_a_data_file_that_is_not_utf_8_stops_the_run(tmp_path: Path, capsys: Any) -> None:
+    write(tmp_path, "framework/templates/a.md", "## A\n\nText.\n")
+    (tmp_path / "registers.json").write_bytes(b'{"\xff": 1}')
+    assert cx.main([str(tmp_path), "--registers", str(tmp_path / "registers.json")]) == 2
+    assert "registers.json" in capsys.readouterr().err
+
+
+def test_a_page_that_is_not_utf_8_stops_the_run_and_is_named(tmp_path: Path, capsys: Any) -> None:
+    write(tmp_path, "framework/templates/a.md", "## A\n\nIt is a map, not a list.\n")
+    (tmp_path / "framework/templates/b.md").write_bytes(b"## B\n\nA map \xff.\n")
+    assert cx.main([str(tmp_path)]) == 3
+    err = capsys.readouterr().err
+    assert "framework/templates/b.md" in err
+    assert "npm ci" not in err
+
+
+# ---------------------------------------------------------------------------
+# A key holds every sentence its test reads
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.parametrize(("before", "after"), [
+    # A fragment counts only after a claim, so the claim is in its key.
+    ("Write a city. Not a failure.", "A rough guess may be wrong. Not a failure."),
+    # A short negation is judged with the claim before it.
+    ("You move a block. You don't start over.", "You stay here. You don't start over."),
+    # A bare "instead" is read against the negation before it.
+    ("Do not guess. Look it up instead.", "Do not rush. Look it up instead."),
+    # A release counts only when the sentence after it recasts the thing.
+    ("Write the date. You do not have to fill every line. A few notes are enough.",
+     "Write the date. You do not have to fill every line. Tomorrow is Tuesday."),
+    # A negation that opens a paragraph is judged with the claim after it.
+    ("Do not guess.\n\nLook it up.", "Do not guess.\n\nAsk a grown-up."),
+    # The banned pair is judged as two sentences.
+    ("It's not a toy. It's a tool.", "It's not a toy. It's a map."),
+])
+def test_changing_a_sentence_a_test_reads_changes_the_key(before: str, after: str) -> None:
+    old = {c.key for c in candidates(before)}
+    new = {c.key for c in candidates(after)}
+    assert old
+    assert old.isdisjoint(new)
+
+
+def test_a_fragment_is_keyed_with_the_claim_before_it() -> None:
+    assert kinds("Write a city. Not a failure.") == [("device", "Write a city. → Not a failure.")]
+
+
+# ---------------------------------------------------------------------------
+# Containers
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.parametrize("page", [
+    "- One.\n\n  It isn't a toy.\n\nIt's a tool.",
+    "1. One.\n\n   It isn't a toy.\n\nIt's a tool.",
+    "- ```\n  x\n  ```\n\n  It isn't a toy.\n\nIt's a tool.",
+    "> - One.\n>\n>   It isn't a toy.\n>\n> It's a tool.",
+    "- One.\n\n  - Two.\n\n    It isn't a toy.\n\n  It's a tool.",
+    "It isn't a toy.\n\n- It's a tool.",
+    "- It isn't a toy.\n- It's a tool.",
+    "- It isn't a toy.\n\n- It's a tool.",
+    "- One.\n\n  It isn't a toy.\n\n- It's a tool.",
+])
+def test_no_pair_crosses_the_edge_of_a_list_or_an_item(page: str) -> None:
+    assert [c.text for c in candidates(page) if "It's a tool." in c.text] == []
+
+
+def test_two_block_quotes_stay_apart() -> None:
+    assert kinds("> It isn't a toy.\n\n> It's a tool.") == []
+    (found,) = candidates('> "Look first.\n\n> Choose the map, not the list."')
+    assert found.key.endswith("|1|block quote")
+
+
+def test_two_paragraphs_of_one_list_item_pair() -> None:
+    found = kinds("- You move a block.\n\n  You don't start over.")
+    assert ("split", "You move a block. → You don't start over.") in found
+
+
+@pytest.mark.parametrize("page", [
+    '> "Look first.\n>\n> > An aside.\n>\n> Choose the map, not the list."',
+    '> "Look first.\n>\n> > Choose the map, not the list."',
+    '> - "Look first.\n>\n> Choose the map, not the list."',
+])
+def test_a_block_quote_is_a_quotation_through_the_blocks_inside_it(page: str) -> None:
+    (found,) = candidates(page)
+    assert found.key.endswith("|quotation block quote")
+
+
+# ---------------------------------------------------------------------------
+# Abbreviations that can end a sentence
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.parametrize(("text", "sentences"), [
+    ("No. Use the map.", ["No.", "Use the map."]),
+    ("Is it open? No. Check again.", ["Is it open?", "No.", "Check again."]),
+    ("Take bus No. 5 to the park.", ["Take bus No. 5 to the park."]),
+    ("Ask Dr. Kim first.", ["Ask Dr. Kim first."]),
+])
+def test_no_ends_a_sentence_unless_a_number_follows(text: str, sentences: list[str]) -> None:
+    assert cx.split_sentences(text) == sentences
+
+
+def test_a_paragraph_that_opens_with_no_is_a_split_candidate() -> None:
+    assert kinds("No. Use the map.") == [("split", "No. → Use the map.")]
+
+
+# ---------------------------------------------------------------------------
+# Every spelling of a negation reads alike
+# ---------------------------------------------------------------------------
+
+NEGATION_SPELLINGS = [
+    ["I am not", "I'm not", "I’m not"],
+    ["it is not", "it isn't", "it's not", "it’s not"],
+    ["we are not", "we aren't", "we're not"],
+    ["we have not", "we haven't", "we've not", "we’ve not"],
+    ["you will not", "you won't", "you'll not"],
+    ["you would not", "you wouldn't", "you'd not"],
+    ["they are never", "they're never"],
+]
+
+
+@pytest.mark.parametrize("template", [
+    "Pick the map, {} picking the list.",
+    "Pick the map; {} picking the list.",
+    "Pick the map -- {} picking the list.",
+    "Pick the map, but {} picking the list.",
+])
+@pytest.mark.parametrize("spellings", NEGATION_SPELLINGS, ids=[s[0] for s in NEGATION_SPELLINGS])
+def test_every_spelling_of_a_negation_is_read_alike(template: str, spellings: list[str]) -> None:
+    found = [[(c.kind, c.patterns) for c in candidates(template.format(s))] for s in spellings]
+    assert found[0]
+    assert all(f == found[0] for f in found)
+
+
+@pytest.mark.parametrize("pair", [
+    ["I am not the expert. I am the helper.", "I'm not the expert. I'm the helper.",
+     "I’m not the expert. I’m the helper.", "I'm not the expert; I'm the helper."],
+    ["We have never had a plan. We have a list.", "We've never had a plan. We've a list."],
+    ["You will not finish it. You will start it.", "You'll not finish it. You'll start it."],
+    ["You would not guess it. You would look it up.", "You'd not guess it. You'd look it up."],
+    ["The kit is not a toy. It is a tool.", "The kit isn't a toy. It'll be a tool."],
+], ids=["I'm", "we've", "you'll", "you'd", "it'll"])
+def test_every_contraction_opens_or_closes_the_banned_shape(pair: list[str]) -> None:
+    for text in pair:
+        assert "banned" in [k for k, _ in kinds(text)], text
+
+
+def test_a_contracted_not_reads_as_not_before_but() -> None:
+    assert [k for k, _ in kinds("It isn't a map but a list.")] == ["device"]
+
+
+def test_a_contracted_release_is_keyed_with_the_sentence_after_it() -> None:
+    found = kinds("Write the date. It's not required to fill every line. A few notes are enough.")
+    assert ("split", "Write the date. → It's not required to fill every line. → A few notes are enough.") in found
+
+
+# ---------------------------------------------------------------------------
+# The device's name in a marker
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.parametrize("name", ["X, not Y", "X-not-Y", "x-not-y"])
+def test_the_documented_names_exempt(name: str) -> None:
+    (mk,) = scoped(f"<!-- density-exempt: {name} -- required -->\nIt is a map, not a list.")
+    assert (mk.applies, mk.problem) == (True, "")
+
+
+@pytest.mark.parametrize("name", ["xnoty", "X not Y", "X, not-y", "x, not y", "X ,not Y"])
+def test_another_spelling_of_the_name_exempts_nothing_and_is_named(name: str) -> None:
+    (mk,) = scoped(f"<!-- density-exempt: {name} -- required -->\nIt is a map, not a list.")
+    assert mk.applies is False
+    assert "not `X, not Y`" in mk.problem
+
+
+def test_another_device_is_not_a_problem() -> None:
+    (mk,) = scoped("<!-- density-exempt: spaced dash -- required -->\nIt is a map -- a list.")
+    assert (mk.applies, mk.problem) == (False, "")
+
+
+def test_a_misspelled_name_fails_the_run(tmp_path: Path, capsys: Any) -> None:
+    root = repo_with(tmp_path, "## A\n\n<!-- density-exempt: X not Y -- required -->\nIt is a map, not a list.\n")
+    assert run(root, judge_all(root), capsys) == 1
