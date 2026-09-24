@@ -10,7 +10,7 @@ You are here: Phase 6 (Lodging, Food, and Budget). Not a First Taste step. Previ
 - Planner skill: revising a plan
 - Estimated time: 20-30 minutes
 - Parent involvement: parent review after session
-- Materials: your [Budget Estimate page](../../templates/budget_estimate.md) from Session 33, your daily cost table from Session 38, your hotel comparison cards, your route and nights from Checkpoint 4, your family's [current travel assumptions](../../templates/current_family_travel_assumptions.md) page (for the budget band), a calculator (allowed)
+- Materials: your [Budget Estimate page](../../templates/budget_estimate.md) from Session 33, your daily cost table from Session 38, your Hotel Comparison Cards, your route and nights from Checkpoint 4, your family's [current travel assumptions](../../templates/current_family_travel_assumptions.md) page (for the budget band), a calculator (allowed)
 
 ## Goal
 
@@ -26,7 +26,7 @@ Your first budget was a quick guess with two slices. Now you know your route, yo
 
 Round to easy numbers. A calculator is always fine, and a grown-up can do the math while you do the thinking.
 
-1. **Hotels, city by city.** Fill in the hotel table in the Workspace, one row per overnight city. If a stop on your route is a region, use the town you picked for it in Session 28. Use your nights from Checkpoint 4 and the cost per room from the card you recommended. A grown-up tells you how many rooms.
+1. **Hotels, city by city.** Fill in the hotel table in the Workspace, one row per overnight city. If a stop on your route is a region, use the town you picked for it in Session 28. Use your nights from Checkpoint 4 and the cost per room from the card you recommended. If that card's cost row is empty, fill it in first, or ask an adult. A grown-up tells you how many rooms.
 2. **Food.** Take the medium food guess from your Session 38 table, and multiply it by the number of days.
 3. **The other slices.** Do the same for local transit, activities and souvenirs. Fill in the rows on your Budget Estimate page that said "later". They're yours now. Your long-distance rides from Session 38 stay out of your subtotal, because the grown-ups price those.
 4. **Add it up.** Your subtotal is what the parts you chose come to. The whole trip costs more than that, and the grown-ups work out the rest on their own page.
@@ -68,7 +68,7 @@ You are done when your budget summary matches the route the grown-ups approved a
 
 ## Source Check
 
-No new sources needed unless you looked something up. Your numbers come from your hotel cards, your daily cost table and your Session 33 page. If you did look up a new price, add it to your Source Log with today's date.
+No new sources needed unless you looked something up. Your numbers come from your Hotel Comparison Cards, your daily cost table and your Session 33 page. If you did look up a new price, add it to your Source Log with today's date.
 
 ## Finish and Quality Check
 

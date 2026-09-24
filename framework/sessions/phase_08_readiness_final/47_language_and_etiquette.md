@@ -6,7 +6,7 @@ You are here: Phase 8 (Readiness and Final). Not a First Taste step. Previous: [
 
 **For parents:**
 
-- Status: Conditional core -- becomes Core if your family wants the language and etiquette quick sheet in the binder
+- Status: Conditional core -- becomes Core if your family wants the Language and Etiquette Quick Sheet in the binder
 - Planner skill: organizing information
 - Estimated time: 20-30 minutes
 - Parent involvement: 5-minute check-in
@@ -41,7 +41,7 @@ You can say your answers to an adult who writes them, or draw them, if that's ea
 
 ## Artifact Created
 
-Your language and etiquette quick sheet: one page of words and manners to carry on the trip.
+Your Language and Etiquette Quick Sheet: one page of words and manners to carry on the trip.
 
 ## Stop Point
 

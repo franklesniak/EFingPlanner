@@ -10,7 +10,7 @@ You are here: Phase 6 (Lodging, Food, and Budget). Not a First Taste step. Previ
 - Planner skill: organizing information
 - Estimated time: 20-30 minutes
 - Parent involvement: none / independent work
-- Materials: this session's Destination Notes, a device with the kid-safe filter on, your food wish list from Session 36, blank [Restaurant Research Cards](../../templates/restaurant_research_card.md), your hotel comparison cards from Session 35, your [Source Log](../../templates/source_log.md)
+- Materials: this session's Destination Notes, a device with the kid-safe filter on, your food wish list from Session 36, blank [Restaurant Research Cards](../../templates/restaurant_research_card.md), your Hotel Comparison Cards from Session 35, your [Source Log](../../templates/source_log.md)
 
 ## Goal
 
@@ -44,7 +44,7 @@ You can say your answers to an adult who writes them, or draw them, if that's ea
 
 ## Artifact Created
 
-Your restaurant cards and dining-area list: at least one place or area to eat for each main city.
+Your Restaurant Research Cards and dining-area list: at least one place or area to eat for each main city.
 
 ## Stop Point
 

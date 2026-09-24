@@ -10,7 +10,7 @@ You are here: Phase 8 (Readiness and Final). Not a First Taste step. Previous: [
 - Planner skill: self-control (knowing when to stop)
 - Estimated time: 20-30 minutes
 - Parent involvement: co-working recommended
-- Materials: your destination pack's safety and emergency page, your packing list from Session 48, your transportation notes from Session 30, a small card or half a sheet of stiff paper, a pencil
+- Materials: your destination pack's safety and emergency page, your Packing List from Session 48, your transportation notes from Session 30, a small card or half a sheet of stiff paper, a pencil
 
 ## Goal
 

@@ -10,7 +10,7 @@ You are here: Phase 7 (Itinerary Building). Not a First Taste step. Previous: [4
 - Planner skill: organizing information
 - Estimated time: several sittings; stop whenever you want
 - Parent involvement: none / independent work
-- Materials: your day cards from Session 41, your pacing review from Session 43, your backup plans and cut list from Session 44, your reservation watchlist, your budget summary from Session 39, a few blank pages
+- Materials: your [Trip-Basics card](../../templates/trip_basics.md) (for the trip length), your Daily Plan Cards from Session 41, your pacing review from Session 43, your backup plans and cut list from Session 44, your Reservation Watchlist, your budget summary from Session 39, a few blank pages
 
 ## Goal
 
@@ -18,17 +18,17 @@ Put everything you've built into one day-by-day plan.
 
 ## Start Here
 
-Set up your own first step, then take it. One idea: stack your day cards in order and write "Day 1" on a blank page.
+Set up your own first step, then take it. One idea: stack your Daily Plan Cards in order and write "Day 1" on a blank page.
 
-Then write a guess in the corner: "I think this sitting will take ___ minutes." Note the time you start. Write a new guess at the start of each sitting.
+Then write a guess in the corner: "I think this sitting will take ___ minutes." Note the time you start. Write a new guess at the start of each sitting. If this is a new day, set your timer for 20 minutes first.
 
 ## Steps
 
 Today's plan is built from work you already did. Every box comes from a card or a page you made, so the job is copying forward and putting it in order. All those cards are what make this plan.
 
-1. Go through your day cards in order, one day at a time.
+1. Go through your Daily Plan Cards in order, one day at a time. Every day of the trip gets a row. Your total days come from your Checkpoint 4 plan, or, if your dates are booked, from your Trip-Basics card's maximum row.
 2. For each day, copy its row into the two tables in the Workspace. Use the same day number in both. If a stop on your route is a region, use the town you picked for it in Session 28.
-3. Take the backup for each day from your day card or your backup plans.
+3. Take the backup for each day from your Daily Plan Card or your backup plans. If a box you need is empty on the card, fill it on the card first if you can, then copy it.
 4. Stop between sittings whenever you like. Pick up at the next day.
 
 A day with only its city and its main activity filled in already works as a plan. A blank meals box is fine, and so is "ask an adult". Your draft makes sense even with gaps, so a family could follow it today.

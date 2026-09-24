@@ -10,7 +10,7 @@ You are here: Phase 8 (Readiness and Final). Not a First Taste step. Previous: [
 - Planner skill: organizing information
 - Estimated time: several sittings; stop whenever you want
 - Parent involvement: 5-minute check-in
-- Materials: your whole project folder or binder, eleven tab dividers or eleven sheets to use as dividers, a pen, and anything you'd like for decorating the cover and the dividers
+- Materials: your whole project folder or binder, your [Trip-Basics card](../../templates/trip_basics.md) (for whether your dates were booked), eleven tab dividers or eleven sheets to use as dividers, a pen, and anything you'd like for decorating the cover and the dividers
 
 ## Goal
 
@@ -27,7 +27,9 @@ Maybe you kept everything in one growing folder, in rough order. Maybe you filed
 1. Make the eleven dividers, in the order in the Workspace.
 2. Build tab 1, then tab 2, and so on. Put each page behind the tab it belongs to.
 3. Tick each tab on the checklist when its pages are in.
-4. Stop between sittings whenever you like. Pick up at the next tab.
+4. Stop between sittings whenever you like. Pick up at the next tab. If this is a new day, set your timer for 20 minutes first.
+
+Tabs 3 and 4 have a different line if your dates were booked. Your Trip-Basics card's maximum trip length row tells you: a booked trip has its booked length written there.
 
 Two lines in the list depend on choices your family made. The restaurant and food shortlist goes under tab 5 only if you did the food sessions. The language and etiquette sheet goes under tab 8 only if you did that session. If you skipped one, write "we didn't do this session" on that tab, and that line is complete.
 

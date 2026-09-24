@@ -10,7 +10,7 @@ You are here: Phase 7 (Itinerary Building). Not a First Taste step. **This is Ch
 - Planner skill: making trade-offs
 - Estimated time: 20-30 minutes for the child, plus a 20-40 minute review with you
 - Parent involvement: parent review -- genuinely use the recommendation in a real family talk
-- Materials: your full itinerary draft and the day cards behind it, your reservation watchlist, your budget summary, your cut list, your [Source Log](../../templates/source_log.md), a [Decision Record page](../../templates/decision_record.md)
+- Materials: your full itinerary draft and the Daily Plan Cards behind it, your Reservation Watchlist, your budget summary, your cut list, your [Source Log](../../templates/source_log.md), a [Decision Record page](../../templates/decision_record.md)
 
 ## Goal
 
@@ -26,7 +26,7 @@ Choose your first move and make it. If you want a suggestion, write one thing yo
 
 1. Fill in the five answers in the Workspace. Your draft and your cards have everything you need.
 2. **Reasons.** Write two or three reasons your plan works, each tied to something you found.
-3. Put your itinerary draft and its day cards in front of a grown-up, with your five answers. They need the draft itself to judge the pacing, the travel, the meals and the rest.
+3. Put your itinerary draft and its Daily Plan Cards in front of a grown-up, with your five answers. They need the draft itself to judge the pacing, the travel, the meals and the rest.
 4. The grown-up picks one of four answers: Approved, Approved with changes, Needs more research, or Park this decision for later. It might be a quick call, a note, or a talk at the table. Any of the four is a normal result.
 5. Write their answer in your Decision Record.
 
@@ -56,11 +56,17 @@ You can say your answers to an adult who writes them, or draw them, if that's ea
 
 ## Artifact Created
 
-Your itinerary review packet: your itinerary draft and its day cards, plus your five answers and your reasons, recorded as a decision-log entry.
+Your itinerary review packet: your itinerary draft and its Daily Plan Cards, plus your five answers and your reasons, recorded as a decision-log entry.
 
 ## Stop Point
 
-You are done when your draft is in front of a grown-up, your review packet has all five parts and your reasons filled in, and a grown-up has written down which of the four choices they picked. Then write that decision in your decision log. That's the checkpoint. "Not sure yet" is a fine answer in any row. If the answer is Needs more research, do that one piece and bring it back before you start the next session. If it's Park this decision for later, the next session waits too, until your family comes back to the decision.
+You are done when your draft is in front of a grown-up, your review packet has all five parts and your reasons filled in, and a grown-up has written down which of the four choices they picked. Then write that decision in your decision log. That's the checkpoint. "Not sure yet" is a fine answer in any row.
+
+Before you start the next session:
+
+- **Approved with changes:** write the changes into your itinerary draft and your decision log.
+- **Needs more research:** do that one piece and bring it back.
+- **Park this decision for later:** the next session waits too, until your family comes back to the decision.
 
 ## Source Check
 
@@ -82,7 +88,7 @@ If you have extra energy, pick the one day you're proudest of and write why it w
 
 This checkpoint is lightweight and asynchronous, like Checkpoints 2 to 4. One accountable adult can review and relay: a quick five-minute call, a comment on a shared note, a short text thread, or one parent deciding and telling the rest. It still needs an adult to read the draft and decide. The family decision meeting comes later, at Session 52. Answer promptly, because the next session waits for you. If you park the decision, Session 47 waits until your family comes back to it.
 
-**What your child brings:** the itinerary draft with its day cards, five short answers, and their reasons. Review the draft itself. The answers point you to the questions, and the itinerary and its day cards are where you judge them.
+**What your child brings:** the itinerary draft with its Daily Plan Cards, five short answers, and their reasons. Review the draft itself. The answers point you to the questions, and the itinerary and its Daily Plan Cards are where you judge them.
 
 **What to consider:** pacing; transit time; meals; rest; booking needs; budget; safety; and practicality.
 

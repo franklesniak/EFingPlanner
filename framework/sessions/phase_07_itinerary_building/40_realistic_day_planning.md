@@ -50,7 +50,7 @@ You can say your answers to an adult who writes them, or draw them, if that's ea
 
 ## Artifact Created
 
-Your realistic day rules: a short list you wrote yourself, ready to use when you build your day cards in Session 41.
+Your realistic day rules: a short list you wrote yourself, ready to use when you build your Daily Plan Cards in Session 41.
 
 ## Stop Point
 

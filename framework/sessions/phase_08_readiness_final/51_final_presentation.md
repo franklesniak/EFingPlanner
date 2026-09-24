@@ -10,7 +10,7 @@ You are here: Phase 8 (Readiness and Final). Not a First Taste step. Previous: [
 - Planner skill: organizing information
 - Estimated time: 20-30 minutes
 - Parent involvement: 5-minute check-in
-- Materials: your assembled binder from Session 50, a blank [Final Presentation Outline](../../templates/final_presentation_outline.md), your [Source Log](../../templates/source_log.md)
+- Materials: your assembled binder from Session 50, your [Trip-Basics card](../../templates/trip_basics.md) (for the trip length), a blank [Final Presentation Outline](../../templates/final_presentation_outline.md), your [Source Log](../../templates/source_log.md)
 
 ## Goal
 
@@ -24,7 +24,7 @@ Decide your first move, then make it. A suggestion: write the one sentence you m
 
 Your presentation is about 5 to 10 minutes long. Part 1 says what you recommend. Part 2 hands the rest over to the grown-ups.
 
-1. Fill in Part 1 of your outline: when to go, how long, which cities and what route, the top experiences, where you might stay, food highlights, a rough budget, the biggest trade-offs, and what you cut and why. If your dates were already booked, say what your season means for the trip, and how you'd use the booked days. With one base, your route is getting there and back, plus your trips out from the base.
+1. Fill in Part 1 of your outline: when to go, how long, which cities and what route, the top experiences, where you might stay, food highlights, a rough budget, the biggest trade-offs, and what you cut and why. If your dates were already booked, say what your season means for the trip, and how you'd use the booked days. The booked trip length is on your Trip-Basics card's maximum row. With one base, your route is getting there and back, plus your trips out from the base to your approved must-dos.
 2. Fill in Part 2: what the grown-ups still need to check, decide and book, the questions that are still open, and which of your pages they should use next.
 3. Pick how you'll present, and circle it at the bottom of the outline.
 
@@ -46,7 +46,7 @@ You can say your answers to an adult who writes them, or draw them, if that's ea
 
 ## Artifact Created
 
-Your presentation outline: Part 1 with your recommendation, Part 2 with the handoff, and your chosen way to present.
+Your Final Presentation Outline: Part 1 with your recommendation, Part 2 with the handoff, and your chosen way to present.
 
 ## Stop Point
 

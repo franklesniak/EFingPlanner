@@ -10,7 +10,7 @@ You are here: Phase 7 (Itinerary Building). Not a First Taste step. Previous: [4
 - Planner skill: planning realistic time
 - Estimated time: several sittings; stop whenever you want
 - Parent involvement: none / independent work
-- Materials: blank [Daily Plan Cards](../../templates/daily_plan_card.md), your day rules from Session 40, your route and nights from Checkpoint 4, your hotel cards, your attraction cards and must-do list, your restaurant cards if you made them, your [Source Log](../../templates/source_log.md)
+- Materials: blank [Daily Plan Cards](../../templates/daily_plan_card.md), your day rules from Session 40, your route and nights from Checkpoint 4, your Hotel Comparison Cards, your Attraction Research Cards and must-do list, your Restaurant Research Cards if you made them, your [Source Log](../../templates/source_log.md)
 
 ## Goal
 
@@ -22,16 +22,16 @@ Set up your first tiny step, then do it. Want a suggestion? Write the name of yo
 
 ## Steps
 
-Day cards come after Checkpoint 4, once the grown-ups have settled your route and how long the trip is. Cards built before that usually have to be redone.
+Daily Plan Cards come after Checkpoint 4, once the grown-ups have settled your route and how long the trip is. Cards built before that usually have to be redone.
 
 Make **one block card for each city-stay** on the route the grown-ups approved: one card for all the days you sleep in the same place, with a row for each of those days. A trip with one base has one card. That's the shape for everyone. A block card is less work, and it flexes. If the grown-ups move a date, you move the block and keep what you wrote.
 
 1. Fill in the top of the card: the city, where you'll sleep, the main goal for this stay, and roughly when. If a stop on your route is a region, use the town you picked for it in Session 28.
-2. Give each day its own row. Put your anchor first, then use your day rules for the rest.
+2. Give each day its own row. Put your anchor first, then use your day rules for the rest. If an attraction card you need is missing its time needed or ticket row, fill that in first.
 3. Give every day an energy level: Easy, Medium or Big day. Mark day one Easy.
-4. Save the cards in order, and stop between sittings whenever you like.
+4. Save the cards in order, and stop between sittings whenever you like. If this is a new day, set your timer for 20 minutes first.
 
-**Roughly when** means a window, like "spring", "the second week", or "not decided yet". Never write the exact booked dates on a day card. Those belong to the grown-ups.
+**Roughly when** means a window, like "spring", "the second week", or "not decided yet". Never write the exact booked dates on a Daily Plan Card. Those belong to the grown-ups.
 
 **How to name your cards.** If you keep your work on a computer, save block cards in your kit's `research/day_cards/` folder as `block_01.md`, `block_02.md`, and so on. The zero in front keeps them in order. Use numbers only, with no city names.
 
@@ -45,7 +45,7 @@ You can say your answers to an adult who writes them, or draw them, if that's ea
 
 ## Artifact Created
 
-Your daily plan cards: one block card for each city-stay, with a row for each day.
+Your Daily Plan Cards: one block card for each city-stay, with a row for each day.
 
 ## Stop Point
 
@@ -69,7 +69,7 @@ If you have extra energy, add a backup idea to every Big day. If not, you are do
 
 ## Parent Notes
 
-This is the heaviest stretch in Phase 7, so let it run over several sittings. The block card per city-stay is the default for every child, on trip-realism grounds: separate day cards built before dates and travel are firm are the most work and the most likely to be thrown away. It also happens to suit a child who finds writing hard.
+This is the heaviest stretch in Phase 7, so let it run over several sittings. The block card per city-stay is the default for every child, on trip-realism grounds: separate Daily Plan Cards built before dates and travel are firm are the most work and the most likely to be thrown away. It also happens to suit a child who finds writing hard.
 
 The date row asks for a rough window. Exact booked dates stay off every working page, on paper and in a shared folder alike, as the [privacy and safety](../../docs/privacy_and_safety.md) page says. The card filenames are numbered, with no city names, for the same kind of reason.
 

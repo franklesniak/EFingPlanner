@@ -10,7 +10,7 @@ You are here: Phase 8 (Readiness and Final). Not a First Taste step. **This is C
 - Planner skill: making trade-offs
 - Estimated time: 20-30 minutes for the child, plus the family decision meeting
 - Parent involvement: parent review -- genuinely use the recommendation in a real family talk
-- Materials: your presentation outline from Session 51, your assembled binder, your [Source Log](../../templates/source_log.md), a [Decision Record page](../../templates/decision_record.md)
+- Materials: your Final Presentation Outline from Session 51, your assembled binder, your [Source Log](../../templates/source_log.md), a [Decision Record page](../../templates/decision_record.md)
 
 ## Goal
 
@@ -75,7 +75,13 @@ Your final recommendation packet: your recommendation and reasons, what the fami
 
 ## Stop Point
 
-You are done when your packet gives your reasons, the family has picked one of the four choices, you've written it in your decision log, and your handoff list says who is doing what next. Any of the four is a result that counts, including "park this for later". "Ask an adult" is a fine answer in any row. If the answer is Needs more research, do that one piece and bring it back before you start Session 53. If it's Park this decision for later, that's your result, and you can go on to Session 53.
+You are done when your packet gives your reasons, the family has picked one of the four choices, you've written it in your decision log, and your handoff list says who is doing what next. Any of the four is a result that counts, including "park this for later". "Ask an adult" is a fine answer in any row.
+
+Before you start Session 53:
+
+- **Approved with changes:** write the changes into your packet and your decision log.
+- **Needs more research:** do that one piece and bring it back.
+- **Park this decision for later:** that's your result, so you can go on to Session 53.
 
 ## Source Check
 
