@@ -25,12 +25,13 @@ Pick one starred sight from a City Research Card for a place on your shortlist. 
 Your cities are shortlisted, so now you look at what you'd do in them. One Attraction Research Card holds one place or experience. It keeps that place's facts together, so later you can compare fairly, with the facts in front of you.
 
 1. **Start with your stars.** Use the cards for the places on your Checkpoint 2 shortlist: your overnight bases and day trips. The sights you starred on those cards are your first ideas. Leave the cards for places you set aside.
-2. **Open this session's Destination Notes** for more starter ideas in your shortlisted places. You'll find big, well-known attractions mixed with everyday ones that cost little. Each one is an idea to research, and the choosing is yours.
-3. **Fill in the card, row by row.** The [Attraction Research Card](../../templates/attraction_research_card.md) has every row you need, in order. Rough answers are fine, like "about two hours" for time needed.
-4. **Guess the price first.** Before you look up a ticket price, write your guess in the card's row for it: "My guess at the ticket price, before I looked it up." Then check the attraction's official website. Write what you found in the next row, with the date. How close was your guess? Being off is normal, and your [planner mindset card](../../student_guide/planner_mindset.md) says why that's fine.
-5. **Look for one downside.** Crowds, a long line, lots of walking, or a high price all count.
-6. **Fill the planning assumption rows** at the bottom, the same way you did on your city cards.
-7. **Feed your "things I can't wait to see" page.** If a card gets you excited, add that attraction to the page you started in Session 01. It's the one page for that feeling, so keep it all there.
+2. **Check your "things I can't wait to see" page.** Any spot on it in a shortlisted place, such as a park or a market you saved in Session 19, gets a card too.
+3. **Open this session's Destination Notes** for more starter ideas in your shortlisted places. You'll find big, well-known attractions mixed with everyday ones that cost little. Each one is an idea to research, and the choosing is yours.
+4. **Fill in the card, row by row.** The [Attraction Research Card](../../templates/attraction_research_card.md) has every row you need, in order. Rough answers are fine, like "about two hours" for time needed.
+5. **Guess the price first.** Before you look up a ticket price, write your guess in the card's row for it: "My guess at the ticket price, before I looked it up." Then check the attraction's official website. Write what you found in the next row, with the date. How close was your guess? Being off is normal, and your [planner mindset card](../../student_guide/planner_mindset.md) says why that's fine.
+6. **Look for one downside.** Crowds, a long line, lots of walking, or a high price all count.
+7. **Fill the planning assumption rows** at the bottom, the same way you did on your city cards.
+8. **Feed your "things I can't wait to see" page.** If a card gets you excited, add that attraction to the page you started in Session 01. It's the one page for that feeling, so keep it all there.
 
 **Two cards is a good day's work.** The whole set is ten cards, and you can take as many sittings as you need to get there. Come back to this session until you have ten, and then move on. Session 24 checks the mix of all ten, so it helps to have them all first.
 

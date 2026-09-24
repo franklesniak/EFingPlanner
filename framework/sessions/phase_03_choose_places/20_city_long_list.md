@@ -64,7 +64,7 @@ Stuck? Use the [When I'm Stuck card](../../student_guide/when_im_stuck.md) in yo
 
 ## Optional Extension
 
-If you have extra energy, draw a small star next to the two or three places you're most excited about. You'll look at those first in Session 21. If not, you are done.
+If you have extra energy, draw a small star next to the two or three places you're most excited about. They're a good place to start in Session 21. If not, you are done.
 
 ## Parent Notes
 
