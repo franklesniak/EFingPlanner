@@ -40,7 +40,7 @@ Pick the one thing you most want to do on this trip. That one's yours, and the g
 2. It can't be booked, or there's no space left.
 3. It isn't safe, or it's too hard for someone in the group because of their age or their energy.
 
-If one of those happens, they'll tell you which one. A grown-up vote can't take this one away.
+If one of those happens, they'll tell you which one, and you choose a new pick together. A grown-up vote can't take this one away.
 
 Choose it with a grown-up. They show you the three blocks above before you choose. Then ask yourselves together: does this work for everyone, including everyone's energy and our group's time? That question helps you choose well. Once the pick is made, only the three blocks can change it.
 
@@ -50,3 +50,4 @@ Choose it with a grown-up. They show you the three blocks above before you choos
 | Grown-up's "got it" | |
 | Still holds? (one line, if you check it again in a later session) | |
 | If it had to change: which block, and why (a grown-up writes this) | |
+| My new pick, if I needed one, and a grown-up's "got it" | |

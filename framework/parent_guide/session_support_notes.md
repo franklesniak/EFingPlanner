@@ -183,7 +183,7 @@ Want a rough signal of how the executive-function side is going? The optional [e
 
 ## Session 21: Compare Cities
 
-- Role: 5-minute check-in. On the Core path, a whole region on the long-list is scored as one town, and you help choose which.
+- Role: 5-minute check-in. On the Core path, a whole region on the long-list is scored as one town, which you help choose and your child writes on the region's card.
 - Prep: the two city cards, plus the City Long-List on the Core path; a Scoring Rubric page.
 - Look for: two cities scored on three things, a written trade-off, and a recommendation (one city, or both kept on purpose). On the Core path, every place kept in the running is scored too.
 - Coaching question: "Does the total match your gut? Walk me through it." Optional formative check, if you want one: "Why did you score it that way?"
@@ -191,8 +191,8 @@ Want a rough signal of how the executive-function side is going? The optional [e
 
 ## Session 22: Checkpoint 2 City Shortlist
 
-- Role: Parent-gated: parent review; use the recommendation in a family talk. If you left the trip shape partly open at setup, firm it up now, including the departure place. For a family continuing from First Taste, the place of the special pick stays on the shortlist unless one of the three blocks applies, and you say which block.
-- Prep: a Decision Record page; the Trip-Basics card and the assumptions page, for the maximum trip length and the budget band.
+- Role: Parent-gated: parent review; use the recommendation in a family talk. If you left the trip shape partly open at setup, firm it up now, including the departure place. For a family continuing from First Taste, the place of the special pick stays on the shortlist. Only the three blocks can change the pick; if one applies, tell your child which, and they choose a new pick with you in Session 26.
+- Prep: a Decision Record page; the Trip-Basics card and the assumptions page, for the maximum trip length and the budget band; the My Calls page, for a family continuing from First Taste.
 - Look for: a city shortlist with 2 to 4 bases, or one for a one-base trip, and up to 3 day trips, or none; reasons, sources, whose wish it makes room for, and a budget-band check.
 - Coaching question: "Which base would you drop first, and why?"
 - Pitfall: choosing the places for them. Weigh their reasons, and say why if you change a pick.
@@ -200,7 +200,7 @@ Want a rough signal of how the executive-function side is going? The optional [e
 ## Session 23: Attraction Research Cards
 
 - Role: Independent.
-- Prep: this session's Destination Notes; blank Attraction Research Cards; the city cards for the shortlisted places.
+- Prep: this session's Destination Notes; blank Attraction Research Cards; the city cards for the shortlisted places; the My Calls page, for a family continuing from First Taste.
 - Look for: Attraction Research Cards, each with a reason, a rough time, a downside and a source, and a price guess left as written beside the checked price. A special pick your child already made gets its own card. Two cards is a finished sitting, and ten across the sittings completes the set.
 - Coaching question: "Which price surprised you?"
 - Pitfall: correcting the price guess. Leave it as written, because the gap is the lesson.
@@ -241,7 +241,7 @@ Want a rough signal of how the executive-function side is going? The optional [e
 
 - Role: Independent, with a 5-minute check-in.
 - Prep: a device with a map app and the filter on; the city shortlist; the assumptions page, for the arrival and departure places; the city card for any whole region on the shortlist.
-- Look for: route map notes with travel times between places, including the two end legs (the arrival place to the first base, and the last base to the departure place), day trips and overnight stays marked, and a left-to-right sketch.
+- Look for: route map notes with travel times between places, including the two end legs (where the family arrives to the first overnight place, and the last one to where it leaves, each skipped when the two places are the same or not yet set), day trips and overnight stays marked, and a left-to-right sketch.
 - Coaching question: "Which two places look close but take longest to reach?"
 - Pitfall: judging distance by eye. The Directions time is the answer.
 
@@ -337,7 +337,7 @@ Want a rough signal of how the executive-function side is going? The optional [e
 
 - Role: Independent, with a 5-minute check-in. This is the Phase 7 hand-off: your child sets up the whole session. Lighter page: read the Steps with your child until they manage two sessions in a row without the When I'm Stuck card or leaning on the Steps. Start Here, the Stop Point, the artifact and the Source Check always stay.
 - Prep: the destination pack's airports and arrival page, or the official airport or transport site; the approved route and nights.
-- Look for: a short list of day rules, with a first-day rule that fits the journey (Easy after a long one, about half a day of travel after a short one), and the rule your child would break first.
+- Look for: a short list of day rules, with first-day and last-day rules that fit the journey (a long one takes most of the day, a short one about half), and the rule your child would break first.
 - Coaching question: "How did you decide how to set this session up?" This is the Phase 7 formative check.
 - Pitfall: setting it up for them. If they freeze, point at the suggestion on the page.
 
@@ -345,7 +345,7 @@ Want a rough signal of how the executive-function side is going? The optional [e
 
 - Role: Independent. Lighter page: read the Steps with your child until they manage two sessions in a row without the When I'm Stuck card or leaning on the Steps. Start Here, the Stop Point, the artifact and the Source Check always stay.
 - Prep: blank Daily Plan Cards; the day rules; the approved route and nights; the hotel and attraction cards; the My Calls page, for the must-do list and its order.
-- Look for: one block Daily Plan Card per city-stay, with a main goal and an energy level for each day, and day one set by the first-day rule.
+- Look for: one block Daily Plan Card per city-stay, with a main goal and an energy level for each day, and the first and last days set by the Session 40 rules, with the day home as its own row.
 - Coaching question: "Which day would you swap if it rained?"
 - Pitfall: asking for per-day cards early. Block cards flex when the dates move.
 
