@@ -53,12 +53,13 @@ Every child session opens with a navigation line above its first `##` section. T
 - A path divergence is announced **forward only**. It renders as one short italic line under the navigation line, on the last on-path session before the skip, and never on `Previous:`. One line is written **for each divergence announced**, so a session that turns two paths aside carries two lines; a count read off the other sessions drops one of them.
 - A conditional add-on session keeps its add-on label in place of a step number.
 
-**Two further kinds of italic line sit under the navigation line of a session that is not on the named path. Both are required wherever the session list gives them, and neither may be removed for failing the on-path condition above.**
+**Further kinds of italic line may sit under the navigation line. Each is required wherever the session list gives it, and none may be removed for failing the forward-only condition above.**
 
 - A **skip affordance**: an off-path session may carry one line saying that a named following session is optional, and where to go instead of it.
 - A **placement note**: a conditional add-on session may carry one line saying where it sits on a named path.
+- A **return note**: an on-path session whose `Previous:` names a session off the path may carry one line naming the on-path session a path reader came from, as Sessions 10, 21 and 33 do.
 
-Neither of those announces a divergence from a path, which is why the divergence rule above does not reach them.
+None of those announces a divergence from a path, which is why the divergence rule above does not reach them.
 
 ## Voice and tone
 

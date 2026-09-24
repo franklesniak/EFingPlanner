@@ -7,7 +7,7 @@
 
 - **Status:** Active
 - **Owner:** Repository Maintainers
-- **Last Updated:** 2026-09-23
+- **Last Updated:** 2026-09-24
 - **Scope:** The blank authoring skeleton for a child-facing curriculum session, with the rules a new session has to satisfy: the seven mandatory-core fields, the section order, the navigation line, the "For parents" strip, and the structure gate's floor. Builder-facing; a child never reads this page.
 - **Related:** [Build style and vocabulary](../docs/build_style_and_vocab.md), [Golden exemplar session](../sessions/phase_00_setup/04_start_a_source_log.md)
 
@@ -100,11 +100,12 @@ The step label comes in three forms, and it is the one part that varies:
 
 ## Italic lines under the navigation line
 
-A session may carry a short italic line directly under its navigation line. There are three kinds, and only three:
+A session may carry a short italic line directly under its navigation line. Only the kinds below are allowed:
 
 - **Path divergence.** The numbered order and the First Taste order disagree here, and the line says where a First Taste reader goes instead. Announce a divergence forward only, and add no line where the two orders already agree. One line per divergence.
 - **Placement note.** An off-path session says where it sits relative to the path, or a path session turns an opt-in family aside before it sends everyone else forward.
 - **Skip affordance.** A session whose Next is Recommended says that next one can be skipped, and names the session after it.
+- **Return note.** An on-path session whose Previous is off the path names the on-path session a path reader came from. It announces no divergence.
 
 Write the line scoped to the path it describes. An unqualified shortcut written for the First Taste path gets read on the full path too, and sends a child past Core sessions.
 

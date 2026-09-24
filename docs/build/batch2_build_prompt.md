@@ -656,6 +656,12 @@ list never reach a built title.
 The First Taste path goes on its **own italic line** below the "You are here" line. This
 is already law in the style guide and already applied to Sessions 05, 08 and 10.
 
+**The backward half of the lines in the table below is a return note.** It names the
+on-path session a First Taste reader came from, as built Session 10 already does, and it
+announces no divergence. The style law and `framework/templates/student_session_template.md`
+list it beside the skip affordance and the placement note, so a later author reads it as
+allowed. Batch 2 adds it to both.
+
 **Five already-built sessions get their navigation re-pointed by this batch.** They are
 the same five the style law names as the set Batch 2 must convert or verify, so this is
 inside the batch rather than an expansion of it. (`D-OPEN-9`.)
@@ -4246,17 +4252,17 @@ from this table. (`D-item-7`.)
 | 18 | organizing information | 20-30 minutes | none / independent work | Conditional core |
 | 19 | checking sources | 20-30 minutes | none / independent work | Core |
 | 20 | organizing information | 20-30 minutes | none / independent work | Core |
-| 22 | making trade-offs | 20-30 minutes for you, plus a 20-40 minute review with an adult | parent review -- genuinely use the recommendation in a real family talk | Core -- **Checkpoint 2** |
+| 22 | making trade-offs | 20-30 minutes for the child, plus a 20-40 minute review with you | parent review -- genuinely use the recommendation in a real family talk | Core -- **Checkpoint 2** |
 | 23 | checking sources | 20-30 minutes (can be several sittings) | none / independent work | Core |
 | 24 | organizing information | 20-30 minutes | none / independent work | Core |
 | 25 | checking sources | 20-30 minutes (one sitting); the second sitting can be its own | co-working recommended | Core |
 | 26 | ranking priorities | 20-30 minutes | 5-minute check-in; help co-choose the one unconditional pick | Core |
-| 27 | making trade-offs | 20-30 minutes for you, plus a 20-40 minute review with an adult | parent review -- genuinely use the recommendation in a real family talk | Core -- **Checkpoint 3** |
+| 27 | making trade-offs | 20-30 minutes for the child, plus a 20-40 minute review with you | parent review -- genuinely use the recommendation in a real family talk | Core -- **Checkpoint 3** |
 | 28 | planning realistic time | 20-30 minutes | 5-minute check-in | Core |
 | 29 | planning realistic time | 20-30 minutes | none / independent work | Core |
 | 30 | checking sources | 20-30 minutes | none / independent work | Core |
 | 31 | making trade-offs | 20-30 minutes | parent review after session | Core |
-| 32 | making trade-offs | 20-30 minutes for you, plus a 20-40 minute review with an adult | parent review -- genuinely use the recommendation in a real family talk | Core -- **Checkpoint 4** |
+| 32 | making trade-offs | 20-30 minutes for the child, plus a 20-40 minute review with you | parent review -- genuinely use the recommendation in a real family talk | Core -- **Checkpoint 4** |
 | 34 | comparing choices | 20-30 minutes | none / independent work | Core |
 | 35 | comparing choices | 20-30 minutes per sitting, several sittings | none / independent work | Core |
 | 36 | organizing information | 20-30 minutes | none / independent work | Conditional core |
@@ -4268,13 +4274,13 @@ from this table. (`D-item-7`.)
 | 42 | organizing information | 20-30 minutes | none / independent work | Core |
 | 43 | planning realistic time | 20-30 minutes | parent review after session | Core |
 | 45 | organizing information | several sittings; stop whenever you want | none / independent work | Core |
-| 46 | making trade-offs | 20-30 minutes for you, plus a 20-40 minute review with an adult | parent review -- genuinely use the recommendation in a real family talk | Core -- **Checkpoint 5** |
+| 46 | making trade-offs | 20-30 minutes for the child, plus a 20-40 minute review with you | parent review -- genuinely use the recommendation in a real family talk | Core -- **Checkpoint 5** |
 | 47 | organizing information | 20-30 minutes | 5-minute check-in | Conditional core |
 | 48 | organizing information | 20-30 minutes | parent review after session | Core |
 | 49 | self-control (knowing when to stop) | 20-30 minutes | co-working recommended | Core |
 | 50 | organizing information | several sittings; stop whenever you want | 5-minute check-in | Core |
 | 51 | organizing information | 20-30 minutes | 5-minute check-in | Core |
-| 52 | making trade-offs | 20-30 minutes for you, plus the family decision meeting | parent review -- genuinely use the recommendation in a real family talk | Core -- **Checkpoint 6** |
+| 52 | making trade-offs | 20-30 minutes for the child, plus the family decision meeting | parent review -- genuinely use the recommendation in a real family talk | Core -- **Checkpoint 6** |
 
 **Session 25's estimate follows a built precedent, and the pattern generalises.** Session
 15 writes `20-30 minutes (one card); a second card can be its own sitting` -- the shape is
@@ -4303,17 +4309,17 @@ and is not edited.
 
 ### The Batch 1 riders this batch retires
 
-**Batch 1 wrote its Session 15 exception onto four surfaces and said in each that Batch 2
-removes it.** This batch does the conversion and the verification, so it must also do the
+**Batch 1 wrote its Session 15 exception onto each surface in the table below and said in
+each that a later batch removes it.** This batch does the conversion and the verification, so it must also do the
 removal -- otherwise the shipped builder docs keep telling a new destination author that
 Session 15 leaks and must be converted by hand, long after it does not.
 
 | Surface | What to remove |
 | --- | --- |
 | `framework/docs/build_style_and_vocab.md` | The three-part exception in the destination-name rule: the clause naming Sessions 15, 21, 33, 44 and 53, and the sentence about converting one and verifying four. **Keep the rule's own banning sentence**, which is a permanent, documented exception |
-| `framework/README.md` | The Session 15 exception note, **and bump the Curriculum version field** to match the new changelog release |
+| `framework/README.md` | The Session 15 exception note and the leak-exemption list it describes. **Once that list is empty, remove it**, since an empty exemption list reads as "exemptions exist". **Bump the Curriculum version field** to match the new changelog release |
 | `destinations/<place>/session_inserts/README.md` | The temporary-exception rider recording Session 15's present state, and Session 15's row in the not-yet-neutral list |
-| The section 4.4 destination-leak exemption list | Session 15's entry. **Once it is empty, remove the list**, since an empty exemption list reads as "exemptions exist" |
+| `framework/how_to_start_a_trip.md` | The paragraph that says Session 15 still names the destination and that a family rewrites it by hand. The first version of this table missed it, and it is false once Session 15 is converted |
 
 **Remove only the cleared exception.** The style law's banning sentence and the `0.1.0`
 changelog line are permanent and documented; they are not riders and they stay. **Do not
