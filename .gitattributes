@@ -56,6 +56,10 @@ testdata/**                   text eol=lf
 *.tfvars                      text eol=lf
 *.tftpl                       text eol=lf
 *.tfbackend                   text eol=lf
+# Local addition: the dependency list the repository's own checks install
+# from. Pinned by name rather than by extension, so the template's managed
+# set of extensions is left exactly as it is.
+requirements-dev.txt          text eol=lf
 .gitattributes                text eol=lf
 .*ignore                      text eol=lf
 CODEOWNERS                    text eol=lf

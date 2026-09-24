@@ -1,0 +1,34 @@
+# Python packages the repository's own checks need when you run them
+# locally. This repository is not a Python package -- see the note at the
+# top of pyproject.toml -- so these are listed here rather than as
+# packaging metadata.
+#
+# Install with these two commands, in this order:
+#
+#   python -m pip install -r requirements-dev.txt
+#   python -m pip install "check-jsonschema==$(python .github/scripts/pinned-check-jsonschema-rev.py)"
+#
+# CI installs these in two workflows, and this file is the union of
+# both, so one local setup runs every suite:
+#
+# - .github/workflows/markdownlint.yml installs pytest, jsonschema and
+#   PyYAML.
+# - .github/workflows/data-ci.yml installs the same three and
+#   check-jsonschema, for the schema example tests.
+#
+# check-jsonschema has no version here: a requirements file cannot read
+# the version .pre-commit-config.yaml pins, and that pin is the one to
+# change. The second command installs that version, as data-ci.yml does,
+# so a local run checks the schemas with the release CI uses. After the
+# first command alone, pip installs the newest release, and
+# tests/test_dependabot_schema.py fails and names the pinned one.
+
+pytest
+jsonschema>=4.18.0
+# The schema example tests shell out to the ``check-jsonschema``
+# command, which is a different package from the ``jsonschema``
+# library above. Without it those tests skip, and a contributor who
+# followed the documented setup would read a green run that had not
+# checked the schemas at all.
+check-jsonschema
+PyYAML>=6.0.3

@@ -1,0 +1,55 @@
+refuses	# issue 27 is private; see https://example.com/releases/27
+refuses	# reported at 4011993843, filed as https://example.com/pull/4011993843x
+refuses	# broken at 7e4463f, see https://example.com/releases/7e4463f
+refuses	# settled in round 12, see https://github.com/o/r/pull/12
+refuses	# deferred from PR #22, see https://example.com/notes/22
+resolves	# issue 27 https://github.com/o/r/issues/27
+resolves	# deferred from PR #22 https://github.com/o/r/pull/22
+resolves	# reported at 4011993843 https://github.com/o/r/pull/1#discussion_r4011993843
+resolves	# reported at 4011993843 https://api.github.com/repos/o/r/pulls/comments/4011993843
+resolves	# broken at 7e4463f https://github.com/o/r/commit/7e4463f0a1b2c3d4e5f6
+resolves	# issue 27 (https://github.com/o/r/issues/27).
+resolves	# issue 27 https://github.com/o/r/issues/27.
+resolves	# issue 27 https://github.com/o/r/issues/27,
+resolves	# issue 27 [the issue](https://github.com/o/r/issues/27)
+resolves	# issue 27 <https://github.com/o/r/issues/27>
+resolves	# see <https://github.com/o/r/issues/27>; it is open
+refuses	# issue 27 (https://example.com/releases/27).
+refuses	# issue 27 <https://example.com/releases/27>
+refuses	# broken at 7E4463F
+refuses	# broken at 7e4463f
+resolves	# broken at 7E4463F <https://github.com/o/r/commit/7e4463f0a1b2c3>
+resolves	# broken at 7e4463f <https://github.com/o/r/commit/7e4463f0a1b2c3>
+refuses	# issue 27 https://github.com/o/r?issues=27
+refuses	# broken at 7e4463f https://github.com/o/r?commit=7e4463f0a1b2
+refuses	# reported at 4011993843 https://github.com/o/r?q=discussion_r4011993843
+refuses	# issue 27 https://example.com/x#issues/27
+resolves	# issue 27 https://github.com/o/r/issues/27?tab=comments
+resolves	# reported at 4011993843 https://github.com/o/r/pull/1?w=1#discussion_r4011993843
+resolves	# blocked on ticket ABC-123 https://tracker.example.com/browse/ABC-123
+resolves	# filed as issue ABC-123 https://jira.example.com/issues/ABC-123
+refuses	# blocked on ticket ABC-123, see https://tracker.example.com/browse/ABC-1234
+refuses	# tracked as project PLAT-9, see https://example.com/board/PLAT-90
+refuses	# blocked on ticket ABC-123, see https://github.com/o/r/issues/123
+refuses	# tracked as project PLAT-9, see https://github.com/o/r/pull/9
+resolves	# blocked on ticket: ABC-123 https://tracker.example.com/browse/ABC-123
+resolves	# blocked on ticket 27 https://tracker.example.com/tickets/27
+resolves	# tracked as project 42 https://tracker.example.com/projects/42
+refuses	# tracked as project 42, see https://tracker.example.com/tickets/42
+resolves	# blocked on #27 https://github.com/o/r/issues/27
+refuses	# blocked on #27, see https://example.com/releases/27
+resolves	# landed upstream in commit deadbee https://github.com/o/r/commit/deadbee0123
+refuses	# landed upstream in commit deadbee, see https://example.com/releases/deadbee
+refuses	# see issues 27 and 28 https://github.com/o/r/issues/27
+resolves	# see issues 27 and 28 https://github.com/o/r/issues/27 https://github.com/o/r/issues/28
+resolves	# tracked as GH-22 https://github.com/o/r/issues/22
+refuses	# tracked as GH-22, see https://github.com/o/r/issues/23
+refuses	# issue 27 https://github.com/o/r/issues/27/../28
+resolves	# issue 27 https://github.com/o/r/issues/./27
+refuses	# issue 27 https://localhost\@github.com/issues/27
+resolves	# issue 27 https://github.com\o/r/issues/27
+refuses	# issue 27 https://github.com../o/r/issues/27
+resolves	# issue 27 https://github.com./o/r/issues/27
+refuses	# issue 27 https://github.com/o/r/ISSUES/27
+refuses	# issue 27 https://127.0.0x1/o/r/issues/27
+resolves	# issue 27 https://github.com/o/r/issues//27

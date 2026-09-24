@@ -5158,7 +5158,7 @@ expression decides. **So read a clean run as evidence rather than as proof.** Wr
 stamp where the contract puts it, directly below the H1 on its own line, and write nothing
 else on any line that begins with those two words and a colon. What would decide this
 invariant is a checker that parses Markdown instead of matching lines; it is item 2 of
-issue #30 in this repository, and it is not in this batch.
+[issue #30](https://github.com/franklesniak/EFingPlanner/issues/30) in this repository, and it is not in this batch.
 
 Every well-formed stamp is also a label, so this count subsumes the canonical one rather
 than sitting beside it, and the loop keeps two messages instead of three. A badly
