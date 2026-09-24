@@ -26,8 +26,8 @@ This is your second checkpoint. You've researched a lot of places, and now you p
 
 Fill in the shortlist table in the Workspace, in this order:
 
-1. **Overnight bases.** Choose 2 to 4 places where you'd sleep. Take them from your long-list and your Session 21 comparison.
-2. **Day trips.** Choose 1 to 3 places you could visit and come back from on the same day.
+1. **Overnight bases.** Choose 2 to 4 places where you'd sleep. If your family plans one base to stay at and travel from, one is enough. Take them from your long-list and your Session 21 comparison.
+2. **Day trips.** Choose up to 3 places you could visit and come back from on the same day. If none is close enough, write "none".
 3. **Skip this time.** Name the places you're setting aside for this trip.
 4. **Save for a future trip.** Name the places you'd love to see someday. These notes help later, when you make your cut list.
 5. **Reasons.** Give two or three, and tie each one to something you found.
@@ -48,8 +48,8 @@ Your city shortlist:
 
 | Prompt | Your answer |
 | --- | --- |
-| Overnight bases (2 to 4) | |
-| Day trips (1 to 3) | |
+| Overnight bases (2 to 4, or 1 for a one-base trip) | |
+| Day trips (up to 3, or none) | |
 | Skip this time | |
 | Save for a future trip | |
 | My reasons | |

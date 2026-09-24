@@ -29,9 +29,10 @@ Now you show them the rest of your plan for what to do. Use the shape from [How 
 1. **Top must-do experiences.** Copy them from your ranked list.
 2. **Strong maybes.** These are the ones you'd love if there's time.
 3. **Skip or save for a future trip.** List what you set aside, and why. These notes will seed your cut list later.
-4. **Biggest trade-offs.** What did you give up to keep your must-dos short?
-5. **Sources.** Where did your reasons come from? Use your Source Log.
-6. **Budget-band check.** Does this still fit our rough budget band? A gut feeling is enough. Attractions with pricey tickets add up fast.
+4. **Reasons.** Why these must-dos? Give two or three reasons, each tied to something you found.
+5. **Biggest trade-offs.** What did you give up to keep your must-dos short?
+6. **Sources.** Where did your reasons come from? Use your Source Log.
+7. **Budget-band check.** Does this still fit our rough budget band? A gut feeling is enough. Attractions with pricey tickets add up fast.
 
 Then share it with a grown-up. It might be a quick call, a note, or a talk at the table. They'll pick one of four answers: Approved, Approved with changes, Needs more research, or Park this decision for later. Any of the four is a normal result.
 
@@ -48,6 +49,7 @@ Your top experiences recommendation:
 | Top must-do experiences | |
 | Strong maybes | |
 | Skip this time, or save for a future trip (and why) | |
+| My reasons | |
 | Biggest trade-offs | |
 | My sources (from my Source Log) | |
 | Does this still fit our rough budget band? | |

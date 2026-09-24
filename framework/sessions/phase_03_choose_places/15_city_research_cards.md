@@ -12,7 +12,7 @@ You are here: Phase 3 (Choose Places), First Taste step 9 of 13. Previous: [14 C
 - Planner skill: organizing information; researching
 - Estimated time: 20-30 minutes (one card); a second card can be its own sitting
 - Parent involvement: 5-minute check-in
-- Materials: a device with the kid-safe filter on, two blank [City Research Cards](../../templates/city_research_card.md), your [Source Log](../../templates/source_log.md), and your region and map notes from Session 11 (on the First Taste path, your Session 10 snapshot)
+- Materials: a device with the kid-safe filter on, two blank [City Research Cards](../../templates/city_research_card.md), your [Source Log](../../templates/source_log.md), and on the Core path your region and map notes from Session 11
 
 ## Goal
 
@@ -20,13 +20,13 @@ Research two cities of your destination, one card each, so you can compare them 
 
 ## Start Here
 
-Write the name of one city you're curious about at the top of a City Research Card. A city most first trips include is a good first one. Your region and map notes from Session 11 name some. On the First Taste path, which skips Session 11, the capital on your Session 10 snapshot is a good first city. That's your start.
+Write the name of one city you're curious about at the top of a City Research Card. A city most first trips include is a good first one. Your region and map notes from Session 11 name some. On the First Taste path, which skips Session 11, ask a grown-up to name a good first city. That's your start.
 
 ## Steps
 
 Now you research real places. Use one **City Research Card** per city. It keeps each city's facts together and easy to compare. You'll pick **two** cities. On the Core path, pick them from your region and map notes. Make the first one a city most first trips include, and then add one more that interests you. The route shape you copied in Session 11 names a few good candidates.
 
-On the First Taste path, you skipped Session 11. Start with the capital from your Session 10 snapshot, or a city a grown-up suggests. Then find your second city in a trusted source, such as the trusted site you kept in your Source Log in Session 05.
+On the First Taste path, you skipped Session 11. A grown-up names your first city. Then find your second city in a trusted source, such as the trusted site you kept in your Source Log in Session 05.
 
 For each city, fill in your card from trusted sources (add each to your Source Log):
 
@@ -76,4 +76,4 @@ If you have extra energy, start a third city card, or add a "things I can't wait
 
 ## Parent Notes
 
-Let one city be a gentle anchor, and let your child choose the second. Ownership matters here. On the First Taste path your child has not done Session 11, so be ready to help pick that anchor city. Two cards are enough for First Taste; the comparison in Session 21 needs two things to compare. The starred "can't wait to see" sights feed the must-see list later. The movable-blocks idea is what makes a later change to the shape of the journey a small edit, not a redo -- it ties to the "your work wasn't wrong" message. Watch out for rabbit holes; one solid card per sitting is a good pace.
+Let one city be a gentle anchor, and let your child choose the second. Ownership matters here. On the First Taste path your child has not done Session 11, so be ready to name a good first city yourself. Two cards are enough for First Taste; the comparison in Session 21 needs two things to compare. The starred "can't wait to see" sights feed the must-see list later. The movable-blocks idea is what makes a later change to the shape of the journey a small edit, not a redo -- it ties to the "your work wasn't wrong" message. Watch out for rabbit holes; one solid card per sitting is a good pace.

@@ -28,9 +28,9 @@ The Destination Notes offer a menu with three kinds of places:
 
 - **Well-known places** that lots of visitors choose.
 - **Places kids often love.**
-- **Everyday places that cost little** and are still great fun, like a park, a market, or a neighborhood where people live and shop.
+- **Everyday places that cost little** and are still great fun, like a smaller town or a quieter area where people live and work.
 
-Every place on the menu is an option to research. You can also add a place you found yourself.
+Every place on the menu is an option to research. You can also add a place you found yourself. A single spot, such as a park or a market, belongs on your "things I can't wait to see" page. Session 23 turns spots like that into attraction cards.
 
 **Famous is only one kind of good.** Some of the best parts of a trip are ordinary places where you can slow down and look around. So try to pick at least one place from the everyday kind.
 
@@ -38,7 +38,7 @@ Every place on the menu is an option to research. You can also add a place you f
 2. **Start one City Research Card for each.** The card works for a region or a town, too.
 3. **Fill in the key rows first**: why people go there, one memorable fact, and your source. Add more rows if you have time.
 4. **Check one fact twice.** Pick one fact on one of your cards and look it up in a second source. Do the two agree? Write the second source in your Source Log's **Verification source** box, with the date.
-5. **Count your cards.** Add up your two cards from Session 15, your City C card if you made one, and today's cards. You need at least five. If you have fewer, add one more place.
+5. **Count your city and region cards.** Add up your two cards from Session 15, your City C card if you made one, and today's cards. You need at least five. If you have fewer, add one more place.
 
 ## Workspace
 
@@ -68,7 +68,7 @@ Stuck? Use the [When I'm Stuck card](../../student_guide/when_im_stuck.md) in yo
 
 ## Optional Extension
 
-If you have extra energy, add one more everyday place that would suit a quiet or rainy afternoon. If not, you are done.
+If you have extra energy, add one more everyday town or area that costs little to visit. If not, you are done.
 
 ## Parent Notes
 

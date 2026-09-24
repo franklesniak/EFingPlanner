@@ -45,6 +45,7 @@ How long should we stay? That's today's question. You'll answer it with a fill-i
 4. **Check the ceiling.** With open dates, your total must fit inside your family's maximum trip length. If your dates are booked, your nights must fit the booked trip.
 5. **Check the floor.** Is the trip long enough to be worth the journey there? Count the travel days and the first jet-lagged day or two, take them away, and see how few days are left. If your dates are booked, ask whether the booked days leave enough days for all your places. If they don't, the answer is fewer places.
 6. **Think about everyone's energy.** Look at the stamina row on each traveler's profile. Your maximum is a ceiling, the most the trip can be. For a group with a traveler who tires more easily, the kinder plan is shorter and gentler: fewer cities, more nights in each, and a rest day or two built in. With booked dates, the length stays the same, so use that same shape inside it.
+7. **Choose your total.** If a shorter, gentler trip fits your group better, write the new total in the Total days blank. Then work the formula again, and fix your nights table so it adds up. With booked dates, keep the booked total.
 
 Here's the big trade-off: fewer places, seen more deeply, or more places, seen faster. Both can work. Your nights table is where you choose.
 

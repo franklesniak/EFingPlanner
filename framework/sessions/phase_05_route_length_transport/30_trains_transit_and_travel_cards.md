@@ -47,7 +47,7 @@ Every place has its own ways of getting around. Your Destination Notes name the 
 
 Now fill in the notes table in the Workspace, one row for each way of getting around you might use.
 
-**Guess, then check.** Pick two cities from your route. In a new Source Log entry, write your guess for the train time between them in the **What I learned** box: "My guess: ___." Then check it in a current transit planner, and add what you found and the date. How close were you? Being off is normal, and your [planner mindset card](../../student_guide/planner_mindset.md) says why that's fine.
+**Guess, then check.** Pick two cities from your route. In a new Source Log entry, write your guess for the train time between them in the **What I learned** box: "My guess: ___." If no train runs between them, guess the travel time for the way your family will go. Then check a train time in a current transit planner, or any other trip in your map's Directions. Add what you found and the date. How close were you? Being off is normal, and your [planner mindset card](../../student_guide/planner_mindset.md) says why that's fine.
 
 ## Workspace
 
@@ -73,7 +73,7 @@ You are done when you can say how you would get between your places, and you've 
 
 ## Source Check
 
-Log this session's Destination Notes (title and today's date), and every other source you used. Your train-time guess sits on the Source Log entry for the transit planner: your guess first, then what you found, then the date you checked. Train times, travel cards and pass prices can all change, so mark each one for a grown-up to check again close to travel.
+Log this session's Destination Notes (title and today's date), and every other source you used. Your travel-time guess sits on the Source Log entry for the planner or map you checked: your guess first, then what you found, then the date you checked. Train times, travel cards and pass prices can all change, so mark each one for a grown-up to check again close to travel.
 
 ## Finish and Quality Check
 
@@ -93,4 +93,4 @@ The place-specific names, such as the train lines, the travel card, and any bag 
 
 Everything your child lists in the last column is yours to verify. Rail-pass value depends on the exact route, so compare it against single tickets before buying. Travel-card availability for visitors can change as well as the price. The large-suitcase seat rule, where one exists, is on the official rail site, and its size limit can change. Check that any transit planner is current before relying on it. Sending bags ahead and paying for it are adult tasks.
 
-The train-time guess is the second guess-then-check loop, after the ticket-price guess in Session 23. Being off is part of the practice.
+The travel-time guess is the second guess-then-check loop, after the ticket-price guess in Session 23. Being off is part of the practice.
