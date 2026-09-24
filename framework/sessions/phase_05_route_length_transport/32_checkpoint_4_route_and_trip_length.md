@@ -28,7 +28,7 @@ First, check your Session 29 nights table against the route you recommended in S
 
 Fill in the table in the Workspace:
 
-1. **Total number of days.** Add one to the total nights in your Session 29 nights table. If your dates are booked, it's the booked trip length on your Trip-Basics card.
+1. **Total number of days.** Add one to the total nights in your Session 29 nights table. Add one more for each flight that lands on a later date than it took off. If your dates are booked, it's the booked trip length on your Trip-Basics card.
 2. **Overnight cities.** Use the route you recommended in Session 31.
 3. **Nights in each city.** Copy them from your nights table.
 4. **Major travel days.** Which days are mostly spent getting from one city to the next?

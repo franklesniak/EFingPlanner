@@ -10,7 +10,7 @@ You are here: Phase 3 (Choose Places). Not a First Taste step. **This is Checkpo
 - Planner skill: making trade-offs
 - Estimated time: 20-30 minutes for the child, plus a 20-40 minute review with you
 - Parent involvement: parent review -- genuinely use the recommendation in a real family talk
-- Materials: your City Long-List and City comparison, your Family Trip Goals page from Session 03, your family's [current travel assumptions](../../templates/current_family_travel_assumptions.md) page (for the budget band), your [Source Log](../../templates/source_log.md), a [Decision Record page](../../templates/decision_record.md)
+- Materials: your City Long-List and City comparison, your My Calls page if you're continuing from First Taste, your Family Trip Goals page from Session 03, your family's [current travel assumptions](../../templates/current_family_travel_assumptions.md) page (for the budget band), your [Source Log](../../templates/source_log.md), a [Decision Record page](../../templates/decision_record.md)
 
 ## Goal
 
@@ -35,6 +35,8 @@ Fill in the shortlist table in the Workspace, in this order:
 7. **Who it makes room for.** Look back at the poll on your Family Trip Goals page. Which traveler's "one thing you'd love" does your shortlist make room for?
 8. **Trade-offs.** What does the family give up by choosing these places?
 9. **Budget-band check.** Does this still fit our rough budget band? A gut feeling is enough here. More cities usually cost more.
+
+Continuing from First Taste? Your special pick from Session 44 is in one of your places. Keep that place on your shortlist, as a base or a day trip.
 
 Then bring it to a grown-up. You might talk it over on a quick call, in a note, or face to face. They'll pick one of four answers: Approved, Approved with changes, Needs more research, or Park this decision for later. Any of the four is a normal result.
 
@@ -103,6 +105,8 @@ This checkpoint is lightweight and asynchronous. One accountable adult can revie
 **What to consider:** whether the travel scope is workable; how it fits your family's maximum trip length from the [Trip-Basics card](../../templates/trip_basics.md), or the booked trip length if your dates are booked; whether the other travelers show up in it, which is what the poll step is there to show; budget implications; safety and common sense; and what it means for getting there, such as international flights if you fly.
 
 **Your own job here.** If you left the rough trip shape partly open at setup, with only the arrival place written down, firm it up now, including the departure place. The route work in Sessions 28 to 32 builds on it. Keep the reasoning about the trip's shape between the adults; your child only needs the arrival and departure places once they are settled.
+
+**A First Taste pick.** If your child chose their one special pick in Session 44, keep its place on the shortlist. Only the three blocks can change that pick: cost, bookability, and safety or feasibility for everyone. If one applies, tell your child which one. They choose a new pick with you in Session 26.
 
 **Use it in a family talk.** Take the shortlist into a family conversation and plan from it. Seeing their research shape the trip a second time, well before the final meeting, is what keeps a child going through the long middle of the project.
 
