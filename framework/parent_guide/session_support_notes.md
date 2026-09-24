@@ -136,7 +136,7 @@ Want a rough signal of how the executive-function side is going? The optional [e
 ## Session 15: City Research Cards
 
 - Role: 5-minute check-in.
-- Prep: a device with the filter on; your child's region and map notes from Session 11, or, on First Taste, which skips Session 11, a first city you name yourself; two blank cards; the Checkpoint 1 season, or the season confirmation if the dates are booked.
+- Prep: a device with the filter on; your child's region and map notes from Session 11, or, on First Taste, which skips Session 11, a first city you name yourself; two blank cards; the Checkpoint 1 season, or the season confirmation if your dates are booked.
 - Look for: two city cards, each with a few starred top sights and a source.
 - Coaching question: "Which sight can you not wait to see?"
 - Pitfall: rabbit holes. One solid card per sitting is a good pace.
@@ -184,8 +184,8 @@ Want a rough signal of how the executive-function side is going? The optional [e
 ## Session 21: Compare Cities
 
 - Role: 5-minute check-in. On the Core path, a whole region on the long-list is scored as one town, which you help choose and your child writes on the region's card.
-- Prep: the two city cards, plus the City Long-List on the Core path; a Scoring Rubric page; the Family Trip Goals page, for the Session 03 poll; the assumptions page, for the budget band.
-- Look for: two cities scored on three things, a written trade-off, and a recommendation (one city, or both kept on purpose). On the Core path, every place kept in the running is scored too, and the money check covers each one.
+- Prep: the two city cards; the Family Trip Goals page, for the poll; the assumptions page, for the budget band; a Scoring Rubric page. On the Core path, also the City Long-List and the cards for every place kept in the running.
+- Look for: two cities scored on three things, a written trade-off, and a recommendation (one city, or both kept on purpose). On the Core path, every place kept in the running is scored too, a whole region as one town you help choose, and the money check covers them all.
 - Coaching question: "Does the total match your gut? Walk me through it." Optional formative check, if you want one: "Why did you score it that way?"
 - Pitfall: treating the score as the decision. The trade-off sentence is the real work.
 
@@ -280,8 +280,8 @@ Want a rough signal of how the executive-function side is going? The optional [e
 ## Session 33: Budget Basics, First Pass
 
 - Role: 5-minute check-in; supply the kid-sized budget band. If your child makes the part-trip note, use it when you set the rooms and book the long rides.
-- Prep: a Budget Estimate page; the assumptions page, for the budget band; the Trip-Basics card, for the number of travelers; a calculator is allowed. On the First Taste path, also the Session 21 recommendation. On the Core path, also the route and nights approved at Checkpoint 4, and the traveler profiles if a traveler comes for part of the trip; have your own rough cost of getting there on your own page, ready for your check at Session 39.
-- Look for: a high/medium/low estimate for meals and hotel, checked against the band. On First Taste, the rows follow the Session 21 recommendation. On the Core path, the hotel line is one typical nightly price times every night in the Checkpoint 4 plan and the number of rooms, and food uses the plan's total days; if a traveler comes for only part of the trip, an optional note on who is there on which days.
+- Prep: a Budget Estimate page; the assumptions page, for the budget band; the Trip-Basics card, for the number of travelers; on First Taste, the Session 21 recommendation; on the Core path, the route, nights and total days approved at Checkpoint 4, and the traveler profiles if someone comes for only part of the trip. A calculator is allowed. On the Core path, have your own rough cost of getting there on your own page, ready for your check at Session 39.
+- Look for: a high/medium/low estimate for meals and hotel, checked against the band. On First Taste, the rows follow the Session 21 recommendation. On the Core path, the hotel line is one typical nightly price times every approved night and the number of rooms, and food uses the plan's total days. If a traveler comes for only part of the trip, an optional note on who is there on which days.
 - Coaching question: "Do the parts you chose fit our band?"
 - Pitfall: reaching for a real total. The cost of getting there stays off their check; keep it to two slices.
 
