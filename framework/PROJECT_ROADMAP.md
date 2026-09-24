@@ -95,6 +95,8 @@ On this path the headline signal is the number of checkpoints reached:
 
 **Checkpoints reached: ____ of 6**
 
+A checkpoint counts once it is finished: Approved, or Approved with changes once your child has written the changes in. At Checkpoints 2 to 5, "Needs more research" and "Park this decision for later" leave it open until your child comes back to it. At Checkpoint 6, a parked decision is the result, so it counts. Every answer is still a normal result.
+
 It stays accurate when sessions are skipped or the family stops at the Core Finish Line, and each of the six checkpoints is one of the six decisions your family makes. Progress within a phase is the smaller detail beneath it. If a picture helps, draw a plain bar for the phase you're in:
 
 ```text

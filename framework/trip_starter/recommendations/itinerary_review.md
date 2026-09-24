@@ -37,7 +37,7 @@ Bring this page to a grown-up with your itinerary draft and its daily plan cards
 
 Before you start the next session:
 
-- **Approved with changes:** write the changes on this page and in your Decision Record.
+- **Approved with changes:** write the changes on this page and in your Decision Record. If the change moves where you arrive or leave, re-time that leg with the map's Directions, and fix your travel days and nights. If a place, a night or a day changes, update your Session 39 budget and check it against your band again. Then run your Session 43 pacing checks again for the days that changed.
 - **Needs more research:** do that one piece, and bring it back.
 - **Park this decision for later:** wait until your family comes back to it.
 
