@@ -47,7 +47,7 @@ Your Reservation Watchlist: everything that might need booking, and whether hold
 
 ## Stop Point
 
-You are done when every item on your day cards that might need booking is on the watchlist, each one says whether holding a date matters, and each one has its date-checked box filled in. If your special pick hit a block, you've chosen a new one from your attraction cards with a grown-up, put it on its day card, and crossed the blocked one off your watchlist. You're making the list the grown-ups will use, and they do all of the booking. "Ask an adult" is a fine answer in any box you can't fill.
+You are done when every item on your day cards that might need booking is on the watchlist, each one says whether holding a date matters, and each one has its date-checked box filled in. If your dates are booked, each one has its opening date in "When adults should check". If your special pick hit a block, you've chosen a new one from your attraction cards with a grown-up, put it on its day card, and crossed the blocked one off your watchlist. You're making the list the grown-ups will use, and they do all of the booking. "Ask an adult" is a fine answer in any box you can't fill.
 
 ## Source Check
 

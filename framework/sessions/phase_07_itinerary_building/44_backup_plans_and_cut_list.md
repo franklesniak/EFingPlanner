@@ -68,7 +68,7 @@ On the Core path: your cut list, started from your Checkpoint 2 and 3 notes, one
 
 On the First Taste path, you are done when you have a short must-see list, a cut list with whatever did not make it (even one thing, or a note that nothing needed cutting), one special pick written and initialed, and two backup plans. Short is good. This is about choosing, not listing everything.
 
-On the Core path, you are done when your cut list holds your Checkpoint 2 and 3 notes and anything else you set aside, your My Calls page has one line saying your special pick still holds, and you have two backup plans.
+On the Core path, you are done when your cut list holds your Checkpoint 2 and 3 notes and anything else you set aside, your My Calls page has one line saying your special pick still holds, and you have two backup plans. Any travel time a swap needed is in your route map notes.
 
 ## Source Check
 

@@ -10,7 +10,7 @@ You are here: Phase 6 (Lodging, Food, and Budget). Not a First Taste step. Previ
 - Planner skill: comparing choices
 - Estimated time: 20-30 minutes per sitting, several sittings
 - Parent involvement: none / independent work
-- Materials: a device with the kid-safe filter on, blank [Hotel Comparison Cards](../../templates/hotel_comparison_card.md), your neighborhood comparison from Session 34, the route your family approved at Checkpoint 4, your route map notes from Session 28, the City Research Card for any region on your route (for its town), your [Source Log](../../templates/source_log.md), a timer or clock
+- Materials: a device with the kid-safe filter on, blank [Hotel Comparison Cards](../../templates/hotel_comparison_card.md), your neighborhood comparison from Session 34, the route your family approved at Checkpoint 4, your route map notes from Session 28, the City Research Card for any region on your route (for its town), your [Source Log](../../templates/source_log.md), a timer and a clock
 
 ## Goal
 
@@ -18,7 +18,7 @@ Compare a few places to stay for each city where you'll sleep, and say which one
 
 ## Start Here
 
-Copy one blank Hotel Comparison Card into your binder, and write the city name at the top. If you already have a card for this place from an earlier sitting, open that one instead. Then write a guess in the corner of the card: "I think this sitting will take ___ minutes." Note the time you start beside it. That's your start. Start another sitting the same way, with a new guess. If this is a new day, set your timer for 20 minutes first.
+Set your timer for 20 minutes. Copy one blank Hotel Comparison Card into your binder, and write the city name at the top. If you already have a card for this place from an earlier sitting, open that one instead. Then write a guess in the corner of the card: "I think this sitting will take ___ minutes." Note the time you start beside it. That's your start. Start every sitting the same way, with a fresh timer and a new guess.
 
 ## Steps
 

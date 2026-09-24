@@ -62,7 +62,7 @@ On the Core path: your final reflection, with the three extra questions answered
 
 You are done when you have looked back at your baseline, answered a few reflection questions, and handed your plan to a grown-up. This is the finish line. On the First Taste path, you can stop here with a usable mini-plan.
 
-On the Core path, you are done when you've also answered the three extra questions and handed your binder to a grown-up. This is the finish line for the whole project.
+On the Core path, you are done when you've also answered the three extra questions and handed your binder to a grown-up. If this is your capstone re-run, you've looked back at your First Taste reflection too. This is the finish line for the whole project.
 
 ## Source Check
 

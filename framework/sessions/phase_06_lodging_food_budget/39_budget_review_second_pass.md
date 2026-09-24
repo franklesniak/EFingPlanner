@@ -10,7 +10,7 @@ You are here: Phase 6 (Lodging, Food, and Budget). Not a First Taste step. Previ
 - Planner skill: revising a plan
 - Estimated time: 20-30 minutes
 - Parent involvement: parent review after session
-- Materials: your [Budget Estimate page](../../templates/budget_estimate.md) from Session 33, your daily cost table from Session 38, your hotel comparison cards, your route and nights from Checkpoint 4, your route map notes from Session 28, the City Research Card for any region on your route (for its town), your My Calls page (for your special pick), your attraction cards (if your special pick hits a block), your [Trip-Basics card](../../templates/trip_basics.md) (for the number of travelers), your family's [current travel assumptions](../../templates/current_family_travel_assumptions.md) page (for the budget band), your [Source Log](../../templates/source_log.md), a calculator (allowed)
+- Materials: your [Budget Estimate page](../../templates/budget_estimate.md) from Session 33 and a blank one for this pass, your daily cost table from Session 38, your hotel comparison cards, your route and nights from Checkpoint 4, your route map notes from Session 28, the City Research Card for any region on your route (for its town), your My Calls page (for your special pick), your attraction cards (if your special pick hits a block), your [Trip-Basics card](../../templates/trip_basics.md) (for the number of travelers), your family's [current travel assumptions](../../templates/current_family_travel_assumptions.md) page (for the budget band), your [Source Log](../../templates/source_log.md), a calculator (allowed)
 
 ## Goal
 
@@ -27,8 +27,8 @@ Your first budget was a quick guess with two slices. Now you know your route, yo
 Round to easy numbers. A calculator is always fine, and a grown-up can do the math while you do the thinking.
 
 1. **Hotels, city by city.** Fill in the hotel table in the Workspace, one row per overnight city. If a stop on your route is a region, use the town on its card from Session 21. If that card names no town, use the one you picked in Session 28. Use your nights from Checkpoint 4 and the cost per room from the card you recommended. If that card's cost row is empty, fill it in first, or ask an adult. A grown-up tells you how many rooms.
-2. **Food.** Take the medium food guess from your Session 38 table, and multiply it by the total days in your Checkpoint 4 plan.
-3. **The other slices.** Do the same for local transit, activities and souvenirs. Fill in the rows on your Budget Estimate page that said "later". They're yours now. Your long-distance rides from Session 38 stay out of your subtotal, because the grown-ups price those.
+2. **Food.** Take the medium food guess from your Session 38 table, and multiply it by the total days in your Checkpoint 4 plan. Write it on your blank Budget Estimate page, which is your page for this pass. That guess already covers everyone, so on its Food row, cross out "per person" and "x ____ people".
+3. **The other slices.** Do the same for local transit, activities and souvenirs. Fill in the rows on that page that said "later". They're yours now. In each one's "How to figure it" box, write "per day x ____ days". On the activities row, cross out "per ticket x ____ people" first. Your long-distance rides from Session 38 stay out of your subtotal, because the grown-ups price those.
 4. **Add it up.** Your subtotal is what the parts you chose come to. The whole trip costs more than that, and the grown-ups work out the rest on their own page.
 5. **Check against your band.** Match the units first, the way you did in Session 33. Compare the piece of your estimate that matches your band: one day for the family, one person for one day, or one hotel night.
 6. **Write one sentence.** Do the parts you chose fit the band? If they don't, what would you change? Maybe fewer nights somewhere, a cheaper area, or one less paid ticket.
@@ -49,7 +49,7 @@ Your hotels, one row per overnight city. Your Budget Estimate page has only two 
 | | | | | |
 | **All hotels** | | | | |
 
-Then use your Budget Estimate page for the other slices, your subtotal and your band check.
+Then use your new Budget Estimate page for food, the other slices, your subtotal and your band check. On its Hotel (first city) row, cross out the formula, write "my hotel table", and copy in your All hotels total. Leave the second city's row blank. Keep your Session 33 page as it is, because Session 53 looks back at it.
 
 Your sentence about the band:
 

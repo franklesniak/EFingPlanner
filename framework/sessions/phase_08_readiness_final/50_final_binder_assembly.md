@@ -24,10 +24,10 @@ Pick your own first move and do it. If you'd like one: make the divider for tab 
 
 Maybe you kept everything in one growing folder, in rough order. Maybe you filed pages under tabs as you went. Both ways end up in the same place today. If you didn't file as you went, you haven't fallen behind. Doing the tabs here, once, at the end, is the usual way.
 
-1. Make the eleven dividers, in the order in the Workspace.
+1. Set your timer for 20 minutes, and make the eleven dividers, in the order in the Workspace.
 2. Build tab 1, then tab 2, and so on. Put each page behind the tab it belongs to.
 3. Tick each tab on the checklist when its pages are in.
-4. Stop between sittings whenever you like. Pick up at the next tab. If this is a new day, set your timer for 20 minutes first.
+4. Stop between sittings whenever you like. Start each new sitting by setting your timer for 20 minutes, then pick up at the next tab.
 
 Tabs 3 and 4 have a different line if your dates were booked. Your Trip-Basics card's maximum trip length row tells you: a booked trip has its booked length written there.
 

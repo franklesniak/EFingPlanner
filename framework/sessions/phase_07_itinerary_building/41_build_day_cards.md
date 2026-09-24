@@ -26,10 +26,10 @@ Day cards come after Checkpoint 4, once the grown-ups have settled your route an
 
 Make **one block card for each city-stay** on the route the grown-ups approved: one card for all the days you sleep in the same place, with a row for each of those days. A trip with one base has one card. That's the shape for everyone. A block card is less work, and it flexes. If the grown-ups move a date, you move the block and keep what you wrote.
 
-1. Before you start a card, check whether you already made one for that city-stay in an earlier sitting. Fill in the top of the card: the city, where you'll sleep, the main goal for this stay, and roughly when. If a stop on your route is a region, use the town on its card from Session 21. If that card names no town, use the one you picked in Session 28.
+1. Set your timer for 20 minutes. Before you start a card, check whether you already made one for that city-stay in an earlier sitting. Fill in the top of the card: the city, where you'll sleep, the main goal for this stay, and roughly when. If a stop on your route is a region, use the town on its card from Session 21. If that card names no town, use the one you picked in Session 28.
 2. Give each day its own row. Put your anchor first. Take your anchors from the must-do list on your My Calls page, in the order you wrote there if you wrote one. Then use your day rules for the rest, and look at your "things I can't wait to see" page for anything that fits. If an attraction card you need is missing its time needed or ticket row, fill that in first. On the last card, the day you head home gets its own row, for the ride from your last overnight place to where you leave from, once a grown-up has set that place.
 3. Give every day an energy level: Easy, Medium or Big day. Give day one and the last day the levels your first-day and last-day rules from Session 40 say. Fill in each day's transit notes too. If your route map notes from Session 28 don't have a travel time you need, check it with the map's Directions and add it to your notes.
-4. Save the cards in order, and stop between sittings whenever you like. If this is a new day, set your timer for 20 minutes first.
+4. Save the cards in order, and stop between sittings whenever you like. Each new sitting starts again at step 1, with a fresh timer.
 
 **Roughly when** means a window, like "spring", "the second week", or "not decided yet". Never write the exact booked dates on a day card. Those belong to the grown-ups.
 
@@ -49,7 +49,7 @@ Your Daily Plan Cards: one block card for each city-stay, with a row for each da
 
 ## Stop Point
 
-You are done when every city-stay on your approved route has one card, each card has a main goal, and each day has its anchor, its transit notes and an energy level. Day one follows your first-day rule, and the day home has its own row, following your last-day rule. One card per city-stay is the finished shape. Per-day cards are extra, and only worth doing once the dates are firm. You can stop between sittings as often as you like, and "not decided yet" is fine in any box.
+You are done when every city-stay on your approved route has one card, each card has a main goal, and each day has its anchor, its transit notes and an energy level. Day one follows your first-day rule, and the day home has its own row, following your last-day rule. Any travel time you had to look up is in your route map notes. One card per city-stay is the finished shape. Per-day cards are extra, and only worth doing once the dates are firm. You can stop between sittings as often as you like, and "not decided yet" is fine in any box.
 
 ## Source Check
 

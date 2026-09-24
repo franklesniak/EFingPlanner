@@ -20,7 +20,7 @@ Put everything you've built into one day-by-day plan.
 
 Set up your own first step, then take it. One idea: stack your day cards in order and write "Day 1" on a blank page.
 
-Then write a guess in the corner: "I think this sitting will take ___ minutes." Note the time you start. Write a new guess at the start of each sitting. If this is a new day, set your timer for 20 minutes first.
+Then set your timer for 20 minutes, and write a guess in the corner: "I think this sitting will take ___ minutes." Note the time you start. Start each new sitting the same way, with a fresh timer and a new guess.
 
 ## Steps
 
@@ -59,7 +59,7 @@ Your full itinerary draft: one row for every day of the trip, copied forward fro
 
 ## Stop Point
 
-You are done when every day in your route has a row, including a travel row for each flight day, and each row has at least an overnight city and a main activity. Blank boxes are fine. A plan with gaps is still a plan, and you don't have to finish it in one sitting.
+You are done when every day in your route has a row, including a travel row for each flight day, and each row has at least an overnight city and a main activity. The first and last days carry their travel legs, the days your pacing review made gentler are copied that way, and nothing on your cut list is in. Any travel time you had to look up is in your route map notes. Blank boxes are fine. A plan with gaps is still a plan, and you don't have to finish it in one sitting.
 
 At the end of each sitting, check the clock. Write how many minutes it took next to your guess. Being off is normal. Then look back at Sessions 16, 26 and 35. Is the gap between your guess and your time smaller now than it was then?
 
