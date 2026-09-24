@@ -130,7 +130,7 @@ Want a rough signal of how the executive-function side is going? The optional [e
 ## Session 15: City Research Cards
 
 - Role: 5-minute check-in.
-- Prep: a device with the filter on; the major cities reference; two blank cards.
+- Prep: a device with the filter on; your child's region and map notes from Session 11, or, on First Taste, which skips Session 11, a first city you name yourself; two blank cards.
 - Look for: two city cards, each with a few starred top sights and a source.
 - Coaching question: "Which sight can you not wait to see?"
 - Pitfall: rabbit holes. One solid card per sitting is a good pace.
@@ -138,8 +138,8 @@ Want a rough signal of how the executive-function side is going? The optional [e
 ## Session 21: Compare Cities
 
 - Role: 5-minute check-in.
-- Prep: the two city cards; a Scoring Rubric page.
-- Look for: two cities scored on three things, a written trade-off, and a recommendation (one city, or both kept on purpose).
+- Prep: the two city cards, plus the City Long-List on the Core path; a Scoring Rubric page.
+- Look for: two cities scored on three things, a written trade-off, and a recommendation (one city, or both kept on purpose). On the Core path, every place kept in the running is scored too.
 - Coaching question: "Does the total match your gut? Walk me through it."
 - Pitfall: treating the score as the decision. The trade-off sentence is the real work.
 

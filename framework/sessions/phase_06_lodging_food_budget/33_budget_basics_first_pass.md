@@ -2,7 +2,11 @@
 
 # Session 33: Budget Basics, First Pass
 
-You are here: Phase 6 (Lodging, Food, and Budget), First Taste step 11 of 13. Previous: [21 Compare Cities](../phase_03_choose_places/21_compare_cities.md) | Next: [44 Backup Plans and Cut List](../phase_07_itinerary_building/44_backup_plans_and_cut_list.md)
+You are here: Phase 6 (Lodging, Food, and Budget), First Taste step 11 of 13. Previous: [32 Checkpoint 4 Route and Trip Length](../phase_05_route_length_transport/32_checkpoint_4_route_and_trip_length.md) | Next: 34 Neighborhoods and Hotel Location
+
+*On the First Taste path, you came here straight from [21 Compare Cities](../phase_03_choose_places/21_compare_cities.md).*
+
+*On the First Taste path, go straight to [44 Backup Plans and Cut List](../phase_07_itinerary_building/44_backup_plans_and_cut_list.md). Sessions 34 to 43 are not among the 13.*
 
 **For parents:**
 
