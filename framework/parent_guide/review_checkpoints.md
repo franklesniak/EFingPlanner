@@ -91,9 +91,9 @@ Each has its own **what to consider** list. The review form checks whether the w
 
 **What they bring:** with open dates, total days, overnight cities, nights in each, travel days, and a shorter backup version.
 
-**Also yours to do here:** confirm or adjust the arrival and departure places against current flight options. If they change, your child's route flexes. They move one block and keep the rest.
+**Also yours to do here:** confirm or adjust the arrival and departure places against how you'll get there and back: the current flights, trains or drive. If they change, your child's route flexes. They move one block and keep the rest.
 
-**What to consider:** flights; the arrival and departure places; how many hotel moves it involves; whether the transit is workable; how it fits your maximum trip length, or your booked trip length; budget implications; and the family schedule.
+**What to consider:** how you get there and back; the arrival and departure places; how many hotel moves it involves; whether the transit is workable; how it fits your maximum trip length, or your booked trip length; budget implications; and the family schedule.
 
 **With the dates already booked,** the trip length is set. They bring how the booked days are split: the cities, the nights in each and the travel days, with no shorter backup version.
 
@@ -121,4 +121,4 @@ The draft is the thing being reviewed. Pacing, transit, meals and rest cannot be
 
 - [Coaching and support](coaching_and_support.md) -- the words for "needs more research", the most common hard verdict.
 - [Booking guidance](booking_guidance.md) -- what happens after a checkpoint approves something that needs booking.
-- [Session support notes](session_support_notes.md) -- each session built so far at a glance, Checkpoint 1 included.
+- [Session support notes](session_support_notes.md) -- one session at a glance in each entry, Checkpoint 1 included.
