@@ -2,7 +2,7 @@
 
 # Session 33: Budget Basics, First Pass
 
-You are here: Phase 6 (Lodging, Food, and Budget), First Taste step 11 of 13. Previous: [32 Checkpoint 4 Route and Trip Length](../phase_05_route_length_transport/32_checkpoint_4_route_and_trip_length.md) | Next: 34 Neighborhoods and Hotel Location
+You are here: Phase 6 (Lodging, Food, and Budget), First Taste step 11 of 13. Previous: [32 Checkpoint 4 Route and Trip Length](../phase_05_route_length_transport/32_checkpoint_4_route_and_trip_length.md) | Next: [34 Neighborhoods and Hotel Location](34_neighborhoods_and_hotel_location.md)
 
 *On the First Taste path, you came here straight from [21 Compare Cities](../phase_03_choose_places/21_compare_cities.md).*
 
@@ -31,7 +31,7 @@ Every trip is made of cost categories. You don't need exact numbers. You're lear
 1. **Meet the categories** (just read these once): getting there, hotels, food, local transit, longer journeys once you are there, activities and tickets, souvenirs, and a buffer for surprises.
 2. **Estimate two of them** with simple **high / medium / low** guesses (a grown-up can help you find rough numbers, and you can use a calculator):
    - **Meals:** about how much per person, per day? (high / medium / low)
-   - **Hotel:** about how much per night, per room? (high / medium / low) (If you kept two cities in Session 21, guess a hotel for each. Your plan pays for both.)
+   - **Hotel:** about how much per night, per room? (high / medium / low) (If you kept two cities in Session 21, guess a hotel for each. Your plan pays for both.) On the Core path, guess the hotel for the first overnight city on the route the grown-ups approved at Checkpoint 4. Session 39 adds any other overnight cities.
 3. **Do the easy math** (round to friendly numbers first; a grown-up may do the multiplying while you do the thinking):
 
    | Cost | How to figure it | My estimate |
@@ -46,11 +46,20 @@ Every trip is made of cost categories. You don't need exact numbers. You're lear
    - Band is **per day for the family**? Add your **meals for everyone per day** (meals per person x your travelers) to your **hotel for one night, all your rooms** (hotel per night x rooms). Then check that daily total against the band.
    - Band is a **hotel tier**? Check your **hotel-per-night** pick against that tier. Circle **fits** or **too high** for the part you checked.
 
+5. **Core path, optional: who's there on which days?** Do this only if your traveler profiles from Session 02 say someone is coming for part of the trip. In the small table in the Workspace, jot how many people are with you on which days. Then note what that changes: how many rooms you need (Sessions 34 and 35), seats on each long ride (Session 30), and how big a restaurant table is (Session 36). Finished First Taste first? Do this step when you come back to this session.
+
 **Remember:** your first guesses will probably be off. Everyone's are, even grown-ups'. Being off is normal. The point is to practice estimating and checking. Being exactly right isn't the goal. (See your [planner mindset card](../../student_guide/planner_mindset.md).)
 
 ## Workspace
 
 Use your Budget Estimate page for the two estimates, the math, and your fits / too-high check.
+
+Only if someone is coming for part of the trip (Core path):
+
+| Which days | How many of us | What it changes (rooms, seats, table size) |
+| --- | --- | --- |
+| | | |
+| | | |
 
 You can say your answers to an adult who writes them, or draw them, if that's easier.
 
@@ -81,3 +90,5 @@ If you have extra energy, estimate a third slice like activities or souvenirs. Y
 ## Parent Notes
 
 Keep this light -- two slices (meals and hotel), checked against a kid-sized band. Getting there is adult-owned, so it stays *off* your child's check here, and when it is a long flight it can outweigh everything else; the lesson is how costs are structured and whether *their* choices fit, not a real bookable total. Supply the band in kid-sized form (per person per day, per day for the family, or "this hotel tier"). A calculator is always allowed, and you may do the arithmetic while your child does the reasoning -- this matters for a child with number anxiety. Keep all figures verify-framed; nothing here is a fixed price.
+
+Before Session 39, have your own cost of getting there ready. Keep a rough figure on your own page: a per-person fare times the number of travelers if you fly or take the train, or the drive's own costs if you drive. It is for your own sanity check at Session 39, and your child never researches it, writes it down or adds it to their subtotal. A family that finished First Taste first gets it ready when it continues, before Session 39.

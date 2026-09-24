@@ -1,0 +1,90 @@
+<!-- markdownlint-disable MD013 -->
+
+# Session 45: Full Itinerary Draft
+
+You are here: Phase 7 (Itinerary Building). Not a First Taste step. Previous: [44 Backup Plans and Cut List](44_backup_plans_and_cut_list.md) | Next: [46 Checkpoint 5 Itinerary Review](46_checkpoint_5_itinerary_review.md)
+
+**For parents:**
+
+- Status: Core
+- Planner skill: organizing information
+- Estimated time: several sittings; stop whenever you want
+- Parent involvement: none / independent work
+- Materials: your day cards from Session 41, your pacing review from Session 43, your backup plans and cut list from Session 44, your reservation watchlist, your budget summary from Session 39, a few blank pages
+
+## Goal
+
+Put everything you've built into one day-by-day plan.
+
+## Start Here
+
+Set up your own first step, then take it. One idea: stack your day cards in order and write "Day 1" on a blank page.
+
+Then write a guess in the corner: "I think this sitting will take ___ minutes." Note the time you start.
+
+## Steps
+
+Today's plan is built from work you already did. Every box comes from a card or a page you made, so the job is copying forward and putting it in order. All those cards are what make this plan.
+
+1. Go through your day cards in order, one day at a time.
+2. For each day, copy its row into the two tables in the Workspace. Use the same day number in both.
+3. Take the backup for each day from your day card or your backup plans.
+4. Stop between sittings whenever you like. Pick up at the next day.
+
+A day with only its city and its main activity filled in already works as a plan. A blank meals box is fine, and so is "ask an adult". Your draft makes sense even with gaps, so a family could follow it today.
+
+## Workspace
+
+Two tables, so the page prints. Give each day a row in both, with the same day number. Add rows as you need them, and carry on to a second sheet for a long trip.
+
+| Day | Overnight city | Main activities | Meals and food ideas |
+| --- | --- | --- | --- |
+| | | | |
+| | | | |
+| | | | |
+| | | | |
+
+| Day | Transit | Estimated costs | Booking notes | Backup plan |
+| --- | --- | --- | --- | --- |
+| | | | | |
+| | | | | |
+| | | | | |
+| | | | | |
+
+You can say your answers to an adult who writes them, or draw them, if that's easier.
+
+## Artifact Created
+
+Your full itinerary draft: one row for every day of the trip, copied forward from your cards.
+
+## Stop Point
+
+You are done when every day in your route has a row, and each row has at least an overnight city and a main activity. Blank boxes are fine. A plan with gaps is still a plan, and you don't have to finish it in one sitting.
+
+At the end of each sitting, check the clock. Write how many minutes it took next to your guess. Then look back at your guesses from Sessions 16, 26 and 35. Did the gap get smaller?
+
+## Source Check
+
+No new sources needed unless you looked something up. Everything here comes from your cards, and their sources are already in your Source Log.
+
+## Finish and Quality Check
+
+Finished? Use the [Finish and Quality Check card](../../student_guide/finish_and_quality_check.md) in your student guide.
+
+## If You Get Stuck
+
+Stuck? Use the [When I'm Stuck card](../../student_guide/when_im_stuck.md) in your student guide.
+
+## Optional Extension
+
+If you have extra energy, read your whole draft aloud to someone, the way you'd tell a friend about the trip. Mark any day that sounds too full. If not, you are done.
+
+## Parent Notes
+
+This is a synthesis session, so allow extra time or split it across sittings. Every column is copied forward from work your child already did. That matters for motivation, and it shows them their earlier work counts.
+
+A partly filled draft still reads as a finished plan. Day, city and main activity are enough for Checkpoint 5 to review, and the meals column can stay light if your family skipped the food sessions.
+
+The minutes guess is the last stop of the session-time loop, after Sessions 16, 26 and 35. Let your child notice whether the gap between guess and time shrank. The final reflection comes back to it.
+
+**The lighter page.** From Phase 7 on, Steps and Workspace are short and your child sets their own Start Here. The readiness signal is two sessions in a row done without needing the When I'm Stuck card or leaning on the written Steps; the Finish and Quality Check closes every session, so using it never counts against them. If your child isn't there yet, read the Steps with them. Start Here, the Stop Point, the named artifact and the Source Check stay on every page.

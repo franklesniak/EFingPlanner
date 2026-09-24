@@ -146,23 +146,23 @@ Want a rough signal of how the executive-function side is going? The optional [e
 ## Session 33: Budget Basics, First Pass
 
 - Role: 5-minute check-in; supply the kid-sized budget band.
-- Prep: a Budget Estimate page; a calculator is allowed.
-- Look for: a high/medium/low estimate for meals and hotel, checked against the band.
+- Prep: a Budget Estimate page; a calculator is allowed. On the Core path, have your own rough cost of getting there on your own page, ready for your check at Session 39.
+- Look for: a high/medium/low estimate for meals and hotel, checked against the band. On the Core path, if a traveler comes for only part of the trip, an optional note on who is there on which days.
 - Coaching question: "Do the parts you chose fit our band?"
 - Pitfall: reaching for a real total. The cost of getting there stays off their check; keep it to two slices.
 
 ## Session 44: Backup Plans and Cut List
 
-- Role: 5-minute check-in; help co-choose the one unconditional pick.
-- Prep: the City Research Cards (starred sights); Cut List and Backup Plan pages.
-- Look for: a short must-see list, a cut list, one special pick initialed, two backups.
+- Role: 5-minute check-in; help co-choose the one unconditional pick. On the Core path, confirm the pick Session 26 already chose instead.
+- Prep: the City Research Cards (starred sights); Cut List and Backup Plan pages. On the Core path, the My Calls page takes the place of the starred sights, with the skip and save-for-future notes from Checkpoints 2 and 3.
+- Look for: a short must-see list, a cut list, one special pick initialed, two backups. On the Core path, the must-do list is the one Session 26 made, the cut list starts from the Checkpoint 2 and 3 notes, and the pick gets a one-line confirmation.
 - Coaching question: "What are you saving for a future trip?"
 - Pitfall: making it exhaustive. This teaches "good enough is good enough."
 
 ## Session 53: Reflection and Handoff
 
-- Role: co-work; deliver the finish acknowledgment warmly (duration-true wording).
-- Prep: the Session 01 baseline reflection; a Final Reflection page.
-- Look for: a reflection compared to the baseline, and the plan handed to you.
+- Role: co-work; deliver the finish acknowledgment warmly, in the duration-true wording: the duration-neutral form for a First Taste finisher, and the months-long form for a child finishing the Core or full path, including a capstone re-run after First Taste.
+- Prep: the Session 01 baseline reflection; a Final Reflection page. On the Core path, also the assembled binder, the checkpoint reflections, the minutes guesses and the Session 39 budget summary.
+- Look for: a reflection compared to the baseline, and the plan handed to you. On the Core path, answers to three more questions, on patterns, time guesses and the budget against the band, and the full binder handed over.
 - Coaching question: "Where else could you use one of these planning moves?"
 - Pitfall: skipping the acknowledgment. Finishing a real project is a big deal -- say so.
