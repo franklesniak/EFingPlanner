@@ -9,7 +9,7 @@ You are here: Phase 5 (Route, Length, and Transportation). Not a First Taste ste
 - Status: Core
 - Planner skill: planning realistic time
 - Estimated time: 20-30 minutes
-- Parent involvement: none / independent work
+- Parent involvement: none / independent work; beforehand, tell your child how long getting there takes and which flights land on a later date
 - Materials: your [Trip-Basics card](../../templates/trip_basics.md) (maximum trip length and time difference), your route map notes from Session 28, your traveler profiles, a pencil, a calculator (allowed)
 
 ## Goal
@@ -96,6 +96,8 @@ Stuck? Use the [When I'm Stuck card](../../student_guide/when_im_stuck.md) in yo
 If you have extra energy, reason out your own floor and ceiling in words (with booked dates, just the floor, since the length is fixed). What's the shortest trip that would still be worth the journey? What's the longest that would still feel good for everyone? Write one sentence for each. If not, you are done.
 
 ## Parent Notes
+
+**Before this session.** Tell your child two travel facts. Does getting there take only a few hours? And if you fly, which flights land on a later date than they take off, as a night flight or a date-line crossing can? A count of those flights is enough, so no dates go on the page.
 
 The time difference and the maximum trip length both come from your Trip-Basics card, so the session never states a number. With the dates booked, the booked length is the total and your child splits it; the floor question becomes whether the booked days leave room for every place chosen.
 
