@@ -69,7 +69,7 @@ Your Transportation basics notes: the ways you'll get around, what each one is f
 
 ## Stop Point
 
-You are done when you can say how you would get between your places, and you've listed at least two things a grown-up needs to check before booking. "Ask an adult" is a fine answer in the last column.
+You are done when you can say how you would get between your places, and you've listed at least two things a grown-up needs to check before booking. You also need your travel-time guess on your Source Log, with what you found and the date. "Ask an adult" is a fine answer in the last column.
 
 ## Source Check
 

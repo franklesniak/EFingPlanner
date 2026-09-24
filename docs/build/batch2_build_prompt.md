@@ -1507,8 +1507,11 @@ already made.**
 - **Stop Point:** you are done **for today** when you have at least two cards with a
   reason, a rough time needed, one downside, and a source each. More cards can wait for
   another sitting. **The attraction set is complete at 10 cards, across as many sittings as
-  it takes** -- that is the Core floor, and reaching it is success. Come back to this session
-  until you reach it, before Session 24 checks the balance, so every card gets that check.
+  it takes** -- that is the Core floor, and reaching it is success. The set also holds at
+  least one price guess written before its lookup (5.5). If every place is free, the guess
+  is whether one charges at all, or the price of a paid extra such as a guided tour. Come
+  back to this session until you reach it, before Session 24 checks the balance, so every
+  card gets that check.
 - **Source Check: required, and this is the first designated predict-then-verify
   session.** The one-line ticket-price guess goes **in the card's guess row**, then the
   child checks the official site, writes what they found in the next row, and notices the
@@ -1802,7 +1805,8 @@ purchases.**
   must check.
 - **Artifact:** Transportation basics notes.
 - **Stop Point:** you are done when you can say how you would get between your places, and
-  you have listed at least two things a grown-up needs to check before booking.
+  you have listed at least two things a grown-up needs to check before booking, and your
+  travel-time guess is on its source line with what you found and the date.
 - **Source Check: required, and this is the second designated predict-then-verify
   session.** The one-line guess at a trip the Session 28 notes do not hold, such as one
   must-do to another in the same city, goes on the source line. The child then checks it
