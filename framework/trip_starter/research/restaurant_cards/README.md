@@ -4,7 +4,7 @@
 
 ## What goes in this folder
 
-One filled Restaurant Research Card for each place or area to eat, one card to a file. You make them in Session 37, from the food wish list you wrote in Session 36.
+One filled restaurant research card for each place or area to eat, one card to a file. You make them in Session 37, from the food wish list you wrote in Session 36.
 
 The food sessions are your family's choice. If your family skipped them, this folder stays empty, and your kit is complete without it. If you did them, Session 37 says how many cards are enough. A dining area counts as a card.
 

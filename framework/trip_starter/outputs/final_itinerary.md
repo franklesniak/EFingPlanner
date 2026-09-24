@@ -4,7 +4,7 @@
 
 Copy this page out of the repository before you fill it in. Do not commit your filled-in work to a public repository.
 
-This is your day-by-day plan, put together from your Daily Plan Cards and your full itinerary draft. Every part is copied forward from a page you already made, so you start from your own work. Blank boxes are fine. A plan with gaps is still a plan.
+This is your day-by-day plan, put together from your daily plan cards and your full itinerary draft. Every part is copied forward from a page you already made, so you start from your own work. Blank boxes are fine. A plan with gaps is still a plan.
 
 Write where you'll stay as an area or a kind of place. Keep hotel names and exact booked dates off this page.
 
@@ -19,7 +19,7 @@ Write where you'll stay as an area or a kind of place. Keep hotel names and exac
 
 ## Each city-stay
 
-Copy this part once for each block Daily Plan Card, in trip order. A trip with one base has one.
+Copy this part once for each block daily plan card, in trip order. A trip with one base has one.
 
 | Prompt | Your answer |
 | --- | --- |
@@ -56,7 +56,7 @@ Copy these from your route notes, starting with the trip from where you arrive t
 
 ## Reservations flagged
 
-Copy the items from your Reservation Watchlist. The grown-ups book every one of them.
+Copy the items from your reservation watchlist. The grown-ups book every one of them.
 
 | Item | Does holding a date matter? | When the grown-ups should check |
 | --- | --- | --- |

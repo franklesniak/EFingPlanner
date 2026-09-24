@@ -4,7 +4,7 @@
 
 ## What goes in this folder
 
-One filled City Research Card for each city or region you research, one card to a file. You make your first two in Session 15. Sessions 16 to 18 take cards deeper, Session 19 adds more places, and Session 20 lists them all on your long-list.
+One filled city research card for each city or region you research, one card to a file. You make your first two in Session 15. Sessions 16 to 18 take cards deeper, Session 19 adds more places, and Session 20 lists them all on your long-list.
 
 If you research five places, five files live here. A card you go deeper on in a later session stays the same file. You add to it, and you keep one card per place. If a card is for a whole region, Session 21 has you write the town you chose for it on that card.
 

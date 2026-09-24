@@ -4,7 +4,7 @@
 
 ## What goes in this folder
 
-One filled Hotel Comparison Card for each place you might stay, one card to a file. You make them in Session 35, after you compare neighborhoods in Session 34.
+One filled hotel comparison card for each place you might stay, one card to a file. You make them in Session 35, after you compare neighborhoods in Session 34.
 
 Session 35 says how many cards are enough.
 
