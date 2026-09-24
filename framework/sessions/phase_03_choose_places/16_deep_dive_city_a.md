@@ -10,7 +10,7 @@ You are here: Phase 3 (Choose Places). Not a First Taste step. Previous: [15 Cit
 - Planner skill: organizing information
 - Estimated time: 20-30 minutes
 - Parent involvement: 5-minute check-in
-- Materials: this session's Destination Notes, a device with the kid-safe filter on, your City Research Card for City A from Session 15, your [Source Log](../../templates/source_log.md), and a blank [City Research Card](../../templates/city_research_card.md) only if your anchor city isn't one of your two cards
+- Materials: this session's Destination Notes, a device with the kid-safe filter on, your City Research Card for City A from Session 15, your [Source Log](../../templates/source_log.md), and a blank [City Research Card](../../templates/city_research_card.md) only if your anchor city doesn't have a card yet
 
 ## Goal
 
@@ -28,7 +28,7 @@ Then write a guess in the top corner of that card: "I think today will take ___ 
 
 You're going deeper on a page you already started. That's what planners mean by "extend, don't redo." Your Session 15 card stays, and today you add to it.
 
-**Which city is City A?** It's your anchor: the one city your family is almost sure to keep for a first trip. It's probably one of the two cards you started in Session 15. Your Destination Notes can help you spot it, and a grown-up can help you decide. Start a new card only if your anchor isn't one of those two.
+**Which city is City A?** It's your anchor: the one city your family is almost sure to keep for a first trip. It's probably one of the cards you started in Session 15. Your Destination Notes can help you spot it, and a grown-up can help you decide. Start a new card only if your anchor doesn't have one yet.
 
 Open this session's Destination Notes. They list the candidate cities for a first trip, with one line about each, and they point you to ideas worth looking into. Every idea there is an option to research. You and your family still make the choices.
 
