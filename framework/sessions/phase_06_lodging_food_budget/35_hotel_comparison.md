@@ -46,7 +46,7 @@ Your Hotel Comparison Cards, with the one you'd recommend for each city.
 
 ## Stop Point
 
-You are done when you have one card filled in for each place you might stay overnight, and you've written which one you'd recommend for each city and why. If one option was already obvious, one card for that city is enough. Four or five cards for the whole trip is plenty. "Ask an adult" is a fine answer in any row.
+You are done when you have at least one card for each city where you'll sleep overnight on your approved route. Each card has its cost per room with the date you found it, and its planning assumption rows filled in. You've written which one you'd recommend for each city and why. If one option was already obvious, one card for that city is enough. Four or five cards for the whole trip is plenty. "Ask an adult" is a fine answer in any row.
 
 At the end of each sitting, check the clock. Write how many minutes the sitting took next to your guess. Being off is normal, and noticing the gap is the practice.
 

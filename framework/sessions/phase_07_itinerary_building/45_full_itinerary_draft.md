@@ -10,7 +10,7 @@ You are here: Phase 7 (Itinerary Building). Not a First Taste step. Previous: [4
 - Planner skill: organizing information
 - Estimated time: several sittings; stop whenever you want
 - Parent involvement: none / independent work
-- Materials: your [Trip-Basics card](../../templates/trip_basics.md) (for the trip length), your day cards from Session 41, your pacing review from Session 43, your backup plans and cut list from Session 44, your reservation watchlist, your budget summary from Session 39, your route and nights from Checkpoint 4, your Session 29 formula (for any flight that lands on a later date), your route map notes from Session 28, the City Research Card for any region on your route (for its town), your family's [current travel assumptions](../../templates/current_family_travel_assumptions.md) page (for the arrival and departure places), a device with a map app or map website (kid-safe filter on), your minutes guesses from Sessions 16, 26 and 35 (on your City A card, your Session 26 scoring page and your hotel comparison cards), a timer, a few blank pages
+- Materials: your [Trip-Basics card](../../templates/trip_basics.md) (for the trip length), your day cards from Session 41, your pacing review from Session 43, your backup plans and cut list from Session 44, your reservation watchlist, your budget summary from Session 39, your route and nights from Checkpoint 4, your Session 29 formula (for its "- 1 flight day" marks), your route map notes from Session 28, the City Research Card for any region on your route (for its town), your family's [current travel assumptions](../../templates/current_family_travel_assumptions.md) page (for the arrival and departure places), a device with a map app or map website (kid-safe filter on), your minutes guesses from Sessions 16, 26 and 35 (on your City A card, your Session 26 scoring page and your hotel comparison cards), a timer, a few blank pages
 
 ## Goal
 
@@ -26,7 +26,7 @@ Then write a guess in the corner: "I think this sitting will take ___ minutes." 
 
 Today's plan is built from work you already did. Every box comes from a card or a page you made, so the job is copying forward and putting it in order. All those cards are what make this plan.
 
-1. Go through your day cards in order, one day at a time. Every day of the trip gets a row. Your total days come from your Checkpoint 4 plan, or, if your dates are booked, from your Trip-Basics card's maximum row. If you fly and a flight lands on a later date than the day it left, the date spent in the air gets its own row marked "travel". Your Session 29 formula shows how many flights do that.
+1. Go through your day cards in order, one day at a time. Every day of the trip gets a row. Your total days come from your Checkpoint 4 plan, or, if your dates are booked, from your Trip-Basics card's maximum row. That total already counts any flight day. Each "- 1 flight day" you wrote on your Session 29 formula is a date spent in the air, so give it its own row marked "travel".
 2. For each day, copy its row into the two tables in the Workspace. Use the same day number in both. If a stop on your route is a region, use the town on its card from Session 21. If that card names no town, use the one you picked in Session 28.
 3. The first day and the last day each carry their travel leg: from where you arrive to your first overnight place, and from your last one to where you leave from. Where your pacing review made a day gentler, copy the gentler version. Leave out anything on your cut list. Transit comes from your day cards. If your route map notes from Session 28 don't have a travel time you need, check it with the map's Directions and add it to your notes. Booking notes come from your reservation watchlist, and costs from your cards and your Session 39 budget summary. Take the backup for each day from your day card or your backup plans. If a box you need is empty on the card, fill it on the card first if you can, then copy it.
 4. Stop between sittings whenever you like. Pick up at the next day.
@@ -59,7 +59,7 @@ Your full itinerary draft: one row for every day of the trip, copied forward fro
 
 ## Stop Point
 
-You are done when every day in your route has a row, and each row has at least an overnight city and a main activity. Blank boxes are fine. A plan with gaps is still a plan, and you don't have to finish it in one sitting.
+You are done when every day in your route has a row, including a travel row for each flight day, and each row has at least an overnight city and a main activity. Blank boxes are fine. A plan with gaps is still a plan, and you don't have to finish it in one sitting.
 
 At the end of each sitting, check the clock. Write how many minutes it took next to your guess. Being off is normal. Then look back at Sessions 16, 26 and 35. Is the gap between your guess and your time smaller now than it was then?
 

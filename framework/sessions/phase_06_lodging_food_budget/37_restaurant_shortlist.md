@@ -48,7 +48,7 @@ Your Restaurant Research Cards and dining-area list: at least one place or area 
 
 ## Stop Point
 
-You are done when you have at least one card for each main city where you'll sleep overnight. An area full of places to eat counts as a card. If you're unsure whether a place needs a reservation, write "ask an adult". That's a finished answer.
+You are done when you have at least one card for each main city where you'll sleep overnight, with its planning assumption rows filled in. If your group is bigger than about four, each card has a seating note. An area full of places to eat counts as a card. If you're unsure whether a place needs a reservation, write "ask an adult". That's a finished answer.
 
 ## Source Check
 

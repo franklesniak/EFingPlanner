@@ -75,7 +75,7 @@ Your final recommendation packet: your recommendation and reasons, what the fami
 
 ## Stop Point
 
-You are done when your packet gives your reasons, the family has picked one of the four choices, you've written it in your decision log, and your handoff list says who is doing what next. Any of the four is a result that counts, including "park this for later". "Ask an adult" is a fine answer in any row.
+You are done when your packet gives your reasons, what the grown-ups approve, what changes and what they'll check or book, the family has picked one of the four choices, you've written it in your decision log, and your handoff list says who is doing what next. Any of the four is a result that counts, including "park this for later". "Ask an adult" is a fine answer in any row.
 
 Before you start Session 53:
 

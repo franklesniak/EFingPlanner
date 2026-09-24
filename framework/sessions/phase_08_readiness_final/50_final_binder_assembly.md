@@ -63,7 +63,7 @@ Your assembled binder checklist: all eleven tabs, in order, each ticked or with 
 
 ## Stop Point
 
-You are done when all eleven tabs exist in order, and each one has the pages that belong in it, or a line saying why it's empty. "We didn't do the food sessions" is a complete answer. You don't have to finish this in one sitting.
+You are done when all eleven tabs exist in order, each one has the pages that belong in it or a line saying why it's empty, and each is ticked on your checklist. "We didn't do the food sessions" is a complete answer. You don't have to finish this in one sitting.
 
 ## Source Check
 

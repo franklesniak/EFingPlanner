@@ -53,7 +53,7 @@ Your Neighborhood Comparison: two or three areas side by side, with the one you'
 
 ## Stop Point
 
-You are done when your neighborhood comparison has at least two areas filled in and you've circled the one you'd recommend, with one sentence saying why. One clear pick with a reason is enough. You don't need every box filled, and "ask an adult" is a fine answer. If you chose to write your third trade-off report here, you're done when that report is filled in too.
+You are done when your neighborhood comparison has at least two areas filled in, its room-count row says "ask an adult", and you've circled the one you'd recommend, with one sentence saying why. One clear pick with a reason is enough. You don't need every box filled, and "ask an adult" is a fine answer. If you chose to write your third trade-off report here, you're done when that report is filled in too.
 
 ## Source Check
 

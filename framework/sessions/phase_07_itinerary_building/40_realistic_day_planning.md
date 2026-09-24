@@ -56,7 +56,7 @@ Your realistic day rules: a short list you wrote yourself, ready to use when you
 
 ## Stop Point
 
-You are done when you've written your own short list of day rules, including your rules for the first and last days, and you know which rule you'd break first if a day got too full. Three or four rules are plenty, and "not sure yet" is fine for the one you'd break.
+You are done when you've written your own short list of day rules, including your rules for the first and last days, and you've put a star by the rule you'd break first if a day got too full. Three or four rules are plenty, and "not sure yet" is fine for the one you'd break.
 
 ## Source Check
 

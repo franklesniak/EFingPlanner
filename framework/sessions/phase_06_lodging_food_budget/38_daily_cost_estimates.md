@@ -66,7 +66,7 @@ Your daily cost table: a low, a medium and a high guess for each kind of cost in
 
 ## Stop Point
 
-You are done when every row has a low, medium, and high guess, or says "ask an adult". The long-distance row can say "not today". Rough guesses are the point, and exact numbers can wait for the grown-ups.
+You are done when every row has a low, medium, and high guess, or says "ask an adult", and the total row is added up. The long-distance row can say "not today". Rough guesses are the point, and exact numbers can wait for the grown-ups.
 
 ## Source Check
 

@@ -84,7 +84,7 @@ Your readiness checklist, with every line ticked or marked for the grown-ups. Yo
 
 ## Stop Point
 
-You are done when every line on your readiness checklist is either checked or marked "ask adults to confirm", and your card is made, with its lodging lines filled in by a grown-up or marked for a grown-up to fill in after booking. The emergency-number rows can stay blank until a grown-up has checked the numbers. You've also said the three-part plan out loud once with a grown-up. That's the whole thing.
+You are done when every line on your readiness checklist is either checked or marked "ask adults to confirm", and your card is made. It has a parent's phone number and the two emergency phrases, and its lodging lines are filled in by a grown-up or marked for a grown-up to fill in after booking. The emergency-number rows can stay blank until a grown-up has checked the numbers. You've also said the three-part plan out loud once with a grown-up. That's the whole thing.
 
 ## Source Check
 

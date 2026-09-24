@@ -50,7 +50,7 @@ Your Final Presentation Outline: Part 1 with your recommendation, Part 2 with th
 
 ## Stop Point
 
-You are done when every item on the outline has at least one line under it, and you've picked how you want to present. One line each is enough, because you'll talk from the outline. "Ask an adult" is a fine line for a question you can't answer yet.
+You are done when every item on the outline has at least one line under it, and you've picked how you want to present. If a grown-up changed where you arrive or leave, that leg is re-timed and your travel days and nights are fixed. One line each is enough, because you'll talk from the outline. "Ask an adult" is a fine line for a question you can't answer yet.
 
 ## Source Check
 

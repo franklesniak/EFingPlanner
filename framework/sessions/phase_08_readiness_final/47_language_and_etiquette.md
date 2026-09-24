@@ -26,8 +26,8 @@ Your family decides whether this sheet goes in the binder. Either way, it's a to
 
 The words and the manners come from your Destination Notes. This session shows you how to build the sheet.
 
-1. **Words.** Fill in the words you'll use most: hello, thank you, excuse me, please, yes and no, and a few for a restaurant.
-2. **Manners.** Answer the manners questions on your sheet from your notes. They cover quiet on public transit, shoes indoors, trash, respect at religious or historic places, whether people tip, and where cash is still needed. Grown-ups handle getting the cash.
+1. **Words.** Fill in the words you'll use most: hello, thank you, excuse me and please. Yes and no, and a few for a restaurant, are good extras.
+2. **Manners.** Your sheet asks about quiet on public transit, shoes indoors, trash, respect at religious or historic places, whether people tip, and where cash is still needed. Answer the ones your notes cover. Two or three you want to remember are enough. Grown-ups handle getting the cash.
 3. **Signs and photos.** Some places limit photos, sometimes with a fine, to protect the people who live or work there. Watch for signs and follow them. Always ask before you take a photo of a person.
 4. **Shared baths.** If your family might visit a shared bath, your notes explain how it works. Whether and how you take part is a grown-up's call.
 
@@ -45,7 +45,7 @@ Your Language and Etiquette Quick Sheet: one page of words and manners to carry 
 
 ## Stop Point
 
-You are done when your sheet has the words you'd actually say, like hello, thank you, excuse me and please, plus two or three manners you want to remember, and it fits on one page you can carry. Six good lines beat twenty you'll never use, and a blank "how it sounds" box is fine.
+You are done when your sheet has the words you'd actually say (hello, thank you, excuse me and please), plus two or three manners you want to remember, and it fits on one page you can carry. Six good lines beat twenty you'll never use, and a blank "how it sounds" box is fine.
 
 ## Source Check
 
