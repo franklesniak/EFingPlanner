@@ -74,7 +74,7 @@ Your City shortlist recommendation, recorded as a decision-log entry.
 
 ## Stop Point
 
-You are done when your shortlist table is filled in and you've shared it with a grown-up. When they decide, write their answer in your Decision Record. "Not sure yet" and "ask an adult" are fine answers in any row, and any of the four answers finishes the checkpoint.
+You are done for today when your shortlist table is filled in and you've shared it with a grown-up. When they decide, write their answer in your Decision Record. "Not sure yet" and "ask an adult" are fine answers in any row. The checkpoint is finished when the answer is Approved, or Approved with changes once you've written the changes in. With the other two answers, it stays open until you come back to it.
 
 Before you start the next session:
 

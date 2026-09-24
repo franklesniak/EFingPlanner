@@ -27,7 +27,7 @@ This is your third checkpoint, and it starts with the grown-ups. First, a grown-
 Now you show them the rest of your plan for what to do. Use the shape from [How to Make a Recommendation](../../student_guide/how_to_make_a_recommendation.md), and fill in the table in the Workspace:
 
 1. **Top must-do experiences.** Copy them from your ranked list.
-2. **Strong maybes.** These are the ones you'd love if there's time.
+2. **Strong maybes.** These are the ones you'd love if there's time. Add your only-if-nearby ones here too, each marked "if nearby".
 3. **Skip or save for a future trip.** List what you set aside, and why. These notes will seed your cut list later.
 4. **Reasons.** Why these must-dos? Give two or three reasons, each tied to something you found.
 5. **Biggest trade-offs.** What did you give up to keep your must-dos short?
@@ -47,7 +47,7 @@ Your top experiences recommendation:
 | Prompt | Your answer |
 | --- | --- |
 | Top must-do experiences | |
-| Strong maybes | |
+| Strong maybes (mark the only-if-nearby ones "if nearby") | |
 | Skip this time, or save for a future trip (and why) | |
 | My reasons | |
 | Biggest trade-offs | |
@@ -68,7 +68,7 @@ Your Top experiences recommendation, recorded as a decision-log entry.
 
 ## Stop Point
 
-You are done when your table is filled in and you've shared it with a grown-up. When they decide, write their answer in your Decision Record. "Not sure yet" and "ask an adult" are fine answers in any row, and any of the four answers finishes the checkpoint.
+You are done for today when your table is filled in and you've shared it with a grown-up. When they decide, write their answer in your Decision Record. "Not sure yet" and "ask an adult" are fine answers in any row. The checkpoint is finished when the answer is Approved, or Approved with changes once you've written the changes in. With the other two answers, it stays open until you come back to it.
 
 Before you start the next session:
 
