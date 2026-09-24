@@ -20,14 +20,14 @@ Put everything you've built into one day-by-day plan.
 
 Set up your own first step, then take it. One idea: stack your day cards in order and write "Day 1" on a blank page.
 
-Then write a guess in the corner: "I think this sitting will take ___ minutes." Note the time you start.
+Then write a guess in the corner: "I think this sitting will take ___ minutes." Note the time you start. Write a new guess at the start of each sitting.
 
 ## Steps
 
 Today's plan is built from work you already did. Every box comes from a card or a page you made, so the job is copying forward and putting it in order. All those cards are what make this plan.
 
 1. Go through your day cards in order, one day at a time.
-2. For each day, copy its row into the two tables in the Workspace. Use the same day number in both.
+2. For each day, copy its row into the two tables in the Workspace. Use the same day number in both. If a stop on your route is a region, use the town you picked for it in Session 28.
 3. Take the backup for each day from your day card or your backup plans.
 4. Stop between sittings whenever you like. Pick up at the next day.
 
@@ -61,7 +61,7 @@ Your full itinerary draft: one row for every day of the trip, copied forward fro
 
 You are done when every day in your route has a row, and each row has at least an overnight city and a main activity. Blank boxes are fine. A plan with gaps is still a plan, and you don't have to finish it in one sitting.
 
-At the end of each sitting, check the clock. Write how many minutes it took next to your guess. Then look back at your guesses from Sessions 16, 26 and 35. Did the gap get smaller?
+At the end of each sitting, check the clock. Write how many minutes it took next to your guess. Being off is normal. Then look back at Sessions 16, 26 and 35. Is the gap between your guess and your time smaller now than it was then?
 
 ## Source Check
 

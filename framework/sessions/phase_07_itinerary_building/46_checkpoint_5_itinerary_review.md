@@ -28,7 +28,7 @@ Choose your first move and make it. If you want a suggestion, write one thing yo
 2. **Reasons.** Write two or three reasons your plan works, each tied to something you found.
 3. Put your itinerary draft and its day cards in front of a grown-up, with your five answers. They need the draft itself to judge the pacing, the travel, the meals and the rest.
 4. The grown-up picks one of four answers: Approved, Approved with changes, Needs more research, or Park this decision for later. It might be a quick call, a note, or a talk at the table. Any of the four is a normal result.
-5. Write their answer in your Decision Record. That record is your decision-log entry.
+5. Write their answer in your Decision Record.
 
 **Your progress is real.** Once this is settled, your family has a usable day-by-day plan.
 
@@ -48,6 +48,8 @@ Your itinerary review packet is your draft, plus these five answers and your rea
 | My reasons | |
 | Approval status (a grown-up circles one: Approved / Approved with changes / Needs more research / Park this decision for later) | |
 
+Then fill your Decision Record. Write "Our day-by-day plan" in its Decision box. Your plan goes in **My recommendation**, and your reasons, sources and trade-offs go in their own rows. When the grown-ups decide, write their answer in **Final family decision**. That record is your decision-log entry.
+
 Optional, one line: *This stretch was easy / medium / hard (circle one), and one concrete thing that helped or got in the way.* A drawing is a fine answer, and so is skipping it. On that same line, a grown-up can ask you: *How's this going for you -- want to go lighter or deeper?*
 
 You can say your answers to an adult who writes them, or draw them, if that's easier.
@@ -58,7 +60,7 @@ Your itinerary review packet: your itinerary draft and its day cards, plus your 
 
 ## Stop Point
 
-You are done when your draft is in front of a grown-up, your review packet has all five parts and your reasons filled in, and a grown-up has written down which of the four choices they picked. Then write that decision in your decision log. That's the checkpoint. "Not sure yet" is a fine answer in any row. If the answer is Needs more research, do that one piece and bring it back before you start the next session.
+You are done when your draft is in front of a grown-up, your review packet has all five parts and your reasons filled in, and a grown-up has written down which of the four choices they picked. Then write that decision in your decision log. That's the checkpoint. "Not sure yet" is a fine answer in any row. If the answer is Needs more research, do that one piece and bring it back before you start the next session. If it's Park this decision for later, the next session waits too, until your family comes back to the decision.
 
 ## Source Check
 
@@ -78,7 +80,7 @@ If you have extra energy, pick the one day you're proudest of and write why it w
 
 ## Parent Notes
 
-This checkpoint is lightweight and asynchronous, like Checkpoints 2 to 4. One accountable adult can review and relay: a quick five-minute call, a comment on a shared note, a short text thread, or one parent deciding and telling the rest. It still needs an adult to read the draft and decide. The family decision meeting comes later, at Session 52. Answer promptly, because the next session waits for you.
+This checkpoint is lightweight and asynchronous, like Checkpoints 2 to 4. One accountable adult can review and relay: a quick five-minute call, a comment on a shared note, a short text thread, or one parent deciding and telling the rest. It still needs an adult to read the draft and decide. The family decision meeting comes later, at Session 52. Answer promptly, because the next session waits for you. If you park the decision, Session 47 waits until your family comes back to it.
 
 **What your child brings:** the itinerary draft with its day cards, five short answers, and their reasons. Review the draft itself. The answers point you to the questions, and the itinerary and its day cards are where you judge them.
 

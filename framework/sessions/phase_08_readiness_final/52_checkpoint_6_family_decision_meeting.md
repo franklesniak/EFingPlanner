@@ -28,7 +28,7 @@ This is the **family decision meeting**. The family gathers, you present your pl
 2. **Reasons.** Give two or three reasons for it, each tied to something you found.
 3. Listen to what the grown-ups approve, what they'd change, and what they'll check or book. Write it in your packet in the Workspace.
 4. Hand over your handoff list. Every item on it belongs to the grown-ups. Your job is to hand each one over clearly.
-5. The grown-ups pick one of four answers: Approved, Approved with changes, Needs more research, or Park this decision for later. Write their answer in your Decision Record. That record is your decision-log entry.
+5. The grown-ups pick one of four answers: Approved, Approved with changes, Needs more research, or Park this decision for later. Write their answer in your Decision Record.
 
 "Park this decision for later" is an honest, respected answer. Sometimes the timing or the money isn't right yet, and saying so is good planning too.
 
@@ -63,6 +63,8 @@ Your handoff list:
 | Safety and emergency planning | |
 | Final booking tasks | |
 
+Then fill your Decision Record. Write "Our final recommendation" in its Decision box. Your recommendation goes in **My recommendation**, and your reasons, sources and trade-offs go in their own rows. When the family decides, write their answer in **Final family decision**. That record is your decision-log entry.
+
 Optional, one line: *This stretch was easy / medium / hard (circle one), and one concrete thing that helped or got in the way.* A drawing is a fine answer, and so is skipping it. On that same line, a grown-up can ask you: *How's this going for you -- want to go lighter or deeper?*
 
 You can say your answers to an adult who writes them, or draw them, if that's easier.
@@ -73,7 +75,7 @@ Your final recommendation packet: your recommendation and reasons, what the fami
 
 ## Stop Point
 
-You are done when your packet gives your reasons, the family has picked one of the four choices, you've written it in your decision log, and your handoff list says who is doing what next. Any of the four is a result that counts, including "park this for later". "Ask an adult" is a fine answer in any row. If the answer is Needs more research, do that one piece and bring it back before you start Session 53.
+You are done when your packet gives your reasons, the family has picked one of the four choices, you've written it in your decision log, and your handoff list says who is doing what next. Any of the four is a result that counts, including "park this for later". "Ask an adult" is a fine answer in any row. If the answer is Needs more research, do that one piece and bring it back before you start Session 53. If it's Park this decision for later, that's your result, and you can go on to Session 53.
 
 ## Source Check
 

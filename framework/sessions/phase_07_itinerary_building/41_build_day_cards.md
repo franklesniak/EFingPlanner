@@ -26,7 +26,7 @@ Day cards come after Checkpoint 4, once the grown-ups have settled your route an
 
 Make **one block card for each city-stay** on the route the grown-ups approved: one card for all the days you sleep in the same place, with a row for each of those days. A trip with one base has one card. That's the shape for everyone. A block card is less work, and it flexes. If the grown-ups move a date, you move the block and keep what you wrote.
 
-1. Fill in the top of the card: the city, where you'll sleep, the main goal for this stay, and roughly when.
+1. Fill in the top of the card: the city, where you'll sleep, the main goal for this stay, and roughly when. If a stop on your route is a region, use the town you picked for it in Session 28.
 2. Give each day its own row. Put your anchor first, then use your day rules for the rest.
 3. Give every day an energy level: Easy, Medium or Big day. Mark day one Easy.
 4. Save the cards in order, and stop between sittings whenever you like.
@@ -49,7 +49,7 @@ Your daily plan cards: one block card for each city-stay, with a row for each da
 
 ## Stop Point
 
-You are done when every city-stay on your approved route has one card, each card has a main goal and an energy level, and day one is marked Easy. One card per city-stay is the finished shape. Per-day cards are extra, and only worth doing once the dates are firm. You can stop between sittings as often as you like, and "not decided yet" is fine in any box.
+You are done when every city-stay on your approved route has one card, each card has a main goal and an energy level for each day, and day one is marked Easy. One card per city-stay is the finished shape. Per-day cards are extra, and only worth doing once the dates are firm. You can stop between sittings as often as you like, and "not decided yet" is fine in any box.
 
 ## Source Check
 

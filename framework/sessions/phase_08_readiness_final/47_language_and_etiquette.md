@@ -22,12 +22,12 @@ Decide your first small move, then do it. A suggestion: open this session's Dest
 
 ## Steps
 
-Your family decides whether this sheet goes in the binder. It's worth keeping, because you'll use it more than almost anything else you make. You'll say hello and thank you with it, order food, and read signs while you're standing right there. So build it **for your own pocket**, small enough to carry, or as a photo on a phone.
+Your family decides whether this sheet goes in the binder. Either way, it's a tool for you to use on the trip. You'll say hello and thank you with it, order food, and read signs while you're standing right there. So build it **for your own pocket**, small enough to carry, or as a photo on a phone.
 
 The words and the manners come from your Destination Notes. This session shows you how to build the sheet.
 
 1. **Words.** Fill in the words you'll use most: hello, thank you, excuse me, please, yes and no, and a few for a restaurant.
-2. **Manners.** Answer the manners questions on your sheet from your notes. They cover quiet on trains and buses, shoes indoors, trash, respect at religious or historic places, whether people tip, and where cash is still needed. Grown-ups handle getting the cash.
+2. **Manners.** Answer the manners questions on your sheet from your notes. They cover quiet on public transit, shoes indoors, trash, respect at religious or historic places, whether people tip, and where cash is still needed. Grown-ups handle getting the cash.
 3. **Signs and photos.** Some places limit photos, sometimes with a fine, to protect the people who live or work there. Watch for signs and follow them. Always ask before you take a photo of a person.
 4. **Shared baths.** If your family might visit a shared bath, your notes explain how it works. Whether and how you take part is a grown-up's call.
 

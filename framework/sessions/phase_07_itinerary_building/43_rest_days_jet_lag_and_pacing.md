@@ -54,7 +54,7 @@ Your pacing checks:
 | --- | --- | --- |
 | Too many early mornings? | | |
 | Too many hotel moves? | | |
-| Too many long travel days? | | |
+| Too many long travel days? (One base? Count long rides from your base to your must-dos.) | | |
 | Is the first day too busy? | | |
 | With a big time change, are the first two or three days gentle? | | |
 | Does the last day leave time to pack and start the trip home? | | |

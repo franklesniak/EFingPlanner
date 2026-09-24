@@ -26,7 +26,7 @@ Find your baseline reflection from Session 01 (the "what is hard about big proje
 
 On the First Taste path, you made a mini-plan for a real trip. If you came here from Session 52, you made the full plan, from choosing places to the family decision meeting. Before you hand it over, take a few minutes to notice how far you've come. Short answers are fine. Say them aloud to a grown-up if you like.
 
-Finished First Taste first, and back here at the end of the whole project? This is your capstone. Look back at your Session 01 baseline and at the reflection you wrote at your First Taste finish, and use the Core path lines on this page.
+Finished First Taste first, and back here at the end of the whole project? This is your capstone, the last step that closes the whole project. Look back at your Session 01 baseline and at the reflection you wrote at your First Taste finish, and use the Core path lines on this page.
 
 1. **Look back at your baseline.** You wrote what was hard about big projects and what helps you start. What is different now?
 2. **Your budget guess.** Look at your budget estimate from Session 33. Were your first guesses off from what you expected? That's normal. Grown-ups' first guesses are often off too. This is about noticing how estimating works, not being exactly right.
@@ -36,13 +36,13 @@ Finished First Taste first, and back here at the end of the whole project? This 
 6. **What are the grown-ups taking over now?** (Booking, getting there, money, and safety are theirs.)
 7. **Bridging prompt:** name one planning move you used here, like "start with one tiny step," "track where a fact came from," or "stop when it's good enough." Where else could you use that same move -- homework, a chore, a big school project?
 
+These are the same planning moves people use for homework, chores, and any big project. The way to carry them over is to *notice* the move and use it on purpose somewhere else.
+
 **On the Core path, three more questions.** Your answers go on the final reflection page in your kit's `outputs` folder.
 
 - **Patterns.** Look at the one-line reflections from your checkpoints, however many you wrote. What felt easy or hard more than once? What helped more than once?
-- **Time.** Look at your minutes guesses from Sessions 16, 26, 35 and 45. How far off were they? Did they get closer with practice? Being off is normal.
+- **Time.** In Sessions 16, 26, 35 and 45, how big was the gap between your guess and your time? Did the gaps get smaller with practice? Being off is normal.
 - **Budget.** How close did your Session 39 budget come to your family's band? The band is the anchor you compare with, since nobody has spent the money yet.
-
-These are the same planning moves people use for homework, chores, and any big project. The way to carry them over is to *notice* the move and use it on purpose somewhere else.
 
 **Hand it off.** Give your plan to the grown-ups: your season pick (or your season confirmation, if your dates were booked), your city choice (with roughly how many days for each), your must-see list, your one special pick, and your budget check. You did the planning; they do the booking. On the Core path, hand over the full binder you put together in Session 50.
 
@@ -78,8 +78,8 @@ Stuck? Use the [When I'm Stuck card](../../student_guide/when_im_stuck.md) in yo
 
 ## Optional Extension
 
-If you want to keep going, there's more a planner can do: more cities, a day-by-day plan, food research, and more. Those fuller sessions exist, and the [roadmap](../../PROJECT_ROADMAP.md) lists them. Finishing here is a complete success, and nothing you did gets redone if you go on. If you came here from Session 52, you've already done them. What comes next is the trip itself.
+If you want to keep going, there's more a planner can do: more cities, a day-by-day plan, food research, and more. Those fuller sessions exist, and they run in numbered order from [Session 16](../phase_03_choose_places/16_deep_dive_city_a.md). Finishing here is a complete success, and nothing you did gets redone if you go on. If you came here from Session 52, you've already done them. What comes next is the grown-ups' part, and maybe the trip.
 
 ## Parent Notes
 
-This is the capstone. Close the loop against the Session 01 baseline so growth is visible. End with a warm, genuine acknowledgment as its own beat, in the **duration-true** wording: the one that is true to how long your child worked. Because First Taste is a few-weeks project, a First Taste finisher gets the duration-neutral form -- *"You finished a real project, start to finish, and made a real mini-plan we can actually use. That's a big deal"* -- not "months-long," which would overclaim. A child who arrives from Session 52, or comes back here as the capstone after First Taste, has finished a months-long project, so say so: *"You stuck with a months-long project, start to finish, and made a full trip plan the whole family can use. That's a big deal."* Keep it non-gamified: no certificate or badge, just your own words. This finish stands whether or not the trip ever happens. If your child wants to continue toward the fuller plan, those later sessions exist, and the [roadmap](../../PROJECT_ROADMAP.md) lists them. Nothing is wasted, and their First Taste work is the seed they build on. On the Core path, the budget question compares their Session 39 estimate with the band, which is an anchor; the trip has not happened, so there is no spending to compare with yet.
+This is the capstone. Close the loop against the Session 01 baseline so growth is visible. End with a warm, genuine acknowledgment as its own beat, in the **duration-true** wording: the one that is true to how long your child worked. Because First Taste is a few-weeks project, a First Taste finisher gets the duration-neutral form -- *"You finished a real project, start to finish, and made a real mini-plan we can actually use. That's a big deal"* -- not "months-long," which would overclaim. A child who arrives from Session 52, or comes back here as the capstone after First Taste, has finished a months-long project, so say so: *"You stuck with a months-long project, start to finish, and made a full trip plan the whole family can use. That's a big deal."* Keep it non-gamified: no certificate or badge, just your own words. This finish stands whether or not the trip ever happens. If your child wants to continue toward the fuller plan, those later sessions exist, and the [roadmap](../../PROJECT_ROADMAP.md) explains how to continue in numbered order. Nothing is wasted, and their First Taste work is the seed they build on. On the Core path, the budget question compares their Session 39 estimate with the band, which is an anchor; the trip has not happened, so there is no spending to compare with yet.

@@ -24,19 +24,19 @@ Decide your first move, then make it. A suggestion: write the one sentence you m
 
 Your presentation is about 5 to 10 minutes long. Part 1 says what you recommend. Part 2 hands the rest over to the grown-ups.
 
-1. Fill in Part 1 of your outline: when to go, how long, which cities and what route, the top experiences, where you might stay, food highlights, a rough budget, the biggest trade-offs, and what you cut and why. If your dates were already booked, say what your season means for the trip, and how you'd use the booked days.
+1. Fill in Part 1 of your outline: when to go, how long, which cities and what route, the top experiences, where you might stay, food highlights, a rough budget, the biggest trade-offs, and what you cut and why. If your dates were already booked, say what your season means for the trip, and how you'd use the booked days. With one base, your route is getting there and back, plus your trips out from the base.
 2. Fill in Part 2: what the grown-ups still need to check, decide and book, the questions that are still open, and which of your pages they should use next.
 3. Pick how you'll present, and circle it at the bottom of the outline.
 
-**There is no single required way to present.** Every one of these is a full way to do it, and you pick the one that suits you:
+**There's no single required way to present.** Every one of these is a full way to do it, and you pick the one that suits you:
 
 - Present live.
-- Practice with one parent first, then present.
+- Practice with one grown-up first, then present.
 - Present from notes.
 - Record a video and play it.
 - Hand over your binder with a short written summary.
 
-If you'd like to build up to it, try it with one parent first, then a couple of adults, then the whole group. Or just record it. Your family makes its decision at Checkpoint 6 whichever way you choose.
+If you'd like to build up to it, try it with one grown-up first, then a couple of adults, then the whole group. Or just record it. Your family makes its decision at Checkpoint 6 whichever way you choose.
 
 ## Workspace
 

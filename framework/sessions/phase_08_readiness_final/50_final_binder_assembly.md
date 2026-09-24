@@ -31,7 +31,7 @@ Maybe you kept everything in one growing folder, in rough order. Maybe you filed
 
 Two lines in the list depend on choices your family made. The restaurant and food shortlist goes under tab 5 only if you did the food sessions. The language and etiquette sheet goes under tab 8 only if you did that session. If you skipped one, write "we didn't do this session" on that tab, and that line is complete.
 
-Tabs 10 and 11 fill up in Sessions 51 to 53. For now, write "comes next" behind them.
+Tab 10 gets the parent review forms from your checkpoints now. Its follow-up questions come in Sessions 51 and 52. Tab 11 fills up in Sessions 52 and 53. For now, write "comes next" where a page is still to come.
 
 The pages inside your binder should be clean and easy to read, because the grown-ups will use them. Your cover and your dividers are the **"Make It Yours" zone**. Decorate those however you like.
 

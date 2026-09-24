@@ -22,15 +22,15 @@ Finish your must-see list, set aside what doesn't fit, and make a couple of back
 
 ## Start Here
 
-Look at the starred sights on the City Research Card(s) for the city or cities you recommended in Session 21, and circle the **one** you most want to do. That circle is where you start. (Didn't star any? Look at all the top sights on those cards and circle your favorite instead.)
+On the First Taste path, look at the starred sights on the City Research Card(s) for the city or cities you recommended in Session 21, and circle the **one** you most want to do. That circle is where you start. (Didn't star any? Look at all the top sights on those cards and circle your favorite instead.)
 
-On the Core path, open your My Calls page and read your must-do list once. That's your start.
+On the Core path, open your My Calls page instead, and read your must-do list once. That's your start.
 
 ## Steps
 
 A good planner can't fit everything. And that's fine. Knowing what to keep, what to save for later, and what to do if a plan falls through is real skill. This is the "good enough is good enough" session.
 
-1. **Make your must-see list.** From the starred sights **in the city (or cities) you recommended in Session 21**, pick the few you most want. (No stars yet? Choose from all the top sights on those cards.) These are the things your plan protects. (Sights in a city you cut go on your cut list, not here.)
+1. **Make your must-see list.** On the First Taste path, pick the few you most want from the starred sights **in the city (or cities) you recommended in Session 21**. (No stars yet? Choose from all the top sights on those cards.) These are the things your plan protects. (Sights in a city you cut go on your cut list, not here.)
 
    **On the Core path**, your must-do list is already on your My Calls page. You made it in Session 26, and the grown-ups acknowledged it at Checkpoint 3. Read it again as the list your plan protects, and keep it as it is.
 
@@ -42,7 +42,7 @@ A good planner can't fit everything. And that's fine. Knowing what to keep, what
 
    **On the Core path**, start your cut list from the skip and save-for-future notes you made at Checkpoints 2 and 3, then add anything else that didn't make it. Finished First Taste first? Add those notes to the cut list you already made, and keep everything that's on it.
 
-3. **Choose your one special pick.** Pick the **single** thing you most want on this trip. Choose it *with a grown-up*, who will show you the only three things that could change it first: it costs more than the budget band, it can't be booked, or it isn't safe or doable for everyone in the group. A grown-up vote can't take this one away. Write it on your **My Calls** page and have a grown-up initial it. (Your My Calls page is a fresh sheet for the choices that are yours. Start one now if you don't have it yet. It's where your [owned decisions](../../student_guide/what_i_decide.md) get a grown-up's "got it.")
+3. **Your one special pick.** On the First Taste path, pick the **single** thing you most want on this trip. Choose it *with a grown-up*, who will show you the only three things that could change it first: it costs more than the budget band, it can't be booked, or it isn't safe or doable for everyone in the group. A grown-up vote can't take this one away. Write it on your **My Calls** page and have a grown-up initial it. (Your My Calls page is a fresh sheet for the choices that are yours. Start one now if you don't have it yet. It's where your [owned decisions](../../student_guide/what_i_decide.md) get a grown-up's "got it.")
 
    **On the Core path**, you already chose your special pick in Session 26, and the grown-ups said it stands at Checkpoint 3. Check that it still holds, and write one line on your My Calls page saying so. That keeps it one choice.
 
@@ -58,13 +58,13 @@ You can say your answers to an adult who writes them, or draw them, if that's ea
 
 ## Artifact Created
 
-Your must-see list, your cut list (with "save for future" notes), your one special pick on the My Calls page, and two backup plans.
+On the First Taste path: your must-see list, your cut list (with "save for future" notes), your one special pick on the My Calls page, and two backup plans.
 
 On the Core path: your cut list, started from your Checkpoint 2 and 3 notes, one line on your My Calls page saying your special pick still holds, and two backup plans. Your must-do list stays the one on your My Calls page.
 
 ## Stop Point
 
-You are done when you have a short must-see list, a cut list with whatever did not make it (even one thing, or a note that nothing needed cutting), one special pick written and initialed, and two backup plans. Short is good. This is about choosing, not listing everything.
+On the First Taste path, you are done when you have a short must-see list, a cut list with whatever did not make it (even one thing, or a note that nothing needed cutting), one special pick written and initialed, and two backup plans. Short is good. This is about choosing, not listing everything.
 
 On the Core path, you are done when your cut list holds your Checkpoint 2 and 3 notes and anything else you set aside, your My Calls page has one line saying your special pick still holds, and you have two backup plans.
 

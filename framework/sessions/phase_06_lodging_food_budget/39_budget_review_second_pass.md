@@ -14,7 +14,7 @@ You are here: Phase 6 (Lodging, Food, and Budget). Not a First Taste step. Previ
 
 ## Goal
 
-Update your budget to match the route you recommended, and check whether the parts you chose still fit your band.
+Update your budget to match the route the grown-ups approved, and check whether the parts you chose still fit your band.
 
 ## Start Here
 
@@ -22,13 +22,13 @@ Open your Budget Estimate page and circle any number you'd change now. That's th
 
 ## Steps
 
-Your first budget was a quick guess with two slices. Now you know your route, your nights in each city, your hotels and what an ordinary day costs. So your second pass can follow the trip you recommended.
+Your first budget was a quick guess with two slices. Now you know your route, your nights in each city, your hotels and what an ordinary day costs. So your second pass can follow the route the grown-ups approved at Checkpoint 4, with any changes they made.
 
 Round to easy numbers. A calculator is always fine, and a grown-up can do the math while you do the thinking.
 
-1. **Hotels, city by city.** Fill in the hotel table in the Workspace, one row per overnight city. Use your nights from Checkpoint 4 and the cost per room from the card you recommended. A grown-up tells you how many rooms.
+1. **Hotels, city by city.** Fill in the hotel table in the Workspace, one row per overnight city. If a stop on your route is a region, use the town you picked for it in Session 28. Use your nights from Checkpoint 4 and the cost per room from the card you recommended. A grown-up tells you how many rooms.
 2. **Food.** Take the medium food guess from your Session 38 table, and multiply it by the number of days.
-3. **The other slices.** Do the same for local transit, activities and souvenirs. Fill in the rows on your Budget Estimate page that said "later". They're yours now.
+3. **The other slices.** Do the same for local transit, activities and souvenirs. Fill in the rows on your Budget Estimate page that said "later". They're yours now. Your long-distance rides from Session 38 stay out of your subtotal, because the grown-ups price those.
 4. **Add it up.** Your subtotal is what the parts you chose come to. The whole trip costs more than that, and the grown-ups work out the rest on their own page.
 5. **Check against your band.** Match the units first, the way you did in Session 33. Compare the piece of your estimate that matches your band: one day for the family, one person for one day, or one hotel night.
 6. **Write one sentence.** Do the parts you chose fit the band? If they don't, what would you change? Maybe fewer nights somewhere, a cheaper area, or one less paid ticket.
@@ -64,7 +64,7 @@ Your updated budget summary: a hotel line for each city, the other slices, and o
 
 ## Stop Point
 
-You are done when your budget summary matches the route you recommended, and you've written one sentence about whether the parts you chose fit the band. If they don't, say what you'd change. "It doesn't fit, so I'd cut ___" is a finished, good answer. "Ask an adult" is fine in any row you can't fill.
+You are done when your budget summary matches the route the grown-ups approved at Checkpoint 4, and you've written one sentence about whether the parts you chose fit the band. If they don't, say what you'd change. "It doesn't fit, so I'd cut ___" is a finished, good answer. "Ask an adult" is fine in any row you can't fill.
 
 ## Source Check
 
