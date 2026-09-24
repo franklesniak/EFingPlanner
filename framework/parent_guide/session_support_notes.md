@@ -183,7 +183,7 @@ Want a rough signal of how the executive-function side is going? The optional [e
 
 ## Session 21: Compare Cities
 
-- Role: 5-minute check-in.
+- Role: 5-minute check-in. On the Core path, a whole region on the long-list is scored as one town, and you help choose which.
 - Prep: the two city cards, plus the City Long-List on the Core path; a Scoring Rubric page.
 - Look for: two cities scored on three things, a written trade-off, and a recommendation (one city, or both kept on purpose). On the Core path, every place kept in the running is scored too.
 - Coaching question: "Does the total match your gut? Walk me through it." Optional formative check, if you want one: "Why did you score it that way?"
@@ -191,7 +191,7 @@ Want a rough signal of how the executive-function side is going? The optional [e
 
 ## Session 22: Checkpoint 2 City Shortlist
 
-- Role: Parent-gated: parent review; use the recommendation in a family talk. If you left the trip shape partly open at setup, firm it up now, including the departure place.
+- Role: Parent-gated: parent review; use the recommendation in a family talk. If you left the trip shape partly open at setup, firm it up now, including the departure place. For a family continuing from First Taste, the place of the special pick stays on the shortlist unless one of the three blocks applies, and you say which block.
 - Prep: a Decision Record page; the Trip-Basics card and the assumptions page, for the maximum trip length and the budget band.
 - Look for: a city shortlist with 2 to 4 bases, or one for a one-base trip, and up to 3 day trips, or none; reasons, sources, whose wish it makes room for, and a budget-band check.
 - Coaching question: "Which base would you drop first, and why?"
@@ -201,7 +201,7 @@ Want a rough signal of how the executive-function side is going? The optional [e
 
 - Role: Independent.
 - Prep: this session's Destination Notes; blank Attraction Research Cards; the city cards for the shortlisted places.
-- Look for: Attraction Research Cards, each with a reason, a rough time, a downside and a source, and a price guess left as written beside the checked price. Two cards is a finished sitting, and ten across the sittings completes the set.
+- Look for: Attraction Research Cards, each with a reason, a rough time, a downside and a source, and a price guess left as written beside the checked price. A special pick your child already made gets its own card. Two cards is a finished sitting, and ten across the sittings completes the set.
 - Coaching question: "Which price surprised you?"
 - Pitfall: correcting the price guess. Leave it as written, because the gap is the lesson.
 
@@ -223,7 +223,7 @@ Want a rough signal of how the executive-function side is going? The optional [e
 
 ## Session 26: Rank Attractions
 
-- Role: 5-minute check-in; help co-choose the one unconditional pick, after you show the three blocks. A family continuing from First Taste confirms the pick from Session 44 in one line.
+- Role: 5-minute check-in; help co-choose the one unconditional pick, after you show the three blocks. A family continuing from First Taste confirms the pick from Session 44 in one line. If a block now stops it, your child chooses a new one with you.
 - Prep: a Scoring Rubric page; a blank My Calls page from the trip starter kit.
 - Look for: every attraction in one of the four groups, a must-do list short enough to read in one breath, the special pick on the My Calls page, and a minutes guess with the time taken.
 - Coaching question: "Which must-do would you keep if you could keep only one?"
@@ -240,8 +240,8 @@ Want a rough signal of how the executive-function side is going? The optional [e
 ## Session 28: Map the Route
 
 - Role: Independent, with a 5-minute check-in.
-- Prep: a device with a map app and the filter on; the city shortlist; the assumptions page, for the arrival and departure places.
-- Look for: route map notes with travel times between places, day trips and overnight stays marked, and a left-to-right sketch.
+- Prep: a device with a map app and the filter on; the city shortlist; the assumptions page, for the arrival and departure places; the city card for any whole region on the shortlist.
+- Look for: route map notes with travel times between places, including the two end legs (the arrival place to the first base, and the last base to the departure place), day trips and overnight stays marked, and a left-to-right sketch.
 - Coaching question: "Which two places look close but take longest to reach?"
 - Pitfall: judging distance by eye. The Directions time is the answer.
 
@@ -249,7 +249,7 @@ Want a rough signal of how the executive-function side is going? The optional [e
 
 - Role: Independent.
 - Prep: the Trip-Basics card, for the maximum trip length or the booked length and for the time difference; the traveler profiles.
-- Look for: the real-days formula filled in, and nights for each overnight place that fit between the floor and the maximum, or that share out the booked trip.
+- Look for: the real-days formula filled in, and nights for each overnight place that fit between the floor and the maximum, or that share out the booked trip. Each flight that lands on a later date takes away one more day and one more night.
 - Coaching question: "Where would one more night help most?"
 - Pitfall: treating the maximum as the target. For a mixed-stamina group, shorter and gentler usually works better.
 
@@ -273,7 +273,7 @@ Want a rough signal of how the executive-function side is going? The optional [e
 
 - Role: Parent-gated: parent review; use the recommendation in a family talk. Confirm or adjust the arrival and departure places against current options for getting there.
 - Prep: a Decision Record page; the Trip-Basics card and the assumptions page.
-- Look for: the cities, the nights in each, the travel days, a shorter backup version, and reasons. With the dates booked, a nights plan with no backup version.
+- Look for: the cities, the nights in each, the travel days, a shorter backup version, and reasons. Total days are the nights plus one, plus one for each flight that lands on a later date. With the dates booked, a nights plan with no backup version.
 - Coaching question: "Where would this plan feel rushed?"
 - Pitfall: redrawing the route yourself. If the arrival or departure moves, your child moves one block.
 

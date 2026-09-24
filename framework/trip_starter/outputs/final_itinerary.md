@@ -46,7 +46,7 @@ The day rows come in two tables, so the page still prints. Use the same day numb
 
 ## Getting between the stays
 
-Copy these from your route notes. With one base, write "one base" here, and add the trips you take from it.
+Copy these from your route notes, starting with the trip from where you arrive to your first stay and ending with the trip from your last stay to where you leave. With one base, add the trips you take from it.
 
 | From | To | How we would travel | About how long |
 | --- | --- | --- | --- |
