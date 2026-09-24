@@ -82,7 +82,7 @@ Stuck? Use the [When I'm Stuck card](../../student_guide/when_im_stuck.md) in yo
 
 ## Optional Extension
 
-If you have extra energy, make a second table for the busiest day on your route, a moving day or a big ticket day. See how it compares with your ordinary day. If not, you are done.
+If you have extra energy, make a second table for the busiest day on your route, a moving day or a big ticket day. Give every row a low, a medium and a high guess, as in your first table. Then see how it compares with your ordinary day. If not, you are done.
 
 ## Parent Notes
 

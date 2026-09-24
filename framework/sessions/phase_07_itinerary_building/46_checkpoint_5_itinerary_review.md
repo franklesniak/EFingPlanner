@@ -24,7 +24,7 @@ Choose your first move and make it. If you want a suggestion, write one thing yo
 
 **This is the Core Finish Line.** You could stop here and still have a usable plan. You know when to go, where, how long, a day-by-day plan, a rough budget, and what adults need to book. Everything after this is a bonus.
 
-1. Fill in the five answers in the Workspace. Your draft and your cards have everything you need.
+1. Fill in the five answers in the Workspace. Your draft, your cards, your Reservation Watchlist, your budget summary and your cut list have everything you need.
 2. **Reasons.** Write two or three reasons your plan works, each tied to something you found.
 3. Put your itinerary draft and its Daily Plan Cards in front of a grown-up, with your five answers. They need the draft itself to judge the pacing, the travel, the meals and the rest.
 4. The grown-up picks one of four answers: Approved, Approved with changes, Needs more research, or Park this decision for later. It might be a quick call, a note, or a talk at the table. Any of the four is a normal result.

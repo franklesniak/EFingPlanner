@@ -10,7 +10,7 @@ You are here: Phase 7 (Itinerary Building). Not a First Taste step. Previous: [4
 - Planner skill: organizing information
 - Estimated time: several sittings; stop whenever you want
 - Parent involvement: none / independent work
-- Materials: your [Trip-Basics card](../../templates/trip_basics.md) (for the trip length), your Daily Plan Cards from Session 41, your pacing review from Session 43, your backup plans and cut list from Session 44, your Reservation Watchlist, your budget summary from Session 39, a few blank pages
+- Materials: your [Trip-Basics card](../../templates/trip_basics.md) (for the trip length), your Daily Plan Cards from Session 41, your pacing review from Session 43, your backup plans and cut list from Session 44, your Reservation Watchlist, your budget summary from Session 39, your route and nights from Checkpoint 4, your route map notes from Session 28, a few blank pages
 
 ## Goal
 
@@ -28,7 +28,7 @@ Today's plan is built from work you already did. Every box comes from a card or 
 
 1. Go through your Daily Plan Cards in order, one day at a time. Every day of the trip gets a row. Your total days come from your Checkpoint 4 plan, or, if your dates are booked, from your Trip-Basics card's maximum row.
 2. For each day, copy its row into the two tables in the Workspace. Use the same day number in both. If a stop on your route is a region, use the town you picked for it in Session 28.
-3. Take the backup for each day from your Daily Plan Card or your backup plans. If a box you need is empty on the card, fill it on the card first if you can, then copy it.
+3. Where your pacing review made a day gentler, copy the gentler version. Leave out anything on your cut list. Booking notes come from your Reservation Watchlist, and costs from your cards and your Session 39 budget summary. Take the backup for each day from your Daily Plan Card or your backup plans. If a box you need is empty on the card, fill it on the card first if you can, then copy it.
 4. Stop between sittings whenever you like. Pick up at the next day.
 
 A day with only its city and its main activity filled in already works as a plan. A blank meals box is fine, and so is "ask an adult". Your draft makes sense even with gaps, so a family could follow it today.

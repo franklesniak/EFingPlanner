@@ -10,7 +10,7 @@ You are here: Phase 7 (Itinerary Building). Not a First Taste step. Previous: [4
 - Planner skill: planning realistic time
 - Estimated time: 20-30 minutes
 - Parent involvement: parent review after session
-- Materials: your Daily Plan Cards from Session 41, your traveler profiles, your [Trip-Basics card](../../templates/trip_basics.md) (for the time difference, and the maximum or booked trip length), your destination pack's transportation basics page, your [Source Log](../../templates/source_log.md); a blank [Trade-Off Report](../../templates/tradeoff_report.md) if the third report goes here
+- Materials: your Daily Plan Cards from Session 41, your must-do list on your My Calls page, your traveler profiles, your [Trip-Basics card](../../templates/trip_basics.md) (for the time difference, and the maximum or booked trip length), your destination pack's transportation basics page, your [Source Log](../../templates/source_log.md); a blank [Trade-Off Report](../../templates/tradeoff_report.md) if the third report goes here
 
 ## Goal
 
@@ -57,7 +57,7 @@ Your pacing checks:
 | Too many long travel days? (One base? Count long rides from your base to your approved must-dos.) | | |
 | Is the first day too busy? | | |
 | With a big time change, are the first two or three days gentle? | | |
-| Does the last day leave time to pack and start the trip home? | | |
+| Does the last day leave time to pack and start the trip home? (A long journey home takes most of the day; a trip of a few hours, about half.) | | |
 | Big days back to back? | | |
 | Enough breaks? | | |
 | Too long or too packed for a traveler who tires easily? | | |
@@ -96,7 +96,7 @@ Stuck? Use the [When I'm Stuck card](../../student_guide/when_im_stuck.md) in yo
 
 ## Optional Extension
 
-If you have extra energy, plan one rest day in words: what would a slow, happy day look like for your group? If not, you are done.
+If you have extra energy, plan one rest day in words: what would a slow, happy day look like for your group? Run it through your pacing checks too. If not, you are done.
 
 ## Parent Notes
 

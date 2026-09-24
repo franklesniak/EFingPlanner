@@ -10,7 +10,7 @@ You are here: Phase 6 (Lodging, Food, and Budget). Not a First Taste step. Previ
 - Planner skill: organizing information
 - Estimated time: 20-30 minutes
 - Parent involvement: none / independent work
-- Materials: this session's Destination Notes, a device with the kid-safe filter on, your [Trip-Basics card](../../templates/trip_basics.md) (for the number of travelers), your [Source Log](../../templates/source_log.md), a pencil
+- Materials: this session's Destination Notes, a device with the kid-safe filter on, your [Trip-Basics card](../../templates/trip_basics.md) (for the number of travelers), the route your family approved at Checkpoint 4, your [Source Log](../../templates/source_log.md), a pencil
 
 ## Goal
 
@@ -78,7 +78,7 @@ Stuck? Use the [When I'm Stuck card](../../student_guide/when_im_stuck.md) in yo
 
 ## Optional Extension
 
-If you have extra energy, add one food a traveler on your trip would love, and ask them if you got it right. If not, you are done.
+If you have extra energy, add one food a traveler on your trip would love, and ask them if you got it right. Mark it special, easy or wherever-we-are, and write its source, like the rest of your list. If not, you are done.
 
 ## Parent Notes
 

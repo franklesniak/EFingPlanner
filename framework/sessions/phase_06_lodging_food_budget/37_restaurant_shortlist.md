@@ -10,7 +10,7 @@ You are here: Phase 6 (Lodging, Food, and Budget). Not a First Taste step. Previ
 - Planner skill: organizing information
 - Estimated time: 20-30 minutes
 - Parent involvement: none / independent work
-- Materials: this session's Destination Notes, a device with the kid-safe filter on, your food wish list from Session 36, blank [Restaurant Research Cards](../../templates/restaurant_research_card.md), your Hotel Comparison Cards from Session 35, your [Source Log](../../templates/source_log.md)
+- Materials: this session's Destination Notes, a device with the kid-safe filter on, your food wish list from Session 36, blank [Restaurant Research Cards](../../templates/restaurant_research_card.md), your Hotel Comparison Cards from Session 35, your must-do list on your My Calls page, the route your family approved at Checkpoint 4, your [Trip-Basics card](../../templates/trip_basics.md) (for the number of travelers), your [Source Log](../../templates/source_log.md)
 
 ## Goal
 
@@ -27,14 +27,14 @@ This session goes with Session 36. If your family chose the food list for the bi
 A card can be about one place to eat, or about a whole area with lots of places to eat. **An area counts as a card.** You don't have to find one exact restaurant to do this well.
 
 1. **Open this session's Destination Notes.** Find where the foods on your wish list are easy to find.
-2. **Start near where you'll be.** Look near a hotel from your Session 35 cards, or near something you want to see.
+2. **Start near where you'll be.** Look near a hotel from your Session 35 cards, or near a must-do on your My Calls page.
 3. **Fill in one card for each place or area.** Go from top to bottom. For "Reservation needed?", "ask an adult" is a finished answer. For "Cash-only?", write what your source says, and mark it for a grown-up to check.
 4. **Aim for one card per main city** where you'll sleep overnight, on the route the grown-ups approved at Checkpoint 4.
 5. **Fill in the planning assumption rows** at the bottom of each card.
 
 Your Destination Notes may point to a local review site. Sites like that can be great, but they may be in another language. So ask an adult to help, and it's fine to skip it.
 
-If your group is bigger than about four, add a seating note to each card. Can this place seat all of you, or would you split into two tables?
+Look at the number of travelers on your Trip-Basics card. If your group is bigger than about four, add a seating note to each card. Can this place seat all of you, or would you split into two tables?
 
 ## Workspace
 

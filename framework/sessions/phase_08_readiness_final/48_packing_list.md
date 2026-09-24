@@ -10,7 +10,7 @@ You are here: Phase 8 (Readiness and Final). Not a First Taste step. Previous: [
 - Planner skill: organizing information
 - Estimated time: 20-30 minutes
 - Parent involvement: parent review after session
-- Materials: a blank [Packing List](../../templates/packing_list.md), your destination pack's seasons and weather page, your Daily Plan Cards, your [Source Log](../../templates/source_log.md)
+- Materials: a blank [Packing List](../../templates/packing_list.md), your season from Checkpoint 1, your destination pack's seasons and weather page, your Daily Plan Cards, your [Source Log](../../templates/source_log.md)
 
 ## Goal
 
@@ -57,7 +57,7 @@ Stuck? Use the [When I'm Stuck card](../../student_guide/when_im_stuck.md) in yo
 
 ## Optional Extension
 
-If you have extra energy, pack your walking-day bag list for one full day, from breakfast to bedtime. If not, you are done.
+If you have extra energy, pack your walking-day bag list for one full day, from breakfast to bedtime. Add anything new to the Walking-day bag section of your Packing List, so a grown-up checks it too. If not, you are done.
 
 ## Parent Notes
 

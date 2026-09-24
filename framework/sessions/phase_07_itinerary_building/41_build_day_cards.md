@@ -10,7 +10,7 @@ You are here: Phase 7 (Itinerary Building). Not a First Taste step. Previous: [4
 - Planner skill: planning realistic time
 - Estimated time: several sittings; stop whenever you want
 - Parent involvement: none / independent work
-- Materials: blank [Daily Plan Cards](../../templates/daily_plan_card.md), your day rules from Session 40, your route and nights from Checkpoint 4, your Hotel Comparison Cards, your Attraction Research Cards and must-do list, your Restaurant Research Cards if you made them, your [Source Log](../../templates/source_log.md)
+- Materials: blank [Daily Plan Cards](../../templates/daily_plan_card.md), your day rules from Session 40, your route and nights from Checkpoint 4, your Hotel Comparison Cards, your Attraction Research Cards, your My Calls page (your must-do list, and its order if you wrote one), your "things I can't wait to see" page, your route map notes from Session 28, your Restaurant Research Cards if you made them, your [Source Log](../../templates/source_log.md)
 
 ## Goal
 
@@ -27,8 +27,8 @@ Daily Plan Cards come after Checkpoint 4, once the grown-ups have settled your r
 Make **one block card for each city-stay** on the route the grown-ups approved: one card for all the days you sleep in the same place, with a row for each of those days. A trip with one base has one card. That's the shape for everyone. A block card is less work, and it flexes. If the grown-ups move a date, you move the block and keep what you wrote.
 
 1. Fill in the top of the card: the city, where you'll sleep, the main goal for this stay, and roughly when. If a stop on your route is a region, use the town you picked for it in Session 28.
-2. Give each day its own row. Put your anchor first, then use your day rules for the rest. If an attraction card you need is missing its time needed or ticket row, fill that in first.
-3. Give every day an energy level: Easy, Medium or Big day. Mark day one Easy.
+2. Give each day its own row. Put your anchor first. Take your anchors from the must-do list on your My Calls page, in the order you wrote there if you wrote one. Then use your day rules for the rest, and look at your "things I can't wait to see" page for anything that fits. If an attraction card you need is missing its time needed or ticket row, fill that in first.
+3. Give every day an energy level: Easy, Medium or Big day. Give day one the level your first-day rule from Session 40 says.
 4. Save the cards in order, and stop between sittings whenever you like. If this is a new day, set your timer for 20 minutes first.
 
 **Roughly when** means a window, like "spring", "the second week", or "not decided yet". Never write the exact booked dates on a Daily Plan Card. Those belong to the grown-ups.
@@ -49,7 +49,7 @@ Your Daily Plan Cards: one block card for each city-stay, with a row for each da
 
 ## Stop Point
 
-You are done when every city-stay on your approved route has one card, each card has a main goal and an energy level for each day, and day one is marked Easy. One card per city-stay is the finished shape. Per-day cards are extra, and only worth doing once the dates are firm. You can stop between sittings as often as you like, and "not decided yet" is fine in any box.
+You are done when every city-stay on your approved route has one card, each card has a main goal and an energy level for each day, and day one follows your first-day rule. One card per city-stay is the finished shape. Per-day cards are extra, and only worth doing once the dates are firm. You can stop between sittings as often as you like, and "not decided yet" is fine in any box.
 
 ## Source Check
 
