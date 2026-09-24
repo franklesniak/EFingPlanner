@@ -14,7 +14,7 @@ You are here: Phase 6 (Lodging, Food, and Budget), First Taste step 11 of 13. Pr
 - Planner skill: estimating; making trade-offs
 - Estimated time: 20-30 minutes
 - Parent involvement: 5-minute check-in; you supply the kid-sized budget band
-- Materials: a [Budget Estimate page](../../templates/budget_estimate.md), your Trip-Basics/assumptions band and your number of travelers, your [Source Log](../../templates/source_log.md), a calculator (allowed). On the First Taste path, also your Session 21 recommendation. On the Core path, also the route and nights your family approved at Checkpoint 4, for your overnight cities, their nights and the number of days, and your traveler profiles from Session 02 if a traveler is coming for part of the trip.
+- Materials: a [Budget Estimate page](../../templates/budget_estimate.md), your family's [current travel assumptions](../../templates/current_family_travel_assumptions.md) page (for the budget band), your [Trip-Basics card](../../templates/trip_basics.md) (for the number of travelers), your [Source Log](../../templates/source_log.md), a calculator (allowed). On the First Taste path, also your Session 21 recommendation. On the Core path, also the route and nights your family approved at Checkpoint 4, for your overnight cities, their nights and the number of days, and your traveler profiles from Session 02 if a traveler is coming for part of the trip.
 
 ## Goal
 

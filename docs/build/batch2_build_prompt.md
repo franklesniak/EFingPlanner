@@ -1366,13 +1366,16 @@ Notes name the anchor; the session never does.**
 ### Session 17: Deep-Dive City B
 
 Take the second candidate city to full depth on its own card -- again, **the card Session
-15 started**, not a new one. Everything in Session 16 applies, with these differences.
+15 started**, not a new one. **City B is the Session 15 card that did not become City A**,
+usually the city the child chose. When City A got a new card in Session 16, the child picks
+one of the two, and the other can become City C. Everything in Session 16 applies, with
+these differences.
 
 - **Start Here** is an ordinary micro-action. The hand-off already happened in 16.
 - **Steps** carry the same five required provisions. **Vary the sentence shapes from
   Session 16.** The style guide forbids repeating the same contrast shape in consecutive
   sessions, and a density gate reads 16, 17 and 18 as one family. Give 17 its own
-  emphasis: **this is the city the child chose**, so lean on comparing against City A
+  emphasis: **this is usually the city the child chose**, so lean on comparing against City A
   rather than restating how a card works.
 - **Artifact:** the City Research Card for City B, now at full depth.
 
@@ -1392,9 +1395,9 @@ optional. **Frame the condition as an open family choice, never as resolved.**
 this session is the choice you make when a third place will not leave you alone.
 
 **City C keeps one card too.** If Session 15 already started a card for it -- its optional
-third card, or an original card that did not become City A -- the child deepens that card,
-as Session 16 does. A blank card starts only when City C has none. Session 19 likewise
-starts cards only for places that have none, so every place keeps one card.
+third card, or an original card that did not become City A or City B -- the child deepens
+that card, as Session 16 does. A blank card starts only when City C has none. Session 19
+likewise starts cards only for places that have none, so every place keeps one card.
 
 - **Artifact:** a City Research Card for City C.
 - **Cross-references:** Sessions 16 and 17; Session 19, where a place that is not a
@@ -1616,8 +1619,9 @@ acknowledgement that must follow it. (`D-OPEN-6`.) **A family continuing from Fi
 already made the pick at Session 44.** Here the child confirms, in one line, that it still
 holds, and Session 27 acknowledges it, so the pick stays one choice. Checkpoint 2 keeps the
 pick's place on the shortlist, and Session 23 gives the pick a card. Only the three blocks
-can change it. If one does, a grown-up says which, and the child chooses a new pick with
-them in Session 26, the way a Core-path pick is chosen.
+can change it. If one does, a grown-up says which, Session 23 makes no card for it, and the
+child chooses a new pick from their attraction cards with a grown-up in Session 26, the
+way a Core-path pick is chosen.
 
 ### Session 27: Checkpoint 3 Top Experiences
 
@@ -3532,7 +3536,11 @@ to open the library catalog or drive to the library, as the built First Taste li
 Session 09 is adult-operated: a grown-up runs the AI
 tool, as its built entry says. Session 26 ends with the one unconditional pick, which a
 grown-up helps choose after showing the three blocks, as built Session 44 does on the First
-Taste path. Write Session 26's Role line the way Session 44's is written. Every session not
+Taste path. Write Session 26's Role line the way Session 44's is written. **Sessions 34, 36
+and 37 have one grown-up step each:** a grown-up stays nearby for any search beyond the
+Destination Notes (and official city sites, in Session 34), and beside the child for an
+image search, as the privacy and safety page asks. Their section 10 values name that step
+after a semicolon, and their Role lines carry it. Every session not
 named in this paragraph is independent: the child can do it without a grown-up there. That
 includes a session whose section 10 value is a 5-minute check-in or a parent review after
 the session, because neither stops the child; its Role line still carries that value.
@@ -4319,10 +4327,10 @@ from this table. (`D-item-7`.)
 | 30 | checking sources | 20-30 minutes | none / independent work | Core |
 | 31 | making trade-offs | 20-30 minutes | parent review after session | Core |
 | 32 | making trade-offs | 20-30 minutes for the child, plus a 20-40 minute review with you | parent review -- genuinely use the recommendation in a real family talk | Core -- **Checkpoint 4** |
-| 34 | comparing choices | 20-30 minutes | none / independent work | Core |
+| 34 | comparing choices | 20-30 minutes | none / independent work; stay nearby for any search beyond the Destination Notes and official city sites | Core |
 | 35 | comparing choices | 20-30 minutes per sitting, several sittings | none / independent work | Core |
-| 36 | organizing information | 20-30 minutes | none / independent work | Conditional core |
-| 37 | organizing information | 20-30 minutes | none / independent work | Conditional core |
+| 36 | organizing information | 20-30 minutes | none / independent work; stay nearby for any search beyond the Destination Notes | Conditional core |
+| 37 | organizing information | 20-30 minutes | none / independent work; stay nearby for any search beyond the Destination Notes | Conditional core |
 | 38 | planning realistic time | 20-30 minutes | 5-minute check-in | Core |
 | 39 | revising a plan | 20-30 minutes | parent review after session | Core |
 | 40 | planning realistic time | 20-30 minutes | 5-minute check-in | Core |
