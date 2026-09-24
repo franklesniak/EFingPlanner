@@ -6,10 +6,22 @@
 
 - **Status:** Active
 - **Owner:** Repository Maintainers
-- **Last Updated:** 2026-09-14
+- **Last Updated:** 2026-09-23
 - **Scope:** Builder-facing voice, vocabulary, banned-word, and lint conventions for authoring and editing the EFingPlanner curriculum batches. Not part of the child's or parent's reading path.
 
 This file is for whoever *builds* the curriculum, not for the child or parent. It is not part of the child's reading path. Load it before authoring or editing any batch so voice, vocabulary, banned words, and lint conventions stay constant across work sessions. The archived spec at `../../docs/spec/specification.md` is the original design record -- but once curriculum files exist, the built repository supersedes the spec on any conflict; this file is the short, load-before-each-batch digest of the rules that keep the built files consistent.
+
+## Build path and review coverage
+
+This repository is on the **Full Build path**: destination-neutral session skeletons plus destination-pack inserts. The first sessions were authored in the earlier Lean shape, with the destination facts written straight into them, and Batch 1 upgraded them.
+
+The stricter review regime is retained alongside it.
+<!-- density-exempt: X, not Y -- the review-coverage rule is stated in its own mandated wording -->
+**A human edits every file a child or a parent reads, not a sample.** The Full Build's sampling fallback is not adopted, and the rule covers every file a batch creates or edits that a child or a parent reads.
+
+## Acceptance-criteria numbering (which matrix is canonical)
+
+Three acceptance-criteria matrices exist in the archived design record. They renumber the same ideas, and several IDs collide between them. For this build the combined archive matrix numbering is canonical. When you quote an ID from the Lean matrix or from the Full/OER companion matrix, name that matrix in the same sentence. Do not reproduce a matrix in any built file. Acceptance criteria are builder-facing, so no child-facing or parent-facing page cites one.
 
 ## The golden exemplar (author and check against this)
 
@@ -19,7 +31,7 @@ A note for whoever edits it next: Session 04 already holds two `X, not Y` contra
 
 ## The seven mandatory-core session fields
 
-Every child-facing session has these seven, and nothing else is required:
+Every child-facing session has these seven. They are the **mandatory core**, which is not the same as being everything a session needs: three further sections are carried by every child session and named a few lines below, and no gate asks for any of them.
 
 1. Goal
 2. Start Here (a true micro-action, doable in under a minute)
@@ -29,7 +41,24 @@ Every child-facing session has these seven, and nothing else is required:
 6. Stop Point (says exactly when the child is done)
 7. Source Check (only when the session has a research step)
 
-Everything else -- Finish and Quality Check, If You Get Stuck, Optional Extension, Parent Notes -- is optional and renders as a short one-line pointer by default. A pointer counts the same as full text; an omitted optional section is correct as it stands. Put the child's action (Goal, Start Here, Steps) first; group parent-facing meta into the labeled "For parents" strip near the top.
+Everything else sits outside that mandatory core, and three of the four are not therefore optional. Finish and Quality Check, If You Get Stuck and Optional Extension are carried by every child session and render as short one-line pointers by default; a pointer counts the same as full text. Parent Notes is the one genuinely optional section, and an omitted Parent Notes is correct as it stands. Put the child's action (Goal, Start Here, Steps) first; group parent-facing meta into the labeled "For parents" strip near the top.
+
+## Navigation line rendering
+
+Every child session opens with a navigation line above its first `##` section. These rules fix how it renders, so a later batch applies them instead of re-deriving them.
+
+- The `You are here:` line always names the phase in the built form `Phase N (Phase Name)`.
+- A session on a named path carries its step label, in the form `First Taste step K of 13`. A session that is not on that path carries `Not a First Taste step.`
+- `Previous:` and `Next:` always follow the **numbered** session order, whatever path the child is on.
+- A path divergence is announced **forward only**. It renders as one short italic line under the navigation line, on the last on-path session before the skip, and never on `Previous:`. One line is written **for each divergence announced**, so a session that turns two paths aside carries two lines; a count read off the other sessions drops one of them.
+- A conditional add-on session keeps its add-on label in place of a step number.
+
+**Two further kinds of italic line sit under the navigation line of a session that is not on the named path. Both are required wherever the session list gives them, and neither may be removed for failing the on-path condition above.**
+
+- A **skip affordance**: an off-path session may carry one line saying that a named following session is optional, and where to go instead of it.
+- A **placement note**: a conditional add-on session may carry one line saying where it sits on a named path.
+
+Neither of those announces a divergence from a path, which is why the divergence rule above does not reach them.
 
 ## Voice and tone
 
@@ -54,20 +83,22 @@ Everything else -- Finish and Quality Check, If You Get Stuck, Optional Extensio
 - **`real` / `really` / `genuine(ly)`: apply the delete test.** Remove the word and read the sentence. If a reader could now think the thing is pretend or simulated, keep the word. If the sentence is only less emphatic, delete it, and where the emphasis was working, name the concrete thing instead: the artifact produced, the person who used it, or the decision it fed. In a child-facing file: at most one per `##` section and four per file. A parent-facing file gets four per file, a builder or spec file six, neither with a per-section cap. `genuine` and `genuinely` do not appear in child-facing text at all. Never substitute `actual`, `true`, or `authentic` -- one word per idea.
 - **`X, not Y` is capped, not banned.** It pre-empts a misreading, which is an instructional move. Keep the instance where a reader actually makes the mistake and the mistake stops them. Cap: 2 per child-facing file, 3 per parent-facing file, 4 per builder or spec file, and one per `##` section. Rewrite the rest with a *different* device each time -- state it positively; split the negation into its own short sentence (once per file at most); name the actor or the consequence; or turn it into a question the child answers. **Never** rewrite to "It's not X. It's Y." Do not repeat the same contrast shape in two consecutive First Taste sessions.
 - **`guardrails` stays, and stays adult-facing.** In any file under `framework/` or `destinations/`, its first use in prose names its contents in the same sentence or the one above ("budget, approved cities, pacing, safety, availability"); `framework/parent_guide/coaching_and_support.md` is the model. A table cell is a label rather than prose, so a cell may carry the term before the gloss arrives, as the roles table does. The archived spec is outside this rule. It never appears in child-facing prose.
-- **Keep the session choreography exactly as written.** The seven mandatory fields, the `Stuck? Use the...` sentence and the `Finished? Use the...` sentence are a designed executive-function support. A child meets the same words each time, so they are never varied, and four rules above pass over them: the contraction rule, the dash tests and the dash budget, the `real` cap, and the `X, not Y` cap. Their lines still count toward the prose-line total, because every ratio measures the page a reader sees. Both are identical in all 14 child sessions. (`00_parent_setup.md` is parent-facing and carries none of this choreography.)
-- **The Optional Extension is choreographed but not frozen, and the difference is the point.** All 14 child sessions have the section. Four things vary on purpose, and a later author or density gate must not normalize them. (a) A session may add its own sentence after the `Finished?` card pointer; Session 04 does, and that trailing sentence is ordinary child-facing prose which the rules above do govern. (b) The opener is `If you have extra energy` in 13 of the 14, but the capstone, Session 53, opens `If you want to keep going`, because a finish line is not a mid-course session and should not sound like one. (c) The close is `If not, you are done.` in 8 of the 14; a session that can name a definite finished state says that instead, as Sessions 15 and 21 do. (d) Four sessions have no close at all -- 05, 09, 33 and 53 -- because their extension continues past First Taste, so there is nothing to be done with. **Measure by section, not by phrase.** Every count above was found by listing each `## Optional Extension` heading and reading the line under it. The three earlier versions of this rule were each wrong, because each searched for the wording it expected to find and so could not see the sessions that word it differently.
+- **Keep the session choreography exactly as written.** The seven mandatory fields, the `Stuck? Use the...` sentence and the `Finished? Use the...` sentence are a designed executive-function support. A child meets the same words each time, so they are never varied, and four rules above pass over them: the contraction rule, the dash tests and the dash budget, the `real` cap, and the `X, not Y` cap. Their lines still count toward the prose-line total, because every ratio measures the page a reader sees. Both are identical in every child session. (`00_parent_setup.md` is parent-facing and carries none of this choreography.)
+- **The Optional Extension is choreographed but not frozen, and the difference is the point.** Every child session has the section. Four things vary on purpose, and a later author or density gate must not normalize them. (a) A session may add its own sentence after the `Finished?` card pointer; Session 04 does, and that trailing sentence is ordinary child-facing prose which the rules above do govern. (b) The opener is `If you have extra energy` in 18 of the 19, but the capstone, Session 53, opens `If you want to keep going`, because a finish line is not a mid-course session and should not sound like one. (c) The close is `If not, you are done.` in 13 of the 19; a session that can name a definite finished state says that instead, as Sessions 15 and 21 do. (d) Four sessions have no close at all -- 05, 09, 33 and 53 -- because their extension continues past First Taste, so there is nothing to be done with. **Measure by section, not by phrase.** Every count above was found by listing each `## Optional Extension` heading and reading the line under it. The three earlier versions of this rule were each wrong, because each searched for the wording it expected to find and so could not see the sessions that word it differently.
 
 ## Banned words and anti-patterns
 
+<!-- density-exempt: X, not Y -- the destination-names rule below is quoted in its own mandated wording, and a law that states a rule is its own subject matter -->
+
 - **No gamification:** no points, badges, levels, "mission unlocked," quests, "adventure," "super awesome challenge," or "earn a reward." (A parent-chosen light token system for a child who needs it is an accommodation described in the parent guide -- not a default and never baked into child-facing sessions.)
 - **No corporate framing:** not "Adult Executives." Use the agreed labels below.
-- **No exotic/othering framing** of Japan or its culture.
+- **No exotic/othering framing** of the destination or its culture.
 - **No leaked trip/origin/roster values in any framework session.** Never hard-code this family's specific home airport or airport code, the specific maximum trip-length number, or the named relatives on the roster. Use fill-in blanks that point to the Trip-Basics card (for example, "your home airport (from your Trip-Basics card)"). Speak generically: "an older relative (for example a grandparent)," "each traveler," "your maximum trip length." The archived spec's trip-basics build rule lists the exact tokens the leak-check greps for; keep this file and every session clear of them. Never copy the spec's parenthetical "this family" annotations into a built file.
-- **Batch 0 note on destination names:** Batch 0 sessions are authored **Japan-concrete on purpose**, so Japan / Tokyo / Kyoto / Osaka / Shinkansen are allowed in session bodies here. The neutral-skeleton + insert split (which would forbid them) arrives in a later batch.
+- **Destination names are banned in `framework/` from Batch 1 onward.** Japan, Tokyo, Kyoto, Osaka, and Shinkansen appear under `destinations/` only, with three bounded exceptions. The first is **this rule's own sentence, the one you are reading**, which prints the five tokens in order to ban them: a law that names a banned token is an instance of what it bans, so the framework leak grep finds all five here and nowhere else in this file. The second is the `0.1.0` **Added** line in `framework/CHANGELOG.md`, which records which destination pack shipped in that release. Version history names what was added; it is not curriculum content. New changelog entries write 'the destination pack', so that exception does not grow. The third is the five already-built later-phase sessions -- 15, 21, 33, 44 and 53 -- which stay exempt until Batch 2 converts or verifies them. **One of them is a known leak; the other four are unverified, and those are different states.** Session 15 still names the place and links into the pack. Sessions 21, 33, 44 and 53 carry no destination fact today: they are on the list because nobody has checked them, not because anything was found in them. So Batch 2 converts one session and verifies four, and this file must not send its authors to convert five. That exemption goes when Batch 2 clears the list. A session that pulls a **session insert** writes the exact phrase 'open this session's Destination Notes'. A session that points only at a pack **reference file** names that reference in the pack's own words -- 'your destination pack's trusted starting sources list' -- because the joining phrase resolves to an insert, and writing it in a session the contract routes no insert to would send the child to a page no pack has. The contract's Insert column is what decides which of the two a session writes. Neither form ever links into a destination folder, because the path string is itself a leak. Framework prose says 'your destination'. A fill-in that needs the name says '(from your Trip-Basics card)'. No session title, heading, or body may name the destination, including inside fenced blocks, link text, link paths, image alt text, and the 'For parents' strip. (Batch 0 authored the first sessions Japan-concrete on purpose; Batch 1 ran the concrete-to-insert upgrade for Phases 0-2, and that exemption is closed for every session this batch reached.)
 
 ## Verify-don't-trust (applies to every travel fact)
 
-Never state entry, visa, passport, insurance, rail-pass, or medication rules, prices, opening hours, closures, or ticketing rules as fixed facts. Use "check with official sources close to travel," "record the date you checked," and "adults verify before booking." Name seasons and categories (Golden Week, rainy season, typhoon season) as things to confirm this year, never as pinned dates. Refer to "teamLab's current venues" (they change); a venue pinned by name today may have closed before the family books. Any currency figure is an example to re-check and date, never a hard-coded rate.
+Never state entry, visa, passport, insurance, rail-pass, or medication rules, prices, opening hours, closures, or ticketing rules as fixed facts. Use "check with official sources close to travel," "record the date you checked," and "adults verify before booking." Name seasons and categories (a national holiday week, a rainy season, a typhoon season) as things to confirm this year, never as pinned dates. Refer to "the operator's current venues" (they change); a venue pinned by name today may have closed before the family books. Any currency figure is an example to re-check and date, never a hard-coded rate.
 
 ## Agreed labels (use these exact terms everywhere)
 
@@ -81,18 +112,20 @@ Never state entry, visa, passport, insurance, rail-pass, or medication rules, pr
 
 ## Canonical concept Names and their built-file homes (name-first, never "Section NN")
 
-Built files reference concepts by **Name** and link to the built-file home below. Built files must **not** cite the archived spec's section numbers.
+Built files reference concepts by **Name** and link to the built-file home below. An instruction to fill in a family page links the trip starter kit's copy instead, because the filled page lives in the kit. Built files must **not** cite the archived spec's section numbers.
 
 | Name | One-line meaning | Built-file home |
 | --- | --- | --- |
-| Verify-Don't-Trust | Prefer official/current sources; never treat volatile facts as fixed | `framework/docs/privacy_and_safety.md` / Source Check guidance |
+| Verify-Don't-Trust | Prefer official/current sources; never treat volatile facts as fixed | `framework/docs/source_trustworthiness.md` |
 | Your-Work-Wasn't-Wrong | Adults may change the plan; the child's work still counts | parent guide when-plans-change content |
 | Trip-Basics card | Family-owned config (home airport, party size, max trip length, roster) kept out of framework files | `framework/templates/trip_basics.md` |
-| Budget Band (kid-graspable) | A rough not-to-exceed signal, per-day/per-person or by hotel tier | `framework/templates/current_family_travel_assumptions.md` |
-| Rough Trip Shape | Provisional adult round-trip-vs-open-jaw call + likely arrival/departure cities | `framework/templates/current_family_travel_assumptions.md` |
+| Budget Band (kid-graspable) | A rough not-to-exceed signal: per person per day, per day for the family, or a hotel tier | `framework/templates/current_family_travel_assumptions.md` |
+| Rough Trip Shape | Provisional adult call on the shape of the trip -- in and out of the same place, in one place and out of another, or one base -- plus the likely arrival and departure places | `framework/templates/current_family_travel_assumptions.md` |
 | Lighter Rubric (3-criteria) | The simplified scoring option offered wherever weighted scoring appears | `framework/templates/scoring_rubric.md` |
 | Core Finish Line | Shortest route to a usable plan (Checkpoint 5) | `framework/PROJECT_ROADMAP.md` index |
 | First Taste path | The ~13-session minimal path that still yields a complete mini-plan | `framework/PROJECT_ROADMAP.md` index |
+| Citation rule | When a citation is required, the six forms and their exact field names, and the three verification fields | `framework/docs/citation_style.md` |
+| Framework and executive-function glossary | The canonical adult lookup for this project's own vocabulary and its executive-function terms | `framework/docs/glossary.md` |
 
 ## Lint conventions (keep generated files passing at scale)
 

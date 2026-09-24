@@ -10,7 +10,7 @@ You are here: Phase 2 (Destination Big Picture), First Taste step 7 of 13. Previ
 - Planner skill: making trade-offs
 - Estimated time: 20-30 minutes
 - Parent involvement: 5-minute check-in
-- Materials: your binder, your family trip goals from Session 03, your Trip-Basics card
+- Materials: your binder, your family trip goals from Session 03, a blank [Travel Style Worksheet](../../templates/travel_style_worksheet.md), your [Trip-Basics card](../../templates/trip_basics.md), the rough budget band from the [assumptions page](../../templates/current_family_travel_assumptions.md)
 
 ## Goal
 
@@ -18,11 +18,11 @@ Decide what kind of trip your family wants, so your choices later fit your style
 
 ## Start Here
 
-Circle one word that sounds more like your family: **busy** or **relaxed**. That is your first style choice.
+On the first row of your Travel Style Worksheet, circle **busy days**, **relaxed days** or **somewhere between**, whichever sounds most like your family. That is your first style choice.
 
 ## Steps
 
-There is no single "right" trip. Different families like different styles. Now that you know a little about Japan, choose the style that fits your family. Look back at your Session 03 goals to remind yourself what people wanted.
+There is no single "right" trip. Different families like different styles. Now that you know a little about your destination, choose the style that fits your family. Look back at your Session 03 goals to remind yourself what people wanted.
 
 For each pair, circle the one your family leans toward (it is okay to land in the middle):
 
@@ -39,7 +39,7 @@ Then write one sentence: *Our travel style is...*
 
 ## Workspace
 
-Use a page for your six circles and your "our travel style is..." sentence.
+Use your [Travel Style Worksheet](../../templates/travel_style_worksheet.md) for the six pairs and your "our travel style is..." sentence.
 
 You can say your answers to an adult who writes them, or draw them, if that is easier.
 
@@ -49,7 +49,7 @@ Your Travel style worksheet -- your family's leanings and a one-sentence style s
 
 ## Stop Point
 
-You are done when you have made your six choices and written your one-sentence style summary. There are no wrong answers here -- it is about fit.
+You are done when you have made your six choices and written your one-sentence style summary. There are no wrong answers here. It is about fit.
 
 ## Source Check
 

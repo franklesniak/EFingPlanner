@@ -36,7 +36,13 @@ This project is built for the child who finds planning hard -- so these are not 
 The opposite tail also needs a named path -- a bright, bored child abandons a project that reads as beneath them. This is not a separate, harder curriculum; it is permission to move faster and deeper through the same one:
 
 - **Batch sessions freely,** including combining adjacent ones in a single sitting. The 20-30-minute target is a floor, not a cap.
-- **Skip the meta-cards** -- a confident planner does not need them each time.
-- **Reach the lighter template fast** -- the trigger is two sessions done without leaning on the written Steps or meta-cards, not a fixed phase.
+- **Skip the When I'm Stuck card** -- a confident planner often won't need it. The Finish and Quality Check still closes every session, because it is where they check the artifact, the Stop Point, their sources and the tracker.
+- **Reach the lighter template fast** -- the trigger is two sessions done without leaning on the written Steps or the When I'm Stuck card, not a fixed phase.
 - **Make the optional and harder versions their main path** ("challenge by choice") -- more cities, deeper research, the open weighted-scoring version.
 - **Keep identical:** the guardrails (budget, approved cities, pacing, safety, availability), the always-kept session anchors, and every safety/privacy rule. The mode changes pace and depth, never the rules.
+
+## Where to go next
+
+- [Time and effort](time_and_effort.md) -- Low-Bandwidth Parent Mode, for when your own time and energy are short.
+- [Coaching and support](coaching_and_support.md) -- scripts for the hard moments.
+- [Session support notes](session_support_notes.md) -- each session at a glance, with its common pitfall.

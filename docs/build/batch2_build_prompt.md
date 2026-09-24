@@ -4,7 +4,7 @@
 
 - **Status:** Active
 - **Owner:** Repository Maintainers
-- **Last Updated:** 2026-09-23
+- **Last Updated:** 2026-09-24
 - **Scope:** The complete build instruction for Batch 2 of the EFingPlanner curriculum -- thirty-four sessions across Phases 3 to 8, thirteen templates, the parent apparatus, the rest of the trip-starter kit, the two binder deliverables, and the roadmap extension. It carries every Batch 2 requirement, every applicable acceptance criterion, and the adjudicated answer to every open question, so an authoring run works from this brief and consults the archived specification only for a detail the brief turns out to lack. It does not cover Batches 0, 1, 3 or 4, and it is a build instruction rather than shipped curriculum.
 - **Related:** [Build prompt directory guide](README.md), [Batch 1 build brief](batch1_build_prompt.md), [Build prompt template](_build_prompt_template.md), [Archived specification](../spec/specification.md)
 
@@ -256,12 +256,21 @@ Write a fill-in blank pointing at the card instead:
 **The path is `../../templates/trip_basics.md`, and it is worth being exact about**,
 because two files carry that name. The blank lives in `framework/templates/`; the copy the
 family actually fills lives in the kit at `framework/trip_starter/family/trip_basics.md`.
-**All five built sessions that reference the card link the template**, and the built
-repository wins, so every session this batch writes links the template too. The kit copy is
-reached through the kit, not from a session.
+**Every built session that names the card as a concept links the template**, and the built
+repository wins, so every session this batch writes links the template too. Session 00 is the
+one exception: it has the adult fill the card in, and a fill-in instruction links the kit
+copy (`framework/docs/build_style_and_vocab.md:115`).
 
 Speak generically about people: "an older relative (for example a grandparent)", "each
 traveler", "a traveler with lower stamina".
+
+**How the family travels is a trip value too.** The Trip-Basics card holds it -- plane, car,
+train or another way -- so a built file never assumes a flight. Where a specification below
+says flight or airport for something every family does, word it for the family's way of
+getting there, or make it conditional on flying. Session 29's floor question, Session 40's
+arrival-day anchor and its Source Check, and Session 43's pacing check are such places. A
+line that is true for a family that flies, such as "Flights" on an adult's checklist, can
+stay, and so can the flights page (B3), which is about flying by design.
 
 ### 1.4 Reference hygiene and linking
 
@@ -419,9 +428,9 @@ project:
   Session 53 uses the same slot for `**This is your finish line.**`, so the slot is for
   whatever makes the page different from an ordinary session -- **not a second status
   label**, which already lives in the parent strip.
-- **The parent strip is written exactly `**For parents:**`**, directly under the
-  navigation line and above `## Goal`, rendering as a short one-field-per-line list
-  rather than a faux table. `AC-15-3`'s "child's action before parent-facing meta" is
+- **The parent strip is written exactly `**For parents:**`**, after the navigation line
+  and any italic routing line under it (section 4.1), and above `## Goal`, rendering as a
+  short one-field-per-line list rather than a faux table. `AC-15-3`'s "child's action before parent-facing meta" is
   satisfied by that section order, not by pushing the strip below `## Steps`.
   **Do not reorder it.**
 - **Every session in this batch produces an artifact**, so every session carries the
@@ -494,7 +503,9 @@ cannot branch on a runtime signal, so this batch builds the phase line:**
 | 7, 8 | **Lighter template.** Steps compress to a short ordered list; Workspace becomes a pointer to the card or page the child already uses |
 
 The readiness trigger is carried as a **parent note**, so a parent whose child fades
-early can move faster on their own side.
+early can move faster on their own side. **Word it as `framework/docs/design_principles.md`
+does:** the Finish and Quality Check closes every session, so doing it never counts against
+the child; the test is whether they needed the When I'm Stuck card or leaned on the Steps.
 
 **Record the cost, do not hide it:** a child who meets the trigger in Phase 5 has no
 lighter Phase 6 page to switch to, and meets the full template longer than they need.
@@ -700,7 +711,7 @@ a short instruction telling the adult to keep a rough per-person fare of their o
 for their own sanity check at Session 39.
 
 **Do not add a workspace row for it.** An earlier draft of this brief said to, and that was
-wrong: the built `budget_estimate.md` states in as many words that flights are the
+wrong: the built `budget_estimate.md` states in as many words that getting there is the
 grown-ups' number and that there is **nothing to fill in** on the child's worksheet. That is
 a deliberate design, not an omission, and the built repository wins. The fare lives on the
 adult's own page -- `money_budget_guidance.md` says so -- and the child never researches it,
@@ -715,8 +726,8 @@ notes are routed from Session 38 to the destination pack's money basics page. Th
 group-size thread runs through Sessions 30, 34 and 36, which a continuing family reaches
 unticked. The spec's which-slice-is-biggest visual needs a flight line on the child's own
 worksheet, which the controllable-slice rule removes, so it is not built. The built budget
-template names flights as the biggest cost in words instead. Section 11 records the
-departure.
+template says in words that getting there is the grown-ups' number instead, and the money
+page says when that cost can outweigh the rest. Section 11 records the departure.
 
 **On the Core path, add one optional micro-task**, shown only when the Session 02 profiles
 mark a traveler as coming for only part of the trip. The child jots how many people are
@@ -1112,10 +1123,18 @@ already carries it.
 *"Does this route still fit our rough budget band?"* and adds the reason: more cities and
 more hotel moves usually cost more.
 
-The band reaches the child in kid-graspable form only -- a rough per-day or per-person
-figure, or "we can / can't afford this tier of hotel" -- and it is a **controllable-slice**
-band with flights excluded. **Never hand the child a whole-trip total.** The canonical
+The band reaches the child in kid-graspable form only -- per person per day, per day for
+the family, or "we can / can't afford this tier of hotel" -- and it is a
+**controllable-slice** band with the cost of getting there excluded. **Never hand the child a whole-trip total.** The canonical
 home is `framework/templates/current_family_travel_assumptions.md`.
+
+**The adult's own check uses the cost of getting there.** The Trip-Basics card asks how the
+family travels, and Batch 1 made the child's budget pages say *getting there*, so a family
+that drives reads a true line. Wherever this brief says fare or airfare for the adult's
+sanity check, write the cost of getting there: a fare times the traveler count for a family
+that flies or takes the train, or the drive's own costs for one that drives. Two merged pages
+still assume flying, the daily plan card and the review checkpoints page; convert them when
+this batch next edits them.
 
 ### 5.4 Movable per-city blocks
 
@@ -1127,7 +1146,7 @@ researches is **one movable block**. The child-facing note already lives in buil
   relative link back to Session 15's note -- not an abbreviated re-explanation, which is
   the worst of both.
 - **Keep the flight reasoning parent-only.** Round-trip versus open-jaw is a parent
-  concept. The child works only with recorded arrival and departure cities and their
+  concept. The child works only with recorded arrival and departure places and their
   movable blocks.
 
 ### 5.5 Predict-then-verify
@@ -1416,7 +1435,7 @@ from the Trip-Basics card, or the booked trip length when the dates are booked**
 interest; budget implications; safety and common sense; international flight implications.
 
 **A Checkpoint 2 extra that Phase 5 depends on.** If the Rough Trip Shape was left partly
-open at setup -- arrival city only -- **adults firm up the shape and the exit city here**,
+open at setup -- arrival place only -- **adults firm up the shape and the departure place here**,
 before the Phase 5 route work builds on it. This is an adult action: put it in Parent
 Notes, and keep open-jaw reasoning out of the child's text entirely.
 
@@ -1775,7 +1794,7 @@ and it stands wherever this brief names the trip-length recommendation.
 - **Source Check: required.** The spec's Checkpoint 4 review list omits Sources where
   Checkpoints 2 and 3 name them; this batch adds it, so all three match. (`D-OPEN-15`.)
 
-**Adult review considers:** flights; **arrival and departure city**; hotel moves; transit
+**Adult review considers:** flights; **arrival and departure place**; hotel moves; transit
 realism; **the family's maximum trip length, read from the Trip-Basics card, or the booked
 trip length when the dates are booked**; budget implications; family schedule.
 
@@ -2007,7 +2026,7 @@ fit. **Fully neutral.**
 - The child connects the budget to the **actual route and itinerary**, not a generic trip.
 - **The child's second pass covers their controllable slices only.** The adult's fare
   number stays on the adult's own page and is never copied into the child's running total
-  -- the built `budget_estimate.md` says in as many words that flights are the grown-ups'
+  -- the built `budget_estimate.md` says in as many words that getting there is the grown-ups'
   number with nothing to fill in, and that is deliberate. The adult's own sanity check is an **addition**: the
   child's subtotal **plus** the per-person fare multiplied by the traveler count. The
   subtotal is already a whole-party amount and the fare is not, so adding them raw
@@ -3156,6 +3175,11 @@ checked and dated.
 official government references are the *origin* layer, not the destination layer. Keep them
 labelled as such. **But never name the family's home airport or its code.**
 
+**Every new page in this group ends with a `## Where to go next` list.**
+`framework/templates/parent_guide_template.md` requires one on every parent-guide page except
+the quick-start and the session support notes: a few links to related pages, each followed
+by one clause saying what that page covers.
+
 #### B1 — `review_checkpoints.md`
 
 The adult's guide to running the checkpoints: Checkpoint 1 alone on First Taste, whose
@@ -3244,10 +3268,10 @@ family's actual airport and code live on the Trip-Basics card and **must not app
 Content, each as a short point-first paragraph or bullet:
 
 - **Adults choose flights.** The child learns flight basics only.
-- **Arrival city may affect the route. Departure city may affect the route.** Adults record
-  what they know at setup as the **rough trip shape** anchor: the likely arrival city and,
-  if known, the departure city and the round-trip-versus-open-jaw shape. **Recording only
-  the arrival city is a supported setup.** Core and Full adults settle the shape at
+- **Arrival place may affect the route. Departure place may affect the route.** Adults record
+  what they know at setup as the **rough trip shape** anchor: the likely arrival place and,
+  if known, the departure place and the round-trip-versus-open-jaw shape. **Recording only
+  the arrival place is a supported setup.** Core and Full adults settle the shape at
   Checkpoint 2; First Taste never reaches Checkpoint 2, so its adults settle it before
   booking flights. The child's route is built on it from Phase 3 in **movable per-city
   blocks.** **Checkpoint 4 is where adults confirm or adjust that shape against current
@@ -3285,15 +3309,15 @@ The adult's half of the budget teaching.
    structured** and **whether the slices the child controls fit the band you gave them.** It
    is **not** a usable, bookable trip total. State this plainly so neither parent nor child
    mistakes the output for a real budget.
-2. **The controllable-slice split, and why flights sit on the side.** The child's
+2. **The controllable-slice split, and why getting there sits on the side.** The child's
    controllable slices are hotels, food, activities, local transit and souvenirs. The
-   adult's own figure -- their subtotal plus the fare times the traveler count -- is **a
+   adult's own figure -- their subtotal plus the cost of getting there -- is **a
    partial floor and a separate adult check**, and not the trip's full cost:
    insurance, intercity transport, entry costs and phone service all sit outside it. Be honest about why: for a
    multi-person long-haul trip the flights dominate everything. **Do not write a party size
    or an airport.**
 3. **What the adult supplies:** the controllable-slice band in kid-sized form; a rough
-   per-person fare kept on the adult's own page, which the child never researches, never
+   cost of getting there kept on the adult's own page, which the child never researches, never
    writes down and never sums; and the final
    budget.
 4. **The teaching points to reinforce:** a trip has categories of costs; some are per
@@ -3370,7 +3394,7 @@ pulling the child into a booking workflow.**
    season recommendation (or, with the dates booked, the season confirmation), the city
    shortlist once Checkpoint 2 has passed (on First Taste,
    the Session 21 city comparison once it is done), and the rough trip shape recorded at
-   setup, with the departure city and the round-trip-or-open-jaw call settled first if
+   setup, with the departure place and the round-trip-or-open-jaw call settled first if
    setup left them open.
 3. **The three timelines collide, and that is expected.** The booking clock often forces a
    commitment before the child's curriculum-paced route is finished. That is handled by
@@ -3567,8 +3591,8 @@ what the plan can be.**
 4. **How to use a constraint, as a three-step move:** name it; write it down where that
    kind of thing lives; then check your recommendation against it.
 5. **Say where each kind goes, because they do not all have the same home.** A settled
-   trip-wide limit is already written down: the Trip-Basics card holds the airport, the time
-   difference, the maximum trip length and who is coming, and the current travel
+   trip-wide limit is already written down: the Trip-Basics card holds how the family travels,
+   the time difference, the maximum trip length and who is coming, and the current travel
    assumptions page holds the budget band, the rough season, the trip shape and mobility
    needs such as how far anyone can walk. An unsure one that belongs to a
    single place goes in **that research card's** planning-assumption block, with what could
@@ -3594,11 +3618,12 @@ blank file includes headings and fill-in sections. **No fake completed decisions
 **One artifact, one canonical home.** Put this rule on every kit page that could invite a
 duplicate:
 
-- The **blank** version lives in `framework/templates/`.
-- The **Phase 0 family-owned** artifacts live in the kit's `family/` folder.
-- The **in-progress** copy lives in the kit's `research/`, `logs/` or `recommendations/`.
-- The **final assembled** version lives in the kit's `outputs/`.
+- The **blank** version stays in the repository, in `framework/templates/`.
+- The **Phase 0 family-owned** artifacts live in the `family/` part of the family's own copy of the kit.
+- The **in-progress** copy lives in the `research/`, `logs/` or `recommendations/` part of that copy.
+- The **final assembled** version lives in the `outputs/` part of that copy.
 - **Work is summarized forward, not duplicated sideways.**
+- **A link that leaves the kit opens a page in the repository**, and the kit page says so.
 
 **Batch 1 built the kit README and the whole `family/` subtree.** Batch 2 builds the rest.
 **Do not re-author the kit README**; extend it only where 9.4.6 says so.

@@ -9,7 +9,7 @@ One line under each item is enough. You're talking from an outline, not reading 
 **There is no single required way to present.** Pick whichever of these fits you, and circle it at the bottom. They're all real options, and none is a lesser version:
 
 - Present live
-- Practise with one parent first, then present
+- Practice with one parent first, then present
 - Present from notes
 - Record a video and play it
 - Hand over the binder with a short written summary
@@ -45,6 +45,6 @@ If you want to work up to it, [the differentiation guide](../parent_guide/differ
 
 | | |
 | --- | --- |
-| Circle one | live / practise with one parent first / from notes / record a video / hand over the binder with a summary |
+| Circle one | live / practice with one parent first / from notes / record a video / hand over the binder with a summary |
 
 Every claim you make should be able to name where it came from. If someone asks "how do you know that?", your Source Log is the answer — you don't have to remember it.

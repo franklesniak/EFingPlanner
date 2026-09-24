@@ -39,7 +39,7 @@ It's a carry-in-pocket safety card, not trip data written down anywhere else. Th
 ## Their three-step plan, so you can rehearse it
 
 1. **Do what today's rule says.** One rule, named that morning.
-2. **Ask a helper without leaving the spot.** Call out, wave, or ask whoever is right there. A transit worker, a shop or security worker with a nametag, or the local equivalent of a neighbourhood police post is the one to ask for.
+2. **Ask a helper without leaving the spot.** Call out, wave, or ask whoever is right there. A transit worker, a shop or security worker with a nametag, or the local equivalent of a neighborhood police post is the one to ask for.
 
    **Your child does not walk to a helper.** Not even one they can see. Judging how far is too far is the decision this whole plan exists to remove, and a child who crosses a concourse toward a uniform is no longer where you are searching. If nobody is within earshot, they stay put and keep looking, and someone will come. **The only time they move is when that morning's rule named a meeting spot.**
 
@@ -62,7 +62,7 @@ Keep the co-research guardrail on:
 - The food session
 - **Any video research** — the risks there are autoplay rabbit holes, recommendation drift, comments, and monetized links, none of which a content filter addresses
 - **Image search**, where place-name and nightlife queries can surface adult imagery with the filter on
-- Open neighbourhood browsing
+- Open neighborhood browsing
 - **Nightlife and drinking-related topics**, which the privacy and safety page names explicitly
 
 That list names the known higher-risk areas. If another topic feels like it belongs on it, treat it as though it is.
@@ -71,4 +71,10 @@ That list names the known higher-risk areas. If another topic feels like it belo
 
 ## Privacy
 
-A short reminder, with the full rules on the [privacy and safety page](../docs/privacy_and_safety.md). **Nothing personal goes in this repository at all.** Your family's copied-out kit is different: that is where the real work belongs, including pages like the Trip-Basics card that hold your airport and your travellers. What stays out of it is the **sensitive** set: passport numbers, birthdates, confirmation numbers, payment details and exact booked dates. A shared-documents folder is not a private vault for those either.
+A short reminder, with the full rules on the [privacy and safety page](../docs/privacy_and_safety.md). **Nothing personal goes in this repository at all.** Your family's copied-out kit is different: that is where the real work belongs, including pages like the Trip-Basics card that hold your travelers and, if you fly, your home airport. What stays out of it is the **sensitive** set: passport numbers, birthdates, confirmation numbers, payment details and exact booked dates. A shared-documents folder is not a private vault for those either.
+
+## Where to go next
+
+- [Adult-only logistics](adult_only_logistics.md) -- insurance, passports, and what to check for an older or lower-mobility traveler.
+- [Adult and child roles](adult_roles.md) -- why every safety decision stays with the adults.
+- [Privacy and safety](../docs/privacy_and_safety.md) -- the full rules on what never goes on a working page.

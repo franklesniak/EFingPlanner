@@ -6,9 +6,31 @@ This roadmap shows the paths through the project and where the honest stopping p
 
 For the child this project is designed for, **finishing First Taste is the expected, complete outcome** -- not a lesser starter. Continuing to the Core Finish Line or the full program is a genuine bonus, and nothing done in First Taste is ever redone.
 
-> **What is built right now** lives in the [curriculum changelog](CHANGELOG.md), which is the version history of these materials and the one file that changes every time something ships. This page describes the whole programme; the changelog says how much of it exists today.
+> **What is built right now** lives in the [curriculum changelog](CHANGELOG.md), which is the version history of these materials and the one file that changes every time something ships. This page describes the whole program; the changelog says how much of it exists today.
 >
 > The Batch 0 gate **cleared** on the recorded no-child fallback, which is one of its two routes. What is still open is the thing that fallback stands in for: **no child has piloted this design.** The flag saying so is carried in [time and effort](parent_guide/time_and_effort.md), and it stays until a real pilot happens.
+>
+> Batch 1 opened two more checks on the Phases 0-2 slice: an adult reads the converted pages against the Batch 0 originals, and an adult watches a child work the new sessions. Both are recorded as open in the changelog, and neither has been done yet.
+
+## Full Phases 0-2 path
+
+Every session in Phases 0-2, in numbered order. The First Taste path below overlaps this list: its first eight numbered steps are sessions here, and the markers say which sessions it skips. Its last five -- Sessions 15, 21, 33, 44 and 53 -- are in later phases.
+
+- [00 Parent Setup](sessions/phase_00_setup/00_parent_setup.md) *(adult-owned)*
+- [01 Project Kickoff](sessions/phase_00_setup/01_project_kickoff.md)
+- [02 Family Traveler Profiles](sessions/phase_00_setup/02_family_traveler_profiles.md) *(not one of the 13)*
+- [03 What Makes a Good Trip](sessions/phase_00_setup/03_what_makes_a_good_trip.md)
+- [04 Start a Source Log](sessions/phase_00_setup/04_start_a_source_log.md)
+- [05 Good Sources, Bad Sources](sessions/phase_01_research_skills/05_good_sources_bad_sources.md)
+- [06 Book Research With a Guidebook](sessions/phase_01_research_skills/06_book_research_guidebook.md) *(not one of the 13)*
+- [07 Library Research Plan](sessions/phase_01_research_skills/07_library_research_plan.md) *(recommended; not one of the 13)*
+- [08 Web Research Practice](sessions/phase_01_research_skills/08_web_research_practice.md) *(not one of the 13)*
+- [09 AI as Helper, Not Boss](sessions/phase_01_research_skills/09_ai_as_helper_not_boss.md) *(AI families only; not one of the 13)*
+- [10 Destination Snapshot](sessions/phase_02_destination_big_picture/10_destination_snapshot.md)
+- [11 Regions and Cities Overview](sessions/phase_02_destination_big_picture/11_regions_and_cities_overview.md) *(not one of the 13)*
+- [12 Weather, Seasons, and Events](sessions/phase_02_destination_big_picture/12_weather_seasons_and_events.md)
+- [13 Trip Goals and Travel Style](sessions/phase_02_destination_big_picture/13_trip_goals_and_travel_style.md)
+- [14 Checkpoint 1: Season Recommendation](sessions/phase_02_destination_big_picture/14_checkpoint_1_season_recommendation.md) *(a grown-up reviews this)*
 
 ## First Taste path (the pilotable mini-plan)
 

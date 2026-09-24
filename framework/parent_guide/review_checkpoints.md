@@ -71,9 +71,9 @@ Each has its own **what to consider** list. The review form checks whether the w
 
 **What they bring:** likely overnight bases, possible day trips, places to skip, places to save for a future trip, with reasons and sources, **and how the Session 03 traveler poll shaped it**, naming which traveler's "one thing you'd love" each choice makes room for.
 
-**Also yours to do here:** if you left the rough trip shape partly open at setup, firm it up now, including the exit city. The Phase 5 route work builds on it.
+**Also yours to do here:** if you left the rough trip shape partly open at setup, firm it up now, including the departure place. The Phase 5 route work builds on it.
 
-**What to consider:** whether the travel scope is workable; how it fits your maximum trip length, or your booked trip length; **whether the other travellers appear in it at all**, which is what the poll connection is there to show; budget implications; safety and common sense; and anything it implies for international flights.
+**What to consider:** whether the travel scope is workable; how it fits your maximum trip length, or your booked trip length; **whether the other travelers appear in it at all**, which is what the poll connection is there to show; budget implications; safety and common sense; and anything it implies for international flights.
 
 **Progress is real:** the family now knows roughly *where*.
 
@@ -91,9 +91,9 @@ Each has its own **what to consider** list. The review form checks whether the w
 
 **What they bring:** with open dates, total days, overnight cities, nights in each, travel days, and a shorter backup version.
 
-**Also yours to do here:** confirm or adjust the arrival and departure cities against current flight options. If they change, your child's route flexes. They move one block and keep the rest.
+**Also yours to do here:** confirm or adjust the arrival and departure places against current flight options. If they change, your child's route flexes. They move one block and keep the rest.
 
-**What to consider:** flights; the arrival and departure cities; how many hotel moves it involves; whether the transit is workable; how it fits your maximum trip length, or your booked trip length; budget implications; and the family schedule.
+**What to consider:** flights; the arrival and departure places; how many hotel moves it involves; whether the transit is workable; how it fits your maximum trip length, or your booked trip length; budget implications; and the family schedule.
 
 **With the dates already booked,** the trip length is set. They bring how the booked days are split: the cities, the nights in each and the travel days, with no shorter backup version.
 
@@ -116,3 +116,9 @@ The draft is the thing being reviewed. Pacing, transit, meals and rest cannot be
 **What to consider:** the final recommendation; what you approve; what you want changed; what you'll verify or book; and which questions stay open.
 
 **Progress is real:** the family has *made a decision*.
+
+## Where to go next
+
+- [Coaching and support](coaching_and_support.md) -- the words for "needs more research", the most common hard verdict.
+- [Booking guidance](booking_guidance.md) -- what happens after a checkpoint approves something that needs booking.
+- [Session support notes](session_support_notes.md) -- each session built so far at a glance, Checkpoint 1 included.
