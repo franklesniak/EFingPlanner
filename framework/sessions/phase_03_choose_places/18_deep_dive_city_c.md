@@ -28,7 +28,7 @@ If you're doing it, City C gets the same deep dive your first two cities got.
 
 1. **Open this session's Destination Notes.** Check whether City C is one of the candidate cities, and read its line if it is. Anything they suggest is a lead you can follow or skip.
 2. **Write your starting questions** at the top of the card. Why does City C keep pulling you back? What would it add that City A and City B don't?
-3. **Research it from at least two sources.** Official tourism sites are a good start.
+3. **Research it.** Official tourism sites are a good start, and a second source makes your card stronger.
 4. **Fill in the card**: top sights (star the ones you can't wait to see), one memorable fact, food and culture notes, travel time from a nearby city, how many days, and season fit.
 5. **Find at least one downside.** A third city often means more travel time. Does it?
 6. **Log every source** in your Source Log as you go, with today's date.

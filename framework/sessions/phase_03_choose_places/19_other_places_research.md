@@ -52,7 +52,7 @@ At least two more city or region cards, each with a reason to go, a memorable fa
 
 ## Stop Point
 
-You are done when two more places have cards with a reason to go, one memorable fact, and a source. You also need at least five city or region cards in total. Every card you've made counts, whichever session you made it in. If you're short, add one more place. A card with "not sure yet" in some rows still counts.
+You are done when two more places have cards with a reason to go, one memorable fact, and a source, and you've checked one fact in a second source. You also need at least five city or region cards in total. Every card you've made counts, whichever session you made it in. If you're short, add one more place. A card with "not sure yet" in some rows still counts.
 
 ## Source Check
 

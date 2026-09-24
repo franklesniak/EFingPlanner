@@ -735,6 +735,12 @@ worksheet, which the controllable-slice rule removes, so it is not built. The bu
 template says in words that getting there is the grown-ups' number instead, and the money
 page says when that cost can outweigh the rest. Section 11 records the departure.
 
+**On the Core path, the hotel slice covers the approved route.** Section 4.1 re-points Session
+33's Previous to 32, so a Core family arrives from Checkpoint 4. Its hotel line keeps the
+Session 21 rows for a First Taste child. On the Core path, the child guesses one typical
+nightly price for all the overnight cities, multiplies it by every night in the Checkpoint
+4 plan, and uses that plan's total days for food. Session 39 goes city by city.
+
 **On the Core path, add one optional micro-task**, shown only when the Session 02 profiles
 mark a traveler as coming for only part of the trip. The child jots how many people are
 present on which days, and what that changes: room count (Sessions 34 and 35), train seats
@@ -1409,7 +1415,8 @@ child's own discovered option.
 - **Workspace:** at least two more City Research Cards, plus the Source Log.
 - **Artifact:** at least two additional city or region cards.
 - **Stop Point:** you are done when two more places have cards with a reason to go, one
-  memorable fact, and a source, **and you have at least five city or region cards in
+  memorable fact, and a source, one fact is checked in a second source, **and you have
+  at least five city or region cards in
   total** -- every city or region card made so far counts, one per place, whichever
   session made it. If you are short, add one
   more alternative. The floor is **at least two alternatives** beyond the City A / B / C
@@ -1690,8 +1697,10 @@ blanks are allowed inside a worked-formula table cell.
 child takes away half a day each for arrival and departure. When a flight lands on a later
 date than it took off, as a date-line crossing or a night flight can, the child takes away
 one more day for that flight, and one more night in the nights check. The printed formula
-stays as quoted, and one teaching line says when each change applies. Checkpoint 4 counts
-that day again when it turns the nights into total days.
+stays as quoted, and one teaching line says when each change applies and how to mark it on
+the formula: ½ written over each 1 for a short journey, and "- 1 flight day" before the
+equals sign for each later-date flight. Checkpoint 4 counts each flight day again when it
+turns the nights into total days.
 
 Then a plain **floor and ceiling check**: "Are there too few real days to be worth the long
 flight?" and "Is the total within your family's maximum trip length?" **When the family's
