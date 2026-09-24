@@ -14,7 +14,7 @@ You are here: Phase 7 (Itinerary Building), First Taste step 12 of 13. Previous:
 - Planner skill: prioritizing; knowing when to stop; flexible thinking
 - Estimated time: 20-30 minutes
 - Parent involvement: 5-minute check-in; help co-choose the one unconditional pick, or confirm it on the Core path
-- Materials: your City Research Cards (starred sights), a [Cut List page](../../templates/cut_list.md), a [Backup Plan page](../../templates/backup_plan.md), and a My Calls page (a blank sheet or the kit's [My Calls page](../../trip_starter/my_calls.md) -- start one if you do not have it yet). On the Core path, your My Calls page, with its must-do list and special pick, takes the place of the starred sights, and you bring the skip and save-for-future notes from Checkpoints 2 and 3 and your route map notes from Session 28.
+- Materials: your City Research Cards (starred sights), a [Cut List page](../../templates/cut_list.md), a [Backup Plan page](../../templates/backup_plan.md), and a My Calls page (a blank sheet or the kit's [My Calls page](../../trip_starter/my_calls.md) -- start one if you do not have it yet). On the Core path, your My Calls page, with its must-do list and special pick, takes the place of the starred sights, and you bring the skip and save-for-future notes from Checkpoints 2 and 3 and your route map notes from Session 28, with a device with a map app or map website (kid-safe filter on) if a swap needs a new travel time.
 
 ## Goal
 
@@ -68,7 +68,7 @@ On the Core path: your cut list, started from your Checkpoint 2 and 3 notes, one
 
 On the First Taste path, you are done when you have a short must-see list, a cut list with whatever did not make it (even one thing, or a note that nothing needed cutting), one special pick written and initialed, and two backup plans. Short is good. This is about choosing, not listing everything.
 
-On the Core path, you are done when your cut list holds your Checkpoint 2 and 3 notes and anything else you set aside, your My Calls page has one line saying your special pick still holds, and you have two backup plans.
+On the Core path, you are done when your cut list holds your Checkpoint 2 and 3 notes and anything else you set aside, your My Calls page has one line saying your special pick still holds, and you have two backup plans. Any travel time a swap needed is in your route map notes.
 
 ## Source Check
 
