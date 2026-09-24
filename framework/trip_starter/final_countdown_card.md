@@ -28,7 +28,7 @@ Pick one job, or more than one. Each one is a job the family needs done.
 | Daily-plan checker | Read the day's plan out loud at breakfast | |
 | Navigator-helper | Hold the map and spot the next train or turn, right beside a grown-up | |
 | Phrase-sayer | Use your own language sheet, if you made one, to say hello and thank you, and to order food | |
-| Keeper of the must-do list | Keep track of which must-dos you have done | |
+| Keeper of the must-do list | Keep track of which must-dos or must-sees you have done | |
 
 The navigator-helper and the phrase-sayer are helper jobs. You always do them beside a grown-up, and the grown-up stays in charge of where the family goes.
 

@@ -23,7 +23,7 @@ When the grown-ups decide, write a Decision Record for the checkpoint in your [d
 
 ## One artifact, one home
 
-Each recommendation lives in one place: its page here, or its session's table if you work on paper. Near the end, the finished pages in `outputs/` carry the short version forward from these pages. Keep one copy of each recommendation, so you always know which one is right.
+Each recommendation lives in one place: its page here, or its session's table if you work on paper. Near the end, the finished pages in `outputs/` carry the short version forward from your recommendations. Keep one copy of each recommendation, so you always know which one is right.
 
 A link that leaves the kit opens a page in the repository. In a printed or pasted copy, find that page there.
 

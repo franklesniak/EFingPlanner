@@ -50,7 +50,7 @@ Your itinerary review packet is your draft, plus these five answers and your rea
 | My reasons | |
 | Approval status (a grown-up circles one: Approved / Approved with changes / Needs more research / Park this decision for later) | |
 
-Keeping your work in the trip starter kit? Its [itinerary review page](../../trip_starter/recommendations/itinerary_review.md) has room for everything in this table, so you can fill it in there. Stopping at this checkpoint? Your kit's [outputs page](../../trip_starter/outputs/README.md) says which finished pages to fill in now.
+Keeping your work in the trip starter kit? Its [itinerary review page](../../trip_starter/recommendations/itinerary_review.md) has room for everything in this table, so you can fill it in there. Once this checkpoint is settled, your kit's [outputs page](../../trip_starter/outputs/README.md) says which finished pages to fill in, whether you stop here or go on.
 
 Then fill your Decision Record. Write "Our day-by-day plan" in its Decision box. Your plan goes in **My recommendation**, and your reasons, sources and trade-offs go in their own rows. When the grown-ups decide, write their answer in **Final family decision**. That record is your decision-log entry.
 
