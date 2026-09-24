@@ -38,7 +38,7 @@ Every place on the menu is an option to research. You can also add a place you f
 2. **Start one City Research Card for each.** The card works for a region or a town, too.
 3. **Fill in the key rows first**: why people go there, one memorable fact, and your source. Add more rows if you have time.
 4. **Check one fact twice.** Pick one fact on one of your cards and look it up in a second source. Do the two agree? Write the second source in your Source Log's **Verification source** box, with the date.
-5. **Count your city and region cards.** Add up your two cards from Session 15, your City C card if you made one, and today's cards. You need at least five. If you have fewer, add one more place.
+5. **Count your city and region cards.** Add up your two cards from Session 15, a new City A card if you made one in Session 16, your City C card if you made one, and today's cards. You need at least five. If you have fewer, add one more place.
 
 ## Workspace
 
@@ -52,7 +52,7 @@ At least two more city or region cards, each with a reason to go, a memorable fa
 
 ## Stop Point
 
-You are done when two more places have cards with a reason to go, one memorable fact, and a source. You also need at least five city or region cards in total. Your two from Session 15 count, and so does a City C card. If you're short, add one more place. A card with "not sure yet" in some rows still counts.
+You are done when two more places have cards with a reason to go, one memorable fact, and a source. You also need at least five city or region cards in total. Your two from Session 15 count, and so do a new City A card from Session 16 and a City C card. If you're short, add one more place. A card with "not sure yet" in some rows still counts.
 
 ## Source Check
 

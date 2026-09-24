@@ -869,7 +869,10 @@ try-then-commit line in `time_and_effort.md` are worded for both paths, and the 
 Card's own row already reads "our Checkpoint 1 season".
 
 **The booked trip length reaches later sessions the same way.** With the dates booked, the
-booked trip length is the total, and the child's nights plan splits it. Each of these says
+booked trip length is the total, and the child's nights plan splits it. The number lives on
+the Trip-Basics card's maximum-trip-length row, which tells a booked family to write it
+there, so `framework/templates/trip_basics.md` and its kit copy
+`framework/trip_starter/family/trip_basics.md` carry that row. Each of these says
 so in place: Session 29's purpose, check, teaching points, stamina steer, Stop Point and
 Optional Extension; Session 32 and its route shell (9.4.3); the adult reviews at Checkpoints
 2 and 4, and the city-shortlist shell; B1's Checkpoint 4 section; the 5.2 progress table;
@@ -1083,6 +1086,8 @@ Five checkpoints land in this batch. Every one of them includes:
   everything after a checkpoint is built on the decision being made at it. At Checkpoints
   2 to 5, **a parked decision holds the next session too**, until the family comes back to
   it. At Checkpoint 6 a parked decision is itself the result, and Session 53 goes ahead.
+  With **Approved with changes**, the child writes the changes into their page and the
+  decision log before the next session starts.
   **Do not add a "waiting" tracker.**
 
 **What each checkpoint's "progress is real" line names:**
@@ -1400,7 +1405,8 @@ child's own discovered option.
 - **Artifact:** at least two additional city or region cards.
 - **Stop Point:** you are done when two more places have cards with a reason to go, one
   memorable fact, and a source, **and you have at least five city or region cards in
-  total** -- Session 15's two count, and so does a City C card. If you are short, add one
+  total** -- Session 15's two count, and so do a new City A card from Session 16 and a
+  City C card. If you are short, add one
   more alternative. The floor is **at least two alternatives** beyond the City A / B / C
   deep-dives.
 - **Source Check:** required.
@@ -1452,8 +1458,8 @@ Notes, and keep open-jaw reasoning out of the child's text entirely.
 one-base trip shape, and built Session 21 lets a child recommend one city, so a one-base
 shortlist with no day trips is a finished checkpoint. Phase 5 then works from that base:
 Session 28 times the trips from the arrival place to the base and from the base to the
-must-dos, Session 30's guess uses one of those trips, and Session 31 compares staying at
-one base with splitting the stay.
+must-dos, Session 30's guess uses one of those trips, and Session 31 compares two ways to
+use that base: fewer must-dos with more free time, against more must-dos, seen faster.
 
 **The second early real win.** Adults should actually use the child's city shortlist in a
 family conversation here, so the child sees their research shaping the trip again well

@@ -18,7 +18,7 @@ Work out how many nights each place needs and how long the whole trip should be,
 
 ## Start Here
 
-Find the maximum trip length on your Trip-Basics card, and write it in the Total days blank of the formula in the Steps. If your dates are already booked, write the booked trip length there. That's your start.
+Find the maximum trip length on your Trip-Basics card, and write it in the Total days blank of the formula in the Steps. If your dates are already booked, that row holds the booked trip length. If it's blank, ask a grown-up. That's your start.
 
 ## Steps
 
