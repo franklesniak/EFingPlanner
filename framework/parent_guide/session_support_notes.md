@@ -201,7 +201,7 @@ Want a rough signal of how the executive-function side is going? The optional [e
 
 - Role: Independent.
 - Prep: this session's Destination Notes; blank Attraction Research Cards; the city shortlist from Checkpoint 2; the city cards for the shortlisted places; the My Calls page, for a family continuing from First Taste.
-- Look for: attraction research cards, each with a reason, a rough time, a downside and a source, and a price guess left as written beside the checked price. A special pick your child already made gets its own card, unless a block applied at Checkpoint 2. Two cards is a finished sitting, and ten across the sittings completes the set.
+- Look for: attraction research cards, each with a reason, a rough time, a downside and a source, and a price guess left as written beside the checked price. A special pick your child already made gets its own card, unless a block applied at Checkpoint 2. Two cards is a finished sitting. Ten across the sittings completes the set, with at least one price guess written before the check; if every place is free, the guess can be whether one charges at all, or a paid extra's price.
 - Coaching question: "Which price surprised you?"
 - Pitfall: correcting the price guess. Leave it as written, because the gap is the lesson.
 
