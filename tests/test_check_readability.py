@@ -7391,3 +7391,47 @@ def test_a_link_outside_the_scanned_trees_is_not_this_check_s_business(
     outside.write_text(LINK_TEST_PROSE, encoding="utf-8")
     _make_link("symlink", root / "framework" / "parent_guide" / "linked.md", outside)
     assert readability.main([], root=root) == 0
+
+
+def test_a_directory_argument_walks_only_the_trees_the_scan_reads(
+    tmp_path: Path, capsys: Any
+) -> None:
+    """``.`` selects from the default corpus, so only the default trees are walked.
+
+    npm writes ``node_modules/.bin`` as symbolic links on Linux, and a walk of
+    the whole root refused the run on them, although no file there is ever
+    scored: CI failed where a Windows checkout, whose ``.bin`` holds command
+    shims, passed. The link here is a junction on Windows and a symbolic link
+    elsewhere, so the case runs on either. A link inside a scanned tree, or a
+    directory argument that is itself a link, still refuses the run.
+    """
+    import os
+
+    kind = "junction" if os.name == "nt" else "symlink"
+    root = tmp_path / "repo"
+    (root / "framework" / "sessions").mkdir(parents=True)
+    (root / "framework" / "sessions" / "01_real.md").write_text(
+        LINK_TEST_PROSE, encoding="utf-8"
+    )
+    (root / "node_modules" / ".bin").mkdir(parents=True)
+    outside = tmp_path / "outside"
+    outside.mkdir()
+    (outside / "hidden_page.md").write_text(LINK_TEST_PROSE, encoding="utf-8")
+    _make_link(kind, root / "node_modules" / ".bin" / "tool", outside)
+
+    assert readability.main(["."], root=root) == 0
+    assert readability.main([], root=root) == 0
+    assert [display for _, display in readability.resolve_paths(["."], root)] == [
+        "framework/sessions/01_real.md"
+    ]
+    capsys.readouterr()
+
+    _make_link(kind, root / "linked", outside)
+    assert readability.main(["linked"], root=root) == 1
+    assert "linked" in capsys.readouterr().err
+
+    _make_link(kind, root / "framework" / "sessions" / "extra", outside)
+    assert readability.main(["."], root=root) == 1
+    printed = capsys.readouterr()
+    assert "extra" in printed.err
+    assert "hidden_page" not in printed.out + printed.err

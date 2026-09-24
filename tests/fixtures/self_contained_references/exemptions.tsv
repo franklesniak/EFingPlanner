@@ -29,11 +29,11 @@ text	_TODO-repo-init.md	issue #8	1	this repository's own issue 8, named beside t
 text	.github/ISSUE_TEMPLATE/feature_request.yml	#123	2	the issue form teaches a contributor how to reference an issue, so the hash and number are the lesson rather than a reference this repository makes
 text	tests/test_check_readability.py	#1	3	a negative control: the readability scan must read a hash and a digit as a word a child reads rather than as a heading, so the test says it three times
 text	AGENTS.md	eightieth round	1	the review loop's definition in a protected instruction file: the loop's limit and its rounds as a concept, not one review
-text	AGENTS.md	rounds:  80	1	the review loop's definition in a protected instruction file: the loop's limit and its rounds as a concept, not one review
+text	AGENTS.md	rounds: 80	1	the review loop's definition in a protected instruction file: the loop's limit and its rounds as a concept, not one review
 text	CLAUDE.md	eightieth round	1	the review loop's definition in a protected instruction file: the loop's limit and its rounds as a concept, not one review
 text	CLAUDE.md	every round	1	the review loop's definition in a protected instruction file: the loop's limit and its rounds as a concept, not one review
-text	CLAUDE.md	rounds:  80	1	the review loop's definition in a protected instruction file: the loop's limit and its rounds as a concept, not one review
-text	CLAUDE.md	the  Round	1	the review loop's definition in a protected instruction file: the loop's limit and its rounds as a concept, not one review
+text	CLAUDE.md	rounds: 80	1	the review loop's definition in a protected instruction file: the loop's limit and its rounds as a concept, not one review
+text	CLAUDE.md	the Round	1	the review loop's definition in a protected instruction file: the loop's limit and its rounds as a concept, not one review
 text	_ADOPTION-DIFFICULTIES.md	The round	2	the adoption journal: each entry heading names the review of pull request 5 it records, so a round named here is an entry in this file
 text	_ADOPTION-DIFFICULTIES.md	previous review round	1	the adoption journal: each entry heading names the review of pull request 5 it records, so a round named here is an entry in this file
 text	_ADOPTION-DIFFICULTIES.md	round 1	1	the adoption journal: each entry heading names the review of pull request 5 it records, so a round named here is an entry in this file

@@ -318,12 +318,13 @@ TRACKER_NOUN_BEFORE = re.compile(
     # reader cannot see
     # and is deliberately never resolvable by a URL, so letting the bare-hash
     # spelling claim it let an unrelated issue link excuse one.
-    r"(?i)(?:PRs?|pull\s+requests?|issues?|tickets?|projects?|rounds?)\s*[:#]?\s*$"
+    r"(?i)(?:PRs?|pull(?:\s+|-)requests?|issues?|tickets?|projects?|rounds?)\s*[:#]?\s*$"
 )
 TRACKER_SEPARATOR = r"\s*:?\s*#?\s*"
 #: The words that name a commit, as they stand in front of its hash: ``commit``
-#: or ``commits``, which may carry ``hash``, ``sha`` or ``id``, and ``sha``.
-COMMIT_NOUN = r"\b(?:commits?(?:\s+(?:hash|sha|id))?|sha)\s*:?\s*#?\s*"
+#: or ``commits``, which may carry ``hash``, ``sha`` or ``id`` after white
+#: space or a hyphen, and ``sha``. ``commit-hash`` is the same two words.
+COMMIT_NOUN = r"\b(?:commits?(?:(?:\s+|-)(?:hash|sha|id))?|sha)\s*:?\s*#?\s*"
 #: A commit noun directly in front of a hash, which means the hash belongs to
 #: the noun's pattern rather than to the bare one, and is reported once.
 COMMIT_NOUN_BEFORE = re.compile(r"(?i)" + COMMIT_NOUN + r"\Z")
@@ -431,11 +432,11 @@ REVIEW_HISTORY_PATTERNS = (
         # The noun may be plural: the plural of either spelling names pull
         # requests as surely as the singular does. Its two words are joined
         # by any run of white space, as every other two-word noun here is.
-        # A single typed space missed emphasis on one word, which the page
-        # prints as nothing and this reads as a space, a doubled space, a
-        # tab and a no-break space.
+        # A single typed space missed a doubled space, a tab and a no-break
+        # space. **Or by a hyphen**, as ``review-comment`` already was:
+        # ``pull-request`` is the same noun.
         re.compile(
-            r"(?i)\b(?:PRs?|pull\s+requests?)" + TRACKER_SEPARATOR + tracker_list(r"\d+") + r"\b"
+            r"(?i)\b(?:PRs?|pull(?:\s+|-)requests?)" + TRACKER_SEPARATOR + tracker_list(r"\d+") + r"\b"
         ),
     ),
     (
@@ -450,12 +451,20 @@ REVIEW_HISTORY_PATTERNS = (
     # scanned files, this reports five occurrences in two files and nothing
     # else, because of what is deliberately excluded in front of the hash:
     #
-    #   ``&``  a character reference such as the one for an asterisk
-    #   ``/``  a cross-repository reference, which names its repository
+    #   ``&``  a character reference such as the one for an asterisk, and
+    #          only one: the digits must end in a semicolon. Without it the
+    #          characters print as written, and the hash and number after an
+    #          ampersand are a reference like any other
     #   ``(``  a Markdown link destination -- an anchor to a numbered heading
     #          is renderer navigation, and without this exclusion the archived
     #          design record alone reports 237 of them
     #   a word character, so a suffix inside a longer token is not a match
+    #
+    # **A slash is not on the list.** It stood for a cross-repository
+    # reference, ``owner/repo`` and a hash and a number, but that form puts a
+    # word character in front of its hash, which the last line excludes. A
+    # slash alone names no repository, so ``/`` or ``nonsense/`` in front of a
+    # hash hid a reference and excused nothing.
     #
     # The patterns loop does not stop at the first match, so this spelling is
     # guarded in ``references_in``: a hash with one of the nouns in front of it
@@ -476,7 +485,7 @@ REVIEW_HISTORY_PATTERNS = (
         # the narrowing costs nothing: 48 matches before and 48 after. An
         # anchor to a numbered heading stays excluded, because its hash sits
         # after a closing bracket and a parenthesis together.
-        re.compile(r"(?<![\w&#/])(?<!\]\()#\d+\b"),
+        re.compile(r"(?<![\w#])(?<!&(?=#\d+;))(?<!\]\()#\d+\b"),
     ),
     (
         "an unlinked issue",
@@ -1350,8 +1359,11 @@ MARKDOWN_SUFFIXES = frozenset(
 def split_comments(line: str, in_comment: bool) -> tuple[str, str, bool]:
     """Return a Markdown line's shown text, its comment text, and the state below.
 
-    Each text keeps the line's length with the other one blanked, so a word
-    on either side of a comment stays a separate word. A comment that does not
+    **The shown text leaves each comment out, because a comment prints
+    nothing and takes no width.** Blanked to spaces, a comment inside a word
+    split it, so ``is``, a comment and ``sue`` read as two words while the
+    page prints one. The hidden text keeps the line's length with the shown
+    part blanked, so the words of two comments stay apart. A comment that does not
     close on the line runs on to the next, which is why the state is handed
     back. This reads only the delimiters. A ``<!--`` that the page prints as
     characters -- in a code span, in a fenced block, after a backslash -- is
@@ -1361,14 +1373,16 @@ def split_comments(line: str, in_comment: bool) -> tuple[str, str, bool]:
     a URL the page shows. ``references_in()`` says why.
     <https://spec.commonmark.org/0.31.2/#html-blocks>
     """
-    shown = list(line)
+    shown: list[str] = []
     hidden = [" "] * len(line)
     index = 0
     while index < len(line):
         if not in_comment:
             start = line.find("<!--", index)
             if start == -1:
+                shown.append(line[index:])
                 break
+            shown.append(line[index:start])
             in_comment = True
             index = start
             continue
@@ -1376,7 +1390,6 @@ def split_comments(line: str, in_comment: bool) -> tuple[str, str, bool]:
         stop = len(line) if end == -1 else end + len("-->")
         for position in range(index, stop):
             hidden[position] = line[position]
-            shown[position] = " "
         if end == -1:
             break
         in_comment = False
@@ -1409,8 +1422,13 @@ CONTINUATION_MARKER = re.compile(r"^\s*(?:(?:#:?|//|--|;|>)\s*)*")
 #: backticks and an inline HTML tag, so a noun and a bold number read as the
 #: noun and the number.
 #: One pass, left to right, so an escaped or a decoded delimiter stays a
-#: character, as CommonMark keeps it. A delimiter becomes a space rather than
-#: nothing, so two words it separated stay two words. An underscore between two
+#: character, as CommonMark keeps it. **Markup prints nothing, so it takes no
+#: width.** A delimiter or a tag used to become a space, so bold on the middle
+#: letters of a word split it into three, and the reference it spelled was
+#: missed. Two words that markup separates have a space between them in the
+#: source, and that space stays. Only ``<br>`` prints a break, and it reads as
+#: a space, as a line break does. A block tag between two words joins them
+#: here, which can report more and never less. An underscore between two
 #: letters or digits is part of the word, because CommonMark never opens or
 #: closes emphasis there: ``my_action`` stays one name. A code span's own
 #: content is not kept apart: CommonMark prints a character reference there as
@@ -1420,9 +1438,11 @@ CONTINUATION_MARKER = re.compile(r"^\s*(?:(?:#:?|//|--|;|>)\s*)*")
 RENDERED_TEXT_PATTERN = re.compile(
     r"\\([!-/:-@\[-`{-~])"
     r"|(&(?:#[0-9]{1,7}|#[xX][0-9A-Fa-f]{1,6}|[A-Za-z][A-Za-z0-9]{1,31});)"
-    r"|</?[A-Za-z][A-Za-z0-9-]*(?:\s[^<>]*)?/?>|[*~`]+"
+    r"|(</?[A-Za-z][A-Za-z0-9-]*(?:\s[^<>]*)?/?>)|[*~`]+"
     r"|(?<![^\W_])_+|_+(?![^\W_])"
 )
+#: The one tag that prints a break inside a line.
+LINE_BREAK_TAG = re.compile(r"(?i)<br\b")
 
 
 def rendered_text(text: str) -> str:
@@ -1437,7 +1457,9 @@ def rendered_text(text: str) -> str:
             return match.group(1)
         if match.group(2) is not None:
             return html.unescape(match.group(2))
-        return " "
+        if match.group(3) is not None and LINE_BREAK_TAG.match(match.group(3)):
+            return " "
+        return ""
 
     return RENDERED_TEXT_PATTERN.sub(replace, text)
 
@@ -4117,3 +4139,85 @@ def test_the_workflow_runs_the_scan_while_its_fixtures_exist() -> None:
     assert THIS_MODULE not in condition, condition
     assert "_pytest_compat" not in condition, condition
     assert THIS_MODULE in steps[0]["run"], steps[0]["run"]
+
+
+def test_a_hash_after_a_slash_is_still_a_reference(tmp_path: Path) -> None:
+    """A slash alone names no repository, so it excuses nothing.
+
+    The slash was excluded in front of a hash to spare ``owner/repo`` and a
+    hash and a number, but that form puts a word character there, which is
+    excluded on its own. So ``/`` or ``nonsense/`` in front of a hash hid a
+    reference. A cross-repository reference and an anchor to a numbered
+    heading stay quiet.
+    """
+    hash_number = "#" + "27"
+    for text in ("See /" + hash_number, "See nonsense/" + hash_number):
+        assert _reported(tmp_path, text), text
+    for text in ("See owner/repo" + hash_number, "See [the heading](" + hash_number + "-intro)"):
+        assert not _reported(tmp_path, text), text
+
+
+def test_an_ampersand_excuses_only_a_character_reference(tmp_path: Path) -> None:
+    """A hash and a number after an ampersand are a reference unless a semicolon ends them.
+
+    The ampersand was excluded to spare a character reference such as the one
+    for an asterisk, and it spared every hash after one. Without the
+    semicolon, the characters print as written.
+    """
+    hash_number = "#" + "27"
+    for text, suffix in (("See &" + hash_number + " now", ".md"), ("# See &" + hash_number + " now", ".py")):
+        assert _reported(tmp_path, text, suffix), text
+    assert not _reported(tmp_path, "# a star, &#" + "42; here", ".py")
+
+
+def test_markup_inside_a_word_takes_no_width(tmp_path: Path) -> None:
+    """Markup prints nothing, so a word it sits inside is still one word.
+
+    A delimiter or a tag became a space, so bold on the middle letters of a
+    word split it into three, and the reference it spelled was missed. Only
+    ``<br>`` prints a break, and it reads as a space.
+    """
+    number = " 27"
+    for text in (
+        "See is**su**e" + number,
+        "See is<b></b>sue" + number,
+        "See is~~su~~e" + number,
+        "See is" + chr(96) + "su" + chr(96) + "e" + number,
+        "See issue<br>" + number.strip(),
+    ):
+        assert _reported(tmp_path, text), text
+    assert rendered_text("a**b**c and *d* e") == "abc and d e"
+    assert rendered_text("a<br>b") == "a b"
+
+
+def test_a_comment_inside_a_word_takes_no_width(tmp_path: Path) -> None:
+    """A comment prints nothing, so the word around it is one word on the page.
+
+    The shown text blanked a comment to spaces, and ``is``, a comment and
+    ``sue`` read as two words. The comment's own words are still read.
+    """
+    number = " 27"
+    assert _reported(tmp_path, "See is<!-- x -->sue" + number)
+    assert split_comments("is<!-- x -->sue", False)[0] == "issue"
+    assert _reported(tmp_path, "<!-- see issue" + number + " -->")
+
+
+def test_a_two_word_noun_may_be_joined_by_a_hyphen(tmp_path: Path) -> None:
+    """``pull-request`` and ``commit-hash`` are the nouns they spell with a space.
+
+    Only white space was read between the words of a two-word noun, although
+    ``review-comment`` already took a hyphen. A hash after the hyphenated noun
+    is still reported once, by the noun's own pattern.
+    """
+    number = "27"
+    for text in (
+        "See pull-request " + number,
+        "See pull-requests " + "22 and 23",
+        "Landed in commit-hash dead" + "bee",
+        "Landed in commit-id dead" + "bee",
+    ):
+        assert _reported(tmp_path, text), text
+    assert not _reported(tmp_path, "See pull-request " + number + " https://github.com/o/r/pull/27")
+    sample = tmp_path / "doc.md"
+    sample.write_text("See pull-request #" + number + chr(10), encoding="utf-8")
+    assert len(references_in(sample, tmp_path)) == 1

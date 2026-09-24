@@ -5735,22 +5735,29 @@ def resolve_paths(path_arguments: Sequence[str], root: Path) -> list[tuple[Path,
     # the default scan -- reads the default trees, so a link in them refuses
     # the run before any glob follows it. A file named on the command line is
     # read alone and needs no walk.
+    #
+    # **Only the trees the scan reads are walked.** Every file a directory
+    # argument can select lies in one of ``DEFAULT_WALK_ROOTS``, and those are
+    # walked in full. Walking the argument's own subtree as well walked the
+    # whole repository for ``.``, and on Linux npm writes ``node_modules/.bin``
+    # as symbolic links, so CI refused the run over files it never scores,
+    # while a Windows checkout, whose ``.bin`` holds command shims, passed. A
+    # link at or above a directory argument still refuses the run.
     walked = [
         Path(os.path.normpath(root / argument))
         for argument in path_arguments
     ]
     if not path_arguments or any(candidate.is_dir() for candidate in walked):
-        trees = [root / base for base in DEFAULT_WALK_ROOTS] + [
-            candidate
-            for candidate in walked
-            if (candidate.is_dir() or path_is_junction(candidate))
-            and candidate.is_relative_to(root)
-        ]
         refused: list[str] = []
-        for tree in trees:
+        for tree in (root / base for base in DEFAULT_WALK_ROOTS):
             # A link at or above the tree is refused before the tree is
             # listed, so nothing behind it is read.
             refused += linked_ancestor(tree, root) or linked_entries(tree, root)
+        for candidate in walked:
+            if (candidate.is_dir() or path_is_junction(candidate)) and candidate.is_relative_to(
+                root
+            ):
+                refused += linked_ancestor(candidate, root)
         if refused:
             raise LinkRefusal(list(dict.fromkeys(refused)))
     if not path_arguments:
@@ -5773,11 +5780,11 @@ def resolve_paths(path_arguments: Sequence[str], root: Path) -> list[tuple[Path,
                 # that one file and is still scored.
                 if in_scope is None:
                     in_scope = default_path_set(root)
-                found = [
-                    entry
-                    for entry in sorted(candidate.rglob("*.md"))
-                    if not entry.is_symlink() and entry.resolve() in in_scope
-                ]
+                # Selected from the default corpus by place, not found by a
+                # glob under the argument, so nothing outside the walked trees
+                # is listed at all.
+                base = candidate.resolve()
+                found = sorted(entry for entry in in_scope if entry.is_relative_to(base))
                 if not found:
                     print(
                         f"{argument}: no child-facing Markdown found in this "
