@@ -42,7 +42,7 @@ Every trip is made of cost categories. You're learning how trip money is split u
    - Band is **per day for the family**? Add your **meals for everyone per day** (meals per person x your travelers) to your **hotel for one night, all your rooms** (hotel per night x rooms). Then check that daily total against the band.
    - Band is a **hotel tier**? Check your **hotel-per-night** pick against that tier. Circle **fits** or **too high** for the part you checked.
 
-**Remember:** your first guesses will probably be off. Everyone's are, even grown-ups'. Being off is normal. The point is to practice estimating and checking. Each check makes your next guess a little closer. (See your [planner mindset card](../../student_guide/planner_mindset.md).)
+**Remember:** your first guesses will probably be off. Everyone's are, even grown-ups'. Being off is normal. The point is to practice estimating and checking. Every time you guess and then check, your guessing gets a little better. (See your [planner mindset card](../../student_guide/planner_mindset.md).)
 
 ## Workspace
 

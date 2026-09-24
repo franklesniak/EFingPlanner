@@ -35,7 +35,7 @@ Name the one specific gap, size the redo to one session, frame it as the checkpo
 > "You chose the aquarium over a third temple. That's your call, and we'll make it work."
 
 <!-- density-exempt: X, not Y -- the owned-decision rule (only with a reason given to the child, never silently) is the spec's multi-adult guarantee (specification line 518) -->
-You set the guardrails (budget, approved cities, pacing, safety, availability), and inside them your child decides. In a multi-adult party, group agreement can sometimes reshape a conditional pick -- but only with a reason given to the child, never silently.
+You set the guardrails (budget, approved cities, pacing, safety, availability), and the calls your child makes inside them stand. In a multi-adult party, group agreement can sometimes reshape a conditional pick -- but only with a reason given to the child, never silently.
 
 **Honoring the one unconditional pick** (a firmer, smaller promise):
 > "Your one special pick was the aquarium -- that one's locked in. We'll only change it if it busts the budget, can't be booked, or isn't safe or doable for everyone, and we'll tell you which."

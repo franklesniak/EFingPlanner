@@ -4,7 +4,7 @@
 
 This page helps you see how trip money is split up, and whether the parts *you* choose fit your family's budget band. The grown-ups own the numbers that get booked. Rounding is always allowed, and so is a calculator. A grown-up may do the math while you do the thinking.
 
-All numbers here are estimates you look up and check again. What day did you look each one up? Write that date beside it.
+All numbers here are estimates you look up and check again. Beside each number you look up, write the day you looked it up.
 
 **The parts your choices drive.** For **First Taste**, fill in **Hotel** and **Food**. That matches Session 33. Did your Session 21 recommendation keep **two cities**? Then estimate a hotel for **each** one. Fill in the second-city hotel row too, since your plan pays for both. The other rows are marked *(later)*: they belong to the fuller Core path, so leave them blank for the pilot.
 

@@ -36,7 +36,7 @@ This page is distinct from both of those. It defines no travel words and no dest
 - **Stop Point** -- the line that says exactly when the child is done, so "done" is a fact rather than a feeling.
 - **[Carry-over tag](design_principles.md)** -- the short callout that names a planning move the child just used and asks where else it would work. It appears only on the session that first introduces that move.
 - **Checkpoint** -- a session where an adult reviews the work before the project moves on.
-- **[Trip-Basics card](../templates/trip_basics.md)** -- the family-owned card holding the few facts about this family and this trip. Each session sends the child to it for those facts.
+- **[Trip-Basics card](../templates/trip_basics.md)** -- the family-owned card holding the few facts about this family and this trip. A session that needs one of those facts sends the child to this card.
 - **[Budget band](../templates/current_family_travel_assumptions.md)** -- a rough not-to-exceed signal in a form a child can use: per person per day, per day for the family, or a hotel tier. The full trip total stays an adult number.
 - **[Rough trip shape](../templates/current_family_travel_assumptions.md)** -- the adults' provisional call on the shape of the trip: in and out of the same place, in one place and out of another, or one base to travel from. It also names the likely arrival and departure places.
 - **Planning assumption** -- a starting point the adults set that can still change, recorded so the child is planning against something real.

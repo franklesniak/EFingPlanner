@@ -17,7 +17,7 @@ Different kinds of source are good at different jobs. None of them is good at ev
 - **Official railway and transit sources.** Where a destination has them, the operator's own page beats any summary of it.
 - **Guidebooks.** Excellent for orientation. Check the publication year, and verify anything current against an official source.
 - **Library books.** Free, and often older than the bookshop edition, so the year check matters more.
-- **Travel websites.** Useful for ideas and for what a place is like, so check any rule it states against an official source.
+- **Travel websites.** Useful for ideas and for what a place is like. Check any rule a travel website states against an official source.
 - **Blogs.** One person's trip. Good for the feel of somewhere, weak on anything that changes.
 - **Influencers.** Often paid, often out of date, and always selling something. Treat as a tip to check, never as an answer.
 - **Video and travel vloggers.** Often the first place a child looks, so it gets its own rules: turn autoplay off, set a timer, and treat every fact in the video as unchecked until an official source agrees. Comments and recommended videos are not part of the research.

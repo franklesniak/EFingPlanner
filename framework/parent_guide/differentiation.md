@@ -41,7 +41,7 @@ The opposite tail also needs a named path -- a bright, bored child abandons a pr
 - **Skip the When I'm Stuck card** -- a confident planner often won't need it. The Finish and Quality Check still closes every session, because it is where they check the artifact, the Stop Point, their sources and the tracker.
 - **Reach the lighter template fast.** The trigger is two sessions done without leaning on the written Steps or the When I'm Stuck card.
 - **Make the optional and harder versions their main path** ("challenge by choice") -- more cities, deeper research, the open weighted-scoring version.
-- **Keep identical:** the guardrails (budget, approved cities, pacing, safety, availability), the always-kept session anchors, and every safety/privacy rule. The mode changes pace and depth, and every rule above still applies.
+- **Keep identical:** the guardrails (budget, approved cities, pacing, safety, availability), the always-kept session anchors, and every safety/privacy rule. The mode changes only pace and depth.
 
 ## Where to go next
 

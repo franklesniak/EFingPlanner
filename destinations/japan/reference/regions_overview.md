@@ -23,7 +23,7 @@ Japan is long from north to south. It stretches roughly 3,000 kilometers (about 
 
 That length is why the weather differs so much by region. In one week, Hokkaido can be under snow while Okinawa is warm.
 
-Length costs time, too. Travel time between regions is the thing to plan around. It's easy to underestimate on a map. How long does the trip take? Look it up.
+Length costs time, too. Travel time between regions is the thing to plan around. It's easy to underestimate on a map. How long is the ride from one region to the next? Look it up.
 
 So a first trip can't include everything. Picking a few regions and leaving the rest for another trip is a normal, good plan.
 

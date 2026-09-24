@@ -208,9 +208,20 @@ def test_a_sentence_keeps_its_closing_marks(text: str, first: str) -> None:
     assert cx.split_sentences(text)[0] == first
 
 
-def test_a_key_keeps_the_sentence_as_written() -> None:
+def test_a_key_is_the_sentence_as_the_page_prints_it() -> None:
     (found,) = candidates("It is **a map, not a list.** Read it.")
-    assert found.key == "device|It is **a map, not a list.**|1"
+    assert found.key == "device|It is a map, not a list.|1"
+
+
+def test_markup_that_prints_the_same_words_keeps_the_key() -> None:
+    spellings = [
+        "It is a map, not a list.",
+        "It is **a map**, not a list.",
+        "It is [a map](map.md), not a list.",
+        "It is [a map][m], not a list.\n\n[m]: map.md",
+        "It is a map, not a&nbsp;list.",
+    ]
+    assert {c.key for text in spellings for c in candidates(text)} == {"device|It is a map, not a list.|1"}
 
 
 @pytest.mark.parametrize("sentence", [
@@ -219,12 +230,12 @@ def test_a_key_keeps_the_sentence_as_written() -> None:
     "It is a draft, _not_ a decision.",
 ])
 def test_underscore_emphasis_does_not_hide_a_contrast(sentence: str) -> None:
-    assert kinds(sentence) == [("device", sentence)]
+    assert kinds(sentence) == [("device", "It is a draft, not a decision.")]
 
 
 def test_underscore_emphasis_does_not_hide_a_negation() -> None:
     found = kinds("You move a block. You _don't_ start over.")
-    assert ("split", "You move a block. → You _don't_ start over.") in found
+    assert ("split", "You move a block. → You don't start over.") in found
 
 
 def test_an_underscore_inside_a_word_is_not_emphasis() -> None:
@@ -255,26 +266,36 @@ def test_a_comment_over_several_lines_does_not_part_two_paragraphs() -> None:
     assert ("banned", "It's not a toy. → It's a tool.") in kinds(text)
 
 
-@pytest.mark.parametrize("sentence", [
-    "Say \\`a map, not a list\\` aloud.",
-    "Say `a map, not a list`` aloud.",
-    "Say ``a map, not a list` aloud.",
+@pytest.mark.parametrize(("sentence", "printed"), [
+    ("Say \\`a map, not a list\\` aloud.", "Say `a map, not a list` aloud."),
+    ("Say `a map, not a list`` aloud.", "Say `a map, not a list`` aloud."),
+    ("Say ``a map, not a list` aloud.", "Say ``a map, not a list` aloud."),
 ])
-def test_backticks_that_open_no_code_span_leave_the_prose(sentence: str) -> None:
-    assert kinds(sentence) == [("device", sentence)]
+def test_backticks_that_open_no_code_span_leave_the_prose(sentence: str, printed: str) -> None:
+    assert kinds(sentence) == [("device", printed)]
 
 
 def test_a_code_span_closes_only_on_a_run_of_its_own_length() -> None:
     assert kinds("Say ``a map, not `a` list`` aloud.") == []
 
 
-@pytest.mark.parametrize("sentence", [
-    "It is a map, [not](other.md) a list.",
-    "Choose the map rather [than](other.md) the list.",
-    "It is a map, [not][ref] a list.",
+@pytest.mark.parametrize(("page", "printed"), [
+    ("It is a map, [not](other.md) a list.", "It is a map, not a list."),
+    ("Choose the map rather [than](other.md) the list.", "Choose the map rather than the list."),
+    ("It is a map, [not][ref] a list.\n\n[ref]: other.md", "It is a map, not a list."),
+    ("It is a map, [not][] a list.\n\n[not]: other.md", "It is a map, not a list."),
 ])
-def test_a_link_label_is_read_as_prose(sentence: str) -> None:
-    assert kinds(sentence) == [("device", sentence)]
+def test_a_link_label_is_read_as_prose(page: str, printed: str) -> None:
+    assert kinds(page) == [("device", printed)]
+
+
+@pytest.mark.parametrize(("page", "printed"), [
+    ("It is a map, [not] a list.\n\n[not]: other.md", "It is a map, not a list."),
+    ("It is a map, [Not] a list.\n\n[not]: other.md", "It is a map, Not a list."),
+])
+def test_a_shortcut_reference_link_is_read_as_its_label(page: str, printed: str) -> None:
+    # CommonMark matches a reference label without regard to case.
+    assert kinds(page) == [("device", printed)]
 
 
 @pytest.mark.parametrize("sentence", [
@@ -354,13 +375,43 @@ def test_an_abbreviation_that_leads_on_stays_in_its_sentence() -> None:
     assert cx.split_sentences("Pick a city, e.g. Kyoto, not a region.") == ["Pick a city, e.g. Kyoto, not a region."]
 
 
-@pytest.mark.parametrize("sentence", [
-    "Choose the map rather&nbsp;than the list.",
-    "Choose the map&#44; not the list.",
-    "Choose the map&comma; not the list.",
+@pytest.mark.parametrize(("sentence", "printed"), [
+    ("Choose the map rather&nbsp;than the list.", "Choose the map rather than the list."),
+    ("Choose the map&#44; not the list.", "Choose the map, not the list."),
+    ("Choose the map&comma; not the list.", "Choose the map, not the list."),
 ])
-def test_a_character_reference_is_read_as_its_character(sentence: str) -> None:
-    assert kinds(sentence) == [("device", sentence)]
+def test_a_character_reference_is_read_as_its_character(sentence: str, printed: str) -> None:
+    assert kinds(sentence) == [("device", printed)]
+
+
+@pytest.mark.parametrize("page", [
+    "Choose the map rather\\\nthan the list.",
+    "Choose the map rather  \nthan the list.",
+])
+def test_a_hard_line_break_is_read_as_a_line_break(page: str) -> None:
+    found = candidates(page)
+    assert [(c.kind, c.text, c.lineno) for c in found] == [("device", "Choose the map rather than the list.", 1)]
+
+
+@pytest.mark.parametrize(("page", "printed"), [
+    ("It is a map, \\*not\\* a list.", "It is a map, *not* a list."),
+    ("It is a map\\, not a list.", "It is a map, not a list."),
+    ("It is a map, <span>not</span> a list.", "It is a map, not a list."),
+    ("It is a map, <!-- note --> not a list.", "It is a map, not a list."),
+])
+def test_an_escape_or_a_tag_is_read_as_the_page_prints_it(page: str, printed: str) -> None:
+    assert kinds(page) == [("device", printed)]
+
+
+def test_a_sentence_keeps_its_line_after_markup_over_a_line_break() -> None:
+    page = "\n".join([
+        "Type `a",
+        "b` now. See [the guide](guide.md",
+        '"Guide") here. Look at ![a map](map.png',
+        '"Map") there.',
+        "It is a map, not a list.",
+    ])
+    assert [(c.text, c.lineno) for c in candidates(page)] == [("It is a map, not a list.", 5)]
 
 
 def test_the_run_stops_when_the_markdown_reader_cannot_start(tmp_path: Path, capsys: Any,
@@ -372,7 +423,12 @@ def test_the_run_stops_when_the_markdown_reader_cannot_start(tmp_path: Path, cap
     assert "Node.js" in capsys.readouterr().err
 
 
-def test_the_reader_refuses_an_answer_it_cannot_use() -> None:
+@pytest.mark.parametrize(("answer", "message"), [
+    ('{"blocks": "no"}', "unexpected answer"),
+    # The helper's own error is the message, so the report says what went wrong.
+    ('{"error": "printed text has 1 lines for 2 source lines"}', r"^x-not-y-blocks\.js: printed text has 1 lines"),
+])
+def test_the_reader_refuses_an_answer_it_cannot_use(answer: str, message: str) -> None:
     class Pipe:
         def write(self, text: str) -> None:
             pass
@@ -381,7 +437,7 @@ def test_the_reader_refuses_an_answer_it_cannot_use() -> None:
             pass
 
         def readline(self) -> str:
-            return '{"blocks": "no"}\n'
+            return answer + "\n"
 
     class Process:
         stdin = Pipe()
@@ -392,8 +448,25 @@ def test_the_reader_refuses_an_answer_it_cannot_use() -> None:
 
     reader = cx.BlockReader()
     reader.process = cast(Any, Process())
-    with pytest.raises(cx.ReadError):
+    with pytest.raises(cx.ReadError, match=message):
         reader("Text.")
+
+
+def test_a_page_the_reader_cannot_read_stops_the_run_and_is_named(tmp_path: Path, capsys: Any,
+                                                                  monkeypatch: Any) -> None:
+    class Refuse:
+        def __call__(self, text: str) -> list:
+            raise cx.ReadError("x-not-y-blocks.js: printed text has 1 lines for 2 source lines")
+
+        def close(self) -> None:
+            pass
+
+    write(tmp_path, "framework/templates/a.md", "## A\n\nIt is a map, not a list.\n")
+    monkeypatch.setattr(cx, "read_blocks", Refuse())
+    assert cx.main([str(tmp_path)]) == 3
+    err = capsys.readouterr().err
+    assert "framework/templates/a.md: x-not-y-blocks.js: printed text has 1 lines" in err
+    assert "npm ci" not in err
 
 
 def test_a_marker_over_two_lines_is_read() -> None:
@@ -415,6 +488,10 @@ def test_a_pair_does_not_reach_across_the_edge_of_a_block_quote() -> None:
     ('> "Choose the map, not the list."', "|quotation block quote"),
     ('> "Look first. Choose the map, not the list."', "|quotation block quote"),
     ("> Choose the map, not the list.\n>\n> — A parent", "|quotation block quote"),
+    ("> 'Choose the map, not the list.'", "|quotation block quote"),
+    ("> ‘Choose the map, not the list.’", "|quotation block quote"),
+    ("> **‘Choose the map, not the list.’**", "|quotation block quote"),
+    ("> Choose the map, not the list, for the kids'", "|block quote"),
 ])
 def test_a_key_carries_the_quotation_context(text: str, suffix: str) -> None:
     (found,) = candidates(text)

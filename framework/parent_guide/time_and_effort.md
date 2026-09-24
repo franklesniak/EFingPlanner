@@ -34,7 +34,7 @@ If you are stretched, or you share your child's executive-function challenges, y
 
 - Run First Taste (or the Core Finish Line) only.
 - Replace per-session co-working with a quick after-the-session glance -- except Sessions 05 and 08, which stay hands-on; 08 is the open-web research session.
-- Use the [coaching scripts](coaching_and_support.md) as-is; they are written for exactly these moments.
+- Use the [coaching scripts](coaching_and_support.md) as-is, so you have nothing to improvise.
 - Default to a single growing folder, and read sessions aloud as needed.
 - Lean on the strong defaults in the quick-start so setup is minutes.
 - Hand delegable pieces (the family interview or poll, a checkpoint co-review) to another traveling adult, while one named adult stays accountable for safety and privacy.

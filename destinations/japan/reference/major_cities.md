@@ -37,4 +37,4 @@ Both are just starting points to compare. Weigh each one against your family's s
 
 In Japan you take your shoes off at the door of many homes. You do it at some restaurants too. A small nod or bow is a normal, friendly hello. People do not expect a visitor to get it all right.
 
-Some private areas limit photos. Parts of Kyoto's Gion are one example. Watch for posted signs, and do what they say. Treat all of this as things to check and be kind about. Which one would you like to try first?
+Some private areas limit photos. Parts of Kyoto's Gion are one example. Watch for posted signs, and do what they say. Treat all of this as things to check and be kind about. It's fine to learn them as you go.

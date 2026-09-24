@@ -20,26 +20,30 @@ Usage::
 How it counts
 -------------
 The counting rules are the style law's ("How to count any density device").
-The page's blocks come from markdown-it, the CommonMark parser the Last
-Updated check and the nested-Markdown lint use: only paragraphs are prose.
-Headings, fenced and indented code, tables, thematic breaks, comments and link
-reference definitions are not, wherever they sit, in a list item or a block
-quote included. Block quotes are read like prose; a quotation block quote,
-such as a coaching script, is judged "no". A paragraph is joined before it is
-split into sentences, because Markdown renders a soft line break as a space,
-and its code spans and comments are removed after the join, because either can
-cross a line break. A code span follows CommonMark's delimiter rules: an
-escaped backtick or a closing run of another length opens or closes nothing.
-The patterns read the words a reader sees: no emphasis (``*`` or ``_``), a
-link's label without its destination, no image, and each character reference
-as its character. The candidate keeps the sentence as written, closing
-quotation marks, emphasis and links included. A comment between two
-paragraphs does not part them. A release (``You do not have to ...``) is keyed
-with the sentence after it, which decides whether it counts. Text above a
-page's first ``##`` heading is not a ``##`` section, so only the file cap
-reaches it. Each ``##`` heading starts its own section, even when two share a
-title. A child session's "For parents" strip and ``## Parent Notes`` are
-parent-facing regions, but the file cap follows the file's own register.
+Each page is read by markdown-it, the CommonMark parser the Last Updated check
+and the nested-Markdown lint use, blocks and inline text alike. Only
+paragraphs are prose. Headings, fenced and indented code, tables, thematic
+breaks, comments and link reference definitions are not, wherever they sit, in
+a list item or a block quote included. Block quotes are read like prose; a
+quotation block quote, such as a coaching script, is judged "no". A block
+quote is a quotation when quotation marks, double or single, enclose it, or
+when it carries a named attribution line.
+
+The tests read the text each paragraph prints, as markdown-it gives it: no
+emphasis marks, a link's label without its destination (an inline link or a
+reference link of any kind), no image, comment or HTML tag, each character
+reference and backslash escape as its character, and each code span as
+``‹code›``, because code is not prose. A line break, soft or hard, is a line
+break. The patterns also skip a literal ``*`` and a run of ``_`` at a word's
+edge, such as a blank to fill in. A paragraph is joined before it is split
+into sentences, because Markdown renders a soft line break as a space. The
+candidate, and its key, is the sentence as the page prints it. A comment
+between two paragraphs does not part them. A release (``You do not have to
+...``) is keyed with the sentence after it, which decides whether it counts.
+Text above a page's first ``##`` heading is not a ``##`` section, so only the
+file cap reaches it. Each ``##`` heading starts its own section, even when two
+share a title. A child session's "For parents" strip and ``## Parent Notes``
+are parent-facing regions, but the file cap follows the file's own register.
 
 A ``<!-- density-exempt: X, not Y -- <reason> -->`` marker covers the block
 directly below it: one paragraph, one whole list (a loose list included), one
@@ -59,9 +63,9 @@ add a judgment for each.
 The data files are strict JSON with 2-space indentation and no comment keys;
 this docstring documents them. ``x-not-y-judgments.json`` maps each page path
 to its judgments. A judgment's key is ``<kind>|<sentence text>|<occurrence>``,
-with ``|block quote`` or ``|quotation block quote`` added for a sentence inside
-one, so a sentence that moves into or out of a quotation is judged again. Each
-entry holds ``line`` (where the sentence stood when last checked; for reading
+where the text is what the page prints, with ``|block quote`` or ``|quotation
+block quote`` added for a sentence inside one, so a sentence that moves into or
+out of a quotation is judged again. Each entry holds ``line`` (where the sentence stood when last checked; for reading
 only), ``judgment`` and ``reason``. The judgment is ``device`` (a true `X, not
 Y` instance), ``split`` (a split negation), ``banned`` (the banned shape) or
 ``no``. Pages are sorted by path, and a page's entries follow the page.
@@ -81,11 +85,12 @@ is UNDETERMINED.
 Exit code: 0 when every page is within its caps or marked exempt, with no
 banned shape, no undetermined register, no unjudged candidate and no marker
 without a reason; 1 otherwise; 2 when REPO_ROOT has no ``framework/``
-directory; 3 when the Markdown reader cannot run.
+directory; 3 when the Markdown reader cannot run or cannot read a page, which
+the report names.
 
 The script is a tool, not a gate: no workflow or hook runs it over the pages.
-It reads each page's blocks with markdown-it, through ``x-not-y-blocks.js``
-beside it and one Node process for the whole run, so it needs Node.js and the
+It reads each page with markdown-it, through ``x-not-y-blocks.js`` beside it
+and one Node process for the whole run, so it needs Node.js and the
 repository's ``node_modules`` (``npm ci``), as the Last Updated check does.
 """
 
@@ -93,7 +98,6 @@ from __future__ import annotations
 
 import argparse
 import atexit
-import html
 import json
 import re
 import subprocess
@@ -127,12 +131,6 @@ PREAMBLE = "(preamble)"
 # Markdown structure
 # ---------------------------------------------------------------------------
 
-HTML_COMMENT_RE = re.compile(r"<!--.*?-->", re.DOTALL)
-#: A code span, as CommonMark reads one: a backtick run that no backslash
-#: escapes, closed by a run of exactly the same length (a longer or shorter
-#: run closes nothing). It may cross a line break inside its paragraph. The
-#: readability check uses the same guards.
-CODE_SPAN_RE = re.compile(r"(?<!`)(?<!\\)(`+)(?!`).*?(?<!`)\1(?!`)", re.DOTALL)
 #: A task-list box at the start of a list item: `[ ]` or `[x]`.
 TASK_BOX_RE = re.compile(r"^\[[ xX]\]\s+")
 #: An HTML block that holds only comments.
@@ -233,10 +231,11 @@ SUBORDINATE_RE = re.compile(
     r"|once|before|after|as|where|wherever|whether|even)\b",
     re.IGNORECASE,
 )
-#: A block quote is a quotation when quotation marks enclose it, or when it
-#: carries a named attribution line such as `— A parent`.
-QUOTE_OPEN_RE = re.compile(r"^[*_]*[\"“]")
-QUOTE_CLOSE_RE = re.compile(r"[\"”][*_]*$")
+#: A block quote is a quotation when quotation marks enclose it, double or
+#: single, straight or curly, or when it carries a named attribution line such
+#: as `— A parent`.
+QUOTE_OPEN_RE = re.compile(r"^[*_]*[\"“'‘]")
+QUOTE_CLOSE_RE = re.compile(r"[\"”'’][*_]*$")
 ATTRIBUTION_RE = re.compile(r"^[*_]*(?:—|―|--)\s*\w")
 
 #: Closing quotation marks, brackets and emphasis that can follow a sentence's
@@ -252,17 +251,9 @@ SENTENCE_SPLIT_RE = re.compile(
 #: `etc.`, `a.m.` and `p.m.` can end a sentence, so a capital after them starts
 #: a new one: `It isn't at 5 p.m. It's at 6 p.m.` is two sentences.
 ABBREV_RE = re.compile(r"\b(?:e\.g|i\.e|vs|Dr|Mr|Mrs|Ms|St|No)\.$")
-#: Emphasis markers: every `*`, and a run of `_` at a word's edge. An
-#: underscore inside a word is not emphasis in Markdown, so it stays.
+#: A literal `*`, or a run of `_` at a word's edge, left in printed text: an
+#: escaped `\*` or a blank to fill in. An underscore inside a word stays.
 EMPHASIS_RE = re.compile(r"\*+|(?<![A-Za-z0-9])_+|_+(?![A-Za-z0-9])")
-#: A link destination and its optional title: `(other.md)` or `(other.md "Title")`.
-LINK_TARGET = r"\((?:[^()\s]|\([^()]*\))*(?:\s+(?:\"[^\"]*\"|'[^']*'))?\s*\)"
-#: A link label, which may hold one level of brackets.
-LINK_LABEL = r"\[(?P<label>(?:[^\[\]]|\[[^\]]*\])*)\]"
-#: An image shows no words, so the tests skip it.
-IMAGE_RE = re.compile("!" + LINK_LABEL + "(?:" + LINK_TARGET + r"|\[[^\]]*\])")
-#: An inline link, or a full or collapsed reference link: the page shows only its label.
-LINK_RE = re.compile(LINK_LABEL + "(?:" + LINK_TARGET + r"|\[[^\]]*\])")
 ARROW = " → "
 
 
@@ -272,16 +263,13 @@ def normalize_space(text: str) -> str:
 
 
 def plain(text: str) -> str:
-    """Return the words a reader sees: link labels without their destinations, no images,
-    no emphasis markers, and character references as the characters they print.
+    """Return the words the patterns read in printed text.
 
-    None of these changes what a sentence says. `&nbsp;` prints a space and `&#44;`
-    a comma, so each is read as one before the patterns run.
+    markdown-it has already removed the markup. A no-break space reads as a
+    space, and a literal `*` or a run of `_` at a word's edge reads as nothing,
+    so `a map, \\*not\\* a list`, printed as `a map, *not* a list`, is still read.
     """
-    text = IMAGE_RE.sub("", text)
-    text = LINK_RE.sub(lambda m: m.group("label"), text)
-    text = html.unescape(text).replace("\u00a0", " ")
-    return EMPHASIS_RE.sub("", text)
+    return EMPHASIS_RE.sub("", text.replace("\u00a0", " "))
 
 
 def sentence_spans(text: str) -> list[tuple[int, int]]:
@@ -330,11 +318,9 @@ def opening_words(sentence: str) -> list[str]:
 
 @dataclass
 class ProseLine:
-    """One prose line of a paragraph, as markdown-it reads it: without its block
-    quote prefix, list marker and indentation.
-
-    Code spans and inline comments stay in the text: one can cross a line break,
-    so they are removed per paragraph, in `paragraph_text()`.
+    """One line of a paragraph, as markdown-it prints it: the text its source
+    line shows, without the markup, the block quote prefix, the list marker and
+    the indentation.
     """
 
     lineno: int
@@ -412,7 +398,15 @@ class FileReport:
 
 
 class ReadError(Exception):
-    """The Markdown reader could not run, or gave an answer the recount cannot use."""
+    """The Markdown reader could not run, or gave an answer the recount cannot use.
+
+    `setup` is true when the reader could not start or stopped, which a missing
+    Node.js or `node_modules` causes.
+    """
+
+    def __init__(self, message: str, setup: bool = False) -> None:
+        super().__init__(message)
+        self.setup = setup
 
 
 class BlockReader:
@@ -437,20 +431,23 @@ class BlockReader:
                 self.process = subprocess.Popen([NODE, str(BLOCKS_HELPER)], stdin=subprocess.PIPE,
                                                 stdout=subprocess.PIPE, text=True, encoding="utf-8")
             except OSError as exc:
-                raise ReadError(f"cannot start {NODE} {BLOCKS_HELPER.name}: {exc}") from exc
+                raise ReadError(f"cannot start {NODE} {BLOCKS_HELPER.name}: {exc}", setup=True) from exc
         assert self.process.stdin is not None and self.process.stdout is not None
         try:
             self.process.stdin.write(json.dumps({"text": text}, ensure_ascii=True) + "\n")
             self.process.stdin.flush()
             line = self.process.stdout.readline()
         except OSError as exc:
-            raise ReadError(f"{BLOCKS_HELPER.name}: {exc}") from exc
+            raise ReadError(f"{BLOCKS_HELPER.name}: {exc}", setup=True) from exc
         if not line:
-            raise ReadError(f"{BLOCKS_HELPER.name} stopped without an answer (exit status {self.process.poll()})")
+            raise ReadError(f"{BLOCKS_HELPER.name} stopped without an answer (exit status {self.process.poll()})",
+                            setup=True)
         try:
             answer = json.loads(line)
         except ValueError as exc:
             raise ReadError(f"{BLOCKS_HELPER.name} gave an answer that is not JSON: {exc}") from exc
+        if isinstance(answer, dict) and "error" in answer:
+            raise ReadError(f"{BLOCKS_HELPER.name}: {answer['error']}")
         blocks = answer.get("blocks") if isinstance(answer, dict) else None
         if not (isinstance(blocks, list) and all(isinstance(b, dict) and {"type", "start", "end"} <= set(b)
                                                  for b in blocks)):
@@ -487,10 +484,10 @@ def parse_marker(lineno: int, body: str) -> Marker:
 def parse_text(text: str) -> Page:
     """Parse one page into prose lines, markers, sections and headings.
 
-    The block structure comes from markdown-it, through `x-not-y-blocks.js`:
-    which lines are paragraphs, headings, fences, tables and comments, and which
-    paragraphs sit in a list item or a block quote. Each paragraph keeps its
-    inline source, one line per source line, for the sentence tests.
+    The page is read by markdown-it, through `x-not-y-blocks.js`: which lines
+    are paragraphs, headings, fences, tables and comments, which paragraphs sit
+    in a list item or a block quote, and the text each paragraph and heading
+    prints, one line per source line, for the sentence tests.
     """
     blocks = read_blocks(text)
     source = text.split("\n")
@@ -525,7 +522,7 @@ def parse_text(text: str) -> Page:
             continue
         if kind == "heading":
             level = block["level"]
-            heading = normalize_space(block.get("content") or "")
+            heading = normalize_space(block.get("text") or "")
             heading_lines[block["start"]] = (level, heading)
             if level <= 2:
                 section = heading if level == 2 else PREAMBLE
@@ -544,10 +541,11 @@ def parse_text(text: str) -> Page:
         if kind != "paragraph":
             follows = False
             continue
-        lines = (block.get("content") or "").split("\n")
+        lines = (block.get("text") or "").split("\n")
         if block.get("item"):
             lines[0] = TASK_BOX_RE.sub("", lines[0], count=1)
-        elif PARENT_STRIP_RE.match(lines[0]):
+        elif PARENT_STRIP_RE.match(block.get("content") or ""):
+            # The strip is known by its bold label, so the source is read here.
             region = "for-parents strip"
         paragraph += 1
         for offset, line in enumerate(lines):
@@ -632,19 +630,8 @@ def adjacent(a: list[ProseLine], b: list[ProseLine], raw_lines: list[str] | None
 
 
 def paragraph_text(para: list[ProseLine]) -> str:
-    """Return a paragraph's text, one source line per text line, without code spans or comments.
-
-    A code span or a comment can cross a line break, so both are removed from
-    the joined paragraph. Each keeps the line breaks it held, so the text's
-    line count still matches the paragraph's source lines.
-    """
-    def keeping_breaks(replacement: str):
-        return lambda m: replacement + "\n" * m.group(0).count("\n")
-
-    text = "\n".join(pl.text for pl in para)
-    # Code spans first: a comment shown inside a code span is literal text.
-    text = CODE_SPAN_RE.sub(keeping_breaks(" ‹code› "), text)
-    return HTML_COMMENT_RE.sub(keeping_breaks(""), text)
+    """Return the text a paragraph prints, one source line per text line."""
+    return "\n".join(pl.text for pl in para)
 
 
 def paragraph_sentences(para: list[ProseLine]) -> list[tuple[str, ProseLine]]:
@@ -764,8 +751,8 @@ def find_candidates(rel: str, prose: list[ProseLine],
             g += 1
             prev = sents[idx - 1][0] if idx > 0 else before
             nxt = sents[idx + 1][0] if idx + 1 < len(sents) else after
-            # Every test reads the text without emphasis, which never changes
-            # what a sentence says; the candidate keeps the text as written.
+            # The tests read the words (see `plain()`); the candidate keeps the
+            # sentence as the page prints it.
             ps = plain(s)
             pprev = plain(prev) if prev is not None else None
             pnxt = plain(nxt) if nxt is not None else None
@@ -884,7 +871,10 @@ def scan(root: Path, judgments: dict, registers: dict) -> list[FileReport]:
     for path in page_paths(root):
         rel = path.relative_to(root).as_posix()
         text = path.read_text(encoding="utf-8")
-        page = parse_text(text)
+        try:
+            page = parse_text(text)
+        except ReadError as exc:
+            raise ReadError(f"{rel}: {exc}", exc.setup) from exc
         register, basis = resolve_register(rel, page.audience, registers)
         raw_lines = text.split("\n")
         rep = FileReport(rel, register, basis, page.sections, [], page.markers)
@@ -1103,8 +1093,9 @@ def main(argv: list[str] | None = None) -> int:
     try:
         reports = scan(root, load_json(args.judgments), load_json(args.registers))
     except ReadError as exc:
-        print(f"error: cannot read Markdown: {exc}. The recount reads pages with markdown-it, so it needs "
-              "Node.js and the repository's node_modules (run `npm ci`).", file=sys.stderr)
+        hint = (" The recount reads pages with markdown-it, so it needs Node.js and the repository's node_modules"
+                " (run `npm ci`)." if exc.setup else "")
+        print(f"error: cannot read Markdown: {exc}.{hint}", file=sys.stderr)
         return 3
     finally:
         read_blocks.close()
