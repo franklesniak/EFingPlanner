@@ -25,7 +25,7 @@ Pick up your first attraction card and read its Type row. Put one tally mark in 
 Ten museums in a row sounds fun until about the third one. A good plan mixes different kinds of days. This session shows you your mix, so you can see it at a glance.
 
 1. **Sort each card.** Read the Type row on each attraction card. Put a tally mark in the matching row of the chart. Each card goes in one category.
-2. **A card that doesn't match?** If its Type row names something outside the nine, pick the row it's closest to.
+2. **A card that doesn't match?** If its Type row names something outside the nine, write it on the odd-ones-out line under the chart. An honest odd one out is fine.
 3. **Look at the whole chart.** Which rows have lots of marks? Which have none?
 4. **Ask the mix question.** Would the trip feel like the same kind of day again and again? Is there room for rest?
 5. **Mark the last column.** For each row, write "yes" if you'd like more of that kind, or leave it blank.
@@ -49,15 +49,21 @@ Your balance chart:
 | Unique experiences | | |
 | Rest and free time | | |
 
+Cards whose type fits none of the nine:
+
+| Prompt | Your answer |
+| --- | --- |
+| Odd ones out (each card's name and its own type) | |
+
 You can say your answers to an adult who writes them, or draw them, if that's easier.
 
 ## Artifact Created
 
-Your balance chart: every attraction sorted into a category, with the one kind you'd like more of circled, or a note that the mix looks right.
+Your balance chart: every attraction sorted into a category or listed as an odd one out, with the one kind you'd like more of circled, or a note that the mix looks right.
 
 ## Stop Point
 
-You are done when every attraction card sits in a category and you've named one category you'd like more of, or written that the mix already looks right. Noticing the mix is the whole job today. If a card could sit in two rows, either one is fine.
+You are done when every attraction card sits in a category or on the odd-ones-out line, and you've named one category you'd like more of, or written that the mix already looks right. Noticing the mix is the whole job today. If a card could sit in two rows, either one is fine.
 
 ## Source Check
 

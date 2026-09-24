@@ -65,7 +65,7 @@ Your Route map notes: travel times between your places, which ones are day trips
 
 ## Stop Point
 
-You are done when you have travel times between your places, and you've marked which are day trips and which need an overnight. A rough sketch is plenty. "Not sure yet" is fine for any pair you couldn't check.
+You are done when you have travel times between your places, and you've marked which are day trips and which need an overnight. You also need the trips from where you arrive and to where you leave, once a grown-up has written those places down. On a trip with one base, you need the times from your base to your must-dos too. A rough sketch is plenty. "Not sure yet" is fine for any pair you couldn't check.
 
 ## Source Check
 
