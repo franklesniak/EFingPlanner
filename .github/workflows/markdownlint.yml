@@ -30,6 +30,17 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
+          # template-sync: begin python-only
+          # The self-containment suite asks Git whether a short hash written in
+          # a Markdown file names a commit here, because that is the question
+          # GitHub answers when it decides whether to render it as a link. The
+          # action fetches only the triggering commit by default, so in CI that
+          # question came back "no" for every older commit and the step would
+          # have reported a reference a reader can click. Only the scan asks,
+          # so an adoption without the `python` module drops the fetch with it.
+          # https://github.com/actions/checkout#usage
+          fetch-depth: 0
+          # template-sync: end python-only
 
       - name: Setup Node.js
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
@@ -106,8 +117,17 @@ jobs:
       # the step outcome feeds the summary below -- but a maintainer would see
       # only the unit-test error and none of the actual readability numbers,
       # which are the part that says what to fix.
+      # **Skipped rather than failed when the test is not there.** A
+      # downstream adoption that keeps markdown and the workflows but drops
+      # the python module has this workflow and not these tests, and an
+      # unguarded step then failed pytest for a file the manifest removed on
+      # purpose. The compat module is named as well as the test, because the
+      # generic Python mapping takes it even where the test itself is kept.
       - name: Check child-facing reading level unit tests
         id: test-readability
+        if: >-
+          hashFiles('tests/test_check_readability.py') != '' &&
+          hashFiles('tests/_pytest_compat.py') != ''
         continue-on-error: true
         run: pytest tests/test_check_readability.py -v
 
@@ -134,6 +154,9 @@ jobs:
       # session violations, which are the part that says what to fix.
       - name: Check session structure unit tests
         id: test-structure
+        if: >-
+          hashFiles('tests/test_check_session_structure.py') != '' &&
+          hashFiles('tests/_pytest_compat.py') != ''
         continue-on-error: true
         run: pytest tests/test_check_session_structure.py -v
 
@@ -141,6 +164,45 @@ jobs:
         id: lint-structure
         continue-on-error: true
         run: python .github/scripts/check-session-structure.py
+
+      # The placeholder hook runs on every commit through pre-commit, and
+      # until this step its own unit tests ran nowhere: a change to its
+      # CommonMark reading could pass every required check while breaking the
+      # parsing the hook depends on. Its two sibling suites already run here
+      # and this one did not, which is the shape of gap that survives by
+      # looking like the others.
+      - name: Check placeholder hook unit tests
+        id: test-placeholders
+        if: >-
+          hashFiles('tests/test_check_prohibited_placeholders.py') != '' &&
+          hashFiles('tests/_pytest_compat.py') != ''
+        continue-on-error: true
+        run: pytest tests/test_check_prohibited_placeholders.py -v
+
+      # template-sync: begin python-only
+      # A repository-wide rule enforced only by a test nothing runs is a rule
+      # in name: a later comment could point at a review round, an issue
+      # number or a bare commit hash and every required check would stay
+      # green. This suite is the only enforcement the self-containment scan
+      # has, so it is the one that most needed wiring.
+      # **It always runs, and it fails the job itself.** A condition on a
+      # file let the step skip, and a skipped step passed the job: keyed on
+      # the module, deleting it skipped the gate; keyed on the fixtures,
+      # deleting both did. So there is no condition, and deleting or renaming
+      # the scan fails the step, because pytest finds no file to run. An
+      # adoption without the `python` module prunes the scan, and the
+      # template-sync block round this step and this comment removes both
+      # with it; a second block removes the checkout's full-history fetch,
+      # which only the scan needs. The step is the last check, so it needs no
+      # `continue-on-error` for the
+      # checks above to run, and its own failure fails the job. The scan
+      # asserts that the three hook suites above are present, so their own
+      # steps keep their guards. It reads Markdown through markdown-it, from
+      # the packages `npm ci` installs above, and fails if they are missing.
+      - name: Check references resolve inside this repository
+        id: test-self-contained
+        run: pytest tests/test_self_contained_references.py -v
+      # template-sync: end python-only
 
       - name: Check validation results
         if: >-
@@ -153,7 +215,8 @@ jobs:
           steps.lint-readability.outcome == 'failure' ||
           steps.test-toolchain.outcome == 'failure' ||
           steps.test-structure.outcome == 'failure' ||
-          steps.lint-structure.outcome == 'failure'
+          steps.lint-structure.outcome == 'failure' ||
+          steps.test-placeholders.outcome == 'failure'
         run: |
           echo "::error::Markdown and toolchain checks failed. Check the logs above for details."
           exit 1

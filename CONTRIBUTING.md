@@ -30,6 +30,19 @@ Git hooks are managed by pre-commit.
 python --version
 ```
 
+The repository's own checks -- the readability gate, the session-structure gate, and the test suite -- need a few Python packages. This repository is not a Python package, so they are listed in `requirements-dev.txt` rather than as packaging metadata:
+
+```bash
+python -m pip install -r requirements-dev.txt
+python -m pip install "check-jsonschema==$(python .github/scripts/pinned-check-jsonschema-rev.py)"
+```
+
+Without them, `python .github/scripts/check-readability.py` stops at import and tells you the first command.
+
+The list includes `check-jsonschema`, which the schema example tests run as a command and which is a different package from the `jsonschema` library beside it. Without it those tests skip rather than fail, so a run that checked no schema at all still reads green.
+
+The second command installs the `check-jsonschema` release that `.pre-commit-config.yaml` pins, which is the release CI installs. A requirements file cannot read that pin, so after the first command alone pip installs the newest release, and `tests/test_dependabot_schema.py` fails and names the pinned one.
+
 
 ### 4. Install Pre-commit
 

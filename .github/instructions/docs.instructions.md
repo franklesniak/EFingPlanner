@@ -7,13 +7,13 @@ description: "Documentation standards:  contract-first, traceable, drift-resista
 
 # Documentation Writing Style
 
-**Version:** 1.6.20260623.0
+**Version:** 1.6.20260924.0
 
 ## Metadata
 
 - **Status:** Active
 - **Owner:** Repository Maintainers
-- **Last Updated:** 2026-06-23
+- **Last Updated:** 2026-09-24
 - **Scope:** Defines documentation standards for Markdown (`**/*.md`) and Cursor Markdown rule (`**/*.mdc`) files in this repository, including specs, design docs, runbooks, ADRs, instruction files, and developer documentation. Does not cover code comments or inline documentation in source files.
 - **Related:** [Repository Copilot Instructions](../copilot-instructions.md)
 
@@ -478,7 +478,19 @@ Before merging, verify:
   - An explicit `**Assumption:**` labeled entry.
   - A cross-reference to another requirement or section that defines the value.
   This rule applies to unresolved requirements/specification content only. It does not ban legitimate template-substitution placeholders, didactic examples, migration notes, or code-comment TODO examples elsewhere in the repository.
-- Markdown files under `docs/**` are additionally checked by the repo-local `check-prohibited-placeholders` pre-commit hook for case-insensitive `TBD`, `TODO:`, `FIXME`, `XXX`, `to be determined`, and `(default ... to be determined)` placeholder forms. Remediate flagged lines with a measurable value, an explicit `**Open Question:**` entry, an explicit `**Assumption:**` entry, or a cross-reference to another requirement. The hook intentionally allows fenced examples, HTML comments, `CHANGELOG*.md` files, and a same-line `<!-- ALLOW-TBD: <reason> -->` marker when a brief suppression justification is necessary.
+- Markdown files under `docs/`, `framework/`, and `destinations/` are additionally checked by the repo-local `check-prohibited-placeholders` pre-commit hook for case-insensitive `TBD`, `TODO:`, `FIXME`, `XXX`, `to be determined`, and `(default ... to be determined)` placeholder forms. The hook skips `docs/spec/` and `CHANGELOG*.md` files. It reads no file through a symbolic link or a junction: it skips such a path when pre-commit passes one, and a run with no paths fails and names the link. Remediate flagged lines with a measurable value, an explicit `**Open Question:**` entry, an explicit `**Assumption:**` entry, or a cross-reference to another requirement. The hook intentionally allows:
+  - A placeholder inside a fenced code block, which is an example. A block indented four spaces or a tab is not an example, and the hook reports a placeholder in it, so write examples in a fenced block.
+  - A placeholder inside a real HTML comment, which is not on the page. A comment that opens part way along a paragraph line must close before that paragraph ends. When a blank line or a fenced block comes first, the page prints the opener and every word after it, and the hook reports a placeholder there.
+  - A line that begins with an `**Open Question:**` or `**Assumption:**` label, bare or as a list item.
+  - A line that carries a same-line `<!-- ALLOW-TBD: <reason> -->` marker, when a brief suppression justification is necessary. The reason must not be empty, and the marker counts only where it is a real comment.
+
+  A raw-text element changes what is a comment. The elements `script`, `style`, `textarea`, `title`, `xmp`, `iframe`, `noembed`, and `noframes` hold text that the page parses as neither Markdown nor HTML, and a `plaintext` element does the same and never closes. Comment-shaped text inside one of them hides no placeholder, and an `ALLOW-TBD` marker inside one grants no exemption. The hook reads these elements as the HTML Standard defines them, as a browser does:
+  - What an element holds ends at its closing tag, not at the end of the line. In `<script></script><!-- ALLOW-TBD: reason -->` the script is empty and the marker is a real comment, so it counts. In `<script><!-- ALLOW-TBD: reason -->` the marker is inside the script and counts for nothing. An element that is never closed holds everything to the end of the file.
+  - Only a real end tag closes an element. In `<script title="</script>">` the characters `</script>` are a quoted attribute value, so the element stays open.
+  - A tag ends at the next `>` outside a quoted attribute value. In `</script title="> x">` the first `>` is attribute data, so a placeholder written before the second `>` is inside the tag, and the hook reports it. This rule and the one above are one rule, seen from the two ends of a tag.
+  - A start tag written after other text, as in `Intro <script>`, or part way along a line of HTML, still opens the element. The hook does not follow such an element to its end tag. From the tag to the end of the file it reads every line as text, so no comment below the tag hides a placeholder and no `ALLOW-TBD` marker below it counts, even after the element closes. Write the tag inside backticks, or remove it.
+
+  For fences, HTML blocks, comments, and tables, the hook reads the file as GitHub's renderer, cmark-gfm, does where the CommonMark specification is silent or the renderers disagree.
 - Contradictory statements between the spec and other docs
 - Vague guarantees without measurable definitions
 - Unowned open questions ("someone should figure out…")

@@ -296,6 +296,12 @@ template_manifest:
       requires_all:
         - markdown
         - github-actions
+      notes: >-
+        Contains a Python-only inline block for the step that runs the
+        self-containment scan, which the python module ships, with the
+        comment above it, and a second for the checkout's full-history fetch,
+        which only the scan needs. Remove both delimited blocks when the
+        python module is excluded.
     - pattern: '.github/workflows/toolchain-eol.yml'
       requires_all:
         - markdown
@@ -482,6 +488,33 @@ template_manifest:
       requires_all:
         - markdown
     - pattern: 'tests/test_replace_template_placeholders.py'
+      requires_all:
+        - baseline
+    # The repository-wide self-containment scan and the fixtures it reads.
+    #
+    # It needs **both** modules, and mapping it to the baseline alone was
+    # wrong. Its REQUIRED_MEMBERS name the prohibited-placeholder hook and
+    # that hook's suite, which belong to `markdown`, so an adoption without
+    # markdown kept the scan and pruned the files it asserts are present.
+    # It is also a Python test importing `tests._pytest_compat`, which the
+    # generic `tests/**/*.py` rule maps to `python` -- and this entry is
+    # earlier and more specific, so it overrode that rule and dropped the
+    # dependency it had been getting for free.
+    - pattern: 'tests/test_self_contained_references.py'
+      requires_all:
+        - markdown
+        - python
+    - pattern: 'tests/fixtures/self_contained_references/**'
+      requires_all:
+        - markdown
+        - python
+    # The Node program the scan reads Markdown through, which goes with it.
+    - pattern: 'tests/printed_markdown.mjs'
+      requires_all:
+        - markdown
+        - python
+    # The Python packages the repository's own checks are installed from.
+    - pattern: 'requirements-dev.txt'
       requires_all:
         - baseline
     - pattern: 'tests/test_check_prohibited_placeholders.py'

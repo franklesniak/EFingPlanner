@@ -1,13 +1,13 @@
 <!-- markdownlint-disable MD013 -->
 # Downstream Template Update Procedure
 
-**Version:** 1.2.20260704.0
+**Version:** 1.2.20260924.0
 
 ## Metadata
 
 - **Status:** Active
 - **Owner:** Repository Maintainers
-- **Last Updated:** 2026-07-04
+- **Last Updated:** 2026-09-24
 - **Scope:** Defines the selective review procedure for downstream repositories that were created from, or adopted files from, this template repository. Covers manual and agent-assisted syncs from later upstream template changes, first-adoption preflight state, the first-adoption bootstrap command, the read-only first-adoption preflight/questionnaire mode, raw first-adoption state reporting, first-adoption quality-debt reports and suppressions, the adoption difficulties journal, one-shot first-adoption materialization, shell-safe first-adoption args files, package identity and collaboration-policy materialization, first-adoption structural convention assessment, first-adoption working-tree validation and doctor diagnostics, downstream local path ownership records, the human-readable view of the template sync manifest, required/recommended/deferred structural-change classification, protected-file decision records, the marker-aware retained-state validation helper command, the excluded-module cleanup report, the sync candidate table generator, post-adoption issue drafting, the generated adoption ledger review artifact, and the concise adoption summary for PR descriptions. Does not define an automated ongoing upstream sync tool.
 - **Related:** [Optional Configurations](https://github.com/franklesniak/copilot-repo-template/blob/HEAD/OPTIONAL_CONFIGURATIONS.md), [Getting Started for New Repositories](https://github.com/franklesniak/copilot-repo-template/blob/HEAD/GETTING_STARTED_NEW_REPO.md), [Getting Started for Existing Repositories](https://github.com/franklesniak/copilot-repo-template/blob/HEAD/GETTING_STARTED_EXISTING_REPO.md), [Repository Copilot Instructions](.github/copilot-instructions.md)
 
@@ -774,6 +774,10 @@ Manifest version 2 and version 3 rows MAY also use `requires_any`: the path is i
 | `.pre-commit-config.yaml` | `baseline` |
 | `.markdownlint.jsonc`, `.remarkignore`, `.remarkrc.mjs`, `package.json`, `package-lock.json`, `.github/scripts/lint-nested-markdown.js`, `.github/scripts/check-toolchain-eol.js`, `.github/scripts/check-prohibited-placeholders.py` | `markdown` |
 | `tests/test_replace_template_placeholders.py` | `baseline` |
+| `tests/test_self_contained_references.py` | `markdown`, `python` |
+| `tests/fixtures/self_contained_references/**` | `markdown`, `python` |
+| `tests/printed_markdown.mjs` | `markdown`, `python` |
+| `requirements-dev.txt` | `baseline` |
 | `tests/test_check_prohibited_placeholders.py` | `markdown` |
 | `tests/toolchain-eol/check-toolchain-eol.test.js` | `markdown` |
 | `tests/toolchain-eol/fixtures/**` | `markdown` |
@@ -972,6 +976,7 @@ The current `markdown-reference-only`, `powershell-reference-only`, `python-refe
 - `.cursor/rules/repository-instructions.mdc`, `.hermes.md`, `AGENTS.md`, `CLAUDE.md`, and `GEMINI.md` for removable optional-stack references in protected agent entry-point summaries.
 - `README.md` and `CONTRIBUTING.md` for removable optional-stack references in shared baseline contributor-facing documentation.
 - `.github/pull_request_template.md` for removable Python, PowerShell, and schema checklist sections in the retained PR template.
+- `.github/instructions/yaml.instructions.md` for the related JSON guidance link in the protected YAML guide.
 
 The current `github-actions-reference-only` inline blocks live in:
 
@@ -984,9 +989,10 @@ The current `github-platform-reference-only` inline blocks live in:
 - `OPTIONAL_CONFIGURATIONS.md` for GitHub Dependabot optional configuration guidance.
 - `schemas/README.md` for GitHub Dependabot built-in schema validation guidance.
 
-The current `template-sync-support-reference-only` inline block lives in:
+The current `template-sync-support-reference-only` inline blocks live in:
 
 - `README.md` for the optional `.template-sync/` and `schemas/template-sync-*.schema.json` surface rows, which are removed when `template-sync-support` is excluded.
+- `CONTRIBUTING.md` for the Template-Sync Validation section, which is removed when `template-sync-support` is excluded.
 
 The current `data-ci-reference-only` inline block lives in:
 
@@ -997,10 +1003,11 @@ The current `azure-devops-guide-reference-only` inline blocks live in:
 
 - `README.md`, `CONTRIBUTING.md`, `OPTIONAL_CONFIGURATIONS.md`, `COPILOT_CHAT_PROMPTS.md`, `docs/PR_REVIEW_PROMPTS.md`, and `schemas/README.md` for optional links to `docs/azure-devops-support.md`, retained when any of `azure-devops-platform`, `azure-pipelines`, or `azure-devops-collaboration` is adopted and removed only when all three are excluded.
 
-The current `python-only` inline block lives in:
+The current `python-only` inline blocks live in:
 
 - `.pre-commit-config.yaml` for the `black` and `ruff-check` Python project hooks.
 - `.github/dependabot.yml` for the `pip` ecosystem header line and update block.
+- `.github/workflows/markdownlint.yml` for the step that runs the self-containment scan, `tests/test_self_contained_references.py`, with the comment above it, and for the checkout's full-history fetch, which only the scan needs.
 
 The current `markdown-only` inline block lives in:
 
@@ -1046,7 +1053,7 @@ The current `terraform-only` inline blocks live in:
 - `.github/workflows/auto-fix-precommit.yml` for the Terraform and TFLint setup steps required only when those hooks are retained.
 - `.azuredevops/pipelines/precommit.yml` for the Terraform and TFLint setup steps required only when those hooks are retained.
 
-After stripping `python-only` blocks, a downstream repository that excludes `python` should be able to run `pre-commit run --all-files` without retaining Python project formatters or linters such as Black and Ruff, and its Dependabot configuration should not retain the `pip` ecosystem.
+After stripping `python-only` blocks, a downstream repository that excludes `python` should be able to run `pre-commit run --all-files` without retaining Python project formatters or linters such as Black and Ruff, its Dependabot configuration should not retain the `pip` ecosystem, and its Markdown workflow should not run the self-containment scan that the `python` module ships.
 
 After stripping `markdown-only` blocks, a downstream repository that excludes `markdown` should be able to run `pre-commit run --all-files` without installing Node.js or markdownlint.
 

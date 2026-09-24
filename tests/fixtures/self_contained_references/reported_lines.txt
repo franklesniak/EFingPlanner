@@ -1,0 +1,30 @@
+# read it that way since round 12
+# the two branches were settled one round apart
+# those rounds each said the opposite
+# deferred from PR #22
+# the findings issue 27 collects
+# reported at 4011993843
+# this fails at 7e4463f only on a case-sensitive filesystem
+# the previous round asserted the opposite
+# an earlier round settled that
+# blocked on ticket 44 in the vendor tracker
+# tracked as project 12 on the internal board
+# the objection raised in review comment 4111993843
+# blocked on ticket ABC-123 in the vendor tracker
+# tracked as project PLAT-9 on the internal board
+# filed as issue ABC-123 in the vendor tracker
+# blocked on ticket: ABC-123 in the vendor tracker
+# tracked as project: PLAT-9 on the internal board
+# filed as issue: 27 in the vendor tracker
+# blocked on #27 in the vendor tracker
+# settled in the third review round
+# settled in round: 12
+# settled in the previous review round
+# settled in the 13th review round
+# settled in the twenty-first round
+# settled in round thirteen
+# settled in round-4
+# landed upstream in commit #abc1234
+# landed upstream in commit deadbee
+# fixed in PRs 22 and 23
+# tracked as GH-22 in the old tracker
