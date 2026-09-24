@@ -10,7 +10,7 @@ You are here: Phase 7 (Itinerary Building). Not a First Taste step. Previous: [4
 - Planner skill: planning realistic time
 - Estimated time: several sittings; stop whenever you want
 - Parent involvement: none / independent work
-- Materials: blank [Daily Plan Cards](../../templates/daily_plan_card.md), your day rules from Session 40, your route and nights from Checkpoint 4, your Hotel Comparison Cards, your Attraction Research Cards, your My Calls page (your must-do list, and its order if you wrote one), your "things I can't wait to see" page, your route map notes from Session 28, your Restaurant Research Cards if you made them, your [Source Log](../../templates/source_log.md)
+- Materials: blank [Daily Plan Cards](../../templates/daily_plan_card.md), your day rules from Session 40, your route and nights from Checkpoint 4, your hotel comparison cards, your attraction cards, your My Calls page (your must-do list, and its order if you wrote one), your "things I can't wait to see" page, your route map notes from Session 28, your restaurant cards if you made them, your [Source Log](../../templates/source_log.md)
 
 ## Goal
 
@@ -22,16 +22,16 @@ Set up your first tiny step, then do it. Want a suggestion? Write the name of yo
 
 ## Steps
 
-Daily Plan Cards come after Checkpoint 4, once the grown-ups have settled your route and how long the trip is. Cards built before that usually have to be redone.
+Day cards come after Checkpoint 4, once the grown-ups have settled your route and how long the trip is. Cards built before that usually have to be redone.
 
 Make **one block card for each city-stay** on the route the grown-ups approved: one card for all the days you sleep in the same place, with a row for each of those days. A trip with one base has one card. That's the shape for everyone. A block card is less work, and it flexes. If the grown-ups move a date, you move the block and keep what you wrote.
 
-1. Fill in the top of the card: the city, where you'll sleep, the main goal for this stay, and roughly when. If a stop on your route is a region, use the town on its card from Session 21. If that card names no town, use the one you picked in Session 28.
+1. Before you start a card, check whether you already made one for that city-stay in an earlier sitting. Fill in the top of the card: the city, where you'll sleep, the main goal for this stay, and roughly when. If a stop on your route is a region, use the town on its card from Session 21. If that card names no town, use the one you picked in Session 28.
 2. Give each day its own row. Put your anchor first. Take your anchors from the must-do list on your My Calls page, in the order you wrote there if you wrote one. Then use your day rules for the rest, and look at your "things I can't wait to see" page for anything that fits. If an attraction card you need is missing its time needed or ticket row, fill that in first. On the last card, the day you head home gets its own row, for the ride from your last overnight place to where you leave from, once a grown-up has set that place.
-3. Give every day an energy level: Easy, Medium or Big day. Give day one and the last day the levels your first-day and last-day rules from Session 40 say.
+3. Give every day an energy level: Easy, Medium or Big day. Give day one and the last day the levels your first-day and last-day rules from Session 40 say. Fill in each day's transit notes too. If your route map notes from Session 28 don't have a travel time you need, check it with the map's Directions and add it to your notes.
 4. Save the cards in order, and stop between sittings whenever you like. If this is a new day, set your timer for 20 minutes first.
 
-**Roughly when** means a window, like "spring", "the second week", or "not decided yet". Never write the exact booked dates on a Daily Plan Card. Those belong to the grown-ups.
+**Roughly when** means a window, like "spring", "the second week", or "not decided yet". Never write the exact booked dates on a day card. Those belong to the grown-ups.
 
 **How to name your cards.** If you keep your work on a computer, save block cards in your kit's `research/day_cards/` folder as `block_01.md`, `block_02.md`, and so on. The zero in front keeps them in order. Use numbers only, with no city names.
 
@@ -39,7 +39,7 @@ Make **one block card for each city-stay** on the route the grown-ups approved: 
 
 ## Workspace
 
-Your Daily Plan Cards, one block card per city-stay.
+Your day cards, one block card per city-stay.
 
 You can say your answers to an adult who writes them, or draw them, if that's easier.
 
@@ -69,7 +69,7 @@ If you have extra energy, add a backup idea to every Big day. If not, you are do
 
 ## Parent Notes
 
-This is the heaviest stretch in Phase 7, so let it run over several sittings. The block card per city-stay is the default for every child, on trip-realism grounds: separate Daily Plan Cards built before dates and travel are firm are the most work and the most likely to be thrown away. It also happens to suit a child who finds writing hard.
+This is the heaviest stretch in Phase 7, so let it run over several sittings. The block card per city-stay is the default for every child, on trip-realism grounds: separate day cards built before dates and travel are firm are the most work and the most likely to be thrown away. It also happens to suit a child who finds writing hard.
 
 The date row asks for a rough window. Exact booked dates stay off every working page, on paper and in a shared folder alike, as the [privacy and safety](../../docs/privacy_and_safety.md) page says. The card filenames are numbered, with no city names, for the same kind of reason.
 

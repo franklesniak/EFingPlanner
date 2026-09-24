@@ -10,7 +10,7 @@ You are here: Phase 8 (Readiness and Final). Not a First Taste step. Previous: [
 - Planner skill: organizing information
 - Estimated time: 20-30 minutes
 - Parent involvement: parent review after session
-- Materials: a blank [Packing List](../../templates/packing_list.md), your season from Checkpoint 1, your destination pack's seasons and weather page, your Daily Plan Cards, your [Source Log](../../templates/source_log.md)
+- Materials: a blank [Packing List](../../templates/packing_list.md), your season from Checkpoint 1, your destination pack's seasons and weather page, your day cards, your [Source Log](../../templates/source_log.md)
 
 ## Goal
 
@@ -24,14 +24,14 @@ Choose a first tiny step and do it. Here's one if you want it: write "shoes" on 
 
 This list is a **draft**. You write it, and then a grown-up checks it. The check is part of the plan.
 
-1. **Check your season.** Your trip's season is the one from Checkpoint 1. Your destination pack's seasons and weather page says what the weather is usually like then. The table at the bottom of your Packing List gives you ideas for each season.
-2. **Go through the categories.** Write in or tick at least one thing for each category you pack for. Think about your Daily Plan Cards too. A long walking day needs a good bag and comfy shoes.
+1. **Check your season.** Your trip's season is the one from Checkpoint 1. Your destination pack's seasons and weather page says what the weather is usually like then. The table at the bottom of your packing list gives you ideas for each season.
+2. **Go through the categories.** Write in or tick at least one thing for each category you pack for. Think about your day cards too. A long walking day needs a good bag and comfy shoes.
 3. **Leave two lines for the grown-ups.** Travel documents and medication are theirs to handle. Keep those lines marked "ask adults to confirm". You don't pack or fill in either one.
 4. **Hand it over.** Give your draft to a grown-up to check.
 
 ## Workspace
 
-Your Packing List page, with its categories and its season table.
+Your packing list, with its categories and its season table.
 
 You can say your answers to an adult who writes them, or draw them, if that's easier.
 
@@ -57,7 +57,7 @@ Stuck? Use the [When I'm Stuck card](../../student_guide/when_im_stuck.md) in yo
 
 ## Optional Extension
 
-If you have extra energy, pack your walking-day bag list for one full day, from breakfast to bedtime. Add anything new to the Walking-day bag section of your Packing List, so a grown-up checks it too. If not, you are done.
+If you have extra energy, pack your walking-day bag list for one full day, from breakfast to bedtime. Add anything new to the Walking-day bag section of your packing list, so a grown-up checks it too. If not, you are done.
 
 ## Parent Notes
 

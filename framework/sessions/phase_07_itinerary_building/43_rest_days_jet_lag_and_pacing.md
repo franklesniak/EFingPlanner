@@ -10,7 +10,7 @@ You are here: Phase 7 (Itinerary Building). Not a First Taste step. Previous: [4
 - Planner skill: planning realistic time
 - Estimated time: 20-30 minutes
 - Parent involvement: parent review after session
-- Materials: your Daily Plan Cards from Session 41, your must-do list on your My Calls page, your traveler profiles, your [Trip-Basics card](../../templates/trip_basics.md) (for the time difference, and the maximum or booked trip length), your destination pack's transportation basics page, your [Source Log](../../templates/source_log.md); a blank [Trade-Off Report](../../templates/tradeoff_report.md) if the third report goes here
+- Materials: your day cards from Session 41, your must-do list on your My Calls page, your traveler profiles, your [Trip-Basics card](../../templates/trip_basics.md) (for the time difference, and the maximum or booked trip length), your destination pack's transportation basics page, your [Source Log](../../templates/source_log.md); a blank [Trade-Off Report](../../templates/tradeoff_report.md) if the third report goes here
 
 ## Goal
 
@@ -18,13 +18,13 @@ Look over your plan, and find the days that would wear people out.
 
 ## Start Here
 
-Pick your own first move and do it. If you'd like an idea, lay your Daily Plan Cards out in order and circle the one that looks busiest.
+Pick your own first move and do it. If you'd like an idea, lay your day cards out in order and circle the one that looks busiest.
 
 ## Steps
 
 A plan can look great on paper and still be too much on the day. This session checks your days against how people feel on a trip.
 
-1. Lay out your Daily Plan Cards in order.
+1. Lay out your day cards in order.
 2. Go down the checks in the Workspace, one row at a time. Mark yes or no, and add a short note.
 3. For any day that needs it, write one way to make it gentler. You could move a big thing, add a break, or swap in a rest day.
 4. Write your flags for the adults.
@@ -44,7 +44,7 @@ A plan can look great on paper and still be too much on the day. This session ch
 - **Feeling sick on rides.** If a long ride makes your stomach feel off, look out at something far away and put the screen or book down. Tell a grown-up. There are easy fixes.
 - **Speak up early.** Telling a grown-up you feel tired, too hot, carsick or just off is the smart move. It's good planning, like flagging a pacing problem. Anything medical is the grown-ups' job. Your job is to speak up.
 
-**The third Trade-Off Report.** Didn't write it in Session 34? Then write it here, on a fresh Trade-Off Report. Pacing is one of its three subjects.
+**The third trade-off report.** Didn't write it in Session 34? Then write it here, on a fresh Trade-Off Report. Pacing is one of its three subjects.
 
 ## Workspace
 
@@ -64,7 +64,7 @@ Your pacing checks:
 | A lot of walking or stairs on one day? | | |
 | Loud or crowded days stacked together? | | |
 
-Your flags for the adults:
+Your flags for the adults. Need more rows? Copy this table onto a blank page.
 
 | Day or place | What might be hard |
 | --- | --- |
@@ -80,7 +80,7 @@ Your pacing review: the checks, the days you'd make gentler, and your flags for 
 
 ## Stop Point
 
-You are done when you've gone through the checks once, and either marked at least one day you'd make gentler or written that every day passed, and you've written your list of flags for the adults. Finding even one thing to fix is a finished review, and so is a plan that passes every check. "Not sure" is a fine note on any check. If you didn't write your third Trade-Off Report in Session 34, you're done once it's written here too.
+You are done when you've gone through the checks once, and either marked at least one day you'd make gentler or written that every day passed, and you've written your list of flags for the adults. Finding even one thing to fix is a finished review, and so is a plan that passes every check. "Not sure" is a fine note on any check. If you didn't write your third trade-off report in Session 34, you're done once it's written here too.
 
 ## Source Check
 
@@ -108,6 +108,6 @@ The "taking care of yourself" block gives your child the words to speak up early
 
 If the pacing check shows the special pick is not doable for every traveler, name that block and let your child choose a new pick with you, as in Session 26. Only the three blocks can change the pick.
 
-The floor's third Trade-Off Report is about pacing, where to stay, or the budget. If your child did not write it at Session 34, it belongs here.
+The floor's third trade-off report is about pacing, where to stay, or the budget. If your child did not write it at Session 34, it belongs here.
 
 **The lighter page.** From Phase 7 on, Steps and Workspace are short and your child sets their own Start Here. The readiness signal is two sessions in a row done without needing the When I'm Stuck card or leaning on the written Steps; the Finish and Quality Check closes every session, so using it never counts against them. If your child isn't there yet, read the Steps with them. Start Here, the Stop Point, the named artifact and the Source Check stay on every page.

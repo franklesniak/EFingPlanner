@@ -10,7 +10,7 @@ You are here: Phase 7 (Itinerary Building). Not a First Taste step. Previous: [4
 - Planner skill: organizing information
 - Estimated time: 20-30 minutes
 - Parent involvement: none / independent work
-- Materials: this session's Destination Notes, a device with the kid-safe filter on, your Daily Plan Cards from Session 41, a blank [Reservation Watchlist](../../templates/reservation_watchlist.md), your [Source Log](../../templates/source_log.md)
+- Materials: this session's Destination Notes, a device with the kid-safe filter on, your day cards from Session 41, a blank [Reservation Watchlist](../../templates/reservation_watchlist.md), your [Source Log](../../templates/source_log.md)
 
 ## Goal
 
@@ -26,7 +26,7 @@ Some things you can only reserve for a set date. You pick the day first, then bo
 
 If your family's dates are already booked, the list works the other way round. Nothing waits on the dates any more, so it becomes an **act-early list**. The grown-ups book each item as soon as its booking opens. Write that opening date in "When adults should check".
 
-1. Go through your Daily Plan Cards and circle anything that might need booking. If a card's tickets row is empty, fill it in first. Popular museums, theme parks, special restaurants, tours, long-distance trains if your trip uses them, timed tickets and hotels are the usual ones.
+1. Go through your day cards and circle anything that might need booking. If a card's tickets row is empty, fill it in first. Popular museums, theme parks, special restaurants, tours, long-distance trains if your trip uses them, timed tickets and hotels are the usual ones.
 2. Open this session's Destination Notes to see what booking ahead looks like where you're going.
 3. Put each item on your watchlist. For each one, answer: does holding a date matter?
 4. Check each item on an official site, and write the date you checked.
@@ -37,7 +37,7 @@ Booking rules, ticket systems and entry rules change, sometimes a lot. So these 
 
 ## Workspace
 
-Your Reservation Watchlist, one item per row across its three tables.
+Your reservation watchlist, one item per row across its three tables.
 
 You can say your answers to an adult who writes them, or draw them, if that's easier.
 
@@ -47,7 +47,7 @@ Your Reservation Watchlist: everything that might need booking, and whether hold
 
 ## Stop Point
 
-You are done when every item on your Daily Plan Cards that might need booking is on the watchlist, each one says whether holding a date matters, and each one has its date-checked box filled in. You're making the list the grown-ups will use, and they do all of the booking. "Ask an adult" is a fine answer in any box you can't fill.
+You are done when every item on your day cards that might need booking is on the watchlist, each one says whether holding a date matters, and each one has its date-checked box filled in. You're making the list the grown-ups will use, and they do all of the booking. "Ask an adult" is a fine answer in any box you can't fill.
 
 ## Source Check
 

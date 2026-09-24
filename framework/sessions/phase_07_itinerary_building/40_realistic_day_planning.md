@@ -10,7 +10,7 @@ You are here: Phase 7 (Itinerary Building). Not a First Taste step. Previous: [3
 - Planner skill: planning realistic time
 - Estimated time: 20-30 minutes
 - Parent involvement: 5-minute check-in
-- Materials: your destination pack's airports and arrival page, your route and nights from Checkpoint 4, your must-do list on your My Calls page, your [Trip-Basics card](../../templates/trip_basics.md) (for how your family gets there), your [Source Log](../../templates/source_log.md), a blank page
+- Materials: your destination pack's airports and arrival page, your route and nights from Checkpoint 4, your route map notes from Session 28, your must-do list on your My Calls page, your [Trip-Basics card](../../templates/trip_basics.md) (for how your family gets there), your [Source Log](../../templates/source_log.md), a blank page
 
 ## Goal
 
@@ -30,7 +30,7 @@ Planners who make good days use a few simple rules. Here are the ones that work:
 - Add **one nearby extra**, close to the anchor.
 - **Group places that are near each other**, so you don't zigzag.
 - Think about **lunch and dinner**: where might you eat?
-- Count the **travel time** between places.
+- Count the **travel time** between places. Your route map notes from Session 28 have many of them. For one they don't have, check the map's Directions and add it to your notes.
 - Leave time to **rest**.
 - Have a **backup** in case something is closed or rained out.
 - **Do not pack too much into one day.**
@@ -52,7 +52,7 @@ You can say your answers to an adult who writes them, or draw them, if that's ea
 
 ## Artifact Created
 
-Your realistic day rules: a short list you wrote yourself, ready to use when you build your Daily Plan Cards in Session 41.
+Your realistic day rules: a short list you wrote yourself, ready to use when you build your day cards in Session 41.
 
 ## Stop Point
 

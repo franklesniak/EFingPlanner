@@ -39,11 +39,11 @@ Where you sleep shapes every day of the trip. You walk out of that door each mor
 
 You compare, and the grown-ups decide where the family stays. They also check that the area is safe and book the rooms.
 
-**The third Trade-Off Report.** Your project needs three trade-off reports. The third is about pacing, where you stay, or the budget. Did choosing an area feel like a hard call? Then write it here, on a fresh Trade-Off Report. If not, it waits for Session 43, which looks at pacing. You write it once, at one of the two.
+**The third trade-off report.** Your project needs three trade-off reports. The third is about pacing, where you stay, or the budget. Did choosing an area feel like a hard call? Then write it here, on a fresh Trade-Off Report. If not, it waits for Session 43, which looks at pacing. You write it once, at one of the two.
 
 ## Workspace
 
-Use your Neighborhood Comparison page, with one column for each area. If you score the areas, use a table on your Scoring Rubric page.
+Use your neighborhood comparison page, with one column for each area. If you score the areas, use a table on your Scoring Rubric page.
 
 You can say your answers to an adult who writes them, or draw them, if that's easier.
 
@@ -53,7 +53,7 @@ Your Neighborhood Comparison: two or three areas side by side, with the one you'
 
 ## Stop Point
 
-You are done when your Neighborhood Comparison has at least two areas filled in and you've circled the one you'd recommend, with one sentence saying why. One clear pick with a reason is enough. You don't need every box filled, and "ask an adult" is a fine answer. If you chose to write your third Trade-Off Report here, you're done when that report is filled in too.
+You are done when your neighborhood comparison has at least two areas filled in and you've circled the one you'd recommend, with one sentence saying why. One clear pick with a reason is enough. You don't need every box filled, and "ask an adult" is a fine answer. If you chose to write your third trade-off report here, you're done when that report is filled in too.
 
 ## Source Check
 

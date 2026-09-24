@@ -10,7 +10,7 @@ You are here: Phase 6 (Lodging, Food, and Budget). Not a First Taste step. Previ
 - Planner skill: comparing choices
 - Estimated time: 20-30 minutes per sitting, several sittings
 - Parent involvement: none / independent work
-- Materials: a device with the kid-safe filter on, blank [Hotel Comparison Cards](../../templates/hotel_comparison_card.md), your Neighborhood Comparison from Session 34, the route your family approved at Checkpoint 4, your route map notes from Session 28, your [Source Log](../../templates/source_log.md)
+- Materials: a device with the kid-safe filter on, blank [Hotel Comparison Cards](../../templates/hotel_comparison_card.md), your neighborhood comparison from Session 34, the route your family approved at Checkpoint 4, your route map notes from Session 28, your [Source Log](../../templates/source_log.md)
 
 ## Goal
 
@@ -18,14 +18,14 @@ Compare a few places to stay for each city where you'll sleep, and say which one
 
 ## Start Here
 
-Copy one blank Hotel Comparison Card into your binder, and write the city name at the top. Then write a guess in the corner of the card: "I think this sitting will take ___ minutes." Note the time you start beside it. That's your start. Start another sitting the same way, with a new guess. If this is a new day, set your timer for 20 minutes first.
+Copy one blank Hotel Comparison Card into your binder, and write the city name at the top. If you already have a card for this place from an earlier sitting, open that one instead. Then write a guess in the corner of the card: "I think this sitting will take ___ minutes." Note the time you start beside it. That's your start. Start another sitting the same way, with a new guess. If this is a new day, set your timer for 20 minutes first.
 
 ## Steps
 
 In Session 34 you picked an area. Now you look at a few real places to stay, one card each. You'll probably need more than one sitting, and that's how this session is meant to go.
 
 1. **Decide how many cards you need.** Make at least one card for each city where you'll sleep overnight on your approved route. A trip with one base needs only one or two cards. If a stop on your route is a region, use the town on its card from Session 21. If that card names no town, use the one you picked in Session 28. Make two for a city only if you still can't decide between places there, and there are enough good places to compare. If one place is already the obvious choice, one card is enough. About four or five cards for the whole trip is plenty, counting the cards from every sitting so far.
-2. **Find a place to stay.** Look in the area you circled in Session 34. For a city you didn't compare there, a grown-up can suggest an area. Use the place's own website, or a hotel search site a grown-up says is okay.
+2. **Find a place to stay.** Look in the area you circled in Session 34. Before you start a new card, check that you don't already have one for that place. For a city you didn't compare there, a grown-up can suggest an area. Use the place's own website, or a hotel search site a grown-up says is okay.
 3. **Fill in the card from top to bottom.** Write the cost **per room**, as an example to check again, with the date you found it. Ask the grown-ups the room-setup question, since they decide how many rooms you need. For review themes, look for what lots of reviews agree on, the way you learned in Session 25.
 4. **Fill in the planning assumption rows.** Write what you're assuming, why, what could change it, and whether a grown-up needs to check it.
 5. **Pick one for each city.** In each card's decision row, mark the one you'd recommend. Write one sentence saying why.

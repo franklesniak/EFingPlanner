@@ -54,6 +54,8 @@ Your food wish list:
 | | | | |
 | | | | |
 
+Need more rows? Copy this table onto a blank page.
+
 You can say your answers to an adult who writes them, or draw them, if that's easier.
 
 ## Artifact Created
