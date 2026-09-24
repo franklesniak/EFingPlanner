@@ -6,8 +6,9 @@
 #
 # Purpose: Enforce Markdown formatting, nested Markdown linting,
 # offline repository-local link validation, and the toolchain-EOL regression
-# test across the repository
-# Runs on: push and pull_request events
+# test across the repository, and, on pull requests, the `Last Updated` bump
+# on every changed Markdown file that carries the metadata header block
+# Runs on: push and pull_request events (the Last Updated job: pull_request only)
 
 name: Markdown and Toolchain Checks
 
@@ -173,4 +174,73 @@ jobs:
           steps.test-required-wording.outcome == 'failure'
         run: |
           echo "::error::Markdown and toolchain checks failed. Check the logs above for details."
+          exit 1
+
+  # The docs guide ("Synchronizing `Last Updated` and `Version` on Content
+  # Changes") asks every Markdown file with the metadata header block to bump
+  # its `Last Updated` field when its content changes. Review kept catching
+  # misses by hand, sixteen times across seven pull requests, so this job
+  # checks the pull request's head: each such file's field must match the
+  # newest pull request commit that changed its content (see the script's
+  # docstring for the full contract). The check needs the pull request's own commits and their
+  # author dates, so this job runs only on pull requests, checks out the head
+  # commit rather than the synthetic merge commit, and fetches full history.
+  # It runs the branch's own script with a read-only token and no persisted
+  # credential, like every other job in this workflow.
+  last-updated:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout pull request head with history
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      # The check parses Markdown with markdown-it through
+      # .github/scripts/render-markdown.js, so it needs Node and node_modules.
+      - name: Setup Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: '24'
+          cache: 'npm'
+          cache-dependency-path: package-lock.json
+
+      - name: Install dependencies
+        run: npm ci --ignore-scripts
+
+      - name: Setup Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.13'
+          cache: 'pip'
+
+      - name: Install pytest
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest
+
+      # Two steps, not two commands in one step, for the same reason as the
+      # session-structure check above: a failing unit test must not hide the
+      # list of files that need a bump.
+      - name: Check Last Updated unit tests
+        id: test-last-updated
+        continue-on-error: true
+        run: pytest tests/test_check_last_updated.py -v
+
+      - name: Check Last Updated on changed Markdown
+        id: check-last-updated
+        continue-on-error: true
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: python .github/scripts/check-last-updated.py --base "$BASE_SHA"
+
+      - name: Check Last Updated results
+        if: >-
+          steps.test-last-updated.outcome == 'failure' ||
+          steps.check-last-updated.outcome == 'failure'
+        run: |
+          echo "::error::Last Updated check failed. Check the logs above for details."
           exit 1
