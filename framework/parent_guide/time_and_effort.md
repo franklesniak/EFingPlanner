@@ -46,7 +46,8 @@ If *you* get busy, that is the most common way a long project quietly dies -- so
 <!-- density-exempt: X, not Y -- the transfer caveat is spec-required: transfer is not guaranteed, and the page states the case as practice and ownership -->
 What the structured version buys: deliberate executive-function practice, real research skill, genuine ownership of concrete decisions, and a reusable planning framework. The honest other side: for some children and families, lighter casual involvement is the better choice. Do not over-claim -- these skills are real practice, but transfer to homework and chores is not guaranteed without deliberate bridging. The honest case is "real practice and real ownership," not "this fixes executive function."
 
-If you want a rough signal over time, the optional [executive-function observation aid](ef_observation_aid.md) takes about a minute, three times across the project.
+<!-- density-exempt: X, not Y -- the batch 1 brief supplies this line word for word -->
+If you want a rough signal over time rather than a feeling, the optional [executive-function observation aid](ef_observation_aid.md) takes about a minute, three times across the project.
 
 ## Is your child ready right now
 
@@ -75,9 +76,11 @@ The file checklist cannot tell you whether this is *usable* -- only a real child
 
 **The pilot passes when all three hold:**
 
+<!-- density-exempt: X, not Y -- these are the spec's three pilot pass/fail signals, which the batch 0 brief says this page must contain; signal (c) fails when the load is heavier across the board -->
+
 - **(a) Unaided start.** The child opens Session 01 and starts the first action within a few minutes, **without you re-explaining the task.**
 - **(b) Reaches Checkpoint 1 mostly on their own.** The child gets to Checkpoint 1 and produces the intended artifacts -- the Session 01 cover page and "things I can't wait to see" page, plus the Checkpoint 1 decision-log entry -- **largely by themselves,** not with you doing the work.
-- **(c) Coaching load matches the estimate.** Your hands-on time roughly matches the estimate above: heavier early, lighter later.
+- **(c) Coaching load matches the estimate.** Your hands-on time roughly matches the estimate above (heavier early, lighter later), not heavier across the board.
 
 **Remediation rule (what to do on failure).** If any signal fails -- above all, if the child **cannot start Session 01 unaided** -- fix the Phase 0-2 sessions and re-pilot before building or running any later batch. **Do not proceed past First Taste on a failed pilot.**
 

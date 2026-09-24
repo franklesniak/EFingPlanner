@@ -61,9 +61,11 @@ Five minutes showing this, concretely, is the strongest answer to "was my adviso
 
 ## A few practical notes
 
+<!-- density-exempt: X, not Y -- each note restates a guarantee the spec gives: the child is never blocked on a schedule, a party of two is a full configuration, and a sibling comparison stays cooperative, never scored -->
+
 - **Interview/poll reachability.** If a traveler is hard to reach, ask by text, ask asynchronously, or relay the question yourself and bring the answer back. Your child can also poll whoever is around and mark the rest "asked through a grown-up." Never let a schedule stall a session.
 - **Small party or single parent.** A party of two -- one parent and the child -- is a normal way to run this. The interview and poll become interviewing the one other traveler (you), plus optionally a remote relative by relay. A one-on-one interview is a strong relatedness moment, not a lesser version.
-- **Other siblings.** It is fine for this to be one child's project. A sibling can have a small helper role, their own "things I can't wait to see" page, or be a reviewer at the family meeting. If two children both want to plan, split the cities or alternate sessions, and give each their own picks -- keep any comparison cooperative, so the children work together.
+- **Other siblings.** It is fine for this to be one child's project. A sibling can have a small helper role, their own "things I can't wait to see" page, or be a reviewer at the family meeting. If two children both want to plan, split the cities or alternate sessions, and give each their own picks -- keep any comparison cooperative, never scored.
 
 ## Where to go next
 

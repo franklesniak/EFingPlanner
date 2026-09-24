@@ -64,7 +64,8 @@ Every field list below is written destination-neutrally, so this contract copies
 | `47_language_etiquette.md` | 47 Language and Etiquette | A short set of everyday phrases; the etiquette points a visiting family actually meets; any custom with rules of its own (bathing, photography, sacred sites), described matter-of-factly and never as something the child will get wrong. |
 | `kid_glossary.md` | Child travel glossary, all sessions | The destination words a child meets on signs, on menus and on trains, one line each; the units the destination uses (temperature, distance, time format) with a kid-sized conversion for each; one currency example, labeled an example to re-check and carrying the month the pack last stood behind the figure, which is normally older than this file's own `Last reviewed` line. |
 
-Every slot file also carries a `**Last reviewed:** <month year>` line directly below its title -- for example, `**Last reviewed:** September 2026`. Re-checking is optional upkeep.
+<!-- density-exempt: X, not Y -- the batch 1 brief gives this rule in exactly this form, ending "not a maintenance promise" -->
+Every slot file also carries a `**Last reviewed:** <month year>` line directly below its title -- for example, `**Last reviewed:** September 2026`. Re-checking is optional upkeep, not a maintenance promise.
 
 ### How a slot divides from its reference
 

@@ -32,4 +32,5 @@ The subtotal above shows how the parts you choose add up. The whole-trip total s
 
 Allowed answers anywhere: low / medium / high, "not sure yet," "ask an adult."
 
-What this teaches: how trip money is split into categories. It also shows whether the parts you chose fit your band. Getting there and the rest of the grown-ups' costs are kept on their own page. Adults still own the budget and the booking.
+<!-- density-exempt: X, not Y -- the spec asks for one warm kid-facing line on this worksheet saying it teaches how trip money is split, not the real final total -->
+What this teaches: how trip money is split into categories. It also shows whether the parts you chose fit your band. It's not the final total. Getting there and the rest of the grown-ups' costs are kept on their own page. Adults still own the budget and the booking.

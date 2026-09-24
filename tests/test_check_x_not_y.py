@@ -198,6 +198,58 @@ def test_a_sentence_wrapped_over_two_lines_is_read_whole() -> None:
     ]
 
 
+@pytest.mark.parametrize(("text", "first"), [
+    ("Use them as **starting points, not answers.** Read them first.", "Use them as **starting points, not answers.**"),
+    ('He said "stop here." Then we went on.', 'He said "stop here."'),
+    ("It is _a map, not a list._ Read it.", "It is _a map, not a list._"),
+    ("(It is a map, not a list.) Read it.", "(It is a map, not a list.)"),
+])
+def test_a_sentence_keeps_its_closing_marks(text: str, first: str) -> None:
+    assert cx.split_sentences(text)[0] == first
+
+
+def test_a_key_keeps_the_sentence_as_written() -> None:
+    (found,) = candidates("It is **a map, not a list.** Read it.")
+    assert found.key == "device|It is **a map, not a list.**|1"
+
+
+@pytest.mark.parametrize("sentence", [
+    "It is a draft, _not a decision_.",
+    "It is a draft, __not a decision__.",
+    "It is a draft, _not_ a decision.",
+])
+def test_underscore_emphasis_does_not_hide_a_contrast(sentence: str) -> None:
+    assert kinds(sentence) == [("device", sentence)]
+
+
+def test_underscore_emphasis_does_not_hide_a_negation() -> None:
+    found = kinds("You move a block. You _don't_ start over.")
+    assert ("split", "You move a block. → You _don't_ start over.") in found
+
+
+def test_an_underscore_inside_a_word_is_not_emphasis() -> None:
+    assert cx.plain("a snake_case word, _stressed_") == "a snake_case word, stressed"
+
+
+def test_a_code_span_that_crosses_a_line_break_is_skipped() -> None:
+    assert kinds("Use `choose the map,\nnot the list` as literal syntax.") == []
+
+
+def test_code_spans_pair_across_a_line_break() -> None:
+    found = kinds("Use `x` then `y and\nz` here, not there `w`.")
+    assert [k for k, _ in found] == ["device"]
+    assert "here, not there" in found[0][1]
+
+
+def test_a_comment_that_crosses_a_line_break_is_skipped() -> None:
+    assert kinds("It is a map <!-- a note,\nnot a list --> for you.") == []
+
+
+def test_a_comment_line_does_not_part_two_paragraphs() -> None:
+    text = "You will change the plan. That is normal.\n\n<!-- a note -->\n**Never silently.** Tell them why."
+    assert [k for k, _ in kinds(text)] == ["device"]
+
+
 def test_a_block_quote_under_a_lead_in_line_is_its_own_block() -> None:
     assert kinds("**Plan A is off.**\n> Don't worry about it.") == []
 
@@ -394,6 +446,16 @@ def test_two_in_one_section_are_over_for_child_and_parent_pages(tmp_path: Path) 
     write(tmp_path, "framework/parent_guide/a.md", text)
     row = summary_for(tmp_path, "framework/parent_guide/a.md", judge_all(tmp_path))
     assert [r["status"] for r in row["sections"] if r["section"] == "One"] == ["OVER"]
+
+
+def test_two_sections_with_one_title_are_capped_apart(tmp_path: Path) -> None:
+    text = "## Same\n\nIt is a map, not a list.\n\n## Same\n\nDraw it rather than fill it in.\n"
+    write(tmp_path, "framework/parent_guide/a.md", text)
+    row = summary_for(tmp_path, "framework/parent_guide/a.md", judge_all(tmp_path))
+    assert [(r["section"], r["counted"], r["status"]) for r in row["sections"] if r["section"] == "Same"] == [
+        ("Same", 1, "PASS"),
+        ("Same", 1, "PASS"),
+    ]
 
 
 def test_builder_sections_carry_no_section_cap(tmp_path: Path) -> None:

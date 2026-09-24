@@ -50,7 +50,8 @@ Your child writes a cancellation note on a card. **That note is a flag, not a fa
 
 You will change parts of the plan: prices, availability, safety, schedules, booking rules. That's normal and expected.
 
-**An owned pick is reshaped only with a stated reason.**
+<!-- density-exempt: X, not Y -- "never silently" is the spec's transparency obligation for owned picks, bold in the batch 2 brief's booking item -->
+**Never silently.** An owned pick is reshaped only with a stated reason.
 
 And the one unconditional personal pick is different from everything else. It can be blocked for exactly three reasons: it costs more than the budget band, it can't be booked or has no availability, or it isn't safe and physically manageable for every traveler. **Never by group vote.** If one of those three applies, tell your child which one.
 

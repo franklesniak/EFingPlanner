@@ -24,10 +24,14 @@ Code spans, fenced blocks, table rows, headings, thematic breaks, and lines
 holding only an HTML comment are skipped. Block quotes are read like prose; a
 quotation block quote, such as a coaching script, is judged "no". A paragraph
 is joined before it is split into sentences, because Markdown renders a soft
-line break as a space. Text above a page's first ``##`` heading is not a
-``##`` section, so only the file cap reaches it. A child session's "For
-parents" strip and ``## Parent Notes`` are parent-facing regions, but the
-file cap follows the file's own register.
+line break as a space, and its code spans and comments are removed after the
+join, because either can cross a line break. The patterns read a sentence
+without its emphasis (``*`` or ``_``), but the candidate keeps the sentence
+as written, closing quotation marks and emphasis included. Text above a
+page's first ``##`` heading is not a ``##`` section, so only the file cap
+reaches it. Each ``##`` heading starts its own section, even when two share
+a title. A child session's "For parents" strip and ``## Parent Notes`` are
+parent-facing regions, but the file cap follows the file's own register.
 
 A ``<!-- density-exempt: X, not Y -- <reason> -->`` marker covers the block
 directly below it: one paragraph, one whole list (a loose list included), or,
@@ -111,8 +115,9 @@ HEADING_RE = re.compile(r"^ {0,3}(?P<hashes>#{1,6})\s+(?P<text>.*?)\s*#*\s*$")
 TABLE_DELIM_RE = re.compile(r"^\s*\|?\s*:?-+:?\s*(?:\|\s*:?-+:?\s*)*\|?\s*$")
 COMMENT_ONLY_RE = re.compile(r"^\s*(?:<!--.*?-->\s*)+$")
 THEMATIC_BREAK_RE = re.compile(r"^ {0,3}(?:(?:-\s*){3,}|(?:\*\s*){3,}|(?:_\s*){3,})$")
-HTML_COMMENT_RE = re.compile(r"<!--.*?-->")
-CODE_SPAN_RE = re.compile(r"(`+)(?:(?!\1).)+?\1")
+HTML_COMMENT_RE = re.compile(r"<!--.*?-->", re.DOTALL)
+#: A code span, which may cross a line break inside its paragraph.
+CODE_SPAN_RE = re.compile(r"(`+)(?:(?!\1).)+?\1", re.DOTALL)
 LIST_MARKER_RE = re.compile(r"^\s*(?:[-*+]|\d{1,9}[.)])\s+(?:\[[ xX]\]\s+)?")
 #: A list item's opening, for finding where a list ends.
 LIST_ITEM_RE = re.compile(r"^(?P<indent> {0,12})(?P<bullet>[-*+]|\d{1,9}(?P<delim>[.)]))(?: {1,4}|$)")
@@ -207,8 +212,19 @@ QUOTE_OPEN_RE = re.compile(r"^[*_]*[\"“]")
 QUOTE_CLOSE_RE = re.compile(r"[\"”][*_]*$")
 ATTRIBUTION_RE = re.compile(r"^[*_]*(?:—|―|--)\s*\w")
 
-SENTENCE_SPLIT_RE = re.compile(r"(?<=[.!?])[\"'”’)\]*_]*\s+(?=[\"'“‘(*_\[]*[A-Z0-9])")
+#: Closing quotation marks, brackets and emphasis that can follow a sentence's
+#: last punctuation. They stay with the sentence they close.
+CLOSERS = "[\"'”’)\\]*_]"
+#: A sentence break: the whitespace after `.`, `!` or `?` and up to three
+#: closers, before a capital or a digit. Only the whitespace is consumed.
+SENTENCE_SPLIT_RE = re.compile(
+    "(?:" + "|".join("(?<=[.!?]" + CLOSERS * n + ")" for n in range(4)) + ")"
+    + r"\s+(?=[\"'“‘(*_\[]*[A-Z0-9])"
+)
 ABBREV_RE = re.compile(r"\b(?:e\.g|i\.e|etc|vs|p\.m|a\.m|Dr|Mr|Mrs|Ms|St|No)\.$")
+#: Emphasis markers: every `*`, and a run of `_` at a word's edge. An
+#: underscore inside a word is not emphasis in Markdown, so it stays.
+EMPHASIS_RE = re.compile(r"\*+|(?<![A-Za-z0-9])_+|_+(?![A-Za-z0-9])")
 ARROW = " → "
 
 
@@ -217,15 +233,33 @@ def normalize_space(text: str) -> str:
     return re.sub(r"\s+", " ", text).strip()
 
 
-def split_sentences(text: str) -> list[str]:
-    """Split one prose line into sentences, keeping common abbreviations whole."""
-    merged: list[str] = []
-    for part in SENTENCE_SPLIT_RE.split(text):
-        if merged and ABBREV_RE.search(merged[-1]):
-            merged[-1] = merged[-1] + " " + part
+def plain(text: str) -> str:
+    """Return text without emphasis markers. Emphasis never changes what a sentence says."""
+    return EMPHASIS_RE.sub("", text)
+
+
+def sentence_spans(text: str) -> list[tuple[int, int]]:
+    """Return the (start, end) of each sentence in text, keeping common abbreviations whole."""
+    spans: list[tuple[int, int]] = []
+    start = 0
+    for m in [*SENTENCE_SPLIT_RE.finditer(text), None]:
+        end = m.start() if m else len(text)
+        if spans and ABBREV_RE.search(text[spans[-1][0]:spans[-1][1]].rstrip()):
+            spans[-1] = (spans[-1][0], end)
         else:
-            merged.append(part)
-    return [p.strip() for p in merged if p.strip()]
+            spans.append((start, end))
+        start = m.end() if m else len(text)
+    out = []
+    for a, b in spans:
+        piece = text[a:b]
+        if piece.strip():
+            out.append((a + len(piece) - len(piece.lstrip()), b - (len(piece) - len(piece.rstrip()))))
+    return out
+
+
+def split_sentences(text: str) -> list[str]:
+    """Split prose into sentences, each with its closing quotation marks and emphasis."""
+    return [text[a:b] for a, b in sentence_spans(text)]
 
 
 def normalize_subject(word: str) -> str:
@@ -239,7 +273,7 @@ def normalize_subject(word: str) -> str:
 
 def opening_words(sentence: str) -> list[str]:
     """Return a sentence's first two words in lower case, with straight apostrophes."""
-    text = sentence.lower().replace("*", "").replace("’", "'")
+    text = plain(sentence).lower().replace("’", "'")
     return re.findall(r"[a-z']+", text)[:2]
 
 
@@ -250,7 +284,11 @@ def opening_words(sentence: str) -> list[str]:
 
 @dataclass
 class ProseLine:
-    """One prose line, with its code spans, comments and list marker removed."""
+    """One prose line, without its block quote prefix and list marker.
+
+    Code spans and comments stay in the text: one can cross a line break, so
+    they are removed per paragraph, in `paragraph_text()`.
+    """
 
     lineno: int
     text: str
@@ -259,6 +297,7 @@ class ProseLine:
     blockquote: bool
     paragraph: int
     item: bool = False  # the line opens a list item
+    section_index: int = 0  # 0 above the first `##`, then 1, 2, ... per `##` heading
 
 
 @dataclass
@@ -292,6 +331,7 @@ class Candidate:
     judgment: str | None = None
     reason: str = ""
     exempt_by: int | None = None
+    section_index: int = 0  # the section's place in the page (see ProseLine)
 
 
 @dataclass
@@ -372,6 +412,7 @@ def parse_text(text: str) -> Page:
     heading_lines: dict[int, tuple[int, str]] = {}
     audience: str | None = None
     section = PREAMBLE
+    section_index = 0
     region = "main"
     fence: tuple[str, int] | None = None
     in_comment = False
@@ -435,8 +476,12 @@ def parse_text(text: str) -> Page:
             heading_lines[lineno] = (level, heading)
             if level <= 2:
                 section = heading if level == 2 else PREAMBLE
+                section_index = 0
                 if level == 2:
+                    # Two `##` headings can share a title, so a section is
+                    # known by its place in the page, not by its title.
                     sections.append(section)
+                    section_index = len(sections) - 1
             region = "parent notes" if PARENT_SECTION_RE.match(heading) else "main"
             in_table = False
             prev_blank = True
@@ -458,19 +503,18 @@ def parse_text(text: str) -> Page:
         if PARENT_STRIP_RE.match(content):
             region = "for-parents strip"
 
-        # Code spans first: a comment shown inside a code span is literal text.
-        text_line = CODE_SPAN_RE.sub(" ‹code› ", content)
-        text_line = HTML_COMMENT_RE.sub("", text_line)
-        is_item = bool(LIST_MARKER_RE.match(text_line))
-        text_line = LIST_MARKER_RE.sub("", text_line)
+        # Code spans and inline comments are removed per paragraph, because a
+        # code span can cross a line break (see `paragraph_text()`).
+        is_item = bool(LIST_MARKER_RE.match(content))
+        text_line = LIST_MARKER_RE.sub("", content, count=1)
         # A block quote interrupts a paragraph, as CommonMark reads it, so a
         # bold lead-in line and the quotation under it are two blocks.
         if prev_blank or is_item or (quoted and not prev_quoted):
             paragraph += 1
         prev_blank = False
         prev_quoted = quoted
-        prose.append(ProseLine(lineno, normalize_space(text_line), section, region, quoted,
-                               paragraph, is_item))
+        prose.append(ProseLine(lineno, text_line, section, region, quoted, paragraph, is_item,
+                               section_index))
 
     return Page(prose, markers, sections, heading_lines, audience)
 
@@ -548,16 +592,34 @@ def adjacent(a: list[ProseLine], b: list[ProseLine], raw_lines: list[str] | None
 
     A split negation or a banned pair can straddle a paragraph break. Only
     plain paragraphs pair up this way: consecutive list items are separate
-    points, and a block quote is a separate box from the prose around it.
+    points, and a block quote is a separate box from the prose around it. A
+    line holding only a comment, such as a `density-exempt` marker, is not
+    rendered, so it does not part two paragraphs.
     """
     if raw_lines is None or a[0].item or b[0].item:
         return False
     if a[-1].blockquote != b[0].blockquote:
         return False
-    if a[-1].section != b[0].section or a[-1].region != b[0].region:
+    if a[-1].section_index != b[0].section_index or a[-1].region != b[0].region:
         return False
     between = raw_lines[a[-1].lineno:b[0].lineno - 1]
-    return all(not line.strip() for line in between)
+    return all(not line.strip() or COMMENT_ONLY_RE.match(line) for line in between)
+
+
+def paragraph_text(para: list[ProseLine]) -> str:
+    """Return a paragraph's text, one source line per text line, without code spans or comments.
+
+    A code span or a comment can cross a line break, so both are removed from
+    the joined paragraph. Each keeps the line breaks it held, so the text's
+    line count still matches the paragraph's source lines.
+    """
+    def keeping_breaks(replacement: str):
+        return lambda m: replacement + "\n" * m.group(0).count("\n")
+
+    text = "\n".join(pl.text for pl in para)
+    # Code spans first: a comment shown inside a code span is literal text.
+    text = CODE_SPAN_RE.sub(keeping_breaks(" ‹code› "), text)
+    return HTML_COMMENT_RE.sub(keeping_breaks(""), text)
 
 
 def paragraph_sentences(para: list[ProseLine]) -> list[tuple[str, ProseLine]]:
@@ -566,28 +628,8 @@ def paragraph_sentences(para: list[ProseLine]) -> list[tuple[str, ProseLine]]:
     Markdown renders a soft line break as a space, so a sentence can run over
     several source lines. The paragraph is joined before it is split.
     """
-    text = ""
-    starts: list[tuple[int, ProseLine]] = []
-    for pl in para:
-        if not pl.text:
-            continue
-        if text:
-            text += " "
-        starts.append((len(text), pl))
-        text += pl.text
-    out: list[tuple[str, ProseLine]] = []
-    pos = 0
-    for s in split_sentences(text):
-        at = text.find(s, pos)
-        at = pos if at < 0 else at
-        line = starts[0][1]
-        for offset, pl in starts:
-            if offset > at:
-                break
-            line = pl
-        out.append((s, line))
-        pos = at + len(s)
-    return out
+    text = paragraph_text(para)
+    return [(normalize_space(text[a:b]), para[text.count("\n", 0, a)]) for a, b in sentence_spans(text)]
 
 
 def quote_contexts(paras: list[list[ProseLine]], raw_lines: list[str] | None) -> list[str]:
@@ -608,10 +650,10 @@ def quote_contexts(paras: list[list[ProseLine]], raw_lines: list[str] | None) ->
         while (raw_lines is not None and j + 1 < len(paras) and paras[j + 1][0].blockquote
                and all(strip_bq(line)[1] for line in raw_lines[paras[j][-1].lineno:paras[j + 1][0].lineno - 1])):
             j += 1
-        block = paras[i:j + 1]
-        joined = " ".join(pl.text for para in block for pl in para if pl.text)
+        texts = [normalize_space(paragraph_text(para)) for para in paras[i:j + 1]]
+        joined = " ".join(t for t in texts if t)
         quotation = bool(QUOTE_OPEN_RE.search(joined) and QUOTE_CLOSE_RE.search(joined)) or any(
-            ATTRIBUTION_RE.match(para[0].text) for para in block)
+            ATTRIBUTION_RE.match(t) for t in texts)
         for k in range(i, j + 1):
             out[k] = "quotation block quote" if quotation else "block quote"
         i = j + 1
@@ -679,7 +721,7 @@ def find_candidates(rel: str, prose: list[ProseLine],
 
     def add(pl: ProseLine, kind: str, pats: list[str], text: str, context: str) -> None:
         cands.append(Candidate(rel, pl.lineno, pl.section, pl.region, kind, pats, text,
-                               pl.blockquote, context))
+                               pl.blockquote, context, section_index=pl.section_index))
 
     # Sentences are numbered across the page, so a pair can be named by where
     # it starts. `opened_pairs` holds each pair already flagged from its first
@@ -695,35 +737,38 @@ def find_candidates(rel: str, prose: list[ProseLine],
                  and adjacent(para, paras[pi + 1], raw_lines) else None)
         for idx, (s, pl) in enumerate(sents):
             g += 1
-            # Emphasis never changes what a sentence says.
-            probe = s.replace("*", "")
-            pats = [name for name, rx in INLINE_PATTERNS.items() if rx.search(probe)]
-            if FRAGMENT_RE.match(s) and (idx > 0 or before is not None):
+            prev = sents[idx - 1][0] if idx > 0 else before
+            nxt = sents[idx + 1][0] if idx + 1 < len(sents) else after
+            # Every test reads the text without emphasis, which never changes
+            # what a sentence says; the candidate keeps the text as written.
+            ps = plain(s)
+            pprev = plain(prev) if prev is not None else None
+            pnxt = plain(nxt) if nxt is not None else None
+            pats = [name for name, rx in INLINE_PATTERNS.items() if rx.search(ps)]
+            if FRAGMENT_RE.match(ps) and (idx > 0 or before is not None):
                 pats.append("fragment")
             if pats:
                 add(pl, "device", pats, s, ctx)
-            prev = sents[idx - 1][0] if idx > 0 else before
-            nxt = sents[idx + 1][0] if idx + 1 < len(sents) else after
             words = len(s.split())
             if not pats:
                 split_pats = []
-                if NEGATION_RE.search(s) and words <= 14 and prev is not None and not FRAGMENT_RE.match(s):
+                if NEGATION_RE.search(ps) and words <= 14 and prev is not None and not FRAGMENT_RE.match(ps):
                     split_pats.append("short-negation-after-claim")
-                if BARE_INSTEAD_RE.search(s) and prev is not None and NEGATION_RE.search(prev):
+                if BARE_INSTEAD_RE.search(ps) and pprev is not None and NEGATION_RE.search(pprev):
                     split_pats.append("negation-then-instead")
                 if split_pats and prev is not None:
                     if g - 1 not in opened_pairs:
                         add(pl, "split", split_pats, prev + ARROW + s, ctx)
-                elif (prev is None and nxt is not None and NEGATION_RE.search(s) and words <= 14
-                      and not FRAGMENT_RE.match(s)):
+                elif (prev is None and nxt is not None and NEGATION_RE.search(ps) and words <= 14
+                      and not FRAGMENT_RE.match(ps)):
                     # The negation opens the paragraph and the claim follows.
                     add(pl, "split", ["negation-before-claim"], s + ARROW + nxt, ctx)
                     opened_pairs.add(g)
-            joined = joined_banned_patterns(s)
+            joined = joined_banned_patterns(ps)
             if joined:
                 add(pl, "banned", joined, s, ctx)
-            if nxt is not None:
-                bpats = banned_patterns(s, nxt)
+            if pnxt is not None:
+                bpats = banned_patterns(ps, pnxt)
                 if bpats:
                     add(pl, "banned", bpats, s + ARROW + nxt, ctx)
     seen: dict[tuple[str, str, str], int] = {}
@@ -841,6 +886,7 @@ def instance_row(rep: FileReport, c: Candidate) -> dict:
     return {
         "line": c.lineno,
         "section": c.section,
+        "section_index": c.section_index,
         "region": c.region,
         "register": region_register(rep.register, c.region),
         "judgment": c.judgment,
@@ -860,10 +906,12 @@ def summarize(rep: FileReport) -> dict:
     unjudged = [c for c in rep.candidates if c.judgment not in VALID_JUDGMENTS]
     cap = FILE_CAP.get(rep.register, FILE_CAP["child"])
     sec_rows = []
-    for sec in rep.sections:
-        in_sec = [c for c in true_dev if c.section == sec]
+    for index, sec in enumerate(rep.sections):
+        # Index 0 is the text above the first `##`; each `##` heading is its
+        # own section, even when two share a title.
+        in_sec = [c for c in true_dev if c.section_index == index]
         sec_counted = [c for c in in_sec if c.exempt_by is None]
-        capped = sec != PREAMBLE and rep.register in SECTION_CAPPED_REGISTERS
+        capped = index > 0 and rep.register in SECTION_CAPPED_REGISTERS
         regions = sorted({region_register(rep.register, c.region) for c in in_sec})
         if PARENT_SECTION_RE.match(sec):
             reg = region_register(rep.register, "parent notes")
@@ -871,7 +919,8 @@ def summarize(rep: FileReport) -> dict:
             reg = "+".join(regions) if regions else rep.register
         sec_rows.append({
             "section": sec,
-            "preamble": sec == PREAMBLE,
+            "index": index,
+            "preamble": index == 0,
             "register": reg,
             "raw": len(in_sec),
             "counted": len(sec_counted),

@@ -42,9 +42,11 @@ Now practice with a grown-up:
 
 **What AI is and is not** (every planner learns this, even if your family does not use AI):
 
+<!-- density-exempt: X, not Y -- these three lines are the always-core AI lesson every family gets, which the batch 1 brief preserves line for line and ai_use_rules.md names: AI can make things up, is never the only source, and never decides legal, safety, entry, medical, money or booking questions -->
+
 - AI can make up facts that sound right. It is not always correct.
 - AI is never your only source. Always check it against a real source.
-- Legal, safety, entry, medical, money, and booking questions are for the adults.
+- AI never decides legal, safety, entry, medical, money, or booking questions. Those are for the adults.
 
 Tracking *who said it* is the same move you started in Session 04 -- you are getting good at it.
 

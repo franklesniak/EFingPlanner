@@ -4,7 +4,7 @@
 
 Use one card per place you might stay, so you can compare options fairly instead of going on the first one you saw. **You compare. The adults book.**
 
-You don't need one of these for every hotel that exists. Do at least one card for each place you might sleep overnight. Do two only when that base is still genuinely undecided and there are enough real options to compare. Where one option is already obvious, one card is enough. Four or five cards for the whole trip is a finished job. This can be split across several sittings.
+You don't need one of these for every hotel that exists. Do at least one card for each place you might sleep overnight. Do two only when that base is still genuinely undecided and there are enough real options to compare. Where one option is already obvious, one card is enough. Four or five cards for the whole trip is plenty, and that's a finished job. This can be split across several sittings.
 
 | Prompt | Your answer |
 | --- | --- |

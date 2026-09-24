@@ -150,6 +150,13 @@ jobs:
         continue-on-error: true
         run: pytest tests/test_check_x_not_y.py -v
 
+      # A density rewrite must keep the wording a build brief or the spec
+      # requires. This test holds the sentences a recount once dropped.
+      - name: Check required wording
+        id: test-required-wording
+        continue-on-error: true
+        run: pytest tests/test_required_wording.py -v
+
       - name: Check validation results
         if: >-
           steps.lint-outer.outcome == 'failure' ||
@@ -162,7 +169,8 @@ jobs:
           steps.test-toolchain.outcome == 'failure' ||
           steps.test-structure.outcome == 'failure' ||
           steps.lint-structure.outcome == 'failure' ||
-          steps.test-x-not-y.outcome == 'failure'
+          steps.test-x-not-y.outcome == 'failure' ||
+          steps.test-required-wording.outcome == 'failure'
         run: |
           echo "::error::Markdown and toolchain checks failed. Check the logs above for details."
           exit 1

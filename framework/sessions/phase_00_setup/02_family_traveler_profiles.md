@@ -22,11 +22,14 @@ Start a Traveler Profile page for the first traveler on your Trip-Basics card. W
 
 ## Steps
 
-First, read the grown-ups' [Current Family Travel Assumptions page](../../templates/current_family_travel_assumptions.md) once. It says what the grown-ups already worked out -- the rough season, the rough trip shape, and any constraints they know about. A grown-up owns that page and makes any changes to it. Medical details stay with the grown-ups and off your pages.
+<!-- density-exempt: X, not Y -- the batch 1 brief fixes this instruction word for word, including "you read it, but you do not change it" -->
+First, read the grown-ups' [Current Family Travel Assumptions page](../../templates/current_family_travel_assumptions.md) once. It says what the grown-ups already worked out -- the rough season, the rough trip shape, and any constraints they know about. A grown-up owns that page, so you read it, but you do not change it. Medical details stay with the grown-ups and off your pages.
 
 Now start on the travelers. You're planning for a group, so you need to know what the group is like. A profile is a short page of facts about one person: what they like, what wears them out, and what they'd love to do.
 
 Write each traveler **by relationship, not by name**. "A parent," "a grandparent," "a cousin," and "me" all work. That keeps private details off your pages.
+
+<!-- density-exempt: X, not Y -- the relay fallback in step 3 is required in the built Session 03's words, which end with not waiting on anyone's schedule -->
 
 1. Start one Traveler Profile page for each traveler on your roster.
 2. Fill in these fourteen boxes on every profile:
@@ -45,7 +48,7 @@ Write each traveler **by relationship, not by name**. "A parent," "a grandparent
    - **Any needs the planner should design around** -- step-free access, an elevator, an accessible room, help with luggage. You never ask why.
    - **Questions to ask** -- what you still want to find out from them.
 3. **Interview at least one traveler yourself**, whenever there's someone you can talk to. Use the [Family Interview template](../../templates/family_interview.md) and ask the three questions on it: what they'd love on this trip, what they prefer, and what might tire them. Write the answers down in their own words where you can.
-   - If someone is far away or hard to reach, ask them by text or call, or have a grown-up ask and bring back the answer. You can also interview whoever is around now and mark the rest "asked through a grown-up," or leave that answer open. Who can you ask today?
+   - If someone is far away or hard to reach, ask them by text or call, or have a grown-up ask and bring back the answer. You can also interview whoever is around now and mark the rest "asked through a grown-up," or leave that answer open. Do not wait on anyone's schedule.
 4. Read your profiles together and circle anything that clashes. One traveler wants busy days and another wants calm ones? Good. You found that out early.
 
 Three of the boxes are **pacing factors**: stamina, comfort with walking and stairs, and sensory sensitivities. They decide how full a day can be. You'll use all three again later, when you check the pacing of your plan.

@@ -17,7 +17,7 @@ This page is distinct from both of those. It defines no travel words and no dest
 
 ## Terms
 
-<!-- density-exempt: X, not Y -- two entries are defined by their contrast: the agreed label "family decision meeting (not executive meeting)" from the style law's Agreed labels list, and the Named concept Verify-Don't-Trust (never treat volatile facts as fixed) -->
+<!-- density-exempt: X, not Y -- four entries are defined by their contrast: the agreed label "family decision meeting (not executive meeting)" from the style law's Agreed labels list, the agreed label "Make It Yours" zone, which the spec keeps separate from the research, the Stop Point field, whose job is to make "done" a fact, and the Named concept Verify-Don't-Trust (never treat volatile facts as fixed) -->
 
 - **Family decision meeting** -- the sit-down where the child presents a recommendation and the adults decide. Not an "executive meeting."
 - **Adult reviewers** -- the adults who read the child's work, ask questions, and make the final bookings.
@@ -30,10 +30,10 @@ This page is distinct from both of those. It defines no travel words and no dest
 - **[Cut list](../templates/cut_list.md)** -- the things the child chose to leave out, kept on purpose so the choosing is visible.
 - **[Research cards](../templates/city_research_card.md)** -- one page per candidate place, so two candidates can be compared side by side.
 - **"Things I can't wait to see" page** -- the child's running excitement list, started in the first session and fed all the way through.
-- **"Make It Yours" zone** -- the part of a session where the child's own taste decides.
+- **"Make It Yours" zone** -- the part of a session where the child's own taste decides, rather than the research.
 - **"My Calls" page** -- where the decisions that are the child's own are written down, with an adult's one-line acknowledgment beside each, so the authority is visible.
 - **Start Here** -- the micro-action that opens every session, small enough to finish in under a minute.
-- **Stop Point** -- the line that says exactly when the child is done. It leaves no guesswork.
+- **Stop Point** -- the line that says exactly when the child is done, so "done" is a fact rather than a feeling.
 - **[Carry-over tag](design_principles.md)** -- the short callout that names a planning move the child just used and asks where else it would work. It appears only on the session that first introduces that move.
 - **Checkpoint** -- a session where an adult reviews the work before the project moves on.
 - **[Trip-Basics card](../templates/trip_basics.md)** -- the family-owned card holding the few facts about this family and this trip. Each session sends the child to it for those facts.

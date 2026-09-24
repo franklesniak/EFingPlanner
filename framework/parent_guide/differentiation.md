@@ -21,6 +21,8 @@ This project is built for the child who finds planning hard, so the moves on thi
 
 ## Notes for specific needs
 
+<!-- density-exempt: X, not Y -- the spec calibrates both contrasts in this list: light token rewards are a parent-chosen tool, and the checkpoint reflections are for noticing, not grading, with no pressing for long answers -->
+
 - **ADHD.** Lean on initiation supports, an externalized next step (the progress tracker), frequent real wins, and movement. For a child who responds to it, a light point/sticker system can genuinely help them start and follow through -- make rewards immediate and frequent at first, pair them with specific praise ("you started without me asking"), let the child choose the reward, and fade it gradually. The evidence is mixed (well-supported for ADHD initiation; the overjustification research cautions that expected tangible rewards can dampen interest in a task a child already enjoys), so it is a parent-chosen tool for the child it fits, not a default. Organizations like CHADD, the AAP, and the CDC publish behavior-therapy guidance worth reading if you go this route.
 - **Dyslexia.** Read aloud, shorter text, more white space, and never penalize spelling.
 - **Anxiety.** Normalize "good enough," normalize off estimates ("being off is normal"), and make stopping and parking explicitly okay. Use the "real *and* low-stakes" idea to hold realness and calm together.
@@ -29,7 +31,7 @@ This project is built for the child who finds planning hard, so the moves on thi
 - **Auditory processing.** Read-aloud alone may not be enough -- offer text *and* audio together (your child follows the written page while you read it).
 - **Dyscalculia / number anxiety.** Separate the reasoning from the arithmetic: your child decides which costs matter and whether the plan fits the band; you may do the multiplying. Round to easy numbers first. A calculator is always allowed. Keep "estimate, don't be exact" especially loud here.
 - **Maps and spatial reasoning.** A child who finds maps hard is normal at this age. Read the map together, use a map's "Directions" tool to get train times, or sketch a simple left-to-right line of the cities in trip order.
-- **Reflection pressure.** The checkpoint reflections are optional, and they are for your child's own noticing. "Easy / medium / hard, plus one concrete thing," or a quick drawing, is a complete answer. Do not press an anxious child for long or "deep" answers.
+- **Reflection pressure.** The checkpoint reflections are optional and for noticing, not grading. "Easy / medium / hard, plus one concrete thing," or a quick drawing, is a complete answer. Do not press an anxious child for long or "deep" answers.
 
 ## For the eager, capable, fast child (High-Engagement Mode)
 

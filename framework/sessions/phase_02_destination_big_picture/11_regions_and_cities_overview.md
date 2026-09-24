@@ -40,7 +40,8 @@ Do this now:
 3. Follow the other pointer to your destination pack's major-cities reference and read the route shapes there. Copy **one** of them onto your notes. Read it as an anchor to compare your own ideas against, and not as the answer. You haven't chosen anything yet.
 4. Mark anything you want to check later. Travel times change, and the pack tells you which facts to confirm close to the trip.
 
-> Your job is to understand enough geography to make better travel decisions.
+<!-- density-exempt: X, not Y -- the batch 1 brief gives this block quote as the session's canonical reassurance, word for word -->
+> You do not need to memorize this. Your job is to understand enough geography to make better travel decisions.
 
 Researching a place does not mean choosing it. You're collecting options now. The route is still yours to build later, and the trade-offs that go with it are still yours to make.
 
