@@ -18,13 +18,13 @@ Check that your list of things to do has a good mix, so the trip isn't the same 
 
 ## Start Here
 
-Pick up your first attraction card and read its Type row. Put one tally mark in that row of the balance chart below. That's your start.
+Pick up your first attraction card and read its Type row. If it has no type yet, choose one and write it in. Put one tally mark in that row of the balance chart below. That's your start.
 
 ## Steps
 
 Ten museums in a row sounds fun until about the third one. A good plan mixes different kinds of days. This session shows you your mix, so you can see it at a glance.
 
-1. **Sort each card.** Read the Type row on each attraction card. Put a tally mark in the matching row of the chart. Each card goes in one category.
+1. **Sort each card.** Read the Type row on each attraction card. Put a tally mark in the matching row of the chart. Each card goes in one category. If a Type row is blank or says "not sure yet", choose the type now and write it in. Pick one of the nine, or write what the place is if none fits.
 2. **A card that doesn't match?** If its Type row names something outside the nine, write it on the odd-ones-out line under the chart. An honest odd one out is fine.
 3. **Look at the whole chart.** Which rows have lots of marks? Which have none?
 4. **Ask the mix question.** Would the trip feel like the same kind of day again and again? Is there room for rest?

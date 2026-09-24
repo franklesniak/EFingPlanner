@@ -139,7 +139,7 @@ Want a rough signal of how the executive-function side is going? The optional [e
 
 - Role: 5-minute check-in.
 - Prep: the two city cards; the Family Trip Goals page, for the poll; the assumptions page, for the budget band; a Scoring Rubric page. On the Core path, also the City Long-List and the cards for every place kept in the running.
-- Look for: two cities scored on three things, a written trade-off, and a recommendation (one city, or both kept on purpose). On the Core path, every place kept in the running is scored too, a whole region as one town you help choose, and the money check covers them all.
+- Look for: two cities scored on three things, a written trade-off, and a recommendation (one city, or both kept on purpose). On the Core path, every place kept in the running is scored too, a whole region as one town you help choose, and the money check covers them all. The recommendation can then name more than two places, each with a rough number of days.
 - Coaching question: "Does the total match your gut? Walk me through it."
 - Pitfall: treating the score as the decision. The trade-off sentence is the real work.
 
