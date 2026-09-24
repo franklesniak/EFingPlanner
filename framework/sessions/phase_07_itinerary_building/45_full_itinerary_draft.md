@@ -10,7 +10,7 @@ You are here: Phase 7 (Itinerary Building). Not a First Taste step. Previous: [4
 - Planner skill: organizing information
 - Estimated time: several sittings; stop whenever you want
 - Parent involvement: none / independent work
-- Materials: your [Trip-Basics card](../../templates/trip_basics.md) (for the trip length), your day cards from Session 41, your pacing review from Session 43, your backup plans and cut list from Session 44, your reservation watchlist, your budget summary from Session 39, your route and nights from Checkpoint 4, your Session 29 formula (for its "- 1 flight day" marks), or a grown-up who can tell you which flights land on a later date, your route map notes from Session 28, the City Research Card for any region on your route (for its town), your family's [current travel assumptions](../../templates/current_family_travel_assumptions.md) page (for the arrival and departure places), a device with a map app or map website (kid-safe filter on), your minutes guesses from Sessions 16, 26 and 35 (on your City A card, your Session 26 scoring page and your hotel comparison cards), a timer, a few blank pages
+- Materials: your [Trip-Basics card](../../templates/trip_basics.md) (for the trip length), your day cards from Session 41, your pacing review from Session 43, your backup plans and cut list from Session 44, your reservation watchlist, your budget summary from Session 39, your route and nights from Checkpoint 4, your Session 29 formula (for its "- 1 flight day" marks), or a grown-up who can tell you which flights land on a later date, your route map notes from Session 28, the City Research Card for any region on your route (for its town), your family's [current travel assumptions](../../templates/current_family_travel_assumptions.md) page (for the arrival and departure places), a device with a map app or map website (kid-safe filter on), your minutes guesses and times from Sessions 16, 26 and 35 (on your City A card, your Session 26 scoring tables and your Session 35 hotel comparison cards), a timer and a clock, a few blank pages
 
 ## Goal
 
@@ -20,7 +20,7 @@ Put everything you've built into one day-by-day plan.
 
 Set up your own first step, then take it. One idea: stack your day cards in order and write "Day 1" on a blank page.
 
-Then set your timer for 20 minutes, and write a guess in the corner: "I think this sitting will take ___ minutes." Note the time you start. Start each new sitting the same way, with a fresh timer and a new guess.
+Then set your timer for 20 minutes, and write a guess in the corner of your draft's first page: "I think this sitting will take ___ minutes." Note the time you start. Start each new sitting the same way, with a fresh timer and a new guess.
 
 ## Steps
 
@@ -61,7 +61,7 @@ Your full itinerary draft: one row for every day of the trip, copied forward fro
 
 You are done for today when you stop at the end of a day's row and write how many minutes this sitting took next to your guess. Being off is normal.
 
-The session is finished when every day in your route has a row. That includes a travel row for each flight day. Each row has at least an overnight city and a main activity. The first and last days carry their travel legs, once a grown-up has written those places down. Days your pacing review made gentler are copied that way, and nothing on your cut list is in. Any travel time you had to look up is in your route map notes. Blank boxes are fine, and a plan with gaps is still a plan. Every sitting has its minutes guess, with the minutes it took beside it. When it's finished, look back at Sessions 16, 26 and 35. If one of those has no guess, compare with the ones that do. Is the gap between your guess and your time smaller now than it was then?
+The session is finished when every day in your route has a row. That includes a travel row for each flight day. Each row has at least an overnight city and a main activity. The first and last days carry their travel legs, once a grown-up has written those places down. Days your pacing review made gentler are copied that way, and nothing on your cut list is in. Any travel time you had to look up is in your route map notes. Blank boxes are fine, and a plan with gaps is still a plan. Every sitting has its minutes guess, with the minutes it took beside it. When it's finished, look back at your guesses and times from Sessions 16, 26 and 35, on your City A card, your Session 26 scoring tables and your Session 35 hotel comparison cards. If one of those has no guess, compare with the ones that do. Is the gap between your guess and your time smaller now than it was then?
 
 ## Source Check
 

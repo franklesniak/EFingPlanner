@@ -12,7 +12,7 @@ You are here: Phase 8 (Readiness and Final), First Taste step 13 of 13. **This i
 - Planner skill: reflection; knowing when to stop
 - Estimated time: 20-30 minutes
 - Parent involvement: co-working recommended; deliver the finish acknowledgment warmly
-- Materials: your baseline reflection from Session 01, your budget estimate from Session 33, a [Final Reflection page](../../templates/final_reflection.md), and the plan pages you hand over: your Checkpoint 1 season, your city choice from Session 21, and your must-see list and special pick from Session 44. On the Core path, also your assembled binder from Session 50, your checkpoint reflections, your minutes guesses from Sessions 16, 26, 35 and 45, your budget summary from Session 39, your family's [current travel assumptions](../../templates/current_family_travel_assumptions.md) page (for the budget band), and the final reflection page in your kit's `outputs` folder, plus your First Taste reflection if this is your capstone re-run.
+- Materials: your baseline reflection from Session 01, your budget estimate from Session 33, a [Final Reflection page](../../templates/final_reflection.md), and the plan pages you hand over: your Checkpoint 1 season, your city choice from Session 21, and your must-see list and special pick from Session 44. On the Core path, also your assembled binder from Session 50, your checkpoint reflections, your minutes guesses and times from Sessions 16, 26, 35 and 45 (on your City A card, your Session 26 scoring tables, your Session 35 hotel comparison cards and your itinerary draft), your budget summary from Session 39, your family's [current travel assumptions](../../templates/current_family_travel_assumptions.md) page (for the budget band), and the final reflection page in your kit's `outputs` folder, plus your First Taste reflection if this is your capstone re-run.
 
 ## Goal
 
@@ -41,7 +41,7 @@ These are the same planning moves people use for homework, chores, and any big p
 **On the Core path, three more questions.** Your answers go on the final reflection page in your kit's `outputs` folder.
 
 - **Patterns.** Look at the one-line reflections from your checkpoints, however many you wrote. What felt easy or hard more than once? What helped more than once?
-- **Time.** In Sessions 16, 26, 35 and 45, how big was the gap between your guess and your time? Did the gaps get smaller with practice? Being off is normal.
+- **Time.** In Sessions 16, 26, 35 and 45, how big was the gap between your guess and your time? Did the gaps get smaller with practice? If one of those has no guess, use the ones that do. Being off is normal.
 - **Budget.** How close did your Session 39 budget come to your family's band? The band is the anchor you compare with, since nobody has spent the money yet.
 
 **Hand it off.** Give your plan to the grown-ups: your season pick (or your season confirmation, if your dates were booked), your city choice (with roughly how many days for each), your must-see list, your one special pick, and your budget check. You did the planning; they do the booking. On the Core path, hand over the full binder you put together in Session 50.

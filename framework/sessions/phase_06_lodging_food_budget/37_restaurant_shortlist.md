@@ -29,7 +29,7 @@ A card can be about one place to eat, or about a whole area with lots of places 
 1. **Open this session's Destination Notes.** Find where the foods on your wish list are easy to find. If you search beyond them, have a grown-up nearby, and beside you for an image search.
 2. **Start near where you'll be.** Look near a hotel from your Session 35 cards, or near a must-do on your My Calls page.
 3. **Fill in one card for each place or area.** Before you start a new card, check that you don't already have one for that place or area. Go from top to bottom. For "Reservation needed?", "ask an adult" is a finished answer. For "Cash-only?", write what your source says, and mark it for a grown-up to check.
-4. **Aim for one card per main city** where you'll sleep overnight, on the route the grown-ups approved at Checkpoint 4.
+4. **Aim for one card per main city** where you'll sleep overnight, on the route the grown-ups approved at Checkpoint 4. You can make the cards over more than one sitting.
 5. **Fill in the planning assumption rows** at the bottom of each card.
 
 Your Destination Notes may point to a local review site. Sites like that can be great, but they may be in another language. So ask an adult to help, and it's fine to skip it.
@@ -48,7 +48,9 @@ Your Restaurant Research Cards and dining-area list: at least one place or area 
 
 ## Stop Point
 
-You are done when you have at least one card for each main city where you'll sleep overnight, with its planning assumption rows filled in. Each card whose group is bigger than about four has a seating note. An area full of places to eat counts as a card, and your area cards are your dining-area list. If you're unsure whether a place needs a reservation, write "ask an adult". That's a finished answer.
+You are done for today when you stop at the end of a card.
+
+The session is finished when you have at least one card for each main city where you'll sleep overnight, with its planning assumption rows filled in. Each card whose group is bigger than about four has a seating note. An area full of places to eat counts as a card, and your area cards are your dining-area list. If you're unsure whether a place needs a reservation, write "ask an adult". That's a finished answer.
 
 ## Source Check
 
