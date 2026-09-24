@@ -64,7 +64,7 @@ Your food wish list: a few foods you'd like to try, each marked as a special, ea
 
 ## Stop Point
 
-You are done when your food wish list has a few foods, or kinds of places to eat, that you want to try, at least one is marked as a special meal and one as an easy meal, and each has its source. A short list is a finished list. "Not sure yet" is fine in any box.
+You are done when your food wish list has a few foods, or kinds of places to eat, that you want to try, each marked special, easy or wherever-we-are, with at least one special meal and one easy meal, and each has its source. A short list is a finished list. "Not sure yet" is fine in any box.
 
 ## Source Check
 

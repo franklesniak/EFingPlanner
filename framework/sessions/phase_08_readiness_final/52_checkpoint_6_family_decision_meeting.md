@@ -10,7 +10,7 @@ You are here: Phase 8 (Readiness and Final). Not a First Taste step. **This is C
 - Planner skill: making trade-offs
 - Estimated time: 20-30 minutes for the child, plus the family decision meeting
 - Parent involvement: parent review -- genuinely use the recommendation in a real family talk
-- Materials: your presentation outline from Session 51, your assembled binder, your route map notes from Session 28 and a device with a map app or map website (kid-safe filter on) (in case a change moves where you arrive or leave), your [Source Log](../../templates/source_log.md), a [Decision Record page](../../templates/decision_record.md)
+- Materials: your presentation outline from Session 51, your assembled binder (with your Session 39 budget summary), your Family Trip Goals page from Session 03 (for the poll and your balancing line), your route map notes from Session 28 and a device with a map app or map website (kid-safe filter on) (in case a change moves where you arrive or leave), your [Source Log](../../templates/source_log.md), a [Decision Record page](../../templates/decision_record.md)
 
 ## Goal
 
@@ -24,8 +24,8 @@ Set up your first small step, then do it. One suggestion: write the date of the 
 
 This is the **family decision meeting**. The family gathers, you present your plan the way you chose in Session 51, and the grown-ups decide.
 
-1. Present your recommendation from your outline.
-2. **Reasons.** Give two or three reasons for it, each tied to something you found.
+1. Present your recommendation from your outline. Bring your Session 39 budget summary, with its band sentence.
+2. **Reasons.** Give two or three reasons for it, each tied to something you found. Then look at every traveler's answer on the poll from Session 03, and your line on how you balanced what people wanted. Say whose "one thing you'd love" the plan makes room for, and name anyone it leaves out.
 3. Listen to what the grown-ups approve, what they'd change, and what they'll check or book. Write it in your packet in the Workspace.
 4. Hand over your handoff list. Every item on it belongs to the grown-ups. Your job is to hand each one over clearly.
 5. The grown-ups pick one of four answers: Approved, Approved with changes, Needs more research, or Park this decision for later. Write their answer in your Decision Record.
@@ -44,6 +44,7 @@ Your final recommendation packet. Your Decision Record page and your presentatio
 | --- | --- |
 | My final recommendation | |
 | My reasons | |
+| Whose "one thing you'd love" the plan makes room for, and anyone it leaves out | |
 | What the grown-ups approve | |
 | What changes | |
 | What the grown-ups will check or book | |
@@ -75,7 +76,7 @@ Your final recommendation packet: your recommendation and reasons, what the fami
 
 ## Stop Point
 
-You are done for today when your packet gives your reasons, what the grown-ups approve, what changes and what they'll check or book, the family has picked one of the four choices, you've written it in your decision log, and your handoff list says who is doing what next. "Ask an adult" is a fine answer in any row. The checkpoint is finished when the answer is Approved, or Approved with changes once you've written the changes in. Here, a parked decision is the result, so it finishes the checkpoint too. With Needs more research, it stays open until you come back to it. Any of the four is a result that counts.
+You are done for today when your final recommendation packet is filled in and you've brought it to the family decision meeting, with your Session 39 budget summary and its band sentence. The packet is filled in when every row of its table has an answer, your handoff list says who does each job next, and your Decision Record has your recommendation, reasons, sources and trade-offs. When the family decides, write their answer in your Decision Record. "Ask an adult" is a fine answer in any row. The checkpoint is finished when the answer is Approved, or Approved with changes once you've written the changes in. Here, a parked decision is the result, so it finishes the checkpoint too. With Needs more research, it stays open until you come back to it. Any of the four is a result that counts.
 
 Before you start Session 53:
 

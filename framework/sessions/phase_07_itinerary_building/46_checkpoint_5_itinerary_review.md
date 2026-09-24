@@ -26,7 +26,7 @@ Choose your first move and make it. If you want a suggestion, write one thing yo
 
 1. Fill in the five answers in the Workspace. Your draft, your cards, your reservation watchlist, your budget summary and your cut list have everything you need.
 2. **Reasons.** Write two or three reasons your plan works, each tied to something you found.
-3. Put your itinerary draft and its day cards in front of a grown-up, with your five answers. They need the draft itself to judge the pacing, the travel, the meals and the rest.
+3. Put your itinerary draft and its day cards in front of a grown-up, with your five answers, your reasons and your Session 39 budget summary. They need the draft itself to judge the pacing, the travel, the meals and the rest.
 4. The grown-up picks one of four answers: Approved, Approved with changes, Needs more research, or Park this decision for later. It might be a quick call, a note, or a talk at the table. Any of the four is a normal result.
 5. Write their answer in your Decision Record.
 
@@ -60,7 +60,7 @@ Your itinerary review packet: your itinerary draft and its day cards, plus your 
 
 ## Stop Point
 
-You are done for today when your draft and its day cards are in front of a grown-up, your review packet has all five parts and your reasons filled in, a grown-up has written down which of the four choices they picked, and you've written that decision in your decision log. "Not sure yet" is a fine answer in any row. The checkpoint is finished when the answer is Approved, or Approved with changes once you've written the changes in. With the other two answers, it stays open until you come back to it.
+You are done for today when your review packet is filled in and you've brought it to a grown-up, with your draft, its day cards and your Session 39 budget summary with its band sentence. The packet is filled in when every row of its table has an answer, and your Decision Record has your recommendation, reasons, sources and trade-offs. When the grown-up decides, write their answer in your Decision Record. "Not sure yet" is a fine answer in any row. The checkpoint is finished when the answer is Approved, or Approved with changes once you've written the changes in. With the other two answers, it stays open until you come back to it.
 
 Before you start the next session:
 

@@ -66,7 +66,7 @@ Your updated budget summary: a hotel line for each city, the other slices, and o
 
 ## Stop Point
 
-You are done when your budget summary matches the route the grown-ups approved at Checkpoint 4, your subtotal is added up, you've checked the matching piece against your band, and you've written one sentence about whether the parts you chose fit. If they don't, say what you'd change. "It doesn't fit, so I'd cut ___" is a finished, good answer. If the number of us changes during a stay, that city has a row for each room count. If your special pick hit a block, you've chosen a new one from your attraction cards with a grown-up, and it's on your must-do list in place of the blocked one. "Ask an adult" is fine in any row you can't fill.
+You are done when your budget summary matches the route the grown-ups approved at Checkpoint 4, with a hotel line for each city and the other slices filled in, your subtotal is added up, you've checked the matching piece against your band, and you've written one sentence about whether the parts you chose fit. If they don't, say what you'd change. "It doesn't fit, so I'd cut ___" is a finished, good answer. If the number of us changes during a stay, that city has a row for each room count. If your special pick hit a block, you've chosen a new one from your attraction cards with a grown-up, and it's on your must-do list in place of the blocked one. "Ask an adult" is fine in any row you can't fill.
 
 ## Source Check
 

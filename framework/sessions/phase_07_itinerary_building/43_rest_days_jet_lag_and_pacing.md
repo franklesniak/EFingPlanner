@@ -27,13 +27,13 @@ A plan can look great on paper and still be too much on the day. This session ch
 1. Lay out your day cards in order.
 2. Go down the checks in the Workspace, one row at a time. Mark yes or no, and add a short note.
 3. For any day that needs it, write one way to make it gentler. You could move a big thing, add a break, or swap in a rest day. Then go down the checks again for each day you changed. If every day passes, write that.
-4. Write your flags for the adults.
+4. Write your flags for the adults. If a day is hard on one traveler, say who, by how they're related to you.
 
-**Everyone's energy.** Look at the stamina notes on the traveler profiles. An older relative, for example a grandparent, may tire more easily on a long trip, even with no trouble walking. Hot, sticky weather makes that matter more. If someone like that is coming, a kinder plan is usually shorter and gentler than your family's maximum trip length on your Trip-Basics card: fewer cities, more nights in each, and a rest day built in. If your dates are booked, that row holds the booked trip length. Keep it, and make the same changes inside it.
+**Everyone's energy.** Go through every traveler's profile, and look at the stamina notes. An older relative, for example a grandparent, may tire more easily on a long trip, even with no trouble walking. Hot, sticky weather makes that matter more. If someone like that is coming, a kinder plan is usually shorter and gentler than your family's maximum trip length on your Trip-Basics card: fewer cities, more nights in each, and a rest day built in. If your dates are booked, that row holds the booked trip length. Keep it, and make the same changes inside it.
 
 **Walking and stairs.** Some trips add up to a lot of walking every day. If your trip uses trains, some station changes mean long walks and many stairs, and an elevator isn't always there. Your destination pack's transportation basics page says what to expect. Look for days that pile up walking or stairs, especially in hot weather.
 
-**Busy, noisy days.** Check the sensory notes on the profiles too. If loud or crowded days are stacked together, plan a quieter stretch after them.
+**Busy, noisy days.** Check the sensory notes on every profile too. If loud or crowded days are stacked together, plan a quieter stretch after them.
 
 **Flag it for the adults.** Mark any spot that might be hard for an older traveler or someone who can't manage stairs, such as a stair-heavy station, a hilltop place, or a station that might have no elevator. You notice and flag. Finding the fix is the grown-ups' part.
 
@@ -66,7 +66,7 @@ Your pacing checks:
 
 Your flags for the adults. Need more rows? Copy this table onto a blank page.
 
-| Day or place | What might be hard |
+| Day or place | What might be hard, and for whom |
 | --- | --- |
 | | |
 | | |
