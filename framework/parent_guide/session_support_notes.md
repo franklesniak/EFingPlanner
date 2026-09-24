@@ -247,9 +247,9 @@ Want a rough signal of how the executive-function side is going? The optional [e
 
 ## Session 29: How Long to Stay
 
-- Role: Independent; beforehand, tell your child how long getting there takes and which flights land on a later date.
-- Prep: your two travel facts: whether getting there takes only a few hours, and a count of the flights that land on a later date, with no dates; the Trip-Basics card, for the maximum trip length or the booked length and for the time difference; the route map notes; the traveler profiles.
-- Look for: the real-days formula filled in, with a ½ over each 1 for a short journey and a "- 1 flight day" mark for each flight that lands on a later date; and nights for each overnight place that fit between the floor and the maximum, or that share out the booked trip.
+- Role: Independent; beforehand, tell your child how long the trips there and home take and which flights land on a later date.
+- Prep: your three travel facts: whether getting there takes only a few hours, whether the trip home does, and a count of the flights that land on a later date, with no dates; the Trip-Basics card, for the maximum trip length or the booked length and for the time difference; the route map notes; the traveler profiles.
+- Look for: the real-days formula filled in, with a ½ over the arrival 1 for a short trip there, a ½ over the departure 1 for a short trip home, and a "- 1 flight day" mark for each flight that lands on a later date; and nights for each overnight place that fit between the floor and the maximum, or that share out the booked trip.
 - Coaching question: "Where would one more night help most?"
 - Pitfall: treating the maximum as the target. For a mixed-stamina group, shorter and gentler usually works better.
 
@@ -336,8 +336,8 @@ Want a rough signal of how the executive-function side is going? The optional [e
 ## Session 40: Realistic Day Planning
 
 - Role: Independent, with a 5-minute check-in. This is the Phase 7 hand-off: your child sets up the whole session. Lighter page: read the Steps with your child until they manage two sessions in a row without the When I'm Stuck card or leaning on the Steps. Start Here, the Stop Point, the artifact and the Source Check always stay.
-- Prep: the destination pack's airports and arrival page, or the official airport or transport site; the route and nights approved at Checkpoint 4, with the route map notes; the My Calls page; the Trip-Basics card, for how the family gets there; the Session 29 formula, for its ½ marks, which show a short journey; the assumptions page, for the arrival and departure places; a device with a map app.
-- Look for: a short list of day rules, with first-day and last-day rules that fit the journey (a long one takes most of the day, a short one about half), and a star by the rule your child would break first.
+- Prep: the destination pack's airports and arrival page, or the official airport or transport site; the route and nights approved at Checkpoint 4, with the route map notes; the My Calls page; the Trip-Basics card, for how the family gets there; the Session 29 formula, for its ½ marks, which show a short trip there or home; the assumptions page, for the arrival and departure places; a device with a map app.
+- Look for: a short list of day rules, with a first-day rule that fits the trip there and a last-day rule that fits the trip home (a long one takes most of the day, a short one about half), and a star by the rule your child would break first.
 - Coaching question: "How did you decide how to set this session up?" This is the Phase 7 formative check.
 - Pitfall: setting it up for them. If they freeze, point at the suggestion on the page.
 
