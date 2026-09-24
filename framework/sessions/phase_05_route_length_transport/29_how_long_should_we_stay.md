@@ -34,6 +34,7 @@ How long should we stay? That's today's question. You'll answer it with a fill-i
 
 - **Arrival day is mostly used up.** Getting there, finding where you'll sleep, and settling in fill most of it.
 - **Departure day is mostly used up, too.** Packing and getting to the airport or station take time.
+- **A short journey uses less.** If getting there takes only a few hours, take away half a day for arrival, and half a day for the trip home.
 - **Jet lag matters.** Look at the time difference on your Trip-Basics card. If it's a big number, your body will still be on home time for the first two or three days. It may feel like the middle of the night when it's daytime there. So plan those days gently, on purpose. For your jet-lag days, write 0 if the time difference is small, and 1 or 2 if it's big.
 - **The date line, if it applies.** If you fly and your flight crosses the date line, a calendar day seems to vanish on the way out and comes back on the way home. Ask a grown-up whether that happens on your trip.
 

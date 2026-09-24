@@ -35,7 +35,7 @@ Work down your City B card, with City A right beside it:
 5. **Add each source to your Source Log** as you go, with today's date.
 6. **Fill the planning assumption rows** at the bottom of the card, the same way you did for City A.
 
-Say out loud, or jot in the margin, one way City B is different from City A. You'll use that in Session 21.
+Say out loud, or jot in the margin, one way City B is different from City A. It can help with your trade-off in Session 21.
 
 ## Workspace
 

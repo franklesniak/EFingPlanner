@@ -1678,6 +1678,10 @@ Give the concrete template first:
 for genuinely preformatted content such as a single worked formula, and inline underscore
 blanks are allowed inside a worked-formula table cell.
 
+**A short journey is the one variant.** When getting there takes only a few hours, the
+child takes away half a day each for arrival and departure. The printed formula stays as
+quoted, and one teaching line says when the half applies.
+
 Then a plain **floor and ceiling check**: "Are there too few real days to be worth the long
 flight?" and "Is the total within your family's maximum trip length?" **When the family's
 dates are already booked, the booked trip length is the total.** The child splits it into

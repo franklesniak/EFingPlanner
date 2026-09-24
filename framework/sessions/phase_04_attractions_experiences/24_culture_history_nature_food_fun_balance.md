@@ -73,7 +73,7 @@ Stuck? Use the [When I'm Stuck card](../../student_guide/when_im_stuck.md) in yo
 
 ## Optional Extension
 
-If you have extra energy, start one new attraction card for the category you circled. Treat it like any other card in Session 23. If not, you are done.
+If you have extra energy, start one new attraction card for the category you circled. Treat it like any other card in Session 23. When it's done, add its tally mark to your balance chart. If not, you are done.
 
 ## Parent Notes
 
