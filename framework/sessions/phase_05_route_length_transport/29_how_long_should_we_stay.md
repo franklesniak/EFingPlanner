@@ -9,7 +9,7 @@ You are here: Phase 5 (Route, Length, and Transportation). Not a First Taste ste
 - Status: Core
 - Planner skill: planning realistic time
 - Estimated time: 20-30 minutes
-- Parent involvement: none / independent work; beforehand, tell your child how long getting there takes and which flights land on a later date
+- Parent involvement: none / independent work; beforehand, tell your child how long the trips there and home take and which flights land on a later date
 - Materials: your [Trip-Basics card](../../templates/trip_basics.md) (maximum trip length and time difference), your route map notes from Session 28, your traveler profiles, a pencil, a calculator (allowed)
 
 ## Goal
@@ -34,7 +34,7 @@ How long should we stay? That's today's question. You'll answer it with a fill-i
 
 - **Arrival day is mostly used up.** Getting there, finding where you'll sleep, and settling in fill most of it.
 - **Departure day is mostly used up, too.** Packing and getting to the airport or station take time.
-- **A short journey uses less.** If getting there takes only a few hours, take away half a day for arrival, and half a day for the trip home. Write ½ over each 1 in the formula.
+- **A short journey uses less.** If getting there takes only a few hours, take away half a day for arrival: write ½ over the 1 before "arrival day". If the trip home takes only a few hours, do the same for departure: write ½ over the 1 before "departure day".
 - **Jet lag matters.** Look at the time difference on your Trip-Basics card. If it's a big number, your body will still be on home time for the first two or three days. It may feel like the middle of the night when it's daytime there. So plan those days gently, on purpose. For your jet-lag days, write 0 if the time difference is small, and 1 or 2 if it's big.
 - **The date line and night flights, if they apply.** If you fly and your flight crosses the date line, a calendar day seems to vanish on the way out and comes back on the way home. A night flight can land on a later date, too. For each flight that lands on a later date than it took off, take away 1 more day. Ask a grown-up which of your flights do that. For each one, write "- 1 flight day" just before the equals sign in the formula.
 
@@ -97,7 +97,7 @@ If you have extra energy, reason out your own floor and ceiling in words (with b
 
 ## Parent Notes
 
-**Before this session.** Tell your child two travel facts. Does getting there take only a few hours? And if you fly, which flights land on a later date than they take off, as a night flight or a date-line crossing can? A count of those flights is enough, so no dates go on the page.
+**Before this session.** Tell your child three travel facts. Does getting there take only a few hours? Does the trip home? And if you fly, which flights land on a later date than they take off, as a night flight or a date-line crossing can? A count of those flights is enough, so no dates go on the page.
 
 The time difference and the maximum trip length both come from your Trip-Basics card, so the session never states a number. With the dates booked, the booked length is the total and your child splits it; the floor question becomes whether the booked days leave room for every place chosen.
 

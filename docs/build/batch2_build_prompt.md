@@ -1706,15 +1706,16 @@ for genuinely preformatted content such as a single worked formula, and inline u
 blanks are allowed inside a worked-formula table cell.
 
 **Two things change the printed numbers.** When getting there takes only a few hours, the
-child takes away half a day each for arrival and departure. When a flight lands on a later
-date than it took off, as a date-line crossing or a night flight can, the child takes away
-one more day for that flight, and one more night in the nights check. The printed formula
-stays as quoted, and one teaching line says when each change applies and how to mark it on
-the formula: ½ written over each 1 for a short journey, and "- 1 flight day" before the
-equals sign for each later-date flight. Checkpoint 4 counts each flight day again when it
-turns the nights into total days. **The adult answers both questions before the session**,
-and the strip names that step after a semicolon. A count of flights is enough, so no date
-goes on the page.
+child takes away half a day for arrival, and when the trip home does, half a day for
+departure. The two trips are asked about separately. When a flight lands on a later date
+than it took off, as a date-line crossing or a night flight can, the child takes away one
+more day for that flight, and one more night in the nights check. The printed formula stays
+as quoted, and one teaching line says when each change applies and how to mark it on the
+formula: ½ written over the arrival or the departure 1 for a short trip that way, and
+"- 1 flight day" before the equals sign for each later-date flight. Checkpoint 4 counts
+each flight day again when it turns the nights into total days. **The adult answers these
+questions before the session**, and the strip names that step after a semicolon. A count
+of flights is enough, so no date goes on the page.
 
 Then a plain **floor and ceiling check**: "Are there too few real days to be worth the long
 flight?" and "Is the total within your family's maximum trip length?" **When the family's
@@ -4319,7 +4320,7 @@ from this table. (`D-item-7`.)
 | 26 | ranking priorities | 20-30 minutes | 5-minute check-in; help co-choose the one unconditional pick | Core |
 | 27 | making trade-offs | 20-30 minutes for the child, plus a 20-40 minute review with you | parent review -- genuinely use the recommendation in a real family talk | Core -- **Checkpoint 3** |
 | 28 | planning realistic time | 20-30 minutes | 5-minute check-in | Core |
-| 29 | planning realistic time | 20-30 minutes | none / independent work; beforehand, tell your child how long getting there takes and which flights land on a later date | Core |
+| 29 | planning realistic time | 20-30 minutes | none / independent work; beforehand, tell your child how long the trips there and home take and which flights land on a later date | Core |
 | 30 | checking sources | 20-30 minutes | none / independent work | Core |
 | 31 | making trade-offs | 20-30 minutes | parent review after session | Core |
 | 32 | making trade-offs | 20-30 minutes for the child, plus a 20-40 minute review with you | parent review -- genuinely use the recommendation in a real family talk | Core -- **Checkpoint 4** |
