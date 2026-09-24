@@ -46,7 +46,7 @@ A group vote does not override this one. Set it up to be keepable: co-choose an 
 **The "here's how your plan shaped what we booked" reveal** (after booking):
 > "Want to see how your plan turned into our real trip? You recommended three nights in the place you picked -- here's our hotel there, three nights. Your must-do aquarium is on Day 4."
 
-Five minutes showing this, concretely, is the strongest answer to "was my advisory work real?" -- far stronger than reassurance. Where you changed something, say why.
+Five minutes showing this, concretely, lets your child see their own recommendations in the trip you booked, and that is the strongest answer to "was my advisory work real?" Where you changed something, say why.
 
 **Naming the fixed family decision warmly:**
 > "Two things the grown-ups picked: that we're going, and where. The planning -- which places, the must-dos, the order of your days, your one special pick -- is really yours."

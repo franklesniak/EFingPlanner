@@ -5,7 +5,7 @@
 
 This page is for the adult, and most of it can be read aloud to the child. It is the canonical home for three things the sessions point to: the current-information rule, lateral reading, and the difference between a primary and a secondary source.
 
-Nothing here names a place. The destination pack carries the list of which sources are worth starting from for one particular destination, and which of them publish in English.
+Everything on this page applies to any destination. The destination pack carries the list of which sources are worth starting from for one particular destination, and which of them publish in English.
 
 ## Kinds of sources
 
@@ -43,6 +43,7 @@ Before you look anything up, ask what kind of question you have. The answer deci
 
 A guidebook is the best orientation tool in this project. One evening with one book gives a child the shape of a place that a hundred search results will not.
 
+<!-- density-exempt: X, not Y -- the guidebook rider the batch 1 brief (F5) requires on this page: for orientation and not current facts, with the year check and the older library edition -->
 It is not a source for current facts. Find the publication year on the copyright page, say it out loud, and treat every price, opening time and rule in the book as something to confirm against an official source with the date checked. A library edition can be several years older still, which is fine for orientation and useless for hours.
 
 ## The three fields that record the check
@@ -57,7 +58,7 @@ When a fact matters and the sources disagree, when it came from an AI tool, or w
 
 ## Two moves that make you harder to fool
 
-**Lateral reading.** Instead of reading further down a page to decide whether to trust it, open a new tab and look up the site itself. Who runs it? Do they sell the thing they are recommending? What do other sources say about them? A minute of reading sideways answers those questions, and the page itself leaves them open however far down you read.
+**Lateral reading.** Instead of reading further down a page to decide whether to trust it, open a new tab and look up the site itself. Who runs it? Do they sell the thing they are recommending? What do other sources say about them? A minute of reading sideways answers those questions, and the answers tell you how far to trust the page.
 
 **Primary and secondary sources.** A primary source is the one the fact comes from: the museum saying its own hours, the government saying its own entry rules, the railway saying its own timetable. A secondary source is somebody reporting that fact: an article, a blog post, a video, a summary. Secondary sources are useful for finding things out and weak for pinning things down. When something matters, follow it back to the primary source.
 
@@ -65,6 +66,7 @@ When a fact matters and the sources disagree, when it came from an AI tool, or w
 
 Some facts stay put, and some are only true this week. Prices, opening hours, closures, travel advisories, entry rules, visa rules, rail-pass rules and ticketing rules all belong in the second group.
 
+<!-- density-exempt: X, not Y -- the current-information rule the batch 1 brief (F5) requires here, the Verify-Don't-Trust Named concept, whose home is this page -->
 Never write one of those into a plan as a settled fact. Write it with three habits instead:
 
 - "Check the official website."
@@ -72,7 +74,7 @@ Never write one of those into a plan as a settled fact. Write it with three habi
 - "Adults must verify before booking."
 - "Requirements can change."
 
-Seasons work the same way. Name the category rather than the date: a busy holiday week, a rainy season, a storm season. Which weeks they fall in is a thing to confirm for the year the family is traveling.
+Seasons work the same way. Name the category: a busy holiday week, a rainy season, a storm season. Which weeks they fall in is a thing to confirm for the year the family is traveling.
 
 Some destinations have a whole category of fast-changing rules, and the pack will say so. Treat that category as "re-check close to travel."
 

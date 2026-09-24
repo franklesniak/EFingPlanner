@@ -32,6 +32,8 @@ You do not have to commit to the whole project to start. Do Phases 0-2, reach Ch
 
 If you are stretched, or you share your child's executive-function challenges, you can run this with less load -- and doing less here is a legitimate, designed choice, not a corner cut:
 
+<!-- density-exempt: X, not Y -- the batch 1 brief fixes this list's second bullet word for word (the Sessions 05 and 08 exception) and keeps the other five bullets as built -->
+
 - Run First Taste (or the Core Finish Line) only.
 - Replace per-session co-working with a quick after-the-session glance -- except Sessions 05 and 08, which stay hands-on; 08 is the open-web research session.
 - Use the [coaching scripts](coaching_and_support.md) as-is, so you have nothing to improvise.
@@ -66,7 +68,7 @@ A short, non-clinical check. Signs they are likely ready: can stay with a ~20-mi
 
 ## Building the materials (a phase ahead)
 
-If you are building the worksheets yourself with AI help, build just-in-time: make the runnable Phase 0-2 slice first (a few days of work), let the child work it, and build the next phase while they are on the current one. A slow week then wastes nothing. Do not build everything up front. One stop, before you build the next phase: read each rebuilt Phase 0-2 session against the version it replaced, with whatever page took its destination facts open beside it, and confirm nothing was lost. Some of these sessions have a Destination Notes page. Others sent their facts to a page in the destination pack or to a page in the framework, and a few only changed wording. Then watch your child work the five sessions this slice adds -- Sessions 02, 06, 07, 08 and 11, with 07 only if you do it. Fix what you find before you build further. Reading the pages is the easy half, and only watching your child tells you whether the new sessions work.
+If you are building the worksheets yourself with AI help, build just-in-time: make the runnable Phase 0-2 slice first (a few days of work), let the child work it, and build the next phase while they are on the current one. A slow week then wastes nothing. Stay about one phase ahead of your child all the way through. One stop, before you build the next phase: read each rebuilt Phase 0-2 session against the version it replaced, with whatever page took its destination facts open beside it, and confirm nothing was lost. Some of these sessions have a Destination Notes page. Others sent their facts to a page in the destination pack or to a page in the framework, and a few only changed wording. Then watch your child work the five sessions this slice adds -- Sessions 02, 06, 07, 08 and 11, with 07 only if you do it. Fix what you find before you build further. Reading the pages is the easy half, and only watching your child tells you whether the new sessions work.
 
 ---
 

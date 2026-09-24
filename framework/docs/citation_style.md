@@ -25,7 +25,7 @@ Write a citation whenever an outside source was used. That means a book, a websi
 
 Asking your own family is family input, and it needs no citation. That covers interviewing a traveler, polling the travelers, and asking a grown-up about your family's plans. The answers go on the session's own page.
 
-A review site is a website, so it uses the Website form. There is no separate form for reviews.
+A review site is a website, so it uses the Website form, just like any other site.
 
 A session with no research step is never asked for a citation. If nothing was looked up, there is nothing to record, and an empty Source Log for that session is correct.
 

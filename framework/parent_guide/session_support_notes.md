@@ -8,6 +8,8 @@ Want a rough signal of how the executive-function side is going? The optional [e
 
 ## Session 00: Parent Setup (adult-only)
 
+<!-- density-exempt: X, not Y -- the Role and Pitfall lines keep their built wording (batch 1 brief, H5), and the Pitfall is the field spec 21.5 requires in every entry -->
+
 - Role: do the setup; the child does not do this session.
 - Prep: kid-safe filter, Trip-Basics card, assumptions page, AI choice, start passports if your trip leaves the country.
 - Look for: your four setup actions done, the passport check kicked off if your trip leaves the country, and Session 01 printed.
@@ -23,6 +25,8 @@ Want a rough signal of how the executive-function side is going? The optional [e
 
 ## Session 02: Family Traveler Profiles
 
+<!-- density-exempt: X, not Y -- the Pitfall is the field spec 21.5 requires in every entry, and it carries the privacy rule that a medical reason stays with the adults (batch 1 brief, Session 02) -->
+
 - Role: 5-minute check-in; relay the interview question to any traveler your child cannot reach.
 - Prep: the assumptions page, filled in before this session; the Trip-Basics roster; blank profile and interview pages.
 - Look for: one traveler profile per person on the roster, plus the notes from one interview.
@@ -30,6 +34,8 @@ Want a rough signal of how the executive-function side is going? The optional [e
 - Pitfall: letting a medical reason onto the page. The need to design around goes down; the why stays with you.
 
 ## Session 03: What Makes a Good Trip
+
+<!-- density-exempt: X, not Y -- the spec's reachability fallback (21.8): the traveler poll must never stall the child, and the parent relays a traveler who is hard to reach -->
 
 - Role: 5-minute check-in; help make far-away travelers reachable.
 - Prep: your copy of the Family Trip Goals and Input Summary page, from the trip starter kit.
@@ -51,7 +57,7 @@ Want a rough signal of how the executive-function side is going? The optional [e
 - Prep: a device with the kid-safe filter on; the trusted sources list.
 - Look for: the three-question test used on two real sites, and one trusted source kept.
 - Coaching question: "Which would you trust for opening hours, and why?"
-- Pitfall: rushing it. This skill carries the next sessions -- spend the time.
+- Pitfall: rushing it, when this skill carries the next sessions.
 
 ## Session 06: Book Research With a Guidebook
 
@@ -83,6 +89,8 @@ Want a rough signal of how the executive-function side is going? The optional [e
 
 ## Session 09: AI as Helper, Not Boss (only if your family uses AI)
 
+<!-- density-exempt: X, not Y -- the Pitfall is the field spec 21.5 requires in every entry, and it carries the AI safety rule that AI never supplies facts (spec, Section 20) -->
+
 - Role: adult-operated -- you run the tool, on your account, with the child present.
 - Prep: your AI tool; verify its current minimum-age policy first, and write the date you checked; a blank AI Notes form.
 - Look for: an AI notes page recording one safe AI use (like brainstorming), with the use also logged in the Source Log.
@@ -90,6 +98,8 @@ Want a rough signal of how the executive-function side is going? The optional [e
 - Pitfall: letting AI supply facts. It brainstorms and organizes; it never decides facts.
 
 ## Session 10: Destination Snapshot
+
+<!-- density-exempt: X, not Y -- the spec's rule for the snapshot session (Session 10): do not require mastery -->
 
 - Role: 5-minute check-in.
 - Prep: this session's Destination Notes from the destination pack; the Trip-Basics card (for the time difference); a blank Destination Snapshot page.
@@ -103,9 +113,11 @@ Want a rough signal of how the executive-function side is going? The optional [e
 - Prep: this session's Destination Notes, your destination pack's regions and major-cities references, and a map.
 - Look for: region and map notes naming the regions the Destination Notes list, one way they differ, and one route shape.
 - Coaching question: "How long does it take to get from this one to that one?"
-- Pitfall: correcting an over-packed route now. Collecting comes first; the cutting comes later.
+- Pitfall: correcting an over-packed route now, which cuts short the collecting this session is for.
 
 ## Session 12: Weather, Seasons, and Events
+
+<!-- density-exempt: X, not Y -- the Verify-Don't-Trust Named concept: a season is a category to confirm for the year of travel, and exact dates are not fixed facts -->
 
 - Role: 5-minute check-in; help with school/work calendar fit.
 - Prep: this session's Destination Notes, your destination pack's seasons reference, and a blank Season Comparison Chart.
@@ -123,6 +135,8 @@ Want a rough signal of how the executive-function side is going? The optional [e
 
 ## Session 14: Checkpoint 1 Season Recommendation
 
+<!-- density-exempt: X, not Y -- the spec's never-silent transparency rule (21.8: an adult who changes the child's plan says why), which the batch 2 brief carries (B6, item 7: adults may change parts of the plan, never silently) -->
+
 - Role: a real review -- genuinely use the recommendation in a family talk (parent-gated).
 - Prep: a Decision Record page.
 - Look for: a season pick and a backup, a season to be careful about, reasons and sources, plus questions for you.
@@ -135,7 +149,7 @@ Want a rough signal of how the executive-function side is going? The optional [e
 - Prep: a device with the filter on; the major cities reference; two blank cards.
 - Look for: two city cards, each with a few starred top sights and a source.
 - Coaching question: "Which sight can you not wait to see?"
-- Pitfall: rabbit holes. One solid card per sitting is a good pace.
+- Pitfall: rabbit holes, which can stretch one card well past its sitting.
 
 ## Session 21: Compare Cities
 
@@ -143,7 +157,7 @@ Want a rough signal of how the executive-function side is going? The optional [e
 - Prep: the two city cards; a Scoring Rubric page.
 - Look for: two cities scored on three things, a written trade-off, and a recommendation (one city, or both kept on purpose).
 - Coaching question: "Does the total match your gut? Walk me through it."
-- Pitfall: treating the score as the decision. The trade-off sentence is the real work.
+- Pitfall: treating the score as the decision, which skips the trade-off sentence where the thinking happens.
 
 ## Session 33: Budget Basics, First Pass
 
@@ -162,6 +176,8 @@ Want a rough signal of how the executive-function side is going? The optional [e
 - Pitfall: making it exhaustive. This teaches "good enough is good enough."
 
 ## Session 53: Reflection and Handoff
+
+<!-- density-exempt: X, not Y -- the finish acknowledgment the spec requires for Session 53 (the "you finished a real project" beat, in the spec's Session 53 section and its 21.8 scripts) -->
 
 - Role: co-work; deliver the finish acknowledgment warmly (duration-true wording).
 - Prep: the Session 01 baseline reflection; a Final Reflection page.

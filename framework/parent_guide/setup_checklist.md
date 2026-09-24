@@ -6,6 +6,7 @@ The full version of the one-time setup. The short version is in the [quick-start
 
 ## The four setup actions (do these to begin)
 
+<!-- density-exempt: X, not Y -- both contrasts in this list are required: step 1's kid-safe filter caveat, a safety rule the batch 1 brief keeps in full at this point of use, and step 3's kid-sized Budget Band, a Named concept whose full trip total the spec keeps an adult number (Section 2.4) -->
 1. **Turn on a kid-safe search filter** on the device your child will use (for example, Google SafeSearch, lockable through Family Link). It reduces exposure but does not remove it, so plan to stay nearby for riskier research.
 2. **Fill in your copy of the [Trip-Basics card](../trip_starter/family/trip_basics.md)** once: how you will travel, the home airport and its code if you are flying, the destination, the time difference to it, maximum trip length, number of travelers, and the roster by relationship.
 3. **Set a rough season window and rough budget band** on your copy of the [assumptions page](../trip_starter/family/current_family_travel_assumptions.md). Both are "this can change" starting points. Express the band in kid-sized form (per person per day, per day for the family, or "this hotel tier"); keep the full trip total an adult number.

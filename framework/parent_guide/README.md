@@ -8,6 +8,7 @@ You do not have to read all of this before you start. This page is the quick-sta
 
 **Finishing First Taste, or stopping at any checkpoint, is a genuine success.** The binder and the skills are real either way, and going all the way is great too. Lead with that -- it takes the pressure off.
 
+<!-- density-exempt: X, not Y -- the spec's most important rule for this page, in its bold wording (specification line 3672): a rule about what counts, where the relationship outranks the project and pausing, shrinking or stopping are successes -->
 And the most important rule: **this is meant to be a positive experience you share. If it ever becomes a source of conflict, the relationship matters more than the project.** Pausing, shrinking to a short First Taste, or stopping are all successes, not failures.
 
 *New to the term "executive function"? It is the set of brain skills for getting started, sticking with a task, knowing when to stop, staying organized, and being flexible. This project builds them by having your child plan a real trip. Read [what executive function is](what_is_executive_function.md) for the one-page version.*

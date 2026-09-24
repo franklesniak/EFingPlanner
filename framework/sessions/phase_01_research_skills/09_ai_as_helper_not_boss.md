@@ -37,6 +37,8 @@ If your family uses AI, a grown-up runs it, on the grown-up's own account, with 
 
 **AI may not:**
 
+<!-- density-exempt: X, not Y -- AI safety rules this session carries at the point of use (batch 1 brief): what AI may not do, and that the listed decisions are the adults' -->
+
 1. Be your only source. Always check its facts against a real, non-AI source.
 2. Give you facts to trust without checking. AI can make up things that sound right.
 3. Decide anything about passports, entry, safety, medical questions, money, or booking. Those are for the adults.

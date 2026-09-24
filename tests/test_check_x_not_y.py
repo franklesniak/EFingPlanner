@@ -29,10 +29,20 @@ TICK = "`"
 FENCE = TICK * 3
 
 
-def candidates(text: str) -> list[Any]:
-    """Return the candidates the script finds in one page."""
+def every_candidate(text: str) -> list[Any]:
+    """Return every candidate the script finds in one page, each sentence's own included."""
     page = cx.parse_text(text)
     return cx.find_candidates("page.md", page.prose, text.split("\n"))
+
+
+def candidates(text: str) -> list[Any]:
+    """Return the candidates a negation word or a pattern gives in one page.
+
+    Every other sentence also gets a candidate of its own (see the tests under
+    "Every sentence is judged"). Most tests here are about the words and the
+    patterns, so they leave those out.
+    """
+    return [c for c in every_candidate(text) if c.patterns[0] not in cx.SENTENCE_PATTERNS]
 
 
 def kinds(text: str) -> list[tuple[str, str]]:
@@ -48,10 +58,16 @@ def write(root: Path, rel: str, text: str) -> None:
 
 
 def judge_all(root: Path, judgment: str = "device") -> dict:
-    """Return judgments that record every candidate under `root` as `judgment`."""
+    """Return judgments that record every candidate under `root` as `judgment`.
+
+    A sentence's own candidate (one that holds no negation word and matches no
+    pattern) is recorded as `no`, so a test page counts its words and patterns.
+    """
     out: dict = {}
     for rep in cx.scan(root, {}, {}):
-        out[rep.path] = {c.key: {"line": c.lineno, "judgment": judgment, "reason": "test"} for c in rep.candidates}
+        out[rep.path] = {c.key: {"line": c.lineno, "reason": "test",
+                                 "judgment": "no" if c.patterns[0] in cx.SENTENCE_PATTERNS else judgment}
+                         for c in rep.candidates}
     return out
 
 
@@ -510,7 +526,9 @@ def test_a_judgment_does_not_follow_a_sentence_out_of_a_quotation(tmp_path: Path
     judged = judge_all(tmp_path, "no")
     write(tmp_path, "framework/templates/a.md", "## A\n\n" + after + "\n")
     (rep,) = cx.scan(tmp_path, judged, {})
-    assert [c.judgment for c in rep.candidates] == [None]
+    # Every sentence's judgment reopens: the first sentence of the quotation
+    # read `"Look first.`, and each other key carries the context.
+    assert [c.judgment for c in rep.candidates] == [None, None, None]
 
 
 # ---------------------------------------------------------------------------
@@ -802,6 +820,50 @@ def test_the_registers_file_is_well_formed() -> None:
 def test_the_data_files_pass_the_checks_the_script_runs_on_them() -> None:
     assert cx.load_judgments(cx.DEFAULT_JUDGMENTS)
     assert cx.load_registers(cx.DEFAULT_REGISTERS)
+
+
+# ---------------------------------------------------------------------------
+# The data files' schemas and the script's own checks agree
+# ---------------------------------------------------------------------------
+
+SCHEMAS = SCRIPT_PATH.parents[2] / "schemas"
+LOADERS = {"x-not-y-judgments": "load_judgments", "x-not-y-registers": "load_registers"}
+SCHEMA_EXAMPLES = sorted((name, side, path) for name in LOADERS for side in ("valid", "invalid")
+                         for path in (SCHEMAS / "examples" / name / side).glob("*.json"))
+
+
+def test_each_data_file_has_a_schema_with_valid_and_invalid_examples() -> None:
+    for name in LOADERS:
+        assert (SCHEMAS / f"{name}.schema.json").is_file()
+        assert {side for n, side, _ in SCHEMA_EXAMPLES if n == name} == {"valid", "invalid"}
+
+
+@pytest.mark.parametrize(("name", "side", "path"), SCHEMA_EXAMPLES,
+                         ids=[f"{n}/{s}/{p.name}" for n, s, p in SCHEMA_EXAMPLES])
+def test_the_script_reads_each_schema_example_as_the_schema_does(name: str, side: str, path: Path) -> None:
+    # tests/test_schema_examples.py holds each example to the schema; this holds
+    # it to the script's loader, so the two cannot drift apart unseen.
+    load = getattr(cx, LOADERS[name])
+    if side == "valid":
+        assert load(path)
+    else:
+        with pytest.raises(cx.DataError):
+            load(path)
+
+
+def test_the_schemas_name_the_values_the_script_accepts() -> None:
+    judgments = json.loads((SCHEMAS / "x-not-y-judgments.schema.json").read_text(encoding="utf-8"))
+    registers = json.loads((SCHEMAS / "x-not-y-registers.schema.json").read_text(encoding="utf-8"))
+    entry = judgments["$defs"]["judgment"]
+    assert set(entry["properties"]["judgment"]["enum"]) == cx.VALID_JUDGMENTS
+    assert set(entry["required"]) == {"line", "judgment", "reason"}
+    fields = registers["additionalProperties"]
+    assert set(fields["properties"]["register"]["enum"]) == set(cx.FILE_CAP)
+    assert set(fields["required"]) == {"register", "basis"}
+    # The key pattern is the script's, with `[\s\S]` for its DOTALL `.`.
+    key = judgments["additionalProperties"]["propertyNames"]["pattern"]
+    assert key == cx.JUDGMENT_KEY_RE.pattern.replace(r"\|.+\|", r"\|[\s\S]+\|")
+    assert judgments["$defs"]["pagePath"]["pattern"] == registers["propertyNames"]["pattern"]
 
 
 def data_run(tmp_path: Path, capsys: Any, judgments: str | None = None, registers: str | None = None) -> tuple[int, str]:
@@ -1127,7 +1189,7 @@ def test_every_negation_word_in_a_sentence_alone_is_a_candidate(word: str) -> No
 
 @pytest.mark.parametrize("page", ["## A filter without a guard", "| A filter without a guard |\n| --- |"])
 def test_a_heading_or_a_table_cell_is_still_not_prose(page: str) -> None:
-    assert kinds(page) == []
+    assert every_candidate(page) == []
 
 
 # ---------------------------------------------------------------------------
@@ -1168,6 +1230,81 @@ def test_a_marker_that_shares_its_line_with_text_exempts_nothing_and_is_named() 
 
 def test_a_block_of_comments_still_shows_nothing() -> None:
     assert kinds("<!-- a note -->\n<!-- another -->") == []
+
+
+# ---------------------------------------------------------------------------
+# A marker inside a line of text
+# ---------------------------------------------------------------------------
+
+INLINE_MARKER = "<!-- density-exempt: X, not Y -- required -->"
+
+
+@pytest.mark.parametrize(("page", "line"), [
+    (f"Visible text. {INLINE_MARKER}", 1),
+    (f"Visible text,\nand more. {INLINE_MARKER}", 2),
+    (f"- A list item. {INLINE_MARKER}", 1),
+    (f"> A callout. {INLINE_MARKER}", 1),
+    (f"[A link {INLINE_MARKER} label](x.md) here.", 1),
+    (f"## A heading {INLINE_MARKER}\n\nChoose the map, not the list.", 1),
+    (f"| A | B |\n| --- | --- |\n| a cell {INLINE_MARKER} | b |", 3),
+    (f"Visible text. <!-- density-exempt: X-not-Y -- old name -->", 1),
+])
+def test_a_marker_inside_a_line_of_text_exempts_nothing_and_is_named(page: str, line: int) -> None:
+    markers = cx.parse_text(page).markers
+    assert [(m.lineno, m.applies, m.problem) for m in markers] == [
+        (line, False, "text shares its lines; put the marker on a line of its own")]
+
+
+@pytest.mark.parametrize("page", [
+    f"Visible text `{INLINE_MARKER}` shown in a code span.",
+    "Visible text. <!-- density-exempt: spaced dash -- another device's marker -->",
+    "Visible text. <!-- a note -->",
+])
+def test_a_code_span_or_another_comment_inside_a_line_is_no_marker(page: str) -> None:
+    assert cx.parse_text(page).markers == []
+
+
+def test_an_audience_marker_inside_a_line_is_read() -> None:
+    assert cx.parse_text("Words for grown-ups. <!-- audience: parent -->").audience == "parent"
+
+
+def test_a_marker_inside_a_line_fails_the_run_and_covers_nothing(tmp_path: Path, capsys: Any) -> None:
+    root = repo_with(tmp_path, f"## A\n\nChoose the map, not the list. {INLINE_MARKER}\n")
+    judgments = judge_all(root)
+    assert summary_for(root, "framework/templates/a.md", judgments)["counted"] == 1
+    jpath = tmp_path / "judgments.json"
+    jpath.write_text(json.dumps(judgments), encoding="utf-8")
+    assert cx.main([str(root), "--judgments", str(jpath), "--registers", str(tmp_path / "none.json")]) == 1
+    assert "EXEMPTS NOTHING (text shares its lines" in capsys.readouterr().out
+
+
+# ---------------------------------------------------------------------------
+# Regions under deeper headings
+# ---------------------------------------------------------------------------
+
+CONTRAST = "Choose the map, not the list."
+
+
+@pytest.mark.parametrize(("page", "region"), [
+    (f"## Parent Notes\n\nA note.\n\n### Coaching\n\n{CONTRAST}", "parent notes"),
+    (f"## Parent Notes\n\n### Coaching\n\n#### A script\n\n{CONTRAST}", "parent notes"),
+    (f"## Parent Notes\n\n### Coaching\n\n## Next\n\n{CONTRAST}", "main"),
+    (f"## Parent Notes\n\n# A new page part\n\n{CONTRAST}", "main"),
+    (f"## Steps\n\n### For parents\n\n{CONTRAST}", "parent notes"),
+    (f"## Steps\n\n### For parents\n\nA note.\n\n### Your turn\n\n{CONTRAST}", "main"),
+    (f"**For parents:**\n\n- Status: Core\n\n{CONTRAST}", "for-parents strip"),
+    # The strip runs to the next heading of any level, as check-session-structure.py reads it.
+    (f"**For parents:**\n\n- Status: Core\n\n### Before you start\n\n{CONTRAST}", "main"),
+])
+def test_a_region_lasts_while_its_heading_is_open(page: str, region: str) -> None:
+    (found,) = candidates(page)
+    assert found.region == region
+
+
+def test_a_subheading_in_parent_notes_keeps_the_parent_register(tmp_path: Path) -> None:
+    write(tmp_path, "framework/templates/a.md", f"## Parent Notes\n\nA note.\n\n### Coaching\n\n{CONTRAST}\n")
+    row = summary_for(tmp_path, "framework/templates/a.md", judge_all(tmp_path))
+    assert [i["register"] for i in row["instances"]] == ["parent"]
 
 
 # ---------------------------------------------------------------------------
@@ -1221,3 +1358,81 @@ def test_a_duplicate_key_in_the_registers_file_stops_the_run(tmp_path: Path, cap
     code, err = data_run(tmp_path, capsys, registers=registers)
     assert code == 2
     assert "duplicate key 'register'" in err
+
+
+# ---------------------------------------------------------------------------
+# Every sentence is judged
+# ---------------------------------------------------------------------------
+
+
+def judged_sentence(c: Any) -> str:
+    """Return the sentence a candidate judges: the one its test flagged."""
+    parts = c.text.split(cx.ARROW)
+    if any(p.endswith("before-claim") for p in c.patterns):
+        return parts[0]
+    if "release-then-recast" in c.patterns:
+        return parts[1]
+    return parts[-1]
+
+
+EVERY_SENTENCE_PAGES = [
+    "Plan the day. Avoid the list; choose the map. Pick one.",
+    "Never guess. Look it up. Then write it down.",
+    "Prefer official sources for facts. A museum's own website beats a random blog.",
+    "- One item.\n- Choose the map, not the list.\n\n> A callout. It is not a toy.\n\nDo not guess. Look.",
+    "Write the date. You do not have to fill every line. A few notes are enough.",
+    "Break a rule gently. Not a failure. Keep going.",
+    "It's not a toy. It's a tool. Use it.",
+]
+
+
+@pytest.mark.parametrize("page", EVERY_SENTENCE_PAGES)
+def test_every_sentence_is_the_sentence_judged_in_one_candidate(page: str) -> None:
+    printed = cx.parse_text(page)
+    sentences = [s for para in cx.paragraphs(printed.prose) for s, _ in cx.paragraph_sentences(para)]
+    judged = [judged_sentence(c) for c in every_candidate(page) if c.kind != "banned"]
+    assert sorted(judged) == sorted(sentences)
+
+
+@pytest.mark.parametrize(("page", "expected"), [
+    ("Plan the day. Avoid the list; choose the map.",
+     [("device", "Plan the day.", "sentence-alone"),
+      ("split", "Plan the day. → Avoid the list; choose the map.", "sentence-after-claim")]),
+    ("Prefer official sources for facts. A museum's own website beats a random blog.",
+     [("device", "Prefer official sources for facts.", "sentence-alone"),
+      ("split", "Prefer official sources for facts. → A museum's own website beats a random blog.",
+       "sentence-after-claim")]),
+    # The pair is keyed from `Never guess.`, so `Look it up.` is judged alone, for what it rejects by itself.
+    ("Never guess. Look it up.",
+     [("split", "Never guess. → Look it up.", "negation-before-claim"),
+      ("device", "Look it up.", "sentence-in-pair")]),
+    ("Never guess. Do not guess.",
+     [("split", "Never guess. → Do not guess.", "negation-before-claim"),
+      ("device", "Do not guess.", "sentence-in-pair")]),
+])
+def test_a_sentence_with_no_word_or_pattern_is_keyed_so_a_split_can_be_judged(page: str, expected: list) -> None:
+    assert [(c.kind, c.text, c.patterns[0]) for c in every_candidate(page)] == expected
+
+
+def test_a_sentence_candidate_moves_no_key_a_word_or_a_pattern_gives() -> None:
+    # The first `Do not guess.` is keyed alone as the partner of `Never guess.`. The second is a negation
+    # alone, and keeps occurrence 1, as it had before every sentence was a candidate.
+    found = {c.patterns[0]: c.key for c in every_candidate("Never guess. Do not guess.\n\n---\n\nDo not guess.")}
+    assert found["negation-alone"] == "device|Do not guess.|1"
+    assert found["sentence-in-pair"] == "device|Do not guess.|2"
+
+
+@pytest.mark.parametrize("page", ["`code`", "- `a` `b`", "> `x`"])
+def test_a_sentence_of_code_alone_is_no_candidate(page: str) -> None:
+    assert every_candidate(page) == []
+
+
+def test_a_sentence_in_a_quotation_is_keyed_with_its_context() -> None:
+    (found,) = every_candidate('> "Look first."')
+    assert found.key == 'device|"Look first."|1|quotation block quote'
+
+
+def test_a_sentence_candidate_must_be_judged_before_the_run_passes(tmp_path: Path, capsys: Any) -> None:
+    root = repo_with(tmp_path, "## A\n\nPlan the day.\n")
+    assert run(tmp_path, {}, capsys) == 1
+    assert run(tmp_path, judge_all(root), capsys) == 0

@@ -91,4 +91,5 @@ If you have extra energy, interview a second traveler, or add one question of yo
 
 ## Parent Notes
 
+<!-- density-exempt: X, not Y -- privacy rule: pacing facts go on the page, and medical specifics stay adult-owned and out of the binder (spec, Session 02 profile fields; batch 1 brief C1) -->
 Two things make this session work. The first is reach: if a traveler is not available, relay the question yourself and bring back the answer, so your child is never waiting on somebody's calendar. The second is the boundary on private information. Stamina, pace and sensory sensitivities are planning facts and belong on the page; the medical reasons behind them are yours and stay with you. If your child asks why a relative tires easily, answer it out loud rather than in the binder. The three pacing factors come back in the pacing review later, so a thin answer now is worth one more question today.

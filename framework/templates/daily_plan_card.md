@@ -69,4 +69,5 @@ Save these as `day_01.md`, `day_02.md`, and so on.
 | Backup idea | |
 | Source notes | |
 
+<!-- density-exempt: X, not Y -- the movable-block reassurance the batch 2 brief (A8) makes mandatory on this card, the Your-Work-Wasn't-Wrong Named concept in a child's words -->
 Your plan is built in movable blocks, one per place. If a grown-up later changes which city you fly into or out of, you move a block and keep the rest. Nothing you wrote gets wasted.

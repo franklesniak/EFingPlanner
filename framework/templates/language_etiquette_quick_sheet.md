@@ -40,7 +40,7 @@ These are questions your destination pack answers. Write the answer in your own 
 | Any bathing or shared-facility etiquette we might meet? | |
 | Date checked | |
 
-Six good lines you'll actually use beat twenty you won't.
+Six good lines you'll actually use are plenty.
 
 Every place has its own normal way of doing things. There's a reason behind each one. You're learning how things are done here. It isn't a test. Nobody expects a visitor to get it perfect, and people are glad you tried.
 

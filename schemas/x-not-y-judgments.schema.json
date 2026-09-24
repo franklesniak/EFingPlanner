@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/franklesniak/EFingPlanner/HEAD/schemas/x-not-y-judgments.schema.json",
+  "title": "X, not Y recount judgments",
+  "description": "The recorded judgment for each candidate the X, not Y recount tool (.github/scripts/check-x-not-y.py) finds, in .github/scripts/x-not-y-judgments.json. Each page path maps its candidate keys to their judgments. The tool checks the same shape as it loads the file, and also refuses a repeated key and NaN or Infinity, which JSON Schema cannot express; tests/test_check_x_not_y.py runs every example under schemas/examples/x-not-y-judgments/ through both, so the two stay in step.",
+  "type": "object",
+  "propertyNames": {
+    "$ref": "#/$defs/pagePath"
+  },
+  "additionalProperties": {
+    "type": "object",
+    "description": "One page's judgments, by candidate key.",
+    "propertyNames": {
+      "type": "string",
+      "pattern": "^(?:device|split|banned)\\|[\\s\\S]+\\|[1-9][0-9]*(?:\\|(?:quotation )?block quote)?$",
+      "description": "A candidate key, <kind>|<sentence text>|<occurrence>, with the quotation context after it for a sentence in a block quote. The tool's JUDGMENT_KEY_RE holds the same form."
+    },
+    "additionalProperties": {
+      "$ref": "#/$defs/judgment"
+    }
+  },
+  "$defs": {
+    "pagePath": {
+      "type": "string",
+      "pattern": "^(?!/|\\.\\./)[\\s\\S]*\\.md$",
+      "description": "A repository path to a Markdown page, such as framework/docs/glossary.md: it ends in .md and starts with neither / nor ../."
+    },
+    "judgment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "line",
+        "judgment",
+        "reason"
+      ],
+      "properties": {
+        "line": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "The line the candidate starts on, counting from 1. The tool refreshes it; it is not part of the key."
+        },
+        "judgment": {
+          "enum": [
+            "device",
+            "split",
+            "banned",
+            "no"
+          ],
+          "description": "device: an X, not Y instance; split: a split negation; banned: the banned It's not X. It's Y. shape; no: none of these."
+        },
+        "reason": {
+          "type": "string",
+          "pattern": "\\S",
+          "description": "Why, in one short clause. It holds more than white space."
+        }
+      }
+    }
+  }
+}

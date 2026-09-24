@@ -6,8 +6,8 @@
 
 - **Status:** Active
 - **Owner:** Repository Maintainers
-- **Last Updated:** 2026-06-29
-- **Scope:** Conventions for JSON Schemas that describe load-bearing JSON and YAML files in this repository, the baseline placeholder manifest schema, the template sync manifest, marker, instruction-contract, and first-adoption quality suppression schemas, plus a clearly removable worked example (`example-config.schema.json` with valid and invalid example data) wired into pre-commit and data CI to demonstrate the schema-validation pipeline end to end.
+- **Last Updated:** 2026-09-24
+- **Scope:** Conventions for JSON Schemas that describe load-bearing JSON and YAML files in this repository, the baseline placeholder manifest schema, the template sync manifest, marker, instruction-contract, and first-adoption quality suppression schemas, this repository's `X, not Y` recount data schemas, plus a clearly removable worked example (`example-config.schema.json` with valid and invalid example data) wired into pre-commit and data CI to demonstrate the schema-validation pipeline end to end.
 - **Related:** [JSON Authoring Standards](../.github/instructions/json.instructions.md), [YAML Authoring Standards](../.github/instructions/yaml.instructions.md), [Repository Copilot Instructions](../.github/copilot-instructions.md), [Template Design Decisions — Schema Location at Repository Root](https://github.com/franklesniak/copilot-repo-template/blob/HEAD/.github/TEMPLATE_DESIGN_DECISIONS.md#design-decision-schema-location-at-repository-root), [Template Design Decisions — Schema Validation Tiers](https://github.com/franklesniak/copilot-repo-template/blob/HEAD/.github/TEMPLATE_DESIGN_DECISIONS.md#design-decision-schema-validation-tiers), [Template Design Decisions — Built-in Schema Validation for Real Load-Bearing Configuration Files](https://github.com/franklesniak/copilot-repo-template/blob/HEAD/.github/TEMPLATE_DESIGN_DECISIONS.md#design-decision-built-in-schema-validation-for-real-load-bearing-configuration-files), [Template Design Decisions — `additionalProperties` Policy](https://github.com/franklesniak/copilot-repo-template/blob/HEAD/.github/TEMPLATE_DESIGN_DECISIONS.md#design-decision-additionalproperties-policy), [Template Design Decisions — Testing Beyond Linting for JSON/YAML](https://github.com/franklesniak/copilot-repo-template/blob/HEAD/.github/TEMPLATE_DESIGN_DECISIONS.md#design-decision-testing-beyond-linting-for-jsonyaml)
 
 ## Purpose
@@ -118,6 +118,8 @@ The following project-owned file families are validated by default through `chec
 | `.template-sync/marker.yml` when present | [`template-sync-marker.schema.json`](./template-sync-marker.schema.json) |
 | [`.template-sync/instruction-contracts.yml`](../.template-sync/instruction-contracts.yml) | [`template-sync-instruction-contracts.schema.json`](./template-sync-instruction-contracts.schema.json) |
 | `.template-sync/first-adoption/quality-suppressions.json` when present | [`first-adoption-quality-suppressions.schema.json`](./first-adoption-quality-suppressions.schema.json) |
+| [`.github/scripts/x-not-y-judgments.json`](../.github/scripts/x-not-y-judgments.json) | [`x-not-y-judgments.schema.json`](./x-not-y-judgments.schema.json) |
+| [`.github/scripts/x-not-y-registers.json`](../.github/scripts/x-not-y-registers.json) | [`x-not-y-registers.schema.json`](./x-not-y-registers.schema.json) |
 
 ### File-Family Hooks
 
@@ -332,6 +334,19 @@ The worked example is intentionally easy to remove. This checklist removes only 
 3. Remove the `Validate example-config valid examples` and `Self-validate example-config schema` hooks (and the surrounding `python-jsonschema/check-jsonschema` repo block, if no other hooks from that repo remain) from [`.pre-commit-config.yaml`](../.pre-commit-config.yaml). Keep the template-sync support hooks when the repository retains `template-sync-support`.
 4. If you adopted the optional schema-example tests (for example, [`tests/test_schema_examples.py`](../tests/test_schema_examples.py)), remove or adjust the corresponding test cases there if no schemas remain in the downstream repository.
 5. Update any documentation that mentions the example schema, including this `README.md` and any references in [`.github/workflows/data-ci.yml`](../.github/workflows/data-ci.yml).
+
+## X, not Y Recount Data Schemas
+
+[`x-not-y-judgments.schema.json`](./x-not-y-judgments.schema.json) and [`x-not-y-registers.schema.json`](./x-not-y-registers.schema.json) define the two data files of the `X, not Y` recount tool, [`.github/scripts/check-x-not-y.py`](../.github/scripts/check-x-not-y.py). The judgments file records a person's judgment for each candidate sentence, and the registers file places the pages the tool cannot place from an audience marker or a tree. Both are this repository's own, not template content.
+
+How the recount data contract is validated:
+
+- The tool checks both files as it loads them, and stops with exit code 2 on a bad entry. It also refuses a repeated key and `NaN` or `Infinity`, which JSON Schema cannot express.
+- The live files are validated by the `Validate X, not Y recount judgments` and `Validate X, not Y recount registers` `check-jsonschema` hooks in [`.pre-commit-config.yaml`](../.pre-commit-config.yaml) and by [`.github/workflows/data-ci.yml`](../.github/workflows/data-ci.yml).
+- Valid fixtures under [`examples/x-not-y-judgments/valid/`](./examples/x-not-y-judgments/valid/) and [`examples/x-not-y-registers/valid/`](./examples/x-not-y-registers/valid/) are validated by the matching `valid examples` hooks and by the data-file CI workflow.
+- Invalid fixtures under each `invalid/` directory are exercised by [`tests/test_schema_examples.py`](../tests/test_schema_examples.py), which asserts that each one is rejected.
+- [`tests/test_check_x_not_y.py`](../tests/test_check_x_not_y.py) runs every fixture through the tool's own loaders too, so a valid fixture must load and an invalid one must stop the run. It also checks that each schema names the same judgments, registers and key form as the tool, so the schemas and the tool cannot drift apart.
+- Each schema is self-validated against its declared JSON Schema Draft 2020-12 metaschema by its `Self-validate` `check-metaschema` hook.
 
 ## Future Work
 

@@ -37,7 +37,7 @@ If you are adding a mechanic to a session, say which row of that table it belong
 
 ## The three core skills
 
-The curriculum trains three executive-function skills, and it trains them on purpose rather than incidentally.
+The curriculum trains three executive-function skills, and it trains them on purpose.
 
 - **Working memory** is holding information in mind while using it. It is supported by the checkboxes, the concrete instructions, the logs, and the "you are here" navigation aids that tell a child where in the project they are standing.
 - **Cognitive flexibility** is shifting and adapting when something changes. It is supported by the trade-off reports, the backup plans, and the repeated message that plans can change when facts change.

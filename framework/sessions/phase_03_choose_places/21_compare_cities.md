@@ -79,4 +79,4 @@ If you have extra energy, try the fuller version on the [Scoring Rubric page](..
 
 ## Parent Notes
 
-Weighted scoring is sophisticated for a ten-year-old -- some children love it, others stall. The 3-criteria version is the recommended path; the fuller version is there for a child who is ready. If the total does not match their gut, that is a great talking point: scores inform a choice, they do not make it. This is the first real trade-off report, so ask them to walk you through how they weighed one city against the other.
+Weighted scoring is sophisticated for a ten-year-old -- some children love it, others stall. The 3-criteria version is the recommended path; the fuller version is there for a child who is ready. If the total does not match their gut, that is a great talking point: scores inform a choice, and the people weighing them make it. This is the first real trade-off report, so ask them to walk you through how they weighed one city against the other.

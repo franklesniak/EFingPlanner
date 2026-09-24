@@ -50,6 +50,8 @@ Everything else sits outside that mandatory core, and three of the four are not 
 
 Every child session opens with a navigation line above its first `##` section. These rules fix how it renders, so every later batch renders the line the same way.
 
+<!-- density-exempt: X, not Y -- the OQ-7 navigation rendering rules, in the wording the batch 1 brief gives for this list -->
+
 - The `You are here:` line always names the phase in the built form `Phase N (Phase Name)`.
 - A session on a named path carries its step label, in the form `First Taste step K of 13`. A session that is not on that path carries `Not a First Taste step.`
 - `Previous:` and `Next:` always follow the **numbered** session order, whatever path the child is on.
@@ -122,7 +124,7 @@ Never state entry, visa, passport, insurance, rail-pass, or medication rules, pr
 
 ## Canonical concept Names and their built-file homes (name-first, never "Section NN")
 
-Built files reference concepts by **Name** and link to the built-file home below. An instruction to fill in a family page links the trip starter kit's copy instead, because the filled page lives in the kit. Built files must **not** cite the archived spec's section numbers.
+Built files reference concepts by **Name** and link to the built-file home below. For an instruction to fill in a family page, the link target is the trip starter kit's copy, because the filled page lives in the kit. Built files must **not** cite the archived spec's section numbers.
 
 | Name | One-line meaning | Built-file home |
 | --- | --- | --- |
@@ -145,7 +147,7 @@ Built files reference concepts by **Name** and link to the built-file home below
 - Bullets use `-`; emphasis and strong use `*` / `**`; horizontal rules are `---`; code fences use backticks. (MD004, MD049, MD050, MD035, MD048)
 - Lines have no trailing whitespace; every file ends with exactly one newline.
 - **Prohibited-placeholder hook:** the built curriculum (under `framework/` and `destinations/`) may **not** contain the common "to-be-decided" and "to-do" placeholder markers that the repo's `check-prohibited-placeholders` hook forbids (its exact token list lives in `.github/scripts/check-prohibited-placeholders.py`). Use plain child-friendly language instead ("not decided yet," "we'll decide later," "ask an adult"), which also reads better. Inline underscore blanks (`______`) -- for example inside a worked-formula table cell -- are fine and do not trip the hook; a worksheet's main fill-in space, though, is an empty table cell (see the worksheet-form rule above).
-- MD013 (line length) and MD034 (bare URLs) are disabled; prefer angle-bracketed `<https://...>` links anyway.
+- MD013 (line length) and MD034 (bare URLs) are disabled; the convention still wraps a written-out URL in angle brackets, as in `<https://...>`.
 
 ### Saying "we have not decided yet" in built pages
 
@@ -164,9 +166,9 @@ Three rules go with that:
 
 1. **Treat the blank as a valid answer.** Wherever a worksheet can plausibly come back empty, the surrounding text should say so out loud: leaving it open is a finished answer.
 2. **Inline underscore blanks (`______`) are fine** and do not trip the hook. The main fill-in space of a worksheet is still an empty table cell.
-3. **The literal token is available only under suppression.** Where a built page must show the software token -- for example, teaching an older child what they will see in a real project plan -- write it with an inline suppression comment on the same line stating why, in the form `<!-- ALLOW-TBD: <reason> -->`. Expect this to be rare; prefer the plain words above. <!-- ALLOW-TBD: naming the banned token is unavoidable when documenting the rule that bans it -->
+3. **The literal token is available only under suppression.** Where a built page must show the software token -- for example, teaching an older child what they will see in a real project plan -- write it with an inline suppression comment on the same line stating why, in the form `<!-- ALLOW-TBD: <reason> -->`. Expect this to be rare; wherever the plain words above can carry the idea, a builder uses them. <!-- ALLOW-TBD: naming the banned token is unavoidable when documenting the rule that bans it -->
 
-For reference, the hook rejects `TBD`, `TODO:`, `FIXME`, `XXX`, the spelled-out phrase "to be determined", and the parenthesized default form `(default ... to be determined)`, all case-insensitively. That last one is listed separately even though the general phrase already catches it, so a future editor does not trim it as redundant. Naming them literally is the point of the inline suppression on this line. The exact list lives in `.github/scripts/check-prohibited-placeholders.py`, which is authoritative if the two ever disagree. <!-- ALLOW-TBD: this line names the prohibited markers in order to document them -->
+For reference, the hook rejects `TBD`, `TODO:`, `FIXME`, `XXX`, the spelled-out phrase "to be determined", and the parenthesized default form `(default ... to be determined)`, all case-insensitively. That last one is listed separately even though the general phrase already catches it, so a future editor does not trim it as redundant. Naming them literally is the point of the inline suppression on this line. The exact list lives in `.github/scripts/check-prohibited-placeholders.py`; the hook enforces that list, so if this line ever drifts from it, correct this line. <!-- ALLOW-TBD: this line names the prohibited markers in order to document them -->
 
 ## First Taste path (the Batch 0 slice)
 

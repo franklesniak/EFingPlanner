@@ -30,7 +30,7 @@ Not every website is equally good. Some are careful and official. Some are tryin
 
 **The quick trust test (three questions):**
 
-1. **Who made this?** A government office, a museum, or a tourism board is usually more careful than an unknown blog.
+1. **Who made this?** A government office, a museum, or a tourism board usually takes extra care with its facts.
 2. **Why did they make it?** To inform you, or to sell you something? Lots of ads and "buy now" links are a warning sign.
 3. **Can another source check it?** A fact you can find in two trusted places is stronger than one you find in only one.
 

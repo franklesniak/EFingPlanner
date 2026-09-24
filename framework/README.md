@@ -54,7 +54,7 @@ A family traveling from elsewhere swaps three things in the framework:
 - The home-airport and time-zone fields on the Trip-Basics card, together with the two sentences of adult help beside them, which name US time zones and daylight saving.
 - The home currency on the budget surfaces. The rough budget band on the current family travel assumptions page, the budget estimate template, and the first-pass budget session all write amounts with a dollar sign. Swap the symbol for your own currency; nothing else on those pages changes.
 
-The destination pack carries the same assumption in its own layer. A pack's child word list and its money reference convert prices into US dollars, the word list gives Fahrenheit and miles beside the local units, and its trusted-sources list names a US government travel page as the adult-owned entry and safety source. A pack written for a family from somewhere else converts into that family's money and units, and names that family's own government page instead.
+The destination pack carries the same assumption in its own layer. A pack's child word list and its money reference convert prices into US dollars, the word list gives Fahrenheit and miles beside the local units, and its trusted-sources list names a US government travel page as the adult-owned entry and safety source. A pack written for a family from somewhere else converts into that family's money and units, and names that family's own government page in that role.
 
 Beyond the origin logistics layer, nothing in the framework assumes an origin country.
 

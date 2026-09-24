@@ -32,6 +32,9 @@
  *            per line; or an HTML block's, a fence's or a code block's text.
  *   text     a paragraph's or a heading's printed text, one source line per
  *            line, so line N of `text` is what line N of `content` prints.
+ *   html     a paragraph's, a heading's or a table's inline HTML, such as a
+ *            comment inside a line of text: one `[offset, source]` pair per
+ *            piece, where offset is its line in the block, counting from 0.
  *
  * The printed text is what the page shows as prose. Emphasis marks print
  * nothing; a link prints its label, whether it is inline or a reference; an
@@ -84,8 +87,9 @@ function inlineRule(name) {
   });
 });
 
-// Returns the text an inline run prints, with one line per source line.
-function printed(children) {
+// Returns the text an inline run prints, with one line per source line. Each
+// piece of inline HTML is added to `html`, when given, with the line it is on.
+function printed(children, html) {
   let out = '';
   const links = [];
   for (const token of children || []) {
@@ -105,6 +109,7 @@ function printed(children) {
         out += '\n'.repeat(token.meta ? token.meta.lines : 0);
         break;
       case 'html_inline':
+        if (html) html.push([newlines(out), token.content]);
         out += (/^<br\b/i.test(token.content) ? ' ' : '') + '\n'.repeat(newlines(token.content));
         break;
       case 'link_open':
@@ -127,8 +132,8 @@ function printed(children) {
 
 // Returns the printed text of an inline token, checked against its source:
 // line N of the text must be line N of the source.
-function printedLines(inline) {
-  const text = printed(inline.children);
+function printedLines(inline, html) {
+  const text = printed(inline.children, html);
   if (newlines(text) !== newlines(inline.content)) {
     throw new Error(`printed text has ${newlines(text) + 1} lines for ${newlines(inline.content) + 1} source lines`);
   }
@@ -145,6 +150,10 @@ function readBlocks(text) {
   let nextList = 0;
   let nextItem = 0;
   let itemOpen = false;
+  // The open table, and the source line of its current row: a cell has no
+  // line of its own, and a row is one line.
+  let table = null;
+  let rowLine = 0;
   const top = (stack) => (stack.length ? stack[stack.length - 1] : null);
   const add = (token, fields) => {
     blocks.push({
@@ -193,13 +202,16 @@ function readBlocks(text) {
         break;
       case 'paragraph_open': {
         const inline = tokens[index + 1];
-        add(token, { type: 'paragraph', content: inline.content, text: printedLines(inline) });
+        const html = [];
+        add(token, { type: 'paragraph', content: inline.content, text: printedLines(inline, html), html });
         break;
       }
       case 'heading_open': {
         const inline = tokens[index + 1];
+        const html = [];
         add(token, {
-          type: 'heading', level: Number(token.tag.slice(1)), content: inline.content, text: printedLines(inline),
+          type: 'heading', level: Number(token.tag.slice(1)), content: inline.content, text: printedLines(inline, html),
+          html,
         });
         break;
       }
@@ -212,7 +224,20 @@ function readBlocks(text) {
         add(token, { type: 'hr' });
         break;
       case 'table_open':
-        add(token, { type: 'table' });
+        add(token, { type: 'table', html: [] });
+        table = blocks[blocks.length - 1];
+        break;
+      case 'table_close':
+        table = null;
+        break;
+      case 'tr_open':
+        rowLine = token.map[0] + 1;
+        break;
+      case 'inline':
+        if (table) {
+          (token.children || []).filter((child) => child.type === 'html_inline')
+            .forEach((child) => table.html.push([rowLine - table.start, child.content]));
+        }
         break;
       default:
         break;

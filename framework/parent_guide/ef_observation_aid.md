@@ -6,6 +6,8 @@ This is a private note you keep for yourself. It takes about a minute, three tim
 
 ## Four guardrails, before anything else
 
+<!-- density-exempt: X, not Y -- the four guardrails spec 21.10 and the batch 1 brief (H4) require at the top: a privacy rule, and noticing, not grading, as a rough home signal for you and not an assessment of your child -->
+
 - **Keep it private.** Your child does not see a score, ever. This is your own notebook, and a number handed to a child becomes a grade the moment they read it. Put no personal data on it.
 - **Noticing, not grading.** This is a rough home signal for you. It is not an assessment of your child, and it measures nothing about their ability.
 - **Not diagnostic or clinical.** Three lines on a page cannot diagnose anything, and nothing here substitutes for a professional evaluation. If something worries you, that is a conversation to have with someone qualified.

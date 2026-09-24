@@ -123,10 +123,10 @@ template_sync:
       reason: Baseline .gitattributes regression test retained; falls under the python catch-all mapping but validates the retained baseline file.
       default_decision: SKIP
     - path: .github/workflows/data-ci.yml
-      reason: Local override adds a schema-guard pytest step (test_schema_examples + test_dependabot_schema) because the python CI workflow was excluded; the full template-sync QA suite is not wired to CI as it assumes the pristine upstream template.
+      reason: Local override adds a schema-guard pytest step (test_schema_examples + test_dependabot_schema) because the python CI workflow was excluded; the full template-sync QA suite is not wired to CI as it assumes the pristine upstream template. It also runs the downstream-only `X, not Y` recount data-file schema hooks (validate-x-not-y-*).
       default_decision: MERGE
     - path: .pre-commit-config.yaml
-      reason: Local override excludes docs/spec/ from the check-prohibited-placeholders hook because the archived design record intentionally uses "TBD" for open trip parameters.
+      reason: Local override excludes docs/spec/ from the check-prohibited-placeholders hook because the archived design record intentionally uses "TBD" for open trip parameters. It also adds a downstream-only check-jsonschema block at the end of the file for the `X, not Y` recount's data files and their schemas (validate-x-not-y-*).
       default_decision: MERGE
     - path: templates/json/
       reason: The json module stays adopted for its validators (check-json and check-jsonschema) and instruction file, but the sample-authoring subtree templates/json/** was pruned to resolve issue 8 (https://github.com/franklesniak/EFingPlanner/issues/8); this directory-level SKIP override prevents template-sync materialization (reconcile_staged_files) from re-creating the deleted starter files on a future sync against an upstream that still ships them, without dropping the retained json infrastructure.

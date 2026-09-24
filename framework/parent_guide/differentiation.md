@@ -11,7 +11,7 @@ This project is built for the child who finds planning hard, so the moves on thi
 - **Movement breaks.** Build in a short movement break partway through, or between steps.
 - **Fewest trackers.** Use only the trackers a session truly needs. The whole project needs just five (Source Log, research cards, decision log, question parking lot, cut list) -- never feel guilty about not keeping more.
 - **Simplify the binder.** A single growing folder, tabbed once at the end, is the recommended default for everyone. For a child who needs even less structure, use one self-organized notebook with the five trackers as labeled sections -- one thing to carry and open.
-- **Co-pilot without taking over.** Sit alongside and scaffold heavily -- prompt, read aloud, hold their place -- without making the decisions for them.
+- **Co-pilot without taking over.** Sit alongside and scaffold heavily -- prompt, read aloud, hold their place -- and let them make the decisions themselves.
 - **Read it aloud.** Read sessions aloud for a child who reads but tires or loses focus.
 
 ## Writing and presenting

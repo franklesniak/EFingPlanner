@@ -2,6 +2,7 @@
 
 # Adult-Only Logistics
 
+<!-- density-exempt: X, not Y -- safety and privacy rule: the child never books, pays or handles personal data (privacy and safety page, online safety for the child) -->
 The booking and logistics tasks on this page are yours. Your child never books, never pays, and never handles booking, account, passport or payment data.
 
 **One deliberate exception, and it matters:** your child carries an "if I get separated" card with where you are staying, its address and phone number, and a parent's phone number. That is the minimum needed to reunite, it is a carry-in-pocket card rather than data written anywhere else, and it is theirs to carry. Do not strip it.

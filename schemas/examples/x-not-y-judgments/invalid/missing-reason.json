@@ -1,0 +1,8 @@
+{
+  "framework/templates/example_card.md": {
+    "device|Choose the map, not the list.|1": {
+      "line": 12,
+      "judgment": "device"
+    }
+  }
+}

@@ -34,6 +34,7 @@ If the tool's current policy does not allow the use you had in mind, the answer 
 
 ## The adult-operated pattern
 
+<!-- density-exempt: X, not Y -- supervision safety rule (batch 1 brief F6): the adult-operated pattern binds every family that opted in -->
 This is the supervision boundary the rest of the curriculum relies on. It is not optional for a family that opted in.
 
 <!-- density-exempt: X, not Y -- the adult-operated pattern, a supervision and verification safety rule: the batch 1 brief (F6) and spec 20.1 require its bullets, and the fourth adds how an AI use is logged -->

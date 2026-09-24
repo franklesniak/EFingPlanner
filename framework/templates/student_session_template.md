@@ -57,7 +57,7 @@ The skeleton opens with the `markdownlint-disable` directive, because every buil
 
 ## The seven mandatory-core fields
 
-Goal, Start Here, Steps, Workspace, Artifact Created, Stop Point, and Source Check when the session has a research step. No other section is part of this mandatory core -- which is not the same as nothing else being required. The three sections below are carried by every child session and the structure gate asks for none of them.
+Goal, Start Here, Steps, Workspace, Artifact Created, Stop Point, and Source Check when the session has a research step. Those seven are the whole mandatory core, and the author still owes every child session the three sections below, though the structure gate asks for none of them.
 
 `## Source Check` is required wherever research occurs, and a session that omits it declares why in its own text, with a `<!-- no-source-check: <reason> -->` comment near the top. `.github/scripts/check-session-structure.py` fails a session carrying neither the heading nor that marker; an adult-only session may instead carry `<!-- audience: adult -->`. Silence is never an exemption. A session with no research step has a second, simpler route: carry the heading with the built no-research form, *"No new sources needed unless you looked something up."* Sessions 01, 03 and 13 ship that way.
 
@@ -90,6 +90,7 @@ The navigation aid is **one line**. It opens `You are here: Phase N (Phase Name)
 
 The step label comes in three forms, and it is the one part that varies:
 
+<!-- density-exempt: X, not Y -- the batch 1 brief (D7) fixes the step label's three forms for this page, the add-on form in this wording -->
 - On the First Taste path: `First Taste step K of 13.`
 - Off that path: `Not a First Taste step.`
 - A conditional add-on session writes its add-on label in place of a step number, as Session 09 does.
@@ -124,7 +125,7 @@ A conditional-core session names its condition on the same line, in the built fo
 
 ## Writing the body
 
-**Start Here is a true micro-action**, ideally doable in under one minute. Opening a page and writing one word on it is the right size. A Start Here that needs a decision is too big. When the session supplies a blank and the micro-action writes something, it writes on that blank or on work the child already has. A first mark on a spare sheet is work the child must copy across or lose.
+**Start Here is a true micro-action**, ideally doable in under one minute. Opening a page and writing one word on it is the right size, and any decision the session needs comes after Start Here. When the session supplies a blank and the micro-action writes something, it writes on that blank or on work the child already has. A first mark on a spare sheet is work the child must copy across or lose.
 
 **An artifact-producing session carries the point-of-use accommodation line**, in the exemplar's form: *"You can say your answers to an adult who writes them, or draw them, if that's easier."*
 
@@ -134,6 +135,7 @@ A conditional-core session names its condition on the same line, in the built fo
 
 In Phases 7-8, and on the two-session readiness trigger, the template gets lighter: `## Steps` and `## Workspace` become minimal, and Start Here becomes self-generated. Start Here, Stop Point, the named Artifact, and Source Check where research occurred are always kept in full.
 
+<!-- density-exempt: X, not Y -- the batch 1 brief (D7) says to write this floor into the template, in its bolded wording "Thinning is a shorter body, never a missing heading" -->
 **Thinning is a shorter body, never a missing heading.** `.github/scripts/check-session-structure.py` requires all six of `## Goal`, `## Start Here`, `## Steps`, `## Workspace`, `## Artifact Created` and `## Stop Point`, each with a non-empty body, in every session in every phase. It has no late-phase exemption and no lighter-template mode. So a lighter session carries a one-line prompt under `## Steps`, a named blank under `## Workspace`, and `## Goal` untouched, because `## Goal` is mandatory too and the always-kept list above does not name it.
 
 ## Before you ship a session

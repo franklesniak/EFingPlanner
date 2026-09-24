@@ -29,11 +29,13 @@ Four things matter here, and all four come back later:
 1. **Shape and size.** Some destinations are long and thin. Some are round and compact. Some are spread over islands. The shape of yours changes how far apart your options sit on the ground.
 2. **Weather can differ from one region to the next.** Two places on the same map can want completely different packing. A small destination may have one weather story; a large one usually has several.
 3. **Travel time matters.** Every hour spent getting somewhere is an hour not spent there. Distance on a map is only half the answer, because how you travel changes the time as much as the distance does.
-4. **A first trip cannot include everything.** That's normal. Choosing a few places well beats rushing through many.
+4. **A first trip cannot include everything.** That's normal. A few well-chosen places, with time for each one, make a great trip.
 
 **Your facts come from the pack.** The regions and the region names are destination facts, so the pack keeps them. When you need them, open this session's Destination Notes.
 
 Do this now:
+
+<!-- density-exempt: X, not Y -- wording the batch 1 brief (C5) requires in the body: read the route shapes as anchors to compare against, not as the answer -->
 
 1. Open this session's Destination Notes and copy the region names onto your map notes page. Put them roughly where they sit on the map.
 2. Follow the pointer the Notes give you to your destination pack's regions overview. Read it, then write **one thing** about how the regions differ from each other.
@@ -79,4 +81,4 @@ If you have extra energy, pick the region that sounds least interesting to you a
 
 ## Parent Notes
 
-The point of this session is scale, and scale is the thing kids most often get wrong on a first trip. If your child's notes imply four regions in five days, leave the cutting to the trade-off sessions; Session 11 is for collecting. Ask one question: "how long does it take to get from this one to that one?" That question is what makes the route shapes on the pack's cities page mean something. A map on the table, or a finger traced along a printed one, does more here than any amount of reading.
+The point of this session is scale, and scale is the thing kids most often get wrong on a first trip. If your child's notes imply four regions in five days, leave the cutting to the trade-off sessions; Session 11 is for collecting. Ask one question: "how long does it take to get from this one to that one?" That question is what makes the route shapes on the pack's cities page mean something. Your child learns the most here from a map on the table, or from a finger traced along a printed one.

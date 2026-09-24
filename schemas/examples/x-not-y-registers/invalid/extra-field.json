@@ -1,0 +1,7 @@
+{
+  "framework/CHANGELOG.md": {
+    "register": "builder",
+    "basis": "builder- and reuser-facing",
+    "cap": 4
+  }
+}

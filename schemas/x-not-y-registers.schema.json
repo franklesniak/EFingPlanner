@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/franklesniak/EFingPlanner/HEAD/schemas/x-not-y-registers.schema.json",
+  "title": "X, not Y recount registers",
+  "description": "The register of each page the X, not Y recount tool (.github/scripts/check-x-not-y.py) cannot place from its audience marker or its tree, in .github/scripts/x-not-y-registers.json. The register sets the page's caps. The tool checks the same shape as it loads the file, and also refuses a repeated key and NaN or Infinity, which JSON Schema cannot express; tests/test_check_x_not_y.py runs every example under schemas/examples/x-not-y-registers/ through both, so the two stay in step.",
+  "type": "object",
+  "propertyNames": {
+    "type": "string",
+    "pattern": "^(?!/|\\.\\./)[\\s\\S]*\\.md$",
+    "description": "A repository path to a Markdown page, such as framework/docs/glossary.md: it ends in .md and starts with neither / nor ../."
+  },
+  "additionalProperties": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "register",
+      "basis"
+    ],
+    "properties": {
+      "register": {
+        "enum": [
+          "child",
+          "parent",
+          "builder"
+        ],
+        "description": "The page's register: child (2 per file), parent (3 per file) or builder (4 per file). The tool's FILE_CAP holds the same three."
+      },
+      "basis": {
+        "type": "string",
+        "pattern": "\\S",
+        "description": "Why the page has this register. It holds more than white space."
+      }
+    }
+  }
+}

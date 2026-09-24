@@ -41,6 +41,8 @@ Each blank page has headings and fill-in spaces, and that is all. Every answer a
 
 ## Keep it private
 
+<!-- density-exempt: X, not Y -- privacy rule: filled-in work is never committed to the public repository and lives in the family's binder or Docs folder (spec 24.1; batch 1 brief G1) -->
 Your real work stays out of this public repository. Keep it in your binder or in your own Docs folder.
 
+<!-- density-exempt: X, not Y -- privacy rule: a Google Docs folder is not a private vault, and the no-personal-data rule holds there too (spec 24, which names this page; batch 1 brief G1) -->
 A Google Docs folder is **not** a private vault. The same rule holds there as on paper: keep passport numbers, birthdates, confirmation numbers, your home address, payment details, and exact booked dates off every page. The full rules are on one page: [privacy and safety](../docs/privacy_and_safety.md).

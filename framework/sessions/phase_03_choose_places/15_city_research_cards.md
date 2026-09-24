@@ -70,4 +70,4 @@ If you have extra energy, start a third city card, or add a "things I can't wait
 
 ## Parent Notes
 
-Keep Tokyo as a gentle anchor, but let your child choose the second city -- ownership matters here. Two cards are enough for First Taste; the comparison next session needs two things to compare. The starred "can't wait to see" sights feed the must-see list later. The movable-blocks idea is what makes a later change to the shape of the journey a small edit, not a redo -- it ties to the "your work wasn't wrong" message. Watch out for rabbit holes; one solid card per sitting is a good pace.
+Keep Tokyo as a gentle anchor, but let your child choose the second city -- ownership matters here. Two cards are enough for First Taste; the comparison next session needs two things to compare. The starred "can't wait to see" sights feed the must-see list later. The movable-blocks idea is what makes a later change to the shape of the journey a small edit, not a redo -- it ties to the "your work wasn't wrong" message. One solid card per sitting is a good pace, and it gives a curious child a natural place to stop digging.

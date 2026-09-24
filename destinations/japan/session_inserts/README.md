@@ -69,6 +69,7 @@ Every slot file also carries a `**Last reviewed:** <month year>` line directly b
 
 ### How a slot divides from its reference
 
+<!-- density-exempt: X, not Y -- the batch 1 brief's (A1) rule for dividing a slot from its reference, with the precedence it fixes for this page: if the two ever disagree, the reference wins -->
 Nine of the twelve slots sit beside a reference file in the contract table above, and a fixed rule divides the two, so every author splits them the same way. The insert supplies only what the session's own page needs in hand: the enumeration a child fills a worksheet from. Everything else belongs to the reference, and so does every volatile fact: availability, current tools, rules that change, anything the pack itself tells a reader to re-check before relying on it. Say so in the slot with a pointer. Where the two ever disagree, the reference wins.
 
 The reason is mechanical. Both files carry their own `Last reviewed` line, so a fact written into both is stamped twice and re-checked once, and the session then meets two freshness claims with one piece of upkeep behind them.

@@ -12,7 +12,7 @@ Your child copies both onto their binder cover in Session 01, and that is intend
 
 Record what you actually know at setup as the **rough trip shape**: the likely arrival place, and, if you know them, the departure place and whether you're flying round-trip or into one place and out of another.
 
-**Recording only the arrival place is a supported setup**, and for a family who has never researched the destination it is the honest one. Do not invent an anchor to fill a field.
+**Recording only the arrival place is a supported setup**, and for a family who has never researched the destination it is the honest one. Leave a field open until you know its answer.
 
 **Where it gets settled depends on your path.** On **Core and Full**, Checkpoint 2 is the point, which is where the setup checklist expects it. **First Taste never reaches Checkpoint 2**, so there is no built moment that forces it. Settle the departure place and the trip shape yourself before you book the flights, since booking is the real deadline either way. Your child builds their route on it from Phase 3 onward, in movable per-city blocks.
 

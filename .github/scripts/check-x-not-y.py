@@ -59,7 +59,21 @@ negation before or after a semicolon, a colon or a dash, and the other forms
 in ``INLINE_PATTERNS``) makes it the device kind. The patterns only name the
 candidate's kind; the
 recorded judgment decides whether it counts, so no negation escapes the count
-because its shape is new. The candidate, and its key, is the sentence as the
+because its shape is new.
+
+Every other prose sentence is a candidate too, because the style law counts
+any sentence that rejects a named alternative, and a rejection needs no
+negation word (``Avoid the list; choose the map.``, ``Two cards with real
+answers beat ten cards with blanks.``). Such a sentence is keyed with the
+sentence before it (``sentence-after-claim``), so a split in any words can be
+judged, or alone when it has none (``sentence-alone``). When the sentence
+before it already keyed the pair, because it opened its paragraph with a
+negation, the sentence is keyed alone and judged for what it rejects by itself
+(``sentence-in-pair``). So each prose sentence is the sentence judged in
+exactly one candidate, and a device in the second sentence of a pair is never
+judged only as the first one's partner. These candidates are numbered after
+the others, so no key a negation word or a pattern gives moves. A sentence of
+nothing but code gives none. The candidate, and its key, is the sentence as the
 page prints it, with every sentence its test reads: a fragment (``Not a
 failure.``) and a negation after a claim are keyed with the claim before them,
 a negation that opens a paragraph with the claim after it, and a release
@@ -70,7 +84,11 @@ two paragraphs does not part them. Text above a page's first ``##`` heading is
 not a ``##`` section, so only the file cap reaches it. Each ``##`` heading
 starts its own section, even when two share a title. A child session's "For
 parents" strip and ``## Parent Notes`` are parent-facing regions, but the file
-cap follows the file's own register.
+cap follows the file's own register. A heading's region lasts while its
+section is open, deeper headings included: ``### Coaching`` under ``## Parent
+Notes`` is still parent-facing, and the next heading of the same or a higher
+level ends it. The strip runs from its label to the next heading of any level,
+as ``check-session-structure.py`` reads it.
 
 A ``<!-- density-exempt: X, not Y -- <reason> -->`` marker covers the block
 directly below it: one paragraph, one whole list (a loose list included), one
@@ -79,8 +97,9 @@ between the marker and its block is skipped. It exempts the instances and
 split negations it covers. The device is named ``X, not Y``; the old
 ``X-not-Y`` and ``x-not-y`` are read too. A marker that gives no reason, that
 names the device in any other spelling (``X not Y``, ``xnoty``), or that
-shares its lines with text the page shows, exempts nothing, and the report
-names it.
+shares its lines with text the page shows (in an HTML block, or inside a line
+of a paragraph, a heading or a table cell), exempts nothing, and the report
+names it. A marker shown in a code span is text, not a marker.
 
 Human judgments
 ---------------
@@ -92,6 +111,10 @@ add a judgment for each.
 
 The data files are strict JSON with 2-space indentation and no comment keys;
 this docstring documents them, and the script checks each one as it loads it.
+``schemas/x-not-y-judgments.schema.json`` and
+``schemas/x-not-y-registers.schema.json`` state the same shape, and pre-commit
+and the data-file CI hold both files to them; ``tests/test_check_x_not_y.py``
+runs every schema example through the loaders below, so the two cannot drift.
 ``x-not-y-judgments.json`` maps each page path (a ``.md`` path) to its
 judgments. A judgment's key is ``<kind>|<sentence text>|<occurrence>``, where
 the text is what the page prints (sentences joined by `` → ``), with ``|block
@@ -113,9 +136,10 @@ object, holds ``NaN`` or ``Infinity``, or holds an entry of another shape or
 value stops the run.
 
 A page's register comes from its ``<!-- audience: parent -->`` or
-``<!-- audience: builder -->`` marker, then from ``x-not-y-registers.json``,
-then from the style law's ``framework/parent_guide/`` tree, then from the
-child-facing trees the readability check scores. A page none of these reaches
+``<!-- audience: builder -->`` marker, wherever the page holds it, then from
+``x-not-y-registers.json``, then from the style law's
+``framework/parent_guide/`` tree, then from the child-facing trees the
+readability check scores. A page none of these reaches
 is UNDETERMINED.
 
 Exit code: 0 when every page is within its caps or marked exempt, with no
@@ -270,6 +294,13 @@ NEGATION_RE = re.compile(NEGATION_WORDS, re.IGNORECASE)
 #: A sentence that holds any of these, `without` included, is a candidate when a
 #: claim sits next to it. No pattern decides that; the recorded judgment does.
 CANDIDATE_NEGATION_RE = re.compile(NEGATION_WORDS + r"|\bwithout\b", re.IGNORECASE)
+#: The patterns of the candidates that every other sentence gets, so that each
+#: prose sentence is the sentence judged in exactly one candidate.
+SENTENCE_PATTERNS = ("sentence-alone", "sentence-after-claim", "sentence-in-pair")
+#: A sentence that holds a letter or a digit once its code spans are set aside.
+HAS_WORDS_RE = re.compile(r"[^\W_]")
+#: What `x-not-y-blocks.js` prints for a code span.
+CODE_MARK = "‹code›"
 INLINE_PATTERNS["not-then-joiner"] = re.compile(
     r"(?:" + NEGATION_WORDS + r")[^;:—–]*?" + CLAUSE_JOINER + r"\s*\S", re.IGNORECASE)
 #: Quotation marks, emphasis and brackets that can open a sentence.
@@ -577,6 +608,20 @@ def parse_marker(lineno: int, body: str) -> Marker:
     return Marker(lineno, device, reason, names_device and bool(reason), problem=problem)
 
 
+def marker_beside_text(lineno: int, body: str) -> Marker | None:
+    """Read a marker that shares its lines with text, or None for another device's.
+
+    The style law puts a marker on the line above what it covers, so one with
+    text on its lines covers nothing, and the report names it.
+    """
+    marker = parse_marker(lineno, body)
+    if not (XNOTY_LOOKALIKE_RE.match(marker.device) or marker.device in XNOTY_DEVICE_NAMES):
+        return None
+    marker.applies = False
+    marker.problem = "text shares its lines; put the marker on a line of its own"
+    return marker
+
+
 def parse_text(text: str) -> Page:
     """Parse one page into prose lines, markers, sections and headings.
 
@@ -597,12 +642,29 @@ def parse_text(text: str) -> Page:
     section = PREAMBLE
     section_index = 0
     region = "main"
+    # The headings whose sections are open, each with whether its title opens
+    # a parent-facing region: a heading closes every open one of its level or
+    # a deeper one, so `### Coaching` under `## Parent Notes` stays inside it.
+    open_headings: list[tuple[int, bool]] = []
     paragraph = 0
     # True while only comments have come since the last paragraph: a comment
     # renders nothing, so it does not part two paragraphs.
     follows = False
     for index, block in enumerate(blocks):
         kind = block["type"]
+        for offset, piece in block.get("html") or ():
+            # Inline HTML in a paragraph, a heading or a table cell. An audience
+            # marker there is read as anywhere else; a `density-exempt` marker
+            # shares its line with text, so it covers nothing and is named.
+            am = AUDIENCE_RE.search(piece)
+            if am and audience is None:
+                audience = am.group(1).lower()
+            for mm in EXEMPT_MARKER_RE.finditer(piece):
+                marker = marker_beside_text(block["start"] + offset + piece.count("\n", 0, mm.start()),
+                                            mm.group("body"))
+                if marker:
+                    markers.append(marker)
+                    marker_blocks.append(index)
         if kind == "html_block":
             content = block.get("content") or ""
             am = AUDIENCE_RE.search(content)
@@ -619,11 +681,8 @@ def parse_text(text: str) -> Page:
             # one line per source line, with character references decoded.
             shown = HIDDEN_HTML_RE.sub(lambda m: "\n" * m.group(0).count("\n"), content.rstrip("\n"))
             for mm in EXEMPT_MARKER_RE.finditer(content):
-                # A marker with text on its own lines covers nothing below it.
-                marker = parse_marker(block["start"] + content.count("\n", 0, mm.start()), mm.group("body"))
-                if XNOTY_LOOKALIKE_RE.match(marker.device) or marker.device in XNOTY_DEVICE_NAMES:
-                    marker.applies = False
-                    marker.problem = "text shares its lines; put the marker on a line of its own"
+                marker = marker_beside_text(block["start"] + content.count("\n", 0, mm.start()), mm.group("body"))
+                if marker:
                     markers.append(marker)
                     marker_blocks.append(index)
             if not shown.strip():
@@ -653,7 +712,12 @@ def parse_text(text: str) -> Page:
                     # known by its place in the page, not by its title.
                     sections.append(section)
                     section_index = len(sections) - 1
-            region = "parent notes" if PARENT_SECTION_RE.match(heading) else "main"
+            while open_headings and open_headings[-1][0] >= level:
+                open_headings.pop()
+            open_headings.append((level, bool(PARENT_SECTION_RE.match(heading))))
+            # The "For parents" strip runs from its label to the next heading of
+            # any level, as check-session-structure.py reads it.
+            region = "parent notes" if any(parent for _, parent in open_headings) else "main"
             follows = False
             continue
         if kind in ("bullet_list", "ordered_list", "blockquote"):
@@ -877,6 +941,12 @@ def find_candidates(rel: str, prose: list[ProseLine],
             g += 1
             prev = sents[idx - 1][0] if idx > 0 else before
             nxt = sents[idx + 1][0] if idx + 1 < len(sents) else after
+            # Whether a candidate above judges this sentence: its own words, not
+            # only as the partner of the sentence before it.
+            judged = len(cands)
+            # The pair this sentence makes with the one before is already keyed
+            # there when that sentence opened it.
+            in_pair = g - 1 in opened_pairs
             # The tests read the words (see `plain()`); the candidate keeps the
             # sentence as the page prints it.
             ps = plain(s)
@@ -901,7 +971,7 @@ def find_candidates(rel: str, prose: list[ProseLine],
                 if BARE_INSTEAD_RE.search(ps) and pprev is not None and NEGATION_RE.search(pprev):
                     split_pats.append("negation-then-instead")
                 if split_pats and prev is not None:
-                    if g - 1 not in opened_pairs:
+                    if not in_pair:
                         if nxt is not None and RELEASE_RE.search(ps):
                             # A release counts only when the next sentence recasts
                             # what the thing is, so that sentence is part of what is
@@ -921,6 +991,17 @@ def find_candidates(rel: str, prose: list[ProseLine],
                     # (`A filter reduces exposure without removing it.`), so it
                     # is a candidate too, keyed alone.
                     add(pl, "device", ["negation-alone"], s, ctx)
+            if len(cands) == judged and HAS_WORDS_RE.search(plain(s).replace(CODE_MARK, "")):
+                # Every other sentence is a candidate too, because the style law
+                # counts any sentence that rejects a named alternative, in any
+                # words. It is keyed with the sentence before it, which a split
+                # needs, unless it has none, or unless that pair is already keyed
+                # from the sentence before; then it is keyed alone, and judged
+                # for what it rejects by itself.
+                if prev is None or in_pair:
+                    add(pl, "device", ["sentence-in-pair" if in_pair else "sentence-alone"], s, ctx)
+                else:
+                    add(pl, "split", ["sentence-after-claim"], prev + ARROW + s, ctx)
             if joined:
                 add(pl, "banned", joined, s, ctx)
             if pnxt is not None:
@@ -928,7 +1009,10 @@ def find_candidates(rel: str, prose: list[ProseLine],
                 if bpats:
                     add(pl, "banned", bpats, s + ARROW + nxt, ctx)
     seen: dict[tuple[str, str, str], int] = {}
-    for c in cands:
+    # A sentence's own candidate is numbered after every other, so adding the
+    # sentence candidates moves no key a word or a pattern gives.
+    ordered = sorted(cands, key=lambda c: c.patterns[0] in SENTENCE_PATTERNS)
+    for c in ordered:
         base = (c.kind, normalize_space(c.text), c.context)
         seen[base] = seen.get(base, 0) + 1
         c.key = f"{c.kind}|{normalize_space(c.text)}|{seen[base]}"

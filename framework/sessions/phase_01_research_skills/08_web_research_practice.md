@@ -33,7 +33,7 @@ In [Session 05](05_good_sources_bad_sources.md) you learned the quick trust test
 - How people get around there.
 - One question from your destination pack's sample search terms.
 
-**Find two sources.** Start from your destination pack's trusted starting sources list. Pick one from there, then find a second somewhere else. Two sources that agree with each other are stronger evidence than one source on its own.
+**Find two sources.** Start from your destination pack's trusted starting sources list. Pick one from there, then find a second somewhere else. When two sources agree, they back each other up.
 
 **Record five things** on your Website Notes form:
 
@@ -43,7 +43,7 @@ In [Session 05](05_good_sources_bad_sources.md) you learned the quick trust test
 4. Where they differ.
 5. Which one is more useful, and why.
 
-That last one is where the thinking happens. A page that answers your exact question in two lines beats a page that says a lot about something else.
+That last one is where the thinking happens. Which page answers your exact question more directly? That's the more useful one, even if its answer is just two lines long.
 
 <!-- density-exempt: X, not Y -- the kid-safe filter caveat is the spec's standalone safety rule (specification line 4245) -->
 **Safety while you research.** A kid-safe filter cuts down what you might run into, but it does not remove it. So a grown-up stays nearby for this one, and for any research that could get sideways. If a page seems wrong, or makes you uncomfortable, close it and tell a grown-up. You are never in trouble for that. If a site asks for your name, an account, a payment, or any personal details, stop and ask a grown-up. The full rules are on the [privacy and safety page](../../docs/privacy_and_safety.md).
@@ -92,4 +92,4 @@ If you have extra energy, run lateral reading on the source you trusted less, th
 
 Stay alongside for this one. Open browsing plus place-name searches is exactly where a filter thins out, and Sessions 05 and 08 are the pair worth co-working even when the rest of the week is hands-off. Model one search out loud, then hand the keyboard over.
 
-Then do a quick, ungraded check when the work is done: ask your child to show you how they would judge whether a website can be trusted. Let them talk through a real page rather than recite the three questions. If the answer is shaky, spend more time here before moving on. This skill carries the rest of the project, and it is cheaper to firm up now than in Phase 6.
+Then do a quick, ungraded check when the work is done: ask your child to show you how they would judge whether a website can be trusted. Let them talk through a real page rather than recite the three questions. If the answer is shaky, spend more time here before moving on. This skill carries the rest of the project, and a gap left here resurfaces in Phase 6, where the lodging, food and budget research leans on it.

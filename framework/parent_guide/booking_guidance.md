@@ -9,7 +9,8 @@ What gets booked, in what order, and how your child's work feeds it, without pul
 
 You own flights, bookings, payments, accounts, personal data, final hotel decisions, final restaurant reservations, and final ticket and timed-entry bookings.
 
-Nothing in this curriculum ever tells a child to book, reserve, buy, create an account, enter payment or passport data, submit an entry form, or handle a confirmation number. If you find something that reads that way, it's a defect. The design is that your child produces a list and you act on it.
+<!-- density-exempt: X, not Y -- the child-never-books boundary, a safety and privacy rule the batch 2 brief (B6, item 1) puts first on this page -->
+Nothing in this curriculum ever tells a child to book, reserve, buy, create an account, enter payment or passport data, submit an entry form, or handle a confirmation number. If you find something that reads that way, it's a defect to fix, because your child's part is the list and yours is acting on it.
 
 ## What your child hands you
 

@@ -8,6 +8,7 @@ Your half of the budget lesson. Read this before your child's first budget sessi
 
 They're learning **how trip costs are structured**: what the categories are, what's priced per person versus per room versus per group, what a buffer is, and whether the parts they chose fit the band you gave them.
 
+<!-- density-exempt: X, not Y -- what the child produces, which the batch 2 brief requires stated plainly (B4 item 1): a structural picture, short of a usable, bookable trip total -->
 What they are producing is a structural picture, and it stops short of a usable, bookable trip budget. Say that plainly to yourself now, so neither of you mistakes the output for one later.
 
 ## Why getting there sits on the side
@@ -16,11 +17,11 @@ Your child's controllable slices are hotels, food, activities, local transit and
 
 **How many of those are in the subtotal depends on where they are.** At the first budget session they estimate **food and lodging only**, and the other three arrive later on the Core path. So an early check runs against a two-slice figure, and the floor it produces is correspondingly lower. Know which one you are looking at before you read anything into it.
 
-**Their band check compares matching units.** The band you give them is a rate or a tier: per person per day, per day for the family, or a hotel tier. A subtotal is a whole-trip amount. Comparing the two would fail a perfectly good estimate on a unit mismatch, so their worksheet asks them to pull out the *matching piece* of their estimate and check that against the band. Give them the band in one of those three forms and the check works; give them a whole-trip number and it cannot.
+**Their band check compares matching units.** The band you give them is a rate or a tier: per person per day, per day for the family, or a hotel tier. A subtotal is a whole-trip amount. Comparing the two would fail a perfectly good estimate on a unit mismatch, so their worksheet asks them to pull out the *matching piece* of their estimate and check that against the band. You make that check work by giving them the band in one of those three forms, since a whole-trip band has no matching piece to compare.
 
 **Your** sanity check needs a number, and the first pass may not produce one. Session 33 lets a child answer in **high / medium / low**, which is a complete answer. If that is what you have, read the check qualitatively: does the tier they landed on sound like the band you set? Ask for a rough range only if you actually need the arithmetic.
 
-**When you do have numbers:** your check is their subtotal plus your cost of getting there for the whole party. If you fly or take the train, that is a per-person fare multiplied by the number of travelers: the subtotal is already a whole-party amount and a fare is not, so adding a fare raw understates the result for any family larger than one. If you drive, it is the drive's own fuel and tolls.
+**When you do have numbers:** your check is their subtotal plus your cost of getting there for the whole party. If you fly or take the train, that is a per-person fare multiplied by the number of travelers, so both parts of the sum cover the whole party. If you drive, it is the drive's own fuel and tolls.
 
 **That figure is a floor, and it is worth knowing what it leaves out.** At the first budget session it leaves out three of the five slices: activities, local transit and souvenirs. That is on top of everything below, so it is a floor under a floor. Once the Core path has added those, the subtotal covers all five.
 
@@ -68,6 +69,7 @@ A lodging category priced per person is the exception, and it skips the per-room
 
 You set the amount and hold the actual money. Your child plans how they might spend it.
 
+<!-- density-exempt: X, not Y -- the spending-money rule the batch 2 brief gives this page (B4, item 7, from spec Section 23): no new tracker or binder page, a line inside the existing budget work -->
 Keep it price-free: have them **look up** a current price. And don't add a page or a tracker for this. It's a line inside the budget work they already do.
 
 ## When the honest answer is no

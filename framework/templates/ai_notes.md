@@ -26,6 +26,8 @@ AI has three jobs on this project, and no others:
 
 ## What AI may not do
 
+<!-- density-exempt: X, not Y -- the may-not list the batch 1 brief (D5) requires on this form: never the only source, never the child's recommendation, never the adults' decisions -->
+
 1. Be your only source.
 2. Write your recommendation. The recommendation is your work, even when AI helped you organize the notes behind it.
 3. Decide anything about passports, entry, visas, safety, medical questions, medication, bookings, payments, legal requirements, or the final budget. Those are for the adults.

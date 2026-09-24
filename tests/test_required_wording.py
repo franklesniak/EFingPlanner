@@ -3,10 +3,11 @@
 The style law caps the `X, not Y` device, and a page over the cap is rewritten.
 The law also says content outranks the budget: a safety statement, a required
 rule, a calibration pair the spec requires, and wording a build brief fixes stay,
-under a ``density-exempt`` marker where the count needs one. Issue #49's
-recount rewrote some of that content anyway, and review round 2 of PR #51 put
-it back. Each entry below is one of those sentences, with the source that
-requires it, so a later rewrite that drops one fails here instead of in review.
+under a ``density-exempt`` marker where the count needs one. The first recount
+under the device's full definition rewrote some of that content anyway, and a
+later audit against the briefs put it back. Each entry below is one of those
+sentences, with the source that requires it, so a later rewrite that drops one
+fails here instead of in review.
 
 The wording must stay where a reader sees it. So each page is read as the
 recount tool reads it, through markdown-it: the text of its paragraphs and
