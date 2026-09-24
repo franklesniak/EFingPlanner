@@ -745,6 +745,67 @@ def test_raw_html_lookalikes_are_not_references(repo: Repo, body: str) -> None:
     assert run(repo) == []
 
 
+def problems_after_a_move(repo: Repo, body: str) -> list[str]:
+    """Publish a file holding `body`, move it to a subdirectory unedited, and run the check."""
+    publish(repo, doc("2026-01-01", "Text.\n\n" + body), "2026-01-01T12:00:00+00:00")
+    (repo.root / "docs" / "sub").mkdir()
+    repo.git("mv", "docs/a.md", "docs/sub/a.md")
+    repo.commit("move", "2026-03-05T10:00:00+00:00")
+    return run(repo)
+
+
+@pytest.mark.parametrize("body", [
+    '<!--\n<a href="x.md">x</a>',                    # the comment runs to the end of the page
+    '> <!--\n> <a href="x.md">x</a>\n\n[y](y.md)',   # past its block quote, over a later link too
+], ids=["in-a-block", "in-a-block-quote"])
+def test_a_comment_that_is_never_closed_hides_the_rest_of_the_page(repo: Repo, body: str) -> None:
+    assert problems_after_a_move(repo, body) == []
+
+
+@pytest.mark.parametrize("body", [
+    '<?php <a href="x.md"> ?>',               # a processing instruction ends at its first >
+    '<?x\n<a href="x.md">x</a>',              # never closed
+    '<!X <a href="x.md">>',                   # a declaration
+    '<![CDATA[ <a href="x.md"> ]]>',          # outside SVG and MathML, CDATA is a bogus comment
+    '<![CDATA[\n<a href="x.md">x</a>',        # never closed
+    'Text <?x <a href="x.md"> ?> more.',      # inline, as CommonMark allows
+    "<p>\n</p title=\"<a href='x.md'>\">",     # an end tag's attribute value
+], ids=["processing-instruction", "open-processing-instruction", "declaration", "cdata", "open-cdata",
+        "inline-processing-instruction", "end-tag-attribute"])
+def test_markup_that_is_not_a_start_tag_hides_what_it_holds(repo: Repo, body: str) -> None:
+    assert problems_after_a_move(repo, body) == []
+
+
+@pytest.mark.parametrize("body", [
+    '<%s>\n<a href="x.md">x</a>\n</%s>' % (name, name)
+    for name in ("textarea", "title", "xmp", "iframe", "noembed", "noframes", "noscript")
+] + [
+    'Text <textarea><a href="x.md">x</a></textarea> more.',   # inline, across Markdown's pieces
+    '<plaintext>\n</plaintext>\n<a href="x.md">x</a>',        # plaintext has no end
+], ids=["textarea", "title", "xmp", "iframe", "noembed", "noframes", "noscript", "inline-textarea", "plaintext"])
+def test_the_text_of_a_raw_text_element_is_not_a_reference(repo: Repo, body: str) -> None:
+    assert problems_after_a_move(repo, body) == []
+
+
+@pytest.mark.parametrize("raw", [
+    '<!--> <img src="pic.png"> -->',                        # <!--> is a whole, empty comment
+    '<!---> <img src="pic.png"> -->',                       # and so is <!--->
+    '<!-- note --!> <img src="pic.png"> -->',               # --!> closes a comment
+    'Text <!-- note --!> <img src="pic.png"> --> more.',    # inline, where CommonMark reads one comment
+    '<?x ?> <img src="pic.png">',                           # a processing instruction ends at its first >
+    '<textarea>x</textarea>\n<img src="pic.png">',          # a raw text element ends at its end tag
+    # A quote outside a value is part of an attribute name, not the start of a value, so it must
+    # not pair with the quotes of the image below and hide it.
+    '<p>x</p b"c>\n\nIt\'s ![i](pic.png "It\'s"), isn\'t it.',
+    '<p b"c>x</p>\n\nIt\'s ![i](pic.png "It\'s"), isn\'t it.',   # read too long, the tag is tied to the directory
+], ids=["after-an-empty-comment", "after-an-empty-dash-comment", "after-a-bang-closed-comment",
+        "inline-after-a-bang-closed-comment", "after-a-processing-instruction", "after-a-textarea",
+        "after-an-end-tag-with-a-stray-quote", "after-a-start-tag-with-a-stray-quote"])
+def test_a_tag_after_a_comment_or_other_markup_ends_is_a_reference(repo: Repo, raw: str) -> None:
+    problems = problems_after_a_move(repo, raw)
+    assert len(problems) == 1 and "Set it to 2026-03-05" in problems[0]
+
+
 @pytest.mark.parametrize("raw", [
     "<img src={up}pic.png>",
     "<img src='{up}pic.png'>",
@@ -783,10 +844,12 @@ def test_attribute_after_a_non_ascii_space_is_not_read_as_a_url(repo: Repo) -> N
     assert len(problems) == 1 and "Set it to 2026-03-05" in problems[0]
 
 
-def test_visible_text_after_a_comment_is_not_skipped(repo: Repo) -> None:
+@pytest.mark.parametrize("opening", ["<!-- note -->Visible introduction", "<!-- note --!>Visible introduction -->"],
+                         ids=["after-the-close", "after-a-bang-close"])
+def test_visible_text_after_a_comment_is_not_skipped(repo: Repo, opening: str) -> None:
     # The comment block renders "Visible introduction", so the list after it is not at the top
-    # of the body, and this page has no metadata block.
-    listed = ("<!-- note -->Visible introduction\n\n- **Status:** Active\n- **Owner:** Maintainers\n"
+    # of the body, and this page has no metadata block. `--!>` closes a comment, as `-->` does.
+    listed = (opening + "\n\n- **Status:** Active\n- **Owner:** Maintainers\n"
               "- **Last Updated:** 2000-01-01\n- **Scope:** Example.\n\n%s\n")
     publish(repo, listed % "Text.", "2026-01-01T12:00:00+00:00", "docs/plain.md")
     repo.write("docs/plain.md", listed % "Text changed.")
@@ -980,6 +1043,38 @@ def test_edit_under_a_middle_name_sets_the_date(repo: Repo, copy: bool) -> None:
     assert repo.git("diff", "--name-status", "-M", "main..HEAD").startswith("R")
     problems = run(repo)
     assert len(problems) == 1 and "docs/c.md" in problems[0] and "Set it to 2026-03-06" in problems[0]
+
+
+def test_edit_on_a_copy_of_a_copy_sets_the_date(repo: Repo) -> None:
+    # a.md is copied to b.md and stays; b.md is edited; b.md is copied to c.md, then a.md and b.md
+    # are deleted, in backdated commits. The final diff shows a.md -> c.md, but c.md came from b.md.
+    repo.write("docs/b.md", doc("2026-01-01"))
+    repo.commit("copy a.md to b.md", "2026-03-04T10:00:00+00:00")
+    repo.write("docs/b.md", doc("2026-03-05", "Edited on the copy."))
+    repo.commit("edit b.md", "2026-03-06T10:00:00+00:00")
+    repo.write("docs/c.md", doc("2026-03-05", "Edited on the copy."))
+    repo.commit("copy b.md to c.md", "2026-03-05T11:00:00+00:00")
+    repo.git("rm", "-q", "docs/a.md", "docs/b.md")
+    repo.commit("delete a.md and b.md", "2026-03-05T12:00:00+00:00")
+    assert repo.git("diff", "--name-status", "-M", "main..HEAD").startswith("R")
+    problems = run(repo)
+    assert len(problems) == 1 and "docs/c.md" in problems[0] and "Set it to 2026-03-06" in problems[0]
+
+
+def test_content_brought_back_from_a_deleted_copy_is_dated_by_that_commit(repo: Repo) -> None:
+    # The walk does not trace c.md to b.md, which an earlier commit deleted. With honest dates the
+    # commit that brings the content back still counts as a change, and it is the newest one.
+    repo.write("docs/b.md", doc("2026-01-01"))
+    repo.commit("copy a.md to b.md", "2026-03-04T10:00:00+00:00")
+    repo.write("docs/b.md", doc("2026-03-06", "Edited on the copy."))
+    repo.commit("edit b.md", "2026-03-06T10:00:00+00:00")
+    repo.git("rm", "-q", "docs/b.md")
+    repo.commit("delete b.md", "2026-03-07T10:00:00+00:00")
+    repo.git("rm", "-q", "docs/a.md")
+    repo.write("docs/c.md", doc("2026-03-06", "Edited on the copy."))
+    repo.commit("bring the copy back as c.md", "2026-03-08T10:00:00+00:00")
+    problems = run(repo)
+    assert len(problems) == 1 and "docs/c.md" in problems[0] and "Set it to 2026-03-08" in problems[0]
 
 
 def test_move_made_in_a_merge_commit_is_not_a_content_change(repo: Repo) -> None:

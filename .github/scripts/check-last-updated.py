@@ -29,8 +29,9 @@ Markdown is read"):
    dates, not on today's date, means a second change on the same day passes
    without a redundant edit, and a check re-run on a later day cannot start
    failing. A renamed file's history is followed under each earlier name,
-   including a rename made as a copy and a later deletion, a deletion followed
-   by a restoration, and a rename made in a merge commit. A rename is what git's
+   including a rename made as a copy and a later deletion, a chain of copies
+   (each step as git's copy detection finds it), a deletion followed by a
+   restoration, and a rename made in a merge commit. A rename is what git's
    rename detection reports, which keeps at least half of the content by
    default; a file rewritten below that counts as a new file, whose history
    starts at the commit that added it. The field must also not be later than
@@ -79,6 +80,10 @@ cleaned as the URL Standard's parser cleans it: white space around it, and tabs
 and newlines inside it, are dropped. Raw HTML that may hold a URL the helper
 does not parse, such as a `style` attribute or a `<style>` element, is tied to
 the file's directory instead, so moving that file counts as a content change.
+The rendered page is read as a browser's HTML tokenizer reads it, so a tag
+inside a comment, even one never closed, inside other markup such as a
+processing instruction, or inside the text of an element such as `textarea`, is
+text and not a reference.
 
 How Markdown is read
 --------------------
@@ -96,7 +101,12 @@ request's own commits. The check does not judge which content is "meaningful":
 any non-mechanical change requires the bump, which is what the guide says.
 Author dates are trusted, because whoever makes a commit sets them: a backdated
 commit can satisfy the check, including one that rewrites a file below git's
-rename threshold. The check is a drift guard, not a trust boundary.
+rename threshold, or one that brings back content from a file an earlier commit
+deleted. Where the walk cannot follow a file's history, the commit it stops at
+still counts as a change, because it differs from what the walk compares it
+with; with honest dates that commit is later than every edit it hides, so an
+edit is missed only when a later commit carries an earlier author date. The
+check is a drift guard, not a trust boundary.
 
 Usage
 -----
@@ -314,6 +324,26 @@ def path_at(commit: str, later: str, path: str) -> str:
     return path
 
 
+def copy_source(parent: str, commit: str, path: str) -> str | None:
+    """The file in `parent` that git's copy detection names as the source of `path` in `commit`.
+
+    `--find-copies-harder` lets every file of the parent be a source, not only the files the
+    commit changed, and git takes the most similar one. None when git finds no source, as when
+    the file is restored after a deletion.
+    """
+    raw = git("diff", "--name-status", "-z", "-C", "--find-copies-harder", parent, commit)
+    tokens = [t for t in raw.split("\0") if t]
+    i = 0
+    while i < len(tokens):
+        if tokens[i][0] in "CR":
+            if tokens[i + 2] == path:
+                return tokens[i + 1]
+            i += 3
+        else:
+            i += 2
+    return None
+
+
 def required_date(base: str, head: str, path: str, origin: str | None = None) -> dt.date | None:
     """UTC author date of the newest PR commit that changed the file's content."""
     changes = content_changes(base, head, path, origin)
@@ -334,11 +364,15 @@ def content_changes(base: str, head: str, path: str,
     the merge is authored.
 
     `origin` is the file's name on the base, when the file existed there. Where the diff
-    against the child loses the file, as at a copy or a restoration, the parent's name is
-    the one a rename-aware diff from the base gives `origin`, so a rename made before the
-    copy is followed too. A commit that lacks the file, as between a deletion and a
-    restoration, passes the name on to its parents. So the history before the copy or the
-    deletion still counts, under each earlier name.
+    against the child loses the file, as at a copy, the parent's name is the copy's source,
+    as git's copy detection finds it (see `copy_source()`), so a chain of copies, renames
+    and edits is followed one step at a time. Where git finds no source, as at a
+    restoration, it is the name a rename-aware diff from the base gives `origin`. A commit
+    that lacks the file, as between a deletion and a restoration, passes the name on to its
+    parents. So the history before the copy or the deletion still counts, under each
+    earlier name. Content brought back from a file that an earlier commit deleted is not
+    traced to that file; the commit that brings it back is dated instead (see "What is not
+    checked").
     """
     # Walk every PR commit children-first, carrying the file's name backwards: the head
     # knows it as `path`, and each parent's name comes from a rename-aware diff against
@@ -365,7 +399,8 @@ def content_changes(base: str, head: str, path: str,
         for parent in parents:
             own = path_in(parent, sha, name)
             if own is None and origin is not None:
-                own = path_at(base, parent, origin)   # added here, as by a copy: the base file's name in the parent
+                # Added here, as by a copy: follow the most similar file in the parent, or else the base file.
+                own = copy_source(parent, sha, name) or path_at(base, parent, origin)
             names.setdefault(parent, own)
             content = show(parent, own) if own else None
             befores.append(rendered(content or "", own or name))

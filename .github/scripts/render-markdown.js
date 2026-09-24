@@ -29,8 +29,11 @@
  *                `meta`, `script` or `style` element, or an attribute that is
  *                neither a URL attribute nor one that never holds a URL, such as
  *                `style` or `srcdoc`) is tied to the directory of `path`, so a
- *                move changes its html. HTML comments and text are left as they
- *                are.
+ *                move changes its html. The rendered page is read as the HTML
+ *                tokenizer reads it, in one pass: a tag inside a comment, inside
+ *                other markup such as a processing instruction, or inside the
+ *                text of an element such as `textarea` is text, and is left as
+ *                it is, as are HTML comments and text.
  *   lastUpdated  YYYY-MM-DD from the `- **Last Updated:** YYYY-MM-DD` item of the
  *                metadata header block, or the item's value as written when it
  *                has another shape (so the check can report it), or null.
@@ -98,10 +101,21 @@ const DIRECTORY_BOUND_ELEMENTS = new Set(['base', 'meta', 'script', 'style']);
 const NOT_RELATIVE = /^(?:[A-Za-z][A-Za-z0-9+.-]*:|\/|#|\?|$)/;
 // The base every relative reference resolves against; the host only makes it a full URL.
 const BASE_ORIGIN = 'https://repository.invalid';
-// Raw HTML pieces: a comment, or a start tag whose quoted values may hold `>`.
-const COMMENT_OR_TAG = /<!--[^]*?-->|<[A-Za-z][A-Za-z0-9-]*(?:[^>"']|"[^"]*"|'[^']*')*>/g;
-// A whole HTML comment, including the empty forms `<!-->` and `<!--->` (CommonMark 0.31.2).
-const COMMENT = /<!--(?:-?>|[^]*?-->)/g;
+// A whole HTML comment, as the HTML tokenizer ends one: at `-->` or `--!>`, as the empty forms
+// `<!-->` and `<!--->`, or, when it is never closed, at the end of the page.
+const COMMENT = /<!--(?:-?>|[^]*?--!?>|[^]*$)/g;
+// One piece of markup at a `<`, as the HTML tokenizer reads it: a comment; other markup opened
+// by `<!`, `<?` or `</`, such as a declaration, CDATA, a processing instruction or an end tag,
+// which ends at the next `>` or at the end of the page; or a start tag (its name is group 1),
+// whose quoted values may hold `>`. An end tag can run past that `>` inside a quoted value, but
+// ending it early can only resolve a tag a browser hides, never hide one it reads. A start tag
+// read too long is tied to the directory by canonicalTag, because its rest is unreadable.
+const MARKUP = new RegExp(COMMENT.source + '|' +
+  /<[!?/][^>]*>?|<([A-Za-z][A-Za-z0-9-]*)(?:[^>"']|"[^"]*"|'[^']*')*>/.source, 'g');
+// Elements whose content the HTML tokenizer reads as text up to their own end tag, and
+// `plaintext`, whose content runs to the end of the page.
+const RAW_TEXT = new Set(['iframe', 'noembed', 'noframes', 'noscript', 'plaintext', 'script', 'style', 'textarea',
+  'title', 'xmp']);
 // One attribute inside a start tag, from the current position (CommonMark 0.31.2, raw HTML).
 // White space here, as everywhere below, is ASCII whitespace, which is what HTML and URL
 // parsing use; JavaScript's `\s` and `trim()` also take in U+00A0 and other Unicode spaces.
@@ -218,23 +232,27 @@ function canonicalTag(tag, directory) {
   return out + (bound ? ' data-directory="' + escapeHtml(directory) + '"' : '') + rest;
 }
 
+// The rendered page with each start tag made canonical, so every relative reference in a
+// Markdown link or image and in raw HTML is resolved. The page is read in one pass, as a browser
+// reads it, so a comment or an element that one Markdown block opens can hide what later blocks
+// render. Everything that is not a start tag is left as it is.
 function canonicalHtml(html, directory) {
-  return html.replace(COMMENT_OR_TAG, (piece) => (piece.startsWith('<!--') ? piece : canonicalTag(piece, directory)));
-}
-
-// Resolve relative references in Markdown links, images and raw HTML, in place.
-function resolveReferences(tokens, directory) {
-  for (const token of tokens) {
-    if (token.type === 'link_open' || token.type === 'image') {
-      const attribute = token.type === 'link_open' ? 'href' : 'src';
-      token.attrSet(attribute, resolveUrl(token.attrGet(attribute), directory));
-    } else if (token.type === 'html_block' || token.type === 'html_inline') {
-      token.content = canonicalHtml(token.content, directory);
-    }
-    if (token.children) {
-      resolveReferences(token.children, directory);
+  let out = '';
+  let at = 0;
+  MARKUP.lastIndex = 0;
+  for (let m = MARKUP.exec(html); m !== null; m = MARKUP.exec(html)) {
+    const start = m[1] !== undefined;
+    out += html.slice(at, m.index) + (start ? canonicalTag(m[0], directory) : m[0]);
+    at = MARKUP.lastIndex;
+    const name = start ? m[1].toLowerCase() : '';
+    if (RAW_TEXT.has(name)) {
+      const end = name === 'plaintext' ? -1 : html.slice(at).search(new RegExp('</' + name + '[\\t\\n\\f\\r />]', 'i'));
+      MARKUP.lastIndex = end < 0 ? html.length : at + end;
+      out += html.slice(at, MARKUP.lastIndex);
+      at = MARKUP.lastIndex;
     }
   }
+  return out + html.slice(at);
 }
 
 // The document's top-level blocks, each with the tokens inside it.
@@ -356,8 +374,8 @@ function metadata(tokens) {
 
 function describe(text, filePath) {
   const tokens = md.parse(text, {});
-  resolveReferences(tokens, path.posix.dirname(filePath));
-  const html = md.renderer.render(tokens, md.options, {})
+  const rendered = md.renderer.render(tokens, md.options, {});
+  const html = canonicalHtml(rendered, path.posix.dirname(filePath))
     .split('\n')
     .map((line) => line.replace(/[ \t]+$/, ''))
     .join('\n')
