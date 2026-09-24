@@ -10,7 +10,7 @@ You are here: Phase 4 (Attractions and Experiences). Not a First Taste step. **T
 - Planner skill: making trade-offs
 - Estimated time: 20-30 minutes for the child, plus a 20-40 minute review with you
 - Parent involvement: parent review -- genuinely use the recommendation in a real family talk
-- Materials: your ranked attraction list and attraction cards, your My Calls page, your family's [current travel assumptions](../../templates/current_family_travel_assumptions.md) page (for the budget band), your [Source Log](../../templates/source_log.md), a [Decision Record page](../../templates/decision_record.md)
+- Materials: your ranked attraction list and attraction cards, your My Calls page, your City A card from Session 16 and your Session 26 scoring tables (for the optional look back at your minutes guesses), your family's [current travel assumptions](../../templates/current_family_travel_assumptions.md) page (for the budget band), your [Source Log](../../templates/source_log.md), a [Decision Record page](../../templates/decision_record.md)
 
 ## Goal
 
@@ -58,7 +58,7 @@ Your top experiences recommendation:
 
 Then fill your Decision Record. Your must-dos go in **My recommendation**, and your reasons, sources and trade-offs go in their own rows. When the grown-ups decide, write their answer in **Final family decision**. That record is your decision-log entry.
 
-Optional, one line: *This stretch was easy / medium / hard (circle one), and one concrete thing that helped or got in the way.* A drawing is a fine answer, and so is skipping it. While you're looking back, find your minutes guesses from Sessions 16 and 26 and see whether the gap got smaller. On that same line, a grown-up can ask you: *How's this going for you -- want to go lighter or deeper?*
+Optional, one line: *This stretch was easy / medium / hard (circle one), and one concrete thing that helped or got in the way.* A drawing is a fine answer, and so is skipping it. While you're looking back, find your minutes guesses on your City A card (Session 16) and your Session 26 scoring tables, and see whether the gap got smaller. On that same line, a grown-up can ask you: *How's this going for you -- want to go lighter or deeper?*
 
 You can say your answers to an adult who writes them, or draw them, if that's easier.
 

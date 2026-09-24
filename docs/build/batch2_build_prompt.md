@@ -1183,7 +1183,7 @@ add a third.**
 | Session | The loop |
 | --- | --- |
 | **23**, first ticket-price lookup | Before looking up one attraction's ticket price, the child writes a **one-line guess** in the attraction card's guess row, then checks it against the official site, writes what they found in the next row, and notices the gap |
-| **30**, first transit-fact lookup | The same one-line guess, on the session's source line, before checking one trip the Session 28 notes do not already hold, such as one must-do to another in the same city, against a current transit planner. Where the family will not ride trains or buses there, the guess is the time for its own way of getting around, checked in the map's Directions. Session 28 already times every hop between places, so a guess at one of those would be recall |
+| **30**, first transit-fact lookup | The same one-line guess, on the session's source line, before checking one trip the Session 28 notes do not already hold, such as one must-do to another in the same city, or to a strong maybe or another attraction on the child's cards, against a current transit planner. Where the family will not ride trains or buses there, the guess is the time for its own way of getting around, checked in the map's Directions. Session 28 already times every hop between places, so a guess at one of those would be recall |
 
 Both **use a surface the child already has and add no new tracker**: the card's two rows at
 Session 23, and the session's source line at Session 30. Both stay **ungraded**:
@@ -1811,7 +1811,8 @@ purchases.**
   travel-time guess is on its source line with what you found and the date.
 - **Source Check: required, and this is the second designated predict-then-verify
   session.** The one-line guess at a trip the Session 28 notes do not hold, such as one
-  must-do to another in the same city, goes on the source line. The child then checks it
+  must-do to another in the same city, or to a strong maybe or another carded attraction,
+  goes on the source line. The child then checks it
   against a current transit planner and notices the gap. Ungraded. Where the family will
   not ride trains or buses there, the child guesses and checks the time for its own way of
   getting around, in the map's Directions.
