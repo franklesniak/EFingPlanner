@@ -46,6 +46,7 @@ How to read the lines:
 - A *Conditional core* line is done when its condition holds.
 - A *Recommended* line is done only if your family chooses it.
 - A line that names a grown-up is one to do with a grown-up.
+- A line that says *before you start* needs one answer from a grown-up first. Once you have it, you can do the session on your own.
 - A line marked *more than one sitting* gets its tick only when the whole session is finished. If its Stop Point says you are done for today, wait.
 - A line under a session that starts *Finished First Taste first?* is extra work for that session on the Core path. If you started on the Core path, tick it along with its session.
 
@@ -96,7 +97,7 @@ How to read the lines:
 ### Phase 5 (Route, Length, and Transportation)
 
 - [ ] [28 Map the Route](../sessions/phase_05_route_length_transport/28_map_the_route.md)
-- [ ] [29 How Long to Stay](../sessions/phase_05_route_length_transport/29_how_long_should_we_stay.md)
+- [ ] [29 How Long to Stay](../sessions/phase_05_route_length_transport/29_how_long_should_we_stay.md) *(before you start: a grown-up tells you how long the trips there and home take, and which flights land on a later date)*
 - [ ] [30 Trains, Transit, and Travel Cards](../sessions/phase_05_route_length_transport/30_trains_transit_and_travel_cards.md)
 - [ ] [31 Route Trade-Off Report](../sessions/phase_05_route_length_transport/31_route_tradeoff_report.md)
 - [ ] [32 Checkpoint 4 Route and Trip Length](../sessions/phase_05_route_length_transport/32_checkpoint_4_route_and_trip_length.md) *(Checkpoint 4: a grown-up reviews this)*
@@ -110,7 +111,7 @@ How to read the lines:
 - [ ] [36 Food Research](../sessions/phase_06_lodging_food_budget/36_food_research.md) *(Conditional core: only if your family wants the restaurant and food shortlist in the binder; a grown-up stays nearby if you search beyond the Destination Notes, and beside you for an image search)*
 - [ ] [37 Restaurant Shortlist](../sessions/phase_06_lodging_food_budget/37_restaurant_shortlist.md) *(Conditional core: only if your family wants the restaurant and food shortlist in the binder; a grown-up stays nearby if you search beyond the Destination Notes, and beside you for an image search)*
 - [ ] [38 Daily Cost Estimates](../sessions/phase_06_lodging_food_budget/38_daily_cost_estimates.md)
-- [ ] [39 Budget Review, Second Pass](../sessions/phase_06_lodging_food_budget/39_budget_review_second_pass.md)
+- [ ] [39 Budget Review, Second Pass](../sessions/phase_06_lodging_food_budget/39_budget_review_second_pass.md) *(before you start: a grown-up tells you how many rooms each city needs)*
 
 ### Phase 7 (Itinerary Building)
 
@@ -147,7 +148,7 @@ On the First Taste path, most sessions you can do on your own. Only a few need a
 
 On the Core and full path, the lines that name a grown-up in the Core and full list above are the ones to do with a grown-up. Every checkpoint is one of them.
 
-So when a grown-up is busy, keep going **in order** on the next session -- unless that next session needs a grown-up (on First Taste, one named just above; on the Core and full path, a line that names a grown-up). Do those *with* a grown-up: pause there until one is free, and do not skip past them -- except Session 07, which you can skip if no grown-up is free, going straight on to Session 08. **A gap of a week or two is normal -- you do not start over.**
+So when a grown-up is busy, keep going **in order** on the next session -- unless that next session needs a grown-up (on First Taste, one named just above; on the Core and full path, a line that names a grown-up, or a *before you start* answer you don't have yet). Do those *with* a grown-up: pause there until one is free, and do not skip past them -- except Session 07, which you can skip if no grown-up is free, going straight on to Session 08. **A gap of a week or two is normal -- you do not start over.**
 
 ## What to do while you wait for a grown-up
 

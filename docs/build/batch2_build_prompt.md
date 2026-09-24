@@ -3552,7 +3552,13 @@ Taste path. Write Session 26's Role line the way Session 44's is written. **Sess
 and 37 have one grown-up step each:** a grown-up stays nearby for any search beyond the
 Destination Notes (and official city sites, in Session 34), and beside the child for an
 image search, as the privacy and safety page asks. Their section 10 values name that step
-after a semicolon, and their Role lines carry it. Every session not
+after a semicolon, and their Role lines carry it. **Sessions 29, 38 and 39 have one grown-up
+step that comes before the session:** a grown-up tells the child how long the trips there
+and home take and which flights land on a later date (29), the souvenir amount for one day
+(38), and how many rooms each overnight city needs (39). Their section 10 values name that
+step after a semicolon too, and their Role and Prep lines carry it. Sessions 29 and 39 hold
+the child until the answer is in hand, because their Stop Points need it. Session 38 does
+not hold the child, because its souvenir row takes "ask an adult". Every session not
 named in this paragraph is independent: the child can do it without a grown-up there. That
 includes a session whose section 10 value is a 5-minute check-in or a parent review after
 the session, because neither stops the child; its Role line still carries that value.
@@ -4265,7 +4271,9 @@ reaches each extension at its session's place.
 in the same form as the First Taste list's markers, taking which sessions those are from
 B7's rule, so the membership lives in one place. A 5-minute check-in or a parent review
 after the session gets no marker, because the child does not wait for it; the built First
-Taste list follows the same rule. **Scope the existing "Which sessions need a grown-up"
+Taste list follows the same rule. A grown-up step that comes before the session is marked
+with a *before you start* line only where B7 says it holds the child, and the legend says
+that line holds the child only until the answer is in hand. **Scope the existing "Which sessions need a grown-up"
 lists to the First Taste path**, and make its waiting rule point at a marked
 session, so a Core child is never told that the later checkpoints or Sessions 25 and 49 need
 no grown-up.

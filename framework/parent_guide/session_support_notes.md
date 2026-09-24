@@ -4,7 +4,7 @@
 
 A short, parent-facing overview of each session built so far -- your role, what to prep, the artifact to look for, a coaching question on the sessions the child does, and a common pitfall. This does not replace the Parent Notes inside each session; it is the at-a-glance map.
 
-**Whether you need to be there.** A Role line marked *parent-gated* is a session your child waits for you on. *Co-worked* marks one you sit through with them. Any other session is one your child can do on their own, apart from any single step its Role line gives you. A Role line that recommends co-working without that mark still lets your child go ahead. A 5-minute check-in or a review after the session never holds them up.
+**Whether you need to be there.** A Role line marked *parent-gated* is a session your child waits for you on. *Co-worked* marks one you sit through with them. Any other session is one your child can do on their own, apart from any single step its Role line gives you. A Role line that recommends co-working without that mark still lets your child go ahead. A 5-minute check-in or a review after the session never holds them up. A Role line that says *beforehand* names an answer to give before the session. Sessions 29 and 39 need it to finish, so your child waits for it there. In Session 38, "ask an adult" in the souvenir row is enough.
 
 **Formative checks.** A few entries name a formative check: a quick spoken prompt that shows whether a skill is growing. It is never a graded test. If your child can't yet show their reasoning, turn support up before the next phase begins. It is a different thing from the checkpoint reflection, which looks back at the stretch just finished.
 
@@ -319,7 +319,7 @@ Want a rough signal of how the executive-function side is going? The optional [e
 
 ## Session 38: Daily Cost Estimates
 
-- Role: Independent, with a 5-minute check-in; beforehand, tell your child the souvenir amount for one ordinary day.
+- Role: Independent, with a 5-minute check-in; beforehand, tell your child the souvenir amount for one day.
 - Prep: your souvenir amount for one ordinary day, as a rough, kid-sized figure; the budget estimate page from Session 33; the attraction cards and transportation notes; the destination pack's money basics page; the Trip-Basics card, for the number of travelers; a calculator.
 - Look for: a daily cost table with a low, a medium and a high guess on each row, or "ask an adult" where your child hit a wall, and the total row added up.
 - Coaching question: "Which cost surprised you most?"
