@@ -51,7 +51,7 @@ The scores are only half the job. Now **make one trade-off** and write it in one
 
 **A quick money check:** does keeping both cities still fit your family's rough budget band? If two cities feels like too much, it's fine to recommend just one for a first trip. Fewer places, done well, is a real plan.
 
-**On the Core path**, you come here with the long-list you made in Session 20. Give each place on it that you want to keep in the running its own column, so your table can hold more than two. The two cities you scored in the table above count, so add columns only for the others. If a card from Session 19 has only its key rows, fill it in first: top sights with stars, travel time, and a rough number of days. If the table gets too wide to print, start a second copy for the next few places. Your trade-off can compare your top two.
+**On the Core path**, you come here with the long-list you made in Session 20. Give each place on it that you want to keep in the running its own column, so your table can hold more than two. The two cities you scored in the table above count, so add columns only for the others. If a place is a whole region, choose one town in it with a grown-up: the one where you'd sleep or spend the day. Write the town on the region's card, and use that town for its travel time and scores. If a card from Session 19 has only its key rows, fill it in first: top sights with stars, travel time, and a rough number of days. If the table gets too wide to print, start a second copy for the next few places. Your trade-off can compare your top two.
 
 ## Workspace
 
