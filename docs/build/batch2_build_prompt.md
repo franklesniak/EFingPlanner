@@ -1600,7 +1600,10 @@ must-do list and ends with the pick; Session 27 opens with the adults' acknowled
 One session cannot hold the choice, the conversation that must precede it, and the
 acknowledgement that must follow it. (`D-OPEN-6`.) **A family continuing from First Taste
 already made the pick at Session 44.** Here the child confirms, in one line, that it still
-holds, and Session 27 acknowledges it, so the pick stays one choice.
+holds, and Session 27 acknowledges it, so the pick stays one choice. Checkpoint 2 keeps the
+pick's place on the shortlist, and Session 23 gives the pick a card. Only the three blocks
+can change it. If one does, a grown-up says which, and the child chooses a new pick with
+them in Session 26, the way a Core-path pick is chosen.
 
 ### Session 27: Checkpoint 3 Top Experiences
 
@@ -1678,9 +1681,12 @@ Give the concrete template first:
 for genuinely preformatted content such as a single worked formula, and inline underscore
 blanks are allowed inside a worked-formula table cell.
 
-**A short journey is the one variant.** When getting there takes only a few hours, the
-child takes away half a day each for arrival and departure. The printed formula stays as
-quoted, and one teaching line says when the half applies.
+**Two things change the printed numbers.** When getting there takes only a few hours, the
+child takes away half a day each for arrival and departure. When a flight lands on a later
+date than it took off, as a date-line crossing or a night flight can, the child takes away
+one more day for that flight, and one more night in the nights check. The printed formula
+stays as quoted, and one teaching line says when each change applies. Checkpoint 4 counts
+that day again when it turns the nights into total days.
 
 Then a plain **floor and ceiling check**: "Are there too few real days to be worth the long
 flight?" and "Is the total within your family's maximum trip length?" **When the family's
