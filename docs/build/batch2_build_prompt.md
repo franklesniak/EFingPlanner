@@ -1437,7 +1437,8 @@ source; keep researching? yes/no/maybe.
   narrow enough to print portrait. The empty cells are the fill-in space.
 - **Artifact:** a long-list of 5-8 possible cities or regions.
 - **Stop Point:** you are done when every place you researched has a row, with a
-  keep/maybe/no mark. **The 5-8 range is a target, not a quota** -- do not require the
+  keep/maybe/no mark and a few words on why beside each no. **The 5-8 range is a target,
+  not a quota** -- do not require the
   child to invent places to reach five.
 - **Source Check:** **required but light.** `Source` is one of the five fields, so the
   session has a source step even though it introduces no new research. Point the child
@@ -1521,9 +1522,11 @@ destination facts.** Keep them generic and **do not illustrate them with any
 place-specific example** -- an illustration is where this session would leak.
 
 - **Workspace:** a balance chart -- categories as rows, a tally column, and a "want more
-  here?" column. Narrow enough to print portrait.
+  here?" column. Narrow enough to print portrait. An odd-ones-out line under the chart
+  holds any card whose type fits none of the nine, as the attraction card allows.
 - **Artifact:** a balance chart.
-- **Stop Point:** you are done when every attraction card sits in a category and you have
+- **Stop Point:** you are done when every attraction card sits in a category or on the
+  odd-ones-out line, and you have
   named one category you would like more of, or said that the mix already looks right.
 - **Source Check:** not required. Carry the heading with
   `No new sources needed unless you looked something up.` plus one sentence: the chart is
@@ -1666,7 +1669,9 @@ back-and-forth train time?
   rough left-to-right sketch of the cities in trip order.
 - **Artifact:** Route map notes.
 - **Stop Point:** you are done when you have travel times between your places, and you
-  have marked which are day trips and which need an overnight.
+  have marked which are day trips and which need an overnight. The times include the legs
+  from the arrival place and to the departure place, once those are written down, and on a
+  one-base trip the times from the base to the must-dos.
 - **Source Check:** required, using the **map citation form**.
 - **Named map tools are permitted.** A tool name is not a destination fact.
 

@@ -30,7 +30,7 @@ Your [City Long-List](../../templates/city_long_list.md) page has five columns. 
 2. **Why it caught my attention**: one short reason, in your own words.
 3. **One memorable fact**: copy it from the card.
 4. **Source**: where that fact came from. Find it in your Source Log.
-5. **Keep researching?** Circle yes, no, or maybe.
+5. **Keep researching?** Circle yes, no, or maybe. Next to a no, write a few words on why, in the same box.
 
 Go card by card until every place has a row. Your deep-dive cities go on the list too.
 
@@ -48,7 +48,7 @@ Your City long-list: every place you researched, usually five to eight, each wit
 
 ## Stop Point
 
-You are done when every place you researched has a row, with a yes, no, or maybe mark. "Maybe" is a finished answer, and so is "not sure yet" in any other box. You don't need to find new places to fill empty rows.
+You are done when every place you researched has a row, with a yes, no, or maybe mark, and a few words on why beside each no. "Maybe" is a finished answer, and so is "not sure yet" in any other box. You don't need to find new places to fill empty rows.
 
 ## Source Check
 

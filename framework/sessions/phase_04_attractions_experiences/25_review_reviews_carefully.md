@@ -35,7 +35,7 @@ Now practice. With a grown-up nearby, find one review, blog post or video about 
 
 ### Sitting two: why reviews can steer you wrong
 
-If this is a new day, set your timer for 20 minutes first, and ask a grown-up to stay nearby again.
+Set your timer for 20 minutes before you start, even on the same day, and ask a grown-up to stay nearby again.
 
 Here are seven reasons a review can mislead you:
 
