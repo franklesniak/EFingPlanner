@@ -62,7 +62,7 @@ You are done when your notes name the regions your Destination Notes list, say o
 
 ## Source Check
 
-Your Destination Notes and the pack references are sources, so log them. Put each one in your Source Log with its title and today's date. If you looked anything up outside the pack, that gets its own entry, with where it came from.
+Your Destination Notes and the pack references are sources, so log them. Put each one in your Source Log with its title and today's date. Your map is a source too, so it gets its own entry: **Source type** = "map"; **Title** = the map or map app you used; **What I learned** = the places you looked for on it; **Date checked** = today's date. If you looked anything up outside the pack, that gets its own entry, with where it came from.
 
 ## Finish and Quality Check
 

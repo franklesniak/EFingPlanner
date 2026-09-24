@@ -12,7 +12,7 @@ One entry per source:
 | --- | --- |
 | Source number | |
 | Date checked | |
-| Source type (website / book / map / video / person / other) | |
+| Source type (website / book / map / video / AI tool / person / other) | |
 | Title | |
 | Author or organization | |
 | Web address or book page | |
