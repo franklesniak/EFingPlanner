@@ -12,6 +12,8 @@ You are here: Phase 6 (Lodging, Food, and Budget). Not a First Taste step. Previ
 - Parent involvement: parent review after session
 - Materials: your [Budget Estimate page](../../templates/budget_estimate.md) from Session 33, your daily cost table from Session 38, your hotel comparison cards, your route and nights from Checkpoint 4, your family's [current travel assumptions](../../templates/current_family_travel_assumptions.md) page (for the budget band), a calculator (allowed)
 
+(For an at-a-glance version, see the matching entry in [the parent session notes](../../parent_guide/session_support_notes.md); the Parent Notes below have the full detail.)
+
 ## Goal
 
 Update your budget to match the route the grown-ups approved, and check whether the parts you chose still fit your band.

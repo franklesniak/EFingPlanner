@@ -12,6 +12,8 @@ You are here: Phase 6 (Lodging, Food, and Budget). Not a First Taste step. Previ
 - Parent involvement: none / independent work
 - Materials: this session's Destination Notes, a device with the kid-safe filter on, a blank [Neighborhood Comparison page](../../templates/neighborhood_comparison.md), the route your family approved at Checkpoint 4, your [Trip-Basics card](../../templates/trip_basics.md) (for the number of travelers), your [Source Log](../../templates/source_log.md), and a [Scoring Rubric page](../../templates/scoring_rubric.md) if your child wants to score; a blank [Trade-Off Report](../../templates/tradeoff_report.md) only if the third report goes here
 
+(For an at-a-glance version, see the matching entry in [the parent session notes](../../parent_guide/session_support_notes.md); the Parent Notes below have the full detail.)
+
 ## Goal
 
 Compare a few areas to stay in for one city, and say which one fits your plan best.

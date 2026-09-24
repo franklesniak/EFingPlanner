@@ -143,7 +143,9 @@ README, **`framework/templates/city_research_card.md`** (a two-row addition, see
 **`framework/student_guide/progress_tracker.md`** (its Core/Full view, see F2), **the root
 `README.md`** (its build-state wording, see F1), **the existing
 `framework/parent_guide/session_support_notes.md` entries for the sessions this batch
-changes** (see section 10), **the Batch 1 neutrality riders listed in section 11**, and
+changes** (see section 10), **the Batch 1 neutrality riders listed in section 11**, **the
+binder card, `framework/student_guide/how_to_use_this_binder.md`** (the links to Session 50
+and the print index that the `0.2.0` changelog deferred until both exist), and
 `framework/CHANGELOG.md`.
 
 **The 53 is the non-session count**, which is the number the spec's own grouping produces.
@@ -2600,7 +2602,8 @@ this instruction in `## Parent Notes`.
 - **Start Here, self-generated.** Suggestion: write "If I get separated" at the top of a
   blank card.
 - **Workspace:** the readiness checklist as a checkbox list with a "who does this" column
-  (you / ask adults), plus the card's own small table.
+  (you / ask adults), plus a pointer to the kit's blank "if I get separated" card (9.4.5),
+  which holds the card's own small table, so its rows have one home.
 - **Stop Point:** you are done when every line on your readiness checklist is either
   checked or marked "ask adults to confirm", and your card is made, with its lodging lines
   filled in by a grown-up or marked for a grown-up to fill in after booking. You've also
@@ -3488,8 +3491,10 @@ requirements keep video research with an adult, keep the kid-safe filter on, and
 whose online-safety guardrail requires them to stay. **Write Session 25's Role line as
 co-worked.** **Session 49 is co-worked for the same kind of reason**: a grown-up rehearses
 the separation plan with the child, and its central-table value is `co-working
-recommended`. Write its Role line as co-worked too. **Two more sessions have one grown-up
-step without being gated as a whole.** Session 09 is adult-operated: a grown-up runs the AI
+recommended`. Write its Role line as co-worked too. **Three more sessions have one grown-up
+step without being gated as a whole.** Session 07, when a family does it, needs a grown-up
+to open the library catalog or drive to the library, as the built First Taste list marks.
+Session 09 is adult-operated: a grown-up runs the AI
 tool, as its built entry says. Session 26 ends with the one unconditional pick, which a
 grown-up helps choose after showing the three blocks, as built Session 44 does on the First
 Taste path. Write Session 26's Role line the way Session 44's is written. Every session not
@@ -3523,7 +3528,9 @@ the next phase rather than pressing on.**
 *for* learning; the checkpoint reflection looks back at the stretch just finished. **Do not
 conflate them.**
 
-**Each Phase 7 and 8 entry carries the one-line note** on the two-session readiness trigger
+**Each Phase 7 and 8 entry for a lighter-template session carries the one-line note**
+(Sessions 44 and 53 are built full-template pages, so theirs do not) on the two-session
+readiness trigger
 for the lighter template and the anchors that never fade -- including the honest cost that a
 child who fades in Phase 5 meets the full template longer than they need.
 
@@ -3929,7 +3936,9 @@ negotiable:
 
 `framework/trip_starter/README.md` already names the kit's folders. Batch 2 may **add
 relative links** to the newly-created folders and the four cards, and one short line naming
-the four cards as optional or session-made. **Do not restructure or re-voice that file.**
+the four cards as optional or session-made. It may also correct the two sentences that say
+the kit holds only `family/` and that recommendations wait for a later folder, because both
+stop being true when this batch ships. **Do not restructure or re-voice that file.**
 
 ---
 

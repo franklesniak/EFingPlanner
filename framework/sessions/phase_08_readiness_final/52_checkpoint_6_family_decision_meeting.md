@@ -12,6 +12,8 @@ You are here: Phase 8 (Readiness and Final). Not a First Taste step. **This is C
 - Parent involvement: parent review -- genuinely use the recommendation in a real family talk
 - Materials: your presentation outline from Session 51, your assembled binder, your [Source Log](../../templates/source_log.md), a [Decision Record page](../../templates/decision_record.md)
 
+(For an at-a-glance version, see the matching entry in [the parent session notes](../../parent_guide/session_support_notes.md); the Parent Notes below have the full detail.)
+
 ## Goal
 
 Bring your recommendation to the family, and write down what they decide.
@@ -62,6 +64,8 @@ Your handoff list:
 | Final budget | |
 | Safety and emergency planning | |
 | Final booking tasks | |
+
+Keeping your work in the trip starter kit? Its [final recommendation page](../../trip_starter/recommendations/final_recommendation.md) has room for everything in this table, so you can fill it in there.
 
 Then fill your Decision Record. Write "Our final recommendation" in its Decision box. Your recommendation goes in **My recommendation**, and your reasons, sources and trade-offs go in their own rows. When the family decides, write their answer in **Final family decision**. That record is your decision-log entry.
 

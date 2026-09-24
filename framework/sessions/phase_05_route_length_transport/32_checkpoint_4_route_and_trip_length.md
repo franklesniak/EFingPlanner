@@ -12,6 +12,8 @@ You are here: Phase 5 (Route, Length, and Transportation). Not a First Taste ste
 - Parent involvement: parent review -- genuinely use the recommendation in a real family talk
 - Materials: your route trade-off report, your nights table from Session 29, your route map notes, your [Trip-Basics card](../../templates/trip_basics.md), your family's [current travel assumptions](../../templates/current_family_travel_assumptions.md) page (for the budget band), your [Source Log](../../templates/source_log.md), a [Decision Record page](../../templates/decision_record.md)
 
+(For an at-a-glance version, see the matching entry in [the parent session notes](../../parent_guide/session_support_notes.md); the Parent Notes below have the full detail.)
+
 ## Goal
 
 Recommend your route and how long the trip should be, or how to use the days if your dates are booked, and take it to the grown-ups.
@@ -64,6 +66,8 @@ Your route and trip-length recommendation:
 | Does this still fit our rough budget band? | |
 | What a grown-up still needs to check or decide | |
 | Approval status (a grown-up circles one: Approved / Approved with changes / Needs more research / Park this decision for later) | |
+
+Keeping your work in the trip starter kit? Its [route and trip length page](../../trip_starter/recommendations/route_and_trip_length.md) has room for everything in this table, so you can fill it in there.
 
 Then fill your Decision Record. Your cities and nights go in **My recommendation**, and your reasons, sources and trade-offs go in their own rows. When the grown-ups decide, write their answer in **Final family decision**. That record is your decision-log entry.
 

@@ -12,6 +12,8 @@ You are here: Phase 3 (Choose Places). Not a First Taste step. **This is Checkpo
 - Parent involvement: parent review -- genuinely use the recommendation in a real family talk
 - Materials: your City Long-List and City comparison, your Family Trip Goals page from Session 03, your family's [current travel assumptions](../../templates/current_family_travel_assumptions.md) page (for the budget band), your [Source Log](../../templates/source_log.md), a [Decision Record page](../../templates/decision_record.md)
 
+(For an at-a-glance version, see the matching entry in [the parent session notes](../../parent_guide/session_support_notes.md); the Parent Notes below have the full detail.)
+
 ## Goal
 
 Recommend a short list of places for the trip, with your reasons, and take it to the grown-ups.
@@ -59,6 +61,8 @@ Your city shortlist:
 | Does this still fit our rough budget band? | |
 | What a grown-up still needs to check or decide | |
 | Approval status (a grown-up circles one: Approved / Approved with changes / Needs more research / Park this decision for later) | |
+
+Keeping your work in the trip starter kit? Its [city shortlist page](../../trip_starter/recommendations/city_shortlist.md) has room for everything in this table, so you can fill it in there.
 
 Then fill your Decision Record. Your bases and day trips go in **My recommendation**. Your reasons, sources and trade-offs go in their own rows. When the grown-ups decide, write their answer in **Final family decision**. That record is your decision-log entry.
 

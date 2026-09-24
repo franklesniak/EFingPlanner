@@ -10,7 +10,9 @@ You are here: Phase 8 (Readiness and Final). Not a First Taste step. Previous: [
 - Planner skill: self-control (knowing when to stop)
 - Estimated time: 20-30 minutes
 - Parent involvement: co-working recommended
-- Materials: your destination pack's safety and emergency page, your packing list from Session 48, your transportation notes from Session 30, a small card or half a sheet of stiff paper, a pencil
+- Materials: your destination pack's safety and emergency page, your packing list from Session 48, your transportation notes from Session 30, the blank [If I Get Separated card](../../trip_starter/if_i_get_separated_card.md) from your trip starter kit, a small card or half a sheet of stiff paper if you'd like a pocket-sized copy, a pencil
+
+(For an at-a-glance version, see the matching entry in [the parent session notes](../../parent_guide/session_support_notes.md); the Parent Notes below have the full detail.)
 
 ## Goal
 
@@ -23,7 +25,7 @@ Set up your first small step, then do it. A suggestion: write "If I get separate
 ## Steps
 
 1. Go down the readiness checklist in the Workspace. Tick what's yours, and mark the rest "ask adults to confirm".
-2. Make your "if I get separated" card, using the card table in the Workspace.
+2. Make your "if I get separated" card, using the blank card from your trip starter kit.
 3. Read your staying-found plan below.
 4. Say the plan out loud once with a grown-up.
 
@@ -60,19 +62,7 @@ Your readiness checklist:
 | If the card's lodging lines are still blank, ask adults to fill them in and check them after booking | ask adults | |
 | Staying-found plan said out loud once | you and a grown-up | |
 
-Your "if I get separated" card:
-
-| On my card | What goes here |
-| --- | --- |
-| Where we're staying (name) | |
-| Its address | |
-| Its phone number | |
-| A parent's phone number | |
-| Where we're staying, in the local language (a grown-up writes this) | |
-| Emergency phrase that means "please help" | |
-| Emergency phrase that means "I'm lost, I got separated from my family" | |
-| Emergency number, and the date a grown-up checked it | |
-| Second emergency number, and the date a grown-up checked it | |
+Your "if I get separated" card: use the blank [If I Get Separated card](../../trip_starter/if_i_get_separated_card.md) from your trip starter kit. It lists each line, who writes it, and your three-step plan. Fill it in, or copy its rows onto a small card for your pocket.
 
 Never on this card: a passport number, a birthdate, a confirmation number, or your home address.
 

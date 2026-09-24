@@ -12,6 +12,8 @@ You are here: Phase 8 (Readiness and Final). Not a First Taste step. Previous: [
 - Parent involvement: 5-minute check-in
 - Materials: your whole project folder or binder, eleven tab dividers or eleven sheets to use as dividers, a pen, and anything you'd like for decorating the cover and the dividers
 
+(For an at-a-glance version, see the matching entry in [the parent session notes](../../parent_guide/session_support_notes.md); the Parent Notes below have the full detail.)
+
 ## Goal
 
 Put your whole project in order, tab by tab.
@@ -52,6 +54,8 @@ Your binder checklist. Tick each tab when its pages are in:
 | 9. Sources and Decisions | Source log; Decision log; "My Calls" page | |
 | 10. Parent Review | Adult follow-up questions; parent review forms | |
 | 11. Final Recommendation | Final recommendation summary; Final reflection | |
+
+This checklist follows the tabs on the [print index](../../print_index.md), the one tab scheme for the whole binder. Keeping your work in the trip starter kit? List your pages on its [binder table of contents](../../trip_starter/outputs/binder_table_of_contents.md).
 
 You can say your answers to an adult who writes them, or draw them, if that's easier.
 

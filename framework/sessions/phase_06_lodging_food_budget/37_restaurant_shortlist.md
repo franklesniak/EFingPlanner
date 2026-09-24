@@ -12,6 +12,8 @@ You are here: Phase 6 (Lodging, Food, and Budget). Not a First Taste step. Previ
 - Parent involvement: none / independent work
 - Materials: this session's Destination Notes, a device with the kid-safe filter on, your food wish list from Session 36, blank [Restaurant Research Cards](../../templates/restaurant_research_card.md), your hotel comparison cards from Session 35, your [Source Log](../../templates/source_log.md)
 
+(For an at-a-glance version, see the matching entry in [the parent session notes](../../parent_guide/session_support_notes.md); the Parent Notes below have the full detail.)
+
 ## Goal
 
 Turn your food wish list into a few places to eat, or areas full of them, that you'd suggest to the family.

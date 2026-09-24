@@ -12,6 +12,8 @@ You are here: Phase 3 (Choose Places). Not a First Taste step. Previous: [18 Dee
 - Parent involvement: none / independent work
 - Materials: this session's Destination Notes, a device with the kid-safe filter on, two or three blank [City Research Cards](../../templates/city_research_card.md), your [Source Log](../../templates/source_log.md)
 
+(For an at-a-glance version, see the matching entry in [the parent session notes](../../parent_guide/session_support_notes.md); the Parent Notes below have the full detail.)
+
 ## Goal
 
 Research at least two more places beyond your deep-dive cities, one card each.

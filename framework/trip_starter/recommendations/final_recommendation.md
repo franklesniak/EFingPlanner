@@ -1,0 +1,27 @@
+<!-- markdownlint-disable MD013 -->
+
+# Final Recommendation
+
+Copy this page out of the repository before you fill it in. Do not commit your filled-in work to a public repository.
+
+This is your Checkpoint 6 page, from [Session 52](../../sessions/phase_08_readiness_final/52_checkpoint_6_family_decision_meeting.md). It's the family decision meeting: you present your plan, and the grown-ups decide. "Not sure yet" and "ask an adult" are complete answers in any row.
+
+| Prompt | Your answer |
+| --- | --- |
+| My final recommendation, in one sentence | |
+| My reasons | |
+| What we'd give up with this plan | |
+| My sources, with the date I checked each | |
+| What the grown-ups approve | |
+| What changes | |
+| What the grown-ups will check and book | |
+| Questions that are still open | |
+| Approval status (a grown-up circles one: Approved / Approved with changes / Needs more research / Park this decision for later) | |
+
+If the answer is Approved with changes, put the changes on this page and in your decision log first. If it's Needs more research, do that one piece before Session 53. If it's Park this decision for later, that's your result, and you can go on to Session 53. Any of the four is a result that counts.
+
+## Your progress is real
+
+Once this meeting is done, your family has made a decision.
+
+Write a Decision Record for this checkpoint in your [decision log](../logs/decision_log.md), too.

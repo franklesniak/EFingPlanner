@@ -12,6 +12,8 @@ You are here: Phase 8 (Readiness and Final). Not a First Taste step. Previous: [
 - Parent involvement: parent review after session
 - Materials: a blank [Packing List](../../templates/packing_list.md), your destination pack's seasons and weather page, your day cards, your [Source Log](../../templates/source_log.md)
 
+(For an at-a-glance version, see the matching entry in [the parent session notes](../../parent_guide/session_support_notes.md); the Parent Notes below have the full detail.)
+
 ## Goal
 
 Draft what you'd pack, so a grown-up can check it.

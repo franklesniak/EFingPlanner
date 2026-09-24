@@ -12,6 +12,8 @@ You are here: Phase 7 (Itinerary Building). Not a First Taste step. Previous: [4
 - Parent involvement: none / independent work
 - Materials: your day cards from Session 41, your pacing review from Session 43, your backup plans and cut list from Session 44, your reservation watchlist, your budget summary from Session 39, a few blank pages
 
+(For an at-a-glance version, see the matching entry in [the parent session notes](../../parent_guide/session_support_notes.md); the Parent Notes below have the full detail.)
+
 ## Goal
 
 Put everything you've built into one day-by-day plan.

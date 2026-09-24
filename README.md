@@ -10,11 +10,11 @@ The trip is the hook; the real subject is *executive function*: getting started,
 
 ## What your child produces
 
-A thoughtful, sourced mini-plan the family can actually use: a when-to-go recommendation, one or two cities, a short must-see list, a rough budget check, and their own special pick -- plus a source log and a decision log showing their reasoning. Adults review, adjust, verify, and do the real booking.
+A thoughtful, sourced mini-plan the family can actually use: a when-to-go call, one or two cities, a short must-see list, a rough budget check, and their own special pick -- plus a source log and a decision log showing their reasoning. Adults review, adjust, verify, and do the real booking.
 
 ## How a destination fits in
 
-One [destination pack](destinations/japan/README.md) ships with this repository, and you do not have to choose a build. The Phases 0-2 sessions carry no facts about any particular place. Where a session needs one, it sends the child to the pack. Some sessions say "open this session's Destination Notes," and the matching insert in the pack supplies the fact. Others name a reference page in the same pack, where the longer facts live.
+One [destination pack](destinations/japan/README.md) ships with this repository, and you do not have to choose a build. The sessions carry no facts about any particular place. Where a session needs one, it sends the child to the pack. Some sessions say "open this session's Destination Notes," and the matching insert in the pack supplies the fact. Others name a reference page in the same pack, where the longer facts live.
 
 **Which kind of "reuse" you actually need:** another US family doing Japan needs only their own two setup pages: the [Trip-Basics card](framework/templates/trip_basics.md) (airport, party size, trip length, roster) and the [Current Family Travel Assumptions page](framework/templates/current_family_travel_assumptions.md) (season window, budget band, AI choice, rough trip shape, constraints), both filled in at Session 00 and both read by later sessions -- near-zero cost, and the real reuse goal. Rebuilding for a *different destination* is the only thing the heavier machinery is for. They are not the same feature.
 
@@ -36,11 +36,11 @@ Quick-start:
 4. Print the first sessions.
 5. Start Session 01.
 6. Review at Checkpoint 1 -- then decide whether to keep going (the try-then-commit on-ramp: you do not have to commit to the whole project to start).
-7. Finish the First Taste path at Session 53 -- a real, usable mini-plan and a complete stopping point. (The [roadmap](framework/PROJECT_ROADMAP.md) already maps the fuller path toward the Core Finish Line, and says what has to happen before those later sessions are built.)
+7. Finish the First Taste path at Session 53 -- a real, usable mini-plan and a complete stopping point. (The [roadmap](framework/PROJECT_ROADMAP.md) maps the fuller path toward the Core Finish Line.)
 
 ## First Taste session index (the short path)
 
-Session 00 is adult-only setup; the child does the First Taste sessions listed below, ending at Session 53 (a subset, not every number in between). This table is the First Taste path. Its first eight numbered steps sit inside the built Phases 0-2 slice, and its last five -- Sessions 15, 21, 33, 44 and 53 -- are already-built sessions in later phases.
+Session 00 is adult-only setup; the child does the First Taste sessions listed below, ending at Session 53 (a subset, not every number in between). This table is the First Taste path. Its first eight numbered steps sit in Phases 0-2, and its last five -- Sessions 15, 21, 33, 44 and 53 -- are in later phases.
 
 | # | Session | Status | Time | Artifact |
 | --- | --- | --- | --- | --- |
@@ -53,7 +53,7 @@ Session 00 is adult-only setup; the child does the First Taste sessions listed b
 | 10 | Destination Snapshot | Core | 20-30 min | Snapshot page |
 | 12 | Weather, Seasons, and Events | Core | 20-30 min | Season comparison chart |
 | 13 | Trip Goals and Travel Style | Core | 20-30 min | Travel style worksheet |
-| 14 | Checkpoint 1: Season Recommendation | Core | 20-30 min + review | Season recommendation |
+| 14 | Checkpoint 1: Season Recommendation | Core | 20-30 min + review | Season recommendation or confirmation |
 | 15 | City Research Cards | Core | 20-30 min | Two city cards |
 | 21 | Compare Cities | Core | 20-30 min | City comparison |
 | 33 | Budget Basics, First Pass | Core | 20-30 min | Budget first pass |
@@ -76,7 +76,7 @@ Three layers (this is how the pages fit together):
 
 ## Status
 
-Early. What is built right now lives in the [curriculum changelog](framework/CHANGELOG.md), the one file that changes every time something ships; the [roadmap](framework/PROJECT_ROADMAP.md) describes the whole program. The **First Taste** path in the table above starts in the Phases 0-2 slice and finishes in five already-built later-phase sessions. The Batch 0 gate cleared on the recorded no-child fallback, and no child has piloted this design yet. Two checks on the Phases 0-2 slice are still open: an adult reads the converted pages against the Batch 0 originals, and an adult watches a child work the new sessions. Building the Phase 3-8 sessions waits for both; the templates and guides for those phases have already landed.
+Early. The [roadmap](framework/PROJECT_ROADMAP.md) describes the whole program, including the [Core Finish Line index](framework/PROJECT_ROADMAP.md#the-core-finish-line-index), and the [curriculum changelog](framework/CHANGELOG.md) records what each release added. The Batch 0 gate cleared on the recorded no-child fallback, and no child has piloted this design yet. Two checks on the Phases 0-2 slice are still open: an adult reads the converted pages against the Batch 0 originals, and an adult watches a child work the new sessions.
 
 - The authoritative design is [docs/spec/specification.md](docs/spec/specification.md) -- an archived design record. Once the curriculum is built, the built repository supersedes the spec on any conflict.
 

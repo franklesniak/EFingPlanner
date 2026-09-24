@@ -12,6 +12,8 @@ You are here: Phase 8 (Readiness and Final). Not a First Taste step. Previous: [
 - Parent involvement: 5-minute check-in
 - Materials: this session's Destination Notes, a blank [Language and Etiquette Quick Sheet](../../templates/language_etiquette_quick_sheet.md), your [Source Log](../../templates/source_log.md), a pencil
 
+(For an at-a-glance version, see the matching entry in [the parent session notes](../../parent_guide/session_support_notes.md); the Parent Notes below have the full detail.)
+
 ## Goal
 
 Build a one-page sheet of words and manners you can carry and use on the trip.

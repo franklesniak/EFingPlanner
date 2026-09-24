@@ -1,0 +1,35 @@
+<!-- markdownlint-disable MD013 -->
+
+# Final Countdown Card
+
+Copy this page out of the repository before you fill it in. Do not commit your filled-in work to a public repository.
+
+This card is optional. Use it in the weeks before you leave, if the trip is happening. A family that skips it misses nothing the plan needs.
+
+Your finish line was Session 53, and that finish counts whether or not the trip happens. If the trip moves or doesn't happen, this card just waits, unused. Your finish still stands.
+
+## Before you leave
+
+| Check | Done? |
+| --- | --- |
+| Do your final packing pass, with your packing list from Session 48 | |
+| Do your last readiness pass, with your checklist from Session 49 | |
+| Put your "if I get separated" card where you'll carry it | |
+| Pack the language and etiquette sheet you made, if you made one | |
+| Take one last look at your must-do list | |
+| Read your "things I can't wait to see" page | |
+
+## Your job on the trip
+
+Pick one job, or more than one. Each one is a job the family needs done, and you've already made the pages it uses.
+
+| Job | What you do | I'll do this one |
+| --- | --- | --- |
+| Daily-plan checker | Read the day's plan out loud at breakfast | |
+| Navigator-helper | Hold the map and spot the next train or turn, right beside a grown-up | |
+| Phrase-sayer | Use your own language sheet to say hello and thank you, and to order food | |
+| Keeper of the must-do list | Keep track of which must-dos you've done | |
+
+The navigator-helper and the phrase-sayer are helper jobs. You always do them beside a grown-up, and the grown-up stays in charge of where the family goes.
+
+This card holds no private details. Names, addresses and phone numbers go only on your "if I get separated" card.

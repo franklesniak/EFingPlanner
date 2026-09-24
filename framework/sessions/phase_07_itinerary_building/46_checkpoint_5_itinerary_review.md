@@ -12,6 +12,8 @@ You are here: Phase 7 (Itinerary Building). Not a First Taste step. **This is Ch
 - Parent involvement: parent review -- genuinely use the recommendation in a real family talk
 - Materials: your full itinerary draft and the day cards behind it, your reservation watchlist, your budget summary, your cut list, your [Source Log](../../templates/source_log.md), a [Decision Record page](../../templates/decision_record.md)
 
+(For an at-a-glance version, see the matching entry in [the parent session notes](../../parent_guide/session_support_notes.md); the Parent Notes below have the full detail.)
+
 ## Goal
 
 Get your plan reviewed, and find out what the grown-ups want changed.
@@ -47,6 +49,8 @@ Your itinerary review packet is your draft, plus these five answers and your rea
 | The biggest trade-offs | |
 | My reasons | |
 | Approval status (a grown-up circles one: Approved / Approved with changes / Needs more research / Park this decision for later) | |
+
+Keeping your work in the trip starter kit? Its [itinerary review page](../../trip_starter/recommendations/itinerary_review.md) has room for everything in this table, so you can fill it in there.
 
 Then fill your Decision Record. Write "Our day-by-day plan" in its Decision box. Your plan goes in **My recommendation**, and your reasons, sources and trade-offs go in their own rows. When the grown-ups decide, write their answer in **Final family decision**. That record is your decision-log entry.
 

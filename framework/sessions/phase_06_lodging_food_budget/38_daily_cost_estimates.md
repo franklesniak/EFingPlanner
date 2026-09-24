@@ -12,6 +12,8 @@ You are here: Phase 6 (Lodging, Food, and Budget). Not a First Taste step. Previ
 - Parent involvement: 5-minute check-in
 - Materials: your destination pack's money basics page, your [Budget Estimate page](../../templates/budget_estimate.md) from Session 33, your attraction cards and transportation notes, your [Trip-Basics card](../../templates/trip_basics.md) (for the number of travelers), your [Source Log](../../templates/source_log.md), a calculator (allowed)
 
+(For an at-a-glance version, see the matching entry in [the parent session notes](../../parent_guide/session_support_notes.md); the Parent Notes below have the full detail.)
+
 ## Goal
 
 Estimate what one ordinary day of this trip might cost your family.

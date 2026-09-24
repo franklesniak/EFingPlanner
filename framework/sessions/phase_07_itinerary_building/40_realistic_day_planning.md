@@ -12,6 +12,8 @@ You are here: Phase 7 (Itinerary Building). Not a First Taste step. Previous: [3
 - Parent involvement: 5-minute check-in
 - Materials: your destination pack's airports and arrival page, your route and nights from Checkpoint 4, your must-do list, your [Source Log](../../templates/source_log.md), a blank page
 
+(For an at-a-glance version, see the matching entry in [the parent session notes](../../parent_guide/session_support_notes.md); the Parent Notes below have the full detail.)
+
 ## Goal
 
 Write the rules you'll use to build every day of this trip.

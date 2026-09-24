@@ -38,7 +38,7 @@ Finished First Taste first, and back here at the end of the whole project? This 
 
 These are the same planning moves people use for homework, chores, and any big project. The way to carry them over is to *notice* the move and use it on purpose somewhere else.
 
-**On the Core path, three more questions.** Your answers go on the final reflection page in your kit's `outputs` folder.
+**On the Core path, three more questions.** Your answers go on the [final reflection page](../../trip_starter/outputs/final_reflection.md) in your trip starter kit.
 
 - **Patterns.** Look at the one-line reflections from your checkpoints, however many you wrote. What felt easy or hard more than once? What helped more than once?
 - **Time.** In Sessions 16, 26, 35 and 45, how big was the gap between your guess and your time? Did the gaps get smaller with practice? Being off is normal.
@@ -48,7 +48,7 @@ These are the same planning moves people use for homework, chores, and any big p
 
 ## Workspace
 
-Use your Final Reflection page for your answers, next to your Session 01 baseline so you can compare. On the Core path, use the final reflection page in your kit's `outputs` folder, which has room for the three extra questions.
+Use your Final Reflection page for your answers, next to your Session 01 baseline so you can compare. On the Core path, use the final reflection page in your trip starter kit, which has room for the three extra questions.
 
 You can say your answers to an adult who writes them, or draw them, if that's easier.
 

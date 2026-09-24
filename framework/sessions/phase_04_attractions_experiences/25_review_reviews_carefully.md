@@ -12,6 +12,8 @@ You are here: Phase 4 (Attractions and Experiences). Not a First Taste step. Pre
 - Parent involvement: co-working recommended
 - Materials: a device with the kid-safe filter on, a grown-up nearby for any video, a timer, your attraction cards, your [Source Log](../../templates/source_log.md), the [simple citation forms](../../templates/simple_citation.md) page for the Video form
 
+(For an at-a-glance version, see the matching entry in [the parent session notes](../../parent_guide/session_support_notes.md); the Parent Notes below have the full detail.)
+
 ## Goal
 
 Learn to judge a review, a blog, or a video before you trust it.

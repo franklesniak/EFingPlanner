@@ -12,6 +12,8 @@ You are here: Phase 3 (Choose Places). Not a First Taste step. Previous: [19 Oth
 - Parent involvement: none / independent work
 - Materials: all your City Research Cards, your [Source Log](../../templates/source_log.md), a blank [City Long-List](../../templates/city_long_list.md) page
 
+(For an at-a-glance version, see the matching entry in [the parent session notes](../../parent_guide/session_support_notes.md); the Parent Notes below have the full detail.)
+
 ## Goal
 
 Put every place you researched onto one long-list, so you can see them all at once.

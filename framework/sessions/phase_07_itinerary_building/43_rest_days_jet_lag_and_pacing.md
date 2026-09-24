@@ -12,6 +12,8 @@ You are here: Phase 7 (Itinerary Building). Not a First Taste step. Previous: [4
 - Parent involvement: parent review after session
 - Materials: your day cards from Session 41, your traveler profiles, your [Trip-Basics card](../../templates/trip_basics.md) (for the time difference and the trip length), your destination pack's transportation basics page, your [Source Log](../../templates/source_log.md); a blank [Trade-Off Report](../../templates/tradeoff_report.md) if the third report goes here
 
+(For an at-a-glance version, see the matching entry in [the parent session notes](../../parent_guide/session_support_notes.md); the Parent Notes below have the full detail.)
+
 ## Goal
 
 Look over your plan, and find the days that would wear people out.

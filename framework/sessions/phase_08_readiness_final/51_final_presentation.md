@@ -12,6 +12,8 @@ You are here: Phase 8 (Readiness and Final). Not a First Taste step. Previous: [
 - Parent involvement: 5-minute check-in
 - Materials: your assembled binder from Session 50, a blank [Final Presentation Outline](../../templates/final_presentation_outline.md), your [Source Log](../../templates/source_log.md)
 
+(For an at-a-glance version, see the matching entry in [the parent session notes](../../parent_guide/session_support_notes.md); the Parent Notes below have the full detail.)
+
 ## Goal
 
 Build the outline you'll use to tell your family what you recommend.
