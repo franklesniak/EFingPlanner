@@ -16,7 +16,7 @@ This is your Checkpoint 2 page, from [Session 22](../../sessions/phase_03_choose
 | Can we get between these places without losing too much travel time? | |
 | How it fits our maximum trip length, from our [Trip-Basics card](../family/trip_basics.md) (with booked dates: our booked trip length) | |
 | Does this still fit our rough budget band? | |
-| Whose "one thing you'd love" this makes room for | |
+| Whose "one thing you'd love" this makes room for, and anyone it leaves out | |
 | My reasons | |
 | Trade-offs (what we give up) | |
 | My sources, with the date I checked each | |

@@ -193,7 +193,7 @@ Want a rough signal of how the executive-function side is going? The optional [e
 
 - Role: Parent-gated: parent review; use the recommendation in a family talk. If you left the trip shape partly open at setup, firm it up now, including the departure place. For a family continuing from First Taste, the place of the special pick stays on the shortlist. Only the three blocks can change the pick; if one applies, tell your child which, so Session 23 makes no card for it, and they choose a new pick from their attraction cards with you in Session 26.
 - Prep: a Decision Record page; the Trip-Basics card and the assumptions page, for the maximum trip length and the budget band; the My Calls page, for a family continuing from First Taste.
-- Look for: a city shortlist with 2 to 4 bases, or one for a one-base trip, and up to 3 day trips, or none; reasons, sources, whose wish it makes room for, and a budget-band check. The checkpoint finishes on Approved, or on Approved with changes once they're written in. The other two answers leave it open, and they're still normal results.
+- Look for: a city shortlist with 2 to 4 bases, or one for a one-base trip, and up to 3 day trips, or none; reasons, sources, every traveler's wish accounted for, with anyone it leaves out named, and a budget-band check. The checkpoint finishes on Approved, or on Approved with changes once they're written in. The other two answers leave it open, and they're still normal results.
 - Coaching question: "Which base would you drop first, and why?"
 - Pitfall: choosing the places for them. Weigh their reasons, and say why if you change a pick.
 
@@ -273,7 +273,7 @@ Want a rough signal of how the executive-function side is going? The optional [e
 
 - Role: Parent-gated: parent review; use the recommendation in a family talk. Confirm or adjust the arrival and departure places against current options for getting there. If the first or last place changes, answer "Approved with changes", or "Needs more research" if the change alters which route works best.
 - Prep: a Decision Record page; the Trip-Basics card and the assumptions page; the Session 29 nights table and formula; the route map notes and a device with a map app, in case you change where the trip arrives or leaves.
-- Look for: the cities, the nights in each, the travel days, a shorter backup version, and reasons. Total days are the nights plus one, plus the flight days. With the dates booked, a nights plan with no backup version. The checkpoint finishes on Approved, or on Approved with changes once they're written in. The other two answers leave it open, and they're still normal results.
+- Look for: the whole recommendation table filled in: the total days, the cities, the nights in each, the travel days, a shorter backup version, reasons, trade-offs, sources, the budget-band check and what a grown-up still needs to check. Total days are the nights plus one, plus the flight days. With the dates booked, a nights plan with no backup version. The checkpoint finishes on Approved, or on Approved with changes once they're written in. The other two answers leave it open, and they're still normal results.
 - Coaching question: "Where would this plan feel rushed?"
 - Pitfall: redrawing the route yourself. If the arrival or departure moves, your child moves one block.
 
