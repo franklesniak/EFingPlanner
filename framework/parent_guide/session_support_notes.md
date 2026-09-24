@@ -168,7 +168,7 @@ Want a rough signal of how the executive-function side is going? The optional [e
 ## Session 19: Other Places Research
 
 - Role: Independent.
-- Prep: this session's Destination Notes; two or three blank City Research Cards.
+- Prep: this session's Destination Notes; two or three blank City Research Cards; the city and region cards made so far, for the count.
 - Look for: at least two more city or region cards, each with a reason, a fact and a source, and at least five cards in all, counting every card made so far.
 - Coaching question: "Which fact did you check in a second place, and did the two agree?"
 - Pitfall: padding cards to reach a number. A short card for a place your child wonders about does more.
@@ -224,7 +224,7 @@ Want a rough signal of how the executive-function side is going? The optional [e
 ## Session 26: Rank Attractions
 
 - Role: 5-minute check-in; help co-choose the one unconditional pick, after you show the three blocks. A family continuing from First Taste confirms the pick from Session 44 in one line. If a block now stops it, your child chooses a new one with you.
-- Prep: a Scoring Rubric page; extra copies of the fuller scoring table, which you print again or your child copies the questions from; a blank My Calls page from the trip starter kit.
+- Prep: a Scoring Rubric page, for spare copies of the lighter table; extra copies of the session's own fuller table, which you print again or your child copies the questions from; a blank My Calls page from the trip starter kit.
 - Look for: every attraction in one of the four groups, a must-do list short enough to read in one breath, the special pick on the My Calls page, and a minutes guess with the time taken.
 - Coaching question: "Which must-do would you keep if you could keep only one?"
 - Pitfall: letting the scores decide. Scores inform the choice, and your child makes it.
