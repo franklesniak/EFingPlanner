@@ -912,8 +912,9 @@ Built Session 21 compares "your two City Research Cards". A Core/Full child arri
 Session 20 with a long-list of five to eight places. The spec's rule is "at 21, extend their
 comparison to the fuller long-list candidates". **On the Core path, extend the score table to
 the long-list candidates the child wants to keep in the running**, and say that the two
-cities already scored count. On the Core path, the Artifact and the Stop Point cover every
-candidate the child keeps in the running. **The two-city First Taste steps stay word for
+cities already scored count. On the Core path, the Artifact, the Stop Point and a second money
+check cover every candidate the child keeps in the running. **The two-city First Taste
+steps stay word for
 word.** In Parent Notes, change "This is the first real trade-off report" to **"This is a
 real trade-off report"**: on the Core path the Session 14 report comes first, and the
 sentence is then true on every path. **A family continuing from First Taste extends Session
@@ -1093,7 +1094,11 @@ Five checkpoints land in this batch. Every one of them includes:
   2 to 5, **a parked decision holds the next session too**, until the family comes back to
   it. At Checkpoint 6 a parked decision is itself the result, and Session 53 goes ahead.
   With **Approved with changes**, the child writes the changes into their page and the
-  decision log before the next session starts.
+  decision log before the next session starts. **A checkpoint session is finished** when
+  its answer is Approved, or Approved with changes once the changes are written in. At
+  Checkpoints 2 to 5, the other two answers keep it open until the child comes back to it.
+  At Checkpoint 6, a parked decision is the result, so the session is finished. Every
+  answer is still a normal result.
   **Do not add a "waiting" tracker.**
 
 **What each checkpoint's "progress is real" line names:**
@@ -1625,14 +1630,16 @@ holds, and Session 27 acknowledges it, so the pick stays one choice. Checkpoint 
 pick's place on the shortlist, and Session 23 gives the pick a card. Only the three blocks
 can change it. If one does, a grown-up says which, Session 23 makes no card for it, and the
 child chooses a new pick from their attraction cards with a grown-up in Session 26, the
-way a Core-path pick is chosen.
+way a Core-path pick is chosen. **The pick is always a must-do:** its card is marked
+must-do and it joins the must-do list, so every later session that reads the list finds it.
 
 ### Session 27: Checkpoint 3 Top Experiences
 
 Present your top experiences to the grown-ups, with reasons. **No destination facts.**
 
-**The child presents:** top must-do experiences; strong maybe list; skip and
-save-for-future list; reasons; biggest trade-offs; sources; and the budget-band check.
+**The child presents:** top must-do experiences; strong maybe list, with the only-if-nearby
+attractions marked in it; skip and save-for-future list; reasons; biggest trade-offs;
+sources; and the budget-band check.
 
 **This session opens with the adults' acknowledgement of the unconditional personal pick
 made in Session 26.** (`D-OPEN-6`.)
