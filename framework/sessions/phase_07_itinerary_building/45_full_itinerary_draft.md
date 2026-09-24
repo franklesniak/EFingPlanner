@@ -61,7 +61,7 @@ Your full itinerary draft: one row for every day of the trip, copied forward fro
 
 You are done for today when you stop at the end of a day's row and write how many minutes this sitting took next to your guess. Being off is normal.
 
-The session is finished when every day in your route has a row. That includes a travel row for each flight day. Each row has at least an overnight city and a main activity. The first and last days carry their travel legs, once a grown-up has written those places down. Days your pacing review made gentler are copied that way, and nothing on your cut list is in. Any travel time you had to look up is in your route map notes. Blank boxes are fine, and a plan with gaps is still a plan. When it's finished, look back at Sessions 16, 26 and 35. Is the gap between your guess and your time smaller now than it was then?
+The session is finished when every day in your route has a row. That includes a travel row for each flight day. Each row has at least an overnight city and a main activity. The first and last days carry their travel legs, once a grown-up has written those places down. Days your pacing review made gentler are copied that way, and nothing on your cut list is in. Any travel time you had to look up is in your route map notes. Blank boxes are fine, and a plan with gaps is still a plan. Every sitting has its minutes guess, with the minutes it took beside it. When it's finished, look back at Sessions 16, 26 and 35. If one of those has no guess, compare with the ones that do. Is the gap between your guess and your time smaller now than it was then?
 
 ## Source Check
 

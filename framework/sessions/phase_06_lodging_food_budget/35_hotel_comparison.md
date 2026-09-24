@@ -48,7 +48,7 @@ Your Hotel Comparison Cards, with the one you'd recommend for each city.
 
 You are done for today when you've written how many minutes this sitting took next to your guess. Being off is normal, and noticing the gap is the practice. The card you're on can wait for your next sitting.
 
-The session is finished when you have at least one card for each city where you'll sleep overnight on your approved route. Each card has its cost per room with the date you found it, and its planning assumption rows filled in. If you made a part-trip note in Session 33, each card's room-setup row says which nights. You've written which one you'd recommend for each city and why. If one option was already obvious, one card for that city is enough. Four or five cards for the whole trip is plenty. "Ask an adult" is a fine answer in any row.
+The session is finished when you have at least one card for each city where you'll sleep overnight on your approved route. Each card has its cost per room with the date you found it, and its planning assumption rows filled in. If you made a part-trip note in Session 33, each card's room-setup row says which nights. You've written which one you'd recommend for each city and why. Every sitting has its minutes guess, with the minutes it took beside it. If one option was already obvious, one card for that city is enough. Four or five cards for the whole trip is plenty. "Ask an adult" is a fine answer in any row.
 
 ## Source Check
 
