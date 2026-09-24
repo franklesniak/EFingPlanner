@@ -10,6 +10,11 @@
       "judgment": "device",
       "reason": "starting points, not answers"
     },
+    "device|[Major cities](reference/major_cities.md) -- candidate places to research (not choices already made).|1": {
+      "line": 18,
+      "judgment": "device",
+      "reason": "candidate places to research, not choices already made (the spec's own framing for surfaced ideas)"
+    },
     "device|These files name *categories to verify*, never current values, so they cannot go stale in the way a pinned price would.|1": {
       "line": 32,
       "judgment": "device",
@@ -379,15 +384,35 @@
       "judgment": "device",
       "reason": "the expected, complete outcome -- not a lesser starter"
     },
+    "device|[02 Family Traveler Profiles](sessions/phase_00_setup/02_family_traveler_profiles.md) *(not one of the 13)*|1": {
+      "line": 22,
+      "judgment": "no",
+      "reason": "a status note: the session is outside the 13; it rejects no named alternative"
+    },
+    "device|[06 Book Research With a Guidebook](sessions/phase_01_research_skills/06_book_research_guidebook.md) *(not one of the 13)*|1": {
+      "line": 26,
+      "judgment": "no",
+      "reason": "a status note: the session is outside the 13; it rejects no named alternative"
+    },
     "device|[07 Library Research Plan](sessions/phase_01_research_skills/07_library_research_plan.md) *(recommended; not one of the 13)*|1": {
       "line": 27,
       "judgment": "no",
       "reason": "two status labels joined by a semicolon; \"not one of the 13\" stands alone as a label on four other lines of this list"
     },
+    "device|[08 Web Research Practice](sessions/phase_01_research_skills/08_web_research_practice.md) *(not one of the 13)*|1": {
+      "line": 28,
+      "judgment": "no",
+      "reason": "a status note: the session is outside the 13; it rejects no named alternative"
+    },
     "device|[09 AI as Helper, Not Boss](sessions/phase_01_research_skills/09_ai_as_helper_not_boss.md) *(AI families only; not one of the 13)*|1": {
       "line": 29,
       "judgment": "no",
       "reason": "two status labels joined by a semicolon, as above"
+    },
+    "device|[11 Regions and Cities Overview](sessions/phase_02_destination_big_picture/11_regions_and_cities_overview.md) *(not one of the 13)*|1": {
+      "line": 31,
+      "judgment": "no",
+      "reason": "a status note: the session is outside the 13; it rejects no named alternative"
     },
     "device|Do [09 AI as Helper, Not Boss](sessions/phase_01_research_skills/09_ai_as_helper_not_boss.md) right after step 4, before any AI use.|1": {
       "line": 60,
@@ -730,28 +755,33 @@
       "judgment": "device",
       "reason": "things to confirm this year, never pinned dates"
     },
+    "device|family decision meeting (not \"executive meeting\")|1": {
+      "line": 112,
+      "judgment": "device",
+      "reason": "the agreed label defined by its contrast: family decision meeting, not \"executive meeting\""
+    },
     "split|An instruction to fill in a family page links the trip starter kit's copy instead, because the filled page lives in the kit. → Built files must **not** cite the archived spec's section numbers.|1": {
-      "line": 120,
+      "line": 122,
       "judgment": "no",
       "reason": "a rule"
     },
     "device|**Worksheet forms are Markdown tables, not fenced underscore blocks.**|1": {
-      "line": 138,
+      "line": 140,
       "judgment": "device",
       "reason": "tables, not fenced underscore blocks"
     },
     "split|No heading ends in punctuation such as ‹code› or ‹code› . → (MD026)|1": {
-      "line": 139,
+      "line": 141,
       "judgment": "no",
       "reason": "a rule and its lint code"
     },
     "split|**Prohibited-placeholder hook:** the built curriculum (under ‹code› and ‹code› ) may **not** contain the common \"to-be-decided\" and \"to-do\" placeholder markers that the repo's ‹code› hook forbids (its exact token list lives in ‹code› ). → Use plain child-friendly language instead (\"not decided yet,\" \"we'll decide later,\" \"ask an adult\"), which also reads better.|1": {
-      "line": 142,
+      "line": 144,
       "judgment": "split",
       "reason": "negation then \"instead\": may not contain the markers / use plain language instead"
     },
     "split|**Inline underscore blanks ( ‹code› ) are fine** and do not trip the hook. → The main fill-in space of a worksheet is still an empty table cell.|1": {
-      "line": 161,
+      "line": 163,
       "judgment": "no",
       "reason": "fact"
     }
@@ -1650,10 +1680,10 @@
       "judgment": "no",
       "reason": "release then permission; the second sentence does not restate the subject's identity"
     },
-    "split|You are done when your cover page is filled in and you have written (or said) your two baseline-reflection answers. → You do not need to decorate it perfectly.|1": {
+    "split|You are done when your cover page is filled in and you have written (or said) your two baseline-reflection answers. → You do not need to decorate it perfectly. → You can add to the \"Make It Yours\" cover any time.|1": {
       "line": 62,
       "judgment": "no",
-      "reason": "release: frees the child from an obligation"
+      "reason": "release, then a permission; the next sentence does not recast what the cover is"
     },
     "split|If you have extra energy, decorate your cover or add three more things to your \"things I can't wait to see\" page. → If not, you are done.|1": {
       "line": 78,
@@ -1761,10 +1791,10 @@
       "judgment": "no",
       "reason": "instruction with a quoted value"
     },
-    "split|That goes in the **One other place I could check this** box. → You don't have to check it right now.|1": {
+    "split|That goes in the **One other place I could check this** box. → You don't have to check it right now. → Just name where you *could*.|1": {
       "line": 41,
       "judgment": "no",
-      "reason": "release"
+      "reason": "release, then an instruction; the next sentence does not recast what the box is"
     },
     "split|One good entry is enough. → You don't need to look up more facts today.|1": {
       "line": 72,
@@ -1830,10 +1860,10 @@
       "judgment": "no",
       "reason": "mandated nav-line label"
     },
-    "split|One free reputable travel website works just as well, and Session 07 is a first-class way to get a book for nothing. → You don't have to buy anything for this project.|1": {
+    "split|One free reputable travel website works just as well, and Session 07 is a first-class way to get a book for nothing. → You don't have to buy anything for this project. → Every move below comes in two forms.|1": {
       "line": 29,
       "judgment": "no",
-      "reason": "release"
+      "reason": "release, then a new topic; nothing is recast"
     },
     "device|\"Not stated\" is a real answer, so write that.|1": {
       "line": 37,
@@ -2013,10 +2043,10 @@
       "judgment": "split",
       "reason": "negation first, then the claim with a different subject: rejoins as \"a snapshot to get oriented, not something to memorize\""
     },
-    "split|Before you plan *where* to go, it helps to know a few big facts. → You do not need to memorize anything.|1": {
+    "split|Before you plan *where* to go, it helps to know a few big facts. → You do not need to memorize anything. → This is just a snapshot to get oriented.|1": {
       "line": 31,
       "judgment": "no",
-      "reason": "release"
+      "reason": "the release and its recast are counted once, on the banned-shape candidate for the same pair (judged split)"
     },
     "split|You are done when your snapshot has the capital, major land features, currency, language, time difference, three surprising facts, and one question. → Do not try to learn everything about your destination today.|1": {
       "line": 56,
@@ -2124,6 +2154,11 @@
       "judgment": "split",
       "reason": "negation first, then the correction: there is no single right trip / different families like different styles"
     },
+    "device|**A quick money thought (not full budgeting yet):** using the rough budget band a grown-up gave you at setup, remember a simple rule -- **more cities and more hotel moves usually cost more**, and a far-away region adds travel cost.|1": {
+      "line": 38,
+      "judgment": "device",
+      "reason": "a quick money thought, not full budgeting yet"
+    },
     "split|You are done when you have made your six choices and written your one-sentence style summary. → There are no wrong answers here.|1": {
       "line": 52,
       "judgment": "no",
@@ -2146,10 +2181,10 @@
       "judgment": "no",
       "reason": "reassurance"
     },
-    "split|*One thing to know (mostly for the grown-ups):* a few must-do experiences and popular hotels can fill up months ahead. → You do not have to lock in dates now.|1": {
+    "split|*One thing to know (mostly for the grown-ups):* a few must-do experiences and popular hotels can fill up months ahead. → You do not have to lock in dates now. → Just know that waiting a long time can make some options harder to get.|1": {
       "line": 45,
       "judgment": "no",
-      "reason": "release"
+      "reason": "release, then a caution; nothing is recast"
     },
     "split|You have also shared it with a grown-up. → You do not need exact dates.|1": {
       "line": 59,
@@ -2178,10 +2213,10 @@
       "judgment": "split",
       "reason": "the exact split negation PR #38 counted on the constraint page (\"You move a block. You don't start over.\")"
     },
-    "split|You are done when you have two cities researched onto two cards, each with at least a few top sights and a source. → You don't have to fill every line perfectly.|1": {
+    "split|You are done when you have two cities researched onto two cards, each with at least a few top sights and a source. → You don't have to fill every line perfectly. → \"Ask an adult\" or \"not sure yet\" are fine answers.|1": {
       "line": 53,
       "judgment": "no",
-      "reason": "release"
+      "reason": "release, then a permission (which answers are fine); nothing is recast"
     },
     "split|You don't have to fill every line perfectly. → \"Ask an adult\" or \"not sure yet\" are fine answers.|1": {
       "line": 53,
@@ -2205,10 +2240,10 @@
     }
   },
   "framework/sessions/phase_03_choose_places/21_compare_cities.md": {
-    "split|And you need a recommendation: either **one city** for this first trip, or **both, kept on purpose**. → You don't have to feel sure.|1": {
+    "split|And you need a recommendation: either **one city** for this first trip, or **both, kept on purpose**. → You don't have to feel sure. → \"I recommend both, let's decide together\" is a real answer.|1": {
       "line": 62,
       "judgment": "no",
-      "reason": "release"
+      "reason": "release, then an example answer; nothing is recast"
     },
     "split|No new sources needed unless you looked something up. → Your scores come from the cards you already made.|1": {
       "line": 66,
@@ -2365,10 +2400,10 @@
       "judgment": "device",
       "reason": "rather than"
     },
-    "split|Every reason should be able to say where it came from. → You don't have to remember it.|1": {
+    "split|Every reason should be able to say where it came from. → You don't have to remember it. → Your Source Log entry is enough.|1": {
       "line": 26,
       "judgment": "no",
-      "reason": "release"
+      "reason": "release, then where the fact is kept; the source log is not a recast of the reason"
     },
     "device|They're parts of it, not holes in it.|1": {
       "line": 30,
@@ -2397,10 +2432,10 @@
       "judgment": "no",
       "reason": "a comparison, not a negation"
     },
-    "split|Write one line where one line will do. → You don't have to write paragraphs to be taking this seriously.|1": {
+    "split|Write one line where one line will do. → You don't have to write paragraphs to be taking this seriously. → Paragraphs are slower to write and harder to use later, and a tired planner stops writing them.|1": {
       "line": 40,
       "judgment": "no",
-      "reason": "release"
+      "reason": "release, then the reason; nothing is recast"
     },
     "split|Each kind of source has its own short form, and there are six of them: website, book, map, video, AI, and a person you asked. → You don't have to remember what each one needs.|1": {
       "line": 46,
@@ -2419,10 +2454,10 @@
     }
   },
   "framework/student_guide/how_to_use_this_binder.md": {
-    "split|Rough order is enough. → You don't need to sort anything, and you don't need tabs yet.|1": {
+    "split|Rough order is enough. → You don't need to sort anything, and you don't need tabs yet. → Tabs come once, at the very end.|1": {
       "line": 11,
       "judgment": "no",
-      "reason": "release"
+      "reason": "release, then when tabs come; nothing is recast"
     },
     "split|If you like strong structure and tabbing things as you go makes you happy, go ahead. → That's a choice you're allowed, and it isn't the default.|1": {
       "line": 13,
@@ -2765,10 +2800,10 @@
       "judgment": "split",
       "reason": "release followed by a reframe with a different subject (\"This is a snapshot\"), as in Session 10"
     },
-    "split|Before you plan *where* to go, it helps to know a few big facts. → You do not need to memorize anything.|1": {
+    "split|Before you plan *where* to go, it helps to know a few big facts. → You do not need to memorize anything. → This is a snapshot to get you oriented.|1": {
       "line": 5,
       "judgment": "no",
-      "reason": "release"
+      "reason": "the release and its recast are counted once, on the banned-shape candidate for the same pair (judged split)"
     }
   },
   "framework/templates/family_interview.md": {
@@ -2823,10 +2858,10 @@
       "judgment": "device",
       "reason": "not just a word"
     },
-    "split|There the space grows to fit. → You do not have to squeeze a whole thought into a small printed box.|1": {
+    "split|There the space grows to fit. → You do not have to squeeze a whole thought into a small printed box. → These are the same planning moves people use for homework and chores.|1": {
       "line": 20,
       "judgment": "no",
-      "reason": "release"
+      "reason": "release, then a reassurance; nothing is recast"
     }
   },
   "framework/templates/hotel_comparison_card.md": {
@@ -2933,42 +2968,42 @@
   },
   "framework/templates/parent_review_form.md": {
     "device|Your job is to model the process, not to know the answers.|1": {
-      "line": 8,
+      "line": 9,
       "judgment": "device",
       "reason": "model the process, not know the answers"
     },
-    "split|Print it, or keep it in the binder under the Parent Review tab. → You don't have to be the expert.|1": {
-      "line": 8,
-      "judgment": "no",
-      "reason": "release"
+    "split|Print it, or keep it in the binder under the Parent Review tab. → You don't have to be the expert. → Your job is to model the process, not to know the answers.|1": {
+      "line": 9,
+      "judgment": "split",
+      "reason": "release, then its recast: you don't have to be the expert / your job is to model the process (the spec's mandatory note)"
     },
     "split|Good enough means an adult could act on it. → It doesn't mean finished, polished, or right.|1": {
-      "line": 26,
+      "line": 27,
       "judgment": "split",
       "reason": "same frame: means / doesn't mean"
     },
     "split|It doesn't mean finished, polished, or right. → Some standards won't fit every checkpoint.|1": {
-      "line": 28,
+      "line": 29,
       "judgment": "no",
       "reason": "rejects nothing"
     },
     "split|Some standards won't fit every checkpoint. → Write \"not needed here\" beside those.|1": {
-      "line": 28,
+      "line": 29,
       "judgment": "no",
       "reason": "instruction"
     },
     "device|Not \"you're so smart\" — that one quietly teaches that being right is the point.|1": {
-      "line": 86,
+      "line": 87,
       "judgment": "device",
       "reason": "fragment \"Not 'you're so smart'\" after the claim (the other half of the spec's praise calibration)"
     },
     "device|Praise the move, not the mind.|1": {
-      "line": 86,
+      "line": 87,
       "judgment": "device",
       "reason": "praise the move, not the mind (spec-required calibration, specification.md line 3471)"
     },
     "split|Optional. → A name, initials, or a \"got it\" is plenty; a signature isn't required.|1": {
-      "line": 90,
+      "line": 91,
       "judgment": "device",
       "reason": "a release joined to its claim in one sentence: initials are plenty; a signature isn't required"
     }
@@ -3068,10 +3103,10 @@
     }
   },
   "framework/templates/source_log.md": {
-    "split|Each source you look up is one entry: a new copy of the table below. → You don't have to fill in every box at once.|1": {
+    "split|Each source you look up is one entry: a new copy of the table below. → You don't have to fill in every box at once. → How to use it: copy this page into your binder or notebook.|1": {
       "line": 5,
       "judgment": "no",
-      "reason": "release"
+      "reason": "release, then how to use the page; nothing is recast"
     },
     "device|\"Not listed\" and \"ask an adult\" are fine answers.|1": {
       "line": 7,

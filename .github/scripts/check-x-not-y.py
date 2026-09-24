@@ -20,29 +20,33 @@ Usage::
 How it counts
 -------------
 The counting rules are the style law's ("How to count any density device").
-Code spans, fenced blocks, table rows, headings, thematic breaks, and lines
-holding only an HTML comment are skipped. Block quotes are read like prose; a
-quotation block quote, such as a coaching script, is judged "no". A paragraph
-is joined before it is split into sentences, because Markdown renders a soft
-line break as a space, and its code spans and comments are removed after the
-join, because either can cross a line break. A code span follows CommonMark's
-delimiter rules: an escaped backtick or a closing run of another length opens
-or closes nothing. The patterns read the words a reader sees: no emphasis
-(``*`` or ``_``), a link's label without its destination, and no image. The
-candidate keeps the sentence as written, closing quotation marks, emphasis
-and links included. A comment between two paragraphs does not part them,
-even over several lines. Text above a page's first ``##`` heading is not a
-``##`` section, so only the file cap reaches it. Each ``##`` heading starts
-its own section, even when two share a title. A child session's "For parents" strip and ``## Parent Notes`` are
+The page's blocks come from markdown-it, the CommonMark parser the Last
+Updated check and the nested-Markdown lint use: only paragraphs are prose.
+Headings, fenced and indented code, tables, thematic breaks, comments and link
+reference definitions are not, wherever they sit, in a list item or a block
+quote included. Block quotes are read like prose; a quotation block quote,
+such as a coaching script, is judged "no". A paragraph is joined before it is
+split into sentences, because Markdown renders a soft line break as a space,
+and its code spans and comments are removed after the join, because either can
+cross a line break. A code span follows CommonMark's delimiter rules: an
+escaped backtick or a closing run of another length opens or closes nothing.
+The patterns read the words a reader sees: no emphasis (``*`` or ``_``), a
+link's label without its destination, no image, and each character reference
+as its character. The candidate keeps the sentence as written, closing
+quotation marks, emphasis and links included. A comment between two
+paragraphs does not part them. A release (``You do not have to ...``) is keyed
+with the sentence after it, which decides whether it counts. Text above a
+page's first ``##`` heading is not a ``##`` section, so only the file cap
+reaches it. Each ``##`` heading starts its own section, even when two share a
+title. A child session's "For parents" strip and ``## Parent Notes`` are
 parent-facing regions, but the file cap follows the file's own register.
 
 A ``<!-- density-exempt: X, not Y -- <reason> -->`` marker covers the block
-directly below it: one paragraph, one whole list (a loose list included), or,
-above a heading, that heading's section. It exempts the instances and split
-negations it covers. A marker that gives no reason exempts nothing, and the
-report names it. A marker must fit on one line, as the style law writes it; a
-comment written over several lines is not read as a marker, so the instances
-below it stay counted.
+directly below it: one paragraph, one whole list (a loose list included), one
+block quote, or, above a heading, that heading's section. Another comment
+between the marker and its block is skipped. It exempts the instances and
+split negations it covers. A marker that gives no reason exempts nothing, and
+the report names it.
 
 Human judgments
 ---------------
@@ -77,25 +81,34 @@ is UNDETERMINED.
 Exit code: 0 when every page is within its caps or marked exempt, with no
 banned shape, no undetermined register, no unjudged candidate and no marker
 without a reason; 1 otherwise; 2 when REPO_ROOT has no ``framework/``
-directory.
+directory; 3 when the Markdown reader cannot run.
 
 The script is a tool, not a gate: no workflow or hook runs it over the pages.
-Standard library only.
+It reads each page's blocks with markdown-it, through ``x-not-y-blocks.js``
+beside it and one Node process for the whole run, so it needs Node.js and the
+repository's ``node_modules`` (``npm ci``), as the Last Updated check does.
 """
 
 from __future__ import annotations
 
 import argparse
+import atexit
+import html
 import json
 import re
+import subprocess
 import sys
 from dataclasses import dataclass, field
 from pathlib import Path
+from typing import Any
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 SCRIPT_DIR = Path(__file__).resolve().parent
 DEFAULT_JUDGMENTS = SCRIPT_DIR / "x-not-y-judgments.json"
 DEFAULT_REGISTERS = SCRIPT_DIR / "x-not-y-registers.json"
+#: The Markdown reader: markdown-it, through one Node process for the run.
+NODE = "node"
+BLOCKS_HELPER = SCRIPT_DIR / "x-not-y-blocks.js"
 
 # ---------------------------------------------------------------------------
 # Caps (the `X, not Y` bullet of the style law)
@@ -114,21 +127,16 @@ PREAMBLE = "(preamble)"
 # Markdown structure
 # ---------------------------------------------------------------------------
 
-FENCE_RE = re.compile(r"^(?P<indent>\s*)(?P<fence>`{3,}|~{3,})")
-BQ_PREFIX_RE = re.compile(r"^ {0,3}> ?")
-HEADING_RE = re.compile(r"^ {0,3}(?P<hashes>#{1,6})\s+(?P<text>.*?)\s*#*\s*$")
-TABLE_DELIM_RE = re.compile(r"^\s*\|?\s*:?-+:?\s*(?:\|\s*:?-+:?\s*)*\|?\s*$")
-COMMENT_ONLY_RE = re.compile(r"^\s*(?:<!--.*?-->\s*)+$")
-THEMATIC_BREAK_RE = re.compile(r"^ {0,3}(?:(?:-\s*){3,}|(?:\*\s*){3,}|(?:_\s*){3,})$")
 HTML_COMMENT_RE = re.compile(r"<!--.*?-->", re.DOTALL)
 #: A code span, as CommonMark reads one: a backtick run that no backslash
 #: escapes, closed by a run of exactly the same length (a longer or shorter
 #: run closes nothing). It may cross a line break inside its paragraph. The
 #: readability check uses the same guards.
 CODE_SPAN_RE = re.compile(r"(?<!`)(?<!\\)(`+)(?!`).*?(?<!`)\1(?!`)", re.DOTALL)
-LIST_MARKER_RE = re.compile(r"^\s*(?:[-*+]|\d{1,9}[.)])\s+(?:\[[ xX]\]\s+)?")
-#: A list item's opening, for finding where a list ends.
-LIST_ITEM_RE = re.compile(r"^(?P<indent> {0,12})(?P<bullet>[-*+]|\d{1,9}(?P<delim>[.)]))(?: {1,4}|$)")
+#: A task-list box at the start of a list item: `[ ]` or `[x]`.
+TASK_BOX_RE = re.compile(r"^\[[ xX]\]\s+")
+#: An HTML block that holds only comments.
+COMMENT_BLOCK_RE = re.compile(r"^\s*(?:<!--.*?-->\s*)+$", re.DOTALL)
 AUDIENCE_RE = re.compile(r"<!--\s*audience:\s*(adult|parent|builder)\b", re.IGNORECASE)
 PARENT_STRIP_RE = re.compile(r"^\s*\*\*For parents:?\*\*", re.IGNORECASE)
 PARENT_SECTION_RE = re.compile(
@@ -178,9 +186,20 @@ INLINE_PATTERNS = {
     "instead-of": re.compile(r"\binstead of\b", re.IGNORECASE),
     "not-but": re.compile(r"\bnot\b(?:(?![.;:!?]).){1,90}?\bbut\b", re.IGNORECASE),
     "and-not": re.compile(r"\b(?:and|or)\s+not\b", re.IGNORECASE),
+    # `Choose the map (not the list).`: the rejected alternative in parentheses.
+    "paren-not": re.compile(r"\(\s*(?:and\s+|but\s+|or\s+)?(?:not|never)\b", re.IGNORECASE),
 }
 #: A sentence that opens with Not/Never: the fragment form, when it follows a claim.
 FRAGMENT_RE = re.compile(r"^[\"'“‘*_(]*(?:Not|Never)\b")
+#: A release frees the reader from an obligation: `You do not have to fill every
+#: line.` The style law counts one as a split negation only when the next
+#: sentence recasts what the thing is.
+RELEASE_RE = re.compile(
+    r"\b(?:do|does|did)\s+not\s+(?:have|need)\s+to\b|\b(?:don|doesn|didn)['’]t\s+(?:have|need)\s+to\b"
+    r"|\bno need to\b|\bneed(?:n['’]t|\s+not)\b"
+    r"|\b(?:is|are|isn['’]t|aren['’]t)\s+(?:not\s+)?(?:required|needed)\b",
+    re.IGNORECASE,
+)
 #: A bare "instead" (not "instead of") closes a two-sentence rejection.
 BARE_INSTEAD_RE = re.compile(r"\binstead\b(?!\s+of\b)", re.IGNORECASE)
 #: Straight and curly apostrophes both spell a contraction: `don't`, `don’t`;
@@ -229,7 +248,10 @@ SENTENCE_SPLIT_RE = re.compile(
     "(?:" + "|".join("(?<=[.!?]" + CLOSERS * n + ")" for n in range(4)) + ")"
     + r"\s+(?=[\"'“‘(*_\[]*[A-Z0-9])"
 )
-ABBREV_RE = re.compile(r"\b(?:e\.g|i\.e|etc|vs|p\.m|a\.m|Dr|Mr|Mrs|Ms|St|No)\.$")
+#: Abbreviations that always lead into more words: a sentence never ends on one.
+#: `etc.`, `a.m.` and `p.m.` can end a sentence, so a capital after them starts
+#: a new one: `It isn't at 5 p.m. It's at 6 p.m.` is two sentences.
+ABBREV_RE = re.compile(r"\b(?:e\.g|i\.e|vs|Dr|Mr|Mrs|Ms|St|No)\.$")
 #: Emphasis markers: every `*`, and a run of `_` at a word's edge. An
 #: underscore inside a word is not emphasis in Markdown, so it stays.
 EMPHASIS_RE = re.compile(r"\*+|(?<![A-Za-z0-9])_+|_+(?![A-Za-z0-9])")
@@ -251,9 +273,14 @@ def normalize_space(text: str) -> str:
 
 def plain(text: str) -> str:
     """Return the words a reader sees: link labels without their destinations, no images,
-    and no emphasis markers. Neither changes what a sentence says."""
+    no emphasis markers, and character references as the characters they print.
+
+    None of these changes what a sentence says. `&nbsp;` prints a space and `&#44;`
+    a comma, so each is read as one before the patterns run.
+    """
     text = IMAGE_RE.sub("", text)
     text = LINK_RE.sub(lambda m: m.group("label"), text)
+    text = html.unescape(text).replace("\u00a0", " ")
     return EMPHASIS_RE.sub("", text)
 
 
@@ -303,10 +330,11 @@ def opening_words(sentence: str) -> list[str]:
 
 @dataclass
 class ProseLine:
-    """One prose line, without its block quote prefix and list marker.
+    """One prose line of a paragraph, as markdown-it reads it: without its block
+    quote prefix, list marker and indentation.
 
-    Code spans and comments stay in the text: one can cross a line break, so
-    they are removed per paragraph, in `paragraph_text()`.
+    Code spans and inline comments stay in the text: one can cross a line break,
+    so they are removed per paragraph, in `paragraph_text()`.
     """
 
     lineno: int
@@ -317,6 +345,8 @@ class ProseLine:
     paragraph: int
     item: bool = False  # the line opens a list item
     section_index: int = 0  # 0 above the first `##`, then 1, 2, ... per `##` heading
+    quote_id: int | None = None  # the block quote the line sits in, numbered in page order
+    follows: bool = False  # the line opens a paragraph that only comments part from the one before
 
 
 @dataclass
@@ -381,31 +411,63 @@ class FileReport:
 # ---------------------------------------------------------------------------
 
 
-def strip_bq(line: str) -> tuple[str, bool]:
-    """Remove block quote prefixes; report whether the line was quoted."""
-    quoted = False
-    while True:
-        m = BQ_PREFIX_RE.match(line)
-        if not m:
-            return line, quoted
-        quoted = True
-        line = line[m.end():]
+class ReadError(Exception):
+    """The Markdown reader could not run, or gave an answer the recount cannot use."""
 
 
-def list_item(line: str) -> tuple[int, str, int] | None:
-    """Return (indent, marker kind, content column) when a line opens a list item.
+class BlockReader:
+    """Markdown blocks from `x-not-y-blocks.js`, through one Node process for the whole run.
 
-    The marker kind is the bullet character, or `ordered.` or `ordered)`: two
-    items belong to one list only when they share it.
+    Answers are cached by text. Any failure raises ReadError, so a page the
+    reader could not read is never counted as a page with no prose.
     """
-    content, _ = strip_bq(line)
-    if THEMATIC_BREAK_RE.match(content):
-        return None
-    m = LIST_ITEM_RE.match(content)
-    if not m:
-        return None
-    kind = "ordered" + m.group("delim") if m.group("delim") else m.group("bullet")
-    return len(m.group("indent")), kind, m.end()
+
+    def __init__(self) -> None:
+        self.process: subprocess.Popen[str] | None = None
+        self.cache: dict[str, list[dict[str, Any]]] = {}
+
+    def __call__(self, text: str) -> list[dict[str, Any]]:
+        if text not in self.cache:
+            self.cache[text] = self.ask(text)
+        return self.cache[text]
+
+    def ask(self, text: str) -> list[dict[str, Any]]:
+        if self.process is None or self.process.poll() is not None:
+            try:
+                self.process = subprocess.Popen([NODE, str(BLOCKS_HELPER)], stdin=subprocess.PIPE,
+                                                stdout=subprocess.PIPE, text=True, encoding="utf-8")
+            except OSError as exc:
+                raise ReadError(f"cannot start {NODE} {BLOCKS_HELPER.name}: {exc}") from exc
+        assert self.process.stdin is not None and self.process.stdout is not None
+        try:
+            self.process.stdin.write(json.dumps({"text": text}, ensure_ascii=True) + "\n")
+            self.process.stdin.flush()
+            line = self.process.stdout.readline()
+        except OSError as exc:
+            raise ReadError(f"{BLOCKS_HELPER.name}: {exc}") from exc
+        if not line:
+            raise ReadError(f"{BLOCKS_HELPER.name} stopped without an answer (exit status {self.process.poll()})")
+        try:
+            answer = json.loads(line)
+        except ValueError as exc:
+            raise ReadError(f"{BLOCKS_HELPER.name} gave an answer that is not JSON: {exc}") from exc
+        blocks = answer.get("blocks") if isinstance(answer, dict) else None
+        if not (isinstance(blocks, list) and all(isinstance(b, dict) and {"type", "start", "end"} <= set(b)
+                                                 for b in blocks)):
+            raise ReadError(f"{BLOCKS_HELPER.name} gave an unexpected answer: {str(answer)[:200]}")
+        return blocks
+
+    def close(self) -> None:
+        if self.process is not None:
+            if self.process.stdin is not None:
+                self.process.stdin.close()
+            self.process.wait()
+            self.process = None
+
+
+read_blocks = BlockReader()
+# Close the Node process when Python exits, so no reader outlives its run.
+atexit.register(read_blocks.close)
 
 
 def parse_marker(lineno: int, body: str) -> Marker:
@@ -423,76 +485,48 @@ def parse_marker(lineno: int, body: str) -> Marker:
 
 
 def parse_text(text: str) -> Page:
-    """Parse one page into prose lines, markers, sections and headings."""
-    lines = text.split("\n")
+    """Parse one page into prose lines, markers, sections and headings.
+
+    The block structure comes from markdown-it, through `x-not-y-blocks.js`:
+    which lines are paragraphs, headings, fences, tables and comments, and which
+    paragraphs sit in a list item or a block quote. Each paragraph keeps its
+    inline source, one line per source line, for the sentence tests.
+    """
+    blocks = read_blocks(text)
+    source = text.split("\n")
     prose: list[ProseLine] = []
     markers: list[Marker] = []
+    marker_blocks: list[int] = []
     sections: list[str] = [PREAMBLE]
     heading_lines: dict[int, tuple[int, str]] = {}
     audience: str | None = None
     section = PREAMBLE
     section_index = 0
     region = "main"
-    fence: tuple[str, int] | None = None
-    in_comment = False
-    in_table = False
     paragraph = 0
-    prev_blank = True
-    prev_quoted = False
-
-    i = 0
-    n = len(lines)
-    while i < n:
-        raw = lines[i]
-        lineno = i + 1
-        content, quoted = strip_bq(raw)
-        i += 1
-
-        # Fenced blocks, including fences inside a block quote or list item.
-        if fence is not None:
-            m = FENCE_RE.match(content)
-            if (m and m.group("fence")[0] == fence[0] and len(m.group("fence")) >= fence[1]
-                    and not content[m.end():].strip()):
-                fence = None
-            prev_blank = True
+    # True while only comments have come since the last paragraph: a comment
+    # renders nothing, so it does not part two paragraphs.
+    follows = False
+    for index, block in enumerate(blocks):
+        kind = block["type"]
+        if kind == "html_block":
+            content = block.get("content") or ""
+            if COMMENT_BLOCK_RE.match(content):
+                # Markers are read only from a block of comments, so an example
+                # shown in a code span or a fence never counts.
+                for mm in EXEMPT_MARKER_RE.finditer(content):
+                    markers.append(parse_marker(block["start"], mm.group("body")))
+                    marker_blocks.append(index)
+                am = AUDIENCE_RE.search(content)
+                if am and audience is None:
+                    audience = am.group(1).lower()
+                continue
+            follows = False
             continue
-        m = FENCE_RE.match(content)
-        if m:
-            fence = (m.group("fence")[0], len(m.group("fence")))
-            prev_blank = True
-            continue
-
-        # HTML comments: markers are read only from comment-only lines, so an
-        # example shown in a code span or a fence never counts.
-        if in_comment:
-            if "-->" in raw:
-                in_comment = False
-            prev_blank = True
-            continue
-        if COMMENT_ONLY_RE.match(raw):
-            for mm in EXEMPT_MARKER_RE.finditer(raw):
-                markers.append(parse_marker(lineno, mm.group("body")))
-            am = AUDIENCE_RE.search(raw)
-            if am and audience is None:
-                audience = am.group(1).lower()
-            prev_blank = True
-            continue
-        if raw.strip().startswith("<!--") and "-->" not in raw:
-            in_comment = True
-            prev_blank = True
-            continue
-
-        if not content.strip() or THEMATIC_BREAK_RE.match(content):
-            in_table = False
-            prev_blank = True
-            continue
-
-        # Headings change the section and the register region; never prose.
-        hm = HEADING_RE.match(content)
-        if hm:
-            level = len(hm.group("hashes"))
-            heading = hm.group("text")
-            heading_lines[lineno] = (level, heading)
+        if kind == "heading":
+            level = block["level"]
+            heading = normalize_space(block.get("content") or "")
+            heading_lines[block["start"]] = (level, heading)
             if level <= 2:
                 section = heading if level == 2 else PREAMBLE
                 section_index = 0
@@ -502,62 +536,52 @@ def parse_text(text: str) -> Page:
                     sections.append(section)
                     section_index = len(sections) - 1
             region = "parent notes" if PARENT_SECTION_RE.match(heading) else "main"
-            in_table = False
-            prev_blank = True
+            follows = False
             continue
-
-        # Tables: the header row, the delimiter row, and the rows below.
-        if in_table:
-            if "|" in content:
-                continue
-            in_table = False
-        if "|" in content and i < n:
-            nxt, _ = strip_bq(lines[i])
-            if TABLE_DELIM_RE.match(nxt) and "-" in nxt:
-                in_table = True
-                i += 1
-                prev_blank = True
-                continue
-
-        if PARENT_STRIP_RE.match(content):
+        if kind in ("bullet_list", "ordered_list", "blockquote"):
+            # A container opens before the blocks inside it; it prints nothing itself.
+            continue
+        if kind != "paragraph":
+            follows = False
+            continue
+        lines = (block.get("content") or "").split("\n")
+        if block.get("item"):
+            lines[0] = TASK_BOX_RE.sub("", lines[0], count=1)
+        elif PARENT_STRIP_RE.match(lines[0]):
             region = "for-parents strip"
-
-        # Code spans and inline comments are removed per paragraph, because a
-        # code span can cross a line break (see `paragraph_text()`).
-        is_item = bool(LIST_MARKER_RE.match(content))
-        text_line = LIST_MARKER_RE.sub("", content, count=1)
-        # A block quote interrupts a paragraph, as CommonMark reads it, so a
-        # bold lead-in line and the quotation under it are two blocks.
-        if prev_blank or is_item or (quoted and not prev_quoted):
-            paragraph += 1
-        prev_blank = False
-        prev_quoted = quoted
-        prose.append(ProseLine(lineno, text_line, section, region, quoted, paragraph, is_item,
-                               section_index))
-
+        paragraph += 1
+        for offset, line in enumerate(lines):
+            prose.append(ProseLine(block["start"] + offset, line, section, region, block.get("quote") is not None,
+                                   paragraph, bool(block.get("item")) and offset == 0, section_index,
+                                   quote_id=block.get("quote"), follows=follows and offset == 0))
+        follows = True
+    for marker, index in zip(markers, marker_blocks):
+        marker_scope(marker, blocks, index, heading_lines, source)
     return Page(prose, markers, sections, heading_lines, audience)
 
 
-def marker_scope(marker: Marker, raw_lines: list[str],
-                 heading_lines: dict[int, tuple[int, str]]) -> None:
+def marker_scope(marker: Marker, blocks: list[dict[str, Any]], index: int,
+                 heading_lines: dict[int, tuple[int, str]], source: list[str]) -> None:
     """Set the line range a marker covers: the block directly below it.
 
-    The block is one paragraph or one whole list (the run of non-blank lines
-    that starts on the first line after the marker that is neither blank nor
-    another comment, so two markers can be stacked). A list goes on past a
-    blank line while the next line is another item of the same list or is
-    indented under an item, as in a loose list. Above a heading, the block is
-    that heading's section, up to the next heading of the same or a higher
-    level.
+    The block is the first one after the marker that is not another block of
+    comments, so two markers can be stacked and a note can sit between a marker
+    and its block. It is one paragraph, one whole list (a loose list included)
+    or one block quote, as markdown-it reads it. Above a heading, the block is
+    that heading's section, up to the next heading of the same or a higher level.
     """
-    lines_total = len(raw_lines)
-    first = marker.lineno + 1
-    while first <= lines_total and (not raw_lines[first - 1].strip()
-                                    or COMMENT_ONLY_RE.match(raw_lines[first - 1])):
-        first += 1
-    if first in heading_lines:
-        level = heading_lines[first][0]
-        end = lines_total
+    nxt = index + 1
+    while nxt < len(blocks) and blocks[nxt]["type"] == "html_block" and COMMENT_BLOCK_RE.match(
+            blocks[nxt].get("content") or ""):
+        nxt += 1
+    if nxt >= len(blocks):
+        marker.scope_desc = "nothing below it"
+        return
+    block = blocks[nxt]
+    first = block["start"]
+    if block["type"] == "heading":
+        level = block["level"]
+        end = len(source)
         for h in sorted(heading_lines):
             if h > first and heading_lines[h][0] <= level:
                 end = h - 1
@@ -565,27 +589,10 @@ def marker_scope(marker: Marker, raw_lines: list[str],
         marker.scope_start, marker.scope_end = first, end
         marker.scope_desc = f"section '{heading_lines[first][1]}' (lines {first}-{end})"
         return
-    def run_end(start: int) -> int:
-        end = start
-        while end + 1 <= lines_total and raw_lines[end].strip() and (end + 1) not in heading_lines:
-            end += 1
-        return end
-
-    end = run_end(first)
-    top = list_item(raw_lines[first - 1]) if first <= lines_total else None
-    while top is not None:
-        nxt = end + 1
-        while nxt <= lines_total and not raw_lines[nxt - 1].strip():
-            nxt += 1
-        if nxt == end + 1 or nxt > lines_total or nxt in heading_lines:
-            break
-        content, _ = strip_bq(raw_lines[nxt - 1])
-        item = list_item(raw_lines[nxt - 1])
-        same_list = item is not None and item[0] == top[0] and item[1] == top[1]
-        indented = len(content) - len(content.lstrip(" ")) >= top[2]
-        if not (same_list or indented):
-            break
-        end = run_end(nxt)
+    end = block["end"]
+    # markdown-it gives a list the blank line after it; the block ends at its last text.
+    while end > first and not source[end - 1].strip():
+        end -= 1
     marker.scope_start, marker.scope_end = first, end
     marker.scope_desc = f"next block (lines {first}-{end})"
 
@@ -617,12 +624,11 @@ def adjacent(a: list[ProseLine], b: list[ProseLine], raw_lines: list[str] | None
     """
     if raw_lines is None or a[0].item or b[0].item:
         return False
-    if a[-1].blockquote != b[0].blockquote:
+    if a[-1].quote_id != b[0].quote_id:
         return False
     if a[-1].section_index != b[0].section_index or a[-1].region != b[0].region:
         return False
-    between = "\n".join(raw_lines[a[-1].lineno:b[0].lineno - 1])
-    return not HTML_COMMENT_RE.sub("", between).strip()
+    return b[0].follows
 
 
 def paragraph_text(para: list[ProseLine]) -> str:
@@ -662,12 +668,12 @@ def quote_contexts(paras: list[list[ProseLine]], raw_lines: list[str] | None) ->
     out = [""] * len(paras)
     i = 0
     while i < len(paras):
-        if not paras[i][0].blockquote:
+        quote = paras[i][0].quote_id
+        if quote is None:
             i += 1
             continue
         j = i
-        while (raw_lines is not None and j + 1 < len(paras) and paras[j + 1][0].blockquote
-               and all(strip_bq(line)[1] for line in raw_lines[paras[j][-1].lineno:paras[j + 1][0].lineno - 1])):
+        while raw_lines is not None and j + 1 < len(paras) and paras[j + 1][0].quote_id == quote:
             j += 1
         texts = [normalize_space(paragraph_text(para)) for para in paras[i:j + 1]]
         joined = " ".join(t for t in texts if t)
@@ -777,7 +783,14 @@ def find_candidates(rel: str, prose: list[ProseLine],
                     split_pats.append("negation-then-instead")
                 if split_pats and prev is not None:
                     if g - 1 not in opened_pairs:
-                        add(pl, "split", split_pats, prev + ARROW + s, ctx)
+                        if nxt is not None and RELEASE_RE.search(ps):
+                            # A release counts only when the next sentence recasts
+                            # what the thing is, so that sentence is part of what is
+                            # judged, and of the key.
+                            add(pl, "split", split_pats + ["release-then-recast"],
+                                prev + ARROW + s + ARROW + nxt, ctx)
+                        else:
+                            add(pl, "split", split_pats, prev + ARROW + s, ctx)
                 elif (prev is None and nxt is not None and NEGATION_RE.search(ps) and words <= 14
                       and not FRAGMENT_RE.match(ps)):
                     # The negation opens the paragraph and the claim follows.
@@ -874,8 +887,6 @@ def scan(root: Path, judgments: dict, registers: dict) -> list[FileReport]:
         page = parse_text(text)
         register, basis = resolve_register(rel, page.audience, registers)
         raw_lines = text.split("\n")
-        for mk in page.markers:
-            marker_scope(mk, raw_lines, page.heading_lines)
         rep = FileReport(rel, register, basis, page.sections, [], page.markers)
         file_j = judgments.get(rel, {})
         for c in find_candidates(rel, page.prose, raw_lines):
@@ -1089,7 +1100,14 @@ def main(argv: list[str] | None = None) -> int:
     if not (root / "framework").is_dir():
         print(f"error: {root} has no framework/ directory", file=sys.stderr)
         return 2
-    reports = scan(root, load_json(args.judgments), load_json(args.registers))
+    try:
+        reports = scan(root, load_json(args.judgments), load_json(args.registers))
+    except ReadError as exc:
+        print(f"error: cannot read Markdown: {exc}. The recount reads pages with markdown-it, so it needs "
+              "Node.js and the repository's node_modules (run `npm ci`).", file=sys.stderr)
+        return 3
+    finally:
+        read_blocks.close()
     if args.candidates or args.unjudged:
         dump_candidates(reports, args.unjudged)
         return 0

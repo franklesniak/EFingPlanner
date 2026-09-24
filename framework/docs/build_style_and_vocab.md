@@ -107,6 +107,8 @@ Never state entry, visa, passport, insurance, rail-pass, or medication rules, pr
 
 ## Agreed labels (use these exact terms everywhere)
 
+<!-- density-exempt: X, not Y -- these agreed labels are written exactly as every file must use them, and the family decision meeting is defined by the label it replaces -->
+
 - family decision meeting (not "executive meeting")
 - adult reviewers / parents / adults / adults who make final bookings
 - Core Finish Line; First Taste path; mini-plan (the spec's "Minimum Viable Plan")

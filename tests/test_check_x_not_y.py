@@ -303,6 +303,104 @@ def test_every_negated_auxiliary_is_read_by_the_inline_patterns() -> None:
     assert [k for k, _ in kinds("Pick the map, but you couldn't pick the list.")] == ["device"]
 
 
+def test_a_release_is_keyed_with_the_sentence_that_follows() -> None:
+    first = candidates("Write today's date. You do not have to fill every line. A few notes are enough.")
+    second = candidates("Write today's date. You do not have to fill every line. Tomorrow is Tuesday.")
+    assert [c.text for c in first if c.kind == "split"] == [
+        "Write today's date. → You do not have to fill every line. → A few notes are enough."]
+    assert {c.key for c in first}.isdisjoint({c.key for c in second})
+
+
+def test_a_negation_that_is_not_a_release_keeps_its_pair() -> None:
+    found = kinds("You move a block. You don't start over. It stays.")
+    assert ("split", "You move a block. → You don't start over.") in found
+
+
+def test_a_contrast_in_parentheses_is_a_candidate() -> None:
+    assert kinds("Choose the map (not the list).") == [("device", "Choose the map (not the list).")]
+
+
+def test_a_link_reference_definition_is_not_prose() -> None:
+    assert kinds('[guide]: /guide "Choose the map, not the list."\n\nSee the [guide].') == []
+
+
+def test_a_fence_opened_on_a_list_item_line_is_not_prose() -> None:
+    text = "- ```text\n  a map, not a list\n  ```\n\nIt is a map, not a list."
+    assert kinds(text) == [("device", "It is a map, not a list.")]
+
+
+def test_an_indented_code_block_is_not_prose() -> None:
+    assert kinds("Intro.\n\n    code, not prose\n") == []
+
+
+def test_a_marker_skips_a_comment_over_several_lines() -> None:
+    text = "<!-- density-exempt: X, not Y -- required -->\n<!-- note\ncontinues -->\n\nIt is a map, not a list."
+    (mk,) = scoped(text)
+    assert (mk.scope_start, mk.scope_end) == (5, 5)
+
+
+def test_an_unclosed_inline_comment_leaves_the_next_paragraph_visible() -> None:
+    # CommonMark prints `Visible <!-- note` as text and the next paragraph as prose.
+    text = "Visible <!-- note\n\nChoose the map, not the list.\n\n--> tail."
+    assert ("device", "Choose the map, not the list.") in kinds(text)
+
+
+def test_an_abbreviation_that_ends_a_sentence_ends_it() -> None:
+    found = kinds("It isn't at 5 p.m. It's at 6 p.m.")
+    assert ("banned", "It isn't at 5 p.m. → It's at 6 p.m.") in found
+
+
+def test_an_abbreviation_that_leads_on_stays_in_its_sentence() -> None:
+    assert cx.split_sentences("Pick a city, e.g. Kyoto, not a region.") == ["Pick a city, e.g. Kyoto, not a region."]
+
+
+@pytest.mark.parametrize("sentence", [
+    "Choose the map rather&nbsp;than the list.",
+    "Choose the map&#44; not the list.",
+    "Choose the map&comma; not the list.",
+])
+def test_a_character_reference_is_read_as_its_character(sentence: str) -> None:
+    assert kinds(sentence) == [("device", sentence)]
+
+
+def test_the_run_stops_when_the_markdown_reader_cannot_start(tmp_path: Path, capsys: Any,
+                                                             monkeypatch: Any) -> None:
+    write(tmp_path, "framework/templates/a.md", "## A\n\nIt is a map, not a list.\n")
+    monkeypatch.setattr(cx, "NODE", str(tmp_path / "no-such-node"))
+    monkeypatch.setattr(cx, "read_blocks", cx.BlockReader())
+    assert cx.main([str(tmp_path)]) == 3
+    assert "Node.js" in capsys.readouterr().err
+
+
+def test_the_reader_refuses_an_answer_it_cannot_use() -> None:
+    class Pipe:
+        def write(self, text: str) -> None:
+            pass
+
+        def flush(self) -> None:
+            pass
+
+        def readline(self) -> str:
+            return '{"blocks": "no"}\n'
+
+    class Process:
+        stdin = Pipe()
+        stdout = Pipe()
+
+        def poll(self) -> None:
+            return None
+
+    reader = cx.BlockReader()
+    reader.process = cast(Any, Process())
+    with pytest.raises(cx.ReadError):
+        reader("Text.")
+
+
+def test_a_marker_over_two_lines_is_read() -> None:
+    (mk,) = scoped("<!-- density-exempt: X, not Y --\n  a reason on the next line -->\nIt is a map, not a list.")
+    assert (mk.applies, mk.scope_start, mk.scope_end) == (True, 3, 3)
+
+
 def test_a_block_quote_under_a_lead_in_line_is_its_own_block() -> None:
     assert kinds("**Plan A is off.**\n> Don't worry about it.") == []
 
@@ -342,12 +440,8 @@ def test_a_judgment_does_not_follow_a_sentence_out_of_a_quotation(tmp_path: Path
 
 
 def scoped(text: str) -> list[Any]:
-    """Return the page's markers with their scopes set."""
-    page = cx.parse_text(text)
-    lines = text.split("\n")
-    for mk in page.markers:
-        cx.marker_scope(mk, lines, page.heading_lines)
-    return cast(list, page.markers)
+    """Return the page's markers; parsing sets their scopes."""
+    return cast(list, cx.parse_text(text).markers)
 
 
 def test_a_marker_covers_the_next_paragraph_only() -> None:

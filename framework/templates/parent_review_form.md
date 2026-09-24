@@ -5,6 +5,7 @@
 
 Use one copy per checkpoint. Print it, or keep it in the binder under the Parent Review tab.
 
+<!-- density-exempt: X, not Y -- "you don't have to be the expert" and "model the process" are the spec's note for the reviewing parent, which the batch 2 brief makes mandatory -->
 You don't have to be the expert. Your job is to model the process, not to know the answers. If you're unsure whether a source is trustworthy, look it up together using the same quick trust test your child is learning — that's a better lesson than a correct answer.
 
 ## Which checkpoint
