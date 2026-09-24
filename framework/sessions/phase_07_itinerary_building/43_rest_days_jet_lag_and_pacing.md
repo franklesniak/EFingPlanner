@@ -57,7 +57,7 @@ Your pacing checks:
 | Too many long travel days? (One base? Count long rides from your base to your approved must-dos.) | | |
 | Is the first day too busy? | | |
 | With a big time change, are the first two or three days gentle? | | |
-| Does the last day leave time to pack and start the trip home? (A long journey home takes most of the day; a trip of a few hours, about half. A ½ over the 1 of "1 departure day" on your Session 29 formula means the trip home takes only a few hours.) | | |
+| Does the last day leave time to pack and start the trip home? (A long journey home takes most of the day; a trip of a few hours, about half. A ½ over the 1 before "departure day" on your Session 29 formula means the trip home takes only a few hours.) | | |
 | Big days back to back? | | |
 | Enough breaks? | | |
 | Too long or too packed for a traveler who tires easily? | | |
