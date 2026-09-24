@@ -106,6 +106,8 @@ Your child flags accessibility trouble spots, and you handle the fixes. Step-fre
 
 The "taking care of yourself" block gives your child the words to speak up early. Medication and every medical decision stay with you.
 
+If the pacing check shows the special pick is not doable for every traveler, name that block and let your child choose a new pick with you, as in Session 26. Only the three blocks can change the pick.
+
 The floor's third Trade-Off Report is about pacing, where to stay, or the budget. If your child did not write it at Session 34, it belongs here.
 
 **The lighter page.** From Phase 7 on, Steps and Workspace are short and your child sets their own Start Here. The readiness signal is two sessions in a row done without needing the When I'm Stuck card or leaning on the written Steps; the Finish and Quality Check closes every session, so using it never counts against them. If your child isn't there yet, read the Steps with them. Start Here, the Stop Point, the named artifact and the Source Check stay on every page.

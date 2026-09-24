@@ -26,9 +26,9 @@ Daily Plan Cards come after Checkpoint 4, once the grown-ups have settled your r
 
 Make **one block card for each city-stay** on the route the grown-ups approved: one card for all the days you sleep in the same place, with a row for each of those days. A trip with one base has one card. That's the shape for everyone. A block card is less work, and it flexes. If the grown-ups move a date, you move the block and keep what you wrote.
 
-1. Fill in the top of the card: the city, where you'll sleep, the main goal for this stay, and roughly when. If a stop on your route is a region, use the town you picked for it in Session 28.
-2. Give each day its own row. Put your anchor first. Take your anchors from the must-do list on your My Calls page, in the order you wrote there if you wrote one. Then use your day rules for the rest, and look at your "things I can't wait to see" page for anything that fits. If an attraction card you need is missing its time needed or ticket row, fill that in first.
-3. Give every day an energy level: Easy, Medium or Big day. Give day one the level your first-day rule from Session 40 says.
+1. Fill in the top of the card: the city, where you'll sleep, the main goal for this stay, and roughly when. If a stop on your route is a region, use the town on its card from Session 21. If that card names no town, use the one you picked in Session 28.
+2. Give each day its own row. Put your anchor first. Take your anchors from the must-do list on your My Calls page, in the order you wrote there if you wrote one. Then use your day rules for the rest, and look at your "things I can't wait to see" page for anything that fits. If an attraction card you need is missing its time needed or ticket row, fill that in first. On the last card, the day you head home gets its own row, for the ride from your last overnight place to where you leave from, once a grown-up has set that place.
+3. Give every day an energy level: Easy, Medium or Big day. Give day one and the last day the levels your first-day and last-day rules from Session 40 say.
 4. Save the cards in order, and stop between sittings whenever you like. If this is a new day, set your timer for 20 minutes first.
 
 **Roughly when** means a window, like "spring", "the second week", or "not decided yet". Never write the exact booked dates on a Daily Plan Card. Those belong to the grown-ups.

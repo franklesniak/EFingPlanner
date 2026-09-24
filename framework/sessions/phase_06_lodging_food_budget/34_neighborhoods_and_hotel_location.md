@@ -24,7 +24,7 @@ Write the name of one city your family approved at the top of a blank Neighborho
 
 Where you sleep shapes every day of the trip. You walk out of that door each morning and come back to it each night. Today you compare the areas, and in Session 35 you compare the hotels inside them.
 
-1. **Pick one city.** Use a city on the route the grown-ups approved at Checkpoint 4. If your trip has more than one base, start with the one where you'll stay the most nights. If a stop on your route is a region, use the town you picked for it in Session 28.
+1. **Pick one city.** Use a city on the route the grown-ups approved at Checkpoint 4. If your trip has more than one base, start with the one where you'll stay the most nights. If a stop on your route is a region, use the town on its card from Session 21. If that card names no town, use the one you picked in Session 28.
 2. **Learn the kinds of places to stay.** There's more than one kind. One kind often suits a bigger group, because more people can share one space. Another kind may be priced in a different way from a hotel room. Open this session's Destination Notes to find out what those kinds are called where you're going.
 3. **Find two or three areas to compare.** The city's official tourism site or your guidebook can tell you where visitors often stay. A grown-up can help you pick. Write each area's name at the top of a column.
 4. **Fill down each column.** Your page has a row for each question. These five ideas help you answer them:

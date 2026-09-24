@@ -31,6 +31,8 @@ If your family's dates are already booked, the list works the other way round. N
 3. Put each item on your watchlist. For each one, answer: does holding a date matter?
 4. Check each item on an official site, and write the date you checked.
 
+If your special pick on your My Calls page can't be booked, a grown-up tells you which of the three blocks it hit. Then you choose a new pick with a grown-up, the way you did in Session 26.
+
 Booking rules, ticket systems and entry rules change, sometimes a lot. So these are things to check again close to the trip. Never trust a number you remember.
 
 ## Workspace
@@ -65,7 +67,7 @@ If you have extra energy, star the one item on your list that would be the sadde
 
 ## Parent Notes
 
-The watchlist is your list to act on, and your child never books, reserves or pays. The [booking guidance](../../parent_guide/booking_guidance.md) page covers what to book first and how the watchlist feeds it.
+The watchlist is your list to act on, and your child never books, reserves or pays. If the special pick on the My Calls page cannot be booked, name that block and let your child choose a new pick with you, as in Session 26. Only the three blocks can change the pick. The [booking guidance](../../parent_guide/booking_guidance.md) page covers what to book first and how the watchlist feeds it.
 
 The lesson here is date-gating. The longer your dates stay open, the more date-gated items can sell out. Your child's job is to show you which items are on that clock, so you can decide when to commit. With your dates already booked, the list becomes an act-early list, and "When adults should check" holds the date each item's booking opens.
 

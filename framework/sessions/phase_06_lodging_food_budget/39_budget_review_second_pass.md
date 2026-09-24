@@ -26,12 +26,14 @@ Your first budget was a quick guess with two slices. Now you know your route, yo
 
 Round to easy numbers. A calculator is always fine, and a grown-up can do the math while you do the thinking.
 
-1. **Hotels, city by city.** Fill in the hotel table in the Workspace, one row per overnight city. If a stop on your route is a region, use the town you picked for it in Session 28. Use your nights from Checkpoint 4 and the cost per room from the card you recommended. If that card's cost row is empty, fill it in first, or ask an adult. A grown-up tells you how many rooms.
+1. **Hotels, city by city.** Fill in the hotel table in the Workspace, one row per overnight city. If a stop on your route is a region, use the town on its card from Session 21. If that card names no town, use the one you picked in Session 28. Use your nights from Checkpoint 4 and the cost per room from the card you recommended. If that card's cost row is empty, fill it in first, or ask an adult. A grown-up tells you how many rooms.
 2. **Food.** Take the medium food guess from your Session 38 table, and multiply it by the number of days.
 3. **The other slices.** Do the same for local transit, activities and souvenirs. Fill in the rows on your Budget Estimate page that said "later". They're yours now. Your long-distance rides from Session 38 stay out of your subtotal, because the grown-ups price those.
 4. **Add it up.** Your subtotal is what the parts you chose come to. The whole trip costs more than that, and the grown-ups work out the rest on their own page.
 5. **Check against your band.** Match the units first, the way you did in Session 33. Compare the piece of your estimate that matches your band: one day for the family, one person for one day, or one hotel night.
 6. **Write one sentence.** Do the parts you chose fit the band? If they don't, what would you change? Maybe fewer nights somewhere, a cheaper area, or one less paid ticket.
+
+If your special pick on your My Calls page costs more than the band, a grown-up tells you which of the three blocks it hit. Then you choose a new pick with a grown-up, the way you did in Session 26.
 
 Sometimes nothing you try fits. Then "I recommend we change the trip, or wait until a better time" is a good, successful answer. Planners give that answer too.
 
@@ -91,5 +93,7 @@ Review this after the session. Your child's second pass covers only the slices t
 Read the result as a partial floor. It now covers all five slices plus getting there, and it still leaves out getting between cities, insurance, entry costs and phone service. So treat it as "are we in the right range?", and never as what the trip will cost. The [money and budget guidance](../../parent_guide/money_budget_guidance.md) explains the split.
 
 Your child compares a matching piece of their estimate with the band, because the band is a rate or a tier and a subtotal is a whole-trip amount. The final budget is yours.
+
+If the special pick on the My Calls page costs more than the band, name that block to your child and let them choose a new pick with you, as in Session 26. Only the three blocks can change the pick.
 
 If their honest answer is "change the trip or wait", receive it warmly. It is a valid, successful result, and it is the budget lesson working.

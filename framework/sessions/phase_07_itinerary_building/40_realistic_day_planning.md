@@ -35,16 +35,18 @@ Planners who make good days use a few simple rules. Here are the ones that work:
 - Have a **backup** in case something is closed or rained out.
 - **Do not pack too much into one day.**
 
-**The first day has its own rule.** Its anchor is getting from where you arrive to where you're staying, and settling in. How much of the day that takes depends on the journey, which your Trip-Basics card shows. After a long journey, arriving at an airport, a station or the end of a long drive takes a big chunk of the day, and you'll be tired, too. So mark day one Easy, and often day two as well. If getting there takes only a few hours, arriving takes about half the day. Then plan one light activity for the other half. Your destination pack's airports and arrival page helps you find how long the trip into the city takes. If your pack doesn't have that page yet, a grown-up can help you check the airport's or station's own website. The grown-ups book that ride.
+**The first day has its own rule.** Its anchor is getting from where you arrive to where you're staying, and settling in. How much of the day that takes depends on the journey, which your Trip-Basics card shows. After a long journey, arriving at an airport, a station or the end of a long drive takes a big chunk of the day, and you'll be tired, too. So mark day one Easy, and often day two as well. If getting there takes only a few hours, arriving takes about half the day. Then plan one light activity for the other half.
+
+**The last day has a rule too.** Its anchor is getting from your last overnight place to where you leave from, once a grown-up has set that place. After a long journey home, that takes most of the day; after a short one, about half. Write it next to your first-day rule. Your destination pack's airports and arrival page helps you find how long the trip into the city takes. If your pack doesn't have that page yet, a grown-up can help you check the airport's or station's own website. The grown-ups book that ride.
 
 1. Read the rules above, and pick the ones you want to keep.
 2. Write them as your own short list, in your own words.
-3. Write the first-day rule as its own line.
+3. Write the first-day and last-day rules as their own lines.
 4. Put a star by the rule you'd break first if a day got too full.
 
 ## Workspace
 
-A blank page for your numbered list of day rules, with one line for the first-day rule.
+A blank page for your numbered list of day rules, with one line each for the first-day and last-day rules.
 
 You can say your answers to an adult who writes them, or draw them, if that's easier.
 
@@ -54,7 +56,7 @@ Your realistic day rules: a short list you wrote yourself, ready to use when you
 
 ## Stop Point
 
-You are done when you've written your own short list of day rules, including your rule for the first day, and you know which rule you'd break first if a day got too full. Three or four rules are plenty, and "not sure yet" is fine for the one you'd break.
+You are done when you've written your own short list of day rules, including your rules for the first and last days, and you know which rule you'd break first if a day got too full. Three or four rules are plenty, and "not sure yet" is fine for the one you'd break.
 
 ## Source Check
 

@@ -44,7 +44,7 @@ A good planner can't fit everything. And that's fine. Knowing what to keep, what
 
 3. **Your one special pick.** On the First Taste path, pick the **single** thing you most want on this trip. Choose it *with a grown-up*, who will show you the only three things that could change it first: it costs more than the budget band, it can't be booked, or it isn't safe or doable for everyone in the group. A grown-up vote can't take this one away. Write it on your **My Calls** page and have a grown-up initial it. (Your My Calls page is a fresh sheet for the choices that are yours. Start one now if you don't have it yet. It's where your [owned decisions](../../student_guide/what_i_decide.md) get a grown-up's "got it.")
 
-   **On the Core path**, you already chose your special pick in Session 26, and the grown-ups said it stands at Checkpoint 3. Check that it still holds, and write one line on your My Calls page saying so. That keeps it one choice.
+   **On the Core path**, you already chose your special pick in Session 26, and the grown-ups said it stands at Checkpoint 3. If a grown-up named a block since then, your pick is the new one you chose. Check that it still holds, and write one line on your My Calls page saying so. That keeps it one choice.
 
 4. **Make two backup plans** on a [Backup Plan page](../../templates/backup_plan.md) for common problems:
    - **Rainy day** -- what could you do instead?
@@ -88,4 +88,4 @@ If you have extra energy, add one more backup plan, or write one line about *why
 
 The one unconditional pick is the ownership centerpiece -- help your child choose one you can genuinely keep. Show the three blocks (budget, bookability, safety/feasibility for everyone, including any lower-stamina traveler) *before* they commit, and steer gently toward an affordable, bookable pick. A grown-up vote does not override this one -- only the three blocks do -- so scope it to a single keepable pick. Honor cut-list "save for future" notes as real; nothing here is wasted. This session teaches "good enough is good enough" -- resist the urge to make it exhaustive.
 
-On the Core path, the pick was chosen at Session 26 and acknowledged at Checkpoint 3, so confirm it still holds and do not run the choice again.
+On the Core path, the pick was chosen at Session 26 and acknowledged at Checkpoint 3, or replaced after a block the way Session 26 chose it, so confirm it still holds and do not run the choice again.
