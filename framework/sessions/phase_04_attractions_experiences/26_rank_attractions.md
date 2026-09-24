@@ -10,7 +10,7 @@ You are here: Phase 4 (Attractions and Experiences). Not a First Taste step. Pre
 - Planner skill: ranking priorities
 - Estimated time: 20-30 minutes
 - Parent involvement: 5-minute check-in; help co-choose the one unconditional pick
-- Materials: your attraction cards, your balance chart from Session 24, your City A card from Session 16 (for your minutes guess), a [Scoring Rubric page](../../templates/scoring_rubric.md) for spare copies of the lighter table, or extra copies of this page's fuller table if you use that one, and a My Calls page (a blank sheet; start one if you do not have it yet)
+- Materials: your attraction cards, your balance chart from Session 24, your City A card from Session 16 (for your minutes guess), a clock or timer, a [Scoring Rubric page](../../templates/scoring_rubric.md) for spare copies of the lighter table, or extra copies of this page's fuller table if you use that one, and a My Calls page (a blank sheet; start one if you do not have it yet)
 
 ## Goal
 
