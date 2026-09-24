@@ -13,27 +13,18 @@
  *                trailing blank lines removed. Two versions of a document whose
  *                html is equal differ only in ways that do not render, which is
  *                what the documentation style guide calls mechanical. Every
- *                relative URL, in a Markdown link or image or in a URL attribute
- *                of a raw HTML tag, is rewritten to a path from the repository
- *                root, resolved from the directory of `path`. So a relative
- *                reference compares by the file it points to, and moving a file
- *                changes its html exactly when a reference now points elsewhere.
- *                Every URL is first cleaned as the URL Standard's parser cleans
- *                it: white space around it, and tabs and newlines inside it, are
- *                dropped. Raw HTML URL attributes are decoded by the HTML spec's
- *                attribute-value rules and written in one form (lowercase name,
- *                double-quoted value escaped as markdown-it escapes its own
- *                attributes, so no two values are written alike). A directory
- *                name byte that is not UTF-8 is written as %XX, as in the file's
- *                URL. A raw HTML tag the helper cannot fully resolve (a `base`,
- *                `meta`, `script` or `style` element, or an attribute that is
- *                neither a URL attribute nor one that never holds a URL, such as
- *                `style` or `srcdoc`) is tied to the directory of `path`, so a
- *                move changes its html. The rendered page is read as the HTML
- *                tokenizer reads it, in one pass: a tag inside a comment, inside
- *                other markup such as a processing instruction, or inside the
- *                text of an element such as `textarea` is text, and is left as
- *                it is, as are HTML comments and text.
+ *                relative URL in a Markdown link or image is rewritten to a path
+ *                from the repository root, resolved from the directory of `path`
+ *                by the URL Standard's rules. So a relative reference compares
+ *                by the file it points to, and moving a file changes its html
+ *                exactly when a reference now points elsewhere. A directory name
+ *                byte that is not UTF-8 is written as %XX, as in the file's URL.
+ *                Raw HTML is not read: the repository's markdownlint
+ *                configuration rejects it (MD033), and reading it as a browser
+ *                does takes the whole HTML parser. It is kept as written, and
+ *                when raw HTML other than comments holds a tag, a line naming
+ *                the directory of `path` is added, so moving the file changes
+ *                its html.
  *   lastUpdated  YYYY-MM-DD from the `- **Last Updated:** YYYY-MM-DD` item of the
  *                metadata header block, or the item's value as written when it
  *                has another shape (so the check can report it), or null.
@@ -60,11 +51,10 @@ const path = require('path');
 const readline = require('readline');
 const MarkdownIt = require('markdown-it');
 const YAML = require('yaml');
-const { decodeHTMLAttribute } = require('entities');
 
 const md = new MarkdownIt('commonmark');
-// markdown-it's renderer escapes every attribute value it writes with this: `&`, `<`, `>` and
-// `"`. Because `&` is escaped too, each value the helper writes reads back as one string only.
+// markdown-it's own escaping: `&`, `<`, `>` and `"`. The directory line uses it, so no two
+// directories are written alike.
 const { escapeHtml } = md.utils;
 const LAST_UPDATED = /^\*\*Last Updated:\*\* (\d{4}-\d{2}-\d{2})[ \t]*$/;
 const LAST_UPDATED_ITEM = /^\*\*Last Updated:\*\*[ \t]*(.*?)[ \t]*$/;
@@ -73,53 +63,17 @@ const FRONT_MATTER = /^---[ \t]*\r?\n(?:[^]*?\r?\n)?(?:---|\.\.\.)[ \t]*(?:\r?\n
 const H1_LINE_LIMIT = 30;
 // The metadata header block's required fields beside Last Updated (the docs guide's Tier 1 list).
 const REQUIRED_FIELDS = ['Status', 'Owner', 'Scope'];
-// HTML attributes whose values hold URLs (HTML Living Standard, attributes index), plus the
-// obsolete `background` and `longdesc`, which browsers still honor, and SVG's `xlink:href`.
-// `itemtype` is left out: its URLs must be absolute.
-const URL_ATTRIBUTES = new Set([
-  'action', 'background', 'cite', 'data', 'formaction', 'href', 'imagesrcset', 'itemid', 'longdesc', 'ping', 'poster',
-  'src', 'srcset', 'xlink:href',
-]);
-// Attributes whose values never hold a URL. Any other attribute, such as `style`, `srcdoc`,
-// `content` or an event handler, may hold one the helper does not parse, so it ties the tag to
-// the document's directory (see canonicalTag).
-const PLAIN_ATTRIBUTES = new Set([
-  'abbr', 'align', 'alt', 'as', 'async', 'autoplay', 'border', 'cellpadding', 'cellspacing', 'charset', 'checked',
-  'class', 'color', 'cols', 'colspan', 'controls', 'coords', 'crossorigin', 'datetime', 'decoding', 'default', 'defer',
-  'dir', 'disabled', 'download', 'fetchpriority', 'headers', 'height', 'hidden', 'hreflang', 'id', 'imagesizes',
-  'integrity', 'itemprop', 'itemscope', 'itemtype', 'kind', 'label', 'lang', 'loading', 'loop', 'media', 'muted', 'name',
-  'nowrap', 'open', 'playsinline', 'preload', 'referrerpolicy', 'rel', 'reversed', 'role', 'rows', 'rowspan', 'scope',
-  'sizes', 'span', 'srclang', 'start', 'summary', 'tabindex', 'target', 'title', 'type', 'usemap', 'valign', 'value',
-  'width',
-]);
-const PLAIN_ATTRIBUTE_PREFIX = /^(?:aria|data)-/;
-// Elements whose content or effect can hold URLs the helper does not parse: CSS, scripts, a
-// `<base>` that changes how every relative URL resolves, and a `<meta>` refresh.
-const DIRECTORY_BOUND_ELEMENTS = new Set(['base', 'meta', 'script', 'style']);
 // A URL with a scheme, a root-relative or protocol-relative path, or only a query or fragment
 // does not depend on the document's directory.
 const NOT_RELATIVE = /^(?:[A-Za-z][A-Za-z0-9+.-]*:|\/|#|\?|$)/;
 // The base every relative reference resolves against; the host only makes it a full URL.
 const BASE_ORIGIN = 'https://repository.invalid';
 // A whole HTML comment, as the HTML tokenizer ends one: at `-->` or `--!>`, as the empty forms
-// `<!-->` and `<!--->`, or, when it is never closed, at the end of the page.
+// `<!-->` and `<!--->`, or, when it is never closed, at the end of the page (see onlyComments).
 const COMMENT = /<!--(?:-?>|[^]*?--!?>|[^]*$)/g;
-// One piece of markup at a `<`, as the HTML tokenizer reads it: a comment; other markup opened
-// by `<!`, `<?` or `</`, such as a declaration, CDATA, a processing instruction or an end tag,
-// which ends at the next `>` or at the end of the page; or a start tag (its name is group 1),
-// whose quoted values may hold `>`. An end tag can run past that `>` inside a quoted value, but
-// ending it early can only resolve a tag a browser hides, never hide one it reads. A start tag
-// read too long is tied to the directory by canonicalTag, because its rest is unreadable.
-const MARKUP = new RegExp(COMMENT.source + '|' +
-  /<[!?/][^>]*>?|<([A-Za-z][A-Za-z0-9-]*)(?:[^>"']|"[^"]*"|'[^']*')*>/.source, 'g');
-// Elements whose content the HTML tokenizer reads as text up to their own end tag, and
-// `plaintext`, whose content runs to the end of the page.
-const RAW_TEXT = new Set(['iframe', 'noembed', 'noframes', 'noscript', 'plaintext', 'script', 'style', 'textarea',
-  'title', 'xmp']);
-// One attribute inside a start tag, from the current position (CommonMark 0.31.2, raw HTML).
-// White space here, as everywhere below, is ASCII whitespace, which is what HTML and URL
-// parsing use; JavaScript's `\s` and `trim()` also take in U+00A0 and other Unicode spaces.
-const ATTRIBUTE = /([\t\n\f\r ]+)([A-Za-z_:][A-Za-z0-9_.:-]*)(?:([\t\n\f\r ]*=[\t\n\f\r ]*)("[^"]*"|'[^']*'|[^\t\n\f\r "'=<>`]+))?/y;
+// Raw HTML that holds a tag. Outside a piece of only comments, the tag counts wherever it is,
+// even inside a comment, a value or other markup, because none of that is read.
+const RAW_TAG = /<[A-Za-z]/;
 
 // Python carries each byte of a name that is not UTF-8 as a lone surrogate, U+DC80 to U+DCFF
 // (PEP 383), and encodeURIComponent() throws on one. Such a byte is written as %XX, as it is in
@@ -132,127 +86,38 @@ function encodeName(name) {
     : encodeURIComponent(part))).join('');
 }
 
+// A Markdown link or image target, which markdown-it has already percent-encoded, so it holds no
+// white space, control character or backslash.
 function resolveUrl(url, directory) {
-  // Before it looks for a scheme, the URL Standard's parser strips leading and trailing C0
-  // controls and spaces, and removes every ASCII tab and newline. Every URL is compared so.
-  const trimmed = url.replace(/^[\u0000-\u0020]+|[\u0000-\u0020]+$/g, '').replace(/[\t\n\r]/g, '');
-  if (NOT_RELATIVE.test(trimmed)) {
-    return trimmed;
+  if (NOT_RELATIVE.test(url)) {
+    return url;
   }
-  const cut = trimmed.search(/[?#]/);
-  const target = cut < 0 ? trimmed : trimmed.slice(0, cut);
-  const rest = cut < 0 ? '' : trimmed.slice(cut);
-  // Resolve by the URL Standard's path rules, as a browser does: `%2e` segments are dots, `\`
-  // is `/`, and `..` stops at the root. Each directory name is encoded so that a `#` or `?` in
-  // it stays part of the path. A target the parser reads as absolute, such as `\\host\x` or a
-  // scheme split by a newline, keeps its whole URL, so a change of host is still a change.
+  const cut = url.search(/[?#]/);
+  const target = cut < 0 ? url : url.slice(0, cut);
+  const rest = cut < 0 ? '' : url.slice(cut);
+  // Resolve by the URL Standard's path rules, as a browser does: `%2e` segments are dots, and `..`
+  // stops at the root. Each directory name is encoded so that a `#` or `?` in it stays part of
+  // the path. A relative target keeps the base's origin, so only its path is kept.
   const folder = directory === '.' ? '' : directory.split('/').map(encodeName).join('/') + '/';
-  try {
-    const resolved = new URL(target, BASE_ORIGIN + '/' + folder);
-    return (resolved.origin === BASE_ORIGIN ? resolved.pathname : resolved.href) + rest;
-  } catch (error) {
-    return '/' + folder + target + rest;   // unreadable as a URL: tie it to the directory
-  }
+  return new URL(target, BASE_ORIGIN + '/' + folder).pathname + rest;
 }
 
-// A srcset value is a list of image candidates, split as the HTML Living Standard's "parse a
-// srcset attribute" does: a URL runs to the next whitespace, so a data URL keeps its comma;
-// commas at the URL's end close the candidate; otherwise descriptors run to the next comma
-// outside parentheses.
-function resolveSrcset(value, directory) {
-  const candidates = [];
-  let at = 0;
-  while (at < value.length) {
-    at += /^[\t\n\f\r ,]*/.exec(value.slice(at))[0].length;
-    if (at >= value.length) {
-      break;
+// Resolve relative references in Markdown links and images, in place. Returns whether any raw
+// HTML holds a tag.
+function resolveReferences(tokens, directory) {
+  let raw = false;
+  for (const token of tokens) {
+    if (token.type === 'link_open' || token.type === 'image') {
+      const attribute = token.type === 'link_open' ? 'href' : 'src';
+      token.attrSet(attribute, resolveUrl(token.attrGet(attribute), directory));
+    } else if (token.type === 'html_block' || token.type === 'html_inline') {
+      raw = raw || (!onlyComments(token.content) && RAW_TAG.test(token.content));
     }
-    let url = /^[^\t\n\f\r ]*/.exec(value.slice(at))[0];
-    at += url.length;
-    let descriptors = '';
-    const commas = /,+$/.exec(url);
-    if (commas) {
-      url = url.slice(0, url.length - commas[0].length);
-    } else {
-      const start = at;
-      let inParentheses = false;
-      while (at < value.length && !(value[at] === ',' && !inParentheses)) {
-        if (value[at] === '(') {
-          inParentheses = true;
-        } else if (value[at] === ')') {
-          inParentheses = false;
-        }
-        at++;
-      }
-      descriptors = value.slice(start, at).replace(/^[\t\n\f\r ]+|[\t\n\f\r ]+$/g, '');
-      at++;
-    }
-    candidates.push(resolveUrl(url, directory) + (descriptors ? ' ' + descriptors : ''));
-  }
-  return candidates.join(', ');
-}
-
-function resolveAttribute(name, value, directory) {
-  if (name === 'srcset' || name === 'imagesrcset') {
-    return resolveSrcset(value, directory);
-  }
-  if (name === 'ping') {
-    // A set of URLs separated by ASCII whitespace.
-    return value.split(/[\t\n\f\r ]+/).filter((url) => url !== '').map((url) => resolveUrl(url, directory)).join(' ');
-  }
-  return resolveUrl(value, directory);
-}
-
-// A start tag with each URL attribute resolved and written as name="value". Values are decoded
-// by the HTML spec's attribute-value rules first, as a browser decodes them. A tag the helper
-// cannot fully resolve (a directory-bound element, an attribute outside both lists, or text it
-// cannot read as attributes) is tied to the document's directory, so moving the file changes it.
-function canonicalTag(tag, directory) {
-  const name = /^<[A-Za-z][A-Za-z0-9-]*/.exec(tag)[0];
-  let bound = DIRECTORY_BOUND_ELEMENTS.has(name.slice(1).toLowerCase());
-  let out = name;
-  let at = name.length;
-  ATTRIBUTE.lastIndex = at;
-  let m;
-  while ((m = ATTRIBUTE.exec(tag)) !== null) {
-    const attribute = m[2].toLowerCase();
-    if (m[4] !== undefined && URL_ATTRIBUTES.has(attribute)) {
-      const quoted = m[4][0] === '"' || m[4][0] === "'";
-      const value = decodeHTMLAttribute(quoted ? m[4].slice(1, -1) : m[4]);
-      out += ' ' + attribute + '="' + escapeHtml(resolveAttribute(attribute, value, directory)) + '"';
-    } else {
-      bound = bound || !(URL_ATTRIBUTES.has(attribute) || PLAIN_ATTRIBUTES.has(attribute) ||
-        PLAIN_ATTRIBUTE_PREFIX.test(attribute));
-      out += m[0];
-    }
-    at = ATTRIBUTE.lastIndex;
-  }
-  const rest = tag.slice(at);
-  bound = bound || !/^[\t\n\f\r ]*\/?>$/.test(rest);
-  return out + (bound ? ' data-directory="' + escapeHtml(directory) + '"' : '') + rest;
-}
-
-// The rendered page with each start tag made canonical, so every relative reference in a
-// Markdown link or image and in raw HTML is resolved. The page is read in one pass, as a browser
-// reads it, so a comment or an element that one Markdown block opens can hide what later blocks
-// render. Everything that is not a start tag is left as it is.
-function canonicalHtml(html, directory) {
-  let out = '';
-  let at = 0;
-  MARKUP.lastIndex = 0;
-  for (let m = MARKUP.exec(html); m !== null; m = MARKUP.exec(html)) {
-    const start = m[1] !== undefined;
-    out += html.slice(at, m.index) + (start ? canonicalTag(m[0], directory) : m[0]);
-    at = MARKUP.lastIndex;
-    const name = start ? m[1].toLowerCase() : '';
-    if (RAW_TEXT.has(name)) {
-      const end = name === 'plaintext' ? -1 : html.slice(at).search(new RegExp('</' + name + '[\\t\\n\\f\\r />]', 'i'));
-      MARKUP.lastIndex = end < 0 ? html.length : at + end;
-      out += html.slice(at, MARKUP.lastIndex);
-      at = MARKUP.lastIndex;
+    if (token.children && resolveReferences(token.children, directory)) {
+      raw = true;
     }
   }
-  return out + html.slice(at);
+  return raw;
 }
 
 // The document's top-level blocks, each with the tokens inside it.
@@ -272,11 +137,15 @@ function topLevelBlocks(tokens) {
   return blocks;
 }
 
-// An HTML block that renders nothing: only whole comments and white space. Text after a
-// comment's `-->` on the same line belongs to the block and renders, so it does not count.
+// Raw HTML of only whole comments and white space, which renders nothing and holds no tag a
+// browser reads. Text after a comment's end belongs to the piece and renders, so it does not count.
+function onlyComments(content) {
+  return /^[\t\n\f\r ]*$/.test(content.replace(COMMENT, ''));
+}
+
+// An HTML block that renders nothing.
 function isComment(block) {
-  return block !== undefined && block.open.type === 'html_block' &&
-    /^[\t\n\f\r ]*$/.test(block.open.content.replace(COMMENT, ''));
+  return block !== undefined && block.open.type === 'html_block' && onlyComments(block.open.content);
 }
 
 function isHeading(block, tag) {
@@ -374,12 +243,13 @@ function metadata(tokens) {
 
 function describe(text, filePath) {
   const tokens = md.parse(text, {});
-  const rendered = md.renderer.render(tokens, md.options, {});
-  const html = canonicalHtml(rendered, path.posix.dirname(filePath))
+  const directory = path.posix.dirname(filePath);
+  const raw = resolveReferences(tokens, directory);
+  const html = md.renderer.render(tokens, md.options, {})
     .split('\n')
     .map((line) => line.replace(/[ \t]+$/, ''))
     .join('\n')
-    .replace(/\n+$/, '');
+    .replace(/\n+$/, '') + (raw ? '\n<!-- raw HTML, read from ' + escapeHtml(directory) + ' -->' : '');
   const skip = frontMatterLength(text);
   const body = skip ? md.parse(text.slice(skip), {}) : tokens;
   return { html, ...metadata(body) };

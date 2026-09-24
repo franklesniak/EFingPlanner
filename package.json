@@ -22,7 +22,6 @@
     "node": ">=22.0.0"
   },
   "devDependencies": {
-    "entities": "^4.5.0",
     "glob": "^13.0.6",
     "jsonc-parser": "^3.3.1",
     "markdown-it": "^14.3.0",

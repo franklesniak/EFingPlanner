@@ -71,19 +71,18 @@ compared after trailing whitespace is removed from each output line. Equal
 output means mechanical. A hard line break renders as `<br />`, so adding or
 removing one still counts. Trailing spaces that CommonMark does not render as a
 break, such as at the end of a paragraph, after a heading or inside a code
-block, do not count. Relative references, in Markdown links and images and in
-the URL attributes of raw HTML tags, are compared as repository paths, resolved
-from each version's own directory by the URL Standard's path rules (as a browser
-resolves them), so moving a file to another directory changes its content
-exactly when a relative reference now points somewhere else. Every URL is first
-cleaned as the URL Standard's parser cleans it: white space around it, and tabs
-and newlines inside it, are dropped. Raw HTML that may hold a URL the helper
-does not parse, such as a `style` attribute or a `<style>` element, is tied to
-the file's directory instead, so moving that file counts as a content change.
-The rendered page is read as a browser's HTML tokenizer reads it, so a tag
-inside a comment, even one never closed, inside other markup such as a
-processing instruction, or inside the text of an element such as `textarea`, is
-text and not a reference.
+block, do not count. Relative references in Markdown links and images are
+compared as repository paths, resolved from each version's own directory by the
+URL Standard's path rules (as a browser resolves them), so moving a file to
+another directory changes its content exactly when a relative reference now
+points somewhere else. Every URL is first cleaned as the URL Standard's parser
+cleans it: white space around it, and tabs and newlines inside it, are dropped.
+Raw HTML is not read. The repository's markdownlint configuration rejects it
+(MD033), and reading it as a browser does takes the whole HTML parser, so it is
+compared as written, and a file whose raw HTML holds a tag is tied to its
+directory: moving that file counts as a content change. So does respelling raw
+HTML, even in a way a browser reads the same. HTML that is only comments ties
+nothing.
 
 How Markdown is read
 --------------------
@@ -234,9 +233,10 @@ def rendered(text: str, path: str) -> str:
     Two versions with equal output differ only mechanically: in line endings, the
     end-of-file newline, or trailing whitespace that renders nothing. A hard line break
     renders as `<br />`, so removing or adding one is still a content change. Relative
-    references, in Markdown and in raw HTML, are resolved from the directory of `path`,
+    references in Markdown links and images are resolved from the directory of `path`,
     so moving a file changes its content exactly when one of them now points somewhere
-    else.
+    else. Raw HTML is compared as written, and when it holds a tag it ties the output to
+    the directory of `path`.
     """
     return cast(str, render(text, path)["html"])
 

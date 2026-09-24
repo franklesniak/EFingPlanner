@@ -643,19 +643,6 @@ def test_unrelated_histories_merge_is_checked(repo: Repo) -> None:
     assert run(repo) == []
 
 
-@pytest.mark.parametrize("raw", [
-    '<a href="https&#58;//example.com/x.md">x</a>',
-    '<a href="https&#58//example.com/x.md">x</a>',      # a numeric reference decodes without its semicolon
-    '<a href="https&#x3a;//example.com/x.md">x</a>',
-], ids=["decimal", "no-semicolon", "hex"])
-def test_entity_encoded_absolute_url_is_not_relative(repo: Repo, raw: str) -> None:
-    publish(repo, doc("2026-01-01", "Text.\n\n" + raw), "2026-01-01T12:00:00+00:00")
-    (repo.root / "docs" / "sub").mkdir()
-    repo.git("mv", "docs/a.md", "docs/sub/a.md")
-    repo.commit("move", "2026-03-05T10:00:00+00:00")
-    assert run(repo) == []
-
-
 def test_h1_after_line_30_does_not_move_the_block(repo: Repo) -> None:
     # The guide looks after the H1 only when it starts in the first 30 lines of the body.
     text = ("- **Status:** Active\n- **Owner:** Maintainers\n- **Last Updated:** 2026-01-01\n- **Scope:** Test.\n" + "\n" * 30
@@ -694,49 +681,29 @@ def test_moving_a_file_with_a_relative_link_needs_a_bump(repo: Repo) -> None:
 
 
 @pytest.mark.parametrize("raw", [
+    '<span class="x">y</span>',                                 # no URL at all
     "<img src=pic.png>",
-    "<img src='pic.png'>",
-    '<a HREF = "other.md">x</a>',
-    '<p>\n<img alt="a" src=pic.png />\n</p>',
-    '<picture><source srcset="dark.png 1x, dark2.png 2x"></picture>',
-    '<img srcset="data:image/png;base64,AAAA 1x, pic.png 2x">',
-    '<a href="#top" ping="https://example.com/p audit">top</a>',
-    '<div itemscope itemid="thing.md">x</div>',
-    '<link rel="preload" as="image" href="/abs.png" imagesrcset="pic.png 1x">',
-    '<svg><image xlink:href="pic.png" /></svg>',
-    # The helper parses none of these, so each ties the tag to the file's directory.
-    '<span style="background-image: url(pic.png)">x</span>',
-    '<style>\n.x { background: url(pic.png); }\n</style>',
-    '<iframe srcdoc="&lt;img src=pic.png&gt;"></iframe>',
-    '<meta http-equiv="refresh" content="0; url=other.md">',
-    '<a href="/abs.md" onclick="location = \'other.md\'">x</a>',
-    # In an HTML block the tag reaches the browser as written, and it reads srcset despite the
-    # missing space; the helper's attribute grammar stops at it.
-    '<div>\n<img src="/abs.png"srcset="pic.png 1x">\n</div>',
-    '<a href="&nbsp;https://example.com/x.md">x</a>',   # the URL parser keeps a leading U+00A0
-], ids=["unquoted", "single-quoted", "uppercase-spaced", "in-a-block", "srcset", "srcset-after-data-url", "ping",
-        "itemid", "imagesrcset", "xlink-href", "style-attribute", "style-element", "srcdoc", "meta-refresh",
-        "event-handler", "unread-attribute", "nbsp-before-scheme"])
-def test_moving_a_file_with_a_relative_raw_html_reference_needs_a_bump(repo: Repo, raw: str) -> None:
-    publish(repo, doc("2026-01-01", "Text.\n\n" + raw), "2026-01-01T12:00:00+00:00")
-    (repo.root / "docs" / "sub").mkdir()
-    repo.git("mv", "docs/a.md", "docs/sub/a.md")
-    repo.commit("move", "2026-03-05T10:00:00+00:00")
-    problems = run(repo)
+    "Text with <b>bold</b> inline.",                            # inline raw HTML
+    '<noscript>\n<a href="help.md">help</a>\n</noscript>',      # markup when scripting is off
+    '<svg><title><a href="x.md">x</a></title></svg>',           # not raw text inside SVG
+    '<math><xmp><a href="x.md">x</a></xmp></math>',             # nor inside MathML
+    '<?x <a href="x.md"> ?>',                                   # a tag inside other markup
+    '<!-- <img src="pic.png"> -->Visible text',                 # beside text, a comment is not skipped
+    '<!--> <img src="pic.png"> -->',                            # <!--> is a whole, empty comment
+    '<!-- note --!> <img src="pic.png"> -->',                   # --!> closes a comment
+], ids=["span", "img", "inline", "noscript", "svg-title", "math-xmp", "processing-instruction",
+        "comment-beside-text", "after-an-empty-comment", "after-a-bang-closed-comment"])
+def test_raw_html_with_a_tag_ties_the_file_to_its_directory(repo: Repo, raw: str) -> None:
+    # The helper does not read raw HTML, which markdownlint's MD033 rejects here, so it cannot
+    # know which URLs a browser follows in it. A move of such a file therefore needs a bump.
+    problems = problems_after_a_move(repo, raw)
     assert len(problems) == 1 and "Set it to 2026-03-05" in problems[0]
 
 
 @pytest.mark.parametrize("body", [
     "```html\n<img src=pic.png>\n```",                              # code shows the tag as text
-    '<a title="see href=x.md" href="https://example.com/">x</a>',   # a lookalike inside a value
     "<!-- <img src=\"pic.png\"> -->",                               # a commented-out tag
-    '<img srcset="data:image/png;base64,AAAA 1x">',                 # a data URL keeps its comma
-    '<a href="ht&#10;tps://example.com/x.md">x</a>',                # the URL parser drops a newline
-    '<a href="\\x.md">x</a>',                                       # a browser reads \ as /
-    '<img srcset="https://example.com/a.png&nbsp;,pic.png 2x">',    # U+00A0 does not split candidates
-    '<a href="/x.md" ping="https://example.com/p&nbsp;q.md">x</a>', # nor ping URLs
-], ids=["code-block", "value-lookalike", "comment", "srcset-data-url", "newline-in-scheme", "backslash-root",
-        "srcset-nbsp", "ping-nbsp"])
+], ids=["code-block", "comment"])
 def test_raw_html_lookalikes_are_not_references(repo: Repo, body: str) -> None:
     publish(repo, doc("2026-01-01", "Text.\n\n" + body), "2026-01-01T12:00:00+00:00")
     (repo.root / "docs" / "sub").mkdir()
@@ -753,95 +720,45 @@ def problems_after_a_move(repo: Repo, body: str) -> list[str]:
     repo.commit("move", "2026-03-05T10:00:00+00:00")
     return run(repo)
 
-
 @pytest.mark.parametrize("body", [
-    '<!--\n<a href="x.md">x</a>',                    # the comment runs to the end of the page
-    '> <!--\n> <a href="x.md">x</a>\n\n[y](y.md)',   # past its block quote, over a later link too
-], ids=["in-a-block", "in-a-block-quote"])
-def test_a_comment_that_is_never_closed_hides_the_rest_of_the_page(repo: Repo, body: str) -> None:
+    "<!-- note -->",
+    '<!--\n<a href="x.md">x</a>',                     # never closed, so it runs to the end
+    "Text <!-- <b>x</b> --> more.",                   # an inline comment
+    "<!-- one --> <!-- two -->",
+], ids=["comment", "unclosed-comment", "inline-comment", "two-comments"])
+def test_raw_html_of_only_comments_ties_nothing(repo: Repo, body: str) -> None:
     assert problems_after_a_move(repo, body) == []
 
 
-@pytest.mark.parametrize("body", [
-    '<?php <a href="x.md"> ?>',               # a processing instruction ends at its first >
-    '<?x\n<a href="x.md">x</a>',              # never closed
-    '<!X <a href="x.md">>',                   # a declaration
-    '<![CDATA[ <a href="x.md"> ]]>',          # outside SVG and MathML, CDATA is a bogus comment
-    '<![CDATA[\n<a href="x.md">x</a>',        # never closed
-    'Text <?x <a href="x.md"> ?> more.',      # inline, as CommonMark allows
-    "<p>\n</p title=\"<a href='x.md'>\">",     # an end tag's attribute value
-], ids=["processing-instruction", "open-processing-instruction", "declaration", "cdata", "open-cdata",
-        "inline-processing-instruction", "end-tag-attribute"])
-def test_markup_that_is_not_a_start_tag_hides_what_it_holds(repo: Repo, body: str) -> None:
+@pytest.mark.parametrize("body", ["<!-- note -->Visible text", "Text.\n\n</div>"],
+                         ids=["text-after-a-comment", "end-tag-alone"])
+def test_raw_html_without_a_start_tag_ties_nothing(repo: Repo, body: str) -> None:
+    # Only a start tag can hold a URL. "</div>" alone is an HTML block with no start tag in it.
     assert problems_after_a_move(repo, body) == []
 
 
-@pytest.mark.parametrize("body", [
-    '<%s>\n<a href="x.md">x</a>\n</%s>' % (name, name)
-    for name in ("textarea", "title", "xmp", "iframe", "noembed", "noframes", "noscript")
-] + [
-    'Text <textarea><a href="x.md">x</a></textarea> more.',   # inline, across Markdown's pieces
-    '<plaintext>\n</plaintext>\n<a href="x.md">x</a>',        # plaintext has no end
-], ids=["textarea", "title", "xmp", "iframe", "noembed", "noframes", "noscript", "inline-textarea", "plaintext"])
-def test_the_text_of_a_raw_text_element_is_not_a_reference(repo: Repo, body: str) -> None:
-    assert problems_after_a_move(repo, body) == []
-
-
-@pytest.mark.parametrize("raw", [
-    '<!--> <img src="pic.png"> -->',                        # <!--> is a whole, empty comment
-    '<!---> <img src="pic.png"> -->',                       # and so is <!--->
-    '<!-- note --!> <img src="pic.png"> -->',               # --!> closes a comment
-    'Text <!-- note --!> <img src="pic.png"> --> more.',    # inline, where CommonMark reads one comment
-    '<?x ?> <img src="pic.png">',                           # a processing instruction ends at its first >
-    '<textarea>x</textarea>\n<img src="pic.png">',          # a raw text element ends at its end tag
-    # A quote outside a value is part of an attribute name, not the start of a value, so it must
-    # not pair with the quotes of the image below and hide it.
-    '<p>x</p b"c>\n\nIt\'s ![i](pic.png "It\'s"), isn\'t it.',
-    '<p b"c>x</p>\n\nIt\'s ![i](pic.png "It\'s"), isn\'t it.',   # read too long, the tag is tied to the directory
-], ids=["after-an-empty-comment", "after-an-empty-dash-comment", "after-a-bang-closed-comment",
-        "inline-after-a-bang-closed-comment", "after-a-processing-instruction", "after-a-textarea",
-        "after-an-end-tag-with-a-stray-quote", "after-a-start-tag-with-a-stray-quote"])
-def test_a_tag_after_a_comment_or_other_markup_ends_is_a_reference(repo: Repo, raw: str) -> None:
-    problems = problems_after_a_move(repo, raw)
-    assert len(problems) == 1 and "Set it to 2026-03-05" in problems[0]
-
-
-@pytest.mark.parametrize("raw", [
-    "<img src={up}pic.png>",
-    "<img src='{up}pic.png'>",
-    '<a href="{up}x.md" ping="{up}p https://example.com/q">x</a>',
-    '<div itemscope itemid="{up}thing.md">x</div>',
-    '<blockquote cite="{up}source.md">q</blockquote>',
-    '<object data="{up}file.pdf"></object>',
-    '<form action="{up}f"><button formaction="{up}g">b</button></form>',
-    '<video poster="{up}poster.png"></video>',
-    '<table background="{up}bg.png"><tr><td>x</td></tr></table>',
-    '<img src="/a.png" alt="a" longdesc="{up}d.md">',
-    '<svg><image xlink:href="{up}pic.png" /></svg>',
-], ids=["unquoted", "single-quoted", "href-and-ping", "itemid", "cite", "data", "action-and-formaction", "poster",
-        "background", "longdesc", "xlink-href"])
-def test_move_that_keeps_every_url_attribute_target_needs_no_bump(repo: Repo, raw: str) -> None:
-    # Each URL attribute is resolved, so a move that keeps its target is mechanical. Were one not
-    # resolved, it would tie the tag to the directory, and the move would need a bump.
-    publish(repo, doc("2026-01-01", "Text.\n\n" + raw.replace("{up}", "")), "2026-01-01T12:00:00+00:00")
-    (repo.root / "docs" / "sub").mkdir()
-    repo.git("mv", "docs/a.md", "docs/sub/a.md")
-    repo.write("docs/sub/a.md", doc("2026-01-01", "Text.\n\n" + raw.replace("{up}", "../")))
-    repo.commit("move and keep targets", "2026-03-05T10:00:00+00:00")
-    assert run(repo) == []
-
-
-def test_attribute_after_a_non_ascii_space_is_not_read_as_a_url(repo: Repo) -> None:
-    # A browser separates attributes only with ASCII whitespace, so after U+00A0 the name is
-    # " src", not src; its value is text, and changing it is a content change.
-    raw = '<div>\n<img alt="x" src="{up}pic.png">\n</div>'
-    publish(repo, doc("2026-01-01", "Text.\n\n" + raw.replace("{up}", "")), "2026-01-01T12:00:00+00:00")
-    (repo.root / "docs" / "sub").mkdir()
-    repo.git("mv", "docs/a.md", "docs/sub/a.md")
-    repo.write("docs/sub/a.md", doc("2026-01-01", "Text.\n\n" + raw.replace("{up}", "../")))
-    repo.commit("move and edit the value", "2026-03-05T10:00:00+00:00")
+@pytest.mark.parametrize("before, after", [
+    ("<span class='x'>y</span>", '<span class="x">y</span>'),
+    ('<span CLASS="x">y</span>', '<span class="x">y</span>'),
+    ('<span title="a&amp;b">y</span>', '<span title="a&#38;b">y</span>'),
+], ids=["quotes", "name-case", "character-reference"])
+def test_raw_html_is_compared_as_written(repo: Repo, before: str, after: str) -> None:
+    # A browser reads each pair the same, but the helper does not read raw HTML, so a respelling
+    # is a content change: a bump the guide does not ask for, in HTML that markdownlint rejects.
+    publish(repo, doc("2026-01-01", "Text.\n\n" + before), "2026-01-01T12:00:00+00:00")
+    repo.write("docs/a.md", doc("2026-01-01", "Text.\n\n" + after))
+    repo.commit("respell", "2026-03-05T10:00:00+00:00")
     problems = run(repo)
     assert len(problems) == 1 and "Set it to 2026-03-05" in problems[0]
+
+
+def test_a_directory_name_cannot_forge_the_raw_html_line() -> None:
+    # The line that ties raw HTML to its directory escapes the name, so a name holding "-->" and a
+    # newline cannot end that line early and make two different pages look the same.
+    forged = "docs/y -->\n<!-- raw HTML, read from docs/z"
+    moved = last_updated.rendered("<b>x</b>\n", forged + "/a.md")
+    commented = last_updated.rendered("<b>x</b>\n\n<!-- raw HTML, read from docs/y -->\n", "docs/z/a.md")
+    assert moved != commented
 
 
 @pytest.mark.parametrize("opening", ["<!-- note -->Visible introduction", "<!-- note --!>Visible introduction -->"],
@@ -869,37 +786,16 @@ def test_a_block_of_only_comments_is_skipped(repo: Repo, comments: str) -> None:
     assert len(problems) == 1 and "Set it to 2026-03-05" in problems[0]
 
 
-@pytest.mark.parametrize("raw", [
-    '<a href="%2e%2e/shared.md">x</a>',
-    '<a href="%2E%2e/shared.md">x</a>',
-    '<a href="..\\shared.md">x</a>',
-    '<a href="../../../shared.md">x</a>',
-], ids=["percent-dots", "percent-dots-mixed-case", "backslash", "above-the-root"])
-def test_url_path_rules_keep_a_target_across_a_sibling_move(repo: Repo, raw: str) -> None:
-    # From docs/ and from other/, each reference resolves to /shared.md under the URL Standard's
-    # path rules, so moving the file between the two needs no bump.
-    publish(repo, doc("2026-01-01", "Text.\n\n" + raw), "2026-01-01T12:00:00+00:00")
+@pytest.mark.parametrize("link", ["%2e%2e/shared.md", "%2E%2e/shared.md", "../../../shared.md"],
+                         ids=["percent-dots", "percent-dots-mixed-case", "above-the-root"])
+def test_url_path_rules_keep_a_target_across_a_sibling_move(repo: Repo, link: str) -> None:
+    # From docs/ and from other/, each link resolves to /shared.md under the URL Standard's path
+    # rules, so moving the file between the two needs no bump.
+    publish(repo, doc("2026-01-01", "Text.\n\n[x](%s)" % link), "2026-01-01T12:00:00+00:00")
     (repo.root / "other").mkdir()
     repo.git("mv", "docs/a.md", "other/a.md")
     repo.commit("move", "2026-03-05T10:00:00+00:00")
     assert run(repo) == []
-
-
-SLASH = chr(92)   # a backslash, built so no escaping layer can change it
-
-
-@pytest.mark.parametrize("before, after", [
-    ('<a href="ht&#10;tps://a.example/x.md">x</a>', '<a href="ht&#10;tps://b.example/x.md">x</a>'),
-    ('<a href="' + SLASH * 2 + "a.example" + SLASH + 'x.md">x</a>',
-     '<a href="' + SLASH * 2 + "b.example" + SLASH + 'x.md">x</a>'),
-], ids=["newline-in-scheme", "backslash-host"])
-def test_changing_the_host_of_an_absolute_reference_is_content(repo: Repo, before: str, after: str) -> None:
-    # A browser reads both forms as absolute URLs, so the host is part of what the page links to.
-    publish(repo, doc("2026-01-01", "Text.\n\n" + before), "2026-01-01T12:00:00+00:00")
-    repo.write("docs/a.md", doc("2026-01-01", "Text.\n\n" + after))
-    repo.commit("change the host", "2026-03-05T10:00:00+00:00")
-    problems = run(repo)
-    assert len(problems) == 1 and "Set it to 2026-03-05" in problems[0]
 
 
 def test_directory_name_with_a_hash_stays_part_of_the_path(repo: Repo) -> None:
@@ -909,92 +805,6 @@ def test_directory_name_with_a_hash_stays_part_of_the_path(repo: Repo) -> None:
     repo.git("mv", "docs/c#1/a.md", "docs/c#1/sub/a.md")
     repo.write("docs/c#1/sub/a.md", doc("2026-01-01", "Text.\n\n[x](../x.md)"))
     repo.commit("move and keep the target", "2026-03-05T10:00:00+00:00")
-    assert run(repo) == []
-
-
-@pytest.mark.parametrize("before, after", [
-    ('<a href=" https://example.com/x.md ">x</a>', '<a href="https://example.com/x.md">x</a>'),
-    ('<a href="https://exa&#10;mple.com/x.md">x</a>', '<a href="https://example.com/x.md">x</a>'),
-    ('<a href="&#9;#top">x</a>', '<a href="#top">x</a>'),
-], ids=["spaces-around-an-absolute-url", "newline-inside-an-absolute-url", "tab-before-a-fragment"])
-def test_white_space_the_url_parser_drops_is_mechanical(repo: Repo, before: str, after: str) -> None:
-    # The URL Standard's parser strips leading and trailing C0 controls and spaces, and removes
-    # every ASCII tab and newline, so each pair links to the same URL.
-    publish(repo, doc("2026-01-01", "Text.\n\n" + before), "2026-01-01T12:00:00+00:00")
-    repo.write("docs/a.md", doc("2026-01-01", "Text.\n\n" + after))
-    repo.commit("tidy the URL", "2026-03-05T10:00:00+00:00")
-    assert run(repo) == []
-
-
-def test_url_holding_an_escaped_reference_is_not_the_character(repo: Repo) -> None:
-    # `&amp;quot;` decodes to the text `&quot;`, and `&quot;` to `"`: two different URLs, which
-    # must not be written alike.
-    publish(repo, doc("2026-01-01", 'Text.\n\n<a href="https://example.com/x&amp;quot;y">x</a>'),
-            "2026-01-01T12:00:00+00:00")
-    repo.write("docs/a.md", doc("2026-01-01", 'Text.\n\n<a href="https://example.com/x&quot;y">x</a>'))
-    repo.commit("change the target", "2026-03-05T10:00:00+00:00")
-    problems = run(repo)
-    assert len(problems) == 1 and "Set it to 2026-03-05" in problems[0]
-
-
-def plumbed_commit(repo: Repo, files: dict[str, str], message: str, date: str, parent: str) -> str:
-    """A commit holding exactly `files`, built with plumbing, for names Windows cannot create."""
-    def tree(entries: dict[str, str]) -> str:
-        folders: dict[str, dict[str, str]] = {}
-        lines = []
-        for name, text in entries.items():
-            folder, _, rest = name.partition("/")
-            if rest:
-                folders.setdefault(folder, {})[rest] = text
-            else:
-                blob = subprocess.run(["git", "hash-object", "-w", "--stdin"], cwd=repo.root, input=text,
-                                      capture_output=True, text=True, check=True).stdout.strip()
-                lines.append("100644 blob %s\t%s" % (blob, name))
-        lines += ["040000 tree %s\t%s" % (tree(inner), folder) for folder, inner in folders.items()]
-        return subprocess.run(["git", "mktree", "-z"], cwd=repo.root, input="\0".join(lines) + "\0",
-                              capture_output=True, text=True, check=True).stdout.strip()
-
-    return repo.git("commit-tree", tree(files), "-p", parent, "-m", message, date=date).strip()
-
-
-def test_directory_name_holding_a_quote_cannot_spell_an_attribute(repo: Repo) -> None:
-    # A tag tied to its directory records the directory in an attribute. Written unescaped, the
-    # name `docs/p" data-directory="docs` reads as two attributes, and the tag the move adds one
-    # to would look unchanged.
-    tag = '<span style="s"%s>x</span>'
-    base = plumbed_commit(repo, {'docs/p" data-directory="docs/a.md': doc("2026-01-01", "Text.\n\n" + tag % "")},
-                          "add", "2026-01-01T12:00:00+00:00", "main")
-    repo.git("update-ref", "refs/heads/main", base)
-    head = plumbed_commit(repo, {"docs/a.md": doc("2026-01-01", "Text.\n\n" + tag % ' data-directory="docs/p"')},
-                          "move and add an attribute", "2026-03-05T10:00:00+00:00", base)
-    assert repo.git("diff", "--name-status", "-M", base, head).startswith("R")
-    problems = last_updated.check("main", head)
-    assert len(problems) == 1 and "docs/a.md" in problems[0] and "Set it to 2026-03-05" in problems[0]
-
-
-def test_moving_html_the_helper_fully_resolves_needs_no_bump(repo: Repo) -> None:
-    # Every attribute here is a resolved URL or one that never holds a URL, so nothing is tied
-    # to the directory, and every URL is absolute or a fragment.
-    body = ('<a id="top"></a>\n\n<img src="/abs.png" alt="A" width="10" class="x" data-note="y" aria-label="z">\n\n'
-            '<details open><summary>More</summary>Text.</details>\n\n<a href="#top" title="Top">up</a><br>')
-    publish(repo, doc("2026-01-01", "Text.\n\n" + body), "2026-01-01T12:00:00+00:00")
-    (repo.root / "docs" / "sub").mkdir()
-    repo.git("mv", "docs/a.md", "docs/sub/a.md")
-    repo.commit("move", "2026-03-05T10:00:00+00:00")
-    assert run(repo) == []
-
-
-@pytest.mark.parametrize("raw", [
-    '<picture><source srcset="%sdark.png 1x, %sdark2.png 2x"><img src="%spic.png"></picture>',
-    '<link rel="preload" as="image" imagesrcset="%sdark.png 1x, %sdark2.png 2x" href="%spic.png">',
-    '<IMG SRC="%sdark.png" ALT="x"><A HREF="%sdark2.png">x</A><img src="%spic.png">',   # names are case-insensitive
-], ids=["srcset", "imagesrcset", "uppercase-names"])
-def test_move_that_keeps_every_srcset_target_needs_no_bump(repo: Repo, raw: str) -> None:
-    publish(repo, doc("2026-01-01", "Text.\n\n" + raw % ("", "", "")), "2026-01-01T12:00:00+00:00")
-    (repo.root / "docs" / "sub").mkdir()
-    repo.git("mv", "docs/a.md", "docs/sub/a.md")
-    repo.write("docs/sub/a.md", doc("2026-01-01", "Text.\n\n" + raw % ("../", "../", "../")))
-    repo.commit("move and keep targets", "2026-03-05T10:00:00+00:00")
     assert run(repo) == []
 
 
