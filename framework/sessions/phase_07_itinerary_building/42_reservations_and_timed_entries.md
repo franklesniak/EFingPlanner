@@ -31,7 +31,7 @@ If your family's dates are already booked, the list works the other way round. N
 3. Put each item on your watchlist. For each one, answer: does holding a date matter?
 4. Check each item on an official site, and write the date you checked.
 
-If your special pick on your My Calls page can't be booked, a grown-up tells you which of the three blocks it hit. Then you choose a new pick from your attraction cards with a grown-up, the way you did in Session 26. Write it on the day card for its place, and on your watchlist if it needs booking. The blocked pick needs no more research, so cross it off your watchlist.
+If your special pick on your My Calls page can't be booked, a grown-up tells you which of the three blocks it hit. Then you choose a new pick from your attraction cards with a grown-up, the way you did in Session 26. Write it on your must-do list, on the day card for its place, and on your watchlist if it needs booking. The blocked pick needs no more research, so cross it off your must-do list, its day card and your watchlist.
 
 Booking rules, ticket systems and entry rules change, sometimes a lot. So these are things to check again close to the trip. Never trust a number you remember.
 
@@ -47,7 +47,7 @@ Your Reservation Watchlist: everything that might need booking, and whether hold
 
 ## Stop Point
 
-You are done when every item on your day cards that might need booking is on the watchlist, each one says whether holding a date matters, and each one has its date-checked box filled in. If your dates are booked, each one has its opening date in "When adults should check". If your special pick hit a block, you've chosen a new one from your attraction cards with a grown-up, put it on its day card, and crossed the blocked one off your watchlist. You're making the list the grown-ups will use, and they do all of the booking. "Ask an adult" is a fine answer in any box you can't fill.
+You are done when every item on your day cards that might need booking is on the watchlist, each one says whether holding a date matters, and each one has its date-checked box filled in. If your dates are booked, each one has its opening date in "When adults should check". If your special pick hit a block, you've chosen a new one from your attraction cards with a grown-up and put it on your must-do list and its day card. The blocked one is crossed off your must-do list, its day card and your watchlist. You're making the list the grown-ups will use, and they do all of the booking. "Ask an adult" is a fine answer in any box you can't fill.
 
 ## Source Check
 

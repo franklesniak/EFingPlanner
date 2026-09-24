@@ -14,7 +14,7 @@ You are here: Phase 7 (Itinerary Building), First Taste step 12 of 13. Previous:
 - Planner skill: prioritizing; knowing when to stop; flexible thinking
 - Estimated time: 20-30 minutes
 - Parent involvement: 5-minute check-in; help co-choose the one unconditional pick, or confirm it on the Core path
-- Materials: your City Research Cards (starred sights), a [Cut List page](../../templates/cut_list.md), a [Backup Plan page](../../templates/backup_plan.md), and a My Calls page (a blank sheet -- start one if you do not have it yet). On the Core path, your My Calls page, with its must-do list and special pick, takes the place of the starred sights, and you bring the skip and save-for-future notes from Checkpoints 2 and 3 and your route map notes from Session 28, with a device with a map app or map website (kid-safe filter on) if a swap needs a new travel time.
+- Materials: your City Research Cards (starred sights), a [Cut List page](../../templates/cut_list.md), a [Backup Plan page](../../templates/backup_plan.md), and a My Calls page (a blank sheet -- start one if you do not have it yet). On the Core path, your My Calls page, with its must-do list and special pick, takes the place of the starred sights, and you bring the skip and save-for-future notes from Checkpoints 2 and 3, the strong maybes from Checkpoint 3, and your route map notes from Session 28, with a device with a map app or map website (kid-safe filter on) if a swap needs a new travel time.
 
 ## Goal
 
@@ -42,13 +42,13 @@ A good planner can't fit everything. And that's fine. Knowing what to keep, what
 
    **On the Core path**, start your cut list from the skip and save-for-future notes you made at Checkpoints 2 and 3, then add anything else that didn't make it. Finished First Taste first? Add those notes to the cut list you already made, and keep everything that's on it.
 
-3. **Your one special pick.** On the First Taste path, pick the **single** thing you most want on this trip. Choose it *with a grown-up*, who will show you the only three things that could change it first: it costs more than the budget band, it can't be booked, or it isn't safe or doable for everyone in the group. A grown-up vote can't take this one away. Write it on your **My Calls** page and have a grown-up initial it. (Your My Calls page is a fresh sheet for the choices that are yours. Start one now if you don't have it yet. It's where your [owned decisions](../../student_guide/what_i_decide.md) get a grown-up's "got it.")
+3. **Your one special pick.** On the First Taste path, pick the **single** thing you most want on this trip. Choose it *with a grown-up*, who will show you the only three things that could change it first: it costs more than the budget band, it can't be booked, or it isn't safe or doable for everyone in the group. A grown-up vote can't take this one away. Write it on your **My Calls** page and have a grown-up initial it. Add it to your must-see list from step 1 too, if it isn't there yet. (Your My Calls page is a fresh sheet for the choices that are yours. Start one now if you don't have it yet. It's where your [owned decisions](../../student_guide/what_i_decide.md) get a grown-up's "got it.")
 
-   **On the Core path**, your special pick is the one Session 26 settled, and the grown-ups said it stands at Checkpoint 3. If a grown-up named a block since then, your pick is the new one you chose from your attraction cards. Check that it still holds, and write one line on your My Calls page saying so. That keeps it one choice.
+   **On the Core path**, your special pick is the one Session 26 settled, and the grown-ups said it stands at Checkpoint 3. If a grown-up named a block since then, your pick is the new one you chose from your attraction cards. Check that it still holds and that it's on your must-do list, and write one line on your My Calls page saying so. That keeps it one choice.
 
 4. **Make two backup plans** on a [Backup Plan page](../../templates/backup_plan.md) for common problems:
    - **Rainy day** -- what could you do instead?
-   - **Attraction closed or too crowded** -- what is a good nearby swap? (Other backups to consider: tired day, restaurant full, transit delay.)
+   - **Attraction closed or too crowded** -- what is a good nearby swap? (Other backups to consider: tired day, restaurant full, transit delay.) On the Core path, a strong maybe from Checkpoint 3 marked "if nearby" can be a good swap.
 
    On the Core path, if a swap needs a travel time your route map notes from Session 28 don't have, check it with the map's Directions and add it to your notes.
 
@@ -66,9 +66,9 @@ On the Core path: your cut list, started from your Checkpoint 2 and 3 notes, one
 
 ## Stop Point
 
-On the First Taste path, you are done when you have a short must-see list, a cut list with whatever did not make it (even one thing, or a note that nothing needed cutting), one special pick written and initialed, and two backup plans. Short is good. This is about choosing, not listing everything.
+On the First Taste path, you are done when you have a short must-see list, a cut list with whatever did not make it (even one thing, or a note that nothing needed cutting), one special pick written, initialed and on your must-see list, and two backup plans. Short is good. This is about choosing, not listing everything.
 
-On the Core path, you are done when your cut list holds your Checkpoint 2 and 3 notes and anything else you set aside, your My Calls page has one line saying your special pick still holds, and you have two backup plans. Any travel time a swap needed is in your route map notes.
+On the Core path, you are done when your cut list holds your Checkpoint 2 and 3 notes and anything else you set aside, your My Calls page has one line saying your special pick still holds and is on your must-do list, and you have two backup plans. Any travel time a swap needed is in your route map notes.
 
 ## Source Check
 

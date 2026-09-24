@@ -33,7 +33,7 @@ Round to easy numbers. A calculator is always fine, and a grown-up can do the ma
 5. **Check against your band.** Match the units first, the way you did in Session 33. Compare the piece of your estimate that matches your band: one day for the family, one person for one day, or one hotel night.
 6. **Write one sentence.** Do the parts you chose fit the band? If they don't, what would you change? Maybe fewer nights somewhere, a cheaper area, or one less paid ticket.
 
-If your special pick on your My Calls page costs more than the band, a grown-up tells you which of the three blocks it hit. Then you choose a new pick from your attraction cards with a grown-up, the way you did in Session 26. The blocked pick needs no more research.
+If your special pick on your My Calls page costs more than the band, a grown-up tells you which of the three blocks it hit. Then you choose a new pick from your attraction cards with a grown-up, the way you did in Session 26. Put it on your must-do list, and take the blocked pick off. The blocked pick needs no more research.
 
 Sometimes nothing you try fits. Then "I recommend we change the trip, or wait until a better time" is a good, successful answer. Planners give that answer too.
 
@@ -66,7 +66,7 @@ Your updated budget summary: a hotel line for each city, the other slices, and o
 
 ## Stop Point
 
-You are done when your budget summary matches the route the grown-ups approved at Checkpoint 4, your subtotal is added up, you've checked the matching piece against your band, and you've written one sentence about whether the parts you chose fit. If they don't, say what you'd change. "It doesn't fit, so I'd cut ___" is a finished, good answer. If the number of us changes during a stay, that city has a row for each room count. If your special pick hit a block, you've chosen a new one from your attraction cards with a grown-up. "Ask an adult" is fine in any row you can't fill.
+You are done when your budget summary matches the route the grown-ups approved at Checkpoint 4, your subtotal is added up, you've checked the matching piece against your band, and you've written one sentence about whether the parts you chose fit. If they don't, say what you'd change. "It doesn't fit, so I'd cut ___" is a finished, good answer. If the number of us changes during a stay, that city has a row for each room count. If your special pick hit a block, you've chosen a new one from your attraction cards with a grown-up, and it's on your must-do list in place of the blocked one. "Ask an adult" is fine in any row you can't fill.
 
 ## Source Check
 

@@ -75,11 +75,13 @@ Your final recommendation packet: your recommendation and reasons, what the fami
 
 ## Stop Point
 
-You are done when your packet gives your reasons, what the grown-ups approve, what changes and what they'll check or book, the family has picked one of the four choices, you've written it in your decision log, and your handoff list says who is doing what next. Any of the four is a result that counts, including "park this for later". "Ask an adult" is a fine answer in any row.
+You are done for today when your packet gives your reasons, what the grown-ups approve, what changes and what they'll check or book, the family has picked one of the four choices, you've written it in your decision log, and your handoff list says who is doing what next. "Ask an adult" is a fine answer in any row.
+
+The checkpoint is finished when the answer is Approved, or Approved with changes once the changes are written in, or Park this decision for later, which is itself the result. Needs more research keeps it open until you bring that piece back. Any of the four is a result that counts.
 
 Before you start Session 53:
 
-- **Approved with changes:** write the changes into your packet and your Decision Record. If the change moves where you arrive or leave, re-time that leg with the map's Directions, and fix your travel days and nights.
+- **Approved with changes:** write the changes into your packet and your Decision Record. If the change moves where you arrive or leave, re-time that leg with the map's Directions, and fix your travel days and nights. If a place, a night or a day changes, update your Session 39 budget and check it against your band again. Then run your Session 43 pacing checks again for the days that changed.
 - **Needs more research:** do that one piece, and bring it back.
 - **Park this decision for later:** that's your result, so you can go on to Session 53.
 

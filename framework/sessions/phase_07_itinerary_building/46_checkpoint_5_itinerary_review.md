@@ -10,7 +10,7 @@ You are here: Phase 7 (Itinerary Building). Not a First Taste step. **This is Ch
 - Planner skill: making trade-offs
 - Estimated time: 20-30 minutes for the child, plus a 20-40 minute review with you
 - Parent involvement: parent review -- genuinely use the recommendation in a real family talk
-- Materials: your full itinerary draft and the day cards behind it, your reservation watchlist, your budget summary, your cut list, your route map notes from Session 28 and a device with a map app or map website (kid-safe filter on) (in case a change moves where you arrive or leave), your [Source Log](../../templates/source_log.md), a [Decision Record page](../../templates/decision_record.md)
+- Materials: your full itinerary draft and the day cards behind it, your reservation watchlist, your budget summary, your cut list, your pacing review from Session 43 (in case a change moves a night or a day), your route map notes from Session 28 and a device with a map app or map website (kid-safe filter on) (in case a change moves where you arrive or leave), your [Source Log](../../templates/source_log.md), a [Decision Record page](../../templates/decision_record.md)
 
 ## Goal
 
@@ -60,11 +60,13 @@ Your itinerary review packet: your itinerary draft and its day cards, plus your 
 
 ## Stop Point
 
-You are done when your draft and its day cards are in front of a grown-up, your review packet has all five parts and your reasons filled in, and a grown-up has written down which of the four choices they picked. Then write that decision in your decision log. That's the checkpoint. "Not sure yet" is a fine answer in any row.
+You are done for today when your draft and its day cards are in front of a grown-up, your review packet has all five parts and your reasons filled in, a grown-up has written down which of the four choices they picked, and you've written that decision in your decision log. "Not sure yet" is a fine answer in any row.
+
+The checkpoint is finished when the answer is Approved, or Approved with changes once the changes are written in. Needs more research and Park this decision for later keep it open until you come back to it.
 
 Before you start the next session:
 
-- **Approved with changes:** write the changes into your itinerary draft and your Decision Record. If the change moves where you arrive or leave, re-time that leg with the map's Directions, and fix your travel days and nights.
+- **Approved with changes:** write the changes into your itinerary draft and your Decision Record. If the change moves where you arrive or leave, re-time that leg with the map's Directions, and fix your travel days and nights. If a place, a night or a day changes, update your Session 39 budget and check it against your band again. Then run your Session 43 pacing checks again for the days that changed.
 - **Needs more research:** do that one piece, and bring it back.
 - **Park this decision for later:** wait until your family comes back to it.
 

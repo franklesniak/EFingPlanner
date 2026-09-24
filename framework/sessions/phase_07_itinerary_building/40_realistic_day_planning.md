@@ -27,7 +27,7 @@ If you want a suggestion: write the words "Day 1" at the top of a blank page.
 Planners who make good days use a few simple rules. Here are the ones that work:
 
 - Start each day with **one anchor**: the main thing that day is for, such as a must-do from your My Calls page.
-- Add **one nearby extra**, close to the anchor.
+- Add **one nearby extra**, close to the anchor. A strong maybe from Checkpoint 3 marked "if nearby" is a good one.
 - **Group places that are near each other**, so you don't zigzag.
 - Think about **lunch and dinner**: where might you eat?
 - Count the **travel time** between places. Your route map notes from Session 28 have many of them. For one they don't have, check the map's Directions and add it to your notes.

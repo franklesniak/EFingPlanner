@@ -26,7 +26,7 @@ A plan can look great on paper and still be too much on the day. This session ch
 
 1. Lay out your day cards in order.
 2. Go down the checks in the Workspace, one row at a time. Mark yes or no, and add a short note.
-3. For any day that needs it, write one way to make it gentler. You could move a big thing, add a break, or swap in a rest day. If every day passes, write that.
+3. For any day that needs it, write one way to make it gentler. You could move a big thing, add a break, or swap in a rest day. Then go down the checks again for each day you changed. If every day passes, write that.
 4. Write your flags for the adults.
 
 **Everyone's energy.** Look at the stamina notes on the traveler profiles. An older relative, for example a grandparent, may tire more easily on a long trip, even with no trouble walking. Hot, sticky weather makes that matter more. If someone like that is coming, a kinder plan is usually shorter and gentler than your family's maximum trip length on your Trip-Basics card: fewer cities, more nights in each, and a rest day built in. If your dates are booked, that row holds the booked trip length. Keep it, and make the same changes inside it.
@@ -80,7 +80,7 @@ Your pacing review: the checks, the days you'd make gentler, and your flags for 
 
 ## Stop Point
 
-You are done when you've gone through the checks once, marking each one yes or no, and either marked at least one day you'd make gentler or written that every day passed, and you've written your list of flags for the adults. Finding even one thing to fix is a finished review, and so is a plan that passes every check. "Not sure" is a fine note on any check. If you didn't write your third trade-off report in Session 34, you're done once it's written here too.
+You are done when you've gone through the checks once, marking each one yes or no, and either marked at least one day you'd make gentler and checked it again, or written that every day passed, and you've written your list of flags for the adults. Finding even one thing to fix is a finished review, and so is a plan that passes every check. "Not sure" is a fine note on any check. If you didn't write your third trade-off report in Session 34, you're done once it's written here too.
 
 ## Source Check
 
@@ -106,7 +106,7 @@ Your child flags accessibility trouble spots, and you handle the fixes. Step-fre
 
 The "taking care of yourself" block gives your child the words to speak up early. Medication and every medical decision stay with you.
 
-If the pacing check shows the special pick is not doable for every traveler, name that block and let your child choose a new pick from their attraction cards with you, as in Session 26, and put it on the day card for its place. The blocked pick needs no more research. Only the three blocks can change the pick.
+If the pacing check shows the special pick is not doable for every traveler, name that block and let your child choose a new pick from their attraction cards with you, as in Session 26. It goes on the must-do list and the day card for its place, and the blocked pick comes off both and needs no more research. Then your child runs the checks again for that day. Only the three blocks can change the pick.
 
 The floor's third trade-off report is about pacing, where to stay, or the budget. If your child did not write it at Session 34, it belongs here.
 
