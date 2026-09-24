@@ -77,7 +77,7 @@ Your Route and trip-length recommendation, recorded as a decision-log entry. If 
 
 ## Stop Point
 
-You are done for today when your recommendation names the cities, the nights in each, the travel days, a shorter backup version, and your reasons, and you've brought it to a grown-up. With the dates booked, leave the shorter backup version blank. When the grown-ups decide, write their answer in your Decision Record. "Not sure yet" in a row is a fine answer. The checkpoint is finished when the answer is Approved, or Approved with changes once you've written the changes in. With the other two answers, it stays open until you come back to it.
+You are done for today when your recommendation table is filled in and you've brought it to a grown-up. With the dates booked, leave the shorter backup version blank. When the grown-ups decide, write their answer in your Decision Record. "Not sure yet" in a row is a fine answer. The checkpoint is finished when the answer is Approved, or Approved with changes once you've written the changes in. With the other two answers, it stays open until you come back to it.
 
 Before you start the next session:
 

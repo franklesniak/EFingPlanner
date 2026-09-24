@@ -77,7 +77,7 @@ Your Nights-per-city estimate: the real-days formula filled in, and a number of 
 
 ## Stop Point
 
-You are done when each overnight place has a number of nights, and your total sits between your floor and your family's maximum. When the dates are already booked, you're done when your nights cover the booked trip. "Not sure yet" on one place is fine.
+You are done when your real-days formula is filled in, with any ½ or flight-day marks, each overnight place has a number of nights, and your total sits between your floor and your family's maximum. When the dates are already booked, you're done when your nights cover the booked trip. "Not sure yet" on one place is fine.
 
 ## Source Check
 
