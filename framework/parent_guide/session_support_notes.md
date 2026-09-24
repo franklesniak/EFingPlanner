@@ -153,7 +153,7 @@ Want a rough signal of how the executive-function side is going? The optional [e
 
 ## Session 44: Backup Plans and Cut List
 
-- Role: 5-minute check-in; help co-choose the one unconditional pick. On the Core path, confirm the pick Session 26 already chose instead.
+- Role: 5-minute check-in; help co-choose the one unconditional pick. On the Core path, confirm the pick Session 26 settled instead.
 - Prep: the City Research Cards (starred sights); Cut List and Backup Plan pages. On the Core path, the My Calls page takes the place of the starred sights, with the skip and save-for-future notes from Checkpoints 2 and 3.
 - Look for: a short must-see list, a cut list, one special pick initialed, two backups. On the Core path, the must-do list is the one Session 26 made, the cut list starts from the Checkpoint 2 and 3 notes, and the pick gets a one-line confirmation.
 - Coaching question: "What are you saving for a future trip?"

@@ -106,7 +106,7 @@ Your child flags accessibility trouble spots, and you handle the fixes. Step-fre
 
 The "taking care of yourself" block gives your child the words to speak up early. Medication and every medical decision stay with you.
 
-If the pacing check shows the special pick is not doable for every traveler, name that block and let your child choose a new pick with you, as in Session 26. Only the three blocks can change the pick.
+If the pacing check shows the special pick is not doable for every traveler, name that block and let your child choose a new pick from their attraction cards with you, as in Session 26, and put it on the day card for its place. The blocked pick needs no more research. Only the three blocks can change the pick.
 
 The floor's third trade-off report is about pacing, where to stay, or the budget. If your child did not write it at Session 34, it belongs here.
 

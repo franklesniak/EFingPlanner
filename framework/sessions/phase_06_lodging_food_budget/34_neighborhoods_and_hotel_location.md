@@ -9,8 +9,8 @@ You are here: Phase 6 (Lodging, Food, and Budget). Not a First Taste step. Previ
 - Status: Core
 - Planner skill: comparing choices
 - Estimated time: 20-30 minutes
-- Parent involvement: none / independent work
-- Materials: this session's Destination Notes, a device with the kid-safe filter on, a blank [Neighborhood Comparison page](../../templates/neighborhood_comparison.md), the route your family approved at Checkpoint 4, your route map notes from Session 28, the City Research Card for any region on your route (for its town), a guidebook if you have one, your [Trip-Basics card](../../templates/trip_basics.md) (for the number of travelers), your [Source Log](../../templates/source_log.md), and a [Scoring Rubric page](../../templates/scoring_rubric.md) if your child wants to score; a blank [Trade-Off Report](../../templates/tradeoff_report.md) only if the third report goes here
+- Parent involvement: none / independent work; stay nearby for any search beyond the Destination Notes and official city sites
+- Materials: this session's Destination Notes, a device with the kid-safe filter on, a grown-up nearby if you search beyond the Destination Notes and official city sites (beside you for an image search), a blank [Neighborhood Comparison page](../../templates/neighborhood_comparison.md), the route your family approved at Checkpoint 4, your route map notes from Session 28, the City Research Card for any region on your route (for its town), a guidebook if you have one, your [Trip-Basics card](../../templates/trip_basics.md) (for the number of travelers), your [Source Log](../../templates/source_log.md), and a [Scoring Rubric page](../../templates/scoring_rubric.md) if your child wants to score; a blank [Trade-Off Report](../../templates/tradeoff_report.md) only if the third report goes here
 
 ## Goal
 
@@ -26,7 +26,7 @@ Where you sleep shapes every day of the trip. You walk out of that door each mor
 
 1. **Pick one city.** Use a city on the route the grown-ups approved at Checkpoint 4. If your trip has more than one base, start with the one where you'll stay the most nights. If a stop on your route is a region, use the town on its card from Session 21. If that card names no town, use the one you picked in Session 28.
 2. **Learn the kinds of places to stay.** There's more than one kind. One kind often suits a bigger group, because more people can share one space. Another kind may be priced in a different way from a hotel room. Open this session's Destination Notes to find out what those kinds are called where you're going.
-3. **Find two or three areas to compare.** The city's official tourism site or your guidebook can tell you where visitors often stay. A grown-up can help you pick. Write each area's name at the top of a column.
+3. **Find two or three areas to compare.** The city's official tourism site or your guidebook can tell you where visitors often stay. A grown-up can help you pick. Searching beyond those and your Destination Notes? Have a grown-up nearby, and beside you for an image search. Write each area's name at the top of a column.
 4. **Fill down each column.** Your page has a row for each question. These five ideas help you answer them:
    - A cheaper place far away can cost you time and energy.
    - Easy rides nearby, by train, bus or however you'll get around, make every day simpler.
@@ -77,6 +77,6 @@ Your child compares; you decide. Lodging safety, the room count and the booking 
 
 The occupancy reality is the part to check yourself. In some places rooms are smaller and cap how many people can sleep in one, children may count differently, and connecting or four-person rooms can be scarce. A larger party often needs more rooms than it expects. That is a structural fact to verify per place, not a price, and it is why the worksheets say "per room". The destination pack's adult-logistics page covers it where the pack has one.
 
-The kinds of lodging come from the destination pack, so the session names none. If your child browses neighborhoods beyond the Destination Notes and official city sites, sit nearby. Open neighborhood browsing is on the co-research list in [safety and emergency guidance](../../parent_guide/safety_emergency_guidance.md), because image results can surface things a filter misses.
+The kinds of lodging come from the destination pack, so the session names none. If your child browses neighborhoods beyond the Destination Notes and official city sites, stay nearby, and beside them for an image search. Open neighborhood browsing is on the co-research list in [safety and emergency guidance](../../parent_guide/safety_emergency_guidance.md), because image results can surface things a filter misses.
 
 The floor asks for three trade-off reports, and the third is about pacing, where to stay, or the budget. Your child writes it here or at Session 43, whichever call was harder, and writes it once.

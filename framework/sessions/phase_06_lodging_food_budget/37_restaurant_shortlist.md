@@ -9,8 +9,8 @@ You are here: Phase 6 (Lodging, Food, and Budget). Not a First Taste step. Previ
 - Status: Conditional core -- becomes Core if your family wants the restaurant and food shortlist in the binder; otherwise it is Recommended
 - Planner skill: organizing information
 - Estimated time: 20-30 minutes
-- Parent involvement: none / independent work
-- Materials: this session's Destination Notes, a device with the kid-safe filter on, your food wish list from Session 36, any restaurant cards from an earlier sitting, blank [Restaurant Research Cards](../../templates/restaurant_research_card.md), your hotel comparison cards from Session 35, your must-do list on your My Calls page, the route your family approved at Checkpoint 4, your [Trip-Basics card](../../templates/trip_basics.md) (for the number of travelers), your [Source Log](../../templates/source_log.md)
+- Parent involvement: none / independent work; stay nearby for any search beyond the Destination Notes
+- Materials: this session's Destination Notes, a device with the kid-safe filter on, a grown-up nearby if you search beyond the Destination Notes (beside you for an image search), your food wish list from Session 36, any restaurant cards from an earlier sitting, blank [Restaurant Research Cards](../../templates/restaurant_research_card.md), your hotel comparison cards from Session 35, your must-do list on your My Calls page, the route your family approved at Checkpoint 4, your [Trip-Basics card](../../templates/trip_basics.md) (for the number of travelers), your [Source Log](../../templates/source_log.md)
 
 ## Goal
 
@@ -26,7 +26,7 @@ This session goes with Session 36. If your family chose the food list for the bi
 
 A card can be about one place to eat, or about a whole area with lots of places to eat. **An area counts as a card.** You don't have to find one exact restaurant to do this well.
 
-1. **Open this session's Destination Notes.** Find where the foods on your wish list are easy to find.
+1. **Open this session's Destination Notes.** Find where the foods on your wish list are easy to find. If you search beyond them, have a grown-up nearby, and beside you for an image search.
 2. **Start near where you'll be.** Look near a hotel from your Session 35 cards, or near a must-do on your My Calls page.
 3. **Fill in one card for each place or area.** Before you start a new card, check that you don't already have one for that place or area. Go from top to bottom. For "Reservation needed?", "ask an adult" is a finished answer. For "Cash-only?", write what your source says, and mark it for a grown-up to check.
 4. **Aim for one card per main city** where you'll sleep overnight, on the route the grown-ups approved at Checkpoint 4.
@@ -69,5 +69,7 @@ If you have extra energy, pick the one card you'd most like for a special meal, 
 ## Parent Notes
 
 The minimum evidence for the food sessions is at least one food or restaurant note for each major overnight city, and only if your family does the food sessions. If you skip Sessions 36 and 37, that evidence and the restaurant and food shortlist in the binder are both optional. Nothing later depends on these cards.
+
+Restaurant research is part of the food research on the co-research list in [safety and emergency guidance](../../parent_guide/safety_emergency_guidance.md). Stay nearby when your child searches beyond the Destination Notes, and beside them for an image search.
 
 Restaurant reservations, and whether a place takes cards, are yours to verify. A local review site may help, and it may be in another language, so treat it as something to use together or skip.

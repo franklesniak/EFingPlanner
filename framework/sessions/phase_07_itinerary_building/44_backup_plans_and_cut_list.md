@@ -44,7 +44,7 @@ A good planner can't fit everything. And that's fine. Knowing what to keep, what
 
 3. **Your one special pick.** On the First Taste path, pick the **single** thing you most want on this trip. Choose it *with a grown-up*, who will show you the only three things that could change it first: it costs more than the budget band, it can't be booked, or it isn't safe or doable for everyone in the group. A grown-up vote can't take this one away. Write it on your **My Calls** page and have a grown-up initial it. (Your My Calls page is a fresh sheet for the choices that are yours. Start one now if you don't have it yet. It's where your [owned decisions](../../student_guide/what_i_decide.md) get a grown-up's "got it.")
 
-   **On the Core path**, you already chose your special pick in Session 26, and the grown-ups said it stands at Checkpoint 3. If a grown-up named a block since then, your pick is the new one you chose. Check that it still holds, and write one line on your My Calls page saying so. That keeps it one choice.
+   **On the Core path**, your special pick is the one Session 26 settled, and the grown-ups said it stands at Checkpoint 3. If a grown-up named a block since then, your pick is the new one you chose from your attraction cards. Check that it still holds, and write one line on your My Calls page saying so. That keeps it one choice.
 
 4. **Make two backup plans** on a [Backup Plan page](../../templates/backup_plan.md) for common problems:
    - **Rainy day** -- what could you do instead?

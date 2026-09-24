@@ -9,8 +9,8 @@ You are here: Phase 6 (Lodging, Food, and Budget). Not a First Taste step. Previ
 - Status: Conditional core -- becomes Core if your family wants the restaurant and food shortlist in the binder; otherwise it is Recommended
 - Planner skill: organizing information
 - Estimated time: 20-30 minutes
-- Parent involvement: none / independent work
-- Materials: this session's Destination Notes, a device with the kid-safe filter on, your [Trip-Basics card](../../templates/trip_basics.md) (for the number of travelers), the route your family approved at Checkpoint 4, your [Source Log](../../templates/source_log.md), a pencil
+- Parent involvement: none / independent work; stay nearby for any search beyond the Destination Notes
+- Materials: this session's Destination Notes, a device with the kid-safe filter on, a grown-up nearby if you search beyond the Destination Notes (beside you for an image search), your [Trip-Basics card](../../templates/trip_basics.md) (for the number of travelers), the route your family approved at Checkpoint 4, your [Source Log](../../templates/source_log.md), a pencil
 
 ## Goal
 
@@ -29,7 +29,7 @@ Your family decides whether a food list goes in the binder. If it does, this ses
 
 A good food plan is a mix. Plan a few special meals, the ones you'd look forward to. Add some easy meals for busy days, like something quick near your hotel or along the way. Then find a few areas with lots of places to eat, where you can just walk in and choose.
 
-1. **Read your Destination Notes.** They name foods to try and the kinds of places people eat. Everything there is an idea to look into, and you pick what goes on your list. Stick to what you could find in the places on the route the grown-ups approved at Checkpoint 4.
+1. **Read your Destination Notes.** They name foods to try and the kinds of places people eat. Everything there is an idea to look into, and you pick what goes on your list. Stick to what you could find in the places on the route the grown-ups approved at Checkpoint 4. If you search beyond your Destination Notes, have a grown-up nearby, and beside you for an image search.
 2. **Fill in your food wish list** in the Workspace. Add a few foods or kinds of meals.
 3. **Mark each one.** Is it a special meal, an easy meal, or a "wherever we are" meal?
 4. **Check your group size.** Look at the number of travelers on your Trip-Basics card. If your group is bigger than about four, many small places can't seat everyone together. Some won't take a big group's reservation, either. So look for places that can seat a group, or plan to split into two tables. A group of two or three can skip this step.
@@ -86,6 +86,6 @@ If you have extra energy, add one food a traveler on your trip would love, and a
 
 Whether the food sessions count toward the plan is your family's call, and you make it when you get here. If you want the restaurant and food shortlist in the binder, this session and Session 37 are Core. If not, they are Recommended, and the binder is complete without them.
 
-Every dish and every kind of eating place comes from the destination pack, so the session names none. Food research is on the co-research list in [safety and emergency guidance](../../parent_guide/safety_emergency_guidance.md). Stay nearby when your child searches beyond the Destination Notes, especially with image search.
+Every dish and every kind of eating place comes from the destination pack, so the session names none. Food research is on the co-research list in [safety and emergency guidance](../../parent_guide/safety_emergency_guidance.md). Stay nearby when your child searches beyond the Destination Notes, and beside them for an image search.
 
 Dietary needs, allergies and anything medical stay with you. The session asks your child only to follow your guidance on unfamiliar food and to speak up.

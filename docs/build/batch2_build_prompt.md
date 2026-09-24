@@ -3527,7 +3527,11 @@ recommended`. Write its Role line as co-worked too. **Two more sessions have one
 step without being gated as a whole.** Session 09 is adult-operated: a grown-up runs the AI
 tool, as its built entry says. Session 26 ends with the one unconditional pick, which a
 grown-up helps choose after showing the three blocks, as built Session 44 does on the First
-Taste path. Write Session 26's Role line the way Session 44's is written. Every session not
+Taste path. Write Session 26's Role line the way Session 44's is written. **Sessions 34, 36
+and 37 have one grown-up step each:** a grown-up stays nearby for any search beyond the
+Destination Notes (and official city sites, in Session 34), and beside the child for an
+image search, as the privacy and safety page asks. Their section 10 values name that step
+after a semicolon, and their Role lines carry it. Every session not
 named in this paragraph is independent: the child can do it without a grown-up there. That
 includes a session whose section 10 value is a 5-minute check-in or a parent review after
 the session, because neither stops the child; its Role line still carries that value.
@@ -4309,10 +4313,10 @@ from this table. (`D-item-7`.)
 | 30 | checking sources | 20-30 minutes | none / independent work | Core |
 | 31 | making trade-offs | 20-30 minutes | parent review after session | Core |
 | 32 | making trade-offs | 20-30 minutes for the child, plus a 20-40 minute review with you | parent review -- genuinely use the recommendation in a real family talk | Core -- **Checkpoint 4** |
-| 34 | comparing choices | 20-30 minutes | none / independent work | Core |
+| 34 | comparing choices | 20-30 minutes | none / independent work; stay nearby for any search beyond the Destination Notes and official city sites | Core |
 | 35 | comparing choices | 20-30 minutes per sitting, several sittings | none / independent work | Core |
-| 36 | organizing information | 20-30 minutes | none / independent work | Conditional core |
-| 37 | organizing information | 20-30 minutes | none / independent work | Conditional core |
+| 36 | organizing information | 20-30 minutes | none / independent work; stay nearby for any search beyond the Destination Notes | Conditional core |
+| 37 | organizing information | 20-30 minutes | none / independent work; stay nearby for any search beyond the Destination Notes | Conditional core |
 | 38 | planning realistic time | 20-30 minutes | 5-minute check-in | Core |
 | 39 | revising a plan | 20-30 minutes | parent review after session | Core |
 | 40 | planning realistic time | 20-30 minutes | 5-minute check-in | Core |

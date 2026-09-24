@@ -10,7 +10,7 @@ You are here: Phase 6 (Lodging, Food, and Budget). Not a First Taste step. Previ
 - Planner skill: revising a plan
 - Estimated time: 20-30 minutes
 - Parent involvement: parent review after session
-- Materials: your [Budget Estimate page](../../templates/budget_estimate.md) from Session 33, your daily cost table from Session 38, your hotel comparison cards, your route and nights from Checkpoint 4, your route map notes from Session 28, the City Research Card for any region on your route (for its town), your My Calls page (for your special pick), your family's [current travel assumptions](../../templates/current_family_travel_assumptions.md) page (for the budget band), your [Source Log](../../templates/source_log.md), a calculator (allowed)
+- Materials: your [Budget Estimate page](../../templates/budget_estimate.md) from Session 33, your daily cost table from Session 38, your hotel comparison cards, your route and nights from Checkpoint 4, your route map notes from Session 28, the City Research Card for any region on your route (for its town), your My Calls page (for your special pick), your attraction cards (if your special pick hits a block), your [Trip-Basics card](../../templates/trip_basics.md) (for the number of travelers), your family's [current travel assumptions](../../templates/current_family_travel_assumptions.md) page (for the budget band), your [Source Log](../../templates/source_log.md), a calculator (allowed)
 
 ## Goal
 
@@ -33,7 +33,7 @@ Round to easy numbers. A calculator is always fine, and a grown-up can do the ma
 5. **Check against your band.** Match the units first, the way you did in Session 33. Compare the piece of your estimate that matches your band: one day for the family, one person for one day, or one hotel night.
 6. **Write one sentence.** Do the parts you chose fit the band? If they don't, what would you change? Maybe fewer nights somewhere, a cheaper area, or one less paid ticket.
 
-If your special pick on your My Calls page costs more than the band, a grown-up tells you which of the three blocks it hit. Then you choose a new pick with a grown-up, the way you did in Session 26.
+If your special pick on your My Calls page costs more than the band, a grown-up tells you which of the three blocks it hit. Then you choose a new pick from your attraction cards with a grown-up, the way you did in Session 26. The blocked pick needs no more research.
 
 Sometimes nothing you try fits. Then "I recommend we change the trip, or wait until a better time" is a good, successful answer. Planners give that answer too.
 
@@ -66,7 +66,7 @@ Your updated budget summary: a hotel line for each city, the other slices, and o
 
 ## Stop Point
 
-You are done when your budget summary matches the route the grown-ups approved at Checkpoint 4, your subtotal is added up, you've checked the matching piece against your band, and you've written one sentence about whether the parts you chose fit. If they don't, say what you'd change. "It doesn't fit, so I'd cut ___" is a finished, good answer. If your special pick hit a block, you've chosen a new one with a grown-up. "Ask an adult" is fine in any row you can't fill.
+You are done when your budget summary matches the route the grown-ups approved at Checkpoint 4, your subtotal is added up, you've checked the matching piece against your band, and you've written one sentence about whether the parts you chose fit. If they don't, say what you'd change. "It doesn't fit, so I'd cut ___" is a finished, good answer. If your special pick hit a block, you've chosen a new one from your attraction cards with a grown-up. "Ask an adult" is fine in any row you can't fill.
 
 ## Source Check
 
@@ -94,6 +94,6 @@ Read the result as a partial floor. It now covers all five slices plus getting t
 
 Your child compares a matching piece of their estimate with the band, because the band is a rate or a tier and a subtotal is a whole-trip amount. The final budget is yours.
 
-If the special pick on the My Calls page costs more than the band, name that block to your child and let them choose a new pick with you, as in Session 26. Only the three blocks can change the pick.
+If the special pick on the My Calls page costs more than the band, name that block to your child and let them choose a new pick from their attraction cards with you, as in Session 26. The blocked pick needs no more research. Only the three blocks can change the pick.
 
 If their honest answer is "change the trip or wait", receive it warmly. It is a valid, successful result, and it is the budget lesson working.
