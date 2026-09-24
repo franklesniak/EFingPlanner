@@ -82,10 +82,12 @@ beside it:
 - *What is a link.* A URL ``url_is_public()`` accepts, and nothing else. Only
   such a URL resolves a reference, and only such a URL is taken out of the
   text before the patterns read it (``blank_urls``). A full hash an action
-  pin declares resolves in the repository the pin names, where YAML declares
-  it: as the value of a ``uses`` key, read by a YAML parser, in a YAML file or
-  in a fenced YAML example in Markdown (``declared_action_pins``). The same
-  characters anywhere else declare nothing.
+  pin declares resolves in the repository the pin names, where GitHub reads
+  the pin: a ``uses`` key of a job or a step, read by a YAML parser, in a
+  workflow in ``.github/workflows`` or in an action's ``action.yml``, and in
+  a fenced YAML example in Markdown, which may show a list of steps alone
+  (``declared_action_pins``). The same characters anywhere else declare
+  nothing.
 - *Which words name a reference.* The nouns, separators and number shapes
   in ``REVIEW_HISTORY_PATTERNS``, which is a closed list: the pointer shapes
   this repository's review history has produced. A reference named by any
@@ -93,26 +95,37 @@ beside it:
   neither is a known noun joined to its number by a word, as in ``issue
   number`` and a number. A new noun or separator is added to the list, with a
   fixture line, when one appears. In a stylesheet's declaration, and in a
-  fenced stylesheet example, a hash and three, four, six or eight digits is
-  a colour and no reference (``COLOUR_VALUE_BEFORE``). A colour anywhere
+  fenced stylesheet example, a hash and three, four, six or eight digits
+  outside a string and a comment is a colour and no reference
+  (``is_a_colour``). A colour anywhere
   else -- a JSON theme, a script -- is read as the issue reference it looks
   like, and a file that holds one records it in the exemption fixture; the
   repository holds none.
 - *What a Markdown page prints.* markdown-it's answer, line by line
   (``printed_markdown``): the characters the page prints from each line,
-  the text of a comment on it, the link destinations written on it, and
-  which printed characters are no link. So
+  the text of a comment on it, the link destinations written on it, which
+  printed characters link nothing of their own, and where markup ends each
+  run of text. So
   markup prints nothing where it forms markup and prints as itself where it
   does not, a character reference prints its character, a code span its
   content, and a tag's attributes and a link's title print nothing and link
-  nothing; an ``a`` tag's ``href`` is a link. **A URL the page shows as text
-  links nothing**: in a code span, a code block, an image's alternative text
-  or raw HTML text, it is taken out of the text and resolves no reference.
+  nothing; an ``a`` tag's ``href`` is a link, decoded as a browser decodes
+  an attribute, and a link's destination is decoded as CommonMark decodes
+  it. **A URL the page shows as text links nothing**: in a code span, a code
+  block, an image's alternative text, a link's label or raw HTML text, it is
+  taken out of the text and resolves no reference. **A URL ends where markup
+  ends its run of text**, because GitHub finds a bare URL inside one text
+  node.
   A paragraph is also read joined across its line breaks, and a URL in a
   comment resolves nothing.
-  GitHub renders with its own parser, and two differences are known: a
+  GitHub renders with its own parser, and three differences are known: a
   strikethrough between single tildes, which GitHub prints and markdown-it
-  leaves as tildes, and footnotes, which markdown-it leaves as text. In every
+  leaves as tildes; footnotes, which markdown-it leaves as text; and the
+  escaping GitHub gives a link's URL. It writes a backslash, a bracket and
+  any character outside a small set as a percent escape, so a browser reads
+  no backslash there as a slash, and a bracketed IPv6 host there names
+  nothing. The scan reads the URL as written; the repository holds no such
+  link. In every
   file, one kind of break is left unread: a block comment's ``*`` at the
   start of each line looks like a list item, so two such lines are read as
   two items. The curriculum hooks still read Markdown by hand; whether they
@@ -319,17 +332,23 @@ ACTION_PIN = re.compile(
 #: Markdown that it reads.
 YAML_SUFFIXES = frozenset({".yml", ".yaml"})
 YAML_FENCE_INFO = frozenset({"yaml", "yml"})
+#: Where GitHub reads a ``uses`` key: the workflow directory, and an action's
+#: metadata file (``reads_action_pins``).
+#: https://docs.github.com/en/actions/writing-workflows/about-workflows
+#: https://docs.github.com/en/actions/sharing-automations/creating-actions/metadata-syntax-for-github-actions
+WORKFLOW_DIRECTORY = ".github/workflows"
+ACTION_METADATA_NAMES = frozenset({"action.yml", "action.yaml"})
 #: The files that are stylesheets, and the info strings of a fenced stylesheet
 #: example in Markdown. In a stylesheet's declaration, a hash and three, four,
 #: six or eight digits is a colour, and names no issue.
 #: https://www.w3.org/TR/css-color-4/#hex-notation
 STYLESHEET_SUFFIXES = frozenset({".css", ".scss", ".sass", ".less"})
 STYLESHEET_FENCE_INFO = frozenset({"css", "scss", "sass", "less"})
-#: A declaration's value, up to the hash: a property or a variable, a colon,
-#: and value text with no comment opened in it and no end of the declaration.
-#: A declaration starts its line or follows ``;`` or ``{``, so a comment's
-#: words before a colon are no property.
-COLOUR_VALUE_BEFORE = re.compile(r"(?:^|[;{])[ \t]*[-$@\w]+[ \t]*:(?:(?!/\*|//)[^;{}])*\Z")
+#: A declaration's value, up to the hash, in a line whose strings and
+#: comments ``stylesheet_code`` has blanked: a property or a variable, a
+#: colon, and value text with no end of the declaration in it. A declaration
+#: starts its line or follows ``;`` or ``{``.
+COLOUR_VALUE_BEFORE = re.compile(r"(?:^|[;{])[ \t]*[-$@\w]+[ \t]*:[^;{}]*\Z")
 #: A tracker noun sitting immediately in front of a hash, which means the
 #: reference belongs to that noun's pattern rather than to the bare one.
 TRACKER_NOUN_BEFORE = re.compile(
@@ -986,6 +1005,18 @@ def url_is_public(url: str) -> bool:
     host = (parts.hostname or "").lower()
     if not host:
         return False
+    # **A bracketed host is an IPv6 address with no zone, and nothing else.**
+    # The WHATWG parser a browser uses refuses a zone identifier, such as
+    # ``%25eth0``, and any other text between the brackets, such as ``v1.``
+    # and a name; ``urlsplit`` and ``ipaddress`` accept both, so each named a
+    # public host no reader could reach.
+    # https://url.spec.whatwg.org/#concept-ipv6-parser
+    if parts.netloc.rpartition("@")[2].startswith("["):
+        try:
+            address = ipaddress.IPv6Address(host)
+        except ValueError:
+            return False
+        return address.scope_id is None and address.is_global
     try:
         return ipaddress.ip_address(host).is_global
     except ValueError:
@@ -1506,6 +1537,7 @@ def _read_markdown(text: str) -> dict[str, Any]:
                     line[1],
                     list(line[2]),
                     [(start, end) for start, end in line[3]],
+                    list(line[4]),
                 )
                 for line in answer["lines"]
             ],
@@ -1520,14 +1552,16 @@ def _read_markdown(text: str) -> dict[str, Any]:
 
 def printed_markdown(
     text: str,
-) -> list[tuple[str, str, list[str], list[tuple[int, int]]]]:
+) -> list[tuple[str, str, list[str], list[tuple[int, int]], list[int]]]:
     """Return, for each line of a Markdown document, what the page prints there.
 
-    Each entry is ``(printed, hidden, destinations, unlinked)``: the characters
-    the page shows from that line, the text of an HTML comment on it, the link
-    destinations written on it, and the ranges of the printed characters that
-    are no link -- a code span, a code block, an image's alternative text and
-    raw HTML text. See ``MARKDOWN_READER``.
+    Each entry is ``(printed, hidden, destinations, unlinked, cuts)``: the
+    characters the page shows from that line, the text of an HTML comment on
+    it, the link destinations written on it as the page decodes them, the
+    ranges of the printed characters that link nothing of their own -- a code
+    span, a code block, an image's alternative text, a link's label and raw
+    HTML text -- and the positions where markup ends one run of text and the
+    next begins. See ``MARKDOWN_READER``.
     """
     return _read_markdown(text)["lines"]
 
@@ -1551,16 +1585,27 @@ def unmapped_markdown_lines(text: str) -> list[int]:
 
 
 def blank_urls(
-    text: str, unlinked: Iterable[tuple[int, int]] = ()
+    text: str,
+    unlinked: Iterable[tuple[int, int]] = (),
+    cuts: Iterable[int] = (),
 ) -> tuple[str, list[str]]:
     """Return ``text`` with each public URL blanked, and those URLs, trimmed.
 
     **A URL the page shows as text is blanked and returns nothing.**
-    ``unlinked`` holds the ranges of a printed Markdown line that are no link:
-    a code span, a code block, an image's alternative text and raw HTML text.
-    The rule asks for a reference that is clearly linked, and markdown-it knows
-    which printed text is a link; a URL in a code span was read from the
-    printed text like any other, and resolved the reference beside it.
+    ``unlinked`` holds the ranges of a printed Markdown line that link nothing
+    of their own: a code span, a code block, an image's alternative text, a
+    link's label and raw HTML text. The rule asks for a reference that is
+    clearly linked, and markdown-it knows which printed text is a link; a URL
+    in a code span was read from the printed text like any other, and
+    resolved the reference beside it.
+
+    **A URL is found inside one run of text.** ``cuts`` holds the positions
+    where markup ends one run and the next begins, and GitHub finds a bare URL
+    inside one text node. ``issues/`` followed by a number in a code span, or
+    in bold, links the list of issues, and the number is text after the link.
+    Read across the cut, the printed characters made one URL, and it resolved
+    the reference. Each range above is a run of its own.
+    https://github.github.com/gfm/#autolinks-extension-
 
     Found with the greedy pattern so the whole run is blanked, then trimmed
     so what is matched against is the URL itself. **Blank the trimmed URL,
@@ -1581,34 +1626,62 @@ def blank_urls(
     pieces = []
     cursor = 0
     ranges = list(unlinked)
-    for spotted in URL_PATTERN.finditer(text):
-        whole = spotted.group(0)
-        trimmed = trim_url(whole)
-        if not url_is_public(trimmed):
-            continue
-        if not any(start <= spotted.start() < end for start, end in ranges):
-            urls.append(trimmed)
-        pieces.append(text[cursor : spotted.start()])
-        pieces.append(" ")
-        pieces.append(whole[len(trimmed) :])
-        cursor = spotted.end()
+    bounds = sorted(
+        {0, len(text)}
+        | {cut for cut in cuts if 0 < cut < len(text)}
+        | {edge for span in ranges for edge in span if 0 < edge < len(text)}
+    )
+    for run_start, run_end in zip(bounds, bounds[1:]):
+        linked = not any(start <= run_start < end for start, end in ranges)
+        for spotted in URL_PATTERN.finditer(text[run_start:run_end]):
+            whole = spotted.group(0)
+            trimmed = trim_url(whole)
+            if not url_is_public(trimmed):
+                continue
+            if linked:
+                urls.append(trimmed)
+            pieces.append(text[cursor : run_start + spotted.start()])
+            pieces.append(" ")
+            pieces.append(whole[len(trimmed) :])
+            cursor = run_start + spotted.end()
     pieces.append(text[cursor:])
     return "".join(pieces), urls
 
 
-def declared_action_pins(text: str) -> dict[int, set[str]]:
+def reads_action_pins(relative: str) -> bool:
+    """Return whether GitHub reads ``uses`` keys in the YAML file at ``relative``.
+
+    GitHub reads a workflow only from ``.github/workflows`` at the root of the
+    repository, not from a directory below it, and an action's metadata only
+    from a file named ``action.yml`` or ``action.yaml``, in any directory.
+    Every other YAML file -- an application's configuration, a template, a
+    copy of a workflow kept elsewhere -- declares no dependency GitHub reads.
+    """
+    directory, _slash, name = relative.rpartition("/")
+    if directory == WORKFLOW_DIRECTORY and name.endswith((".yml", ".yaml")):
+        return True
+    return name in ACTION_METADATA_NAMES
+
+
+def declared_action_pins(text: str, *, fragment: bool = False) -> dict[int, set[str]]:
     """Return the hash of each action pin a YAML document declares, by line.
 
-    **A pin is excused where YAML declares it, and nowhere else.** A pattern
-    that read ``uses:`` at the start of a line excused the same characters in
-    a text file, in a YAML block scalar and in a Markdown line outside any
-    example, and none of those declares a dependency. A YAML parser reads the
-    value of every ``uses`` key, in every spelling YAML allows -- a quoted key,
-    a flow mapping -- and reads a block scalar as the text it is. A document
-    that does not parse declares nothing, so its hashes are reported. The key
-    is the line the value starts on, counted from zero. Measured: the 31 pins
-    the corpus holds are all read this way, 17 in YAML files and 14 in fenced
-    examples.
+    **A pin is excused where GitHub reads it, and nowhere else.** A workflow
+    declares an action in a job's steps, and a reusable workflow in a job's
+    own ``uses`` key; an action's metadata declares one in ``runs.steps``. Any
+    other ``uses`` key -- under ``env``, or in a mapping of an application's
+    own -- declares nothing, and reading every one let a YAML file hide a
+    hash. A YAML parser reads the document, so a quoted key and a flow
+    mapping count, and a block scalar is text. A document that does not parse
+    declares nothing, so its hashes are reported. The key is the line the
+    value starts on, counted from zero.
+
+    ``fragment`` reads a fenced example in Markdown, which may show part of a
+    workflow: a list of steps, one step, or a job's ``steps`` alone. Measured:
+    the 31 pins the corpus holds are all read this way, 17 in workflows and 14
+    in fenced examples, every one of those a list of steps.
+    https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions#jobsjob_iduses
+    https://docs.github.com/en/actions/sharing-automations/creating-actions/metadata-syntax-for-github-actions#runsstepsuses
     https://pyyaml.org/wiki/PyYAMLDocumentation
     """
     try:
@@ -1616,47 +1689,112 @@ def declared_action_pins(text: str) -> dict[int, set[str]]:
     except yaml.YAMLError:
         return {}
     declared: dict[int, set[str]] = {}
-    stack: list[yaml.Node] = [node for node in documents if node is not None]
-    seen: set[int] = set()
+    top = "fragment" if fragment else "document"
+    stack: list[tuple[yaml.Node, str]] = [
+        (node, top) for node in documents if node is not None
+    ]
+    seen: set[tuple[int, str]] = set()
     while stack:
-        node = stack.pop()
-        if id(node) in seen:
+        node, role = stack.pop()
+        if (id(node), role) in seen:
             # An alias shares its anchor's node, and may hold itself.
             continue
-        seen.add(id(node))
-        if isinstance(node, yaml.MappingNode):
+        seen.add((id(node), role))
+        if isinstance(node, yaml.SequenceNode):
+            item = "step" if role in ("steps", "fragment") else "other"
+            stack.extend((child, item) for child in node.value)
+        elif isinstance(node, yaml.MappingNode):
             for key, value in node.value:
+                name = key.value if isinstance(key, yaml.ScalarNode) else None
                 if (
-                    isinstance(key, yaml.ScalarNode)
-                    and key.value == "uses"
+                    name == "uses"
+                    and role in ("step", "job", "fragment")
                     and isinstance(value, yaml.ScalarNode)
                     and ACTION_PIN.fullmatch(value.value)
                 ):
                     hashes = declared.setdefault(value.start_mark.line, set())
                     hashes.add(value.value.rsplit("@", 1)[1])
-                stack.extend((key, value))
-        elif isinstance(node, yaml.SequenceNode):
-            stack.extend(node.value)
+                if role == "jobs":
+                    child = "job"
+                elif name == "steps" and role in ("job", "runs", "fragment"):
+                    child = "steps"
+                elif name in ("jobs", "runs") and role in ("document", "fragment"):
+                    child = name
+                else:
+                    child = "other"
+                stack.append((value, child))
     return declared
 
 
-def lines_outside_a_comment(text: str) -> set[int]:
-    """Return the lines of a stylesheet that do not start inside a comment.
+def stylesheet_code(line: str, in_comment: bool) -> tuple[str, bool]:
+    """Return a stylesheet line with its strings and comments blanked.
 
-    A block comment may run over several lines, and a line inside one is
-    read as a comment even when it looks like a declaration. Counted from
-    zero.
+    Also return whether a block comment is still open where the line ends;
+    ``in_comment`` says whether one was open where it starts. **A colour is a
+    token of the stylesheet's code.** A hash and digits in a string, such as a
+    ``content`` value, is text a reader sees, and the declaration pattern read
+    it as a colour; and a comment opener inside a string opened a comment for
+    the tracker, which then read the next line's colour as a comment's
+    reference. A string ends at its closing quote or at the end of its line,
+    and a backslash escapes the character after it. ``//`` starts a comment
+    to the end of the line, as it does in Sass and Less; in plain CSS that
+    reports a colour after it, which is the safe direction.
+    https://www.w3.org/TR/css-syntax-3/#consume-string-token
     """
-    outside: set[int] = set()
-    inside = False
-    for number, line in enumerate(text.split("\n")):
-        if not inside:
-            outside.add(number)
-        at = line.find("*/" if inside else "/*")
-        while at != -1:
-            inside = not inside
-            at = line.find("*/" if inside else "/*", at + 2)
-    return outside
+    out: list[str] = []
+    quote = ""
+    index = 0
+    while index < len(line):
+        pair = line[index : index + 2]
+        character = line[index]
+        if in_comment:
+            if pair == "*/":
+                in_comment = False
+                out.append("  ")
+                index += 2
+            else:
+                out.append(" ")
+                index += 1
+        elif quote:
+            if character == "\\":
+                out.append(" " * len(pair))
+                index += len(pair)
+            else:
+                if character == quote:
+                    quote = ""
+                out.append(" ")
+                index += 1
+        elif pair == "/*":
+            in_comment = True
+            out.append("  ")
+            index += 2
+        elif pair == "//":
+            out.append(" " * (len(line) - index))
+            break
+        elif character in "\"'":
+            quote = character
+            out.append(" ")
+            index += 1
+        else:
+            out.append(character)
+            index += 1
+    return "".join(out), in_comment
+
+
+def comments_open_by_line(text: str) -> list[bool]:
+    """Return, for each line of a stylesheet, whether it starts in a comment."""
+    opened: list[bool] = []
+    in_comment = False
+    for line in text.split("\n"):
+        opened.append(in_comment)
+        _code, in_comment = stylesheet_code(line, in_comment)
+    return opened
+
+
+def is_a_colour(line: str, start: int, in_comment: bool) -> bool:
+    """Return whether the hash at ``start`` is a colour in a declaration's value."""
+    code, _open = stylesheet_code(line, in_comment)
+    return code[start : start + 1] == "#" and bool(COLOUR_VALUE_BEFORE.search(code[:start]))
 
 
 def references_in(
@@ -1733,9 +1871,9 @@ def references_in(
                     continue
                 if (
                     name == "a bare issue reference"
-                    and number in colour_lines
+                    and number in stylesheet_lines
                     and len(matched) - 1 in (3, 4, 6, 8)
-                    and COLOUR_VALUE_BEFORE.search(scanned[: match.start()])
+                    and is_a_colour(scanned, match.start(), stylesheet_lines[number])
                 ):
                     # A colour in a stylesheet's declaration.
                     continue
@@ -1768,30 +1906,30 @@ def references_in(
         printed_markdown(body) if path.suffix.lower() in MARKDOWN_SUFFIXES else None
     )
     # What the file type makes of each line: the hashes an action pin declares
-    # there, in a YAML file or a fenced YAML example; and whether it is
-    # stylesheet code, where a colour is written, in a stylesheet or a fenced
-    # stylesheet example, outside a comment.
+    # there, in a workflow, an action's metadata or a fenced YAML example; and,
+    # for a line of a stylesheet or a fenced stylesheet example, where a colour
+    # is written, whether it starts inside a comment.
     pins_on_line: dict[int, set[str]] = {}
-    colour_lines: set[int] = set()
-    if path.suffix.lower() in YAML_SUFFIXES:
+    stylesheet_lines: dict[int, bool] = {}
+    if path.suffix.lower() in YAML_SUFFIXES and reads_action_pins(relative):
         for line, hashes in declared_action_pins(body).items():
             pins_on_line[line + 1] = hashes
     if path.suffix.lower() in STYLESHEET_SUFFIXES:
-        colour_lines.update(line + 1 for line in lines_outside_a_comment(body))
+        for line, opened in enumerate(comments_open_by_line(body)):
+            stylesheet_lines[line + 1] = opened
     if printed is not None:
         for info, first, content in markdown_fences(body):
             if info in YAML_FENCE_INFO:
-                for line, hashes in declared_action_pins(content).items():
+                for line, hashes in declared_action_pins(content, fragment=True).items():
                     pins_on_line[first + 1 + line] = hashes
             elif info in STYLESHEET_FENCE_INFO:
-                colour_lines.update(
-                    first + 1 + line for line in lines_outside_a_comment(content)
-                )
+                for line, opened in enumerate(comments_open_by_line(content)):
+                    stylesheet_lines[first + 1 + line] = opened
     for number, line in enumerate(lines):
-        shown, hidden, destinations, unlinked = (
-            printed[number] if printed is not None else (line, "", [], [])
+        shown, hidden, destinations, unlinked, cuts = (
+            printed[number] if printed is not None else (line, "", [], [], [])
         )
-        shown_text, shown_urls = blank_urls(shown, unlinked)
+        shown_text, shown_urls = blank_urls(shown, unlinked, cuts)
         # A link's destination is not printed, and it is a URL written on
         # this line all the same.
         shown_urls = shown_urls + destinations
@@ -2308,10 +2446,11 @@ def test_a_pinned_action_is_resolved_and_a_loose_hash_is_not(tmp_path: Path) -> 
     """``owner/repo@`` with a full hash is a pin GitHub resolves; the same hash alone is not."""
     # Built from a short piece, so no long hexadecimal run sits in this file.
     full = "ab12" * 10
-    sample = tmp_path / "workflow.yml"
-    sample.write_text(f"      - uses: actions/checkout@{full} # v7.0.1\n", encoding="utf-8")
+    sample = tmp_path / ".github" / "workflows" / "ci.yml"
+    sample.parent.mkdir(parents=True)
+    sample.write_text(_workflow(f"- uses: actions/checkout@{full} # v7.0.1") + "\n", encoding="utf-8")
     assert references_in(sample, tmp_path) == []
-    sample.write_text(f"      - uses: actions/checkout@{full[:12]} # v7.0.1\n", encoding="utf-8")
+    sample.write_text(_workflow(f"- uses: actions/checkout@{full[:12]} # v7.0.1") + "\n", encoding="utf-8")
     assert references_in(sample, tmp_path), "a short pin is not an immutable pin, so it is still reported"
     sample.write_text(f"The change is {full}.\n", encoding="utf-8")
     assert references_in(sample, tmp_path), "a hash with no repository in front of it is still reported"
@@ -3441,6 +3580,26 @@ def _reported(tmp_path: Path, body: str, suffix: str = ".md") -> bool:
     return bool(references_in(sample, tmp_path))
 
 
+#: Where GitHub reads a workflow, for the tests that need one.
+WORKFLOW = ".github/workflows/ci.yml"
+
+
+def _reported_at(tmp_path: Path, relative: str, body: str) -> bool:
+    """Return whether the scan reports anything in one file at ``relative``."""
+    sample = tmp_path / relative
+    sample.parent.mkdir(parents=True, exist_ok=True)
+    sample.write_text(body + chr(10), encoding="utf-8")
+    return bool(references_in(sample, tmp_path))
+
+
+def _workflow(*steps: str) -> str:
+    """Return a workflow whose one job runs ``steps``, each a step's YAML."""
+    lines = ["jobs:", "  build:", "    runs-on: ubuntu-latest", "    steps:"]
+    for step in steps:
+        lines.extend("      " + line for line in step.split(chr(10)))
+    return chr(10).join(lines)
+
+
 def test_a_url_must_name_a_host_the_public_can_reach(tmp_path: Path) -> None:
     """A link nobody outside can follow resolves nothing.
 
@@ -3661,27 +3820,32 @@ def test_an_action_pin_is_excused_only_as_a_resolvable_uses_value(
     after them is a commit like any other.
     """
     full = ("0123456789" + "abcdef") * 2 + "01234567"
-    for body, suffix in (
-        ("- uses: invalid-/repo@" + full, ".yml"),
-        ("- uses: a--b/repo@" + full, ".yml"),
-        ("- uses: owner/..@" + full, ".yml"),
-        ("see invalid-/repo@" + full, ".yml"),
-        ("we pinned actions/checkout@" + full + " last week", ".md"),
-        ("# actions/checkout@" + full, ".py"),
+    newline = chr(10)
+    for relative, body in (
+        (WORKFLOW, _workflow("- uses: invalid-/repo@" + full)),
+        (WORKFLOW, _workflow("- uses: a--b/repo@" + full)),
+        (WORKFLOW, _workflow("- uses: owner/..@" + full)),
+        (WORKFLOW, "see invalid-/repo@" + full),
+        ("doc.md", "we pinned actions/checkout@" + full + " last week"),
+        ("doc.py", "# actions/checkout@" + full),
     ):
-        assert _reported(tmp_path, body, suffix), body
-    for body, suffix in (
-        ("      - uses: actions/checkout@" + full + " # v7.0.1", ".yml"),
-        ("  uses: 'actions/checkout@" + full + "'", ".yml"),
-        ('  uses: "owner/repo/.github/workflows/ci.yml@' + full + '"', ".yml"),
+        assert _reported_at(tmp_path, relative, body), body
+    for relative, body in (
+        (WORKFLOW, _workflow("- uses: actions/checkout@" + full + " # v7.0.1")),
+        (WORKFLOW, _workflow("- uses: 'actions/checkout@" + full + "'")),
         (
-            chr(96) * 3 + "yaml" + chr(10) + "      - uses: my-org/my_action@" + full
-            + chr(10) + chr(96) * 3,
-            ".md",
+            WORKFLOW,
+            "jobs:" + newline + "  call:" + newline
+            + '    uses: "owner/repo/.github/workflows/ci.yml@' + full + '"',
         ),
-        ("uses: my-org/.github@" + full, ".yml"),
+        (
+            "doc.md",
+            chr(96) * 3 + "yaml" + newline + "      - uses: my-org/my_action@" + full
+            + newline + chr(96) * 3,
+        ),
+        (WORKFLOW, _workflow("- uses: my-org/.github@" + full)),
     ):
-        assert not _reported(tmp_path, body, suffix), body
+        assert not _reported_at(tmp_path, relative, body), body
 
 
 def test_only_a_public_url_hides_what_it_holds(tmp_path: Path) -> None:
@@ -3808,33 +3972,33 @@ def test_an_action_pin_is_excused_only_where_yaml_declares_it(
     newline = chr(10)
     full = ("0123456789" + "abcdef") * 2 + "01234567"
     pin = "owner/repo@" + full
-    for body, suffix in (
-        ("This prose uses: " + pin, ".md"),
-        ("uses: " + pin, ".md"),
-        ("uses: " + pin, ".txt"),
-        ("# note: this step uses: " + pin, ".yml"),
-        ("run: echo uses: " + pin, ".yml"),
-        ("run: |" + newline + "  uses: " + pin, ".yml"),
-        ("with:" + newline + "  ref: " + pin, ".yml"),
-        ("uses: " + pin + newline + "broken: [", ".yml"),
-        ("- uses: " + pin + newline + "# " + pin, ".yml"),
-        ("    - uses: " + pin, ".md"),
-        (fence + "text" + newline + "uses: " + pin + newline + fence, ".md"),
-        (fence + "yaml" + newline + "run: |" + newline + "  uses: " + pin + newline + fence, ".md"),
+    for relative, body in (
+        ("doc.md", "This prose uses: " + pin),
+        ("doc.md", "uses: " + pin),
+        ("doc.txt", "uses: " + pin),
+        (WORKFLOW, "# note: this step uses: " + pin),
+        (WORKFLOW, "run: echo uses: " + pin),
+        (WORKFLOW, _workflow("- run: |" + newline + "    uses: " + pin)),
+        (WORKFLOW, _workflow("- uses: actions/checkout@v4" + newline + "  with:" + newline + "    ref: " + pin)),
+        (WORKFLOW, _workflow("- uses: " + pin) + newline + "broken: ["),
+        (WORKFLOW, _workflow("- uses: " + pin, "# " + pin)),
+        ("doc.md", "    - uses: " + pin),
+        ("doc.md", fence + "text" + newline + "uses: " + pin + newline + fence),
+        ("doc.md", fence + "yaml" + newline + "run: |" + newline + "  uses: " + pin + newline + fence),
     ):
-        assert _reported(tmp_path, body, suffix), body
-    for body, suffix in (
-        ("      - uses: actions/checkout@" + full + " # v7.0.1", ".yml"),
-        ("    uses: actions/checkout@" + full, ".yaml"),
-        ("  - uses: '" + pin + "'", ".yml"),
-        (fence + "yaml" + newline + "      - uses: actions/checkout@" + full + newline + fence, ".md"),
+        assert _reported_at(tmp_path, relative, body), body
+    for relative, body in (
+        (WORKFLOW, _workflow("- uses: actions/checkout@" + full + " # v7.0.1")),
+        (".github/workflows/ci.yaml", _workflow("- uses: actions/checkout@" + full)),
+        (WORKFLOW, _workflow("- uses: '" + pin + "'")),
+        ("doc.md", fence + "yaml" + newline + "      - uses: actions/checkout@" + full + newline + fence),
         (
+            "doc.md",
             "- A step:" + newline + newline + "  " + fence + "YML" + newline + "  - uses: " + pin
             + newline + "  " + fence,
-            ".md",
         ),
     ):
-        assert not _reported(tmp_path, body, suffix), body
+        assert not _reported_at(tmp_path, relative, body), body
 
 
 def test_a_reserved_name_is_refused_in_any_spelling(tmp_path: Path) -> None:
@@ -4317,9 +4481,11 @@ def test_a_quoted_uses_key_declares_a_pin(tmp_path: Path) -> None:
     """
     full = ("0123456789" + "abcdef") * 2 + "01234567"
     for key in (chr(34) + "uses" + chr(34), "'uses'"):
-        assert not _reported(tmp_path, "      - " + key + ": actions/checkout@" + full, ".yml"), key
+        step = _workflow("- " + key + ": actions/checkout@" + full)
+        assert not _reported_at(tmp_path, WORKFLOW, step), key
     for key in (chr(34) + "uses'", "'uses" + chr(34)):
-        assert _reported(tmp_path, "      - " + key + ": actions/checkout@" + full, ".yml"), key
+        step = _workflow("- " + key + ": actions/checkout@" + full)
+        assert _reported_at(tmp_path, WORKFLOW, step), key
 
 
 def test_a_uses_key_in_a_flow_mapping_declares_a_pin(tmp_path: Path) -> None:
@@ -4330,8 +4496,12 @@ def test_a_uses_key_in_a_flow_mapping_declares_a_pin(tmp_path: Path) -> None:
     alike.
     """
     full = ("0123456789" + "abcdef") * 2 + "01234567"
-    assert not _reported(tmp_path, "      - {uses: actions/checkout@" + full + "}", ".yml")
-    assert declared_action_pins("- {uses: actions/checkout@" + full + "}") == {0: {full}}
+    step = "- {uses: actions/checkout@" + full + "}"
+    assert not _reported_at(tmp_path, WORKFLOW, _workflow(step))
+    assert declared_action_pins(step, fragment=True) == {0: {full}}
+    # A list of steps is a workflow's part, and a whole file declares nothing
+    # outside a job.
+    assert declared_action_pins(step) == {}
 
 
 def test_the_workflow_runs_the_scan_while_its_fixtures_exist() -> None:
@@ -4714,3 +4884,189 @@ def test_a_shorthand_a_noun_reads_is_reported_once(tmp_path: Path) -> None:
         sample.write_text(body + chr(10), encoding="utf-8")
         reported = references_in(sample, tmp_path)
         assert len(reported) == 1 and (": " + label + ": ") in reported[0], (body, reported)
+
+
+def test_an_action_pin_is_excused_only_where_github_reads_it(tmp_path: Path) -> None:
+    """A ``uses`` key declares a dependency in a job or a step, and nowhere else.
+
+    Every YAML file's ``uses`` keys were read, so an application's
+    configuration could hide a hash under one. GitHub reads a workflow only
+    from ``.github/workflows`` and an action's steps from its ``action.yml``;
+    a fenced example may show a workflow's part.
+    """
+    fence = chr(96) * 3
+    newline = chr(10)
+    full = ("0123456789" + "abcdef") * 2 + "01234567"
+    pin = "owner/repo@" + full
+    step = _workflow("- uses: " + pin)
+    composite = (
+        "runs:" + newline + "  using: composite" + newline + "  steps:" + newline
+        + "    - uses: " + pin
+    )
+    for relative, body in (
+        ("app.yml", step),
+        ("config/app.yml", "metadata:" + newline + "  uses: " + pin),
+        ("app.yml", "{metadata: {uses: " + pin + "}}"),
+        (".github/workflows/nested/ci.yml", step),
+        ("docs/.github/workflows/ci.yml", step),
+        (WORKFLOW, "jobs:" + newline + "  build:" + newline + "    env:" + newline + "      uses: " + pin),
+        (WORKFLOW, "metadata:" + newline + "  uses: " + pin),
+        (WORKFLOW, "metadata:" + newline + "  steps:" + newline + "    - uses: " + pin),
+        ("my-action.yml", composite),
+        ("doc.md", fence + "yaml" + newline + "metadata:" + newline + "  uses: " + pin + newline + fence),
+    ):
+        assert _reported_at(tmp_path, relative, body), (relative, body)
+    for relative, body in (
+        (WORKFLOW, step),
+        (".github/workflows/ci.yaml", step),
+        (WORKFLOW, "jobs:" + newline + "  call:" + newline + "    uses: owner/repo/.github/workflows/ci.yml@" + full),
+        ("action.yml", composite),
+        (".github/actions/setup/action.yaml", composite),
+        ("doc.md", fence + "yaml" + newline + "uses: " + pin + newline + fence),
+        ("doc.md", fence + "yaml" + newline + "steps:" + newline + "  - uses: " + pin + newline + fence),
+    ):
+        assert not _reported_at(tmp_path, relative, body), (relative, body)
+    assert reads_action_pins(WORKFLOW)
+    assert not reads_action_pins(".github/workflows/README.md")
+
+
+def test_a_hash_in_a_stylesheet_string_is_no_colour(tmp_path: Path) -> None:
+    """A colour is a token of the stylesheet's code, never text in a string.
+
+    The declaration pattern read a quoted hash and digits in a ``content``
+    value as a colour, and it is text a reader sees. And a comment opener in a
+    string opened a comment for the tracker, so the next line's colour was
+    read as a comment's reference.
+    """
+    fence = chr(96) * 3
+    newline = chr(10)
+    quote = chr(34)
+
+    def colour(digits: str) -> str:
+        return chr(35) + digits
+
+    for body, suffix in (
+        (".x { content: " + quote + colour("123") + quote + "; }", ".css"),
+        (".x { content: '" + colour("1234") + "'; }", ".css"),
+        (".x { content: " + quote + "a" + chr(92) + quote + " " + colour("123") + quote + "; }", ".css"),
+        ("$label: " + quote + colour("123456") + quote + ";", ".scss"),
+        (fence + "css" + newline + ".x { content: " + quote + colour("123") + quote + "; }" + newline + fence, ".md"),
+    ):
+        assert _reported(tmp_path, body, suffix), body
+    for body, suffix in (
+        (".x { content: " + quote + "/*" + quote + "; }" + newline + ".y { color: " + colour("123") + "; }", ".css"),
+        (".x { background: url(" + quote + "a.png" + quote + ") " + colour("123") + "; }", ".css"),
+        (".x { content: " + quote + "a;b" + quote + "; color: " + colour("123456") + "; }", ".css"),
+    ):
+        assert not _reported(tmp_path, body, suffix), body
+    assert stylesheet_code("a: " + quote + "x" + quote + " /* y */ " + colour("123"), False) == (
+        "a:" + " " * 13 + colour("123"),
+        False,
+    )
+
+
+def test_a_bracketed_host_is_an_ipv6_address_with_no_zone(tmp_path: Path) -> None:
+    """A browser refuses a zone identifier, and any other text between brackets.
+
+    ``ipaddress`` accepts a zone after an IPv6 address and calls the address
+    global, and ``urlsplit`` accepts ``v1.`` and a name between brackets, which
+    was then read as a public domain. The WHATWG parser a browser uses refuses
+    both, so neither is a link anyone can follow.
+    """
+    reference = "issue" + " " + "27"
+    path = "/o/r/issues/" + "27"
+    for host in (
+        "[2606:4700:4700::1111%25eth0]",
+        "[2606:4700:4700::1111%eth0]",
+        "[v1.github.com]",
+    ):
+        url = "https://" + host + path
+        assert not url_is_public(url), host
+        assert _reported(tmp_path, reference + " " + url), host
+    assert url_is_public("https://[2606:4700:4700::1111]" + path)
+    assert url_is_public("https://someone@[2606:4700:4700::1111]:443" + path)
+
+
+def test_a_url_ends_where_markup_ends_its_run_of_text(tmp_path: Path) -> None:
+    """GitHub finds a bare URL inside one run of text, and markup ends a run.
+
+    ``issues/`` and a number in a code span, or in bold, links the list of
+    issues, and the number is text after the link. The scan read the printed
+    characters as one URL, which resolved the reference. The same cut ends a
+    URL before a code span that follows it with no space, and lets a URL right
+    after a code span be read.
+    """
+    tick = chr(96)
+    reference = "issue" + " " + "27"
+    base = "https://github.com/o/r/issues/"
+    number = "27"
+    for body in (
+        "See " + reference + " " + base + tick + number + tick,
+        "See " + reference + " " + base + "**" + number + "**",
+        "See " + reference + " " + base + "<b>" + number + "</b>",
+        "See " + reference + " " + base + "~~" + number + "~~",
+    ):
+        assert _reported(tmp_path, body), body
+    for body in (
+        "See " + reference + " " + base + number + tick + "x" + tick,
+        "See " + reference + " " + tick + "x" + tick + base + number,
+        "See " + reference + " **" + base + number + "**",
+        "See " + reference + " " + base + number + chr(92) + ".",
+        # A character reference is part of its run, as an escape is.
+        "See " + reference + " " + base + "&#" + "50;7",
+    ):
+        assert not _reported(tmp_path, body), body
+    printed = printed_markdown("a " + base + "**" + number + "** b")[0]
+    assert printed[4] == [0, len("a " + base), len("a " + base + number)]
+
+
+def test_a_url_in_a_link_label_links_nothing_of_its_own(tmp_path: Path) -> None:
+    """A link's label is its text: a URL shown there links to the destination.
+
+    The label is printed, so a URL written in it was read as a link to
+    itself, and resolved a reference the link does not point to.
+    """
+    reference = "issue" + " " + "27"
+    url = "https://github.com/o/r/issues/" + "27"
+    assert _reported(tmp_path, "See " + reference + " [" + url + "](https://example.com/)")
+    assert not _reported(tmp_path, "See " + reference + " [" + url + "](" + url + ")")
+    assert not _reported(tmp_path, "See [" + reference + "](" + url + ")")
+
+
+def test_a_destination_is_read_as_the_page_decodes_it(tmp_path: Path) -> None:
+    """A link's destination is decoded before it links, and so is an ``href``.
+
+    CommonMark decodes character references and backslash escapes in a
+    destination, and a browser decodes character references in an attribute.
+    The reader kept the characters as written, so the hash of a character
+    reference started a fragment, and a linked reference was reported.
+    """
+    reference = "issue" + " " + "27"
+    base = "https://github.com/o/r/issues/"
+    encoded = "&#" + "50;7"
+    quote = chr(34)
+    for body in (
+        "See [" + reference + "](" + base + encoded + ")",
+        "See [" + reference + "](<" + base + encoded + ">)",
+        "See <a href=" + quote + base + encoded + quote + ">" + reference + "</a>",
+        "<p><a href='" + base + encoded + "'>" + reference + "</a></p>",
+    ):
+        assert not _reported(tmp_path, body), body
+    # A backslash before a digit escapes nothing, and stays in the path.
+    assert _reported(tmp_path, "See [" + reference + "](" + base + "2" + chr(92) + "7)")
+    assert printed_markdown("[x](" + base + encoded + ")")[0][2] == [base + "27"]
+
+
+def test_a_markdown_link_is_read_as_written_not_as_github_escapes_it(tmp_path: Path) -> None:
+    """A documented limit, pinned: GitHub escapes a link's URL, and the scan does not.
+
+    GitHub's renderer writes a backslash in a link's URL as a percent escape,
+    so a browser reads it as a character of the path, not as a slash, and
+    the link below opens no issue. The scan reads the URL as written, as a
+    browser reads it typed, and the backslash is a slash. The module
+    docstring states this; if this test starts to fail, the limit has gone,
+    and the docstring must say so.
+    """
+    reference = "issue" + " " + "27"
+    url = "https://github.com/o/r/issues" + chr(92) + "27"
+    assert not _reported(tmp_path, "See [" + reference + "](" + url + ")")

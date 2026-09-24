@@ -9,14 +9,17 @@
  * writes one JSON object per line on stdout:
  *
  *   lines     one entry per line of the document, as the text splits on
- *             "\n": [printed, hidden, destinations, unlinked]. printed is
- *             what the page shows from that line; hidden is the text of an
- *             HTML comment on it; destinations are the link targets written
- *             on it, for an inline link, an image and an HTML "a" tag; and
- *             unlinked holds [start, end] ranges of printed that the page
- *             shows as text a reader cannot follow: a code span, a fenced or
- *             indented code block, an image's alternative text and raw HTML
- *             text. A URL there is a URL written out, and no link.
+ *             "\n": [printed, hidden, destinations, unlinked, cuts]. printed
+ *             is what the page shows from that line; hidden is the text of
+ *             an HTML comment on it; destinations are the link targets
+ *             written on it, for an inline link, an image and an HTML "a"
+ *             tag, decoded as the page decodes them; unlinked holds [start,
+ *             end] ranges of printed that link nothing of their own: a code
+ *             span, a fenced or indented code block, an image's alternative
+ *             text, a link's label and raw HTML text; and cuts holds each
+ *             position in printed where markup ends one run of text and the
+ *             next begins. GitHub finds a bare URL inside one run of text, so
+ *             a URL stops at a cut.
  *   fences    [info, first, content] for each fenced code block: the first
  *             word of its info string, in lower case, the line its content
  *             starts on, and the content itself.
@@ -44,6 +47,7 @@ const LINE_BREAK_TAG = /^<br\b/i;
 const A_TAG = /^<a\s/i;
 const HREF = /\shref\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s"'=<>`]+))/i;
 const TAG = /<[^<>]*>/g;
+const CHARACTER_REFERENCE = /&[a-z#][a-z0-9]{1,31};/gi;
 
 class Unmapped extends Error {}
 
@@ -55,6 +59,7 @@ function readDocument(text) {
   const unmapped = [];
 
   const unlinked = source.map(() => []);
+  const cuts = source.map(() => []);
   const fences = [];
   const print = (line, characters) => {
     if (line < source.length) printed[line] = (printed[line] ?? '') + characters;
@@ -68,6 +73,9 @@ function readDocument(text) {
     print(line, characters);
     unlinked[line].push([start, start + [...characters].length]);
   };
+  const cut = (line) => {
+    if (line < source.length) cuts[line].push([...(printed[line] ?? '')].length);
+  };
   const cover = (from, to) => {
     for (let line = from; line < Math.min(to, source.length); line += 1) {
       if (printed[line] === null) printed[line] = '';
@@ -77,7 +85,10 @@ function readDocument(text) {
     if (LINE_BREAK_TAG.test(tag)) print(line, ' ');
     if (A_TAG.test(tag)) {
       const href = HREF.exec(tag);
-      if (href) destinations[line].push(href[1] ?? href[2] ?? href[3]);
+      if (href) {
+        const value = href[1] ?? href[2] ?? href[3];
+        destinations[line].push(value.replace(CHARACTER_REFERENCE, (reference) => md.utils.unescapeAll(reference)));
+      }
     }
   };
 
@@ -135,6 +146,19 @@ function readDocument(text) {
     // An image's alternative text is printed where the image fails, and it
     // is no link.
     let inImage = false;
+    // A link's label is the link's text: a URL written there links to the
+    // destination, not to itself.
+    let inLink = false;
+    // Whether the text printed last belongs to the run the next text joins.
+    // An escape or a character reference is part of its run; any markup
+    // ends the run.
+    let joined = false;
+    const printText = (line, characters) => {
+      if (!joined) cut(line);
+      joined = true;
+      if (inImage || inLink) printUnlinked(line, characters);
+      else print(line, characters);
+    };
     const find = (needle) => {
       const at = content.indexOf(needle, cursor);
       if (at === -1) throw new Unmapped();
@@ -152,9 +176,7 @@ function readDocument(text) {
         const start = skipBlank(cursor + 1);
         const target = md.helpers.parseLinkDestination(content, start, content.length);
         if (!target.ok) throw new Unmapped();
-        let written = content.slice(start, target.pos);
-        if (written.startsWith('<') && written.endsWith('>')) written = written.slice(1, -1);
-        if (written) destinations[lineAt(start)].push(written);
+        if (target.str) destinations[lineAt(start)].push(target.str);
         let at = skipBlank(target.pos);
         if (at < content.length && content[at] !== ')') {
           const title = md.helpers.parseLinkTitle(content, at, content.length);
@@ -169,6 +191,7 @@ function readDocument(text) {
     };
     const walk = (children) => {
       for (const child of children) {
+        if (child.type !== 'text' && child.type !== 'text_special') joined = false;
         switch (child.type) {
           case 'text': {
             if (!child.content) break;
@@ -176,17 +199,15 @@ function readDocument(text) {
             if (inAutolink) {
               destinations[lineAt(at)].push(child.content);
               print(lineAt(at), ' ');
-            } else if (inImage) {
-              printUnlinked(lineAt(at), child.content);
             } else {
-              print(lineAt(at), child.content);
+              printText(lineAt(at), child.content);
             }
             cursor = at + child.content.length;
             break;
           }
           case 'text_special': {
             const at = find(child.markup);
-            print(lineAt(at), child.content);
+            printText(lineAt(at), child.content);
             cursor = at + child.markup.length;
             break;
           }
@@ -228,6 +249,7 @@ function readDocument(text) {
           }
           case 'link_open':
             inAutolink = child.markup === 'autolink';
+            inLink = !inAutolink;
             cursor = find(inAutolink ? '<' : '[') + 1;
             break;
           case 'link_close':
@@ -235,6 +257,7 @@ function readDocument(text) {
               inAutolink = false;
               cursor = find('>') + 1;
             } else {
+              inLink = false;
               cursor = find(']') + 1;
               afterLabel();
             }
@@ -246,6 +269,7 @@ function readDocument(text) {
             inImage = true;
             walk(child.children ?? []);
             inImage = false;
+            joined = false;
             cursor = find(']') + 1;
             afterLabel();
             break;
@@ -263,6 +287,7 @@ function readDocument(text) {
         printed[line] = source[line];
         destinations[line] = [];
         unlinked[line] = [];
+        cuts[line] = [];
       }
     }
   };
@@ -307,7 +332,7 @@ function readDocument(text) {
       htmlLines(token.content.replace(/\n$/, '').split('\n'), from);
     }
   }
-  const lines = source.map((raw, line) => [printed[line] ?? raw, hidden[line], destinations[line], unlinked[line]]);
+  const lines = source.map((raw, line) => [printed[line] ?? raw, hidden[line], destinations[line], unlinked[line], cuts[line]]);
   return { lines, unmapped, fences };
 }
 
