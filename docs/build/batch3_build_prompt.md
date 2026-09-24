@@ -6,7 +6,7 @@
 
 - **Status:** Active
 - **Owner:** Repository Maintainers
-- **Last Updated:** 2026-09-23
+- **Last Updated:** 2026-09-24
 - **Scope:** The complete build instruction for Batch 3 of the EFingPlanner curriculum -- the seven remaining destination-pack reference files, the eight remaining session-insert slots, the routing contract's conversion from inline-code filenames to links, and the edits to built pack files that keep one fact in one home. It carries every Batch 3 requirement, every applicable acceptance criterion, and the adjudicated answer to every open question raised against the batch. It does not cover Batches 0, 1, 2 or 4, and it is a build instruction rather than shipped curriculum.
 - **Related:** [Build prompt directory guide](README.md), [Batch 2 build brief](batch2_build_prompt.md), [Batch 1 build brief](batch1_build_prompt.md), [Build prompt template](_build_prompt_template.md), [Archived specification](../spec/specification.md)
 
@@ -219,6 +219,7 @@ section.** The **pack contents page** carries a curated Reference files list and
 inserts list, and **all fifteen new files go into them**, each with the one-line
 description the existing entries use. A batch that creates fifteen files and leaves the
 pack's browsing surface listing none of them has made its own work undiscoverable. The
+same page's fast-changing note becomes a short framing and a link to the watch (`B3-1`). The
 **routing contract** gets the link conversion of section 3.3, the `B3-10` row changes, the
 count and pack-state updates of section 3.4, and `Last Updated` bumped in the same commit,
 per the next paragraph.
@@ -228,9 +229,9 @@ documentation policy requires that field bumped in the same commit that changes 
 document's rendered content. They are the routing contract and `framework/CHANGELOG.md`.
 Bump both.
 
-**`Last reviewed` is a different field.** One built pack file only gains a link here: the
-money file. Its stamp says when a person last checked the facts, and linking checks
-nothing, so **leave that stamp alone.** **The glossary, the transport file and the
+**`Last reviewed` is a different field.** One built pack file only loses a sentence and
+gains links here: the money file. Its stamp says when a person last checked the facts, and
+trimming or linking checks nothing, so **leave that stamp alone.** **The glossary, the transport file and the
 major-cities file are the exceptions** (`B3-6`, 6.4, 6.2 and 6.3), because each gains
 content: new terms, a named planner, and the other-places draws and the stamp book's
 explanation. Re-check every entry in each against a current source, then set its stamp to the month of that check. The currency example keeps its own month unless its figure is
@@ -373,14 +374,14 @@ judgment only the owner can make.
 
 | | The question | The answer | Why |
 | --- | --- | --- | --- |
-| **B3-1** | The archived record asks for a short "access and pricing watch" checklist in the pack, cross-linked from three places and carrying its own freshness stamp. The built pack README carries a prose note covering the same categories. Is the note the watch? | **No. The watch gets its own file, `access_and_pricing_watch.md`**, and the pack README's note keeps its place as the short framing and links to it | Three things are asked of the watch that the note cannot do. It must be cross-linked *to* from the reservation, transit and budget surfaces, and a link into the middle of a README section is the kind of pointer that rots. It must carry its own `Last reviewed` stamp, and the README carries none. And it must list categories in a form a reader can work down before travel, which is a checklist rather than a paragraph. **This makes seven new reference files, not six** -- the count in section 2 includes it |
+| **B3-1** | The archived record asks for a short "access and pricing watch" checklist in the pack, cross-linked from three places and carrying its own freshness stamp. The built pack README carries a prose note covering the same categories. Is the note the watch? | **No. The watch gets its own file, `access_and_pricing_watch.md`**, and the pack README's note keeps a short framing and links to it in place of its own list of categories. The note also drops its claim that these rules "have been changing unusually fast": say they are the facts most likely to have changed since a page's `Last reviewed` date | Three things are asked of the watch that the note cannot do. It must be cross-linked *to* from the reservation, transit and budget surfaces, and a link into the middle of a README section is the kind of pointer that rots. It must carry its own `Last reviewed` stamp, and the README carries none. And it must list categories in a form a reader can work down before travel, which is a checklist rather than a paragraph. **This makes seven new reference files, not six** -- the count in section 2 includes it |
 | **B3-2** | Batch 2 rules that no built page prints an emergency number. Three other sentences put the numbers in the pack: Session 49's "**the pack has them**", Group B's "local emergency numbers ... belong in the pack's adult-logistics reference", and the built safety guide's "Your destination pack is where the destination-specific numbers ... belong". Which binds the pack? | **The stricter one. No file this batch writes prints an emergency number.** The pack names the official source the numbers come from, and says who can place the call. **The conflict is recorded as an open question for the owner**, not resolved by this brief | All of these sentences are merged, and they do not agree. An earlier draft of this brief resolved it by reading -- deciding "built page" must have meant framework pages -- and that is narrowing a safety rule on an inference. The safe reading costs little: the adult is already required to get the number from a current official page rather than from the pack, so a pack that routes to that page serves the instruction. **What the owner must decide** is whether those three sentences should say the pack names where to find the numbers. That is a Batch 4 edit to a merged brief and a built guide, outside this batch's scope. Until then, the built guide's own fallback applies: an adult takes the numbers from a current official source and dates the check |
 | **B3-3** | Where does the bathing-custom content live: `etiquette_basics.md`, the `47_language_etiquette.md` slot, or both? | **`etiquette_basics.md` carries it. The slot names it in one line and points there** | Section 3.2's rule, applied. The custom has rules of its own and an adult-owned age judgment attached, which is reference depth. A child mid-Session-47 needs to know it exists and that the pack explains it |
 | **B3-4** | The built `transportation_basics.md` already has a "Getting there and the arrival day" section. Does `airports_and_arrival_basics.md` duplicate it or replace it? | **Neither. The airport file takes the airport-to-city and settling-in lines, the origin-relative lines are dropped (5.1), and the transport file's section becomes a pointer** | One fact, one home. The arrival-day content is airport content that landed early because the airport file did not exist yet. Moving it is an edit to a built file, so it is named here explicitly: the transport file's section is reduced to a one-clause reminder plus a link, per the reader-economy rule |
 | **B3-5** | The built `major_cities.md` already carries "Other places people research" and "Fun things to consider". Do `19_other_places_menu.md` and `23_attraction_ideas.md` duplicate them? | **No. Both slots name a short set and point at `major_cities.md` for the rest** | The contract already says this for slot 19 in as many words. Slot 23 takes the same treatment for the same reason. What the slots add is the framing each session needs, which the reference does not carry |
 | **B3-6** | Does this batch extend `kid_glossary.md` with the new terms its files introduce (such as `sento` and `kashikiri`)? | **Yes, and it is an edit to a built file, so it is in scope and listed.** The same edit adds a link from the glossary to the generic `framework/student_guide/travel_glossary.md`, the cross-link the archived record asks for. The framework page names the pack in words only, so this is the one direction a link can run | The glossary is the child's route to any destination word they meet. A slot that uses `takkyubin` while the glossary does not define it has left a ten-year-old with an unglossed word. Check each term before adding: the built glossary already has ryokan, takkyubin, koban, konbini, goshuin and onsen. Adding a term means re-checking the whole glossary before its stamp moves (section 2) |
 | **B3-8** | The built `major_cities.md` already states the shoe-removal, greeting and photography guidance that `etiquette_basics.md` must carry, and already carries the attraction menu that `23_attraction_ideas.md` must supply. Two homes, or one? | **One. `major_cities.md` is added to scope**, its etiquette section becomes a pointer to `etiquette_basics.md`, and its attraction menu **stays** as the canonical menu that slot 23 points at | The same treatment `B3-4` gives the arrival day, for the same reason. The direction differs per fact: etiquette moves out, because `etiquette_basics.md` is the canonical home the contract routes Session 47 to; the attraction menu stays, because the contract already routes slot 19 to this reference for exactly that list and moving it would break a built route |
-| **B3-9** | The built `money_basics.md` already carries the per-person and per-room split, the child-fare note and the moving taxes. Does `adult_logistics.md` restate them? | **No, and `money_basics.md` is added to scope** for one edit: the link to `access_and_pricing_watch.md` goes beside its child-fare note, which is the budget surface the archived record names | Restating them would give three dated pages the same facts. The record asks for the watch to be cross-linked from the budget surface, and the budget surface is this file, not `adult_logistics.md`, which carries no child-fare note |
+| **B3-9** | The built `money_basics.md` already carries the per-person and per-room split, the child-fare note and the moving taxes. Does `adult_logistics.md` restate them? | **No, and `money_basics.md` is added to scope** for two edits: the link to `access_and_pricing_watch.md` goes beside its child-fare note, which is the budget surface the archived record names, and its per-room line points at `adult_logistics.md` for how many people a room holds, in place of its own sentence on the cap | Restating them would give three dated pages the same facts. The record asks for the watch to be cross-linked from the budget surface, and the budget surface is this file, not `adult_logistics.md`, which carries no child-fare note |
 | **B3-10** | `B3-8` has slot 23 point at `major_cities.md`, 5.7 has slot 42 point at `access_and_pricing_watch.md`, and 6.8 has slot 47 point at `money_basics.md`. None of them is in the slot's contract row. Are those undocumented routes? | **They would be, so each row gains its file.** Slot 23's Reference column becomes `food_basics.md`, `major_cities.md`; slot 42's becomes `access_and_pricing_watch.md`; slot 47's becomes `language_basics.md`, `etiquette_basics.md`, `money_basics.md` | `AC-29-1` asks that no fact reach a child by a route the contract does not carry. A slot pointing somewhere the row does not name is exactly that. Slot 23's row keeps `food_basics.md`, which is why it exists: food-type attractions. The watch lists categories and no examples, so slot 42 still owns its examples outright |
 | **B3-7** | The archived record names specific high-draw attractions and specific everyday options. Are those names requirements or examples? | **Requirements for the category, examples for the instance** | The record's own teaching point is that famous is not the only good, and it names everyday options precisely so the pack carries them. Write the categories it names. Within a category, an instance that has closed or moved gets replaced rather than preserved, because a pack naming a closed venue teaches the opposite of verify-don't-trust |
 
@@ -550,16 +551,19 @@ Must carry:
   priced per room with an occupancy cap; a traditional inn is the type usually priced per
   person. `money_basics.md` already carries that three-way split, so point at it rather
   than restating it (`B3-9`).
+  This page is the cap's one home: `money_basics.md`'s per-room line points here (`B3-9`).
 - **Lodging types from the adult side**, which is the depth behind the slot's one-line
   categories: what a traditional inn involves (tatami-mat rooms, futon bedding and a yukata
   robe; commonly shared or hot-spring baths and set meal times, which vary by inn, so an
   adult checks the one they book; and per-person pricing, which `money_basics.md` carries,
-  so point at it), what an apartment-style or family hotel offers a larger party, and what a
+  so point at it), what an apartment-style or family hotel offers a larger party (multi-person rooms with a
+  kitchen and living space, often letting a larger family stay in one room instead of
+  several), and what a
   licensed vacation rental involves: an adult checks that the property is currently licensed
   or registered before booking, and the page names no rental operator.
-- **Booking-lead reality as a category**, not a calendar: peak periods book out far ahead
-  at high prices, and adults book early. Point at `seasons_weather_events.md` for which
-  periods those are.
+- **Booking-lead reality as a category**, not a calendar: peak periods book out far ahead,
+  and adults book early. Point at `seasons_weather_events.md` for which periods those are
+  and what they cost, and do not restate either.
 - **The travel taxes: one clause and a pointer, not a treatment** (`B3-9`).
   `money_basics.md` already names the departure tax, the mechanics of tax-free shopping
   and city lodging and bathing taxes, verify-framed and with nothing pinned. A second
@@ -581,9 +585,9 @@ Must carry:
     That holds whatever the current requirement turns out to be.
 - **A pointer to `access_and_pricing_watch.md`** for the whole fast-moving category.
 - **Luggage handling, by name.** The built adult-only logistics page sends parents here for
-  which luggage services exist and what they are called. Name the ones that exist there,
-  one line each with the local word, and link `transportation_basics.md`, which explains
-  them.
+  which luggage services exist and what they are called. Name the ones that exist there
+  with their local words, in one sentence, and link `transportation_basics.md`, which
+  explains them; do not describe them again.
 - **A pointer to `safety_and_emergency.md`** for the emergency route, police posts and local
   hazards, which Batch 2's Group B lists under this file.
 
@@ -665,7 +669,11 @@ were volatile.
 **It lists categories and never current values, which is what makes it un-decayable.**
 Carry its own `Last reviewed` stamp.
 
-The categories, each one line, each with what specifically changes:
+The categories, each one line with what to re-check and a link to the page that explains
+it: `transportation_basics.md` for transit cards and rail passes, `money_basics.md` for
+dual pricing, child fares and taxes, `adult_logistics.md` for entry authorization, and
+`etiquette_basics.md` for access and photo limits. The watch restates nothing those pages
+carry:
 
 - Timed-entry and reservation systems: which attractions need one now.
 - Permit systems, including the mountain-climbing permit and fee.
@@ -949,7 +957,7 @@ the child will get wrong.
 - **The edits to built files**: the transport file's arrival-day section (`B3-4`), its
   watch link (5.7), and its named planner and full re-check (6.4), the
   glossary's new terms, its link to the travel glossary, and its full re-check (`B3-6`), the etiquette move out of `major_cities.md` (`B3-8`) and its new draws, places and stamp-book explanation (6.2, 6.3), the
-  watch link beside the child-fare note in `money_basics.md` (`B3-9`), and the pack
+  watch link beside the child-fare note in `money_basics.md` and its per-room pointer (`B3-9`), and the pack
   contents page.
 - **The version.** This batch adds fifteen destination files, and the changelog's own
   policy moves the minor number when destination files are added. **Promote the
