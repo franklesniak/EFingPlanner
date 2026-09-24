@@ -46,6 +46,7 @@ How to read the lines:
 - A *Conditional core* line is done when its condition holds.
 - A *Recommended* line is done only if your family chooses it.
 - A line that names a grown-up is one to do with a grown-up.
+- A line marked *more than one sitting* gets its tick only when the whole session is finished. If its Stop Point says you are done for today, wait.
 - A line under a session that starts *Finished First Taste first?* is extra work for that session on the Core path. If you started on the Core path, tick it along with its session.
 
 ### Phase 0 (Setup)
@@ -86,9 +87,9 @@ How to read the lines:
 
 ### Phase 4 (Attractions and Experiences)
 
-- [ ] [23 Attraction Research Cards](../sessions/phase_04_attractions_experiences/23_attraction_research_cards.md)
+- [ ] [23 Attraction Research Cards](../sessions/phase_04_attractions_experiences/23_attraction_research_cards.md) *(more than one sitting)*
 - [ ] [24 Culture, History, Nature, Food, and Fun Balance](../sessions/phase_04_attractions_experiences/24_culture_history_nature_food_fun_balance.md)
-- [ ] [25 Review Reviews Carefully](../sessions/phase_04_attractions_experiences/25_review_reviews_carefully.md) *(a grown-up stays nearby, and with you for any video)*
+- [ ] [25 Review Reviews Carefully](../sessions/phase_04_attractions_experiences/25_review_reviews_carefully.md) *(more than one sitting; a grown-up stays nearby, and with you for any video)*
 - [ ] [26 Rank Attractions](../sessions/phase_04_attractions_experiences/26_rank_attractions.md) *(choose your special pick with a grown-up)*
 - [ ] [27 Checkpoint 3 Top Experiences](../sessions/phase_04_attractions_experiences/27_checkpoint_3_top_experiences.md) *(Checkpoint 3: a grown-up reviews this)*
 
@@ -105,7 +106,7 @@ How to read the lines:
 - [ ] [33 Budget Basics, First Pass](../sessions/phase_06_lodging_food_budget/33_budget_basics_first_pass.md)
   - [ ] *Finished First Taste first?* Ask a grown-up to have their own cost of getting there ready for Session 39. If a traveler comes for only part of the trip, jot down who is there on which days.
 - [ ] [34 Neighborhoods and Hotel Location](../sessions/phase_06_lodging_food_budget/34_neighborhoods_and_hotel_location.md) *(a grown-up stays nearby if you search beyond the Destination Notes and official city sites, and beside you for an image search)*
-- [ ] [35 Hotel Comparison](../sessions/phase_06_lodging_food_budget/35_hotel_comparison.md)
+- [ ] [35 Hotel Comparison](../sessions/phase_06_lodging_food_budget/35_hotel_comparison.md) *(more than one sitting)*
 - [ ] [36 Food Research](../sessions/phase_06_lodging_food_budget/36_food_research.md) *(Conditional core: only if your family wants the restaurant and food shortlist in the binder; a grown-up stays nearby if you search beyond the Destination Notes, and beside you for an image search)*
 - [ ] [37 Restaurant Shortlist](../sessions/phase_06_lodging_food_budget/37_restaurant_shortlist.md) *(Conditional core: only if your family wants the restaurant and food shortlist in the binder; a grown-up stays nearby if you search beyond the Destination Notes, and beside you for an image search)*
 - [ ] [38 Daily Cost Estimates](../sessions/phase_06_lodging_food_budget/38_daily_cost_estimates.md)
@@ -114,12 +115,12 @@ How to read the lines:
 ### Phase 7 (Itinerary Building)
 
 - [ ] [40 Realistic Day Planning](../sessions/phase_07_itinerary_building/40_realistic_day_planning.md)
-- [ ] [41 Build Day Cards](../sessions/phase_07_itinerary_building/41_build_day_cards.md)
+- [ ] [41 Build Day Cards](../sessions/phase_07_itinerary_building/41_build_day_cards.md) *(more than one sitting)*
 - [ ] [42 Reservations and Timed Entries](../sessions/phase_07_itinerary_building/42_reservations_and_timed_entries.md)
 - [ ] [43 Rest Days, Jet Lag, and Pacing](../sessions/phase_07_itinerary_building/43_rest_days_jet_lag_and_pacing.md)
 - [ ] [44 Backup Plans and Cut List](../sessions/phase_07_itinerary_building/44_backup_plans_and_cut_list.md)
   - [ ] *Finished First Taste first?* Add your Checkpoint 2 and 3 skip and save notes to your cut list. Then write one line on your My Calls page saying your special pick still holds.
-- [ ] [45 Full Itinerary Draft](../sessions/phase_07_itinerary_building/45_full_itinerary_draft.md)
+- [ ] [45 Full Itinerary Draft](../sessions/phase_07_itinerary_building/45_full_itinerary_draft.md) *(more than one sitting)*
 - [ ] [46 Checkpoint 5 Itinerary Review](../sessions/phase_07_itinerary_building/46_checkpoint_5_itinerary_review.md) *(Checkpoint 5, the Core Finish Line: a grown-up reviews this)*
 
 ### Phase 8 (Readiness and Final)
@@ -127,7 +128,7 @@ How to read the lines:
 - [ ] [47 Language and Etiquette](../sessions/phase_08_readiness_final/47_language_and_etiquette.md) *(Conditional core: only if your family wants the language and etiquette quick sheet in the binder)*
 - [ ] [48 Packing List](../sessions/phase_08_readiness_final/48_packing_list.md)
 - [ ] [49 Travel Readiness Checklist](../sessions/phase_08_readiness_final/49_travel_readiness_checklist.md) *(say your staying-found plan out loud with a grown-up)*
-- [ ] [50 Final Binder Assembly](../sessions/phase_08_readiness_final/50_final_binder_assembly.md)
+- [ ] [50 Final Binder Assembly](../sessions/phase_08_readiness_final/50_final_binder_assembly.md) *(more than one sitting)*
 - [ ] [51 Final Presentation](../sessions/phase_08_readiness_final/51_final_presentation.md)
 - [ ] [52 Checkpoint 6 Family Decision Meeting](../sessions/phase_08_readiness_final/52_checkpoint_6_family_decision_meeting.md) *(Checkpoint 6: the family decision meeting, with the grown-ups)*
 - [ ] [53 Reflection and Handoff](../sessions/phase_08_readiness_final/53_reflection_and_handoff.md) *(finish line)*

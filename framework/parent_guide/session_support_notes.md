@@ -153,7 +153,7 @@ Want a rough signal of how the executive-function side is going? The optional [e
 
 - Role: Independent.
 - Prep: this session's Destination Notes; the City A and City B cards; the Checkpoint 1 season, or the season confirmation if the dates are booked.
-- Look for: City B's card with top sights, one memorable fact, at least one downside, a season-fit note, and at least one dated source, plus a note on how it compares with City A.
+- Look for: City B's card with top sights, one memorable fact, at least one downside, a season-fit note, and at least one dated source not used for City A, plus a note on how it compares with City A.
 - Coaching question: "What did you find there that City A doesn't have?"
 - Pitfall: answering "which city is better?" for them. Turn it back: "What did you find?"
 
@@ -241,14 +241,14 @@ Want a rough signal of how the executive-function side is going? The optional [e
 
 - Role: Independent, with a 5-minute check-in.
 - Prep: a device with a map app and the filter on; the city shortlist; the assumptions page, for the arrival and departure places; the city card for any whole region on the shortlist; the Checkpoint 3 must-do list, for a trip with one base.
-- Look for: route map notes with travel times between places, including the two end legs (where the family arrives to the overnight place it visits first, and the one it visits last to where it leaves, each skipped when the two places are the same or not yet set), the times from the base to each must-do on a trip with one base, day trips and overnight stays marked, and a left-to-right sketch.
+- Look for: route map notes with travel times between places, including the two end legs (where the family arrives to the overnight place it visits first, and the one it visits last to where it leaves, each skipped when the two places are the same or not yet set), the times from the base to each must-do on any trip with one base, even with day trips, day trips and overnight stays marked, and a left-to-right sketch.
 - Coaching question: "Which two places look close but take longest to reach?"
 - Pitfall: judging distance by eye. The Directions time is the answer.
 
 ## Session 29: How Long to Stay
 
-- Role: Independent.
-- Prep: the Trip-Basics card, for the maximum trip length or the booked length and for the time difference; the traveler profiles.
+- Role: Independent; beforehand, tell your child how long getting there takes and which flights land on a later date.
+- Prep: your two travel facts: whether getting there takes only a few hours, and a count of the flights that land on a later date, with no dates; the Trip-Basics card, for the maximum trip length or the booked length and for the time difference; the route map notes; the traveler profiles.
 - Look for: the real-days formula filled in, with a ½ over each 1 for a short journey and a "- 1 flight day" mark for each flight that lands on a later date; and nights for each overnight place that fit between the floor and the maximum, or that share out the booked trip.
 - Coaching question: "Where would one more night help most?"
 - Pitfall: treating the maximum as the target. For a mixed-stamina group, shorter and gentler usually works better.
@@ -327,8 +327,8 @@ Want a rough signal of how the executive-function side is going? The optional [e
 
 ## Session 39: Budget Review, Second Pass
 
-- Role: Independent; parent review after the session. Keep your own cost of getting there on your own page.
-- Prep: the Session 33 budget estimate and a blank Budget Estimate page for this pass; the daily cost table and the hotel cards; the route and nights approved at Checkpoint 4, with the route map notes; the city card for any region on the route, for its town; the My Calls page, for the special pick; the attraction cards, if the special pick hits a block; the Session 33 part-trip note, if there is one, for a row per room count; the Trip-Basics card, for the number of travelers; the assumptions page, for the budget band.
+- Role: Independent; beforehand, tell your child how many rooms each overnight city needs. Parent review after the session. Keep your own cost of getting there on your own page.
+- Prep: your answer on how many rooms each overnight city needs, with a count for each part of a stay when the group changes; the Session 33 budget estimate and a blank Budget Estimate page for this pass; the daily cost table and the hotel cards; the route and nights approved at Checkpoint 4, with the route map notes; the city card for any region on the route, for its town; the My Calls page, for the special pick; the attraction cards, if the special pick hits a block; the Session 33 part-trip note, if there is one, for a row per room count; the Trip-Basics card, for the number of travelers; the assumptions page, for the budget band.
 - Look for: a second-pass budget on the fresh page, matching the route and nights approved at Checkpoint 4, with food multiplied by the plan's total days, a row for each room count in a city where the number of travelers changes mid-stay, the subtotal added up, the matching piece checked against the band, and one sentence on whether the slices fit, with what your child would change if they don't. If a block stopped the special pick, a new one chosen with you from the attraction cards; the blocked one needs no more research.
 - Coaching question: "If it doesn't fit, what would you cut first?"
 - Pitfall: reading the result as the trip's cost. It's a partial floor, and "change the trip or wait" is a good answer.
