@@ -2,6 +2,11 @@
 
 The script is loaded by file path because its filename is hyphenated, matching
 the pattern used by `tests/test_check_prohibited_placeholders.py`.
+
+The docstrings below cite markdown-it 14.3.0, the version each case was
+measured on. markdown-it 15.0.2, which the repository now installs, renders
+every input this suite passes the same way, except a lowercase declaration,
+where the tests follow GitHub's renderer.
 """
 
 from __future__ import annotations
@@ -2874,11 +2879,12 @@ def test_a_type_seven_html_block_does_not_end_a_paragraph() -> None:
 def test_a_lowercase_declaration_does_not_end_a_paragraph() -> None:
     """A negative control, and the same split between the two renderers.
 
-    markdown-it 14.3.0 wants an uppercase letter after ``<!``; the CommonMark
-    0.31.2 prose says "an ASCII letter" and micromark 4.0.2 reads it that way.
-    This module follows the renderer the repository measures a page against,
-    as the sibling hooks do, so ``<!doctype html>`` opens no block and the span
-    crosses it.
+    GitHub's renderer wants an uppercase letter after ``<!``, and so did
+    markdown-it 14.3.0; the CommonMark 0.31.2 prose says "an ASCII letter",
+    and micromark 4.0.2 and markdown-it 15.0.2 read it that way. This module
+    follows GitHub, as the sibling hooks do, so ``<!doctype html>`` opens no
+    block and the span crosses it. Measured through GitHub's Markdown API:
+    the code span runs over the declaration's line.
     """
     text = f"Use {TICK}open\n<!doctype html>\n{CHILD_SENTENCE} {TICK}today.\n"
     assert CHILD_SENTENCE not in readability.strip_code_spans(text)
@@ -4388,7 +4394,8 @@ def test_a_lowercase_inline_declaration_is_not_a_declaration() -> None:
     Two grammars, and this follows the one the reader sees. CommonMark
     0.31.2 says ``<!``, an ASCII letter, characters, ``>``; markdown-it
     14.3.0 and micromark 4.0.2 implement exactly that and agree with each
-    other on all 92 spellings measured. GitHub's own renderer wants one or
+    other on all 92 spellings measured, and markdown-it 15.0.2's inline
+    grammar is the same pattern. GitHub's own renderer wants one or
     more *uppercase* letters and then whitespace, and the two readings part
     on 45 of those 92. So ``<!foo `` is text on the page: the backtick
     after it opens a code span, and the marker inside that span is code
@@ -4415,7 +4422,9 @@ def test_a_block_declaration_still_needs_an_uppercase_letter() -> None:
     Measured on both renderers this time: ``<!FOO`` on a line of its own
     opens a raw HTML block that runs to the line holding ``>``, so a
     heading inside it is not a heading, and ``<!doctype html`` opens no
-    block -- markdown-it 14.3.0 and GitHub agree, and a lowercase opener
+    block on GitHub, as on markdown-it 14.3.0 -- 15.0.2 opens one, as
+    CommonMark 0.31.2 says, and this module follows GitHub -- and a
+    lowercase opener
     under a delimiter row is one more table row on GitHub rather than the
     end of the table. The inline production took any ASCII letter and now
     takes the same uppercase name the block condition does, so the two
@@ -6631,7 +6640,8 @@ def test_a_lowercase_declaration_opens_no_run_here_either() -> None:
     """The page-level walks follow the same condition 4 the block machine does.
 
     ``<!doctype a`` has no upper-case letter after ``<!``, which is what
-    markdown-it 14.3.0 wants for block condition 4, and no closing ``>``, so
+    GitHub's renderer wants for block condition 4, as markdown-it 14.3.0 did
+    and 15.0.2 does not, and no closing ``>``, so
     it is no complete inline declaration either. The renderer escapes it and
     prints it, and every word below it is prose. Opening a run there took a
     document of twenty-four words down to six.
@@ -7076,6 +7086,8 @@ def test_inline_comment_end_answers_both_layers() -> None:
         ("<!-- a --->", -1),
         ("<!-- a ---> b -->", 11),
         ("<!-- a", -1),
+        ("<!-- a --!> b -->", 11),
+        ("<!-- a --!>", -1),
     )
     for text, expected in cases:
         assert readability.inline_comment_end(text, 0) == expected, text
@@ -7096,6 +7108,7 @@ def test_the_two_hooks_read_a_comment_alike() -> None:
         "<!-- a ---> b -->",
         "<!-- a -- b -->",
         "<!-- a",
+        "<!-- a --!> b -->",
     ):
         assert readability.inline_comment_end(text, 0) == other.inline_comment_end(
             text, 0
@@ -7450,3 +7463,34 @@ def test_a_closed_inline_text_state_element_still_fails_the_file(tmp_path: Path)
     failure = readability.text_state_failure(document, "x.md")
     assert failure is not None
     assert failure.status == "fail"
+
+
+def test_a_tag_is_read_whole_before_its_words_are_counted() -> None:
+    """A ``>`` inside a quoted value belongs to the value, not to the prose.
+
+    The attribute run was ``[^<>]*``, which ended the tag at its first ``>``
+    and left the rest of the value as words a child is scored on. GitHub
+    renders only ``Hi there.``.
+    """
+    assert readability.extract_prose(
+        'Hi <span title="a > big words here">there</span>.'
+    ).split() == ["Hi", "there", "."]
+    assert readability.extract_prose(
+        '<textarea title="a > b">words here</textarea>'
+    ).split() == ["words", "here"]
+
+
+def test_a_comment_the_page_closes_with_a_bang_still_carries_its_marker() -> None:
+    """``--!>`` closes a comment on the page, so a marker it closes is a marker.
+
+    The pattern wanted ``-->``, and an audience marker the page closes with
+    ``--!>`` was read as no marker at all when no ``-->`` came after it.
+    """
+    assert readability.has_adult_marker("<!-- audience: adult --!>\n\nWords.\n")
+    assert not readability.has_adult_marker("<!-- audience: --!> adult -->\n\nWords.\n")
+
+
+def test_the_words_after_a_bang_closer_are_scored() -> None:
+    """The page prints what follows ``--!>`` up to the ``-->``, so it is prose."""
+    prose = readability.extract_prose("Head. <!-- a --!> tail words --> more.")
+    assert "tail" in prose.split(), prose

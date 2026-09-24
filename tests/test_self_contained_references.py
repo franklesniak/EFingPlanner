@@ -111,11 +111,12 @@ beside it:
   markup prints nothing where it forms markup and prints as itself where it
   does not, a character reference prints its character, a code span its
   content, and a tag's attributes and a link's title print nothing and link
-  nothing; an ``a`` tag's ``href`` is a link, decoded as a browser decodes
-  an attribute, and a link's destination is decoded as CommonMark decodes
-  it. **A link covers its text**: its destination resolves a reference on
-  every line of its label, and an ``a`` tag's on every line up to its end
-  tag. **An image links nothing**: GitHub wraps one in a link to the image
+  nothing; an ``a`` tag's ``href`` is a link, decoded as GitHub decodes
+  raw HTML in a file, and a link's destination is decoded as CommonMark
+  decodes it. **A link covers its content**: its destination resolves a
+  reference on each line where its text, code or image stands, and a link
+  that shows nothing resolves nothing. **An image links nothing**: GitHub
+  wraps one in a link to the image
   itself, through its image proxy for another host. **A bare URL links
   where GitHub finds it** (``markdown_links``): in a paragraph's source,
   from a start the text leaves plain -- not in code, a link's label or an
@@ -130,11 +131,12 @@ beside it:
   GitHub renders with its own parser, and three differences are known: a
   strikethrough between single tildes, which GitHub prints and markdown-it
   leaves as tildes; footnotes, which markdown-it leaves as text; and the
-  escaping GitHub gives a link's URL. It writes a backslash, a bracket and
-  any character outside a small set as a percent escape, so a browser reads
-  no backslash there as a slash, and a bracketed IPv6 host there names
-  nothing. The scan reads the URL as written; the repository holds no such
-  link. In every
+  escaping GitHub gives a link's URL. It writes a backslash and any
+  character outside a small set as a percent escape, so a browser reads no
+  backslash there as a slash. The scan reads a backslash as written; the
+  repository holds no such link. It writes ``[`` and ``]`` as GitHub does, so
+  a bracketed IPv6 host in a Markdown link names nothing, and a bare URL
+  with one links nothing. In every
   file, one kind of break is left unread: a block comment's ``*`` at the
   start of each line looks like a list item, so two such lines are read as
   two items. The curriculum hooks still read Markdown by hand; whether they
@@ -205,6 +207,11 @@ REQUIRED_MEMBERS = (
 #: scope, and a hash written here is a reference in a swept file. The first
 #: draft of the narrowing wrote all nine of them into this module, and the scan
 #: reported all nine -- the check working on its author.
+#:
+#: **A row names the words around its occurrence, too** (``occurrence_context``).
+#: Keyed by path and text alone, a row moved: delete the occurrence it was
+#: written for, write the same text into another sentence of that file, and the
+#: row excused the new one while the count still matched.
 EXEMPTIONS = (
     REPO_ROOT / "tests" / "fixtures" / "self_contained_references" / "exemptions.tsv"
 )
@@ -216,8 +223,8 @@ URL_RESOLUTION_CASES = (
 )
 
 
-def exemption_rows() -> tuple[tuple[str, str, str, int, str], ...]:
-    """Return the exemptions as ``(kind, path, occurrence, count, reason)``.
+def exemption_rows() -> tuple[tuple[str, str, str, str, int, str], ...]:
+    """Return the exemptions as ``(kind, path, occurrence, context, count, reason)``.
 
     **The count is the fifth field and it is the point.** Without it a row
     exempted every identical match in a file rather than the one it was
@@ -226,6 +233,13 @@ def exemption_rows() -> tuple[tuple[str, str, str, int, str], ...]:
     carrying those same characters anywhere in that file was silently
     ignored. With it, each exemption is consumed a stated number of times and
     the next match is reported.
+
+    **The context is the fourth, and it is what keeps the count honest.** It is
+    the words around the occurrence, as ``occurrence_context`` gives them, and
+    a row is spent only on an occurrence that stands in those words. Without it
+    a row followed its text anywhere in the file: the occurrence it was written
+    for could be deleted and the same text written into another sentence, and
+    the count still matched.
 
     A row with the wrong number of fields raises rather than being skipped: a
     loader that drops what it cannot read turns an exemption file into an empty
@@ -239,17 +253,17 @@ def exemption_rows() -> tuple[tuple[str, str, str, int, str], ...]:
     any other kind raises, and a name that names a review run is renamed.
     """
     text = EXEMPTIONS.read_text(encoding="utf-8")
-    rows: list[tuple[str, str, str, int, str]] = []
+    rows: list[tuple[str, str, str, str, int, str]] = []
     for number, line in enumerate(text.split("\n"), start=1):
         if not line.strip():
             continue
         fields = line.split("\t")
-        if len(fields) != 5:
+        if len(fields) != 6:
             raise AssertionError(
                 f"{EXEMPTIONS.name}:{number} holds {len(fields)} field(s); "
-                "every row is kind, path, occurrence, count, reason"
+                "every row is kind, path, occurrence, context, count, reason"
             )
-        kind, path, occurrence, count, reason = fields
+        kind, path, occurrence, context, count, reason = fields
         if kind != "text":
             raise AssertionError(
                 f"{EXEMPTIONS.name}:{number} names the kind {kind!r}; the "
@@ -261,7 +275,7 @@ def exemption_rows() -> tuple[tuple[str, str, str, int, str], ...]:
                 f"{EXEMPTIONS.name}:{number} gives the count {count!r}; it is "
                 "a whole number of occurrences, at least one"
             )
-        rows.append((kind, path, occurrence, int(count), reason))
+        rows.append((kind, path, occurrence, context, int(count), reason))
     if not rows:
         raise AssertionError(
             f"{EXEMPTIONS.name} holds no row, so either every exemption has "
@@ -270,11 +284,33 @@ def exemption_rows() -> tuple[tuple[str, str, str, int, str], ...]:
     return tuple(rows)
 
 
-def exempt_texts() -> tuple[tuple[str, str, int, str], ...]:
-    """Return the text exemptions as ``(path, occurrence, count, reason)``."""
+def exempt_texts() -> tuple[tuple[str, str, str, int, str], ...]:
+    """Return the text exemptions as ``(path, occurrence, context, count, reason)``."""
     return tuple(
-        (p, o, c, r) for kind, p, o, c, r in exemption_rows() if kind == "text"
+        (p, o, x, c, r) for kind, p, o, x, c, r in exemption_rows() if kind == "text"
     )
+
+
+#: How many words either side of an occurrence bind an exemption to it.
+EXEMPTION_CONTEXT_WORDS = 3
+
+
+def occurrence_context(text: str, start: int, end: int) -> str:
+    """Return the words around ``text[start:end]`` that bind an exemption to it.
+
+    The occurrence is widened to the whole words it stands in, and up to
+    ``EXEMPTION_CONTEXT_WORDS`` words either side are added. ``text`` is the
+    reading the scan reports the occurrence in: the printed text of a Markdown
+    line, the line itself in any other file, or neighbouring lines joined for
+    a reference that crosses a break. Runs of white space become one space.
+    """
+    while start > 0 and not text[start - 1].isspace():
+        start -= 1
+    while end < len(text) and not text[end].isspace():
+        end += 1
+    before = text[:start].split()[::-1][:EXEMPTION_CONTEXT_WORDS][::-1]
+    after = text[end:].split()[:EXEMPTION_CONTEXT_WORDS]
+    return " ".join([*before, *text[start:end].split(), *after])
 
 
 #: **Every pattern speaks for every file.** A few documents discuss a review
@@ -1862,15 +1898,19 @@ def is_a_colour(
 def references_in(
     path: Path,
     root: Path,
-    exempt: dict[str, int] | None = None,
+    exempt: dict[tuple[str, str], int] | None = None,
     *,
     python: bool | None = None,
+    contexts: list[tuple[str, str]] | None = None,
 ) -> list[str]:
     """Return one message per reference in ``path`` that resolves only elsewhere.
 
-    ``exempt`` holds the matched texts recorded for **this file** in
-    the exemption fixture. A caller that passes nothing gets the rule unexempted,
-    which is what the test that proves each exemption still occurs needs.
+    ``exempt`` holds the matched texts recorded for **this file** in the
+    exemption fixture, each with the words around it (``occurrence_context``)
+    and a count. A caller that passes nothing gets the rule unexempted, which
+    is what the test that proves each exemption still occurs needs. A caller
+    that passes ``contexts`` gets, beside each message, the text and the words
+    around it, in the same order.
 
     Each line is read as two texts in a Markdown file: what the page prints
     from it, and what an HTML comment on it hides, as markdown-it reads the
@@ -1955,9 +1995,16 @@ def references_in(
                 # was reported: the same two lines passed in one order and
                 # failed in the other. The test that proves each row still
                 # occurs counts unresolved occurrences, so the two now agree.
-                if budget.get(matched):
-                    budget[matched] -= 1
+                #
+                # **And only on the occurrence standing in the words the row
+                # records.** A row keyed by its text alone followed that text to
+                # any other sentence in the file.
+                key = (matched, occurrence_context(scanned, match.start(), match.end()))
+                if budget.get(key):
+                    budget[key] -= 1
                     continue
+                if contexts is not None:
+                    contexts.append(key)
                 found.append(f"{relative}:{number}: {name}: {matched!r}")
 
     # Per line: the shown text and the URLs that resolve it, then the hidden
@@ -2062,12 +2109,12 @@ def references_in(
     return found
 
 
-def exempt_texts_for(relative: str) -> dict[str, int]:
-    """Return how many occurrences of each text are exempt in one file."""
-    budget: dict[str, int] = {}
-    for name, text, count, _reason in exempt_texts():
+def exempt_texts_for(relative: str) -> dict[tuple[str, str], int]:
+    """Return how many occurrences of each text, in each context, are exempt in one file."""
+    budget: dict[tuple[str, str], int] = {}
+    for name, text, context, count, _reason in exempt_texts():
         if name == relative:
-            budget[text] = budget.get(text, 0) + count
+            budget[(text, context)] = budget.get((text, context), 0) + count
     return budget
 
 
@@ -2257,7 +2304,7 @@ def exempt_paths() -> set[str]:
     other file, with the one recorded occurrence skipped; naming it here says
     only that somebody wrote a reason down for something inside it.
     """
-    return {name for name, _text, _count, _reason in exempt_texts()}
+    return {name for name, _text, _context, _count, _reason in exempt_texts()}
 
 
 def scoped_paths() -> list[Path]:
@@ -2341,19 +2388,23 @@ def test_every_exempt_occurrence_still_occurs() -> None:
     every line of seven files.
     """
     tracked = {path.relative_to(REPO_ROOT).as_posix() for path in tracked_text_files()}
-    for name, text, count, reason in exempt_texts():
+    for name, text, context, count, reason in exempt_texts():
         assert name in tracked, f"{name} is named in an exemption and is not tracked"
-        reported = references_in(REPO_ROOT / name, REPO_ROOT)
-        found = sum(1 for message in reported if message.endswith(repr(text)))
+        seen: list[tuple[str, str]] = []
+        references_in(REPO_ROOT / name, REPO_ROOT, contexts=seen)
+        found = seen.count((text, context))
         # **The count is compared, not just its being non-zero.** Asking only
         # whether *any* match remains left a row declaring 38 valid at 37, and
         # the spare budget then absorbed a genuine new occurrence in silence --
         # which is the hole the count was added to close, left open in the
-        # check that guards it.
+        # check that guards it. And it is compared in the row's own words, so
+        # a row whose occurrence has moved to another sentence fails here.
         assert found == count, (
-            f"{name} is exempt for {count} occurrence(s) of {text!r} because it "
-            f"is {reason}, and the scan now reports {found}. Correct the count, "
-            "or delete the entry if the reason has gone."
+            f"{name} is exempt for {count} occurrence(s) of {text!r} in "
+            f"{context!r} because it is {reason}, and the scan now reports "
+            f"{found} there. It reports this text in: "
+            f"{sorted({c for t, c in seen if t == text})!r}. Correct the row, "
+            "or delete it if the reason has gone."
         )
 
 
@@ -2657,21 +2708,27 @@ def test_the_scope_failure_says_how_much_it_did_collect() -> None:
 
 
 @pytest.mark.parametrize(
-    "name,occurrence,count,reason", list(exempt_texts())
+    "name,occurrence,context,count,reason", list(exempt_texts())
 )
 def test_each_exemption_names_a_path_an_occurrence_and_a_reason(
-    name: str, occurrence: str, count: int, reason: str
+    name: str, occurrence: str, context: str, count: int, reason: str
 ) -> None:
-    """An entry with an empty reason is an exemption nobody has to defend."""
+    """An entry with an empty reason is an exemption nobody has to defend.
+
+    Its context holds its occurrence, written as ``occurrence_context`` writes
+    one, so a row cannot name words the scan never gives.
+    """
     assert (REPO_ROOT / name).is_file(), name
     assert occurrence and occurrence.strip() == occurrence
+    assert occurrence in context, (occurrence, context)
+    assert context == " ".join(context.split()), context
     assert count >= 1
     assert len(reason.split()) >= 2
 
 
 def test_no_two_exemptions_are_the_same_entry() -> None:
     """A duplicate entry is one nobody would notice going stale."""
-    texts = [(name, text) for name, text, _c, _r in exempt_texts()]
+    texts = [(name, text, context) for name, text, context, _c, _r in exempt_texts()]
     assert len(set(texts)) == len(texts), texts
 
 
@@ -2806,9 +2863,13 @@ def test_a_concept_document_is_excused_only_for_what_it_records(
     # one more occurrence of the same words is reported.
     recorded = exempt_texts_for("CLAUDE.md")
     assert recorded, "the fixture records the loop document's conceptual uses"
-    occurrence, count = sorted(recorded.items())[0]
+    (occurrence, context), count = sorted(recorded.items())[0]
     sample = tmp_path / "CLAUDE.md"
-    sample.write_text(("x " + occurrence + "\n") * (count + 1), encoding="utf-8")
+    sample.write_text((context + "\n\n") * (count + 1), encoding="utf-8")
+    assert len(references_in(sample, tmp_path, recorded)) == 1
+
+    # The same words in another sentence are not the recorded use.
+    sample.write_text("x " + occurrence + "\n", encoding="utf-8")
     assert len(references_in(sample, tmp_path, recorded)) == 1
 
 
@@ -2836,12 +2897,12 @@ def test_an_exemption_is_spent_on_the_occurrences_it_records(tmp_path: Path) -> 
     """
     token = "0123456789" + "abcdef" + "0123456789" + "abcdef" + "01234567"
     sample = tmp_path / "a.py"
-    sample.write_text("# one %s\n# two %s\n# three %s\n" % (token, token, token),
-                      encoding="utf-8")
+    sample.write_text(("# one %s\n" % token) * 3, encoding="utf-8")
+    key = (token, "# one " + token)
     assert len(references_in(sample, tmp_path)) == 3
-    assert len(references_in(sample, tmp_path, {token: 1})) == 2
-    assert len(references_in(sample, tmp_path, {token: 2})) == 1
-    assert len(references_in(sample, tmp_path, {token: 3})) == 0
+    assert len(references_in(sample, tmp_path, {key: 1})) == 2
+    assert len(references_in(sample, tmp_path, {key: 2})) == 1
+    assert len(references_in(sample, tmp_path, {key: 3})) == 0
 
 
 def test_no_tracker_issue_number_survives_in_an_identifier() -> None:
@@ -3159,10 +3220,11 @@ def test_every_declared_count_matches_what_the_scan_reports() -> None:
     whole fixture. This one names the property so a reader grepping for
     "count" finds it, and fails the same way.
     """
-    for name, text, count, _reason in exempt_texts():
-        reported = references_in(REPO_ROOT / name, REPO_ROOT)
-        found = sum(1 for message in reported if message.endswith(repr(text)))
-        assert found == count, (name, text, count, found)
+    for name, text, context, count, _reason in exempt_texts():
+        seen: list[tuple[str, str]] = []
+        references_in(REPO_ROOT / name, REPO_ROOT, contexts=seen)
+        found = seen.count((text, context))
+        assert found == count, (name, text, context, count, found)
 
 
 def test_the_identifier_pass_reads_a_file_with_no_syntax_tree(tmp_path: Path) -> None:
@@ -4241,7 +4303,7 @@ def test_an_identifier_is_renamed_and_never_exempted(
     name = "review" + "_round_42"
     fake = tmp_path / "exemptions.tsv"
     fake.write_text(
-        tab.join(("name", "a.py", name, "1", "a declared name")) + newline,
+        tab.join(("name", "a.py", name, name + " = 1", "1", "a declared name")) + newline,
         encoding="utf-8",
     )
     monkeypatch.setitem(globals(), "EXEMPTIONS", fake)
@@ -4443,7 +4505,7 @@ def test_an_exemption_is_spent_only_where_nothing_else_resolves(tmp_path: Path) 
     for body in (linked + newline * 2 + reference, reference + newline * 2 + linked):
         sample.write_text(body + newline, encoding="utf-8")
         assert references_in(sample, tmp_path) != [], body
-        assert references_in(sample, tmp_path, {reference: 1}) == [], body
+        assert references_in(sample, tmp_path, {(reference, reference): 1}) == [], body
 
 
 def test_a_tag_attribute_or_a_link_title_links_nothing(tmp_path: Path) -> None:
@@ -5175,8 +5237,8 @@ def test_a_link_covers_every_line_of_its_text(tmp_path: Path) -> None:
 
     The destination was given only to the line it is written on, so a label
     that wraps left its first line's reference unlinked, and the valid link
-    failed the gate. An ``a`` tag's destination covers its text up to the end
-    tag in the same way, inline and in an HTML block.
+    failed the gate. An ``a`` tag's destination covers each line its text
+    stands on in the same way, inline and in an HTML block.
     """
     newline = chr(10)
     reference = "issue" + " " + "27"
@@ -5361,3 +5423,235 @@ def test_a_pin_in_a_block_scalar_is_read_on_the_line_of_its_hash(tmp_path: Path)
     # A literal block keeps its line break, and a pin with one is no pin.
     literal = "- uses: |" + newline + "    " + pin
     assert _reported_at(tmp_path, WORKFLOW, _workflow(literal))
+
+
+def test_a_tag_ends_at_the_first_bracket_outside_a_quoted_value(tmp_path: Path) -> None:
+    """A ``>`` inside a quoted attribute value belongs to the value.
+
+    The reader ended a tag at its first ``>``, so an ``a`` tag in an HTML block
+    whose ``href`` held one lost its destination, and the reference it links
+    was reported. A tag is read now as the HTML tokenizer reads one: over lines,
+    and with a comment opener in a value as the value's text. GitHub's renderer
+    links each reference here.
+    """
+    reference = "issue" + " " + "27"
+    url = "https://github.com/o/r/issues/27"
+    quote = chr(34)
+    newline = chr(10)
+    for body in (
+        "<div><a href=" + quote + url + "?x=>" + quote + ">" + reference + "</a></div>",
+        "<div><a title=" + quote + "a > b" + quote + " href=" + quote + url + quote + ">"
+        + reference + "</a></div>",
+        "<div><a" + newline + "href=" + quote + url + quote + ">" + reference + "</a></div>",
+        "<div title=" + quote + "<!--" + quote + ">" + reference + " " + url + "</div>",
+    ):
+        assert not _reported(tmp_path, body), body
+
+
+def test_an_anchor_takes_its_href_from_its_own_attribute(tmp_path: Path) -> None:
+    """``href=`` written inside another attribute's value is that value's text.
+
+    The destination was searched for in the tag's characters and found in a
+    ``title``, so the reference beside the tag was resolved by a URL the
+    anchor does not link to. GitHub links it to the second attribute's URL.
+    """
+    reference = "issue" + " " + "27"
+    quote = chr(34)
+    anchor = (
+        "<a title=" + quote + " href=https://github.com/o/r/issues/27" + quote
+        + " href=" + quote + "https://example.com/" + quote + ">" + reference + "</a>"
+    )
+    assert _reported(tmp_path, anchor)
+    assert _reported(tmp_path, "<div>" + chr(10) + anchor + chr(10) + "</div>")
+
+
+def test_a_link_that_shows_nothing_links_nothing(tmp_path: Path) -> None:
+    """A destination is given only to lines where its link shows something.
+
+    GitHub renders an ``a`` tag with nothing before its end tag, an ``a`` tag
+    that ends ``/>`` and ``[](...)`` as links with no text, and ``[ ](...)`` and
+    a no-break space as links holding a space. A reader has nothing to follow
+    in any of them, so none resolves the reference beside it. The destination
+    was recorded at the tag, and at a Markdown link's label, before anything
+    in it was read. An image is content, so a link around one still resolves.
+    """
+    reference = "issue" + " " + "27"
+    url = "https://github.com/o/r/issues/27"
+    quote = chr(34)
+    newline = chr(10)
+    href = "<a href=" + quote + url + quote
+    for body in (
+        href + "></a> " + reference,
+        href + "/> " + reference,
+        "<div>" + newline + href + "></a> " + reference + newline + "</div>",
+        "<div>" + href + "/> " + reference + "</div>",
+        "[](" + url + ") " + reference,
+        "[ ](" + url + ") " + reference,
+        href + ">&nbsp;</a> " + reference,
+    ):
+        assert _reported(tmp_path, body), body
+    image = "<img src=" + quote + "https://example.com/i.png" + quote + " alt=" + quote + quote + ">"
+    for body in (
+        href + ">" + reference + "</a>",
+        "[" + reference + "](" + url + ")",
+        "<div>" + href + ">" + image + "</a> " + reference + "</div>",
+        "[![x](https://example.com/i.png)](" + url + ") " + reference,
+    ):
+        assert not _reported(tmp_path, body), body
+
+
+def test_a_link_covers_only_the_lines_its_content_stands_on(tmp_path: Path) -> None:
+    """A link's destination reaches no line its content does not.
+
+    An ``a`` tag's destination was given to its tag's line and to its end
+    tag's, and a Markdown link's to the line its destination starts on, so a
+    reference beside the link on those lines was resolved from outside the
+    link. GitHub renders each as text beside a link.
+    """
+    reference = "issue" + " " + "27"
+    url = "https://github.com/o/r/issues/27"
+    quote = chr(34)
+    newline = chr(10)
+    href = "<a href=" + quote + url + quote + ">"
+    for body in (
+        reference + " " + href + newline + "here</a>",
+        href + "here" + newline + "</a> " + reference,
+        "[here](" + newline + url + ") " + reference,
+    ):
+        assert _reported(tmp_path, body), body
+
+
+def test_a_comment_ends_where_the_page_ends_it(tmp_path: Path) -> None:
+    """``<!-->``, ``<!--->`` and ``--!>`` end a comment, and what follows prints.
+
+    GitHub's page is an HTML parser's reading of the raw HTML. Its tokenizer
+    closes a comment at ``--!>`` as at ``-->``, and reads ``<!-->`` and
+    ``<!--->`` as empty comments, in an HTML block and in a paragraph alike.
+    The reader hid the text after each, so a URL there linked nothing, and the
+    reference it links was reported.
+    """
+    reference = "issue" + " " + "27"
+    url = "https://github.com/o/r/issues/27"
+    for body in (
+        "<!--> " + reference + " " + url + " <!-- x -->",
+        "<!---> " + reference + " " + url + " <!-- x -->",
+        "<div><!-- a --!> " + reference + " " + url + " --></div>",
+        "Text <!-- a --!> " + reference + " " + url + " --> end.",
+    ):
+        assert not _reported(tmp_path, body), body
+
+
+def test_an_exemption_stays_with_the_words_it_was_written_for(tmp_path: Path) -> None:
+    """A row is spent only on an occurrence standing in the words it records.
+
+    Keyed by path and text alone, a row moved with its text: the occurrence it
+    was written for could be deleted and the same text written into another
+    sentence of the file, and both reconciliation checks still passed, because
+    the file still held one occurrence and the row excused it.
+    """
+    reference = "issue" + " " + "632"
+    newline = chr(10)
+    sample = tmp_path / "a.yml"
+    sample.write_text("basis: removed in " + reference + "." + newline, encoding="utf-8")
+    seen: list[tuple[str, str]] = []
+    assert len(references_in(sample, tmp_path, contexts=seen)) == 1
+    assert seen == [(reference, "basis: removed in " + reference + ".")]
+    row = {seen[0]: 1}
+    assert references_in(sample, tmp_path, row) == []
+    # The recorded occurrence goes, and the same words arrive in another sentence.
+    sample.write_text(
+        "basis: removed." + newline + "# prose: see " + reference + "." + newline,
+        encoding="utf-8",
+    )
+    moved: list[tuple[str, str]] = []
+    assert len(references_in(sample, tmp_path, row, contexts=moved)) == 1
+    assert moved == [(reference, "# prose: see " + reference + ".")]
+    # Words the context does not reach may change.
+    sample.write_text(
+        "basis: removed in " + reference + "." + newline + "note: unrelated" + newline,
+        encoding="utf-8",
+    )
+    assert references_in(sample, tmp_path, row) == []
+
+
+def test_occurrence_context_takes_whole_words_either_side() -> None:
+    """The context is the occurrence's own words and three either side."""
+    text = "one two three four issue-27x five six seven eight"
+    start = text.index("issue")
+    assert occurrence_context(text, start, start + len("issue")) == (
+        "two three four issue-27x five six seven"
+    )
+    assert occurrence_context("  a   b  ", 2, 3) == "a b"
+
+
+def test_a_lowercase_declaration_is_text_as_github_prints_it(tmp_path: Path) -> None:
+    """GitHub reads a declaration by an older grammar than markdown-it 15.0.2.
+
+    Measured through GitHub's Markdown API: an HTML block needs a capital
+    letter after ``<!``, and inline raw HTML needs capital letters and then
+    white space, so ``<!doctype html>`` prints as text. markdown-it 15.0.2
+    follows CommonMark 0.31.2 and reads both as raw HTML. So the reference
+    inside the inline one printed nothing, and the fence below the block one
+    was read as HTML text whose URL links. GitHub prints both references, and
+    links neither.
+    """
+    reference = "issue" + " " + "27"
+    url = "https://github.com/o/r/issues/27"
+    fence = chr(96) * 3
+    newline = chr(10)
+    assert _reported(tmp_path, "Text <!doctype " + reference + "> more.")
+    # It is printed, not hidden: a URL there would be on the page.
+    printed, hidden = printed_markdown("Text <!doctype a> more.")[0][:2]
+    assert (printed, hidden.strip()) == ("Text <!doctype a> more.", "")
+    assert printed_markdown("Text <!DOCTYPE a> more.")[0][0] == "Text  more."
+    block = (
+        "Intro line." + newline + "<!doctype html>" + newline + "<x-note>" + newline
+        + fence + newline + reference + " " + url + newline + fence
+    )
+    assert _reported(tmp_path, block)
+    # The capital spelling is an HTML block on GitHub, and its URL links.
+    assert not _reported(tmp_path, block.replace("<!doctype", "<!DOCTYPE"))
+
+
+def test_a_character_reference_in_raw_html_reads_as_github_writes_it() -> None:
+    """In raw HTML GitHub decodes a name only with its ``;``, and a number without one.
+
+    Measured through GitHub's Markdown API, for a file: ``&copyright;`` and
+    ``&copy 2026`` stay as written, in an HTML block's text and in an ``href``
+    alike, and a decimal or hexadecimal reference is decoded with or without
+    its ``;``. The reader asked markdown-it, which wants every ``;``, so a
+    number without one was read as written. A backslash is a character there,
+    and GitHub prints it.
+    """
+    newline = chr(10)
+    lines = printed_markdown(
+        "<div>" + newline + "a &copyright; b &copy c &#x41 d &#x41; e \\x" + newline + "</div>"
+    )
+    assert lines[1][0] == "a &copyright; b &copy c A d A e \\x"
+    links = markdown_links('<div><a href="https://example.com/?a=1&copy=3&#x41x">x</a></div>')
+    assert links[0] == ["https://example.com/?a=1&copy=3Ax"]
+
+
+def test_a_bracketed_host_links_only_from_raw_html(tmp_path: Path) -> None:
+    """GitHub writes ``[`` and ``]`` in a Markdown destination as ``%5B`` and ``%5D``.
+
+    Measured through GitHub's Markdown API: a Markdown link's and an autolink's
+    ``href`` carry the escapes, so a URL whose host is an IPv6 address in
+    brackets is no URL a browser opens, and the autolinker links no bare URL
+    with such a host, in a paragraph or an HTML block. The reader took each as
+    a link, and the reference beside it resolved. A raw HTML ``href`` keeps
+    the brackets, and a browser opens it.
+    """
+    reference = "issue" + " " + "27"
+    url = "http://[2606:4700:4700::1111]/issues/27"
+    newline = chr(10)
+    for body in (
+        "[x](" + url + ") " + reference,
+        "<" + url + "> " + reference,
+        url + " " + reference,
+        "<div>" + newline + reference + " " + url + newline + "</div>",
+    ):
+        assert _reported(tmp_path, body), body
+    assert not _reported(tmp_path, '<a href="' + url + '">' + reference + "</a>")
+    # A bracket elsewhere is escaped too, and the URL still opens.
+    assert not _reported(tmp_path, "[x](https://github.com/o/r/issues/27?q=[a]) " + reference)

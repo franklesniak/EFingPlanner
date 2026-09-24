@@ -1,4 +1,10 @@
-"""Tests for the prohibited Markdown placeholder pre-commit hook."""
+"""Tests for the prohibited Markdown placeholder pre-commit hook.
+
+The docstrings below cite markdown-it 14.3.0, the version each case was
+measured on. markdown-it 15.0.2, which the repository now installs, renders
+every input this suite passes the same way, except a lowercase declaration,
+where the tests follow GitHub's renderer.
+"""
 
 from __future__ import annotations
 
@@ -907,9 +913,11 @@ def test_a_lowercase_declaration_does_not_open_an_html_block() -> None:
 
     ``<!foo>`` closed the paragraph, the complete tag on the next line opened a
     type-seven block, and the fence inside that block stopped being a fence --
-    so a placeholder that is code was reported as text. Measured against
-    markdown-it 14.3.0: both lines stay in the paragraph, the fence interrupts
-    it, and ``TBD`` is inside a code block.
+    so a placeholder that is code was reported as text. Measured on GitHub's
+    renderer, through its Markdown API: both lines stay in the paragraph, the
+    fence interrupts it, and ``TBD`` is inside a code block. markdown-it
+    14.3.0 read it the same way; 15.0.2 opens an HTML block at the
+    declaration, as CommonMark 0.31.2 says, and this hook follows GitHub.
     """
     text = "Pack a snack for the walk.\n<!foo>\n<x>\n```\nTBD\n```\n\nRide your bike.\n"
 
@@ -919,7 +927,8 @@ def test_a_lowercase_declaration_does_not_open_an_html_block() -> None:
 def test_an_uppercase_declaration_still_opens_an_html_block() -> None:
     """A negative control. The condition is real; it just wants a capital.
 
-    Measured against markdown-it 14.3.0: the declaration closes the paragraph,
+    Measured on GitHub's renderer, and on markdown-it 14.3.0 and 15.0.2
+    alike: the declaration closes the paragraph,
     the tag opens a block, and everything down to the blank line -- fence
     markers included -- is raw HTML the page prints.
     """
@@ -2087,3 +2096,95 @@ def test_a_closed_inline_text_state_element_is_still_read_whole() -> None:
     """
     document = "Intro <textarea></textarea> words.\n\n<!-- TBD -->\n"
     assert [violation.matched_text for violation in _find(document)] == ["TBD"]
+
+
+def test_an_allow_tbd_marker_is_one_real_comment() -> None:
+    """A marker's reason is read inside its own comment, which the page ends.
+
+    ``TBD <!-- ALLOW-TBD: --><!-- -->`` was excused: the pattern took the ``-``
+    of the first comment's ``-->`` for a reason and ran on to the second
+    comment's closer. A marker is one comment, opened and closed on the line,
+    whose text begins ``ALLOW-TBD:`` and gives a reason, and a comment ends
+    where the page ends it: ``--!>`` closes one as ``-->`` does.
+    """
+    for document in (
+        "TBD <!-- ALLOW-TBD: --><!-- -->\n",
+        "TBD <!-- ALLOW-TBD:   --> <!-- x -->\n",
+        "TBD <!-- ALLOW-TBD: --!> reason -->\n",
+        "TBD <!-- see <!-- ALLOW-TBD: reason -->\n",
+        "<!-- a note\n<!-- ALLOW-TBD: reason --> TBD\n",
+        "TBD <!-- ALLOW-TBD: reason\n",
+    ):
+        assert "TBD" in [violation.matched_text for violation in _find(document)], document
+    for document in (
+        "TBD <!-- ALLOW-TBD: reason --><!-- -->\n",
+        "TBD <!-- ALLOW-TBD: reason --!>\n",
+        "TBD <!-- x --> <!-- ALLOW-TBD: reason -->\n",
+        "TBD <!-- allow-tbd: reason -->\n",
+    ):
+        assert _find(document) == [], document
+
+
+def test_an_empty_comment_ends_where_it_stands() -> None:
+    """``<!-->`` and ``<!--->`` are whole comments, and the words after them print.
+
+    The closer was searched for from past the opener, so ``<!-->`` ran on to
+    the next comment's ``-->`` and hid the placeholder between them. Measured
+    on GitHub: ``Text <!--> TBD <!-- x --> end.`` prints ``TBD``, in a
+    paragraph and as an HTML block.
+    """
+    for document in (
+        "Text <!--> TBD <!-- x --> end.\n",
+        "Text <!---> TBD <!-- x --> end.\n",
+        "<!--> TBD <!-- x -->\n",
+        "<!---> TBD <!-- x -->\n",
+    ):
+        assert [violation.matched_text for violation in _find(document)] == ["TBD"], document
+
+
+def test_the_page_ends_a_comment_at_its_first_closer() -> None:
+    """``--!>`` closes a comment on the page, and what follows it prints.
+
+    CommonMark reads on to ``-->``, and GitHub's HTML parser ends the comment
+    at ``--!>``: ``Text <!-- a --!> TBD --> end.`` prints ``TBD -->``, and an
+    HTML block prints every line after it, a fence line included, as text.
+    """
+    for document, lines in (
+        ("Text <!-- a --!> TBD --> end.\n", [1]),
+        ("<!-- a --!>\nTBD\n-->\n", [2]),
+        ("<!-- a --!> TBD\n-->\n", [1]),
+        ("<!-- a --!>\n```\nTBD\n```\n-->\n", [3]),
+    ):
+        assert [violation.line_number for violation in _find(document)] == lines, document
+
+
+def test_an_inline_comment_that_never_closes_hides_nothing() -> None:
+    """A ``<!--`` in a paragraph is a comment only when its ``-->`` comes first.
+
+    The words after such an opener, on its own lines, were hidden, while
+    GitHub prints the opener escaped and every word after it. They are held
+    now, and reported when the paragraph ends without a closer. A heading's
+    inline content ends with its line, an HTML block may interrupt a
+    paragraph, and ``--->`` closes no inline comment. A ``>`` on a
+    continuation line keeps a blockquote's paragraph open, so a comment there
+    still closes on the next line. Each verdict was measured on GitHub.
+    """
+    for document, lines in (
+        ("text <!-- TBD\n\nmore\n", [1]),
+        ("text <!-- a\nTBD\n\nmore\n", [2]),
+        ("text <!-- TBD --->\n", [1]),
+        ("## Head <!-- TBD\nmore -->\n", [1]),
+        ("x <!-- TBD\n<!-- ALLOW-TBD: reason --> y\n", [1]),
+        ("x <!-- a\n<div>\nTBD\n</div>\n", [3]),
+        ("- item <!-- TBD\n- next\n", [1]),
+        ("text <!-- a --!> TBD\n", [1]),
+    ):
+        assert [violation.line_number for violation in _find(document)] == lines, document
+    for document in (
+        "text <!-- a\nTBD -->\n",
+        "text <!-- TBD ---> x -->\n",
+        "> quoted <!-- a\n> TBD -->\n",
+        "- item <!-- a\n  TBD -->\n",
+        "<!-- ALLOW-TBD: reason --> x <!-- TBD\n\n",
+    ):
+        assert _find(document) == [], document

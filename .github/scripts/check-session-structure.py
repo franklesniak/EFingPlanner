@@ -148,6 +148,11 @@ argument supplies a real file.
 A refused path is a violation, not a silent skip. A gate that prints ``all
 well-formed`` over a session file it declined to open is telling the reader
 something it does not know, so a refusal fails the run.
+
+The notes below cite markdown-it 14.3.0, the version each was measured on.
+markdown-it 15.0.2, which the repository now installs, reads each of those
+cases the same way, with one exception the notes name: a lowercase
+declaration, where they follow GitHub's renderer.
 """
 
 from __future__ import annotations
@@ -381,7 +386,8 @@ AUTOLINK_PATTERN = re.compile(
 #: 0.31.2's. The spec says ``<!``, an ASCII letter, zero or more
 #: characters other than ``>``, and ``>``; markdown-it 14.3.0 and
 #: micromark 4.0.2 both implement exactly that and agree with each other
-#: on all 92 spellings measured. The renderer these files are read on
+#: on all 92 spellings measured, and markdown-it 15.0.2's inline grammar
+#: is the same pattern. The renderer these files are read on
 #: does not: it takes ``<!FOO `` and ``<!Q`` followed by a tab or a line
 #: ending, and refuses ``<!foo ``, ``<!Foo ``, ``<!FOO1 ``,
 #: ``<!FOO-BAR `` and ``<!FOO>`` -- one or more uppercase ASCII letters,
@@ -409,12 +415,6 @@ RAW_HTML_RUN_PATTERNS = (
     (re.compile(r"<!\[CDATA\["), "]]>"),
     (re.compile(r"<![A-Z]+(?=[ \t]|$)"), ">"),
 )
-#: The same three with the comment in front of them, for a scan that reads one
-#: line rather than one paragraph. The comment is first because it is the one
-#: of the four whose opener another of them could also match, and because that
-#: is the order ``scan_inline_run`` asks in.
-#: https://spec.commonmark.org/0.31.2/#raw-html
-RAW_HTML_INLINE_RUNS = ((re.compile(r"<!--"), "-->"),) + RAW_HTML_RUN_PATTERNS
 #: The raw HTML runs whose content is not markup. What sits inside one is
 #: characters the page shows as they stand or drops altogether, so a
 #: ``<!-- ... -->`` written there is displayed text rather than a comment and
@@ -444,6 +444,14 @@ RAW_HTML_INLINE_RUNS = ((re.compile(r"<!--"), "-->"),) + RAW_HTML_RUN_PATTERNS
 #: <https://html.spec.whatwg.org/multipage/parsing.html#rawtext-state>
 #: <https://spec.commonmark.org/0.31.2/#html-blocks>
 COMMENT_RUN = "comment"
+#: Where the page ends a comment. The page is an HTML parser's reading of the
+#: raw HTML, and its tokenizer closes a comment at the first ``-->`` or
+#: ``--!>`` after the opener; ``comment_extent`` adds the two empty comments,
+#: ``<!-->`` and ``<!--->``. Measured on GitHub's renderer:
+#: ``Text <!--> TBD <!-- x --> end.`` and ``Text <!-- a --!> TBD --> end.``
+#: both print ``TBD``. Kept identical to the constant in the sibling hooks.
+#: https://html.spec.whatwg.org/multipage/parsing.html#comment-start-state
+COMMENT_CLOSER_PATTERN = re.compile(r"--!?>")
 #: The characters HTML5's tokenizer reads as whitespace inside a tag. The
 #: Markdown layer's ``ASCII_HORIZONTAL_WHITESPACE`` is a different set for a
 #: different question: this one carries the line ending and the form feed,
@@ -472,7 +480,7 @@ RAW_TEXT_RUNS = tuple(
     ("processing instruction", re.compile(r"^ {0,3}<\?"), re.compile(r"\?>")),
     ("CDATA section", re.compile(r"^ {0,3}<!\[CDATA\["), re.compile(r"\]\]>")),
     ("declaration", re.compile(r"^ {0,3}<![A-Za-z]"), re.compile(r">")),
-    (COMMENT_RUN, re.compile(r"^ {0,3}<!--"), re.compile(r"-->")),
+    (COMMENT_RUN, re.compile(r"^ {0,3}<!--"), COMMENT_CLOSER_PATTERN),
 )
 RAW_TEXT_CLOSERS = {key: closer for key, _, closer in RAW_TEXT_RUNS}
 #: The start tags that switch the page's tokenizer into a state it leaves only
@@ -832,20 +840,23 @@ EMPTY_LIST_ITEM_PATTERN = re.compile(r"^ {0,3}(?:[-*+]|\d{1,9}[.)])[ \t]*$")
 #: ``re.DOTALL`` because a comment may hold a line ending and still be one
 #: comment: the marker scans hand over the comment text the renderer produces,
 #: line breaks included, and ``.*?`` stops at the first one without it. The
-#: reluctant quantifier still stops at the first ``-->``, so a match that
-#: *starts* inside a comment cannot leave it.
+#: reluctant quantifier still stops at the first closer, so a match that
+#: *starts* inside a comment cannot leave it. A closer is ``-->`` or ``--!>``,
+#: the two the page ends a comment at (``COMMENT_CLOSER_PATTERN``).
 #:
 #: Starting is the half that needed guarding, and the control that found it is
 #: in the suite: the reason's first character is ``\S``, which the ``-`` of an
-#: immediately following ``-->`` satisfies -- so ``<!-- no-source-check: -->``,
+#: immediately following closer satisfies -- so ``<!-- no-source-check: -->``,
 #: a marker with no reason at all, would have reached across to the next
 #: comment's closer for one. The lookahead refuses that character, and an empty
-#: reason is no marker again.
+#: reason is no marker again. It refused only ``-->``, so
+#: ``<!-- no-source-check: --!>``, which the page ends as an empty marker, took
+#: its reason from the words after it.
 AUDIENCE_ADULT_PATTERN = re.compile(
-    r"<!--\s*audience:\s*(?:adult|parent|builder)\b.*?-->", re.IGNORECASE | re.DOTALL
+    r"<!--\s*audience:\s*(?:adult|parent|builder)\b.*?--!?>", re.IGNORECASE | re.DOTALL
 )
 NO_SOURCE_CHECK_PATTERN = re.compile(
-    r"<!--\s*no-source-check:\s*(?!-->)\S.*?-->", re.IGNORECASE | re.DOTALL
+    r"<!--\s*no-source-check:\s*(?!--!?>)\S.*?--!?>", re.IGNORECASE | re.DOTALL
 )
 
 
@@ -970,12 +981,13 @@ class ActiveHtmlBlock:
 #: *inside* a comment from opening a second block that outlives the comment.
 HTML_BLOCK_COMMENT = "comment"
 
-#: Condition 4 asks for an *uppercase* ASCII letter after ``<!``. That is the
-#: rule markdown-it 14.3.0 carries, and markdown-it is what this repository
-#: measures a rendered page against. The CommonMark 0.31.2 prose says "an ASCII
-#: letter" instead, and micromark-core-commonmark 2.0.3 reads it that way, so
-#: the two really do part over a lowercase ``<!doctype html>``. Following the
-#: renderer is also the safe way round: a lowercase declaration that opens no
+#: Condition 4 asks for an *uppercase* ASCII letter after ``<!``, because
+#: GitHub's renderer does. Measured through its Markdown API: ``<!doctype
+#: html>`` prints as paragraph text, and ``<!DOCTYPE html>`` is an HTML block.
+#: The CommonMark 0.31.2 prose says "an ASCII letter" instead, and
+#: micromark-core-commonmark 2.0.3 and markdown-it 15.0.2 read it that way;
+#: markdown-it 14.3.0 wanted the capital, as GitHub does. Following GitHub is
+#: also the safe way round: a lowercase declaration that opens no
 #: block leaves the paragraph above it open, and a mandatory heading below it is
 #: still a heading. Reading it as a block closes that paragraph, lets the next
 #: line open a type-seven block, and hides every heading down to the blank line.
@@ -1063,18 +1075,38 @@ def strip_html_comments(
     the second value cannot answer it: a line that closes one comment and opens
     another comes in open and goes out open, while the answer changes. Kept
     identical to the parser in
-    ``.github/scripts/check-prohibited-placeholders.py``.
+    ``.github/scripts/check-prohibited-placeholders.py``. A comment ends where
+    the page ends it, which is ``split_html_comments``'s walk.
+    """
+    visible, _hidden, is_in_html_comment, opened_here = split_html_comments(
+        line, is_in_html_comment
+    )
+    return visible, is_in_html_comment, opened_here
+
+
+def split_html_comments(
+    line: str, is_in_html_comment: bool
+) -> tuple[str, list[tuple[int, int]], bool, bool]:
+    """Return a line's text outside HTML comments, and where its comment text is.
+
+    The second value lists each run of comment text on the line as a
+    ``(start, end)`` pair, delimiters left out, in order. The other two are
+    ``strip_html_comments``'s. A comment ends where the page ends it; see
+    ``comment_extent``. Kept identical to the helper in the sibling hook.
     """
     uncommented_parts: list[str] = []
+    hidden: list[tuple[int, int]] = []
     index = 0
     opened_here = False
 
     while index < len(line):
         if is_in_html_comment:
-            comment_end = line.find("-->", index)
-            if comment_end == -1:
-                return "".join(uncommented_parts), True, opened_here
-            index = comment_end + len("-->")
+            closer = COMMENT_CLOSER_PATTERN.search(line, index)
+            if closer is None:
+                hidden.append((index, len(line)))
+                return "".join(uncommented_parts), hidden, True, opened_here
+            hidden.append((index, closer.start()))
+            index = closer.end()
             is_in_html_comment = False
             continue
 
@@ -1084,14 +1116,16 @@ def strip_html_comments(
             break
 
         uncommented_parts.append(line[index:comment_start])
-        comment_end = line.find("-->", comment_start + len("<!--"))
+        text_end, comment_end = comment_extent(line, comment_start)
         if comment_end == -1:
+            hidden.append((comment_start + len("<!--"), len(line)))
             is_in_html_comment = True
             opened_here = True
             break
-        index = comment_end + len("-->")
+        hidden.append((comment_start + len("<!--"), text_end))
+        index = comment_end
 
-    return "".join(uncommented_parts), is_in_html_comment, opened_here
+    return "".join(uncommented_parts), hidden, is_in_html_comment, opened_here
 
 
 def normalize_line_endings(text: str) -> str:
@@ -1934,9 +1968,18 @@ def raw_html_run_end(line: str, index: int) -> int:
     caller's recorded limit rather than this one's; answering ``-1`` there
     leaves the characters to be read as text, which is what they are when the
     run never closes at all. Kept identical to the helper in the sibling hook.
+
+    The comment is CommonMark's inline production, which
+    ``INLINE_COMMENT_PATTERN`` runs: ``<!-->`` and ``<!--->`` close where they
+    stand, and ``<!-- a --->`` with no closer after it is text. Searching for
+    the next ``-->`` from past the opener read an empty comment on to a later
+    comment's closer, and closed the other at its own dashes.
     <https://spec.commonmark.org/0.31.2/#raw-html>
     """
-    for opener, closer in RAW_HTML_INLINE_RUNS:
+    if line.startswith("<!--", index):
+        closed = INLINE_COMMENT_PATTERN.match(line, index)
+        return -1 if closed is None else closed.end()
+    for opener, closer in RAW_HTML_RUN_PATTERNS:
         match = opener.match(line, index)
         if match is None:
             continue
@@ -2272,16 +2315,23 @@ def raw_html_comment_spans(
 
     while index < len(line):
         if is_in_comment:
-            comment_end = line.find("-->", index)
-            if comment_end == -1:
+            closer = COMMENT_CLOSER_PATTERN.search(line, index)
+            if closer is None:
                 spans.append(line[index:])
                 return "".join(spans), True, None, False
-            spans.append(line[index : comment_end + len("-->")])
-            index = comment_end + len("-->")
+            spans.append(line[index : closer.end()])
+            index = closer.end()
             is_in_comment = False
             continue
 
         if line.startswith("<!--", index):
+            # The page ends the comment (``comment_extent``): an empty one
+            # where it stands, and any other at ``-->`` or ``--!>``.
+            _text_end, comment_end = comment_extent(line, index)
+            if comment_end != -1:
+                spans.append(line[index:comment_end])
+                index = comment_end
+                continue
             spans.append("<!--")
             index += len("<!--")
             is_in_comment = True
@@ -2403,6 +2453,26 @@ def following_backtick_run(contents: Sequence[str], row: int, length: int) -> tu
 INLINE_COMMENT_PATTERN = re.compile(r"<!---?>|<!--(?:[^-]|-[^-]|--[^>])*-->")
 
 
+def comment_extent(text: str, start: int) -> tuple[int, int]:
+    """Return where the page ends the comment whose ``<!--`` is at ``start``.
+
+    The pair is the end of the comment's text and the end of the comment, and
+    both are ``-1`` when no closer follows. ``<!-->`` and ``<!--->`` are empty
+    comments, and any other runs to the first ``COMMENT_CLOSER_PATTERN``. The
+    closer was searched for from past the opener, so an empty comment ran on
+    over the words after it to the next comment's ``-->``. Kept identical to
+    the helper in the sibling hooks.
+    https://html.spec.whatwg.org/multipage/parsing.html#comment-start-state
+    """
+    for empty in ("<!-->", "<!--->"):
+        if text.startswith(empty, start):
+            return start + len("<!--"), start + len(empty)
+    closer = COMMENT_CLOSER_PATTERN.search(text, start + len("<!--"))
+    if closer is None:
+        return -1, -1
+    return closer.start(), closer.end()
+
+
 def inline_comment_end(text: str, start: int) -> int:
     """Return where the comment opened at ``start`` ends, or ``-1``.
 
@@ -2411,8 +2481,9 @@ def inline_comment_end(text: str, start: int) -> int:
     ``<!-- a --->`` with no later closer is not one, and markdown-it 14.3.0
     and GitHub both print its characters. **HTML5 then decides how far the
     node reaches**: GitHub's sanitizer parses the token the Markdown layer
-    emitted and ends the comment at the first ``-->``, and ends ``<!-->`` and
-    ``<!--->`` where they stand.
+    emitted and ends the comment at the first ``-->`` or ``--!>``, and ends
+    ``<!-->`` and ``<!--->`` where they stand: ``Head. <!-- a --!> tail -->``
+    paints ``tail -->`` on GitHub.
 
     The two layers really do part, and one document shows it. On
     ``Head. <!-- a ---> tail --> more`` the Markdown layer matches through the
@@ -2428,11 +2499,7 @@ def inline_comment_end(text: str, start: int) -> int:
     """
     if INLINE_COMMENT_PATTERN.match(text, start) is None:
         return -1
-    for short in ("<!-->", "<!--->"):
-        if text.startswith(short, start):
-            return start + len(short)
-    closer = text.find("-->", start + len("<!--"))
-    return -1 if closer == -1 else closer + len("-->")
+    return comment_extent(text, start)[1]
 
 
 def following_comment_end(contents: Sequence[str], row: int, index: int) -> tuple[int, int]:
@@ -2571,10 +2638,10 @@ def comment_open_below(content: str, position: int) -> str | None:
         start = content.find("<!--", position)
         if start == -1:
             return None
-        end = content.find("-->", start + len("<!--"))
+        _text_end, end = comment_extent(content, start)
         if end == -1:
             return COMMENT_RUN
-        position = end + len("-->")
+        position = end
 
 
 def raw_text_run_state(
@@ -2988,14 +3055,14 @@ def scan_inline_run(
             continue
 
         if is_in_comment:
-            comment_end = line.find("-->", index)
-            if comment_end == -1:
+            closer = COMMENT_CLOSER_PATTERN.search(line, index)
+            if closer is None:
                 spans[row].append(line[index:])
                 row += 1
                 index = 0
                 continue
-            spans[row].append(line[index : comment_end + len("-->")])
-            index = comment_end + len("-->")
+            spans[row].append(line[index : closer.end()])
+            index = closer.end()
             is_in_comment = False
             continue
 
@@ -3075,6 +3142,13 @@ def scan_inline_run(
                 close_row, _ = following_comment_end(contents, row, index)
                 if close_row == -1:
                     index += len("<!--")
+                    continue
+                # The page ends it (``comment_extent``): an empty comment
+                # where it stands, and any other at ``-->`` or ``--!>``.
+                _text_end, comment_end = comment_extent(line, index)
+                if comment_end != -1:
+                    spans[row].append(line[index:comment_end])
+                    index = comment_end
                     continue
                 spans[row].append("<!--")
                 index += len("<!--")

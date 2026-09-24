@@ -1,55 +1,84 @@
-text	tests/test_materialize_downstream_adoption.py	0123456789abcdef0123456789abcdef01234567	1	a synthetic fixture hash
-text	tests/test_report_excluded_module_references.py	0123456789abcdef0123456789abcdef01234567	1	a synthetic fixture hash
-text	tests/test_template_manifest.py	0123456789abcdef0123456789abcdef01234567	1	a synthetic fixture hash
-text	tests/test_template_sync_materialization_helpers.py	0123456789abcdef0123456789abcdef01234567	1	a synthetic fixture hash
-text	tests/test_validate_downstream_adoption.py	0123456789abcdef0123456789abcdef01234567	1	a synthetic fixture hash
-text	tests/test_validate_instruction_contracts.py	0123456789abcdef0123456789abcdef01234567	1	a synthetic fixture hash
-text	tests/test_validate_marker.py	0123456789abcdef0123456789abcdef01234567	1	a synthetic fixture hash
-text	tests/test_validate_marker.py	89abcdef0123456789abcdef0123456789abcdef	2	a second synthetic fixture hash
-text	tests/test_validate_marker.py	89abcdef	1	the abbreviation of the second synthetic fixture hash
-text	schemas/examples/template-sync-marker/invalid/deferred-candidate-directory-path.yml	89abcdef0123456789abcdef0123456789abcdef	1	a synthetic commit hash in a schema example
-text	schemas/examples/template-sync-marker/invalid/empty-instruction-waiver-reason.yml	0123456789abcdef0123456789abcdef01234567	1	a synthetic commit hash in a schema example
-text	schemas/examples/template-sync-marker/invalid/malformed-protected-guide-waiver-contract-key.yml	0123456789abcdef0123456789abcdef01234567	1	a synthetic commit hash in a schema example
-text	schemas/examples/template-sync-marker/invalid/missing-instruction-waiver-authorization.yml	0123456789abcdef0123456789abcdef01234567	1	a synthetic commit hash in a schema example
-text	schemas/examples/template-sync-marker/invalid/missing-protected-guide-waiver-target.yml	0123456789abcdef0123456789abcdef01234567	1	a synthetic commit hash in a schema example
-text	schemas/examples/template-sync-marker/invalid/missing-remove-local-reason.yml	issue 632	1	an upstream tracker issue number inside a schema example document
-text	schemas/examples/template-sync-marker/invalid/tailored-non-content-decision.yml	issue 632	1	an upstream tracker issue number inside a schema example document
-text	schemas/examples/template-sync-marker/valid/full.yml	0123456789abcdef0123456789abcdef01234567	1	a synthetic commit hash in a schema example
-text	schemas/examples/template-sync-marker/valid/full.yml	89abcdef0123456789abcdef0123456789abcdef	1	a synthetic commit hash in a schema example
-text	schemas/examples/template-sync-marker/valid/full.yml	issue 632	1	an upstream tracker issue number inside a schema example document
-text	schemas/examples/template-sync-marker/valid/instruction-contract-waiver.yml	0123456789abcdef0123456789abcdef01234567	1	a synthetic commit hash in a schema example
-text	schemas/examples/template-sync-marker/valid/placeholder-waiver.yml	0123456789abcdef0123456789abcdef01234567	1	a synthetic commit hash in a schema example
-text	schemas/examples/template-sync-marker/valid/protected-decisions.yml	0123456789abcdef0123456789abcdef01234567	1	a synthetic commit hash in a schema example
-text	schemas/examples/template-sync-marker/valid/protected-decisions.yml	issue 632	1	an upstream tracker issue number inside a schema example document
-text	schemas/examples/template-sync-marker/valid/protected-guide-contract-waiver.yml	0123456789abcdef0123456789abcdef01234567	1	a synthetic commit hash in a schema example
-text	schemas/examples/template-sync-marker/valid/source-ref-first-adoption.yml	89abcdef0123456789abcdef0123456789abcdef	1	a synthetic commit hash in a schema example
-text	TEMPLATE_UPDATE_PROCEDURE.md	issue 123	1	a placeholder issue number in a worked procedure example
-text	_ADOPTION-DIFFICULTIES.md	PR #5	38	this repository's own pull request 5, named in every entry heading of the adoption journal; GitHub renders it as a link and the commit history holds it
-text	_TODO-repo-init.md	issue #8	1	this repository's own issue 8, named beside the commit that closed it; GitHub renders it as a link
-text	.github/ISSUE_TEMPLATE/feature_request.yml	#123	2	the issue form teaches a contributor how to reference an issue, so the hash and number are the lesson rather than a reference this repository makes
-text	tests/test_check_readability.py	#1	3	a negative control: the readability scan must read a hash and a digit as a word a child reads rather than as a heading, so the test says it three times
-text	AGENTS.md	eightieth round	1	the review loop's definition in a protected instruction file: the loop's limit and its rounds as a concept, not one review
-text	AGENTS.md	rounds: 80	1	the review loop's definition in a protected instruction file: the loop's limit and its rounds as a concept, not one review
-text	CLAUDE.md	eightieth round	1	the review loop's definition in a protected instruction file: the loop's limit and its rounds as a concept, not one review
-text	CLAUDE.md	every round	1	the review loop's definition in a protected instruction file: the loop's limit and its rounds as a concept, not one review
-text	CLAUDE.md	rounds: 80	1	the review loop's definition in a protected instruction file: the loop's limit and its rounds as a concept, not one review
-text	CLAUDE.md	the Round	1	the review loop's definition in a protected instruction file: the loop's limit and its rounds as a concept, not one review
-text	_ADOPTION-DIFFICULTIES.md	The round	2	the adoption journal: each entry heading names the review of pull request 5 it records, so a round named here is an entry in this file
-text	_ADOPTION-DIFFICULTIES.md	previous review round	1	the adoption journal: each entry heading names the review of pull request 5 it records, so a round named here is an entry in this file
-text	_ADOPTION-DIFFICULTIES.md	round 1	1	the adoption journal: each entry heading names the review of pull request 5 it records, so a round named here is an entry in this file
-text	_ADOPTION-DIFFICULTIES.md	round 3	2	the adoption journal: each entry heading names the review of pull request 5 it records, so a round named here is an entry in this file
-text	_ADOPTION-DIFFICULTIES.md	round-3	2	the adoption journal: each entry heading names the review of pull request 5 it records, so a round named here is an entry in this file
-text	_ADOPTION-DIFFICULTIES.md	round-4	3	the adoption journal: each entry heading names the review of pull request 5 it records, so a round named here is an entry in this file
-text	_ADOPTION-DIFFICULTIES.md	the round	3	the adoption journal: each entry heading names the review of pull request 5 it records, so a round named here is an entry in this file
-text	docs/build/batch1_build_prompt.md	the round	2	the Batch 1 brief describing its own revision process, not one review
-text	docs/build/batch1_build_prompt.md	this round	2	the Batch 1 brief describing its own revision process, not one review
-text	docs/spec/specification.md	earlier rounds	1	the archived design record naming its own revision rounds, which its version history lists one by one
-text	docs/spec/specification.md	eighth round	1	the archived design record naming its own revision rounds, which its version history lists one by one
-text	docs/spec/specification.md	ninth round	1	the archived design record naming its own revision rounds, which its version history lists one by one
-text	docs/spec/specification.md	prior rounds	1	the archived design record naming its own revision rounds, which its version history lists one by one
-text	docs/spec/specification.md	round-8	1	the archived design record naming its own revision rounds, which its version history lists one by one
-text	docs/spec/specification.md	round-9	1	the archived design record naming its own revision rounds, which its version history lists one by one
-text	docs/spec/specification.md	seventh round	1	the archived design record naming its own revision rounds, which its version history lists one by one
-text	docs/spec/specification.md	sixth round	1	the archived design record naming its own revision rounds, which its version history lists one by one
-text	docs/spec/specification.md	the round	3	the archived design record naming its own revision rounds, which its version history lists one by one
-text	docs/spec/specification.md	this round	1	the archived design record naming its own revision rounds, which its version history lists one by one
+text	tests/test_materialize_downstream_adoption.py	0123456789abcdef0123456789abcdef01234567	FULL_SHA = "0123456789abcdef0123456789abcdef01234567"	1	a synthetic fixture hash
+text	tests/test_report_excluded_module_references.py	0123456789abcdef0123456789abcdef01234567	FULL_SHA = "0123456789abcdef0123456789abcdef01234567"	1	a synthetic fixture hash
+text	tests/test_template_manifest.py	0123456789abcdef0123456789abcdef01234567	FULL_SHA = "0123456789abcdef0123456789abcdef01234567"	1	a synthetic fixture hash
+text	tests/test_template_sync_materialization_helpers.py	0123456789abcdef0123456789abcdef01234567	FULL_SHA = "0123456789abcdef0123456789abcdef01234567"	1	a synthetic fixture hash
+text	tests/test_validate_downstream_adoption.py	0123456789abcdef0123456789abcdef01234567	FULL_SHA = "0123456789abcdef0123456789abcdef01234567"	1	a synthetic fixture hash
+text	tests/test_validate_instruction_contracts.py	0123456789abcdef0123456789abcdef01234567	FULL_SHA = "0123456789abcdef0123456789abcdef01234567"	1	a synthetic fixture hash
+text	tests/test_validate_marker.py	0123456789abcdef0123456789abcdef01234567	FULL_SHA = "0123456789abcdef0123456789abcdef01234567"	1	a synthetic fixture hash
+text	tests/test_validate_marker.py	89abcdef0123456789abcdef0123456789abcdef	"source_commit": "89abcdef0123456789abcdef0123456789abcdef",	2	a second synthetic fixture hash
+text	tests/test_validate_marker.py	89abcdef	assert "deferred_protected_candidates: source_commit=89abcdef" in result.stderr	1	the abbreviation of the second synthetic fixture hash
+text	schemas/examples/template-sync-marker/invalid/deferred-candidate-directory-path.yml	89abcdef0123456789abcdef0123456789abcdef	source_commit: "89abcdef0123456789abcdef0123456789abcdef"	1	a synthetic commit hash in a schema example
+text	schemas/examples/template-sync-marker/invalid/empty-instruction-waiver-reason.yml	0123456789abcdef0123456789abcdef01234567	last_reviewed_template_commit: 0123456789abcdef0123456789abcdef01234567	1	a synthetic commit hash in a schema example
+text	schemas/examples/template-sync-marker/invalid/malformed-protected-guide-waiver-contract-key.yml	0123456789abcdef0123456789abcdef01234567	last_reviewed_template_commit: 0123456789abcdef0123456789abcdef01234567	1	a synthetic commit hash in a schema example
+text	schemas/examples/template-sync-marker/invalid/missing-instruction-waiver-authorization.yml	0123456789abcdef0123456789abcdef01234567	last_reviewed_template_commit: 0123456789abcdef0123456789abcdef01234567	1	a synthetic commit hash in a schema example
+text	schemas/examples/template-sync-marker/invalid/missing-protected-guide-waiver-target.yml	0123456789abcdef0123456789abcdef01234567	last_reviewed_template_commit: 0123456789abcdef0123456789abcdef01234567	1	a synthetic commit hash in a schema example
+text	schemas/examples/template-sync-marker/invalid/missing-remove-local-reason.yml	issue 632	removing GEMINI.md in issue 632.	1	an upstream tracker issue number inside a schema example document
+text	schemas/examples/template-sync-marker/invalid/tailored-non-content-decision.yml	issue 632	removing GEMINI.md in issue 632.	1	an upstream tracker issue number inside a schema example document
+text	schemas/examples/template-sync-marker/valid/full.yml	0123456789abcdef0123456789abcdef01234567	last_reviewed_template_commit: 0123456789abcdef0123456789abcdef01234567	1	a synthetic commit hash in a schema example
+text	schemas/examples/template-sync-marker/valid/full.yml	89abcdef0123456789abcdef0123456789abcdef	source_commit: 89abcdef0123456789abcdef0123456789abcdef	1	a synthetic commit hash in a schema example
+text	schemas/examples/template-sync-marker/valid/full.yml	issue 632	removing GEMINI.md in issue 632.	1	an upstream tracker issue number inside a schema example document
+text	schemas/examples/template-sync-marker/valid/instruction-contract-waiver.yml	0123456789abcdef0123456789abcdef01234567	last_reviewed_template_commit: 0123456789abcdef0123456789abcdef01234567	1	a synthetic commit hash in a schema example
+text	schemas/examples/template-sync-marker/valid/placeholder-waiver.yml	0123456789abcdef0123456789abcdef01234567	last_reviewed_template_commit: 0123456789abcdef0123456789abcdef01234567	1	a synthetic commit hash in a schema example
+text	schemas/examples/template-sync-marker/valid/protected-decisions.yml	0123456789abcdef0123456789abcdef01234567	last_reviewed_template_commit: 0123456789abcdef0123456789abcdef01234567	1	a synthetic commit hash in a schema example
+text	schemas/examples/template-sync-marker/valid/protected-decisions.yml	issue 632	removing GEMINI.md in issue 632.	1	an upstream tracker issue number inside a schema example document
+text	schemas/examples/template-sync-marker/valid/protected-guide-contract-waiver.yml	0123456789abcdef0123456789abcdef01234567	last_reviewed_template_commit: 0123456789abcdef0123456789abcdef01234567	1	a synthetic commit hash in a schema example
+text	schemas/examples/template-sync-marker/valid/source-ref-first-adoption.yml	89abcdef0123456789abcdef0123456789abcdef	source_commit: 89abcdef0123456789abcdef0123456789abcdef	1	a synthetic commit hash in a schema example
+text	TEMPLATE_UPDATE_PROCEDURE.md	issue 123	removing GEMINI.md in issue 123."	1	a placeholder issue number in a worked procedure example
+text	_ADOPTION-DIFFICULTIES.md	PR #5	2026-07-04 PR #5 initial adoption -	11	this repository's own pull request 5, named in every entry heading of the adoption journal; GitHub renders it as a link and the commit history holds it
+text	_ADOPTION-DIFFICULTIES.md	PR #5	2026-07-05 PR #5 review - This	1	this repository's own pull request 5, named in every entry heading of the adoption journal; GitHub renders it as a link and the commit history holds it
+text	_ADOPTION-DIFFICULTIES.md	PR #5	What happened: The PR #5 description ("Adoption artifacts"	1	this repository's own pull request 5, named in the body of the adoption journal's entry about its own description; GitHub renders it as a link and the commit history holds it
+text	_ADOPTION-DIFFICULTIES.md	PR #5	(re)created during the PR #5 review loop at	1	this repository's own pull request 5, named in the body of the adoption journal's entry about its own description; GitHub renders it as a link and the commit history holds it
+text	_ADOPTION-DIFFICULTIES.md	PR #5	2026-07-05 PR #5 review - OWNER/REPO	1	this repository's own pull request 5, named in every entry heading of the adoption journal; GitHub renders it as a link and the commit history holds it
+text	_ADOPTION-DIFFICULTIES.md	PR #5	2026-07-05 PR #5 review - Markdown	1	this repository's own pull request 5, named in every entry heading of the adoption journal; GitHub renders it as a link and the commit history holds it
+text	_ADOPTION-DIFFICULTIES.md	PR #5	2026-07-05 PR #5 review - CONTRIBUTING.md	1	this repository's own pull request 5, named in every entry heading of the adoption journal; GitHub renders it as a link and the commit history holds it
+text	_ADOPTION-DIFFICULTIES.md	PR #5	2026-07-05 PR #5 review - Broken	1	this repository's own pull request 5, named in every entry heading of the adoption journal; GitHub renders it as a link and the commit history holds it
+text	_ADOPTION-DIFFICULTIES.md	PR #5	2026-07-05 PR #5 review - check-jsonschema	1	this repository's own pull request 5, named in every entry heading of the adoption journal; GitHub renders it as a link and the commit history holds it
+text	_ADOPTION-DIFFICULTIES.md	PR #5	2026-07-05 PR #5 review - Prohibited-placeholder	1	this repository's own pull request 5, named in every entry heading of the adoption journal; GitHub renders it as a link and the commit history holds it
+text	_ADOPTION-DIFFICULTIES.md	PR #5	2026-07-05 PR #5 code review -	6	this repository's own pull request 5, named in every entry heading of the adoption journal; GitHub renders it as a link and the commit history holds it
+text	_ADOPTION-DIFFICULTIES.md	PR #5	2026-07-05 PR #5 second code review	3	this repository's own pull request 5, named in every entry heading of the adoption journal; GitHub renders it as a link and the commit history holds it
+text	_ADOPTION-DIFFICULTIES.md	PR #5	2026-07-05 PR #5 third code review	3	this repository's own pull request 5, named in every entry heading of the adoption journal; GitHub renders it as a link and the commit history holds it
+text	_ADOPTION-DIFFICULTIES.md	PR #5	2026-07-05 PR #5 fourth code review	2	this repository's own pull request 5, named in every entry heading of the adoption journal; GitHub renders it as a link and the commit history holds it
+text	_ADOPTION-DIFFICULTIES.md	PR #5	2026-07-05 PR #5 fifth code review	3	this repository's own pull request 5, named in every entry heading of the adoption journal; GitHub renders it as a link and the commit history holds it
+text	_ADOPTION-DIFFICULTIES.md	PR #5	2026-07-05 PR #5 review - template-placeholders.json	1	this repository's own pull request 5, named in every entry heading of the adoption journal; GitHub renders it as a link and the commit history holds it
+text	_TODO-repo-init.md	issue #8	fdd3408 deleted it (issue #8). .template-sync/marker.yml now holds	1	this repository's own issue 8, named beside the commit that closed it; GitHub renders it as a link
+text	.github/ISSUE_TEMPLATE/feature_request.yml	#123	(e.g., #123 for same-repo references	1	the issue form teaches a contributor how to reference an issue, so the hash and number are the lesson rather than a reference this repository makes
+text	.github/ISSUE_TEMPLATE/feature_request.yml	#123	#123	1	the issue form teaches a contributor how to reference an issue, so the hash and number are the lesson rather than a reference this repository makes
+text	tests/test_check_readability.py	#1	"""Negative control: ``#1`` is a word	1	a negative control: the readability scan must read a hash and a digit as a word a child reads rather than as a heading, so the test says it three times
+text	tests/test_check_readability.py	#1	prose = readability.extract_prose("Write #1 on your paper	1	a negative control: the readability scan must read a hash and a digit as a word a child reads rather than as a heading, so the test says it three times
+text	tests/test_check_readability.py	#1	assert "#1" in prose	1	a negative control: the readability scan must read a hash and a digit as a word a child reads rather than as a heading, so the test says it three times
+text	AGENTS.md	eightieth round	invocation. After the eightieth round, PAUSE and ask	1	the review loop's definition in a protected instruction file: the loop's limit and its rounds as a concept, not one review
+text	AGENTS.md	rounds: 80	Maximum rounds: 80 review iterations per	1	the review loop's definition in a protected instruction file: the loop's limit and its rounds as a concept, not one review
+text	CLAUDE.md	eightieth round	invocation. After the eightieth round, PAUSE regardless of	1	the review loop's definition in a protected instruction file: the loop's limit and its rounds as a concept, not one review
+text	CLAUDE.md	every round	branch so that every round's changes remain in	1	the review loop's definition in a protected instruction file: the loop's limit and its rounds as a concept, not one review
+text	CLAUDE.md	rounds: 80	Maximum rounds: 80 review iterations per	1	the review loop's definition in a protected instruction file: the loop's limit and its rounds as a concept, not one review
+text	CLAUDE.md	the Round	liveness below, not the Round N round counter	1	the review loop's definition in a protected instruction file: the loop's limit and its rounds as a concept, not one review
+text	_ADOPTION-DIFFICULTIES.md	The round	What happened: The round-3 reshape adapted bug_report.yml	1	the adoption journal: each entry heading names the review of pull request 5 it records, so a round named here is an entry in this file
+text	_ADOPTION-DIFFICULTIES.md	The round	What happened: (a) The round-4 fix that softened	1	the adoption journal: each entry heading names the review of pull request 5 it records, so a round named here is an entry in this file
+text	_ADOPTION-DIFFICULTIES.md	previous review round	introduced by the previous review round, not inherited debris.	1	the adoption journal: each entry heading names the review of pull request 5 it records, so a round named here is an entry in this file
+text	_ADOPTION-DIFFICULTIES.md	round 1	and root cause round 1 removed from .github/workflows/markdownlint.yml	1	the adoption journal: each entry heading names the review of pull request 5 it records, so a round named here is an entry in this file
+text	_ADOPTION-DIFFICULTIES.md	round 3	false the moment round 3 reshaped bug_report's Area;	1	the adoption journal: each entry heading names the review of pull request 5 it records, so a round named here is an entry in this file
+text	_ADOPTION-DIFFICULTIES.md	round 3	(the same contradiction round 3 removed from bug_report),	1	the adoption journal: each entry heading names the review of pull request 5 it records, so a round named here is an entry in this file
+text	_ADOPTION-DIFFICULTIES.md	round-3	What happened: The round-3 reshape adapted bug_report.yml	1	the adoption journal: each entry heading names the review of pull request 5 it records, so a round named here is an entry in this file
+text	_ADOPTION-DIFFICULTIES.md	round-3	class as the round-3 OPTIONAL_CONFIGURATIONS.md finding.	1	the adoption journal: each entry heading names the review of pull request 5 it records, so a round named here is an entry in this file
+text	_ADOPTION-DIFFICULTIES.md	round-4	self-inflicted by the round-4 fix	1	the adoption journal: each entry heading names the review of pull request 5 it records, so a round named here is an entry in this file
+text	_ADOPTION-DIFFICULTIES.md	round-4	happened: (a) The round-4 fix that softened	1	the adoption journal: each entry heading names the review of pull request 5 it records, so a round named here is an entry in this file
+text	_ADOPTION-DIFFICULTIES.md	round-4	the honesty the round-4 edit intended; a	1	the adoption journal: each entry heading names the review of pull request 5 it records, so a round named here is an entry in this file
+text	_ADOPTION-DIFFICULTIES.md	the round	defect class as the round-3 OPTIONAL_CONFIGURATIONS.md finding.	1	the adoption journal: each entry heading names the review of pull request 5 it records, so a round named here is an entry in this file
+text	_ADOPTION-DIFFICULTIES.md	the round	one self-inflicted by the round-4 fix	1	the adoption journal: each entry heading names the review of pull request 5 it records, so a round named here is an entry in this file
+text	_ADOPTION-DIFFICULTIES.md	the round	undercuts the honesty the round-4 edit intended; a	1	the adoption journal: each entry heading names the review of pull request 5 it records, so a round named here is an entry in this file
+text	docs/build/batch1_build_prompt.md	the round	the pointer from the round that wrote them	1	the Batch 1 brief describing its own revision process, not one review
+text	docs/build/batch1_build_prompt.md	the round	to fix inside the round that meets it.	1	the Batch 1 brief describing its own revision process, not one review
+text	docs/build/batch1_build_prompt.md	this round	command agree; until this round	1	the Batch 1 brief describing its own revision process, not one review
+text	docs/build/batch1_build_prompt.md	this round	same reason and this round	1	the Batch 1 brief describing its own revision process, not one review
+text	docs/spec/specification.md	earlier rounds	append-only growth of earlier rounds. (The spec's own	1	the archived design record naming its own revision rounds, which its version history lists one by one
+text	docs/spec/specification.md	eighth round	v8.0 (eighth round, 18a): a subtraction-and-consolidation	1	the archived design record naming its own revision rounds, which its version history lists one by one
+text	docs/spec/specification.md	ninth round	v9.0 (ninth round, 20a; this document)	1	the archived design record naming its own revision rounds, which its version history lists one by one
+text	docs/spec/specification.md	prior rounds	v1.0-v5.0 (prior rounds): see git history.	1	the archived design record naming its own revision rounds, which its version history lists one by one
+text	docs/spec/specification.md	round-8	is itself the round-8 answer to "the	1	the archived design record naming its own revision rounds, which its version history lists one by one
+text	docs/spec/specification.md	round-9	that repairs the round-9 defects and stale	1	the archived design record naming its own revision rounds, which its version history lists one by one
+text	docs/spec/specification.md	seventh round	v7.0 (seventh round, 16a): Lean-first made	1	the archived design record naming its own revision rounds, which its version history lists one by one
+text	docs/spec/specification.md	sixth round	v6.0 (sixth round, 14a): the acceptance-criteria	1	the archived design record naming its own revision rounds, which its version history lists one by one
+text	docs/spec/specification.md	the round	(~+230 lines) because the round also closes several	1	the archived design record naming its own revision rounds, which its version history lists one by one
+text	docs/spec/specification.md	the round	pass that repairs the round-9 defects and stale	1	the archived design record naming its own revision rounds, which its version history lists one by one
+text	docs/spec/specification.md	the round	block is itself the round-8 answer to "the	1	the archived design record naming its own revision rounds, which its version history lists one by one
+text	docs/spec/specification.md	this round	the release valve this round closes. Relatedly, the	1	the archived design record naming its own revision rounds, which its version history lists one by one

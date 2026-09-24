@@ -2,6 +2,11 @@
 
 The script is loaded by file path because its filename is hyphenated, matching
 the pattern used by `tests/test_check_prohibited_placeholders.py`.
+
+The docstrings below cite markdown-it 14.3.0, the version each case was
+measured on. markdown-it 15.0.2, which the repository now installs, renders
+every input this suite passes the same way, except a lowercase declaration,
+where the tests follow GitHub's renderer.
 """
 
 from __future__ import annotations
@@ -2554,14 +2559,14 @@ def test_a_document_with_crlf_line_endings_keeps_its_sections() -> None:
 
 
 def test_a_lowercase_declaration_does_not_open_an_html_block() -> None:
-    """``<!foo>`` is a declaration to micromark and prose to markdown-it.
+    """``<!foo>`` is a declaration to CommonMark 0.31.2 and prose to GitHub.
 
     Condition 4 accepted any ASCII letter, so a lowercase declaration inside a
     paragraph closed it, the complete tag on the next line opened a type-seven
     block, and every mandatory heading down to the blank line disappeared into
-    it. Measured against markdown-it 14.3.0, which is what this repository
-    reads a rendered page by: both lines stay in the paragraph and the heading
-    below them is a heading.
+    it. Measured on GitHub's renderer, through its Markdown API: both lines
+    stay in the paragraph and the heading below them is a heading. markdown-it
+    14.3.0 read it the same way; 15.0.2 opens a block at the declaration.
     """
     text = build_session(
         sections=SIX_SECTIONS,
@@ -2573,7 +2578,8 @@ def test_a_lowercase_declaration_does_not_open_an_html_block() -> None:
 def test_an_uppercase_declaration_still_opens_an_html_block() -> None:
     """A negative control. Condition 4 is a real condition; it just wants a capital.
 
-    Measured against markdown-it 14.3.0: the declaration closes the paragraph,
+    Measured on GitHub's renderer, and on markdown-it 14.3.0 and 15.0.2
+    alike: the declaration closes the paragraph,
     the tag below it opens a block, and the heading inside that block is raw
     HTML rather than a heading.
     """
@@ -4932,6 +4938,9 @@ def test_the_two_hooks_walk_a_comment_the_same_way() -> None:
         ("<!-- a", False),
         ("a --> b <!-- c", True),
         ("no comment here", False),
+        ("Text <!--> b <!-- c --> d", False),
+        ("a --!> b <!-- c", True),
+        ("<!-- a --!> b --> c", False),
     ):
         assert structure.strip_html_comments(line, state) == sibling.strip_html_comments(
             line, state
@@ -5158,3 +5167,77 @@ def test_the_three_hooks_share_the_junction_check() -> None:
         spec.loader.exec_module(module)
         sources.append(inspect.getsource(module.path_is_junction))
     assert sources[0] == sources[1] == sources[2]
+
+
+def test_the_three_hooks_end_a_comment_where_the_page_does() -> None:
+    """``comment_extent`` is one helper in three files, and this keeps it one.
+
+    The page ends a comment at the first ``-->`` or ``--!>``, and ``<!-->``
+    and ``<!--->`` are empty comments. The pair is the end of the text and
+    the end of the comment.
+    """
+    readability_hook = _load_readability_hook()
+    import importlib.util as _util
+
+    path = Path(__file__).resolve().parents[1] / ".github" / "scripts"
+    spec = _util.spec_from_file_location(
+        "check_placeholders_for_structure_tests", path / "check-prohibited-placeholders.py"
+    )
+    placeholder_hook = _util.module_from_spec(spec)
+    sys.modules[spec.name] = placeholder_hook
+    spec.loader.exec_module(placeholder_hook)
+    for text, expected in (
+        ("<!-->", (4, 5)),
+        ("<!--->", (4, 6)),
+        ("<!---->", (4, 7)),
+        ("<!-- a -->", (7, 10)),
+        ("<!-- a --!> b -->", (7, 11)),
+        ("<!-- a ---> b", (8, 11)),
+        ("<!-- a", (-1, -1)),
+    ):
+        assert structure.comment_extent(text, 0) == expected, text
+        assert readability_hook.comment_extent(text, 0) == expected, text
+        assert placeholder_hook.comment_extent(text, 0) == expected, text
+    assert (
+        structure.COMMENT_CLOSER_PATTERN.pattern
+        == readability_hook.COMMENT_CLOSER_PATTERN.pattern
+        == placeholder_hook.COMMENT_CLOSER_PATTERN.pattern
+    )
+
+
+def test_a_no_source_check_marker_takes_no_reason_past_its_comment() -> None:
+    """``<!-- no-source-check: --!>`` is an empty marker to the page.
+
+    The lookahead refused only ``-->``, so the ``-`` of ``--!>`` passed for a
+    reason, and the words after the page's closer were read as the marker's.
+    A marker the page closes with ``--!>`` is still a marker.
+    """
+    newline = chr(10)
+    assert (
+        structure.NO_SOURCE_CHECK_PATTERN.search(
+            "<!-- no-source-check: --!>" + newline + "<!-- x -->"
+        )
+        is None
+    )
+    sections = ("Goal", "Start Here", "Steps", "Workspace", "Artifact Created", "Stop Point")
+    for markers in (
+        "<!-- no-source-check: --!> offline -->",
+        "<!-- no-source-check: --!> offline -->" + newline + "<!-- a note -->",
+    ):
+        text = build_session(sections=sections, markers=markers)
+        assert any("Source Check" in m for m in check(text)), markers
+    text = build_session(sections=sections, markers="<!-- no-source-check: offline --!> -->")
+    assert check(text) == []
+
+
+def test_an_empty_comment_hides_nothing_after_it() -> None:
+    """``<!-->`` closes where it stands, so a marker after it is its own comment.
+
+    The walk searched for the closer from past the opener, so ``<!-->`` ran on
+    to the next ``-->`` and swallowed a real marker's opener with it.
+    """
+    sections = ("Goal", "Start Here", "Steps", "Workspace", "Artifact Created", "Stop Point")
+    text = build_session(
+        sections=sections, markers="<!--> <!-- no-source-check: offline exercise -->"
+    )
+    assert check(text) == []

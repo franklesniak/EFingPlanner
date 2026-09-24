@@ -3,6 +3,11 @@
 The pre-commit hook calls this script with candidate Markdown paths. The
 checker intentionally stays dependency-free so it can run in the repo-local
 hook environment on Windows, macOS, Linux, and WSL.
+
+The notes below cite markdown-it 14.3.0, the version each was measured on.
+markdown-it 15.0.2, which the repository now installs, reads each of those
+cases the same way, with one exception the notes name: a lowercase
+declaration, where they follow GitHub's renderer.
 """
 
 from __future__ import annotations
@@ -31,7 +36,29 @@ PLACEHOLDER_PATTERN = re.compile(
     r"|\bto\s+be\s+determined\b",
     re.IGNORECASE,
 )
-ALLOW_TBD_PATTERN = re.compile(r"<!--\s*ALLOW-TBD:\s*\S.*?-->", re.IGNORECASE)
+#: How an ALLOW-TBD marker's comment text begins: the label, then a reason
+#: whose first character is not white space. It is matched inside the text of
+#: one comment, which ``carries_allow_tbd_marker`` finds, and never past that
+#: comment's end: searched across the line, the reason's ``\S`` took the ``-``
+#: of an empty marker's own ``-->``, and ``TBD <!-- ALLOW-TBD: --><!-- -->``
+#: was excused by a reason borrowed from the next comment.
+ALLOW_TBD_PATTERN = re.compile(r"\s*ALLOW-TBD:\s*\S", re.IGNORECASE)
+#: Where the page ends a comment. The page is an HTML parser's reading of the
+#: raw HTML, and its tokenizer closes a comment at the first ``-->`` or
+#: ``--!>`` after the opener; ``comment_extent`` adds the two empty comments,
+#: ``<!-->`` and ``<!--->``. Measured on GitHub's renderer:
+#: ``Text <!--> TBD <!-- x --> end.`` and ``Text <!-- a --!> TBD --> end.``
+#: both print ``TBD``. Kept identical to the constant in the sibling hooks.
+#: https://html.spec.whatwg.org/multipage/parsing.html#comment-start-state
+COMMENT_CLOSER_PATTERN = re.compile(r"--!?>")
+#: The inline HTML comment, as CommonMark's renderers run it: ``<!-->``,
+#: ``<!--->``, or ``<!--``, text, and a ``-->`` the text does not end in ``-``
+#: before. It answers whether a ``<!--`` part way along a paragraph is a comment
+#: at all, which is CommonMark's question; where the page ends the comment is
+#: ``comment_extent``'s. ``check-readability.py`` records the measurements.
+#: Kept identical to the constant in the sibling hooks.
+#: <https://spec.commonmark.org/0.31.2/#raw-html>
+INLINE_COMMENT_PATTERN = re.compile(r"<!---?>|<!--(?:[^-]|-[^-]|--[^>])*-->")
 ALLOWED_LABEL_PATTERN = re.compile(
     r"^[ \t]*(?:(?:[-*+]|\d{1,9}[.)])[ \t]+)?\*\*(?:Open Questions?|Assumption):\*\*",
     re.IGNORECASE,
@@ -322,7 +349,7 @@ RAW_TEXT_RUNS = tuple(
     ("processing instruction", re.compile(r"^ {0,3}<\?"), re.compile(r"\?>")),
     ("CDATA section", re.compile(r"^ {0,3}<!\[CDATA\["), re.compile(r"\]\]>")),
     ("declaration", re.compile(r"^ {0,3}<![A-Za-z]"), re.compile(r">")),
-    (COMMENT_RUN, re.compile(r"^ {0,3}<!--"), re.compile(r"-->")),
+    (COMMENT_RUN, re.compile(r"^ {0,3}<!--"), COMMENT_CLOSER_PATTERN),
 )
 RAW_TEXT_CLOSERS = {key: closer for key, _, closer in RAW_TEXT_RUNS}
 #: The start tags that switch the page's tokenizer into a state it leaves only
@@ -493,12 +520,13 @@ class ActiveHtmlBlock:
 #: *inside* a comment from opening a second block that outlives the comment.
 HTML_BLOCK_COMMENT = "comment"
 
-#: Condition 4 asks for an *uppercase* ASCII letter after ``<!``. That is the
-#: rule markdown-it 14.3.0 carries, and markdown-it is what this repository
-#: measures a rendered page against. The CommonMark 0.31.2 prose says "an ASCII
-#: letter" instead, and micromark-core-commonmark 2.0.3 reads it that way, so
-#: the two really do part over a lowercase ``<!doctype html>``. Following the
-#: renderer is also the safe way round: a lowercase declaration that opens no
+#: Condition 4 asks for an *uppercase* ASCII letter after ``<!``, because
+#: GitHub's renderer does. Measured through its Markdown API: ``<!doctype
+#: html>`` prints as paragraph text, and ``<!DOCTYPE html>`` is an HTML block.
+#: The CommonMark 0.31.2 prose says "an ASCII letter" instead, and
+#: micromark-core-commonmark 2.0.3 and markdown-it 15.0.2 read it that way;
+#: markdown-it 14.3.0 wanted the capital, as GitHub does. Following GitHub is
+#: also the safe way round: a lowercase declaration that opens no
 #: block leaves the paragraph above it open, and a mandatory heading below it is
 #: still a heading. Reading it as a block closes that paragraph, lets the next
 #: line open a type-seven block, and hides every heading down to the blank line.
@@ -595,6 +623,70 @@ def resolve_candidate_path(path_argument: str | Path, root: Path) -> tuple[Path,
     return resolved_candidate, relative_path.as_posix()
 
 
+def comment_extent(text: str, start: int) -> tuple[int, int]:
+    """Return where the page ends the comment whose ``<!--`` is at ``start``.
+
+    The pair is the end of the comment's text and the end of the comment, and
+    both are ``-1`` when no closer follows. ``<!-->`` and ``<!--->`` are empty
+    comments, and any other runs to the first ``COMMENT_CLOSER_PATTERN``. The
+    closer was searched for from past the opener, so an empty comment ran on
+    over the words after it to the next comment's ``-->``. Kept identical to
+    the helper in the sibling hooks.
+    https://html.spec.whatwg.org/multipage/parsing.html#comment-start-state
+    """
+    for empty in ("<!-->", "<!--->"):
+        if text.startswith(empty, start):
+            return start + len("<!--"), start + len(empty)
+    closer = COMMENT_CLOSER_PATTERN.search(text, start + len("<!--"))
+    if closer is None:
+        return -1, -1
+    return closer.start(), closer.end()
+
+
+def split_html_comments(
+    line: str, is_in_html_comment: bool
+) -> tuple[str, list[tuple[int, int]], bool, bool]:
+    """Return a line's text outside HTML comments, and where its comment text is.
+
+    The second value lists each run of comment text on the line as a
+    ``(start, end)`` pair, delimiters left out, in order. The other two are
+    ``strip_html_comments``'s. A comment ends where the page ends it; see
+    ``comment_extent``. Kept identical to the helper in the sibling hook.
+    """
+    uncommented_parts: list[str] = []
+    hidden: list[tuple[int, int]] = []
+    index = 0
+    opened_here = False
+
+    while index < len(line):
+        if is_in_html_comment:
+            closer = COMMENT_CLOSER_PATTERN.search(line, index)
+            if closer is None:
+                hidden.append((index, len(line)))
+                return "".join(uncommented_parts), hidden, True, opened_here
+            hidden.append((index, closer.start()))
+            index = closer.end()
+            is_in_html_comment = False
+            continue
+
+        comment_start = line.find("<!--", index)
+        if comment_start == -1:
+            uncommented_parts.append(line[index:])
+            break
+
+        uncommented_parts.append(line[index:comment_start])
+        text_end, comment_end = comment_extent(line, comment_start)
+        if comment_end == -1:
+            hidden.append((comment_start + len("<!--"), len(line)))
+            is_in_html_comment = True
+            opened_here = True
+            break
+        hidden.append((comment_start + len("<!--"), text_end))
+        index = comment_end
+
+    return "".join(uncommented_parts), hidden, is_in_html_comment, opened_here
+
+
 def strip_html_comments(
     line: str, is_in_html_comment: bool
 ) -> tuple[str, bool, bool]:
@@ -605,35 +697,13 @@ def strip_html_comments(
     apart, and the second value cannot answer it: a line that closes one
     comment and opens another comes in open and goes out open, while the
     answer changes. The sibling hook walks a line the same way and is kept
-    in step with this.
+    in step with this. A comment ends where the page ends it, which is
+    ``split_html_comments``'s walk.
     """
-    uncommented_parts: list[str] = []
-    index = 0
-    opened_here = False
-
-    while index < len(line):
-        if is_in_html_comment:
-            comment_end = line.find("-->", index)
-            if comment_end == -1:
-                return "".join(uncommented_parts), True, opened_here
-            index = comment_end + len("-->")
-            is_in_html_comment = False
-            continue
-
-        comment_start = line.find("<!--", index)
-        if comment_start == -1:
-            uncommented_parts.append(line[index:])
-            break
-
-        uncommented_parts.append(line[index:comment_start])
-        comment_end = line.find("-->", comment_start + len("<!--"))
-        if comment_end == -1:
-            is_in_html_comment = True
-            opened_here = True
-            break
-        index = comment_end + len("-->")
-
-    return "".join(uncommented_parts), is_in_html_comment, opened_here
+    visible, _hidden, is_in_html_comment, opened_here = split_html_comments(
+        line, is_in_html_comment
+    )
+    return visible, is_in_html_comment, opened_here
 
 
 def normalize_line_endings(text: str) -> str:
@@ -1318,10 +1388,10 @@ def comment_open_below(content: str, position: int) -> str | None:
         start = content.find("<!--", position)
         if start == -1:
             return None
-        end = content.find("-->", start + len("<!--"))
+        _text_end, end = comment_extent(content, start)
         if end == -1:
             return COMMENT_RUN
-        position = end + len("-->")
+        position = end
 
 
 def raw_text_run_state(
@@ -1684,15 +1754,17 @@ def text_state_tag_column(line: str, is_in_comment: bool) -> int:
     index = 0
     while index < len(line):
         if is_in_comment:
-            comment_end = line.find("-->", index)
-            if comment_end == -1:
+            closer = COMMENT_CLOSER_PATTERN.search(line, index)
+            if closer is None:
                 return -1
-            index = comment_end + len("-->")
+            index = closer.end()
             is_in_comment = False
             continue
         if line.startswith("<!--", index):
-            index += len("<!--")
-            is_in_comment = True
+            _text_end, comment_end = comment_extent(line, index)
+            if comment_end == -1:
+                return -1
+            index = comment_end
             continue
         character = line[index]
         if character == "\\":
@@ -1904,9 +1976,143 @@ def is_closing_fence(line: str, fence_character: str, minimum_length: int) -> bo
     return closing_pattern.match(line) is not None
 
 
+def interrupts_a_paragraph_as_html(content: str) -> bool:
+    """Return whether ``content`` starts an HTML block that ends a paragraph.
+
+    Every HTML block condition but the seventh may interrupt a paragraph.
+    <https://spec.commonmark.org/0.31.2/#html-blocks>
+    """
+    return any(
+        condition.interrupts_paragraph and condition.start.match(content) is not None
+        for condition in HTML_BLOCK_CONDITIONS
+    )
+
+
 def is_allowed_label_line(line: str) -> bool:
     """Return whether the line is an explicit Open Question or Assumption entry."""
     return ALLOWED_LABEL_PATTERN.match(line) is not None
+
+
+def carries_allow_tbd_marker(line: str, is_in_comment: bool) -> bool:
+    """Return whether one real comment on ``line`` is an ALLOW-TBD marker.
+
+    A marker is a comment of its own, opened and closed on the line, whose
+    text begins ``ALLOW-TBD:`` and gives a reason. Each comment is read to
+    where the page ends it (``comment_extent``), and the reason is looked for
+    inside that text only, so a marker cannot borrow a reason, or a closer,
+    from a comment after it: in ``TBD <!-- ALLOW-TBD: --><!-- -->`` the first
+    comment gives no reason and the second is no marker. A comment open from
+    the line above ends at the first closer on this one, and a ``<!--``
+    written before that closer is its text, not a marker's opener.
+    """
+    index = 0
+    if is_in_comment:
+        closer = COMMENT_CLOSER_PATTERN.search(line)
+        if closer is None:
+            return False
+        index = closer.end()
+    while True:
+        start = line.find("<!--", index)
+        if start == -1:
+            return False
+        text_end, end = comment_extent(line, start)
+        if end == -1:
+            return False
+        if ALLOW_TBD_PATTERN.match(line, start + len("<!--"), text_end) is not None:
+            return True
+        index = end
+
+
+@dataclass
+class InlineComment:
+    """An inline comment whose ``-->`` CommonMark has not found yet.
+
+    A ``<!--`` part way along a paragraph line is a comment only when a closer
+    ``INLINE_COMMENT_PATTERN`` accepts arrives before the paragraph ends.
+    Until then the words the page would hide are held rather than dropped:
+    ``text`` is the paragraph from the opener on, one line of block content at
+    a time, and ``held`` is the hidden text per line, with whether that line's
+    own marker or label excuses it. An opener in an ATX heading is
+    ``one_line``, because a heading's inline content ends with its line.
+    """
+
+    text: str
+    containment_path: tuple[Container, ...]
+    one_line: bool
+    held: list[tuple[int, str, bool]] = field(default_factory=list)
+
+
+def follow_inline_comment(
+    comment: InlineComment | None,
+    raw_line: str,
+    block_content: str,
+    hidden: Sequence[tuple[int, int]],
+    containment_path: tuple[Container, ...],
+    line_number: int,
+    excused: bool,
+    may_open: bool,
+) -> InlineComment | None:
+    """Return the inline comment still unclosed after one line.
+
+    ``hidden`` is where the page hides comment text on the line
+    (``split_html_comments``). A comment carried in from above is given the
+    line and asked again; one that closes here is a comment, and the words it
+    held stay hidden. Then each opener after it, when ``may_open`` says the
+    line is paragraph text, is asked whether it closes on this line. The first
+    that does not is the new unclosed comment, and the hidden text from it to
+    the end of the line is held.
+    """
+    hold_from = -1
+    resume = 0
+    if comment is not None:
+        comment.text += "\n" + block_content
+        closed = INLINE_COMMENT_PATTERN.match(comment.text)
+        if closed is None:
+            hold_from = 0
+        else:
+            resume = len(raw_line) - len(comment.text) + closed.end()
+            comment = None
+    if comment is None and may_open:
+        for start, _end in hidden:
+            opener = start - len("<!--")
+            if opener < resume or not raw_line.startswith("<!--", opener):
+                continue
+            closed = INLINE_COMMENT_PATTERN.match(raw_line, opener)
+            if closed is not None:
+                resume = closed.end()
+                continue
+            comment = InlineComment(
+                text=raw_line[opener:],
+                containment_path=containment_path,
+                one_line=ATX_HEADING_LINE_PATTERN.match(block_content) is not None,
+            )
+            hold_from = opener
+            break
+    if comment is not None and hold_from != -1:
+        for start, end in hidden:
+            if end > hold_from:
+                comment.held.append(
+                    (line_number, raw_line[max(start, hold_from) : end], excused)
+                )
+    return comment
+
+
+def held_violations(comment: InlineComment, display_path: str) -> list[Violation]:
+    """Return the placeholders an unclosed inline comment held.
+
+    Its paragraph has ended with no closer, so the ``<!--`` was never a
+    comment, and the page prints every word it would have hidden.
+    """
+    return [
+        Violation(
+            display_path=display_path,
+            line_number=line_number,
+            matched_text=match.group(0),
+        )
+        for line_number, text, excused in comment.held
+        if not excused
+        for match in PLACEHOLDER_PATTERN.finditer(text)
+    ]
 
 
 def find_violations_in_text(text: str, display_path: str) -> list[Violation]:
@@ -1917,22 +2123,26 @@ def find_violations_in_text(text: str, display_path: str) -> list[Violation]:
     ``normalize_line_endings``.
     """
     violations: list[Violation] = []
+    # Whether the page has a comment open below the current line. The page
+    # ends one at the first closer ``comment_extent`` names.
     is_in_html_comment = False
-    # Where the comment that is open below the current line began. CommonMark
-    # has two comments and only one of them may cross a block boundary: a
-    # ``<!--`` at the start of a line's block content is HTML block condition
-    # 2 and runs to the line carrying ``-->`` whatever stands between, while a
-    # ``<!--`` written part way along a paragraph line is inline raw HTML and
-    # cannot leave the paragraph it opened in. Both renderers agree: measured
-    # on GitHub's own and on markdown-it 14.3.0, ``text <!-- a`` over a blank
-    # line over ``TODO: x`` paints two paragraphs with the opener *escaped*,
-    # so the placeholder is text a reader sees. Reading every ``<!--`` as the
-    # block kind hid nine such documents out of seventeen measured.
+    # The inline comment CommonMark has not closed yet. CommonMark has two
+    # comments and only one of them may cross a block boundary: a ``<!--`` at
+    # the start of a line's block content is HTML block condition 2 and runs
+    # to the line carrying ``-->`` whatever stands between, while a ``<!--``
+    # written part way along a paragraph line is inline raw HTML and cannot
+    # leave the paragraph it opened in. Both renderers agree: measured on
+    # GitHub's own and on markdown-it 14.3.0, ``text <!-- a`` over a blank line
+    # over ``TODO: x`` paints two paragraphs with the opener *escaped*, so the
+    # placeholder is text a reader sees. Reading every ``<!--`` as the block
+    # kind hid nine such documents out of seventeen measured.
     # ``check-readability.py`` states the same rule for a whole span in
     # ``comment_span_is_one_block``; this is that rule for a walk that reads
-    # one line at a time.
-    comment_is_inline = False
-    comment_containment_path: tuple[Container, ...] = ()
+    # one line at a time. The words on the opener's own lines are the page's
+    # too, and were hidden: ``text <!-- TBD`` over a blank line printed
+    # ``TBD`` on GitHub and passed here. So they are held until the comment
+    # closes (``InlineComment``).
+    inline_comment: InlineComment | None = None
     active_fence: ActiveFence | None = None
     list_contexts: list[ListContext] = []
     html_block: ActiveHtmlBlock | None = None
@@ -2006,20 +2216,34 @@ def find_violations_in_text(text: str, display_path: str) -> list[Violation]:
             paragraph_open,
             header_above,
         )
-        if is_in_html_comment and comment_is_inline and (
-            block_line.containment_path != comment_containment_path
-            or bool(block_line.opened)
+        if inline_comment is not None and (
+            inline_comment.one_line
+            or block_line.containment_path != inline_comment.containment_path
+            or any(
+                container.kind != CONTAINER_KIND_BLOCK_QUOTE
+                for container in block_line.opened
+            )
             or block_starts
+            or interrupts_a_paragraph_as_html(block_content)
             or parse_opening_fence(block_content) is not None
             or not opens_a_paragraph(block_content, True, header_above)
         ):
             # The paragraph holding the opener has ended, so the ``<!--`` was
-            # never a comment. The five tests are the five ways a paragraph
-            # ends under it: the line has left the container the opener sat
-            # in, a container opened on this line, an HTML block opened, a
+            # never a comment. The tests are the ways a paragraph ends under
+            # it: the opener was in a heading, which ends with its line; the
+            # line has left the container the opener sat in, a list item
+            # opened on this line, a block started, an HTML block opened, a
             # fence opened, or the line is one ``opens_a_paragraph`` refuses --
             # a blank line, a heading, a thematic break, a Setext underline, a
-            # table's delimiter row.
+            # table's delimiter row. A ``>`` is not counted as a container
+            # opening, because ``container_line`` reports the blockquote as
+            # opened on every line that carries one, and the path test above
+            # already sees a blockquote that is new. Counting it ended
+            # ``> quoted <!-- a`` over ``> TBD -->`` at the second line, and
+            # GitHub hides that ``TBD``. An HTML block of conditions 1 to 6 may
+            # interrupt a paragraph, so ``x <!-- TBD`` over
+            # ``<!-- ALLOW-TBD: r --> y`` leaves the first ``<!--`` unclosed,
+            # and GitHub prints its ``TBD``.
             #
             # ``paragraph_open`` is *not* asked, and the reason is worth the
             # line: it is set ``False`` on every line of an open HTML block,
@@ -2036,6 +2260,11 @@ def find_violations_in_text(text: str, display_path: str) -> list[Violation]:
             # ``was_in_html_comment`` is cleared with it: it was read out of
             # this variable a few lines above and would otherwise carry the
             # stale answer into ``in_html_block``.
+            #
+            # The words the comment held are the paragraph's own, so they are
+            # reported now, at the lines that hold them.
+            violations.extend(held_violations(inline_comment, display_path))
+            inline_comment = None
             is_in_html_comment = False
             was_in_html_comment = False
         html_block, line_html_block = html_block_state(
@@ -2078,12 +2307,14 @@ def find_violations_in_text(text: str, display_path: str) -> list[Violation]:
         # comment at all.
         markup_start = 0
         markup_end = len(raw_line)
+        # Where the page hides comment text on the line, for the inline
+        # comment below. Left empty wherever this hook does not read comments.
+        hidden_spans: list[tuple[int, int]] = []
         if in_raw_text:
             # The line is a raw-text element's content, which the page
             # displays as it stands. A comment-shaped run there opens no
             # comment and hides no placeholder, so the line is read whole.
             commentless_line = raw_line
-            comment_opened_here = False
             markup_start = len(raw_line)
         elif run_released_the_line:
             # The run held the head of the line and released the tail, so only
@@ -2091,13 +2322,13 @@ def find_violations_in_text(text: str, display_path: str) -> list[Violation]:
             # coming in, because a run opens only at the start of a line.
             split = len(raw_line) - len(block_content) + raw_text_end
             markup_start = split
-            tail, is_in_html_comment, comment_opened_here = strip_html_comments(
+            tail, is_in_html_comment, _opened_here = strip_html_comments(
                 raw_line[split:], False
             )
             commentless_line = raw_line[:split] + tail
         else:
-            commentless_line, is_in_html_comment, comment_opened_here = (
-                strip_html_comments(raw_line, is_in_html_comment)
+            commentless_line, hidden_spans, is_in_html_comment, _opened_here = (
+                split_html_comments(raw_line, is_in_html_comment)
             )
         if not text_state_open:
             column = text_state_tag_column(
@@ -2123,13 +2354,7 @@ def find_violations_in_text(text: str, display_path: str) -> list[Violation]:
             # tag in every Markdown file it lints, before this hook runs.
             commentless_line = raw_line
             is_in_html_comment = False
-            comment_opened_here = False
-        if comment_opened_here:
-            # A line CommonMark reads as raw HTML holds no inline content, so a
-            # comment opening on one is the block kind. Everywhere else the
-            # opener sits inside a paragraph and the comment is inline.
-            comment_is_inline = line_html_block is None
-            comment_containment_path = block_line.containment_path
+            hidden_spans = []
         if raw_text_run_holds_text(raw_text):
             # A raw-text run is open below this line, so no comment can be open
             # inside it. Said here as well as above because a run opens part way
@@ -2184,10 +2409,26 @@ def find_violations_in_text(text: str, display_path: str) -> list[Violation]:
         previous_content = block_content
         previous_container = block_line.containment_path
 
-        if ALLOW_TBD_PATTERN.search(raw_line[markup_start:markup_end]):
-            continue
+        excused = carries_allow_tbd_marker(
+            raw_line[markup_start:markup_end],
+            was_in_html_comment and not run_released_the_line,
+        ) or is_allowed_label_line(commentless_line)
+        # A line CommonMark reads as raw HTML holds no inline content, so a
+        # comment opening on one is the block kind, and the page decides it.
+        # Everywhere else the opener sits inside a paragraph and the comment is
+        # inline, and CommonMark decides whether it is one at all.
+        inline_comment = follow_inline_comment(
+            inline_comment,
+            raw_line,
+            block_content,
+            hidden_spans,
+            block_line.containment_path,
+            line_number,
+            excused,
+            may_open=line_html_block is None and bool(hidden_spans),
+        )
 
-        if is_allowed_label_line(commentless_line):
+        if excused:
             continue
 
         for match in PLACEHOLDER_PATTERN.finditer(commentless_line):
@@ -2199,6 +2440,13 @@ def find_violations_in_text(text: str, display_path: str) -> list[Violation]:
                 )
             )
 
+    if inline_comment is not None:
+        # The file ended inside the paragraph, so the opener was never a
+        # comment either.
+        violations.extend(held_violations(inline_comment, display_path))
+    # Held words are reported when their paragraph ends, after the lines below
+    # them; the report is in line order all the same.
+    violations.sort(key=lambda violation: violation.line_number)
     return violations
 
 
