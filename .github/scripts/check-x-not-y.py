@@ -25,19 +25,24 @@ holding only an HTML comment are skipped. Block quotes are read like prose; a
 quotation block quote, such as a coaching script, is judged "no". A paragraph
 is joined before it is split into sentences, because Markdown renders a soft
 line break as a space, and its code spans and comments are removed after the
-join, because either can cross a line break. The patterns read a sentence
-without its emphasis (``*`` or ``_``), but the candidate keeps the sentence
-as written, closing quotation marks and emphasis included. Text above a
-page's first ``##`` heading is not a ``##`` section, so only the file cap
-reaches it. Each ``##`` heading starts its own section, even when two share
-a title. A child session's "For parents" strip and ``## Parent Notes`` are
+join, because either can cross a line break. A code span follows CommonMark's
+delimiter rules: an escaped backtick or a closing run of another length opens
+or closes nothing. The patterns read the words a reader sees: no emphasis
+(``*`` or ``_``), a link's label without its destination, and no image. The
+candidate keeps the sentence as written, closing quotation marks, emphasis
+and links included. A comment between two paragraphs does not part them,
+even over several lines. Text above a page's first ``##`` heading is not a
+``##`` section, so only the file cap reaches it. Each ``##`` heading starts
+its own section, even when two share a title. A child session's "For parents" strip and ``## Parent Notes`` are
 parent-facing regions, but the file cap follows the file's own register.
 
 A ``<!-- density-exempt: X, not Y -- <reason> -->`` marker covers the block
 directly below it: one paragraph, one whole list (a loose list included), or,
 above a heading, that heading's section. It exempts the instances and split
 negations it covers. A marker that gives no reason exempts nothing, and the
-report names it.
+report names it. A marker must fit on one line, as the style law writes it; a
+comment written over several lines is not read as a marker, so the instances
+below it stay counted.
 
 Human judgments
 ---------------
@@ -116,8 +121,11 @@ TABLE_DELIM_RE = re.compile(r"^\s*\|?\s*:?-+:?\s*(?:\|\s*:?-+:?\s*)*\|?\s*$")
 COMMENT_ONLY_RE = re.compile(r"^\s*(?:<!--.*?-->\s*)+$")
 THEMATIC_BREAK_RE = re.compile(r"^ {0,3}(?:(?:-\s*){3,}|(?:\*\s*){3,}|(?:_\s*){3,})$")
 HTML_COMMENT_RE = re.compile(r"<!--.*?-->", re.DOTALL)
-#: A code span, which may cross a line break inside its paragraph.
-CODE_SPAN_RE = re.compile(r"(`+)(?:(?!\1).)+?\1", re.DOTALL)
+#: A code span, as CommonMark reads one: a backtick run that no backslash
+#: escapes, closed by a run of exactly the same length (a longer or shorter
+#: run closes nothing). It may cross a line break inside its paragraph. The
+#: readability check uses the same guards.
+CODE_SPAN_RE = re.compile(r"(?<!`)(?<!\\)(`+)(?!`).*?(?<!`)\1(?!`)", re.DOTALL)
 LIST_MARKER_RE = re.compile(r"^\s*(?:[-*+]|\d{1,9}[.)])\s+(?:\[[ xX]\]\s+)?")
 #: A list item's opening, for finding where a list ends.
 LIST_ITEM_RE = re.compile(r"^(?P<indent> {0,12})(?P<bullet>[-*+]|\d{1,9}(?P<delim>[.)]))(?: {1,4}|$)")
@@ -138,14 +146,24 @@ XNOTY_DEVICE_RE = re.compile(r"^x\s*[,-]?\s*not\s*[,-]?\s*y$", re.IGNORECASE)
 # Candidate patterns
 # ---------------------------------------------------------------------------
 
+#: The auxiliary verbs a negation attaches to.
+AUX = r"(?:is|are|am|was|were|does|do|did|has|have|had|can|could|will|would|shall|should|may|might|must|need)"
+#: A negated auxiliary, in every spelling the tests read: `is not`, `isn't`,
+#: `could not`, `couldn't`, and the irregular `can't`, `won't`, `shan't` and
+#: `cannot`, whose verb is not spelled out before `n't`. One list serves every
+#: test, so a spelling one test reads, every test reads.
+NEG_AUX = (
+    r"(?:" + AUX + r"\s+(?:not|never)"
+    r"|(?:is|are|was|were|does|do|did|has|have|had|could|would|should|must|might|need)n['’]t"
+    r"|(?:can|won|shan)['’]t|cannot)"
+)
+#: A short subject before a negated verb: "it isn't", "you can't".
+SUBJ = r"(?:it|they|that|this|you|we|he|she|i)"
 # A negation that opens a clause: "not", "never", or a short subject plus a
 # negated verb ("do not", "it isn't", "they're not").
 CLAUSE_NEG = (
-    r"(?:not|never"
-    r"|(?:(?:it|they|that|this|you|we)\s+)?(?:(?:is|are|do|does|did|will|should)\s+|can\s*)not"
-    r"|(?:(?:it|they|that|this|you|we)\s+)?(?:don|doesn|didn|isn|aren|can|won|shouldn)['’]t"
-    r"|(?:it|that)['’]s\s+not|(?:they|you|we)['’]re\s+not"
-    r"|(?:it|they|this|that|you|we)\s+never)\b"
+    r"(?:not|never|(?:" + SUBJ + r"\s+)?" + NEG_AUX
+    + r"|(?:it|that)['’]s\s+not|(?:they|you|we)['’]re\s+not|" + SUBJ + r"\s+never)\b"
 )
 
 # Inline forms of the device. Each match is a *candidate* only.
@@ -154,16 +172,8 @@ INLINE_PATTERNS = {
     "comma-never": re.compile(r",\s*(?:and\s+|but\s+)?never\b", re.IGNORECASE),
     "dash-not": re.compile(r"(?:\s--\s*|\s?[—–]\s?)(?:and\s+)?" + CLAUSE_NEG, re.IGNORECASE),
     "semi-colon-not": re.compile(r"[;:]\s*" + CLAUSE_NEG, re.IGNORECASE),
-    "comma-clause-not": re.compile(
-        r",\s*(?:it|they|this|that|you|we)\s+(?:(?:(?:do|does|did|is|are|was|were|will)\s+|can\s*)not\b"
-        r"|(?:don|doesn|didn|isn|aren|wasn|weren|can|won)['’]t\b)",
-        re.IGNORECASE,
-    ),
-    "but-not": re.compile(
-        r"\bbut\s+(?:(?:it|they|this|that|you|we)\s+)?(?:(?:(?:does|do|did|is|are|will)\s+|can\s*)not\b"
-        r"|(?:doesn|don|didn|isn|aren|can|won)['’]t\b|not\b|never\b)",
-        re.IGNORECASE,
-    ),
+    "comma-clause-not": re.compile(r",\s*" + SUBJ + r"\s+" + NEG_AUX + r"\b", re.IGNORECASE),
+    "but-not": re.compile(r"\bbut\s+(?:" + SUBJ + r"\s+)?(?:" + NEG_AUX + r"|not|never)\b", re.IGNORECASE),
     "rather-than": re.compile(r"\brather than\b", re.IGNORECASE),
     "instead-of": re.compile(r"\binstead of\b", re.IGNORECASE),
     "not-but": re.compile(r"\bnot\b(?:(?![.;:!?]).){1,90}?\bbut\b", re.IGNORECASE),
@@ -181,16 +191,14 @@ OPENERS = r"[\"'“‘*_(]*"
 #: Negation in the first words of a sentence: the opening of the banned shape.
 LEADING_NEG_RE = re.compile(
     "^" + OPENERS + r"(?P<subj>[A-Za-z]+)(?:'s|'re|’s|’re)?"
-    r"(?:\s+(?:is|are|was|were|does|do|did|has|have|can|will|would|should))?"
-    r"\s*(?:not\b|n't\b|n’t\b|never\b)",
+    r"(?:\s+" + AUX + ")?"
+    r"\s*(?:not\b|n't\b|n’t\b|never\b)"
+    # `can't`, `won't` and `shan't` do not spell their verb before `n't`.
+    r"|^" + OPENERS + r"(?P<subj2>[A-Za-z]+)\s+(?:can|won|shan)['’]t\b",
 )
 SUBJECT_RE = re.compile("^" + OPENERS + r"(?P<subj>[A-Za-z]+)")
 #: A negated main verb anywhere in a sentence ("is not", "doesn't").
-NEG_VERB_RE = re.compile(
-    r"\b(?:is|are|was|were|does|do|did)\s+(?:not|never)\b"
-    r"|\b(?:isn|aren|wasn|weren|doesn|don|didn)['’]t\b",
-    re.IGNORECASE,
-)
+NEG_VERB_RE = re.compile(r"\b" + NEG_AUX + r"\b", re.IGNORECASE)
 #: A sentence that restates a subject with a pronoun and a verb: the second
 #: half of "It's not X. It's Y."
 PRONOUN_CLAIM_RE = re.compile(
@@ -225,6 +233,14 @@ ABBREV_RE = re.compile(r"\b(?:e\.g|i\.e|etc|vs|p\.m|a\.m|Dr|Mr|Mrs|Ms|St|No)\.$"
 #: Emphasis markers: every `*`, and a run of `_` at a word's edge. An
 #: underscore inside a word is not emphasis in Markdown, so it stays.
 EMPHASIS_RE = re.compile(r"\*+|(?<![A-Za-z0-9])_+|_+(?![A-Za-z0-9])")
+#: A link destination and its optional title: `(other.md)` or `(other.md "Title")`.
+LINK_TARGET = r"\((?:[^()\s]|\([^()]*\))*(?:\s+(?:\"[^\"]*\"|'[^']*'))?\s*\)"
+#: A link label, which may hold one level of brackets.
+LINK_LABEL = r"\[(?P<label>(?:[^\[\]]|\[[^\]]*\])*)\]"
+#: An image shows no words, so the tests skip it.
+IMAGE_RE = re.compile("!" + LINK_LABEL + "(?:" + LINK_TARGET + r"|\[[^\]]*\])")
+#: An inline link, or a full or collapsed reference link: the page shows only its label.
+LINK_RE = re.compile(LINK_LABEL + "(?:" + LINK_TARGET + r"|\[[^\]]*\])")
 ARROW = " → "
 
 
@@ -234,7 +250,10 @@ def normalize_space(text: str) -> str:
 
 
 def plain(text: str) -> str:
-    """Return text without emphasis markers. Emphasis never changes what a sentence says."""
+    """Return the words a reader sees: link labels without their destinations, no images,
+    and no emphasis markers. Neither changes what a sentence says."""
+    text = IMAGE_RE.sub("", text)
+    text = LINK_RE.sub(lambda m: m.group("label"), text)
     return EMPHASIS_RE.sub("", text)
 
 
@@ -593,8 +612,8 @@ def adjacent(a: list[ProseLine], b: list[ProseLine], raw_lines: list[str] | None
     A split negation or a banned pair can straddle a paragraph break. Only
     plain paragraphs pair up this way: consecutive list items are separate
     points, and a block quote is a separate box from the prose around it. A
-    line holding only a comment, such as a `density-exempt` marker, is not
-    rendered, so it does not part two paragraphs.
+    comment, such as a `density-exempt` marker, is not rendered, so it does
+    not part two paragraphs, even when it runs over several lines.
     """
     if raw_lines is None or a[0].item or b[0].item:
         return False
@@ -602,8 +621,8 @@ def adjacent(a: list[ProseLine], b: list[ProseLine], raw_lines: list[str] | None
         return False
     if a[-1].section_index != b[0].section_index or a[-1].region != b[0].region:
         return False
-    between = raw_lines[a[-1].lineno:b[0].lineno - 1]
-    return all(not line.strip() or COMMENT_ONLY_RE.match(line) for line in between)
+    between = "\n".join(raw_lines[a[-1].lineno:b[0].lineno - 1])
+    return not HTML_COMMENT_RE.sub("", between).strip()
 
 
 def paragraph_text(para: list[ProseLine]) -> str:
@@ -674,7 +693,7 @@ def banned_patterns(first: str, second: str, joined: bool = False) -> list[str]:
     sm = SUBJECT_RE.match(second)
     second_positive = not NEGATION_RE.search(second.split(",")[0][:40])
     if (lm and sm and second_positive
-            and normalize_subject(sm.group("subj")) == normalize_subject(lm.group("subj"))):
+            and normalize_subject(sm.group("subj")) == normalize_subject(lm.group("subj") or lm.group("subj2"))):
         pats.append("neg-then-same-subject")
     if (NEG_VERB_RE.search(first) and PRONOUN_CLAIM_RE.match(second) and second_positive
             and len(first.split()) <= 25):

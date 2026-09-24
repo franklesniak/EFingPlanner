@@ -342,6 +342,11 @@
       "judgment": "no",
       "reason": "fact and purpose"
     },
+    "banned|Check 2 has not been run; it needs a real child.|1": {
+      "line": 121,
+      "judgment": "no",
+      "reason": "a fact and the reason it is open; the second half corrects nothing"
+    },
     "device|Those Batch 0 pages are the baseline, not a validated reference: they are unpiloted too, under the same deferral.|1": {
       "line": 121,
       "judgment": "device",
@@ -443,6 +448,11 @@
       "judgment": "no",
       "reason": "two facts"
     },
+    "banned|Every family gets it, in Session 05, including families who will never touch a tool. → It teaches three things: AI can make up facts that sound completely plausible; AI is never the only source for anything; and AI never decides legal, safety, entry, medical, money or booking matters.|1": {
+      "line": 20,
+      "judgment": "no",
+      "reason": "the second sentence goes on to what the lesson teaches; it recasts nothing"
+    },
     "split|An adult records the yes or no at setup, on the family's assumptions page. → Writing it down is what keeps the safety sequence from being skipped by accident.|1": {
       "line": 23,
       "judgment": "no",
@@ -467,6 +477,11 @@
       "line": 40,
       "judgment": "device",
       "reason": "fragment \"Never the child alone, and never on an account belonging to the child\" after the claim (supervision rule, safety)"
+    },
+    "banned|**It may not decide** passport requirements, entry requirements, visa issues, safety, medical issues, medication rules, bookings, payments, legal requirements, or the final budget. → Those are adult decisions made against official sources.|1": {
+      "line": 60,
+      "judgment": "no",
+      "reason": "a rule and its owner: those questions are adult decisions; the subject changes, nothing is recast"
     },
     "split|**Never share family or personal details with an AI tool.** → No names, no addresses, no dates, no passport details, no booking details.|1": {
       "line": 66,
@@ -559,6 +574,11 @@
       "line": 73,
       "judgment": "device",
       "reason": "plain parent voice, not the nested-qualification voice"
+    },
+    "banned|Contract these forms: *do not, does not, did not, is not, are not, was not, will not, cannot, could not, would not, should not, have not, has not, it is, that is, there is, you are, they are, we are, you will, we will, you have, let us*.|1": {
+      "line": 80,
+      "judgment": "no",
+      "reason": "a list of spellings to contract, not a claim"
     },
     "device|Contract these forms: *do not, does not, did not, is not, are not, was not, will not, cannot, could not, would not, should not, have not, has not, it is, that is, there is, you are, they are, we are, you will, we will, you have, let us*.|1": {
       "line": 80,
@@ -1045,6 +1065,11 @@
       "judgment": "no",
       "reason": "fact"
     },
+    "banned|**Luggage handling** for anyone who shouldn't carry bags up stairs: forwarding services, porter help, or lockers. → Those are categories; **which ones exist where you are going, and what they are called, is in your destination pack's adult-logistics page**.|1": {
+      "line": 57,
+      "judgment": "no",
+      "reason": "a list item, then what the categories are; no correction of the first"
+    },
     "split|They notice and hand it to you. → They don't research the fix.|1": {
       "line": 60,
       "judgment": "split",
@@ -1378,6 +1403,11 @@
       "judgment": "device",
       "reason": "fragment \"Not 'stay, or move somewhere safer'\" (the separation default, safety)"
     },
+    "banned|It may **never** carry passport numbers, birthdates, confirmation numbers, or your home address. → It's a carry-in-pocket safety card, not trip data written down anywhere else.|1": {
+      "line": 35,
+      "judgment": "no",
+      "reason": "a prohibition, then the card's purpose as its reason; the first is a rule, not an identity claim the second corrects (the spec's carry-card boundary)"
+    },
     "split|The card may carry the **lodging name, address and phone number, and a parent's phone number** — the minimum needed to reunite. → It may **never** carry passport numbers, birthdates, confirmation numbers, or your home address.|1": {
       "line": 35,
       "judgment": "split",
@@ -1671,6 +1701,11 @@
       "line": 56,
       "judgment": "split",
       "reason": "same verb: write this / do not write that (privacy prohibition)"
+    },
+    "banned|For a traveler you could not reach, fill in what you know and mark the rest \"asked through a grown-up\" or \"not decided yet.\" → That's enough for today.|1": {
+      "line": 74,
+      "judgment": "no",
+      "reason": "an instruction, then a reassurance"
     },
     "split|No new sources needed unless you looked something up. → The interview answers are family input, so they go on your profile and interview pages.|1": {
       "line": 78,
@@ -2010,6 +2045,11 @@
       "judgment": "no",
       "reason": "elaboration of the claim; \"not spent there\" rejects no alternative"
     },
+    "banned|**A first trip cannot include everything.** → That's normal.|1": {
+      "line": 32,
+      "judgment": "no",
+      "reason": "a limit and a reassurance; the second sentence does not recast what a first trip is"
+    },
     "split|**A first trip cannot include everything.** → That's normal.|1": {
       "line": 32,
       "judgment": "no",
@@ -2342,10 +2382,10 @@
     }
   },
   "framework/student_guide/how_to_take_notes.md": {
-    "split|One more line. → If you can't think of a reason, you might not need the fact.|1": {
+    "device|If you can't think of a reason, you might not need the fact.|1": {
       "line": 12,
       "judgment": "no",
-      "reason": "conditional"
+      "reason": "a condition and its consequence; it rejects no named alternative"
     },
     "split|Part two is the one people skip, and it's the one that saves you. → A page of facts with no reasons is a pile.|1": {
       "line": 16,

@@ -250,6 +250,59 @@ def test_a_comment_line_does_not_part_two_paragraphs() -> None:
     assert [k for k, _ in kinds(text)] == ["device"]
 
 
+def test_a_comment_over_several_lines_does_not_part_two_paragraphs() -> None:
+    text = "It's not a toy.\n\n<!-- a note that\nruns on -->\n\nIt's a tool."
+    assert ("banned", "It's not a toy. → It's a tool.") in kinds(text)
+
+
+@pytest.mark.parametrize("sentence", [
+    "Say \\`a map, not a list\\` aloud.",
+    "Say `a map, not a list`` aloud.",
+    "Say ``a map, not a list` aloud.",
+])
+def test_backticks_that_open_no_code_span_leave_the_prose(sentence: str) -> None:
+    assert kinds(sentence) == [("device", sentence)]
+
+
+def test_a_code_span_closes_only_on_a_run_of_its_own_length() -> None:
+    assert kinds("Say ``a map, not `a` list`` aloud.") == []
+
+
+@pytest.mark.parametrize("sentence", [
+    "It is a map, [not](other.md) a list.",
+    "Choose the map rather [than](other.md) the list.",
+    "It is a map, [not][ref] a list.",
+])
+def test_a_link_label_is_read_as_prose(sentence: str) -> None:
+    assert kinds(sentence) == [("device", sentence)]
+
+
+@pytest.mark.parametrize("sentence", [
+    'Read the [guide](a.md "Pick this, not that") first.',
+    "Read the [guide](notes/a,not-b.md) first.",
+    "See ![a map, not a list](m.png) here.",
+])
+def test_a_link_destination_title_or_image_is_not_prose(sentence: str) -> None:
+    assert kinds(sentence) == []
+
+
+@pytest.mark.parametrize("sentence", [
+    "It can't be final; it's a draft.",
+    "It won't be final; it's a draft.",
+    "It couldn't be final; it's a draft.",
+    "This could not be final; it is a draft.",
+    "It shan't be final; it's a draft.",
+    "You can't start over; you move a block.",
+    "You won't start over; you move a block.",
+])
+def test_every_negated_auxiliary_opens_the_banned_shape(sentence: str) -> None:
+    assert ("banned", sentence) in kinds(sentence)
+
+
+def test_every_negated_auxiliary_is_read_by_the_inline_patterns() -> None:
+    assert [k for k, _ in kinds("Pick the map, but you couldn't pick the list.")] == ["device"]
+
+
 def test_a_block_quote_under_a_lead_in_line_is_its_own_block() -> None:
     assert kinds("**Plan A is off.**\n> Don't worry about it.") == []
 
