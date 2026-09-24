@@ -1,4 +1,10 @@
-"""Tests for the prohibited Markdown placeholder pre-commit hook."""
+"""Tests for the prohibited Markdown placeholder pre-commit hook.
+
+The docstrings below cite markdown-it 14.3.0, the version each case was
+measured on. markdown-it 15.0.2, which the repository now installs, renders
+every input this suite passes the same way, except a lowercase declaration,
+where the tests follow GitHub's renderer.
+"""
 
 from __future__ import annotations
 
@@ -41,6 +47,8 @@ class PlaceholderHookModule(Protocol):
 
     def main(self, argv: Iterable[str] | None = None, root: Path = ...) -> int: ...
 
+    def find_violations_in_text(self, text: str, display_path: str) -> list[ViolationLike]: ...
+
 
 placeholder_hook: PlaceholderHookModule = cast(PlaceholderHookModule, _placeholder_hook)
 
@@ -55,6 +63,11 @@ def write_file(path: Path, content: str) -> Path:
 def scan_single_file(path: Path, root: Path) -> list[ViolationLike]:
     """Scan one file through the public hook path."""
     return placeholder_hook.scan_files([path], root=root)
+
+
+def _find(text: str) -> list[ViolationLike]:
+    """Scan one document through the public text path, with no file in between."""
+    return placeholder_hook.find_violations_in_text(text, "x.md")
 
 
 @pytest.mark.parametrize(
@@ -573,7 +586,7 @@ def test_a_blank_line_does_not_end_a_list_nested_fence(tmp_path: Path) -> None:
 
 
 # ---------------------------------------------------------------------------
-# Round 6: an HTML block opens no fence here either
+# An HTML block opens no fence here either
 # ---------------------------------------------------------------------------
 
 
@@ -622,7 +635,7 @@ def test_a_fence_on_the_line_after_a_comment_still_hides_a_placeholder(
 
 
 # ---------------------------------------------------------------------------
-# Round 7: a container prefix does not stop an HTML block from being one
+# A container prefix does not stop an HTML block from being one
 # ---------------------------------------------------------------------------
 
 
@@ -694,7 +707,7 @@ def test_the_html_block_test_does_not_disturb_list_tracking(tmp_path: Path) -> N
 
 
 def test_a_fence_line_inside_a_div_block_hides_nothing(tmp_path: Path) -> None:
-    """Round 8: a comment is one HTML block condition out of several.
+    """A comment is one HTML block condition out of several.
 
     The backticks inside the ``<div>`` are raw HTML, so no fenced block opens.
     Before this, they opened one that never closed, and every placeholder to
@@ -762,3 +775,1416 @@ def test_an_ordinary_paragraph_starting_with_a_tag_still_opens_its_fence(
     )
 
     assert scan_single_file(path, tmp_path) == []
+
+
+# ---------------------------------------------------------------------------
+# HTML blocks a document prints, in the third copy of the same walk
+# ---------------------------------------------------------------------------
+
+
+def test_an_unclosed_html_block_ends_with_its_blockquote(tmp_path: Path) -> None:
+    """A leaf block ends with the block that holds it, as an unclosed fence does.
+
+    The HTML-block state had no containment path, so the ``<script>`` stayed
+    open past the outdent; a line read as raw HTML opens no fence, so the
+    example below was never a fence and its placeholder was reported.
+    """
+    path = write_file(
+        tmp_path / "docs" / "spec" / "example.md",
+        "> <script>\n\n```\nThe limit is TBD.\n```\n",
+    )
+
+    assert scan_single_file(path, tmp_path) == []
+
+
+def test_a_script_line_inside_a_comment_opens_no_block(tmp_path: Path) -> None:
+    """No start condition is tried while an HTML block is open.
+
+    A ``<script>`` written inside a multiline comment opened a second state
+    that outlived the ``-->`` and hid every fence below it.
+    """
+    path = write_file(
+        tmp_path / "docs" / "spec" / "example.md",
+        "<!-- a note\n<script>\n-->\n\n```\nThe limit is TBD.\n```\n",
+    )
+
+    assert scan_single_file(path, tmp_path) == []
+
+
+def test_a_fence_inside_a_type_seven_html_block_is_not_a_fence(tmp_path: Path) -> None:
+    """A complete tag alone at a block boundary opens a raw HTML block.
+
+    The backticks inside it are raw HTML rather than a fence, so the
+    placeholder on the line below is characters on the page and is reported.
+    Measured against markdown-it 14.3.0.
+    """
+    path = write_file(
+        tmp_path / "docs" / "spec" / "example.md",
+        "<x-session>\n```\nThe limit is TBD.\n```\n",
+    )
+
+    assert [violation.matched_text for violation in scan_single_file(path, tmp_path)] == ["TBD"]
+
+
+def test_a_nonbreaking_space_does_not_close_a_fence(tmp_path: Path) -> None:
+    """CommonMark permits spaces and tabs after a closing fence and nothing else.
+
+    The narrowed pattern keeps the block open, so the placeholder under the
+    fake closing fence stays inside the example -- which is where the renderer
+    keeps it.
+    """
+    path = write_file(
+        tmp_path / "docs" / "spec" / "example.md",
+        "```\ncode\n```\u00a0\nThe limit is TBD.\n```\n",
+    )
+
+    assert scan_single_file(path, tmp_path) == []
+
+
+def test_a_fence_whose_container_ends_does_not_leave_a_paragraph_open(tmp_path: Path) -> None:
+    """A fence line opens a code block, not a paragraph.
+
+    The paragraph state was written before the opening-fence branch, where a
+    fence line reads as ordinary text, so a fence whose blockquote ended on the
+    very next line handed a stale open paragraph to the line below it. The
+    complete tag there was refused HTML block condition 7, the backticks under
+    it opened a fence of their own, and the placeholder inside went unreported.
+    Measured against markdown-it 14.3.0: the tag opens a raw HTML block and the
+    placeholder is characters on the page.
+    """
+    path = write_file(
+        tmp_path / "docs" / "spec" / "example.md",
+        "> ```\n<x-session>\n```\nThe limit is TBD.\n",
+    )
+
+    assert [violation.matched_text for violation in scan_single_file(path, tmp_path)] == ["TBD"]
+
+
+def test_an_open_paragraph_still_refuses_a_complete_tag(tmp_path: Path) -> None:
+    """A negative control. Condition 7 is the one condition that may not interrupt.
+
+    A paragraph really is open above the tag here, so no HTML block opens, the
+    backticks below it are a fence, and the placeholder inside is an example.
+    Measured against markdown-it 14.3.0.
+    """
+    path = write_file(
+        tmp_path / "docs" / "spec" / "example.md",
+        "Heading\n<x-session>\n```\nThe limit is TBD.\n```\n",
+    )
+
+    assert scan_single_file(path, tmp_path) == []
+
+
+def test_a_form_feed_does_not_end_a_line(tmp_path: Path) -> None:
+    """CommonMark knows three line endings, and a form feed is none of them.
+
+    The walk cut the document with ``str.splitlines``, which also splits on a
+    form feed, a vertical tab and two Unicode separators, so a form feed in
+    front of a fence produced a closing fence out of thin air and the example
+    below it was reported as a violation. Measured against markdown-it 14.3.0:
+    the block never closes and the placeholder stays inside it.
+    """
+    path = write_file(
+        tmp_path / "docs" / "spec" / "example.md",
+        "```\ncode\n\x0c```\nThe limit is TBD.\n",
+    )
+
+    assert scan_single_file(path, tmp_path) == []
+
+
+def test_crlf_line_endings_report_what_line_feeds_report() -> None:
+    """A negative control, and the one that keeps the new split honest.
+
+    Splitting on ``\\n`` alone is what the sibling hooks do, and it is right
+    only because the document's line endings are made one thing first. A
+    closing fence carrying a stray ``\\r`` would not close, and the placeholder
+    below it would vanish into the block that never ended.
+    """
+    text = "# T\n\n```\ncode\n```\n\nThe limit is TBD.\n"
+    expected = [violation.matched_text for violation in _find(text)]
+
+    assert expected == ["TBD"]
+    assert [violation.matched_text for violation in _find(text.replace("\n", "\r\n"))] == expected
+# --- HTML block condition 4 wants a capital ----------------------------------
+
+
+def test_a_lowercase_declaration_does_not_open_an_html_block() -> None:
+    """Condition 4 took any ASCII letter, and the fence below paid for it.
+
+    ``<!foo>`` closed the paragraph, the complete tag on the next line opened a
+    type-seven block, and the fence inside that block stopped being a fence --
+    so a placeholder that is code was reported as text. Measured on GitHub's
+    renderer, through its Markdown API: both lines stay in the paragraph, the
+    fence interrupts it, and ``TBD`` is inside a code block. markdown-it
+    14.3.0 read it the same way; 15.0.2 opens an HTML block at the
+    declaration, as CommonMark 0.31.2 says, and this hook follows GitHub.
+    """
+    text = "Pack a snack for the walk.\n<!foo>\n<x>\n```\nTBD\n```\n\nRide your bike.\n"
+
+    assert _find(text) == []
+
+
+def test_an_uppercase_declaration_still_opens_an_html_block() -> None:
+    """A negative control. The condition is real; it just wants a capital.
+
+    Measured on GitHub's renderer, and on markdown-it 14.3.0 and 15.0.2
+    alike: the declaration closes the paragraph,
+    the tag opens a block, and everything down to the blank line -- fence
+    markers included -- is raw HTML the page prints.
+    """
+    text = (
+        "Pack a snack for the walk.\n<!DOCTYPE html>\n<x>\n```\nTBD\n```\n\nRide your bike.\n"
+    )
+
+    assert [violation.matched_text for violation in _find(text)] == ["TBD"]
+
+
+#: One non-breaking space, spelled through a name for the reason the sibling
+#: test modules spell it through one.
+NONBREAKING_SPACE = "\u00a0"
+
+#: A three-backtick code fence.
+FENCE = "`" * 3
+
+
+def test_a_nonbreaking_space_line_does_not_leave_a_list() -> None:
+    """A line of one U+00A0 is a paragraph, not a blank line.
+
+    A fence opened inside a list item ends where the list item ends. The
+    non-breaking space at column 0 has outdented out of the item, so measured
+    against markdown-it 14.3.0 the fence ends there and the placeholder below
+    it is on the page, where this hook has to report it. ``str.strip`` with no
+    argument read the line as blank, kept the fence open, and let the
+    placeholder through.
+    https://spec.commonmark.org/0.31.2/#blank-line
+    """
+    text = f"- item\n\n  {FENCE}\n  code\n{NONBREAKING_SPACE}\n  TBD tomorrow.\n"
+    assert [violation.matched_text for violation in _find(text)] == ["TBD"]
+
+
+@pytest.mark.parametrize(
+    ("label", "filler"),
+    [("an empty line", ""), ("three spaces", "   "), ("a tab", "\t")],
+)
+def test_a_blank_line_does_not_leave_a_list(label: str, filler: str) -> None:
+    """The negative control. A blank line is ordinary list content.
+
+    The fence is still open below it, so the placeholder really is inside a
+    code block and is not reported.
+    """
+    text = f"- item\n\n  {FENCE}\n  code\n{filler}\n  TBD tomorrow.\n"
+    assert _find(text) == [], label
+
+
+def test_a_nonbreaking_space_line_does_not_close_an_html_block() -> None:
+    """Only a blank line closes an HTML block whose condition has no end tag.
+
+    Condition 6 is still open below a line of one U+00A0, so the backticks
+    under it are raw HTML rather than a fence and markdown-it 14.3.0 prints
+    the placeholder between them. Closing the block early made the fence real
+    and hid a placeholder that is on the page.
+    https://spec.commonmark.org/0.31.2/#html-blocks
+    """
+    text = f"<div>\nnote\n{NONBREAKING_SPACE}\n{FENCE}\nTBD tomorrow.\n{FENCE}\n"
+    assert [violation.matched_text for violation in _find(text)] == ["TBD"]
+
+
+def test_a_blank_line_closes_an_html_block() -> None:
+    """The negative control. A real blank line still closes condition 6.
+
+    The fence below it is a real fence, so the placeholder inside it is code.
+    """
+    text = f"<div>\nnote\n\n{FENCE}\nTBD tomorrow.\n{FENCE}\n"
+    assert _find(text) == []
+
+
+# --- a block start clears the paragraph above condition 7 --------------------
+
+
+@pytest.mark.parametrize(
+    ("label", "document"),
+    [
+        (
+            "a list item opening on the line",
+            f"Words above the list.\n- <x-session>\n  {FENCE}\n  TBD tomorrow.\n  {FENCE}\n",
+        ),
+        (
+            "a second list item",
+            f"- Words in item one\n- <x-session>\n  {FENCE}\n  TBD tomorrow.\n  {FENCE}\n",
+        ),
+        (
+            "a nested list item",
+            f"- Words in item one\n  - <x-session>\n    {FENCE}\n"
+            f"    TBD tomorrow.\n    {FENCE}\n",
+        ),
+        (
+            "a blockquote opening on the line",
+            f"Words above the quote.\n> <x-session>\n> {FENCE}\n"
+            f"> TBD tomorrow.\n> {FENCE}\n",
+        ),
+        (
+            "an ordered list starting at one",
+            f"Words above the list.\n1. <x-session>\n   {FENCE}\n"
+            f"   TBD tomorrow.\n   {FENCE}\n",
+        ),
+    ],
+)
+def test_a_container_opening_on_a_line_lets_condition_seven_open(
+    label: str, document: str
+) -> None:
+    """A container that opens on a line has closed the paragraph above it.
+
+    HTML block condition 7 is the one start that may not interrupt a paragraph,
+    and ``opens_a_paragraph`` answers for the line *below* the one it reads, so
+    a list item or a blockquote opening on this line inherited the paragraph
+    from the line above and refused the block CommonMark opens inside the new
+    container. The backtick runs under it were then read as a fence rather than
+    as raw HTML, and the placeholder between them went unreported while
+    markdown-it 14.3.0 printed it on the page. ``starts_a_block`` is the
+    sibling hook's name for the other half of the question, and this hook had
+    never been given it.
+    <https://spec.commonmark.org/0.31.2/#html-blocks>
+    """
+    assert [violation.matched_text for violation in _find(document)] == ["TBD"], label
+
+
+@pytest.mark.parametrize(
+    ("label", "document"),
+    [
+        (
+            "a tag under a root paragraph",
+            f"Words above.\n<x-session>\n{FENCE}\nTBD tomorrow.\n{FENCE}\n",
+        ),
+        (
+            "a tag outdented out of a list item",
+            f"- Words in a list item.\n<x-session>\n{FENCE}\nTBD tomorrow.\n{FENCE}\n",
+        ),
+        (
+            "a tag continuing a list item's paragraph",
+            f"- Words in a list item.\n  <x-session>\n  {FENCE}\n"
+            f"  TBD tomorrow.\n  {FENCE}\n",
+        ),
+        (
+            "a tag continuing a quoted paragraph",
+            f"> Words in a quote.\n> <x-session>\n> {FENCE}\n"
+            f"> TBD tomorrow.\n> {FENCE}\n",
+        ),
+    ],
+)
+def test_condition_seven_still_may_not_interrupt_a_paragraph(
+    label: str, document: str
+) -> None:
+    """The negative controls, and the ones the comment rule measured.
+
+    A line that merely outdents out of a container has not started a block: an
+    unprefixed line under a listed paragraph is the lazy continuation
+    CommonMark reads it as. No type-seven block opens on any of these, the
+    backtick runs really are a fence, and the placeholder inside them is code.
+    Clearing the paragraph state on any change of containment path -- rather
+    than on a block start -- would open a block on all four.
+    <https://spec.commonmark.org/0.31.2/#paragraphs>
+    """
+    assert _find(document) == [], label
+
+
+def test_a_setext_underline_still_closes_the_paragraph_it_underlines() -> None:
+    """A Setext underline starts a block and closes the paragraph above it.
+
+    It is the shape where the two halves of the model part, so the state handed
+    to ``opens_a_paragraph`` is the one the line above left and not the cleared
+    one: reading a cleared state would leave a paragraph open under a heading
+    and shut condition 7 on the line below.
+    <https://spec.commonmark.org/0.31.2/#setext-headings>
+    """
+    text = f"Words above\n===\n<x-session>\n{FENCE}\nTBD tomorrow.\n{FENCE}\n"
+    assert [violation.matched_text for violation in _find(text)] == ["TBD"]
+
+
+def test_a_list_item_holding_a_real_fence_is_still_a_fence() -> None:
+    """The control that keeps the fence model intact.
+
+    A list item whose content is prose and then a fenced block still holds a
+    fenced block; nothing on those lines opens an HTML block, so the
+    placeholder inside the fence is code and is not reported.
+    """
+    text = f"Words above the list.\n- An exercise\n\n  {FENCE}\n  TBD tomorrow.\n  {FENCE}\n"
+    assert _find(text) == []
+
+
+# --- list interruption, leaf blocks, and raw text ----------------------------
+
+
+def test_a_link_reference_definition_holds_condition_seven_shut() -> None:
+    """A definition leaves the paragraph it is written into open.
+
+    This pin used to say the opposite, on a markdown-it 14.3.0 measurement.
+    Re-measured on GitHub's own renderer: ``[x]: /url`` over ``<x-session>``
+    over a fenced block paints ``<p></p>`` and then
+    ``<pre><code>TBD tomorrow.</code></pre>``. Condition 7 may not interrupt a
+    paragraph, a fence may, so the backtick runs really are a fence and the
+    placeholder inside them is an example rather than a violation.
+    <https://spec.commonmark.org/0.31.2/#link-reference-definitions>
+    """
+    text = f"[x]: /url\n<x-session>\n{FENCE}\nTBD tomorrow.\n{FENCE}\n"
+    assert _find(text) == []
+
+
+def test_a_placeholder_below_a_definition_with_no_tag_is_still_reported() -> None:
+    """The control in the other direction: nothing here opens a block at all.
+
+    A definition over an ordinary line leaves that line on the page, so a
+    placeholder written there is a violation. Without this the rule above
+    could be written as "a definition silences everything under it".
+    """
+    text = "[x]: /url\nTBD tomorrow.\n"
+    assert [violation.matched_text for violation in _find(text)] == ["TBD"]
+
+
+@pytest.mark.parametrize(
+    ("label", "document"),
+    [
+        ("a paragraph above the tag", f"Words above.\n<x-session>\n{FENCE}\nTBD.\n{FENCE}\n"),
+        ("a label with no destination", f"[x]:\n<x-session>\n{FENCE}\nTBD.\n{FENCE}\n"),
+    ],
+)
+def test_a_paragraph_still_holds_condition_seven_shut(label: str, document: str) -> None:
+    """The positive controls. Condition 7 may not interrupt a paragraph.
+
+    With one open the backtick runs really are a fence and the placeholder
+    inside them is code, which is what markdown-it 14.3.0 shows. A label with
+    no destination on its own line is no definition at all.
+    """
+    assert _find(document) == [], label
+
+
+def test_an_ordered_list_above_one_opens_no_block() -> None:
+    """A list may interrupt a paragraph only when an ordered one starts at 1.
+
+    So ``2. <x-session>`` under an open sentence is that sentence's own text,
+    no type-seven block opens, and the backtick runs below it pair as a code
+    span the page prints as code. This shape was recorded as the one
+    condition-7 case still disagreeing; it agrees now.
+    <https://spec.commonmark.org/0.31.2/#list-items>
+    """
+    text = f"Words above the list.\n2. <x-session>\n   {FENCE}\n   TBD.\n   {FENCE}\n"
+    assert _find(text) == []
+
+
+def test_an_ordered_list_at_one_still_opens_the_block() -> None:
+    """The positive control. A list starting at 1 does interrupt.
+
+    The item closes the paragraph, condition 7 opens inside it, the backtick
+    runs are raw HTML, and the page prints the placeholder.
+    """
+    text = f"Words above the list.\n1. <x-session>\n   {FENCE}\n   TBD.\n   {FENCE}\n"
+    assert [violation.matched_text for violation in _find(text)] == ["TBD"]
+
+
+def test_a_comment_inside_a_raw_text_element_hides_nothing() -> None:
+    """Comment-shaped text inside a textarea is displayed text.
+
+    Python's ``html.parser`` reports it as data rather than as a comment, so
+    the page prints the placeholder and the hook has to report it. Stripping it
+    as a comment hid a placeholder the child can read.
+    https://html.spec.whatwg.org/multipage/parsing.html#rawtext-state
+    """
+    text = "<textarea>\n<!-- TBD tomorrow. -->\n</textarea>\n"
+    assert [violation.matched_text for violation in _find(text)] == ["TBD"]
+
+
+@pytest.mark.parametrize(
+    ("label", "document"),
+    [
+        ("a div, whose content is markup", "<div>\n<!-- TBD tomorrow. -->\n</div>\n"),
+        ("a pre, whose content is markup", "<pre>\n<!-- TBD tomorrow. -->\n</pre>\n"),
+        (
+            "a script name written inside a comment",
+            "<!-- a note\n<script>\n-->\n\nWords with no placeholder.\n",
+        ),
+    ],
+)
+def test_a_real_comment_still_hides_its_placeholder(label: str, document: str) -> None:
+    """The positive controls, and the one that bounds the new state.
+
+    ``pre`` and ``div`` hold markup, so the run really is a comment and the
+    placeholder inside it is not on the page. A ``<script>`` written inside a
+    comment opens no raw-text run, so the comment still ends at its ``-->``.
+    """
+    assert _find(document) == [], label
+
+
+def test_raw_text_run_state_names_the_run_the_line_is_in() -> None:
+    """The helper's contract, kept identical across the three hooks.
+
+    It returns the run below the line and the run the line is *in*, the pair
+    ``html_block_state`` returns. This hook asks only the first question of it
+    -- are these characters text rather than markup -- and reads the answer
+    through ``raw_text_run_holds_text``.
+    """
+    hook = cast(Any, _placeholder_hook)
+    state, line_run = hook.raw_text_run_state("<textarea>", None, True)
+    assert (state, line_run) == ("textarea", "textarea")
+    state, line_run = hook.raw_text_run_state("some words", "textarea", False)
+    assert (state, line_run) == ("textarea", "textarea")
+    state, line_run = hook.raw_text_run_state("</textarea>", "textarea", False)
+    assert (state, line_run) == (None, "textarea")
+    # A run that opens and closes on one line is the run that line is in.
+    state, line_run = hook.raw_text_run_state("<script>a</script>", None, True)
+    assert (state, line_run) == (None, "script")
+    # A line CommonMark keeps inside the paragraph above it opens no run.
+    state, line_run = hook.raw_text_run_state("<xmp>", None, False)
+    assert (state, line_run) == (None, None)
+    # The comment may open part way along a line, and may close and open again.
+    state, line_run = hook.raw_text_run_state("<!-- one --> x <!-- two", None, True)
+    assert (state, line_run) == (hook.COMMENT_RUN, None)
+    state, line_run = hook.raw_text_run_state("<!-- one -->", None, True)
+    assert (state, line_run) == (None, None)
+    assert hook.raw_text_run_holds_text("textarea")
+    assert hook.raw_text_run_holds_text("script")
+    assert not hook.raw_text_run_holds_text(hook.HTML_BLOCK_COMMENT)
+    assert not hook.raw_text_run_holds_text(None)
+
+
+def test_a_condition_seven_opener_inside_an_open_comment_opens_no_run() -> None:
+    """An ``<xmp>`` written inside an open comment is inside the comment.
+
+    ``xmp`` is in neither HTML block condition 1 nor condition 6, so a bare
+    opener on its own line is condition 7 and may not interrupt a paragraph.
+    The comment that opened part way along the line above it is therefore still
+    open, the page shows no ``TBD``, and the hook must report none. Measured
+    against markdown-it 14.3.0 and ``html.parser``: the whole run is one
+    comment.
+    """
+    hook = cast(Any, _placeholder_hook)
+    document = (
+        "Words here <!-- a note\n<xmp>\nTBD\n</xmp>\nend of the note -->\n"
+    )
+    assert hook.find_violations_in_text(document, "doc.md") == []
+
+
+def test_a_condition_one_opener_inside_an_open_comment_ends_the_comment() -> None:
+    """The same shape with ``<script>``, which may interrupt a paragraph.
+
+    Condition 1 ends the paragraph, so the ``<!--`` above it never closes and is
+    escaped text rather than a comment; the ``TBD`` is script data, which is not
+    a comment either, and the hook reports it. This is the over-application
+    control for the test above: a rule that refuses every run under an open
+    comment fails here.
+    """
+    hook = cast(Any, _placeholder_hook)
+    document = (
+        "Words here <!-- a note\n<script>\nTBD\n</script>\nend of the note -->\n"
+    )
+    assert [v.line_number for v in hook.find_violations_in_text(document, "doc.md")] == [3]
+
+
+def test_a_comment_closed_and_reopened_on_one_line_stays_open() -> None:
+    """``<!-- one --> words <!-- two`` leaves a comment open below it.
+
+    Reading only the first delimiter pair answered "no run open", a
+    ``<textarea>`` on the next line opened a raw-text run, and the lines under it
+    stopped being stripped -- so a ``TBD`` inside a real comment was reported.
+    """
+    hook = cast(Any, _placeholder_hook)
+    document = "<!-- one --> words <!-- two\n<textarea>\nTBD\n</textarea> -->\n"
+    assert hook.find_violations_in_text(document, "doc.md") == []
+
+
+def test_a_comment_closed_on_one_line_leaves_nothing_open() -> None:
+    """The narrowing control for the test above.
+
+    One complete comment on a line leaves no comment open, so the
+    ``<textarea>`` below it really does open a run and the ``TBD`` it prints is
+    reported. A rule that treats every line holding ``<!--`` as leaving a
+    comment open fails here.
+    """
+    hook = cast(Any, _placeholder_hook)
+    document = "<!-- one --> words\n\n<textarea>\nTBD\n</textarea>\n"
+    assert [v.line_number for v in hook.find_violations_in_text(document, "doc.md")] == [4]
+
+
+def test_a_comment_shaped_run_inside_a_one_line_element_is_not_a_comment() -> None:
+    """``<script><!-- TBD --></script>`` holds script data, not a comment.
+
+    The run opens and closes on one line. Returning "no run at all" for that
+    line let the body be read as markup, and the comment-shaped run hid the
+    token the page prints.
+    """
+    hook = cast(Any, _placeholder_hook)
+    document = "<script><!-- TBD --></script>\n"
+    assert [v.line_number for v in hook.find_violations_in_text(document, "doc.md")] == [1]
+
+
+def test_a_real_one_line_comment_still_hides_its_placeholder() -> None:
+    """The over-application control: ``<div>`` is not a raw-text element.
+
+    Its content is markup, the comment inside it is a comment, and the token is
+    hidden. A rule that reads every one-line element as raw text fails here.
+    """
+    hook = cast(Any, _placeholder_hook)
+    assert hook.find_violations_in_text("<div><!-- TBD --></div>\n", "doc.md") == []
+
+
+def test_a_comment_opened_on_a_run_opener_line_does_not_outlive_the_run() -> None:
+    """``<textarea> <!-- a note`` opens a run, and the comment dies with it.
+
+    Everything after the opener is the element's content, so the ``<!--`` there
+    is characters the page prints. Leaving the open-comment flag standing
+    carried a comment the page never shows past the ``</textarea>`` and hid a
+    real ``TBD`` below it.
+    """
+    hook = cast(Any, _placeholder_hook)
+    document = "<textarea> <!-- a note\nwords\n</textarea>\n\nTBD\n"
+    assert [v.line_number for v in hook.find_violations_in_text(document, "doc.md")] == [5]
+
+
+# ---------------------------------------------------------------------------
+# Spaces or tabs, and an opener line
+# ---------------------------------------------------------------------------
+
+
+def test_a_tab_separated_reference_definition_is_a_definition() -> None:
+    """The placeholder copy, kept identical to the siblings'."""
+    hook = cast(Any, _placeholder_hook)
+    assert hook.LINK_REFERENCE_DEFINITION_PATTERN.match("[a]:\t/url")
+    assert hook.LINK_REFERENCE_DEFINITION_PATTERN.match('[a]: /url\t"t"\t')
+    assert hook.LINK_REFERENCE_DEFINITION_PATTERN.match("\t[a]: /url") is None
+    assert hook.LINK_REFERENCE_DEFINITION_PATTERN.match("   [a]: /url")
+
+
+def test_a_tab_after_a_block_quote_marker_is_peeled() -> None:
+    """A fenced example inside a block quote whose marker is followed by a tab
+    is still a fenced example, so the token in it is not a placeholder."""
+    hook = cast(Any, _placeholder_hook)
+    quoted = ">\t```\n> TBD\n> ```\n"
+    assert hook.find_violations_in_text(quoted, "doc.md") == []
+    assert hook.find_violations_in_text("> TBD\n", "doc.md") != []
+
+
+def test_an_opener_line_belongs_to_the_run_it_opens() -> None:
+    """``<textarea><!-- TBD -->`` with its closer below prints the token.
+
+    The run opens on that line and stays open, so the comment-shaped thing on
+    it is the element's own content. Returning no classification for the
+    opener line hid a placeholder the page shows.
+    """
+    hook = cast(Any, _placeholder_hook)
+    document = "<textarea><!-- TBD -->\nx\n</textarea>\n"
+    assert [v.line_number for v in hook.find_violations_in_text(document, "doc.md")] == [1]
+
+
+def test_a_placeholder_in_a_real_comment_is_still_allowed() -> None:
+    """The control in the other direction: a ``<div>`` holds inline content, so
+    the comment in it is a comment and the token in it is not reported."""
+    hook = cast(Any, _placeholder_hook)
+    document = "<div><!-- TBD -->\nx\n</div>\n"
+    assert hook.find_violations_in_text(document, "doc.md") == []
+
+
+def test_a_run_outlives_the_container_its_block_died_with() -> None:
+    """A raw-text run is the page's construct, so a container does not end it.
+
+    The reviewer's shape: an unclosed ``<script>`` inside a blockquote, the
+    container ending, and a comment-shaped run below it. Measured with
+    markdown-it 14.3.0 read by ``html.parser``: the page holds no comment at
+    all, because the renderer wrote the ``<script>`` into the output and the
+    parser stays in raw text to the end of the file. So the ``TBD`` below is
+    not inside a comment and the hook is right to report it. Clearing the run
+    at the container boundary would have hidden it.
+    """
+    hook = cast(Any, _placeholder_hook)
+    for opener in ("> <script>\n> var total = 1;\n", "> <textarea>\n> some text\n"):
+        document = opener + "\n<!-- TBD: a note -->\n\nTail words here.\n"
+        assert [v.matched_text for v in hook.find_violations_in_text(document, "doc.md")] == [
+            "TBD"
+        ], opener
+
+
+def test_a_closed_run_frees_the_comment_below_its_container() -> None:
+    """The control in the other direction: a run that closes inside the
+    blockquote leaves a real comment below it, and the token in it is
+    allowed."""
+    hook = cast(Any, _placeholder_hook)
+    document = (
+        "> <script>\n> var total = 1;\n> </script>\n\n<!-- TBD: a note -->\n\nTail.\n"
+    )
+    assert hook.find_violations_in_text(document, "doc.md") == []
+
+
+def test_a_closer_below_the_container_still_closes_the_run() -> None:
+    """The run ends where the page ends it.
+
+    markdown-it writes the ``</script>`` into the output below the
+    ``</blockquote>``, so the element really does close there and the comment
+    after it is a real comment. The run has to survive the container boundary
+    for this to work.
+    """
+    hook = cast(Any, _placeholder_hook)
+    document = "> <script>\n\n</script>\n\n<!-- TBD: a note -->\n\nTail.\n"
+    assert hook.find_violations_in_text(document, "doc.md") == []
+
+
+def test_an_empty_list_item_does_not_interrupt_a_paragraph() -> None:
+    """The placeholder copy of the empty-item rule, kept identical.
+
+    ``Words`` then ``*`` then ``<x>`` is one paragraph of three lines, so the
+    backticks under it open a real fenced block and the placeholder inside it
+    is an example. Closing the paragraph at the empty marker let the tag open a
+    type 7 block, and the fence below was read as raw HTML.
+    """
+    hook = cast(Any, _placeholder_hook)
+    fence = "`" * 3
+    document = f"Words\n* \n<x>\n\n{fence}\nTBD\n{fence}\n"
+    assert hook.find_violations_in_text(document, "doc.md") == []
+
+
+def test_an_item_with_content_still_interrupts_in_the_placeholder_hook() -> None:
+    """The over-application control for the copy above, read off the rule.
+
+    Kept identical to the assertions in the sibling suites."""
+    hook = cast(Any, _placeholder_hook)
+    star = hook.Container(kind=hook.CONTAINER_KIND_LIST, bullet="*")
+    dash = hook.Container(kind=hook.CONTAINER_KIND_LIST, bullet="-")
+    first = hook.Container(kind=hook.CONTAINER_KIND_LIST, ordered_start=1)
+    assert not hook.container_interrupts_paragraph(star, "")
+    assert hook.container_interrupts_paragraph(star, "item")
+    assert hook.container_interrupts_paragraph(dash, "")
+    assert not hook.container_interrupts_paragraph(first, "")
+
+
+# ---------------------------------------------------------------------------
+# The third copy of the start-tag rule.
+# ---------------------------------------------------------------------------
+
+
+def test_an_end_tag_inside_an_attribute_does_not_close_the_run() -> None:
+    """The placeholder copy of the rule, kept identical to its two siblings.
+
+    The element never closes, so a comment-shaped run below it is the
+    element's content rather than a comment, and a placeholder written there is
+    reported.
+    """
+    hook = cast(Any, _placeholder_hook)
+    tag = '<script title="</script>">'
+    assert hook.raw_text_run_boundary(tag, None, True) == ("script", "script", -1)
+    assert hook.raw_text_run_boundary("<script></script>", None, True) == (
+        None,
+        "script",
+        17,
+    )
+
+
+def test_a_placeholder_below_an_unclosed_attribute_tag_is_reported() -> None:
+    """The same rule, read through the hook's own answer.
+
+    The run stays open past the line, so the comment-shaped run below it opens
+    no comment and the token inside it is on the page.
+    """
+    document = '<script title="</script>">\n<!-- TBD: a note -->\n'
+    hook = cast(Any, _placeholder_hook)
+    violations = hook.find_violations_in_text(document, "docs/example.md")
+    assert [violation.matched_text for violation in violations] == ["TBD"]
+
+
+def test_a_placeholder_below_a_closed_element_is_still_exempt() -> None:
+    """The over-application control: a real comment still allows the token."""
+    document = "<script></script>\n\n<!-- TBD: a note -->\n"
+    hook = cast(Any, _placeholder_hook)
+    assert hook.find_violations_in_text(document, "docs/example.md") == []
+
+
+#: One tab, spelled through a name so it is visible in a diff.
+TAB = chr(9)
+
+
+def test_a_tab_after_a_list_marker_puts_the_content_at_column_four() -> None:
+    """A tab is four columns here, so a fenced block indented four is the item's.
+
+    Measured with markdown-it 14.3.0: a dash, a tab and a fence, with ``TBD``
+    indented four spaces under it, renders the placeholder inside
+    ``<pre><code>`` where it is an example rather than an unfinished section.
+    Indent the same body two spaces and it has left the item, the fence never
+    opened around it, and the placeholder is on the page. Reading the tab as
+    one character gets exactly these two the wrong way round.
+    https://spec.commonmark.org/0.31.2/#tabs
+    """
+    inside = "-" + TAB + FENCE + "\n    TBD\n    " + FENCE + "\n"
+    outside = "-" + TAB + FENCE + "\n  TBD\n  " + FENCE + "\n"
+    assert _find(inside) == []
+    assert _find(outside)
+
+
+def test_a_table_closes_the_paragraph_above_a_type_seven_tag() -> None:
+    """A fence inside a raw HTML block is literal, so the placeholder is on the page.
+
+    GFM ends the table before the tag, so HTML block condition 7 opens and
+    every line under it is raw HTML -- backticks included. Holding the
+    paragraph open across the table refused the block, read the backticks as a
+    fence, and the ``TBD`` between them went unreported while GitHub's own
+    renderer printed it.
+    https://github.github.com/gfm/#tables-extension-
+    """
+    table = "a | b\n--- | ---\n"
+    inside_block = table + "<custom>\n" + FENCE + "\nTBD\n" + FENCE + "\n"
+    assert _find(inside_block)
+
+
+def test_a_paragraph_above_the_tag_still_refuses_the_block() -> None:
+    """The over-application control: only a table closes the paragraph here."""
+    after_paragraph = "Intro\n<custom>\n" + FENCE + "\nTBD\n" + FENCE + "\n"
+    assert _find(after_paragraph) == []
+
+
+def test_a_comment_after_a_closed_raw_text_run_hides_its_placeholder() -> None:
+    """A run that closes part way along a line releases the rest of it.
+
+    The browser leaves raw text at the closing tag, so a comment written
+    after it is a real comment and what it holds is not on the page.
+    Reading the whole line as the element's content skipped the comment
+    stripping and reported a placeholder the page never prints.
+
+    The run's own characters stay readable, and that is this hook's
+    difference from its two siblings: they ask whether the characters are
+    markup, and this one asks whether they are a comment. Script data is
+    neither, so a placeholder written inside an open run is still
+    reported.
+    https://html.spec.whatwg.org/multipage/parsing.html#rawtext-state
+    """
+    assert _find("<script></script><!-- TBD -->\n") == []
+    assert _find("<script><!-- TBD -->\n")
+    assert _find("<script></script>TBD\n")
+
+
+def test_an_indented_line_opens_no_paragraph_in_this_hook_too() -> None:
+    """The four-column rule, and the tab that reaches column four.
+
+    This hook carries the rule because a paragraph it holds open refuses the
+    HTML block condition 7 below it, which is what decides whether a run of
+    comment-shaped characters is on the page at all.
+    """
+    assert not _placeholder_hook.opens_a_paragraph("    x", False)
+    assert not _placeholder_hook.opens_a_paragraph(chr(9) + "x", False)
+    assert _placeholder_hook.opens_a_paragraph("   x", False)
+    assert _placeholder_hook.opens_a_paragraph("    x", True)
+    assert not _placeholder_hook.is_table_delimiter("    -:")
+    assert _placeholder_hook.is_table_delimiter("   -:")
+
+
+def test_the_three_hooks_count_an_indent_alike() -> None:
+    """The cross-hook pin: ``count_indent_columns`` is one function in three."""
+    import importlib.util as _util
+    import sys as _sys
+    from pathlib import Path as _Path
+
+    root = _Path(__file__).resolve().parent.parent / ".github" / "scripts"
+    loaded = []
+    for name in ("check-readability.py", "check-session-structure.py"):
+        spec = _util.spec_from_file_location("_indent_pin_" + name[6:9], root / name)
+        assert spec is not None and spec.loader is not None
+        module = _util.module_from_spec(spec)
+        _sys.modules[spec.name] = module
+        spec.loader.exec_module(module)
+        loaded.append(module)
+    for line in ("x", "   x", "    x", chr(9) + "x", "  " + chr(9) + "x", "     "):
+        wanted = _placeholder_hook.count_indent_columns(line)
+        for module in loaded:
+            assert module.count_indent_columns(line) == wanted
+
+
+def test_an_unfinished_end_tag_keeps_its_state_below() -> None:
+    """The placeholder hook's copy of the same rule, read through the boundary.
+
+    A closer whose tag does not finish on its line leaves the parser inside that
+    tag, so the state below is the half-read tag rather than "nothing open".
+    """
+    quote = chr(34)
+    below, line_run, tail = _placeholder_hook.raw_text_run_boundary(
+        "</script title=" + quote, "script", True
+    )
+    assert line_run == "script"
+    assert tail == len("</script title=" + quote)
+    assert _placeholder_hook.closing_tag_state(below) == "attribute-value-double-quoted"
+    # the control: a tag that closes where it starts leaves no tag open at all
+    closed, _line, _tail = _placeholder_hook.raw_text_run_boundary(
+        "</script>", "script", True
+    )
+    assert _placeholder_hook.closing_tag_state(closed) is None
+    assert closed is None
+
+
+def test_a_table_header_may_not_be_a_heading_in_this_hook_either() -> None:
+    """``table_starts_here`` carries the paragraph precondition in all three."""
+    assert _placeholder_hook.table_starts_here("# a | b", "--- | ---") == 0
+    assert _placeholder_hook.table_starts_here("***", "-:") == 0
+    assert _placeholder_hook.table_starts_here("a | b", "--- | ---") == 2
+
+
+# A container is peeled only where CommonMark opens one
+# ---------------------------------------------------------------------------
+
+_MARK_NL = chr(10)
+_MARK_FENCE = chr(96) * 3
+
+
+def test_a_fence_behind_a_non_interrupting_marker_opens_no_fenced_block() -> None:
+    """An ordered list starting at 2 may not interrupt an open paragraph.
+
+    ``Intro.`` over ``2. ``` `` is one paragraph of two lines on GitHub's own
+    renderer, measured, so the backticks are a code span and the ``TBD`` under
+    them is text a reader sees. The container walk peeled the ``2.`` anyway,
+    the backticks then opened a fenced block, and every placeholder inside it
+    was exempted as an example.
+    """
+    document = (
+        "Intro."
+        + _MARK_NL
+        + "2. "
+        + _MARK_FENCE
+        + _MARK_NL
+        + "   TBD"
+        + _MARK_NL
+        + "   "
+        + _MARK_FENCE
+        + _MARK_NL
+    )
+    assert _find(document)
+    # the control: a start of 1 does interrupt, so this really is a fence
+    opened = document.replace("2. ", "1. ", 1)
+    assert not _find(opened)
+    # and so does a bullet, whatever its item holds
+    bulleted = "Intro." + _MARK_NL + "- " + _MARK_FENCE + _MARK_NL + "  TBD" + _MARK_NL + "  " + _MARK_FENCE + _MARK_NL
+    assert not _find(bulleted)
+
+
+def test_the_paragraph_has_to_be_the_one_the_marker_would_open_inside() -> None:
+    """A list opens outside the blockquote whose paragraph stands above it.
+
+    ``> Intro.`` over ``2. ``` `` really does open a list on GitHub's own
+    renderer, because the paragraph is inside the blockquote and the list is
+    not, so there is nothing at that level to interrupt. Reading the rule
+    without the container answered this one the other way.
+    """
+    outside = (
+        "> Intro." + _MARK_NL + "2. " + _MARK_FENCE + _MARK_NL
+        + "   TBD" + _MARK_NL + "   " + _MARK_FENCE + _MARK_NL
+    )
+    assert not _find(outside)
+    inside = (
+        "> Intro." + _MARK_NL + "> 2. " + _MARK_FENCE + _MARK_NL
+        + ">    TBD" + _MARK_NL + ">    " + _MARK_FENCE + _MARK_NL
+    )
+    assert _find(inside)
+    # a marker always begins a new item, so nothing is open inside this one
+    sibling = (
+        "- Intro." + _MARK_NL + "- 2. " + _MARK_FENCE + _MARK_NL
+        + "     TBD" + _MARK_NL + "     " + _MARK_FENCE + _MARK_NL
+    )
+    assert not _find(sibling)
+    # and the next item of a list already open interrupts nothing
+    following = (
+        "2. Intro." + _MARK_NL + "3. " + _MARK_FENCE + _MARK_NL
+        + "   TBD" + _MARK_NL + "   " + _MARK_FENCE + _MARK_NL
+    )
+    assert not _find(following)
+
+
+def test_the_peel_defaults_to_the_answer_it_gave_with_no_paragraph_state() -> None:
+    """A caller that cannot say whether a paragraph is open peels as before."""
+    contexts: list = []
+    assert _placeholder_hook.normalize_for_fence_opening("2. x", contexts).content == "x"
+    contexts = []
+    held = _placeholder_hook.normalize_for_fence_opening("2. x", contexts, True, ())
+    assert held.content == "2. x"
+    assert held.opened == ()
+
+
+# The inline HTML comment, and the block one. CommonMark has two, and only the
+# block kind crosses a block boundary. Every expectation below was measured
+# against GitHub's own renderer and against markdown-it 14.3.0 read the way a
+# browser reads it, and the two agree on all of them.
+
+
+def _scan(tmp_path: Path, text: str) -> list[ViolationLike]:
+    """Scan one document under a root the hook will accept."""
+    hook = cast(PlaceholderHookModule, _placeholder_hook)
+    directory = tmp_path / "framework"
+    directory.mkdir(exist_ok=True)
+    document = directory / "doc.md"
+    document.write_text(text, encoding="utf-8")
+    return hook.scan_files([document], root=tmp_path)
+
+
+def test_an_unterminated_inline_comment_hides_nothing_below_its_paragraph(
+    tmp_path: Path,
+) -> None:
+    """A ``<!--`` part way along a paragraph line is inline raw HTML.
+
+    Inline raw HTML cannot span two blocks, so an unterminated opener is not a
+    comment at all: both renderers escape it and paint every word after it.
+    Reading it as the block kind hid the placeholder below.
+    """
+    assert _scan(tmp_path, "text <!-- a\n\nTBD: visible\n")
+    assert _scan(tmp_path, "> text <!-- a\n\nTBD: visible\n")
+    assert _scan(tmp_path, "- text <!-- a\n\nTBD: visible\n")
+
+
+def test_a_paragraph_ends_at_a_block_start_as_well_as_at_a_blank_line(
+    tmp_path: Path,
+) -> None:
+    """Four ways a paragraph ends without a blank line, each measured."""
+    assert _scan(tmp_path, "text <!-- a\n# H\nTBD: visible\n")
+    assert _scan(tmp_path, "text <!-- a\n***\nTBD: visible\n")
+    assert _scan(tmp_path, "text <!-- a\n- item\nTBD: visible\n")
+    assert _scan(tmp_path, "text <!-- a\n> quoted\nTBD: visible\n")
+
+
+def test_an_inline_comment_still_spans_the_lines_of_its_own_paragraph(
+    tmp_path: Path,
+) -> None:
+    """The rule ends the comment at the paragraph, not at the line.
+
+    Without this the fix would be the opposite defect: an inline comment that
+    genuinely wraps is one comment, and the words inside it are on nobody's
+    page.
+    """
+    assert not _scan(tmp_path, "text <!-- a\nTBD: hidden\nb --> after\n")
+    assert _scan(tmp_path, "text <!-- a\nb --> TBD: visible\n")
+
+
+def test_a_block_comment_still_runs_to_its_closer_or_its_container(
+    tmp_path: Path,
+) -> None:
+    """The block kind is untouched, including where a container ends it.
+
+    On GitHub an unterminated block comment takes the rest of the page with
+    it, container or no container: the rendered output carries the unclosed
+    delimiter and the sanitiser drops everything after it. So the hook stays
+    silent on all three, and that silence is the measured answer rather than
+    the old defect surviving.
+    """
+    assert not _scan(tmp_path, "<!-- a\n\nTBD: hidden\n")
+    assert not _scan(tmp_path, "> <!-- a\n\nTBD: hidden\n")
+    assert not _scan(tmp_path, "- <!-- a\n\nTBD: hidden\n")
+    assert not _scan(tmp_path, "> <!-- a\n> TBD: hidden\n")
+
+
+def test_a_closed_comment_hides_only_what_is_inside_it(tmp_path: Path) -> None:
+    """The control: the rule must not stop comments working."""
+    assert not _scan(tmp_path, "text <!-- TBD: hidden --> after\n")
+    assert _scan(tmp_path, "text <!-- a --> TBD: visible\n")
+    assert _scan(tmp_path, "> <!-- a -->\n\nTBD: visible\n")
+
+
+def test_a_run_given_no_path_walks_the_scan_roots(tmp_path: Path) -> None:
+    """A bare run reads the repository rather than reading nothing.
+
+    It exited zero having opened no file, which is this repository's most
+    frequently recorded defect: a check reporting success on something it
+    never examined. The count is printed for the same reason -- silence and a
+    clean result looked identical.
+    """
+    hook = cast(Any, _placeholder_hook)
+    (tmp_path / "framework").mkdir()
+    (tmp_path / "framework" / "clean.md").write_text("# T\n\nWords.\n", encoding="utf-8")
+    assert hook.main([], root=tmp_path) == 0
+    (tmp_path / "framework" / "dirty.md").write_text("# T\n\nTBD: here\n", encoding="utf-8")
+    assert hook.main([], root=tmp_path) == 1
+
+
+def test_a_run_given_no_path_and_finding_no_file_refuses(tmp_path: Path) -> None:
+    """An empty corpus is a refusal, not a clean result."""
+    hook = cast(Any, _placeholder_hook)
+    assert hook.main([], root=tmp_path) == 1
+
+
+def test_the_default_walk_leaves_out_what_the_hook_config_leaves_out(
+    tmp_path: Path,
+) -> None:
+    """The bare run and the configured gate read the same set.
+
+    The archived design record uses the literal token on purpose and the
+    pre-commit hook excludes it. A default walk that read it would fail on
+    something the gate has never called a failure.
+    """
+    hook = cast(Any, _placeholder_hook)
+    spec_dir = tmp_path / "docs" / "spec"
+    spec_dir.mkdir(parents=True)
+    (spec_dir / "specification.md").write_text("# S\n\nTBD\n", encoding="utf-8")
+    (tmp_path / "framework").mkdir()
+    (tmp_path / "framework" / "clean.md").write_text("# T\n\nWords.\n", encoding="utf-8")
+    assert hook.main([], root=tmp_path) == 0
+    # named explicitly, the same file is still read: the exclusion is the
+    # default walk's, not a rule about the file.
+    assert hook.scan_files([spec_dir / "specification.md"], root=tmp_path)
+
+
+def test_the_default_excludes_match_the_pre_commit_configuration() -> None:
+    """The two lists are kept in step, and this says so when they drift."""
+    hook = cast(Any, _placeholder_hook)
+    config = (
+        Path(__file__).resolve().parents[1] / ".pre-commit-config.yaml"
+    ).read_text(encoding="utf-8")
+    for prefix in hook.DEFAULT_SCAN_EXCLUDES:
+        assert "exclude: ^" + prefix in config, prefix
+
+
+def test_the_default_walk_selects_a_markdown_suffix_in_any_case(
+    tmp_path: Path,
+) -> None:
+    """``rglob("*.md")`` matches the suffix case-sensitively.
+
+    On a case-sensitive filesystem an uppercase suffix was never selected by
+    the default walk, while ``resolve_candidate_path`` accepts the same file
+    when it is named on the command line -- so the two entry points disagreed
+    about one file.
+    """
+    hook = cast(Any, _placeholder_hook)
+    (tmp_path / "framework").mkdir()
+    (tmp_path / "framework" / "clean.md").write_text(
+        "# T\n\nWords.\n", encoding="utf-8"
+    )
+    assert hook.main([], root=tmp_path) == 0
+    (tmp_path / "framework" / "SHOUTED.MD").write_text(
+        "# T\n\nTBD: here\n", encoding="utf-8"
+    )
+    assert hook.main([], root=tmp_path) == 1
+    for mixed in ("Mixed.Md", "other.mD"):
+        (tmp_path / "framework" / "SHOUTED.MD").unlink()
+        (tmp_path / "framework" / mixed).write_text(
+            "# T\n\nTBD: here\n", encoding="utf-8"
+        )
+        assert hook.main([], root=tmp_path) == 1, mixed
+        (tmp_path / "framework" / mixed).unlink()
+        (tmp_path / "framework" / "SHOUTED.MD").write_text(
+            "# T\n\nTBD: here\n", encoding="utf-8"
+        )
+
+
+def test_the_default_walk_reads_no_file_that_is_not_markdown(
+    tmp_path: Path,
+) -> None:
+    """The control for the case above: widening the suffix test widens nothing else."""
+    hook = cast(Any, _placeholder_hook)
+    (tmp_path / "framework").mkdir()
+    (tmp_path / "framework" / "notes.txt").write_text("TBD: here\n", encoding="utf-8")
+    (tmp_path / "framework" / "notes.mdx").write_text("TBD: here\n", encoding="utf-8")
+    # No Markdown file at all, so the walk refuses rather than passing.
+    assert hook.main([], root=tmp_path) == 1
+    (tmp_path / "framework" / "real.md").write_text("# T\n\nWords.\n", encoding="utf-8")
+    assert hook.main([], root=tmp_path) == 0
+
+
+def test_the_default_walk_refuses_a_symlink(tmp_path: Path) -> None:
+    """A symlink is refused by name, whatever else the corpus holds.
+
+    ``is_file()`` says yes to a symlink pointing at a file, so the walk offered
+    one, ``resolve_candidate_path`` declined it, and ``scan_files`` dropped it
+    without a word -- a run that printed "1 file(s) checked" having opened none.
+
+    **Dropping it from the walk was not the repair, and this test used to say
+    it was.** With the symlink skipped, the empty-corpus guard never fired
+    whenever one ordinary file sat beside it, so the run exited zero and a
+    committed symlink walked past the gate anyway. It is now offered as a
+    target so the resolver refuses it by name and the run says so.
+    """
+    hook = cast(Any, _placeholder_hook)
+    (tmp_path / "framework").mkdir()
+    outside = tmp_path.parent / (tmp_path.name + "_outside.md")
+    outside.write_text("# T" + chr(10) * 2 + "TBD: here" + chr(10), encoding="utf-8")
+    link = tmp_path / "framework" / "linked.md"
+    try:
+        link.symlink_to(outside)
+    except (OSError, NotImplementedError):  # pragma: no cover - platform
+        outside.unlink()
+        pytest.skip("this environment cannot create a symlink")
+    try:
+        # Alone, the symlink is the only candidate and the run must refuse.
+        assert hook.main([], root=tmp_path) == 1
+        assert link in hook.default_targets(tmp_path)
+
+        # **Beside an ordinary file it must still refuse.** This is the case
+        # the earlier version of this test asserted the other way round, and it
+        # is the one a bypass would use: a corpus with something legitimate in
+        # it, so the empty-corpus guard stays quiet.
+        (tmp_path / "framework" / "real.md").write_text(
+            "# T" + chr(10) * 2 + "Words." + chr(10), encoding="utf-8"
+        )
+        assert hook.main([], root=tmp_path) == 1
+        assert link in hook.default_targets(tmp_path)
+
+        # With the link gone, the same corpus is clean and counts the one file.
+        link.unlink()
+        assert hook.main([], root=tmp_path) == 0
+        assert [path.name for path in hook.default_targets(tmp_path)] == ["real.md"]
+    finally:
+        if link.is_symlink():
+            link.unlink()
+        outside.unlink()
+
+
+def test_the_count_reports_files_read_rather_than_offered(tmp_path: Path) -> None:
+    """A designed exclusion is not a refusal, and the count knows the difference.
+
+    The first version of this fix treated **every** path the resolver declined
+    as a boundary problem, so a changelog under a scan root -- excluded by
+    design -- failed the whole run. Measured against the real repository before
+    that shipped: 58 offered, 1 refused, exit 1. The walk now asks the
+    resolver's own scope question, so a changelog is never offered, and the
+    count dropped from 58 to 57 because it had been counting a file it never
+    opened.
+    """
+    hook = cast(Any, _placeholder_hook)
+    (tmp_path / "framework").mkdir()
+    (tmp_path / "framework" / "real.md").write_text(
+        "# T\n\nWords.\n", encoding="utf-8"
+    )
+    (tmp_path / "framework" / "CHANGELOG.md").write_text(
+        "# Changelog\n\nTBD\n", encoding="utf-8"
+    )
+    names = [path.name for path in hook.default_targets(tmp_path)]
+    assert names == ["real.md"], names
+    assert hook.main([], root=tmp_path) == 0
+
+
+@pytest.mark.parametrize(
+    ("label", "document"),
+    [
+        ("a comment below an inline textarea", "Intro <textarea>\n\n<!-- TBD -->\n"),
+        ("a comment on the same line", "Intro <script> <!-- TBD -->\n"),
+        ("a comment below an inline plaintext", "Intro <plaintext>\n\n<!-- TBD -->\n"),
+        (
+            "a comment below a tag part way along a raw HTML line",
+            "<div><textarea>\n\n<!-- TBD -->\n",
+        ),
+    ],
+)
+def test_a_comment_after_a_text_state_tag_hides_no_placeholder(
+    label: str, document: str
+) -> None:
+    """The page reads everything after such a tag as the element's content.
+
+    ``Intro <textarea>`` is inline raw HTML, so Markdown opens no block and
+    this hook's block model opened no run -- while the browser enters the
+    textarea at the tag and prints the comment below it as text. The hook
+    now reads the file whole from such a tag on.
+    """
+    assert [violation.matched_text for violation in _find(document)] == ["TBD"], label
+
+
+@pytest.mark.parametrize(
+    ("label", "document"),
+    [
+        ("inside a script block", "<script>\nTBD <!-- ALLOW-TBD: example -->\n</script>\n"),
+        ("after an inline script", "Intro <script> TBD <!-- ALLOW-TBD: example -->\n"),
+    ],
+)
+def test_an_allow_marker_inside_raw_text_exempts_nothing(label: str, document: str) -> None:
+    """A marker the page prints as text is no comment, so it exempts nothing.
+
+    Two placeholders are reported, and both are right: the one the marker
+    was meant to excuse, and the one spelled inside the marker's own words,
+    which are text here like everything else in the element.
+    """
+    assert [violation.matched_text for violation in _find(document)] == [
+        "TBD",
+        "TBD",
+    ], label
+
+
+@pytest.mark.parametrize(
+    ("label", "document"),
+    [
+        ("a code span", "Use `<script>` here.\n\n<!-- TBD -->\n"),
+        ("a backslash escape", "Use \\<script> here.\n\n<!-- TBD -->\n"),
+        ("a comment", "<!-- a <script> note -->\n\n<!-- TBD -->\n"),
+        ("a comment open from above", "<!-- a\n<script>\n-->\n\n<!-- TBD -->\n"),
+        ("a block that closes", "<script>\n</script>\n\n<!-- TBD -->\n"),
+        ("a marker before the tag", "<!-- ALLOW-TBD: example --> TBD Intro <script>\n"),
+        (
+            "a marker after the element closes",
+            "<script></script> TBD <!-- ALLOW-TBD: example -->\n",
+        ),
+    ],
+)
+def test_comments_and_markers_the_page_reads_are_left_alone(
+    label: str, document: str
+) -> None:
+    """The over-application controls: a real comment still hides, a real marker exempts."""
+    assert _find(document) == [], label
+
+
+def _make_link(kind: str, link: Path, target: Path) -> None:
+    """Create a symbolic link or a Windows junction, or skip the test."""
+    import os
+    import subprocess
+
+    if kind == "junction":
+        if os.name != "nt":
+            pytest.skip("a junction exists only on Windows")
+        subprocess.run(
+            ["cmd", "/c", "mklink", "/J", str(link), str(target)],
+            check=True,
+            capture_output=True,
+        )
+        return
+    try:
+        link.symlink_to(target, target_is_directory=target.is_dir())
+    except (OSError, NotImplementedError):  # pragma: no cover - platform
+        pytest.skip("this environment cannot create a symlink")
+
+
+@pytest.mark.parametrize(
+    ("label", "kind", "where", "target_is_dir"),
+    [
+        ("a symbolic link to a directory", "symlink", "framework/external", True),
+        ("a junction", "junction", "framework/external", True),
+        ("a link whose name is not Markdown", "symlink", "framework/notes.txt", False),
+        ("a scan root that is a link", "symlink", "framework", True),
+        ("a scan root that is a junction", "junction", "framework", True),
+    ],
+)
+def test_the_default_walk_refuses_every_link(
+    tmp_path: Path, capsys: Any, label: str, kind: str, where: str, target_is_dir: bool
+) -> None:
+    """Every link in the walk is refused by name, and nothing behind it is read.
+
+    ``rglob`` passed a linked directory in silence, because its name does not
+    end in ``.md``, so a whole linked subtree was never read and the run exited
+    zero after checking the file beside it. It descended into a junction, and
+    into a scan root that was a link, listing a directory outside the
+    repository before any file in it was refused.
+    """
+    hook = cast(Any, _placeholder_hook)
+    root = tmp_path / "repo"
+    (root / "docs").mkdir(parents=True)
+    (root / "docs" / "real.md").write_text("# T\n\nWords.\n", encoding="utf-8")
+    if where != "framework":
+        (root / "framework").mkdir()
+    outside = tmp_path / "outside"
+    outside.mkdir()
+    (outside / "hidden_note.md").write_text("# T\n\nTBD: here\n", encoding="utf-8")
+    target = outside if target_is_dir else outside / "hidden_note.md"
+    _make_link(kind, root / where, target)
+
+    assert hook.main([], root=root) == 1, label
+    printed = capsys.readouterr()
+    text = printed.out + printed.err
+    assert Path(where).name in text, label
+    assert "hidden_note" not in text, label
+
+
+def test_the_default_walk_passes_a_tree_with_no_link(tmp_path: Path) -> None:
+    """The over-application control: real files and real directories pass."""
+    hook = cast(Any, _placeholder_hook)
+    (tmp_path / "framework" / "nested").mkdir(parents=True)
+    (tmp_path / "framework" / "nested" / "real.md").write_text(
+        "# T\n\nWords.\n", encoding="utf-8"
+    )
+    (tmp_path / "framework" / "notes.txt").write_text("TBD: here\n", encoding="utf-8")
+    assert hook.main([], root=tmp_path) == 0
+    assert [path.name for path in hook.default_targets(tmp_path)] == ["real.md"]
+
+
+def test_a_closed_inline_text_state_element_is_still_read_whole() -> None:
+    """A documented limit, pinned: an element that closes is read whole too.
+
+    The page shows the comment below ``</textarea>`` as a comment, and this
+    hook reads it as text, because it does not follow the element to its end
+    tag. So the placeholder in it is reported. markdownlint refuses the tag
+    first. If this test starts to fail, the limit has gone, and the comment
+    in the hook must say so.
+    """
+    document = "Intro <textarea></textarea> words.\n\n<!-- TBD -->\n"
+    assert [violation.matched_text for violation in _find(document)] == ["TBD"]
+
+
+def test_an_allow_tbd_marker_is_one_real_comment() -> None:
+    """A marker's reason is read inside its own comment, which the page ends.
+
+    ``TBD <!-- ALLOW-TBD: --><!-- -->`` was excused: the pattern took the ``-``
+    of the first comment's ``-->`` for a reason and ran on to the second
+    comment's closer. A marker is one comment, opened and closed on the line,
+    whose text begins ``ALLOW-TBD:`` and gives a reason, and a comment ends
+    where the page ends it: ``--!>`` closes one as ``-->`` does.
+    """
+    for document in (
+        "TBD <!-- ALLOW-TBD: --><!-- -->\n",
+        "TBD <!-- ALLOW-TBD:   --> <!-- x -->\n",
+        "TBD <!-- ALLOW-TBD: --!> reason -->\n",
+        "TBD <!-- see <!-- ALLOW-TBD: reason -->\n",
+        "<!-- a note\n<!-- ALLOW-TBD: reason --> TBD\n",
+        "TBD <!-- ALLOW-TBD: reason\n",
+    ):
+        assert "TBD" in [violation.matched_text for violation in _find(document)], document
+    for document in (
+        "TBD <!-- ALLOW-TBD: reason --><!-- -->\n",
+        "TBD <!-- ALLOW-TBD: reason --!>\n",
+        "TBD <!-- x --> <!-- ALLOW-TBD: reason -->\n",
+        "TBD <!-- allow-tbd: reason -->\n",
+    ):
+        assert _find(document) == [], document
+
+
+def test_an_empty_comment_ends_where_it_stands() -> None:
+    """``<!-->`` and ``<!--->`` are whole comments, and the words after them print.
+
+    The closer was searched for from past the opener, so ``<!-->`` ran on to
+    the next comment's ``-->`` and hid the placeholder between them. Measured
+    on GitHub: ``Text <!--> TBD <!-- x --> end.`` prints ``TBD``, in a
+    paragraph and as an HTML block.
+    """
+    for document in (
+        "Text <!--> TBD <!-- x --> end.\n",
+        "Text <!---> TBD <!-- x --> end.\n",
+        "<!--> TBD <!-- x -->\n",
+        "<!---> TBD <!-- x -->\n",
+    ):
+        assert [violation.matched_text for violation in _find(document)] == ["TBD"], document
+
+
+def test_the_page_ends_a_comment_at_its_first_closer() -> None:
+    """``--!>`` closes a comment on the page, and what follows it prints.
+
+    CommonMark reads on to ``-->``, and GitHub's HTML parser ends the comment
+    at ``--!>``: ``Text <!-- a --!> TBD --> end.`` prints ``TBD -->``, and an
+    HTML block prints every line after it, a fence line included, as text.
+    """
+    for document, lines in (
+        ("Text <!-- a --!> TBD --> end.\n", [1]),
+        ("<!-- a --!>\nTBD\n-->\n", [2]),
+        ("<!-- a --!> TBD\n-->\n", [1]),
+        ("<!-- a --!>\n```\nTBD\n```\n-->\n", [3]),
+    ):
+        assert [violation.line_number for violation in _find(document)] == lines, document
+
+
+def test_an_inline_comment_that_never_closes_hides_nothing() -> None:
+    """A ``<!--`` in a paragraph is a comment only when its ``-->`` comes first.
+
+    The words after such an opener, on its own lines, were hidden, while
+    GitHub prints the opener escaped and every word after it. They are held
+    now, and reported when the paragraph ends without a closer. A heading's
+    inline content ends with its line, an HTML block may interrupt a
+    paragraph, and ``--->`` closes no inline comment. A ``>`` on a
+    continuation line keeps a blockquote's paragraph open, so a comment there
+    still closes on the next line. Each verdict was measured on GitHub.
+    """
+    for document, lines in (
+        ("text <!-- TBD\n\nmore\n", [1]),
+        ("text <!-- a\nTBD\n\nmore\n", [2]),
+        ("text <!-- TBD --->\n", [1]),
+        ("## Head <!-- TBD\nmore -->\n", [1]),
+        ("x <!-- TBD\n<!-- ALLOW-TBD: reason --> y\n", [1]),
+        ("x <!-- a\n<div>\nTBD\n</div>\n", [3]),
+        ("- item <!-- TBD\n- next\n", [1]),
+        ("text <!-- a --!> TBD\n", [1]),
+    ):
+        assert [violation.line_number for violation in _find(document)] == lines, document
+    for document in (
+        "text <!-- a\nTBD -->\n",
+        "text <!-- TBD ---> x -->\n",
+        "> quoted <!-- a\n> TBD -->\n",
+        "- item <!-- a\n  TBD -->\n",
+        "<!-- ALLOW-TBD: reason --> x <!-- TBD\n\n",
+    ):
+        assert _find(document) == [], document
