@@ -10,7 +10,7 @@ You are here: Phase 7 (Itinerary Building). Not a First Taste step. Previous: [4
 - Planner skill: planning realistic time
 - Estimated time: 20-30 minutes
 - Parent involvement: parent review after session
-- Materials: your day cards from Session 41, your day rules from Session 40, your must-do list on your My Calls page, your attraction cards (if your special pick hits a block), your traveler profiles, your [Trip-Basics card](../../templates/trip_basics.md) (for the time difference, and the maximum or booked trip length), your season from Checkpoint 1 (for hot weather), your destination pack's transportation basics page, a device with the kid-safe filter on if you check an official site, your [Source Log](../../templates/source_log.md); a blank [Trade-Off Report](../../templates/tradeoff_report.md) if the third report goes here
+- Materials: your day cards from Session 41, your Session 29 formula (for its ½ marks), or a grown-up who can tell you how long getting there takes, your must-do list on your My Calls page, your attraction cards (if your special pick hits a block), your traveler profiles, your [Trip-Basics card](../../templates/trip_basics.md) (for the time difference, and the maximum or booked trip length), your season from Checkpoint 1 (for hot weather), your destination pack's transportation basics page, a device with the kid-safe filter on if you check an official site, your [Source Log](../../templates/source_log.md); a blank [Trade-Off Report](../../templates/tradeoff_report.md) if the third report goes here
 
 ## Goal
 
@@ -57,7 +57,7 @@ Your pacing checks:
 | Too many long travel days? (One base? Count long rides from your base to your approved must-dos.) | | |
 | Is the first day too busy? | | |
 | With a big time change, are the first two or three days gentle? | | |
-| Does the last day leave time to pack and start the trip home? (Your last-day rule from Session 40 says how much.) | | |
+| Does the last day leave time to pack and start the trip home? (A long journey home takes most of the day; a trip of a few hours, about half. A ½ over the 1s on your Session 29 formula means a trip of a few hours.) | | |
 | Big days back to back? | | |
 | Enough breaks? | | |
 | Too long or too packed for a traveler who tires easily? | | |
