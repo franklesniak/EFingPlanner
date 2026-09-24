@@ -26,12 +26,14 @@ Your `family/` folder is the "Start Here" section of your binder. The [binder ca
 
 Every page has exactly one home. If you can never remember where something goes, this is the rule.
 
-- The blank version lives in `framework/templates/`.
-- Your filled-in family pages live in the kit's `family/` folder.
-- Work in progress lives in `research/`, `logs/`, or `recommendations/`.
-- The final version, in order, lives in `outputs/`.
+- The blank version stays in this repository, in `framework/templates/`.
+- Your filled-in family pages live in the `family/` part of your own copy of this kit.
+- Work in progress lives in the `research/`, `logs/`, or `recommendations/` part of your copy.
+- The final version, in order, lives in the `outputs/` part of your copy.
 
 Work is summarized forward, not copied sideways. When a page feeds a later page, carry the short version forward. Do not keep two copies of the same thing in two folders. Two copies drift apart, and then you do not know which one is right.
+
+A link that leaves the kit, like the one to the binder card, opens a page in this repository. In a printed or pasted copy, find that page here.
 
 ## Nothing here is filled in
 

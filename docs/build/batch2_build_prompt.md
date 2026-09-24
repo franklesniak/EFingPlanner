@@ -3618,11 +3618,12 @@ blank file includes headings and fill-in sections. **No fake completed decisions
 **One artifact, one canonical home.** Put this rule on every kit page that could invite a
 duplicate:
 
-- The **blank** version lives in `framework/templates/`.
-- The **Phase 0 family-owned** artifacts live in the kit's `family/` folder.
-- The **in-progress** copy lives in the kit's `research/`, `logs/` or `recommendations/`.
-- The **final assembled** version lives in the kit's `outputs/`.
+- The **blank** version stays in the repository, in `framework/templates/`.
+- The **Phase 0 family-owned** artifacts live in the `family/` part of the family's own copy of the kit.
+- The **in-progress** copy lives in the `research/`, `logs/` or `recommendations/` part of that copy.
+- The **final assembled** version lives in the `outputs/` part of that copy.
 - **Work is summarized forward, not duplicated sideways.**
+- **A link that leaves the kit opens a page in the repository**, and the kit page says so.
 
 **Batch 1 built the kit README and the whole `family/` subtree.** Batch 2 builds the rest.
 **Do not re-author the kit README**; extend it only where 9.4.6 says so.
