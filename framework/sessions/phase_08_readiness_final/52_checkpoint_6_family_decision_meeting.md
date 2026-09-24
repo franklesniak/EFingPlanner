@@ -75,9 +75,7 @@ Your final recommendation packet: your recommendation and reasons, what the fami
 
 ## Stop Point
 
-You are done for today when your packet gives your reasons, what the grown-ups approve, what changes and what they'll check or book, the family has picked one of the four choices, you've written it in your decision log, and your handoff list says who is doing what next. "Ask an adult" is a fine answer in any row.
-
-The checkpoint is finished when the answer is Approved, or Approved with changes once the changes are written in, or Park this decision for later, which is itself the result. Needs more research keeps it open until you bring that piece back. Any of the four is a result that counts.
+You are done for today when your packet gives your reasons, what the grown-ups approve, what changes and what they'll check or book, the family has picked one of the four choices, you've written it in your decision log, and your handoff list says who is doing what next. "Ask an adult" is a fine answer in any row. The checkpoint is finished when the answer is Approved, or Approved with changes once you've written the changes in. Here, a parked decision is the result, so it finishes the checkpoint too. With Needs more research, it stays open until you come back to it. Any of the four is a result that counts.
 
 Before you start Session 53:
 

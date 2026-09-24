@@ -60,9 +60,7 @@ Your itinerary review packet: your itinerary draft and its day cards, plus your 
 
 ## Stop Point
 
-You are done for today when your draft and its day cards are in front of a grown-up, your review packet has all five parts and your reasons filled in, a grown-up has written down which of the four choices they picked, and you've written that decision in your decision log. "Not sure yet" is a fine answer in any row.
-
-The checkpoint is finished when the answer is Approved, or Approved with changes once the changes are written in. Needs more research and Park this decision for later keep it open until you come back to it.
+You are done for today when your draft and its day cards are in front of a grown-up, your review packet has all five parts and your reasons filled in, a grown-up has written down which of the four choices they picked, and you've written that decision in your decision log. "Not sure yet" is a fine answer in any row. The checkpoint is finished when the answer is Approved, or Approved with changes once you've written the changes in. With the other two answers, it stays open until you come back to it.
 
 Before you start the next session:
 
