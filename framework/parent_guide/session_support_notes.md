@@ -130,7 +130,7 @@ Want a rough signal of how the executive-function side is going? The optional [e
 ## Session 15: City Research Cards
 
 - Role: 5-minute check-in.
-- Prep: a device with the filter on; your child's region and map notes from Session 11, or, on First Taste, which skips Session 11, a first city you name yourself; two blank cards.
+- Prep: a device with the filter on; your child's region and map notes from Session 11, or, on First Taste, which skips Session 11, a first city you name yourself; two blank cards; the Checkpoint 1 season, or the season confirmation if your dates are booked.
 - Look for: two city cards, each with a few starred top sights and a source.
 - Coaching question: "Which sight can you not wait to see?"
 - Pitfall: rabbit holes. One solid card per sitting is a good pace.
@@ -138,16 +138,16 @@ Want a rough signal of how the executive-function side is going? The optional [e
 ## Session 21: Compare Cities
 
 - Role: 5-minute check-in.
-- Prep: the two city cards, plus the City Long-List on the Core path; a Scoring Rubric page.
-- Look for: two cities scored on three things, a written trade-off, and a recommendation (one city, or both kept on purpose). On the Core path, every place kept in the running is scored too.
+- Prep: the two city cards; the Family Trip Goals page, for the poll; the assumptions page, for the budget band; a Scoring Rubric page. On the Core path, also the City Long-List and the cards for every place kept in the running.
+- Look for: two cities scored on three things, a written trade-off, and a recommendation (one city, or both kept on purpose). On the Core path, every place kept in the running is scored too, a whole region as one town you help choose, and the money check covers them all.
 - Coaching question: "Does the total match your gut? Walk me through it."
 - Pitfall: treating the score as the decision. The trade-off sentence is the real work.
 
 ## Session 33: Budget Basics, First Pass
 
 - Role: 5-minute check-in; supply the kid-sized budget band.
-- Prep: a Budget Estimate page; a calculator is allowed.
-- Look for: a high/medium/low estimate for meals and hotel, checked against the band.
+- Prep: a Budget Estimate page; the assumptions page, for the budget band; the Trip-Basics card, for the number of travelers; on First Taste, the Session 21 recommendation; on the Core path, the route, nights and total days approved at Checkpoint 4. A calculator is allowed.
+- Look for: a high/medium/low estimate for meals and hotel, checked against the band. On the Core path, the hotel line is one typical nightly price times every approved night, and food uses the plan's total days.
 - Coaching question: "Do the parts you chose fit our band?"
 - Pitfall: reaching for a real total. The cost of getting there stays off their check; keep it to two slices.
 

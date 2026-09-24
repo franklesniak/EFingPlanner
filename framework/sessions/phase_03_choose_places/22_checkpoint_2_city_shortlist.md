@@ -10,7 +10,7 @@ You are here: Phase 3 (Choose Places). Not a First Taste step. **This is Checkpo
 - Planner skill: making trade-offs
 - Estimated time: 20-30 minutes for the child, plus a 20-40 minute review with you
 - Parent involvement: parent review -- genuinely use the recommendation in a real family talk
-- Materials: your City Long-List and City comparison, your My Calls page if you're continuing from First Taste, your Family Trip Goals page from Session 03, your family's [current travel assumptions](../../templates/current_family_travel_assumptions.md) page (for the budget band), your [Source Log](../../templates/source_log.md), a [Decision Record page](../../templates/decision_record.md)
+- Materials: your City Long-List and City comparison, your My Calls page if you're continuing from First Taste, your Family Trip Goals page from Session 03, your [Trip-Basics card](../../templates/trip_basics.md) (for the maximum or booked trip length), your family's [current travel assumptions](../../templates/current_family_travel_assumptions.md) page (for the budget band), your [Source Log](../../templates/source_log.md), a [Decision Record page](../../templates/decision_record.md)
 
 ## Goal
 

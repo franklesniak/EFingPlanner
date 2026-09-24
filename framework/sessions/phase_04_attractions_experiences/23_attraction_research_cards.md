@@ -28,7 +28,7 @@ Your cities are shortlisted, so now you look at what you'd do in them. One Attra
 2. **Check your "things I can't wait to see" page.** Any spot on it in a shortlisted place, such as a park or a market you saved in Session 19, gets a card too. Continuing from First Taste? Your special pick from Session 44 gets one as well, unless a grown-up told you at Checkpoint 2 that one of the three things stops it.
 3. **Open this session's Destination Notes** for more starter ideas in your shortlisted places. You'll find big, well-known attractions mixed with everyday ones that cost little. Each one is an idea to research, and the choosing is yours.
 4. **Fill in the card, row by row.** The [Attraction Research Card](../../templates/attraction_research_card.md) has every row you need, in order. Rough answers are fine, like "about two hours" for time needed.
-5. **Guess the price first.** Before you look up a ticket price, write your guess in the card's row for it: "My guess at the ticket price, before I looked it up." Then check the attraction's official website. Write what you found in the next row, with the date. How close was your guess? Being off is normal, and your [planner mindset card](../../student_guide/planner_mindset.md) says why that's fine.
+5. **Guess the price first.** Before you look up a ticket price, write your guess in the card's row for it: "My guess at the ticket price, before I looked it up." Then check the attraction's official website. Write what you found in the next row, with the date. A free place counts too: guess whether it charges at all, or the price of a paid extra, such as a guided tour. How close was your guess? Being off is normal, and your [planner mindset card](../../student_guide/planner_mindset.md) says why that's fine.
 6. **Look for one downside.** Crowds, a long line, lots of walking, or a high price all count.
 7. **Fill the planning assumption rows** at the bottom, the same way you did on your city cards.
 8. **Feed your "things I can't wait to see" page.** If a card gets you excited, add that attraction to the page you started in Session 01. It's the one page for that feeling, so keep it all there.
@@ -47,7 +47,7 @@ Your attraction cards: one card per thing you want to do, each with a reason, a 
 
 ## Stop Point
 
-You are done for today when you have at least two cards with a reason, a rough time needed, one downside, and a source each. More cards can wait for another sitting. Your attraction set is finished at ten cards, however many sittings that takes. Come back to this session until you reach ten, before Session 24, so every card gets its balance check. "Ask an adult" and "not sure yet" are fine answers on any card.
+You are done for today when you have at least two cards with a reason, a rough time needed, one downside, and a source each. More cards can wait for another sitting. Your attraction set is finished at ten cards, with at least one price guess you wrote before you checked the official site, however many sittings that takes. If every place is free, your guess can be whether one of them charges at all, or the price of a paid extra, such as a guided tour. Come back to this session until you reach ten, before Session 24, so every card gets its balance check. "Ask an adult" and "not sure yet" are fine answers on any card.
 
 ## Source Check
 
