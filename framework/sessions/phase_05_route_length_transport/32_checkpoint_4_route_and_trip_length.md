@@ -10,7 +10,7 @@ You are here: Phase 5 (Route, Length, and Transportation). Not a First Taste ste
 - Planner skill: making trade-offs
 - Estimated time: 20-30 minutes for the child, plus a 20-40 minute review with you
 - Parent involvement: parent review -- genuinely use the recommendation in a real family talk
-- Materials: your route trade-off report, your nights table from Session 29, your route map notes, your [Trip-Basics card](../../templates/trip_basics.md), your family's [current travel assumptions](../../templates/current_family_travel_assumptions.md) page (for the budget band), your [Source Log](../../templates/source_log.md), a [Decision Record page](../../templates/decision_record.md)
+- Materials: your Trade-Off Report from Session 31, your nights table from Session 29, your route map notes, your [Trip-Basics card](../../templates/trip_basics.md), your family's [current travel assumptions](../../templates/current_family_travel_assumptions.md) page (for the budget band), your [Source Log](../../templates/source_log.md), a [Decision Record page](../../templates/decision_record.md)
 
 ## Goal
 
@@ -28,7 +28,7 @@ First, check your Session 29 nights table against the route you recommended in S
 
 Fill in the table in the Workspace:
 
-1. **Total number of days.** Add one to the total nights in your Session 29 nights table. If your dates are booked, it's the booked trip length.
+1. **Total number of days.** Add one to the total nights in your Session 29 nights table. If your dates are booked, it's the booked trip length on your Trip-Basics card.
 2. **Overnight cities.** Use the route you recommended in Session 31.
 3. **Nights in each city.** Copy them from your nights table.
 4. **Major travel days.** Which days are mostly spent getting from one city to the next?
@@ -77,7 +77,13 @@ Your Route and trip-length recommendation, recorded as a decision-log entry. If 
 
 ## Stop Point
 
-You are done when your recommendation names the cities, the nights in each, the travel days, a shorter backup version, and your reasons, and you've brought it to a grown-up. With the dates booked, leave the shorter backup version blank. When the grown-ups decide, write their answer in your Decision Record. "Not sure yet" in a row is a fine answer. If the answer is Needs more research, do that one piece and bring it back before you start the next session. If it's Park this decision for later, the next session waits too, until your family comes back to the decision.
+You are done when your recommendation names the cities, the nights in each, the travel days, a shorter backup version, and your reasons, and you've brought it to a grown-up. With the dates booked, leave the shorter backup version blank. When the grown-ups decide, write their answer in your Decision Record. "Not sure yet" in a row is a fine answer.
+
+Before you start the next session:
+
+- **Approved with changes:** write the changes into your table and your Decision Record.
+- **Needs more research:** do that one piece, and bring it back.
+- **Park this decision for later:** wait until your family comes back to it.
 
 ## Source Check
 

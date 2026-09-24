@@ -35,6 +35,8 @@ Now practice. Find one review, blog post or video about the place you picked, wi
 
 ### Sitting two: why reviews can steer you wrong
 
+If this is a new day, set your timer for 20 minutes first.
+
 Here are seven reasons a review can mislead you:
 
 - **Review inflation.** Lots of places have high ratings, so a high score often means less than it seems.
