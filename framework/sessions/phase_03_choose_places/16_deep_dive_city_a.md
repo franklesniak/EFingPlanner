@@ -35,7 +35,7 @@ Open this session's Destination Notes. They list the candidate cities for a firs
 Now work through your card:
 
 1. **Ask your starting questions.** What would we do in City A on an ordinary day? What would each traveler love there? What might be hard about it?
-2. **Pick your sources.** Start with the city's official tourism website. Then add one more, such as a guidebook or a site a grown-up says is okay.
+2. **Pick your sources.** Start with the city's official tourism website. A second source, such as a guidebook or a site a grown-up says is okay, makes your card stronger.
 3. **Fill the empty rows.** Aim for three top sights, and star any you can't wait to see. Add one memorable fact, food and culture notes, and how long it takes to get there from a nearby city. How many days might you want? Does City A fit our Checkpoint 1 season?
 4. **Hunt for downsides.** Every city has some. Is it very crowded? Costly? Tiring to get around? Write at least one in the downsides row.
 5. **Log each source as you use it.** Every website or book gets its own entry in your Source Log, with today's date.

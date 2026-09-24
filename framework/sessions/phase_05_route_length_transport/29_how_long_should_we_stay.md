@@ -34,15 +34,15 @@ How long should we stay? That's today's question. You'll answer it with a fill-i
 
 - **Arrival day is mostly used up.** Getting there, finding where you'll sleep, and settling in fill most of it.
 - **Departure day is mostly used up, too.** Packing and getting to the airport or station take time.
-- **A short journey uses less.** If getting there takes only a few hours, take away half a day for arrival, and half a day for the trip home.
+- **A short journey uses less.** If getting there takes only a few hours, take away half a day for arrival, and half a day for the trip home. Write ½ over each 1 in the formula.
 - **Jet lag matters.** Look at the time difference on your Trip-Basics card. If it's a big number, your body will still be on home time for the first two or three days. It may feel like the middle of the night when it's daytime there. So plan those days gently, on purpose. For your jet-lag days, write 0 if the time difference is small, and 1 or 2 if it's big.
-- **The date line and night flights, if they apply.** If you fly and your flight crosses the date line, a calendar day seems to vanish on the way out and comes back on the way home. A night flight can land on a later date, too. For each flight that lands on a later date than it took off, take away 1 more day. Ask a grown-up which of your flights do that, and write how many beside the formula.
+- **The date line and night flights, if they apply.** If you fly and your flight crosses the date line, a calendar day seems to vanish on the way out and comes back on the way home. A night flight can land on a later date, too. For each flight that lands on a later date than it took off, take away 1 more day. Ask a grown-up which of your flights do that. For each one, write "- 1 flight day" just before the equals sign in the formula.
 
 **Then share out the nights:**
 
 1. **List your overnight places** from your route map notes in the nights table in the Workspace.
 2. **Give each place a number of nights.** Moving hotels takes time, since every move means packing, traveling and settling in again. One-night stays can be tiring, so try for two or more where you can.
-3. **Add up your nights.** They usually come to one less than your total days, because on the day you leave, you don't stay the night. Take away one more for each flight that lands on a later date.
+3. **Add up your nights.** They usually come to one less than your total days, because on the day you leave, you don't stay the night. Take away one more night for each flight day in your formula.
 4. **Check the ceiling.** With open dates, your total must fit inside your family's maximum trip length. If your dates are booked, your nights must fit the booked trip.
 5. **Check the floor.** Is the trip long enough to be worth the journey there? Count the travel days and the first jet-lagged day or two, take them away, and see how few days are left. If your dates are booked, ask whether the booked days leave enough days for all your places. If they don't, the answer is fewer places.
 6. **Think about everyone's energy.** Look at the stamina row on each traveler's profile. Your maximum is a ceiling, the most the trip can be. For a group with a traveler who tires more easily, the kinder plan is shorter and gentler: fewer cities, more nights in each, and a rest day or two built in. With booked dates, the length stays the same, so use that same shape inside it.
