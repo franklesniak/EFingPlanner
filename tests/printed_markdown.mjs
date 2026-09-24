@@ -7,24 +7,29 @@
  * rule for that question was followed by the next case it missed. It reads
  * one JSON object per line on stdin, {"text": <a Markdown document>}, and
  * writes one JSON object per line on stdout. It also answers {"urls": [...]}
- * with {"hosts": [...]}: for each URL, [protocol, hostname, port] as the
- * WHATWG parser a browser uses reads it, or null when a browser refuses it.
- * For a document:
+ * with {"urls": [...]}: for each URL, [protocol, hostname, port, pathname,
+ * hash] as the WHATWG parser a browser uses reads it, or null when a browser
+ * refuses it. For a document:
  *
  *   lines     one entry per line of the document, as the text splits on
  *             "\n": [printed, hidden, destinations, bare, written]. printed is what
  *             the page shows from that line; hidden is the text of an HTML
- *             comment on it; destinations are the targets of the links whose
- *             content is on it -- an inline link or an HTML "a" tag, on each
- *             line where the link's text, code or image stands, and on no
- *             line when the link shows nothing -- decoded as the page decodes
- *             them; bare holds each bare URL GitHub links on it, as
- *             written, before the prose around it is trimmed off; and
- *             written holds, once for each time it is written there, the
- *             source spelling of each destination that links and is written
+ *             comment on it; destinations are the hrefs GitHub writes for the
+ *             links whose content is on it -- an inline link or an HTML "a"
+ *             tag, on each line where the link's text, code or image stands,
+ *             and on no line when the link shows nothing; bare holds, for each
+ *             bare URL GitHub links on it, [url, escaped, spelling, ends]: the
+ *             URL as GitHub's autolinker reads it, before the prose around it
+ *             is trimmed off, whether GitHub percent-escapes it (in a
+ *             paragraph) or writes it as it stands (in an HTML block), its
+ *             source spelling, and, when that spelling differs from the URL,
+ *             how many of its characters the first k of the URL's come from;
+ *             and written holds, once for each time it is written there,
+ *             [spelling, href] for each destination that links and is written
  *             on the line -- a Markdown link's, an autolink's or an "a" tag's
  *             "href" -- so a caller can tell a linked copy of a URL from an
- *             unlinked copy of the same URL on one line.
+ *             unlinked copy of the same URL on one line, and judge the copy
+ *             by the href GitHub writes for it.
  *   fences    [info, first, content] for each fenced code block: the first
  *             word of its info string, in lower case, the line its content
  *             starts on, and the content itself.
@@ -70,6 +75,18 @@
  * and a bare URL inside a raw "a" tag is linked on its own: the page closes the
  * open link where the new one starts. Measured through GitHub's Markdown API.
  * https://github.github.com/gfm/#disallowed-raw-html-extension-
+ *
+ * A link's href is the one GitHub writes, because that is the URL a browser
+ * opens. In a Markdown link's destination, an autolink and a bare URL in a
+ * paragraph, GitHub writes each character outside a small set as a percent
+ * escape, so a backslash is "%5C", a character of the path and not a slash.
+ * It trims white space from the ends of a destination, and decodes a
+ * character reference in an autolink, which markdown-it does not. In an "a"
+ * tag's href it drops the white space in front and writes the rest as
+ * percent escapes, so a trailing space is "%20" and a line break "%0A", which
+ * no browser strips; a backslash stays, and a browser reads it as a slash.
+ * In an HTML block a bare URL is written as its text reads. Measured through
+ * GitHub's Markdown API.
  *
  * Where markdown-it and GitHub's renderer part, the reader follows GitHub, as
  * the repository's hooks do. GitHub reads a declaration by an older CommonMark
@@ -146,23 +163,75 @@ const COMMENT_CLOSER = /--!?>/g;
 
 class Unmapped extends Error {}
 
-// GitHub writes "[" and "]" in a Markdown link's destination, and in an
-// autolink's, as "%5B" and "%5D", measured through its Markdown API. So a URL
-// whose host is an IPv6 address in brackets is no URL a browser opens there,
-// and GitHub links no bare URL with such a host at all, in a paragraph or an
-// HTML block. Only a raw HTML "href" keeps the brackets.
-const githubHref = (url) => url.replace(/\[/g, '%5B').replace(/\]/g, '%5D');
+// GitHub writes a Markdown link's URL, an autolink's and a paragraph's bare
+// URL's with every character outside this set as a percent escape of its
+// UTF-8 bytes: cmark's href escaping, measured through its Markdown API. So a
+// backslash is "%5C", which a browser reads as a character of the path, not
+// as a slash, and "[" and "]" are "%5B" and "%5D", so a URL whose host is an
+// IPv6 address in brackets is no URL a browser opens there. GitHub links no
+// bare URL with such a host at all, in a paragraph or an HTML block. The scan
+// holds the same set, for the bare URLs it trims (github_href).
+const HREF_SAFE = /^[A-Za-z0-9\-_.+!*'(),%#@?=;:/&$~]$/u;
+const percentEncode = (character) =>
+  [...Buffer.from(character, 'utf8')].map((byte) => '%' + byte.toString(16).toUpperCase().padStart(2, '0')).join('');
+const escapeHref = (url) => [...url].map((character) => (HREF_SAFE.test(character) ? character : percentEncode(character))).join('');
+// The white space cmark trims from the ends of a destination and an autolink.
+const CMARK_SPACE_ENDS = /^[\t\n\v\f\r ]+|[\t\n\v\f\r ]+$/g;
+// A Markdown link's href, from its destination as written: trimmed, its
+// escapes and character references decoded, and escaped. So "< url >" links
+// the URL without the spaces, as GitHub links it; markdown-it keeps them.
+const markdownHref = (written) => escapeHref(md.utils.unescapeAll(written.replace(CMARK_SPACE_ENDS, '')));
+// An autolink's href: a character reference is decoded, with its ";", as
+// GitHub decodes one there, and a backslash is no escape. markdown-it decodes
+// neither.
+const REFERENCE_WITH_SEMICOLON = /&(?:#[0-9]{1,7}|#[xX][0-9A-Fa-f]{1,6}|[A-Za-z][A-Za-z0-9]{1,31});/g;
+const autolinkHref = (written) =>
+  escapeHref(written.replace(CMARK_SPACE_ENDS, '').replace(REFERENCE_WITH_SEMICOLON, (reference) => md.utils.unescapeAll(reference)));
+// A bare URL in a paragraph, before the scan trims it: as written, and
+// escaped by GitHub.
+const paragraphBare = (url) => [url, true, url, null];
 const BRACKETED_HOST = /^(?:https?:\/\/)\[/i;
 const linksBare = (url) => !BRACKETED_HOST.test(url);
 
 // Every bare URL GitHub links in a line read as plain text, as written.
-const bareIn = (line, pattern = BARE_URL) => [...line.matchAll(pattern)].map((match) => match[0]).filter(linksBare);
+const bareIn = (line) => [...line.matchAll(BARE_URL)].map((match) => match[0]).filter(linksBare);
 
 // Raw HTML text, or an attribute value, with its character references decoded
 // as GitHub's renderer decodes them, and nothing else: a backslash is a
-// character here, and GitHub prints it.
-const decodeHtml = (text) =>
-  text.replace(REFERENCE, (reference) => md.utils.unescapeAll(reference.endsWith(';') ? reference : reference + ';'));
+// character here, and GitHub prints it. starts gives, for each UTF-16 unit of
+// the result, where in the text it comes from, offset by offset.
+const decodeHtmlAt = (text, offset) => {
+  let decoded = '';
+  const starts = [];
+  let last = 0;
+  const keep = (to) => {
+    for (let at = last; at < to; at += 1) starts.push(offset + at);
+    decoded += text.slice(last, to);
+  };
+  for (const match of text.matchAll(REFERENCE)) {
+    keep(match.index);
+    const character = md.utils.unescapeAll(match[0].endsWith(';') ? match[0] : match[0] + ';');
+    for (let unit = 0; unit < character.length; unit += 1) starts.push(offset + match.index);
+    decoded += character;
+    last = match.index + match[0].length;
+  }
+  keep(text.length);
+  return { decoded, starts };
+};
+const decodeHtml = (text) => decodeHtmlAt(text, 0).decoded;
+
+// An "a" tag's href as GitHub writes it: decoded, without the white space in
+// front, and with each other white space, control or non-ASCII character as a
+// percent escape. A browser strips white space from both ends of a URL and a
+// tab or a line break inside one, and GitHub leaves it none to strip: a
+// trailing space is "%20" and a line break "%0A", so an issue's URL with a
+// space at its end opens no issue, although the same URL typed would.
+// Measured through its Markdown API.
+const RAW_HREF_ESCAPED = /^[\x00-\x20\x7F-\u{10FFFF}]$/u;
+const rawHref = (value) =>
+  [...decodeHtml(value).replace(/^[\t\n\r ]+/, '')]
+    .map((character) => (RAW_HREF_ESCAPED.test(character) ? percentEncode(character) : character))
+    .join('');
 
 // The tag that starts at text[start], read as the HTML tokenizer reads one:
 // its name in lower case, whether it is an end tag, whether it ends "/>", its
@@ -232,13 +301,13 @@ const readTag = (text, start) => {
   }
 };
 
-// An "a" start tag's destination, decoded as GitHub decodes raw HTML in a
-// file (decodeHtml), or null for a tag that opens no link: an end tag, one
-// with no href, or one that ends "/>", which GitHub renders as an empty link.
+// An "a" start tag's href as GitHub writes it (rawHref), or null for a tag
+// that opens no link: an end tag, one with no href, or one that ends "/>",
+// which GitHub renders as an empty link.
 const destinationOf = (tag) => {
   if (tag.name !== 'a' || tag.closing || tag.selfClosing) return null;
   const href = tag.attributes.get('href');
-  return href === undefined ? null : decodeHtml(href);
+  return href === undefined ? null : rawHref(href);
 };
 
 // The comment that opens at text[start], as the page reads it: where its text
@@ -260,10 +329,11 @@ function readDocument(text) {
   const destinations = source.map(() => []);
   const bare = source.map(() => []);
   const written = source.map(() => []);
-  // The source spelling of a destination that links, on the line it is
-  // written on, once for each time it is written there.
-  const spell = (line, spelling) => {
-    if (line < source.length) written[line].push(spelling);
+  // The source spelling of a destination that links, and the href GitHub
+  // writes for it, on the line it is written on, once for each time it is
+  // written there.
+  const spell = (line, spelling, href) => {
+    if (line < source.length) written[line].push([spelling, href]);
   };
   const plain = new Array(source.length).fill(false);
   const unmapped = [];
@@ -302,7 +372,7 @@ function readDocument(text) {
       if (anchor !== null) {
         link(anchor.href, line, line);
         if (!anchor.spelled) {
-          spell(anchor.line, anchor.written);
+          spell(anchor.line, anchor.written, anchor.href);
           anchor.spelled = true;
         }
       }
@@ -316,15 +386,40 @@ function readDocument(text) {
       }
     };
     // The text of the current text node on its current line, not yet read
-    // for bare URLs, and whether a quiet element holds it.
+    // for bare URLs, whether a quiet element holds it, where each of its
+    // UTF-16 units starts in the run, and where its last one ends.
     // A "<" or ">" in such a URL is text, and GitHub writes it as "&lt;" or
     // "&gt;", so it is given back that way: the scan's trimming reads a bare
     // "<" as the end of an autolink.
+    //
+    // Each URL is given with its source spelling: from where its first
+    // character is written to where its last one ends, character references
+    // and any end tag the page drops included. So a caller can find the copy
+    // the page links on its line, however the source spells it, and ends says
+    // how much of the spelling the first k characters of the URL come from.
     let node = null;
     const endNode = () => {
       if (node !== null && !node.quiet) {
-        for (const url of bareIn(node.text, BARE_URL_IN_TEXT)) {
-          bare[node.line].push(url.replace(/</g, '&lt;').replace(/>/g, '&gt;'));
+        for (const match of node.text.matchAll(BARE_URL_IN_TEXT)) {
+          if (!linksBare(match[0])) continue;
+          const stop = match.index + match[0].length;
+          const first = node.starts[match.index];
+          const last = stop < node.text.length ? node.starts[stop] : node.end;
+          const spelling = text.slice(first, last);
+          const width = (to) => [...text.slice(first, to)].length;
+          let url = '';
+          const ends = [0];
+          for (let unit = match.index; unit < stop;) {
+            const character = String.fromCodePoint(node.text.codePointAt(unit));
+            const next = unit + character.length;
+            const shown = character === '<' ? '&lt;' : character === '>' ? '&gt;' : character;
+            // Part of a "&lt;" covers none of the "<"; the whole of it, all.
+            for (let part = 1; part < shown.length; part += 1) ends.push(width(node.starts[unit]));
+            ends.push(width(next < stop ? node.starts[next] : last));
+            url += shown;
+            unit = next;
+          }
+          bare[node.line].push([url, false, spelling, url === spelling ? null : ends]);
         }
       }
       node = null;
@@ -334,11 +429,13 @@ function readDocument(text) {
       let at = from;
       text.slice(from, to).split('\n').forEach((part, index) => {
         const line = lineOf(at);
-        const decoded = decodeHtml(part);
+        const { decoded, starts } = decodeHtmlAt(part, at);
         print(line, decoded);
         if (index > 0 || (node !== null && node.line !== line)) endNode();
-        if (node === null) node = { line, text: '', quiet: quiet() };
+        if (node === null) node = { line, text: '', quiet: quiet(), starts: [], end: at };
         node.text += decoded;
+        node.starts.push(...starts);
+        node.end = at + part.length;
         if (VISIBLE.test(decoded)) content(line);
         at += part.length + 1;
       });
@@ -440,7 +537,7 @@ function readDocument(text) {
       if (anchor !== null) {
         link(anchor.href, from, to);
         if (!anchor.spelled) {
-          spell(anchor.line, anchor.written);
+          spell(anchor.line, anchor.written, anchor.href);
           anchor.spelled = true;
         }
       }
@@ -473,7 +570,7 @@ function readDocument(text) {
       let first = to;
       for (let match = pattern.exec(content); match && match.index < to; match = pattern.exec(content)) {
         if (linksBare(match[0])) {
-          bare[lineAt(match.index)].push(match[0]);
+          bare[lineAt(match.index)].push(paragraphBare(match[0]));
           if (first === to) first = match.index;
         }
         bareEnd = match.index + match[0].length;
@@ -490,11 +587,13 @@ function readDocument(text) {
         const start = skipBlank(cursor + 1);
         const target = md.helpers.parseLinkDestination(content, start, content.length);
         if (!target.ok) throw new Unmapped();
-        if (target.str && shown !== null && shown.first !== null) {
-          link(githubHref(target.str), shown.first, shown.last);
-          // As written, on the line it is written on.
-          const writtenAs = content.slice(start, target.pos);
-          spell(lineAt(start), writtenAs.startsWith('<') && writtenAs.endsWith('>') ? writtenAs.slice(1, -1) : writtenAs);
+        // As written, on the line it is written on, and as GitHub writes it.
+        const writtenAs = content.slice(start, target.pos);
+        const spelling = writtenAs.startsWith('<') && writtenAs.endsWith('>') ? writtenAs.slice(1, -1) : writtenAs;
+        const href = markdownHref(spelling);
+        if (href && shown !== null && shown.first !== null) {
+          link(href, shown.first, shown.last);
+          spell(lineAt(start), spelling, href);
         }
         let at = skipBlank(target.pos);
         if (at < content.length && content[at] !== ')') {
@@ -515,10 +614,12 @@ function readDocument(text) {
             if (!child.content) break;
             const at = find(child.content);
             if (inAutolink) {
-              destinations[lineAt(at)].push(githubHref(child.content));
-              print(lineAt(at), ' ');
               // As written: between the autolink's "<" and ">".
-              spell(lineAt(at), content.slice(cursor, content.indexOf('>', cursor)));
+              const spelling = content.slice(cursor, content.indexOf('>', cursor));
+              const href = autolinkHref(spelling);
+              destinations[lineAt(at)].push(href);
+              print(lineAt(at), ' ');
+              spell(lineAt(at), spelling, href);
             } else {
               print(lineAt(at), child.content);
               const end = at + child.content.length;
@@ -702,18 +803,18 @@ function readDocument(text) {
   }
   // A line given as it stands is read as plain text, bare URLs and all.
   const lines = source.map((raw, line) => {
-    if (printed[line] === null || plain[line]) return [raw, hidden[line], destinations[line], bareIn(raw), []];
+    if (printed[line] === null || plain[line]) return [raw, hidden[line], destinations[line], bareIn(raw).map(paragraphBare), []];
     return [printed[line], hidden[line], destinations[line], bare[line], written[line]];
   });
   return { lines, unmapped, fences };
 }
 
-// A URL as the WHATWG parser a browser uses reads it: its scheme, its host
-// and its port, or null when a browser refuses it.
-const hostOf = (url) => {
+// A URL as the WHATWG parser a browser uses reads it: its scheme, host, port,
+// path and fragment, from one parse, or null when a browser refuses it.
+const partsOf = (url) => {
   try {
     const parsed = new URL(url);
-    return [parsed.protocol, parsed.hostname, parsed.port];
+    return [parsed.protocol, parsed.hostname, parsed.port, parsed.pathname, parsed.hash];
   } catch {
     return null;
   }
@@ -723,6 +824,6 @@ const input = createInterface({ input: process.stdin, crlfDelay: Infinity });
 input.on('line', (line) => {
   if (!line.trim()) return;
   const request = JSON.parse(line);
-  const answer = 'urls' in request ? { hosts: request.urls.map(hostOf) } : readDocument(request.text);
+  const answer = 'urls' in request ? { urls: request.urls.map(partsOf) } : readDocument(request.text);
   process.stdout.write(JSON.stringify(answer) + '\n');
 });

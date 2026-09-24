@@ -81,16 +81,18 @@ beside it:
   hides nothing from this scan; the repository holds none.
 - *What is a link.* A URL ``url_is_public()`` accepts, and nothing else. Only
   such a URL resolves a reference, and only such a URL is taken out of the
-  text before the patterns read it (``blank_urls``). Its host is the one the
-  WHATWG parser a browser uses reads, asked of Node through the Markdown
-  reader for a URL in any file (``browser_host``); the scan judges only
-  whether that host is public. A full hash an action
+  text before the patterns read it (``blank_urls``). Its host, path and
+  fragment come from one parse by the WHATWG parser a browser uses, asked of
+  Node through the Markdown reader for a URL in any file (``browser_url``);
+  the scan judges only whether that host is public, and which reference the
+  path or the fragment names. In Markdown the URL parsed is the href GitHub
+  writes for the link, which is the URL a browser opens. A full hash an action
   pin declares resolves in the repository the pin names, where GitHub reads
   the pin: a ``uses`` key of a job or a step, read by a YAML parser, in a
   workflow in ``.github/workflows`` or in an action's ``action.yml``, and in
   a fenced YAML example in Markdown, which may show a list of steps alone
   (``declared_action_pins``). The same characters anywhere else declare
-  nothing.
+  nothing, a comment after the pin and another key of its step included.
 - *Which words name a reference.* The nouns, separators and number shapes
   in ``REVIEW_HISTORY_PATTERNS``, which is a closed list: the pointer shapes
   this repository's review history has produced. A reference named by any
@@ -111,9 +113,17 @@ beside it:
   markup prints nothing where it forms markup and prints as itself where it
   does not, a character reference prints its character, a code span its
   content, and a tag's attributes and a link's title print nothing and link
-  nothing; an ``a`` tag's ``href`` is a link, decoded as GitHub decodes
-  raw HTML in a file, and a link's destination is decoded as CommonMark
-  decodes it. **A link covers its content**: its destination resolves a
+  nothing; an ``a`` tag's ``href`` is a link, and so is a link's destination.
+  **A link is the href GitHub writes for it**: in a Markdown link, an
+  autolink and a bare URL in a paragraph, GitHub writes a backslash, ``[``,
+  ``]`` and each other character outside a small set as a percent escape
+  (``github_href``), so a backslash there is no slash to a browser and a
+  bracketed IPv6 host names nothing; it trims white space from a
+  destination's ends, and decodes a character reference in an autolink; and
+  in an ``a`` tag's ``href``, decoded as GitHub decodes raw HTML in a file,
+  it drops the white space in front and escapes the rest, so a trailing space
+  or a line break inside is a character of the path, which a browser keeps.
+  **A link covers its content**: its destination resolves a
   reference on each line where its text, code or image stands, and a link
   that shows nothing resolves nothing. **An image links nothing**: GitHub
   wraps one in a link to the image
@@ -135,15 +145,9 @@ beside it:
   the text and resolves no reference.
   A paragraph is also read joined across its line breaks, and a URL in a
   comment resolves nothing.
-  GitHub renders with its own parser, and three differences are known: a
+  GitHub renders with its own parser, and two differences are known: a
   strikethrough between single tildes, which GitHub prints and markdown-it
-  leaves as tildes; footnotes, which markdown-it leaves as text; and the
-  escaping GitHub gives a link's URL. It writes a backslash and any
-  character outside a small set as a percent escape, so a browser reads no
-  backslash there as a slash. The scan reads a backslash as written; the
-  repository holds no such link. It writes ``[`` and ``]`` as GitHub does, so
-  a bracketed IPv6 host in a Markdown link names nothing, and a bare URL
-  with one links nothing. In every
+  leaves as tildes; and footnotes, which markdown-it leaves as text. In every
   file, one kind of break is left unread: a block comment's ``*`` at the
   start of each line looks like a list item, so two such lines are read as
   two items. The curriculum hooks still read Markdown by hand; whether they
@@ -160,12 +164,12 @@ import ipaddress
 import json
 import re
 import shutil
+import string
 import subprocess
-from collections import Counter
 from collections.abc import Callable, Iterable
-from typing import Any
+from typing import Any, NamedTuple
 from pathlib import Path
-from urllib.parse import SplitResult, unquote, urlsplit
+from urllib.parse import quote, unquote
 
 import yaml
 
@@ -972,45 +976,44 @@ NON_PUBLIC_NAMES = (
 )
 
 
-def split_url(url: str) -> SplitResult | None:
-    """Return ``urlsplit(url)``, or ``None`` when the URL cannot be parsed.
-
-    ``urlsplit`` raises ``ValueError: Invalid IPv6 URL`` on an unclosed
-    bracketed authority, and every scanned file is untrusted input to this
-    check. Left to escape, one malformed URL on one committed line ended the
-    whole repository-wide gate in a traceback rather than reporting the
-    reference beside it.
-
-    A URL this cannot parse resolves nothing, which is the direction that
-    reports the reference rather than excusing it.
-    """
-    try:
-        return urlsplit(url)
-    except ValueError:
-        return None
-
-
 def browser_form(url: str) -> str:
-    """Return ``url`` in the form a browser parses, before it is split.
+    """Return ``url`` as a browser is given it: ``www.`` gets ``http://`` in front.
 
-    A scheme-less ``www.`` candidate gets ``http://`` in front. For ``http``
-    and ``https``, a backslash before the query or the fragment is a slash --
-    in the authority as well as in the path. So in ``localhost``, a backslash,
-    ``@github.com`` and a path, the backslash ends the authority, the host is
-    ``localhost``, and the rest is path. ``urlsplit`` reads the characters as
-    written and found ``github.com`` after the ``@``, so a host nobody outside
-    can reach passed as a public link. The host, the path and the fragment are
-    each read from what this returns, so the three cannot disagree.
+    A scheme-less ``www.`` candidate is written that way by GitHub's
+    autolinker, and read that way from any other file. Everything else is the
+    parser's to read (``browser_url``): for ``http`` and ``https`` it reads a
+    backslash before the query or the fragment as a slash, in the authority
+    as well as in the path. So in ``localhost``, a backslash, ``@github.com``
+    and a path, the backslash ends the authority and the host is
+    ``localhost``; ``urlsplit`` found ``github.com`` after the ``@``, and a
+    host nobody outside can reach passed as a public link.
     https://url.spec.whatwg.org/#authority-state
     """
     if url[:4].lower() == "www.":
-        url = "http://" + url
-    scheme, colon, rest = url.partition(":")
-    if not colon or scheme.lower() not in ("http", "https"):
-        return url
-    ends = [index for index in (rest.find("?"), rest.find("#")) if index != -1]
-    cut = min(ends, default=len(rest))
-    return scheme + colon + rest[:cut].replace(chr(92), "/") + rest[cut:]
+        return "http://" + url
+    return url
+
+
+#: The characters GitHub writes as they are in a Markdown link's URL, an
+#: autolink's and a paragraph's bare URL's. It writes every other one as a
+#: percent escape of its UTF-8 bytes: cmark's href escaping, measured through
+#: GitHub's Markdown API. The reader holds the same set (``HREF_SAFE``), and a
+#: test keeps the two alike.
+GITHUB_HREF_SAFE = frozenset(string.ascii_letters + string.digits + "-_.+!*'(),%#@?=;:/&$~")
+
+
+def github_href(url: str) -> str:
+    """Return a bare URL in a paragraph as GitHub writes it in the link's href.
+
+    So a backslash in one is ``%5C``, a character of the path to a browser,
+    and not the slash it is in the same URL typed. A bare URL is trimmed here
+    before it is escaped, as GitHub trims it, so this is the scan's to apply;
+    the reader applies the same set to every destination it reads.
+    """
+    return "".join(
+        character if character in GITHUB_HREF_SAFE else quote(character, safe="")
+        for character in url
+    )
 
 
 def is_public_address(address: ipaddress.IPv4Address | ipaddress.IPv6Address) -> bool:
@@ -1048,7 +1051,7 @@ def url_is_public(url: str) -> bool:
     found the next: ``http://localhost/issues/27``. This asks the whole
     question once.
 
-    **The host is the one a browser reads** (``browser_host``). Python's
+    **The host is the one a browser reads** (``browser_url``). Python's
     parsers answered that question for years of findings -- a port that is not
     a number, a zone in an IPv6 address, a percent escape in a name, IDNA 2003
     where browsers use UTS 46 -- each one a place where the scan and a browser
@@ -1067,10 +1070,10 @@ def url_is_public(url: str) -> bool:
     https://www.rfc-editor.org/rfc/rfc6761
     https://www.rfc-editor.org/rfc/rfc1123#section-2.1
     """
-    parsed = browser_host(browser_form(url))
+    parsed = browser_url(browser_form(url))
     if parsed is None:
         return False
-    protocol, host, port = parsed
+    protocol, host, port = parsed.protocol, parsed.hostname, parsed.port
     if protocol not in ("http:", "https:") or port == "0" or not host:
         return False
     if host.startswith("["):
@@ -1096,9 +1099,18 @@ def url_is_public(url: str) -> bool:
 
 
 def url_path_segments(url: str) -> list[str]:
-    """Return the path segments of one URL, in order, as a browser resolves them."""
-    parts = split_url(browser_form(url))
-    if parts is None:
+    """Return the path segments of one URL, in order, as a browser resolves them.
+
+    **From the same parse as its host** (``browser_url``), **of the href
+    GitHub writes.** The path was split again with ``urlsplit``, so the host
+    and the path were two readings of one URL: a space at the end of an
+    ``href``, which the host's parse stripped, stayed in the path. And both
+    read the value as written, where GitHub writes a trailing space, a tab or
+    a line break as a percent escape a browser keeps. The href is the URL a
+    browser opens, and one parse of it gives all three parts.
+    """
+    parsed = browser_url(browser_form(url))
+    if parsed is None:
         return []
     # **Each segment is decoded before it is compared.** A destination may
     # percent-encode characters that need no encoding, and the encoded form is
@@ -1108,13 +1120,13 @@ def url_path_segments(url: str) -> list[str]:
     # path, so an encoded slash cannot invent a segment boundary that the URL
     # does not have.
     #
-    # **And the path is resolved the way a browser resolves it.** For ``http``
-    # and ``https`` a backslash is a slash, which ``browser_form()`` has
-    # written already; ``.`` and its encoded ``%2e`` name the current segment;
-    # and ``..`` in any of its four spellings removes the one before it. Read
-    # as written, ``/issues/27/../28`` held ``issues`` and
-    # ``27`` side by side although the page it opens is the one for 28, and
-    # ``/issues/./27`` held them apart although it opens 27.
+    # **And the path is resolved the way a browser resolves it**, by the
+    # parser. For ``http`` and ``https`` a backslash is a slash; ``.`` and its
+    # encoded ``%2e`` name the current segment; and ``..`` in any of its four
+    # spellings removes the one before it. Read as written,
+    # ``/issues/27/../28`` held ``issues`` and ``27`` side by side although
+    # the page it opens is the one for 28, and ``/issues/./27`` held them
+    # apart although it opens 27.
     # https://url.spec.whatwg.org/#path-state
     #
     # **An empty segment is dropped, as GitHub drops it.** The URL Standard
@@ -1122,27 +1134,20 @@ def url_path_segments(url: str) -> list[str]:
     # to the same issue, and the same holds for a pull request and a commit:
     # checked against this repository. So a doubled slash does not unlink a
     # reference, while ``/issues/x/27``, whose words sit apart, still does.
-    segments: list[str] = []
-    for part in parts.path.split("/"):
-        segment = unquote(part)
-        if segment in ("", "."):
-            continue
-        if segment == "..":
-            if segments:
-                segments.pop()
-            continue
-        segments.append(segment)
-    return segments
+    return [unquote(part) for part in parsed.pathname.split("/") if part]
 
 
 def url_fragment_tokens(url: str) -> list[str]:
-    """Return the fragment of one URL, cut where a host joins its pieces."""
-    parts = split_url(browser_form(url))
-    if parts is None:
+    """Return the fragment of one URL, cut where a host joins its pieces.
+
+    From the same parse as its host and its path (``browser_url``).
+    """
+    parsed = browser_url(browser_form(url))
+    if parsed is None:
         return []
     # Decoded after the split, as path segments are, so an encoded separator
     # cannot invent a token boundary and an encoded digit is still the digit.
-    return [unquote(part) for part in FRAGMENT_SEPARATORS.split(parts.fragment) if part]
+    return [unquote(part) for part in FRAGMENT_SEPARATORS.split(parsed.hash[1:]) if part]
 
 
 #: The noun patterns that read a tracker key, and so read ``GH-`` and a number
@@ -1437,6 +1442,12 @@ def names_in(path: Path, root: Path) -> list[str]:
     its decoded value, a linked URL also blanked an unlinked copy of itself on
     the line, and a destination the source spells with a character reference,
     or writes on the line after its label, was not blanked at all.
+
+    **A copy links when the href GitHub writes for it is public, however
+    the source spells it** (``blank_spellings``). The spelling was judged
+    too, and one with a character reference in its host, which GitHub
+    decodes, named no public host, so the name in the path of a link a reader
+    follows was reported.
     """
     found: list[str] = []
     relative = path.relative_to(root).as_posix()
@@ -1447,7 +1458,7 @@ def names_in(path: Path, root: Path) -> list[str]:
         spellings = markdown_link_spellings(source)
         names = identifier_like_names(
             "\n".join(
-                blank_urls(line, spellings[number])[0]
+                blank_spellings(line, spellings[number])
                 for number, line in enumerate(source.split("\n"))
             )
         )
@@ -1584,23 +1595,36 @@ def _ask_reader(request: dict[str, Any]) -> dict[str, Any]:
     return json.loads(answer)
 
 
-def browser_host(url: str) -> tuple[str, str, str] | None:
-    """Return ``(protocol, hostname, port)`` as a browser's URL parser reads ``url``.
+class BrowserURL(NamedTuple):
+    """A URL's parts, as a browser's URL parser reads them."""
+
+    protocol: str
+    hostname: str
+    port: str
+    pathname: str
+    hash: str
+
+
+def browser_url(url: str) -> BrowserURL | None:
+    """Return the parts of ``url`` as a browser's URL parser reads it, from one parse.
 
     The reader answers with Node's ``URL``, the WHATWG parser browsers share,
     for a URL in any file: a percent escape in a name is decoded, a numeric
     IPv4 host is read in every spelling a browser reads, a name is mapped as
-    UTS 46 maps it, and a zone in an IPv6 address, a port that is not a number
-    and anything else a browser refuses give ``None``. Each URL is asked once.
+    UTS 46 maps it, white space at the ends and a tab or a line break inside
+    are dropped, a backslash in an ``http`` or ``https`` URL is a slash, and a
+    ``.`` or ``..`` segment is resolved. A zone in an IPv6 address, a port
+    that is not a number and anything else a browser refuses give ``None``,
+    so a URL this cannot parse resolves nothing. Each URL is asked once.
     https://url.spec.whatwg.org/#concept-basic-url-parser
     """
-    if url not in _browser_hosts:
-        found = _ask_reader({"urls": [url]})["hosts"][0]
-        _browser_hosts[url] = (found[0], found[1], found[2]) if found is not None else None
-    return _browser_hosts[url]
+    if url not in _browser_urls:
+        found = _ask_reader({"urls": [url]})["urls"][0]
+        _browser_urls[url] = BrowserURL(*found) if found is not None else None
+    return _browser_urls[url]
 
 
-_browser_hosts: dict[str, tuple[str, str, str] | None] = {}
+_browser_urls: dict[str, BrowserURL | None] = {}
 
 
 def _read_markdown(text: str) -> dict[str, Any]:
@@ -1610,7 +1634,13 @@ def _read_markdown(text: str) -> dict[str, Any]:
         answer = _ask_markdown_reader(text)
         cached = {
             "lines": [
-                (line[0], line[1], list(line[2]), list(line[3]), list(line[4]))
+                (
+                    line[0],
+                    line[1],
+                    list(line[2]),
+                    [(url, escaped, spelling, ends) for url, escaped, spelling, ends in line[3]],
+                    [(spelling, href) for spelling, href in line[4]],
+                )
                 for line in answer["lines"]
             ],
             "unmapped": list(answer["unmapped"]),
@@ -1624,15 +1654,25 @@ def _read_markdown(text: str) -> dict[str, Any]:
 
 def printed_markdown(
     text: str,
-) -> list[tuple[str, str, list[str], list[str], list[str]]]:
+) -> list[
+    tuple[
+        str,
+        str,
+        list[str],
+        list[tuple[str, bool, str, list[int] | None]],
+        list[tuple[str, str]],
+    ]
+]:
     """Return, for each line of a Markdown document, what the page prints there.
 
     Each entry is ``(printed, hidden, destinations, bare, written)``: the
     characters the page shows from that line, the text of an HTML comment on
-    it, the destinations of the links whose text is on it, decoded as the page
-    decodes them, each bare URL GitHub links on it, as written, and the source
-    spelling of each destination that links and is written on it, once for
-    each time. See ``MARKDOWN_READER``.
+    it, the hrefs GitHub writes for the links whose text is on it, each bare
+    URL GitHub links on it -- as its autolinker reads it, whether GitHub
+    escapes it, its source spelling, and how much of that spelling each
+    prefix of it comes from -- and, once for each time, the source spelling
+    and the href of each destination that links and is written on it. See
+    ``MARKDOWN_READER``.
     """
     return _read_markdown(text)["lines"]
 
@@ -1650,20 +1690,31 @@ def markdown_links(text: str) -> list[list[str]]:
     ``pre`` or ``kbd`` element; reading that text as linking nothing reported
     a reference its URL links. Checked against GitHub's own renderer, through
     its Markdown API. Each bare
-    URL is trimmed as ``trim_url`` trims one and kept when ``url_is_public()``
-    accepts it; each destination is kept as the reader gives it.
+    URL is trimmed as ``trim_url`` trims one, written as GitHub writes it in
+    the link (``bare_href``), and kept when ``url_is_public()`` accepts that;
+    each destination is kept as the reader gives it, the href GitHub writes.
     https://github.github.com/gfm/#autolinks-extension-
     https://docs.github.com/en/rest/markdown/markdown
     """
     links: list[list[str]] = []
     for _printed, _hidden, destinations, bare, _written in printed_markdown(text):
         found: list[str] = []
-        for written in bare:
-            url = trim_url(written, MARKDOWN_BARE_CLOSERS)
-            if url_is_public(url):
-                found.append(url)
+        for url, escaped, _spelling, _ends in bare:
+            href = bare_href(url, escaped)[1]
+            if url_is_public(href):
+                found.append(href)
         links.append(found + destinations)
     return links
+
+
+def bare_href(url: str, escaped: bool) -> tuple[str, str]:
+    """Return a bare URL trimmed, and the href GitHub writes for it.
+
+    GitHub escapes a bare URL in a paragraph (``github_href``), after it
+    trims the prose off, and writes one in an HTML block as its text reads.
+    """
+    trimmed = trim_url(url, MARKDOWN_BARE_CLOSERS)
+    return trimmed, (github_href(trimmed) if escaped else trimmed)
 
 
 def markdown_link_spellings(text: str) -> list[list[str]]:
@@ -1674,12 +1725,24 @@ def markdown_link_spellings(text: str) -> list[list[str]]:
     bare URL is trimmed as ``markdown_links`` trims it; a destination is its
     source spelling, which a character reference or an escape can make
     differ from the destination the page links.
+
+    **Each is kept when the href GitHub writes for it is public, not when
+    its spelling is.** A host written with a character reference, as in
+    ``github&#46;com``, names no host as written, and GitHub decodes it; the
+    link opens ``github.com``. An HTML block's bare URL is read with its
+    character references decoded, so its spelling is the reader's: from its
+    first character in the source to its last, and as much of that as the
+    trimmed URL comes from.
     """
     spellings: list[list[str]] = []
     for _printed, _hidden, _destinations, bare, written in printed_markdown(text):
-        found = [trim_url(url, MARKDOWN_BARE_CLOSERS) for url in bare]
-        found.extend(written)
-        spellings.append([url for url in found if url_is_public(url)])
+        found: list[str] = []
+        for url, escaped, spelling, ends in bare:
+            trimmed, href = bare_href(url, escaped)
+            if url_is_public(href):
+                found.append(spelling[: len(trimmed) if ends is None else ends[len(trimmed)]])
+        found.extend(spelling for spelling, href in written if url_is_public(href))
+        spellings.append(found)
     return spellings
 
 
@@ -1701,20 +1764,15 @@ def unmapped_markdown_lines(text: str) -> list[int]:
     return _read_markdown(text)["unmapped"]
 
 
-def blank_urls(
-    text: str, links: Iterable[str] | None = None
-) -> tuple[str, list[str]]:
+def blank_urls(text: str) -> tuple[str, list[str]]:
     """Return ``text`` with each public URL blanked, and those URLs, trimmed.
 
     **In Markdown, which URLs link is the reader's answer** (``markdown_links``),
     so the Markdown reading blanks each public URL in the printed text, where
     its path would otherwise be read as prose, and takes its links from the
-    reader. ``links``, when given, limits the blanking to the URLs in it: the
-    identifier pass reads a Markdown file's source, where a URL that links
-    nothing -- in code, in a comment -- is text like any other. **Each entry
-    blanks one copy**, so a URL written twice on a line, linked once and once
-    in code, keeps its unlinked copy: matched by value, one link took both,
-    and a name in the code copy was never read.
+    reader. The identifier pass reads a Markdown file's source instead, where
+    a URL that links nothing -- in code, in a comment -- is text like any
+    other, and blanks only the copies that link (``blank_spellings``).
 
     Found with the greedy pattern so the whole run is blanked, then trimmed
     so what is matched against is the URL itself. **Blank the trimmed URL,
@@ -1731,26 +1789,64 @@ def blank_urls(
     now decides both what resolves a reference and what is taken out of the
     text, so any other candidate stays in the text and is read like it.
     """
+    blanked, urls, _origin = blank_urls_placed(text)
+    return blanked, urls
+
+
+def blank_urls_placed(text: str) -> tuple[str, list[str], list[int]]:
+    """Return ``blank_urls(text)``, and where each character of the result stands.
+
+    ``origin[i]`` is the index in ``text`` of the result's character ``i``,
+    with one entry more for the end, so a position the source gives, such as
+    where an action pin writes its hash, can be found in the text the
+    patterns read. A URL blanked to one space stands where it started.
+    """
     urls = []
     pieces = []
+    origin: list[int] = []
     cursor = 0
-    remaining = None if links is None else Counter(links)
     for spotted in URL_PATTERN.finditer(text):
         whole = spotted.group(0)
         trimmed = trim_url(whole)
         if not url_is_public(trimmed):
             continue
-        if remaining is not None:
-            if remaining[trimmed] < 1:
-                continue
-            remaining[trimmed] -= 1
         urls.append(trimmed)
         pieces.append(text[cursor : spotted.start()])
+        origin.extend(range(cursor, spotted.start()))
         pieces.append(" ")
+        origin.append(spotted.start())
         pieces.append(whole[len(trimmed) :])
+        origin.extend(range(spotted.start() + len(trimmed), spotted.end()))
         cursor = spotted.end()
     pieces.append(text[cursor:])
-    return "".join(pieces), urls
+    origin.extend(range(cursor, len(text) + 1))
+    return "".join(pieces), urls, origin
+
+
+#: What may stand before a URL a spelling is found at: nothing a URL could
+#: continue from, as ``URL_PATTERN`` requires of the start of one.
+SPELLING_START = r"(?<![^\W_])(?<![+./@-])"
+
+
+def blank_spellings(line: str, spellings: Iterable[str]) -> str:
+    """Return ``line`` with one copy of each spelling blanked, where it is written.
+
+    ``spellings`` are the linked URLs of one Markdown source line, as the
+    source writes them (``markdown_link_spellings``): the link's href decided
+    that each links, so each is found as written, not by looking for a URL's
+    shape. Found by shape, a URL spelled with a character reference in its
+    scheme was never found at all. Each is found longest first, leftmost, and
+    where a URL could start, so a shorter one is not found inside a longer
+    one; two copies written alike hold the same names, so which of them is
+    blanked does not change what is read.
+    """
+    for spelling in sorted(spellings, key=len, reverse=True):
+        if not spelling:
+            continue
+        found = re.search(SPELLING_START + re.escape(spelling), line)
+        if found is not None:
+            line = line[: found.start()] + " " + line[found.end() :]
+    return line
 
 
 def reads_action_pins(relative: str) -> bool:
@@ -1768,8 +1864,10 @@ def reads_action_pins(relative: str) -> bool:
     return name in ACTION_METADATA_NAMES
 
 
-def declared_action_pins(text: str, *, fragment: bool = False) -> dict[int, set[str]]:
-    """Return the hash of each action pin a YAML document declares, by line.
+def declared_action_pins(
+    text: str, *, fragment: bool = False
+) -> dict[int, set[tuple[int, int]]]:
+    """Return where each action pin a YAML document declares writes its hash, by line.
 
     **A pin is excused where GitHub reads it, and nowhere else.** A workflow
     declares an action in a job's steps, and a reusable workflow in a job's
@@ -1779,7 +1877,13 @@ def declared_action_pins(text: str, *, fragment: bool = False) -> dict[int, set[
     hash. A YAML parser reads the document, so a quoted key and a flow
     mapping count, and a block scalar is text. A document that does not parse
     declares nothing, so its hashes are reported. The key is each line the
-    hash is written on, counted from zero.
+    hash is written on, counted from zero, and each value holds the columns
+    the hash starts and ends at there.
+
+    **Only that occurrence is the pin**: the hash after the last ``@`` of the
+    ``uses`` value, where it is written. The same hash in a comment after the
+    pin, or in another key of the step, declares nothing, and a set of the
+    hashes on each line excused those too.
 
     ``fragment`` reads a fenced example in Markdown, which may show part of a
     workflow: a list of steps, one step, or a job's ``steps`` alone. Measured:
@@ -1821,11 +1925,16 @@ def declared_action_pins(text: str, *, fragment: bool = False) -> dict[int, set[
                     # starts on its key's line, ``uses: >-``, and holds its
                     # text on the lines below, so the start mark named a line
                     # the hash is not on, and the hash was reported there.
+                    # Lines are counted at each ``\n``, as the scan splits
+                    # the file.
                     pin_hash = value.value.rsplit("@", 1)[1]
                     written = text[value.start_mark.index : value.end_mark.index]
-                    for found in re.finditer(re.escape(pin_hash), written):
-                        line = value.start_mark.line + written.count("\n", 0, found.start())
-                        declared.setdefault(line, set()).add(pin_hash)
+                    start = written.rfind("@") + 1
+                    if start and written.startswith(pin_hash, start):
+                        at = value.start_mark.index + start
+                        line = text.count("\n", 0, at)
+                        column = at - (text.rfind("\n", 0, at) + 1)
+                        declared.setdefault(line, set()).add((column, column + len(pin_hash)))
                 if role == "jobs":
                     child = "job"
                 elif name == "steps" and role in ("job", "runs", "fragment"):
@@ -1982,7 +2091,7 @@ def references_in(
 
     def report(
         scanned: str,
-        where: Callable[[re.Match[str]], tuple[int, list[str]] | None],
+        where: Callable[[re.Match[str]], tuple[int, list[str], int | None] | None],
     ) -> None:
         for name, pattern in REVIEW_HISTORY_PATTERNS:
             for match in pattern.finditer(scanned):
@@ -1990,7 +2099,10 @@ def references_in(
                 if located is None:
                     # Across a line break, only what crosses it is new.
                     continue
-                number, urls = located
+                # The line, the URLs that resolve a reference there, and the
+                # column the match starts at in the line's shown text, when
+                # it is read alone.
+                number, urls, column = located
                 matched = match.group(0)
                 if name == "a bare issue reference" and TRACKER_NOUN_BEFORE.search(
                     scanned[: match.start()]
@@ -2021,11 +2133,13 @@ def references_in(
                     continue
                 if resolves_in_this_repository(name, matched, root):
                     continue
-                if name == "a bare commit hash" and matched in pins_on_line.get(
-                    number, ()
+                if (
+                    name == "a bare commit hash"
+                    and column is not None
+                    and (column, column + len(matched)) in pins_on_line.get(number, ())
                 ):
-                    # A pin YAML declares on this line: GitHub resolves it in
-                    # the repository it names.
+                    # A pin YAML declares, where the ``uses`` value writes it:
+                    # GitHub resolves it in the repository it names.
                     continue
                 # **An exemption is spent only on an occurrence that nothing
                 # else resolves.** Spent first, it went to a linked occurrence
@@ -2048,19 +2162,22 @@ def references_in(
     # Per line: the shown text and the URLs that resolve it, then the hidden
     # text and the URLs that resolve that.
     lines = body.split("\n")
-    readings: list[tuple[tuple[str, list[str]], tuple[str, list[str]]]] = []
+    readings: list[
+        tuple[tuple[str, list[str], list[int] | None], tuple[str, list[str], list[int] | None]]
+    ] = []
     printed = (
         printed_markdown(body) if path.suffix.lower() in MARKDOWN_SUFFIXES else None
     )
-    # What the file type makes of each line: the hashes an action pin declares
-    # there, in a workflow, an action's metadata or a fenced YAML example; and,
+    # What the file type makes of each line: where an action pin writes its
+    # hash there, in a workflow, an action's metadata or a fenced YAML example,
+    # counted in the line as the page shows it; and,
     # for a line of a stylesheet or a fenced stylesheet example, where a colour
     # is written, what comment, string and declaration it starts inside.
-    pins_on_line: dict[int, set[str]] = {}
+    pins_on_line: dict[int, set[tuple[int, int]]] = {}
     stylesheet_lines: dict[int, tuple[tuple[bool, str], str]] = {}
     if path.suffix.lower() in YAML_SUFFIXES and reads_action_pins(relative):
-        for line, hashes in declared_action_pins(body).items():
-            pins_on_line[line + 1] = hashes
+        for line, spans in declared_action_pins(body).items():
+            pins_on_line[line + 1] = spans
     if path.suffix.lower() in STYLESHEET_SUFFIXES:
         indented = path.suffix.lower() == ".sass"
         for line, context in enumerate(stylesheet_context(body, indented=indented)):
@@ -2068,8 +2185,8 @@ def references_in(
     if printed is not None:
         for info, first, content in markdown_fences(body):
             if info in YAML_FENCE_INFO:
-                for line, hashes in declared_action_pins(content, fragment=True).items():
-                    pins_on_line[first + 1 + line] = hashes
+                for line, spans in declared_action_pins(content, fragment=True).items():
+                    pins_on_line[first + 1 + line] = spans
             elif info in STYLESHEET_FENCE_INFO:
                 indented = info == "sass"
                 for line, context in enumerate(stylesheet_context(content, indented=indented)):
@@ -2077,7 +2194,7 @@ def references_in(
     links = markdown_links(body) if printed is not None else None
     for number, line in enumerate(lines):
         shown, hidden = printed[number][:2] if printed is not None else (line, "")
-        shown_text, shown_urls = blank_urls(shown)
+        shown_text, shown_urls, shown_origin = blank_urls_placed(shown)
         if links is not None:
             # In Markdown the reader says what links on this line: each
             # destination whose link text is here, and each bare URL GitHub
@@ -2086,16 +2203,20 @@ def references_in(
         # A hidden URL is still taken out of the hidden text, so its path is
         # not read as a reference, and it resolves nothing.
         hidden_text, _hidden_urls = blank_urls(hidden)
-        readings.append(((shown_text, shown_urls), (hidden_text, shown_urls)))
+        readings.append(((shown_text, shown_urls, shown_origin), (hidden_text, shown_urls, None)))
 
-    def on_line(number: int, urls: list[str]) -> Callable[
-        [re.Match[str]], tuple[int, list[str]]
-    ]:
-        return lambda _match: (number, urls)
+    def on_line(
+        number: int, urls: list[str], origin: list[int] | None
+    ) -> Callable[[re.Match[str]], tuple[int, list[str], int | None]]:
+        return lambda match: (
+            number,
+            urls,
+            origin[match.start()] if origin is not None else None,
+        )
 
     for number, texts in enumerate(readings, start=1):
-        for scanned, urls in texts:
-            report(scanned, on_line(number, urls))
+        for scanned, urls, origin in texts:
+            report(scanned, on_line(number, urls, origin))
 
     def across(run: list[int], side: int) -> None:
         """Read one run of lines joined, for what crosses a break in it."""
@@ -2112,14 +2233,14 @@ def references_in(
             pieces.append(text)
             offset += len(text)
 
-        def where(match: re.Match[str]) -> tuple[int, list[str]] | None:
+        def where(match: re.Match[str]) -> tuple[int, list[str], int | None] | None:
             first = bisect.bisect_right(starts, match.start()) - 1
             last = bisect.bisect_right(starts, match.end() - 1) - 1
             if first == last:
                 return None
             spanned = run[first : last + 1]
             urls = [url for line in spanned for url in readings[line][side][1]]
-            return run[first] + 1, urls
+            return run[first] + 1, urls, None
 
         report(" ".join(pieces), where)
 
@@ -3457,9 +3578,9 @@ def test_a_url_this_cannot_parse_reports_rather_than_crashes(tmp_path: Path) -> 
     # resolves nothing.
     assert references_in(sample, tmp_path)
 
-    # The helper answers rather than raising, in both directions.
-    assert split_url("https://[bad/issues/27") is None
-    assert split_url("https://github.com/o/r/issues/27") is not None
+    # The parser answers rather than raising, in both directions.
+    assert browser_url("https://[bad/issues/27") is None
+    assert browser_url("https://github.com/o/r/issues/27") is not None
 
 
 def test_a_uuid_segment_is_not_a_commit_hash(tmp_path: Path) -> None:
@@ -4222,8 +4343,11 @@ def test_a_url_path_is_read_as_a_browser_resolves_it(tmp_path: Path) -> None:
     """
     reference = "issue" + " " + "27"
     base = "https://github.com/o/r/issues/"
-    for tail in ("27/../28", "27/%2e%2e/28", "27/.%2E/28", "27/..\\28"):
+    for tail in ("27/../28", "27/%2e%2e/28", "27/.%2E/28"):
         assert _reported(tmp_path, reference + " " + base + tail), tail
+    # Typed, as a code file holds it, a backslash is a slash too. GitHub
+    # writes one in a Markdown file's bare URL as "%5C", which is not.
+    assert _reported(tmp_path, "# " + reference + " " + base + "27/..\\28", ".py")
     for tail in ("./27", "%2e/27", "27/", "x/../27"):
         assert not _reported(tmp_path, reference + " " + base + tail), tail
     assert url_path_segments(base + "27/../28") == ["o", "r", "issues", "28"]
@@ -4322,9 +4446,10 @@ def test_a_backslash_in_the_authority_ends_it(tmp_path: Path) -> None:
     public = "https://github.com" + backslash + "o/r/issues/27"
     assert url_is_public(public)
     assert not _reported(tmp_path, "# " + reference + " " + public, ".py")
-    tail = "?q=" + backslash + "#f" + backslash
-    assert browser_form("https://h" + backslash + "p" + tail) == "https://h/p" + tail
-    assert browser_form("www.github.com" + backslash + "o") == "http://www.github.com/o"
+    parsed = browser_url("https://h" + backslash + "p?q=" + backslash + "#f" + backslash)
+    assert parsed is not None
+    assert (parsed.hostname, parsed.pathname, parsed.hash) == ("h", "/p", "#f" + backslash)
+    assert url_path_segments("www.github.com" + backslash + "o") == ["o"]
 
 
 def test_an_identifier_is_renamed_and_never_exempted(
@@ -4665,7 +4790,8 @@ def test_a_uses_key_in_a_flow_mapping_declares_a_pin(tmp_path: Path) -> None:
     full = ("0123456789" + "abcdef") * 2 + "01234567"
     step = "- {uses: actions/checkout@" + full + "}"
     assert not _reported_at(tmp_path, WORKFLOW, _workflow(step))
-    assert declared_action_pins(step, fragment=True) == {0: {full}}
+    at = step.index(full)
+    assert declared_action_pins(step, fragment=True) == {0: {(at, at + len(full))}}
     # A list of steps is a workflow's part, and a whole file declares nothing
     # outside a job.
     assert declared_action_pins(step) == {}
@@ -4888,7 +5014,7 @@ def test_the_scan_fails_when_the_markdown_reader_cannot_run(
     sample.write_text("Words." + chr(10), encoding="utf-8")
     monkeypatch.setitem(globals(), "_markdown_reader", None)
     monkeypatch.setitem(globals(), "_printed", {})
-    monkeypatch.setitem(globals(), "_browser_hosts", {})
+    monkeypatch.setitem(globals(), "_browser_urls", {})
     monkeypatch.setitem(globals(), "NODE_COMMAND", "node-" + "absent-for-this-test")
     with pytest.raises(AssertionError, match="npm ci"):
         references_in(sample, tmp_path)
@@ -5222,11 +5348,12 @@ def test_a_bare_url_is_read_where_github_finds_it(tmp_path: Path) -> None:
         "See " + reference + " _" + base + number,
     ):
         assert not _reported(tmp_path, body), body
-    assert printed_markdown("a " + base + "**" + number + "** b")[0][3] == [base + "**" + number + "**"]
+    written = base + "**" + number + "**"
+    assert printed_markdown("a " + written + " b")[0][3] == [(written, True, written, None)]
     assert markdown_links("a " + base + "**" + number + "** b") == [[base + "**" + number]]
     # A URL that runs into the next one written against it is one URL.
     joined = "https://example.com/" + tick + "x" + tick + "https://example.org/b"
-    assert printed_markdown("a " + joined + " c")[0][3] == [joined]
+    assert printed_markdown("a " + joined + " c")[0][3] == [(joined, True, joined, None)]
 
 
 def test_a_url_in_a_link_label_links_nothing_of_its_own(tmp_path: Path) -> None:
@@ -5266,19 +5393,18 @@ def test_a_destination_is_read_as_the_page_decodes_it(tmp_path: Path) -> None:
     assert printed_markdown("[x](" + base + encoded + ")")[0][2] == [base + "27"]
 
 
-def test_a_markdown_link_is_read_as_written_not_as_github_escapes_it(tmp_path: Path) -> None:
-    """A documented limit, pinned: GitHub escapes a link's URL, and the scan does not.
+def test_a_markdown_link_is_read_as_github_escapes_it(tmp_path: Path) -> None:
+    """GitHub escapes a link's URL, and the scan reads the href it writes.
 
     GitHub's renderer writes a backslash in a link's URL as a percent escape,
     so a browser reads it as a character of the path, not as a slash, and
-    the link below opens no issue. The scan reads the URL as written, as a
-    browser reads it typed, and the backslash is a slash. The module
-    docstring states this; if this test starts to fail, the limit has gone,
-    and the docstring must say so.
+    the link below opens no issue. The scan read the URL as written, as a
+    browser reads it typed, and the backslash was a slash: a documented limit
+    until the reader gave each link's href as GitHub writes it.
     """
     reference = "issue" + " " + "27"
     url = "https://github.com/o/r/issues" + chr(92) + "27"
-    assert not _reported(tmp_path, "See [" + reference + "](" + url + ")")
+    assert _reported(tmp_path, "See [" + reference + "](" + url + ")")
 
 
 def test_a_link_covers_every_line_of_its_text(tmp_path: Path) -> None:
@@ -5394,8 +5520,9 @@ def test_a_host_is_the_one_a_browser_reads(tmp_path: Path) -> None:
         url = "https://" + host + tail
         assert not url_is_public(url), repr(host)
         assert _reported(tmp_path, reference + " " + url), repr(host)
-    assert browser_host("https://github%2ecom" + tail) == ("https:", "github.com", "")
-    assert browser_host("https://[2606:4700:4700::1111%25eth0]" + tail) is None
+    parsed = browser_url("https://github%2ecom" + tail)
+    assert parsed is not None and parsed[:3] == ("https:", "github.com", "")
+    assert browser_url("https://[2606:4700:4700::1111%25eth0]" + tail) is None
 
 
 def test_a_multicast_or_unroutable_address_is_no_public_host(tmp_path: Path) -> None:
@@ -5468,7 +5595,8 @@ def test_a_pin_in_a_block_scalar_is_read_on_the_line_of_its_hash(tmp_path: Path)
     pin = "owner/repo@" + full
     step = "- uses: >-" + newline + "    " + pin
     assert not _reported_at(tmp_path, WORKFLOW, _workflow(step))
-    assert declared_action_pins(step, fragment=True) == {1: {full}}
+    at = len("    owner/repo@")
+    assert declared_action_pins(step, fragment=True) == {1: {(at, at + len(full))}}
     # A literal block keeps its line break, and a pin with one is no pin.
     literal = "- uses: |" + newline + "    " + pin
     assert _reported_at(tmp_path, WORKFLOW, _workflow(literal))
@@ -5808,3 +5936,165 @@ def test_a_bare_url_inside_a_raw_anchor_links_on_its_own(tmp_path: Path) -> None
     assert _reported(tmp_path, later)
     # The control: with no URL inside, the anchor's text is its own.
     assert not _reported(tmp_path, "<a href=" + quote + url + quote + ">see" + newline + reference + "</a>")
+
+
+def test_a_link_is_read_as_the_href_github_writes(tmp_path: Path) -> None:
+    """A link opens the href GitHub writes, and its host, path and fragment come from it.
+
+    Each case was rendered by GitHub's own renderer, through its Markdown API.
+    In an ``a`` tag's ``href`` GitHub drops the white space in front and
+    writes the rest as percent escapes, which no browser strips: a trailing
+    space is ``%20``, and GitHub serves no issue at ``/issues/27%20``. So the
+    scan is right to report the first case below, and reading the path from
+    the host's parse of the value as written, with the space stripped, would
+    excuse it. A tab or a line break inside is ``%09`` or ``%0A``, and the
+    path was read without it. In a Markdown link, an autolink and a bare URL
+    in a paragraph GitHub writes a backslash as ``%5C``; in an ``href`` and an
+    HTML block's bare URL it keeps one, and a browser reads a slash. It trims
+    white space from the ends of a destination in angle brackets.
+    """
+    reference = "issue" + " " + "27"
+    backslash = chr(92)
+    newline = chr(10)
+    quote = chr(34)
+    url = "https://github.com/o/r/issues/" + "27"
+    split = "https://github.com/o/r" + backslash + "issues" + backslash + "27"
+
+    def anchor(href: str) -> str:
+        return "See <a href=" + quote + href + quote + ">" + reference + "</a>."
+
+    for body in (
+        anchor(" " + url + " "),
+        "<div>" + newline + anchor(" " + url + " ") + newline + "</div>",
+        anchor(url + "&#" + "9;"),
+        anchor(url[:-2] + newline + "27"),
+        anchor("https://github.com/o/r/" + newline + "issues/27"),
+        "See [" + reference + "](" + split + ").",
+        "See <" + split + "> for " + reference + ".",
+        "See " + split + " for " + reference + ".",
+    ):
+        assert _reported(tmp_path, body), body
+    for body in (
+        anchor("  " + url),
+        anchor("&#" + "9;" + url),
+        anchor(split),
+        "<div>" + newline + split + " " + reference + newline + "</div>",
+        "See [" + reference + "](< " + url + " >).",
+        "See [" + reference + "](" + url + ").",
+    ):
+        assert not _reported(tmp_path, body), body
+    assert printed_markdown(anchor(" " + url + " "))[0][2] == [url + "%20"]
+    assert printed_markdown("[x](" + split + ")")[0][2] == [split.replace(backslash, "%5C")]
+    # Typed, as a code file holds it, the backslash is a slash.
+    assert not _reported(tmp_path, "# " + reference + " " + split, ".py")
+
+
+def test_the_reader_and_the_scan_escape_a_url_alike() -> None:
+    """The reader escapes a destination, and the scan a bare URL, with one set of characters.
+
+    GitHub writes the same characters as percent escapes in both. The set is
+    held twice because the scan trims a bare URL before it escapes it, as
+    GitHub does, and the reader cannot trim. Every printable ASCII character a
+    destination in angle brackets can hold, a space and one character outside
+    ASCII are escaped alike by both.
+    """
+    backslash = chr(92)
+    held = (
+        "x "
+        + "".join(chr(code) for code in range(33, 127) if chr(code) not in "<>" + backslash)
+        + chr(0xE9)
+    )
+    assert printed_markdown("[x](<" + held + ">)")[0][2] == [github_href(held)]
+    assert github_href(backslash + "[] " + chr(0xE9)) == "%5C%5B%5D%20%C3%A9"
+
+
+def test_a_linked_url_is_blanked_however_its_source_spells_it(tmp_path: Path) -> None:
+    """The identifier pass blanks a copy that links, judged by the href GitHub writes.
+
+    A destination written with a character reference in its host names no
+    public host as written, and GitHub decodes it: the link opens
+    ``github.com``. Judged as spelled, it was not blanked, and the name in its
+    path was reported. The same held for an ``href``, an autolink, an escape in
+    the host, and a reference in the scheme, which no URL pattern finds; and
+    for an HTML block's bare URL, which GitHub reads with its references
+    decoded and across an end tag the page drops. A copy that links nothing is
+    still read.
+    """
+    name = "review" + "_round_42"
+    newline = chr(10)
+    host = "https://github&#" + "46;com/"
+    for body in (
+        "[x](" + host + name + ")",
+        "<a href=" + chr(34) + host + name + chr(34) + ">x</a>",
+        "<" + host + name + ">",
+        "[x](https://github" + chr(92) + ".com/" + name + ")",
+        "[x](h&#" + "116;tps://github.com/" + name + ")",
+        "<div>" + newline + host + name + newline + "</div>",
+        "<div>" + newline + "<span>https://github.com/o/</b>" + name + "</span>" + newline + "</div>",
+    ):
+        assert _names(tmp_path, body) == [], body
+    for body in (
+        "`https://github.com/" + name + "`",
+        "[x](http://localhost/" + name + ")",
+        "<!-- https://github.com/" + name + " -->",
+        "See " + host + name + " here.",
+        "<div>" + newline + host + "x " + name + newline + "</div>",
+    ):
+        assert _names(tmp_path, body), body
+
+
+def test_an_autolink_decodes_its_character_references(tmp_path: Path) -> None:
+    """GitHub decodes a character reference in an autolink, and markdown-it does not.
+
+    Rendered by GitHub, through its Markdown API: an autolink to a host
+    written with a reference links the decoded host, so the reference beside
+    it is linked. A numeric reference with no ``;`` is written as it stands,
+    and a backslash is no escape there, so neither of the last two opens the
+    issue.
+    """
+    reference = "issue" + " " + "27"
+    for body in (
+        "See <https://github&#" + "46;com/o/r/issues/27> for " + reference + ".",
+        "See <https://github.com/o/r/issues/2&#" + "x37;> for " + reference + ".",
+    ):
+        assert not _reported(tmp_path, body), body
+    for body in (
+        "See <https://github.com/o/r/issues/2&#" + "55> for " + reference + ".",
+        "See <https://github.com/o/r/issues/2" + chr(92) + "7> for " + reference + ".",
+    ):
+        assert _reported(tmp_path, body), body
+
+
+def test_a_pin_is_excused_only_where_its_uses_value_writes_it(tmp_path: Path) -> None:
+    """The hash a ``uses`` value pins is excused there, and nowhere else on its line.
+
+    A set of the hashes each line declares excused every equal hash on the
+    line: in a comment after the pin, in another key of a flow mapping, in a
+    workflow and in a fenced example alike. Each of those is a hash like any
+    other, and is reported.
+    """
+    full = ("0123456789" + "abcdef") * 2 + "01234567"
+    pin = "owner/repo@" + full
+    newline = chr(10)
+    fence = "```"
+    for step in (
+        "- uses: " + pin + " # " + full,
+        "- {name: " + full + ", uses: " + pin + "}",
+        "- uses: >-" + newline + "    " + pin + newline + "  # " + full,
+    ):
+        assert _reported_at(tmp_path, WORKFLOW, _workflow(step)), step
+    for step in (
+        "- uses: " + pin,
+        "- {name: see https://github.com/o/r, uses: " + pin + "}",
+        "- uses: " + pin + " # the release tag",
+    ):
+        assert not _reported_at(tmp_path, WORKFLOW, _workflow(step)), step
+    commented = "- uses: " + pin + " # " + full
+    for body in (
+        fence + "yaml" + newline + commented + newline + fence,
+        "- item" + newline * 2 + "  " + fence + "yaml" + newline + "  " + commented + newline + "  " + fence,
+    ):
+        assert _reported(tmp_path, body), body
+    assert not _reported(tmp_path, fence + "yaml" + newline + "- uses: " + pin + newline + fence)
+    at = commented.index(full)
+    assert declared_action_pins(commented, fragment=True) == {0: {(at, at + len(full))}}
