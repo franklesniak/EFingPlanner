@@ -105,7 +105,7 @@ Each has its own **what to consider** list. The review form checks whether the w
 
 The draft is the thing being reviewed. Pacing, transit, meals and rest cannot be judged from the summary alone.
 
-**If the first or last place has changed since Checkpoint 4,** the draft's first and last days carry the wrong travel legs. Answer "Approved with changes", so your child re-times those days and fixes the travel days and nights. Make it "Needs more research" if the change alters which route works best.
+**If your answer moves where the trip arrives or leaves,** the draft's first or last day carries the wrong travel leg. That is "Approved with changes": your child re-times that leg and fixes the travel days and nights before the next session. Make it "Needs more research" if the change alters which route works best.
 
 **What to consider:** pacing; transit time; meals; rest; booking needs; budget; safety; and practicality.
 
@@ -117,7 +117,7 @@ The draft is the thing being reviewed. Pacing, transit, meals and rest cannot be
 
 **What to consider:** the final recommendation; what you approve; what you want changed; what you'll verify or book; and which questions stay open.
 
-**If the first or last place changes at the meeting,** the same two answers apply. "Approved with changes" covers re-timing the first or last day. "Needs more research" fits a change that alters which route works best, and your child does that piece before Session 53.
+**If your answer moves where the trip arrives or leaves,** the same two answers apply. "Approved with changes" means your child re-times that leg and fixes the travel days and nights. "Needs more research" fits a change that alters which route works best, and your child does that piece before Session 53.
 
 **Progress is real:** the family has *made a decision*.
 
