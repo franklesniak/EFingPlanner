@@ -1080,8 +1080,10 @@ Five checkpoints land in this batch. Every one of them includes:
   `[When I'm Stuck card](../../student_guide/when_im_stuck.md)`. The outlets are: do an
   Optional Extension, add to the question parking lot, grow the "things I can't wait to
   see" page. **The next session waits** until the adult finishes the review, because
-  everything after a checkpoint is built on the decision being made at it. **Do not add
-  a "waiting" tracker.**
+  everything after a checkpoint is built on the decision being made at it. At Checkpoints
+  2 to 5, **a parked decision holds the next session too**, until the family comes back to
+  it. At Checkpoint 6 a parked decision is itself the result, and Session 53 goes ahead.
+  **Do not add a "waiting" tracker.**
 
 **What each checkpoint's "progress is real" line names:**
 
@@ -1163,7 +1165,7 @@ add a third.**
 | Session | The loop |
 | --- | --- |
 | **23**, first ticket-price lookup | Before looking up one attraction's ticket price, the child writes a **one-line guess** in the attraction card's guess row, then checks it against the official site, writes what they found in the next row, and notices the gap |
-| **30**, first transit-fact lookup | The same one-line guess, on the session's source line, before checking one train time between two of their cities against a current transit planner. Where no train runs between them, the guess is the travel time for the family's own way of getting around, checked in the map's Directions |
+| **30**, first transit-fact lookup | The same one-line guess, on the session's source line, before checking one train time between two of their cities against a current transit planner. Where no train runs between them, the guess is the travel time for the family's own way of getting around, checked in the map's Directions. On a one-base trip, the guess is one of the trips Session 28 timed |
 
 Both **use a surface the child already has and add no new tracker**: the card's two rows at
 Session 23, and the session's source line at Session 30. Both stay **ungraded**:
@@ -1448,7 +1450,10 @@ Notes, and keep open-jaw reasoning out of the child's text entirely.
 
 **The ranges are a guide for the usual trip.** The built assumptions page offers a
 one-base trip shape, and built Session 21 lets a child recommend one city, so a one-base
-shortlist with no day trips is a finished checkpoint.
+shortlist with no day trips is a finished checkpoint. Phase 5 then works from that base:
+Session 28 times the trips from the arrival place to the base and from the base to the
+must-dos, Session 30's guess uses one of those trips, and Session 31 compares staying at
+one base with splitting the stay.
 
 **The second early real win.** Adults should actually use the child's city shortlist in a
 family conversation here, so the child sees their research shaping the trip again well

@@ -100,7 +100,7 @@ The step label comes in three forms, and it is the one part that varies:
 
 ## Italic lines under the navigation line
 
-A session may carry a short italic line directly under its navigation line. Only the kinds below are allowed:
+A session may carry one or more short italic lines directly under its navigation line, one line for each job. Only the kinds below are allowed:
 
 - **Path divergence.** The numbered order and the First Taste order disagree here, and the line says where a First Taste reader goes instead. Announce a divergence forward only, and add no line where the two orders already agree. One line per divergence.
 - **Placement note.** An off-path session says where it sits relative to the path, or a path session turns an opt-in family aside before it sends everyone else forward.

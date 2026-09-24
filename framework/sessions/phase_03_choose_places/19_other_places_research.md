@@ -30,7 +30,7 @@ The Destination Notes offer a menu with three kinds of places:
 - **Places kids often love.**
 - **Everyday places that cost little** and are still great fun, like a smaller town or a quieter area where people live and work.
 
-Every place on the menu is an option to research. You can also add a place you found yourself. A single spot, such as a park or a market, belongs on your "things I can't wait to see" page. Session 23 turns spots like that into attraction cards.
+Every place on the menu is an option to research. You can also add a place you found yourself. If one kind is missing from your Notes, look for one in your own research. A single spot, such as a park or a market, belongs on your "things I can't wait to see" page. Session 23 turns spots like that into attraction cards.
 
 **Famous is only one kind of good.** Some of the best parts of a trip are ordinary places where you can slow down and look around. So try to pick at least one place from the everyday kind.
 

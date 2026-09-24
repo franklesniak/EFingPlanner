@@ -47,7 +47,7 @@ Every place has its own ways of getting around. Your Destination Notes name the 
 
 Now fill in the notes table in the Workspace, one row for each way of getting around you might use.
 
-**Guess, then check.** Pick two cities from your route. In a new Source Log entry, write your guess for the train time between them in the **What I learned** box: "My guess: ___." If no train runs between them, guess the travel time for the way your family will go. Then check a train time in a current transit planner, or any other trip in your map's Directions. Add what you found and the date. How close were you? Being off is normal, and your [planner mindset card](../../student_guide/planner_mindset.md) says why that's fine.
+**Guess, then check.** Pick two cities from your route. On a trip with one base, pick one of the trips you timed in Session 28. In a new Source Log entry, write your guess for the train time between them in the **What I learned** box: "My guess: ___." If no train runs between them, guess the travel time for the way your family will go. Then check a train time in a current transit planner, or any other trip in your map's Directions. Add what you found and the date. How close were you? Being off is normal, and your [planner mindset card](../../student_guide/planner_mindset.md) says why that's fine.
 
 ## Workspace
 

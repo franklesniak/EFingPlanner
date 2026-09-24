@@ -24,13 +24,15 @@ Open a Decision Record page and write "Our route and trip length" in its Decisio
 
 This is your fourth checkpoint. You've mapped your places, worked out the nights, and compared two routes. Now you put it together as one recommendation. [How to Make a Recommendation](../../student_guide/how_to_make_a_recommendation.md) has the shape.
 
+First, check your Session 29 nights table against the route you recommended in Session 31. If that route added or dropped a place, fix the table: give each place on the route its nights, and add them up again.
+
 Fill in the table in the Workspace:
 
 1. **Total number of days.** Add one to the total nights in your Session 29 nights table. If your dates are booked, it's the booked trip length.
 2. **Overnight cities.** Use the route you recommended in Session 31.
 3. **Nights in each city.** Copy them from your nights table.
 4. **Major travel days.** Which days are mostly spent getting from one city to the next?
-5. **A shorter backup version.** If the grown-ups need a shorter trip, what would you drop first? If your dates are booked, leave this row out, because the length is already set.
+5. **A shorter backup version.** If the grown-ups need a shorter trip, what would you drop first? If your dates are booked, leave this row blank, because the length is already set.
 6. **Reasons.** Give two or three, each tied to something you found.
 7. **Trade-offs.** What does the family give up with this plan?
 8. **Budget-band check.** Does this still fit our rough budget band? More cities and more hotel moves usually cost more.
@@ -75,7 +77,7 @@ Your Route and trip-length recommendation, recorded as a decision-log entry. If 
 
 ## Stop Point
 
-You are done when your recommendation names the cities, the nights in each, the travel days, a shorter backup version, and your reasons, and you've brought it to a grown-up. With the dates booked, leave out the shorter backup version. When the grown-ups decide, write their answer in your Decision Record. "Not sure yet" in a row is a fine answer. If the answer is Needs more research, do that one piece and bring it back before you start the next session.
+You are done when your recommendation names the cities, the nights in each, the travel days, a shorter backup version, and your reasons, and you've brought it to a grown-up. With the dates booked, leave the shorter backup version blank. When the grown-ups decide, write their answer in your Decision Record. "Not sure yet" in a row is a fine answer. If the answer is Needs more research, do that one piece and bring it back before you start the next session. If it's Park this decision for later, the next session waits too, until your family comes back to the decision.
 
 ## Source Check
 

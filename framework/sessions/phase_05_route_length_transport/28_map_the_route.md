@@ -31,8 +31,8 @@ Here's how to read the map for trip planning:
 
 Maps are tricky at first, and "how near is near?" is a hard question for everyone. The travel time answers it.
 
-1. **Find every place on your shortlist**, one dot at a time.
-2. **Check the travel time for each hop your trip might make.** That means each overnight place to the next, and each base to each day trip. Include pairs that look far apart. Use **Directions**, and write each time in the Workspace table. Add rows if you need more.
+1. **Find every place on your shortlist**, one dot at a time. If a place is a whole region, pick the town in it where you'd sleep or spend the day, and use that town's dot. A grown-up can help you choose.
+2. **Check the travel time for each hop your trip might make.** That means each overnight place to the next, and each base to each day trip. Include pairs that look far apart. On a trip with one base and no day trips, time the trip from where you arrive to your base, and from your base to your must-dos. Use **Directions**, and write each time in the Workspace table. Add rows if you need more.
 3. **Answer five questions**, using travel time every time:
    - Which places are close together, a short ride apart?
    - Which places are far apart?
