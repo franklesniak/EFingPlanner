@@ -63,4 +63,4 @@ The `/goal` command has a 4000-character limit, so keep it short: point it at th
 
 ## Committing
 
-These briefs are committed — see the `!docs/build/` exception in `.gitignore`. Keep them markdownlint-clean so `pre-commit run --all-files` stays green: MD013 (line length) and MD034 (bare URLs) are disabled repo-wide, but MD040 (every fence declares a language) and MD026 (no heading ends in `:` or `?`) are enforced.
+These briefs are committed — see the `!docs/build/` exception in `.gitignore`. Keep them markdownlint-clean so `pre-commit run --all-files` stays green: MD013 (line length), MD034 (bare URLs), MD036 and MD041 are disabled repo-wide, but MD040 (every fence declares a language) and MD026 (no heading ends in `.`, `,`, `;`, `:` or `!`; it lets `?` pass by default) are enforced, and the style guide is what rules out `?`.
