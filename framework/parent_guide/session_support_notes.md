@@ -288,7 +288,7 @@ Want a rough signal of how the executive-function side is going? The optional [e
 ## Session 34: Neighborhoods and Hotel Location
 
 - Role: Independent; stay nearby for any search beyond the Destination Notes and official city sites, and beside your child for an image search.
-- Prep: this session's Destination Notes; a blank Neighborhood Comparison; the route and nights approved at Checkpoint 4, with the route map notes; the city card for any region on the route, for its town; a guidebook, if you have one; the Trip-Basics card, for the number of travelers; the Session 33 part-trip note, if there is one, for the nights beside the room count.
+- Prep: this session's Destination Notes; a blank Neighborhood Comparison; the route and nights approved at Checkpoint 4, with the route map notes; the city card for any region on the route, for its town; a guidebook, if you have one; the Trip-Basics card, for the number of travelers; the Session 33 part-trip note, if there is one, for the nights beside the room count; the destination pack's adult logistics page, where the pack has one, for your room-count check.
 - Look for: a neighborhood comparison with two or three areas, its room-count row saying "ask an adult", with the nights from the part-trip note if there is one, and one circled, with a reason. The third trade-off report goes here or at Session 43.
 - Coaching question: "What would staying farther out cost us in time?"
 - Pitfall: handing lodging decisions to your child. They compare; you check the room count, decide and book.
@@ -368,7 +368,7 @@ Want a rough signal of how the executive-function side is going? The optional [e
 ## Session 44: Backup Plans and Cut List
 
 - Role: 5-minute check-in; help co-choose the one unconditional pick. On the Core path, confirm the pick Session 26 settled instead.
-- Prep: the City Research Cards (starred sights); Cut List and Backup Plan pages. On the Core path, the My Calls page takes the place of the starred sights, with the skip and save-for-future notes from Checkpoints 2 and 3, the Checkpoint 3 strong maybes, and the route map notes, and a device with a map app if a swap needs a new travel time.
+- Prep: the City Research Cards (starred sights); Cut List and Backup Plan pages; the assumptions page, for the budget band when you check the special pick. On the Core path, the My Calls page takes the place of the starred sights, with the skip and save-for-future notes from Checkpoints 2 and 3, the Checkpoint 3 strong maybes, and the route map notes, and a device with a map app if a swap needs a new travel time.
 - Look for: a short must-see list, a cut list, one special pick initialed and on the must-see list, two backups. On the Core path, the must-do list is the one Session 26 made, the cut list starts from the Checkpoint 2 and 3 notes, the pick gets a one-line confirmation and is on the must-do list, and any travel time a swap needed is in the route map notes.
 - Coaching question: "What are you saving for a future trip?"
 - Pitfall: making it exhaustive. This teaches "good enough is good enough."
