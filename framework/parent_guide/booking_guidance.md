@@ -56,11 +56,12 @@ And the one unconditional personal pick is different from everything else. It ca
 
 Write the acknowledgment on their **"My Calls" page**. That page exists so their owned decisions get a grown-up's "got it" in writing, and it's worth more to a child than it looks.
 
-**When you book the dates,** write the booked trip length in the Trip-Basics card's maximum trip length row, with "booked" beside it. Count the day you leave home and the day you get home. If the booked travel arrives or leaves somewhere other than your assumptions page says, write the new place there, because Sessions 40, 41 and 45 read it. Then tell your child:
+**When you book the dates,** write the booked trip length in the Trip-Basics card's maximum trip length row, with "booked" beside it. Count the day you leave home and the day you get home. If the booked travel arrives or leaves somewhere other than your assumptions page says, write the new place there, because Sessions 40, 41 and 45 read it. If you booked a different way to travel than the card says, such as a train in place of a drive, fix its travel row, and its home airport rows if you now fly. Then tell your child:
 
 - which season it is, as a broad word with no dates, if it differs from their Checkpoint 1 pick
 - if you fly, which of the booked flights land on a later date than they took off, for the flight-day marks on their Session 29 formula
 - a new arrival or departure place, if the booking changed one
+- a different way to travel, if the booking changed it
 - which nights change. The nights are the booked length, minus one, minus each flight day. If that no longer matches the nights in their Checkpoint 4 plan, because the length or the flight days changed, say which night comes off or goes on.
 
 They carry each change back with their [When the Plan Changes card](../student_guide/when_the_plan_changes.md), with "changed after booking". If they have made the Reservation Watchlist, it becomes an act-early list: they write how far ahead each booking opens, and you turn each one into a date.

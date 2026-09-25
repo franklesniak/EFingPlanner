@@ -72,6 +72,6 @@ You compare, and the adults book. Your child never signs in, creates an account 
 
 The how-many rule is written into the Steps on purpose, so stopping is built in. At least one card per overnight base is a finished job. A three- or four-base trip does not need eight cards.
 
-The cost row is per room and is an example to re-check. The room count, the cancellation terms and the final choice are yours to verify. The cards are your child's recommendation, which you are free to weigh against what you find.
+The cost row is per room, or per person where a place charges that way, and is an example to re-check. The room count, the cancellation terms and the final choice are yours to verify. The cards are your child's recommendation, which you are free to weigh against what you find.
 
 The minutes guess is the session-time loop, the third of its four stops after Sessions 16 and 26. Here the guess is for one sitting, not the whole task. The gaps come back at Session 45 and in the final reflection.
