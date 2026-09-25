@@ -920,6 +920,50 @@ def test_a_pack_name_that_begins_with_another_name_is_reported_as_itself(
     assert 'framework/a.md:1:5: the destination name "Tokyo Bay"' in capsys.readouterr().out
 
 
+@pytest.mark.parametrize("order", ["shorter first", "longer first"])
+def test_of_two_names_that_cover_the_same_letters_the_longer_is_reported(order: str) -> None:
+    """A pack ``foo`` and a pack ``foobar`` both match ``Foobar``; the hit is the longer pack's."""
+    names = (("foo",), ("foobar",)) if order == "shorter first" else (("foobar",), ("foo",))
+    hits = hook.find_hits("See Foobar today.\n", "framework/a.md", "destination", names=names)
+    assert [(hit.occurrence, hit.label) for hit in hits] == [("Foobar", "foobar")]
+
+
+def test_a_pack_name_with_digits_is_read_as_itself(
+    tmp_path: Path, made_up_family: None, capsys: pytest.CaptureFixture[str]
+) -> None:
+    """A pack folder ``route66`` stands for "route 66", not for every word that begins with ``route``."""
+    text = "Take the routes you like.\nDrive Route 66 west.\nroute66 notes\nRoute 660 is another road.\nIn 2024.\n"
+    root = make_repo(
+        tmp_path,
+        {"destinations/route66/a.md": "Pack.\n", "destinations/2024/a.md": "Pack.\n", "framework/a.md": text},
+    )
+    assert hook.destination_names(root)[len(FIVE_NAMES) :] == (("route", "66"),)
+    assert hook.main(["--rule", "destination"], root=root) == 1
+    assert [line.split('"')[1] for line in capsys.readouterr().out.splitlines()] == ["Route 66", "route66"]
+
+
+def test_a_destination_name_beside_digits_is_still_found() -> None:
+    """Controls: digits beside a name are a run of their own, so the name's own run still matches."""
+    hits = hook.find_hits("Tokyo2020 and 2Kyoto and Osaka 3\n", "framework/a.md", "destination", names=FIVE_NAMES)
+    assert [hit.occurrence for hit in hits] == ["Tokyo", "Kyoto", "Osaka"]
+
+
+@pytest.mark.parametrize(
+    "text", ["23 days_ago", "23 days1", "trip_23_days_itinerary.md", "__23 days__", "23 days ago"]
+)
+def test_the_unit_is_a_whole_word_when_anything_but_a_letter_follows(text: str) -> None:
+    """An underscore, a digit (a footnote pasted as one) or a space after the unit leaves it the unit."""
+    assert family(text + "\n") == [(1, "number")]
+    assert family(text.replace("days", "daylight") + "\n") == [], "control: a longer word is not the unit"
+
+
+@pytest.mark.parametrize("escape", ["s", "S", "w", "W"])
+def test_each_regular_expression_escape_in_a_grep_pattern_is_read(escape: str) -> None:
+    """Each of the four escapes lets a grep pattern find the number with its unit, so the grep line spells both."""
+    assert family("grep -E '23" + BACKSLASH + escape + "*days' .\n") == [(1, "number")]
+    assert family("grep -E '23" + BACKSLASH + "d*days' .\n") == [], "control: a digit escape is another number"
+
+
 def test_a_linked_pack_folder_adds_no_name(tmp_path: Path) -> None:
     """Git records a link as one file, so a linked folder holds no tracked file."""
     target = tmp_path / "elsewhere" / "zembla"

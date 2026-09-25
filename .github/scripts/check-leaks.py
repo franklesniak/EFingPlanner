@@ -70,14 +70,19 @@ number in it is a candidate, a binary file's included.
 
   - followed by ``day``, ``days``, ``night`` or ``nights``, with nothing
     between but spaces, one line break, one hyphen or dash, and the
-    Markdown, bracket or quote marks around the number or the unit;
+    Markdown, bracket or quote marks around the number or the unit. The
+    unit is a whole word when anything but a letter follows it, so
+    ``N days_ago``, ``N_days_notes.md`` and ``N days1``, a footnote number
+    pasted as a digit, state it as plainly as ``N days ago`` does;
   - followed by the design record's own words for it, "as a trip-length
     cap";
   - after a label for it: "trip length" (or "trip length in days"), or the
     design record's "this family:", joined to the number by marks such as a
     colon, an equals sign, "is", "of", or an opening bracket;
-  - in a grep pattern for it: the number, a bracket class or a ``\\s`` or
-    ``\\W`` escape, then the unit, as a hand-run leak grep writes it.
+  - in a grep pattern for it: the number, a bracket class or one of the
+    escapes ``\\s``, ``\\S``, ``\\w`` and ``\\W``, then the unit, as a
+    hand-run leak grep writes it; each escape lets the pattern find the
+    number with its unit.
 
   A spelled-out number from one to ninety-nine counts as its digits, and
   digits from any script count as their ASCII digits, read as text, so a
@@ -94,11 +99,17 @@ number in it is a candidate, a binary file's included.
   N"), are left to that hand-read.
 * A **destination** name matches a word that begins with it, in any case,
   so a demonym or a path segment into a pack matches. Where two names
-  match from the same word, the longer match is reported, so a pack name
-  that begins with another name is found as itself. The names are the five
-  ``AC-16-1`` gives, and the name of every folder under ``destinations/``
-  that holds a file Git tracks, so a local folder nobody committed adds no
-  name and a run in CI reads the same list as a run on a laptop.
+  match from the same word, the longer match is reported, and of two that
+  cover the same letters the longer name, so a pack name that begins with
+  another name is found as itself. The names are the five ``AC-16-1``
+  gives, and the name of every folder under ``destinations/`` that holds a
+  file Git tracks, so a local folder nobody committed adds no name and a
+  run in CI reads the same list as a run on a laptop. A folder's name, and
+  the text this rule reads, are split into runs of letters and runs of
+  digits, so a folder ``route66`` is the name "route 66", found as
+  ``route66`` or ``Route 66``, and not every word that begins with
+  ``route``. A run of digits matches only a whole run, and a folder whose
+  name holds no letter adds no name.
 
 Exemptions
 ----------
@@ -208,8 +219,9 @@ person's read, to ``--candidates``, or to another check:
 * A spelling the matcher does not fold: a misspelling, a nickname or an
   abbreviation, letters split by spaces or by an invisible character such
   as a zero-width space, a look-alike letter from another alphabet, the
-  code in lower case or inside a longer identifier, and a word value inside
-  a longer word.
+  code in lower case or inside a longer identifier, a word value inside
+  a longer word, and a superscript digit or a fraction joined to a word or
+  a unit, such as a footnote marker, which Python reads as a letter.
 * An encoding other than one level of a character reference, a percent
   escape or a one-letter backslash escape: an escape inside another escape,
   as in a URL encoded twice; a numeric character reference padded past 32
@@ -570,6 +582,9 @@ MAX_VALUE_WORDS = 3
 
 #: A run of letters. ``\w`` less digits and the underscore.
 LETTER_RUN = re.compile(r"[^\W\d_]+")
+#: A run of letters or a run of digits: how a destination name, and the text
+#: the destination rule reads, are split, so a pack folder's digits count.
+NAME_RUN = re.compile(r"[^\W\d_]+|\d+")
 #: A run of letters, digits and underscores: the unit a code value must fill.
 WORD_RUN = re.compile(r"\w+")
 HEX_DIGEST = re.compile(r"[0-9a-f]{64}")
@@ -632,9 +647,11 @@ NUMBER_AFTER_LABEL = re.compile(
 )
 #: The number in a grep pattern for the trip length, as the build briefs and
 #: the design record's grep note write one: the number, a bracket class or a
-#: ``\s`` or ``\W`` escape, then the unit, alone or in an alternation.
+#: ``\s``, ``\S``, ``\w`` or ``\W`` escape, then the unit, alone or in an
+#: alternation. All four escapes are listed: each lets the pattern find the
+#: number with its unit, and a grep line that holds one spells both.
 NUMBER_IN_PATTERN = re.compile(
-    NUMBER_START + NUMBER + r"(?:\[[^\]\n]{0,8}\][?*+]?|\\[sW][?*+]?)\(?(?:\?:)?"
+    NUMBER_START + NUMBER + r"(?:\[[^\]\n]{0,8}\][?*+]?|\\[sSwW][?*+]?)\(?(?:\?:)?"
     + r"(?:days?|nights?|day\|night|night\|day)(?![^\W\d_])",
     re.IGNORECASE,
 )
@@ -1159,14 +1176,15 @@ def trip_lengths(text: str, numbers: frozenset[str]) -> list[tuple[int, int, int
 
 
 def destination_names(root: Path, tracked: Sequence[str] | None = None) -> tuple[tuple[str, ...], ...]:
-    """Return each destination name as its folded letter runs.
+    """Return each destination name as its folded runs of letters and of digits.
 
     The five names ``AC-16-1`` gives come first, then the name of each folder
     under ``destinations/`` that holds a file Git tracks (``tracked``, or the
     repository's own list). A folder that exists only on this machine adds
     nothing, so a run in CI reads the list a local run reads. Git records a
     linked folder as one file, so a link adds nothing either, and a folder
-    whose name holds no letter adds nothing.
+    whose name holds no letter adds nothing. A folder's digits are kept as
+    runs of their own, so ``route66`` adds the name "route 66", not "route".
     """
     names: list[tuple[str, ...]] = []
     for name in DESTINATION_NAMES:
@@ -1180,8 +1198,8 @@ def destination_names(root: Path, tracked: Sequence[str] | None = None) -> tuple
         if path.startswith(prefix) and path.count("/") >= 2
     }
     for folder in sorted(folders):
-        runs = tuple(LETTER_RUN.findall(fold(folder)))
-        if runs and runs not in names:
+        runs = tuple(NAME_RUN.findall(fold(folder)))
+        if any(not run.isdigit() for run in runs) and runs not in names:
             names.append(runs)
     return tuple(names)
 
@@ -1191,11 +1209,13 @@ def destination_hits_in_reading(
 ) -> list[tuple[int, int, str, str]]:
     """Return ``(start, end, name, name)`` for each destination name in ``reading``.
 
-    A name's last run matches a letter run that begins with it; its earlier
-    runs, when it has any, match whole runs.
+    The text is split as the names are, into runs of letters and runs of
+    digits. A name's last run matches a letter run that begins with it, or a
+    run of digits that equals it; its earlier runs, when it has any, match
+    whole runs.
     """
     text = reading.text
-    runs = letter_runs(text)
+    runs = [(match.start(), match.end(), fold(match.group())) for match in NAME_RUN.finditer(text)]
     found: list[tuple[int, int, str, str]] = []
     for index in range(len(runs)):
         # Every name is tried from this word, and the longest match is kept,
@@ -1212,9 +1232,10 @@ def destination_hits_in_reading(
                 for position in range(index, last)
             ):
                 continue
-            if runs[last][2].startswith(name[-1]):
+            if runs[last][2] == name[-1] or (not name[-1].isdigit() and runs[last][2].startswith(name[-1])):
                 label = " ".join(name)
-                if longest is None or runs[last][1] > longest[0]:
+                # Of two names that end at the same letter, the longer is kept.
+                if longest is None or (runs[last][1], len(label)) > (longest[0], len(longest[1])):
                     longest = (runs[last][1], label)
         if longest is not None:
             end, label = longest
