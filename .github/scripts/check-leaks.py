@@ -232,6 +232,8 @@ person's read, to ``--candidates``, or to another check:
 * A percent escape, such as ``%63``, and a character reference, such as
   ``&#99;``: neither is decoded, so a value spelled with one is not
   matched. No tracked file on any branch hid a value in one (DP-21).
+* A grep bracket expression of more than 64 items: the bound keeps the
+  grep-pattern reading's cost in line with the line's length (S53-53).
 * Any other encoding: an escape inside another escape, ``\\uXXXX``,
   ``\\xXX``, octal, base64 and a cipher are text built to hide a value,
   which the threat model above leaves out.
@@ -633,11 +635,18 @@ NUMBER_AFTER_LABEL = re.compile(
     + GAP + OPENING_MARKS + NUMBER_START + NUMBER + NUMBER_END,
     re.IGNORECASE,
 )
-#: A bracket expression, as grep reads one: up to eight items, each a
-#: character or one of the bracketed items POSIX defines, a class such as
-#: ``[:space:]``, an equivalence class such as ``[=e=]`` or a collating
-#: element such as ``[.-.]``, so the class's own ``]`` does not end it.
-BRACKET_EXPRESSION = r"\[\^?(?:\[:[a-z]+:\]|\[=[^=\]\n]{1,8}=\]|\[\.[^.\]\n]{1,8}\.\]|[^\]\n]){0,8}\]"
+#: A bracket expression, as grep reads one: items, each a character or one
+#: of the bracketed items POSIX defines, a class such as ``[:space:]``, an
+#: equivalence class such as ``[=e=]`` or a collating element such as
+#: ``[.-.]``, so the class's own ``]`` does not end it. Grep sets no limit
+#: on the items; this reads up to ``BRACKET_ITEMS``, far more than a grep a
+#: person writes holds, because with no bound a line of numbers that each
+#: open a bracket never closed is read from each number to the line's end,
+#: and its cost grows with the square of the line's length (S53-53).
+BRACKET_ITEMS = 64
+BRACKET_EXPRESSION = (
+    r"\[\^?(?:\[:[a-z]+:\]|\[=[^=\]\n]{1,8}=\]|\[\.[^.\]\n]{1,8}\.\]|[^\]\n]){0,%d}\]" % BRACKET_ITEMS
+)
 #: The number in a grep pattern for the trip length, as the build briefs and
 #: the design record's grep note write one: the number, a bracket expression
 #: or a ``\s``, ``\S``, ``\w`` or ``\W`` escape, then the unit, alone or in an

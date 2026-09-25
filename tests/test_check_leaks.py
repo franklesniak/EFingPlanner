@@ -63,13 +63,31 @@ sys.modules[HOOK_SPEC.name] = hook
 HOOK_SPEC.loader.exec_module(hook)
 
 
+#: The paths Git tracks in this repository, listed once per run: no test changes its index.
+REPO_TRACKED: list[frozenset[str]] = []
+
+
+def tracked(root: Path) -> frozenset[str]:
+    """Return the paths Git tracks under ``root``, the repository's own list read once per run."""
+    if root != REPO_ROOT:
+        return frozenset(hook.tracked_files(root))
+    if not REPO_TRACKED:
+        REPO_TRACKED.append(frozenset(hook.tracked_files(REPO_ROOT)))
+    return REPO_TRACKED[0]
+
+
 def read_tracked(path: Path, root: Path = REPO_ROOT) -> str:
     """Return a repository file's text, read only if the hook's own rule would read it (DP-22).
 
-    ``resolve_candidate()`` refuses a link, a path through a linked folder or out of the repository, and
-    anything but a regular file, so no read here follows a link to a device or to a file elsewhere. Every
-    read of a file in this suite goes through this function, and a structural test holds it to that.
+    The hook reads a file only when Git tracks it, so this does too: a file that is not in the index is not
+    the commit's content, even at a tracked file's old path (S53-54). ``resolve_candidate()`` then refuses a
+    link, a path through a linked folder or out of the repository, and anything but a regular file, so no
+    read here follows a link to a device or to a file elsewhere. Every read of a file in this suite goes
+    through this function, and a structural test holds it to that.
     """
+    relative = path.relative_to(root).as_posix()
+    if relative not in tracked(root):
+        pytest.fail(f"{relative} is not tracked, so the suite does not read it")
     resolved = hook.resolve_candidate(path, root)
     if isinstance(resolved, str):
         pytest.fail(f"{path.relative_to(root).as_posix()} is refused ({resolved}), so the suite does not read it")
@@ -347,6 +365,35 @@ def test_a_number_in_words_is_not_matched(tmp_path: Path, made_up_family: None, 
 def test_a_posix_class_in_a_grep_pattern_is_read_as_a_bracket_expression(text: str) -> None:
     """S53-51: POSIX's bracketed items, such as ``[:space:]``, sit inside a bracket expression, as grep reads it."""
     assert [kind for _line, kind in family(text + "\n")] == ["number"]
+
+
+#: Characters a bracket expression may list, with neither bracket, so each is one item.
+BRACKET_CHARACTERS = "".join(chr(code) for code in range(32, 127) if chr(code) not in "[]")
+
+
+@pytest.mark.parametrize(
+    "text",
+    [
+        "grep -rwE '23[ .,;:!?_/-]days' framework/",
+        "23[[:space:][:punct:]abcdefghij]?days",
+        "23[" + BRACKET_CHARACTERS[:64] + "]days",
+    ],
+    ids=["eleven-items", "posix-and-letters", "sixty-four-items"],
+)
+def test_a_bracket_expression_of_many_items_is_read(text: str) -> None:
+    """S53-53: grep sets no limit on a bracket expression's items, and a grep line of eleven spells the leak."""
+    assert [kind for _line, kind in family(text + "\n")] == ["number"]
+
+
+def test_a_bracket_expression_past_the_bound_is_left_to_the_hand_read() -> None:
+    """The bound keeps the cost in line with the line's length; past it, the number is a bare candidate.
+
+    With no bound, a line of numbers that each open a bracket never closed is read from each number to the line's
+    end. No grep a person writes holds more than ``BRACKET_ITEMS`` items, and "Known limits" names the case.
+    """
+    text = "23[" + BRACKET_CHARACTERS[: hook.BRACKET_ITEMS + 1] + "]days\n"
+    assert family(text) == []
+    assert hook.bare_numbers(text, VALUES) == [(1, 1)]
 
 
 @pytest.mark.parametrize(
@@ -2079,8 +2126,8 @@ def spec_lines(marker: str, what: str) -> list[str]:
     flag, never the text, because pytest prints the values an assertion
     compares, and a CI log is as public as the repository.
     """
-    present = SPEC_PATH.is_file()
-    assert present, "docs/spec/ is tracked but docs/spec/specification.md is gone; point SPEC_PATH at the record"
+    present = SPEC_PATH.relative_to(REPO_ROOT).as_posix() in tracked(REPO_ROOT)
+    assert present, "docs/spec/ is tracked but docs/spec/specification.md is not; point SPEC_PATH at the record"
     lines = [line for line in read_tracked(SPEC_PATH).split("\n") if marker in line]
     found = len(lines)
     assert found == 1, f"the {what} is in the design record {found} times, not once"
@@ -2242,6 +2289,17 @@ def test_the_style_law_is_checked_without_the_design_record(tmp_path: Path) -> N
     assert not design_record_is_tracked(root)
     assert style_law_problems(root) == ["the style law names ['Sapporo'], which DESTINATION_NAMES lacks"]
     assert style_law_problems(make_repo(tmp_path / "bare", {"README.md": "Root.\n"})) is None
+
+
+def test_the_suite_reads_no_file_git_does_not_track(tmp_path: Path) -> None:
+    """S53-54: a file removed from the index is not the commit's content, even back on disk at its old path."""
+    root = make_repo(tmp_path, {"docs/spec/other.md": "Kept.\n", "docs/spec/specification.md": "Record.\n"})
+    assert read_tracked(root / "docs" / "spec" / "specification.md", root) == "Record.\n", "control: tracked"
+    subprocess.run(["git", "-C", str(root), "rm", "-q", "--cached", "docs/spec/specification.md"], check=True)
+    assert (root / "docs" / "spec" / "specification.md").is_file(), "the untracked copy is still on disk"
+    assert design_record_is_tracked(root), "another file under docs/spec/ keeps the record tests running"
+    with pytest.raises(pytest.fail.Exception, match=r"docs/spec/specification\.md is not tracked"):
+        read_tracked(root / "docs" / "spec" / "specification.md", root)
 
 
 def test_a_link_at_a_file_the_suite_reads_fails_instead_of_being_read(tmp_path: Path) -> None:
