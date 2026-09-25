@@ -96,8 +96,10 @@ is a candidate, a binary file's included.
   N"), are left to that hand-read.
 * A **destination** name matches a word that begins with it, in any case,
   so a demonym or a path segment into a pack matches. The names are the
-  five ``AC-16-1`` gives. A folder under ``destinations/`` adds no name
-  (DP-21): no pack name beyond the five caught anything on any branch.
+  five ``AC-16-1`` gives and the style law lists, and the suite checks
+  ``DESTINATION_NAMES`` against both. A folder under ``destinations/``
+  adds no name (DP-21): no pack name beyond the five caught anything on
+  any branch.
 
 Exemptions
 ----------
@@ -935,7 +937,10 @@ def occurrence_context(text: str, start: int, end: int) -> str:
     The occurrence is widened to the whole words it stands in, and up to
     ``CONTEXT_WORDS`` words either side are added from the lines it stands
     on, and no further, so an edit to the line above or below leaves the row
-    alone. Runs of white space become one space.
+    alone. Runs of white space become one space. The line is split once for
+    each hit on it, so a line with thousands of hits takes seconds: time,
+    never a different verdict, and no tracked line holds more than a
+    handful.
     """
     first = text.rfind("\n", 0, start) + 1
     last = text.find("\n", end)
@@ -1779,7 +1784,9 @@ def run(argv: Sequence[str] | None = None, root: Path = REPO_ROOT) -> int:
             # A tracked, in-scope path that is a link, goes through a linked
             # folder or resolves outside the repository is refused by name,
             # whether a walk found it or pre-commit passed it. A file deleted
-            # from the working tree is not content any more.
+            # from the working tree is not content any more, and neither is
+            # one whose folder became a link to nothing, which ``git status``
+            # also shows as deleted.
             if resolved != "not a file":
                 refused.append(f"{argument} ({resolved})")
             continue

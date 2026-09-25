@@ -1844,6 +1844,58 @@ def test_the_list_check_reports_a_missing_and_an_obsolete_row() -> None:
     assert len(problems) == 1 and problems[0].startswith("1 value row(s) missing")
 
 
+def destination_name_problems(spec_text: str, law_text: str) -> list[str]:
+    """Return how ``DESTINATION_NAMES`` differs from AC-16-1's grep pattern and the style law's list.
+
+    The names are public, unlike the family's values, so a failure may print them.
+    """
+    found = re.findall(r"grep every built session \*\*body\*\* \(not just its title\) for `([^`]*)`", spec_text)
+    if len(found) != 1:
+        return [f"AC-16-1's grep pattern is in the design record {len(found)} times, not once"]
+    from_spec = {name.strip() for name in found[0].replace(BACKSLASH + "|", "|").split("|") if name.strip()}
+    bullets = [line for line in law_text.split("\n") if line.startswith("- **Destination names are banned")]
+    if len(bullets) != 1:
+        return [f"the style law's destination-names bullet is there {len(bullets)} times, not once"]
+    listed = bullets[0].split("** ", 1)[1].split(" appear under", 1)[0]
+    from_law = {name for name in re.split(r",\s*(?:and\s+)?|\s+and\s+", listed) if name}
+    names = set(hook.DESTINATION_NAMES)
+    problems = []
+    for source, named in (("AC-16-1", from_spec), ("the style law", from_law)):
+        if named - names:
+            problems.append(f"{source} names {sorted(named - names)}, which DESTINATION_NAMES lacks")
+        if names - named:
+            problems.append(f"DESTINATION_NAMES holds {sorted(names - named)}, which {source} does not name")
+    return problems
+
+
+def test_the_destination_names_are_the_ones_ac_16_1_and_the_style_law_list(design_record: None) -> None:
+    """S53-40: the tuple is checked against its sources, as the family's list is against the BUILD RULE line."""
+    law = REPO_ROOT / "framework" / "docs" / "build_style_and_vocab.md"
+    if not law.is_file():
+        pytest.skip("the style law is not in this tree")
+    assert destination_name_problems(SPEC_PATH.read_text(encoding="utf-8"), law.read_text(encoding="utf-8")) == []
+
+
+def test_the_destination_name_check_reports_a_name_either_source_adds(monkeypatch: pytest.MonkeyPatch) -> None:
+    """Failure injection: a name either source adds, and the tuple lacks, is reported by source."""
+    pattern = (BACKSLASH + "|").join(["Japan", "Tokyo", "Kyoto", "Osaka", "Shinkansen"])
+    spec = "grep every built session **body** (not just its title) for `" + pattern + "`"
+    law = ("- **Destination names are banned in `framework/` from Batch 1 onward.** Japan, Tokyo, Kyoto, Osaka, and "
+           "Shinkansen appear under `destinations/` only.")
+    assert destination_name_problems(spec, law) == [], "control: the committed five"
+    added_to_spec = spec.replace("Shinkansen", "Shinkansen" + BACKSLASH + "|Sapporo")
+    assert destination_name_problems(added_to_spec, law) == ["AC-16-1 names ['Sapporo'], which DESTINATION_NAMES lacks"]
+    added_to_law = law.replace("and Shinkansen", "Shinkansen, and Sapporo")
+    assert destination_name_problems(spec, added_to_law) == [
+        "the style law names ['Sapporo'], which DESTINATION_NAMES lacks"
+    ]
+    monkeypatch.setattr(hook, "DESTINATION_NAMES", (*hook.DESTINATION_NAMES, "Sapporo"))
+    assert destination_name_problems(spec, law) == [
+        "DESTINATION_NAMES holds ['Sapporo'], which AC-16-1 does not name",
+        "DESTINATION_NAMES holds ['Sapporo'], which the style law does not name",
+    ]
+
+
 def test_the_committed_list_is_well_formed() -> None:
     assert hook.check_family_values(hook.FAMILY_VALUES) == []
 
@@ -1981,12 +2033,19 @@ def test_neither_hook_nor_suite_holds_a_family_value() -> None:
 
 
 def test_the_repository_passes_the_family_rule() -> None:
-    """Every committed family row is still used, and no unexcused occurrence remains."""
+    """Every committed family row is still used, and no unexcused occurrence remains.
+
+    This is CI's walk: the pre-commit scans get file names, and a deleted
+    file's name is never passed, so only this call reports its stale row.
+    """
     assert hook.main(["--rule", "family"]) == 0
 
 
 def test_the_repository_passes_the_destination_rule() -> None:
-    """Every committed destination row is still used, and no unexcused name remains."""
+    """Every committed destination row is still used, and no unexcused name remains.
+
+    Like the family walk above, this is where CI reports a stale row.
+    """
     if not any(path.startswith("framework/") for path in hook.tracked_files(REPO_ROOT)):
         pytest.skip("framework/ holds no tracked file, so the destination rule has nothing to read")
     assert hook.main(["--rule", "destination"]) == 0
