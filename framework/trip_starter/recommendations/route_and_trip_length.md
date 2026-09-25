@@ -9,7 +9,7 @@ This is your Checkpoint 4 page, from [Session 32](../../sessions/phase_05_route_
 | Prompt | Your answer |
 | --- | --- |
 | What I recommend, in one sentence | |
-| Total number of days (with booked dates: the booked trip length, from the maximum row of our [Trip-Basics card](../family/trip_basics.md)) | |
+| Total number of days (with booked dates: the booked trip length, from the maximum trip length row of our [Trip-Basics card](../family/trip_basics.md)) | |
 | The other option I compared in Session 31 (another route, or another way to use one base) | |
 | Overnight cities (one base: and the must-dos your way keeps) | |
 | Nights in each city | |
@@ -26,7 +26,7 @@ This is your Checkpoint 4 page, from [Session 32](../../sessions/phase_05_route_
 
 If the grown-ups change where you arrive or leave, you move one block of your plan and keep the rest. Your [When the Plan Changes card](../../student_guide/when_the_plan_changes.md) says what to fix. Your work still counts.
 
-If a place or its nights change later, at Checkpoint 5 or 6 or in Session 51, come back to this page. Cross out the old, and write the new beside it, with where it changed.
+If a place, its nights or a flight-day mark change later, come back to this page. Cross out the old, and write the new beside it, with where it changed. For a flight-day mark, the flight-day row on your When the Plan Changes card says whether your total grows or a night comes off.
 
 Before you start the next session:
 
