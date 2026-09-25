@@ -145,6 +145,32 @@ of any source (``spec 21.5``, ``Section 20``, ``specification line 4245``,
 ``AC-`` id, or a build brief's item label (``F6``, ``B4, item 7``) is named
 as a marker problem.
 
+Supported Markdown
+------------------
+The recount reads the Markdown the curriculum uses, and names anything else it
+meets rather than guess at it. No page held anything outside this list when
+it was set.
+
+- Blocks: paragraphs; bullet and ordered lists, nested ones included;
+  headings, one inside a block quote or a list item included; block quotes
+  one level deep; tables; fenced and indented code; thematic breaks; link
+  reference definitions.
+- Inline: emphasis, links, images, code spans, character references,
+  backslash escapes and line breaks.
+- Raw HTML: a comment that closes, as an HTML block or inside a line, and
+  nothing else.
+- Markers: a ``density-exempt`` marker on a line of its own, outside any
+  block quote or list item; one audience marker on a page at most.
+
+The run names anything else on its page as ``OUTSIDE SUPPORTED MARKDOWN line
+N: <what it is>``, counts it in the ``unsupported_markdown`` total, and fails:
+raw HTML other than a closing comment (a tag, a processing instruction, a
+CDATA section or a declaration), a ``density-exempt`` marker inside a block
+quote or a list item, a block quote inside a block quote, and each audience
+marker after a page's first. Rewrite that part in the Markdown above. UNREAD
+HTML still names an HTML block that shows text next to a tag or holds a part
+that never closes, and a marker problem a malformed marker.
+
 Human judgments
 ---------------
 Regular expressions find *candidates* only. Whether a candidate is a true
@@ -190,13 +216,14 @@ A page's register comes from its ``<!-- audience: parent -->`` or
 ``x-not-y-registers.json``, then from the style law's
 ``framework/parent_guide/`` tree, then from the child-facing trees the
 readability check scores. A page none of these reaches
-is UNDETERMINED. The first audience marker sets the register. A page holds
-one, so each audience marker after it is a marker problem, which fails the run.
+is UNDETERMINED. The first audience marker sets the register; a page holds
+one, and each after it is named as outside the supported Markdown.
 
 Exit code: 0 when every page is within its caps or marked exempt, with no
 banned shape, no undetermined register, no unjudged candidate, no marker
-problem and no unread HTML block; 1 otherwise; 2 when REPO_ROOT has no ``framework/`` directory, or when
-a data file stops the run, which the message names; 3 when the Markdown reader
+problem, no unread HTML block and nothing outside the supported Markdown; 1
+otherwise; 2 when REPO_ROOT has no ``framework/`` directory, or when a data
+file stops the run, which the message names; 3 when the Markdown reader
 cannot run, or a page cannot be read (not UTF-8, say), which the message
 names.
 
@@ -738,6 +765,8 @@ class Page:
     unread_html: list[int] = field(default_factory=list)
     #: Each heading's and table cell's text, where the banned shape is tested.
     labels: list[Label] = field(default_factory=list)
+    #: `(line, what)` for each part of the page outside the supported Markdown.
+    unsupported: list[tuple[int, str]] = field(default_factory=list)
 
 
 @dataclass
@@ -751,6 +780,7 @@ class FileReport:
     candidates: list[Candidate] = field(default_factory=list)
     markers: list[Marker] = field(default_factory=list)
     unread_html: list[int] = field(default_factory=list)
+    unsupported: list[tuple[int, str]] = field(default_factory=list)
 
 
 # ---------------------------------------------------------------------------
@@ -887,6 +917,8 @@ def parse_text(text: str) -> Page:
     sections: list[str] = [PREAMBLE]
     heading_lines: dict[int, tuple[int, str]] = {}
     labels: list[Label] = []
+    # Each part of the page outside the supported Markdown, named, not read.
+    unsupported: list[tuple[int, str]] = []
     audience: str | None = None
     section = PREAMBLE
     section_index = 0
@@ -900,7 +932,7 @@ def parse_text(text: str) -> Page:
     # renders nothing, so it does not part two paragraphs.
     follows = False
     # Every audience marker, with its line: a page holds one, and each after
-    # the first is a marker problem.
+    # the first is outside the supported Markdown.
     audiences: list[tuple[int, str]] = []
     # The page's section, region and open headings as they stood before a
     # heading inside a block quote or a list item, restored when that
@@ -917,6 +949,8 @@ def parse_text(text: str) -> Page:
             # in it. An audience marker there is read as anywhere else; a
             # `density-exempt` marker shares its line with text, so it covers
             # nothing and is named.
+            if not piece.startswith("<!--"):
+                unsupported.append((block["start"] + offset, f"raw HTML inside a line ({piece[:24]!r})"))
             for line, comment in marker_comments(piece):
                 if am := AUDIENCE_RE.match(comment):
                     audiences.append((block["start"] + offset + line, am.group(1).lower()))
@@ -938,6 +972,8 @@ def parse_text(text: str) -> Page:
                 unread.append(block["start"])
                 follows = False
                 continue
+            if any(text is None for _, _, text in hidden_parts(content)):
+                unsupported.append((block["start"], "a processing instruction, a CDATA section or a declaration"))
             if shows_nothing(block):
                 # A block that shows nothing (comments, processing instructions,
                 # declarations and CDATA sections) is read as a block of
@@ -949,6 +985,9 @@ def parse_text(text: str) -> Page:
                     if mm := EXEMPT_MARKER_RE.match(comment):
                         markers.append(parse_marker(block["start"], mm.group("body")))
                         marker_blocks.append(index)
+                        if path:
+                            unsupported.append((block["start"], "a density-exempt marker inside a block quote or a"
+                                                                " list item"))
                 continue
             # The block shows text: what is left once the hidden parts are gone,
             # one line per source line, with character references decoded.
@@ -1001,6 +1040,8 @@ def parse_text(text: str) -> Page:
             labels.extend(Label(block["start"] + offset, normalize_space(cell), section, region, section_index,
                                 tuple(block.get("path") or ()))
                           for offset, cell in block.get("cells") or () if cell.strip())
+        if kind == "blockquote" and any(part.startswith("q") for part in path):
+            unsupported.append((block["start"], "a block quote inside a block quote"))
         if kind in ("bullet_list", "ordered_list", "blockquote"):
             # A container opens before the blocks inside it; it prints nothing itself.
             continue
@@ -1023,13 +1064,11 @@ def parse_text(text: str) -> Page:
         marker_scope(marker, blocks, index, heading_lines, source)
     if audiences:
         # The first audience marker sets the register. A page holds one, so
-        # each after it is named and fails the run, whether it agrees or not.
+        # each after it is named, whether it agrees or not.
         audience = audiences[0][1]
-        for lineno, value in audiences[1:]:
-            markers.append(Marker(lineno, "audience", "", False, problem=(
-                f"a second audience marker ({value}); a page holds one, and the first ({audience}, line"
-                f" {audiences[0][0]}) sets its register")))
-    return Page(prose, markers, sections, heading_lines, audience, unread, labels)
+        unsupported += [(lineno, f"a second audience marker ({value}); the first ({audience}, line"
+                                 f" {audiences[0][0]}) sets the register") for lineno, value in audiences[1:]]
+    return Page(prose, markers, sections, heading_lines, audience, unread, labels, sorted(unsupported))
 
 
 def marker_scope(marker: Marker, blocks: list[dict[str, Any]], index: int,
@@ -1593,7 +1632,8 @@ def scan(root: Path, judgments: dict, registers: dict) -> list[FileReport]:
             raise ReadError(f"{rel}: {exc}", exc.setup) from exc
         register, basis = resolve_register(rel, page.audience, registers)
         raw_lines = text.split("\n")
-        rep = FileReport(rel, register, basis, page.sections, [], page.markers, page.unread_html)
+        rep = FileReport(rel, register, basis, page.sections, [], page.markers, page.unread_html,
+                         page.unsupported)
         file_j = judgments.get(rel, {})
         for c in find_candidates(rel, page.prose, raw_lines, page.labels):
             j = file_j.get(c.key)
@@ -1690,6 +1730,7 @@ def summarize(rep: FileReport) -> dict:
                     for m in rep.markers],
         "marker_problems": len([m for m in rep.markers if m.problem]),
         "unread_html": list(rep.unread_html),
+        "unsupported": [{"line": n, "what": what} for n, what in rep.unsupported],
     }
 
 
@@ -1697,7 +1738,7 @@ TOTAL_KEYS = (
     "files", "candidates", "rejected_candidates", "unjudged_candidates", "undetermined_registers",
     "true_instances", "counted_instances", "exempted_instances", "files_over", "files_exempt",
     "sections_over", "sections_exempt", "split_negations", "split_negations_counted",
-    "files_over_split_limit", "banned_shapes", "marker_problems", "unread_html_blocks",
+    "files_over_split_limit", "banned_shapes", "marker_problems", "unread_html_blocks", "unsupported_markdown",
 )
 
 
@@ -1732,8 +1773,10 @@ def print_report(reports: list[FileReport], only_problems: bool) -> dict:
         totals["banned_shapes"] += len(s["banned"])
         totals["marker_problems"] += s["marker_problems"]
         totals["unread_html_blocks"] += len(s["unread_html"])
+        totals["unsupported_markdown"] += len(s["unsupported"])
         problem = (s["status"] == "OVER" or s["split_status"] == "OVER" or s["banned"] or s["unjudged"]
-                   or s["register"] == "undetermined" or sec_over or s["marker_problems"] or s["unread_html"])
+                   or s["register"] == "undetermined" or sec_over or s["marker_problems"] or s["unread_html"]
+                   or s["unsupported"])
         if only_problems and not problem:
             continue
         print(s["file"])
@@ -1763,6 +1806,9 @@ def print_report(reports: list[FileReport], only_problems: bool) -> dict:
             print(f"    BANNED line {b['line']}: {b['text']}")
         if s["unjudged"]:
             print(f"    UNJUDGED candidates: {s['unjudged']} (run with --unjudged)")
+        for u in s["unsupported"]:
+            print(f"    OUTSIDE SUPPORTED MARKDOWN line {u['line']}: {u['what']}; see \"Supported Markdown\" in"
+                  " .github/scripts/check-x-not-y.py")
         for line in s["unread_html"]:
             print(f"    UNREAD HTML line {line}: an HTML block shows text next to a tag, or holds a comment or"
                   " another hidden part that never closes, which the recount cannot read; write it as Markdown")
@@ -1795,7 +1841,7 @@ def failing(totals: dict) -> bool:
     """True when the totals show any page outside the rule."""
     return bool(totals["unjudged_candidates"] or totals["undetermined_registers"] or totals["files_over"]
                 or totals["sections_over"] or totals["files_over_split_limit"] or totals["banned_shapes"]
-                or totals["marker_problems"] or totals["unread_html_blocks"])
+                or totals["marker_problems"] or totals["unread_html_blocks"] or totals["unsupported_markdown"])
 
 
 def main(argv: list[str] | None = None) -> int:

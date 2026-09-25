@@ -1936,11 +1936,11 @@ def test_a_closed_comment_or_an_inline_opener_is_read_as_before(text: str) -> No
     ("<!-- audience: adult -->\n<!-- audience: parent -->\n\n# Page", "adult"),
     ("<!-- audience: builder -->\n\n# Page\n\nWords. <!-- audience: builder -->", "builder"),
 ])
-def test_every_audience_marker_after_the_first_is_a_marker_problem(text: str, audience: str) -> None:
+def test_every_audience_marker_after_the_first_is_named(text: str, audience: str) -> None:
     # A page holds one audience marker, so a second is named whether it agrees or not; the first sets the register.
     page = cx.parse_text(text)
-    (mk,) = [m for m in page.markers if m.device == "audience"]
-    assert (mk.problem.startswith("a second audience marker"), mk.applies, page.audience) == (True, False, audience)
+    (named,) = page.unsupported
+    assert (named[1].startswith("a second audience marker"), page.audience, page.markers) == (True, audience, [])
 
 
 @pytest.mark.parametrize(("text", "audience"), [
@@ -1949,10 +1949,69 @@ def test_every_audience_marker_after_the_first_is_a_marker_problem(text: str, au
 ])
 def test_one_audience_marker_is_read_as_before(text: str, audience: str) -> None:
     page = cx.parse_text(text)
-    assert page.audience == audience and not page.markers
+    assert page.audience == audience and not page.markers and not page.unsupported
 
 
 def test_a_second_audience_marker_fails_the_run(tmp_path: Path, capsys: Any) -> None:
     root = repo_with(tmp_path, "<!-- audience: parent -->\n<!-- audience: builder -->\n\n## A\n\nPlan the day.\n")
     assert run(root, judge_all(root, "no"), capsys) == 1
-    assert summary_for(root, "framework/templates/a.md", judge_all(root, "no"))["marker_problems"] == 1
+    assert len(summary_for(root, "framework/templates/a.md", judge_all(root, "no"))["unsupported"]) == 1
+
+
+# ---------------------------------------------------------------------------
+# The supported Markdown (decision D49-14)
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.parametrize(("text", "line", "what"), [
+    ("<?x?>\n\nPlan the day.", 1, "a processing instruction, a CDATA section or a declaration"),
+    ("<![CDATA[ x ]]>\n\nPlan the day.", 1, "a processing instruction, a CDATA section or a declaration"),
+    ("<!X decl>\n\nPlan the day.", 1, "a processing instruction, a CDATA section or a declaration"),
+    ("<!-- a --><?x?>\n\nPlan the day.", 1, "a processing instruction, a CDATA section or a declaration"),
+    ("Plan the day <br> now.", 1, "raw HTML inside a line"),
+    ("Plan the day <?x?> now.", 1, "raw HTML inside a line"),
+    ("| A | B |\n| --- | --- |\n| a <br> b | c |", 3, "raw HTML inside a line"),
+    ("> Outer.\n>\n> > Inner.", 3, "a block quote inside a block quote"),
+    ("- One.\n\n  <!-- density-exempt: X, not Y -- required -->\n\n  Pick the map, not the list.", 3,
+     "a density-exempt marker inside a block quote or a list item"),
+    ("> <!-- density-exempt: X, not Y -- required -->\n>\n> Pick the map, not the list.", 1,
+     "a density-exempt marker inside a block quote or a list item"),
+    ("<!-- audience: parent -->\n<!-- audience: builder -->\n\n# Page", 2, "a second audience marker"),
+])
+def test_markdown_outside_the_supported_subset_is_named(text: str, line: int, what: str) -> None:
+    (named,) = cx.parse_text(text).unsupported
+    assert named[0] == line and named[1].startswith(what)
+
+
+@pytest.mark.parametrize("text", [
+    "<!-- a comment -->\n\nPlan the day. <!-- an inline comment -->",
+    "<!-- density-exempt: X, not Y -- required -->\n\nPick the map, not the list.",
+    "- One.\n\n  ## Inside\n\n  Pick the map.",
+    "> ## Inside\n>\n> Pick the map.",
+    "> A single block quote.",
+    "- One.\n  - Two.\n    - Three.",
+    "<!-- audience: parent -->\n\n# Page",
+    "| A | B |\n| --- | --- |\n| a | b |",
+    "```text\nx\n```\n\n    indented code\n\n---\n\n[ref]: https://example.com",
+    "**Bold**, _em_, `code`, [link](https://example.com), ![image](a.png), &amp;, \\*, and a  \nbreak.",
+])
+def test_the_supported_markdown_is_named_nowhere(text: str) -> None:
+    assert cx.parse_text(text).unsupported == []
+
+
+def test_markdown_outside_the_subset_fails_the_run_and_says_where_the_list_is(tmp_path: Path, capsys: Any) -> None:
+    root = repo_with(tmp_path, "## A\n\n> Outer.\n>\n> > Inner.\n")
+    judged = judge_all(root, "no")
+    jpath = tmp_path / "judgments.json"
+    jpath.write_text(json.dumps(judged), encoding="utf-8")
+    code = cx.main([str(root), "--judgments", str(jpath), "--registers", str(tmp_path / "none.json")])
+    out = capsys.readouterr().out
+    assert code == 1
+    assert ('OUTSIDE SUPPORTED MARKDOWN line 5: a block quote inside a block quote; see "Supported Markdown" in'
+            " .github/scripts/check-x-not-y.py") in out
+    assert "  unsupported_markdown: 1" in out
+
+
+def test_the_docstring_lists_the_supported_markdown() -> None:
+    doc = cx.__doc__ or ""
+    assert "Supported Markdown\n------------------" in doc and "OUTSIDE SUPPORTED MARKDOWN" in doc
