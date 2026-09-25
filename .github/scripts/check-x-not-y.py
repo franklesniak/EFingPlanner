@@ -28,13 +28,19 @@ a list item or a block quote included. Block quotes are read like prose; a
 quotation block quote, such as a coaching script, is judged "no". A block
 quote is a quotation when quotation marks, double or single, enclose it, or
 when its last line is a named attribution: a dash and a name, such as
-``— A parent``, never a dash-led sentence of the page's own. An HTML block
-that shows text is read like a paragraph when all it hides is comments,
-processing instructions, declarations or CDATA sections
+``— A parent``, never a dash-led sentence of the page's own. The attribution
+must close the quote itself: one that closes a block quote nested in it names
+that quote's source alone, so the outer callout stays a callout. Quotation
+marks are read over every paragraph inside the quote, nested quotes
+included, since a quotation can hold one. An HTML block that shows
+nothing (comments, processing instructions, declarations and CDATA sections)
+is read as a block of comments: its markers are markers, and the paragraphs
+on either side of it stay adjacent. An HTML block that shows text is read
+like a paragraph when all it hides is those
 (``<!-- note --> Choose the map.``), as GitHub's renderer shows it: its text
-as written, with character references decoded. One that shows text next to an HTML tag is not
-read; the report names it (UNREAD HTML), and it fails the run, as
-markdownlint's MD033 fails the tag.
+as written, with character references decoded. One that shows text next to
+an HTML tag is not read; the report names it (UNREAD HTML), and it fails the
+run, as markdownlint's MD033 fails the tag.
 
 The tests read the text each paragraph prints, as markdown-it gives it: no
 emphasis marks, a link's label without its destination (an inline link or a
@@ -94,8 +100,10 @@ as ``check-session-structure.py`` reads it.
 
 A ``<!-- density-exempt: X, not Y -- <reason> -->`` marker covers the block
 directly below it: one paragraph, one whole list (a loose list included), one
-block quote, or, above a heading, that heading's section. Another comment
-between the marker and its block is skipped. It exempts the instances and
+block quote, or, above a heading, that heading's section, which ends where
+a block quote or a list item holding the heading does. Another comment, or
+an HTML block that shows nothing, between the marker and its block is
+skipped. It exempts the instances and
 split negations it covers. The device is named ``X, not Y``; the old
 ``X-not-Y`` and ``x-not-y`` are read too. The block sits in the marker's own
 container: a marker inside a block quote or a list item never covers a block
@@ -218,6 +226,15 @@ HIDDEN_HTML_RE = re.compile(r"<!--.*?-->|<\?.*?\?>|<!\[CDATA\[.*?\]\]>|<![A-Za-z
 #: does (markdownlint's MD033 rejects them), so a block that shows text next to
 #: one is reported rather than read.
 HTML_TAG_RE = re.compile(r"</?[A-Za-z][A-Za-z0-9-]*(?:\s[^>]*)?/?>")
+
+
+def shows_nothing(block: dict[str, Any]) -> bool:
+    """True when an HTML block shows nothing: only comments, processing
+    instructions, declarations or CDATA sections, which GitHub renders as
+    nothing. Such a block is read as a block of comments everywhere."""
+    content = block.get("content") or ""
+    return block.get("type") == "html_block" and (
+        bool(COMMENT_BLOCK_RE.match(content)) or not HIDDEN_HTML_RE.sub("", content).strip())
 AUDIENCE_RE = re.compile(r"<!--\s*audience:\s*(adult|parent|builder)\b", re.IGNORECASE)
 PARENT_STRIP_RE = re.compile(r"^\s*\*\*For parents:?\*\*", re.IGNORECASE)
 PARENT_SECTION_RE = re.compile(
@@ -709,9 +726,13 @@ def parse_text(text: str) -> Page:
             am = AUDIENCE_RE.search(content)
             if am and audience is None:
                 audience = am.group(1).lower()
-            if COMMENT_BLOCK_RE.match(content):
-                # Markers are read only from a block of comments, so an example
-                # shown in a code span or a fence never counts.
+            if shows_nothing(block):
+                # A block that shows nothing (comments, processing instructions,
+                # declarations and CDATA sections) is read as a block of
+                # comments: its markers are markers, and the paragraphs on
+                # either side of it stay adjacent. Markers are read only from
+                # such a block, so an example shown in a code span or a fence
+                # never counts.
                 for mm in EXEMPT_MARKER_RE.finditer(content):
                     markers.append(parse_marker(block["start"], mm.group("body")))
                     marker_blocks.append(index)
@@ -724,9 +745,6 @@ def parse_text(text: str) -> Page:
                 if marker:
                     markers.append(marker)
                     marker_blocks.append(index)
-            if not shown.strip():
-                follows = False
-                continue
             if HTML_TAG_RE.search(shown):
                 unread.append(block["start"])
                 follows = False
@@ -799,8 +817,7 @@ def marker_scope(marker: Marker, blocks: list[dict[str, Any]], index: int,
     must be honored or named.
     """
     nxt = index + 1
-    while nxt < len(blocks) and blocks[nxt]["type"] == "html_block" and COMMENT_BLOCK_RE.match(
-            blocks[nxt].get("content") or ""):
+    while nxt < len(blocks) and shows_nothing(blocks[nxt]):
         nxt += 1
     own = tuple(blocks[index].get("path") or ())
     if nxt >= len(blocks) or tuple(blocks[nxt].get("path") or ())[:len(own)] != own:
@@ -819,6 +836,13 @@ def marker_scope(marker: Marker, blocks: list[dict[str, Any]], index: int,
             if h > first and heading_lines[h][0] <= level:
                 end = h - 1
                 break
+        inside = tuple(block.get("path") or ())
+        if inside:
+            # A heading inside a block quote or a list item: its section ends
+            # where that container does.
+            end = min(end, max(b["end"] for b in blocks if tuple(b.get("path") or ())[:len(inside)] == inside))
+            while end > first and not source[end - 1].strip():
+                end -= 1
         marker.scope_start, marker.scope_end = first, end
         marker.scope_desc = f"section '{heading_lines[first][1]}' (lines {first}-{end})"
         return
@@ -918,7 +942,12 @@ def quote_contexts(paras: list[list[ProseLine]], raw_lines: list[str] | None) ->
     for quote, members in quotes.items():
         texts = [normalize_space(paragraph_text(paras[k])) for k in members]
         joined = " ".join(t for t in texts if t)
-        last_line = paragraph_text(paras[members[-1]]).split("\n")[-1]
+        # The attribution closes this quote only when the quote's last
+        # paragraph is its own, outside any block quote nested in it: a
+        # nested quote's attribution names the source of that quote alone.
+        last = members[-1]
+        own = [p for p in paras[last][0].container if p.startswith("q")][-1] == quote
+        last_line = paragraph_text(paras[last]).split("\n")[-1] if own else ""
         if (QUOTE_OPEN_RE.search(joined) and QUOTE_CLOSE_RE.search(joined)) or is_named_attribution(last_line):
             quotation.add(quote)
     out = []

@@ -30096,10 +30096,10 @@
       "judgment": "no",
       "reason": "a prohibition followed by a fact about the five records already kept; the recast comes as a question in the next sentence"
     },
-    "split|You already keep five things: your Source Log, your research cards, your decision log, your question parking lot, and your cut list. → Which of those five does an assumption move into once it drives a decision?|1": {
+    "split|You already keep five things: your Source Log, your research cards, your decision log, your question parking lot, and your cut list. → These questions sit on cards you already keep, so the five stay five.|1": {
       "line": 7,
       "judgment": "no",
-      "reason": "a question"
+      "reason": "where the questions live and the consequence (the five stay five); it rejects no named alternative"
     },
     "split|Write it down. → That's what stops it turning into a fact when you weren't looking.|1": {
       "line": 9,
@@ -30121,10 +30121,10 @@
       "judgment": "no",
       "reason": "an example"
     },
-    "split|Which of those five does an assumption move into once it drives a decision? → An assumption is something you treat as true so you can keep going.|1": {
+    "split|These questions sit on cards you already keep, so the five stay five. → An assumption is something you treat as true so you can keep going.|1": {
       "line": 9,
       "judgment": "no",
-      "reason": "a definition"
+      "reason": "a definition of an assumption"
     },
     "device|Copy those labels exactly, parentheticals included — they're part of the label, not decoration.|1": {
       "line": 21,

@@ -4,7 +4,7 @@
 
 **This is a small block of questions on your city, attraction, and hotel cards.** When an assumption actually drives a decision, it moves into your decision log.
 
-There's no assumptions list to keep. Don't start one. You already keep five things: your Source Log, your research cards, your decision log, your question parking lot, and your cut list. Which of those five does an assumption move into once it drives a decision?
+There's no assumptions list to keep. Don't start one. You already keep five things: your Source Log, your research cards, your decision log, your question parking lot, and your cut list. These questions sit on cards you already keep, so the five stay five.
 
 An assumption is something you treat as true so you can keep going. Nobody has checked it yet. "It's probably open on a Monday" is one. Write it down. That's what stops it turning into a fact when you weren't looking.
 

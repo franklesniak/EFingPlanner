@@ -1585,3 +1585,67 @@ def test_a_sentence_candidate_must_be_judged_before_the_run_passes(tmp_path: Pat
     root = repo_with(tmp_path, "## A\n\nPlan the day.\n")
     assert run(tmp_path, {}, capsys) == 1
     assert run(tmp_path, judge_all(root), capsys) == 0
+
+# ---------------------------------------------------------------------------
+# A heading's section, a nested attribution and a block that shows nothing
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.parametrize(("text", "scope"), [
+    ("- One.\n\n  <!-- density-exempt: X, not Y -- required -->\n\n  ## Inside\n\n  Pick the map, not the list.\n\n"
+     "Outside, choose the map, not the list.\n", (5, 7)),
+    ("> <!-- density-exempt: X, not Y -- required -->\n>\n> ## Inside\n>\n> Pick the map, not the list.\n\n"
+     "Outside, choose the map, not the list.\n", (3, 5)),
+    ("- One.\n\n  <!-- density-exempt: X, not Y -- required -->\n\n  > ## Inside\n  >\n  > Pick the map.\n\n"
+     "  Still in the item, not the quote.\n", (5, 7)),
+    ("- One.\n\n  <!-- density-exempt: X, not Y -- required -->\n\n  ## Inside\n\n  Pick the map, not the list.\n\n"
+     "  ## Next\n\n  More, not less.\n", (5, 7)),
+])
+def test_a_heading_section_ends_where_its_container_does(text: str, scope: tuple[int, int]) -> None:
+    (mk,) = scoped(text)
+    assert ((mk.scope_start, mk.scope_end), mk.applies) == (scope, True)
+
+
+def test_a_marker_over_a_heading_in_a_list_item_leaves_the_page_after_it_counted(
+        tmp_path: Path, capsys: Any) -> None:
+    root = repo_with(tmp_path, "## A\n\n- One.\n\n  <!-- density-exempt: X, not Y -- required -->\n\n  ### Inside\n\n"
+                               "  Pick the map, not the list.\n\nChoose the map, not the list.\n\n"
+                               "Take the map, not the list.\n")
+    assert run(root, judge_all(root), capsys) == 1
+
+
+@pytest.mark.parametrize("text", [
+    '> Choose the map, not the list.\n>\n> > "A borrowed line."\n> >\n> > — A parent',
+    "> Choose the map, not the list.\n>\n> > A borrowed line.\n> >\n> > — A parent",
+    "> Choose the map, not the list.\n>\n> > A borrowed line.\n> > — A parent",
+])
+def test_a_nested_attribution_leaves_the_outer_callout_a_callout(text: str) -> None:
+    keys = [c.key for c in every_candidate(text)]
+    assert "device|Choose the map, not the list.|1|block quote" in keys
+    assert any(k.endswith("|quotation block quote") for k in keys)
+
+
+def test_an_attribution_closing_the_outer_quote_still_quotes_it_all() -> None:
+    keys = [c.key for c in every_candidate("> Choose the map, not the list.\n>\n> > An aside.\n>\n> — A parent")]
+    assert keys and all(k.endswith("|quotation block quote") for k in keys)
+
+
+@pytest.mark.parametrize("hidden", ["<?x?>", "<!X decl>", "<![CDATA[ x ]]>", "<!-- note -->"])
+def test_a_block_that_shows_nothing_keeps_its_neighbors_adjacent(hidden: str) -> None:
+    found = kinds("It's not a toy.\n\n" + hidden + "\n\nIt's a tool.")
+    assert ("banned", "It's not a toy. → It's a tool.") in found
+
+
+@pytest.mark.parametrize("text", [
+    "<!-- density-exempt: X, not Y -- required --><?x?>\n\nChoose the map, not the list.",
+    "<!-- density-exempt: X, not Y -- required -->\n\n<?x?>\n\nChoose the map, not the list.",
+    "<!-- density-exempt: X, not Y -- required -->\n\n<![CDATA[ x ]]>\n\nChoose the map, not the list.",
+    "<!-- density-exempt: X, not Y -- required -->\n\n<!-- note -->\n\nChoose the map, not the list.",
+])
+def test_a_block_that_shows_nothing_is_read_as_comments_around_a_marker(text: str) -> None:
+    (mk,) = scoped(text)
+    assert (mk.applies, mk.problem, mk.scope_start) == (True, "", text.count("\n") + 1)
+
+
+def test_a_block_that_shows_text_beside_a_hidden_part_is_still_read() -> None:
+    assert kinds("<?x?> Choose the map, not the list.") == [("device", "Choose the map, not the list.")]

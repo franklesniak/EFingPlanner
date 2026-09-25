@@ -218,8 +218,9 @@ jobs:
       # which only the scan needs. The step is the last check, so it needs no
       # `continue-on-error` for the
       # checks above to run, and its own failure fails the job. The scan
-      # asserts that the three hook suites above are present, so their own
-      # steps keep their guards. It reads Markdown through markdown-it, from
+      # asserts that the three hook suites above, the recount's suite and the
+      # required-wording suite are present, so their own steps keep their
+      # guards: deleting or renaming one fails this step. It reads Markdown through markdown-it, from
       # the packages `npm ci` installs above, and fails if they are missing.
       - name: Check references resolve inside this repository
         id: test-self-contained
