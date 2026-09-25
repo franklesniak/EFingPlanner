@@ -10,7 +10,7 @@ You are here: Phase 7 (Itinerary Building). Not a First Taste step. Previous: [4
 - Planner skill: organizing information
 - Estimated time: 20-30 minutes
 - Parent involvement: none / independent work
-- Materials: this session's Destination Notes, a device with the kid-safe filter on, your day cards from Session 41, your My Calls page (your must-do list and special pick), your attraction cards (to fill a tickets row, and if your special pick hits a block), your [Trip-Basics card](../../templates/trip_basics.md) (for whether your dates are booked), a blank [Reservation Watchlist](../../templates/reservation_watchlist.md), your [Source Log](../../templates/source_log.md)
+- Materials: this session's Destination Notes, a device with the kid-safe filter on, your day cards from Session 41, your My Calls page (your must-do list and special pick), your attraction cards (to fill a tickets row, and if your special pick hits a block), your Session 39 budget summary and your family's [current travel assumptions](../../templates/current_family_travel_assumptions.md) page (if your special pick hits a block, for the band check), your [Trip-Basics card](../../templates/trip_basics.md) (for whether your dates are booked), a blank [Reservation Watchlist](../../templates/reservation_watchlist.md), your [Source Log](../../templates/source_log.md)
 
 ## Goal
 
@@ -31,7 +31,7 @@ If your family's dates are already booked, the list works the other way round. N
 3. Put each item on your watchlist. For each one, answer: does holding a date matter?
 4. Check each item on an official site, and write the date you checked.
 
-If your special pick on your My Calls page can't be booked, a grown-up tells you which of the three blocks it hit. Then you choose a new pick from your attraction cards with a grown-up, the way you did in Session 26. Write it on your must-do list, on the day card for its place, and on your watchlist if it needs booking. The blocked pick needs no more research, so cross it off your must-do list, its day card and your watchlist.
+If your special pick on your My Calls page can't be booked, a grown-up tells you which of the three blocks it hit. Then you choose a new pick with a grown-up, the way you did in Session 26. Pick it from your attraction cards for places on your route. Write it on your My Calls page in place of the blocked pick. The grown-up writes "got it" beside it. Write must-do on its card too. Put it on your must-do list, on the day card for its place, and on your watchlist if it needs booking. The blocked pick needs no more research, so cross it off your must-do list, its day card and your watchlist. If your Session 39 budget counted the blocked pick's ticket, swap in the new one's, and check your band again.
 
 Booking rules, ticket systems and entry rules change, sometimes a lot. So these are things to check again close to the trip. Never trust a number you remember.
 
@@ -47,7 +47,7 @@ Your Reservation Watchlist: everything that might need booking, and whether hold
 
 ## Stop Point
 
-You are done when every item on your day cards that might need booking is on the watchlist, each one says whether holding a date matters, and each one has its date-checked box filled in. If your dates are booked, each one has its opening date in "When adults should check". If your special pick hit a block, you've chosen a new one from your attraction cards with a grown-up and put it on your must-do list and its day card. The blocked one is crossed off your must-do list, its day card and your watchlist. You're making the list the grown-ups will use, and they do all of the booking. "Ask an adult" is a fine answer in any box you can't fill.
+You are done when every item on your day cards that might need booking is on the watchlist, each one says whether holding a date matters, and each one has its date-checked box filled in. If your dates are booked, each one has its opening date in "When adults should check". If your special pick hit a block, you've chosen a new one with a grown-up. It's on your My Calls page with their "got it", and on your must-do list and its day card. If your budget counted the old pick's ticket, it uses the new one's. The blocked one is crossed off your must-do list, its day card and your watchlist. You're making the list the grown-ups will use, and they do all of the booking. "Ask an adult" is a fine answer in any box you can't fill.
 
 ## Source Check
 
@@ -67,7 +67,7 @@ If you have extra energy, star the one item on your list that would be the sadde
 
 ## Parent Notes
 
-The watchlist is your list to act on, and your child never books, reserves or pays. If the special pick on the My Calls page cannot be booked, name that block and let your child choose a new pick from their attraction cards with you, as in Session 26. The blocked pick needs no more research. Only the three blocks can change the pick. The [booking guidance](../../parent_guide/booking_guidance.md) page covers what to book first and how the watchlist feeds it.
+The watchlist is your list to act on, and your child never books, reserves or pays. If the special pick on the My Calls page cannot be booked, name that block and let your child choose a new pick with you, from their attraction cards for places on the route, as in Session 26. Write "got it" beside the new pick on their My Calls page. The blocked pick needs no more research. Only the three blocks can change the pick. The [booking guidance](../../parent_guide/booking_guidance.md) page covers what to book first and how the watchlist feeds it.
 
 The lesson here is date-gating. The longer your dates stay open, the more date-gated items can sell out. Your child's job is to show you which items are on that clock, so you can decide when to commit. With your dates already booked, the list becomes an act-early list, and "When adults should check" holds the date each item's booking opens.
 

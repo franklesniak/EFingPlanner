@@ -10,7 +10,7 @@ You are here: Phase 8 (Readiness and Final). Not a First Taste step. Previous: [
 - Planner skill: organizing information
 - Estimated time: several sittings; stop whenever you want
 - Parent involvement: 5-minute check-in
-- Materials: your whole project folder or binder, your [Trip-Basics card](../../templates/trip_basics.md) (for whether your dates were booked), eleven tab dividers or eleven sheets to use as dividers, a pen, a timer, and anything you'd like for decorating the cover and the dividers
+- Materials: your whole project folder or binder, eleven tab dividers or eleven sheets to use as dividers, a pen, a timer, and anything you'd like for decorating the cover and the dividers
 
 ## Goal
 
@@ -29,9 +29,9 @@ Maybe you kept everything in one growing folder, in rough order. Maybe you filed
 3. Tick each tab on the checklist when its pages are in.
 4. Stop between sittings whenever you like. Start each new sitting by setting your timer for 20 minutes, then pick up at the next tab.
 
-Tabs 3 and 4 have a different line if your dates were booked. Your Trip-Basics card's maximum trip length row tells you: a booked trip has its booked length written there.
+Tabs 3 and 4 have a different line if your dates were booked. File the page you made at that checkpoint. If your dates were booked by Checkpoint 1, that's your season confirmation. If they were booked by Checkpoint 4, it's your nights plan. Otherwise, file the recommendation.
 
-Two lines in the list depend on choices your family made. The restaurant and food shortlist goes under tab 5 only if you did the food sessions. The language and etiquette sheet goes under tab 8 only if you did that session. If you skipped one, write "we didn't do this session" on that tab, and that line is complete.
+Two lines in the list depend on choices your family made. The restaurant and food shortlist goes under tab 5 only if you did the food sessions and your family chose it for the binder. The language and etiquette sheet goes under tab 8 the same way: only if you did that session and your family chose it. If you skipped one, write "we didn't do this session" on that tab. If your family left one out, write "not in our binder". Either way, that line is complete.
 
 Tab 10 gets the parent review forms from your checkpoints now. Its follow-up questions come in Sessions 51 and 52. Tab 11 fills up in Sessions 52 and 53. For now, write "comes next" where a page is still to come. Session 53 puts those pages in before you hand the binder over.
 

@@ -34,7 +34,7 @@ A card can be about one place to eat, or about a whole area with lots of places 
 
 Your Destination Notes may point to a local review site. Sites like that can be great, but they may be in another language. So ask an adult to help, and it's fine to skip it.
 
-Look at the number of travelers on your Trip-Basics card. If it says "not decided yet", count the travelers listed on the card instead. If your Session 33 note says someone is with you for only part of the trip, count the group on the days you'll be in each card's city. If the group is bigger than about four, add a seating note to the card. Can this place seat all of you, or would you split into two tables?
+Look at the number of travelers on your Trip-Basics card. If it says "not decided yet", count the travelers listed on the card instead. If your Session 33 note says someone is with you for only part of the trip, count the biggest group you'll have in each card's city. If the group is bigger than about four, add a seating note to the card. Can this place seat all of you, or would you split into two tables?
 
 ## Workspace
 

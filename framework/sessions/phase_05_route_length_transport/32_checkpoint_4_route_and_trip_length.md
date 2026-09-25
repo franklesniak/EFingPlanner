@@ -29,7 +29,7 @@ First, check your Session 29 nights table against the route you recommended in S
 Fill in the table in the Workspace:
 
 1. **Total number of days.** Add one to the total nights in your Session 29 nights table. Add one more for each flight day you took away in your Session 29 formula. If your dates are booked, it's the booked trip length on your Trip-Basics card.
-2. **Overnight cities.** Use the route you recommended in Session 31.
+2. **Overnight cities.** Use the route you recommended in Session 31. On a one-base trip, also write which must-dos your way of using the base keeps.
 3. **Nights in each city.** Copy them from your nights table.
 4. **Major travel days.** Which days are mostly spent getting from one city to the next?
 5. **A shorter backup version.** If the grown-ups need a shorter trip, what would you drop first? Keep your special pick and its place. If your dates are booked, leave this row blank, because the length is already set.
@@ -54,7 +54,7 @@ Your route and trip-length recommendation:
 | Prompt | Your answer |
 | --- | --- |
 | Total number of days (booked dates: the booked trip length) | |
-| Overnight cities | |
+| Overnight cities (one base: and the must-dos your way keeps) | |
 | Nights in each city | |
 | Major travel days | |
 | A shorter backup version (leave blank if your dates are booked) | |
@@ -81,7 +81,8 @@ You are done for today when your recommendation table is filled in and you've br
 
 Before you start the next session:
 
-- **Approved with changes:** write the changes into your table and your Decision Record. If where you arrive or leave changed, time the new first or last hop with Directions, as in Session 28. Then fix your travel days and nights. A grown-up writes the new place on your family's assumptions page, because later sessions read it there.
+- **Approved, or Approved with changes:** cross off your must-do list any must-do in a place that's not on your approved route, or that your one-base way leaves out. Write why beside it. Your special pick stays. In Session 44, they go on your cut list.
+- **Approved with changes:** write the changes into your table and your Decision Record. If where you arrive or leave changed, ask a grown-up whether each flight still lands on a later date, and fix your flight-day marks. Time the new first or last hop with Directions, as in Session 28. Then fix your travel days and nights. A grown-up writes the new place on your family's assumptions page, because later sessions read it there.
 - **Needs more research:** do that one piece, and bring it back.
 - **Park this decision for later:** wait until your family comes back to it.
 
@@ -107,7 +108,7 @@ This review stays lightweight too: a five-minute call, a note on a shared page, 
 
 **What to consider:** flights, if you fly; the arrival and departure places; how many hotel moves it involves; whether the transit is workable; how it fits your family's maximum trip length from the Trip-Basics card, or the booked trip length if your dates are booked; budget implications; and the family schedule. With the dates booked, your child brings a nights plan, with no shorter backup version.
 
-**Your own job here.** You recorded a rough trip shape at setup and firmed up any open part at Checkpoint 2. Now confirm or adjust the arrival and departure places against current flight options, or against however your family is getting there. If they change, your child's route flexes: they move one city block and keep the rest. A changed place means Approved with changes, so your child re-times the new first or last leg and fixes the travel days and nights. If the change alters which route works best, pick Needs more research instead. The reasoning about the shape of the journey, such as flying into one city and out of another, stays with you.
+**Your own job here.** You recorded a rough trip shape at setup and firmed up any open part at Checkpoint 2. Now confirm or adjust the arrival and departure places against current flight options, or against however your family is getting there. If they change, your child's route flexes: they move one city block and keep the rest. A changed place means Approved with changes, so your child re-times the new first or last leg and fixes the travel days and nights. If the change alters which route works best, pick Needs more research instead. The reasoning about the shape of the journey, such as flying into one city and out of another, stays with you. Once you approve, your child crosses off the must-dos your route leaves out, keeping the special pick.
 
 **Questions to ask:** "Where would this plan feel rushed?" and "What would you cut first if we had fewer days?" The [parent review form](../../templates/parent_review_form.md) has the full set of coaching questions and the good-enough standards; [review checkpoints](../../parent_guide/review_checkpoints.md) explains how to run each one.
 

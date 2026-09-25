@@ -10,7 +10,7 @@ You are here: Phase 8 (Readiness and Final). Not a First Taste step. **This is C
 - Planner skill: making trade-offs
 - Estimated time: 20-30 minutes for the child, plus the family decision meeting
 - Parent involvement: parent review -- genuinely use the recommendation in a real family talk
-- Materials: your Final Presentation Outline from Session 51, your assembled binder (with your Session 39 budget summary and your Checkpoint 4 route and trip-length recommendation), your Family Trip Goals page from Session 03 (for the poll and your balancing line), your route map notes from Session 28 and a device with a map app or map website (kid-safe filter on) (in case a change moves where you arrive or leave), your [Source Log](../../templates/source_log.md), a [Decision Record page](../../templates/decision_record.md)
+- Materials: your Final Presentation Outline from Session 51, your assembled binder (with your Session 39 budget summary and your Checkpoint 4 route and trip-length recommendation), your day cards, your pacing review from Session 43, your Session 29 formula and your attraction cards (in case a change needs them), your Family Trip Goals page from Session 03 (for the poll and your balancing line), your route map notes from Session 28 and a device with a map app or map website (kid-safe filter on) (in case a change moves where you arrive or leave), your [Source Log](../../templates/source_log.md), a [Decision Record page](../../templates/decision_record.md)
 
 ## Goal
 
@@ -76,11 +76,18 @@ Your final recommendation packet: your recommendation and reasons, what the fami
 
 ## Stop Point
 
-You are done for today when your final recommendation packet is filled in and you've brought it to the family decision meeting, with your Session 39 budget summary and its band sentence. The packet is filled in when every row of its table has an answer, your handoff list says who does each job next, and your Decision Record has your recommendation, reasons, sources and trade-offs. When the family decides, write their answer in your Decision Record. "Ask an adult" is a fine answer in any row. The checkpoint is finished when the answer is Approved, or Approved with changes once you've written the changes in. Here, a parked decision is the result, so it finishes the checkpoint too. With Needs more research, it stays open until you come back to it. Any of the four is a result that counts.
+You are done for today when your final recommendation packet is filled in and you've brought it to the family decision meeting, with your Session 39 budget summary and its band sentence. The packet is filled in when every row of its table has an answer, your handoff list says who does each job next, and your Decision Record has your recommendation, reasons, sources and trade-offs. When the family decides, write their answer in your Decision Record. "Ask an adult" is a fine answer in any row. The checkpoint is finished when the answer is Approved, or Approved with changes once you've written the changes in and carried each one back, as the list below says. Here, a parked decision is the result, so it finishes the checkpoint too. With Needs more research, it stays open until you come back to it. Any of the four is a result that counts.
 
 Before you start Session 53:
 
-- **Approved with changes:** write the changes into your packet and your Decision Record. If a change touches your plan, update your itinerary draft too, and if it adds, drops or moves something that needs booking, update your Reservation Watchlist. If the change moves where you arrive or leave, re-time that leg with the map's Directions, and fix your travel days and nights. A grown-up writes the new place on your family's assumptions page, because later sessions read it there. If a place or its nights change, note it on your Checkpoint 4 route and trip-length recommendation too: cross out the old, and write the new beside it, with "changed at Checkpoint 6". If a place, a night or a day changes, update your Session 39 budget and check it against your band again. Then run your Session 43 pacing checks again for the days that changed.
+- **Approved with changes:** write the changes into your packet and your Decision Record. If a change touches your plan, write it into your itinerary draft and onto the day cards for the days that change too. Then carry each change back to the pages that hold it:
+  - **Something to book added, dropped or moved?** Update your Reservation Watchlist.
+  - **A must-do dropped?** Cross it off your must-do list, and put it on your cut list with the reason. Your special pick stays.
+  - **A place dropped?** Write "not on our route now" on its Hotel Comparison Card too.
+  - **A new place to arrive or leave?** A grown-up writes it on your family's assumptions page, because later sessions read it there. Ask them whether each flight still lands on a later date, and fix your flight-day marks. Re-time that leg with the map's Directions, and fix your travel days and nights.
+  - **A place or its nights changed?** Note it on your Checkpoint 4 route and trip-length recommendation: cross out the old, and write the new beside it, with "changed at Checkpoint 6".
+  - **A place, a night or a day changed?** Update your Session 39 budget, and check it against your band again. Someone with you for only part of the trip? Ask a grown-up who is there on the changed days, and count your traveler-days again. Then run your Session 43 pacing checks again for the days that changed.
+  - **Your special pick blocked?** A grown-up names the block. Choose a new pick with them, from your attraction cards for places on your route. Write it on your My Calls page in place of the blocked pick. They write "got it" beside it. Write must-do on its card too. Put it on your must-do list, its day card, your draft and, if it needs booking, your watchlist, and take the blocked pick off them. If your Session 39 budget counted the blocked pick's ticket, swap in the new one's, and check your band again.
 - **Needs more research:** do that one piece, and bring it back.
 - **Park this decision for later:** that's your result, so you can go on to Session 53.
 
@@ -109,6 +116,10 @@ This is the one checkpoint with the full family decision meeting: the whole part
 **What to consider:** the final recommendation; what you approve; what you want changed; what you will verify or book; and which questions stay open.
 
 **The handoff is all yours.** Flights or other travel, hotels, reservations, passport and entry, travel insurance, the final budget, safety and emergency planning, and the final booking tasks are adult-owned. Your child's job ends at handing them over clearly. The [booking guidance](../../parent_guide/booking_guidance.md) page covers what comes next, including telling your child what changed after booking, and why.
+
+**Your own changes keep the special pick too.** A change you make keeps the special pick and its place; only the three blocks change it. If one applies, name it, and your child chooses a new pick with you, as in Session 43.
+
+**Carrying changes back.** After Approved with changes, your child carries each change back to the pages that hold it, as the list under their Stop Point says. Tell them which flights land on a later date if a change moves where you arrive or leave, and who is there on the changed days if someone comes for only part of the trip.
 
 **A changed first or last place.** If your change moves where the trip arrives or leaves, your child re-times that leg and fixes the travel days and nights; that is Approved with changes. If it changes which route works best, the answer is Needs more research.
 

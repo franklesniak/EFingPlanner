@@ -56,6 +56,12 @@ And the one unconditional personal pick is different from everything else. It ca
 
 Write the acknowledgment on their **"My Calls" page**. That page exists so their owned decisions get a grown-up's "got it" in writing, and it's worth more to a child than it looks.
 
+**When you book the dates,** write the booked trip length in the Trip-Basics card's maximum trip length row, with "booked" beside it. Count the day you leave home and the day you get home. Then tell your child:
+
+- which season it is, as a broad word with no dates, if it differs from their Checkpoint 1 pick
+- which of the booked flights land on a later date than they took off, for the flight-day marks on their Session 29 formula
+- which nights change, if the booked length differs from the total in their Checkpoint 4 plan. They note it on their Checkpoint 4 route and trip-length recommendation, with "changed after booking", and update any day cards and budget they have made.
+
 ## Privacy
 
 Don't enter booking information, confirmation numbers or payment details anywhere in the repository or the kit. A shared-documents folder is not a private vault either. The same data stays off it that you'd keep off a public page.

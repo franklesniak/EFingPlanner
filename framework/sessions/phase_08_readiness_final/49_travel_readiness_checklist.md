@@ -10,7 +10,7 @@ You are here: Phase 8 (Readiness and Final). Not a First Taste step. Previous: [
 - Planner skill: self-control (knowing when to stop)
 - Estimated time: 20-30 minutes
 - Parent involvement: co-working recommended; hear your child say the staying-found plan out loud once
-- Materials: your destination pack's safety and emergency page, or a grown-up who finds the phrases for you if your pack doesn't have that page yet, your Packing List from Session 48, your transportation notes from Session 30, your [Source Log](../../templates/source_log.md), a small card or half a sheet of stiff paper, a pencil
+- Materials: your destination pack's safety and emergency page, or a grown-up who finds the phrases, the emergency numbers and the kinds of help for you if your pack doesn't have that page yet, your Packing List from Session 48, your transportation notes from Session 30, your [Source Log](../../templates/source_log.md), a small card or half a sheet of stiff paper, a pencil
 
 ## Goal
 
@@ -39,8 +39,8 @@ If a grown-up has already booked and checked where you're staying, they fill in 
 **Staying found: my own plan.** The moment to plan for is losing sight of your group for a minute in a crowded place, like a station. A plan you've practiced makes that moment much calmer.
 
 1. **Do what today's rule says.** Each morning, a grown-up says today's rule out loud. There's one rule per outing. Usually it's this: **stay where you are**, so your family can find you. If you'll be somewhere you shouldn't stand still, the grown-up names a meeting spot for that outing instead. It will be a spot you can see from where you'll be, and they name it that same morning.
-2. **Ask a helper without leaving your spot.** Call out, wave, or ask whoever is right there. A station worker, or a shop or security worker with a name tag, can help. If a uniformed worker or a police post is right there, they're the best ones to ask. Your destination pack names the kinds of help where you're going. Stay in your spot, even if you can see a helper farther away. If nobody is close enough to hear you, stay put and keep looking. The only time you move is when that morning's rule named a meeting spot.
-3. **Know the emergency numbers.** Your destination pack has them. A grown-up checks them on a current official page and writes the date checked. Then you write the numbers on your card. A grown-up, a shop worker or the police post can call them for you.
+2. **Ask a helper without leaving your spot.** Call out, wave, or ask whoever is right there. A station worker, or a shop or security worker with a name tag, can help. If a uniformed worker or a police post is right there, they're the best ones to ask. Your destination pack's safety and emergency page names the kinds of help where you're going. If your pack doesn't have that page yet, a grown-up tells you. Stay in your spot, even if you can see a helper farther away. If nobody is close enough to hear you, stay put and keep looking. The only time you move is when that morning's rule named a meeting spot.
+3. **Know the emergency numbers.** Your destination pack's safety and emergency page has them, or a grown-up finds them if your pack doesn't have that page yet. A grown-up checks them on a current official page and writes the date checked. Then you write the numbers on your card. A grown-up, a shop worker or the police post can call them for you.
 
 ## Workspace
 
