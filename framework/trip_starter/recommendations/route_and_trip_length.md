@@ -24,14 +24,13 @@ This is your Checkpoint 4 page, from [Session 32](../../sessions/phase_05_route_
 | What a grown-up still needs to check, decide or book | |
 | Approval status (a grown-up circles one: Approved / Approved with changes / Needs more research / Park this decision for later) | |
 
-If the grown-ups change where you arrive or leave, you move one block of your plan and keep the rest. Ask a grown-up whether each flight still lands on a later date, and fix your flight-day marks. Then time the new first or last hop with Directions, and fix your travel days and nights to match. A grown-up writes the new place on your family's assumptions page, because later sessions read it there. Your work still counts.
+If the grown-ups change where you arrive or leave, you move one block of your plan and keep the rest. Your [When the Plan Changes card](../../student_guide/when_the_plan_changes.md) says what to fix. Your work still counts.
 
 If a place or its nights change later, at Checkpoint 5 or 6 or in Session 51, come back to this page. Cross out the old, and write the new beside it, with where it changed.
 
 Before you start the next session:
 
-- **Approved, or Approved with changes:** cross off your must-do list any must-do in a place that's not on your approved route, or that your one-base way leaves out. Write why beside it. Your special pick stays. In Session 44, they go on your cut list.
-- **Approved with changes:** write the changes on this page and in your Decision Record.
+- **Approved, or Approved with changes:** write any changes on this page and in your Decision Record. A place or must-do that your approved route, or your one-base way, leaves out is a change too. Your special pick stays. For each change, go down your When the Plan Changes card, and fix every page it names that you've already made.
 - **Needs more research:** do that one piece, and bring it back.
 - **Park this decision for later:** wait until your family comes back to it.
 

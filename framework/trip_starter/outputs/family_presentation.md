@@ -28,7 +28,7 @@ This whole page comes after Checkpoint 5. If your family stopped at the Core Fin
 | What are the top experiences? | |
 | Where might we stay? | |
 | What are the food highlights? | |
-| What is the rough budget estimate? | |
+| What is the rough budget for the parts I chose? (The grown-ups add the rest, such as getting there.) | |
 | What are the biggest trade-offs? | |
 | What did we cut, and why? | |
 

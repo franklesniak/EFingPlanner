@@ -18,21 +18,21 @@ This list names what the child produces, in this order.
 4. Current family travel assumptions
 5. Source log
 6. Decision log
-7. Season recommendation (or the season confirmation, when the dates were booked)
+7. Season recommendation (or the season confirmation, when the dates were booked by Checkpoint 1)
 8. City long-list
 9. City shortlist and recommendation
 10. Route recommendation
-11. Trip-length recommendation (or the nights plan, when the dates were booked)
+11. Trip-length recommendation (or the nights plan, when the dates were booked by Checkpoint 4)
 12. Top attractions and experiences
 13. Culture/history/nature/food/fun balance check
 14. Hotel/neighborhood comparison summary (the Neighborhood Comparison and the Hotel Comparison Cards)
-15. Restaurant and food shortlist (optional but recommended; included if the family does the food sessions)
+15. Restaurant and food shortlist (optional but recommended; included if the family chose it for the binder)
 16. Transportation notes
 17. Reservation watchlist
 18. Day-by-day itinerary
-19. Budget estimate
+19. Budget estimate (the Session 33 first pass and the Session 39 budget summary)
 20. Packing list
-21. Language and etiquette quick sheet (optional but recommended; included if the family does that session)
+21. Language and etiquette quick sheet (optional but recommended; included if the family chose it for the binder)
 22. Readiness checklist
 23. Backup plans
 24. Cut list or "save for future trip" list
@@ -57,7 +57,7 @@ The kit's `outputs/` folder holds the finished pages, summarized forward from th
 
 The child gives a 5-10 minute presentation at the family decision meeting, in two parts.
 
-**Part 1, Recommendation:** when should we go? (With the dates booked: what does our season mean for the trip?) How long should we go? (With the dates booked: how do we use our booked days?) Which cities should we visit? What route should we take? What are the top experiences? Where might we stay? What are the food highlights? What is the rough budget estimate? What are the biggest trade-offs? What did we cut, and why?
+**Part 1, Recommendation:** when should we go? (With the dates booked: what does our season mean for the trip?) How long should we go? (With the dates booked: how do we use our booked days?) Which cities should we visit? What route should we take? What are the top experiences? Where might we stay? What are the food highlights? What is the rough budget for the parts the child chose? (The grown-ups add the rest, such as getting there.) What are the biggest trade-offs? What did we cut, and why?
 
 **Part 2, Handoff:** what do adults still need to verify? What do adults still need to decide? What do adults need to book? What questions remain open? Which child-created materials should adults use next?
 

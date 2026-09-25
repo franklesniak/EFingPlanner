@@ -38,7 +38,7 @@ Finishing all 13 is a **complete success**. You will have a real mini-plan. If y
 
 **Checkpoints reached: ____ of 6**
 
-Count a checkpoint once it is finished. That means the grown-ups said Approved, or Approved with changes and you've written the changes in. At Checkpoint 6, "Park this decision for later" counts too. At the other checkpoints, "Needs more research" and "Park this decision for later" are normal answers, and the checkpoint counts once you come back and finish it.
+Count a checkpoint once it is finished. That means the grown-ups said Approved, or Approved with changes and you've written the changes in. From Checkpoint 4 on, you've also gone down your [When the Plan Changes card](when_the_plan_changes.md) for each change. At Checkpoint 6, "Park this decision for later" counts too. At the other checkpoints, "Needs more research" and "Park this decision for later" are normal answers, and the checkpoint counts once you come back and finish it.
 
 This part is for a family that keeps going past First Taste. When you move here, tick the First Taste sessions you already finished. Then keep going in numbered order.
 
