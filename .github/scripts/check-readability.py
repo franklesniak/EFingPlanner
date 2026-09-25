@@ -268,6 +268,11 @@ THEMATIC_BREAK_PATTERN = re.compile(r"^ {0,3}(?:-{3,}|\*{3,}|_{3,})[ \t]*$")
 NAV_LINE_PATTERN = re.compile(
     r"^[ \t]*(?:You are here:|Previous:|Next:)", re.IGNORECASE
 )
+#: The "For parents" strip's label, found leniently on purpose: any case, an
+#: indent, and the colon optional. This pattern only marks where adult text
+#: starts, so a drifted label still keeps that text out of the child's score.
+#: ``check-session-structure.py`` holds the label to ``**For parents:**`` and
+#: names a drifted one.
 PARENT_STRIP_PATTERN = re.compile(r"^[ \t]*\*\*For parents:?\*\*", re.IGNORECASE)
 PARENT_SECTION_PATTERN = re.compile(
     r"^ {0,3}#{1,6}[ \t]+(?:Parent Notes?|For Parents?|Notes? for Parents?)[ \t]*$",

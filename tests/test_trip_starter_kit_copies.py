@@ -50,8 +50,11 @@ PREAMBLE_FIRST = (
 PREAMBLE_SECOND_PREFIX = "The blank this page was copied from is the ["
 
 
-def strip_kit_preamble(lines: list[str]) -> list[str]:
-    """Return ``lines`` without the kit-only preamble and its blank lines."""
+def strip_kit_preamble(lines: list[str], copy_path: str) -> list[str]:
+    """Return ``lines`` without the kit-only preamble and its blank lines.
+
+    ``copy_path`` is the kit copy's repository path, so a failure names it.
+    """
     kept: list[str] = []
     index = 0
     removed = 0
@@ -66,7 +69,13 @@ def strip_kit_preamble(lines: list[str]) -> list[str]:
             continue
         kept.append(line)
         index += 1
-    assert removed == 2, f"expected two preamble lines, removed {removed}"
+    assert removed == 2, (
+        f"{copy_path} should open with the two kit-only preamble lines, and this "
+        f"test found {removed}. The first line must equal PREAMBLE_FIRST in this "
+        f"file, and the second must start with {PREAMBLE_SECOND_PREFIX!r}. If the "
+        "preamble was reworded on purpose, update those two constants to match. "
+        "If not, restore the preamble from another kit copy."
+    )
     return kept
 
 
@@ -80,7 +89,7 @@ def test_the_kit_copy_is_its_template_plus_the_kit_preamble(stem: str) -> None:
 
     template_lines = template.read_text(encoding="utf-8").split("\n")
     copy_lines = copy.read_text(encoding="utf-8").split("\n")
-    assert strip_kit_preamble(copy_lines) == template_lines, (
+    assert strip_kit_preamble(copy_lines, MIRRORED_BLANKS[stem]) == template_lines, (
         f"{copy.relative_to(REPO_ROOT).as_posix()} has drifted from "
         f"{template.relative_to(REPO_ROOT).as_posix()}. Edit both, or edit the "
         "template and copy it across. The kit README's own rule says two copies "
@@ -101,9 +110,13 @@ def test_the_kit_preamble_links_the_template_it_came_from(stem: str) -> None:
         for line in copy.read_text(encoding="utf-8").split("\n")
         if line.startswith(PREAMBLE_SECOND_PREFIX)
     ]
-    assert len(lines) == 1, f"expected one provenance line, found {len(lines)}"
+    assert len(lines) == 1, (
+        f"{MIRRORED_BLANKS[stem]} should have one line starting "
+        f"{PREAMBLE_SECOND_PREFIX!r}, and this test found {len(lines)}. That line "
+        "names the blank the kit copy came from, once."
+    )
     match = re.search(r"\]\(([^)\s]+)\)", lines[0])
-    assert match, f"no link in {lines[0]!r}"
+    assert match, f"{MIRRORED_BLANKS[stem]}: the provenance line has no link: {lines[0]!r}"
     linked = (copy.parent / match.group(1)).resolve()
     expected = (REPO_ROOT / "framework" / "templates" / f"{stem}.md").resolve()
     assert linked == expected, (
