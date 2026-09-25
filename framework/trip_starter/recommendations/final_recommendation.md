@@ -22,7 +22,7 @@ This is your Checkpoint 6 page, from [Session 52](../../sessions/phase_08_readin
 
 Any of the four is a result that counts. Before you start Session 53:
 
-- **Approved with changes:** write the changes on this page and in your Decision Record. If the change moves where you arrive or leave, re-time that leg with the map's Directions, and fix your travel days and nights. If a place, a night or a day changes, update your Session 39 budget and check it against your band again. Then run your Session 43 pacing checks again for the days that changed.
+- **Approved with changes:** write the changes on this page and in your Decision Record. If a change touches your plan, update your itinerary draft too, and if it adds, drops or moves something that needs booking, update your Reservation Watchlist. If the change moves where you arrive or leave, re-time that leg with the map's Directions, and fix your travel days and nights. If a place, a night or a day changes, update your Session 39 budget and check it against your band again. Then run your Session 43 pacing checks again for the days that changed.
 - **Needs more research:** do that one piece, and bring it back.
 - **Park this decision for later:** that's your result, so you can go on to Session 53.
 
