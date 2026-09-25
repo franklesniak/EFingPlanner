@@ -4,7 +4,7 @@
 
 Copy this page out of the repository before you fill it in. Do not commit your filled-in work to a public repository.
 
-This page gathers what the grown-ups still need to do. Collect it from the "what a grown-up still needs to check, decide or book" rows on your recommendation pages, and from your question parking lot. Every item here belongs to the grown-ups. Your job is to hand it over clearly.
+This page gathers what the grown-ups still need to do. It's the same list as Part 2 of your Final Presentation Outline, from Session 51, so you can copy that part here. Collect the rest from the "what a grown-up still needs to check, decide or book" rows on your recommendation pages, and from your question parking lot. Every item here belongs to the grown-ups. Your job is to hand it over clearly.
 
 ## What the grown-ups need to check
 

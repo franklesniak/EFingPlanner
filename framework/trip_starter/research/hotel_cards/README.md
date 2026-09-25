@@ -6,7 +6,7 @@
 
 One filled Hotel Comparison Card for each place you might stay, one card to a file. You make them in Session 35, after you compare neighborhoods in Session 34.
 
-Session 35 says how many cards are enough.
+Session 35 says how many cards are enough. A card's cost is per room. If a place charges per person, the card keeps that price, with "per person" beside it.
 
 ## Where the blank comes from
 

@@ -68,7 +68,7 @@ Your handoff list:
 | Safety and emergency planning | |
 | Final booking tasks | |
 
-Keeping your work in the kit? Your handoff list also goes on its [adult follow-up questions page](../../trip_starter/outputs/adult_follow_up_questions.md). What the family decided goes on its [final itinerary](../../trip_starter/outputs/final_itinerary.md) and [executive summary](../../trip_starter/outputs/executive_summary.md) pages.
+Keeping your work in the kit? Part 2 of your outline and your handoff list go on its [adult follow-up questions page](../../trip_starter/outputs/adult_follow_up_questions.md). What the family decided goes on its [final itinerary](../../trip_starter/outputs/final_itinerary.md) and [executive summary](../../trip_starter/outputs/executive_summary.md) pages.
 
 Then fill your Decision Record. Write "Our final recommendation" in its Decision box. Your recommendation goes in **My recommendation**, and your reasons, sources and trade-offs go in their own rows. When the family decides, write their answer in **Final family decision**. That record is your decision-log entry.
 
