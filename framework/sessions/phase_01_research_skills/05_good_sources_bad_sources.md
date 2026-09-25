@@ -30,7 +30,7 @@ Not every website is equally good. Some are careful and official. Some are tryin
 
 **The quick trust test (three questions):**
 
-1. **Who made this?** A government office, a museum, or a tourism board is usually more careful than an unknown blog.
+1. **Who made this?** A government office, a museum, or a tourism board usually takes extra care with its facts.
 2. **Why did they make it?** To inform you, or to sell you something? Lots of ads and "buy now" links are a warning sign.
 3. **Can another source check it?** A fact you can find in two trusted places is stronger than one you find in only one.
 
@@ -41,6 +41,8 @@ Now practice with a grown-up:
 3. Add the better source to your Source Log with today's date.
 
 **What AI is and is not** (every planner learns this, even if your family does not use AI):
+
+<!-- density-exempt: X, not Y -- these three lines are the always-core AI lesson every family gets, which the batch 1 brief preserves line for line and ai_use_rules.md names: AI can make things up, is never the only source, and never decides legal, safety, entry, medical, money or booking questions -->
 
 - AI can make up facts that sound right. It is not always correct.
 - AI is never your only source. Always check it against a real source.

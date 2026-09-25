@@ -4,7 +4,7 @@
 
 ## What goes in this folder
 
-One finished profile for each traveler on your Trip-Basics roster, one traveler to one file -- if you did Session 02. That session is on the full Phases 0-2 path rather than the 13, so an empty folder is the right answer on the First Taste path.
+One finished profile for each traveler on your Trip-Basics roster, one traveler to one file -- if you did Session 02. That session is only on the full Phases 0-2 path, so on the First Taste path an empty folder is the right answer.
 
 If six people are coming, six files live here when you are done. If two more join later, add two more files. Nothing else belongs in this folder.
 
@@ -27,9 +27,10 @@ If two travelers share a role, add a number, the way the first example does. You
 
 ## Keep private details out
 
+<!-- density-exempt: X, not Y -- privacy rule: each traveler is written by relationship or role and never by name (the batch 1 brief's entry for this page) -->
 Write each traveler by relationship or role. A profile never needs a name.
 
-Medical specifics stay with the adults and go on no page at all. Write what someone needs designed around. Do not write why. The full rules are on one page: [privacy and safety](../../../docs/privacy_and_safety.md).
+Medical specifics stay with the adults and go on no page at all. Write what someone needs designed around, and leave the reason with the adults. The full rules are on one page: [privacy and safety](../../../docs/privacy_and_safety.md).
 
 ## An open answer is a complete answer
 

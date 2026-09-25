@@ -31,16 +31,18 @@ Every page has exactly one home. If you can never remember where something goes,
 - Work in progress lives in the `research/`, `logs/`, or `recommendations/` part of your copy.
 - The final version, in order, lives in the `outputs/` part of your copy.
 
-Work is summarized forward, not copied sideways. When a page feeds a later page, carry the short version forward. Do not keep two copies of the same thing in two folders. Two copies drift apart, and then you do not know which one is right.
+Work is summarized forward. When a page feeds a later page, carry the short version forward. Do not keep two copies of the same thing in two folders. Two copies drift apart, and then you do not know which one is right.
 
 A link that leaves the kit, like the one to the binder card, opens a page in this repository. In a printed or pasted copy, find that page here.
 
 ## Nothing here is filled in
 
-Each blank page has headings and fill-in spaces, and that is all. There are no example answers, no pretend decisions, and no sample family anywhere in the kit. What you write is the first thing on the page.
+Each blank page has headings and fill-in spaces, and that is all. Every answer and every decision in the kit starts empty, and the only family in it will be yours. What you write is the first thing on the page.
 
 ## Keep it private
 
+<!-- density-exempt: X, not Y -- privacy rule: filled-in work is never committed to the public repository and lives in the family's binder or Docs folder (the spec's Public Framework, Private Trip Work; the batch 1 brief's entry for this page) -->
 Your real work stays out of this public repository. Keep it in your binder or in your own Docs folder.
 
+<!-- density-exempt: X, not Y -- privacy rule: a Google Docs folder is not a private vault, and the no-personal-data rule holds there too (the spec's Privacy and Safety Requirements, which name this page; the batch 1 brief's entry for this page) -->
 A Google Docs folder is **not** a private vault. The same rule holds there as on paper: keep passport numbers, birthdates, confirmation numbers, your home address, payment details, and exact booked dates off every page. The full rules are on one page: [privacy and safety](../docs/privacy_and_safety.md).

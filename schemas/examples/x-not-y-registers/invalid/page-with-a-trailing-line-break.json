@@ -1,0 +1,6 @@
+{
+  "framework/CHANGELOG.md\n": {
+    "register": "builder",
+    "basis": "builder- and reuser-facing"
+  }
+}

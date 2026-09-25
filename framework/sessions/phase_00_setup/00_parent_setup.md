@@ -10,7 +10,7 @@ You are here: Phase 0 (Setup). This session is **adult-only** -- the child start
 
 - Status: Core (adult-only setup)
 - Estimated time: about 1-2 hours, once
-- Parent involvement: adult-owned; the child does not do this session
+- Parent involvement: adult-owned; this session is yours, and your child starts at Session 01
 - Materials: this checklist, and your copies of the [Trip-Basics card](../../trip_starter/family/trip_basics.md) and the [Family Travel Assumptions page](../../trip_starter/family/current_family_travel_assumptions.md) from the trip starter kit
 
 This is the one setup you do before your child begins. Most of it is quick. The full, detailed version lives in the [setup checklist](../../parent_guide/setup_checklist.md); this session is the short in-order version.
@@ -21,6 +21,7 @@ Complete the one-time setup -- safety filter, the Trip-Basics and assumptions pa
 
 ## Start Here
 
+<!-- density-exempt: X, not Y -- the kid-safe filter caveat is the standalone safety rule in the spec's Privacy and Safety Requirements, and it is stated as the contrast it guards against -->
 Turn on a kid-safe search filter on the device your child will use (for example, Google SafeSearch, lockable through Family Link). That one action is your start. It reduces exposure but does not remove it, so plan to stay nearby for the riskier research.
 
 ## Steps
@@ -29,7 +30,7 @@ Only four things are genuine setup *actions* (the first is the filter you just t
 
 1. **Kid-safe filter on** -- done in Start Here.
 2. **Fill in your copy of the [Trip-Basics card](../../trip_starter/family/trip_basics.md)** once: how you will travel, your home airport and its code if you are flying, your destination, the time difference to it, your maximum trip length, how many travelers, and the roster by relationship.
-3. **Set a rough season window and a rough budget band** on your copy of the [Family Travel Assumptions page](../../trip_starter/family/current_family_travel_assumptions.md). Both are "this can change" starting points, not final decisions.
+3. **Set a rough season window and a rough budget band** on your copy of the [Family Travel Assumptions page](../../trip_starter/family/current_family_travel_assumptions.md). Both are "this can change" starting points, and the final decisions come later.
 4. **Choose AI: yes or no**, and record the choice on your copy of the [Family Travel Assumptions page](../../trip_starter/family/current_family_travel_assumptions.md). The default is **no** (AI-free). If you choose yes, you commit to the adult-operated pattern in the [privacy and safety rules](../../docs/privacy_and_safety.md), and your child does Session 09 before using any AI tool -- writing the yes/no down is what keeps that safety gate from being missed. Before you choose yes, read the [AI use rules](../../docs/ai_use_rules.md) -- an adult checks the tool's current minimum-age and supervision policy first, and writes the date checked beside the choice.
 
 Leave everything else at its default. You do not decide the "City C," food, or language sessions now. Each becomes Core later on its own condition: City C if a third city keeps coming up in your child's research, and the food and language sessions if your family wants their page in the binder, which you decide when your child reaches them.
@@ -42,7 +43,7 @@ You work from this checklist and your copies of the [Trip-Basics card](../../tri
 
 - Skim the [parent quick-start](../../parent_guide/README.md) -- the three must-reads before you begin: the setup checklist, the adult-and-child roles, and the honest time-and-effort reality.
 - Read the [privacy and safety rules](../../docs/privacy_and_safety.md) once. Off every working page: passport numbers, birthdates, confirmation numbers, your home address, and payment details -- and use vague travel dates ("spring," "not decided yet") instead of exact booked dates. Keep hotel names off anything public.
-- Print [Session 01](01_project_kickoff.md) and the child's first pages. Print or copy each session as you reach it -- not the whole set at once.
+- Print [Session 01](01_project_kickoff.md) and the child's first pages. Print or copy each session only when you reach it.
 - Gather a guidebook (a library copy is perfect) or a couple of reputable travel websites. Nothing needs to be bought.
 - **Check passports early, if your trip leaves the country.** A child's first passport is a long-lead item and can set the earliest date you could travel, and children's applications follow their own rules. Confirm the current child-passport requirements and processing times with the official US source at travel.state.gov, since these can change. Note the date you checked and that source (the same verify-don't-trust habit your child is learning), since the rules and times can shift before you book. This shapes the season research your child will do, so start it now. If your trip stays inside your own country, no passport is needed for it and this item is already done.
 - Record a **rough trip shape** on the assumptions page if you can: in and out of the same place, in one place and out of another, or one base you stay at and travel from, and the likely arrival place. If you have never been to your destination, naming just the arrival place is a fine answer -- leave the rest open and firm it up later on the full Core path (by the City Shortlist checkpoint). For the First Taste, leaving it open is fine.
@@ -58,10 +59,12 @@ Ask yourself honestly: is your child actually excited, or is this mostly your id
 
 ## How to help without taking over
 
-Sit with your child for the early sessions, especially the source-judging ones (05). Coach; do not do the work for them. Praise the move ("you checked a second source"), not the mind ("you're so smart"). Schedule sessions when your child is rested and fed. If frustration rises, point them to the [When I'm Stuck card](../../student_guide/when_im_stuck.md) and take a break. If a task is too much, the [differentiation guide](../../parent_guide/differentiation.md) has concrete lighter moves.
+<!-- density-exempt: X, not Y -- praise the move, not the mind is the praise calibration pair in the spec's Parent Review Rubric -->
+Sit with your child for the early sessions, especially the source-judging ones (05). Coach, and let your child do the work. Praise the move ("you checked a second source"), not the mind ("you're so smart"). Schedule sessions when your child is rested and fed. If frustration rises, point them to the [When I'm Stuck card](../../student_guide/when_im_stuck.md) and take a break. If a task is too much, the [differentiation guide](../../parent_guide/differentiation.md) has concrete lighter moves.
 
 ## What not to record
 
+<!-- density-exempt: X, not Y -- privacy rules from the spec's Privacy and Safety Requirements: the data kept off every page, vague dates in place of exact booked ones, and hotel names kept off anything public -->
 Keep sensitive personal data out of every page, whether on paper, in Google Docs, or anywhere else: no passport numbers, birthdates, confirmation numbers, home address, or payment details. Use vague travel dates instead of exact booked ones, and keep hotel names off anything public. Adults handle all of that.
 
 ## Artifact Created

@@ -12,10 +12,11 @@ Your child copies both onto their binder cover in Session 01, and that is intend
 
 Record what you actually know at setup as the **rough trip shape**: the likely arrival place, and, if you know them, the departure place and whether you're flying round-trip or into one place and out of another.
 
-**Recording only the arrival place is a supported setup**, and for a family who has never researched the destination it is the honest one. Do not invent an anchor to fill a field.
+**Recording only the arrival place is a supported setup**, and for a family who has never researched the destination it is the honest one. Leave a field open until you know its answer.
 
 **Where it gets settled depends on your path.** On **Core and Full**, Checkpoint 2 is the point, which is where the setup checklist expects it. **First Taste never reaches Checkpoint 2**, so there is no built moment that forces it. Settle the departure place and the trip shape yourself before you book the flights, since booking is the real deadline either way. Your child builds their route on it from Phase 3 onward, in movable per-city blocks.
 
+<!-- density-exempt: X, not Y -- the batch 2 brief requires this item: Checkpoint 4 confirms the trip shape and is not where it is first revealed -->
 **Checkpoint 4 is where you confirm or adjust that shape** against real flight options. It is not where you reveal it for the first time. If it changes there, your child moves one block and keeps the rest, which only works if the shape existed from the start.
 
 Flying into one city and out of another is called an **open-jaw** ticket, and a route through several is a **multi-city** one. Both can save real backtracking. You will meet the term on your [current travel assumptions](../templates/current_family_travel_assumptions.md) page, which is why it is named here.

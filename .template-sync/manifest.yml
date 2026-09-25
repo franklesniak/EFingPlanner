@@ -450,7 +450,8 @@ template_manifest:
         validators, runtime schema self-validation hooks, manifest, marker, and
         instruction-contract validators, a
         github-platform-only inline block for Dependabot configuration
-        validation, a Markdown-only inline block for markdownlint-cli2, and a
+        validation, a Markdown-only inline block for the prohibited-placeholder
+        hook, the three leak-check hooks and markdownlint-cli2, and a
         Terraform-only inline block for repo-local Terraform hooks. Remove the
         delimited YAML block when the yaml module is excluded, remove the
         delimited GitHub-actions block when the github-actions module is
@@ -487,6 +488,12 @@ template_manifest:
     - pattern: '.github/scripts/check-prohibited-placeholders.py'
       requires_all:
         - markdown
+    # The leak checks for family values and destination names. Their hooks
+    # sit in the Markdown-only block of `.pre-commit-config.yaml`, so they go
+    # with the markdown module.
+    - pattern: '.github/scripts/check-leaks.py'
+      requires_all:
+        - markdown
     - pattern: 'tests/test_replace_template_placeholders.py'
       requires_all:
         - baseline
@@ -518,6 +525,12 @@ template_manifest:
       requires_all:
         - baseline
     - pattern: 'tests/test_check_prohibited_placeholders.py'
+      requires_all:
+        - markdown
+    # The leak checks' suite imports pytest directly, not through
+    # `tests/_pytest_compat.py`, so it needs no python module; a pre-commit
+    # hook in the Markdown-only block runs it.
+    - pattern: 'tests/test_check_leaks.py'
       requires_all:
         - markdown
     - pattern: 'tests/toolchain-eol/check-toolchain-eol.test.js'

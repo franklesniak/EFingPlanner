@@ -14,7 +14,7 @@ A few simple rules keep your research safe and trustworthy. A grown-up also turn
 
 - **Do not trust just one source.** For anything important, check a second trusted source.
 - **Prefer official sources** for facts like hours, prices, and rules. A museum's own website beats a random blog.
-- **AI is never your only source.** It can make up facts that sound right, so always check it against a real source. AI never decides safety, money, or booking questions.
+- **Always check AI against a real source.** It can make up facts that sound right. AI never decides safety, money, or booking questions.
 - **Write down where facts came from** in your [Source Log](../templates/source_log.md), with the date you checked. Facts like prices and hours change, so a grown-up re-checks them before booking.
 
 ## Privacy

@@ -6,7 +6,7 @@ Put every place you researched onto one page, so you can see them all at once. T
 
 Aim for **five to eight places**. That's a target, not a quota. Don't invent places to reach five, and if your research turned up more than eight, keep them.
 
-The Source column comes from your Source Log. You're not looking anything new up here — you're gathering what you already found.
+The Source column comes from your Source Log. Here, you gather what you already found.
 
 | Place | Why it caught my attention | One memorable fact | Source | Keep researching? (yes / no / maybe) |
 | --- | --- | --- | --- | --- |

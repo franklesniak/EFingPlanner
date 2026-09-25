@@ -1,4 +1,5 @@
 <!-- markdownlint-disable MD013 -->
+<!-- audience: parent -->
 
 # The Framework
 
@@ -19,6 +20,8 @@ Only the first two layers live in this repository. The third one is yours, and i
 ## Curriculum version
 
 **Curriculum version: 0.2.0.** What changed between revisions is in the [curriculum changelog](CHANGELOG.md).
+
+<!-- density-exempt: X, not Y -- this is the which-is-which tag the batch 1 brief and the spec require wherever the two logs meet, a rule about telling two named logs apart, and it carries the privacy rule that a family's decision log is never committed -->
 
 Which log is which: the curriculum changelog is the version history of these reusable materials, and it is committed here. A **decision log** is a record of one family's trip decisions, it lives in their own binder or Docs folder, and it is never committed. If you are using the curriculum, the decision log is yours and the changelog is not.
 
@@ -51,7 +54,7 @@ A family traveling from elsewhere swaps three things in the framework:
 - The home-airport and time-zone fields on the Trip-Basics card, together with the two sentences of adult help beside them, which name US time zones and daylight saving.
 - The home currency on the budget surfaces. The rough budget band on the current family travel assumptions page, the budget estimate template, and the first-pass budget session all write amounts with a dollar sign. Swap the symbol for your own currency; nothing else on those pages changes.
 
-The destination pack carries the same assumption in its own layer. A pack's child word list and its money reference convert prices into US dollars, the word list gives Fahrenheit and miles beside the local units, and its trusted-sources list names a US government travel page as the adult-owned entry and safety source. A pack written for a family from somewhere else converts into that family's money and units, and names that family's own government page instead.
+The destination pack carries the same assumption in its own layer. A pack's child word list and its money reference convert prices into US dollars, the word list gives Fahrenheit and miles beside the local units, and its trusted-sources list names a US government travel page as the adult-owned entry and safety source. A pack written for a family from somewhere else converts into that family's money and units, and names that family's own government page in that role.
 
 Beyond the origin logistics layer, nothing in the framework assumes an origin country.
 

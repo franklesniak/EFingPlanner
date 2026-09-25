@@ -30,7 +30,7 @@ On the Core path, open your My Calls page instead, and read your must-do list on
 
 A good planner can't fit everything. And that's fine. Knowing what to keep, what to save for later, and what to do if a plan falls through is real skill. This is the "good enough is good enough" session.
 
-1. **Make your must-see list.** On the First Taste path, pick the few you most want from the starred sights **in the city (or cities) you recommended in Session 21**. (No stars yet? Choose from all the top sights on those cards.) These are the things your plan protects. (Sights in a city you cut go on your cut list, not here.)
+1. **Make your must-see list.** On the First Taste path, pick the few you most want from the starred sights **in the city (or cities) you recommended in Session 21**. (No stars yet? Choose from all the top sights on those cards.) These are the things your plan protects. (Found a sight you like in a city you cut? It goes on your cut list.)
 
    **On the Core path**, your must-do list is already on your My Calls page. You made it in Session 26, and the grown-ups acknowledged it at Checkpoint 3. Read it again as the list your plan protects, and keep it as it is.
 
@@ -38,7 +38,7 @@ A good planner can't fit everything. And that's fine. Knowing what to keep, what
    - Place or activity.
    - Why it sounded interesting.
    - Why it may not fit (too far, too costly, too little time).
-   - Save for a future trip? Yes / no. Cutting something isn't losing it: "save for a future trip" keeps it for later.
+   - Save for a future trip? Yes / no. A "yes" keeps it for later.
 
    **On the Core path**, start your cut list from the skip and save-for-future notes you made at Checkpoints 2 and 3, and any must-dos you crossed off at Checkpoint 4. Then add anything else that didn't make it. If something you cut is already on a day card or your Reservation Watchlist, go down your When the Plan Changes card for it. Finished First Taste first? Add those notes to the cut list you already made, and keep everything that's on it.
 
@@ -88,6 +88,6 @@ If you have extra energy, add one more backup plan, or write one line about *why
 
 ## Parent Notes
 
-The one unconditional pick is the ownership centerpiece -- help your child choose one you can genuinely keep. Show the three blocks (budget, bookability, safety/feasibility for everyone, including any lower-stamina traveler) *before* they commit, and steer gently toward an affordable, bookable pick. A grown-up vote does not override this one -- only the three blocks do -- so scope it to a single keepable pick. Honor cut-list "save for future" notes as real; nothing here is wasted. This session teaches "good enough is good enough" -- resist the urge to make it exhaustive.
+The one unconditional pick is the ownership centerpiece -- help your child choose one you can genuinely keep. Show the three blocks (budget, bookability, safety/feasibility for everyone, including any lower-stamina traveler) *before* they commit, and steer gently toward an affordable, bookable pick. A grown-up vote does not override this one -- only the three blocks do -- so scope it to a single keepable pick. Honor cut-list "save for future" notes as real; everything here keeps its value. This session teaches "good enough is good enough," so let short lists count as done.
 
 On the Core path, the pick was chosen at Session 26 and acknowledged at Checkpoint 3, or replaced after a block the way Session 26 chose it, so confirm it still holds and do not run the choice again. If one of the three blocks applies now, name it, and your child replaces the pick with you, as in Session 43; write "got it" beside the new pick.

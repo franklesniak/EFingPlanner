@@ -1,0 +1,9 @@
+{
+  "framework/parent_guide/example_guide.md": {
+    "device|\"Look first, not last.\"|1|quotation block quote": {
+      "line": 7,
+      "judgment": "device",
+      "reason": "a quoted coaching script"
+    }
+  }
+}

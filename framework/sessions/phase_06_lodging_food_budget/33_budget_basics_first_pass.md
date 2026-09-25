@@ -26,7 +26,7 @@ Write the word "Food" and the word "Hotel" on your Budget Estimate page. Those a
 
 ## Steps
 
-Every trip is made of cost categories. You don't need exact numbers. You're learning how trip money is split up, and checking whether the parts *you* choose fit.
+Every trip is made of cost categories. You're learning how trip money is split up, and checking whether the parts *you* choose fit. Rough numbers work fine for that.
 
 1. **Meet the categories** (just read these once): getting there, hotels, food, local transit, longer journeys once you are there, activities and tickets, souvenirs, and a buffer for surprises.
 2. **Estimate two of them** with simple **high / medium / low** guesses (a grown-up can help you find rough numbers, and you can use a calculator):
@@ -52,7 +52,7 @@ Every trip is made of cost categories. You don't need exact numbers. You're lear
 
 5. **Core path, optional: how many of us, on which days?** Do this only if your traveler profiles from Session 02 say someone is coming for part of the trip. Ask a grown-up who is with you on which days, by day number with no dates, and jot it in the small table in the Workspace. Then note what that changes: how many rooms you need (Sessions 34, 35 and 39), how big a restaurant table is (Sessions 36 and 37), and seats on each long ride, which the grown-ups book. Finished First Taste first? Do this step when you come back to this session.
 
-**Remember:** your first guesses will probably be off. Everyone's are, even grown-ups'. Being off is normal. The point is to practice estimating and checking. Being exactly right isn't the goal. (See your [planner mindset card](../../student_guide/planner_mindset.md).)
+**Remember:** your first guesses will probably be off. Everyone's are, even grown-ups'. Being off is normal. The point is to practice estimating and checking. Every time you guess and then check, your guessing gets a little better. (See your [planner mindset card](../../student_guide/planner_mindset.md).)
 
 ## Workspace
 
@@ -91,11 +91,11 @@ Stuck? Use the [When I'm Stuck card](../../student_guide/when_im_stuck.md) in yo
 
 ## Optional Extension
 
-If you have extra energy, estimate a third slice like activities or souvenirs. You can also do this when you continue past First Taste. Or plan your own "spending money." Did a grown-up give you an amount? Then look up what a small treat costs. Do not guess. See how many you could get.
+If you have extra energy, estimate a third slice like activities or souvenirs. You can also do this when you continue past First Taste. Or plan your own "spending money." Did a grown-up give you an amount? Then look up what a small treat costs. How many could you get?
 
 ## Parent Notes
 
-Keep this light -- two slices (meals and hotel), checked against a kid-sized band. Getting there is adult-owned, so it stays *off* your child's check here, and when it is a long flight it can outweigh everything else; the lesson is how costs are structured and whether *their* choices fit, not a real bookable total. Supply the band in kid-sized form (per person per day, per day for the family, or "this hotel tier"). A calculator is always allowed, and you may do the arithmetic while your child does the reasoning -- this matters for a child with number anxiety. Keep all figures verify-framed; nothing here is a fixed price.
+Keep this light -- two slices (meals and hotel), checked against a kid-sized band. Getting there is adult-owned, so it stays *off* your child's check here, and when it is a long flight it can outweigh everything else; the lesson is how costs are structured and whether *their* choices fit, not a real bookable total. Supply the band in kid-sized form (per person per day, per day for the family, or "this hotel tier"). A calculator is always allowed, and you may do the arithmetic while your child does the reasoning -- this matters for a child with number anxiety. Keep all figures verify-framed, because every price here can change.
 
 Before Session 39, have your own cost of getting there ready. Keep a rough figure on your own page: a per-person fare times the number of travelers if you fly or take the train, or the drive's own costs if you drive. It is for your own sanity check at Session 39, and your child never researches it, writes it down or adds it to their subtotal. A family that finished First Taste first gets it ready when it continues, before Session 39.
 

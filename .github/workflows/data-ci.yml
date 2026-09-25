@@ -87,6 +87,17 @@
 #                           auto-assignment fields are regression-tested in
 #                           `tests/test_dependabot_schema.py`.
 # template-sync: end github-platform-only
+# LOCAL OVERRIDE (recorded in .template-sync/marker.yml):
+#   - validate-x-not-y-judgments, validate-x-not-y-registers
+#                         — JSON Schema validation for the `X, not Y`
+#                           recount's data files under `.github/scripts/`.
+#   - validate-x-not-y-judgments-valid-examples,
+#     validate-x-not-y-registers-valid-examples
+#                         — JSON Schema validation for their valid
+#                           fixtures under `schemas/examples/`.
+#   - validate-x-not-y-judgments-schema, validate-x-not-y-registers-schema
+#                         — JSON Schema metaschema validation for the two
+#                           schemas.
 #
 # Schema-backed checks are invoked by pre-commit alias instead of the aggregate
 # `check-jsonschema` or `check-metaschema` hook IDs so module-owned validation
@@ -249,6 +260,26 @@ jobs:
       - name: Run validate-dependabot-config
         run: pre-commit run validate-dependabot-config --all-files
       # template-sync: end github-platform-only
+
+      # LOCAL OVERRIDE (recorded in .template-sync/marker.yml): the `X, not Y`
+      # recount's data files and their schemas (not a template module).
+      - name: Run validate-x-not-y-judgments
+        run: pre-commit run validate-x-not-y-judgments --all-files
+
+      - name: Run validate-x-not-y-registers
+        run: pre-commit run validate-x-not-y-registers --all-files
+
+      - name: Run validate-x-not-y-judgments-valid-examples
+        run: pre-commit run validate-x-not-y-judgments-valid-examples --all-files
+
+      - name: Run validate-x-not-y-registers-valid-examples
+        run: pre-commit run validate-x-not-y-registers-valid-examples --all-files
+
+      - name: Run validate-x-not-y-judgments-schema
+        run: pre-commit run validate-x-not-y-judgments-schema --all-files
+
+      - name: Run validate-x-not-y-registers-schema
+        run: pre-commit run validate-x-not-y-registers-schema --all-files
 
       # LOCAL OVERRIDE (recorded in .template-sync/marker.yml): this repository
       # excludes the `python` package module but retains the `schema` module,
