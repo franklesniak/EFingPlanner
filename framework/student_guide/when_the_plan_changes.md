@@ -8,12 +8,12 @@ When something changes, your earlier pages need to catch up. First, write the ch
 
 ## What changed?
 
-- **A day's plan?** Fix the day cards for the days that change, and your itinerary draft if you've made it.
+- **A day's plan?** Fix the day cards for the days that change, and your itinerary draft if you've made it. If you've made your Packing List, check it still fits the new day, such as a long walking day.
 - **Something to book added, dropped or moved?** Fix its row on your Reservation Watchlist, or fill in a new row the way Session 42 does. With booked dates, tell a grown-up, so they can fix its opening date.
-- **A must-do dropped?** Cross it off your must-do list, and write why beside it. Put it on your cut list, if you've made one. Your special pick always stays.
-- **A place dropped?** Cross off its must-dos the same way. Write "not on our route now" on its Hotel Comparison Card, if you've made one.
-- **A place added?** It needs a place to stay. Make a Hotel Comparison Card for it, the way Session 35 does, or ask a grown-up for a cost per night and how many rooms.
-- **A different place to stay?** Mark the new Hotel Comparison Card as your pick, and fix your Session 39 hotel line and the "where you'll sleep" line on your day cards, if you've made them.
+- **A must-do dropped?** Cross it off your must-do list, and write why beside it. Change its attraction card's group to skip or save for future. Put it on your cut list, if you've made one. Your special pick always stays.
+- **A place dropped?** Cross off its must-dos the same way. Write "not on our route now" on its Hotel Comparison Card and its restaurant cards, if you've made them. Has a grown-up filled in your "if I get separated" card for that place? Then it's torn up, and they fill in one for where you'll sleep instead.
+- **A place added?** It needs a place to stay and, if you've made your day cards, a day card, the way Session 41 makes one. Make a Hotel Comparison Card for it, the way Session 35 does, or ask a grown-up for a cost per night, per room or per person, and how many rooms or people. If you've made your Packing List, check its weather items for the new place.
+- **A different place to stay?** Mark the new Hotel Comparison Card as your pick, and fix your Session 39 hotel line and the "where you'll sleep" line on your day cards, if you've made them. Has a grown-up filled in the lodging lines on your "if I get separated" card? Then they fill in a fresh card for the new place, and the old one is torn up, as Session 49 says.
 - **A place or its nights changed?** Note it on your Checkpoint 4 route and trip-length recommendation. Cross out the old, and write the new beside it, with where it changed.
 - **A new place to arrive or leave?** A grown-up writes it on your family's assumptions page, because later sessions read it there. Re-time that leg with the map's Directions, the way Session 28 does, and fix your travel days and nights. Then check your Session 29 formula:
   - **If you fly,** ask a grown-up whether each flight still lands on a later date. Fix your "- 1 flight day" marks to match, and use the row for a flight-day mark below.
