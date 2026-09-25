@@ -379,10 +379,12 @@ repos:
     hooks:
       # Both scans take every tracked file and link, not only text: the hook
       # reads each file's path as well as its text, and refuses a tracked
-      # link, which `types: [text]` would drop before the hook saw it.
+      # link, which `types: [text]` would drop before the hook saw it. Each
+      # entry ends with `--`, so a file whose name begins with a hyphen, such
+      # as `--help`, is read as a path and not taken for an option.
       - id: check-family-leaks
         name: Check tracked files for family values
-        entry: python .github/scripts/check-leaks.py --rule family
+        entry: python .github/scripts/check-leaks.py --rule family --
         language: python
         types_or: [file, symlink]
         # The archived design record states the values on purpose; the hook
@@ -390,7 +392,7 @@ repos:
         exclude: ^docs/spec/
       - id: check-destination-leaks
         name: Check framework files for destination names
-        entry: python .github/scripts/check-leaks.py --rule destination
+        entry: python .github/scripts/check-leaks.py --rule destination --
         language: python
         types_or: [file, symlink]
         files: ^framework/

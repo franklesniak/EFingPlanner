@@ -631,6 +631,15 @@ def test_a_stale_row_fails_the_run(
 # --------------------------------------------------------------------------
 
 
+def test_the_digest_cache_is_bounded() -> None:
+    """Failure injection: hash more distinct tokens than the bound, and the cache must not grow past it."""
+    limit = hook.value_digest.cache_info().maxsize
+    assert limit is not None and limit <= 65536
+    text = " ".join(f"token{index:06d}x" for index in range(limit + 500)).replace("0", "o").replace("1", "i")
+    hook.find_hits(text + "\n", "x.md", "family", VALUES)
+    assert hook.value_digest.cache_info().currsize <= limit
+
+
 @pytest.mark.parametrize(
     ("kind", "value", "forms"),
     [
@@ -843,6 +852,48 @@ def test_a_family_value_in_a_path_fails_the_run_and_is_never_printed(
     assert capsys.readouterr().out == ""
 
 
+@pytest.mark.parametrize(
+    ("rule", "name", "shown"),
+    [
+        ("family", "docs/%51uillhaven.md", "docs/<family value>.md"),
+        ("family", "docs/&#81;uillhaven/a.md", "docs/<family value>/a.md"),
+        ("destination", "framework/%54okyo.md", "framework/%54okyo.md"),
+    ],
+)
+def test_an_escaped_value_in_a_path_is_found(
+    tmp_path: Path, made_up_family: None, capsys: pytest.CaptureFixture[str], rule: str, name: str, shown: str
+) -> None:
+    """A path is read as written and decoded, as a file's text is."""
+    root = make_repo(tmp_path, {name: "Clean.\n", "docs/b.md": "Clean.\n", "framework/b.md": "Clean.\n"})
+    assert hook.main(["--rule", rule], root=root) == 1
+    out = capsys.readouterr().out
+    assert out.startswith(shown + ": the file's path holds")
+    assert "uillhaven" not in out
+
+
+def test_every_form_of_a_family_value_is_masked_and_a_bare_number_is_not(
+    tmp_path: Path, made_up_family: None, capsys: pytest.CaptureFixture[str]
+) -> None:
+    """Words, codes and stated numbers are masked as written and escaped. A bare number is printed as it is:
+    it is not a family value, and masking it where it stands would print which number the family's is."""
+    root = make_repo(
+        tmp_path,
+        {
+            "framework/%51uillhaven_osaka.md": "Clean.\n",
+            "framework/2%33_days_kyoto.md": "Clean.\n",
+            "framework/QH%56-tokyo.md": "Clean.\n",
+            "framework/23_japan.md": "Clean.\n",
+        },
+    )
+    assert hook.main(["--rule", "destination"], root=root) == 1
+    out = capsys.readouterr().out
+    assert "framework/<family value>_osaka.md: the file's path holds" in out
+    assert "framework/<family value>_kyoto.md: the file's path holds" in out
+    assert "framework/<family value>-tokyo.md: the file's path holds" in out
+    assert "framework/23_japan.md: the file's path holds" in out
+    assert "%51" not in out and "%33" not in out and "%56" not in out
+
+
 def test_every_message_about_a_value_named_path_prints_it_masked(
     tmp_path: Path, made_up_family: None, capsys: pytest.CaptureFixture[str]
 ) -> None:
@@ -973,6 +1024,63 @@ def test_a_passed_path_git_does_not_track_is_neither_read_nor_refused(
     assert hook.main(["--rule", "family", "notes.md"], root=root) == 1
 
 
+@pytest.mark.parametrize("name", ["--exemption-rows", "--help", "-h", "--candidates"])
+def test_a_file_named_like_an_option_is_read_as_a_path(tmp_path: Path, made_up_family: None, name: str) -> None:
+    """Pre-commit appends file names after the entry, and the entry ends with ``--``, so a name is never an option."""
+    root = make_repo(tmp_path, {"a.md": "Clean.\n", name: "From Quillhaven.\n"})
+    assert hook.main(["--rule", "family", "--", name], root=root) == 1
+    assert hook.main(["--rule", "family", "--", "a.md"], root=root) == 0
+    if name == "--exemption-rows":
+        # Without the terminator the name is taken for the option, and the file is never read.
+        assert hook.main(["--rule", "family", name], root=root) == 0
+
+
+@pytest.mark.parametrize("hook_id", ["check-family-leaks", "check-destination-leaks"])
+def test_each_scan_entry_ends_its_options_with_a_terminator(hook_id: str) -> None:
+    entry = next(line for line in hook_block(hook_id) if line.startswith("entry:"))
+    assert entry.endswith(" --")
+
+
+def test_an_argument_error_prints_no_family_value(made_up_family: None, capsys: pytest.CaptureFixture[str]) -> None:
+    """Argparse names the argument it could not read; its message goes through the masking too."""
+    with pytest.raises(SystemExit) as exited:
+        hook.main(["--rule", "family", "--quillhaven-notes"])
+    assert exited.value.code == 2
+    err = capsys.readouterr().err
+    assert "unrecognized arguments: --<family value>-notes" in err and "quillhaven" not in err.casefold()
+
+
+def add_submodule_entry(root: Path, name: str) -> None:
+    """Record a submodule (a gitlink) at ``name`` in the index, with no repository behind it."""
+    subprocess.run(
+        ["git", "-C", str(root), "update-index", "--add", "--cacheinfo", "160000," + "1" * 40 + "," + name],
+        check=True,
+    )
+
+
+def test_a_tracked_submodule_in_scope_is_refused(
+    tmp_path: Path, made_up_family: None, capsys: pytest.CaptureFixture[str]
+) -> None:
+    """A submodule's content is another repository, which the run cannot read, so it fails as a link does."""
+    root = make_repo(tmp_path, {"framework/b.md": "Clean.\n", "docs/b.md": "Clean.\n"})
+    assert hook.main(["--rule", "destination"], root=root) == 0
+    capsys.readouterr()
+    add_submodule_entry(root, "framework/Tokyo")
+    assert hook.main(["--rule", "destination"], root=root) == 1
+    assert "framework/Tokyo (a submodule)" in capsys.readouterr().err
+    add_submodule_entry(root, "docs/quillhaven")
+    assert hook.main(["--rule", "family"], root=root) == 1
+    err = capsys.readouterr().err
+    assert "docs/<family value> (a submodule)" in err and "quillhaven" not in err.casefold()
+    assert hook.tracked_submodules(root) == {"framework/Tokyo", "docs/quillhaven"}
+
+
+def test_a_submodule_outside_the_rule_s_scope_is_not_refused(tmp_path: Path, made_up_family: None) -> None:
+    root = make_repo(tmp_path, {"framework/b.md": "Clean.\n"})
+    add_submodule_entry(root, "vendor/lib")
+    assert hook.main(["--rule", "destination"], root=root) == 0
+
+
 def test_a_passed_symlink_git_does_not_track_is_skipped(tmp_path: Path, made_up_family: None) -> None:
     """A path that is not this repository's content is not this run's to report on."""
     root = make_repo(tmp_path, {"a.md": "Quillhaven\n"})
@@ -1098,6 +1206,65 @@ def test_only_emit_and_print_hash_rows_print() -> None:
         and any(isinstance(inner, ast.Call) and getattr(inner.func, "id", "") == "print" for inner in ast.walk(node))
     ]
     assert top_level == []
+    # Nor may anything else reach the standard output streams directly.
+    streams = set()
+    for function in ast.walk(tree):
+        if isinstance(function, ast.FunctionDef):
+            for node in ast.walk(function):
+                if (
+                    isinstance(node, ast.Attribute) and node.attr in ("stdout", "stderr")
+                    and isinstance(node.value, ast.Name) and node.value.id == "sys"
+                ):
+                    streams.add(function.name)
+    assert streams == {"emit", "print_hash_rows"}
+
+
+def test_an_unexpected_error_prints_one_masked_line_and_no_traceback(
+    tmp_path: Path, made_up_family: None, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    """Failure injection: a crash whose message holds a value exits 2 with one masked line, never a traceback."""
+    root = make_repo(tmp_path, {"docs/a.md": "Clean.\n"})
+
+    def crash(*_args: object, **_kwargs: object) -> object:
+        raise ValueError("could not read the Quillhaven notes\nfor QHV")
+
+    monkeypatch.setattr(hook, "scan", crash)
+    assert hook.main(["--rule", "family"], root=root) == 2
+    captured = capsys.readouterr()
+    lines = captured.err.strip().splitlines()
+    assert len(lines) == 1 and captured.out == ""
+    assert lines[0].startswith("check-leaks.py: an unexpected error stopped the run in run(), line ")
+    assert lines[0].endswith(": ValueError: could not read the <family value> notes for <family value>")
+    assert "Traceback" not in captured.err and "quillhaven" not in captured.err.casefold()
+
+
+def test_a_crash_while_masking_prints_nothing_from_the_error(
+    tmp_path: Path, made_up_family: None, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    """If the masking fails too, the run prints a fixed line and still exits 2."""
+    root = make_repo(tmp_path, {"docs/a.md": "Clean.\n"})
+
+    def crash(*_args: object, **_kwargs: object) -> object:
+        raise ValueError("Quillhaven")
+
+    def broken(_rows: object) -> object:
+        raise RuntimeError("the masking values could not load")
+
+    monkeypatch.setattr(hook, "scan", crash)
+    monkeypatch.setattr(hook, "well_formed_values", broken)
+    assert hook.main(["--rule", "family"], root=root) == 2
+    assert capsys.readouterr().err.strip() == hook.CRASH_UNMASKABLE
+
+
+def test_a_clean_run_and_an_exit_are_not_crashes(
+    tmp_path: Path, made_up_family: None, capsys: pytest.CaptureFixture[str]
+) -> None:
+    """Controls: a clean run prints no crash line, and argparse's own exit still exits."""
+    root = make_repo(tmp_path, {"docs/a.md": "Clean.\n"})
+    assert hook.main(["--rule", "family"], root=root) == 0
+    assert "unexpected error" not in capsys.readouterr().err
+    with pytest.raises(SystemExit):
+        hook.main(["--rule", "nothing"], root=root)
 
 
 def test_a_rule_is_required(capsys: pytest.CaptureFixture[str]) -> None:
@@ -1196,8 +1363,43 @@ def spec_airport_name() -> str:
 
 
 COMMITTED = hook.FamilyValues.from_rows(hook.FAMILY_VALUES)
-#: What a failure asks for when the record names a value the list lacks.
-ADD_WITH_HASH = "add it: run the hook with --hash KIND, type the value, and paste the printed rows into FAMILY_VALUES"
+
+
+def rows_of(pairs: list[tuple[str, str]]) -> set[tuple[str, int, str]]:
+    """Return the ``FAMILY_VALUES`` rows ``--hash`` would print for plain ``(kind, value)`` pairs."""
+    return set(value_rows(tuple(pairs)))
+
+
+def list_problems(committed: tuple[tuple[str, int, str], ...], expected: set[tuple[str, int, str]]) -> list[str]:
+    """Return why ``committed`` is not exactly ``expected``, by kind and count, never by value.
+
+    A missing row lets a value through; an obsolete one keeps failing text
+    that is no longer family data. Either way the list has drifted.
+    """
+    problems = []
+    missing = expected - set(committed)
+    obsolete = set(committed) - expected
+    if missing:
+        kinds = sorted(kind for kind, _words, _digest in missing)
+        problems.append(f"{len(missing)} value row(s) missing ({', '.join(kinds)}): run the hook with --hash KIND, "
+                        "type the value, and paste the printed rows into FAMILY_VALUES")
+    if obsolete:
+        kinds = sorted(kind for kind, _words, _digest in obsolete)
+        problems.append(f"{len(obsolete)} value row(s) the design record no longer names ({', '.join(kinds)}): "
+                        "remove them from FAMILY_VALUES")
+    return problems
+
+
+def test_the_list_check_reports_a_missing_and_an_obsolete_row() -> None:
+    """Failure injection: drop one made-up row, or add a stale one, and the check must say so by kind."""
+    expected = rows_of(list(MADE_UP))
+    rows = tuple(sorted(expected))
+    assert list_problems(rows, expected) == []
+    stale = ("word", 1, hook.value_digest("word", "oldtown"))
+    problems = list_problems((*rows, stale), expected)
+    assert len(problems) == 1 and problems[0].startswith("1 value row(s) the design record no longer names (word)")
+    problems = list_problems(rows[1:], expected)
+    assert len(problems) == 1 and problems[0].startswith("1 value row(s) missing")
 
 
 def test_the_committed_list_is_well_formed() -> None:
@@ -1206,22 +1408,14 @@ def test_the_committed_list_is_well_formed() -> None:
     assert hook.check_exemption_rows("destination", hook.DESTINATION_EXEMPTIONS) == []
 
 
-def test_the_committed_list_holds_every_value_on_the_build_rule_line(design_record: None) -> None:
-    missing = []
-    for number, (kind, value) in enumerate(spec_values(), start=1):
-        for form in hook.normalize_value(kind, value):
-            if hook.value_digest(kind, form) not in COMMITTED.digests[kind]:
-                missing.append(f"value {number} ({kind})")
-    assert missing == [], ADD_WITH_HASH
-
-
-def test_the_committed_list_holds_the_airport_name_as_two_words_and_as_one(design_record: None) -> None:
-    forms = hook.normalize_value("word", spec_airport_name())
-    count = len(forms)
+def test_the_committed_list_is_exactly_the_design_record_s_values(design_record: None) -> None:
+    """Every value on the BUILD RULE line and the airport's name, as two words and joined, and nothing else."""
+    airport_forms = hook.normalize_value("word", spec_airport_name())
+    count = len(airport_forms)
     assert count == 2
-    digests = COMMITTED.digests["word"]
-    missing = [index for index, form in enumerate(forms) if hook.value_digest("word", form) not in digests]
-    assert missing == [], ADD_WITH_HASH
+    expected = rows_of(spec_values() + [("word", spec_airport_name())])
+    problems = list_problems(hook.FAMILY_VALUES, expected)
+    assert problems == []
 
 
 def spec_cases() -> list[tuple[str, str, int]]:

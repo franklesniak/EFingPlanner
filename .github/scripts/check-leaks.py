@@ -51,8 +51,9 @@ file's own line and column. A decoded occurrence that covers some of the
 same characters of the file as a plain occurrence of the same value is the
 same occurrence and counts once; any other decoded occurrence counts on its
 own, beside a plain one on the same line. Each file's repository-relative
-path is read too, as one line, so a value or a name in a file's or a
-folder's name is a hit, a binary file's included.
+path is read too, as one line, as written and decoded, so a value or a
+name in a file's or a folder's name is a hit, escaped or not, a binary
+file's included.
 
 * A **word** value matches a run of letters, or two or three runs in a row
   separated by anything but digits and a blank line, in any case. The last
@@ -117,7 +118,13 @@ each family value in it with ``<family value>``: a hit, a stale row, a
 refusal, an error, a candidate and an exemption row. The destination rule
 masks as the family rule does, so a framework path or line that holds both
 a destination name and a family value prints the name and hides the value.
-Only ``--hash`` prints elsewhere, and it prints digests.
+A value is masked as it is written, escaped or not, and so is an argument
+error, which names the argument it could not read. Only ``--hash`` prints
+elsewhere, and it prints digests. An unexpected error prints one masked
+line, naming its type, where in this script it was raised, and its
+message, and exits 2, with no traceback. A bare number is printed as it
+stands: it is not a family value, and masking the family's number wherever
+it stood, in a session number or a date, would print which number it is.
 
 File access
 -----------
@@ -128,10 +135,13 @@ or that resolves outside the repository, and it refuses the same path when
 pre-commit passes it, so a link fails a commit as it fails CI. The hooks
 take links as well as files for that reason. A passed path Git does not
 track is neither read nor refused, whether it resolves or not, so a local
-file such as one under ``.git/`` is never read. A file holding a zero byte is binary: its path is read,
-and its bytes are skipped, as Git treats them. A file that cannot be read
-as UTF-8 stops the run, because a file that was not read has not been
-checked.
+file such as one under ``.git/`` is never read. A tracked submodule in the
+rule's scope is refused by name too: its content is another repository,
+which this run cannot read. A file holding a zero byte is binary: its path
+is read, and its bytes are skipped, as Git treats them. A file that cannot
+be read as UTF-8 stops the run, because a file that was not read has not
+been checked. The pre-commit entries end with ``--``, so a file whose name
+begins with a hyphen is read as a path, never taken for an option.
 
 In place of a hand-run grep
 ---------------------------
@@ -148,6 +158,33 @@ leak greps runs these calls instead, and they name no value and print none:
 
 A grep for a destination name, for a path into ``destinations/`` or for a
 spec section number names nothing private, and may stay a grep.
+
+Known limits
+------------
+The hook matches forms, not meaning. These pass it, and are left to a
+person's read, to ``--candidates``, or to another check:
+
+* A paraphrase or an inference: a cap with no unit or label ("the trip
+  cannot go past N"), a word between the number and its unit ("N full
+  days"), an ordinal, a number over ninety-nine in words, or a length given
+  in weeks.
+* A spelling the matcher does not fold: a misspelling, a nickname or an
+  abbreviation, letters split by spaces or by an invisible character such
+  as a zero-width space, a look-alike letter from another alphabet, the
+  code in lower case or inside a longer identifier, and a word value inside
+  a longer word.
+* An encoding other than a character reference, a percent escape and a
+  one-letter backslash escape: ``\\uXXXX``, ``\\xXX``, octal, base64 or a
+  cipher, and a character reference split over two lines.
+* A value the lists do not hold: a relative the BUILD RULE line does not
+  name, and a destination name that is neither one of the five nor a pack
+  folder's name, such as a second city or a landmark.
+* What the hook does not read: ``docs/spec/``, untracked files, a binary
+  file's bytes, a submodule's content (refused, not read), Git history,
+  commit messages, branch and tag names, pull request text and issues.
+* A deleted file's stale row: pre-commit passes no file for a deletion, so
+  only a walk reports it, and CI's walk runs in this script's suite.
+* A digest does not stop a guess, as the section above says.
 
 Adding a family's value
 -----------------------
@@ -169,6 +206,7 @@ import re
 import stat
 import subprocess
 import sys
+import traceback
 import unicodedata
 import urllib.parse
 from collections.abc import Callable, Iterable, Sequence
@@ -586,7 +624,14 @@ def fold(text: str) -> str:
     return unicodedata.normalize("NFKC", text).casefold()
 
 
-@functools.lru_cache(maxsize=None)
+#: How many digests ``value_digest`` keeps. A scan hashes every word, word
+#: pair and number of every file, so an unbounded cache would hold every
+#: distinct token in the repository; this bound keeps memory flat whatever a
+#: file holds, and keeps most of the cache's speed.
+DIGEST_CACHE_SIZE = 4096
+
+
+@functools.lru_cache(maxsize=DIGEST_CACHE_SIZE)
 def value_digest(kind: str, normalized: str) -> str:
     """Return the salted digest of one normalized value of ``kind``."""
     return hashlib.sha256(f"{SALT}\x00{kind}\x00{normalized}".encode("utf-8")).hexdigest()
@@ -1165,24 +1210,31 @@ def path_hits(
 ) -> list[Hit]:
     """Return a hit for each value or name in a file's repository-relative path.
 
-    The path is read as one line, as written. A family hit keeps no context,
-    because no row may excuse it; a destination hit's context is the path.
+    The path is read as one line, as written and decoded, as a file's text
+    is, so an escaped value in a file's name is found. A family hit keeps no
+    context, because no row may excuse it; a destination hit's context is the
+    path.
     """
-    reading = Reading(display_path)
     if rule == "family":
         assert values is not None
-        found = family_hits_in_reading(reading, values)
+        family_values = values
+
+        def finder(reading: Reading) -> list[tuple[int, int, str, str]]:
+            return family_hits_in_reading(reading, family_values)
+
     else:
-        found = destination_hits_in_reading(reading, names)
+
+        def finder(reading: Reading) -> list[tuple[int, int, str, str]]:
+            return destination_hits_in_reading(reading, names)
+
     hits = []
-    for start, end, label, value_key in sorted(found):
+    for reading, start, end, label, value_key in across_readings(display_path, finder):
+        _line, column = reading.position(start)
         if rule == "family":
             occurrence, context = "", ""
         else:
-            occurrence, context = display_path[start:end], PATH_CONTEXT + display_path
-        hits.append(
-            Hit(rule, display_path, 0, start + 1, label, occurrence, context, value_key, in_path=True)
-        )
+            occurrence, context = reading.text[start:end], PATH_CONTEXT + display_path
+        hits.append(Hit(rule, display_path, 0, column, label, occurrence, context, value_key, in_path=True))
     return hits
 
 
@@ -1197,10 +1249,20 @@ def redact(text: str, values: FamilyValues) -> str:
 
     ``emit()`` passes every line the script prints through this, under both
     rules, so a path, a context or an error message that holds a value is
-    printed masked whichever rule found it.
+    printed masked whichever rule found it. The text is read as written and
+    decoded, as a file is, so an escaped value is masked where it is written.
+    A bare number is not masked: it is not a family value, and masking the
+    family's number wherever it stood, in a session number or a date, would
+    print which number it is.
     """
+    text = text.replace("\r\n", "\n").replace("\r", "\n")
+
+    def finder(reading: Reading) -> list[tuple[int, int, str, str]]:
+        return family_hits_in_reading(reading, values)
+
     merged: list[tuple[int, int]] = []
-    spans = sorted((start, end) for start, end, _kind, _digest in family_hits_in_reading(Reading(text), values))
+    found = across_readings(text, finder)
+    spans = sorted(reading.source_span(start, end) for reading, start, end, _label, _key in found)
     for start, end in spans:
         if merged and start <= merged[-1][1]:
             merged[-1] = (merged[-1][0], max(end, merged[-1][1]))
@@ -1382,6 +1444,28 @@ def tracked_files(root: Path) -> list[str]:
     )
 
 
+def tracked_submodules(root: Path) -> set[str]:
+    """Return the repository-relative paths Git tracks as submodules (gitlinks) under ``root``."""
+    completed = subprocess.run(
+        ["git", "-C", str(root), "ls-files", "-s", "-z"],
+        capture_output=True,
+    )
+    if completed.returncode != 0:
+        detail = completed.stderr.decode("utf-8", "replace").strip()
+        raise FileReadError(str(root), OSError(f"git ls-files failed: {detail}"))
+    found = set()
+    for entry in completed.stdout.decode("utf-8", "surrogateescape").split("\0"):
+        if entry:
+            fields, _tab, name = entry.partition("\t")
+            if fields.split(" ", 1)[0] == GITLINK_MODE:
+                found.add(name)
+    return found
+
+
+#: The mode Git gives a submodule's entry in the index.
+GITLINK_MODE = "160000"
+
+
 def read_text(path: Path, display_path: str) -> str | None:
     """Return a file's text, or ``None`` for a binary file."""
     try:
@@ -1458,8 +1542,20 @@ def scan(
     return Report(unexcused, ledger.stale(scanned, rule, complete), checked, candidates)
 
 
+class ArgumentParser(argparse.ArgumentParser):
+    """An argument parser whose error message goes through ``emit()``.
+
+    Its error names the argument it could not read, and a file name passed by
+    mistake as an option could hold a family value.
+    """
+
+    def error(self, message: str):  # type: ignore[override]
+        emit(f"{self.prog}: error: {message}", well_formed_values(FAMILY_VALUES), error=True)
+        raise SystemExit(2)
+
+
 def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
-    parser = argparse.ArgumentParser(
+    parser = ArgumentParser(
         description=(
             "Check tracked files for this family's values (--rule family) or for "
             "destination names in framework files (--rule destination). With no "
@@ -1520,8 +1616,41 @@ def emit(text: str, values: FamilyValues, error: bool = False) -> None:
     print(redact(text, values), file=sys.stderr if error else sys.stdout)
 
 
+#: What prints when even the masked crash line cannot be built.
+CRASH_UNMASKABLE = "check-leaks.py: an unexpected error stopped the run, and its message could not be masked"
+
+
+def crash_line(error: BaseException) -> str:
+    """Return one line naming an unexpected error: its type, where in this script, and its message.
+
+    ``emit()`` masks it. No traceback is printed: its frames hold paths and
+    text that ``emit()`` would have to mask line by line.
+    """
+    here = Path(__file__).resolve()
+    frames = [frame for frame in traceback.extract_tb(error.__traceback__) if Path(frame.filename).resolve() == here]
+    where = f" in {frames[-1].name}(), line {frames[-1].lineno}" if frames else ""
+    message = " ".join(str(error).split())
+    return f"check-leaks.py: an unexpected error stopped the run{where}: {type(error).__name__}: {message}"
+
+
 def main(argv: Sequence[str] | None = None, root: Path = REPO_ROOT) -> int:
-    """Run one rule, and return the exit status."""
+    """Run one rule, and return the exit status.
+
+    An unexpected error prints one masked line and exits 2, with no
+    traceback, since a traceback's paths and text could hold a family value.
+    """
+    try:
+        return run(argv, root)
+    except Exception as error:  # noqa: BLE001 - every failure must stay masked
+        try:
+            emit(crash_line(error), well_formed_values(FAMILY_VALUES), error=True)
+        except Exception:  # noqa: BLE001 - the masking itself failed, so print nothing from the error
+            emit(CRASH_UNMASKABLE, FamilyValues.from_rows(()), error=True)
+        return 2
+
+
+def run(argv: Sequence[str] | None = None, root: Path = REPO_ROOT) -> int:
+    """Run one rule, and return the exit status. ``main()`` guards it."""
     args = parse_args(argv)
     if args.hash_kind:
         return print_hash_rows(args.hash_kind)
@@ -1547,6 +1676,7 @@ def main(argv: Sequence[str] | None = None, root: Path = REPO_ROOT) -> int:
     refused: list[str] = []
     try:
         tracked = tracked_files(root)
+        submodules = tracked_submodules(root)
     except FileReadError as error:
         emit(str(error), values, error=True)
         return 1
@@ -1559,6 +1689,11 @@ def main(argv: Sequence[str] | None = None, root: Path = REPO_ROOT) -> int:
             # whether it resolves or not, so it is neither read nor refused.
             continue
         if not in_scope(args.rule, name):
+            continue
+        if name in submodules:
+            # A submodule's content is another repository, which this run
+            # cannot read, so it is refused by name, as a link is.
+            refused.append(f"{argument} (a submodule)")
             continue
         resolved = resolve_candidate(argument, root)
         if isinstance(resolved, str):
@@ -1573,8 +1708,8 @@ def main(argv: Sequence[str] | None = None, root: Path = REPO_ROOT) -> int:
             targets.append(resolved)
     if refused:
         emit(
-            "these tracked paths are links, go through a linked folder, or resolve outside the "
-            "repository, so this run refuses to report on them: " + ", ".join(refused[:5]),
+            "these tracked paths are links or submodules, go through a linked folder, or resolve "
+            "outside the repository, so this run refuses to report on them: " + ", ".join(refused[:5]),
             values,
             error=True,
         )
