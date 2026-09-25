@@ -3511,16 +3511,6 @@
       "judgment": "no",
       "reason": "a condition: when the booked season is used"
     },
-    "split|Sessions 41, 43 and 48 use the booked season when the grown-ups booked dates in a different season from the Checkpoint 1 recommendation. → Session 39's daily slices count only days on the ground, leaving out a date spent in the air, and a per-person band is compared as the subtotal divided by traveler-days.|1": {
-      "line": 58,
-      "judgment": "device",
-      "reason": "count only days on the ground / leaving out a date spent in the air (included named beside the excluded)"
-    },
-    "split|Session 39's daily slices count only days on the ground, leaving out a date spent in the air, and a per-person band is compared as the subtotal divided by traveler-days. → Session 39 takes the parts of the trip from the Session 33 note or from the grown-up's answer before the session, so the part-trip table stays optional.|1": {
-      "line": 58,
-      "judgment": "no",
-      "reason": "a fact with its consequence"
-    },
     "split|Session 39 takes the parts of the trip from the Session 33 note or from the grown-up's answer before the session, so the part-trip table stays optional. → Session 41 gives day one and the day home their travel anchors before any must-do.|1": {
       "line": 58,
       "judgment": "no",
@@ -3676,16 +3666,6 @@
       "judgment": "no",
       "reason": "a fact: what the booking guidance does"
     },
-    "split|The booking guidance writes a booked change of travel mode on the Trip-Basics card and tells the child. → Every cost names its unit and is scaled once to the people or rooms it covers: Session 38's per-person fares and tickets count every traveler, the souvenir amount is for the whole group, a hotel priced per person uses people in place of rooms from Session 33 on, a grown-up's cost says its unit, and the day card's cost is for everyone.|1": {
-      "line": 58,
-      "judgment": "device",
-      "reason": "uses people / in place of rooms"
-    },
-    "split|Every cost names its unit and is scaled once to the people or rooms it covers: Session 38's per-person fares and tickets count every traveler, the souvenir amount is for the whole group, a hotel priced per person uses people in place of rooms from Session 33 on, a grown-up's cost says its unit, and the day card's cost is for everyone. → A price's unit can be per person, per room, or per vehicle, family or group, and only a per-person price is multiplied by the travelers: Session 38 counts a taxi or a family ticket once, and the attraction card records which unit a ticket price is.|1": {
-      "line": 58,
-      "judgment": "no",
-      "reason": "a rule about units and which price is multiplied"
-    },
     "split|A price's unit can be per person, per room, or per vehicle, family or group, and only a per-person price is multiplied by the travelers: Session 38 counts a taxi or a family ticket once, and the attraction card records which unit a ticket price is. → The Budget Estimate's hotel rows say whether a price per night is per room or per person, its ticket row takes a family ticket once, and Session 39's part-trip count scales only per-person prices by traveler-days, with a price counted once kept to the days on the ground.|1": {
       "line": 58,
       "judgment": "no",
@@ -3731,16 +3711,6 @@
       "judgment": "no",
       "reason": "a fact: the rule added and applied"
     },
-    "split|Session 40 adds a moving-day rule for the first day of each later city-stay, and Session 41 applies it. → A place priced per person keeps that price, and Session 39 counts its people in place of rooms.|1": {
-      "line": 58,
-      "judgment": "device",
-      "reason": "counts its people / in place of rooms"
-    },
-    "split|A place priced per person keeps that price, and Session 39 counts its people in place of rooms. → Every session that reads the traveler count says what to do with \"not decided yet\", and a subtotal or band check with an unknown piece says what it leaves out.|1": {
-      "line": 58,
-      "judgment": "no",
-      "reason": "a fact; not decided yet is quoted"
-    },
     "split|Every session that reads the traveler count says what to do with \"not decided yet\", and a subtotal or band check with an unknown piece says what it leaves out. → Every checkpoint's parent review form is filled in by a grown-up and filed behind tab 10, as the review checkpoints page now says, and Session 41 fills the day card's cost.|1": {
       "line": 58,
       "judgment": "no",
@@ -3776,6 +3746,36 @@
       "judgment": "no",
       "reason": "a list of facts"
     },
+    "split|Sessions 41, 43 and 48 use the booked season when the grown-ups booked dates in a different season from the Checkpoint 1 recommendation. → Session 39's daily slices count the days on the ground, and a per-person band is compared as the subtotal divided by traveler-days.|1": {
+      "line": 58,
+      "judgment": "no",
+      "reason": "a change record: two facts in a row"
+    },
+    "split|Session 39's daily slices count the days on the ground, and a per-person band is compared as the subtotal divided by traveler-days. → Session 39 takes the parts of the trip from the Session 33 note or from the grown-up's answer before the session, so the part-trip table stays optional.|1": {
+      "line": 58,
+      "judgment": "no",
+      "reason": "a fact: where Session 39 takes the parts of the trip"
+    },
+    "split|The booking guidance writes a booked change of travel mode on the Trip-Basics card and tells the child. → Every cost names its unit and is scaled once to the people or rooms it covers: Session 38's per-person fares and tickets count every traveler, the souvenir amount is for the whole group, a hotel priced per person is multiplied by its people from Session 33 on, a grown-up's cost says its unit, and the day card's cost is for everyone.|1": {
+      "line": 58,
+      "judgment": "no",
+      "reason": "a change record listing each cost's unit"
+    },
+    "split|Every cost names its unit and is scaled once to the people or rooms it covers: Session 38's per-person fares and tickets count every traveler, the souvenir amount is for the whole group, a hotel priced per person is multiplied by its people from Session 33 on, a grown-up's cost says its unit, and the day card's cost is for everyone. → A price's unit can be per person, per room, or per vehicle, family or group, and only a per-person price is multiplied by the travelers: Session 38 counts a taxi or a family ticket once, and the attraction card records which unit a ticket price is.|1": {
+      "line": 58,
+      "judgment": "no",
+      "reason": "a rule about units and which price is multiplied, each unit with its own handling, as this sentence was judged before the rewrite"
+    },
+    "split|Session 40 adds a moving-day rule for the first day of each later city-stay, and Session 41 applies it. → A place priced per person keeps that price, and Session 39 multiplies it by the people staying.|1": {
+      "line": 58,
+      "judgment": "no",
+      "reason": "a fact: a per-person price is multiplied by the people staying"
+    },
+    "split|A place priced per person keeps that price, and Session 39 multiplies it by the people staying. → Every session that reads the traveler count says what to do with \"not decided yet\", and a subtotal or band check with an unknown piece says what it leaves out.|1": {
+      "line": 58,
+      "judgment": "no",
+      "reason": "a new fact; the quoted not decided yet is a field value, and what it leaves out is a fact"
+    },
     "device|Removed the build-state sentences this wave makes false.|1": {
       "line": 59,
       "judgment": "no",
@@ -3786,15 +3786,15 @@
       "judgment": "no",
       "reason": "a change record: what the card said before and what it does now"
     },
-    "split|The binder card said Session 50 was not built yet; it now links it and says what it does. → The session support notes and the review checkpoints page described the notes as covering \"each session built so far\"; they now describe one session per entry, with no build inventory.|1": {
-      "line": 59,
-      "judgment": "device",
-      "reason": "one session per entry / with no build inventory (what is included named beside what is left out)"
-    },
-    "split|The session support notes and the review checkpoints page described the notes as covering \"each session built so far\"; they now describe one session per entry, with no build inventory. → Editing the review checkpoints page, this batch also converts its Checkpoint 4 lines from flights to getting there and back, as the Batch 2 brief asks of the next edit.|1": {
+    "split|The binder card said Session 50 was not built yet; it now links it and says what it does. → The session support notes and the review checkpoints page described the notes as covering \"each session built so far\"; they now describe one session per entry.|1": {
       "line": 59,
       "judgment": "no",
-      "reason": "a change record: the lines converted"
+      "reason": "a change record: the old description and the new one"
+    },
+    "split|The session support notes and the review checkpoints page described the notes as covering \"each session built so far\"; they now describe one session per entry. → Editing the review checkpoints page, this batch also converts its Checkpoint 4 lines from flights to getting there and back, as the Batch 2 brief asks of the next edit.|1": {
+      "line": 59,
+      "judgment": "no",
+      "reason": "a change record: what this batch also converts"
     },
     "device|The lighter template starts at Phase 7.|1": {
       "line": 60,
@@ -3806,16 +3806,6 @@
       "judgment": "no",
       "reason": "a fact: the spec's two triggers"
     },
-    "split|The archived spec gives the lighter late-phase template two triggers: a readiness signal, and Phases 7 and 8 at the latest. → A static page cannot branch on a signal, so the build uses the phase line.|1": {
-      "line": 60,
-      "judgment": "device",
-      "reason": "two named triggers, one chosen: the build uses the phase line / a static page cannot branch on a signal"
-    },
-    "split|A static page cannot branch on a signal, so the build uses the phase line. → Phases 7 and 8 have short Steps, a small Workspace, and a Start Here the child sets, with a suggestion beside it.|1": {
-      "line": 60,
-      "judgment": "no",
-      "reason": "a fact: what the late phases have"
-    },
     "split|Phases 7 and 8 have short Steps, a small Workspace, and a Start Here the child sets, with a suggestion beside it. → Start Here, the Stop Point, the named artifact and the Source Check never fade.|1": {
       "line": 60,
       "judgment": "no",
@@ -3826,15 +3816,25 @@
       "judgment": "no",
       "reason": "a fact: what the Parent Notes name"
     },
-    "device|The cost is recorded rather than hidden: a child who is ready in Phase 5 meets the full template through Phase 6.|1": {
+    "split|The archived spec gives the lighter late-phase template two triggers: a readiness signal, and Phases 7 and 8 at the latest. → The build uses the phase line, the trigger a static page can carry.|1": {
       "line": 60,
-      "judgment": "device",
-      "reason": "recorded / rather than hidden"
+      "judgment": "no",
+      "reason": "names why the build uses the phase line; it rejects nothing, as recorded for That's the more useful one"
     },
-    "device|That is the safe direction, with more support rather than less.|1": {
+    "split|The build uses the phase line, the trigger a static page can carry. → Phases 7 and 8 have short Steps, a small Workspace, and a Start Here the child sets, with a suggestion beside it.|1": {
       "line": 60,
-      "judgment": "device",
-      "reason": "more support / rather than less"
+      "judgment": "no",
+      "reason": "a fact about the late-phase template"
+    },
+    "split|Each new Phase 7 and 8 session's Parent Notes names the two-session readiness signal. → The cost is recorded here: a child who is ready in Phase 5 meets the full template through Phase 6.|1": {
+      "line": 60,
+      "judgment": "no",
+      "reason": "a fact: where the cost is recorded"
+    },
+    "split|The cost is recorded here: a child who is ready in Phase 5 meets the full template through Phase 6. → That errs toward more support, the safe direction.|1": {
+      "line": 60,
+      "judgment": "no",
+      "reason": "a direction named with its reason; no alternative is named"
     },
     "device|Gave Sessions 33, 44 and 53 their Core-path edits, and re-pointed their navigation.|1": {
       "line": 61,
@@ -3931,15 +3931,15 @@
       "judgment": "no",
       "reason": "a changelog entry opener (a fact)"
     },
-    "device|Day cards are saved with numbered names, ‹code› or ‹code› , and never a city name, because a place name in a kit path the session prints would leak the destination ( ‹code› ).|1": {
-      "line": 64,
-      "judgment": "device",
-      "reason": "numbered names / and never a city name"
-    },
-    "split|Day cards are saved with numbered names, ‹code› or ‹code› , and never a city name, because a place name in a kit path the session prints would leak the destination ( ‹code› ). → Session 49 names one artifact, the readiness checklist, and hands the \"if I get separated\" card over with it as a companion, so every session still has one named artifact ( ‹code› ).|1": {
+    "split|Recorded two more departures that the Phase 7 and 8 sessions build. → Day cards are saved with numbered names, ‹code› or ‹code› , so the kit path the session prints keeps the destination private ( ‹code› ).|1": {
       "line": 64,
       "judgment": "no",
-      "reason": "a fact with its reason (one artifact and a companion)"
+      "reason": "a fact with its consequence: numbered names keep the destination private"
+    },
+    "split|Day cards are saved with numbered names, ‹code› or ‹code› , so the kit path the session prints keeps the destination private ( ‹code› ). → Session 49 names one artifact, the readiness checklist, and hands the \"if I get separated\" card over with it as a companion, so every session still has one named artifact ( ‹code› ).|1": {
+      "line": 64,
+      "judgment": "no",
+      "reason": "a fact: the session's one named artifact"
     },
     "device|Batch 1: the complete Phases 0-2 slice -- Session 00 through Checkpoint 1.|1": {
       "line": 71,
@@ -10023,10 +10023,10 @@
       "judgment": "no",
       "reason": "a lead-in to a list"
     },
-    "device|which season it is, as a broad word with no dates, if it differs from their Checkpoint 1 pick|1": {
+    "device|which season it is, as a broad word such as \"late spring\", if it differs from their Checkpoint 1 pick|1": {
       "line": 60,
-      "judgment": "device",
-      "reason": "as a broad word / with no dates"
+      "judgment": "no",
+      "reason": "a list entry with an example"
     },
     "device|if you fly, which of the booked flights land on a later date than they took off, for the flight-day marks on their Session 29 formula|1": {
       "line": 61,
@@ -13174,30 +13174,30 @@
       "judgment": "no",
       "reason": "a field label"
     },
-    "split|Role: 5-minute check-in; help co-choose the one unconditional pick. → On the Core path, confirm the pick Session 26 settled instead.|1": {
+    "split|Role: 5-minute check-in; help co-choose the one unconditional pick. → On the Core path, the check-in confirms the pick Session 26 settled.|1": {
       "line": 172,
-      "judgment": "device",
-      "reason": "confirm the pick Session 26 settled / instead of help co-choose the one unconditional pick"
+      "judgment": "no",
+      "reason": "a path-specific role line; nothing is rejected"
     },
     "device|Prep: the City Research Cards (starred sights); Cut List and Backup Plan pages.|1": {
       "line": 173,
       "judgment": "no",
       "reason": "a prep list; \"Cut List\" is a Name"
     },
-    "split|Prep: the City Research Cards (starred sights); Cut List and Backup Plan pages. → On the Core path, the My Calls page takes the place of the starred sights, with the skip and save-for-future notes from Checkpoints 2 and 3.|1": {
+    "split|Prep: the City Research Cards (starred sights); Cut List and Backup Plan pages. → On the Core path, the My Calls page, with the skip and save-for-future notes from Checkpoints 2 and 3.|1": {
       "line": 173,
-      "judgment": "device",
-      "reason": "the My Calls page / takes the place of the starred sights"
+      "judgment": "no",
+      "reason": "a path-specific prep line"
     },
     "device|Look for: a short must-see list, a cut list, one special pick initialed, two backups.|1": {
       "line": 174,
       "judgment": "no",
       "reason": "a look-for list; \"a cut list\" is an item"
     },
-    "split|Look for: a short must-see list, a cut list, one special pick initialed, two backups. → On the Core path, the must-do list Session 26 made takes the place of the must-see list, the cut list starts from the Checkpoint 2 and 3 notes, and a one-line confirmation of the pick takes the place of the initials.|1": {
+    "split|Look for: a short must-see list, a cut list, one special pick initialed, two backups. → On the Core path, the must-do list Session 26 made, a cut list that starts from the Checkpoint 2 and 3 notes, a one-line confirmation of the pick, and two backups.|1": {
       "line": 174,
-      "judgment": "device",
-      "reason": "the must-do list / takes the place of the must-see list (and the confirmation / the initials)"
+      "judgment": "no",
+      "reason": "a path-specific look-for line"
     },
     "device|Coaching question: \"What are you saving for a future trip?\"|1": {
       "line": 175,
@@ -25629,10 +25629,10 @@
       "judgment": "no",
       "reason": "a fact of degree; prefers no option"
     },
-    "split|More cities and more hotel moves usually cost more. → The rides between places are on the grown-ups' page, so your band check shows only the hotels and days.|1": {
+    "split|More cities and more hotel moves usually cost more. → Your band check adds up the hotels and the days, and the grown-ups price the rides between places on their own page.|1": {
       "line": 31,
-      "judgment": "device",
-      "reason": "your band check shows only the hotels and days / the rides between places are on the grown-ups' page"
+      "judgment": "no",
+      "reason": "says who adds up which part; nothing is rejected"
     },
     "device|Fill the source rows.|1": {
       "line": 32,
@@ -26508,20 +26508,20 @@
       "judgment": "no",
       "reason": "a list entry with a question and a fact"
     },
-    "split|Hotel: about how much per night, per room? (high / medium / low) A grown-up tells you how many rooms. → If they say the places you'd stay charge per person, guess per person, and use people in place of rooms.|1": {
-      "line": 34,
-      "judgment": "device",
-      "reason": "use people / in place of rooms"
-    },
-    "split|If they say the places you'd stay charge per person, guess per person, and use people in place of rooms. → (On the First Taste path: if you kept two cities in Session 21, guess a hotel for each.|1": {
-      "line": 34,
-      "judgment": "no",
-      "reason": "a conditional instruction"
-    },
     "split|(On the First Taste path: if you kept two cities in Session 21, guess a hotel for each. → Your plan pays for both.)|1": {
       "line": 34,
       "judgment": "no",
       "reason": "a reason"
+    },
+    "split|Hotel: about how much per night, per room? (high / medium / low) A grown-up tells you how many rooms. → If they say the places you'd stay charge per person, guess per person, and multiply by the number of people.|1": {
+      "line": 34,
+      "judgment": "no",
+      "reason": "a conditional instruction"
+    },
+    "split|If they say the places you'd stay charge per person, guess per person, and multiply by the number of people. → (On the First Taste path: if you kept two cities in Session 21, guess a hotel for each.|1": {
+      "line": 34,
+      "judgment": "no",
+      "reason": "a path-specific instruction"
     },
     "device|Do the easy math (round to friendly numbers first; a grown-up may do the multiplying while you do the thinking):|1": {
       "line": 35,
@@ -26683,16 +26683,6 @@
       "judgment": "no",
       "reason": "a condition"
     },
-    "split|Do this only if your traveler profiles from Session 02 say someone is coming for part of the trip. → Ask a grown-up who is with you on which days, by day number with no dates, and jot it in the small table in the Workspace.|1": {
-      "line": 53,
-      "judgment": "device",
-      "reason": "by day number / with no dates"
-    },
-    "split|Ask a grown-up who is with you on which days, by day number with no dates, and jot it in the small table in the Workspace. → Then note what that changes: how many rooms you need (Sessions 34, 35 and 39), how big a restaurant table is (Sessions 36 and 37), and seats on each long ride, which the grown-ups book.|1": {
-      "line": 53,
-      "judgment": "no",
-      "reason": "an instruction"
-    },
     "split|Then note what that changes: how many rooms you need (Sessions 34, 35 and 39), how big a restaurant table is (Sessions 36 and 37), and seats on each long ride, which the grown-ups book. → Finished First Taste first?|1": {
       "line": 53,
       "judgment": "no",
@@ -26702,6 +26692,16 @@
       "line": 53,
       "judgment": "no",
       "reason": "an instruction"
+    },
+    "split|Do this only if your traveler profiles from Session 02 say someone is coming for part of the trip. → Ask a grown-up who is with you on which days, by day number, such as day 3 to day 6, and jot it in the small table in the Workspace.|1": {
+      "line": 53,
+      "judgment": "no",
+      "reason": "an instruction with an example"
+    },
+    "split|Ask a grown-up who is with you on which days, by day number, such as day 3 to day 6, and jot it in the small table in the Workspace. → Then note what that changes: how many rooms you need (Sessions 34, 35 and 39), how big a restaurant table is (Sessions 36 and 37), and seats on each long ride, which the grown-ups book.|1": {
+      "line": 53,
+      "judgment": "no",
+      "reason": "an instruction with a list"
     },
     "split|Every time you guess and then check, your guessing gets a little better. → (See your planner mindset card.)|1": {
       "line": 55,
@@ -26883,30 +26883,30 @@
       "judgment": "no",
       "reason": "an instruction"
     },
-    "split|Keep a rough figure on your own page: a per-person fare times the number of travelers if you fly or take the train, or the drive's own costs if you drive. → It is for your own sanity check at Session 39, and your child never researches it, writes it down or adds it to their subtotal.|1": {
-      "line": 100,
-      "judgment": "device",
-      "reason": "for your own sanity check at Session 39 / your child never researches it, writes it down or adds it to their subtotal"
-    },
-    "split|It is for your own sanity check at Session 39, and your child never researches it, writes it down or adds it to their subtotal. → A family that finished First Taste first gets it ready when it continues, before Session 39.|1": {
+    "split|Keep a rough figure on your own page: a per-person fare times the number of travelers if you fly or take the train, or the drive's own costs if you drive. → It is for your own sanity check at Session 39, on your own page.|1": {
       "line": 100,
       "judgment": "no",
-      "reason": "a fact"
+      "reason": "a fact: what the figure is for"
+    },
+    "split|It is for your own sanity check at Session 39, on your own page. → A family that finished First Taste first gets it ready when it continues, before Session 39.|1": {
+      "line": 100,
+      "judgment": "no",
+      "reason": "a fact about timing"
     },
     "split|A family that finished First Taste first gets it ready when it continues, before Session 39. → Tell your child how many rooms to use for the hotel guess.|1": {
       "line": 102,
       "judgment": "no",
       "reason": "an instruction"
     },
-    "split|Tell your child how many rooms to use for the hotel guess. → If someone comes for only part of the trip, tell your child who is there on which days, by day number with no dates, so they can make the optional note.|1": {
-      "line": 102,
-      "judgment": "device",
-      "reason": "by day number / with no dates"
-    },
-    "split|If someone comes for only part of the trip, tell your child who is there on which days, by day number with no dates, so they can make the optional note. → If your child made the part-trip note, use it when you decide the rooms and book the long rides, so each night and each leg fits everyone who is there.|1": {
+    "split|Tell your child how many rooms to use for the hotel guess. → If someone comes for only part of the trip, tell your child who is there on which days, by day number, so they can make the optional note.|1": {
       "line": 102,
       "judgment": "no",
-      "reason": "a conditional instruction with its purpose"
+      "reason": "a conditional instruction"
+    },
+    "split|If someone comes for only part of the trip, tell your child who is there on which days, by day number, so they can make the optional note. → If your child made the part-trip note, use it when you decide the rooms and book the long rides, so each night and each leg fits everyone who is there.|1": {
+      "line": 102,
+      "judgment": "no",
+      "reason": "a conditional instruction"
     }
   },
   "framework/sessions/phase_06_lodging_food_budget/34_neighborhoods_and_hotel_location.md": {
@@ -27622,17 +27622,12 @@
       "judgment": "no",
       "reason": "a statement of roles; rejects nothing by itself"
     },
-    "split|You compare places, and the grown-ups book them. → If a card runs past two pages, keep Pros, Cons and Review themes short.|1": {
+    "split|You compare places, and the grown-ups book them. → If a card runs past two pages, shorten Pros, Cons and Review themes, and keep the cost, the date you checked, the verification rows and the decision row in full.|1": {
       "line": 35,
       "judgment": "no",
-      "reason": "a conditional instruction"
+      "reason": "an instruction for a long card"
     },
-    "split|If a card runs past two pages, keep Pros, Cons and Review themes short. → The cost, the date you checked, the verification rows and the decision row always stay.|1": {
-      "line": 35,
-      "judgment": "split",
-      "reason": "keep Pros, Cons and Review themes short / the cost, the date you checked, the verification rows and the decision row always stay"
-    },
-    "split|The cost, the date you checked, the verification rows and the decision row always stay. → Those are what make the card trustworthy.|1": {
+    "split|If a card runs past two pages, shorten Pros, Cons and Review themes, and keep the cost, the date you checked, the verification rows and the decision row in full. → Those are what make the card trustworthy.|1": {
       "line": 35,
       "judgment": "no",
       "reason": "a reason"
@@ -27757,25 +27752,15 @@
       "judgment": "no",
       "reason": "a condition"
     },
-    "device|You compare, and the adults book.|1": {
+    "device|You compare, and the adults book: every sign-in, account and booking detail is yours.|1": {
       "line": 71,
       "judgment": "no",
-      "reason": "a statement of roles; rejects nothing by itself"
+      "reason": "a role statement naming the actor"
     },
-    "split|You compare, and the adults book. → Your child never signs in, creates an account or enters any details on a booking site.|1": {
-      "line": 71,
-      "judgment": "split",
-      "reason": "you compare, and the adults book / your child never signs in, creates an account or enters any details on a booking site"
-    },
-    "split|Your child never signs in, creates an account or enters any details on a booking site. → If they hit a sign-in screen, that is where they stop and fetch you.|1": {
+    "split|You compare, and the adults book: every sign-in, account and booking detail is yours. → If your child hits a sign-in screen, that is where they stop and fetch you.|1": {
       "line": 71,
       "judgment": "no",
-      "reason": "a conditional instruction that only recasts the rejection judged under 60171"
-    },
-    "split|If they hit a sign-in screen, that is where they stop and fetch you. → The how-many rule is written into the Steps on purpose, so stopping is built in.|1": {
-      "line": 73,
-      "judgment": "no",
-      "reason": "a reason"
+      "reason": "an instruction for the sign-in screen"
     },
     "split|The how-many rule is written into the Steps on purpose, so stopping is built in. → At least one card per overnight base is a finished job.|1": {
       "line": 73,
@@ -27786,6 +27771,11 @@
       "line": 73,
       "judgment": "no",
       "reason": "a release after a claim of sufficiency, as recorded for 'One good entry is enough.'"
+    },
+    "split|If your child hits a sign-in screen, that is where they stop and fetch you. → The how-many rule is written into the Steps on purpose, so stopping is built in.|1": {
+      "line": 73,
+      "judgment": "no",
+      "reason": "a fact about the Steps"
     },
     "split|A three- or four-base trip does not need eight cards. → The cost row is per room, or per person where a place charges that way, and is an example to re-check.|1": {
       "line": 75,
@@ -28623,20 +28613,20 @@
       "judgment": "no",
       "reason": "an instruction naming the three guesses"
     },
-    "split|You'll make three guesses for each kind of cost: low, medium and high. → Three guesses are easier to trust than one exact number.|1": {
+    "split|You'll make three guesses for each kind of cost: low, medium and high. → Three guesses show the range a cost can land in.|1": {
       "line": 25,
-      "judgment": "device",
-      "reason": "comparison preferring one way to estimate: three guesses / one exact number"
-    },
-    "split|Three guesses are easier to trust than one exact number. → Here's how one row works.|1": {
-      "line": 27,
       "judgment": "no",
-      "reason": "a lead-in to the worked example"
+      "reason": "a reason stated positively"
     },
     "split|Here's how one row works. → Fill in the blanks, and you have your medium guess for food:|1": {
       "line": 27,
       "judgment": "no",
       "reason": "an instruction"
+    },
+    "split|Three guesses show the range a cost can land in. → Here's how one row works.|1": {
+      "line": 27,
+      "judgment": "no",
+      "reason": "an introduction to an example"
     },
     "device|Round to easy numbers first.|1": {
       "line": 33,
@@ -28653,11 +28643,6 @@
       "judgment": "no",
       "reason": "a row heading fragment stating the rule"
     },
-    "split|One price for each person. → Use the adult price for everyone, even where a child pays less.|1": {
-      "line": 35,
-      "judgment": "no",
-      "reason": "an instruction whose concessive clause (even where a child pays less) names a case, not an option; recorded even-if sentences are no, as is 61337 on Session 49"
-    },
     "split|Use the adult price for everyone, even where a child pays less. → Your guess may come out a little high, and a little high is safe for a budget.|1": {
       "line": 35,
       "judgment": "no",
@@ -28667,6 +28652,11 @@
       "line": 35,
       "judgment": "no",
       "reason": "a fact about who works out the exact numbers; nothing is rejected"
+    },
+    "split|One price for each person. → Use the adult price for everyone, even where a child pays less.|1": {
+      "line": 35,
+      "judgment": "no",
+      "reason": "an instruction whose concessive clause (even where a child pays less) names a case, not an option; concessive even-if sentences are no, as is the stay-in-your-spot sentence on Session 49"
     },
     "device|Food.|1": {
       "line": 37,
@@ -28998,20 +28988,20 @@
       "judgment": "no",
       "reason": "a fact listing the child's slices"
     },
-    "split|Your child is estimating the slices they control: food, local transit, activities and souvenirs, with lodging joining at Session 39. → The long-distance row is a flag for you: getting between cities, or far out from a base, stays on your own page, outside their subtotal.|1": {
-      "line": 93,
-      "judgment": "device",
-      "reason": "stays on your own page / outside their subtotal (exclusion with the inclusion named beside it)"
-    },
-    "split|The long-distance row is a flag for you: getting between cities, or far out from a base, stays on your own page, outside their subtotal. → The cost of getting there stays on your own page, as the money and budget guidance explains.|1": {
-      "line": 93,
-      "judgment": "no",
-      "reason": "a fact with a pointer; parallel to the sentence before, not contrasted"
-    },
     "split|The cost of getting there stays on your own page, as the money and budget guidance explains. → Rounding and a calculator are always allowed, and you may do the arithmetic while your child does the reasoning.|1": {
       "line": 93,
       "judgment": "no",
       "reason": "a permission and a division of roles; nothing is rejected"
+    },
+    "split|Your child is estimating the slices they control: food, local transit, activities and souvenirs, with lodging joining at Session 39. → The long-distance row is a flag for you: getting between cities, or far out from a base, goes on your own page.|1": {
+      "line": 93,
+      "judgment": "no",
+      "reason": "a flag and where the cost goes"
+    },
+    "split|The long-distance row is a flag for you: getting between cities, or far out from a base, goes on your own page. → The cost of getting there stays on your own page, as the money and budget guidance explains.|1": {
+      "line": 93,
+      "judgment": "no",
+      "reason": "a fact with its source"
     },
     "split|Rounding and a calculator are always allowed, and you may do the arithmetic while your child does the reasoning. → Every figure here is an example to re-check with a date.|1": {
       "line": 95,
@@ -29030,15 +29020,15 @@
       "judgment": "no",
       "reason": "a navigation line"
     },
-    "device|You are here: Phase 6 (Lodging, Food, and Budget). → Not a First Taste step.|1": {
-      "line": 5,
-      "judgment": "no",
-      "reason": "mandated nav-line label, as recorded in round 7"
-    },
     "split|Not a First Taste step. → Previous: 38 Daily Cost Estimates | Next: 40 Realistic Day Planning|1": {
       "line": 5,
       "judgment": "no",
       "reason": "a navigation line"
+    },
+    "device|You are here: Phase 6 (Lodging, Food, and Budget). → Not a First Taste step.|1": {
+      "line": 5,
+      "judgment": "no",
+      "reason": "mandated nav-line label, as the student session template requires"
     },
     "device|For parents:|1": {
       "line": 7,
@@ -29615,15 +29605,15 @@
       "judgment": "device",
       "reason": "stays on your own page / never copied into their running total"
     },
-    "split|Your cost of getting there stays on your own page and is never copied into their running total. → The budget estimate page says in as many words that getting there is the grown-ups' number, with nothing for your child to fill in.|1": {
-      "line": 91,
-      "judgment": "device",
-      "reason": "the grown-ups' number / nothing for your child to fill in (what is included named beside what is left out)"
-    },
-    "split|The budget estimate page says in as many words that getting there is the grown-ups' number, with nothing for your child to fill in. → That is deliberate, and your child neither researches nor books flights.|1": {
+    "split|Your cost of getting there stays on your own page and is never copied into their running total. → The budget estimate page says in as many words that getting there is the grown-ups' number.|1": {
       "line": 91,
       "judgment": "no",
-      "reason": "a statement of design scope (no flight research or booking); a new fact, not a recast"
+      "reason": "a fact about the budget page; the rejection is judged under the sentence before"
+    },
+    "split|The budget estimate page says in as many words that getting there is the grown-ups' number. → That is deliberate, and your child neither researches nor books flights.|1": {
+      "line": 91,
+      "judgment": "split",
+      "reason": "a role boundary after the adults' task: getting there is the grown-ups' number / your child neither researches nor books flights"
     },
     "split|That is deliberate, and your child neither researches nor books flights. → Your own sanity check is an addition.|1": {
       "line": 93,
@@ -29650,13 +29640,8 @@
       "judgment": "no",
       "reason": "a parallel condition"
     },
-    "split|If you drive, it is the drive's own costs. → Once any flights are booked, update your check with the real fares; there is no flight line on your child's page to replace.|1": {
+    "split|If you drive, it is the drive's own costs. → Once any flights are booked, update your own check with the real fares.|1": {
       "line": 93,
-      "judgment": "device",
-      "reason": "update your check with the real fares / no flight line on your child's page to replace"
-    },
-    "split|Once any flights are booked, update your check with the real fares; there is no flight line on your child's page to replace. → Read the result as a partial floor.|1": {
-      "line": 95,
       "judgment": "no",
       "reason": "an instruction"
     },
@@ -29665,15 +29650,20 @@
       "judgment": "no",
       "reason": "a caveat: what the floor covers and what it still leaves out; nothing is rejected"
     },
-    "device|So treat it as \"are we in the right range?\", and never as what the trip will cost.|1": {
-      "line": 95,
-      "judgment": "device",
-      "reason": "treat it as \"are we in the right range?\" / never as what the trip will cost"
-    },
-    "split|So treat it as \"are we in the right range?\", and never as what the trip will cost. → The money and budget guidance explains the split.|1": {
+    "split|Once any flights are booked, update your own check with the real fares. → Read the result as a partial floor.|1": {
       "line": 95,
       "judgment": "no",
-      "reason": "a pointer to guidance"
+      "reason": "an instruction"
+    },
+    "split|It now covers all five slices plus getting there, and it still leaves out getting between cities, insurance, entry costs and phone service. → So use it to answer one question: are we in the right range?|1": {
+      "line": 95,
+      "judgment": "no",
+      "reason": "a question the reader answers"
+    },
+    "split|So use it to answer one question: are we in the right range? → The money and budget guidance explains the split.|1": {
+      "line": 95,
+      "judgment": "no",
+      "reason": "a pointer to a source"
     },
     "split|The money and budget guidance explains the split. → Your child compares a matching piece of their estimate with the band, because the band is a rate or a tier and a subtotal is a whole-trip amount.|1": {
       "line": 97,
@@ -30234,20 +30224,15 @@
       "judgment": "no",
       "reason": "an instruction"
     },
-    "device|Day cards come after Checkpoint 4, once the grown-ups have settled your route and how long the trip is.|1": {
+    "device|Day cards come after Checkpoint 4.|1": {
       "line": 25,
       "judgment": "no",
-      "reason": "a fact of timing"
+      "reason": "a fact of order"
     },
-    "split|Day cards come after Checkpoint 4, once the grown-ups have settled your route and how long the trip is. → Cards built before that usually have to be redone.|1": {
+    "split|Day cards come after Checkpoint 4. → By then the grown-ups have settled your route and how long the trip is, so the cards you build now can last.|1": {
       "line": 25,
-      "judgment": "split",
-      "reason": "day cards come after Checkpoint 4 / cards built before that usually have to be redone"
-    },
-    "split|Cards built before that usually have to be redone. → Make one block card for each city-stay on the route the grown-ups approved: one card for all the days you sleep in the same place, with a row for each of those days.|1": {
-      "line": 27,
       "judgment": "no",
-      "reason": "an instruction"
+      "reason": "a reason with its consequence"
     },
     "split|Make one block card for each city-stay on the route the grown-ups approved: one card for all the days you sleep in the same place, with a row for each of those days. → A trip with one base has one card.|1": {
       "line": 27,
@@ -30268,6 +30253,11 @@
       "line": 27,
       "judgment": "no",
       "reason": "a condition"
+    },
+    "split|By then the grown-ups have settled your route and how long the trip is, so the cards you build now can last. → Make one block card for each city-stay on the route the grown-ups approved: one card for all the days you sleep in the same place, with a row for each of those days.|1": {
+      "line": 27,
+      "judgment": "no",
+      "reason": "an instruction"
     },
     "device|Set your timer for 20 minutes.|1": {
       "line": 29,
@@ -30349,16 +30339,6 @@
       "judgment": "no",
       "reason": "an instruction"
     },
-    "split|Fill in each day's transit notes too, and its cost. → Start from your Session 38 medium total for one day, and put that day's own tickets in place of its activities guess.|1": {
-      "line": 31,
-      "judgment": "device",
-      "reason": "that day's own tickets in place of its activities guess"
-    },
-    "split|Start from your Session 38 medium total for one day, and put that day's own tickets in place of its activities guess. → That total counts your whole group.|1": {
-      "line": 31,
-      "judgment": "no",
-      "reason": "a fact"
-    },
     "split|That total counts your whole group. → On a day when someone is away, write \"fewer of us\" beside it: it's a little high then, and a grown-up can lower it.|1": {
       "line": 31,
       "judgment": "no",
@@ -30373,6 +30353,16 @@
       "line": 31,
       "judgment": "no",
       "reason": "a condition"
+    },
+    "split|Fill in each day's transit notes too, and its cost. → Start from your Session 38 medium total for one day, and use that day's own tickets for its activities part.|1": {
+      "line": 31,
+      "judgment": "no",
+      "reason": "an instruction"
+    },
+    "split|Start from your Session 38 medium total for one day, and use that day's own tickets for its activities part. → That total counts your whole group.|1": {
+      "line": 31,
+      "judgment": "no",
+      "reason": "a fact"
     },
     "device|Save the cards in order, and stop between sittings whenever you like.|1": {
       "line": 32,
@@ -30474,15 +30464,15 @@
       "judgment": "no",
       "reason": "a claim; its split with the next sentence is judged under that item"
     },
-    "split|One card per city-stay is the finished shape. → Per-day cards are extra, and only worth doing once the dates are firm.|1": {
-      "line": 54,
-      "judgment": "split",
-      "reason": "one card per city-stay is the finished shape / per-day cards are extra"
-    },
-    "device|Per-day cards are extra, and only worth doing once the dates are firm. → \"Not decided yet\" is fine in any box.|1": {
+    "split|One card per city-stay is the finished shape. → Once the dates are firm, per-day cards are an extra you can add.|1": {
       "line": 54,
       "judgment": "no",
-      "reason": "a permission"
+      "reason": "a permission for later"
+    },
+    "device|Once the dates are firm, per-day cards are an extra you can add. → \"Not decided yet\" is fine in any box.|1": {
+      "line": 54,
+      "judgment": "no",
+      "reason": "the quoted not decided yet is a field value, not a rejection"
     },
     "device|Fill in the Source notes on each card.|1": {
       "line": 58,
@@ -30534,45 +30524,35 @@
       "judgment": "no",
       "reason": "a fact with an instruction"
     },
-    "split|This is the heaviest stretch in Phase 7, so let it run over several sittings. → The block card per city-stay is the default for every child, on trip-realism grounds: separate day cards built before dates and travel are firm are the most work and the most likely to be thrown away.|1": {
-      "line": 74,
-      "judgment": "device",
-      "reason": "the block card per city-stay is the default / separate day cards built before dates and travel are firm are the most work"
-    },
-    "split|The block card per city-stay is the default for every child, on trip-realism grounds: separate day cards built before dates and travel are firm are the most work and the most likely to be thrown away. → It also happens to suit a child who finds writing hard.|1": {
+    "split|This is the heaviest stretch in Phase 7, so let it run over several sittings. → The block card per city-stay is the default for every child, on trip-realism grounds: it holds up when dates and travel change.|1": {
       "line": 74,
       "judgment": "no",
-      "reason": "a reason"
+      "reason": "a default with its reason; no alternative is named"
     },
-    "split|It also happens to suit a child who finds writing hard. → The date row asks for a rough window.|1": {
-      "line": 76,
+    "split|The block card per city-stay is the default for every child, on trip-realism grounds: it holds up when dates and travel change. → It also happens to suit a child who finds writing hard.|1": {
+      "line": 74,
       "judgment": "no",
-      "reason": "a fact; its split with the next sentence is judged under that item"
+      "reason": "a fact"
     },
-    "split|The date row asks for a rough window. → Exact booked dates stay off every working page, on paper and in a shared folder alike, as the privacy and safety page says.|1": {
-      "line": 76,
-      "judgment": "split",
-      "reason": "the date row asks for a rough window / exact booked dates stay off every working page"
-    },
-    "split|Exact booked dates stay off every working page, on paper and in a shared folder alike, as the privacy and safety page says. → The card filenames are numbered, with no city names, for the same kind of reason.|1": {
+    "split|It also happens to suit a child who finds writing hard. → The date row asks for a rough window, because the privacy and safety page keeps exact booked dates off every working page, on paper and in a shared folder alike.|1": {
       "line": 76,
       "judgment": "device",
-      "reason": "numbered / with no city names"
+      "reason": "one sentence names both sides: a rough window / exact booked dates kept off every working page"
     },
-    "split|The card filenames are numbered, with no city names, for the same kind of reason. → If you booked dates in a different season from the Checkpoint 1 recommendation, tell your child which season it is.|1": {
+    "split|The date row asks for a rough window, because the privacy and safety page keeps exact booked dates off every working page, on paper and in a shared folder alike. → The card filenames are numbered for the same kind of reason.|1": {
+      "line": 76,
+      "judgment": "no",
+      "reason": "a fact with a reason"
+    },
+    "split|The card filenames are numbered for the same kind of reason. → If you booked dates in a different season from the Checkpoint 1 recommendation, tell your child which season it is.|1": {
       "line": 78,
       "judgment": "no",
-      "reason": "a condition"
+      "reason": "a conditional instruction"
     },
-    "split|If you booked dates in a different season from the Checkpoint 1 recommendation, tell your child which season it is. → A broad word such as \"late spring\" is enough, with no dates.|1": {
+    "split|If you booked dates in a different season from the Checkpoint 1 recommendation, tell your child which season it is. → A broad word such as \"late spring\" is enough.|1": {
       "line": 78,
-      "judgment": "device",
-      "reason": "a broad word such as \"late spring\" is enough / with no dates"
-    },
-    "split|A broad word such as \"late spring\" is enough, with no dates. → The lighter page.|1": {
-      "line": 80,
       "judgment": "no",
-      "reason": "a label"
+      "reason": "a sufficiency statement, as on Session 43"
     },
     "split|The lighter page. → From Phase 7 on, Steps and Workspace are short and your child sets their own Start Here.|1": {
       "line": 80,
@@ -30593,6 +30573,11 @@
       "line": 80,
       "judgment": "no",
       "reason": "a fact"
+    },
+    "split|A broad word such as \"late spring\" is enough. → The lighter page.|1": {
+      "line": 80,
+      "judgment": "no",
+      "reason": "a sufficiency statement, then a bold lead-in label"
     }
   },
   "framework/sessions/phase_07_itinerary_building/42_reservations_and_timed_entries.md": {
@@ -30681,15 +30666,10 @@
       "judgment": "no",
       "reason": "a claim; its split with the next sentence is judged under that item"
     },
-    "split|The fix is knowing which items are on that clock, so nobody gets surprised. → Nobody has to rush the dates.|1": {
+    "split|The fix is knowing which items are on that clock, so nobody gets surprised. → The dates can take the time they need.|1": {
       "line": 25,
-      "judgment": "split",
-      "reason": "the fix is knowing which items are on that clock / nobody has to rush the dates"
-    },
-    "split|Nobody has to rush the dates. → If your family's dates are already booked, the list works the other way round.|1": {
-      "line": 27,
       "judgment": "no",
-      "reason": "a condition"
+      "reason": "a recast stated positively; nothing is rejected"
     },
     "split|If your family's dates are already booked, the list works the other way round. → Nothing waits on the dates any more, so it becomes an act-early list.|1": {
       "line": 27,
@@ -30715,6 +30695,11 @@
       "line": 27,
       "judgment": "no",
       "reason": "a fact with a reason"
+    },
+    "split|The dates can take the time they need. → If your family's dates are already booked, the list works the other way round.|1": {
+      "line": 27,
+      "judgment": "no",
+      "reason": "a condition that changes the list"
     },
     "device|Go through your day cards and circle anything that might need booking.|1": {
       "line": 29,
@@ -31153,20 +31138,15 @@
       "judgment": "no",
       "reason": "an instruction following a reason"
     },
-    "split|Write it as a flag for them, and keep the city with your special pick in it. → They can make that change at Checkpoint 5.|1": {
+    "split|Write it as a flag for them, and keep the city with your special pick in it. → They can make that change at Checkpoint 5, and today you can make days gentler inside your route.|1": {
       "line": 34,
       "judgment": "no",
-      "reason": "a fact (when they can make the change)"
+      "reason": "who can change what, and when; nothing is rejected"
     },
-    "split|They can make that change at Checkpoint 5. → Here, make days gentler inside your route.|1": {
-      "line": 34,
-      "judgment": "split",
-      "reason": "they can make that change at Checkpoint 5 / here, make days gentler inside your route"
-    },
-    "split|Here, make days gentler inside your route. → If your dates are booked, that row holds the booked trip length, and the length stays.|1": {
+    "split|They can make that change at Checkpoint 5, and today you can make days gentler inside your route. → If your dates are booked, that row holds the booked trip length, and the length stays.|1": {
       "line": 34,
       "judgment": "no",
-      "reason": "a condition and a limit"
+      "reason": "a conditional fact"
     },
     "split|If your dates are booked, that row holds the booked trip length, and the length stays. → Walking and stairs.|1": {
       "line": 36,
@@ -31218,20 +31198,10 @@
       "judgment": "no",
       "reason": "an instruction with examples"
     },
-    "split|Mark any spot that might be hard for an older traveler or someone who can't manage stairs, such as a stair-heavy station, a hilltop place, or a station that might have no elevator. → You notice and flag.|1": {
+    "split|Mark any spot that might be hard for an older traveler or someone who can't manage stairs, such as a stair-heavy station, a hilltop place, or a station that might have no elevator. → You notice and flag, and the grown-ups find the fix.|1": {
       "line": 40,
       "judgment": "no",
-      "reason": "states the child's role"
-    },
-    "split|You notice and flag. → Finding the fix is the grown-ups' part.|1": {
-      "line": 40,
-      "judgment": "split",
-      "reason": "you notice and flag / finding the fix is the grown-ups' part"
-    },
-    "split|Finding the fix is the grown-ups' part. → If your special pick can't work for everyone.|1": {
-      "line": 42,
-      "judgment": "no",
-      "reason": "a lead-in label (a condition)"
+      "reason": "a role statement naming both actors"
     },
     "split|If your special pick can't work for everyone. → A grown-up may tell you your special pick isn't doable for every traveler.|1": {
       "line": 42,
@@ -31257,6 +31227,11 @@
       "line": 42,
       "judgment": "no",
       "reason": "an instruction"
+    },
+    "split|You notice and flag, and the grown-ups find the fix. → If your special pick can't work for everyone.|1": {
+      "line": 42,
+      "judgment": "no",
+      "reason": "a bold condition label; can't sits inside the condition"
     },
     "split|Then go down the checks again for that day. → Taking care of yourself on the trip.|1": {
       "line": 44,
@@ -31543,15 +31518,10 @@
       "judgment": "no",
       "reason": "a condition and an instruction"
     },
-    "split|If you booked dates in a different season from the Checkpoint 1 recommendation, tell your child which season it is, for the hot-weather check. → A broad word such as \"late spring\" is enough, with no dates.|1": {
+    "split|If you booked dates in a different season from the Checkpoint 1 recommendation, tell your child which season it is, for the hot-weather check. → A broad word such as \"late spring\" is enough.|1": {
       "line": 109,
-      "judgment": "device",
-      "reason": "a broad word such as late spring / with no dates (what is excluded named beside what is enough)"
-    },
-    "split|A broad word such as \"late spring\" is enough, with no dates. → Your child flags accessibility trouble spots, and you handle the fixes.|1": {
-      "line": 111,
       "judgment": "no",
-      "reason": "a division of roles told to the parent; rejects no named alternative"
+      "reason": "a sufficiency statement"
     },
     "split|Your child flags accessibility trouble spots, and you handle the fixes. → Step-free routes, station elevators, accessible lodging and luggage help are yours to verify; the adult-only logistics page lists them.|1": {
       "line": 111,
@@ -31562,6 +31532,11 @@
       "line": 111,
       "judgment": "no",
       "reason": "a pointer to the pack page"
+    },
+    "split|A broad word such as \"late spring\" is enough. → Your child flags accessibility trouble spots, and you handle the fixes.|1": {
+      "line": 111,
+      "judgment": "no",
+      "reason": "a role statement naming both actors"
     },
     "split|The walking and stair detail for your destination is in the pack's transportation basics page. → The \"taking care of yourself\" block gives your child the words to speak up early.|1": {
       "line": 113,
@@ -31685,15 +31660,15 @@
       "judgment": "no",
       "reason": "a field label"
     },
-    "split|Materials: your City Research Cards (starred sights), a Cut List page, a Backup Plan page, a My Calls page (a blank sheet -- start one if you do not have it yet), and your family's current travel assumptions page (for the budget band, when a grown-up checks your special pick). → On the Core path, your My Calls page, with its must-do list and special pick, takes the place of the starred sights, and you bring the skip and save-for-future notes from Checkpoints 2 and 3, the strong maybes from Checkpoint 3, your day cards and Reservation Watchlist (to cross off anything you cut), your attraction cards and your Session 39 budget summary (if your special pick hits a block), your When the Plan Changes card (for anything you cut, or a block), and your route map notes from Session 28, with a device with a map app or map website (kid-safe filter on) if a swap needs a new travel time.|1": {
+    "split|Materials: your City Research Cards (starred sights), a Cut List page, a Backup Plan page, a My Calls page (a blank sheet -- start one if you do not have it yet), and your family's current travel assumptions page (for the budget band, when a grown-up checks your special pick). → On the Core path, you bring your My Calls page, with its must-do list and special pick, the skip and save-for-future notes from Checkpoints 2 and 3, the strong maybes from Checkpoint 3, your day cards and Reservation Watchlist (to cross off anything you cut), your attraction cards and your Session 39 budget summary (if your special pick hits a block), your When the Plan Changes card (for anything you cut, or a block), and your route map notes from Session 28, with a device with a map app or map website (kid-safe filter on) if a swap needs a new travel time.|1": {
       "line": 17,
       "judgment": "no",
-      "reason": "a field label (materials list); the substitution is in the with sentence, judged under its own item"
+      "reason": "a materials list; do not have it yet is a condition"
     },
-    "device|On the Core path, your My Calls page, with its must-do list and special pick, takes the place of the starred sights, and you bring the skip and save-for-future notes from Checkpoints 2 and 3, the strong maybes from Checkpoint 3, your day cards and Reservation Watchlist (to cross off anything you cut), your attraction cards and your Session 39 budget summary (if your special pick hits a block), your When the Plan Changes card (for anything you cut, or a block), and your route map notes from Session 28, with a device with a map app or map website (kid-safe filter on) if a swap needs a new travel time.|1": {
+    "device|On the Core path, you bring your My Calls page, with its must-do list and special pick, the skip and save-for-future notes from Checkpoints 2 and 3, the strong maybes from Checkpoint 3, your day cards and Reservation Watchlist (to cross off anything you cut), your attraction cards and your Session 39 budget summary (if your special pick hits a block), your When the Plan Changes card (for anything you cut, or a block), and your route map notes from Session 28, with a device with a map app or map website (kid-safe filter on) if a swap needs a new travel time.|1": {
       "line": 17,
-      "judgment": "device",
-      "reason": "your My Calls page takes the place of the starred sights (X in place of a named Y)"
+      "judgment": "no",
+      "reason": "a list of what to bring"
     },
     "device|Finish your must-see list, set aside what doesn't fit, and make a couple of backup plans.|1": {
       "line": 21,
@@ -31720,15 +31695,15 @@
       "judgment": "no",
       "reason": "a statement of where to start"
     },
-    "split|Look at all the top sights on those cards and circle your favorite instead.) → On the Core path, open your My Calls page instead, and read your must-do list once.|1": {
-      "line": 27,
-      "judgment": "device",
-      "reason": "open your My Calls page instead / the starred sights of the First Taste start (instead after a claim)"
-    },
-    "split|On the Core path, open your My Calls page instead, and read your must-do list once. → That's your start.|1": {
+    "split|Look at all the top sights on those cards and circle your favorite instead.) → On the Core path, open your My Calls page and read your must-do list once.|1": {
       "line": 27,
       "judgment": "no",
-      "reason": "a statement of where to start"
+      "reason": "a path-specific instruction"
+    },
+    "split|On the Core path, open your My Calls page and read your must-do list once. → That's your start.|1": {
+      "line": 27,
+      "judgment": "no",
+      "reason": "a pointer"
     },
     "split|A good planner can't fit everything. → And that's fine.|1": {
       "line": 31,
@@ -32115,15 +32090,15 @@
       "judgment": "no",
       "reason": "an instruction with its reason"
     },
-    "split|This session teaches \"good enough is good enough,\" so let short lists count as done. → On the Core path, the pick was chosen at Session 26 and acknowledged at Checkpoint 3, or replaced after a block the way Session 26 chose it, so confirm it still holds and do not run the choice again.|1": {
-      "line": 93,
-      "judgment": "device",
-      "reason": "X, and never Y: confirm it still holds / do not run the choice again"
-    },
-    "split|On the Core path, the pick was chosen at Session 26 and acknowledged at Checkpoint 3, or replaced after a block the way Session 26 chose it, so confirm it still holds and do not run the choice again. → If one of the three blocks applies now, name it, and your child replaces the pick with you, as in Session 43; write \"got it\" beside the new pick.|1": {
+    "split|This session teaches \"good enough is good enough,\" so let short lists count as done. → On the Core path, the pick was chosen at Session 26 and acknowledged at Checkpoint 3, or replaced after a block the way Session 26 chose it, so confirm it still holds.|1": {
       "line": 93,
       "judgment": "no",
-      "reason": "a condition and an instruction"
+      "reason": "a path-specific instruction"
+    },
+    "split|On the Core path, the pick was chosen at Session 26 and acknowledged at Checkpoint 3, or replaced after a block the way Session 26 chose it, so confirm it still holds. → If one of the three blocks applies now, name it, and your child replaces the pick with you, as in Session 43; write \"got it\" beside the new pick.|1": {
+      "line": 93,
+      "judgment": "no",
+      "reason": "a conditional instruction"
     }
   },
   "framework/sessions/phase_07_itinerary_building/45_full_itinerary_draft.md": {
@@ -33379,7 +33354,7 @@
     "split|You are done when your sheet has the words you'd actually say (hello, thank you, excuse me and please), plus two or three manners you want to remember, and it fits on one page you can carry. → Six good lines beat twenty you'll never use, and a blank \"how it sounds\" box is fine.|1": {
       "line": 48,
       "judgment": "device",
-      "reason": "a comparison preferring one option (S51-52): six good lines / twenty you'll never use"
+      "reason": "a comparison preferring one option: six good lines / twenty you'll never use"
     },
     "split|Six good lines beat twenty you'll never use, and a blank \"how it sounds\" box is fine. → If your family decided to skip this session, you're done too.|1": {
       "line": 50,
@@ -34345,15 +34320,10 @@
       "judgment": "device",
       "reason": "a uniformed worker or the local police post, the main one / a shop's help, voluntary"
     },
-    "split|The pack names the kinds of help; a uniformed worker or the local police post is the main one, because a shop's help is voluntary. → A panicking child can carry out one rehearsed rule; a choice between two asks them to judge in the one moment they can't.|1": {
+    "split|The pack names the kinds of help; a uniformed worker or the local police post is the main one, because a shop's help is voluntary. → A panicking child can carry out one rehearsed rule without deciding anything.|1": {
       "line": 115,
-      "judgment": "device",
-      "reason": "one rehearsed rule a panicking child can carry out / a choice between two that asks them to judge"
-    },
-    "split|A panicking child can carry out one rehearsed rule; a choice between two asks them to judge in the one moment they can't. → The card carries the minimum needed to reunite and nothing more.|1": {
-      "line": 117,
       "judgment": "no",
-      "reason": "a limit; nothing more names no alternative"
+      "reason": "a reason for one rule; nothing named is rejected"
     },
     "split|The card carries the minimum needed to reunite and nothing more. → The filled card never goes into the repository or a shared folder, is never photographed into an AI tool, and is never posted.|1": {
       "line": 117,
@@ -34364,6 +34334,11 @@
       "line": 117,
       "judgment": "no",
       "reason": "a fact"
+    },
+    "split|A panicking child can carry out one rehearsed rule without deciding anything. → The card carries the minimum needed to reunite and nothing more.|1": {
+      "line": 117,
+      "judgment": "no",
+      "reason": "a limit; nothing more names no alternative, as this sentence was judged before the rewrite"
     },
     "split|Passports, entry, insurance and the rest of the checklist are on the adult-only logistics page, and every rule on it is checked on official sources close to travel. → The lighter page.|1": {
       "line": 119,
@@ -34467,15 +34442,10 @@
       "judgment": "no",
       "reason": "a reassurance that equates the two ways; neither is preferred"
     },
-    "device|If you didn't file as you went, you haven't fallen behind.|1": {
+    "split|Both ways end up in the same place today. → Doing the tabs here, once, at the end, is the usual way, so if you're filing everything now, you're on track.|1": {
       "line": 25,
       "judgment": "no",
-      "reason": "a conditional reassurance; by itself it rejects no named alternative"
-    },
-    "split|If you didn't file as you went, you haven't fallen behind. → Doing the tabs here, once, at the end, is the usual way.|1": {
-      "line": 25,
-      "judgment": "split",
-      "reason": "you haven't fallen behind / doing the tabs here, once, at the end, is the usual way"
+      "reason": "a reassurance stated positively"
     },
     "device|Set your timer for 20 minutes, and make the eleven dividers, in the order in the Workspace.|1": {
       "line": 27,
@@ -34894,15 +34864,15 @@
       "judgment": "no",
       "reason": "an instruction"
     },
-    "split|There's no single required way to present. → Every one of these is a full way to do it, and you pick the one that suits you:|1": {
-      "line": 33,
-      "judgment": "split",
-      "reason": "there's no single required way to present / every one of these is a full way to do it"
-    },
-    "device|Every one of these is a full way to do it, and you pick the one that suits you:|1": {
+    "device|Every way here counts.|1": {
       "line": 33,
       "judgment": "no",
-      "reason": "introduces the list; the claim side of the split judged under 61493"
+      "reason": "a lead-in stated positively"
+    },
+    "split|Every way here counts. → Each one is a full way to present, and you pick the one that suits you:|1": {
+      "line": 33,
+      "judgment": "no",
+      "reason": "introduces the list"
     },
     "device|Present live.|1": {
       "line": 35,
@@ -35054,15 +35024,15 @@
       "judgment": "no",
       "reason": "a fact"
     },
-    "split|They carry the change back with their When the Plan Changes card before they build the outline. → The budget line is your child's subtotal for the parts they chose.|1": {
-      "line": 79,
-      "judgment": "no",
-      "reason": "a fact; the claim side of the split judged under 61526"
-    },
     "split|The budget line is your child's subtotal for the parts they chose. → Getting there, getting between cities, insurance, entry costs and phone service stay on your own page, so say so if anyone reads it as the trip's cost.|1": {
       "line": 79,
       "judgment": "split",
       "reason": "the budget line is your child's subtotal for the parts they chose / getting there and the other costs stay on your own page, not read as the trip's cost"
+    },
+    "split|They carry the change back with their When the Plan Changes card before they build the outline. → The budget line is your child's subtotal for the parts they chose.|1": {
+      "line": 79,
+      "judgment": "no",
+      "reason": "a fact; the split is judged on the pair that follows (the budget line / getting there and the other costs stay on your own page)"
     },
     "split|Getting there, getting between cities, insurance, entry costs and phone service stay on your own page, so say so if anyone reads it as the trip's cost. → The presentation accommodations and the rehearsal ladder live in the differentiation guide.|1": {
       "line": 81,
@@ -35106,11 +35076,6 @@
       "judgment": "no",
       "reason": "a navigation line"
     },
-    "device|You are here: Phase 8 (Readiness and Final). → Not a First Taste step.|1": {
-      "line": 5,
-      "judgment": "no",
-      "reason": "mandated nav-line label, as in the round 7 record"
-    },
     "split|Not a First Taste step. → This is Checkpoint 6 -- the family decides on your final recommendation.|1": {
       "line": 5,
       "judgment": "no",
@@ -35120,6 +35085,11 @@
       "line": 5,
       "judgment": "no",
       "reason": "a navigation line"
+    },
+    "device|You are here: Phase 8 (Readiness and Final). → Not a First Taste step.|1": {
+      "line": 5,
+      "judgment": "no",
+      "reason": "mandated nav-line label, as the student session template requires"
     },
     "device|For parents:|1": {
       "line": 7,
@@ -35634,7 +35604,7 @@
     "split|Praise the move, not the mind. → Try \"you handed every job to the right person.\"|1": {
       "line": 126,
       "judgment": "no",
-      "reason": "an example of the praise; the contrast is counted under 61639"
+      "reason": "an example of the praise; the contrast is counted on the sentence before it (praise the move / not the mind)"
     },
     "split|Try \"you handed every job to the right person.\" → If your child answers the lighter-or-deeper question with \"lighter,\" see Low-Bandwidth Parent Mode in time and effort and use the lighter forms.|1": {
       "line": 128,
@@ -35728,15 +35698,15 @@
       "judgment": "no",
       "reason": "a field label (materials list)"
     },
-    "split|Materials: your baseline reflection from Session 01, your budget estimate from Session 33, a Final Reflection page, and the plan pages you hand over: your Checkpoint 1 season, your city choice from Session 21, and your must-see list and special pick from Session 44. → On the Core path, your assembled binder from Session 50 holds the plan pages, with your must-do list and approved route in place of the must-see list and the city choice, and the final reflection page in your kit's ‹code› folder takes the place of the Final Reflection page.|1": {
-      "line": 15,
-      "judgment": "device",
-      "reason": "must-do list and approved route / in place of the must-see list and the city choice (X in place of a named Y)"
-    },
-    "split|On the Core path, your assembled binder from Session 50 holds the plan pages, with your must-do list and approved route in place of the must-see list and the city choice, and the final reflection page in your kit's ‹code› folder takes the place of the Final Reflection page. → On the Core path, also bring your follow-up questions from Sessions 51 and 52, Checkpoint 6's parent review form, your final recommendation packet, your checkpoint reflections, your minutes guesses and times from Sessions 16, 26, 35 and 45 (on your City A card, your Session 26 scoring tables, your Session 35 Hotel Comparison Cards and your itinerary draft), your budget summary from Session 39, your family's current travel assumptions page (for the budget band), and your First Taste reflection if this is your capstone re-run.|1": {
+    "split|Materials: your baseline reflection from Session 01, your budget estimate from Session 33, a Final Reflection page, and the plan pages you hand over: your Checkpoint 1 season, your city choice from Session 21, and your must-see list and special pick from Session 44. → On the Core path, your assembled binder from Session 50 holds the plan pages, with your must-do list and approved route, and you use the final reflection page in your kit's ‹code› folder.|1": {
       "line": 15,
       "judgment": "no",
-      "reason": "a field label (materials list)"
+      "reason": "a path-specific materials line"
+    },
+    "split|On the Core path, your assembled binder from Session 50 holds the plan pages, with your must-do list and approved route, and you use the final reflection page in your kit's ‹code› folder. → On the Core path, also bring your follow-up questions from Sessions 51 and 52, Checkpoint 6's parent review form, your final recommendation packet, your checkpoint reflections, your minutes guesses and times from Sessions 16, 26, 35 and 45 (on your City A card, your Session 26 scoring tables, your Session 35 Hotel Comparison Cards and your itinerary draft), your budget summary from Session 39, your family's current travel assumptions page (for the budget band), and your First Taste reflection if this is your capstone re-run.|1": {
+      "line": 15,
+      "judgment": "no",
+      "reason": "a path-specific materials line"
     },
     "device|Look back at what you learned, and hand your plan to the grown-ups.|1": {
       "line": 19,
@@ -35993,10 +35963,10 @@
       "judgment": "no",
       "reason": "an instruction"
     },
-    "split|Then hand over the full binder you put together in Session 50. → In it, your must-do list takes the place of the must-see list, and your approved route, with its nights, takes the place of the city choice.|1": {
+    "split|Then hand over the full binder you put together in Session 50. → In it are your must-do list and your approved route, with its nights.|1": {
       "line": 47,
-      "judgment": "device",
-      "reason": "your must-do list takes the place of the must-see list, your approved route takes the place of the city choice"
+      "judgment": "no",
+      "reason": "what the binder holds"
     },
     "device|Use your Final Reflection page for your answers, next to your Session 01 baseline so you can compare.|1": {
       "line": 51,
@@ -42981,10 +42951,10 @@
       "judgment": "no",
       "reason": "a release (nobody has to explain why) after a claim; the rejection of the medical reason is already inside the prior sentence"
     },
-    "split|On the Core path, Session 33's part-trip note writes them down. → Keep medical specifics with the adults, off this page.|1": {
+    "split|On the Core path, Session 33's part-trip note writes them down. → Medical specifics stay with the adults.|1": {
       "line": 28,
-      "judgment": "device",
-      "reason": "with the adults / off this page (as the recorded out loud rather than in the binder)"
+      "judgment": "no",
+      "reason": "a rule of who handles what, as recorded for the same sentence"
     },
     "split|Nobody has to explain why. → You can say your answers to an adult who writes them, or draw them, if that's easier.|1": {
       "line": 30,

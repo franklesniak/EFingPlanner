@@ -22,7 +22,7 @@ Write "Food" in the first row of the daily cost table in the Workspace. That's y
 
 ## Steps
 
-In Session 33 you estimated food and a hotel. Today you picture one ordinary day of the trip and guess what it costs. You'll make three guesses for each kind of cost: low, medium and high. Three guesses are easier to trust than one exact number.
+In Session 33 you estimated food and a hotel. Today you picture one ordinary day of the trip and guess what it costs. You'll make three guesses for each kind of cost: low, medium and high. Three guesses show the range a cost can land in.
 
 **Here's how one row works.** Fill in the blanks, and you have your medium guess for food:
 
@@ -90,6 +90,6 @@ If you have extra energy, make a second table for a day you change cities, or a 
 
 Before the session, tell your child the souvenir amount for one ordinary day, for the whole group, as a rough, kid-sized figure. After that, a five-minute check-in is enough. Look for three guesses on each row and a sensible "ask an adult" where your child hit a wall. That row is a complete answer.
 
-Your child is estimating the slices they control: food, local transit, activities and souvenirs, with lodging joining at Session 39. The long-distance row is a flag for you: getting between cities, or far out from a base, stays on your own page, outside their subtotal. The cost of getting there stays on your own page, as the [money and budget guidance](../../parent_guide/money_budget_guidance.md) explains. Rounding and a calculator are always allowed, and you may do the arithmetic while your child does the reasoning.
+Your child is estimating the slices they control: food, local transit, activities and souvenirs, with lodging joining at Session 39. The long-distance row is a flag for you: getting between cities, or far out from a base, goes on your own page. The cost of getting there stays on your own page, as the [money and budget guidance](../../parent_guide/money_budget_guidance.md) explains. Rounding and a calculator are always allowed, and you may do the arithmetic while your child does the reasoning.
 
 Every figure here is an example to re-check with a date. Currency and cash facts come from the destination pack's money basics page, and exchange rates move, so your child checks the current rate while you handle any real exchange.

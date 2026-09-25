@@ -32,7 +32,7 @@ In Session 34 you picked an area. Now you look at a few real places to stay, one
 
 Never sign in, make an account, or start a booking. If a site asks you to, stop and get a grown-up. You compare places, and the grown-ups book them.
 
-If a card runs past two pages, keep Pros, Cons and Review themes short. The cost, the date you checked, the verification rows and the decision row always stay. Those are what make the card trustworthy.
+If a card runs past two pages, shorten Pros, Cons and Review themes, and keep the cost, the date you checked, the verification rows and the decision row in full. Those are what make the card trustworthy.
 
 ## Workspace
 
@@ -68,7 +68,7 @@ If you have extra energy and you made two cards for one city, write the one thin
 
 ## Parent Notes
 
-You compare, and the adults book. Your child never signs in, creates an account or enters any details on a booking site. If they hit a sign-in screen, that is where they stop and fetch you.
+You compare, and the adults book: every sign-in, account and booking detail is yours. If your child hits a sign-in screen, that is where they stop and fetch you.
 
 The how-many rule is written into the Steps on purpose, so stopping is built in. At least one card per overnight base is a finished job. A three- or four-base trip does not need eight cards.
 

@@ -14,7 +14,7 @@ You are here: Phase 7 (Itinerary Building), First Taste step 12 of 13. Previous:
 - Planner skill: prioritizing; knowing when to stop; flexible thinking
 - Estimated time: 20-30 minutes
 - Parent involvement: 5-minute check-in; help co-choose the one unconditional pick, or confirm it on the Core path
-- Materials: your City Research Cards (starred sights), a [Cut List page](../../templates/cut_list.md), a [Backup Plan page](../../templates/backup_plan.md), a My Calls page (a blank sheet -- start one if you do not have it yet), and your family's [current travel assumptions](../../templates/current_family_travel_assumptions.md) page (for the budget band, when a grown-up checks your special pick). On the Core path, your My Calls page, with its must-do list and special pick, takes the place of the starred sights, and you bring the skip and save-for-future notes from Checkpoints 2 and 3, the strong maybes from Checkpoint 3, your day cards and Reservation Watchlist (to cross off anything you cut), your attraction cards and your Session 39 budget summary (if your special pick hits a block), your [When the Plan Changes card](../../student_guide/when_the_plan_changes.md) (for anything you cut, or a block), and your route map notes from Session 28, with a device with a map app or map website (kid-safe filter on) if a swap needs a new travel time.
+- Materials: your City Research Cards (starred sights), a [Cut List page](../../templates/cut_list.md), a [Backup Plan page](../../templates/backup_plan.md), a My Calls page (a blank sheet -- start one if you do not have it yet), and your family's [current travel assumptions](../../templates/current_family_travel_assumptions.md) page (for the budget band, when a grown-up checks your special pick). On the Core path, you bring your My Calls page, with its must-do list and special pick, the skip and save-for-future notes from Checkpoints 2 and 3, the strong maybes from Checkpoint 3, your day cards and Reservation Watchlist (to cross off anything you cut), your attraction cards and your Session 39 budget summary (if your special pick hits a block), your [When the Plan Changes card](../../student_guide/when_the_plan_changes.md) (for anything you cut, or a block), and your route map notes from Session 28, with a device with a map app or map website (kid-safe filter on) if a swap needs a new travel time.
 
 ## Goal
 
@@ -24,7 +24,7 @@ Finish your must-see list, set aside what doesn't fit, and make a couple of back
 
 On the First Taste path, look at the starred sights on the City Research Card(s) for the city or cities you recommended in Session 21, and circle the **one** you most want to do. That circle is where you start. (Didn't star any? Look at all the top sights on those cards and circle your favorite instead.)
 
-On the Core path, open your My Calls page instead, and read your must-do list once. That's your start.
+On the Core path, open your My Calls page and read your must-do list once. That's your start.
 
 ## Steps
 
@@ -90,4 +90,4 @@ If you have extra energy, add one more backup plan, or write one line about *why
 
 The one unconditional pick is the ownership centerpiece -- help your child choose one you can genuinely keep. Show the three blocks (budget, bookability, safety/feasibility for everyone, including any lower-stamina traveler) *before* they commit, and steer gently toward an affordable, bookable pick. A grown-up vote does not override this one -- only the three blocks do -- so scope it to a single keepable pick. Honor cut-list "save for future" notes as real; everything here keeps its value. This session teaches "good enough is good enough," so let short lists count as done.
 
-On the Core path, the pick was chosen at Session 26 and acknowledged at Checkpoint 3, or replaced after a block the way Session 26 chose it, so confirm it still holds and do not run the choice again. If one of the three blocks applies now, name it, and your child replaces the pick with you, as in Session 43; write "got it" beside the new pick.
+On the Core path, the pick was chosen at Session 26 and acknowledged at Checkpoint 3, or replaced after a block the way Session 26 chose it, so confirm it still holds. If one of the three blocks applies now, name it, and your child replaces the pick with you, as in Session 43; write "got it" beside the new pick.

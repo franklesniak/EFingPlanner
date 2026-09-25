@@ -22,7 +22,7 @@ Choose your own first move, then make it. A suggestion if you'd like one: write 
 
 ## Steps
 
-Some things you can only reserve for a set date. You pick the day first, then book, sometimes weeks or a month ahead. And they can sell out. The longer your family's dates stay open, the more of these can fill up before anyone books. The fix is knowing which items are on that clock, so nobody gets surprised. Nobody has to rush the dates.
+Some things you can only reserve for a set date. You pick the day first, then book, sometimes weeks or a month ahead. And they can sell out. The longer your family's dates stay open, the more of these can fill up before anyone books. The fix is knowing which items are on that clock, so nobody gets surprised. The dates can take the time they need.
 
 If your family's dates are already booked, the list works the other way round. Nothing waits on the dates any more, so it becomes an **act-early list**. The grown-ups book each item as soon as its booking opens. Find how far ahead that is on the official site, such as "30 days before". Write it in "When adults should check". A grown-up turns it into the date, because only they keep the booked dates.
 

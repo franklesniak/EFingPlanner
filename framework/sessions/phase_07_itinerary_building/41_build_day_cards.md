@@ -22,13 +22,13 @@ Set up your first tiny step, then do it. Want a suggestion? Write the name of yo
 
 ## Steps
 
-Day cards come after Checkpoint 4, once the grown-ups have settled your route and how long the trip is. Cards built before that usually have to be redone.
+Day cards come after Checkpoint 4. By then the grown-ups have settled your route and how long the trip is, so the cards you build now can last.
 
 Make **one block card for each city-stay** on the route the grown-ups approved: one card for all the days you sleep in the same place, with a row for each of those days. A trip with one base has one card. That's the shape for everyone. A block card is less work, and it flexes. If the grown-ups move a date, you move the block and keep what you wrote.
 
 1. Set your timer for 20 minutes. Before you start a card, check whether you already made one for that city-stay in an earlier sitting. Fill in the top of the card: the city, where you'll sleep, the main goal for this stay, and roughly when. If a stop on your route is a region, use the town on its card from Session 21. If that card names no town, use the one you picked in Session 28.
 2. Give each day its own row. Put your anchor first. Day one's anchor is getting to where you're staying, each moving day's anchor is the ride to the new place, and the day home's anchor is the ride to where you leave from, as your Session 40 rules say. Take the other days' anchors from the must-do list on your My Calls page, in the order you wrote there if you wrote one. Then use your day rules for the rest, and look at your "things I can't wait to see" page and your strong maybes from Checkpoint 3 for anything that fits. A strong maybe marked "if nearby" fits a day that already takes you close to it. If an attraction card you need is missing its time needed or ticket row, fill that in first. On the last card, the day you head home gets its own row, for the ride from your last overnight place to where you leave from, once a grown-up has set that place.
-3. Give every day an energy level: Easy, Medium or Big day. Give day one, each moving day and the last day the levels your Session 40 rules say. Fill in each day's transit notes too, and its cost. Start from your Session 38 medium total for one day, and put that day's own tickets in place of its activities guess. That total counts your whole group. On a day when someone is away, write "fewer of us" beside it: it's a little high then, and a grown-up can lower it. "Ask an adult" is fine. If your route map notes from Session 28 don't have a travel time you need, check it with the map's Directions and add it to your notes.
+3. Give every day an energy level: Easy, Medium or Big day. Give day one, each moving day and the last day the levels your Session 40 rules say. Fill in each day's transit notes too, and its cost. Start from your Session 38 medium total for one day, and use that day's own tickets for its activities part. That total counts your whole group. On a day when someone is away, write "fewer of us" beside it: it's a little high then, and a grown-up can lower it. "Ask an adult" is fine. If your route map notes from Session 28 don't have a travel time you need, check it with the map's Directions and add it to your notes.
 4. Save the cards in order, and stop between sittings whenever you like. Each new sitting starts again at step 1, with a fresh timer.
 
 **Roughly when** means a window, like "spring", "the second week", or "not decided yet". Never write the exact booked dates on a day card. Those belong to the grown-ups.
@@ -51,7 +51,7 @@ Your Daily Plan Cards: one block card for each city-stay, with a row for each da
 
 You are done for today whenever you stop between sittings, with your cards saved in order.
 
-The session is finished when every city-stay on your approved route has one card, each card has a main goal, and each day has its anchor, its transit notes and an energy level. Day one follows your first-day rule, each moving day follows your moving-day rule, and the day home has its own row, following your last-day rule. Any travel time you had to look up is in your route map notes. One card per city-stay is the finished shape. Per-day cards are extra, and only worth doing once the dates are firm. "Not decided yet" is fine in any box.
+The session is finished when every city-stay on your approved route has one card, each card has a main goal, and each day has its anchor, its transit notes and an energy level. Day one follows your first-day rule, each moving day follows your moving-day rule, and the day home has its own row, following your last-day rule. Any travel time you had to look up is in your route map notes. One card per city-stay is the finished shape. Once the dates are firm, per-day cards are an extra you can add. "Not decided yet" is fine in any box.
 
 ## Source Check
 
@@ -71,10 +71,10 @@ If you have extra energy, add a backup idea to every Big day. If not, you are do
 
 ## Parent Notes
 
-This is the heaviest stretch in Phase 7, so let it run over several sittings. The block card per city-stay is the default for every child, on trip-realism grounds: separate day cards built before dates and travel are firm are the most work and the most likely to be thrown away. It also happens to suit a child who finds writing hard.
+This is the heaviest stretch in Phase 7, so let it run over several sittings. The block card per city-stay is the default for every child, on trip-realism grounds: it holds up when dates and travel change. It also happens to suit a child who finds writing hard.
 
-The date row asks for a rough window. Exact booked dates stay off every working page, on paper and in a shared folder alike, as the [privacy and safety](../../docs/privacy_and_safety.md) page says. The card filenames are numbered, with no city names, for the same kind of reason.
+The date row asks for a rough window, because the [privacy and safety](../../docs/privacy_and_safety.md) page keeps exact booked dates off every working page, on paper and in a shared folder alike. The card filenames are numbered for the same kind of reason.
 
-If you booked dates in a different season from the Checkpoint 1 recommendation, tell your child which season it is. A broad word such as "late spring" is enough, with no dates.
+If you booked dates in a different season from the Checkpoint 1 recommendation, tell your child which season it is. A broad word such as "late spring" is enough.
 
 **The lighter page.** From Phase 7 on, Steps and Workspace are short and your child sets their own Start Here. The readiness signal is two sessions in a row done without needing the When I'm Stuck card or leaning on the written Steps; the Finish and Quality Check closes every session, so using it never counts against them. If your child isn't there yet, read the Steps with them. Start Here, the Stop Point, the named artifact and the Source Check stay on every page.

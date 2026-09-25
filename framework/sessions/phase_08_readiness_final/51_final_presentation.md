@@ -30,7 +30,7 @@ Your presentation is about 5 to 10 minutes long. Part 1 says what you recommend.
 2. Fill in Part 2: what the grown-ups still need to check, decide and book, the questions that are still open, and which of your pages they should use next. Part 2 is your adult follow-up questions, which go behind tab 10.
 3. Pick how you'll present, and circle it at the bottom of the outline.
 
-**There's no single required way to present.** Every one of these is a full way to do it, and you pick the one that suits you:
+**Every way here counts.** Each one is a full way to present, and you pick the one that suits you:
 
 - Present live.
 - Practice with one grown-up first, then present.
