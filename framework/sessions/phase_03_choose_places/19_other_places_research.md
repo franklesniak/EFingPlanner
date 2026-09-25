@@ -72,4 +72,4 @@ If you have extra energy, add one more everyday town or area that costs little t
 
 ## Parent Notes
 
-The floor here is at least two places beyond the deep-dive cities, and at least five city or region cards in all. A short card for a place your child wonders about beats a padded one written to reach a number. Encourage one everyday, low-cost place: it teaches that famous is only one kind of good, and those places are often the ones a family remembers. The second-source check in step 4 is the planner skill for this session, so ask which fact they checked and whether the sources agreed.
+The floor here is at least two places beyond the deep-dive cities, and at least five city or region cards in all. Let your child keep a card short for a place they wonder about; the floor counts places, and a card with its key rows filled in counts in full. Encourage one everyday, low-cost place: it teaches that famous is only one kind of good, and those places are often the ones a family remembers. The second-source check in step 4 is the planner skill for this session, so ask which fact they checked and whether the sources agreed.

@@ -179,6 +179,28 @@ jobs:
         continue-on-error: true
         run: pytest tests/test_check_prohibited_placeholders.py -v
 
+      # The `X, not Y` recount (.github/scripts/check-x-not-y.py) is a tool,
+      # not a gate: its page scan needs a human judgment for every new
+      # candidate sentence, so CI runs only its unit tests. Run the scan by
+      # hand before a review; the PR that adds pages judges their candidates.
+      - name: Check X, not Y recount unit tests
+        id: test-x-not-y
+        if: >-
+          hashFiles('tests/test_check_x_not_y.py') != '' &&
+          hashFiles('tests/_pytest_compat.py') != ''
+        continue-on-error: true
+        run: pytest tests/test_check_x_not_y.py -v
+
+      # A density rewrite must keep the wording a build brief or the spec
+      # requires. This test holds the sentences a recount once dropped.
+      - name: Check required wording
+        id: test-required-wording
+        if: >-
+          hashFiles('tests/test_required_wording.py') != '' &&
+          hashFiles('tests/_pytest_compat.py') != ''
+        continue-on-error: true
+        run: pytest tests/test_required_wording.py -v
+
       # template-sync: begin python-only
       # A repository-wide rule enforced only by a test nothing runs is a rule
       # in name: a later comment could point at a review round, an issue
@@ -196,8 +218,9 @@ jobs:
       # which only the scan needs. The step is the last check, so it needs no
       # `continue-on-error` for the
       # checks above to run, and its own failure fails the job. The scan
-      # asserts that the three hook suites above are present, so their own
-      # steps keep their guards. It reads Markdown through markdown-it, from
+      # asserts that the three hook suites above, the recount's suite and the
+      # required-wording suite are present, so their own steps keep their
+      # guards: deleting or renaming one fails this step. It reads Markdown through markdown-it, from
       # the packages `npm ci` installs above, and fails if they are missing.
       - name: Check references resolve inside this repository
         id: test-self-contained
@@ -216,7 +239,9 @@ jobs:
           steps.test-toolchain.outcome == 'failure' ||
           steps.test-structure.outcome == 'failure' ||
           steps.lint-structure.outcome == 'failure' ||
-          steps.test-placeholders.outcome == 'failure'
+          steps.test-placeholders.outcome == 'failure' ||
+          steps.test-x-not-y.outcome == 'failure' ||
+          steps.test-required-wording.outcome == 'failure'
         run: |
           echo "::error::Markdown and toolchain checks failed. Check the logs above for details."
           exit 1

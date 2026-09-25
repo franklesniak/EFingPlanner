@@ -10,6 +10,8 @@ Check off each session as you finish it. Your one big milestone is **Checkpoint 
 
 <!-- density-exempt: spaced dash -- the path parentheticals below are required content: this list is the one place a child reads what counts toward the 13 -->
 
+<!-- density-exempt: X, not Y -- the path parentheticals below are required content (the batch 1 brief's entry for this page): this list is the one place a child reads what counts toward the 13 -->
+
 - [ ] 1. [01 Project Kickoff](../sessions/phase_00_setup/01_project_kickoff.md)
   - [ ] [02 Family Traveler Profiles](../sessions/phase_00_setup/02_family_traveler_profiles.md) *(full Phases 0-2 path only -- not one of the 13)*
 - [ ] 2. [03 What Makes a Good Trip](../sessions/phase_00_setup/03_what_makes_a_good_trip.md)
@@ -44,6 +46,8 @@ On the First Taste path, most sessions you can do on your own. Only a few need a
 - **On your own:** every other First Taste session.
 
 On the Core path, these need a grown-up too: Checkpoints 2, 3 and 4 (a grown-up reviews each one), Session 25 (a grown-up stays nearby, and with you for any video), Session 26 (choose your special pick with a grown-up), and Session 29 (before you start, a grown-up tells you how long the trips there and home take, and which flights land on a later date). So does any other session whose page says a grown-up reviews it, stays nearby, or does a step with you.
+
+<!-- density-exempt: X, not Y -- standing rules a child obeys, in wording the batch 1 brief's entry for this page fixes, and the gap line the spec's entry for this page requires -->
 
 So when a grown-up is busy, keep going **in order** on the next session -- unless that next session needs a grown-up (Session 05, Session 07 if you are doing it, Session 08, Session 09 for AI families, Checkpoint 1, or Session 44's special-pick step, and on the Core path the ones just above). Do those *with* a grown-up: pause there until one is free, and do not skip past them -- except Session 07, which you can skip if no grown-up is free, going straight on to Session 08. **A gap of a week or two is normal -- you do not start over.**
 

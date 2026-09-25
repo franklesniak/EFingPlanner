@@ -75,4 +75,4 @@ If you have extra energy, poll one more traveler, or add a "things I can't wait 
 
 ## Parent Notes
 
-The poll is a relatedness moment -- it gives every traveler a real stake and makes the plan reflect the whole party. Help make far-away travelers reachable (relay a question, bring back the answer); do not let a scheduling gap stall your child. If a "what makes it special" answer sparks excitement, steer it onto the "things I can't wait to see" page. Keep private details off the page.
+The poll is a relatedness moment -- it gives every traveler a real stake and makes the plan reflect the whole party. Help make far-away travelers reachable (relay a question, bring back the answer), so your child can keep going. If a "what makes it special" answer sparks excitement, steer it onto the "things I can't wait to see" page. Keep private details off the page.

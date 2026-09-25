@@ -1,4 +1,5 @@
 <!-- markdownlint-disable MD013 -->
+<!-- audience: parent -->
 
 # How to Start a Trip
 
@@ -26,7 +27,7 @@ If nobody has written a pack for your destination yet, the packs that exist carr
 
 Start with the adult-only [Session 00: Parent Setup](sessions/phase_00_setup/00_parent_setup.md), then go in the order the [project roadmap](PROJECT_ROADMAP.md) gives.
 
-**When a session says "open this session's Destination Notes," read the matching insert from your destination pack.** That sentence is the whole joining mechanism. A session that needs a fact about a place does not hold the fact; it sends the child to the pack. So the same session works for the next destination without being rewritten.
+**When a session says "open this session's Destination Notes," read the matching insert from your destination pack.** That sentence is the whole joining mechanism. A session that needs a fact about a place sends the child to the pack for that fact. So the same session works for the next destination without being rewritten.
 
 Print each session as you reach it rather than the whole set at once.
 

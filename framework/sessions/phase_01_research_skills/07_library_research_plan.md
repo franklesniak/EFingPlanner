@@ -84,4 +84,4 @@ If you have extra energy, look up one more kind of book from the list of five, o
 
 ## Parent Notes
 
-This one needs you first: a library card, a catalog login, or a ride. That is why it is Recommended rather than Core, and skipping it costs your child nothing that Session 06 does not already teach. If you do it, let your child run the catalog search and do the asking at the desk. Placing a hold and talking to a librarian are both small, safe, real transactions with a stranger, and they are worth more here than the books are.
+This one needs you first: a library card, a catalog login, or a ride. That is why it is Recommended rather than Core, and skipping it costs your child nothing that Session 06 does not already teach. If you do it, let your child run the catalog search and do the asking at the desk. Placing a hold and talking to a librarian are both small, safe, real transactions with a stranger, and that practice is the most valuable thing your child gets from this session.

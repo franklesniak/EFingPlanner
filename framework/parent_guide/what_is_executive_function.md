@@ -12,7 +12,7 @@ Executive function is the set of brain skills a person uses to run themselves. F
 - **Staying organized**, so the thing you need is where you can find it.
 - **Being flexible**, so a plan that stops working gets changed instead of abandoned.
 
-These skills develop on their own schedule, and that schedule is not the same as a child's reading age or their intelligence. A child who reads two grades ahead can still need a nudge to start every single time.
+These skills develop on their own schedule, which can run ahead of or behind a child's reading age, however bright the child is. A child who reads two grades ahead can still need a nudge to start every single time.
 
 ## Why it matters past this trip
 
@@ -22,7 +22,7 @@ That is why the trip is the hook and not the subject.
 
 ## Why this project is a promising way to build them
 
-Three things make this a better practice ground than a worksheet.
+Three things make this project a good practice ground.
 
 It is a real task. The child's recommendation goes to the adults and feeds a real family decision. Whether the trip is taken, moved or dropped is the adults' call and the world's, and the child's work stands either way -- Session 53 says so in as many words. Effort on something that matters is easier to sustain.
 

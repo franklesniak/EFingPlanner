@@ -73,4 +73,4 @@ If you have extra energy, find today's *exact* time difference between your home
 
 ## Parent Notes
 
-The goal is orientation, not mastery -- a snapshot, not a report. The time difference comes from your Trip-Basics card so the session stays reusable; do not expect a pinned number here. If your child gets pulled into a fun rabbit hole, that is fine for a few minutes, then steer back to finishing the snapshot. Keep travel specifics as "a grown-up handles that."
+The goal is orientation, not mastery -- a snapshot, not a report. The time difference comes from your Trip-Basics card, which keeps the session reusable. If your child gets pulled into a fun rabbit hole, that is fine for a few minutes, then steer back to finishing the snapshot. Keep travel specifics as "a grown-up handles that."

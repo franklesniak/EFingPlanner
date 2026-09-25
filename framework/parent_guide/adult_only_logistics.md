@@ -2,6 +2,7 @@
 
 # Adult-Only Logistics
 
+<!-- density-exempt: X, not Y -- safety and privacy rule: the child never books, pays or handles personal data (privacy and safety page, online safety for the child) -->
 The booking and logistics tasks on this page are yours. Your child never books, never pays, and never handles booking, account, passport or payment data.
 
 **One deliberate exception, and it matters:** your child carries an "if I get separated" card with where you are staying, its address and phone number, and a parent's phone number. That is the minimum needed to reunite, it is a carry-in-pocket card rather than data written anywhere else, and it is theirs to carry. Do not strip it.
@@ -56,11 +57,12 @@ Three things go beyond stamina, and they are yours to verify:
 - **Accessible lodging** — step-free access, and any room or bathroom needs
 - **Luggage handling** for anyone who shouldn't carry bags up stairs: forwarding services, porter help, or lockers. Those are categories; **which ones exist where you are going, and what they are called, is in your destination pack's adult-logistics page**. If your pack does not have that page yet, check the official sites of the local transport operators, or ask your lodging, and write the date you checked
 
+<!-- density-exempt: X, not Y -- the spec's child-flags-not-fixes boundary, bold in the batch 2 brief: the child does not research the fix -->
 Your child's job is to *flag* likely trouble spots: a stair-heavy transfer, a hilltop site, a station that may not have a lift. They notice and hand it to you. They don't research the fix.
 
 Write about this generically with your child: "an older adult".
 
-<!-- density-exempt: X-not-Y -- the separation default and the carry-card boundary are stated as contrasts because in both cases the wrong version is the intuitive one -->
+<!-- density-exempt: X, not Y -- the separation default and the carry-card boundary are stated as contrasts because in both cases the wrong version is the intuitive one -->
 ## The meeting-point rule
 
 One separation rule per outing, named to your child out loud each morning.

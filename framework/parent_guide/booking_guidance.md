@@ -2,13 +2,13 @@
 
 # Booking Guidance
 
+<!-- density-exempt: X, not Y -- the opening line the batch 2 brief's entry for this page gives, whose bold boundary is that the child is never pulled into a booking workflow -->
 What gets booked, in what order, and how your child's work feeds it, without pulling them into a booking workflow at any point.
 
 ## The boundary
 
-You own flights, bookings, payments, accounts, personal data, final hotel decisions, final restaurant reservations, and final ticket and timed-entry bookings.
-
-Nothing in this curriculum ever tells a child to book, reserve, buy, create an account, enter payment or passport data, submit an entry form, or handle a confirmation number. If you find something that reads that way, it's a defect. The design is that your child produces a list and you act on it.
+<!-- density-exempt: X, not Y -- the booking boundary, what you own and that the child never books, a safety and privacy rule the batch 2 brief's entry for this page puts first -->
+You own flights, bookings, payments, accounts, personal data, final hotel decisions, final restaurant reservations, and final ticket and timed-entry bookings. Nothing in this curriculum ever tells a child to book, reserve, buy, create an account, enter payment or passport data, submit an entry form, or handle a confirmation number. If you find something that reads that way, it's a defect to fix, because your child's part is the list and yours is acting on it.
 
 ## What your child hands you
 
@@ -26,7 +26,7 @@ The watchlist is the one to read first, once it exists. It's built specifically 
 
 The booking clock often forces a commitment before your child's curriculum-paced route is finished. Flights get cheaper-then-dearer on their own schedule, lodging sells out on another, and a child working a session a week is on a third.
 
-This is handled two ways: you set the **rough trip shape** early, so their work is built on it rather than derailed by it, and you have the "we had to book before you finished" conversation when it comes. The [coaching guide](coaching_and_support.md) has the script. Don't improvise that one. It's the moment a child decides whether their work was real.
+This is handled two ways: you set the **rough trip shape** early, so their work is built on it from the start, and you have the "we had to book before you finished" conversation when it comes. The [coaching guide](coaching_and_support.md) has the script. Don't improvise that one. It's the moment a child decides whether their work was real.
 
 ## Order, and the long leads
 
@@ -48,9 +48,8 @@ Your child writes a cancellation note on a card. **That note is a flag, not a fa
 
 ## After you book, tell them what changed and why
 
-You will change parts of the plan: prices, availability, safety, schedules, booking rules. That's normal and expected.
-
-**Never silently.** An owned pick is reshaped only with a stated reason.
+<!-- density-exempt: X, not Y -- "never silently" is the spec's transparency obligation for owned picks, bold in the batch 2 brief's booking item, which states it with the change it answers -->
+You will change parts of the plan: prices, availability, safety, schedules, booking rules. That's normal and expected. **Never silently.** An owned pick is reshaped only with a stated reason.
 
 And the one unconditional personal pick is different from everything else. It can be blocked for exactly three reasons: it costs more than the budget band, it can't be booked or has no availability, or it isn't safe and physically manageable for every traveler. **Never by group vote.** If one of those three applies, tell your child which one.
 

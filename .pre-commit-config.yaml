@@ -429,3 +429,50 @@ repos:
     hooks:
       - id: markdownlint-cli2
   # template-sync: end markdown-only
+
+  # LOCAL OVERRIDE (recorded in .template-sync/marker.yml): the `X, not Y`
+  # recount's data files (not a template module). The recount tool,
+  # .github/scripts/check-x-not-y.py, checks both files as it loads them; these
+  # hooks hold them to their schemas at commit time too, as the JSON guide's
+  # schema policy asks for a durable data contract. Invalid examples are
+  # exercised by tests/test_schema_examples.py, and
+  # tests/test_check_x_not_y.py runs every example through the tool's loaders.
+  - repo: https://github.com/python-jsonschema/check-jsonschema
+    rev: "0.38.0"
+    hooks:
+      - id: check-jsonschema
+        alias: validate-x-not-y-judgments
+        name: Validate X, not Y recount judgments
+        files: ^\.github/scripts/x-not-y-judgments\.json$
+        args:
+          - --schemafile
+          - schemas/x-not-y-judgments.schema.json
+      - id: check-jsonschema
+        alias: validate-x-not-y-registers
+        name: Validate X, not Y recount registers
+        files: ^\.github/scripts/x-not-y-registers\.json$
+        args:
+          - --schemafile
+          - schemas/x-not-y-registers.schema.json
+      - id: check-jsonschema
+        alias: validate-x-not-y-judgments-valid-examples
+        name: Validate X, not Y judgments valid examples
+        files: ^schemas/examples/x-not-y-judgments/valid/.*\.json$
+        args:
+          - --schemafile
+          - schemas/x-not-y-judgments.schema.json
+      - id: check-jsonschema
+        alias: validate-x-not-y-registers-valid-examples
+        name: Validate X, not Y registers valid examples
+        files: ^schemas/examples/x-not-y-registers/valid/.*\.json$
+        args:
+          - --schemafile
+          - schemas/x-not-y-registers.schema.json
+      - id: check-metaschema
+        alias: validate-x-not-y-judgments-schema
+        name: Self-validate X, not Y judgments schema
+        files: ^schemas/x-not-y-judgments\.schema\.json$
+      - id: check-metaschema
+        alias: validate-x-not-y-registers-schema
+        name: Self-validate X, not Y registers schema
+        files: ^schemas/x-not-y-registers\.schema\.json$

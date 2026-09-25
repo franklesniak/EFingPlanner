@@ -50,6 +50,6 @@ Each kind of source has its own short form, and there are six of them: website, 
 
 ## If writing is the hard part
 
-Writing is not the skill this session is testing. Getting the thinking down is.
+Getting the thinking down is the skill that counts here.
 
 So use whatever gets it down. You can say your answers to an adult who writes them for you. You can draw a note instead of writing it. You can use two words where a sentence feels like too much. All of those count as a finished note.

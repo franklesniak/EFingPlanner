@@ -1,4 +1,5 @@
 <!-- markdownlint-disable MD013 -->
+<!-- audience: parent -- also builder-facing; measured at the stricter parent cap -->
 
 # Citation Style
 
@@ -16,7 +17,7 @@ A fact is worth what its source is worth. Writing the source down is what lets a
 
 There is a second reason, and it is the one children feel. A note written in the child's own words, with the source beside it, is the child's own work. Nobody has to wonder whether a page was copied.
 
-A source line is short. It is a habit rather than a chore, and the forms below are deliberately small enough to finish in a minute.
+A source line is short. The forms below are deliberately small enough to finish in a minute, so writing a source down becomes a habit.
 
 ## When a citation is required
 
@@ -24,7 +25,7 @@ Write a citation whenever an outside source was used. That means a book, a websi
 
 Asking your own family is family input, and it needs no citation. That covers interviewing a traveler, polling the travelers, and asking a grown-up about your family's plans. The answers go on the session's own page.
 
-A review site is a website, so it uses the Website form. There is no separate form for reviews.
+A review site is a website, so it uses the Website form, just like any other site.
 
 A session with no research step is never asked for a citation. If nothing was looked up, there is nothing to record, and an empty Source Log for that session is correct.
 
@@ -59,7 +60,7 @@ AI tool name, prompt I asked, date used, what it helped with, facts I checked so
 Who they are (their job, not their name), where you asked, date asked, what they
 told you.
 
-Write the role rather than the name: *a librarian at the city library*. A
+Write the role: *a librarian at the city library*. A
 person's name is a private detail, and the
 [privacy and safety page](privacy_and_safety.md) keeps those off the page. A
 person source has no web address and no page number, so those boxes stay empty

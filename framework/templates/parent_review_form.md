@@ -1,9 +1,11 @@
 <!-- markdownlint-disable MD013 -->
+<!-- audience: parent -- a parent fills this form in at each checkpoint -->
 
 # Parent Review Form
 
 Use one copy per checkpoint. Print it, or keep it in the binder under the Parent Review tab.
 
+<!-- density-exempt: X, not Y -- "you don't have to be the expert" and "model the process" are the spec's note for the reviewing parent, which the batch 2 brief makes mandatory -->
 You don't have to be the expert. Your job is to model the process, not to know the answers. If you're unsure whether a source is trustworthy, look it up together using the same quick trust test your child is learning — that's a better lesson than a correct answer.
 
 ## Which checkpoint
@@ -81,6 +83,7 @@ Ask if they want to. Skipping it is fine, and a drawing is just as good an answe
 - Taking over the fun research decisions
 - Letting them handle bookings, payments, accounts, or private data
 
+<!-- density-exempt: X, not Y -- praise the move, not the mind, with its "not you're so smart" example, is the praise calibration pair in the spec's Parent Review Rubric -->
 Praise the move, not the mind. "You checked a second source." "You stopped at the stop point." Not "you're so smart" — that one quietly teaches that being right is the point.
 
 ## Reviewed by
