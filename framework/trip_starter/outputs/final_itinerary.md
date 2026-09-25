@@ -30,7 +30,7 @@ Copy this part once for each block Daily Plan Card, in trip order. A trip with o
 | Where we would stay (an area) | |
 | Main goal for this stay | |
 
-The day rows come in two tables, so the page still prints. Use the same day numbers in both.
+The day rows come in two tables, so the page still prints. Use the same day numbers in both. Each day's cost counts your whole group, as on your day cards. Copy any "fewer of us" beside it too.
 
 | Day | Main activities | Meals and food ideas | Energy (Easy / Medium / Big day) |
 | --- | --- | --- | --- |
