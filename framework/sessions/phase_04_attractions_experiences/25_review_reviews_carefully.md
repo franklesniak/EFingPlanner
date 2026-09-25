@@ -9,7 +9,7 @@ You are here: Phase 4 (Attractions and Experiences). Not a First Taste step. Pre
 - Status: Core
 - Planner skill: checking sources
 - Estimated time: 20-30 minutes (one sitting); the second sitting can be its own
-- Parent involvement: co-working recommended
+- Parent involvement: co-working recommended; stay nearby for both sittings, and alongside for any video
 - Materials: a device with the kid-safe filter on, a grown-up nearby for the whole session (and beside you for any video), a timer, your attraction cards, your [Source Log](../../templates/source_log.md), the [simple citation forms](../../templates/simple_citation.md) page for the Video form
 
 ## Goal

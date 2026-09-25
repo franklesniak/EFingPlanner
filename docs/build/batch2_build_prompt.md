@@ -1586,8 +1586,9 @@ the source-trust lesson**, and **do not write a per-platform setup guide.**
 - **Source Check:** required, and it carries the **video citation form**.
 - **Named platforms are permitted** -- map, review and hotel-review services are tool
   names, not destination facts.
-- **Parent involvement:** `co-working recommended`. The co-research guardrail stays
-  explicitly on video research.
+- **Parent involvement:** `co-working recommended`, with the clause `stay nearby for both
+  sittings, and alongside for any video` after a semicolon, because the grown-up must stay
+  near. The co-research guardrail stays explicitly on video research.
 
 ### Session 26: Rank Attractions
 
