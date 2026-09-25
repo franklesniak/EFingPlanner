@@ -680,6 +680,82 @@ def test_the_session_00_strip_shape_passes() -> None:
 
 
 # ---------------------------------------------------------------------------
+# The strip's label is written exactly "**For parents:**"
+# ---------------------------------------------------------------------------
+
+
+def test_the_exact_strip_label_passes() -> None:
+    """A positive control. The label the session template fixes passes."""
+    text = build_session()
+    assert "\n**For parents:**\n" in text
+    assert check(text) == []
+
+
+@pytest.mark.parametrize("label", ["**For parents:**  ", "**For parents:**\t"],
+                         ids=["trailing-spaces", "trailing-tab"])
+def test_trailing_whitespace_after_the_strip_label_passes(label: str) -> None:
+    """A positive control. Trailing spaces or a tab change nothing a reader sees."""
+    assert check(build_session().replace("**For parents:**", label, 1)) == []
+
+
+@pytest.mark.parametrize(
+    ("label", "difference"),
+    [
+        ("**For parents**", "it has no colon"),
+        ("**For parents**:", "the colon is outside the bold"),
+        ("**For Parents:**", "its capital letters differ"),
+        ("  **For parents:**", "it is indented"),
+        ("\t**For parents:**", "it is indented"),
+        ("**For parents:** extra", "text follows it on its line"),
+        ("**For parents:**:", "text follows it on its line"),
+    ],
+    ids=["no-colon", "colon-outside-bold", "capital-p", "indented", "tab-indented",
+         "text-after", "colon-after"],
+)
+def test_a_strip_label_that_drifts_is_named(label: str, difference: str) -> None:
+    """The template writes the label exactly ``**For parents:**``, alone on its line.
+
+    A label with no colon, with the colon outside the bold, with a capital P,
+    indented, or with text after it on its line has drifted from it. The
+    violation quotes the line as written, indentation included, says how it
+    differs, and gives its line number. It does not say the strip is missing,
+    because a parent can see one.
+    """
+    text = build_session().replace("**For parents:**", label, 1)
+    violations = structure.check_text(text, "07_a_session.md", "07_a_session.md")
+    named = [v for v in violations if "parent strip label" in v.message]
+    assert len(named) == 1, [v.message for v in violations]
+    assert f"is written {label!r}:" in named[0].message, named[0].message
+    assert difference in named[0].message, named[0].message
+    assert '"**For parents:**"' in named[0].message
+    assert named[0].line_number == text.split("\n").index(label) + 1
+    assert not any("no parent metadata strip" in v.message for v in violations)
+
+
+def test_a_label_that_drifts_several_ways_names_each_way() -> None:
+    """Every difference is named, in the order the line reads."""
+    label = "  **For Parents** extra"
+    messages = check(build_session().replace("**For parents:**", label, 1))
+    named = [m for m in messages if "parent strip label" in m]
+    assert len(named) == 1, messages
+    assert (
+        f"is written {label!r}: it is indented; its capital letters differ; it has no "
+        "colon; text follows it on its line." in named[0]
+    ), named[0]
+
+
+def test_a_fenced_drifted_label_is_not_named() -> None:
+    """A negative control. A label inside a fence is an example, so no strip is present."""
+    text = build_session(
+        parents=False,
+        extra=f"## Example\n\n{FENCE}markdown\n**For parents**\n{FENCE}\n",
+    )
+    messages = check(text)
+    assert any("no parent metadata strip" in m for m in messages), messages
+    assert not any("parent strip label" in m for m in messages)
+
+
+# ---------------------------------------------------------------------------
 # A section that prints nothing is empty
 # ---------------------------------------------------------------------------
 
