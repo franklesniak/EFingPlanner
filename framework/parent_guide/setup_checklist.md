@@ -22,7 +22,7 @@ The full version of the one-time setup. The short version is in the [quick-start
 
 ## What you do not decide now
 
-The City C, food, and language sessions start Recommended and promote themselves later only if your child's research keeps surfacing them. You are not asked to predict them.
+The City C, food, and language sessions are Conditional core, and you are not asked to predict them. Each becomes Core later on its own condition: City C if a third city keeps coming up in your child's research, and the food and language sessions if your family wants their page in the binder, which you decide when your child reaches them.
 
 ## A privacy reminder
 
