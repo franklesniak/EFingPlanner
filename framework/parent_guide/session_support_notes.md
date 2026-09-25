@@ -155,14 +155,14 @@ Want a rough signal of how the executive-function side is going? The optional [e
 
 - Role: 5-minute check-in; help co-choose the one unconditional pick. On the Core path, confirm the pick Session 26 settled instead.
 - Prep: the City Research Cards (starred sights); Cut List and Backup Plan pages. On the Core path, the My Calls page takes the place of the starred sights, with the skip and save-for-future notes from Checkpoints 2 and 3.
-- Look for: a short must-see list, a cut list, one special pick initialed, two backups. On the Core path, the must-do list is the one Session 26 made, the cut list starts from the Checkpoint 2 and 3 notes, and the pick gets a one-line confirmation.
+- Look for: a short must-see list, a cut list, one special pick initialed, two backups. On the Core path, the must-do list Session 26 made takes the place of the must-see list, the cut list starts from the Checkpoint 2 and 3 notes, and a one-line confirmation of the pick takes the place of the initials.
 - Coaching question: "What are you saving for a future trip?"
 - Pitfall: making it exhaustive. This teaches "good enough is good enough."
 
 ## Session 53: Reflection and Handoff
 
 - Role: co-work; deliver the finish acknowledgment warmly, in the duration-true wording: the duration-neutral form for a First Taste finisher, and the months-long form for a child finishing the Core or full path, including a capstone re-run after First Taste.
-- Prep: the Session 01 baseline reflection; a Final Reflection page. On the Core path, also the assembled binder, the checkpoint reflections, the minutes guesses and the Session 39 budget summary.
-- Look for: a reflection compared to the baseline, and the plan handed to you. On the Core path, answers to three more questions, on patterns, time guesses and the budget against the band, and the full binder handed over.
+- Prep: the Session 01 baseline reflection; a Final Reflection page. On the Core path, the kit's final reflection page in place of the Final Reflection page, and also the assembled binder, the checkpoint reflections, the minutes guesses and the Session 39 budget summary.
+- Look for: a reflection compared to the baseline, and the plan handed to you. On the Core path, answers to three more questions, on patterns, time guesses and the budget against the band, and the full binder handed over, with the must-do list and the approved route in place of the must-see list and the city choice.
 - Coaching question: "Where else could you use one of these planning moves?"
 - Pitfall: skipping the acknowledgment. Finishing a real project is a big deal -- say so.

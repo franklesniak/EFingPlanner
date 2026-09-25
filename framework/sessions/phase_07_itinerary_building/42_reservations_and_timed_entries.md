@@ -10,7 +10,7 @@ You are here: Phase 7 (Itinerary Building). Not a First Taste step. Previous: [4
 - Planner skill: organizing information
 - Estimated time: 20-30 minutes
 - Parent involvement: none / independent work
-- Materials: this session's Destination Notes, a device with the kid-safe filter on, your day cards from Session 41, your My Calls page (your must-do list and special pick), your attraction cards (if your special pick hits a block), your [Trip-Basics card](../../templates/trip_basics.md) (for whether your dates are booked), a blank [Reservation Watchlist](../../templates/reservation_watchlist.md), your [Source Log](../../templates/source_log.md)
+- Materials: this session's Destination Notes, a device with the kid-safe filter on, your day cards from Session 41, your My Calls page (your must-do list and special pick), your attraction cards (to fill a tickets row, and if your special pick hits a block), your [Trip-Basics card](../../templates/trip_basics.md) (for whether your dates are booked), a blank [Reservation Watchlist](../../templates/reservation_watchlist.md), your [Source Log](../../templates/source_log.md)
 
 ## Goal
 
@@ -26,7 +26,7 @@ Some things you can only reserve for a set date. You pick the day first, then bo
 
 If your family's dates are already booked, the list works the other way round. Nothing waits on the dates any more, so it becomes an **act-early list**. The grown-ups book each item as soon as its booking opens. Write that opening date in "When adults should check".
 
-1. Go through your day cards and circle anything that might need booking. If a card's tickets row is empty, fill it in first. Popular museums, theme parks, special restaurants, tours, long-distance trains if your trip uses them, timed tickets and hotels are the usual ones.
+1. Go through your day cards and circle anything that might need booking. If a card's tickets row is empty or says "not decided yet", fill it in first. Popular museums, theme parks, special restaurants, tours, long-distance trains if your trip uses them, timed tickets and hotels are the usual ones.
 2. Open this session's Destination Notes to see what booking ahead looks like where you're going.
 3. Put each item on your watchlist. For each one, answer: does holding a date matter?
 4. Check each item on an official site, and write the date you checked.

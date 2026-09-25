@@ -32,7 +32,7 @@ A good food plan is a mix. Plan a few special meals, the ones you'd look forward
 1. **Read your Destination Notes.** They name foods to try and the kinds of places people eat. Everything there is an idea to look into, and you pick what goes on your list. Stick to what you could find in the places on the route the grown-ups approved at Checkpoint 4. If you search beyond your Destination Notes, have a grown-up nearby, and beside you for an image search.
 2. **Fill in your food wish list** in the Workspace. Add a few foods or kinds of meals.
 3. **Mark each one.** Is it a special meal, an easy meal, or a "wherever we are" meal?
-4. **Check your group size.** Look at the number of travelers on your Trip-Basics card. If your Session 33 note says someone is with you for only part of the trip, count the biggest group you'll have. If your group is bigger than about four, many small places can't seat everyone together. Some won't take a big group's reservation, either. So look for places that can seat a group, or plan to split into two tables. A group of two or three can skip this step.
+4. **Check your group size.** Look at the number of travelers on your Trip-Basics card. If it says "not decided yet", count the travelers listed on the card instead. If your Session 33 note says someone is with you for only part of the trip, count the biggest group you'll have. If your group is bigger than about four, many small places can't seat everyone together. Some won't take a big group's reservation, either. So look for places that can seat a group, or plan to split into two tables. A group of two or three can skip this step.
 5. **Write the source** for each idea, so you can find it again.
 
 **Eating safely on the trip:**

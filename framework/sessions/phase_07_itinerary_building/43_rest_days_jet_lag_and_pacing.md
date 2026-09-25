@@ -18,13 +18,13 @@ Look over your plan, and find the days that would wear people out.
 
 ## Start Here
 
-Pick your own first move and do it. If you'd like an idea, lay your day cards out in order and circle the one that looks busiest.
+Pick your own first move and do it. If you'd like an idea, lay your day cards out in order and circle the one that looks busiest. If a day has no energy level yet, give it one first.
 
 ## Steps
 
 A plan can look great on paper and still be too much on the day. This session checks your days against how people feel on a trip.
 
-1. Lay out your day cards in order.
+1. Lay out your day cards in order. If a day's energy level is blank or says "not decided yet", choose Easy, Medium or Big day, and write it in.
 2. Go down the checks in the Workspace, one row at a time. Mark yes or no, and add a short note.
 3. For any day that needs it, write one way to make it gentler. You could move a big thing, add a break, or swap in a rest day. Then go down the checks again for each day you changed. If every day passes, write that.
 4. Write your flags for the adults. If a day is hard on one traveler, say who, by how they're related to you.
