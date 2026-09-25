@@ -29,13 +29,13 @@ Two different cases:
 Name the one specific gap, size the redo to one session, frame it as the checkpoint working, and end on what already stands.
 
 **"We had to book before you finished"** (the timeline collision):
-<!-- density-exempt: X, not Y -- the spec's timeline-collision script, the Your-Work-Wasn't-Wrong Named concept in a parent's words (specification line 3934) -->
+<!-- density-exempt: X, not Y -- the timeline-collision script in the spec's Coaching and Support scripts, the Your-Work-Wasn't-Wrong Named concept in a parent's words -->
 > "We had to lock the bookings before you finished, because prices were climbing -- that's how trips work, and it doesn't mean your planning was wrong. Here's what's still yours to decide inside the dates we booked."
 
 **Honoring the child's calls** (even when you'd have chosen differently):
 > "You chose the aquarium over a third temple. That's your call, and we'll make it work."
 
-<!-- density-exempt: X, not Y -- the owned-decision rule (only with a reason given to the child, never silently) is the spec's multi-adult guarantee (specification line 518) -->
+<!-- density-exempt: X, not Y -- the owned-decision rule (only with a reason given to the child, never silently) is the spec's multi-adult guarantee, in its Child Autonomy With Adult Guardrails -->
 You set the guardrails (budget, approved cities, pacing, safety, availability), and the calls your child makes inside them stand. In a multi-adult party, group agreement can sometimes reshape a conditional pick -- but only with a reason given to the child, never silently.
 
 **Honoring the one unconditional pick** (a firmer, smaller promise):
@@ -54,7 +54,7 @@ Five minutes showing this, concretely, lets your child see their own recommendat
 **The finish acknowledgment** (Session 53). First Taste is a few-weeks project, so use the duration-true, non-overclaiming form:
 > "You finished a real project, start to finish, and made a real mini-plan we can actually use. That's a big deal."
 
-<!-- density-exempt: X, not Y -- the duration-true praise wording and the non-gamified acknowledgment are spec-required calibration (specification line 3319) -->
+<!-- density-exempt: X, not Y -- the duration-true praise wording and the non-gamified acknowledgment are spec-required calibration (the spec's Session 53 acknowledgment beat) -->
 (For the fuller months-long capstone, "you stuck with a months-long project" is the right wording. Do not use "months-long" for a First Taste finisher -- it overclaims and deflates.) No certificate or badge -- just genuine recognition. This stands whether or not the trip happens.
 
 **When the plan changes during the trip:**

@@ -68,5 +68,5 @@ If you want to keep going, there's more a planner can do: more cities, a day-by-
 
 ## Parent Notes
 
-<!-- density-exempt: X, not Y -- the duration-true praise wording and the non-gamified acknowledgment are spec-required calibration (specification line 3319) -->
+<!-- density-exempt: X, not Y -- the duration-true praise wording and the non-gamified acknowledgment are spec-required calibration (the spec's Session 53 acknowledgment beat) -->
 This is the capstone. Close the loop against the Session 01 baseline so growth is visible. End with a warm, genuine acknowledgment as its own beat. Because First Taste is a few-weeks project, use the **duration-true** wording -- *"You finished a real project, start to finish, and made a real mini-plan we can actually use. That's a big deal"* -- not "months-long," which would overclaim. Keep it non-gamified: no certificate or badge, just your own words. This finish stands whether or not the trip ever happens. If your child wants to continue toward the fuller plan, those later sessions are documented in the [roadmap](../../PROJECT_ROADMAP.md), which says what has to happen before they are built. Nothing is wasted, and their First Taste work is the seed they build on.

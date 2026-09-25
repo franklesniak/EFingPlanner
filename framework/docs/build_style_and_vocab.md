@@ -7,7 +7,7 @@
 
 - **Status:** Active
 - **Owner:** Repository Maintainers
-- **Last Updated:** 2026-09-24
+- **Last Updated:** 2026-09-25
 - **Scope:** Builder-facing voice, vocabulary, banned-word, and lint conventions for authoring and editing the EFingPlanner curriculum batches. Read by builders only.
 
 This file is for whoever *builds* the curriculum. Load it before authoring or editing any batch so voice, vocabulary, banned words, and lint conventions stay constant across work sessions. The archived spec at `../../docs/spec/specification.md` is the original design record -- but once curriculum files exist, the built repository supersedes the spec on any conflict; this file is the short, load-before-each-batch digest of the rules that keep the built files consistent.
@@ -50,7 +50,7 @@ Everything else sits outside that mandatory core, and three of the four are not 
 
 Every child session opens with a navigation line above its first `##` section. These rules fix how it renders, so every later batch renders the line the same way.
 
-<!-- density-exempt: X, not Y -- the OQ-7 navigation rendering rules, in the wording the batch 1 brief gives for this list -->
+<!-- density-exempt: X, not Y -- the navigation rendering rules from the navigation-table decision, in the wording the batch 1 brief gives for this list -->
 
 - The `You are here:` line always names the phase in the built form `Phase N (Phase Name)`.
 - A session on a named path carries its step label, in the form `First Taste step K of 13`. A session that is not on that path carries `Not a First Taste step.`

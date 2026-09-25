@@ -7,7 +7,7 @@
 
 - **Status:** Active
 - **Owner:** Repository Maintainers
-- **Last Updated:** 2026-09-24
+- **Last Updated:** 2026-09-25
 - **Scope:** The single canonical home for the AI rules in this curriculum: the AI-free default, the adult-operated pattern, the before-you-opt-in age and supervision check, the three jobs AI may do, the jobs it may never do, the AI-privacy prohibitions, and the verification rules. Parent-facing, with rules a child can read. Every other surface that mentions the AI choice points here instead of restating these rules.
 - **Related:** [Privacy and safety](privacy_and_safety.md), [Session 09: AI as Helper, Not Boss](../sessions/phase_01_research_skills/09_ai_as_helper_not_boss.md), [AI notes form](../templates/ai_notes.md)
 
@@ -34,10 +34,10 @@ If the tool's current policy does not allow the use you had in mind, the answer 
 
 ## The adult-operated pattern
 
-<!-- density-exempt: X, not Y -- supervision safety rule (batch 1 brief F6): the adult-operated pattern binds every family that opted in -->
+<!-- density-exempt: X, not Y -- supervision safety rule (the batch 1 brief's entry for this page): the adult-operated pattern binds every family that opted in -->
 This is the supervision boundary the rest of the curriculum relies on. It is not optional for a family that opted in.
 
-<!-- density-exempt: X, not Y -- the adult-operated pattern, a supervision and verification safety rule: the batch 1 brief (F6) and spec 20.1 require its bullets, and the fourth adds how an AI use is logged -->
+<!-- density-exempt: X, not Y -- the adult-operated pattern, a supervision and verification safety rule: the batch 1 brief's entry for this page and the spec's Compliant Adult-Operated Pattern require its bullets, and the fourth adds how an AI use is logged -->
 
 - A grown-up operates the tool, on the grown-up's own account, with the child present.
 - Never the child alone, and never on an account belonging to the child.
@@ -58,7 +58,7 @@ All three run on material the child already has. Finding something new out alway
 
 ## What AI may not do
 
-<!-- density-exempt: X, not Y -- the batch 1 brief's (F6) required list of what AI may not do, with its fixed wording on the child's recommendation, and the safety statement that the listed decisions are the adults' -->
+<!-- density-exempt: X, not Y -- the list of what AI may not do that the batch 1 brief's entry for this page requires, with its fixed wording on the child's recommendation, and the safety statement that the listed decisions are the adults' -->
 
 - **It may not be the only source** for anything that ends up in the plan.
 - **It may not draft or produce the child's recommendation**, even from the child's own notes. The recommendation is the child's work, and handing that job to a tool removes the one thing this whole project is for.

@@ -627,6 +627,50 @@ def test_a_marker_without_a_reason_fails_the_run(tmp_path: Path, capsys: Any) ->
     assert run(root, judge_all(root), capsys) == 1
 
 
+@pytest.mark.parametrize("reason", [
+    "the field spec 21.5 requires in every entry",
+    "the AI safety rule (spec, Section 20)",
+    "a standalone safety rule (specification line 4245)",
+    "privacy rules (specification lines 4235-4237)",
+    "the privacy rules (§ 24)",
+    "the reachability fallback (21.8)",
+    "the OQ-7 navigation rendering rules",
+    "the reference rule AC-6-2 states",
+    "supervision safety rule (batch 1 brief F6)",
+    "the spending-money rule (B4, item 7)",
+    "the floor warning the brief requires (item 2)",
+])
+def test_a_marker_that_cites_its_source_by_number_exempts_nothing(reason: str) -> None:
+    # The style law's name-first rule: a built file names its source.
+    (mk,) = scoped(f"<!-- density-exempt: X, not Y -- {reason} -->\nIt is a map, not a list.")
+    assert mk.applies is False
+    assert "by number" in mk.problem
+
+
+@pytest.mark.parametrize("reason", [
+    "the field the spec's Session Support Notes require in every entry",
+    "the batch 1 brief's entry for this page",
+    "the privacy rule for Session 02's profile fields",
+    "the Checkpoint 4 booked-dates beat",
+    "step 3's kid-sized Budget Band, on the Phases 0-2 path",
+    "the sections of the spec that hold its privacy rules",
+])
+def test_a_marker_that_names_its_source_applies(reason: str) -> None:
+    (mk,) = scoped(f"<!-- density-exempt: X, not Y -- {reason} -->\nIt is a map, not a list.")
+    assert (mk.applies, mk.problem) == (True, "")
+
+
+def test_another_devices_marker_is_not_read_for_its_source() -> None:
+    (mk,) = scoped("<!-- density-exempt: spaced dash -- spec 21.5 -->\nText.")
+    assert (mk.applies, mk.problem) == (False, "")
+
+
+def test_a_marker_that_cites_its_source_by_number_fails_the_run(tmp_path: Path, capsys: Any) -> None:
+    root = repo_with(tmp_path, "## A\n\n<!-- density-exempt: X, not Y -- the spec's rule (spec 21.5) -->\n"
+                               "It is a map, not a list.\n")
+    assert run(root, judge_all(root), capsys) == 1
+
+
 # ---------------------------------------------------------------------------
 # Registers
 # ---------------------------------------------------------------------------

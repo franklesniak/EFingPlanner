@@ -35,7 +35,7 @@ Four things matter here, and all four come back later:
 
 Do this now:
 
-<!-- density-exempt: X, not Y -- wording the batch 1 brief (C5) requires in the body: read the route shapes as anchors to compare against, not as the answer -->
+<!-- density-exempt: X, not Y -- wording the batch 1 brief's entry for this session requires in the body: read the route shapes as anchors to compare against, not as the answer -->
 
 1. Open this session's Destination Notes and copy the region names onto your map notes page. Put them roughly where they sit on the map.
 2. Follow the pointer the Notes give you to your destination pack's regions overview. Read it, then write **one thing** about how the regions differ from each other.

@@ -2,14 +2,14 @@
 
 # Booking Guidance
 
-<!-- density-exempt: X, not Y -- the batch 2 brief's (B6) opening line for this page, whose bold boundary is that the child is never pulled into a booking workflow -->
+<!-- density-exempt: X, not Y -- the opening line the batch 2 brief's entry for this page gives, whose bold boundary is that the child is never pulled into a booking workflow -->
 What gets booked, in what order, and how your child's work feeds it, without pulling them into a booking workflow at any point.
 
 ## The boundary
 
 You own flights, bookings, payments, accounts, personal data, final hotel decisions, final restaurant reservations, and final ticket and timed-entry bookings.
 
-<!-- density-exempt: X, not Y -- the child-never-books boundary, a safety and privacy rule the batch 2 brief (B6, item 1) puts first on this page -->
+<!-- density-exempt: X, not Y -- the child-never-books boundary, a safety and privacy rule the batch 2 brief's entry for this page puts first -->
 Nothing in this curriculum ever tells a child to book, reserve, buy, create an account, enter payment or passport data, submit an entry form, or handle a confirmation number. If you find something that reads that way, it's a defect to fix, because your child's part is the list and yours is acting on it.
 
 ## What your child hands you

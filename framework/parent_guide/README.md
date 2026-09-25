@@ -8,7 +8,7 @@ You do not have to read all of this before you start. This page is the quick-sta
 
 **Finishing First Taste, or stopping at any checkpoint, is a genuine success.** The binder and the skills are real either way, and going all the way is great too. Lead with that -- it takes the pressure off.
 
-<!-- density-exempt: X, not Y -- the spec's most important rule for this page, in its bold wording (specification line 3672): a rule about what counts, where the relationship outranks the project and pausing, shrinking or stopping are successes -->
+<!-- density-exempt: X, not Y -- the spec's most important rule for this page, in its bold wording in the spec's Parent Quick-Start: a rule about what counts, where the relationship outranks the project and pausing, shrinking or stopping are successes -->
 And the most important rule: **this is meant to be a positive experience you share. If it ever becomes a source of conflict, the relationship matters more than the project.** Pausing, shrinking to a short First Taste, or stopping are all successes, not failures.
 
 *New to the term "executive function"? It is the set of brain skills for getting started, sticking with a task, knowing when to stop, staying organized, and being flexible. This project builds them by having your child plan a real trip. Read [what executive function is](what_is_executive_function.md) for the one-page version.*
@@ -42,7 +42,7 @@ A quick, honest self-check before you commit weeks or months:
 - Do I myself find getting-started or following-through hard?
 - Is right now an unusually hard season for our family?
 
-<!-- density-exempt: X, not Y -- the spec (specification line 3680) requires both contrasts in this self-check's routing answer: parking it is a respected outcome, not a failure, and a parent does not have to be the source-evaluation expert -->
+<!-- density-exempt: X, not Y -- the spec's Parent Quick-Start requires both contrasts in this self-check's routing answer: parking it is a respected outcome, not a failure, and a parent does not have to be the source-evaluation expert -->
 
 If it is a lot right now, that is fine -- use the try-then-commit on-ramp (do Phases 0-2, reach Checkpoint 1, then decide), lighten the load (see [time and effort](time_and_effort.md)), or park it for later. Parking it is a respected outcome, not a failure. If two adults will coach, agree who owns the day-to-day coaching stance. And you do not have to be the source-evaluation expert -- you and your child can look things up together.
 

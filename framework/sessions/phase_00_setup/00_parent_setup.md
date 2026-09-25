@@ -21,7 +21,7 @@ Complete the one-time setup -- safety filter, the Trip-Basics and assumptions pa
 
 ## Start Here
 
-<!-- density-exempt: X, not Y -- the kid-safe filter caveat is the spec's standalone safety rule (specification line 4245), and it is stated as the contrast it guards against -->
+<!-- density-exempt: X, not Y -- the kid-safe filter caveat is the standalone safety rule in the spec's Privacy and Safety Requirements, and it is stated as the contrast it guards against -->
 Turn on a kid-safe search filter on the device your child will use (for example, Google SafeSearch, lockable through Family Link). That one action is your start. It reduces exposure but does not remove it, so plan to stay nearby for the riskier research.
 
 ## Steps
@@ -59,12 +59,12 @@ Ask yourself honestly: is your child actually excited, or is this mostly your id
 
 ## How to help without taking over
 
-<!-- density-exempt: X, not Y -- praise the move, not the mind is the spec's praise calibration pair (specification line 3471) -->
+<!-- density-exempt: X, not Y -- praise the move, not the mind is the praise calibration pair in the spec's Parent Review Rubric -->
 Sit with your child for the early sessions, especially the source-judging ones (05). Coach, and let your child do the work. Praise the move ("you checked a second source"), not the mind ("you're so smart"). Schedule sessions when your child is rested and fed. If frustration rises, point them to the [When I'm Stuck card](../../student_guide/when_im_stuck.md) and take a break. If a task is too much, the [differentiation guide](../../parent_guide/differentiation.md) has concrete lighter moves.
 
 ## What not to record
 
-<!-- density-exempt: X, not Y -- privacy rules: the data kept off every page, vague dates in place of exact booked ones, and hotel names kept off anything public (specification lines 4235-4237) -->
+<!-- density-exempt: X, not Y -- privacy rules from the spec's Privacy and Safety Requirements: the data kept off every page, vague dates in place of exact booked ones, and hotel names kept off anything public -->
 Keep sensitive personal data out of every page, whether on paper, in Google Docs, or anywhere else: no passport numbers, birthdates, confirmation numbers, home address, or payment details. Use vague travel dates instead of exact booked ones, and keep hotel names off anything public. Adults handle all of that.
 
 ## Artifact Created

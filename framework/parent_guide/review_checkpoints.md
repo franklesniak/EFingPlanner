@@ -95,7 +95,7 @@ Each has its own **what to consider** list. The review form checks whether the w
 
 **What to consider:** flights; the arrival and departure places; how many hotel moves it involves; whether the transit is workable; how it fits your maximum trip length, or your booked trip length; budget implications; and the family schedule.
 
-<!-- density-exempt: X, not Y -- the Checkpoint 4 booked-dates beat the batch 2 brief (B1) requires on this page: the booked days split, with no shorter backup version -->
+<!-- density-exempt: X, not Y -- the Checkpoint 4 booked-dates beat the batch 2 brief's entry for this page requires: the booked days split, with no shorter backup version -->
 **With the dates already booked,** the trip length is set. They bring how the booked days are split: the cities, the nights in each and the travel days, with no shorter backup version.
 
 **Progress is real:** the family now knows *when, where, and how long*. The trip is becoming concrete. With the dates booked, it now knows *where*, and how the booked days are split.

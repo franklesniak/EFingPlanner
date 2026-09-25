@@ -45,7 +45,7 @@ In [Session 05](05_good_sources_bad_sources.md) you learned the quick trust test
 
 That last one is where the thinking happens. Which page answers your exact question more directly? That's the more useful one, even if its answer is just two lines long.
 
-<!-- density-exempt: X, not Y -- the kid-safe filter caveat is the spec's standalone safety rule (specification line 4245) -->
+<!-- density-exempt: X, not Y -- the kid-safe filter caveat is the standalone safety rule in the spec's Privacy and Safety Requirements -->
 **Safety while you research.** A kid-safe filter cuts down what you might run into, but it does not remove it. So a grown-up stays nearby for this one, and for any research that could get sideways. If a page seems wrong, or makes you uncomfortable, close it and tell a grown-up. You are never in trouble for that. If a site asks for your name, an account, a payment, or any personal details, stop and ask a grown-up. The full rules are on the [privacy and safety page](../../docs/privacy_and_safety.md).
 
 **When the source is not in English.** Official pages are often written in the local language first. Look for an official English version of the page before anything else. If there isn't one, a translation tool helps you *understand* the page. It does not help you trust it. Anything that matters gets checked against an official English source or a grown-up. When in doubt, ask a grown-up.

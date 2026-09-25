@@ -96,10 +96,18 @@ block quote, or, above a heading, that heading's section. Another comment
 between the marker and its block is skipped. It exempts the instances and
 split negations it covers. The device is named ``X, not Y``; the old
 ``X-not-Y`` and ``x-not-y`` are read too. A marker that gives no reason, that
-names the device in any other spelling (``X not Y``, ``xnoty``), or that
-shares its lines with text the page shows (in an HTML block, or inside a line
-of a paragraph, a heading or a table cell), exempts nothing, and the report
-names it. A marker shown in a code span is text, not a marker.
+names the device in any other spelling (``X not Y``, ``xnoty``), that
+reaches its source by number, or that shares its lines with text the page
+shows (in an HTML block, or inside a line of a paragraph, a heading or a
+table cell), exempts nothing, and the report names it. A marker shown in a
+code span is text, not a marker.
+
+A marker's reason names its source, as the style law's name-first rule asks
+of every built file: ``the spec's Session Support Notes``, ``the batch 1
+brief's entry for this page``. A reason that cites a section number or a
+line (``spec 21.5``, ``Section 20``, ``specification line 4245``, ``§ 24``,
+a bare ``21.8``), an ``OQ-`` or ``AC-`` id, or a build brief's item label
+(``F6``, ``B4, item 7``) is named as a marker problem.
 
 Human judgments
 ---------------
@@ -221,6 +229,20 @@ XNOTY_DEVICE_NAMES = ("X, not Y", "X-not-Y", "x-not-y")
 #: A name that looks like the device's in another spelling (`X not Y`, `xnoty`,
 #: `X, not-y`). Such a marker exempts nothing, and the report names it.
 XNOTY_LOOKALIKE_RE = re.compile(r"^x\s*[,-]?\s*not\s*[,-]?\s*y$", re.IGNORECASE)
+#: A reason that reaches its source by number, which the style law's
+#: name-first rule forbids in a built file: a section or a line of the spec,
+#: a section sign, a dotted section number, an `OQ-` or `AC-` id, or a build
+#: brief's item label (`F6`, `B4, item 7`). A session's number is its name
+#: (`Session 02`), so it is not one of these.
+NUMBERED_SOURCE_RE = re.compile(
+    r"(?i:\bsections?\s+\d+(?:\.\d+)*)"
+    r"|(?i:\bspec(?:ification)?\b\W{0,3}(?:lines?\s+)?\d+(?:[.-]\d+)*)"
+    r"|§\s*\d*(?:\.\d+)*"
+    r"|\b\d+(?:\.\d+)+\b"
+    r"|\b(?:OQ|AC)-\d+(?:-\d+)*"
+    r"|\b[A-H]\d{1,2}\b"
+    r"|(?i:\bitems?\s+\d+)"
+)
 
 # ---------------------------------------------------------------------------
 # Candidate patterns
@@ -594,7 +616,9 @@ def parse_marker(lineno: int, body: str) -> Marker:
 
     The style law asks a marker to say why, so a marker that names `X, not Y`
     and gives no reason exempts nothing, and the report names it. So does a
-    marker that names the device in a spelling the law does not use.
+    marker that names the device in a spelling the law does not use, and one
+    whose reason reaches its source by number (`NUMBERED_SOURCE_RE`), which
+    the law's name-first rule forbids in a built file.
     """
     m = MARKER_BODY_RE.match(body)
     device = normalize_space(m.group("device") if m else body)
@@ -603,9 +627,11 @@ def parse_marker(lineno: int, body: str) -> Marker:
     problem = ""
     if names_device and not reason:
         problem = "no reason after ' -- '"
+    elif names_device and (cited := NUMBERED_SOURCE_RE.search(reason)):
+        problem = f"the reason cites its source by number ({cited.group(0).strip()!r}); name the source instead"
     elif not names_device and XNOTY_LOOKALIKE_RE.match(device):
         problem = "device name is not `X, not Y`"
-    return Marker(lineno, device, reason, names_device and bool(reason), problem=problem)
+    return Marker(lineno, device, reason, names_device and bool(reason) and not problem, problem=problem)
 
 
 def marker_beside_text(lineno: int, body: str) -> Marker | None:

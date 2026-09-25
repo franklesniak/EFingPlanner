@@ -3,7 +3,7 @@
 
 # Japan Knowledge Pack
 
-<!-- density-exempt: X, not Y -- the provided-as-is banner in the spec's canonical wording (section 13.1), which this page carries verbatim -->
+<!-- density-exempt: X, not Y -- the provided-as-is banner in the spec's canonical wording for the repository README, which this page carries verbatim -->
 
 > **Provided as-is by one family. This is not an actively maintained project, and no one is on call to fix or update it. Facts -- prices, hours, entry and visa rules, attraction names, links -- may be out of date. Always verify anything you rely on against official sources before acting on it.**
 
@@ -31,6 +31,6 @@ Each reference file and each session insert carries a `Last reviewed` date: the 
 
 ## A note on fast-changing rules
 
-<!-- density-exempt: X, not Y -- the spec's section 22.4 verify framing: its required "re-check close to travel" pair and its categories, never current values -->
+<!-- density-exempt: X, not Y -- the verify framing of the spec's Japan Topics to Cover Briefly: its required "re-check close to travel" pair and its categories, never current values -->
 
 Japan's tourist access rules, reservation systems, and pricing have been changing unusually fast. Treat that whole category -- timed-entry and reservation systems, permit systems, IC-card options, rail-pass value, tourist/dual pricing, entry authorization, and travel taxes -- as **"re-check close to travel," not "set it once."** These files name *categories to verify*, never current values, so they cannot go stale in the way a pinned price would. Adults own anything to do with entry, money, and booking.

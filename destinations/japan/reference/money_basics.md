@@ -10,7 +10,7 @@ Enough to help the child think about cost. Adults own the real budget. Adults al
 
 Japan uses the yen. To tell if a thing costs a lot, change yen into dollars. But **rates move a lot from year to year**. Any swap you work out is only true for the day you checked it. So look up today's rate. Then write the date beside it.
 
-<!-- density-exempt: X, not Y -- the dated example rate and its warning, which the batch 1 brief (A5) quotes from this page so the kid glossary matches it -->
+<!-- density-exempt: X, not Y -- the dated example rate and its warning, which the batch 1 brief's kid-glossary entry quotes from this page so the kid glossary matches it -->
 *Example only -- check today's rate.* In July 2026, and not re-checked since, it took very roughly 150-160 yen to make 1 US dollar. So 100 yen was worth a bit more than half a US dollar. Rates move a lot. Do not lean on this number. Look up today's rate, and write the date beside it.
 
 ## Cash still matters

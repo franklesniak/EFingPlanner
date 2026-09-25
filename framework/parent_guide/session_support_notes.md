@@ -8,7 +8,7 @@ Want a rough signal of how the executive-function side is going? The optional [e
 
 ## Session 00: Parent Setup (adult-only)
 
-<!-- density-exempt: X, not Y -- the Role and Pitfall lines keep their built wording (batch 1 brief, H5), and the Pitfall is the field spec 21.5 requires in every entry -->
+<!-- density-exempt: X, not Y -- the Role and Pitfall lines keep their built wording (the batch 1 brief's entry for this page), and the Pitfall is the field the spec's Session Support Notes require in every entry -->
 
 - Role: do the setup; the child does not do this session.
 - Prep: kid-safe filter, Trip-Basics card, assumptions page, AI choice, start passports if your trip leaves the country.
@@ -25,7 +25,7 @@ Want a rough signal of how the executive-function side is going? The optional [e
 
 ## Session 02: Family Traveler Profiles
 
-<!-- density-exempt: X, not Y -- the Pitfall is the field spec 21.5 requires in every entry, and it carries the privacy rule that a medical reason stays with the adults (batch 1 brief, Session 02) -->
+<!-- density-exempt: X, not Y -- the Pitfall is the field the spec's Session Support Notes require in every entry, and it carries the privacy rule that a medical reason stays with the adults (batch 1 brief, Session 02) -->
 
 - Role: 5-minute check-in; relay the interview question to any traveler your child cannot reach.
 - Prep: the assumptions page, filled in before this session; the Trip-Basics roster; blank profile and interview pages.
@@ -35,7 +35,7 @@ Want a rough signal of how the executive-function side is going? The optional [e
 
 ## Session 03: What Makes a Good Trip
 
-<!-- density-exempt: X, not Y -- the spec's reachability fallback (21.8): the traveler poll must never stall the child, and the parent relays a traveler who is hard to reach -->
+<!-- density-exempt: X, not Y -- the reachability fallback in the spec's Coaching and Support section: the traveler poll must never stall the child, and the parent relays a traveler who is hard to reach -->
 
 - Role: 5-minute check-in; help make far-away travelers reachable.
 - Prep: your copy of the Family Trip Goals and Input Summary page, from the trip starter kit.
@@ -89,7 +89,7 @@ Want a rough signal of how the executive-function side is going? The optional [e
 
 ## Session 09: AI as Helper, Not Boss (only if your family uses AI)
 
-<!-- density-exempt: X, not Y -- the Pitfall is the field spec 21.5 requires in every entry, and it carries the AI safety rule that AI never supplies facts (spec, Section 20) -->
+<!-- density-exempt: X, not Y -- the Pitfall is the field the spec's Session Support Notes require in every entry, and it carries the AI safety rule that AI never supplies facts (the spec's AI Use Rules) -->
 
 - Role: adult-operated -- you run the tool, on your account, with the child present.
 - Prep: your AI tool; verify its current minimum-age policy first, and write the date you checked; a blank AI Notes form.
@@ -135,7 +135,7 @@ Want a rough signal of how the executive-function side is going? The optional [e
 
 ## Session 14: Checkpoint 1 Season Recommendation
 
-<!-- density-exempt: X, not Y -- the spec's never-silent transparency rule (21.8: an adult who changes the child's plan says why), which the batch 2 brief carries (B6, item 7: adults may change parts of the plan, never silently) -->
+<!-- density-exempt: X, not Y -- the spec's never-silent transparency rule, in its Coaching and Support section (an adult who changes the child's plan says why), which the batch 2 brief's booking-guidance entry carries (adults may change parts of the plan, never silently) -->
 
 - Role: a real review -- genuinely use the recommendation in a family talk (parent-gated).
 - Prep: a Decision Record page.
@@ -177,7 +177,7 @@ Want a rough signal of how the executive-function side is going? The optional [e
 
 ## Session 53: Reflection and Handoff
 
-<!-- density-exempt: X, not Y -- the finish acknowledgment the spec requires for Session 53 (the "you finished a real project" beat, in the spec's Session 53 section and its 21.8 scripts) -->
+<!-- density-exempt: X, not Y -- the finish acknowledgment the spec requires for Session 53 (the "you finished a real project" beat, in the spec's Session 53 section and its Coaching and Support scripts) -->
 
 - Role: co-work; deliver the finish acknowledgment warmly (duration-true wording).
 - Prep: the Session 01 baseline reflection; a Final Reflection page.

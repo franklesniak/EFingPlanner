@@ -7,7 +7,7 @@
 
 - **Status:** Active
 - **Owner:** Repository Maintainers
-- **Last Updated:** 2026-09-24
+- **Last Updated:** 2026-09-25
 - **Scope:** The blank authoring skeleton for a child-facing curriculum session, with the rules a new session has to satisfy: the seven mandatory-core fields, the section order, the navigation line, the "For parents" strip, and the structure gate's floor. Builder-facing; a child never reads this page.
 - **Related:** [Build style and vocabulary](../docs/build_style_and_vocab.md), [Golden exemplar session](../sessions/phase_00_setup/04_start_a_source_log.md)
 
@@ -90,7 +90,7 @@ The navigation aid is **one line**. It opens `You are here: Phase N (Phase Name)
 
 The step label comes in three forms, and it is the one part that varies:
 
-<!-- density-exempt: X, not Y -- the batch 1 brief (D7) fixes the step label's three forms for this page, the add-on form in this wording -->
+<!-- density-exempt: X, not Y -- the batch 1 brief's entry for this page fixes the step label's three forms, the add-on form in this wording -->
 - On the First Taste path: `First Taste step K of 13.`
 - Off that path: `Not a First Taste step.`
 - A conditional add-on session writes its add-on label in place of a step number, as Session 09 does.
@@ -135,7 +135,7 @@ A conditional-core session names its condition on the same line, in the built fo
 
 In Phases 7-8, and on the two-session readiness trigger, the template gets lighter: `## Steps` and `## Workspace` become minimal, and Start Here becomes self-generated. Start Here, Stop Point, the named Artifact, and Source Check where research occurred are always kept in full.
 
-<!-- density-exempt: X, not Y -- the batch 1 brief (D7) says to write this floor into the template, in its bolded wording "Thinning is a shorter body, never a missing heading" -->
+<!-- density-exempt: X, not Y -- the batch 1 brief's entry for this page says to write this floor into the template, in its bolded wording "Thinning is a shorter body, never a missing heading" -->
 **Thinning is a shorter body, never a missing heading.** `.github/scripts/check-session-structure.py` requires all six of `## Goal`, `## Start Here`, `## Steps`, `## Workspace`, `## Artifact Created` and `## Stop Point`, each with a non-empty body, in every session in every phase. It has no late-phase exemption and no lighter-template mode. So a lighter session carries a one-line prompt under `## Steps`, a named blank under `## Workspace`, and `## Goal` untouched, because `## Goal` is mandatory too and the always-kept list above does not name it.
 
 ## Before you ship a session

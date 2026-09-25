@@ -8,7 +8,7 @@ Your half of the budget lesson. Read this before your child's first budget sessi
 
 They're learning **how trip costs are structured**: what the categories are, what's priced per person versus per room versus per group, what a buffer is, and whether the parts they chose fit the band you gave them.
 
-<!-- density-exempt: X, not Y -- what the child produces, which the batch 2 brief requires stated plainly (B4 item 1): a structural picture, short of a usable, bookable trip total -->
+<!-- density-exempt: X, not Y -- what the child produces, which the batch 2 brief's entry for this page requires stated plainly: a structural picture, short of a usable, bookable trip total -->
 What they are producing is a structural picture, and it stops short of a usable, bookable trip budget. Say that plainly to yourself now, so neither of you mistakes the output for one later.
 
 ## Why getting there sits on the side
@@ -25,7 +25,7 @@ Your child's controllable slices are hotels, food, activities, local transit and
 
 **That figure is a floor, and it is worth knowing what it leaves out.** At the first budget session it leaves out three of the five slices: activities, local transit and souvenirs. That is on top of everything below, so it is a floor under a floor. Once the Core path has added those, the subtotal covers all five.
 
-<!-- density-exempt: X, not Y -- the floor warning the batch 2 brief requires (B4 item 2): adult costs sit outside the figure, and it is not the trip's full cost -->
+<!-- density-exempt: X, not Y -- the floor warning the batch 2 brief's entry for this page requires: adult costs sit outside the figure, and it is not the trip's full cost -->
 **Outside it at every stage:** intercity transportation, travel insurance, any entry or visa costs, phone or data service, and anything else adult-owned. So treat the number as *are we in the right range*, and never as what the trip will cost.
 
 **Keep your getting-there number on your own page.** Their budget worksheet says in as many words that getting there is the grown-ups' number and that there is nothing to fill in there. That wording is deliberate. A jotted line in this guide, or anywhere you keep trip notes, is all it needs to be.
@@ -69,7 +69,7 @@ A lodging category priced per person is the exception, and it skips the per-room
 
 You set the amount and hold the actual money. Your child plans how they might spend it.
 
-<!-- density-exempt: X, not Y -- the spending-money rule the batch 2 brief gives this page (B4, item 7, from spec Section 23): no new tracker or binder page, a line inside the existing budget work -->
+<!-- density-exempt: X, not Y -- the spending-money rule the batch 2 brief's entry for this page gives, from the spec's Budget Teaching Requirements: no new tracker or binder page, a line inside the existing budget work -->
 Keep it price-free: have them **look up** a current price. And don't add a page or a tracker for this. It's a line inside the budget work they already do.
 
 ## When the honest answer is no
@@ -86,7 +86,7 @@ Children's fares are often lower than adults' on some transport systems. Treat i
 
 ---
 
-<!-- density-exempt: X, not Y -- the page's closing line, which the batch 2 brief (B4) gives in bold: every figure is an example to re-check, with a date, and there are no pinned amounts -->
+<!-- density-exempt: X, not Y -- the page's closing line, which the batch 2 brief's entry for this page gives in bold: every figure is an example to re-check, with a date, and there are no pinned amounts -->
 Every figure on this page is an example to re-check, with a date. There are no pinned amounts here, and there shouldn't be any in your child's work either.
 
 ## Where to go next

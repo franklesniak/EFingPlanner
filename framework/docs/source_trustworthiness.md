@@ -43,7 +43,7 @@ Before you look anything up, ask what kind of question you have. The answer deci
 
 A guidebook is the best orientation tool in this project. One evening with one book gives a child the shape of a place that a hundred search results will not.
 
-<!-- density-exempt: X, not Y -- the guidebook rider the batch 1 brief (F5) requires on this page: for orientation and not current facts, with the year check and the older library edition -->
+<!-- density-exempt: X, not Y -- the guidebook rider the batch 1 brief's entry for this page requires: for orientation and not current facts, with the year check and the older library edition -->
 It is not a source for current facts. Find the publication year on the copyright page, say it out loud, and treat every price, opening time and rule in the book as something to confirm against an official source with the date checked. A library edition can be several years older still, which is fine for orientation and useless for hours.
 
 ## The three fields that record the check
@@ -66,7 +66,7 @@ When a fact matters and the sources disagree, when it came from an AI tool, or w
 
 Some facts stay put, and some are only true this week. Prices, opening hours, closures, travel advisories, entry rules, visa rules, rail-pass rules and ticketing rules all belong in the second group.
 
-<!-- density-exempt: X, not Y -- the current-information rule the batch 1 brief (F5) requires here, the Verify-Don't-Trust Named concept, whose home is this page -->
+<!-- density-exempt: X, not Y -- the current-information rule the batch 1 brief's entry for this page requires, the Verify-Don't-Trust Named concept, whose home is this page -->
 Never write one of those into a plan as a settled fact. Write it with three habits instead:
 
 - "Check the official website."

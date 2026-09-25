@@ -6,7 +6,7 @@ This is a private note you keep for yourself. It takes about a minute, three tim
 
 ## Four guardrails, before anything else
 
-<!-- density-exempt: X, not Y -- the four guardrails spec 21.10 and the batch 1 brief (H4) require at the top: a privacy rule, and noticing, not grading, as a rough home signal for you and not an assessment of your child -->
+<!-- density-exempt: X, not Y -- the four guardrails the spec's Optional EF Observation Aid and the batch 1 brief's entry for this page require at the top: a privacy rule, and noticing, not grading, as a rough home signal for you and not an assessment of your child -->
 
 - **Keep it private.** Your child does not see a score, ever. This is your own notebook, and a number handed to a child becomes a grade the moment they read it. Put no personal data on it.
 - **Noticing, not grading.** This is a rough home signal for you. It is not an assessment of your child, and it measures nothing about their ability.
@@ -15,7 +15,7 @@ This is a private note you keep for yourself. It takes about a minute, three tim
 
 ## What the three items are, and what they are not
 
-<!-- density-exempt: X, not Y -- the batch 1 brief (H4) requires the page to say the items are everyday behaviors and not a one-to-one measurement of the three skills -->
+<!-- density-exempt: X, not Y -- the batch 1 brief's entry for this page requires it to say the items are everyday behaviors and not a one-to-one measurement of the three skills -->
 The three items below are everyday behaviors you can see from across the room. They are not a one-to-one measurement of the three core executive-function skills, and this page does not claim they are.
 
 The canonical three are **working memory**, **cognitive flexibility** and **inhibitory control**, and they are defined in [design principles](../docs/design_principles.md). A three-item home note cannot see cognitive flexibility at all, so nothing here stands in for it. What you are watching is the visible surface: getting started, sustaining effort, and knowing when to stop.

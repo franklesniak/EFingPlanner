@@ -7,7 +7,7 @@
 
 - **Status:** Active
 - **Owner:** Repository Maintainers
-- **Last Updated:** 2026-09-24
+- **Last Updated:** 2026-09-25
 - **Scope:** The single, canonical home for the EFingPlanner privacy and safety rules -- data that is never recorded, child online-safety rules, the kid-safe-filter caveat, AI-privacy rules, public-repo/private-work separation, and work backup. Other files carry a short reminder and link here. Where a rule is written out in full at the point a child or an adult acts on it, that repetition is deliberate and required.
 
 This is the single home for the privacy and safety rules. Other files carry a short reminder and link here rather than repeating them, with one deliberate exception: where a rule is written out in full at the point a child or an adult acts on it, the full copy is required and must not be reduced to a pointer.
@@ -30,7 +30,7 @@ Keep these out of the repository and out of any filled-in page, on paper or in G
 
 ## A kid-safe filter is not enough on its own
 
-<!-- density-exempt: X, not Y -- the kid-safe filter caveat and the co-research guardrail, a standalone safety rule the spec states in this form (specification line 4245) -->
+<!-- density-exempt: X, not Y -- the kid-safe filter caveat and the co-research guardrail, a standalone safety rule the spec's Privacy and Safety Requirements state in this form -->
 A kid-safe search filter (turned on at setup) reduces exposure but does not remove it, and it is not a substitute for an adult nearby on riskier research. Stay alongside for: the source-judging sessions, any video research (autoplay, recommendation drift, comments, and monetized links), image searches (place-name and nightlife queries can surface adult imagery even with the filter on), nightlife/drinking topics, and open neighborhood browsing. This is not a ban on open research -- learning to research is the point -- just an adult alongside for the riskier topics.
 
 ## AI use and privacy (if your family uses AI)
@@ -42,7 +42,7 @@ A kid-safe search filter (turned on at setup) reduces exposure but does not remo
 
 ## Public framework, private trip work
 
-<!-- density-exempt: X, not Y -- privacy rules: the repository holds no trip data, filled-in work is never committed, and Google Docs is no private vault (specification lines 4241-4252) -->
+<!-- density-exempt: X, not Y -- privacy rules from the spec's Privacy and Safety Requirements and its Public Framework, Private Trip Work: the repository holds no trip data, filled-in work is never committed, and Google Docs is no private vault -->
 This repository is public and holds no trip data -- only the reusable curriculum, guides, blank templates, and the destination reference pack. Your child's real, filled-in work is never committed here: copy the blank pages out and complete them in a private binder or a Google Docs folder. A Google Docs folder is not a private vault either -- keep the same **sensitive** personal data (passport numbers, birthdates, home address, payment details, exact booked dates) off it, just as you would on paper.
 
 ## Back up your work (30 seconds)
@@ -51,5 +51,5 @@ Keeping weeks or months of work in one paper binder is a single point of failure
 
 ## The "if I get separated" card is a small exception
 
-<!-- density-exempt: X, not Y -- privacy rule: what the separated card may and may never hold (specification line 4243) -->
+<!-- density-exempt: X, not Y -- privacy rule: what the separated card may and may never hold (the spec's Privacy and Safety Requirements) -->
 The child's carry-in-pocket "if I get separated" card may hold the hotel name, address, and phone, and a parent's phone number -- the minimum needed to reunite. It never holds passport numbers, birthdates, confirmation numbers, or the home address, and it is not committed to the repository.
