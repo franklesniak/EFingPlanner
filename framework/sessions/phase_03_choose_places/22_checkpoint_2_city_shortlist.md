@@ -10,7 +10,7 @@ You are here: Phase 3 (Choose Places). Not a First Taste step. **This is Checkpo
 - Planner skill: making trade-offs
 - Estimated time: 20-30 minutes for the child, plus a 20-40 minute review with you
 - Parent involvement: parent review -- genuinely use the recommendation in a real family talk
-- Materials: your City Long-List and City comparison, your My Calls page if you're continuing from First Taste, your Family Trip Goals page from Session 03, your [Trip-Basics card](../../templates/trip_basics.md) (for the maximum or booked trip length), your family's [current travel assumptions](../../templates/current_family_travel_assumptions.md) page (for the budget band), your [Source Log](../../templates/source_log.md), a [Decision Record page](../../templates/decision_record.md)
+- Materials: your City Long-List and City comparison, your My Calls page if you're continuing from First Taste, your Family Trip Goals page from Session 03, your [Trip-Basics card](../../templates/trip_basics.md) (for the maximum or booked trip length), your family's [current travel assumptions](../../templates/current_family_travel_assumptions.md) page (for the budget band), your [Source Log](../../templates/source_log.md), a [Decision Record page](../../templates/decision_record.md), a blank [Parent Review Form](../../templates/parent_review_form.md) for a grown-up to fill in
 
 ## Goal
 
@@ -110,7 +110,7 @@ This checkpoint is lightweight and asynchronous. One accountable adult can revie
 
 **Use it in a family talk.** Take the shortlist into a family conversation and plan from it. Seeing their research shape the trip a second time, well before the final meeting, is what keeps a child going through the long middle of the project.
 
-**Questions to ask:** "Which base would you drop first, and why?" and "Whose wish does this shortlist leave out?" The [parent review form](../../templates/parent_review_form.md) has the full set of coaching questions and the good-enough standards; [review checkpoints](../../parent_guide/review_checkpoints.md) explains how to run each one.
+**Questions to ask:** "Which base would you drop first, and why?" and "Whose wish does this shortlist leave out?" Fill in a [parent review form](../../templates/parent_review_form.md) for this checkpoint as you decide. It has the full set of coaching questions and the good-enough standards, and your child files it behind tab 10 in Session 50; [review checkpoints](../../parent_guide/review_checkpoints.md) explains how to run each one.
 
 **What to avoid:** choosing the places for them, rewriting their shortlist in adult words, or asking for perfection before you decide. The review form lists the rest.
 

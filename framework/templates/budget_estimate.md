@@ -13,7 +13,7 @@ All numbers here are estimates you look up and re-check -- never a fixed price. 
 | Hotel (first city) | $____ per night, per room (or per person) x ____ nights x ____ rooms (or people, if it's per person) | |
 | Second city's hotel (only if you kept two cities in Session 21) | $____ per night, per room (or per person) x ____ nights x ____ rooms (or people, if it's per person) | |
 | Food | $____ per person per day x ____ people x ____ days | |
-| Activities/tickets (later) | $____ per ticket x ____ people (or once, for a family or group ticket) | |
+| Activities/tickets (later) | $____ per ticket x ____ people (or x how many family or group tickets you'd need) | |
 | Local transit -- trains/buses inside the trip (later) | | |
 | Souvenirs / spending money (later) | | |
 | **Subtotal of the parts I choose (Core path)** | add the costs above. If a part still says "ask an adult" or "not sure yet", add up the rest, and write "not counting ___" beside what you added up, naming what's missing. | |

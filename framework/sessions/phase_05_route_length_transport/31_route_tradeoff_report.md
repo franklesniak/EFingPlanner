@@ -28,7 +28,7 @@ This is your route trade-off, one of the three trade-off reports you'll write in
 2. **Put one route in each column.** Route 1 goes under Option A and Route 2 under Option B. Write which cities each route includes. On a one-base trip, write what each way does. The example row shows the shape: "Route 1: City A + City B" and "Route 2: City A + City C".
 3. **Fill every row for both routes.** Go down the page: pros, cons, cost effect, time effect, energy effect, and what you'd miss. For cost, write higher, about the same, or lower. You don't need prices.
 4. **Use travel times from Directions.** Copy them from your route map notes. They came from the map's Directions in Session 28, so they're better than a guess from the map picture. If a route needs a trip your notes don't have, such as going straight from City A to City C, check it now with Directions. Add that time to your route map notes too.
-5. **Do the budget-band check.** In that row, ask: "Does this route still fit our rough budget band?" More cities and more hotel moves usually cost more.
+5. **Do the budget-band check.** In that row, ask: "Does this route still fit our rough budget band?" More cities and more hotel moves usually cost more. The rides between places are on the grown-ups' page, so your band check shows only the hotels and days.
 6. **Fill the source rows.** Where did your facts come from? Use your Source Log.
 7. **Write your closing lines**: your recommendation, two or three reasons, what the family gives up by choosing it, and what a grown-up still needs to check or decide.
 

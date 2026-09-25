@@ -62,7 +62,7 @@ You are done when you've written your own short list of day rules, including you
 
 ## Source Check
 
-Write where you found out how long it takes to get from where you arrive to where you'll stay, and the date you checked. Add it to your Source Log. Times like that can change, so mark it for a grown-up to check again before the trip.
+Write where you found out how long it takes to get from where you arrive to where you'll stay, and the date you checked. Add it to your Source Log. Checked any other travel time with the map's Directions? Log the map too, the way Session 28 does. Times like that can change, so mark it for a grown-up to check again before the trip.
 
 ## Finish and Quality Check
 

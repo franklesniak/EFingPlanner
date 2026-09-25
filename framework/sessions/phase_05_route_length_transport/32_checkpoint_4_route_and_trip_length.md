@@ -10,7 +10,7 @@ You are here: Phase 5 (Route, Length, and Transportation). Not a First Taste ste
 - Planner skill: making trade-offs
 - Estimated time: 20-30 minutes for the child, plus a 20-40 minute review with you
 - Parent involvement: parent review -- genuinely use the recommendation in a real family talk
-- Materials: your Trade-Off Report from Session 31, your nights table and formula from Session 29, your route map notes, your [Trip-Basics card](../../templates/trip_basics.md), your family's [current travel assumptions](../../templates/current_family_travel_assumptions.md) page (for the budget band), a device with a map app (kid-safe filter on) if the grown-ups change where you arrive or leave, your [When the Plan Changes card](../../student_guide/when_the_plan_changes.md) and the pages it names that you've made (for any change the grown-ups approve), your [Source Log](../../templates/source_log.md), a [Decision Record page](../../templates/decision_record.md)
+- Materials: your Trade-Off Report from Session 31, your nights table and formula from Session 29, your route map notes, your [Trip-Basics card](../../templates/trip_basics.md), your family's [current travel assumptions](../../templates/current_family_travel_assumptions.md) page (for the budget band), a device with a map app (kid-safe filter on) if the grown-ups change where you arrive or leave, your [When the Plan Changes card](../../student_guide/when_the_plan_changes.md) and the pages it names that you've made (for any change the grown-ups approve), your [Source Log](../../templates/source_log.md), a [Decision Record page](../../templates/decision_record.md), a blank [Parent Review Form](../../templates/parent_review_form.md) for a grown-up to fill in
 
 ## Goal
 
@@ -35,7 +35,7 @@ Fill in the table in the Workspace:
 5. **A shorter backup version.** If the grown-ups need a shorter trip, what would you drop first? Keep your special pick and its place. If your dates are booked, leave this row blank, because the length is already set.
 6. **Reasons.** Give two or three, each tied to something you found.
 7. **Trade-offs.** What does the family give up with this plan?
-8. **Budget-band check.** Does this still fit our rough budget band? More cities and more hotel moves usually cost more.
+8. **Budget-band check.** Does this still fit our rough budget band? More cities and more hotel moves usually cost more. The rides between places are on the grown-ups' page, so your band check shows only the hotels and days.
 
 With your dates booked, your cities, the nights in each and your travel days make up your **nights plan**. It shares out the booked trip.
 
@@ -109,7 +109,7 @@ This review stays lightweight too: a five-minute call, a note on a shared page, 
 
 **Your own job here.** You recorded a rough trip shape at setup and firmed up any open part at Checkpoint 2. Now confirm or adjust the arrival and departure places against current flight options, or against however your family is getting there. If they change, your child's route flexes: they move one city block and keep the rest. A changed place means Approved with changes, so your child re-times the new first or last leg and fixes the travel days and nights. If the change alters which route works best, pick Needs more research instead. The reasoning about the shape of the journey, such as flying into one city and out of another, stays with you. Once you approve, your child carries each change back with their When the Plan Changes card, including the must-dos your route leaves out; the special pick stays. If you fly and a place changes, tell them which flights land on a later date.
 
-**Questions to ask:** "Where would this plan feel rushed?" and "What would you cut first if we had fewer days?" The [parent review form](../../templates/parent_review_form.md) has the full set of coaching questions and the good-enough standards; [review checkpoints](../../parent_guide/review_checkpoints.md) explains how to run each one.
+**Questions to ask:** "Where would this plan feel rushed?" and "What would you cut first if we had fewer days?" Fill in a [parent review form](../../templates/parent_review_form.md) for this checkpoint as you decide. It has the full set of coaching questions and the good-enough standards, and your child files it behind tab 10 in Session 50; [review checkpoints](../../parent_guide/review_checkpoints.md) explains how to run each one.
 
 **What to avoid:** redrawing the route yourself, overruling the nights without saying why, or asking for exact dates. The review form lists the rest.
 

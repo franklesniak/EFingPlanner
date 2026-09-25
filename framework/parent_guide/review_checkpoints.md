@@ -6,7 +6,7 @@ Your child stops at certain points and brings you a recommendation. That's a che
 
 **How many you will meet depends on the path.** On **First Taste**, Checkpoint 1 is the only checkpoint, and the path carries on after it to Session 53; the [roadmap](../PROJECT_ROADMAP.md) lists the sessions in between. If that is your family's path, the Checkpoint 1 section below is the only one you need. On the **Core and Full** paths there are six, and the rest of this page covers them all.
 
-The blank form is the [parent review form](../templates/parent_review_form.md). This page is the how and the why; the form is what you fill in.
+The blank form is the [parent review form](../templates/parent_review_form.md). This page is the how and the why; the form is what you fill in, one copy at each checkpoint as you decide. On the Core path, your child files the forms behind tab 10 of the binder: Checkpoints 1 to 5 in Session 50, and Checkpoint 6 in Session 53.
 
 ## Five of the six are low-ceremony
 

@@ -72,7 +72,7 @@ On the Core path, you are done when your cut list holds your Checkpoint 2 and 3 
 
 ## Source Check
 
-No new sources needed unless you looked something up. This session uses the cards and picks you already made.
+This session uses the cards and picks you already made. Did you check a travel time with the map's Directions? Then give the map a Source Log entry, the way Session 28 does, with the date you checked.
 
 ## Finish and Quality Check
 

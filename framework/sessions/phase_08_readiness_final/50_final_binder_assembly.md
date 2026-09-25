@@ -10,7 +10,7 @@ You are here: Phase 8 (Readiness and Final). Not a First Taste step. Previous: [
 - Planner skill: organizing information
 - Estimated time: several sittings; stop whenever you want
 - Parent involvement: 5-minute check-in
-- Materials: your whole project folder or binder, eleven tab dividers or eleven sheets to use as dividers, a pen, a timer, and anything you'd like for decorating the cover and the dividers
+- Materials: your whole project folder or binder, the parent review forms a grown-up filled in at your checkpoints, eleven tab dividers or eleven sheets to use as dividers, a pen, a timer, and anything you'd like for decorating the cover and the dividers
 
 ## Goal
 
@@ -25,13 +25,13 @@ Pick your own first move and do it. If you'd like one: make the divider for tab 
 Maybe you kept everything in one growing folder, in rough order. Maybe you filed pages under tabs as you went. Both ways end up in the same place today. If you didn't file as you went, you haven't fallen behind. Doing the tabs here, once, at the end, is the usual way.
 
 1. Set your timer for 20 minutes, and make the eleven dividers, in the order in the Workspace.
-2. Build tab 1, then tab 2, and so on. Put each page behind the tab it belongs to.
+2. Build tab 1, then tab 2, and so on. Put each page behind the tab it belongs to. A working page the list doesn't name, such as your route map notes or your pacing review, goes behind the tab it fits best, after the listed pages.
 3. Tick each tab on the checklist when its pages are in.
 4. Stop between sittings whenever you like. Start each new sitting by setting your timer for 20 minutes, then pick up at the next tab.
 
 Tabs 3 and 4 hold the page you made at that checkpoint. If your dates were booked by Checkpoint 1, that's your season confirmation. If they were booked by Checkpoint 4, it's your nights plan. Otherwise, it's the recommendation.
 
-Two lines in the list depend on choices your family made. The restaurant and food shortlist goes under tab 5 only if you did the food sessions and your family chose it for the binder. The language and etiquette sheet goes under tab 8 the same way: only if you did that session and your family chose it. If you skipped one, write "we didn't do this session" on that tab. If your family left one out, write "not in our binder". Either way, that line is complete.
+Two lines in the list depend on choices your family made. The restaurant and food shortlist goes under tab 5 only if you did the food sessions and your family chose it for the binder. The language and etiquette sheet goes under tab 8 the same way: only if you did that session and your family chose it. If you skipped one, write "we didn't do this session" on that tab. If your family left one out, write "not in our binder". Either way, that line is complete. Tab 2 holds the research-skill pages your family chooses to keep, so ask a grown-up which. If they keep none, write "not in our binder" there too.
 
 Tab 10 gets the parent review forms from your checkpoints now. Its follow-up questions come in Sessions 51 and 52. Tab 11 fills up in Sessions 52 and 53. For now, write "comes next" where a page is still to come. Session 53 puts those pages in before you hand the binder over.
 

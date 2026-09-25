@@ -10,7 +10,7 @@ You are here: Phase 7 (Itinerary Building). Not a First Taste step. **This is Ch
 - Planner skill: making trade-offs
 - Estimated time: 20-30 minutes for the child, plus a 20-40 minute review with you
 - Parent involvement: parent review -- genuinely use the recommendation in a real family talk
-- Materials: your full itinerary draft and the day cards behind it, your Reservation Watchlist, your budget summary, your cut list, your pacing review from Session 43 (for your flags for the adults), your [When the Plan Changes card](../../student_guide/when_the_plan_changes.md) and the pages it names that you've made (in case the grown-ups approve a change), your route map notes from Session 28 and a device with a map app or map website (kid-safe filter on) (in case a change moves where you arrive or leave), your attraction cards (if your special pick hits a block), your [Source Log](../../templates/source_log.md), a [Decision Record page](../../templates/decision_record.md)
+- Materials: your full itinerary draft and the day cards behind it, your Reservation Watchlist, your budget summary, your cut list, your pacing review from Session 43 (for your flags for the adults), your [When the Plan Changes card](../../student_guide/when_the_plan_changes.md) and the pages it names that you've made (in case the grown-ups approve a change), your route map notes from Session 28 and a device with a map app or map website (kid-safe filter on) (in case a change moves where you arrive or leave), your attraction cards (if your special pick hits a block), your [Source Log](../../templates/source_log.md), a [Decision Record page](../../templates/decision_record.md), a blank [Parent Review Form](../../templates/parent_review_form.md) for a grown-up to fill in
 
 ## Goal
 
@@ -94,7 +94,7 @@ This checkpoint is lightweight and asynchronous, like Checkpoints 2 to 4. One ac
 
 **This is the Core Finish Line.** The sentence at the top of the Steps holds for your family as written, so treat stopping here as a full finish. Keep it free of badges, certificates or any other marker; your own words are the acknowledgment.
 
-**Questions to ask:** "Which day would you make gentler first?" and "What would you cut if everyone was tired?" Your child's answer keeps the special pick and its place, since only the three blocks change it. The [parent review form](../../templates/parent_review_form.md) has the full set of coaching questions and the good-enough standards; [review checkpoints](../../parent_guide/review_checkpoints.md) explains how to run each one.
+**Questions to ask:** "Which day would you make gentler first?" and "What would you cut if everyone was tired?" Your child's answer keeps the special pick and its place, since only the three blocks change it. Fill in a [parent review form](../../templates/parent_review_form.md) for this checkpoint as you decide. It has the full set of coaching questions and the good-enough standards, and your child files it behind tab 10 in Session 50; [review checkpoints](../../parent_guide/review_checkpoints.md) explains how to run each one.
 
 **Your own changes keep the special pick too.** A change you make keeps the special pick and its place; only the three blocks change it. If one applies, name it, and your child chooses a new pick with you, as in Session 43.
 

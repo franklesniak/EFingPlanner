@@ -10,7 +10,7 @@ You are here: Phase 7 (Itinerary Building). Not a First Taste step. Previous: [4
 - Planner skill: organizing information
 - Estimated time: several sittings; stop whenever you want
 - Parent involvement: none / independent work
-- Materials: your [Trip-Basics card](../../templates/trip_basics.md) (for the booked trip length, if your dates are booked), your day cards from Session 41, your pacing review from Session 43, your backup plans and cut list from Session 44, your Reservation Watchlist, your route and nights from Checkpoint 4, your Session 29 formula (for its "- 1 flight day" marks), or a grown-up who can tell you which flights land on a later date, your route map notes from Session 28, the City Research Card for any region on your route (for its town), your family's [current travel assumptions](../../templates/current_family_travel_assumptions.md) page (for the arrival and departure places), a device with a map app or map website (kid-safe filter on), your minutes guesses and times from Sessions 16, 26 and 35 (on your City A card, your Session 26 scoring tables and your Session 35 Hotel Comparison Cards), your [When the Plan Changes card](../../student_guide/when_the_plan_changes.md) and the pages it names (if your days don't match your Checkpoint 4 plan), a timer and a clock, a few blank pages
+- Materials: your [Trip-Basics card](../../templates/trip_basics.md) (for the booked trip length, if your dates are booked), your day cards from Session 41, your pacing review from Session 43, your backup plans and cut list from Session 44, your Reservation Watchlist, your route and nights from Checkpoint 4, your Session 29 formula (for its "- 1 flight day" marks), or a grown-up who can tell you which flights land on a later date, your route map notes from Session 28 and your [Source Log](../../templates/source_log.md), the City Research Card for any region on your route (for its town), your family's [current travel assumptions](../../templates/current_family_travel_assumptions.md) page (for the arrival and departure places), a device with a map app or map website (kid-safe filter on), your minutes guesses and times from Sessions 16, 26 and 35 (on your City A card, your Session 26 scoring tables and your Session 35 Hotel Comparison Cards), your [When the Plan Changes card](../../student_guide/when_the_plan_changes.md) and the pages it names (if your days don't match your Checkpoint 4 plan), a timer and a clock, a few blank pages
 
 ## Goal
 
@@ -67,7 +67,7 @@ The session is finished when every day in your route has a row. That includes a 
 
 ## Source Check
 
-No new sources needed unless you looked something up. Everything here comes from your cards, and their sources are already in your Source Log.
+Everything here comes from your cards, and their sources are already in your Source Log. Did you check a travel time with the map's Directions? Then give the map a Source Log entry, the way Session 28 does, with the date you checked.
 
 ## Finish and Quality Check
 

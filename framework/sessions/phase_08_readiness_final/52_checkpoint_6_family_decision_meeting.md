@@ -10,7 +10,7 @@ You are here: Phase 8 (Readiness and Final). Not a First Taste step. **This is C
 - Planner skill: making trade-offs
 - Estimated time: 20-30 minutes for the child, plus the family decision meeting
 - Parent involvement: parent review -- genuinely use the recommendation in a real family talk
-- Materials: your Final Presentation Outline from Session 51, your assembled binder (with your Session 39 budget summary and your Checkpoint 4 route and trip-length recommendation), your [When the Plan Changes card](../../student_guide/when_the_plan_changes.md) and the pages it names (in case the grown-ups approve a change), your Family Trip Goals page from Session 03 (for the poll and your balancing line), your route map notes from Session 28 and a device with a map app or map website (kid-safe filter on) (in case a change moves where you arrive or leave), your [Source Log](../../templates/source_log.md), a [Decision Record page](../../templates/decision_record.md)
+- Materials: your Final Presentation Outline from Session 51, your assembled binder (with your Session 39 budget summary and your Checkpoint 4 route and trip-length recommendation), your [When the Plan Changes card](../../student_guide/when_the_plan_changes.md) and the pages it names (in case the grown-ups approve a change), your Family Trip Goals page from Session 03 (for the poll and your balancing line), your route map notes from Session 28 and a device with a map app or map website (kid-safe filter on) (in case a change moves where you arrive or leave), your [Source Log](../../templates/source_log.md), a [Decision Record page](../../templates/decision_record.md), a blank [Parent Review Form](../../templates/parent_review_form.md) for a grown-up to fill in
 
 ## Goal
 
@@ -27,7 +27,7 @@ This is the **family decision meeting**. The family gathers, you present your pl
 1. Present your recommendation from your outline. Bring your Session 39 budget summary, with its band sentence.
 2. **Reasons.** Give two or three reasons for it, each tied to something you found. Then look at every traveler's answer on the poll from Session 03, and your line on how you balanced what people wanted. A traveler still marked with no answer? Ask them at the meeting, or have a grown-up ask, and write the answer on your Family Trip Goals page. If you still can't reach them, write "not heard from yet" beside their name. Say whose "one thing you'd love" the plan makes room for, and name anyone it leaves out. For someone with you for only part of the trip, their thing needs to fall on their days, as their profile says.
 3. Listen to what the grown-ups approve, what they'd change, and what they'll check or book. Write it in your packet in the Workspace. Add what they'll check or book to Part 2 of your outline too, your follow-up questions.
-4. Hand over your handoff list. Every item on it belongs to the grown-ups. Your job is to hand each one over clearly.
+4. Hand over your handoff list. Every item on it belongs to the grown-ups. Ask who does each one next, and write them in by how they're related to you. Your job is to hand each one over clearly.
 5. The grown-ups pick one of four answers: Approved, Approved with changes, Needs more research, or Park this decision for later. Write their answer in your Decision Record.
 
 "Park this decision for later" is an honest, respected answer. Sometimes the timing or the money isn't right yet, and saying so is good planning too.
@@ -118,7 +118,7 @@ This is the one checkpoint with the full family decision meeting: the whole part
 
 **Your answer.** Pick one of the four and write it in the decision log too. "Park this decision for later" is a respected, honest outcome, and it deserves the same warmth as the other three. "Needs more research" is the hard one to deliver; the [coaching guide](../../parent_guide/coaching_and_support.md) has the words.
 
-**Questions to ask:** "What are you proudest of in this plan?" and "What should we check first?" The [parent review form](../../templates/parent_review_form.md) has the full set of coaching questions and the good-enough standards; [review checkpoints](../../parent_guide/review_checkpoints.md) explains how to run each one.
+**Questions to ask:** "What are you proudest of in this plan?" and "What should we check first?" Fill in a [parent review form](../../templates/parent_review_form.md) for this checkpoint as you decide. It has the full set of coaching questions and the good-enough standards, and your child files it behind tab 10 in Session 53; [review checkpoints](../../parent_guide/review_checkpoints.md) explains how to run each one.
 
 **What to avoid:** handing any booking or payment task to your child, reshaping their owned picks without a reason, or treating any of the four answers as a lesser result. The review form lists the rest.
 
