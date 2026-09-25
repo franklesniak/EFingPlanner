@@ -26,10 +26,10 @@ A plan can look great on paper and still be too much on the day. This session ch
 
 1. Lay out your day cards in order. If a day's energy level is blank or says "not decided yet", choose Easy, Medium or Big day, and write it in.
 2. Go down the checks in the Workspace, one row at a time. Mark yes or no, and add a short note.
-3. For any day that needs it, write one way to make it gentler. You could move a big thing, add a break, or swap in a rest day. Then go down the checks again for each day you changed. If every day passes, write that.
+3. For any day that needs it, write one way to make it gentler. You could move a big thing, add a break, or swap in a rest day. Keep your special pick and its place. Then go down the checks again for each day you changed. If every day passes, write that.
 4. Write your flags for the adults. If a day is hard on one traveler, say who, by how they're related to you.
 
-**Everyone's energy.** Go through every traveler's profile, and look at the stamina notes. An older relative, for example a grandparent, may tire more easily on a long trip, even with no trouble walking. Hot, sticky weather makes that matter more. If someone like that is coming, a kinder plan is usually shorter and gentler than your family's maximum trip length on your Trip-Basics card: fewer cities, more nights in each, and a rest day built in. If your dates are booked, that row holds the booked trip length. Keep it, and make the same changes inside it.
+**Everyone's energy.** Go through every traveler's profile, and look at the stamina notes. An older relative, for example a grandparent, may tire more easily on a long trip, even with no trouble walking. Hot, sticky weather makes that matter more. If someone like that is coming, a kinder plan is usually shorter and gentler than your family's maximum trip length on your Trip-Basics card: fewer cities, more nights in each, and a rest day built in. If you'd drop a city, keep the one with your special pick. If your dates are booked, that row holds the booked trip length. Keep it, and make the same changes inside it.
 
 **Walking and stairs.** Some trips add up to a lot of walking every day. If your trip uses trains, some station changes mean long walks and many stairs, and an elevator isn't always there. Your destination pack's transportation basics page says what to expect. Look for days that pile up walking or stairs, especially in hot weather.
 

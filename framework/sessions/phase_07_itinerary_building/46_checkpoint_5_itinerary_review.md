@@ -24,7 +24,7 @@ Choose your first move and make it. If you want a suggestion, write one thing yo
 
 **This is the Core Finish Line.** You could stop here and still have a usable plan. You know when to go, where, how long, a day-by-day plan, a rough budget, and what adults need to book. Everything after this is a bonus.
 
-1. Fill in the five answers in the Workspace. Your draft, your cards, your reservation watchlist, your budget summary and your cut list have everything you need.
+1. Fill in the five answers in the Workspace. Your draft, your cards, your reservation watchlist, your budget summary and your cut list have everything you need. For what could be cut, keep your special pick and its place.
 2. **Reasons.** Write two or three reasons your plan works, each tied to something you found.
 3. Put your itinerary draft and its day cards in front of a grown-up, with your five answers, your reasons and your Session 39 budget summary. They need the draft itself to judge the pacing, the travel, the meals and the rest.
 4. The grown-up picks one of four answers: Approved, Approved with changes, Needs more research, or Park this decision for later. It might be a quick call, a note, or a talk at the table. Any of the four is a normal result.
@@ -94,7 +94,7 @@ This checkpoint is lightweight and asynchronous, like Checkpoints 2 to 4. One ac
 
 **This is the Core Finish Line.** The sentence at the top of the Steps holds for your family as written, so treat stopping here as a full finish. Keep it free of badges, certificates or any other marker; your own words are the acknowledgment.
 
-**Questions to ask:** "Which day would you make gentler first?" and "What would you cut if everyone was tired?" The [parent review form](../../templates/parent_review_form.md) has the full set of coaching questions and the good-enough standards; [review checkpoints](../../parent_guide/review_checkpoints.md) explains how to run each one.
+**Questions to ask:** "Which day would you make gentler first?" and "What would you cut if everyone was tired?" Your child's answer keeps the special pick and its place, since only the three blocks change it. The [parent review form](../../templates/parent_review_form.md) has the full set of coaching questions and the good-enough standards; [review checkpoints](../../parent_guide/review_checkpoints.md) explains how to run each one.
 
 **What to avoid:** adding your own favorite sights, rewriting the days in adult language, or asking for a finished polish. The review form lists the rest.
 

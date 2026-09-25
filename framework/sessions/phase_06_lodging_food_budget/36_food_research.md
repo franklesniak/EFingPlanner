@@ -60,11 +60,11 @@ You can say your answers to an adult who writes them, or draw them, if that's ea
 
 ## Artifact Created
 
-Your food wish list: a few foods you'd like to try, each marked as a special, easy, or wherever-we-are meal.
+Your food wish list: a few foods you'd like to try, each marked as a special, easy, or wherever-we-are meal. If you skipped this session, you don't make one.
 
 ## Stop Point
 
-You are done when your food wish list has a few foods, or kinds of places to eat, that you want to try, each marked special, easy or wherever-we-are, with at least one special meal and one easy meal, and each has its source. A short list is a finished list. "Not sure yet" is fine in any box.
+You are done when your food wish list has a few foods, or kinds of places to eat, that you want to try, each marked special, easy or wherever-we-are, with at least one special meal and one easy meal, and each has its source. A short list is a finished list. "Not sure yet" is fine in any box. If your family left the food list out of the binder and you skipped this session, you're done too. There's no list to check, so you can skip the Finish card this time and go on to Session 37.
 
 ## Source Check
 

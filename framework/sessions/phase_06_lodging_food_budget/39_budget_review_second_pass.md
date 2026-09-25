@@ -31,7 +31,7 @@ Round to easy numbers. A calculator is always fine, and a grown-up can do the ma
 3. **The other slices.** Do the same for local transit, activities and souvenirs. Fill in the rows on that page that said "later". They're yours now. In each one's "How to figure it" box, write "per day x ____ days". On the activities row, cross out "per ticket x ____ people" first. Your long-distance rides from Session 38 stay out of your subtotal, because the grown-ups price those.
 4. **Add it up.** Your subtotal is what the parts you chose come to. The whole trip costs more than that, and the grown-ups work out the rest on their own page.
 5. **Check against your band.** Match the units first, the way you did in Session 33. Compare the piece of your estimate that matches your band: one day for the family, one person for one day, or one hotel night.
-6. **Write one sentence.** Do the parts you chose fit the band? If they don't, what would you change? Maybe fewer nights somewhere, a cheaper area, or one less paid ticket.
+6. **Write one sentence.** Do the parts you chose fit the band? If they don't, what would you change? Maybe fewer nights somewhere, a cheaper area, or one less paid ticket. Keep your special pick and its place.
 
 If your special pick on your My Calls page costs more than the band, a grown-up tells you which of the three blocks it hit. Then you choose a new pick from your attraction cards with a grown-up, the way you did in Session 26. Put it on your must-do list, and take the blocked pick off. The blocked pick needs no more research.
 
