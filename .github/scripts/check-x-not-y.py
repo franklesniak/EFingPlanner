@@ -208,7 +208,9 @@ number from 1; for reading only), ``judgment`` and ``reason`` (not empty). The
 judgment is ``device`` (a true `X, not Y` instance), ``split`` (a split
 negation), ``banned`` (the banned shape) or ``no``; a heading's or a table
 cell's candidate takes only ``banned`` or ``no``, and any other leaves it
-unjudged. Pages are sorted by path, and a page's entries follow the page.
+unjudged. A candidate keyed with ``|quotation block quote`` takes only ``no``,
+because the style law exempts verbatim borrowed text, and any other judgment
+stops the run, as the schema refuses it. Pages are sorted by path, and a page's entries follow the page.
 Each value is read as the schemas read it: a line is a number with a zero
 fractional part, so ``12.0`` is line 12; a key matches its form to its very
 end; and text that is not empty holds a character that is white space
@@ -1553,6 +1555,9 @@ def region_register(file_register: str, region: str) -> str:
 VALID_JUDGMENTS = {"device", "split", "banned", "no"}
 #: The judgments a heading's or a table cell's candidate can take.
 LABEL_JUDGMENTS = {"banned", "no"}
+#: The end of a key made inside a quotation block quote, which the style law
+#: exempts: its candidates are judged `no`, and the loader refuses any other.
+QUOTATION_KEY_END = "|quotation block quote"
 
 
 class DataError(Exception):
@@ -1735,6 +1740,9 @@ def load_judgments(path: Path | None) -> dict:
                 raise DataError(f"{where}: judgment {entry['judgment']!r} is not device, split, banned or no")
             if not is_text(entry["reason"]):
                 raise DataError(f"{where}: the reason is empty")
+            if key.endswith(QUOTATION_KEY_END) and entry["judgment"] != "no":
+                raise DataError(f"{where}: a candidate in a quotation block quote is judged no, since the style law"
+                                " exempts verbatim borrowed text")
     return data
 
 

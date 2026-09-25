@@ -9317,8 +9317,8 @@
     },
     "split|\"We had to lock the bookings before you finished, because prices were climbing -- that's how trips work, and it doesn't mean your planning was wrong. → Here's what's still yours to decide inside the dates we booked.\"|1|quotation block quote": {
       "line": 33,
-      "judgment": "device",
-      "reason": "that's how trips work, and it doesn't mean your planning was wrong"
+      "judgment": "no",
+      "reason": "a pair in a quotation block quote; the style law exempts verbatim borrowed text"
     },
     "device|Here's what's still yours to decide inside the dates we booked.\"|1|quotation block quote": {
       "line": 33,

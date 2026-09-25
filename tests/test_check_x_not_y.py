@@ -2513,3 +2513,43 @@ def test_a_page_key_as_the_scan_prints_it_is_accepted_by_the_script_and_the_sche
 def test_the_docstring_declares_the_threat_model() -> None:
     doc = cx.__doc__
     assert "Threat model" in doc and "In scope" in doc and "Out of scope" in doc
+
+
+# ---------------------------------------------------------------------------
+# A candidate in a quotation block quote is judged no
+# ---------------------------------------------------------------------------
+
+QUOTED = 'device|"Choose the map, not the list."|1|quotation block quote'
+
+
+def one_judgment(key: str, judgment: str) -> str:
+    """Return a judgments file holding one entry."""
+    return json.dumps({"framework/templates/a.md": {key: {"line": 3, "judgment": judgment, "reason": "a reason"}}})
+
+
+@pytest.mark.parametrize("judgment", ["device", "split", "banned"])
+def test_a_counted_judgment_on_a_quotation_key_stops_the_run(tmp_path: Path, capsys: Any, judgment: str) -> None:
+    # The style law exempts verbatim borrowed text, so a quotation's candidate is judged no.
+    code, err = data_run(tmp_path, capsys, judgments=one_judgment(QUOTED, judgment))
+    assert code == 2
+    assert "quotation block quote is judged no" in err
+
+
+@pytest.mark.parametrize(("key", "judgment"), [
+    (QUOTED, "no"),
+    ("device|Choose the map, not the list.|1|block quote", "device"),
+    ("split|Pick the map. → Not the list.|1|block quote", "split"),
+    ("device|The quotation block quote rule, not the callout rule.|1", "device"),
+])
+def test_a_quotation_judged_no_or_another_key_judged_anything_loads(tmp_path: Path, key: str, judgment: str) -> None:
+    # A block quote that is not a quotation is prose, and a sentence may name a quotation without being in one.
+    jpath = tmp_path / "judgments.json"
+    jpath.write_text(one_judgment(key, judgment), encoding="utf-8")
+    assert cx.load_judgments(jpath)["framework/templates/a.md"][key]["judgment"] == judgment
+
+
+def test_no_quotation_candidate_on_the_pages_is_counted() -> None:
+    judged = cx.load_json(cx.DEFAULT_JUDGMENTS)
+    counted = [(page, key) for page, entries in judged.items() for key, entry in entries.items()
+               if key.endswith(cx.QUOTATION_KEY_END) and entry["judgment"] != "no"]
+    assert counted == []
