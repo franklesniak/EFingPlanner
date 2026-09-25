@@ -884,6 +884,23 @@ def test_a_pack_folder_git_does_not_track_adds_no_name(tmp_path: Path) -> None:
     assert destination("A scratch note.\n", hook.destination_names(root)) == []
 
 
+def test_a_pack_name_that_begins_with_another_name_is_reported_as_itself(
+    tmp_path: Path, made_up_family: None, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    """A row for the shorter name cannot hide the longer pack name that starts at the same word."""
+    text = "See Tokyo Bay today.\n"
+    row = ("framework/a.md", "Tokyo", hook.occurrence_context(text, 4, 9), 1, "a test row")
+    monkeypatch.setattr(hook, "DESTINATION_EXEMPTIONS", (row,))
+    root = make_repo(tmp_path / "without", {"destinations/japan/a.md": "Pack.\n", "framework/a.md": text})
+    assert hook.main(["--rule", "destination"], root=root) == 0, "control: with no such pack, the row excuses Tokyo"
+    root = make_repo(tmp_path / "with", {"destinations/tokyo-bay/a.md": "Pack.\n", "framework/a.md": text})
+    names = hook.destination_names(root)
+    hits = hook.find_hits(text, "framework/a.md", "destination", names=names)
+    assert [hit.occurrence for hit in hits] == ["Tokyo Bay"]
+    assert hook.main(["--rule", "destination"], root=root) == 1
+    assert 'framework/a.md:1:5: the destination name "Tokyo Bay"' in capsys.readouterr().out
+
+
 def test_a_linked_pack_folder_adds_no_name(tmp_path: Path) -> None:
     """Git records a link as one file, so a linked folder holds no tracked file."""
     target = tmp_path / "elsewhere" / "zembla"
@@ -1317,6 +1334,32 @@ def test_a_crash_is_withheld_while_a_value_row_is_malformed(
     assert capsys.readouterr().err.strip() == hook.CRASH_UNMASKABLE
 
 
+def record_as_link(root: Path, name: str) -> None:
+    """Record the tracked file ``name`` as a link, as a checkout with ``core.symlinks`` false leaves one."""
+    blob = subprocess.run(
+        ["git", "-C", str(root), "hash-object", "-w", name], capture_output=True, text=True, check=True
+    ).stdout.strip()
+    subprocess.run(["git", "-C", str(root), "update-index", "--cacheinfo", f"120000,{blob},{name}"], check=True)
+
+
+@pytest.mark.parametrize(
+    ("rule", "name", "target"),
+    [("destination", "framework/link.md", "../docs/b.md"), ("family", "docs/link.md", "b.md")],
+    ids=["destination", "family"],
+)
+def test_a_link_checked_out_as_a_file_is_refused_by_its_index_mode(
+    tmp_path: Path, made_up_family: None, capsys: pytest.CaptureFixture[str], rule: str, name: str, target: str
+) -> None:
+    """With ``core.symlinks`` false, Git writes a link as a file holding its target; the index still says link."""
+    root = make_repo(tmp_path, {"docs/b.md": "Clean.\n", "framework/a.md": "Clean.\n", name: target})
+    assert hook.main(["--rule", rule], root=root) == 0, "control: the same text as a file is read, and passes"
+    capsys.readouterr()
+    record_as_link(root, name)
+    for args in (["--rule", rule], ["--rule", rule, "--", name]):
+        assert hook.main(args, root=root) == 1
+        assert f"{name} (a link)" in capsys.readouterr().err
+
+
 def add_submodule_entry(root: Path, name: str) -> None:
     """Record a submodule (a gitlink) at ``name`` in the index, with no repository behind it."""
     subprocess.run(
@@ -1339,7 +1382,7 @@ def test_a_tracked_submodule_in_scope_is_refused(
     assert hook.main(["--rule", "family"], root=root) == 1
     err = capsys.readouterr().err
     assert "docs/<family value> (a submodule)" in err and "quillhaven" not in err.casefold()
-    assert hook.tracked_submodules(root) == {"framework/Tokyo", "docs/quillhaven"}
+    assert hook.tracked_unreadable(root) == {"framework/Tokyo": "a submodule", "docs/quillhaven": "a submodule"}
 
 
 def test_a_submodule_outside_the_rule_s_scope_is_not_refused(tmp_path: Path, made_up_family: None) -> None:
@@ -1371,6 +1414,19 @@ def test_a_passed_symlink_git_tracks_fails_the_run(
     subprocess.run(["git", "-C", str(root), "add", "-A"], check=True)
     assert hook.main(["--rule", "family", "framework/broken.md"], root=root) == 1
     assert "framework/broken.md (a link)" in capsys.readouterr().err
+
+
+def test_a_link_in_the_working_tree_over_a_tracked_file_is_refused(
+    tmp_path: Path, made_up_family: None, capsys: pytest.CaptureFixture[str]
+) -> None:
+    """Git records a file, but the working tree holds a link, so a read would go through it: it is refused."""
+    files = {"framework/a.md": "Clean.\n", "framework/l.md": "Clean.\n", "docs/x.md": "Quillhaven.\n"}
+    root = make_repo(tmp_path, files)
+    (root / "framework" / "l.md").unlink()
+    make_link(root / "framework" / "l.md", root / "docs" / "x.md", "symlink")
+    for args in (["--rule", "family"], ["--rule", "family", "framework/l.md"]):
+        assert hook.main(args, root=root) == 1
+        assert "framework/l.md (a link)" in capsys.readouterr().err
 
 
 @pytest.mark.parametrize("kind", ["symlink", "junction"])
@@ -1684,7 +1740,14 @@ def spec_airport_name() -> str:
     return " ".join(runs[len(city_runs) :])
 
 
-COMMITTED = hook.FamilyValues.from_rows(hook.FAMILY_VALUES)
+def committed() -> hook.FamilyValues:
+    """Return the committed values, built when a test asks for them.
+
+    Built at import, a malformed row would stop the whole module from
+    loading, and no test would say which row; built here, the
+    well-formedness test fails by name.
+    """
+    return hook.FamilyValues.from_rows(hook.FAMILY_VALUES)
 
 
 def rows_of(pairs: list[tuple[str, str]]) -> set[tuple[str, int, str]]:
@@ -1726,6 +1789,25 @@ def test_the_list_check_reports_a_missing_and_an_obsolete_row() -> None:
 
 def test_the_committed_list_is_well_formed() -> None:
     assert hook.check_family_values(hook.FAMILY_VALUES) == []
+
+
+def test_a_malformed_committed_row_fails_its_test_and_not_the_suite_s_import(tmp_path: Path) -> None:
+    """Failure injection: with a malformed row committed, the suite still loads and the well-formedness test fails."""
+    copy = tmp_path / ".github" / "scripts" / "check-leaks.py"
+    copy.parent.mkdir(parents=True)
+    source = HOOK_PATH.read_text(encoding="utf-8")
+    anchor = "FAMILY_VALUES: tuple[tuple[str, int, str], ...] = (\n"
+    assert source.count(anchor) == 1
+    copy.write_text(source.replace(anchor, anchor + '    ("phrase", 1, "' + "0" * 64 + '"),\n'), encoding="utf-8")
+    (tmp_path / "tests").mkdir()
+    (tmp_path / "tests" / "test_check_leaks.py").write_bytes(Path(__file__).read_bytes())
+    done = subprocess.run(
+        [sys.executable, "-B", "-m", "pytest", "-q", "-p", "no:cacheprovider", "--tb=no", "-rf",
+         "tests/test_check_leaks.py::test_the_committed_list_is_well_formed"],
+        cwd=tmp_path, capture_output=True, text=True, encoding="utf-8",
+    )
+    assert done.returncode == 1, done.stdout[-300:]
+    assert "FAILED tests/test_check_leaks.py::test_the_committed_list_is_well_formed" in done.stdout
     assert hook.check_exemption_rows("family", hook.FAMILY_EXEMPTIONS) == []
     assert hook.check_exemption_rows("destination", hook.DESTINATION_EXEMPTIONS) == []
 
@@ -1815,7 +1897,7 @@ def test_every_spec_value_is_found_in_the_forms_the_spec_names(design_record: No
     wrong = [
         label
         for label, text, expected in spec_cases()
-        if len(hook.find_hits(text + "\n", "x.md", "family", COMMITTED)) != expected
+        if len(hook.find_hits(text + "\n", "x.md", "family", committed())) != expected
     ]
     assert wrong == []
 
@@ -1823,18 +1905,20 @@ def test_every_spec_value_is_found_in_the_forms_the_spec_names(design_record: No
 def test_the_bare_spec_number_is_a_candidate_and_not_a_leak(design_record: None) -> None:
     number = next(value for kind, value in spec_values() if kind == "number")
     text = f"# Session {number}: Plan\n"
-    hits = hook.find_hits(text, "x.md", "family", COMMITTED)
-    candidates = hook.bare_numbers(text, COMMITTED)
+    values = committed()
+    hits = hook.find_hits(text, "x.md", "family", values)
+    candidates = hook.bare_numbers(text, values)
     assert hits == []
     assert candidates == [(1, 11)]
 
 
 def test_neither_hook_nor_suite_holds_a_family_value() -> None:
     """The two files that know most about the values hold none of them."""
+    values = committed()
     for path in (HOOK_PATH, Path(__file__)):
         text = path.read_text(encoding="utf-8")
-        hits = hook.find_hits(text, path.name, "family", COMMITTED)
-        candidates = hook.bare_numbers(text, COMMITTED)
+        hits = hook.find_hits(text, path.name, "family", values)
+        candidates = hook.bare_numbers(text, values)
         assert hits == [], path.name
         assert candidates == [], path.name
 

@@ -93,7 +93,9 @@ number in it is a candidate, a binary file's included.
   full days"), and a cap with no unit or label ("the trip cannot go past
   N"), are left to that hand-read.
 * A **destination** name matches a word that begins with it, in any case,
-  so a demonym or a path segment into a pack matches. The names are the five
+  so a demonym or a path segment into a pack matches. Where two names
+  match from the same word, the longer match is reported, so a pack name
+  that begins with another name is found as itself. The names are the five
   ``AC-16-1`` gives, and the name of every folder under ``destinations/``
   that holds a file Git tracks, so a local folder nobody committed adds no
   name and a run in CI reads the same list as a run on a laptop.
@@ -148,7 +150,10 @@ files Git tracks. It refuses, by name, a tracked path in the rule's scope
 that is a symbolic link or a junction, that goes through a linked folder,
 or that resolves outside the repository, and it refuses the same path when
 pre-commit passes it, so a link fails a commit as it fails CI. The hooks
-take links as well as files for that reason. A passed path Git does not
+take links as well as files for that reason. Git's own record of a link,
+mode 120000 in the index, is read too, so a link a checkout wrote as a
+plain file holding its target, as Git for Windows does by default, is
+refused as well. A passed path Git does not
 track is neither read nor refused, whether it resolves or not, so a local
 file such as one under ``.git/`` is never read. A tracked submodule in the
 rule's scope is refused by name too: its content is another repository,
@@ -176,6 +181,20 @@ leak greps runs these calls instead, and they name no value and print none:
 A grep for a destination name, for a path into ``destinations/`` or for a
 spec section number names nothing private, and may stay a grep.
 
+Threat model
+------------
+The hook guards against a family value that an author writes or pastes
+into a tracked file by accident: typed, wrapped over a line, in a heading,
+a link or a grep pattern, in a pasted URL or HTML fragment, which carries
+one level of percent escapes or character references, in a file's or a
+folder's name, under a checkout setting such as ``core.symlinks``, or in
+any layout of the repository. That is what ``AC-29-2``'s grep asks, and
+what the privacy rules' "public framework, private trip work" protects.
+Deliberate obfuscation, text built to slip past the hook, is out of scope:
+a person who would build it can skip a pre-commit hook or publish
+elsewhere, so no check here could stop them. A finding that needs such
+text is answered by this section and the list below, not by new matching.
+
 Known limits
 ------------
 The hook matches forms, not meaning. These pass it, and are left to a
@@ -190,9 +209,12 @@ person's read, to ``--candidates``, or to another check:
   as a zero-width space, a look-alike letter from another alphabet, the
   code in lower case or inside a longer identifier, and a word value inside
   a longer word.
-* An encoding other than a character reference, a percent escape and a
-  one-letter backslash escape: ``\\uXXXX``, ``\\xXX``, octal, base64 or a
-  cipher, and a character reference split over two lines.
+* An encoding other than one level of a character reference, a percent
+  escape or a one-letter backslash escape: an escape inside another escape,
+  as in a URL encoded twice; a numeric character reference padded past 32
+  digits; ``\\uXXXX``, ``\\xXX``, octal, base64 or a cipher; and a
+  character reference split over two lines. Each is text built to hide a
+  value, which the threat model above leaves out.
 * A value the lists do not hold: a relative the BUILD RULE line does not
   name, and a destination name that is neither one of the five nor a pack
   folder's name, such as a second city or a landmark.
@@ -1171,6 +1193,9 @@ def destination_hits_in_reading(
     runs = letter_runs(text)
     found: list[tuple[int, int, str, str]] = []
     for index in range(len(runs)):
+        # Every name is tried from this word, and the longest match is kept,
+        # so a pack name that begins with another name is reported as itself.
+        longest: tuple[int, str] | None = None
         for name in names:
             last = index + len(name) - 1
             if last >= len(runs):
@@ -1184,8 +1209,11 @@ def destination_hits_in_reading(
                 continue
             if runs[last][2].startswith(name[-1]):
                 label = " ".join(name)
-                found.append((runs[index][0], runs[last][1], label, label))
-                break
+                if longest is None or runs[last][1] > longest[0]:
+                    longest = (runs[last][1], label)
+        if longest is not None:
+            end, label = longest
+            found.append((runs[index][0], end, label, label))
     return found
 
 
@@ -1545,8 +1573,14 @@ def tracked_files(root: Path) -> list[str]:
     )
 
 
-def tracked_submodules(root: Path) -> set[str]:
-    """Return the repository-relative paths Git tracks as submodules (gitlinks) under ``root``."""
+def tracked_unreadable(root: Path) -> dict[str, str]:
+    """Return each path Git tracks as a link or a submodule under ``root``, with which it is.
+
+    The index's mode says so whatever the working tree holds: with
+    ``core.symlinks`` false, as Git for Windows sets by default, a link is
+    checked out as a plain file holding its target, which no look at the
+    file can tell from any other file.
+    """
     completed = subprocess.run(
         ["git", "-C", str(root), "ls-files", "-s", "-z"],
         capture_output=True,
@@ -1554,17 +1588,19 @@ def tracked_submodules(root: Path) -> set[str]:
     if completed.returncode != 0:
         detail = completed.stderr.decode("utf-8", "replace").strip()
         raise FileReadError(str(root), OSError(f"git ls-files failed: {detail}"))
-    found = set()
+    found = {}
     for entry in completed.stdout.decode("utf-8", "surrogateescape").split("\0"):
         if entry:
             fields, _tab, name = entry.partition("\t")
-            if fields.split(" ", 1)[0] == GITLINK_MODE:
-                found.add(name)
+            kind = UNREADABLE_MODES.get(fields.split(" ", 1)[0])
+            if kind is not None:
+                found[name] = kind
     return found
 
 
-#: The mode Git gives a submodule's entry in the index.
-GITLINK_MODE = "160000"
+#: The index modes of the entries a run refuses by name: a link, and a
+#: submodule (a gitlink), whose content is another repository.
+UNREADABLE_MODES = {"120000": "a link", "160000": "a submodule"}
 
 
 def read_text(path: Path, display_path: str) -> str | None:
@@ -1821,7 +1857,7 @@ def run(argv: Sequence[str] | None = None, root: Path = REPO_ROOT) -> int:
     refused: list[str] = []
     try:
         tracked = tracked_files(root)
-        submodules = tracked_submodules(root)
+        unreadable = tracked_unreadable(root)
     except FileReadError as error:
         emit(str(error), values, error=True)
         return 1
@@ -1835,10 +1871,12 @@ def run(argv: Sequence[str] | None = None, root: Path = REPO_ROOT) -> int:
             continue
         if not in_scope(args.rule, name):
             continue
-        if name in submodules:
-            # A submodule's content is another repository, which this run
-            # cannot read, so it is refused by name, as a link is.
-            refused.append(f"{argument} (a submodule)")
+        if name in unreadable:
+            # The index records a link or a submodule by its mode, whatever
+            # the checkout wrote: a submodule's content is another
+            # repository, and a link may be a plain file holding its target.
+            # Either is refused by name.
+            refused.append(f"{argument} ({unreadable[name]})")
             continue
         resolved = resolve_candidate(argument, root)
         if isinstance(resolved, str):
