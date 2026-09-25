@@ -174,7 +174,9 @@ is read, and its bytes are skipped, as Git treats them. A file that cannot
 be read as UTF-8 stops the run, because a file that was not read has not
 been checked, and so does a tracked path the run cannot look at, such as
 one in a folder it may not search. A tracked file that is not there, as
-``git status`` shows a deleted one, has nothing to read and is skipped.
+``git status`` shows a deleted one, has nothing to read and is skipped;
+one a sparse checkout leaves out, which ``git status`` does not show, is
+refused by name, since the run did not read it.
 The pre-commit entries end with ``--``, so a file whose name begins with a
 hyphen is read as a path, never taken for an option.
 
@@ -638,14 +640,16 @@ NUMBER_AFTER_LABEL = re.compile(
 #: A bracket expression, as grep reads one: items, each a character or one
 #: of the bracketed items POSIX defines, a class such as ``[:space:]``, an
 #: equivalence class such as ``[=e=]`` or a collating element such as
-#: ``[.-.]``, so the class's own ``]`` does not end it. Grep sets no limit
+#: ``[.-.]``, so the class's own ``]`` does not end it. A ``]`` first in
+#: the list, straight after ``[`` or ``[^``, is a character too, as grep
+#: reads it (S53-55). Grep sets no limit
 #: on the items; this reads up to ``BRACKET_ITEMS``, far more than a grep a
 #: person writes holds, because with no bound a line of numbers that each
 #: open a bracket never closed is read from each number to the line's end,
 #: and its cost grows with the square of the line's length (S53-53).
 BRACKET_ITEMS = 64
 BRACKET_EXPRESSION = (
-    r"\[\^?(?:\[:[a-z]+:\]|\[=[^=\]\n]{1,8}=\]|\[\.[^.\]\n]{1,8}\.\]|[^\]\n]){0,%d}\]" % BRACKET_ITEMS
+    r"\[\^?\]?(?:\[:[a-z]+:\]|\[=[^=\]\n]{1,8}=\]|\[\.[^.\]\n]{1,8}\.\]|[^\]\n]){0,%d}\]" % BRACKET_ITEMS
 )
 #: The number in a grep pattern for the trip length, as the build briefs and
 #: the design record's grep note write one: the number, a bracket expression
@@ -1507,15 +1511,20 @@ def tracked_files(root: Path) -> list[str]:
 
 
 def tracked_unreadable(root: Path) -> dict[str, str]:
-    """Return each path Git tracks as a link or a submodule under ``root``, with which it is.
+    """Return each path Git tracks under ``root`` that the run refuses by name, with why.
 
-    The index's mode says so whatever the working tree holds: with
-    ``core.symlinks`` false, as Git for Windows sets by default, a link is
-    checked out as a plain file holding its target, which no look at the
-    file can tell from any other file.
+    A link or a submodule: the index's mode says so whatever the working
+    tree holds. With ``core.symlinks`` false, as Git for Windows sets by
+    default, a link is checked out as a plain file holding its target,
+    which no look at the file can tell from any other file. And a file a
+    sparse checkout leaves out of the working tree: Git marks it
+    skip-worktree, tag ``S`` in ``git ls-files -t``, and ``git status``
+    stays clean, so a walk that skipped it as deleted would report a
+    tracked file it never read (S53-56). A file deleted from the working
+    tree keeps tag ``H``, and is skipped as ``git status`` shows it.
     """
     completed = subprocess.run(
-        ["git", "-C", str(root), "ls-files", "-s", "-z"],
+        ["git", "-C", str(root), "ls-files", "-s", "-t", "-z"],
         capture_output=True,
     )
     if completed.returncode != 0:
@@ -1525,7 +1534,8 @@ def tracked_unreadable(root: Path) -> dict[str, str]:
     for entry in completed.stdout.decode("utf-8", "surrogateescape").split("\0"):
         if entry:
             fields, _tab, name = entry.partition("\t")
-            kind = UNREADABLE_MODES.get(fields.split(" ", 1)[0])
+            tag, mode = fields.split(" ", 2)[:2]
+            kind = UNREADABLE_MODES.get(mode) or (NOT_CHECKED_OUT if tag == SKIP_WORKTREE_TAG else None)
             if kind is not None:
                 found[name] = kind
     return found
@@ -1534,6 +1544,9 @@ def tracked_unreadable(root: Path) -> dict[str, str]:
 #: The index modes of the entries a run refuses by name: a link, and a
 #: submodule (a gitlink), whose content is another repository.
 UNREADABLE_MODES = {"120000": "a link", "160000": "a submodule"}
+#: The tag ``git ls-files -t`` gives a skip-worktree entry, and how a refusal names one.
+SKIP_WORKTREE_TAG = "S"
+NOT_CHECKED_OUT = "not checked out: a sparse checkout leaves it out"
 
 
 def read_text(path: Path, display_path: str) -> str | None:
@@ -1836,7 +1849,8 @@ def run(argv: Sequence[str] | None = None, root: Path = REPO_ROOT) -> int:
             targets.append(resolved)
     if refused:
         emit(
-            "these tracked paths are links or submodules, go through a linked folder, or resolve "
+            "these tracked paths are links or submodules, are not checked out, go through a linked folder, "
+            "or resolve "
             "outside the repository, so this run refuses to report on them: " + ", ".join(refused[:5]),
             values,
             error=True,

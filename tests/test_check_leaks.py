@@ -385,6 +385,15 @@ def test_a_bracket_expression_of_many_items_is_read(text: str) -> None:
     assert [kind for _line, kind in family(text + "\n")] == ["number"]
 
 
+@pytest.mark.parametrize(
+    "text",
+    ["grep -rwE '23[] ]days' framework/", "23[]-]?days", "23[^]x]days", "23[][:space:]]?nights", "23[^] ]*days"],
+)
+def test_a_closing_bracket_first_in_a_bracket_expression_is_a_character(text: str) -> None:
+    """S53-55: grep reads a ``]`` first in the list, after ``[`` or ``[^``, as a character, not the end."""
+    assert [kind for _line, kind in family(text + "\n")] == ["number"]
+
+
 def test_a_bracket_expression_past_the_bound_is_left_to_the_hand_read() -> None:
     """The bound keeps the cost in line with the line's length; past it, the number is a bare candidate.
 
@@ -1661,6 +1670,27 @@ def test_a_link_in_the_working_tree_over_a_tracked_file_is_refused(
     for args in (["--rule", "family"], ["--rule", "family", "framework/l.md"]):
         assert hook.main(args, root=root) == 1
         assert "framework/l.md (a link)" in capsys.readouterr().err
+
+
+def test_a_tracked_file_a_sparse_checkout_leaves_out_is_refused(
+    tmp_path: Path, made_up_family: None, capsys: pytest.CaptureFixture[str]
+) -> None:
+    """S53-56: Git marks it skip-worktree and ``git status`` stays clean, so a walk that skipped it would pass unread.
+
+    A file deleted from the working tree, which ``git status`` shows, is still skipped (S53-37).
+    """
+    root = make_repo(
+        tmp_path, {"framework/a.md": "Clean.\n", "framework/b.md": "Visit Tokyo.\n", "framework/c.md": "Clean.\n"}
+    )
+    subprocess.run(["git", "-C", str(root), "update-index", "--skip-worktree", "framework/b.md"], check=True)
+    (root / "framework" / "b.md").unlink()
+    (root / "framework" / "c.md").unlink()
+    for args in (["--rule", "destination"], ["--rule", "destination", "--", "framework/b.md", "framework/c.md"]):
+        assert hook.main(args, root=root) == 1
+        err = capsys.readouterr().err
+        assert "framework/b.md (" + hook.NOT_CHECKED_OUT + ")" in err and "framework/c.md" not in err
+    subprocess.run(["git", "-C", str(root), "update-index", "--no-skip-worktree", "framework/b.md"], check=True)
+    assert hook.main(["--rule", "destination"], root=root) == 0, "control: a plain deletion is skipped"
 
 
 def test_a_tracked_file_replaced_by_a_folder_is_skipped_as_git_reads_it(
