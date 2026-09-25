@@ -27,7 +27,7 @@ Worth knowing: your child's binder is valuable either way. If you use an agent, 
 ## The checklist
 
 - [ ] Passports
-- [ ] Entry requirements: verify the current rule on the official government source close to travel, and write the date you checked. If anyone is *selling* you a travel authorization, check that against the official source before paying; the destination specifics are in your destination pack's adult-logistics page
+- [ ] Entry requirements: verify the current rule on the official government source close to travel, and write the date you checked. If anyone is *selling* you a travel authorization, check that against the official source before paying; the destination specifics are in your destination pack's adult-logistics page, or on the official source if the pack does not cover them yet
 - [ ] Visa or entry forms, if applicable
 - [ ] Flights
 - [ ] Hotels
