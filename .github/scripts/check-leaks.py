@@ -51,9 +51,10 @@ file's own line and column. A decoded occurrence that covers some of the
 same characters of the file as a plain occurrence of the same value is the
 same occurrence and counts once; any other decoded occurrence counts on its
 own, beside a plain one on the same line. Each file's repository-relative
-path is read too, as one line, as written and decoded, so a value or a
-name in a file's or a folder's name is a hit, escaped or not, a binary
-file's included.
+path is read too, as one more line of the file, by the same loop as its
+text, so every way the text is read, the path is read too: a value or a
+name in a file's or a folder's name is a hit, escaped or not, and a bare
+number in it is a candidate, a binary file's included.
 
 * A **word** value matches a run of letters, or two or three runs in a row
   separated by anything but digits and a blank line, in any case. The last
@@ -1183,8 +1184,17 @@ def find_hits(
     rule: str,
     values: FamilyValues | None = None,
     names: Sequence[tuple[str, ...]] = (),
+    in_path: bool = False,
 ) -> list[Hit]:
-    """Return every occurrence ``rule`` reports in ``text``, before exemptions."""
+    """Return every occurrence ``rule`` reports in ``text``, before exemptions.
+
+    ``in_path`` says ``text`` is the file's repository-relative path, which
+    ``scan()`` reads through this same loop, as one more line of the file.
+    The path's own rules are these flags and no more: its hits are on line
+    0; a family hit in it keeps no context, since no row may excuse it; and
+    a destination hit's context is ``(path)`` and the path as its reading
+    reads it, so a decoded name stands in its own row's context.
+    """
     if rule == "family":
         assert values is not None
         family_values = values
@@ -1200,14 +1210,14 @@ def find_hits(
     hits: list[Hit] = []
     for reading, start, end, label, value_key in across_readings(text, finder):
         line, column = reading.position(start)
-        context = occurrence_context(reading.text, start, end)
         if rule == "family":
             occurrence = ""
-            context = value_digest("context", context)
+            context = "" if in_path else value_digest("context", occurrence_context(reading.text, start, end))
         else:
             occurrence = reading.text[start:end]
+            context = PATH_CONTEXT + reading.text if in_path else occurrence_context(reading.text, start, end)
         hits.append(
-            Hit(rule, display_path, line, column, label, occurrence, context, value_key)
+            Hit(rule, display_path, 0 if in_path else line, column, label, occurrence, context, value_key, in_path)
         )
     hits.sort(key=lambda hit: (hit.line_number, hit.column))
     return hits
@@ -1232,41 +1242,6 @@ def bare_numbers(text: str, values: FamilyValues) -> list[tuple[int, int]]:
         return found
 
     return sorted(reading.position(start) for reading, start, _end, _label, _key in across_readings(text, finder))
-
-
-def path_hits(
-    display_path: str, rule: str, values: FamilyValues | None, names: Sequence[tuple[str, ...]]
-) -> list[Hit]:
-    """Return a hit for each value or name in a file's repository-relative path.
-
-    The path is read as one line, as written and decoded, as a file's text
-    is, so an escaped value in a file's name is found. A family hit keeps no
-    context, because no row may excuse it; a destination hit's context is the
-    path.
-    """
-    if rule == "family":
-        assert values is not None
-        family_values = values
-
-        def finder(reading: Reading) -> list[tuple[int, int, str, str]]:
-            return family_hits_in_reading(reading, family_values)
-
-    else:
-
-        def finder(reading: Reading) -> list[tuple[int, int, str, str]]:
-            return destination_hits_in_reading(reading, names)
-
-    hits = []
-    for reading, start, end, label, value_key in across_readings(display_path, finder):
-        _line, column = reading.position(start)
-        if rule == "family":
-            occurrence, context = "", ""
-        else:
-            # The context is the path as this reading reads it, so a decoded
-            # name stands in its own row's context.
-            occurrence, context = reading.text[start:end], PATH_CONTEXT + reading.text
-        hits.append(Hit(rule, display_path, 0, column, label, occurrence, context, value_key, in_path=True))
-    return hits
 
 
 #: How a destination row names a path hit: this, then the path, as its context.
@@ -1516,6 +1491,10 @@ def read_text(path: Path, display_path: str) -> str | None:
 # --------------------------------------------------------------------------
 
 
+#: What a candidate line asks of the reader, after where the number stands.
+CANDIDATE_READ = "Read it in context; it is a leak only if it states the family's maximum trip length."
+
+
 @dataclass
 class Report:
     """What one run found."""
@@ -1537,9 +1516,11 @@ def scan(
 ) -> Report:
     """Scan resolved ``(path, display path)`` targets and apply the exemptions.
 
-    Each target's path is read as well as its text, a binary file's path
-    included. ``complete`` says the targets are every tracked file the rule
-    reads, so a row for a file not among them is stale.
+    Each target's path goes through the same loop as its text, as one more
+    line of the file, so hits, excusing and candidates cover both; a binary
+    file's path is read, and its bytes are skipped. ``complete`` says the
+    targets are every tracked file the rule reads, so a row for a file not
+    among them is stale.
     """
     if rule == "family" and values is None:
         values = FamilyValues.from_rows(FAMILY_VALUES)
@@ -1552,31 +1533,29 @@ def scan(
     scanned: set[str] = set()
     checked = 0
     for path, display_path in targets:
-        for hit in path_hits(display_path, rule, values, names):
-            # A family value in a path is never excused: its row would spell it.
-            if rule == "family" or not ledger.excuse(hit):
-                unexcused.append(hit)
-        if list_candidates and values is not None:
-            # A binary file's path is read too, so it is listed too.
-            for _line, column in bare_numbers(display_path, values):
-                candidates.append(
-                    f"{display_path}: a bare trip-length number in the file's path, at column {column}. Read it "
-                    "in context; it is a leak only if it states the family's maximum trip length."
-                )
         text = read_text(path, display_path)
+        # The path is one more line of the file, read by the same loop as the
+        # text, so a way of reading added here reads both. A binary file's
+        # text is None, and only its path is read.
+        for body, in_path in ((display_path, True), (text, False)):
+            if body is None:
+                continue
+            for hit in find_hits(body, display_path, rule, values, names, in_path):
+                # A family value in a path is never excused: its row would spell it.
+                if (in_path and rule == "family") or not ledger.excuse(hit):
+                    unexcused.append(hit)
+            if list_candidates and values is not None:
+                for line, column in bare_numbers(body, values):
+                    where = (
+                        f"{display_path}: a bare trip-length number in the file's path, at column {column}."
+                        if in_path
+                        else f"{display_path}:{line}:{column}: a bare trip-length number."
+                    )
+                    candidates.append(f"{where} {CANDIDATE_READ}")
         if text is None:
             continue
         checked += 1
         scanned.add(display_path)
-        for hit in find_hits(text, display_path, rule, values, names):
-            if not ledger.excuse(hit):
-                unexcused.append(hit)
-        if list_candidates and values is not None:
-            for line, column in bare_numbers(text, values):
-                candidates.append(
-                    f"{display_path}:{line}:{column}: a bare trip-length number. Read it in "
-                    "context; it is a leak only if it states the family's maximum trip length."
-                )
     return Report(unexcused, ledger.stale(scanned, rule, complete), checked, candidates)
 
 

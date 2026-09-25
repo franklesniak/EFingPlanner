@@ -26,6 +26,7 @@ Markdown and drops Python.
 from __future__ import annotations
 
 import ast
+import codecs
 import importlib.util
 import io
 import re
@@ -886,6 +887,70 @@ def test_an_escaped_destination_name_in_a_path_gets_a_row_that_excuses_it(
     assert hook.check_exemption_rows("destination", rows) == []
     monkeypatch.setattr(hook, "DESTINATION_EXEMPTIONS", rows)
     assert hook.main(["--rule", "destination"], root=root) == 0
+
+
+@pytest.mark.parametrize(
+    ("rule", "name", "path_message"),
+    [
+        (
+            "family",
+            "docs/dhvyyunira.md",
+            "docs/dhvyyunira.md: the file's path holds a family value (a place or a relative). Rename",
+        ),
+        (
+            "destination",
+            "framework/gbxlb.md",
+            'framework/gbxlb.md: the file\'s path holds the destination name "tokyo". Place',
+        ),
+    ],
+    ids=["family", "destination"],
+)
+def test_a_reading_added_to_the_scan_loop_reads_a_file_s_path_too(
+    tmp_path: Path,
+    made_up_family: None,
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
+    rule: str,
+    name: str,
+    path_message: str,
+) -> None:
+    """DP-19: a file's path goes through the same loop as its text, so a feature added there covers paths.
+
+    The feature is a made-up ROT13 reading, added once, where the loop finds hits. The file's path and
+    text both hold a value in ROT13; the path is found only because it goes through that loop too.
+    """
+    word = name.rsplit("/", 1)[1].removesuffix(".md")
+    root = make_repo(tmp_path, {name: word + "\n"})
+    assert hook.main(["--rule", rule], root=root) == 0, "control: with no ROT13 reading, nothing is found"
+    capsys.readouterr()
+    real = hook.find_hits
+
+    def with_rot13(text: str, *args: object, **kwargs: object) -> list[object]:
+        return [*real(text, *args, **kwargs), *real(codecs.encode(text, "rot13"), *args, **kwargs)]
+
+    monkeypatch.setattr(hook, "find_hits", with_rot13)
+    assert hook.main(["--rule", rule], root=root) == 1
+    lines = capsys.readouterr().out.splitlines()
+    assert lines[0].startswith(path_message)
+    assert lines[1].startswith(f"{name}:1:1: ")
+
+
+def test_a_path_s_own_rules_are_flags_on_the_one_loop() -> None:
+    """A path hit is on line 0, a family hit in a path keeps no context, and a destination hit's is the path."""
+    [hit] = hook.find_hits("docs/Quillhaven.md", "docs/Quillhaven.md", "family", VALUES, in_path=True)
+    assert (hit.line_number, hit.column, hit.context, hit.in_path) == (0, 6, "", True)
+    [hit] = hook.find_hits("framework/%54okyo.md", "framework/%54okyo.md", "destination", names=FIVE_NAMES, in_path=True)
+    assert (hit.line_number, hit.column, hit.occurrence, hit.context) == (0, 11, "Tokyo", "(path) framework/Tokyo.md")
+    [hit] = hook.find_hits("See Quillhaven.\n", "x.md", "family", VALUES)
+    assert (hit.line_number, hit.column, hit.in_path) == (1, 5, False) and len(hit.context) == 64
+
+
+def test_no_row_excuses_a_family_value_in_a_path(tmp_path: Path, made_up_family: None) -> None:
+    """A row that names a family value in a path is never spent: the path must be renamed."""
+    root = make_repo(tmp_path, {"docs/quillhaven.md": "Clean.\n"})
+    row = ("docs/quillhaven.md", "word", "", 1, "a test row")
+    report = hook.scan("family", [(root / "docs/quillhaven.md", "docs/quillhaven.md")], root, VALUES, (row,))
+    assert [(hit.in_path, hit.label) for hit in report.hits] == [(True, "word")]
 
 
 def test_a_family_value_in_a_path_fails_the_run_and_is_never_printed(
