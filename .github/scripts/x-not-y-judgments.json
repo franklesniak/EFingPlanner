@@ -2342,16 +2342,6 @@
       "judgment": "no",
       "reason": "an instruction with its reason (nothing is written on day one); \"not-yet-written lists\" is a list name"
     },
-    "device|Create the pack's two contents pages. ‹code› carries the provided-as-is framing and lists the pack's reference files and its inserts. ‹code› is a destination-neutral copy of this contract.|1": {
-      "line": 96,
-      "judgment": "no",
-      "reason": "an instruction and two descriptions"
-    },
-    "split|Create the pack's two contents pages. ‹code› carries the provided-as-is framing and lists the pack's reference files and its inserts. ‹code› is a destination-neutral copy of this contract. → Then create the pack's ‹code› directory and fill in its stable facts, one file per topic, each named as the contract's reference column names it: regions, major cities, seasons, weather and events, transportation, airports, money, language, etiquette, food, adult logistics, trusted starting sources, and sample search terms.|1": {
-      "line": 96,
-      "judgment": "no",
-      "reason": "an instruction"
-    },
     "split|Every field list above is written destination-neutral so that a copy of this contract carries only the contract, and the new pack supplies every value. → One section is the exception.|1": {
       "line": 96,
       "judgment": "no",
@@ -2361,6 +2351,26 @@
       "line": 96,
       "judgment": "no",
       "reason": "a positive allocation of the contract and the values; it rejects no named alternative"
+    },
+    "device|Create the pack's two contents pages.|1": {
+      "line": 96,
+      "judgment": "no",
+      "reason": "an instruction; it rejects no alternative"
+    },
+    "split|Create the pack's two contents pages. → ‹code› carries the provided-as-is framing and lists the pack's reference files and its inserts.|1": {
+      "line": 96,
+      "judgment": "no",
+      "reason": "an instruction, then a description of the first contents page; nothing is rejected"
+    },
+    "split|‹code› carries the provided-as-is framing and lists the pack's reference files and its inserts. → ‹code› is a destination-neutral copy of this contract.|1": {
+      "line": 96,
+      "judgment": "no",
+      "reason": "two descriptions of the pack's contents pages; nothing is rejected"
+    },
+    "split|‹code› is a destination-neutral copy of this contract. → Then create the pack's ‹code› directory and fill in its stable facts, one file per topic, each named as the contract's reference column names it: regions, major cities, seasons, weather and events, transportation, airports, money, language, etiquette, food, adult logistics, trusted starting sources, and sample search terms.|1": {
+      "line": 96,
+      "judgment": "no",
+      "reason": "a description, then an instruction; nothing is rejected"
     },
     "device|Write the small \"destination notes\" each place-specific session pulls in.|1": {
       "line": 97,
@@ -2776,7 +2786,7 @@
       "judgment": "no",
       "reason": "a fact with its reason"
     },
-    "split|Its standing \"what is built right now\" note claimed the repository holds only the First Taste slice, which stopped being true when the Batch 2 brief and templates landed, and which had gone stale once per batch by design. → The roadmap now sends its reader here, because this is the file that changes whenever something ships. ( ‹code› .)|1": {
+    "split|Its standing \"what is built right now\" note claimed the repository holds only the First Taste slice, which stopped being true when the Batch 2 brief and templates landed, and which had gone stale once per batch by design. → The roadmap now sends its reader here, because this is the file that changes whenever something ships.|1": {
       "line": 47,
       "judgment": "no",
       "reason": "a fact: the roadmap's new behavior and the reason for it"
@@ -2785,11 +2795,6 @@
       "line": 48,
       "judgment": "no",
       "reason": "a correction record of the archived spec's error with its reasons; the negations are the spec's recorded status and a safety rule"
-    },
-    "split|The contract also routes parent-facing files for the first time, with a row for each, so every route is written down. ( ‹code› and ‹code› .) → And the two named scaffolding hand-offs are designated: Session 16 for Phase 3 and Session 40 for Phase 7, so a later batch does not re-derive them and land them elsewhere.|1": {
-      "line": 48,
-      "judgment": "no",
-      "reason": "a purpose clause (so a later batch does not re-derive them); it rejects no alternative to a claim"
     },
     "split|Recorded the departures from the archived spec that Batch 2's brief settles. → Session 30's title and filename drop a destination-specific fare product, because that term belongs in the destination pack's glossary.|1": {
       "line": 48,
@@ -2805,11 +2810,6 @@
       "line": 48,
       "judgment": "no",
       "reason": "a changelog record of where the cancelled item's content now lives"
-    },
-    "split|The archived spec marked Session 49 as needing no destination facts; that was wrong, because its staying-found teaching rests on local institution types, two emergency phrases in the local language and two emergency numbers, so it gains a reference row naming ‹code› , a file no pack has yet; the card instruction says an adult checks each emergency number on a current official page and writes the date checked, and the child then writes the checked number on their own card, because a built page must never print one. → The contract also routes parent-facing files for the first time, with a row for each, so every route is written down. ( ‹code› and ‹code› .)|1": {
-      "line": 48,
-      "judgment": "no",
-      "reason": "a changelog record of routing added; rejects nothing"
     },
     "device|Recorded the departures from the archived spec that Batch 2's brief settles.|1": {
       "line": 48,
@@ -2835,6 +2835,21 @@
       "line": 48,
       "judgment": "no",
       "reason": "a fact with its reason"
+    },
+    "split|The archived spec marked Session 49 as needing no destination facts; that was wrong, because its staying-found teaching rests on local institution types, two emergency phrases in the local language and two emergency numbers, so it gains a reference row naming ‹code› , a file no pack has yet; the card instruction says an adult checks each emergency number on a current official page and writes the date checked, and the child then writes the checked number on their own card, because a built page must never print one. → The contract also routes parent-facing files for the first time, with a row for each, so every route is written down.|1": {
+      "line": 48,
+      "judgment": "no",
+      "reason": "a changelog record of routing added; the second sentence rejects nothing"
+    },
+    "split|The contract also routes parent-facing files for the first time, with a row for each, so every route is written down. → ( ‹code› and ‹code› .)|1": {
+      "line": 48,
+      "judgment": "no",
+      "reason": "a record of routing added, then a parenthesis naming two files; nothing is rejected"
+    },
+    "split|( ‹code› and ‹code› .) → And the two named scaffolding hand-offs are designated: Session 16 for Phase 3 and Session 40 for Phase 7, so a later batch does not re-derive them and land them elsewhere.|1": {
+      "line": 48,
+      "judgment": "no",
+      "reason": "a purpose clause (so a later batch does not re-derive them); it rejects no alternative to a claim"
     },
     "device|Added the Batch 2 parent apparatus and student-guide pages.|1": {
       "line": 49,
@@ -3001,10 +3016,10 @@
       "judgment": "no",
       "reason": "a fact and its consequence"
     },
-    "split|First Taste skips Session 11, so a First Taste child's page adds one fallback: a grown-up names the first city, and the child finds the second in a trusted source. → An automated equivalence read compared the converted page with the pre-conversion text and found it equivalent, with the First Taste fallback as the one added change; an adult's acceptance of that read is listed under \"What is still owed to a human\" below. ( ‹code› .)|1": {
+    "split|First Taste skips Session 11, so a First Taste child's page adds one fallback: a grown-up names the first city, and the child finds the second in a trusted source. → An automated equivalence read compared the converted page with the pre-conversion text and found it equivalent, with the First Taste fallback as the one added change; an adult's acceptance of that read is listed under \"What is still owed to a human\" below.|1": {
       "line": 55,
       "judgment": "no",
-      "reason": "a fact"
+      "reason": "a fact about the equivalence read; nothing is rejected"
     },
     "device|Retired the Session 15 riders.|1": {
       "line": 56,
@@ -5059,16 +5074,6 @@
       "judgment": "device",
       "reason": "the audience statement is always the range \"roughly 9-11\", and no page sets a hard age bar"
     },
-    "device|Neither ‹code› nor ‹code› is in POSIX; the ‹code› escape is not in POSIX either and is absent from BSD grep as well, so ‹code› is simply the form that fails in fewer places. ‹code› also stops ‹code› matching inside ‹code› , which is why both forms are listed).|1": {
-      "line": 77,
-      "judgment": "no",
-      "reason": "portability facts about POSIX and BSD grep leading to a conclusion; it rejects no alternative to a claim"
-    },
-    "split|Neither ‹code› nor ‹code› is in POSIX; the ‹code› escape is not in POSIX either and is absent from BSD grep as well, so ‹code› is simply the form that fails in fewer places. ‹code› also stops ‹code› matching inside ‹code› , which is why both forms are listed). → This rule's own line always matches, so expect at least one hit.|1": {
-      "line": 77,
-      "judgment": "no",
-      "reason": "a portability fact, then an expectation for the QA grep; rejects no alternative"
-    },
     "split|This rule's own line always matches, so expect at least one hit. → Confirm that every remaining hit is a quoted example.|1": {
       "line": 77,
       "judgment": "no",
@@ -5098,6 +5103,21 @@
       "line": 77,
       "judgment": "no",
       "reason": "an instruction with a portability fact"
+    },
+    "device|Neither ‹code› nor ‹code› is in POSIX; the ‹code› escape is not in POSIX either and is absent from BSD grep as well, so ‹code› is simply the form that fails in fewer places.|1": {
+      "line": 77,
+      "judgment": "device",
+      "reason": "ranks named grep forms and prefers one: -w is the form that fails in fewer places (S51-52)"
+    },
+    "split|Neither ‹code› nor ‹code› is in POSIX; the ‹code› escape is not in POSIX either and is absent from BSD grep as well, so ‹code› is simply the form that fails in fewer places. → ‹code› also stops ‹code› matching inside ‹code› , which is why both forms are listed).|1": {
+      "line": 77,
+      "judgment": "no",
+      "reason": "a portability fact, then a fact about what the pattern matches; nothing is rejected"
+    },
+    "split|‹code› also stops ‹code› matching inside ‹code› , which is why both forms are listed). → This rule's own line always matches, so expect at least one hit.|1": {
+      "line": 77,
+      "judgment": "no",
+      "reason": "a fact, then an expectation for the QA grep; rejects no alternative"
     },
     "device|Parent-facing text may read at an adult level, but every ‹code› file still uses short sentences, states the point first, and qualifies at most once: plain parent voice, not the archived spec's nested-qualification voice.|1": {
       "line": 78,
@@ -5169,16 +5189,6 @@
       "judgment": "no",
       "reason": "a reason"
     },
-    "split|Otherwise read it aloud the way a kind adult speaks to a ten-year-old, and contract it if the full form sounds like a form letter. → A release is not a rule. ‹code› frees the child from an obligation, so it contracts.|1": {
-      "line": 87,
-      "judgment": "split",
-      "reason": "negation first, recast after: a release is not a rule / the quoted release frees the child from an obligation"
-    },
-    "split|A release is not a rule. ‹code› frees the child from an obligation, so it contracts. → Three repeated phrases keep the full form for the reason the choreography bullet below gives, without being frozen the way the two card pointers are: the Stop Point's ‹code› , which states that field's own rule, and the Optional Extension openers ‹code› and ‹code› , whose session counts the Optional Extension bullet records.|1": {
-      "line": 87,
-      "judgment": "device",
-      "reason": "three repeated phrases keep the full form, without being frozen the way the two card pointers are"
-    },
     "split|Contracting some copies of those would falsify the counts and vary words a child meets every session. → Contract a form only where English has one: ‹code› becomes ‹code› before a past participle and stays whole before a noun, and a clause-final ‹code› has no contracted spelling at all.|1": {
       "line": 87,
       "judgment": "no",
@@ -5228,6 +5238,21 @@
       "line": 87,
       "judgment": "no",
       "reason": "a reason"
+    },
+    "split|Otherwise read it aloud the way a kind adult speaks to a ten-year-old, and contract it if the full form sounds like a form letter. → A release is not a rule.|1": {
+      "line": 87,
+      "judgment": "no",
+      "reason": "an instruction, then the negation that opens the release's split, judged with the sentence after it"
+    },
+    "split|A release is not a rule. → ‹code› frees the child from an obligation, so it contracts.|1": {
+      "line": 87,
+      "judgment": "split",
+      "reason": "negation first, recast after: a release is not a rule / the quoted release frees the child from an obligation"
+    },
+    "split|‹code› frees the child from an obligation, so it contracts. → Three repeated phrases keep the full form for the reason the choreography bullet below gives, without being frozen the way the two card pointers are: the Stop Point's ‹code› , which states that field's own rule, and the Optional Extension openers ‹code› and ‹code› , whose session counts the Optional Extension bullet records.|1": {
+      "line": 87,
+      "judgment": "device",
+      "reason": "three repeated phrases keep the full form, without being frozen the way the two card pointers are"
     },
     "split|Is it a label separator ( ‹code› )? → Keep it, and do not count it.|1": {
       "line": 88,
@@ -5534,16 +5559,6 @@
       "judgment": "no",
       "reason": "a definition"
     },
-    "device|A parent-facing file gets four per file, a builder or spec file six, neither with a per-section cap. ‹code› and ‹code› do not appear in child-facing text at all. → Never substitute ‹code› , ‹code› , or ‹code› -- one word per idea.|1": {
-      "line": 93,
-      "judgment": "no",
-      "reason": "a prohibition with its reason; no alternative in the sentence"
-    },
-    "split|In a child-facing file: at most one per ‹code› section and four per file. → A parent-facing file gets four per file, a builder or spec file six, neither with a per-section cap. ‹code› and ‹code› do not appear in child-facing text at all.|1": {
-      "line": 93,
-      "judgment": "no",
-      "reason": "budget facts and a word ban for child-facing text; it rejects no alternative to a claim"
-    },
     "device|‹code› / ‹code› / ‹code› : apply the delete test.|1": {
       "line": 93,
       "judgment": "no",
@@ -5568,6 +5583,21 @@
       "line": 93,
       "judgment": "no",
       "reason": "an instruction"
+    },
+    "split|In a child-facing file: at most one per ‹code› section and four per file. → A parent-facing file gets four per file, a builder or spec file six, neither with a per-section cap.|1": {
+      "line": 93,
+      "judgment": "no",
+      "reason": "budget facts; \"neither\" states a missing cap and rejects no alternative to a claim"
+    },
+    "split|A parent-facing file gets four per file, a builder or spec file six, neither with a per-section cap. → ‹code› and ‹code› do not appear in child-facing text at all.|1": {
+      "line": 93,
+      "judgment": "no",
+      "reason": "budget facts and a word ban for child-facing text; it rejects no alternative to a claim"
+    },
+    "device|‹code› and ‹code› do not appear in child-facing text at all. → Never substitute ‹code› , ‹code› , or ‹code› -- one word per idea.|1": {
+      "line": 93,
+      "judgment": "no",
+      "reason": "a prohibition naming three substitutes, with its reason; it names no option it prefers"
     },
     "device|‹code› is capped, not banned.|1": {
       "line": 94,
@@ -5659,11 +5689,6 @@
       "judgment": "no",
       "reason": "a reason and an exemption list"
     },
-    "split|Their lines still count toward the prose-line total, because every ratio measures the page a reader sees. → Both are identical in every child session. ( ‹code› is parent-facing and carries none of this choreography.)|1": {
-      "line": 96,
-      "judgment": "no",
-      "reason": "a fact that Session 00 is parent-facing and carries none of the choreography; a scope note"
-    },
     "device|Keep the session choreography exactly as written.|1": {
       "line": 96,
       "judgment": "no",
@@ -5678,6 +5703,16 @@
       "line": 96,
       "judgment": "no",
       "reason": "a fact"
+    },
+    "split|Their lines still count toward the prose-line total, because every ratio measures the page a reader sees. → Both are identical in every child session.|1": {
+      "line": 96,
+      "judgment": "no",
+      "reason": "a reason, then a fact that both pointers are identical; nothing is rejected"
+    },
+    "split|Both are identical in every child session. → ( ‹code› is parent-facing and carries none of this choreography.)|1": {
+      "line": 96,
+      "judgment": "no",
+      "reason": "a fact that Session 00 is parent-facing and carries none of the choreography; a scope note"
     },
     "device|Measure by section, not by phrase.|1": {
       "line": 97,
@@ -31187,16 +31222,6 @@
       "judgment": "no",
       "reason": "a fact with a caveat"
     },
-    "split|‹code› is required wherever research occurs, and a session that omits it declares why in its own text, with a ‹code› comment near the top. ‹code› fails a session carrying neither the heading nor that marker; an adult-only session may instead carry ‹code› . → Silence is never an exemption.|1": {
-      "line": 62,
-      "judgment": "split",
-      "reason": "pre-empts the alternative to declaring why: silence is never an exemption"
-    },
-    "device|‹code› is required wherever research occurs, and a session that omits it declares why in its own text, with a ‹code› comment near the top. ‹code› fails a session carrying neither the heading nor that marker; an adult-only session may instead carry ‹code› .|1": {
-      "line": 62,
-      "judgment": "no",
-      "reason": "a gate rule and a permitted substitute for adult-only sessions (\"may instead carry\"); nothing is rejected"
-    },
     "device|A session with no research step has a second, simpler route: carry the heading with the built no-research form, \"No new sources needed unless you looked something up.\"|1": {
       "line": 62,
       "judgment": "no",
@@ -31207,25 +31232,40 @@
       "judgment": "no",
       "reason": "a fact"
     },
+    "split|Those seven are the whole mandatory core, and the author still owes every child session the three sections below, though the structure gate asks for none of them. → ‹code› is required wherever research occurs, and a session that omits it declares why in its own text, with a ‹code› comment near the top.|1": {
+      "line": 62,
+      "judgment": "no",
+      "reason": "a scope fact, then a rule for Source Check; nothing is rejected"
+    },
+    "device|‹code› fails a session carrying neither the heading nor that marker; an adult-only session may instead carry ‹code› .|1": {
+      "line": 62,
+      "judgment": "no",
+      "reason": "a gate rule and a permitted substitute for adult-only sessions (\"may instead carry\"); nothing is rejected"
+    },
+    "split|‹code› fails a session carrying neither the heading nor that marker; an adult-only session may instead carry ‹code› . → Silence is never an exemption.|1": {
+      "line": 62,
+      "judgment": "split",
+      "reason": "pre-empts the alternative to declaring why: silence is never an exemption"
+    },
     "banned|The three sections no gate asks for|1": {
       "line": 64,
       "judgment": "no",
       "reason": "a heading naming a topic; it does not deny a thing and then say what it is"
-    },
-    "device|Write all three. ‹code› alone is optional and pointer-by-default; a pointer counts the same as full text, and an omitted ‹code› is correct rather than a gap.|1": {
-      "line": 66,
-      "judgment": "device",
-      "reason": "correct rather than a gap"
     },
     "device|‹code› , ‹code› and ‹code› are carried by every child session.|1": {
       "line": 66,
       "judgment": "no",
       "reason": "a fact"
     },
-    "split|Write all three. ‹code› alone is optional and pointer-by-default; a pointer counts the same as full text, and an omitted ‹code› is correct rather than a gap. → They are named here because the structure gate requires none of the three.|1": {
-      "line": 68,
+    "split|‹code› , ‹code› and ‹code› are carried by every child session. → Write all three.|1": {
+      "line": 66,
       "judgment": "no",
-      "reason": "a reason (the structure gate requires none of the three); it rejects no alternative"
+      "reason": "a fact, then an instruction; nothing is rejected"
+    },
+    "device|‹code› alone is optional and pointer-by-default; a pointer counts the same as full text, and an omitted ‹code› is correct rather than a gap.|1": {
+      "line": 66,
+      "judgment": "device",
+      "reason": "correct rather than a gap"
     },
     "split|The operative style law states as a rule that both pointer sentences are identical in every child session, and that every child session carries the Optional Extension. → So a session that dropped one would pass every gate in this repository and still be the first page in the corpus that does not behave like the others.|1": {
       "line": 68,
@@ -31236,6 +31276,11 @@
       "line": 68,
       "judgment": "no",
       "reason": "a fact about which rule requires the sections; nothing is rejected"
+    },
+    "split|‹code› alone is optional and pointer-by-default; a pointer counts the same as full text, and an omitted ‹code› is correct rather than a gap. → They are named here because the structure gate requires none of the three.|1": {
+      "line": 68,
+      "judgment": "no",
+      "reason": "a reason (the structure gate requires none of the three); it rejects no alternative"
     },
     "split|So a session that dropped one would pass every gate in this repository and still be the first page in the corpus that does not behave like the others. → The canonical pointer wordings, with their links, are:|1": {
       "line": 70,
@@ -31322,20 +31367,25 @@
       "judgment": "no",
       "reason": "a fact and its consequence"
     },
-    "device|The H1 is ‹code› , with a two-digit number matching the filename. ‹code› requires two digits, so ‹code› fails the gate.|1": {
+    "device|The H1 is ‹code› , with a two-digit number matching the filename.|1": {
+      "line": 87,
+      "judgment": "no",
+      "reason": "a fact about the H1"
+    },
+    "split|The H1 is ‹code› , with a two-digit number matching the filename. → ‹code› requires two digits, so ‹code› fails the gate.|1": {
       "line": 87,
       "judgment": "no",
       "reason": "facts about the H1 and the gate"
-    },
-    "split|The H1 is ‹code› , with a two-digit number matching the filename. ‹code› requires two digits, so ‹code› fails the gate. → The navigation aid is one line.|1": {
-      "line": 89,
-      "judgment": "no",
-      "reason": "a fact"
     },
     "split|The navigation aid is one line. → It opens ‹code› , then the step label, then ‹code› and ‹code› separated by a pipe.|1": {
       "line": 89,
       "judgment": "no",
       "reason": "a fact"
+    },
+    "split|‹code› requires two digits, so ‹code› fails the gate. → The navigation aid is one line.|1": {
+      "line": 89,
+      "judgment": "no",
+      "reason": "a fact about the gate, then a fact about the navigation aid"
     },
     "split|It opens ‹code› , then the step label, then ‹code› and ‹code› separated by a pipe. → The step label comes in three forms, and it is the one part that varies:|1": {
       "line": 91,
@@ -31662,20 +31712,25 @@
       "judgment": "no",
       "reason": "a fact"
     },
-    "device|Thinning is a shorter body, never a missing heading. ‹code› requires all six of ‹code› , ‹code› , ‹code› , ‹code› , ‹code› and ‹code› , each with a non-empty body, in every session in every phase.|1": {
-      "line": 146,
-      "judgment": "device",
-      "reason": "a shorter body, never a missing heading"
-    },
-    "split|Thinning is a shorter body, never a missing heading. ‹code› requires all six of ‹code› , ‹code› , ‹code› , ‹code› , ‹code› and ‹code› , each with a non-empty body, in every session in every phase. → It has no late-phase exemption and no lighter-template mode.|1": {
-      "line": 146,
-      "judgment": "no",
-      "reason": "elaboration (fact)"
-    },
     "split|It has no late-phase exemption and no lighter-template mode. → So a lighter session carries a one-line prompt under ‹code› , a named blank under ‹code› , and ‹code› untouched, because ‹code› is mandatory too and the always-kept list above does not name it.|1": {
       "line": 146,
       "judgment": "no",
       "reason": "a consequence of the gate fact (\"So...\") with its reason; \"does not name it\" is a fact"
+    },
+    "device|Thinning is a shorter body, never a missing heading.|1": {
+      "line": 146,
+      "judgment": "device",
+      "reason": "a shorter body, never a missing heading"
+    },
+    "split|Thinning is a shorter body, never a missing heading. → ‹code› requires all six of ‹code› , ‹code› , ‹code› , ‹code› , ‹code› and ‹code› , each with a non-empty body, in every session in every phase.|1": {
+      "line": 146,
+      "judgment": "no",
+      "reason": "the rule, then its elaboration: which six headings the gate requires"
+    },
+    "split|‹code› requires all six of ‹code› , ‹code› , ‹code› , ‹code› , ‹code› and ‹code› , each with a non-empty body, in every session in every phase. → It has no late-phase exemption and no lighter-template mode.|1": {
+      "line": 146,
+      "judgment": "split",
+      "reason": "claim, then the rejected alternative in its own sentence: all six in every phase / no late-phase exemption"
     },
     "device|Draft and check it against the golden exemplar, Session 04.|1": {
       "line": 150,

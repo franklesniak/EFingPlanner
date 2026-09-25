@@ -1802,3 +1802,157 @@ def test_text_is_more_than_white_space_in_either_reading() -> None:
     patterns = {schemas[0]["$defs"]["judgment"]["properties"]["reason"]["pattern"],
                 schemas[1]["additionalProperties"]["properties"]["basis"]["pattern"]}
     assert patterns == {r"[^\s\u001c-\u001f\u0085]"}
+
+
+# ---------------------------------------------------------------------------
+# A sentence opened by code, the marker separator, a determiner alone, a
+# heading's section in a container, an unclosed comment and two audiences
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.parametrize(("text", "expected"), [
+    ("It works. ‹code› installs it.", ["It works.", "‹code› installs it."]),
+    ("Is it done? ‹code› says so.", ["Is it done?", "‹code› says so."]),
+    ('He said "go." ‹code› came next.', ['He said "go."', "‹code› came next."]),
+    ("Written down. ( ‹code› and ‹code› .)", ["Written down.", "( ‹code› and ‹code› .)"]),
+])
+def test_a_code_span_after_a_sentence_mark_starts_a_sentence(text: str, expected: list) -> None:
+    assert cx.split_sentences(text) == expected
+
+
+@pytest.mark.parametrize("text", [
+    "Use e.g. ‹code› here.",
+    "Call it ‹code› , then ‹code› .",
+    "It works. then ‹code› runs.",
+])
+def test_a_code_span_starts_no_sentence_elsewhere(text: str) -> None:
+    assert cx.split_sentences(text) == [text]
+
+
+def test_a_sentence_opened_by_code_is_judged_on_its_own() -> None:
+    found = [(c.kind, c.text) for c in candidates("Plan the day. " + TICK + "x" + TICK + " does not decide it.")]
+    assert found == [("split", "Plan the day. → ‹code› does not decide it.")]
+
+
+@pytest.mark.parametrize("body", [
+    "X, not Y --required", "X, not Y --- required", "X, not Y — required", "X, not Y – required",
+    "X not Y --required", "X-not-Y ---required",
+])
+def test_a_marker_whose_device_and_reason_are_not_parted_by_a_spaced_double_hyphen_exempts_nothing(body: str) -> None:
+    mk = cx.parse_marker(1, " " + body + " ")
+    assert (mk.applies, mk.problem) == (False, "the device and the reason are not parted by ' -- '")
+
+
+@pytest.mark.parametrize(("body", "device", "reason", "applies"), [
+    ("X, not Y -- required", "X, not Y", "required", True),
+    ("X, not Y -- a -- b", "X, not Y", "a -- b", True),
+    ("X, not Y --\trequired", "X, not Y", "required", True),
+    ("spaced dash --reason", "spaced dash", "", False),
+    ("real -- required", "real", "required", False),
+])
+def test_a_marker_body_parts_at_a_spaced_double_hyphen(body: str, device: str, reason: str, applies: bool) -> None:
+    mk = cx.parse_marker(1, " " + body + " ")
+    assert (mk.device, mk.reason, mk.applies, mk.problem) == (device, reason, applies, "")
+
+
+@pytest.mark.parametrize("last", ["> — The", "> — A", "> — 3", "> — Our", "> — One of", "> — The 3"])
+@pytest.mark.parametrize("layout", ["paragraph", "line"])
+def test_a_determiner_or_a_number_alone_is_no_attribution(last: str, layout: str) -> None:
+    joiner = "\n>\n" if layout == "paragraph" else "\n"
+    keys = [c.key for c in every_candidate("> Choose the map, not the list." + joiner + last)]
+    assert "device|Choose the map, not the list.|1|block quote" in keys
+
+
+@pytest.mark.parametrize("last", ["> — One of the parents", "> — 3 families", "> — The coach"])
+def test_a_determiner_or_a_number_with_a_noun_is_an_attribution(last: str) -> None:
+    (found,) = candidates("> Choose the map, not the list.\n>\n" + last)
+    assert found.key.endswith("|quotation block quote")
+
+
+@pytest.mark.parametrize(("text", "section", "index"), [
+    ("- One.\n\n  ## Inside\n\n  Pick the map.\n\nChoose the map, not the list.", cx.PREAMBLE, 0),
+    ("## Outer\n\n- One.\n\n  ## Inside\n\n  Pick the map.\n\nChoose the map, not the list.", "Outer", 1),
+    ("## Outer\n\n> ## Inside\n>\n> Pick the map.\n\nChoose the map, not the list.", "Outer", 1),
+    ("## Outer\n\n- One.\n\n  > ## Deeper\n\n  Still the item.\n\nChoose the map, not the list.", "Outer", 1),
+])
+def test_a_heading_in_a_container_opens_a_section_that_ends_with_the_container(
+        text: str, section: str, index: int) -> None:
+    (found,) = [c for c in candidates(text) if c.text == "Choose the map, not the list."]
+    assert (found.section, found.section_index) == (section, index)
+
+
+def test_a_heading_in_a_container_still_opens_its_own_section() -> None:
+    (found,) = candidates("## Outer\n\n- One.\n\n  ## Inside\n\n  Pick the map, not the list.")
+    assert (found.section, found.section_index) == ("Inside", 2)
+
+
+def test_a_parent_notes_heading_in_a_container_ends_its_region_with_the_container() -> None:
+    page = cx.parse_text("## A\n\n- One.\n\n  ## Parent Notes\n\n  For grown-ups.\n\nFor the child.")
+    assert [(p.text, p.region) for p in page.prose] == [
+        ("One.", "main"), ("For grown-ups.", "parent notes"), ("For the child.", "main")]
+
+
+def test_a_section_after_a_container_is_capped_with_the_text_before_it(tmp_path: Path, capsys: Any) -> None:
+    root = repo_with(tmp_path, "## A\n\nPick the map, not the list.\n\n> ## B\n>\n> Plan the day.\n\n"
+                               "Choose the map, not the list.\n")
+    assert run(root, judge_all(root), capsys) == 1
+    rows = summary_for(root, "framework/templates/a.md", judge_all(root))["sections"]
+    (row,) = [r for r in rows if r["section"] == "A"]
+    assert (row["raw"], row["status"]) == (2, "OVER")
+
+
+@pytest.mark.parametrize(("text", "line"), [
+    ("<!-- never closed\nChoose the map, not the list.\n", 1),
+    ("## A\n\n<!-- a --> <!-- b\n\nChoose the map, not the list.\n", 3),
+    ("<?x never closed\n\nChoose the map, not the list.\n", 1),
+    ("<![CDATA[ never closed\n\nChoose the map, not the list.\n", 1),
+    ("- One.\n\n  <!-- never closed\n\nChoose the map, not the list.\n", 3),
+])
+def test_a_hidden_part_that_never_closes_is_named_and_not_read(text: str, line: int) -> None:
+    page = cx.parse_text(text)
+    assert page.unread_html == [line]
+    assert not any("never closed" in p.text for p in page.prose)
+
+
+def test_an_unclosed_comment_fails_the_run(tmp_path: Path, capsys: Any) -> None:
+    root = repo_with(tmp_path, "## A\n\n<!-- never closed\nPlan the day.\n")
+    code = cx.main([str(root), "--judgments", str(tmp_path / "none.json"), "--registers", str(tmp_path / "none.json")])
+    assert code == 1
+    assert "UNREAD HTML line 3" in capsys.readouterr().out
+
+
+@pytest.mark.parametrize("text", [
+    "<!-- a -->\n\nChoose the map, not the list.\n",
+    "Text <!-- never closed, which prints as text.\n",
+])
+def test_a_closed_comment_or_an_inline_opener_is_read_as_before(text: str) -> None:
+    assert cx.parse_text(text).unread_html == []
+
+
+@pytest.mark.parametrize(("text", "audience"), [
+    ("<!-- audience: parent -->\n<!-- audience: builder -->\n\n# Page", "parent"),
+    ("<!-- audience: builder -->\n\n# Page\n\nWords. <!-- audience: adult -->", "builder"),
+    ("<!-- audience: parent --> <!-- audience: builder -->\n\n# Page", "parent"),
+    ("<!-- audience: adult -->\n<!-- audience: parent -->\n\n# Page", "adult"),
+    ("<!-- audience: builder -->\n\n# Page\n\nWords. <!-- audience: builder -->", "builder"),
+])
+def test_every_audience_marker_after_the_first_is_a_marker_problem(text: str, audience: str) -> None:
+    # A page holds one audience marker, so a second is named whether it agrees or not; the first sets the register.
+    page = cx.parse_text(text)
+    (mk,) = [m for m in page.markers if m.device == "audience"]
+    assert (mk.problem.startswith("a second audience marker"), mk.applies, page.audience) == (True, False, audience)
+
+
+@pytest.mark.parametrize(("text", "audience"), [
+    ("<!-- audience: parent -->\n\n# Page", "parent"),
+    ("# Page\n\nWords. <!-- audience: builder -->", "builder"),
+])
+def test_one_audience_marker_is_read_as_before(text: str, audience: str) -> None:
+    page = cx.parse_text(text)
+    assert page.audience == audience and not page.markers
+
+
+def test_a_second_audience_marker_fails_the_run(tmp_path: Path, capsys: Any) -> None:
+    root = repo_with(tmp_path, "<!-- audience: parent -->\n<!-- audience: builder -->\n\n## A\n\nPlan the day.\n")
+    assert run(root, judge_all(root, "no"), capsys) == 1
+    assert summary_for(root, "framework/templates/a.md", judge_all(root, "no"))["marker_problems"] == 1

@@ -50,6 +50,8 @@ all it hides is those (``<!-- note --> Choose the map.``), as GitHub's
 renderer shows it: its text as written, with character references decoded.
 One that shows text next to an HTML tag is not read; the report names it
 (UNREAD HTML), and it fails the run, as markdownlint's MD033 fails the tag.
+So is a block that holds a comment, or another hidden part, that never
+closes, which hides the rest of the page on GitHub.
 Raw HTML is read from the left, as a browser reads it: a comment ends at the
 first ``-->`` or ``--!>``, ``<!-->`` and ``<!--->`` are empty comments, and a
 ``<!--`` inside a processing instruction, a CDATA section, a declaration, a
@@ -65,7 +67,8 @@ edge, such as a blank to fill in. A paragraph is joined before it is split
 into sentences, because Markdown renders a soft line break as a space. A
 sentence ends at ``.``, ``!`` or ``?`` when the next letter or digit is not
 lower case, whatever stands before it (a quotation mark, a bullet, an emoji)
-and in any script; ``No.`` ends a sentence unless a number follows it.
+and in any script, or when a code span comes next, since code has no case;
+``No.`` ends a sentence unless a number follows it.
 
 Every sentence that holds a negation word is a candidate when a claim sits
 next to it: another sentence in its paragraph, or in the paragraph it pairs
@@ -102,8 +105,10 @@ a negation that opens a paragraph with the claim after it, and a release
 whether it counts. A paragraph pairs with the one before it only inside the
 same container: the page, one block quote or one list item. A comment between
 two paragraphs does not part them. Text above a page's first ``##`` heading is
-not a ``##`` section, so only the file cap reaches it. Each ``##`` heading
-starts its own section, even when two share a title. A child session's "For
+not a ``##`` section, so only the file cap reaches it. A heading inside a
+block quote or a list item opens a section that ends with its container,
+and the text after the container is back in the section before it. Each
+``##`` heading starts its own section, even when two share a title. A child session's "For
 parents" strip and ``## Parent Notes`` are parent-facing regions, but the file
 cap follows the file's own register. A heading's region lasts while its
 section is open, deeper headings included: ``### Coaching`` under ``## Parent
@@ -121,7 +126,9 @@ split negations it covers. The device is named ``X, not Y``; the old
 ``X-not-Y`` and ``x-not-y`` are read too. The block sits in the marker's own
 container: a marker inside a block quote or a list item never covers a block
 beyond that container's edge. A marker that gives no reason, that names the
-device in any other spelling (``X not Y``, ``xnoty``), that reaches its
+device in any other spelling (``X not Y``, ``xnoty``), that parts its device
+and its reason by anything but `` -- `` (``--required``, ``--- required``),
+that reaches its
 source by number, that has no block below it in its container, or that
 shares its lines with text the page shows (in an HTML block, or inside a
 line of a paragraph, a heading or a table cell), exempts nothing, and the
@@ -183,7 +190,8 @@ A page's register comes from its ``<!-- audience: parent -->`` or
 ``x-not-y-registers.json``, then from the style law's
 ``framework/parent_guide/`` tree, then from the child-facing trees the
 readability check scores. A page none of these reaches
-is UNDETERMINED.
+is UNDETERMINED. The first audience marker sets the register. A page holds
+one, so each audience marker after it is a marker problem, which fails the run.
 
 Exit code: 0 when every page is within its caps or marked exempt, with no
 banned shape, no undetermined register, no unjudged candidate, no marker
@@ -253,8 +261,14 @@ HTML_TAG_RE = re.compile(
     r"\s*/?>|</[A-Za-z][A-Za-z0-9-]*\s*>")
 
 
-def hidden_parts(content: str) -> list[tuple[int, int, str | None]]:
-    """Return each part of raw HTML that a browser hides, in document order.
+#: What opens a part a browser hides. One with no closer after it hides the
+#: rest of the page on GitHub, past its block and its container.
+HIDDEN_OPENER_RE = re.compile(r"<!--|<\?|<!\[CDATA\[|<![A-Za-z]")
+
+
+def scan_hidden(content: str) -> tuple[list[tuple[int, int, str | None]], int | None]:
+    """Return each part of raw HTML that a browser hides, in document order,
+    and where a part that never closes opens (None when every part closes).
 
     Each part is `(start, end, comment)`, where `comment` is a comment's text
     and None for a processing instruction, a CDATA section or a declaration.
@@ -262,7 +276,8 @@ def hidden_parts(content: str) -> list[tuple[int, int, str | None]]:
     inside one of them, or inside a tag's quoted attribute, opens nothing:
     `<?x <!-- audience: parent --> ?>` is one processing instruction, and
     `<!-- see <!-- audience: parent -->` one comment whose text is
-    `see <!-- audience: parent`.
+    `see <!-- audience: parent`. A part that never closes runs on to the end,
+    so the scan stops there.
     """
     parts: list[tuple[int, int, str | None]] = []
     at = content.find("<")
@@ -271,16 +286,24 @@ def hidden_parts(content: str) -> list[tuple[int, int, str | None]]:
         if content.startswith("<!--", at):
             empty = next((e for e in ("<!-->", "<!--->") if content.startswith(e, at)), "")
             closer = None if empty else COMMENT_CLOSER_RE.search(content, at + len("<!--"))
-            if empty or closer:
-                end = at + len(empty) if empty else closer.end()
-                parts.append((at, end, "" if empty else content[at + len("<!--"):closer.start()]))
+            if not (empty or closer):
+                return parts, at
+            end = at + len(empty) if empty else closer.end()
+            parts.append((at, end, "" if empty else content[at + len("<!--"):closer.start()]))
         elif m := HIDDEN_OTHER_RE.match(content, at):
             end = m.end()
             parts.append((at, end, None))
+        elif HIDDEN_OPENER_RE.match(content, at):
+            return parts, at
         elif m := HTML_TAG_RE.match(content, at):
             end = m.end()
         at = content.find("<", end)
-    return parts
+    return parts, None
+
+
+def hidden_parts(content: str) -> list[tuple[int, int, str | None]]:
+    """Return each closed part of raw HTML that a browser hides (see `scan_hidden()`)."""
+    return scan_hidden(content)[0]
 
 
 def without_hidden(content: str) -> str:
@@ -316,7 +339,15 @@ EXEMPT_MARKER_RE = re.compile(r"^\s*density-exempt:(?P<body>.*)$", re.DOTALL)
 def marker_comments(content: str) -> list[tuple[int, str]]:
     """Return `(line offset, text)` for each comment in raw HTML, where a marker can be."""
     return [(content.count("\n", 0, start), text) for start, _, text in hidden_parts(content) if text is not None]
-MARKER_BODY_RE = re.compile(r"^\s*(?P<device>.*?)\s+--(?P<reason>.*)$", re.DOTALL)
+
+
+#: A marker body: the device, then ` -- ` (white space, two hyphens, white
+#: space), then the reason, as the style law writes `<device> -- <reason>`. A
+#: body that ends at ` --` has no reason.
+MARKER_BODY_RE = re.compile(r"^\s*(?P<device>.*?)\s+--(?:\s+(?P<reason>.*?))?\s*$", re.DOTALL)
+#: Where a body with no ` -- ` parts its device from the rest, so the device of
+#: `X, not Y --- required` or `X, not Y — required` can still be named.
+LOOSE_SEPARATOR_RE = re.compile(r"^\s*(?P<device>.*?)\s*(?:-{2,}|[—–])", re.DOTALL)
 #: The device names a marker may use: the style law's `X, not Y`, and the old
 #: `X-not-Y` and `x-not-y`, so an old marker still counts. No other spelling
 #: exempts anything.
@@ -489,6 +520,8 @@ NAME_PREPOSITIONS = frozenset("in at from after on for with during about of sinc
 #: kids loved the map` is a sentence.
 NAME_CORE_MAX_WORDS = 4
 POSSESSIVE_RE = re.compile(r"['’]s$")
+#: A number as a name's first word writes it: `3`, `1,200`, `2.5`.
+NUMBER_RE = re.compile(r"[\d.,:]+")
 
 
 def is_name(name: str) -> bool:
@@ -509,6 +542,11 @@ def is_name(name: str) -> bool:
     if (low[0] in CLAUSE_OPENERS and low[0] not in NAME_DETERMINERS) or any(w in NOT_IN_NAME for w in low):
         return False
     if low[0] in NAME_DETERMINERS or head[0][0].isdigit():
+        # A determiner or a number names no one alone (`— The`, `— 3`): it
+        # needs a noun, a word that is none of those and no preposition.
+        if not any(w not in NAME_DETERMINERS and w not in NAME_PREPOSITIONS and not NUMBER_RE.fullmatch(w)
+                   for w in low):
+            return False
         core = next((i for i, w in enumerate(low) if i and w in NAME_PREPOSITIONS), len(low))
         return core <= NAME_CORE_MAX_WORDS
     possessive = False
@@ -534,8 +572,13 @@ def starts_sentence(text: str, at: int) -> bool:
     Quotation marks, brackets, emphasis, bullets and emoji before it are
     skipped, so `✅ Look it up.`, `«Look.»` and `Élodie calls.` start sentences,
     in any script. A lower-case word (`e.g. kyoto`, `5 p.m. on Monday`) does not.
+    A code span starts one, as a digit does: code has no case of its own, and
+    the letters of the mark the helper prints for it (`CODE_MARK`) are not the
+    page's.
     """
-    for ch in text[at:]:
+    for i, ch in enumerate(text[at:], at):
+        if text.startswith(CODE_MARK.strip(), i):
+            return True
         if ch.isalnum():
             return not ch.islower()
     return False
@@ -792,14 +835,19 @@ def parse_marker(lineno: int, body: str) -> Marker:
     and gives no reason exempts nothing, and the report names it. So does a
     marker that names the device in a spelling the law does not use, and one
     whose reason reaches its source by number (`NUMBERED_SOURCE_RE`), which
-    the law's name-first rule forbids in a built file.
+    the law's name-first rule forbids in a built file, and one whose device and
+    reason are parted by anything but ` -- ` (`--required`, `--- required`,
+    `— required`).
     """
     m = MARKER_BODY_RE.match(body)
-    device = normalize_space(m.group("device") if m else body)
+    loose = None if m else LOOSE_SEPARATOR_RE.match(body)
+    device = normalize_space(m.group("device") if m else loose.group("device") if loose else body)
     reason = normalize_space((m.group("reason") or "") if m else "")
     names_device = device in XNOTY_DEVICE_NAMES
     problem = ""
-    if names_device and not reason:
+    if (names_device or XNOTY_LOOKALIKE_RE.match(device)) and loose:
+        problem = "the device and the reason are not parted by ' -- '"
+    elif names_device and not reason:
         problem = "no reason after ' -- '"
     elif names_device and (cited := NUMBERED_SOURCE_RE.search(reason)):
         problem = f"the reason cites its source by number ({cited.group(0).strip()!r}); name the source instead"
@@ -851,8 +899,18 @@ def parse_text(text: str) -> Page:
     # True while only comments have come since the last paragraph: a comment
     # renders nothing, so it does not part two paragraphs.
     follows = False
+    # Every audience marker, with its line: a page holds one, and each after
+    # the first is a marker problem.
+    audiences: list[tuple[int, str]] = []
+    # The page's section, region and open headings as they stood before a
+    # heading inside a block quote or a list item, restored when that
+    # container ends: the heading's section ends with its container.
+    saved: list[tuple[tuple[str, ...], tuple[str, int, str, list[tuple[int, bool]]]]] = []
     for index, block in enumerate(blocks):
         kind = block["type"]
+        path = tuple(block.get("path") or ())
+        while saved and path[:len(saved[-1][0])] != saved[-1][0]:
+            section, section_index, region, open_headings = saved.pop()[1]
         for offset, piece in block.get("html") or ():
             # Inline HTML in a paragraph, a heading or a table cell. markdown-it
             # gives each piece whole, and a marker is read only from a comment
@@ -860,9 +918,8 @@ def parse_text(text: str) -> Page:
             # `density-exempt` marker shares its line with text, so it covers
             # nothing and is named.
             for line, comment in marker_comments(piece):
-                am = AUDIENCE_RE.match(comment)
-                if am and audience is None:
-                    audience = am.group(1).lower()
+                if am := AUDIENCE_RE.match(comment):
+                    audiences.append((block["start"] + offset + line, am.group(1).lower()))
                 if mm := EXEMPT_MARKER_RE.match(comment):
                     marker = marker_beside_text(block["start"] + offset + line, mm.group("body"))
                     if marker:
@@ -871,10 +928,16 @@ def parse_text(text: str) -> Page:
         if kind == "html_block":
             content = block.get("content") or ""
             comments = marker_comments(content)
-            for _, comment in comments:
-                am = AUDIENCE_RE.match(comment)
-                if am and audience is None:
-                    audience = am.group(1).lower()
+            for line, comment in comments:
+                if am := AUDIENCE_RE.match(comment):
+                    audiences.append((block["start"] + line, am.group(1).lower()))
+            if scan_hidden(content)[1] is not None:
+                # A comment, or another hidden part, that never closes hides the
+                # rest of the page on GitHub, past this block and its container.
+                # The recount cannot read that, so it names the block.
+                unread.append(block["start"])
+                follows = False
+                continue
             if shows_nothing(block):
                 # A block that shows nothing (comments, processing instructions,
                 # declarations and CDATA sections) is read as a block of
@@ -912,6 +975,8 @@ def parse_text(text: str) -> Page:
             level = block["level"]
             heading = normalize_space(block.get("text") or "")
             heading_lines[block["start"]] = (level, heading)
+            if path and not (saved and saved[-1][0] == path):
+                saved.append((path, (section, section_index, region, list(open_headings))))
             if level <= 2:
                 section = heading if level == 2 else PREAMBLE
                 section_index = 0
@@ -956,6 +1021,14 @@ def parse_text(text: str) -> Page:
         follows = True
     for marker, index in zip(markers, marker_blocks):
         marker_scope(marker, blocks, index, heading_lines, source)
+    if audiences:
+        # The first audience marker sets the register. A page holds one, so
+        # each after it is named and fails the run, whether it agrees or not.
+        audience = audiences[0][1]
+        for lineno, value in audiences[1:]:
+            markers.append(Marker(lineno, "audience", "", False, problem=(
+                f"a second audience marker ({value}); a page holds one, and the first ({audience}, line"
+                f" {audiences[0][0]}) sets its register")))
     return Page(prose, markers, sections, heading_lines, audience, unread, labels)
 
 
@@ -1329,10 +1402,15 @@ CHILD_TREE_RES = (
 )
 
 
+def audience_register(audience: str) -> str:
+    """Return the register an audience marker gives: builder, or parent for `adult` and `parent`."""
+    return "builder" if audience == "builder" else "parent"
+
+
 def resolve_register(rel: str, audience: str | None, registers: dict) -> tuple[str, str]:
     """Return (register, basis) for a page."""
     if audience:
-        return ("builder" if audience == "builder" else "parent"), f"audience marker ({audience})"
+        return audience_register(audience), f"audience marker ({audience})"
     entry = registers.get(rel)
     if entry:
         return entry["register"], entry["basis"]
@@ -1674,7 +1752,9 @@ def print_report(reports: list[FileReport], only_problems: bool) -> dict:
             print(f"    {label[:56]:<56} {r['register']:<14} {r['counted']}/{cap}"
                   f" (true {r['raw']}) {r['status']}{lines}")
         for m in s["markers"]:
-            if m["problem"]:
+            if m["problem"] and m["device"] == "audience":
+                tag = f"PROBLEM ({m['problem']})"
+            elif m["problem"]:
                 tag = f"EXEMPTS NOTHING ({m['problem']})"
             else:
                 tag = "applies" if m["applies"] else "other device"
@@ -1684,8 +1764,8 @@ def print_report(reports: list[FileReport], only_problems: bool) -> dict:
         if s["unjudged"]:
             print(f"    UNJUDGED candidates: {s['unjudged']} (run with --unjudged)")
         for line in s["unread_html"]:
-            print(f"    UNREAD HTML line {line}: an HTML block shows text next to a tag, which the recount"
-                  " cannot read; write it as Markdown")
+            print(f"    UNREAD HTML line {line}: an HTML block shows text next to a tag, or holds a comment or"
+                  " another hidden part that never closes, which the recount cannot read; write it as Markdown")
     print()
     print("TOTALS")
     for k in TOTAL_KEYS:
