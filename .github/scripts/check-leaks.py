@@ -49,7 +49,8 @@ so the word or number after it is read whole and every hit keeps the
 file's own line and column. An occurrence both readings see counts once;
 an occurrence only the second reading sees counts on its own, beside a
 plain one on the same line. A percent escape and a character reference
-are read as written (DP-21). Each file's repository-relative path is read
+are not decoded, so a value spelled with either is not matched (DP-21);
+"Known limits" lists both. Each file's repository-relative path is read
 too, as one more line of the file, by the same loop as its text: a value
 or a name in a file's or a folder's name is a hit, and a bare number in it
 is a candidate, a binary file's included.
@@ -85,19 +86,19 @@ is a candidate, a binary file's included.
 
   The number is read in digits, and digits from any script count as their
   ASCII digits, read as text, so a run of any length is read. A number in
-  words is read as written (DP-23): no tracked file on any branch states
-  the family's trip length in words, and the design record and the briefs
-  write it in digits. A number that is part of a decimal or a thousands
-  group is not a match; a comma or a full stop that does not
-  follow a digit, as in a CSV field, does not hide one. A bare number is
-  not a leak: the design record's grep note lists page numbers, item counts
-  and dates as the wider pattern's false positives, and the Batch 2 build
-  brief scopes this hook to the number with its unit. The label and the cap
-  phrase state the trip length as plainly as a unit does. ``--candidates``
-  lists the bare occurrences, in text and in paths, for the grep note's
-  hand-read, and does not fail. A word between the number and its unit ("N
-  full days"), and a cap with no unit or label ("the trip cannot go past
-  N"), are left to that hand-read.
+  words is not matched (DP-23), and "Known limits" lists it: no tracked
+  file on any branch states the family's trip length in words, and the
+  design record and the briefs write it in digits. A number that is part of
+  a decimal or a thousands group is not a match; a comma or a full stop
+  that does not follow a digit, as in a CSV field, does not hide one. A
+  bare number is not a leak: the design record's grep note lists page
+  numbers, item counts and dates as the wider pattern's false positives,
+  and the Batch 2 build brief scopes this hook to the number with its unit.
+  The label and the cap phrase state the trip length as plainly as a unit
+  does. ``--candidates`` lists the bare occurrences, in text and in paths,
+  for the grep note's hand-read, and does not fail. A word between the
+  number and its unit ("N full days"), and a cap with no unit or label
+  ("the trip cannot go past N"), are left to that hand-read.
 * A **destination** name matches a word that begins with it, in any case,
   so a demonym or a path segment into a pack matches. The names are the
   five ``AC-16-1`` gives and the style law lists, and the suite checks
@@ -204,13 +205,14 @@ written, in a file's or a folder's name, under a checkout setting such as
 ``core.symlinks``, or in any layout of the repository. Of the ways text
 can be escaped, it reads one level of one-letter backslash escapes only,
 the kind a grep pattern carries; a percent escape and a character
-reference are read as written, and "Known limits" below lists both. That
-is what ``AC-29-2``'s grep asks, and what the privacy rules' "public
-framework, private trip work" protects. Deliberate obfuscation, text built to slip
-past the hook, is out of scope: a person who would build it can skip a
-pre-commit hook or publish elsewhere, so no check here could stop them.
-A finding that needs such text is answered by this section and the list
-below, not by new matching.
+reference are not decoded, so a value spelled with either is not matched,
+and "Known limits" below lists both. That is what ``AC-29-2``'s grep asks,
+and what the privacy rules' "public framework, private trip work"
+protects. Deliberate obfuscation, text built to slip past the hook, is out
+of scope: a person who would build it can skip a pre-commit hook or
+publish elsewhere, so no check here could stop them. A finding that needs
+such text is answered by this section and the list below, not by new
+matching.
 
 Known limits
 ------------
@@ -228,8 +230,8 @@ person's read, to ``--candidates``, or to another check:
   a longer word, and a superscript digit or a fraction joined to a word or
   a unit, such as a footnote marker, which Python reads as a letter.
 * A percent escape, such as ``%63``, and a character reference, such as
-  ``&#99;``: each is read as written, so a value spelled with one is not
-  found. No tracked file on any branch hid a value in one (DP-21).
+  ``&#99;``: neither is decoded, so a value spelled with one is not
+  matched. No tracked file on any branch hid a value in one (DP-21).
 * Any other encoding: an escape inside another escape, ``\\uXXXX``,
   ``\\xXX``, octal, base64 and a cipher are text built to hide a value,
   which the threat model above leaves out.

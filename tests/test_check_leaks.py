@@ -251,8 +251,8 @@ def test_a_backslash_escape_does_not_widen_a_match(text: str) -> None:
         ("Tok" + "&#121;" + "o", "destination"),
     ],
 )
-def test_a_percent_escape_or_a_character_reference_is_read_as_written(text: str, rule: str) -> None:
-    """DP-21: no tracked file on any branch hid a value in either, so neither is decoded, and "Known limits" says so."""
+def test_a_value_in_a_percent_escape_or_a_character_reference_is_not_matched(text: str, rule: str) -> None:
+    """DP-21: no tracked file on any branch hid a value in either, so neither is decoded; "Known limits" says so."""
     assert hook.find_hits(text + "\n", "framework/x.md", rule, VALUES, names=FIVE_NAMES) == []
 
 
@@ -325,10 +325,11 @@ def test_the_number_stated_as_the_trip_length_is_a_leak(text: str) -> None:
         "twentyone days", "twenty one nights", "ninety-nine days",
     ],
 )
-def test_a_number_in_words_is_read_as_written(tmp_path: Path, made_up_family: None, text: str) -> None:
-    """DP-23: no tracked file on any branch states the trip length in words, so a number in words is not read.
+def test_a_number_in_words_is_not_matched(tmp_path: Path, made_up_family: None, text: str) -> None:
+    """DP-23: no tracked file on any branch states the trip length in words, so a number in words is not matched.
 
-    It is no hit and no candidate, and a joined compound such as "twentyone" no longer stops the run (S53-48).
+    It is no hit and no candidate, "Known limits" lists it, and a joined compound such as "twentyone" no longer
+    stops the run (S53-48).
     """
     assert family(text + "\n") == []
     assert hook.bare_numbers(text + "\n", VALUES) == []
