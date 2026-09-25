@@ -64,7 +64,7 @@ You are done for today when your review packet is filled in and you've brought i
 
 Before you start the next session:
 
-- **Approved with changes:** write the changes into your itinerary draft and your Decision Record. If the change moves where you arrive or leave, re-time that leg with the map's Directions, and fix your travel days and nights. If a place, a night or a day changes, update your Session 39 budget and check it against your band again. Then run your Session 43 pacing checks again for the days that changed.
+- **Approved with changes:** write the changes into your itinerary draft and your Decision Record. If a change adds, drops or moves something that needs booking, update its day card and your Reservation Watchlist too. If the change moves where you arrive or leave, re-time that leg with the map's Directions, and fix your travel days and nights. If a place, a night or a day changes, update your Session 39 budget and check it against your band again. Then run your Session 43 pacing checks again for the days that changed.
 - **Needs more research:** do that one piece, and bring it back.
 - **Park this decision for later:** wait until your family comes back to it.
 
