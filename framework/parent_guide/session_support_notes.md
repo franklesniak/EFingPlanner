@@ -201,7 +201,7 @@ Want a rough signal of how the executive-function side is going? The optional [e
 
 - Role: Independent.
 - Prep: this session's Destination Notes; blank Attraction Research Cards; the city shortlist from Checkpoint 2; the city cards for the shortlisted places; the My Calls page, for a family continuing from First Taste.
-- Look for: Attraction Research Cards, each with a reason, a rough time, a downside and a source, and a price guess left as written beside the checked price. A special pick your child already made gets its own card, unless a block applied at Checkpoint 2. Two cards is a finished sitting. Ten across the sittings completes the set, with at least one price guess written before the check; if every place is free, the guess can be whether one charges at all, or a paid extra's price.
+- Look for: Attraction Research Cards, each with a reason, a rough time, a downside and a source, and a price guess left as written beside the checked price, which says whether it's per person or per family or group. A special pick your child already made gets its own card, unless a block applied at Checkpoint 2. Two cards is a finished sitting. Ten across the sittings completes the set, with at least one price guess written before the check; if every place is free, the guess can be whether one charges at all, or a paid extra's price.
 - Coaching question: "Which price surprised you?"
 - Pitfall: correcting the price guess. Leave it as written, because the gap is the lesson.
 
@@ -319,9 +319,9 @@ Want a rough signal of how the executive-function side is going? The optional [e
 
 ## Session 38: Daily Cost Estimates
 
-- Role: Independent, with a 5-minute check-in; beforehand, tell your child the souvenir amount for one day.
+- Role: Independent, with a 5-minute check-in; beforehand, tell your child the souvenir amount for one day, for the whole group.
 - Prep: your souvenir amount for one ordinary day, for the whole group, as a rough, kid-sized figure; the budget estimate page from Session 33; the attraction cards and transportation notes; the destination pack's money basics page; the Trip-Basics card, for the number of travelers, or the travelers listed on it if the number says "not decided yet"; a calculator.
-- Look for: a daily cost table for the whole family, with a low, a medium and a high guess on each row, or "ask an adult" where your child hit a wall, each fare and ticket multiplied by the travelers, and the total row added up. If a part still says "ask an adult" or "not sure yet", your child adds up the rest, and writes "not counting ___" beside what they added up, naming what's missing. On a one-base trip, a long ride out from the base goes on the long-distance row, which stays off the subtotal.
+- Look for: a daily cost table for the whole family, with a low, a medium and a high guess on each row, or "ask an adult" where your child hit a wall, each per-person fare and ticket multiplied by the travelers, and a taxi or a family or group price counted once for each one needed, and the total row added up. If a part still says "ask an adult" or "not sure yet", your child adds up the rest, and writes "not counting ___" beside what they added up, naming what's missing. On a one-base trip, a long ride out from the base goes on the long-distance row, which stays off the subtotal.
 - Coaching question: "Which cost surprised you most?"
 - Pitfall: asking for exact numbers. Rough guesses are the point, and you may do the arithmetic.
 
