@@ -24,7 +24,7 @@ Write "Food" in the first row of the daily cost table in the Workspace. That's y
 
 ## Steps
 
-In Session 33 you estimated food and a hotel. Today you picture one ordinary day of the trip and guess what it costs. You'll make three guesses for each kind of cost: low, medium and high. Three guesses are easier to trust than one exact number.
+In Session 33 you estimated food and a hotel. Today you picture one ordinary day of the trip and guess what it costs. You'll make three guesses for each kind of cost: low, medium and high. Three guesses show the range a cost can land in.
 
 **Here's how one row works.** Fill in the blanks, and you have your medium guess for food:
 
@@ -34,9 +34,11 @@ In Session 33 you estimated food and a hotel. Today you picture one ordinary day
 
 Round to easy numbers first. A calculator is always fine, and a grown-up can do the math while you do the thinking.
 
+**One price for each person.** Use the adult price for everyone, even where a child pays less. Your guess may come out a little high, and a little high is safe for a budget. The grown-ups work out the exact numbers.
+
 1. **Food.** Use the example above for your medium guess. For the people, use the number of travelers on your Trip-Basics card. If it says "not decided yet", count the travelers listed on the card instead. Then make a cheaper day (low) and a fancier day (high).
-2. **Local transit.** How will you get around inside the city on an ordinary day? Your transportation notes from Session 30 help here. Most fares are for one person, so multiply them by your travelers, as the food row does. If a child's fare is less, count each child at that fare. A taxi, or a pass for a family or group, has one price for everyone in it, so count it once for each one you'd need. Write each price you counted once beside the row, such as "taxi $20, once".
-3. **Activities.** What might one day's tickets cost? Look at the ticket rows on your attraction cards, and at what each price is for. A ticket for one person gets multiplied by your travelers, with each child at a child's price if it's less. A family or group ticket counts once for each one you'd need, so check how many people it covers, and write it beside the row the same way. Leave out your special pick's ticket, because Session 39 adds it once. If a card's ticket row is empty, fill it in first, or write "ask an adult".
+2. **Local transit.** How will you get around inside the city on an ordinary day? Your transportation notes from Session 30 help here. Most fares are for one person, so multiply them by your travelers, as the food row does. A taxi, or a pass for a family or group, has one price for everyone in it, so count it once for each one you'd need. Write each price you counted once beside the row, such as "taxi $20, once".
+3. **Activities.** What might one day's tickets cost? Look at the ticket rows on your attraction cards, and at what each price is for. A ticket for one person gets multiplied by your travelers. A family or group ticket counts once for each one you'd need, so check how many people it covers, and write it beside the row the same way. Leave out your special pick's ticket, because Session 39 adds it once. If a card's ticket row is empty, fill it in first, or write "ask an adult".
 4. **Long-distance transit.** Only fill this in for a day when you move to a new city, or take a long ride out from your base. On other days, write "not today". The grown-ups add these longer rides to the budget on their own page.
 5. **Souvenirs.** What might you spend on small things? A grown-up sets the amount for one day, for your whole group, and tells you before you start.
 6. **Unknown / ask an adult.** Anything you can't estimate goes in this row. Name the cost, and write "ask an adult" in its boxes. That's a finished answer, not a gap.
@@ -90,6 +92,6 @@ If you have extra energy, make a second table for a day you change cities, or a 
 
 Before the session, tell your child the souvenir amount for one ordinary day, for the whole group, as a rough, kid-sized figure. After that, a five-minute check-in is enough. Look for three guesses on each row and a sensible "ask an adult" where your child hit a wall. That row is a complete answer.
 
-Your child is estimating the slices they control: food, local transit, activities and souvenirs, with lodging joining at Session 39. The long-distance row is a flag for you: getting between cities, or far out from a base, stays on your own page, outside their subtotal. The cost of getting there stays on your own page, as the [money and budget guidance](../../parent_guide/money_budget_guidance.md) explains. Rounding and a calculator are always allowed, and you may do the arithmetic while your child does the reasoning.
+Your child is estimating the slices they control: food, local transit, activities and souvenirs, with lodging joining at Session 39. The long-distance row is a flag for you: getting between cities, or far out from a base, goes on your own page. The cost of getting there stays on your own page, as the [money and budget guidance](../../parent_guide/money_budget_guidance.md) explains. Rounding and a calculator are always allowed, and you may do the arithmetic while your child does the reasoning.
 
 Every figure here is an example to re-check with a date. Currency and cash facts come from the destination pack's money basics page, and exchange rates move, so your child checks the current rate while you handle any real exchange.

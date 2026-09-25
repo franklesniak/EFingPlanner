@@ -31,7 +31,7 @@ Every reason should be able to say where it came from. You don't have to remembe
 
 ## Stop when it's useful
 
-You're done when a grown-up could act on it. Perfect is a different bar, and a higher one than this job needs. See [Good enough is good enough](planner_mindset.md) if you're stuck on this one.
+You're done when a grown-up could act on it. That's the whole bar for this job. See [Good enough is good enough](planner_mindset.md) if you're stuck on this one.
 
 And this is worth saying plainly, because "a grown-up could act on it" can sound like a lot of pressure. **Your work is real *and* it's low-stakes, both at once.** Grown-ups will actually use your recommendations, so it counts. And they make every big decision, so "let's park this for later" is always an okay answer. Your job is to help them decide better.
 

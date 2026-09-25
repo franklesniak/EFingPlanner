@@ -10,6 +10,8 @@ Check off each session as you finish it. Your one big milestone is **Checkpoint 
 
 <!-- density-exempt: spaced dash -- the path parentheticals below are required content: this list is the one place a child reads what counts toward the 13 -->
 
+<!-- density-exempt: X, not Y -- the path parentheticals below are required content (the batch 1 brief's entry for this page): this list is the one place a child reads what counts toward the 13 -->
+
 - [ ] 1. [01 Project Kickoff](../sessions/phase_00_setup/01_project_kickoff.md)
   - [ ] [02 Family Traveler Profiles](../sessions/phase_00_setup/02_family_traveler_profiles.md) *(full Phases 0-2 path only -- not one of the 13)*
 - [ ] 2. [03 What Makes a Good Trip](../sessions/phase_00_setup/03_what_makes_a_good_trip.md)
@@ -149,6 +151,8 @@ On the First Taste path, most sessions you can do on your own. Only a few need a
 - **On your own:** every other First Taste session.
 
 On the Core and full path, the lines that name a grown-up in the Core and full list above are the ones to do with a grown-up. Every checkpoint is one of them.
+
+<!-- density-exempt: X, not Y -- standing rules a child obeys, in wording the batch 1 brief's entry for this page fixes, and the gap line the spec's entry for this page requires -->
 
 So when a grown-up is busy, keep going **in order** on the next session -- unless that next session needs a grown-up (on First Taste, one named just above; on the Core and full path, a line that names a grown-up, or a *before you start* answer you don't have yet). Do those *with* a grown-up: pause there until one is free, and do not skip past them -- except Session 07, which you can skip if no grown-up is free, going straight on to Session 08. **A gap of a week or two is normal -- you do not start over.**
 

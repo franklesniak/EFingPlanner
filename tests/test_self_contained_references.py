@@ -197,6 +197,11 @@ REQUIRED_MEMBERS = (
     "tests/test_check_readability.py",
     "tests/test_check_session_structure.py",
     "tests/test_check_prohibited_placeholders.py",
+    # The recount and its two suites. Their workflow steps are guarded on
+    # the suites' presence, so this is what fails when one is deleted.
+    ".github/scripts/check-x-not-y.py",
+    "tests/test_check_x_not_y.py",
+    "tests/test_required_wording.py",
     THIS_MODULE,
     "tests/printed_markdown.mjs",
 )

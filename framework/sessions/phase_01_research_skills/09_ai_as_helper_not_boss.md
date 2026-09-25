@@ -26,6 +26,7 @@ Say the rule out loud with a grown-up: *"AI helps me think. It never decides fac
 
 ## Steps
 
+<!-- density-exempt: X, not Y -- the supervision rule (a grown-up runs the AI tool, never the child alone) is a safety rule -->
 If your family uses AI, a grown-up runs it, on the grown-up's own account, with you right there. Never on your own. AI is a helper for a few safe jobs only.
 
 **AI may help you:**
@@ -35,6 +36,8 @@ If your family uses AI, a grown-up runs it, on the grown-up's own account, with 
 3. Tidy or organize *your own* notes.
 
 **AI may not:**
+
+<!-- density-exempt: X, not Y -- AI safety rules this session carries at the point of use (batch 1 brief): what AI may not do, and that the listed decisions are the adults' -->
 
 1. Be your only source. Always check its facts against a real, non-AI source.
 2. Give you facts to trust without checking. AI can make up things that sound right.

@@ -6,7 +6,7 @@ This is the outline you'll talk from at the family decision meeting. Aim for **5
 
 One line under each item is enough. You're talking from an outline, not reading a script.
 
-**There is no single required way to present.** Pick whichever of these fits you, and circle it at the bottom. They're all real options, and none is a lesser version:
+**There is no single required way to present.** Pick whichever of these fits you, and circle it at the bottom. They're all real options, and each one is just as good as the others:
 
 - Present live
 - Practice with one parent first, then present

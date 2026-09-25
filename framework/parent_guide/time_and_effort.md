@@ -32,19 +32,23 @@ You do not have to commit to the whole project to start. Do Phases 0-2, reach Ch
 
 If you are stretched, or you share your child's executive-function challenges, you can run this with less load -- and doing less here is a legitimate, designed choice, not a corner cut:
 
-- Run First Taste (or the Core Finish Line) only, not the full program.
+<!-- density-exempt: X, not Y -- the batch 1 brief fixes this list's second bullet word for word (the Sessions 05 and 08 exception) and keeps the other five bullets as built -->
+
+- Run First Taste (or the Core Finish Line) only.
 - Replace per-session co-working with a quick after-the-session glance -- except Sessions 05 and 08, which stay hands-on; 08 is the open-web research session.
-- Use the [coaching scripts](coaching_and_support.md) as-is rather than improvising.
+- Use the [coaching scripts](coaching_and_support.md) as-is, so you have nothing to improvise.
 - Default to a single growing folder, and read sessions aloud as needed.
 - Lean on the strong defaults in the quick-start so setup is minutes.
 - Hand delegable pieces (the family interview or poll, a checkpoint co-review) to another traveling adult, while one named adult stays accountable for safety and privacy.
 
-If *you* get busy, that is the most common way a long project quietly dies -- so it is planned for. Your child can self-advance on the on-their-own sessions (the [progress tracker](../student_guide/progress_tracker.md) shows which), and a multi-week gap is normal, not a restart.
+If *you* get busy, that is the most common way a long project quietly dies -- so it is planned for. Your child can self-advance on the on-their-own sessions (the [progress tracker](../student_guide/progress_tracker.md) shows which), and after a multi-week gap your child picks up where they left off.
 
 ## Is it worth it (versus casual involvement)
 
+<!-- density-exempt: X, not Y -- the transfer caveat is spec-required: transfer is not guaranteed, and the page states the case as practice and ownership -->
 What the structured version buys: deliberate executive-function practice, real research skill, genuine ownership of concrete decisions, and a reusable planning framework. The honest other side: for some children and families, lighter casual involvement is the better choice. Do not over-claim -- these skills are real practice, but transfer to homework and chores is not guaranteed without deliberate bridging. The honest case is "real practice and real ownership," not "this fixes executive function."
 
+<!-- density-exempt: X, not Y -- the batch 1 brief supplies this line word for word -->
 If you want a rough signal over time rather than a feeling, the optional [executive-function observation aid](ef_observation_aid.md) takes about a minute, three times across the project.
 
 ## Is your child ready right now
@@ -64,7 +68,7 @@ A short, non-clinical check. Signs they are likely ready: can stay with a ~20-mi
 
 ## Building the materials (a phase ahead)
 
-If you are building the worksheets yourself with AI help, build just-in-time: make the runnable Phase 0-2 slice first (days, not weeks), let the child work it, and build the next phase while they are on the current one. A slow week then wastes nothing. Do not build everything up front. One stop, before you build the next phase: read each rebuilt Phase 0-2 session against the version it replaced, with whatever page took its destination facts open beside it, and confirm nothing was lost. Some of these sessions have a Destination Notes page. Others sent their facts to a page in the destination pack or to a page in the framework, and a few only changed wording. Then watch your child work the five sessions this slice adds -- Sessions 02, 06, 07, 08 and 11, with 07 only if you do it. Fix what you find before you build further. Reading the pages is the easy half, and only watching your child tells you whether the new sessions work.
+If you are building the worksheets yourself with AI help, build just-in-time: make the runnable Phase 0-2 slice first (a few days of work), let the child work it, and build the next phase while they are on the current one. A slow week then wastes nothing. Stay about one phase ahead of your child all the way through. One stop, before you build the next phase: read each rebuilt Phase 0-2 session against the version it replaced, with whatever page took its destination facts open beside it, and confirm nothing was lost. Some of these sessions have a Destination Notes page. Others sent their facts to a page in the destination pack or to a page in the framework, and a few only changed wording. Then watch your child work the five sessions this slice adds -- Sessions 02, 06, 07, 08 and 11, with 07 only if you do it. Fix what you find before you build further. Reading the pages is the easy half, and only watching your child tells you whether the new sessions work.
 
 ---
 
@@ -74,19 +78,21 @@ The file checklist cannot tell you whether this is *usable* -- only a real child
 
 **The pilot passes when all three hold:**
 
+<!-- density-exempt: X, not Y -- these are the spec's three pilot pass/fail signals, which the batch 0 brief says this page must contain; signal (c) fails when the load is heavier across the board -->
+
 - **(a) Unaided start.** The child opens Session 01 and starts the first action within a few minutes, **without you re-explaining the task.**
 - **(b) Reaches Checkpoint 1 mostly on their own.** The child gets to Checkpoint 1 and produces the intended artifacts -- the Session 01 cover page and "things I can't wait to see" page, plus the Checkpoint 1 decision-log entry -- **largely by themselves,** not with you doing the work.
-- **(c) Coaching load matches the estimate.** Your hands-on time roughly matches the estimate above (heavier early, lighter later) -- not heavier across the board.
+- **(c) Coaching load matches the estimate.** Your hands-on time roughly matches the estimate above (heavier early, lighter later), not heavier across the board.
 
 **Remediation rule (what to do on failure).** If any signal fails -- above all, if the child **cannot start Session 01 unaided** -- fix the Phase 0-2 sessions and re-pilot before building or running any later batch. **Do not proceed past First Taste on a failed pilot.**
 
 **If no ten-year-old is available.** Do not silently skip the gate. Either run a read-aloud walkthrough of the First Taste sessions with any available person, checking signals (a)-(c), **or** carry this flag forward, in writing: *"Usability pilot deferred -- design unvalidated; pilot before relying on the full apparatus."*
 
-> **Flag carried forward -- recorded 2026-09-13.** This curriculum's own First Taste pilot has **not** been run with a child. The gate is not skipped; it is deferred, and the flag above is carried in writing:
+> **Flag carried forward -- recorded 2026-09-13.** This curriculum's own First Taste pilot has **not** been run with a child. The gate is deferred, and the flag above is carried in writing:
 >
 > *"Usability pilot deferred -- design unvalidated; pilot before relying on the full apparatus."*
 >
-> What that means for you as a reader: the sessions were built, reviewed, and checked against each other, but no ten-year-old has walked them yet. Treat the time estimates and the coaching-load claims on this page as designed intent, not as measured results. If you are the first family to run this, you are the pilot -- check signals (a)-(c) as you go, and expect to lighten things. This note is removed only after a real pilot, and the removal is recorded in the [curriculum changelog](../CHANGELOG.md).
+> What that means for you as a reader: the sessions were built, reviewed, and checked against each other, but no ten-year-old has walked them yet. Treat the time estimates and the coaching-load claims on this page as designed intent until a pilot measures them. If you are the first family to run this, you are the pilot -- check signals (a)-(c) as you go, and expect to lighten things. This note is removed only after a real pilot, and the removal is recorded in the [curriculum changelog](../CHANGELOG.md).
 
 **Decide what each outcome means, before you pilot:**
 

@@ -1,0 +1,6 @@
+{
+  "framework/CHANGELOG": {
+    "register": "builder",
+    "basis": "builder- and reuser-facing"
+  }
+}

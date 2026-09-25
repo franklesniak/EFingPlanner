@@ -10,7 +10,7 @@ Enough to help the child plan a route that will really work. Adults own the book
 
 - **Shinkansen** ("bullet trains") link the big cities. The ride is quick and comfortable.
 - Local trains and subways cover the cities. Use a map's "Directions" tool to get **travel times**. Do not just eyeball the distance. Time is what matters for a route.
-- **IC cards** are tap-to-pay cards for trains and buses. Which ones a visitor can get and use changes often. There are plastic cards, and there are phone versions. Adding a card to a phone wallet can be hard on some phones. So **check which options work for a visitor right now.** Do not memorize today's list.
+- **IC cards** are tap-to-pay cards for trains and buses. Which ones a visitor can get and use changes often. There are plastic cards, and there are phone versions. Adding a card to a phone wallet can be hard on some phones. So **check which options work for a visitor right now.**
 - Whether a **rail pass** is worth it changes too. Adults check the current value, and the rules for who may buy one. The child only needs to know a pass may exist.
 
 ## The walking and stairs reality (a pacing factor)

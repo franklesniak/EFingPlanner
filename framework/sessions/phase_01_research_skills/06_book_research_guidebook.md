@@ -24,7 +24,7 @@ Open your source and read its list of parts: a book's table of contents, or a we
 
 ## Steps
 
-A guidebook is a long source. So is a big travel website. Nobody reads either one from front to back. Planners learn where things are kept, then go straight to the part they want.
+A guidebook is a long source. So is a big travel website. Planners learn where things are kept in either one, then go straight to the part they want.
 
 Your destination pack's trusted starting sources list names a guidebook or two. Pick **one** source and work in it today. A library copy is perfect. One free reputable travel website works just as well, and Session 07 is a first-class way to get a book for nothing. You don't have to buy anything for this project.
 
@@ -33,7 +33,7 @@ Every move below comes in two forms. Use the form that matches what you picked.
 1. **Find your way in.** In a book, read the table of contents. On a website, open its own section menu. Either one tells you what parts the source has.
 2. **Look one thing up.** In a book, use the index at the back: it lists places and topics in alphabetical order, with the page each one is on. On a website, use its search box. Try a place name you already know.
 3. **Skim first.** Read headings, captions and the first line of each part before you read anything closely. Skimming tells you which two pages are worth your time.
-4. **Write down where you found it.** From a book, the page number. From a website, the page title and its web address. Do it as you go. Finding a fact again later is much harder than writing this down now.
+4. **Write down where you found it.** From a book, the page number. From a website, the page title and its web address. Do it as you go, so you can go straight back to each fact later.
 5. **Check how recent it is.** A book prints its publication year on one of the first pages. A website often says when the page was last updated. "Not stated" is a real answer, so write that. When you can choose, pick the source that tells you.
 
 Now do the work:
@@ -44,7 +44,7 @@ Now do the work:
 
 **Guidebooks get out of date.** They're great for getting oriented and great for ideas. They aren't current. Opening hours, prices, access rules and even the names of attractions change after a book is printed. So check the publication year, and check anything that matters against an official source. Write the date you checked it beside the fact. That's the same move you'll use for video and for AI: get oriented first, then verify the facts. A library copy is often older than the one on a store shelf, so this check matters most on the free path.
 
-**Do not copy the source's words.** Write your notes in your own words. A short line you quote for a citation is fine. Copying pages or typing out long chunks is never okay, and it stops you learning anything.
+**Write your notes in your own words.** As you write each one, make sure the words are yours. A short line you quote for a citation is fine. Copying pages or typing out long chunks is never okay, and it stops you learning anything.
 
 You only need one source today. Comparing two sources on the same question is Session 08's job.
 

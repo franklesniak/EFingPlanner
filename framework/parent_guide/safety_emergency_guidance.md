@@ -8,7 +8,7 @@ Your child owns exactly one thing: a personal-safety skill, and the card they ca
 
 That split is deliberate. A ten-year-old who has rehearsed what to do if they lose you in a crowded station is safer and calmer than one who hasn't, and giving them that doesn't hand them any of the rest.
 
-<!-- density-exempt: X-not-Y -- the separation rule and the carry-card boundary are stated as contrasts on purpose: each names a thing an adult would otherwise do by default, and the spec requires both boundaries verbatim -->
+<!-- density-exempt: X, not Y -- the separation rule and the carry-card boundary are stated as contrasts on purpose: each names a thing an adult would otherwise do by default, and the spec requires both boundaries verbatim -->
 ## The meeting-point rule
 
 One separation rule per outing, named to your child out loud each morning.
@@ -51,7 +51,7 @@ Carry the numbers verify-framed. Your destination pack's safety and emergency pa
 
 One line each, because the detail belongs on a single page. Advisories and weather alerts are worth watching in the weeks before travel. Travel insurance, particularly medical and emergency-evacuation coverage for an older traveler, is on the [adult-only logistics checklist](adult_only_logistics.md).
 
-<!-- density-exempt: X-not-Y -- the build brief requires both statements in this section: a kid-safe filter reduces but does not eliminate exposure and is no substitute for co-research, and the list is not a ban on open research -->
+<!-- density-exempt: X, not Y -- the build brief requires both statements in this section: a kid-safe filter reduces but does not eliminate exposure and is no substitute for co-research, and the list is not a ban on open research -->
 ## The kid-safe filter is not a supervision plan
 
 State this to yourself honestly: a kid-safe search filter **reduces but does not eliminate** exposure, and it is not a substitute for co-research on riskier topics.
@@ -71,6 +71,7 @@ That list names the known higher-risk areas. If another topic feels like it belo
 
 ## Privacy
 
+<!-- density-exempt: X, not Y -- privacy rules: nothing personal in the repository, what the copied-out kit holds, and the sensitive set kept out of it and out of shared folders (the spec's Privacy and Safety Requirements) -->
 A short reminder, with the full rules on the [privacy and safety page](../docs/privacy_and_safety.md). **Nothing personal goes in this repository at all.** Your family's copied-out kit is different: that is where the real work belongs, including pages like the Trip-Basics card that hold your travelers and, if you fly, your home airport. What stays out of it is the **sensitive** set: passport numbers, birthdates, confirmation numbers, payment details and exact booked dates. A shared-documents folder is not a private vault for those either.
 
 ## Where to go next

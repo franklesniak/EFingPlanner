@@ -25,6 +25,6 @@ Three of these rows are pacing factors: stamina, walking and stairs, and sensory
 
 **Here for only part of the trip?** Then this page counts only on the days they're there. That goes for their pacing rows, their needs, and the one thing they might love. A grown-up tells you which days. On the Core path, Session 33's part-trip note writes them down.
 
-**Keep medical specifics with the adults, off this page.** Write what someone needs designed around, never the medical reason behind it. Nobody has to explain why.
+**Medical specifics stay with the adults.** Write what someone needs designed around, never the medical reason behind it. Nobody has to explain why.
 
 You can say your answers to an adult who writes them, or draw them, if that's easier.

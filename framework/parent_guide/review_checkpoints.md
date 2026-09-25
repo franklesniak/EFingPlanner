@@ -19,7 +19,7 @@ Any of these works:
 - A short text thread
 - One adult deciding and telling the rest
 
-**Lightweight means low-ceremony, and the review still happens.** An adult reads the work and makes a decision. It never means skipping it: a checkpoint that does not happen removes the one thing that shows your child their work counts.
+**Lightweight means low-ceremony, and the review still happens.** An adult reads the work and makes a decision. A skipped checkpoint removes the one thing that shows your child their work counts.
 
 **Only Checkpoint 6 is the family decision meeting**: the gathering, with your child presenting. Save that framing for the last one, so it lands.
 
@@ -59,7 +59,7 @@ Each has its own **what to consider** list. The review form checks whether the w
 
 **What they bring:** with open dates, a season, a backup season, a season to be careful about, possible months, their reasons, their sources, and their questions for you. Those often include whether it fits school and work.
 
-**Weighing the calendars is yours, not theirs.** Session 14 has them ask the question; you answer it.
+**Weighing the calendars is your job.** Session 14 has them ask the question; you answer it.
 
 **What to consider:** weather; crowds; cost; major holidays; and how the season fits school and work schedules.
 
@@ -97,6 +97,7 @@ Each has its own **what to consider** list. The review form checks whether the w
 
 **What to consider:** flights, if you fly; the arrival and departure places; how many hotel moves it involves; whether the transit is workable; how it fits your maximum trip length, or your booked trip length; budget implications; and the family schedule.
 
+<!-- density-exempt: X, not Y -- the Checkpoint 4 booked-dates beat the batch 2 brief's entry for this page requires: the booked days split, with no shorter backup version -->
 **With the dates already booked,** the trip length is set. They bring how the booked days are split: the cities, the nights in each and the travel days, with no shorter backup version.
 
 **Progress is real:** the family now knows *when, where, and how long*. The trip is becoming concrete. With the dates booked, it now knows *where*, and how the booked days are split.
@@ -105,7 +106,7 @@ Each has its own **what to consider** list. The review form checks whether the w
 
 **What they bring:** the day-by-day itinerary draft itself, with the day cards behind it, plus what they're confident about, what they're unsure about, what you need to decide, what could be cut, and the biggest trade-offs.
 
-The draft is the thing being reviewed. Pacing, transit, meals and rest cannot be judged from the summary alone.
+The draft is the thing being reviewed, because pacing, transit, meals and rest show up in its day cards.
 
 **If your answer moves where the trip arrives or leaves,** the draft's first or last day carries the wrong travel leg. That is "Approved with changes": write the new place on your assumptions page, which later sessions read, and tell your child whether each flight still lands on a later date. Make it "Needs more research" if the change alters which route works best.
 

@@ -1,4 +1,5 @@
 <!-- markdownlint-disable MD013 -->
+<!-- audience: parent -->
 
 # How to Use These Markdown Files
 
@@ -14,12 +15,12 @@ It opens in any web browser, in any text editor, and in Google Docs. On the webs
 
 Plain text was chosen for four reasons that matter to a family using this.
 
-- **One source of truth.** A page exists once. There is no document and separate export to keep in step.
+- **One source of truth.** A page exists once, and every copy you print or paste comes straight from that one file.
 - **It prints.** Any browser prints a page, and a library printer handles it.
 - **It copies.** Select a page, paste it into a Google Doc, and the headings and tables come with it.
-- **No build step.** The repository ships no PDFs and generates nothing. What you see is the file.
+- **No build step.** The repository ships no PDFs and generates nothing from these files.
 
-Nothing about using these materials needs Node, Python, a package manager, or a command line. Those exist in this project only for the people who edit the source, and they are not part of the reading path.
+Node, Python, a package manager and a command line are in this project for the people who edit the source. A family can use every page without any of them.
 
 ## Reading and printing
 
@@ -45,7 +46,7 @@ If you look in the repository you will find workflow files, linting configuratio
 
 Plain text buys the four things above, and it costs something.
 
-There are no diagrams, no maps and no photographs anywhere in these pages. A child who learns best from pictures gets less here than a child who learns from words, and that is a real limit rather than an oversight. A screen reader handles the text and the tables well, and it gets nothing extra from the layout.
+There are no diagrams, no maps and no photographs anywhere in these pages. A child who learns best from pictures gets less here than a child who learns from words; that is a real limit, and a known one. A screen reader handles the text and the tables well, and it gets nothing extra from the layout.
 
 That was a deliberate choice: printability and portability for everyone, over richness for some. The [differentiation guide](../parent_guide/differentiation.md) has what to do when the defaults do not fit your child, including drawing answers and saying them aloud.
 

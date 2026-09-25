@@ -10,7 +10,8 @@ Your first guesses about time, cost, and energy will probably be off. Everyone's
 
 ## Good enough is good enough
 
-Your job is not to research forever. Your job is to collect enough good information to make a thoughtful recommendation. When you hit a stop point, you are done. Extra questions go in your [question parking lot](../templates/question_parking_lot.md), not into endless searching.
+<!-- density-exempt: X, not Y -- the spec says student-facing materials include this idea: the job is enough good information, not research forever -->
+Your job is to collect enough good information to make a thoughtful recommendation, not to research forever. When you hit a stop point, you are done. Extra questions go in your [question parking lot](../templates/question_parking_lot.md), so you can stop searching and come back to them later.
 
 ## Frustration is information
 

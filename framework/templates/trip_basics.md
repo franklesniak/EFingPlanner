@@ -2,7 +2,7 @@
 
 # Trip-Basics Card
 
-This card holds the few facts about *your* family and trip. The sessions ask for these facts by name. Fill the card in once, with help from a grown-up. Then keep it at the front of your binder. The sessions never guess these facts. They point here instead. That is what makes the planner fit your family.
+This card holds the few facts about *your* family and trip. The sessions ask for these facts by name. Fill the card in once, with help from a grown-up. Then keep it at the front of your binder. The sessions point here for these facts. That is what makes the planner fit your family.
 
 Keep this card with your setup pages. It holds no sensitive personal data. Do not write passport numbers or birthdates. Do not write confirmation numbers. Do not write your home address. Do not write payment details.
 

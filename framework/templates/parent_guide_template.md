@@ -7,7 +7,7 @@
 
 - **Status:** Active
 - **Owner:** Repository Maintainers
-- **Last Updated:** 2026-09-23
+- **Last Updated:** 2026-09-24
 - **Scope:** The blank skeleton for a page in the parent guide, with the register rule that page has to be written in and the shape of a per-session support note. Builder-facing; a parent never reads this page.
 - **Related:** [Build style and vocabulary](../docs/build_style_and_vocab.md), [Session support notes](../parent_guide/session_support_notes.md)
 
@@ -23,7 +23,7 @@ Keep a page to one to four pages. Mark adult-owned responsibilities clearly, so 
 
 Every legal, entry, safety or current-information item whose answer comes from an outside source that can change carries two lines: verify it with official sources, and record the date you checked. Entry and visa rules, travel advisories, opening hours and prices, and a tool's current minimum-age and supervision policy are all of that kind.
 
-A standing rule of this curriculum takes neither line. Keeping personal data off a page, keeping a grown-up in the loop, and leaving the booking and the legal questions with an adult are decisions this project made, not facts an outside source can confirm. There is nothing to check them against, and no date that would be true of them. A safety rule is not the weaker for carrying no date; it is stated and obeyed.
+A standing rule of this curriculum takes neither line. Keeping personal data off a page, keeping a grown-up in the loop, and leaving the booking and the legal questions with an adult are decisions this project made, not facts an outside source can confirm. There is nothing to check them against, and no date that would be true of them. A safety rule without a date keeps its full force: it is stated and obeyed.
 
 ## The page skeleton
 

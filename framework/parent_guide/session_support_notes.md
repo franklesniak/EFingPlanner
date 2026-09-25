@@ -2,7 +2,7 @@
 
 # Session Support Notes
 
-Each entry is a short, parent-facing overview of one session -- your role, what to prep, the artifact to look for, a coaching question on the sessions the child does, and a common pitfall. This does not replace the Parent Notes inside each session; it is the at-a-glance map. A session with no entry here has what you need in its own For parents strip and Parent Notes.
+Each entry is a short, parent-facing overview of one session -- your role, what to prep, the artifact to look for, a coaching question on the sessions the child does, and a common pitfall. This page is the at-a-glance map, and the Parent Notes inside each session still hold the detail. A session with no entry here has what you need in its own For parents strip and Parent Notes.
 
 **Whether you need to be there.** A Role line marked *parent-gated* is a session your child waits for you on. *Co-worked* marks one you sit through with them. Any other session is one your child can do on their own, apart from any single step its Role line gives you. A Role line that recommends co-working without that mark still lets your child go ahead. A 5-minute check-in or a review after the session never holds them up. A Role line that says *beforehand* names an answer to give before the session. Sessions 29 and 39 need it to finish, so your child waits for it there. In Session 38, "ask an adult" in the souvenir row is enough.
 
@@ -13,6 +13,8 @@ Each entry is a short, parent-facing overview of one session -- your role, what 
 Want a rough signal of how the executive-function side is going? The optional [executive-function observation aid](ef_observation_aid.md) is a private three-item note you keep to yourself.
 
 ## Session 00: Parent Setup (adult-only)
+
+<!-- density-exempt: X, not Y -- the Role and Pitfall lines keep their built wording (the batch 1 brief's entry for this page), and the Pitfall is the field the spec's Session Support Notes require in every entry -->
 
 - Role: do the setup; the child does not do this session (parent-gated).
 - Prep: kid-safe filter, Trip-Basics card, assumptions page, AI choice, start passports if your trip leaves the country.
@@ -29,6 +31,8 @@ Want a rough signal of how the executive-function side is going? The optional [e
 
 ## Session 02: Family Traveler Profiles
 
+<!-- density-exempt: X, not Y -- the Pitfall is the field the spec's Session Support Notes require in every entry, and it carries the privacy rule that a medical reason stays with the adults (batch 1 brief, Session 02) -->
+
 - Role: 5-minute check-in; relay the interview question to any traveler your child cannot reach.
 - Prep: the assumptions page, filled in before this session; the Trip-Basics roster; blank profile and interview pages.
 - Look for: one traveler profile per person on the roster, plus the notes from one interview.
@@ -36,6 +40,8 @@ Want a rough signal of how the executive-function side is going? The optional [e
 - Pitfall: letting a medical reason onto the page. The need to design around goes down; the why stays with you.
 
 ## Session 03: What Makes a Good Trip
+
+<!-- density-exempt: X, not Y -- the reachability fallback in the spec's Coaching and Support section: the traveler poll must never stall the child, and the parent relays a traveler who is hard to reach -->
 
 - Role: 5-minute check-in; help make far-away travelers reachable.
 - Prep: your copy of the Family Trip Goals and Input Summary page, from the trip starter kit.
@@ -47,7 +53,7 @@ Want a rough signal of how the executive-function side is going? The optional [e
 
 - Role: a real 5-minute look -- this habit carries the project.
 - Prep: a Source Log page.
-- Look for: one complete entry showing *where* the fact came from, not just the fact.
+- Look for: one complete entry that shows *where* the fact came from, as well as the fact.
 - Coaching question: "Where could you check that same fact?"
 - Pitfall: recording the fact but not the source. Praise the move, not the cleverness.
 
@@ -57,7 +63,7 @@ Want a rough signal of how the executive-function side is going? The optional [e
 - Prep: a device with the kid-safe filter on; the trusted sources list.
 - Look for: the three-question test used on two real sites, and one trusted source kept.
 - Coaching question: "Which would you trust for opening hours, and why?" Formative check, afterward: ask your child to show you how they would decide whether a website is trustworthy.
-- Pitfall: rushing it. This skill carries the next sessions -- spend the time.
+- Pitfall: rushing it, when this skill carries the next sessions.
 
 ## Session 06: Book Research With a Guidebook
 
@@ -79,6 +85,8 @@ Want a rough signal of how the executive-function side is going? The optional [e
 
 ## Session 08: Web Research Practice
 
+<!-- density-exempt: X, not Y -- both contrasts here are safety content: the supervision rule for open-web research, and the spec's standalone rule that a kid-safe filter reduces but does not remove exposure -->
+
 - Role: a grown-up stays nearby for this one (parent-gated) -- required, not a suggestion, and it holds in Low-Bandwidth Parent Mode too. A filter reduces exposure without removing it.
 - Prep: a device with the kid-safe filter on; your destination pack's trusted starting sources and its sample search terms; a blank Website Notes form.
 - Look for: website comparison notes with one question, two sources, and a call on which is more useful.
@@ -87,6 +95,8 @@ Want a rough signal of how the executive-function side is going? The optional [e
 
 ## Session 09: AI as Helper, Not Boss (only if your family uses AI)
 
+<!-- density-exempt: X, not Y -- the Pitfall is the field the spec's Session Support Notes require in every entry, and it carries the AI safety rule that AI never supplies facts (the spec's AI Use Rules) -->
+
 - Role: adult-operated -- you run the tool, on your account, with the child present.
 - Prep: your AI tool; verify its current minimum-age policy first, and write the date you checked; a blank AI Notes form.
 - Look for: an AI notes page recording one safe AI use (like brainstorming), with the use also logged in the Source Log.
@@ -94,6 +104,8 @@ Want a rough signal of how the executive-function side is going? The optional [e
 - Pitfall: letting AI supply facts. It brainstorms and organizes; it never decides facts.
 
 ## Session 10: Destination Snapshot
+
+<!-- density-exempt: X, not Y -- the spec's rule for the snapshot session (Session 10): do not require mastery -->
 
 - Role: 5-minute check-in.
 - Prep: this session's Destination Notes from the destination pack; the Trip-Basics card (for the time difference); a blank Destination Snapshot page.
@@ -107,9 +119,11 @@ Want a rough signal of how the executive-function side is going? The optional [e
 - Prep: this session's Destination Notes, your destination pack's regions and major-cities references, and a map.
 - Look for: region and map notes naming the regions the Destination Notes list, one way they differ, and one route shape.
 - Coaching question: "How long does it take to get from this one to that one?"
-- Pitfall: correcting an over-packed route now. Collecting comes first; the cutting comes later.
+- Pitfall: correcting an over-packed route now, which cuts short the collecting this session is for.
 
 ## Session 12: Weather, Seasons, and Events
+
+<!-- density-exempt: X, not Y -- the Verify-Don't-Trust Named concept: a season is a category to confirm for the year of travel, and exact dates are not fixed facts -->
 
 - Role: 5-minute check-in; help with school/work calendar fit.
 - Prep: this session's Destination Notes, your destination pack's seasons reference, and a blank Season Comparison Chart.
@@ -127,6 +141,8 @@ Want a rough signal of how the executive-function side is going? The optional [e
 
 ## Session 14: Checkpoint 1 Season Recommendation
 
+<!-- density-exempt: X, not Y -- the spec's never-silent transparency rule, in its Coaching and Support section (an adult who changes the child's plan says why), which the batch 2 brief's booking-guidance entry carries (adults may change parts of the plan, never silently) -->
+
 - Role: a real review -- genuinely use the recommendation in a family talk (parent-gated). With the dates booked, use the season confirmation in the family talk to confirm the fit.
 - Prep: a Decision Record page and a blank Parent Review Form. On the Core path, a Trade-Off Report page.
 - Look for: a season pick and a backup, a season to be careful about, reasons and sources, plus questions for you. On the Core path, a Trade-Off Report comparing the best season with the backup, or, with the dates booked, two ways to plan around the booked season's biggest challenge. With the dates booked, an explanation of what the season means for the trip, and the confirmed fit.
@@ -139,7 +155,7 @@ Want a rough signal of how the executive-function side is going? The optional [e
 - Prep: a device with the filter on; your child's region and map notes from Session 11, or, on First Taste, which skips Session 11, a first city you name yourself; two blank cards; the Checkpoint 1 season, or the season confirmation if your dates are booked.
 - Look for: two city cards, each with a few starred top sights and a source.
 - Coaching question: "Which sight can you not wait to see?"
-- Pitfall: rabbit holes. One solid card per sitting is a good pace.
+- Pitfall: rabbit holes, which can stretch one card well past its sitting.
 
 ## Session 16: Deep-Dive City A
 
@@ -187,7 +203,7 @@ Want a rough signal of how the executive-function side is going? The optional [e
 - Prep: the two city cards; the Family Trip Goals page, for the poll; the assumptions page, for the budget band; a Scoring Rubric page. On the Core path, also the City Long-List and the cards for every place kept in the running.
 - Look for: two cities scored on three things, a written trade-off, and a recommendation (one city, or both kept on purpose). On the Core path, every place kept in the running is scored too, a whole region as one town you help choose, and the money check covers them all. The recommendation can then name more than two places, each with a rough number of days.
 - Coaching question: "Does the total match your gut? Walk me through it." Optional formative check, if you want one: "Why did you score it that way?"
-- Pitfall: treating the score as the decision. The trade-off sentence is the real work.
+- Pitfall: treating the score as the decision, which skips the trade-off sentence where the thinking happens.
 
 ## Session 22: Checkpoint 2 City Shortlist
 
@@ -367,9 +383,9 @@ Want a rough signal of how the executive-function side is going? The optional [e
 
 ## Session 44: Backup Plans and Cut List
 
-- Role: 5-minute check-in; help co-choose the one unconditional pick. On the Core path, confirm the pick Session 26 settled instead, or, if a block applies now, replace it with your child as in Session 43.
-- Prep: the City Research Cards (starred sights); Cut List and Backup Plan pages; the assumptions page, for the budget band when you check the special pick. On the Core path, the My Calls page takes the place of the starred sights, with the skip and save-for-future notes from Checkpoints 2 and 3, the Checkpoint 3 strong maybes, the day cards and the Reservation Watchlist, the attraction cards, the Session 39 budget summary and the When the Plan Changes card, for anything cut or a block, and the route map notes, and a device with a map app if a swap needs a new travel time.
-- Look for: a short must-see list, a cut list with each item marked save for future or not, one special pick initialed and on the must-see list, two backups. On the Core path, the must-do list Session 26 made takes the place of the must-see list, the cut list starts from the Checkpoint 2 and 3 notes and the must-dos crossed off at Checkpoint 4, each item marked save for future or not, anything cut from the day cards or the watchlist taken down the When the Plan Changes card, a one-line confirmation of the pick takes the place of the initials and says it is on the must-do list, and any travel time a swap needed is in the route map notes, with a Source Log entry for the map. If a block applies now, a new pick chosen with you, and the card's "Your special pick blocked?" row done.
+- Role: 5-minute check-in; help co-choose the one unconditional pick. On the Core path, the check-in confirms the pick Session 26 settled. If a block applies now, replace it with your child, as in Session 43.
+- Prep: the City Research Cards (starred sights); Cut List and Backup Plan pages; the assumptions page, for the budget band when you check the special pick. On the Core path, the My Calls page, with the skip and save-for-future notes from Checkpoints 2 and 3, the Checkpoint 3 strong maybes, the day cards and the Reservation Watchlist, the attraction cards, the Session 39 budget summary and the When the Plan Changes card, for anything cut or a block, and the route map notes, and a device with a map app if a swap needs a new travel time.
+- Look for: a short must-see list, a cut list with each item marked save for future or not, one special pick initialed and on the must-see list, two backups. On the Core path, the must-do list Session 26 made, a cut list that starts from the Checkpoint 2 and 3 notes and the must-dos crossed off at Checkpoint 4, each item marked save for future or not, anything cut from the day cards or the watchlist taken down the When the Plan Changes card, a one-line confirmation of the pick that says it is on the must-do list, two backups, and any travel time a swap needed in the route map notes, with a Source Log entry for the map. If a block applies now, a new pick chosen with you, and the card's "Your special pick blocked?" row done.
 - Coaching question: "What are you saving for a future trip?"
 - Pitfall: making it exhaustive. This teaches "good enough is good enough."
 
@@ -438,6 +454,8 @@ Want a rough signal of how the executive-function side is going? The optional [e
 - Pitfall: treating "Park this decision for later" as a failure. It's an honest, respected result.
 
 ## Session 53: Reflection and Handoff
+
+<!-- density-exempt: X, not Y -- the finish acknowledgment the spec requires for Session 53 (the "you finished a real project" beat, in the spec's Session 53 section and its Coaching and Support scripts) -->
 
 - Role: co-work; deliver the finish acknowledgment warmly, in the duration-true wording: the duration-neutral form for a First Taste finisher, and the months-long form for a child finishing the Core or full path, including a capstone re-run after First Taste.
 - Prep: the Session 01 baseline reflection; the Session 33 budget estimate; a Final Reflection page; the plan pages your child hands over. On the Core path, the kit's final reflection page in place of the Final Reflection page, and also the assembled binder, the follow-up questions, Checkpoint 6's parent review form, the final recommendation packet, the checkpoint reflections, the minutes guesses and times (on the City A card, the Session 26 scoring tables, the Session 35 hotel cards and the itinerary draft), the ticket-price and travel-time guesses from Sessions 23 and 30, and the Session 39 budget summary; the assumptions page, for the budget band; and the First Taste reflection, for a capstone re-run.

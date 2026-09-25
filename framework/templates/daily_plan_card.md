@@ -4,6 +4,8 @@
 
 **Build these only after your route and trip length are settled** — that's Checkpoint 4. Day cards built before then usually have to be redone, and that's a lot of work to lose.
 
+<!-- density-exempt: X, not Y -- privacy rule: exact booked travel dates stay off every working page (the privacy page, and the batch 2 brief's day-card rule), so the card names what to write in their place -->
+
 **Don't write exact booked travel dates on this card.** Use the day number, or a broad window like "spring" or "the second week", or "not decided yet". Exact dates are the grown-ups' business and they stay off working pages — on paper and in a shared folder alike.
 
 ## The block card (start here — this is the default)
@@ -67,4 +69,5 @@ Save these as `day_01.md`, `day_02.md`, and so on.
 | Backup idea | |
 | Source notes | |
 
-Your plan is built in movable blocks, one per place. If a grown-up later changes which city you fly into or out of, your plan just flexes — you move a block, you don't start over. Nothing you wrote gets wasted.
+<!-- density-exempt: X, not Y -- the movable-block reassurance the batch 2 brief's entry for this card makes mandatory, the Your-Work-Wasn't-Wrong Named concept in a child's words -->
+Your plan is built in movable blocks, one per place. If a grown-up later changes which city you fly into or out of, you move a block and keep the rest. Nothing you wrote gets wasted.

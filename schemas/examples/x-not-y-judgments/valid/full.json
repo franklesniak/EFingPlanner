@@ -1,0 +1,36 @@
+{
+  "framework/templates/example_card.md": {
+    "device|Choose the map, not the list.|1": {
+      "line": 12,
+      "judgment": "device",
+      "reason": "the map, not the list"
+    },
+    "split|Use two sources. → Never guess.|1": {
+      "line": 14,
+      "judgment": "split",
+      "reason": "use two sources / never guess"
+    },
+    "banned|It's not a toy. → It's a tool.|1": {
+      "line": 16,
+      "judgment": "banned",
+      "reason": "It's not a toy. It's a tool."
+    },
+    "device|Do not share your address.|1": {
+      "line": 18,
+      "judgment": "no",
+      "reason": "a privacy rule; it rejects no alternative to a claim"
+    }
+  },
+  "framework/parent_guide/example_guide.md": {
+    "device|\"Look first, not last.\"|1|quotation block quote": {
+      "line": 7,
+      "judgment": "no",
+      "reason": "a quoted coaching script"
+    },
+    "device|Keep the map, not the list.|2|block quote": {
+      "line": 30,
+      "judgment": "device",
+      "reason": "a callout: the map, not the list"
+    }
+  }
+}

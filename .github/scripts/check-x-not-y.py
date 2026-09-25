@@ -1,0 +1,2065 @@
+#!/usr/bin/env python3
+"""Recount the `X, not Y` device across the curriculum pages.
+
+The style law, ``framework/docs/build_style_and_vocab.md``, caps the `X, not Y`
+device: 2 per child-facing file, 3 per parent-facing file, 4 per builder or
+spec file, and one per ``##`` section in child-facing and parent-facing text.
+It allows one split negation per file and bans the ``It's not X. It's Y.``
+shape, as two sentences or joined into one. This script counts all three for
+every Markdown page under ``framework/`` and ``destinations/`` and prints, per
+file and per ``##`` section, the register, the count, the cap, and PASS, OVER
+or EXEMPT (within the cap only because a ``density-exempt`` marker covers some
+instances).
+
+Usage::
+
+    python .github/scripts/check-x-not-y.py [REPO_ROOT] [--only-problems]
+        [--json OUT] [--candidates | --unjudged]
+        [--judgments FILE] [--registers FILE]
+
+How it counts
+-------------
+The counting rules are the style law's ("How to count any density device").
+Each page is read by markdown-it, the CommonMark parser the Last Updated check
+and the nested-Markdown lint use, blocks and inline text alike. Only
+paragraphs are prose. Headings, fenced and indented code, tables, thematic
+breaks, comments and link reference definitions are not, wherever they sit, in
+a list item or a block quote included. A heading and a table cell are still
+authored text, and the style law's tests run over authored text while its
+counts run over prose lines, so each is tested for the banned shape and
+nothing in it is counted: every sentence of a heading or a cell that holds a
+negation word is a candidate of the banned kind, keyed with the sentence
+after it in the same heading or cell, or alone, and judged ``banned`` or
+``no``. A heading or a cell never pairs with the text around it. Block
+quotes are read like prose; a quotation block quote, such as a coaching
+script, is judged "no". A block quote is a quotation when a pair of
+quotation marks encloses it: double or single, straight or curly, and the
+closing mark the one that pairs with the opening mark. Quotation marks are
+read over every paragraph inside the quote, nested quotes included, since a
+quotation can hold one. A dash-led line that ends a block quote, the form of
+an attribution, makes nothing a quotation; it is outside the supported
+Markdown. An HTML block that shows nothing (comments, processing
+instructions, declarations and CDATA sections) is read as a block of
+comments: its markers are markers, and the paragraphs on either side of it
+stay adjacent. An HTML block that shows text is read like a paragraph when
+all it hides is those (``<!-- note --> Choose the map.``), as GitHub's
+renderer shows it: its text as written, with character references decoded.
+One that shows text next to an HTML tag is not read; the report names it
+(UNREAD HTML), and it fails the run, as markdownlint's MD033 fails the tag.
+So is a block that holds a comment, or another hidden part, that never
+closes, which hides the rest of the page on GitHub.
+Raw HTML is read from the left, as a browser reads it: a comment ends at the
+first ``-->`` or ``--!>``, ``<!-->`` and ``<!--->`` are empty comments, and a
+``<!--`` inside a processing instruction, a CDATA section, a declaration, a
+tag's quoted attribute or another comment opens nothing.
+
+The tests read the text each paragraph prints, as markdown-it gives it: no
+emphasis marks, a link's label without its destination (an inline link or a
+reference link of any kind), no image, comment or HTML tag, each character
+reference and backslash escape as its character, and each code span as
+``‹code›``, because code is not prose. A line break, soft or hard, is a line
+break. The patterns also skip a literal ``*`` and a run of ``_`` at a word's
+edge, such as a blank to fill in. A paragraph is joined before it is split
+into sentences, because Markdown renders a soft line break as a space. A
+sentence ends at ``.``, ``!`` or ``?`` when the next letter or digit is not
+lower case, whatever stands before it (a quotation mark, a bullet, an emoji)
+and in any script, or when a code span or a name styled in lower case
+(``eSIM``, ``iPad``) comes next, reading past a list label such as ``(b)``;
+``No.`` ends a sentence unless a number follows it.
+
+Every sentence that holds a negation word is a candidate when a claim sits
+next to it: another sentence in its paragraph, or in the paragraph it pairs
+with. The negation words are ``not``, ``never``, ``no``, ``nor``, ``none``,
+``nothing``, ``nobody``, ``no one``, ``nowhere``, ``neither``, ``cannot``,
+``without`` and ``n't``. A sentence with no neighbor, such as a list item on
+its own, is a candidate too, keyed alone, because it can hold its claim and
+its rejection together (``A filter reduces exposure without removing it.``).
+So every sentence that holds a negation word is a candidate. A pattern that
+reads a contrast inside a sentence (``X, not Y``, ``X rather than Y``, a
+negation before or after a semicolon, a colon or a dash, and the other forms
+in ``INLINE_PATTERNS``) makes it the device kind. The patterns only name the
+candidate's kind; the
+recorded judgment decides whether it counts, so no negation escapes the count
+because its shape is new.
+
+Every other prose sentence is a candidate too, because the style law counts
+any sentence that rejects a named alternative, and a rejection needs no
+negation word (``Avoid the list; choose the map.``, ``Two cards with real
+answers beat ten cards with blanks.``). Such a sentence is keyed with the
+sentence before it (``sentence-after-claim``), so a split in any words can be
+judged, or alone when it has none (``sentence-alone``). When the sentence
+before it already keyed the pair, because it opened its paragraph with a
+negation, the sentence is keyed alone and judged for what it rejects by itself
+(``sentence-in-pair``). So each prose sentence is the sentence judged in
+exactly one candidate, and a device in the second sentence of a pair is never
+judged only as the first one's partner. These candidates are numbered after
+the others, so no key a negation word or a pattern gives moves. A sentence of
+nothing but code gives none. The candidate, and its key, is the sentence as the
+page prints it, with every sentence its test reads: a fragment (``Not a
+failure.``) and a negation after a claim are keyed with the claim before them,
+a negation that opens a paragraph with the claim after it, and a release
+(``You do not have to ...``) with both, because the sentence after it decides
+whether it counts. A paragraph pairs with the one before it only inside the
+same container: the page, one block quote or one list item. A comment between
+two paragraphs does not part them. Text above a page's first ``##`` heading is
+not a ``##`` section, so only the file cap reaches it. A heading inside a
+block quote or a list item is outside the supported Markdown: it opens no
+section and closes none. Each ``##`` heading starts its own section, even
+when two share a title. A child session's "For
+parents" strip and ``## Parent Notes`` are parent-facing regions, but the file
+cap follows the file's own register. A heading's region lasts while its
+section is open, deeper headings included: ``### Coaching`` under ``## Parent
+Notes`` is still parent-facing, and the next heading of the same or a higher
+level ends it. The strip runs from its label to the next heading of any level,
+as ``check-session-structure.py`` reads it.
+
+A ``<!-- density-exempt: X, not Y -- <reason> -->`` marker covers the block
+directly below it: one paragraph, one whole list (a loose list included), one
+block quote, or, above a heading, that heading's section, which ends where
+a block quote or a list item holding the heading does. Another comment, or
+an HTML block that shows nothing, between the marker and its block is
+skipped. It exempts the instances and
+split negations it covers, whole: a candidate that holds more than one
+sentence, such as a pair across two paragraphs, is exempt only when markers
+cover every sentence it holds. The device is named ``X, not Y``; the old
+``X-not-Y`` and ``x-not-y`` are read too. The block sits in the marker's own
+container: a marker inside a block quote or a list item never covers a block
+beyond that container's edge. A marker that gives no reason, that names the
+device in any other spelling (``X not Y``, ``xnoty``), that parts its device
+and its reason by anything but `` -- `` (``--required``, ``--- required``),
+that reaches its
+source by number, that has no block below it in its container, or that
+shares its lines with text the page shows (in an HTML block, or inside a
+line of a paragraph, a heading or a table cell) or with another comment,
+exempts nothing, and the report names it. A marker shown in a code span is text, not a marker. A
+marker, ``density-exempt`` or audience, is a comment whose own text opens
+with its word, so comment-like text inside another hidden part, a tag or a
+comment is none.
+
+A marker's reason names its source, as the style law's name-first rule asks
+of every built file: ``the spec's Session Support Notes``, ``the batch 1
+brief's entry for this page``. A reason that cites a section number, a line
+of any source (``spec 21.5``, ``Section 20``, ``specification line 4245``,
+``brief lines 3330-3335``, ``§ 24``, a bare ``21.8``), an ``OQ-`` or
+``AC-`` id, or a build brief's item label (``F6``, ``B4, item 7``) is named
+as a marker problem. So is any other place in a source reached by its number:
+a part, a paragraph, a row, a column, a clause, a page, a chapter, an appendix,
+a note, a figure, a table, a round, ``No. 5``, ``number 5``, or a number after
+a number sign. A rule, a step, an item, a point, a question, a criterion, an
+entry or an option may be named by its number only when it is the page's own:
+when the block the marker covers holds a numbered list with that number, as
+the page prints it (``the relay fallback in step 3``), and the reason does not
+tie the number to a source. ``the spec's step 2``, ``step 2 of the brief`` and
+``brief step 2`` reach a source by number whatever the list below holds; the
+sources are a spec or specification, a brief, a prompt, a law, a guide, a
+record, an ``OQ-`` or ``AC-`` id, a named ``.md`` file and a numbered session.
+Any other such number reaches a source, and is named.
+
+Supported Markdown
+------------------
+The recount reads the Markdown the curriculum uses, and names anything else it
+meets rather than guess at it. No page held anything outside this list when
+it was set.
+
+- Blocks: paragraphs; bullet and ordered lists, nested ones included;
+  headings outside any block quote or list item; block quotes
+  one level deep, a quotation among them marked by its quotation marks; tables; fenced and indented code; thematic breaks; link
+  reference definitions.
+- Inline: emphasis, links, images, code spans, character references,
+  backslash escapes and line breaks.
+- Raw HTML: a comment that closes, as an HTML block or inside a line, and
+  nothing else.
+- Markers: a ``density-exempt`` marker on a line of its own, outside any
+  block quote or list item; one audience marker on a page at most.
+
+The run names anything else on its page as ``OUTSIDE SUPPORTED MARKDOWN line
+N: <what it is>``, counts it in the ``unsupported_markdown`` total, and fails:
+raw HTML other than a closing comment (a tag, a processing instruction, a
+CDATA section or a declaration), a heading inside a block quote or a list
+item, a ``density-exempt`` marker inside a block
+quote or a list item, a block quote inside a block quote, a block quote that
+ends in a dash-led line (the form of an attribution: enclose the quotation in
+quotation marks and name its source after the block quote), and each audience
+marker after a page's first. Rewrite that part in the Markdown above. UNREAD
+HTML still names an HTML block that shows text next to a tag or holds a part
+that never closes, and a marker problem a malformed marker.
+
+Human judgments
+---------------
+Regular expressions find *candidates* only. Whether a candidate is a true
+instance is a human judgment, recorded in ``x-not-y-judgments.json`` beside
+this script. An unchanged sentence keeps its judgment when it moves. A new or
+changed sentence is reported as UNJUDGED; list those with ``--unjudged`` and
+add a judgment for each.
+
+The data files are strict JSON with 2-space indentation and no comment keys;
+this docstring documents them, and the script checks each one as it loads it.
+``schemas/x-not-y-judgments.schema.json`` and
+``schemas/x-not-y-registers.schema.json`` state the same shape, and pre-commit
+and the data-file CI hold both files to them; ``tests/test_check_x_not_y.py``
+runs every schema example through the loaders below, so the two cannot drift.
+``x-not-y-judgments.json`` maps each page path (a ``.md`` path) to its
+judgments. A judgment's key is ``<kind>|<sentence text>|<occurrence>``, where
+the text is what the page prints (sentences joined by `` → ``), with ``|block
+quote`` or ``|quotation block quote`` added for a sentence inside one, so a
+sentence that moves into or out of a quotation is judged again. Each entry
+holds exactly ``line`` (where the sentence stood when last checked, a whole
+number from 1; for reading only), ``judgment`` and ``reason`` (not empty). The
+judgment is ``device`` (a true `X, not Y` instance), ``split`` (a split
+negation), ``banned`` (the banned shape) or ``no``; a heading's or a table
+cell's candidate takes only ``banned`` or ``no``, and any other leaves it
+unjudged. A candidate keyed with ``|quotation block quote`` takes only ``no``,
+because the style law exempts verbatim borrowed text, and any other judgment
+stops the run, as the schema refuses it. Pages are sorted by path, and a page's entries follow the page.
+Each value is read as the schemas read it: a line is a number with a zero
+fractional part, so ``12.0`` is line 12; a key matches its form to its very
+end; and text that is not empty holds a character that is white space
+neither in ECMA-262's ``\\s``, which the schemas' patterns use, nor in
+Python's (U+001C to U+001F and U+0085).
+
+``x-not-y-registers.json`` maps a page path (a ``.md`` path) to exactly a
+``register`` (``child``, ``parent`` or ``builder``) and the ``basis`` for it
+(not empty). It holds the trip starter kit's pages, which are copies of
+child-facing templates (``tests/test_trip_starter_kit_copies.py`` keeps them
+in step) and so take no marker of their own. A data file that is missing is
+read as empty; one that is a link or not a regular file, cannot be read, is
+not JSON, repeats a key in any object, holds ``NaN`` or ``Infinity``, or holds
+an entry of another shape or value stops the run.
+
+A page's register comes from its ``<!-- audience: parent -->`` or
+``<!-- audience: builder -->`` marker, wherever the page holds it, then from
+``x-not-y-registers.json``, then from the style law's
+``framework/parent_guide/`` tree, then from the child-facing trees the
+readability check scores. A page none of these reaches
+is UNDETERMINED. The first audience marker sets the register; a page holds
+one, and each after it is named as outside the supported Markdown.
+
+Exit code: 0 when every page is within its caps or marked exempt, with no
+banned shape, no undetermined register, no unjudged candidate, no marker
+problem, no unread HTML block and nothing outside the supported Markdown; 1
+otherwise; 2 when REPO_ROOT has no ``framework/`` directory, or when a data
+file stops the run, which the message names; 3 when the Markdown reader
+cannot run, or a page cannot be read (not UTF-8, say), which the message
+names. The scan roots are walked without following a link: a symbolic link or
+a junction under them, or a page that is not a regular file inside the root,
+stops the run with exit code 3 and is named, as the hooks refuse one.
+
+The script is a tool, not a gate: no workflow or hook runs it over the pages.
+It reads each page with markdown-it, through ``x-not-y-blocks.js`` beside it
+and one Node process for the whole run, so it needs Node.js and the
+repository's ``node_modules`` (``npm ci``), as the Last Updated check does.
+
+Threat model
+------------
+A builder runs the recount by hand before a review, and a reviewer reads
+what it prints; CI runs only its unit tests. Its input is the curriculum's
+pages and its two data files, which builders write under the build briefs.
+In scope is what an honest author writes: a page's Markdown and wording, a
+marker and its reason, and a data file's keys, slips included, such as a
+marker that shares its line with a note, a page path typed with ``..`` or a
+backslash, or a quotation in another language's marks. Out of scope is
+input built to slip past a rule, such as a chain of qualifiers around a
+source or a construct no page uses, and a finding that needs it is answered
+with this section. The recount names what it does not read (see "Supported
+Markdown"), so an author learns of it, and it counts what it reads by the
+style law, which a reviewer still applies.
+"""
+
+from __future__ import annotations
+
+import argparse
+import atexit
+import html
+import json
+import re
+import stat
+import subprocess
+import sys
+from dataclasses import dataclass, field
+from pathlib import Path
+from typing import Any
+
+REPO_ROOT = Path(__file__).resolve().parents[2]
+SCRIPT_DIR = Path(__file__).resolve().parent
+DEFAULT_JUDGMENTS = SCRIPT_DIR / "x-not-y-judgments.json"
+DEFAULT_REGISTERS = SCRIPT_DIR / "x-not-y-registers.json"
+#: The Markdown reader: markdown-it, through one Node process for the run.
+NODE = "node"
+BLOCKS_HELPER = SCRIPT_DIR / "x-not-y-blocks.js"
+
+# ---------------------------------------------------------------------------
+# Caps (the `X, not Y` bullet of the style law)
+# ---------------------------------------------------------------------------
+
+FILE_CAP = {"child": 2, "parent": 3, "builder": 4}
+SECTION_CAP = 1
+#: Registers whose `##` sections carry the one-per-section cap.
+SECTION_CAPPED_REGISTERS = ("child", "parent")
+SPLIT_NEGATION_FILE_LIMIT = 1
+
+SCAN_ROOTS = ("framework", "destinations")
+PREAMBLE = "(preamble)"
+
+# ---------------------------------------------------------------------------
+# Markdown structure
+# ---------------------------------------------------------------------------
+
+#: A task-list box at the start of a list item: `[ ]` or `[x]`.
+TASK_BOX_RE = re.compile(r"^\[[ xX]\]\s+")
+#: Where a comment ends, as the page's HTML ends it: at the first `-->` or
+#: `--!>` after its `<!--`. `<!-->` and `<!--->` are empty comments.
+COMMENT_CLOSER_RE = re.compile(r"--!?>")
+#: The other parts a browser hides: a processing instruction (`<?x ?>`), a
+#: CDATA section and a declaration (`<!X ...>`).
+HIDDEN_OTHER_RE = re.compile(r"<\?.*?\?>|<!\[CDATA\[.*?\]\]>|<![A-Za-z][^>]*>", re.DOTALL)
+#: A start or end tag, with its attributes as CommonMark reads them, so a
+#: quoted value that holds `<!--` is part of the tag. The recount does not read
+#: HTML elements as a browser does (markdownlint's MD033 rejects them), so a
+#: block that shows text next to one is reported rather than read.
+HTML_TAG_RE = re.compile(
+    r"<[A-Za-z][A-Za-z0-9-]*(?:\s+[A-Za-z_:][A-Za-z0-9:._-]*(?:\s*=\s*(?:[^\"'=<>`\x00-\x20]+|'[^']*'|\"[^\"]*\"))?)*"
+    r"\s*/?>|</[A-Za-z][A-Za-z0-9-]*\s*>")
+
+
+#: What opens a part a browser hides. One with no closer after it hides the
+#: rest of the page on GitHub, past its block and its container.
+HIDDEN_OPENER_RE = re.compile(r"<!--|<\?|<!\[CDATA\[|<![A-Za-z]")
+
+
+def scan_hidden(content: str) -> tuple[list[tuple[int, int, str | None]], int | None]:
+    """Return each part of raw HTML that a browser hides, in document order,
+    and where a part that never closes opens (None when every part closes).
+
+    Each part is `(start, end, comment)`, where `comment` is a comment's text
+    and None for a processing instruction, a CDATA section or a declaration.
+    The parts are read from the left, as a browser reads them, so a `<!--`
+    inside one of them, or inside a tag's quoted attribute, opens nothing:
+    `<?x <!-- audience: parent --> ?>` is one processing instruction, and
+    `<!-- see <!-- audience: parent -->` one comment whose text is
+    `see <!-- audience: parent`. A part that never closes runs on to the end,
+    so the scan stops there.
+    """
+    parts: list[tuple[int, int, str | None]] = []
+    at = content.find("<")
+    while at >= 0:
+        end = at + 1
+        if content.startswith("<!--", at):
+            empty = next((e for e in ("<!-->", "<!--->") if content.startswith(e, at)), "")
+            closer = None if empty else COMMENT_CLOSER_RE.search(content, at + len("<!--"))
+            if not (empty or closer):
+                return parts, at
+            end = at + len(empty) if empty else closer.end()
+            parts.append((at, end, "" if empty else content[at + len("<!--"):closer.start()]))
+        elif m := HIDDEN_OTHER_RE.match(content, at):
+            end = m.end()
+            parts.append((at, end, None))
+        elif HIDDEN_OPENER_RE.match(content, at):
+            return parts, at
+        elif m := HTML_TAG_RE.match(content, at):
+            end = m.end()
+        at = content.find("<", end)
+    return parts, None
+
+
+def hidden_parts(content: str) -> list[tuple[int, int, str | None]]:
+    """Return each closed part of raw HTML that a browser hides (see `scan_hidden()`)."""
+    return scan_hidden(content)[0]
+
+
+def without_hidden(content: str) -> str:
+    """Return what raw HTML shows once its hidden parts are gone, each part
+    replaced by the line breaks it held, so every line stays on its line."""
+    out, last = [], 0
+    for start, end, _ in hidden_parts(content):
+        out += [content[last:start], "\n" * content.count("\n", start, end)]
+        last = end
+    return "".join(out) + content[last:]
+
+
+def shows_nothing(block: dict[str, Any]) -> bool:
+    """True when an HTML block shows nothing: only comments, processing
+    instructions, declarations or CDATA sections, which GitHub renders as
+    nothing. Such a block is read as a block of comments everywhere."""
+    return block.get("type") == "html_block" and not without_hidden(block.get("content") or "").strip()
+
+
+#: An audience or `density-exempt` marker is a comment whose own text opens
+#: with its word: `<!-- audience: parent -->`. Comment-like text inside another
+#: hidden part, a tag or a comment is no marker.
+AUDIENCE_RE = re.compile(r"^\s*audience:\s*(adult|parent|builder)\b", re.IGNORECASE)
+PARENT_STRIP_RE = re.compile(r"^\s*\*\*For parents:?\*\*", re.IGNORECASE)
+PARENT_SECTION_RE = re.compile(
+    r"^(?:Parent Notes?|For Parents?|Notes? for Parents?)$", re.IGNORECASE
+)
+#: A `density-exempt` marker's comment text. Its body is `<device> -- <reason>`;
+#: a body with no reason is still read, so that the report can name it.
+EXEMPT_MARKER_RE = re.compile(r"^\s*density-exempt:(?P<body>.*)$", re.DOTALL)
+
+
+def marker_comments(content: str) -> list[tuple[int, str]]:
+    """Return `(line offset, text)` for each comment in raw HTML, where a marker can be."""
+    return [(content.count("\n", 0, start), text) for start, _, text in hidden_parts(content) if text is not None]
+
+
+#: A marker body: the device, then ` -- ` (white space, two hyphens, white
+#: space), then the reason, as the style law writes `<device> -- <reason>`. A
+#: body that ends at ` --` has no reason.
+MARKER_BODY_RE = re.compile(r"^\s*(?P<device>.*?)\s+--(?:\s+(?P<reason>.*?))?\s*$", re.DOTALL)
+#: Where a body with no ` -- ` parts its device from the rest, so the device of
+#: `X, not Y --- required` or `X, not Y — required` can still be named.
+LOOSE_SEPARATOR_RE = re.compile(r"^\s*(?P<device>.*?)\s*(?:-{2,}|[—–])", re.DOTALL)
+#: The device names a marker may use: the style law's `X, not Y`, and the old
+#: `X-not-Y` and `x-not-y`, so an old marker still counts. No other spelling
+#: exempts anything.
+XNOTY_DEVICE_NAMES = ("X, not Y", "X-not-Y", "x-not-y")
+#: A name that looks like the device's in another spelling (`X not Y`, `xnoty`,
+#: `X, not-y`). Such a marker exempts nothing, and the report names it.
+XNOTY_LOOKALIKE_RE = re.compile(r"^x\s*[,-]?\s*not\s*[,-]?\s*y$", re.IGNORECASE)
+#: A reason that reaches its source by number, which the style law's
+#: name-first rule forbids in a built file: a section of the spec, a line of
+#: any source (`specification line 4245`, `Batch 1 brief lines 3330-3335`), a
+#: section sign, a dotted section number, an `OQ-` or `AC-` id, a build
+#: brief's item label (`F6`, `B4`), or any other place a reader finds only by
+#: counting: a part, a paragraph, a row, a column, a clause, a page, a
+#: chapter, an appendix, a note, a figure, a table, a round, `No. 5`,
+#: `number 5`, or a number after a number sign. A session's number is its name
+#: (`Session 02`), as is a checkpoint's, a phase's and a batch's, so none is one
+#: of these.
+NUMBERED_SOURCE_RE = re.compile(
+    r"(?i:\bsections?\s+\d+(?:\.\d+)*)"
+    r"|(?i:\bspec(?:ification)?\b\W{0,3}(?:lines?\s+)?\d+(?:[.-]\d+)*)"
+    r"|§\s*\d*(?:\.\d+)*"
+    r"|\b\d+(?:\.\d+)+\b"
+    r"|\b(?:OQ|AC)-\d+(?:-\d+)*"
+    r"|\b[A-H]\d{1,2}\b"
+    r"|(?i:\blines?\s+\d+(?:[.-]\d+)*)"
+    r"|(?i:\b(?:parts?|paragraphs?|paras?|rows?|columns?|clauses?|numbers?|pages?|chapters?|appendix|appendices"
+    r"|notes?|footnotes?|figures?|tables?|rounds?)\s+#?\d+)"
+    r"|(?i:\bno\.\s*\d+)"
+    r"|#\s*\d+"
+)
+#: A numbered place in a list: a rule, a step, an item, a point, a question, a
+#: criterion, an entry or an option, with one number or several (`rules 5 and
+#: 6`, `steps 2-4`). It is the page's own, and may be named so, only when the
+#: block the marker covers holds a numbered list with each of its numbers;
+#: otherwise it reaches a source by number.
+LIST_PLACE_WORDS = r"(?:rules?|steps?|items?|points?|questions?|criterion|criteria|entry|entries|options?)"
+LIST_PLACE_RE = re.compile(
+    r"(?i:\b" + LIST_PLACE_WORDS + r"\s+"
+    r"(?P<numbers>\d+(?:\s*(?:,|and|or|to|-|–)\s*\d+)*))"
+)
+#: A source a reason can tie a numbered place to: a spec or specification, a
+#: brief, a prompt, a law, a guide, a record, an `OQ-` or `AC-` id, a named
+#: `.md` file, or a numbered session, which is another page.
+SOURCE_WORDS = (r"(?:spec(?:ification)?|brief|prompt|law|guide|record|(?:OQ|AC)-\d+(?:-\d+)*|[\w./-]+\.md"
+                r"|session\s+\d+)")
+#: A numbered place in a list that the reason ties to a source, which is that
+#: source's place however the covered list is numbered: by possession (`the
+#: spec's step 2`, `the brief's booking rule 7`), by name (`spec step 2`, `the
+#: brief rule 5`), or by a preposition after it (`step 2 of the spec`, `rules 1
+#: and 3 in the batch 2 brief`), the words before the source possessives
+#: included (`step 2 of the project's spec`).
+TIED_PLACE_RE = re.compile(
+    r"(?i:\b" + SOURCE_WORDS + r"['’]s\s+(?:[\w-]+\s+){0,2}" + LIST_PLACE_WORDS + r"\s+\d"
+    r"|\b" + SOURCE_WORDS + r"\s+(?:[\w-]+\s+)?" + LIST_PLACE_WORDS + r"\s+\d"
+    r"|\b" + LIST_PLACE_WORDS + r"\s+\d+(?:\s*(?:,|and|or|to|-|–)\s*\d+)*\s+(?:of|in|from)\s+"
+    r"(?:(?:the|this|that)\s+)?(?:[\w-]+(?:['’]s)?\s+){0,3}" + SOURCE_WORDS + r"(?![\w-]))"
+)
+
+# ---------------------------------------------------------------------------
+# Candidate patterns
+# ---------------------------------------------------------------------------
+
+#: The auxiliary verbs a negation attaches to.
+AUX = r"(?:is|are|am|was|were|does|do|did|has|have|had|can|could|will|would|shall|should|may|might|must|need)"
+#: A negated auxiliary, in every spelling the tests read: `is not`, `isn't`,
+#: `could not`, `couldn't`, and the irregular `can't`, `won't`, `shan't` and
+#: `cannot`, whose verb is not spelled out before `n't`. One list serves every
+#: test, so a spelling one test reads, every test reads.
+NEG_AUX = (
+    r"(?:" + AUX + r"\s+(?:not|never)"
+    r"|(?:is|are|was|were|does|do|did|has|have|had|could|would|should|must|might|need)n['’]t"
+    r"|(?:can|won|shan)['’]t|cannot)"
+)
+#: A verb contracted onto its subject: `it's`, `they're`, `I'm`, `we've`,
+#: `you'd`, `it'll`, with a straight or a curly apostrophe.
+CONTRACTION = r"['’](?:s|re|m|ve|d|ll)"
+#: A short subject before a negated verb: "it isn't", "you can't".
+SUBJ = r"(?:it|they|that|this|these|those|there|you|we|he|she|i)"
+#: A subject and its negated verb, in every spelling the tests read: `it is
+#: not`, `it isn't`, `it's not`, `I'm not`, `we've never`, `you'll never` and
+#: `it never`. One pattern serves every test that reads a subject, so a
+#: contraction one test reads, every test reads.
+SUBJ_NEG = SUBJ + r"(?:\s+" + NEG_AUX + r"|" + CONTRACTION + r"\s+(?:not|never)|\s+never)"
+# A negation that opens a clause: "not", "never", a negated verb ("do not"),
+# or a subject and its negated verb ("it isn't", "they're not", "I'm not").
+CLAUSE_NEG = r"(?:not|never|" + NEG_AUX + r"|" + SUBJ_NEG + r")\b"
+
+# Inline forms of the device. Each match is a *candidate* only.
+INLINE_PATTERNS = {
+    "comma-not": re.compile(r",\s*(?:and\s+|but\s+)?not\b", re.IGNORECASE),
+    "comma-never": re.compile(r",\s*(?:and\s+|but\s+)?never\b", re.IGNORECASE),
+    "dash-not": re.compile(r"(?:\s--\s*|\s?[—–]\s?)(?:and\s+)?" + CLAUSE_NEG, re.IGNORECASE),
+    "semi-colon-not": re.compile(r"[;:]\s*" + CLAUSE_NEG, re.IGNORECASE),
+    "comma-clause-not": re.compile(r",\s*" + SUBJ_NEG + r"\b", re.IGNORECASE),
+    "but-not": re.compile(r"\bbut\s+(?:" + SUBJ_NEG + r"|" + NEG_AUX + r"|not|never)\b", re.IGNORECASE),
+    "rather-than": re.compile(r"\brather than\b", re.IGNORECASE),
+    "instead-of": re.compile(r"\binstead of\b", re.IGNORECASE),
+    # `not X but Y`, also with the negation contracted: `isn't X but Y`.
+    "not-but": re.compile(r"(?:\bnot\b|n['’]t\b)(?:(?![.;:!?]).){1,90}?\bbut\b", re.IGNORECASE),
+    "and-not": re.compile(r"\b(?:and|or)\s+not\b", re.IGNORECASE),
+    # `Choose the map (not the list).`: the rejected alternative in parentheses.
+    "paren-not": re.compile(r"\(\s*(?:and\s+|but\s+|or\s+)?(?:not|never)\b", re.IGNORECASE),
+}
+#: A joiner between two clauses of one sentence: a semicolon, a colon, or a
+#: spaced or unspaced dash. The patterns above read a negation after one;
+#: `not-then-joiner` reads one before it: `Do not pick the list; choose the map.`
+CLAUSE_JOINER = r"(?:[;:]|\s--\s|\s?[—–]\s?)"
+#: A sentence that opens with Not/Never: the fragment form, when it follows a claim.
+FRAGMENT_RE = re.compile(r"^[\"'“‘*_(]*(?:Not|Never)\b")
+#: A release frees the reader from an obligation: `You do not have to fill every
+#: line.` The style law counts one as a split negation only when the next
+#: sentence recasts what the thing is.
+RELEASE_RE = re.compile(
+    r"\b(?:do|does|did)\s+not\s+(?:have|need)\s+to\b|\b(?:don|doesn|didn)['’]t\s+(?:have|need)\s+to\b"
+    r"|\bno need to\b|\bneed(?:n['’]t|\s+not)\b"
+    r"|(?:\b(?:is|are|isn['’]t|aren['’]t)|['’](?:s|re))\s+(?:not\s+)?(?:required|needed)\b",
+    re.IGNORECASE,
+)
+#: A bare "instead" (not "instead of") closes a two-sentence rejection.
+BARE_INSTEAD_RE = re.compile(r"\binstead\b(?!\s+of\b)", re.IGNORECASE)
+#: Every negation word the tests read: `not`, `never`, `no`, `nor`, the
+#: negative pronouns and adverbs (`none`, `nothing`, `nobody`, `no one`,
+#: `nowhere`, `neither`), `cannot`, the one negation English writes as a single
+#: word, and `n't` with a straight or a curly apostrophe.
+NEGATION_WORDS = (r"\b(?:not|never|no|nor|none|nothing|nobody|nowhere|neither|cannot)\b|\bno[ -]one\b"
+                  r"|n['’]t\b")
+NEGATION_RE = re.compile(NEGATION_WORDS, re.IGNORECASE)
+#: A sentence that holds any of these, `without` included, is a candidate when a
+#: claim sits next to it. No pattern decides that; the recorded judgment does.
+CANDIDATE_NEGATION_RE = re.compile(NEGATION_WORDS + r"|\bwithout\b", re.IGNORECASE)
+#: The patterns of the candidates that every other sentence gets, so that each
+#: prose sentence is the sentence judged in exactly one candidate.
+SENTENCE_PATTERNS = ("sentence-alone", "sentence-after-claim", "sentence-in-pair")
+#: A sentence that holds a letter or a digit once its code spans are set aside.
+HAS_WORDS_RE = re.compile(r"[^\W_]")
+#: What `x-not-y-blocks.js` prints for a code span.
+CODE_MARK = "‹code›"
+INLINE_PATTERNS["not-then-joiner"] = re.compile(
+    r"(?:" + NEGATION_WORDS + r")[^;:—–]*?" + CLAUSE_JOINER + r"\s*\S", re.IGNORECASE)
+#: Quotation marks, emphasis and brackets that can open a sentence.
+OPENERS = r"[\"'“‘*_(]*"
+#: Negation in the first words of a sentence: the opening of the banned shape.
+LEADING_NEG_RE = re.compile(
+    "^" + OPENERS + r"(?P<subj>[A-Za-z]+)(?:" + CONTRACTION + ")?"
+    r"(?:\s+" + AUX + ")?"
+    r"\s*(?:not\b|n['’]t\b|never\b)"
+    # `can't`, `won't` and `shan't` do not spell their verb before `n't`.
+    r"|^" + OPENERS + r"(?P<subj2>[A-Za-z]+)\s+(?:can|won|shan)['’]t\b",
+)
+SUBJECT_RE = re.compile("^" + OPENERS + r"(?P<subj>[A-Za-z]+)")
+#: A negated main verb anywhere in a sentence ("is not", "doesn't").
+NEG_VERB_RE = re.compile(r"\b" + NEG_AUX + r"\b", re.IGNORECASE)
+#: A sentence that restates a subject with a pronoun and a verb: the second
+#: half of "It's not X. It's Y."
+PRONOUN_CLAIM_RE = re.compile(
+    "^" + OPENERS + r"(?:It|They|This|That|These|Those)"
+    r"(?:" + CONTRACTION + r"|\s+(?:is|are|was|were|does|do|just|only|\w+s)\b)",
+)
+#: Where the two halves of a joined banned shape meet: `It's not a toy; it's a
+#: tool.` joins them with a semicolon, and a colon, a comma or a dash does too.
+JOINER_RE = re.compile(r"\s*[;:,]\s+|\s+--\s+|\s*[—–]\s*")
+#: A clause that opens with one of these is a condition or a time, not a claim.
+SUBORDINATE_RE = re.compile(
+    "^" + OPENERS + r"(?:if|when|whenever|while|because|since|unless|until|although|though"
+    r"|once|before|after|as|where|wherever|whether|even)\b",
+    re.IGNORECASE,
+)
+#: A block quote is a quotation when a pair of quotation marks encloses it:
+#: double or single, straight or curly, and the closing mark the one that pairs
+#: with the opening mark, so `"...'` and `“..."` enclose nothing.
+QUOTE_OPEN_RE = re.compile(r"^[*_]*([\"“'‘])")
+QUOTE_CLOSE_RE = re.compile(r"([\"”'’])[*_]*$")
+QUOTE_PAIRS = {'"': '"', "“": "”", "'": "'", "‘": "’"}
+#: A line that opens with a dash, the form of an attribution (`— A parent`).
+#: The recount reads a quotation by its marks alone, so a block quote that ends
+#: in one is outside the supported Markdown.
+DASH_LED_RE = re.compile(r"^[*_]*(?:—|―|--)")
+
+
+def enclosed_in_marks(text: str) -> bool:
+    """True when a pair of quotation marks encloses `text`: the closing mark pairs with the opening one."""
+    o, c = QUOTE_OPEN_RE.search(text), QUOTE_CLOSE_RE.search(text)
+    return bool(o and c and c.start(1) > o.start(1) and QUOTE_PAIRS[o.group(1)] == c.group(1))
+
+
+#: Closing quotation marks, brackets and emphasis that can follow a sentence's
+#: last punctuation, guillemets among them (`»`, `›`). They stay with the
+#: sentence they close.
+CLOSERS = "[\"'”’»›)\\]*_]"
+#: A possible sentence break: the whitespace after `.`, `!` or `?` and up to
+#: three closers. Only the whitespace is consumed. `starts_sentence()` decides.
+SENTENCE_BREAK_RE = re.compile(
+    "(?:" + "|".join("(?<=[.!?]" + CLOSERS * n + ")" for n in range(4)) + ")" + r"\s+"
+)
+
+
+def starts_sentence(text: str, at: int) -> bool:
+    """True when a sentence can start at `at`: the first letter or digit there is not lower case.
+
+    Quotation marks, brackets, emphasis, bullets and emoji before it are
+    skipped, so `✅ Look it up.`, `«Look.»` and `Élodie calls.` start sentences,
+    in any script. A lower-case word (`e.g. kyoto`, `5 p.m. on Monday`) does not.
+    A code span starts one, as a digit does: code has no case of its own, and
+    the letters of the mark the helper prints for it (`CODE_MARK`) are not the
+    page's. So does a name styled to start in lower case (`eSIMs are tools.`,
+    `iPad`), and a list label in brackets (`(b) The opener`) is read past, to
+    the word after it.
+    """
+    if label := LIST_LABEL_RE.match(text, at):
+        at = label.end()
+    for i, ch in enumerate(text[at:], at):
+        if text.startswith(CODE_MARK.strip(), i):
+            return True
+        if ch.isalnum():
+            return not ch.islower() or bool(LOWER_STYLED_RE.match(text, i))
+    return False
+
+
+#: A word that starts in lower case and holds a capital later, as a name styled
+#: that way does: `eSIM`, `iPad`, `iOS`.
+LOWER_STYLED_RE = re.compile(r"[a-z]+[A-Z]")
+#: A list label in brackets that opens a sentence: `(a)`, `(b)`, `(iv)`.
+LIST_LABEL_RE = re.compile(r"\((?:[a-z]|[ivx]+)\)\s+")
+#: Abbreviations that always lead into more words: a sentence never ends on one.
+#: `etc.`, `a.m.` and `p.m.` can end a sentence, so a capital after them starts
+#: a new one: `It isn't at 5 p.m. It's at 6 p.m.` is two sentences. `St.` and
+#: `Dr.` are read as titles (`St. Louis`, `Dr. Kim`); a street name such as
+#: `Main St.` at a sentence's end joins the next sentence, which no page has.
+ABBREV_RE = re.compile(r"\b(?:e\.g|i\.e|vs|Dr|Mr|Mrs|Ms|St)\.$")
+#: `No.` leads into a number (`bus No. 5`); anywhere else it is the answer
+#: "No." and ends its sentence: `No. Use the map.` is two sentences.
+NUMBER_ABBREV_RE = re.compile(r"\bNo\.$")
+#: A literal `*`, or a run of `_` at a word's edge, left in printed text: an
+#: escaped `\*` or a blank to fill in. An underscore inside a word stays.
+EMPHASIS_RE = re.compile(r"\*+|(?<![A-Za-z0-9])_+|_+(?![A-Za-z0-9])")
+ARROW = " → "
+
+
+def normalize_space(text: str) -> str:
+    """Collapse runs of whitespace to one space."""
+    return re.sub(r"\s+", " ", text).strip()
+
+
+def plain(text: str) -> str:
+    """Return the words the patterns read in printed text.
+
+    markdown-it has already removed the markup. A no-break space reads as a
+    space, and a literal `*` or a run of `_` at a word's edge reads as nothing,
+    so `a map, \\*not\\* a list`, printed as `a map, *not* a list`, is still read.
+    """
+    return EMPHASIS_RE.sub("", text.replace("\u00a0", " "))
+
+
+def sentence_spans(text: str) -> list[tuple[int, int]]:
+    """Return the (start, end) of each sentence in text, keeping common abbreviations whole."""
+    spans: list[tuple[int, int]] = []
+    start = 0
+    breaks = [m for m in SENTENCE_BREAK_RE.finditer(text) if starts_sentence(text, m.end())]
+    for m in [*breaks, None]:
+        end = m.start() if m else len(text)
+        before = text[spans[-1][0]:spans[-1][1]].rstrip() if spans else ""
+        if spans and (ABBREV_RE.search(before)
+                      or (NUMBER_ABBREV_RE.search(before) and text[start:start + 1].isdigit())):
+            spans[-1] = (spans[-1][0], end)
+        else:
+            spans.append((start, end))
+        start = m.end() if m else len(text)
+    out = []
+    for a, b in spans:
+        piece = text[a:b]
+        if piece.strip():
+            out.append((a + len(piece) - len(piece.lstrip()), b - (len(piece) - len(piece.rstrip()))))
+    return out
+
+
+def split_sentences(text: str) -> list[str]:
+    """Split prose into sentences, each with its closing quotation marks and emphasis."""
+    return [text[a:b] for a, b in sentence_spans(text)]
+
+
+def normalize_subject(word: str) -> str:
+    """Return a sentence subject in lower case, without a contracted verb."""
+    word = re.sub(CONTRACTION + "$", "", word.lower())
+    return "it" if word == "its" else word
+
+
+def opening_words(sentence: str) -> list[str]:
+    """Return a sentence's first two words in lower case, with straight apostrophes."""
+    text = plain(sentence).lower().replace("’", "'")
+    return re.findall(r"[a-z']+", text)[:2]
+
+
+# ---------------------------------------------------------------------------
+# Data model
+# ---------------------------------------------------------------------------
+
+
+@dataclass
+class ProseLine:
+    """One line of a paragraph, as markdown-it prints it: the text its source
+    line shows, without the markup, the block quote prefix, the list marker and
+    the indentation.
+    """
+
+    lineno: int
+    text: str
+    section: str
+    region: str  # "main", "for-parents strip" or "parent notes"
+    blockquote: bool
+    paragraph: int
+    section_index: int = 0  # 0 above the first `##`, then 1, 2, ... per `##` heading
+    #: Every block quote (`q<n>`) and list item (`i<n>`) around the line,
+    #: outermost first. `()` is the page itself.
+    container: tuple[str, ...] = ()
+    follows: bool = False  # the line opens a paragraph that only comments part from the one before
+
+
+@dataclass
+class Label:
+    """A heading's or a table cell's printed text: authored text that is not a
+    prose line, so the banned shape is tested in it and nothing is counted."""
+
+    lineno: int
+    text: str
+    section: str
+    region: str
+    section_index: int
+    container: tuple[str, ...] = ()
+
+
+@dataclass
+class Marker:
+    """A `density-exempt` marker and the line range it covers."""
+
+    lineno: int
+    device: str
+    reason: str
+    applies: bool  # the device is `X, not Y` and the marker gives a reason
+    scope_start: int = 0
+    scope_end: int = 0
+    scope_desc: str = ""
+    problem: str = ""  # why a marker that names `X, not Y` exempts nothing
+    # Each numbered place in a list the reason names, with its numbers: the
+    # block the marker covers must hold each one (`LIST_PLACE_RE`).
+    places: list[tuple[str, tuple[int, ...]]] = field(default_factory=list)
+
+
+@dataclass
+class Candidate:
+    """A sentence (or pair of sentences) that a pattern flagged for judgment."""
+
+    file: str
+    lineno: int
+    section: str
+    region: str
+    kind: str  # "device", "split" or "banned"
+    patterns: list[str]
+    text: str
+    blockquote: bool
+    context: str = ""  # "", "block quote" or "quotation block quote"
+    key: str = ""
+    judgment: str | None = None
+    reason: str = ""
+    exempt_by: int | None = None
+    section_index: int = 0  # the section's place in the page (see ProseLine)
+    label: bool = False  # in a heading or a table cell: only the banned shape is judged
+    #: The line each sentence the candidate holds starts on, in order; a marker
+    #: exempts the candidate only when it covers every one of them.
+    lines: tuple[int, ...] = ()
+
+
+@dataclass
+class Page:
+    """The parsed structure of one Markdown page."""
+
+    prose: list[ProseLine]
+    markers: list[Marker]
+    sections: list[str]
+    heading_lines: dict[int, tuple[int, str]]
+    audience: str | None
+    #: The first line of each HTML block that shows text next to a tag, which the
+    #: recount cannot read; each fails the run.
+    unread_html: list[int] = field(default_factory=list)
+    #: Each heading's and table cell's text, where the banned shape is tested.
+    labels: list[Label] = field(default_factory=list)
+    #: `(line, what)` for each part of the page outside the supported Markdown.
+    unsupported: list[tuple[int, str]] = field(default_factory=list)
+
+
+@dataclass
+class FileReport:
+    """Everything the report needs for one page."""
+
+    path: str
+    register: str
+    register_basis: str
+    sections: list[str] = field(default_factory=list)
+    candidates: list[Candidate] = field(default_factory=list)
+    markers: list[Marker] = field(default_factory=list)
+    unread_html: list[int] = field(default_factory=list)
+    unsupported: list[tuple[int, str]] = field(default_factory=list)
+
+
+# ---------------------------------------------------------------------------
+# Parsing
+# ---------------------------------------------------------------------------
+
+
+class ReadError(Exception):
+    """The Markdown reader could not run, or gave an answer the recount cannot use.
+
+    `setup` is true when the reader could not start or stopped, which a missing
+    Node.js or `node_modules` causes.
+    """
+
+    def __init__(self, message: str, setup: bool = False) -> None:
+        super().__init__(message)
+        self.setup = setup
+
+
+class BlockReader:
+    """Markdown blocks from `x-not-y-blocks.js`, through one Node process for the whole run.
+
+    Answers are cached by text. Any failure raises ReadError, so a page the
+    reader could not read is never counted as a page with no prose.
+    """
+
+    def __init__(self) -> None:
+        self.process: subprocess.Popen[str] | None = None
+        self.cache: dict[str, list[dict[str, Any]]] = {}
+
+    def __call__(self, text: str) -> list[dict[str, Any]]:
+        if text not in self.cache:
+            self.cache[text] = self.ask(text)
+        return self.cache[text]
+
+    def ask(self, text: str) -> list[dict[str, Any]]:
+        if self.process is None or self.process.poll() is not None:
+            try:
+                self.process = subprocess.Popen([NODE, str(BLOCKS_HELPER)], stdin=subprocess.PIPE,
+                                                stdout=subprocess.PIPE, text=True, encoding="utf-8")
+            except OSError as exc:
+                raise ReadError(f"cannot start {NODE} {BLOCKS_HELPER.name}: {exc}", setup=True) from exc
+        assert self.process.stdin is not None and self.process.stdout is not None
+        try:
+            self.process.stdin.write(json.dumps({"text": text}, ensure_ascii=True) + "\n")
+            self.process.stdin.flush()
+            line = self.process.stdout.readline()
+        except OSError as exc:
+            raise ReadError(f"{BLOCKS_HELPER.name}: {exc}", setup=True) from exc
+        if not line:
+            raise ReadError(f"{BLOCKS_HELPER.name} stopped without an answer (exit status {self.process.poll()})",
+                            setup=True)
+        try:
+            answer = json.loads(line)
+        except ValueError as exc:
+            raise ReadError(f"{BLOCKS_HELPER.name} gave an answer that is not JSON: {exc}") from exc
+        if isinstance(answer, dict) and "error" in answer:
+            raise ReadError(f"{BLOCKS_HELPER.name}: {answer['error']}")
+        blocks = answer.get("blocks") if isinstance(answer, dict) else None
+        if not (isinstance(blocks, list) and all(isinstance(b, dict) and {"type", "start", "end"} <= set(b)
+                                                 for b in blocks)):
+            raise ReadError(f"{BLOCKS_HELPER.name} gave an unexpected answer: {str(answer)[:200]}")
+        return blocks
+
+    def close(self) -> None:
+        if self.process is not None:
+            if self.process.stdin is not None:
+                self.process.stdin.close()
+            self.process.wait()
+            self.process = None
+
+
+read_blocks = BlockReader()
+# Close the Node process when Python exits, so no reader outlives its run.
+atexit.register(read_blocks.close)
+
+
+def parse_marker(lineno: int, body: str) -> Marker:
+    """Read one marker body, `<device> -- <reason>`.
+
+    The style law asks a marker to say why, so a marker that names `X, not Y`
+    and gives no reason exempts nothing, and the report names it. So does a
+    marker that names the device in a spelling the law does not use, and one
+    whose reason reaches its source by number (`NUMBERED_SOURCE_RE`), which
+    the law's name-first rule forbids in a built file, and one whose device and
+    reason are parted by anything but ` -- ` (`--required`, `--- required`,
+    `— required`).
+    """
+    m = MARKER_BODY_RE.match(body)
+    loose = None if m else LOOSE_SEPARATOR_RE.match(body)
+    device = normalize_space(m.group("device") if m else loose.group("device") if loose else body)
+    reason = normalize_space((m.group("reason") or "") if m else "")
+    names_device = device in XNOTY_DEVICE_NAMES
+    problem = ""
+    if (names_device or XNOTY_LOOKALIKE_RE.match(device)) and loose:
+        problem = "the device and the reason are not parted by ' -- '"
+    elif names_device and not reason:
+        problem = "no reason after ' -- '"
+    elif names_device and (cited := NUMBERED_SOURCE_RE.search(reason) or TIED_PLACE_RE.search(reason)):
+        problem = f"the reason cites its source by number ({cited.group(0).strip()!r}); name the source instead"
+    elif not names_device and XNOTY_LOOKALIKE_RE.match(device):
+        problem = "device name is not `X, not Y`"
+    places = [(m.group(0).strip(), place_numbers(m.group("numbers"))) for m in LIST_PLACE_RE.finditer(reason)]
+    return Marker(lineno, device, reason, names_device and bool(reason) and not problem, problem=problem,
+                  places=places)
+
+
+def place_numbers(numbers: str) -> tuple[int, ...]:
+    """Return the numbers a list place names. A list prints its numbers in a run, so a range's two ends stand for it."""
+    return tuple(int(n) for n in re.findall(r"\d+", numbers))
+
+
+def listed_numbers(blocks: list[dict[str, Any]], first: int, last: int) -> set[int]:
+    """Return the numbers the items of each numbered list between lines `first` and `last` print."""
+    out: set[int] = set()
+    for block in blocks:
+        if block["type"] == "ordered_list" and first <= block["start"] <= last:
+            out.update(range(block["number"], block["number"] + block["items"]))
+    return out
+
+
+def check_places(marker: Marker, blocks: list[dict[str, Any]]) -> None:
+    """Name a marker whose reason numbers a place in a list that the block it covers does not hold.
+
+    `step 3` names the page's own step when the marker covers a numbered list
+    with a step 3; anywhere else, the number reaches a source, which the style
+    law's name-first rule forbids.
+    """
+    if not marker.applies or not marker.places:
+        return
+    own = listed_numbers(blocks, marker.scope_start, marker.scope_end)
+    for text, numbers in marker.places:
+        if not set(numbers) <= own:
+            marker.applies = False
+            marker.problem = (f"the reason cites its source by number ({text!r}); a number names only an item of"
+                              " the numbered list the marker covers, so name the source instead")
+            return
+
+
+def marker_beside_comment(marker: Marker) -> Marker:
+    """Name a marker that shares its line with another comment: it covers nothing.
+
+    The style law puts a marker on a line of its own, and a note beside it is
+    easy to add by accident, so the report names it rather than read it.
+    """
+    if marker.device in XNOTY_DEVICE_NAMES and not marker.problem:
+        marker.applies = False
+        marker.problem = "another comment shares its line; put the marker on a line of its own"
+    return marker
+
+
+def marker_beside_text(lineno: int, body: str) -> Marker | None:
+    """Read a marker that shares its lines with text, or None for another device's.
+
+    The style law puts a marker on the line above what it covers, so one with
+    text on its lines covers nothing, and the report names it.
+    """
+    marker = parse_marker(lineno, body)
+    if not (XNOTY_LOOKALIKE_RE.match(marker.device) or marker.device in XNOTY_DEVICE_NAMES):
+        return None
+    marker.applies = False
+    marker.problem = "text shares its lines; put the marker on a line of its own"
+    return marker
+
+
+def parse_text(text: str) -> Page:
+    """Parse one page into prose lines, markers, sections and headings.
+
+    The page is read by markdown-it, through `x-not-y-blocks.js`: which lines
+    are paragraphs, headings, fences, tables and comments, which paragraphs sit
+    in a list item or a block quote, and the text each paragraph and heading
+    prints, one line per source line, for the sentence tests.
+    """
+    blocks = read_blocks(text)
+    source = text.split("\n")
+    prose: list[ProseLine] = []
+    markers: list[Marker] = []
+    unread: list[int] = []
+    marker_blocks: list[int] = []
+    sections: list[str] = [PREAMBLE]
+    heading_lines: dict[int, tuple[int, str]] = {}
+    labels: list[Label] = []
+    # Each part of the page outside the supported Markdown, named, not read.
+    unsupported: list[tuple[int, str]] = []
+    audience: str | None = None
+    section = PREAMBLE
+    section_index = 0
+    region = "main"
+    # The headings whose sections are open, each with whether its title opens
+    # a parent-facing region: a heading closes every open one of its level or
+    # a deeper one, so `### Coaching` under `## Parent Notes` stays inside it.
+    open_headings: list[tuple[int, bool]] = []
+    paragraph = 0
+    # True while only comments have come since the last paragraph: a comment
+    # renders nothing, so it does not part two paragraphs.
+    follows = False
+    # Every audience marker, with its line: a page holds one, and each after
+    # the first is outside the supported Markdown.
+    audiences: list[tuple[int, str]] = []
+    for index, block in enumerate(blocks):
+        kind = block["type"]
+        path = tuple(block.get("path") or ())
+        if kind not in ("paragraph", "html_block"):
+            # Every other block parts the paragraphs on either side of it: a
+            # list or a block quote too, even one that holds no paragraph. An
+            # HTML block parts them only when it shows something (below).
+            follows = False
+        for offset, piece in block.get("html") or ():
+            # Inline HTML in a paragraph, a heading or a table cell. markdown-it
+            # gives each piece whole, and a marker is read only from a comment
+            # in it. An audience marker there is read as anywhere else; a
+            # `density-exempt` marker shares its line with text, so it covers
+            # nothing and is named.
+            if not piece.startswith("<!--"):
+                unsupported.append((block["start"] + offset, f"raw HTML inside a line ({piece[:24]!r})"))
+            for line, comment in marker_comments(piece):
+                if am := AUDIENCE_RE.match(comment):
+                    audiences.append((block["start"] + offset + line, am.group(1).lower()))
+                if mm := EXEMPT_MARKER_RE.match(comment):
+                    marker = marker_beside_text(block["start"] + offset + line, mm.group("body"))
+                    if marker:
+                        markers.append(marker)
+                        marker_blocks.append(index)
+        if kind == "html_block":
+            content = block.get("content") or ""
+            comments = marker_comments(content)
+            for line, comment in comments:
+                if am := AUDIENCE_RE.match(comment):
+                    audiences.append((block["start"] + line, am.group(1).lower()))
+            if scan_hidden(content)[1] is not None:
+                # A comment, or another hidden part, that never closes hides the
+                # rest of the page on GitHub, past this block and its container.
+                # The recount cannot read that, so it names the block.
+                unread.append(block["start"])
+                follows = False
+                continue
+            if any(text is None for _, _, text in hidden_parts(content)):
+                unsupported.append((block["start"], "a processing instruction, a CDATA section or a declaration"))
+            if shows_nothing(block):
+                # A block that shows nothing (comments, processing instructions,
+                # declarations and CDATA sections) is read as a block of
+                # comments: its markers are markers, and the paragraphs on
+                # either side of it stay adjacent. Markers are read only from
+                # the comments in raw HTML, so an example shown in a code span
+                # or a fence never counts.
+                parts = hidden_parts(content)
+                spans = [(content.count("\n", 0, s), content.count("\n", 0, max(s, e - 1))) for s, e, _ in parts]
+                for i, (_, _, comment) in enumerate(parts):
+                    if comment is not None and (mm := EXEMPT_MARKER_RE.match(comment)):
+                        marker = parse_marker(block["start"], mm.group("body"))
+                        lo, hi = spans[i]
+                        if any(j != i and a <= hi and lo <= b for j, (a, b) in enumerate(spans)):
+                            # Another comment shares one of the marker's lines:
+                            # a marker sits on a line of its own.
+                            marker = marker_beside_comment(marker)
+                        markers.append(marker)
+                        marker_blocks.append(index)
+                        if path:
+                            unsupported.append((block["start"], "a density-exempt marker inside a block quote or a"
+                                                                " list item"))
+                continue
+            # The block shows text: what is left once the hidden parts are gone,
+            # one line per source line, with character references decoded.
+            shown = without_hidden(content.rstrip("\n"))
+            for line, comment in comments:
+                if mm := EXEMPT_MARKER_RE.match(comment):
+                    marker = marker_beside_text(block["start"] + line, mm.group("body"))
+                    if marker:
+                        markers.append(marker)
+                        marker_blocks.append(index)
+            if HTML_TAG_RE.search(shown):
+                unread.append(block["start"])
+                follows = False
+                continue
+            lines = html.unescape(shown).replace("\u00a0", " ").split("\n")
+            paragraph += 1
+            for offset, line in enumerate(lines):
+                prose.append(ProseLine(block["start"] + offset, line, section, region, block.get("quote") is not None,
+                                       paragraph, section_index, container=tuple(block.get("path") or ()),
+                                       follows=follows and offset == 0))
+            follows = True
+            continue
+        if kind == "heading":
+            level = block["level"]
+            heading = normalize_space(block.get("text") or "")
+            heading_lines[block["start"]] = (level, heading)
+            if path:
+                # A heading inside a block quote or a list item is outside the
+                # supported Markdown: it is named, tested as a label, and opens
+                # no section or region.
+                unsupported.append((block["start"], "a heading inside a block quote or a list item"))
+                labels.append(Label(block["start"], heading, section, region, section_index, path))
+                continue
+            if level <= 2:
+                section = heading if level == 2 else PREAMBLE
+                section_index = 0
+                if level == 2:
+                    # Two `##` headings can share a title, so a section is
+                    # known by its place in the page, not by its title.
+                    sections.append(section)
+                    section_index = len(sections) - 1
+            while open_headings and open_headings[-1][0] >= level:
+                open_headings.pop()
+            open_headings.append((level, bool(PARENT_SECTION_RE.match(heading))))
+            # The "For parents" strip runs from its label to the next heading of
+            # any level, as check-session-structure.py reads it.
+            region = "parent notes" if any(parent for _, parent in open_headings) else "main"
+            # A heading is authored text, so the banned shape is tested in it,
+            # but not a prose line, so nothing in it is counted.
+            labels.append(Label(block["start"], heading, section, region, section_index,
+                                tuple(block.get("path") or ())))
+            continue
+        if kind == "table":
+            labels.extend(Label(block["start"] + offset, normalize_space(cell), section, region, section_index,
+                                tuple(block.get("path") or ()))
+                          for offset, cell in block.get("cells") or () if cell.strip())
+        if kind == "blockquote" and any(part.startswith("q") for part in path):
+            unsupported.append((block["start"], "a block quote inside a block quote"))
+        if kind in ("bullet_list", "ordered_list", "blockquote"):
+            # A container opens before the blocks inside it; it prints nothing itself.
+            continue
+        if kind != "paragraph":
+            continue
+        lines = (block.get("text") or "").split("\n")
+        if block.get("item"):
+            lines[0] = TASK_BOX_RE.sub("", lines[0], count=1)
+        elif PARENT_STRIP_RE.match(block.get("content") or ""):
+            # The strip is known by its bold label, so the source is read here.
+            region = "for-parents strip"
+        paragraph += 1
+        for offset, line in enumerate(lines):
+            prose.append(ProseLine(block["start"] + offset, line, section, region, block.get("quote") is not None,
+                                   paragraph, section_index, container=tuple(block.get("path") or ()),
+                                   follows=follows and offset == 0))
+        follows = True
+    for marker, index in zip(markers, marker_blocks):
+        marker_scope(marker, blocks, index, heading_lines, source)
+        check_places(marker, blocks)
+    # A block quote that ends in a dash-led line, the form of an attribution:
+    # the recount reads a quotation by its marks alone, so it names the line.
+    last_in_quote: dict[str, ProseLine] = {}
+    for pl in prose:
+        inside = [part for part in pl.container if part.startswith("q")]
+        if inside:
+            last_in_quote[inside[-1]] = pl
+    unsupported += [(pl.lineno, "a block quote that ends in a dash-led line, the form of an attribution")
+                    for pl in last_in_quote.values() if DASH_LED_RE.match(normalize_space(pl.text))]
+    if audiences:
+        # The first audience marker sets the register. A page holds one, so
+        # each after it is named, whether it agrees or not.
+        audience = audiences[0][1]
+        unsupported += [(lineno, f"a second audience marker ({value}); the first ({audience}, line"
+                                 f" {audiences[0][0]}) sets the register") for lineno, value in audiences[1:]]
+    return Page(prose, markers, sections, heading_lines, audience, unread, labels, sorted(unsupported))
+
+
+def marker_scope(marker: Marker, blocks: list[dict[str, Any]], index: int,
+                 heading_lines: dict[int, tuple[int, str]], source: list[str]) -> None:
+    """Set the line range a marker covers: the block directly below it.
+
+    The block is the first one after the marker that is not another block of
+    comments, so two markers can be stacked and a note can sit between a marker
+    and its block. It is one paragraph, one whole list (a loose list included)
+    or one block quote, as markdown-it reads it. Above a heading, the block is
+    that heading's section, up to the next heading of the same or a higher level.
+
+    The block must sit in the marker's own container: a marker written inside
+    a block quote or a list item covers the next block inside it, never a
+    paragraph, a list item or a heading beyond its edge. A marker with no such
+    block covers nothing, and the report names it, as a marker the page holds
+    must be honored or named.
+    """
+    nxt = index + 1
+    while nxt < len(blocks) and shows_nothing(blocks[nxt]):
+        nxt += 1
+    own = tuple(blocks[index].get("path") or ())
+    if nxt >= len(blocks) or tuple(blocks[nxt].get("path") or ())[:len(own)] != own:
+        where = "in its block quote or list item" if own else "on the page"
+        marker.scope_desc = f"nothing below it {where}"
+        if marker.device in XNOTY_DEVICE_NAMES and not marker.problem:
+            marker.applies = False
+            marker.problem = f"covers nothing: no block follows it {where}"
+        return
+    block = blocks[nxt]
+    first = block["start"]
+    if block["type"] == "heading":
+        level = block["level"]
+        end = len(source)
+        # A heading inside a block quote or a list item opens no section, so
+        # it closes none either.
+        nested = {b["start"] for b in blocks if b["type"] == "heading" and b.get("path")}
+        for h in sorted(heading_lines):
+            if h > first and h not in nested and heading_lines[h][0] <= level:
+                end = h - 1
+                break
+        inside = tuple(block.get("path") or ())
+        if inside:
+            # A heading inside a block quote or a list item: its section ends
+            # where that container does.
+            end = min(end, max(b["end"] for b in blocks if tuple(b.get("path") or ())[:len(inside)] == inside))
+            while end > first and not source[end - 1].strip():
+                end -= 1
+        marker.scope_start, marker.scope_end = first, end
+        marker.scope_desc = f"section '{heading_lines[first][1]}' (lines {first}-{end})"
+        return
+    end = block["end"]
+    # markdown-it gives a list the blank line after it; the block ends at its last text.
+    while end > first and not source[end - 1].strip():
+        end -= 1
+    marker.scope_start, marker.scope_end = first, end
+    marker.scope_desc = f"next block (lines {first}-{end})"
+
+
+# ---------------------------------------------------------------------------
+# Candidate detection
+# ---------------------------------------------------------------------------
+
+
+def paragraphs(prose: list[ProseLine]) -> list[list[ProseLine]]:
+    """Group prose lines into paragraphs and list items."""
+    out: list[list[ProseLine]] = []
+    for p in prose:
+        if out and out[-1][-1].paragraph == p.paragraph:
+            out[-1].append(p)
+        else:
+            out.append([p])
+    return out
+
+
+def adjacent(a: list[ProseLine], b: list[ProseLine], raw_lines: list[str] | None) -> bool:
+    """True when paragraph b directly follows paragraph a in one container and one section.
+
+    A split negation or a banned pair can straddle a paragraph break, but not a
+    container's edge. The container is the page itself, one block quote or one
+    list item, with everything around it: consecutive list items are separate
+    points, a block quote is a separate box, and a list, even a loose one whose
+    item runs on in a second paragraph, is apart from the prose around it. Two
+    paragraphs of one list item do pair. A comment, such as a `density-exempt`
+    marker, is not rendered, so it does not part two paragraphs, even when it
+    runs over several lines; nor does a link reference definition, which prints
+    nothing. Every other block parts them, an empty list or block quote, or one
+    that holds only a comment, included.
+    """
+    if raw_lines is None or a[-1].container != b[0].container:
+        return False
+    if a[-1].section_index != b[0].section_index or a[-1].region != b[0].region:
+        return False
+    return b[0].follows
+
+
+def paragraph_text(para: list[ProseLine]) -> str:
+    """Return the text a paragraph prints, one source line per text line."""
+    return "\n".join(pl.text for pl in para)
+
+
+def paragraph_sentences(para: list[ProseLine]) -> list[tuple[str, ProseLine]]:
+    """Split one paragraph into sentences, each with the prose line it starts on.
+
+    Markdown renders a soft line break as a space, so a sentence can run over
+    several source lines. The paragraph is joined before it is split.
+    """
+    text = paragraph_text(para)
+    return [(normalize_space(text[a:b]), para[text.count("\n", 0, a)]) for a, b in sentence_spans(text)]
+
+
+def quote_contexts(paras: list[list[ProseLine]], raw_lines: list[str] | None) -> list[str]:
+    """Return each paragraph's quotation context, which a judgment depends on.
+
+    The context is "" for ordinary prose, "block quote" for a callout, and
+    "quotation block quote" when a pair of quotation marks encloses the whole
+    block quote, as the style law's counting bullet defines a quotation. A
+    block quote's text is every paragraph inside it, those in a list or a block
+    quote within it included, and a paragraph inside any block quote that is a
+    quotation is quoted.
+    """
+    quotation = quotation_quotes(paras)
+    return [container_context(para[0].container, quotation) for para in paras]
+
+
+def quotation_quotes(paras: list[list[ProseLine]]) -> set[str]:
+    """Return the block quotes (`q<n>`) that are quotations (see `quote_contexts()`)."""
+    quotes: dict[str, list[int]] = {}
+    for index, para in enumerate(paras):
+        for part in para[0].container:
+            if part.startswith("q"):
+                quotes.setdefault(part, []).append(index)
+    quotation: set[str] = set()
+    for quote, members in quotes.items():
+        texts = [normalize_space(paragraph_text(paras[k])) for k in members]
+        if enclosed_in_marks(" ".join(t for t in texts if t)):
+            quotation.add(quote)
+    return quotation
+
+
+def container_context(container: tuple[str, ...], quotation: set[str]) -> str:
+    """Return the quotation context of text in `container`, given the block quotes that are quotations."""
+    inside = [part for part in container if part.startswith("q")]
+    if not inside:
+        return ""
+    return "quotation block quote" if quotation.intersection(inside) else "block quote"
+
+
+def banned_patterns(first: str, second: str, joined: bool = False) -> list[str]:
+    """Return the patterns that read `first` then `second` as the banned shape.
+
+    `first` is a negated sentence and `second` the claim after it: two
+    sentences, or, when `joined` is true, the two halves of one sentence.
+    """
+    if joined:
+        # The second half of a joined sentence opens in lower case.
+        second = second[:1].upper() + second[1:]
+    pats = []
+    lm = LEADING_NEG_RE.match(first)
+    sm = SUBJECT_RE.match(second)
+    second_positive = not NEGATION_RE.search(second.split(",")[0][:40])
+    if (lm and sm and second_positive
+            and normalize_subject(sm.group("subj")) == normalize_subject(lm.group("subj") or lm.group("subj2"))):
+        pats.append("neg-then-same-subject")
+    if (NEG_VERB_RE.search(first) and PRONOUN_CLAIM_RE.match(second) and second_positive
+            and len(first.split()) <= 25):
+        pats.append("neg-then-pronoun-claim")
+    f_open = opening_words(first)
+    if (len(f_open) == 2 and f_open == opening_words(second) and NEG_VERB_RE.search(first)
+            and second_positive and "neg-then-same-subject" not in pats):
+        pats.append("neg-then-same-opening")
+    return pats
+
+
+def joined_banned_patterns(sentence: str) -> list[str]:
+    """Return the patterns that read one sentence as the joined banned shape.
+
+    `It's not a toy; it's a tool.` is one sentence, so the pair test never
+    sees it. Each joiner is tried in turn as the point where the halves meet.
+    """
+    joiners = list(JOINER_RE.finditer(sentence))
+    for m in joiners:
+        negs = [n for n in NEGATION_RE.finditer(sentence) if n.end() <= m.start()]
+        second = sentence[m.end():]
+        if not negs or not second:
+            continue
+        # The first half is the clause that holds the negation: it opens
+        # after the last joiner before that negation.
+        start = max((j.end() for j in joiners if j.end() <= negs[-1].start()), default=0)
+        first = sentence[start:m.start()]
+        if SUBORDINATE_RE.match(first):
+            # `If it's not ready, that's fine.` is a condition, not a claim.
+            continue
+        pats = banned_patterns(first, second, joined=True)
+        if pats:
+            return ["joined-" + p for p in pats]
+    return []
+
+
+def label_candidates(rel: str, labels: list[Label], quotation: set[str]) -> list[Candidate]:
+    """Return the banned-shape candidates in the headings and table cells of a page.
+
+    The style law's tests run over all authored text and its counts over prose
+    lines, so a heading or a table cell is tested for the banned shape, joined
+    or as two sentences, and nothing in it is counted. The banned shape opens
+    with a negation, so every sentence of a heading or a cell that holds a
+    negation word is a candidate, keyed with the sentence after it when there
+    is one, and judged `banned` or `no`: no shape escapes because the patterns
+    miss it, which only name the kind. A heading or a cell is read on its own:
+    it never pairs with the text around it.
+    """
+    out = []
+    for lb in labels:
+        sents = split_sentences(lb.text)
+        ctx = container_context(lb.container, quotation)
+        for idx, s in enumerate(sents):
+            if not CANDIDATE_NEGATION_RE.search(plain(s)):
+                continue
+            nxt = sents[idx + 1] if idx + 1 < len(sents) else None
+            pats = joined_banned_patterns(plain(s)) + (banned_patterns(plain(s), plain(nxt)) if nxt else [])
+            out.append(Candidate(rel, lb.lineno, lb.section, lb.region, "banned", pats or ["negation-in-label"],
+                                 s + ARROW + nxt if nxt else s, bool(ctx), ctx, section_index=lb.section_index,
+                                 label=True))
+    return out
+
+
+def find_candidates(rel: str, prose: list[ProseLine],
+                    raw_lines: list[str] | None = None, labels: list[Label] | None = None) -> list[Candidate]:
+    """Return every candidate device, split negation and banned shape in a page,
+    the banned shapes in its headings and table cells (`labels`) included."""
+    cands: list[Candidate] = []
+    paras = paragraphs(prose)
+    para_sents = [paragraph_sentences(para) for para in paras]
+    contexts = quote_contexts(paras, raw_lines)
+
+    def add(pl: ProseLine, kind: str, pats: list[str], text: str, context: str,
+            lines: tuple[int | None, ...] = ()) -> None:
+        cands.append(Candidate(rel, pl.lineno, pl.section, pl.region, kind, pats, text,
+                               pl.blockquote, context, section_index=pl.section_index,
+                               lines=tuple(n for n in lines if n is not None) or (pl.lineno,)))
+
+    # Sentences are numbered across the page, so a pair can be named by where
+    # it starts. `opened_pairs` holds each pair already flagged from its first
+    # sentence, so a pair whose two sentences both negate is flagged once.
+    opened_pairs: set[int] = set()
+    g = -1
+    for pi, para in enumerate(paras):
+        sents = para_sents[pi]
+        ctx = contexts[pi]
+        before = (para_sents[pi - 1][-1][0] if pi > 0 and para_sents[pi - 1]
+                  and adjacent(paras[pi - 1], para, raw_lines) else None)
+        after = (para_sents[pi + 1][0][0] if pi + 1 < len(paras) and para_sents[pi + 1]
+                 and adjacent(para, paras[pi + 1], raw_lines) else None)
+        # The line each neighbor starts on, so a candidate knows every line it spans.
+        before_line = para_sents[pi - 1][-1][1].lineno if before is not None else None
+        after_line = para_sents[pi + 1][0][1].lineno if after is not None else None
+        for idx, (s, pl) in enumerate(sents):
+            g += 1
+            prev = sents[idx - 1][0] if idx > 0 else before
+            nxt = sents[idx + 1][0] if idx + 1 < len(sents) else after
+            prev_line = sents[idx - 1][1].lineno if idx > 0 else before_line
+            nxt_line = sents[idx + 1][1].lineno if idx + 1 < len(sents) else after_line
+            here = pl.lineno
+            # Whether a candidate above judges this sentence: its own words, not
+            # only as the partner of the sentence before it.
+            judged = len(cands)
+            # The pair this sentence makes with the one before is already keyed
+            # there when that sentence opened it.
+            in_pair = g - 1 in opened_pairs
+            # The tests read the words (see `plain()`); the candidate keeps the
+            # sentence as the page prints it.
+            ps = plain(s)
+            pprev = plain(prev) if prev is not None else None
+            pnxt = plain(nxt) if nxt is not None else None
+            pats = [name for name, rx in INLINE_PATTERNS.items() if rx.search(ps)]
+            joined = joined_banned_patterns(ps)
+            if FRAGMENT_RE.match(ps) and prev is not None:
+                pats.append("fragment")
+            if pats:
+                # A candidate's text holds every sentence its test reads, so a
+                # judgment reopens when any of them changes. A fragment counts
+                # only when it follows a claim, so the claim is part of it.
+                add(pl, "device", pats, prev + ARROW + s if "fragment" in pats else s, ctx,
+                    (prev_line, here) if "fragment" in pats else (here,))
+            if not pats:
+                # Any other sentence with a negation word, and a claim next to
+                # it, is a candidate of the split kind, whatever its length or
+                # shape: the judgment says whether it counts, and as what.
+                split_pats = []
+                if CANDIDATE_NEGATION_RE.search(ps) and prev is not None:
+                    split_pats.append("negation-after-claim")
+                if BARE_INSTEAD_RE.search(ps) and pprev is not None and NEGATION_RE.search(pprev):
+                    split_pats.append("negation-then-instead")
+                if split_pats and prev is not None:
+                    if not in_pair:
+                        if nxt is not None and RELEASE_RE.search(ps):
+                            # A release counts only when the next sentence recasts
+                            # what the thing is, so that sentence is part of what is
+                            # judged, and of the key.
+                            add(pl, "split", split_pats + ["release-then-recast"],
+                                prev + ARROW + s + ARROW + nxt, ctx, (prev_line, here, nxt_line))
+                        else:
+                            add(pl, "split", split_pats, prev + ARROW + s, ctx, (prev_line, here))
+                elif prev is None and nxt is not None and CANDIDATE_NEGATION_RE.search(ps):
+                    # The negation opens the paragraph and the claim follows,
+                    # `Never guess. Look it up.` included.
+                    add(pl, "split", ["negation-before-claim"], s + ARROW + nxt, ctx, (here, nxt_line))
+                    opened_pairs.add(g)
+                elif prev is None and nxt is None and CANDIDATE_NEGATION_RE.search(ps):
+                    # A sentence with no neighbor, a list item on its own
+                    # included, can hold its claim and its rejection together
+                    # (`A filter reduces exposure without removing it.`), so it
+                    # is a candidate too, keyed alone.
+                    add(pl, "device", ["negation-alone"], s, ctx)
+            if len(cands) == judged and HAS_WORDS_RE.search(plain(s).replace(CODE_MARK, "")):
+                # Every other sentence is a candidate too, because the style law
+                # counts any sentence that rejects a named alternative, in any
+                # words. It is keyed with the sentence before it, which a split
+                # needs, unless it has none, or unless that pair is already keyed
+                # from the sentence before; then it is keyed alone, and judged
+                # for what it rejects by itself.
+                if prev is None or in_pair:
+                    add(pl, "device", ["sentence-in-pair" if in_pair else "sentence-alone"], s, ctx)
+                else:
+                    add(pl, "split", ["sentence-after-claim"], prev + ARROW + s, ctx, (prev_line, here))
+            if joined:
+                add(pl, "banned", joined, s, ctx)
+            if pnxt is not None:
+                bpats = banned_patterns(ps, pnxt)
+                if bpats:
+                    add(pl, "banned", bpats, s + ARROW + nxt, ctx, (here, nxt_line))
+    # After every prose candidate, so no key a paragraph gives moves.
+    cands += label_candidates(rel, labels or [], quotation_quotes(paras))
+    seen: dict[tuple[str, str, str], int] = {}
+    # A sentence's own candidate is numbered after every other, so adding the
+    # sentence candidates moves no key a word or a pattern gives.
+    ordered = sorted(cands, key=lambda c: c.patterns[0] in SENTENCE_PATTERNS)
+    for c in ordered:
+        base = (c.kind, normalize_space(c.text), c.context)
+        seen[base] = seen.get(base, 0) + 1
+        c.key = f"{c.kind}|{normalize_space(c.text)}|{seen[base]}"
+        if c.context:
+            # A judgment made inside a quotation must not follow the sentence
+            # out of it, so the context is part of the key.
+            c.key += f"|{c.context}"
+    return cands
+
+
+# ---------------------------------------------------------------------------
+# Register
+# ---------------------------------------------------------------------------
+
+CHILD_TREES = ("framework/sessions/", "framework/student_guide/", "framework/templates/")
+CHILD_TREE_RES = (
+    re.compile(r"^destinations/[^/]+/session_inserts/"),
+    re.compile(r"^destinations/[^/]+/reference/[^/]+\.md$"),
+)
+
+
+def audience_register(audience: str) -> str:
+    """Return the register an audience marker gives: builder, or parent for `adult` and `parent`."""
+    return "builder" if audience == "builder" else "parent"
+
+
+def resolve_register(rel: str, audience: str | None, registers: dict) -> tuple[str, str]:
+    """Return (register, basis) for a page."""
+    if audience:
+        return audience_register(audience), f"audience marker ({audience})"
+    entry = registers.get(rel)
+    if entry:
+        return entry["register"], entry["basis"]
+    if rel.startswith("framework/parent_guide/"):
+        return "parent", "style law: every parent_guide/ file is parent-facing"
+    if rel.startswith(CHILD_TREES) or any(r.match(rel) for r in CHILD_TREE_RES):
+        return "child", "child-facing tree"
+    return "undetermined", "no audience marker and no registers entry"
+
+
+def region_register(file_register: str, region: str) -> str:
+    """Return the register of a region inside a page."""
+    if file_register == "child" and region in ("for-parents strip", "parent notes"):
+        return "parent"
+    return file_register
+
+
+# ---------------------------------------------------------------------------
+# Scan and report
+# ---------------------------------------------------------------------------
+
+VALID_JUDGMENTS = {"device", "split", "banned", "no"}
+#: The judgments a heading's or a table cell's candidate can take.
+LABEL_JUDGMENTS = {"banned", "no"}
+#: The end of a key made inside a quotation block quote, which the style law
+#: exempts: its candidates are judged `no`, and the loader refuses any other.
+QUOTATION_KEY_END = "|quotation block quote"
+
+
+class DataError(Exception):
+    """A data file cannot be used: it cannot be read, is not JSON, or holds an
+    entry of another shape or value than the top of this script documents."""
+
+
+#: A judgment's key: `<kind>|<sentence text>|<occurrence>`, with the quotation
+#: context after it for a sentence in a block quote. It ends at `$(?![\s\S])`,
+#: as the schema's pattern does: Python's `$` also matches before a final line
+#: break, and nothing may follow the key. The tool matches it whole anyway.
+JUDGMENT_KEY_RE = re.compile(r"^(?:device|split|banned)\|.+\|[1-9][0-9]*(?:\|(?:quotation )?block quote)?$"
+                             r"(?![\s\S])", re.DOTALL)
+
+
+def unique_object(pairs: list[tuple[str, Any]]) -> dict:
+    """Build a JSON object, refusing a key it already holds.
+
+    `json.loads()` keeps the last of two equal keys, so a second judgment for
+    one candidate would silently replace the first. RFC 8259 leaves duplicate
+    names to the reader; this reader refuses them, at every level.
+    """
+    out: dict = {}
+    for key, value in pairs:
+        if key in out:
+            raise ValueError(f"duplicate key {key!r}")
+        out[key] = value
+    return out
+
+
+def refuse_constant(name: str) -> Any:
+    """Refuse `NaN`, `Infinity` and `-Infinity`, which JSON (RFC 8259) does not allow."""
+    raise ValueError(f"{name} is not JSON")
+
+
+def path_is_junction(path: Path) -> bool:
+    """Return whether ``path`` is a Windows junction, on any supported Python.
+
+    ``Path.is_junction()`` arrived in Python 3.12. ``CONTRIBUTING.md`` asks for
+    "a working Python 3 interpreter" and names no minimum, so on 3.10 or 3.11
+    a direct call raised ``AttributeError`` before the hook read its first file.
+    A guard that refuses to run is not a guard.
+
+    Falling back to ``False`` would be worse than the crash, because it turns a
+    loud failure into a silent hole in a check this repository relies on to
+    reject link escapes. So the reparse tag is read directly, which is the same
+    question ``is_junction()`` asks. ``st_reparse_tag`` exists only on Windows,
+    and junctions exist only on Windows, so its absence is a real ``False``.
+    """
+    checker = getattr(path, "is_junction", None)
+    if checker is not None:
+        return bool(checker())
+    try:
+        tag = getattr(path.lstat(), "st_reparse_tag", None)
+    except (OSError, ValueError):
+        return False
+    return tag is not None and tag == getattr(stat, "IO_REPARSE_TAG_MOUNT_POINT", None)
+
+
+def refusal(path: Path, root: Path | None = None) -> str | None:
+    """Return why a file must not be read, or None when it may be.
+
+    This mirrors the rule the hooks apply to what they read
+    (``resolve_candidate_path`` in ``check-prohibited-placeholders.py`` and
+    ``guard_path`` in ``check-session-structure.py``), and the self-containment
+    scan's refusal of a tracked link. A symbolic link or a Windows junction is
+    refused even when it points back inside the tree, so a pull request cannot
+    aim a page or a data file at a device or at data outside the repository.
+    Anything but a regular file is refused too, so a directory, a pipe or a
+    device is never opened. With a ``root``, a path that resolves outside it is
+    refused, which catches a linked directory above the file. A data file named
+    on the command line has no root: the person running the tool chose it.
+    """
+    if path.is_symlink() or path_is_junction(path):
+        return "is a symbolic link or a junction, not a real file"
+    if not path.is_file():
+        return "is not a regular file"
+    if root is not None:
+        try:
+            path.resolve(strict=True).relative_to(root.resolve())
+        except (OSError, RuntimeError, ValueError):
+            return "resolves outside the repository"
+    return None
+
+
+def load_json(path: Path | None) -> Any:
+    """Load a data file; a missing one is empty. Any other failure raises DataError.
+
+    A link, even a broken one, or anything but a regular file is refused before
+    it is opened, so a data file cannot be aimed at a device or elsewhere.
+    """
+    if path is None or not (path.exists() or path.is_symlink()):
+        return {}
+    if why := refusal(path):
+        raise DataError(f"{path.name} {why}; refusing to read it")
+    try:
+        return json.loads(path.read_text(encoding="utf-8"), object_pairs_hook=unique_object,
+                          parse_constant=refuse_constant)
+    except (OSError, ValueError) as exc:  # ValueError covers bad UTF-8, bad JSON and duplicate keys
+        raise DataError(f"{path.name}: {exc}") from exc
+
+
+#: A part of a path the scan never prints: a leading `/`, an empty segment, a
+#: `.` or `..` segment, or a backslash. A page key that holds one names no page
+#: the scan reads, so its entries would be passed over without a word.
+NONCANONICAL_PATH_RE = re.compile(r"(?:^|/)\.{0,2}/|\\")
+
+
+def is_page_path(key: Any) -> bool:
+    """True for a data file's page key: a repository path to a `.md` file, written as the scan prints it."""
+    return isinstance(key, str) and key.endswith(".md") and not NONCANONICAL_PATH_RE.search(key)
+
+
+#: A character that is white space in neither of the two readings a data file
+#: gets. The schemas' patterns are ECMA-262 regular expressions, whose `\s` is
+#: TAB, VT, FF, U+FEFF, the space separators, LF, CR, U+2028 and U+2029.
+#: Python's white space (`str.isspace()`) leaves out U+FEFF and adds U+001C to
+#: U+001F and U+0085. Text must hold a character outside both, and each schema
+#: states the same set as `[^\s\u001c-\u001f\u0085\ufeff]`, naming U+FEFF so
+#: that a validator reading the pattern in Python's dialect refuses it too.
+NOT_SPACE_RE = re.compile(
+    r"[^\t\n\v\f\r \u00a0\u1680\u2000-\u200a\u2028\u2029\u202f\u205f\u3000\ufeff\u001c-\u001f\u0085]")
+
+
+def is_text(value: Any) -> bool:
+    """True for a string that holds more than white space, in either reading (see `NOT_SPACE_RE`)."""
+    return isinstance(value, str) and bool(NOT_SPACE_RE.search(value))
+
+
+def is_line_number(value: Any) -> bool:
+    """True for a whole number from 1, as the schema's `integer` reads it.
+
+    JSON Schema's `integer` is any number with a zero fractional part, so `1`,
+    `1.0` and `1e0` are all line 1. A boolean is not a number.
+    """
+    if isinstance(value, bool) or not isinstance(value, (int, float)):
+        return False
+    return (isinstance(value, int) or value.is_integer()) and value >= 1
+
+
+def load_registers(path: Path | None) -> dict:
+    """Load `x-not-y-registers.json` and check every entry, so no typo sets a register."""
+    data = load_json(path)
+    name = path.name if path else "registers"
+    if not isinstance(data, dict):
+        raise DataError(f"{name}: the file must hold one object of pages")
+    for rel, entry in data.items():
+        where = f"{name}: {rel!r}"
+        if not is_page_path(rel):
+            raise DataError(f"{where} is not a .md page path")
+        if not isinstance(entry, dict) or set(entry) != {"register", "basis"}:
+            raise DataError(f"{where} must hold exactly `register` and `basis`")
+        if entry["register"] not in FILE_CAP:
+            raise DataError(f"{where}: register {entry['register']!r} is not child, parent or builder")
+        if not is_text(entry["basis"]):
+            raise DataError(f"{where}: the basis is empty")
+    return data
+
+
+def load_judgments(path: Path | None) -> dict:
+    """Load `x-not-y-judgments.json` and check every entry, so no typo passes as a judgment."""
+    data = load_json(path)
+    name = path.name if path else "judgments"
+    if not isinstance(data, dict):
+        raise DataError(f"{name}: the file must hold one object of pages")
+    for rel, entries in data.items():
+        if not is_page_path(rel) or not isinstance(entries, dict):
+            raise DataError(f"{name}: {rel!r} must be a .md page path that maps to its judgments")
+        for key, entry in entries.items():
+            where = f"{name}: {rel}: {key[:80]!r}"
+            # `fullmatch`, because Python's `$` also matches before a last line
+            # break, where the schema's ECMA-262 `$` does not.
+            if not JUDGMENT_KEY_RE.fullmatch(key):
+                raise DataError(f"{where} is not a key of the form <kind>|<sentence text>|<occurrence>")
+            if not isinstance(entry, dict) or set(entry) != {"line", "judgment", "reason"}:
+                raise DataError(f"{where} must hold exactly `line`, `judgment` and `reason`")
+            if not is_line_number(entry["line"]):
+                raise DataError(f"{where}: the line must be a whole number from 1")
+            if entry["judgment"] not in VALID_JUDGMENTS:
+                raise DataError(f"{where}: judgment {entry['judgment']!r} is not device, split, banned or no")
+            if not is_text(entry["reason"]):
+                raise DataError(f"{where}: the reason is empty")
+            if key.endswith(QUOTATION_KEY_END) and entry["judgment"] != "no":
+                raise DataError(f"{where}: a candidate in a quotation block quote is judged no, since the style law"
+                                " exempts verbatim borrowed text")
+    return data
+
+
+def page_paths(root: Path) -> list[Path]:
+    """Return the Markdown pages to scan, or raise ReadError naming each link.
+
+    The scan roots are walked as the hooks walk theirs: every link -- a
+    symbolic link or a junction, to a file or a directory, whatever its name --
+    is refused by name and never followed, so a page replaced by a link, or a
+    linked directory, stops the run instead of dropping out of the count. A
+    page must also pass ``refusal``: a regular file inside ``root``.
+    """
+    out: list[Path] = []
+    refused: list[str] = []
+
+    def walk(directory: Path) -> None:
+        for entry in sorted(directory.iterdir(), key=lambda e: e.name):
+            if entry.is_symlink() or path_is_junction(entry):
+                refused.append(f"{entry.relative_to(root).as_posix()} is a symbolic link or a junction")
+            elif entry.is_dir():
+                walk(entry)
+            elif entry.name.endswith(".md"):
+                if why := refusal(entry, root):
+                    refused.append(f"{entry.relative_to(root).as_posix()} {why}")
+                else:
+                    out.append(entry)
+
+    for base in SCAN_ROOTS:
+        top = root / base
+        if top.is_symlink() or path_is_junction(top):
+            refused.append(f"{base} is a symbolic link or a junction")
+        elif top.is_dir():
+            walk(top)
+    if refused:
+        raise ReadError("; ".join(refused) + "; refusing to read a link or anything but a page")
+    return sorted(out)
+
+
+def scan(root: Path, judgments: dict, registers: dict) -> list[FileReport]:
+    """Parse, match and judge every page under the scan roots."""
+    reports: list[FileReport] = []
+    try:
+        paths = page_paths(root)
+    except OSError as exc:
+        raise ReadError(f"cannot list the pages: {exc}") from exc
+    for path in paths:
+        rel = path.relative_to(root).as_posix()
+        # Every read goes through ReadError, so a page that cannot be read (not
+        # UTF-8, or not readable) stops the run and is named.
+        try:
+            text = path.read_text(encoding="utf-8")
+        except (OSError, UnicodeDecodeError) as exc:
+            raise ReadError(f"{rel}: {exc}") from exc
+        try:
+            page = parse_text(text)
+        except ReadError as exc:
+            raise ReadError(f"{rel}: {exc}", exc.setup) from exc
+        register, basis = resolve_register(rel, page.audience, registers)
+        raw_lines = text.split("\n")
+        rep = FileReport(rel, register, basis, page.sections, [], page.markers, page.unread_html,
+                         page.unsupported)
+        file_j = judgments.get(rel, {})
+        for c in find_candidates(rel, page.prose, raw_lines, page.labels):
+            j = file_j.get(c.key)
+            # A heading or a table cell is judged for the banned shape only, so
+            # it never counts toward a cap; any other judgment leaves it unjudged.
+            if j is not None and (not c.label or j.get("judgment") in LABEL_JUDGMENTS):
+                c.judgment = j.get("judgment")
+                c.reason = j.get("reason", "")
+            # A marker exempts a candidate only when it, or another marker,
+            # covers every sentence the candidate holds: a pair that runs past
+            # a marker's block is judged without the exemption.
+            covers = [[mk for mk in page.markers if mk.applies and mk.scope_start <= n <= mk.scope_end]
+                      for n in (c.lines or (c.lineno,))]
+            at_start = [mk for mk in page.markers if mk.applies and mk.scope_start <= c.lineno <= mk.scope_end]
+            if at_start and all(covers):
+                c.exempt_by = at_start[-1].lineno
+            rep.candidates.append(c)
+        reports.append(rep)
+    return reports
+
+
+def status(raw: int, counted: int, cap: int) -> str:
+    """PASS within the cap, EXEMPT within it only because of markers, else OVER."""
+    if counted > cap:
+        return "OVER"
+    if raw > cap:
+        return "EXEMPT"
+    return "PASS"
+
+
+def instance_row(rep: FileReport, c: Candidate) -> dict:
+    """Return one judged candidate as a report row."""
+    return {
+        "line": c.lineno,
+        "section": c.section,
+        "section_index": c.section_index,
+        "region": c.region,
+        "register": region_register(rep.register, c.region),
+        "judgment": c.judgment,
+        "text": c.text,
+        "reason": c.reason,
+        "exempt_by_marker_on_line": c.exempt_by,
+    }
+
+
+def summarize(rep: FileReport) -> dict:
+    """Return the counts and statuses for one page."""
+    true_dev = [c for c in rep.candidates if c.judgment == "device"]
+    counted = [c for c in true_dev if c.exempt_by is None]
+    splits = [c for c in rep.candidates if c.judgment == "split"]
+    splits_counted = [c for c in splits if c.exempt_by is None]
+    banned = [c for c in rep.candidates if c.judgment == "banned"]
+    unjudged = [c for c in rep.candidates if c.judgment not in VALID_JUDGMENTS]
+    cap = FILE_CAP.get(rep.register, FILE_CAP["child"])
+    sec_rows = []
+    for index, sec in enumerate(rep.sections):
+        # Index 0 is the text above the first `##`; each `##` heading is its
+        # own section, even when two share a title.
+        in_sec = [c for c in true_dev if c.section_index == index]
+        sec_counted = [c for c in in_sec if c.exempt_by is None]
+        capped = index > 0 and rep.register in SECTION_CAPPED_REGISTERS
+        regions = sorted({region_register(rep.register, c.region) for c in in_sec})
+        if PARENT_SECTION_RE.match(sec):
+            reg = region_register(rep.register, "parent notes")
+        else:
+            reg = "+".join(regions) if regions else rep.register
+        sec_rows.append({
+            "section": sec,
+            "index": index,
+            "preamble": index == 0,
+            "register": reg,
+            "raw": len(in_sec),
+            "counted": len(sec_counted),
+            "cap": SECTION_CAP if capped else None,
+            "status": status(len(in_sec), len(sec_counted), SECTION_CAP) if capped else "n/a",
+            "lines": [c.lineno for c in in_sec],
+        })
+    return {
+        "file": rep.path,
+        "register": rep.register,
+        "register_basis": rep.register_basis,
+        "raw": len(true_dev),
+        "counted": len(counted),
+        "cap": cap,
+        "status": status(len(true_dev), len(counted), cap),
+        "sections": sec_rows,
+        "instances": [instance_row(rep, c) for c in true_dev],
+        "splits": len(splits),
+        "splits_counted": len(splits_counted),
+        "split_limit": SPLIT_NEGATION_FILE_LIMIT,
+        "split_status": status(len(splits), len(splits_counted), SPLIT_NEGATION_FILE_LIMIT),
+        "split_instances": [instance_row(rep, c) for c in splits],
+        "banned": [instance_row(rep, c) for c in banned],
+        "unjudged": len(unjudged),
+        "candidates": len(rep.candidates),
+        "rejected": len([c for c in rep.candidates if c.judgment == "no"]),
+        "markers": [{"line": m.lineno, "device": m.device, "reason": m.reason, "applies": m.applies,
+                     "scope": m.scope_desc, "problem": m.problem}
+                    for m in rep.markers],
+        "marker_problems": len([m for m in rep.markers if m.problem]),
+        "unread_html": list(rep.unread_html),
+        "unsupported": [{"line": n, "what": what} for n, what in rep.unsupported],
+    }
+
+
+TOTAL_KEYS = (
+    "files", "candidates", "rejected_candidates", "unjudged_candidates", "undetermined_registers",
+    "true_instances", "counted_instances", "exempted_instances", "files_over", "files_exempt",
+    "sections_over", "sections_exempt", "split_negations", "split_negations_counted",
+    "files_over_split_limit", "banned_shapes", "marker_problems", "unread_html_blocks", "unsupported_markdown",
+)
+
+
+def print_report(reports: list[FileReport], only_problems: bool) -> dict:
+    """Print the per-file report and the totals; return them as a dict."""
+    totals = dict.fromkeys(TOTAL_KEYS, 0)
+    by_register: dict[str, dict[str, int]] = {}
+    rows = []
+    for rep in reports:
+        s = summarize(rep)
+        rows.append(s)
+        reg = by_register.setdefault(s["register"], {"files": 0, "files_over": 0, "sections_over": 0})
+        sec_over = [r for r in s["sections"] if r["status"] == "OVER"]
+        reg["files"] += 1
+        reg["files_over"] += s["status"] == "OVER"
+        reg["sections_over"] += len(sec_over)
+        totals["files"] += 1
+        totals["candidates"] += s["candidates"]
+        totals["rejected_candidates"] += s["rejected"]
+        totals["unjudged_candidates"] += s["unjudged"]
+        totals["undetermined_registers"] += s["register"] == "undetermined"
+        totals["true_instances"] += s["raw"]
+        totals["counted_instances"] += s["counted"]
+        totals["exempted_instances"] += s["raw"] - s["counted"]
+        totals["files_over"] += s["status"] == "OVER"
+        totals["files_exempt"] += s["status"] == "EXEMPT"
+        totals["sections_over"] += len(sec_over)
+        totals["sections_exempt"] += sum(r["status"] == "EXEMPT" for r in s["sections"])
+        totals["split_negations"] += s["splits"]
+        totals["split_negations_counted"] += s["splits_counted"]
+        totals["files_over_split_limit"] += s["split_status"] == "OVER"
+        totals["banned_shapes"] += len(s["banned"])
+        totals["marker_problems"] += s["marker_problems"]
+        totals["unread_html_blocks"] += len(s["unread_html"])
+        totals["unsupported_markdown"] += len(s["unsupported"])
+        problem = (s["status"] == "OVER" or s["split_status"] == "OVER" or s["banned"] or s["unjudged"]
+                   or s["register"] == "undetermined" or sec_over or s["marker_problems"] or s["unread_html"]
+                   or s["unsupported"])
+        if only_problems and not problem:
+            continue
+        print(s["file"])
+        print(f"  register: {s['register']} ({s['register_basis']})")
+        print(f"  file: {s['counted']} counted of {s['raw']} true, cap {s['cap']} -> {s['status']}")
+        split_lines = [r["line"] for r in s["split_instances"]]
+        print(f"  split negations: {s['splits_counted']} counted of {s['splits']}, limit {s['split_limit']}"
+              f" -> {s['split_status']}" + (f"  lines {split_lines}" if split_lines else ""))
+        print(f"  banned shapes: {len(s['banned'])}")
+        for r in s["sections"]:
+            if only_problems and r["status"] != "OVER":
+                continue
+            label = "(above the first ##)" if r["preamble"] else "## " + r["section"]
+            cap = r["cap"] if r["cap"] is not None else "-"
+            lines = f"  lines {r['lines']}" if r["lines"] else ""
+            print(f"    {label[:56]:<56} {r['register']:<14} {r['counted']}/{cap}"
+                  f" (true {r['raw']}) {r['status']}{lines}")
+        for m in s["markers"]:
+            if m["problem"] and m["device"] == "audience":
+                tag = f"PROBLEM ({m['problem']})"
+            elif m["problem"]:
+                tag = f"EXEMPTS NOTHING ({m['problem']})"
+            else:
+                tag = "applies" if m["applies"] else "other device"
+            print(f"    marker line {m['line']} [{m['device']}] {tag}: {m['scope']}")
+        for b in s["banned"]:
+            print(f"    BANNED line {b['line']}: {b['text']}")
+        if s["unjudged"]:
+            print(f"    UNJUDGED candidates: {s['unjudged']} (run with --unjudged)")
+        for u in s["unsupported"]:
+            print(f"    OUTSIDE SUPPORTED MARKDOWN line {u['line']}: {u['what']}; see \"Supported Markdown\" in"
+                  " .github/scripts/check-x-not-y.py")
+        for line in s["unread_html"]:
+            print(f"    UNREAD HTML line {line}: an HTML block shows text next to a tag, or holds a comment or"
+                  " another hidden part that never closes, which the recount cannot read; write it as Markdown")
+    print()
+    print("TOTALS")
+    for k in TOTAL_KEYS:
+        print(f"  {k}: {totals[k]}")
+    print("BY REGISTER")
+    for name, v in sorted(by_register.items()):
+        print(f"  {name}: {v['files']} files, {v['files_over']} over the file cap,"
+              f" {v['sections_over']} sections over")
+    return {"totals": totals, "by_register": by_register, "files": rows}
+
+
+def dump_candidates(reports: list[FileReport], unjudged_only: bool) -> None:
+    """Print each candidate with its key, for writing judgments."""
+    for rep in reports:
+        for c in rep.candidates:
+            if unjudged_only and c.judgment in VALID_JUDGMENTS:
+                continue
+            ex = f" [marker {c.exempt_by}]" if c.exempt_by else ""
+            bq = f" [{c.context}]" if c.context else ""
+            lb = " [heading or table cell: banned or no]" if c.label else ""
+            print(f"{rep.path}:{c.lineno} {c.kind} {','.join(c.patterns)} ({c.section} / {c.region})"
+                  f"{bq}{lb}{ex} => {c.judgment}")
+            print(f"    KEY {c.key}")
+
+
+def failing(totals: dict) -> bool:
+    """True when the totals show any page outside the rule."""
+    return bool(totals["unjudged_candidates"] or totals["undetermined_registers"] or totals["files_over"]
+                or totals["sections_over"] or totals["files_over_split_limit"] or totals["banned_shapes"]
+                or totals["marker_problems"] or totals["unread_html_blocks"] or totals["unsupported_markdown"])
+
+
+def main(argv: list[str] | None = None) -> int:
+    """Run the recount and return the exit code."""
+    ap = argparse.ArgumentParser(description="Recount the `X, not Y` device across the curriculum pages.")
+    ap.add_argument("root", type=Path, nargs="?", default=REPO_ROOT, help="repository root (default: this repository)")
+    ap.add_argument("--judgments", type=Path, default=DEFAULT_JUDGMENTS, help="per-candidate judgments (JSON)")
+    ap.add_argument("--registers", type=Path, default=DEFAULT_REGISTERS, help="register entries (JSON)")
+    ap.add_argument("--candidates", action="store_true", help="list every candidate with its key, then stop")
+    ap.add_argument("--unjudged", action="store_true", help="list only candidates with no judgment, then stop")
+    ap.add_argument("--only-problems", action="store_true", help="print only pages that need attention")
+    ap.add_argument("--json", type=Path, help="also write the full report, with every instance, as JSON")
+    args = ap.parse_args(argv)
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(encoding="utf-8", newline="\n")
+
+    root = args.root.resolve()
+    if not (root / "framework").is_dir():
+        print(f"error: {root} has no framework/ directory", file=sys.stderr)
+        return 2
+    try:
+        judgments, registers = load_judgments(args.judgments), load_registers(args.registers)
+    except DataError as exc:
+        print(f"error: cannot use a data file: {exc}", file=sys.stderr)
+        return 2
+    try:
+        reports = scan(root, judgments, registers)
+    except ReadError as exc:
+        hint = (" The recount reads pages with markdown-it, so it needs Node.js and the repository's node_modules"
+                " (run `npm ci`)." if exc.setup else "")
+        print(f"error: cannot read Markdown: {exc}.{hint}", file=sys.stderr)
+        return 3
+    finally:
+        read_blocks.close()
+    if args.candidates or args.unjudged:
+        dump_candidates(reports, args.unjudged)
+        return 0
+    result = print_report(reports, args.only_problems)
+    if args.json:
+        args.json.write_text(json.dumps(result, indent=2, ensure_ascii=False) + "\n",
+                             encoding="utf-8", newline="\n")
+    return 1 if failing(result["totals"]) else 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

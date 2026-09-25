@@ -6,7 +6,7 @@ The conversations that are hard to improvise. Keep each script to a few lines an
 
 ## A gap is not quitting
 
-Real families miss a week or three. A break is normal and is not the same as waning interest. When you come back, use the "getting back on track" routine (re-read the last page, check the [progress tracker](../student_guide/progress_tracker.md), do one tiny Start Here) instead of feeling you must restart.
+Real families miss a week or three. A break is normal and is not the same as waning interest. When you come back, use the "getting back on track" routine (re-read the last page, check the [progress tracker](../student_guide/progress_tracker.md), do one tiny Start Here).
 
 ## If your child wants to quit
 
@@ -29,12 +29,14 @@ Two different cases:
 Name the one specific gap, size the redo to one session, frame it as the checkpoint working, and end on what already stands.
 
 **"We had to book before you finished"** (the timeline collision):
+<!-- density-exempt: X, not Y -- the timeline-collision script in the spec's Coaching and Support scripts, the Your-Work-Wasn't-Wrong Named concept in a parent's words -->
 > "We had to lock the bookings before you finished, because prices were climbing -- that's how trips work, and it doesn't mean your planning was wrong. Here's what's still yours to decide inside the dates we booked."
 
 **Honoring the child's calls** (even when you'd have chosen differently):
 > "You chose the aquarium over a third temple. That's your call, and we'll make it work."
 
-You set the guardrails (budget, approved cities, pacing, safety, availability), but you do not quietly re-decide inside them. In a multi-adult party, group agreement can sometimes reshape a conditional pick -- but only with a reason given to the child, never silently.
+<!-- density-exempt: X, not Y -- the owned-decision rule (only with a reason given to the child, never silently) is the spec's multi-adult guarantee, in its Child Autonomy With Adult Guardrails -->
+You set the guardrails (budget, approved cities, pacing, safety, availability), and the calls your child makes inside them stand. In a multi-adult party, group agreement can sometimes reshape a conditional pick -- but only with a reason given to the child, never silently.
 
 **Honoring the one unconditional pick** (a firmer, smaller promise):
 > "Your one special pick was the aquarium -- that one's locked in. We'll only change it if it busts the budget, can't be booked, or isn't safe or doable for everyone, and we'll tell you which."
@@ -44,7 +46,7 @@ A group vote does not override this one. Set it up to be keepable: co-choose an 
 **The "here's how your plan shaped what we booked" reveal** (after booking):
 > "Want to see how your plan turned into our real trip? You recommended three nights in the place you picked -- here's our hotel there, three nights. Your must-do aquarium is on Day 4."
 
-Five minutes showing this, concretely, is the strongest answer to "was my advisory work real?" -- far stronger than reassurance. Where you changed something, say why.
+Five minutes showing this, concretely, lets your child see their own recommendations in the trip you booked, and that is the strongest answer to "was my advisory work real?" Where you changed something, say why.
 
 **Naming the fixed family decision warmly:**
 > "Two things the grown-ups picked: that we're going, and where. The planning -- which places, the must-dos, the order of your days, your one special pick -- is really yours."
@@ -52,12 +54,15 @@ Five minutes showing this, concretely, is the strongest answer to "was my adviso
 **The finish acknowledgment** (Session 53). First Taste is a few-weeks project, so use the duration-true, non-overclaiming form:
 > "You finished a real project, start to finish, and made a real mini-plan we can actually use. That's a big deal."
 
+<!-- density-exempt: X, not Y -- the duration-true praise wording and the non-gamified acknowledgment are spec-required calibration (the spec's Session 53 acknowledgment beat) -->
 (For the fuller months-long capstone, "you stuck with a months-long project" is the right wording. Do not use "months-long" for a First Taste finisher -- it overclaims and deflates.) No certificate or badge -- just genuine recognition. This stands whether or not the trip happens.
 
 **When the plan changes during the trip:**
 > "Plans flex on the ground -- weather, tiredness, a closed shop. That's normal and doesn't mean your work failed. Look what did hold: the route, your must-sees, the language sheet you made."
 
 ## A few practical notes
+
+<!-- density-exempt: X, not Y -- each note restates a guarantee the spec gives: the child is never blocked on a schedule, a party of two is a full configuration, and a sibling comparison stays cooperative, never scored -->
 
 - **Interview/poll reachability.** If a traveler is hard to reach, ask by text, ask asynchronously, or relay the question yourself and bring the answer back. Your child can also poll whoever is around and mark the rest "asked through a grown-up." Never let a schedule stall a session.
 - **Small party or single parent.** A party of two -- one parent and the child -- is a normal way to run this. The interview and poll become interviewing the one other traveler (you), plus optionally a remote relative by relay. A one-on-one interview is a strong relatedness moment, not a lesser version.

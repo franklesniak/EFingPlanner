@@ -1,0 +1,22 @@
+{
+  "framework/trip_starter/README.md": {
+    "register": "child",
+    "basis": "inferred: no audience statement; addresses the child (\"ask an adult\"), and the kit's pages are copies of child-facing templates"
+  },
+  "framework/trip_starter/family/current_family_travel_assumptions.md": {
+    "register": "child",
+    "basis": "copy of a child-facing template (names its blank in framework/templates/); no audience marker"
+  },
+  "framework/trip_starter/family/family_trip_goals.md": {
+    "register": "child",
+    "basis": "copy of a child-facing template (names its blank in framework/templates/); no audience marker"
+  },
+  "framework/trip_starter/family/traveler_profiles/README.md": {
+    "register": "child",
+    "basis": "inferred: no audience statement; addresses the child (\"if you did Session 02\"), and names its blank in framework/templates/"
+  },
+  "framework/trip_starter/family/trip_basics.md": {
+    "register": "child",
+    "basis": "copy of a child-facing template (names its blank in framework/templates/); no audience marker"
+  }
+}

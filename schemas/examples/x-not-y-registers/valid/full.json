@@ -1,0 +1,14 @@
+{
+  "framework/CHANGELOG.md": {
+    "register": "builder",
+    "basis": "builder- and reuser-facing"
+  },
+  "framework/templates/parent_review_form.md": {
+    "register": "parent",
+    "basis": "a form a parent fills in"
+  },
+  "destinations/japan/session_inserts/kid_glossary.md": {
+    "register": "child",
+    "basis": "words the child meets"
+  }
+}

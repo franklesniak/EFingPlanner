@@ -49,7 +49,7 @@ Your Travel style worksheet -- your family's leanings and a one-sentence style s
 
 ## Stop Point
 
-You are done when you have made your six choices and written your one-sentence style summary. There are no wrong answers here. It is about fit.
+You are done when you have made your six choices and written your one-sentence style summary. Your answers just need to fit your family.
 
 ## Source Check
 
