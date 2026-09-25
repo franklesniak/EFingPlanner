@@ -138,10 +138,10 @@ def test_a_word_value_is_found_wherever_the_file_writes_it(text: str) -> None:
 @pytest.mark.parametrize(
     "text",
     ["QUILLHAVEN", "quillhaven", "QuillHaven", "Quillhaven's", "Quillhavens", "GODMOTHERS",
-     "great-godmother", "godmother_notes", "Quillhaven2026", "Quill" + "&#104;" + "aven", "Quill%68aven"],
+     "great-godmother", "godmother_notes", "Quillhaven2026"],
 )
 def test_a_word_value_is_found_in_any_case_and_form(text: str) -> None:
-    """Case, a possessive, a plural, a compound, an underscore, a digit and an escape end no word."""
+    """Case, a possessive, a plural, a compound, an underscore and a digit end no word."""
     assert [kind for _line, kind in family(text + "\n")] == ["word"]
 
 
@@ -207,12 +207,28 @@ def test_a_backslash_escape_does_not_widen_a_match(text: str) -> None:
     assert family(text + "\n") == []
 
 
+@pytest.mark.parametrize(
+    ("text", "rule"),
+    [
+        ("Quill" + "&#104;" + "aven", "family"),
+        ("Quill%68aven", "family"),
+        ("QH" + "&#86;", "family"),
+        ("2" + "&#51;" + " days", "family"),
+        ("Brannock%20Field", "family"),
+        ("Tok" + "&#121;" + "o", "destination"),
+    ],
+)
+def test_a_percent_escape_or_a_character_reference_is_read_as_written(text: str, rule: str) -> None:
+    """DP-21: no tracked file on any branch hid a value in either, so neither is decoded, and "Known limits" says so."""
+    assert hook.find_hits(text + "\n", "framework/x.md", rule, VALUES, names=FIVE_NAMES) == []
+
+
 def test_a_two_word_value_is_reported_on_the_line_it_starts() -> None:
     """A wrapped phrase is reported where it begins."""
     assert family("Intro line.\nWe land at Brannock\nField today.\n") == [(2, "word")]
 
 
-@pytest.mark.parametrize("text", ["QHV", "(QHV)", "QHV-bound", "QHV's", "Fly QHV to", "QH" + "&#86;"])
+@pytest.mark.parametrize("text", ["QHV", "(QHV)", "QHV-bound", "QHV's", "Fly QHV to"])
 def test_a_code_value_is_found_as_a_whole_run(text: str) -> None:
     """A code is matched in its exact case, as a whole run of letters, digits and underscores."""
     assert [kind for _line, kind in family(text + "\n")] == ["code"]
@@ -234,7 +250,7 @@ def test_a_code_value_in_another_case_or_inside_a_run_is_not_found(text: str) ->
     [
         "23 days", "23-day", "23day", "23 nights", "23-Night", "23 DAYS", "a 23-day trip",
         "23\ndays", "> 23\n> days", "23 " + EN_DASH + " day", "23" + NO_BREAK_SPACE + "days",
-        "twenty-three days", "Twenty three nights", "twenty-three-day", "2" + "&#51;" + " days",
+        "twenty-three days", "Twenty three nights", "twenty-three-day",
         "up to 23 days.", "(23 nights)",
         "**23** days", "*23* days", "_23_ nights", "`23` days", "(23) days", "23 *days*", "**23 days**",
         "'23' days", "23 (days)", "label,23 days", "Length.23 days", "a;23 nights",
@@ -319,16 +335,16 @@ def test_a_cap_in_other_words_is_left_to_the_hand_read(text: str) -> None:
 @pytest.mark.parametrize(
     ("text", "expected"),
     [
-        ("Session 2&#51; starts.\nPage 2%33.\n", [(1, 9), (2, 6)]),
-        ("Session 23 and 2&#51;.\n", [(1, 9), (1, 16)]),
-        ("Session 23 &amp; more.\n", [(1, 9)]),
-        ("Up to 2&#51; days.\n", []),
-        ("Page 2&#52;.\n", []),
+        ("Session " + BACKSLASH + "b23 starts.\n", [(1, 11)]),
+        ("Session 23 and " + BACKSLASH + "b23.\n", [(1, 9), (1, 18)]),
+        ("Session 23 " + BACKSLASH + "t more.\n", [(1, 9)]),
+        ("Up to " + BACKSLASH + "b23 days.\n", []),
+        ("Page " + BACKSLASH + "b24.\n", []),
     ],
     ids=["escaped", "plain-and-escaped", "plain-once", "escaped-leak", "another-number"],
 )
 def test_candidates_read_an_escaped_number_once(text: str, expected: list[tuple[int, int]]) -> None:
-    """The hand-read reads a file as the enforcing scan does: decoded too, each occurrence once."""
+    """The hand-read reads a file as the enforcing scan does: both readings, each occurrence once."""
     assert hook.bare_numbers(text, VALUES) == expected
 
 
@@ -421,50 +437,45 @@ def test_candidates_needs_the_family_rule(tmp_path: Path, capsys: pytest.Capture
 # --------------------------------------------------------------------------
 
 
-def test_a_decoded_reading_adds_no_second_hit_for_the_same_occurrence() -> None:
+def test_a_second_reading_adds_no_second_hit_for_the_same_occurrence() -> None:
     """A line read twice reports each occurrence once."""
-    assert family("Quillhaven &amp; Quillhaven\n") == [(1, "word"), (1, "word")]
-    assert family("Quillhaven &amp; Quill&#104;aven\n") == [(1, "word"), (1, "word")]
+    assert family("Quillhaven " + BACKSLASH + "bx Quillhaven\n") == [(1, "word"), (1, "word")]
+    assert family("Quillhaven " + BACKSLASH + "bQuillhaven\n") == [(1, "word"), (1, "word")]
 
 
 def test_a_plain_and_a_different_escaped_occurrence_on_one_line_are_both_reported(tmp_path: Path) -> None:
     """Failure injection: excuse the plain occurrence, and the escaped one beside it must still fail."""
-    text = "Quillhaven%41 and %51uillhaven\n"
+    text = "Quillhaven and " + BACKSLASH + "bQuillhaven\n"
     assert family(text) == [(1, "word"), (1, "word")]
-    # A decoded occurrence is the same as a plain one only where their spans in the file meet.
-    assert len(family("&#81;&#81;&#81; &#81;uillhaven Quillhaven\n")) == 2
+    # An occurrence of the second reading is the same as a plain one only where their spans meet.
+    assert len(family(BACKSLASH + "bQuillhaven Quillhaven\n")) == 2
     report = run_family(tmp_path, {"docs/a.md": text}, (family_row(text, 1),))
-    assert [(hit.line_number, hit.column) for hit in report.hits] == [(1, 19)]
+    assert [(hit.line_number, hit.column) for hit in report.hits] == [(1, 18)]
 
 
 @pytest.mark.parametrize(
     ("text", "columns"),
     [
-        ("a %41 then %51uillhaven\n", [12]),
-        ("&#81;uillhaven\n", [1]),
-        ("Plain line.\nx &amp; y &#81;uillhaven and QHV\n", [11, 30]),
-        ("a %41 then Quillhaven\n", [12]),
+        ("a " + BACKSLASH + "bx then " + BACKSLASH + "bQuillhaven\n", [14]),
+        (BACKSLASH + "bQuillhaven\n", [3]),
+        ("Plain line.\nx " + BACKSLASH + "by " + BACKSLASH + "bQuillhaven and QHV\n", [9, 24]),
+        ("a " + BACKSLASH + "bx then Quillhaven\n", [12]),
     ],
-    ids=["percent-escape", "character-reference", "second-line", "plain-after-an-escape"],
+    ids=["escape-then-value", "escape-at-line-start", "second-line", "plain-after-an-escape"],
 )
 def test_every_occurrence_is_reported_at_its_column_in_the_file(text: str, columns: list[int]) -> None:
-    """A decoding shortens the line, so a decoded occurrence is placed by the file's characters it came from."""
+    """The second reading keeps every character where the file has it, so a hit after an escape is at its column."""
     assert [hit.column for hit in hook.find_hits(text, "x.md", "family", VALUES)] == columns
 
 
 def test_a_candidate_is_listed_at_its_column_in_the_file() -> None:
-    assert hook.bare_numbers("a %41 then 2%33 more\n", VALUES) == [(1, 12)]
+    assert hook.bare_numbers("a " + BACKSLASH + "bx then " + BACKSLASH + "b23 more\n", VALUES) == [(1, 14)]
 
 
-def test_a_decoded_line_break_keeps_the_file_s_line_numbers() -> None:
-    """A character reference for a line break does not move a later hit to another line."""
-    assert family("a&#10;b\nQuillhaven\n") == [(2, "word")]
-
-
-def test_a_decoded_line_break_does_not_cut_a_row_s_words() -> None:
-    """A row binds to the words of the occurrence's own line in the file, a decoded break or not."""
-    hits = hook.find_hits("See a&#10;b &#81;uillhaven here.\n", "x.md", "family", VALUES)
-    assert [hit.context for hit in hits] == [hook.value_digest("context", "See a b Quillhaven here.")]
+def test_a_hit_after_an_escape_binds_to_the_words_of_its_line() -> None:
+    """A row binds to the line's words as the second reading reads them, with the escape set aside."""
+    hits = hook.find_hits("See " + BACKSLASH + "bx " + BACKSLASH + "bQuillhaven here.\n", "x.md", "family", VALUES)
+    assert [hit.context for hit in hits] == [hook.value_digest("context", "See x Quillhaven here.")]
 
 
 def test_each_occurrence_is_reported() -> None:
@@ -861,7 +872,6 @@ def test_a_destination_name_is_found_wherever_the_file_writes_it(text: str) -> N
         ("Osaka's markets", "Osaka"),
         ("the shinkansen", "shinkansen"),
         ("Kyoto-style", "Kyoto"),
-        ("Tok" + "&#121;" + "o", "Tokyo"),
         ("grep -E '" + BACKSLASH + "bOsaka" + BACKSLASH + "b'", "Osaka"),
     ],
 )
@@ -877,69 +887,48 @@ def test_other_words_are_not_destination_names(text: str) -> None:
     assert destination(text + "\n") == []
 
 
-def test_every_tracked_pack_folder_name_joins_the_list(tmp_path: Path) -> None:
+def test_the_walk_finds_each_of_the_five_names_in_any_case(
+    tmp_path: Path, made_up_family: None, capsys: pytest.CaptureFixture[str]
+) -> None:
+    """The rule's own list, not the suite's copy of it, finds each of the five, whatever its case."""
+    root = make_repo(tmp_path, {"framework/a.md": "japan TOKYO Kyoto osaka SHINKANSEN\n"})
+    assert hook.main(["--rule", "destination"], root=root) == 1
+    found = [line.split('"')[1] for line in capsys.readouterr().out.splitlines()]
+    assert found == ["japan", "TOKYO", "Kyoto", "osaka", "SHINKANSEN"]
+
+
+def test_a_pack_folder_adds_no_destination_name(
+    tmp_path: Path, made_up_family: None, capsys: pytest.CaptureFixture[str]
+) -> None:
+    """DP-21: the destination rule reads the five names AC-16-1 gives; a folder under ``destinations/`` adds none."""
+    text = "Zemblan food, North Quarland trips, Tokyo Bay, Route 66 and routes.\n"
     root = make_repo(
         tmp_path,
         {
-            "destinations/zembla/README.md": "Pack.\n",
-            "destinations/north_quarland/reference/a.md": "Pack.\n",
-            "destinations/README.md": "Packs.\n",
+            "destinations/zembla/a.md": "Pack.\n",
+            "destinations/north_quarland/a.md": "Pack.\n",
+            "destinations/route66/a.md": "Pack.\n",
+            "framework/a.md": text,
         },
     )
-    names = hook.destination_names(root)
-    assert names[: len(FIVE_NAMES)] == FIVE_NAMES
-    assert names[len(FIVE_NAMES) :] == (("north", "quarland"), ("zembla",))
-    assert destination("Zemblan food\n", names) == ["Zemblan"]
-    assert destination("North Quarland trip\n", names) == ["North Quarland"]
-    assert destination("North of here, Quarland\n", names) == []
-
-
-def test_a_pack_folder_git_does_not_track_adds_no_name(tmp_path: Path) -> None:
-    """A folder on one machine only would fail that machine's runs and nobody else's."""
-    root = make_repo(tmp_path, {"destinations/zembla/README.md": "Pack.\n"})
-    (root / "destinations" / "scratch").mkdir()
-    (root / "destinations" / "scratch" / "notes.md").write_text("Local notes.\n", encoding="utf-8")
-    assert hook.destination_names(root) == (*FIVE_NAMES, ("zembla",))
-    assert destination("A scratch note.\n", hook.destination_names(root)) == []
-
-
-def test_a_pack_name_that_begins_with_another_name_is_reported_as_itself(
-    tmp_path: Path, made_up_family: None, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
-) -> None:
-    """A row for the shorter name cannot hide the longer pack name that starts at the same word."""
-    text = "See Tokyo Bay today.\n"
-    row = ("framework/a.md", "Tokyo", hook.occurrence_context(text, 4, 9), 1, "a test row")
-    monkeypatch.setattr(hook, "DESTINATION_EXEMPTIONS", (row,))
-    root = make_repo(tmp_path / "without", {"destinations/japan/a.md": "Pack.\n", "framework/a.md": text})
-    assert hook.main(["--rule", "destination"], root=root) == 0, "control: with no such pack, the row excuses Tokyo"
-    root = make_repo(tmp_path / "with", {"destinations/tokyo-bay/a.md": "Pack.\n", "framework/a.md": text})
-    names = hook.destination_names(root)
-    hits = hook.find_hits(text, "framework/a.md", "destination", names=names)
-    assert [hit.occurrence for hit in hits] == ["Tokyo Bay"]
     assert hook.main(["--rule", "destination"], root=root) == 1
-    assert 'framework/a.md:1:5: the destination name "Tokyo Bay"' in capsys.readouterr().out
+    assert [line.split('"')[1] for line in capsys.readouterr().out.splitlines()] == ["Tokyo"]
 
 
-@pytest.mark.parametrize("order", ["shorter first", "longer first"])
-def test_of_two_names_that_cover_the_same_letters_the_longer_is_reported(order: str) -> None:
-    """A pack ``foo`` and a pack ``foobar`` both match ``Foobar``; the hit is the longer pack's."""
-    names = (("foo",), ("foobar",)) if order == "shorter first" else (("foobar",), ("foo",))
-    hits = hook.find_hits("See Foobar today.\n", "framework/a.md", "destination", names=names)
-    assert [(hit.occurrence, hit.label) for hit in hits] == [("Foobar", "foobar")]
-
-
-def test_a_pack_name_with_digits_is_read_as_itself(
-    tmp_path: Path, made_up_family: None, capsys: pytest.CaptureFixture[str]
-) -> None:
-    """A pack folder ``route66`` stands for "route 66", not for every word that begins with ``route``."""
-    text = "Take the routes you like.\nDrive Route 66 west.\nroute66 notes\nRoute 660 is another road.\nIn 2024.\n"
-    root = make_repo(
-        tmp_path,
-        {"destinations/route66/a.md": "Pack.\n", "destinations/2024/a.md": "Pack.\n", "framework/a.md": text},
-    )
-    assert hook.destination_names(root)[len(FIVE_NAMES) :] == (("route", "66"),)
-    assert hook.main(["--rule", "destination"], root=root) == 1
-    assert [line.split('"')[1] for line in capsys.readouterr().out.splitlines()] == ["Route 66", "route66"]
+@pytest.mark.parametrize(
+    ("text", "found"),
+    [
+        ("Mount Fuji views", ["Mount Fuji"]),
+        ("Mount\nFuji", ["Mount\nFuji"]),
+        ("Fountain Fuji", []),
+        ("Mount\n\nFuji", []),
+        ("Mount 5 Fuji", []),
+    ],
+    ids=["phrase", "across-a-line-break", "another-first-word", "across-a-blank-line", "across-a-digit"],
+)
+def test_a_two_word_destination_name_matches_its_words_as_a_phrase(text: str, found: list[str]) -> None:
+    """None of the five has two words, but ``AC-16-1`` may add one: its words match in order, as a phrase."""
+    assert destination(text + "\n", (("mount", "fuji"),)) == found
 
 
 def test_a_destination_name_beside_digits_is_still_found() -> None:
@@ -964,23 +953,10 @@ def test_each_regular_expression_escape_in_a_grep_pattern_is_read(escape: str) -
     assert family("grep -E '23" + BACKSLASH + "d*days' .\n") == [], "control: a digit escape is another number"
 
 
-def test_a_linked_pack_folder_adds_no_name(tmp_path: Path) -> None:
-    """Git records a link as one file, so a linked folder holds no tracked file."""
-    target = tmp_path / "elsewhere" / "zembla"
-    target.mkdir(parents=True)
-    (target / "README.md").write_text("Pack.\n", encoding="utf-8")
-    root = make_repo(tmp_path / "repo", {"README.md": "Root.\n"})
-    (root / "destinations").mkdir()
-    make_link(root / "destinations" / "zembla", target, "symlink")
-    subprocess.run(["git", "-C", str(root), "add", "-A"], check=True)
-    assert "destinations/zembla" in hook.tracked_files(root)
-    assert hook.destination_names(root) == FIVE_NAMES
-
-
-def test_a_run_that_cannot_list_the_packs_fails(
+def test_a_run_that_cannot_list_the_tracked_files_fails(
     tmp_path: Path, made_up_family: None, capsys: pytest.CaptureFixture[str]
 ) -> None:
-    """Failure injection: without Git's list, the pack names are unknown, so the run does not pass."""
+    """Failure injection: without Git's list, the run cannot tell what is tracked, so it does not pass."""
     (tmp_path / "framework").mkdir()
     (tmp_path / "framework" / "a.md").write_text("Clean.\n", encoding="utf-8")
     assert hook.main(["--rule", "destination", "framework/a.md"], root=tmp_path) == 1
@@ -1048,22 +1024,6 @@ def test_a_destination_name_in_a_framework_path_fails_the_run(
     assert hook.main(["--rule", "destination"], root=root) == 0
 
 
-def test_an_escaped_destination_name_in_a_path_gets_a_row_that_excuses_it(
-    tmp_path: Path, made_up_family: None, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
-) -> None:
-    """``--exemption-rows`` prints a row whose context holds its decoded name, so the row passes the data check."""
-    root = make_repo(tmp_path, {"framework/%54okyo.md": "Clean.\n", "framework/b.md": "Clean.\n"})
-    assert hook.main(["--rule", "destination", "--exemption-rows"], root=root) == 0
-    printed = [ast.literal_eval(line.strip().rstrip(",")) for line in capsys.readouterr().out.strip().splitlines()]
-    assert [(row[0], row[1], row[2]) for row in printed] == [
-        ("framework/%54okyo.md", "Tokyo", "(path) framework/Tokyo.md")
-    ]
-    rows = tuple(row[:4] + ("a test row",) for row in printed)
-    assert hook.check_exemption_rows("destination", rows) == []
-    monkeypatch.setattr(hook, "DESTINATION_EXEMPTIONS", rows)
-    assert hook.main(["--rule", "destination"], root=root) == 0
-
-
 @pytest.mark.parametrize(
     ("rule", "name", "path_message"),
     [
@@ -1114,8 +1074,9 @@ def test_a_path_s_own_rules_are_flags_on_the_one_loop() -> None:
     """A path hit is on line 0, a family hit in a path keeps no context, and a destination hit's is the path."""
     [hit] = hook.find_hits("docs/Quillhaven.md", "docs/Quillhaven.md", "family", VALUES, in_path=True)
     assert (hit.line_number, hit.column, hit.context, hit.in_path) == (0, 6, "", True)
-    [hit] = hook.find_hits("framework/%54okyo.md", "framework/%54okyo.md", "destination", names=FIVE_NAMES, in_path=True)
-    assert (hit.line_number, hit.column, hit.occurrence, hit.context) == (0, 11, "Tokyo", "(path) framework/Tokyo.md")
+    name = "framework/" + BACKSLASH + "bTokyo.md"
+    [hit] = hook.find_hits(name, name, "destination", names=FIVE_NAMES, in_path=True)
+    assert (hit.line_number, hit.column, hit.occurrence, hit.context) == (0, 13, "Tokyo", "(path) framework/  Tokyo.md")
     [hit] = hook.find_hits("See Quillhaven.\n", "x.md", "family", VALUES)
     assert (hit.line_number, hit.column, hit.in_path) == (1, 5, False) and len(hit.context) == 64
 
@@ -1151,35 +1112,30 @@ def test_a_family_value_in_a_path_fails_the_run_and_is_never_printed(
 
 
 @pytest.mark.parametrize(
-    ("rule", "name", "shown"),
+    ("rule", "name", "label"),
     [
-        ("family", "docs/%51uillhaven.md", "docs/<family value>.md"),
-        ("family", "docs/&#81;uillhaven/a.md", "docs/<family value>/a.md"),
-        ("destination", "framework/%54okyo.md", "framework/%54okyo.md"),
+        ("family", "docs/" + BACKSLASH + "bquillhaven.md", "word"),
+        ("destination", "framework/" + BACKSLASH + "bTokyo.md", "tokyo"),
     ],
+    ids=["family", "destination"],
 )
-def test_an_escaped_value_in_a_path_is_found(
-    tmp_path: Path, made_up_family: None, capsys: pytest.CaptureFixture[str], rule: str, name: str, shown: str
-) -> None:
-    """A path is read as written and decoded, as a file's text is."""
-    root = make_repo(tmp_path, {name: "Clean.\n", "docs/b.md": "Clean.\n", "framework/b.md": "Clean.\n"})
-    assert hook.main(["--rule", rule], root=root) == 1
-    out = capsys.readouterr().out
-    assert out.startswith(shown + ": the file's path holds")
-    assert "uillhaven" not in out
+def test_an_escaped_value_in_a_path_is_found(rule: str, name: str, label: str) -> None:
+    """A path is read in both readings, as a file's text is, so a value after a backslash escape is found."""
+    hits = hook.find_hits(name, name, rule, VALUES, names=FIVE_NAMES, in_path=True)
+    assert [(hit.label, hit.in_path) for hit in hits] == [(label, True)]
 
 
 def test_every_form_of_a_family_value_is_masked_and_a_bare_number_is_not(
     tmp_path: Path, made_up_family: None, capsys: pytest.CaptureFixture[str]
 ) -> None:
-    """Words, codes and stated numbers are masked as written and escaped. A bare number is printed as it is:
-    it is not a family value, and masking it where it stands would print which number the family's is."""
+    """Words, codes and stated numbers are masked, after a backslash escape too. A bare number is printed as it
+    is: it is not a family value, and masking it where it stands would print which number the family's is."""
     root = make_repo(
         tmp_path,
         {
-            "framework/%51uillhaven_osaka.md": "Clean.\n",
-            "framework/2%33_days_kyoto.md": "Clean.\n",
-            "framework/QH%56-tokyo.md": "Clean.\n",
+            "framework/quillhaven_osaka.md": "Clean.\n",
+            "framework/23_days_kyoto.md": "Clean.\n",
+            "framework/QHV-tokyo.md": "Clean.\n",
             "framework/23_japan.md": "Clean.\n",
         },
     )
@@ -1189,7 +1145,11 @@ def test_every_form_of_a_family_value_is_masked_and_a_bare_number_is_not(
     assert "framework/<family value>_kyoto.md: the file's path holds" in out
     assert "framework/<family value>-tokyo.md: the file's path holds" in out
     assert "framework/23_japan.md: the file's path holds" in out
-    assert "%51" not in out and "%33" not in out and "%56" not in out
+    escaped = "grep " + BACKSLASH + "bQuillhaven, " + BACKSLASH + "b23 days and " + BACKSLASH + "bQHV"
+    masked = (
+        "grep " + BACKSLASH + "b<family value>, " + BACKSLASH + "b<family value> and " + BACKSLASH + "b<family value>"
+    )
+    assert hook.redact(escaped, VALUES) == masked
 
 
 def test_every_message_about_a_value_named_path_prints_it_masked(

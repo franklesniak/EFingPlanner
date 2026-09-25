@@ -41,20 +41,17 @@ What a match is
 A file is read as it is written, every character of it: a value inside a
 fenced or indented code block, an HTML comment, a link's text or its path
 is written in the file all the same, and a comment is still published with
-it. A line that holds a character reference, a percent escape or a
-backslash is read a second time with those decoded, so ``&#99;`` or ``%63``
-does not hide a letter, and a word or number right after a one-letter
-backslash escape, such as a regular expression's ``\\b``, ``\\A`` or ``\\s``, is
-read without the escape's letter. Each character of the decoded reading
-keeps the span of the file it came from, so every hit is reported at the
-file's own line and column. A decoded occurrence that covers some of the
-same characters of the file as a plain occurrence of the same value is the
-same occurrence and counts once; any other decoded occurrence counts on its
-own, beside a plain one on the same line. Each file's repository-relative
-path is read too, as one more line of the file, by the same loop as its
-text, so every way the text is read, the path is read too: a value or a
-name in a file's or a folder's name is a hit, escaped or not, and a bare
-number in it is a candidate, a binary file's included.
+it. A line that holds a backslash is read a second time with each
+one-letter backslash escape before a word or a number, such as a regular
+expression's ``\\b``, ``\\A`` or ``\\s``, blanked out where it stands,
+so the word or number after it is read whole and every hit keeps the
+file's own line and column. An occurrence both readings see counts once;
+an occurrence only the second reading sees counts on its own, beside a
+plain one on the same line. A percent escape and a character reference
+are read as written (DP-21). Each file's repository-relative path is read
+too, as one more line of the file, by the same loop as its text: a value
+or a name in a file's or a folder's name is a hit, and a bare number in it
+is a candidate, a binary file's included.
 
 * A **word** value matches a run of letters, or two or three runs in a row
   separated by anything but digits and a blank line, in any case. The last
@@ -98,18 +95,9 @@ number in it is a candidate, a binary file's included.
   full days"), and a cap with no unit or label ("the trip cannot go past
   N"), are left to that hand-read.
 * A **destination** name matches a word that begins with it, in any case,
-  so a demonym or a path segment into a pack matches. Where two names
-  match from the same word, the longer match is reported, and of two that
-  cover the same letters the longer name, so a pack name that begins with
-  another name is found as itself. The names are the five ``AC-16-1``
-  gives, and the name of every folder under ``destinations/`` that holds a
-  file Git tracks, so a local folder nobody committed adds no name and a
-  run in CI reads the same list as a run on a laptop. A folder's name, and
-  the text this rule reads, are split into runs of letters and runs of
-  digits, so a folder ``route66`` is the name "route 66", found as
-  ``route66`` or ``Route 66``, and not every word that begins with
-  ``route``. A run of digits matches only a whole run, and a folder whose
-  name holds no letter adds no name.
+  so a demonym or a path segment into a pack matches. The names are the
+  five ``AC-16-1`` gives. A folder under ``destinations/`` adds no name
+  (DP-21): no pack name beyond the five caught anything on any branch.
 
 Exemptions
 ----------
@@ -125,8 +113,8 @@ row for a file Git no longer tracks is stale there. ``--exemption-rows``
 prints a row for each unexcused match, for a maintainer to review and paste
 in with a reason; where a row already covers the same words too few times,
 the printed row counts them all and replaces it. A destination name in a
-path is excused by a row whose context is ``(path)`` and the path, decoded
-when the name was escaped. A family value in a path is never excused,
+path is excused by a row whose context is ``(path)`` and the path, as the
+rule reads it. A family value in a path is never excused,
 because its row would spell the value: rename the file. No row is printed
 whose path or words hold a family value, under either rule.
 
@@ -141,8 +129,9 @@ A malformed value row stops both rules before either prints anything read
 from the repository, since a row the data check cannot read masks nothing.
 While one stands, an argument error or an unexpected error prints a fixed
 line in place of its message, and a row error names the row by number, not
-by what it holds. A value is masked as it is written, escaped or not, and
-so is an argument error, which names the argument it could not read. After
+by what it holds. A value is masked as it is written, after a backslash
+escape or not, and so is an argument error, which names the argument it
+could not read. After
 the masking, a character a terminal would not print as itself, such as a
 line break, a carriage return or the escape that starts a terminal
 sequence, is written as its escape, so a file's name cannot add a line to
@@ -197,15 +186,18 @@ Threat model
 ------------
 The hook guards against a family value that an author writes or pastes
 into a tracked file by accident: typed, wrapped over a line, in a heading,
-a link or a grep pattern, in a pasted URL or HTML fragment, which carries
-one level of percent escapes or character references, in a file's or a
-folder's name, under a checkout setting such as ``core.symlinks``, or in
-any layout of the repository. That is what ``AC-29-2``'s grep asks, and
-what the privacy rules' "public framework, private trip work" protects.
-Deliberate obfuscation, text built to slip past the hook, is out of scope:
-a person who would build it can skip a pre-commit hook or publish
-elsewhere, so no check here could stop them. A finding that needs such
-text is answered by this section and the list below, not by new matching.
+a link or a grep pattern, in a pasted URL or HTML fragment as it is
+written, in a file's or a folder's name, under a checkout setting such as
+``core.symlinks``, or in any layout of the repository. Of the ways text
+can be escaped, it reads one level of one-letter backslash escapes only,
+the kind a grep pattern carries; a percent escape and a character
+reference are read as written, and "Known limits" below lists both. That
+is what ``AC-29-2``'s grep asks, and what the privacy rules' "public
+framework, private trip work" protects. Deliberate obfuscation, text built to slip
+past the hook, is out of scope: a person who would build it can skip a
+pre-commit hook or publish elsewhere, so no check here could stop them.
+A finding that needs such text is answered by this section and the list
+below, not by new matching.
 
 Known limits
 ------------
@@ -222,15 +214,15 @@ person's read, to ``--candidates``, or to another check:
   code in lower case or inside a longer identifier, a word value inside
   a longer word, and a superscript digit or a fraction joined to a word or
   a unit, such as a footnote marker, which Python reads as a letter.
-* An encoding other than one level of a character reference, a percent
-  escape or a one-letter backslash escape: an escape inside another escape,
-  as in a URL encoded twice; a numeric character reference padded past 32
-  digits; ``\\uXXXX``, ``\\xXX``, octal, base64 or a cipher; and a
-  character reference split over two lines. Each is text built to hide a
-  value, which the threat model above leaves out.
+* A percent escape, such as ``%63``, and a character reference, such as
+  ``&#99;``: each is read as written, so a value spelled with one is not
+  found. No tracked file on any branch hid a value in one (DP-21).
+* Any other encoding: an escape inside another escape, ``\\uXXXX``,
+  ``\\xXX``, octal, base64 and a cipher are text built to hide a value,
+  which the threat model above leaves out.
 * A value the lists do not hold: a relative the BUILD RULE line does not
-  name, and a destination name that is neither one of the five nor a pack
-  folder's name, such as a second city or a landmark.
+  name, and a destination name other than the five, such as a pack
+  folder's own name, a second city or a landmark.
 * What the hook does not read: ``docs/spec/``, untracked files, a binary
   file's bytes, a submodule's content (refused, not read), Git history,
   commit messages, branch and tag names, pull request text and issues.
@@ -254,7 +246,6 @@ import argparse
 import bisect
 import functools
 import hashlib
-import html
 import os
 import re
 import stat
@@ -262,7 +253,6 @@ import subprocess
 import sys
 import traceback
 import unicodedata
-import urllib.parse
 from collections.abc import Callable, Iterable, Sequence
 from dataclasses import dataclass
 from pathlib import Path
@@ -569,8 +559,6 @@ KINDS = ("word", "code", "number")
 FAMILY_SKIPPED_PREFIXES = ("docs/spec/",)
 #: The destination rule reads only these.
 DESTINATION_SCOPE_PREFIXES = ("framework/",)
-#: Where the destination packs live. Each folder's name is a destination name.
-DESTINATIONS_DIRECTORY = "destinations"
 #: How many words either side of an occurrence bind an exemption to it.
 CONTEXT_WORDS = 3
 #: The longest word value, in letter runs, that ``--hash`` accepts.
@@ -582,9 +570,6 @@ MAX_VALUE_WORDS = 3
 
 #: A run of letters. ``\w`` less digits and the underscore.
 LETTER_RUN = re.compile(r"[^\W\d_]+")
-#: A run of letters or a run of digits: how a destination name, and the text
-#: the destination rule reads, are split, so a pack folder's digits count.
-NAME_RUN = re.compile(r"[^\W\d_]+|\d+")
 #: A run of letters, digits and underscores: the unit a code value must fill.
 WORD_RUN = re.compile(r"\w+")
 HEX_DIGEST = re.compile(r"[0-9a-f]{64}")
@@ -905,7 +890,7 @@ class Hit:
     #: The exemption key's context: a digest for a family value, the words
     #: themselves for a destination name.
     context: str
-    #: What the hit is, for merging the plain and decoded readings.
+    #: What the hit is, for merging the plain reading and the second one.
     value_key: str
     #: Whether the occurrence is in the file's repository-relative path, not
     #: its text. Such a hit's line is 0 and its column counts from the path's
@@ -972,36 +957,24 @@ def line_starts_of(text: str) -> list[int]:
 
 
 class Reading:
-    """One reading of a file: its text, and where each of its characters came from.
+    """One reading of a file: its text, character for character where the file has it.
 
-    The plain reading is the file itself. A decoded reading also holds, for
-    each of its characters, the span of the file's characters it was decoded
-    from, so a hit in it is placed, and matched against the plain reading's
-    hits, by where it stands in the file.
+    The plain reading is the file itself. The second reading blanks each
+    backslash escape before a word where it stands, so both readings have
+    the file's length, and a hit in either is placed, and matched against
+    the other's hits, by the same offsets.
     """
 
-    def __init__(
-        self,
-        text: str,
-        source: str | None = None,
-        starts: list[int] | None = None,
-        ends: list[int] | None = None,
-    ) -> None:
+    def __init__(self, text: str) -> None:
         self.text = text
-        self.starts = starts
-        self.ends = ends
-        self.line_starts = line_starts_of(text if source is None else source)
+        self.line_starts = line_starts_of(text)
 
     def source_span(self, start: int, end: int) -> tuple[int, int]:
-        """Return the file's span for this reading's ``text[start:end]``."""
-        if self.starts is None or self.ends is None:
-            return start, end
-        return self.starts[start], self.ends[end - 1]
+        """Return the file's span for this reading's ``text[start:end]``: the same span."""
+        return start, end
 
     def position(self, offset: int) -> tuple[int, int]:
         """Return the file's ``(line, column)`` for this reading's ``offset``."""
-        if self.starts is not None:
-            offset = self.starts[offset]
         line = bisect.bisect_right(self.line_starts, offset)
         return line, offset - self.line_starts[line - 1] + 1
 
@@ -1010,94 +983,23 @@ class Reading:
 #: or class of a regular expression (``\b``, ``\A``, ``\s``, ``\Q`` and the
 #: rest, which differ by flavor), or a line break, tab or other control
 #: escape. Read as written, its letter joins the word or starts it. The
-#: decoded reading drops any such letter, and the plain reading keeps it, so
-#: a word that merely starts after a backslash, as in a Windows path, is
-#: still read whole in the plain reading.
+#: second reading blanks the escape, and the plain reading keeps it, so a
+#: word that merely starts after a backslash, as in a Windows path, is still
+#: read whole in the plain reading.
 ESCAPE_BEFORE_WORD = re.compile(r"\\[A-Za-z](?=[^\W_])")
 
 
-#: A character reference, as ``html.unescape`` finds one.
-#: The digits are bounded: no character needs more than seven, and
-#: ``html.unescape`` would pass a longer run to ``int()``, which refuses one of
-#: more than 4,300 digits.
-CHARACTER_REFERENCE = re.compile(r"&(#[0-9]{1,32};?|#[xX][0-9a-fA-F]{1,32};?|[^\t\n\f <&#;]{1,32};?)")
-#: A percent escape of an ASCII byte, or a run of escapes of the bytes above
-#: it, which UTF-8 decodes together, as ``urllib.parse.unquote`` does.
-PERCENT_ESCAPE = re.compile(r"%[0-7][0-9A-Fa-f]|(?:%[89A-Fa-f][0-9A-Fa-f])+")
-#: A line break or other control character a decoding can produce.
-DECODED_BREAK = re.compile(r"[\r\n\u2028\u2029\x0b\x0c\x1c-\x1e\x85]")
-
-
-def rewrite(
-    text: str, starts: list[int], ends: list[int], pattern: re.Pattern[str], replace: Callable[[re.Match[str]], str]
-) -> tuple[str, list[int], list[int]]:
-    """Replace each match of ``pattern`` in ``text``, and carry each character's file span along.
-
-    A replacement's characters all take the span of the text they replace.
-    """
-    out: list[str] = []
-    out_starts: list[int] = []
-    out_ends: list[int] = []
-    last = 0
-    for match in pattern.finditer(text):
-        out.append(text[last : match.start()])
-        out_starts += starts[last : match.start()]
-        out_ends += ends[last : match.start()]
-        replacement = replace(match)
-        out.append(replacement)
-        out_starts += [starts[match.start()]] * len(replacement)
-        out_ends += [ends[match.end() - 1]] * len(replacement)
-        last = match.end()
-    out.append(text[last:])
-    out_starts += starts[last:]
-    out_ends += ends[last:]
-    return "".join(out), out_starts, out_ends
-
-
-def decode_line(line: str, offset: int) -> tuple[str, list[int], list[int]]:
-    """Return one line decoded, with each character's span in the file.
-
-    Character references are decoded first and percent escapes second, so a
-    reference that spells a percent escape is decoded twice, as before. A
-    decoded line break becomes a space, and so does a one-letter backslash
-    escape before a letter or a digit.
-    """
-    starts = list(range(offset, offset + len(line)))
-    ends = [start + 1 for start in starts]
-    text, starts, ends = rewrite(line, starts, ends, CHARACTER_REFERENCE, lambda match: html.unescape(match.group()))
-    text, starts, ends = rewrite(
-        text, starts, ends, PERCENT_ESCAPE, lambda match: urllib.parse.unquote(match.group())
-    )
-    text, starts, ends = rewrite(text, starts, ends, ESCAPE_BEFORE_WORD, lambda _match: " ")
-    return rewrite(text, starts, ends, DECODED_BREAK, lambda _match: " ")
-
-
 def readings(text: str) -> list[Reading]:
-    """Return the file as written and, when it holds an escape, decoded.
+    """Return the file as written and, when it holds a backslash escape before a word, with it blanked.
 
-    The decoded reading keeps one line for each line, and each of its
-    characters keeps the span of the file it came from, so a hit in it is
-    reported at the file's line and column.
+    The escape becomes as many spaces as it has characters, so the second
+    reading keeps every line and column of the file.
     """
     found = [Reading(text)]
-    if "&" in text or "%" in text or "\\" in text:
-        parts: list[str] = []
-        starts: list[int] = []
-        ends: list[int] = []
-        offset = 0
-        for number, line in enumerate(text.split("\n")):
-            if number:
-                parts.append("\n")
-                starts.append(offset - 1)
-                ends.append(offset)
-            decoded_line, line_starts, line_ends = decode_line(line, offset)
-            parts.append(decoded_line)
-            starts += line_starts
-            ends += line_ends
-            offset += len(line) + 1
-        decoded = "".join(parts)
-        if decoded != text:
-            found.append(Reading(decoded, text, starts, ends))
+    if "\\" in text:
+        blanked = ESCAPE_BEFORE_WORD.sub(lambda match: " " * len(match.group()), text)
+        if blanked != text:
+            found.append(Reading(blanked))
     return found
 
 
@@ -1175,33 +1077,8 @@ def trip_lengths(text: str, numbers: frozenset[str]) -> list[tuple[int, int, int
     return sorted(found.values())
 
 
-def destination_names(root: Path, tracked: Sequence[str] | None = None) -> tuple[tuple[str, ...], ...]:
-    """Return each destination name as its folded runs of letters and of digits.
-
-    The five names ``AC-16-1`` gives come first, then the name of each folder
-    under ``destinations/`` that holds a file Git tracks (``tracked``, or the
-    repository's own list). A folder that exists only on this machine adds
-    nothing, so a run in CI reads the list a local run reads. Git records a
-    linked folder as one file, so a link adds nothing either, and a folder
-    whose name holds no letter adds nothing. A folder's digits are kept as
-    runs of their own, so ``route66`` adds the name "route 66", not "route".
-    """
-    names: list[tuple[str, ...]] = []
-    for name in DESTINATION_NAMES:
-        names.append(tuple(LETTER_RUN.findall(fold(name))))
-    if tracked is None:
-        tracked = tracked_files(root)
-    prefix = DESTINATIONS_DIRECTORY + "/"
-    folders = {
-        path[len(prefix) :].split("/", 1)[0]
-        for path in tracked
-        if path.startswith(prefix) and path.count("/") >= 2
-    }
-    for folder in sorted(folders):
-        runs = tuple(NAME_RUN.findall(fold(folder)))
-        if any(not run.isdigit() for run in runs) and runs not in names:
-            names.append(runs)
-    return tuple(names)
+#: The five destination names as their folded letter runs, as the finder reads them.
+DESTINATION_RUNS = tuple(tuple(LETTER_RUN.findall(fold(name))) for name in DESTINATION_NAMES)
 
 
 def destination_hits_in_reading(
@@ -1209,18 +1086,14 @@ def destination_hits_in_reading(
 ) -> list[tuple[int, int, str, str]]:
     """Return ``(start, end, name, name)`` for each destination name in ``reading``.
 
-    The text is split as the names are, into runs of letters and runs of
-    digits. A name's last run matches a letter run that begins with it, or a
-    run of digits that equals it; its earlier runs, when it has any, match
-    whole runs.
+    A name's last run matches a letter run that begins with it; its earlier
+    runs, when it has any, match whole runs. No two of the five names begin
+    the same word, so the first that matches is the only one.
     """
     text = reading.text
-    runs = [(match.start(), match.end(), fold(match.group())) for match in NAME_RUN.finditer(text)]
+    runs = letter_runs(text)
     found: list[tuple[int, int, str, str]] = []
     for index in range(len(runs)):
-        # Every name is tried from this word, and the longest match is kept,
-        # so a pack name that begins with another name is reported as itself.
-        longest: tuple[int, str] | None = None
         for name in names:
             last = index + len(name) - 1
             if last >= len(runs):
@@ -1232,14 +1105,10 @@ def destination_hits_in_reading(
                 for position in range(index, last)
             ):
                 continue
-            if runs[last][2] == name[-1] or (not name[-1].isdigit() and runs[last][2].startswith(name[-1])):
+            if runs[last][2].startswith(name[-1]):
                 label = " ".join(name)
-                # Of two names that end at the same letter, the longer is kept.
-                if longest is None or (runs[last][1], len(label)) > (longest[0], len(longest[1])):
-                    longest = (runs[last][1], label)
-        if longest is not None:
-            end, label = longest
-            found.append((runs[index][0], end, label, label))
+                found.append((runs[index][0], runs[last][1], label, label))
+                break
     return found
 
 
@@ -1250,11 +1119,12 @@ Finder = Callable[[Reading], list[tuple[int, int, str, str]]]
 def across_readings(text: str, finder: Finder) -> list[tuple[Reading, int, int, str, str]]:
     """Return ``(reading, start, end, label, value key)`` for each occurrence ``finder`` reports.
 
-    The file is read as written and, when it holds an escape, decoded. A
-    decoded occurrence is dropped only when a plain occurrence of the same
-    value covers some of the same characters of the file, so one occurrence
-    both readings see is reported once, and two occurrences on one line, one
-    plain and one escaped, are both reported. The enforcing scan and the
+    The file is read as written and, when it holds a backslash escape before
+    a word, with that escape blanked. An occurrence of the second reading is
+    dropped only when a plain occurrence of the same value covers some of the
+    same characters, so one occurrence both readings see is reported once,
+    and two occurrences on one line, one plain and one after an escape, are
+    both reported. The enforcing scan and the
     ``--candidates`` hand-read both read a file this way.
     """
     text = text.replace("\r\n", "\n").replace("\r", "\n")
@@ -1289,7 +1159,7 @@ def find_hits(
     The path's own rules are these flags and no more: its hits are on line
     0; a family hit in it keeps no context, since no row may excuse it; and
     a destination hit's context is ``(path)`` and the path as its reading
-    reads it, so a decoded name stands in its own row's context.
+    reads it, so a name after an escape stands in its own row's context.
     """
     if rule == "family":
         assert values is not None
@@ -1323,8 +1193,8 @@ def bare_numbers(text: str, values: FamilyValues) -> list[tuple[int, int]]:
     """Return ``(line, column)`` for each bare trip-length number, for a hand-read.
 
     A number the family rule already reports as a trip length is left out.
-    The file is read as the enforcing scan reads it, decoded too, so an
-    escaped number is listed once.
+    The file is read as the enforcing scan reads it, both readings, so a
+    number after a backslash escape is listed once.
     """
     numbers = values.digests["number"]
 
@@ -1351,8 +1221,8 @@ def redact(text: str, values: FamilyValues) -> str:
 
     ``emit()`` passes every line the script prints through this, under both
     rules, so a path, a context or an error message that holds a value is
-    printed masked whichever rule found it. The text is read as written and
-    decoded, as a file is, so an escaped value is masked where it is written.
+    printed masked whichever rule found it. The text is read as a file is,
+    both readings, so a value after a backslash escape is masked too.
     A bare number is not masked: it is not a family value, and masking the
     family's number wherever it stood, in a session number or a date, would
     print which number it is.
@@ -1683,7 +1553,7 @@ def scan(
         values = FamilyValues.from_rows(FAMILY_VALUES)
     if exemptions is None:
         exemptions = FAMILY_EXEMPTIONS if rule == "family" else DESTINATION_EXEMPTIONS
-    names = destination_names(root) if rule == "destination" else ()
+    names = DESTINATION_RUNS if rule == "destination" else ()
     ledger = Ledger.for_rows(exemptions)
     unexcused: list[Hit] = []
     candidates: list[str] = []
