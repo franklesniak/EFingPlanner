@@ -6,7 +6,9 @@ Each entry is a short, parent-facing overview of one session -- your role, what 
 
 **Whether you need to be there.** A Role line marked *parent-gated* is a session your child waits for you on. *Co-worked* marks one you sit through with them. Any other session is one your child can do on their own, apart from any single step its Role line gives you. A Role line that recommends co-working without that mark still lets your child go ahead. A 5-minute check-in or a review after the session never holds them up. A Role line that says *beforehand* names an answer to give before the session. Sessions 29 and 39 need it to finish, so your child waits for it there. In Session 38, "ask an adult" in the souvenir row is enough.
 
-**Formative checks.** A few entries name a formative check: a quick spoken prompt that shows whether a skill is growing. It is never a graded test. If your child can't yet show their reasoning, turn support up before the next phase begins. It is a different thing from the checkpoint reflection, which looks back at the stretch just finished.
+<!-- density-exempt: X, not Y -- the spec's Session Support Notes keep formative checks as quick spoken prompts, never graded tests -->
+
+**Formative checks.** A few entries name a formative check: a quick spoken prompt that shows whether a skill is growing. It is never a graded test. If your child can't yet show their reasoning, turn support up before the next phase begins. The checkpoint reflection looks back at the stretch just finished.
 
 **The lighter pages in Phases 7 and 8.** From Session 40 on, the Steps and Workspace are short, and your child sets their own Start Here. The signal that a child is ready sooner is two sessions in a row done without needing the When I'm Stuck card or leaning on the written Steps. The Finish and Quality Check closes every session, so using it never counts against them. The pages switch by phase, so a child who shows that signal in Phase 5 still meets the fuller pages through Phase 6. That errs on the side of more support, which is the safer side, and you can step back on your side sooner. Start Here, the Stop Point, the named artifact and the Source Check stay on every page.
 
@@ -159,6 +161,8 @@ Want a rough signal of how the executive-function side is going? The optional [e
 
 ## Session 16: Deep-Dive City A
 
+<!-- density-exempt: X, not Y -- the Pitfall is the field the spec's Session Support Notes require in every entry -->
+
 - Role: Independent, with a 5-minute check-in. This is the Phase 3 hand-off: your child picks their own first step, with one fallback on the page.
 - Prep: a device with the filter on; a timer; this session's Destination Notes; the City A card from Session 15, or a blank City Research Card only if the anchor has no card yet; the Checkpoint 1 season, or the season confirmation if the dates are booked.
 - Look for: City A's card at full depth: top sights, one memorable fact, at least one downside, a season-fit note, and at least one dated source, with a second one suggested. Also a minutes guess and the time taken.
@@ -166,6 +170,8 @@ Want a rough signal of how the executive-function side is going? The optional [e
 - Pitfall: writing the first step for them. If they freeze, point at the fallback and let them choose.
 
 ## Session 17: Deep-Dive City B
+
+<!-- density-exempt: X, not Y -- the Pitfall is the field the spec's Session Support Notes require in every entry -->
 
 - Role: Independent.
 - Prep: this session's Destination Notes; the City A and City B cards; the Checkpoint 1 season, or the season confirmation if the dates are booked.
@@ -182,6 +188,8 @@ Want a rough signal of how the executive-function side is going? The optional [e
 - Pitfall: treating two cities as unfinished. Two is a complete job.
 
 ## Session 19: Other Places Research
+
+<!-- density-exempt: X, not Y -- the Pitfall is the field the spec's Session Support Notes require in every entry -->
 
 - Role: Independent.
 - Prep: this session's Destination Notes; two or three blank City Research Cards; the city and region cards made so far, for the count.
@@ -207,6 +215,8 @@ Want a rough signal of how the executive-function side is going? The optional [e
 
 ## Session 22: Checkpoint 2 City Shortlist
 
+<!-- density-exempt: X, not Y -- the Pitfall is the field the spec's Session Support Notes require in every entry -->
+
 - Role: Parent-gated: parent review; use the recommendation in a family talk. If you left the trip shape partly open at setup, firm it up now, including the departure place. For a family continuing from First Taste, the place of the special pick stays on the shortlist. Only the three blocks can change the pick; if one applies, tell your child which, so Session 23 makes no card for it, and they choose a new pick from their attraction cards with you in Session 26.
 - Prep: a Decision Record page and a blank Parent Review Form; the Trip-Basics card and the assumptions page, for the maximum trip length and the budget band; the My Calls page, for a family continuing from First Taste.
 - Look for: a city shortlist with 2 to 4 bases, or one for a one-base trip, and up to 3 day trips, or none; reasons, sources, every traveler's wish accounted for, with anyone it leaves out named and a traveler still marked in Session 03 asked, by your child or you, or marked "not heard from yet", and a budget-band check. The checkpoint finishes on Approved, or on Approved with changes once they're written in. The other two answers leave it open, and they're still normal results.
@@ -214,6 +224,8 @@ Want a rough signal of how the executive-function side is going? The optional [e
 - Pitfall: choosing the places for them. Weigh their reasons, and say why if you change a pick.
 
 ## Session 23: Attraction Research Cards
+
+<!-- density-exempt: X, not Y -- the Pitfall is the field the spec's Session Support Notes require in every entry -->
 
 - Role: Independent.
 - Prep: this session's Destination Notes; blank Attraction Research Cards; the city shortlist from Checkpoint 2; the city cards for the shortlisted places; the My Calls page, for a family continuing from First Taste.
@@ -223,6 +235,8 @@ Want a rough signal of how the executive-function side is going? The optional [e
 
 ## Session 24: Culture, History, Nature, Food, and Fun Balance
 
+<!-- density-exempt: X, not Y -- the Pitfall is the field the spec's Session Support Notes require in every entry -->
+
 - Role: Independent.
 - Prep: the attraction cards.
 - Look for: a balance chart with every card in a category or on the odd-ones-out line, and one kind of day to add more of, or a note that the mix looks right. A card with no type got one before it was sorted.
@@ -230,6 +244,8 @@ Want a rough signal of how the executive-function side is going? The optional [e
 - Pitfall: fixing a lopsided chart now. Noticing is the job, and Session 26 uses it.
 
 ## Session 25: Review Reviews Carefully
+
+<!-- density-exempt: X, not Y -- the Pitfall is the field the spec's Session Support Notes require in every entry -->
 
 - Role: Co-worked: co-working recommended; stay nearby for both sittings, and alongside for any video. Each sitting sets its timer for 20 minutes at its start, even on the same day.
 - Prep: a device with the filter on; a timer; the attraction cards; the Video form on the simple citation forms page.
@@ -239,6 +255,8 @@ Want a rough signal of how the executive-function side is going? The optional [e
 
 ## Session 26: Rank Attractions
 
+<!-- density-exempt: X, not Y -- the Pitfall is the field the spec's Session Support Notes require in every entry -->
+
 - Role: 5-minute check-in; help co-choose the one unconditional pick, after you show the three blocks. A family continuing from First Taste confirms the pick from Session 44 in one line. If a block now stops it, your child chooses a new one with you, from their attraction cards.
 - Prep: a Scoring Rubric page, for spare copies of the lighter table; extra copies of the session's own fuller table, which you print again or your child copies the questions from; a blank My Calls page from the trip starter kit; the City A card, for the anchor city; a clock or timer, for the minutes guess.
 - Look for: every attraction in one of the four groups, a must-do list short enough to read in one breath, the special pick on the My Calls page and on the must-do list, and a minutes guess with the time taken.
@@ -246,6 +264,8 @@ Want a rough signal of how the executive-function side is going? The optional [e
 - Pitfall: letting the scores decide. Scores inform the choice, and your child makes it.
 
 ## Session 27: Checkpoint 3 Top Experiences
+
+<!-- density-exempt: X, not Y -- the Pitfall is the field the spec's Session Support Notes require in every entry -->
 
 - Role: Parent-gated: parent review; use the recommendation in a family talk. Open by telling your child their special pick stands, and initial it on the My Calls page.
 - Prep: a Decision Record page and a blank Parent Review Form; the My Calls page; the assumptions page, for the budget band; the City A card and the Session 26 scoring tables, for the optional look back at the minutes guesses.
@@ -255,6 +275,8 @@ Want a rough signal of how the executive-function side is going? The optional [e
 
 ## Session 28: Map the Route
 
+<!-- density-exempt: X, not Y -- the Pitfall is the field the spec's Session Support Notes require in every entry -->
+
 - Role: Independent, with a 5-minute check-in.
 - Prep: a device with a map app and the filter on; the city shortlist; the assumptions page, for the arrival and departure places; the city card for any whole region on the shortlist; the Checkpoint 3 must-do list, for a trip with one base.
 - Look for: route map notes with travel times between places, including the two end legs (where the family arrives to the overnight place it visits first, and the one it visits last to where it leaves, each skipped when the two places are the same or not yet set), the times from the base to each must-do on any trip with one base, even with day trips, day trips and overnight stays marked, and a left-to-right sketch.
@@ -263,13 +285,17 @@ Want a rough signal of how the executive-function side is going? The optional [e
 
 ## Session 29: How Long to Stay
 
+<!-- density-exempt: X, not Y -- the Pitfall is the field the spec's Session Support Notes require in every entry -->
+
 - Role: Independent; beforehand, tell your child how long the trips there and home take and which flights land on a later date.
-- Prep: your three travel facts: whether getting there takes only a few hours, whether the trip home does, and a count of the flights that land on a later date, with no dates; the Trip-Basics card's maximum trip length row, for the maximum or the booked length, and the card's time difference; the route map notes; the traveler profiles.
+- Prep: your three travel facts: whether getting there takes only a few hours, whether the trip home does, and a count of the flights that land on a later date; the Trip-Basics card's maximum trip length row, for the maximum or the booked length, and the card's time difference; the route map notes; the traveler profiles.
 - Look for: the real-days formula filled in, with a ½ over the arrival 1 for a short trip there, a ½ over the departure 1 for a short trip home, and a "- 1 flight day" mark for each flight that lands on a later date; and nights for each overnight place that fit between the floor and the maximum, with the floor checked again after any new total, or that share out the booked trip. A place dropped for a shorter or gentler trip is never the one with the special pick. Later changes go down the When the Plan Changes card, then Your plan pages: a flight-day mark by its "A flight-day mark added or taken away?" row, a new way to travel by "How you travel, or your home airport, changed?", a new time zone by "A place with a different time zone?", and a new maximum with open dates by "Your family's maximum trip length changed?". A traveler whose energy, walking or senses change goes down its "A traveler's energy, walking or senses changed?" row.
 - Coaching question: "Where would one more night help most?"
 - Pitfall: treating the maximum as the target. For a mixed-stamina group, shorter and gentler usually works better. A traveler with you for only part of the trip counts only on their days, as their profile says, so lean the part they're there for.
 
 ## Session 30: Trains, Transit, and Travel Cards
+
+<!-- density-exempt: X, not Y -- the Pitfall is the field the spec's Session Support Notes require in every entry -->
 
 - Role: Independent.
 - Prep: this session's Destination Notes; the route map notes; the Trip-Basics card, for the number of travelers; the Checkpoint 3 must-do list and strong maybes; the attraction cards.
@@ -279,29 +305,35 @@ Want a rough signal of how the executive-function side is going? The optional [e
 
 ## Session 31: Route Trade-Off Report
 
+<!-- density-exempt: X, not Y -- the Pitfall is the field the spec's Session Support Notes require in every entry -->
+
 - Role: Independent; parent review after the session.
 - Prep: a Trade-Off Report page; the route map notes, the nights table and the transportation notes; a device with a map app, for any new leg the route needs; the must-dos and strong maybes, for a trip with one base.
-- Look for: a Trade-Off Report comparing at least two routes, or two ways to use one base, with every column filled, a recommendation, and what the family gives up. The special pick and its place are in both. With one base and the pick as the only must-do, two paces around the pick are a fine pair. The rides between places stay on your own page, so its band check shows only the hotels and days.
+- Look for: a Trade-Off Report comparing at least two routes, or two ways to use one base, with every column filled, a recommendation, and what the family gives up. The special pick and its place are in both. With one base and the pick as the only must-do, two paces around the pick are a fine pair. Its band check adds up the hotels and the days, and you price the rides between places on your own page.
 - Coaching question: "Walk me through how you weighed this option against that one." This is the formative check after the route report.
 - Pitfall: weighing it for them. If your child can't show how they weighed it yet, talk through one row together before Phase 6.
 
 ## Session 32: Checkpoint 4 Route and Trip Length
 
+<!-- density-exempt: X, not Y -- the Pitfall is the field the spec's Session Support Notes require in every entry -->
+
 - Role: Parent-gated: parent review; use the recommendation in a family talk. Confirm or adjust the arrival and departure places against current options for getting there. If the first or last place changes, write the new place on the assumptions page, and answer "Approved with changes", or "Needs more research" if the change alters which route works best.
 - Prep: a Decision Record page and a blank Parent Review Form; the Trip-Basics card, for its maximum trip length row, and the assumptions page; the Session 29 nights table and formula; the route map notes and a device with a map app, in case you change where the trip arrives or leaves; the When the Plan Changes card, for any change you approve.
-- Look for: the whole recommendation table filled in: the total days, the cities, the nights in each, the travel days, a shorter backup version that keeps the special pick and its place, reasons, trade-offs, sources, the budget-band check, which shows only the hotels and days because the rides between places stay on your own page, and what a grown-up still needs to check. Total days are the nights plus one, plus the flight days, and a flight-day mark that changes later follows the When the Plan Changes card's "A flight-day mark added or taken away?" row. On a one-base trip, the must-dos the chosen way keeps. With the dates booked, a nights plan with no backup version. Once you approve, each change, including the must-dos the route leaves out, taken down the When the Plan Changes card, with the special pick kept. The checkpoint finishes on Approved, or on Approved with changes once they're written in. The other two answers leave it open, and they're still normal results.
+- Look for: the whole recommendation table filled in: the total days, the cities, the nights in each, the travel days, a shorter backup version that keeps the special pick and its place, reasons, trade-offs, sources, the budget-band check of the hotels and days (you price the rides between places on your own page), and what a grown-up still needs to check. Total days are the nights plus one, plus the flight days, and a flight-day mark that changes later follows the When the Plan Changes card's "A flight-day mark added or taken away?" row. On a one-base trip, the must-dos the chosen way keeps. With the dates booked, the nights plan alone. Once you approve, each change, including the must-dos the route leaves out, taken down the When the Plan Changes card, with the special pick kept. The checkpoint finishes on Approved, or on Approved with changes once they're written in. The other two answers leave it open, and they're still normal results.
 - Coaching question: "Where would this plan feel rushed?"
 - Pitfall: redrawing the route yourself. If the arrival or departure moves, your child moves one block.
 
 ## Session 33: Budget Basics, First Pass
 
-- Role: 5-minute check-in; supply the kid-sized budget band and the number of rooms. If someone comes for only part of the trip, tell your child who is there on which days, by day number with no dates, and use their part-trip note when you set the rooms and book the long rides.
+- Role: 5-minute check-in; supply the kid-sized budget band and the number of rooms. If someone comes for only part of the trip, tell your child who is there on which days, by day number, and use their part-trip note when you set the rooms and book the long rides.
 - Prep: a Budget Estimate page; the assumptions page, for the budget band; the Trip-Basics card, for the number of travelers, or the travelers listed on it if the number says "not decided yet"; on First Taste, the Session 21 recommendation; on the Core path, the route, nights and total days approved at Checkpoint 4, the Session 29 formula, for its "- 1 flight day" marks, or your answer on which flights land on a later date, and the traveler profiles if someone comes for only part of the trip. A calculator is allowed. On the Core path, have your own rough cost of getting there on your own page, ready for your check at Session 39.
-- Look for: a high/medium/low estimate for meals and hotel, checked against the band. The hotel guess is per room, or per person with people in place of rooms where the places charge that way. On First Taste, the rows follow the Session 21 recommendation. On the Core path, the hotel line is one typical nightly price times every approved night and the number of rooms or people, and food uses the plan's total days minus any flight days. A "not sure yet" night uses your number, or says "ask an adult". A word-only answer gets your reading of the band. For a per-day family band, the two-slice estimate is divided by the days used for food, as Session 39 does; for a hotel tier, each hotel is checked against it. If a part still says "ask an adult" or "not sure yet", your child adds up the rest, and writes "not counting ___" beside what they added up, naming what's missing. The band check says what the total leaves out. If a traveler comes for only part of the trip, an optional note on who is there on which days, by day number.
+- Look for: a high/medium/low estimate for meals and hotel, checked against the band. The hotel guess is per room, or per person where the places charge that way, and a per-person guess counts people. On First Taste, the rows follow the Session 21 recommendation. On the Core path, the hotel line is one typical nightly price times every approved night and the number of rooms or people, and food uses the plan's total days minus any flight days. A "not sure yet" night uses your number, or says "ask an adult". A word-only answer gets your reading of the band. For a per-day family band, the two-slice estimate is divided by the days used for food, as Session 39 does; for a hotel tier, each hotel is checked against it. If a part still says "ask an adult" or "not sure yet", your child adds up the rest, and writes "not counting ___" beside what they added up, naming what's missing. The band check says what the total leaves out. If a traveler comes for only part of the trip, an optional note on who is there on which days, by day number.
 - Coaching question: "Do the parts you chose fit our band?"
 - Pitfall: reaching for a real total. The cost of getting there stays off their check; keep it to two slices.
 
 ## Session 34: Neighborhoods and Hotel Location
+
+<!-- density-exempt: X, not Y -- the Pitfall is the field the spec's Session Support Notes require in every entry -->
 
 - Role: Independent; stay nearby for any search beyond the Destination Notes and official city sites, and beside your child for an image search.
 - Prep: this session's Destination Notes; a blank Neighborhood Comparison; the route and nights approved at Checkpoint 4, with the route map notes; the city card for any region on the route, for its town; a guidebook, if you have one; the Trip-Basics card, for the number of travelers; the Session 33 part-trip note, if there is one, for the nights beside the room count; the destination pack's adult-logistics page, where the pack has one, for your room-count check.
@@ -327,6 +359,8 @@ Want a rough signal of how the executive-function side is going? The optional [e
 
 ## Session 37: Restaurant Shortlist
 
+<!-- density-exempt: X, not Y -- the Pitfall is the field the spec's Session Support Notes require in every entry -->
+
 - Role: Conditional core -- becomes Core if your family wants the restaurant and food shortlist in the binder; otherwise it is Recommended. Independent; stay nearby for any search beyond the Destination Notes, and beside your child for an image search. The cards can take more than one sitting, each ending at the end of a card.
 - Prep: blank Restaurant Research Cards; the food wish list; any restaurant cards from an earlier sitting; the hotel cards; the My Calls page; the route approved at Checkpoint 4; the Trip-Basics card, for the number of travelers; the Session 33 part-trip note, if there is one, for the biggest group in each city.
 - Look for: at least one Restaurant Research Card for each main overnight city on the route and nights approved at Checkpoint 4, with its planning assumption rows filled in, and a seating note on each card whose biggest group in its city is bigger than about four. A dining area counts as a card, and the area cards make the dining-area list. If the family left the food list out of the binder, your child may skip this session, even after doing Session 36.
@@ -334,6 +368,8 @@ Want a rough signal of how the executive-function side is going? The optional [e
 - Pitfall: taking a reservation note as settled. You check reservations and payment rules yourself.
 
 ## Session 38: Daily Cost Estimates
+
+<!-- density-exempt: X, not Y -- the Pitfall is the field the spec's Session Support Notes require in every entry -->
 
 - Role: Independent, with a 5-minute check-in; beforehand, tell your child the souvenir amount for one day, for the whole group.
 - Prep: your souvenir amount for one ordinary day, for the whole group, as a rough, kid-sized figure; the budget estimate page from Session 33; the attraction cards and transportation notes; the destination pack's money basics page; the Trip-Basics card, for the number of travelers, or the travelers listed on it if the number says "not decided yet"; a calculator.
@@ -345,11 +381,13 @@ Want a rough signal of how the executive-function side is going? The optional [e
 
 - Role: Independent; beforehand, tell your child how many rooms each overnight city needs. Parent review after the session. Keep your own cost of getting there on your own page.
 - Prep: your answer on how many rooms each overnight city needs, with a count for each part of a stay when the group changes, and, when someone joins for part of the trip, on who is there on which days; the Session 33 budget estimate and a blank Budget Estimate page for this pass; the daily cost table and the hotel cards; the route and nights approved at Checkpoint 4, with the route map notes; the city card for any region on the route, for its town; the My Calls page, for the special pick; the attraction cards and the When the Plan Changes card, if the special pick hits a block or you agree to a change; the Session 33 part-trip note, if there is one, for a row per room count and the traveler-days; the Session 29 formula, for its "- 1 flight day" marks, or your answer on which flights land on a later date; the Trip-Basics card, for the number of travelers, or the travelers listed on it if the number says "not decided yet"; the assumptions page, for the budget band.
-- Look for: a second-pass budget on the fresh page, matching the route and nights approved at Checkpoint 4, with a hotel line for each city in its card's own unit, counting people in place of rooms where the card is per person, and the other slices filled in, the daily slices multiplied by the days on the ground (the total days minus each "- 1 flight day" mark on the Session 29 formula), a row for each room count, or people count where the place is per person, in a city where the number of travelers changes mid-stay, food, local transit and activities priced by traveler-days when someone joins for only part of the trip, with each price Session 38 marked "once" counted for each one needed on each day, times the days on the ground, the special pick's ticket added once to activities, food leaving out any meals a place's price includes, the subtotal added up, the band check counting all five slices in the band's own units, and one sentence on whether the slices fit, saying what it leaves out, with what your child would change if they don't, keeping the special pick and its place. If a part still says "ask an adult" or "not sure yet", your child adds up the rest, and writes "not counting ___" beside what they added up, naming what's missing, on the All hotels line too. Every figure uses one price for each person, the adult price, and counts the whole group unless a step scales it, such as traveler-days. A little high is safe, and you work out the exact numbers. A change you agree to goes down the When the Plan Changes card, a new band by its "Your budget band changed?" row. A new or booked room count goes down its "A different number of rooms?" row, which fixes the Rooms column only where a place charges per room, with a row for each room count and its nights; a per-person place keeps its people count. If who's coming changes, its "Who's coming changed?" row recounts each price written "once", and gives a restaurant card whose group grows past about four a seating note. If a block stopped the special pick, a new one chosen with you, the card's "Your special pick blocked?" row done, and the subtotal and band sentence using the new pick's ticket, added once.
+- Look for: a second-pass budget on the fresh page, matching the route and nights approved at Checkpoint 4, with a hotel line for each city in its card's own unit, counting people where the card is per person, and the other slices filled in, the daily slices multiplied by the days on the ground (the total days minus each "- 1 flight day" mark on the Session 29 formula), a row for each room count, or people count where the place is per person, in a city where the number of travelers changes mid-stay, food, local transit and activities priced by traveler-days when someone joins for only part of the trip, with each price Session 38 marked "once" counted for each one needed on each day, times the days on the ground, the special pick's ticket added once to activities, food leaving out any meals a place's price includes, the subtotal added up, the band check counting all five slices in the band's own units, and one sentence on whether the slices fit, saying what it leaves out, with what your child would change if they don't, keeping the special pick and its place. If a part still says "ask an adult" or "not sure yet", your child adds up the rest, and writes "not counting ___" beside what they added up, naming what's missing, on the All hotels line too. Every figure uses one price for each person, the adult price, and counts the whole group unless a step scales it, such as traveler-days. A little high is safe, and you work out the exact numbers. A change you agree to goes down the When the Plan Changes card, a new band by its "Your budget band changed?" row. A new or booked room count goes down its "A different number of rooms?" row, which fixes the Rooms column only where a place charges per room, with a row for each room count and its nights; a per-person place keeps its people count. If who's coming changes, its "Who's coming changed?" row recounts each price written "once", and gives a restaurant card whose group grows past about four a seating note. If a block stopped the special pick, a new one chosen with you, the card's "Your special pick blocked?" row done, and the subtotal and band sentence using the new pick's ticket, added once.
 - Coaching question: "If it doesn't fit, what would you cut first?"
 - Pitfall: reading the result as the trip's cost. It's a partial floor, and "change the trip or wait" is a good answer.
 
 ## Session 40: Realistic Day Planning
+
+<!-- density-exempt: X, not Y -- the Pitfall is the field the spec's Session Support Notes require in every entry -->
 
 - Role: Independent, with a 5-minute check-in. This is the Phase 7 hand-off: your child sets up the whole session. Lighter page: read the Steps with your child until they manage two sessions in a row without the When I'm Stuck card or leaning on the Steps. Start Here, the Stop Point, the artifact and the Source Check always stay.
 - Prep: the destination pack's airports and arrival page, or the official airport or transport site; the route and nights approved at Checkpoint 4, with the route map notes; the My Calls page; the Checkpoint 3 strong maybes, for an "if nearby" extra; the Trip-Basics card, for how the family gets there; the Session 29 formula, for its ½ marks, which show a short trip there or home, or your answer on how long the trips there and home take; the assumptions page, for the arrival and departure places; a device with a map app.
@@ -360,24 +398,28 @@ Want a rough signal of how the executive-function side is going? The optional [e
 ## Session 41: Build Day Cards
 
 - Role: Independent. Lighter page: read the Steps with your child until they manage two sessions in a row without the When I'm Stuck card or leaning on the Steps. Start Here, the Stop Point, the artifact and the Source Check always stay. Each sitting sets its timer for 20 minutes at its start, even on the same day.
-- Prep: blank Daily Plan Cards; the day rules; the route and nights approved at Checkpoint 4, with the route map notes; the city card for any region on the route, for its town; the hotel and attraction cards; the daily cost table from Session 38; the My Calls page, for the must-do list and its order; the Checkpoint 3 strong maybes, for the "if nearby" ones; the Checkpoint 1 season, or the booked season if you booked a different window, as a broad word with no dates; the assumptions page, for the arrival and departure places; a device with a map app; a timer.
+- Prep: blank Daily Plan Cards; the day rules; the route and nights approved at Checkpoint 4, with the route map notes; the city card for any region on the route, for its town; the hotel and attraction cards; the daily cost table from Session 38; the My Calls page, for the must-do list and its order; the Checkpoint 3 strong maybes, for the "if nearby" ones; the Checkpoint 1 season, or the booked season if you booked a different window, as a broad word such as "late spring"; the assumptions page, for the arrival and departure places; a device with a map app; a timer.
 - Look for: one block Daily Plan Card per city-stay on the route and nights approved at Checkpoint 4, with a main goal, and an anchor, transit notes, a cost and an energy level for each day, the cost being the whole group's, from the Session 38 medium total with that day's own tickets for its activities part, marked "fewer of us" on a day someone is away, which you can lower, or "ask an adult"; the first day, each moving day and the last day set by the Session 40 rules, with the day home as its own row; any travel time your child looked up, in the route map notes.
 - Coaching question: "Which day would you swap if it rained?"
 - Pitfall: asking for per-day cards early. Block cards flex when the dates move.
 
 ## Session 42: Reservations and Timed Entries
 
+<!-- density-exempt: X, not Y -- the Pitfall is the field the spec's Session Support Notes require in every entry -->
+
 - Role: Independent. Lighter page: read the Steps with your child until they manage two sessions in a row without the When I'm Stuck card or leaning on the Steps. Start Here, the Stop Point, the artifact and the Source Check always stay.
 - Prep: this session's Destination Notes; a blank Reservation Watchlist; the Daily Plan Cards; the My Calls page; the attraction cards, to fill a tickets row and if the special pick hits a block; the Session 39 budget summary, the assumptions page and the When the Plan Changes card, if the special pick hits a block; the Trip-Basics card, for whether the dates are booked.
 - Look for: a Reservation Watchlist holding every item on the day cards that might need booking, each marked for whether holding a date matters, with a date checked on each, and, with the dates booked, how far ahead its booking opens under "When adults should check", for you to turn into the date. If the dates are booked after this session, the watchlist becomes an act-early list, as the When the Plan Changes card's "Your dates or your travel got booked?" row says. A booking that changes kind, such as a walk-in place that now needs a timed ticket, goes down its "Something to book added, dropped, moved or changed?" row. If a block stopped the special pick, a new one chosen with you, and its "Your special pick blocked?" row and Your plan pages done.
 - Coaching question: "Which of these could sell out first?"
-- Pitfall: letting the list sit. It's your list to act on, and your child never books.
+- Pitfall: letting the list sit. It's your list to act on, and the booking is yours.
 
 ## Session 43: Rest Days, Jet Lag, and Pacing
 
+<!-- density-exempt: X, not Y -- the Pitfall is the field the spec's Session Support Notes require in every entry -->
+
 - Role: Independent; parent review after the session. Lighter page: read the Steps with your child until they manage two sessions in a row without the When I'm Stuck card or leaning on the Steps. Start Here, the Stop Point, the artifact and the Source Check always stay.
-- Prep: the Daily Plan Cards; the Session 29 formula, for the ½ mark over its departure 1, or your answer on how long the trip home takes; the My Calls page; the Reservation Watchlist and the When the Plan Changes card, for any day your child changes; the attraction cards, the Session 39 budget summary and the assumptions page, if the special pick hits a block; every traveler's profile, with the Session 33 part-trip note, or your answer on which days a part-trip traveler is there; the Trip-Basics card; the Checkpoint 1 season, or the booked season if you booked a different window, as a broad word with no dates; the destination pack's transportation basics page.
-- Look for: a pacing review with each check marked yes or no, every day with an energy level, the days to make gentler, each checked again, still holding the special pick and its place, and taken down the When the Plan Changes card, or a line saying every day passed, and flags for you, each hard day naming who it is hard for, by relation. A traveler with you for only part of the trip is checked only on their days, as their profile says. A fewer-cities idea, or with one base fewer long rides out, is one of those flags, keeping the special pick's city, for you to decide at Checkpoint 5; your child never drops a city. The third trade-off report too, if it wasn't written at Session 34. If a block stopped the special pick, a new one chosen with you, the card's "Your special pick blocked?" row done, and that day checked again. If the time zone, who's coming, or a traveler's energy, walking or senses change later, your child goes down the card's "A place with a different time zone?", "Who's coming changed?" or "A traveler's energy, walking or senses changed?" row, then Your plan pages, which bring these checks back.
+- Prep: the Daily Plan Cards; the Session 29 formula, for the ½ mark over its departure 1, or your answer on how long the trip home takes; the My Calls page; the Reservation Watchlist and the When the Plan Changes card, for any day your child changes; the attraction cards, the Session 39 budget summary and the assumptions page, if the special pick hits a block; every traveler's profile, with the Session 33 part-trip note, or your answer on which days a part-trip traveler is there; the Trip-Basics card; the Checkpoint 1 season, or the booked season if you booked a different window, as a broad word such as "late spring"; the destination pack's transportation basics page.
+- Look for: a pacing review with each check marked yes or no, every day with an energy level, the days to make gentler, each checked again, still holding the special pick and its place, and taken down the When the Plan Changes card, or a line saying every day passed, and flags for you, each hard day naming who it is hard for, by relation. A traveler with you for only part of the trip is checked only on their days, as their profile says. A fewer-cities idea, or with one base fewer long rides out, is one of those flags, keeping the special pick's city, for you to decide at Checkpoint 5. The third trade-off report too, if it wasn't written at Session 34. If a block stopped the special pick, a new one chosen with you, the card's "Your special pick blocked?" row done, and that day checked again. If the time zone, who's coming, or a traveler's energy, walking or senses change later, your child goes down the card's "A place with a different time zone?", "Who's coming changed?" or "A traveler's energy, walking or senses changed?" row, then Your plan pages, which bring these checks back.
 - Coaching question: "Which day would wear out our most tired traveler?"
 - Pitfall: asking your child to solve an accessibility flag. They flag it; you check it and solve it.
 
@@ -415,8 +457,10 @@ Want a rough signal of how the executive-function side is going? The optional [e
 
 ## Session 48: Packing List
 
+<!-- density-exempt: X, not Y -- the Pitfall is the field the spec's Session Support Notes require in every entry -->
+
 - Role: Independent; parent review after the session. Lighter page: read the Steps with your child until they manage two sessions in a row without the When I'm Stuck card or leaning on the Steps. Start Here, the Stop Point, the artifact and the Source Check always stay.
-- Prep: a blank Packing List; the Checkpoint 1 season, or the booked season if you booked a different window, as a broad word with no dates; the destination pack's seasons and weather page; the Daily Plan Cards.
+- Prep: a blank Packing List; the Checkpoint 1 season, or the booked season if you booked a different window, as a broad word such as "late spring"; the destination pack's seasons and weather page; the Daily Plan Cards.
 - Look for: a draft Packing List with every category covered, and the documents and medication lines marked for you. If how you travel or the season changes later, your child goes down the When the Plan Changes card's "How you travel, or your home airport, changed?" or "The season changed?" row, then Your plan pages, which reach this list.
 - Coaching question: "What will you wear on a long walking day?"
 - Pitfall: handing documents or medication to your child. Those lines are yours.
@@ -430,6 +474,8 @@ Want a rough signal of how the executive-function side is going? The optional [e
 - Pitfall: turning it into a scary drill. One calm "what if" lowers anxiety.
 
 ## Session 50: Final Binder Assembly
+
+<!-- density-exempt: X, not Y -- the Pitfall is the field the spec's Session Support Notes require in every entry -->
 
 - Role: Independent, with a 5-minute check-in. Lighter page: read the Steps with your child until they manage two sessions in a row without the When I'm Stuck card or leaning on the Steps. Start Here, the Stop Point, the artifact and the Source Check always stay. Each sitting sets its timer for 20 minutes at its start, even on the same day.
 - Prep: tab dividers; the print index; the parent review forms you filled in at Checkpoints 1 to 5; a timer.

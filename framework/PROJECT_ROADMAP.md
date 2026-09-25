@@ -167,7 +167,7 @@ At Checkpoint 5: You could stop here and still have a usable plan. You know when
 
 *Recommended:* [07 Library Research Plan](sessions/phase_01_research_skills/07_library_research_plan.md) fits after step 6, if your family chooses it.
 
-*Conditional core:* [18 Deep-Dive City C](sessions/phase_03_choose_places/18_deep_dive_city_c.md) comes after step 15, and it becomes Core if a third city keeps coming up in your child's research. [36 Food Research](sessions/phase_06_lodging_food_budget/36_food_research.md) and [37 Restaurant Shortlist](sessions/phase_06_lodging_food_budget/37_restaurant_shortlist.md) come after step 32, and they become Core if your family wants the restaurant and food shortlist in the binder. Each one promotes itself on its own condition, so nobody has to predict it at setup.
+*Conditional core:* [18 Deep-Dive City C](sessions/phase_03_choose_places/18_deep_dive_city_c.md) comes after step 15, and it becomes Core if a third city keeps coming up in your child's research. [36 Food Research](sessions/phase_06_lodging_food_budget/36_food_research.md) and [37 Restaurant Shortlist](sessions/phase_06_lodging_food_budget/37_restaurant_shortlist.md) come after step 32, and they become Core if your family wants the restaurant and food shortlist in the binder. Each one promotes itself when its own condition is met.
 
 ### After Checkpoint 5
 

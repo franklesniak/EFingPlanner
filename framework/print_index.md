@@ -1,4 +1,5 @@
 <!-- markdownlint-disable MD013 -->
+<!-- audience: parent -->
 
 # Print Index
 
@@ -6,7 +7,7 @@ This page does two jobs. It says what to print and in what order, and it holds t
 
 ## Print just in time
 
-Print each session when you reach it. Printing the whole repository up front wastes paper, and a tall stack of blank pages is discouraging to look at.
+Print each session when you reach it. That saves paper, and it keeps the stack small and friendly.
 
 ## Or print a whole phase
 

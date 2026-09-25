@@ -1,4 +1,5 @@
 <!-- markdownlint-disable MD013 -->
+<!-- audience: parent -->
 
 # Final Deliverable
 
@@ -78,7 +79,7 @@ These are the adults' jobs, and the child's part is to hand them over clearly:
 
 ## Minimum final evidence
 
-This is a floor. Meeting it is success, and a child is never asked to pile up more. The lightest accepted form of each artifact is the default path, so a child who finds writing hard can use it with no special arrangement.
+This is a floor. Meeting it is success, and a child is never asked to pile up more. The lightest accepted form of each artifact is the default path, open to every child, including one who finds writing hard.
 
 - One season recommendation, or one season confirmation when the dates were booked.
 - One city long-list.
