@@ -680,6 +680,56 @@ def test_the_session_00_strip_shape_passes() -> None:
 
 
 # ---------------------------------------------------------------------------
+# The strip's label is written exactly "**For parents:**"
+# ---------------------------------------------------------------------------
+
+
+def test_the_exact_strip_label_passes() -> None:
+    """A positive control. The label the session template fixes passes."""
+    text = build_session()
+    assert "\n**For parents:**\n" in text
+    assert check(text) == []
+
+
+@pytest.mark.parametrize(
+    "label",
+    [
+        "**For parents**",
+        "**For parents**:",
+        "**For Parents:**",
+        "  **For parents:**",
+    ],
+    ids=["no-colon", "colon-outside-bold", "capital-p", "indented"],
+)
+def test_a_strip_label_that_drifts_is_named(label: str) -> None:
+    """The template writes the label exactly ``**For parents:**``.
+
+    A label with no colon, with the colon outside the bold, with a capital P,
+    or indented has drifted from it. The violation names the label and its
+    line. It does not say the strip is missing, because a parent can see one.
+    """
+    text = build_session().replace("**For parents:**", label, 1)
+    violations = structure.check_text(text, "07_a_session.md", "07_a_session.md")
+    named = [v for v in violations if "parent strip label" in v.message]
+    assert len(named) == 1, [v.message for v in violations]
+    assert f'"{label.strip()}"' in named[0].message
+    assert '"**For parents:**"' in named[0].message
+    assert named[0].line_number == text.split("\n").index(label) + 1
+    assert not any("no parent metadata strip" in v.message for v in violations)
+
+
+def test_a_fenced_drifted_label_is_not_named() -> None:
+    """A negative control. A label inside a fence is an example, so no strip is present."""
+    text = build_session(
+        parents=False,
+        extra=f"## Example\n\n{FENCE}markdown\n**For parents**\n{FENCE}\n",
+    )
+    messages = check(text)
+    assert any("no parent metadata strip" in m for m in messages), messages
+    assert not any("parent strip label" in m for m in messages)
+
+
+# ---------------------------------------------------------------------------
 # A section that prints nothing is empty
 # ---------------------------------------------------------------------------
 
