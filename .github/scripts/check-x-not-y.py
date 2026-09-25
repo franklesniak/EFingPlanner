@@ -118,7 +118,9 @@ block quote, or, above a heading, that heading's section, which ends where
 a block quote or a list item holding the heading does. Another comment, or
 an HTML block that shows nothing, between the marker and its block is
 skipped. It exempts the instances and
-split negations it covers. The device is named ``X, not Y``; the old
+split negations it covers, whole: a candidate that holds more than one
+sentence, such as a pair across two paragraphs, is exempt only when markers
+cover every sentence it holds. The device is named ``X, not Y``; the old
 ``X-not-Y`` and ``x-not-y`` are read too. The block sits in the marker's own
 container: a marker inside a block quote or a list item never covers a block
 beyond that container's edge. A marker that gives no reason, that names the
@@ -691,6 +693,9 @@ class Candidate:
     exempt_by: int | None = None
     section_index: int = 0  # the section's place in the page (see ProseLine)
     label: bool = False  # in a heading or a table cell: only the banned shape is judged
+    #: The line each sentence the candidate holds starts on, in order; a marker
+    #: exempts the candidate only when it covers every one of them.
+    lines: tuple[int, ...] = ()
 
 
 @dataclass
@@ -1250,9 +1255,11 @@ def find_candidates(rel: str, prose: list[ProseLine],
     para_sents = [paragraph_sentences(para) for para in paras]
     contexts = quote_contexts(paras, raw_lines)
 
-    def add(pl: ProseLine, kind: str, pats: list[str], text: str, context: str) -> None:
+    def add(pl: ProseLine, kind: str, pats: list[str], text: str, context: str,
+            lines: tuple[int | None, ...] = ()) -> None:
         cands.append(Candidate(rel, pl.lineno, pl.section, pl.region, kind, pats, text,
-                               pl.blockquote, context, section_index=pl.section_index))
+                               pl.blockquote, context, section_index=pl.section_index,
+                               lines=tuple(n for n in lines if n is not None) or (pl.lineno,)))
 
     # Sentences are numbered across the page, so a pair can be named by where
     # it starts. `opened_pairs` holds each pair already flagged from its first
@@ -1266,10 +1273,16 @@ def find_candidates(rel: str, prose: list[ProseLine],
                   and adjacent(paras[pi - 1], para, raw_lines) else None)
         after = (para_sents[pi + 1][0][0] if pi + 1 < len(paras) and para_sents[pi + 1]
                  and adjacent(para, paras[pi + 1], raw_lines) else None)
+        # The line each neighbor starts on, so a candidate knows every line it spans.
+        before_line = para_sents[pi - 1][-1][1].lineno if before is not None else None
+        after_line = para_sents[pi + 1][0][1].lineno if after is not None else None
         for idx, (s, pl) in enumerate(sents):
             g += 1
             prev = sents[idx - 1][0] if idx > 0 else before
             nxt = sents[idx + 1][0] if idx + 1 < len(sents) else after
+            prev_line = sents[idx - 1][1].lineno if idx > 0 else before_line
+            nxt_line = sents[idx + 1][1].lineno if idx + 1 < len(sents) else after_line
+            here = pl.lineno
             # Whether a candidate above judges this sentence: its own words, not
             # only as the partner of the sentence before it.
             judged = len(cands)
@@ -1289,7 +1302,8 @@ def find_candidates(rel: str, prose: list[ProseLine],
                 # A candidate's text holds every sentence its test reads, so a
                 # judgment reopens when any of them changes. A fragment counts
                 # only when it follows a claim, so the claim is part of it.
-                add(pl, "device", pats, prev + ARROW + s if "fragment" in pats else s, ctx)
+                add(pl, "device", pats, prev + ARROW + s if "fragment" in pats else s, ctx,
+                    (prev_line, here) if "fragment" in pats else (here,))
             if not pats:
                 # Any other sentence with a negation word, and a claim next to
                 # it, is a candidate of the split kind, whatever its length or
@@ -1306,13 +1320,13 @@ def find_candidates(rel: str, prose: list[ProseLine],
                             # what the thing is, so that sentence is part of what is
                             # judged, and of the key.
                             add(pl, "split", split_pats + ["release-then-recast"],
-                                prev + ARROW + s + ARROW + nxt, ctx)
+                                prev + ARROW + s + ARROW + nxt, ctx, (prev_line, here, nxt_line))
                         else:
-                            add(pl, "split", split_pats, prev + ARROW + s, ctx)
+                            add(pl, "split", split_pats, prev + ARROW + s, ctx, (prev_line, here))
                 elif prev is None and nxt is not None and CANDIDATE_NEGATION_RE.search(ps):
                     # The negation opens the paragraph and the claim follows,
                     # `Never guess. Look it up.` included.
-                    add(pl, "split", ["negation-before-claim"], s + ARROW + nxt, ctx)
+                    add(pl, "split", ["negation-before-claim"], s + ARROW + nxt, ctx, (here, nxt_line))
                     opened_pairs.add(g)
                 elif prev is None and nxt is None and CANDIDATE_NEGATION_RE.search(ps):
                     # A sentence with no neighbor, a list item on its own
@@ -1330,13 +1344,13 @@ def find_candidates(rel: str, prose: list[ProseLine],
                 if prev is None or in_pair:
                     add(pl, "device", ["sentence-in-pair" if in_pair else "sentence-alone"], s, ctx)
                 else:
-                    add(pl, "split", ["sentence-after-claim"], prev + ARROW + s, ctx)
+                    add(pl, "split", ["sentence-after-claim"], prev + ARROW + s, ctx, (prev_line, here))
             if joined:
                 add(pl, "banned", joined, s, ctx)
             if pnxt is not None:
                 bpats = banned_patterns(ps, pnxt)
                 if bpats:
-                    add(pl, "banned", bpats, s + ARROW + nxt, ctx)
+                    add(pl, "banned", bpats, s + ARROW + nxt, ctx, (here, nxt_line))
     # After every prose candidate, so no key a paragraph gives moves.
     cands += label_candidates(rel, labels or [], quotation_quotes(paras))
     seen: dict[tuple[str, str, str], int] = {}
@@ -1566,9 +1580,14 @@ def scan(root: Path, judgments: dict, registers: dict) -> list[FileReport]:
             if j is not None and (not c.label or j.get("judgment") in LABEL_JUDGMENTS):
                 c.judgment = j.get("judgment")
                 c.reason = j.get("reason", "")
-            for mk in page.markers:
-                if mk.applies and mk.scope_start <= c.lineno <= mk.scope_end:
-                    c.exempt_by = mk.lineno
+            # A marker exempts a candidate only when it, or another marker,
+            # covers every sentence the candidate holds: a pair that runs past
+            # a marker's block is judged without the exemption.
+            covers = [[mk for mk in page.markers if mk.applies and mk.scope_start <= n <= mk.scope_end]
+                      for n in (c.lines or (c.lineno,))]
+            at_start = [mk for mk in page.markers if mk.applies and mk.scope_start <= c.lineno <= mk.scope_end]
+            if at_start and all(covers):
+                c.exempt_by = at_start[-1].lineno
             rep.candidates.append(c)
         reports.append(rep)
     return reports

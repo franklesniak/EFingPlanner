@@ -7,10 +7,8 @@ What gets booked, in what order, and how your child's work feeds it, without pul
 
 ## The boundary
 
-You own flights, bookings, payments, accounts, personal data, final hotel decisions, final restaurant reservations, and final ticket and timed-entry bookings.
-
-<!-- density-exempt: X, not Y -- the child-never-books boundary, a safety and privacy rule the batch 2 brief's entry for this page puts first -->
-Nothing in this curriculum ever tells a child to book, reserve, buy, create an account, enter payment or passport data, submit an entry form, or handle a confirmation number. If you find something that reads that way, it's a defect to fix, because your child's part is the list and yours is acting on it.
+<!-- density-exempt: X, not Y -- the booking boundary, what you own and that the child never books, a safety and privacy rule the batch 2 brief's entry for this page puts first -->
+You own flights, bookings, payments, accounts, personal data, final hotel decisions, final restaurant reservations, and final ticket and timed-entry bookings. Nothing in this curriculum ever tells a child to book, reserve, buy, create an account, enter payment or passport data, submit an entry form, or handle a confirmation number. If you find something that reads that way, it's a defect to fix, because your child's part is the list and yours is acting on it.
 
 ## What your child hands you
 
@@ -50,10 +48,8 @@ Your child writes a cancellation note on a card. **That note is a flag, not a fa
 
 ## After you book, tell them what changed and why
 
-You will change parts of the plan: prices, availability, safety, schedules, booking rules. That's normal and expected.
-
-<!-- density-exempt: X, not Y -- "never silently" is the spec's transparency obligation for owned picks, bold in the batch 2 brief's booking item -->
-**Never silently.** An owned pick is reshaped only with a stated reason.
+<!-- density-exempt: X, not Y -- "never silently" is the spec's transparency obligation for owned picks, bold in the batch 2 brief's booking item, which states it with the change it answers -->
+You will change parts of the plan: prices, availability, safety, schedules, booking rules. That's normal and expected. **Never silently.** An owned pick is reshaped only with a stated reason.
 
 And the one unconditional personal pick is different from everything else. It can be blocked for exactly three reasons: it costs more than the budget band, it can't be booked or has no availability, or it isn't safe and physically manageable for every traveler. **Never by group vote.** If one of those three applies, tell your child which one.
 

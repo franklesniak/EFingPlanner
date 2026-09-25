@@ -10,10 +10,13 @@ sentences, with the source that requires it, so a later rewrite that drops one
 fails here instead of in review.
 
 The wording must stay where a reader sees it. So each page is read as the
-recount tool reads it, through markdown-it: the text of its paragraphs and
-headings, without comments, fenced blocks, code spans, link destinations or
-emphasis markers. Wording kept only in a comment, a fence or a marker's reason
-does not count. The tool needs Node.js and the repository's ``node_modules``.
+recount tool reads it, through markdown-it: the text of its paragraphs,
+headings and table cells, without comments, fenced blocks, code spans, link
+destinations or emphasis markers. Wording kept only in a comment, a fence or a
+marker's reason does not count. Each required passage must stand within one
+block, as a reader meets it: wording split across two paragraphs, two list
+items or a heading and a paragraph does not count. The tool needs Node.js and
+the repository's ``node_modules``.
 
 A sentence may change only with the authority of the source named beside it.
 """
@@ -100,18 +103,27 @@ REQUIRED = [
 ]
 
 
-def visible_prose(text: str) -> str:
-    """Return the words a reader sees on a page: its paragraphs and headings, as the tool reads them."""
+def visible_blocks(text: str) -> list[str]:
+    """Return the words a reader sees on a page, one entry per block: each paragraph, heading and table cell.
+
+    Blocks are kept apart, so a passage counts only when one block holds all of it.
+    """
     page = cx.parse_text(text)
-    parts = [cx.plain(cx.paragraph_text(para)) for para in cx.paragraphs(page.prose)]
-    parts += [cx.plain(heading) for _, heading in page.heading_lines.values()]
-    return cx.normalize_space(" ".join(parts))
+    blocks = [cx.plain(cx.paragraph_text(para)) for para in cx.paragraphs(page.prose)]
+    blocks += [cx.plain(label.text) for label in page.labels]
+    return [cx.normalize_space(block) for block in blocks]
+
+
+def is_visible(wording: str, text: str) -> bool:
+    """True when one block of the page shows all of `wording`."""
+    wanted = cx.normalize_space(wording)
+    return any(wanted in block for block in visible_blocks(text))
 
 
 @pytest.mark.parametrize(("page", "wording", "source"), REQUIRED, ids=[f"{p}: {w[:40]}" for p, w, _ in REQUIRED])
 def test_required_wording_is_visible_on_its_page(page: str, wording: str, source: str) -> None:
     text = (REPO_ROOT / page).read_text(encoding="utf-8")
-    assert cx.normalize_space(wording) in visible_prose(text), (
+    assert is_visible(wording, text), (
         f"{page} no longer shows required wording ({source}): {wording}")
 
 
@@ -122,9 +134,30 @@ def test_required_wording_is_visible_on_its_page(page: str, wording: str, source
     "Say `AI never decides legal questions.` aloud.",
 ])
 def test_wording_the_page_does_not_show_is_not_visible(hidden: str) -> None:
-    assert "AI never decides legal questions." not in visible_prose("Intro.\n\n" + hidden + "\n\nOutro.\n")
+    assert not is_visible("AI never decides legal questions.", "Intro.\n\n" + hidden + "\n\nOutro.\n")
 
 
 def test_wording_in_prose_is_visible_through_markup() -> None:
     text = "- **AI never decides** legal [questions](a.md).\n"
-    assert "AI never decides legal questions." in visible_prose(text)
+    assert is_visible("AI never decides legal questions.", text)
+
+
+@pytest.mark.parametrize("text", [
+    "AI never decides legal\n\nquestions.\n",
+    "- AI never decides legal\n- questions.\n",
+    "- AI never decides legal\n\n  questions.\n",
+    "## AI never decides legal\n\nquestions.\n",
+    "> AI never decides legal\n\nquestions.\n",
+])
+def test_wording_split_across_two_blocks_is_not_visible(text: str) -> None:
+    assert not is_visible("AI never decides legal questions.", text)
+
+
+@pytest.mark.parametrize("text", [
+    "AI never decides\nlegal questions.\n",
+    "- AI never decides legal questions.\n",
+    "## AI never decides legal questions.\n",
+    "| AI never decides legal questions. | x |\n| --- | --- |\n",
+])
+def test_wording_within_one_block_is_visible(text: str) -> None:
+    assert is_visible("AI never decides legal questions.", text)

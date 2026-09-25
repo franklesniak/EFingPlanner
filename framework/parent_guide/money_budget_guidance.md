@@ -6,10 +6,8 @@ Your half of the budget lesson. Read this before your child's first budget sessi
 
 ## What your child is learning, and what they're not
 
-They're learning **how trip costs are structured**: what the categories are, what's priced per person versus per room versus per group, what a buffer is, and whether the parts they chose fit the band you gave them.
-
-<!-- density-exempt: X, not Y -- what the child produces, which the batch 2 brief's entry for this page requires stated plainly: a structural picture, short of a usable, bookable trip total -->
-What they are producing is a structural picture, and it stops short of a usable, bookable trip budget. Say that plainly to yourself now, so neither of you mistakes the output for one later.
+<!-- density-exempt: X, not Y -- what the child learns and what they produce, which the batch 2 brief's entry for this page requires stated plainly: a structural picture, short of a usable, bookable trip total -->
+They're learning **how trip costs are structured**: what the categories are, what's priced per person versus per room versus per group, what a buffer is, and whether the parts they chose fit the band you gave them. What they are producing is a structural picture, and it stops short of a usable, bookable trip budget. Say that plainly to yourself now, so neither of you mistakes the output for one later.
 
 ## Why getting there sits on the side
 

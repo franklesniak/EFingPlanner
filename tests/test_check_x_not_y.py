@@ -1984,3 +1984,48 @@ def test_quotation_marks_that_do_not_pair_enclose_nothing(text: str) -> None:
 ])
 def test_quotation_marks_enclose_text_only_as_a_pair(text: str, enclosed: bool) -> None:
     assert cx.enclosed_in_marks(text) is enclosed
+
+
+# ---------------------------------------------------------------------------
+# A marker exempts only a candidate it covers whole
+# ---------------------------------------------------------------------------
+
+MARKER = "<!-- density-exempt: X, not Y -- required -->\n"
+
+
+def exemptions(tmp_path: Path, page: str) -> dict[str, int | None]:
+    """Return each candidate's text on one child page, with the line of the marker that exempts it, or None."""
+    root = repo_with(tmp_path, page)
+    (rep,) = cx.scan(root, {}, {})
+    return {c.text: c.exempt_by for c in rep.candidates}
+
+
+@pytest.mark.parametrize(("page", "text"), [
+    ("## A\n\n" + MARKER + "Never guess.\n\nLook it up.\n", "Never guess. → Look it up."),
+    ("## A\n\nPick the map.\n\n" + MARKER + "Not the list.\n", "Pick the map. → Not the list."),
+    ("## A\n\nPlan the day.\n\n" + MARKER + "Do not guess.\n", "Plan the day. → Do not guess."),
+    ("## A\n\n" + MARKER + "Plan the day.\n\nYou do not have to finish.\n\nIt is a draft.\n",
+     "Plan the day. → You do not have to finish. → It is a draft."),
+])
+def test_a_marker_exempts_no_pair_that_runs_past_its_block(tmp_path: Path, page: str, text: str) -> None:
+    assert exemptions(tmp_path, page)[text] is None
+
+
+@pytest.mark.parametrize(("page", "text", "marker"), [
+    ("## A\n\n" + MARKER + "Never guess. Look it up.\n", "Never guess. → Look it up.", 3),
+    ("## A\n\n" + MARKER + "Never guess.\n\n" + MARKER + "Look it up.\n", "Never guess. → Look it up.", 3),
+    ("## A\n\n" + MARKER + "Pick the map. Not the list.\n", "Pick the map. → Not the list.", 3),
+    ("## A\n\n" + MARKER + "Choose the map, not the list.\n", "Choose the map, not the list.", 3),
+    (MARKER + "## A\n\nNever guess.\n\nLook it up.\n", "Never guess. → Look it up.", 1),
+])
+def test_a_marker_exempts_a_candidate_whose_every_sentence_it_covers(
+        tmp_path: Path, page: str, text: str, marker: int) -> None:
+    assert exemptions(tmp_path, page)[text] == marker
+
+
+def test_a_pair_that_runs_past_a_marker_is_counted(tmp_path: Path) -> None:
+    root = repo_with(tmp_path, "## A\n\n" + MARKER + "Never guess.\n\nLook it up.\n")
+    judged = judge_all(root, "no")
+    judged["framework/templates/a.md"]["split|Never guess. → Look it up.|1"]["judgment"] = "split"
+    s = summary_for(root, "framework/templates/a.md", judged)
+    assert (s["splits"], s["splits_counted"]) == (1, 1)
