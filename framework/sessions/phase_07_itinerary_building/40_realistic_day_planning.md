@@ -37,11 +37,13 @@ Planners who make good days use a few simple rules. Here are the ones that work:
 
 **The first day has its own rule.** Its anchor is getting from where you arrive to where you're staying, and settling in. How much of the day that takes depends on the trip there. Your Session 29 formula shows which kind yours is: a ½ written over the 1 before "arrival day" means getting there takes only a few hours. If you can't tell, ask a grown-up. After a long journey, arriving at an airport, a station or the end of a long drive takes a big chunk of the day, and you'll be tired, too. So mark day one Easy, and often day two as well. If getting there takes only a few hours, arriving takes about half the day. Then plan one light activity for the other half, and mark the day Easy or Medium.
 
-**The last day has a rule too.** Its anchor is getting from your last overnight place to where you leave from, once a grown-up has set that place. After a long journey home, that takes most of the day, so mark the last day Easy. After a short one, it takes about half, so mark it Easy or Medium. A ½ over the 1 before "departure day" on your Session 29 formula means the trip home takes only a few hours. Write it next to your first-day rule. Your destination pack's airports and arrival page helps you find how long the trip into the city takes. If your pack doesn't have that page yet, a grown-up can help you check the airport's or station's own website. The grown-ups book that ride.
+**The last day has a rule too.** Its anchor is getting from your last overnight place to where you leave from, once a grown-up has set that place. After a long journey home, that takes most of the day, so mark the last day Easy. After a short one, it takes about half, so mark it Easy or Medium. A ½ over the 1 before "departure day" on your Session 29 formula means the trip home takes only a few hours. Write it next to your first-day rule.
+
+**A moving day has a rule too.** On a route with more than one city-stay, the first day of each later stay is a moving day. Your Checkpoint 4 table lists it as a travel day. Its anchor is the ride from your last place to the new one, and settling in. After a long ride, mark it Easy. After a short one, plan one light activity, and mark it Easy or Medium. Your destination pack's airports and arrival page helps you find how long the trip into the city takes. If your pack doesn't have that page yet, a grown-up can help you check the airport's or station's own website. The grown-ups book that ride.
 
 1. Read the rules above, and pick the ones you want to keep.
 2. Write them as your own short list, in your own words.
-3. Write the first-day and last-day rules as their own lines.
+3. Write the first-day, moving-day and last-day rules as their own lines.
 4. Put a star by the rule you'd break first if a day got too full.
 
 ## Workspace
@@ -56,7 +58,7 @@ Your realistic day rules: a short list you wrote yourself, ready to use when you
 
 ## Stop Point
 
-You are done when you've written your own short list of day rules, including your rules for the first and last days, and you've put a star by the rule you'd break first if a day got too full. Three or four rules are plenty, and "not sure yet" is fine for the one you'd break.
+You are done when you've written your own short list of day rules, including your rules for the first day, a moving day and the last day, and you've put a star by the rule you'd break first if a day got too full. Three or four rules are plenty, and "not sure yet" is fine for the one you'd break.
 
 ## Source Check
 

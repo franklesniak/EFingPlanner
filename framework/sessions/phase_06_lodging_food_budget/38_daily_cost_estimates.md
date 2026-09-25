@@ -32,7 +32,7 @@ In Session 33 you estimated food and a hotel. Today you picture one ordinary day
 
 Round to easy numbers first. A calculator is always fine, and a grown-up can do the math while you do the thinking.
 
-1. **Food.** Use the example above for your medium guess. Then make a cheaper day (low) and a fancier day (high).
+1. **Food.** Use the example above for your medium guess. For the people, use the number of travelers on your Trip-Basics card. If it says "not decided yet", count the travelers listed on the card instead. Then make a cheaper day (low) and a fancier day (high).
 2. **Local transit.** How will you get around inside the city on an ordinary day? Your transportation notes from Session 30 help here.
 3. **Activities.** What might one day's tickets cost? Look at the ticket rows on your attraction cards. If a card's ticket row is empty, fill it in first, or write "ask an adult".
 4. **Long-distance transit.** Only fill this in for a day when you move to a new city, or take a long ride out from your base. On other days, write "not today". The grown-ups add these longer rides to the budget on their own page.

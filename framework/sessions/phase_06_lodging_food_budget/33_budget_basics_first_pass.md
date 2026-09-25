@@ -44,6 +44,7 @@ Every trip is made of cost categories. You don't need exact numbers. You're lear
    On the Core path, use the first hotel row for all your overnight cities: your one price, times every night in your Checkpoint 4 plan, times rooms. For food, use that plan's total days, minus each "- 1 flight day" on your Session 29 formula. Session 39 goes city by city.
 
 4. **Check it against your band. Match the units first.** A grown-up gave you *one* kid-sized band at setup. It's a per-person-per-day amount, a per-day amount for the whole family, *or* a hotel "tier we can afford." It's never your whole-trip total. That stays a grown-up number. Compare the matching piece, not your big two-slice total:
+   - Your travelers are the number on your Trip-Basics card. If it says "not decided yet", count the travelers listed on the card instead.
    - Band is **per person, per day**? Multiply it by your travelers to get a **per-day family** number. Then check that the same way as the **per day for the family** band below. A grown-up can do the multiplying. That way your rooms count as well as your meals.
    - Band is **per day for the family**? Add your **meals for everyone per day** (meals per person x your travelers) to your **hotel for one night, all your rooms** (hotel per night x rooms). Then check that daily total against the band.
    - Band is a **hotel tier**? Check your **hotel-per-night** pick against that tier. Circle **fits** or **too high** for the part you checked.
