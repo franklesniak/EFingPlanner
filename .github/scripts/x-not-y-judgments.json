@@ -277,6 +277,11 @@
       "judgment": "no",
       "reason": "a list entry"
     },
+    "banned|Two ways to shape a first trip (comparison anchors, not answers)|1": {
+      "line": 24,
+      "judgment": "no",
+      "reason": "an X, not Y contrast in a heading, which is never counted; not the banned shape, which denies a thing and then says what it is"
+    },
     "device|The \"golden route\" -- Tokyo, Kyoto, and Osaka.|1": {
       "line": 26,
       "judgment": "no",
@@ -331,6 +336,11 @@
       "line": 29,
       "judgment": "no",
       "reason": "an instruction"
+    },
+    "banned|Fun things to consider (research, not pre-chosen)|1": {
+      "line": 31,
+      "judgment": "no",
+      "reason": "an X, not Y contrast in a heading, which is never counted; not the banned shape, which denies a thing and then says what it is"
     },
     "device|These are ideas to research rather than a current list -- check which are open now, and what a visit involves.|1": {
       "line": 33,
@@ -643,6 +653,11 @@
       "line": 29,
       "judgment": "no",
       "reason": "an instruction"
+    },
+    "banned|Things that are changing (verify, never assume)|1": {
+      "line": 31,
+      "judgment": "no",
+      "reason": "an X, not Y contrast in a heading, which is never counted; not the banned shape, which denies a thing and then says what it is"
     },
     "split|So a grown-up checks the current amounts and rules at booking, and again before travel. → No amount is pinned here on purpose.|1": {
       "line": 33,
@@ -1736,6 +1751,11 @@
       "judgment": "no",
       "reason": "an instruction"
     },
+    "banned|What this page does not give you|1": {
+      "line": 18,
+      "judgment": "no",
+      "reason": "a heading naming a topic; it does not deny a thing and then say what it is"
+    },
     "device|The time-difference value comes from your Trip-Basics card, not from this page.|1": {
       "line": 20,
       "judgment": "device",
@@ -1982,6 +2002,56 @@
       "judgment": "no",
       "reason": "a navigation pointer to the rule"
     },
+    "banned|none|1": {
+      "line": 22,
+      "judgment": "no",
+      "reason": "a table cell reading none"
+    },
+    "banned|none|2": {
+      "line": 23,
+      "judgment": "no",
+      "reason": "a table cell reading none"
+    },
+    "banned|none|3": {
+      "line": 24,
+      "judgment": "no",
+      "reason": "a table cell reading none"
+    },
+    "banned|none|4": {
+      "line": 25,
+      "judgment": "no",
+      "reason": "a table cell reading none"
+    },
+    "banned|none|5": {
+      "line": 32,
+      "judgment": "no",
+      "reason": "a table cell reading none"
+    },
+    "banned|none|6": {
+      "line": 35,
+      "judgment": "no",
+      "reason": "a table cell reading none"
+    },
+    "banned|none|7": {
+      "line": 36,
+      "judgment": "no",
+      "reason": "a table cell reading none"
+    },
+    "banned|none|8": {
+      "line": 37,
+      "judgment": "no",
+      "reason": "a table cell reading none"
+    },
+    "banned|none|9": {
+      "line": 39,
+      "judgment": "no",
+      "reason": "a table cell reading none"
+    },
+    "banned|none|10": {
+      "line": 40,
+      "judgment": "no",
+      "reason": "a table cell reading none"
+    },
     "split|A row with an insert means the session writes the exact phrase \"open this session's Destination Notes\", and that phrase resolves to the insert. → A row whose Insert column reads ‹code› means the session names the reference in the pack's own words instead, because there is no insert for the phrase to resolve to.|1": {
       "line": 42,
       "judgment": "device",
@@ -2041,6 +2111,86 @@
       "line": 50,
       "judgment": "no",
       "reason": "a rule placing values in the slot files; it rejects nothing named"
+    },
+    "banned|Not the time-difference figure -- that is a Trip-Basics card value.|1": {
+      "line": 54,
+      "judgment": "no",
+      "reason": "a table cell that keeps a figure out of the slot and names the card that holds it; the second clause is about the figure, so it does not deny a thing and then say what it is"
+    },
+    "banned|The regions the pack plans a first trip around, named, with one line saying the destination has more, so the child can start their region notes; then a pointer to the pack's regions reference for how each region feels different and for the geography instances the neutral session may not state -- your destination's shape and size, how weather differs by region, why travel time between regions matters -- and a pointer to the pack's major-cities reference for the route shapes. → That regions reference is their canonical home; do not restate them in the slot.|1": {
+      "line": 55,
+      "judgment": "no",
+      "reason": "a table cell describing the slot; its negation is a clause inside one long sentence, and nothing is recast"
+    },
+    "banned|That regions reference is their canonical home; do not restate them in the slot. → No trip shapes, no costs, no pinned travel times.|1": {
+      "line": 55,
+      "judgment": "no",
+      "reason": "a table cell listing what the slot leaves out; no sentence recasts what a thing is"
+    },
+    "banned|No trip shapes, no costs, no pinned travel times.|1": {
+      "line": 55,
+      "judgment": "no",
+      "reason": "a table cell listing what the slot leaves out; no sentence recasts what a thing is"
+    },
+    "banned|That reference is their canonical home; do not restate them in the slot. → No pinned dates, prices or forecasts.|1": {
+      "line": 56,
+      "judgment": "no",
+      "reason": "a table cell listing what the slot leaves out; no sentence recasts what a thing is"
+    },
+    "banned|No pinned dates, prices or forecasts.|1": {
+      "line": 56,
+      "judgment": "no",
+      "reason": "a table cell listing what the slot leaves out; no sentence recasts what a thing is"
+    },
+    "banned|That reference is their canonical home; do not restate them in the slot. → Candidates to research, never a shortlist.|1": {
+      "line": 57,
+      "judgment": "no",
+      "reason": "a table cell listing what the slot leaves out; no sentence recasts what a thing is"
+    },
+    "banned|Candidates to research, never a shortlist.|1": {
+      "line": 57,
+      "judgment": "no",
+      "reason": "an X, not Y contrast in a table cell, which is never counted; not the banned shape, which denies a thing and then says what it is"
+    },
+    "banned|No prices, no hours.|1": {
+      "line": 59,
+      "judgment": "no",
+      "reason": "a table cell listing what the slot leaves out; no sentence recasts what a thing is"
+    },
+    "banned|That reference is their canonical home; do not restate them in the slot. → No fares, no pinned journey times.|1": {
+      "line": 60,
+      "judgment": "no",
+      "reason": "a table cell listing what the slot leaves out; no sentence recasts what a thing is"
+    },
+    "banned|No fares, no pinned journey times.|1": {
+      "line": 60,
+      "judgment": "no",
+      "reason": "a table cell listing what the slot leaves out; no sentence recasts what a thing is"
+    },
+    "banned|That reference is their canonical home; do not restate it in the slot. → No prices, no named properties.|1": {
+      "line": 61,
+      "judgment": "no",
+      "reason": "a table cell listing what the slot leaves out; no sentence recasts what a thing is"
+    },
+    "banned|No prices, no named properties.|1": {
+      "line": 61,
+      "judgment": "no",
+      "reason": "a table cell listing what the slot leaves out; no sentence recasts what a thing is"
+    },
+    "banned|No restaurant recommendations, no prices.|1": {
+      "line": 62,
+      "judgment": "no",
+      "reason": "a table cell listing what the slot leaves out; no sentence recasts what a thing is"
+    },
+    "banned|No release dates, no prices.|1": {
+      "line": 63,
+      "judgment": "no",
+      "reason": "a table cell listing what the slot leaves out; no sentence recasts what a thing is"
+    },
+    "banned|A short set of everyday phrases; the etiquette points a visiting family actually meets; any custom with rules of its own (bathing, photography, sacred sites), described matter-of-factly and never as something the child will get wrong.|1": {
+      "line": 64,
+      "judgment": "no",
+      "reason": "a table cell describing the slot; its negation is a clause inside one sentence, and nothing is recast"
     },
     "device|Re-checking is optional upkeep, not a maintenance promise.|1": {
       "line": 68,
@@ -2136,6 +2286,11 @@
       "line": 81,
       "judgment": "no",
       "reason": "an instruction"
+    },
+    "banned|What is written in this pack, and what is not|1": {
+      "line": 83,
+      "judgment": "no",
+      "reason": "a heading naming a topic; it does not deny a thing and then say what it is"
     },
     "device|The contract table names twelve insert slots and twelve reference files.|1": {
       "line": 85,
@@ -2450,6 +2605,11 @@
       "line": 15,
       "judgment": "no",
       "reason": "a table intro stating the two trails differ; it names no alternative it rejects in favor of a claim"
+    },
+    "banned|Your private binder or Docs folder (never committed)|1": {
+      "line": 20,
+      "judgment": "no",
+      "reason": "a table cell naming a place, with a rule in brackets"
     },
     "device|If you are a family using the curriculum, the decision log is yours, and you can leave this file to the builders and reusers.|1": {
       "line": 22,
@@ -4407,6 +4567,11 @@
       "judgment": "split",
       "reason": "all three run on material the child already has / finding something new out always takes a non-AI source"
     },
+    "banned|What AI may not do|1": {
+      "line": 59,
+      "judgment": "no",
+      "reason": "a heading naming a topic; it does not deny a thing and then say what it is"
+    },
     "device|It may not be the only source for anything that ends up in the plan.|1": {
       "line": 63,
       "judgment": "no",
@@ -5669,6 +5834,11 @@
       "judgment": "no",
       "reason": "a history note"
     },
+    "banned|Verify-don't-trust (applies to every travel fact)|1": {
+      "line": 109,
+      "judgment": "no",
+      "reason": "a Named concept in a heading"
+    },
     "device|Name seasons and categories (a national holiday week, a rainy season, a typhoon season) as things to confirm this year, never as pinned dates.|1": {
       "line": 112,
       "judgment": "device",
@@ -5729,6 +5899,11 @@
       "judgment": "no",
       "reason": "a list entry"
     },
+    "banned|Canonical concept Names and their built-file homes (name-first, never \"Section NN\")|1": {
+      "line": 126,
+      "judgment": "no",
+      "reason": "a heading naming a topic; it does not deny a thing and then say what it is"
+    },
     "device|Built files reference concepts by Name and link to the built-file home below.|1": {
       "line": 128,
       "judgment": "no",
@@ -5743,6 +5918,26 @@
       "line": 128,
       "judgment": "no",
       "reason": "a prohibition that sets a new rule; the kit-copy sentence names nothing it is the alternative to"
+    },
+    "banned|Verify-Don't-Trust|1": {
+      "line": 132,
+      "judgment": "no",
+      "reason": "a Named concept in a table cell"
+    },
+    "banned|Prefer official/current sources; never treat volatile facts as fixed|1": {
+      "line": 132,
+      "judgment": "no",
+      "reason": "a table cell rule: an instruction and a negated instruction beside it; it does not deny a thing and then say what it is"
+    },
+    "banned|Your-Work-Wasn't-Wrong|1": {
+      "line": 133,
+      "judgment": "no",
+      "reason": "a Named concept in a table cell"
+    },
+    "banned|A rough not-to-exceed signal: per person per day, per day for the family, or a hotel tier|1": {
+      "line": 135,
+      "judgment": "no",
+      "reason": "a table cell label with its answer choices or a hint in brackets; no clause recasts what a thing is"
     },
     "device|Every fenced code block declares a language.|1": {
       "line": 145,
@@ -5834,6 +6029,11 @@
       "judgment": "no",
       "reason": "a fact about lint status plus the convention that still applies"
     },
+    "banned|Saying \"we have not decided yet\" in built pages|1": {
+      "line": 153,
+      "judgment": "no",
+      "reason": "a heading naming a topic; it does not deny a thing and then say what it is"
+    },
     "split|The archived spec teaches a load-bearing idea: an honest \"we have not decided that yet\" is a valid, complete answer on a planning worksheet, so the child can leave it that way. → The spec writes that idea using the literal placeholder token that software projects use.|1": {
       "line": 155,
       "judgment": "no",
@@ -5858,6 +6058,11 @@
       "line": 157,
       "judgment": "no",
       "reason": "a conclusion restating the rule; the idea and the token are not alternatives"
+    },
+    "banned|\"not decided yet\"|1": {
+      "line": 161,
+      "judgment": "no",
+      "reason": "a table cell label with its answer choices or a hint in brackets; no clause recasts what a thing is"
     },
     "device|Three rules go with that:|1": {
       "line": 166,
@@ -6257,6 +6462,16 @@
       "line": 16,
       "judgment": "no",
       "reason": "an elaboration of the claim"
+    },
+    "banned|Nudges quality continuously, not only at the six checkpoints|1": {
+      "line": 25,
+      "judgment": "no",
+      "reason": "an X, not Y contrast in a table cell, which is never counted; not the banned shape, which denies a thing and then says what it is"
+    },
+    "banned|Captures extra energy without making extra work mandatory|1": {
+      "line": 26,
+      "judgment": "no",
+      "reason": "a table cell describing a sign to look for; nothing is recast"
     },
     "split|If you are adding a mechanic to a session, say which row of that table it belongs to. → If it belongs to none, it is probably decoration.|1": {
       "line": 36,
@@ -6822,6 +7037,11 @@
       "judgment": "no",
       "reason": "a fact"
     },
+    "banned|The automatic checks are not yours to run|1": {
+      "line": 41,
+      "judgment": "no",
+      "reason": "a heading naming a topic; it does not deny a thing and then say what it is"
+    },
     "split|A family using the materials can ignore all of it completely. → Nothing you do as a reader can break a check, and no check has to pass before you print a page.|1": {
       "line": 43,
       "judgment": "no",
@@ -7004,6 +7224,11 @@
       "judgment": "no",
       "reason": "a pointer; \"stopping points\" is a noun"
     },
+    "banned|What this is not|1": {
+      "line": 32,
+      "judgment": "no",
+      "reason": "a heading naming a topic; it does not deny a thing and then say what it is"
+    },
     "split|Not a maintained product. → One family wrote it and nobody is on call.|1": {
       "line": 34,
       "judgment": "no",
@@ -7121,6 +7346,11 @@
       "judgment": "no",
       "reason": "the negation sits inside quoted names (the \"verify, don't trust\" habit and the banner); it rejects no alternative"
     },
+    "banned|What never gets written down|1": {
+      "line": 17,
+      "judgment": "no",
+      "reason": "a heading naming a topic; it does not deny a thing and then say what it is"
+    },
     "device|Keep these out of the repository and out of any filled-in page, on paper or in Google Docs:|1": {
       "line": 19,
       "judgment": "no",
@@ -7170,6 +7400,11 @@
       "line": 29,
       "judgment": "no",
       "reason": "a fact: adults own those actions"
+    },
+    "banned|A kid-safe filter is not enough on its own|1": {
+      "line": 31,
+      "judgment": "no",
+      "reason": "a heading with one negated claim and no second clause that recasts it"
     },
     "device|A kid-safe search filter (turned on at setup) reduces exposure but does not remove it, and it is not a substitute for an adult nearby on riskier research.|1": {
       "line": 34,
@@ -7663,6 +7898,11 @@
       "judgment": "no",
       "reason": "a fact"
     },
+    "banned|When the source is not in English|1": {
+      "line": 81,
+      "judgment": "no",
+      "reason": "a heading naming a topic; it does not deny a thing and then say what it is"
+    },
     "split|Everything in this project is written in English, and plenty of the best sources for a destination are not. → Four steps, in order:|1": {
       "line": 83,
       "judgment": "no",
@@ -7932,6 +8172,11 @@
       "judgment": "no",
       "reason": "a fact"
     },
+    "banned|Money and budget guidance, what the exercise produces and what it does not|1": {
+      "line": 31,
+      "judgment": "no",
+      "reason": "a table cell naming a topic; it does not deny a thing and then say what it is"
+    },
     "device|A quick, honest self-check before you commit weeks or months:|1": {
       "line": 39,
       "judgment": "no",
@@ -7991,6 +8236,11 @@
       "line": 51,
       "judgment": "no",
       "reason": "an instruction"
+    },
+    "banned|If you're not sure, do exactly this (fastest safe start)|1": {
+      "line": 53,
+      "judgment": "no",
+      "reason": "a heading naming a topic; it does not deny a thing and then say what it is"
     },
     "device|Only four things are genuine setup actions:|1": {
       "line": 55,
@@ -8506,6 +8756,16 @@
       "judgment": "no",
       "reason": "a division of ownership; nothing is rejected"
     },
+    "banned|Honor it; set the guardrails; reshape only with a stated reason, never silently|1": {
+      "line": 15,
+      "judgment": "no",
+      "reason": "an X, not Y contrast in a table cell, which is never counted; not the banned shape, which denies a thing and then says what it is"
+    },
+    "banned|Honor unconditionally; block only for budget, no availability, or safety -- never by group vote|1": {
+      "line": 16,
+      "judgment": "no",
+      "reason": "an X, not Y contrast in a table cell, which is never counted; not the banned shape, which denies a thing and then says what it is"
+    },
     "device|In a multi-generational party, group agreement may sometimes reshape one -- but only with a reason given to the child, never silently.|1": {
       "line": 26,
       "judgment": "device",
@@ -8879,6 +9139,11 @@
       "line": 5,
       "judgment": "no",
       "reason": "an instruction"
+    },
+    "banned|A gap is not quitting|1": {
+      "line": 7,
+      "judgment": "no",
+      "reason": "a heading with one negated claim and no second clause that recasts it"
     },
     "split|Real families miss a week or three. → A break is normal and is not the same as waning interest.|1": {
       "line": 9,
@@ -9709,6 +9974,11 @@
       "judgment": "no",
       "reason": "states the aid's role beside the child's record; nothing rejected"
     },
+    "banned|What the three items are, and what they are not|1": {
+      "line": 16,
+      "judgment": "no",
+      "reason": "a heading naming a topic; it does not deny a thing and then say what it is"
+    },
     "split|The three items below are everyday behaviors you can see from across the room. → They are not a one-to-one measurement of the three core executive-function skills, and this page does not claim they are.|1": {
       "line": 19,
       "judgment": "split",
@@ -9828,6 +10098,11 @@
       "line": 51,
       "judgment": "no",
       "reason": "an instruction"
+    },
+    "banned|Got started without much prompting|1": {
+      "line": 55,
+      "judgment": "no",
+      "reason": "a table cell describing a sign to look for; nothing is recast"
     },
     "split|It prints on portrait letter or A4 without changing anything. → The whole point of this curriculum is executive-function practice, and practice you cannot see is hard to keep faith with.|1": {
       "line": 59,
@@ -10001,6 +10276,11 @@
       "judgment": "no",
       "reason": "a condition"
     },
+    "banned|Plan the return, not just the arrival|1": {
+      "line": 32,
+      "judgment": "no",
+      "reason": "an X, not Y contrast in a heading, which is never counted; not the banned shape, which denies a thing and then says what it is"
+    },
     "device|Book the trip home so there are a day or two at home before school or work resumes.|1": {
       "line": 34,
       "judgment": "no",
@@ -10147,6 +10427,11 @@
       "line": 5,
       "judgment": "no",
       "reason": "an instruction with its reason"
+    },
+    "banned|What your child is learning, and what they're not|1": {
+      "line": 7,
+      "judgment": "no",
+      "reason": "a heading naming a topic; it does not deny a thing and then say what it is"
     },
     "device|They're learning how trip costs are structured: what the categories are, what's priced per person versus per room versus per group, what a buffer is, and whether the parts they chose fit the band you gave them.|1": {
       "line": 9,
@@ -10473,6 +10758,11 @@
       "judgment": "split",
       "reason": "negation then recast: \"don't add a page or a tracker\" / \"it's a line inside the budget work they already do\""
     },
+    "banned|When the honest answer is no|1": {
+      "line": 75,
+      "judgment": "no",
+      "reason": "a heading naming a topic; it does not deny a thing and then say what it is"
+    },
     "split|If the estimate can't fit the band in any workable window, \"I recommend we change the trip or wait for a better time\" is a correct, successful result. → Receive it warmly.|1": {
       "line": 77,
       "judgment": "no",
@@ -10659,6 +10949,11 @@
       "line": 24,
       "judgment": "no",
       "reason": "an instruction with its reason"
+    },
+    "banned|Don't let a delay stall them|1": {
+      "line": 26,
+      "judgment": "no",
+      "reason": "a heading naming a topic; it does not deny a thing and then say what it is"
     },
     "device|If you can't, your child has somewhere to go: the \"what to do while you wait for an adult checkpoint\" note on their When I'm Stuck card.|1": {
       "line": 28,
@@ -11192,6 +11487,11 @@
       "judgment": "no",
       "reason": "advice"
     },
+    "banned|The kid-safe filter is not a supervision plan|1": {
+      "line": 55,
+      "judgment": "no",
+      "reason": "a heading with one negated claim and no second clause that recasts it"
+    },
     "device|State this to yourself honestly: a kid-safe search filter reduces but does not eliminate exposure, and it is not a substitute for co-research on riskier topics.|1": {
       "line": 57,
       "judgment": "device",
@@ -11578,6 +11878,11 @@
       "line": 88,
       "judgment": "no",
       "reason": "a Pitfall line naming a mistake"
+    },
+    "banned|Session 09: AI as Helper, Not Boss (only if your family uses AI)|1": {
+      "line": 90,
+      "judgment": "no",
+      "reason": "an X, not Y contrast in a heading, which is never counted; not the banned shape, which denies a thing and then says what it is"
     },
     "device|Role: adult-operated -- you run the tool, on your account, with the child present.|1": {
       "line": 94,
@@ -12056,6 +12361,11 @@
       "judgment": "no",
       "reason": "a permission; nothing is rejected"
     },
+    "banned|What you do not decide now|1": {
+      "line": 24,
+      "judgment": "no",
+      "reason": "a heading naming a topic; it does not deny a thing and then say what it is"
+    },
     "split|The City C, food, and language sessions start Recommended and promote themselves later only if your child's research keeps surfacing them. → You are not asked to predict them.|1": {
       "line": 26,
       "judgment": "no",
@@ -12288,6 +12598,16 @@
       "judgment": "no",
       "reason": "a parallel list of signs; nothing is rejected"
     },
+    "banned|The child self-advances on independent sessions; use the re-entry routine; a gap is normal, not a restart|1": {
+      "line": 64,
+      "judgment": "no",
+      "reason": "an X, not Y contrast in a table cell, which is never counted; not the banned shape, which denies a thing and then says what it is"
+    },
+    "banned|\"Your work wasn't wrong\"; the binder is reusable|1": {
+      "line": 66,
+      "judgment": "no",
+      "reason": "a table cell: a quoted Name and a separate fact about the binder; it does not deny a thing and then say what it is"
+    },
     "split|If you are building the worksheets yourself with AI help, build just-in-time: make the runnable Phase 0-2 slice first (a few days of work), let the child work it, and build the next phase while they are on the current one. → A slow week then wastes nothing.|1": {
       "line": 71,
       "judgment": "no",
@@ -12457,6 +12777,16 @@
       "line": 97,
       "judgment": "no",
       "reason": "an instruction"
+    },
+    "banned|Lighten, don't quit: Low-Bandwidth Mode, micro-sessions, or make First Taste the whole project -- then re-decide.|1": {
+      "line": 102,
+      "judgment": "no",
+      "reason": "an X, not Y contrast in a table cell, which is never counted; not the banned shape, which denies a thing and then says what it is"
+    },
+    "banned|This is a designed, successful outcome, not an abandonment.|1": {
+      "line": 103,
+      "judgment": "no",
+      "reason": "an X, not Y contrast in a table cell, which is never counted; not the banned shape, which denies a thing and then says what it is"
     },
     "device|Differentiation -- lighter and deeper moves when the defaults do not fit your child.|1": {
       "line": 107,
@@ -12982,6 +13312,11 @@
       "judgment": "no",
       "reason": "a reassurance with a navigation pointer"
     },
+    "banned|How to help without taking over|1": {
+      "line": 60,
+      "judgment": "no",
+      "reason": "a heading naming a topic; it does not deny a thing and then say what it is"
+    },
     "device|Praise the move (\"you checked a second source\"), not the mind (\"you're so smart\").|1": {
       "line": 63,
       "judgment": "device",
@@ -13011,6 +13346,11 @@
       "line": 63,
       "judgment": "no",
       "reason": "an instruction"
+    },
+    "banned|What not to record|1": {
+      "line": 65,
+      "judgment": "no",
+      "reason": "a heading naming a topic; it does not deny a thing and then say what it is"
     },
     "device|Use vague travel dates instead of exact booked ones, and keep hotel names off anything public.|1": {
       "line": 68,
@@ -15915,6 +16255,11 @@
     }
   },
   "framework/sessions/phase_01_research_skills/09_ai_as_helper_not_boss.md": {
+    "banned|Session 09: AI as Helper, Not Boss|1": {
+      "line": 3,
+      "judgment": "no",
+      "reason": "an X, not Y contrast in a heading, which is never counted; not the banned shape, which denies a thing and then says what it is"
+    },
     "device|You are here: Phase 1 (Research Skills), AI opt-in add-on -- not a numbered step.|1": {
       "line": 5,
       "judgment": "no",
@@ -20255,6 +20600,11 @@
       "line": 49,
       "judgment": "no",
       "reason": "a field label"
+    },
+    "banned|Day trips (up to 3, or none)|1": {
+      "line": 54,
+      "judgment": "no",
+      "reason": "a table cell label with its answer choices or a hint in brackets; no clause recasts what a thing is"
     },
     "device|Then fill your Decision Record.|1": {
       "line": 65,
@@ -26263,6 +26613,11 @@
       "judgment": "no",
       "reason": "a condition"
     },
+    "banned|Say what you're not sure about|1": {
+      "line": 28,
+      "judgment": "no",
+      "reason": "a heading naming a topic; it does not deny a thing and then say what it is"
+    },
     "device|They're parts of it, not holes in it.|1": {
       "line": 30,
       "judgment": "device",
@@ -27659,6 +28014,11 @@
       "judgment": "no",
       "reason": "a list label"
     },
+    "banned|Constraints aren't the enemy|1": {
+      "line": 18,
+      "judgment": "no",
+      "reason": "a heading with one negated claim and no second clause that recasts it"
+    },
     "split|They're also why a trade-off has two real sides. → If nothing limited you, there would be nothing to trade.|1": {
       "line": 20,
       "judgment": "no",
@@ -27748,6 +28108,11 @@
       "line": 32,
       "judgment": "no",
       "reason": "a fragment affirming sameness; nothing rejected"
+    },
+    "banned|Not sure about one?|1": {
+      "line": 34,
+      "judgment": "no",
+      "reason": "a heading naming a topic; it does not deny a thing and then say what it is"
     },
     "split|If it belongs to a place you are researching, write it in that card's planning-assumption block, say what could change it, and flag whether a grown-up needs to check it. → If it is trip-wide, it goes in your question parking lot instead.|1": {
       "line": 36,
@@ -28013,6 +28378,11 @@
       "judgment": "no",
       "reason": "a list entry"
     },
+    "banned|What AI may not do|1": {
+      "line": 27,
+      "judgment": "no",
+      "reason": "a heading naming a topic; it does not deny a thing and then say what it is"
+    },
     "device|Be your only source.|1": {
       "line": 31,
       "judgment": "no",
@@ -28037,6 +28407,11 @@
       "line": 33,
       "judgment": "split",
       "reason": "AI may not decide these / those are for the adults"
+    },
+    "banned|Anything I could not check, so I took it out|1": {
+      "line": 41,
+      "judgment": "no",
+      "reason": "a table cell naming what was taken out; nothing is recast"
     },
     "split|For a major recommendation, use at least two non-AI sources. → AI may help you brainstorm or organize, and it is never the source of a fact.|1": {
       "line": 44,
@@ -28129,6 +28504,16 @@
       "line": 7,
       "judgment": "no",
       "reason": "a reason and a permission"
+    },
+    "banned|Review themes (what do lots of reviews say, not just one?)|1": {
+      "line": 22,
+      "judgment": "no",
+      "reason": "a table cell label with its answer choices or a hint in brackets; no clause recasts what a thing is"
+    },
+    "banned|Needs adult verification? (yes / no)|1": {
+      "line": 31,
+      "judgment": "no",
+      "reason": "a table cell label with its answer choices or a hint in brackets; no clause recasts what a thing is"
     },
     "split|The Type row uses the same nine categories you'll sort these cards into later, so you won't have to relabel anything. → Does this place truly fit one of them?|1": {
       "line": 34,
@@ -28270,6 +28655,11 @@
       "line": 7,
       "judgment": "no",
       "reason": "an instruction; the with sentence is unrelated"
+    },
+    "banned|The date the page says it was last updated (\"not stated\" is a fine answer)|1": {
+      "line": 28,
+      "judgment": "no",
+      "reason": "a table cell label with its answer choices or a hint in brackets; no clause recasts what a thing is"
     },
     "device|Hours, prices, access rules and attraction names change.|1": {
       "line": 38,
@@ -28495,6 +28885,11 @@
       "judgment": "no",
       "reason": "a description"
     },
+    "banned|Keep researching? (yes / no / maybe)|1": {
+      "line": 11,
+      "judgment": "no",
+      "reason": "a table cell label with its answer choices or a hint in brackets; no clause recasts what a thing is"
+    },
     "device|Eight rows is the printable size, not the limit — if your research turned up eleven places, all eleven belong on the list.|1": {
       "line": 22,
       "judgment": "device",
@@ -28541,6 +28936,16 @@
       "line": 5,
       "judgment": "no",
       "reason": "a reason"
+    },
+    "banned|Top sight 1 (star the ones you can't wait to see)|1": {
+      "line": 12,
+      "judgment": "no",
+      "reason": "a table cell label with its answer choices or a hint in brackets; no clause recasts what a thing is"
+    },
+    "banned|Needs adult verification? (yes / no)|1": {
+      "line": 25,
+      "judgment": "no",
+      "reason": "a table cell label with its answer choices or a hint in brackets; no clause recasts what a thing is"
     },
     "device|If a grown-up later changes which city you arrive in or leave from, you move a block -- you do not start over.|1": {
       "line": 28,
@@ -28598,6 +29003,41 @@
       "line": 7,
       "judgment": "no",
       "reason": "the start of the privacy prohibitions"
+    },
+    "banned|Rough budget band -- a not-to-exceed signal, not a final number, in the kid-sized form the child uses: about $____ per person per day, about $____ per day for the family, or \"we can afford this hotel tier: ____\"|1": {
+      "line": 12,
+      "judgment": "no",
+      "reason": "a table cell label with its answer choices or a hint in brackets; no clause recasts what a thing is"
+    },
+    "banned|Likely departure place (leave open if not known yet)|1": {
+      "line": 15,
+      "judgment": "no",
+      "reason": "a table cell label with its answer choices or a hint in brackets; no clause recasts what a thing is"
+    },
+    "banned|Mobility constraints (none known is fine)|1": {
+      "line": 16,
+      "judgment": "no",
+      "reason": "a table cell label with its answer choices or a hint in brackets; no clause recasts what a thing is"
+    },
+    "banned|Dietary constraints (none known is fine)|1": {
+      "line": 17,
+      "judgment": "no",
+      "reason": "a table cell label with its answer choices or a hint in brackets; no clause recasts what a thing is"
+    },
+    "banned|Sensory constraints (none known is fine)|1": {
+      "line": 18,
+      "judgment": "no",
+      "reason": "a table cell label with its answer choices or a hint in brackets; no clause recasts what a thing is"
+    },
+    "banned|Medical constraints (none known is fine; keep specifics with the adults, off the page)|1": {
+      "line": 19,
+      "judgment": "no",
+      "reason": "a table cell label with its answer choices or a hint in brackets; no clause recasts what a thing is"
+    },
+    "banned|AI helper -- a grown-up call (default no): yes / no|1": {
+      "line": 20,
+      "judgment": "no",
+      "reason": "a table cell label with its answer choices or a hint in brackets; no clause recasts what a thing is"
     },
     "device|Two adult notes.|1": {
       "line": 24,
@@ -28691,6 +29131,21 @@
       "judgment": "no",
       "reason": "an instruction"
     },
+    "banned|Why it may not fit (too far / too costly / too little time)|1": {
+      "line": 13,
+      "judgment": "no",
+      "reason": "a table cell label with its answer choices or a hint in brackets; no clause recasts what a thing is"
+    },
+    "banned|Save for a future trip? (yes / no)|1": {
+      "line": 14,
+      "judgment": "no",
+      "reason": "a table cell label with its answer choices or a hint in brackets; no clause recasts what a thing is"
+    },
+    "banned|Could it be a backup instead? (yes / no)|1": {
+      "line": 15,
+      "judgment": "no",
+      "reason": "a table cell label with its answer choices or a hint in brackets; no clause recasts what a thing is"
+    },
     "split|Add more entries (new copies of this table) as needed. → A short cut list is a good cut list.|1": {
       "line": 17,
       "judgment": "no",
@@ -28762,6 +29217,11 @@
       "line": 17,
       "judgment": "no",
       "reason": "an instruction"
+    },
+    "banned|Roughly when (a window, not a booked date)|1": {
+      "line": 24,
+      "judgment": "no",
+      "reason": "a table cell label with its answer choices or a hint in brackets; no clause recasts what a thing is"
     },
     "device|The day rows come in two tables, so the page still prints.|1": {
       "line": 27,
@@ -28842,6 +29302,11 @@
       "line": 51,
       "judgment": "no",
       "reason": "a filename instruction; the \"not the standard\" device is in the other sentence"
+    },
+    "banned|Roughly when (a window, not a booked date)|2": {
+      "line": 56,
+      "judgment": "no",
+      "reason": "a table cell label with its answer choices or a hint in brackets; no clause recasts what a thing is"
     },
     "split|If a grown-up later changes which city you fly into or out of, you move a block and keep the rest. → Nothing you wrote gets wasted.|1": {
       "line": 73,
@@ -29352,6 +29817,11 @@
       "judgment": "no",
       "reason": "an instruction after a release; a release followed by an instruction is no"
     },
+    "banned|Needs adult verification? (yes / no)|1": {
+      "line": 31,
+      "judgment": "no",
+      "reason": "a table cell label with its answer choices or a hint in brackets; no clause recasts what a thing is"
+    },
     "device|The cost row is per room, not the whole night's lodging.|1": {
       "line": 35,
       "judgment": "device",
@@ -29453,6 +29923,11 @@
       "line": 11,
       "judgment": "no",
       "reason": "an instruction"
+    },
+    "banned|No|1": {
+      "line": 22,
+      "judgment": "no",
+      "reason": "a table cell reading No"
     },
     "device|These are questions your destination pack answers.|1": {
       "line": 29,
@@ -29929,6 +30404,16 @@
       "judgment": "no",
       "reason": "a condition and an instruction"
     },
+    "banned|Met / not yet|1": {
+      "line": 31,
+      "judgment": "no",
+      "reason": "a table cell label with its answer choices or a hint in brackets; no clause recasts what a thing is"
+    },
+    "banned|Safety boundaries — adult-owned items identified, not handled by the child|1": {
+      "line": 37,
+      "judgment": "no",
+      "reason": "an X, not Y contrast in a table cell, which is never counted; not the banned shape, which denies a thing and then says what it is"
+    },
     "device|What source helped you most, and why?|1": {
       "line": 44,
       "judgment": "no",
@@ -30071,6 +30556,11 @@
     }
   },
   "framework/templates/planning_assumption_field.md": {
+    "banned|Planning Assumption (a card field, not a page)|1": {
+      "line": 3,
+      "judgment": "no",
+      "reason": "an X, not Y contrast in a heading, which is never counted; not the banned shape, which denies a thing and then says what it is"
+    },
     "device|This is a small block of questions on your city, attraction, and hotel cards.|1": {
       "line": 5,
       "judgment": "no",
@@ -30126,6 +30616,11 @@
       "judgment": "no",
       "reason": "a definition of an assumption"
     },
+    "banned|Needs adult verification? (yes / no)|1": {
+      "line": 18,
+      "judgment": "no",
+      "reason": "a table cell label with its answer choices or a hint in brackets; no clause recasts what a thing is"
+    },
     "device|Copy those labels exactly, parentheticals included — they're part of the label, not decoration.|1": {
       "line": 21,
       "judgment": "device",
@@ -30165,6 +30660,11 @@
       "line": 27,
       "judgment": "no",
       "reason": "a change of status over time; rejects nothing named"
+    },
+    "banned|One file this is not|1": {
+      "line": 29,
+      "judgment": "no",
+      "reason": "a heading naming a topic; it does not deny a thing and then say what it is"
     },
     "split|This block is yours, and it lives on your cards. → Don't merge the two.|1": {
       "line": 31,
@@ -30387,6 +30887,11 @@
       "judgment": "no",
       "reason": "a status"
     },
+    "banned|Needs adult verification? (yes / no)|1": {
+      "line": 28,
+      "judgment": "no",
+      "reason": "a table cell label with its answer choices or a hint in brackets; no clause recasts what a thing is"
+    },
     "split|If your group is bigger than about four, add a note about seating. → Lots of small restaurants can't seat a big group and may not take large-group reservations, so look for places that can, or plan to split into two tables.|1": {
       "line": 31,
       "judgment": "no",
@@ -30567,6 +31072,11 @@
       "line": 5,
       "judgment": "no",
       "reason": "an instruction"
+    },
+    "banned|Who they are (their job, not their name)|1": {
+      "line": 60,
+      "judgment": "no",
+      "reason": "a table cell label with its answer choices or a hint in brackets; no clause recasts what a thing is"
     }
   },
   "framework/templates/source_log.md": {
@@ -30609,6 +31119,11 @@
       "line": 9,
       "judgment": "no",
       "reason": "a field label"
+    },
+    "banned|Useful for this question? (yes / sort of / no)|1": {
+      "line": 22,
+      "judgment": "no",
+      "reason": "a table cell label with its answer choices or a hint in brackets; no clause recasts what a thing is"
     },
     "device|Tip: for facts that can change -- prices, hours, opening times, rules -- write \"check again before booking\" so a grown-up knows to re-check it close to travel.|1": {
       "line": 27,
@@ -30691,6 +31206,11 @@
       "line": 62,
       "judgment": "no",
       "reason": "a fact"
+    },
+    "banned|The three sections no gate asks for|1": {
+      "line": 64,
+      "judgment": "no",
+      "reason": "a heading naming a topic; it does not deny a thing and then say what it is"
     },
     "device|Write all three. ‹code› alone is optional and pointer-by-default; a pointer counts the same as full text, and an omitted ‹code› is correct rather than a gap.|1": {
       "line": 66,
@@ -31229,6 +31749,16 @@
       "judgment": "no",
       "reason": "a field label"
     },
+    "banned|Cost effect (higher / about the same / lower — not a price)|1": {
+      "line": 19,
+      "judgment": "no",
+      "reason": "a table cell label with its answer choices or a hint in brackets; no clause recasts what a thing is"
+    },
+    "banned|Travel time (read it from the map's \"Directions\", don't guess from the map picture)|1": {
+      "line": 22,
+      "judgment": "no",
+      "reason": "a table cell label with its answer choices or a hint in brackets; no clause recasts what a thing is"
+    },
     "device|My recommendation:|1": {
       "line": 30,
       "judgment": "no",
@@ -31368,6 +31898,31 @@
       "judgment": "no",
       "reason": "an instruction with a permission to leave gaps"
     },
+    "banned|Traveler role (by relationship, not by name)|1": {
+      "line": 9,
+      "judgment": "no",
+      "reason": "a table cell label with its answer choices or a hint in brackets; no clause recasts what a thing is"
+    },
+    "banned|Stamina for long, busy days (high / medium / take it easy; \"none known\" is fine)|1": {
+      "line": 15,
+      "judgment": "no",
+      "reason": "a table cell label with its answer choices or a hint in brackets; no clause recasts what a thing is"
+    },
+    "banned|Comfort with lots of walking and stairs on a busy day (\"none known\" is fine)|1": {
+      "line": 16,
+      "judgment": "no",
+      "reason": "a table cell label with its answer choices or a hint in brackets; no clause recasts what a thing is"
+    },
+    "banned|Any sensory sensitivities: crowds, noise, bright or flashing light, food textures (\"none known\" is fine)|1": {
+      "line": 17,
+      "judgment": "no",
+      "reason": "a table cell label with its answer choices or a hint in brackets; no clause recasts what a thing is"
+    },
+    "banned|Any needs the planner should design around: step-free access, an elevator, an accessible room, help with luggage (\"none known\" is fine)|1": {
+      "line": 21,
+      "judgment": "no",
+      "reason": "a table cell label with its answer choices or a hint in brackets; no clause recasts what a thing is"
+    },
     "device|Three of these rows are pacing factors: stamina, walking and stairs, and sensory sensitivities.|1": {
       "line": 24,
       "judgment": "no",
@@ -31465,6 +32020,11 @@
       "judgment": "no",
       "reason": "a field label"
     },
+    "banned|Number of travelers (write \"not decided yet\" if you are unsure)|1": {
+      "line": 20,
+      "judgment": "no",
+      "reason": "a table cell label with its answer choices or a hint in brackets; no clause recasts what a thing is"
+    },
     "device|A grown-up writes the destination here.|1": {
       "line": 22,
       "judgment": "no",
@@ -31534,6 +32094,11 @@
       "line": 28,
       "judgment": "no",
       "reason": "an example; the with sentence's not-clause is its own device"
+    },
+    "banned|Traveler (by relationship, not private details)|1": {
+      "line": 30,
+      "judgment": "no",
+      "reason": "a table cell label with its answer choices or a hint in brackets; no clause recasts what a thing is"
     },
     "split|One might say \"a traveler with lower stamina, like an older relative.\" → This card names your family's real people.|1": {
       "line": 39,
@@ -31799,6 +32364,11 @@
       "judgment": "no",
       "reason": "a fact"
     },
+    "banned|Nothing here is filled in|1": {
+      "line": 38,
+      "judgment": "no",
+      "reason": "a heading stating a fact about the page; nothing is recast"
+    },
     "device|Each blank page has headings and fill-in spaces, and that is all.|1": {
       "line": 40,
       "judgment": "no",
@@ -31900,6 +32470,41 @@
       "line": 11,
       "judgment": "no",
       "reason": "the start of the privacy prohibitions"
+    },
+    "banned|Rough budget band -- a not-to-exceed signal, not a final number, in the kid-sized form the child uses: about $____ per person per day, about $____ per day for the family, or \"we can afford this hotel tier: ____\"|1": {
+      "line": 16,
+      "judgment": "no",
+      "reason": "a table cell label with its answer choices or a hint in brackets; no clause recasts what a thing is"
+    },
+    "banned|Likely departure place (leave open if not known yet)|1": {
+      "line": 19,
+      "judgment": "no",
+      "reason": "a table cell label with its answer choices or a hint in brackets; no clause recasts what a thing is"
+    },
+    "banned|Mobility constraints (none known is fine)|1": {
+      "line": 20,
+      "judgment": "no",
+      "reason": "a table cell label with its answer choices or a hint in brackets; no clause recasts what a thing is"
+    },
+    "banned|Dietary constraints (none known is fine)|1": {
+      "line": 21,
+      "judgment": "no",
+      "reason": "a table cell label with its answer choices or a hint in brackets; no clause recasts what a thing is"
+    },
+    "banned|Sensory constraints (none known is fine)|1": {
+      "line": 22,
+      "judgment": "no",
+      "reason": "a table cell label with its answer choices or a hint in brackets; no clause recasts what a thing is"
+    },
+    "banned|Medical constraints (none known is fine; keep specifics with the adults, off the page)|1": {
+      "line": 23,
+      "judgment": "no",
+      "reason": "a table cell label with its answer choices or a hint in brackets; no clause recasts what a thing is"
+    },
+    "banned|AI helper -- a grown-up call (default no): yes / no|1": {
+      "line": 24,
+      "judgment": "no",
+      "reason": "a table cell label with its answer choices or a hint in brackets; no clause recasts what a thing is"
     },
     "device|Two adult notes.|1": {
       "line": 28,
@@ -32242,6 +32847,11 @@
       "judgment": "no",
       "reason": "a label"
     },
+    "banned|Number of travelers (write \"not decided yet\" if you are unsure)|1": {
+      "line": 24,
+      "judgment": "no",
+      "reason": "a table cell label with its answer choices or a hint in brackets; no clause recasts what a thing is"
+    },
     "device|A grown-up writes the destination here.|1": {
       "line": 26,
       "judgment": "no",
@@ -32311,6 +32921,11 @@
       "line": 32,
       "judgment": "no",
       "reason": "an example; the with sentence's device is judged there"
+    },
+    "banned|Traveler (by relationship, not private details)|1": {
+      "line": 34,
+      "judgment": "no",
+      "reason": "a table cell label with its answer choices or a hint in brackets; no clause recasts what a thing is"
     },
     "device|The sessions talk in general terms.|1": {
       "line": 43,

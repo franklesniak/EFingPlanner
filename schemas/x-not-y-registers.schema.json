@@ -27,8 +27,8 @@
       },
       "basis": {
         "type": "string",
-        "pattern": "\\S",
-        "description": "Why the page has this register. It holds more than white space."
+        "pattern": "[^\\s\\u001c-\\u001f\\u0085]",
+        "description": "Why the page has this register. It holds more than white space, in the tool's reading too: a character outside ECMA-262's \\s, U+001C to U+001F and U+0085."
       }
     }
   }

@@ -24,23 +24,36 @@ Each page is read by markdown-it, the CommonMark parser the Last Updated check
 and the nested-Markdown lint use, blocks and inline text alike. Only
 paragraphs are prose. Headings, fenced and indented code, tables, thematic
 breaks, comments and link reference definitions are not, wherever they sit, in
-a list item or a block quote included. Block quotes are read like prose; a
-quotation block quote, such as a coaching script, is judged "no". A block
-quote is a quotation when quotation marks, double or single, enclose it, or
-when its last line is a named attribution: a dash and a name, such as
-``— A parent``, never a dash-led sentence of the page's own. The attribution
-must close the quote itself: one that closes a block quote nested in it names
-that quote's source alone, so the outer callout stays a callout. Quotation
-marks are read over every paragraph inside the quote, nested quotes
-included, since a quotation can hold one. An HTML block that shows
-nothing (comments, processing instructions, declarations and CDATA sections)
-is read as a block of comments: its markers are markers, and the paragraphs
-on either side of it stay adjacent. An HTML block that shows text is read
-like a paragraph when all it hides is those
-(``<!-- note --> Choose the map.``), as GitHub's renderer shows it: its text
-as written, with character references decoded. One that shows text next to
-an HTML tag is not read; the report names it (UNREAD HTML), and it fails the
-run, as markdownlint's MD033 fails the tag.
+a list item or a block quote included. A heading and a table cell are still
+authored text, and the style law's tests run over authored text while its
+counts run over prose lines, so each is tested for the banned shape and
+nothing in it is counted: every sentence of a heading or a cell that holds a
+negation word is a candidate of the banned kind, keyed with the sentence
+after it in the same heading or cell, or alone, and judged ``banned`` or
+``no``. A heading or a cell never pairs with the text around it. Block
+quotes are read like prose; a quotation block quote, such as a coaching
+script, is judged "no". A block quote is a quotation when quotation marks,
+double or single, enclose it, or when its last line is a named attribution:
+a dash and a name, such as ``— A parent``, never a dash-led sentence of the
+page's own. A name has a name's shape: a determiner or a number and a short
+noun (``A parent``, ``3 families in the pilot``), or a proper name
+(``Grandma Rose``, ``Session 05's script``), with no word a clause needs, so
+``— Then check the route`` is prose. The attribution must close the quote
+itself: one that closes a block quote nested in it names that quote's source
+alone, so the outer callout stays a callout. Quotation marks are read over
+every paragraph inside the quote, nested quotes included, since a quotation
+can hold one. An HTML block that shows nothing (comments, processing
+instructions, declarations and CDATA sections) is read as a block of
+comments: its markers are markers, and the paragraphs on either side of it
+stay adjacent. An HTML block that shows text is read like a paragraph when
+all it hides is those (``<!-- note --> Choose the map.``), as GitHub's
+renderer shows it: its text as written, with character references decoded.
+One that shows text next to an HTML tag is not read; the report names it
+(UNREAD HTML), and it fails the run, as markdownlint's MD033 fails the tag.
+Raw HTML is read from the left, as a browser reads it: a comment ends at the
+first ``-->`` or ``--!>``, ``<!-->`` and ``<!--->`` are empty comments, and a
+``<!--`` inside a processing instruction, a CDATA section, a declaration, a
+tag's quoted attribute or another comment opens nothing.
 
 The tests read the text each paragraph prints, as markdown-it gives it: no
 emphasis marks, a link's label without its destination (an inline link or a
@@ -112,7 +125,10 @@ device in any other spelling (``X not Y``, ``xnoty``), that reaches its
 source by number, that has no block below it in its container, or that
 shares its lines with text the page shows (in an HTML block, or inside a
 line of a paragraph, a heading or a table cell), exempts nothing, and the
-report names it. A marker shown in a code span is text, not a marker.
+report names it. A marker shown in a code span is text, not a marker. A
+marker, ``density-exempt`` or audience, is a comment whose own text opens
+with its word, so comment-like text inside another hidden part, a tag or a
+comment is none.
 
 A marker's reason names its source, as the style law's name-first rule asks
 of every built file: ``the spec's Session Support Notes``, ``the batch 1
@@ -144,8 +160,14 @@ sentence that moves into or out of a quotation is judged again. Each entry
 holds exactly ``line`` (where the sentence stood when last checked, a whole
 number from 1; for reading only), ``judgment`` and ``reason`` (not empty). The
 judgment is ``device`` (a true `X, not Y` instance), ``split`` (a split
-negation), ``banned`` (the banned shape) or ``no``. Pages are sorted by path,
-and a page's entries follow the page.
+negation), ``banned`` (the banned shape) or ``no``; a heading's or a table
+cell's candidate takes only ``banned`` or ``no``, and any other leaves it
+unjudged. Pages are sorted by path, and a page's entries follow the page.
+Each value is read as the schemas read it: a line is a number with a zero
+fractional part, so ``12.0`` is line 12; a key matches its form to its very
+end; and text that is not empty holds a character that is white space
+neither in ECMA-262's ``\\s``, which the schemas' patterns use, nor in
+Python's (U+001C to U+001F and U+0085).
 
 ``x-not-y-registers.json`` maps a page path (a ``.md`` path) to exactly a
 ``register`` (``child``, ``parent`` or ``builder``) and the ``basis`` for it
@@ -216,33 +238,84 @@ PREAMBLE = "(preamble)"
 
 #: A task-list box at the start of a list item: `[ ]` or `[x]`.
 TASK_BOX_RE = re.compile(r"^\[[ xX]\]\s+")
-#: An HTML block that holds only comments.
-COMMENT_BLOCK_RE = re.compile(r"^\s*(?:<!--.*?-->\s*)+$", re.DOTALL)
-#: What a browser hides in an HTML block: a comment, a processing instruction
-#: (`<?x ?>`), a declaration (`<!X ...>`) and a CDATA section. Text after one is
-#: shown, as GitHub's renderer shows it.
-HIDDEN_HTML_RE = re.compile(r"<!--.*?-->|<\?.*?\?>|<!\[CDATA\[.*?\]\]>|<![A-Za-z][^>]*>", re.DOTALL)
-#: A start or end tag. The recount does not read HTML elements as a browser
-#: does (markdownlint's MD033 rejects them), so a block that shows text next to
-#: one is reported rather than read.
-HTML_TAG_RE = re.compile(r"</?[A-Za-z][A-Za-z0-9-]*(?:\s[^>]*)?/?>")
+#: Where a comment ends, as the page's HTML ends it: at the first `-->` or
+#: `--!>` after its `<!--`. `<!-->` and `<!--->` are empty comments.
+COMMENT_CLOSER_RE = re.compile(r"--!?>")
+#: The other parts a browser hides: a processing instruction (`<?x ?>`), a
+#: CDATA section and a declaration (`<!X ...>`).
+HIDDEN_OTHER_RE = re.compile(r"<\?.*?\?>|<!\[CDATA\[.*?\]\]>|<![A-Za-z][^>]*>", re.DOTALL)
+#: A start or end tag, with its attributes as CommonMark reads them, so a
+#: quoted value that holds `<!--` is part of the tag. The recount does not read
+#: HTML elements as a browser does (markdownlint's MD033 rejects them), so a
+#: block that shows text next to one is reported rather than read.
+HTML_TAG_RE = re.compile(
+    r"<[A-Za-z][A-Za-z0-9-]*(?:\s+[A-Za-z_:][A-Za-z0-9:._-]*(?:\s*=\s*(?:[^\"'=<>`\x00-\x20]+|'[^']*'|\"[^\"]*\"))?)*"
+    r"\s*/?>|</[A-Za-z][A-Za-z0-9-]*\s*>")
+
+
+def hidden_parts(content: str) -> list[tuple[int, int, str | None]]:
+    """Return each part of raw HTML that a browser hides, in document order.
+
+    Each part is `(start, end, comment)`, where `comment` is a comment's text
+    and None for a processing instruction, a CDATA section or a declaration.
+    The parts are read from the left, as a browser reads them, so a `<!--`
+    inside one of them, or inside a tag's quoted attribute, opens nothing:
+    `<?x <!-- audience: parent --> ?>` is one processing instruction, and
+    `<!-- see <!-- audience: parent -->` one comment whose text is
+    `see <!-- audience: parent`.
+    """
+    parts: list[tuple[int, int, str | None]] = []
+    at = content.find("<")
+    while at >= 0:
+        end = at + 1
+        if content.startswith("<!--", at):
+            empty = next((e for e in ("<!-->", "<!--->") if content.startswith(e, at)), "")
+            closer = None if empty else COMMENT_CLOSER_RE.search(content, at + len("<!--"))
+            if empty or closer:
+                end = at + len(empty) if empty else closer.end()
+                parts.append((at, end, "" if empty else content[at + len("<!--"):closer.start()]))
+        elif m := HIDDEN_OTHER_RE.match(content, at):
+            end = m.end()
+            parts.append((at, end, None))
+        elif m := HTML_TAG_RE.match(content, at):
+            end = m.end()
+        at = content.find("<", end)
+    return parts
+
+
+def without_hidden(content: str) -> str:
+    """Return what raw HTML shows once its hidden parts are gone, each part
+    replaced by the line breaks it held, so every line stays on its line."""
+    out, last = [], 0
+    for start, end, _ in hidden_parts(content):
+        out += [content[last:start], "\n" * content.count("\n", start, end)]
+        last = end
+    return "".join(out) + content[last:]
 
 
 def shows_nothing(block: dict[str, Any]) -> bool:
     """True when an HTML block shows nothing: only comments, processing
     instructions, declarations or CDATA sections, which GitHub renders as
     nothing. Such a block is read as a block of comments everywhere."""
-    content = block.get("content") or ""
-    return block.get("type") == "html_block" and (
-        bool(COMMENT_BLOCK_RE.match(content)) or not HIDDEN_HTML_RE.sub("", content).strip())
-AUDIENCE_RE = re.compile(r"<!--\s*audience:\s*(adult|parent|builder)\b", re.IGNORECASE)
+    return block.get("type") == "html_block" and not without_hidden(block.get("content") or "").strip()
+
+
+#: An audience or `density-exempt` marker is a comment whose own text opens
+#: with its word: `<!-- audience: parent -->`. Comment-like text inside another
+#: hidden part, a tag or a comment is no marker.
+AUDIENCE_RE = re.compile(r"^\s*audience:\s*(adult|parent|builder)\b", re.IGNORECASE)
 PARENT_STRIP_RE = re.compile(r"^\s*\*\*For parents:?\*\*", re.IGNORECASE)
 PARENT_SECTION_RE = re.compile(
     r"^(?:Parent Notes?|For Parents?|Notes? for Parents?)$", re.IGNORECASE
 )
-#: A `density-exempt` marker. Its body is `<device> -- <reason>`; a body with
-#: no reason is still read, so that the report can name it.
-EXEMPT_MARKER_RE = re.compile(r"<!--\s*density-exempt:(?P<body>.*?)-->", re.DOTALL)
+#: A `density-exempt` marker's comment text. Its body is `<device> -- <reason>`;
+#: a body with no reason is still read, so that the report can name it.
+EXEMPT_MARKER_RE = re.compile(r"^\s*density-exempt:(?P<body>.*)$", re.DOTALL)
+
+
+def marker_comments(content: str) -> list[tuple[int, str]]:
+    """Return `(line offset, text)` for each comment in raw HTML, where a marker can be."""
+    return [(content.count("\n", 0, start), text) for start, _, text in hidden_parts(content) if text is not None]
 MARKER_BODY_RE = re.compile(r"^\s*(?P<device>.*?)\s+--(?P<reason>.*)$", re.DOTALL)
 #: The device names a marker may use: the style law's `X, not Y`, and the old
 #: `X-not-Y` and `x-not-y`, so an old marker still counts. No other spelling
@@ -389,6 +462,61 @@ ATTRIBUTION_RE = re.compile(r"^[*_]*(?:—|―|--)\s*[*_]*(?P<name>.*?)[*_]*$")
 #: The most words a name in an attribution runs to (`— A parent, after Session
 #: 05`); a longer line is prose.
 ATTRIBUTION_MAX_WORDS = 8
+#: Words that open a name as a determiner does: `A parent`, `The coach`, `Our
+#: guide`. A number does too: `3 families in the pilot`.
+NAME_DETERMINERS = frozenset(
+    "a an the one two three four five six seven eight nine ten our your my his her their its every each some"
+    " another many most several both all".split())
+#: Words a name never holds: a pronoun that is not a possessive one, a form of
+#: `be`, `have` or `do`, a modal and a negation. Each needs a clause around it.
+NOT_IN_NAME = frozenset(
+    "i you he she it we they me him us them who whom which what is are was were be been being am have has had"
+    " do does did can could will would shall should may might must not never no nor".split())
+#: Words that open a clause and never a name: those above, and a conjunction, a
+#: linking or sequence adverb, a demonstrative, and a word that opens a
+#: condition or a time. `— Then check the route` is the page's own prose.
+CLAUSE_OPENERS = NOT_IN_NAME | frozenset(
+    "and but or so yet then now also just still only even too please let here there this that these those if"
+    " when whenever while because since unless until although though once as where whether before after how"
+    " why".split())
+#: Lower-case words that join the parts of a proper name: `Mom and Dad`, `Anna
+#: de Souza`.
+NAME_JOINERS = frozenset("and & of de da del della der di du la le van von y al bin ibn".split())
+#: A word that ends a determiner's noun and opens what describes it: `3
+#: families in the pilot`.
+NAME_PREPOSITIONS = frozenset("in at from after on for with during about of since by near via per".split())
+#: The most words a determiner's noun runs to (`The Batch 2 brief`), so `The
+#: kids loved the map` is a sentence.
+NAME_CORE_MAX_WORDS = 4
+POSSESSIVE_RE = re.compile(r"['’]s$")
+
+
+def is_name(name: str) -> bool:
+    """True when `name`, up to its first comma or bracket, has the shape of a name.
+
+    A name is a determiner or a number and a noun of at most
+    `NAME_CORE_MAX_WORDS` words (`A parent`, `3 families in the pilot`), or a
+    proper name whose every word opens with a capital letter or a digit, a
+    joining word aside (`Grandma Rose`, `Mom and Dad`), with lower-case words
+    only after a possessive (`Session 05's script`). It opens no clause and
+    holds no word a clause needs (`NOT_IN_NAME`), so `Then check the route`,
+    `Check the route` and `The route is long` are sentences.
+    """
+    head = re.split(r"[,(;:]", name, maxsplit=1)[0].split()
+    if not head:
+        return False
+    low = [POSSESSIVE_RE.sub("", w).strip(".\"'“”‘’").lower() for w in head]
+    if (low[0] in CLAUSE_OPENERS and low[0] not in NAME_DETERMINERS) or any(w in NOT_IN_NAME for w in low):
+        return False
+    if low[0] in NAME_DETERMINERS or head[0][0].isdigit():
+        core = next((i for i, w in enumerate(low) if i and w in NAME_PREPOSITIONS), len(low))
+        return core <= NAME_CORE_MAX_WORDS
+    possessive = False
+    for word, lower in zip(head, low):
+        if not (possessive or word[0].isupper() or word[0].isdigit() or lower in NAME_JOINERS):
+            return False
+        possessive = possessive or bool(POSSESSIVE_RE.search(word))
+    return True
 
 #: Closing quotation marks, brackets and emphasis that can follow a sentence's
 #: last punctuation. They stay with the sentence they close.
@@ -506,6 +634,19 @@ class ProseLine:
 
 
 @dataclass
+class Label:
+    """A heading's or a table cell's printed text: authored text that is not a
+    prose line, so the banned shape is tested in it and nothing is counted."""
+
+    lineno: int
+    text: str
+    section: str
+    region: str
+    section_index: int
+    container: tuple[str, ...] = ()
+
+
+@dataclass
 class Marker:
     """A `density-exempt` marker and the line range it covers."""
 
@@ -537,6 +678,7 @@ class Candidate:
     reason: str = ""
     exempt_by: int | None = None
     section_index: int = 0  # the section's place in the page (see ProseLine)
+    label: bool = False  # in a heading or a table cell: only the banned shape is judged
 
 
 @dataclass
@@ -551,6 +693,8 @@ class Page:
     #: The first line of each HTML block that shows text next to a tag, which the
     #: recount cannot read; each fails the run.
     unread_html: list[int] = field(default_factory=list)
+    #: Each heading's and table cell's text, where the banned shape is tested.
+    labels: list[Label] = field(default_factory=list)
 
 
 @dataclass
@@ -694,6 +838,7 @@ def parse_text(text: str) -> Page:
     marker_blocks: list[int] = []
     sections: list[str] = [PREAMBLE]
     heading_lines: dict[int, tuple[int, str]] = {}
+    labels: list[Label] = []
     audience: str | None = None
     section = PREAMBLE
     section_index = 0
@@ -709,42 +854,48 @@ def parse_text(text: str) -> Page:
     for index, block in enumerate(blocks):
         kind = block["type"]
         for offset, piece in block.get("html") or ():
-            # Inline HTML in a paragraph, a heading or a table cell. An audience
-            # marker there is read as anywhere else; a `density-exempt` marker
-            # shares its line with text, so it covers nothing and is named.
-            am = AUDIENCE_RE.search(piece)
-            if am and audience is None:
-                audience = am.group(1).lower()
-            for mm in EXEMPT_MARKER_RE.finditer(piece):
-                marker = marker_beside_text(block["start"] + offset + piece.count("\n", 0, mm.start()),
-                                            mm.group("body"))
-                if marker:
-                    markers.append(marker)
-                    marker_blocks.append(index)
+            # Inline HTML in a paragraph, a heading or a table cell. markdown-it
+            # gives each piece whole, and a marker is read only from a comment
+            # in it. An audience marker there is read as anywhere else; a
+            # `density-exempt` marker shares its line with text, so it covers
+            # nothing and is named.
+            for line, comment in marker_comments(piece):
+                am = AUDIENCE_RE.match(comment)
+                if am and audience is None:
+                    audience = am.group(1).lower()
+                if mm := EXEMPT_MARKER_RE.match(comment):
+                    marker = marker_beside_text(block["start"] + offset + line, mm.group("body"))
+                    if marker:
+                        markers.append(marker)
+                        marker_blocks.append(index)
         if kind == "html_block":
             content = block.get("content") or ""
-            am = AUDIENCE_RE.search(content)
-            if am and audience is None:
-                audience = am.group(1).lower()
+            comments = marker_comments(content)
+            for _, comment in comments:
+                am = AUDIENCE_RE.match(comment)
+                if am and audience is None:
+                    audience = am.group(1).lower()
             if shows_nothing(block):
                 # A block that shows nothing (comments, processing instructions,
                 # declarations and CDATA sections) is read as a block of
                 # comments: its markers are markers, and the paragraphs on
                 # either side of it stay adjacent. Markers are read only from
-                # such a block, so an example shown in a code span or a fence
-                # never counts.
-                for mm in EXEMPT_MARKER_RE.finditer(content):
-                    markers.append(parse_marker(block["start"], mm.group("body")))
-                    marker_blocks.append(index)
+                # the comments in raw HTML, so an example shown in a code span
+                # or a fence never counts.
+                for _, comment in comments:
+                    if mm := EXEMPT_MARKER_RE.match(comment):
+                        markers.append(parse_marker(block["start"], mm.group("body")))
+                        marker_blocks.append(index)
                 continue
             # The block shows text: what is left once the hidden parts are gone,
             # one line per source line, with character references decoded.
-            shown = HIDDEN_HTML_RE.sub(lambda m: "\n" * m.group(0).count("\n"), content.rstrip("\n"))
-            for mm in EXEMPT_MARKER_RE.finditer(content):
-                marker = marker_beside_text(block["start"] + content.count("\n", 0, mm.start()), mm.group("body"))
-                if marker:
-                    markers.append(marker)
-                    marker_blocks.append(index)
+            shown = without_hidden(content.rstrip("\n"))
+            for line, comment in comments:
+                if mm := EXEMPT_MARKER_RE.match(comment):
+                    marker = marker_beside_text(block["start"] + line, mm.group("body"))
+                    if marker:
+                        markers.append(marker)
+                        marker_blocks.append(index)
             if HTML_TAG_RE.search(shown):
                 unread.append(block["start"])
                 follows = False
@@ -775,8 +926,16 @@ def parse_text(text: str) -> Page:
             # The "For parents" strip runs from its label to the next heading of
             # any level, as check-session-structure.py reads it.
             region = "parent notes" if any(parent for _, parent in open_headings) else "main"
+            # A heading is authored text, so the banned shape is tested in it,
+            # but not a prose line, so nothing in it is counted.
+            labels.append(Label(block["start"], heading, section, region, section_index,
+                                tuple(block.get("path") or ())))
             follows = False
             continue
+        if kind == "table":
+            labels.extend(Label(block["start"] + offset, normalize_space(cell), section, region, section_index,
+                                tuple(block.get("path") or ()))
+                          for offset, cell in block.get("cells") or () if cell.strip())
         if kind in ("bullet_list", "ordered_list", "blockquote"):
             # A container opens before the blocks inside it; it prints nothing itself.
             continue
@@ -797,7 +956,7 @@ def parse_text(text: str) -> Page:
         follows = True
     for marker, index in zip(markers, marker_blocks):
         marker_scope(marker, blocks, index, heading_lines, source)
-    return Page(prose, markers, sections, heading_lines, audience, unread)
+    return Page(prose, markers, sections, heading_lines, audience, unread, labels)
 
 
 def marker_scope(marker: Marker, blocks: list[dict[str, Any]], index: int,
@@ -910,15 +1069,16 @@ def is_named_attribution(line: str) -> bool:
     The style law exempts a block quote only when the page shows on its face
     that the text is borrowed, and an attribution does that by naming its
     source: `— A parent`, `-- Session 05's script`. The name starts with a
-    capital letter or a digit, runs at most `ATTRIBUTION_MAX_WORDS` words and
-    ends without a sentence mark. So a dash-led continuation of the page's own
-    prose, `-- and then check the route.` or `— because this matters.`, is
-    not an attribution.
+    capital letter or a digit, runs at most `ATTRIBUTION_MAX_WORDS` words, ends
+    without a sentence mark and has the shape of a name (`is_name()`). So a
+    dash-led continuation of the page's own prose, `-- and then check the
+    route.`, `— because this matters.` or `— Then check the route`, is not an
+    attribution.
     """
     m = ATTRIBUTION_RE.match(normalize_space(line))
     name = m.group("name").strip() if m else ""
     return (bool(name) and (name[0].isupper() or name[0].isdigit()) and name[-1] not in ".!?…"
-            and len(name.split()) <= ATTRIBUTION_MAX_WORDS)
+            and len(name.split()) <= ATTRIBUTION_MAX_WORDS and is_name(name))
 
 
 def quote_contexts(paras: list[list[ProseLine]], raw_lines: list[str] | None) -> list[str]:
@@ -933,6 +1093,12 @@ def quote_contexts(paras: list[list[ProseLine]], raw_lines: list[str] | None) ->
     included, and a paragraph inside any block quote that is a quotation is
     quoted.
     """
+    quotation = quotation_quotes(paras)
+    return [container_context(para[0].container, quotation) for para in paras]
+
+
+def quotation_quotes(paras: list[list[ProseLine]]) -> set[str]:
+    """Return the block quotes (`q<n>`) that are quotations (see `quote_contexts()`)."""
     quotes: dict[str, list[int]] = {}
     for index, para in enumerate(paras):
         for part in para[0].container:
@@ -950,14 +1116,15 @@ def quote_contexts(paras: list[list[ProseLine]], raw_lines: list[str] | None) ->
         last_line = paragraph_text(paras[last]).split("\n")[-1] if own else ""
         if (QUOTE_OPEN_RE.search(joined) and QUOTE_CLOSE_RE.search(joined)) or is_named_attribution(last_line):
             quotation.add(quote)
-    out = []
-    for para in paras:
-        inside = [part for part in para[0].container if part.startswith("q")]
-        if not inside:
-            out.append("")
-        else:
-            out.append("quotation block quote" if quotation.intersection(inside) else "block quote")
-    return out
+    return quotation
+
+
+def container_context(container: tuple[str, ...], quotation: set[str]) -> str:
+    """Return the quotation context of text in `container`, given the block quotes that are quotations."""
+    inside = [part for part in container if part.startswith("q")]
+    if not inside:
+        return ""
+    return "quotation block quote" if quotation.intersection(inside) else "block quote"
 
 
 def banned_patterns(first: str, second: str, joined: bool = False) -> list[str]:
@@ -1011,9 +1178,37 @@ def joined_banned_patterns(sentence: str) -> list[str]:
     return []
 
 
+def label_candidates(rel: str, labels: list[Label], quotation: set[str]) -> list[Candidate]:
+    """Return the banned-shape candidates in the headings and table cells of a page.
+
+    The style law's tests run over all authored text and its counts over prose
+    lines, so a heading or a table cell is tested for the banned shape, joined
+    or as two sentences, and nothing in it is counted. The banned shape opens
+    with a negation, so every sentence of a heading or a cell that holds a
+    negation word is a candidate, keyed with the sentence after it when there
+    is one, and judged `banned` or `no`: no shape escapes because the patterns
+    miss it, which only name the kind. A heading or a cell is read on its own:
+    it never pairs with the text around it.
+    """
+    out = []
+    for lb in labels:
+        sents = split_sentences(lb.text)
+        ctx = container_context(lb.container, quotation)
+        for idx, s in enumerate(sents):
+            if not CANDIDATE_NEGATION_RE.search(plain(s)):
+                continue
+            nxt = sents[idx + 1] if idx + 1 < len(sents) else None
+            pats = joined_banned_patterns(plain(s)) + (banned_patterns(plain(s), plain(nxt)) if nxt else [])
+            out.append(Candidate(rel, lb.lineno, lb.section, lb.region, "banned", pats or ["negation-in-label"],
+                                 s + ARROW + nxt if nxt else s, bool(ctx), ctx, section_index=lb.section_index,
+                                 label=True))
+    return out
+
+
 def find_candidates(rel: str, prose: list[ProseLine],
-                    raw_lines: list[str] | None = None) -> list[Candidate]:
-    """Return every candidate device, split negation and banned shape in a page."""
+                    raw_lines: list[str] | None = None, labels: list[Label] | None = None) -> list[Candidate]:
+    """Return every candidate device, split negation and banned shape in a page,
+    the banned shapes in its headings and table cells (`labels`) included."""
     cands: list[Candidate] = []
     paras = paragraphs(prose)
     para_sents = [paragraph_sentences(para) for para in paras]
@@ -1106,6 +1301,8 @@ def find_candidates(rel: str, prose: list[ProseLine],
                 bpats = banned_patterns(ps, pnxt)
                 if bpats:
                     add(pl, "banned", bpats, s + ARROW + nxt, ctx)
+    # After every prose candidate, so no key a paragraph gives moves.
+    cands += label_candidates(rel, labels or [], quotation_quotes(paras))
     seen: dict[tuple[str, str, str], int] = {}
     # A sentence's own candidate is numbered after every other, so adding the
     # sentence candidates moves no key a word or a pattern gives.
@@ -1158,6 +1355,8 @@ def region_register(file_register: str, region: str) -> str:
 # ---------------------------------------------------------------------------
 
 VALID_JUDGMENTS = {"device", "split", "banned", "no"}
+#: The judgments a heading's or a table cell's candidate can take.
+LABEL_JUDGMENTS = {"banned", "no"}
 
 
 class DataError(Exception):
@@ -1207,9 +1406,30 @@ def is_page_path(key: Any) -> bool:
     return isinstance(key, str) and key.endswith(".md") and not key.startswith(("/", "../"))
 
 
+#: A character that is white space in neither of the two readings a data file
+#: gets. The schemas' patterns are ECMA-262 regular expressions, whose `\s` is
+#: TAB, VT, FF, U+FEFF, the space separators, LF, CR, U+2028 and U+2029.
+#: Python's white space (`str.isspace()`) leaves out U+FEFF and adds U+001C to
+#: U+001F and U+0085. Text must hold a character outside both, and each schema
+#: states the same set as `[^\s\u001c-\u001f\u0085]`.
+NOT_SPACE_RE = re.compile(
+    r"[^\t\n\v\f\r \u00a0\u1680\u2000-\u200a\u2028\u2029\u202f\u205f\u3000\ufeff\u001c-\u001f\u0085]")
+
+
 def is_text(value: Any) -> bool:
-    """True for a string that holds more than white space."""
-    return isinstance(value, str) and bool(value.strip())
+    """True for a string that holds more than white space, in either reading (see `NOT_SPACE_RE`)."""
+    return isinstance(value, str) and bool(NOT_SPACE_RE.search(value))
+
+
+def is_line_number(value: Any) -> bool:
+    """True for a whole number from 1, as the schema's `integer` reads it.
+
+    JSON Schema's `integer` is any number with a zero fractional part, so `1`,
+    `1.0` and `1e0` are all line 1. A boolean is not a number.
+    """
+    if isinstance(value, bool) or not isinstance(value, (int, float)):
+        return False
+    return (isinstance(value, int) or value.is_integer()) and value >= 1
 
 
 def load_registers(path: Path | None) -> dict:
@@ -1242,11 +1462,13 @@ def load_judgments(path: Path | None) -> dict:
             raise DataError(f"{name}: {rel!r} must be a .md page path that maps to its judgments")
         for key, entry in entries.items():
             where = f"{name}: {rel}: {key[:80]!r}"
-            if not JUDGMENT_KEY_RE.match(key):
+            # `fullmatch`, because Python's `$` also matches before a last line
+            # break, where the schema's ECMA-262 `$` does not.
+            if not JUDGMENT_KEY_RE.fullmatch(key):
                 raise DataError(f"{where} is not a key of the form <kind>|<sentence text>|<occurrence>")
             if not isinstance(entry, dict) or set(entry) != {"line", "judgment", "reason"}:
                 raise DataError(f"{where} must hold exactly `line`, `judgment` and `reason`")
-            if type(entry["line"]) is not int or entry["line"] < 1:
+            if not is_line_number(entry["line"]):
                 raise DataError(f"{where}: the line must be a whole number from 1")
             if entry["judgment"] not in VALID_JUDGMENTS:
                 raise DataError(f"{where}: judgment {entry['judgment']!r} is not device, split, banned or no")
@@ -1295,9 +1517,11 @@ def scan(root: Path, judgments: dict, registers: dict) -> list[FileReport]:
         raw_lines = text.split("\n")
         rep = FileReport(rel, register, basis, page.sections, [], page.markers, page.unread_html)
         file_j = judgments.get(rel, {})
-        for c in find_candidates(rel, page.prose, raw_lines):
+        for c in find_candidates(rel, page.prose, raw_lines, page.labels):
             j = file_j.get(c.key)
-            if j is not None:
+            # A heading or a table cell is judged for the banned shape only, so
+            # it never counts toward a cap; any other judgment leaves it unjudged.
+            if j is not None and (not c.label or j.get("judgment") in LABEL_JUDGMENTS):
                 c.judgment = j.get("judgment")
                 c.reason = j.get("reason", "")
             for mk in page.markers:
@@ -1481,8 +1705,9 @@ def dump_candidates(reports: list[FileReport], unjudged_only: bool) -> None:
                 continue
             ex = f" [marker {c.exempt_by}]" if c.exempt_by else ""
             bq = f" [{c.context}]" if c.context else ""
+            lb = " [heading or table cell: banned or no]" if c.label else ""
             print(f"{rep.path}:{c.lineno} {c.kind} {','.join(c.patterns)} ({c.section} / {c.region})"
-                  f"{bq}{ex} => {c.judgment}")
+                  f"{bq}{lb}{ex} => {c.judgment}")
             print(f"    KEY {c.key}")
 
 

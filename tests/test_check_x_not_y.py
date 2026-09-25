@@ -62,11 +62,14 @@ def judge_all(root: Path, judgment: str = "device") -> dict:
 
     A sentence's own candidate (one that holds no negation word and matches no
     pattern) is recorded as `no`, so a test page counts its words and patterns.
+    So is a heading's or a table cell's candidate, which takes only `banned` or
+    `no`, unless `judgment` is one of those.
     """
     out: dict = {}
     for rep in cx.scan(root, {}, {}):
         out[rep.path] = {c.key: {"line": c.lineno, "reason": "test",
-                                 "judgment": "no" if c.patterns[0] in cx.SENTENCE_PATTERNS else judgment}
+                                 "judgment": "no" if c.patterns[0] in cx.SENTENCE_PATTERNS or (
+                                     getattr(c, "label", False) and judgment not in ("banned", "no")) else judgment}
                          for c in rep.candidates}
     return out
 
@@ -1649,3 +1652,153 @@ def test_a_block_that_shows_nothing_is_read_as_comments_around_a_marker(text: st
 
 def test_a_block_that_shows_text_beside_a_hidden_part_is_still_read() -> None:
     assert kinds("<?x?> Choose the map, not the list.") == [("device", "Choose the map, not the list.")]
+
+# ---------------------------------------------------------------------------
+# Markers only in comments, attributions only for names, headings and table
+# cells tested for the banned shape, and data files read as their schemas do
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.parametrize("text", [
+    "<?x <!-- audience: parent --> ?>\n\n# Page",
+    "<![CDATA[ <!-- audience: parent --> ]]>\n\n# Page",
+    "<!DOCTYPE x <!-- audience: parent -->\n\n# Page",
+    "<!-- see <!-- audience: parent -->\n\n# Page",
+    "Words <?x <!-- audience: parent --> ?> here.",
+    'Words <span title="<!-- audience: parent -->">here</span>.',
+])
+def test_comment_like_text_inside_another_hidden_part_is_no_audience_marker(text: str) -> None:
+    assert cx.parse_text(text).audience is None
+
+
+@pytest.mark.parametrize("text", [
+    "<?x <!-- density-exempt: X, not Y -- required --> ?>\n\nChoose the map, not the list.",
+    "<![CDATA[ <!-- density-exempt: X, not Y -- required --> ]]>\n\nChoose the map, not the list.",
+    "<!-- see <!-- density-exempt: X, not Y -- required -->\n\nChoose the map, not the list.",
+    "Words <?x <!-- density-exempt: X, not Y -- required --> ?> here.",
+])
+def test_comment_like_text_inside_another_hidden_part_is_no_density_marker(text: str) -> None:
+    assert scoped(text) == []
+
+
+@pytest.mark.parametrize("text", [
+    "<!-- audience: parent -->\n\n# Page",
+    "<?x?><!-- audience: parent -->\n\n# Page",
+    "<!--> <!-- audience: parent -->\n\n# Page",
+    "<!-- note --!> <!-- audience: parent -->\n\n# Page",
+    "Words for grown-ups. <!-- audience: parent -->",
+])
+def test_an_audience_marker_is_read_from_each_comment_the_page_holds(text: str) -> None:
+    assert cx.parse_text(text).audience == "parent"
+
+
+def test_a_comment_ends_where_the_page_ends_it() -> None:
+    # `--!>` closes a comment in HTML, so the page shows the sentence after it.
+    assert kinds("<!-- note --!> Choose the map, not the list.") == [("device", "Choose the map, not the list.")]
+
+
+@pytest.mark.parametrize("last", [
+    "> — Then check the route",
+    "> — Check the route",
+    "> — The route is long",
+    "> — We did it together",
+    "> — And that is fine",
+    "> — The kids loved the map",
+    "> — Then",
+    "> — Then Kyoto",
+])
+@pytest.mark.parametrize("layout", ["paragraph", "line"])
+def test_a_dash_led_clause_without_an_end_mark_is_no_attribution(last: str, layout: str) -> None:
+    joiner = "\n>\n" if layout == "paragraph" else "\n"
+    keys = [c.key for c in every_candidate("> Choose the map, not the list." + joiner + last)]
+    assert "device|Choose the map, not the list.|1|block quote" in keys
+    assert not any(k.endswith("|quotation block quote") for k in keys)
+
+
+@pytest.mark.parametrize("last", ["> — Mom and Dad", "> — Grandma Rose", "> — Dr. Kim", "> — Our guide in Session 12"])
+@pytest.mark.parametrize("layout", ["paragraph", "line"])
+def test_a_name_still_closes_a_quotation(last: str, layout: str) -> None:
+    joiner = "\n>\n" if layout == "paragraph" else "\n"
+    (found,) = candidates("> Choose the map, not the list." + joiner + last)
+    assert found.key.endswith("|quotation block quote")
+
+
+def label_keys(text: str) -> list[tuple[str, str]]:
+    """Return (key, first pattern) for each heading or table-cell candidate in one page."""
+    page = cx.parse_text(text)
+    found = cx.find_candidates("page.md", page.prose, text.split("\n"), page.labels)
+    return [(c.key, c.patterns[0]) for c in found if c.label]
+
+
+@pytest.mark.parametrize(("text", "expected"), [
+    ("## It's not a race, it's a route\n\nText.", [("banned|It's not a race, it's a route|1", "joined-neg-then-same-subject")]),
+    ("## It's not a race. It's a route.\n\nText.",
+     [("banned|It's not a race. → It's a route.|1", "neg-then-same-subject")]),
+    ("| It isn't a list; it's a map. | x |\n| --- | --- |\n| a | b |",
+     [("banned|It isn't a list; it's a map.|1", "joined-neg-then-same-subject")]),
+    ("| A | B |\n| --- | --- |\n| It's not a race. It's a route. | x |",
+     [("banned|It's not a race. → It's a route.|1", "neg-then-same-subject")]),
+    ("> ## It's not a race, it's a route\n>\n> Text.",
+     [("banned|It's not a race, it's a route|1|block quote", "joined-neg-then-same-subject")]),
+])
+def test_the_banned_shape_in_a_heading_or_a_table_cell_is_a_candidate(text: str, expected: list) -> None:
+    assert label_keys(text) == expected
+
+
+@pytest.mark.parametrize(("text", "expected"), [
+    ("## A gap is not quitting\n\nText.", [("banned|A gap is not quitting|1", "negation-in-label")]),
+    ("| Needs a grown-up? (yes / no) | |\n| --- | --- |", [("banned|Needs a grown-up? (yes / no)|1", "negation-in-label")]),
+    ("## It's not a race\n\nIt's a route.", [("banned|It's not a race|1", "negation-in-label")]),
+    ("## Plan the day\n\n| Plan | Day |\n| --- | --- |\n| a | b |", []),
+])
+def test_every_heading_or_cell_with_a_negation_is_judged_on_its_own(text: str, expected: list) -> None:
+    # A heading never pairs with the text under it, and one with no negation word gives no candidate.
+    assert label_keys(text) == expected
+
+
+def test_a_heading_candidate_moves_no_key_a_paragraph_gives() -> None:
+    page = "It's not a race, it's a route.\n\n## It's not a race, it's a route."
+    keys = [c.key for c in every_candidate(page)]
+    assert "banned|It's not a race, it's a route.|1" in keys
+    assert label_keys(page) == [("banned|It's not a race, it's a route.|2", "joined-neg-then-same-subject")]
+
+
+@pytest.mark.parametrize(("judgment", "code", "banned", "unjudged"), [
+    ("banned", 1, 1, 0), ("no", 0, 0, 0), ("device", 1, 0, 1), ("split", 1, 0, 1)])
+def test_a_heading_is_judged_banned_or_no_and_never_counted(
+        tmp_path: Path, capsys: Any, judgment: str, code: int, banned: int, unjudged: int) -> None:
+    root = repo_with(tmp_path, "## It's not a race, it's a route\n\nPlan the day.\n")
+    judged = judge_all(root, "no")
+    for key in judged["framework/templates/a.md"]:
+        if key.startswith("banned|"):
+            judged["framework/templates/a.md"][key]["judgment"] = judgment
+    assert run(root, judged, capsys) == code
+    s = summary_for(root, "framework/templates/a.md", judged)
+    assert (len(s["banned"]), s["unjudged"], s["raw"], s["splits"]) == (banned, unjudged, 0, 0)
+
+
+def test_the_helper_gives_each_table_cell_its_printed_text() -> None:
+    (table,) = [b for b in cx.read_blocks("| **A**, *b* | `c` |\n| --- | --- |\n| [d](e) | |") if b["type"] == "table"]
+    assert table["cells"] == [[0, "A, b"], [0, " \u2039code\u203a "], [2, "d"], [2, ""]]
+
+
+@pytest.mark.parametrize(("value", "ok"), [
+    (1, True), (1.0, True), (12.0, True), (0, False), (1.5, False), (True, False), ("1", False), (None, False),
+    (float("inf"), False)])
+def test_a_line_is_a_whole_number_from_1_as_json_schema_reads_one(value: Any, ok: bool) -> None:
+    assert cx.is_line_number(value) is ok
+
+
+def test_text_is_more_than_white_space_in_either_reading() -> None:
+    # The schemas' ECMA-262 `\s`, and Python's `str.isspace()`: a text of either
+    # kind of white space alone is refused by the schema and the script alike.
+    ecma = set("\t\n\v\f\r \u00a0\u1680\u2028\u2029\u202f\u205f\u3000\ufeff") | {chr(c) for c in range(0x2000, 0x200B)}
+    for code in range(0x10000):
+        ch = chr(code)
+        if 0xD800 <= code <= 0xDFFF:
+            continue
+        assert cx.is_text(ch) is not (ch in ecma or ch.isspace()), hex(code)
+    schemas = [json.loads((SCHEMAS / f"{n}.schema.json").read_text(encoding="utf-8")) for n in LOADERS]
+    patterns = {schemas[0]["$defs"]["judgment"]["properties"]["reason"]["pattern"],
+                schemas[1]["additionalProperties"]["properties"]["basis"]["pattern"]}
+    assert patterns == {r"[^\s\u001c-\u001f\u0085]"}

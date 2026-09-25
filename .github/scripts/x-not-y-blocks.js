@@ -35,6 +35,9 @@
  *   html     a paragraph's, a heading's or a table's inline HTML, such as a
  *            comment inside a line of text: one `[offset, source]` pair per
  *            piece, where offset is its line in the block, counting from 0.
+ *   cells    a table's cells, in document order: one `[offset, text]` pair per
+ *            cell, where offset is its row's line in the block, counting from
+ *            0, and text is what the cell prints, on one line.
  *
  * The printed text is what the page shows as prose. Emphasis marks print
  * nothing; a link prints its label, whether it is inline or a reference; an
@@ -224,7 +227,7 @@ function readBlocks(text) {
         add(token, { type: 'hr' });
         break;
       case 'table_open':
-        add(token, { type: 'table', html: [] });
+        add(token, { type: 'table', html: [], cells: [] });
         table = blocks[blocks.length - 1];
         break;
       case 'table_close':
@@ -237,6 +240,7 @@ function readBlocks(text) {
         if (table) {
           (token.children || []).filter((child) => child.type === 'html_inline')
             .forEach((child) => table.html.push([rowLine - table.start, child.content]));
+          table.cells.push([rowLine - table.start, printed(token.children).replace(/\n/g, ' ')]);
         }
         break;
       default:
