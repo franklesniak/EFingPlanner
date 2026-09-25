@@ -46,7 +46,7 @@ This page holds the item list, and the [print index](print_index.md) holds the o
 The kit's `outputs/` folder holds the finished pages, summarized forward from the rest of the work. Each has one job:
 
 - [Outputs README](trip_starter/outputs/README.md): how the finished pages work, and what stays off them.
-- [Final itinerary](trip_starter/outputs/final_itinerary.md): the day-by-day plan, compiled from the daily plan cards.
+- [Final itinerary](trip_starter/outputs/final_itinerary.md): the day-by-day plan, compiled from the Daily Plan Cards.
 - [Executive summary](trip_starter/outputs/executive_summary.md): the whole recommendation on one page.
 - [Family presentation](trip_starter/outputs/family_presentation.md): the presentation as given at the family decision meeting.
 - [Binder table of contents](trip_starter/outputs/binder_table_of_contents.md): the binder's pages, in the print index's tab order.
@@ -61,7 +61,7 @@ The child gives a 5-10 minute presentation at the family decision meeting, in tw
 
 **Part 2, Handoff:** what do adults still need to verify? What do adults still need to decide? What do adults need to book? What questions remain open? Which child-created materials should adults use next?
 
-There is no single required way to present. The child can present live, practice with one parent first, present from notes, record a video and play it, or hand over the binder with a short written summary. The family makes its decision the same way whichever one they choose. The blank outline is the [final presentation outline](templates/final_presentation_outline.md).
+There is no single required way to present. The child can present live, practice with one parent first, present from notes, record a video and play it, or hand over the binder with a short written summary. The family makes its decision the same way whichever one they choose. The blank outline is the [Final Presentation Outline](templates/final_presentation_outline.md).
 
 ## Adult handoff
 

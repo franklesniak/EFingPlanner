@@ -66,7 +66,7 @@ The mapping also files entries the item list on the [final deliverable](FINAL_DE
 | 10. Parent Review | Adult follow-up questions; parent review forms |
 | 11. Final Recommendation | Final recommendation summary; Final reflection |
 
-Two lines depend on the family's choices: the restaurant and food shortlist, and the language and etiquette quick sheet. A binder without them is complete if the family skipped those sessions.
+Two lines depend on the family's choices: the restaurant and food shortlist, and the Language and Etiquette Quick Sheet. A binder without them is complete if the family skipped those sessions.
 
 ## One scheme
 

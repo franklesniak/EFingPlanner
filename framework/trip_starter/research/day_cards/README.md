@@ -4,7 +4,7 @@
 
 ## What goes in this folder
 
-Your daily plan cards, one card to a file. You make them in Session 41.
+Your Daily Plan Cards, one card to a file. You make them in Session 41.
 
 Make them only after Checkpoint 4, once the grown-ups have settled your route and how long the trip is. Cards made before that usually have to be redone.
 

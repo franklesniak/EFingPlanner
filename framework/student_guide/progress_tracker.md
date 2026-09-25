@@ -74,7 +74,7 @@ How to read the lines:
 - [ ] [12 Weather, Seasons, and Events](../sessions/phase_02_destination_big_picture/12_weather_seasons_and_events.md)
 - [ ] [13 Trip Goals and Travel Style](../sessions/phase_02_destination_big_picture/13_trip_goals_and_travel_style.md)
 - [ ] [14 Checkpoint 1 Season Recommendation](../sessions/phase_02_destination_big_picture/14_checkpoint_1_season_recommendation.md) *(Checkpoint 1: a grown-up reviews this)*
-  - [ ] *Finished First Taste first?* Fill in your season trade-off report for Checkpoint 1.
+  - [ ] *Finished First Taste first?* Fill in your season Trade-Off Report for Checkpoint 1.
 
 ### Phase 3 (Choose Places)
 
@@ -85,7 +85,7 @@ How to read the lines:
 - [ ] [19 Other Places Research](../sessions/phase_03_choose_places/19_other_places_research.md)
 - [ ] [20 City Long-List](../sessions/phase_03_choose_places/20_city_long_list.md)
 - [ ] [21 Compare Cities](../sessions/phase_03_choose_places/21_compare_cities.md)
-  - [ ] *Finished First Taste first?* Score the places you're keeping from your city long-list, too.
+  - [ ] *Finished First Taste first?* Score the places you're keeping from your City Long-List, too.
 - [ ] [22 Checkpoint 2 City Shortlist](../sessions/phase_03_choose_places/22_checkpoint_2_city_shortlist.md) *(Checkpoint 2: a grown-up reviews this)*
 
 ### Phase 4 (Attractions and Experiences)

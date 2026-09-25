@@ -4,7 +4,7 @@
 
 ## What goes in this folder
 
-One filled attraction research card for each attraction or experience you research, one card to a file. You start them in Session 23. Session 25 helps you judge the reviews you find, and Session 26 sorts every card into a group.
+One filled Attraction Research Card for each attraction or experience you research, one card to a file. You start them in Session 23. Session 25 helps you judge the reviews you find, and Session 26 sorts every card into a group.
 
 Session 23 says how many cards make the set complete. It can take several sittings, and two cards in a sitting is a finished day.
 

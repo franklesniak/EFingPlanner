@@ -12,7 +12,7 @@ Finishing your plan was the big accomplishment, and it counts whether or not the
 
 | Check | Done? |
 | --- | --- |
-| Do your final packing pass, with your packing list from Session 48, if you made one | |
+| Do your final packing pass, with your Packing List from Session 48, if you made one | |
 | Do your last readiness pass, with your checklist from Session 49, if you made one | |
 | Put your "if I get separated" card where you will carry it (no card yet? ask a grown-up to make one with you from the blank in your kit) | |
 | Pack the language and etiquette sheet you made, if you made one | |

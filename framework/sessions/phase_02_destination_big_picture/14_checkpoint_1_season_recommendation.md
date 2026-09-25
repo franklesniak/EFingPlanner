@@ -10,7 +10,7 @@ You are here: Phase 2 (Destination Big Picture), First Taste step 8 of 13. **Thi
 - Planner skill: making trade-offs; making a recommendation
 - Estimated time: 20-30 minutes for the child, plus a 20-40 minute review with you
 - Parent involvement: parent review -- genuinely use the recommendation in a real family talk
-- Materials: your Season comparison chart, your [Source Log](../../templates/source_log.md), a [Decision Record page](../../templates/decision_record.md), and on the Core path a [Trade-Off Report](../../templates/tradeoff_report.md) page
+- Materials: your Season Comparison Chart, your [Source Log](../../templates/source_log.md), a [Decision Record page](../../templates/decision_record.md), and on the Core path a [Trade-Off Report](../../templates/tradeoff_report.md) page
 
 ## Goal
 
@@ -52,7 +52,7 @@ Then bring it to a grown-up for a family talk. They will weigh school and work s
 
 Use your Decision Record page. This becomes the first entry in your **decision log** -- a place you will record each big decision and its reasons all through the project.
 
-Keeping your work in the trip starter kit? Its [season recommendation page](../../trip_starter/recommendations/season_recommendation.md) has room for every part, in both forms. Fill it in, then copy your season and the family's decision onto your Decision Record. On the Core path, keep your trade-off report with it.
+Keeping your work in the trip starter kit? Its [season recommendation page](../../trip_starter/recommendations/season_recommendation.md) has room for every part, in both forms. Fill it in, then copy your season and the family's decision onto your Decision Record. On the Core path, keep your Trade-Off Report with it.
 
 You can say your answers to an adult who writes them, or draw them, if that is easier.
 
@@ -70,7 +70,7 @@ You are done when your Decision Record has a season pick, a backup, a season to 
 
 With your dates booked, you are done when your Decision Record says what your season means for the trip and whether it fits, with your sources and your questions, and you've shared it with a grown-up.
 
-On the Core path, you are done when your trade-off report is filled in too, in whichever form fits your dates. "Not sure yet" is fine in any row.
+On the Core path, you are done when your Trade-Off Report is filled in too, in whichever form fits your dates. "Not sure yet" is fine in any row.
 
 ## Source Check
 
