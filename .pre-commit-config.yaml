@@ -38,7 +38,13 @@ repos:
       # already restricts the hook to *.toml, so no `files:` argument is
       # needed (and no anchored-pattern treatment like check-json above).
       - id: check-toml
+      # The recount's judgments file (.github/scripts/x-not-y-judgments.json)
+      # is a reviewed data file of over 1 MB that grows with every curriculum
+      # page, so a branch that merges it in for the first time would fail
+      # this hook. It is excluded by its exact path; the 500 KB limit still
+      # applies to every other file.
       - id: check-added-large-files
+        exclude: '^\.github/scripts/x-not-y-judgments\.json$'
 
   # Baseline placeholder manifest validation:
   #
