@@ -63,7 +63,8 @@ edge, such as a blank to fill in. A paragraph is joined before it is split
 into sentences, because Markdown renders a soft line break as a space. A
 sentence ends at ``.``, ``!`` or ``?`` when the next letter or digit is not
 lower case, whatever stands before it (a quotation mark, a bullet, an emoji)
-and in any script, or when a code span comes next, since code has no case;
+and in any script, or when a code span or a name styled in lower case
+(``eSIM``, ``iPad``) comes next, reading past a list label such as ``(b)``;
 ``No.`` ends a sentence unless a number follows it.
 
 Every sentence that holds a negation word is a candidate when a claim sits
@@ -102,9 +103,9 @@ whether it counts. A paragraph pairs with the one before it only inside the
 same container: the page, one block quote or one list item. A comment between
 two paragraphs does not part them. Text above a page's first ``##`` heading is
 not a ``##`` section, so only the file cap reaches it. A heading inside a
-block quote or a list item opens a section that ends with its container,
-and the text after the container is back in the section before it. Each
-``##`` heading starts its own section, even when two share a title. A child session's "For
+block quote or a list item is outside the supported Markdown: it opens no
+section and closes none. Each ``##`` heading starts its own section, even
+when two share a title. A child session's "For
 parents" strip and ``## Parent Notes`` are parent-facing regions, but the file
 cap follows the file's own register. A heading's region lasts while its
 section is open, deeper headings included: ``### Coaching`` under ``## Parent
@@ -150,7 +151,7 @@ meets rather than guess at it. No page held anything outside this list when
 it was set.
 
 - Blocks: paragraphs; bullet and ordered lists, nested ones included;
-  headings, one inside a block quote or a list item included; block quotes
+  headings outside any block quote or list item; block quotes
   one level deep, a quotation among them marked by its quotation marks; tables; fenced and indented code; thematic breaks; link
   reference definitions.
 - Inline: emphasis, links, images, code spans, character references,
@@ -163,7 +164,8 @@ it was set.
 The run names anything else on its page as ``OUTSIDE SUPPORTED MARKDOWN line
 N: <what it is>``, counts it in the ``unsupported_markdown`` total, and fails:
 raw HTML other than a closing comment (a tag, a processing instruction, a
-CDATA section or a declaration), a ``density-exempt`` marker inside a block
+CDATA section or a declaration), a heading inside a block quote or a list
+item, a ``density-exempt`` marker inside a block
 quote or a list item, a block quote inside a block quote, a block quote that
 ends in a dash-led line (the form of an attribution: enclose the quotation in
 quotation marks and name its source after the block quote), and each audience
@@ -545,14 +547,25 @@ def starts_sentence(text: str, at: int) -> bool:
     in any script. A lower-case word (`e.g. kyoto`, `5 p.m. on Monday`) does not.
     A code span starts one, as a digit does: code has no case of its own, and
     the letters of the mark the helper prints for it (`CODE_MARK`) are not the
-    page's.
+    page's. So does a name styled to start in lower case (`eSIMs are tools.`,
+    `iPad`), and a list label in brackets (`(b) The opener`) is read past, to
+    the word after it.
     """
+    if label := LIST_LABEL_RE.match(text, at):
+        at = label.end()
     for i, ch in enumerate(text[at:], at):
         if text.startswith(CODE_MARK.strip(), i):
             return True
         if ch.isalnum():
-            return not ch.islower()
+            return not ch.islower() or bool(LOWER_STYLED_RE.match(text, i))
     return False
+
+
+#: A word that starts in lower case and holds a capital later, as a name styled
+#: that way does: `eSIM`, `iPad`, `iOS`.
+LOWER_STYLED_RE = re.compile(r"[a-z]+[A-Z]")
+#: A list label in brackets that opens a sentence: `(a)`, `(b)`, `(iv)`.
+LIST_LABEL_RE = re.compile(r"\((?:[a-z]|[ivx]+)\)\s+")
 #: Abbreviations that always lead into more words: a sentence never ends on one.
 #: `etc.`, `a.m.` and `p.m.` can end a sentence, so a capital after them starts
 #: a new one: `It isn't at 5 p.m. It's at 6 p.m.` is two sentences. `St.` and
@@ -881,15 +894,9 @@ def parse_text(text: str) -> Page:
     # Every audience marker, with its line: a page holds one, and each after
     # the first is outside the supported Markdown.
     audiences: list[tuple[int, str]] = []
-    # The page's section, region and open headings as they stood before a
-    # heading inside a block quote or a list item, restored when that
-    # container ends: the heading's section ends with its container.
-    saved: list[tuple[tuple[str, ...], tuple[str, int, str, list[tuple[int, bool]]]]] = []
     for index, block in enumerate(blocks):
         kind = block["type"]
         path = tuple(block.get("path") or ())
-        while saved and path[:len(saved[-1][0])] != saved[-1][0]:
-            section, section_index, region, open_headings = saved.pop()[1]
         for offset, piece in block.get("html") or ():
             # Inline HTML in a paragraph, a heading or a table cell. markdown-it
             # gives each piece whole, and a marker is read only from a comment
@@ -961,8 +968,14 @@ def parse_text(text: str) -> Page:
             level = block["level"]
             heading = normalize_space(block.get("text") or "")
             heading_lines[block["start"]] = (level, heading)
-            if path and not (saved and saved[-1][0] == path):
-                saved.append((path, (section, section_index, region, list(open_headings))))
+            if path:
+                # A heading inside a block quote or a list item is outside the
+                # supported Markdown: it is named, tested as a label, and opens
+                # no section or region.
+                unsupported.append((block["start"], "a heading inside a block quote or a list item"))
+                labels.append(Label(block["start"], heading, section, region, section_index, path))
+                follows = False
+                continue
             if level <= 2:
                 section = heading if level == 2 else PREAMBLE
                 section_index = 0
@@ -1059,8 +1072,11 @@ def marker_scope(marker: Marker, blocks: list[dict[str, Any]], index: int,
     if block["type"] == "heading":
         level = block["level"]
         end = len(source)
+        # A heading inside a block quote or a list item opens no section, so
+        # it closes none either.
+        nested = {b["start"] for b in blocks if b["type"] == "heading" and b.get("path")}
         for h in sorted(heading_lines):
-            if h > first and heading_lines[h][0] <= level:
+            if h > first and h not in nested and heading_lines[h][0] <= level:
                 end = h - 1
                 break
         inside = tuple(block.get("path") or ())

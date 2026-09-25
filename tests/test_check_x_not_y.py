@@ -1562,7 +1562,7 @@ def test_a_sentence_candidate_must_be_judged_before_the_run_passes(tmp_path: Pat
     ("- One.\n\n  <!-- density-exempt: X, not Y -- required -->\n\n  > ## Inside\n  >\n  > Pick the map.\n\n"
      "  Still in the item, not the quote.\n", (5, 7)),
     ("- One.\n\n  <!-- density-exempt: X, not Y -- required -->\n\n  ## Inside\n\n  Pick the map, not the list.\n\n"
-     "  ## Next\n\n  More, not less.\n", (5, 7)),
+     "  ## Next\n\n  More, not less.\n", (5, 11)),
 ])
 def test_a_heading_section_ends_where_its_container_does(text: str, scope: tuple[int, int]) -> None:
     (mk,) = scoped(text)
@@ -1785,21 +1785,35 @@ def test_a_marker_body_parts_at_a_spaced_double_hyphen(body: str, device: str, r
     ("## Outer\n\n> ## Inside\n>\n> Pick the map.\n\nChoose the map, not the list.", "Outer", 1),
     ("## Outer\n\n- One.\n\n  > ## Deeper\n\n  Still the item.\n\nChoose the map, not the list.", "Outer", 1),
 ])
-def test_a_heading_in_a_container_opens_a_section_that_ends_with_the_container(
+def test_the_text_after_a_nested_heading_stays_in_its_page_section(
         text: str, section: str, index: int) -> None:
     (found,) = [c for c in candidates(text) if c.text == "Choose the map, not the list."]
     assert (found.section, found.section_index) == (section, index)
 
 
-def test_a_heading_in_a_container_still_opens_its_own_section() -> None:
+def test_a_heading_in_a_container_opens_no_section() -> None:
+    # It is outside the supported Markdown, and named; the text under it stays in the page's section.
     (found,) = candidates("## Outer\n\n- One.\n\n  ## Inside\n\n  Pick the map, not the list.")
-    assert (found.section, found.section_index) == ("Inside", 2)
+    assert (found.section, found.section_index) == ("Outer", 1)
 
 
-def test_a_parent_notes_heading_in_a_container_ends_its_region_with_the_container() -> None:
+def test_a_parent_notes_heading_in_a_container_opens_no_region() -> None:
     page = cx.parse_text("## A\n\n- One.\n\n  ## Parent Notes\n\n  For grown-ups.\n\nFor the child.")
     assert [(p.text, p.region) for p in page.prose] == [
-        ("One.", "main"), ("For grown-ups.", "parent notes"), ("For the child.", "main")]
+        ("One.", "main"), ("For grown-ups.", "main"), ("For the child.", "main")]
+
+
+@pytest.mark.parametrize(("text", "scope"), [
+    ("<!-- density-exempt: X, not Y -- required -->\n## Outer\n\n> ## Inner\n>\n> Quoted.\n\nPick the map, not the list."
+     "\n\n## Next\n\nMore.\n", (2, 9)),
+    ("<!-- density-exempt: X, not Y -- required -->\n## Outer\n\n- One.\n\n  ## Inner\n\n  Two.\n\nPick the map, not the "
+     "list.\n\n## Next\n\nMore.\n", (2, 11)),
+    ("<!-- density-exempt: X, not Y -- required -->\n## Outer\n\n- One.\n\n  ### Inner\n\nPick the map, not the list.\n",
+     (2, 9)),
+])
+def test_a_nested_heading_never_closes_the_section_of_a_heading_outside_it(text: str, scope: tuple[int, int]) -> None:
+    (mk,) = scoped(text)
+    assert (mk.scope_start, mk.scope_end) == scope
 
 
 def test_a_section_after_a_container_is_capped_with_the_text_before_it(tmp_path: Path, capsys: Any) -> None:
@@ -1887,6 +1901,9 @@ def test_a_second_audience_marker_fails_the_run(tmp_path: Path, capsys: Any) -> 
     ("> <!-- density-exempt: X, not Y -- required -->\n>\n> Pick the map, not the list.", 1,
      "a density-exempt marker inside a block quote or a list item"),
     ("<!-- audience: parent -->\n<!-- audience: builder -->\n\n# Page", 2, "a second audience marker"),
+    ("- One.\n\n  ## Inside\n\n  Pick the map.", 3, "a heading inside a block quote or a list item"),
+    ("> ## Inside\n>\n> Pick the map.", 1, "a heading inside a block quote or a list item"),
+    ("## Outer\n\n- One.\n\n  ### Deeper\n\n  Pick the map.", 5, "a heading inside a block quote or a list item"),
 ])
 def test_markdown_outside_the_supported_subset_is_named(text: str, line: int, what: str) -> None:
     (named,) = cx.parse_text(text).unsupported
@@ -1896,8 +1913,7 @@ def test_markdown_outside_the_supported_subset_is_named(text: str, line: int, wh
 @pytest.mark.parametrize("text", [
     "<!-- a comment -->\n\nPlan the day. <!-- an inline comment -->",
     "<!-- density-exempt: X, not Y -- required -->\n\nPick the map, not the list.",
-    "- One.\n\n  ## Inside\n\n  Pick the map.",
-    "> ## Inside\n>\n> Pick the map.",
+    "## Outer\n\n### Deeper\n\nPick the map.",
     "> A single block quote.",
     "- One.\n  - Two.\n    - Three.",
     "<!-- audience: parent -->\n\n# Page",
@@ -2029,3 +2045,36 @@ def test_a_pair_that_runs_past_a_marker_is_counted(tmp_path: Path) -> None:
     judged["framework/templates/a.md"]["split|Never guess. → Look it up.|1"]["judgment"] = "split"
     s = summary_for(root, "framework/templates/a.md", judged)
     assert (s["splits"], s["splits_counted"]) == (1, 1)
+
+
+# ---------------------------------------------------------------------------
+# A sentence that opens with a name styled in lower case, or after a list label
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.parametrize(("text", "expected"), [
+    ("Buy one before you fly. eSIMs are tools, not guarantees.",
+     ["Buy one before you fly.", "eSIMs are tools, not guarantees."]),
+    ("Charge it. iPads run out.", ["Charge it.", "iPads run out."]),
+    ("Update it first. iOS asks.", ["Update it first.", "iOS asks."]),
+    ('He said "go." eBay is closed.', ['He said "go."', "eBay is closed."]),
+    ("Four things vary. (a) A session may add a sentence. (b) The opener varies.",
+     ["Four things vary.", "(a) A session may add a sentence.", "(b) The opener varies."]),
+    ("Four things vary. (iv) The last one.", ["Four things vary.", "(iv) The last one."]),
+])
+def test_a_name_styled_in_lower_case_or_a_list_label_starts_a_sentence(text: str, expected: list) -> None:
+    assert cx.split_sentences(text) == expected
+
+
+@pytest.mark.parametrize("text", [
+    'Ask "what would make this fun for you?" and let them answer.',
+    "Possible downsides (very crowded? far away? expensive?).",
+    "Meals: about how much per person, per day? (high / medium / low)",
+    "Primary vs. secondary sources.",
+    "Use e.g. eSIMs abroad.",
+    "It works. then it stops.",
+    "Four things vary. (a) the first is small.",
+    "Pick one. (ab) is not a label.",
+])
+def test_a_lower_case_word_still_starts_no_sentence(text: str) -> None:
+    assert cx.split_sentences(text) == [text]

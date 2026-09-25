@@ -5734,11 +5734,6 @@
       "judgment": "no",
       "reason": "a fact"
     },
-    "device|Four things vary on purpose, and a later author or density gate must not normalize them. (a) A session may add its own sentence after the ‹code› card pointer; Session 04 does, and that trailing sentence is ordinary child-facing prose which the rules above do govern. (b) The opener is ‹code› in every child session except the capstone, Session 53, which opens ‹code› , because a finish line is not a mid-course session and should not sound like one. (c) The close is ‹code› unless the session can name a definite finished state and says that instead, as Sessions 15, 21 and 31 do. (d) Four sessions have no close at all -- 05, 09, 33 and 53 -- because their extension continues past First Taste, so there is nothing to be done with.|1": {
-      "line": 97,
-      "judgment": "no",
-      "reason": "four deliberate variations with reasons and conditions; \"a finish line is not a mid-course session\" is a reason and \"says that instead\" a condition"
-    },
     "split|Measure by section, not by phrase. → Every exception above was found by listing each ‹code› heading and reading the line under it.|1": {
       "line": 97,
       "judgment": "no",
@@ -5748,6 +5743,31 @@
       "line": 97,
       "judgment": "no",
       "reason": "a history fact and its reason; the section/phrase contrast is already counted in \"Measure by section, not by phrase.\""
+    },
+    "split|Every child session has the section. → Four things vary on purpose, and a later author or density gate must not normalize them.|1": {
+      "line": 97,
+      "judgment": "no",
+      "reason": "a fact, then a rule with its reason; it rejects no alternative to a claim"
+    },
+    "split|Four things vary on purpose, and a later author or density gate must not normalize them. → (a) A session may add its own sentence after the ‹code› card pointer; Session 04 does, and that trailing sentence is ordinary child-facing prose which the rules above do govern.|1": {
+      "line": 97,
+      "judgment": "no",
+      "reason": "a rule, then a list entry stating a fact"
+    },
+    "split|(a) A session may add its own sentence after the ‹code› card pointer; Session 04 does, and that trailing sentence is ordinary child-facing prose which the rules above do govern. → (b) The opener is ‹code› in every child session except the capstone, Session 53, which opens ‹code› , because a finish line is not a mid-course session and should not sound like one.|1": {
+      "line": 97,
+      "judgment": "no",
+      "reason": "a list entry, then a list entry whose negation is a reason"
+    },
+    "split|(b) The opener is ‹code› in every child session except the capstone, Session 53, which opens ‹code› , because a finish line is not a mid-course session and should not sound like one. → (c) The close is ‹code› unless the session can name a definite finished state and says that instead, as Sessions 15, 21 and 31 do.|1": {
+      "line": 97,
+      "judgment": "no",
+      "reason": "a list entry, then a list entry with a condition; nothing is rejected"
+    },
+    "device|(d) Four sessions have no close at all -- 05, 09, 33 and 53 -- because their extension continues past First Taste, so there is nothing to be done with.|1": {
+      "line": 97,
+      "judgment": "no",
+      "reason": "a list entry stating a fact"
     },
     "device|(A parent-chosen light token system for a child who needs it is an accommodation described in the parent guide -- not a default and never baked into child-facing sessions.)|1": {
       "line": 103,
@@ -8899,272 +8919,272 @@
       "reason": "X without Y: your child's work feeds the booking, without pulling them into a booking workflow"
     },
     "device|You own flights, bookings, payments, accounts, personal data, final hotel decisions, final restaurant reservations, and final ticket and timed-entry bookings.|1": {
-      "line": 10,
+      "line": 11,
       "judgment": "no",
       "reason": "a statement of what the adult owns"
     },
     "split|You own flights, bookings, payments, accounts, personal data, final hotel decisions, final restaurant reservations, and final ticket and timed-entry bookings. → Nothing in this curriculum ever tells a child to book, reserve, buy, create an account, enter payment or passport data, submit an entry form, or handle a confirmation number.|1": {
-      "line": 13,
+      "line": 11,
       "judgment": "split",
       "reason": "you own flights, bookings, payments / nothing in this curriculum ever tells a child to book, reserve or buy (same act, the rejected owner named)"
     },
     "split|Nothing in this curriculum ever tells a child to book, reserve, buy, create an account, enter payment or passport data, submit an entry form, or handle a confirmation number. → If you find something that reads that way, it's a defect to fix, because your child's part is the list and yours is acting on it.|1": {
-      "line": 13,
+      "line": 11,
       "judgment": "no",
       "reason": "a reason for treating such a page as a defect; the rejection is the sentence before it, judged under its own key"
     },
     "device|The reservation watchlist, with its date-gated flag, the cancellation note, the source, and a column for your status on each item|1": {
-      "line": 17,
+      "line": 15,
       "judgment": "no",
       "reason": "a list entry"
     },
     "device|The hotel comparison cards|1": {
-      "line": 18,
+      "line": 16,
       "judgment": "no",
       "reason": "a list entry"
     },
     "device|The neighborhood comparison|1": {
-      "line": 19,
+      "line": 17,
       "judgment": "no",
       "reason": "a list entry"
     },
     "device|The day cards|1": {
-      "line": 20,
+      "line": 18,
       "judgment": "no",
       "reason": "a list entry"
     },
     "device|The budget estimate|1": {
-      "line": 21,
+      "line": 19,
       "judgment": "no",
       "reason": "a list entry"
     },
     "device|The watchlist is the one to read first, once it exists.|1": {
-      "line": 23,
+      "line": 21,
       "judgment": "no",
       "reason": "an instruction on reading order"
     },
     "split|The watchlist is the one to read first, once it exists. → It's built specifically so you can see what's on a clock.|1": {
-      "line": 23,
+      "line": 21,
       "judgment": "no",
       "reason": "a reason"
     },
     "device|On First Taste, and early on the Core path, most of that list has not been made yet: the hotel and neighborhood comparisons come in Sessions 34 and 35, the day cards in 41, the watchlist in 42.|1": {
-      "line": 25,
+      "line": 23,
       "judgment": "no",
       "reason": "a status note (most of that list has not been made yet) followed by its schedule; it rejects no alternative"
     },
     "split|On First Taste, and early on the Core path, most of that list has not been made yet: the hotel and neighborhood comparisons come in Sessions 34 and 35, the day cards in 41, the watchlist in 42. → What exists early is the season recommendation (with your dates already booked, the season confirmation), the city shortlist once Checkpoint 2 has passed (on First Taste, the city comparison once Session 21 is done), and the rough trip shape you recorded at setup.|1": {
-      "line": 25,
+      "line": 23,
       "judgment": "no",
       "reason": "states what exists early; rejects nothing"
     },
     "split|If that shape still names only the arrival place, settle the departure place and round-trip or open-jaw yourself first, as the flights page says. → Then it is enough to book flights and a first hotel against, and it is what the early-booking conversation in the coaching guide assumes you are holding.|1": {
-      "line": 25,
+      "line": 23,
       "judgment": "no",
       "reason": "a statement of sufficiency"
     },
     "split|It's built specifically so you can see what's on a clock. → If booking arrives before your child has got that far, work from what they have.|1": {
-      "line": 25,
+      "line": 23,
       "judgment": "no",
       "reason": "a condition and an instruction"
     },
     "split|What exists early is the season recommendation (with your dates already booked, the season confirmation), the city shortlist once Checkpoint 2 has passed (on First Taste, the city comparison once Session 21 is done), and the rough trip shape you recorded at setup. → If that shape still names only the arrival place, settle the departure place and round-trip or open-jaw yourself first, as the flights page says.|1": {
-      "line": 25,
+      "line": 23,
       "judgment": "no",
       "reason": "a condition and an instruction"
     },
     "device|The booking clock often forces a commitment before your child's curriculum-paced route is finished.|1": {
-      "line": 29,
+      "line": 27,
       "judgment": "no",
       "reason": "a fact"
     },
     "split|The booking clock often forces a commitment before your child's curriculum-paced route is finished. → Flights get cheaper-then-dearer on their own schedule, lodging sells out on another, and a child working a session a week is on a third.|1": {
-      "line": 29,
+      "line": 27,
       "judgment": "no",
       "reason": "a fact"
     },
     "banned|Don't improvise that one. → It's the moment a child decides whether their work was real.|1": {
-      "line": 31,
+      "line": 29,
       "judgment": "no",
       "reason": "the second sentence gives a reason; it corrects nothing"
     },
     "split|The coaching guide has the script. → Don't improvise that one.|1": {
-      "line": 31,
+      "line": 29,
       "judgment": "no",
       "reason": "instruction"
     },
     "split|Don't improvise that one. → It's the moment a child decides whether their work was real.|1": {
-      "line": 31,
+      "line": 29,
       "judgment": "no",
       "reason": "a reason"
     },
     "split|Flights get cheaper-then-dearer on their own schedule, lodging sells out on another, and a child working a session a week is on a third. → This is handled two ways: you set the rough trip shape early, so their work is built on it from the start, and you have the \"we had to book before you finished\" conversation when it comes.|1": {
-      "line": 31,
+      "line": 29,
       "judgment": "no",
       "reason": "a statement of the two ways"
     },
     "split|This is handled two ways: you set the rough trip shape early, so their work is built on it from the start, and you have the \"we had to book before you finished\" conversation when it comes. → The coaching guide has the script.|1": {
-      "line": 31,
+      "line": 29,
       "judgment": "no",
       "reason": "a navigation pointer"
     },
     "device|Passports are the longest lead.|1": {
-      "line": 35,
+      "line": 33,
       "judgment": "no",
       "reason": "a fact"
     },
     "split|Passports are the longest lead. → Start them first.|1": {
-      "line": 35,
+      "line": 33,
       "judgment": "no",
       "reason": "an instruction"
     },
     "device|Peak-season lodging sells out months ahead.|1": {
-      "line": 36,
+      "line": 34,
       "judgment": "no",
       "reason": "a fact"
     },
     "device|Date-gated tickets open on their own schedule.|1": {
-      "line": 37,
+      "line": 35,
       "judgment": "no",
       "reason": "a fact"
     },
     "split|Date-gated tickets open on their own schedule. → Once it exists, your child's watchlist flags which.|1": {
-      "line": 37,
+      "line": 35,
       "judgment": "no",
       "reason": "a fact"
     },
     "device|Flight prices climb as dates approach.|1": {
-      "line": 38,
+      "line": 36,
       "judgment": "no",
       "reason": "a fact"
     },
     "device|Book refundable where you can.|1": {
-      "line": 39,
+      "line": 37,
       "judgment": "no",
       "reason": "an instruction"
     },
     "split|Book refundable where you can. → It's the cheapest insurance against a plan that's still moving.|1": {
-      "line": 39,
+      "line": 37,
       "judgment": "no",
       "reason": "a reason"
     },
     "device|Each of those is a category to verify, not a number to memorize.|1": {
-      "line": 41,
+      "line": 39,
       "judgment": "device",
       "reason": "a category to verify, not a number to memorize"
     },
     "split|Each of those is a category to verify, not a number to memorize. → Check current windows and rules yourself, and write the date you checked; they change.|1": {
-      "line": 41,
+      "line": 39,
       "judgment": "no",
       "reason": "an instruction; the contrast is in the with sentence"
     },
     "split|No endorsement either way. → Your child's binder works as a brief to an agent just as well as it works as your own planning file.|1": {
-      "line": 45,
+      "line": 43,
       "judgment": "no",
       "reason": "a fragment after a heading, not after a claim; rejects no alternative"
     },
     "device|Your child's binder works as a brief to an agent just as well as it works as your own planning file.|1": {
-      "line": 45,
+      "line": 43,
       "judgment": "no",
       "reason": "an equal comparison; it prefers neither"
     },
     "split|Your child's binder works as a brief to an agent just as well as it works as your own planning file. → See adult-only logistics.|1": {
-      "line": 45,
+      "line": 43,
       "judgment": "no",
       "reason": "a navigation pointer"
     },
     "device|That note is a flag, not a fact.|1": {
-      "line": 49,
+      "line": 47,
       "judgment": "device",
       "reason": "a flag, not a fact (a bold sentence; bold exempts no device)"
     },
     "device|Your child writes a cancellation note on a card.|1": {
-      "line": 49,
+      "line": 47,
       "judgment": "no",
       "reason": "a fact"
     },
     "split|That note is a flag, not a fact. → Check every cancellation rule yourself before you rely on it, and write the date you checked.|1": {
-      "line": 49,
+      "line": 47,
       "judgment": "no",
       "reason": "an instruction; the contrast is in the with sentence"
     },
     "device|You will change parts of the plan: prices, availability, safety, schedules, booking rules.|1": {
-      "line": 53,
+      "line": 52,
       "judgment": "no",
       "reason": "a fact"
     },
     "split|You will change parts of the plan: prices, availability, safety, schedules, booking rules. → That's normal and expected.|1": {
-      "line": 53,
+      "line": 52,
       "judgment": "no",
       "reason": "a reassurance"
     },
     "device|That's normal and expected. → Never silently.|1": {
-      "line": 56,
+      "line": 52,
       "judgment": "device",
       "reason": "fragment after a claim: never silently (the spec's transparency obligation, bold in the batch 2 brief)"
     },
     "split|Never silently. → An owned pick is reshaped only with a stated reason.|1": {
-      "line": 56,
+      "line": 52,
       "judgment": "no",
       "reason": "the same rejection is counted under the fragment Never silently. after its claim"
     },
     "device|It can be blocked for exactly three reasons: it costs more than the budget band, it can't be booked or has no availability, or it isn't safe and physically manageable for every traveler. → Never by group vote.|1": {
-      "line": 58,
+      "line": 54,
       "judgment": "device",
       "reason": "fragment \"Never by group vote.\" after the claim (owned-decision rule)"
     },
     "device|It can be blocked for exactly three reasons: it costs more than the budget band, it can't be booked or has no availability, or it isn't safe and physically manageable for every traveler.|1": {
-      "line": 58,
+      "line": 54,
       "judgment": "no",
       "reason": "a list of the three reasons the pick can be blocked"
     },
     "split|An owned pick is reshaped only with a stated reason. → And the one unconditional personal pick is different from everything else.|1": {
-      "line": 58,
+      "line": 54,
       "judgment": "no",
       "reason": "introduces an exception; rejects nothing named"
     },
     "split|Never by group vote. → If one of those three applies, tell your child which one.|1": {
-      "line": 58,
+      "line": 54,
       "judgment": "no",
       "reason": "a condition and an instruction"
     },
     "split|If one of those three applies, tell your child which one. → Write the acknowledgment on their \"My Calls\" page.|1": {
-      "line": 60,
+      "line": 56,
       "judgment": "no",
       "reason": "an instruction"
     },
     "split|Write the acknowledgment on their \"My Calls\" page. → That page exists so their owned decisions get a grown-up's \"got it\" in writing, and it's worth more to a child than it looks.|1": {
-      "line": 60,
+      "line": 56,
       "judgment": "no",
       "reason": "a reason"
     },
     "split|Don't enter booking information, confirmation numbers or payment details anywhere in the repository or the kit. → A shared-documents folder is not a private vault either.|1": {
-      "line": 64,
+      "line": 60,
       "judgment": "no",
       "reason": "privacy fact"
     },
     "device|A shared-documents folder is not a private vault either.|1": {
-      "line": 64,
+      "line": 60,
       "judgment": "no",
       "reason": "a caution by itself"
     },
     "split|A shared-documents folder is not a private vault either. → The same data stays off it that you'd keep off a public page.|1": {
-      "line": 64,
+      "line": 60,
       "judgment": "split",
       "reason": "not a private vault / keep off it what you would keep off a public page (the mistake, then what to do instead)"
     },
     "device|Adult-only logistics -- the full list of what your child never touches, long leads first.|1": {
-      "line": 68,
+      "line": 64,
       "judgment": "no",
       "reason": "a navigation line describing the linked page; it rejects no alternative"
     },
     "device|Coaching and support -- what to say when you had to book before your child finished.|1": {
-      "line": 69,
+      "line": 65,
       "judgment": "no",
       "reason": "a navigation line"
     },
     "device|Review checkpoints -- how your child's recommendations reach you before anything is booked.|1": {
-      "line": 70,
+      "line": 66,
       "judgment": "no",
       "reason": "a navigation line"
     }
@@ -10474,407 +10494,407 @@
       "reason": "a heading naming a topic; it does not deny a thing and then say what it is"
     },
     "device|They're learning how trip costs are structured: what the categories are, what's priced per person versus per room versus per group, what a buffer is, and whether the parts they chose fit the band you gave them.|1": {
-      "line": 9,
+      "line": 10,
       "judgment": "no",
       "reason": "a description of what the child learns; \"versus\" lists cost units and prefers none"
     },
     "split|What they are producing is a structural picture, and it stops short of a usable, bookable trip budget. → Say that plainly to yourself now, so neither of you mistakes the output for one later.|1": {
-      "line": 12,
+      "line": 10,
       "judgment": "no",
       "reason": "an instruction with its purpose; the contrast with a bookable budget sits in the prior sentence, which uses no negation"
     },
     "split|They're learning how trip costs are structured: what the categories are, what's priced per person versus per room versus per group, what a buffer is, and whether the parts they chose fit the band you gave them. → What they are producing is a structural picture, and it stops short of a usable, bookable trip budget.|1": {
-      "line": 12,
+      "line": 10,
       "judgment": "device",
       "reason": "a structural picture / stops short of a usable, bookable trip budget"
     },
     "device|Your child's controllable slices are hotels, food, activities, local transit and souvenirs, with the cost of getting there excluded.|1": {
-      "line": 16,
+      "line": 14,
       "judgment": "device",
       "reason": "hotels, food, activities, local transit and souvenirs / the cost of getting there excluded"
     },
     "split|At the first budget session they estimate food and lodging only, and the other three arrive later on the Core path. → So an early check runs against a two-slice figure, and the floor it produces is correspondingly lower.|1": {
-      "line": 18,
+      "line": 16,
       "judgment": "no",
       "reason": "a fact of degree (correspondingly lower)"
     },
     "split|How many of those are in the subtotal depends on where they are. → At the first budget session they estimate food and lodging only, and the other three arrive later on the Core path.|1": {
-      "line": 18,
+      "line": 16,
       "judgment": "no",
       "reason": "a fact about when the slices arrive"
     },
     "split|So an early check runs against a two-slice figure, and the floor it produces is correspondingly lower. → Know which one you are looking at before you read anything into it.|1": {
-      "line": 18,
+      "line": 16,
       "judgment": "no",
       "reason": "an instruction"
     },
     "split|Your child's controllable slices are hotels, food, activities, local transit and souvenirs, with the cost of getting there excluded. → How many of those are in the subtotal depends on where they are.|1": {
-      "line": 18,
+      "line": 16,
       "judgment": "no",
       "reason": "a fact"
     },
     "split|A subtotal is a whole-trip amount. → Comparing the two would fail a perfectly good estimate on a unit mismatch, so their worksheet asks them to pull out the matching piece of their estimate and check that against the band.|1": {
-      "line": 20,
+      "line": 18,
       "judgment": "no",
       "reason": "a reason for the worksheet's matching-piece check; naming the consequence is the law's own rewrite technique"
     },
     "split|Know which one you are looking at before you read anything into it. → Their band check compares matching units.|1": {
-      "line": 20,
+      "line": 18,
       "judgment": "no",
       "reason": "a fact"
     },
     "split|The band you give them is a rate or a tier: per person per day, per day for the family, or a hotel tier. → A subtotal is a whole-trip amount.|1": {
-      "line": 20,
+      "line": 18,
       "judgment": "no",
       "reason": "a fact (the subtotal's unit); nothing is rejected"
     },
     "split|Their band check compares matching units. → The band you give them is a rate or a tier: per person per day, per day for the family, or a hotel tier.|1": {
-      "line": 20,
+      "line": 18,
       "judgment": "no",
       "reason": "a fact defining the band's forms"
     },
     "split|Comparing the two would fail a perfectly good estimate on a unit mismatch, so their worksheet asks them to pull out the matching piece of their estimate and check that against the band. → You make that check work by giving them the band in one of those three forms, since a whole-trip band has no matching piece to compare.|1": {
-      "line": 20,
+      "line": 18,
       "judgment": "no",
       "reason": "a reason naming the consequence (a whole-trip band has no matching piece)"
     },
     "split|If that is what you have, read the check qualitatively: does the tier they landed on sound like the band you set? → Ask for a rough range only if you actually need the arithmetic.|1": {
-      "line": 22,
+      "line": 20,
       "judgment": "no",
       "reason": "a conditional instruction (ask for a range only if needed)"
     },
     "split|Session 33 lets a child answer in high / medium / low, which is a complete answer. → If that is what you have, read the check qualitatively: does the tier they landed on sound like the band you set?|1": {
-      "line": 22,
+      "line": 20,
       "judgment": "no",
       "reason": "a conditional instruction and a question"
     },
     "split|Your sanity check needs a number, and the first pass may not produce one. → Session 33 lets a child answer in high / medium / low, which is a complete answer.|1": {
-      "line": 22,
+      "line": 20,
       "judgment": "no",
       "reason": "a fact about the high / medium / low answer"
     },
     "split|You make that check work by giving them the band in one of those three forms, since a whole-trip band has no matching piece to compare. → Your sanity check needs a number, and the first pass may not produce one.|1": {
-      "line": 22,
+      "line": 20,
       "judgment": "no",
       "reason": "a limit about the first pass"
     },
     "split|Ask for a rough range only if you actually need the arithmetic. → When you do have numbers: your check is their subtotal plus your cost of getting there for the whole party.|1": {
-      "line": 24,
+      "line": 22,
       "judgment": "no",
       "reason": "a definition of the check"
     },
     "split|When you do have numbers: your check is their subtotal plus your cost of getting there for the whole party. → If you fly or take the train, that is a per-person fare multiplied by the number of travelers, so both parts of the sum cover the whole party.|1": {
-      "line": 24,
+      "line": 22,
       "judgment": "no",
       "reason": "a conditional explanation of the figure"
     },
     "split|If you fly or take the train, that is a per-person fare multiplied by the number of travelers, so both parts of the sum cover the whole party. → If you drive, it is the drive's own fuel and tolls.|1": {
-      "line": 24,
+      "line": 22,
       "judgment": "no",
       "reason": "a condition giving the driving case"
     },
     "split|If you drive, it is the drive's own fuel and tolls. → That figure is a floor, and it is worth knowing what it leaves out.|1": {
-      "line": 26,
+      "line": 24,
       "judgment": "no",
       "reason": "a caveat introducing what the floor omits"
     },
     "split|At the first budget session it leaves out three of the five slices: activities, local transit and souvenirs. → That is on top of everything below, so it is a floor under a floor.|1": {
-      "line": 26,
+      "line": 24,
       "judgment": "no",
       "reason": "a fact"
     },
     "split|That figure is a floor, and it is worth knowing what it leaves out. → At the first budget session it leaves out three of the five slices: activities, local transit and souvenirs.|1": {
-      "line": 26,
+      "line": 24,
       "judgment": "no",
       "reason": "a fact about what the floor leaves out (a limit)"
     },
     "split|That is on top of everything below, so it is a floor under a floor. → Once the Core path has added those, the subtotal covers all five.|1": {
-      "line": 26,
+      "line": 24,
       "judgment": "no",
       "reason": "a fact"
     },
     "device|So treat the number as are we in the right range, and never as what the trip will cost.|1": {
-      "line": 29,
+      "line": 27,
       "judgment": "device",
       "reason": "never as what the trip will cost (the floor warning brief B4 item 2 requires)"
     },
     "split|Once the Core path has added those, the subtotal covers all five. → Outside it at every stage: intercity transportation, travel insurance, any entry or visa costs, phone or data service, and anything else adult-owned.|1": {
-      "line": 29,
+      "line": 27,
       "judgment": "no",
       "reason": "a list of costs outside the figure (a limit or caveat)"
     },
     "split|Keep your getting-there number on your own page. → Their budget worksheet says in as many words that getting there is the grown-ups' number and that there is nothing to fill in there.|1": {
-      "line": 31,
+      "line": 29,
       "judgment": "no",
       "reason": "a fact about the worksheet's wording that backs the instruction; it rejects no alternative"
     },
     "split|So treat the number as are we in the right range, and never as what the trip will cost. → Keep your getting-there number on your own page.|1": {
-      "line": 31,
+      "line": 29,
       "judgment": "no",
       "reason": "an instruction on where the adult keeps a number; the neighbor's \"never as what the trip will cost\" is its own device"
     },
     "split|That wording is deliberate. → A jotted line in this guide, or anywhere you keep trip notes, is all it needs to be.|1": {
-      "line": 31,
+      "line": 29,
       "judgment": "no",
       "reason": "a release that names no alternative"
     },
     "split|Their budget worksheet says in as many words that getting there is the grown-ups' number and that there is nothing to fill in there. → That wording is deliberate.|1": {
-      "line": 31,
+      "line": 29,
       "judgment": "no",
       "reason": "a comment on the wording"
     },
     "split|Put that in front of a ten-year-old as one line item and the rest of their careful work looks like rounding error. → It isn't, and the split is what keeps it from looking that way.|1": {
-      "line": 33,
+      "line": 31,
       "judgment": "no",
       "reason": "states a fact (\"It isn't\"); it answers the sentence before it and rejects no named alternative"
     },
     "split|A jotted line in this guide, or anywhere you keep trip notes, is all it needs to be. → The honest reasons: getting there is adult-owned, like the booking itself, and it can be large.|1": {
-      "line": 33,
+      "line": 31,
       "judgment": "no",
       "reason": "a reason"
     },
     "split|For a multi-person long-haul trip, flights dominate everything. → They can run several times the entire rest of the trip put together.|1": {
-      "line": 33,
+      "line": 31,
       "judgment": "no",
       "reason": "a fact of degree"
     },
     "split|The honest reasons: getting there is adult-owned, like the booking itself, and it can be large. → For a multi-person long-haul trip, flights dominate everything.|1": {
-      "line": 33,
+      "line": 31,
       "judgment": "no",
       "reason": "a fact"
     },
     "split|They can run several times the entire rest of the trip put together. → Put that in front of a ten-year-old as one line item and the rest of their careful work looks like rounding error.|1": {
-      "line": 33,
+      "line": 31,
       "judgment": "no",
       "reason": "a consequence"
     },
     "device|The controllable-slice band, in a form a child can hold: a rough per-person per-day figure, a per-day figure for the family, or a hotel tier|1": {
-      "line": 37,
+      "line": 35,
       "judgment": "no",
       "reason": "a list entry"
     },
     "device|A rough cost of getting there (a per-person fare, if you fly or take the train), which your child never researches and never writes down|1": {
-      "line": 38,
+      "line": 36,
       "judgment": "no",
       "reason": "a list item under What you supply stating a role boundary; the sentence makes no claim it contrasts"
     },
     "device|The final budget, later|1": {
-      "line": 39,
+      "line": 37,
       "judgment": "no",
       "reason": "a list entry"
     },
     "device|A trip has categories of cost|1": {
-      "line": 43,
+      "line": 41,
       "judgment": "no",
       "reason": "a list entry"
     },
     "device|Some costs are per person|1": {
-      "line": 44,
+      "line": 42,
       "judgment": "no",
       "reason": "a list entry"
     },
     "device|Some are per room — this is why room count is an adult decision|1": {
-      "line": 45,
+      "line": 43,
       "judgment": "no",
       "reason": "a list entry with its reason"
     },
     "device|Some are per group|1": {
-      "line": 46,
+      "line": 44,
       "judgment": "no",
       "reason": "a list entry"
     },
     "device|Prices change|1": {
-      "line": 47,
+      "line": 45,
       "judgment": "no",
       "reason": "a list entry"
     },
     "device|Exchange rates change; your child should re-check the current rate to judge whether something is expensive, while you handle the actual exchange|1": {
-      "line": 48,
+      "line": 46,
       "judgment": "no",
       "reason": "a list entry dividing roles"
     },
     "device|A budget needs a buffer|1": {
-      "line": 49,
+      "line": 47,
       "judgment": "no",
       "reason": "a list entry"
     },
     "device|More cities usually means more transportation cost|1": {
-      "line": 50,
+      "line": 48,
       "judgment": "no",
       "reason": "a list entry stating a fact of degree"
     },
     "device|Central lodging can cost more and save time|1": {
-      "line": 51,
+      "line": 49,
       "judgment": "no",
       "reason": "a list entry stating a trade-off"
     },
     "device|Famous restaurants may need reservations, or cost more|1": {
-      "line": 52,
+      "line": 50,
       "judgment": "no",
       "reason": "a list entry"
     },
     "device|Free activities are worth real weight|1": {
-      "line": 53,
+      "line": 51,
       "judgment": "no",
       "reason": "a list entry"
     },
     "device|Adults decide the final budget|1": {
-      "line": 54,
+      "line": 52,
       "judgment": "no",
       "reason": "a list entry"
     },
     "device|Say so out loud, at the moment it comes up.|1": {
-      "line": 58,
+      "line": 56,
       "judgment": "no",
       "reason": "an instruction"
     },
     "split|An adult may do the arithmetic while the child does the reasoning. → The reasoning is the lesson, and the arithmetic is a tax on it.|1": {
-      "line": 58,
+      "line": 56,
       "judgment": "device",
       "reason": "the reasoning is the lesson / the arithmetic is a tax on it"
     },
     "split|Say so out loud, at the moment it comes up. → An adult may do the arithmetic while the child does the reasoning.|1": {
-      "line": 58,
+      "line": 56,
       "judgment": "no",
       "reason": "a permission dividing roles"
     },
     "split|The reasoning is the lesson, and the arithmetic is a tax on it. → This matters a lot for a child with dyscalculia or number anxiety, and it costs nothing for a child without.|1": {
-      "line": 60,
+      "line": 58,
       "judgment": "no",
       "reason": "a reason (it costs nothing for a child without); no alternative is named"
     },
     "device|Estimate lodging per city, then sum.|1": {
-      "line": 64,
+      "line": 62,
       "judgment": "no",
       "reason": "an instruction"
     },
     "split|Estimate lodging per city, then sum. → A multi-city trip stays in different places at different nightly rates, and a single average hides that.|1": {
-      "line": 64,
+      "line": 62,
       "judgment": "split",
       "reason": "estimate lodging per city, then sum / a single average hides that"
     },
     "split|The category names live in your destination pack. → If your pack does not name them yet, check how the lodging prices its rooms on its official site, and write the date you checked.|1": {
-      "line": 66,
+      "line": 64,
       "judgment": "no",
       "reason": "a condition (if your pack does not name them yet) with an instruction"
     },
     "split|A multi-city trip stays in different places at different nightly rates, and a single average hides that. → A lodging category priced per person is the exception, and it skips the per-room maths.|1": {
-      "line": 66,
+      "line": 64,
       "judgment": "no",
       "reason": "states an exception; a per-person category \"skips the per-room maths\" as a conditional skip"
     },
     "split|A lodging category priced per person is the exception, and it skips the per-room maths. → The category names live in your destination pack.|1": {
-      "line": 66,
+      "line": 64,
       "judgment": "no",
       "reason": "a navigation fact"
     },
     "device|You set the amount and hold the actual money.|1": {
-      "line": 70,
+      "line": 68,
       "judgment": "no",
       "reason": "a statement of the adult's role"
     },
     "split|You set the amount and hold the actual money. → Your child plans how they might spend it.|1": {
-      "line": 70,
+      "line": 68,
       "judgment": "no",
       "reason": "a statement of the child's role"
     },
     "banned|And don't add a page or a tracker for this. → It's a line inside the budget work they already do.|1": {
-      "line": 73,
+      "line": 71,
       "judgment": "no",
       "reason": "not the banned shape (different subjects); the pair is counted under its split key"
     },
     "split|Keep it price-free: have them look up a current price. → And don't add a page or a tracker for this.|1": {
-      "line": 73,
+      "line": 71,
       "judgment": "no",
       "reason": "the negative half of the split counted at the next candidate"
     },
     "split|Your child plans how they might spend it. → Keep it price-free: have them look up a current price.|1": {
-      "line": 73,
+      "line": 71,
       "judgment": "no",
       "reason": "a role statement and a price-free instruction; rejects no named alternative"
     },
     "split|And don't add a page or a tracker for this. → It's a line inside the budget work they already do.|1": {
-      "line": 73,
+      "line": 71,
       "judgment": "split",
       "reason": "negation then recast: \"don't add a page or a tracker\" / \"it's a line inside the budget work they already do\""
     },
     "banned|When the honest answer is no|1": {
-      "line": 75,
+      "line": 73,
       "judgment": "no",
       "reason": "a heading naming a topic; it does not deny a thing and then say what it is"
     },
     "split|If the estimate can't fit the band in any workable window, \"I recommend we change the trip or wait for a better time\" is a correct, successful result. → Receive it warmly.|1": {
-      "line": 77,
+      "line": 75,
       "judgment": "no",
       "reason": "a condition and a reassurance about a quoted result"
     },
     "split|Receive it warmly. → Your child just did the thing adults find hardest: they followed the numbers to a conclusion they didn't want.|1": {
-      "line": 79,
+      "line": 77,
       "judgment": "no",
       "reason": "\"didn't want\" describes the conclusion; nothing is rejected"
     },
     "device|Receive it warmly.|1": {
-      "line": 79,
+      "line": 77,
       "judgment": "no",
       "reason": "an instruction"
     },
     "device|Name what they found, not what they failed to find: \"you worked out that this costs more than we set aside, and that's worth knowing now rather than in April.\"|1": {
-      "line": 81,
+      "line": 79,
       "judgment": "device",
       "reason": "name what they found, not what they failed to find (one sentence, counted once)"
     },
     "split|Say what happens next, so it does not feel like an ending: the binder keeps, the research keeps, and a different window or a shorter trip reuses nearly all of it. → And tell them the decision is yours, so they are not carrying it.|1": {
-      "line": 81,
+      "line": 79,
       "judgment": "no",
       "reason": "purpose clauses, not rejections"
     },
     "device|Say what happens next, so it does not feel like an ending: the binder keeps, the research keeps, and a different window or a shorter trip reuses nearly all of it.|1": {
-      "line": 81,
+      "line": 79,
       "judgment": "no",
       "reason": "an instruction with its purpose (so it does not feel like an ending); it rejects no alternative to a claim"
     },
     "split|Your child just did the thing adults find hardest: they followed the numbers to a conclusion they didn't want. → Three things worth saying, in your own words.|1": {
-      "line": 81,
+      "line": 79,
       "judgment": "no",
       "reason": "a list introduction"
     },
     "split|Treat it as something to verify for current ages and amounts on an official source, with the date you checked. → Leave the rule and any fraction to that source; the destination-specific source is in your pack.|1": {
-      "line": 85,
+      "line": 83,
       "judgment": "no",
       "reason": "a verify instruction, then deferring the rule to the source; rejects no named alternative"
     },
     "device|Children's fares are often lower than adults' on some transport systems.|1": {
-      "line": 85,
+      "line": 83,
       "judgment": "no",
       "reason": "a fact of degree about fares"
     },
     "split|Children's fares are often lower than adults' on some transport systems. → Treat it as something to verify for current ages and amounts on an official source, with the date you checked.|1": {
-      "line": 85,
+      "line": 83,
       "judgment": "no",
       "reason": "an instruction"
     },
     "split|Every figure on this page is an example to re-check, with a date. → There are no pinned amounts here, and there shouldn't be any in your child's work either.|1": {
-      "line": 90,
+      "line": 88,
       "judgment": "split",
       "reason": "every figure is an example to re-check / there are no pinned amounts here (the brief's closing line)"
     },
     "device|Every figure on this page is an example to re-check, with a date.|1": {
-      "line": 90,
+      "line": 88,
       "judgment": "no",
       "reason": "a fact"
     },
     "device|Flights from your home airport -- if you fly, the biggest cost, which stays on your own page.|1": {
-      "line": 94,
+      "line": 92,
       "judgment": "no",
       "reason": "a navigation line"
     },
     "device|Booking guidance -- what gets booked in what order once the numbers settle.|1": {
-      "line": 95,
+      "line": 93,
       "judgment": "no",
       "reason": "a navigation line"
     },
     "device|Coaching and support -- scripts for the hard moments, including disagreeing without overriding.|1": {
-      "line": 96,
+      "line": 94,
       "judgment": "no",
       "reason": "a navigation line naming the script heading \"disagreeing without overriding\""
     }
