@@ -7,7 +7,7 @@
 
 - **Status:** Active
 - **Owner:** Repository Maintainers
-- **Last Updated:** 2026-09-23
+- **Last Updated:** 2026-09-25
 - **Scope:** The blank authoring skeleton for a child-facing curriculum session, with the rules a new session has to satisfy: the seven mandatory-core fields, the section order, the navigation line, the "For parents" strip, and the structure gate's floor. Builder-facing; a child never reads this page.
 - **Related:** [Build style and vocabulary](../docs/build_style_and_vocab.md), [Golden exemplar session](../sessions/phase_00_setup/04_start_a_source_log.md)
 
@@ -100,11 +100,12 @@ The step label comes in three forms, and it is the one part that varies:
 
 ## Italic lines under the navigation line
 
-A session may carry a short italic line directly under its navigation line. There are three kinds, and only three:
+A session may carry one or more short italic lines directly under its navigation line, one line for each job. Only the kinds below are allowed:
 
-- **Path divergence.** The numbered order and the First Taste order disagree here, and the line says where a First Taste reader goes instead. Announce a divergence forward only, and add no line where the two orders already agree. One line per divergence.
+- **Path divergence.** The numbered order and the First Taste order disagree here, and the line says where a First Taste reader goes instead. Announce a divergence forward only, and add no line where the two orders already agree. Write one line for each divergence announced, so a session that turns two paths aside carries two.
 - **Placement note.** An off-path session says where it sits relative to the path, or a path session turns an opt-in family aside before it sends everyone else forward.
 - **Skip affordance.** A session whose Next is Recommended says that next one can be skipped, and names the session after it.
+- **Return note.** An on-path session whose Previous is a session some readers skip says which session each of those readers came from, as Sessions 10, 21 and 33 do. It announces no divergence.
 
 Write the line scoped to the path it describes. An unqualified shortcut written for the First Taste path gets read on the full path too, and sends a child past Core sessions.
 
@@ -121,11 +122,15 @@ A conditional-core session names its condition on the same line, in the built fo
 - **Planner skill** comes from a closed list: getting started; comparing choices; checking sources; ranking priorities; planning realistic time; making trade-offs; organizing information; revising a plan; self-control (knowing when to stop). Write the value your batch brief assigns, and when it assigns two, name both. Some sessions built before the list was closed carry other labels, such as *estimating* or *reflection*. Leave those as built, and do not copy one into a new session.
 - **Materials** names what the child needs in hand, with a relative link to each framework template it names. **A blank is linked; the child's own filled-in page is not.** "two blank City Research Cards" links the template, because the child needs to fetch one; "your two City Research Cards" names work they already have, and a link there would send them to an empty page. A running artifact the child keeps -- the Source Log -- is linked anyway, because a family may still be printing their first copy. A setup page a grown-up filled in, such as the Trip-Basics card or the assumptions page, is linked too: it is a canonical concept, and the style law links every concept Name to its home.
 
+**A parent-involvement value can take one short clause**, after a semicolon, to name the grown-up's one step, as Sessions 33 and 44 do. When a batch brief assigns a softer value to a session whose steps keep a grown-up nearby, the value stays as the brief assigns it, and the clause names that requirement. Session 25 does this: `co-working recommended; stay nearby for both sittings, and alongside for any video`. The two requirement values above stay with Sessions 08 and 09.
+
 ## Writing the body
 
 **Start Here is a true micro-action**, ideally doable in under one minute. Opening a page and writing one word on it is the right size. A Start Here that needs a decision is too big. When the session supplies a blank and the micro-action writes something, it writes on that blank or on work the child already has. A first mark on a spare sheet is work the child must copy across or lose.
 
 **An artifact-producing session carries the point-of-use accommodation line**, in the exemplar's form: *"You can say your answers to an adult who writes them, or draw them, if that's easier."*
+
+**Artifact Created names the artifact.** A named artifact takes a capital letter on the first word of its name, as the batch brief writes it, even mid-sentence: *Your Season recommendation report*, *Your Route and trip-length recommendation*. That capital letter on the name's first word belongs on the Artifact Created line only. Other mentions of the same artifact, such as a Workspace label or the words a Start Here puts in a Decision box, write that word in lower case. Built Session 14 writes *My season recommendation*: the label's own first word takes a capital, as any label does, and *season* stays lower case. A generic artifact is lower case everywhere, as in *Your attraction cards*. A template's title keeps the template's own capital letters on every line, as in *Your Trade-Off Report*, because it names a page the child fetches.
 
 **Worksheet fill-ins are two-column `Prompt | Your answer` Markdown tables**, never fenced underscore blocks. The empty answer cell is the fill-in space. Comparison grids stay narrow enough to print on portrait letter or A4. The structure gate rejects a fenced block used as a worksheet fill-in.
 
