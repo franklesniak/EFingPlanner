@@ -9,7 +9,7 @@ You are here: Phase 6 (Lodging, Food, and Budget). Not a First Taste step. Previ
 - Status: Core
 - Planner skill: planning realistic time
 - Estimated time: 20-30 minutes
-- Parent involvement: 5-minute check-in; beforehand, tell your child the souvenir amount for one day
+- Parent involvement: 5-minute check-in; beforehand, tell your child the souvenir amount for one day, for the whole group
 - Materials: a device with the kid-safe filter on, your destination pack's money basics page, your [Budget Estimate page](../../templates/budget_estimate.md) from Session 33, your attraction cards and transportation notes, your [Trip-Basics card](../../templates/trip_basics.md) (for the number of travelers), your [Source Log](../../templates/source_log.md), a calculator (allowed)
 
 ## Goal
@@ -33,8 +33,8 @@ In Session 33 you estimated food and a hotel. Today you picture one ordinary day
 Round to easy numbers first. A calculator is always fine, and a grown-up can do the math while you do the thinking.
 
 1. **Food.** Use the example above for your medium guess. For the people, use the number of travelers on your Trip-Basics card. If it says "not decided yet", count the travelers listed on the card instead. Then make a cheaper day (low) and a fancier day (high).
-2. **Local transit.** How will you get around inside the city on an ordinary day? Your transportation notes from Session 30 help here. A fare is usually for one person, so multiply it by your travelers, as the food row does.
-3. **Activities.** What might one day's tickets cost? Look at the ticket rows on your attraction cards. A ticket is for one person, so multiply it by your travelers. If a card's ticket row is empty, fill it in first, or write "ask an adult".
+2. **Local transit.** How will you get around inside the city on an ordinary day? Your transportation notes from Session 30 help here. Most fares are for one person, so multiply them by your travelers, as the food row does. A taxi, or a pass for a family or group, has one price for everyone in it, so count it once for each one you'd need.
+3. **Activities.** What might one day's tickets cost? Look at the ticket rows on your attraction cards, and at what each price is for. A ticket for one person gets multiplied by your travelers. A family or group ticket counts once. If a card's ticket row is empty, fill it in first, or write "ask an adult".
 4. **Long-distance transit.** Only fill this in for a day when you move to a new city, or take a long ride out from your base. On other days, write "not today". The grown-ups add these longer rides to the budget on their own page.
 5. **Souvenirs.** What might you spend on small things? A grown-up sets the amount for one day, for your whole group, and tells you before you start.
 6. **Unknown / ask an adult.** Anything you can't estimate goes in this row. Name the cost, and write "ask an adult" in its boxes. That's a finished answer, not a gap.
