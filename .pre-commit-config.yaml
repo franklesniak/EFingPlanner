@@ -368,6 +368,61 @@ repos:
         # destinations/, which this hook still guards.
         exclude: ^docs/spec/
 
+  # Leak checks: no family value in any tracked file (AC-29-2), and no
+  # destination name in the framework (AC-16-1). One script runs both rules;
+  # its docstring says what each reads and how an exemption row works. The
+  # family rule holds digests, not values, because this repository is public.
+  # The destination rule reads the five names AC-16-1 gives, and no more: a
+  # new pack under destinations/ adds no name, so a name that must stay out
+  # of the framework goes into AC-16-1, the style law's destination-names
+  # bullet and the script's DESTINATION_NAMES, which the suite checks against
+  # both sources.
+  - repo: local
+    hooks:
+      # Both scans take every tracked file, link and submodule, not only text:
+      # the hook reads each file's path as well as its text, and refuses a
+      # tracked link or submodule by name. Pre-commit's default, `types:
+      # [file]`, drops a link (tagged `symlink`) and a checked-out submodule
+      # (tagged `directory`) before the hook sees them, so `types: []` clears
+      # it and `types_or` names the three kinds. Each entry ends with `--`, so
+      # a file whose name begins with a hyphen, such as `--help`, is read as a
+      # path and not taken for an option.
+      - id: check-family-leaks
+        name: Check tracked files for family values
+        entry: python .github/scripts/check-leaks.py --rule family --
+        language: python
+        types: []
+        types_or: [file, symlink, directory]
+        # The archived design record states the values on purpose; the hook
+        # skips it too when run with no paths.
+        exclude: ^docs/spec/
+      - id: check-destination-leaks
+        name: Check framework files for destination names
+        entry: python .github/scripts/check-leaks.py --rule destination --
+        language: python
+        types: []
+        types_or: [file, symlink, directory]
+        # A link or a submodule at `framework` itself stands in the folder's
+        # place, so the hook takes it too, and refuses it.
+        files: '^framework(/|$)'
+      # The hook's unit tests read the design record's BUILD RULE line and
+      # AC-16-1, and the style law's destination-names bullet, so a change to
+      # either reruns them as well as a change to the hook.
+      - id: check-leaks-tests
+        name: Leak check unit tests
+        entry: python -m pytest tests/test_check_leaks.py -q -p no:cacheprovider
+        language: python
+        pass_filenames: false
+        files: |
+          (?x)^(
+            \.github/scripts/check-leaks\.py|
+            tests/test_check_leaks\.py|
+            docs/spec/specification\.md|
+            framework/docs/build_style_and_vocab\.md
+          )$
+        additional_dependencies:
+          - pytest
+
   # Markdown linting
   - repo: https://github.com/DavidAnson/markdownlint-cli2
     rev: v0.23.2

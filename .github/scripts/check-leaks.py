@@ -1,0 +1,1894 @@
+"""Check tracked files for leaked family values and destination names.
+
+One script, two rules, chosen with ``--rule``:
+
+``--rule family``
+    Acceptance criterion ``AC-29-2`` in ``docs/spec/specification.md``, and the
+    wider rule that no tracked file carries this family's data. The values are
+    the ones the spec's trip-basics BUILD RULE names (Section 2.5): the origin
+    city, the home airport's code, the trip-length number, and two roster
+    words, plus the home airport's name from the card bullet below that rule.
+    They belong on the family's own Trip-Basics card, which is never
+    committed. The rule reads every tracked text file except ``docs/spec/``,
+    the owner's protected design record, which states the values on purpose.
+
+``--rule destination``
+    Acceptance criterion ``AC-16-1``: no destination name in the reusable
+    framework. The rule reads every tracked file under ``framework/``, the
+    scope the style law (``framework/docs/build_style_and_vocab.md``) gives its
+    destination-names ban, and a tracked entry at ``framework`` itself, such
+    as a link or a submodule in the folder's place, which it refuses.
+
+The values are not in this file
+-------------------------------
+This repository is public, so the family rule cannot hold its values as
+text. ``FAMILY_VALUES`` holds a SHA-256 digest of each value's normalized
+form, mixed with ``SALT``, and the scan hashes the words and numbers of each
+file and compares digests. **A digest hides a value from reading, grepping
+and search indexes. It does not hide it from a guess.** The values are
+ordinary words, a city and a three-letter code, and anyone who guesses one
+can confirm it against its digest; a salt only stops a lookup in a
+precomputed table. The design record already prints the values in this
+repository, so the digests add no exposure. The hook's output never prints a
+matched family value either, because a CI log is readable by anyone who can
+read the repository.
+
+``tests/test_check_leaks.py`` reads the design record's BUILD RULE line at
+test time and proves that every value it names is listed here, so the list
+cannot drift from its source without a failing test.
+
+What a match is
+---------------
+A file is read as it is written, every character of it: a value inside a
+fenced or indented code block, an HTML comment, a link's text or its path
+is written in the file all the same, and a comment is still published with
+it. A line that holds a backslash is read a second time with each
+one-letter backslash escape before a word or a number, such as a regular
+expression's ``\\b``, ``\\A`` or ``\\s``, blanked out where it stands,
+so the word or number after it is read whole and every hit keeps the
+file's own line and column. An occurrence both readings see counts once;
+an occurrence only the second reading sees counts on its own, beside a
+plain one on the same line. A percent escape and a character reference
+are not decoded, so a value spelled with either is not matched (DP-21);
+"Known limits" lists both. Each file's repository-relative path is read
+too, as one more line of the file, by the same loop as its text: a value
+or a name in a file's or a folder's name is a hit, and a bare number in it
+is a candidate, a binary file's included.
+
+* A **word** value matches a run of letters, or two or three runs in a row
+  separated by anything but digits and a blank line, in any case. The last
+  run may carry a plural ``s``. Letters are a run, so an apostrophe, a
+  hyphen, an underscore, a slash or a digit ends one: a possessive, a
+  compound and a link path all hold the word, and a longer word that merely
+  contains it does not.
+* A **code** value matches a whole run of letters, digits and underscores,
+  in its exact case, so the code in lower case, or inside a longer
+  identifier, is not a match.
+* A **number** value is the trip-length number, and it leaks only where the
+  text states it as the trip length, in one of four ways, in any case:
+
+  - followed by ``day``, ``days``, ``night`` or ``nights``, with nothing
+    between but spaces, one line break, one hyphen or dash, and the
+    Markdown, bracket or quote marks around the number or the unit. The
+    unit is a whole word when anything but a letter follows it, so
+    ``N days_ago``, ``N_days_notes.md`` and ``N days1``, a footnote number
+    pasted as a digit, state it as plainly as ``N days ago`` does;
+  - followed by the design record's own words for it, "as a trip-length
+    cap";
+  - after a label for it: "trip length" (or "trip length in days"), or the
+    design record's "this family:", joined to the number by marks such as a
+    colon, an equals sign, "is", "of", or an opening bracket;
+  - in a grep pattern for it: the number, a bracket expression (a POSIX
+    class such as ``[:space:]`` inside it included) or one of the escapes
+    ``\\s``, ``\\S``, ``\\w`` and ``\\W``, then the unit, as a
+    hand-run leak grep writes it; each escape lets the pattern find the
+    number with its unit.
+
+  The number is read in digits, and digits from any script count as their
+  ASCII digits, read as text, so a run of any length is read. A number in
+  words is not matched (DP-23), and "Known limits" lists it: no tracked
+  file on any branch states the family's trip length in words, and the
+  design record and the briefs write it in digits. A number that is part of
+  a decimal or a thousands group is not a match; a comma or a full stop
+  that does not follow a digit, as in a CSV field, does not hide one. A
+  bare number is not a leak: the design record's grep note lists page
+  numbers, item counts and dates as the wider pattern's false positives,
+  and the Batch 2 build brief scopes this hook to the number with its unit.
+  The label and the cap phrase state the trip length as plainly as a unit
+  does. ``--candidates`` lists the bare occurrences, in text and in paths,
+  for the grep note's hand-read, and does not fail. A word between the
+  number and its unit ("N full days"), and a cap with no unit or label
+  ("the trip cannot go past N"), are left to that hand-read.
+* A **destination** name matches a word that begins with it, in any case,
+  so a demonym or a path segment into a pack matches. The names are the
+  five ``AC-16-1`` gives and the style law lists, and the suite checks
+  ``DESTINATION_NAMES`` against both. A folder under ``destinations/``
+  adds no name (DP-21): no pack name beyond the five caught anything on
+  any branch.
+
+Exemptions
+----------
+An exemption covers one occurrence, never a file. A row names its path, what
+was matched, the words around it (up to three either side, on its own line,
+the way the self-containment scan in ``tests/test_self_contained_references.py``
+binds its rows), how many such occurrences it covers, and why they may stay. A
+family row holds a digest of those words, since the words hold the value. A
+row names a path its rule reads. A row whose occurrences have gone is
+reported as stale, so a row cannot outlive its reason: a run given paths
+judges the rows of the files it read, and a walk judges every row, so a
+row for a file Git no longer tracks is stale there. ``--exemption-rows``
+prints a row for each unexcused match, for a maintainer to review and paste
+in with a reason; where a row already covers the same words too few times,
+the printed row counts them all and replaces it. A destination name in a
+path is excused by a row whose context is ``(path)`` and the path, as the
+rule reads it. A family value in a path is never excused,
+because its row would spell the value: rename the file. No row is printed
+whose path or words hold a family value, under either rule.
+
+Output
+------
+Every line either rule prints passes through ``emit()``, which replaces
+each family value in it with ``<family value>``: a hit, a stale row, a
+refusal, an error, a candidate and an exemption row. The destination rule
+masks as the family rule does, so a framework path or line that holds both
+a destination name and a family value prints the name and hides the value.
+A malformed value row stops both rules before either prints anything read
+from the repository, since a row the data check cannot read masks nothing.
+While one stands, an argument error or an unexpected error prints a fixed
+line in place of its message. A row error, for a value row or an exemption
+row, names the row by number, never what a field holds, and a stale row's
+message gives neither the row's count nor the path of a file the run did
+not read: a field typed in the wrong place could hold a value, and a bare
+number in it is not masked. A value is masked as it is written, after a backslash
+escape or not, and so is an argument error, which names the argument it
+could not read. After
+the masking, a character a terminal would not print as itself, such as a
+line break, a carriage return or the escape that starts a terminal
+sequence, is written as its escape, so a file's name cannot add a line to
+the log or change how it shows; so is a character the output cannot
+encode. Only ``--hash`` prints elsewhere, and it prints digests. An
+unexpected error prints one masked line, naming its type, where in this
+script it was raised, and its message with each run of digits replaced,
+and exits 2, with no traceback. A
+bare number is printed as it stands: it is not a family value, and masking
+the family's number wherever it stood, in a session number or a date,
+would print which number it is.
+
+File access
+-----------
+Only files inside the repository are read. With no paths, the run walks the
+files Git tracks. It refuses, by name, a tracked path in the rule's scope
+that is a symbolic link or a junction, that goes through a linked folder,
+or that resolves outside the repository, and it refuses the same path when
+pre-commit passes it, so a link fails a commit as it fails CI. The hooks
+take links and submodules as well as files for that reason: pre-commit's
+default passes files only. Git's own record of a link,
+mode 120000 in the index, is read too, so a link a checkout wrote as a
+plain file holding its target, as Git for Windows does by default, is
+refused as well. A passed path Git does not
+track is neither read nor refused, whether it resolves or not, so a local
+file such as one under ``.git/`` is never read. A tracked submodule in the
+rule's scope is refused by name too: its content is another repository,
+which this run cannot read. A file holding a zero byte is binary: its path
+is read, and its bytes are skipped, as Git treats them. A file that cannot
+be read as UTF-8 stops the run, because a file that was not read has not
+been checked, and so does a tracked path the run cannot look at, such as
+one in a folder it may not search. A tracked file that is not there, as
+``git status`` shows a deleted one, has nothing to read and is skipped;
+one a sparse checkout leaves out, which ``git status`` does not show, is
+refused by name, since the run did not read it.
+The pre-commit entries end with ``--``, so a file whose name begins with a
+hyphen is read as a path, never taken for an option.
+
+In place of a hand-run grep
+---------------------------
+A grep for the family's values has to name them, so the grep itself leaks
+them: into the file that holds it, the shell's history and its output. This
+script is the replacement. A build brief or a checklist that asks for the
+leak greps runs these calls instead, and they name no value and print none:
+
+* ``python .github/scripts/check-leaks.py --rule family``, which exits 1 and
+  prints each unexcused occurrence as a path, line, column and kind;
+* ``python .github/scripts/check-leaks.py --rule family --candidates``, the
+  grep note's hand-read of bare numbers, which lists positions and exits 0.
+  Those positions point at the family's number, so keep that list in a local
+  terminal: never paste it into a pull request, an issue or a CI log;
+* ``python .github/scripts/check-leaks.py --rule destination``.
+
+A grep for a destination name, for a path into ``destinations/`` or for a
+spec section number names nothing private, and may stay a grep.
+
+Threat model
+------------
+The hook guards against a family value that an author writes or pastes
+into a tracked file by accident: typed, wrapped over a line, in a heading,
+a link or a grep pattern, in a pasted URL or HTML fragment as it is
+written, in a file's or a folder's name, under a checkout setting such as
+``core.symlinks``, or in any layout of the repository. Of the ways text
+can be escaped, it reads one level of one-letter backslash escapes only,
+the kind a grep pattern carries; a percent escape and a character
+reference are not decoded, so a value spelled with either is not matched,
+and "Known limits" below lists both. That is what ``AC-29-2``'s grep asks,
+and what the privacy rules' "public framework, private trip work"
+protects. Deliberate obfuscation, text built to slip past the hook, is out
+of scope: a person who would build it can skip a pre-commit hook or
+publish elsewhere, so no check here could stop them. A finding that needs
+such text is answered by this section and the list below, not by new
+matching.
+
+Known limits
+------------
+The hook matches forms, not meaning. These pass it, and are left to a
+person's read, to ``--candidates``, or to another check:
+
+* A paraphrase or an inference: a cap with no unit or label ("the trip
+  cannot go past N"), a word between the number and its unit ("N full
+  days"), an ordinal, a number in words (DP-23), or a length given in
+  weeks.
+* A spelling the matcher does not fold: a misspelling, a nickname or an
+  abbreviation, letters split by spaces or by an invisible character such
+  as a zero-width space, a look-alike letter from another alphabet, the
+  code in lower case or inside a longer identifier, a word value inside
+  a longer word, and a superscript digit or a fraction joined to a word or
+  a unit, such as a footnote marker, which Python reads as a letter.
+* A percent escape, such as ``%63``, and a character reference, such as
+  ``&#99;``: neither is decoded, so a value spelled with one is not
+  matched. No tracked file on any branch hid a value in one (DP-21).
+* A grep bracket expression of more than 64 items: the bound keeps the
+  grep-pattern reading's cost in line with the line's length (S53-53).
+* Any other encoding: an escape inside another escape, ``\\uXXXX``,
+  ``\\xXX``, octal, base64 and a cipher are text built to hide a value,
+  which the threat model above leaves out.
+* A value the lists do not hold: a relative the BUILD RULE line does not
+  name, and a destination name other than the five, such as a pack
+  folder's own name, a second city or a landmark.
+* What the hook does not read: ``docs/spec/``, untracked files, a binary
+  file's bytes, a submodule's content (refused, not read), Git history,
+  commit messages, branch and tag names, pull request text and issues.
+* A deleted file's stale row: pre-commit passes no file for a deletion, so
+  only a walk reports it, and CI's walk runs in this script's suite.
+* A digest does not stop a guess, as the section above says.
+
+Adding a family's value
+-----------------------
+Run ``python .github/scripts/check-leaks.py --hash word`` (or ``code`` or
+``number``), type the value, and end the input. The value is read from
+standard input so it stays out of the shell history. Paste the printed lines
+into ``FAMILY_VALUES``. A word or code value the matcher would not find as
+it is typed, such as one a digit or a blank line splits, prints no row and
+exits 1, since no digest of it could match.
+"""
+
+from __future__ import annotations
+
+import argparse
+import bisect
+import functools
+import hashlib
+import os
+import re
+import stat
+import subprocess
+import sys
+import traceback
+import unicodedata
+from collections.abc import Callable, Iterable, Sequence
+from dataclasses import dataclass
+from pathlib import Path
+
+REPO_ROOT = Path(__file__).resolve().parents[2]
+
+# --------------------------------------------------------------------------
+# Data
+# --------------------------------------------------------------------------
+
+#: Mixed into every digest. It is public and it is not a secret; it stops a
+#: lookup of these digests in a precomputed table of common words.
+SALT = "efingplanner leak check"
+
+#: ``(kind, words, digest)`` for each family value. ``words`` is how many
+#: letter runs a word value holds, which bounds how far the scan joins runs;
+#: it is 1 for a code and a number. Generate a row with ``--hash``.
+FAMILY_VALUES: tuple[tuple[str, int, str], ...] = (
+    # The origin city.
+    ("word", 1, "62b3feeb7ad9938881a521ceb08da1b58a7dbdef1ebc013d9129d94e094d207b"),
+    # The home airport's code.
+    ("code", 1, "4af76db67cd33995d834017627c8af91efe99aee3136520561319cf2c0b9837f"),
+    # The trip-length number.
+    ("number", 1, "ff3ec1d08e7d007a7b904ef466a4fec5c9f6cc6ee0abfc60151eb4de9c79ceeb"),
+    # The two roster words.
+    ("word", 1, "438c89b4fef2bccad89a5fae9cbb40301ba379e5a02f9cba4f5df064b74ccdb0"),
+    ("word", 1, "cb9e4fb9d18f3a7db66394a0aed32ad8e68f736d8c0d01538a1f934253e2ef9b"),
+    # The home airport's name, as two words and as one.
+    ("word", 2, "e315fe8d70b551c841a46edc193876fdbb34f6cb1e3afda902d85dd960eb7baa"),
+    ("word", 1, "8e9662ba76c03835748fa2fbb963d9949bb8d14ac6c16eaceabecfe9e587d5a1"),
+)
+
+#: The destination names ``AC-16-1``'s grep part names, and the whole of the
+#: destination rule's list: a folder under ``destinations/`` adds no name
+#: (DP-21). A name to keep out of the framework goes here, into ``AC-16-1``,
+#: and into the style law's destination-names bullet; the suite checks that
+#: the three agree.
+DESTINATION_NAMES = ("Japan", "Tokyo", "Kyoto", "Osaka", "Shinkansen")
+
+#: The reasons the rows below give, each written once.
+BRIEF_RULE = "A build brief's leak rule names the values it bans."
+BRIEF_GREP = "A build brief's self-check prints the values its grep command looks for."
+BRIEF_TRIP_LENGTH_NOTE = (
+    "The Batch 1 brief's note on its narrowed trip-length token shows the forms the token matches."
+)
+BRIEF_PLURAL_NOTE = (
+    "The Batch 1 brief's note on plurals and case quotes the forms and the fixture lines it measured."
+)
+CHANGELOG_PACK_LINE = (
+    "Version history: the 0.1.0 Added line records which destination pack shipped. The style law "
+    "names it as a permanent exception."
+)
+STYLE_LAW_RULE = (
+    "The style law's destination-names bullet prints the names it bans. The bullet names itself as "
+    "a permanent exception."
+)
+
+#: ``(path, kind, context digest, count, reason)``. The context digest is
+#: ``value_digest("context", words)`` over the words ``occurrence_context``
+#: gives: up to three either side of the occurrence, on its own line.
+FAMILY_EXEMPTIONS: tuple[tuple[str, str, str, int, str], ...] = (
+    (
+        "docs/build/_build_prompt_template.md", "word",
+        "d6e85956a42ea20d2cf4e4982a012f25e2c11b3ee0b6fd2d39268baf8de5cec8", 1, BRIEF_RULE,
+    ),
+    (
+        "docs/build/_build_prompt_template.md", "code",
+        "96b82d47292c00ca147ff91390bfe17e9bdf9fb85f316ce44398eed326cfe18d", 1, BRIEF_RULE,
+    ),
+    (
+        "docs/build/_build_prompt_template.md", "word",
+        "d002f4c407e4448570af3e532f0bff70d65a3a20d805f24c5549db5a15036641", 1, BRIEF_RULE,
+    ),
+    (
+        "docs/build/_build_prompt_template.md", "word",
+        "e6fae2d0bd2e2313ecd2a8c50e3c965b0a17deb40308771bf86be5fd4718b21b", 1, BRIEF_RULE,
+    ),
+    (
+        "docs/build/_build_prompt_template.md", "number",
+        "5c81c94ca37dcdba3546fddd7d5a32c813813ab60288d4e244f551748ee388ea", 1, BRIEF_RULE,
+    ),
+    (
+        "docs/build/_build_prompt_template.md", "word",
+        "f0d94a26dd0279d47f9536f87c027242d91b78a6653bc95e80a670f0895bc38f", 3, BRIEF_GREP,
+    ),
+    (
+        "docs/build/_build_prompt_template.md", "code",
+        "f0d94a26dd0279d47f9536f87c027242d91b78a6653bc95e80a670f0895bc38f", 1, BRIEF_GREP,
+    ),
+    (
+        "docs/build/batch0_build_prompt.md", "word",
+        "fb442ccf809f426f48faa87c54bc6653c72358e656b2448926c29f511168287d", 1, BRIEF_RULE,
+    ),
+    (
+        "docs/build/batch0_build_prompt.md", "code",
+        "932ed8a82be700f3738a897a883b04d9da2769eaf8418743967cbf51beb114eb", 1, BRIEF_RULE,
+    ),
+    (
+        "docs/build/batch0_build_prompt.md", "word",
+        "228f91f54649b6243d214a3a7aae9f1fcbe7802b500f383f810f44e7539866a8", 1, BRIEF_RULE,
+    ),
+    (
+        "docs/build/batch0_build_prompt.md", "word",
+        "e6fae2d0bd2e2313ecd2a8c50e3c965b0a17deb40308771bf86be5fd4718b21b", 1, BRIEF_RULE,
+    ),
+    (
+        "docs/build/batch0_build_prompt.md", "number",
+        "5c81c94ca37dcdba3546fddd7d5a32c813813ab60288d4e244f551748ee388ea", 1, BRIEF_RULE,
+    ),
+    (
+        "docs/build/batch0_build_prompt.md", "word",
+        "e53f5311742145e972274c662d3d40f0d1819f1f7b14e053231216214679320d", 3, BRIEF_GREP,
+    ),
+    (
+        "docs/build/batch0_build_prompt.md", "code",
+        "e53f5311742145e972274c662d3d40f0d1819f1f7b14e053231216214679320d", 1, BRIEF_GREP,
+    ),
+    (
+        "docs/build/batch1_build_prompt.md", "word",
+        "4267c044a7ecbb60cb39f0b0974752ea9fe62c477f564051b67ac3830479a36e", 1, BRIEF_RULE,
+    ),
+    (
+        "docs/build/batch1_build_prompt.md", "code",
+        "395988df5a873fbf92979f9e732ff51a22d40fafb1b0a8270cdcefb46f53d418", 1, BRIEF_RULE,
+    ),
+    (
+        "docs/build/batch1_build_prompt.md", "word",
+        "de791b686e14055b4dae02d30ef18e1e88ce389b69d4c5dedbc41c6823dc4169", 1, BRIEF_RULE,
+    ),
+    (
+        "docs/build/batch1_build_prompt.md", "word",
+        "66b5119914b79dddbe86cc3d1071dd88f98631d3db467360a3ddf6477758f364", 1, BRIEF_RULE,
+    ),
+    (
+        "docs/build/batch1_build_prompt.md", "number",
+        "eebb37c794e313606944d8d6a76462792cdab4b787b8a03078d4b6e195805640", 1, BRIEF_RULE,
+    ),
+    (
+        "docs/build/batch1_build_prompt.md", "word",
+        "d6e85956a42ea20d2cf4e4982a012f25e2c11b3ee0b6fd2d39268baf8de5cec8", 1, BRIEF_RULE,
+    ),
+    (
+        "docs/build/batch1_build_prompt.md", "code",
+        "96b82d47292c00ca147ff91390bfe17e9bdf9fb85f316ce44398eed326cfe18d", 1, BRIEF_RULE,
+    ),
+    (
+        "docs/build/batch1_build_prompt.md", "word",
+        "ce90a0665dd1f53b929c23f22ab76eed7fda06faefe2ce86556c48395c63c3be", 1, BRIEF_RULE,
+    ),
+    (
+        "docs/build/batch1_build_prompt.md", "word",
+        "f725cef4bfe515d2c3d35c60cc4bff956e5efac10a703ca27395ff0f23bcc66d", 1, BRIEF_RULE,
+    ),
+    (
+        "docs/build/batch1_build_prompt.md", "number",
+        "5c81c94ca37dcdba3546fddd7d5a32c813813ab60288d4e244f551748ee388ea", 1, BRIEF_RULE,
+    ),
+    (
+        "docs/build/batch1_build_prompt.md", "word",
+        "9453e333123e110817f7885e15102c0aa065dbd43462a8d5e97af7430ebd86bb", 3, BRIEF_GREP,
+    ),
+    (
+        "docs/build/batch1_build_prompt.md", "code",
+        "9453e333123e110817f7885e15102c0aa065dbd43462a8d5e97af7430ebd86bb", 1, BRIEF_GREP,
+    ),
+    (
+        "docs/build/batch1_build_prompt.md", "number",
+        "9453e333123e110817f7885e15102c0aa065dbd43462a8d5e97af7430ebd86bb", 1, BRIEF_GREP,
+    ),
+    (
+        "docs/build/batch1_build_prompt.md", "number",
+        "e93483b40184bbd8cc56afe4b51b67e5d76159e332c95d79b98b9aa455493852", 1, BRIEF_TRIP_LENGTH_NOTE,
+    ),
+    (
+        "docs/build/batch1_build_prompt.md", "number",
+        "70747d3eb5de4563c2839096218470c804e1d66d2549b5537b4eaca8b519306e", 1, BRIEF_TRIP_LENGTH_NOTE,
+    ),
+    (
+        "docs/build/batch1_build_prompt.md", "number",
+        "ff0b9de7b7c82ba94bc2c7ca2b956ca39d2cd09f376fa63ba4c00b8381be4fb5", 1, BRIEF_TRIP_LENGTH_NOTE,
+    ),
+    (
+        "docs/build/batch1_build_prompt.md", "number",
+        "1b8576accc6f85be3d0a2cc75810bc46d4b1a1ed90f46bc36b69be167ba9402d", 1, BRIEF_TRIP_LENGTH_NOTE,
+    ),
+    (
+        "docs/build/batch1_build_prompt.md", "number",
+        "fa84f81bbb556710e1a8ed52899f6d0dbbaa884b945511d9fd76a00b1dad6ba1", 1, BRIEF_TRIP_LENGTH_NOTE,
+    ),
+    (
+        "docs/build/batch1_build_prompt.md", "word",
+        "0851166053f994d20734974fbd11f7d729cfd66bfb98d1147c0be3c453234dce", 1, BRIEF_PLURAL_NOTE,
+    ),
+    (
+        "docs/build/batch1_build_prompt.md", "word",
+        "49d1bcc9f695af9ed78144d379119b525fed04a0a4eaf36cb8c639e592fa13ef", 1, BRIEF_PLURAL_NOTE,
+    ),
+    (
+        "docs/build/batch1_build_prompt.md", "word",
+        "0874722845b24550954d839aee86023943134a2442b52513a6ddd4cfe284d50c", 1, BRIEF_PLURAL_NOTE,
+    ),
+    (
+        "docs/build/batch1_build_prompt.md", "word",
+        "68b5e2400e8296216742d994240d6e9ad468387d07515af8a85c112d00a1b764", 1, BRIEF_PLURAL_NOTE,
+    ),
+    (
+        "docs/build/batch1_build_prompt.md", "word",
+        "09b8b1d0d40207d53f0200337606a1ba38e2b542dd635d5f11e6e2da61c62cb7", 1, BRIEF_PLURAL_NOTE,
+    ),
+    (
+        "docs/build/batch1_build_prompt.md", "word",
+        "01a4d6bd6839410efaab7d017b6096f7a00d34e8edcf128ac6e36bd01ec94314", 1, BRIEF_PLURAL_NOTE,
+    ),
+    (
+        "docs/build/batch1_build_prompt.md", "word",
+        "05edf04b3960830d826ad89b5b987523e93ab2810b979dd30dedcc4401850eee", 1, BRIEF_PLURAL_NOTE,
+    ),
+    (
+        "docs/build/batch1_build_prompt.md", "word",
+        "8b13d444bb2c038ff0c735ff748fb4d11fe986bcad302cd09052f2e7b6cbc518", 1, BRIEF_PLURAL_NOTE,
+    ),
+    (
+        "docs/build/batch2_build_prompt.md", "word",
+        "7694c80e02d5f518db924e7bf109831f6f8422dfbae2f3c01fa9eb27dfdc8914", 3, BRIEF_GREP,
+    ),
+    (
+        "docs/build/batch2_build_prompt.md", "code",
+        "7694c80e02d5f518db924e7bf109831f6f8422dfbae2f3c01fa9eb27dfdc8914", 1, BRIEF_GREP,
+    ),
+    (
+        "docs/build/batch2_build_prompt.md", "number",
+        "86dde9d8578b9b83a7f15dd5d37d80032951298ceab4fb194e603732a1d06de6", 1, BRIEF_GREP,
+    ),
+    (
+        "docs/build/batch3_build_prompt.md", "word",
+        "6968a04f4bab347696c0cd23e5d0be3fc8850d16555a4cd502c37a10bb2a8c05", 3, BRIEF_GREP,
+    ),
+    (
+        "docs/build/batch3_build_prompt.md", "code",
+        "6968a04f4bab347696c0cd23e5d0be3fc8850d16555a4cd502c37a10bb2a8c05", 1, BRIEF_GREP,
+    ),
+    (
+        "docs/build/batch3_build_prompt.md", "number",
+        "ea411721a772a532478f3e1a37d969892bdbe9074c5f4b21e588541656854d61", 1, BRIEF_GREP,
+    ),
+    (
+        "docs/build/batch3_build_prompt.md", "word",
+        "c95f89cc63af37e0f2b0abaaaae73c21ad7584c848f2435704f8b1806dd139d9", 3, BRIEF_GREP,
+    ),
+    (
+        "docs/build/batch3_build_prompt.md", "code",
+        "c95f89cc63af37e0f2b0abaaaae73c21ad7584c848f2435704f8b1806dd139d9", 1, BRIEF_GREP,
+    ),
+    (
+        "docs/build/batch3_build_prompt.md", "number",
+        "ee484b222b56da2b46593f8448dabb70539b0d45aa05114a3b2ee627351f6466", 1, BRIEF_GREP,
+    ),
+)
+
+#: ``(path, occurrence, context, count, reason)``.
+DESTINATION_EXEMPTIONS: tuple[tuple[str, str, str, int, str], ...] = (
+    (
+        "framework/CHANGELOG.md", "Japan",
+        "- The Japan reference pack, and",
+        1, CHANGELOG_PACK_LINE,
+    ),
+    (
+        "framework/docs/build_style_and_vocab.md", "Japan",
+        "Batch 1 onward.** Japan, Tokyo, Kyoto, Osaka,",
+        1, STYLE_LAW_RULE,
+    ),
+    (
+        "framework/docs/build_style_and_vocab.md", "Tokyo",
+        "1 onward.** Japan, Tokyo, Kyoto, Osaka, and",
+        1, STYLE_LAW_RULE,
+    ),
+    (
+        "framework/docs/build_style_and_vocab.md", "Kyoto",
+        "onward.** Japan, Tokyo, Kyoto, Osaka, and Shinkansen",
+        1, STYLE_LAW_RULE,
+    ),
+    (
+        "framework/docs/build_style_and_vocab.md", "Osaka",
+        "Japan, Tokyo, Kyoto, Osaka, and Shinkansen appear",
+        1, STYLE_LAW_RULE,
+    ),
+    (
+        "framework/docs/build_style_and_vocab.md", "Shinkansen",
+        "Kyoto, Osaka, and Shinkansen appear under `destinations/`",
+        1, STYLE_LAW_RULE,
+    ),
+    (
+        "framework/docs/build_style_and_vocab.md", "Japan",
+        "the first sessions Japan-concrete on purpose; Batch",
+        1, STYLE_LAW_RULE,
+    ),
+)
+
+# --------------------------------------------------------------------------
+# Scope
+# --------------------------------------------------------------------------
+
+RULES = ("family", "destination")
+KINDS = ("word", "code", "number")
+#: The family rule reads every tracked text file except these. The design
+#: record states the values on purpose, and it is the owner's to edit.
+FAMILY_SKIPPED_PREFIXES = ("docs/spec/",)
+#: The destination rule reads only these folders, and a tracked entry at a
+#: folder's own path: a link or a submodule there stands in the folder's place.
+DESTINATION_SCOPE_PREFIXES = ("framework/",)
+#: How many words either side of an occurrence bind an exemption to it.
+CONTEXT_WORDS = 3
+#: The longest word value, in letter runs, that ``--hash`` accepts.
+MAX_VALUE_WORDS = 3
+
+# --------------------------------------------------------------------------
+# Reading words and numbers
+# --------------------------------------------------------------------------
+
+#: A run of letters. ``\w`` less digits and the underscore.
+LETTER_RUN = re.compile(r"[^\W\d_]+")
+#: A run of letters, digits and underscores: the unit a code value must fill.
+WORD_RUN = re.compile(r"\w+")
+HEX_DIGEST = re.compile(r"[0-9a-f]{64}")
+
+#: A number that does not continue a decimal, a thousands group or a word. An
+#: underscore may stand before it, as Markdown's emphasis mark, and so may a
+#: comma or a full stop that does not follow a digit, as in a CSV field. A
+#: stop, a comma or an underscore between two digits joins them into one
+#: number, as a decimal point, a thousands group or a digit separator does.
+NUMBER_START = r"(?<![^\W_])(?<!\d[.,_])"
+#: A number that does not go on into a longer number or a word. An
+#: underscore may stand after it, as Markdown's emphasis mark does, unless a
+#: digit follows it.
+NUMBER_END = r"(?![^\W_]|[.,_]\d)"
+NUMBER = r"(?P<number>\d+)"
+#: Spaces, and at most one line break with a block quote marker after it.
+GAP = r"[ \t\u00a0]*(?:\n[ \t\u00a0>]*)?"
+#: Marks that may close around a number, or open around the word after it:
+#: Markdown emphasis and code, a bracket, and a quote.
+CLOSING_MARKS = r"[*_`~)\]\"'\u2019\u201d]{0,3}"
+OPENING_MARKS = r"[*_`~(\[\"'\u2018\u201c]{0,3}"
+#: What may stand between a number and its unit: those marks, spaces, one
+#: line break (and a block quote marker after it), and one hyphen or dash.
+UNIT_SEPARATOR = CLOSING_MARKS + GAP + r"(?:[-\u2010-\u2015][ \t\u00a0]*)?" + OPENING_MARKS
+NUMBER_WITH_UNIT = re.compile(
+    NUMBER_START + NUMBER + UNIT_SEPARATOR + r"(?:days?|nights?)(?![^\W\d_])",
+    re.IGNORECASE,
+)
+#: "trip length", with a space, a hyphen, a dash or a line break, or joined.
+TRIP_LENGTH = r"trip(?:[-\u2010-\u2015]|" + GAP + r")length"
+#: The number, then the design record's words for it: "as a trip-length cap".
+NUMBER_AS_CAP = re.compile(
+    NUMBER_START + NUMBER + CLOSING_MARKS + GAP + r"\(?(?:\*\*|__|\*|_)?as" + GAP + r"a" + GAP
+    + TRIP_LENGTH + GAP + r"cap(?![^\W\d_])",
+    re.IGNORECASE,
+)
+#: A label for the number, then the number: "trip length: N", "trip length in
+#: days (this family: N)". The label and the number are joined only by marks.
+NUMBER_AFTER_LABEL = re.compile(
+    r"(?<![^\W\d_])(?:" + TRIP_LENGTH + r"(?:" + GAP + r"in" + GAP + r"days)?|this" + GAP + r"family)"
+    + r"(?:" + GAP + r"(?:\*\*|__|[*_`(\[:=]|is(?![^\W\d_])|of(?![^\W\d_])|this" + GAP + r"family))+"
+    + GAP + OPENING_MARKS + NUMBER_START + NUMBER + NUMBER_END,
+    re.IGNORECASE,
+)
+#: A bracket expression, as grep reads one: items, each a character or one
+#: of the bracketed items POSIX defines, a class such as ``[:space:]``, an
+#: equivalence class such as ``[=e=]`` or a collating element such as
+#: ``[.-.]``, so the class's own ``]`` does not end it. A ``]`` first in
+#: the list, straight after ``[`` or ``[^``, is a character too, as grep
+#: reads it (S53-55). Grep sets no limit
+#: on the items; this reads up to ``BRACKET_ITEMS``, far more than a grep a
+#: person writes holds, because with no bound a line of numbers that each
+#: open a bracket never closed is read from each number to the line's end,
+#: and its cost grows with the square of the line's length (S53-53).
+BRACKET_ITEMS = 64
+BRACKET_EXPRESSION = (
+    r"\[\^?\]?(?:\[:[a-z]+:\]|\[=[^=\]\n]{1,8}=\]|\[\.[^.\]\n]{1,8}\.\]|[^\]\n]){0,%d}\]" % BRACKET_ITEMS
+)
+#: The number in a grep pattern for the trip length, as the build briefs and
+#: the design record's grep note write one: the number, a bracket expression
+#: or a ``\s``, ``\S``, ``\w`` or ``\W`` escape, then the unit, alone or in an
+#: alternation. All four escapes are listed: each lets the pattern find the
+#: number with its unit, and a grep line that holds one spells both.
+NUMBER_IN_PATTERN = re.compile(
+    NUMBER_START + NUMBER + r"(?:" + BRACKET_EXPRESSION + r"[?*+]?|\\[sSwW][?*+]?)\(?(?:\?:)?"
+    + r"(?:days?|nights?|day\|night|night\|day)(?![^\W\d_])",
+    re.IGNORECASE,
+)
+#: Each way a trip length is stated, in the order a hit's span is taken from.
+#: The unit rule keeps its whole match as the span; the others take the number's.
+TRIP_LENGTH_RULES = (
+    (NUMBER_WITH_UNIT, False),
+    (NUMBER_AS_CAP, True),
+    (NUMBER_AFTER_LABEL, True),
+    (NUMBER_IN_PATTERN, True),
+)
+#: A number standing alone, for ``--candidates``.
+BARE_NUMBER = re.compile(NUMBER_START + NUMBER + NUMBER_END, re.IGNORECASE)
+
+
+def digits_value(text: str) -> str:
+    """Return decimal digits as ASCII digits with no leading zero, without ``int()``.
+
+    Python refuses ``int()`` on a string of more than 4,300 digits, and a
+    tracked file can hold one, so the digits are normalized as text.
+    """
+    return "".join(str(unicodedata.decimal(character)) for character in text).lstrip("0") or "0"
+
+
+def number_value(text: str) -> str:
+    """Return a matched number as the digits a number value is hashed from."""
+    return digits_value(text)
+
+
+def fold(text: str) -> str:
+    """Return ``text`` in the compatibility form a word value is compared in."""
+    return unicodedata.normalize("NFKC", text).casefold()
+
+
+#: How many digests ``value_digest`` keeps. A scan hashes every word, word
+#: pair and number of every file, so an unbounded cache would hold every
+#: distinct token in the repository; this bound keeps memory flat whatever a
+#: file holds, and keeps most of the cache's speed.
+DIGEST_CACHE_SIZE = 4096
+
+
+@functools.lru_cache(maxsize=DIGEST_CACHE_SIZE)
+def value_digest(kind: str, normalized: str) -> str:
+    """Return the salted digest of one normalized value of ``kind``."""
+    return hashlib.sha256(f"{SALT}\x00{kind}\x00{normalized}".encode("utf-8")).hexdigest()
+
+
+def normalize_value(kind: str, value: str) -> list[str]:
+    """Return the normalized forms ``--hash`` records for one value.
+
+    A word value of more than one letter run is recorded twice: as its runs
+    joined by a space, and as one joined word, so a spelling without the
+    space is found too. A word or code value the matcher would not find as
+    it is typed is refused, since no digest of it could ever match.
+    """
+    if kind == "word":
+        runs = LETTER_RUN.findall(fold(value))
+        if not runs or len(runs) > MAX_VALUE_WORDS:
+            raise ValueError(f"a word value holds one to {MAX_VALUE_WORDS} runs of letters")
+        forms = [" ".join(runs)]
+        if len(runs) > 1:
+            forms.append("".join(runs))
+        return found_as_typed(kind, value, forms)
+    if kind == "code":
+        code = unicodedata.normalize("NFKC", value.strip())
+        if not WORD_RUN.fullmatch(code):
+            raise ValueError("a code value is one run of letters, digits and underscores")
+        return found_as_typed(kind, value, [code])
+    if kind == "number":
+        text = value.strip()
+        if text.isdecimal():
+            return [digits_value(text)]
+        raise ValueError("a number value is written in digits")
+    raise ValueError(f"the kind is one of {', '.join(KINDS)}")
+
+
+def found_as_typed(kind: str, value: str, forms: list[str]) -> list[str]:
+    """Return ``forms`` when the matcher, given only their digests, finds ``value`` in its own text.
+
+    ``--hash`` folds a value and then takes its letter runs, and the matcher
+    takes a file's runs and then folds each, joining runs only across what
+    ``joins()`` allows. A value whose runs a digit or a blank line splits,
+    or whose letters folding draws from a symbol, is refused here, with a
+    message that does not repeat it. A number value needs no such check:
+    ``--hash`` and the matcher read it with the same two functions.
+    """
+    rows = [(kind, len(form.split(" ")), value_digest(kind, form)) for form in forms]
+    text = value.replace("\r\n", "\n").replace("\r", "\n").strip()
+    if not family_hits_in_reading(Reading(text), FamilyValues.from_rows(rows)):
+        raise ValueError(
+            f"the matcher would not find this {kind} value as it is typed: a digit, a blank line or a "
+            "symbol splits it, so no digest of it could match. Type it as the text writes it"
+        )
+    return forms
+
+
+# --------------------------------------------------------------------------
+# Data checks
+# --------------------------------------------------------------------------
+
+
+@dataclass(frozen=True)
+class FamilyValues:
+    """The family values as digests, by kind."""
+
+    digests: dict[str, frozenset[str]]
+    max_words: int
+
+    @classmethod
+    def from_rows(cls, rows: Iterable[tuple[str, int, str]]) -> FamilyValues:
+        by_kind: dict[str, set[str]] = {kind: set() for kind in KINDS}
+        max_words = 1
+        for kind, words, digest in rows:
+            by_kind[kind].add(digest)
+            max_words = max(max_words, words)
+        return cls({kind: frozenset(found) for kind, found in by_kind.items()}, max_words)
+
+    @classmethod
+    def from_plain(cls, values: Iterable[tuple[str, str]]) -> FamilyValues:
+        """Build the set from plain ``(kind, value)`` pairs. The tests use this."""
+        rows: list[tuple[str, int, str]] = []
+        for kind, value in values:
+            for form in normalize_value(kind, value):
+                rows.append((kind, len(form.split(" ")), value_digest(kind, form)))
+        return cls.from_rows(rows)
+
+
+def check_family_values(rows: Sequence[object]) -> list[str]:
+    """Return every problem with the ``FAMILY_VALUES`` rows.
+
+    A loader that skips what it cannot read turns a value list into an empty
+    one, and an empty list checks nothing while reporting success.
+    """
+    if not isinstance(rows, (tuple, list)):
+        return ["FAMILY_VALUES is not a tuple of (kind, words, digest) rows"]
+    errors: list[str] = []
+    if not rows:
+        errors.append("FAMILY_VALUES holds no value, so the family rule would check nothing")
+    seen: set[tuple[object, ...]] = set()
+    for number, row in enumerate(rows, start=1):
+        if not isinstance(row, tuple) or len(row) != 3:
+            errors.append(f"FAMILY_VALUES row {number} is not (kind, words, digest)")
+            continue
+        kind, words, digest = row
+        found: list[str] = []
+        # An error names the row by number and never repeats a field: a
+        # field typed in the wrong place could hold a value, and this error
+        # prints before any mask can be trusted.
+        if kind not in KINDS:
+            found.append(f"FAMILY_VALUES row {number} names an unknown kind; it is one of {', '.join(KINDS)}")
+        if not isinstance(words, int) or isinstance(words, bool) or not 1 <= words <= MAX_VALUE_WORDS:
+            found.append(
+                f"FAMILY_VALUES row {number} gives a word count that is not a whole number from 1 to {MAX_VALUE_WORDS}"
+            )
+        elif kind in KINDS and kind != "word" and words != 1:
+            found.append(f"FAMILY_VALUES row {number} gives a {kind} value more than one word; it is 1")
+        if not isinstance(digest, str) or not HEX_DIGEST.fullmatch(digest):
+            found.append(f"FAMILY_VALUES row {number} holds no 64-character lowercase hex digest")
+        # Only a row that passed is compared with the others: its fields are
+        # then a kind, a whole number and a digest, which hash, where a field
+        # of another type might not.
+        if not found and row in seen:
+            found.append(f"FAMILY_VALUES row {number} repeats an earlier row")
+        if not found:
+            seen.add(row)
+        errors += found
+    return errors
+
+
+def check_exemption_rows(rule: str, rows: Sequence[object]) -> list[str]:
+    """Return every problem with one rule's exemption rows."""
+    name = "FAMILY_EXEMPTIONS" if rule == "family" else "DESTINATION_EXEMPTIONS"
+    if not isinstance(rows, (tuple, list)):
+        return [f"{name} is not a tuple of rows"]
+    errors: list[str] = []
+    keys: set[tuple[object, ...]] = set()
+    # An error names the row by number and never repeats a field, as a value
+    # row's does: a field typed in the wrong place could hold a family value,
+    # and a bare number in it is not masked.
+    for number, row in enumerate(rows, start=1):
+        where = f"{name} row {number}"
+        if not isinstance(row, tuple) or len(row) != 5:
+            errors.append(f"{where} does not hold five fields")
+            continue
+        passed = len(errors)
+        path, matched, context, count, reason = row
+        if (
+            not isinstance(path, str)
+            or not path
+            or path.startswith("/")
+            or "\\" in path
+            or ".." in path.split("/")
+        ):
+            errors.append(f"{where} names no repository-relative path")
+        if rule == "family":
+            if matched not in KINDS:
+                errors.append(f"{where} names an unknown kind; it is one of {', '.join(KINDS)}")
+            if not isinstance(context, str) or not HEX_DIGEST.fullmatch(context):
+                errors.append(f"{where} holds no 64-character lowercase hex context digest")
+        else:
+            if not isinstance(matched, str) or not matched.strip():
+                errors.append(f"{where} names no occurrence")
+            elif not isinstance(context, str) or matched not in context:
+                errors.append(f"{where} gives a context that does not hold its occurrence")
+            elif not any(
+                (start, end) == (0, len(matched))
+                for start, end, _label, _key in destination_hits_in_reading(Reading(matched), DESTINATION_RUNS)
+            ):
+                # A stale row's message names what it matched, so what it
+                # matched must be a destination name, never other text.
+                errors.append(f"{where} names an occurrence that is not a destination name")
+        if not isinstance(count, int) or isinstance(count, bool) or count < 1:
+            errors.append(f"{where} gives a count that is not a whole number of at least one")
+        if not isinstance(reason, str) or not reason.strip():
+            errors.append(f"{where} gives no reason")
+        if isinstance(path, str) and path and not in_scope(rule, path):
+            # A row for a file the rule never reads can never be used, and so
+            # can never be reported stale either.
+            errors.append(f"{where} names a path the {rule} rule does not read")
+        # Only a row that passed is compared with the others, since a field of
+        # the wrong type might not hash.
+        if len(errors) == passed:
+            key = (path, matched, context)
+            if key in keys:
+                errors.append(f"{where} repeats an earlier row's path, occurrence and context; add to its count")
+            keys.add(key)
+    return errors
+
+
+# --------------------------------------------------------------------------
+# Matching
+# --------------------------------------------------------------------------
+
+
+@dataclass(frozen=True)
+class Hit:
+    """One occurrence the rule reports, before exemptions."""
+
+    rule: str
+    display_path: str
+    line_number: int
+    column: int
+    #: The family value's kind, or the destination name's casefolded form.
+    label: str
+    #: The occurrence as written. Held for a destination name only, because a
+    #: family value is never kept in text.
+    occurrence: str
+    #: The exemption key's context: a digest for a family value, the words
+    #: themselves for a destination name.
+    context: str
+    #: What the hit is, for merging the plain reading and the second one.
+    value_key: str
+    #: Whether the occurrence is in the file's repository-relative path, not
+    #: its text. Such a hit's line is 0 and its column counts from the path's
+    #: first character.
+    in_path: bool = False
+
+    def format_message(self) -> str:
+        """Return the hit's message. ``emit()`` masks any family value in it before it prints."""
+        shown = self.display_path
+        if self.in_path:
+            if self.rule == "family":
+                return (
+                    f"{shown}: the file's path holds {FAMILY_KIND_LABELS[self.label]}. Rename the "
+                    "file or its folder; no row can excuse a path, since the row would spell the value."
+                )
+            return (
+                f'{shown}: the file\'s path holds the destination name "{self.occurrence}". '
+                "Place files live in the destination pack."
+            )
+        where = f"{shown}:{self.line_number}:{self.column}"
+        if self.rule == "family":
+            return (
+                f"{where}: {FAMILY_KIND_LABELS[self.label]} is written here. It belongs on the "
+                "family's Trip-Basics card, which is never committed."
+            )
+        return (
+            f'{where}: the destination name "{self.occurrence}" is written in a framework file. '
+            "Place facts live in the destination pack."
+        )
+
+
+FAMILY_KIND_LABELS = {
+    "word": "a family value (a place or a relative)",
+    "code": "a family value (the home airport's code)",
+    "number": "a family value (the trip-length number, stated as the trip length)",
+}
+
+
+def occurrence_context(text: str, start: int, end: int) -> str:
+    """Return the words around ``text[start:end]`` that bind an exemption to it.
+
+    The occurrence is widened to the whole words it stands in, and up to
+    ``CONTEXT_WORDS`` words either side are added from the lines it stands
+    on, and no further, so an edit to the line above or below leaves the row
+    alone. Runs of white space become one space. The line is split once for
+    each hit on it, so a line with thousands of hits takes seconds: time,
+    never a different verdict, and no tracked line holds more than a
+    handful.
+    """
+    first = text.rfind("\n", 0, start) + 1
+    last = text.find("\n", end)
+    line = text[first : len(text) if last == -1 else last]
+    start -= first
+    end -= first
+    while start > 0 and not line[start - 1].isspace():
+        start -= 1
+    while end < len(line) and not line[end].isspace():
+        end += 1
+    before = line[:start].split()[::-1][:CONTEXT_WORDS][::-1]
+    after = line[end:].split()[:CONTEXT_WORDS]
+    return " ".join([*before, *line[start:end].split(), *after])
+
+
+def line_starts_of(text: str) -> list[int]:
+    """Return the offset where each line of ``text`` starts."""
+    return [0] + [index + 1 for index, character in enumerate(text) if character == "\n"]
+
+
+class Reading:
+    """One reading of a file: its text, character for character where the file has it.
+
+    The plain reading is the file itself. The second reading blanks each
+    backslash escape before a word where it stands, so both readings have
+    the file's length, and a hit in either is placed, and matched against
+    the other's hits, by the same offsets.
+    """
+
+    def __init__(self, text: str) -> None:
+        self.text = text
+        self.line_starts = line_starts_of(text)
+
+    def source_span(self, start: int, end: int) -> tuple[int, int]:
+        """Return the file's span for this reading's ``text[start:end]``: the same span."""
+        return start, end
+
+    def position(self, offset: int) -> tuple[int, int]:
+        """Return the file's ``(line, column)`` for this reading's ``offset``."""
+        line = bisect.bisect_right(self.line_starts, offset)
+        return line, offset - self.line_starts[line - 1] + 1
+
+
+#: A one-letter backslash escape right before a word or a number: an anchor
+#: or class of a regular expression (``\b``, ``\A``, ``\s``, ``\Q`` and the
+#: rest, which differ by flavor), or a line break, tab or other control
+#: escape. Read as written, its letter joins the word or starts it. The
+#: second reading blanks the escape, and the plain reading keeps it, so a
+#: word that merely starts after a backslash, as in a Windows path, is still
+#: read whole in the plain reading.
+ESCAPE_BEFORE_WORD = re.compile(r"\\[A-Za-z](?=[^\W_])")
+
+
+def readings(text: str) -> list[Reading]:
+    """Return the file as written and, when it holds a backslash escape before a word, with it blanked.
+
+    The escape becomes as many spaces as it has characters, so the second
+    reading keeps every line and column of the file.
+    """
+    found = [Reading(text)]
+    if "\\" in text:
+        blanked = ESCAPE_BEFORE_WORD.sub(lambda match: " " * len(match.group()), text)
+        if blanked != text:
+            found.append(Reading(blanked))
+    return found
+
+
+def letter_runs(text: str) -> list[tuple[int, int, str]]:
+    """Return each run of letters as ``(start, end, folded run)``."""
+    return [(match.start(), match.end(), fold(match.group())) for match in LETTER_RUN.finditer(text)]
+
+
+def joins(text: str, first_end: int, second_start: int) -> bool:
+    """Return whether two letter runs may belong to one phrase.
+
+    Anything but a digit and a blank line may stand between them.
+    """
+    gap = text[first_end:second_start]
+    return gap.count("\n") <= 1 and not any(character.isdigit() for character in gap)
+
+
+def plural_forms(run: str) -> tuple[str, ...]:
+    """Return the run, and the run without a plural ``s``."""
+    if len(run) > 2 and run.endswith("s"):
+        return (run, run[:-1])
+    return (run,)
+
+
+def family_hits_in_reading(reading: Reading, values: FamilyValues) -> list[tuple[int, int, str, str]]:
+    """Return ``(start, end, kind, value digest)`` for each family value in ``reading``."""
+    text = reading.text
+    found: list[tuple[int, int, str, str]] = []
+    words = values.digests["word"]
+    if words:
+        runs = letter_runs(text)
+        for index in range(len(runs)):
+            for size in range(1, values.max_words + 1):
+                last = index + size - 1
+                if last >= len(runs):
+                    break
+                if size > 1 and not joins(text, runs[last - 1][1], runs[last][0]):
+                    break
+                head = [run for _start, _end, run in runs[index:last]]
+                for form in plural_forms(runs[last][2]):
+                    digest = value_digest("word", " ".join([*head, form]))
+                    if digest in words:
+                        found.append((runs[index][0], runs[last][1], "word", digest))
+                        break
+    codes = values.digests["code"]
+    if codes:
+        for match in WORD_RUN.finditer(text):
+            digest = value_digest("code", unicodedata.normalize("NFKC", match.group()))
+            if digest in codes:
+                found.append((match.start(), match.end(), "code", digest))
+    numbers = values.digests["number"]
+    if numbers:
+        for start, end, _number_start, digest in trip_lengths(text, numbers):
+            found.append((start, end, "number", digest))
+    return found
+
+
+def trip_lengths(text: str, numbers: frozenset[str]) -> list[tuple[int, int, int, str]]:
+    """Return ``(start, end, number start, digest)`` for each trip length stated with a listed number.
+
+    A number that two rules both read is reported once, with the span of the
+    first rule in ``TRIP_LENGTH_RULES`` that reads it.
+    """
+    found: dict[int, tuple[int, int, int, str]] = {}
+    for pattern, number_span in TRIP_LENGTH_RULES:
+        for match in pattern.finditer(text):
+            number_start = match.start("number")
+            digest = value_digest("number", number_value(match.group("number")))
+            if number_start in found or digest not in numbers:
+                continue
+            if number_span:
+                found[number_start] = (number_start, match.end("number"), number_start, digest)
+            else:
+                found[number_start] = (match.start(), match.end(), number_start, digest)
+    return sorted(found.values())
+
+
+#: The five destination names as their folded letter runs, as the finder reads them.
+DESTINATION_RUNS = tuple(tuple(LETTER_RUN.findall(fold(name))) for name in DESTINATION_NAMES)
+
+
+def destination_hits_in_reading(
+    reading: Reading, names: Sequence[tuple[str, ...]]
+) -> list[tuple[int, int, str, str]]:
+    """Return ``(start, end, name, name)`` for each destination name in ``reading``.
+
+    A name's last run matches a letter run that begins with it; its earlier
+    runs, when it has any, match whole runs. No two of the five names begin
+    the same word, so the first that matches is the only one.
+    """
+    text = reading.text
+    runs = letter_runs(text)
+    found: list[tuple[int, int, str, str]] = []
+    for index in range(len(runs)):
+        for name in names:
+            last = index + len(name) - 1
+            if last >= len(runs):
+                continue
+            if any(runs[index + offset][2] != name[offset] for offset in range(len(name) - 1)):
+                continue
+            if any(
+                not joins(text, runs[position][1], runs[position + 1][0])
+                for position in range(index, last)
+            ):
+                continue
+            if runs[last][2].startswith(name[-1]):
+                label = " ".join(name)
+                found.append((runs[index][0], runs[last][1], label, label))
+                break
+    return found
+
+
+#: Finds ``(start, end, label, value key)`` for each occurrence in one reading.
+Finder = Callable[[Reading], list[tuple[int, int, str, str]]]
+
+
+def across_readings(text: str, finder: Finder) -> list[tuple[Reading, int, int, str, str]]:
+    """Return ``(reading, start, end, label, value key)`` for each occurrence ``finder`` reports.
+
+    The file is read as written and, when it holds a backslash escape before
+    a word, with that escape blanked. An occurrence of the second reading is
+    dropped only when a plain occurrence of the same value covers some of the
+    same characters, so one occurrence both readings see is reported once,
+    and two occurrences on one line, one plain and one after an escape, are
+    both reported. The enforcing scan and the
+    ``--candidates`` hand-read both read a file this way.
+    """
+    text = text.replace("\r\n", "\n").replace("\r", "\n")
+    found: list[tuple[Reading, int, int, str, str]] = []
+    plain: dict[str, list[tuple[int, int]]] = {}
+    for reading_number, reading in enumerate(readings(text)):
+        for start, end, label, value_key in sorted(finder(reading)):
+            source_start, source_end = reading.source_span(start, end)
+            if not reading_number:
+                plain.setdefault(value_key, []).append((source_start, source_end))
+            elif any(
+                source_start < plain_end and plain_start < source_end
+                for plain_start, plain_end in plain.get(value_key, ())
+            ):
+                continue
+            found.append((reading, start, end, label, value_key))
+    return found
+
+
+def find_hits(
+    text: str,
+    display_path: str,
+    rule: str,
+    values: FamilyValues | None = None,
+    names: Sequence[tuple[str, ...]] = (),
+    in_path: bool = False,
+) -> list[Hit]:
+    """Return every occurrence ``rule`` reports in ``text``, before exemptions.
+
+    ``in_path`` says ``text`` is the file's repository-relative path, which
+    ``scan()`` reads through this same loop, as one more line of the file.
+    The path's own rules are these flags and no more: its hits are on line
+    0; a family hit in it keeps no context, since no row may excuse it; and
+    a destination hit's context is ``(path)`` and the path as its reading
+    reads it, so a name after an escape stands in its own row's context.
+    """
+    if rule == "family":
+        assert values is not None
+        family_values = values
+
+        def finder(reading: Reading) -> list[tuple[int, int, str, str]]:
+            return family_hits_in_reading(reading, family_values)
+
+    else:
+
+        def finder(reading: Reading) -> list[tuple[int, int, str, str]]:
+            return destination_hits_in_reading(reading, names)
+
+    hits: list[Hit] = []
+    for reading, start, end, label, value_key in across_readings(text, finder):
+        line, column = reading.position(start)
+        if rule == "family":
+            occurrence = ""
+            context = "" if in_path else value_digest("context", occurrence_context(reading.text, start, end))
+        else:
+            occurrence = reading.text[start:end]
+            context = PATH_CONTEXT + reading.text if in_path else occurrence_context(reading.text, start, end)
+        hits.append(
+            Hit(rule, display_path, 0 if in_path else line, column, label, occurrence, context, value_key, in_path)
+        )
+    hits.sort(key=lambda hit: (hit.line_number, hit.column))
+    return hits
+
+
+def bare_numbers(text: str, values: FamilyValues) -> list[tuple[int, int]]:
+    """Return ``(line, column)`` for each bare trip-length number, for a hand-read.
+
+    A number the family rule already reports as a trip length is left out.
+    The file is read as the enforcing scan reads it, both readings, so a
+    number after a backslash escape is listed once.
+    """
+    numbers = values.digests["number"]
+
+    def finder(reading: Reading) -> list[tuple[int, int, str, str]]:
+        reported = {start for _start, _end, start, _digest in trip_lengths(reading.text, numbers)}
+        found = []
+        for match in BARE_NUMBER.finditer(reading.text):
+            digest = value_digest("number", number_value(match.group("number")))
+            if match.start() not in reported and digest in numbers:
+                found.append((match.start(), match.end(), "number", digest))
+        return found
+
+    return sorted(reading.position(start) for reading, start, _end, _label, _key in across_readings(text, finder))
+
+
+#: How a destination row names a path hit: this, then the path, as its context.
+PATH_CONTEXT = "(path) "
+#: What a message prints in place of a family value.
+MASKED_VALUE = "<family value>"
+
+
+def redact(text: str, values: FamilyValues) -> str:
+    """Return ``text`` with each family value in it replaced by ``MASKED_VALUE``.
+
+    ``emit()`` passes every line the script prints through this, under both
+    rules, so a path, a context or an error message that holds a value is
+    printed masked whichever rule found it. The text is read as a file is,
+    both readings, so a value after a backslash escape is masked too.
+    A bare number is not masked: it is not a family value, and masking the
+    family's number wherever it stood, in a session number or a date, would
+    print which number it is.
+    """
+    # The text is matched with its line breaks read as a file's are, and
+    # masked where it stands, so a carriage return is printed as itself.
+    unified, starts = unify_breaks(text)
+
+    def finder(reading: Reading) -> list[tuple[int, int, str, str]]:
+        return family_hits_in_reading(reading, values)
+
+    merged: list[tuple[int, int]] = []
+    found = across_readings(unified, finder)
+    spans = sorted(reading.source_span(start, end) for reading, start, end, _label, _key in found)
+    for start, end in spans:
+        if merged and start <= merged[-1][1]:
+            merged[-1] = (merged[-1][0], max(end, merged[-1][1]))
+        else:
+            merged.append((start, end))
+    shown, last = [], 0
+    for start, end in merged:
+        shown.append(text[last : starts[start]] + MASKED_VALUE)
+        last = starts[end]
+    return "".join(shown) + text[last:]
+
+
+def unify_breaks(text: str) -> tuple[str, list[int]]:
+    """Return ``text`` with each CRLF and CR read as LF, as a file's text is, and where each character starts.
+
+    The list has one entry more than the text, ``len(text)``, so the end of
+    a span maps too.
+    """
+    unified: list[str] = []
+    starts: list[int] = []
+    index = 0
+    while index < len(text):
+        starts.append(index)
+        if text[index] == "\r":
+            unified.append("\n")
+            index += 2 if text.startswith("\r\n", index) else 1
+        else:
+            unified.append(text[index])
+            index += 1
+    starts.append(len(text))
+    return "".join(unified), starts
+
+
+def printable(text: str) -> str:
+    """Return ``text`` with each character a terminal would not print as itself written as its escape.
+
+    Those are the characters ``str.isprintable()`` refuses: a control
+    character, such as a line break, a carriage return or the escape that
+    starts a terminal sequence; a format character, such as a bidirectional
+    override; a separator other than the space; and an unpaired surrogate,
+    which is how a file name that is not UTF-8 arrives.
+    """
+    return "".join(
+        character if character.isprintable() else character.encode("unicode_escape").decode("ascii")
+        for character in text
+    )
+
+
+# --------------------------------------------------------------------------
+# Exemptions
+# --------------------------------------------------------------------------
+
+
+@dataclass
+class Ledger:
+    """What each exemption row may still excuse, and what it has."""
+
+    rows: tuple[tuple[str, str, str, int, str], ...]
+    used: list[int]
+
+    @classmethod
+    def for_rows(cls, rows: Sequence[tuple[str, str, str, int, str]]) -> Ledger:
+        return cls(tuple(rows), [0] * len(rows))
+
+    def excuse(self, hit: Hit) -> bool:
+        """Spend one use of the row that names ``hit``, when one is left."""
+        matched = hit.label if hit.rule == "family" else hit.occurrence
+        for index, (path, row_matched, context, count, _reason) in enumerate(self.rows):
+            if (path, row_matched, context) == (hit.display_path, matched, hit.context):
+                if self.used[index] < count:
+                    self.used[index] += 1
+                    return True
+                return False
+        return False
+
+    def stale(self, scanned: set[str], rule: str, complete: bool = False) -> list[str]:
+        """Return a message for each row left partly unused.
+
+        A run given paths judges only the rows of files it read, because
+        pre-commit passes only the files a commit changes. A ``complete`` run,
+        one that walked every tracked file, also judges a row whose file it
+        did not read: Git no longer tracks that file, or it is gone from the
+        working tree, so the row excuses nothing and would come back into use
+        if the same words came back.
+        """
+        # A message names the row by number, and gives neither its count nor,
+        # for a file the run did not read, its path: either could be a field
+        # typed in the wrong place. A read file's path is a tracked file's name.
+        table = "FAMILY_EXEMPTIONS" if rule == "family" else "DESTINATION_EXEMPTIONS"
+        messages = []
+        for index, (path, matched, _context, count, _reason) in enumerate(self.rows):
+            if self.used[index] >= count:
+                continue
+            what = f"a {matched} value" if rule == "family" else f'"{matched}"'
+            if path in scanned:
+                messages.append(
+                    f"{path}: {table} row {index + 1} excuses more occurrences of {what} than the "
+                    f"file holds in those words, {self.used[index]}. Remove the row, or correct its count."
+                )
+            elif complete:
+                messages.append(
+                    f"{table} row {index + 1} excuses {what} in a file this walk did not read, because "
+                    "Git does not track it or it is not in the working tree. Remove the row."
+                )
+        return messages
+
+
+def exemption_row_lines(
+    hits: Sequence[Hit], values: FamilyValues, rule: str, rows: Sequence[tuple[str, str, str, int, str]] = ()
+) -> list[str]:
+    """Return a row, as Python source, for each distinct unexcused occurrence.
+
+    The reason is left empty, and a row with no reason fails the data check,
+    so a row pasted without one stops the run rather than excusing anything.
+    When a row already covers the occurrence's words, too few times, the
+    row printed replaces it: it counts every occurrence of those words, and
+    a comment before it names the row to delete, since a second row for the
+    same words fails the data check. No row is given for a family value in a
+    path, nor for any row whose path or words hold a family value, under
+    either rule: the row would spell the value, and the family rule would
+    then fail this script.
+    """
+    name = "FAMILY_EXEMPTIONS" if rule == "family" else "DESTINATION_EXEMPTIONS"
+    covered = {row[:3]: (number, row[3]) for number, row in enumerate(rows, start=1)}
+    counts: dict[tuple[str, str, str], int] = {}
+    for hit in hits:
+        matched = hit.label if hit.rule == "family" else hit.occurrence
+        key = (hit.display_path, matched, hit.context)
+        counts[key] = counts.get(key, 0) + 1
+    lines = []
+    for (path, matched, context), count in counts.items():
+        number, old = covered.get((path, matched, context), (0, 0))
+        row = f'    ({path!r}, {matched!r}, {context!r}, {old + count}, ""),'
+        if redact(row, values) != row:
+            continue
+        if number:
+            lines.append(
+                f"    # Replaces {name} row {number}, which covers too few of these {old + count}; delete that row."
+            )
+        lines.append(row)
+    return lines
+
+
+# --------------------------------------------------------------------------
+# Files
+# --------------------------------------------------------------------------
+
+
+class FileReadError(RuntimeError):
+    """Raised when a candidate file cannot be read."""
+
+    def __init__(self, display_path: str, error: Exception) -> None:
+        detail = getattr(error, "strerror", None) or str(error) or "I/O error"
+        super().__init__(f"{display_path}: unable to read file ({type(error).__name__}: {detail})")
+
+
+def path_is_junction(path: Path) -> bool:
+    """Return whether ``path`` is a Windows junction, on any supported Python.
+
+    ``Path.is_junction()`` arrived in Python 3.12; before it, the reparse tag
+    answers the same question. ``st_reparse_tag`` exists only on Windows,
+    where junctions exist, so its absence is a real ``False``.
+    """
+    checker = getattr(path, "is_junction", None)
+    if checker is not None:
+        return bool(checker())
+    try:
+        tag = getattr(path.lstat(), "st_reparse_tag", None)
+    except (OSError, ValueError):
+        return False
+    return tag is not None and tag == getattr(stat, "IO_REPARSE_TAG_MOUNT_POINT", None)
+
+
+def in_scope(rule: str, relative: str) -> bool:
+    """Return whether ``rule`` reads the repository-relative path ``relative``.
+
+    Each way fails closed: a tracked entry at ``framework`` itself is in the
+    destination rule's scope, and one at ``docs/spec`` is not skipped by the
+    family rule, so a link or a submodule at either is refused.
+    """
+    if rule == "family":
+        return not any(relative.startswith(prefix) for prefix in FAMILY_SKIPPED_PREFIXES)
+    return any(relative.startswith(prefix) or relative == prefix[:-1] for prefix in DESTINATION_SCOPE_PREFIXES)
+
+
+def lexical_relative(path_argument: str | Path, root: Path) -> str | None:
+    """Return ``path_argument`` as a repository-relative POSIX path, without following links.
+
+    ``None`` means the path does not lie under ``root`` as written.
+    """
+    path = Path(os.path.normpath(path_argument))
+    if not path.is_absolute():
+        return path.as_posix()
+    try:
+        return path.relative_to(root).as_posix()
+    except ValueError:
+        return None
+
+
+def resolve_candidate(path_argument: str | Path, root: Path) -> tuple[Path, str] | str:
+    """Resolve a path to a file inside ``root``, or return why it is refused.
+
+    A path is refused when it is a link, when it resolves outside ``root``,
+    and when it passes through a linked folder: then Git's name for the file
+    and the file actually read differ, and the file would be judged, and
+    scoped, by a name that is not its own.
+
+    Only a path that is not there is "not a file" to skip: one that is gone,
+    or under a folder that is gone, is a file, or became a link to nothing,
+    as ``git status`` reads it too. Any other failure to look at the path,
+    such as a folder the run may not search, raises ``FileReadError``, so
+    the run fails. ``Path.is_file()`` cannot tell the two apart: from Python
+    3.14 it returns ``False`` for every error.
+    """
+    root = root.resolve()
+    path = Path(path_argument)
+    candidate = path if path.is_absolute() else root / path
+    try:
+        status = candidate.lstat()
+    except (FileNotFoundError, NotADirectoryError):
+        return "not a file"
+    except OSError as error:
+        raise FileReadError(str(path_argument), error) from error
+    if stat.S_ISLNK(status.st_mode) or path_is_junction(candidate):
+        return "a link"
+    if not stat.S_ISREG(status.st_mode):
+        return "not a file"
+    resolved = candidate.resolve()
+    try:
+        relative = resolved.relative_to(root)
+    except ValueError:
+        return "outside the repository"
+    lexical = lexical_relative(candidate, root)
+    if lexical is None or os.path.normcase(lexical) != os.path.normcase(relative.as_posix()):
+        return "through a linked folder"
+    return resolved, relative.as_posix()
+
+
+def tracked_files(root: Path) -> list[str]:
+    """Return the repository-relative paths Git tracks under ``root``."""
+    completed = subprocess.run(
+        ["git", "-C", str(root), "ls-files", "-z"],
+        capture_output=True,
+    )
+    if completed.returncode != 0:
+        detail = completed.stderr.decode("utf-8", "replace").strip()
+        raise FileReadError(str(root), OSError(f"git ls-files failed: {detail}"))
+    return sorted(
+        name for name in completed.stdout.decode("utf-8", "surrogateescape").split("\0") if name
+    )
+
+
+def tracked_unreadable(root: Path) -> dict[str, str]:
+    """Return each path Git tracks under ``root`` that the run refuses by name, with why.
+
+    A link or a submodule: the index's mode says so whatever the working
+    tree holds. With ``core.symlinks`` false, as Git for Windows sets by
+    default, a link is checked out as a plain file holding its target,
+    which no look at the file can tell from any other file. And a file a
+    sparse checkout leaves out of the working tree: Git marks it
+    skip-worktree, tag ``S`` in ``git ls-files -t``, and ``git status``
+    stays clean, so a walk that skipped it as deleted would report a
+    tracked file it never read (S53-56). A file deleted from the working
+    tree keeps tag ``H``, and is skipped as ``git status`` shows it.
+    """
+    completed = subprocess.run(
+        ["git", "-C", str(root), "ls-files", "-s", "-t", "-z"],
+        capture_output=True,
+    )
+    if completed.returncode != 0:
+        detail = completed.stderr.decode("utf-8", "replace").strip()
+        raise FileReadError(str(root), OSError(f"git ls-files failed: {detail}"))
+    found = {}
+    for entry in completed.stdout.decode("utf-8", "surrogateescape").split("\0"):
+        if entry:
+            fields, _tab, name = entry.partition("\t")
+            tag, mode = fields.split(" ", 2)[:2]
+            kind = UNREADABLE_MODES.get(mode) or (NOT_CHECKED_OUT if tag == SKIP_WORKTREE_TAG else None)
+            if kind is not None:
+                found[name] = kind
+    return found
+
+
+#: The index modes of the entries a run refuses by name: a link, and a
+#: submodule (a gitlink), whose content is another repository.
+UNREADABLE_MODES = {"120000": "a link", "160000": "a submodule"}
+#: The tag ``git ls-files -t`` gives a skip-worktree entry, and how a refusal names one.
+SKIP_WORKTREE_TAG = "S"
+NOT_CHECKED_OUT = "not checked out: a sparse checkout leaves it out"
+
+
+def read_text(path: Path, display_path: str) -> str | None:
+    """Return a file's text, or ``None`` for a binary file."""
+    try:
+        data = path.read_bytes()
+    except OSError as error:
+        raise FileReadError(display_path, error) from error
+    if b"\x00" in data:
+        return None
+    try:
+        return data.decode("utf-8-sig")
+    except UnicodeDecodeError as error:
+        raise FileReadError(display_path, error) from error
+
+
+# --------------------------------------------------------------------------
+# Run
+# --------------------------------------------------------------------------
+
+
+#: What a candidate line asks of the reader, after where the number stands.
+CANDIDATE_READ = "Read it in context; it is a leak only if it states the family's maximum trip length."
+
+
+@dataclass
+class Report:
+    """What one run found."""
+
+    hits: list[Hit]
+    stale: list[str]
+    checked: int
+    candidates: list[str]
+
+
+def scan(
+    rule: str,
+    targets: Sequence[tuple[Path, str]],
+    root: Path,
+    values: FamilyValues | None = None,
+    exemptions: Sequence[tuple[str, str, str, int, str]] | None = None,
+    list_candidates: bool = False,
+    complete: bool = False,
+) -> Report:
+    """Scan resolved ``(path, display path)`` targets and apply the exemptions.
+
+    Each target's path goes through the same loop as its text, as one more
+    line of the file, so hits, excusing and candidates cover both; a binary
+    file's path is read, and its bytes are skipped. ``complete`` says the
+    targets are every tracked file the rule reads, so a row for a file not
+    among them is stale.
+    """
+    if rule == "family" and values is None:
+        values = FamilyValues.from_rows(FAMILY_VALUES)
+    if exemptions is None:
+        exemptions = FAMILY_EXEMPTIONS if rule == "family" else DESTINATION_EXEMPTIONS
+    names = DESTINATION_RUNS if rule == "destination" else ()
+    ledger = Ledger.for_rows(exemptions)
+    unexcused: list[Hit] = []
+    candidates: list[str] = []
+    scanned: set[str] = set()
+    checked = 0
+    for path, display_path in targets:
+        text = read_text(path, display_path)
+        # The path is one more line of the file, read by the same loop as the
+        # text, so a way of reading added here reads both. A binary file's
+        # text is None, and only its path is read.
+        for body, in_path in ((display_path, True), (text, False)):
+            if body is None:
+                continue
+            for hit in find_hits(body, display_path, rule, values, names, in_path):
+                # A family value in a path is never excused: its row would spell it.
+                if (in_path and rule == "family") or not ledger.excuse(hit):
+                    unexcused.append(hit)
+            if list_candidates and values is not None:
+                for line, column in bare_numbers(body, values):
+                    where = (
+                        f"{display_path}: a bare trip-length number in the file's path, at column {column}."
+                        if in_path
+                        else f"{display_path}:{line}:{column}: a bare trip-length number."
+                    )
+                    candidates.append(f"{where} {CANDIDATE_READ}")
+        if text is None:
+            continue
+        checked += 1
+        scanned.add(display_path)
+    return Report(unexcused, ledger.stale(scanned, rule, complete), checked, candidates)
+
+
+class ArgumentParser(argparse.ArgumentParser):
+    """An argument parser whose error message goes through ``emit()``.
+
+    Its error names the argument it could not read, and a file name passed by
+    mistake as an option could hold a family value.
+    """
+
+    def error(self, message: str):  # type: ignore[override]
+        mask = output_mask()
+        if mask is None:
+            emit(f"{self.prog}: error: {ARGUMENTS_WITHHELD}", NO_VALUES, error=True)
+        else:
+            emit(f"{self.prog}: error: {message}", mask, error=True)
+        raise SystemExit(2)
+
+
+def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
+    parser = ArgumentParser(
+        description=(
+            "Check tracked files for this family's values (--rule family) or for "
+            "destination names in framework files (--rule destination). With no "
+            "paths, checks every tracked file the rule reads."
+        )
+    )
+    parser.add_argument("paths", nargs="*", help="Files passed by pre-commit.")
+    parser.add_argument("--rule", choices=RULES, help="Which rule to run.")
+    parser.add_argument(
+        "--hash",
+        choices=KINDS,
+        dest="hash_kind",
+        help="Read one value of this kind from standard input and print its FAMILY_VALUES rows.",
+    )
+    parser.add_argument(
+        "--candidates",
+        action="store_true",
+        help="With --rule family, list each bare trip-length number for a hand-read, and exit 0.",
+    )
+    parser.add_argument(
+        "--exemption-rows",
+        action="store_true",
+        help="Print an exemption row for each unexcused occurrence, and exit 0.",
+    )
+    return parser.parse_args(argv)
+
+
+def print_hash_rows(kind: str) -> int:
+    value = sys.stdin.read().strip()
+    try:
+        forms = normalize_value(kind, value)
+    except ValueError as error:
+        print(f"--hash {kind}: {error}", file=sys.stderr)
+        return 1
+    for form in forms:
+        print(f'    ("{kind}", {len(form.split(" "))}, "{value_digest(kind, form)}"),')
+    return 0
+
+
+def output_mask() -> FamilyValues | None:
+    """Return the values every printed line is masked with, or ``None`` while a value row is malformed.
+
+    A row the data check rejects masks nothing, whichever part of it is
+    wrong, so while one stands no line that holds repository text prints:
+    both rules stop, and an argument error or a crash prints a fixed line in
+    place of its message.
+    """
+    if check_family_values(FAMILY_VALUES):
+        return None
+    return FamilyValues.from_rows(FAMILY_VALUES)  # type: ignore[arg-type]
+
+
+#: The mask for a line that holds no repository text.
+NO_VALUES = FamilyValues.from_rows(())
+#: What an argument error prints in place of its message while a value row is malformed.
+ARGUMENTS_WITHHELD = (
+    "the arguments could not be read. The message is withheld, since a malformed FAMILY_VALUES row "
+    "leaves it unmasked; run with --rule family to see the row"
+)
+
+
+def emit(text: str, values: FamilyValues, error: bool = False) -> None:
+    """Print one line of output with every family value in it masked.
+
+    Every line a rule prints goes through here, under both rules: a hit, a
+    stale row, a refusal, an error, a candidate and an exemption row. The
+    suite fails if any function but ``emit()`` and ``print_hash_rows()``
+    calls ``print``. After the masking, each character a terminal would not print
+    as itself is written as its escape, so a file's name cannot add a line,
+    move the cursor or colour the log; and a character the stream cannot
+    encode is written as its escape too, rather than stopping the run.
+    """
+    stream = sys.stderr if error else sys.stdout
+    encoding = getattr(stream, "encoding", None) or "utf-8"
+    line = printable(redact(text, values))
+    print(line.encode(encoding, "backslashreplace").decode(encoding), file=stream)
+
+
+#: A run of digits, in any script, and what an unexpected error's message shows in its place.
+DIGIT_RUN = re.compile(r"\d+")
+DIGITS_WITHHELD = "<digits>"
+#: What prints when even the masked crash line cannot be built.
+CRASH_UNMASKABLE = "check-leaks.py: an unexpected error stopped the run, and its message could not be masked"
+
+
+def crash_line(error: BaseException) -> str:
+    """Return one line naming an unexpected error: its type, where in this script, and its message.
+
+    ``emit()`` masks the family values in it. Every run of digits in the
+    message is replaced first, since a message can carry text from a file
+    and ``emit()`` leaves a bare number as it stands. No traceback is
+    printed: its frames hold paths and text that ``emit()`` would have to
+    mask line by line.
+    """
+    here = Path(__file__).resolve()
+    frames = [frame for frame in traceback.extract_tb(error.__traceback__) if Path(frame.filename).resolve() == here]
+    where = f" in {frames[-1].name}(), line {frames[-1].lineno}" if frames else ""
+    message = DIGIT_RUN.sub(DIGITS_WITHHELD, " ".join(str(error).split()))
+    return f"check-leaks.py: an unexpected error stopped the run{where}: {type(error).__name__}: {message}"
+
+
+def main(argv: Sequence[str] | None = None, root: Path = REPO_ROOT) -> int:
+    """Run one rule, and return the exit status.
+
+    An unexpected error prints one masked line and exits 2, with no
+    traceback, since a traceback's paths and text could hold a family value.
+    """
+    try:
+        return run(argv, root)
+    except Exception as error:  # noqa: BLE001 - every failure must stay masked
+        try:
+            mask = output_mask()
+            if mask is None:
+                emit(CRASH_UNMASKABLE, NO_VALUES, error=True)
+            else:
+                emit(crash_line(error), mask, error=True)
+        except Exception:  # noqa: BLE001 - the masking itself failed, so print nothing from the error
+            emit(CRASH_UNMASKABLE, NO_VALUES, error=True)
+        return 2
+
+
+def run(argv: Sequence[str] | None = None, root: Path = REPO_ROOT) -> int:
+    """Run one rule, and return the exit status. ``main()`` guards it."""
+    args = parse_args(argv)
+    if args.hash_kind:
+        return print_hash_rows(args.hash_kind)
+    # A malformed value row stops both rules before either prints: every
+    # line is masked with these values, and a row the check rejects masks
+    # nothing.
+    errors = check_family_values(FAMILY_VALUES)
+    if errors:
+        for error in errors:
+            emit(error, NO_VALUES, error=True)
+        return 1
+    values = FamilyValues.from_rows(FAMILY_VALUES)  # type: ignore[arg-type]
+    if args.rule is None:
+        emit("choose a rule with --rule family or --rule destination", values, error=True)
+        return 2
+    if args.candidates and args.rule != "family":
+        emit("--candidates lists trip-length numbers, so it needs --rule family", values, error=True)
+        return 2
+
+    exemptions = FAMILY_EXEMPTIONS if args.rule == "family" else DESTINATION_EXEMPTIONS
+    errors = check_exemption_rows(args.rule, exemptions)
+    if errors:
+        for error in errors:
+            emit(error, values, error=True)
+        return 1
+
+    root = root.resolve()
+    walked = not args.paths
+    targets: list[tuple[Path, str]] = []
+    refused: list[str] = []
+    try:
+        tracked = tracked_files(root)
+        unreadable = tracked_unreadable(root)
+    except FileReadError as error:
+        emit(str(error), values, error=True)
+        return 1
+    tracked_set = set(tracked)
+    arguments: Iterable[str] = tracked if walked else args.paths
+    for argument in arguments:
+        name = lexical_relative(argument, root)
+        if name is None or name not in tracked_set:
+            # A path Git does not track is not this repository's content,
+            # whether it resolves or not, so it is neither read nor refused.
+            continue
+        if not in_scope(args.rule, name):
+            continue
+        if name in unreadable:
+            # The index records a link or a submodule by its mode, whatever
+            # the checkout wrote: a submodule's content is another
+            # repository, and a link may be a plain file holding its target.
+            # Either is refused by name.
+            refused.append(f"{argument} ({unreadable[name]})")
+            continue
+        try:
+            resolved = resolve_candidate(argument, root)
+        except FileReadError as error:
+            emit(str(error), values, error=True)
+            return 1
+        if isinstance(resolved, str):
+            # A tracked, in-scope path that is a link, goes through a linked
+            # folder or resolves outside the repository is refused by name,
+            # whether a walk found it or pre-commit passed it. A file deleted
+            # from the working tree is not content any more, and neither is
+            # one whose folder became a link to nothing, which ``git status``
+            # also shows as deleted.
+            if resolved != "not a file":
+                refused.append(f"{argument} ({resolved})")
+            continue
+        if in_scope(args.rule, resolved[1]):
+            targets.append(resolved)
+    if refused:
+        emit(
+            "these tracked paths are links or submodules, are not checked out, go through a linked folder, "
+            "or resolve "
+            "outside the repository, so this run refuses to report on them: " + ", ".join(refused[:5]),
+            values,
+            error=True,
+        )
+        return 1
+    if walked and not targets:
+        emit(
+            f"no tracked file is in the {args.rule} rule's scope, so this run checked nothing. "
+            "Check the working directory.",
+            values,
+            error=True,
+        )
+        return 1
+
+    family_values = values if args.rule == "family" else None
+    try:
+        report = scan(args.rule, targets, root, family_values, list_candidates=args.candidates, complete=walked)
+    except FileReadError as error:
+        emit(str(error), values, error=True)
+        return 1
+
+    if args.candidates:
+        for line in report.candidates:
+            emit(line, values)
+        return 0
+    if args.exemption_rows:
+        for line in exemption_row_lines(report.hits, values, args.rule, exemptions):
+            emit(line, values)
+        return 0
+
+    for hit in report.hits:
+        emit(hit.format_message(), values)
+    for message in report.stale:
+        emit(message, values)
+    if walked and not report.hits and not report.stale:
+        emit(f"{args.rule.capitalize()} leaks: {report.checked} file(s) checked, none found.", values)
+    return 1 if report.hits or report.stale else 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
