@@ -110,11 +110,12 @@ reported as stale, so a row cannot outlive its reason: a run given paths
 judges the rows of the files it read, and a walk judges every row, so a
 row for a file Git no longer tracks is stale there. ``--exemption-rows``
 prints a row for each unexcused match, for a maintainer to review and paste
-in with a reason. A destination name in a path is excused by a row whose
-context is ``(path)`` and the path, decoded when the name was escaped. A
-family value in a path is never excused, because its row would spell the
-value: rename the file. No row is printed whose path or words hold a
-family value, under either rule.
+in with a reason; where a row already covers the same words too few times,
+the printed row counts them all and replaces it. A destination name in a
+path is excused by a row whose context is ``(path)`` and the path, decoded
+when the name was escaped. A family value in a path is never excused,
+because its row would spell the value: rename the file. No row is printed
+whose path or words hold a family value, under either rule.
 
 Output
 ------
@@ -127,14 +128,18 @@ A malformed value row stops both rules before either prints anything read
 from the repository, since a row the data check cannot read masks nothing.
 While one stands, an argument error or an unexpected error prints a fixed
 line in place of its message, and a row error names the row by number, not
-by what it holds.
-A value is masked as it is written, escaped or not, and so is an argument
-error, which names the argument it could not read. Only ``--hash`` prints
-elsewhere, and it prints digests. An unexpected error prints one masked
-line, naming its type, where in this script it was raised, and its
-message, and exits 2, with no traceback. A bare number is printed as it
-stands: it is not a family value, and masking the family's number wherever
-it stood, in a session number or a date, would print which number it is.
+by what it holds. A value is masked as it is written, escaped or not, and
+so is an argument error, which names the argument it could not read. After
+the masking, a character a terminal would not print as itself, such as a
+line break, a carriage return or the escape that starts a terminal
+sequence, is written as its escape, so a file's name cannot add a line to
+the log or change how it shows; so is a character the output cannot
+encode. Only ``--hash`` prints elsewhere, and it prints digests. An
+unexpected error prints one masked line, naming its type, where in this
+script it was raised, and its message, and exits 2, with no traceback. A
+bare number is printed as it stands: it is not a family value, and masking
+the family's number wherever it stood, in a session number or a date,
+would print which number it is.
 
 File access
 -----------
@@ -203,7 +208,9 @@ Adding a family's value
 Run ``python .github/scripts/check-leaks.py --hash word`` (or ``code`` or
 ``number``), type the value, and end the input. The value is read from
 standard input so it stays out of the shell history. Paste the printed lines
-into ``FAMILY_VALUES``.
+into ``FAMILY_VALUES``. A word or code value the matcher would not find as
+it is typed, such as one a digit or a blank line splits, prints no row and
+exits 1, since no digest of it could match.
 """
 
 from __future__ import annotations
@@ -664,7 +671,8 @@ def normalize_value(kind: str, value: str) -> list[str]:
 
     A word value of more than one letter run is recorded twice: as its runs
     joined by a space, and as one joined word, so a spelling without the
-    space is found too.
+    space is found too. A word or code value the matcher would not find as
+    it is typed is refused, since no digest of it could ever match.
     """
     if kind == "word":
         runs = LETTER_RUN.findall(fold(value))
@@ -673,12 +681,12 @@ def normalize_value(kind: str, value: str) -> list[str]:
         forms = [" ".join(runs)]
         if len(runs) > 1:
             forms.append("".join(runs))
-        return forms
+        return found_as_typed(kind, value, forms)
     if kind == "code":
         code = unicodedata.normalize("NFKC", value.strip())
         if not WORD_RUN.fullmatch(code):
             raise ValueError("a code value is one run of letters, digits and underscores")
-        return [code]
+        return found_as_typed(kind, value, [code])
     if kind == "number":
         text = value.strip()
         if text.isdecimal():
@@ -687,6 +695,26 @@ def normalize_value(kind: str, value: str) -> list[str]:
             return [str(spelled_to_int(text))]
         raise ValueError("a number value is written in digits, or spelled out from one to ninety-nine")
     raise ValueError(f"the kind is one of {', '.join(KINDS)}")
+
+
+def found_as_typed(kind: str, value: str, forms: list[str]) -> list[str]:
+    """Return ``forms`` when the matcher, given only their digests, finds ``value`` in its own text.
+
+    ``--hash`` folds a value and then takes its letter runs, and the matcher
+    takes a file's runs and then folds each, joining runs only across what
+    ``joins()`` allows. A value whose runs a digit or a blank line splits,
+    or whose letters folding draws from a symbol, is refused here, with a
+    message that does not repeat it. A number value needs no such check:
+    ``--hash`` and the matcher read it with the same two functions.
+    """
+    rows = [(kind, len(form.split(" ")), value_digest(kind, form)) for form in forms]
+    text = value.replace("\r\n", "\n").replace("\r", "\n").strip()
+    if not family_hits_in_reading(Reading(text), FamilyValues.from_rows(rows)):
+        raise ValueError(
+            f"the matcher would not find this {kind} value as it is typed: a digit, a blank line or a "
+            "symbol splits it, so no digest of it could match. Type it as the text writes it"
+        )
+    return forms
 
 
 # --------------------------------------------------------------------------
@@ -726,6 +754,8 @@ def check_family_values(rows: Sequence[object]) -> list[str]:
     A loader that skips what it cannot read turns a value list into an empty
     one, and an empty list checks nothing while reporting success.
     """
+    if not isinstance(rows, (tuple, list)):
+        return ["FAMILY_VALUES is not a tuple of (kind, words, digest) rows"]
     errors: list[str] = []
     if not rows:
         errors.append("FAMILY_VALUES holds no value, so the family rule would check nothing")
@@ -735,28 +765,36 @@ def check_family_values(rows: Sequence[object]) -> list[str]:
             errors.append(f"FAMILY_VALUES row {number} is not (kind, words, digest)")
             continue
         kind, words, digest = row
+        found: list[str] = []
         # An error names the row by number and never repeats a field: a
         # field typed in the wrong place could hold a value, and this error
         # prints before any mask can be trusted.
         if kind not in KINDS:
-            errors.append(f"FAMILY_VALUES row {number} names an unknown kind; it is one of {', '.join(KINDS)}")
+            found.append(f"FAMILY_VALUES row {number} names an unknown kind; it is one of {', '.join(KINDS)}")
         if not isinstance(words, int) or isinstance(words, bool) or not 1 <= words <= MAX_VALUE_WORDS:
-            errors.append(
+            found.append(
                 f"FAMILY_VALUES row {number} gives a word count that is not a whole number from 1 to {MAX_VALUE_WORDS}"
             )
         elif kind in KINDS and kind != "word" and words != 1:
-            errors.append(f"FAMILY_VALUES row {number} gives a {kind} value {words} words; it is 1")
+            found.append(f"FAMILY_VALUES row {number} gives a {kind} value {words} words; it is 1")
         if not isinstance(digest, str) or not HEX_DIGEST.fullmatch(digest):
-            errors.append(f"FAMILY_VALUES row {number} holds no 64-character lowercase hex digest")
-        if row in seen:
-            errors.append(f"FAMILY_VALUES row {number} repeats an earlier row")
-        seen.add(row)
+            found.append(f"FAMILY_VALUES row {number} holds no 64-character lowercase hex digest")
+        # Only a row that passed is compared with the others: its fields are
+        # then a kind, a whole number and a digest, which hash, where a field
+        # of another type might not.
+        if not found and row in seen:
+            found.append(f"FAMILY_VALUES row {number} repeats an earlier row")
+        if not found:
+            seen.add(row)
+        errors += found
     return errors
 
 
 def check_exemption_rows(rule: str, rows: Sequence[object]) -> list[str]:
     """Return every problem with one rule's exemption rows."""
     name = "FAMILY_EXEMPTIONS" if rule == "family" else "DESTINATION_EXEMPTIONS"
+    if not isinstance(rows, (tuple, list)):
+        return [f"{name} is not a tuple of rows"]
     errors: list[str] = []
     keys: set[tuple[object, ...]] = set()
     for number, row in enumerate(rows, start=1):
@@ -764,6 +802,7 @@ def check_exemption_rows(rule: str, rows: Sequence[object]) -> list[str]:
         if not isinstance(row, tuple) or len(row) != 5:
             errors.append(f"{where} does not hold five fields")
             continue
+        passed = len(errors)
         path, matched, context, count, reason = row
         if (
             not isinstance(path, str)
@@ -791,10 +830,13 @@ def check_exemption_rows(rule: str, rows: Sequence[object]) -> list[str]:
             # A row for a file the rule never reads can never be used, and so
             # can never be reported stale either.
             errors.append(f"{where} names a path the {rule} rule does not read")
-        key = (path, matched, context)
-        if key in keys:
-            errors.append(f"{where} repeats an earlier row's path, occurrence and context; add to its count")
-        keys.add(key)
+        # Only a row that passed is compared with the others, since a field of
+        # the wrong type might not hash.
+        if len(errors) == passed:
+            key = (path, matched, context)
+            if key in keys:
+                errors.append(f"{where} repeats an earlier row's path, occurrence and context; add to its count")
+            keys.add(key)
     return errors
 
 
@@ -1261,13 +1303,15 @@ def redact(text: str, values: FamilyValues) -> str:
     family's number wherever it stood, in a session number or a date, would
     print which number it is.
     """
-    text = text.replace("\r\n", "\n").replace("\r", "\n")
+    # The text is matched with its line breaks read as a file's are, and
+    # masked where it stands, so a carriage return is printed as itself.
+    unified, starts = unify_breaks(text)
 
     def finder(reading: Reading) -> list[tuple[int, int, str, str]]:
         return family_hits_in_reading(reading, values)
 
     merged: list[tuple[int, int]] = []
-    found = across_readings(text, finder)
+    found = across_readings(unified, finder)
     spans = sorted(reading.source_span(start, end) for reading, start, end, _label, _key in found)
     for start, end in spans:
         if merged and start <= merged[-1][1]:
@@ -1276,9 +1320,45 @@ def redact(text: str, values: FamilyValues) -> str:
             merged.append((start, end))
     shown, last = [], 0
     for start, end in merged:
-        shown.append(text[last:start] + MASKED_VALUE)
-        last = end
+        shown.append(text[last : starts[start]] + MASKED_VALUE)
+        last = starts[end]
     return "".join(shown) + text[last:]
+
+
+def unify_breaks(text: str) -> tuple[str, list[int]]:
+    """Return ``text`` with each CRLF and CR read as LF, as a file's text is, and where each character starts.
+
+    The list has one entry more than the text, ``len(text)``, so the end of
+    a span maps too.
+    """
+    unified: list[str] = []
+    starts: list[int] = []
+    index = 0
+    while index < len(text):
+        starts.append(index)
+        if text[index] == "\r":
+            unified.append("\n")
+            index += 2 if text.startswith("\r\n", index) else 1
+        else:
+            unified.append(text[index])
+            index += 1
+    starts.append(len(text))
+    return "".join(unified), starts
+
+
+def printable(text: str) -> str:
+    """Return ``text`` with each character a terminal would not print as itself written as its escape.
+
+    Those are the characters ``str.isprintable()`` refuses: a control
+    character, such as a line break, a carriage return or the escape that
+    starts a terminal sequence; a format character, such as a bidirectional
+    override; a separator other than the space; and an unpaired surrogate,
+    which is how a file name that is not UTF-8 arrives.
+    """
+    return "".join(
+        character if character.isprintable() else character.encode("unicode_escape").decode("ascii")
+        for character in text
+    )
 
 
 # --------------------------------------------------------------------------
@@ -1338,25 +1418,40 @@ class Ledger:
         return messages
 
 
-def exemption_row_lines(hits: Sequence[Hit], values: FamilyValues) -> list[str]:
+def exemption_row_lines(
+    hits: Sequence[Hit], values: FamilyValues, rule: str, rows: Sequence[tuple[str, str, str, int, str]] = ()
+) -> list[str]:
     """Return a row, as Python source, for each distinct unexcused occurrence.
 
     The reason is left empty, and a row with no reason fails the data check,
     so a row pasted without one stops the run rather than excusing anything.
-    No row is given for a family value in a path, nor for any row whose path
-    or words hold a family value, under either rule: the row would spell the
-    value, and the family rule would then fail this script.
+    When a row already covers the occurrence's words, too few times, the
+    row printed replaces it: it counts every occurrence of those words, and
+    a comment before it names the row to delete, since a second row for the
+    same words fails the data check. No row is given for a family value in a
+    path, nor for any row whose path or words hold a family value, under
+    either rule: the row would spell the value, and the family rule would
+    then fail this script.
     """
+    name = "FAMILY_EXEMPTIONS" if rule == "family" else "DESTINATION_EXEMPTIONS"
+    covered = {row[:3]: (number, row[3]) for number, row in enumerate(rows, start=1)}
     counts: dict[tuple[str, str, str], int] = {}
     for hit in hits:
         matched = hit.label if hit.rule == "family" else hit.occurrence
         key = (hit.display_path, matched, hit.context)
         counts[key] = counts.get(key, 0) + 1
-    rows = [
-        f'    ({path!r}, {matched!r}, {context!r}, {count}, ""),'
-        for (path, matched, context), count in counts.items()
-    ]
-    return [row for row in rows if redact(row, values) == row]
+    lines = []
+    for (path, matched, context), count in counts.items():
+        number, old = covered.get((path, matched, context), (0, 0))
+        row = f'    ({path!r}, {matched!r}, {context!r}, {old + count}, ""),'
+        if redact(row, values) != row:
+            continue
+        if number:
+            lines.append(
+                f"    # Replaces {name} row {number}, which covers {old} of these {old + count}; delete that row."
+            )
+        lines.append(row)
+    return lines
 
 
 # --------------------------------------------------------------------------
@@ -1644,9 +1739,15 @@ def emit(text: str, values: FamilyValues, error: bool = False) -> None:
     Every line a rule prints goes through here, under both rules: a hit, a
     stale row, a refusal, an error, a candidate and an exemption row. The
     suite fails if any other function but ``print_hash_rows`` calls
-    ``print``.
+    ``print``. After the masking, each character a terminal would not print
+    as itself is written as its escape, so a file's name cannot add a line,
+    move the cursor or colour the log; and a character the stream cannot
+    encode is written as its escape too, rather than stopping the run.
     """
-    print(redact(text, values), file=sys.stderr if error else sys.stdout)
+    stream = sys.stderr if error else sys.stdout
+    encoding = getattr(stream, "encoding", None) or "utf-8"
+    line = printable(redact(text, values))
+    print(line.encode(encoding, "backslashreplace").decode(encoding), file=stream)
 
 
 #: What prints when even the masked crash line cannot be built.
@@ -1779,7 +1880,7 @@ def run(argv: Sequence[str] | None = None, root: Path = REPO_ROOT) -> int:
             emit(line, values)
         return 0
     if args.exemption_rows:
-        for line in exemption_row_lines(report.hits, values):
+        for line in exemption_row_lines(report.hits, values, args.rule, exemptions):
             emit(line, values)
         return 0
 

@@ -592,11 +592,45 @@ def test_a_malformed_destination_row_is_an_error(row: tuple[object, ...], fragme
         ((("word", 1, "0" * 60),), "no 64-character lowercase hex digest"),
         ((("word", 1, "0" * 64), ("word", 1, "0" * 64)), "repeats an earlier row"),
         ((("word", 1),), "is not (kind, words, digest)"),
+        ((("word", 1, []),), "no 64-character lowercase hex digest"),
+        ((("word", 1, []), ("word", 1, [])), "no 64-character lowercase hex digest"),
+        ((([], 1, "0" * 64),), "names an unknown kind"),
+        ((("word", {}, "0" * 64),), "gives a word count"),
+        (None, "is not a tuple of (kind, words, digest) rows"),
+        (7, "is not a tuple of (kind, words, digest) rows"),
     ],
 )
 def test_a_malformed_value_row_is_an_error(rows: tuple[object, ...], fragment: str) -> None:
+    """A field of any type, one that does not hash included, is an error and never an exception."""
     errors = hook.check_family_values(rows)
     assert any(fragment in error for error in errors), errors
+
+
+@pytest.mark.parametrize(
+    ("rows", "fragment"),
+    [
+        ((("framework/a.md", "Tokyo", ["the Tokyo line"], 1, "r"),), "context that does not hold its occurrence"),
+        ((("framework/a.md", ["Tokyo"], "the Tokyo line", 1, "r"),) * 2, "names no occurrence"),
+        (((["framework/a.md"], "Tokyo", "the Tokyo line", 1, "r"),), "names no repository-relative path"),
+        ((("framework/a.md", "Tokyo", "the Tokyo line", [1], "r"),), "gives the count"),
+        (None, "DESTINATION_EXEMPTIONS is not a tuple of rows"),
+    ],
+)
+def test_a_destination_row_field_that_does_not_hash_is_an_error(rows: object, fragment: str) -> None:
+    errors = hook.check_exemption_rows("destination", rows)  # type: ignore[arg-type]
+    assert any(fragment in error for error in errors), errors
+
+
+def test_a_value_row_that_does_not_hash_stops_the_run_with_its_error(
+    tmp_path: Path, made_up_family: None, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    """The row error prints and the run exits 1, where a set lookup used to crash it."""
+    root = make_repo(tmp_path, {"docs/a.md": "Clean.\n"})
+    monkeypatch.setattr(hook, "FAMILY_VALUES", value_rows(MADE_UP) + (("word", 1, []),))
+    for rule in ("family", "destination"):
+        assert hook.main(["--rule", rule], root=root) == 1
+        err = capsys.readouterr().err
+        assert "unexpected error" not in err and "holds no 64-character lowercase hex digest" in err
 
 
 def test_a_malformed_row_stops_the_run(
@@ -632,6 +666,42 @@ def test_exemption_rows_mode_prints_rows_that_clear_the_run_once_given_reasons(
     assert hook.main(["--rule", "family"], root=root) == 1
     monkeypatch.setattr(hook, "FAMILY_EXEMPTIONS", tuple(row[:4] + ("a test row",) for row in rows))
     assert hook.main(["--rule", "family"], root=root) == 0
+
+
+@pytest.mark.parametrize(
+    ("rule", "name", "text"),
+    [
+        ("destination", "framework/a.md", "See Tokyo and Tokyo again.\n"),
+        ("family", "docs/a.md", "See Quillhaven and Quillhaven again.\n"),
+    ],
+    ids=["destination", "family"],
+)
+def test_a_row_that_covers_too_few_is_replaced_by_one_for_every_occurrence(
+    tmp_path: Path,
+    made_up_family: None,
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
+    rule: str,
+    name: str,
+    text: str,
+) -> None:
+    """A second row for the same words fails the data check, so the printed row replaces the one in place."""
+    table = "DESTINATION_EXEMPTIONS" if rule == "destination" else "FAMILY_EXEMPTIONS"
+    root = make_repo(tmp_path, {name: text})
+    assert hook.main(["--rule", rule, "--exemption-rows"], root=root) == 0
+    [first] = [ast.literal_eval(line.strip().rstrip(",")) for line in capsys.readouterr().out.strip().splitlines()]
+    assert first[3] == 2, "control: with no row in place, the row counts both"
+    monkeypatch.setattr(hook, table, (first[:3] + (1, "a test row"),))
+    assert hook.main(["--rule", rule], root=root) == 1
+    capsys.readouterr()
+    assert hook.main(["--rule", rule, "--exemption-rows"], root=root) == 0
+    comment, row = capsys.readouterr().out.strip().splitlines()
+    assert comment.strip() == f"# Replaces {table} row 1, which covers 1 of these 2; delete that row."
+    replacement = ast.literal_eval(row.strip().rstrip(","))
+    assert replacement == first[:3] + (2, "")
+    monkeypatch.setattr(hook, table, (replacement[:4] + ("a test row",),))
+    assert hook.check_exemption_rows(rule, getattr(hook, table)) == []
+    assert hook.main(["--rule", rule], root=root) == 0
 
 
 def test_a_family_row_for_the_design_record_is_an_error() -> None:
@@ -704,14 +774,39 @@ def test_hash_prints_the_rows_for_one_value(
 
 
 @pytest.mark.parametrize(
-    ("kind", "value"), [("word", ""), ("word", "one two three four"), ("code", "Q H"), ("number", "many")]
+    ("kind", "value"),
+    [
+        ("word", ""),
+        ("word", "one two three four"),
+        ("code", "Q H"),
+        ("number", "many"),
+        ("word", "Quill2haven"),
+        ("word", "Brannock\n\nField"),
+        ("word", "Brannock\r\rField"),
+        ("word", "Quill\u2122haven"),
+        ("code", "QE\u0301V"),
+    ],
 )
 def test_hash_refuses_a_value_it_cannot_record(
     kind: str, value: str, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
 ) -> None:
+    """A value the matcher would not find as typed gets no row: its digest could never match."""
     monkeypatch.setattr(sys, "stdin", io.StringIO(value))
     assert hook.main(["--hash", kind]) == 1
-    assert capsys.readouterr().out == ""
+    captured = capsys.readouterr()
+    assert captured.out == ""
+    assert "quill" not in captured.err.casefold() and "brannock" not in captured.err.casefold()
+
+
+@pytest.mark.parametrize(
+    ("kind", "value"),
+    [("word", "Brannock\nField"), ("word", "Brannock-Field"), ("word", "godmothers"), ("code", "Q\u00c9V")],
+)
+def test_hash_accepts_a_value_the_matcher_finds_as_typed(kind: str, value: str) -> None:
+    """Controls: one line break, a hyphen, a plural and a composed letter are all read as the matcher reads them."""
+    forms = hook.normalize_value(kind, value)
+    rows = tuple((kind, len(form.split(" ")), hook.value_digest(kind, form)) for form in forms)
+    assert hook.find_hits(value + "\n", "x.md", "family", hook.FamilyValues.from_rows(rows))
 
 
 # --------------------------------------------------------------------------
@@ -1376,6 +1471,45 @@ def test_a_malformed_value_row_stops_both_rules_and_prints_no_value(
         captured = capsys.readouterr()
         assert fragment in captured.err
         assert captured.out == "" and "quillhaven" not in captured.err.casefold()
+
+
+def test_emit_writes_what_a_terminal_would_not_print_as_an_escape(capsys: pytest.CaptureFixture[str]) -> None:
+    """A file's name cannot add a line, move the cursor or colour the log: each such character prints escaped."""
+    hook.emit("framework/a\x1b[2Jb\rc\nd\u202ee\udcff.md: a name", hook.NO_VALUES)
+    assert capsys.readouterr().out == "framework/a\\x1b[2Jb\\rc\\nd\\u202ee\\udcff.md: a name\n"
+    hook.emit("See the \u00e9t\u00e9 notes, in \u6771\u4eac.", hook.NO_VALUES)
+    assert capsys.readouterr().out == "See the \u00e9t\u00e9 notes, in \u6771\u4eac.\n", "control: printable text"
+
+
+def test_a_value_is_masked_before_its_line_breaks_are_escaped(capsys: pytest.CaptureFixture[str]) -> None:
+    """The masking reads a carriage return as a file's line break, and the escape keeps it as written."""
+    hook.emit("docs/Brannock\r\nField and Quillhaven\rx.md", VALUES)
+    assert capsys.readouterr().out == "docs/<family value> and <family value>\\rx.md\n"
+
+
+def test_a_character_the_stream_cannot_encode_prints_as_its_escape(monkeypatch: pytest.MonkeyPatch) -> None:
+    """A path the log's encoding cannot hold used to stop the run with an encoding error."""
+    stream = io.TextIOWrapper(io.BytesIO(), encoding="ascii", newline="\n")
+    monkeypatch.setattr(sys, "stdout", stream)
+    hook.emit("framework/\u6771\u4eac.md: a name", hook.NO_VALUES)
+    stream.flush()
+    assert stream.buffer.getvalue() == b"framework/\\u6771\\u4eac.md: a name\n"
+
+
+def test_a_tracked_name_with_control_characters_prints_escaped(
+    tmp_path: Path, made_up_family: None, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    """Git tracks such a name on Linux; Windows cannot write it, so the walk is given it here."""
+    root = make_repo(tmp_path, {"framework/a.md": "Clean.\n"})
+    name = "framework/tokyo\x1b[2J\rnotes.md"
+    monkeypatch.setattr(hook, "tracked_files", lambda _root: [name])
+    monkeypatch.setattr(hook, "resolve_candidate", lambda _argument, _root: (root / "framework/a.md", name))
+    assert hook.main(["--rule", "destination"], root=root) == 1
+    out = capsys.readouterr().out
+    assert out == (
+        "framework/tokyo\\x1b[2J\\rnotes.md: the file's path holds the destination name \"tokyo\". "
+        "Place files live in the destination pack.\n"
+    )
 
 
 def test_only_emit_and_print_hash_rows_print() -> None:
