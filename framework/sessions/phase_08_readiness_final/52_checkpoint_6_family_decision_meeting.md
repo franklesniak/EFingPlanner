@@ -25,7 +25,7 @@ Set up your first small step, then do it. One suggestion: write the date of the 
 This is the **family decision meeting**. The family gathers, you present your plan the way you chose in Session 51, and the grown-ups decide.
 
 1. Present your recommendation from your outline. Bring your Session 39 budget summary, with its band sentence.
-2. **Reasons.** Give two or three reasons for it, each tied to something you found. Then look at every traveler's answer on the poll from Session 03, and your line on how you balanced what people wanted. Say whose "one thing you'd love" the plan makes room for, and name anyone it leaves out.
+2. **Reasons.** Give two or three reasons for it, each tied to something you found. Then look at every traveler's answer on the poll from Session 03, and your line on how you balanced what people wanted. A traveler still marked with no answer? Ask them at the meeting, or have a grown-up ask, and write the answer on your Family Trip Goals page. If you still can't reach them, write "not heard from yet" beside their name. Say whose "one thing you'd love" the plan makes room for, and name anyone it leaves out.
 3. Listen to what the grown-ups approve, what they'd change, and what they'll check or book. Write it in your packet in the Workspace.
 4. Hand over your handoff list. Every item on it belongs to the grown-ups. Your job is to hand each one over clearly.
 5. The grown-ups pick one of four answers: Approved, Approved with changes, Needs more research, or Park this decision for later. Write their answer in your Decision Record.
