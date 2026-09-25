@@ -36,4 +36,4 @@ Your plan is built in movable blocks, one per place. If a grown-up changes where
 
 "Roughly when" means a window, like "spring", "the second week" or "not decided yet". Keep exact booked dates off every card. "Not decided yet", "unknown" and "ask an adult" are complete answers in any box.
 
-Opening times, ticket rules and prices change. A grown-up checks them again before the trip. Keep private details off every card, as the [privacy and safety](../../../docs/privacy_and_safety.md) page says.
+Opening times, ticket rules and prices change. A grown-up checks them again before the trip. If a booking changes kind, such as a walk-in place that now needs a timed ticket, use the "Something to book added, dropped, moved or changed?" row on your [When the Plan Changes card](../../../student_guide/when_the_plan_changes.md). Keep private details off every card, as the [privacy and safety](../../../docs/privacy_and_safety.md) page says.

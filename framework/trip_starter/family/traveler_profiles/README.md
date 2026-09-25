@@ -8,6 +8,8 @@ One finished profile for each traveler on your Trip-Basics roster, one traveler 
 
 If six people are coming, six files live here when you are done. If two more join later, add two more files. Nothing else belongs in this folder.
 
+Someone here for only part of the trip? Their profile counts only on the days they're there, as the template's "Here for only part of the trip?" line says.
+
 ## Where the blank comes from
 
 The blank is the [traveler profile template](../../../templates/traveler_profile.md). Copy it once for each traveler, and fill in the copy.

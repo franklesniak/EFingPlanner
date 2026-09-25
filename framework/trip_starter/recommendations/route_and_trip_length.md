@@ -26,7 +26,7 @@ This is your Checkpoint 4 page, from [Session 32](../../sessions/phase_05_route_
 
 If the grown-ups change where you arrive or leave, you move one block of your plan and keep the rest. Your [When the Plan Changes card](../../student_guide/when_the_plan_changes.md) says what to fix. Your work still counts.
 
-If a place, its nights or a flight-day mark change later, come back to this page. Cross out the old, and write the new beside it, with where it changed. For a flight-day mark, the flight-day row on your When the Plan Changes card says whether your total grows or a night comes off.
+If a place, its nights or a flight-day mark change later, come back to this page. Cross out the old, and write the new beside it, with where it changed. For a flight-day mark, the "A flight-day mark added or taken away?" row on your When the Plan Changes card says whether your total grows or a night comes off.
 
 Before you start the next session:
 

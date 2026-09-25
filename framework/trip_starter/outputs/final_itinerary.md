@@ -6,7 +6,7 @@ Copy this page out of the repository before you fill it in. Do not commit your f
 
 This is your day-by-day plan, put together from your Daily Plan Cards and your full itinerary draft. Every part is copied forward from a page you already made, so you start from your own work. Blank boxes are fine. A plan with gaps is still a plan.
 
-If the plan changes after you fill this in, go down your [When the Plan Changes card](../../student_guide/when_the_plan_changes.md). Then copy the fixed parts here.
+If the plan changes after you fill this in, go down your [When the Plan Changes card](../../student_guide/when_the_plan_changes.md). Then copy the fixed parts here. A booking that changes kind, such as a walk-in place that now needs a timed ticket, has its own row on the card: "Something to book added, dropped, moved or changed?"
 
 Write where you'll stay as an area or a kind of place. Keep hotel names and exact booked dates off this page.
 
