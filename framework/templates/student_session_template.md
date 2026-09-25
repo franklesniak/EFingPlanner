@@ -103,6 +103,8 @@ The step label comes in three forms, and it is the one part that varies:
 
 A session may carry one or more short italic lines directly under its navigation line, one line for each job. Only the kinds below are allowed:
 
+<!-- density-exempt: X, not Y -- the return note the batch 2 brief's navigation rule requires this template to list beside the skip affordance and the placement note, in the brief's own terms: it names where a reader came from and announces no divergence -->
+
 - **Path divergence.** The numbered order and the First Taste order disagree here, and the line says where a First Taste reader goes instead. Announce a divergence forward only, and add no line where the two orders already agree. Write one line for each divergence announced, so a session that turns two paths aside carries two.
 - **Placement note.** An off-path session says where it sits relative to the path, or a path session turns an opt-in family aside before it sends everyone else forward.
 - **Skip affordance.** A session whose Next is Recommended says that next one can be skipped, and names the session after it.
