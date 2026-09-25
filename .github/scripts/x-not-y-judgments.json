@@ -5474,11 +5474,6 @@
       "judgment": "no",
       "reason": "a label"
     },
-    "split|A block quote is a prose line unless it is a quotation. → Exempt it only when its content is verbatim borrowed text and the page shows that on its face, through enclosing quotation marks or a named attribution, as the parent guide's ten coaching scripts do.|1": {
-      "line": 92,
-      "judgment": "no",
-      "reason": "a condition"
-    },
     "split|A block quote used as a callout or a carry-over tag renders to the reader as ordinary prose, so it counts, and its lines join the prose-line count the ratios divide. → Session 04 settles the case: its Carry-over tag holds the only spaced dash in the file, and a container-based exemption made that dash invisible.|1": {
       "line": 92,
       "judgment": "no",
@@ -5519,11 +5514,6 @@
       "judgment": "no",
       "reason": "a reason (the consequence of counting twice)"
     },
-    "split|Exempt it only when its content is verbatim borrowed text and the page shows that on its face, through enclosing quotation marks or a named attribution, as the parent guide's ten coaching scripts do. → A block quote used as a callout or a carry-over tag renders to the reader as ordinary prose, so it counts, and its lines join the prose-line count the ratios divide.|1": {
-      "line": 92,
-      "judgment": "no",
-      "reason": "a rule for the non-exempt case, with a reason"
-    },
     "split|How to count any density device. → These rules apply to the dash budget, the ‹code› / ‹code› cap, and the ‹code› cap alike.|1": {
       "line": 92,
       "judgment": "no",
@@ -5558,6 +5548,21 @@
       "line": 92,
       "judgment": "no",
       "reason": "a definition"
+    },
+    "split|A block quote is a prose line unless it is a quotation. → Exempt it only when its content is verbatim borrowed text and the page shows that on its face with enclosing quotation marks, as the parent guide's ten coaching scripts do.|1": {
+      "line": 92,
+      "judgment": "no",
+      "reason": "a condition"
+    },
+    "split|Exempt it only when its content is verbatim borrowed text and the page shows that on its face with enclosing quotation marks, as the parent guide's ten coaching scripts do. → Name the source, if you name it, on its own line after the block quote: the recount reads a quotation by its marks alone.|1": {
+      "line": 92,
+      "judgment": "no",
+      "reason": "a rule, then an instruction with its reason; nothing is rejected"
+    },
+    "split|Name the source, if you name it, on its own line after the block quote: the recount reads a quotation by its marks alone. → A block quote used as a callout or a carry-over tag renders to the reader as ordinary prose, so it counts, and its lines join the prose-line count the ratios divide.|1": {
+      "line": 92,
+      "judgment": "no",
+      "reason": "a rule for the non-exempt case, with a reason"
     },
     "device|‹code› / ‹code› / ‹code› : apply the delete test.|1": {
       "line": 93,

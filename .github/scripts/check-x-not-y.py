@@ -32,17 +32,13 @@ negation word is a candidate of the banned kind, keyed with the sentence
 after it in the same heading or cell, or alone, and judged ``banned`` or
 ``no``. A heading or a cell never pairs with the text around it. Block
 quotes are read like prose; a quotation block quote, such as a coaching
-script, is judged "no". A block quote is a quotation when quotation marks,
-double or single, enclose it, or when its last line is a named attribution:
-a dash and a name, such as ``— A parent``, never a dash-led sentence of the
-page's own. A name has a name's shape: a determiner or a number and a short
-noun (``A parent``, ``3 families in the pilot``), or a proper name
-(``Grandma Rose``, ``Session 05's script``), with no word a clause needs, so
-``— Then check the route`` is prose. The attribution must close the quote
-itself: one that closes a block quote nested in it names that quote's source
-alone, so the outer callout stays a callout. Quotation marks are read over
-every paragraph inside the quote, nested quotes included, since a quotation
-can hold one. An HTML block that shows nothing (comments, processing
+script, is judged "no". A block quote is a quotation when a pair of
+quotation marks encloses it: double or single, straight or curly, and the
+closing mark the one that pairs with the opening mark. Quotation marks are
+read over every paragraph inside the quote, nested quotes included, since a
+quotation can hold one. A dash-led line that ends a block quote, the form of
+an attribution, makes nothing a quotation; it is outside the supported
+Markdown. An HTML block that shows nothing (comments, processing
 instructions, declarations and CDATA sections) is read as a block of
 comments: its markers are markers, and the paragraphs on either side of it
 stay adjacent. An HTML block that shows text is read like a paragraph when
@@ -153,7 +149,7 @@ it was set.
 
 - Blocks: paragraphs; bullet and ordered lists, nested ones included;
   headings, one inside a block quote or a list item included; block quotes
-  one level deep; tables; fenced and indented code; thematic breaks; link
+  one level deep, a quotation among them marked by its quotation marks; tables; fenced and indented code; thematic breaks; link
   reference definitions.
 - Inline: emphasis, links, images, code spans, character references,
   backslash escapes and line breaks.
@@ -166,7 +162,9 @@ The run names anything else on its page as ``OUTSIDE SUPPORTED MARKDOWN line
 N: <what it is>``, counts it in the ``unsupported_markdown`` total, and fails:
 raw HTML other than a closing comment (a tag, a processing instruction, a
 CDATA section or a declaration), a ``density-exempt`` marker inside a block
-quote or a list item, a block quote inside a block quote, and each audience
+quote or a list item, a block quote inside a block quote, a block quote that
+ends in a dash-led line (the form of an attribution: enclose the quotation in
+quotation marks and name its source after the block quote), and each audience
 marker after a page's first. Rewrite that part in the Markdown above. UNREAD
 HTML still names an HTML block that shows text next to a tag or holds a part
 that never closes, and a marker problem a malformed marker.
@@ -509,79 +507,23 @@ SUBORDINATE_RE = re.compile(
     r"|once|before|after|as|where|wherever|whether|even)\b",
     re.IGNORECASE,
 )
-#: A block quote is a quotation when quotation marks enclose it, double or
-#: single, straight or curly, or when its last line is a named attribution such
-#: as `— A parent`.
-QUOTE_OPEN_RE = re.compile(r"^[*_]*[\"“'‘]")
-QUOTE_CLOSE_RE = re.compile(r"[\"”'’][*_]*$")
-#: A line that opens with an attribution dash; `is_named_attribution()` decides
-#: whether what follows it is a name.
-ATTRIBUTION_RE = re.compile(r"^[*_]*(?:—|―|--)\s*[*_]*(?P<name>.*?)[*_]*$")
-#: The most words a name in an attribution runs to (`— A parent, after Session
-#: 05`); a longer line is prose.
-ATTRIBUTION_MAX_WORDS = 8
-#: Words that open a name as a determiner does: `A parent`, `The coach`, `Our
-#: guide`. A number does too: `3 families in the pilot`.
-NAME_DETERMINERS = frozenset(
-    "a an the one two three four five six seven eight nine ten our your my his her their its every each some"
-    " another many most several both all".split())
-#: Words a name never holds: a pronoun that is not a possessive one, a form of
-#: `be`, `have` or `do`, a modal and a negation. Each needs a clause around it.
-NOT_IN_NAME = frozenset(
-    "i you he she it we they me him us them who whom which what is are was were be been being am have has had"
-    " do does did can could will would shall should may might must not never no nor".split())
-#: Words that open a clause and never a name: those above, and a conjunction, a
-#: linking or sequence adverb, a demonstrative, and a word that opens a
-#: condition or a time. `— Then check the route` is the page's own prose.
-CLAUSE_OPENERS = NOT_IN_NAME | frozenset(
-    "and but or so yet then now also just still only even too please let here there this that these those if"
-    " when whenever while because since unless until although though once as where whether before after how"
-    " why".split())
-#: Lower-case words that join the parts of a proper name: `Mom and Dad`, `Anna
-#: de Souza`.
-NAME_JOINERS = frozenset("and & of de da del della der di du la le van von y al bin ibn".split())
-#: A word that ends a determiner's noun and opens what describes it: `3
-#: families in the pilot`.
-NAME_PREPOSITIONS = frozenset("in at from after on for with during about of since by near via per".split())
-#: The most words a determiner's noun runs to (`The Batch 2 brief`), so `The
-#: kids loved the map` is a sentence.
-NAME_CORE_MAX_WORDS = 4
-POSSESSIVE_RE = re.compile(r"['’]s$")
-#: A number as a name's first word writes it: `3`, `1,200`, `2.5`.
-NUMBER_RE = re.compile(r"[\d.,:]+")
+#: A block quote is a quotation when a pair of quotation marks encloses it:
+#: double or single, straight or curly, and the closing mark the one that pairs
+#: with the opening mark, so `"...'` and `“..."` enclose nothing.
+QUOTE_OPEN_RE = re.compile(r"^[*_]*([\"“'‘])")
+QUOTE_CLOSE_RE = re.compile(r"([\"”'’])[*_]*$")
+QUOTE_PAIRS = {'"': '"', "“": "”", "'": "'", "‘": "’"}
+#: A line that opens with a dash, the form of an attribution (`— A parent`).
+#: The recount reads a quotation by its marks alone, so a block quote that ends
+#: in one is outside the supported Markdown.
+DASH_LED_RE = re.compile(r"^[*_]*(?:—|―|--)")
 
 
-def is_name(name: str) -> bool:
-    """True when `name`, up to its first comma or bracket, has the shape of a name.
+def enclosed_in_marks(text: str) -> bool:
+    """True when a pair of quotation marks encloses `text`: the closing mark pairs with the opening one."""
+    o, c = QUOTE_OPEN_RE.search(text), QUOTE_CLOSE_RE.search(text)
+    return bool(o and c and c.start(1) > o.start(1) and QUOTE_PAIRS[o.group(1)] == c.group(1))
 
-    A name is a determiner or a number and a noun of at most
-    `NAME_CORE_MAX_WORDS` words (`A parent`, `3 families in the pilot`), or a
-    proper name whose every word opens with a capital letter or a digit, a
-    joining word aside (`Grandma Rose`, `Mom and Dad`), with lower-case words
-    only after a possessive (`Session 05's script`). It opens no clause and
-    holds no word a clause needs (`NOT_IN_NAME`), so `Then check the route`,
-    `Check the route` and `The route is long` are sentences.
-    """
-    head = re.split(r"[,(;:]", name, maxsplit=1)[0].split()
-    if not head:
-        return False
-    low = [POSSESSIVE_RE.sub("", w).strip(".\"'“”‘’").lower() for w in head]
-    if (low[0] in CLAUSE_OPENERS and low[0] not in NAME_DETERMINERS) or any(w in NOT_IN_NAME for w in low):
-        return False
-    if low[0] in NAME_DETERMINERS or head[0][0].isdigit():
-        # A determiner or a number names no one alone (`— The`, `— 3`): it
-        # needs a noun, a word that is none of those and no preposition.
-        if not any(w not in NAME_DETERMINERS and w not in NAME_PREPOSITIONS and not NUMBER_RE.fullmatch(w)
-                   for w in low):
-            return False
-        core = next((i for i, w in enumerate(low) if i and w in NAME_PREPOSITIONS), len(low))
-        return core <= NAME_CORE_MAX_WORDS
-    possessive = False
-    for word, lower in zip(head, low):
-        if not (possessive or word[0].isupper() or word[0].isdigit() or lower in NAME_JOINERS):
-            return False
-        possessive = possessive or bool(POSSESSIVE_RE.search(word))
-    return True
 
 #: Closing quotation marks, brackets and emphasis that can follow a sentence's
 #: last punctuation. They stay with the sentence they close.
@@ -1062,6 +1004,15 @@ def parse_text(text: str) -> Page:
         follows = True
     for marker, index in zip(markers, marker_blocks):
         marker_scope(marker, blocks, index, heading_lines, source)
+    # A block quote that ends in a dash-led line, the form of an attribution:
+    # the recount reads a quotation by its marks alone, so it names the line.
+    last_in_quote: dict[str, ProseLine] = {}
+    for pl in prose:
+        inside = [part for part in pl.container if part.startswith("q")]
+        if inside:
+            last_in_quote[inside[-1]] = pl
+    unsupported += [(pl.lineno, "a block quote that ends in a dash-led line, the form of an attribution")
+                    for pl in last_in_quote.values() if DASH_LED_RE.match(normalize_space(pl.text))]
     if audiences:
         # The first audience marker sets the register. A page holds one, so
         # each after it is named, whether it agrees or not.
@@ -1175,35 +1126,15 @@ def paragraph_sentences(para: list[ProseLine]) -> list[tuple[str, ProseLine]]:
     return [(normalize_space(text[a:b]), para[text.count("\n", 0, a)]) for a, b in sentence_spans(text)]
 
 
-def is_named_attribution(line: str) -> bool:
-    """True when `line` is a named attribution: a dash, then a name.
-
-    The style law exempts a block quote only when the page shows on its face
-    that the text is borrowed, and an attribution does that by naming its
-    source: `— A parent`, `-- Session 05's script`. The name starts with a
-    capital letter or a digit, runs at most `ATTRIBUTION_MAX_WORDS` words, ends
-    without a sentence mark and has the shape of a name (`is_name()`). So a
-    dash-led continuation of the page's own prose, `-- and then check the
-    route.`, `— because this matters.` or `— Then check the route`, is not an
-    attribution.
-    """
-    m = ATTRIBUTION_RE.match(normalize_space(line))
-    name = m.group("name").strip() if m else ""
-    return (bool(name) and (name[0].isupper() or name[0].isdigit()) and name[-1] not in ".!?…"
-            and len(name.split()) <= ATTRIBUTION_MAX_WORDS and is_name(name))
-
-
 def quote_contexts(paras: list[list[ProseLine]], raw_lines: list[str] | None) -> list[str]:
     """Return each paragraph's quotation context, which a judgment depends on.
 
     The context is "" for ordinary prose, "block quote" for a callout, and
-    "quotation block quote" when the whole block quote sits inside quotation
-    marks or its last line is a named attribution, as the style law's counting
-    bullet defines a quotation. The attribution closes the quote, as its own
-    paragraph or as the last line of the last one. A block quote's text is
-    every paragraph inside it, those in a list or a block quote within it
-    included, and a paragraph inside any block quote that is a quotation is
-    quoted.
+    "quotation block quote" when a pair of quotation marks encloses the whole
+    block quote, as the style law's counting bullet defines a quotation. A
+    block quote's text is every paragraph inside it, those in a list or a block
+    quote within it included, and a paragraph inside any block quote that is a
+    quotation is quoted.
     """
     quotation = quotation_quotes(paras)
     return [container_context(para[0].container, quotation) for para in paras]
@@ -1219,14 +1150,7 @@ def quotation_quotes(paras: list[list[ProseLine]]) -> set[str]:
     quotation: set[str] = set()
     for quote, members in quotes.items():
         texts = [normalize_space(paragraph_text(paras[k])) for k in members]
-        joined = " ".join(t for t in texts if t)
-        # The attribution closes this quote only when the quote's last
-        # paragraph is its own, outside any block quote nested in it: a
-        # nested quote's attribution names the source of that quote alone.
-        last = members[-1]
-        own = [p for p in paras[last][0].container if p.startswith("q")][-1] == quote
-        last_line = paragraph_text(paras[last]).split("\n")[-1] if own else ""
-        if (QUOTE_OPEN_RE.search(joined) and QUOTE_CLOSE_RE.search(joined)) or is_named_attribution(last_line):
+        if enclosed_in_marks(" ".join(t for t in texts if t)):
             quotation.add(quote)
     return quotation
 

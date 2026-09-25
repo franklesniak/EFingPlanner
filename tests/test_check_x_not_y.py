@@ -508,7 +508,8 @@ def test_a_pair_does_not_reach_across_the_edge_of_a_block_quote() -> None:
     ("> Choose the map, not the list.", "|block quote"),
     ('> "Choose the map, not the list."', "|quotation block quote"),
     ('> "Look first. Choose the map, not the list."', "|quotation block quote"),
-    ("> Choose the map, not the list.\n>\n> — A parent", "|quotation block quote"),
+    ("> Choose the map, not the list.\n>\n> — A parent", "|block quote"),
+    ("> “Choose the map, not the list.”", "|quotation block quote"),
     ("> 'Choose the map, not the list.'", "|quotation block quote"),
     ("> ‘Choose the map, not the list.’", "|quotation block quote"),
     ("> **‘Choose the map, not the list.’**", "|quotation block quote"),
@@ -519,51 +520,10 @@ def test_a_key_carries_the_quotation_context(text: str, suffix: str) -> None:
     assert found.key.endswith("|1" + suffix)
 
 
-@pytest.mark.parametrize("last", [
-    "> — A parent",
-    "> -- Session 05's script",
-    "> ― A parent, after Session 05",
-    "> — *A parent*",
-    "> — 3 families in the pilot",
-])
-@pytest.mark.parametrize("layout", ["paragraph", "line"])
-def test_a_named_attribution_closing_the_quote_makes_it_a_quotation(last: str, layout: str) -> None:
-    joiner = "\n>\n" if layout == "paragraph" else "\n"
-    (found,) = candidates("> Choose the map, not the list." + joiner + last)
-    assert found.key.endswith("|quotation block quote")
-
-
-@pytest.mark.parametrize("last", [
-    "> -- and then check the route.",
-    "> -- and then check the route",
-    "> — because this matters.",
-    "> — Then check the route.",
-    "> — A parent!",
-    "> — A parent who ran the first three sessions with us last spring",
-    "> —",
-])
-@pytest.mark.parametrize("layout", ["paragraph", "line"])
-def test_a_dash_led_line_of_prose_is_no_attribution(last: str, layout: str) -> None:
-    # The style law exempts only text the page shows is borrowed, through
-    # quotation marks or a named attribution; a dash-led sentence is prose.
-    joiner = "\n>\n" if layout == "paragraph" else "\n"
-    keys = [c.key for c in every_candidate("> Choose the map, not the list." + joiner + last)]
-    assert keys
-    assert all(k.endswith("|block quote") and not k.endswith("|quotation block quote") for k in keys)
-
-
 def test_an_attribution_that_does_not_close_the_quote_is_no_attribution() -> None:
     keys = [c.key for c in every_candidate("> — A parent\n>\n> Choose the map, not the list.")]
     assert "device|Choose the map, not the list.|1|block quote" in keys
     assert not any(k.endswith("|quotation block quote") for k in keys)
-
-
-def test_a_continuation_in_place_of_an_attribution_reopens_the_judgment(tmp_path: Path) -> None:
-    write(tmp_path, "framework/templates/a.md", "## A\n\n> Choose the map, not the list.\n>\n> — A parent\n")
-    judged = judge_all(tmp_path, "no")
-    write(tmp_path, "framework/templates/a.md", "## A\n\n> Choose the map, not the list.\n>\n> -- and then check the route.\n")
-    (rep,) = cx.scan(tmp_path, judged, {})
-    assert [c.judgment for c in rep.candidates if c.text == "Choose the map, not the list."] == [None]
 
 
 @pytest.mark.parametrize("after", [
@@ -1617,20 +1577,10 @@ def test_a_marker_over_a_heading_in_a_list_item_leaves_the_page_after_it_counted
     assert run(root, judge_all(root), capsys) == 1
 
 
-@pytest.mark.parametrize("text", [
-    '> Choose the map, not the list.\n>\n> > "A borrowed line."\n> >\n> > — A parent',
-    "> Choose the map, not the list.\n>\n> > A borrowed line.\n> >\n> > — A parent",
-    "> Choose the map, not the list.\n>\n> > A borrowed line.\n> > — A parent",
-])
-def test_a_nested_attribution_leaves_the_outer_callout_a_callout(text: str) -> None:
-    keys = [c.key for c in every_candidate(text)]
+def test_a_nested_quotation_leaves_the_outer_callout_a_callout() -> None:
+    keys = [c.key for c in every_candidate('> Choose the map, not the list.\n>\n> > "A borrowed line."')]
     assert "device|Choose the map, not the list.|1|block quote" in keys
     assert any(k.endswith("|quotation block quote") for k in keys)
-
-
-def test_an_attribution_closing_the_outer_quote_still_quotes_it_all() -> None:
-    keys = [c.key for c in every_candidate("> Choose the map, not the list.\n>\n> > An aside.\n>\n> — A parent")]
-    assert keys and all(k.endswith("|quotation block quote") for k in keys)
 
 
 @pytest.mark.parametrize("hidden", ["<?x?>", "<!X decl>", "<![CDATA[ x ]]>", "<!-- note -->"])
@@ -1695,32 +1645,6 @@ def test_an_audience_marker_is_read_from_each_comment_the_page_holds(text: str) 
 def test_a_comment_ends_where_the_page_ends_it() -> None:
     # `--!>` closes a comment in HTML, so the page shows the sentence after it.
     assert kinds("<!-- note --!> Choose the map, not the list.") == [("device", "Choose the map, not the list.")]
-
-
-@pytest.mark.parametrize("last", [
-    "> — Then check the route",
-    "> — Check the route",
-    "> — The route is long",
-    "> — We did it together",
-    "> — And that is fine",
-    "> — The kids loved the map",
-    "> — Then",
-    "> — Then Kyoto",
-])
-@pytest.mark.parametrize("layout", ["paragraph", "line"])
-def test_a_dash_led_clause_without_an_end_mark_is_no_attribution(last: str, layout: str) -> None:
-    joiner = "\n>\n" if layout == "paragraph" else "\n"
-    keys = [c.key for c in every_candidate("> Choose the map, not the list." + joiner + last)]
-    assert "device|Choose the map, not the list.|1|block quote" in keys
-    assert not any(k.endswith("|quotation block quote") for k in keys)
-
-
-@pytest.mark.parametrize("last", ["> — Mom and Dad", "> — Grandma Rose", "> — Dr. Kim", "> — Our guide in Session 12"])
-@pytest.mark.parametrize("layout", ["paragraph", "line"])
-def test_a_name_still_closes_a_quotation(last: str, layout: str) -> None:
-    joiner = "\n>\n" if layout == "paragraph" else "\n"
-    (found,) = candidates("> Choose the map, not the list." + joiner + last)
-    assert found.key.endswith("|quotation block quote")
 
 
 def label_keys(text: str) -> list[tuple[str, str]]:
@@ -1853,20 +1777,6 @@ def test_a_marker_whose_device_and_reason_are_not_parted_by_a_spaced_double_hyph
 def test_a_marker_body_parts_at_a_spaced_double_hyphen(body: str, device: str, reason: str, applies: bool) -> None:
     mk = cx.parse_marker(1, " " + body + " ")
     assert (mk.device, mk.reason, mk.applies, mk.problem) == (device, reason, applies, "")
-
-
-@pytest.mark.parametrize("last", ["> — The", "> — A", "> — 3", "> — Our", "> — One of", "> — The 3"])
-@pytest.mark.parametrize("layout", ["paragraph", "line"])
-def test_a_determiner_or_a_number_alone_is_no_attribution(last: str, layout: str) -> None:
-    joiner = "\n>\n" if layout == "paragraph" else "\n"
-    keys = [c.key for c in every_candidate("> Choose the map, not the list." + joiner + last)]
-    assert "device|Choose the map, not the list.|1|block quote" in keys
-
-
-@pytest.mark.parametrize("last", ["> — One of the parents", "> — 3 families", "> — The coach"])
-def test_a_determiner_or_a_number_with_a_noun_is_an_attribution(last: str) -> None:
-    (found,) = candidates("> Choose the map, not the list.\n>\n" + last)
-    assert found.key.endswith("|quotation block quote")
 
 
 @pytest.mark.parametrize(("text", "section", "index"), [
@@ -2015,3 +1925,62 @@ def test_markdown_outside_the_subset_fails_the_run_and_says_where_the_list_is(tm
 def test_the_docstring_lists_the_supported_markdown() -> None:
     doc = cx.__doc__ or ""
     assert "Supported Markdown\n------------------" in doc and "OUTSIDE SUPPORTED MARKDOWN" in doc
+
+
+# ---------------------------------------------------------------------------
+# A quotation only by its marks, and marks that pair
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.parametrize("last", [
+    "> — A parent", "> -- Session 05's script", "> ― A parent, after Session 05", "> — *A parent*",
+    "> — 3 families in the pilot", "> — Mom and Dad", "> — Grandma Rose", "> — Dr. Kim",
+    "> — Choose The Map", "> — Then check the route", "> -- and then check the route.", "> — The",
+    "> — 3", "> —",
+])
+@pytest.mark.parametrize("layout", ["paragraph", "line"])
+def test_a_dash_led_last_line_makes_no_quotation_and_is_named(last: str, layout: str) -> None:
+    # The recount reads a quotation by its marks alone; a dash-led line that ends a block quote, the form of an
+    # attribution, is outside the supported Markdown, however its words look.
+    joiner = "\n>\n" if layout == "paragraph" else "\n"
+    text = "> Choose the map, not the list." + joiner + last
+    keys = [c.key for c in every_candidate(text)]
+    assert keys and all(k.endswith("|block quote") and not k.endswith("|quotation block quote") for k in keys)
+    (named,) = cx.parse_text(text).unsupported
+    assert named == (text.count("\n") + 1, "a block quote that ends in a dash-led line, the form of an attribution")
+
+
+@pytest.mark.parametrize("text", [
+    '> "Choose the map, not the list."\n\n— A parent',
+    "> — A parent\n>\n> Choose the map, not the list.",
+    "Choose the map, not the list.\n\n— A parent",
+])
+def test_a_dash_led_line_that_ends_no_block_quote_is_not_named(text: str) -> None:
+    assert cx.parse_text(text).unsupported == []
+
+
+def test_a_source_named_after_a_quotation_in_marks_leaves_it_a_quotation() -> None:
+    keys = [c.key for c in every_candidate('> "Choose the map, not the list."\n\n— A parent')]
+    assert 'device|"Choose the map, not the list."|1|quotation block quote' in keys
+
+
+@pytest.mark.parametrize("text", [
+    "> \"Choose the map, not the list.'",
+    "> “Choose the map, not the list.\"",
+    "> \"Choose the map, not the list.”",
+    "> 'Choose the map, not the list.’",
+    "> ‘Choose the map, not the list.'",
+    "> “Choose the map, not the list.’",
+    "> ‘Choose the map, not the list.”",
+])
+def test_quotation_marks_that_do_not_pair_enclose_nothing(text: str) -> None:
+    keys = [c.key for c in every_candidate(text)]
+    assert keys and not any(k.endswith("|quotation block quote") for k in keys)
+
+
+@pytest.mark.parametrize(("text", "enclosed"), [
+    ('"a"', True), ("“a”", True), ("'a'", True), ("‘a’", True), ("**‘a’**", True),
+    ('"a\'', False), ("“a\"", False), ("'a’", False), ("‘a'", False), ('"', False), ("a", False),
+])
+def test_quotation_marks_enclose_text_only_as_a_pair(text: str, enclosed: bool) -> None:
+    assert cx.enclosed_in_marks(text) is enclosed
