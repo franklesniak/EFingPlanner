@@ -37,7 +37,7 @@ Round to easy numbers first. A calculator is always fine, and a grown-up can do 
 3. **Activities.** What might one day's tickets cost? Look at the ticket rows on your attraction cards. If a card's ticket row is empty, fill it in first, or write "ask an adult".
 4. **Long-distance transit.** Only fill this in for a day when you move to a new city. On other days, write "not today". The grown-ups add these longer rides to the budget on their own page.
 5. **Souvenirs.** What might you spend on small things? A grown-up sets the amount and tells you before you start.
-6. **Unknown / ask adult.** Anything you can't estimate goes in this row. Name the cost, and write "ask adult" in its boxes. That's a finished answer, not a gap.
+6. **Unknown / ask an adult.** Anything you can't estimate goes in this row. Name the cost, and write "ask an adult" in its boxes. That's a finished answer, not a gap.
 7. **Add each column** to get a low, a medium and a high total for one day.
 
 Found a price in another currency? Your destination pack's money basics page shows how to change it into your family's money. Rates move, so write the date you checked.
@@ -55,7 +55,7 @@ Your daily cost table, for one ordinary day, for the whole family. It asks about
 | Activities and tickets | | | |
 | Long-distance transit, if you change cities that day | | | |
 | Souvenirs | | | |
-| Unknown / ask adult (name the cost) | | | |
+| Unknown / ask an adult (name the cost) | | | |
 | **Total for one day** | | | |
 
 You can say your answers to an adult who writes them, or draw them, if that's easier.

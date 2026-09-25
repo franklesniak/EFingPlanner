@@ -33,7 +33,7 @@ Tabs 3 and 4 have a different line if your dates were booked. Your Trip-Basics c
 
 Two lines in the list depend on choices your family made. The restaurant and food shortlist goes under tab 5 only if you did the food sessions. The language and etiquette sheet goes under tab 8 only if you did that session. If you skipped one, write "we didn't do this session" on that tab, and that line is complete.
 
-Tab 10 gets the parent review forms from your checkpoints now. Its follow-up questions come in Sessions 51 and 52. Tab 11 fills up in Sessions 52 and 53. For now, write "comes next" where a page is still to come.
+Tab 10 gets the parent review forms from your checkpoints now. Its follow-up questions come in Sessions 51 and 52. Tab 11 fills up in Sessions 52 and 53. For now, write "comes next" where a page is still to come. Session 53 puts those pages in before you hand the binder over.
 
 The pages inside your binder should be clean and easy to read, because the grown-ups will use them. Your cover and your dividers are the **"Make It Yours" zone**. Decorate those however you like.
 
@@ -48,12 +48,12 @@ Your binder checklist. Tick each tab when its pages are in:
 | 3. Destination Overview | Season recommendation, or the season confirmation if your dates were booked | |
 | 4. Cities and Route | City long-list; City shortlist and recommendation; Route recommendation; Trip-length recommendation, or the nights plan if your dates were booked; Transportation notes | |
 | 5. Attractions and Food | Top attractions and experiences; Culture/history/nature/food/fun balance check; Restaurant and food shortlist, if you did the food sessions | |
-| 6. Hotels and Budget | Hotel and neighborhood comparison summary; Budget estimate | |
+| 6. Hotels and Budget | Hotel and neighborhood comparison summary (your Neighborhood Comparison and your Hotel Comparison Cards); Budget estimate | |
 | 7. Itinerary | Day-by-day itinerary; Reservation watchlist; Backup plans; Cut list or "save for future trip" list | |
 | 8. Readiness | Packing list; Language and etiquette quick sheet, if you did that session; Readiness checklist | |
 | 9. Sources and Decisions | Source log; Decision log; "My Calls" page | |
 | 10. Parent Review | Adult follow-up questions; parent review forms | |
-| 11. Final Recommendation | Final recommendation summary; Final reflection | |
+| 11. Final Recommendation | Final recommendation summary (your final recommendation packet from Session 52); Final reflection | |
 
 You can say your answers to an adult who writes them, or draw them, if that's easier.
 

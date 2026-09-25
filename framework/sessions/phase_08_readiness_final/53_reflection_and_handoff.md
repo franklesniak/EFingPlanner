@@ -12,7 +12,7 @@ You are here: Phase 8 (Readiness and Final), First Taste step 13 of 13. **This i
 - Planner skill: reflection; knowing when to stop
 - Estimated time: 20-30 minutes
 - Parent involvement: co-working recommended; deliver the finish acknowledgment warmly
-- Materials: your baseline reflection from Session 01, your budget estimate from Session 33, a [Final Reflection page](../../templates/final_reflection.md), and the plan pages you hand over: your Checkpoint 1 season, your city choice from Session 21, and your must-see list and special pick from Session 44. On the Core path, your assembled binder from Session 50 holds the plan pages, with your must-do list and approved route in place of the must-see list and the city choice, and the final reflection page in your kit's `outputs` folder takes the place of the Final Reflection page. On the Core path, also bring your checkpoint reflections, your minutes guesses and times from Sessions 16, 26, 35 and 45 (on your City A card, your Session 26 scoring tables, your Session 35 Hotel Comparison Cards and your itinerary draft), your budget summary from Session 39, your family's [current travel assumptions](../../templates/current_family_travel_assumptions.md) page (for the budget band), and your First Taste reflection if this is your capstone re-run.
+- Materials: your baseline reflection from Session 01, your budget estimate from Session 33, a [Final Reflection page](../../templates/final_reflection.md), and the plan pages you hand over: your Checkpoint 1 season, your city choice from Session 21, and your must-see list and special pick from Session 44. On the Core path, your assembled binder from Session 50 holds the plan pages, with your must-do list and approved route in place of the must-see list and the city choice, and the final reflection page in your kit's `outputs` folder takes the place of the Final Reflection page. On the Core path, also bring your follow-up questions from Sessions 51 and 52, Checkpoint 6's parent review form, your final recommendation packet, your checkpoint reflections, your minutes guesses and times from Sessions 16, 26, 35 and 45 (on your City A card, your Session 26 scoring tables, your Session 35 Hotel Comparison Cards and your itinerary draft), your budget summary from Session 39, your family's [current travel assumptions](../../templates/current_family_travel_assumptions.md) page (for the budget band), and your First Taste reflection if this is your capstone re-run.
 
 ## Goal
 
@@ -44,7 +44,7 @@ These are the same planning moves people use for homework, chores, and any big p
 - **Time.** In Sessions 16, 26, 35 and 45, how big was the gap between your guess and your time? Did the gaps get smaller with practice? If one of those has no guess, use the ones that do. Being off is normal.
 - **Budget.** How close did your Session 39 budget come to your family's band? The band is the anchor you compare with, since nobody has spent the money yet.
 
-**Hand it off.** Give your plan to the grown-ups: your season pick (or your season confirmation, if your dates were booked), your city choice (with roughly how many days for each), your must-see list, your one special pick, and your budget check. You did the planning; they do the booking. On the Core path, hand over the full binder you put together in Session 50. In it, your must-do list takes the place of the must-see list, and your approved route, with its nights, takes the place of the city choice.
+**Hand it off.** Give your plan to the grown-ups: your season pick (or your season confirmation, if your dates were booked), your city choice (with roughly how many days for each), your must-see list, your one special pick, and your budget check. You did the planning; they do the booking. On the Core path, first put your newest pages in your binder, in place of each "comes next": the follow-up questions and Checkpoint 6's parent review form behind tab 10, and your final recommendation packet and this final reflection behind tab 11. Then hand over the full binder you put together in Session 50. In it, your must-do list takes the place of the must-see list, and your approved route, with its nights, takes the place of the city choice.
 
 ## Workspace
 
@@ -62,7 +62,7 @@ On the Core path: your final reflection, with the three extra questions answered
 
 You are done when you have looked back at your baseline, answered a few reflection questions, and handed your plan to a grown-up. This is the finish line. On the First Taste path, you can stop here with a usable mini-plan.
 
-On the Core path, you are done when you've also answered the three extra questions and handed your binder to a grown-up. If this is your capstone re-run, you've looked back at your First Taste reflection too. This is the finish line for the whole project.
+On the Core path, you are done when you've also answered the three extra questions, filled tabs 10 and 11, and handed your binder to a grown-up. If this is your capstone re-run, you've looked back at your First Taste reflection too. This is the finish line for the whole project.
 
 ## Source Check
 

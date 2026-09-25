@@ -2084,7 +2084,7 @@ page". **Do not write the Destination Notes phrase.** (`D-item-3`.)
 
 **Use low / medium / high estimates, never a single pinned number.** The categories in the
 daily table: **Food · Local transit · Activities · Long-distance transit if applicable ·
-Souvenirs · Unknown / ask adult.** "Unknown / ask adult" is a **finished answer**, not a
+Souvenirs · Unknown / ask an adult.** "Unknown / ask an adult" is a **finished answer**, not a
 gap.
 
 **Budget-teaching rules that govern this page:**
@@ -4354,10 +4354,10 @@ from this table. (`D-item-7`.)
 | 30 | checking sources | 20-30 minutes | none / independent work | Core |
 | 31 | making trade-offs | 20-30 minutes | parent review after session | Core |
 | 32 | making trade-offs | 20-30 minutes for the child, plus a 20-40 minute review with you | parent review -- genuinely use the recommendation in a real family talk | Core -- **Checkpoint 4** |
-| 34 | comparing choices | 20-30 minutes | none / independent work; stay nearby for any search beyond the Destination Notes and official city sites | Core |
+| 34 | comparing choices | 20-30 minutes | none / independent work; stay nearby for any search beyond the Destination Notes and official city sites, and beside your child for an image search | Core |
 | 35 | comparing choices | 20-30 minutes per sitting, several sittings | none / independent work | Core |
-| 36 | organizing information | 20-30 minutes | none / independent work; stay nearby for any search beyond the Destination Notes | Conditional core |
-| 37 | organizing information | 20-30 minutes | none / independent work; stay nearby for any search beyond the Destination Notes | Conditional core |
+| 36 | organizing information | 20-30 minutes | none / independent work; stay nearby for any search beyond the Destination Notes, and beside your child for an image search | Conditional core |
+| 37 | organizing information | 20-30 minutes | none / independent work; stay nearby for any search beyond the Destination Notes, and beside your child for an image search | Conditional core |
 | 38 | planning realistic time | 20-30 minutes | 5-minute check-in; beforehand, tell your child the souvenir amount for one day | Core |
 | 39 | revising a plan | 20-30 minutes | parent review after session; beforehand, tell your child how many rooms each overnight city needs | Core |
 | 40 | planning realistic time | 20-30 minutes | 5-minute check-in | Core |

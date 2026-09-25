@@ -9,7 +9,7 @@ You are here: Phase 6 (Lodging, Food, and Budget). Not a First Taste step. Previ
 - Status: Conditional core -- becomes Core if your family wants the restaurant and food shortlist in the binder; otherwise it is Recommended
 - Planner skill: organizing information
 - Estimated time: 20-30 minutes
-- Parent involvement: none / independent work; stay nearby for any search beyond the Destination Notes
+- Parent involvement: none / independent work; stay nearby for any search beyond the Destination Notes, and beside your child for an image search
 - Materials: this session's Destination Notes, a device with the kid-safe filter on, a grown-up nearby if you search beyond the Destination Notes (beside you for an image search), your food wish list from Session 36, any Restaurant Research Cards from an earlier sitting, blank [Restaurant Research Cards](../../templates/restaurant_research_card.md), your Hotel Comparison Cards from Session 35, your must-do list on your My Calls page, the route your family approved at Checkpoint 4, your [Trip-Basics card](../../templates/trip_basics.md) (for the number of travelers), your part-trip note from Session 33 (if you made one), your [Source Log](../../templates/source_log.md)
 
 ## Goal
@@ -18,11 +18,11 @@ Turn your food wish list into a few places to eat, or areas full of them, that y
 
 ## Start Here
 
-Pick one food from your Session 36 wish list, and write it at the top of a blank Restaurant Research Card. That's your start. Already have a card for the place you're thinking of? Add to that one instead.
+Did your family skip Session 36? Then skip this session too, and go on to Session 38. If not, pick one food from your Session 36 wish list, and write it at the top of a blank Restaurant Research Card. That's your start. Already have a card for the place you're thinking of? Add to that one instead.
 
 ## Steps
 
-This session goes with Session 36. If your family chose the food list for the binder, it's part of the plan. If your family skipped it, you can skip this one too.
+This session goes with Session 36. If your family chose the food list for the binder, it's part of the plan.
 
 A card can be about one place to eat, or about a whole area with lots of places to eat. **An area counts as a card.** You don't have to find one exact restaurant to do this well.
 

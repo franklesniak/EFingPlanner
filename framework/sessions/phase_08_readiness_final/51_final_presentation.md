@@ -10,7 +10,7 @@ You are here: Phase 8 (Readiness and Final). Not a First Taste step. Previous: [
 - Planner skill: organizing information
 - Estimated time: 20-30 minutes
 - Parent involvement: 5-minute check-in
-- Materials: your assembled binder from Session 50, your [Trip-Basics card](../../templates/trip_basics.md) (for the trip length), a blank [Final Presentation Outline](../../templates/final_presentation_outline.md), your route map notes from Session 28 and a device with a map app or map website (kid-safe filter on) (in case a grown-up has changed where you arrive or leave), your [Source Log](../../templates/source_log.md)
+- Materials: your assembled binder from Session 50, your [Trip-Basics card](../../templates/trip_basics.md) (for the booked trip length, if your dates are booked), a blank [Final Presentation Outline](../../templates/final_presentation_outline.md), your route map notes from Session 28 and a device with a map app or map website (kid-safe filter on) (in case a grown-up has changed where you arrive or leave), your [Source Log](../../templates/source_log.md)
 
 ## Goal
 

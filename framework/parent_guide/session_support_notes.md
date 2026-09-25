@@ -163,6 +163,6 @@ Want a rough signal of how the executive-function side is going? The optional [e
 
 - Role: co-work; deliver the finish acknowledgment warmly, in the duration-true wording: the duration-neutral form for a First Taste finisher, and the months-long form for a child finishing the Core or full path, including a capstone re-run after First Taste.
 - Prep: the Session 01 baseline reflection; a Final Reflection page. On the Core path, the kit's final reflection page in place of the Final Reflection page, and also the assembled binder, the checkpoint reflections, the minutes guesses and the Session 39 budget summary.
-- Look for: a reflection compared to the baseline, and the plan handed to you. On the Core path, answers to three more questions, on patterns, time guesses and the budget against the band, and the full binder handed over, with the must-do list and the approved route in place of the must-see list and the city choice.
+- Look for: a reflection compared to the baseline, and the plan handed to you. On the Core path, answers to three more questions, on patterns, time guesses and the budget against the band, and the full binder handed over, with tabs 10 and 11 filled in, and with the must-do list and the approved route in place of the must-see list and the city choice.
 - Coaching question: "Where else could you use one of these planning moves?"
 - Pitfall: skipping the acknowledgment. Finishing a real project is a big deal -- say so.

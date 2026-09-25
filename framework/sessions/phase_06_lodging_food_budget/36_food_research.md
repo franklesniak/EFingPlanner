@@ -9,7 +9,7 @@ You are here: Phase 6 (Lodging, Food, and Budget). Not a First Taste step. Previ
 - Status: Conditional core -- becomes Core if your family wants the restaurant and food shortlist in the binder; otherwise it is Recommended
 - Planner skill: organizing information
 - Estimated time: 20-30 minutes
-- Parent involvement: none / independent work; stay nearby for any search beyond the Destination Notes
+- Parent involvement: none / independent work; stay nearby for any search beyond the Destination Notes, and beside your child for an image search
 - Materials: this session's Destination Notes, a device with the kid-safe filter on, a grown-up nearby if you search beyond the Destination Notes (beside you for an image search), your [Trip-Basics card](../../templates/trip_basics.md) (for the number of travelers), your part-trip note from Session 33 (if you made one), the route your family approved at Checkpoint 4, your [Source Log](../../templates/source_log.md), a pencil
 
 ## Goal
