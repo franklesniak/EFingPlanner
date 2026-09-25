@@ -236,7 +236,7 @@ def test_a_code_value_in_another_case_or_inside_a_run_is_not_found(text: str) ->
         "twenty-three days", "Twenty three nights", "twenty-three-day", "2" + "&#51;" + " days",
         "up to 23 days.", "(23 nights)",
         "**23** days", "*23* days", "_23_ nights", "`23` days", "(23) days", "23 *days*", "**23 days**",
-        "'23' days", "23 (days)",
+        "'23' days", "23 (days)", "label,23 days", "Length.23 days", "a;23 nights",
     ],
 )
 def test_the_trip_length_number_with_its_unit_is_a_leak(text: str) -> None:
@@ -331,6 +331,30 @@ def test_candidates_read_an_escaped_number_once(text: str, expected: list[tuple[
     assert hook.bare_numbers(text, VALUES) == expected
 
 
+@pytest.mark.parametrize(
+    "text",
+    ["9" * 5000 + " days", "9" * 5000, "&#" + "9" * 5000 + ";", "&#x" + "f" * 5000 + ";", "0" * 5000 + "23 days"],
+    ids=["digits-with-a-unit", "bare-digits", "numeric-reference", "hex-reference", "zeros-then-the-number"],
+)
+def test_a_very_long_digit_run_is_read_without_int(
+    tmp_path: Path, made_up_family: None, capsys: pytest.CaptureFixture[str], text: str
+) -> None:
+    """Python refuses ``int()`` on more than 4,300 digits, and a tracked file may hold such a run."""
+    root = make_repo(tmp_path, {"a.md": text + "\n"})
+    expected = 1 if text.endswith("23 days") else 0
+    assert hook.main(["--rule", "family"], root=root) == expected
+    assert hook.main(["--rule", "family", "--candidates"], root=root) == 0
+    assert "unexpected error" not in capsys.readouterr().err
+
+
+def test_digits_are_normalized_as_text() -> None:
+    arabic_indic = chr(0x0662) + chr(0x0663)
+    assert hook.digits_value("0023") == "23"
+    assert hook.digits_value(arabic_indic) == "23"
+    assert hook.digits_value("000") == "0"
+    assert family(arabic_indic + " days\n") == [(1, "number")]
+
+
 def test_candidates_lists_bare_numbers_and_leaves_out_leaks() -> None:
     """``--candidates`` is the grep note's hand-read, so a leak it already reports is not listed."""
     text = (
@@ -348,6 +372,24 @@ def test_candidates_mode_prints_and_exits_zero(
     out = capsys.readouterr().out
     assert out.startswith("notes.md:1:9: a bare trip-length number.")
     assert len(out.strip().splitlines()) == 1
+
+
+def test_candidates_lists_a_bare_number_in_a_path(
+    tmp_path: Path, made_up_family: None, capsys: pytest.CaptureFixture[str]
+) -> None:
+    """The hand-read covers what the enforcing path scan leaves: a bare number in a file's name, binary or not."""
+    root = make_repo(
+        tmp_path,
+        {"docs/photo_23.png": b"\x00\x01", "docs/session_23.md": "Clean.\n", "docs/session_24.md": "Clean.\n"},
+    )
+    assert hook.main(["--rule", "family", "--candidates"], root=root) == 0
+    lines = capsys.readouterr().out.strip().splitlines()
+    assert lines == [
+        "docs/photo_23.png: a bare trip-length number in the file's path, at column 12. Read it in context; "
+        "it is a leak only if it states the family's maximum trip length.",
+        "docs/session_23.md: a bare trip-length number in the file's path, at column 14. Read it in context; "
+        "it is a leak only if it states the family's maximum trip length.",
+    ]
 
 
 def test_candidates_needs_the_family_rule(tmp_path: Path, capsys: pytest.CaptureFixture[str]) -> None:
@@ -542,9 +584,9 @@ def test_a_malformed_destination_row_is_an_error(row: tuple[object, ...], fragme
     ("rows", "fragment"),
     [
         ((), "holds no value"),
-        ((("phrase", 1, "0" * 64),), "names the kind"),
-        ((("word", 0, "0" * 64),), "gives 0 words"),
-        ((("word", 4, "0" * 64),), "gives 4 words"),
+        ((("phrase", 1, "0" * 64),), "names an unknown kind"),
+        ((("word", 0, "0" * 64),), "gives a word count that is not a whole number from 1 to 3"),
+        ((("word", 4, "0" * 64),), "gives a word count that is not a whole number from 1 to 3"),
         ((("code", 2, "0" * 64),), "gives a code value 2 words"),
         ((("word", 1, "0" * 60),), "no 64-character lowercase hex digest"),
         ((("word", 1, "0" * 64), ("word", 1, "0" * 64)), "repeats an earlier row"),
@@ -830,6 +872,22 @@ def test_a_destination_name_in_a_framework_path_fails_the_run(
     assert hook.main(["--rule", "destination"], root=root) == 0
 
 
+def test_an_escaped_destination_name_in_a_path_gets_a_row_that_excuses_it(
+    tmp_path: Path, made_up_family: None, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    """``--exemption-rows`` prints a row whose context holds its decoded name, so the row passes the data check."""
+    root = make_repo(tmp_path, {"framework/%54okyo.md": "Clean.\n", "framework/b.md": "Clean.\n"})
+    assert hook.main(["--rule", "destination", "--exemption-rows"], root=root) == 0
+    printed = [ast.literal_eval(line.strip().rstrip(",")) for line in capsys.readouterr().out.strip().splitlines()]
+    assert [(row[0], row[1], row[2]) for row in printed] == [
+        ("framework/%54okyo.md", "Tokyo", "(path) framework/Tokyo.md")
+    ]
+    rows = tuple(row[:4] + ("a test row",) for row in printed)
+    assert hook.check_exemption_rows("destination", rows) == []
+    monkeypatch.setattr(hook, "DESTINATION_EXEMPTIONS", rows)
+    assert hook.main(["--rule", "destination"], root=root) == 0
+
+
 def test_a_family_value_in_a_path_fails_the_run_and_is_never_printed(
     tmp_path: Path, made_up_family: None, capsys: pytest.CaptureFixture[str]
 ) -> None:
@@ -1050,6 +1108,55 @@ def test_an_argument_error_prints_no_family_value(made_up_family: None, capsys: 
     assert "unrecognized arguments: --<family value>-notes" in err and "quillhaven" not in err.casefold()
 
 
+def damaged_rows() -> tuple[object, ...]:
+    """Return the made-up family's rows with the city's row damaged, so no well-formed row masks the city."""
+    rows = list(value_rows(MADE_UP))
+    city = value_rows((MADE_UP[0],))
+    return tuple(("phrase", row[1], row[2]) if row in city else row for row in rows)
+
+
+def test_a_row_error_never_repeats_a_field(
+    tmp_path: Path, made_up_family: None, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    """A value typed into a row's kind or word count is not printed back: the row is named by number."""
+    others = value_rows(MADE_UP[1:])
+    typed_in = (("Quillhaven", 2, "0" * 64), ("word", "Quillhaven", "1" * 64))
+    monkeypatch.setattr(hook, "FAMILY_VALUES", others + typed_in)
+    root = make_repo(tmp_path, {"docs/a.md": "Clean.\n"})
+    for rule in ("family", "destination"):
+        assert hook.main(["--rule", rule], root=root) == 1
+        err = capsys.readouterr().err
+        assert "quillhaven" not in err.casefold()
+        assert "names an unknown kind" in err and "gives a word count" in err
+
+
+def test_an_argument_error_is_withheld_while_a_value_row_is_malformed(
+    made_up_family: None, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    """A malformed row masks nothing, so argparse's message, which names the argument, is not printed."""
+    monkeypatch.setattr(hook, "FAMILY_VALUES", damaged_rows())
+    with pytest.raises(SystemExit) as exited:
+        hook.main(["--rule", "family", "--quillhaven-notes"])
+    assert exited.value.code == 2
+    err = capsys.readouterr().err
+    assert "quillhaven" not in err.casefold()
+    assert err.strip().endswith(": error: " + hook.ARGUMENTS_WITHHELD)
+
+
+def test_a_crash_is_withheld_while_a_value_row_is_malformed(
+    made_up_family: None, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    """A crash before the value check prints the fixed line, not its message, while a row is malformed."""
+    monkeypatch.setattr(hook, "FAMILY_VALUES", damaged_rows())
+
+    def crash(*_args: object, **_kwargs: object) -> object:
+        raise ValueError("could not read the Quillhaven notes")
+
+    monkeypatch.setattr(hook, "parse_args", crash)
+    assert hook.main(["--rule", "family"]) == 2
+    assert capsys.readouterr().err.strip() == hook.CRASH_UNMASKABLE
+
+
 def add_submodule_entry(root: Path, name: str) -> None:
     """Record a submodule (a gitlink) at ``name`` in the index, with no repository behind it."""
     subprocess.run(
@@ -1177,17 +1284,33 @@ def test_the_destination_rule_never_prints_a_family_value(
     assert "framework/<family value>.md (a link)" in err and "quillhaven" not in err.casefold()
 
 
-def test_a_malformed_value_row_does_not_stop_the_destination_rule_masking(
-    tmp_path: Path, made_up_family: None, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+@pytest.mark.parametrize(
+    ("damage", "fragment"),
+    [("kind", "names an unknown kind"), ("words", "gives a word count"), ("extra", "names an unknown kind")],
+)
+def test_a_malformed_value_row_stops_both_rules_and_prints_no_value(
+    tmp_path: Path,
+    made_up_family: None,
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
+    damage: str,
+    fragment: str,
 ) -> None:
-    """The family rule reports a malformed row; the destination rule still masks with the well-formed ones."""
-    monkeypatch.setattr(hook, "FAMILY_VALUES", value_rows(MADE_UP) + (("phrase", 1, "0" * 64),))
+    """A row the data check cannot read masks nothing, so neither rule prints repository text while it stands."""
+    rows = list(value_rows(MADE_UP))
+    if damage == "kind":
+        rows[0] = ("phrase", rows[0][1], rows[0][2])
+    elif damage == "words":
+        rows[0] = (rows[0][0], 0, rows[0][2])
+    else:
+        rows.append(("phrase", 1, "0" * 64))
+    monkeypatch.setattr(hook, "FAMILY_VALUES", tuple(rows))
     root = make_repo(tmp_path, {"framework/quillhaven_tokyo.md": "Clean.\n"})
-    assert hook.main(["--rule", "destination"], root=root) == 1
-    out = capsys.readouterr().out
-    assert "framework/<family value>_tokyo.md" in out and "quillhaven" not in out.casefold()
-    assert hook.main(["--rule", "family"], root=root) == 1
-    assert "names the kind 'phrase'" in capsys.readouterr().err
+    for rule in ("destination", "family"):
+        assert hook.main(["--rule", rule], root=root) == 1
+        captured = capsys.readouterr()
+        assert fragment in captured.err
+        assert captured.out == "" and "quillhaven" not in captured.err.casefold()
 
 
 def test_only_emit_and_print_hash_rows_print() -> None:
@@ -1247,11 +1370,11 @@ def test_a_crash_while_masking_prints_nothing_from_the_error(
     def crash(*_args: object, **_kwargs: object) -> object:
         raise ValueError("Quillhaven")
 
-    def broken(_rows: object) -> object:
+    def broken() -> object:
         raise RuntimeError("the masking values could not load")
 
     monkeypatch.setattr(hook, "scan", crash)
-    monkeypatch.setattr(hook, "well_formed_values", broken)
+    monkeypatch.setattr(hook, "output_mask", broken)
     assert hook.main(["--rule", "family"], root=root) == 2
     assert capsys.readouterr().err.strip() == hook.CRASH_UNMASKABLE
 

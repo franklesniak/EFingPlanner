@@ -78,16 +78,19 @@ file's included.
   - in a grep pattern for it: the number, a bracket class or a ``\\s`` or
     ``\\W`` escape, then the unit, as a hand-run leak grep writes it.
 
-  A spelled-out number from one to ninety-nine counts as its digits. A
-  number that is part of a decimal or a thousands group is not a match. A
-  bare number is not a leak: the design record's grep note lists page
-  numbers, item counts and dates as the wider pattern's false positives, and
-  the Batch 2 build brief scopes this hook to the number with its unit. The
-  label and the cap phrase state the trip length as plainly as a unit does.
-  ``--candidates`` lists the bare occurrences for the grep note's hand-read,
-  and does not fail. A word between the number and its unit ("N full
-  days"), and a cap with no unit or label ("the trip cannot go past N"), are
-  left to that hand-read.
+  A spelled-out number from one to ninety-nine counts as its digits, and
+  digits from any script count as their ASCII digits, read as text, so a
+  run of any length is read. A number that is part of a decimal or a
+  thousands group is not a match; a comma or a full stop that does not
+  follow a digit, as in a CSV field, does not hide one. A bare number is
+  not a leak: the design record's grep note lists page numbers, item counts
+  and dates as the wider pattern's false positives, and the Batch 2 build
+  brief scopes this hook to the number with its unit. The label and the cap
+  phrase state the trip length as plainly as a unit does. ``--candidates``
+  lists the bare occurrences, in text and in paths, for the grep note's
+  hand-read, and does not fail. A word between the number and its unit ("N
+  full days"), and a cap with no unit or label ("the trip cannot go past
+  N"), are left to that hand-read.
 * A **destination** name matches a word that begins with it, in any case,
   so a demonym or a path segment into a pack matches. The names are the five
   ``AC-16-1`` gives, and the name of every folder under ``destinations/``
@@ -107,9 +110,10 @@ judges the rows of the files it read, and a walk judges every row, so a
 row for a file Git no longer tracks is stale there. ``--exemption-rows``
 prints a row for each unexcused match, for a maintainer to review and paste
 in with a reason. A destination name in a path is excused by a row whose
-context is ``(path)`` and the path. A family value in a path is never
-excused, because its row would spell the value: rename the file. No row
-is printed whose path or words hold a family value, under either rule.
+context is ``(path)`` and the path, decoded when the name was escaped. A
+family value in a path is never excused, because its row would spell the
+value: rename the file. No row is printed whose path or words hold a
+family value, under either rule.
 
 Output
 ------
@@ -118,6 +122,11 @@ each family value in it with ``<family value>``: a hit, a stale row, a
 refusal, an error, a candidate and an exemption row. The destination rule
 masks as the family rule does, so a framework path or line that holds both
 a destination name and a family value prints the name and hides the value.
+A malformed value row stops both rules before either prints anything read
+from the repository, since a row the data check cannot read masks nothing.
+While one stands, an argument error or an unexpected error prints a fixed
+line in place of its message, and a row error names the row by number, not
+by what it holds.
 A value is masked as it is written, escaped or not, and so is an argument
 error, which names the argument it could not read. Only ``--hash`` prints
 elsewhere, and it prints digests. An unexpected error prints one masked
@@ -153,7 +162,9 @@ leak greps runs these calls instead, and they name no value and print none:
 * ``python .github/scripts/check-leaks.py --rule family``, which exits 1 and
   prints each unexcused occurrence as a path, line, column and kind;
 * ``python .github/scripts/check-leaks.py --rule family --candidates``, the
-  grep note's hand-read of bare numbers, which lists positions and exits 0;
+  grep note's hand-read of bare numbers, which lists positions and exits 0.
+  Those positions point at the family's number, so keep that list in a local
+  terminal: never paste it into a pull request, an issue or a CI log;
 * ``python .github/scripts/check-leaks.py --rule destination``.
 
 A grep for a destination name, for a path into ``destinations/`` or for a
@@ -549,8 +560,9 @@ SPELLED_NUMBER = (
     + r"|" + "|".join(sorted(UNITS, key=len, reverse=True)) + r")"
 )
 #: A number that does not continue a decimal, a thousands group or a word. An
-#: underscore may stand before it, as Markdown's emphasis mark.
-NUMBER_START = r"(?<![^\W_]|[.,])"
+#: underscore may stand before it, as Markdown's emphasis mark, and so may a
+#: comma or a full stop that does not follow a digit, as in a CSV field.
+NUMBER_START = r"(?<![^\W_])(?<!\d[.,])"
 #: A number that does not go on into a longer number or a word.
 NUMBER_END = r"(?![\w]|[.,]\d)"
 NUMBER = r"(?P<number>\d+|" + SPELLED_NUMBER + r")"
@@ -612,10 +624,19 @@ def spelled_to_int(text: str) -> int:
     return total
 
 
+def digits_value(text: str) -> str:
+    """Return decimal digits as ASCII digits with no leading zero, without ``int()``.
+
+    Python refuses ``int()`` on a string of more than 4,300 digits, and a
+    tracked file can hold one, so the digits are normalized as text.
+    """
+    return "".join(str(unicodedata.decimal(character)) for character in text).lstrip("0") or "0"
+
+
 def number_value(text: str) -> str:
     """Return a matched number as the digits a number value is hashed from."""
-    if text.isdigit():
-        return str(int(text))
+    if text.isdecimal():
+        return digits_value(text)
     return str(spelled_to_int(text))
 
 
@@ -659,8 +680,8 @@ def normalize_value(kind: str, value: str) -> list[str]:
         return [code]
     if kind == "number":
         text = value.strip()
-        if text.isdigit():
-            return [str(int(text))]
+        if text.isdecimal():
+            return [digits_value(text)]
         if re.fullmatch(SPELLED_NUMBER, text, re.IGNORECASE):
             return [str(spelled_to_int(text))]
         raise ValueError("a number value is written in digits, or spelled out from one to ninety-nine")
@@ -713,11 +734,16 @@ def check_family_values(rows: Sequence[object]) -> list[str]:
             errors.append(f"FAMILY_VALUES row {number} is not (kind, words, digest)")
             continue
         kind, words, digest = row
+        # An error names the row by number and never repeats a field: a
+        # field typed in the wrong place could hold a value, and this error
+        # prints before any mask can be trusted.
         if kind not in KINDS:
-            errors.append(f"FAMILY_VALUES row {number} names the kind {kind!r}")
+            errors.append(f"FAMILY_VALUES row {number} names an unknown kind; it is one of {', '.join(KINDS)}")
         if not isinstance(words, int) or isinstance(words, bool) or not 1 <= words <= MAX_VALUE_WORDS:
-            errors.append(f"FAMILY_VALUES row {number} gives {words!r} words; it is 1 to {MAX_VALUE_WORDS}")
-        elif kind != "word" and words != 1:
+            errors.append(
+                f"FAMILY_VALUES row {number} gives a word count that is not a whole number from 1 to {MAX_VALUE_WORDS}"
+            )
+        elif kind in KINDS and kind != "word" and words != 1:
             errors.append(f"FAMILY_VALUES row {number} gives a {kind} value {words} words; it is 1")
         if not isinstance(digest, str) or not HEX_DIGEST.fullmatch(digest):
             errors.append(f"FAMILY_VALUES row {number} holds no 64-character lowercase hex digest")
@@ -904,7 +930,10 @@ ESCAPE_BEFORE_WORD = re.compile(r"\\[A-Za-z](?=[^\W_])")
 
 
 #: A character reference, as ``html.unescape`` finds one.
-CHARACTER_REFERENCE = re.compile(r"&(#[0-9]+;?|#[xX][0-9a-fA-F]+;?|[^\t\n\f <&#;]{1,32};?)")
+#: The digits are bounded: no character needs more than seven, and
+#: ``html.unescape`` would pass a longer run to ``int()``, which refuses one of
+#: more than 4,300 digits.
+CHARACTER_REFERENCE = re.compile(r"&(#[0-9]{1,32};?|#[xX][0-9a-fA-F]{1,32};?|[^\t\n\f <&#;]{1,32};?)")
 #: A percent escape of an ASCII byte, or a run of escapes of the bytes above
 #: it, which UTF-8 decodes together, as ``urllib.parse.unquote`` does.
 PERCENT_ESCAPE = re.compile(r"%[0-7][0-9A-Fa-f]|(?:%[89A-Fa-f][0-9A-Fa-f])+")
@@ -1233,7 +1262,9 @@ def path_hits(
         if rule == "family":
             occurrence, context = "", ""
         else:
-            occurrence, context = reading.text[start:end], PATH_CONTEXT + display_path
+            # The context is the path as this reading reads it, so a decoded
+            # name stands in its own row's context.
+            occurrence, context = reading.text[start:end], PATH_CONTEXT + reading.text
         hits.append(Hit(rule, display_path, 0, column, label, occurrence, context, value_key, in_path=True))
     return hits
 
@@ -1525,6 +1556,13 @@ def scan(
             # A family value in a path is never excused: its row would spell it.
             if rule == "family" or not ledger.excuse(hit):
                 unexcused.append(hit)
+        if list_candidates and values is not None:
+            # A binary file's path is read too, so it is listed too.
+            for _line, column in bare_numbers(display_path, values):
+                candidates.append(
+                    f"{display_path}: a bare trip-length number in the file's path, at column {column}. Read it "
+                    "in context; it is a leak only if it states the family's maximum trip length."
+                )
         text = read_text(path, display_path)
         if text is None:
             continue
@@ -1550,7 +1588,11 @@ class ArgumentParser(argparse.ArgumentParser):
     """
 
     def error(self, message: str):  # type: ignore[override]
-        emit(f"{self.prog}: error: {message}", well_formed_values(FAMILY_VALUES), error=True)
+        mask = output_mask()
+        if mask is None:
+            emit(f"{self.prog}: error: {ARGUMENTS_WITHHELD}", NO_VALUES, error=True)
+        else:
+            emit(f"{self.prog}: error: {message}", mask, error=True)
         raise SystemExit(2)
 
 
@@ -1595,14 +1637,26 @@ def print_hash_rows(kind: str) -> int:
     return 0
 
 
-def well_formed_values(rows: Sequence[object]) -> FamilyValues:
-    """Return the family values of the rows that pass the data check, for masking output.
+def output_mask() -> FamilyValues | None:
+    """Return the values every printed line is masked with, or ``None`` while a value row is malformed.
 
-    Both rules mask with them, so a malformed row, which the family rule
-    reports, cannot stop the destination rule from masking the others.
+    A row the data check rejects masks nothing, whichever part of it is
+    wrong, so while one stands no line that holds repository text prints:
+    both rules stop, and an argument error or a crash prints a fixed line in
+    place of its message.
     """
-    good = [row for row in rows if not check_family_values([row])]
-    return FamilyValues.from_rows(good)  # type: ignore[arg-type]
+    if check_family_values(FAMILY_VALUES):
+        return None
+    return FamilyValues.from_rows(FAMILY_VALUES)  # type: ignore[arg-type]
+
+
+#: The mask for a line that holds no repository text.
+NO_VALUES = FamilyValues.from_rows(())
+#: What an argument error prints in place of its message while a value row is malformed.
+ARGUMENTS_WITHHELD = (
+    "the arguments could not be read. The message is withheld, since a malformed FAMILY_VALUES row "
+    "leaves it unmasked; run with --rule family to see the row"
+)
 
 
 def emit(text: str, values: FamilyValues, error: bool = False) -> None:
@@ -1643,9 +1697,13 @@ def main(argv: Sequence[str] | None = None, root: Path = REPO_ROOT) -> int:
         return run(argv, root)
     except Exception as error:  # noqa: BLE001 - every failure must stay masked
         try:
-            emit(crash_line(error), well_formed_values(FAMILY_VALUES), error=True)
+            mask = output_mask()
+            if mask is None:
+                emit(CRASH_UNMASKABLE, NO_VALUES, error=True)
+            else:
+                emit(crash_line(error), mask, error=True)
         except Exception:  # noqa: BLE001 - the masking itself failed, so print nothing from the error
-            emit(CRASH_UNMASKABLE, FamilyValues.from_rows(()), error=True)
+            emit(CRASH_UNMASKABLE, NO_VALUES, error=True)
         return 2
 
 
@@ -1654,7 +1712,15 @@ def run(argv: Sequence[str] | None = None, root: Path = REPO_ROOT) -> int:
     args = parse_args(argv)
     if args.hash_kind:
         return print_hash_rows(args.hash_kind)
-    values = well_formed_values(FAMILY_VALUES)
+    # A malformed value row stops both rules before either prints: every
+    # line is masked with these values, and a row the check rejects masks
+    # nothing.
+    errors = check_family_values(FAMILY_VALUES)
+    if errors:
+        for error in errors:
+            emit(error, NO_VALUES, error=True)
+        return 1
+    values = FamilyValues.from_rows(FAMILY_VALUES)  # type: ignore[arg-type]
     if args.rule is None:
         emit("choose a rule with --rule family or --rule destination", values, error=True)
         return 2
@@ -1662,9 +1728,8 @@ def run(argv: Sequence[str] | None = None, root: Path = REPO_ROOT) -> int:
         emit("--candidates lists trip-length numbers, so it needs --rule family", values, error=True)
         return 2
 
-    errors = check_family_values(FAMILY_VALUES) if args.rule == "family" else []
     exemptions = FAMILY_EXEMPTIONS if args.rule == "family" else DESTINATION_EXEMPTIONS
-    errors += check_exemption_rows(args.rule, exemptions)
+    errors = check_exemption_rows(args.rule, exemptions)
     if errors:
         for error in errors:
             emit(error, values, error=True)
