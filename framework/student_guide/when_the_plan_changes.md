@@ -60,7 +60,7 @@ Go down this list in order. For each page you've made, look at what it holds. If
 - **Your restaurant cards** (Session 37): the seating note.
 - **Your budget** (Sessions 38 and 39): your daily cost table, your hotel table, your slices and your subtotal. Add it up again, and check your band sentence. Keep your Session 33 Budget Estimate page as it is, because Session 53 looks back at it. If it's your only budget, as on First Taste, write the new numbers beside the old ones.
 - **Your day rules** (Session 40): your first-day, last-day and moving-day rules, which follow your ½ marks.
-- **Your day cards** (Session 41): each day's number, roughly when, where you'll sleep, its anchor and travel legs, its tickets row, its cost for everyone there, and its energy level.
+- **Your day cards** (Session 41): each day's number, roughly when, where you'll sleep, its anchor and travel legs, its tickets row, its cost (with "fewer of us" on a day someone is away), and its energy level.
 - **Your Reservation Watchlist** (Session 42): each item's rows.
 - **Your pacing review** (Session 43): run its checks again for each day the change touches. A new season touches every day's heat, and a new time difference the first days. A traveler's profile counts only on the days they're there, so a new traveler touches those days.
 - **Your cut list and backup plans** (Session 44).

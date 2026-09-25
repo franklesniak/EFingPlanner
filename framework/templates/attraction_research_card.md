@@ -15,7 +15,7 @@ Before you look up the ticket price, write your guess in the row that asks for i
 | Time needed (a rough guess in hours is fine) | |
 | Ticket or reservation needed? | |
 | My guess at the ticket price, before I looked it up | |
-| What I found when I checked: the price, whether it's per person or per family or group (and how many a family or group ticket covers), and a child's price if it's less (prices change, so write the date) | |
+| What I found when I checked: the price, whether it's per person or per family or group (and how many a family or group ticket covers), and a child's price if it's less, for the grown-ups (prices change, so write the date) | |
 | Best time of day? (check this again closer to the trip) | |
 | Nearby places I could group with it | |
 | Possible downside (crowded? far? tiring? costly?) | |
