@@ -10,7 +10,7 @@ Check off each session as you finish it. Your one big milestone is **Checkpoint 
 
 <!-- density-exempt: spaced dash -- the path parentheticals below are required content: this list is the one place a child reads what counts toward the 13 -->
 
-<!-- density-exempt: X, not Y -- the path parentheticals below are required content (Batch 1 brief lines 3330-3335): this list is the one place a child reads what counts toward the 13 -->
+<!-- density-exempt: X, not Y -- the path parentheticals below are required content (the batch 1 brief's entry for this page): this list is the one place a child reads what counts toward the 13 -->
 
 - [ ] 1. [01 Project Kickoff](../sessions/phase_00_setup/01_project_kickoff.md)
   - [ ] [02 Family Traveler Profiles](../sessions/phase_00_setup/02_family_traveler_profiles.md) *(full Phases 0-2 path only -- not one of the 13)*

@@ -27,12 +27,14 @@ breaks, comments and link reference definitions are not, wherever they sit, in
 a list item or a block quote included. Block quotes are read like prose; a
 quotation block quote, such as a coaching script, is judged "no". A block
 quote is a quotation when quotation marks, double or single, enclose it, or
-when it carries a named attribution line. An HTML block that shows text is
-read like a paragraph when all it hides is comments, processing instructions,
-declarations or CDATA sections (``<!-- note --> Choose the map.``), as
-GitHub's renderer shows it: its text as written, with character references
-decoded. One that shows text next to an HTML tag is not read; the report names
-it (UNREAD HTML), and it fails the run, as markdownlint's MD033 fails the tag.
+when its last line is a named attribution: a dash and a name, such as
+``— A parent``, never a dash-led sentence of the page's own. An HTML block
+that shows text is read like a paragraph when all it hides is comments,
+processing instructions, declarations or CDATA sections
+(``<!-- note --> Choose the map.``), as GitHub's renderer shows it: its text
+as written, with character references decoded. One that shows text next to an HTML tag is not
+read; the report names it (UNREAD HTML), and it fails the run, as
+markdownlint's MD033 fails the tag.
 
 The tests read the text each paragraph prints, as markdown-it gives it: no
 emphasis marks, a link's label without its destination (an inline link or a
@@ -95,19 +97,22 @@ directly below it: one paragraph, one whole list (a loose list included), one
 block quote, or, above a heading, that heading's section. Another comment
 between the marker and its block is skipped. It exempts the instances and
 split negations it covers. The device is named ``X, not Y``; the old
-``X-not-Y`` and ``x-not-y`` are read too. A marker that gives no reason, that
-names the device in any other spelling (``X not Y``, ``xnoty``), that
-reaches its source by number, or that shares its lines with text the page
-shows (in an HTML block, or inside a line of a paragraph, a heading or a
-table cell), exempts nothing, and the report names it. A marker shown in a
-code span is text, not a marker.
+``X-not-Y`` and ``x-not-y`` are read too. The block sits in the marker's own
+container: a marker inside a block quote or a list item never covers a block
+beyond that container's edge. A marker that gives no reason, that names the
+device in any other spelling (``X not Y``, ``xnoty``), that reaches its
+source by number, that has no block below it in its container, or that
+shares its lines with text the page shows (in an HTML block, or inside a
+line of a paragraph, a heading or a table cell), exempts nothing, and the
+report names it. A marker shown in a code span is text, not a marker.
 
 A marker's reason names its source, as the style law's name-first rule asks
 of every built file: ``the spec's Session Support Notes``, ``the batch 1
-brief's entry for this page``. A reason that cites a section number or a
-line (``spec 21.5``, ``Section 20``, ``specification line 4245``, ``§ 24``,
-a bare ``21.8``), an ``OQ-`` or ``AC-`` id, or a build brief's item label
-(``F6``, ``B4, item 7``) is named as a marker problem.
+brief's entry for this page``. A reason that cites a section number, a line
+of any source (``spec 21.5``, ``Section 20``, ``specification line 4245``,
+``brief lines 3330-3335``, ``§ 24``, a bare ``21.8``), an ``OQ-`` or
+``AC-`` id, or a build brief's item label (``F6``, ``B4, item 7``) is named
+as a marker problem.
 
 Human judgments
 ---------------
@@ -230,10 +235,12 @@ XNOTY_DEVICE_NAMES = ("X, not Y", "X-not-Y", "x-not-y")
 #: `X, not-y`). Such a marker exempts nothing, and the report names it.
 XNOTY_LOOKALIKE_RE = re.compile(r"^x\s*[,-]?\s*not\s*[,-]?\s*y$", re.IGNORECASE)
 #: A reason that reaches its source by number, which the style law's
-#: name-first rule forbids in a built file: a section or a line of the spec,
-#: a section sign, a dotted section number, an `OQ-` or `AC-` id, or a build
+#: name-first rule forbids in a built file: a section of the spec, a line of
+#: any source (`specification line 4245`, `Batch 1 brief lines 3330-3335`), a
+#: section sign, a dotted section number, an `OQ-` or `AC-` id, or a build
 #: brief's item label (`F6`, `B4, item 7`). A session's number is its name
-#: (`Session 02`), so it is not one of these.
+#: (`Session 02`), and a step or a rule on the page is the page's own, so
+#: neither is one of these.
 NUMBERED_SOURCE_RE = re.compile(
     r"(?i:\bsections?\s+\d+(?:\.\d+)*)"
     r"|(?i:\bspec(?:ification)?\b\W{0,3}(?:lines?\s+)?\d+(?:[.-]\d+)*)"
@@ -242,6 +249,7 @@ NUMBERED_SOURCE_RE = re.compile(
     r"|\b(?:OQ|AC)-\d+(?:-\d+)*"
     r"|\b[A-H]\d{1,2}\b"
     r"|(?i:\bitems?\s+\d+)"
+    r"|(?i:\blines?\s+\d+(?:[.-]\d+)*)"
 )
 
 # ---------------------------------------------------------------------------
@@ -354,11 +362,16 @@ SUBORDINATE_RE = re.compile(
     re.IGNORECASE,
 )
 #: A block quote is a quotation when quotation marks enclose it, double or
-#: single, straight or curly, or when it carries a named attribution line such
+#: single, straight or curly, or when its last line is a named attribution such
 #: as `— A parent`.
 QUOTE_OPEN_RE = re.compile(r"^[*_]*[\"“'‘]")
 QUOTE_CLOSE_RE = re.compile(r"[\"”'’][*_]*$")
-ATTRIBUTION_RE = re.compile(r"^[*_]*(?:—|―|--)\s*\w")
+#: A line that opens with an attribution dash; `is_named_attribution()` decides
+#: whether what follows it is a name.
+ATTRIBUTION_RE = re.compile(r"^[*_]*(?:—|―|--)\s*[*_]*(?P<name>.*?)[*_]*$")
+#: The most words a name in an attribution runs to (`— A parent, after Session
+#: 05`); a longer line is prose.
+ATTRIBUTION_MAX_WORDS = 8
 
 #: Closing quotation marks, brackets and emphasis that can follow a sentence's
 #: last punctuation. They stay with the sentence they close.
@@ -778,13 +791,24 @@ def marker_scope(marker: Marker, blocks: list[dict[str, Any]], index: int,
     and its block. It is one paragraph, one whole list (a loose list included)
     or one block quote, as markdown-it reads it. Above a heading, the block is
     that heading's section, up to the next heading of the same or a higher level.
+
+    The block must sit in the marker's own container: a marker written inside
+    a block quote or a list item covers the next block inside it, never a
+    paragraph, a list item or a heading beyond its edge. A marker with no such
+    block covers nothing, and the report names it, as a marker the page holds
+    must be honored or named.
     """
     nxt = index + 1
     while nxt < len(blocks) and blocks[nxt]["type"] == "html_block" and COMMENT_BLOCK_RE.match(
             blocks[nxt].get("content") or ""):
         nxt += 1
-    if nxt >= len(blocks):
-        marker.scope_desc = "nothing below it"
+    own = tuple(blocks[index].get("path") or ())
+    if nxt >= len(blocks) or tuple(blocks[nxt].get("path") or ())[:len(own)] != own:
+        where = "in its block quote or list item" if own else "on the page"
+        marker.scope_desc = f"nothing below it {where}"
+        if marker.device in XNOTY_DEVICE_NAMES and not marker.problem:
+            marker.applies = False
+            marker.problem = f"covers nothing: no block follows it {where}"
         return
     block = blocks[nxt]
     first = block["start"]
@@ -856,15 +880,34 @@ def paragraph_sentences(para: list[ProseLine]) -> list[tuple[str, ProseLine]]:
     return [(normalize_space(text[a:b]), para[text.count("\n", 0, a)]) for a, b in sentence_spans(text)]
 
 
+def is_named_attribution(line: str) -> bool:
+    """True when `line` is a named attribution: a dash, then a name.
+
+    The style law exempts a block quote only when the page shows on its face
+    that the text is borrowed, and an attribution does that by naming its
+    source: `— A parent`, `-- Session 05's script`. The name starts with a
+    capital letter or a digit, runs at most `ATTRIBUTION_MAX_WORDS` words and
+    ends without a sentence mark. So a dash-led continuation of the page's own
+    prose, `-- and then check the route.` or `— because this matters.`, is
+    not an attribution.
+    """
+    m = ATTRIBUTION_RE.match(normalize_space(line))
+    name = m.group("name").strip() if m else ""
+    return (bool(name) and (name[0].isupper() or name[0].isdigit()) and name[-1] not in ".!?…"
+            and len(name.split()) <= ATTRIBUTION_MAX_WORDS)
+
+
 def quote_contexts(paras: list[list[ProseLine]], raw_lines: list[str] | None) -> list[str]:
     """Return each paragraph's quotation context, which a judgment depends on.
 
     The context is "" for ordinary prose, "block quote" for a callout, and
     "quotation block quote" when the whole block quote sits inside quotation
-    marks or carries a named attribution, as the style law's counting bullet
-    defines a quotation. A block quote's text is every paragraph inside it,
-    those in a list or a block quote within it included, and a paragraph inside
-    any block quote that is a quotation is quoted.
+    marks or its last line is a named attribution, as the style law's counting
+    bullet defines a quotation. The attribution closes the quote, as its own
+    paragraph or as the last line of the last one. A block quote's text is
+    every paragraph inside it, those in a list or a block quote within it
+    included, and a paragraph inside any block quote that is a quotation is
+    quoted.
     """
     quotes: dict[str, list[int]] = {}
     for index, para in enumerate(paras):
@@ -875,8 +918,8 @@ def quote_contexts(paras: list[list[ProseLine]], raw_lines: list[str] | None) ->
     for quote, members in quotes.items():
         texts = [normalize_space(paragraph_text(paras[k])) for k in members]
         joined = " ".join(t for t in texts if t)
-        if (QUOTE_OPEN_RE.search(joined) and QUOTE_CLOSE_RE.search(joined)) or any(
-                ATTRIBUTION_RE.match(t) for t in texts):
+        last_line = paragraph_text(paras[members[-1]]).split("\n")[-1]
+        if (QUOTE_OPEN_RE.search(joined) and QUOTE_CLOSE_RE.search(joined)) or is_named_attribution(last_line):
             quotation.add(quote)
     out = []
     for para in paras:

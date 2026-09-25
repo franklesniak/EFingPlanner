@@ -516,6 +516,53 @@ def test_a_key_carries_the_quotation_context(text: str, suffix: str) -> None:
     assert found.key.endswith("|1" + suffix)
 
 
+@pytest.mark.parametrize("last", [
+    "> — A parent",
+    "> -- Session 05's script",
+    "> ― A parent, after Session 05",
+    "> — *A parent*",
+    "> — 3 families in the pilot",
+])
+@pytest.mark.parametrize("layout", ["paragraph", "line"])
+def test_a_named_attribution_closing_the_quote_makes_it_a_quotation(last: str, layout: str) -> None:
+    joiner = "\n>\n" if layout == "paragraph" else "\n"
+    (found,) = candidates("> Choose the map, not the list." + joiner + last)
+    assert found.key.endswith("|quotation block quote")
+
+
+@pytest.mark.parametrize("last", [
+    "> -- and then check the route.",
+    "> -- and then check the route",
+    "> — because this matters.",
+    "> — Then check the route.",
+    "> — A parent!",
+    "> — A parent who ran the first three sessions with us last spring",
+    "> —",
+])
+@pytest.mark.parametrize("layout", ["paragraph", "line"])
+def test_a_dash_led_line_of_prose_is_no_attribution(last: str, layout: str) -> None:
+    # The style law exempts only text the page shows is borrowed, through
+    # quotation marks or a named attribution; a dash-led sentence is prose.
+    joiner = "\n>\n" if layout == "paragraph" else "\n"
+    keys = [c.key for c in every_candidate("> Choose the map, not the list." + joiner + last)]
+    assert keys
+    assert all(k.endswith("|block quote") and not k.endswith("|quotation block quote") for k in keys)
+
+
+def test_an_attribution_that_does_not_close_the_quote_is_no_attribution() -> None:
+    keys = [c.key for c in every_candidate("> — A parent\n>\n> Choose the map, not the list.")]
+    assert "device|Choose the map, not the list.|1|block quote" in keys
+    assert not any(k.endswith("|quotation block quote") for k in keys)
+
+
+def test_a_continuation_in_place_of_an_attribution_reopens_the_judgment(tmp_path: Path) -> None:
+    write(tmp_path, "framework/templates/a.md", "## A\n\n> Choose the map, not the list.\n>\n> — A parent\n")
+    judged = judge_all(tmp_path, "no")
+    write(tmp_path, "framework/templates/a.md", "## A\n\n> Choose the map, not the list.\n>\n> -- and then check the route.\n")
+    (rep,) = cx.scan(tmp_path, judged, {})
+    assert [c.judgment for c in rep.candidates if c.text == "Choose the map, not the list."] == [None]
+
+
 @pytest.mark.parametrize("after", [
     "> Look first. Choose the map, not the list. Then go.",
     "Look first. Choose the map, not the list. Then go.",
@@ -632,6 +679,7 @@ def test_a_marker_without_a_reason_fails_the_run(tmp_path: Path, capsys: Any) ->
     "the AI safety rule (spec, Section 20)",
     "a standalone safety rule (specification line 4245)",
     "privacy rules (specification lines 4235-4237)",
+    "the privacy rules (spec 24)",
     "the privacy rules (§ 24)",
     "the reachability fallback (21.8)",
     "the OQ-7 navigation rendering rules",
@@ -663,6 +711,63 @@ def test_a_marker_that_names_its_source_applies(reason: str) -> None:
 def test_another_devices_marker_is_not_read_for_its_source() -> None:
     (mk,) = scoped("<!-- density-exempt: spaced dash -- spec 21.5 -->\nText.")
     assert (mk.applies, mk.problem) == (False, "")
+
+
+@pytest.mark.parametrize("reason", [
+    "required content (Batch 1 brief lines 3330-3335)",
+    "the batch 2 brief's line 412",
+    "the rule on line 7 of the spec's entry",
+    "the privacy page's lines 4-6",
+])
+def test_a_marker_that_cites_a_line_of_any_source_exempts_nothing(reason: str) -> None:
+    (mk,) = scoped(f"<!-- density-exempt: X, not Y -- {reason} -->\nIt is a map, not a list.")
+    assert mk.applies is False
+    assert "by number" in mk.problem
+
+
+@pytest.mark.parametrize("reason", [
+    "the relay fallback in step 3 is required",
+    "the contrasts are in rule 5 of the list below",
+    "this list is where a child reads what counts toward the 13",
+    "a timeline and its guidelines, from the batch 1 brief's entry for this page",
+])
+def test_a_step_a_rule_or_a_word_holding_line_is_not_a_numbered_source(reason: str) -> None:
+    (mk,) = scoped(f"<!-- density-exempt: X, not Y -- {reason} -->\nIt is a map, not a list.")
+    assert (mk.applies, mk.problem) == (True, "")
+
+
+@pytest.mark.parametrize("text", [
+    "> Intro.\n>\n> <!-- density-exempt: X, not Y -- required -->\n\nChoose the map, not the list.",
+    "> <!-- density-exempt: X, not Y -- required -->\n\n## Rule\n\nChoose the map, not the list.",
+    "- One.\n  <!-- density-exempt: X, not Y -- required -->\n- Pick the map, not the list.",
+    "- One.\n  <!-- density-exempt: X, not Y -- required -->\n\nChoose the map, not the list.",
+    "Intro.\n\n<!-- density-exempt: X, not Y -- required -->",
+])
+def test_a_marker_never_covers_a_block_beyond_its_container(text: str) -> None:
+    (mk,) = scoped(text)
+    assert (mk.scope_start, mk.scope_end, mk.applies) == (0, 0, False)
+    assert mk.problem.startswith("covers nothing")
+
+
+@pytest.mark.parametrize(("text", "scope"), [
+    ("<!-- density-exempt: X, not Y -- required -->\n> Choose the map.\n> Not the list.", (2, 3)),
+    ("> <!-- density-exempt: X, not Y -- required -->\n> Choose the map, not the list.", (2, 2)),
+    ("- One.\n\n  <!-- density-exempt: X, not Y -- required -->\n\n  Choose the map, not the list.", (5, 5)),
+    ("- One.\n\n  <!-- density-exempt: X, not Y -- required -->\n\n  - Pick the map, not the list.", (5, 5)),
+])
+def test_a_marker_covers_the_next_block_inside_its_container(text: str, scope: tuple[int, int]) -> None:
+    (mk,) = scoped(text)
+    assert ((mk.scope_start, mk.scope_end), mk.applies, mk.problem) == (scope, True, "")
+
+
+def test_another_devices_marker_that_covers_nothing_is_not_a_problem() -> None:
+    (mk,) = scoped("> <!-- density-exempt: spaced dash -- required -->\n\nText -- more text.")
+    assert (mk.applies, mk.problem) == (False, "")
+
+
+def test_a_marker_that_covers_nothing_fails_the_run(tmp_path: Path, capsys: Any) -> None:
+    root = repo_with(tmp_path, "## A\n\n> <!-- density-exempt: X, not Y -- required -->\n\nIt is a map, not a list.\n")
+    assert run(root, judge_all(root), capsys) == 1
 
 
 def test_a_marker_that_cites_its_source_by_number_fails_the_run(tmp_path: Path, capsys: Any) -> None:
