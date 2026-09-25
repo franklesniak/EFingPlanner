@@ -20,12 +20,14 @@ Fill in:
 | Airport code, if you are flying | |
 | Time difference to the destination, in hours ahead or behind (a grown-up looks this up) | |
 | Home time zone, if you want to write it down too | |
-| Maximum trip length in days (if your dates are already booked, write the booked trip length) | |
+| Maximum trip length in days, counting the day you leave home and the day you get home (if your dates are already booked, write the booked trip length, with "booked" beside it) | |
 | Number of travelers (write "not decided yet" if you are unsure) | |
 
 A grown-up writes the destination here. The name is on the front of your destination pack.
 
 If you are not flying, the travel row is where that goes: by car, by train, or another way.
+
+If your family books the dates later, a grown-up writes the booked trip length in the trip length row, with "booked" beside it, and tells you.
 
 For the time zone, a grown-up does the looking up. They find how many hours ahead of or behind home your destination is right now. Then they write it here. The gap is not the same for every US time zone. It also shifts with daylight saving. So check today's figure. Some destinations have more than one time zone. Then the grown-up writes the gap for the place you will probably arrive in, or writes a range.
 

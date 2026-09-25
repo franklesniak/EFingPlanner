@@ -10,7 +10,7 @@ You are here: Phase 8 (Readiness and Final). Not a First Taste step. Previous: [
 - Planner skill: self-control (knowing when to stop)
 - Estimated time: 20-30 minutes
 - Parent involvement: co-working recommended; hear your child say the staying-found plan out loud once
-- Materials: your destination pack's safety and emergency page, or a grown-up who finds the phrases for you if your pack doesn't have that page yet, your Packing List from Session 48, your transportation notes from Session 30, your [Source Log](../../templates/source_log.md), the blank [If I Get Separated card](../../trip_starter/if_i_get_separated_card.md) from your trip starter kit, a small card or half a sheet of stiff paper for a pocket-sized copy, a pencil
+- Materials: your destination pack's safety and emergency page, or a grown-up who finds the phrases, the emergency numbers and the kinds of help for you if your pack doesn't have that page yet, your Packing List from Session 48, your transportation notes from Session 30, your [Source Log](../../templates/source_log.md), the blank [If I Get Separated card](../../trip_starter/if_i_get_separated_card.md) from your trip starter kit, a small card or half a sheet of stiff paper for a pocket-sized copy, a pencil
 
 (For an at-a-glance version, see the matching entry in [the parent session notes](../../parent_guide/session_support_notes.md); the Parent Notes below have the full detail.)
 
@@ -41,8 +41,8 @@ If a grown-up has already booked and checked where you're staying, they fill in 
 **Staying found: my own plan.** The moment to plan for is losing sight of your group for a minute in a crowded place, like a station. A plan you've practiced makes that moment much calmer.
 
 1. **Do what today's rule says.** Each morning, a grown-up says today's rule out loud. There's one rule per outing. Usually it's this: **stay where you are**, so your family can find you. If you'll be somewhere you shouldn't stand still, the grown-up names a meeting spot for that outing instead. It will be a spot you can see from where you'll be, and they name it that same morning.
-2. **Ask a helper without leaving your spot.** Call out, wave, or ask whoever is right there. A station worker, or a shop or security worker with a name tag, can help. If a uniformed worker or a police post is right there, they're the best ones to ask. Your destination pack names the kinds of help where you're going. Stay in your spot, even if you can see a helper farther away. If nobody is close enough to hear you, stay put and keep looking. The only time you move is when that morning's rule named a meeting spot.
-3. **Know the emergency numbers.** Your destination pack has them. A grown-up checks them on a current official page and writes the date checked. Then you write the numbers on your card. A grown-up, a shop worker or the police post can call them for you.
+2. **Ask a helper without leaving your spot.** Call out, wave, or ask whoever is right there. A station worker, or a shop or security worker with a name tag, can help. If a uniformed worker or a police post is right there, they're the best ones to ask. Your destination pack's safety and emergency page names the kinds of help where you're going. If your pack doesn't have that page yet, a grown-up tells you. Stay in your spot, even if you can see a helper farther away. If nobody is close enough to hear you, stay put and keep looking. The only time you move is when that morning's rule named a meeting spot.
+3. **Know the emergency numbers.** Your destination pack's safety and emergency page has them, or a grown-up finds them if your pack doesn't have that page yet. A grown-up checks them on a current official page and writes the date checked. Then you write the numbers on your card. A grown-up, a shop worker or the police post can call them for you.
 
 ## Workspace
 
@@ -61,6 +61,7 @@ Your readiness checklist:
 | "If I get separated" card made | you | |
 | If the card's lodging lines are still blank, ask adults to fill them in and check them after booking | ask adults | |
 | At each move to a new place to stay, a fresh card with that place's lines | ask adults | |
+| If the card's emergency-number rows are still blank, ask adults to check the numbers so you can write them in before the trip | ask adults | |
 | Staying-found plan said out loud once | you and a grown-up | |
 
 Your "if I get separated" card: use the blank [If I Get Separated card](../../trip_starter/if_i_get_separated_card.md) from your trip starter kit. It lists each line, who writes it, and your three-step plan. Fill it in, or copy its rows onto a small card for your pocket.
@@ -75,7 +76,7 @@ Your readiness checklist, with every line ticked or marked for the grown-ups. Yo
 
 ## Stop Point
 
-You are done when every line on your readiness checklist is either checked or marked "ask adults to confirm", and your card is made. It has a parent's phone number and the two emergency phrases, and its lodging lines are filled in by a grown-up or marked for a grown-up to fill in after booking. The emergency-number rows can stay blank until a grown-up has checked the numbers. You've also said the three-part plan out loud once with a grown-up. That's the whole thing.
+You are done when every line on your readiness checklist is either checked or marked "ask adults to confirm", and your card is made. It has a parent's phone number and the two emergency phrases, and its lodging lines are filled in by a grown-up or marked for a grown-up to fill in after booking. The emergency-number rows can stay blank until a grown-up has checked the numbers, as long as your checklist marks them for the adults. You've also said the three-part plan out loud once with a grown-up. That's the whole thing.
 
 ## Source Check
 
