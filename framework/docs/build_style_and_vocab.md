@@ -6,7 +6,7 @@
 
 - **Status:** Active
 - **Owner:** Repository Maintainers
-- **Last Updated:** 2026-09-24
+- **Last Updated:** 2026-09-25
 - **Scope:** Builder-facing voice, vocabulary, banned-word, and lint conventions for authoring and editing the EFingPlanner curriculum batches. Not part of the child's or parent's reading path.
 
 This file is for whoever *builds* the curriculum, not for the child or parent. It is not part of the child's reading path. Load it before authoring or editing any batch so voice, vocabulary, banned words, and lint conventions stay constant across work sessions. The archived spec at `../../docs/spec/specification.md` is the original design record -- but once curriculum files exist, the built repository supersedes the spec on any conflict; this file is the short, load-before-each-batch digest of the rules that keep the built files consistent.
@@ -57,7 +57,7 @@ Every child session opens with a navigation line above its first `##` section. T
 
 - A **skip affordance**: an off-path session may carry one line saying that a named following session is optional, and where to go instead of it.
 - A **placement note**: a conditional add-on session may carry one line saying where it sits on a named path.
-- A **return note**: an on-path session whose `Previous:` names a session off the path may carry one line naming the on-path session a path reader came from, as Sessions 10, 21 and 33 do.
+- A **return note**: an on-path session whose `Previous:` names a session some readers skip may carry one line saying which session each of those readers came from, as Sessions 10, 21 and 33 do.
 
 None of those announces a divergence from a path, which is why the divergence rule above does not reach them.
 
