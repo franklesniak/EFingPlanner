@@ -29,7 +29,7 @@ Maybe you kept everything in one growing folder, in rough order. Maybe you filed
 3. Tick each tab on the checklist when its pages are in.
 4. Stop between sittings whenever you like. Start each new sitting by setting your timer for 20 minutes, then pick up at the next tab.
 
-Tabs 3 and 4 have a different line if your dates were booked. File the page you made at that checkpoint. If your dates were booked by Checkpoint 1, that's your season confirmation. If they were booked by Checkpoint 4, it's your nights plan. Otherwise, file the recommendation.
+Tabs 3 and 4 hold the page you made at that checkpoint. If your dates were booked by Checkpoint 1, that's your season confirmation. If they were booked by Checkpoint 4, it's your nights plan. Otherwise, it's the recommendation.
 
 Two lines in the list depend on choices your family made. The restaurant and food shortlist goes under tab 5 only if you did the food sessions and your family chose it for the binder. The language and etiquette sheet goes under tab 8 the same way: only if you did that session and your family chose it. If you skipped one, write "we didn't do this session" on that tab. If your family left one out, write "not in our binder". Either way, that line is complete.
 
@@ -45,12 +45,12 @@ Your binder checklist. Tick each tab when its pages are in:
 | --- | --- | --- |
 | 1. Start Here | Cover page; Trip-Basics card; Traveler profiles; Family trip goals; Current family travel assumptions | |
 | 2. Research Skills | The Phase 1 research-skill pages your family chose to keep, for example the trust test | |
-| 3. Destination Overview | Season recommendation, or the season confirmation if your dates were booked | |
-| 4. Cities and Route | City long-list; City shortlist and recommendation; Route recommendation; Trip-length recommendation, or the nights plan if your dates were booked; Transportation notes | |
-| 5. Attractions and Food | Top attractions and experiences; Culture/history/nature/food/fun balance check; Restaurant and food shortlist, if you did the food sessions | |
-| 6. Hotels and Budget | Hotel and neighborhood comparison summary (your Neighborhood Comparison and your Hotel Comparison Cards); Budget estimate | |
+| 3. Destination Overview | Season recommendation, or the season confirmation if your dates were booked by Checkpoint 1 | |
+| 4. Cities and Route | City long-list; City shortlist and recommendation; Route recommendation; Trip-length recommendation, or the nights plan if your dates were booked by Checkpoint 4; Transportation notes | |
+| 5. Attractions and Food | Top attractions and experiences; Culture/history/nature/food/fun balance check; Restaurant and food shortlist, if your family chose it for the binder | |
+| 6. Hotels and Budget | Hotel and neighborhood comparison summary (your Neighborhood Comparison and your Hotel Comparison Cards); Budget estimate (your Session 33 first pass and your Session 39 budget summary) | |
 | 7. Itinerary | Day-by-day itinerary; Reservation watchlist; Backup plans; Cut list or "save for future trip" list | |
-| 8. Readiness | Packing list; Language and etiquette quick sheet, if you did that session; Readiness checklist | |
+| 8. Readiness | Packing list; Language and etiquette quick sheet, if your family chose it for the binder; Readiness checklist | |
 | 9. Sources and Decisions | Source log; Decision log; "My Calls" page | |
 | 10. Parent Review | Adult follow-up questions; parent review forms | |
 | 11. Final Recommendation | Final recommendation summary (your final recommendation packet from Session 52); Final reflection | |

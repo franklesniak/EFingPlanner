@@ -112,7 +112,7 @@ This is the one checkpoint with the full family decision meeting: the whole part
 
 **Your own changes keep the special pick too.** A change you make keeps the special pick and its place; only the three blocks change it. If one applies, name it, and your child chooses a new pick with you, as in Session 43.
 
-**Carrying changes back.** After Approved with changes, your child goes down their When the Plan Changes card and fixes every page it names. If you fly and a change moves where you arrive or leave, tell them which flights land on a later date. If someone comes for only part of the trip, tell them who is there on the changed days.
+**Carrying changes back.** After Approved with changes, your child goes down their When the Plan Changes card and fixes every page it names. If you fly and a change moves where you arrive or leave, tell them which flights land on a later date. If a change adds an overnight place, help with a Hotel Comparison Card for it, or give a cost per night. If someone comes for only part of the trip, tell them who is there on the changed days.
 
 **A changed first or last place.** If your change moves where the trip arrives or leaves, your child re-times that leg and fixes the travel days and nights; that is Approved with changes. If it changes which route works best, the answer is Needs more research.
 

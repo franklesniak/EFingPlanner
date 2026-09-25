@@ -2716,12 +2716,12 @@ Put your whole project in order, tab by tab. **Fully neutral.**
 | --- | --- |
 | 1. Start Here | Cover page; Trip-Basics card; Traveler profiles; **Family trip goals**; Current family travel assumptions |
 | 2. Research Skills | The Phase 1 research-skill artifacts the family chose to keep, for example the trust test |
-| 3. Destination Overview | Season recommendation, or the season confirmation when the dates were booked |
-| 4. Cities and Route | City long-list; City shortlist and recommendation; Route recommendation; Trip-length recommendation, or the nights plan when the dates were booked; Transportation notes |
-| 5. Attractions and Food | Top attractions and experiences; Culture/history/nature/food/fun balance check; Restaurant and food shortlist, if the food sessions were done |
+| 3. Destination Overview | Season recommendation, or the season confirmation when the dates were booked by Checkpoint 1 |
+| 4. Cities and Route | City long-list; City shortlist and recommendation; Route recommendation; Trip-length recommendation, or the nights plan when the dates were booked by Checkpoint 4; Transportation notes |
+| 5. Attractions and Food | Top attractions and experiences; Culture/history/nature/food/fun balance check; Restaurant and food shortlist, if the family chose it for the binder |
 | 6. Hotels and Budget | Hotel and neighborhood comparison summary; Budget estimate |
 | 7. Itinerary | Day-by-day itinerary; Reservation watchlist; Backup plans; Cut list or "save for future trip" list |
-| 8. Readiness | Packing list; Language and etiquette quick sheet, if that session was done; Readiness checklist |
+| 8. Readiness | Packing list; Language and etiquette quick sheet, if the family chose it for the binder; Readiness checklist |
 | 9. Sources and Decisions | Source log; Decision log; "My Calls" page |
 | 10. Parent Review | Adult follow-up questions; parent review forms |
 | 11. Final Recommendation | Final recommendation summary; Final reflection |

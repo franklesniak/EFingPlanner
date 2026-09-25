@@ -26,7 +26,7 @@ Your presentation is about 5 to 10 minutes long. Part 1 says what you recommend.
 
 **Has a grown-up changed where you arrive or leave since Checkpoint 5?** Check that they wrote the new place on your family's assumptions page. Then go down your When the Plan Changes card, with "changed at Session 51", and fix every page it names that you've already made.
 
-1. Fill in Part 1 of your outline: when to go, how long, which cities and what route, the top experiences, where you might stay, food highlights, a rough budget, the biggest trade-offs, and what you cut and why. If your family skipped the food sessions, write that on the food line. If your dates were already booked, say what your season means for the trip, and how you'd use the booked days. The booked trip length is on your Trip-Basics card's maximum row. With one base, your route is getting there and back, plus your trips out from the base to your approved must-dos.
+1. Fill in Part 1 of your outline: when to go, how long, which cities and what route, the top experiences, where you might stay, food highlights, your rough budget for the parts you chose (your Session 39 subtotal, and say that the grown-ups add the rest, such as getting there), the biggest trade-offs, and what you cut and why. If your family skipped the food sessions, write that on the food line. If your dates were already booked, say what your season means for the trip, and how you'd use the booked days. The booked trip length is on your Trip-Basics card's maximum row. With one base, your route is getting there and back, plus your trips out from the base to your approved must-dos.
 2. Fill in Part 2: what the grown-ups still need to check, decide and book, the questions that are still open, and which of your pages they should use next.
 3. Pick how you'll present, and circle it at the bottom of the outline.
 
@@ -52,7 +52,7 @@ Your Final Presentation Outline: Part 1 with your recommendation, Part 2 with th
 
 ## Stop Point
 
-You are done when every item on the outline has at least one line under it, and you've picked how you want to present. If a grown-up changed where you arrive or leave, the new place is on your assumptions page, and you've gone down your When the Plan Changes card for it. One line each is enough, because you'll talk from the outline. "Ask an adult" is a fine line for a question you can't answer yet.
+You are done when every item on the outline has at least one line under it, and you've picked how you want to present. Your budget line names the parts you chose and says the grown-ups add the rest. If a grown-up changed where you arrive or leave, the new place is on your assumptions page, and you've gone down your When the Plan Changes card for it. One line each is enough, because you'll talk from the outline. "Ask an adult" is a fine line for a question you can't answer yet.
 
 ## Source Check
 
@@ -75,6 +75,8 @@ If you have extra energy, run through your outline once out loud, and time it wi
 All five ways of presenting are offered as equal options to every child, so nobody has to say they are nervous to use one. A live talk is one choice among five. The family still makes its decision at Checkpoint 6; only the delivery changes.
 
 If you change where the trip arrives or leaves after Checkpoint 5, write the new place on the assumptions page. If you fly, tell your child which flights land on a later date. They carry the change back with their When the Plan Changes card before they build the outline.
+
+The budget line is your child's subtotal for the parts they chose. Getting there, getting between cities, insurance, entry costs and phone service stay on your own page, so say so if anyone reads it as the trip's cost.
 
 The presentation accommodations and the rehearsal ladder live in the [differentiation guide](../../parent_guide/differentiation.md). If your child wants to rehearse, be the first audience, then add a couple of adults, then the group.
 
