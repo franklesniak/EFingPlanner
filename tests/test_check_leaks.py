@@ -178,17 +178,31 @@ BACKSLASH = chr(92)
         ('PATTERN = "' + BACKSLASH * 2 + "bgodmother" + BACKSLASH * 2 + 'b"', ["word"]),
         ('print("Home:' + BACKSLASH + "nQuillhaven" + BACKSLASH + 'tQHV")', ["word", "code"]),
         ("C:" + BACKSLASH + "trips" + BACKSLASH + "Quillhaven" + BACKSLASH + "notes.md", ["word"]),
+        (BACKSLASH + "AQuillhaven" + BACKSLASH + "Z", ["word"]),
+        (BACKSLASH + "AQHV" + BACKSLASH + "z", ["code"]),
+        ("re.compile(r'" + BACKSLASH + "sgodmother')", ["word"]),
+        (BACKSLASH + "QBrannock Field" + BACKSLASH + "E", ["word"]),
+        (BACKSLASH + "A23 days", ["number"]),
+        (BACKSLASH + "xQHV", ["code"]),
     ],
-    ids=["regex-boundary", "grep-pattern", "escaped-boundary", "line-break-and-tab", "windows-path"],
+    ids=[
+        "regex-boundary", "grep-pattern", "escaped-boundary", "line-break-and-tab", "windows-path",
+        "string-anchors", "anchors-before-a-code", "class-escape", "quoted-literal", "anchor-before-a-number",
+        "undefined-escape",
+    ],
 )
 def test_a_value_after_a_backslash_escape_is_found(text: str, kinds: list[str]) -> None:
     """Read as written, the escape's letter joins the word; a grep pattern is how a leak check writes one."""
     assert [kind for _line, kind in family(text + "\n")] == kinds
 
 
-@pytest.mark.parametrize("text", [BACKSLASH + "bQHVX", BACKSLASH + "Quillhavenite", BACKSLASH + "xQHV"])
+@pytest.mark.parametrize(
+    "text",
+    [BACKSLASH + "bQHVX", BACKSLASH + "Quillhavenite", BACKSLASH + "AQuillhavenite", BACKSLASH + "sQHV2",
+     BACKSLASH + "bxQHV", BACKSLASH + "A123 days"],
+)
 def test_a_backslash_escape_does_not_widen_a_match(text: str) -> None:
-    """Only a boundary or control escape's letter is set aside; the word after it must still match whole."""
+    """Only the one letter after the backslash is set aside; the word after it must still match whole."""
     assert family(text + "\n") == []
 
 
@@ -299,6 +313,22 @@ def test_a_cap_in_other_words_is_left_to_the_hand_read(text: str) -> None:
     """
     assert family(text + "\n") == []
     assert len(hook.bare_numbers(text + "\n", VALUES)) == 1
+
+
+@pytest.mark.parametrize(
+    ("text", "expected"),
+    [
+        ("Session 2&#51; starts.\nPage 2%33.\n", [(1, 9), (2, 6)]),
+        ("Session 23 and 2&#51;.\n", [(1, 9), (1, 16)]),
+        ("Session 23 &amp; more.\n", [(1, 9)]),
+        ("Up to 2&#51; days.\n", []),
+        ("Page 2&#52;.\n", []),
+    ],
+    ids=["escaped", "plain-and-escaped", "plain-once", "escaped-leak", "another-number"],
+)
+def test_candidates_read_an_escaped_number_once(text: str, expected: list[tuple[int, int]]) -> None:
+    """The hand-read reads a file as the enforcing scan does: decoded too, each occurrence once."""
+    assert hook.bare_numbers(text, VALUES) == expected
 
 
 def test_candidates_lists_bare_numbers_and_leaves_out_leaks() -> None:
@@ -460,6 +490,7 @@ def test_a_repeated_row_is_an_error() -> None:
     [
         (("framework/a.md", "", "x", 1, "r"), "names no occurrence"),
         (("framework/a.md", "Japan", "the Tokyo line", 1, "r"), "context that does not hold its occurrence"),
+        (("docs/a.md", "Japan", "the Japan line", 1, "r"), "names a path the destination rule does not read"),
     ],
 )
 def test_a_malformed_destination_row_is_an_error(row: tuple[object, ...], fragment: str) -> None:
@@ -520,13 +551,39 @@ def test_exemption_rows_mode_prints_rows_that_clear_the_run_once_given_reasons(
     assert hook.main(["--rule", "family"], root=root) == 0
 
 
+def test_a_family_row_for_the_design_record_is_an_error() -> None:
+    """The family rule never reads ``docs/spec/``, so a row there could never be used or go stale."""
+    row = ("docs/spec/specification.md", "word", "0" * 64, 1, "r")
+    errors = hook.check_exemption_rows("family", [row])
+    assert any("names a path the family rule does not read" in error for error in errors)
+    assert hook.check_exemption_rows("family", [("docs/build/a.md", "word", "0" * 64, 1, "r")]) == []
+
+
+def test_a_full_walk_reports_a_row_whose_file_git_no_longer_tracks(
+    tmp_path: Path, made_up_family: None, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    """Failure injection: remove the excused file, and the row that excused it must fail the walk."""
+    root = make_repo(tmp_path, {"docs/a.md": "See Quillhaven here.\n", "docs/b.md": "Clean.\n"})
+    monkeypatch.setattr(hook, "FAMILY_EXEMPTIONS", (family_row("See Quillhaven here.\n", 1),))
+    assert hook.main(["--rule", "family"], root=root) == 0
+    capsys.readouterr()
+    subprocess.run(["git", "-C", str(root), "rm", "-q", "-f", "docs/a.md"], check=True)
+    assert hook.main(["--rule", "family"], root=root) == 1
+    assert "docs/a.md: exemption row 1 excuses 1 occurrence(s) of a word value in a file this walk did not read" in (
+        capsys.readouterr().out
+    )
+    assert hook.main(["--rule", "family", "docs/b.md"], root=root) == 0
+
+
 def test_a_stale_row_fails_the_run(
     tmp_path: Path, made_up_family: None, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
 ) -> None:
     root = make_repo(tmp_path, {"docs/a.md": "Nothing here.\n"})
     monkeypatch.setattr(hook, "FAMILY_EXEMPTIONS", (family_row("See Quillhaven here.\n", 1),))
     assert hook.main(["--rule", "family"], root=root) == 1
-    assert "docs/a.md: exemption row 1 excuses 1 occurrence(s)" in capsys.readouterr().out
+    assert "docs/a.md: exemption row 1 excuses 1 occurrence(s) of a word value and the file holds 0" in (
+        capsys.readouterr().out
+    )
 
 
 # --------------------------------------------------------------------------
@@ -693,6 +750,77 @@ def test_the_family_rule_skips_the_design_record_when_pre_commit_passes_it(
     assert hook.main(["--rule", "family", "docs/spec/specification.md"], root=root) == 0
 
 
+def test_a_destination_name_in_a_framework_path_fails_the_run(
+    tmp_path: Path, made_up_family: None, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    """The style law bans the names throughout ``framework/``, a file's name and folders included."""
+    root = make_repo(
+        tmp_path,
+        {
+            "framework/japan_notes.md": "Clean.\n",
+            "framework/tokyo/a.md": "Clean.\n",
+            "framework/pics/kyoto.png": b"\x89PNG\x00\x01",
+            "framework/destination_notes.md": "Clean.\n",
+        },
+    )
+    assert hook.main(["--rule", "destination"], root=root) == 1
+    out = capsys.readouterr().out
+    assert "framework/japan_notes.md: the file's path holds the destination name \"japan\"" in out
+    assert "framework/tokyo/a.md: the file's path holds the destination name \"tokyo\"" in out
+    assert "framework/pics/kyoto.png: the file's path holds the destination name \"kyoto\"" in out
+    assert "destination_notes" not in out
+    rows = tuple(
+        (path, name, hook.PATH_CONTEXT + path, 1, "a test row")
+        for path, name in (
+            ("framework/japan_notes.md", "japan"),
+            ("framework/tokyo/a.md", "tokyo"),
+            ("framework/pics/kyoto.png", "kyoto"),
+        )
+    )
+    monkeypatch.setattr(hook, "DESTINATION_EXEMPTIONS", rows)
+    assert hook.main(["--rule", "destination"], root=root) == 0
+
+
+def test_a_family_value_in_a_path_fails_the_run_and_is_never_printed(
+    tmp_path: Path, made_up_family: None, capsys: pytest.CaptureFixture[str]
+) -> None:
+    """A path hit's message, and every other message about that file, print the path masked."""
+    root = make_repo(
+        tmp_path,
+        {"docs/quillhaven/a.md": "From Quillhaven.\n", "docs/qhv.md": "Clean.\n", "docs/QHV-notes.md": "Clean.\n",
+         "docs/QHV_notes.md": "Clean.\n",
+         "docs/b.md": "Clean.\n"},
+    )
+    assert hook.main(["--rule", "family"], root=root) == 1
+    out = capsys.readouterr().out
+    assert "quillhaven" not in out.casefold()
+    assert "docs/<family value>/a.md: the file's path holds a family value (a place or a relative)" in out
+    assert "docs/<family value>/a.md:1:6: a family value (a place or a relative) is written here" in out
+    assert "qhv" not in out.casefold()
+    assert "docs/<family value>-notes.md: the file's path holds a family value (the home airport's code)" in out
+    assert len(out.strip().splitlines()) == 3
+    assert hook.main(["--rule", "family", "--exemption-rows"], root=root) == 0
+    assert capsys.readouterr().out == ""
+
+
+def test_every_message_about_a_value_named_path_prints_it_masked(
+    tmp_path: Path, made_up_family: None, capsys: pytest.CaptureFixture[str]
+) -> None:
+    """A refusal, a read error and a candidate line name the file too, and none may spell the value."""
+    root = make_repo(tmp_path, {"docs/b.md": "Clean.\n", "docs/quillhaven/c.md": "Session 23.\n"})
+    assert hook.main(["--rule", "family", "--candidates"], root=root) == 0
+    assert capsys.readouterr().out.startswith("docs/<family value>/c.md:1:9: a bare trip-length number.")
+    (root / "docs" / "quillhaven" / "c.md").write_bytes(b"Quill\xffhaven\n")
+    assert hook.main(["--rule", "family", "docs/quillhaven/c.md"], root=root) == 1
+    err = capsys.readouterr().err
+    assert "docs/<family value>/c.md: unable to read file" in err and "quillhaven" not in err.casefold()
+    make_link(root / "docs" / "quillhaven.md", root / "docs" / "b.md", "symlink")
+    subprocess.run(["git", "-C", str(root), "add", "docs/quillhaven.md"], check=True)
+    assert hook.main(["--rule", "family", "docs/quillhaven.md"], root=root) == 1
+    err = capsys.readouterr().err
+    assert "docs/<family value>.md (a link)" in err and "quillhaven" not in err.casefold()
+
+
 def test_the_destination_rule_reads_framework_files_only(
     tmp_path: Path, made_up_family: None, capsys: pytest.CaptureFixture[str]
 ) -> None:
@@ -792,11 +920,67 @@ def test_a_passed_path_outside_the_repository_is_skipped(
     assert capsys.readouterr().out == ""
 
 
-def test_a_passed_symlink_is_skipped(tmp_path: Path, made_up_family: None) -> None:
+def test_a_passed_symlink_git_does_not_track_is_skipped(tmp_path: Path, made_up_family: None) -> None:
+    """A path that is not this repository's content is not this run's to report on."""
     root = make_repo(tmp_path, {"a.md": "Quillhaven\n"})
     make_link(root / "b.md", root / "a.md", "symlink")
     assert hook.main(["--rule", "family", "b.md"], root=root) == 0
     assert hook.main(["--rule", "family", "a.md"], root=root) == 1
+
+
+def test_a_passed_symlink_git_tracks_fails_the_run(
+    tmp_path: Path, made_up_family: None, capsys: pytest.CaptureFixture[str]
+) -> None:
+    """Pre-commit passes paths, and a tracked link must fail there as it fails a walk."""
+    root = make_repo(tmp_path, {"framework/a.md": "Clean.\n", "docs/x.md": "From Quillhaven.\n"})
+    make_link(root / "framework" / "l.md", root / "docs" / "x.md", "symlink")
+    subprocess.run(["git", "-C", str(root), "add", "-A"], check=True)
+    for rule in ("family", "destination"):
+        assert hook.main(["--rule", rule, "framework/l.md"], root=root) == 1
+        assert "framework/l.md (a link)" in capsys.readouterr().err
+    assert hook.main(["--rule", "family", "framework/a.md"], root=root) == 0
+    make_link(root / "framework" / "broken.md", root / "docs" / "gone.md", "symlink")
+    subprocess.run(["git", "-C", str(root), "add", "-A"], check=True)
+    assert hook.main(["--rule", "family", "framework/broken.md"], root=root) == 1
+    assert "framework/broken.md (a link)" in capsys.readouterr().err
+
+
+@pytest.mark.parametrize("kind", ["symlink", "junction"])
+def test_a_path_through_a_linked_folder_inside_the_repository_fails_the_run(
+    tmp_path: Path, made_up_family: None, kind: str, capsys: pytest.CaptureFixture[str]
+) -> None:
+    """Git's name for the file and the file read differ, so its scope and rows would be the wrong file's."""
+    root = make_repo(
+        tmp_path / "repo",
+        {"framework/b.md": "Clean.\n", "framework/sub/c.md": "Clean.\n", "docs/spec/c.md": "Quillhaven\n"},
+    )
+    (root / "framework" / "sub" / "c.md").unlink()
+    (root / "framework" / "sub").rmdir()
+    make_link(root / "framework" / "sub", root / "docs" / "spec", kind)
+    assert hook.main(["--rule", "family", "framework/sub/c.md"], root=root) == 1
+    assert "framework/sub/c.md (through a linked folder)" in capsys.readouterr().err
+    assert hook.main(["--rule", "family"], root=root) == 1
+    assert "framework/sub/c.md (through a linked folder)" in capsys.readouterr().err
+
+
+def hook_block(hook_id: str) -> list[str]:
+    """Return the stripped lines of one hook's entry in ``.pre-commit-config.yaml``."""
+    lines = (REPO_ROOT / ".pre-commit-config.yaml").read_text(encoding="utf-8").split("\n")
+    start = next(index for index, line in enumerate(lines) if line.strip() == f"- id: {hook_id}")
+    block = [lines[start].strip()]
+    for line in lines[start + 1 :]:
+        if line.strip().startswith(("- id:", "- repo:")) or line.startswith("  #"):
+            break
+        block.append(line.strip())
+    return block
+
+
+@pytest.mark.parametrize("hook_id", ["check-family-leaks", "check-destination-leaks"])
+def test_pre_commit_passes_links_and_binary_files_to_the_scans(hook_id: str) -> None:
+    """``types: [text]`` would drop a tracked link, and a binary file's name, before the hook saw them."""
+    block = hook_block(hook_id)
+    assert "types_or: [file, symlink]" in block
+    assert not any(line.startswith("types:") for line in block)
 
 
 def test_a_rule_is_required(capsys: pytest.CaptureFixture[str]) -> None:

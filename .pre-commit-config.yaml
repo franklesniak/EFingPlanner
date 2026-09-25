@@ -377,11 +377,14 @@ repos:
   # checked against the framework.
   - repo: local
     hooks:
+      # Both scans take every tracked file and link, not only text: the hook
+      # reads each file's path as well as its text, and refuses a tracked
+      # link, which `types: [text]` would drop before the hook saw it.
       - id: check-family-leaks
         name: Check tracked files for family values
         entry: python .github/scripts/check-leaks.py --rule family
         language: python
-        types: [text]
+        types_or: [file, symlink]
         # The archived design record states the values on purpose; the hook
         # skips it too when run with no paths.
         exclude: ^docs/spec/
@@ -389,7 +392,7 @@ repos:
         name: Check framework files for destination names
         entry: python .github/scripts/check-leaks.py --rule destination
         language: python
-        types: [text]
+        types_or: [file, symlink]
         files: ^framework/
       # The hook's unit tests read the design record's BUILD RULE line, so a
       # change to the spec reruns them as well as a change to the hook.
