@@ -150,7 +150,8 @@ files Git tracks. It refuses, by name, a tracked path in the rule's scope
 that is a symbolic link or a junction, that goes through a linked folder,
 or that resolves outside the repository, and it refuses the same path when
 pre-commit passes it, so a link fails a commit as it fails CI. The hooks
-take links as well as files for that reason. Git's own record of a link,
+take links and submodules as well as files for that reason: pre-commit's
+default passes files only. Git's own record of a link,
 mode 120000 in the index, is read too, so a link a checkout wrote as a
 plain file holding its target, as Git for Windows does by default, is
 refused as well. A passed path Git does not
@@ -591,10 +592,14 @@ SPELLED_NUMBER = (
 )
 #: A number that does not continue a decimal, a thousands group or a word. An
 #: underscore may stand before it, as Markdown's emphasis mark, and so may a
-#: comma or a full stop that does not follow a digit, as in a CSV field.
-NUMBER_START = r"(?<![^\W_])(?<!\d[.,])"
-#: A number that does not go on into a longer number or a word.
-NUMBER_END = r"(?![\w]|[.,]\d)"
+#: comma or a full stop that does not follow a digit, as in a CSV field. A
+#: stop, a comma or an underscore between two digits joins them into one
+#: number, as a decimal point, a thousands group or a digit separator does.
+NUMBER_START = r"(?<![^\W_])(?<!\d[.,_])"
+#: A number that does not go on into a longer number or a word. An
+#: underscore may stand after it, as Markdown's emphasis mark does, unless a
+#: digit follows it.
+NUMBER_END = r"(?![^\W_]|[.,_]\d)"
 NUMBER = r"(?P<number>\d+|" + SPELLED_NUMBER + r")"
 #: Spaces, and at most one line break with a block quote marker after it.
 GAP = r"[ \t\u00a0]*(?:\n[ \t\u00a0>]*)?"
@@ -1774,8 +1779,8 @@ def emit(text: str, values: FamilyValues, error: bool = False) -> None:
 
     Every line a rule prints goes through here, under both rules: a hit, a
     stale row, a refusal, an error, a candidate and an exemption row. The
-    suite fails if any other function but ``print_hash_rows`` calls
-    ``print``. After the masking, each character a terminal would not print
+    suite fails if any function but ``emit()`` and ``print_hash_rows()``
+    calls ``print``. After the masking, each character a terminal would not print
     as itself is written as its escape, so a file's name cannot add a line,
     move the cursor or colour the log; and a character the stream cannot
     encode is written as its escape too, rather than stopping the run.

@@ -348,6 +348,25 @@ def test_a_very_long_digit_run_is_read_without_int(
     assert "unexpected error" not in capsys.readouterr().err
 
 
+@pytest.mark.parametrize(
+    "text", ["Trip length: __23__", "Trip length: _23_", "Trip length: __23__.", "**Trip length:** __23__"]
+)
+def test_a_trip_length_in_underscore_emphasis_is_a_leak(text: str) -> None:
+    """Markdown writes bold and italics with underscores as well as asterisks."""
+    assert family(text + "\n") == [(1, "number")]
+
+
+@pytest.mark.parametrize("text", ["Trip length: 23_000", "It runs 1_23 days", "Trip length: 23_5 days"])
+def test_a_number_an_underscore_joins_to_digits_is_not_the_trip_length(text: str) -> None:
+    """Controls: an underscore between two digits is a digit separator, so the digits are one longer number."""
+    assert family(text + "\n") == []
+
+
+def test_a_bare_number_in_underscore_emphasis_is_a_candidate() -> None:
+    assert hook.bare_numbers("See __23__ here.\n", VALUES) == [(1, 7)]
+    assert hook.bare_numbers("See 23_000 here.\n", VALUES) == [], "control: a digit separator"
+
+
 def test_digits_are_normalized_as_text() -> None:
     arabic_indic = chr(0x0662) + chr(0x0663)
     assert hook.digits_value("0023") == "23"
@@ -1459,12 +1478,35 @@ def hook_block(hook_id: str) -> list[str]:
     return block
 
 
+#: The tags ``identify`` gives each kind of tracked path, as pre-commit classifies it: a link is tagged
+#: ``symlink`` and a checked-out submodule ``directory``, with no ``file`` tag.
+PATH_TAGS = {
+    "a text file": {"file", "text", "non-executable", "markdown"},
+    "a binary file": {"file", "binary", "non-executable"},
+    "a link": {"symlink"},
+    "a checked-out submodule": {"directory"},
+}
+
+
+def listed_types(block: list[str], key: str, default: list[str]) -> set[str]:
+    """Return a hook's ``types`` or ``types_or`` list, or pre-commit's default when the key is absent."""
+    line = next((line for line in block if line.startswith(key + ":")), None)
+    if line is None:
+        return set(default)
+    return {item.strip() for item in line.split(":", 1)[1].strip().strip("[]").split(",") if item.strip()}
+
+
+@pytest.mark.parametrize("kind", sorted(PATH_TAGS))
 @pytest.mark.parametrize("hook_id", ["check-family-leaks", "check-destination-leaks"])
-def test_pre_commit_passes_links_and_binary_files_to_the_scans(hook_id: str) -> None:
-    """``types: [text]`` would drop a tracked link, and a binary file's name, before the hook saw them."""
+def test_pre_commit_passes_every_kind_of_tracked_path_to_the_scans(hook_id: str, kind: str) -> None:
+    """Pre-commit passes a path whose tags hold every ``types`` entry, ``[file]`` unless set, and one ``types_or`` one.
+
+    Its default drops a link and a submodule, which the hook refuses by name, so both scans clear it.
+    """
     block = hook_block(hook_id)
-    assert "types_or: [file, symlink]" in block
-    assert not any(line.startswith("types:") for line in block)
+    types, types_or = listed_types(block, "types", ["file"]), listed_types(block, "types_or", [])
+    tags = PATH_TAGS[kind]
+    assert tags >= types and (not types_or or tags & types_or)
 
 
 def test_the_destination_rule_never_prints_a_family_value(
@@ -1568,6 +1610,17 @@ def test_a_tracked_name_with_control_characters_prints_escaped(
     )
 
 
+#: The functions the hook lets print: ``emit()`` masks every line, and ``--hash`` prints digests.
+PRINTERS = {"emit", "print_hash_rows"}
+
+
+def test_emit_s_docstring_names_the_functions_that_may_print() -> None:
+    """The docstring's promise and the structural test below must name the same functions."""
+    doc = " ".join(hook.emit.__doc__.split())
+    sentence = next(part for part in doc.split(". ") if "calls ``print``" in part)
+    assert set(re.findall(r"``(\w+)\(\)``", sentence)) == PRINTERS
+
+
 def test_only_emit_and_print_hash_rows_print() -> None:
     """Every line a rule prints must pass through ``emit()``, which masks family values under both rules."""
     tree = ast.parse(HOOK_PATH.read_text(encoding="utf-8"))
@@ -1577,7 +1630,7 @@ def test_only_emit_and_print_hash_rows_print() -> None:
             for node in ast.walk(function):
                 if isinstance(node, ast.Call) and isinstance(node.func, ast.Name) and node.func.id == "print":
                     printers.add(function.name)
-    assert printers == {"emit", "print_hash_rows"}
+    assert printers == PRINTERS
     top_level = [
         node for node in tree.body
         if not isinstance(node, (ast.FunctionDef, ast.ClassDef))
