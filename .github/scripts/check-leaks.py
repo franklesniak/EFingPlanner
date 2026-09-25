@@ -77,15 +77,18 @@ is a candidate, a binary file's included.
   - after a label for it: "trip length" (or "trip length in days"), or the
     design record's "this family:", joined to the number by marks such as a
     colon, an equals sign, "is", "of", or an opening bracket;
-  - in a grep pattern for it: the number, a bracket class or one of the
-    escapes ``\\s``, ``\\S``, ``\\w`` and ``\\W``, then the unit, as a
+  - in a grep pattern for it: the number, a bracket expression (a POSIX
+    class such as ``[:space:]`` inside it included) or one of the escapes
+    ``\\s``, ``\\S``, ``\\w`` and ``\\W``, then the unit, as a
     hand-run leak grep writes it; each escape lets the pattern find the
     number with its unit.
 
-  A spelled-out number from one to ninety-nine counts as its digits, and
-  digits from any script count as their ASCII digits, read as text, so a
-  run of any length is read. A number that is part of a decimal or a
-  thousands group is not a match; a comma or a full stop that does not
+  The number is read in digits, and digits from any script count as their
+  ASCII digits, read as text, so a run of any length is read. A number in
+  words is read as written (DP-23): no tracked file on any branch states
+  the family's trip length in words, and the design record and the briefs
+  write it in digits. A number that is part of a decimal or a thousands
+  group is not a match; a comma or a full stop that does not
   follow a digit, as in a CSV field, does not hide one. A bare number is
   not a leak: the design record's grep note lists page numbers, item counts
   and dates as the wider pattern's false positives, and the Batch 2 build
@@ -131,8 +134,11 @@ a destination name and a family value prints the name and hides the value.
 A malformed value row stops both rules before either prints anything read
 from the repository, since a row the data check cannot read masks nothing.
 While one stands, an argument error or an unexpected error prints a fixed
-line in place of its message, and a row error names the row by number, not
-by what it holds. A value is masked as it is written, after a backslash
+line in place of its message. A row error, for a value row or an exemption
+row, names the row by number, never what a field holds, and a stale row's
+message gives neither the row's count nor the path of a file the run did
+not read: a field typed in the wrong place could hold a value, and a bare
+number in it is not masked. A value is masked as it is written, after a backslash
 escape or not, and so is an argument error, which names the argument it
 could not read. After
 the masking, a character a terminal would not print as itself, such as a
@@ -141,7 +147,8 @@ sequence, is written as its escape, so a file's name cannot add a line to
 the log or change how it shows; so is a character the output cannot
 encode. Only ``--hash`` prints elsewhere, and it prints digests. An
 unexpected error prints one masked line, naming its type, where in this
-script it was raised, and its message, and exits 2, with no traceback. A
+script it was raised, and its message with each run of digits replaced,
+and exits 2, with no traceback. A
 bare number is printed as it stands: it is not a family value, and masking
 the family's number wherever it stood, in a session number or a date,
 would print which number it is.
@@ -212,8 +219,8 @@ person's read, to ``--candidates``, or to another check:
 
 * A paraphrase or an inference: a cap with no unit or label ("the trip
   cannot go past N"), a word between the number and its unit ("N full
-  days"), an ordinal, a number over ninety-nine in words, or a length given
-  in weeks.
+  days"), an ordinal, a number in words (DP-23), or a length given in
+  weeks.
 * A spelling the matcher does not fold: a misspelling, a nickname or an
   abbreviation, letters split by spaces or by an invisible character such
   as a zero-width space, a look-alike letter from another alphabet, the
@@ -291,8 +298,11 @@ FAMILY_VALUES: tuple[tuple[str, int, str], ...] = (
     ("word", 1, "8e9662ba76c03835748fa2fbb963d9949bb8d14ac6c16eaceabecfe9e587d5a1"),
 )
 
-#: The destination names ``AC-16-1``'s grep part names. The name of every
-#: folder under ``destinations/`` is added at run time.
+#: The destination names ``AC-16-1``'s grep part names, and the whole of the
+#: destination rule's list: a folder under ``destinations/`` adds no name
+#: (DP-21). A name to keep out of the framework goes here, into ``AC-16-1``,
+#: and into the style law's destination-names bullet; the suite checks that
+#: the three agree.
 DESTINATION_NAMES = ("Japan", "Tokyo", "Kyoto", "Osaka", "Shinkansen")
 
 #: The reasons the rows below give, each written once.
@@ -581,22 +591,6 @@ LETTER_RUN = re.compile(r"[^\W\d_]+")
 WORD_RUN = re.compile(r"\w+")
 HEX_DIGEST = re.compile(r"[0-9a-f]{64}")
 
-UNITS = {"one": 1, "two": 2, "three": 3, "four": 4, "five": 5, "six": 6, "seven": 7, "eight": 8, "nine": 9}
-#: The teens are built from their stems and counted from ten, so this table
-#: spells no whole number word, and no number, for ``--candidates`` to list.
-TEEN_WORDS = ("ten", "eleven", "twelve") + tuple(
-    stem + "teen" for stem in ("thir", "four", "fif", "six", "seven", "eigh", "nine")
-)
-TEENS = {word: 10 + index for index, word in enumerate(TEEN_WORDS)}
-
-TENS = {"twenty": 20, "thirty": 30, "forty": 40, "fifty": 50, "sixty": 60, "seventy": 70, "eighty": 80, "ninety": 90}
-#: A number spelled out, from one to ninety-nine. Longer words come first in
-#: each group, so ``nineteen`` is not read as ``nine``.
-SPELLED_NUMBER = (
-    r"(?:(?:" + "|".join(TENS) + r")(?:[- \u00a0]?(?:" + "|".join(UNITS) + r"))?"
-    r"|" + "|".join(sorted(TEENS, key=len, reverse=True))
-    + r"|" + "|".join(sorted(UNITS, key=len, reverse=True)) + r")"
-)
 #: A number that does not continue a decimal, a thousands group or a word. An
 #: underscore may stand before it, as Markdown's emphasis mark, and so may a
 #: comma or a full stop that does not follow a digit, as in a CSV field. A
@@ -607,7 +601,7 @@ NUMBER_START = r"(?<![^\W_])(?<!\d[.,_])"
 #: underscore may stand after it, as Markdown's emphasis mark does, unless a
 #: digit follows it.
 NUMBER_END = r"(?![^\W_]|[.,_]\d)"
-NUMBER = r"(?P<number>\d+|" + SPELLED_NUMBER + r")"
+NUMBER = r"(?P<number>\d+)"
 #: Spaces, and at most one line break with a block quote marker after it.
 GAP = r"[ \t\u00a0]*(?:\n[ \t\u00a0>]*)?"
 #: Marks that may close around a number, or open around the word after it:
@@ -637,13 +631,18 @@ NUMBER_AFTER_LABEL = re.compile(
     + GAP + OPENING_MARKS + NUMBER_START + NUMBER + NUMBER_END,
     re.IGNORECASE,
 )
+#: A bracket expression, as grep reads one: up to eight items, each a
+#: character or one of the bracketed items POSIX defines, a class such as
+#: ``[:space:]``, an equivalence class such as ``[=e=]`` or a collating
+#: element such as ``[.-.]``, so the class's own ``]`` does not end it.
+BRACKET_EXPRESSION = r"\[\^?(?:\[:[a-z]+:\]|\[=[^=\]\n]{1,8}=\]|\[\.[^.\]\n]{1,8}\.\]|[^\]\n]){0,8}\]"
 #: The number in a grep pattern for the trip length, as the build briefs and
-#: the design record's grep note write one: the number, a bracket class or a
-#: ``\s``, ``\S``, ``\w`` or ``\W`` escape, then the unit, alone or in an
+#: the design record's grep note write one: the number, a bracket expression
+#: or a ``\s``, ``\S``, ``\w`` or ``\W`` escape, then the unit, alone or in an
 #: alternation. All four escapes are listed: each lets the pattern find the
 #: number with its unit, and a grep line that holds one spells both.
 NUMBER_IN_PATTERN = re.compile(
-    NUMBER_START + NUMBER + r"(?:\[[^\]\n]{0,8}\][?*+]?|\\[sSwW][?*+]?)\(?(?:\?:)?"
+    NUMBER_START + NUMBER + r"(?:" + BRACKET_EXPRESSION + r"[?*+]?|\\[sSwW][?*+]?)\(?(?:\?:)?"
     + r"(?:days?|nights?|day\|night|night\|day)(?![^\W\d_])",
     re.IGNORECASE,
 )
@@ -659,15 +658,6 @@ TRIP_LENGTH_RULES = (
 BARE_NUMBER = re.compile(NUMBER_START + NUMBER + NUMBER_END, re.IGNORECASE)
 
 
-def spelled_to_int(text: str) -> int:
-    """Return the value of a number the ``SPELLED_NUMBER`` pattern matched."""
-    words = [word for word in re.split(r"[- \u00a0]+", text.casefold()) if word]
-    total = 0
-    for word in words:
-        total += TENS.get(word) or TEENS.get(word) or UNITS[word]
-    return total
-
-
 def digits_value(text: str) -> str:
     """Return decimal digits as ASCII digits with no leading zero, without ``int()``.
 
@@ -679,9 +669,7 @@ def digits_value(text: str) -> str:
 
 def number_value(text: str) -> str:
     """Return a matched number as the digits a number value is hashed from."""
-    if text.isdecimal():
-        return digits_value(text)
-    return str(spelled_to_int(text))
+    return digits_value(text)
 
 
 def fold(text: str) -> str:
@@ -727,9 +715,7 @@ def normalize_value(kind: str, value: str) -> list[str]:
         text = value.strip()
         if text.isdecimal():
             return [digits_value(text)]
-        if re.fullmatch(SPELLED_NUMBER, text, re.IGNORECASE):
-            return [str(spelled_to_int(text))]
-        raise ValueError("a number value is written in digits, or spelled out from one to ninety-nine")
+        raise ValueError("a number value is written in digits")
     raise ValueError(f"the kind is one of {', '.join(KINDS)}")
 
 
@@ -812,7 +798,7 @@ def check_family_values(rows: Sequence[object]) -> list[str]:
                 f"FAMILY_VALUES row {number} gives a word count that is not a whole number from 1 to {MAX_VALUE_WORDS}"
             )
         elif kind in KINDS and kind != "word" and words != 1:
-            found.append(f"FAMILY_VALUES row {number} gives a {kind} value {words} words; it is 1")
+            found.append(f"FAMILY_VALUES row {number} gives a {kind} value more than one word; it is 1")
         if not isinstance(digest, str) or not HEX_DIGEST.fullmatch(digest):
             found.append(f"FAMILY_VALUES row {number} holds no 64-character lowercase hex digest")
         # Only a row that passed is compared with the others: its fields are
@@ -833,6 +819,9 @@ def check_exemption_rows(rule: str, rows: Sequence[object]) -> list[str]:
         return [f"{name} is not a tuple of rows"]
     errors: list[str] = []
     keys: set[tuple[object, ...]] = set()
+    # An error names the row by number and never repeats a field, as a value
+    # row's does: a field typed in the wrong place could hold a family value,
+    # and a bare number in it is not masked.
     for number, row in enumerate(rows, start=1):
         where = f"{name} row {number}"
         if not isinstance(row, tuple) or len(row) != 5:
@@ -850,7 +839,7 @@ def check_exemption_rows(rule: str, rows: Sequence[object]) -> list[str]:
             errors.append(f"{where} names no repository-relative path")
         if rule == "family":
             if matched not in KINDS:
-                errors.append(f"{where} names the kind {matched!r}")
+                errors.append(f"{where} names an unknown kind; it is one of {', '.join(KINDS)}")
             if not isinstance(context, str) or not HEX_DIGEST.fullmatch(context):
                 errors.append(f"{where} holds no 64-character lowercase hex context digest")
         else:
@@ -858,8 +847,15 @@ def check_exemption_rows(rule: str, rows: Sequence[object]) -> list[str]:
                 errors.append(f"{where} names no occurrence")
             elif not isinstance(context, str) or matched not in context:
                 errors.append(f"{where} gives a context that does not hold its occurrence")
+            elif not any(
+                (start, end) == (0, len(matched))
+                for start, end, _label, _key in destination_hits_in_reading(Reading(matched), DESTINATION_RUNS)
+            ):
+                # A stale row's message names what it matched, so what it
+                # matched must be a destination name, never other text.
+                errors.append(f"{where} names an occurrence that is not a destination name")
         if not isinstance(count, int) or isinstance(count, bool) or count < 1:
-            errors.append(f"{where} gives the count {count!r}; it is a whole number, at least one")
+            errors.append(f"{where} gives a count that is not a whole number of at least one")
         if not isinstance(reason, str) or not reason.strip():
             errors.append(f"{where} gives no reason")
         if isinstance(path, str) and path and not in_scope(rule, path):
@@ -1332,6 +1328,10 @@ class Ledger:
         working tree, so the row excuses nothing and would come back into use
         if the same words came back.
         """
+        # A message names the row by number, and gives neither its count nor,
+        # for a file the run did not read, its path: either could be a field
+        # typed in the wrong place. A read file's path is a tracked file's name.
+        table = "FAMILY_EXEMPTIONS" if rule == "family" else "DESTINATION_EXEMPTIONS"
         messages = []
         for index, (path, matched, _context, count, _reason) in enumerate(self.rows):
             if self.used[index] >= count:
@@ -1339,15 +1339,13 @@ class Ledger:
             what = f"a {matched} value" if rule == "family" else f'"{matched}"'
             if path in scanned:
                 messages.append(
-                    f"{path}: exemption row {index + 1} excuses {count} occurrence(s) of {what} "
-                    f"and the file holds {self.used[index]} in those words. Remove the row, or "
-                    "correct its count."
+                    f"{path}: {table} row {index + 1} excuses more occurrences of {what} than the "
+                    f"file holds in those words, {self.used[index]}. Remove the row, or correct its count."
                 )
             elif complete:
                 messages.append(
-                    f"{path}: exemption row {index + 1} excuses {count} occurrence(s) of {what} "
-                    "in a file this walk did not read, because Git does not track it or it is not "
-                    "in the working tree. Remove the row."
+                    f"{table} row {index + 1} excuses {what} in a file this walk did not read, because "
+                    "Git does not track it or it is not in the working tree. Remove the row."
                 )
         return messages
 
@@ -1382,7 +1380,7 @@ def exemption_row_lines(
             continue
         if number:
             lines.append(
-                f"    # Replaces {name} row {number}, which covers {old} of these {old + count}; delete that row."
+                f"    # Replaces {name} row {number}, which covers too few of these {old + count}; delete that row."
             )
         lines.append(row)
     return lines
@@ -1710,6 +1708,9 @@ def emit(text: str, values: FamilyValues, error: bool = False) -> None:
     print(line.encode(encoding, "backslashreplace").decode(encoding), file=stream)
 
 
+#: A run of digits, in any script, and what an unexpected error's message shows in its place.
+DIGIT_RUN = re.compile(r"\d+")
+DIGITS_WITHHELD = "<digits>"
 #: What prints when even the masked crash line cannot be built.
 CRASH_UNMASKABLE = "check-leaks.py: an unexpected error stopped the run, and its message could not be masked"
 
@@ -1717,13 +1718,16 @@ CRASH_UNMASKABLE = "check-leaks.py: an unexpected error stopped the run, and its
 def crash_line(error: BaseException) -> str:
     """Return one line naming an unexpected error: its type, where in this script, and its message.
 
-    ``emit()`` masks it. No traceback is printed: its frames hold paths and
-    text that ``emit()`` would have to mask line by line.
+    ``emit()`` masks the family values in it. Every run of digits in the
+    message is replaced first, since a message can carry text from a file
+    and ``emit()`` leaves a bare number as it stands. No traceback is
+    printed: its frames hold paths and text that ``emit()`` would have to
+    mask line by line.
     """
     here = Path(__file__).resolve()
     frames = [frame for frame in traceback.extract_tb(error.__traceback__) if Path(frame.filename).resolve() == here]
     where = f" in {frames[-1].name}(), line {frames[-1].lineno}" if frames else ""
-    message = " ".join(str(error).split())
+    message = DIGIT_RUN.sub(DIGITS_WITHHELD, " ".join(str(error).split()))
     return f"check-leaks.py: an unexpected error stopped the run{where}: {type(error).__name__}: {message}"
 
 

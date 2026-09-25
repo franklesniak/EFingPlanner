@@ -283,7 +283,6 @@ def test_a_code_value_in_another_case_or_inside_a_run_is_not_found(text: str) ->
     [
         "23 days", "23-day", "23day", "23 nights", "23-Night", "23 DAYS", "a 23-day trip",
         "23\ndays", "> 23\n> days", "23 " + EN_DASH + " day", "23" + NO_BREAK_SPACE + "days",
-        "twenty-three days", "Twenty three nights", "twenty-three-day",
         "up to 23 days.", "(23 nights)",
         "**23** days", "*23* days", "_23_ nights", "`23` days", "(23) days", "23 *days*", "**23 days**",
         "'23' days", "23 (days)", "label,23 days", "Length.23 days", "a;23 nights",
@@ -304,7 +303,7 @@ def test_the_trip_length_number_with_its_unit_is_a_leak(text: str) -> None:
         "`23` (as a trip-length cap)", "23 as a trip length cap", "`23` **as a\n   trip-length cap**",
         "no `23` (AS A TRIP-LENGTH CAP)", "trip length: 23", "Trip length = 23", "the trip length is 23",
         "**Maximum trip length in days** (this family: 23).", "(this family: 23)", "trip-length: `23`",
-        "Trip\nlength: twenty-three", "triplength: 23", "Maximum trip length: 23 days",
+        "Trip\nlength: 23", "triplength: 23", "Maximum trip length: 23 days",
         "trip length: `23` (as a trip-length cap)",
         "grep -rwiE '23[ -]?days?' framework/", "grep -rwE '23[ -]?(day|night)s?' framework/",
         "`" + chr(92) + "b23[ -]?day`", "23" + chr(92) + "s*days", "23[- ]*(?:day|night)",
@@ -316,6 +315,45 @@ def test_the_number_stated_as_the_trip_length_is_a_leak(text: str) -> None:
     A number that more than one rule reads is one occurrence, reported once.
     """
     assert [kind for _line, kind in family(text + "\n")] == ["number"]
+
+
+@pytest.mark.parametrize(
+    "text",
+    [
+        "twenty-three days", "Twenty three nights", "twenty-three-day", "trip length: twenty-three",
+        "(this family: twenty-three)", "twenty-three as a trip-length cap", "twentythree days",
+        "twentyone days", "twenty one nights", "ninety-nine days",
+    ],
+)
+def test_a_number_in_words_is_read_as_written(tmp_path: Path, made_up_family: None, text: str) -> None:
+    """DP-23: no tracked file on any branch states the trip length in words, so a number in words is not read.
+
+    It is no hit and no candidate, and a joined compound such as "twentyone" no longer stops the run (S53-48).
+    """
+    assert family(text + "\n") == []
+    assert hook.bare_numbers(text + "\n", VALUES) == []
+    root = make_repo(tmp_path, {"notes.md": text + "\n"})
+    assert hook.main(["--rule", "family"], root=root) == 0
+
+
+@pytest.mark.parametrize(
+    "text",
+    [
+        "grep -rwE '23[[:space:]]+days' framework/", "23[[:space:]-]?(day|night)s?", "23[[:blank:]]*nights",
+        "23[^[:alpha:]]?days", "23[[=a=]]days", "23[[.-.]]?days",
+    ],
+)
+def test_a_posix_class_in_a_grep_pattern_is_read_as_a_bracket_expression(text: str) -> None:
+    """S53-51: POSIX's bracketed items, such as ``[:space:]``, sit inside a bracket expression, as grep reads it."""
+    assert [kind for _line, kind in family(text + "\n")] == ["number"]
+
+
+@pytest.mark.parametrize(
+    "text", ["23[[:space:]]+weeks", "23[[:space:]]+", "123[[:space:]]+days", "23[[:space:]][[:space:]]x days"]
+)
+def test_a_posix_class_before_no_unit_is_not_a_leak(text: str) -> None:
+    """Controls: the pattern still needs the unit right after its bracket expression, and the number whole."""
+    assert family(text + "\n") == []
 
 
 def test_a_number_two_rules_read_keeps_the_unit_rule_s_span() -> None:
@@ -430,7 +468,7 @@ def test_candidates_lists_bare_numbers_and_leaves_out_leaks() -> None:
         "Session 23\n**Last Updated:** 2026-07-23\nup to 23 days\ntwenty-three people\n123 things\n"
         "trip length: 23\n`23` (as a trip-length cap)\n"
     )
-    assert hook.bare_numbers(text, VALUES) == [(1, 9), (2, 27), (4, 1)]
+    assert hook.bare_numbers(text, VALUES) == [(1, 9), (2, 27)]
 
 
 def test_candidates_mode_prints_and_exits_zero(
@@ -578,7 +616,7 @@ def test_a_moved_occurrence_is_reported_and_its_row_goes_stale(tmp_path: Path) -
     report = run_family(tmp_path, {"docs/a.md": "A new sentence names Quillhaven now.\n"}, (row,))
     assert [hit.label for hit in report.hits] == ["word"]
     assert len(report.stale) == 1
-    assert "exemption row 1 excuses 1 occurrence(s) of a word value" in report.stale[0]
+    assert "FAMILY_EXEMPTIONS row 1 excuses more occurrences of a word value than the file holds" in report.stale[0]
 
 
 def test_a_row_is_bound_to_its_own_line_not_the_lines_around_it(tmp_path: Path) -> None:
@@ -612,11 +650,11 @@ def test_a_destination_row_shows_its_words_and_excuses_only_them(tmp_path: Path)
         (("/docs/a.md", "word", "0" * 64, 1, "r"), "names no repository-relative path"),
         (("docs/../a.md", "word", "0" * 64, 1, "r"), "names no repository-relative path"),
         (("docs" + chr(92) + "a.md", "word", "0" * 64, 1, "r"), "names no repository-relative path"),
-        (("docs/a.md", "phrase", "0" * 64, 1, "r"), "names the kind"),
+        (("docs/a.md", "phrase", "0" * 64, 1, "r"), "names an unknown kind; it is one of word, code, number"),
         (("docs/a.md", "word", "0" * 63, 1, "r"), "no 64-character lowercase hex context digest"),
         (("docs/a.md", "word", "A" * 64, 1, "r"), "no 64-character lowercase hex context digest"),
-        (("docs/a.md", "word", "0" * 64, 0, "r"), "gives the count 0"),
-        (("docs/a.md", "word", "0" * 64, True, "r"), "gives the count True"),
+        (("docs/a.md", "word", "0" * 64, 0, "r"), "gives a count that is not a whole number of at least one"),
+        (("docs/a.md", "word", "0" * 64, True, "r"), "gives a count that is not a whole number of at least one"),
         (("docs/a.md", "word", "0" * 64, 1, " "), "gives no reason"),
     ],
 )
@@ -637,6 +675,8 @@ def test_a_repeated_row_is_an_error() -> None:
         (("framework/a.md", "", "x", 1, "r"), "names no occurrence"),
         (("framework/a.md", "Japan", "the Tokyo line", 1, "r"), "context that does not hold its occurrence"),
         (("docs/a.md", "Japan", "the Japan line", 1, "r"), "names a path the destination rule does not read"),
+        (("framework/a.md", "Tokyo line", "the Tokyo line", 1, "r"), "an occurrence that is not a destination name"),
+        (("framework/a.md", "line", "the Tokyo line", 1, "r"), "an occurrence that is not a destination name"),
     ],
 )
 def test_a_malformed_destination_row_is_an_error(row: tuple[object, ...], fragment: str) -> None:
@@ -651,7 +691,7 @@ def test_a_malformed_destination_row_is_an_error(row: tuple[object, ...], fragme
         ((("phrase", 1, "0" * 64),), "names an unknown kind"),
         ((("word", 0, "0" * 64),), "gives a word count that is not a whole number from 1 to 3"),
         ((("word", 4, "0" * 64),), "gives a word count that is not a whole number from 1 to 3"),
-        ((("code", 2, "0" * 64),), "gives a code value 2 words"),
+        ((("code", 2, "0" * 64),), "gives a code value more than one word; it is 1"),
         ((("word", 1, "0" * 60),), "no 64-character lowercase hex digest"),
         ((("word", 1, "0" * 64), ("word", 1, "0" * 64)), "repeats an earlier row"),
         ((("word", 1),), "is not (kind, words, digest)"),
@@ -675,7 +715,7 @@ def test_a_malformed_value_row_is_an_error(rows: tuple[object, ...], fragment: s
         ((("framework/a.md", "Tokyo", ["the Tokyo line"], 1, "r"),), "context that does not hold its occurrence"),
         ((("framework/a.md", ["Tokyo"], "the Tokyo line", 1, "r"),) * 2, "names no occurrence"),
         (((["framework/a.md"], "Tokyo", "the Tokyo line", 1, "r"),), "names no repository-relative path"),
-        ((("framework/a.md", "Tokyo", "the Tokyo line", [1], "r"),), "gives the count"),
+        ((("framework/a.md", "Tokyo", "the Tokyo line", [1], "r"),), "gives a count that is not a whole number"),
         (None, "DESTINATION_EXEMPTIONS is not a tuple of rows"),
     ],
 )
@@ -759,7 +799,7 @@ def test_a_row_that_covers_too_few_is_replaced_by_one_for_every_occurrence(
     capsys.readouterr()
     assert hook.main(["--rule", rule, "--exemption-rows"], root=root) == 0
     comment, row = capsys.readouterr().out.strip().splitlines()
-    assert comment.strip() == f"# Replaces {table} row 1, which covers 1 of these 2; delete that row."
+    assert comment.strip() == f"# Replaces {table} row 1, which covers too few of these 2; delete that row."
     replacement = ast.literal_eval(row.strip().rstrip(","))
     assert replacement == first[:3] + (2, "")
     monkeypatch.setattr(hook, table, (replacement[:4] + ("a test row",),))
@@ -785,9 +825,7 @@ def test_a_full_walk_reports_a_row_whose_file_git_no_longer_tracks(
     capsys.readouterr()
     subprocess.run(["git", "-C", str(root), "rm", "-q", "-f", "docs/a.md"], check=True)
     assert hook.main(["--rule", "family"], root=root) == 1
-    assert "docs/a.md: exemption row 1 excuses 1 occurrence(s) of a word value in a file this walk did not read" in (
-        capsys.readouterr().out
-    )
+    assert "FAMILY_EXEMPTIONS row 1 excuses a word value in a file this walk did not read" in capsys.readouterr().out
     assert hook.main(["--rule", "family", "docs/b.md"], root=root) == 0
 
 
@@ -797,8 +835,9 @@ def test_a_stale_row_fails_the_run(
     root = make_repo(tmp_path, {"docs/a.md": "Nothing here.\n"})
     monkeypatch.setattr(hook, "FAMILY_EXEMPTIONS", (family_row("See Quillhaven here.\n", 1),))
     assert hook.main(["--rule", "family"], root=root) == 1
-    assert "docs/a.md: exemption row 1 excuses 1 occurrence(s) of a word value and the file holds 0" in (
-        capsys.readouterr().out
+    assert (
+        "docs/a.md: FAMILY_EXEMPTIONS row 1 excuses more occurrences of a word value than the file holds in those "
+        "words, 0." in capsys.readouterr().out
     )
 
 
@@ -823,7 +862,6 @@ def test_the_digest_cache_is_bounded() -> None:
         ("word", "  Brannock   Field ", ["brannock field", "brannockfield"]),
         ("code", "QHV", ["QHV"]),
         ("number", "23", ["23"]),
-        ("number", "twenty-three", ["23"]),
     ],
 )
 def test_hash_prints_the_rows_for_one_value(
@@ -843,6 +881,7 @@ def test_hash_prints_the_rows_for_one_value(
         ("word", "one two three four"),
         ("code", "Q H"),
         ("number", "many"),
+        ("number", "twenty-three"),
         ("word", "Quill2haven"),
         ("word", "Brannock\n\nField"),
         ("word", "Brannock\r\rField"),
@@ -1868,6 +1907,99 @@ def test_an_unexpected_error_prints_one_masked_line_and_no_traceback(
     assert lines[0].startswith("check-leaks.py: an unexpected error stopped the run in run(), line ")
     assert lines[0].endswith(": ValueError: could not read the <family value> notes for <family value>")
     assert "Traceback" not in captured.err and "quillhaven" not in captured.err.casefold()
+
+
+#: The made-up family's values, as a field typed in the wrong place would hold them, and the forms each prints as.
+WRONG_FIELDS = ["Quillhaven", "QHV", "23", "23 days", 23, "Brannock Field"]
+
+
+def printed_nothing_of_the_family(text: str) -> bool:
+    """Return whether ``text`` holds none of the made-up family's values, the bare number included."""
+    folded = text.casefold()
+    return all(word not in folded for word in ("quillhaven", "qhv", "brannock", "godmother")) and not re.search(
+        r"(?<!\d)23(?!\d)", text
+    )
+
+
+@pytest.mark.parametrize("value", WRONG_FIELDS, ids=[str(value) for value in WRONG_FIELDS])
+@pytest.mark.parametrize(
+    ("rule", "row", "field"),
+    [(rule, row, field) for rule, row in (("family", ("docs/a.md", "word", "0" * 64, 1, "r")),
+                                          ("destination", ("framework/a.md", "Tokyo", "the Tokyo line", 1, "r")))
+     for field in range(5)],
+    ids=[rule + "-" + name for rule in ("family", "destination")
+         for name in ("path", "occurrence", "context", "count", "reason")],
+)
+def test_a_field_typed_in_the_wrong_place_never_prints_its_value(
+    tmp_path: Path,
+    made_up_family: None,
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
+    rule: str,
+    row: tuple[object, ...],
+    field: int,
+    value: object,
+) -> None:
+    """S53-49 as a class: an exemption row with a family value in the wrong field fails the run and prints no value."""
+    wrong = row[:field] + (value,) + row[field + 1 :]
+    if rule == "destination" and field == 1:
+        wrong = wrong[:2] + ("the " + str(value) + " line",) + wrong[3:]
+    table = "FAMILY_EXEMPTIONS" if rule == "family" else "DESTINATION_EXEMPTIONS"
+    monkeypatch.setattr(hook, table, (wrong,))
+    root = make_repo(tmp_path, {"docs/a.md": "Clean.\n", "framework/a.md": "Clean.\n"})
+    code = hook.main(["--rule", rule], root=root)
+    captured = capsys.readouterr()
+    assert code == 1, "the row is malformed, or well-formed and stale, since the file holds nothing it excuses"
+    assert printed_nothing_of_the_family(captured.out + captured.err), (captured.out, captured.err)
+
+
+@pytest.mark.parametrize("value", WRONG_FIELDS, ids=[str(value) for value in WRONG_FIELDS])
+@pytest.mark.parametrize("field", [0, 1, 2], ids=["kind", "words", "digest"])
+def test_a_value_row_field_typed_in_the_wrong_place_never_prints_its_value(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str], field: int, value: object
+) -> None:
+    """A value row's error names the row by number, whatever its field holds."""
+    rows = list(value_rows(MADE_UP))
+    rows[0] = rows[0][:field] + (value,) + rows[0][field + 1 :]
+    monkeypatch.setattr(hook, "FAMILY_VALUES", tuple(rows))
+    monkeypatch.setattr(hook, "FAMILY_EXEMPTIONS", ())
+    root = make_repo(tmp_path, {"docs/a.md": "Clean.\n"})
+    assert hook.main(["--rule", "family"], root=root) == 1
+    captured = capsys.readouterr()
+    assert printed_nothing_of_the_family(captured.out + captured.err), (captured.out, captured.err)
+
+
+def test_a_stale_row_prints_neither_its_count_nor_an_unread_path(
+    tmp_path: Path, made_up_family: None, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    """A well-formed row can still hold a value in its count or its path, so a stale row's message shows neither."""
+    root = make_repo(tmp_path, {"framework/a.md": "Clean.\n"})
+    rows = (
+        ("framework/a.md", "Tokyo", "the Tokyo line", 23, "a test row"),
+        ("framework/quillhaven_23.md", "Tokyo", "the Tokyo line", 1, "a test row"),
+    )
+    monkeypatch.setattr(hook, "DESTINATION_EXEMPTIONS", rows)
+    assert hook.main(["--rule", "destination"], root=root) == 1
+    captured = capsys.readouterr()
+    assert "DESTINATION_EXEMPTIONS row 1 excuses more occurrences" in captured.out
+    assert "DESTINATION_EXEMPTIONS row 2 excuses" in captured.out
+    assert printed_nothing_of_the_family(captured.out + captured.err), (captured.out, captured.err)
+
+
+def test_an_unexpected_error_s_message_prints_no_run_of_digits(
+    tmp_path: Path, made_up_family: None, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    """A crash's message can carry a file's text, and a bare number in it is not masked, so its digits are withheld."""
+    root = make_repo(tmp_path, {"docs/a.md": "Clean.\n"})
+
+    def crash(*_args: object, **_kwargs: object) -> object:
+        raise KeyError("Quillhaven for 23")
+
+    monkeypatch.setattr(hook, "scan", crash)
+    assert hook.main(["--rule", "family"], root=root) == 2
+    err = capsys.readouterr().err
+    assert err.strip().endswith(": KeyError: '<family value> for <digits>'")
+    assert printed_nothing_of_the_family(err), err
 
 
 def test_a_crash_while_masking_prints_nothing_from_the_error(
