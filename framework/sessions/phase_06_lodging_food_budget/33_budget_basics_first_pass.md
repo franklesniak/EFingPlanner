@@ -2,7 +2,11 @@
 
 # Session 33: Budget Basics, First Pass
 
-You are here: Phase 6 (Lodging, Food, and Budget), First Taste step 11 of 13. Previous: [21 Compare Cities](../phase_03_choose_places/21_compare_cities.md) | Next: [44 Backup Plans and Cut List](../phase_07_itinerary_building/44_backup_plans_and_cut_list.md)
+You are here: Phase 6 (Lodging, Food, and Budget), First Taste step 11 of 13. Previous: [32 Checkpoint 4 Route and Trip Length](../phase_05_route_length_transport/32_checkpoint_4_route_and_trip_length.md) | Next: 34 Neighborhoods and Hotel Location
+
+*On the First Taste path, you came here straight from [21 Compare Cities](../phase_03_choose_places/21_compare_cities.md).*
+
+*On the First Taste path, go straight to [44 Backup Plans and Cut List](../phase_07_itinerary_building/44_backup_plans_and_cut_list.md). Sessions 34 to 43 are not among the 13.*
 
 **For parents:**
 
@@ -10,7 +14,7 @@ You are here: Phase 6 (Lodging, Food, and Budget), First Taste step 11 of 13. Pr
 - Planner skill: estimating; making trade-offs
 - Estimated time: 20-30 minutes
 - Parent involvement: 5-minute check-in; you supply the kid-sized budget band
-- Materials: a [Budget Estimate page](../../templates/budget_estimate.md), your Trip-Basics/assumptions band, a calculator (allowed)
+- Materials: a [Budget Estimate page](../../templates/budget_estimate.md), your family's [current travel assumptions](../../templates/current_family_travel_assumptions.md) page (for the budget band), your [Trip-Basics card](../../templates/trip_basics.md) (for the number of travelers), your [Source Log](../../templates/source_log.md), a calculator (allowed). On the First Taste path, also your Session 21 recommendation. On the Core path, also the route and nights your family approved at Checkpoint 4, for your overnight cities, their nights and the number of days.
 
 ## Goal
 
@@ -27,15 +31,17 @@ Every trip is made of cost categories. You don't need exact numbers. You're lear
 1. **Meet the categories** (just read these once): getting there, hotels, food, local transit, longer journeys once you are there, activities and tickets, souvenirs, and a buffer for surprises.
 2. **Estimate two of them** with simple **high / medium / low** guesses (a grown-up can help you find rough numbers, and you can use a calculator):
    - **Meals:** about how much per person, per day? (high / medium / low)
-   - **Hotel:** about how much per night, per room? (high / medium / low) (If you kept two cities in Session 21, guess a hotel for each. Your plan pays for both.)
+   - **Hotel:** about how much per night, per room? (high / medium / low) (On the First Taste path: if you kept two cities in Session 21, guess a hotel for each. Your plan pays for both.) On the Core path, guess one typical price that fits all the overnight cities the grown-ups approved at Checkpoint 4.
 3. **Do the easy math** (round to friendly numbers first; a grown-up may do the multiplying while you do the thinking):
 
    | Cost | How to figure it | My estimate |
    | --- | --- | --- |
    | Food | $____ per person per day x ____ people x ____ days | |
    | Hotel (first city) | $____ per night x ____ nights x ____ rooms | |
-   | Second city's hotel (only if you kept two cities in Session 21) | $____ per night x ____ nights x ____ rooms | |
+   | Second city's hotel (First Taste only, if you kept two cities in Session 21) | $____ per night x ____ nights x ____ rooms | |
    | **My two-slice estimate** | add Food + your hotel(s) | |
+
+   On the Core path, use the first hotel row for all your overnight cities: your one price, times every night in your Checkpoint 4 plan, times rooms. Use that plan's total days for food. Session 39 goes city by city.
 
 4. **Check it against your band. Match the units first.** A grown-up gave you *one* kid-sized band at setup. It's a per-person-per-day amount, a per-day amount for the whole family, *or* a hotel "tier we can afford." It's never your whole-trip total. That stays a grown-up number. Compare the matching piece, not your big two-slice total:
    - Band is **per person, per day**? Multiply it by your travelers to get a **per-day family** number. Then check that the same way as the **per day for the family** band below. A grown-up can do the multiplying. That way your rooms count as well as your meals.
@@ -57,6 +63,8 @@ Your budget first pass: the cost categories, a meals-and-hotel estimate, and a c
 ## Stop Point
 
 You are done when you have a high/medium/low estimate for meals and for hotel, and you have checked whether they fit your band. Two slices is enough for First Taste. You can stop here.
+
+On the Core path, you are done when your hotel row uses every night in your Checkpoint 4 plan and your food row uses that plan's total days.
 
 ## Source Check
 
