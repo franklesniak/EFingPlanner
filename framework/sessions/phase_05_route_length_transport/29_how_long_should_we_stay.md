@@ -45,7 +45,7 @@ How long should we stay? That's today's question. You'll answer it with a fill-i
 3. **Add up your nights.** They usually come to one less than your total days, because on the day you leave, you don't stay the night. Take away one more night for each flight day in your formula.
 4. **Check the ceiling.** With open dates, your total must fit inside your family's maximum trip length. If your dates are booked, your nights must fit the booked trip.
 5. **Check the floor.** Is the trip long enough to be worth the journey there? Count the travel days and the first jet-lagged day or two, take them away, and see how few days are left. If your dates are booked, ask whether the booked days leave enough days for all your places. If they don't, the answer is fewer places.
-6. **Think about everyone's energy.** Look at the stamina row on each traveler's profile. Your maximum is a ceiling, the most the trip can be. For a group with a traveler who tires more easily, the kinder plan is shorter and gentler: fewer cities, more nights in each, and a rest day or two built in. With booked dates, the length stays the same, so use that same shape inside it. If you drop a place here or in step 5, keep the one with your special pick.
+6. **Think about everyone's energy.** Look at the stamina row on each traveler's profile. Your maximum is a ceiling, the most the trip can be. For a group with a traveler who tires more easily, the kinder plan is shorter and gentler: fewer cities, more nights in each, and a rest day or two built in. Is that traveler with you for only part of the trip? Their profile says so, and then the kinder shape is for their part. With booked dates, the length stays the same, so use that same shape inside it. If you drop a place here or in step 5, keep the one with your special pick.
 7. **Choose your total.** If a shorter, gentler trip fits your group better, write the new total in the Total days blank. Then work the formula again, fix your nights table so it adds up, and check the floor again. With booked dates, keep the booked total.
 
 Here's the big trade-off: fewer places, seen more deeply, or more places, seen faster. Both can work. Your nights table is where you choose.
@@ -101,6 +101,6 @@ If you have extra energy, reason out your own floor and ceiling in words (with b
 
 The time difference and the maximum trip length both come from your Trip-Basics card, so the session never states a number. With the dates booked, the booked length is the total and your child splits it; the floor question becomes whether the booked days leave room for every place chosen.
 
-The stamina steer is deliberate. For a mixed-stamina group, lean the recommendation shorter and gentler than your maximum, and let your child read each traveler's stamina from the profiles.
+The stamina steer is deliberate. For a mixed-stamina group, lean the recommendation shorter and gentler than your maximum, and let your child read each traveler's stamina from the profiles. If a lower-stamina traveler comes for only part of the trip, lean the part they're there for.
 
 One adult calendar matter sits outside this session: plan a recovery day or two at home before school or work starts again. Which leg of the journey is the harder jet-lag adjustment depends on the direction of travel, so work that out for your own trip.
