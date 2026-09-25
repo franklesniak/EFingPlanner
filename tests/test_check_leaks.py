@@ -365,9 +365,44 @@ def test_a_decoded_reading_adds_no_second_hit_for_the_same_occurrence() -> None:
     assert family("Quillhaven &amp; Quill&#104;aven\n") == [(1, "word"), (1, "word")]
 
 
+def test_a_plain_and_a_different_escaped_occurrence_on_one_line_are_both_reported(tmp_path: Path) -> None:
+    """Failure injection: excuse the plain occurrence, and the escaped one beside it must still fail."""
+    text = "Quillhaven%41 and %51uillhaven\n"
+    assert family(text) == [(1, "word"), (1, "word")]
+    # A decoded occurrence is the same as a plain one only where their spans in the file meet.
+    assert len(family("&#81;&#81;&#81; &#81;uillhaven Quillhaven\n")) == 2
+    report = run_family(tmp_path, {"docs/a.md": text}, (family_row(text, 1),))
+    assert [(hit.line_number, hit.column) for hit in report.hits] == [(1, 19)]
+
+
+@pytest.mark.parametrize(
+    ("text", "columns"),
+    [
+        ("a %41 then %51uillhaven\n", [12]),
+        ("&#81;uillhaven\n", [1]),
+        ("Plain line.\nx &amp; y &#81;uillhaven and QHV\n", [11, 30]),
+        ("a %41 then Quillhaven\n", [12]),
+    ],
+    ids=["percent-escape", "character-reference", "second-line", "plain-after-an-escape"],
+)
+def test_every_occurrence_is_reported_at_its_column_in_the_file(text: str, columns: list[int]) -> None:
+    """A decoding shortens the line, so a decoded occurrence is placed by the file's characters it came from."""
+    assert [hit.column for hit in hook.find_hits(text, "x.md", "family", VALUES)] == columns
+
+
+def test_a_candidate_is_listed_at_its_column_in_the_file() -> None:
+    assert hook.bare_numbers("a %41 then 2%33 more\n", VALUES) == [(1, 12)]
+
+
 def test_a_decoded_line_break_keeps_the_file_s_line_numbers() -> None:
     """A character reference for a line break does not move a later hit to another line."""
     assert family("a&#10;b\nQuillhaven\n") == [(2, "word")]
+
+
+def test_a_decoded_line_break_does_not_cut_a_row_s_words() -> None:
+    """A row binds to the words of the occurrence's own line in the file, a decoded break or not."""
+    hits = hook.find_hits("See a&#10;b &#81;uillhaven here.\n", "x.md", "family", VALUES)
+    assert [hit.context for hit in hits] == [hook.value_digest("context", "See a b Quillhaven here.")]
 
 
 def test_each_occurrence_is_reported() -> None:
@@ -392,6 +427,11 @@ def test_the_output_never_prints_a_family_value(
     assert "23" not in out.replace("framework/a.md:1:", "")
     assert len(out.strip().splitlines()) == 5
     assert out.startswith("framework/a.md:1:6: a family value (a place or a relative)")
+    # The messages hold no value before emit() masks them, too: two layers, each tested.
+    text = (root / "framework" / "a.md").read_text(encoding="utf-8")
+    for hit in hook.find_hits(text, "framework/a.md", "family", VALUES):
+        assert hit.occurrence == ""
+        assert "quill" not in hit.format_message().casefold()
 
 
 # --------------------------------------------------------------------------
@@ -920,6 +960,19 @@ def test_a_passed_path_outside_the_repository_is_skipped(
     assert capsys.readouterr().out == ""
 
 
+@pytest.mark.parametrize("name", ["notes.md", ".git/extra.md", "sub/../notes.md"])
+def test_a_passed_path_git_does_not_track_is_neither_read_nor_refused(
+    tmp_path: Path, made_up_family: None, name: str
+) -> None:
+    """Only tracked files are this repository's content, whether a path resolves or not."""
+    root = make_repo(tmp_path, {"a.md": "Clean.\n", "sub/b.md": "Clean.\n"})
+    (root / "notes.md").write_text("From Quillhaven.\n", encoding="utf-8")
+    (root / ".git" / "extra.md").write_text("From Quillhaven.\n", encoding="utf-8")
+    assert hook.main(["--rule", "family", name], root=root) == 0
+    subprocess.run(["git", "-C", str(root), "add", "notes.md"], check=True)
+    assert hook.main(["--rule", "family", "notes.md"], root=root) == 1
+
+
 def test_a_passed_symlink_git_does_not_track_is_skipped(tmp_path: Path, made_up_family: None) -> None:
     """A path that is not this repository's content is not this run's to report on."""
     root = make_repo(tmp_path, {"a.md": "Quillhaven\n"})
@@ -981,6 +1034,70 @@ def test_pre_commit_passes_links_and_binary_files_to_the_scans(hook_id: str) -> 
     block = hook_block(hook_id)
     assert "types_or: [file, symlink]" in block
     assert not any(line.startswith("types:") for line in block)
+
+
+def test_the_destination_rule_never_prints_a_family_value(
+    tmp_path: Path, made_up_family: None, capsys: pytest.CaptureFixture[str]
+) -> None:
+    """A path or a line can hold a family value and a destination name; the destination log masks the value."""
+    root = make_repo(
+        tmp_path,
+        {
+            "framework/quillhaven_tokyo.md": "Clean.\n",
+            "framework/quillhaven/c.md": "Visit Tokyo.\n",
+            "framework/b.md": "Tokyo and Quillhaven.\nKyoto is here.\n",
+        },
+    )
+    assert hook.main(["--rule", "destination"], root=root) == 1
+    out = capsys.readouterr().out
+    assert "quillhaven" not in out.casefold()
+    assert "framework/<family value>_tokyo.md: the file's path holds the destination name \"tokyo\"" in out
+    assert "framework/<family value>/c.md:1:7: the destination name \"Tokyo\"" in out
+    assert hook.main(["--rule", "destination", "--exemption-rows"], root=root) == 0
+    rows = capsys.readouterr().out
+    assert "quillhaven" not in rows.casefold()
+    assert "'framework/b.md', 'Kyoto', 'Kyoto is here.'" in rows
+    assert len(rows.strip().splitlines()) == 1
+    (root / "framework" / "quillhaven" / "c.md").write_bytes(b"Tok\xffyo\n")
+    assert hook.main(["--rule", "destination", "framework/quillhaven/c.md"], root=root) == 1
+    err = capsys.readouterr().err
+    assert "framework/<family value>/c.md: unable to read file" in err and "quillhaven" not in err.casefold()
+    make_link(root / "framework" / "quillhaven.md", root / "framework" / "b.md", "symlink")
+    subprocess.run(["git", "-C", str(root), "add", "framework/quillhaven.md"], check=True)
+    assert hook.main(["--rule", "destination", "framework/quillhaven.md"], root=root) == 1
+    err = capsys.readouterr().err
+    assert "framework/<family value>.md (a link)" in err and "quillhaven" not in err.casefold()
+
+
+def test_a_malformed_value_row_does_not_stop_the_destination_rule_masking(
+    tmp_path: Path, made_up_family: None, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    """The family rule reports a malformed row; the destination rule still masks with the well-formed ones."""
+    monkeypatch.setattr(hook, "FAMILY_VALUES", value_rows(MADE_UP) + (("phrase", 1, "0" * 64),))
+    root = make_repo(tmp_path, {"framework/quillhaven_tokyo.md": "Clean.\n"})
+    assert hook.main(["--rule", "destination"], root=root) == 1
+    out = capsys.readouterr().out
+    assert "framework/<family value>_tokyo.md" in out and "quillhaven" not in out.casefold()
+    assert hook.main(["--rule", "family"], root=root) == 1
+    assert "names the kind 'phrase'" in capsys.readouterr().err
+
+
+def test_only_emit_and_print_hash_rows_print() -> None:
+    """Every line a rule prints must pass through ``emit()``, which masks family values under both rules."""
+    tree = ast.parse(HOOK_PATH.read_text(encoding="utf-8"))
+    printers = set()
+    for function in ast.walk(tree):
+        if isinstance(function, ast.FunctionDef):
+            for node in ast.walk(function):
+                if isinstance(node, ast.Call) and isinstance(node.func, ast.Name) and node.func.id == "print":
+                    printers.add(function.name)
+    assert printers == {"emit", "print_hash_rows"}
+    top_level = [
+        node for node in tree.body
+        if not isinstance(node, (ast.FunctionDef, ast.ClassDef))
+        and any(isinstance(inner, ast.Call) and getattr(inner.func, "id", "") == "print" for inner in ast.walk(node))
+    ]
+    assert top_level == []
 
 
 def test_a_rule_is_required(capsys: pytest.CaptureFixture[str]) -> None:

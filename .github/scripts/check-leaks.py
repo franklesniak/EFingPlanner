@@ -45,10 +45,14 @@ it. A line that holds a character reference, a percent escape or a
 backslash is read a second time with those decoded, so ``&#99;`` or ``%63``
 does not hide a letter, and a word or number right after a one-letter
 backslash escape, such as a regular expression's ``\\b``, ``\\A`` or ``\\s``, is
-read without the escape's letter. An occurrence both readings see counts
-once. Each file's repository-relative path is read too, as one line, so a
-value or a name in a file's or a folder's name is a hit, a binary file's
-included.
+read without the escape's letter. Each character of the decoded reading
+keeps the span of the file it came from, so every hit is reported at the
+file's own line and column. A decoded occurrence that covers some of the
+same characters of the file as a plain occurrence of the same value is the
+same occurrence and counts once; any other decoded occurrence counts on its
+own, beside a plain one on the same line. Each file's repository-relative
+path is read too, as one line, so a value or a name in a file's or a
+folder's name is a hit, a binary file's included.
 
 * A **word** value matches a run of letters, or two or three runs in a row
   separated by anything but digits and a blank line, in any case. The last
@@ -103,8 +107,17 @@ row for a file Git no longer tracks is stale there. ``--exemption-rows``
 prints a row for each unexcused match, for a maintainer to review and paste
 in with a reason. A destination name in a path is excused by a row whose
 context is ``(path)`` and the path. A family value in a path is never
-excused, because its row would spell the value: rename the file. Every
-message prints such a path with the value replaced by ``<family value>``.
+excused, because its row would spell the value: rename the file. No row
+is printed whose path or words hold a family value, under either rule.
+
+Output
+------
+Every line either rule prints passes through ``emit()``, which replaces
+each family value in it with ``<family value>``: a hit, a stale row, a
+refusal, an error, a candidate and an exemption row. The destination rule
+masks as the family rule does, so a framework path or line that holds both
+a destination name and a family value prints the name and hides the value.
+Only ``--hash`` prints elsewhere, and it prints digests.
 
 File access
 -----------
@@ -114,7 +127,8 @@ that is a symbolic link or a junction, that goes through a linked folder,
 or that resolves outside the repository, and it refuses the same path when
 pre-commit passes it, so a link fails a commit as it fails CI. The hooks
 take links as well as files for that reason. A passed path Git does not
-track is skipped. A file holding a zero byte is binary: its path is read,
+track is neither read nor refused, whether it resolves or not, so a local
+file such as one under ``.git/`` is never read. A file holding a zero byte is binary: its path is read,
 and its bytes are skipped, as Git treats them. A file that cannot be read
 as UTF-8 stops the run, because a file that was not read has not been
 checked.
@@ -209,11 +223,6 @@ CHANGELOG_PACK_LINE = (
 STYLE_LAW_RULE = (
     "The style law's destination-names bullet prints the names it bans. The bullet names itself as "
     "a permanent exception."
-)
-SESSION_15_UNTIL_CONVERTED = (
-    "Temporary: Session 15 is on the style law's leak-exemption list until the Batch 2 build converts "
-    "it (docs/build/batch2_build_prompt.md, section 4.1b). Once the conversion lands, the hook reports "
-    "this row as stale until it is removed."
 )
 
 #: ``(path, kind, context digest, count, reason)``. The context digest is
@@ -454,46 +463,6 @@ DESTINATION_EXEMPTIONS: tuple[tuple[str, str, str, int, str], ...] = (
         "framework/docs/build_style_and_vocab.md", "Japan",
         "the first sessions Japan-concrete on purpose; Batch",
         1, STYLE_LAW_RULE,
-    ),
-    (
-        "framework/sessions/phase_03_choose_places/15_city_research_cards.md", "japan",
-        "the [major cities reference](../../../destinations/japan/reference/major_cities.md), two blank [City",
-        1, SESSION_15_UNTIL_CONVERTED,
-    ),
-    (
-        "framework/sessions/phase_03_choose_places/15_city_research_cards.md", "Japan",
-        "Research two Japan cities, one card",
-        1, SESSION_15_UNTIL_CONVERTED,
-    ),
-    (
-        "framework/sessions/phase_03_choose_places/15_city_research_cards.md", "Tokyo",
-        "City Research Card. Tokyo is a great",
-        1, SESSION_15_UNTIL_CONVERTED,
-    ),
-    (
-        "framework/sessions/phase_03_choose_places/15_city_research_cards.md", "Tokyo",
-        "Pick **two** cities: Tokyo is a strong",
-        1, SESSION_15_UNTIL_CONVERTED,
-    ),
-    (
-        "framework/sessions/phase_03_choose_places/15_city_research_cards.md", "japan",
-        "(the [major cities reference](../../../destinations/japan/reference/major_cities.md) lists good candidates",
-        1, SESSION_15_UNTIL_CONVERTED,
-    ),
-    (
-        "framework/sessions/phase_03_choose_places/15_city_research_cards.md", "Kyoto",
-        "good candidates like Kyoto and Osaka).",
-        1, SESSION_15_UNTIL_CONVERTED,
-    ),
-    (
-        "framework/sessions/phase_03_choose_places/15_city_research_cards.md", "Osaka",
-        "like Kyoto and Osaka).",
-        1, SESSION_15_UNTIL_CONVERTED,
-    ),
-    (
-        "framework/sessions/phase_03_choose_places/15_city_research_cards.md", "Tokyo",
-        "Keep Tokyo as a gentle",
-        1, SESSION_15_UNTIL_CONVERTED,
     ),
 )
 
@@ -784,12 +753,10 @@ class Hit:
     #: its text. Such a hit's line is 0 and its column counts from the path's
     #: first character.
     in_path: bool = False
-    #: The path as a message prints it: the display path, with each family
-    #: value in it replaced by a placeholder. Empty means the display path.
-    shown_path: str = ""
 
     def format_message(self) -> str:
-        shown = self.shown_path or self.display_path
+        """Return the hit's message. ``emit()`` masks any family value in it before it prints."""
+        shown = self.display_path
         if self.in_path:
             if self.rule == "family":
                 return (
@@ -841,14 +808,42 @@ def occurrence_context(text: str, start: int, end: int) -> str:
     return " ".join([*before, *line[start:end].split(), *after])
 
 
-class Reading:
-    """One reading of a file: its text, and where each line starts."""
+def line_starts_of(text: str) -> list[int]:
+    """Return the offset where each line of ``text`` starts."""
+    return [0] + [index + 1 for index, character in enumerate(text) if character == "\n"]
 
-    def __init__(self, text: str) -> None:
+
+class Reading:
+    """One reading of a file: its text, and where each of its characters came from.
+
+    The plain reading is the file itself. A decoded reading also holds, for
+    each of its characters, the span of the file's characters it was decoded
+    from, so a hit in it is placed, and matched against the plain reading's
+    hits, by where it stands in the file.
+    """
+
+    def __init__(
+        self,
+        text: str,
+        source: str | None = None,
+        starts: list[int] | None = None,
+        ends: list[int] | None = None,
+    ) -> None:
         self.text = text
-        self.line_starts = [0] + [index + 1 for index, character in enumerate(text) if character == "\n"]
+        self.starts = starts
+        self.ends = ends
+        self.line_starts = line_starts_of(text if source is None else source)
+
+    def source_span(self, start: int, end: int) -> tuple[int, int]:
+        """Return the file's span for this reading's ``text[start:end]``."""
+        if self.starts is None or self.ends is None:
+            return start, end
+        return self.starts[start], self.ends[end - 1]
 
     def position(self, offset: int) -> tuple[int, int]:
+        """Return the file's ``(line, column)`` for this reading's ``offset``."""
+        if self.starts is not None:
+            offset = self.starts[offset]
         line = bisect.bisect_right(self.line_starts, offset)
         return line, offset - self.line_starts[line - 1] + 1
 
@@ -863,25 +858,85 @@ class Reading:
 ESCAPE_BEFORE_WORD = re.compile(r"\\[A-Za-z](?=[^\W_])")
 
 
+#: A character reference, as ``html.unescape`` finds one.
+CHARACTER_REFERENCE = re.compile(r"&(#[0-9]+;?|#[xX][0-9a-fA-F]+;?|[^\t\n\f <&#;]{1,32};?)")
+#: A percent escape of an ASCII byte, or a run of escapes of the bytes above
+#: it, which UTF-8 decodes together, as ``urllib.parse.unquote`` does.
+PERCENT_ESCAPE = re.compile(r"%[0-7][0-9A-Fa-f]|(?:%[89A-Fa-f][0-9A-Fa-f])+")
+#: A line break or other control character a decoding can produce.
+DECODED_BREAK = re.compile(r"[\r\n\u2028\u2029\x0b\x0c\x1c-\x1e\x85]")
+
+
+def rewrite(
+    text: str, starts: list[int], ends: list[int], pattern: re.Pattern[str], replace: Callable[[re.Match[str]], str]
+) -> tuple[str, list[int], list[int]]:
+    """Replace each match of ``pattern`` in ``text``, and carry each character's file span along.
+
+    A replacement's characters all take the span of the text they replace.
+    """
+    out: list[str] = []
+    out_starts: list[int] = []
+    out_ends: list[int] = []
+    last = 0
+    for match in pattern.finditer(text):
+        out.append(text[last : match.start()])
+        out_starts += starts[last : match.start()]
+        out_ends += ends[last : match.start()]
+        replacement = replace(match)
+        out.append(replacement)
+        out_starts += [starts[match.start()]] * len(replacement)
+        out_ends += [ends[match.end() - 1]] * len(replacement)
+        last = match.end()
+    out.append(text[last:])
+    out_starts += starts[last:]
+    out_ends += ends[last:]
+    return "".join(out), out_starts, out_ends
+
+
+def decode_line(line: str, offset: int) -> tuple[str, list[int], list[int]]:
+    """Return one line decoded, with each character's span in the file.
+
+    Character references are decoded first and percent escapes second, so a
+    reference that spells a percent escape is decoded twice, as before. A
+    decoded line break becomes a space, and so does a one-letter backslash
+    escape before a letter or a digit.
+    """
+    starts = list(range(offset, offset + len(line)))
+    ends = [start + 1 for start in starts]
+    text, starts, ends = rewrite(line, starts, ends, CHARACTER_REFERENCE, lambda match: html.unescape(match.group()))
+    text, starts, ends = rewrite(
+        text, starts, ends, PERCENT_ESCAPE, lambda match: urllib.parse.unquote(match.group())
+    )
+    text, starts, ends = rewrite(text, starts, ends, ESCAPE_BEFORE_WORD, lambda _match: " ")
+    return rewrite(text, starts, ends, DECODED_BREAK, lambda _match: " ")
+
+
 def readings(text: str) -> list[Reading]:
     """Return the file as written and, when it holds an escape, decoded.
 
-    The decoded reading keeps one line for each line, so its line numbers are
-    the file's. A decoded line break becomes a space, and so does a backslash
-    escape before a letter or a digit.
+    The decoded reading keeps one line for each line, and each of its
+    characters keeps the span of the file it came from, so a hit in it is
+    reported at the file's line and column.
     """
     found = [Reading(text)]
     if "&" in text or "%" in text or "\\" in text:
-        lines = []
-        for line in text.split("\n"):
-            if "&" in line or "%" in line or "\\" in line:
-                line = urllib.parse.unquote(html.unescape(line))
-                line = ESCAPE_BEFORE_WORD.sub(" ", line)
-                line = re.sub(r"[\r\n\u2028\u2029\x0b\x0c\x1c-\x1e\x85]", " ", line)
-            lines.append(line)
-        decoded = "\n".join(lines)
+        parts: list[str] = []
+        starts: list[int] = []
+        ends: list[int] = []
+        offset = 0
+        for number, line in enumerate(text.split("\n")):
+            if number:
+                parts.append("\n")
+                starts.append(offset - 1)
+                ends.append(offset)
+            decoded_line, line_starts, line_ends = decode_line(line, offset)
+            parts.append(decoded_line)
+            starts += line_starts
+            ends += line_ends
+            offset += len(line) + 1
+        decoded = "".join(parts)
         if decoded != text:
-            found.append(Reading(decoded))
+            found.append(Reading(decoded, text, starts, ends))
     return found
 
 
@@ -1024,26 +1079,27 @@ Finder = Callable[[Reading], list[tuple[int, int, str, str]]]
 def across_readings(text: str, finder: Finder) -> list[tuple[Reading, int, int, str, str]]:
     """Return ``(reading, start, end, label, value key)`` for each occurrence ``finder`` reports.
 
-    The file is read as written and, when it holds an escape, decoded. An
-    occurrence the decoded reading adds is kept only beyond the count the
-    plain reading already found for the same value on the same line, so an
-    occurrence both readings see is reported once. The enforcing scan and
-    the ``--candidates`` hand-read both read a file this way.
+    The file is read as written and, when it holds an escape, decoded. A
+    decoded occurrence is dropped only when a plain occurrence of the same
+    value covers some of the same characters of the file, so one occurrence
+    both readings see is reported once, and two occurrences on one line, one
+    plain and one escaped, are both reported. The enforcing scan and the
+    ``--candidates`` hand-read both read a file this way.
     """
     text = text.replace("\r\n", "\n").replace("\r", "\n")
     found: list[tuple[Reading, int, int, str, str]] = []
-    counted: dict[tuple[int, str], int] = {}
+    plain: dict[str, list[tuple[int, int]]] = {}
     for reading_number, reading in enumerate(readings(text)):
-        seen_here: dict[tuple[int, str], int] = {}
         for start, end, label, value_key in sorted(finder(reading)):
-            line, _column = reading.position(start)
-            key = (line, value_key)
-            seen_here[key] = seen_here.get(key, 0) + 1
-            if reading_number and seen_here[key] <= counted.get(key, 0):
+            source_start, source_end = reading.source_span(start, end)
+            if not reading_number:
+                plain.setdefault(value_key, []).append((source_start, source_end))
+            elif any(
+                source_start < plain_end and plain_start < source_end
+                for plain_start, plain_end in plain.get(value_key, ())
+            ):
                 continue
             found.append((reading, start, end, label, value_key))
-        if not reading_number:
-            counted = seen_here
     return found
 
 
@@ -1053,7 +1109,6 @@ def find_hits(
     rule: str,
     values: FamilyValues | None = None,
     names: Sequence[tuple[str, ...]] = (),
-    shown_path: str = "",
 ) -> list[Hit]:
     """Return every occurrence ``rule`` reports in ``text``, before exemptions."""
     if rule == "family":
@@ -1078,7 +1133,7 @@ def find_hits(
         else:
             occurrence = reading.text[start:end]
         hits.append(
-            Hit(rule, display_path, line, column, label, occurrence, context, value_key, shown_path=shown_path)
+            Hit(rule, display_path, line, column, label, occurrence, context, value_key)
         )
     hits.sort(key=lambda hit: (hit.line_number, hit.column))
     return hits
@@ -1106,7 +1161,7 @@ def bare_numbers(text: str, values: FamilyValues) -> list[tuple[int, int]]:
 
 
 def path_hits(
-    display_path: str, rule: str, values: FamilyValues | None, names: Sequence[tuple[str, ...]], shown_path: str = ""
+    display_path: str, rule: str, values: FamilyValues | None, names: Sequence[tuple[str, ...]]
 ) -> list[Hit]:
     """Return a hit for each value or name in a file's repository-relative path.
 
@@ -1126,22 +1181,26 @@ def path_hits(
         else:
             occurrence, context = display_path[start:end], PATH_CONTEXT + display_path
         hits.append(
-            Hit(rule, display_path, 0, start + 1, label, occurrence, context, value_key, in_path=True,
-                shown_path=shown_path)
+            Hit(rule, display_path, 0, start + 1, label, occurrence, context, value_key, in_path=True)
         )
     return hits
 
 
 #: How a destination row names a path hit: this, then the path, as its context.
 PATH_CONTEXT = "(path) "
-#: What a message prints in place of a family value in a path.
+#: What a message prints in place of a family value.
 MASKED_VALUE = "<family value>"
 
 
-def mask_path(path: str, values: FamilyValues) -> str:
-    """Return ``path`` with each family value in it replaced by ``MASKED_VALUE``."""
+def redact(text: str, values: FamilyValues) -> str:
+    """Return ``text`` with each family value in it replaced by ``MASKED_VALUE``.
+
+    ``emit()`` passes every line the script prints through this, under both
+    rules, so a path, a context or an error message that holds a value is
+    printed masked whichever rule found it.
+    """
     merged: list[tuple[int, int]] = []
-    spans = sorted((start, end) for start, end, _kind, _digest in family_hits_in_reading(Reading(path), values))
+    spans = sorted((start, end) for start, end, _kind, _digest in family_hits_in_reading(Reading(text), values))
     for start, end in spans:
         if merged and start <= merged[-1][1]:
             merged[-1] = (merged[-1][0], max(end, merged[-1][1]))
@@ -1149,9 +1208,9 @@ def mask_path(path: str, values: FamilyValues) -> str:
             merged.append((start, end))
     shown, last = [], 0
     for start, end in merged:
-        shown.append(path[last:start] + MASKED_VALUE)
+        shown.append(text[last:start] + MASKED_VALUE)
         last = end
-    return "".join(shown) + path[last:]
+    return "".join(shown) + text[last:]
 
 
 # --------------------------------------------------------------------------
@@ -1211,25 +1270,25 @@ class Ledger:
         return messages
 
 
-def exemption_row_lines(hits: Sequence[Hit]) -> list[str]:
+def exemption_row_lines(hits: Sequence[Hit], values: FamilyValues) -> list[str]:
     """Return a row, as Python source, for each distinct unexcused occurrence.
 
     The reason is left empty, and a row with no reason fails the data check,
     so a row pasted without one stops the run rather than excusing anything.
-    A family hit in a file whose path holds a family value gets no row, and
-    nor does the path itself: the row's path would spell the value.
+    No row is given for a family value in a path, nor for any row whose path
+    or words hold a family value, under either rule: the row would spell the
+    value, and the family rule would then fail this script.
     """
     counts: dict[tuple[str, str, str], int] = {}
     for hit in hits:
-        if hit.rule == "family" and (hit.in_path or (hit.shown_path and hit.shown_path != hit.display_path)):
-            continue
         matched = hit.label if hit.rule == "family" else hit.occurrence
         key = (hit.display_path, matched, hit.context)
         counts[key] = counts.get(key, 0) + 1
-    return [
+    rows = [
         f'    ({path!r}, {matched!r}, {context!r}, {count}, ""),'
         for (path, matched, context), count in counts.items()
     ]
+    return [row for row in rows if redact(row, values) == row]
 
 
 # --------------------------------------------------------------------------
@@ -1378,23 +1437,22 @@ def scan(
     scanned: set[str] = set()
     checked = 0
     for path, display_path in targets:
-        shown = mask_path(display_path, values) if values is not None else display_path
-        for hit in path_hits(display_path, rule, values, names, shown):
+        for hit in path_hits(display_path, rule, values, names):
             # A family value in a path is never excused: its row would spell it.
             if rule == "family" or not ledger.excuse(hit):
                 unexcused.append(hit)
-        text = read_text(path, shown)
+        text = read_text(path, display_path)
         if text is None:
             continue
         checked += 1
         scanned.add(display_path)
-        for hit in find_hits(text, display_path, rule, values, names, shown):
+        for hit in find_hits(text, display_path, rule, values, names):
             if not ledger.excuse(hit):
                 unexcused.append(hit)
         if list_candidates and values is not None:
             for line, column in bare_numbers(text, values):
                 candidates.append(
-                    f"{shown}:{line}:{column}: a bare trip-length number. Read it in "
+                    f"{display_path}:{line}:{column}: a bare trip-length number. Read it in "
                     "context; it is a leak only if it states the family's maximum trip length."
                 )
     return Report(unexcused, ledger.stale(scanned, rule, complete), checked, candidates)
@@ -1441,16 +1499,38 @@ def print_hash_rows(kind: str) -> int:
     return 0
 
 
+def well_formed_values(rows: Sequence[object]) -> FamilyValues:
+    """Return the family values of the rows that pass the data check, for masking output.
+
+    Both rules mask with them, so a malformed row, which the family rule
+    reports, cannot stop the destination rule from masking the others.
+    """
+    good = [row for row in rows if not check_family_values([row])]
+    return FamilyValues.from_rows(good)  # type: ignore[arg-type]
+
+
+def emit(text: str, values: FamilyValues, error: bool = False) -> None:
+    """Print one line of output with every family value in it masked.
+
+    Every line a rule prints goes through here, under both rules: a hit, a
+    stale row, a refusal, an error, a candidate and an exemption row. The
+    suite fails if any other function but ``print_hash_rows`` calls
+    ``print``.
+    """
+    print(redact(text, values), file=sys.stderr if error else sys.stdout)
+
+
 def main(argv: Sequence[str] | None = None, root: Path = REPO_ROOT) -> int:
     """Run one rule, and return the exit status."""
     args = parse_args(argv)
     if args.hash_kind:
         return print_hash_rows(args.hash_kind)
+    values = well_formed_values(FAMILY_VALUES)
     if args.rule is None:
-        print("choose a rule with --rule family or --rule destination", file=sys.stderr)
+        emit("choose a rule with --rule family or --rule destination", values, error=True)
         return 2
     if args.candidates and args.rule != "family":
-        print("--candidates lists trip-length numbers, so it needs --rule family", file=sys.stderr)
+        emit("--candidates lists trip-length numbers, so it needs --rule family", values, error=True)
         return 2
 
     errors = check_family_values(FAMILY_VALUES) if args.rule == "family" else []
@@ -1458,79 +1538,78 @@ def main(argv: Sequence[str] | None = None, root: Path = REPO_ROOT) -> int:
     errors += check_exemption_rows(args.rule, exemptions)
     if errors:
         for error in errors:
-            print(error, file=sys.stderr)
+            emit(error, values, error=True)
         return 1
 
     root = root.resolve()
     walked = not args.paths
-    values = FamilyValues.from_rows(FAMILY_VALUES) if args.rule == "family" else None
     targets: list[tuple[Path, str]] = []
     refused: list[str] = []
     try:
         tracked = tracked_files(root)
     except FileReadError as error:
-        print(error, file=sys.stderr)
+        emit(str(error), values, error=True)
         return 1
     tracked_set = set(tracked)
     arguments: Iterable[str] = tracked if walked else args.paths
     for argument in arguments:
         name = lexical_relative(argument, root)
-        if walked and not in_scope(args.rule, argument):
+        if name is None or name not in tracked_set:
+            # A path Git does not track is not this repository's content,
+            # whether it resolves or not, so it is neither read nor refused.
+            continue
+        if not in_scope(args.rule, name):
             continue
         resolved = resolve_candidate(argument, root)
         if isinstance(resolved, str):
             # A tracked, in-scope path that is a link, goes through a linked
             # folder or resolves outside the repository is refused by name,
             # whether a walk found it or pre-commit passed it. A file deleted
-            # from the working tree is not content any more, and a path Git
-            # does not track is not this repository's to report on.
-            if (
-                resolved != "not a file"
-                and name is not None
-                and name in tracked_set
-                and in_scope(args.rule, name)
-            ):
-                shown = mask_path(argument, values) if values is not None else argument
-                refused.append(f"{shown} ({resolved})")
+            # from the working tree is not content any more.
+            if resolved != "not a file":
+                refused.append(f"{argument} ({resolved})")
             continue
         if in_scope(args.rule, resolved[1]):
             targets.append(resolved)
     if refused:
-        print(
+        emit(
             "these tracked paths are links, go through a linked folder, or resolve outside the "
             "repository, so this run refuses to report on them: " + ", ".join(refused[:5]),
-            file=sys.stderr,
+            values,
+            error=True,
         )
         return 1
     if walked and not targets:
-        print(
+        emit(
             f"no tracked file is in the {args.rule} rule's scope, so this run checked nothing. "
             "Check the working directory.",
-            file=sys.stderr,
+            values,
+            error=True,
         )
         return 1
 
+    family_values = values if args.rule == "family" else None
     try:
-        report = scan(args.rule, targets, root, values, list_candidates=args.candidates, complete=walked)
+        report = scan(args.rule, targets, root, family_values, list_candidates=args.candidates, complete=walked)
     except FileReadError as error:
-        print(error, file=sys.stderr)
+        emit(str(error), values, error=True)
         return 1
 
     if args.candidates:
         for line in report.candidates:
-            print(line)
+            emit(line, values)
         return 0
     if args.exemption_rows:
-        for line in exemption_row_lines(report.hits):
-            print(line)
+        for line in exemption_row_lines(report.hits, values):
+            emit(line, values)
         return 0
 
     for hit in report.hits:
-        print(hit.format_message())
+        emit(hit.format_message(), values)
     for message in report.stale:
-        print(message)
+        emit(message, values)
     if walked and not report.hits and not report.stale:
-        print(f"{args.rule.capitalize()} leaks: {report.checked} file(s) checked, none found.")
+        emit(f"{args.rule.capitalize()} leaks: {report.checked} file(s) checked, none found.", values)
     return 1 if report.hits or report.stale else 0
 
 
