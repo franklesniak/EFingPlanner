@@ -10,7 +10,7 @@ You are here: Phase 6 (Lodging, Food, and Budget). Not a First Taste step. Previ
 - Planner skill: planning realistic time
 - Estimated time: 20-30 minutes
 - Parent involvement: 5-minute check-in; beforehand, tell your child the souvenir amount for one day, for the whole group
-- Materials: a device with the kid-safe filter on, your destination pack's money basics page, your [Budget Estimate page](../../templates/budget_estimate.md) from Session 33, your attraction cards and transportation notes, your [Trip-Basics card](../../templates/trip_basics.md) (for the number of travelers), your [Source Log](../../templates/source_log.md), a calculator (allowed)
+- Materials: a device with the kid-safe filter on, your destination pack's money basics page, your [Budget Estimate page](../../templates/budget_estimate.md) from Session 33, your attraction cards and transportation notes, your My Calls page (for your special pick), your [Trip-Basics card](../../templates/trip_basics.md) (for the number of travelers), your [Source Log](../../templates/source_log.md), a calculator (allowed)
 
 ## Goal
 
