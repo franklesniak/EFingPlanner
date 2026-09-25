@@ -91,7 +91,7 @@ Each has its own **what to consider** list. The review form checks whether the w
 
 **What they bring:** with open dates, total days, overnight cities, nights in each, travel days, and a shorter backup version.
 
-**Also yours to do here:** confirm or adjust the arrival and departure places against how you'll get there and back: the current flights, trains or driving route. If they change, your child's route flexes. They move one block and keep the rest.
+**Also yours to do here:** confirm or adjust the arrival and departure places against how you'll get there and back: the current flights, trains or driving route. If they change, write the new place on your assumptions page, which Sessions 40, 41 and 45 read. Your child's route flexes. They move one block and keep the rest.
 
 **What to consider:** how you get there and back; the arrival and departure places; how many hotel moves it involves; whether the transit is workable; how it fits your maximum trip length, or your booked trip length; budget implications; and the family schedule.
 

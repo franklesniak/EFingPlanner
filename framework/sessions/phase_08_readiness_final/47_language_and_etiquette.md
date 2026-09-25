@@ -18,7 +18,7 @@ Build a one-page sheet of words and manners you can carry and use on the trip.
 
 ## Start Here
 
-Decide your first small move, then do it. A suggestion: open this session's Destination Notes and write down how to say thank you.
+Did your family decide to skip this session? Then go on to Session 48. If not, decide your first small move, then do it. A suggestion: open this session's Destination Notes and write down how to say thank you.
 
 ## Steps
 
@@ -41,11 +41,13 @@ You can say your answers to an adult who writes them, or draw them, if that's ea
 
 ## Artifact Created
 
-Your Language and Etiquette Quick Sheet: one page of words and manners to carry on the trip.
+Your Language and Etiquette Quick Sheet: one page of words and manners to carry on the trip. If your family skipped this session, you don't make one.
 
 ## Stop Point
 
 You are done when your sheet has the words you'd actually say (hello, thank you, excuse me and please), plus two or three manners you want to remember, and it fits on one page you can carry. Six good lines beat twenty you'll never use, and a blank "how it sounds" box is fine.
+
+If your family decided to skip this session, you're done too. There's no sheet to check, so you can skip the Finish card this time and go on to Session 48.
 
 ## Source Check
 

@@ -81,7 +81,7 @@ You are done for today when your recommendation table is filled in and you've br
 
 Before you start the next session:
 
-- **Approved with changes:** write the changes into your table and your Decision Record. If where you arrive or leave changed, time the new first or last hop with Directions, as in Session 28. Then fix your travel days and nights.
+- **Approved with changes:** write the changes into your table and your Decision Record. If where you arrive or leave changed, time the new first or last hop with Directions, as in Session 28. Then fix your travel days and nights. A grown-up writes the new place on your family's assumptions page, because later sessions read it there.
 - **Needs more research:** do that one piece, and bring it back.
 - **Park this decision for later:** wait until your family comes back to it.
 

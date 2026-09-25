@@ -59,6 +59,7 @@ Your readiness checklist:
 | "If I get separated" card made | you | |
 | If the card's lodging lines are still blank, ask adults to fill them in and check them after booking | ask adults | |
 | At each move to a new place to stay, a fresh card with that place's lines | ask adults | |
+| If the card's emergency-number rows are still blank, ask adults to check the numbers so you can write them in before the trip | ask adults | |
 | Staying-found plan said out loud once | you and a grown-up | |
 
 Your "if I get separated" card:
@@ -85,7 +86,7 @@ Your readiness checklist, with every line ticked or marked for the grown-ups. Yo
 
 ## Stop Point
 
-You are done when every line on your readiness checklist is either checked or marked "ask adults to confirm", and your card is made. It has a parent's phone number and the two emergency phrases, and its lodging lines are filled in by a grown-up or marked for a grown-up to fill in after booking. The emergency-number rows can stay blank until a grown-up has checked the numbers. You've also said the three-part plan out loud once with a grown-up. That's the whole thing.
+You are done when every line on your readiness checklist is either checked or marked "ask adults to confirm", and your card is made. It has a parent's phone number and the two emergency phrases, and its lodging lines are filled in by a grown-up or marked for a grown-up to fill in after booking. The emergency-number rows can stay blank until a grown-up has checked the numbers, as long as your checklist marks them for the adults. You've also said the three-part plan out loud once with a grown-up. That's the whole thing.
 
 ## Source Check
 
