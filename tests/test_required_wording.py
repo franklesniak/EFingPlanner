@@ -15,8 +15,17 @@ headings and table cells, without comments, fenced blocks, code spans, link
 destinations or emphasis markers. Wording kept only in a comment, a fence or a
 marker's reason does not count. Each required passage must stand within one
 block, as a reader meets it: wording split across two paragraphs, two list
-items or a heading and a paragraph does not count. The tool needs Node.js and
-the repository's ``node_modules``.
+items or a heading and a paragraph does not count. And it must stand as whole
+words: past any punctuation beside it, each side is white space or the edge of
+the block, so wording kept only inside a longer word (``XAI can make up
+facts``, ``sound right.ly``) does not count. The tool needs Node.js and the
+repository's ``node_modules``.
+
+A page is read only after the check the recount tool and the hooks make before
+they read: a link, even one back inside the tree, anything but a regular file,
+and a path that resolves outside the repository are refused by name. The
+Markdown workflow runs this test before the self-containment scan, which
+refuses a tracked link, so this test cannot wait for that scan.
 
 A sentence may change only with the authority of the source named beside it.
 """
@@ -24,6 +33,7 @@ A sentence may change only with the authority of the source named beside it.
 from __future__ import annotations
 
 import importlib.util
+import re
 import sys
 from pathlib import Path
 from typing import Any, cast
@@ -115,14 +125,27 @@ def visible_blocks(text: str) -> list[str]:
 
 
 def is_visible(wording: str, text: str) -> bool:
-    """True when one block of the page shows all of `wording`."""
-    wanted = cx.normalize_space(wording)
-    return any(wanted in block for block in visible_blocks(text))
+    """True when one block of the page shows all of `wording`, as whole words.
+
+    Past any punctuation beside the passage, each side must be white space or
+    the edge of the block.
+    """
+    wanted = re.compile(r"(?:^|(?<=\s))[^\w\s]*" + re.escape(cx.normalize_space(wording)) + r"[^\w\s]*(?:\s|$)")
+    return any(wanted.search(block) for block in visible_blocks(text))
+
+
+def read_page(page: str, root: Path | None = None) -> str:
+    """Read a page of the repository, or raise ReadError naming it when the tool's check refuses it."""
+    base = REPO_ROOT if root is None else root
+    why = cx.refusal(base / page, base)
+    if why is not None:
+        raise cx.ReadError(f"{page} {why}; refusing to read it")
+    return (base / page).read_text(encoding="utf-8")
 
 
 @pytest.mark.parametrize(("page", "wording", "source"), REQUIRED, ids=[f"{p}: {w[:40]}" for p, w, _ in REQUIRED])
 def test_required_wording_is_visible_on_its_page(page: str, wording: str, source: str) -> None:
-    text = (REPO_ROOT / page).read_text(encoding="utf-8")
+    text = read_page(page)
     assert is_visible(wording, text), (
         f"{page} no longer shows required wording ({source}): {wording}")
 
@@ -161,3 +184,84 @@ def test_wording_split_across_two_blocks_is_not_visible(text: str) -> None:
 ])
 def test_wording_within_one_block_is_visible(text: str) -> None:
     assert is_visible("AI never decides legal questions.", text)
+
+
+AI = "AI can make up facts that sound right."
+
+
+@pytest.mark.parametrize("text", [
+    "XAI can make up facts that sound right.\n",
+    "AI can make up facts that sound right.ly\n",
+    "Non-AI can make up facts that sound right.\n",
+    "Human/AI can make up facts that sound right.\n",
+    "AI can make up facts that sound right.2\n",
+])
+def test_wording_kept_only_inside_a_longer_word_is_not_visible(text: str) -> None:
+    assert not is_visible(AI, text)
+
+
+@pytest.mark.parametrize(("wording", "text"), [
+    (AI, "AI can make up facts that sound right.\n"),
+    (AI, "Careful. AI can make up facts that sound right. Check it.\n"),
+    (AI, '"AI can make up facts that sound right."\n'),
+    (AI, "(AI can make up facts that sound right.)\n"),
+    (AI, "**AI** can make up facts that sound right.\n"),
+    ("not to force the dates", "The fix is awareness, not to force the dates, and it helps.\n"),
+    ("not to force the dates", "The fix is awareness, not to force the dates.\n"),
+])
+def test_wording_that_stands_as_whole_words_is_visible(wording: str, text: str) -> None:
+    assert is_visible(wording, text)
+
+
+def make_link(link: Path, target: Path) -> None:
+    """Create a symbolic link, or skip the test where the platform cannot."""
+    link.parent.mkdir(parents=True, exist_ok=True)
+    try:
+        link.symlink_to(target, target_is_directory=target.is_dir())
+    except (OSError, NotImplementedError):
+        pytest.skip("this platform cannot create a symlink here")
+
+
+def write_page(path: Path, text: str) -> None:
+    """Write one page, making its directories."""
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(text, encoding="utf-8", newline="\n")
+
+
+@pytest.mark.parametrize(("kind", "why"), [
+    ("a link back inside the tree", "is a symbolic link or a junction"),
+    ("a link out of the tree", "is a symbolic link or a junction"),
+    ("a page under a linked directory", "resolves outside the repository"),
+])
+def test_a_required_page_that_is_a_link_is_refused_before_it_is_read(tmp_path: Path, kind: str, why: str) -> None:
+    root, outside = tmp_path / "repo", tmp_path / "outside"
+    write_page(root / "real.md", AI + "\n")
+    write_page(outside / "a.md", AI + "\n")
+    if kind == "a link back inside the tree":
+        make_link(root / "framework/a.md", root / "real.md")
+    elif kind == "a link out of the tree":
+        make_link(root / "framework/a.md", outside / "a.md")
+    else:
+        make_link(root / "framework", outside)
+    with pytest.raises(cx.ReadError, match=why):
+        read_page("framework/a.md", root)
+
+
+def test_a_required_page_that_is_a_directory_is_refused(tmp_path: Path) -> None:
+    (tmp_path / "framework/a.md").mkdir(parents=True)
+    with pytest.raises(cx.ReadError, match="is not a regular file"):
+        read_page("framework/a.md", tmp_path)
+
+
+def test_a_required_page_that_is_a_regular_file_is_read(tmp_path: Path) -> None:
+    write_page(tmp_path / "framework/a.md", AI + "\n")
+    assert read_page("framework/a.md", tmp_path) == AI + "\n"
+
+
+def test_the_required_wording_test_reads_through_the_check(tmp_path: Path, monkeypatch: Any) -> None:
+    page, wording, source = REQUIRED[0]
+    write_page(tmp_path / "outside.md", wording + "\n")
+    make_link(tmp_path / page, tmp_path / "outside.md")
+    monkeypatch.setitem(globals(), "REPO_ROOT", tmp_path)
+    with pytest.raises(cx.ReadError, match="refusing to read it"):
+        test_required_wording_is_visible_on_its_page(page, wording, source)

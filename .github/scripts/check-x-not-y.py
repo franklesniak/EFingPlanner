@@ -209,9 +209,9 @@ Python's (U+001C to U+001F and U+0085).
 (not empty). It holds the trip starter kit's pages, which are copies of
 child-facing templates (``tests/test_trip_starter_kit_copies.py`` keeps them
 in step) and so take no marker of their own. A data file that is missing is
-read as empty; one that cannot be read, is not JSON, repeats a key in any
-object, holds ``NaN`` or ``Infinity``, or holds an entry of another shape or
-value stops the run.
+read as empty; one that is a link or not a regular file, cannot be read, is
+not JSON, repeats a key in any object, holds ``NaN`` or ``Infinity``, or holds
+an entry of another shape or value stops the run.
 
 A page's register comes from its ``<!-- audience: parent -->`` or
 ``<!-- audience: builder -->`` marker, wherever the page holds it, then from
@@ -227,7 +227,9 @@ problem, no unread HTML block and nothing outside the supported Markdown; 1
 otherwise; 2 when REPO_ROOT has no ``framework/`` directory, or when a data
 file stops the run, which the message names; 3 when the Markdown reader
 cannot run, or a page cannot be read (not UTF-8, say), which the message
-names.
+names. The scan roots are walked without following a link: a symbolic link or
+a junction under them, or a page that is not a regular file inside the root,
+stops the run with exit code 3 and is named, as the hooks refuse one.
 
 The script is a tool, not a gate: no workflow or hook runs it over the pages.
 It reads each page with markdown-it, through ``x-not-y-blocks.js`` beside it
@@ -242,6 +244,7 @@ import atexit
 import html
 import json
 import re
+import stat
 import subprocess
 import sys
 from dataclasses import dataclass, field
@@ -1461,10 +1464,66 @@ def refuse_constant(name: str) -> Any:
     raise ValueError(f"{name} is not JSON")
 
 
+def path_is_junction(path: Path) -> bool:
+    """Return whether ``path`` is a Windows junction, on any supported Python.
+
+    ``Path.is_junction()`` arrived in Python 3.12. ``CONTRIBUTING.md`` asks for
+    "a working Python 3 interpreter" and names no minimum, so on 3.10 or 3.11
+    a direct call raised ``AttributeError`` before the hook read its first file.
+    A guard that refuses to run is not a guard.
+
+    Falling back to ``False`` would be worse than the crash, because it turns a
+    loud failure into a silent hole in a check this repository relies on to
+    reject link escapes. So the reparse tag is read directly, which is the same
+    question ``is_junction()`` asks. ``st_reparse_tag`` exists only on Windows,
+    and junctions exist only on Windows, so its absence is a real ``False``.
+    """
+    checker = getattr(path, "is_junction", None)
+    if checker is not None:
+        return bool(checker())
+    try:
+        tag = getattr(path.lstat(), "st_reparse_tag", None)
+    except (OSError, ValueError):
+        return False
+    return tag is not None and tag == getattr(stat, "IO_REPARSE_TAG_MOUNT_POINT", None)
+
+
+def refusal(path: Path, root: Path | None = None) -> str | None:
+    """Return why a file must not be read, or None when it may be.
+
+    This mirrors the rule the hooks apply to what they read
+    (``resolve_candidate_path`` in ``check-prohibited-placeholders.py`` and
+    ``guard_path`` in ``check-session-structure.py``), and the self-containment
+    scan's refusal of a tracked link. A symbolic link or a Windows junction is
+    refused even when it points back inside the tree, so a pull request cannot
+    aim a page or a data file at a device or at data outside the repository.
+    Anything but a regular file is refused too, so a directory, a pipe or a
+    device is never opened. With a ``root``, a path that resolves outside it is
+    refused, which catches a linked directory above the file. A data file named
+    on the command line has no root: the person running the tool chose it.
+    """
+    if path.is_symlink() or path_is_junction(path):
+        return "is a symbolic link or a junction, not a real file"
+    if not path.is_file():
+        return "is not a regular file"
+    if root is not None:
+        try:
+            path.resolve(strict=True).relative_to(root.resolve())
+        except (OSError, RuntimeError, ValueError):
+            return "resolves outside the repository"
+    return None
+
+
 def load_json(path: Path | None) -> Any:
-    """Load a data file; a missing one is empty. Any other failure raises DataError."""
-    if path is None or not path.exists():
+    """Load a data file; a missing one is empty. Any other failure raises DataError.
+
+    A link, even a broken one, or anything but a regular file is refused before
+    it is opened, so a data file cannot be aimed at a device or elsewhere.
+    """
+    if path is None or not (path.exists() or path.is_symlink()):
         return {}
+    if why := refusal(path):
+        raise DataError(f"{path.name} {why}; refusing to read it")
     try:
         return json.loads(path.read_text(encoding="utf-8"), object_pairs_hook=unique_object,
                           parse_constant=refuse_constant)
@@ -1549,19 +1608,37 @@ def load_judgments(path: Path | None) -> dict:
 
 
 def page_paths(root: Path) -> list[Path]:
-    """Return the Markdown pages to scan. Symlinks and escapes are refused."""
-    root_resolved = root.resolve()
-    out = []
+    """Return the Markdown pages to scan, or raise ReadError naming each link.
+
+    The scan roots are walked as the hooks walk theirs: every link -- a
+    symbolic link or a junction, to a file or a directory, whatever its name --
+    is refused by name and never followed, so a page replaced by a link, or a
+    linked directory, stops the run instead of dropping out of the count. A
+    page must also pass ``refusal``: a regular file inside ``root``.
+    """
+    out: list[Path] = []
+    refused: list[str] = []
+
+    def walk(directory: Path) -> None:
+        for entry in sorted(directory.iterdir(), key=lambda e: e.name):
+            if entry.is_symlink() or path_is_junction(entry):
+                refused.append(f"{entry.relative_to(root).as_posix()} is a symbolic link or a junction")
+            elif entry.is_dir():
+                walk(entry)
+            elif entry.name.endswith(".md"):
+                if why := refusal(entry, root):
+                    refused.append(f"{entry.relative_to(root).as_posix()} {why}")
+                else:
+                    out.append(entry)
+
     for base in SCAN_ROOTS:
         top = root / base
-        if not top.is_dir():
-            continue
-        for p in top.rglob("*.md"):
-            if p.is_symlink() or not p.is_file():
-                continue
-            if root_resolved not in p.resolve().parents:
-                continue
-            out.append(p)
+        if top.is_symlink() or path_is_junction(top):
+            refused.append(f"{base} is a symbolic link or a junction")
+        elif top.is_dir():
+            walk(top)
+    if refused:
+        raise ReadError("; ".join(refused) + "; refusing to read a link or anything but a page")
     return sorted(out)
 
 

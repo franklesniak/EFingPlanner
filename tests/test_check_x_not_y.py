@@ -882,14 +882,134 @@ def test_a_root_without_framework_is_refused(tmp_path: Path, capsys: Any) -> Non
     capsys.readouterr()
 
 
-def test_symlinked_pages_are_not_read(tmp_path: Path) -> None:
-    write(tmp_path, "outside.md", "It is a map, not a list.\n")
-    (tmp_path / "framework").mkdir()
+# ---------------------------------------------------------------------------
+# What the tool reads: a regular file, never a link, inside the repository
+# ---------------------------------------------------------------------------
+
+PAGE = "It is a map, not a list.\n"
+
+
+def make_link(kind: str, link: Path, target: Path) -> None:
+    """Create a symbolic link or a Windows junction, or skip the test, as the hooks' tests do."""
+    import os
+    import subprocess
+
+    link.parent.mkdir(parents=True, exist_ok=True)
+    if kind == "junction":
+        if os.name != "nt":
+            pytest.skip("a junction exists only on Windows")
+        subprocess.run(["cmd", "/c", "mklink", "/J", str(link), str(target)], check=True, capture_output=True)
+        return
     try:
-        (tmp_path / "framework" / "link.md").symlink_to(tmp_path / "outside.md")
+        link.symlink_to(target, target_is_directory=target.is_dir())
     except (OSError, NotImplementedError):
         pytest.skip("this platform cannot create a symlink here")
-    assert cx.page_paths(tmp_path) == []
+
+
+def refused_path(kind: str, root: Path, outside: Path, suffix: str = ".md", text: str = PAGE) -> Path:
+    """Build one path under `root` that the reading rule refuses, and return it."""
+    write(root, f"framework/real{suffix}", text)
+    write(outside, f"page{suffix}", text)
+    link = root / f"framework/link{suffix}"
+    if kind == "a link back inside the tree":
+        make_link("symlink", link, root / f"framework/real{suffix}")
+    elif kind == "a link out of the tree":
+        make_link("symlink", link, outside / f"page{suffix}")
+    elif kind == "a broken link":
+        make_link("symlink", link, root / f"framework/gone{suffix}")
+    elif kind == "a directory":
+        link = root / f"framework/dir{suffix}"
+        link.mkdir()
+    elif kind in ("a file under a linked directory", "a file under a junction"):
+        make_link("symlink" if "linked" in kind else "junction", root / "framework/linked", outside)
+        link = root / f"framework/linked/page{suffix}"
+    else:
+        raise AssertionError(kind)
+    return link
+
+
+LINK = "is a symbolic link or a junction, not a real file"
+REFUSED = [
+    ("a link back inside the tree", LINK),
+    ("a link out of the tree", LINK),
+    ("a broken link", LINK),
+    ("a directory", "is not a regular file"),
+    ("a file under a linked directory", "resolves outside the repository"),
+    ("a file under a junction", "resolves outside the repository"),
+]
+
+
+@pytest.mark.parametrize(("kind", "why"), REFUSED)
+def test_a_link_or_anything_but_a_regular_file_inside_the_root_is_refused(tmp_path: Path, kind: str,
+                                                                          why: str) -> None:
+    path = refused_path(kind, tmp_path / "repo", tmp_path / "outside")
+    assert cx.refusal(path, tmp_path / "repo") == why
+
+
+def test_a_regular_file_inside_the_root_is_read(tmp_path: Path) -> None:
+    write(tmp_path, "framework/deep/a.md", PAGE)
+    assert cx.refusal(tmp_path / "framework/deep/a.md", tmp_path) is None
+    assert cx.refusal(tmp_path / "framework/deep/a.md") is None
+
+
+@pytest.mark.parametrize("kind", [k for k, why in REFUSED if why != "resolves outside the repository"])
+def test_a_data_file_that_is_a_link_or_not_a_regular_file_is_refused(tmp_path: Path, kind: str) -> None:
+    path = refused_path(kind, tmp_path / "repo", tmp_path / "outside", ".json", '{"framework/a.md": {}}\n')
+    with pytest.raises(cx.DataError, match="refusing to read it"):
+        cx.load_json(path)
+
+
+def test_a_data_file_that_is_a_regular_file_or_missing_is_read(tmp_path: Path) -> None:
+    write(tmp_path, "data.json", '{"framework/a.md": {}}\n')
+    assert cx.load_json(tmp_path / "data.json") == {"framework/a.md": {}}
+    assert cx.load_json(tmp_path / "missing.json") == {}
+
+
+@pytest.mark.parametrize(("kind", "link", "target"), [
+    ("symlink", "framework/link.md", "framework/real.md"),
+    ("symlink", "framework/link.md", "outside/page.md"),
+    ("symlink", "framework/notes", "outside"),
+    ("symlink", "destinations", "outside"),
+    ("junction", "framework/notes", "outside"),
+])
+def test_a_link_under_the_scan_roots_stops_the_run_by_name(tmp_path: Path, kind: str, link: str,
+                                                           target: str) -> None:
+    write(tmp_path, "framework/real.md", PAGE)
+    write(tmp_path, "outside/page.md", PAGE)
+    make_link(kind, tmp_path / link, tmp_path / target)
+    with pytest.raises(cx.ReadError, match=link + " is a symbolic link or a junction"):
+        cx.page_paths(tmp_path)
+
+
+def test_a_linked_page_makes_the_run_exit_3_and_names_it(tmp_path: Path, capsys: Any) -> None:
+    write(tmp_path, "framework/real.md", PAGE)
+    make_link("symlink", tmp_path / "framework/link.md", tmp_path / "framework/real.md")
+    assert cx.main([str(tmp_path)]) == 3
+    assert "framework/link.md is a symbolic link or a junction" in capsys.readouterr().err
+
+
+def test_the_walk_lists_every_real_page_under_the_scan_roots(tmp_path: Path) -> None:
+    for rel in ("framework/a.md", "framework/deep/b.md", "framework/dir.md/d.md", "destinations/x/c.md",
+                "other/e.md"):
+        write(tmp_path, rel, PAGE)
+    write(tmp_path, "framework/notes.txt", "Not a page.\n")
+    assert [p.relative_to(tmp_path).as_posix() for p in cx.page_paths(tmp_path)] == [
+        "destinations/x/c.md", "framework/a.md", "framework/deep/b.md", "framework/dir.md/d.md"]
+
+
+def test_a_link_outside_the_scan_roots_is_not_the_walk_s_to_refuse(tmp_path: Path) -> None:
+    write(tmp_path, "framework/a.md", PAGE)
+    make_link("symlink", tmp_path / "other/link.md", tmp_path / "framework/a.md")
+    assert [p.relative_to(tmp_path).as_posix() for p in cx.page_paths(tmp_path)] == ["framework/a.md"]
+
+
+def test_the_junction_check_is_the_hooks_copy() -> None:
+    def source(path: Path) -> str:
+        text = path.read_text(encoding="utf-8")
+        start = text.index("def path_is_junction(path: Path) -> bool:")
+        return text[start:text.index("\n\n\ndef ", start)]
+
+    assert source(SCRIPT_PATH) == source(SCRIPT_PATH.parent / "check-session-structure.py")
 
 
 # ---------------------------------------------------------------------------
@@ -914,7 +1034,7 @@ def test_the_judgments_file_is_well_formed() -> None:
 
 @pytest.mark.parametrize("path", [cx.DEFAULT_JUDGMENTS, cx.DEFAULT_REGISTERS])
 def test_a_data_file_uses_two_space_indentation_and_no_comment_keys(path: Path) -> None:
-    raw = path.read_text(encoding="utf-8")
+    raw = repo_text(path)
     data = json.loads(raw)
     assert raw == json.dumps(data, indent=2, ensure_ascii=False) + "\n"
     assert not [k for k in data if k.startswith("_")]
@@ -939,6 +1059,15 @@ def test_the_data_files_pass_the_checks_the_script_runs_on_them() -> None:
 # ---------------------------------------------------------------------------
 
 SCHEMAS = SCRIPT_PATH.parents[2] / "schemas"
+REPO_ROOT = SCRIPT_PATH.parents[2]
+
+
+def repo_text(path: Path) -> str:
+    """Read one of this repository's files after the check the tool makes: a regular file, never a link, inside."""
+    why = cx.refusal(path, REPO_ROOT)
+    assert why is None, f"{path} {why}; refusing to read it"
+    return path.read_text(encoding="utf-8")
+
 LOADERS = {"x-not-y-judgments": "load_judgments", "x-not-y-registers": "load_registers"}
 SCHEMA_EXAMPLES = sorted((name, side, path) for name in LOADERS for side in ("valid", "invalid")
                          for path in (SCHEMAS / "examples" / name / side).glob("*.json"))
@@ -955,6 +1084,7 @@ def test_each_data_file_has_a_schema_with_valid_and_invalid_examples() -> None:
 def test_the_script_reads_each_schema_example_as_the_schema_does(name: str, side: str, path: Path) -> None:
     # tests/test_schema_examples.py holds each example to the schema; this holds
     # it to the script's loader, so the two cannot drift apart unseen.
+    assert cx.refusal(path, REPO_ROOT) is None
     load = getattr(cx, LOADERS[name])
     if side == "valid":
         assert load(path)
@@ -964,8 +1094,8 @@ def test_the_script_reads_each_schema_example_as_the_schema_does(name: str, side
 
 
 def test_the_schemas_name_the_values_the_script_accepts() -> None:
-    judgments = json.loads((SCHEMAS / "x-not-y-judgments.schema.json").read_text(encoding="utf-8"))
-    registers = json.loads((SCHEMAS / "x-not-y-registers.schema.json").read_text(encoding="utf-8"))
+    judgments = json.loads(repo_text(SCHEMAS / "x-not-y-judgments.schema.json"))
+    registers = json.loads(repo_text(SCHEMAS / "x-not-y-registers.schema.json"))
     entry = judgments["$defs"]["judgment"]
     assert set(entry["properties"]["judgment"]["enum"]) == cx.VALID_JUDGMENTS
     assert set(entry["required"]) == {"line", "judgment", "reason"}
@@ -1722,7 +1852,7 @@ def test_text_is_more_than_white_space_in_either_reading() -> None:
         if 0xD800 <= code <= 0xDFFF:
             continue
         assert cx.is_text(ch) is not (ch in ecma or ch.isspace()), hex(code)
-    schemas = [json.loads((SCHEMAS / f"{n}.schema.json").read_text(encoding="utf-8")) for n in LOADERS]
+    schemas = [json.loads(repo_text(SCHEMAS / f"{n}.schema.json")) for n in LOADERS]
     patterns = {schemas[0]["$defs"]["judgment"]["properties"]["reason"]["pattern"],
                 schemas[1]["additionalProperties"]["properties"]["basis"]["pattern"]}
     assert patterns == {r"[^\s\u001c-\u001f\u0085]"}
