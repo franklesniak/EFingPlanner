@@ -25,7 +25,7 @@ This list names what the child produces, in this order.
 11. Trip-length recommendation (or the nights plan, when the dates were booked)
 12. Top attractions and experiences
 13. Culture/history/nature/food/fun balance check
-14. Hotel/neighborhood comparison summary
+14. Hotel/neighborhood comparison summary (the Neighborhood Comparison and the Hotel Comparison Cards)
 15. Restaurant and food shortlist (optional but recommended; included if the family does the food sessions)
 16. Transportation notes
 17. Reservation watchlist

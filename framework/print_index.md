@@ -59,12 +59,12 @@ The mapping also files entries the item list on the [final deliverable](FINAL_DE
 | 3. Destination Overview | Season recommendation, or the season confirmation when the dates were booked |
 | 4. Cities and Route | City long-list; City shortlist and recommendation; Route recommendation; Trip-length recommendation, or the nights plan when the dates were booked; Transportation notes |
 | 5. Attractions and Food | Top attractions and experiences; Culture/history/nature/food/fun balance check; Restaurant and food shortlist, if the food sessions were done |
-| 6. Hotels and Budget | Hotel and neighborhood comparison summary; Budget estimate |
+| 6. Hotels and Budget | Hotel and neighborhood comparison summary (the Neighborhood Comparison and the Hotel Comparison Cards); Budget estimate |
 | 7. Itinerary | Day-by-day itinerary; Reservation watchlist; Backup plans; Cut list or "save for future trip" list |
 | 8. Readiness | Packing list; Language and etiquette quick sheet, if that session was done; Readiness checklist |
 | 9. Sources and Decisions | Source log; Decision log; "My Calls" page |
 | 10. Parent Review | Adult follow-up questions; parent review forms |
-| 11. Final Recommendation | Final recommendation summary; Final reflection |
+| 11. Final Recommendation | Final recommendation summary (the final recommendation packet from Session 52); Final reflection |
 
 Two lines depend on the family's choices: the restaurant and food shortlist, and the Language and Etiquette Quick Sheet. A binder without them is complete if the family skipped those sessions.
 
