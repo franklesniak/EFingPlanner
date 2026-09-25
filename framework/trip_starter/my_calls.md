@@ -10,7 +10,7 @@ Your calls live inside some limits: the cities your family approved, the budget 
 
 ## My must-do picks
 
-You choose which attractions make your must-do list, in Session 26. You choose your one special pick in Session 26 too, or in Session 44 on the First Taste path, and only the three blocks below can change it. The grown-ups honor your picks. Sometimes a grown-up will need to change one of them, because of a rule or because the whole group has to agree. If that happens, they'll tell you why. Your choices still mattered, and they still count.
+You choose which attractions make your must-do list, in Session 26. You choose your one special pick in Session 26 too, or in Session 44 on the First Taste path, and only the three blocks below can change it. The grown-ups honor your picks. Sometimes a grown-up will need to change one of them, because of a rule or because the whole group has to agree. If that happens, they'll tell you why. Your choices still mattered, and they still count. If a must-do drops out, cross it off here, and write why beside it. Your [When the Plan Changes card](../student_guide/when_the_plan_changes.md) says which other pages to fix.
 
 | My must-do pick | Grown-up's "got it" |
 | --- | --- |

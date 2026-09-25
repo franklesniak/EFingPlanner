@@ -109,7 +109,7 @@ The draft is the thing being reviewed. Pacing, transit, meals and rest cannot be
 
 **If your answer moves where the trip arrives or leaves,** the draft's first or last day carries the wrong travel leg. That is "Approved with changes": write the new place on your assumptions page, which later sessions read, and tell your child whether each flight still lands on a later date. Make it "Needs more research" if the change alters which route works best.
 
-**After any "Approved with changes",** your child goes down their When the Plan Changes card and fixes every page it names, marked "changed at Checkpoint 5". If you fly and a change moves where the trip arrives or leaves, tell them which flights land on a later date. If a change adds an overnight place, help with a Hotel Comparison Card for it, or give a cost per night. If someone comes for only part of the trip, tell them who is there on the changed days.
+**After any "Approved with changes",** your child goes down their When the Plan Changes card and fixes every page it names, marked "changed at Checkpoint 5". If you fly and a change moves where the trip arrives or leaves, tell them which flights land on a later date. If a change adds an overnight place, help with a Hotel Comparison Card for it, or give a cost per night and say whether it's per room or per person. If someone comes for only part of the trip, tell them who is there on the changed days.
 
 **What to consider:** pacing; transit time; meals; rest; booking needs; budget; safety; and practicality.
 
@@ -123,7 +123,7 @@ The draft is the thing being reviewed. Pacing, transit, meals and rest cannot be
 
 **If your answer moves where the trip arrives or leaves,** the same two answers apply. "Approved with changes" means you write the new place on your assumptions page and tell your child whether each flight still lands on a later date. "Needs more research" fits a change that alters which route works best, and your child does that piece before Session 53.
 
-**After any "Approved with changes",** your child goes down their When the Plan Changes card and fixes every page it names, marked "changed at Checkpoint 6". If you fly and a change moves where the trip arrives or leaves, tell them which flights land on a later date. If a change adds an overnight place, help with a Hotel Comparison Card for it, or give a cost per night. If someone comes for only part of the trip, tell them who is there on the changed days.
+**After any "Approved with changes",** your child goes down their When the Plan Changes card and fixes every page it names, marked "changed at Checkpoint 6". If you fly and a change moves where the trip arrives or leaves, tell them which flights land on a later date. If a change adds an overnight place, help with a Hotel Comparison Card for it, or give a cost per night and say whether it's per room or per person. If someone comes for only part of the trip, tell them who is there on the changed days.
 
 **Progress is real:** the family has *made a decision*.
 

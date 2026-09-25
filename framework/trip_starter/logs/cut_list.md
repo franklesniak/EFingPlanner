@@ -4,7 +4,7 @@
 
 Copy this page out of the repository before you fill it in. Do not commit your filled-in work to a public repository.
 
-The blank this page was copied from is the [Cut List template](../../templates/cut_list.md). It becomes your formal cut list in Session 44. If you did Checkpoints 2 and 3, start it with the skip and save-for-future notes you wrote there.
+The blank this page was copied from is the [Cut List template](../../templates/cut_list.md). It becomes your formal cut list in Session 44. If you did Checkpoints 2 and 3, start it with the skip and save-for-future notes you wrote there. A must-do dropped later goes here too, and your [When the Plan Changes card](../../student_guide/when_the_plan_changes.md) says which other pages to fix.
 
 Your Cut List holds the things you set aside. You can't fit everything, and that's fine. Cutting something isn't losing it: "save for a future trip" keeps it for later. This is part of learning that good enough is good enough.
 

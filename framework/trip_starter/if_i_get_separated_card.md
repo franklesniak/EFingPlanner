@@ -22,7 +22,7 @@ You make this card in [Session 49](../sessions/phase_08_readiness_final/49_trave
 
 If the lodging lines are still blank, leave them for a grown-up to fill in after booking. A safety card never carries a guess. The number rows can wait until a grown-up has checked the numbers, too.
 
-Staying in more than one place? Then you carry only the card for where you sleep that night. At each move, a grown-up fills in a fresh card, and the old one is torn up.
+Staying in more than one place? Then you carry only the card for where you sleep that night. At each move, a grown-up fills in a fresh card, and the old one is torn up. The same goes if the place to stay changes before the trip.
 
 ## Never on this card
 
@@ -41,7 +41,7 @@ The filled card stays in your pocket. It is never saved into a shared folder or 
 
 ## For the grown-ups: three card jobs
 
-1. Fill in the lodging lines once the lodging is booked and checked. If you stay in more than one place, fill in a fresh card for each one, and tear up the card for a place you've left, so your child carries only the current one.
+1. Fill in the lodging lines once the lodging is booked and checked. If you stay in more than one place, fill in a fresh card for each one, and tear up the card for a place you've left, so your child carries only the current one. If the place to stay changes before the trip, fill in a fresh card for the new place, and tear up the old one.
 2. Write the local-language line, and confirm its current wording. Check the two phrases while you're at it.
 3. Check each emergency number on a current official page, and write the date you checked. Then your child writes the numbers on the card.
 

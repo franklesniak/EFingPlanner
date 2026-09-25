@@ -28,7 +28,7 @@ You fill this in at Session 53. If your family stopped at the Core Finish Line, 
 | My minutes guesses, from the sessions that asked for one (on my City A card, my Session 26 scoring tables, my Session 35 hotel cards and my itinerary draft): how big was each gap? If one has no guess, use the ones that do. | |
 | Did my time guesses get closer with practice? | |
 | My ticket-price guess in Session 23 and my travel-time guess in Session 30: how far off were they? | |
-| How close did my Session 39 budget come to our budget band? (The band is the anchor to compare with, because nobody has spent the money yet.) | |
+| How close did my Session 39 budget come to our budget band? If it said "not counting ___", say what it left out. (The band is the anchor to compare with, because nobody has spent the money yet.) | |
 
 ### What I learned
 
