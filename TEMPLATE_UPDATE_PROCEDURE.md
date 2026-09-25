@@ -1,13 +1,13 @@
 <!-- markdownlint-disable MD013 -->
 # Downstream Template Update Procedure
 
-**Version:** 1.2.20260924.0
+**Version:** 1.2.20260925.0
 
 ## Metadata
 
 - **Status:** Active
 - **Owner:** Repository Maintainers
-- **Last Updated:** 2026-09-24
+- **Last Updated:** 2026-09-25
 - **Scope:** Defines the selective review procedure for downstream repositories that were created from, or adopted files from, this template repository. Covers manual and agent-assisted syncs from later upstream template changes, first-adoption preflight state, the first-adoption bootstrap command, the read-only first-adoption preflight/questionnaire mode, raw first-adoption state reporting, first-adoption quality-debt reports and suppressions, the adoption difficulties journal, one-shot first-adoption materialization, shell-safe first-adoption args files, package identity and collaboration-policy materialization, first-adoption structural convention assessment, first-adoption working-tree validation and doctor diagnostics, downstream local path ownership records, the human-readable view of the template sync manifest, required/recommended/deferred structural-change classification, protected-file decision records, the marker-aware retained-state validation helper command, the excluded-module cleanup report, the sync candidate table generator, post-adoption issue drafting, the generated adoption ledger review artifact, and the concise adoption summary for PR descriptions. Does not define an automated ongoing upstream sync tool.
 - **Related:** [Optional Configurations](https://github.com/franklesniak/copilot-repo-template/blob/HEAD/OPTIONAL_CONFIGURATIONS.md), [Getting Started for New Repositories](https://github.com/franklesniak/copilot-repo-template/blob/HEAD/GETTING_STARTED_NEW_REPO.md), [Getting Started for Existing Repositories](https://github.com/franklesniak/copilot-repo-template/blob/HEAD/GETTING_STARTED_EXISTING_REPO.md), [Repository Copilot Instructions](.github/copilot-instructions.md)
 
@@ -772,13 +772,13 @@ Manifest version 2 and version 3 rows MAY also use `requires_any`: the path is i
 | `.azuredevops/pipelines/**` | `azure-pipelines` |
 | `.yamllint.yml` | `yaml` |
 | `.pre-commit-config.yaml` | `baseline` |
-| `.markdownlint.jsonc`, `.remarkignore`, `.remarkrc.mjs`, `package.json`, `package-lock.json`, `.github/scripts/lint-nested-markdown.js`, `.github/scripts/check-toolchain-eol.js`, `.github/scripts/check-prohibited-placeholders.py` | `markdown` |
+| `.markdownlint.jsonc`, `.remarkignore`, `.remarkrc.mjs`, `package.json`, `package-lock.json`, `.github/scripts/lint-nested-markdown.js`, `.github/scripts/check-toolchain-eol.js`, `.github/scripts/check-prohibited-placeholders.py`, `.github/scripts/check-leaks.py` | `markdown` |
 | `tests/test_replace_template_placeholders.py` | `baseline` |
 | `tests/test_self_contained_references.py` | `markdown`, `python` |
 | `tests/fixtures/self_contained_references/**` | `markdown`, `python` |
 | `tests/printed_markdown.mjs` | `markdown`, `python` |
 | `requirements-dev.txt` | `baseline` |
-| `tests/test_check_prohibited_placeholders.py` | `markdown` |
+| `tests/test_check_prohibited_placeholders.py`, `tests/test_check_leaks.py` | `markdown` |
 | `tests/toolchain-eol/check-toolchain-eol.test.js` | `markdown` |
 | `tests/toolchain-eol/fixtures/**` | `markdown` |
 | `templates/markdown/**` | `markdown` |
@@ -1011,7 +1011,7 @@ The current `python-only` inline blocks live in:
 
 The current `markdown-only` inline block lives in:
 
-- `.pre-commit-config.yaml` for the `markdownlint-cli2` hook.
+- `.pre-commit-config.yaml` for the prohibited-placeholder hook, the three leak-check hooks, and the `markdownlint-cli2` hook.
 
 The current `yaml-only` inline blocks live in:
 
