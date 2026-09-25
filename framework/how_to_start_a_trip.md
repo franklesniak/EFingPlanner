@@ -29,8 +29,6 @@ Start with the adult-only [Session 00: Parent Setup](sessions/phase_00_setup/00_
 
 **When a session says "open this session's Destination Notes," read the matching insert from your destination pack.** That sentence is the whole joining mechanism. A session that needs a fact about a place sends the child to the pack for that fact. So the same session works for the next destination without being rewritten.
 
-There is one exception today. [Session 15](sessions/phase_03_choose_places/15_city_research_cards.md) still names the destination this repository shipped with, and it links straight into that destination's pack. A family going somewhere else rewrites that one page by hand. A later release will fix it for everyone.
-
 Print each session as you reach it rather than the whole set at once.
 
 ## Later: the next trip to the same place

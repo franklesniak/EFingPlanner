@@ -11,7 +11,7 @@ New here? [The overview](docs/overview.md) is the page to read first.
 
 The project is built in three layers, and each has a different lifecycle.
 
-1. **The framework** is the reusable curriculum: the guides, the blank templates, the generic session skeletons, the executive-function rationale and the roadmap logic. It is written once and then reused by every family and every destination. It holds no destination facts and no trip data, except in the later-phase sessions named on the leak-exemption list, one of which still carries the first destination's facts until a later batch converts it.
+1. **The framework** is the reusable curriculum: the guides, the blank templates, the generic session skeletons, the executive-function rationale and the roadmap logic. It is written once and then reused by every family and every destination. It holds no destination facts and no trip data.
 2. **A destination knowledge pack**, one per place. It holds the stable facts about that place, plus the short "destination notes" inserts that the generic sessions pull in. A pack is written once for a destination and reused across any number of trips there.
 3. **A trip**, one per trip. This is one family's filled-in work, and it is **never committed**. The family copies a blank trip starter kit out of the repository and fills it in a binder or a Google Docs folder.
 
@@ -29,11 +29,11 @@ Which log is which: the curriculum changelog is the version history of these reu
 
 Done, for modularity, means this: a family can copy the blank kit and a destination pack, fill in their own Trip-Basics card and their own Current Family Travel Assumptions page, write a new destination's reference facts and inserts, and reuse the whole curriculum unchanged, without editing any framework file and without editing the first destination.
 
-Two bounds sit on that promise today. They clear on different events, so neither one retires the other.
+A family who reaches their destination by road or rail rather than by air reads differently. Most of the wording that assumed a flight has been made general, and the few pages that still assume one are converted as later batches edit them.
 
-**The first is the leak-exemption list**, and a later batch clears it. Five already-built later-phase sessions are on it. One of them still names the first destination and links into its pack, so that one session has to be converted by hand before a second destination is finished. The other four carry no destination fact at all; they are on the list only because nobody has verified them yet. So the count of framework files a second destination forces you to edit for the destination name is one, and four more get read. That count is about the destination name and nothing else. A family who reaches their destination by road or rail rather than by air reads differently, and the wording that assumed a flight has been made general wherever this batch reached it.
+One bound sits on that promise today, and only a decision clears it.
 
-**The second is the shape of the destination**, and only a decision clears it. The pack contract assumes a destination that is a country. A second destination that is a country needs no framework edit beyond that one session. For a city, a region, or a route across several countries, the pack slots that assume a country have no settled meaning yet, and somebody has to answer that before a pack of that shape can be finished.
+**The shape of the destination.** The pack contract assumes a destination that is a country. A second destination that is a country needs no framework edit. For a city, a region, or a route across several countries, the pack slots that assume a country have no settled meaning yet, and somebody has to answer that before a pack of that shape can be finished.
 
 ## Two kinds of reuse
 

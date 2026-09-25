@@ -36,7 +36,7 @@ Quick-start:
 4. Print the first sessions.
 5. Start Session 01.
 6. Review at Checkpoint 1 -- then decide whether to keep going (the try-then-commit on-ramp: you do not have to commit to the whole project to start).
-7. Finish the First Taste path at Session 53 -- a real, usable mini-plan and a complete stopping point. (The [roadmap](framework/PROJECT_ROADMAP.md) already maps the fuller path toward the Core Finish Line, and says what has to happen before those later sessions are built.)
+7. Finish the First Taste path at Session 53 -- a real, usable mini-plan and a complete stopping point. (The [roadmap](framework/PROJECT_ROADMAP.md) maps the fuller path toward the Core Finish Line.)
 
 ## First Taste session index (the short path)
 
@@ -76,7 +76,7 @@ Three layers (this is how the pages fit together):
 
 ## Status
 
-Early. What is built right now lives in the [curriculum changelog](framework/CHANGELOG.md), the one file that changes every time something ships; the [roadmap](framework/PROJECT_ROADMAP.md) describes the whole program. The **First Taste** path in the table above starts in the Phases 0-2 slice and finishes in five already-built later-phase sessions. The Batch 0 gate cleared on the recorded no-child fallback, and no child has piloted this design yet. Two checks on the Phases 0-2 slice are still open: an adult reads the converted pages against the Batch 0 originals, and an adult watches a child work the new sessions. Building the Phase 3-8 sessions waits for both; the templates and guides for those phases have already landed.
+Early. What is built right now lives in the [curriculum changelog](framework/CHANGELOG.md), the one file that changes every time something ships; the [roadmap](framework/PROJECT_ROADMAP.md) describes the whole program. The **First Taste** path in the table above starts in the Phases 0-2 slice and finishes in five already-built later-phase sessions. The Batch 0 gate cleared on the recorded no-child fallback, and no child has piloted this design yet. Two checks on the Phases 0-2 slice are still open: an adult reads the converted pages against the Batch 0 originals, and an adult watches a child work the new sessions.
 
 - The authoritative design is [docs/spec/specification.md](docs/spec/specification.md) -- an archived design record. Once the curriculum is built, the built repository supersedes the spec on any conflict.
 

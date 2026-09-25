@@ -38,16 +38,18 @@ Finishing all 13 is a **complete success**. You will have a real mini-plan. If y
 
 ## Which sessions need a grown-up
 
-Most sessions you can do on your own. Only a few need a grown-up first:
+On the First Taste path, most sessions you can do on your own. Only a few need a grown-up first:
 
 <!-- density-exempt: spaced dash -- each condition below is a rule a child acts on, and naming the session without its condition would decide the family's choice for them -->
 
 - **Need a grown-up:** Session 00 (setup, grown-ups only), Session 05 (do it together), Session 07 (only if you do the library session -- a grown-up opens the catalog or drives you), Session 08 (a grown-up stays nearby while you search the web), Session 09 (only if your family uses AI -- a grown-up runs the AI tool, on their account, with you there), Checkpoint 1 (a grown-up reviews it), and Session 44 (co-choose your one special pick with a grown-up).
-- **On your own:** everything else.
+- **On your own:** every other First Taste session.
+
+On the Core path, these need a grown-up too: Checkpoints 2, 3 and 4 (a grown-up reviews each one), Session 25 (a grown-up stays nearby, and with you for any video), Session 26 (choose your special pick with a grown-up), and Session 29 (before you start, a grown-up tells you how long the trips there and home take, and which flights land on a later date). So does any other session whose page says a grown-up reviews it, stays nearby, or does a step with you.
 
 <!-- density-exempt: X, not Y -- standing rules a child obeys, in wording the batch 1 brief's entry for this page fixes, and the gap line the spec's entry for this page requires -->
 
-So when a grown-up is busy, keep going **in order** on the next session -- unless that next session needs a grown-up (Session 05, Session 07 if you are doing it, Session 08, Session 09 for AI families, Checkpoint 1, or Session 44's special-pick step). Do those *with* a grown-up: pause there until one is free, and do not skip past them -- except Session 07, which you can skip if no grown-up is free, going straight on to Session 08. **A gap of a week or two is normal -- you do not start over.**
+So when a grown-up is busy, keep going **in order** on the next session -- unless that next session needs a grown-up (Session 05, Session 07 if you are doing it, Session 08, Session 09 for AI families, Checkpoint 1, or Session 44's special-pick step, and on the Core path the ones just above). Do those *with* a grown-up: pause there until one is free, and do not skip past them -- except Session 07, which you can skip if no grown-up is free, going straight on to Session 08. **A gap of a week or two is normal -- you do not start over.**
 
 ## What to do while you wait for a grown-up
 

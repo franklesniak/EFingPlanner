@@ -16,7 +16,7 @@ Fill in:
 | Airport code, if you are flying | |
 | Time difference to the destination, in hours ahead or behind (a grown-up looks this up) | |
 | Home time zone, if you want to write it down too | |
-| Maximum trip length (in days) | |
+| Maximum trip length in days (if your dates are already booked, write the booked trip length) | |
 | Number of travelers (write "not decided yet" if you are unsure) | |
 
 A grown-up writes the destination here. The name is on the front of your destination pack.
