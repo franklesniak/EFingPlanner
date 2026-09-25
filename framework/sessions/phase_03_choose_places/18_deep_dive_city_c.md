@@ -44,11 +44,11 @@ You can say your answers to an adult who writes them, or draw them, if that's ea
 
 ## Artifact Created
 
-A City Research Card for City C.
+A City Research Card for City C. If you skipped this session, you don't make one.
 
 ## Stop Point
 
-You are done when City C's card has its top sights, one memorable fact, at least one downside, a season-fit note, and at least one dated source. "Ask an adult" and "not sure yet" are fine answers. If you skipped this session because two cities felt right, you're done too.
+You are done when City C's card has its top sights, one memorable fact, at least one downside, a season-fit note, and at least one dated source. "Ask an adult" and "not sure yet" are fine answers. If you skipped this session because two cities felt right, you're done too. There's no card to check, so you can skip the Finish card this time and go on to Session 19.
 
 ## Source Check
 
