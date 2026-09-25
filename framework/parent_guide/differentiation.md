@@ -45,4 +45,4 @@ The opposite tail also needs a named path -- a bright, bored child abandons a pr
 
 - [Time and effort](time_and_effort.md) -- Low-Bandwidth Parent Mode, for when your own time and energy are short.
 - [Coaching and support](coaching_and_support.md) -- scripts for the hard moments.
-- [Session support notes](session_support_notes.md) -- each session at a glance, with its common pitfall.
+- [Session support notes](session_support_notes.md) -- a session at a glance in each entry, with its common pitfall.

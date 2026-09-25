@@ -2,7 +2,7 @@
 
 # Session Support Notes
 
-Each entry is a short, parent-facing overview of one session -- your role, what to prep, the artifact to look for, a coaching question on the sessions the child does, and a common pitfall. This does not replace the Parent Notes inside each session; it is the at-a-glance map.
+Each entry is a short, parent-facing overview of one session -- your role, what to prep, the artifact to look for, a coaching question on the sessions the child does, and a common pitfall. This does not replace the Parent Notes inside each session; it is the at-a-glance map. A session with no entry here has what you need in its own For parents strip and Parent Notes.
 
 Want a rough signal of how the executive-function side is going? The optional [executive-function observation aid](ef_observation_aid.md) is a private three-item note you keep to yourself.
 

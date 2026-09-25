@@ -10,7 +10,7 @@ You are here: Phase 7 (Itinerary Building). Not a First Taste step. Previous: [4
 - Planner skill: planning realistic time
 - Estimated time: 20-30 minutes
 - Parent involvement: parent review after session
-- Materials: your day cards from Session 41, your Session 29 formula (for its ½ marks), or a grown-up who can tell you how long the trip home takes, your must-do list on your My Calls page, your attraction cards (if your special pick hits a block), your traveler profiles, your [Trip-Basics card](../../templates/trip_basics.md) (for the time difference, and the maximum or booked trip length), your season from Checkpoint 1, or the booked one if it's different (for hot weather), your destination pack's transportation basics page, a device with the kid-safe filter on if you check an official site, your [Source Log](../../templates/source_log.md); a blank [Trade-Off Report](../../templates/tradeoff_report.md) if the third report goes here
+- Materials: your day cards from Session 41, your Session 29 formula (for its ½ marks), or a grown-up who can tell you how long the trip home takes, your must-do list on your My Calls page, your attraction cards and your Reservation Watchlist (if your special pick hits a block), your traveler profiles, your [Trip-Basics card](../../templates/trip_basics.md) (for the time difference, and the maximum or booked trip length), your season from Checkpoint 1, or the booked one if it's different (for hot weather), your destination pack's transportation basics page, a device with the kid-safe filter on if you check an official site, your [Source Log](../../templates/source_log.md); a blank [Trade-Off Report](../../templates/tradeoff_report.md) if the third report goes here
 
 ## Goal
 
@@ -37,7 +37,7 @@ A plan can look great on paper and still be too much on the day. This session ch
 
 **Flag it for the adults.** Mark any spot that might be hard for an older traveler or someone who can't manage stairs, such as a stair-heavy station, a hilltop place, or a station that might have no elevator. You notice and flag. Finding the fix is the grown-ups' part.
 
-**If your special pick can't work for everyone.** A grown-up may tell you your special pick isn't doable for every traveler. That's one of the three blocks. Choose a new pick from your attraction cards with them, the way you did in Session 26. Put it on your must-do list and on the day card for its place, and take the blocked pick off both. It needs no more research. Then go down the checks again for that day.
+**If your special pick can't work for everyone.** A grown-up may tell you your special pick isn't doable for every traveler. That's one of the three blocks. Choose a new pick from your attraction cards with them, the way you did in Session 26. Put it on your must-do list, on the day card for its place, and on your Reservation Watchlist if it needs booking. Take the blocked pick off all three. It needs no more research. Then go down the checks again for that day.
 
 **Taking care of yourself on the trip.** Pacing is for you too. Kids get tired and hot on busy trips, just like grown-ups.
 
@@ -82,7 +82,7 @@ Your pacing review: the checks, the days you'd make gentler, and your flags for 
 
 ## Stop Point
 
-You are done when you've gone through the checks once, marking each one yes or no, and either marked at least one day you'd make gentler and checked it again, or written that every day passed, and you've written your list of flags for the adults. Finding even one thing to fix is a finished review, and so is a plan that passes every check. "Not sure" is a fine note on any check. If you didn't write your third trade-off report in Session 34, you're done once it's written here too. If your special pick hit a block, you've chosen a new one with a grown-up, it's on your must-do list and its day card in place of the blocked one, and you've checked that day again.
+You are done when you've gone through the checks once, marking each one yes or no, and either marked at least one day you'd make gentler and checked it again, or written that every day passed, and you've written your list of flags for the adults. Finding even one thing to fix is a finished review, and so is a plan that passes every check. "Not sure" is a fine note on any check. If you didn't write your third trade-off report in Session 34, you're done once it's written here too. If your special pick hit a block, you've chosen a new one with a grown-up, it's on your must-do list, its day card and, if it needs booking, your watchlist, in place of the blocked one, and you've checked that day again.
 
 ## Source Check
 
@@ -108,7 +108,7 @@ Your child flags accessibility trouble spots, and you handle the fixes. Step-fre
 
 The "taking care of yourself" block gives your child the words to speak up early. Medication and every medical decision stay with you.
 
-If the pacing check shows the special pick is not doable for every traveler, name that block and let your child choose a new pick from their attraction cards with you, as in Session 26. It goes on the must-do list and the day card for its place, and the blocked pick comes off both and needs no more research. Then your child runs the checks again for that day. Only the three blocks can change the pick.
+If the pacing check shows the special pick is not doable for every traveler, name that block and let your child choose a new pick from their attraction cards with you, as in Session 26. It goes on the must-do list, the day card for its place and, if it needs booking, the Reservation Watchlist, and the blocked pick comes off all three and needs no more research. Then your child runs the checks again for that day. Only the three blocks can change the pick.
 
 The floor's third trade-off report is about pacing, where to stay, or the budget. If your child did not write it at Session 34, it belongs here.
 

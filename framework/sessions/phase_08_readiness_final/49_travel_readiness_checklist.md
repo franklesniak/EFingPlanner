@@ -89,7 +89,7 @@ You are done when every line on your readiness checklist is either checked or ma
 
 ## Source Check
 
-Log your destination pack's safety and emergency page in your Source Log, with today's date, since your phrases come from it. Any emergency number or local rule on your card gets checked by a grown-up on a current official page, with the date written down.
+Log where your phrases came from in your Source Log, with today's date: your destination pack's safety and emergency page, or the official source a grown-up used if your pack doesn't have that page yet. Any emergency number or local rule on your card gets checked by a grown-up on a current official page, with the date written down.
 
 ## Finish and Quality Check
 

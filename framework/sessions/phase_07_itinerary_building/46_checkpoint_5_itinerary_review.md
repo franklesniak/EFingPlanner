@@ -10,7 +10,7 @@ You are here: Phase 7 (Itinerary Building). Not a First Taste step. **This is Ch
 - Planner skill: making trade-offs
 - Estimated time: 20-30 minutes for the child, plus a 20-40 minute review with you
 - Parent involvement: parent review -- genuinely use the recommendation in a real family talk
-- Materials: your full itinerary draft and the day cards behind it, your Reservation Watchlist, your budget summary, your cut list, your pacing review from Session 43 (in case a change moves a night or a day), your route map notes from Session 28 and a device with a map app or map website (kid-safe filter on) (in case a change moves where you arrive or leave), your [Source Log](../../templates/source_log.md), a [Decision Record page](../../templates/decision_record.md)
+- Materials: your full itinerary draft and the day cards behind it, your Reservation Watchlist, your budget summary, your cut list, your pacing review from Session 43 and your Checkpoint 4 route and trip-length recommendation (in case a change moves a place, a night or a day), your route map notes from Session 28 and a device with a map app or map website (kid-safe filter on) (in case a change moves where you arrive or leave), your [Source Log](../../templates/source_log.md), a [Decision Record page](../../templates/decision_record.md)
 
 ## Goal
 
@@ -64,7 +64,7 @@ You are done for today when your review packet is filled in and you've brought i
 
 Before you start the next session:
 
-- **Approved with changes:** write the changes into your itinerary draft and your Decision Record. If a change adds, drops or moves something that needs booking, update its day card and your Reservation Watchlist too. If the change moves where you arrive or leave, re-time that leg with the map's Directions, and fix your travel days and nights. If a place, a night or a day changes, update your Session 39 budget and check it against your band again. Then run your Session 43 pacing checks again for the days that changed.
+- **Approved with changes:** write the changes into your itinerary draft and your Decision Record. If a change adds, drops or moves something that needs booking, update its day card and your Reservation Watchlist too. If the change moves where you arrive or leave, re-time that leg with the map's Directions, and fix your travel days and nights. If a place or its nights change, note it on your Checkpoint 4 route and trip-length recommendation too: cross out the old, and write the new beside it, with "changed at Checkpoint 5". If a place, a night or a day changes, update your Session 39 budget and check it against your band again. Then run your Session 43 pacing checks again for the days that changed.
 - **Needs more research:** do that one piece, and bring it back.
 - **Park this decision for later:** wait until your family comes back to it.
 

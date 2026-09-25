@@ -32,4 +32,4 @@ Whatever surface you use -- paper, a binder, or a Google Docs folder -- keep sen
 
 - [Adult and child roles](adult_roles.md) -- the second must-read: what you own, what your child owns, and the safety boundary.
 - [Session 00](../sessions/phase_00_setup/00_parent_setup.md) -- this same setup as a short session, in order.
-- [Session support notes](session_support_notes.md) -- each session at a glance, once your child begins.
+- [Session support notes](session_support_notes.md) -- a session at a glance in each entry, once your child begins.
