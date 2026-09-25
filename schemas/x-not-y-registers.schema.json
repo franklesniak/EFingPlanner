@@ -6,8 +6,8 @@
   "type": "object",
   "propertyNames": {
     "type": "string",
-    "pattern": "^(?!/|\\.\\./)[\\s\\S]*\\.md$(?![\\s\\S])",
-    "description": "A repository path to a Markdown page, such as framework/docs/glossary.md: it ends in .md, with nothing after it, not even a line break, and starts with neither / nor ../."
+    "pattern": "^(?![\\s\\S]*(?:^|/)\\.{0,2}/)(?![\\s\\S]*\\\\)[\\s\\S]*\\.md$(?![\\s\\S])",
+    "description": "A repository path to a Markdown page, such as framework/docs/glossary.md: it ends in .md, with nothing after it, not even a line break, and it is written as the tool's scan prints it: no leading /, no empty, . or .. segment, and no backslash, so it names a page the scan reads."
   },
   "additionalProperties": {
     "type": "object",

@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import importlib.util
 import json
+import re
 import sys
 from pathlib import Path
 from typing import Any, cast
@@ -1738,7 +1739,7 @@ def test_a_block_that_shows_nothing_keeps_its_neighbors_adjacent(hidden: str) ->
 
 
 @pytest.mark.parametrize("text", [
-    "<!-- density-exempt: X, not Y -- required --><?x?>\n\nChoose the map, not the list.",
+    "<!-- density-exempt: X, not Y -- required -->\n<?x?>\n\nChoose the map, not the list.",
     "<!-- density-exempt: X, not Y -- required -->\n\n<?x?>\n\nChoose the map, not the list.",
     "<!-- density-exempt: X, not Y -- required -->\n\n<![CDATA[ x ]]>\n\nChoose the map, not the list.",
     "<!-- density-exempt: X, not Y -- required -->\n\n<!-- note -->\n\nChoose the map, not the list.",
@@ -2352,6 +2353,18 @@ def test_a_list_place_the_reason_ties_to_a_source_is_that_source_s(reason: str) 
 
 
 @pytest.mark.parametrize("reason", [
+    "step 2 from the repository's archived design specification requires this",
+    "rule 3 of the curriculum's brief",
+    "item 1 in the project's style law",
+    "step 2 of the family’s own guide",
+])
+def test_a_possessive_before_the_source_still_ties_the_number_to_it(reason: str) -> None:
+    mk = covering(reason)
+    assert mk.applies is False
+    assert "by number" in mk.problem
+
+
+@pytest.mark.parametrize("reason", [
     "the relay fallback in step 3 is required in the built Session 03's words",
     "the batch 1 brief's add-a-destination rules; the contrasts are in rule 3, the brief's verify framing",
     "step 1's kid-safe filter caveat, a safety rule the batch 1 brief keeps in full at this point of use",
@@ -2406,3 +2419,97 @@ def test_every_block_that_shows_something_parts_two_paragraphs(between: str) -> 
 def test_a_block_that_prints_nothing_keeps_two_paragraphs_adjacent(between: str) -> None:
     # A comment and a link reference definition print nothing, so a reader meets the two paragraphs together.
     assert ("banned", "It's not a toy. → It's a tool.") in kinds(TOY.format(between))
+
+
+# ---------------------------------------------------------------------------
+# A marker that shares its line with another comment
+# ---------------------------------------------------------------------------
+
+MARKER_TEXT = "<!-- density-exempt: X, not Y -- required -->"
+
+
+@pytest.mark.parametrize("line", [
+    "<!-- a note --> " + MARKER_TEXT,
+    MARKER_TEXT + " <!-- a note -->",
+    MARKER_TEXT + "<?x?>",
+    "<!-- a note that\nruns on --> " + MARKER_TEXT,
+    MARKER_TEXT + " <!-- density-exempt: X, not Y -- another -->",
+])
+def test_a_marker_that_shares_a_line_with_another_comment_exempts_nothing(line: str) -> None:
+    for mk in [m for m in scoped(line + "\nIt is a map, not a list.") if m.device == "X, not Y"]:
+        assert mk.applies is False
+        assert "line of its own" in mk.problem
+
+
+@pytest.mark.parametrize("block", [
+    MARKER_TEXT,
+    MARKER_TEXT + "\n<!-- a note -->",
+    "<!-- a note -->\n" + MARKER_TEXT,
+    "<!-- a note that\nruns on -->\n" + MARKER_TEXT,
+])
+def test_a_marker_on_a_line_of_its_own_beside_other_comments_applies(block: str) -> None:
+    (mk,) = [m for m in scoped(block + "\nIt is a map, not a list.") if m.device == "X, not Y"]
+    assert (mk.applies, mk.problem) == (True, "")
+
+
+# ---------------------------------------------------------------------------
+# Guillemets close a sentence
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.parametrize(("text", "expected"), [
+    ("«Choose A, not B.» Choose C, not D.", ["«Choose A, not B.»", "Choose C, not D."]),
+    ("‹Pick one.› Then go.", ["‹Pick one.›", "Then go."]),
+    ("He said «go.»» Then left.", ["He said «go.»»", "Then left."]),
+])
+def test_a_guillemet_after_a_sentence_mark_closes_the_sentence(text: str, expected: list) -> None:
+    assert cx.split_sentences(text) == expected
+
+
+def test_a_guillemet_quotation_splits_into_its_own_candidate() -> None:
+    texts = [c.text for c in every_candidate("«Choose A, not B.» Choose C, not D.\n")]
+    assert "«Choose A, not B.»" in texts and "Choose C, not D." in texts
+
+
+@pytest.mark.parametrize("text", ["He said «go» and left.", "A ‹word› in marks."])
+def test_a_guillemet_inside_a_sentence_splits_nothing(text: str) -> None:
+    assert cx.split_sentences(text) == [text]
+
+
+# ---------------------------------------------------------------------------
+# A data file's page key is written as the scan prints it
+# ---------------------------------------------------------------------------
+
+NONCANONICAL = [
+    "/framework/templates/a.md",
+    "../framework/templates/a.md",
+    "./framework/templates/a.md",
+    "framework/../framework/templates/a.md",
+    "framework/./templates/a.md",
+    "framework//templates/a.md",
+    "framework\\templates\\a.md",
+]
+CANONICAL = ["framework/templates/a.md", "framework/templates/a..b.md", "framework/.notes/a.md", "a.md"]
+
+
+@pytest.mark.parametrize("key", NONCANONICAL)
+def test_a_page_key_the_scan_never_prints_is_refused_by_the_script_and_the_schemas(key: str) -> None:
+    assert not cx.is_page_path(key)
+    for name in LOADERS:
+        schema = json.loads(repo_text(SCHEMAS / f"{name}.schema.json"))
+        pattern = (schema["$defs"]["pagePath"] if "$defs" in schema else schema["propertyNames"])["pattern"]
+        assert not re.search(pattern, key), (name, key)
+
+
+@pytest.mark.parametrize("key", CANONICAL)
+def test_a_page_key_as_the_scan_prints_it_is_accepted_by_the_script_and_the_schemas(key: str) -> None:
+    assert cx.is_page_path(key)
+    for name in LOADERS:
+        schema = json.loads(repo_text(SCHEMAS / f"{name}.schema.json"))
+        pattern = (schema["$defs"]["pagePath"] if "$defs" in schema else schema["propertyNames"])["pattern"]
+        assert re.search(pattern, key), (name, key)
+
+
+def test_the_docstring_declares_the_threat_model() -> None:
+    doc = cx.__doc__
+    assert "Threat model" in doc and "In scope" in doc and "Out of scope" in doc

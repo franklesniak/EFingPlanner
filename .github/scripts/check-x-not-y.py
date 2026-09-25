@@ -130,8 +130,8 @@ and its reason by anything but `` -- `` (``--required``, ``--- required``),
 that reaches its
 source by number, that has no block below it in its container, or that
 shares its lines with text the page shows (in an HTML block, or inside a
-line of a paragraph, a heading or a table cell), exempts nothing, and the
-report names it. A marker shown in a code span is text, not a marker. A
+line of a paragraph, a heading or a table cell) or with another comment,
+exempts nothing, and the report names it. A marker shown in a code span is text, not a marker. A
 marker, ``density-exempt`` or audience, is a comment whose own text opens
 with its word, so comment-like text inside another hidden part, a tag or a
 comment is none.
@@ -246,6 +246,21 @@ The script is a tool, not a gate: no workflow or hook runs it over the pages.
 It reads each page with markdown-it, through ``x-not-y-blocks.js`` beside it
 and one Node process for the whole run, so it needs Node.js and the
 repository's ``node_modules`` (``npm ci``), as the Last Updated check does.
+
+Threat model
+------------
+A builder runs the recount by hand before a review, and a reviewer reads
+what it prints; CI runs only its unit tests. Its input is the curriculum's
+pages and its two data files, which builders write under the build briefs.
+In scope is what an honest author writes: a page's Markdown and wording, a
+marker and its reason, and a data file's keys, slips included, such as a
+marker that shares its line with a note, a page path typed with ``..`` or a
+backslash, or a quotation in another language's marks. Out of scope is
+input built to slip past a rule, such as a chain of qualifiers around a
+source or a construct no page uses, and a finding that needs it is answered
+with this section. The recount names what it does not read (see "Supported
+Markdown"), so an author learns of it, and it counts what it reads by the
+style law, which a reviewer still applies.
 """
 
 from __future__ import annotations
@@ -440,12 +455,13 @@ SOURCE_WORDS = (r"(?:spec(?:ification)?|brief|prompt|law|guide|record|(?:OQ|AC)-
 #: source's place however the covered list is numbered: by possession (`the
 #: spec's step 2`, `the brief's booking rule 7`), by name (`spec step 2`, `the
 #: brief rule 5`), or by a preposition after it (`step 2 of the spec`, `rules 1
-#: and 3 in the batch 2 brief`).
+#: and 3 in the batch 2 brief`), the words before the source possessives
+#: included (`step 2 of the project's spec`).
 TIED_PLACE_RE = re.compile(
     r"(?i:\b" + SOURCE_WORDS + r"['’]s\s+(?:[\w-]+\s+){0,2}" + LIST_PLACE_WORDS + r"\s+\d"
     r"|\b" + SOURCE_WORDS + r"\s+(?:[\w-]+\s+)?" + LIST_PLACE_WORDS + r"\s+\d"
     r"|\b" + LIST_PLACE_WORDS + r"\s+\d+(?:\s*(?:,|and|or|to|-|–)\s*\d+)*\s+(?:of|in|from)\s+"
-    r"(?:(?:the|this|that)\s+)?(?:[\w-]+\s+){0,3}" + SOURCE_WORDS + r"(?![\w-]))"
+    r"(?:(?:the|this|that)\s+)?(?:[\w-]+(?:['’]s)?\s+){0,3}" + SOURCE_WORDS + r"(?![\w-]))"
 )
 
 # ---------------------------------------------------------------------------
@@ -576,8 +592,9 @@ def enclosed_in_marks(text: str) -> bool:
 
 
 #: Closing quotation marks, brackets and emphasis that can follow a sentence's
-#: last punctuation. They stay with the sentence they close.
-CLOSERS = "[\"'”’)\\]*_]"
+#: last punctuation, guillemets among them (`»`, `›`). They stay with the
+#: sentence they close.
+CLOSERS = "[\"'”’»›)\\]*_]"
 #: A possible sentence break: the whitespace after `.`, `!` or `?` and up to
 #: three closers. Only the whitespace is consumed. `starts_sentence()` decides.
 SENTENCE_BREAK_RE = re.compile(
@@ -929,6 +946,18 @@ def check_places(marker: Marker, blocks: list[dict[str, Any]]) -> None:
             return
 
 
+def marker_beside_comment(marker: Marker) -> Marker:
+    """Name a marker that shares its line with another comment: it covers nothing.
+
+    The style law puts a marker on a line of its own, and a note beside it is
+    easy to add by accident, so the report names it rather than read it.
+    """
+    if marker.device in XNOTY_DEVICE_NAMES and not marker.problem:
+        marker.applies = False
+        marker.problem = "another comment shares its line; put the marker on a line of its own"
+    return marker
+
+
 def marker_beside_text(lineno: int, body: str) -> Marker | None:
     """Read a marker that shares its lines with text, or None for another device's.
 
@@ -1023,9 +1052,17 @@ def parse_text(text: str) -> Page:
                 # either side of it stay adjacent. Markers are read only from
                 # the comments in raw HTML, so an example shown in a code span
                 # or a fence never counts.
-                for _, comment in comments:
-                    if mm := EXEMPT_MARKER_RE.match(comment):
-                        markers.append(parse_marker(block["start"], mm.group("body")))
+                parts = hidden_parts(content)
+                spans = [(content.count("\n", 0, s), content.count("\n", 0, max(s, e - 1))) for s, e, _ in parts]
+                for i, (_, _, comment) in enumerate(parts):
+                    if comment is not None and (mm := EXEMPT_MARKER_RE.match(comment)):
+                        marker = parse_marker(block["start"], mm.group("body"))
+                        lo, hi = spans[i]
+                        if any(j != i and a <= hi and lo <= b for j, (a, b) in enumerate(spans)):
+                            # Another comment shares one of the marker's lines:
+                            # a marker sits on a line of its own.
+                            marker = marker_beside_comment(marker)
+                        markers.append(marker)
                         marker_blocks.append(index)
                         if path:
                             unsupported.append((block["start"], "a density-exempt marker inside a block quote or a"
@@ -1618,9 +1655,15 @@ def load_json(path: Path | None) -> Any:
         raise DataError(f"{path.name}: {exc}") from exc
 
 
+#: A part of a path the scan never prints: a leading `/`, an empty segment, a
+#: `.` or `..` segment, or a backslash. A page key that holds one names no page
+#: the scan reads, so its entries would be passed over without a word.
+NONCANONICAL_PATH_RE = re.compile(r"(?:^|/)\.{0,2}/|\\")
+
+
 def is_page_path(key: Any) -> bool:
-    """True for a data file's page key: a repository path to a `.md` file."""
-    return isinstance(key, str) and key.endswith(".md") and not key.startswith(("/", "../"))
+    """True for a data file's page key: a repository path to a `.md` file, written as the scan prints it."""
+    return isinstance(key, str) and key.endswith(".md") and not NONCANONICAL_PATH_RE.search(key)
 
 
 #: A character that is white space in neither of the two readings a data file
