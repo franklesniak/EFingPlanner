@@ -2,7 +2,7 @@
 
 # Session Support Notes
 
-Each entry is a short, parent-facing overview of one session -- your role, what to prep, the artifact to look for, a coaching question on the sessions the child does, and a common pitfall. This does not replace the Parent Notes inside each session; it is the at-a-glance map.
+Each entry is a short, parent-facing overview of one session -- your role, what to prep, the artifact to look for, a coaching question on the sessions the child does, and a common pitfall. This does not replace the Parent Notes inside each session; it is the at-a-glance map. A session with no entry here has what you need in its own For parents strip and Parent Notes.
 
 **Whether you need to be there.** A Role line marked *parent-gated* is a session your child waits for you on. *Co-worked* marks one you sit through with them. Any other session is one your child can do on their own, apart from any single step its Role line gives you. A Role line that recommends co-working without that mark still lets your child go ahead. A 5-minute check-in or a review after the session never holds them up. A Role line that says *beforehand* names an answer to give before the session. Sessions 29 and 39 need it to finish, so your child waits for it there. In Session 38, "ask an adult" in the souvenir row is enough.
 
