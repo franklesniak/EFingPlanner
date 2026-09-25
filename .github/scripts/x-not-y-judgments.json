@@ -3786,7 +3786,12 @@
       "judgment": "no",
       "reason": "a fact: what Session 38 brings and why"
     },
-    "split|Session 38 brings the My Calls page, which names the special pick whose ticket it leaves out. → The card files new pages as well as fixed ones, names every box of the draft, and covers a day trip, a place to stay with no card and a booked room count.|1": {
+    "split|Session 38 brings the My Calls page, which names the special pick whose ticket it leaves out. → The budget estimate's intro gives the Core path's hotel row in Session 33's words: one price for all the overnight cities, times every night in the Checkpoint 4 plan.|1": {
+      "line": 58,
+      "judgment": "no",
+      "reason": "a change record: a fact about the budget estimate's intro"
+    },
+    "split|The budget estimate's intro gives the Core path's hotel row in Session 33's words: one price for all the overnight cities, times every night in the Checkpoint 4 plan. → The card files new pages as well as fixed ones, names every box of the draft, and covers a day trip, a place to stay with no card and a booked room count.|1": {
       "line": 58,
       "judgment": "no",
       "reason": "a fact: what the card files, names and covers; with no card is a determiner"
@@ -39850,6 +39855,11 @@
       "line": 9,
       "judgment": "no",
       "reason": "an instruction"
+    },
+    "split|The other rows are marked (later): they belong to the fuller Core path, so leave them blank for the pilot. → On the Core path, use the first hotel row for all your overnight cities: your one price, times every night in your Checkpoint 4 plan, times rooms, or people if it's per person.|1": {
+      "line": 9,
+      "judgment": "no",
+      "reason": "a path-specific instruction; the per-person case is stated positively"
     },
     "banned|If a part still says \"ask an adult\" or \"not sure yet\", add up the rest, and write \"not counting ___\" beside what you added up, naming what's missing.|1": {
       "line": 19,
