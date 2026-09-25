@@ -27,6 +27,8 @@
  *            so the recount pairs no paragraphs across a container's edge: a
  *            list's edge is its first item's start and its last item's end.
  *   level    a heading's level, 1 to 6.
+ *   number   an ordered list's first number, as its first item prints it.
+ *   items    a list's number of items, an empty item included.
  *   content  a paragraph's or a heading's inline source, less the block quote
  *            prefixes, list markers and indentation around it, one source line
  *            per line; or an HTML block's, a fence's or a code block's text.
@@ -148,6 +150,8 @@ function readBlocks(text) {
   const blocks = [];
   const quotes = [];
   const lists = [];
+  // The block of each open list, so an item is counted on its own list.
+  const listBlocks = [];
   const path = [];
   let nextQuote = 0;
   let nextList = 0;
@@ -185,17 +189,25 @@ function readBlocks(text) {
       case 'bullet_list_open':
       case 'ordered_list_open': {
         const opensItem = itemOpen;
-        add(token, { type: token.type.replace('_open', '') });
+        const fields = { type: token.type.replace('_open', ''), items: 0 };
+        if (token.type === 'ordered_list_open') {
+          // markdown-it gives `start` only when the first number is not 1.
+          fields.number = Number(token.attrGet('start') ?? 1);
+        }
+        add(token, fields);
         blocks[blocks.length - 1].item = opensItem;
         lists.push(nextList);
+        listBlocks.push(blocks[blocks.length - 1]);
         nextList += 1;
         break;
       }
       case 'bullet_list_close':
       case 'ordered_list_close':
         lists.pop();
+        listBlocks.pop();
         break;
       case 'list_item_open':
+        top(listBlocks).items += 1;
         itemOpen = true;
         path.push(`i${nextItem}`);
         nextItem += 1;

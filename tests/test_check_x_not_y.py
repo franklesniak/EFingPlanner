@@ -663,7 +663,7 @@ def test_a_marker_that_cites_its_source_by_number_exempts_nothing(reason: str) -
     "the batch 1 brief's entry for this page",
     "the privacy rule for Session 02's profile fields",
     "the Checkpoint 4 booked-dates beat",
-    "step 3's kid-sized Budget Band, on the Phases 0-2 path",
+    "the kid-sized Budget Band, on the Phases 0-2 path",
     "the sections of the spec that hold its privacy rules",
 ])
 def test_a_marker_that_names_its_source_applies(reason: str) -> None:
@@ -689,12 +689,10 @@ def test_a_marker_that_cites_a_line_of_any_source_exempts_nothing(reason: str) -
 
 
 @pytest.mark.parametrize("reason", [
-    "the relay fallback in step 3 is required",
-    "the contrasts are in rule 5 of the list below",
     "this list is where a child reads what counts toward the 13",
     "a timeline and its guidelines, from the batch 1 brief's entry for this page",
 ])
-def test_a_step_a_rule_or_a_word_holding_line_is_not_a_numbered_source(reason: str) -> None:
+def test_a_count_or_a_word_holding_line_is_not_a_numbered_source(reason: str) -> None:
     (mk,) = scoped(f"<!-- density-exempt: X, not Y -- {reason} -->\nIt is a map, not a list.")
     assert (mk.applies, mk.problem) == (True, "")
 
@@ -2208,3 +2206,142 @@ def test_a_name_styled_in_lower_case_or_a_list_label_starts_a_sentence(text: str
 ])
 def test_a_lower_case_word_still_starts_no_sentence(text: str) -> None:
     assert cx.split_sentences(text) == [text]
+
+
+# ---------------------------------------------------------------------------
+# A numbered place in a reason: the page's own list, or a source reached by number
+# ---------------------------------------------------------------------------
+
+LIST = "1. One, not two.\n2. Two.\n3. Three.\n"
+
+
+def covering(reason: str, block: str = LIST) -> Any:
+    """Return the one marker of a page where a marker with `reason` sits above `block`."""
+    (mk,) = scoped(f"<!-- density-exempt: X, not Y -- {reason} -->\n{block}")
+    return mk
+
+
+@pytest.mark.parametrize("reason", [
+    "the brief's part 2",
+    "paragraph 3 of the brief",
+    "the brief's para 3",
+    "row 2 of the brief's table",
+    "column 2 of the spec's table",
+    "the brief's clause 3",
+    "the brief's No. 2",
+    "number 2 in the brief",
+    # A number sign and a round's number are built from parts, so this suite
+    # cites no issue and no review round of its own.
+    "the fix " + "#" + "3 made",
+    "step " + "#" + "3",
+    "the brief's page 1",
+    "chapter 3 of the guide",
+    "appendix 2",
+    "the brief's note 1",
+    "footnote 1",
+    "figure 2",
+    "table 3",
+    "the review's " + "round" + " 2",
+])
+def test_a_marker_that_reaches_any_other_place_by_number_exempts_nothing(reason: str) -> None:
+    # None of these is a place in a list, so the numbered list below it does not make it the page's own. A
+    # number after a number sign is refused even after a list word: the list below holds a 3, and `step`
+    # followed by a number sign and 3 still exempts nothing.
+    mk = covering(reason)
+    assert mk.applies is False
+    assert "by number" in mk.problem
+
+
+@pytest.mark.parametrize("reason", [
+    "the relay fallback in step 3 is required",
+    "the contrasts are in rules 1 and 3 of the list below",
+    "step 1's kid-safe filter caveat",
+    "items 1-3",
+    "item 2",
+    "point 2",
+    "question 2",
+    "criterion 1",
+    "entry 3",
+    "option 2",
+])
+def test_a_list_place_that_the_covered_list_holds_is_the_page_s_own(reason: str) -> None:
+    assert (covering(reason).applies, covering(reason).problem) == (True, "")
+
+
+@pytest.mark.parametrize("reason", [
+    "the brief's rule 5",
+    "the contrasts are in rule 4",
+    "steps 2 and 7",
+    "the spec's step 9",
+    "items 3-5",
+    "question 4",
+    "criterion 6",
+    "entry 8",
+    "option 4",
+    "point 12",
+])
+def test_a_list_place_that_the_covered_list_does_not_hold_reaches_a_source(reason: str) -> None:
+    mk = covering(reason)
+    assert mk.applies is False
+    assert "by number" in mk.problem
+
+
+@pytest.mark.parametrize(("reason", "block", "applies"), [
+    ("the relay fallback in step 3", "It is a map, not a list.\n", False),
+    ("the relay fallback in step 3", "- One, not two.\n- Two.\n- Three.\n", False),
+    ("step 5", "4. Four, not five.\n5. Five.\n", True),
+    ("step 3", "4. Four, not five.\n5. Five.\n", False),
+    ("step 3", "1. One, not two.\n2.\n3. Three.\n", True),
+    ("step 2", "- One, not two.\n\n  1. A.\n  2. B.\n", True),
+    ("step 2", "## A\n\nIt is a map, not a list.\n\n1. A.\n2. B.\n", True),
+    ("step 2", "## A\n\nIt is a map, not a list.\n\n## B\n\n1. A.\n2. B.\n", False),
+])
+def test_a_list_place_is_the_page_s_own_only_in_the_numbered_list_the_marker_covers(reason: str, block: str,
+                                                                                     applies: bool) -> None:
+    # A paragraph or a bullet list holds no numbered place; a list prints the numbers it starts from; an empty
+    # item still takes its number; a numbered list nested in the covered block counts, and so does one in the
+    # covered heading's section, but not one in the next section.
+    assert covering(reason, block).applies is applies
+
+
+def test_a_copied_list_of_a_brief_s_rules_is_the_page_s_own() -> None:
+    # A pack's contents page copies the batch 1 brief's six add-a-destination rules as its own numbered list, so
+    # the marker above that list may name two of them by the number the page prints.
+    reason = ("the batch 1 brief's add-a-destination rules; the contrasts are in rule 5, the brief's verify framing, "
+              "and rule 6, the brief's completion rule")
+    first_four = "".join(f"{n}. Rule {n}.\n" for n in range(1, 5))
+    assert covering(reason, first_four + "5. Keep it verified, never fixed.\n6. Done, not open.\n").applies is True
+    assert covering(reason, first_four).applies is False
+
+
+def test_the_reader_gives_a_numbered_list_its_first_number_and_its_items() -> None:
+    blocks = cx.read_blocks("3. A.\n4.\n5. C.\n\n- D.\n- E.\n")
+    numbered, bulleted = [b for b in blocks if b["type"] in ("ordered_list", "bullet_list")]
+    assert (numbered["number"], numbered["items"], bulleted["items"]) == (3, 3, 2)
+    assert "number" not in bulleted
+
+
+# ---------------------------------------------------------------------------
+# What parts two paragraphs
+# ---------------------------------------------------------------------------
+
+TOY = "It's not a toy.\n\n{}\n\nIt's a tool.\n"
+
+
+@pytest.mark.parametrize("between", [">", "-", "1.", "> <!-- a note -->", "- <!-- a note -->", "> -"])
+def test_a_list_or_a_block_quote_parts_two_paragraphs_even_when_it_holds_no_paragraph(between: str) -> None:
+    assert [text for _, text in kinds(TOY.format(between)) if " → " in text] == []
+
+
+@pytest.mark.parametrize("between", [
+    "> Quoted.", "- Listed.", "---", "<div>x</div>", FENCE + "\ncode\n" + FENCE, FENCE + "\n" + FENCE, "    code",
+    "| a |\n| --- |\n| b |", "### A heading", "## A heading",
+])
+def test_every_block_that_shows_something_parts_two_paragraphs(between: str) -> None:
+    assert [text for _, text in kinds(TOY.format(between)) if " → " in text] == []
+
+
+@pytest.mark.parametrize("between", ["<!-- a note -->", "[a]: https://example.com"])
+def test_a_block_that_prints_nothing_keeps_two_paragraphs_adjacent(between: str) -> None:
+    # A comment and a link reference definition print nothing, so a reader meets the two paragraphs together.
+    assert ("banned", "It's not a toy. → It's a tool.") in kinds(TOY.format(between))

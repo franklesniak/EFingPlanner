@@ -142,7 +142,14 @@ brief's entry for this page``. A reason that cites a section number, a line
 of any source (``spec 21.5``, ``Section 20``, ``specification line 4245``,
 ``brief lines 3330-3335``, ``§ 24``, a bare ``21.8``), an ``OQ-`` or
 ``AC-`` id, or a build brief's item label (``F6``, ``B4, item 7``) is named
-as a marker problem.
+as a marker problem. So is any other place in a source reached by its number:
+a part, a paragraph, a row, a column, a clause, a page, a chapter, an appendix,
+a note, a figure, a table, a round, ``No. 5``, ``number 5``, or a number after
+a number sign. A rule, a step, an item, a point, a question, a criterion, an
+entry or an option may be named by its number only when it is the page's own:
+when the block the marker covers holds a numbered list with that number, as
+the page prints it (``the relay fallback in step 3``). Any other such number
+reaches a source, and is named.
 
 Supported Markdown
 ------------------
@@ -390,10 +397,13 @@ XNOTY_LOOKALIKE_RE = re.compile(r"^x\s*[,-]?\s*not\s*[,-]?\s*y$", re.IGNORECASE)
 #: A reason that reaches its source by number, which the style law's
 #: name-first rule forbids in a built file: a section of the spec, a line of
 #: any source (`specification line 4245`, `Batch 1 brief lines 3330-3335`), a
-#: section sign, a dotted section number, an `OQ-` or `AC-` id, or a build
-#: brief's item label (`F6`, `B4, item 7`). A session's number is its name
-#: (`Session 02`), and a step or a rule on the page is the page's own, so
-#: neither is one of these.
+#: section sign, a dotted section number, an `OQ-` or `AC-` id, a build
+#: brief's item label (`F6`, `B4`), or any other place a reader finds only by
+#: counting: a part, a paragraph, a row, a column, a clause, a page, a
+#: chapter, an appendix, a note, a figure, a table, a round, `No. 5`,
+#: `number 5`, or a number after a number sign. A session's number is its name
+#: (`Session 02`), as is a checkpoint's, a phase's and a batch's, so none is one
+#: of these.
 NUMBERED_SOURCE_RE = re.compile(
     r"(?i:\bsections?\s+\d+(?:\.\d+)*)"
     r"|(?i:\bspec(?:ification)?\b\W{0,3}(?:lines?\s+)?\d+(?:[.-]\d+)*)"
@@ -401,8 +411,20 @@ NUMBERED_SOURCE_RE = re.compile(
     r"|\b\d+(?:\.\d+)+\b"
     r"|\b(?:OQ|AC)-\d+(?:-\d+)*"
     r"|\b[A-H]\d{1,2}\b"
-    r"|(?i:\bitems?\s+\d+)"
     r"|(?i:\blines?\s+\d+(?:[.-]\d+)*)"
+    r"|(?i:\b(?:parts?|paragraphs?|paras?|rows?|columns?|clauses?|numbers?|pages?|chapters?|appendix|appendices"
+    r"|notes?|footnotes?|figures?|tables?|rounds?)\s+#?\d+)"
+    r"|(?i:\bno\.\s*\d+)"
+    r"|#\s*\d+"
+)
+#: A numbered place in a list: a rule, a step, an item, a point, a question, a
+#: criterion, an entry or an option, with one number or several (`rules 5 and
+#: 6`, `steps 2-4`). It is the page's own, and may be named so, only when the
+#: block the marker covers holds a numbered list with each of its numbers;
+#: otherwise it reaches a source by number.
+LIST_PLACE_RE = re.compile(
+    r"(?i:\b(?:rules?|steps?|items?|points?|questions?|criterion|criteria|entry|entries|options?)\s+"
+    r"(?P<numbers>\d+(?:\s*(?:,|and|or|to|-|–)\s*\d+)*))"
 )
 
 # ---------------------------------------------------------------------------
@@ -688,6 +710,9 @@ class Marker:
     scope_end: int = 0
     scope_desc: str = ""
     problem: str = ""  # why a marker that names `X, not Y` exempts nothing
+    # Each numbered place in a list the reason names, with its numbers: the
+    # block the marker covers must hold each one (`LIST_PLACE_RE`).
+    places: list[tuple[str, tuple[int, ...]]] = field(default_factory=list)
 
 
 @dataclass
@@ -846,7 +871,41 @@ def parse_marker(lineno: int, body: str) -> Marker:
         problem = f"the reason cites its source by number ({cited.group(0).strip()!r}); name the source instead"
     elif not names_device and XNOTY_LOOKALIKE_RE.match(device):
         problem = "device name is not `X, not Y`"
-    return Marker(lineno, device, reason, names_device and bool(reason) and not problem, problem=problem)
+    places = [(m.group(0).strip(), place_numbers(m.group("numbers"))) for m in LIST_PLACE_RE.finditer(reason)]
+    return Marker(lineno, device, reason, names_device and bool(reason) and not problem, problem=problem,
+                  places=places)
+
+
+def place_numbers(numbers: str) -> tuple[int, ...]:
+    """Return the numbers a list place names. A list prints its numbers in a run, so a range's two ends stand for it."""
+    return tuple(int(n) for n in re.findall(r"\d+", numbers))
+
+
+def listed_numbers(blocks: list[dict[str, Any]], first: int, last: int) -> set[int]:
+    """Return the numbers the items of each numbered list between lines `first` and `last` print."""
+    out: set[int] = set()
+    for block in blocks:
+        if block["type"] == "ordered_list" and first <= block["start"] <= last:
+            out.update(range(block["number"], block["number"] + block["items"]))
+    return out
+
+
+def check_places(marker: Marker, blocks: list[dict[str, Any]]) -> None:
+    """Name a marker whose reason numbers a place in a list that the block it covers does not hold.
+
+    `step 3` names the page's own step when the marker covers a numbered list
+    with a step 3; anywhere else, the number reaches a source, which the style
+    law's name-first rule forbids.
+    """
+    if not marker.applies or not marker.places:
+        return
+    own = listed_numbers(blocks, marker.scope_start, marker.scope_end)
+    for text, numbers in marker.places:
+        if not set(numbers) <= own:
+            marker.applies = False
+            marker.problem = (f"the reason cites its source by number ({text!r}); a number names only an item of"
+                              " the numbered list the marker covers, so name the source instead")
+            return
 
 
 def marker_beside_text(lineno: int, body: str) -> Marker | None:
@@ -900,6 +959,11 @@ def parse_text(text: str) -> Page:
     for index, block in enumerate(blocks):
         kind = block["type"]
         path = tuple(block.get("path") or ())
+        if kind not in ("paragraph", "html_block"):
+            # Every other block parts the paragraphs on either side of it: a
+            # list or a block quote too, even one that holds no paragraph. An
+            # HTML block parts them only when it shows something (below).
+            follows = False
         for offset, piece in block.get("html") or ():
             # Inline HTML in a paragraph, a heading or a table cell. markdown-it
             # gives each piece whole, and a marker is read only from a comment
@@ -977,7 +1041,6 @@ def parse_text(text: str) -> Page:
                 # no section or region.
                 unsupported.append((block["start"], "a heading inside a block quote or a list item"))
                 labels.append(Label(block["start"], heading, section, region, section_index, path))
-                follows = False
                 continue
             if level <= 2:
                 section = heading if level == 2 else PREAMBLE
@@ -997,7 +1060,6 @@ def parse_text(text: str) -> Page:
             # but not a prose line, so nothing in it is counted.
             labels.append(Label(block["start"], heading, section, region, section_index,
                                 tuple(block.get("path") or ())))
-            follows = False
             continue
         if kind == "table":
             labels.extend(Label(block["start"] + offset, normalize_space(cell), section, region, section_index,
@@ -1009,7 +1071,6 @@ def parse_text(text: str) -> Page:
             # A container opens before the blocks inside it; it prints nothing itself.
             continue
         if kind != "paragraph":
-            follows = False
             continue
         lines = (block.get("text") or "").split("\n")
         if block.get("item"):
@@ -1025,6 +1086,7 @@ def parse_text(text: str) -> Page:
         follows = True
     for marker, index in zip(markers, marker_blocks):
         marker_scope(marker, blocks, index, heading_lines, source)
+        check_places(marker, blocks)
     # A block quote that ends in a dash-led line, the form of an attribution:
     # the recount reads a quotation by its marks alone, so it names the line.
     last_in_quote: dict[str, ProseLine] = {}
@@ -1126,7 +1188,9 @@ def adjacent(a: list[ProseLine], b: list[ProseLine], raw_lines: list[str] | None
     item runs on in a second paragraph, is apart from the prose around it. Two
     paragraphs of one list item do pair. A comment, such as a `density-exempt`
     marker, is not rendered, so it does not part two paragraphs, even when it
-    runs over several lines.
+    runs over several lines; nor does a link reference definition, which prints
+    nothing. Every other block parts them, an empty list or block quote, or one
+    that holds only a comment, included.
     """
     if raw_lines is None or a[-1].container != b[0].container:
         return False
