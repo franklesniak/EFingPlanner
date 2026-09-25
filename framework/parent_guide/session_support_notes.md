@@ -209,7 +209,7 @@ Want a rough signal of how the executive-function side is going? The optional [e
 
 - Role: Independent.
 - Prep: the attraction cards.
-- Look for: a balance chart with every card in a category or on the odd-ones-out line, and one kind of day to add more of, or a note that the mix looks right.
+- Look for: a balance chart with every card in a category or on the odd-ones-out line, and one kind of day to add more of, or a note that the mix looks right. A card with no type got one before it was sorted.
 - Coaching question: "Which kind of day would you like more of?"
 - Pitfall: fixing a lopsided chart now. Noticing is the job, and Session 26 uses it.
 
@@ -249,7 +249,7 @@ Want a rough signal of how the executive-function side is going? The optional [e
 
 - Role: Independent; beforehand, tell your child how long the trips there and home take and which flights land on a later date.
 - Prep: your three travel facts: whether getting there takes only a few hours, whether the trip home does, and a count of the flights that land on a later date, with no dates; the Trip-Basics card, for the maximum trip length or the booked length and for the time difference; the route map notes; the traveler profiles.
-- Look for: the real-days formula filled in, with a ½ over the arrival 1 for a short trip there, a ½ over the departure 1 for a short trip home, and a "- 1 flight day" mark for each flight that lands on a later date; and nights for each overnight place that fit between the floor and the maximum, with the floor checked again after any new total, or that share out the booked trip.
+- Look for: the real-days formula filled in, with a ½ over the arrival 1 for a short trip there, a ½ over the departure 1 for a short trip home, and a "- 1 flight day" mark for each flight that lands on a later date; and nights for each overnight place that fit between the floor and the maximum, with the floor checked again after any new total, or that share out the booked trip. A place dropped for a shorter or gentler trip is never the one with the special pick.
 - Coaching question: "Where would one more night help most?"
 - Pitfall: treating the maximum as the target. For a mixed-stamina group, shorter and gentler usually works better.
 
@@ -265,7 +265,7 @@ Want a rough signal of how the executive-function side is going? The optional [e
 
 - Role: Independent; parent review after the session.
 - Prep: a Trade-Off Report page; the route map notes, the nights table and the transportation notes; a device with a map app, for any new leg the route needs; the must-dos and strong maybes, for a trip with one base.
-- Look for: a trade-off report comparing at least two routes, or two ways to use one base, with every column filled, a recommendation, and what the family gives up.
+- Look for: a trade-off report comparing at least two routes, or two ways to use one base, with every column filled, a recommendation, and what the family gives up. The special pick and its place are in both. With one base and the pick as the only must-do, two paces around the pick are a fine pair.
 - Coaching question: "Walk me through how you weighed this option against that one." This is the formative check after the route report.
 - Pitfall: weighing it for them. If your child can't show how they weighed it yet, talk through one row together before Phase 6.
 
@@ -273,7 +273,7 @@ Want a rough signal of how the executive-function side is going? The optional [e
 
 - Role: Parent-gated: parent review; use the recommendation in a family talk. Confirm or adjust the arrival and departure places against current options for getting there. If the first or last place changes, answer "Approved with changes", or "Needs more research" if the change alters which route works best.
 - Prep: a Decision Record page; the Trip-Basics card and the assumptions page; the Session 29 nights table and formula; the route map notes and a device with a map app, in case you change where the trip arrives or leaves.
-- Look for: the whole recommendation table filled in: the total days, the cities, the nights in each, the travel days, a shorter backup version, reasons, trade-offs, sources, the budget-band check and what a grown-up still needs to check. Total days are the nights plus one, plus the flight days. With the dates booked, a nights plan with no backup version. The checkpoint finishes on Approved, or on Approved with changes once they're written in. The other two answers leave it open, and they're still normal results.
+- Look for: the whole recommendation table filled in: the total days, the cities, the nights in each, the travel days, a shorter backup version that keeps the special pick and its place, reasons, trade-offs, sources, the budget-band check and what a grown-up still needs to check. Total days are the nights plus one, plus the flight days. With the dates booked, a nights plan with no backup version. The checkpoint finishes on Approved, or on Approved with changes once they're written in. The other two answers leave it open, and they're still normal results.
 - Coaching question: "Where would this plan feel rushed?"
 - Pitfall: redrawing the route yourself. If the arrival or departure moves, your child moves one block.
 
@@ -329,7 +329,7 @@ Want a rough signal of how the executive-function side is going? The optional [e
 
 - Role: Independent; beforehand, tell your child how many rooms each overnight city needs. Parent review after the session. Keep your own cost of getting there on your own page.
 - Prep: your answer on how many rooms each overnight city needs, with a count for each part of a stay when the group changes; the Session 33 budget estimate and a blank Budget Estimate page for this pass; the daily cost table and the hotel cards; the route and nights approved at Checkpoint 4, with the route map notes; the city card for any region on the route, for its town; the My Calls page, for the special pick; the attraction cards, if the special pick hits a block; the Session 33 part-trip note, if there is one, for a row per room count; the Trip-Basics card, for the number of travelers; the assumptions page, for the budget band.
-- Look for: a second-pass budget on the fresh page, matching the route and nights approved at Checkpoint 4, with a hotel line for each city and the other slices filled in, food multiplied by the plan's total days, a row for each room count in a city where the number of travelers changes mid-stay, the subtotal added up, the matching piece checked against the band, and one sentence on whether the slices fit, with what your child would change if they don't. If a block stopped the special pick, a new one chosen with you from the attraction cards and put on the must-do list; the blocked one comes off and needs no more research.
+- Look for: a second-pass budget on the fresh page, matching the route and nights approved at Checkpoint 4, with a hotel line for each city and the other slices filled in, food multiplied by the plan's total days, a row for each room count in a city where the number of travelers changes mid-stay, the subtotal added up, the matching piece checked against the band, and one sentence on whether the slices fit, with what your child would change if they don't, keeping the special pick and its place. If a block stopped the special pick, a new one chosen with you from the attraction cards and put on the must-do list; the blocked one comes off and needs no more research.
 - Coaching question: "If it doesn't fit, what would you cut first?"
 - Pitfall: reading the result as the trip's cost. It's a partial floor, and "change the trip or wait" is a good answer.
 
@@ -352,7 +352,7 @@ Want a rough signal of how the executive-function side is going? The optional [e
 ## Session 42: Reservations and Timed Entries
 
 - Role: Independent. Lighter page: read the Steps with your child until they manage two sessions in a row without the When I'm Stuck card or leaning on the Steps. Start Here, the Stop Point, the artifact and the Source Check always stay.
-- Prep: this session's Destination Notes; a blank Reservation Watchlist; the daily plan cards; the My Calls page; the attraction cards, if the special pick hits a block; the Trip-Basics card, for whether the dates are booked.
+- Prep: this session's Destination Notes; a blank Reservation Watchlist; the daily plan cards; the My Calls page; the attraction cards, to fill a tickets row and if the special pick hits a block; the Trip-Basics card, for whether the dates are booked.
 - Look for: a reservation watchlist holding every item on the day cards that might need booking, each marked for whether holding a date matters, with a date checked on each, and, with the dates booked, its opening date under "When adults should check". If a block stopped the special pick, a new one chosen with you from the attraction cards, written on the must-do list, its day card and the watchlist if it needs booking, and the blocked one crossed off all three.
 - Coaching question: "Which of these could sell out first?"
 - Pitfall: letting the list sit. It's your list to act on, and your child never books.
@@ -361,7 +361,7 @@ Want a rough signal of how the executive-function side is going? The optional [e
 
 - Role: Independent; parent review after the session. Lighter page: read the Steps with your child until they manage two sessions in a row without the When I'm Stuck card or leaning on the Steps. Start Here, the Stop Point, the artifact and the Source Check always stay.
 - Prep: the daily plan cards; the Session 29 formula, for the ½ mark over its departure 1, or your answer on how long the trip home takes; the My Calls page; the attraction cards, if the special pick hits a block; every traveler's profile; the Trip-Basics card; the Checkpoint 1 season; the destination pack's transportation basics page.
-- Look for: a pacing review with each check marked yes or no, the days to make gentler, each checked again, or a line saying every day passed, and flags for you, each hard day naming who it is hard for, by relation. The third trade-off report too, if it wasn't written at Session 34.
+- Look for: a pacing review with each check marked yes or no, the days to make gentler, each checked again and still holding the special pick and its place, or a line saying every day passed, and flags for you, each hard day naming who it is hard for, by relation. The third trade-off report too, if it wasn't written at Session 34.
 - Coaching question: "Which day would wear out our most tired traveler?"
 - Pitfall: asking your child to solve an accessibility flag. They flag it; you check it and solve it.
 
@@ -385,7 +385,7 @@ Want a rough signal of how the executive-function side is going? The optional [e
 
 - Role: Parent-gated: parent review; use the recommendation in a family talk. Review the draft itself. Lighter page: read the Steps with your child until they manage two sessions in a row without the When I'm Stuck card or leaning on the Steps. Start Here, the Stop Point, the artifact and the Source Check always stay.
 - Prep: a Decision Record page; the Session 39 budget summary, with its band sentence; the Session 43 pacing review, in case a change moves a night or a day; the route map notes and a device with a map app, in case your answer moves where the trip arrives or leaves.
-- Look for: a review packet with every row answered, brought to you with the draft, its day cards and the Session 39 budget summary with its band sentence; and a Decision Record with the recommendation, reasons, sources and trade-offs, and your answer written in. The checkpoint finishes on Approved, or on Approved with changes once they're written in. The other two answers leave it open, and they're still normal results.
+- Look for: a review packet with every row answered, its cut answer keeping the special pick and its place, brought to you with the draft, its day cards and the Session 39 budget summary with its band sentence; and a Decision Record with the recommendation, reasons, sources and trade-offs, and your answer written in. The checkpoint finishes on Approved, or on Approved with changes once they're written in. The other two answers leave it open, and they're still normal results.
 - Coaching question: "Which day would you make gentler first?"
 - Pitfall: treating a stop here as second best. Checkpoint 5 is the Core Finish Line, a full finish.
 
