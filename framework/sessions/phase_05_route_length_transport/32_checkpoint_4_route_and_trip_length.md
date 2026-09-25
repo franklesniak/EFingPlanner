@@ -32,7 +32,7 @@ Fill in the table in the Workspace:
 2. **Overnight cities.** Use the route you recommended in Session 31.
 3. **Nights in each city.** Copy them from your nights table.
 4. **Major travel days.** Which days are mostly spent getting from one city to the next?
-5. **A shorter backup version.** If the grown-ups need a shorter trip, what would you drop first? If your dates are booked, leave this row blank, because the length is already set.
+5. **A shorter backup version.** If the grown-ups need a shorter trip, what would you drop first? Keep your special pick and its place. If your dates are booked, leave this row blank, because the length is already set.
 6. **Reasons.** Give two or three, each tied to something you found.
 7. **Trade-offs.** What does the family give up with this plan?
 8. **Budget-band check.** Does this still fit our rough budget band? More cities and more hotel moves usually cost more.

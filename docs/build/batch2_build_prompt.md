@@ -4,7 +4,7 @@
 
 - **Status:** Active
 - **Owner:** Repository Maintainers
-- **Last Updated:** 2026-09-24
+- **Last Updated:** 2026-09-25
 - **Scope:** The complete build instruction for Batch 2 of the EFingPlanner curriculum -- thirty-four sessions across Phases 3 to 8, thirteen templates, the parent apparatus, the rest of the trip-starter kit, the two binder deliverables, and the roadmap extension. It carries every Batch 2 requirement, every applicable acceptance criterion, and the adjudicated answer to every open question, so an authoring run works from this brief and consults the archived specification only for a detail the brief turns out to lack. It does not cover Batches 0, 1, 3 or 4, and it is a build instruction rather than shipped curriculum.
 - **Related:** [Build prompt directory guide](README.md), [Batch 1 build brief](batch1_build_prompt.md), [Build prompt template](_build_prompt_template.md), [Archived specification](../spec/specification.md)
 
@@ -1485,6 +1485,8 @@ with or without day trips:
 Session 28 times the trips between the base and the arrival and departure places, and from
 the base to the must-dos. Session 30's guess is a trip Session 28 did not time, and
 Session 31 compares two ways to use that base: fewer must-dos with more free time, against more must-dos, seen faster.
+When the special pick is the only must-do and no strong maybe is left, the two ways are two
+paces around the pick, such as doing it early against doing it after a slower start.
 
 **The second early real win.** Adults should actually use the child's city shortlist in a
 family conversation here, so the child sees their research shaping the trip again well
@@ -1833,7 +1835,12 @@ usually cost more.
 **The worked example row uses unnamed placeholders** -- "Route 1: City A + City B",
 "Route 2: City A + City C". The spec's example comparisons are destination instantiations
 and must not appear. The one neutral comparison the session may name is **fewer cities
-deeper versus more cities faster.** (`D-OPEN-5`.)
+deeper versus more cities faster.** (`D-OPEN-5`.) The one-base pairs in the Session 22
+entry name no place either, so the session may name them too.
+
+**Whichever pair the child compares, the special pick and its place stay in both routes**,
+because only the three blocks change the pick. Session 29's fewer-places steps and Session
+32's shorter backup keep them too.
 
 - **Workspace:** the comparison table, narrow enough to print portrait; split it if it
   would be too wide.
