@@ -9,8 +9,8 @@ You are here: Phase 8 (Readiness and Final). Not a First Taste step. Previous: [
 - Status: Core
 - Planner skill: self-control (knowing when to stop)
 - Estimated time: 20-30 minutes
-- Parent involvement: co-working recommended
-- Materials: your destination pack's safety and emergency page, your packing list from Session 48, your transportation notes from Session 30, your [Source Log](../../templates/source_log.md), the blank [If I Get Separated card](../../trip_starter/if_i_get_separated_card.md) from your trip starter kit, a small card or half a sheet of stiff paper for a pocket-sized copy, a pencil
+- Parent involvement: co-working recommended; hear your child say the staying-found plan out loud once
+- Materials: your destination pack's safety and emergency page, your Packing List from Session 48, your transportation notes from Session 30, your [Source Log](../../templates/source_log.md), the blank [If I Get Separated card](../../trip_starter/if_i_get_separated_card.md) from your trip starter kit, a small card or half a sheet of stiff paper for a pocket-sized copy, a pencil
 
 (For an at-a-glance version, see the matching entry in [the parent session notes](../../parent_guide/session_support_notes.md); the Parent Notes below have the full detail.)
 

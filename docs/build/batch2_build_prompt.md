@@ -1588,8 +1588,9 @@ the source-trust lesson**, and **do not write a per-platform setup guide.**
 - **Source Check:** required, and it carries the **video citation form**.
 - **Named platforms are permitted** -- map, review and hotel-review services are tool
   names, not destination facts.
-- **Parent involvement:** `co-working recommended`. The co-research guardrail stays
-  explicitly on video research.
+- **Parent involvement:** `co-working recommended`, with the clause `stay nearby for both
+  sittings, and alongside for any video` after a semicolon, because the grown-up must stay
+  near. The co-research guardrail stays explicitly on video research.
 
 ### Session 26: Rank Attractions
 
@@ -3565,7 +3566,8 @@ requirements keep video research with an adult, keep the kid-safe filter on, and
 whose online-safety guardrail requires them to stay. **Write Session 25's Role line as
 co-worked.** **Session 49 is co-worked for the same kind of reason**: a grown-up rehearses
 the separation plan with the child, and its central-table value is `co-working
-recommended`. Write its Role line as co-worked too. **Three more sessions have one grown-up
+recommended`, with that rehearsal named after a semicolon. Write its Role line as
+co-worked too. **Three more sessions have one grown-up
 step without being gated as a whole.** Session 07, when a family does it, needs a grown-up
 to open the library catalog or drive to the library, as the built First Taste list marks.
 Session 09 is adult-operated: a grown-up runs the AI
@@ -4384,7 +4386,7 @@ from this table. (`D-item-7`.)
 | 46 | making trade-offs | 20-30 minutes for the child, plus a 20-40 minute review with you | parent review -- genuinely use the recommendation in a real family talk | Core -- **Checkpoint 5** |
 | 47 | organizing information | 20-30 minutes | 5-minute check-in | Conditional core |
 | 48 | organizing information | 20-30 minutes | parent review after session | Core |
-| 49 | self-control (knowing when to stop) | 20-30 minutes | co-working recommended | Core |
+| 49 | self-control (knowing when to stop) | 20-30 minutes | co-working recommended; hear your child say the staying-found plan out loud once | Core |
 | 50 | organizing information | several sittings; stop whenever you want | 5-minute check-in | Core |
 | 51 | organizing information | 20-30 minutes | 5-minute check-in | Core |
 | 52 | making trade-offs | 20-30 minutes for the child, plus the family decision meeting | parent review -- genuinely use the recommendation in a real family talk | Core -- **Checkpoint 6** |
