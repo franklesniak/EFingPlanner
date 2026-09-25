@@ -6,8 +6,8 @@
   "type": "object",
   "propertyNames": {
     "type": "string",
-    "pattern": "^(?!/|\\.\\./)[\\s\\S]*\\.md$",
-    "description": "A repository path to a Markdown page, such as framework/docs/glossary.md: it ends in .md and starts with neither / nor ../."
+    "pattern": "^(?!/|\\.\\./)[\\s\\S]*\\.md$(?![\\s\\S])",
+    "description": "A repository path to a Markdown page, such as framework/docs/glossary.md: it ends in .md, with nothing after it, not even a line break, and starts with neither / nor ../."
   },
   "additionalProperties": {
     "type": "object",
@@ -27,8 +27,8 @@
       },
       "basis": {
         "type": "string",
-        "pattern": "[^\\s\\u001c-\\u001f\\u0085]",
-        "description": "Why the page has this register. It holds more than white space, in the tool's reading too: a character outside ECMA-262's \\s, U+001C to U+001F and U+0085."
+        "pattern": "[^\\s\\u001c-\\u001f\\u0085\\ufeff]",
+        "description": "Why the page has this register. It holds more than white space, in the tool's reading too: a character outside ECMA-262's \\s, U+001C to U+001F, U+0085 and U+FEFF. The pattern names U+FEFF though ECMA-262's \\s holds it, because Python's does not, so a validator reading either dialect refuses the same text."
       }
     }
   }

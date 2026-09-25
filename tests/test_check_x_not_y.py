@@ -1091,6 +1091,26 @@ def test_the_script_reads_each_schema_example_as_the_schema_does(name: str, side
             load(path)
 
 
+@pytest.mark.parametrize(("name", "side", "path"), SCHEMA_EXAMPLES,
+                         ids=[f"{n}/{s}/{p.name}" for n, s, p in SCHEMA_EXAMPLES])
+def test_each_schema_example_gets_its_verdict_in_python_s_regex_dialect_too(name: str, side: str, path: Path) -> None:
+    # JSON Schema reads a pattern as ECMA-262, as check-jsonschema does by default; python-jsonschema reads it with
+    # Python's `re`, whose `$` also matches before a final line break. The schemas are published by their `$id`, so
+    # each pattern must mean the same in both, and each example gets the same verdict from either.
+    jsonschema = pytest.importorskip("jsonschema")
+    assert cx.refusal(path, REPO_ROOT) is None
+    schema = json.loads(repo_text(SCHEMAS / f"{name}.schema.json"))
+    errors = list(jsonschema.Draft202012Validator(schema).iter_errors(json.loads(repo_text(path))))
+    assert (not errors) is (side == "valid"), [e.message for e in errors]
+
+
+def test_the_script_refuses_a_page_or_a_key_that_ends_in_a_line_break() -> None:
+    # The key form ends where the schema's does, so even a plain `match` stops short of a final line break.
+    assert cx.is_page_path("framework/docs/glossary.md") and not cx.is_page_path("framework/docs/glossary.md\n")
+    key = "device|Choose the map, not the list.|1"
+    assert cx.JUDGMENT_KEY_RE.match(key) and not cx.JUDGMENT_KEY_RE.match(key + "\n")
+
+
 def test_the_schemas_name_the_values_the_script_accepts() -> None:
     judgments = json.loads(repo_text(SCHEMAS / "x-not-y-judgments.schema.json"))
     registers = json.loads(repo_text(SCHEMAS / "x-not-y-registers.schema.json"))
@@ -1853,7 +1873,7 @@ def test_text_is_more_than_white_space_in_either_reading() -> None:
     schemas = [json.loads(repo_text(SCHEMAS / f"{n}.schema.json")) for n in LOADERS]
     patterns = {schemas[0]["$defs"]["judgment"]["properties"]["reason"]["pattern"],
                 schemas[1]["additionalProperties"]["properties"]["basis"]["pattern"]}
-    assert patterns == {r"[^\s\u001c-\u001f\u0085]"}
+    assert patterns == {r"[^\s\u001c-\u001f\u0085\ufeff]"}
 
 
 # ---------------------------------------------------------------------------
@@ -2302,6 +2322,47 @@ def test_a_list_place_is_the_page_s_own_only_in_the_numbered_list_the_marker_cov
     # item still takes its number; a numbered list nested in the covered block counts, and so does one in the
     # covered heading's section, but not one in the next section.
     assert covering(reason, block).applies is applies
+
+
+@pytest.mark.parametrize("reason", [
+    "the spec's step 2 requires this list",
+    "the specification's rule 1",
+    "the batch 1 brief's step 3",
+    "the brief's booking rule 2",
+    "the style law's rule 1",
+    "the parent guide's step 2",
+    "the record's item 3",
+    "the prompt's point 1",
+    "step 2 of the spec",
+    "rules 1 and 3 in the batch 2 brief",
+    "item 2 from the prompt",
+    "question 3 of the style law",
+    "spec step 2",
+    "the brief rule 3",
+    "the booking_guidance.md step 2",
+    "step 2 of framework/docs/glossary.md",
+    "Session 05's step 2",
+    "the guide’s step 1",
+])
+def test_a_list_place_the_reason_ties_to_a_source_is_that_source_s(reason: str) -> None:
+    # The list below holds 1 to 3, so each number is on the page, but the reason says whose it is.
+    mk = covering(reason)
+    assert mk.applies is False
+    assert "by number" in mk.problem
+
+
+@pytest.mark.parametrize("reason", [
+    "the relay fallback in step 3 is required in the built Session 03's words",
+    "the batch 1 brief's add-a-destination rules; the contrasts are in rule 3, the brief's verify framing",
+    "step 1's kid-safe filter caveat, a safety rule the batch 1 brief keeps in full at this point of use",
+    "the contrasts are in rules 1 and 3 of the list below",
+    "this list's step 2",
+    "the steps the brief requires; step 2 holds the contrast",
+    "step 2 of this list, which the spec requires",
+])
+def test_a_list_place_the_reason_does_not_tie_to_a_source_stays_the_page_s_own(reason: str) -> None:
+    # A source named elsewhere in the reason does not claim the number; only a tie beside it does.
+    assert (covering(reason).applies, covering(reason).problem) == (True, "")
 
 
 def test_a_copied_list_of_a_brief_s_rules_is_the_page_s_own() -> None:

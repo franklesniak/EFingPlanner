@@ -148,8 +148,12 @@ a note, a figure, a table, a round, ``No. 5``, ``number 5``, or a number after
 a number sign. A rule, a step, an item, a point, a question, a criterion, an
 entry or an option may be named by its number only when it is the page's own:
 when the block the marker covers holds a numbered list with that number, as
-the page prints it (``the relay fallback in step 3``). Any other such number
-reaches a source, and is named.
+the page prints it (``the relay fallback in step 3``), and the reason does not
+tie the number to a source. ``the spec's step 2``, ``step 2 of the brief`` and
+``brief step 2`` reach a source by number whatever the list below holds; the
+sources are a spec or specification, a brief, a prompt, a law, a guide, a
+record, an ``OQ-`` or ``AC-`` id, a named ``.md`` file and a numbered session.
+Any other such number reaches a source, and is named.
 
 Supported Markdown
 ------------------
@@ -422,9 +426,26 @@ NUMBERED_SOURCE_RE = re.compile(
 #: 6`, `steps 2-4`). It is the page's own, and may be named so, only when the
 #: block the marker covers holds a numbered list with each of its numbers;
 #: otherwise it reaches a source by number.
+LIST_PLACE_WORDS = r"(?:rules?|steps?|items?|points?|questions?|criterion|criteria|entry|entries|options?)"
 LIST_PLACE_RE = re.compile(
-    r"(?i:\b(?:rules?|steps?|items?|points?|questions?|criterion|criteria|entry|entries|options?)\s+"
+    r"(?i:\b" + LIST_PLACE_WORDS + r"\s+"
     r"(?P<numbers>\d+(?:\s*(?:,|and|or|to|-|–)\s*\d+)*))"
+)
+#: A source a reason can tie a numbered place to: a spec or specification, a
+#: brief, a prompt, a law, a guide, a record, an `OQ-` or `AC-` id, a named
+#: `.md` file, or a numbered session, which is another page.
+SOURCE_WORDS = (r"(?:spec(?:ification)?|brief|prompt|law|guide|record|(?:OQ|AC)-\d+(?:-\d+)*|[\w./-]+\.md"
+                r"|session\s+\d+)")
+#: A numbered place in a list that the reason ties to a source, which is that
+#: source's place however the covered list is numbered: by possession (`the
+#: spec's step 2`, `the brief's booking rule 7`), by name (`spec step 2`, `the
+#: brief rule 5`), or by a preposition after it (`step 2 of the spec`, `rules 1
+#: and 3 in the batch 2 brief`).
+TIED_PLACE_RE = re.compile(
+    r"(?i:\b" + SOURCE_WORDS + r"['’]s\s+(?:[\w-]+\s+){0,2}" + LIST_PLACE_WORDS + r"\s+\d"
+    r"|\b" + SOURCE_WORDS + r"\s+(?:[\w-]+\s+)?" + LIST_PLACE_WORDS + r"\s+\d"
+    r"|\b" + LIST_PLACE_WORDS + r"\s+\d+(?:\s*(?:,|and|or|to|-|–)\s*\d+)*\s+(?:of|in|from)\s+"
+    r"(?:(?:the|this|that)\s+)?(?:[\w-]+\s+){0,3}" + SOURCE_WORDS + r"(?![\w-]))"
 )
 
 # ---------------------------------------------------------------------------
@@ -867,7 +888,7 @@ def parse_marker(lineno: int, body: str) -> Marker:
         problem = "the device and the reason are not parted by ' -- '"
     elif names_device and not reason:
         problem = "no reason after ' -- '"
-    elif names_device and (cited := NUMBERED_SOURCE_RE.search(reason)):
+    elif names_device and (cited := NUMBERED_SOURCE_RE.search(reason) or TIED_PLACE_RE.search(reason)):
         problem = f"the reason cites its source by number ({cited.group(0).strip()!r}); name the source instead"
     elif not names_device and XNOTY_LOOKALIKE_RE.match(device):
         problem = "device name is not `X, not Y`"
@@ -1503,9 +1524,11 @@ class DataError(Exception):
 
 
 #: A judgment's key: `<kind>|<sentence text>|<occurrence>`, with the quotation
-#: context after it for a sentence in a block quote.
-JUDGMENT_KEY_RE = re.compile(r"^(?:device|split|banned)\|.+\|[1-9][0-9]*(?:\|(?:quotation )?block quote)?$",
-                             re.DOTALL)
+#: context after it for a sentence in a block quote. It ends at `$(?![\s\S])`,
+#: as the schema's pattern does: Python's `$` also matches before a final line
+#: break, and nothing may follow the key. The tool matches it whole anyway.
+JUDGMENT_KEY_RE = re.compile(r"^(?:device|split|banned)\|.+\|[1-9][0-9]*(?:\|(?:quotation )?block quote)?$"
+                             r"(?![\s\S])", re.DOTALL)
 
 
 def unique_object(pairs: list[tuple[str, Any]]) -> dict:
@@ -1605,7 +1628,8 @@ def is_page_path(key: Any) -> bool:
 #: TAB, VT, FF, U+FEFF, the space separators, LF, CR, U+2028 and U+2029.
 #: Python's white space (`str.isspace()`) leaves out U+FEFF and adds U+001C to
 #: U+001F and U+0085. Text must hold a character outside both, and each schema
-#: states the same set as `[^\s\u001c-\u001f\u0085]`.
+#: states the same set as `[^\s\u001c-\u001f\u0085\ufeff]`, naming U+FEFF so
+#: that a validator reading the pattern in Python's dialect refuses it too.
 NOT_SPACE_RE = re.compile(
     r"[^\t\n\v\f\r \u00a0\u1680\u2000-\u200a\u2028\u2029\u202f\u205f\u3000\ufeff\u001c-\u001f\u0085]")
 

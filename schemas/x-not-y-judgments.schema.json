@@ -12,8 +12,8 @@
     "description": "One page's judgments, by candidate key.",
     "propertyNames": {
       "type": "string",
-      "pattern": "^(?:device|split|banned)\\|[\\s\\S]+\\|[1-9][0-9]*(?:\\|(?:quotation )?block quote)?$",
-      "description": "A candidate key, <kind>|<sentence text>|<occurrence>, with the quotation context after it for a sentence in a block quote. The tool's JUDGMENT_KEY_RE holds the same form."
+      "pattern": "^(?:device|split|banned)\\|[\\s\\S]+\\|[1-9][0-9]*(?:\\|(?:quotation )?block quote)?$(?![\\s\\S])",
+      "description": "A candidate key, <kind>|<sentence text>|<occurrence>, with the quotation context after it for a sentence in a block quote, and nothing after that, not even a line break: the pattern ends at $(?![\\s\\S]), because a validator that reads it in Python's dialect lets $ match before a final line break. The tool's JUDGMENT_KEY_RE holds the same form."
     },
     "additionalProperties": {
       "$ref": "#/$defs/judgment"
@@ -22,8 +22,8 @@
   "$defs": {
     "pagePath": {
       "type": "string",
-      "pattern": "^(?!/|\\.\\./)[\\s\\S]*\\.md$",
-      "description": "A repository path to a Markdown page, such as framework/docs/glossary.md: it ends in .md and starts with neither / nor ../."
+      "pattern": "^(?!/|\\.\\./)[\\s\\S]*\\.md$(?![\\s\\S])",
+      "description": "A repository path to a Markdown page, such as framework/docs/glossary.md: it ends in .md, with nothing after it, not even a line break, and starts with neither / nor ../."
     },
     "judgment": {
       "type": "object",
@@ -50,8 +50,8 @@
         },
         "reason": {
           "type": "string",
-          "pattern": "[^\\s\\u001c-\\u001f\\u0085]",
-          "description": "Why, in one short clause. It holds more than white space, in the tool's reading too: a character outside ECMA-262's \\s, U+001C to U+001F and U+0085."
+          "pattern": "[^\\s\\u001c-\\u001f\\u0085\\ufeff]",
+          "description": "Why, in one short clause. It holds more than white space, in the tool's reading too: a character outside ECMA-262's \\s, U+001C to U+001F, U+0085 and U+FEFF. The pattern names U+FEFF though ECMA-262's \\s holds it, because Python's does not, so a validator reading either dialect refuses the same text."
         }
       }
     }
