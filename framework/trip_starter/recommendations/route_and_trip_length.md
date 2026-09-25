@@ -11,7 +11,7 @@ This is your Checkpoint 4 page, from [Session 32](../../sessions/phase_05_route_
 | What I recommend, in one sentence | |
 | Total number of days (with booked dates: the booked trip length, from the maximum row of our [Trip-Basics card](../family/trip_basics.md)) | |
 | The other option I compared in Session 31 (another route, or another way to use one base) | |
-| Overnight cities | |
+| Overnight cities (one base: and the must-dos your way keeps) | |
 | Nights in each city | |
 | Travel days: the days mostly spent getting to the next place | |
 | Hotel moves: how many times we pack up and move | |
@@ -24,12 +24,13 @@ This is your Checkpoint 4 page, from [Session 32](../../sessions/phase_05_route_
 | What a grown-up still needs to check, decide or book | |
 | Approval status (a grown-up circles one: Approved / Approved with changes / Needs more research / Park this decision for later) | |
 
-If the grown-ups change where you arrive or leave, you move one block of your plan and keep the rest. Then time the new first or last hop with Directions, and fix your travel days and nights to match. Your work still counts.
+If the grown-ups change where you arrive or leave, you move one block of your plan and keep the rest. Ask a grown-up whether each flight still lands on a later date, and fix your flight-day marks. Then time the new first or last hop with Directions, and fix your travel days and nights to match. A grown-up writes the new place on your family's assumptions page, because later sessions read it there. Your work still counts.
 
 If a place or its nights change later, at Checkpoint 5 or 6 or in Session 51, come back to this page. Cross out the old, and write the new beside it, with where it changed.
 
 Before you start the next session:
 
+- **Approved, or Approved with changes:** cross off your must-do list any must-do in a place that's not on your approved route, or that your one-base way leaves out. Write why beside it. Your special pick stays. In Session 44, they go on your cut list.
 - **Approved with changes:** write the changes on this page and in your Decision Record.
 - **Needs more research:** do that one piece, and bring it back.
 - **Park this decision for later:** wait until your family comes back to it.

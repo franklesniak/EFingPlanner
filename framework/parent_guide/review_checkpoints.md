@@ -107,7 +107,9 @@ Each has its own **what to consider** list. The review form checks whether the w
 
 The draft is the thing being reviewed. Pacing, transit, meals and rest cannot be judged from the summary alone.
 
-**If your answer moves where the trip arrives or leaves,** the draft's first or last day carries the wrong travel leg. That is "Approved with changes": your child re-times that leg and fixes the travel days and nights before the next session. Any change that adds, drops or moves something to book also goes on its day card and the Reservation Watchlist, and a changed place or its nights go on the Checkpoint 4 route page, marked "changed at Checkpoint 5". Make it "Needs more research" if the change alters which route works best. If a place, a night or a day changes, your child also updates the Session 39 budget against the band and runs the Session 43 pacing checks again for the days that changed.
+**If your answer moves where the trip arrives or leaves,** the draft's first or last day carries the wrong travel leg. That is "Approved with changes": write the new place on your assumptions page, which later sessions read, and tell your child whether each flight still lands on a later date. Make it "Needs more research" if the change alters which route works best.
+
+**After any "Approved with changes",** your child carries each change back before the next session, as the list under Session 46's Stop Point says: the draft and day cards, the Reservation Watchlist, the must-do and cut lists, a dropped place's Hotel Comparison Card, the leg and the travel days and nights, the Checkpoint 4 route page, marked "changed at Checkpoint 5", the Session 39 budget and the Session 43 pacing checks. If someone comes for only part of the trip, tell them who is there on the changed days.
 
 **What to consider:** pacing; transit time; meals; rest; booking needs; budget; safety; and practicality.
 
@@ -119,7 +121,9 @@ The draft is the thing being reviewed. Pacing, transit, meals and rest cannot be
 
 **What to consider:** the final recommendation; what you approve; what you want changed; what you'll verify or book; and which questions stay open.
 
-**If your answer moves where the trip arrives or leaves,** the same two answers apply. "Approved with changes" means your child re-times that leg and fixes the travel days and nights, and writes any change into the itinerary draft, into the Reservation Watchlist when it touches something to book, and onto the Checkpoint 4 route page, marked "changed at Checkpoint 6", when a place or its nights change. "Needs more research" fits a change that alters which route works best, and your child does that piece before Session 53. If a place, a night or a day changes, your child also updates the Session 39 budget against the band and runs the Session 43 pacing checks again for the days that changed.
+**If your answer moves where the trip arrives or leaves,** the same two answers apply. "Approved with changes" means you write the new place on your assumptions page and tell your child whether each flight still lands on a later date. "Needs more research" fits a change that alters which route works best, and your child does that piece before Session 53.
+
+**After any "Approved with changes",** your child carries each change back, as the list under Session 52's Stop Point says: the draft and day cards, the Reservation Watchlist, the must-do and cut lists, a dropped place's Hotel Comparison Card, the leg and the travel days and nights, the Checkpoint 4 route page, marked "changed at Checkpoint 6", the Session 39 budget and the Session 43 pacing checks. If someone comes for only part of the trip, tell them who is there on the changed days.
 
 **Progress is real:** the family has *made a decision*.
 

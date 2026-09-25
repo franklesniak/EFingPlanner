@@ -22,7 +22,14 @@ This is your Checkpoint 6 page, from [Session 52](../../sessions/phase_08_readin
 
 Any of the four is a result that counts. Before you start Session 53:
 
-- **Approved with changes:** write the changes on this page and in your Decision Record. If a change touches your plan, update your itinerary draft too. If it adds, drops or moves something that needs booking, update your Reservation Watchlist. If the change moves where you arrive or leave, re-time that leg with the map's Directions, and fix your travel days and nights. If a place or its nights change, note it on your Checkpoint 4 route and trip-length recommendation too. Cross out the old, and write the new beside it, with "changed at Checkpoint 6". If a place, a night or a day changes, update your Session 39 budget and check it against your band again. Then run your Session 43 pacing checks again for the days that changed.
+- **Approved with changes:** write the changes on this page and in your Decision Record. If a change touches your plan, write it into your itinerary draft and onto the day cards for the days that change too. Then carry each change back to the pages that hold it:
+  - **Something to book added, dropped or moved?** Update your Reservation Watchlist.
+  - **A must-do dropped?** Cross it off your must-do list, and put it on your cut list with the reason. Your special pick stays.
+  - **A place dropped?** Write "not on our route now" on its Hotel Comparison Card too.
+  - **A new place to arrive or leave?** A grown-up writes it on your family's assumptions page, because later sessions read it there. Ask them whether each flight still lands on a later date, and fix your flight-day marks. Re-time that leg with the map's Directions, and fix your travel days and nights.
+  - **A place or its nights changed?** Note it on your Checkpoint 4 route and trip-length recommendation. Cross out the old, and write the new beside it, with "changed at Checkpoint 6".
+  - **A place, a night or a day changed?** Update your Session 39 budget, and check it against your band again. Someone with you for only part of the trip? Ask a grown-up who is there on the changed days, and count your traveler-days again. Then run your Session 43 pacing checks again for the days that changed.
+  - **Your special pick blocked?** A grown-up names the block. Choose a new pick with them, from your attraction cards for places on your route. Write it on your My Calls page in place of the blocked pick. They write "got it" beside it. Write must-do on its card too. Put it on your must-do list, its day card, your draft and, if it needs booking, your watchlist, and take the blocked pick off them. If your Session 39 budget counted the blocked pick's ticket, swap in the new one's, and check your band again.
 - **Needs more research:** do that one piece, and bring it back.
 - **Park this decision for later:** that's your result, so you can go on to Session 53.
 
