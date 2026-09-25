@@ -23,7 +23,7 @@ A grown-up writes the destination here. The name is on the front of your destina
 
 If you are not flying, the travel row is where that goes: by car, by train, or another way.
 
-If your family books the dates later, a grown-up writes the booked trip length in the trip length row, with "booked" beside it, and tells you.
+If your family books the dates later, a grown-up writes the booked trip length in the maximum trip length row, with "booked" beside it, and tells you.
 
 For the time zone, a grown-up does the looking up. They find how many hours ahead of or behind home your destination is right now. Then they write it here. The gap is not the same for every US time zone. It also shifts with daylight saving. So check today's figure. Some destinations have more than one time zone. Then the grown-up writes the gap for the place you will probably arrive in, or writes a range.
 

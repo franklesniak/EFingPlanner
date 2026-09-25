@@ -61,7 +61,9 @@ Write the acknowledgment on their **"My Calls" page**. That page exists so their
 - which season it is, as a broad word with no dates, if it differs from their Checkpoint 1 pick
 - if you fly, which of the booked flights land on a later date than they took off, for the flight-day marks on their Session 29 formula
 - a new arrival or departure place, if the booking changed one
-- which nights change, if the booked length differs from the total in their Checkpoint 4 plan. They carry each change back with their [When the Plan Changes card](../student_guide/when_the_plan_changes.md), with "changed after booking".
+- which nights change. The nights are the booked length, minus one, minus each flight day. If that no longer matches the nights in their Checkpoint 4 plan, because the length or the flight days changed, say which night comes off or goes on.
+
+They carry each change back with their [When the Plan Changes card](../student_guide/when_the_plan_changes.md), with "changed after booking". If they have made the Reservation Watchlist, it becomes an act-early list: they write how far ahead each booking opens, and you turn each one into a date.
 
 ## Privacy
 
