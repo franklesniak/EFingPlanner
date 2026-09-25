@@ -10,7 +10,7 @@ You are here: Phase 8 (Readiness and Final). Not a First Taste step. Previous: [
 - Planner skill: organizing information
 - Estimated time: 20-30 minutes
 - Parent involvement: 5-minute check-in
-- Materials: your assembled binder from Session 50, your [Trip-Basics card](../../templates/trip_basics.md) (for the booked trip length, if your dates are booked), a blank [Final Presentation Outline](../../templates/final_presentation_outline.md), your Session 29 formula, your day cards, your pacing review from Session 43, your route map notes from Session 28 and a device with a map app or map website (kid-safe filter on) (in case a grown-up has changed where you arrive or leave), your [Source Log](../../templates/source_log.md)
+- Materials: your assembled binder from Session 50, your [Trip-Basics card](../../templates/trip_basics.md) (for the booked trip length, if your dates are booked), a blank [Final Presentation Outline](../../templates/final_presentation_outline.md), your [When the Plan Changes card](../../student_guide/when_the_plan_changes.md) and the pages it names, your route map notes from Session 28 and a device with a map app or map website (kid-safe filter on) (in case a grown-up has changed where you arrive or leave), your [Source Log](../../templates/source_log.md)
 
 ## Goal
 
@@ -24,7 +24,7 @@ Decide your first move, then make it. A suggestion: write the one sentence you m
 
 Your presentation is about 5 to 10 minutes long. Part 1 says what you recommend. Part 2 hands the rest over to the grown-ups.
 
-**Has a grown-up changed where you arrive or leave since Checkpoint 5?** Check that they wrote the new place on your family's assumptions page, and ask whether each flight still lands on a later date. Fix your flight-day marks. Re-time that leg with the map's Directions, and fix your travel days and nights in your itinerary draft and on the day cards they touch. Note the change on your Checkpoint 4 route and trip-length recommendation too, with "changed at Session 51". If it changes something that needs booking, update your Reservation Watchlist. If a night or a day changes, update your Session 39 budget and check it against your band again. Someone with you for only part of the trip? Ask a grown-up who is there on the changed days, and count your traveler-days again. Then run your Session 43 pacing checks again for the days that changed.
+**Has a grown-up changed where you arrive or leave since Checkpoint 5?** Check that they wrote the new place on your family's assumptions page. Then go down your When the Plan Changes card, with "changed at Session 51", and fix every page it names that you've already made.
 
 1. Fill in Part 1 of your outline: when to go, how long, which cities and what route, the top experiences, where you might stay, food highlights, a rough budget, the biggest trade-offs, and what you cut and why. If your family skipped the food sessions, write that on the food line. If your dates were already booked, say what your season means for the trip, and how you'd use the booked days. The booked trip length is on your Trip-Basics card's maximum row. With one base, your route is getting there and back, plus your trips out from the base to your approved must-dos.
 2. Fill in Part 2: what the grown-ups still need to check, decide and book, the questions that are still open, and which of your pages they should use next.
@@ -52,7 +52,7 @@ Your Final Presentation Outline: Part 1 with your recommendation, Part 2 with th
 
 ## Stop Point
 
-You are done when every item on the outline has at least one line under it, and you've picked how you want to present. If a grown-up changed where you arrive or leave, you've carried it back. The new place is on your assumptions page. Your flight-day marks, that leg, your travel days and nights, your day cards and your Checkpoint 4 recommendation are fixed. So are your watchlist, your budget and your pacing checks, for anything that changed. One line each is enough, because you'll talk from the outline. "Ask an adult" is a fine line for a question you can't answer yet.
+You are done when every item on the outline has at least one line under it, and you've picked how you want to present. If a grown-up changed where you arrive or leave, the new place is on your assumptions page, and you've gone down your When the Plan Changes card for it. One line each is enough, because you'll talk from the outline. "Ask an adult" is a fine line for a question you can't answer yet.
 
 ## Source Check
 
@@ -74,7 +74,7 @@ If you have extra energy, run through your outline once out loud, and time it wi
 
 All five ways of presenting are offered as equal options to every child, so nobody has to say they are nervous to use one. A live talk is one choice among five. The family still makes its decision at Checkpoint 6; only the delivery changes.
 
-If you change where the trip arrives or leaves after Checkpoint 5, write the new place on the assumptions page, and tell your child which flights land on a later date. They carry the change back before they build the outline.
+If you change where the trip arrives or leaves after Checkpoint 5, write the new place on the assumptions page. If you fly, tell your child which flights land on a later date. They carry the change back with their When the Plan Changes card before they build the outline.
 
 The presentation accommodations and the rehearsal ladder live in the [differentiation guide](../../parent_guide/differentiation.md). If your child wants to rehearse, be the first audience, then add a couple of adults, then the group.
 

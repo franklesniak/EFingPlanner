@@ -60,7 +60,7 @@ Write the acknowledgment on their **"My Calls" page**. That page exists so their
 
 - which season it is, as a broad word with no dates, if it differs from their Checkpoint 1 pick
 - which of the booked flights land on a later date than they took off, for the flight-day marks on their Session 29 formula
-- which nights change, if the booked length differs from the total in their Checkpoint 4 plan. They note it on their Checkpoint 4 route and trip-length recommendation, with "changed after booking", and update any day cards and budget they have made.
+- which nights change, if the booked length differs from the total in their Checkpoint 4 plan. They carry each change back with their [When the Plan Changes card](../student_guide/when_the_plan_changes.md), with "changed after booking".
 
 ## Privacy
 

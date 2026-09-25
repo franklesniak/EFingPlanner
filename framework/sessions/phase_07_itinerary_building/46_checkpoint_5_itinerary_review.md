@@ -10,7 +10,7 @@ You are here: Phase 7 (Itinerary Building). Not a First Taste step. **This is Ch
 - Planner skill: making trade-offs
 - Estimated time: 20-30 minutes for the child, plus a 20-40 minute review with you
 - Parent involvement: parent review -- genuinely use the recommendation in a real family talk
-- Materials: your full itinerary draft and the day cards behind it, your Reservation Watchlist, your budget summary, your cut list, your pacing review from Session 43 (for your flags for the adults), your My Calls page with your must-do list, your Checkpoint 4 route and trip-length recommendation, your Hotel Comparison Cards, your family's [current travel assumptions](../../templates/current_family_travel_assumptions.md) page (for the budget band), your traveler profiles and your [Trip-Basics card](../../templates/trip_basics.md) (for the pacing checks) (in case a change moves a place, a night or a day), your Session 29 formula, your route map notes from Session 28 and a device with a map app or map website (kid-safe filter on) (in case a change moves where you arrive or leave), your attraction cards (if your special pick hits a block), your [Source Log](../../templates/source_log.md), a [Decision Record page](../../templates/decision_record.md)
+- Materials: your full itinerary draft and the day cards behind it, your Reservation Watchlist, your budget summary, your cut list, your pacing review from Session 43 (for your flags for the adults), your [When the Plan Changes card](../../student_guide/when_the_plan_changes.md) and the pages it names that you've made (in case the grown-ups approve a change), your route map notes from Session 28 and a device with a map app or map website (kid-safe filter on) (in case a change moves where you arrive or leave), your attraction cards (if your special pick hits a block), your [Source Log](../../templates/source_log.md), a [Decision Record page](../../templates/decision_record.md)
 
 ## Goal
 
@@ -60,18 +60,11 @@ Your itinerary review packet: your itinerary draft and its day cards, plus your 
 
 ## Stop Point
 
-You are done for today when your review packet is filled in and you've brought it to a grown-up, with your draft, its day cards and your Session 39 budget summary with its band sentence. The packet is filled in when every row of its table has an answer, with your Session 43 flags in "What the grown-ups need to decide", and your Decision Record has your recommendation, reasons, sources and trade-offs. When the grown-up decides, write their answer in your Decision Record. "Not sure yet" is a fine answer in any row. The checkpoint is finished when the answer is Approved, or Approved with changes once you've written the changes in and carried each one back, as the list below says. With the other two answers, it stays open until you come back to it.
+You are done for today when your review packet is filled in and you've brought it to a grown-up, with your draft, its day cards and your Session 39 budget summary with its band sentence. The packet is filled in when every row of its table has an answer, with your Session 43 flags in "What the grown-ups need to decide", and your Decision Record has your recommendation, reasons, sources and trade-offs. When the grown-up decides, write their answer in your Decision Record. "Not sure yet" is a fine answer in any row. The checkpoint is finished when the answer is Approved, or Approved with changes once you've written the changes in and gone down your When the Plan Changes card for each one. With the other two answers, it stays open until you come back to it.
 
 Before you start the next session:
 
-- **Approved with changes:** write the changes into your itinerary draft, onto the day cards for the days that change, and into your Decision Record. Then carry each change back to the pages that hold it:
-  - **Something to book added, dropped or moved?** Update your Reservation Watchlist.
-  - **A must-do dropped?** Cross it off your must-do list, and put it on your cut list with the reason. Your special pick stays.
-  - **A place dropped?** Write "not on our route now" on its Hotel Comparison Card too.
-  - **A new place to arrive or leave?** A grown-up writes it on your family's assumptions page, because later sessions read it there. Ask them whether each flight still lands on a later date, and fix your flight-day marks. Re-time that leg with the map's Directions, and fix your travel days and nights.
-  - **A place or its nights changed?** Note it on your Checkpoint 4 route and trip-length recommendation: cross out the old, and write the new beside it, with "changed at Checkpoint 5".
-  - **A place, a night or a day changed?** Update your Session 39 budget, and check it against your band again. Someone with you for only part of the trip? Ask a grown-up who is there on the changed days, and count your traveler-days again. Then run your Session 43 pacing checks again for the days that changed.
-  - **Your special pick blocked?** A grown-up names the block. Choose a new pick with them, from your attraction cards for places on your route. Write it on your My Calls page in place of the blocked pick. They write "got it" beside it. Write must-do on its card too. Put it on your must-do list, its day card, your draft and, if it needs booking, your watchlist, and take the blocked pick off them. If your Session 39 budget counted the blocked pick's ticket, swap in the new one's, and check your band again.
+- **Approved with changes:** write the changes into your itinerary draft and your Decision Record, with "changed at Checkpoint 5". Then go down your When the Plan Changes card, and fix every page it names that you've already made.
 - **Needs more research:** do that one piece, and bring it back.
 - **Park this decision for later:** wait until your family comes back to it.
 
@@ -105,7 +98,7 @@ This checkpoint is lightweight and asynchronous, like Checkpoints 2 to 4. One ac
 
 **Your own changes keep the special pick too.** A change you make keeps the special pick and its place; only the three blocks change it. If one applies, name it, and your child chooses a new pick with you, as in Session 43.
 
-**Carrying changes back.** After Approved with changes, your child carries each change back to the pages that hold it, as the list under their Stop Point says. Tell them which flights land on a later date if a change moves where you arrive or leave, and who is there on the changed days if someone comes for only part of the trip.
+**Carrying changes back.** After Approved with changes, your child goes down their When the Plan Changes card and fixes every page it names. If you fly and a change moves where you arrive or leave, tell them which flights land on a later date. If someone comes for only part of the trip, tell them who is there on the changed days.
 
 **What to avoid:** adding your own favorite sights, rewriting the days in adult language, or asking for a finished polish. The review form lists the rest.
 

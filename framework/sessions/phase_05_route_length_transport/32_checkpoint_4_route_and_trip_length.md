@@ -10,7 +10,7 @@ You are here: Phase 5 (Route, Length, and Transportation). Not a First Taste ste
 - Planner skill: making trade-offs
 - Estimated time: 20-30 minutes for the child, plus a 20-40 minute review with you
 - Parent involvement: parent review -- genuinely use the recommendation in a real family talk
-- Materials: your Trade-Off Report from Session 31, your nights table and formula from Session 29, your route map notes, your [Trip-Basics card](../../templates/trip_basics.md), your family's [current travel assumptions](../../templates/current_family_travel_assumptions.md) page (for the budget band), a device with a map app (kid-safe filter on) if the grown-ups change where you arrive or leave, your [Source Log](../../templates/source_log.md), a [Decision Record page](../../templates/decision_record.md)
+- Materials: your Trade-Off Report from Session 31, your nights table and formula from Session 29, your route map notes, your [Trip-Basics card](../../templates/trip_basics.md), your family's [current travel assumptions](../../templates/current_family_travel_assumptions.md) page (for the budget band), a device with a map app (kid-safe filter on) if the grown-ups change where you arrive or leave, your [When the Plan Changes card](../../student_guide/when_the_plan_changes.md) and the pages it names that you've made (for any change the grown-ups approve), your [Source Log](../../templates/source_log.md), a [Decision Record page](../../templates/decision_record.md)
 
 ## Goal
 
@@ -77,12 +77,11 @@ Your Route and trip-length recommendation, recorded as a decision-log entry. If 
 
 ## Stop Point
 
-You are done for today when your recommendation table is filled in and you've brought it to a grown-up. With the dates booked, leave the shorter backup version blank. When the grown-ups decide, write their answer in your Decision Record. "Not sure yet" in a row is a fine answer. The checkpoint is finished when the answer is Approved, or Approved with changes once you've written the changes in. With the other two answers, it stays open until you come back to it.
+You are done for today when your recommendation table is filled in and you've brought it to a grown-up. With the dates booked, leave the shorter backup version blank. When the grown-ups decide, write their answer in your Decision Record. "Not sure yet" in a row is a fine answer. The checkpoint is finished when the answer is Approved, or Approved with changes once you've written the changes in. Either way, you've gone down your When the Plan Changes card for each change. With the other two answers, it stays open until you come back to it.
 
 Before you start the next session:
 
-- **Approved, or Approved with changes:** cross off your must-do list any must-do in a place that's not on your approved route, or that your one-base way leaves out. Write why beside it. Your special pick stays. In Session 44, they go on your cut list.
-- **Approved with changes:** write the changes into your table and your Decision Record. If where you arrive or leave changed, ask a grown-up whether each flight still lands on a later date, and fix your flight-day marks. Time the new first or last hop with Directions, as in Session 28. Then fix your travel days and nights. A grown-up writes the new place on your family's assumptions page, because later sessions read it there.
+- **Approved, or Approved with changes:** write any changes into your table and your Decision Record. A place or must-do that your approved route, or your one-base way, leaves out is a change too. Your special pick stays. For each change, go down your When the Plan Changes card, and fix every page it names that you've already made.
 - **Needs more research:** do that one piece, and bring it back.
 - **Park this decision for later:** wait until your family comes back to it.
 
@@ -108,7 +107,7 @@ This review stays lightweight too: a five-minute call, a note on a shared page, 
 
 **What to consider:** flights, if you fly; the arrival and departure places; how many hotel moves it involves; whether the transit is workable; how it fits your family's maximum trip length from the Trip-Basics card, or the booked trip length if your dates are booked; budget implications; and the family schedule. With the dates booked, your child brings a nights plan, with no shorter backup version.
 
-**Your own job here.** You recorded a rough trip shape at setup and firmed up any open part at Checkpoint 2. Now confirm or adjust the arrival and departure places against current flight options, or against however your family is getting there. If they change, your child's route flexes: they move one city block and keep the rest. A changed place means Approved with changes, so your child re-times the new first or last leg and fixes the travel days and nights. If the change alters which route works best, pick Needs more research instead. The reasoning about the shape of the journey, such as flying into one city and out of another, stays with you. Once you approve, your child crosses off the must-dos your route leaves out, keeping the special pick.
+**Your own job here.** You recorded a rough trip shape at setup and firmed up any open part at Checkpoint 2. Now confirm or adjust the arrival and departure places against current flight options, or against however your family is getting there. If they change, your child's route flexes: they move one city block and keep the rest. A changed place means Approved with changes, so your child re-times the new first or last leg and fixes the travel days and nights. If the change alters which route works best, pick Needs more research instead. The reasoning about the shape of the journey, such as flying into one city and out of another, stays with you. Once you approve, your child carries each change back with their When the Plan Changes card, including the must-dos your route leaves out; the special pick stays. If you fly and a place changes, tell them which flights land on a later date.
 
 **Questions to ask:** "Where would this plan feel rushed?" and "What would you cut first if we had fewer days?" The [parent review form](../../templates/parent_review_form.md) has the full set of coaching questions and the good-enough standards; [review checkpoints](../../parent_guide/review_checkpoints.md) explains how to run each one.
 
