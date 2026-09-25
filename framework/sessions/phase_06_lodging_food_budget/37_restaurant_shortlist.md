@@ -18,7 +18,7 @@ Turn your food wish list into a few places to eat, or areas full of them, that y
 
 ## Start Here
 
-Did your family skip Session 36? Then skip this session too, and go on to Session 38. If not, pick one food from your Session 36 wish list, and write it at the top of a blank Restaurant Research Card. That's your start. Already have a card for the place you're thinking of? Add to that one instead.
+Did your family leave the food list out of the binder? Then you can skip this session, even if you did Session 36 for fun, and go on to Session 38. If not, pick one food from your Session 36 wish list, and write it at the top of a blank Restaurant Research Card. That's your start. Already have a card for the place you're thinking of? Add to that one instead.
 
 ## Steps
 
@@ -52,7 +52,7 @@ You are done for today when you stop at the end of a card.
 
 The session is finished when you have at least one card for each main city where you'll sleep overnight, with its planning assumption rows filled in. Each card whose group is bigger than about four has a seating note. An area full of places to eat counts as a card, and your area cards are your dining-area list. If you're unsure whether a place needs a reservation, write "ask an adult". That's a finished answer.
 
-If you skipped this session along with Session 36, you're done too. There are no cards to check, so you can skip the Finish card this time and go on to Session 38.
+If you skipped this session because your family left the food list out, you're done too. There are no cards to check, so you can skip the Finish card this time and go on to Session 38.
 
 ## Source Check
 

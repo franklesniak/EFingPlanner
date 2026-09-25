@@ -82,7 +82,7 @@ Your pacing review: the checks, the days you'd make gentler, and your flags for 
 
 ## Stop Point
 
-You are done when you've gone through the checks once, marking each one yes or no, and either marked at least one day you'd make gentler and checked it again, or written that every day passed, and you've written your list of flags for the adults. You've gone down your When the Plan Changes card for each change you made. Finding even one thing to fix is a finished review, and so is a plan that passes every check. "Not sure" is a fine note on any check. If you didn't write your third trade-off report in Session 34, you're done once it's written here too. If your special pick hit a block, you've chosen a new one with a grown-up, every page the card's special-pick row names is fixed, and you've checked that day again.
+You are done when you've gone through the checks once, marking each one yes or no, and either marked at least one day you'd make gentler and checked it again, or written that every day passed, and you've written your list of flags for the adults. Every day has an energy level. You've gone down your When the Plan Changes card for each change you made. Finding even one thing to fix is a finished review, and so is a plan that passes every check. "Not sure" is a fine note on any check. If you didn't write your third trade-off report in Session 34, you're done once it's written here too. If your special pick hit a block, you've chosen a new one with a grown-up, every page the card's special-pick row names is fixed, and you've checked that day again.
 
 ## Source Check
 
