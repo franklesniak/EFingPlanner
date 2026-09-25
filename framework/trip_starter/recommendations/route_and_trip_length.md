@@ -26,6 +26,8 @@ This is your Checkpoint 4 page, from [Session 32](../../sessions/phase_05_route_
 
 If the grown-ups change where you arrive or leave, you move one block of your plan and keep the rest. Then time the new first or last hop with Directions, and fix your travel days and nights to match. Your work still counts.
 
+If a place or its nights change later, at Checkpoint 5 or 6 or in Session 51, come back to this page. Cross out the old, and write the new beside it, with where it changed.
+
 Before you start the next session:
 
 - **Approved with changes:** write the changes on this page and in your Decision Record.
