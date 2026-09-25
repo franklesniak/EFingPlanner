@@ -21,13 +21,14 @@ What is checked
    file that moves it below ``## Stop Point`` has it where nobody reads it.
 3. The parent metadata strip is present, outside every fenced block, and it
    carries a bullet for Status, for Estimated time, and for Parent
-   involvement. Its label is written exactly ``**For parents:**``, as the
-   session template writes it. A label written another way, such as one with
-   no colon, is named with its line. Where the strip sits is deliberately not
-   checked. The specification states that the parent-facing meta-fields "may
-   be shown in a compact strip near the top ... or grouped at the bottom", so
-   a strip below the work is in one of the two places the curriculum allows,
-   and a gate that demanded the header would reject it.
+   involvement. Its label is written exactly ``**For parents:**``, alone on its
+   line, as the session template writes it. A label written another way, such
+   as one with no colon or with text after it, is named with how it differs
+   and its line. Where the strip sits is deliberately not checked. The
+   specification states that the parent-facing meta-fields "may be shown in a
+   compact strip near the top ... or grouped at the bottom", so a strip below
+   the work is in one of the two places the curriculum allows, and a gate that
+   demanded the header would reject it.
 4. The six always-mandatory sections exist: Goal, Start Here, Steps, Workspace,
    Artifact Created, Stop Point.
 5. Source Check exists, unless the session is exempt (see below).
@@ -216,15 +217,18 @@ FILENAME_NUMBER_PATTERN = re.compile(r"^(?P<number>\d{2})[_-]")
 #: navigation line. The child reads the location or they do not.
 NAV_PATTERN = re.compile(r"^You are here:[^\S\r\n]*\S", re.MULTILINE)
 #: The strip's label, exactly as the session template writes it: bold, with
-#: the colon inside the bold, at the start of a line.
-PARENT_STRIP_PATTERN = re.compile(r"^\*\*For parents:\*\*", re.MULTILINE)
-#: A label a reader takes for the strip's, written some other way: no colon,
-#: the colon outside the bold, another case, or an indent. This is the label
-#: as ``check-readability.py`` finds it, plus a colon after the bold. The gate
-#: names such a label and its line. "No strip" would be the wrong message for
-#: a page where a parent can see one.
+#: the colon inside the bold, alone on its line and at its start. Trailing
+#: spaces or tabs are allowed, because they change nothing a reader sees.
+PARENT_STRIP_PATTERN = re.compile(r"^\*\*For parents:\*\*[ \t]*$", re.MULTILINE)
+#: A line a reader takes for the strip's label, written some other way: no
+#: colon, the colon outside the bold, other capital letters, an indent, or
+#: text after the label on its line. It starts as the label that
+#: ``check-readability.py`` finds, and it runs to the end of the line. The
+#: gate names such a line, how it differs, and its line number. "No strip"
+#: would be the wrong message for a page where a parent can see one.
 PARENT_STRIP_DRIFT_PATTERN = re.compile(
-    r"^[ \t]*\*\*For parents:?\*\*:?", re.MULTILINE | re.IGNORECASE
+    r"^(?P<indent>[ \t]*)\*\*(?P<words>For parents)(?P<colon>:?)\*\*(?P<rest>[^\n]*)$",
+    re.MULTILINE | re.IGNORECASE,
 )
 
 #: The strip's load-bearing fields. Each pattern requires a *value* after
@@ -4578,6 +4582,30 @@ def renders_as_content(body: str) -> bool:
     return False
 
 
+def parent_strip_differences(drift: re.Match[str]) -> list[str]:
+    """Return each way a drifted strip label differs from ``**For parents:**``.
+
+    ``drift`` is a ``PARENT_STRIP_DRIFT_PATTERN`` match on a line that the
+    exact pattern rejected, so the list is never empty. The differences are in
+    the order the line reads, so a builder can fix them left to right.
+    """
+    differences: list[str] = []
+    if drift.group("indent"):
+        differences.append("it is indented")
+    if drift.group("words") != "For parents":
+        differences.append("its capital letters differ")
+    rest = drift.group("rest")
+    if not drift.group("colon"):
+        if rest.startswith(":"):
+            differences.append("the colon is outside the bold")
+            rest = rest[1:]
+        else:
+            differences.append("it has no colon")
+    if rest.strip(" \t"):
+        differences.append("text follows it on its line")
+    return differences
+
+
 def check_text(text: str, display_path: str, file_name: str) -> list[Violation]:
     """Return every structural violation in one session document.
 
@@ -4662,9 +4690,10 @@ def check_text(text: str, display_path: str, file_name: str) -> list[Violation]:
             Violation(
                 display_path,
                 content.count("\n", 0, drift_match.start()) + 1,
-                f'the parent strip label is written "{drift_match.group(0).strip()}". '
-                'Write it exactly "**For parents:**", at the start of the line, with the '
-                "colon inside the bold, as the session template does.",
+                f"the parent strip label is written {drift_match.group(0)!r}: "
+                + "; ".join(parent_strip_differences(drift_match))
+                + '. Write it exactly "**For parents:**", alone on its line and at its '
+                "start, with the colon inside the bold, as the session template does.",
             )
         )
     elif strip_match is None:
