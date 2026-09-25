@@ -69,7 +69,7 @@ On the Core path, your comparison also holds every place you kept in the running
 
 You are done when both cities have three scores and a total. You also need your trade-off, written in a sentence or two. And you need a recommendation: either **one city** for this first trip, or **both, kept on purpose**. You don't have to feel sure. "I recommend both, let's decide together" is a real answer. But write down which way you lean, because your final plan needs a city or two. For each city you keep, also jot the rough number of days from your City Research Card, so your plan has a length.
 
-On the Core path, you are done when every place you kept in the running has three scores and a total too, and your money check covers them all. Your recommendation then names the places you'd take to Checkpoint 2.
+On the Core path, you are done when every place you kept in the running has three scores and a total too, and your money check covers them all. Your recommendation can name more than two places. It names every place you'd take to Checkpoint 2, with a rough number of days for each.
 
 ## Source Check
 

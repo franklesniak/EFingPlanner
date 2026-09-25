@@ -36,7 +36,7 @@ A card can be about one place to eat, or about a whole area with lots of places 
 
 Your Destination Notes may point to a local review site. Sites like that can be great, but they may be in another language. So ask an adult to help, and it's fine to skip it.
 
-Look at the number of travelers on your Trip-Basics card. If your Session 33 note says someone is with you for only part of the trip, count the group on the days you'll be in each card's city. If the group is bigger than about four, add a seating note to the card. Can this place seat all of you, or would you split into two tables?
+Look at the number of travelers on your Trip-Basics card. If it says "not decided yet", count the travelers listed on the card instead. If your Session 33 note says someone is with you for only part of the trip, count the group on the days you'll be in each card's city. If the group is bigger than about four, add a seating note to the card. Can this place seat all of you, or would you split into two tables?
 
 ## Workspace
 
@@ -46,13 +46,15 @@ You can say your answers to an adult who writes them, or draw them, if that's ea
 
 ## Artifact Created
 
-Your Restaurant Research Cards and dining-area list: at least one place or area to eat for each main city.
+Your Restaurant Research Cards and dining-area list: at least one place or area to eat for each main city. If you skipped this session, you don't make them.
 
 ## Stop Point
 
 You are done for today when you stop at the end of a card.
 
 The session is finished when you have at least one card for each main city where you'll sleep overnight, with its planning assumption rows filled in. Each card whose group is bigger than about four has a seating note. An area full of places to eat counts as a card, and your area cards are your dining-area list. If you're unsure whether a place needs a reservation, write "ask an adult". That's a finished answer.
+
+If you skipped this session along with Session 36, you're done too. There are no cards to check, so you can skip the Finish card this time and go on to Session 38.
 
 ## Source Check
 

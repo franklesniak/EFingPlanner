@@ -185,7 +185,7 @@ Want a rough signal of how the executive-function side is going? The optional [e
 
 - Role: 5-minute check-in. On the Core path, a whole region on the long-list is scored as one town, which you help choose and your child writes on the region's card.
 - Prep: the two city cards; the Family Trip Goals page, for the poll; the assumptions page, for the budget band; a Scoring Rubric page. On the Core path, also the City Long-List and the cards for every place kept in the running.
-- Look for: two cities scored on three things, a written trade-off, and a recommendation (one city, or both kept on purpose). On the Core path, every place kept in the running is scored too, a whole region as one town you help choose, and the money check covers them all.
+- Look for: two cities scored on three things, a written trade-off, and a recommendation (one city, or both kept on purpose). On the Core path, every place kept in the running is scored too, a whole region as one town you help choose, and the money check covers them all. The recommendation can then name more than two places, each with a rough number of days.
 - Coaching question: "Does the total match your gut? Walk me through it." Optional formative check, if you want one: "Why did you score it that way?"
 - Pitfall: treating the score as the decision. The trade-off sentence is the real work.
 
@@ -369,7 +369,7 @@ Want a rough signal of how the executive-function side is going? The optional [e
 
 - Role: 5-minute check-in; help co-choose the one unconditional pick. On the Core path, confirm the pick Session 26 settled instead.
 - Prep: the City Research Cards (starred sights); Cut List and Backup Plan pages; the assumptions page, for the budget band when you check the special pick. On the Core path, the My Calls page takes the place of the starred sights, with the skip and save-for-future notes from Checkpoints 2 and 3, the Checkpoint 3 strong maybes, and the route map notes, and a device with a map app if a swap needs a new travel time.
-- Look for: a short must-see list, a cut list with each item marked save for future or not, one special pick initialed and on the must-see list, two backups. On the Core path, the must-do list is the one Session 26 made, the cut list starts from the Checkpoint 2 and 3 notes, the pick gets a one-line confirmation and is on the must-do list, and any travel time a swap needed is in the route map notes.
+- Look for: a short must-see list, a cut list with each item marked save for future or not, one special pick initialed and on the must-see list, two backups. On the Core path, the must-do list Session 26 made takes the place of the must-see list, the cut list starts from the Checkpoint 2 and 3 notes, a one-line confirmation of the pick takes the place of the initials and says it is on the must-do list, and any travel time a swap needed is in the route map notes.
 - Coaching question: "What are you saving for a future trip?"
 - Pitfall: making it exhaustive. This teaches "good enough is good enough."
 
@@ -440,7 +440,7 @@ Want a rough signal of how the executive-function side is going? The optional [e
 ## Session 53: Reflection and Handoff
 
 - Role: co-work; deliver the finish acknowledgment warmly, in the duration-true wording: the duration-neutral form for a First Taste finisher, and the months-long form for a child finishing the Core or full path, including a capstone re-run after First Taste.
-- Prep: the Session 01 baseline reflection; the Session 33 budget estimate; a Final Reflection page; the plan pages your child hands over. On the Core path, also the assembled binder, the checkpoint reflections, the minutes guesses and times (on the City A card, the Session 26 scoring tables, the Session 35 hotel cards and the itinerary draft), the ticket-price and travel-time guesses from Sessions 23 and 30, and the Session 39 budget summary; the assumptions page, for the budget band; the kit's final reflection page; and the First Taste reflection, for a capstone re-run.
-- Look for: a reflection compared to the baseline, and the plan handed to you. On the Core path, answers to three more questions, on patterns, time guesses (the ones that exist) and the budget against the band, and the full binder handed over; for a capstone re-run, a look back at the First Taste reflection too.
+- Prep: the Session 01 baseline reflection; the Session 33 budget estimate; a Final Reflection page; the plan pages your child hands over. On the Core path, the kit's final reflection page in place of the Final Reflection page, and also the assembled binder, the checkpoint reflections, the minutes guesses and times (on the City A card, the Session 26 scoring tables, the Session 35 hotel cards and the itinerary draft), the ticket-price and travel-time guesses from Sessions 23 and 30, and the Session 39 budget summary; the assumptions page, for the budget band; and the First Taste reflection, for a capstone re-run.
+- Look for: a reflection compared to the baseline, and the plan handed to you. On the Core path, answers to three more questions, on patterns, time guesses (the ones that exist) and the budget against the band, and the full binder handed over, with the must-do list and the approved route in place of the must-see list and the city choice; for a capstone re-run, a look back at the First Taste reflection too.
 - Coaching question: "Where else could you use one of these planning moves?"
 - Pitfall: skipping the acknowledgment. Finishing a real project is a big deal -- say so.
