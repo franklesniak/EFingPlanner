@@ -37,11 +37,11 @@ Every trip is made of cost categories. You don't need exact numbers. You're lear
    | Cost | How to figure it | My estimate |
    | --- | --- | --- |
    | Food | $____ per person per day x ____ people x ____ days | |
-   | Hotel (first city) | $____ per night x ____ nights x ____ rooms (or people, if it's per person) | |
-   | Second city's hotel (First Taste only, if you kept two cities in Session 21) | $____ per night x ____ nights x ____ rooms (or people, if it's per person) | |
+   | Hotel (first city) | $____ per night, per room (or per person) x ____ nights x ____ rooms (or people, if it's per person) | |
+   | Second city's hotel (First Taste only, if you kept two cities in Session 21) | $____ per night, per room (or per person) x ____ nights x ____ rooms (or people, if it's per person) | |
    | **My two-slice estimate** | add Food + your hotel(s). If a part still says "ask an adult" or "not sure yet", add up the rest, and write "not counting ___" beside what you added up, naming what's missing. | |
 
-   On the Core path, use the first hotel row for all your overnight cities: your one price, times every night in your Checkpoint 4 plan, times rooms. For food, use that plan's total days, minus each "- 1 flight day" on your Session 29 formula. Session 39 goes city by city.
+   On the Core path, use the first hotel row for all your overnight cities: your one price, times every night in your Checkpoint 4 plan, times rooms, or people if it's per person. For food, use that plan's total days, minus each "- 1 flight day" on your Session 29 formula. Session 39 goes city by city.
 
 4. **Check it against your band. Match the units first.** A grown-up gave you *one* kid-sized band at setup. It's a per-person-per-day amount, a per-day amount for the whole family, *or* a hotel "tier we can afford." It's never your whole-trip total. That stays a grown-up number. Compare the matching piece, not your big two-slice total:
    - Your travelers are the number on your Trip-Basics card. If it says "not decided yet", count the travelers listed on the card instead.
