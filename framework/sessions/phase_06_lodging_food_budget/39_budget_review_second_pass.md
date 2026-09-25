@@ -10,7 +10,7 @@ You are here: Phase 6 (Lodging, Food, and Budget). Not a First Taste step. Previ
 - Planner skill: revising a plan
 - Estimated time: 20-30 minutes
 - Parent involvement: parent review after session; beforehand, tell your child how many rooms each overnight city needs
-- Materials: your [Budget Estimate page](../../templates/budget_estimate.md) from Session 33 and a blank one for this pass, your daily cost table from Session 38, your hotel comparison cards, your route and nights from Checkpoint 4, your route map notes from Session 28, the City Research Card for any region on your route (for its town), your My Calls page (for your special pick), your attraction cards (if your special pick hits a block), your part-trip note from Session 33 (if you made one), your [Trip-Basics card](../../templates/trip_basics.md) (for the number of travelers), your family's [current travel assumptions](../../templates/current_family_travel_assumptions.md) page (for the budget band), your [Source Log](../../templates/source_log.md), a calculator (allowed)
+- Materials: your [Budget Estimate page](../../templates/budget_estimate.md) from Session 33 and a blank one for this pass, your daily cost table from Session 38, your Hotel Comparison Cards, your route and nights from Checkpoint 4, your route map notes from Session 28, the City Research Card for any region on your route (for its town), your My Calls page (for your special pick), your attraction cards (if your special pick hits a block), your part-trip note from Session 33 (if you made one), your [Trip-Basics card](../../templates/trip_basics.md) (for the number of travelers), your family's [current travel assumptions](../../templates/current_family_travel_assumptions.md) page (for the budget band), your [Source Log](../../templates/source_log.md), a calculator (allowed)
 
 ## Goal
 
@@ -70,7 +70,7 @@ You are done when your budget summary matches the route the grown-ups approved a
 
 ## Source Check
 
-No new sources needed unless you looked something up. Your numbers come from your hotel comparison cards, your daily cost table and your Session 33 page. If you did look up a new price, add it to your Source Log with today's date.
+No new sources needed unless you looked something up. Your numbers come from your Hotel Comparison Cards, your daily cost table and your Session 33 page. If you did look up a new price, add it to your Source Log with today's date.
 
 ## Finish and Quality Check
 

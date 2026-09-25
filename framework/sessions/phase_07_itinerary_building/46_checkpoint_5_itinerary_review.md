@@ -10,7 +10,7 @@ You are here: Phase 7 (Itinerary Building). Not a First Taste step. **This is Ch
 - Planner skill: making trade-offs
 - Estimated time: 20-30 minutes for the child, plus a 20-40 minute review with you
 - Parent involvement: parent review -- genuinely use the recommendation in a real family talk
-- Materials: your full itinerary draft and the day cards behind it, your reservation watchlist, your budget summary, your cut list, your pacing review from Session 43 (in case a change moves a night or a day), your route map notes from Session 28 and a device with a map app or map website (kid-safe filter on) (in case a change moves where you arrive or leave), your [Source Log](../../templates/source_log.md), a [Decision Record page](../../templates/decision_record.md)
+- Materials: your full itinerary draft and the day cards behind it, your Reservation Watchlist, your budget summary, your cut list, your pacing review from Session 43 (in case a change moves a night or a day), your route map notes from Session 28 and a device with a map app or map website (kid-safe filter on) (in case a change moves where you arrive or leave), your [Source Log](../../templates/source_log.md), a [Decision Record page](../../templates/decision_record.md)
 
 ## Goal
 
@@ -24,7 +24,7 @@ Choose your first move and make it. If you want a suggestion, write one thing yo
 
 **This is the Core Finish Line.** You could stop here and still have a usable plan. You know when to go, where, how long, a day-by-day plan, a rough budget, and what adults need to book. Everything after this is a bonus.
 
-1. Fill in the five answers in the Workspace. Your draft, your cards, your reservation watchlist, your budget summary and your cut list have everything you need. For what could be cut, keep your special pick and its place.
+1. Fill in the five answers in the Workspace. Your draft, your cards, your Reservation Watchlist, your budget summary and your cut list have everything you need. For what could be cut, keep your special pick and its place.
 2. **Reasons.** Write two or three reasons your plan works, each tied to something you found.
 3. Put your itinerary draft and its day cards in front of a grown-up, with your five answers, your reasons and your Session 39 budget summary. They need the draft itself to judge the pacing, the travel, the meals and the rest.
 4. The grown-up picks one of four answers: Approved, Approved with changes, Needs more research, or Park this decision for later. It might be a quick call, a note, or a talk at the table. Any of the four is a normal result.

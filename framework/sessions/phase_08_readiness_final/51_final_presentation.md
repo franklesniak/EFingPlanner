@@ -40,7 +40,7 @@ If you'd like to build up to it, try it with one grown-up first, then a couple o
 
 ## Workspace
 
-Your presentation outline, with one line for each item and a row to circle how you'll present.
+Your Final Presentation Outline, with one line for each item and a row to circle how you'll present.
 
 You can say your answers to an adult who writes them, or draw them, if that's easier.
 

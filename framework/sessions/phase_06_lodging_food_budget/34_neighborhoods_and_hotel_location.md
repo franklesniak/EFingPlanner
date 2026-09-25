@@ -43,7 +43,7 @@ You compare, and the grown-ups decide where the family stays. They also check th
 
 ## Workspace
 
-Use your neighborhood comparison page, with one column for each area. If you score the areas, use a table on your Scoring Rubric page.
+Use your Neighborhood Comparison page, with one column for each area. If you score the areas, use a table on your Scoring Rubric page.
 
 You can say your answers to an adult who writes them, or draw them, if that's easier.
 
@@ -53,7 +53,7 @@ Your Neighborhood Comparison: two or three areas side by side, with the one you'
 
 ## Stop Point
 
-You are done when your neighborhood comparison has at least two areas filled in, its room-count row says "ask an adult", with the nights from your Session 33 note if you made one, and you've circled the one you'd recommend, with one sentence saying why. One clear pick with a reason is enough. You don't need every box filled, and "ask an adult" is a fine answer. If you chose to write your third trade-off report here, you're done when that report is filled in too.
+You are done when your Neighborhood Comparison has at least two areas filled in, its room-count row says "ask an adult", with the nights from your Session 33 note if you made one, and you've circled the one you'd recommend, with one sentence saying why. One clear pick with a reason is enough. You don't need every box filled, and "ask an adult" is a fine answer. If you chose to write your third trade-off report here, you're done when that report is filled in too.
 
 ## Source Check
 

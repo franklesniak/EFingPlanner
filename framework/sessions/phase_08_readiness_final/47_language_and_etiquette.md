@@ -35,7 +35,7 @@ Every place has its own everyday ways of doing things, and there's a reason behi
 
 ## Workspace
 
-Your language and etiquette quick sheet. Keep it to one page you can fold into a pocket.
+Your Language and Etiquette Quick Sheet. Keep it to one page you can fold into a pocket.
 
 You can say your answers to an adult who writes them, or draw them, if that's easier.
 

@@ -37,7 +37,7 @@ Booking rules, ticket systems and entry rules change, sometimes a lot. So these 
 
 ## Workspace
 
-Your reservation watchlist, one item per row across its three tables.
+Your Reservation Watchlist, one item per row across its three tables.
 
 You can say your answers to an adult who writes them, or draw them, if that's easier.
 
