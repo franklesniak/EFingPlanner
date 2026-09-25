@@ -10,13 +10,13 @@ All numbers here are estimates you look up and re-check -- never a fixed price. 
 
 | Cost | How to figure it | My estimate |
 | --- | --- | --- |
-| Hotel (first city) | $____ per night x ____ nights x ____ rooms | |
-| Second city's hotel (only if you kept two cities in Session 21) | $____ per night x ____ nights x ____ rooms | |
+| Hotel (first city) | $____ per night x ____ nights x ____ rooms (or people, if it's per person) | |
+| Second city's hotel (only if you kept two cities in Session 21) | $____ per night x ____ nights x ____ rooms (or people, if it's per person) | |
 | Food | $____ per person per day x ____ people x ____ days | |
 | Activities/tickets (later) | $____ per ticket x ____ people | |
 | Local transit -- trains/buses inside the trip (later) | | |
 | Souvenirs / spending money (later) | | |
-| **Subtotal of the parts I choose (Core path)** | add the costs above | |
+| **Subtotal of the parts I choose (Core path)** | add the costs above. If a part still says "ask an adult" or "not sure yet", add up the rest, and write "not counting ___" beside what you added up, naming what's missing. | |
 
 **Check against your band. Match the units.** Your band comes from the assumptions page. It's one kid-sized form: per person/day, per day for the family, or a hotel tier. It's not a whole-trip total. So compare the *matching* piece of your estimate, not the subtotal:
 

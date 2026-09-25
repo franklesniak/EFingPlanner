@@ -31,7 +31,7 @@ The day rows come in two tables, so the page still prints. The **Day** column is
 | | | | | | |
 | | | | | | |
 
-| Day | Transit notes | Tickets or reservations to flag | Estimated cost (an example to re-check) | Energy level (easy / medium / big day) | Backup idea |
+| Day | Transit notes | Tickets or reservations to flag | Estimated cost, for everyone (an example to re-check) | Energy level (easy / medium / big day) | Backup idea |
 | --- | --- | --- | --- | --- | --- |
 | | | | | | |
 | | | | | | |
@@ -62,7 +62,7 @@ Save these as `day_01.md`, `day_02.md`, and so on.
 | Dinner idea | |
 | Transit notes | |
 | Tickets or reservations | |
-| Estimated cost (an example to re-check) | |
+| Estimated cost, for everyone (an example to re-check) | |
 | Energy level (easy / medium / big day) | |
 | Backup idea | |
 | Source notes | |

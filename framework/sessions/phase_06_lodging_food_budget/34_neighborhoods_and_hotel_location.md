@@ -75,7 +75,7 @@ If you have extra energy and your route has another base, do a second Neighborho
 
 Your child compares; you decide. Lodging safety, the room count and the booking all stay with you.
 
-The occupancy reality is the part to check yourself. In some places rooms are smaller and cap how many people can sleep in one, children may count differently, and connecting or four-person rooms can be scarce. A larger party often needs more rooms than it expects. That is a structural fact to verify per place, not a price, and it is why the worksheets say "per room". The destination pack's adult-logistics page covers it where the pack has one.
+The occupancy reality is the part to check yourself. In some places rooms are smaller and cap how many people can sleep in one, children may count differently, and connecting or four-person rooms can be scarce. A larger party often needs more rooms than it expects. That is a structural fact to verify per place, not a price, and it is why the worksheets say "per room", unless a place charges per person. The destination pack's adult-logistics page covers it where the pack has one.
 
 The kinds of lodging come from the destination pack, so the session names none. If your child browses neighborhoods beyond the Destination Notes and official city sites, stay nearby, and beside them for an image search. Open neighborhood browsing is on the co-research list in [safety and emergency guidance](../../parent_guide/safety_emergency_guidance.md), because image results can surface things a filter misses.
 

@@ -98,7 +98,7 @@ This checkpoint is lightweight and asynchronous, like Checkpoints 2 to 4. One ac
 
 **Your own changes keep the special pick too.** A change you make keeps the special pick and its place; only the three blocks change it. If one applies, name it, and your child chooses a new pick with you, as in Session 43.
 
-**Carrying changes back.** After Approved with changes, your child goes down their When the Plan Changes card and fixes every page it names. If you fly and a change moves where you arrive or leave, tell them which flights land on a later date. If a change adds an overnight place, help with a Hotel Comparison Card for it, or give a cost per night. If someone comes for only part of the trip, tell them who is there on the changed days.
+**Carrying changes back.** After Approved with changes, your child goes down their When the Plan Changes card and fixes every page it names. If you fly and a change moves where you arrive or leave, tell them which flights land on a later date. If a change adds an overnight place, help with a Hotel Comparison Card for it, or give a cost per night and say whether it's per room or per person. If someone comes for only part of the trip, tell them who is there on the changed days.
 
 **What to avoid:** adding your own favorite sights, rewriting the days in adult language, or asking for a finished polish. The review form lists the rest.
 
