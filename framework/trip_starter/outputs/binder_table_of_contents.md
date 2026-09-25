@@ -25,3 +25,5 @@ You fill this in during [Session 50](../../sessions/phase_08_readiness_final/50_
 | 11. Final Recommendation | | |
 
 If a page is missing on purpose, write why, like "we didn't do the food sessions". That's a complete answer.
+
+Tab 10 holds the six parent review forms, one from each checkpoint, with the adult follow-up questions. The form from Checkpoint 6 goes in during Session 53.

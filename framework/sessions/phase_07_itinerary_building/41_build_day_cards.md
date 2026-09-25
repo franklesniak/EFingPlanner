@@ -35,7 +35,7 @@ Make **one block card for each city-stay** on the route the grown-ups approved: 
 
 **Roughly when** means a window, like "spring", "the second week", or "not decided yet". Never write the exact booked dates on a day card. Those belong to the grown-ups.
 
-**How to name your cards.** If you keep your work on a computer, save block cards in the [day cards folder](../../trip_starter/research/day_cards/README.md) of your trip starter kit as `block_01.md`, `block_02.md`, and so on. The zero in front keeps them in order. Use numbers only, with no city names.
+**How to name your cards.** If you keep your work on a computer, save block cards in the [day cards folder](../../trip_starter/research/day_cards/README.md) of your trip starter kit. Name them `block_01.md`, `block_02.md`, and so on. The zero in front keeps them in order. Use numbers only, with no city names.
 
 **Per-day cards are extra.** Once the dates and travel plans are firm, you can split a block into one card per day, named `day_01.md`, `day_02.md`, and so on. Do it only if you want more detail.
 

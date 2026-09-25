@@ -27,6 +27,6 @@ If two places share a name, add the city to one of them.
 
 ## Keep it honest and open
 
-Write only what you found. Your price guess stays as you wrote it, even when the checked price is different. With the checked price, write whether it's for one person or for a family or group. Being off is normal. "Not decided yet", "unknown" and "ask an adult" are complete answers.
+Write only what you found. Your price guess stays as you wrote it, even when the checked price is different. With the checked price, write whether it's for one person or for a family or group. For a family or group ticket, write how many it covers, and write a child's price if it's less. Being off is normal. "Not decided yet", "unknown" and "ask an adult" are complete answers.
 
 Ticket prices, opening hours and booking rules change. Check them again before anyone books. Keep private details off every card, as the [privacy and safety](../../../docs/privacy_and_safety.md) page says.
