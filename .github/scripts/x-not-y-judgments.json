@@ -3736,11 +3736,6 @@
       "judgment": "no",
       "reason": "a fact with a caveat (a little high by design)"
     },
-    "split|The child's figures use the adult price for everyone, a little high by design, as Session 38 says, and a day card's cost counts the whole group, marked \"fewer of us\" on a day someone is away. → The card files new pages as well as fixed ones, names every box of the draft, and covers a day trip, a place to stay with no card and a booked room count.|1": {
-      "line": 58,
-      "judgment": "no",
-      "reason": "a fact: what the card files, names and covers"
-    },
     "split|The card files new pages as well as fixed ones, names every box of the draft, and covers a day trip, a place to stay with no card and a booked room count. → Session 33 gets its room count from a grown-up, Session 37 can be skipped whenever the family leaves the food list out, and Part 2 of the presentation outline is the adult follow-up questions page for tab 10.|1": {
       "line": 58,
       "judgment": "no",
@@ -3775,6 +3770,16 @@
       "line": 58,
       "judgment": "no",
       "reason": "a new fact; the quoted not decided yet is a field value, and what it leaves out is a fact"
+    },
+    "split|The child's figures use the adult price for everyone, a little high by design, as Session 38 says, and a day card's cost counts the whole group, marked \"fewer of us\" on a day someone is away. → Session 49's card carries the staying-found plan's three steps on its back.|1": {
+      "line": 58,
+      "judgment": "no",
+      "reason": "a change record: two facts in a row"
+    },
+    "split|Session 49's card carries the staying-found plan's three steps on its back. → The card files new pages as well as fixed ones, names every box of the draft, and covers a day trip, a place to stay with no card and a booked room count.|1": {
+      "line": 58,
+      "judgment": "no",
+      "reason": "a fact: what the card files, names and covers; with no card is a determiner"
     },
     "device|Removed the build-state sentences this wave makes false.|1": {
       "line": 59,
@@ -33870,6 +33875,11 @@
       "judgment": "no",
       "reason": "an instruction"
     },
+    "split|Make your \"if I get separated\" card, using the card table in the Workspace. → Copy the three steps below it onto the back of your card.|1": {
+      "line": 26,
+      "judgment": "no",
+      "reason": "an instruction"
+    },
     "device|Read your staying-found plan below.|1": {
       "line": 27,
       "judgment": "no",
@@ -34140,228 +34150,248 @@
       "judgment": "no",
       "reason": "a prohibition line on the card"
     },
-    "split|Never on this card: a passport number, a birthdate, a confirmation number, or your home address. → You can say your answers to an adult who writes them, or draw them, if that's easier.|1": {
+    "split|Never on this card: a passport number, a birthdate, a confirmation number, or your home address. → On the back of your card, copy your plan's three steps:|1": {
       "line": 81,
+      "judgment": "no",
+      "reason": "a prohibition list, then an instruction that introduces the three steps"
+    },
+    "device|Do what today's rule says.|2": {
+      "line": 83,
+      "judgment": "no",
+      "reason": "an instruction, as recorded for the same plan step"
+    },
+    "device|Ask a helper without leaving your spot.|1": {
+      "line": 84,
+      "judgment": "no",
+      "reason": "a numbered safety step with its constraint (ask from the spot); asking and staying both hold, as recorded for the same step"
+    },
+    "device|Know the emergency numbers.|2": {
+      "line": 85,
+      "judgment": "no",
+      "reason": "an instruction, as recorded for the same plan step"
+    },
+    "device|You can say your answers to an adult who writes them, or draw them, if that's easier.|1": {
+      "line": 87,
       "judgment": "no",
       "reason": "a permission"
     },
     "device|Your readiness checklist, with every line ticked or marked for the grown-ups.|1": {
-      "line": 85,
+      "line": 91,
       "judgment": "no",
       "reason": "a statement of the artifact"
     },
     "split|Your readiness checklist, with every line ticked or marked for the grown-ups. → Your \"if I get separated\" card goes with it, for your pocket.|1": {
-      "line": 85,
+      "line": 91,
       "judgment": "no",
       "reason": "a statement of the artifact"
     },
     "device|You are done when every line on your readiness checklist is either checked or marked \"ask adults to confirm\", and your card is made.|1": {
-      "line": 89,
+      "line": 95,
       "judgment": "no",
       "reason": "the stop condition"
     },
-    "split|You are done when every line on your readiness checklist is either checked or marked \"ask adults to confirm\", and your card is made. → It has a parent's phone number and the two emergency phrases, and its lodging lines are filled in by a grown-up or marked for a grown-up to fill in after booking.|1": {
-      "line": 89,
-      "judgment": "no",
-      "reason": "a fact"
-    },
-    "split|It has a parent's phone number and the two emergency phrases, and its lodging lines are filled in by a grown-up or marked for a grown-up to fill in after booking. → The emergency-number rows can stay blank until a grown-up has checked the numbers, as long as your checklist marks them for the adults.|1": {
-      "line": 89,
-      "judgment": "no",
-      "reason": "a permission with a condition"
-    },
     "split|The emergency-number rows can stay blank until a grown-up has checked the numbers, as long as your checklist marks them for the adults. → You've also said the three-part plan out loud once with a grown-up.|1": {
-      "line": 89,
+      "line": 95,
       "judgment": "no",
       "reason": "a fact"
     },
     "split|You've also said the three-part plan out loud once with a grown-up. → That's the whole thing.|1": {
-      "line": 89,
+      "line": 95,
       "judgment": "no",
       "reason": "a reassurance"
     },
+    "split|You are done when every line on your readiness checklist is either checked or marked \"ask adults to confirm\", and your card is made. → It has a parent's phone number, the two emergency phrases and your plan's three steps, and its lodging lines are filled in by a grown-up or marked for a grown-up to fill in after booking.|1": {
+      "line": 95,
+      "judgment": "no",
+      "reason": "a fact: what the finished card holds"
+    },
+    "split|It has a parent's phone number, the two emergency phrases and your plan's three steps, and its lodging lines are filled in by a grown-up or marked for a grown-up to fill in after booking. → The emergency-number rows can stay blank until a grown-up has checked the numbers, as long as your checklist marks them for the adults.|1": {
+      "line": 95,
+      "judgment": "no",
+      "reason": "a permission with a condition"
+    },
     "split|Log where your phrases came from in your Source Log, with today's date: your destination pack's safety and emergency page, or the official source a grown-up used if your pack doesn't have that page yet. → Any emergency number or local rule on your card gets checked by a grown-up on a current official page, with the date written down.|1": {
-      "line": 93,
+      "line": 99,
       "judgment": "no",
       "reason": "an instruction"
     },
     "device|Any emergency number or local rule on your card gets checked by a grown-up on a current official page, with the date written down.|1": {
-      "line": 93,
+      "line": 99,
       "judgment": "no",
       "reason": "a rule"
     },
     "split|Any emergency number or local rule on your card gets checked by a grown-up on a current official page, with the date written down. → Add that official page to your Source Log too, with the same date.|1": {
-      "line": 93,
+      "line": 99,
       "judgment": "no",
       "reason": "an instruction"
     },
     "device|Finished?|1": {
-      "line": 97,
+      "line": 103,
       "judgment": "no",
       "reason": "a navigation question"
     },
     "split|Finished? → Use the Finish and Quality Check card in your student guide.|1": {
-      "line": 97,
+      "line": 103,
       "judgment": "no",
       "reason": "a navigation instruction"
     },
     "device|Stuck?|1": {
-      "line": 101,
+      "line": 107,
       "judgment": "no",
       "reason": "a navigation question"
     },
     "split|Stuck? → Use the When I'm Stuck card in your student guide.|1": {
-      "line": 101,
+      "line": 107,
       "judgment": "no",
       "reason": "a navigation instruction"
     },
     "device|If you have extra energy, ask a grown-up to name a pretend meeting spot for one outing on your day cards, and say where you'd wait.|1": {
-      "line": 105,
+      "line": 111,
       "judgment": "no",
       "reason": "an optional instruction"
     },
     "split|If you have extra energy, ask a grown-up to name a pretend meeting spot for one outing on your day cards, and say where you'd wait. → If not, you are done.|1": {
-      "line": 105,
+      "line": 111,
       "judgment": "no",
       "reason": "a condition"
     },
     "device|Safety planning is yours: insurance, advisories, contacts and monitoring.|1": {
-      "line": 109,
+      "line": 115,
       "judgment": "no",
       "reason": "a role assignment"
     },
     "split|Safety planning is yours: insurance, advisories, contacts and monitoring. → Your child owns one thing, the personal-safety skill and the card they carry.|1": {
-      "line": 109,
+      "line": 115,
       "judgment": "no",
       "reason": "a division of roles; both halves affirm, nothing is rejected"
     },
     "split|Your child owns one thing, the personal-safety skill and the card they carry. → The safety and emergency guidance page covers your side.|1": {
-      "line": 109,
+      "line": 115,
       "judgment": "no",
       "reason": "a navigation line"
     },
     "split|The safety and emergency guidance page covers your side. → Rehearse the plan once, calmly, as a \"what if\".|1": {
-      "line": 111,
+      "line": 117,
       "judgment": "no",
       "reason": "an instruction"
     },
     "split|Rehearse the plan once, calmly, as a \"what if\". → Keep it short, calm and matter-of-fact.|1": {
-      "line": 111,
+      "line": 117,
       "judgment": "no",
       "reason": "an instruction"
     },
     "split|Keep it short, calm and matter-of-fact. → A rehearsed plan lowers a child's anxiety, because it turns a vague fear into a known script.|1": {
-      "line": 111,
+      "line": 117,
       "judgment": "no",
       "reason": "a reason"
     },
     "split|A rehearsed plan lowers a child's anxiety, because it turns a vague fear into a known script. → Your three card jobs.|1": {
-      "line": 113,
+      "line": 119,
       "judgment": "no",
       "reason": "a lead-in label"
     },
     "split|Your three card jobs. → Fill in the lodging lines once the lodging is booked and checked.|1": {
-      "line": 113,
+      "line": 119,
       "judgment": "no",
       "reason": "an instruction"
     },
     "split|Fill in the lodging lines once the lodging is booked and checked. → If you stay in more than one place, fill in a fresh card for each one, and tear up the card for a place you've left, so your child carries only the current one.|1": {
-      "line": 113,
+      "line": 119,
       "judgment": "no",
       "reason": "an instruction"
     },
     "split|If you stay in more than one place, fill in a fresh card for each one, and tear up the card for a place you've left, so your child carries only the current one. → Write the local-language line yourself and confirm its current wording, along with the two phrases.|1": {
-      "line": 113,
+      "line": 119,
       "judgment": "no",
       "reason": "an instruction"
     },
     "split|Write the local-language line yourself and confirm its current wording, along with the two phrases. → Check each emergency number on a current official page and write the date; your child then copies the numbers onto their card.|1": {
-      "line": 113,
+      "line": 119,
       "judgment": "no",
       "reason": "an instruction"
     },
     "split|Check each emergency number on a current official page and write the date; your child then copies the numbers onto their card. → The destination-specific numbers, phrases and kinds of help belong in the destination pack's safety and emergency page.|1": {
-      "line": 113,
+      "line": 119,
       "judgment": "no",
       "reason": "a placement rule"
     },
     "split|The destination-specific numbers, phrases and kinds of help belong in the destination pack's safety and emergency page. → Until your pack has that page, take them from the destination's official tourism or government site, with the date you checked.|1": {
-      "line": 113,
+      "line": 119,
       "judgment": "no",
       "reason": "a condition and a fallback source"
     },
     "split|Until your pack has that page, take them from the destination's official tourism or government site, with the date you checked. → The one-rule plan.|1": {
-      "line": 115,
+      "line": 121,
       "judgment": "no",
       "reason": "a lead-in label"
     },
     "split|The one-rule plan. → Name one separation rule each morning, out loud.|1": {
-      "line": 115,
+      "line": 121,
       "judgment": "no",
       "reason": "an instruction"
     },
     "split|Name one separation rule each morning, out loud. → The default is \"stay where you are\".|1": {
-      "line": 115,
+      "line": 121,
       "judgment": "no",
       "reason": "a fact (the default rule)"
     },
     "split|The default is \"stay where you are\". → Name a meeting spot instead only when the outing has places your child should not stand still in.|1": {
-      "line": 115,
+      "line": 121,
       "judgment": "no",
       "reason": "a condition: when the meeting spot replaces the default"
     },
     "split|Name a meeting spot instead only when the outing has places your child should not stand still in. → Choose one they can see from where they will be, and name it that same morning.|1": {
-      "line": 115,
+      "line": 121,
       "judgment": "no",
       "reason": "an instruction"
     },
     "split|Choose one they can see from where they will be, and name it that same morning. → The pack names the kinds of help; a uniformed worker or the local police post is the main one, because a shop's help is voluntary.|1": {
-      "line": 115,
+      "line": 121,
       "judgment": "device",
       "reason": "a uniformed worker or the local police post, the main one / a shop's help, voluntary"
     },
     "split|The pack names the kinds of help; a uniformed worker or the local police post is the main one, because a shop's help is voluntary. → A panicking child can carry out one rehearsed rule without deciding anything.|1": {
-      "line": 115,
+      "line": 121,
       "judgment": "no",
       "reason": "a reason for one rule; nothing named is rejected"
     },
     "split|The card carries the minimum needed to reunite and nothing more. → The filled card never goes into the repository or a shared folder, is never photographed into an AI tool, and is never posted.|1": {
-      "line": 117,
+      "line": 123,
       "judgment": "no",
       "reason": "a prohibition"
     },
     "split|The filled card never goes into the repository or a shared folder, is never photographed into an AI tool, and is never posted. → Passports, entry, insurance and the rest of the checklist are on the adult-only logistics page, and every rule on it is checked on official sources close to travel.|1": {
-      "line": 117,
+      "line": 123,
       "judgment": "no",
       "reason": "a fact"
     },
     "split|A panicking child can carry out one rehearsed rule without deciding anything. → The card carries the minimum needed to reunite and nothing more.|1": {
-      "line": 117,
+      "line": 123,
       "judgment": "no",
       "reason": "a limit; nothing more names no alternative, as this sentence was judged before the rewrite"
     },
     "split|Passports, entry, insurance and the rest of the checklist are on the adult-only logistics page, and every rule on it is checked on official sources close to travel. → The lighter page.|1": {
-      "line": 119,
+      "line": 125,
       "judgment": "no",
       "reason": "a lead-in label"
     },
     "split|The lighter page. → From Phase 7 on, Steps and Workspace are short and your child sets their own Start Here.|1": {
-      "line": 119,
+      "line": 125,
       "judgment": "no",
       "reason": "a fact"
     },
     "split|From Phase 7 on, Steps and Workspace are short and your child sets their own Start Here. → The readiness signal is two sessions in a row done without needing the When I'm Stuck card or leaning on the written Steps; the Finish and Quality Check closes every session, so using it never counts against them.|1": {
-      "line": 119,
+      "line": 125,
       "judgment": "no",
       "reason": "a definition of the readiness signal with a caveat"
     },
     "split|The readiness signal is two sessions in a row done without needing the When I'm Stuck card or leaning on the written Steps; the Finish and Quality Check closes every session, so using it never counts against them. → If your child isn't there yet, read the Steps with them.|1": {
-      "line": 119,
+      "line": 125,
       "judgment": "no",
       "reason": "a condition"
     },
     "split|If your child isn't there yet, read the Steps with them. → Start Here, the Stop Point, the named artifact and the Source Check stay on every page.|1": {
-      "line": 119,
+      "line": 125,
       "judgment": "no",
       "reason": "a fact"
     }

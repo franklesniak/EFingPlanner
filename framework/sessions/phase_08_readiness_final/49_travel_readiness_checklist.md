@@ -23,7 +23,7 @@ Set up your first small step, then do it. A suggestion: write "If I get separate
 ## Steps
 
 1. Go down the readiness checklist in the Workspace. Tick what's yours, and mark the rest "ask adults to confirm".
-2. Make your "if I get separated" card, using the card table in the Workspace.
+2. Make your "if I get separated" card, using the card table in the Workspace. Copy the three steps below it onto the back of your card.
 3. Read your staying-found plan below.
 4. Say the plan out loud once with a grown-up.
 
@@ -78,6 +78,12 @@ Your "if I get separated" card:
 
 Never on this card: a passport number, a birthdate, a confirmation number, or your home address.
 
+On the back of your card, copy your plan's three steps:
+
+1. **Do what today's rule says.**
+2. **Ask a helper without leaving your spot.**
+3. **Know the emergency numbers.**
+
 You can say your answers to an adult who writes them, or draw them, if that's easier.
 
 ## Artifact Created
@@ -86,7 +92,7 @@ Your readiness checklist, with every line ticked or marked for the grown-ups. Yo
 
 ## Stop Point
 
-You are done when every line on your readiness checklist is either checked or marked "ask adults to confirm", and your card is made. It has a parent's phone number and the two emergency phrases, and its lodging lines are filled in by a grown-up or marked for a grown-up to fill in after booking. The emergency-number rows can stay blank until a grown-up has checked the numbers, as long as your checklist marks them for the adults. You've also said the three-part plan out loud once with a grown-up. That's the whole thing.
+You are done when every line on your readiness checklist is either checked or marked "ask adults to confirm", and your card is made. It has a parent's phone number, the two emergency phrases and your plan's three steps, and its lodging lines are filled in by a grown-up or marked for a grown-up to fill in after booking. The emergency-number rows can stay blank until a grown-up has checked the numbers, as long as your checklist marks them for the adults. You've also said the three-part plan out loud once with a grown-up. That's the whole thing.
 
 ## Source Check
 
