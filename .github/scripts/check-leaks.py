@@ -16,7 +16,8 @@ One script, two rules, chosen with ``--rule``:
     Acceptance criterion ``AC-16-1``: no destination name in the reusable
     framework. The rule reads every tracked file under ``framework/``, the
     scope the style law (``framework/docs/build_style_and_vocab.md``) gives its
-    destination-names ban.
+    destination-names ban, and a tracked entry at ``framework`` itself, such
+    as a link or a submodule in the folder's place, which it refuses.
 
 The values are not in this file
 -------------------------------
@@ -163,8 +164,11 @@ rule's scope is refused by name too: its content is another repository,
 which this run cannot read. A file holding a zero byte is binary: its path
 is read, and its bytes are skipped, as Git treats them. A file that cannot
 be read as UTF-8 stops the run, because a file that was not read has not
-been checked. The pre-commit entries end with ``--``, so a file whose name
-begins with a hyphen is read as a path, never taken for an option.
+been checked, and so does a tracked path the run cannot look at, such as
+one in a folder it may not search. A tracked file that is not there, as
+``git status`` shows a deleted one, has nothing to read and is skipped.
+The pre-commit entries end with ``--``, so a file whose name begins with a
+hyphen is read as a path, never taken for an option.
 
 In place of a hand-run grep
 ---------------------------
@@ -559,7 +563,8 @@ KINDS = ("word", "code", "number")
 #: The family rule reads every tracked text file except these. The design
 #: record states the values on purpose, and it is the owner's to edit.
 FAMILY_SKIPPED_PREFIXES = ("docs/spec/",)
-#: The destination rule reads only these.
+#: The destination rule reads only these folders, and a tracked entry at a
+#: folder's own path: a link or a submodule there stands in the folder's place.
 DESTINATION_SCOPE_PREFIXES = ("framework/",)
 #: How many words either side of an occurrence bind an exemption to it.
 CONTEXT_WORDS = 3
@@ -1414,10 +1419,15 @@ def path_is_junction(path: Path) -> bool:
 
 
 def in_scope(rule: str, relative: str) -> bool:
-    """Return whether ``rule`` reads the repository-relative path ``relative``."""
+    """Return whether ``rule`` reads the repository-relative path ``relative``.
+
+    Each way fails closed: a tracked entry at ``framework`` itself is in the
+    destination rule's scope, and one at ``docs/spec`` is not skipped by the
+    family rule, so a link or a submodule at either is refused.
+    """
     if rule == "family":
         return not any(relative.startswith(prefix) for prefix in FAMILY_SKIPPED_PREFIXES)
-    return any(relative.startswith(prefix) for prefix in DESTINATION_SCOPE_PREFIXES)
+    return any(relative.startswith(prefix) or relative == prefix[:-1] for prefix in DESTINATION_SCOPE_PREFIXES)
 
 
 def lexical_relative(path_argument: str | Path, root: Path) -> str | None:
@@ -1441,13 +1451,26 @@ def resolve_candidate(path_argument: str | Path, root: Path) -> tuple[Path, str]
     and when it passes through a linked folder: then Git's name for the file
     and the file actually read differ, and the file would be judged, and
     scoped, by a name that is not its own.
+
+    Only a path that is not there is "not a file" to skip: one that is gone,
+    or under a folder that is gone, is a file, or became a link to nothing,
+    as ``git status`` reads it too. Any other failure to look at the path,
+    such as a folder the run may not search, raises ``FileReadError``, so
+    the run fails. ``Path.is_file()`` cannot tell the two apart: from Python
+    3.14 it returns ``False`` for every error.
     """
     root = root.resolve()
     path = Path(path_argument)
     candidate = path if path.is_absolute() else root / path
-    if candidate.is_symlink() or path_is_junction(candidate):
+    try:
+        status = candidate.lstat()
+    except (FileNotFoundError, NotADirectoryError):
+        return "not a file"
+    except OSError as error:
+        raise FileReadError(str(path_argument), error) from error
+    if stat.S_ISLNK(status.st_mode) or path_is_junction(candidate):
         return "a link"
-    if not candidate.is_file():
+    if not stat.S_ISREG(status.st_mode):
         return "not a file"
     resolved = candidate.resolve()
     try:
@@ -1779,7 +1802,11 @@ def run(argv: Sequence[str] | None = None, root: Path = REPO_ROOT) -> int:
             # Either is refused by name.
             refused.append(f"{argument} ({unreadable[name]})")
             continue
-        resolved = resolve_candidate(argument, root)
+        try:
+            resolved = resolve_candidate(argument, root)
+        except FileReadError as error:
+            emit(str(error), values, error=True)
+            return 1
         if isinstance(resolved, str):
             # A tracked, in-scope path that is a link, goes through a linked
             # folder or resolves outside the repository is refused by name,

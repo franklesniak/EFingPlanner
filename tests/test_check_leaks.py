@@ -29,23 +29,56 @@ import ast
 import codecs
 import importlib.util
 import io
+import os
 import re
+import stat
 import subprocess
 import sys
+from collections.abc import Callable
 from pathlib import Path
 
 import pytest
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 HOOK_PATH = REPO_ROOT / ".github" / "scripts" / "check-leaks.py"
-HOOK_SPEC = importlib.util.spec_from_file_location("check_leaks", HOOK_PATH)
+
+
+def plain_file_before_the_hook_loads(path: Path) -> Path:
+    """Return ``path`` if it is a regular file reached through no link, or raise.
+
+    The hook's own rule cannot check the hook before the hook is loaded, so this looks first, with ``lstat()``
+    and ``realpath()``; ``read_tracked()`` applies the hook's full rule to every later read (DP-22).
+    """
+    status = os.lstat(path)
+    if not stat.S_ISREG(status.st_mode) or os.path.normcase(os.path.realpath(path)) != os.path.normcase(str(path)):
+        raise RuntimeError(f"{path.name} is a link or not a plain file, so the suite will not load it")
+    return path
+
+
+HOOK_SPEC = importlib.util.spec_from_file_location("check_leaks", plain_file_before_the_hook_loads(HOOK_PATH))
 if HOOK_SPEC is None or HOOK_SPEC.loader is None:
     raise RuntimeError(f"Unable to load the leak hook from {HOOK_PATH}")
 hook = importlib.util.module_from_spec(HOOK_SPEC)
 sys.modules[HOOK_SPEC.name] = hook
 HOOK_SPEC.loader.exec_module(hook)
 
+
+def read_tracked(path: Path, root: Path = REPO_ROOT) -> str:
+    """Return a repository file's text, read only if the hook's own rule would read it (DP-22).
+
+    ``resolve_candidate()`` refuses a link, a path through a linked folder or out of the repository, and
+    anything but a regular file, so no read here follows a link to a device or to a file elsewhere. Every
+    read of a file in this suite goes through this function, and a structural test holds it to that.
+    """
+    resolved = hook.resolve_candidate(path, root)
+    if isinstance(resolved, str):
+        pytest.fail(f"{path.relative_to(root).as_posix()} is refused ({resolved}), so the suite does not read it")
+    return resolved[0].read_text(encoding="utf-8")
+
+
 SPEC_PATH = REPO_ROOT / "docs" / "spec" / "specification.md"
+#: The style law, whose destination-names bullet is the second source of the destination names.
+STYLE_LAW = "framework/docs/build_style_and_vocab.md"
 EN_DASH = chr(0x2013)
 NO_BREAK_SPACE = chr(0xA0)
 
@@ -433,7 +466,7 @@ def test_candidates_needs_the_family_rule(tmp_path: Path, capsys: pytest.Capture
 
 
 # --------------------------------------------------------------------------
-# Family values: decoding, counting and output
+# Family values: both readings, counting and output
 # --------------------------------------------------------------------------
 
 
@@ -501,7 +534,7 @@ def test_the_output_never_prints_a_family_value(
     assert len(out.strip().splitlines()) == 5
     assert out.startswith("framework/a.md:1:6: a family value (a place or a relative)")
     # The messages hold no value before emit() masks them, too: two layers, each tested.
-    text = (root / "framework" / "a.md").read_text(encoding="utf-8")
+    text = read_tracked(root / "framework" / "a.md", root)
     for hit in hook.find_hits(text, "framework/a.md", "family", VALUES):
         assert hit.occurrence == ""
         assert "quill" not in hit.format_message().casefold()
@@ -1408,6 +1441,97 @@ def test_a_tracked_submodule_in_scope_is_refused(
     assert hook.tracked_unreadable(root) == {"framework/Tokyo": "a submodule", "docs/quillhaven": "a submodule"}
 
 
+def destination_scope_is_tracked(root: Path) -> bool:
+    """Return whether Git tracks anything the destination rule reads, an entry at ``framework`` itself included."""
+    return any(hook.in_scope("destination", path) for path in hook.tracked_files(root))
+
+
+@pytest.mark.parametrize("kind", ["a link", "a submodule"])
+def test_a_link_or_a_submodule_in_the_framework_folder_s_place_is_refused(
+    tmp_path: Path, made_up_family: None, capsys: pytest.CaptureFixture[str], kind: str
+) -> None:
+    """S53-46: a tracked entry at ``framework`` itself is in the destination rule's scope, so it is refused."""
+    root = make_repo(tmp_path, {"docs/b.md": "Clean.\n"})
+    assert not destination_scope_is_tracked(root), "control: nothing in scope yet"
+    if kind == "a link":
+        (root / "framework").write_bytes(b"destinations/japan")
+        subprocess.run(["git", "-C", str(root), "add", "framework"], check=True)
+        record_as_link(root, "framework")
+    else:
+        add_submodule_entry(root, "framework")
+    assert destination_scope_is_tracked(root)
+    for args in (["--rule", "destination"], ["--rule", "destination", "--", "framework"]):
+        assert hook.main(args, root=root) == 1
+        assert f"framework ({kind})" in capsys.readouterr().err
+    for path, expected in [("framework", True), ("framework/a.md", True), ("frameworks/a.md", False),
+                           ("framework.md", False), ("docs/framework/a.md", False)]:
+        assert hook.in_scope("destination", path) is expected, path
+
+
+@pytest.mark.parametrize(
+    ("error", "skipped"),
+    [
+        (FileNotFoundError(2, "made-up failure"), True),
+        (NotADirectoryError(20, "made-up failure"), True),
+        (PermissionError(13, "made-up failure"), False),
+        (OSError(5, "made-up failure"), False),
+    ],
+    ids=["missing", "under-a-file", "no-permission", "other-error"],
+)
+def test_only_a_tracked_path_that_is_not_there_is_skipped(
+    tmp_path: Path,
+    made_up_family: None,
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
+    error: OSError,
+    skipped: bool,
+) -> None:
+    """S53-44: a tracked path the run cannot look at fails the run; one that is not there is skipped.
+
+    ``os.stat`` and ``os.lstat`` both fail for the one path, as a folder the run may not search makes them fail,
+    so the test holds under Python 3.14 too, whose ``Path.is_file()`` returns ``False`` for any error.
+    """
+    root = make_repo(tmp_path, {"framework/locked/a.md": "Visit Tokyo.\n", "framework/b.md": "Clean.\n"})
+
+    def failing(real: Callable[..., os.stat_result]) -> Callable[..., os.stat_result]:
+        def call(path: object, *args: object, **kwargs: object) -> os.stat_result:
+            if isinstance(path, (str, os.PathLike)) and os.fspath(path).replace(BACKSLASH, "/").endswith(
+                "framework/locked/a.md"
+            ):
+                raise error
+            return real(path, *args, **kwargs)
+
+        return call
+
+    monkeypatch.setattr(os, "stat", failing(os.stat))
+    monkeypatch.setattr(os, "lstat", failing(os.lstat))
+    code = hook.main(["--rule", "destination", "--", "framework/locked/a.md", "framework/b.md"], root=root)
+    err = capsys.readouterr().err
+    if skipped:
+        assert (code, err) == (0, "")
+    else:
+        assert code == 1
+        assert f"framework/locked/a.md: unable to read file ({type(error).__name__}: made-up failure)" in err
+
+
+@pytest.mark.skipif(
+    os.name == "nt" or os.geteuid() == 0, reason="needs POSIX permissions, which bind only a user who is not root"
+)
+def test_a_tracked_file_in_a_folder_the_run_may_not_search_fails_the_run(
+    tmp_path: Path, made_up_family: None, capsys: pytest.CaptureFixture[str]
+) -> None:
+    """S53-44, for real: the folder's permissions, not a stand-in, stop the run from looking at the file."""
+    root = make_repo(tmp_path, {"framework/locked/a.md": "Visit Tokyo.\n", "framework/b.md": "Clean.\n"})
+    locked = root / "framework" / "locked"
+    locked.chmod(0)
+    try:
+        code = hook.main(["--rule", "destination", "--", "framework/locked/a.md", "framework/b.md"], root=root)
+    finally:
+        locked.chmod(0o755)
+    assert code == 1
+    assert "framework/locked/a.md: unable to read file (PermissionError" in capsys.readouterr().err
+
+
 def test_a_submodule_outside_the_rule_s_scope_is_not_refused(tmp_path: Path, made_up_family: None) -> None:
     root = make_repo(tmp_path, {"framework/b.md": "Clean.\n"})
     add_submodule_entry(root, "vendor/lib")
@@ -1452,6 +1576,20 @@ def test_a_link_in_the_working_tree_over_a_tracked_file_is_refused(
         assert "framework/l.md (a link)" in capsys.readouterr().err
 
 
+def test_a_tracked_file_replaced_by_a_folder_is_skipped_as_git_reads_it(
+    tmp_path: Path, made_up_family: None, capsys: pytest.CaptureFixture[str]
+) -> None:
+    """``git status`` shows the file deleted and the folder untracked, so the run has no file there to read."""
+    root = make_repo(tmp_path, {"framework/a.md": "Clean.\n", "framework/b.md": "Clean.\n"})
+    (root / "framework" / "a.md").unlink()
+    (root / "framework" / "a.md").mkdir()
+    (root / "framework" / "a.md" / "c.md").write_bytes(b"Visit Tokyo.\n")
+    for args in (["--rule", "destination"], ["--rule", "destination", "--", "framework/a.md", "framework/b.md"]):
+        assert hook.main(args, root=root) == 0
+        captured = capsys.readouterr()
+        assert captured.err == "" and "Tokyo" not in captured.out
+
+
 @pytest.mark.parametrize("kind", ["symlink", "junction"])
 def test_a_path_through_a_linked_folder_inside_the_repository_fails_the_run(
     tmp_path: Path, made_up_family: None, kind: str, capsys: pytest.CaptureFixture[str]
@@ -1472,7 +1610,7 @@ def test_a_path_through_a_linked_folder_inside_the_repository_fails_the_run(
 
 def hook_block(hook_id: str) -> list[str]:
     """Return the stripped lines of one hook's entry in ``.pre-commit-config.yaml``."""
-    lines = (REPO_ROOT / ".pre-commit-config.yaml").read_text(encoding="utf-8").split("\n")
+    lines = read_tracked(REPO_ROOT / ".pre-commit-config.yaml").split("\n")
     start = next(index for index, line in enumerate(lines) if line.strip() == f"- id: {hook_id}")
     block = [lines[start].strip()]
     for line in lines[start + 1 :]:
@@ -1511,6 +1649,65 @@ def test_pre_commit_passes_every_kind_of_tracked_path_to_the_scans(hook_id: str,
     types, types_or = listed_types(block, "types", ["file"]), listed_types(block, "types_or", [])
     tags = PATH_TAGS[kind]
     assert tags >= types and (not types_or or tags & types_or)
+
+
+def hook_pattern(block: list[str], key: str) -> str | None:
+    """Return a hook's ``files`` or ``exclude`` expression as pre-commit reads it, quoted, plain or a block."""
+    for index, line in enumerate(block):
+        if line.startswith(key + ":"):
+            value = line.split(":", 1)[1].strip()
+            if value != "|":
+                return value.strip("'")
+            lines = []
+            for following in block[index + 1 :]:
+                if re.match(r"[a-z_]+:", following) or following.startswith(("#", "- ")):
+                    break
+                lines.append(following)
+            return "\n".join(lines)
+    return None
+
+
+#: Paths either side of each rule's scope, the folders' own paths included, and whether each rule reads them.
+#: An entry at ``framework`` itself is the destination rule's, and one at ``docs/spec`` is not skipped by the
+#: family rule, so a link or a submodule at either is refused rather than passed over.
+SCOPE_SAMPLES = [
+    ("framework", True, True),
+    ("framework/a.md", True, True),
+    ("framework/docs/b.md", True, True),
+    ("frameworks/a.md", True, False),
+    ("framework.md", True, False),
+    ("docs/framework/a.md", True, False),
+    ("docs/spec", True, False),
+    ("docs/spec/specification.md", False, False),
+    ("docs/spec2/a.md", True, False),
+    ("README.md", True, False),
+]
+
+
+@pytest.mark.parametrize(("path", "family", "destination"), SCOPE_SAMPLES)
+def test_pre_commit_passes_each_scan_exactly_the_paths_its_rule_reads(
+    path: str, family: bool, destination: bool
+) -> None:
+    """S53-46: each scan's ``files`` and ``exclude`` agree with the rule's scope, a folder's own path included."""
+    for hook_id, rule, expected in (("check-family-leaks", "family", family),
+                                    ("check-destination-leaks", "destination", destination)):
+        block = hook_block(hook_id)
+        files, exclude = hook_pattern(block, "files"), hook_pattern(block, "exclude")
+        passed = (files is None or re.search(files, path) is not None) and (
+            exclude is None or re.search(exclude, path) is None
+        )
+        assert (passed, hook.in_scope(rule, path)) == (expected, expected), (hook_id, path)
+
+
+@pytest.mark.parametrize(
+    "path", [".github/scripts/check-leaks.py", "tests/test_check_leaks.py", "docs/spec/specification.md", STYLE_LAW]
+)
+def test_the_unit_tests_rerun_when_a_file_they_read_changes(path: str) -> None:
+    """The suite reads the design record and the style law as sources, so a change to either reruns it."""
+    files = hook_pattern(hook_block("check-leaks-tests"), "files")
+    assert files is not None
+    assert re.search(files, path) is not None
+    assert re.search(files, "framework/docs/another.md") is None, "control: another file does not"
 
 
 def test_the_destination_rule_never_prints_a_family_value(
@@ -1627,7 +1824,7 @@ def test_emit_s_docstring_names_the_functions_that_may_print() -> None:
 
 def test_only_emit_and_print_hash_rows_print() -> None:
     """Every line a rule prints must pass through ``emit()``, which masks family values under both rules."""
-    tree = ast.parse(HOOK_PATH.read_text(encoding="utf-8"))
+    tree = ast.parse(read_tracked(HOOK_PATH))
     printers = set()
     for function in ast.walk(tree):
         if isinstance(function, ast.FunctionDef):
@@ -1751,7 +1948,7 @@ def spec_lines(marker: str, what: str) -> list[str]:
     """
     present = SPEC_PATH.is_file()
     assert present, "docs/spec/ is tracked but docs/spec/specification.md is gone; point SPEC_PATH at the record"
-    lines = [line for line in SPEC_PATH.read_text(encoding="utf-8").split("\n") if marker in line]
+    lines = [line for line in read_tracked(SPEC_PATH).split("\n") if marker in line]
     found = len(lines)
     assert found == 1, f"the {what} is in the design record {found} times, not once"
     return lines
@@ -1844,36 +2041,138 @@ def test_the_list_check_reports_a_missing_and_an_obsolete_row() -> None:
     assert len(problems) == 1 and problems[0].startswith("1 value row(s) missing")
 
 
-def destination_name_problems(spec_text: str, law_text: str) -> list[str]:
-    """Return how ``DESTINATION_NAMES`` differs from AC-16-1's grep pattern and the style law's list.
+def ac_16_1_names(spec_text: str) -> set[str] | str:
+    """Return the names AC-16-1's grep pattern lists, or why they cannot be read."""
+    found = re.findall(r"grep every built session \*\*body\*\* \(not just its title\) for `([^`]*)`", spec_text)
+    if len(found) != 1:
+        return f"AC-16-1's grep pattern is in the design record {len(found)} times, not once"
+    return {name.strip() for name in found[0].replace(BACKSLASH + "|", "|").split("|") if name.strip()}
+
+
+def style_law_names(law_text: str) -> set[str] | str:
+    """Return the names the style law's destination-names bullet lists, or why they cannot be read."""
+    bullets = [line for line in law_text.split("\n") if line.startswith("- **Destination names are banned")]
+    if len(bullets) != 1:
+        return f"the style law's destination-names bullet is there {len(bullets)} times, not once"
+    listed = bullets[0].split("** ", 1)[1].split(" appear under", 1)[0]
+    return {name for name in re.split(r",\s*(?:and\s+)?|\s+and\s+", listed) if name}
+
+
+def destination_name_problems(source: str, named: set[str] | str) -> list[str]:
+    """Return how ``DESTINATION_NAMES`` differs from the names one source gives.
 
     The names are public, unlike the family's values, so a failure may print them.
     """
-    found = re.findall(r"grep every built session \*\*body\*\* \(not just its title\) for `([^`]*)`", spec_text)
-    if len(found) != 1:
-        return [f"AC-16-1's grep pattern is in the design record {len(found)} times, not once"]
-    from_spec = {name.strip() for name in found[0].replace(BACKSLASH + "|", "|").split("|") if name.strip()}
-    bullets = [line for line in law_text.split("\n") if line.startswith("- **Destination names are banned")]
-    if len(bullets) != 1:
-        return [f"the style law's destination-names bullet is there {len(bullets)} times, not once"]
-    listed = bullets[0].split("** ", 1)[1].split(" appear under", 1)[0]
-    from_law = {name for name in re.split(r",\s*(?:and\s+)?|\s+and\s+", listed) if name}
+    if isinstance(named, str):
+        return [named]
     names = set(hook.DESTINATION_NAMES)
     problems = []
-    for source, named in (("AC-16-1", from_spec), ("the style law", from_law)):
-        if named - names:
-            problems.append(f"{source} names {sorted(named - names)}, which DESTINATION_NAMES lacks")
-        if names - named:
-            problems.append(f"DESTINATION_NAMES holds {sorted(names - named)}, which {source} does not name")
+    if named - names:
+        problems.append(f"{source} names {sorted(named - names)}, which DESTINATION_NAMES lacks")
+    if names - named:
+        problems.append(f"DESTINATION_NAMES holds {sorted(names - named)}, which {source} does not name")
     return problems
 
 
-def test_the_destination_names_are_the_ones_ac_16_1_and_the_style_law_list(design_record: None) -> None:
-    """S53-40: the tuple is checked against its sources, as the family's list is against the BUILD RULE line."""
-    law = REPO_ROOT / "framework" / "docs" / "build_style_and_vocab.md"
-    if not law.is_file():
-        pytest.skip("the style law is not in this tree")
-    assert destination_name_problems(SPEC_PATH.read_text(encoding="utf-8"), law.read_text(encoding="utf-8")) == []
+def style_law_problems(root: Path) -> list[str] | None:
+    """Return how ``DESTINATION_NAMES`` differs from the style law's list, or ``None`` where Git does not track it.
+
+    The design record plays no part, so an adoption without ``docs/spec/`` still checks the law it keeps.
+    """
+    if STYLE_LAW not in hook.tracked_files(root):
+        return None
+    law = read_tracked(root / STYLE_LAW, root)
+    return destination_name_problems("the style law", style_law_names(law))
+
+
+def test_the_destination_names_are_the_ones_the_style_law_lists() -> None:
+    """S53-40, S53-45: the tuple is checked against the style law wherever Git tracks it, design record or not."""
+    problems = style_law_problems(REPO_ROOT)
+    if problems is None:
+        pytest.skip("Git does not track the style law in this tree")
+    assert problems == []
+
+
+def test_the_destination_names_are_the_ones_ac_16_1_gives(design_record: None) -> None:
+    """S53-40: the tuple is checked against AC-16-1, as the family's list is against the BUILD RULE line."""
+    spec = read_tracked(SPEC_PATH)
+    assert destination_name_problems("AC-16-1", ac_16_1_names(spec)) == []
+
+
+def test_the_style_law_is_checked_without_the_design_record(tmp_path: Path) -> None:
+    """S53-45: a tree with the style law and no ``docs/spec/``, the supported adoption, still checks the law."""
+    law = (
+        "- **Destination names are banned in `framework/` from Batch 1 onward.** Japan, Tokyo, Kyoto, Osaka, "
+        "Shinkansen, and Sapporo appear under `destinations/` only.\n"
+    )
+    root = make_repo(tmp_path / "adopted", {STYLE_LAW: law, "README.md": "Root.\n"})
+    assert not design_record_is_tracked(root)
+    assert style_law_problems(root) == ["the style law names ['Sapporo'], which DESTINATION_NAMES lacks"]
+    assert style_law_problems(make_repo(tmp_path / "bare", {"README.md": "Root.\n"})) is None
+
+
+def test_a_link_at_a_file_the_suite_reads_fails_instead_of_being_read(tmp_path: Path) -> None:
+    """DP-22: with the style law a link, here to a law naming a sixth place, the suite fails and reads nothing."""
+    elsewhere = (
+        "- **Destination names are banned in `framework/` from Batch 1 onward.** Japan, Tokyo, Kyoto, Osaka, "
+        "Shinkansen, and Sapporo appear under `destinations/` only.\n"
+    )
+    root = make_repo(tmp_path, {"elsewhere.md": elsewhere, "README.md": "Root.\n"})
+    assert read_tracked(root / "elsewhere.md", root) == elsewhere, "control: a plain file is read"
+    (root / STYLE_LAW).parent.mkdir(parents=True)
+    make_link(root / STYLE_LAW, root / "elsewhere.md", "symlink")
+    subprocess.run(["git", "-C", str(root), "add", STYLE_LAW], check=True)
+    with pytest.raises(pytest.fail.Exception, match=r"build_style_and_vocab\.md is refused \(a link\)"):
+        style_law_problems(root)
+
+
+def test_the_suite_will_not_load_a_hook_that_is_a_link(tmp_path: Path) -> None:
+    """DP-22: the hook is looked at before it is loaded, since its own rule cannot run until then."""
+    source = read_tracked(HOOK_PATH).encode("utf-8")
+    (tmp_path / "tests").mkdir()
+    (tmp_path / "tests" / "test_check_leaks.py").write_bytes(read_tracked(Path(__file__)).encode("utf-8"))
+    scripts = tmp_path / ".github" / "scripts"
+    scripts.mkdir(parents=True)
+    command = [sys.executable, "-B", "-m", "pytest", "-q", "-p", "no:cacheprovider", "--tb=short",
+               "tests/test_check_leaks.py::test_the_committed_list_is_well_formed"]
+    (scripts / "check-leaks.py").write_bytes(source)
+    done = subprocess.run(command, cwd=tmp_path, capture_output=True, text=True, encoding="utf-8")
+    assert done.returncode == 0, "control: a plain hook loads: " + done.stdout[-300:]
+    (scripts / "check-leaks.py").unlink()
+    (tmp_path / "real.py").write_bytes(source)
+    make_link(scripts / "check-leaks.py", tmp_path / "real.py", "symlink")
+    done = subprocess.run(command, cwd=tmp_path, capture_output=True, text=True, encoding="utf-8")
+    assert done.returncode != 0
+    assert "check-leaks.py is a link or not a plain file, so the suite will not load it" in done.stdout
+
+
+#: The only function in this suite that opens a file.
+READERS = {"read_tracked"}
+
+
+def test_every_read_of_a_file_in_the_suite_goes_through_read_tracked() -> None:
+    """DP-22: no other function opens a file, and the module loads the hook only after looking at it."""
+    tree = ast.parse(read_tracked(Path(__file__)))
+
+    def reads(node: ast.AST) -> bool:
+        return isinstance(node, ast.Call) and (
+            (isinstance(node.func, ast.Attribute) and node.func.attr in ("read_text", "read_bytes", "open"))
+            or (isinstance(node.func, ast.Name) and node.func.id == "open")
+        )
+
+    readers = set()
+    for function in ast.walk(tree):
+        if isinstance(function, ast.FunctionDef) and any(reads(node) for node in ast.walk(function)):
+            readers.add(function.name)
+    assert readers == READERS
+    top_level = [node for statement in tree.body if not isinstance(statement, ast.FunctionDef)
+                 for node in ast.walk(statement)]
+    assert not any(reads(node) for node in top_level)
+    [load] = [node for node in top_level if isinstance(node, ast.Call) and isinstance(node.func, ast.Attribute)
+              and node.func.attr == "spec_from_file_location"]
+    guard = load.args[1]
+    assert isinstance(guard, ast.Call) and isinstance(guard.func, ast.Name)
+    assert guard.func.id == "plain_file_before_the_hook_loads"
 
 
 def test_the_destination_name_check_reports_a_name_either_source_adds(monkeypatch: pytest.MonkeyPatch) -> None:
@@ -1882,17 +2181,25 @@ def test_the_destination_name_check_reports_a_name_either_source_adds(monkeypatc
     spec = "grep every built session **body** (not just its title) for `" + pattern + "`"
     law = ("- **Destination names are banned in `framework/` from Batch 1 onward.** Japan, Tokyo, Kyoto, Osaka, and "
            "Shinkansen appear under `destinations/` only.")
-    assert destination_name_problems(spec, law) == [], "control: the committed five"
+    assert destination_name_problems("AC-16-1", ac_16_1_names(spec)) == [], "control: the committed five"
+    assert destination_name_problems("the style law", style_law_names(law)) == [], "control: the committed five"
     added_to_spec = spec.replace("Shinkansen", "Shinkansen" + BACKSLASH + "|Sapporo")
-    assert destination_name_problems(added_to_spec, law) == ["AC-16-1 names ['Sapporo'], which DESTINATION_NAMES lacks"]
+    assert destination_name_problems("AC-16-1", ac_16_1_names(added_to_spec)) == [
+        "AC-16-1 names ['Sapporo'], which DESTINATION_NAMES lacks"
+    ]
     added_to_law = law.replace("and Shinkansen", "Shinkansen, and Sapporo")
-    assert destination_name_problems(spec, added_to_law) == [
+    assert destination_name_problems("the style law", style_law_names(added_to_law)) == [
         "the style law names ['Sapporo'], which DESTINATION_NAMES lacks"
     ]
+    assert destination_name_problems("the style law", style_law_names("No bullet.")) == [
+        "the style law's destination-names bullet is there 0 times, not once"
+    ]
     monkeypatch.setattr(hook, "DESTINATION_NAMES", (*hook.DESTINATION_NAMES, "Sapporo"))
-    assert destination_name_problems(spec, law) == [
-        "DESTINATION_NAMES holds ['Sapporo'], which AC-16-1 does not name",
-        "DESTINATION_NAMES holds ['Sapporo'], which the style law does not name",
+    assert destination_name_problems("AC-16-1", ac_16_1_names(spec)) == [
+        "DESTINATION_NAMES holds ['Sapporo'], which AC-16-1 does not name"
+    ]
+    assert destination_name_problems("the style law", style_law_names(law)) == [
+        "DESTINATION_NAMES holds ['Sapporo'], which the style law does not name"
     ]
 
 
@@ -1904,12 +2211,12 @@ def test_a_malformed_committed_row_fails_its_test_and_not_the_suite_s_import(tmp
     """Failure injection: with a malformed row committed, the suite still loads and the well-formedness test fails."""
     copy = tmp_path / ".github" / "scripts" / "check-leaks.py"
     copy.parent.mkdir(parents=True)
-    source = HOOK_PATH.read_text(encoding="utf-8")
+    source = read_tracked(HOOK_PATH)
     anchor = "FAMILY_VALUES: tuple[tuple[str, int, str], ...] = (\n"
     assert source.count(anchor) == 1
     copy.write_text(source.replace(anchor, anchor + '    ("phrase", 1, "' + "0" * 64 + '"),\n'), encoding="utf-8")
     (tmp_path / "tests").mkdir()
-    (tmp_path / "tests" / "test_check_leaks.py").write_bytes(Path(__file__).read_bytes())
+    (tmp_path / "tests" / "test_check_leaks.py").write_bytes(read_tracked(Path(__file__)).encode("utf-8"))
     done = subprocess.run(
         [sys.executable, "-B", "-m", "pytest", "-q", "-p", "no:cacheprovider", "--tb=no", "-rf",
          "tests/test_check_leaks.py::test_the_committed_list_is_well_formed"],
@@ -2025,7 +2332,7 @@ def test_neither_hook_nor_suite_holds_a_family_value() -> None:
     """The two files that know most about the values hold none of them."""
     values = committed()
     for path in (HOOK_PATH, Path(__file__)):
-        text = path.read_text(encoding="utf-8")
+        text = read_tracked(path)
         hits = hook.find_hits(text, path.name, "family", values)
         candidates = hook.bare_numbers(text, values)
         assert hits == [], path.name
@@ -2046,6 +2353,6 @@ def test_the_repository_passes_the_destination_rule() -> None:
 
     Like the family walk above, this is where CI reports a stale row.
     """
-    if not any(path.startswith("framework/") for path in hook.tracked_files(REPO_ROOT)):
+    if not destination_scope_is_tracked(REPO_ROOT):
         pytest.skip("framework/ holds no tracked file, so the destination rule has nothing to read")
     assert hook.main(["--rule", "destination"]) == 0

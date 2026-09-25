@@ -372,9 +372,11 @@ repos:
   # destination name in the framework (AC-16-1). One script runs both rules;
   # its docstring says what each reads and how an exemption row works. The
   # family rule holds digests, not values, because this repository is public.
-  # A new destination pack adds its folder's name to the destination rule, so
-  # CI's all-files run is where a pack added without a framework change is
-  # checked against the framework.
+  # The destination rule reads the five names AC-16-1 gives, and no more: a
+  # new pack under destinations/ adds no name, so a name that must stay out
+  # of the framework goes into AC-16-1, the style law's destination-names
+  # bullet and the script's DESTINATION_NAMES, which the suite checks against
+  # both sources.
   - repo: local
     hooks:
       # Both scans take every tracked file, link and submodule, not only text:
@@ -400,15 +402,24 @@ repos:
         language: python
         types: []
         types_or: [file, symlink, directory]
-        files: ^framework/
-      # The hook's unit tests read the design record's BUILD RULE line, so a
-      # change to the spec reruns them as well as a change to the hook.
+        # A link or a submodule at `framework` itself stands in the folder's
+        # place, so the hook takes it too, and refuses it.
+        files: '^framework(/|$)'
+      # The hook's unit tests read the design record's BUILD RULE line and
+      # AC-16-1, and the style law's destination-names bullet, so a change to
+      # either reruns them as well as a change to the hook.
       - id: check-leaks-tests
         name: Leak check unit tests
         entry: python -m pytest tests/test_check_leaks.py -q -p no:cacheprovider
         language: python
         pass_filenames: false
-        files: ^(\.github/scripts/check-leaks\.py|tests/test_check_leaks\.py|docs/spec/specification\.md)$
+        files: |
+          (?x)^(
+            \.github/scripts/check-leaks\.py|
+            tests/test_check_leaks\.py|
+            docs/spec/specification\.md|
+            framework/docs/build_style_and_vocab\.md
+          )$
         additional_dependencies:
           - pytest
 
