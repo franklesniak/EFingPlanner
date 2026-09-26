@@ -29,9 +29,9 @@ This table routes every session that needs place facts to the pack, in session o
 | 19 Other Places Research | `19_other_places_menu.md` | `major_cities.md` |
 | 23 Attraction Research Cards | `23_attraction_ideas.md` | `food_basics.md` (for food-type attractions) |
 | 30 Trains, Transit, and Travel Cards | `30_transport_specifics.md` | `transportation_basics.md` |
-| 38 Daily Cost Estimates | none | `money_basics.md` (cash culture, currency) |
 | 34 Neighborhoods and Hotel Location | `34_lodging_types.md` | `adult_logistics.md` (occupancy reality) |
 | 36-37 Food / Restaurant Shortlist | `36_37_food_ideas.md` | `food_basics.md` |
+| 38 Daily Cost Estimates | none | `money_basics.md` (cash culture, currency) |
 | 40 Realistic Day Planning | none | `airports_and_arrival_basics.md` (airport-to-city) |
 | 42 Reservations and Timed Entries | `42_reservation_examples.md` | none |
 | 43 Rest Days, Jet Lag, and Pacing | none | `transportation_basics.md` (walking/stairs) |

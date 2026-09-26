@@ -10,7 +10,7 @@ You are here: Phase 6 (Lodging, Food, and Budget). Not a First Taste step. Previ
 - Planner skill: comparing choices
 - Estimated time: 20-30 minutes per sitting, several sittings
 - Parent involvement: none / independent work
-- Materials: a device with the kid-safe filter on, blank [Hotel Comparison Cards](../../templates/hotel_comparison_card.md), your Neighborhood Comparison from Session 34, the route your family approved at Checkpoint 4, your route map notes from Session 28, the City Research Card for any region on your route (for its town), your part-trip note from Session 33 (if you made one), your [Source Log](../../templates/source_log.md), a timer and a clock
+- Materials: a device with the kid-safe filter on, blank [Hotel Comparison Cards](../../templates/hotel_comparison_card.md), your Neighborhood Comparison from Session 34, the route your family approved at Checkpoint 4, your must-do list on your My Calls page (for the places you want to reach), your route map notes from Session 28, the City Research Card for any region on your route (for its town), your part-trip note from Session 33 (if you made one), your [Source Log](../../templates/source_log.md), a timer and a clock
 
 ## Goal
 
@@ -26,7 +26,7 @@ In Session 34 you picked an area. Now you look at a few real places to stay, one
 
 1. **Decide how many cards you need.** Make at least one card for each city where you'll sleep overnight on your approved route. A trip with one base needs only one or two cards. If a stop on your route is a region, use the town on its card from Session 21. If that card names no town, use the one you picked in Session 28. Make two for a city only if you still can't decide between places there, and there are enough good places to compare. If one place is already the obvious choice, one card is enough. About four or five cards for the whole trip is plenty, counting the cards from every sitting so far.
 2. **Find a place to stay.** Look in the area you circled in Session 34. Before you start a new card, check that you don't already have one for that place. For a city you didn't compare there, a grown-up can suggest an area. Use the place's own website, or a hotel search site a grown-up says is okay.
-3. **Fill in the card from top to bottom.** Write the cost **per room**, as an example to check again, with the date you found it. Some places charge per person instead. Then write the cost per person, and write "per person" beside it. Ask the grown-ups the room-setup question, since they decide how many rooms you need. If your Session 33 note says someone is with you for only part of the trip, write which nights in the card's room-setup row, and tell the grown-ups. For review themes, look for what lots of reviews agree on, the way you learned in Session 25.
+3. **Fill in the card from top to bottom.** Write the cost **per room**, as an example to check again, with the date you found it. Some places charge per person instead. Then write the cost per person, and write "per person" beside it. Ask the grown-ups the room-setup question, since they decide how many rooms you need. If your Session 33 note says someone is with you for only part of the trip, write which nights in the card's room-setup row, and tell the grown-ups. Someone there on days 3 to 6 sleeps there on nights 3, 4 and 5. For review themes, look for what lots of reviews agree on, the way you learned in Session 25.
 4. **Fill in the planning assumption rows.** Write what you're assuming, why, what could change it, and whether a grown-up needs to check it.
 5. **Pick one for each city.** In each card's decision row, mark the one you'd recommend. Write one sentence saying why.
 
@@ -70,7 +70,7 @@ If you have extra energy and you made two cards for one city, write the one thin
 
 You compare, and the adults book: every sign-in, account and booking detail is yours. If your child hits a sign-in screen, that is where they stop and fetch you.
 
-The how-many rule is written into the Steps on purpose, so stopping is built in. At least one card per overnight base is a finished job. A three- or four-base trip does not need eight cards.
+If your child uses a hotel search site, tell them which ones are okay. The how-many rule is written into the Steps on purpose, so stopping is built in. At least one card per overnight base is a finished job. A three- or four-base trip does not need eight cards.
 
 The cost row is per room, or per person where a place charges that way, and is an example to re-check. The room count, the cancellation terms and the final choice are yours to verify. The cards are your child's recommendation, which you are free to weigh against what you find.
 

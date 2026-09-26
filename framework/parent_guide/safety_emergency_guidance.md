@@ -25,7 +25,7 @@ Your child makes an "if I get separated" card and carries it. You do four things
 
 - **Rehearse it once, calmly**, as a "what if". A calm rehearsal *lowers* anxiety, because it turns a vague fear into a known script.
 - **Fill in the lodging lines** on the card once the lodging is booked and checked. If you stay in more than one place, fill in a fresh card for each one, and tear up the card for a place you've left, so your child carries only the current one.
-- **Fill in any local-language line** on the card yourself, and confirm the current wording.
+- **Fill in any local-language line** on the card yourself, and confirm the current wording. Check the two emergency phrases while you're at it.
 - **Check any emergency number** on a current official page before it goes on the card, and write the date you checked.
 
 ## The privacy exception, exactly

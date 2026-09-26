@@ -10,7 +10,7 @@ You are here: Phase 5 (Route, Length, and Transportation). Not a First Taste ste
 - Planner skill: planning realistic time
 - Estimated time: 20-30 minutes
 - Parent involvement: none / independent work; beforehand, tell your child how long the trips there and home take and which flights land on a later date
-- Materials: your [Trip-Basics card](../../templates/trip_basics.md) (maximum trip length and time difference), your route map notes from Session 28, your traveler profiles, a pencil, a calculator (allowed)
+- Materials: your [Trip-Basics card](../../templates/trip_basics.md) (maximum trip length and time difference), your route map notes from Session 28, your My Calls page (for your special pick), your traveler profiles, a pencil, a calculator (allowed)
 
 ## Goal
 

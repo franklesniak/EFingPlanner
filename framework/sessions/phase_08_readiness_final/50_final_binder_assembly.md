@@ -87,7 +87,7 @@ If you have extra energy, add a short note on each divider saying what that tab 
 
 This full tabbed assembly is the one required organizing step in the project. A child who kept one growing folder all along does the tabbing here, once, and arrives at the same binder as a child who filed continuously. Say that warmly if your child worries they are behind.
 
-Judge the binder on organization and clarity. Decoration belongs on the cover and the dividers, and the research pages stay clean enough for you to use.
+Tell your child which Phase 1 research-skill pages to keep behind tab 2. Judge the binder on organization and clarity. Decoration belongs on the cover and the dividers, and the research pages stay clean enough for you to use.
 
 Two contents lines are conditional: the food shortlist under tab 5, and the language and etiquette sheet under tab 8. If your family skipped those sessions, the binder is complete without them. The eleven tabs are the one organizing scheme for the whole project, so keep to them.
 

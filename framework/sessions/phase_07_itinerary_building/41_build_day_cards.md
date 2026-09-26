@@ -75,6 +75,6 @@ This is the heaviest stretch in Phase 7, so let it run over several sittings. Th
 
 The date row asks for a rough window, because the [privacy and safety](../../docs/privacy_and_safety.md) page keeps exact booked dates off every working page, on paper and in a shared folder alike. The card filenames are numbered for the same kind of reason.
 
-If you booked dates in a different season from the Checkpoint 1 recommendation, tell your child which season it is. A broad word such as "late spring" is enough.
+If someone comes for only part of the trip and your child has no Session 33 note, tell them who is there on which days. If you booked dates in a different season from the Checkpoint 1 recommendation, tell your child which season it is. A broad word such as "late spring" is enough.
 
 **The lighter page.** From Phase 7 on, Steps and Workspace are short and your child sets their own Start Here. The readiness signal is two sessions in a row done without needing the When I'm Stuck card or leaning on the written Steps; the Finish and Quality Check closes every session, so using it never counts against them. If your child isn't there yet, read the Steps with them. Start Here, the Stop Point, the named artifact and the Source Check stay on every page.

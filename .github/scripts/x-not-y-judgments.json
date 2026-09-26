@@ -2023,7 +2023,7 @@
       "reason": "a table cell reading none"
     },
     "banned|none|5": {
-      "line": 32,
+      "line": 34,
       "judgment": "no",
       "reason": "a table cell reading none"
     },
@@ -3286,16 +3286,6 @@
       "judgment": "no",
       "reason": "a fact: what the budget and lodging steps read"
     },
-    "split|Every budget and lodging step reads the route and nights approved at Checkpoint 4. → Each Stop Point names every floor its steps set, such as the end legs, the flight-day rows, a replacement pick, a looked-up travel time and a booked trip's opening dates.|1": {
-      "line": 58,
-      "judgment": "no",
-      "reason": "a fact: what each Stop Point names"
-    },
-    "split|Each Stop Point names every floor its steps set, such as the end legs, the flight-day rows, a replacement pick, a looked-up travel time and a booked trip's opening dates. → Anything more in a step reads as a suggestion.|1": {
-      "line": 58,
-      "judgment": "no",
-      "reason": "a classification of the rest of a step; rejects no alternative"
-    },
     "split|Anything more in a step reads as a suggestion. → Materials link each setup page they name, with its purpose.|1": {
       "line": 58,
       "judgment": "no",
@@ -3836,7 +3826,37 @@
       "judgment": "no",
       "reason": "a change record: a fact"
     },
-    "split|The season row's opening check covers every attraction the plan still uses, backups included. → The insert contract's parent-facing rows give local hazards one home, ‹code› , and lodging priced per person and children's fares one home, ‹code› , as the Batch 3 brief settles.|1": {
+    "split|Every budget and lodging step reads the route and nights approved at Checkpoint 4. → Each Stop Point names every floor its steps set, such as the end legs, the flight-day rows, a replacement pick, a looked-up travel time and how far ahead each booking opens on a booked trip.|1": {
+      "line": 58,
+      "judgment": "no",
+      "reason": "a change record: a fact"
+    },
+    "split|Each Stop Point names every floor its steps set, such as the end legs, the flight-day rows, a replacement pick, a looked-up travel time and how far ahead each booking opens on a booked trip. → Anything more in a step reads as a suggestion.|1": {
+      "line": 58,
+      "judgment": "no",
+      "reason": "a change record: a fact"
+    },
+    "split|The season row's opening check covers every attraction the plan still uses, backups included. → Each session's Materials and Parent Notes now name every input its steps use, the grown-up's answers included.|1": {
+      "line": 58,
+      "judgment": "no",
+      "reason": "a change record: a fact"
+    },
+    "split|Each session's Materials and Parent Notes now name every input its steps use, the grown-up's answers included. → Session 37 checks each place against the family's dietary constraints and what each traveler avoids.|1": {
+      "line": 58,
+      "judgment": "no",
+      "reason": "a change record: a fact"
+    },
+    "split|Session 37 checks each place against the family's dietary constraints and what each traveler avoids. → Session 40 takes a moving day's ride from the route map notes, and the airports page serves the first day.|1": {
+      "line": 58,
+      "judgment": "no",
+      "reason": "a change record: a fact"
+    },
+    "split|Session 40 takes a moving day's ride from the route map notes, and the airports page serves the first day. → The card and Session 49 use the templates' field names, and a new place to stay gets a fresh separation card, with a parent who's there on it.|1": {
+      "line": 58,
+      "judgment": "no",
+      "reason": "a change record: a fact"
+    },
+    "split|The card and Session 49 use the templates' field names, and a new place to stay gets a fresh separation card, with a parent who's there on it. → The insert contract's parent-facing rows give local hazards one home, ‹code› , and lodging priced per person and children's fares one home, ‹code› , as the Batch 3 brief settles.|1": {
       "line": 58,
       "judgment": "no",
       "reason": "a change record: a fact"
@@ -9614,11 +9634,6 @@
       "judgment": "no",
       "reason": "an instruction"
     },
-    "split|Fill in any local-language line and confirm its current wording. → And check the emergency numbers on a current official page and write the date you checked.|1": {
-      "line": 82,
-      "judgment": "no",
-      "reason": "an instruction"
-    },
     "split|Rehearse the plan once, calmly; keep it light, because a drill teaches fear rather than the script. → Then three jobs on the card itself.|1": {
       "line": 82,
       "judgment": "no",
@@ -9629,7 +9644,12 @@
       "judgment": "no",
       "reason": "an instruction"
     },
-    "split|Fill in the lodging lines once the lodging is booked and checked, on a fresh card for each place you stay, and tear up the card for a place you've left. → Fill in any local-language line and confirm its current wording.|1": {
+    "split|Fill in the lodging lines once the lodging is booked and checked, on a fresh card for each place you stay, and tear up the card for a place you've left. → Fill in any local-language line and confirm its current wording, along with the two emergency phrases.|1": {
+      "line": 82,
+      "judgment": "no",
+      "reason": "an instruction"
+    },
+    "split|Fill in any local-language line and confirm its current wording, along with the two emergency phrases. → And check the emergency numbers on a current official page and write the date you checked.|1": {
       "line": 82,
       "judgment": "no",
       "reason": "an instruction"
@@ -12498,6 +12518,11 @@
       "reason": "an instruction with its purpose; tearing up the old card is an action, not a rejected alternative"
     },
     "device|Fill in any local-language line on the card yourself, and confirm the current wording.|1": {
+      "line": 28,
+      "judgment": "no",
+      "reason": "an instruction"
+    },
+    "split|Fill in any local-language line on the card yourself, and confirm the current wording. → Check the two emergency phrases while you're at it.|1": {
       "line": 28,
       "judgment": "no",
       "reason": "an instruction"
@@ -24880,7 +24905,7 @@
       "judgment": "no",
       "reason": "a field label with an instruction; \"none\" rejects no named alternative"
     },
-    "device|Materials: your Trip-Basics card (maximum trip length and time difference), your route map notes from Session 28, your traveler profiles, a pencil, a calculator (allowed)|1": {
+    "device|Materials: your Trip-Basics card (maximum trip length and time difference), your route map notes from Session 28, your My Calls page (for your special pick), your traveler profiles, a pencil, a calculator (allowed)|1": {
       "line": 13,
       "judgment": "no",
       "reason": "a field label listing materials"
@@ -25829,10 +25854,10 @@
       "judgment": "no",
       "reason": "a field label"
     },
-    "device|Materials: a fresh Trade-Off Report page, your route map notes from Session 28, your nights table from Session 29, your transportation notes from Session 30, on a one-base trip your must-dos and strong maybes from Checkpoint 3, your family's current travel assumptions page (for the budget band), a device with a map app (kid-safe filter on) in case a route needs a new travel time, your Source Log|1": {
+    "device|Materials: a fresh Trade-Off Report page, your route map notes from Session 28, your My Calls page (for your special pick), your nights table from Session 29, your transportation notes from Session 30, on a one-base trip your must-dos and strong maybes from Checkpoint 3, your family's current travel assumptions page (for the budget band), a device with a map app (kid-safe filter on) in case a route needs a new travel time, your Source Log and your simple citation forms page (for the Map form)|1": {
       "line": 13,
       "judgment": "no",
-      "reason": "a field label with a materials list"
+      "reason": "a field label listing materials"
     },
     "device|Compare two routes for the trip, and recommend one.|1": {
       "line": 17,
@@ -26191,10 +26216,10 @@
       "judgment": "no",
       "reason": "a field label"
     },
-    "device|Materials: your Trade-Off Report from Session 31, your nights table and formula from Session 29, your route map notes, your Trip-Basics card, your family's current travel assumptions page (for the budget band), a device with a map app (kid-safe filter on) if the grown-ups change where you arrive or leave, your When the Plan Changes card and the pages it names that you've made (for any change the grown-ups approve), your Source Log, a Decision Record page, a blank Parent Review Form for a grown-up to fill in|1": {
+    "device|Materials: your Trade-Off Report from Session 31, your nights table and formula from Session 29, your route map notes, your My Calls page (for your special pick), your Trip-Basics card, your family's current travel assumptions page (for the budget band), a device with a map app (kid-safe filter on) if the grown-ups change where you arrive or leave, your When the Plan Changes card and the pages it names that you've made (for any change the grown-ups approve), your Source Log, a Decision Record page, a blank Parent Review Form for a grown-up to fill in|1": {
       "line": 13,
       "judgment": "no",
-      "reason": "a field label with its list"
+      "reason": "a field label listing materials"
     },
     "device|Recommend your route and how long the trip should be, or how to use the days if your dates are booked, and take it to the grown-ups.|1": {
       "line": 17,
@@ -27258,17 +27283,17 @@
       "judgment": "no",
       "reason": "a fact about timing"
     },
-    "split|A family that finished First Taste first gets it ready when it continues, before Session 39. → Tell your child how many rooms to use for the hotel guess.|1": {
-      "line": 102,
-      "judgment": "no",
-      "reason": "an instruction"
-    },
-    "split|Tell your child how many rooms to use for the hotel guess. → If someone comes for only part of the trip, tell your child who is there on which days, by day number, so they can make the optional note.|1": {
+    "split|If someone comes for only part of the trip, tell your child who is there on which days, by day number, so they can make the optional note. → If your child made the part-trip note, use it when you decide the rooms and book the long rides, so each night and each leg fits everyone who is there.|1": {
       "line": 102,
       "judgment": "no",
       "reason": "a conditional instruction"
     },
-    "split|If someone comes for only part of the trip, tell your child who is there on which days, by day number, so they can make the optional note. → If your child made the part-trip note, use it when you decide the rooms and book the long rides, so each night and each leg fits everyone who is there.|1": {
+    "split|A family that finished First Taste first gets it ready when it continues, before Session 39. → Tell your child how many rooms to use for the hotel guess, and whether the places you'd stay charge per room or per person.|1": {
+      "line": 102,
+      "judgment": "no",
+      "reason": "an instruction"
+    },
+    "split|Tell your child how many rooms to use for the hotel guess, and whether the places you'd stay charge per room or per person. → If someone comes for only part of the trip, tell your child who is there on which days, by day number, so they can make the optional note.|1": {
       "line": 102,
       "judgment": "no",
       "reason": "a conditional instruction"
@@ -27315,10 +27340,10 @@
       "judgment": "no",
       "reason": "a field label with a safety instruction"
     },
-    "device|Materials: this session's Destination Notes, a device with the kid-safe filter on, a grown-up nearby if you search beyond the Destination Notes and official city sites (beside you for an image search), a blank Neighborhood Comparison page, the route your family approved at Checkpoint 4, your route map notes from Session 28, the City Research Card for any region on your route (for its town), a guidebook if you have one, your Trip-Basics card (for the number of travelers), your part-trip note from Session 33 (if you made one), your destination pack's adult-logistics page, where the pack has one (for the grown-up's room-count check), your Source Log, and a Scoring Rubric page if your child wants to score; a blank Trade-Off Report only if the third report goes here|1": {
+    "device|Materials: this session's Destination Notes, a device with the kid-safe filter on, a grown-up nearby if you search beyond the Destination Notes and official city sites (beside you for an image search), a blank Neighborhood Comparison page, the route your family approved at Checkpoint 4, your must-do list on your My Calls page (for the places you want to reach), your route map notes from Session 28, the City Research Card for any region on your route (for its town), a guidebook if you have one, your Trip-Basics card (for the number of travelers), your part-trip note from Session 33 (if you made one), your destination pack's adult-logistics page, where the pack has one (for the grown-up's room-count check), your Source Log, and a Scoring Rubric page if your child wants to score; a blank Trade-Off Report only if the third report goes here|1": {
       "line": 13,
       "judgment": "no",
-      "reason": "a field label listing materials; the only-if is a condition"
+      "reason": "a field label listing materials"
     },
     "device|Compare a few areas to stay in for one city, and say which one fits your plan best.|1": {
       "line": 17,
@@ -27515,7 +27540,12 @@
       "judgment": "no",
       "reason": "a condition with an instruction"
     },
-    "split|If your Session 33 note says someone is with you for only part of the trip, write beside it which nights they're there. → Grown-ups check this for each place and decide the room count.|1": {
+    "split|If your Session 33 note says someone is with you for only part of the trip, write beside it which nights they're there. → Someone there on days 3 to 6 sleeps there on nights 3, 4 and 5.|1": {
+      "line": 36,
+      "judgment": "no",
+      "reason": "a worked example"
+    },
+    "split|Someone there on days 3 to 6 sleeps there on nights 3, 4 and 5. → Grown-ups check this for each place and decide the room count.|1": {
       "line": 36,
       "judgment": "no",
       "reason": "a statement of the grown-ups' role"
@@ -27787,7 +27817,7 @@
       "judgment": "no",
       "reason": "a field label"
     },
-    "device|Materials: a device with the kid-safe filter on, blank Hotel Comparison Cards, your Neighborhood Comparison from Session 34, the route your family approved at Checkpoint 4, your route map notes from Session 28, the City Research Card for any region on your route (for its town), your part-trip note from Session 33 (if you made one), your Source Log, a timer and a clock|1": {
+    "device|Materials: a device with the kid-safe filter on, blank Hotel Comparison Cards, your Neighborhood Comparison from Session 34, the route your family approved at Checkpoint 4, your must-do list on your My Calls page (for the places you want to reach), your route map notes from Session 28, the City Research Card for any region on your route (for its town), your part-trip note from Session 33 (if you made one), your Source Log, a timer and a clock|1": {
       "line": 13,
       "judgment": "no",
       "reason": "a field label listing materials"
@@ -27942,7 +27972,12 @@
       "judgment": "no",
       "reason": "a conditional instruction"
     },
-    "split|If your Session 33 note says someone is with you for only part of the trip, write which nights in the card's room-setup row, and tell the grown-ups. → For review themes, look for what lots of reviews agree on, the way you learned in Session 25.|1": {
+    "split|If your Session 33 note says someone is with you for only part of the trip, write which nights in the card's room-setup row, and tell the grown-ups. → Someone there on days 3 to 6 sleeps there on nights 3, 4 and 5.|1": {
+      "line": 29,
+      "judgment": "no",
+      "reason": "a worked example"
+    },
+    "split|Someone there on days 3 to 6 sleeps there on nights 3, 4 and 5. → For review themes, look for what lots of reviews agree on, the way you learned in Session 25.|1": {
       "line": 29,
       "judgment": "no",
       "reason": "an instruction"
@@ -28137,7 +28172,12 @@
       "judgment": "no",
       "reason": "a release after a claim of sufficiency, as recorded for 'One good entry is enough.'"
     },
-    "split|If your child hits a sign-in screen, that is where they stop and fetch you. → The how-many rule is written into the Steps on purpose, so stopping is built in.|1": {
+    "split|If your child hits a sign-in screen, that is where they stop and fetch you. → If your child uses a hotel search site, tell them which ones are okay.|1": {
+      "line": 73,
+      "judgment": "no",
+      "reason": "a conditional instruction"
+    },
+    "split|If your child uses a hotel search site, tell them which ones are okay. → The how-many rule is written into the Steps on purpose, so stopping is built in.|1": {
       "line": 73,
       "judgment": "no",
       "reason": "a fact about the Steps"
@@ -28586,7 +28626,7 @@
       "judgment": "no",
       "reason": "a field label with a supervision instruction"
     },
-    "device|Materials: this session's Destination Notes, a device with the kid-safe filter on, a grown-up nearby if you search beyond the Destination Notes (beside you for an image search), your food wish list from Session 36, any Restaurant Research Cards from an earlier sitting, blank Restaurant Research Cards, your Hotel Comparison Cards from Session 35, your must-do list on your My Calls page, the route your family approved at Checkpoint 4, your Trip-Basics card (for the number of travelers), your part-trip note from Session 33 (if you made one), your Source Log|1": {
+    "device|Materials: this session's Destination Notes, a device with the kid-safe filter on, a grown-up nearby if you search beyond the Destination Notes (beside you for an image search), your food wish list from Session 36, any Restaurant Research Cards from an earlier sitting, blank Restaurant Research Cards, your Hotel Comparison Cards from Session 35, your must-do list on your My Calls page, the route your family approved at Checkpoint 4, your Trip-Basics card (for the number of travelers), your family's current travel assumptions page (for its dietary constraints) and your traveler profiles (for what each person avoids), your part-trip note from Session 33 (if you made one), your Source Log|1": {
       "line": 13,
       "judgment": "no",
       "reason": "a field label listing materials"
@@ -28691,15 +28731,35 @@
       "judgment": "no",
       "reason": "an instruction"
     },
-    "split|Go from top to bottom. → For \"Reservation needed?\", \"ask an adult\" is a finished answer.|1": {
-      "line": 31,
-      "judgment": "no",
-      "reason": "a rule for a field"
-    },
     "split|For \"Reservation needed?\", \"ask an adult\" is a finished answer. → For \"Cash-only?\", write what your source says, and mark it for a grown-up to check.|1": {
       "line": 31,
       "judgment": "no",
       "reason": "an instruction for a field"
+    },
+    "split|Go from top to bottom. → Can everyone who's with you in that city eat there?|1": {
+      "line": 31,
+      "judgment": "no",
+      "reason": "a question"
+    },
+    "split|Can everyone who's with you in that city eat there? → Check the dietary constraints on your assumptions page, and what each traveler profile says they avoid.|1": {
+      "line": 31,
+      "judgment": "no",
+      "reason": "an instruction"
+    },
+    "device|Check the dietary constraints on your assumptions page, and what each traveler profile says they avoid. → Not sure?|1": {
+      "line": 31,
+      "judgment": "no",
+      "reason": "a conditional question that opens an instruction"
+    },
+    "split|Not sure? → Write \"ask an adult\" in the card's \"Possible downside\" row.|1": {
+      "line": 31,
+      "judgment": "no",
+      "reason": "an instruction"
+    },
+    "split|Write \"ask an adult\" in the card's \"Possible downside\" row. → For \"Reservation needed?\", \"ask an adult\" is a finished answer.|1": {
+      "line": 31,
+      "judgment": "no",
+      "reason": "a rule for a field"
     },
     "device|Aim for one card per main city where you'll sleep overnight, on the route the grown-ups approved at Checkpoint 4.|1": {
       "line": 32,
@@ -28891,15 +28951,30 @@
       "judgment": "no",
       "reason": "a supervision instruction"
     },
-    "split|Stay nearby when your child searches beyond the Destination Notes, and beside them for an image search. → Restaurant reservations, and whether a place takes cards, are yours to verify.|1": {
-      "line": 79,
-      "judgment": "no",
-      "reason": "a statement of who verifies"
-    },
     "split|Restaurant reservations, and whether a place takes cards, are yours to verify. → A local review site may help, and it may be in another language, so treat it as something to use together or skip.|1": {
       "line": 79,
       "judgment": "no",
       "reason": "a caveat and an instruction; nothing rejected"
+    },
+    "split|Stay nearby when your child searches beyond the Destination Notes, and beside them for an image search. → Your child checks each place against the dietary constraints you wrote on the assumptions page, and what each traveler profile says that person avoids.|1": {
+      "line": 79,
+      "judgment": "no",
+      "reason": "a statement of what the child checks"
+    },
+    "split|Your child checks each place against the dietary constraints you wrote on the assumptions page, and what each traveler profile says that person avoids. → Keep those lines to what the food must work around.|1": {
+      "line": 79,
+      "judgment": "no",
+      "reason": "an instruction"
+    },
+    "split|Keep those lines to what the food must work around. → The reasons stay with you, as the traveler profile's medical line asks.|1": {
+      "line": 79,
+      "judgment": "split",
+      "reason": "keep those lines to what the food must work around / the reasons stay with you (the recorded need-beside-reason privacy contrast, over two sentences)"
+    },
+    "split|The reasons stay with you, as the traveler profile's medical line asks. → Restaurant reservations, and whether a place takes cards, are yours to verify.|1": {
+      "line": 79,
+      "judgment": "no",
+      "reason": "a statement of who verifies"
     }
   },
   "framework/sessions/phase_06_lodging_food_budget/38_daily_cost_estimates.md": {
@@ -29425,7 +29500,7 @@
       "judgment": "no",
       "reason": "a field label with its instruction"
     },
-    "device|Materials: your Budget Estimate page from Session 33 and a blank one for this pass, your daily cost table from Session 38, your Hotel Comparison Cards, your route and nights from Checkpoint 4, your route map notes from Session 28, the City Research Card for any region on your route (for its town), your My Calls page (for your special pick), your attraction cards and your When the Plan Changes card (if your special pick hits a block, or a grown-up agrees to a change), your part-trip note from Session 33 (if you made one) or the grown-up's answer on who is there on which days, your Session 29 formula (for its \"- 1 flight day\" marks), or a grown-up who can tell you which flights land on a later date, your Trip-Basics card (for the number of travelers), your family's current travel assumptions page (for the budget band), your Source Log, a calculator (allowed)|1": {
+    "device|Materials: your Budget Estimate page from Session 33 and a blank one for this pass, your daily cost table from Session 38, your Hotel Comparison Cards, your route and nights from Checkpoint 4, your route map notes from Session 28, the City Research Card for any region on your route (for its town), your My Calls page (for your special pick), your attraction cards (for your special pick's ticket, and if it hits a block), your When the Plan Changes card and the pages it names that you've made (if your special pick hits a block, or a grown-up agrees to a change), a device with a map app (kid-safe filter on) in case a change needs a new travel time, your part-trip note from Session 33 (if you made one) or the grown-up's answer on who is there on which days, your Session 29 formula (for its \"- 1 flight day\" marks), or a grown-up who can tell you which flights land on a later date, your Trip-Basics card (for the number of travelers), your family's current travel assumptions page (for the budget band), your Source Log, a calculator (allowed)|1": {
       "line": 13,
       "judgment": "no",
       "reason": "a field label listing materials"
@@ -29980,11 +30055,6 @@
       "judgment": "no",
       "reason": "an instruction with its reason"
     },
-    "split|In that case, also say how many of you are there on which days, so your child can count traveler-days even without a Session 33 note. → Review the rest after the session.|1": {
-      "line": 91,
-      "judgment": "no",
-      "reason": "an instruction"
-    },
     "split|Review the rest after the session. → Your child's second pass covers only the slices they control: hotels, food, local transit, activities and souvenirs.|1": {
       "line": 91,
       "judgment": "no",
@@ -30004,6 +30074,16 @@
       "line": 91,
       "judgment": "split",
       "reason": "a role boundary after the adults' task: getting there is the grown-ups' number / your child neither researches nor books flights"
+    },
+    "split|In that case, also say how many of you are there on which days, so your child can count traveler-days even without a Session 33 note. → Have ready which meals each place's price includes, and a cost and unit for any place whose card has none.|1": {
+      "line": 91,
+      "judgment": "no",
+      "reason": "an instruction; none is a determiner"
+    },
+    "split|Have ready which meals each place's price includes, and a cost and unit for any place whose card has none. → Review the rest after the session.|1": {
+      "line": 91,
+      "judgment": "no",
+      "reason": "an instruction"
     },
     "split|That is deliberate, and your child neither researches nor books flights. → Your own sanity check is an addition.|1": {
       "line": 93,
@@ -30147,15 +30227,15 @@
       "judgment": "no",
       "reason": "a field label"
     },
-    "device|Materials: your destination pack's airports and arrival page, or a grown-up who can help you check the airport's or station's own website if your pack doesn't have that page yet, your route and nights from Checkpoint 4, your route map notes from Session 28, your must-do list on your My Calls page, your strong maybes from Checkpoint 3 (for the ones marked \"if nearby\"), your Trip-Basics card (for how your family gets there), your Session 29 formula (for its ½ marks), or a grown-up who can tell you how long the trips there and home take, your family's current travel assumptions page (for the arrival and departure places), a device with a map app or map website (kid-safe filter on), your Source Log, a blank page|1": {
+    "device|Materials: your destination pack's airports and arrival page (for the first day's trip into the city), or a grown-up who can help you check the airport's or station's own website if your pack doesn't have that page yet, your route and nights from Checkpoint 4, your route map notes from Session 28, your must-do list on your My Calls page, your strong maybes from Checkpoint 3 (for the ones marked \"if nearby\"), your Trip-Basics card (for how your family gets there), your Session 29 formula (for its ½ marks), or a grown-up who can tell you how long the trips there and home take, your family's current travel assumptions page (for the arrival and departure places), a device with a map app or map website (kid-safe filter on), your Source Log, a blank page|1": {
       "line": 13,
       "judgment": "no",
-      "reason": "a field label listing materials; the negation is a condition inside the list"
+      "reason": "a field label listing materials"
     },
-    "banned|Materials: your destination pack's airports and arrival page, or a grown-up who can help you check the airport's or station's own website if your pack doesn't have that page yet, your route and nights from Checkpoint 4, your route map notes from Session 28, your must-do list on your My Calls page, your strong maybes from Checkpoint 3 (for the ones marked \"if nearby\"), your Trip-Basics card (for how your family gets there), your Session 29 formula (for its ½ marks), or a grown-up who can tell you how long the trips there and home take, your family's current travel assumptions page (for the arrival and departure places), a device with a map app or map website (kid-safe filter on), your Source Log, a blank page|1": {
+    "banned|Materials: your destination pack's airports and arrival page (for the first day's trip into the city), or a grown-up who can help you check the airport's or station's own website if your pack doesn't have that page yet, your route and nights from Checkpoint 4, your route map notes from Session 28, your must-do list on your My Calls page, your strong maybes from Checkpoint 3 (for the ones marked \"if nearby\"), your Trip-Basics card (for how your family gets there), your Session 29 formula (for its ½ marks), or a grown-up who can tell you how long the trips there and home take, your family's current travel assumptions page (for the arrival and departure places), a device with a map app or map website (kid-safe filter on), your Source Log, a blank page|1": {
       "line": 13,
       "judgment": "no",
-      "reason": "a field label listing materials; no same-subject restatement"
+      "reason": "a materials list; the negation is a condition inside the list, with no same-subject restatement"
     },
     "device|Write the rules you'll use to build every day of this trip.|1": {
       "line": 17,
@@ -30292,10 +30372,15 @@
       "judgment": "no",
       "reason": "an instruction"
     },
-    "split|Then plan one light activity for the other half, and mark the day Easy or Medium. → The last day has a rule too.|1": {
-      "line": 40,
+    "split|Your destination pack's airports and arrival page helps you find how long the trip into the city takes. → If your pack doesn't have that page yet, a grown-up can help you check the airport's or station's own website.|1": {
+      "line": 38,
       "judgment": "no",
-      "reason": "a statement"
+      "reason": "a condition and a permission"
+    },
+    "split|Then plan one light activity for the other half, and mark the day Easy or Medium. → Your destination pack's airports and arrival page helps you find how long the trip into the city takes.|1": {
+      "line": 38,
+      "judgment": "no",
+      "reason": "a pointer to a source"
     },
     "split|The last day has a rule too. → Its anchor is getting from your last overnight place to where you leave from, once a grown-up has set that place.|1": {
       "line": 40,
@@ -30321,6 +30406,11 @@
       "line": 40,
       "judgment": "no",
       "reason": "an instruction"
+    },
+    "split|If your pack doesn't have that page yet, a grown-up can help you check the airport's or station's own website. → The last day has a rule too.|1": {
+      "line": 40,
+      "judgment": "no",
+      "reason": "a fact"
     },
     "split|Write it next to your first-day rule. → A moving day has a rule too.|1": {
       "line": 42,
@@ -30352,20 +30442,20 @@
       "judgment": "no",
       "reason": "a conditional instruction"
     },
-    "split|After a short one, plan one light activity, and mark it Easy or Medium. → Your destination pack's airports and arrival page helps you find how long the trip into the city takes.|1": {
+    "split|After a short one, plan one light activity, and mark it Easy or Medium. → Your route map notes from Session 28 have how long that ride takes.|1": {
       "line": 42,
       "judgment": "no",
-      "reason": "a fact"
+      "reason": "a pointer to a source"
     },
-    "split|Your destination pack's airports and arrival page helps you find how long the trip into the city takes. → If your pack doesn't have that page yet, a grown-up can help you check the airport's or station's own website.|1": {
+    "split|Your route map notes from Session 28 have how long that ride takes. → If they don't, check it with the map's Directions and add it to your notes.|1": {
       "line": 42,
       "judgment": "no",
-      "reason": "a condition and a permission"
+      "reason": "a conditional fallback instruction"
     },
-    "split|If your pack doesn't have that page yet, a grown-up can help you check the airport's or station's own website. → The grown-ups book that ride.|1": {
+    "split|If they don't, check it with the map's Directions and add it to your notes. → The grown-ups book that ride.|1": {
       "line": 42,
       "judgment": "no",
-      "reason": "a fact of who books the ride; nothing rejected"
+      "reason": "a fact of who books the ride"
     },
     "device|Read the rules above, and pick the ones you want to keep.|1": {
       "line": 44,
@@ -30512,20 +30602,25 @@
       "judgment": "no",
       "reason": "two conditional facts"
     },
-    "split|After a long journey, the first day's anchor is the arrival itself; after a short one, arriving takes about half the day. → The airport-to-city details, or the station or drive equivalent, are in the destination pack's airports and arrival page.|1": {
+    "split|After a long journey, the first day's anchor is the arrival itself; after a short one, arriving takes about half the day. → The airport-to-city details are in the destination pack's airports and arrival page.|1": {
       "line": 85,
       "judgment": "no",
-      "reason": "a fact"
+      "reason": "a pointer to a source"
     },
-    "split|The airport-to-city details, or the station or drive equivalent, are in the destination pack's airports and arrival page. → Where the pack does not have that page yet, use the official airport or transport site and note the date.|1": {
+    "split|The airport-to-city details are in the destination pack's airports and arrival page. → Where the pack does not have that page yet, or you arrive by train or car, use the official airport or station site, or the map's Directions, and note the date.|1": {
       "line": 85,
       "judgment": "no",
       "reason": "a conditional instruction"
     },
-    "split|Where the pack does not have that page yet, use the official airport or transport site and note the date. → Booking that transfer is yours.|1": {
+    "split|Where the pack does not have that page yet, or you arrive by train or car, use the official airport or station site, or the map's Directions, and note the date. → If your child can't tell from the Session 29 formula how long the trips there and home take, tell them.|1": {
       "line": 85,
       "judgment": "no",
-      "reason": "a statement of the parent's role"
+      "reason": "a conditional instruction"
+    },
+    "split|If your child can't tell from the Session 29 formula how long the trips there and home take, tell them. → Booking that transfer is yours.|1": {
+      "line": 85,
+      "judgment": "no",
+      "reason": "a statement of who books the transfer"
     },
     "split|Booking that transfer is yours. → The lighter page.|1": {
       "line": 87,
@@ -30944,15 +31039,20 @@
       "judgment": "no",
       "reason": "a fact with a reason"
     },
-    "split|The card filenames are numbered for the same kind of reason. → If you booked dates in a different season from the Checkpoint 1 recommendation, tell your child which season it is.|1": {
-      "line": 78,
-      "judgment": "no",
-      "reason": "a conditional instruction"
-    },
     "split|If you booked dates in a different season from the Checkpoint 1 recommendation, tell your child which season it is. → A broad word such as \"late spring\" is enough.|1": {
       "line": 78,
       "judgment": "no",
       "reason": "a sufficiency statement, as on Session 43"
+    },
+    "split|The card filenames are numbered for the same kind of reason. → If someone comes for only part of the trip and your child has no Session 33 note, tell them who is there on which days.|1": {
+      "line": 78,
+      "judgment": "no",
+      "reason": "a conditional instruction"
+    },
+    "split|If someone comes for only part of the trip and your child has no Session 33 note, tell them who is there on which days. → If you booked dates in a different season from the Checkpoint 1 recommendation, tell your child which season it is.|1": {
+      "line": 78,
+      "judgment": "no",
+      "reason": "a conditional instruction"
     },
     "split|The lighter page. → From Phase 7 on, Steps and Workspace are short and your child sets their own Start Here.|1": {
       "line": 80,
@@ -31021,10 +31121,10 @@
       "judgment": "no",
       "reason": "a field label"
     },
-    "device|Materials: this session's Destination Notes, a device with the kid-safe filter on, your day cards from Session 41, your My Calls page (your must-do list and special pick), your attraction cards (to fill a tickets row, and if your special pick hits a block), your Session 39 budget summary and your family's current travel assumptions page (if your special pick hits a block, for the band check), your When the Plan Changes card (if your special pick hits a block), your Trip-Basics card (for whether your dates are booked), a blank Reservation Watchlist, your Source Log|1": {
+    "device|Materials: this session's Destination Notes, a device with the kid-safe filter on, your day cards from Session 41, your Hotel Comparison Cards (for a hotel you put on the watchlist), your My Calls page (your must-do list and special pick), your attraction cards (to fill a tickets row, and if your special pick hits a block), your Session 39 budget summary and your family's current travel assumptions page (if your special pick hits a block, for the band check), your When the Plan Changes card (if your special pick hits a block), your Trip-Basics card (for whether your dates are booked), a blank Reservation Watchlist, your Source Log|1": {
       "line": 13,
       "judgment": "no",
-      "reason": "a field label (materials list)"
+      "reason": "a field label listing materials"
     },
     "device|List the things that might need booking ahead, so the grown-ups know what to watch.|1": {
       "line": 17,
@@ -31378,10 +31478,10 @@
       "judgment": "no",
       "reason": "a field label"
     },
-    "device|Materials: your day cards from Session 41, your Session 29 formula (for its ½ marks), or a grown-up who can tell you how long the trip home takes, your must-do list on your My Calls page, your Reservation Watchlist (in case a change moves something on it), your attraction cards, your Session 39 budget summary and your family's current travel assumptions page (if your special pick hits a block, for the new pick and the band check), your When the Plan Changes card (for any day you change), your traveler profiles, your part-trip note from Session 33 (if you made one) or the grown-up's answer on who is there on which days, your Trip-Basics card (for the time difference, and the maximum or booked trip length), your season from Checkpoint 1, or a grown-up who can tell you the booked season if it's different (for hot weather), your destination pack's transportation basics page, a device with the kid-safe filter on if you check an official site, your Source Log; a blank Trade-Off Report if the third report goes here|1": {
+    "device|Materials: your day cards from Session 41, your Session 29 formula (for its ½ marks), or a grown-up who can tell you how long the trip home takes, your must-do list on your My Calls page, your Reservation Watchlist (in case a change moves something on it), your attraction cards, your Session 39 budget summary and your family's current travel assumptions page (if your special pick hits a block, for the new pick and the band check), your When the Plan Changes card and the pages it names that you've made (for any day you change), your traveler profiles, your part-trip note from Session 33 (if you made one) or the grown-up's answer on who is there on which days, your Trip-Basics card (for the time difference, and the maximum or booked trip length), your season from Checkpoint 1, or a grown-up who can tell you the booked season if it's different (for hot weather), your destination pack's transportation basics page, a device with the kid-safe filter on if you check an official site, your Source Log; a blank Trade-Off Report if the third report goes here|1": {
       "line": 13,
       "judgment": "no",
-      "reason": "a field label (the materials list)"
+      "reason": "a field label listing materials"
     },
     "device|Look over your plan, and find the days that would wear people out.|1": {
       "line": 17,
@@ -32060,15 +32160,15 @@
       "judgment": "no",
       "reason": "a field label"
     },
-    "split|Materials: your City Research Cards (starred sights), a Cut List page, a Backup Plan page, a My Calls page (a blank sheet -- start one if you do not have it yet), and your family's current travel assumptions page (for the budget band, when a grown-up checks your special pick). → On the Core path, you bring your My Calls page, with its must-do list and special pick, the skip and save-for-future notes from Checkpoints 2 and 3, the strong maybes from Checkpoint 3, your day cards and Reservation Watchlist (to cross off anything you cut), your attraction cards and your Session 39 budget summary (if your special pick hits a block), your When the Plan Changes card (for anything you cut, or a block), and your route map notes from Session 28 and your Source Log, with a device with a map app or map website (kid-safe filter on) if a swap needs a new travel time.|1": {
+    "split|Materials: your City Research Cards (starred sights), a Cut List page, a Backup Plan page, a My Calls page (a blank sheet -- start one if you do not have it yet), and your family's current travel assumptions page (for the budget band, when a grown-up checks your special pick). → On the Core path, you bring your My Calls page, with its must-do list and special pick, the skip and save-for-future notes from Checkpoints 2 and 3, the strong maybes from Checkpoint 3, your day cards and Reservation Watchlist (to cross off anything you cut), your attraction cards and your Session 39 budget summary (for anything you cut, or if your special pick hits a block), your When the Plan Changes card and the pages it names that you've made (for anything you cut, or a block), and your route map notes from Session 28 and your Source Log, with a device with a map app or map website (kid-safe filter on) if a swap needs a new travel time.|1": {
       "line": 17,
       "judgment": "no",
-      "reason": "a materials list, then the Core path's list of what to bring"
+      "reason": "a materials list; do not have it yet is a condition"
     },
-    "device|On the Core path, you bring your My Calls page, with its must-do list and special pick, the skip and save-for-future notes from Checkpoints 2 and 3, the strong maybes from Checkpoint 3, your day cards and Reservation Watchlist (to cross off anything you cut), your attraction cards and your Session 39 budget summary (if your special pick hits a block), your When the Plan Changes card (for anything you cut, or a block), and your route map notes from Session 28 and your Source Log, with a device with a map app or map website (kid-safe filter on) if a swap needs a new travel time.|1": {
+    "device|On the Core path, you bring your My Calls page, with its must-do list and special pick, the skip and save-for-future notes from Checkpoints 2 and 3, the strong maybes from Checkpoint 3, your day cards and Reservation Watchlist (to cross off anything you cut), your attraction cards and your Session 39 budget summary (for anything you cut, or if your special pick hits a block), your When the Plan Changes card and the pages it names that you've made (for anything you cut, or a block), and your route map notes from Session 28 and your Source Log, with a device with a map app or map website (kid-safe filter on) if a swap needs a new travel time.|1": {
       "line": 17,
       "judgment": "no",
-      "reason": "a materials list"
+      "reason": "the Core path's list of what to bring"
     },
     "device|Finish your must-see list, set aside what doesn't fit, and make a couple of backup plans.|1": {
       "line": 21,
@@ -32542,7 +32642,7 @@
       "judgment": "no",
       "reason": "a field label"
     },
-    "device|Materials: your Trip-Basics card (for the booked trip length, if your dates are booked), your day cards from Session 41, your pacing review from Session 43, your backup plans and cut list from Session 44, your Reservation Watchlist, your route and nights from Checkpoint 4, your Session 29 formula (for its \"- 1 flight day\" marks), or a grown-up who can tell you which flights land on a later date, your route map notes from Session 28 and your Source Log, the City Research Card for any region on your route (for its town), your family's current travel assumptions page (for the arrival and departure places), a device with a map app or map website (kid-safe filter on), your minutes guesses and times from Sessions 16, 26 and 35 (on your City A card, your Session 26 scoring tables and your Session 35 Hotel Comparison Cards), your When the Plan Changes card and the pages it names (if your days don't match your Checkpoint 4 plan), a timer and a clock, a few blank pages|1": {
+    "device|Materials: your Trip-Basics card (for the booked trip length, if your dates are booked), your day cards from Session 41, your pacing review from Session 43, your backup plans and cut list from Session 44, your Reservation Watchlist, your route and nights from Checkpoint 4, your Session 29 formula (for its \"- 1 flight day\" marks), or a grown-up who can tell you which flights land on a later date and whether each is on the way there or home, your route map notes from Session 28 and your Source Log, the City Research Card for any region on your route (for its town), your family's current travel assumptions page (for the arrival and departure places), a device with a map app or map website (kid-safe filter on), your minutes guesses and times from Sessions 16, 26 and 35 (on your City A card, your Session 26 scoring tables and your Session 35 Hotel Comparison Cards), your When the Plan Changes card and the pages it names (if your days don't match your Checkpoint 4 plan), a timer and a clock, a few blank pages|1": {
       "line": 13,
       "judgment": "no",
       "reason": "a field label listing materials"
@@ -32922,15 +33022,20 @@
       "judgment": "no",
       "reason": "a fact and an instruction offering options"
     },
-    "split|This is a synthesis session, so allow extra time or split it across sittings. → Every column is copied forward from work your child already did.|1": {
-      "line": 86,
-      "judgment": "no",
-      "reason": "a fact"
-    },
     "split|Every column is copied forward from work your child already did. → That matters for motivation, and it shows them their earlier work counts.|1": {
       "line": 86,
       "judgment": "no",
       "reason": "a reason"
+    },
+    "split|This is a synthesis session, so allow extra time or split it across sittings. → If you fly, your child asks which flight days fall on the way there and which on the way home, so have that ready.|1": {
+      "line": 86,
+      "judgment": "no",
+      "reason": "a conditional instruction"
+    },
+    "split|If you fly, your child asks which flight days fall on the way there and which on the way home, so have that ready. → Every column is copied forward from work your child already did.|1": {
+      "line": 86,
+      "judgment": "no",
+      "reason": "a fact"
     },
     "split|That matters for motivation, and it shows them their earlier work counts. → A partly filled draft still reads as a finished plan.|1": {
       "line": 88,
@@ -33029,7 +33134,7 @@
       "judgment": "no",
       "reason": "a field label"
     },
-    "device|Materials: your full itinerary draft and the day cards behind it, your Reservation Watchlist, your budget summary, your cut list, your pacing review from Session 43 (for your flags for the adults), your When the Plan Changes card and the pages it names that you've made (in case the grown-ups approve a change), your route map notes from Session 28 and a device with a map app or map website (kid-safe filter on) (in case a change moves where you arrive or leave), your attraction cards (if your special pick hits a block), your Source Log, a Decision Record page, a blank Parent Review Form for a grown-up to fill in|1": {
+    "device|Materials: your full itinerary draft and the day cards behind it, your Reservation Watchlist, your budget summary, your cut list, your pacing review from Session 43 (for your flags for the adults), your When the Plan Changes card and the pages it names that you've made (in case the grown-ups approve a change), your route map notes from Session 28 and a device with a map app or map website (kid-safe filter on) (in case a change moves where you arrive or leave), your attraction cards (if your special pick hits a block), your Trip-Basics card and your family's current travel assumptions page (in case a change needs the trip length or the band), your Source Log, a Decision Record page, a blank Parent Review Form for a grown-up to fill in|1": {
       "line": 13,
       "judgment": "no",
       "reason": "a field label listing materials"
@@ -34370,6 +34475,11 @@
       "judgment": "no",
       "reason": "an instruction"
     },
+    "split|At each move, a grown-up fills in a fresh card, and the old one is torn up. → The parent's number on each card is for a parent who's with you there, so a grown-up tells you whose number goes on it.|1": {
+      "line": 34,
+      "judgment": "no",
+      "reason": "a fact with its consequence"
+    },
     "device|The privacy rule for this card.|1|block quote": {
       "line": 37,
       "judgment": "no",
@@ -34595,12 +34705,12 @@
       "judgment": "no",
       "reason": "a reassurance"
     },
-    "split|You are done when every line on your readiness checklist is either checked or marked \"ask adults to confirm\", and your card is made. → It has a parent's phone number, the two emergency phrases and your plan's three steps, and its lodging lines are filled in by a grown-up or marked for a grown-up to fill in after booking.|1": {
+    "split|You are done when every line on your readiness checklist is either checked or marked \"ask adults to confirm\", and your card is made. → It has a parent's phone number, the two emergency phrases and your plan's three steps, and its lodging lines and local-language line are filled in by a grown-up or marked for a grown-up to fill in after booking.|1": {
       "line": 95,
       "judgment": "no",
       "reason": "a fact: what the finished card holds"
     },
-    "split|It has a parent's phone number, the two emergency phrases and your plan's three steps, and its lodging lines are filled in by a grown-up or marked for a grown-up to fill in after booking. → The emergency-number rows can stay blank until a grown-up has checked the numbers, as long as your checklist marks them for the adults.|1": {
+    "split|It has a parent's phone number, the two emergency phrases and your plan's three steps, and its lodging lines and local-language line are filled in by a grown-up or marked for a grown-up to fill in after booking. → The emergency-number rows can stay blank until a grown-up has checked the numbers, as long as your checklist marks them for the adults.|1": {
       "line": 95,
       "judgment": "no",
       "reason": "a permission with a condition"
@@ -35097,15 +35207,20 @@
       "judgment": "no",
       "reason": "an instruction"
     },
-    "split|Say that warmly if your child worries they are behind. → Judge the binder on organization and clarity.|1": {
-      "line": 90,
-      "judgment": "no",
-      "reason": "an instruction"
-    },
     "split|Judge the binder on organization and clarity. → Decoration belongs on the cover and the dividers, and the research pages stay clean enough for you to use.|1": {
       "line": 90,
       "judgment": "device",
       "reason": "decoration belongs on the cover and the dividers / the research pages stay clean (not decorated)"
+    },
+    "split|Say that warmly if your child worries they are behind. → Tell your child which Phase 1 research-skill pages to keep behind tab 2.|1": {
+      "line": 90,
+      "judgment": "no",
+      "reason": "an instruction"
+    },
+    "split|Tell your child which Phase 1 research-skill pages to keep behind tab 2. → Judge the binder on organization and clarity.|1": {
+      "line": 90,
+      "judgment": "no",
+      "reason": "an instruction"
     },
     "split|Decoration belongs on the cover and the dividers, and the research pages stay clean enough for you to use. → Two contents lines are conditional: the food shortlist under tab 5, and the language and etiquette sheet under tab 8.|1": {
       "line": 92,
@@ -35541,10 +35656,10 @@
       "judgment": "no",
       "reason": "a field label"
     },
-    "device|Materials: your Final Presentation Outline from Session 51, your assembled binder (with your Session 39 budget summary and your Checkpoint 4 route and trip-length recommendation), your When the Plan Changes card and the pages it names (in case the grown-ups approve a change), your Family Trip Goals page from Session 03 (for the poll and your balancing line), your route map notes from Session 28 and a device with a map app or map website (kid-safe filter on) (in case a change moves where you arrive or leave), your Source Log, a Decision Record page, a blank Parent Review Form for a grown-up to fill in|1": {
+    "device|Materials: your Final Presentation Outline from Session 51, your assembled binder (with your Session 39 budget summary and your Checkpoint 4 route and trip-length recommendation), your When the Plan Changes card and the pages it names (in case the grown-ups approve a change), your Family Trip Goals page from Session 03 (for the poll and your balancing line), your part-trip note from Session 33 (if you made one) or the grown-up's answer on who is there on which days, your route map notes from Session 28 and a device with a map app or map website (kid-safe filter on) (in case a change moves where you arrive or leave), your Source Log, a Decision Record page, a blank Parent Review Form for a grown-up to fill in|1": {
       "line": 13,
       "judgment": "no",
-      "reason": "a field label with a materials list"
+      "reason": "a field label listing materials"
     },
     "device|Bring your recommendation to the family, and write down what they decide.|1": {
       "line": 17,
@@ -35616,7 +35731,7 @@
       "judgment": "no",
       "reason": "an instruction"
     },
-    "split|Say whose \"one thing you'd love\" the plan makes room for, and name anyone it leaves out. → For someone with you for only part of the trip, their thing needs to fall on their days, as their profile says.|1": {
+    "split|Say whose \"one thing you'd love\" the plan makes room for, and name anyone it leaves out. → For someone with you for only part of the trip, their thing needs to fall on the days they're there, from your part-trip note or a grown-up's answer.|1": {
       "line": 28,
       "judgment": "no",
       "reason": "a condition, a rule for partial-trip travelers"
@@ -38704,20 +38819,25 @@
       "judgment": "no",
       "reason": "an example of the change"
     },
-    "split|For example, a place you could walk into now needs a timed ticket. → Fix its row on your Reservation Watchlist, or fill in a new row the way Session 42 does.|1": {
+    "split|For example, a place you could walk into now needs a timed ticket. → Fix the item's rows on your Reservation Watchlist, or add it the way Session 42 does.|1": {
       "line": 12,
       "judgment": "no",
       "reason": "an instruction"
     },
-    "split|Fix its row on your Reservation Watchlist, or fill in a new row the way Session 42 does. → With booked dates, tell a grown-up, so they can fix its opening date.|1": {
+    "split|Fix the item's rows on your Reservation Watchlist, or add it the way Session 42 does. → With booked dates, write how far ahead its booking opens in \"When adults should check\", the way Session 42 does.|1": {
       "line": 12,
       "judgment": "no",
-      "reason": "an instruction with a reason"
+      "reason": "a conditional instruction"
     },
-    "split|With booked dates, tell a grown-up, so they can fix its opening date. → Then go down Your plan pages.|1": {
+    "split|With booked dates, write how far ahead its booking opens in \"When adults should check\", the way Session 42 does. → A grown-up turns it into the date.|1": {
       "line": 12,
       "judgment": "no",
-      "reason": "a navigation instruction (go down Your plan pages)"
+      "reason": "a fact of who sets the date"
+    },
+    "split|A grown-up turns it into the date. → Then go down Your plan pages.|1": {
+      "line": 12,
+      "judgment": "no",
+      "reason": "an instruction"
     },
     "device|A must-do dropped?|1": {
       "line": 13,
@@ -38834,26 +38954,6 @@
       "judgment": "no",
       "reason": "a navigation instruction (go down Your plan pages)"
     },
-    "split|A different place to stay? → Mark the new Hotel Comparison Card as your pick, and write \"booked another place\" on the old one.|1": {
-      "line": 16,
-      "judgment": "no",
-      "reason": "an instruction after a question; the note on the old card records the booking"
-    },
-    "split|Mark the new Hotel Comparison Card as your pick, and write \"booked another place\" on the old one. → Is it on your Reservation Watchlist?|1": {
-      "line": 16,
-      "judgment": "no",
-      "reason": "a question"
-    },
-    "split|Is it on your Reservation Watchlist? → Fix that row for the new place.|1": {
-      "line": 16,
-      "judgment": "no",
-      "reason": "an instruction"
-    },
-    "split|Fix that row for the new place. → Is the new place in a different area?|1": {
-      "line": 16,
-      "judgment": "no",
-      "reason": "a question"
-    },
     "split|Is the new place in a different area? → Write \"booked in ___\" beside your pick on your Neighborhood Comparison, naming the new area.|1": {
       "line": 16,
       "judgment": "no",
@@ -38889,6 +38989,26 @@
       "judgment": "no",
       "reason": "a question"
     },
+    "split|A different place to stay? → Mark the new Hotel Comparison Card \"my recommendation for this base\", and write \"booked another place\" on the old one.|1": {
+      "line": 16,
+      "judgment": "no",
+      "reason": "an instruction"
+    },
+    "split|Mark the new Hotel Comparison Card \"my recommendation for this base\", and write \"booked another place\" on the old one. → Is it on your Reservation Watchlist?|1": {
+      "line": 16,
+      "judgment": "no",
+      "reason": "a question"
+    },
+    "split|Is it on your Reservation Watchlist? → Fix its rows for the new place.|1": {
+      "line": 16,
+      "judgment": "no",
+      "reason": "an instruction"
+    },
+    "split|Fix its rows for the new place. → Is the new place in a different area?|1": {
+      "line": 16,
+      "judgment": "no",
+      "reason": "a question"
+    },
     "device|A different number of rooms?|1": {
       "line": 17,
       "judgment": "no",
@@ -38899,16 +39019,6 @@
       "judgment": "no",
       "reason": "a fact"
     },
-    "split|A grown-up tells you how many rooms, and on which nights. → Fix the room count on your Hotel Comparison Card.|1": {
-      "line": 17,
-      "judgment": "no",
-      "reason": "an instruction"
-    },
-    "split|Fix the room count on your Hotel Comparison Card. → If that place charges per room, fix the Rooms column of your Session 39 hotel table too, with a row for each room count and its nights.|1": {
-      "line": 17,
-      "judgment": "no",
-      "reason": "a condition with an instruction"
-    },
     "split|If that place charges per room, fix the Rooms column of your Session 39 hotel table too, with a row for each room count and its nights. → A place that charges per person keeps its people count there.|1": {
       "line": 17,
       "judgment": "no",
@@ -38918,6 +39028,16 @@
       "line": 17,
       "judgment": "no",
       "reason": "a navigation instruction (go down Your plan pages)"
+    },
+    "split|A grown-up tells you how many rooms, and on which nights. → Fix the room-setup row on your Hotel Comparison Card.|1": {
+      "line": 17,
+      "judgment": "no",
+      "reason": "an instruction"
+    },
+    "split|Fix the room-setup row on your Hotel Comparison Card. → If that place charges per room, fix the Rooms column of your Session 39 hotel table too, with a row for each room count and its nights.|1": {
+      "line": 17,
+      "judgment": "no",
+      "reason": "a condition with an instruction"
     },
     "device|A place or its nights changed?|1": {
       "line": 18,
@@ -39709,7 +39829,7 @@
       "judgment": "no",
       "reason": "a list entry naming a page and what to check"
     },
-    "device|Your day cards (Session 41): each day's number, roughly when, where you'll sleep, its anchor and travel legs, its tickets row, its cost (with \"fewer of us\" on a day someone is away), and its energy level.|1": {
+    "device|Your day cards (Session 41): each day's number, roughly when and where you'll sleep, and every box in each day's rows: its anchor activity, meal ideas, transit notes, tickets, cost (with \"fewer of us\" on a day someone is away), energy level and backup idea.|1": {
       "line": 64,
       "judgment": "no",
       "reason": "a list entry naming a page and what to check"
@@ -39749,17 +39869,27 @@
       "judgment": "no",
       "reason": "a list entry naming a page and what to check"
     },
-    "device|Your \"if I get separated\" card (Session 49): a grown-up fixes its lodging lines.|1": {
+    "device|Your \"if I get separated\" card (Session 49): each line the change touches.|1": {
       "line": 70,
       "judgment": "no",
-      "reason": "a list entry with a fact"
+      "reason": "a list entry naming a page and what to check"
+    },
+    "split|Your \"if I get separated\" card (Session 49): each line the change touches. → A new place to stay gets a fresh card, with its lodging lines and its local-language line filled in by a grown-up, and the old one is torn up.|1": {
+      "line": 70,
+      "judgment": "no",
+      "reason": "a replacement: a fresh card for a new place, and the old one torn up"
+    },
+    "split|A new place to stay gets a fresh card, with its lodging lines and its local-language line filled in by a grown-up, and the old one is torn up. → If the parent whose number is on it won't be with you there, a grown-up tells you whose number to write instead.|1": {
+      "line": 70,
+      "judgment": "no",
+      "reason": "a conditional fallback; the instead rejects no option the reader could choose"
     },
     "device|Your Final Presentation Outline (Session 51): if you haven't presented it yet, its Part 1 lines.|1": {
       "line": 71,
       "judgment": "no",
       "reason": "a list entry with a condition"
     },
-    "device|Your Checkpoint 6 packet (Session 52): whose \"one thing you'd love\" the plan makes room for.|1": {
+    "device|Your final recommendation packet (Session 52): whose \"one thing you'd love\" the plan makes room for.|1": {
       "line": 72,
       "judgment": "no",
       "reason": "a list entry naming a page and what to check"

@@ -10,7 +10,7 @@ You are here: Phase 7 (Itinerary Building). Not a First Taste step. Previous: [4
 - Planner skill: organizing information
 - Estimated time: several sittings; stop whenever you want
 - Parent involvement: none / independent work
-- Materials: your [Trip-Basics card](../../templates/trip_basics.md) (for the booked trip length, if your dates are booked), your day cards from Session 41, your pacing review from Session 43, your backup plans and cut list from Session 44, your Reservation Watchlist, your route and nights from Checkpoint 4, your Session 29 formula (for its "- 1 flight day" marks), or a grown-up who can tell you which flights land on a later date, your route map notes from Session 28 and your [Source Log](../../templates/source_log.md), the City Research Card for any region on your route (for its town), your family's [current travel assumptions](../../templates/current_family_travel_assumptions.md) page (for the arrival and departure places), a device with a map app or map website (kid-safe filter on), your minutes guesses and times from Sessions 16, 26 and 35 (on your City A card, your Session 26 scoring tables and your Session 35 Hotel Comparison Cards), your [When the Plan Changes card](../../student_guide/when_the_plan_changes.md) and the pages it names (if your days don't match your Checkpoint 4 plan), a timer and a clock, a few blank pages
+- Materials: your [Trip-Basics card](../../templates/trip_basics.md) (for the booked trip length, if your dates are booked), your day cards from Session 41, your pacing review from Session 43, your backup plans and cut list from Session 44, your Reservation Watchlist, your route and nights from Checkpoint 4, your Session 29 formula (for its "- 1 flight day" marks), or a grown-up who can tell you which flights land on a later date and whether each is on the way there or home, your route map notes from Session 28 and your [Source Log](../../templates/source_log.md), the City Research Card for any region on your route (for its town), your family's [current travel assumptions](../../templates/current_family_travel_assumptions.md) page (for the arrival and departure places), a device with a map app or map website (kid-safe filter on), your minutes guesses and times from Sessions 16, 26 and 35 (on your City A card, your Session 26 scoring tables and your Session 35 Hotel Comparison Cards), your [When the Plan Changes card](../../student_guide/when_the_plan_changes.md) and the pages it names (if your days don't match your Checkpoint 4 plan), a timer and a clock, a few blank pages
 
 ## Goal
 
@@ -83,7 +83,7 @@ If you have extra energy, read your whole draft aloud to someone, the way you'd 
 
 ## Parent Notes
 
-This is a synthesis session, so allow extra time or split it across sittings. Every column is copied forward from work your child already did. That matters for motivation, and it shows them their earlier work counts.
+This is a synthesis session, so allow extra time or split it across sittings. If you fly, your child asks which flight days fall on the way there and which on the way home, so have that ready. Every column is copied forward from work your child already did. That matters for motivation, and it shows them their earlier work counts.
 
 A partly filled draft still reads as a finished plan. Day, city and main activity are enough for Checkpoint 5 to review, and the meals column can stay light if your family skipped the food sessions.
 

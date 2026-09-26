@@ -31,7 +31,7 @@ Set up your first small step, then do it. A suggestion: write "If I get separate
 
 **Your card.** Your card holds where you're staying, its address and its phone number, and a parent's phone number. A grown-up adds a line in the local language saying where you're staying, so you can show it to anyone. Copy two emergency phrases from your destination pack's safety and emergency page: one that means "please help", and one that means "I'm lost, I got separated from my family". If your pack doesn't have that page yet, a grown-up finds the phrases for you. A grown-up checks the wording either way.
 
-If a grown-up has already booked and checked where you're staying, they fill in those lines now. If not, the lines stay blank until after booking. Your family may book after the plan is finished. A safety card never carries a guess. Staying in more than one place? Then you carry only the card for where you sleep that night. At each move, a grown-up fills in a fresh card, and the old one is torn up.
+If a grown-up has already booked and checked where you're staying, they fill in those lines now. If not, the lines stay blank until after booking. Your family may book after the plan is finished. A safety card never carries a guess. Staying in more than one place? Then you carry only the card for where you sleep that night. At each move, a grown-up fills in a fresh card, and the old one is torn up. The parent's number on each card is for a parent who's with you there, so a grown-up tells you whose number goes on it.
 
 <!-- density-exempt: X, not Y -- the card's privacy exception is a safety statement the brief requires on this page -->
 > **The privacy rule for this card.** This card is **not** an exception to the privacy rules. It may carry the name, address and phone number of where you're staying, and a parent's phone number. That's the least your family needs to find you again. It **never** carries a passport number, a birthdate, a confirmation number, or your home address. It's a safety card for your pocket. It is never saved in a shared folder, put into an AI tool, or posted anywhere. See [the privacy and safety page](../../docs/privacy_and_safety.md).
@@ -57,7 +57,7 @@ Your readiness checklist:
 | Travel cards looked into | you (your Session 30 notes) | |
 | Packing list checked | you, then a grown-up | |
 | "If I get separated" card made | you | |
-| If the card's lodging lines are still blank, ask adults to fill them in and check them after booking | ask adults | |
+| If the card's lodging lines or local-language line are still blank, ask adults to fill them in and check them after booking | ask adults | |
 | At each move to a new place to stay, a fresh card with that place's lines | ask adults | |
 | If the card's emergency-number rows are still blank, ask adults to check the numbers so you can write them in before the trip | ask adults | |
 | Staying-found plan said out loud once | you and a grown-up | |
@@ -92,7 +92,7 @@ Your readiness checklist, with every line ticked or marked for the grown-ups. Yo
 
 ## Stop Point
 
-You are done when every line on your readiness checklist is either checked or marked "ask adults to confirm", and your card is made. It has a parent's phone number, the two emergency phrases and your plan's three steps, and its lodging lines are filled in by a grown-up or marked for a grown-up to fill in after booking. The emergency-number rows can stay blank until a grown-up has checked the numbers, as long as your checklist marks them for the adults. You've also said the three-part plan out loud once with a grown-up. That's the whole thing.
+You are done when every line on your readiness checklist is either checked or marked "ask adults to confirm", and your card is made. It has a parent's phone number, the two emergency phrases and your plan's three steps, and its lodging lines and local-language line are filled in by a grown-up or marked for a grown-up to fill in after booking. The emergency-number rows can stay blank until a grown-up has checked the numbers, as long as your checklist marks them for the adults. You've also said the three-part plan out loud once with a grown-up. That's the whole thing.
 
 ## Source Check
 
