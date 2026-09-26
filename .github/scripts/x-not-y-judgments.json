@@ -3586,16 +3586,6 @@
       "judgment": "no",
       "reason": "a fact: what the travel row says"
     },
-    "split|Its travel row says what to check if you fly, and that a train or a drive has no flight-day marks. → Checkpoints 4 to 6 and Sessions 39, 42 to 45 and 51 point to the card in one line, and each Stop Point checks it.|1": {
-      "line": 58,
-      "judgment": "no",
-      "reason": "a fact: which pages point to the card"
-    },
-    "split|Checkpoints 4 to 6 and Sessions 39, 42 to 45 and 51 point to the card in one line, and each Stop Point checks it. → Checkpoint 4 crosses off the must-dos its route leaves out, Checkpoint 5 takes up Session 43's flags, and Sessions 43 and 44 carry their own changes to the day cards and the watchlist.|1": {
-      "line": 58,
-      "judgment": "no",
-      "reason": "a list of facts about the checkpoints and sessions"
-    },
     "split|Checkpoint 4 crosses off the must-dos its route leaves out, Checkpoint 5 takes up Session 43's flags, and Sessions 43 and 44 carry their own changes to the day cards and the watchlist. → A new pick after a block comes from a place on the route and replaces the old one on the My Calls page, with a grown-up's \"got it\", at Sessions 39, 42 to 44 and Checkpoints 5 and 6, and the budget takes its ticket.|1": {
       "line": 58,
       "judgment": "no",
@@ -3856,7 +3846,27 @@
       "judgment": "no",
       "reason": "a change record: a fact"
     },
-    "split|The card and Session 49 use the templates' field names, and a new place to stay gets a fresh separation card, with a parent who's there on it. → The insert contract's parent-facing rows give local hazards one home, ‹code› , and lodging priced per person and children's fares one home, ‹code› , as the Batch 3 brief settles.|1": {
+    "split|Its travel row says what to check if you fly, and that a train or a drive has no flight-day marks. → Checkpoints 4 to 6 and Sessions 39, 42 to 45, 51 and 53 point to the card in one line, and each Stop Point checks it.|1": {
+      "line": 58,
+      "judgment": "no",
+      "reason": "a change record: a fact of which pages point to the card"
+    },
+    "split|Checkpoints 4 to 6 and Sessions 39, 42 to 45, 51 and 53 point to the card in one line, and each Stop Point checks it. → Checkpoint 4 crosses off the must-dos its route leaves out, Checkpoint 5 takes up Session 43's flags, and Sessions 43 and 44 carry their own changes to the day cards and the watchlist.|1": {
+      "line": 58,
+      "judgment": "no",
+      "reason": "a change record: a list of facts about the checkpoints and sessions"
+    },
+    "split|The card and Session 49 use the templates' field names, and a new place to stay gets a fresh separation card, with a parent who's there on it. → The card's dropped must-do row and Checkpoint 4 keep the special pick unless a grown-up names one of the three blocks.|1": {
+      "line": 58,
+      "judgment": "no",
+      "reason": "a change record: a fact with its exception (unless a grown-up names a block); it rejects no named alternative"
+    },
+    "split|The card's dropped must-do row and Checkpoint 4 keep the special pick unless a grown-up names one of the three blocks. → Session 53 takes a band changed since the band sentence down the card before its budget question.|1": {
+      "line": 58,
+      "judgment": "no",
+      "reason": "a change record: a fact; before names an order of steps, not a preference"
+    },
+    "split|Session 53 takes a band changed since the band sentence down the card before its budget question. → The insert contract's parent-facing rows give local hazards one home, ‹code› , and lodging priced per person and children's fares one home, ‹code› , as the Batch 3 brief settles.|1": {
       "line": 58,
       "judgment": "no",
       "reason": "a change record: a fact"
@@ -26571,12 +26581,12 @@
       "judgment": "no",
       "reason": "a definition"
     },
-    "split|A place or must-do that your approved route, or your one-base way, leaves out is a change too. → Your special pick stays.|1": {
+    "split|A place or must-do that your approved route, or your one-base way, leaves out is a change too. → Your special pick stays, unless a grown-up names one of the three blocks.|1": {
       "line": 84,
       "judgment": "no",
-      "reason": "an exception to the claim, not a rejected alternative"
+      "reason": "a rule with its exception (unless a grown-up names a block), following a claim about left-out must-dos; it rejects no named alternative"
     },
-    "split|Your special pick stays. → For each change, go down your When the Plan Changes card, and fix every page it names that you've already made.|1": {
+    "split|Your special pick stays, unless a grown-up names one of the three blocks. → For each change, go down your When the Plan Changes card, and fix every page it names that you've already made.|1": {
       "line": 84,
       "judgment": "no",
       "reason": "an instruction"
@@ -26701,12 +26711,22 @@
       "judgment": "no",
       "reason": "a statement of who owns the reasoning"
     },
-    "split|The reasoning about the shape of the journey, such as flying into one city and out of another, stays with you. → Once you approve, your child carries each change back with their When the Plan Changes card, including the must-dos your route leaves out; the special pick stays.|1": {
+    "split|The reasoning about the shape of the journey, such as flying into one city and out of another, stays with you. → Once you approve, your child carries each change back with their When the Plan Changes card, including the must-dos your route leaves out.|1": {
       "line": 110,
       "judgment": "no",
-      "reason": "an instruction with an exception (the special pick stays)"
+      "reason": "a statement of what the child does after approval; it recasts nothing in the sentence before"
     },
-    "split|Once you approve, your child carries each change back with their When the Plan Changes card, including the must-dos your route leaves out; the special pick stays. → If you fly and a place changes, tell them which flights land on a later date.|1": {
+    "split|Once you approve, your child carries each change back with their When the Plan Changes card, including the must-dos your route leaves out. → A change you make keeps the special pick and its place; only the three blocks change it.|1": {
+      "line": 110,
+      "judgment": "no",
+      "reason": "a rule with its limit, as recorded for the same sentence on the Checkpoint 5 and 6 pages; it rejects no named alternative"
+    },
+    "split|A change you make keeps the special pick and its place; only the three blocks change it. → If one applies, name it, and your child chooses a new pick with you, as in Session 26.|1": {
+      "line": 110,
+      "judgment": "no",
+      "reason": "a conditional instruction"
+    },
+    "split|If one applies, name it, and your child chooses a new pick with you, as in Session 26. → If you fly and a place changes, tell them which flights land on a later date.|1": {
       "line": 110,
       "judgment": "no",
       "reason": "a conditional instruction"
@@ -36243,10 +36263,10 @@
       "judgment": "no",
       "reason": "a path-specific materials line"
     },
-    "split|On the Core path, your assembled binder from Session 50 holds the plan pages, with your must-do list and approved route, and you use the final reflection page in your kit's ‹code› folder. → On the Core path, also bring your follow-up questions from Sessions 51 and 52, Checkpoint 6's parent review form, your final recommendation packet, your checkpoint reflections, your minutes guesses and times from Sessions 16, 26, 35 and 45 (on your City A card, your Session 26 scoring tables, your Session 35 Hotel Comparison Cards and your itinerary draft), your budget summary from Session 39, your family's current travel assumptions page (for the budget band), and your First Taste reflection if this is your capstone re-run.|1": {
+    "split|On the Core path, your assembled binder from Session 50 holds the plan pages, with your must-do list and approved route, and you use the final reflection page in your kit's ‹code› folder. → On the Core path, also bring your follow-up questions from Sessions 51 and 52, Checkpoint 6's parent review form, your final recommendation packet, your checkpoint reflections, your minutes guesses and times from Sessions 16, 26, 35 and 45 (on your City A card, your Session 26 scoring tables, your Session 35 Hotel Comparison Cards and your itinerary draft), your budget summary from Session 39, your family's current travel assumptions page (for the budget band), your When the Plan Changes card (if a grown-up changed your band after your band sentence), and your First Taste reflection if this is your capstone re-run.|1": {
       "line": 15,
       "judgment": "no",
-      "reason": "a path-specific materials line"
+      "reason": "a path-specific materials line; the band condition is a condition inside the list"
     },
     "device|Look back at what you learned, and hand your plan to the grown-ups.|1": {
       "line": 19,
@@ -36453,11 +36473,6 @@
       "judgment": "no",
       "reason": "a list label"
     },
-    "split|Budget. → Look at your Session 39 band sentence, and the matching piece you checked against the band.|1": {
-      "line": 45,
-      "judgment": "no",
-      "reason": "an instruction"
-    },
     "split|Look at your Session 39 band sentence, and the matching piece you checked against the band. → How close did it come?|1": {
       "line": 45,
       "judgment": "no",
@@ -36477,6 +36492,21 @@
       "line": 45,
       "judgment": "no",
       "reason": "a reason (nobody has spent the money yet)"
+    },
+    "split|Budget. → Did a grown-up change your band after you wrote your band sentence?|1": {
+      "line": 45,
+      "judgment": "no",
+      "reason": "a question after a step label"
+    },
+    "split|Did a grown-up change your band after you wrote your band sentence? → Do the \"Your budget band changed?\" row of your When the Plan Changes card first.|1": {
+      "line": 45,
+      "judgment": "no",
+      "reason": "an instruction naming which row to do first"
+    },
+    "split|Do the \"Your budget band changed?\" row of your When the Plan Changes card first. → Look at your Session 39 band sentence, and the matching piece you checked against the band.|1": {
+      "line": 45,
+      "judgment": "no",
+      "reason": "an instruction"
     },
     "device|Hand it off.|1": {
       "line": 47,
@@ -36558,15 +36588,20 @@
       "judgment": "no",
       "reason": "a stop condition"
     },
-    "split|On the Core path, you are done when you've also answered the three extra questions, filled tabs 10 and 11, and handed your binder to a grown-up. → If this is your capstone re-run, you've looked back at your First Taste reflection too.|1": {
-      "line": 65,
-      "judgment": "no",
-      "reason": "a conditional stop condition"
-    },
     "split|If this is your capstone re-run, you've looked back at your First Taste reflection too. → This is the finish line for the whole project.|1": {
       "line": 65,
       "judgment": "no",
       "reason": "a statement"
+    },
+    "split|On the Core path, you are done when you've also answered the three extra questions, filled tabs 10 and 11, and handed your binder to a grown-up. → If a grown-up changed your band after your band sentence, you've gone down your When the Plan Changes card for it.|1": {
+      "line": 65,
+      "judgment": "no",
+      "reason": "a conditional stop condition"
+    },
+    "split|If a grown-up changed your band after your band sentence, you've gone down your When the Plan Changes card for it. → If this is your capstone re-run, you've looked back at your First Taste reflection too.|1": {
+      "line": 65,
+      "judgment": "no",
+      "reason": "a conditional stop condition"
     },
     "device|No new sources needed unless you looked something up.|1": {
       "line": 69,
@@ -36677,6 +36712,16 @@
       "line": 86,
       "judgment": "no",
       "reason": "a reason (the trip has not happened, so no spending exists yet)"
+    },
+    "split|On the Core path, the budget question compares the matching piece of their Session 39 estimate with the band, as their band sentence does, which is an anchor; the trip has not happened, so there is no spending to compare with yet. → If you've changed the band since your child wrote that sentence, write the new one on the assumptions page and tell them.|1": {
+      "line": 86,
+      "judgment": "no",
+      "reason": "a conditional instruction to the grown-up"
+    },
+    "split|If you've changed the band since your child wrote that sentence, write the new one on the assumptions page and tell them. → They take it down the When the Plan Changes card's \"Your budget band changed?\" row first.|1": {
+      "line": 86,
+      "judgment": "no",
+      "reason": "a statement of what the child does next"
     }
   },
   "framework/student_guide/README.md": {
@@ -38859,12 +38904,17 @@
       "judgment": "no",
       "reason": "an instruction with a condition"
     },
-    "split|Put it on your cut list, if you've made one. → Your special pick always stays.|1": {
+    "split|Put it on your cut list, if you've made one. → Your special pick stays, unless a grown-up names one of the three blocks.|1": {
       "line": 13,
       "judgment": "no",
-      "reason": "a rule: the special pick stays; it rejects no named alternative"
+      "reason": "a rule with its exception (unless a grown-up names a block), after an instruction for a dropped must-do; it rejects no named alternative"
     },
-    "split|Your special pick always stays. → Then go down Your plan pages.|1": {
+    "split|Your special pick stays, unless a grown-up names one of the three blocks. → For a block, use the row for a blocked special pick.|1": {
+      "line": 13,
+      "judgment": "no",
+      "reason": "an instruction pointing to another row"
+    },
+    "split|For a block, use the row for a blocked special pick. → Then go down Your plan pages.|1": {
       "line": 13,
       "judgment": "no",
       "reason": "a navigation instruction (go down Your plan pages)"
