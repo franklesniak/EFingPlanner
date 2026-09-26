@@ -64,7 +64,7 @@ Your readiness checklist:
 | If the card's emergency-number rows are still blank, ask adults to check the numbers so you can write them in before the trip | ask adults | |
 | Staying-found plan said out loud once | you and a grown-up | |
 
-Your "if I get separated" card: use the blank [If I Get Separated card](../../trip_starter/if_i_get_separated_card.md) from your trip starter kit. It lists each line, who writes it, and your three-step plan. Fill it in, or copy its rows onto a small card for your pocket.
+Your "if I get separated" card: use the blank [If I Get Separated card](../../trip_starter/if_i_get_separated_card.md) from your trip starter kit. It lists each line, who writes it, and your three-step plan. Fill it in, or copy its rows onto a small card for your pocket, with the three steps on the back.
 
 Never on this card: a passport number, a birthdate, a confirmation number, or your home address.
 

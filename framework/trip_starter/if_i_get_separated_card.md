@@ -4,7 +4,7 @@
 
 Copy this page out of the repository before you fill it in. Do not commit your filled-in work to a public repository.
 
-You make this card in [Session 49](../sessions/phase_08_readiness_final/49_travel_readiness_checklist.md), and you carry it in your pocket on the trip. It holds what a helper needs to get you back to your family. Fill in this page, or copy its rows onto a small card that fits your pocket.
+You make this card in [Session 49](../sessions/phase_08_readiness_final/49_travel_readiness_checklist.md), and you carry it in your pocket on the trip. It holds what a helper needs to get you back to your family. Fill in this page, or copy its rows onto a small card that fits your pocket, with your plan's three steps on the back.
 
 ## My card
 
