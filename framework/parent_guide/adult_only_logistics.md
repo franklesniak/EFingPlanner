@@ -28,7 +28,7 @@ Worth knowing: your child's binder is valuable either way. If you use an agent, 
 ## The checklist
 
 - [ ] Passports
-- [ ] Entry requirements: verify the current rule on the official government source close to travel, and write the date you checked. If anyone is *selling* you a travel authorization, check that against the official source before paying; the destination specifics are in your destination pack's adult-logistics page, or on the official source if the pack does not cover them yet
+- [ ] Entry requirements: verify the current rule on the official government source close to travel, and write the date you checked. If anyone is *selling* you a travel authorization, check that against the official source before paying; the destination specifics are in your destination pack's adult logistics page, or on the official source if the pack does not cover them yet
 - [ ] Visa or entry forms, if applicable
 - [ ] Flights
 - [ ] Hotels
@@ -55,7 +55,7 @@ Three things go beyond stamina, and they are yours to verify:
 
 - **Step-free routing and station elevator availability** on the route you're actually planning
 - **Accessible lodging** — step-free access, and any room or bathroom needs
-- **Luggage handling** for anyone who shouldn't carry bags up stairs: forwarding services, porter help, or lockers. Those are categories; **which ones exist where you are going, and what they are called, is in your destination pack's adult-logistics page**. If your pack does not have that page yet, check the official sites of the local transport operators, or ask your lodging, and write the date you checked
+- **Luggage handling** for anyone who shouldn't carry bags up stairs: forwarding services, porter help, or lockers. Those are categories; **which ones exist where you are going, and what they are called, is in your destination pack's adult logistics page**. If your pack does not have that page yet, check the official sites of the local transport operators, or ask your lodging, and write the date you checked
 
 <!-- density-exempt: X, not Y -- the spec's child-flags-not-fixes boundary, bold in the batch 2 brief: the child does not research the fix -->
 Your child's job is to *flag* likely trouble spots: a stair-heavy transfer, a hilltop site, a station that may not have a lift. They notice and hand it to you. They don't research the fix.

@@ -78,7 +78,7 @@ Stuck? Use the [When I'm Stuck card](../../student_guide/when_im_stuck.md) in yo
 
 ## Optional Extension
 
-If you want to keep going, there's more a planner can do: more cities, a day-by-day plan, food research, and more. Those fuller sessions exist, and they run in numbered order from [Session 16](../phase_03_choose_places/16_deep_dive_city_a.md). Finishing here is a complete success, and nothing you did gets redone if you go on. If you came here from Session 52, you've already done the ones your family chose. What comes next is the grown-ups' part, and maybe the trip.
+If you want to keep going, there's more a planner can do: more cities, a day-by-day plan, food research, and more. Those fuller sessions exist. Do the ones you haven't done in numbered order, starting with the lowest number. A session you've already done may ask for a little more on the Core path, such as Session 14's Trade-Off Report. Do that part when your numbered order reaches it. Finishing here is a complete success, and nothing you did gets redone if you go on. If you came here from Session 52, you've already done the ones your family chose. What comes next is the grown-ups' part, and maybe the trip.
 
 ## Parent Notes
 

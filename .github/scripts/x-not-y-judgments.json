@@ -3386,16 +3386,6 @@
       "judgment": "no",
       "reason": "a fact: what the Stop Points check"
     },
-    "split|The Stop Points of Sessions 35 and 45 check the minutes guess and the minutes taken beside it, and Session 45 compares with whichever earlier guesses exist. → Every page an adult check in Parent Notes uses is in its session's Materials, as with Session 34's adult-logistics page and Session 44's budget band; the adult's own fare page for Session 39 stays off the child's Materials.|1": {
-      "line": 58,
-      "judgment": "no",
-      "reason": "a rule and its one exception (a caveat), not a rejected alternative"
-    },
-    "split|Every page an adult check in Parent Notes uses is in its session's Materials, as with Session 34's adult-logistics page and Session 44's budget band; the adult's own fare page for Session 39 stays off the child's Materials. → Checkpoints 5 and 6 are done for today when their whole packet is filled in and brought to a grown-up, in the form Checkpoints 2 to 4 use, with the Session 39 budget summary and its band sentence alongside.|1": {
-      "line": 58,
-      "judgment": "no",
-      "reason": "a fact: when the checkpoints are done for today"
-    },
     "split|Checkpoints 5 and 6 are done for today when their whole packet is filled in and brought to a grown-up, in the form Checkpoints 2 to 4 use, with the Session 39 budget summary and its band sentence alongside. → A step that reads the poll or the traveler profiles reads every traveler and names anyone left out: Session 43 names who a hard day is hard on, and Session 52 reads the Session 03 poll and balancing line, with a row for whose wish the plan makes room for and anyone it leaves out.|1": {
       "line": 58,
       "judgment": "no",
@@ -3510,16 +3500,6 @@
       "line": 58,
       "judgment": "no",
       "reason": "an instruction with its fallback; not heard from yet is quoted"
-    },
-    "split|Checkpoints 2 and 6 ask a traveler still marked in Session 03 for their answer, or write \"not heard from yet\". → Each pack page has one name everywhere, as the adult-logistics page and the airports and arrival page show.|1": {
-      "line": 58,
-      "judgment": "no",
-      "reason": "a fact: each pack page has one name"
-    },
-    "split|Each pack page has one name everywhere, as the adult-logistics page and the airports and arrival page show. → Sessions 40 and 49 list the grown-up fallback in Materials beside a pack page that may not exist yet.|1": {
-      "line": 58,
-      "judgment": "no",
-      "reason": "a fact: where the fallback is listed; may not exist yet is a status"
     },
     "split|Sessions 40 and 49 list the grown-up fallback in Materials beside a pack page that may not exist yet. → Session 40's first-day and last-day rules each give the day's energy level, Easy after a long journey and Easy or Medium after a short one.|1": {
       "line": 58,
@@ -3866,7 +3846,37 @@
       "judgment": "no",
       "reason": "a change record: a fact; before names an order of steps, not a preference"
     },
-    "split|Session 53 takes a band changed since the band sentence down the card before its budget question. → The insert contract's parent-facing rows give local hazards one home, ‹code› , and lodging priced per person and children's fares one home, ‹code› , as the Batch 3 brief settles.|1": {
+    "split|The Stop Points of Sessions 35 and 45 check the minutes guess and the minutes taken beside it, and Session 45 compares with whichever earlier guesses exist. → Every page an adult check in Parent Notes uses is in its session's Materials, as with Session 34's adult logistics page and Session 44's budget band; the adult's own fare page for Session 39 stays off the child's Materials.|1": {
+      "line": 58,
+      "judgment": "no",
+      "reason": "a change record: a rule and its one exception (the adult's fare page stays off), a caveat that rejects no named alternative"
+    },
+    "split|Every page an adult check in Parent Notes uses is in its session's Materials, as with Session 34's adult logistics page and Session 44's budget band; the adult's own fare page for Session 39 stays off the child's Materials. → Checkpoints 5 and 6 are done for today when their whole packet is filled in and brought to a grown-up, in the form Checkpoints 2 to 4 use, with the Session 39 budget summary and its band sentence alongside.|1": {
+      "line": 58,
+      "judgment": "no",
+      "reason": "a change record: a fact of when the checkpoints are done for today"
+    },
+    "split|Checkpoints 2 and 6 ask a traveler still marked in Session 03 for their answer, or write \"not heard from yet\". → Each pack page has one name everywhere, as the adult logistics page and the airports and arrival page show.|1": {
+      "line": 58,
+      "judgment": "no",
+      "reason": "a change record: a fact that each pack page has one name"
+    },
+    "split|Each pack page has one name everywhere, as the adult logistics page and the airports and arrival page show. → Sessions 40 and 49 list the grown-up fallback in Materials beside a pack page that may not exist yet.|1": {
+      "line": 58,
+      "judgment": "no",
+      "reason": "a change record: a fact of where the fallback is listed; may not exist yet is a status"
+    },
+    "split|Session 53 takes a band changed since the band sentence down the card before its budget question. → A place the card's nights row leaves with no nights goes down the dropped-place row, unless a grown-up keeps it as a day trip.|1": {
+      "line": 58,
+      "judgment": "no",
+      "reason": "a change record: a rule with its exception (unless a grown-up keeps it as a day trip); it rejects no named alternative"
+    },
+    "split|A place the card's nights row leaves with no nights goes down the dropped-place row, unless a grown-up keeps it as a day trip. → A new traveler, or a traveler's changed food, sends each restaurant card back through Session 37's question, and the traveler profile keeps medical specifics off every page.|1": {
+      "line": 58,
+      "judgment": "no",
+      "reason": "a change record: facts about the restaurant cards and the profile's privacy rule"
+    },
+    "split|A new traveler, or a traveler's changed food, sends each restaurant card back through Session 37's question, and the traveler profile keeps medical specifics off every page. → The insert contract's parent-facing rows give local hazards one home, ‹code› , and lodging priced per person and children's fares one home, ‹code› , as the Batch 3 brief settles.|1": {
       "line": 58,
       "judgment": "no",
       "reason": "a change record: a fact"
@@ -3976,20 +3986,20 @@
       "judgment": "no",
       "reason": "a fact: what two sentences used to say"
     },
-    "split|Two sentences on Session 53 described the later sessions as not built yet. → They now say that those sessions exist: the child's page adds that they run in numbered order from Session 16, and the Parent Notes point to the roadmap for how to continue.|1": {
-      "line": 61,
-      "judgment": "no",
-      "reason": "a change record: what the sentences now say"
-    },
-    "split|They now say that those sessions exist: the child's page adds that they run in numbered order from Session 16, and the Parent Notes point to the roadmap for how to continue. → Previous and Next on Sessions 33, 44 and 53 follow the numbered order, so the chain from Session 00 to Session 53 is continuous, and the First Taste route stays on italic lines.|1": {
-      "line": 61,
-      "judgment": "no",
-      "reason": "a fact: navigation order and its result"
-    },
     "split|Previous and Next on Sessions 33, 44 and 53 follow the numbered order, so the chain from Session 00 to Session 53 is continuous, and the First Taste route stays on italic lines. → The session support notes entries for the three sessions carry the same Core-path lines.|1": {
       "line": 61,
       "judgment": "no",
       "reason": "a fact: the support notes carry the same lines"
+    },
+    "split|Two sentences on Session 53 described the later sessions as not built yet. → They now say that those sessions exist: the child's page adds that a child who goes on does the sessions not yet done in numbered order, with a finished session's Core-path step when that order reaches it, and the Parent Notes point to the roadmap for how to continue.|1": {
+      "line": 61,
+      "judgment": "no",
+      "reason": "a change record: what the two sentences now say; reporting an edit rejects no alternative"
+    },
+    "split|They now say that those sessions exist: the child's page adds that a child who goes on does the sessions not yet done in numbered order, with a finished session's Core-path step when that order reaches it, and the Parent Notes point to the roadmap for how to continue. → Previous and Next on Sessions 33, 44 and 53 follow the numbered order, so the chain from Session 00 to Session 53 is continuous, and the First Taste route stays on italic lines.|1": {
+      "line": 61,
+      "judgment": "no",
+      "reason": "a change record: a fact of navigation order and its result"
     },
     "device|Dropped the archived spec's which-slice-is-biggest budget visual.|1": {
       "line": 62,
@@ -9429,7 +9439,7 @@
       "judgment": "no",
       "reason": "a list entry (an instruction)"
     },
-    "split|Entry requirements: verify the current rule on the official government source close to travel, and write the date you checked. → If anyone is selling you a travel authorization, check that against the official source before paying; the destination specifics are in your destination pack's adult-logistics page, or on the official source if the pack does not cover them yet|1": {
+    "split|Entry requirements: verify the current rule on the official government source close to travel, and write the date you checked. → If anyone is selling you a travel authorization, check that against the official source before paying; the destination specifics are in your destination pack's adult logistics page, or on the official source if the pack does not cover them yet|1": {
       "line": 31,
       "judgment": "no",
       "reason": "a conditional instruction and a pointer to where the specifics live"
@@ -9554,25 +9564,25 @@
       "judgment": "no",
       "reason": "a list entry"
     },
-    "banned|Luggage handling for anyone who shouldn't carry bags up stairs: forwarding services, porter help, or lockers. → Those are categories; which ones exist where you are going, and what they are called, is in your destination pack's adult-logistics page.|1": {
-      "line": 58,
-      "judgment": "no",
-      "reason": "a list item, then what the categories are; no correction of the first"
-    },
     "device|Luggage handling for anyone who shouldn't carry bags up stairs: forwarding services, porter help, or lockers.|1": {
       "line": 58,
       "judgment": "no",
       "reason": "a list item whose \"shouldn't carry bags\" describes who needs luggage help; it rejects no alternative"
     },
-    "split|Those are categories; which ones exist where you are going, and what they are called, is in your destination pack's adult-logistics page. → If your pack does not have that page yet, check the official sites of the local transport operators, or ask your lodging, and write the date you checked|1": {
+    "banned|Luggage handling for anyone who shouldn't carry bags up stairs: forwarding services, porter help, or lockers. → Those are categories; which ones exist where you are going, and what they are called, is in your destination pack's adult logistics page.|1": {
       "line": 58,
       "judgment": "no",
-      "reason": "a condition (if your pack does not have that page yet) with an instruction; it rejects no alternative"
+      "reason": "a list item, then what the items are and where their names live; no same-subject correction"
     },
-    "split|Luggage handling for anyone who shouldn't carry bags up stairs: forwarding services, porter help, or lockers. → Those are categories; which ones exist where you are going, and what they are called, is in your destination pack's adult-logistics page.|1": {
+    "split|Luggage handling for anyone who shouldn't carry bags up stairs: forwarding services, porter help, or lockers. → Those are categories; which ones exist where you are going, and what they are called, is in your destination pack's adult logistics page.|1": {
       "line": 58,
       "judgment": "no",
       "reason": "a fact and a pointer to the pack"
+    },
+    "split|Those are categories; which ones exist where you are going, and what they are called, is in your destination pack's adult logistics page. → If your pack does not have that page yet, check the official sites of the local transport operators, or ask your lodging, and write the date you checked|1": {
+      "line": 58,
+      "judgment": "no",
+      "reason": "a conditional fallback instruction; does not have that page yet is a condition"
     },
     "split|They notice and hand it to you. → They don't research the fix.|1": {
       "line": 61,
@@ -10103,20 +10113,20 @@
       "judgment": "no",
       "reason": "an instruction"
     },
-    "split|Count the day you leave home and the day you get home. → If the booked travel arrives or leaves somewhere other than your assumptions page says, write the new place there, because Sessions 40, 41 and 45 read it.|1": {
-      "line": 58,
-      "judgment": "no",
-      "reason": "a conditional instruction with its reason"
-    },
-    "split|If the booked travel arrives or leaves somewhere other than your assumptions page says, write the new place there, because Sessions 40, 41 and 45 read it. → If you booked a different way to travel than the card says, such as a train in place of a drive, fix its travel row, and its home airport rows if you now fly.|1": {
-      "line": 58,
-      "judgment": "no",
-      "reason": "a conditional instruction; 'a train in place of a drive' illustrates the booking change inside the condition, not a rejected option"
-    },
     "split|If you booked a different way to travel than the card says, such as a train in place of a drive, fix its travel row, and its home airport rows if you now fly. → Then tell your child:|1": {
       "line": 58,
       "judgment": "no",
       "reason": "a lead-in to a list"
+    },
+    "split|Count the day you leave home and the day you get home. → If the booked travel arrives or leaves somewhere other than where your assumptions page says, write the new place there, because Sessions 40, 41 and 45 read it.|1": {
+      "line": 58,
+      "judgment": "no",
+      "reason": "a conditional instruction with its reason"
+    },
+    "split|If the booked travel arrives or leaves somewhere other than where your assumptions page says, write the new place there, because Sessions 40, 41 and 45 read it. → If you booked a different way to travel than the card says, such as a train in place of a drive, fix its travel row, and its home airport rows if you now fly.|1": {
+      "line": 58,
+      "judgment": "no",
+      "reason": "a conditional instruction; a train in place of a drive illustrates the booked change inside the condition, not an option the reader could choose"
     },
     "device|which season it is, as a broad word such as \"late spring\", if it differs from their Checkpoint 1 pick|1": {
       "line": 60,
@@ -27360,7 +27370,7 @@
       "judgment": "no",
       "reason": "a field label with a safety instruction"
     },
-    "device|Materials: this session's Destination Notes, a device with the kid-safe filter on, a grown-up nearby if you search beyond the Destination Notes and official city sites (beside you for an image search), a blank Neighborhood Comparison page, the route your family approved at Checkpoint 4, your must-do list on your My Calls page (for the places you want to reach), your route map notes from Session 28, the City Research Card for any region on your route (for its town), a guidebook if you have one, your Trip-Basics card (for the number of travelers), your part-trip note from Session 33 (if you made one), your destination pack's adult-logistics page, where the pack has one (for the grown-up's room-count check), your Source Log, and a Scoring Rubric page if your child wants to score; a blank Trade-Off Report only if the third report goes here|1": {
+    "device|Materials: this session's Destination Notes, a device with the kid-safe filter on, a grown-up nearby if you search beyond the Destination Notes and official city sites (beside you for an image search), a blank Neighborhood Comparison page, the route your family approved at Checkpoint 4, your must-do list on your My Calls page (for the places you want to reach), your route map notes from Session 28, the City Research Card for any region on your route (for its town), a guidebook if you have one, your Trip-Basics card (for the number of travelers), your part-trip note from Session 33 (if you made one), your destination pack's adult logistics page, where the pack has one (for the grown-up's room-count check), your Source Log, and a Scoring Rubric page if your child wants to score; a blank Trade-Off Report only if the third report goes here|1": {
       "line": 13,
       "judgment": "no",
       "reason": "a field label listing materials"
@@ -27765,15 +27775,10 @@
       "judgment": "device",
       "reason": "a structural fact to verify per place / not a price"
     },
-    "split|That is a structural fact to verify per place, not a price, and it is why the worksheets say \"per room\", unless a place charges per person. → The destination pack's adult-logistics page covers it where the pack has one.|1": {
+    "split|That is a structural fact to verify per place, not a price, and it is why the worksheets say \"per room\", unless a place charges per person. → The destination pack's adult logistics page covers it where the pack has one.|1": {
       "line": 78,
       "judgment": "no",
-      "reason": "a navigation fact"
-    },
-    "split|The destination pack's adult-logistics page covers it where the pack has one. → The kinds of lodging come from the destination pack, so the session names none.|1": {
-      "line": 80,
-      "judgment": "no",
-      "reason": "a reason for an absence (the pack supplies the names)"
+      "reason": "a pointer to the pack page"
     },
     "split|The kinds of lodging come from the destination pack, so the session names none. → If your child browses neighborhoods beyond the Destination Notes and official city sites, stay nearby, and beside them for an image search.|1": {
       "line": 80,
@@ -27784,6 +27789,11 @@
       "line": 80,
       "judgment": "no",
       "reason": "a fact with a reason"
+    },
+    "split|The destination pack's adult logistics page covers it where the pack has one. → The kinds of lodging come from the destination pack, so the session names none.|1": {
+      "line": 80,
+      "judgment": "no",
+      "reason": "a reason for an absence (the pack supplies the kinds)"
     },
     "split|Open neighborhood browsing is on the co-research list in safety and emergency guidance, because image results can surface things a filter misses. → The floor asks for three trade-off reports, and the third is about pacing, where to stay, or the budget.|1": {
       "line": 82,
@@ -36633,16 +36643,6 @@
       "judgment": "no",
       "reason": "an option with a list"
     },
-    "split|If you want to keep going, there's more a planner can do: more cities, a day-by-day plan, food research, and more. → Those fuller sessions exist, and they run in numbered order from Session 16.|1": {
-      "line": 81,
-      "judgment": "no",
-      "reason": "a fact"
-    },
-    "split|Those fuller sessions exist, and they run in numbered order from Session 16. → Finishing here is a complete success, and nothing you did gets redone if you go on.|1": {
-      "line": 81,
-      "judgment": "no",
-      "reason": "a claim and a fact about going on (work carries forward); rejects no alternative to the claim"
-    },
     "split|Finishing here is a complete success, and nothing you did gets redone if you go on. → If you came here from Session 52, you've already done the ones your family chose.|1": {
       "line": 81,
       "judgment": "no",
@@ -36652,6 +36652,31 @@
       "line": 81,
       "judgment": "no",
       "reason": "a statement of what comes next"
+    },
+    "split|If you want to keep going, there's more a planner can do: more cities, a day-by-day plan, food research, and more. → Those fuller sessions exist.|1": {
+      "line": 81,
+      "judgment": "no",
+      "reason": "a fact"
+    },
+    "split|Those fuller sessions exist. → Do the ones you haven't done in numbered order, starting with the lowest number.|1": {
+      "line": 81,
+      "judgment": "no",
+      "reason": "an instruction; haven't done names which sessions"
+    },
+    "split|Do the ones you haven't done in numbered order, starting with the lowest number. → A session you've already done may ask for a little more on the Core path, such as Session 14's Trade-Off Report.|1": {
+      "line": 81,
+      "judgment": "no",
+      "reason": "a fact with an example"
+    },
+    "split|A session you've already done may ask for a little more on the Core path, such as Session 14's Trade-Off Report. → Do that part when your numbered order reaches it.|1": {
+      "line": 81,
+      "judgment": "no",
+      "reason": "an instruction of when to do that part"
+    },
+    "split|Do that part when your numbered order reaches it. → Finishing here is a complete success, and nothing you did gets redone if you go on.|1": {
+      "line": 81,
+      "judgment": "no",
+      "reason": "a claim and a reassurance about going on, as recorded for the same sentence; it rejects no named alternative"
     },
     "device|That's a big deal\" -- not \"months-long,\" which would overclaim.|1": {
       "line": 86,
@@ -39114,7 +39139,37 @@
       "judgment": "no",
       "reason": "an instruction"
     },
-    "split|So fix those day numbers wherever you wrote them. → Then go down Your plan pages.|1": {
+    "split|So fix those day numbers wherever you wrote them. → Is a place left with no nights?|1": {
+      "line": 18,
+      "judgment": "no",
+      "reason": "a question opening a branch"
+    },
+    "split|Is a place left with no nights? → Ask a grown-up if you'll still visit it on a day trip.|1": {
+      "line": 18,
+      "judgment": "no",
+      "reason": "an instruction"
+    },
+    "split|Ask a grown-up if you'll still visit it on a day trip. → If not, use the row for a dropped place.|1": {
+      "line": 18,
+      "judgment": "no",
+      "reason": "a conditional instruction for one answer to the question"
+    },
+    "banned|If not, use the row for a dropped place. → If so, keep its must-dos, and write \"day trip now\" on its Hotel Comparison Card, if you've made one.|1": {
+      "line": 18,
+      "judgment": "no",
+      "reason": "the other branch of a yes-or-no question; no same-subject correction"
+    },
+    "split|If not, use the row for a dropped place. → If so, keep its must-dos, and write \"day trip now\" on its Hotel Comparison Card, if you've made one.|1": {
+      "line": 18,
+      "judgment": "no",
+      "reason": "a conditional instruction for the other answer; the grown-up's answer decides, so neither branch is rejected"
+    },
+    "split|If so, keep its must-dos, and write \"day trip now\" on its Hotel Comparison Card, if you've made one. → For the day trip, time the ride there from where you'll sleep with the map's Directions, and log the map, the way Session 28 does.|1": {
+      "line": 18,
+      "judgment": "no",
+      "reason": "an instruction"
+    },
+    "split|For the day trip, time the ride there from where you'll sleep with the map's Directions, and log the map, the way Session 28 does. → Then go down Your plan pages.|1": {
       "line": 18,
       "judgment": "no",
       "reason": "a navigation instruction (go down Your plan pages)"
@@ -39479,26 +39534,6 @@
       "judgment": "no",
       "reason": "a navigation instruction (go down Your plan pages)"
     },
-    "device|A traveler's energy, walking or senses changed?|1": {
-      "line": 31,
-      "judgment": "no",
-      "reason": "a row label question naming a kind of change"
-    },
-    "split|A traveler's energy, walking or senses changed? → For example, someone now tires more easily, or finds crowds harder.|1": {
-      "line": 31,
-      "judgment": "no",
-      "reason": "an example of the change"
-    },
-    "split|For example, someone now tires more easily, or finds crowds harder. → A grown-up tells you.|1": {
-      "line": 31,
-      "judgment": "no",
-      "reason": "a fact"
-    },
-    "split|A grown-up tells you. → Fix that row on their traveler profile.|1": {
-      "line": 31,
-      "judgment": "no",
-      "reason": "an instruction"
-    },
     "split|Fix that row on their traveler profile. → Before Checkpoint 4, think about everyone's energy again, the way Session 29 does.|1": {
       "line": 31,
       "judgment": "no",
@@ -39509,7 +39544,37 @@
       "judgment": "no",
       "reason": "a time condition with its rule"
     },
-    "split|After it, a shorter or gentler trip is a flag for the grown-ups, as Session 43 says. → Then go down Your plan pages.|1": {
+    "device|A traveler's energy, walking, senses or food changed?|1": {
+      "line": 31,
+      "judgment": "no",
+      "reason": "a row label question naming a kind of change"
+    },
+    "split|A traveler's energy, walking, senses or food changed? → For example, someone now tires more easily, finds crowds harder, or avoids a food.|1": {
+      "line": 31,
+      "judgment": "no",
+      "reason": "an example of the change"
+    },
+    "split|For example, someone now tires more easily, finds crowds harder, or avoids a food. → A grown-up tells you, and fixes the dietary constraints on your assumptions page if they change.|1": {
+      "line": 31,
+      "judgment": "no",
+      "reason": "a statement of the grown-up's part, with a condition"
+    },
+    "split|A grown-up tells you, and fixes the dietary constraints on your assumptions page if they change. → Fix that row on their traveler profile.|1": {
+      "line": 31,
+      "judgment": "no",
+      "reason": "an instruction"
+    },
+    "split|After it, a shorter or gentler trip is a flag for the grown-ups, as Session 43 says. → For food, ask Session 37's question of each restaurant card: can everyone who's with you in that city eat there?|1": {
+      "line": 31,
+      "judgment": "no",
+      "reason": "an instruction with the question to ask"
+    },
+    "split|For food, ask Session 37's question of each restaurant card: can everyone who's with you in that city eat there? → If not, find another place, the way Session 37 does.|1": {
+      "line": 31,
+      "judgment": "no",
+      "reason": "a conditional instruction"
+    },
+    "split|If not, find another place, the way Session 37 does. → Then go down Your plan pages.|1": {
       "line": 31,
       "judgment": "no",
       "reason": "a navigation instruction (go down Your plan pages)"
@@ -39544,11 +39609,6 @@
       "judgment": "no",
       "reason": "an instruction"
     },
-    "split|Then check your balancing line again. → For someone who isn't coming now, write \"not coming\" on their profile and their poll answer.|1": {
-      "line": 33,
-      "judgment": "no",
-      "reason": "a condition with an instruction and a quoted label"
-    },
     "split|For someone who isn't coming now, write \"not coming\" on their profile and their poll answer. → Someone's part of the trip changed?|1": {
       "line": 33,
       "judgment": "no",
@@ -39558,6 +39618,21 @@
       "line": 33,
       "judgment": "no",
       "reason": "an instruction"
+    },
+    "split|Then check your balancing line again. → Does their profile say they avoid a food?|1": {
+      "line": 33,
+      "judgment": "no",
+      "reason": "a question"
+    },
+    "split|Does their profile say they avoid a food? → Then use the row for a traveler's food too.|1": {
+      "line": 33,
+      "judgment": "no",
+      "reason": "a conditional instruction pointing to another row"
+    },
+    "split|Then use the row for a traveler's food too. → For someone who isn't coming now, write \"not coming\" on their profile and their poll answer.|1": {
+      "line": 33,
+      "judgment": "no",
+      "reason": "a condition with an instruction and a quoted label"
     },
     "device|The counts.|1": {
       "line": 34,
@@ -39849,7 +39924,7 @@
       "judgment": "no",
       "reason": "a list entry naming a page and what to check"
     },
-    "device|Your restaurant cards (Session 37): the seating note, and whether each place is still near where you'll be.|1": {
+    "device|Your restaurant cards (Session 37): the seating note, whether everyone who's with you in that city can eat there, and whether each place is still near where you'll be.|1": {
       "line": 61,
       "judgment": "no",
       "reason": "a list entry naming a page and what to check"
@@ -43666,10 +43741,10 @@
       "judgment": "no",
       "reason": "a release (nobody has to explain why) after a claim; the rejection of the medical reason is already inside the prior sentence"
     },
-    "split|On the Core path, Session 33's part-trip note writes them down. → Medical specifics stay with the adults.|1": {
+    "split|On the Core path, Session 33's part-trip note writes them down. → Medical specifics stay with the adults and go on no page at all.|1": {
       "line": 28,
       "judgment": "no",
-      "reason": "a rule of who handles what, as recorded for the same sentence"
+      "reason": "a privacy rule of who holds medical details, as recorded for the same sentence; go on no page at all is a prohibition"
     },
     "split|Nobody has to explain why. → You can say your answers to an adult who writes them, or draw them, if that's easier.|1": {
       "line": 30,
