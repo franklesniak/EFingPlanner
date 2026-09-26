@@ -73,7 +73,7 @@ Your budget first pass: the cost categories, a meals-and-hotel estimate, and a c
 
 ## Stop Point
 
-You are done when you have a high/medium/low estimate for meals and for hotel, and you have checked whether they fit your band. Two slices is enough for First Taste. You can stop here.
+You are done when you have a high/medium/low estimate for meals and for hotel, and you have checked the matching piece against your band. Two slices is enough for First Taste. You can stop here.
 
 On the Core path, you are done when your hotel row uses every night in your Checkpoint 4 plan and your food row uses that plan's total days, minus any flight days. If a city's nights say "not sure yet", use a number a grown-up gives you, or write "ask an adult" in that blank. Someone coming for only part of the trip? The part-trip table from step 5 is a helpful extra. You can stop without it.
 

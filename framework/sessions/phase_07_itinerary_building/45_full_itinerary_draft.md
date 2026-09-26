@@ -46,7 +46,7 @@ Two tables, so the page prints. Give each day a row in both, with the same day n
 | | | | |
 | | | | |
 
-| Day | Transit | Estimated costs | Booking notes | Backup plan |
+| Day | Transit | Estimated costs: food, local transit, tickets, souvenirs | Booking notes | Backup plan |
 | --- | --- | --- | --- | --- |
 | | | | | |
 | | | | | |

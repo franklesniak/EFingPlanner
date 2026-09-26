@@ -3806,7 +3806,22 @@
       "judgment": "no",
       "reason": "a change record: a fact"
     },
-    "split|The support notes for Sessions 14, 33, 44 and 53, Checkpoints 4 to 6 on the review checkpoints page, and Sessions 44 and 50 take the last wave's settled wording. → The card files new pages as well as fixed ones, names every box of the draft, and covers a day trip, a place to stay with no card and a booked room count.|1": {
+    "split|The support notes for Sessions 14, 33, 44 and 53, Checkpoints 4 to 6 on the review checkpoints page, and Sessions 44 and 50 take the last wave's settled wording. → A hotel-tier band checks the hotels only, and a grown-up checks the special pick's ticket against the family's budget.|1": {
+      "line": 58,
+      "judgment": "no",
+      "reason": "a change record: each side gets a positive job"
+    },
+    "split|A hotel-tier band checks the hotels only, and a grown-up checks the special pick's ticket against the family's budget. → The day card's cost and the itinerary's cost column name the slices they cover.|1": {
+      "line": 58,
+      "judgment": "no",
+      "reason": "a change record: a fact"
+    },
+    "split|The day card's cost and the itinerary's cost column name the slices they cover. → The When the Plan Changes card's season row re-checks each season fit and weather score a child gave.|1": {
+      "line": 58,
+      "judgment": "no",
+      "reason": "a change record: a fact"
+    },
+    "split|The When the Plan Changes card's season row re-checks each season fit and weather score a child gave. → The card files new pages as well as fixed ones, names every box of the draft, and covers a day trip, a place to stay with no card and a booked room count.|1": {
       "line": 58,
       "judgment": "no",
       "reason": "a fact: what the card files, names and covers; with no card is a determiner"
@@ -27093,15 +27108,15 @@
       "judgment": "no",
       "reason": "an enough-claim followed by a stopping permission; nothing is recast"
     },
-    "device|You are done when you have a high/medium/low estimate for meals and for hotel, and you have checked whether they fit your band.|1": {
+    "device|You are done when you have a high/medium/low estimate for meals and for hotel, and you have checked the matching piece against your band.|1": {
       "line": 76,
       "judgment": "no",
-      "reason": "a stop condition"
+      "reason": "a completion condition"
     },
-    "split|You are done when you have a high/medium/low estimate for meals and for hotel, and you have checked whether they fit your band. → Two slices is enough for First Taste.|1": {
+    "split|You are done when you have a high/medium/low estimate for meals and for hotel, and you have checked the matching piece against your band. → Two slices is enough for First Taste.|1": {
       "line": 76,
       "judgment": "no",
-      "reason": "a limit (enough for First Taste)"
+      "reason": "a sufficiency statement; nothing named is rejected"
     },
     "split|You can stop here. → On the Core path, you are done when your hotel row uses every night in your Checkpoint 4 plan and your food row uses that plan's total days, minus any flight days.|1": {
       "line": 78,
@@ -29183,11 +29198,6 @@
       "judgment": "no",
       "reason": "a fact about the table"
     },
-    "split|Every row counts everyone. → It asks about one day, so it has different rows from your Budget Estimate page.|1": {
-      "line": 51,
-      "judgment": "no",
-      "reason": "a fact of difference with a reason; it prefers neither page"
-    },
     "split|It asks about one day, so it has different rows from your Budget Estimate page. → Use this table for this session.|1": {
       "line": 51,
       "judgment": "no",
@@ -29197,6 +29207,16 @@
       "line": 51,
       "judgment": "no",
       "reason": "an instruction"
+    },
+    "split|Every row counts everyone. → Your hotels join these slices in Session 39.|1": {
+      "line": 51,
+      "judgment": "no",
+      "reason": "a fact about when the hotels join"
+    },
+    "split|Your hotels join these slices in Session 39. → It asks about one day, so it has different rows from your Budget Estimate page.|1": {
+      "line": 51,
+      "judgment": "no",
+      "reason": "a reason: the page asks about one day, so its rows differ"
     },
     "device|You can say your answers to an adult who writes them, or draw them, if that's easier.|1": {
       "line": 63,
@@ -29690,6 +29710,11 @@
       "judgment": "no",
       "reason": "an instruction"
     },
+    "split|Check each hotel's cost per night against it. → A tier covers only the hotels, so that's what this check is about.|1": {
+      "line": 35,
+      "judgment": "no",
+      "reason": "a scope limit with its reason; no alternative is named"
+    },
     "device|Write one sentence.|1": {
       "line": 36,
       "judgment": "no",
@@ -29699,11 +29724,6 @@
       "line": 36,
       "judgment": "no",
       "reason": "a question"
-    },
-    "split|Do the parts you chose fit the band? → If your total leaves a part out, say so, such as \"Without the hotel, it fits.\"|1": {
-      "line": 36,
-      "judgment": "no",
-      "reason": "a condition with an instruction and a quoted example"
     },
     "split|If your total leaves a part out, say so, such as \"Without the hotel, it fits.\" → If they don't, what would you change?|1": {
       "line": 36,
@@ -29725,15 +29745,20 @@
       "judgment": "no",
       "reason": "a condition with an instruction"
     },
+    "split|Do the parts you chose fit the band? → With a hotel tier, say whether your hotels fit.|1": {
+      "line": 36,
+      "judgment": "no",
+      "reason": "a conditional instruction"
+    },
+    "split|With a hotel tier, say whether your hotels fit. → If your total leaves a part out, say so, such as \"Without the hotel, it fits.\"|1": {
+      "line": 36,
+      "judgment": "no",
+      "reason": "a conditional instruction with a quoted example"
+    },
     "device|If your special pick on your My Calls page costs more than the band, a grown-up tells you which of the three blocks it hit.|1": {
       "line": 38,
       "judgment": "no",
       "reason": "a condition"
-    },
-    "split|If your special pick on your My Calls page costs more than the band, a grown-up tells you which of the three blocks it hit. → Choose a new pick with them, and fix your pages by the special-pick row of your When the Plan Changes card.|1": {
-      "line": 38,
-      "judgment": "no",
-      "reason": "an instruction"
     },
     "split|Choose a new pick with them, and fix your pages by the special-pick row of your When the Plan Changes card. → Here that includes this budget: take the blocked pick's ticket out of your activities slice, and add the new pick's ticket once, counted the way Session 38 counts a ticket.|1": {
       "line": 38,
@@ -29741,6 +29766,16 @@
       "reason": "an instruction (swap the ticket in the activities slice)"
     },
     "split|Here that includes this budget: take the blocked pick's ticket out of your activities slice, and add the new pick's ticket once, counted the way Session 38 counts a ticket. → Then add up your subtotal, check it against your band again, and fix your sentence.|1": {
+      "line": 38,
+      "judgment": "no",
+      "reason": "an instruction"
+    },
+    "split|If your special pick on your My Calls page costs more than the band, a grown-up tells you which of the three blocks it hit. → With a hotel tier, the grown-up checks its ticket against the family's budget.|1": {
+      "line": 38,
+      "judgment": "no",
+      "reason": "a conditional routing: who checks the ticket when the band is a hotel tier"
+    },
+    "split|With a hotel tier, the grown-up checks its ticket against the family's budget. → Choose a new pick with them, and fix your pages by the special-pick row of your When the Plan Changes card.|1": {
       "line": 38,
       "judgment": "no",
       "reason": "an instruction"
@@ -29825,11 +29860,6 @@
       "judgment": "no",
       "reason": "a completion condition"
     },
-    "split|You are done when your budget summary matches the route the grown-ups approved at Checkpoint 4, with a hotel line for each city and the other slices filled in, your subtotal is added up, you've checked the matching piece against your band, and you've written one sentence about whether the parts you chose fit. → If a part still says \"ask an adult\" or \"not sure yet\", your subtotal and your sentence both say what they leave out.|1": {
-      "line": 71,
-      "judgment": "no",
-      "reason": "a condition"
-    },
     "split|If a part still says \"ask an adult\" or \"not sure yet\", your subtotal and your sentence both say what they leave out. → If they don't, say what you'd change.|1": {
       "line": 71,
       "judgment": "no",
@@ -29864,6 +29894,16 @@
       "line": 71,
       "judgment": "no",
       "reason": "a permission"
+    },
+    "split|You are done when your budget summary matches the route the grown-ups approved at Checkpoint 4, with a hotel line for each city and the other slices filled in, your subtotal is added up, you've checked the matching piece against your band, and you've written one sentence about whether the parts you chose fit. → With a hotel tier, the check and the sentence are about your hotels.|1": {
+      "line": 71,
+      "judgment": "no",
+      "reason": "a conditional scope for the check and the sentence"
+    },
+    "split|With a hotel tier, the check and the sentence are about your hotels. → If a part still says \"ask an adult\" or \"not sure yet\", your subtotal and your sentence both say what they leave out.|1": {
+      "line": 71,
+      "judgment": "no",
+      "reason": "a conditional instruction"
     },
     "split|No new sources needed unless you looked something up. → Your numbers come from your Hotel Comparison Cards, your daily cost table and your Session 33 page.|1": {
       "line": 75,
@@ -30005,7 +30045,12 @@
       "judgment": "no",
       "reason": "a fact with its reason"
     },
-    "split|Your child compares a matching piece of their estimate with the band, because the band is a rate or a tier and a subtotal is a whole-trip amount. → The final budget is yours.|1": {
+    "split|Your child compares a matching piece of their estimate with the band, because the band is a rate or a tier and a subtotal is a whole-trip amount. → A hotel tier covers only the hotels, so with a tier their check and sentence are about the hotels, and you check the special pick's ticket against the family's budget yourself.|1": {
+      "line": 97,
+      "judgment": "no",
+      "reason": "a scope fact and a role statement; each side gets a positive job"
+    },
+    "split|A hotel tier covers only the hotels, so with a tier their check and sentence are about the hotels, and you check the special pick's ticket against the family's budget yourself. → The final budget is yours.|1": {
       "line": 97,
       "judgment": "no",
       "reason": "a role statement"
@@ -30674,11 +30719,6 @@
       "judgment": "no",
       "reason": "an instruction"
     },
-    "split|That total counts your whole group. → On a day when someone is away, write \"fewer of us\" beside it: it's a little high then, and a grown-up can lower it.|1": {
-      "line": 31,
-      "judgment": "no",
-      "reason": "an instruction with a reason"
-    },
     "split|On a day when someone is away, write \"fewer of us\" beside it: it's a little high then, and a grown-up can lower it. → \"Ask an adult\" is fine.|1": {
       "line": 31,
       "judgment": "no",
@@ -30694,10 +30734,20 @@
       "judgment": "no",
       "reason": "an instruction"
     },
-    "split|Start from your Session 38 medium total for one day, and use that day's own tickets for its activities part. → That total counts your whole group.|1": {
+    "split|Start from your Session 38 medium total for one day, and use that day's own tickets for its activities part. → That total counts your whole group, for the day's food, local transit, tickets and souvenirs.|1": {
       "line": 31,
       "judgment": "no",
-      "reason": "a fact"
+      "reason": "a fact naming what the total covers"
+    },
+    "split|That total counts your whole group, for the day's food, local transit, tickets and souvenirs. → Your hotels are on your budget.|1": {
+      "line": 31,
+      "judgment": "no",
+      "reason": "says where the hotels are recorded; nothing is excluded"
+    },
+    "split|Your hotels are on your budget. → On a day when someone is away, write \"fewer of us\" beside it: it's a little high then, and a grown-up can lower it.|1": {
+      "line": 31,
+      "judgment": "no",
+      "reason": "a conditional instruction"
     },
     "device|Save the cards in order, and stop between sittings whenever you like.|1": {
       "line": 32,
@@ -32994,15 +33044,15 @@
       "judgment": "no",
       "reason": "a fact (a reassurance)"
     },
-    "split|You could stop here and still have a usable plan. → You know when to go, where, how long, a day-by-day plan, a rough budget, and what adults need to book.|1": {
+    "split|You could stop here and still have a usable plan. → You know when to go, where, how long, a day-by-day plan, a rough budget for the parts you chose, and what adults need to book.|1": {
       "line": 25,
       "judgment": "no",
-      "reason": "a fact listing what the reader knows"
+      "reason": "a list of what the reader knows at this point"
     },
-    "split|You know when to go, where, how long, a day-by-day plan, a rough budget, and what adults need to book. → Everything after this is a bonus.|1": {
+    "split|You know when to go, where, how long, a day-by-day plan, a rough budget for the parts you chose, and what adults need to book. → Everything after this is a bonus.|1": {
       "line": 25,
       "judgment": "no",
-      "reason": "a fact"
+      "reason": "a statement of what comes after"
     },
     "device|Fill in the five answers in the Workspace.|1": {
       "line": 27,
@@ -39074,10 +39124,45 @@
       "judgment": "no",
       "reason": "an instruction"
     },
-    "split|Note it on your Checkpoint 1 season recommendation, with where it changed. → Then go down Your plan pages.|1": {
+    "split|Note it on your Checkpoint 1 season recommendation, with where it changed. → Check the \"Best season fit\" row on each City Research Card.|1": {
       "line": 28,
       "judgment": "no",
-      "reason": "a navigation instruction (go down Your plan pages)"
+      "reason": "an instruction"
+    },
+    "split|Check the \"Best season fit\" row on each City Research Card. → Did you give cities or attractions a weather or season score in Session 21 or 26?|1": {
+      "line": 28,
+      "judgment": "no",
+      "reason": "a question"
+    },
+    "split|Did you give cities or attractions a weather or season score in Session 21 or 26? → Score each one again for the new season, and add up the new totals.|1": {
+      "line": 28,
+      "judgment": "no",
+      "reason": "an instruction"
+    },
+    "split|Score each one again for the new season, and add up the new totals. → Then look at each attraction's group again.|1": {
+      "line": 28,
+      "judgment": "no",
+      "reason": "an instruction"
+    },
+    "split|Then look at each attraction's group again. → Would you move a city, or an attraction on or off your must-do list?|1": {
+      "line": 28,
+      "judgment": "no",
+      "reason": "a question"
+    },
+    "split|Would you move a city, or an attraction on or off your must-do list? → Talk it over with a grown-up first.|1": {
+      "line": 28,
+      "judgment": "no",
+      "reason": "an instruction"
+    },
+    "split|Talk it over with a grown-up first. → If your special pick won't work in the new season, a grown-up names the block, and you use the row for a blocked special pick.|1": {
+      "line": 28,
+      "judgment": "no",
+      "reason": "a conditional routing; won't sits inside the condition"
+    },
+    "split|If your special pick won't work in the new season, a grown-up names the block, and you use the row for a blocked special pick. → Then go down Your plan pages.|1": {
+      "line": 28,
+      "judgment": "no",
+      "reason": "an instruction"
     },
     "device|A place, a night or a day changed?|1": {
       "line": 29,
@@ -39479,138 +39564,143 @@
       "judgment": "no",
       "reason": "a list entry naming a page and what to check"
     },
+    "device|Your City Research Cards (Sessions 15 to 18): each card's \"Best season fit\" row.|1": {
+      "line": 54,
+      "judgment": "no",
+      "reason": "a list entry"
+    },
     "device|Your route notes (Sessions 28 and 30): your route map notes, their travel times, and your transportation notes.|1": {
-      "line": 54,
-      "judgment": "no",
-      "reason": "a list entry naming a page and what to check"
-    },
-    "split|Your route notes (Sessions 28 and 30): your route map notes, their travel times, and your transportation notes. → Log any new travel time in your Source Log.|1": {
-      "line": 54,
-      "judgment": "no",
-      "reason": "an instruction"
-    },
-    "device|Your Session 29 formula: its total, its ½ marks, its \"- 1 flight day\" marks and its jet-lag days.|1": {
       "line": 55,
       "judgment": "no",
       "reason": "a list entry naming a page and what to check"
     },
-    "device|Your must-do list and special pick, on your My Calls page.|1": {
+    "split|Your route notes (Sessions 28 and 30): your route map notes, their travel times, and your transportation notes. → Log any new travel time in your Source Log.|1": {
+      "line": 55,
+      "judgment": "no",
+      "reason": "an instruction"
+    },
+    "device|Your Session 29 formula: its total, its ½ marks, its \"- 1 flight day\" marks and its jet-lag days.|1": {
       "line": 56,
       "judgment": "no",
       "reason": "a list entry naming a page and what to check"
     },
-    "device|Your attraction cards: each card's group, its \"Ticket or reservation needed?\" row and its price.|1": {
+    "device|Your must-do list and special pick, on your My Calls page.|1": {
       "line": 57,
       "judgment": "no",
       "reason": "a list entry naming a page and what to check"
     },
-    "device|Your Session 33 part-trip note: who is there on which days.|1": {
+    "device|Your attraction cards: each card's group, its \"Ticket or reservation needed?\" row and its price, and its Weather fit score on your Session 26 table.|1": {
       "line": 58,
       "judgment": "no",
-      "reason": "a list entry naming a page and what to check"
+      "reason": "a list entry"
     },
-    "device|Your Neighborhood Comparison and Hotel Comparison Cards (Sessions 34 and 35): the room count and room setup, and the nights beside them.|1": {
+    "device|Your Session 33 part-trip note: who is there on which days.|1": {
       "line": 59,
       "judgment": "no",
       "reason": "a list entry naming a page and what to check"
     },
-    "device|Your restaurant cards (Session 37): the seating note.|1": {
+    "device|Your Neighborhood Comparison and Hotel Comparison Cards (Sessions 34 and 35): the room count and room setup, and the nights beside them.|1": {
       "line": 60,
       "judgment": "no",
       "reason": "a list entry naming a page and what to check"
     },
-    "device|Your budget (Sessions 38 and 39): your daily cost table, your hotel table, your slices and your subtotal.|1": {
+    "device|Your restaurant cards (Session 37): the seating note.|1": {
       "line": 61,
       "judgment": "no",
       "reason": "a list entry naming a page and what to check"
     },
-    "split|Your budget (Sessions 38 and 39): your daily cost table, your hotel table, your slices and your subtotal. → Add it up again, and check your band sentence.|1": {
-      "line": 61,
-      "judgment": "no",
-      "reason": "an instruction"
-    },
-    "split|Add it up again, and check your band sentence. → Keep your Session 33 Budget Estimate page as it is, because Session 53 looks back at it.|1": {
-      "line": 61,
-      "judgment": "no",
-      "reason": "an instruction with a reason"
-    },
-    "split|Keep your Session 33 Budget Estimate page as it is, because Session 53 looks back at it. → If it's your only budget, as on First Taste, write the new numbers beside the old ones.|1": {
-      "line": 61,
-      "judgment": "no",
-      "reason": "a condition with an instruction"
-    },
-    "device|Your day rules (Session 40): your first-day, last-day and moving-day rules, which follow your ½ marks.|1": {
+    "device|Your budget (Sessions 38 and 39): your daily cost table, your hotel table, your slices and your subtotal.|1": {
       "line": 62,
       "judgment": "no",
       "reason": "a list entry naming a page and what to check"
     },
-    "device|Your day cards (Session 41): each day's number, roughly when, where you'll sleep, its anchor and travel legs, its tickets row, its cost (with \"fewer of us\" on a day someone is away), and its energy level.|1": {
+    "split|Your budget (Sessions 38 and 39): your daily cost table, your hotel table, your slices and your subtotal. → Add it up again, and check your band sentence.|1": {
+      "line": 62,
+      "judgment": "no",
+      "reason": "an instruction"
+    },
+    "split|Add it up again, and check your band sentence. → Keep your Session 33 Budget Estimate page as it is, because Session 53 looks back at it.|1": {
+      "line": 62,
+      "judgment": "no",
+      "reason": "an instruction with a reason"
+    },
+    "split|Keep your Session 33 Budget Estimate page as it is, because Session 53 looks back at it. → If it's your only budget, as on First Taste, write the new numbers beside the old ones.|1": {
+      "line": 62,
+      "judgment": "no",
+      "reason": "a condition with an instruction"
+    },
+    "device|Your day rules (Session 40): your first-day, last-day and moving-day rules, which follow your ½ marks.|1": {
       "line": 63,
       "judgment": "no",
       "reason": "a list entry naming a page and what to check"
     },
-    "device|Your Reservation Watchlist (Session 42): each item's rows.|1": {
+    "device|Your day cards (Session 41): each day's number, roughly when, where you'll sleep, its anchor and travel legs, its tickets row, its cost (with \"fewer of us\" on a day someone is away), and its energy level.|1": {
       "line": 64,
       "judgment": "no",
       "reason": "a list entry naming a page and what to check"
     },
-    "device|Your pacing review (Session 43): run its checks again for each day the change touches.|1": {
+    "device|Your Reservation Watchlist (Session 42): each item's rows.|1": {
       "line": 65,
+      "judgment": "no",
+      "reason": "a list entry naming a page and what to check"
+    },
+    "device|Your pacing review (Session 43): run its checks again for each day the change touches.|1": {
+      "line": 66,
       "judgment": "no",
       "reason": "a list entry with an instruction"
     },
     "split|Your pacing review (Session 43): run its checks again for each day the change touches. → A new season touches every day's heat, and a new time difference the first days.|1": {
-      "line": 65,
+      "line": 66,
       "judgment": "no",
       "reason": "a fact"
     },
     "split|A new season touches every day's heat, and a new time difference the first days. → A traveler's profile counts only on the days they're there, so a new traveler touches those days.|1": {
-      "line": 65,
+      "line": 66,
       "judgment": "no",
       "reason": "a fact with a limit"
     },
     "device|Your cut list and backup plans (Session 44).|1": {
-      "line": 66,
-      "judgment": "no",
-      "reason": "a list entry naming a page and what to check"
-    },
-    "device|Your itinerary draft (Session 45): every box in each day's row: its number, overnight city, main activities, meals, travel legs, costs, booking notes and backup.|1": {
       "line": 67,
       "judgment": "no",
       "reason": "a list entry naming a page and what to check"
     },
-    "device|Your Packing List (Session 48): its weather items, its plane items, and what a long walking day needs.|1": {
+    "device|Your itinerary draft (Session 45): every box in each day's row: its number, overnight city, main activities, meals, travel legs, costs, booking notes and backup.|1": {
       "line": 68,
       "judgment": "no",
       "reason": "a list entry naming a page and what to check"
     },
-    "device|Your \"if I get separated\" card (Session 49): a grown-up fixes its lodging lines.|1": {
+    "device|Your Packing List (Session 48): its weather items, its plane items, and what a long walking day needs.|1": {
       "line": 69,
+      "judgment": "no",
+      "reason": "a list entry naming a page and what to check"
+    },
+    "device|Your \"if I get separated\" card (Session 49): a grown-up fixes its lodging lines.|1": {
+      "line": 70,
       "judgment": "no",
       "reason": "a list entry with a fact"
     },
     "device|Your Final Presentation Outline (Session 51): if you haven't presented it yet, its Part 1 lines.|1": {
-      "line": 70,
+      "line": 71,
       "judgment": "no",
       "reason": "a list entry with a condition"
     },
     "device|Your Checkpoint 6 packet (Session 52): whose \"one thing you'd love\" the plan makes room for.|1": {
-      "line": 71,
+      "line": 72,
       "judgment": "no",
       "reason": "a list entry naming a page and what to check"
     },
     "device|Your binder (Session 50): put each page you made or fixed behind its tab, in place of the old one if there is one.|1": {
-      "line": 72,
+      "line": 73,
       "judgment": "no",
       "reason": "a list entry with a replacement instruction; nothing is argued against"
     },
     "device|You're done when you've done the rows that fit your change and gone down Your plan pages.|1": {
-      "line": 74,
+      "line": 75,
       "judgment": "no",
       "reason": "a completion condition"
     },
     "split|You're done when you've done the rows that fit your change and gone down Your plan pages. → \"Ask an adult\" is a fine answer in any box you can't fill yet.|1": {
-      "line": 74,
+      "line": 75,
       "judgment": "no",
       "reason": "a permission"
     }
@@ -40541,11 +40631,6 @@
       "judgment": "no",
       "reason": "an instruction"
     },
-    "split|A long stay can carry on to a second sheet. → Each day gets its own row for transit, tickets, cost and a backup, because those really do change day to day — and Session 45 copies them across one day at a time.|1": {
-      "line": 43,
-      "judgment": "no",
-      "reason": "a fact with a reason"
-    },
     "split|Add rows as you need them, and keep the two tables matching. → A long stay can carry on to a second sheet.|1": {
       "line": 43,
       "judgment": "no",
@@ -40565,6 +40650,21 @@
       "line": 43,
       "judgment": "no",
       "reason": "an instruction"
+    },
+    "split|A long stay can carry on to a second sheet. → The cost is that day's own spending.|1": {
+      "line": 43,
+      "judgment": "no",
+      "reason": "a definition of the day's cost"
+    },
+    "split|The cost is that day's own spending. → Your hotels are on your budget, and the grown-ups price the long rides.|1": {
+      "line": 43,
+      "judgment": "no",
+      "reason": "says where the hotels and the long rides are priced; each side gets a positive job"
+    },
+    "split|Your hotels are on your budget, and the grown-ups price the long rides. → Each day gets its own row for transit, tickets, cost and a backup, because those really do change day to day — and Session 45 copies them across one day at a time.|1": {
+      "line": 43,
+      "judgment": "no",
+      "reason": "a reason for the per-day rows"
     },
     "split|Each day gets its own row for transit, tickets, cost and a backup, because those really do change day to day — and Session 45 copies them across one day at a time. → Give your first day the energy level from your first-day rule in Session 40.|1": {
       "line": 45,

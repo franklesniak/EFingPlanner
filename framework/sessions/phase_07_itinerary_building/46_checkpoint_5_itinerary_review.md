@@ -22,7 +22,7 @@ Choose your first move and make it. If you want a suggestion, write one thing yo
 
 ## Steps
 
-**This is the Core Finish Line.** You could stop here and still have a usable plan. You know when to go, where, how long, a day-by-day plan, a rough budget, and what adults need to book. Everything after this is a bonus.
+**This is the Core Finish Line.** You could stop here and still have a usable plan. You know when to go, where, how long, a day-by-day plan, a rough budget for the parts you chose, and what adults need to book. Everything after this is a bonus.
 
 1. Fill in the five answers in the Workspace. Your draft, your cards, your Reservation Watchlist, your budget summary, your cut list and your pacing review have everything you need. For what could be cut, keep your special pick and its place. Copy your flags for the adults from your Session 43 pacing review into "What the grown-ups need to decide", including any flag for fewer cities or fewer rides out.
 2. **Reasons.** Write two or three reasons your plan works, each tied to something you found.

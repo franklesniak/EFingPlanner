@@ -48,7 +48,7 @@ The cost of getting there belongs to the grown-ups, and they keep it on their ow
 
 ## Workspace
 
-Your daily cost table, for one ordinary day, for the whole family. Every row counts everyone. It asks about one day, so it has different rows from your Budget Estimate page. Use this table for this session. To make another copy, draw it on a blank page:
+Your daily cost table, for one ordinary day, for the whole family. Every row counts everyone. Your hotels join these slices in Session 39. It asks about one day, so it has different rows from your Budget Estimate page. Use this table for this session. To make another copy, draw it on a blank page:
 
 | Cost | Low | Medium | High |
 | --- | --- | --- | --- |
