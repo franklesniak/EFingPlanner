@@ -3821,20 +3821,25 @@
       "judgment": "no",
       "reason": "a change record: a fact"
     },
-    "split|The When the Plan Changes card's season row re-checks each season fit and weather score a child gave, and each attraction's opening months. → Its row for a different place to stay reaches the old hotel card, the watchlist, the area pick and the rides from where the family sleeps.|1": {
-      "line": 58,
-      "judgment": "no",
-      "reason": "a change record: a fact"
-    },
-    "split|Its row for a different place to stay reaches the old hotel card, the watchlist, the area pick and the rides from where the family sleeps. → The insert contract's parent-facing rows give local hazards one home, ‹code› , and lodging priced per person and children's fares one home, ‹code› , as the Batch 3 brief settles.|1": {
-      "line": 58,
-      "judgment": "no",
-      "reason": "a change record: a fact"
-    },
     "split|The insert contract's parent-facing rows give local hazards one home, ‹code› , and lodging priced per person and children's fares one home, ‹code› , as the Batch 3 brief settles. → The card files new pages as well as fixed ones, names every box of the draft, and covers a day trip, a place to stay with no card and a booked room count.|1": {
       "line": 58,
       "judgment": "no",
       "reason": "a fact: what the card files, names and covers; with no card is a determiner"
+    },
+    "split|The When the Plan Changes card's season row re-checks each season fit and weather score a child gave, and each attraction's opening months. → Its row for a different place to stay reaches the old hotel card, the watchlist, the area pick, the rides from where the family sleeps, and every budget figure the place sets, its included meals among them.|1": {
+      "line": 58,
+      "judgment": "no",
+      "reason": "a change record: a fact"
+    },
+    "split|Its row for a different place to stay reaches the old hotel card, the watchlist, the area pick, the rides from where the family sleeps, and every budget figure the place sets, its included meals among them. → The season row's opening check covers every attraction the plan still uses, backups included.|1": {
+      "line": 58,
+      "judgment": "no",
+      "reason": "a change record: a fact"
+    },
+    "split|The season row's opening check covers every attraction the plan still uses, backups included. → The insert contract's parent-facing rows give local hazards one home, ‹code› , and lodging priced per person and children's fares one home, ‹code› , as the Batch 3 brief settles.|1": {
+      "line": 58,
+      "judgment": "no",
+      "reason": "a change record: a fact"
     },
     "device|Removed the build-state sentences this wave makes false.|1": {
       "line": 59,
@@ -38819,16 +38824,6 @@
       "judgment": "no",
       "reason": "an instruction"
     },
-    "split|Ask a grown-up for its cost per night, per room or per person, and how many rooms or people. → If you've done Session 39, fix its hotel line in the new place's unit: rooms, or people if it's per person.|1": {
-      "line": 16,
-      "judgment": "no",
-      "reason": "a condition with an instruction"
-    },
-    "split|If you've done Session 39, fix its hotel line in the new place's unit: rooms, or people if it's per person. → Has a grown-up filled in the lodging lines on your \"if I get separated\" card?|1": {
-      "line": 16,
-      "judgment": "no",
-      "reason": "a question"
-    },
     "split|Has a grown-up filled in the lodging lines on your \"if I get separated\" card? → Then they fill in a fresh card for the new place, and the old one is torn up, as Session 49 says.|1": {
       "line": 16,
       "judgment": "no",
@@ -38873,6 +38868,26 @@
       "line": 16,
       "judgment": "no",
       "reason": "a conditional question"
+    },
+    "split|Ask a grown-up for its cost per night, per room or per person, and how many rooms or people. → If you've done Session 39, fix every figure that depends on the place: its price and unit on your hotel line (rooms, or people if it's per person), and any meals it includes.|1": {
+      "line": 16,
+      "judgment": "no",
+      "reason": "a condition with an instruction"
+    },
+    "split|If you've done Session 39, fix every figure that depends on the place: its price and unit on your hotel line (rooms, or people if it's per person), and any meals it includes. → Ask a grown-up which meals those are, and leave them out of your food the way Session 39 does.|1": {
+      "line": 16,
+      "judgment": "no",
+      "reason": "an instruction to leave the included meals out, as recorded for the same step on Session 39; nothing included is named beside it"
+    },
+    "split|Ask a grown-up which meals those are, and leave them out of your food the way Session 39 does. → Then check your band again.|1": {
+      "line": 16,
+      "judgment": "no",
+      "reason": "an instruction"
+    },
+    "split|Then check your band again. → Has a grown-up filled in the lodging lines on your \"if I get separated\" card?|1": {
+      "line": 16,
+      "judgment": "no",
+      "reason": "a question"
     },
     "device|A different number of rooms?|1": {
       "line": 17,
@@ -39194,22 +39209,32 @@
       "judgment": "no",
       "reason": "an instruction"
     },
-    "split|Score each one again for the new season, and add up the new totals. → Is each attraction on your must-do list, your day cards or your watchlist open in the new season?|1": {
-      "line": 28,
-      "judgment": "no",
-      "reason": "a question"
-    },
-    "split|Is each attraction on your must-do list, your day cards or your watchlist open in the new season? → Check its official site for the months it's open, write them on its attraction card, and log the site in your Source Log.|1": {
-      "line": 28,
-      "judgment": "no",
-      "reason": "an instruction"
-    },
     "split|Check its official site for the months it's open, write them on its attraction card, and log the site in your Source Log. → If one is closed then, use the row for a dropped must-do, a day's plan or something to book, whichever fits.|1": {
       "line": 28,
       "judgment": "no",
       "reason": "a conditional routing to the row that fits"
     },
-    "split|If one is closed then, use the row for a dropped must-do, a day's plan or something to book, whichever fits. → Then look at each attraction's group again.|1": {
+    "split|Score each one again for the new season, and add up the new totals. → Is every attraction your plan still uses open in the new season?|1": {
+      "line": 28,
+      "judgment": "no",
+      "reason": "a question"
+    },
+    "split|Is every attraction your plan still uses open in the new season? → That's each one on your must-do list, day cards, backup plans, draft or watchlist.|1": {
+      "line": 28,
+      "judgment": "no",
+      "reason": "a definition of which attractions count"
+    },
+    "split|That's each one on your must-do list, day cards, backup plans, draft or watchlist. → Check its official site for the months it's open, write them on its attraction card, and log the site in your Source Log.|1": {
+      "line": 28,
+      "judgment": "no",
+      "reason": "an instruction"
+    },
+    "split|If one is closed then, use the row for a dropped must-do, a day's plan or something to book, whichever fits. → A closed backup gets a new one, the way Session 44 picks it.|1": {
+      "line": 28,
+      "judgment": "no",
+      "reason": "a replacement for a closed backup; nothing the reader could choose is rejected"
+    },
+    "split|A closed backup gets a new one, the way Session 44 picks it. → Then look at each attraction's group again.|1": {
       "line": 28,
       "judgment": "no",
       "reason": "an instruction"
