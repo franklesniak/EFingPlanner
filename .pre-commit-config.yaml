@@ -61,7 +61,7 @@ repos:
   #      Validates the placeholder manifest schema against its declared JSON
   #      Schema Draft 2020-12 metaschema.
   - repo: https://github.com/python-jsonschema/check-jsonschema
-    rev: "0.38.0"
+    rev: "0.38.1"
     hooks:
       - id: check-jsonschema
         alias: validate-template-placeholders-manifest
@@ -141,7 +141,7 @@ repos:
   #      Validates the worked-example schema against its declared JSON Schema
   #      Draft 2020-12 metaschema.
   - repo: https://github.com/python-jsonschema/check-jsonschema
-    rev: "0.38.0"
+    rev: "0.38.1"
     hooks:
       - id: check-jsonschema
         alias: validate-example-config-valid-examples
@@ -181,7 +181,7 @@ repos:
   #      Validates the schemas loaded by `.template-sync/scripts/` at runtime
   #      against their declared JSON Schema Draft 2020-12 metaschema.
   - repo: https://github.com/python-jsonschema/check-jsonschema
-    rev: "0.38.0"
+    rev: "0.38.1"
     hooks:
       - id: check-jsonschema
         alias: validate-template-sync-marker-valid-examples
@@ -245,7 +245,7 @@ repos:
   #      when a downstream repository creates it. The upstream template does
   #      not ship that downstream-owned suppression file.
   - repo: https://github.com/python-jsonschema/check-jsonschema
-    rev: "0.38.0"
+    rev: "0.38.1"
     hooks:
       - id: check-jsonschema
         alias: validate-template-sync-manifest
@@ -346,7 +346,7 @@ repos:
   #      `files:` pattern at that time. Do not vendor third-party
   #      schemas into this repository to fill the gap.
   - repo: https://github.com/python-jsonschema/check-jsonschema
-    rev: "0.38.0"
+    rev: "0.38.1"
     hooks:
       - id: check-jsonschema
         alias: validate-dependabot-config
@@ -444,7 +444,7 @@ repos:
   # exercised by tests/test_schema_examples.py, and
   # tests/test_check_x_not_y.py runs every example through the tool's loaders.
   - repo: https://github.com/python-jsonschema/check-jsonschema
-    rev: "0.38.0"
+    rev: "0.38.1"
     hooks:
       - id: check-jsonschema
         alias: validate-x-not-y-judgments
