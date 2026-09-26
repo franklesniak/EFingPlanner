@@ -7,7 +7,7 @@
 
 - **Status:** Active
 - **Owner:** Repository Maintainers
-- **Last Updated:** 2026-09-25
+- **Last Updated:** 2026-09-26
 - **Scope:** The destination-pack routing contract. It says which session pulls which insert, which reference files each session points to, what fields every insert slot has to supply, and what it takes to add a new destination pack. It holds routing rather than facts, so it carries no `Last reviewed` stamp.
 - **Related:** [Destination pack contents](../README.md)
 
@@ -52,9 +52,9 @@ Parent-facing routing is in scope from Batch 2 onward. The parent-guide pages in
 
 | Parent-facing page | Insert it pulls | Reference file(s) it points to (`reference/`) |
 | --- | --- | --- |
-| Adult-only logistics | none | `adult_logistics.md` (entry specifics, local natural hazards, luggage help) |
-| Safety and emergency guidance | none | `safety_and_emergency.md` (emergency numbers, local terms for help, hazard notes) |
-| Money and budget guidance | none | `adult_logistics.md` (lodging priced per person), `transportation_basics.md` (children's fares) |
+| Adult-only logistics | none | `adult_logistics.md` (entry specifics, luggage help), `safety_and_emergency.md` (local natural hazards) |
+| Safety and emergency guidance | none | `safety_and_emergency.md` (emergency numbers, local terms for help, local natural hazards) |
+| Money and budget guidance | none | `money_basics.md` (lodging priced per person, children's fares) |
 | Flights from your home airport | none | `airports_and_arrival_basics.md` (which airport to land at, arrival-day transit) |
 
 ## What each insert slot supplies

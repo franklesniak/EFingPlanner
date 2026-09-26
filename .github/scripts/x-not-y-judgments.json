@@ -1957,10 +1957,10 @@
       "judgment": "no",
       "reason": "a metadata field label"
     },
-    "device|Last Updated: 2026-09-25|1": {
+    "device|Last Updated: 2026-09-26|1": {
       "line": 10,
       "judgment": "no",
-      "reason": "a metadata field label"
+      "reason": "a metadata field, as recorded for the earlier date"
     },
     "device|It holds routing rather than facts, so it carries no ‹code› stamp.|1": {
       "line": 11,
@@ -3816,12 +3816,22 @@
       "judgment": "no",
       "reason": "a change record: a fact"
     },
-    "split|The day card's cost and the itinerary's cost column name the slices they cover. → The When the Plan Changes card's season row re-checks each season fit and weather score a child gave.|1": {
+    "split|The day card's cost and the itinerary's cost column name the slices they cover. → The When the Plan Changes card's season row re-checks each season fit and weather score a child gave, and each attraction's opening months.|1": {
       "line": 58,
       "judgment": "no",
       "reason": "a change record: a fact"
     },
-    "split|The When the Plan Changes card's season row re-checks each season fit and weather score a child gave. → The card files new pages as well as fixed ones, names every box of the draft, and covers a day trip, a place to stay with no card and a booked room count.|1": {
+    "split|The When the Plan Changes card's season row re-checks each season fit and weather score a child gave, and each attraction's opening months. → Its row for a different place to stay reaches the old hotel card, the watchlist, the area pick and the rides from where the family sleeps.|1": {
+      "line": 58,
+      "judgment": "no",
+      "reason": "a change record: a fact"
+    },
+    "split|Its row for a different place to stay reaches the old hotel card, the watchlist, the area pick and the rides from where the family sleeps. → The insert contract's parent-facing rows give local hazards one home, ‹code› , and lodging priced per person and children's fares one home, ‹code› , as the Batch 3 brief settles.|1": {
+      "line": 58,
+      "judgment": "no",
+      "reason": "a change record: a fact"
+    },
+    "split|The insert contract's parent-facing rows give local hazards one home, ‹code› , and lodging priced per person and children's fares one home, ‹code› , as the Batch 3 brief settles. → The card files new pages as well as fixed ones, names every box of the draft, and covers a day trip, a place to stay with no card and a booked room count.|1": {
       "line": 58,
       "judgment": "no",
       "reason": "a fact: what the card files, names and covers; with no card is a determiner"
@@ -9474,10 +9484,10 @@
       "judgment": "no",
       "reason": "a list entry"
     },
-    "device|Local natural-hazard awareness: see your destination pack's adult-logistics page, or a current official source for the destination if the pack does not cover it yet, with the date you checked|1": {
+    "device|Local natural-hazard awareness: see your destination pack's safety and emergency page, or a current official source for the destination if the pack does not cover it yet, with the date you checked|1": {
       "line": 47,
       "judgment": "no",
-      "reason": "a checklist entry with a pointer and a fallback source"
+      "reason": "a checklist entry with a pointer and a fallback source, as recorded for the earlier pointer"
     },
     "device|Timed tickets|1": {
       "line": 48,
@@ -11738,15 +11748,15 @@
       "judgment": "no",
       "reason": "states an exception; a per-person category \"skips the per-room maths\" as a conditional skip"
     },
-    "split|A lodging category priced per person is the exception, and it skips the per-room maths. → The category names live in your destination pack's adult-logistics page.|1": {
+    "split|A lodging category priced per person is the exception, and it skips the per-room maths. → The category names live in your destination pack's money basics page.|1": {
       "line": 64,
       "judgment": "no",
-      "reason": "a pointer to where the names live"
+      "reason": "a pointer to where the names live, as recorded for the earlier pointer"
     },
-    "split|The category names live in your destination pack's adult-logistics page. → If your pack does not name them yet, check how the lodging prices its rooms on its official site, and write the date you checked.|1": {
+    "split|The category names live in your destination pack's money basics page. → If your pack does not name them yet, check how the lodging prices its rooms on its official site, and write the date you checked.|1": {
       "line": 64,
       "judgment": "no",
-      "reason": "a conditional fallback instruction"
+      "reason": "a conditional fallback instruction, as recorded"
     },
     "device|You set the amount and hold the actual money.|1": {
       "line": 68,
@@ -11828,10 +11838,10 @@
       "judgment": "no",
       "reason": "an instruction"
     },
-    "split|Treat it as something to verify for current ages and amounts on an official source, with the date you checked. → Leave the rule and any fraction to that source; the destination-specific source is your pack's transportation basics page, or the official source if your pack does not have that page yet.|1": {
+    "split|Treat it as something to verify for current ages and amounts on an official source, with the date you checked. → Leave the rule and any fraction to that source; the destination-specific source is your pack's money basics page, or the official source if your pack does not have that page yet.|1": {
       "line": 83,
       "judgment": "no",
-      "reason": "an instruction and a pointer to the source"
+      "reason": "an instruction and a pointer to the source, as recorded for the earlier pointer"
     },
     "split|Every figure on this page is an example to re-check, with a date. → There are no pinned amounts here, and there shouldn't be any in your child's work either.|1": {
       "line": 88,
@@ -38804,16 +38814,6 @@
       "judgment": "no",
       "reason": "a row label question naming a kind of change"
     },
-    "split|A different place to stay? → Mark the new Hotel Comparison Card as your pick.|1": {
-      "line": 16,
-      "judgment": "no",
-      "reason": "an instruction"
-    },
-    "split|Mark the new Hotel Comparison Card as your pick. → No card for it?|1": {
-      "line": 16,
-      "judgment": "no",
-      "reason": "a conditional question"
-    },
     "split|No card for it? → Ask a grown-up for its cost per night, per room or per person, and how many rooms or people.|1": {
       "line": 16,
       "judgment": "no",
@@ -38838,6 +38838,41 @@
       "line": 16,
       "judgment": "no",
       "reason": "a navigation instruction (go down Your plan pages)"
+    },
+    "split|A different place to stay? → Mark the new Hotel Comparison Card as your pick, and write \"booked another place\" on the old one.|1": {
+      "line": 16,
+      "judgment": "no",
+      "reason": "an instruction after a question; the note on the old card records the booking"
+    },
+    "split|Mark the new Hotel Comparison Card as your pick, and write \"booked another place\" on the old one. → Is it on your Reservation Watchlist?|1": {
+      "line": 16,
+      "judgment": "no",
+      "reason": "a question"
+    },
+    "split|Is it on your Reservation Watchlist? → Fix that row for the new place.|1": {
+      "line": 16,
+      "judgment": "no",
+      "reason": "an instruction"
+    },
+    "split|Fix that row for the new place. → Is the new place in a different area?|1": {
+      "line": 16,
+      "judgment": "no",
+      "reason": "a question"
+    },
+    "split|Is the new place in a different area? → Write \"booked in ___\" beside your pick on your Neighborhood Comparison, naming the new area.|1": {
+      "line": 16,
+      "judgment": "no",
+      "reason": "an instruction"
+    },
+    "split|Write \"booked in ___\" beside your pick on your Neighborhood Comparison, naming the new area. → Then re-time the rides from where you'll sleep with the map's Directions, and log the map, the way Session 28 does.|1": {
+      "line": 16,
+      "judgment": "no",
+      "reason": "an instruction"
+    },
+    "split|Then re-time the rides from where you'll sleep with the map's Directions, and log the map, the way Session 28 does. → No card for it?|1": {
+      "line": 16,
+      "judgment": "no",
+      "reason": "a conditional question"
     },
     "device|A different number of rooms?|1": {
       "line": 17,
@@ -39139,11 +39174,6 @@
       "judgment": "no",
       "reason": "an instruction"
     },
-    "split|Score each one again for the new season, and add up the new totals. → Then look at each attraction's group again.|1": {
-      "line": 28,
-      "judgment": "no",
-      "reason": "an instruction"
-    },
     "split|Then look at each attraction's group again. → Would you move a city, or an attraction on or off your must-do list?|1": {
       "line": 28,
       "judgment": "no",
@@ -39160,6 +39190,26 @@
       "reason": "a conditional routing; won't sits inside the condition"
     },
     "split|If your special pick won't work in the new season, a grown-up names the block, and you use the row for a blocked special pick. → Then go down Your plan pages.|1": {
+      "line": 28,
+      "judgment": "no",
+      "reason": "an instruction"
+    },
+    "split|Score each one again for the new season, and add up the new totals. → Is each attraction on your must-do list, your day cards or your watchlist open in the new season?|1": {
+      "line": 28,
+      "judgment": "no",
+      "reason": "a question"
+    },
+    "split|Is each attraction on your must-do list, your day cards or your watchlist open in the new season? → Check its official site for the months it's open, write them on its attraction card, and log the site in your Source Log.|1": {
+      "line": 28,
+      "judgment": "no",
+      "reason": "an instruction"
+    },
+    "split|Check its official site for the months it's open, write them on its attraction card, and log the site in your Source Log. → If one is closed then, use the row for a dropped must-do, a day's plan or something to book, whichever fits.|1": {
+      "line": 28,
+      "judgment": "no",
+      "reason": "a conditional routing to the row that fits"
+    },
+    "split|If one is closed then, use the row for a dropped must-do, a day's plan or something to book, whichever fits. → Then look at each attraction's group again.|1": {
       "line": 28,
       "judgment": "no",
       "reason": "an instruction"
@@ -39599,12 +39649,12 @@
       "judgment": "no",
       "reason": "a list entry naming a page and what to check"
     },
-    "device|Your Neighborhood Comparison and Hotel Comparison Cards (Sessions 34 and 35): the room count and room setup, and the nights beside them.|1": {
+    "device|Your Neighborhood Comparison and Hotel Comparison Cards (Sessions 34 and 35): your pick of area and of place to stay, the room count and room setup, and the nights beside them.|1": {
       "line": 60,
       "judgment": "no",
       "reason": "a list entry naming a page and what to check"
     },
-    "device|Your restaurant cards (Session 37): the seating note.|1": {
+    "device|Your restaurant cards (Session 37): the seating note, and whether each place is still near where you'll be.|1": {
       "line": 61,
       "judgment": "no",
       "reason": "a list entry naming a page and what to check"

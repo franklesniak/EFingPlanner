@@ -61,7 +61,7 @@ This matters a lot for a child with dyscalculia or number anxiety, and it costs 
 
 Estimate lodging **per city, then sum**. A multi-city trip stays in different places at different nightly rates, and a single average hides that.
 
-A lodging category priced per person is the exception, and it skips the per-room maths. The category names live in your destination pack's adult-logistics page. If your pack does not name them yet, check how the lodging prices its rooms on its official site, and write the date you checked.
+A lodging category priced per person is the exception, and it skips the per-room maths. The category names live in your destination pack's money basics page. If your pack does not name them yet, check how the lodging prices its rooms on its official site, and write the date you checked.
 
 ## Spending money
 
@@ -80,7 +80,7 @@ Three things worth saying, in your own words. **Name what they found**, not what
 
 ## One optional, verify-framed note
 
-Children's fares are often lower than adults' on some transport systems. Treat it as something to verify for current ages and amounts on an official source, with the date you checked. Leave the rule and any fraction to that source; the destination-specific source is your pack's transportation basics page, or the official source if your pack does not have that page yet.
+Children's fares are often lower than adults' on some transport systems. Treat it as something to verify for current ages and amounts on an official source, with the date you checked. Leave the rule and any fraction to that source; the destination-specific source is your pack's money basics page, or the official source if your pack does not have that page yet.
 
 ---
 

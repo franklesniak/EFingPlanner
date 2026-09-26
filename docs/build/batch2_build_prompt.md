@@ -4,7 +4,7 @@
 
 - **Status:** Active
 - **Owner:** Repository Maintainers
-- **Last Updated:** 2026-09-25
+- **Last Updated:** 2026-09-26
 - **Scope:** The complete build instruction for Batch 2 of the EFingPlanner curriculum -- thirty-four sessions across Phases 3 to 8, thirteen templates, the parent apparatus, the rest of the trip-starter kit, the two binder deliverables, and the roadmap extension. It carries every Batch 2 requirement, every applicable acceptance criterion, and the adjudicated answer to every open question, so an authoring run works from this brief and consults the archived specification only for a detail the brief turns out to lack. It does not cover Batches 0, 1, 3 or 4, and it is a build instruction rather than shipped curriculum.
 - **Related:** [Build prompt directory guide](README.md), [Batch 1 build brief](batch1_build_prompt.md), [Build prompt template](_build_prompt_template.md), [Archived specification](../spec/specification.md)
 
@@ -3259,8 +3259,11 @@ extends a built file, as its entry says.
 local hazard awareness, local emergency numbers, local luggage-forwarding services, local
 police-post equivalents, local lodging categories -- belong in the pack's adult-logistics
 reference, which these pages **name generically.** The contract gains a row for each page
-that needs pack facts, so the routing is on the record. (`D-X-2`.) **Until a pack carries
-that file, each pointer also names what to do without it:** a current official source,
+that needs pack facts, so the routing is on the record. (`D-X-2`.) The Batch 3 brief
+(`I-3`) later gives local hazards their home in `safety_and_emergency.md`, and lodging
+priced per person and children's fares theirs in `money_basics.md`; the contract rows and
+the pages follow it. **Until a pack carries that file, each pointer also names what to do
+without it:** a current official source,
 checked and dated.
 
 **Origin-layer content is allowed and is US-specific by design.** Passport rules and

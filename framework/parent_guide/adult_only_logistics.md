@@ -44,7 +44,7 @@ Worth knowing: your child's binder is valuable either way. If you use an agent, 
 - [ ] Meeting-point plan
 - [ ] Travel advisories
 - [ ] Weather alerts
-- [ ] Local natural-hazard awareness: see your destination pack's adult-logistics page, or a current official source for the destination if the pack does not cover it yet, with the date you checked
+- [ ] Local natural-hazard awareness: see your destination pack's safety and emergency page, or a current official source for the destination if the pack does not cover it yet, with the date you checked
 - [ ] Timed tickets
 - [ ] Restaurant reservations
 - [ ] Transportation bookings
