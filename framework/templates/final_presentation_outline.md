@@ -27,7 +27,7 @@ If you want to work up to it, [the differentiation guide](../parent_guide/differ
 | What are the top experiences? | |
 | Where might we stay? | |
 | What are the food highlights? | |
-| What's the rough budget estimate? | |
+| What's the rough budget for the parts I chose? (The grown-ups add the rest, such as getting there.) | |
 | What are the biggest trade-offs? | |
 | What did we cut, and why? | |
 

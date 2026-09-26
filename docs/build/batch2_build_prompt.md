@@ -4,7 +4,7 @@
 
 - **Status:** Active
 - **Owner:** Repository Maintainers
-- **Last Updated:** 2026-09-25
+- **Last Updated:** 2026-09-26
 - **Scope:** The complete build instruction for Batch 2 of the EFingPlanner curriculum -- thirty-four sessions across Phases 3 to 8, thirteen templates, the parent apparatus, the rest of the trip-starter kit, the two binder deliverables, and the roadmap extension. It carries every Batch 2 requirement, every applicable acceptance criterion, and the adjudicated answer to every open question, so an authoring run works from this brief and consults the archived specification only for a detail the brief turns out to lack. It does not cover Batches 0, 1, 3 or 4, and it is a build instruction rather than shipped curriculum.
 - **Related:** [Build prompt directory guide](README.md), [Batch 1 build brief](batch1_build_prompt.md), [Build prompt template](_build_prompt_template.md), [Archived specification](../spec/specification.md)
 
@@ -743,9 +743,11 @@ nightly price for all the overnight cities, multiplies it by every night in the 
 
 **On the Core path, add one optional micro-task**, shown only when the Session 02 profiles
 mark a traveler as coming for only part of the trip. The child jots how many people are
-present on which days, and what that changes: room count (Sessions 34 and 35), train seats
-on each leg (Session 30), and restaurant table size (Session 36). A family continuing from
-First Taste meets it on Session 33's extension line.
+present on which days, and what that changes: room count (Sessions 34, 35 and 39),
+restaurant table size (Sessions 36 and 37), and train seats on each leg, which the grown-ups
+book. Each of those sessions reads the note where it applies: rooms on the nights that
+traveler is there, and table size on those days. A family continuing from First Taste
+meets it on Session 33's extension line.
 
 #### Session 44 — the personal pick, now chosen at Session 26
 
@@ -2082,7 +2084,7 @@ page". **Do not write the Destination Notes phrase.** (`D-item-3`.)
 
 **Use low / medium / high estimates, never a single pinned number.** The categories in the
 daily table: **Food · Local transit · Activities · Long-distance transit if applicable ·
-Souvenirs · Unknown / ask adult.** "Unknown / ask adult" is a **finished answer**, not a
+Souvenirs · Unknown / ask an adult.** "Unknown / ask an adult" is a **finished answer**, not a
 gap.
 
 **Budget-teaching rules that govern this page:**
@@ -2714,12 +2716,12 @@ Put your whole project in order, tab by tab. **Fully neutral.**
 | --- | --- |
 | 1. Start Here | Cover page; Trip-Basics card; Traveler profiles; **Family trip goals**; Current family travel assumptions |
 | 2. Research Skills | The Phase 1 research-skill artifacts the family chose to keep, for example the trust test |
-| 3. Destination Overview | Season recommendation, or the season confirmation when the dates were booked |
-| 4. Cities and Route | City long-list; City shortlist and recommendation; Route recommendation; Trip-length recommendation, or the nights plan when the dates were booked; Transportation notes |
-| 5. Attractions and Food | Top attractions and experiences; Culture/history/nature/food/fun balance check; Restaurant and food shortlist, if the food sessions were done |
+| 3. Destination Overview | Season recommendation, or the season confirmation when the dates were booked by Checkpoint 1 |
+| 4. Cities and Route | City long-list; City shortlist and recommendation; Route recommendation; Trip-length recommendation, or the nights plan when the dates were booked by Checkpoint 4; Transportation notes |
+| 5. Attractions and Food | Top attractions and experiences; Culture/history/nature/food/fun balance check; Restaurant and food shortlist, if the family chose it for the binder |
 | 6. Hotels and Budget | Hotel and neighborhood comparison summary; Budget estimate |
 | 7. Itinerary | Day-by-day itinerary; Reservation watchlist; Backup plans; Cut list or "save for future trip" list |
-| 8. Readiness | Packing list; Language and etiquette quick sheet, if that session was done; Readiness checklist |
+| 8. Readiness | Packing list; Language and etiquette quick sheet, if the family chose it for the binder; Readiness checklist |
 | 9. Sources and Decisions | Source log; Decision log; "My Calls" page |
 | 10. Parent Review | Adult follow-up questions; parent review forms |
 | 11. Final Recommendation | Final recommendation summary; Final reflection |
@@ -3257,8 +3259,11 @@ extends a built file, as its entry says.
 local hazard awareness, local emergency numbers, local luggage-forwarding services, local
 police-post equivalents, local lodging categories -- belong in the pack's adult-logistics
 reference, which these pages **name generically.** The contract gains a row for each page
-that needs pack facts, so the routing is on the record. (`D-X-2`.) **Until a pack carries
-that file, each pointer also names what to do without it:** a current official source,
+that needs pack facts, so the routing is on the record. (`D-X-2`.) The Batch 3 brief
+(`I-3`) later gives local hazards their home in `safety_and_emergency.md`, and lodging
+priced per person and children's fares theirs in `money_basics.md`; the contract rows and
+the pages follow it. **Until a pack carries that file, each pointer also names what to do
+without it:** a current official source,
 checked and dated.
 
 **Origin-layer content is allowed and is US-specific by design.** Passport rules and
@@ -3561,11 +3566,16 @@ requirements keep video research with an adult, keep the kid-safe filter on, and
 whose online-safety guardrail requires them to stay. **Write Session 25's Role line as
 co-worked.** **Session 49 is co-worked for the same kind of reason**: a grown-up rehearses
 the separation plan with the child, and its central-table value is `co-working
-recommended`. Write its Role line as co-worked too. **Two more sessions have one grown-up
+recommended`, with that rehearsal named after a semicolon. Write its Role line as
+co-worked too. **Two more sessions have one grown-up
 step without being gated as a whole.** Session 09 is adult-operated: a grown-up runs the AI
 tool, as its built entry says. Session 26 ends with the one unconditional pick, which a
 grown-up helps choose after showing the three blocks, as built Session 44 does on the First
-Taste path. Write Session 26's Role line the way Session 44's is written. Every session not
+Taste path. Write Session 26's Role line the way Session 44's is written. **Sessions 34, 36
+and 37 have one grown-up step each:** a grown-up stays nearby for any search beyond the
+Destination Notes (and official city sites, in Session 34), and beside the child for an
+image search, as the privacy and safety page asks. Their section 10 values name that step
+after a semicolon, and their Role lines carry it. Every session not
 named in this paragraph is independent: the child can do it without a grown-up there. That
 includes a session whose section 10 value is a 5-minute check-in or a parent review after
 the session, because neither stops the child; its Role line still carries that value.
@@ -4347,12 +4357,12 @@ from this table. (`D-item-7`.)
 | 30 | checking sources | 20-30 minutes | none / independent work | Core |
 | 31 | making trade-offs | 20-30 minutes | parent review after session | Core |
 | 32 | making trade-offs | 20-30 minutes for the child, plus a 20-40 minute review with you | parent review -- genuinely use the recommendation in a real family talk | Core -- **Checkpoint 4** |
-| 34 | comparing choices | 20-30 minutes | none / independent work | Core |
+| 34 | comparing choices | 20-30 minutes | none / independent work; stay nearby for any search beyond the Destination Notes and official city sites, and beside your child for an image search | Core |
 | 35 | comparing choices | 20-30 minutes per sitting, several sittings | none / independent work | Core |
-| 36 | organizing information | 20-30 minutes | none / independent work | Conditional core |
-| 37 | organizing information | 20-30 minutes | none / independent work | Conditional core |
-| 38 | planning realistic time | 20-30 minutes | 5-minute check-in | Core |
-| 39 | revising a plan | 20-30 minutes | parent review after session | Core |
+| 36 | organizing information | 20-30 minutes | none / independent work; stay nearby for any search beyond the Destination Notes, and beside your child for an image search | Conditional core |
+| 37 | organizing information | 20-30 minutes | none / independent work; stay nearby for any search beyond the Destination Notes, and beside your child for an image search | Conditional core |
+| 38 | planning realistic time | 20-30 minutes | 5-minute check-in; beforehand, tell your child the souvenir amount for one day, for the whole group | Core |
+| 39 | revising a plan | 20-30 minutes | parent review after session; beforehand, tell your child how many rooms each overnight city needs | Core |
 | 40 | planning realistic time | 20-30 minutes | 5-minute check-in | Core |
 | 41 | planning realistic time | several sittings; stop whenever you want | none / independent work | Core |
 | 42 | organizing information | 20-30 minutes | none / independent work | Core |
@@ -4361,7 +4371,7 @@ from this table. (`D-item-7`.)
 | 46 | making trade-offs | 20-30 minutes for the child, plus a 20-40 minute review with you | parent review -- genuinely use the recommendation in a real family talk | Core -- **Checkpoint 5** |
 | 47 | organizing information | 20-30 minutes | 5-minute check-in | Conditional core |
 | 48 | organizing information | 20-30 minutes | parent review after session | Core |
-| 49 | self-control (knowing when to stop) | 20-30 minutes | co-working recommended | Core |
+| 49 | self-control (knowing when to stop) | 20-30 minutes | co-working recommended; hear your child say the staying-found plan out loud once | Core |
 | 50 | organizing information | several sittings; stop whenever you want | 5-minute check-in | Core |
 | 51 | organizing information | 20-30 minutes | 5-minute check-in | Core |
 | 52 | making trade-offs | 20-30 minutes for the child, plus the family decision meeting | parent review -- genuinely use the recommendation in a real family talk | Core -- **Checkpoint 6** |

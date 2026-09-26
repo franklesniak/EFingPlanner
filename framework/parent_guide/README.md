@@ -61,4 +61,4 @@ Only four things are genuine setup actions:
 
 **Also start now if your trip leaves the country (it runs in the background):** kick off the child's passport check at travel.state.gov. It is a long-lead item that can set your earliest travel date and shapes the season research your child does next, so it should not wait. If your trip stays inside your own country, there is nothing to start here.
 
-Everything else has a default and can wait. You do not decide the "City C," food, or language sessions now -- they promote themselves later only if your child's research keeps surfacing them. Full detail is in the [setup checklist](setup_checklist.md).
+Everything else has a default and can wait. You do not decide the "City C," food, or language sessions now. Each becomes Core later on its own condition: City C if a third city keeps coming up in your child's research, and the food and language sessions if your family wants their page in the binder, which you decide when your child reaches them. Full detail is in the [setup checklist](setup_checklist.md).

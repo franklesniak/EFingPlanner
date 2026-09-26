@@ -33,16 +33,16 @@ The day rows come in two tables, so the page still prints. The **Day** column is
 | | | | | | |
 | | | | | | |
 
-| Day | Transit notes | Tickets or reservations to flag | Estimated cost (an example to re-check) | Energy level (easy / medium / big day) | Backup idea |
+| Day | Transit notes | Tickets or reservations to flag | Estimated cost, for everyone: food, local transit, tickets, souvenirs (an example to re-check) | Energy level (easy / medium / big day) | Backup idea |
 | --- | --- | --- | --- | --- | --- |
 | | | | | | |
 | | | | | | |
 | | | | | | |
 | | | | | | |
 
-Number the Day column yourself. Give each day of the stay a row, starting with the day you arrive. Stop before the day you move on, because that day is the first row of your next stay. So a four-night stay has four rows. On the last stay of the trip, add one more row for the day you head home. Add rows as you need them, and keep the two tables matching. A long stay can carry on to a second sheet. Each day gets its own row for transit, tickets, cost and a backup, because those really do change day to day — and Session 45 copies them across one day at a time.
+Number the Day column yourself. Give each day of the stay a row, starting with the day you arrive. Stop before the day you move on, because that day is the first row of your next stay. So a four-night stay has four rows. On the last stay of the trip, add one more row for the day you head home. Add rows as you need them, and keep the two tables matching. A long stay can carry on to a second sheet. The cost is that day's own spending. Your hotels are on your budget, and the grown-ups price the long rides. Each day gets its own row for transit, tickets, cost and a backup, because those really do change day to day — and Session 45 copies them across one day at a time.
 
-Mark your first day **easy**. Getting from the airport to where you're staying is a real chunk of that day, and you'll be tired. Often day two is easy too.
+Give your first day the energy level from your first-day rule in Session 40. After a long journey, that's **easy**. Getting to where you're staying takes a big chunk of the day, and you'll be tired. Often day two is easy too. After a trip of only a few hours, it's easy or medium.
 
 ## The per-day card (optional, later)
 
@@ -64,7 +64,7 @@ Save these as `day_01.md`, `day_02.md`, and so on.
 | Dinner idea | |
 | Transit notes | |
 | Tickets or reservations | |
-| Estimated cost (an example to re-check) | |
+| Estimated cost, for everyone: food, local transit, tickets, souvenirs (an example to re-check) | |
 | Energy level (easy / medium / big day) | |
 | Backup idea | |
 | Source notes | |

@@ -37,7 +37,7 @@ One of the two legs will be the harder adjustment, and which one depends on the 
 
 ## Where a city has more than one airport
 
-Which one you land at can change arrival-day fatigue substantially: sometimes an hour or more of extra transit while everyone is exhausted. The specifics belong in your destination pack's airport basics page. If your pack does not have that page yet, check the airport's official site for current transit options, and write the date you checked.
+Which one you land at can change arrival-day fatigue substantially: sometimes an hour or more of extra transit while everyone is exhausted. The specifics belong in your destination pack's airports and arrival page. If your pack does not have that page yet, check the airport's official site for current transit options, and write the date you checked.
 
 ## Dates, and what they cost you
 

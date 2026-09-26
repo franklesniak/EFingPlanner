@@ -47,4 +47,4 @@ Before you photograph a page, look at it once. Check there are no private detail
 
 ## At the very end
 
-At the very end, put your finished pages in the order you did them and write what each one is on a sticky note. That is enough. Families who go on to the longer path get **Session 50, Final Binder Assembly**, which helps with tabs and order, and a **print index** that says what goes in which tab. Neither is built yet, so neither is linked here. You do not need to think about tabs before then.
+At the very end, put your finished pages in the order you did them and write what each one is on a sticky note. That is enough. Families who go on to the longer path get [Session 50, Final Binder Assembly](../sessions/phase_08_readiness_final/50_final_binder_assembly.md), which helps with tabs and order and says what goes in which tab. You do not need to think about tabs before then.

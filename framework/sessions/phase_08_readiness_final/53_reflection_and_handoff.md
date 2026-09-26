@@ -2,7 +2,9 @@
 
 # Session 53: Reflection and Handoff
 
-You are here: Phase 8 (Readiness and Final), First Taste step 13 of 13. **This is your finish line.** Previous: [44 Backup Plans and Cut List](../phase_07_itinerary_building/44_backup_plans_and_cut_list.md) | Next: none. You made it.
+You are here: Phase 8 (Readiness and Final), First Taste step 13 of 13. **This is your finish line.** Previous: [52 Checkpoint 6 Family Decision Meeting](52_checkpoint_6_family_decision_meeting.md) | Next: none. You made it.
+
+*On the First Taste path, you came here straight from [44 Backup Plans and Cut List](../phase_07_itinerary_building/44_backup_plans_and_cut_list.md).*
 
 **For parents:**
 
@@ -10,7 +12,7 @@ You are here: Phase 8 (Readiness and Final), First Taste step 13 of 13. **This i
 - Planner skill: reflection; knowing when to stop
 - Estimated time: 20-30 minutes
 - Parent involvement: co-working recommended; deliver the finish acknowledgment warmly
-- Materials: your baseline reflection from Session 01, a [Final Reflection page](../../templates/final_reflection.md)
+- Materials: your baseline reflection from Session 01, your budget estimate from Session 33, a [Final Reflection page](../../templates/final_reflection.md), and the plan pages you hand over: your Checkpoint 1 season, your city choice from Session 21, and your must-see list and special pick from Session 44. On the Core path, your assembled binder from Session 50 holds the plan pages, with your must-do list and approved route, and you use the final reflection page in your kit's `outputs` folder. On the Core path, also bring your follow-up questions from Sessions 51 and 52, Checkpoint 6's parent review form, your final recommendation packet, your checkpoint reflections, your minutes guesses and times from Sessions 16, 26, 35 and 45 (on your City A card, your Session 26 scoring tables, your Session 35 Hotel Comparison Cards and your itinerary draft), your budget summary from Session 39, your family's [current travel assumptions](../../templates/current_family_travel_assumptions.md) page (for the budget band), your [When the Plan Changes card](../../student_guide/when_the_plan_changes.md) (if a grown-up changed your band after your band sentence), and your First Taste reflection if this is your capstone re-run.
 
 ## Goal
 
@@ -22,7 +24,9 @@ Find your baseline reflection from Session 01 (the "what is hard about big proje
 
 ## Steps
 
-You made a mini-plan for a real trip. Before you hand it over, take a few minutes to notice how far you've come. Short answers are fine. Say them aloud to a grown-up if you like.
+On the First Taste path, you made a mini-plan for a real trip. If you came here from Session 52, you made the full plan, from choosing places to the family decision meeting. Before you hand it over, take a few minutes to notice how far you've come. Short answers are fine. Say them aloud to a grown-up if you like.
+
+Finished First Taste first, and back here at the end of the whole project? This is your capstone, the last step that closes the whole project. Look back at your Session 01 baseline and at the reflection you wrote at your First Taste finish, and use the Core path lines on this page.
 
 1. **Look back at your baseline.** You wrote what was hard about big projects and what helps you start. What is different now?
 2. **Your budget guess.** Look at your budget estimate from Session 33. Were your first guesses off from what you expected? That's normal. Grown-ups' first guesses are often off too. This is about noticing how estimating works, not being exactly right.
@@ -34,21 +38,31 @@ You made a mini-plan for a real trip. Before you hand it over, take a few minute
 
 These are the same planning moves people use for homework, chores, and any big project. The way to carry them over is to *notice* the move and use it on purpose somewhere else.
 
-**Hand it off.** Give your plan to the grown-ups: your season pick, your city choice (with roughly how many days for each), your must-see list, your one special pick, and your budget check. You did the planning; they do the booking.
+**On the Core path, three more questions.** Your answers go on the final reflection page in your kit's `outputs` folder.
+
+- **Patterns.** Look at the one-line reflections from your checkpoints, however many you wrote. What felt easy or hard more than once? What helped more than once?
+- **Time.** In Sessions 16, 26, 35 and 45, how big was the gap between your guess and your time? Did the gaps get smaller with practice? If one of those has no guess, use the ones that do. Being off is normal.
+- **Budget.** Did a grown-up change your band after you wrote your band sentence? Do the "Your budget band changed?" row of your When the Plan Changes card first. Look at your Session 39 band sentence, and the matching piece you checked against the band. How close did it come? With a hotel tier, did each hotel fit? If it said "not counting ___", say what it left out. The band is the anchor you compare with, since nobody has spent the money yet.
+
+**Hand it off.** Give your plan to the grown-ups: your season pick (or your season confirmation, if you made one at Checkpoint 1), your city choice (with roughly how many days for each), your must-see list, your one special pick, and your budget check. You did the planning; they do the booking. On the Core path, first put your newest pages in your binder, in place of each "comes next" and of any page Checkpoint 6 changed, with any page it added: the follow-up questions and Checkpoint 6's parent review form behind tab 10, and your final recommendation packet and this final reflection behind tab 11. Then hand over the full binder you put together in Session 50. In it are your must-do list and your approved route, with its nights.
 
 ## Workspace
 
-Use your Final Reflection page for your answers, next to your Session 01 baseline so you can compare.
+Use your Final Reflection page for your answers, next to your Session 01 baseline so you can compare. On the Core path, use the final reflection page in your kit's `outputs` folder in place of the Final Reflection page. It has room for the three extra questions.
 
 You can say your answers to an adult who writes them, or draw them, if that's easier.
 
 ## Artifact Created
 
-Your Final Reflection, and your finished mini-plan handed to the grown-ups.
+On the First Taste path: your Final Reflection, and your finished mini-plan handed to the grown-ups.
+
+On the Core path: your final reflection, with the three extra questions answered, and your full binder handed to the grown-ups.
 
 ## Stop Point
 
-You are done when you have looked back at your baseline, answered a few reflection questions, and handed your plan to a grown-up. This is the finish line. You can stop here with a usable mini-plan.
+You are done when you have looked back at your baseline, answered a few reflection questions, and handed your plan to a grown-up. This is the finish line. On the First Taste path, you can stop here with a usable mini-plan.
+
+On the Core path, you are done when you've also answered the three extra questions, filled tabs 10 and 11, and handed your binder to a grown-up. If a grown-up changed your band after your band sentence, you've gone down your When the Plan Changes card for it. If this is your capstone re-run, you've looked back at your First Taste reflection too. This is the finish line for the whole project.
 
 ## Source Check
 
@@ -64,9 +78,9 @@ Stuck? Use the [When I'm Stuck card](../../student_guide/when_im_stuck.md) in yo
 
 ## Optional Extension
 
-If you want to keep going, there's more a planner can do: more cities, a day-by-day plan, food research, and more. Those fuller steps are being built and will come later; for now, finishing here is a complete success, and nothing you did gets redone when they come.
+If you want to keep going, there's more a planner can do: more cities, a day-by-day plan, food research, and more. Those fuller sessions exist. Do the ones you haven't done in numbered order, starting with the lowest number. A session you've already done may ask for a little more on the Core path, such as Session 14's Trade-Off Report. Do that part when your numbered order reaches it. Finishing here is a complete success, and nothing you did gets redone if you go on. If you came here from Session 52, you've already done the ones your family chose. What comes next is the grown-ups' part, and maybe the trip.
 
 ## Parent Notes
 
 <!-- density-exempt: X, not Y -- the duration-true praise wording and the non-gamified acknowledgment are spec-required calibration (the spec's Session 53 acknowledgment beat) -->
-This is the capstone. Close the loop against the Session 01 baseline so growth is visible. End with a warm, genuine acknowledgment as its own beat. Because First Taste is a few-weeks project, use the **duration-true** wording -- *"You finished a real project, start to finish, and made a real mini-plan we can actually use. That's a big deal"* -- not "months-long," which would overclaim. Keep it non-gamified: no certificate or badge, just your own words. This finish stands whether or not the trip ever happens. If your child wants to continue toward the fuller plan, those later sessions are documented in the [roadmap](../../PROJECT_ROADMAP.md), which says what has to happen before they are built. Nothing is wasted, and their First Taste work is the seed they build on.
+This is the capstone. Close the loop against the Session 01 baseline so growth is visible. End with a warm, genuine acknowledgment as its own beat, in the **duration-true** wording: the one that is true to how long your child worked. Because First Taste is a few-weeks project, a First Taste finisher gets the duration-neutral form -- *"You finished a real project, start to finish, and made a real mini-plan we can actually use. That's a big deal"* -- not "months-long," which would overclaim. A child who arrives from Session 52, or comes back here as the capstone after First Taste, has finished a months-long project, so say so: *"You stuck with a months-long project, start to finish, and made a full trip plan the whole family can use. That's a big deal."* Keep it non-gamified: no certificate or badge, just your own words. This finish stands whether or not the trip ever happens. If your child wants to continue toward the fuller plan, those later sessions exist, and the [roadmap](../../PROJECT_ROADMAP.md) explains how to continue in numbered order. Nothing is wasted, and their First Taste work is the seed they build on. On the Core path, the budget question compares the matching piece of their Session 39 estimate with the band, as their band sentence does, which is an anchor; the trip has not happened, so there is no spending to compare with yet. If you've changed the band since your child wrote that sentence, write the new one on the assumptions page and tell them. They take it down the When the Plan Changes card's "Your budget band changed?" row first.

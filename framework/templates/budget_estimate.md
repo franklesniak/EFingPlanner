@@ -6,17 +6,17 @@ This page helps you see how trip money is split up, and whether the parts *you* 
 
 All numbers here are estimates you look up and check again. Beside each number you look up, write the day you looked it up.
 
-**The parts your choices drive.** For **First Taste**, fill in **Hotel** and **Food**. That matches Session 33. Did your Session 21 recommendation keep **two cities**? Then estimate a hotel for **each** one. Fill in the second-city hotel row too, since your plan pays for both. The other rows are marked *(later)*: they belong to the fuller Core path, so leave them blank for the pilot.
+**The parts your choices drive.** For **First Taste**, fill in **Hotel** and **Food**. That matches Session 33. Did your Session 21 recommendation keep **two cities**? Then estimate a hotel for **each** one. Fill in the second-city hotel row too, since your plan pays for both. The other rows are marked *(later)*: they belong to the fuller Core path, so leave them blank for the pilot. On the **Core** path, use the first hotel row for all your overnight cities: your one price, times every night in your Checkpoint 4 plan, times rooms, or people if it's per person.
 
 | Cost | How to figure it | My estimate |
 | --- | --- | --- |
-| Hotel (first city) | $____ per night x ____ nights x ____ rooms | |
-| Second city's hotel (only if you kept two cities in Session 21) | $____ per night x ____ nights x ____ rooms | |
+| Hotel (first city) | $____ per night, per room (or per person) x ____ nights x ____ rooms (or people, if it's per person) | |
+| Second city's hotel (only if you kept two cities in Session 21) | $____ per night, per room (or per person) x ____ nights x ____ rooms (or people, if it's per person) | |
 | Food | $____ per person per day x ____ people x ____ days | |
-| Activities/tickets (later) | $____ per ticket x ____ people | |
+| Activities/tickets (later) | $____ per ticket x ____ people (or x how many family or group tickets you'd need) | |
 | Local transit -- trains/buses inside the trip (later) | | |
 | Souvenirs / spending money (later) | | |
-| **Subtotal of the parts I choose (Core path)** | add the costs above | |
+| **Subtotal of the parts I choose (Core path)** | add the costs above. If a part still says "ask an adult" or "not sure yet", add up the rest, and write "not counting ___" beside what you added up, naming what's missing. | |
 
 **Check against your band. Match the units.** Your band comes from the assumptions page. It's one kid-sized form: per person/day, per day for the family, or a hotel tier. It's not a whole-trip total. So compare the *matching* piece of your estimate, not the subtotal:
 
