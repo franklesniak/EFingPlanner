@@ -27,7 +27,7 @@ Any of these works:
 
 Turn reviews around promptly. If you can't, your child has somewhere to go: the "what to do while you wait for an adult checkpoint" note on their [When I'm Stuck card](../student_guide/when_im_stuck.md). They can do an Optional Extension, add to the question parking lot, or grow their "things I can't wait to see" page.
 
-**The next session genuinely waits**, and that is on purpose. Everything after a checkpoint is built on the decision you are about to make; letting a child run ahead means later work rests on a season, shortlist or route nobody approved.
+**The next session waits for your answer**, and that is on purpose. Everything after a checkpoint is built on the decision you are about to make; letting a child run ahead means later work rests on a season, shortlist or route nobody approved.
 
 What you don't want is a child sitting still because you were busy on Tuesday.
 
@@ -41,6 +41,8 @@ Pick one:
 - **Park this decision for later**
 
 A signature is optional. Initials or a "got it" is plenty.
+
+**When a checkpoint is finished.** From Checkpoint 2 on, a checkpoint is finished when your answer is Approved, or Approved with changes once your child has written the changes in. From Checkpoint 4 on, they also go down their [When the Plan Changes card](../student_guide/when_the_plan_changes.md) for each change. At Checkpoints 2 to 5, "Needs more research" and "Park this decision for later" keep it open until your child comes back to it. At Checkpoint 6, a parked decision is the result, so the checkpoint is finished. Every answer is still a normal result, and only a finished checkpoint counts toward "Checkpoints reached".
 
 **"Needs more research" is the hard one**, and it's the most common of the hard ones. Said badly it reads as "you failed." The [coaching guide](coaching_and_support.md) has the script. Use its words, because this is the verdict most likely to end the project.
 

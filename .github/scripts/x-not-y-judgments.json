@@ -3816,16 +3816,6 @@
       "judgment": "no",
       "reason": "a change record: a fact"
     },
-    "split|Session 37 checks each place against the family's dietary constraints and what each traveler avoids. → Session 40 takes a moving day's ride from the route map notes, and the airports page serves the first day.|1": {
-      "line": 58,
-      "judgment": "no",
-      "reason": "a change record: a fact"
-    },
-    "split|Session 40 takes a moving day's ride from the route map notes, and the airports page serves the first day. → The card and Session 49 use the templates' field names, and a new place to stay gets a fresh separation card, with a parent who's there on it.|1": {
-      "line": 58,
-      "judgment": "no",
-      "reason": "a change record: a fact"
-    },
     "split|Its travel row says what to check if you fly, and that a train or a drive has no flight-day marks. → Checkpoints 4 to 6 and Sessions 39, 42 to 45, 51 and 53 point to the card in one line, and each Stop Point checks it.|1": {
       "line": 58,
       "judgment": "no",
@@ -3876,7 +3866,22 @@
       "judgment": "no",
       "reason": "a change record: facts about the restaurant cards and the profile's privacy rule"
     },
-    "split|A new traveler, or a traveler's changed food, sends each restaurant card back through Session 37's question, and the traveler profile keeps medical specifics off every page. → The insert contract's parent-facing rows give local hazards one home, ‹code› , and lodging priced per person and children's fares one home, ‹code› , as the Batch 3 brief settles.|1": {
+    "split|Session 37 checks each place against the family's dietary constraints and what each traveler avoids. → Session 40 takes a moving day's ride from the route map notes, and the airports page serves the first day of a trip that flies in, with the map's Directions for a train or car arrival.|1": {
+      "line": 58,
+      "judgment": "no",
+      "reason": "a change record: a fact of which page or tool serves each arrival; naming the tool for a train or car arrival rejects nothing"
+    },
+    "split|Session 40 takes a moving day's ride from the route map notes, and the airports page serves the first day of a trip that flies in, with the map's Directions for a train or car arrival. → The card and Session 49 use the templates' field names, and a new place to stay gets a fresh separation card, with a parent who's there on it.|1": {
+      "line": 58,
+      "judgment": "no",
+      "reason": "a change record: a fact"
+    },
+    "split|A new traveler, or a traveler's changed food, sends each restaurant card back through Session 37's question, and the traveler profile keeps medical specifics off every page. → The review checkpoints page says when each checkpoint is finished, and that a parked decision at Checkpoint 6 is the result.|1": {
+      "line": 58,
+      "judgment": "no",
+      "reason": "a change record: a fact of what the review checkpoints page says"
+    },
+    "split|The review checkpoints page says when each checkpoint is finished, and that a parked decision at Checkpoint 6 is the result. → The insert contract's parent-facing rows give local hazards one home, ‹code› , and lodging priced per person and children's fares one home, ‹code› , as the Batch 3 brief settles.|1": {
       "line": 58,
       "judgment": "no",
       "reason": "a change record: a fact"
@@ -12050,15 +12055,15 @@
       "judgment": "no",
       "reason": "an instruction"
     },
-    "split|The next session genuinely waits, and that is on purpose. → Everything after a checkpoint is built on the decision you are about to make; letting a child run ahead means later work rests on a season, shortlist or route nobody approved.|1": {
+    "split|They can do an Optional Extension, add to the question parking lot, or grow their \"things I can't wait to see\" page. → The next session waits for your answer, and that is on purpose.|1": {
       "line": 30,
       "judgment": "no",
-      "reason": "a reason the next session waits; \"nobody approved\" describes the route"
+      "reason": "a fact with its purpose"
     },
-    "split|They can do an Optional Extension, add to the question parking lot, or grow their \"things I can't wait to see\" page. → The next session genuinely waits, and that is on purpose.|1": {
+    "split|The next session waits for your answer, and that is on purpose. → Everything after a checkpoint is built on the decision you are about to make; letting a child run ahead means later work rests on a season, shortlist or route nobody approved.|1": {
       "line": 30,
       "judgment": "no",
-      "reason": "a fact"
+      "reason": "a reason the next session waits; nobody approved describes the route"
     },
     "split|Everything after a checkpoint is built on the decision you are about to make; letting a child run ahead means later work rests on a season, shortlist or route nobody approved. → What you don't want is a child sitting still because you were busy on Tuesday.|1": {
       "line": 32,
@@ -12100,343 +12105,373 @@
       "judgment": "no",
       "reason": "a release followed by a permission (initials are enough)"
     },
-    "split|The coaching guide has the script. → Use its words, because this is the verdict most likely to end the project.|1": {
+    "split|Initials or a \"got it\" is plenty. → When a checkpoint is finished.|1": {
       "line": 45,
+      "judgment": "no",
+      "reason": "a lead-in label"
+    },
+    "split|When a checkpoint is finished. → From Checkpoint 2 on, a checkpoint is finished when your answer is Approved, or Approved with changes once your child has written the changes in.|1": {
+      "line": 45,
+      "judgment": "no",
+      "reason": "a rule with a condition"
+    },
+    "split|From Checkpoint 2 on, a checkpoint is finished when your answer is Approved, or Approved with changes once your child has written the changes in. → From Checkpoint 4 on, they also go down their When the Plan Changes card for each change.|1": {
+      "line": 45,
+      "judgment": "no",
+      "reason": "an instruction"
+    },
+    "split|From Checkpoint 4 on, they also go down their When the Plan Changes card for each change. → At Checkpoints 2 to 5, \"Needs more research\" and \"Park this decision for later\" keep it open until your child comes back to it.|1": {
+      "line": 45,
+      "judgment": "no",
+      "reason": "a rule"
+    },
+    "split|At Checkpoints 2 to 5, \"Needs more research\" and \"Park this decision for later\" keep it open until your child comes back to it. → At Checkpoint 6, a parked decision is the result, so the checkpoint is finished.|1": {
+      "line": 45,
+      "judgment": "no",
+      "reason": "a rule for a different case; nothing is rejected"
+    },
+    "split|At Checkpoint 6, a parked decision is the result, so the checkpoint is finished. → Every answer is still a normal result, and only a finished checkpoint counts toward \"Checkpoints reached\".|1": {
+      "line": 45,
+      "judgment": "no",
+      "reason": "a fact and an exclusive limit"
+    },
+    "split|The coaching guide has the script. → Use its words, because this is the verdict most likely to end the project.|1": {
+      "line": 47,
       "judgment": "no",
       "reason": "an instruction with a reason; rejects nothing"
     },
     "split|\"Needs more research\" is the hard one, and it's the most common of the hard ones. → Said badly it reads as \"you failed.\"|1": {
-      "line": 45,
+      "line": 47,
       "judgment": "no",
       "reason": "a caveat quoting a reading"
     },
-    "split|Initials or a \"got it\" is plenty. → \"Needs more research\" is the hard one, and it's the most common of the hard ones.|1": {
-      "line": 45,
-      "judgment": "no",
-      "reason": "a fact of degree"
-    },
     "split|Said badly it reads as \"you failed.\" → The coaching guide has the script.|1": {
-      "line": 45,
+      "line": 47,
       "judgment": "no",
       "reason": "a navigation line"
     },
+    "split|Every answer is still a normal result, and only a finished checkpoint counts toward \"Checkpoints reached\". → \"Needs more research\" is the hard one, and it's the most common of the hard ones.|1": {
+      "line": 47,
+      "judgment": "no",
+      "reason": "a fact of degree"
+    },
     "split|Every checkpoint decision also goes in your child's decision log. → The checkpoints and the log are meant to tell the same story, and they stop doing that the moment one entry is skipped.|1": {
-      "line": 49,
+      "line": 51,
       "judgment": "no",
       "reason": "a reason naming the consequence of a skipped entry"
     },
     "device|Every checkpoint decision also goes in your child's decision log.|1": {
-      "line": 49,
+      "line": 51,
       "judgment": "no",
       "reason": "a rule"
     },
     "split|The review form checks whether the work is good enough in general; these are the specific things this checkpoint exists to catch. → A decision made without them is a decision made on the form alone.|1": {
-      "line": 54,
+      "line": 56,
       "judgment": "no",
       "reason": "the consequence of skipping the checkpoint list; it rejects no alternative to a claim"
     },
     "device|Each has its own what to consider list.|1": {
-      "line": 54,
+      "line": 56,
       "judgment": "no",
       "reason": "a fact"
     },
     "split|Each has its own what to consider list. → The review form checks whether the work is good enough in general; these are the specific things this checkpoint exists to catch.|1": {
-      "line": 54,
+      "line": 56,
       "judgment": "no",
       "reason": "a division of roles (form checks general / list catches specific); nothing is rejected"
     },
     "device|What they bring: with open dates, a season, a backup season, a season to be careful about, possible months, their reasons, their sources, and their questions for you.|1": {
-      "line": 58,
+      "line": 60,
       "judgment": "no",
       "reason": "a field label with a list"
     },
     "split|What they bring: with open dates, a season, a backup season, a season to be careful about, possible months, their reasons, their sources, and their questions for you. → Those often include whether it fits school and work.|1": {
-      "line": 58,
+      "line": 60,
       "judgment": "no",
       "reason": "a fact"
     },
     "split|Those often include whether it fits school and work. → Weighing the calendars is your job.|1": {
-      "line": 60,
+      "line": 62,
       "judgment": "no",
       "reason": "names the adult's job; rejects no named alternative"
     },
     "split|Weighing the calendars is your job. → Session 14 has them ask the question; you answer it.|1": {
-      "line": 60,
+      "line": 62,
       "judgment": "no",
       "reason": "a division of roles (they ask / you answer); nothing is rejected"
     },
     "split|Session 14 has them ask the question; you answer it. → What to consider: weather; crowds; cost; major holidays; and how the season fits school and work schedules.|1": {
-      "line": 62,
+      "line": 64,
       "judgment": "no",
       "reason": "a field label with a list"
     },
     "split|With the dates already booked, Checkpoint 1 is a confirmation. → They bring what the chosen season means for the trip and whether it fits, and they recommend no season, so there is no pick to adjust.|1": {
-      "line": 64,
+      "line": 66,
       "judgment": "device",
       "reason": "they bring what the chosen season means and whether it fits, and they recommend no season"
     },
     "split|What to consider: weather; crowds; cost; major holidays; and how the season fits school and work schedules. → With the dates already booked, Checkpoint 1 is a confirmation.|1": {
-      "line": 64,
+      "line": 66,
       "judgment": "no",
       "reason": "a condition and a fact"
     },
     "split|They bring what the chosen season means for the trip and whether it fits, and they recommend no season, so there is no pick to adjust. → On the Core path, they also bring their first Trade-Off Report: their best season against the backup or, with the dates booked, two ways to plan around the season's biggest challenge.|1": {
-      "line": 66,
+      "line": 68,
       "judgment": "no",
       "reason": "a description of the report"
     },
     "split|On the Core path, they also bring their first Trade-Off Report: their best season against the backup or, with the dates booked, two ways to plan around the season's biggest challenge. → Progress is real: the family now knows roughly when.|1": {
-      "line": 68,
+      "line": 70,
       "judgment": "no",
       "reason": "a status line"
     },
     "split|Progress is real: the family now knows roughly when. → With the dates booked, it now knows what its season means for the trip, and which challenge to plan around.|1": {
-      "line": 68,
+      "line": 70,
       "judgment": "no",
       "reason": "a fact"
     },
     "device|What they bring: likely overnight bases, possible day trips, places to skip, places to save for a future trip, with reasons and sources, and how the Session 03 traveler poll shaped it, naming which traveler's \"one thing you'd love\" each choice makes room for.|1": {
-      "line": 72,
+      "line": 74,
       "judgment": "no",
       "reason": "a field label with a list"
     },
     "split|Also yours to do here: if you left the rough trip shape partly open at setup, firm it up now, including the departure place. → The Phase 5 route work builds on it.|1": {
-      "line": 74,
+      "line": 76,
       "judgment": "no",
       "reason": "a fact"
     },
     "split|What they bring: likely overnight bases, possible day trips, places to skip, places to save for a future trip, with reasons and sources, and how the Session 03 traveler poll shaped it, naming which traveler's \"one thing you'd love\" each choice makes room for. → Also yours to do here: if you left the rough trip shape partly open at setup, firm it up now, including the departure place.|1": {
-      "line": 74,
+      "line": 76,
       "judgment": "no",
       "reason": "an instruction"
     },
     "split|The Phase 5 route work builds on it. → What to consider: whether the travel scope is workable; how it fits your maximum trip length, or your booked trip length; whether the other travelers appear in it at all, which is what the poll connection is there to show; budget implications; safety and common sense; and anything it implies for international flights.|1": {
-      "line": 76,
+      "line": 78,
       "judgment": "no",
       "reason": "a field label with a list"
     },
     "split|What to consider: whether the travel scope is workable; how it fits your maximum trip length, or your booked trip length; whether the other travelers appear in it at all, which is what the poll connection is there to show; budget implications; safety and common sense; and anything it implies for international flights. → Progress is real: the family now knows roughly where.|1": {
-      "line": 78,
+      "line": 80,
       "judgment": "no",
       "reason": "a status line"
     },
     "device|What they bring: a must-do list, strong maybes, skips and save-for-futures, the biggest trade-offs.|1": {
-      "line": 82,
+      "line": 84,
       "judgment": "no",
       "reason": "a field label with a list"
     },
     "split|Also yours to do here: acknowledge the one unconditional personal pick your child made in Session 26. → Session 27 opens with it, and it is a separate action from the review.|1": {
-      "line": 84,
+      "line": 86,
       "judgment": "no",
       "reason": "a fact"
     },
     "split|Session 27 opens with it, and it is a separate action from the review. → They chose it knowing the three things that could block it, and this is where you say it stands.|1": {
-      "line": 84,
+      "line": 86,
       "judgment": "no",
       "reason": "a fact"
     },
     "split|What they bring: a must-do list, strong maybes, skips and save-for-futures, the biggest trade-offs. → Also yours to do here: acknowledge the one unconditional personal pick your child made in Session 26.|1": {
-      "line": 84,
+      "line": 86,
       "judgment": "no",
       "reason": "an instruction"
     },
     "split|They chose it knowing the three things that could block it, and this is where you say it stands. → What to consider: variety; age appropriateness; cost; time realism; reservation needs; and whether it matches your family's pace.|1": {
-      "line": 86,
+      "line": 88,
       "judgment": "no",
       "reason": "a field label with a list"
     },
     "split|What to consider: variety; age appropriateness; cost; time realism; reservation needs; and whether it matches your family's pace. → Progress is real: the family now knows the top experiences.|1": {
-      "line": 88,
+      "line": 90,
       "judgment": "no",
       "reason": "a status line"
     },
     "device|What they bring: with open dates, total days, overnight cities, nights in each, travel days, and a shorter backup version.|1": {
-      "line": 92,
+      "line": 94,
       "judgment": "no",
       "reason": "a field label with a list"
     },
     "split|If they change, write the new place on your assumptions page, which Sessions 40, 41 and 45 read. → Your child's route flexes.|1": {
-      "line": 94,
+      "line": 96,
       "judgment": "no",
       "reason": "a fact"
     },
     "split|What they bring: with open dates, total days, overnight cities, nights in each, travel days, and a shorter backup version. → Also yours to do here: confirm or adjust the arrival and departure places against current flight options, or against however your family is getting there.|1": {
-      "line": 94,
+      "line": 96,
       "judgment": "no",
       "reason": "an instruction offering two acceptable references"
     },
     "split|Also yours to do here: confirm or adjust the arrival and departure places against current flight options, or against however your family is getting there. → If they change, write the new place on your assumptions page, which Sessions 40, 41 and 45 read.|1": {
-      "line": 94,
+      "line": 96,
       "judgment": "no",
       "reason": "a conditional instruction"
     },
     "split|Your child's route flexes. → They move one block and keep the rest, then go down their When the Plan Changes card.|1": {
-      "line": 94,
+      "line": 96,
       "judgment": "no",
       "reason": "a description of steps"
     },
     "split|They move one block and keep the rest, then go down their When the Plan Changes card. → A changed first or last place makes your answer \"Approved with changes\".|1": {
-      "line": 94,
+      "line": 96,
       "judgment": "no",
       "reason": "a rule"
     },
     "split|A changed first or last place makes your answer \"Approved with changes\". → Make it \"Needs more research\" if the change alters which route works best.|1": {
-      "line": 94,
+      "line": 96,
       "judgment": "no",
       "reason": "a conditional instruction"
     },
     "split|Make it \"Needs more research\" if the change alters which route works best. → What to consider: flights, if you fly; the arrival and departure places; how many hotel moves it involves; whether the transit is workable; how it fits your maximum trip length, or your booked trip length; budget implications; and the family schedule.|1": {
-      "line": 96,
+      "line": 98,
       "judgment": "no",
       "reason": "a list of considerations"
     },
     "split|With the dates already booked, the trip length is set. → They bring how the booked days are split: the cities, the nights in each and the travel days, with no shorter backup version.|1": {
-      "line": 99,
+      "line": 101,
       "judgment": "device",
       "reason": "how the booked days are split, with no shorter backup version"
     },
     "split|What to consider: flights, if you fly; the arrival and departure places; how many hotel moves it involves; whether the transit is workable; how it fits your maximum trip length, or your booked trip length; budget implications; and the family schedule. → With the dates already booked, the trip length is set.|1": {
-      "line": 99,
+      "line": 101,
       "judgment": "no",
       "reason": "a fact under a condition"
     },
     "split|The trip is becoming concrete. → With the dates booked, it now knows where, and how the booked days are split.|1": {
-      "line": 101,
+      "line": 103,
       "judgment": "no",
       "reason": "a progress statement for a booked family; rejects nothing"
     },
     "split|Progress is real: the family now knows when, where, and how long. → The trip is becoming concrete.|1": {
-      "line": 101,
+      "line": 103,
       "judgment": "no",
       "reason": "a status line"
     },
     "split|They bring how the booked days are split: the cities, the nights in each and the travel days, with no shorter backup version. → Progress is real: the family now knows when, where, and how long.|1": {
-      "line": 101,
+      "line": 103,
       "judgment": "no",
       "reason": "a status line"
     },
     "device|What they bring: the day-by-day itinerary draft itself, with the day cards behind it, plus what they're confident about, what they're unsure about, what you need to decide, what could be cut, and the biggest trade-offs.|1": {
-      "line": 105,
+      "line": 107,
       "judgment": "no",
       "reason": "a field label with a list"
     },
     "split|What they bring: the day-by-day itinerary draft itself, with the day cards behind it, plus what they're confident about, what they're unsure about, what you need to decide, what could be cut, and the biggest trade-offs. → The draft is the thing being reviewed, because pacing, transit, meals and rest show up in its day cards.|1": {
-      "line": 107,
+      "line": 109,
       "judgment": "no",
       "reason": "a fact with its reason"
     },
     "split|The draft is the thing being reviewed, because pacing, transit, meals and rest show up in its day cards. → If your answer moves where the trip arrives or leaves, the draft's first or last day carries the wrong travel leg.|1": {
-      "line": 109,
+      "line": 111,
       "judgment": "no",
       "reason": "a condition and a fact"
     },
     "split|If your answer moves where the trip arrives or leaves, the draft's first or last day carries the wrong travel leg. → That is \"Approved with changes\": write the new place on your assumptions page, which later sessions read, and tell your child whether each flight still lands on a later date.|1": {
-      "line": 109,
+      "line": 111,
       "judgment": "no",
       "reason": "an instruction"
     },
     "split|That is \"Approved with changes\": write the new place on your assumptions page, which later sessions read, and tell your child whether each flight still lands on a later date. → Make it \"Needs more research\" if the change alters which route works best.|1": {
-      "line": 109,
+      "line": 111,
       "judgment": "no",
       "reason": "a conditional instruction"
     },
     "split|Make it \"Needs more research\" if the change alters which route works best. → After any \"Approved with changes\", your child goes down their When the Plan Changes card and fixes every page it names, marked \"changed at Checkpoint 5\".|1": {
-      "line": 111,
+      "line": 113,
       "judgment": "no",
       "reason": "an instruction"
     },
     "split|After any \"Approved with changes\", your child goes down their When the Plan Changes card and fixes every page it names, marked \"changed at Checkpoint 5\". → If you fly and a change moves where the trip arrives or leaves, tell them which flights land on a later date.|1": {
-      "line": 111,
+      "line": 113,
       "judgment": "no",
       "reason": "a conditional instruction"
     },
     "split|If you fly and a change moves where the trip arrives or leaves, tell them which flights land on a later date. → If a change adds an overnight place, help with a Hotel Comparison Card for it, or give a cost per night and say whether it's per room or per person.|1": {
-      "line": 111,
+      "line": 113,
       "judgment": "no",
       "reason": "a conditional instruction offering two acceptable options"
     },
     "split|If a change adds an overnight place, help with a Hotel Comparison Card for it, or give a cost per night and say whether it's per room or per person. → If someone comes for only part of the trip, tell them who is there on the changed days.|1": {
-      "line": 111,
+      "line": 113,
       "judgment": "no",
       "reason": "a condition"
     },
     "split|If someone comes for only part of the trip, tell them who is there on the changed days. → What to consider: pacing; transit time; meals; rest; booking needs; budget; safety; and practicality.|1": {
-      "line": 113,
+      "line": 115,
       "judgment": "no",
       "reason": "a list of considerations"
     },
     "split|Progress is real: the family has a usable day-by-day plan. → Stopping here is a finish in its own right.|1": {
-      "line": 115,
+      "line": 117,
       "judgment": "no",
       "reason": "a reassurance; \"stopping here\" is a finish, not a rejected alternative"
     },
     "split|What to consider: pacing; transit time; meals; rest; booking needs; budget; safety; and practicality. → Progress is real: the family has a usable day-by-day plan.|1": {
-      "line": 115,
+      "line": 117,
       "judgment": "no",
       "reason": "a status line"
     },
     "device|What they bring: the final recommendation, and the handoff list of what adults verify, decide and book.|1": {
-      "line": 119,
-      "judgment": "no",
-      "reason": "a field label with a list"
-    },
-    "split|What they bring: the final recommendation, and the handoff list of what adults verify, decide and book. → What to consider: the final recommendation; what you approve; what you want changed; what you'll verify or book; and which questions stay open.|1": {
       "line": 121,
       "judgment": "no",
       "reason": "a field label with a list"
     },
-    "split|What to consider: the final recommendation; what you approve; what you want changed; what you'll verify or book; and which questions stay open. → If your answer moves where the trip arrives or leaves, the same two answers apply.|1": {
+    "split|What they bring: the final recommendation, and the handoff list of what adults verify, decide and book. → What to consider: the final recommendation; what you approve; what you want changed; what you'll verify or book; and which questions stay open.|1": {
       "line": 123,
+      "judgment": "no",
+      "reason": "a field label with a list"
+    },
+    "split|What to consider: the final recommendation; what you approve; what you want changed; what you'll verify or book; and which questions stay open. → If your answer moves where the trip arrives or leaves, the same two answers apply.|1": {
+      "line": 125,
       "judgment": "no",
       "reason": "a condition and a fact"
     },
     "split|If your answer moves where the trip arrives or leaves, the same two answers apply. → \"Approved with changes\" means you write the new place on your assumptions page and tell your child whether each flight still lands on a later date.|1": {
-      "line": 123,
+      "line": 125,
       "judgment": "no",
       "reason": "a definition of an answer"
     },
     "split|\"Approved with changes\" means you write the new place on your assumptions page and tell your child whether each flight still lands on a later date. → \"Needs more research\" fits a change that alters which route works best, and your child does that piece before Session 53.|1": {
-      "line": 123,
+      "line": 125,
       "judgment": "no",
       "reason": "a fact about when an answer fits"
     },
     "split|\"Needs more research\" fits a change that alters which route works best, and your child does that piece before Session 53. → After any \"Approved with changes\", your child goes down their When the Plan Changes card and fixes every page it names, marked \"changed at Checkpoint 6\".|1": {
-      "line": 125,
+      "line": 127,
       "judgment": "no",
       "reason": "an instruction"
     },
     "split|After any \"Approved with changes\", your child goes down their When the Plan Changes card and fixes every page it names, marked \"changed at Checkpoint 6\". → If you fly and a change moves where the trip arrives or leaves, tell them which flights land on a later date.|1": {
-      "line": 125,
+      "line": 127,
       "judgment": "no",
       "reason": "a conditional instruction"
     },
     "split|If you fly and a change moves where the trip arrives or leaves, tell them which flights land on a later date. → If a change adds an overnight place, help with a Hotel Comparison Card for it, or give a cost per night and say whether it's per room or per person.|2": {
-      "line": 125,
+      "line": 127,
       "judgment": "no",
       "reason": "a conditional instruction offering two acceptable options"
     },
     "split|If a change adds an overnight place, help with a Hotel Comparison Card for it, or give a cost per night and say whether it's per room or per person. → If someone comes for only part of the trip, tell them who is there on the changed days.|2": {
-      "line": 125,
+      "line": 127,
       "judgment": "no",
       "reason": "a condition"
     },
     "split|If someone comes for only part of the trip, tell them who is there on the changed days. → Progress is real: the family has made a decision.|1": {
-      "line": 127,
+      "line": 129,
       "judgment": "no",
       "reason": "a status line"
     },
     "device|Coaching and support -- the words for \"needs more research\", the most common hard verdict.|1": {
-      "line": 131,
+      "line": 133,
       "judgment": "no",
       "reason": "a navigation line"
     },
     "device|Booking guidance -- what happens after a checkpoint approves something that needs booking.|1": {
-      "line": 132,
+      "line": 134,
       "judgment": "no",
       "reason": "a navigation line"
     },
     "device|Session support notes -- one session at a glance in each entry, Checkpoint 1 included.|1": {
-      "line": 133,
+      "line": 135,
       "judgment": "no",
       "reason": "a navigation line"
     }
@@ -30257,12 +30292,12 @@
       "judgment": "no",
       "reason": "a field label"
     },
-    "device|Materials: your destination pack's airports and arrival page (for the first day's trip into the city), or a grown-up who can help you check the airport's or station's own website if your pack doesn't have that page yet, your route and nights from Checkpoint 4, your route map notes from Session 28, your must-do list on your My Calls page, your strong maybes from Checkpoint 3 (for the ones marked \"if nearby\"), your Trip-Basics card (for how your family gets there), your Session 29 formula (for its ½ marks), or a grown-up who can tell you how long the trips there and home take, your family's current travel assumptions page (for the arrival and departure places), a device with a map app or map website (kid-safe filter on), your Source Log, a blank page|1": {
+    "device|Materials: your destination pack's airports and arrival page (if you fly, for the first day's trip into the city), or a grown-up who can help you check the airport's own website if your pack doesn't have that page yet, your route and nights from Checkpoint 4, your route map notes from Session 28, your must-do list on your My Calls page, your strong maybes from Checkpoint 3 (for the ones marked \"if nearby\"), your Trip-Basics card (for how your family gets there), your Session 29 formula (for its ½ marks), or a grown-up who can tell you how long the trips there and home take, your family's current travel assumptions page (for the arrival and departure places), a device with a map app or map website (kid-safe filter on), your Source Log, a blank page|1": {
       "line": 13,
       "judgment": "no",
       "reason": "a field label listing materials"
     },
-    "banned|Materials: your destination pack's airports and arrival page (for the first day's trip into the city), or a grown-up who can help you check the airport's or station's own website if your pack doesn't have that page yet, your route and nights from Checkpoint 4, your route map notes from Session 28, your must-do list on your My Calls page, your strong maybes from Checkpoint 3 (for the ones marked \"if nearby\"), your Trip-Basics card (for how your family gets there), your Session 29 formula (for its ½ marks), or a grown-up who can tell you how long the trips there and home take, your family's current travel assumptions page (for the arrival and departure places), a device with a map app or map website (kid-safe filter on), your Source Log, a blank page|1": {
+    "banned|Materials: your destination pack's airports and arrival page (if you fly, for the first day's trip into the city), or a grown-up who can help you check the airport's own website if your pack doesn't have that page yet, your route and nights from Checkpoint 4, your route map notes from Session 28, your must-do list on your My Calls page, your strong maybes from Checkpoint 3 (for the ones marked \"if nearby\"), your Trip-Basics card (for how your family gets there), your Session 29 formula (for its ½ marks), or a grown-up who can tell you how long the trips there and home take, your family's current travel assumptions page (for the arrival and departure places), a device with a map app or map website (kid-safe filter on), your Source Log, a blank page|1": {
       "line": 13,
       "judgment": "no",
       "reason": "a materials list; the negation is a condition inside the list, with no same-subject restatement"
@@ -30402,15 +30437,30 @@
       "judgment": "no",
       "reason": "an instruction"
     },
-    "split|Your destination pack's airports and arrival page helps you find how long the trip into the city takes. → If your pack doesn't have that page yet, a grown-up can help you check the airport's or station's own website.|1": {
+    "split|Then plan one light activity for the other half, and mark the day Easy or Medium. → Flying in?|1": {
       "line": 38,
       "judgment": "no",
-      "reason": "a condition and a permission"
+      "reason": "a question opening a branch"
     },
-    "split|Then plan one light activity for the other half, and mark the day Easy or Medium. → Your destination pack's airports and arrival page helps you find how long the trip into the city takes.|1": {
+    "split|Flying in? → Your destination pack's airports and arrival page helps you find how long the trip into the city takes.|1": {
       "line": 38,
       "judgment": "no",
       "reason": "a pointer to a source"
+    },
+    "split|Your destination pack's airports and arrival page helps you find how long the trip into the city takes. → If your pack doesn't have that page yet, a grown-up can help you check the airport's own website.|1": {
+      "line": 38,
+      "judgment": "no",
+      "reason": "a condition and a permission (the grown-up fallback)"
+    },
+    "split|If your pack doesn't have that page yet, a grown-up can help you check the airport's own website. → Arriving by train or car?|1": {
+      "line": 38,
+      "judgment": "no",
+      "reason": "a question opening the other branch; the two branches are parallel cases, with no preference"
+    },
+    "split|Arriving by train or car? → Time the ride from where you arrive to where you're staying with the map's Directions, and log the map, the way Session 28 does.|1": {
+      "line": 38,
+      "judgment": "no",
+      "reason": "an instruction"
     },
     "split|The last day has a rule too. → Its anchor is getting from your last overnight place to where you leave from, once a grown-up has set that place.|1": {
       "line": 40,
@@ -30437,10 +30487,10 @@
       "judgment": "no",
       "reason": "an instruction"
     },
-    "split|If your pack doesn't have that page yet, a grown-up can help you check the airport's or station's own website. → The last day has a rule too.|1": {
+    "split|Time the ride from where you arrive to where you're staying with the map's Directions, and log the map, the way Session 28 does. → The last day has a rule too.|1": {
       "line": 40,
       "judgment": "no",
-      "reason": "a fact"
+      "reason": "a lead-in fact"
     },
     "split|Write it next to your first-day rule. → A moving day has a rule too.|1": {
       "line": 42,
