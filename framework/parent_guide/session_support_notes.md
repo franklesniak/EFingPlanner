@@ -137,11 +137,11 @@ Want a rough signal of how the executive-function side is going? The optional [e
 
 <!-- density-exempt: X, not Y -- the spec's never-silent transparency rule, in its Coaching and Support section (an adult who changes the child's plan says why), which the batch 2 brief's booking-guidance entry carries (adults may change parts of the plan, never silently) -->
 
-- Role: a real review -- genuinely use the recommendation in a family talk (parent-gated).
-- Prep: a Decision Record page.
-- Look for: a season pick and a backup, a season to be careful about, reasons and sources, plus questions for you.
-- Coaching question: "Why not your backup season?"
-- Pitfall: overriding silently. If you adjust it, say why -- their reasons still count.
+- Role: a real review -- genuinely use the recommendation in a family talk (parent-gated). With the dates booked, use the season confirmation in the family talk to confirm the fit.
+- Prep: a Decision Record page and a blank Parent Review Form. On the Core path, a Trade-Off Report page.
+- Look for: a season pick and a backup, a season to be careful about, reasons and sources, plus questions for you. On the Core path, a Trade-Off Report comparing the best season with the backup, or, with the dates booked, two ways to plan around the booked season's biggest challenge. With the dates booked, an explanation of what the season means for the trip, and the confirmed fit.
+- Coaching question: "Why not your backup season?" With the dates booked: "What will our season change about the plan?"
+- Pitfall: overriding silently. If you adjust it, say why -- their reasons still count. With the dates booked, treating the confirmation as a formality; explaining the season is the child's work here.
 
 ## Session 15: City Research Cards
 
@@ -161,17 +161,17 @@ Want a rough signal of how the executive-function side is going? The optional [e
 
 ## Session 33: Budget Basics, First Pass
 
-- Role: 5-minute check-in; supply the kid-sized budget band.
-- Prep: a Budget Estimate page; the assumptions page, for the budget band; the Trip-Basics card, for the number of travelers; on First Taste, the Session 21 recommendation; on the Core path, the route, nights and total days approved at Checkpoint 4, and the traveler profiles if someone comes for only part of the trip. A calculator is allowed. On the Core path, have your own rough cost of getting there on your own page, ready for your check at Session 39.
-- Look for: a high/medium/low estimate for meals and hotel, checked against the band. On the Core path, the hotel line is one typical nightly price times every approved night, and food uses the plan's total days. If a traveler comes for only part of the trip, an optional note on who is there on which days.
+- Role: 5-minute check-in; supply the kid-sized budget band and the number of rooms. If someone comes for only part of the trip, tell your child who is there on which days, by day number, and use their part-trip note when you set the rooms and book the long rides.
+- Prep: a Budget Estimate page; the assumptions page, for the budget band; the Trip-Basics card, for the number of travelers, or the travelers listed on it if the number says "not decided yet"; on First Taste, the Session 21 recommendation; on the Core path, the route, nights and total days approved at Checkpoint 4, the Session 29 formula, for its "- 1 flight day" marks, or your answer on which flights land on a later date, and the traveler profiles if someone comes for only part of the trip. A calculator is allowed. On the Core path, have your own rough cost of getting there on your own page, ready for your check at Session 39.
+- Look for: a high/medium/low estimate for meals and hotel, checked against the band. The hotel guess is per room, or per person where the places charge that way, and a per-person guess counts people. On First Taste, the rows follow the Session 21 recommendation. On the Core path, the hotel line is one typical nightly price times every approved night and the number of rooms or people, and food uses the plan's total days minus any flight days. A "not sure yet" night uses your number, or says "ask an adult". A word-only answer gets your reading of the band. For a per-day family band, the two-slice estimate is divided by the days used for food, as Session 39 does; for a hotel tier, each hotel is checked against it. If a part still says "ask an adult" or "not sure yet", your child adds up the rest, and writes "not counting ___" beside what they added up, naming what's missing. The band check says what the total leaves out. If a traveler comes for only part of the trip, an optional note on who is there on which days, by day number.
 - Coaching question: "Do the parts you chose fit our band?"
 - Pitfall: reaching for a real total. The cost of getting there stays off their check; keep it to two slices.
 
 ## Session 44: Backup Plans and Cut List
 
-- Role: 5-minute check-in; help co-choose the one unconditional pick. On the Core path, the check-in confirms the pick Session 26 settled.
-- Prep: the City Research Cards (starred sights); Cut List and Backup Plan pages. On the Core path, the My Calls page, with the skip and save-for-future notes from Checkpoints 2 and 3.
-- Look for: a short must-see list, a cut list, one special pick initialed, two backups. On the Core path, the must-do list Session 26 made, a cut list that starts from the Checkpoint 2 and 3 notes, a one-line confirmation of the pick, and two backups.
+- Role: 5-minute check-in; help co-choose the one unconditional pick. On the Core path, the check-in confirms the pick Session 26 settled. If a block applies now, replace it with your child, as in Session 43.
+- Prep: the City Research Cards (starred sights); Cut List and Backup Plan pages; the assumptions page, for the budget band when you check the special pick. On the Core path, the My Calls page, with the skip and save-for-future notes from Checkpoints 2 and 3, the Checkpoint 3 strong maybes, the day cards and the Reservation Watchlist, the attraction cards, the Session 39 budget summary and the When the Plan Changes card, for anything cut or a block, and the route map notes, and a device with a map app if a swap needs a new travel time.
+- Look for: a short must-see list, a cut list with each item marked save for future or not, one special pick initialed and on the must-see list, two backups. On the Core path, the must-do list Session 26 made, a cut list that starts from the Checkpoint 2 and 3 notes and the must-dos crossed off at Checkpoint 4, each item marked save for future or not, anything cut from the day cards or the watchlist taken down the When the Plan Changes card, a one-line confirmation of the pick that says it is on the must-do list, two backups, and any travel time a swap needed in the route map notes, with a Source Log entry for the map. If a block applies now, a new pick chosen with you, and the card's "Your special pick blocked?" row done.
 - Coaching question: "What are you saving for a future trip?"
 - Pitfall: making it exhaustive. This teaches "good enough is good enough."
 
@@ -180,7 +180,7 @@ Want a rough signal of how the executive-function side is going? The optional [e
 <!-- density-exempt: X, not Y -- the finish acknowledgment the spec requires for Session 53 (the "you finished a real project" beat, in the spec's Session 53 section and its Coaching and Support scripts) -->
 
 - Role: co-work; deliver the finish acknowledgment warmly, in the duration-true wording: the duration-neutral form for a First Taste finisher, and the months-long form for a child finishing the Core or full path, including a capstone re-run after First Taste.
-- Prep: the Session 01 baseline reflection; a Final Reflection page. On the Core path, the kit's final reflection page in place of the Final Reflection page, and also the assembled binder, the checkpoint reflections, the minutes guesses and the Session 39 budget summary.
-- Look for: a reflection compared to the baseline, and the plan handed to you. On the Core path, answers to three more questions, on patterns, time guesses and the budget against the band, and the full binder handed over, with tabs 10 and 11 filled in, and with the must-do list and the approved route in place of the must-see list and the city choice.
+- Prep: the Session 01 baseline reflection; the Session 33 budget estimate; a Final Reflection page; the plan pages your child hands over. On the Core path, the kit's final reflection page in place of the Final Reflection page, and also the assembled binder, the follow-up questions, Checkpoint 6's parent review form, the final recommendation packet, the checkpoint reflections, the minutes guesses and times (on the City A card, the Session 26 scoring tables, the Session 35 hotel cards and the itinerary draft), and the Session 39 budget summary; the assumptions page, for the budget band; and the First Taste reflection, for a capstone re-run.
+- Look for: a reflection compared to the baseline, and the plan handed to you. On the Core path, answers to three more questions, on patterns, time guesses (the ones that exist) and the budget against the band, comparing the matching piece your child checked with the band sentence, and each hotel for a hotel tier, saying what a "not counting ___" left out, with a band you changed since Session 39 taken down the When the Plan Changes card's "Your budget band changed?" row first, and the full binder handed over, with tabs 10 and 11 filled in, and with the must-do list and the approved route in place of the must-see list and the city choice; for a capstone re-run, a look back at the First Taste reflection too.
 - Coaching question: "Where else could you use one of these planning moves?"
 - Pitfall: skipping the acknowledgment. Finishing a real project is a big deal -- say so.

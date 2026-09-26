@@ -33,7 +33,7 @@ Tabs 3 and 4 hold the page you made at that checkpoint. If your dates were booke
 
 Two lines in the list depend on choices your family made. The restaurant and food shortlist goes under tab 5 only if you did the food sessions and your family chose it for the binder. The language and etiquette sheet goes under tab 8 the same way: only if you did that session and your family chose it. If you skipped one, write "we didn't do this session" on that tab. If your family left one out, write "not in our binder". Either way, that line is complete. Tab 2 holds the research-skill pages your family chooses to keep, so ask a grown-up which. If they keep none, write "not in our binder" there too.
 
-Tab 10 gets the parent review forms from your checkpoints now. Its follow-up questions come in Sessions 51 and 52. Tab 11 fills up in Sessions 52 and 53. For now, write "comes next" where a page is still to come. Session 53 puts those pages in before you hand the binder over.
+Tab 10 gets the parent review forms from your checkpoints now. Its follow-up questions, which are Part 2 of your presentation outline, get their last part in Session 52. Tab 11 fills up in Sessions 52 and 53. For now, write "comes next" where a page is still to come. Session 53 puts those pages in before you hand the binder over.
 
 The pages inside your binder should be clean and easy to read, because the grown-ups will use them. Your cover and your dividers are the **"Make It Yours" zone**. Decorate those however you like.
 
