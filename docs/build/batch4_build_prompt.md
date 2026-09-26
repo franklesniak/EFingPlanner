@@ -36,19 +36,17 @@ It carries every Batch 4 requirement and the adjudicated answer to every open qu
 
 **Then measure `main` before you change it.** All of these exit `0`: `python .github/scripts/check-leaks.py --rule family`, `python .github/scripts/check-leaks.py --rule destination`, `python .github/scripts/check-x-not-y.py --only-problems`, and `python .github/scripts/check-session-structure.py`, which reports 54 files. Record the set of failing test ids from a full `pytest` run on `main`, so section 11 can compare your branch against it.
 
-**And one prerequisite that is not a batch:** the companion maintenance pull request of section 2 has merged. On `main`, `.template-sync/marker.yml` carries a `local_overrides` entry for `CONTRIBUTING.md`, and `FAMILY_EXEMPTIONS` in `.github/scripts/check-leaks.py` is empty.
-
-**If anything above is missing, or a check fails on `main`, an earlier batch or the companion pull request has not finished.** Stop and report it as a blocker. Do not build the missing piece here, and do not fix an earlier batch's gate failure under this batch's scope.
+**If anything above is missing, or a check fails on `main`, an earlier batch has not finished.** Stop and report it as a blocker. Do not build the missing piece here, and do not fix an earlier batch's gate failure under this batch's scope.
 
 ## Build track
 
-**Full Build.** The neutral-skeleton and insert apparatus has been live since Batch 1. The destination-leak rule is **on** for `framework/` and has no session exemptions left. This batch writes one framework session, framework guides and examples, one section of `CONTRIBUTING.md`, and one sentence in the root README. It writes no destination fact.
+**Full Build.** The neutral-skeleton and insert apparatus has been live since Batch 1. The destination-leak rule is **on** for `framework/` and has no session exemptions left. This batch writes one framework session, framework guides and examples, and two short additions to the root README. It writes no destination fact.
 
 ---
 
 ## 0. What this batch is, in one paragraph
 
-Eleven new files, a set of named edits that wire them in, and one closing pass over the whole curriculum. The new files are Session 54, the optional post-trip module; seven worked examples on a pretend trip to Italy; the cross-reference map; the add-a-destination guide; and an optional itinerary revision notes template. The edits add a destination-pack section to `CONTRIBUTING.md` once its template-sync record is on `main`, link Session 54 from every page that names it, settle the two questions Batch 1 left open about what a destination is and where the build-risk register lives, and reconcile the emergency-number sentences Batch 3 routed here. **Then the closing pass re-reads every built file** for terms, tone, agreed labels, cross-reference names, leaks, freshness, density, reading level and links, and fixes what it finds. When the pass merges, the deliverable inventory is complete and the curriculum reaches version `1.0.0`. A child pilot is still owed after that; version `1.0.0` claims completeness, and validation is a separate claim only a child can make.
+Eleven new files, a set of named edits that wire them in, and one closing pass over the whole curriculum. The new files are Session 54, the optional post-trip module; seven worked examples on a pretend trip to Italy; the cross-reference map; the add-a-destination guide; and an optional itinerary revision notes template. The new add-a-destination guide also carries a section on sharing a pack. The edits link Session 54 from every page that names it, settle the two questions Batch 1 left open about what a destination is and where the build-risk register lives, and reconcile the emergency-number sentences Batch 3 routed here. **Then the closing pass re-reads every built file** for terms, tone, agreed labels, cross-reference names, leaks, freshness, density, reading level and links, and fixes what it finds. When the pass merges, the deliverable inventory is complete and the curriculum reaches version `1.0.0`. A child pilot is still owed after that; version `1.0.0` claims completeness, and validation is a separate claim only a child can make.
 
 ---
 
@@ -118,11 +116,11 @@ Session 54, the examples README, the think-aloud example, the guide and every pa
 | D | Edits that link the examples (`B4-9`) | `GETTING_STARTED.md`; `framework/student_guide/when_im_stuck.md`; `framework/README.md` |
 | E | New: the map and the guide (section 6) | `framework/cross_reference_map.md`; `framework/how_to_add_a_destination.md` |
 | F | Edits for the guide and the destination model (`B4-11`, `B4-12`) | `destinations/japan/session_inserts/README.md`; `destinations/japan/README.md` (one link's text); `framework/how_to_start_a_trip.md`; `framework/README.md`; any other built page that states the destination model as open or sends a reader to the contract for the add-a-destination steps |
-| G | The optional tier (section 7) | `CONTRIBUTING.md` (one added section, after the companion pull request's template-sync record, `B4-15`); new `framework/templates/itinerary_revision_notes.md`; `framework/student_guide/when_the_plan_changes.md`; `framework/print_index.md`; `framework/docs/build_style_and_vocab.md` (the build-risk register section) |
+| G | The optional tier (section 7) | The sharing section of `framework/how_to_add_a_destination.md` and one line in the root `README.md`'s "Contributing and community" list (`B4-15`); new `framework/templates/itinerary_revision_notes.md`; `framework/student_guide/when_the_plan_changes.md`; `framework/print_index.md`; `framework/docs/build_style_and_vocab.md` (the build-risk register section) |
 | H | The emergency-number reconciliation (`B4-16`), made in the closing-pass pull request | `framework/sessions/phase_08_readiness_final/49_travel_readiness_checklist.md`; `framework/parent_guide/safety_emergency_guidance.md`; any other built page that says the pack holds the numbers |
 | I | The release record | `framework/CHANGELOG.md`; the version line in `framework/README.md` |
 | J | The recount's data | `.github/scripts/x-not-y-judgments.json`; `.github/scripts/x-not-y-registers.json` |
-| K | The closing pass (section 8, `B4-22`) | Every file under `framework/` and `destinations/`; root `README.md`; `GETTING_STARTED.md`; `CONTRIBUTING.md`'s destination-pack section; group J |
+| K | The closing pass (section 8, `B4-22`) | Every file under `framework/` and `destinations/`; root `README.md`; `GETTING_STARTED.md`; group J |
 
 **Eleven files are created.** Groups A to G are the content pull request; group H and the fixes of section 8 are the closing-pass pull request; groups I and J change in both. Groups B, D, F, G and H name the edits that Batches 1 to 3 left for this batch or that this batch's new files require. Group K is the pass's scope, named as a scope the way the template allows for a pass that spans many files.
 
@@ -130,23 +128,22 @@ Session 54, the examples README, the think-aloud example, the guide and every pa
 
 ### Work this brief routes outside the build run: the companion maintenance pull request
 
-Six items belong to Batch 4's work and need files the BUILD RULES close to a build run: a CI script, a test, template-sync state, and the build briefs themselves. **They go to one companion maintenance pull request that the repository maintainers open from `main`, outside the build run, after Batch 3 has merged** so that no brief moves under a running build. **It merges before this batch's content pull request opens:** item 6 is the record that must exist before `CONTRIBUTING.md` is edited, and item 1 clears the family greps from the Batch 3 brief section whose stamp loop the closing pass runs. The build run does not make these edits. It names this pull request in its build report so the work is not lost.
+Five items belong to Batch 4's work and need files the BUILD RULES close to a build run: a CI script, a test, and the build briefs themselves. **They go to one companion maintenance pull request that the repository maintainers open from `main`, outside the build run, after Batch 3 has merged** so that no brief moves under a running build. It can land before, beside or after this batch's pull requests. The build run does not make these edits. It names this pull request in its build report so the work is not lost.
 
 1. **Scrub the family values from the five briefs** (`B4-20`): `_build_prompt_template.md` and the Batch 0 to 3 briefs. Replace each hand-run family grep with the leak hook's calls, as its docstring's "In place of a hand-run grep" section names them. Remove every value the briefs still spell: in the leak rules of the template and the Batch 0 and Batch 1 briefs, in every brief's grep commands, and in the Batch 1 brief's two notes on its trip-length token and on plurals and case. Find every position with `--rule family` and read `--candidates` locally. The greps for destination names, pack paths and section numbers may stay.
 2. **Delete the exemption rows the scrub clears, in the same commit** (`B4-20`): in `.github/scripts/check-leaks.py`, delete each `FAMILY_EXEMPTIONS` row whose occurrence is gone, and each reason constant nothing then uses. Add no row and change no logic. All 49 family rows on `main` excuse occurrences in those five files, so the expected end state is an empty `FAMILY_EXEMPTIONS` table and an unchanged `DESTINATION_EXEMPTIONS` table. The hook reports a row stale once its occurrence has gone, which is why the two edits share a commit. `tests/test_check_leaks.py` pins no row count; it requires both rules to pass on the repository, so it needs no edit.
 3. **Correct the build guide's guardrail** in `docs/build/README.md`: its sentence saying the briefs may name the fixed leak tokens is false once the hook replaces the greps. It becomes a pointer to the hook.
 4. **Update the stale Session 00 sample** in `tests/test_check_session_structure.py` to the built page's "Parent involvement" wording, as the open-items issue for [pull request 51](https://github.com/franklesniak/EFingPlanner/pull/51) asks ([issue 57](https://github.com/franklesniak/EFingPlanner/issues/57)) (`B4-21`).
 5. **Reword the Batch 2 brief's two sentences that put the emergency numbers in the pack** (`B4-16`): the Session 49 contract line "The pack has them.", and the Group B sentence that says local emergency numbers belong in the pack's adult-logistics reference. Both come to say the pack names where the numbers come from.
-6. **Record the adoption choice for `CONTRIBUTING.md`** (`B4-15`): add a `local_overrides` entry for `CONTRIBUTING.md` to `.template-sync/marker.yml`, with `default_decision: MERGE` and a reason that names the `tailored` mode this run's decision process selected and the downstream destination-pack section it preserves. `TEMPLATE_UPDATE_PROCEDURE.md` asks for this record before the file is edited.
 
-**Each edited file that carries a metadata block bumps its `Last Updated` field**, as the documentation policy requires; the template and the Batch 0 brief carry none. The companion pull request runs `pre-commit run --all-files`, both leak rules and the full test comparison in section 11.
+**Each file the companion pull request edits is a Tier 1 process document** under the documentation policy, so each carries the metadata block: Status, Owner, Last Updated, Scope, and Related where useful. The Batch 1 to 3 briefs have one; bump its `Last Updated`. The template, the Batch 0 brief and `docs/build/README.md` have none; add one directly under the H1, as the policy places it. The companion pull request runs `pre-commit run --all-files`, both leak rules and the full test comparison in section 11.
 
 ### Not in scope, and do not build it "to unblock" something
 
-- **The root README's full session index and its status section.** The finalization step after this batch rewrites both, re-runs every gate on `main`, and writes the final report. This batch adds one sentence to the README (`B4-5`) and nothing else there.
+- **The root README's full session index and its status section.** The finalization step after this batch rewrites both, re-runs every gate on `main`, and writes the final report. This batch adds one sentence to the README (`B4-5`) and one line to its "Contributing and community" list (`B4-15`). The closing pass may fix a finding elsewhere in the README (group K). None of these touches the session index or the status section.
 - **A second destination pack**, and any new destination fact. The reuse claim is tested by the guide being followable.
 - **A new tracker, a new binder tab, or a new navigation page.** Batch 2's five-tracker rule and its one-navigation-page rule stand.
-- **The rest of `CONTRIBUTING.md`.** This batch adds one section and changes nothing else in the file: the development-setup and validation content stays as the template has it.
+- **`CONTRIBUTING.md`.** It stays exactly as it is (`B4-15`). It is synced from the upstream template in `minimal-preservation` mode, and an added section needs the maintainer's explicit `tailored` selection for that file first. This run does not record that selection on the maintainer's behalf, so the content goes to the add-a-destination guide.
 - **The three skipped optional items** (section 3.1): the acceptance-criteria manifest, the coverage check and curriculum issue templates. They are recorded as skips, and nothing is built for them.
 - **Gate and tooling changes.** The parser question, the pin tests, wiring the two curriculum gates into pre-commit, the readability globs, and the checkers issues 27 and 30 record ([issue 27](https://github.com/franklesniak/EFingPlanner/issues/27), [issue 30](https://github.com/franklesniak/EFingPlanner/issues/30)) are tooling work, outside a curriculum batch.
 - **Two items that wait on the owner and have nothing to do with this batch:** the JSON guide rule proposed on the open-items issue ([issue 57](https://github.com/franklesniak/EFingPlanner/issues/57)), and the docs guide sentence asked on [pull request 28](https://github.com/franklesniak/EFingPlanner/pull/28). Both are protected files. The upstream template's schema anchoring, on the same issue, belongs upstream.
@@ -162,14 +159,14 @@ Each of this batch's two pull requests ends at its own quality pass: the validat
 
 ### 3.1 Inherited: the six optional and aspirational items
 
-These were decided before this brief was drafted, each with the record's default as the leading option. They bind unless a fact found later reopens one through the same decision process, as `B4-15` reopened `F4-4` and kept it. The labels are provenance tags.
+These were decided before this brief was drafted, each with the record's default as the leading option. They bind unless a fact found later reopens one through the same decision process, as `B4-15` reopened `F4-4` and moved its content to the guide. The labels are provenance tags.
 
 | | The item | The decision | Why, in one line |
 | --- | --- | --- | --- |
 | **F4-1** | `framework/docs/acceptance_criteria.yml`, the machine-readable manifest | **Skip, with a changelog record** | The record derives it from its own criteria matrix, which this repository's reusers never receive, and the built criteria have departed from that matrix, so a manifest generated from it would be wrong on arrival. `AC-GLOBAL-7` is a no-op without it |
 | **F4-2** | The coverage check | **Skip, with a changelog record** | The record already ran it and printed every row covered; what it protected is re-read by this batch's closing pass |
 | **F4-3** | Curriculum issue templates | **Skip, with a changelog record** | The record omits them from core, an issue process presumes a maintainer nobody is, and the repository already ships three issue forms, one of them for reporting a documentation problem |
-| **F4-4** | The `CONTRIBUTING.md` destination-pack section | **Build**, as an added section, with the existing development-setup content intact. **Reopened by `B4-15` and kept:** the file's `tailored` adoption choice is recorded for template sync before the section is added | The one testable part of a contribution process, framed as an invitation a future maintainer could pick up, with no promise of service. F.4 did not weigh the template-update procedure, which asks for the adoption record first (section 7.1) |
+| **F4-4** | The `CONTRIBUTING.md` destination-pack section | Was: **build**, as an added section. **Reopened by `B4-15`:** the same content ships as a section of the add-a-destination guide, and `CONTRIBUTING.md` is unchanged | F.4 did not weigh the template-update procedure, which lets only the maintainer select `tailored` for a specific file before a section is added. The content, framed as an invitation with no promise of service, is unchanged (section 7.1) |
 | **F4-5** | `itinerary_revision_notes.md` | **Build it as an optional template in `framework/templates/`** | A blank in `trip_starter/logs/` would read as a sixth tracker, which Batch 2's five-tracker rule bans. The decision log stays the core home (section 7.2) |
 | **F4-6** | High-Engagement Mode as a standalone file | **Keep it folded into `framework/parent_guide/differentiation.md`**, and write the changelog line that reconciles the record's tree | The built page already carries it under its own heading, and the checkpoint contract already routes there (section 7.3) |
 
@@ -202,14 +199,14 @@ Each was validated, given its materially distinct options, and scored against a 
 | **B4-12** | Batch 1 left open, for the owner, what `Capital` and the candidate-cities slot mean for a destination that is not a country. What does a pack cover? | **A pack covers one country, and `Capital` keeps its meaning.** A trip whose destination is a city or region inside a country uses that country's pack. **What a trip across several countries does stays an Open Question**, which the guide records in the repository's own form. Settled under the owner's standing instruction; the owner can overturn it (26.5 against 21.5) | The record's schema, Session 10's wording and its second-destination example are all countries, so every pack becomes finishable. Nobody the reuse promise covers today is newly excluded, and no built session changes. Settling the multi-country case either way would need session behavior the built sessions do not have, or would narrow the Full / OER promise, and neither is needed for the guide |
 | **B4-13** | `AC-GLOBAL-1` names "the build-risk register" and the record's layout gives it no path. Batch 1 left this for the owner. What is it? | **A section of `framework/docs/build_style_and_vocab.md`** that names each build risk and the built repository's check for it. Settled under the owner's standing instruction; the owner can overturn it (22.0 against 21.0) | **This departs from the Batch 1 brief's recommendation**, that the archived record's own section is the register. That option scored 20.0 and loses on one criterion: the record's register rows spell family values in their greps, so pointing a later builder at them is the hazard the leak hook exists to remove. The record also has every batch load the style law and the register together |
 | **B4-14** | F.4 says the revision notes template gets named where the revision-handling rule lives. Which page? | **The When the Plan Changes card**, with one sentence, plus the Tab 9 line in the print index and in Session 50's mirrored tab table (27.5 against 18.5) | The card is where the built repository handles a changed plan. The decision log's kit page is a copy of its template that must be kept in step with it, and naming the notes on it would read as a companion log |
-| **B4-15** | F.4 chose a destination-pack section in `CONTRIBUTING.md`. That file is template-synced in the default `minimal-preservation` mode, and `TEMPLATE_UPDATE_PROCEDURE.md` allows an added section only after a `tailored` choice for it is selected and recorded. How is the section added? | **This run's decision process selects `tailored` for `CONTRIBUTING.md`. The companion maintenance pull request records the `local_overrides` entry and merges first; the content pull request then adds the section** (29.0 against 27.5) | The procedure gives the adoption choice to the maintainer. The owner's standing instruction has this run's decision process make such choices and reserves only protected instruction files, which `CONTRIBUTING.md`, the marker and the procedure are not. Selecting and recording the choice before the edit keeps the procedure's order, the record's placement and F.4's decision |
+| **B4-15** | F.4 chose a destination-pack section in `CONTRIBUTING.md`. That file is template-synced in the default `minimal-preservation` mode, and `TEMPLATE_UPDATE_PROCEDURE.md` allows an added section only after the maintainer explicitly selects `tailored` for that file. Where does the content go? | **Into a section of `framework/how_to_add_a_destination.md` on sharing a pack, linked from one line in the root README's "Contributing and community" list. `CONTRIBUTING.md` is unchanged**, and the changelog records the departure from `F4-4` (27.5 against 26.0) | The procedure makes `tailored` the maintainer's explicit selection for a specific file, and it forbids inventing an adoption mode. The run's standing instruction settles questions without asking the owner, but it selects no mode for any file, so a marker entry would record a selection nobody made. The guide keeps the pack quality bar in one home, and the README is the repository's own tailored file. If the maintainer later selects `tailored` for `CONTRIBUTING.md`, the section can move there |
 | **B4-16** | Batch 3's `B3-2` left three merged sentences saying the pack holds the emergency numbers, while no file prints one, and recorded the conflict as waiting on the owner. Which reading binds? | **The stricter one, made consistent.** Session 49, the safety guide and any other built page say the pack names where the numbers come from and who can place the call; the companion pull request rewords the Batch 2 brief's two sentences. Settled under the owner's standing instruction; the owner can overturn it. Leaving it for the owner's answer was an option, and scored 14.5 (25.5 against 25.0) | The built pack already routes to the official source, and the card instruction already has an adult check each number on a current official page and date it. A printed number goes stale; a route to the source does not |
 | **B4-17** | The Batch 1 open-items issue asks, for the owner, whether the parent-facing density caps apply to Session 00, which is adult-facing ([issue 50](https://github.com/franklesniak/EFingPlanner/issues/50)) | **Yes.** The pass measures Session 00 against the parent caps on the merged tree and reworks any overage, keeping every required statement, with a `density-exempt` marker where a brief fixes the wording. Settled under the owner's standing instruction; the owner can overturn it (26.5 against 19.0) | The style law already assigns them: a parent-facing file gets the per-file number with no per-section cap |
 | **B4-18** | The curriculum changelog cites a brief's numbered section. Does the name-first rule forbid that? | **No, in builder-facing text that names the brief in the same sentence.** The archived record's numbers stay banned in every built file, and family-facing pages cite no build machinery (24.0 against 22.0) | `AC-10.3-1` is about the record's section numbers. A brief is committed and frozen, so its section resolves |
 | **B4-19** | Issue 31 records five style-law proposals declined on scope ([issue 31](https://github.com/franklesniak/EFingPlanner/issues/31)). Does the closing pass adopt them? | **The pass applies two as read checks**: a neutralisation that removes the name and keeps the shape is no neutralisation, and a closure claim carries the rule that derives its members. The law is unchanged, and the proposals stay in the issue (20.0 against 17.5) | Both catch defects a consistency pass exists to catch. A law change at the end of the build binds every page and wants its own review |
 | **B4-20** | Five build briefs still spell family values in their leak rules and greps, excused by 49 exemption rows. Who removes them? | **The companion maintenance pull request**, in one commit with the row deletions (26.5 against 22.0) | The leak-hook work kept the rows for the whole-repository pass, the hook fails on a stale row, and the rows live in a CI script a build run leaves alone |
 | **B4-21** | A test builds a stale Session 00 sample, and the template's editing bullet bans `tests/*` to a build run. Who fixes it? | **The companion maintenance pull request** (24.0 against 18.5) | The build guide says to copy the editing bullets unchanged and never narrow them |
-| **B4-22** | What may the closing pass edit? | **Every file under `framework/` and `destinations/`, the root README, GETTING_STARTED, `CONTRIBUTING.md`'s destination-pack section, and the recount's two data files.** Nothing under `docs/`, tests, scripts, workflows or configuration (26.0 against 22.5) | It reaches every page a family or reuser reads, and it keeps the copied editing bullets whole |
+| **B4-22** | What may the closing pass edit? | **Every file under `framework/` and `destinations/`, the root README, GETTING_STARTED, and the recount's two data files.** Nothing under `docs/`, tests, scripts, workflows or configuration; `CONTRIBUTING.md` stays out too (26.0 against 22.5) | It reaches every page a family or reuser reads, and it keeps the copied editing bullets whole |
 | **B4-23** | Which version does Batch 4 cut? | **The content pull request cuts the next minor version; the closing-pass pull request cuts `1.0.0`.** `framework/README.md`'s version line matches each time. The finalization step cuts nothing (24.0 against 22.0) | The changelog's own rule: `1.0.0` is reached when the inventory is complete and the whole-repo pass has run, which is the moment the pass merges |
 
 ---
@@ -259,13 +256,13 @@ Each was validated, given its materially distinct options, and scored against a 
 
 - **`Next:`** names Session 54 with a relative link and the label "optional, after the trip" (`B4-4`). Everything else on the navigation line stays, including "This is your finish line" and "You made it."
 - **One pointer in the budget step on the Core path**, where the page says nobody has spent the money yet: one clause saying the comparison with what was spent happens in Session 54, if the family does it, with the link. The record asks for this pointer in Session 53's budget prompt.
-- Nothing else changes. The Stop Point, the finish-line acknowledgment and the Optional Extension stay as built.
+- Nothing else changes in the content pull request. The Stop Point, the finish-line acknowledgment and the Optional Extension stay as built, and the closing pass reads the page with every other file.
 
 ### 4.3 `framework/PROJECT_ROADMAP.md`
 
 - **The phase table keeps its nine rows**, Phases 0 to 8. Reword the sentence above it, "Every session sits in one of nine phases", so the count is true once a Phase 9 folder exists: the project's sessions sit in nine phases, and Session 54, after the trip, is listed separately (`B4-5`).
 - **Link Session 54 in both places the page names it**, with its phase named as Phase 9 (After You Get Back), optional and after the trip. Batch 2 wrote both mentions without a link under its rule for a file that did not exist yet.
-- Nothing else on the roadmap changes in this batch. The closing pass reads it with every other file.
+- Nothing else on the roadmap changes in the content pull request. The closing pass reads it with every other file.
 
 ### 4.4 `framework/student_guide/progress_tracker.md`
 
@@ -295,7 +292,7 @@ Its sentence about looking back after the trip gains one clause naming Session 5
 
 ### 4.8 Root `README.md`
 
-**One sentence, with a link,** where the README describes the paths (for example beside its roadmap pointer in "How to use it"): after the trip, an optional short module, Session 54, compares the plan with what happened. The First Taste index, the status section and everything else stay as they are (`B4-5`).
+**One sentence, with a link,** where the README describes the paths (for example beside its roadmap pointer in "How to use it"): after the trip, an optional short module, Session 54, compares the plan with what happened. Section 7.1 adds one line to its "Contributing and community" list. Nothing else in the README changes in the content pull request. The closing pass may fix a finding elsewhere in it, but never in the session index (the First Taste index today) or the status section (`B4-5`).
 
 ---
 
@@ -356,10 +353,11 @@ No session and no template links an example.
 **Definition of done:** a non-technical adult can add a destination by following this page, filling the contract's slots, without editing any framework file or the existing pack.
 
 - Line 1 the `markdownlint-disable` comment; line 2 `<!-- audience: parent -->`. Plain parent voice, point first.
-- **What a pack is, and what it covers** (`B4-12`): a pack is the reference facts and the short Destination Notes for **one country**. A trip whose destination is a city or a region inside that country uses that country's pack, and the sessions still say "your destination". Then an `**Open Question:**` paragraph in the repository's own form: what a trip across several countries does is not settled. The sessions each open one pack's Destination Notes, and nothing yet says how a trip would use two. **Say plainly that this is a recorded limit and that nothing is waiting on it**: no owner answer and no later batch is due. It blocks no single-country pack, and it is written down so a later reader sees it was asked. Link `framework/README.md`, which names the same bound.
+- **What a pack is, and what it covers** (`B4-12`): a pack is the reference facts and the short Destination Notes for **one country**. A trip whose destination is a city or a region inside that country uses that country's pack, and the sessions still say "your destination". Then an `**Open Question:**` paragraph in the repository's own form: what a trip across several countries does is not settled. The sessions each open one pack's Destination Notes, and nothing yet says how a trip would use two. **Give it a next step and a trigger:** the first maintainer or reusing family who wants a trip across several countries settles how a trip uses two packs, writes the answer into this guide and the routing contract, and records it in the curriculum changelog. Until then nothing waits on it: no owner answer and no later batch is due. It blocks no single-country pack. Link `framework/README.md`, which names the same bound.
 - **The steps**, moved here from the contract (`B4-11`), in the record's order, as a numbered list: create the pack's contents page and its copy of the contract; write each reference file the contract names, with its `**Last reviewed:** <month year>` stamp directly below its title; write each insert slot to the schema; edit no framework file and no other pack; keep adult-owned topics adult-owned; write volatile facts as verify-on-official-sources; the pack is done when every named slot and reference file exists and is filled.
 - **Where the contract and schema are:** the existing pack's `session_inserts/README.md`, named by its path pattern `destinations/<pack>/session_inserts/README.md` in inline code. Its copy note, about recounting the pack-state bullets, stays in that file.
-- **Links out:** the cross-reference map; `CONTRIBUTING.md`'s destination-pack section, for how to offer a pack; how to start a trip, for using one.
+- **A last section on sharing a pack** (`B4-15`), which carries the contribution content the archived record gave to `CONTRIBUTING.md` (section 7.1).
+- **Links out:** the cross-reference map; how to start a trip, for using a pack.
 - **What it must not do:** name a destination, a place or a pack folder by name; promise review or maintenance.
 
 ### 6.3 The routing contract, `destinations/japan/session_inserts/README.md`
@@ -385,19 +383,18 @@ No session and no template links an example.
 
 ## 7. The optional-tier items
 
-### 7.1 `CONTRIBUTING.md`: the destination-pack section (`F4-4`, `B4-15`)
+### 7.1 Sharing a pack: the contribution content (`F4-4`, `B4-15`)
 
-**First, the template-sync record.** `CONTRIBUTING.md` is synced from the upstream template in the default `minimal-preservation` mode, and `TEMPLATE_UPDATE_PROCEDURE.md` allows an added section only after a `tailored` choice for the file is selected and recorded. This run's decision process selected it (`B4-15`), and the companion pull request's item 6 records it in `.template-sync/marker.yml`. **Do not touch the file until that entry is on `main`** (see "Before you start").
-
-**Then add one `##` section and change nothing else in the file.** Place it before "Questions or Issues?". It says:
+**`CONTRIBUTING.md` stays exactly as it is.** It is synced from the upstream template in the default `minimal-preservation` mode. `TEMPLATE_UPDATE_PROCEDURE.md` permits an added section only after the maintainer explicitly selects `tailored` for that file, and it forbids inventing an adoption mode. This run records no such selection. The archived record's contribution content goes to the last section of `framework/how_to_add_a_destination.md` instead. That section says:
 
 - **Framing first, in one or two sentences:** this project is shared by one family, nobody is on call, and this section describes what a future maintainer could pick up. It makes no promise of review, triage or response time.
 - **How to offer a pack:** an issue or a pull request, with the pack under `destinations/<name>/`.
-- **The pack quality bar**, each item testable: every slot and reference file in the routing contract filled, and no session reaching for a fact the contract does not route; volatile facts written as verify-on-official-sources; etiquette and culture matter-of-fact and respectful; a `Last reviewed` stamp on every reference file and slot; adult-owned legal and safety topics left adult-owned; no family data.
+- **The quality bar is the steps above it.** Say that a pack ready to share meets every step on this page, and add the two items the steps do not already state: etiquette and culture written matter-of-factly and respectfully, and no family data anywhere in the pack. Do not restate the steps.
 - **How to flag a stale fact:** an issue naming the file and what changed, with the honest note that re-checking depends on someone volunteering.
-- **A link to `framework/how_to_add_a_destination.md`** for the steps that meet the bar.
 
-`CONTRIBUTING.md` is outside the recount's and the readability gate's scope. Keep its register plain and adult. The root README already links `CONTRIBUTING.md` from its "Contributing and community" list, so the README needs no new line.
+**The root README's "Contributing and community" list gains one line** linking that section. The README is the repository's own tailored file, recorded as a `local_overrides` entry, so it takes the line with no template question.
+
+**The changelog records the departure from `F4-4`**: the record puts this content in `CONTRIBUTING.md`, this batch put it in the guide, and why. If the maintainer later selects `tailored` for `CONTRIBUTING.md`, the section can move there with a link back.
 
 ### 7.2 `framework/templates/itinerary_revision_notes.md` (`F4-5`, `B4-14`)
 
@@ -434,7 +431,7 @@ Record each in the changelog in one line with its reason from section 3.1. `AC-G
 
 1. **Agreed labels.** Every file uses the style law's agreed labels exactly: family decision meeting, adult reviewers, Core Finish Line, First Taste path, mini-plan, the five tracker names, the "things I can't wait to see" page, the "Make It Yours" zone, the "My Calls" page, Start Here, Stop Point, carry-over tag, checkpoint, Trip-Basics card, budget band.
 2. **Tone.** The style law's voice rules, read against the three calibration pairs. Child-facing text warm and plain; culture matter-of-fact; no gamification words; parent-facing text point first.
-3. **Cross-reference names.** Every concept in the style law's canonical-names table is named the same way everywhere and links to its built home. Every link's text matches the page it opens.
+3. **Cross-reference names.** Every concept in the style law's canonical-names table is named the same way everywhere and links to its built home. Every link's text matches the page it opens. Every page a family reads names a pack page in the pack's own words, with no hyphen. **One known item:** Session 11's Materials line and step 3, and its support-note entry, still write "major-cities reference"; write "major cities reference", as the pack's own regions slot does (section 8.3).
 4. **Name-first references.** These report nothing on a correct tree, except hits in builder-facing text that names a brief in the same sentence (`B4-18`):
 
    ```bash
@@ -442,6 +439,8 @@ Record each in the changelog in one line with its reason from section 3.1. `AC-G
    grep -rniE 'sections? [0-9]' framework/ destinations/ README.md GETTING_STARTED.md
    grep -rn '§' framework/ destinations/ README.md GETTING_STARTED.md
    ```
+
+   Judge these three by their output. A clean result exits 1, and some hits are allowed, so the exit status is no verdict here.
 
 5. **Leaks.** Both rules exit `0` with no new exemption row. `--candidates` is read locally and never pasted (rule 1.2). The destination rule's table still holds its two permanent exceptions and nothing under `framework/sessions/`, which is the zero-exemptions condition for session bodies.
 6. **Freshness.** The stamp loop in the Batch 3 brief's section 9 prints nothing. Copy that `bash` loop alone and run nothing else from that section: the family check is the leak hook (check 5), and until the companion pull request lands that section also holds hand-run family greps. No `Last reviewed` stamp moved on a file whose facts were not re-checked.
@@ -485,6 +484,7 @@ Each item's source is named. "Pass" means the closing pass fixes it in scope K; 
 | The emergency-number sentences | The Batch 3 brief's `B3-2` | **Pass** for built pages, **companion** for the Batch 2 brief (`B4-16`) |
 | Any session that reads wrongly against a pack file | Batch 3's changelog "still owed" list | **Pass.** Fix the session, or the contract row, per the Batch 3 record |
 | Session 54 named without a link | Batch 2's rule for a file not yet built | **Pass** and section 4 |
+| Session 11 names the pack's major cities page with a hyphen, "major-cities reference" | The pack-page naming class decision DB2-212 on Batch 2's pull request ([comment](https://github.com/franklesniak/EFingPlanner/pull/56#issuecomment-5850277373)) | **Pass** (check 3). Name the page in the pack's own words, with no hyphen, in Session 11 and its support-note entry |
 | The stranded commit from the Batch 0 brief's review, which never reached `main` ([commit](https://github.com/franklesniak/EFingPlanner/commit/b97ce1a3ca11e2329197fb68b13568196e11cc9a), [pull request 11](https://github.com/franklesniak/EFingPlanner/pull/11)) | The build handoff notes | **Closed by measurement.** Its three changes are on `main` in equivalent wording: the template's self-check names its target and reads recursively, the template's editing rule names the Batch 4 pass, and the Batch 0 brief requires the banner on the root README and GETTING_STARTED. Nothing to port. The companion pull request rewrites those grep lines anyway |
 | The issue 31 content items ([issue 31](https://github.com/franklesniak/EFingPlanner/issues/31)) | Items 1, 2, 4, 5 and 6 | **Pass, by reading.** Item 1: confirm built Session 27 settles its worked-formula form. Item 2: the kit pages are scored by name in section 11. Items 4 and 5: the "fly into or out of" sentence is gone from the city card and Session 15 on `main`; confirm it stays gone. Item 6: the session titles are the record's canonical titles; renaming sessions is outside a consistency pass |
 | The checker and style-law items in [issue 31](https://github.com/franklesniak/EFingPlanner/issues/31) | Items 3 and 7 to 16 | Item 3 goes to the **companion** with the brief scrub. Items 15 and 16 are **pass** read checks (`B4-19`). Items 7 to 14 are tooling or law proposals and stay in the issue |
@@ -509,7 +509,7 @@ IDs are the combined archived matrix's, which the style law makes canonical. The
 | `AC-16-2` | automatic | Seven example files exist, each with the marker as its first rendered line; none holds an answer for the pack's destination |
 | `AC-25-1` | human | The examples read as authentic reasoning |
 | `AC-26-1` | automatic | Both how-to guides and the curriculum changelog exist |
-| `AC-GLOBAL-1` | automatic | The full inventory, walked in check 21: 55 session files, the examples, the map, the guide, `CONTRIBUTING.md` with its destination-pack section, the build-risk register section (`B4-13`), and High-Engagement Mode as reconciled (`F4-6`) |
+| `AC-GLOBAL-1` | automatic | The full inventory, walked in check 21: 55 session files, the examples, the map, the guide, `CONTRIBUTING.md` (unchanged), the build-risk register section (`B4-13`), and High-Engagement Mode as reconciled (`F4-6`) |
 | `AC-29-1` | human | Every place-needing session is routed; no orphan slot; the map's mirror matches the contract |
 | `AC-29-2` | grep + human | The grep half is the family rule. The human half: a person follows `how_to_add_a_destination.md` and confirms a second destination could be added, and a fresh trip started, without editing `framework/` or the existing pack |
 | `AC-16-1` | grep + human | The destination rule exits `0` with no session exemption; culture reads matter-of-fact |
@@ -536,8 +536,8 @@ IDs are the combined archived matrix's, which the style law makes canonical. The
 
 **The content pull request's entry** (`B4-23`) is cut as the next minor version after the one on `main` when this batch starts, and `framework/README.md`'s version line is bumped to match in the same commit. It records:
 
-- **Added:** Session 54; the seven worked examples; the cross-reference map; the add-a-destination guide; the `CONTRIBUTING.md` destination-pack section; the optional itinerary revision notes template; the build-risk register section.
-- **The departures from the archived record:** Session 54's folder, which the record's tree omits (`B4-1`); its artifact kept on its own page (`B4-2`); the examples' marker wording and reassurance line (`B4-6`); the revision notes built as an optional template (`F4-5`); High-Engagement Mode kept inside the differentiation guide (`F4-6`); the build-risk register as a style-law section (`B4-13`); the destination model, packs per country with the multi-country case recorded as open (`B4-12`); the add-a-destination steps moved from the contract to the guide (`B4-11`).
+- **Added:** Session 54; the seven worked examples; the cross-reference map; the add-a-destination guide, with its section on sharing a pack; the optional itinerary revision notes template; the build-risk register section.
+- **The departures from the archived record:** Session 54's folder, which the record's tree omits (`B4-1`); its artifact kept on its own page (`B4-2`); the examples' marker wording and reassurance line (`B4-6`); the revision notes built as an optional template (`F4-5`); High-Engagement Mode kept inside the differentiation guide (`F4-6`); the build-risk register as a style-law section (`B4-13`); the destination model, packs per country with the multi-country case recorded as open (`B4-12`); the add-a-destination steps moved from the contract to the guide (`B4-11`); the contribution content in the guide, with `CONTRIBUTING.md` unchanged, a departure from both the record and `F4-4` (`B4-15`).
 - **The skips:** the manifest, the coverage check and curriculum issue templates, each with its reason (`F4-1` to `F4-3`).
 - **What is still owed to a human:** a person's read of every file this batch created or edited that a child or a parent reads; the `AC-29-2` walk of the guide; the `AC-25-1` read of the examples. The pilot deferral stays.
 
@@ -561,7 +561,7 @@ npm run lint:md
 npm run lint:md:nested
 npm run lint:md:links
 python .github/scripts/check-readability.py
-python .github/scripts/check-readability.py --show-ok $(git ls-files 'framework/examples/*.md' 'framework/trip_starter/*.md')
+python .github/scripts/check-readability.py --show-ok $(git ls-files ':(glob)framework/examples/*.md' ':(glob)framework/trip_starter/**/*.md')
 python .github/scripts/check-session-structure.py
 python .github/scripts/check-prohibited-placeholders.py
 python .github/scripts/check-leaks.py --rule family
@@ -572,7 +572,7 @@ python .github/scripts/check-last-updated.py --base "$(git merge-base origin/mai
 pytest
 ```
 
-**What each must show.** `pre-commit` and every script exit `0`. The readability runs report no failing file, and the second run, with `--show-ok`, names each example and kit page it read; if it names none of them, the files were not tracked and it fell back to the default scan. The structure gate reports 55 files, all well-formed. The placeholder hook prints its file count and none found. Both leak rules report none found. The recount's summary shows no file or section over its cap, and `--unjudged` lists nothing. The Last Updated check, run after you commit, passes for every changed file that carries a metadata block. **`pytest`'s failing set equals the set you recorded on `main`**: compare the sets of failing test ids, because two runs can fail the same number of different tests. These suites must pass outright: `test_check_leaks.py`, `test_check_readability.py`, `test_check_session_structure.py`, `test_check_prohibited_placeholders.py`, `test_check_x_not_y.py`, `test_required_wording.py`, `test_self_contained_references.py`, `test_trip_starter_kit_copies.py` and `test_check_last_updated.py`.
+**What each must show.** `pre-commit` and every script exit `0`. The readability runs report no failing file, and the second run, with `--show-ok`, names each example and kit page it read; if it names none of them, the files were not tracked and it fell back to the default scan. Its `:(glob)` pathspecs make `**` reach every kit subfolder under any local pathspec setting. The structure gate reports 55 files, all well-formed. The placeholder hook prints its file count and none found. Both leak rules report none found. The recount's summary shows no file or section over its cap, and `--unjudged` lists nothing. The Last Updated check, run after you commit, passes for every changed file that carries a metadata block. **`pytest`'s failing set equals the set you recorded on `main`**: compare the sets of failing test ids, because two runs can fail the same number of different tests. These suites must pass outright: `test_check_leaks.py`, `test_check_readability.py`, `test_check_session_structure.py`, `test_check_prohibited_placeholders.py`, `test_check_x_not_y.py`, `test_required_wording.py`, `test_self_contained_references.py`, `test_trip_starter_kit_copies.py` and `test_check_last_updated.py`.
 
 The recount and the Markdown scripts need the repository's `node_modules`. Install them with `npm ci` in a checkout that has its own.
 
@@ -580,18 +580,22 @@ The recount and the Markdown scripts need the repository's `node_modules`. Insta
 
 ### The batch's own checks
 
-Each prints nothing on a correct tree.
+Run them as one block. It prints each offending file or line, ends with `Batch checks: clean` or `Batch checks: FAILED`, and exits 0 only when clean.
 
 ```bash
-for f in framework/examples/*.md; do n=$(grep -c '^# ' "$f" || true); [ "$n" = 1 ] || echo "H1 COUNT $n: $f"; done
-for f in framework/examples/*.md; do first=$(grep -v -e '^<!--' -e '^[[:space:]]*$' "$f" | head -n 1); case "$first" in *'EXAMPLE ONLY -- a pretend trip to Italy'*) ;; *) echo "MARKER NOT FIRST: $f";; esac; done
-grep -rnE '(^|[^0-9,.])[0-9]{6,}|[0-9]{1,4}[- ][0-9]{2,4}[- ][0-9]{3,4}' framework/examples/ framework/sessions/phase_09_after_you_get_back/
-grep -rnE '[0-9]{4}-[0-9]{2}-[0-9]{2}|[0-9]{1,2}/[0-9]{1,2}/[0-9]{2,4}' framework/examples/ framework/sessions/phase_09_after_you_get_back/
-grep -rniE '(confirmation (number|code)|passport (number|no)|card number|booking (reference|number)|reservation (number|code))[ :#.-]*[a-z]{0,6}[0-9]' framework/examples/ framework/sessions/phase_09_after_you_get_back/
-grep -rnE 'https?://' framework/examples/
+fail=0
+check() { grep "$@" && s=0 || s=$?; [ "$s" -eq 1 ] || fail=1; }
+for f in framework/examples/*.md; do n=$(grep -c '^# ' "$f" 2>/dev/null) || n=0; [ "$n" = 1 ] || { echo "H1 COUNT $n: $f"; fail=1; }; done
+for f in framework/examples/*.md; do first=$(grep -v -m 1 -e '^<!--' -e '^[[:space:]]*$' "$f" 2>/dev/null) || first=''; case "$first" in *'EXAMPLE ONLY -- a pretend trip to Italy'*) ;; *) echo "MARKER NOT FIRST: $f"; fail=1;; esac; done
+check -rnE '(^|[^0-9,.])[0-9]{6,}|[0-9]{1,4}[- ][0-9]{2,4}[- ][0-9]{3,4}' framework/examples/ framework/sessions/phase_09_after_you_get_back/
+check -rnE '[0-9]{4}-[0-9]{2}-[0-9]{2}|[0-9]{1,2}/[0-9]{1,2}/[0-9]{2,4}' framework/examples/ framework/sessions/phase_09_after_you_get_back/
+check -rniE '(confirmation (number|code)|passport (number|no)|card number|booking (reference|number)|reservation (number|code))[ :#.-]*[a-z]{0,6}[0-9]' framework/examples/ framework/sessions/phase_09_after_you_get_back/
+check -rnE 'https?://' framework/examples/
+if [ "$fail" -eq 0 ]; then echo "Batch checks: clean"; else echo "Batch checks: FAILED"; fi
+[ "$fail" -eq 0 ]
 ```
 
-The first names an example with no H1 or more than one, and it counts per file, so a file with none is reported too. The second finds an example whose first rendered line is not the marker: it skips comment and blank lines, so it reads what a reader sees first. The third, fourth and fifth are the trip-data greps from the Batch 3 brief, scoped to this batch's new child pages: long or grouped digit runs, numeric dates, and a booking or passport label followed by a value. The sixth finds a full web address in an example (`B4-7`).
+The first loop names an example with no H1 or more than one, counted per file, so a file with none is reported too. The second loop names an example whose first rendered line is not the marker: it skips comment and blank lines, so it reads what a reader sees first. The first three `check` lines are the trip-data greps from the Batch 3 brief, scoped to this batch's new child pages: long or grouped digit runs, numeric dates, and a booking or passport label followed by a value. The last finds a full web address in an example (`B4-7`). **The `check` helper fails the block on a match or on an error, such as a missing folder, and passes only on grep's no-match status.** The block uses no pipe, so every line runs under plain `bash`, `bash -e` and `bash -eo pipefail`.
 
 **And one comparison, recorded in the build report:** every routing row in the map's mirror matches a contract row, and every contract row is in the mirror (section 6.1).
 
@@ -605,13 +609,13 @@ The first names an example with no H1 or more than one, and it counts per file, 
 - Both leak rules exit `0`, **with no exemption row added by this batch**, and the destination rule's table holds no row under `framework/sessions/`.
 - The changelog carries both entries of section 10; `framework/README.md` reads `1.0.0` after the pass; the two numbers match.
 - Every file this batch created or edited that a child or a parent reads is listed as an open human read, in the build report and the changelog. The pilot deferral flag stays.
-- The build report confirms that the companion maintenance pull request's six items were on `main` before the content pull request opened.
+- The companion maintenance pull request's five items are listed in the build report for the repository maintainers.
 
 ---
 
 ## BUILD RULES (hard constraints)
 
-- **Build at the repository root.** Leave `docs/spec/` and the repository's template and CI infrastructure untouched, except the recount's two data files, which section 2 scopes, and the one section this batch adds to `CONTRIBUTING.md` once its template-sync record is on `main`.
+- **Build at the repository root.** Leave `docs/spec/` and the repository's template and CI infrastructure untouched, except the recount's two data files, which section 2 scopes.
 - **Never:** real personal information, passport or confirmation numbers, payment or booking workflows, asking the child to book anything, placeholder-only files, fake completed itineraries or recommendations for the family's trip, copyrighted guidebook text, shipped or generated PDFs or PDF tooling, build tools, package managers, external images, or inline HTML. **HTML comments are not inline HTML and are expected:** every built curriculum file opens with a `markdownlint-disable` comment, and the audience, `no-source-check` and `density-exempt` markers are comments too. The ban is on rendered HTML elements.
 - **Verify-don't-trust, in every file this batch writes or edits:** never state entry, visa, passport, insurance, rail-pass or medication rules, prices, hours, closures or ticketing rules as fixed facts. Use the wording of the style law's Verify-don't-trust section: check with official sources close to travel, record the date checked, and adults verify before booking. The pass edits pack files, which hold most of these facts.
 - **Tone:** child-facing text at reading level, warm and non-othering; cultural content matter-of-fact. **No points, badges, levels, or "mission unlocked."**
@@ -636,7 +640,7 @@ The first names an example with no H1 or more than one, and it counts per file, 
 - the files still owed a human read, and the human checks `AC-29-2` and `AC-25-1` ask for;
 - the map-against-contract comparison;
 - the disposition of every section 8.3 item;
-- confirmation that the companion maintenance pull request's six items were on `main` before the content pull request opened;
+- the companion maintenance pull request's five items, for the repository maintainers to open;
 - the inventory table from check 21;
 - anything found that needs a file outside scope K, with the reason.
 
