@@ -3751,11 +3751,6 @@
       "judgment": "no",
       "reason": "a change record: a fact about the budget estimate's intro"
     },
-    "split|The budget estimate's intro gives the Core path's hotel row in Session 33's words: one price for all the overnight cities, times every night in the Checkpoint 4 plan. → The hotel comparison card's cost row is for one room, or for one person where the place charges that way, and its notes say so.|1": {
-      "line": 58,
-      "judgment": "no",
-      "reason": "a change record: a fact about the budget estimate and the hotel card"
-    },
     "split|The hotel comparison card's cost row is for one room, or for one person where the place charges that way, and its notes say so. → Session 41 brings the part-trip note for the days marked \"fewer of us\".|1": {
       "line": 58,
       "judgment": "no",
@@ -3901,7 +3896,22 @@
       "judgment": "no",
       "reason": "a change record: a fact of what the count leaves out and what a list names; nothing included is named against it"
     },
-    "split|Session 39's part-trip food count leaves out the meals a place includes, and Your plan pages names the Checkpoint 2 and 3 recommendations. → The insert contract's parent-facing rows give local hazards one home, ‹code› , and lodging priced per person and children's fares one home, ‹code› , as the Batch 3 brief settles.|1": {
+    "split|The budget estimate's intro gives the Core path's hotel row in Session 33's words: one price for all the overnight cities, times every night in the Checkpoint 4 plan. → It says that's Session 33's, and that Session 39 goes city by city.|1": {
+      "line": 58,
+      "judgment": "no",
+      "reason": "a change record: a fact of which session does what; both ways are used, one per session, so nothing is rejected"
+    },
+    "split|It says that's Session 33's, and that Session 39 goes city by city. → The hotel comparison card's cost row is for one room, or for one person where the place charges that way, and its notes say so.|1": {
+      "line": 58,
+      "judgment": "no",
+      "reason": "a change record: a fact about the hotel card"
+    },
+    "split|Session 39's part-trip food count leaves out the meals a place includes, and Your plan pages names the Checkpoint 2 and 3 recommendations. → A third trade-off report about the budget goes at Session 43, with the Session 39 budget summary.|1": {
+      "line": 58,
+      "judgment": "no",
+      "reason": "a change record: a fact of where the budget report goes"
+    },
+    "split|A third trade-off report about the budget goes at Session 43, with the Session 39 budget summary. → The insert contract's parent-facing rows give local hazards one home, ‹code› , and lodging priced per person and children's fares one home, ‹code› , as the Batch 3 brief settles.|1": {
       "line": 58,
       "judgment": "no",
       "reason": "a change record: a fact"
@@ -27695,12 +27705,12 @@
       "judgment": "no",
       "reason": "an instruction"
     },
-    "split|Then write it here, on a fresh Trade-Off Report. → If not, it waits for Session 43, which looks at pacing.|1": {
+    "split|Then write it here, on a fresh Trade-Off Report. → If not, it waits for Session 43, where it can be about pacing or the budget.|1": {
       "line": 42,
       "judgment": "no",
-      "reason": "a condition"
+      "reason": "a condition (the other branch) with what the report can be about"
     },
-    "split|If not, it waits for Session 43, which looks at pacing. → You write it once, at one of the two.|1": {
+    "split|If not, it waits for Session 43, where it can be about pacing or the budget. → You write it once, at one of the two.|1": {
       "line": 42,
       "judgment": "no",
       "reason": "a rule"
@@ -31588,7 +31598,7 @@
       "judgment": "no",
       "reason": "a field label"
     },
-    "device|Materials: your day cards from Session 41, your Session 29 formula (for its ½ marks), or a grown-up who can tell you how long the trip home takes, your must-do list on your My Calls page, your Reservation Watchlist (in case a change moves something on it), your attraction cards, your Session 39 budget summary and your family's current travel assumptions page (if your special pick hits a block, for the new pick and the band check), your When the Plan Changes card and the pages it names that you've made (for any day you change), your traveler profiles, your part-trip note from Session 33 (if you made one) or the grown-up's answer on who is there on which days, your Trip-Basics card (for the time difference, and the maximum or booked trip length), your season from Checkpoint 1, or a grown-up who can tell you the booked season if it's different (for hot weather), your destination pack's transportation basics page, a device with the kid-safe filter on if you check an official site, your Source Log; a blank Trade-Off Report if the third report goes here|1": {
+    "device|Materials: your day cards from Session 41, your Session 29 formula (for its ½ marks), or a grown-up who can tell you how long the trip home takes, your must-do list on your My Calls page, your Reservation Watchlist (in case a change moves something on it), your attraction cards, your Session 39 budget summary and your family's current travel assumptions page (if your special pick hits a block, for the new pick and the band check, or for a third trade-off report about the budget), your When the Plan Changes card and the pages it names that you've made (for any day you change), your traveler profiles, your part-trip note from Session 33 (if you made one) or the grown-up's answer on who is there on which days, your Trip-Basics card (for the time difference, and the maximum or booked trip length), your season from Checkpoint 1, or a grown-up who can tell you the booked season if it's different (for hot weather), your destination pack's transportation basics page, a device with the kid-safe filter on if you check an official site, your Source Log; a blank Trade-Off Report if the third report goes here|1": {
       "line": 13,
       "judgment": "no",
       "reason": "a field label listing materials"
@@ -31958,10 +31968,10 @@
       "judgment": "no",
       "reason": "an instruction"
     },
-    "split|Then write it here, on a fresh Trade-Off Report. → Pacing is one of its three subjects.|1": {
+    "split|Then write it here, on a fresh Trade-Off Report. → It can be about pacing, or about the budget, using your Session 39 budget summary.|1": {
       "line": 51,
       "judgment": "no",
-      "reason": "a fact"
+      "reason": "a permission naming the report's possible subjects"
     },
     "device|Your pacing checks:|1": {
       "line": 55,
@@ -40551,10 +40561,15 @@
       "judgment": "no",
       "reason": "an instruction"
     },
-    "split|The other rows are marked (later): they belong to the fuller Core path, so leave them blank for the pilot. → On the Core path, use the first hotel row for all your overnight cities: your one price, times every night in your Checkpoint 4 plan, times rooms, or people if it's per person.|1": {
+    "split|The other rows are marked (later): they belong to the fuller Core path, so leave them blank for the pilot. → On the Core path, Session 33 uses the first hotel row for all your overnight cities: your one price, times every night in your Checkpoint 4 plan, times rooms, or people if it's per person.|1": {
       "line": 9,
       "judgment": "no",
-      "reason": "a path-specific instruction; the per-person case is stated positively"
+      "reason": "a path-specific fact of how the first pass fills the row"
+    },
+    "split|On the Core path, Session 33 uses the first hotel row for all your overnight cities: your one price, times every night in your Checkpoint 4 plan, times rooms, or people if it's per person. → Session 39 goes city by city on its own hotel table, and copies the All hotels total into that row.|1": {
+      "line": 9,
+      "judgment": "no",
+      "reason": "a fact of what the second pass does; it copies its total into the same row, so nothing is rejected"
     },
     "banned|If a part still says \"ask an adult\" or \"not sure yet\", add up the rest, and write \"not counting ___\" beside what you added up, naming what's missing.|1": {
       "line": 19,

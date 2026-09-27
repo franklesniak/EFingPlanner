@@ -39,7 +39,7 @@ Where you sleep shapes every day of the trip. You walk out of that door each mor
 
 You compare, and the grown-ups decide where the family stays. They also check that the area is safe and book the rooms.
 
-**The third trade-off report.** Your project needs three trade-off reports. The third is about pacing, where you stay, or the budget. Did choosing an area feel like a hard call? Then write it here, on a fresh Trade-Off Report. If not, it waits for Session 43, which looks at pacing. You write it once, at one of the two.
+**The third trade-off report.** Your project needs three trade-off reports. The third is about pacing, where you stay, or the budget. Did choosing an area feel like a hard call? Then write it here, on a fresh Trade-Off Report. If not, it waits for Session 43, where it can be about pacing or the budget. You write it once, at one of the two.
 
 ## Workspace
 
