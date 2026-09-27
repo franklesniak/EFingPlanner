@@ -20,6 +20,13 @@ Each reference file and each session insert carries a `Last reviewed` date: the 
 - [Major cities](reference/major_cities.md) -- candidate places to research (not choices already made).
 - [Money basics](reference/money_basics.md) -- yen, cash culture, converting to dollars.
 - [Transportation basics](reference/transportation_basics.md) -- trains, IC cards, luggage, and the walking reality.
+- [Airports and arrival basics](reference/airports_and_arrival_basics.md) -- which airport to land at, getting into the city, and the arrival day.
+- [Food basics](reference/food_basics.md) -- kinds of places to eat, how ordering works, and what a family plans ahead.
+- [Language basics](reference/language_basics.md) -- how the writing looks, and a small set of words to try.
+- [Etiquette basics](reference/etiquette_basics.md) -- everyday customs, shrines and temples, photos, and shared baths.
+- [Safety and emergency](reference/safety_and_emergency.md) -- earthquakes, getting separated, and where the emergency numbers come from, with a part for parents.
+- [Adult logistics](reference/adult_logistics.md) -- for the adults: rooms, lodging types, entry, and luggage help.
+- [Access and pricing watch](reference/access_and_pricing_watch.md) -- the short list to re-check close to travel.
 
 ## Session inserts
 
@@ -27,10 +34,18 @@ Each reference file and each session insert carries a `Last reviewed` date: the 
 - [Destination snapshot notes](session_inserts/10_snapshot_facts.md) -- the big facts for the snapshot session.
 - [Regions and cities notes](session_inserts/11_regions_overview.md) -- the regions this pack plans around, for the regions session.
 - [Weather and seasons notes](session_inserts/12_seasons_and_events.md) -- the four seasons, for the seasons session.
+- [Deep-dive cities notes](session_inserts/16_18_candidate_cities.md) -- the candidate cities, with the first-trip anchor marked, for the deep-dive sessions.
+- [Other places notes](session_inserts/19_other_places_menu.md) -- a menu of places in three kinds, for the other-places session.
+- [Attraction ideas notes](session_inserts/23_attraction_ideas.md) -- starter ideas, each with its kind of visit, for the attraction cards session.
+- [Transit notes](session_inserts/30_transport_specifics.md) -- the ways of getting around, for the transit session.
+- [Places to stay notes](session_inserts/34_lodging_types.md) -- the kinds of lodging, for the neighborhoods session.
+- [Food notes](session_inserts/36_37_food_ideas.md) -- foods to try and where people find them, for the food sessions.
+- [Reservation examples](session_inserts/42_reservation_examples.md) -- things booked for a set date, with rough booking horizons, for the reservations session.
+- [Language and etiquette notes](session_inserts/47_language_etiquette.md) -- the pocket phrases and manners, for the quick sheet session.
 - [Words and numbers you will meet](session_inserts/kid_glossary.md) -- Japan words, units, and one money example.
 
 ## A note on fast-changing rules
 
-<!-- density-exempt: X, not Y -- the verify framing of the spec's Japan Topics to Cover Briefly: its required "re-check close to travel" pair and its categories, never current values -->
+<!-- density-exempt: X, not Y -- the verify framing of the spec's Japan Topics to Cover Briefly: its required "re-check close to travel" pair -->
 
-Japan's tourist access rules, reservation systems, and pricing have been changing unusually fast. Treat that whole category -- timed-entry and reservation systems, permit systems, IC-card options, rail-pass value, tourist/dual pricing, entry authorization, and travel taxes -- as **"re-check close to travel," not "set it once."** These files name *categories to verify*, never current values, so they cannot go stale in the way a pinned price would. Adults own anything to do with entry, money, and booking.
+The facts most likely to have changed since a page's `Last reviewed` date are gathered on one short list, the [access and pricing watch](reference/access_and_pricing_watch.md). Treat each item on it as **"re-check close to travel," not "set it once."** Adults own anything to do with entry, money, and booking.

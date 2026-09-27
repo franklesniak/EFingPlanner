@@ -20,13 +20,15 @@ Card and phone payments are growing. But **many small places are still cash-only
 ## Costs come in different shapes
 
 - **Per person** -- like meals and most activity tickets.
-- **Per room** -- like most hotels. A family may need more than one room. Japanese rooms often cap how many people fit. That is why room count is an adult call.
+- **Per room** -- like most hotels. A family may need more than one room, and room count is an adult call. How many people a room holds is on the [adult logistics page](adult_logistics.md).
 - **Per group** -- some things are one cost for everyone.
 - A **ryokan** (traditional inn) is usually priced **per person**. It often includes dinner and breakfast. So the per-room math does not apply to it.
 
 ## A fun budget fact to check
 
 On Japanese trains, children often cost less than adults. Sometimes it is about half. Very young children often ride free. Look up the current ages and amounts on an official source first. Do not assume a fixed rule.
+
+Child fares are one of the items on the [access and pricing watch](access_and_pricing_watch.md), the list of things to check again close to travel.
 
 ## Things that are changing (verify, never assume)
 
