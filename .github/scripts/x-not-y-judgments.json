@@ -3611,16 +3611,6 @@
       "judgment": "no",
       "reason": "a label naming the kit's remaining pages"
     },
-    "split|The rest of the trip starter kit. → The kit's ‹code› folder holds blank copies of the Source Log, the decision log, the question parking lot and the cut list, each naming the session that starts it.|1": {
-      "line": 55,
-      "judgment": "no",
-      "reason": "a fact listing the blank copies the kit holds"
-    },
-    "split|The kit's ‹code› folder holds blank copies of the Source Log, the decision log, the question parking lot and the cut list, each naming the session that starts it. → The research area has a README for each card folder.|1": {
-      "line": 55,
-      "judgment": "no",
-      "reason": "a fact about the research area's READMEs"
-    },
     "split|The research area has a README for each card folder. → The recommendations area has one page for each of the six checkpoints, and the Checkpoint 5 page carries the Core Finish Line sentence.|1": {
       "line": 55,
       "judgment": "no",
@@ -3645,6 +3635,16 @@
       "line": 55,
       "judgment": "no",
       "reason": "a change record: a condition (only when the dates are still open) and its consequence for the page's layout; it reports where the row went rather than rejecting an option"
+    },
+    "split|The rest of the trip starter kit. → The kit's ‹code› folder holds blank copies of the Source Log, the decision log, the question parking lot and the cut list, each saying when to start it.|1": {
+      "line": 55,
+      "judgment": "no",
+      "reason": "a change record: a fact listing the blank copies the kit holds"
+    },
+    "split|The kit's ‹code› folder holds blank copies of the Source Log, the decision log, the question parking lot and the cut list, each saying when to start it. → The research area has a README for each card folder.|1": {
+      "line": 55,
+      "judgment": "no",
+      "reason": "a change record: a fact about the research area's READMEs"
     },
     "device|The two binder deliverables.|1": {
       "line": 56,
@@ -3720,16 +3720,6 @@
       "line": 58,
       "judgment": "no",
       "reason": "a fact with a limit on how long the line holds the child"
-    },
-    "split|The progress tracker marks 29 and 39 with a \"before you start\" line, which holds the child only until the answer is in hand. → Session 38's souvenir row takes \"ask an adult\", so its line stays unmarked.|1": {
-      "line": 58,
-      "judgment": "no",
-      "reason": "a fact with its reason"
-    },
-    "split|Session 38's souvenir row takes \"ask an adult\", so its line stays unmarked. → The brief's B7 and F2 say the same.|1": {
-      "line": 58,
-      "judgment": "no",
-      "reason": "a note that another document agrees"
     },
     "split|The brief's B7 and F2 say the same. → The kit's checkpoint pages and the support notes follow the same rules as the sessions: each checkpoint page lists what to do before the next session after each result, including the budget and pacing re-checks after a change at Checkpoints 5 and 6, and names match their templates' titles.|1": {
       "line": 58,
@@ -3980,6 +3970,16 @@
       "line": 58,
       "judgment": "no",
       "reason": "a change record: a rule of whose number goes on each card"
+    },
+    "split|The progress tracker marks 29 and 39 with a \"before you start\" line, which holds the child only until the answer is in hand. → Session 38's line says \"ask ahead\" instead: its souvenir row takes \"ask an adult\", so the child never waits for the answer.|1": {
+      "line": 58,
+      "judgment": "no",
+      "reason": "a change record: a case distinction, Session 38's marker beside the one Sessions 29 and 39 carry, with its reason; instead contrasts two cases and rejects no option"
+    },
+    "split|Session 38's line says \"ask ahead\" instead: its souvenir row takes \"ask an adult\", so the child never waits for the answer. → The brief's B7 and F2 say the same.|1": {
+      "line": 58,
+      "judgment": "no",
+      "reason": "a note that another document agrees"
     },
     "device|Completed the planning-assumption block on the built city research card.|1": {
       "line": 62,
@@ -6515,12 +6515,17 @@
       "judgment": "no",
       "reason": "a condition and a status label"
     },
-    "device|The full program adds the Recommended and conditional sessions your family chooses, each in its numbered place.|1": {
+    "device|The full program adds the Recommended sessions your family chooses, each in its numbered place.|1": {
       "line": 178,
       "judgment": "no",
       "reason": "a fact"
     },
-    "split|The full program adds the Recommended and conditional sessions your family chooses, each in its numbered place. → After the trip, Session 54, After You Get Back, is an optional, post-trip reflection module.|1": {
+    "split|The full program adds the Recommended sessions your family chooses, each in its numbered place. → A conditional session comes in when its own condition holds, just as on the Core path.|1": {
+      "line": 178,
+      "judgment": "no",
+      "reason": "a parallel fact: conditional sessions come in on their own condition beside the chosen Recommended ones; neither kind is rejected, and just as marks a likeness"
+    },
+    "split|A conditional session comes in when its own condition holds, just as on the Core path. → After the trip, Session 54, After You Get Back, is an optional, post-trip reflection module.|1": {
       "line": 178,
       "judgment": "no",
       "reason": "a fact about an optional module"
@@ -42281,463 +42286,473 @@
       "judgment": "no",
       "reason": "a permission"
     },
-    "device|A line marked more than one sitting gets its tick only when the whole session is finished.|1": {
+    "device|A line that says ask ahead names one thing to ask a grown-up for before you start.|1": {
       "line": 54,
+      "judgment": "no",
+      "reason": "a legend definition"
+    },
+    "split|A line that says ask ahead names one thing to ask a grown-up for before you start. → If no grown-up is free, write \"ask an adult\" where it goes, and keep going.|1": {
+      "line": 54,
+      "judgment": "no",
+      "reason": "a conditional fallback instruction"
+    },
+    "device|A line marked more than one sitting gets its tick only when the whole session is finished.|1": {
+      "line": 55,
       "judgment": "no",
       "reason": "a condition for ticking a line"
     },
     "split|A line marked more than one sitting gets its tick only when the whole session is finished. → If its Stop Point says you are done for today, you've made today's part, so wait to tick it.|1": {
-      "line": 54,
+      "line": 55,
       "judgment": "no",
       "reason": "a conditional instruction"
     },
     "device|A line under a session that starts Finished First Taste first? is extra work for that session on the Core path.|1": {
-      "line": 55,
+      "line": 56,
       "judgment": "no",
       "reason": "a definition"
     },
     "split|A line under a session that starts Finished First Taste first? is extra work for that session on the Core path. → If you started on the Core path, tick it along with its session.|1": {
-      "line": 55,
+      "line": 56,
       "judgment": "no",
       "reason": "a conditional instruction"
     },
     "device|01 Project Kickoff|1": {
-      "line": 59,
-      "judgment": "no",
-      "reason": "a list entry"
-    },
-    "device|02 Family Traveler Profiles|1": {
       "line": 60,
       "judgment": "no",
       "reason": "a list entry"
     },
-    "device|03 What Makes a Good Trip|1": {
+    "device|02 Family Traveler Profiles|1": {
       "line": 61,
+      "judgment": "no",
+      "reason": "a list entry"
+    },
+    "device|03 What Makes a Good Trip|1": {
+      "line": 62,
       "judgment": "no",
       "reason": "a session title in a path list; rejects nothing"
     },
     "device|04 Start a Source Log|1": {
-      "line": 62,
+      "line": 63,
       "judgment": "no",
       "reason": "a list entry"
     },
     "device|05 Good Sources, Bad Sources (do this one with a grown-up)|1": {
-      "line": 66,
+      "line": 67,
       "judgment": "no",
       "reason": "a list entry with a grown-up note"
     },
     "device|06 Book Research With a Guidebook|1": {
-      "line": 67,
+      "line": 68,
       "judgment": "no",
       "reason": "a list entry"
     },
     "device|07 Library Research Plan (Recommended; if you do it, a grown-up opens the catalog or drives you)|1": {
-      "line": 68,
+      "line": 69,
       "judgment": "no",
       "reason": "a list entry with its status and a condition"
     },
     "device|08 Web Research Practice (a grown-up stays nearby while you search the web)|1": {
-      "line": 69,
+      "line": 70,
       "judgment": "no",
       "reason": "a list entry with a grown-up note"
     },
     "device|09 AI as Helper, Not Boss (Conditional core: only if your family uses AI, right after Session 05; a grown-up runs the AI tool, with you there)|1": {
-      "line": 70,
+      "line": 71,
       "judgment": "no",
       "reason": "a list entry quoting a session title, with its status and a condition"
     },
     "device|10 Destination Snapshot|1": {
-      "line": 74,
-      "judgment": "no",
-      "reason": "a list entry"
-    },
-    "device|11 Regions and Cities Overview|1": {
       "line": 75,
       "judgment": "no",
       "reason": "a list entry"
     },
-    "device|12 Weather, Seasons, and Events|1": {
+    "device|11 Regions and Cities Overview|1": {
       "line": 76,
       "judgment": "no",
       "reason": "a list entry"
     },
-    "device|13 Trip Goals and Travel Style|1": {
+    "device|12 Weather, Seasons, and Events|1": {
       "line": 77,
       "judgment": "no",
       "reason": "a list entry"
     },
-    "device|14 Checkpoint 1 Season Recommendation (Checkpoint 1: a grown-up reviews this)|1": {
+    "device|13 Trip Goals and Travel Style|1": {
       "line": 78,
+      "judgment": "no",
+      "reason": "a list entry"
+    },
+    "device|14 Checkpoint 1 Season Recommendation (Checkpoint 1: a grown-up reviews this)|1": {
+      "line": 79,
       "judgment": "no",
       "reason": "a list entry with a review note"
     },
     "device|Finished First Taste first?|1": {
-      "line": 79,
+      "line": 80,
       "judgment": "no",
       "reason": "a question that sets a condition"
     },
     "split|Finished First Taste first? → Fill in your season Trade-Off Report for Checkpoint 1.|1": {
-      "line": 79,
+      "line": 80,
       "judgment": "no",
       "reason": "an instruction"
     },
     "device|15 City Research Cards|1": {
-      "line": 83,
-      "judgment": "no",
-      "reason": "a list entry"
-    },
-    "device|16 Deep-Dive City A|1": {
       "line": 84,
       "judgment": "no",
       "reason": "a list entry"
     },
-    "device|17 Deep-Dive City B|1": {
+    "device|16 Deep-Dive City A|1": {
       "line": 85,
       "judgment": "no",
       "reason": "a list entry"
     },
-    "device|18 Deep-Dive City C (Conditional core: only if a third city keeps coming up in your research)|1": {
+    "device|17 Deep-Dive City B|1": {
       "line": 86,
+      "judgment": "no",
+      "reason": "a list entry"
+    },
+    "device|18 Deep-Dive City C (Conditional core: only if a third city keeps coming up in your research)|1": {
+      "line": 87,
       "judgment": "no",
       "reason": "a list entry with its status and a condition"
     },
     "device|19 Other Places Research|1": {
-      "line": 87,
-      "judgment": "no",
-      "reason": "a list entry"
-    },
-    "device|20 City Long-List|1": {
       "line": 88,
       "judgment": "no",
       "reason": "a list entry"
     },
-    "device|21 Compare Cities|1": {
+    "device|20 City Long-List|1": {
       "line": 89,
       "judgment": "no",
       "reason": "a list entry"
     },
-    "device|Finished First Taste first?|2": {
+    "device|21 Compare Cities|1": {
       "line": 90,
+      "judgment": "no",
+      "reason": "a list entry"
+    },
+    "device|Finished First Taste first?|2": {
+      "line": 91,
       "judgment": "no",
       "reason": "a question that sets a condition"
     },
     "split|Finished First Taste first? → Score the places you're keeping from your City Long-List, too.|1": {
-      "line": 90,
+      "line": 91,
       "judgment": "no",
       "reason": "an instruction"
     },
     "device|22 Checkpoint 2 City Shortlist (Checkpoint 2: a grown-up reviews this)|1": {
-      "line": 91,
+      "line": 92,
       "judgment": "no",
       "reason": "a list entry with a review note"
     },
     "device|23 Attraction Research Cards (more than one sitting)|1": {
-      "line": 95,
+      "line": 96,
       "judgment": "no",
       "reason": "a list entry with a sitting note"
     },
     "device|24 Culture, History, Nature, Food, and Fun Balance|1": {
-      "line": 96,
+      "line": 97,
       "judgment": "no",
       "reason": "a list entry"
     },
     "device|25 Review Reviews Carefully (more than one sitting; a grown-up stays nearby, and with you for any video)|1": {
-      "line": 97,
+      "line": 98,
       "judgment": "no",
       "reason": "a list entry with a sitting note and a grown-up note"
     },
     "device|26 Rank Attractions (choose your special pick with a grown-up)|1": {
-      "line": 98,
+      "line": 99,
       "judgment": "no",
       "reason": "a list entry with a grown-up note"
     },
     "device|27 Checkpoint 3 Top Experiences (Checkpoint 3: a grown-up reviews this)|1": {
-      "line": 99,
+      "line": 100,
       "judgment": "no",
       "reason": "a list entry with a review note"
     },
     "device|28 Map the Route|1": {
-      "line": 103,
+      "line": 104,
       "judgment": "no",
       "reason": "a list entry"
     },
     "device|29 How Long to Stay (before you start: a grown-up tells you how long the trips there and home take, and which flights land on a later date)|1": {
-      "line": 104,
+      "line": 105,
       "judgment": "no",
       "reason": "a list entry with a before-you-start note"
     },
     "device|30 Trains, Transit, and Travel Cards|1": {
-      "line": 105,
-      "judgment": "no",
-      "reason": "a list entry"
-    },
-    "device|31 Route Trade-Off Report|1": {
       "line": 106,
       "judgment": "no",
       "reason": "a list entry"
     },
-    "device|32 Checkpoint 4 Route and Trip Length (Checkpoint 4: a grown-up reviews this)|1": {
+    "device|31 Route Trade-Off Report|1": {
       "line": 107,
+      "judgment": "no",
+      "reason": "a list entry"
+    },
+    "device|32 Checkpoint 4 Route and Trip Length (Checkpoint 4: a grown-up reviews this)|1": {
+      "line": 108,
       "judgment": "no",
       "reason": "a list entry with a review note"
     },
     "device|33 Budget Basics, First Pass|1": {
-      "line": 111,
+      "line": 112,
       "judgment": "no",
       "reason": "a list entry"
     },
     "device|Finished First Taste first?|3": {
-      "line": 112,
+      "line": 113,
       "judgment": "no",
       "reason": "a question that sets a condition"
     },
     "split|Finished First Taste first? → Ask a grown-up to have their own cost of getting there ready for Session 39.|1": {
-      "line": 112,
+      "line": 113,
       "judgment": "no",
       "reason": "an instruction"
     },
     "split|Ask a grown-up to have their own cost of getting there ready for Session 39. → If a traveler comes for only part of the trip, jot down who is there on which days.|1": {
-      "line": 112,
+      "line": 113,
       "judgment": "no",
       "reason": "a conditional instruction"
     },
     "device|34 Neighborhoods and Hotel Location (a grown-up stays nearby if you search beyond the Destination Notes and official city sites, and beside you for an image search)|1": {
-      "line": 113,
+      "line": 114,
       "judgment": "no",
       "reason": "a list entry with a conditional grown-up note"
     },
     "device|35 Hotel Comparison (more than one sitting)|1": {
-      "line": 114,
+      "line": 115,
       "judgment": "no",
       "reason": "a list entry with a sitting note"
     },
     "device|36 Food Research (Conditional core: only if your family wants the restaurant and food shortlist in the binder; a grown-up stays nearby if you search beyond the Destination Notes, and beside you for an image search)|1": {
-      "line": 115,
-      "judgment": "no",
-      "reason": "a list entry with its status and conditions"
-    },
-    "device|37 Restaurant Shortlist (Conditional core: only if your family wants the restaurant and food shortlist in the binder; more than one sitting; a grown-up stays nearby if you search beyond the Destination Notes, and beside you for an image search)|1": {
       "line": 116,
       "judgment": "no",
       "reason": "a list entry with its status and conditions"
     },
-    "device|38 Daily Cost Estimates|1": {
+    "device|37 Restaurant Shortlist (Conditional core: only if your family wants the restaurant and food shortlist in the binder; more than one sitting; a grown-up stays nearby if you search beyond the Destination Notes, and beside you for an image search)|1": {
       "line": 117,
       "judgment": "no",
-      "reason": "a list entry"
+      "reason": "a list entry with its status and conditions"
+    },
+    "device|38 Daily Cost Estimates (ask ahead: the souvenir amount for one day, for your whole group)|1": {
+      "line": 118,
+      "judgment": "no",
+      "reason": "a list entry with its ask-ahead label"
     },
     "device|39 Budget Review, Second Pass (before you start: a grown-up tells you how many rooms each city needs)|1": {
-      "line": 118,
+      "line": 119,
       "judgment": "no",
       "reason": "a list entry with a before-you-start note"
     },
     "device|40 Realistic Day Planning|1": {
-      "line": 122,
+      "line": 123,
       "judgment": "no",
       "reason": "a list entry"
     },
     "device|41 Build Day Cards (more than one sitting)|1": {
-      "line": 123,
+      "line": 124,
       "judgment": "no",
       "reason": "a list entry with a sitting note"
     },
     "device|42 Reservations and Timed Entries|1": {
-      "line": 124,
-      "judgment": "no",
-      "reason": "a list entry"
-    },
-    "device|43 Rest Days, Jet Lag, and Pacing|1": {
       "line": 125,
       "judgment": "no",
       "reason": "a list entry"
     },
-    "device|44 Backup Plans and Cut List|1": {
+    "device|43 Rest Days, Jet Lag, and Pacing|1": {
       "line": 126,
       "judgment": "no",
       "reason": "a list entry"
     },
-    "device|Finished First Taste first?|4": {
+    "device|44 Backup Plans and Cut List|1": {
       "line": 127,
+      "judgment": "no",
+      "reason": "a list entry"
+    },
+    "device|Finished First Taste first?|4": {
+      "line": 128,
       "judgment": "no",
       "reason": "a question that sets a condition"
     },
     "split|Finished First Taste first? → Add your Checkpoint 2 and 3 skip and save notes to your cut list.|1": {
-      "line": 127,
+      "line": 128,
       "judgment": "no",
       "reason": "an instruction"
     },
     "split|Add your Checkpoint 2 and 3 skip and save notes to your cut list. → Then write one line on your My Calls page saying your special pick still holds.|1": {
-      "line": 127,
+      "line": 128,
       "judgment": "no",
       "reason": "an instruction"
     },
     "device|45 Full Itinerary Draft (more than one sitting)|1": {
-      "line": 128,
+      "line": 129,
       "judgment": "no",
       "reason": "a list entry with a sitting note"
     },
     "device|46 Checkpoint 5 Itinerary Review (Checkpoint 5, the Core Finish Line: a grown-up reviews this)|1": {
-      "line": 129,
+      "line": 130,
       "judgment": "no",
       "reason": "a list entry with a review note"
     },
     "device|47 Language and Etiquette (Conditional core: only if your family wants the language and etiquette quick sheet in the binder)|1": {
-      "line": 133,
+      "line": 134,
       "judgment": "no",
       "reason": "a list entry with its status and a condition"
     },
     "device|48 Packing List|1": {
-      "line": 134,
+      "line": 135,
       "judgment": "no",
       "reason": "a list entry"
     },
     "device|49 Travel Readiness Checklist (say your staying-found plan out loud with a grown-up)|1": {
-      "line": 135,
+      "line": 136,
       "judgment": "no",
       "reason": "a list entry with a grown-up note"
     },
     "device|50 Final Binder Assembly (more than one sitting)|1": {
-      "line": 136,
+      "line": 137,
       "judgment": "no",
       "reason": "a list entry with a sitting note"
     },
     "device|51 Final Presentation|1": {
-      "line": 137,
+      "line": 138,
       "judgment": "no",
       "reason": "a list entry"
     },
     "device|52 Checkpoint 6 Family Decision Meeting (Checkpoint 6: the family decision meeting, with the grown-ups)|1": {
-      "line": 138,
+      "line": 139,
       "judgment": "no",
       "reason": "a list entry with a grown-up note"
     },
     "device|53 Reflection and Handoff (finish line)|1": {
-      "line": 139,
+      "line": 140,
       "judgment": "no",
       "reason": "a list entry"
     },
     "device|Finished First Taste first?|5": {
-      "line": 140,
+      "line": 141,
       "judgment": "no",
       "reason": "a question that sets a condition"
     },
     "split|Finished First Taste first? → Do this page again as your capstone, the last step that closes the whole project, on the final reflection page in your kit.|1": {
-      "line": 140,
+      "line": 141,
       "judgment": "no",
       "reason": "an instruction"
     },
     "device|Stopping at Checkpoint 5, the Core Finish Line, is a complete success, and so is going all the way to Session 53.|1": {
-      "line": 142,
+      "line": 143,
       "judgment": "no",
       "reason": "two finish points both called a success; neither is preferred"
     },
     "device|On the First Taste path, most sessions you can do on your own.|1": {
-      "line": 146,
+      "line": 147,
       "judgment": "no",
       "reason": "a fact"
     },
     "split|On the First Taste path, most sessions you can do on your own. → Only a few need a grown-up first:|1": {
-      "line": 146,
+      "line": 147,
       "judgment": "no",
       "reason": "a list intro"
     },
     "device|Need a grown-up: Session 00 (setup, grown-ups only), Session 05 (do it together), Session 07 (only if you do the library session -- a grown-up opens the catalog or drives you), Session 08 (a grown-up stays nearby while you search the web), Session 09 (only if your family uses AI -- a grown-up runs the AI tool, on their account, with you there), Checkpoint 1 (a grown-up reviews it), and Session 44 (co-choose your one special pick with a grown-up).|1": {
-      "line": 150,
+      "line": 151,
       "judgment": "no",
       "reason": "a list of sessions with notes"
     },
     "device|On your own: every other First Taste session.|1": {
-      "line": 151,
+      "line": 152,
       "judgment": "no",
       "reason": "a list entry"
     },
     "device|On the Core and full path, the lines that name a grown-up in the Core and full list above are the ones to do with a grown-up.|1": {
-      "line": 153,
+      "line": 154,
       "judgment": "no",
       "reason": "a definition"
     },
     "split|On the Core and full path, the lines that name a grown-up in the Core and full list above are the ones to do with a grown-up. → Every checkpoint is one of them.|1": {
-      "line": 153,
+      "line": 154,
       "judgment": "no",
       "reason": "a fact"
     },
     "device|A gap of a week or two is normal -- you do not start over.|1": {
-      "line": 157,
+      "line": 158,
       "judgment": "device",
       "reason": "a release joined to its claim: a gap of a week or two is normal / you do not start over"
     },
     "device|Do those with a grown-up: pause there until one is free, and do not skip past them -- except Session 07, which you can skip if no grown-up is free, going straight on to Session 08.|1": {
-      "line": 157,
+      "line": 158,
       "judgment": "device",
       "reason": "pause there until one is free / do not skip past them"
     },
     "split|Every checkpoint is one of them. → So when a grown-up is busy, keep going in order on the next session -- unless that next session needs a grown-up (on First Taste, one named just above; on the Core and full path, a line that names a grown-up, or a before you start answer you don't have yet).|1": {
-      "line": 157,
+      "line": 158,
       "judgment": "no",
       "reason": "an instruction with an exception condition"
     },
     "split|If you are waiting for a checkpoint review, keep your momentum without racing ahead. → The next session waits until a grown-up finishes the review:|1": {
-      "line": 161,
+      "line": 162,
       "judgment": "device",
       "reason": "keep your momentum / without racing ahead"
     },
     "device|The next session waits until a grown-up finishes the review:|1": {
-      "line": 161,
+      "line": 162,
       "judgment": "no",
       "reason": "a fact"
     },
     "device|Do an Optional Extension from your last session.|1": {
-      "line": 163,
-      "judgment": "no",
-      "reason": "an instruction"
-    },
-    "device|Add to your question parking lot.|1": {
       "line": 164,
       "judgment": "no",
       "reason": "an instruction"
     },
-    "device|Grow your \"things I can't wait to see\" page.|1": {
+    "device|Add to your question parking lot.|1": {
       "line": 165,
+      "judgment": "no",
+      "reason": "an instruction"
+    },
+    "device|Grow your \"things I can't wait to see\" page.|1": {
+      "line": 166,
       "judgment": "no",
       "reason": "an instruction; \"things I can't wait to see\" is a quoted page title (a Name)"
     },
     "device|Missed a week or three?|1": {
-      "line": 169,
+      "line": 170,
       "judgment": "no",
       "reason": "a question"
     },
     "split|Missed a week or three? → That is okay.|1": {
-      "line": 169,
+      "line": 170,
       "judgment": "no",
       "reason": "a reassurance"
     },
     "split|That is okay. → Come back like this:|1": {
-      "line": 169,
+      "line": 170,
       "judgment": "no",
       "reason": "an instruction introducing a list"
     },
     "device|Re-read your last finished page.|1": {
-      "line": 171,
-      "judgment": "no",
-      "reason": "an instruction"
-    },
-    "device|Check this tracker for where you are.|1": {
       "line": 172,
       "judgment": "no",
       "reason": "an instruction"
     },
-    "device|Do one tiny Start Here to get moving again.|1": {
+    "device|Check this tracker for where you are.|1": {
       "line": 173,
       "judgment": "no",
       "reason": "an instruction"
     },
+    "device|Do one tiny Start Here to get moving again.|1": {
+      "line": 174,
+      "judgment": "no",
+      "reason": "an instruction"
+    },
     "device|That is your choice -- not a rule.|1": {
-      "line": 177,
+      "line": 178,
       "judgment": "device",
       "reason": "your choice -- not a rule"
     },
     "device|If a session feels easy, you are allowed to do more in one sitting, go deeper, or take the harder \"extra-energy\" version.|1": {
-      "line": 177,
+      "line": 178,
       "judgment": "no",
       "reason": "a permission"
     }

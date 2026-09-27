@@ -51,6 +51,7 @@ How to read the lines:
 - A *Recommended* line is done only if your family chooses it.
 - A line that names a grown-up is one to do with a grown-up.
 - A line that says *before you start* needs one answer from a grown-up first. Once you have it, you can do the session on your own.
+- A line that says *ask ahead* names one thing to ask a grown-up for before you start. If no grown-up is free, write "ask an adult" where it goes, and keep going.
 - A line marked *more than one sitting* gets its tick only when the whole session is finished. If its Stop Point says you are done for today, you've made today's part, so wait to tick it.
 - A line under a session that starts *Finished First Taste first?* is extra work for that session on the Core path. If you started on the Core path, tick it along with its session.
 
@@ -114,7 +115,7 @@ How to read the lines:
 - [ ] [35 Hotel Comparison](../sessions/phase_06_lodging_food_budget/35_hotel_comparison.md) *(more than one sitting)*
 - [ ] [36 Food Research](../sessions/phase_06_lodging_food_budget/36_food_research.md) *(Conditional core: only if your family wants the restaurant and food shortlist in the binder; a grown-up stays nearby if you search beyond the Destination Notes, and beside you for an image search)*
 - [ ] [37 Restaurant Shortlist](../sessions/phase_06_lodging_food_budget/37_restaurant_shortlist.md) *(Conditional core: only if your family wants the restaurant and food shortlist in the binder; more than one sitting; a grown-up stays nearby if you search beyond the Destination Notes, and beside you for an image search)*
-- [ ] [38 Daily Cost Estimates](../sessions/phase_06_lodging_food_budget/38_daily_cost_estimates.md)
+- [ ] [38 Daily Cost Estimates](../sessions/phase_06_lodging_food_budget/38_daily_cost_estimates.md) *(ask ahead: the souvenir amount for one day, for your whole group)*
 - [ ] [39 Budget Review, Second Pass](../sessions/phase_06_lodging_food_budget/39_budget_review_second_pass.md) *(before you start: a grown-up tells you how many rooms each city needs)*
 
 ### Phase 7 (Itinerary Building)

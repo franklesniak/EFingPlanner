@@ -175,7 +175,7 @@ The rest of the Core path is the continuation, from readiness to the family deci
 
 ### The full program
 
-The full program adds the Recommended and conditional sessions your family chooses, each in its numbered place. After the trip, Session 54, After You Get Back, is an optional, post-trip reflection module.
+The full program adds the Recommended sessions your family chooses, each in its numbered place. A conditional session comes in when its own condition holds, just as on the Core path. After the trip, Session 54, After You Get Back, is an optional, post-trip reflection module.
 
 ## Both ends are served
 

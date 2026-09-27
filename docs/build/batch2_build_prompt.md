@@ -4304,7 +4304,9 @@ B7's rule, so the membership lives in one place. A 5-minute check-in or a parent
 after the session gets no marker, because the child does not wait for it; the built First
 Taste list follows the same rule. A grown-up step that comes before the session is marked
 with a *before you start* line only where B7 says it holds the child, and the legend says
-that line holds the child only until the answer is in hand. **Scope the existing "Which sessions need a grown-up"
+that line holds the child only until the answer is in hand. Where the step does not hold the
+child, as at Session 38, the line says *ask ahead*, and the legend says to write
+"ask an adult" and keep going if no grown-up is free. **Scope the existing "Which sessions need a grown-up"
 lists to the First Taste path**, and make its waiting rule point at a marked
 session, so a Core child is never told that the later checkpoints or Sessions 25 and 49 need
 no grown-up.
