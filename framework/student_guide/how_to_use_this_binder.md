@@ -43,7 +43,7 @@ Weeks of work in one paper folder is one spill away from gone.
 
 If you work on paper, photograph or scan each finished page into a phone folder or a cloud folder. If you work in Google Docs, the cloud copy is already your backup.
 
-Before you photograph a page, look at it once. Check there are no private details on it. The full rules are on one page: [privacy and safety](../docs/privacy_and_safety.md).
+Before you photograph a page, look at it once. Check there are no private details on it. Your "if I get separated" card stays on paper, in your pocket. The full rules are on one page: [privacy and safety](../docs/privacy_and_safety.md).
 
 ## At the very end
 

@@ -25,7 +25,7 @@ Pick your own first move and do it. If you'd like one: make the divider for tab 
 Maybe you kept everything in one growing folder, in rough order. Maybe you filed pages under tabs as you went. Both ways end up in the same place today. Doing the tabs here, once, at the end, is the usual way, so if you're filing everything now, you're on track.
 
 1. Set your timer for 20 minutes, and make the eleven dividers, in the order in the Workspace.
-2. Build tab 1, then tab 2, and so on. Put each page behind the tab it belongs to. A working page the list doesn't name, such as your route map notes or your pacing review, goes behind the tab it fits best, after the listed pages.
+2. Build tab 1, then tab 2, and so on. Put your "if I get separated" card in your pocket, as Session 49 says, and each other page behind the tab it belongs to. A working page the list doesn't name, such as your route map notes or your pacing review, goes behind the tab it fits best, after the listed pages.
 3. Tick each tab on the checklist when its pages are in.
 4. Stop between sittings whenever you like. Start each new sitting by setting your timer for 20 minutes, then pick up at the next tab.
 

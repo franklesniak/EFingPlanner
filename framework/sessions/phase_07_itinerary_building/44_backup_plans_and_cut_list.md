@@ -14,7 +14,7 @@ You are here: Phase 7 (Itinerary Building), First Taste step 12 of 13. Previous:
 - Planner skill: prioritizing; knowing when to stop; flexible thinking
 - Estimated time: 20-30 minutes
 - Parent involvement: 5-minute check-in; help co-choose the one unconditional pick, or confirm it on the Core path
-- Materials: your City Research Cards (starred sights), a [Cut List page](../../templates/cut_list.md), a [Backup Plan page](../../templates/backup_plan.md), a My Calls page (a blank sheet -- start one if you do not have it yet), and your family's [current travel assumptions](../../templates/current_family_travel_assumptions.md) page (for the budget band, when a grown-up checks your special pick). On the Core path, you bring your My Calls page, with its must-do list and special pick, the skip and save-for-future notes from Checkpoints 2 and 3, the strong maybes from Checkpoint 3, your day cards and Reservation Watchlist (to cross off anything you cut), your attraction cards and your Session 39 budget summary (for anything you cut, or if your special pick hits a block), your [When the Plan Changes card](../../student_guide/when_the_plan_changes.md) and the pages it names that you've made (for anything you cut, or a block), and your route map notes from Session 28 and your [Source Log](../../templates/source_log.md), with a device with a map app or map website (kid-safe filter on) if a swap needs a new travel time.
+- Materials: your City Research Cards (starred sights), a [Cut List page](../../templates/cut_list.md), a [Backup Plan page](../../templates/backup_plan.md), a My Calls page (a blank sheet -- start one if you do not have it yet), and your family's [current travel assumptions](../../templates/current_family_travel_assumptions.md) page (for the budget band, when a grown-up checks your special pick). On the Core path, you bring your My Calls page, with its must-do list and special pick, the skip and save-for-future notes from Checkpoints 2 and 3, the strong maybes from Checkpoint 3, your day cards and Reservation Watchlist (to cross off anything you cut, or add a backup that needs booking), your Restaurant Research Cards if you made them (for whether a backup needs booking), your attraction cards and your Session 39 budget summary (for anything you cut, whether a backup needs booking, or if your special pick hits a block), your [When the Plan Changes card](../../student_guide/when_the_plan_changes.md) and the pages it names that you've made (for anything you cut, or a block), and your route map notes from Session 28 and your [Source Log](../../templates/source_log.md), with a device with a map app or map website (kid-safe filter on) if a swap needs a new travel time.
 
 ## Goal
 
@@ -52,6 +52,8 @@ A good planner can't fit everything. And that's fine. Knowing what to keep, what
 
    On the Core path, if a swap needs a travel time your route map notes from Session 28 don't have, check it with the map's Directions and add it to your notes.
 
+   A backup you can walk into is best. Does one need a ticket or a reservation? Its attraction card or restaurant card says, or ask a grown-up. If it does, write "needs booking" in its Notes. On the Core path, add it to your Reservation Watchlist too, the way Session 42 does, so the grown-ups can decide.
+
 ## Workspace
 
 Use your Cut List page, your Backup Plan page, and your My Calls page for the one special pick.
@@ -66,9 +68,9 @@ On the Core path: your cut list, started from your Checkpoint 2 and 3 notes, one
 
 ## Stop Point
 
-On the First Taste path, you are done when you have a short must-see list, a cut list with whatever did not make it, each marked save for future or not (even one thing, or a note that nothing needed cutting), one special pick written, initialed and on your must-see list, and two backup plans. Short is good. This is about choosing, not listing everything.
+On the First Taste path, you are done when you have a short must-see list, a cut list with whatever did not make it, each marked save for future or not (even one thing, or a note that nothing needed cutting), one special pick written, initialed and on your must-see list, and two backup plans, with "needs booking" on any that does. Short is good. This is about choosing, not listing everything.
 
-On the Core path, you are done when your cut list holds your Checkpoint 2 and 3 notes, the must-dos you crossed off at Checkpoint 4 and anything else you set aside. Each one is marked save for a future trip or not. For anything you cut from your day cards or watchlist, and for a block, you've gone down your When the Plan Changes card. Your My Calls page has one line saying your special pick, or the new one after a block, still holds and is on your must-do list. You have two backup plans. Any travel time a swap needed is in your route map notes.
+On the Core path, you are done when your cut list holds your Checkpoint 2 and 3 notes, the must-dos you crossed off at Checkpoint 4 and anything else you set aside. Each one is marked save for a future trip or not. For anything you cut from your day cards or watchlist, and for a block, you've gone down your When the Plan Changes card. Your My Calls page has one line saying your special pick, or the new one after a block, still holds and is on your must-do list. You have two backup plans. Any travel time a swap needed is in your route map notes, and any backup that needs booking is on your watchlist.
 
 ## Source Check
 
@@ -88,6 +90,6 @@ If you have extra energy, add one more backup plan, or write one line about *why
 
 ## Parent Notes
 
-The one unconditional pick is the ownership centerpiece -- help your child choose one you can genuinely keep. Show the three blocks (budget, bookability, safety/feasibility for everyone, including any lower-stamina traveler) *before* they commit, and steer gently toward an affordable, bookable pick. A grown-up vote does not override this one -- only the three blocks do -- so scope it to a single keepable pick. Honor cut-list "save for future" notes as real; everything here keeps its value. This session teaches "good enough is good enough," so let short lists count as done.
+The one unconditional pick is the ownership centerpiece -- help your child choose one you can genuinely keep. Show the three blocks (budget, bookability, safety/feasibility for everyone, including any lower-stamina traveler) *before* they commit, and steer gently toward an affordable, bookable pick. With a hotel tier, check the pick's ticket against the family's budget yourself, as in Session 39. A grown-up vote does not override this one -- only the three blocks do -- so scope it to a single keepable pick. Honor cut-list "save for future" notes as real; everything here keeps its value. This session teaches "good enough is good enough," so let short lists count as done.
 
 On the Core path, the pick was chosen at Session 26 and acknowledged at Checkpoint 3, or replaced after a block the way Session 26 chose it, so confirm it still holds. If one of the three blocks applies now, name it, and your child replaces the pick with you, as in Session 43; write "got it" beside the new pick.

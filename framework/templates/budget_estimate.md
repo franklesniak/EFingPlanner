@@ -23,7 +23,7 @@ All numbers here are estimates you look up and check again. Beside each number y
 | Prompt | Your answer |
 | --- | --- |
 | My band form (per person/day, per day for family, or hotel tier) | |
-| The matching piece of my estimate (in $) | |
+| The matching piece of my estimate (in $; for a hotel tier, each hotel's cost per night) | |
 | Fits my band? (yes / too high) | |
 
 The subtotal above shows how the parts you choose add up. The whole-trip total stays a grown-up number.

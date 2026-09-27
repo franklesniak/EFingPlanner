@@ -24,7 +24,7 @@ Choose your own first move, then make it. A suggestion if you'd like one: write 
 
 Some things you can only reserve for a set date. You pick the day first, then book, sometimes weeks or a month ahead. And they can sell out. The longer your family's dates stay open, the more of these can fill up before anyone books. The fix is knowing which items are on that clock, so nobody gets surprised. The dates can take the time they need.
 
-If your family's dates are already booked, the list works the other way round. Nothing waits on the dates any more, so it becomes an **act-early list**. The grown-ups book each item as soon as its booking opens. Find how far ahead that is on the official site, such as "30 days before". Write it in "When adults should check". A grown-up turns it into the date, because only they keep the booked dates.
+If your family's dates are already booked, the list works the other way round. Nothing waits on the dates any more, so it becomes an **act-early list**. The grown-ups book each item as soon as its booking opens. Find how far ahead that is on the official site, such as "30 days before". Write it in "When adults should check". A grown-up turns it into a date in their own calendar. Only they keep the booked dates.
 
 1. Go through your day cards and circle anything that might need booking. If a card's tickets row is empty or says "not decided yet", fill it in first. Popular museums, theme parks, special restaurants, tours, long-distance trains if your trip uses them, timed tickets and hotels are the usual ones.
 2. Open this session's Destination Notes to see what booking ahead looks like where you're going.
@@ -47,7 +47,7 @@ Your Reservation Watchlist: everything that might need booking, and whether hold
 
 ## Stop Point
 
-You are done when every item on your day cards that might need booking is on the watchlist, each one says whether holding a date matters, and each one has its date-checked box filled in. If your dates are booked, each one says in "When adults should check" how far ahead its booking opens, for a grown-up to turn into the date. If your special pick hit a block, you've chosen a new one with a grown-up, and every page the card's special-pick row names is fixed. You're making the list the grown-ups will use, and they do all of the booking. "Ask an adult" is a fine answer in any box you can't fill.
+You are done when every item on your day cards that might need booking is on the watchlist, each one says whether holding a date matters, and each one has its date-checked box filled in. If your dates are booked, each one says in "When adults should check" how far ahead its booking opens, for a grown-up to turn into a date in their own calendar. If your special pick hit a block, you've chosen a new one with a grown-up, and every page the card's special-pick row names is fixed. You're making the list the grown-ups will use, and they do all of the booking. "Ask an adult" is a fine answer in any box you can't fill.
 
 ## Source Check
 
