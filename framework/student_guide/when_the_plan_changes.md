@@ -52,10 +52,12 @@ Go down this list in order. For each page you've made, look at what it holds. If
 - **Your cover page** (Session 01): the travel party and home airport lines.
 - **Your Destination Snapshot** (Session 10): the time difference and the "Getting there" row.
 - **Your City Research Cards** (Sessions 15 to 18): each card's "Best season fit" row.
+- **Your Checkpoint 2 city shortlist recommendation** (Session 22): a place the change adds or drops. Note it beside the old, with where it changed.
 - **Your route notes** (Sessions 28 and 30): your route map notes, their travel times, and your transportation notes. Log any new travel time in your Source Log.
 - **Your Session 29 formula**: its total, its ½ marks, its "- 1 flight day" marks and its jet-lag days.
 - **Your must-do list and special pick**, on your My Calls page.
 - **Your attraction cards**: each card's group, its "Ticket or reservation needed?" row and its price, and its Weather fit score on your Session 26 table.
+- **Your Checkpoint 3 top experiences recommendation** (Session 27): a must-do the change adds or drops. Note it beside the old, with where it changed.
 - **Your Session 33 part-trip note**: who is there on which days.
 - **Your Neighborhood Comparison and Hotel Comparison Cards** (Sessions 34 and 35): your pick of area and of place to stay, the room count and room setup, and the nights beside them.
 - **Your restaurant cards** (Session 37): the seating note, whether everyone who's with you in that city can eat there, and whether each place is still near where you'll be.

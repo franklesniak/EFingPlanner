@@ -3886,7 +3886,22 @@
       "judgment": "no",
       "reason": "a change record: a fact of what Session 46 carries and what its step says"
     },
-    "split|Session 46 carries the Core Finish Line sentence word for word, as its three other surfaces do, and its step 3 says the budget summary is for the parts the child chose. → The insert contract's parent-facing rows give local hazards one home, ‹code› , and lodging priced per person and children's fares one home, ‹code› , as the Batch 3 brief settles.|1": {
+    "split|Session 46 carries the Core Finish Line sentence word for word, as its three other surfaces do, and its step 3 says the budget summary is for the parts the child chose. → Sessions 36 and 37's Status lines carry the label and its condition, as Sessions 18 and 47 do.|1": {
+      "line": 58,
+      "judgment": "no",
+      "reason": "a change record: a fact of what the Status lines carry"
+    },
+    "split|Sessions 36 and 37's Status lines carry the label and its condition, as Sessions 18 and 47 do. → With booked dates, the grown-up keeps each booking's date in their own calendar, as the privacy rules ask.|1": {
+      "line": 58,
+      "judgment": "no",
+      "reason": "a change record: a placement rule with its source; it names no page the date stays off"
+    },
+    "split|With booked dates, the grown-up keeps each booking's date in their own calendar, as the privacy rules ask. → Session 39's part-trip food count leaves out the meals a place includes, and Your plan pages names the Checkpoint 2 and 3 recommendations.|1": {
+      "line": 58,
+      "judgment": "no",
+      "reason": "a change record: a fact of what the count leaves out and what a list names; nothing included is named against it"
+    },
+    "split|Session 39's part-trip food count leaves out the meals a place includes, and Your plan pages names the Checkpoint 2 and 3 recommendations. → The insert contract's parent-facing rows give local hazards one home, ‹code› , and lodging priced per person and children's fares one home, ‹code› , as the Batch 3 brief settles.|1": {
       "line": 58,
       "judgment": "no",
       "reason": "a change record: a fact"
@@ -10178,10 +10193,10 @@
       "judgment": "no",
       "reason": "an instruction"
     },
-    "split|They carry each change back with their When the Plan Changes card, with \"changed after booking\". → If they have made the Reservation Watchlist, it becomes an act-early list: they write how far ahead each booking opens, and you turn each one into a date.|1": {
+    "split|They carry each change back with their When the Plan Changes card, with \"changed after booking\". → If they have made the Reservation Watchlist, it becomes an act-early list: they write how far ahead each booking opens, and you turn each one into a date in your own calendar, because a date written beside how far ahead it is would show your booked dates.|1": {
       "line": 66,
       "judgment": "no",
-      "reason": "a conditional statement of who does what; nothing is rejected"
+      "reason": "a conditional statement of who does what, with a reason; the reason names a consequence, not a rejected option"
     },
     "split|Don't enter booking information, confirmation numbers or payment details anywhere in the repository or the kit. → A shared-documents folder is not a private vault either.|1": {
       "line": 70,
@@ -28304,10 +28319,10 @@
       "judgment": "no",
       "reason": "a field label"
     },
-    "device|Status: Conditional core -- becomes Core if your family wants the restaurant and food shortlist in the binder; otherwise it is Recommended|1": {
+    "device|Status: Conditional core -- becomes Core if your family wants the restaurant and food shortlist in the binder|1": {
       "line": 9,
       "judgment": "no",
-      "reason": "a field label stating a status and its condition"
+      "reason": "a field label with a condition"
     },
     "device|Planner skill: organizing information|1": {
       "line": 10,
@@ -28676,10 +28691,10 @@
       "judgment": "no",
       "reason": "a field label"
     },
-    "device|Status: Conditional core -- becomes Core if your family wants the restaurant and food shortlist in the binder; otherwise it is Recommended|1": {
+    "device|Status: Conditional core -- becomes Core if your family wants the restaurant and food shortlist in the binder|1": {
       "line": 9,
       "judgment": "no",
-      "reason": "a field label stating a status and its condition"
+      "reason": "a field label with a condition"
     },
     "device|Planner skill: organizing information|1": {
       "line": 10,
@@ -29765,11 +29780,6 @@
       "judgment": "no",
       "reason": "an instruction"
     },
-    "split|Then, for food, divide your Session 38 guess by all of you, and multiply by your traveler-days. → Do the same for local transit and activities, but first take out each price you wrote \"once\" beside.|1": {
-      "line": 33,
-      "judgment": "no",
-      "reason": "an instruction with an exception step"
-    },
     "split|Do the same for local transit and activities, but first take out each price you wrote \"once\" beside. → It's one price for the people it covers, so multiply it by your days on the ground, and add it back.|1": {
       "line": 33,
       "judgment": "no",
@@ -29789,6 +29799,16 @@
       "line": 33,
       "judgment": "no",
       "reason": "a permission"
+    },
+    "split|Then, for food, divide your Session 38 guess by all of you, and multiply by your traveler-days. → Then leave out the meals a place includes, as step 2 says, for the people there on those nights.|1": {
+      "line": 33,
+      "judgment": "no",
+      "reason": "an instruction (a subtraction step); nothing included is named beside it"
+    },
+    "split|Then leave out the meals a place includes, as step 2 says, for the people there on those nights. → Do the same for local transit and activities, but first take out each price you wrote \"once\" beside.|1": {
+      "line": 33,
+      "judgment": "no",
+      "reason": "an instruction with an exception step"
     },
     "device|Add it up.|1": {
       "line": 34,
@@ -31476,25 +31496,30 @@
       "judgment": "no",
       "reason": "a statement of roles"
     },
-    "split|Your child's job is to show you which items are on that clock, so you can decide when to commit. → With your dates already booked, the list becomes an act-early list, and \"When adults should check\" holds the date each item's booking opens.|1": {
+    "split|Your child's job is to show you which items are on that clock, so you can decide when to commit. → With your dates already booked, the list becomes an act-early list, and \"When adults should check\" holds how far ahead each item's booking opens.|1": {
       "line": 72,
       "judgment": "no",
-      "reason": "a condition"
+      "reason": "a condition with a fact of what the column holds"
     },
-    "split|With your dates already booked, the list becomes an act-early list, and \"When adults should check\" holds the date each item's booking opens. → Your child writes how far ahead each booking opens; you turn that into the date there, since only you keep the booked dates.|1": {
+    "split|With your dates already booked, the list becomes an act-early list, and \"When adults should check\" holds how far ahead each item's booking opens. → Your child writes that; you turn it into a date in your own calendar or another private reminder.|1": {
       "line": 72,
       "judgment": "no",
-      "reason": "a statement of roles"
+      "reason": "a statement of roles and where the date goes; it names no page the date stays off"
     },
-    "split|Your child writes how far ahead each booking opens; you turn that into the date there, since only you keep the booked dates. → Every example of a date-gated item is in the destination pack.|1": {
-      "line": 74,
+    "split|Your child writes that; you turn it into a date in your own calendar or another private reminder. → Exact booked dates stay in your own records, as the privacy and safety rules say, because an opening date written beside how far ahead it is would give them away.|1": {
+      "line": 72,
       "judgment": "no",
-      "reason": "a fact"
+      "reason": "a privacy rule with its reason, restating where the date goes; it rejects nothing in the sentence before, so no split"
     },
     "split|Every example of a date-gated item is in the destination pack. → Booking windows, reservation systems and entry rules all move, so verify each one on its official source close to travel.|1": {
       "line": 74,
       "judgment": "no",
       "reason": "a reason with an instruction"
+    },
+    "split|Exact booked dates stay in your own records, as the privacy and safety rules say, because an opening date written beside how far ahead it is would give them away. → Every example of a date-gated item is in the destination pack.|1": {
+      "line": 74,
+      "judgment": "no",
+      "reason": "a fact"
     },
     "split|Booking windows, reservation systems and entry rules all move, so verify each one on its official source close to travel. → The lighter page.|1": {
       "line": 76,
@@ -39944,148 +39969,168 @@
       "judgment": "no",
       "reason": "a list entry"
     },
-    "device|Your route notes (Sessions 28 and 30): your route map notes, their travel times, and your transportation notes.|1": {
+    "device|Your Checkpoint 2 city shortlist recommendation (Session 22): a place the change adds or drops.|1": {
       "line": 55,
       "judgment": "no",
       "reason": "a list entry naming a page and what to check"
     },
-    "split|Your route notes (Sessions 28 and 30): your route map notes, their travel times, and your transportation notes. → Log any new travel time in your Source Log.|1": {
+    "split|Your Checkpoint 2 city shortlist recommendation (Session 22): a place the change adds or drops. → Note it beside the old, with where it changed.|1": {
       "line": 55,
       "judgment": "no",
       "reason": "an instruction"
     },
-    "device|Your Session 29 formula: its total, its ½ marks, its \"- 1 flight day\" marks and its jet-lag days.|1": {
+    "device|Your route notes (Sessions 28 and 30): your route map notes, their travel times, and your transportation notes.|1": {
       "line": 56,
       "judgment": "no",
       "reason": "a list entry naming a page and what to check"
     },
-    "device|Your must-do list and special pick, on your My Calls page.|1": {
+    "split|Your route notes (Sessions 28 and 30): your route map notes, their travel times, and your transportation notes. → Log any new travel time in your Source Log.|1": {
+      "line": 56,
+      "judgment": "no",
+      "reason": "an instruction"
+    },
+    "device|Your Session 29 formula: its total, its ½ marks, its \"- 1 flight day\" marks and its jet-lag days.|1": {
       "line": 57,
       "judgment": "no",
       "reason": "a list entry naming a page and what to check"
     },
-    "device|Your attraction cards: each card's group, its \"Ticket or reservation needed?\" row and its price, and its Weather fit score on your Session 26 table.|1": {
+    "device|Your must-do list and special pick, on your My Calls page.|1": {
       "line": 58,
-      "judgment": "no",
-      "reason": "a list entry"
-    },
-    "device|Your Session 33 part-trip note: who is there on which days.|1": {
-      "line": 59,
       "judgment": "no",
       "reason": "a list entry naming a page and what to check"
     },
-    "device|Your Neighborhood Comparison and Hotel Comparison Cards (Sessions 34 and 35): your pick of area and of place to stay, the room count and room setup, and the nights beside them.|1": {
+    "device|Your attraction cards: each card's group, its \"Ticket or reservation needed?\" row and its price, and its Weather fit score on your Session 26 table.|1": {
+      "line": 59,
+      "judgment": "no",
+      "reason": "a list entry"
+    },
+    "device|Your Checkpoint 3 top experiences recommendation (Session 27): a must-do the change adds or drops.|1": {
       "line": 60,
       "judgment": "no",
       "reason": "a list entry naming a page and what to check"
     },
-    "device|Your restaurant cards (Session 37): the seating note, whether everyone who's with you in that city can eat there, and whether each place is still near where you'll be.|1": {
+    "split|Your Checkpoint 3 top experiences recommendation (Session 27): a must-do the change adds or drops. → Note it beside the old, with where it changed.|1": {
+      "line": 60,
+      "judgment": "no",
+      "reason": "an instruction"
+    },
+    "device|Your Session 33 part-trip note: who is there on which days.|1": {
       "line": 61,
       "judgment": "no",
       "reason": "a list entry naming a page and what to check"
     },
-    "device|Your budget (Sessions 38 and 39): your daily cost table, your hotel table, your slices and your subtotal.|1": {
+    "device|Your Neighborhood Comparison and Hotel Comparison Cards (Sessions 34 and 35): your pick of area and of place to stay, the room count and room setup, and the nights beside them.|1": {
       "line": 62,
       "judgment": "no",
       "reason": "a list entry naming a page and what to check"
     },
-    "split|Your budget (Sessions 38 and 39): your daily cost table, your hotel table, your slices and your subtotal. → Add it up again, and check your band sentence.|1": {
-      "line": 62,
-      "judgment": "no",
-      "reason": "an instruction"
-    },
-    "split|Add it up again, and check your band sentence. → Keep your Session 33 Budget Estimate page as it is, because Session 53 looks back at it.|1": {
-      "line": 62,
-      "judgment": "no",
-      "reason": "an instruction with a reason"
-    },
-    "split|Keep your Session 33 Budget Estimate page as it is, because Session 53 looks back at it. → If it's your only budget, as on First Taste, write the new numbers beside the old ones.|1": {
-      "line": 62,
-      "judgment": "no",
-      "reason": "a condition with an instruction"
-    },
-    "device|Your day rules (Session 40): your first-day, last-day and moving-day rules, which follow your ½ marks.|1": {
+    "device|Your restaurant cards (Session 37): the seating note, whether everyone who's with you in that city can eat there, and whether each place is still near where you'll be.|1": {
       "line": 63,
       "judgment": "no",
       "reason": "a list entry naming a page and what to check"
     },
-    "device|Your day cards (Session 41): each day's number, roughly when and where you'll sleep, and every box in each day's rows: its anchor activity, meal ideas, transit notes, tickets, cost (with \"fewer of us\" on a day someone is away), energy level and backup idea.|1": {
+    "device|Your budget (Sessions 38 and 39): your daily cost table, your hotel table, your slices and your subtotal.|1": {
       "line": 64,
       "judgment": "no",
       "reason": "a list entry naming a page and what to check"
     },
-    "device|Your Reservation Watchlist (Session 42): each item's rows.|1": {
+    "split|Your budget (Sessions 38 and 39): your daily cost table, your hotel table, your slices and your subtotal. → Add it up again, and check your band sentence.|1": {
+      "line": 64,
+      "judgment": "no",
+      "reason": "an instruction"
+    },
+    "split|Add it up again, and check your band sentence. → Keep your Session 33 Budget Estimate page as it is, because Session 53 looks back at it.|1": {
+      "line": 64,
+      "judgment": "no",
+      "reason": "an instruction with a reason"
+    },
+    "split|Keep your Session 33 Budget Estimate page as it is, because Session 53 looks back at it. → If it's your only budget, as on First Taste, write the new numbers beside the old ones.|1": {
+      "line": 64,
+      "judgment": "no",
+      "reason": "a condition with an instruction"
+    },
+    "device|Your day rules (Session 40): your first-day, last-day and moving-day rules, which follow your ½ marks.|1": {
       "line": 65,
       "judgment": "no",
       "reason": "a list entry naming a page and what to check"
     },
-    "device|Your pacing review (Session 43): run its checks again for each day the change touches.|1": {
+    "device|Your day cards (Session 41): each day's number, roughly when and where you'll sleep, and every box in each day's rows: its anchor activity, meal ideas, transit notes, tickets, cost (with \"fewer of us\" on a day someone is away), energy level and backup idea.|1": {
       "line": 66,
       "judgment": "no",
-      "reason": "a list entry with an instruction"
+      "reason": "a list entry naming a page and what to check"
     },
-    "split|Your pacing review (Session 43): run its checks again for each day the change touches. → A new season touches every day's heat, and a new time difference the first days.|1": {
-      "line": 66,
-      "judgment": "no",
-      "reason": "a fact"
-    },
-    "split|A new season touches every day's heat, and a new time difference the first days. → A traveler's profile counts only on the days they're there, so a new traveler touches those days.|1": {
-      "line": 66,
-      "judgment": "no",
-      "reason": "a fact with a limit"
-    },
-    "device|Your cut list and backup plans (Session 44).|1": {
+    "device|Your Reservation Watchlist (Session 42): each item's rows.|1": {
       "line": 67,
       "judgment": "no",
       "reason": "a list entry naming a page and what to check"
     },
-    "device|Your itinerary draft (Session 45): every box in each day's row: its number, overnight city, main activities, meals, travel legs, costs, booking notes and backup.|1": {
+    "device|Your pacing review (Session 43): run its checks again for each day the change touches.|1": {
       "line": 68,
       "judgment": "no",
-      "reason": "a list entry naming a page and what to check"
+      "reason": "a list entry with an instruction"
     },
-    "device|Your Packing List (Session 48): its weather items, its plane items, and what a long walking day needs.|1": {
+    "split|Your pacing review (Session 43): run its checks again for each day the change touches. → A new season touches every day's heat, and a new time difference the first days.|1": {
+      "line": 68,
+      "judgment": "no",
+      "reason": "a fact"
+    },
+    "split|A new season touches every day's heat, and a new time difference the first days. → A traveler's profile counts only on the days they're there, so a new traveler touches those days.|1": {
+      "line": 68,
+      "judgment": "no",
+      "reason": "a fact with a limit"
+    },
+    "device|Your cut list and backup plans (Session 44).|1": {
       "line": 69,
       "judgment": "no",
       "reason": "a list entry naming a page and what to check"
     },
-    "device|Your \"if I get separated\" card (Session 49): each line the change touches.|1": {
+    "device|Your itinerary draft (Session 45): every box in each day's row: its number, overnight city, main activities, meals, travel legs, costs, booking notes and backup.|1": {
       "line": 70,
       "judgment": "no",
       "reason": "a list entry naming a page and what to check"
     },
-    "split|Your \"if I get separated\" card (Session 49): each line the change touches. → A new place to stay gets a fresh card, with its lodging lines and its local-language line filled in by a grown-up, and the old one is torn up.|1": {
-      "line": 70,
-      "judgment": "no",
-      "reason": "a replacement: a fresh card for a new place, and the old one torn up"
-    },
-    "split|A new place to stay gets a fresh card, with its lodging lines and its local-language line filled in by a grown-up, and the old one is torn up. → If the parent whose number is on it won't be with you there, a grown-up tells you whose number to write instead.|1": {
-      "line": 70,
-      "judgment": "no",
-      "reason": "a conditional fallback; the instead rejects no option the reader could choose"
-    },
-    "device|Your Final Presentation Outline (Session 51): if you haven't presented it yet, its Part 1 lines.|1": {
+    "device|Your Packing List (Session 48): its weather items, its plane items, and what a long walking day needs.|1": {
       "line": 71,
       "judgment": "no",
-      "reason": "a list entry with a condition"
+      "reason": "a list entry naming a page and what to check"
     },
-    "device|Your final recommendation packet (Session 52): whose \"one thing you'd love\" the plan makes room for.|1": {
+    "device|Your \"if I get separated\" card (Session 49): each line the change touches.|1": {
       "line": 72,
       "judgment": "no",
       "reason": "a list entry naming a page and what to check"
     },
-    "device|Your binder (Session 50): put each page you made or fixed behind its tab, in place of the old one if there is one.|1": {
+    "split|Your \"if I get separated\" card (Session 49): each line the change touches. → A new place to stay gets a fresh card, with its lodging lines and its local-language line filled in by a grown-up, and the old one is torn up.|1": {
+      "line": 72,
+      "judgment": "no",
+      "reason": "a replacement: a fresh card for a new place, and the old one torn up"
+    },
+    "split|A new place to stay gets a fresh card, with its lodging lines and its local-language line filled in by a grown-up, and the old one is torn up. → If the parent whose number is on it won't be with you there, a grown-up tells you whose number to write instead.|1": {
+      "line": 72,
+      "judgment": "no",
+      "reason": "a conditional fallback; the instead rejects no option the reader could choose"
+    },
+    "device|Your Final Presentation Outline (Session 51): if you haven't presented it yet, its Part 1 lines.|1": {
       "line": 73,
+      "judgment": "no",
+      "reason": "a list entry with a condition"
+    },
+    "device|Your final recommendation packet (Session 52): whose \"one thing you'd love\" the plan makes room for.|1": {
+      "line": 74,
+      "judgment": "no",
+      "reason": "a list entry naming a page and what to check"
+    },
+    "device|Your binder (Session 50): put each page you made or fixed behind its tab, in place of the old one if there is one.|1": {
+      "line": 75,
       "judgment": "no",
       "reason": "a list entry with a replacement instruction; nothing is argued against"
     },
     "device|You're done when you've done the rows that fit your change and gone down Your plan pages.|1": {
-      "line": 75,
+      "line": 77,
       "judgment": "no",
       "reason": "a completion condition"
     },
     "split|You're done when you've done the rows that fit your change and gone down Your plan pages. → \"Ask an adult\" is a fine answer in any box you can't fill yet.|1": {
-      "line": 75,
+      "line": 77,
       "judgment": "no",
       "reason": "a permission"
     }
@@ -42598,12 +42643,12 @@
       "judgment": "no",
       "reason": "an instruction"
     },
-    "split|So write how far ahead that is under \"When adults should check\", such as \"30 days before\". → A grown-up turns it into the date, because only they keep the booked dates.|1": {
+    "split|So write how far ahead that is under \"When adults should check\", such as \"30 days before\". → A grown-up turns it into a date in their own calendar, because only they keep the booked dates.|1": {
       "line": 7,
       "judgment": "no",
-      "reason": "a role and a reason"
+      "reason": "a role and where the date goes, with a reason; only they is an exclusive limit"
     },
-    "split|A grown-up turns it into the date, because only they keep the booked dates. → Open your destination pack for examples of what that looks like where you're going.|1": {
+    "split|A grown-up turns it into a date in their own calendar, because only they keep the booked dates. → Open your destination pack for examples of what that looks like where you're going.|1": {
       "line": 7,
       "judgment": "no",
       "reason": "an instruction"

@@ -6,7 +6,7 @@ You are here: Phase 6 (Lodging, Food, and Budget). Not a First Taste step. Previ
 
 **For parents:**
 
-- Status: Conditional core -- becomes Core if your family wants the restaurant and food shortlist in the binder; otherwise it is Recommended
+- Status: Conditional core -- becomes Core if your family wants the restaurant and food shortlist in the binder
 - Planner skill: organizing information
 - Estimated time: 20-30 minutes
 - Parent involvement: none / independent work; stay nearby for any search beyond the Destination Notes, and beside your child for an image search
