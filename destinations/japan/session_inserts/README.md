@@ -7,7 +7,7 @@
 
 - **Status:** Active
 - **Owner:** Repository Maintainers
-- **Last Updated:** 2026-09-25
+- **Last Updated:** 2026-09-26
 - **Scope:** The destination-pack routing contract. It says which session pulls which insert, which reference files each session points to, what fields every insert slot has to supply, and what it takes to add a new destination pack. It holds routing rather than facts, so it carries no `Last reviewed` stamp.
 - **Related:** [Destination pack contents](../README.md)
 
@@ -29,9 +29,9 @@ This table routes every session that needs place facts to the pack, in session o
 | 19 Other Places Research | `19_other_places_menu.md` | `major_cities.md` |
 | 23 Attraction Research Cards | `23_attraction_ideas.md` | `food_basics.md` (for food-type attractions) |
 | 30 Trains, Transit, and Travel Cards | `30_transport_specifics.md` | `transportation_basics.md` |
-| 38 Daily Cost Estimates | none | `money_basics.md` (cash culture, currency) |
 | 34 Neighborhoods and Hotel Location | `34_lodging_types.md` | `adult_logistics.md` (occupancy reality) |
 | 36-37 Food / Restaurant Shortlist | `36_37_food_ideas.md` | `food_basics.md` |
+| 38 Daily Cost Estimates | none | `money_basics.md` (cash culture, currency) |
 | 40 Realistic Day Planning | none | `airports_and_arrival_basics.md` (airport-to-city) |
 | 42 Reservations and Timed Entries | `42_reservation_examples.md` | none |
 | 43 Rest Days, Jet Lag, and Pacing | none | `transportation_basics.md` (walking/stairs) |
@@ -52,9 +52,9 @@ Parent-facing routing is in scope from Batch 2 onward. The parent-guide pages in
 
 | Parent-facing page | Insert it pulls | Reference file(s) it points to (`reference/`) |
 | --- | --- | --- |
-| Adult-only logistics | none | `adult_logistics.md` (entry specifics, local natural hazards, luggage help) |
-| Safety and emergency guidance | none | `safety_and_emergency.md` (emergency numbers, local terms for help, hazard notes) |
-| Money and budget guidance | none | `adult_logistics.md` (lodging priced per person), `transportation_basics.md` (children's fares) |
+| Adult-only logistics | none | `adult_logistics.md` (entry specifics, luggage help), `safety_and_emergency.md` (local natural hazards) |
+| Safety and emergency guidance | none | `safety_and_emergency.md` (emergency numbers, local terms for help, local natural hazards) |
+| Money and budget guidance | none | `money_basics.md` (lodging priced per person, children's fares) |
 | Flights from your home airport | none | `airports_and_arrival_basics.md` (which airport to land at, arrival-day transit) |
 
 ## What each insert slot supplies

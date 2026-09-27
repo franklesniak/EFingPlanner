@@ -27,7 +27,7 @@ Any of these works:
 
 Turn reviews around promptly. If you can't, your child has somewhere to go: the "what to do while you wait for an adult checkpoint" note on their [When I'm Stuck card](../student_guide/when_im_stuck.md). They can do an Optional Extension, add to the question parking lot, or grow their "things I can't wait to see" page.
 
-**The next session genuinely waits**, and that is on purpose. Everything after a checkpoint is built on the decision you are about to make; letting a child run ahead means later work rests on a season, shortlist or route nobody approved.
+**The next session waits for your answer**, and that is on purpose. Everything after a checkpoint is built on the decision you are about to make; letting a child run ahead means later work rests on a season, shortlist or route nobody approved.
 
 What you don't want is a child sitting still because you were busy on Tuesday.
 

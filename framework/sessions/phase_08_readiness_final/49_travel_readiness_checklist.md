@@ -33,10 +33,10 @@ Set up your first small step, then do it. A suggestion: write "If I get separate
 
 **Your card.** Your card holds where you're staying, its address and its phone number, and a parent's phone number. A grown-up adds a line in the local language saying where you're staying, so you can show it to anyone. Copy two emergency phrases from your destination pack's safety and emergency page: one that means "please help", and one that means "I'm lost, I got separated from my family". If your pack doesn't have that page yet, a grown-up finds the phrases for you. A grown-up checks the wording either way.
 
-If a grown-up has already booked and checked where you're staying, they fill in those lines now. If not, the lines stay blank until after booking. Your family may book after the plan is finished. A safety card never carries a guess. Staying in more than one place? Then you carry only the card for where you sleep that night. At each move, a grown-up fills in a fresh card, and the old one is torn up.
+If a grown-up has already booked and checked where you're staying, they fill in those lines now. If not, the lines stay blank until after booking. Your family may book after the plan is finished. A safety card never carries a guess. Staying in more than one place? Then you carry only the card for where you sleep that night. At each move, a grown-up fills in a fresh card, and the old one is torn up. The parent's number on each card is for a parent who's with you there, so a grown-up tells you whose number goes on it.
 
 <!-- density-exempt: X, not Y -- the card's privacy exception is a safety statement the brief requires on this page -->
-> **The privacy rule for this card.** This card is **not** an exception to the privacy rules. It may carry the name, address and phone number of where you're staying, and a parent's phone number. That's the least your family needs to find you again. It **never** carries a passport number, a birthdate, a confirmation number, or your home address. It's a safety card for your pocket. It is never saved in a shared folder, put into an AI tool, or posted anywhere. See [the privacy and safety page](../../docs/privacy_and_safety.md).
+> **The privacy rule for this card.** This card is **not** an exception to the privacy rules. It may carry the name, address and phone number of where you're staying, and a parent's phone number. That's the least your family needs to find you again. It **never** carries a passport number, a birthdate, a confirmation number, or your home address. It's a safety card for your pocket, filled in on paper. It is never saved in a shared folder, put into an AI tool, or posted anywhere. See [the privacy and safety page](../../docs/privacy_and_safety.md).
 
 **Staying found: my own plan.** The moment to plan for is losing sight of your group for a minute in a crowded place, like a station. A plan you've practiced makes that moment much calmer.
 
@@ -59,12 +59,12 @@ Your readiness checklist:
 | Travel cards looked into | you (your Session 30 notes) | |
 | Packing list checked | you, then a grown-up | |
 | "If I get separated" card made | you | |
-| If the card's lodging lines are still blank, ask adults to fill them in and check them after booking | ask adults | |
+| If the card's lodging lines or local-language line are still blank, ask adults to fill them in and check them after booking | ask adults | |
 | At each move to a new place to stay, a fresh card with that place's lines | ask adults | |
 | If the card's emergency-number rows are still blank, ask adults to check the numbers so you can write them in before the trip | ask adults | |
 | Staying-found plan said out loud once | you and a grown-up | |
 
-Your "if I get separated" card: use the blank [If I Get Separated card](../../trip_starter/if_i_get_separated_card.md) from your trip starter kit. It lists each line, who writes it, and your three-step plan. Fill it in, or copy its rows onto a small card for your pocket, with the three steps on the back.
+Your "if I get separated" card: use the blank [If I Get Separated card](../../trip_starter/if_i_get_separated_card.md) from your trip starter kit. It lists each line, who writes it, and your three-step plan. Fill it in on paper: print it, or copy its rows onto a small card for your pocket, with the three steps on the back.
 
 Never on this card: a passport number, a birthdate, a confirmation number, or your home address.
 
@@ -78,11 +78,11 @@ You can say your answers to an adult who writes them, or draw them, if that's ea
 
 ## Artifact Created
 
-Your readiness checklist, with every line ticked or marked for the grown-ups. Your "if I get separated" card goes with it, for your pocket.
+Your readiness checklist, with every line ticked or marked for the grown-ups. Your "if I get separated" card is made too, for your pocket.
 
 ## Stop Point
 
-You are done when every line on your readiness checklist is either checked or marked "ask adults to confirm", and your card is made. It has a parent's phone number, the two emergency phrases and your plan's three steps, and its lodging lines are filled in by a grown-up or marked for a grown-up to fill in after booking. The emergency-number rows can stay blank until a grown-up has checked the numbers, as long as your checklist marks them for the adults. You've also said the three-part plan out loud once with a grown-up. That's the whole thing.
+You are done when every line on your readiness checklist is either checked or marked "ask adults to confirm", and your card is made. It has a parent's phone number, the two emergency phrases and your plan's three steps, and its lodging lines and local-language line are filled in by a grown-up or marked for a grown-up to fill in after booking. The emergency-number rows can stay blank until a grown-up has checked the numbers, as long as your checklist marks them for the adults. You've also said the three-part plan out loud once with a grown-up. That's the whole thing.
 
 ## Source Check
 
@@ -106,10 +106,10 @@ Safety planning is yours: insurance, advisories, contacts and monitoring. Your c
 
 **Rehearse the plan once, calmly, as a "what if".** Keep it short, calm and matter-of-fact. A rehearsed plan lowers a child's anxiety, because it turns a vague fear into a known script.
 
-**Your three card jobs.** Fill in the lodging lines once the lodging is booked and checked. If you stay in more than one place, fill in a fresh card for each one, and tear up the card for a place you've left, so your child carries only the current one. Write the local-language line yourself and confirm its current wording, along with the two phrases. Check each emergency number on a current official page and write the date; your child then copies the numbers onto their card. The destination-specific numbers, phrases and kinds of help belong in the destination pack's safety and emergency page. Until your pack has that page, take them from the destination's official tourism or government site, with the date you checked.
+**Your three card jobs.** Fill in the lodging lines on the paper card once the lodging is booked and checked. If you stay in more than one place, fill in a fresh card for each one, and tear up the card for a place you've left, so your child carries only the current one. Write the local-language line yourself and confirm its current wording, along with the two phrases. Check each emergency number on a current official page and write the date; your child then copies the numbers onto their card. The destination-specific numbers, phrases and kinds of help belong in the destination pack's safety and emergency page. Until your pack has that page, take them from the destination's official tourism or government site, with the date you checked.
 
 **The one-rule plan.** Name one separation rule each morning, out loud. The default is "stay where you are". Name a meeting spot instead only when the outing has places your child should not stand still in. Choose one they can see from where they will be, and name it that same morning. The pack names the kinds of help; a uniformed worker or the local police post is the main one, because a shop's help is voluntary. A panicking child can carry out one rehearsed rule without deciding anything.
 
-The card carries the minimum needed to reunite and nothing more. The filled card never goes into the repository or a shared folder, is never photographed into an AI tool, and is never posted. Passports, entry, insurance and the rest of the checklist are on the [adult-only logistics](../../parent_guide/adult_only_logistics.md) page, and every rule on it is checked on official sources close to travel.
+The card carries the minimum needed to reunite and nothing more. The filled card never goes into the repository, the binder or a shared folder, is never photographed into an AI tool, and is never posted. Passports, entry, insurance and the rest of the checklist are on the [adult-only logistics](../../parent_guide/adult_only_logistics.md) page, and every rule on it is checked on official sources close to travel.
 
 **The lighter page.** From Phase 7 on, Steps and Workspace are short and your child sets their own Start Here. The readiness signal is two sessions in a row done without needing the When I'm Stuck card or leaning on the written Steps; the Finish and Quality Check closes every session, so using it never counts against them. If your child isn't there yet, read the Steps with them. Start Here, the Stop Point, the named artifact and the Source Check stay on every page.

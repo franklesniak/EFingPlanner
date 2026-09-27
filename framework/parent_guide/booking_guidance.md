@@ -51,11 +51,11 @@ Your child writes a cancellation note on a card. **That note is a flag, not a fa
 <!-- density-exempt: X, not Y -- "never silently" is the spec's transparency obligation for owned picks, bold in the batch 2 brief's booking item, which states it with the change it answers -->
 You will change parts of the plan: prices, availability, safety, schedules, booking rules. That's normal and expected. **Never silently.** An owned pick is reshaped only with a stated reason.
 
-And the one unconditional personal pick is different from everything else. It can be blocked for exactly three reasons: it costs more than the budget band, it can't be booked or has no availability, or it isn't safe and physically manageable for every traveler. **Never by group vote.** If one of those three applies, tell your child which one.
+And the one unconditional personal pick is different from everything else. It can be blocked for exactly three reasons: it costs more than the budget band, it can't be booked or has no availability, or it isn't safe and physically manageable for every traveler. **Never by group vote.** If one of those three applies, tell your child which one. With a hotel tier, the band covers only the hotels, so you check the pick's ticket against the family's budget yourself.
 
 Write the acknowledgment on their **"My Calls" page**. That page exists so their owned decisions get a grown-up's "got it" in writing, and it's worth more to a child than it looks.
 
-**When you book the dates,** write the booked trip length in the Trip-Basics card's maximum trip length row, with "booked" beside it. Count the day you leave home and the day you get home. If the booked travel arrives or leaves somewhere other than your assumptions page says, write the new place there, because Sessions 40, 41 and 45 read it. If you booked a different way to travel than the card says, such as a train in place of a drive, fix its travel row, and its home airport rows if you now fly. Then tell your child:
+**When you book the dates,** write the booked trip length in the Trip-Basics card's maximum trip length row, with "booked" beside it. Count the day you leave home and the day you get home. If the booked travel arrives or leaves somewhere other than where your assumptions page says, write the new place there, because Sessions 40, 41 and 45 read it. If you booked a different way to travel than the card says, such as a train in place of a drive, fix its travel row, and its home airport rows if you now fly. Then tell your child:
 
 - which season it is, as a broad word such as "late spring", if it differs from their Checkpoint 1 pick
 - if you fly, which of the booked flights land on a later date than they took off, for the flight-day marks on their Session 29 formula
@@ -63,7 +63,7 @@ Write the acknowledgment on their **"My Calls" page**. That page exists so their
 - a different way to travel, if the booking changed it
 - which nights change. The nights are the booked length, minus one, minus each flight day. If that no longer matches the nights in their Checkpoint 4 plan, because the length or the flight days changed, say which night comes off or goes on.
 
-They carry each change back with their [When the Plan Changes card](../student_guide/when_the_plan_changes.md), with "changed after booking". If they have made the Reservation Watchlist, it becomes an act-early list: they write how far ahead each booking opens, and you turn each one into a date.
+They carry each change back with their [When the Plan Changes card](../student_guide/when_the_plan_changes.md), with "changed after booking". If they have made the Reservation Watchlist, it becomes an act-early list: they write how far ahead each booking opens, and you turn each one into a date in your own calendar, because a date written beside how far ahead it is would show your booked dates.
 
 ## Privacy
 
