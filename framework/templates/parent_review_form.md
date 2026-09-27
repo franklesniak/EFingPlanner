@@ -84,7 +84,7 @@ Ask if they want to. Skipping it is fine, and a drawing is just as good an answe
 - Letting them handle bookings, payments, accounts, or private data
 
 <!-- density-exempt: X, not Y -- praise the move, not the mind, with its "not you're so smart" example, is the praise calibration pair in the spec's Parent Review Rubric -->
-Praise the move, not the mind. "You checked a second source." "You stopped at the stop point." Not "you're so smart" — that one quietly teaches that being right is the point.
+Praise the move, not the mind. "You checked a second source." "You stopped at the Stop Point." Not "you're so smart" — that one quietly teaches that being right is the point.
 
 ## Reviewed by
 

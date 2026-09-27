@@ -3641,6 +3641,11 @@
       "judgment": "no",
       "reason": "a fact about links"
     },
+    "split|The kit README links all of them. → The Checkpoint 4 page asks for a shorter backup version only when the dates are still open, in its own part after the table, so a booked family's nights plan has no row for it.|1": {
+      "line": 55,
+      "judgment": "no",
+      "reason": "a change record: a condition (only when the dates are still open) and its consequence for the page's layout; it reports where the row went rather than rejecting an option"
+    },
     "device|The two binder deliverables.|1": {
       "line": 56,
       "judgment": "no",
@@ -4586,618 +4591,628 @@
       "judgment": "no",
       "reason": "a pointer to where evaluations are kept"
     },
+    "device|Wrote the agreed label Stop Point with its capitals on the question parking lot page and the parent review form.|1": {
+      "line": 86,
+      "judgment": "no",
+      "reason": "a change record: a fact"
+    },
+    "split|Wrote the agreed label Stop Point with its capitals on the question parking lot page and the parent review form. → The question parking lot template and its kit copy, and the parent review form's praise example, now write it as the style guide's agreed labels do, like the heading on every session.|1": {
+      "line": 86,
+      "judgment": "no",
+      "reason": "a change record: a fact; like marks a likeness, not a preference"
+    },
     "split|Session 54, After You Get Back, is named in the roadmap without a link. → The progress tracker gains its line when Batch 4 builds it.|1": {
-      "line": 89,
+      "line": 90,
       "judgment": "no",
       "reason": "a status: named without a link"
     },
     "device|The progress tracker gains its line when Batch 4 builds it.|1": {
-      "line": 89,
+      "line": 90,
       "judgment": "no",
       "reason": "a fact about a later addition"
     },
     "device|The destination-pack slots and reference files the Batch 2 sessions name stay as inline code in the insert contract until Batch 3 writes them.|1": {
-      "line": 90,
+      "line": 91,
       "judgment": "no",
       "reason": "a status with a time limit"
     },
     "device|Batch 1: the complete Phases 0-2 slice -- Session 00 through Checkpoint 1.|1": {
-      "line": 97,
+      "line": 98,
       "judgment": "no",
       "reason": "a section label"
     },
     "device|The Phases 0-2 slice: five new sessions, the destination-pack insert contract and its first four slots, the Batch 1 templates, the framework docs set, the trip starter kit's ‹code› subtree, and the new guides.|1": {
-      "line": 101,
+      "line": 102,
       "judgment": "no",
       "reason": "a list"
     },
     "split|Recorded the deferral of the Batch 0 usability pilot. → The design-validation gate for the First Taste slice has not been run with a child.|1": {
-      "line": 105,
+      "line": 106,
       "judgment": "no",
       "reason": "a status fact (the gate has not been run with a child); it rejects no alternative"
     },
     "device|Recorded the deferral of the Batch 0 usability pilot.|1": {
-      "line": 105,
+      "line": 106,
       "judgment": "no",
       "reason": "a fact (a change record)"
     },
     "split|The design-validation gate for the First Taste slice has not been run with a child. → The parent guide's own documented escape hatch is used, and the flag is now carried in writing in time and effort: \"Usability pilot deferred -- design unvalidated; pilot before relying on the full apparatus.\"|1": {
-      "line": 105,
+      "line": 106,
       "judgment": "no",
       "reason": "a fact with a quoted flag"
     },
     "split|The flag stays until a real pilot happens. → See \"What is still owed to a human\" below.|1": {
-      "line": 105,
+      "line": 106,
       "judgment": "no",
       "reason": "a navigation line"
     },
     "split|The parent guide's own documented escape hatch is used, and the flag is now carried in writing in time and effort: \"Usability pilot deferred -- design unvalidated; pilot before relying on the full apparatus.\" → The flag stays until a real pilot happens.|1": {
-      "line": 105,
+      "line": 106,
       "judgment": "no",
       "reason": "a condition (how long the flag stays)"
     },
     "device|Recorded two build conventions in the style guide so later batches stay consistent: the neutral-pronoun rule (a generic child is \"your child\" / \"the child\" / \"they\"; child-facing text stays second-person \"you\"), and the vocabulary that replaces the spec's placeholder-token teaching concept in built pages (\"not decided yet\" / \"ask an adult\").|1": {
-      "line": 106,
+      "line": 107,
       "judgment": "no",
       "reason": "a changelog fact; \"not decided yet\" is quoted vocabulary"
     },
     "device|Punctuation carried the change wherever it could, so a reuser diffing these pages mostly sees sentence breaks and colons rather than rewritten instructions.|1": {
-      "line": 107,
+      "line": 108,
       "judgment": "device",
       "reason": "rather than rewritten instructions"
     },
     "device|Brought thirteen child-facing pages under the density caps.|1": {
-      "line": 107,
+      "line": 108,
       "judgment": "no",
       "reason": "a fact (a change record)"
     },
     "split|Brought thirteen child-facing pages under the density caps. → Spaced dashes, the ‹code› family, and the ‹code› contrast were reworked to the per-file and per-section budgets in build style and vocabulary, across the five First Taste sessions that were over a cap, four templates, three student-guide cards, and the destination pack's seasons reference.|1": {
-      "line": 107,
+      "line": 108,
       "judgment": "no",
       "reason": "a fact"
     },
     "split|Punctuation carried the change wherever it could, so a reuser diffing these pages mostly sees sentence breaks and colons rather than rewritten instructions. → Applied in pull request #29.|1": {
-      "line": 107,
+      "line": 108,
       "judgment": "no",
       "reason": "a record of the pull request"
     },
     "device|Applied the contraction convention to those same thirteen pages.|1": {
-      "line": 108,
+      "line": 109,
       "judgment": "no",
       "reason": "a fact (a change record)"
     },
     "split|Applied the contraction convention to those same thirteen pages. → Child-facing prose now reads ‹code› / ‹code› / ‹code› where the guide's list calls for it, while the seven places that keep the full form stay whole: headings and nav lines, standing rules, safety rules, agreed labels, text the child copies, quoted boilerplate, and parent-facing or builder-facing text.|1": {
-      "line": 108,
+      "line": 109,
       "judgment": "no",
       "reason": "a fact with its exception list"
     },
     "split|Child-facing prose now reads ‹code› / ‹code› / ‹code› where the guide's list calls for it, while the seven places that keep the full form stay whole: headings and nav lines, standing rules, safety rules, agreed labels, text the child copies, quoted boilerplate, and parent-facing or builder-facing text. → Pages outside those thirteen still carry the register they had, so expect a mixed corpus until a later batch finishes the pass.|1": {
-      "line": 108,
+      "line": 109,
       "judgment": "no",
       "reason": "a limit (a caveat)"
     },
     "split|Restored the full form in the two child-facing safety guarantees. → Research rules and When I'm Stuck both read \"You are never in trouble for that.\" again, matching the wording the archived design spec prescribes and the canonical privacy and safety page.|1": {
-      "line": 109,
+      "line": 110,
       "judgment": "no",
       "reason": "the negation sits inside quoted wording (\"You are never in trouble for that.\")"
     },
     "device|Restored the full form in the two child-facing safety guarantees.|1": {
-      "line": 109,
+      "line": 110,
       "judgment": "no",
       "reason": "a fact (a change record)"
     },
     "device|A named contraction exception now outranks the rule-card test rather than being narrowed by it.|1": {
-      "line": 110,
+      "line": 111,
       "judgment": "device",
       "reason": "outranks rather than being narrowed"
     },
     "device|The style guide now names the two sets its rules run over, so an author and a later density gate read one scope instead of two: a test runs over authored text, a count divides by prose lines, and literal syntax such as a code span sits outside both.|1": {
-      "line": 110,
+      "line": 111,
       "judgment": "device",
       "reason": "one scope instead of two"
     },
     "device|Restated the density conventions the pages were measured against.|1": {
-      "line": 110,
+      "line": 111,
       "judgment": "no",
       "reason": "a fact (a change record)"
     },
     "device|The contract is the record of which session has which, and not every one of the eight held facts to move.|1": {
-      "line": 111,
+      "line": 112,
       "judgment": "no",
       "reason": "the quantifier \"not every one\" states a fact"
     },
     "device|Those eight pages remain the Batch 0 concrete baseline, not a validated reference: the usability pilot is still deferred and no child has walked them.|1": {
-      "line": 111,
+      "line": 112,
       "judgment": "device",
       "reason": "the concrete baseline, not a validated reference"
     },
     "device|Text that named no destination changed with the split as well, and the build report's diff list is the record of which page each change touched: Session 05's lateral-reading and primary-versus-secondary definitions moved to their canonical home in the framework docs, leaving a one-clause reminder and a link where they stood; the navigation lines were re-pointed for the sessions this batch adds; passages that named no place but assumed one starting point or one shape of journey were made general; and wording was reworked where a conversion left a page over the density caps.|1": {
-      "line": 111,
+      "line": 112,
       "judgment": "no",
       "reason": "a list of changes; \"named no place but assumed one\" describes passages"
     },
     "split|Text that named no destination changed with the split as well, and the build report's diff list is the record of which page each change touched: Session 05's lateral-reading and primary-versus-secondary definitions moved to their canonical home in the framework docs, leaving a one-clause reminder and a link where they stood; the navigation lines were re-pointed for the sessions this batch adds; passages that named no place but assumed one starting point or one shape of journey were made general; and wording was reworked where a conversion left a page over the density caps. → None of them changes what a page teaches.|1": {
-      "line": 111,
+      "line": 112,
       "judgment": "no",
       "reason": "a limit on the listed changes' effect, like the recorded transfer caveat; it names no alternative to a claim"
     },
     "device|Build path moved from the Lean shape to the Full Build shape.|1": {
-      "line": 111,
+      "line": 112,
       "judgment": "no",
       "reason": "a fact recording a change"
     },
     "split|Build path moved from the Lean shape to the Full Build shape. → The eight Batch 0 Phase 0-2 sessions became destination-neutral skeletons, and the destination facts they held moved into the destination pack: to a session insert where the insert/reference contract routes one, and to a pack reference file otherwise.|1": {
-      "line": 111,
+      "line": 112,
       "judgment": "no",
       "reason": "a fact recording a move"
     },
     "split|The contract is the record of which session has which, and not every one of the eight held facts to move. → The eight pages' voice, structure and step order are unchanged.|1": {
-      "line": 111,
+      "line": 112,
       "judgment": "no",
       "reason": "a fact"
     },
     "split|Those eight pages remain the Batch 0 concrete baseline, not a validated reference: the usability pilot is still deferred and no child has walked them. → See \"What is still owed to a human\" below.|1": {
-      "line": 111,
+      "line": 112,
       "judgment": "no",
       "reason": "a navigation line"
     },
     "device|Guides, cards, templates and the style law now speak of \"your destination\" and \"the destination pack\" instead of naming one place, and the adult-owned boundary was re-worded so a family who drives, or who stays inside their own country, reads a true instruction.|1": {
-      "line": 112,
+      "line": 113,
       "judgment": "device",
       "reason": "instead of naming one place"
     },
     "device|Scrubbed the destination from the framework layer.|1": {
-      "line": 112,
+      "line": 113,
       "judgment": "no",
       "reason": "a fact (a change record)"
     },
     "split|Guides, cards, templates and the style law now speak of \"your destination\" and \"the destination pack\" instead of naming one place, and the adult-owned boundary was re-worded so a family who drives, or who stays inside their own country, reads a true instruction. → Five already-built later-phase sessions stay exempt; see the deferred list below.|1": {
-      "line": 112,
+      "line": 113,
       "judgment": "no",
       "reason": "a limit (an exemption) with a pointer"
     },
     "device|Moved the child's destination word list into the destination pack.|1": {
-      "line": 113,
+      "line": 114,
       "judgment": "no",
       "reason": "a fact (a change record)"
     },
     "split|Moved the child's destination word list into the destination pack. → The travel glossary's two place-specific sections left travel glossary and now live in the pack's own child word list, with a short routing section in their place.|1": {
-      "line": 113,
+      "line": 114,
       "judgment": "no",
       "reason": "a fact recording a move"
     },
     "split|The travel glossary's two place-specific sections left travel glossary and now live in the pack's own child word list, with a short routing section in their place. → The seven travel words that apply to any trip stayed.|1": {
-      "line": 113,
+      "line": 114,
       "judgment": "no",
       "reason": "a fact: what stayed; nothing rejected"
     },
     "device|Reworked the build style and vocabulary guide for the new layer: destination names are banned in ‹code› from this batch onward, the canonical-concept table points at the homes this batch created, and the navigation-rendering rules, the build-path and review-coverage rule and the acceptance-criteria numbering rule are now written down where a later author reads them.|1": {
-      "line": 114,
+      "line": 115,
       "judgment": "no",
       "reason": "a changelog record of rule changes; \"banned\" states a rule, not a rejected alternative to a claim"
     },
     "device|The other two, the Session 01 cover page and the Session 11 map sketch, are genuinely the child's own to make, and each session now says so rather than leaving a parent hunting for a page that was never going to exist.|1": {
-      "line": 118,
+      "line": 119,
       "judgment": "device",
       "reason": "rather than leaving a parent hunting"
     },
     "device|Review found that six artifacts the sessions name had no blank anywhere, including two a child cannot produce without one: Session 13 tells them to mark six either/or pairs, and Session 12's season chart is named as required input by Checkpoint 1.|1": {
-      "line": 118,
+      "line": 119,
       "judgment": "no",
       "reason": "a review finding (fact); \"cannot produce without one\" states a need, rejecting no alternative"
     },
     "device|Batch 1 ships more files than its brief planned, and this is why.|1": {
-      "line": 118,
+      "line": 119,
       "judgment": "no",
       "reason": "a fact of degree"
     },
     "split|Batch 1 ships more files than its brief planned, and this is why. → The brief fixed the batch at 66 deliverables, 37 created and 29 edited.|1": {
-      "line": 118,
+      "line": 119,
       "judgment": "no",
       "reason": "a fact"
     },
     "split|Review found that six artifacts the sessions name had no blank anywhere, including two a child cannot produce without one: Session 13 tells them to mark six either/or pairs, and Session 12's season chart is named as required input by Checkpoint 1. → Four blanks were added -- the travel style worksheet, the season comparison chart, the destination snapshot page and the library book list.|1": {
-      "line": 118,
+      "line": 119,
       "judgment": "no",
       "reason": "a fact"
     },
     "split|The other two, the Session 01 cover page and the Session 11 map sketch, are genuinely the child's own to make, and each session now says so rather than leaving a parent hunting for a page that was never going to exist. → A mirror check for the starter kit's copies was added as well, after those copies drifted three times during review.|1": {
-      "line": 118,
+      "line": 119,
       "judgment": "no",
       "reason": "a fact with its reason"
     },
     "split|Three carry-over tags were placed, and the moves they claim are recorded here so a later batch does not claim them again. → The placement rule puts a tag on the session that first introduces a transferable move, and only there, so the claim has to be written down somewhere a later author reads.|1": {
-      "line": 120,
+      "line": 121,
       "judgment": "no",
       "reason": "a fact with its purpose"
     },
     "device|The placement rule puts a tag on the session that first introduces a transferable move, and only there, so the claim has to be written down somewhere a later author reads.|1": {
-      "line": 120,
+      "line": 121,
       "judgment": "no",
       "reason": "a rule with its reason; \"only there\" names no alternative"
     },
     "split|Session 06 claims finding your way around a long source by its contents page and index; Session 08 claims asking the same question in two places and seeing whether the answers agree; Session 11 claims getting the shape of something big before choosing a part of it. → With Sessions 01 and 04, that is five tags across nineteen child sessions.|1": {
-      "line": 120,
+      "line": 121,
       "judgment": "no",
       "reason": "a count"
     },
     "split|The placement rule puts a tag on the session that first introduces a transferable move, and only there, so the claim has to be written down somewhere a later author reads. → Session 06 claims finding your way around a long source by its contents page and index; Session 08 claims asking the same question in two places and seeing whether the answers agree; Session 11 claims getting the shape of something big before choosing a part of it.|1": {
-      "line": 120,
+      "line": 121,
       "judgment": "no",
       "reason": "a list of claimed moves"
     },
     "device|The contract is authoritative, and the author who finishes the pack inherits a table of 19 rows rather than 17.|1": {
-      "line": 122,
+      "line": 123,
       "judgment": "device",
       "reason": "19 rows rather than 17"
     },
     "split|Session 14 (Checkpoint 1) has no destination-notes slot. → The archived design record listed Session 14 among the Batch 1 insert slots, but the insert/reference contract routes none to it and names Session 14 as fully neutral.|1": {
-      "line": 122,
+      "line": 123,
       "judgment": "no",
       "reason": "fact"
     },
     "device|The archived design record listed Session 14 among the Batch 1 insert slots, but the insert/reference contract routes none to it and names Session 14 as fully neutral.|1": {
-      "line": 122,
+      "line": 123,
       "judgment": "no",
       "reason": "a fact: the two records disagree"
     },
     "split|The archived design record listed Session 14 among the Batch 1 insert slots, but the insert/reference contract routes none to it and names Session 14 as fully neutral. → Checkpoint 1 uses the child's own season chart from Session 12.|1": {
-      "line": 122,
+      "line": 123,
       "judgment": "no",
       "reason": "a fact"
     },
     "split|The brief routed Sessions 33 and 38 to the pack's money reference in one row. → The built Session 33 works in the family's home-currency band, with a grown-up helping find the rough numbers, and has no pointer into the pack, and the Batch 2 brief routes the currency and cash notes through Session 38 alone.|1": {
-      "line": 123,
+      "line": 124,
       "judgment": "no",
       "reason": "a factual correction of the brief's routing (no pointer into the pack); it rejects no alternative to a claim"
     },
     "split|The built Session 33 works in the family's home-currency band, with a grown-up helping find the rough numbers, and has no pointer into the pack, and the Batch 2 brief routes the currency and cash notes through Session 38 alone. → So the row now names Session 38, Session 33 joins the sessions that need no destination facts, and the table keeps its 19 rows.|1": {
-      "line": 123,
+      "line": 124,
       "judgment": "no",
       "reason": "a status change; \"need no destination facts\" names a category of sessions"
     },
     "device|Session 33 left the insert/reference contract.|1": {
-      "line": 123,
+      "line": 124,
       "judgment": "no",
       "reason": "a fact (a change record)"
     },
     "split|Session 33 left the insert/reference contract. → The brief routed Sessions 33 and 38 to the pack's money reference in one row.|1": {
-      "line": 123,
+      "line": 124,
       "judgment": "no",
       "reason": "a fact"
     },
     "device|The merged family trip goals page is authoritative.|1": {
-      "line": 124,
+      "line": 125,
       "judgment": "no",
       "reason": "a status"
     },
     "split|The archived tree listed the family trip goals page and the family input summary as separate files. → The built repository merged them into one page in Batch 0, and that merged page stays the one canonical blank.|1": {
-      "line": 124,
+      "line": 125,
       "judgment": "no",
       "reason": "a fact recording the merge"
     },
     "split|The merged family trip goals page is authoritative. → The archived tree listed the family trip goals page and the family input summary as separate files.|1": {
-      "line": 124,
+      "line": 125,
       "judgment": "no",
       "reason": "a fact about the archived record"
     },
     "device|Acceptance-criteria numbering: the combined archive matrix numbering is canonical for this build.|1": {
-      "line": 125,
+      "line": 126,
       "judgment": "no",
       "reason": "a rule"
     },
     "split|A quoted Lean or Full/OER companion ID must name its matrix. → Recorded in the build style and vocabulary guide.|1": {
-      "line": 125,
+      "line": 126,
       "judgment": "no",
       "reason": "a record"
     },
     "split|Acceptance-criteria numbering: the combined archive matrix numbering is canonical for this build. → A quoted Lean or Full/OER companion ID must name its matrix.|1": {
-      "line": 125,
+      "line": 126,
       "judgment": "no",
       "reason": "a rule"
     },
     "device|Human-review coverage is set at full coverage, and it has not happened yet -- the policy is that every file a batch creates or edits which a child or a parent reads is human-edited rather than sampled, and the Full Build's sampling fallback is not adopted.|1": {
-      "line": 126,
+      "line": 127,
       "judgment": "device",
       "reason": "human-edited rather than sampled"
     },
     "split|Human-review coverage is set at full coverage, and it has not happened yet -- the policy is that every file a batch creates or edits which a child or a parent reads is human-edited rather than sampled, and the Full Build's sampling fallback is not adopted. → No file in this batch has been read by a person.|1": {
-      "line": 126,
+      "line": 127,
       "judgment": "no",
       "reason": "fact"
     },
     "split|No file in this batch has been read by a person. → The policy is recorded here; the reading itself is an open action in \"What is still owed to a human\" below.|1": {
-      "line": 126,
+      "line": 127,
       "judgment": "no",
       "reason": "a status with a pointer"
     },
     "device|Session 07 Library Research Plan is authored in Batch 1 with the Phases 0-2 slice, not with the later recommended tier.|1": {
-      "line": 127,
+      "line": 128,
       "judgment": "device",
       "reason": "authored with the slice, not with the later tier"
     },
     "split|Session 07 Library Research Plan is authored in Batch 1 with the Phases 0-2 slice, not with the later recommended tier. → Its Recommended status is unchanged, and the family's choice stays open in the built text.|1": {
-      "line": 127,
+      "line": 128,
       "judgment": "no",
       "reason": "a status"
     },
     "split|Built curriculum pages write \"not decided yet\", \"we'll decide later\", \"ask an adult\", or leave the table cell empty. → The banned software placeholder tokens do not appear under ‹code› or ‹code› .|1": {
-      "line": 128,
+      "line": 129,
       "judgment": "no",
       "reason": "a rule"
     },
     "split|Placeholder vocabulary: the built repository's placeholder rule supersedes the archived design record's literal wording. → Built curriculum pages write \"not decided yet\", \"we'll decide later\", \"ask an adult\", or leave the table cell empty.|1": {
-      "line": 128,
+      "line": 129,
       "judgment": "no",
       "reason": "the negation sits inside quoted placeholder phrases (\"not decided yet\")"
     },
     "device|Placeholder vocabulary: the built repository's placeholder rule supersedes the archived design record's literal wording.|1": {
-      "line": 128,
+      "line": 129,
       "judgment": "device",
       "reason": "the built repository's placeholder rule / the archived design record's literal wording (supersedes)"
     },
     "split|Summarizing notes and organizing a comparison are instances of the third. → Drafting the child's recommendation is not a permitted job, because the recommendation is the child's own work.|1": {
-      "line": 129,
+      "line": 130,
       "judgment": "split",
       "reason": "same predicate, in then out: summarizing and organizing are instances of the third / drafting the child's recommendation is not a permitted job"
     },
     "device|AI permission boundary: the archived design record states the confinement as three helper jobs in one section and as a five-item list in another.|1": {
-      "line": 129,
+      "line": 130,
       "judgment": "no",
       "reason": "a fact about the archived record"
     },
     "split|AI permission boundary: the archived design record states the confinement as three helper jobs in one section and as a five-item list in another. → The built repository's Session 09 ships the three, so the three are canonical: brainstorming questions, suggesting search terms, and tidying and organizing the child's own notes.|1": {
-      "line": 129,
+      "line": 130,
       "judgment": "no",
       "reason": "a fact naming the canonical three"
     },
     "split|The built repository's Session 09 ships the three, so the three are canonical: brainstorming questions, suggesting search terms, and tidying and organizing the child's own notes. → Summarizing notes and organizing a comparison are instances of the third.|1": {
-      "line": 129,
+      "line": 130,
       "judgment": "no",
       "reason": "a fact"
     },
     "split|That contract is copied whole into each new pack, so the slot is registered as ‹code› . → The file exists in no pack yet, so nothing was renamed.|1": {
-      "line": 130,
+      "line": 131,
       "judgment": "no",
       "reason": "fact"
     },
     "split|Destination-pack filenames are destination-neutral. → In the archived design record one reference file carried the destination inside its own filename, in both that record's tree inventory and its copy of the insert/reference contract, and no other file of the pack did.|1": {
-      "line": 130,
+      "line": 131,
       "judgment": "no",
       "reason": "a fact about the archived record's filenames; it rejects no alternative to a claim"
     },
     "device|Destination-pack filenames are destination-neutral.|1": {
-      "line": 130,
+      "line": 131,
       "judgment": "no",
       "reason": "a rule"
     },
     "split|In the archived design record one reference file carried the destination inside its own filename, in both that record's tree inventory and its copy of the insert/reference contract, and no other file of the pack did. → That contract is copied whole into each new pack, so the slot is registered as ‹code› .|1": {
-      "line": 130,
+      "line": 131,
       "judgment": "no",
       "reason": "a fact with its reason"
     },
     "device|The binder guide names the print index and the Final Binder Assembly session but does not link to them, because neither file exists yet.|1": {
-      "line": 134,
+      "line": 135,
       "judgment": "device",
       "reason": "X but not Y: names them but does not link to them"
     },
     "split|The binder guide names the print index and the Final Binder Assembly session but does not link to them, because neither file exists yet. → Add both relative links when ‹code› and Session 50 land.|1": {
-      "line": 134,
+      "line": 135,
       "judgment": "no",
       "reason": "an instruction (a to-do)"
     },
     "device|Five already-built later-phase sessions -- 15, 21, 33, 44 and 53 -- stay on the destination-leak exemption list until Batch 2 converts or verifies them.|1": {
-      "line": 135,
+      "line": 136,
       "judgment": "no",
       "reason": "a status (an exemption)"
     },
     "split|Five already-built later-phase sessions -- 15, 21, 33, 44 and 53 -- stay on the destination-leak exemption list until Batch 2 converts or verifies them. → One of them still carries the destination's facts and links into the pack.|1": {
-      "line": 135,
+      "line": 136,
       "judgment": "no",
       "reason": "a fact"
     },
     "split|One of them still carries the destination's facts and links into the pack. → The framework README's three-layer claim carries the matching exception until that list is cleared.|1": {
-      "line": 135,
+      "line": 136,
       "judgment": "no",
       "reason": "a status"
     },
     "device|The First Taste slice: the shortest path that still produces a usable mini-plan.|1": {
-      "line": 141,
+      "line": 142,
       "judgment": "no",
       "reason": "a label with a definition"
     },
     "device|Fifteen sessions covering Phase 0 setup through the closing reflection, in the intended First Taste path order.|1": {
-      "line": 145,
-      "judgment": "no",
-      "reason": "a list entry"
-    },
-    "split|Fifteen sessions covering Phase 0 setup through the closing reflection, in the intended First Taste path order. → That order is designed intent, and it stays unpiloted until a child walks it.|1": {
-      "line": 145,
-      "judgment": "no",
-      "reason": "a status and its limit"
-    },
-    "split|That order is designed intent, and it stays unpiloted until a child walks it. → See \"What is still owed to a human\" below.|1": {
-      "line": 145,
-      "judgment": "no",
-      "reason": "a navigation line"
-    },
-    "device|The student guide, the parent guide, and the blank templates those sessions use.|1": {
       "line": 146,
       "judgment": "no",
       "reason": "a list entry"
     },
-    "device|The Japan reference pack, and the root start surfaces ( ‹code› , ‹code› ) with the verify-don't-trust banner.|1": {
+    "split|Fifteen sessions covering Phase 0 setup through the closing reflection, in the intended First Taste path order. → That order is designed intent, and it stays unpiloted until a child walks it.|1": {
+      "line": 146,
+      "judgment": "no",
+      "reason": "a status and its limit"
+    },
+    "split|That order is designed intent, and it stays unpiloted until a child walks it. → See \"What is still owed to a human\" below.|1": {
+      "line": 146,
+      "judgment": "no",
+      "reason": "a navigation line"
+    },
+    "device|The student guide, the parent guide, and the blank templates those sessions use.|1": {
       "line": 147,
+      "judgment": "no",
+      "reason": "a list entry"
+    },
+    "device|The Japan reference pack, and the root start surfaces ( ‹code› , ‹code› ) with the verify-don't-trust banner.|1": {
+      "line": 148,
       "judgment": "no",
       "reason": "a changelog list item; \"verify-don't-trust\" is the banner's name"
     },
     "device|‹code› with the First Taste index up front.|1": {
-      "line": 148,
+      "line": 149,
       "judgment": "no",
       "reason": "a changelog list item; rejects nothing"
     },
     "split|Fenced underscore blocks were replaced by two-column ‹code› tables for single-record forms, and by narrow criteria-by-option grids for scoring and comparison worksheets. → Tables print as bordered boxes to handwrite in, become editable cells when a page is copied into Google Docs, and reflow on a phone screen, none of which a fenced block does.|1": {
-      "line": 152,
+      "line": 153,
       "judgment": "device",
       "reason": "names the replaced format and rejects it: tables print, become editable and reflow, none of which a fenced block does"
     },
     "split|Worksheet fill-in blocks became Markdown tables. → Fenced underscore blocks were replaced by two-column ‹code› tables for single-record forms, and by narrow criteria-by-option grids for scoring and comparison worksheets.|1": {
-      "line": 152,
+      "line": 153,
       "judgment": "no",
       "reason": "a changelog record of the table conversion"
     },
     "device|Worksheet fill-in blocks became Markdown tables.|1": {
-      "line": 152,
+      "line": 153,
       "judgment": "no",
       "reason": "a fact (a change record)"
     },
     "split|Applied across the sessions and templates in pull request #13: commit ‹code› made the conversion, and later commits in that pull request refined it across five review rounds. → The archived spec was amended to match, as its v9.1 erratum, in commit ‹code› , because the built repository supersedes the spec on conflict.|1": {
-      "line": 152,
+      "line": 153,
       "judgment": "device",
       "reason": "the built repository / the spec (supersedes on conflict)"
     },
     "split|Tables print as bordered boxes to handwrite in, become editable cells when a page is copied into Google Docs, and reflow on a phone screen, none of which a fenced block does. → Applied across the sessions and templates in pull request #13: commit ‹code› made the conversion, and later commits in that pull request refined it across five review rounds.|1": {
-      "line": 152,
+      "line": 153,
       "judgment": "no",
       "reason": "a record of the pull request and commits"
     },
     "split|These items cannot be closed by editing files. → They are recorded here so they are not lost.|1": {
-      "line": 158,
+      "line": 159,
       "judgment": "no",
       "reason": "fact and purpose"
     },
     "device|They are recorded here so they are not lost.|1": {
-      "line": 158,
+      "line": 159,
       "judgment": "no",
       "reason": "a reason"
     },
     "device|Run the Batch 0 usability pilot with an actual child (roughly ten years old), then remove the deferral flag from time and effort.|1": {
-      "line": 160,
+      "line": 161,
       "judgment": "no",
       "reason": "an instruction"
     },
     "split|Check the three documented signals: an unaided start, reaching Checkpoint 1 mostly independently, and a coaching load that matches the estimate. → A failed pilot means fixing the Phase 0-2 sessions and re-piloting before relying on later material.|1": {
-      "line": 160,
+      "line": 161,
       "judgment": "no",
       "reason": "a consequence"
     },
     "split|Run the Batch 0 usability pilot with an actual child (roughly ten years old), then remove the deferral flag from time and effort. → Check the three documented signals: an unaided start, reaching Checkpoint 1 mostly independently, and a coaching load that matches the estimate.|1": {
-      "line": 160,
+      "line": 161,
       "judgment": "no",
       "reason": "an instruction with a list"
     },
     "banned|Check 2 has not been run; it needs a real child.|1": {
-      "line": 161,
+      "line": 162,
       "judgment": "no",
       "reason": "a fact and the reason it is open; the second half corrects nothing"
     },
     "device|Those Batch 0 pages are the baseline, not a validated reference: they are unpiloted too, under the same deferral.|1": {
-      "line": 161,
+      "line": 162,
       "judgment": "device",
       "reason": "the baseline, not a validated reference"
     },
     "split|Nothing stands in for check 2. → It needs a real child, and no review pass replaces one.|1": {
-      "line": 161,
+      "line": 162,
       "judgment": "no",
       "reason": "elaboration"
     },
     "device|Check 2 has not been run; it needs a real child.|1": {
-      "line": 161,
+      "line": 162,
       "judgment": "no",
       "reason": "a status fact with its need (Check 2 has not been run); the brief's own example of no"
     },
     "split|Check 2 has not been run; it needs a real child. → Nothing stands in for check 2.|1": {
-      "line": 161,
+      "line": 162,
       "judgment": "split",
       "reason": "claim then a short rejection of any substitute: it needs a real child / nothing stands in for check 2"
     },
     "device|Run the two \"verify the built slice\" checks, once Batch 1 exists.|1": {
-      "line": 161,
+      "line": 162,
       "judgment": "no",
       "reason": "an instruction"
     },
     "split|Batch 1 has now created those pages and sessions. → The automated equivalence read that is check 1's evidence was run during the build, and its result is in the build report; check 1 stays open until an adult accepts that result or performs the read, because the build that wrote both sides of the comparison also ran it.|1": {
-      "line": 161,
+      "line": 162,
       "judgment": "no",
       "reason": "a status with its reason"
     },
     "split|Check 2: an adult watches the child work the new sessions 02, 06, 07, 08 and 11, as the child reaches them, and fixes what the child struggles with before the Phase 3-8 sessions are built. → Batch 1 has now created those pages and sessions.|1": {
-      "line": 161,
+      "line": 162,
       "judgment": "no",
       "reason": "a status"
     },
     "split|Run the two \"verify the built slice\" checks, once Batch 1 exists. → This repository builds the Full / OER Build, and that track sets two checks at the gate after the first vertical slice.|1": {
-      "line": 161,
+      "line": 162,
       "judgment": "no",
       "reason": "a fact"
     },
     "split|This repository builds the Full / OER Build, and that track sets two checks at the gate after the first vertical slice. → Check 1: an adult reads the upgraded neutral-skeleton and insert pages against the Batch 0 concrete pages, and confirms they say the same thing.|1": {
-      "line": 161,
+      "line": 162,
       "judgment": "no",
       "reason": "a check definition (an instruction)"
     },
     "split|Those Batch 0 pages are the baseline, not a validated reference: they are unpiloted too, under the same deferral. → Check 2: an adult watches the child work the new sessions 02, 06, 07, 08 and 11, as the child reaches them, and fixes what the child struggles with before the Phase 3-8 sessions are built.|1": {
-      "line": 161,
+      "line": 162,
       "judgment": "no",
       "reason": "a check definition (an instruction)"
     },
     "device|Accept or redo the Session 15 equivalence read.|1": {
-      "line": 162,
+      "line": 163,
       "judgment": "no",
       "reason": "an instruction"
     },
     "split|Accept or redo the Session 15 equivalence read. → Batch 2 converted Session 15 and an automated read compared it with the pre-conversion text.|1": {
-      "line": 162,
+      "line": 163,
       "judgment": "no",
       "reason": "a fact"
     },
     "split|Batch 2 converted Session 15 and an automated read compared it with the pre-conversion text. → That read is evidence, and it stays open until an adult accepts its result or reads the two versions side by side, because the build that wrote the conversion also ran the check.|1": {
-      "line": 162,
+      "line": 163,
       "judgment": "no",
       "reason": "a status and its reason"
     },
     "device|Note that Batch 2 is building the Phase 3 to 8 sessions before check 2 has run.|1": {
-      "line": 163,
+      "line": 164,
       "judgment": "no",
       "reason": "a fact"
     },
     "split|Note that Batch 2 is building the Phase 3 to 8 sessions before check 2 has run. → Check 2 above was meant to run before those sessions were built.|1": {
-      "line": 163,
+      "line": 164,
       "judgment": "no",
       "reason": "a fact"
     },
     "split|Check 2 above was meant to run before those sessions were built. → It has not run, under the same deferral as the pilot, so what a child struggles with in the new sessions 02, 06, 07, 08 and 11 has not yet informed them.|1": {
-      "line": 163,
+      "line": 164,
       "judgment": "no",
       "reason": "a status (check 2 has not run) and its consequence"
     },
     "device|Read every child-facing and parent-facing file this batch created or edited, as a person.|1": {
-      "line": 164,
+      "line": 165,
       "judgment": "no",
       "reason": "an instruction"
     },
     "split|Read every child-facing and parent-facing file this batch created or edited, as a person. → The review-coverage policy above is full coverage: every one of those files gets a person's read, and every one is still waiting for it.|1": {
-      "line": 164,
+      "line": 165,
       "judgment": "no",
       "reason": "a definition of the policy with its status"
     },
     "split|The build that wrote each file has also checked it, and the person's read is owed on top of that check. → This is separate from the two slice checks above: those ask whether the converted pages still say what the originals said and whether a child can work the new ones.|1": {
-      "line": 164,
+      "line": 165,
       "judgment": "no",
       "reason": "a scope statement; its contrast with the next sentence is judged under 4531"
     },
     "split|The review-coverage policy above is full coverage: every one of those files gets a person's read, and every one is still waiting for it. → The build that wrote each file has also checked it, and the person's read is owed on top of that check.|1": {
-      "line": 164,
+      "line": 165,
       "judgment": "no",
       "reason": "a fact: the person's read is owed on top of that check; nothing rejected"
     },
     "split|This is separate from the two slice checks above: those ask whether the converted pages still say what the originals said and whether a child can work the new ones. → This one asks whether each page is fit to put in front of a child at all.|1": {
-      "line": 164,
+      "line": 165,
       "judgment": "no",
       "reason": "a division between two checks"
     },
     "split|This one asks whether each page is fit to put in front of a child at all. → It stays open until an adult has read them.|1": {
-      "line": 164,
+      "line": 165,
       "judgment": "no",
       "reason": "a condition (when it closes)"
     }
@@ -46886,25 +46901,25 @@
       "judgment": "no",
       "reason": "a list entry"
     },
-    "device|\"You stopped at the stop point.\" → Not \"you're so smart\" — that one quietly teaches that being right is the point.|1": {
-      "line": 87,
-      "judgment": "device",
-      "reason": "fragment \"Not 'you're so smart'\" after the claim (the other half of the spec's praise calibration)"
-    },
     "device|Praise the move, not the mind.|1": {
       "line": 87,
       "judgment": "device",
       "reason": "praise the move, not the mind (spec-required calibration, specification.md line 3471)"
     },
-    "split|\"You checked a second source.\" → \"You stopped at the stop point.\"|1": {
-      "line": 87,
-      "judgment": "no",
-      "reason": "two quoted example praise lines"
-    },
     "split|Praise the move, not the mind. → \"You checked a second source.\"|1": {
       "line": 87,
       "judgment": "no",
       "reason": "a quoted example"
+    },
+    "split|\"You checked a second source.\" → \"You stopped at the Stop Point.\"|1": {
+      "line": 87,
+      "judgment": "no",
+      "reason": "two quoted example praise lines"
+    },
+    "device|\"You stopped at the Stop Point.\" → Not \"you're so smart\" — that one quietly teaches that being right is the point.|1": {
+      "line": 87,
+      "judgment": "device",
+      "reason": "fragment \"Not 'you're so smart'\" after the claim (the other half of the spec's praise calibration)"
     },
     "split|Optional. → A name, initials, or a \"got it\" is plenty; a signature isn't required.|1": {
       "line": 91,
@@ -47095,15 +47110,15 @@
       "judgment": "no",
       "reason": "an instruction"
     },
-    "split|Parking a question is a real planner skill. → It protects your focus and your stop point.|1": {
-      "line": 17,
-      "judgment": "no",
-      "reason": "a claim and its benefit"
-    },
     "device|Parking a question is a real planner skill.|1": {
       "line": 17,
       "judgment": "no",
       "reason": "a claim"
+    },
+    "split|Parking a question is a real planner skill. → It protects your focus and your Stop Point.|1": {
+      "line": 17,
+      "judgment": "no",
+      "reason": "a claim and its benefit"
     }
   },
   "framework/templates/reservation_watchlist.md": {
@@ -50111,7 +50126,7 @@
       "judgment": "no",
       "reason": "a claim"
     },
-    "split|Parking a question is a real planner skill. → It protects your focus and your stop point.|1": {
+    "split|Parking a question is a real planner skill. → It protects your focus and your Stop Point.|1": {
       "line": 21,
       "judgment": "no",
       "reason": "a claim and its benefit"
@@ -51389,88 +51404,103 @@
       "judgment": "no",
       "reason": "a permission naming quoted answers; nothing is rejected"
     },
+    "device|If your dates are still open, add a shorter backup version too.|1": {
+      "line": 26,
+      "judgment": "no",
+      "reason": "a conditional instruction"
+    },
+    "split|If your dates are still open, add a shorter backup version too. → If the grown-ups need a shorter trip, what would you drop first?|1": {
+      "line": 26,
+      "judgment": "no",
+      "reason": "a conditional question"
+    },
+    "split|If the grown-ups need a shorter trip, what would you drop first? → Keep your special pick and its place.|1": {
+      "line": 26,
+      "judgment": "no",
+      "reason": "an instruction setting a limit on what to drop"
+    },
     "device|If the grown-ups change where you arrive or leave, you move one block of your plan and keep the rest.|1": {
-      "line": 27,
+      "line": 32,
       "judgment": "no",
       "reason": "a condition; moving one block and keeping the rest both hold"
     },
     "split|If the grown-ups change where you arrive or leave, you move one block of your plan and keep the rest. → Your When the Plan Changes card says what to fix.|1": {
-      "line": 27,
+      "line": 32,
       "judgment": "no",
       "reason": "a fact pointing to the card"
     },
     "split|Your When the Plan Changes card says what to fix. → Your work still counts.|1": {
-      "line": 27,
+      "line": 32,
       "judgment": "no",
       "reason": "a reassurance"
     },
     "split|Your work still counts. → If a place, its nights or a flight-day mark change later, come back to this page.|1": {
-      "line": 29,
+      "line": 34,
       "judgment": "no",
       "reason": "a condition with an instruction"
     },
     "split|If a place, its nights or a flight-day mark change later, come back to this page. → Cross out the old, and write the new beside it, with where it changed.|1": {
-      "line": 29,
+      "line": 34,
       "judgment": "no",
       "reason": "an instruction for updating the page"
     },
     "split|Cross out the old, and write the new beside it, with where it changed. → For a flight-day mark, the \"A flight-day mark added or taken away?\" row on your When the Plan Changes card says whether your total grows or a night comes off.|1": {
-      "line": 29,
+      "line": 34,
       "judgment": "no",
       "reason": "a fact about what the card row says"
     },
     "split|For a flight-day mark, the \"A flight-day mark added or taken away?\" row on your When the Plan Changes card says whether your total grows or a night comes off. → Before you start the next session:|1": {
-      "line": 31,
+      "line": 36,
       "judgment": "no",
       "reason": "a label"
     },
     "device|Approved, or Approved with changes: write any changes on this page and in your Decision Record.|1": {
-      "line": 33,
+      "line": 38,
       "judgment": "no",
       "reason": "a list entry with an instruction"
     },
     "split|Approved, or Approved with changes: write any changes on this page and in your Decision Record. → A place or must-do that your approved route, or your one-base way, leaves out is a change too.|1": {
-      "line": 33,
+      "line": 38,
       "judgment": "no",
       "reason": "a rule defining what counts as a change"
     },
     "split|A place or must-do that your approved route, or your one-base way, leaves out is a change too. → Your special pick stays, unless a grown-up names one of the three blocks.|1": {
-      "line": 33,
+      "line": 38,
       "judgment": "no",
       "reason": "a rule with its exception (unless a grown-up names a block); it rejects no named alternative"
     },
     "split|Your special pick stays, unless a grown-up names one of the three blocks. → For each change, go down your When the Plan Changes card, and fix every page it names that you've already made.|1": {
-      "line": 33,
+      "line": 38,
       "judgment": "no",
       "reason": "an instruction"
     },
     "device|Needs more research: do that one piece, and bring it back.|1": {
-      "line": 34,
+      "line": 39,
       "judgment": "no",
       "reason": "a list entry"
     },
     "device|Park this decision for later: wait until your family comes back to it.|1": {
-      "line": 35,
+      "line": 40,
       "judgment": "no",
       "reason": "a list entry"
     },
     "device|Once this is settled, your family knows when, where, and how long.|1": {
-      "line": 39,
+      "line": 44,
       "judgment": "no",
       "reason": "a fact about progress"
     },
     "split|Once this is settled, your family knows when, where, and how long. → The trip is becoming concrete.|1": {
-      "line": 39,
+      "line": 44,
       "judgment": "no",
       "reason": "a fact"
     },
     "split|The trip is becoming concrete. → If your dates were already booked, your family now knows where, and how the booked days are split.|1": {
-      "line": 39,
+      "line": 44,
       "judgment": "no",
       "reason": "a condition"
     },
     "split|If your dates were already booked, your family now knows where, and how the booked days are split. → Write a Decision Record for this checkpoint in your decision log, too.|1": {
-      "line": 41,
+      "line": 46,
       "judgment": "no",
       "reason": "an instruction"
     }

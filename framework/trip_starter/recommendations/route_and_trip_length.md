@@ -15,7 +15,6 @@ This is your Checkpoint 4 page, from [Session 32](../../sessions/phase_05_route_
 | Nights in each city | |
 | Travel days: the days mostly spent getting to the next place | |
 | Hotel moves: how many times we pack up and move | |
-| A shorter backup version (leave blank if your dates are booked) | |
 | My reasons | |
 | Trade-offs (what we give up) | |
 | Does this still fit our rough budget band? | |
@@ -23,6 +22,12 @@ This is your Checkpoint 4 page, from [Session 32](../../sessions/phase_05_route_
 | What the grown-ups confirm about where we arrive and where we leave | |
 | What a grown-up still needs to check, decide or book | |
 | Approval status (a grown-up circles one: Approved / Approved with changes / Needs more research / Park this decision for later) | |
+
+**If your dates are still open,** add a shorter backup version too. If the grown-ups need a shorter trip, what would you drop first? Keep your special pick and its place.
+
+| Prompt | Your answer |
+| --- | --- |
+| A shorter backup version | |
 
 If the grown-ups change where you arrive or leave, you move one block of your plan and keep the rest. Your [When the Plan Changes card](../../student_guide/when_the_plan_changes.md) says what to fix. Your work still counts.
 

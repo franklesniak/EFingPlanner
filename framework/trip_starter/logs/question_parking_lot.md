@@ -18,4 +18,4 @@ One entry per question -- start a new copy of this table for each one:
 | Need it now, or later? (now / later) | |
 | Status (parked / answered) | |
 
-Parking a question is a real planner skill. It protects your focus and your stop point.
+Parking a question is a real planner skill. It protects your focus and your Stop Point.
