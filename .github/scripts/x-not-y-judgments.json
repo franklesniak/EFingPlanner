@@ -1814,17 +1814,17 @@
       "judgment": "no",
       "reason": "a statement; no alternative named"
     },
-    "split|Small everyday treats count too. → You could ride the Shinkansen itself.|1": {
-      "line": 44,
-      "judgment": "no",
-      "reason": "a suggestion"
-    },
     "split|There are gachapon capsule-toy machines, and vending machines are everywhere. → There are arcades, themed cafes, and a big aquarium.|1": {
       "line": 44,
       "judgment": "no",
       "reason": "a fact"
     },
-    "split|You could ride the Shinkansen itself. → You could try conveyor-belt sushi.|1": {
+    "split|Small everyday treats count too. → You could enjoy the Shinkansen ride itself, on a route that already uses it.|1": {
+      "line": 44,
+      "judgment": "no",
+      "reason": "a suggestion with a condition; itself is emphasis and names no alternative"
+    },
+    "split|You could enjoy the Shinkansen ride itself, on a route that already uses it. → You could try conveyor-belt sushi.|1": {
       "line": 44,
       "judgment": "no",
       "reason": "a suggestion"
@@ -3880,12 +3880,12 @@
       "judgment": "no",
       "reason": "a list entry naming an idea and its kind of visit"
     },
-    "split|A Shinkansen ride -- something you do on the way between cities. → Grown-ups buy the tickets.|1": {
+    "split|A Shinkansen ride -- something you do on the way between cities. → On a route that already uses it, the ride is part of the travel the grown-ups plan and pay for.|1": {
       "line": 19,
       "judgment": "no",
-      "reason": "a role statement"
+      "reason": "a conditional role statement (who plans and pays)"
     },
-    "split|Grown-ups buy the tickets. → Verify.|1": {
+    "split|On a route that already uses it, the ride is part of the travel the grown-ups plan and pay for. → Verify.|1": {
       "line": 19,
       "judgment": "no",
       "reason": "a label"

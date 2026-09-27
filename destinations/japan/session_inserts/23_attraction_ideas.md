@@ -16,7 +16,7 @@ Each idea says what kind of visit it is, so you can see how it fits into a day. 
 
 ## Everyday things that cost little
 
-- **A Shinkansen ride** -- something you do on the way between cities. Grown-ups buy the tickets. **Verify.**
+- **A Shinkansen ride** -- something you do on the way between cities. On a route that already uses it, the ride is part of the travel the grown-ups plan and pay for. **Verify.**
 - **Conveyor-belt sushi** -- a meal, with plates that ride past on a belt.
 - **Goshuin stamps** -- a collection that grows during the trip, one page at each shrine or temple you visit. Your pack's major cities reference explains the custom. **Verify.**
 

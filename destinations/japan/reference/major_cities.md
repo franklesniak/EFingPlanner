@@ -41,7 +41,7 @@ Both are just starting points to compare. Weigh each one against your family's s
 ## Fun things to consider (research, not pre-chosen)
 
 - Big draws: a Ghibli museum or park, Tokyo Disney, and Pokemon Centers. Universal Studios Japan has Super Nintendo World. These are ideas to research, and what's open changes. Check which are open now, and what a visit involves. You could also look at teamLab's current venues, and check which ones are open now. Nara is known for its deer.
-- Small everyday treats count too. You could ride the Shinkansen itself. You could try conveyor-belt sushi. There are gachapon capsule-toy machines, and vending machines are everywhere. There are arcades, themed cafes, and a big aquarium.
+- Small everyday treats count too. You could enjoy the Shinkansen ride itself, on a route that already uses it. You could try conveyor-belt sushi. There are gachapon capsule-toy machines, and vending machines are everywhere. There are arcades, themed cafes, and a big aquarium.
 - A goshuin stamp book. You buy the book once. Then each shrine or temple you visit can add its own hand-brushed page, for a small fee. Goshuin are a religious custom, so visit respectfully first. Then wait quietly, with your book open and ready. The custom can differ from place to place, so check how it works where you go.
 
 ## A note on culture and etiquette
