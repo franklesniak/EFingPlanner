@@ -131,7 +131,8 @@ on the `lean-spec.md` / `full-oer-companion.md` pointers named under Source of t
   all relative links resolve.
 - Self-check before stopping: run the committed leak hook, never a grep that names a
   family value. Track every file this batch created first, with
-  `git add -- <each path on the deliverables list>`, and confirm that
+  `git add -- framework destinations README.md GETTING_STARTED.md`, which covers every
+  path the deliverables list writes to, and confirm that
   `git ls-files --others --exclude-standard` prints nothing. The hook and
   `pre-commit run --all-files` read only the files Git tracks, so a run made before the
   new files are tracked passes having opened none of them.

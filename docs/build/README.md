@@ -26,7 +26,7 @@ The spec's build model reuses one set of rules for every batch and changes only 
 
 1. Copy the template to a new file — for example, `cp docs/build/_build_prompt_template.md docs/build/batch1_build_prompt.md` (or, in PowerShell, `Copy-Item docs/build/_build_prompt_template.md docs/build/batch1_build_prompt.md`).
 2. Read the source of truth first. Open `docs/spec/specification.md` and read §31 (Implementation Order) and §33 (Acceptance Criteria) in full. §31 defines this batch's scope, what must not be built yet, and the gate it stops at.
-3. Replace the inline tokens `{{BATCH_NUMBER}}` and `{{BATCH_SHORT_NAME}}` everywhere they appear.
+3. Replace the inline tokens `{{BATCH_NUMBER}}`, `{{BATCH_SHORT_NAME}}` and `{{DELIVERABLE_PATHS}}` everywhere they appear.
 4. Resolve every **FILL IN** block using the guidance inside it and the spec sections in the next section. Delete each block once resolved.
 5. Delete the template note at the top of the file, and rewrite the `## Metadata` block above it so it describes the new brief, with the current UTC date as its `Last Updated`.
 6. Verify: no `{{` token and no **FILL IN** marker remains; the file is markdownlint-clean; relative links resolve.
@@ -36,6 +36,7 @@ The spec's build model reuses one set of rules for every batch and changes only 
 
 - `{{BATCH_NUMBER}}` — the batch number (for example, `1`). Source: §31.
 - `{{BATCH_SHORT_NAME}}` — a short phrase naming the batch (for example, "the runnable Phase 0–2 vertical slice"). Source: §31.
+- `{{DELIVERABLE_PATHS}}` — the paths this batch's deliverables list writes to, as `git add` takes them (for example, `framework destinations README.md`), so the self-check tracks every new file before the leak hook runs. Source: the **Deliverables** entry below.
 - **Authoring mode** — Japan-concrete vs insert-based authoring, and the state of the neutral-skeleton + insert apparatus. Source: §29.1, §30–§31.
 - **Scope boundary** — what is in scope and what must NOT be built yet. Source: §31.
 - **Batch gate** — the gate this batch ends at, and whether the agent can perform it. Source: §31.
