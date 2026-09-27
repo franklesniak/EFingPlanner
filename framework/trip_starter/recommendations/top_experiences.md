@@ -10,7 +10,7 @@ This is your Checkpoint 3 page, from [Session 27](../../sessions/phase_04_attrac
 | --- | --- |
 | What I recommend, in one sentence | |
 | Top must-do experiences | |
-| Strong maybes | |
+| Strong maybes (mark the only-if-nearby ones "if nearby") | |
 | Skip this time, or save for a future trip (and why) | |
 | My reasons | |
 | Biggest trade-offs | |

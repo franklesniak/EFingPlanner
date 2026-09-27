@@ -26,9 +26,12 @@ Bring this page to a grown-up with your itinerary draft, its Daily Plan Cards an
 
 | Prompt | Your answer |
 | --- | --- |
+| What I recommend, in one sentence | |
+| Other options I thought about | |
 | What I am confident about | |
 | What I am unsure about | |
 | What the grown-ups need to decide | |
+| What a grown-up still needs to check | |
 | What could be cut if we need to | |
 | The biggest trade-offs | |
 | My reasons | |

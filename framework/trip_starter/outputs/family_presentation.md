@@ -27,7 +27,7 @@ This whole page comes after Checkpoint 5. If your family stopped at the Core Fin
 | What route should we take? | |
 | What are the top experiences? | |
 | Where might we stay? (an area) | |
-| What are the food highlights? | |
+| What are the food highlights? (if we did the food sessions) | |
 | What is the rough budget for the parts I chose? (My Session 39 subtotal, with its "not counting ___" if it has one. The grown-ups add the rest, such as getting there.) | |
 | What are the biggest trade-offs? | |
 | What did we cut, and why? | |

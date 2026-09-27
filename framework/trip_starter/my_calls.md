@@ -23,7 +23,7 @@ You choose which attractions make your must-do list, in Session 26. You choose y
 
 ## Which comes first
 
-When a day can't fit them all, which must-do comes first? Write them in order.
+When a day can't fit them all, which must-do comes first? Write them in order. Add a row if you have more must-dos.
 
 | Order | Must-do | Grown-up's "got it" |
 | --- | --- | --- |
@@ -49,5 +49,7 @@ Choose it with a grown-up. They show you the three blocks above before you choos
 | My one special pick | |
 | Grown-up's "got it" | |
 | Still holds? (one line, if you check it again in a later session) | |
-| If it had to change: which block, and why (a grown-up writes this) | |
+| If it had to change: which block, and why (a grown-up tells you, and you write it) | |
 | My new pick, if I needed one, and a grown-up's "got it" | |
+
+If a new pick hits a block too, add another "My new pick" row.

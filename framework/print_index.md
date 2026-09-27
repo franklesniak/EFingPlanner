@@ -61,13 +61,15 @@ The mapping also files entries the item list on the [final deliverable](FINAL_DE
 | 4. Cities and Route | City long-list; City shortlist and recommendation; Route recommendation; Trip-length recommendation, or the nights plan when the dates were booked by Checkpoint 4; Transportation notes |
 | 5. Attractions and Food | Top attractions and experiences; Culture/history/nature/food/fun balance check; Restaurant and food shortlist, if the family chose it for the binder |
 | 6. Hotels and Budget | Hotel and neighborhood comparison summary (the Neighborhood Comparison and the Hotel Comparison Cards); Budget estimate (the Session 33 first pass and the Session 39 budget summary) |
-| 7. Itinerary | Day-by-day itinerary; Reservation watchlist; Backup plans; Cut list or "save for future trip" list |
+| 7. Itinerary | Day-by-day itinerary (the itinerary draft with its Checkpoint 5 review page, and the final itinerary); Reservation watchlist; Backup plans; Cut list or "save for future trip" list |
 | 8. Readiness | Packing list; Language and etiquette quick sheet, if the family chose it for the binder; Readiness checklist |
 | 9. Sources and Decisions | Source log; Decision log; "My Calls" page |
 | 10. Parent Review | Adult follow-up questions; parent review forms |
-| 11. Final Recommendation | Final recommendation summary (the final recommendation packet from Session 52); Final reflection |
+| 11. Final Recommendation | Final recommendation summary (the final recommendation packet from Session 52, the executive summary, and the family presentation or the Final Presentation Outline from Session 51); Final reflection |
 
 Two lines depend on the family's choices: the restaurant and food shortlist, and the Language and Etiquette Quick Sheet. A binder without them is complete if the family skipped those sessions or left their pages out.
+
+The binder table of contents goes at the front, before tab 1. The "if I get separated" card goes in your child's pocket. The Final Countdown card and the in-trip capture card go with the family on the trip.
 
 ## One scheme
 

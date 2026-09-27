@@ -51,11 +51,11 @@ Your binder checklist. Tick each tab when its pages are in:
 | 4. Cities and Route | City long-list; City shortlist and recommendation; Route recommendation; Trip-length recommendation, or the nights plan if your dates were booked by Checkpoint 4; Transportation notes | |
 | 5. Attractions and Food | Top attractions and experiences; Culture/history/nature/food/fun balance check; Restaurant and food shortlist, if your family chose it for the binder | |
 | 6. Hotels and Budget | Hotel and neighborhood comparison summary (your Neighborhood Comparison and your Hotel Comparison Cards); Budget estimate (your Session 33 first pass and your Session 39 budget summary) | |
-| 7. Itinerary | Day-by-day itinerary; Reservation watchlist; Backup plans; Cut list or "save for future trip" list | |
+| 7. Itinerary | Day-by-day itinerary (your itinerary draft with its Checkpoint 5 review page, and your final itinerary); Reservation watchlist; Backup plans; Cut list or "save for future trip" list | |
 | 8. Readiness | Packing list; Language and etiquette quick sheet, if your family chose it for the binder; Readiness checklist | |
 | 9. Sources and Decisions | Source log; Decision log; "My Calls" page | |
 | 10. Parent Review | Adult follow-up questions; parent review forms | |
-| 11. Final Recommendation | Final recommendation summary (your final recommendation packet from Session 52); Final reflection | |
+| 11. Final Recommendation | Final recommendation summary (your final recommendation packet from Session 52, your executive summary, and your family presentation or your Final Presentation Outline from Session 51); Final reflection | |
 
 This checklist follows the tabs on the [print index](../../print_index.md), the one tab scheme for the whole binder. Keeping your work in the trip starter kit? List your pages on its [binder table of contents](../../trip_starter/outputs/binder_table_of_contents.md).
 

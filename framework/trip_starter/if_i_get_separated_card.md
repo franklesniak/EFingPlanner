@@ -17,12 +17,12 @@ You make this card in [Session 49](../sessions/phase_08_readiness_final/49_trave
 | Where we are staying, in the local language | A grown-up, who checks the wording | |
 | Emergency phrase that means "please help" | Me, from my destination pack, or a grown-up finds it; a grown-up checks it | |
 | Emergency phrase that means "I'm lost, I got separated from my family" | Me, from my destination pack, or a grown-up finds it; a grown-up checks it | |
-| Emergency number, and the date a grown-up checked it | Me, after a grown-up checks it on a current official page | |
-| Second emergency number, and the date a grown-up checked it | Me, after a grown-up checks it on a current official page | |
+| Emergency number, and the date a grown-up checked it | A grown-up checks it on a current official page and writes the date. Then I write the number. | |
+| Second emergency number, and the date a grown-up checked it | A grown-up checks it on a current official page and writes the date. Then I write the number. | |
 
 If the lodging lines are still blank, leave them for a grown-up to fill in after booking. A safety card never carries a guess. The number rows can wait until a grown-up has checked the numbers, too.
 
-Staying in more than one place? Then you carry only the card for where you sleep that night. At each move, a grown-up fills in a fresh card, and the old one is torn up. The same goes if the place to stay changes before the trip. The parent's number on each card is for a parent who's with you there, so a grown-up tells you whose number goes on it.
+Staying in more than one place? Then you carry only the card for where you sleep that night. At each move, a grown-up fills in the lodging lines on a fresh card, and you copy your other lines onto it. The old one is torn up. The same goes if the place to stay changes before the trip. The parent's number on each card is for a parent who's with you there, so a grown-up tells you whose number goes on it.
 
 ## Never on this card
 
