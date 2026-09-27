@@ -10,7 +10,7 @@ You are here: Phase 7 (Itinerary Building). Not a First Taste step. **This is Ch
 - Planner skill: making trade-offs
 - Estimated time: 20-30 minutes for the child, plus a 20-40 minute review with you
 - Parent involvement: parent review -- genuinely use the recommendation in a real family talk
-- Materials: your full itinerary draft and the day cards behind it, your Reservation Watchlist, your budget summary, your cut list, your pacing review from Session 43 (for your flags for the adults), your [When the Plan Changes card](../../student_guide/when_the_plan_changes.md) and the pages it names that you've made (in case the grown-ups approve a change), your route map notes from Session 28 and a device with a map app or map website (kid-safe filter on) (in case a change moves where you arrive or leave), your attraction cards (if your special pick hits a block), your [Trip-Basics card](../../templates/trip_basics.md) and your family's [current travel assumptions](../../templates/current_family_travel_assumptions.md) page (in case a change needs the trip length or the band), your [Source Log](../../templates/source_log.md), a [Decision Record page](../../templates/decision_record.md), a blank [Parent Review Form](../../templates/parent_review_form.md) for a grown-up to fill in
+- Materials: your full itinerary draft and the day cards behind it, your Reservation Watchlist, your budget summary, your cut list, your pacing review from Session 43 (for your flags for the adults), your [When the Plan Changes card](../../student_guide/when_the_plan_changes.md) and the pages it names that you've made (in case the grown-ups approve a change), your route map notes from Session 28 and a device with a map app or map website (kid-safe filter on) in case a change moves where you arrive or leave, your attraction cards (if your special pick hits a block), your [Trip-Basics card](../../templates/trip_basics.md) and your family's [current travel assumptions](../../templates/current_family_travel_assumptions.md) page (in case a change needs the trip length or the band), your [Source Log](../../templates/source_log.md), a [Decision Record page](../../templates/decision_record.md), a blank [Parent Review Form](../../templates/parent_review_form.md) for a grown-up to fill in
 
 ## Goal
 
@@ -22,11 +22,11 @@ Choose your first move and make it. If you want a suggestion, write one thing yo
 
 ## Steps
 
-**This is the Core Finish Line.** You could stop here and still have a usable plan. You know when to go, where, how long, a day-by-day plan, a rough budget for the parts you chose, and what adults need to book. Everything after this is a bonus.
+**This is the Core Finish Line.** You could stop here and still have a usable plan. You know when to go, where, how long, a day-by-day plan, a rough budget, and what adults need to book. Everything after this is a bonus.
 
 1. Fill in the five answers in the Workspace. Your draft, your cards, your Reservation Watchlist, your budget summary, your cut list and your pacing review have everything you need. For what could be cut, keep your special pick and its place. Copy your flags for the adults from your Session 43 pacing review into "What the grown-ups need to decide", including any flag for fewer cities or fewer rides out.
 2. **Reasons.** Write two or three reasons your plan works, each tied to something you found.
-3. Put your itinerary draft and its day cards in front of a grown-up, with your five answers, your reasons and your Session 39 budget summary. They need the draft itself to judge the pacing, the travel, the meals and the rest.
+3. Put your itinerary draft and its day cards in front of a grown-up, with your five answers, your reasons and your Session 39 budget summary for the parts you chose. They need the draft itself to judge the pacing, the travel, the meals and the rest.
 4. The grown-up picks one of four answers: Approved, Approved with changes, Needs more research, or Park this decision for later. It might be a quick call, a note, or a talk at the table. Any of the four is a normal result.
 5. Write their answer in your Decision Record.
 

@@ -2631,7 +2631,7 @@
       "judgment": "no",
       "reason": "a field label"
     },
-    "device|Last Updated: 2026-09-26|1": {
+    "device|Last Updated: 2026-09-27|1": {
       "line": 10,
       "judgment": "no",
       "reason": "a metadata field"
@@ -3881,7 +3881,12 @@
       "judgment": "no",
       "reason": "a change record: a fact of what the review checkpoints page says"
     },
-    "split|The review checkpoints page says when each checkpoint is finished, and that a parked decision at Checkpoint 6 is the result. → The insert contract's parent-facing rows give local hazards one home, ‹code› , and lodging priced per person and children's fares one home, ‹code› , as the Batch 3 brief settles.|1": {
+    "split|The review checkpoints page says when each checkpoint is finished, and that a parked decision at Checkpoint 6 is the result. → Session 46 carries the Core Finish Line sentence word for word, as its three other surfaces do, and its step 3 says the budget summary is for the parts the child chose.|1": {
+      "line": 58,
+      "judgment": "no",
+      "reason": "a change record: a fact of what Session 46 carries and what its step says"
+    },
+    "split|Session 46 carries the Core Finish Line sentence word for word, as its three other surfaces do, and its step 3 says the budget summary is for the parts the child chose. → The insert contract's parent-facing rows give local hazards one home, ‹code› , and lodging priced per person and children's fares one home, ‹code› , as the Batch 3 brief settles.|1": {
       "line": 58,
       "judgment": "no",
       "reason": "a change record: a fact"
@@ -33214,7 +33219,7 @@
       "judgment": "no",
       "reason": "a field label"
     },
-    "device|Materials: your full itinerary draft and the day cards behind it, your Reservation Watchlist, your budget summary, your cut list, your pacing review from Session 43 (for your flags for the adults), your When the Plan Changes card and the pages it names that you've made (in case the grown-ups approve a change), your route map notes from Session 28 and a device with a map app or map website (kid-safe filter on) (in case a change moves where you arrive or leave), your attraction cards (if your special pick hits a block), your Trip-Basics card and your family's current travel assumptions page (in case a change needs the trip length or the band), your Source Log, a Decision Record page, a blank Parent Review Form for a grown-up to fill in|1": {
+    "device|Materials: your full itinerary draft and the day cards behind it, your Reservation Watchlist, your budget summary, your cut list, your pacing review from Session 43 (for your flags for the adults), your When the Plan Changes card and the pages it names that you've made (in case the grown-ups approve a change), your route map notes from Session 28 and a device with a map app or map website (kid-safe filter on) in case a change moves where you arrive or leave, your attraction cards (if your special pick hits a block), your Trip-Basics card and your family's current travel assumptions page (in case a change needs the trip length or the band), your Source Log, a Decision Record page, a blank Parent Review Form for a grown-up to fill in|1": {
       "line": 13,
       "judgment": "no",
       "reason": "a field label listing materials"
@@ -33244,15 +33249,15 @@
       "judgment": "no",
       "reason": "a fact (a reassurance)"
     },
-    "split|You could stop here and still have a usable plan. → You know when to go, where, how long, a day-by-day plan, a rough budget for the parts you chose, and what adults need to book.|1": {
+    "split|You could stop here and still have a usable plan. → You know when to go, where, how long, a day-by-day plan, a rough budget, and what adults need to book.|1": {
       "line": 25,
       "judgment": "no",
-      "reason": "a list of what the reader knows at this point"
+      "reason": "a fact listing what the reader knows"
     },
-    "split|You know when to go, where, how long, a day-by-day plan, a rough budget for the parts you chose, and what adults need to book. → Everything after this is a bonus.|1": {
+    "split|You know when to go, where, how long, a day-by-day plan, a rough budget, and what adults need to book. → Everything after this is a bonus.|1": {
       "line": 25,
       "judgment": "no",
-      "reason": "a statement of what comes after"
+      "reason": "a fact"
     },
     "device|Fill in the five answers in the Workspace.|1": {
       "line": 27,
@@ -33284,12 +33289,12 @@
       "judgment": "no",
       "reason": "an instruction"
     },
-    "device|Put your itinerary draft and its day cards in front of a grown-up, with your five answers, your reasons and your Session 39 budget summary.|1": {
+    "device|Put your itinerary draft and its day cards in front of a grown-up, with your five answers, your reasons and your Session 39 budget summary for the parts you chose.|1": {
       "line": 29,
       "judgment": "no",
       "reason": "an instruction"
     },
-    "split|Put your itinerary draft and its day cards in front of a grown-up, with your five answers, your reasons and your Session 39 budget summary. → They need the draft itself to judge the pacing, the travel, the meals and the rest.|1": {
+    "split|Put your itinerary draft and its day cards in front of a grown-up, with your five answers, your reasons and your Session 39 budget summary for the parts you chose. → They need the draft itself to judge the pacing, the travel, the meals and the rest.|1": {
       "line": 29,
       "judgment": "no",
       "reason": "a reason"
@@ -35384,10 +35389,10 @@
       "judgment": "no",
       "reason": "a field label"
     },
-    "device|Materials: your assembled binder from Session 50, your Trip-Basics card (for the booked trip length, if your dates are booked), a blank Final Presentation Outline, your When the Plan Changes card and the pages it names, your route map notes from Session 28 and a device with a map app or map website (kid-safe filter on) (in case a grown-up has changed where you arrive or leave), your Source Log|1": {
+    "device|Materials: your assembled binder from Session 50, your Trip-Basics card (for the booked trip length, if your dates are booked), a blank Final Presentation Outline, your When the Plan Changes card and the pages it names, your route map notes from Session 28 and a device with a map app or map website (kid-safe filter on) in case a grown-up has changed where you arrive or leave, your Source Log|1": {
       "line": 13,
       "judgment": "no",
-      "reason": "a field label (the materials list)"
+      "reason": "a field label listing materials"
     },
     "device|Build the outline you'll use to tell your family what you recommend.|1": {
       "line": 17,
@@ -35736,7 +35741,7 @@
       "judgment": "no",
       "reason": "a field label"
     },
-    "device|Materials: your Final Presentation Outline from Session 51, your assembled binder (with your Session 39 budget summary and your Checkpoint 4 route and trip-length recommendation), your When the Plan Changes card and the pages it names (in case the grown-ups approve a change), your Family Trip Goals page from Session 03 (for the poll and your balancing line), your part-trip note from Session 33 (if you made one) or the grown-up's answer on who is there on which days, your route map notes from Session 28 and a device with a map app or map website (kid-safe filter on) (in case a change moves where you arrive or leave), your Source Log, a Decision Record page, a blank Parent Review Form for a grown-up to fill in|1": {
+    "device|Materials: your Final Presentation Outline from Session 51, your assembled binder (with your Session 39 budget summary and your Checkpoint 4 route and trip-length recommendation), your When the Plan Changes card and the pages it names (in case the grown-ups approve a change), your Family Trip Goals page from Session 03 (for the poll and your balancing line), your part-trip note from Session 33 (if you made one) or the grown-up's answer on who is there on which days, your route map notes from Session 28 and a device with a map app or map website (kid-safe filter on) in case a change moves where you arrive or leave, your Source Log, a Decision Record page, a blank Parent Review Form for a grown-up to fill in|1": {
       "line": 13,
       "judgment": "no",
       "reason": "a field label listing materials"
