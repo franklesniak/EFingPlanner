@@ -2660,9 +2660,10 @@ wording.
   removes, and a child crossing a concourse is no longer where the family is looking.
   If nobody is within earshot, they stay put and keep looking. **The only time they
   move is when that morning's rule named a meeting spot.**
-- **Know the emergency numbers.** The pack has them. **An adult checks them on a current
-  official page and writes the date checked; you write the numbers on your card once
-  they have.** An adult, a shop worker, or the police post can call them for you.
+- **Know the emergency numbers.** The pack names where they come from. **An adult checks
+  them on a current official page and writes the date checked; you write the numbers on
+  your card once they have.** An adult, a shop worker, or the police post can call them
+  for you.
 
 **No built page prints an emergency number, not even as an example.** The card instruction
 is that the adult verifies on an official page and dates the check, and the child writes the
@@ -3259,8 +3260,9 @@ ever differ, follow the built page and record the difference in your build repor
 extends a built file, as its entry says.
 
 **All six new pages are destination-neutral.** Destination-specific adult logistics --
-local hazard awareness, local emergency numbers, local luggage-forwarding services, local
-police-post equivalents, local lodging categories -- belong in the pack's adult-logistics
+local hazard awareness, the official source for local emergency numbers, local
+luggage-forwarding services, local police-post equivalents, local lodging categories --
+belong in the pack's adult-logistics
 reference, which these pages **name generically.** The contract gains a row for each page
 that needs pack facts, so the routing is on the record. (`D-X-2`.) The Batch 3 brief
 (`I-3`) later gives local hazards their home in `safety_and_emergency.md`, and lodging
