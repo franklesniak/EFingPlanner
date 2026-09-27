@@ -4,7 +4,7 @@
 
 - **Status:** Active
 - **Owner:** Repository Maintainers
-- **Last Updated:** 2026-09-23
+- **Last Updated:** 2026-09-27
 - **Scope:** The complete build instruction for Batch 1 of the EFingPlanner curriculum -- the Phase 0-2 vertical slice, Session 00 through Checkpoint 1. It carries every Batch 1 requirement, every applicable acceptance criterion and the adjudicated answer to every open question, so an authoring run works from this brief and consults the archived specification only for a detail the brief turns out to lack. It does not cover Batch 0 or Batches 2-4, and it is a build instruction rather than shipped curriculum.
 - **Related:** [Build prompt directory guide](README.md), [Build prompt template](_build_prompt_template.md), [Archived specification](../spec/specification.md)
 
@@ -3804,11 +3804,11 @@ contradicting it.
 6. Keep the seven mandatory-core fields intact; keep the "You are here" navigation aid;
    keep the point-of-use accommodation line.
 7. Re-point Previous and Next per the navigation table below.
-8. Keep the trip, origin and roster discipline: no `Chicago`, `ORD`, `17` **as a
-   trip-length cap**, `grandmother`, `uncle`. The qualifier is BUILD RULES' own and it
-   is load-bearing in both directions: the digits are not the leak, a hard-coded
-   maximum is, and a converted session may legitimately carry a date or a count that
-   contains them.
+8. Keep the trip, origin and roster discipline: no origin city, home airport or its
+   code, trip-length cap as a number, or relative on the family's roster. The word *cap*
+   is BUILD RULES' own qualifier, and it is load-bearing in both directions: the digits
+   are not the leak, a hard-coded maximum is, and a converted session may legitimately
+   carry a date or a count that contains the same digits.
 9. **The density caps bind a converted session, and they outrank a freeze instruction.**
    Several sessions below say "change nothing else" or name the only lines to touch. That
    freeze protects voice, structure, step order and content; it does not license leaving a
@@ -4355,10 +4355,12 @@ You are here: Phase 2 (Destination Big Picture), First Taste step 5 of 13. Previ
 
 ## BUILD RULES (hard constraints)
 
-- **Trip/origin/roster leak:** no `Chicago`, `ORD`, `17` (as a trip-length cap),
-  `grandmother`, or `uncle` in any framework session. Use fill-in blanks that point to
-  `trip_basics.md`. The spec's `(this family: …)` parentheticals are annotations — never
-  write them into built files. (§2.5 / `AC-29-2`.)
+- **Trip/origin/roster leak:** no origin city, home airport or its code, trip-length cap
+  as a number, or relative on the family's roster in any framework session. Use fill-in
+  blanks that point to `trip_basics.md`. The spec's `(this family: …)` parentheticals
+  are annotations — never write them into built files, and never copy their values into
+  a brief: the committed leak hook is the check, and the self-check below runs it.
+  (§2.5 / `AC-29-2`.)
 - **Destination-leak rule — ON from this batch, and widened to all of `framework/`.** No
   `Japan`, `Tokyo`, `Kyoto`, `Osaka` or `Shinkansen` in any `framework/` file — in a
   title, a heading, a body, a fenced block, link text, a link path, image alt text, or
@@ -4707,81 +4709,42 @@ anywhere else and several come back looking clean, because a pathspec that match
 nothing, a glob that does not expand and a file that has not changed all produce the
 same silence.
 
-Trip, origin and roster leak — the explicit `framework/` target plus `-r` scans
-the built files instead of reading stdin, and `-w` gives standalone-token matching in
-GNU and BSD grep, so it works on Linux, macOS and Git Bash on Windows. Neither
-`-w` nor `-r` is in POSIX; the `\b` escape is not in POSIX either and is absent
-from BSD grep as well, so `-w` is the form that fails in fewer places rather than
-the portable one:
+Trip, origin and roster leak — run the committed leak hook, never a grep that names a
+family value. A grep for the values has to name them, so it leaks them into the file
+that holds it, the shell's history and its output; the hook's docstring says so under
+"In place of a hand-run grep", and these are the calls it names:
 
 ```bash
-grep -rwiE 'Chicago|ORD|17[ -]?days?|grandmothers?|uncles?' framework/ \
-  || [ $? -eq 1 ]
+python .github/scripts/check-leaks.py --rule family
+python .github/scripts/check-leaks.py --rule family --candidates
 ```
 
-Expect no output, and confirm no hard-coded family value (blanks pointing to
-`trip_basics.md` are fine). **The scope is all of `framework/`, not `framework/sessions/`.**
-The leak rule is written about sessions, but this batch creates
-`framework/trip_starter/family/trip_basics.md` (G2), the traveler-profiles folder README
-(G4) and the traveler-profile template (D1) -- the three files most able to acquire a
-roster value, all of them outside `sessions/`, and all three required above to be
-completely blank with no example family. Widening costs nothing: the whole of `framework/`
-returns zero hits today, so the expectation is unchanged and only the blind spot closes.
+**The first call is a gate, which the grep blocks in this section are not.** On a clean
+tree it prints one line saying how many files it checked and that it found none, and
+exits `0`; on a leak it prints a path, line, column and kind for each unexcused
+occurrence, and no value, and exits `1`. So rule 6 holds for this block, and its status
+reports a leak as plainly as its output does. Confirm no hard-coded family value (blanks
+pointing to `trip_basics.md` are fine). **The hook reads every tracked file except
+`docs/spec/`, not only `framework/sessions/`.** The leak rule is written about sessions,
+but this batch creates `framework/trip_starter/family/trip_basics.md` (G2), the
+traveler-profiles folder README (G4) and the traveler-profile template (D1) -- the three
+files most able to acquire a roster value, all of them outside `sessions/`, and all
+three required above to be completely blank with no example family.
 
-**The trip-length token is `17[ -]?days?` and not a bare `17`, and that is what makes
-"expect no output" reachable.** BUILD RULES below bans `17` **as a trip-length cap**;
-the check had dropped the qualifier and banned the digits. `-w` treats a hyphen as a
-word boundary, so a bare `17` matches the `17` in `**Last Updated:** 2026-07-17` -- and
-this brief requires that field, in `YYYY-MM-DD` form and carrying **the current UTC
-date**,
-on **eight** files inside `framework/`: F10's changelog, F11's style law and F12's
-privacy page under the bump rule near the top of this brief, and D7, D8, F4, **F6** and
-F7 as creates. Build on the seventeenth of any month and the check prints a line for
-every one of them that it can never be cleared of, on content this brief itself
-mandates. A check that cannot go green is a check the builder learns to ignore, or
-"satisfies" by editing a correct metadata date.
-The narrowed token has the same effect on a real cap -- `17 days`, `17-day` and `17day`
-all match -- and no effect on a date.
+**The second call is the wider trip-length sweep the archived design record asks for,
+and it is a hand-read, not a pass or fail.** It lists each bare occurrence of the
+family's number and exits `0`. The record's own note on this sweep lists its expected
+false positives -- page numbers, item counts, dates -- and requires a person to confirm
+that none of them is a hard-coded family cap. What it catches that the first call cannot
+is a cap written with no unit and no label. Read every line in context. **Keep the list
+in your own terminal:** its positions point at the family's number, so never paste it
+into the build report, a pull request, an issue, a commit message or a log. The report
+says the list was read and that no line states the family's maximum trip length, and it
+names no position.
 
-**Do not restate that list here; derive it, and derive it from one place.** It is the
-bump rule's census near the top of this brief, less the one member of it that is not a
-`framework/` file: six creates carry the block, A1 is the `destinations/` one, and the
-three edits already carry it, so five creates plus three edits are eight. **A ruling
-that moves one file's classification moves every count that depends on it**, and this
-brief states that classification in four places -- the bump rule's census, the Section F
-split with its denominator, the sentence naming the three block-carrying files outside
-Section F, and this inventory. When `ai_use_rules.md` moved to the required side, the
-first three were re-based in the same pass and this one was not, because it sits far
-from them in a paragraph about a grep token rather than about metadata. That is the
-shape to watch for: the stale copy of a count is rarely next to the ruling that
-invalidated it. If you ever find this figure and the census disagreeing, **the census
-is the authority** and this line is the one to correct.
-
-**Two roster tokens gained a plural and the check gained `-i`, and neither moves the
-expectation.** `grep -w` does not match `uncles` against `uncle`, nor `grandmothers`
-against `grandmother`, and without `-i` neither matches a capitalised `Uncle` opening a
-sentence, so three of the likeliest shapes of a roster leak walked past the check that
-exists to catch them. Measured rather than argued: against the tree at this brief's
-head the old pattern and the new one both return **nothing** across the whole of
-`framework/`, so the stated expectation does not move; against a fixture carrying
-`Two uncles are coming.`, `Both grandmothers are coming.` and `Uncle Bob is coming.`,
-the old pattern returns nothing and the new one returns all three.
-
-Then the wider trip-length sweep, which the archived design record asks for alongside
-the narrow token and which **is a hand-read, not a pass or fail**:
-
-```bash
-grep -rnwE '17' framework/ || [ $? -eq 1 ]
-```
-
-**Expect no output on most builds, and date lines only when there is output.** The
-record's own note on this pattern lists its expected false positives -- page numbers,
-item counts, dates -- and requires a person to confirm that none of them is a
-hard-coded family cap. A `Last Updated` value whose day is the seventeenth is exactly
-such a hit and is correct. What this sweep catches that the narrow token cannot is a
-cap written without the word `day`: *"the trip cannot go past 17."* Read every line and
-say in the build report why each one is innocent; an unread list is the same as no
-sweep at all.
+The hand-run grep this block replaces needed a narrowed trip-length token, plural forms
+and a case-blind flag, and two notes here once argued for each. The hook's matching
+carries all three; its docstring, under "What a match is", records how.
 
 Destination leak in the converted and new session bodies. **Both leak greps below take
 `-i`, and that is load-bearing, not cosmetic:** the rule bans the destination name in a
@@ -4915,7 +4878,11 @@ beyond `sessions/`, `parent_guide/` and `student_guide/` -- among them every tem
 every framework doc, the whole trip-starter kit, all five session inserts, and the new
 reference page. The templates and the inserts are child-facing by the readability
 gate's own path
-list below, so a narrower grep would skip the files a child actually fills in:
+list below, so a narrower grep would skip the files a child actually fills in. `-w`
+gives standalone-token matching in GNU and BSD grep, so it works on Linux, macOS and Git
+Bash on Windows. Neither `-w` nor `-r` is in POSIX; the `\b` escape is not in POSIX
+either and is absent from BSD grep as well, so `-w` is the form that fails in fewer
+places rather than the portable one:
 
 ```bash
 grep -rniwE 'he|him|his|she|her|hers|himself|herself' framework/ destinations/

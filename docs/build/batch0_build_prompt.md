@@ -1,5 +1,13 @@
 # GOAL: Build Batch 0 of the EFingPlanner curriculum — the pilotable First-Taste slice
 
+## Metadata
+
+- **Status:** Active
+- **Owner:** Repository Maintainers
+- **Last Updated:** 2026-09-27
+- **Scope:** The build instruction for Batch 0 of the EFingPlanner curriculum -- the pilotable First-Taste slice, authored destination-concrete, ending at the Batch 0 gate. It is also the worked example of a finished brief that the build prompt directory guide points to. It does not cover Batches 1-4, and it is a build instruction rather than shipped curriculum.
+- **Related:** [Build prompt directory guide](README.md), [Build prompt template](_build_prompt_template.md), [Batch 1 build brief](batch1_build_prompt.md), [Archived specification](../spec/specification.md), [Leak hook](../../.github/scripts/check-leaks.py)
+
 ## Source of truth
 
 Build strictly from `docs/spec/specification.md` (the complete, combined archived
@@ -86,10 +94,12 @@ on the `lean-spec.md` / `full-oer-companion.md` pointers named under Source of t
 
 ## BUILD RULES (hard constraints)
 
-- **Trip/origin/roster leak (applies now):** no `Chicago`, `ORD`, `17` (as a trip-length
-  cap), `grandmother`, or `uncle` in any framework session. Use fill-in blanks that point
-  to `trip_basics.md`. The spec's `(this family: …)` parentheticals are annotations —
-  never write them into built files. (§2.5 / `AC-29-2`.)
+- **Trip/origin/roster leak (applies now):** no origin city, home airport or its code,
+  trip-length cap as a number, or relative on the family's roster in any framework
+  session. Use fill-in blanks that point to `trip_basics.md`. The spec's
+  `(this family: …)` parentheticals are annotations — never write them into built files,
+  and never copy their values into a brief: the committed leak hook is the check, and
+  the self-check below runs it. (§2.5 / `AC-29-2`.)
 - **Destination-leak rule does NOT apply to Batch 0** — these sessions are Japan-concrete
   on purpose. (It kicks in at Batch 1's concrete→insert conversion.)
 - **Verify-don't-trust (§32):** never state entry/visa/passport/insurance/rail-pass/
@@ -119,14 +129,17 @@ on the `lean-spec.md` / `full-oer-companion.md` pointers named under Source of t
 
 - All Batch 0 files above exist, are meaningful (no thin/placeholder files), and lint-clean;
   all relative links resolve.
-- Self-check before stopping: grep the built sessions for the leak tokens —
-  `grep -rwE 'Chicago|ORD|17|grandmother|uncle' framework/sessions/` (the explicit
-  `framework/sessions/` target + `-r` scans the built files instead of reading stdin; `-w`
-  gives standalone-token matching. Neither `-w` nor `-r` is in POSIX, but GNU and BSD grep
-  both carry them, while the `\b` escape is absent from BSD grep as well as
-  from POSIX) — and confirm no hard-coded
-  family value (blanks pointing to `trip_basics.md` are fine); confirm every session has a
-  named artifact and a stop point (§15).
+- Self-check before stopping: run the committed leak hook, never a grep that names a
+  family value. `python .github/scripts/check-leaks.py --rule family` exits `1` and
+  prints a path, line, column and kind for each unexcused occurrence.
+  `python .github/scripts/check-leaks.py --rule family --candidates` lists bare numbers
+  for a hand-read and exits `0`: read each one in context, since it is a leak only if it
+  states the family's maximum trip length, and keep that list in your own terminal,
+  because its positions point at the family's number. Never paste it into a pull
+  request, an issue, a commit message or a log. The hook's docstring, under "In place of
+  a hand-run grep", says why a grep for the values leaks them. Confirm no hard-coded
+  family value (blanks pointing to `trip_basics.md` are fine); confirm every session has
+  a named artifact and a stop point (§15).
 - **STOP at the Batch 0 gate** (cleared by a passing child pilot, or by the no-child
   fallback recorded in writing). Produce a short build report listing what was built, plus the
   full §31 handoff for the human:

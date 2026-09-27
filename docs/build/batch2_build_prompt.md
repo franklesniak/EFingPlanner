@@ -4521,37 +4521,38 @@ is incomplete and removing the rider would make the docs wrong in the other dire
   `framework/docs/build_style_and_vocab.md`, not from this brief**, and check every new
   child-facing file against them. This brief names which rules bite; the style law is where
   their numbers live, and a number copied into a brief drifts.
-- **Run the leak greps and read their output**, rather than trusting a silent pass:
+- **Run the leak checks and read their output**, rather than trusting a silent pass:
 
   ```text
-  grep -rwE 'Chicago|ORD|grandmother|uncle' framework/
-  grep -rwE '17[ -]?(day|night)s?' framework/
+  python .github/scripts/check-leaks.py --rule family
+  python .github/scripts/check-leaks.py --rule family --candidates
   grep -rwE 'Japan|Tokyo|Kyoto|Osaka|Shinkansen' framework/
   grep -rn 'destinations/' framework/sessions/
   grep -rnE 'Section [0-9]' framework/
   ```
 
-  **The trip-length check is two commands, and the split is not cosmetic.** The archived
-  criterion greps a bare `17`, and **that pattern stops working the moment this batch
-  creates Session 17** -- `-w` treats the colon in `# Session 17:` as a word boundary, so
-  the heading matches, every cross-reference to that session matches, and a date ending
-  `-17` matches. A gate that cannot return clean is not a gate. The value being protected is
-  the **trip-length cap**, so the second command looks for it with its unit attached, which
-  is how it would actually be written. **A bare `17` with no unit is not greppable any
-  more**; if you need to check one, read it in context. The `AC-29-2` hook, when it is
-  built, scopes the pattern the same way.
+  **The first two lines are the committed leak hook, not a grep.** A grep for the family's
+  values has to name them, so it leaks them into this file, the shell's history and its
+  output; the hook's docstring says so under "In place of a hand-run grep" and names these
+  calls. The first exits `1` and prints a path, line, column and kind for each unexcused
+  occurrence, and no value. The second lists each bare occurrence of the family's number
+  for the archived criterion's hand-read and exits `0`: read each in context, since it is
+  a leak only if it states the family's maximum trip length. **Keep that list in your own
+  terminal**: its positions point at the family's number, so never paste it into a pull
+  request, an issue, a commit message or a log. The hook reads every tracked file except
+  `docs/spec/`, and its docstring, under "What a match is", records the forms it matches,
+  a unit or a label attached to the number among them.
 
   **Only the third command has permitted hits**, and they are exactly two: the style law's
-  own banning sentence, and the `0.1.0` changelog line. **The other four must find nothing
-  at all.** A grep that prints
-  nothing because it was pointed at the wrong path is not a pass -- **confirm the command
-  read the corpus you think it read.**
+  own banning sentence, and the `0.1.0` changelog line. **The first must report none
+  found, and the last two must find nothing at all**; the second is the hand-read above. A
+  grep that prints nothing because it was pointed at the wrong path is not a pass --
+  **confirm the command read the corpus you think it read.**
 
   `-w` is used rather than a word-boundary escape for the reason the Batch 1 brief
   records: `-w` is absent from POSIX but present in GNU and BSD grep, so it works on
   Linux, macOS and Git Bash on Windows, while the escape is absent from POSIX *and*
-  from BSD grep. It also stops the trip-length pattern matching inside a longer
-  number such as `317 days`.
+  from BSD grep.
 
   **What you inherit, measured on the Batch 1 content branch rather than assumed.** Exactly
   three files under `framework/` carry a destination token when this batch starts:
