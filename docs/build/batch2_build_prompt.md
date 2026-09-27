@@ -4523,7 +4523,11 @@ is incomplete and removing the rider would make the docs wrong in the other dire
   `framework/docs/build_style_and_vocab.md`, not from this brief**, and check every new
   child-facing file against them. This brief names which rules bite; the style law is where
   their numbers live, and a number copied into a brief drifts.
-- **Run the leak checks and read their output**, rather than trusting a silent pass:
+- **Run the leak checks and read their output**, rather than trusting a silent pass.
+  **Track this batch's new files first**, with `git add -- framework destinations`, and
+  confirm that `git ls-files --others --exclude-standard` prints nothing. The leak hook
+  and `pre-commit run --all-files` read only the files Git tracks, so a run made before
+  the new files are tracked passes having opened none of them. Then run:
 
   ```text
   python .github/scripts/check-leaks.py --rule family
@@ -4536,14 +4540,15 @@ is incomplete and removing the rider would make the docs wrong in the other dire
   **The first two lines are the committed leak hook, not a grep.** A grep for the family's
   values has to name them, so it leaks them into this file, the shell's history and its
   output; the hook's docstring says so under "In place of a hand-run grep" and names these
-  calls. The first exits `1` and prints a path, line, column and kind for each unexcused
-  occurrence, and no value. The second lists each bare occurrence of the family's number
-  for the archived criterion's hand-read and exits `0`: read each in context, since it is
-  a leak only if it states the family's maximum trip length. **Keep that list in your own
-  terminal**: its positions point at the family's number, so never paste it into a pull
-  request, an issue, a commit message or a log. The hook reads every tracked file except
-  `docs/spec/`, and its docstring, under "What a match is", records the forms it matches,
-  a unit or a label attached to the number among them.
+  calls. The first exits `0` with one none-found line on a clean tree; on a leak it prints
+  a path, line, column and kind for each unexcused occurrence, and no value, and exits
+  `1`. The second lists each bare occurrence of the family's number for the archived
+  criterion's hand-read and exits `0`: read each in context, since it is a leak only if it
+  states the family's maximum trip length. **Keep that list in your own terminal**: its
+  positions point at the family's number, so never paste it into a pull request, an issue,
+  a commit message or a log. The hook reads every tracked file except `docs/spec/`, and
+  its docstring, under "What a match is", records the forms it matches, a unit or a label
+  attached to the number among them.
 
   **Only the third command has permitted hits**, and they are exactly two: the style law's
   own banning sentence, and the `0.1.0` changelog line. **The first must report none

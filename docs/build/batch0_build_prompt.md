@@ -130,8 +130,14 @@ on the `lean-spec.md` / `full-oer-companion.md` pointers named under Source of t
 - All Batch 0 files above exist, are meaningful (no thin/placeholder files), and lint-clean;
   all relative links resolve.
 - Self-check before stopping: run the committed leak hook, never a grep that names a
-  family value. `python .github/scripts/check-leaks.py --rule family` exits `1` and
-  prints a path, line, column and kind for each unexcused occurrence.
+  family value. Track every file this batch created first, with
+  `git add -- <each path on the deliverables list>`, and confirm that
+  `git ls-files --others --exclude-standard` prints nothing. The hook and
+  `pre-commit run --all-files` read only the files Git tracks, so a run made before the
+  new files are tracked passes having opened none of them.
+  `python .github/scripts/check-leaks.py --rule family` exits `0` with one none-found
+  line on a clean tree; on a leak it prints a path, line, column and kind for each
+  unexcused occurrence and exits `1`.
   `python .github/scripts/check-leaks.py --rule family --candidates` lists bare numbers
   for a hand-read and exits `0`: read each one in context, since it is a leak only if it
   states the family's maximum trip length, and keep that list in your own terminal,

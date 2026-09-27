@@ -6,7 +6,7 @@
 
 - **Status:** Active
 - **Owner:** Repository Maintainers
-- **Last Updated:** 2026-09-26
+- **Last Updated:** 2026-09-27
 - **Scope:** The complete build instruction for Batch 4 of the EFingPlanner curriculum: Session 54, the seven worked examples, the cross-reference map, the add-a-destination guide, the optional-tier items, and the closing whole-repository consistency pass. It carries every Batch 4 requirement, every applicable acceptance criterion, the adjudicated answer to every open question raised against the batch, and the forward items earlier batches and reviews routed here. It does not cover Batches 0 to 3 or the finalization step after this batch. It instructs the build, and no family reads it.
 - **Related:** [Build prompt directory guide](README.md), [Batch 3 build brief](batch3_build_prompt.md), [Batch 2 build brief](batch2_build_prompt.md), [Batch 1 build brief](batch1_build_prompt.md), [Build prompt template](_build_prompt_template.md), [Archived specification](../spec/specification.md)
 
@@ -62,14 +62,14 @@ Every earlier batch could write "a later batch adds this". This one cannot. **No
 
 No home airport and no airport code. No origin city. No trip-length number. No relatives' names. No booked dates, budget figures, lodging names or confirmation numbers.
 
-**The committed leak hook is the only family check you run.** Its docstring, under "In place of a hand-run grep", explains why a grep for the values leaks them into the file, the shell history and the output. Run these, and never type a grep that names a value:
+**The committed leak hook is the only family check you run.** Its docstring, under "In place of a hand-run grep", explains why a grep for the values leaks them into the file, the shell history and the output. **Track new files before either call**, as section 11 says for every gate: the hook reads only the files Git tracks, so a run made before a new file is tracked passes it unread. Confirm that `git ls-files --others --exclude-standard` prints nothing, then run these, and never type a grep that names a value:
 
 ```bash
 python .github/scripts/check-leaks.py --rule family
 python .github/scripts/check-leaks.py --rule family --candidates
 ```
 
-The first exits `1` and prints a path, line, column and kind for each unexcused occurrence. The second lists bare numbers for a hand-read and exits `0`. **Keep that list in your own terminal.** Its positions point at the family's number, so never paste it into a pull request, an issue, a commit message or a log.
+The first exits `0` with one none-found line on a clean tree; on a leak it prints a path, line, column and kind for each unexcused occurrence and exits `1`. The second lists bare numbers for a hand-read and exits `0`. **Keep that list in your own terminal.** Its positions point at the family's number, so never paste it into a pull request, an issue, a commit message or a log.
 
 **The family rule bans two ordinary relationship words anywhere in the repository, and the hook names neither.** If it fires on a pretend family's roster in an example, change the relationship. If it fires on a trip length in an example, change the number. Never ask anyone what the values are, and never add an exemption row: a new row for a file this batch writes is a failure of this batch.
 

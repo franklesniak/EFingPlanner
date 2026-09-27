@@ -4712,7 +4712,12 @@ same silence.
 Trip, origin and roster leak — run the committed leak hook, never a grep that names a
 family value. A grep for the values has to name them, so it leaks them into the file
 that holds it, the shell's history and its output; the hook's docstring says so under
-"In place of a hand-run grep", and these are the calls it names:
+"In place of a hand-run grep". **Track this batch's files before either call.** The hook
+reads only the files Git tracks, so a run made before the 37 new files are tracked
+passes having opened none of them. Run the scoped
+`git add -- framework destinations README.md` from the four repo-wide gates below, and
+confirm that `git ls-files --others --exclude-standard` prints nothing. Then run the two
+calls the docstring names:
 
 ```bash
 python .github/scripts/check-leaks.py --rule family

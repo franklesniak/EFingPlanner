@@ -187,13 +187,17 @@ them: into the file that holds it, the shell's history and its output. This
 script is the replacement. A build brief or a checklist that asks for the
 leak greps runs these calls instead, and they name no value and print none:
 
-* ``python .github/scripts/check-leaks.py --rule family``, which exits 1 and
-  prints each unexcused occurrence as a path, line, column and kind;
+* ``python .github/scripts/check-leaks.py --rule family``, which exits 0 with
+  one none-found line on a clean tree, and on a leak prints each unexcused
+  occurrence as a path, line, column and kind and exits 1;
 * ``python .github/scripts/check-leaks.py --rule family --candidates``, the
   grep note's hand-read of bare numbers, which lists positions and exits 0.
   Those positions point at the family's number, so keep that list in a local
   terminal: never paste it into a pull request, an issue or a CI log;
 * ``python .github/scripts/check-leaks.py --rule destination``.
+
+A walk reads only the files Git tracks, as "File access" above says, so track
+a new file before any of these calls, or the call passes it unread.
 
 A grep for a destination name, for a path into ``destinations/`` or for a
 spec section number names nothing private, and may stay a grep.

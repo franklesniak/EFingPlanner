@@ -175,7 +175,7 @@ leaks the value into the file, the shell's history and the output.
 `python .github/scripts/check-leaks.py --rule family` finds nothing unexcused, and
 `python .github/scripts/check-leaks.py --rule family --candidates` lists bare numbers for
 a hand-read that stays in your own terminal, because its positions point at the family's
-number. Section 9 runs both.
+number. Section 9 tracks the new pack files first, then runs both.
 
 ### 1.7 Reader economy: the built pack already carries a lot
 
@@ -991,6 +991,12 @@ wrong.
 ## 9. Validation gates and definition of done
 
 ### Gates, all five, before every pull request
+
+Track the new pack files before you run anything that reads `git ls-files`.
+`pre-commit run --all-files` and the leak hook in the batch's own checks below read only
+the files Git tracks, so a run made before the new files are tracked passes having opened
+none of them. Run `git add -- destinations` first, and confirm that
+`git ls-files --others --exclude-standard` prints nothing.
 
 ```text
 pre-commit run --all-files
