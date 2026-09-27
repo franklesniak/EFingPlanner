@@ -187,13 +187,20 @@ them: into the file that holds it, the shell's history and its output. This
 script is the replacement. A build brief or a checklist that asks for the
 leak greps runs these calls instead, and they name no value and print none:
 
-* ``python .github/scripts/check-leaks.py --rule family``, which exits 1 and
-  prints each unexcused occurrence as a path, line, column and kind;
+* ``python .github/scripts/check-leaks.py --rule family``, which exits 0 with
+  one none-found line on a clean tree, and exits 1 on a leak, printing each
+  unexcused occurrence as a path, line, column and kind, or on a stale
+  exemption row, printing the row's number;
 * ``python .github/scripts/check-leaks.py --rule family --candidates``, the
   grep note's hand-read of bare numbers, which lists positions and exits 0.
   Those positions point at the family's number, so keep that list in a local
   terminal: never paste it into a pull request, an issue or a CI log;
-* ``python .github/scripts/check-leaks.py --rule destination``.
+* ``python .github/scripts/check-leaks.py --rule destination``, which reads
+  ``framework/`` and exits the same way: 0 with one none-found line, or 1 on
+  an unexcused name or a stale exemption row.
+
+A walk reads only the files Git tracks, as "File access" above says, so track
+a new file before any of these calls, or the call passes it unread.
 
 A grep for a destination name, for a path into ``destinations/`` or for a
 spec section number names nothing private, and may stay a grep.
@@ -312,14 +319,6 @@ FAMILY_VALUES: tuple[tuple[str, int, str], ...] = (
 DESTINATION_NAMES = ("Japan", "Tokyo", "Kyoto", "Osaka", "Shinkansen")
 
 #: The reasons the rows below give, each written once.
-BRIEF_RULE = "A build brief's leak rule names the values it bans."
-BRIEF_GREP = "A build brief's self-check prints the values its grep command looks for."
-BRIEF_TRIP_LENGTH_NOTE = (
-    "The Batch 1 brief's note on its narrowed trip-length token shows the forms the token matches."
-)
-BRIEF_PLURAL_NOTE = (
-    "The Batch 1 brief's note on plurals and case quotes the forms and the fixture lines it measured."
-)
 CHANGELOG_PACK_LINE = (
     "Version history: the 0.1.0 Added line records which destination pack shipped. The style law "
     "names it as a permanent exception."
@@ -332,204 +331,7 @@ STYLE_LAW_RULE = (
 #: ``(path, kind, context digest, count, reason)``. The context digest is
 #: ``value_digest("context", words)`` over the words ``occurrence_context``
 #: gives: up to three either side of the occurrence, on its own line.
-FAMILY_EXEMPTIONS: tuple[tuple[str, str, str, int, str], ...] = (
-    (
-        "docs/build/_build_prompt_template.md", "word",
-        "d6e85956a42ea20d2cf4e4982a012f25e2c11b3ee0b6fd2d39268baf8de5cec8", 1, BRIEF_RULE,
-    ),
-    (
-        "docs/build/_build_prompt_template.md", "code",
-        "96b82d47292c00ca147ff91390bfe17e9bdf9fb85f316ce44398eed326cfe18d", 1, BRIEF_RULE,
-    ),
-    (
-        "docs/build/_build_prompt_template.md", "word",
-        "d002f4c407e4448570af3e532f0bff70d65a3a20d805f24c5549db5a15036641", 1, BRIEF_RULE,
-    ),
-    (
-        "docs/build/_build_prompt_template.md", "word",
-        "e6fae2d0bd2e2313ecd2a8c50e3c965b0a17deb40308771bf86be5fd4718b21b", 1, BRIEF_RULE,
-    ),
-    (
-        "docs/build/_build_prompt_template.md", "number",
-        "5c81c94ca37dcdba3546fddd7d5a32c813813ab60288d4e244f551748ee388ea", 1, BRIEF_RULE,
-    ),
-    (
-        "docs/build/_build_prompt_template.md", "word",
-        "f0d94a26dd0279d47f9536f87c027242d91b78a6653bc95e80a670f0895bc38f", 3, BRIEF_GREP,
-    ),
-    (
-        "docs/build/_build_prompt_template.md", "code",
-        "f0d94a26dd0279d47f9536f87c027242d91b78a6653bc95e80a670f0895bc38f", 1, BRIEF_GREP,
-    ),
-    (
-        "docs/build/batch0_build_prompt.md", "word",
-        "fb442ccf809f426f48faa87c54bc6653c72358e656b2448926c29f511168287d", 1, BRIEF_RULE,
-    ),
-    (
-        "docs/build/batch0_build_prompt.md", "code",
-        "932ed8a82be700f3738a897a883b04d9da2769eaf8418743967cbf51beb114eb", 1, BRIEF_RULE,
-    ),
-    (
-        "docs/build/batch0_build_prompt.md", "word",
-        "228f91f54649b6243d214a3a7aae9f1fcbe7802b500f383f810f44e7539866a8", 1, BRIEF_RULE,
-    ),
-    (
-        "docs/build/batch0_build_prompt.md", "word",
-        "e6fae2d0bd2e2313ecd2a8c50e3c965b0a17deb40308771bf86be5fd4718b21b", 1, BRIEF_RULE,
-    ),
-    (
-        "docs/build/batch0_build_prompt.md", "number",
-        "5c81c94ca37dcdba3546fddd7d5a32c813813ab60288d4e244f551748ee388ea", 1, BRIEF_RULE,
-    ),
-    (
-        "docs/build/batch0_build_prompt.md", "word",
-        "e53f5311742145e972274c662d3d40f0d1819f1f7b14e053231216214679320d", 3, BRIEF_GREP,
-    ),
-    (
-        "docs/build/batch0_build_prompt.md", "code",
-        "e53f5311742145e972274c662d3d40f0d1819f1f7b14e053231216214679320d", 1, BRIEF_GREP,
-    ),
-    (
-        "docs/build/batch1_build_prompt.md", "word",
-        "4267c044a7ecbb60cb39f0b0974752ea9fe62c477f564051b67ac3830479a36e", 1, BRIEF_RULE,
-    ),
-    (
-        "docs/build/batch1_build_prompt.md", "code",
-        "395988df5a873fbf92979f9e732ff51a22d40fafb1b0a8270cdcefb46f53d418", 1, BRIEF_RULE,
-    ),
-    (
-        "docs/build/batch1_build_prompt.md", "word",
-        "de791b686e14055b4dae02d30ef18e1e88ce389b69d4c5dedbc41c6823dc4169", 1, BRIEF_RULE,
-    ),
-    (
-        "docs/build/batch1_build_prompt.md", "word",
-        "66b5119914b79dddbe86cc3d1071dd88f98631d3db467360a3ddf6477758f364", 1, BRIEF_RULE,
-    ),
-    (
-        "docs/build/batch1_build_prompt.md", "number",
-        "eebb37c794e313606944d8d6a76462792cdab4b787b8a03078d4b6e195805640", 1, BRIEF_RULE,
-    ),
-    (
-        "docs/build/batch1_build_prompt.md", "word",
-        "d6e85956a42ea20d2cf4e4982a012f25e2c11b3ee0b6fd2d39268baf8de5cec8", 1, BRIEF_RULE,
-    ),
-    (
-        "docs/build/batch1_build_prompt.md", "code",
-        "96b82d47292c00ca147ff91390bfe17e9bdf9fb85f316ce44398eed326cfe18d", 1, BRIEF_RULE,
-    ),
-    (
-        "docs/build/batch1_build_prompt.md", "word",
-        "ce90a0665dd1f53b929c23f22ab76eed7fda06faefe2ce86556c48395c63c3be", 1, BRIEF_RULE,
-    ),
-    (
-        "docs/build/batch1_build_prompt.md", "word",
-        "f725cef4bfe515d2c3d35c60cc4bff956e5efac10a703ca27395ff0f23bcc66d", 1, BRIEF_RULE,
-    ),
-    (
-        "docs/build/batch1_build_prompt.md", "number",
-        "5c81c94ca37dcdba3546fddd7d5a32c813813ab60288d4e244f551748ee388ea", 1, BRIEF_RULE,
-    ),
-    (
-        "docs/build/batch1_build_prompt.md", "word",
-        "9453e333123e110817f7885e15102c0aa065dbd43462a8d5e97af7430ebd86bb", 3, BRIEF_GREP,
-    ),
-    (
-        "docs/build/batch1_build_prompt.md", "code",
-        "9453e333123e110817f7885e15102c0aa065dbd43462a8d5e97af7430ebd86bb", 1, BRIEF_GREP,
-    ),
-    (
-        "docs/build/batch1_build_prompt.md", "number",
-        "9453e333123e110817f7885e15102c0aa065dbd43462a8d5e97af7430ebd86bb", 1, BRIEF_GREP,
-    ),
-    (
-        "docs/build/batch1_build_prompt.md", "number",
-        "e93483b40184bbd8cc56afe4b51b67e5d76159e332c95d79b98b9aa455493852", 1, BRIEF_TRIP_LENGTH_NOTE,
-    ),
-    (
-        "docs/build/batch1_build_prompt.md", "number",
-        "70747d3eb5de4563c2839096218470c804e1d66d2549b5537b4eaca8b519306e", 1, BRIEF_TRIP_LENGTH_NOTE,
-    ),
-    (
-        "docs/build/batch1_build_prompt.md", "number",
-        "ff0b9de7b7c82ba94bc2c7ca2b956ca39d2cd09f376fa63ba4c00b8381be4fb5", 1, BRIEF_TRIP_LENGTH_NOTE,
-    ),
-    (
-        "docs/build/batch1_build_prompt.md", "number",
-        "1b8576accc6f85be3d0a2cc75810bc46d4b1a1ed90f46bc36b69be167ba9402d", 1, BRIEF_TRIP_LENGTH_NOTE,
-    ),
-    (
-        "docs/build/batch1_build_prompt.md", "number",
-        "fa84f81bbb556710e1a8ed52899f6d0dbbaa884b945511d9fd76a00b1dad6ba1", 1, BRIEF_TRIP_LENGTH_NOTE,
-    ),
-    (
-        "docs/build/batch1_build_prompt.md", "word",
-        "0851166053f994d20734974fbd11f7d729cfd66bfb98d1147c0be3c453234dce", 1, BRIEF_PLURAL_NOTE,
-    ),
-    (
-        "docs/build/batch1_build_prompt.md", "word",
-        "49d1bcc9f695af9ed78144d379119b525fed04a0a4eaf36cb8c639e592fa13ef", 1, BRIEF_PLURAL_NOTE,
-    ),
-    (
-        "docs/build/batch1_build_prompt.md", "word",
-        "0874722845b24550954d839aee86023943134a2442b52513a6ddd4cfe284d50c", 1, BRIEF_PLURAL_NOTE,
-    ),
-    (
-        "docs/build/batch1_build_prompt.md", "word",
-        "68b5e2400e8296216742d994240d6e9ad468387d07515af8a85c112d00a1b764", 1, BRIEF_PLURAL_NOTE,
-    ),
-    (
-        "docs/build/batch1_build_prompt.md", "word",
-        "09b8b1d0d40207d53f0200337606a1ba38e2b542dd635d5f11e6e2da61c62cb7", 1, BRIEF_PLURAL_NOTE,
-    ),
-    (
-        "docs/build/batch1_build_prompt.md", "word",
-        "01a4d6bd6839410efaab7d017b6096f7a00d34e8edcf128ac6e36bd01ec94314", 1, BRIEF_PLURAL_NOTE,
-    ),
-    (
-        "docs/build/batch1_build_prompt.md", "word",
-        "05edf04b3960830d826ad89b5b987523e93ab2810b979dd30dedcc4401850eee", 1, BRIEF_PLURAL_NOTE,
-    ),
-    (
-        "docs/build/batch1_build_prompt.md", "word",
-        "8b13d444bb2c038ff0c735ff748fb4d11fe986bcad302cd09052f2e7b6cbc518", 1, BRIEF_PLURAL_NOTE,
-    ),
-    (
-        "docs/build/batch2_build_prompt.md", "word",
-        "7694c80e02d5f518db924e7bf109831f6f8422dfbae2f3c01fa9eb27dfdc8914", 3, BRIEF_GREP,
-    ),
-    (
-        "docs/build/batch2_build_prompt.md", "code",
-        "7694c80e02d5f518db924e7bf109831f6f8422dfbae2f3c01fa9eb27dfdc8914", 1, BRIEF_GREP,
-    ),
-    (
-        "docs/build/batch2_build_prompt.md", "number",
-        "86dde9d8578b9b83a7f15dd5d37d80032951298ceab4fb194e603732a1d06de6", 1, BRIEF_GREP,
-    ),
-    (
-        "docs/build/batch3_build_prompt.md", "word",
-        "6968a04f4bab347696c0cd23e5d0be3fc8850d16555a4cd502c37a10bb2a8c05", 3, BRIEF_GREP,
-    ),
-    (
-        "docs/build/batch3_build_prompt.md", "code",
-        "6968a04f4bab347696c0cd23e5d0be3fc8850d16555a4cd502c37a10bb2a8c05", 1, BRIEF_GREP,
-    ),
-    (
-        "docs/build/batch3_build_prompt.md", "number",
-        "ea411721a772a532478f3e1a37d969892bdbe9074c5f4b21e588541656854d61", 1, BRIEF_GREP,
-    ),
-    (
-        "docs/build/batch3_build_prompt.md", "word",
-        "c95f89cc63af37e0f2b0abaaaae73c21ad7584c848f2435704f8b1806dd139d9", 3, BRIEF_GREP,
-    ),
-    (
-        "docs/build/batch3_build_prompt.md", "code",
-        "c95f89cc63af37e0f2b0abaaaae73c21ad7584c848f2435704f8b1806dd139d9", 1, BRIEF_GREP,
-    ),
-    (
-        "docs/build/batch3_build_prompt.md", "number",
-        "ee484b222b56da2b46593f8448dabb70539b0d45aa05114a3b2ee627351f6466", 1, BRIEF_GREP,
-    ),
-)
+FAMILY_EXEMPTIONS: tuple[tuple[str, str, str, int, str], ...] = ()
 
 #: ``(path, occurrence, context, count, reason)``.
 DESTINATION_EXEMPTIONS: tuple[tuple[str, str, str, int, str], ...] = (

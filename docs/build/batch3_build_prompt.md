@@ -6,7 +6,7 @@
 
 - **Status:** Active
 - **Owner:** Repository Maintainers
-- **Last Updated:** 2026-09-24
+- **Last Updated:** 2026-09-27
 - **Scope:** The complete build instruction for Batch 3 of the EFingPlanner curriculum -- the seven remaining destination-pack reference files, the eight remaining session-insert slots, the routing contract's conversion from inline-code filenames to links, and the edits to built pack files that keep one fact in one home. It carries every Batch 3 requirement, every applicable acceptance criterion, and the adjudicated answer to every open question raised against the batch. It does not cover Batches 0, 1, 2 or 4, and it is a build instruction rather than shipped curriculum.
 - **Related:** [Build prompt directory guide](README.md), [Batch 2 build brief](batch2_build_prompt.md), [Batch 1 build brief](batch1_build_prompt.md), [Build prompt template](_build_prompt_template.md), [Archived specification](../spec/specification.md)
 
@@ -170,8 +170,12 @@ This is not softened by the pack being the destination layer. The pack describes
 any reusing family; the moment it describes *this* family, it stops being reusable and
 starts being a privacy problem in a public repository.
 
-**The check:** `grep -rwE 'Chicago|ORD|grandmother|uncle' destinations/` and
-`grep -rwE '17[ -]?(day|night)s?' destinations/` both find nothing.
+**The check:** the committed leak hook, never a grep that names a value, since such a grep
+leaks the value into the file, the shell's history and the output.
+`python .github/scripts/check-leaks.py --rule family` finds nothing unexcused, and
+`python .github/scripts/check-leaks.py --rule family --candidates` lists bare numbers for
+a hand-read that stays in your own terminal, because its positions point at the family's
+number. Section 9 tracks the new pack files first, then runs both.
 
 ### 1.7 Reader economy: the built pack already carries a lot
 
@@ -988,6 +992,12 @@ wrong.
 
 ### Gates, all five, before every pull request
 
+Track the new pack files before you run anything that reads `git ls-files`.
+`pre-commit run --all-files` and the leak hook in the batch's own checks below read only
+the files Git tracks, so a run made before the new files are tracked passes having opened
+none of them. Run `git add -- destinations` first, and confirm that
+`git ls-files --others --exclude-standard` prints nothing.
+
 ```text
 pre-commit run --all-files
 npm run lint:md
@@ -1004,8 +1014,8 @@ otherwise.
 ### The batch's own checks
 
 ```text
-grep -rwE 'Chicago|ORD|grandmother|uncle' destinations/
-grep -rwE '17[ -]?(day|night)s?' destinations/
+python .github/scripts/check-leaks.py --rule family
+python .github/scripts/check-leaks.py --rule family --candidates
 grep -rnE '[0-9]{4}-[0-9]{2}-[0-9]{2}|[0-9]{1,2}/[0-9]{1,2}/[0-9]{2,4}' destinations/ | grep -v 'Last Updated:'
 grep -rnE '(^|[^0-9,.])[0-9]{6,}|[0-9]{1,4}[- ][0-9]{2,4}[- ][0-9]{3,4}' destinations/
 grep -rniE '(confirmation (number|code)|passport (number|no)|card number|booking (reference|number)|reservation (number|code))[ :#.-]*[a-z]{0,6}[0-9]' destinations/
@@ -1038,8 +1048,10 @@ done
 [ "$seen" -gt 0 ] || echo "NO PACK FILES FOUND -- run this from the repo root."
 ```
 
-Every command but the last finds nothing on a correct tree. The third to fifth are the
-trip-data greps: dates written as numbers, long or grouped digit runs such as phone,
+The first two lines are the committed leak hook: the first reports none found on a correct
+tree, and the second lists bare numbers for rule 1.6's hand-read and exits `0`. Of the
+rest, every command but the last finds nothing on a correct tree. The third to fifth are
+the trip-data greps: dates written as numbers, long or grouped digit runs such as phone,
 passport, confirmation or card numbers, and a label such as "passport no" followed by a
 value. That grep needs the value, so the card boundary 5.6 requires, which names the
 labels with no value, passes. The date grep
