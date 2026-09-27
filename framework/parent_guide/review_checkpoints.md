@@ -6,7 +6,7 @@ Your child stops at certain points and brings you a recommendation. That's a che
 
 **How many you will meet depends on the path.** On **First Taste**, Checkpoint 1 is the only checkpoint, and the path carries on after it to Session 53; the [roadmap](../PROJECT_ROADMAP.md) lists the sessions in between. If that is your family's path, the Checkpoint 1 section below is the only one you need. On the **Core and Full** paths there are six, and the rest of this page covers them all.
 
-The blank form is the [parent review form](../templates/parent_review_form.md). This page is the how and the why; the form is what you fill in.
+The blank form is the [parent review form](../templates/parent_review_form.md). This page is the how and the why; the form is what you fill in, one copy at each checkpoint as you decide. On the Core path, your child files the forms behind tab 10 of the binder: Checkpoints 1 to 5 in Session 50, and Checkpoint 6 in Session 53.
 
 ## Five of the six are low-ceremony
 
@@ -27,7 +27,7 @@ Any of these works:
 
 Turn reviews around promptly. If you can't, your child has somewhere to go: the "what to do while you wait for an adult checkpoint" note on their [When I'm Stuck card](../student_guide/when_im_stuck.md). They can do an Optional Extension, add to the question parking lot, or grow their "things I can't wait to see" page.
 
-**The next session genuinely waits**, and that is on purpose. Everything after a checkpoint is built on the decision you are about to make; letting a child run ahead means later work rests on a season, shortlist or route nobody approved.
+**The next session waits for your answer**, and that is on purpose. Everything after a checkpoint is built on the decision you are about to make; letting a child run ahead means later work rests on a season, shortlist or route nobody approved.
 
 What you don't want is a child sitting still because you were busy on Tuesday.
 
@@ -41,6 +41,8 @@ Pick one:
 - **Park this decision for later**
 
 A signature is optional. Initials or a "got it" is plenty.
+
+**When a checkpoint is finished.** From Checkpoint 2 on, a checkpoint is finished when your answer is Approved, or Approved with changes once your child has written the changes in. From Checkpoint 4 on, they also go down their [When the Plan Changes card](../student_guide/when_the_plan_changes.md) for each change. At Checkpoints 2 to 5, "Needs more research" and "Park this decision for later" keep it open until your child comes back to it. At Checkpoint 6, a parked decision is the result, so the checkpoint is finished. Every answer is still a normal result, and only a finished checkpoint counts toward "Checkpoints reached".
 
 **"Needs more research" is the hard one**, and it's the most common of the hard ones. Said badly it reads as "you failed." The [coaching guide](coaching_and_support.md) has the script. Use its words, because this is the verdict most likely to end the project.
 
@@ -91,9 +93,9 @@ Each has its own **what to consider** list. The review form checks whether the w
 
 **What they bring:** with open dates, total days, overnight cities, nights in each, travel days, and a shorter backup version.
 
-**Also yours to do here:** confirm or adjust the arrival and departure places against current flight options. If they change, your child's route flexes. They move one block and keep the rest.
+**Also yours to do here:** confirm or adjust the arrival and departure places against current flight options, or against however your family is getting there. If they change, write the new place on your assumptions page, which Sessions 40, 41 and 45 read. Your child's route flexes. They move one block and keep the rest, then go down their When the Plan Changes card. A changed first or last place makes your answer "Approved with changes". Make it "Needs more research" if the change alters which route works best.
 
-**What to consider:** flights; the arrival and departure places; how many hotel moves it involves; whether the transit is workable; how it fits your maximum trip length, or your booked trip length; budget implications; and the family schedule.
+**What to consider:** flights, if you fly; the arrival and departure places; how many hotel moves it involves; whether the transit is workable; how it fits your maximum trip length, or your booked trip length; budget implications; and the family schedule.
 
 <!-- density-exempt: X, not Y -- the Checkpoint 4 booked-dates beat the batch 2 brief's entry for this page requires: the booked days split, with no shorter backup version -->
 **With the dates already booked,** the trip length is set. They bring how the booked days are split: the cities, the nights in each and the travel days, with no shorter backup version.
@@ -106,6 +108,10 @@ Each has its own **what to consider** list. The review form checks whether the w
 
 The draft is the thing being reviewed, because pacing, transit, meals and rest show up in its day cards.
 
+**If your answer moves where the trip arrives or leaves,** the draft's first or last day carries the wrong travel leg. That is "Approved with changes": write the new place on your assumptions page, which later sessions read, and tell your child whether each flight still lands on a later date. Make it "Needs more research" if the change alters which route works best.
+
+**After any "Approved with changes",** your child goes down their When the Plan Changes card and fixes every page it names, marked "changed at Checkpoint 5". If you fly and a change moves where the trip arrives or leaves, tell them which flights land on a later date. If a change adds an overnight place, help with a Hotel Comparison Card for it, or give a cost per night and say whether it's per room or per person. If someone comes for only part of the trip, tell them who is there on the changed days.
+
 **What to consider:** pacing; transit time; meals; rest; booking needs; budget; safety; and practicality.
 
 **Progress is real:** the family has a usable *day-by-day plan*. Stopping here is a finish in its own right.
@@ -116,10 +122,14 @@ The draft is the thing being reviewed, because pacing, transit, meals and rest s
 
 **What to consider:** the final recommendation; what you approve; what you want changed; what you'll verify or book; and which questions stay open.
 
+**If your answer moves where the trip arrives or leaves,** the same two answers apply. "Approved with changes" means you write the new place on your assumptions page and tell your child whether each flight still lands on a later date. "Needs more research" fits a change that alters which route works best, and your child does that piece before Session 53.
+
+**After any "Approved with changes",** your child goes down their When the Plan Changes card and fixes every page it names, marked "changed at Checkpoint 6". If you fly and a change moves where the trip arrives or leaves, tell them which flights land on a later date. If a change adds an overnight place, help with a Hotel Comparison Card for it, or give a cost per night and say whether it's per room or per person. If someone comes for only part of the trip, tell them who is there on the changed days.
+
 **Progress is real:** the family has *made a decision*.
 
 ## Where to go next
 
 - [Coaching and support](coaching_and_support.md) -- the words for "needs more research", the most common hard verdict.
 - [Booking guidance](booking_guidance.md) -- what happens after a checkpoint approves something that needs booking.
-- [Session support notes](session_support_notes.md) -- each session built so far at a glance, Checkpoint 1 included.
+- [Session support notes](session_support_notes.md) -- one session at a glance in each entry, Checkpoint 1 included.

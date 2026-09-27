@@ -43,8 +43,8 @@ Weeks of work in one paper folder is one spill away from gone.
 
 If you work on paper, photograph or scan each finished page into a phone folder or a cloud folder. If you work in Google Docs, the cloud copy is already your backup.
 
-Before you photograph a page, look at it once. Check there are no private details on it. The full rules are on one page: [privacy and safety](../docs/privacy_and_safety.md).
+Before you photograph a page, look at it once. Check there are no private details on it. Your "if I get separated" card stays on paper, in your pocket. The full rules are on one page: [privacy and safety](../docs/privacy_and_safety.md).
 
 ## At the very end
 
-At the very end, put your finished pages in the order you did them and write what each one is on a sticky note. That is enough. Families who go on to the longer path get **Session 50, Final Binder Assembly**, which helps with tabs and order, and a **print index** that says what goes in which tab. Neither is built yet, so neither is linked here. You do not need to think about tabs before then.
+At the very end, put your finished pages in the order you did them and write what each one is on a sticky note. That is enough. Families who go on to the longer path get [Session 50, Final Binder Assembly](../sessions/phase_08_readiness_final/50_final_binder_assembly.md), which helps with tabs and order and says what goes in which tab. You do not need to think about tabs before then.

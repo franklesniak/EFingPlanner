@@ -33,7 +33,7 @@ Only four things are genuine setup *actions* (the first is the filter you just t
 3. **Set a rough season window and a rough budget band** on your copy of the [Family Travel Assumptions page](../../trip_starter/family/current_family_travel_assumptions.md). Both are "this can change" starting points, and the final decisions come later.
 4. **Choose AI: yes or no**, and record the choice on your copy of the [Family Travel Assumptions page](../../trip_starter/family/current_family_travel_assumptions.md). The default is **no** (AI-free). If you choose yes, you commit to the adult-operated pattern in the [privacy and safety rules](../../docs/privacy_and_safety.md), and your child does Session 09 before using any AI tool -- writing the yes/no down is what keeps that safety gate from being missed. Before you choose yes, read the [AI use rules](../../docs/ai_use_rules.md) -- an adult checks the tool's current minimum-age and supervision policy first, and writes the date checked beside the choice.
 
-Leave everything else at its default. You do not decide the "City C," food, or language sessions now -- they promote themselves later only if your child's research keeps surfacing them.
+Leave everything else at its default. You do not decide the "City C," food, or language sessions now. Each becomes Core later on its own condition: City C if a third city keeps coming up in your child's research, and the food and language sessions if your family wants their page in the binder, which you decide when your child reaches them.
 
 ## Workspace
 

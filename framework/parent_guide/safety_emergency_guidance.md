@@ -24,8 +24,8 @@ Stated plainly: a panicking child executes one rehearsed rule. A child choosing 
 Your child makes an "if I get separated" card and carries it. You do four things:
 
 - **Rehearse it once, calmly**, as a "what if". A calm rehearsal *lowers* anxiety, because it turns a vague fear into a known script.
-- **Fill in the lodging lines** on the card once the lodging is booked and checked.
-- **Fill in any local-language line** on the card yourself, and confirm the current wording.
+- **Fill in the lodging lines** on the card once the lodging is booked and checked. If you stay in more than one place, fill in a fresh card for each one, and tear up the card for a place you've left, so your child carries only the current one.
+- **Fill in any local-language line** on the card yourself, and confirm the current wording. Check the two emergency phrases while you're at it.
 - **Check any emergency number** on a current official page before it goes on the card, and write the date you checked.
 
 ## The privacy exception, exactly
@@ -45,7 +45,7 @@ It's a carry-in-pocket safety card, not trip data written down anywhere else. Th
 
 3. **Know the emergency numbers**, and know that an adult, a shop worker, or an official post can call them.
 
-Carry the numbers verify-framed. Your destination pack is where the destination-specific numbers, the local terms, and any local hazard notes belong. If your pack does not have them yet, take them from a current official source, such as the destination's official tourism or government site, and write the date you checked.
+Carry the numbers verify-framed. Your destination pack's safety and emergency page is where the destination-specific numbers, the local terms, and any local hazard notes belong. If your pack does not have them yet, take them from a current official source, such as the destination's official tourism or government site, and write the date you checked.
 
 ## Monitoring, insurance, medical coverage
 
@@ -72,7 +72,7 @@ That list names the known higher-risk areas. If another topic feels like it belo
 ## Privacy
 
 <!-- density-exempt: X, not Y -- privacy rules: nothing personal in the repository, what the copied-out kit holds, and the sensitive set kept out of it and out of shared folders (the spec's Privacy and Safety Requirements) -->
-A short reminder, with the full rules on the [privacy and safety page](../docs/privacy_and_safety.md). **Nothing personal goes in this repository at all.** Your family's copied-out kit is different: that is where the real work belongs, including pages like the Trip-Basics card that hold your travelers and, if you fly, your home airport. What stays out of it is the **sensitive** set: passport numbers, birthdates, confirmation numbers, payment details and exact booked dates. A shared-documents folder is not a private vault for those either.
+A short reminder, with the full rules on the [privacy and safety page](../docs/privacy_and_safety.md). **Nothing personal goes in this repository at all.** Your family's copied-out kit is different: that is where the real work belongs, including pages like the Trip-Basics card that hold your travelers and, if you fly, your home airport. What stays out of it is the **sensitive** set: passport numbers, birthdates, your home address, confirmation numbers, payment details and exact booked dates. A shared-documents folder is not a private vault for those either.
 
 ## Where to go next
 

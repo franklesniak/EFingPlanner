@@ -10,7 +10,7 @@ You are here: Phase 4 (Attractions and Experiences). Not a First Taste step. **T
 - Planner skill: making trade-offs
 - Estimated time: 20-30 minutes for the child, plus a 20-40 minute review with you
 - Parent involvement: parent review -- genuinely use the recommendation in a real family talk
-- Materials: your ranked attraction list and attraction cards, your My Calls page, your City A card from Session 16 and your Session 26 scoring tables (for the optional look back at your minutes guesses), your family's [current travel assumptions](../../templates/current_family_travel_assumptions.md) page (for the budget band), your [Source Log](../../templates/source_log.md), a [Decision Record page](../../templates/decision_record.md)
+- Materials: your ranked attraction list and attraction cards, your My Calls page, your City A card from Session 16 and your Session 26 scoring tables (for the optional look back at your minutes guesses), your family's [current travel assumptions](../../templates/current_family_travel_assumptions.md) page (for the budget band), your [Source Log](../../templates/source_log.md), a [Decision Record page](../../templates/decision_record.md), a blank [Parent Review Form](../../templates/parent_review_form.md) for a grown-up to fill in
 
 ## Goal
 
@@ -104,7 +104,7 @@ Like Checkpoint 2, this one is lightweight and asynchronous. One adult can revie
 
 **The time glance.** This is the midpoint look at your child's minutes guesses from Sessions 16 and 26. Let them notice any change themselves. A gap that shrank is worth a word of credit; a gap that didn't is normal.
 
-**Questions to ask:** "Which must-do would you give up first, and why?" and "Which of these would the whole family enjoy?" The [parent review form](../../templates/parent_review_form.md) has the full set of coaching questions and the good-enough standards; [review checkpoints](../../parent_guide/review_checkpoints.md) explains how to run each one.
+**Questions to ask:** "Which must-do would you give up first, and why?" and "Which of these would the whole family enjoy?" Fill in a [parent review form](../../templates/parent_review_form.md) for this checkpoint as you decide. It has the full set of coaching questions and the good-enough standards, and your child files it behind tab 10 in Session 50; [review checkpoints](../../parent_guide/review_checkpoints.md) explains how to run each one.
 
 **What to avoid:** taking over the fun choices, swapping in your own favorites, or asking for a longer must-do list. The review form lists the rest.
 

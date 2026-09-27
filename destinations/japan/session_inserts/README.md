@@ -7,7 +7,7 @@
 
 - **Status:** Active
 - **Owner:** Repository Maintainers
-- **Last Updated:** 2026-09-25
+- **Last Updated:** 2026-09-26
 - **Scope:** The destination-pack routing contract. It says which session pulls which insert, which reference files each session points to, what fields every insert slot has to supply, and what it takes to add a new destination pack. It holds routing rather than facts, so it carries no `Last reviewed` stamp.
 - **Related:** [Destination pack contents](../README.md)
 
@@ -29,21 +29,33 @@ This table routes every session that needs place facts to the pack, in session o
 | 19 Other Places Research | `19_other_places_menu.md` | `major_cities.md` |
 | 23 Attraction Research Cards | `23_attraction_ideas.md` | `food_basics.md` (for food-type attractions) |
 | 30 Trains, Transit, and Travel Cards | `30_transport_specifics.md` | `transportation_basics.md` |
-| 38 Daily Cost Estimates | none | `money_basics.md` (cash culture, currency) |
 | 34 Neighborhoods and Hotel Location | `34_lodging_types.md` | `adult_logistics.md` (occupancy reality) |
 | 36-37 Food / Restaurant Shortlist | `36_37_food_ideas.md` | `food_basics.md` |
+| 38 Daily Cost Estimates | none | `money_basics.md` (cash culture, currency) |
 | 40 Realistic Day Planning | none | `airports_and_arrival_basics.md` (airport-to-city) |
 | 42 Reservations and Timed Entries | `42_reservation_examples.md` | none |
 | 43 Rest Days, Jet Lag, and Pacing | none | `transportation_basics.md` (walking/stairs) |
 | 47 Language and Etiquette | `47_language_etiquette.md` | `language_basics.md`, `etiquette_basics.md` |
 | 48 Packing List | none | `seasons_weather_events.md` (seasonal packing) |
+| 49 Travel Readiness Checklist | none | `safety_and_emergency.md` (emergency numbers, the local kinds of help, the two staying-found phrases) |
 | (child travel glossary, all sessions) | `kid_glossary.md` | none |
 
-**Which column a row fills decides how its session writes.** A row with an insert means the session writes the exact phrase *"open this session's Destination Notes"*, and that phrase resolves to the insert. A row whose Insert column reads `none` means the session names the reference in the pack's own words instead, because there is no insert for the phrase to resolve to. Sessions 05, 06 and 08 are that second kind.
+**Which column a row fills decides how its session writes.** A row with an insert means the session writes the exact phrase *"open this session's Destination Notes"*, and that phrase resolves to the insert. A row whose Insert column reads `none` means the session names the reference in the pack's own words instead, because there is no insert for the phrase to resolve to.
 
 Every filename in that table is written as inline code and never as a relative link. Most of the slots and several of the reference files do not exist in any pack yet, so a link to one would dangle and fail the repository's link check. Whichever batch or pack author writes a target adds the link then.
 
-Sessions not in this table (00-04, 07, 09, 13-15, 20-22, 24-29, 31-33, 35, 39, 41, 44-46, 49-54) need no destination facts and are fully neutral -- 54 included, the optional post-trip session, in which the child compares what they predicted against what actually happened on the real trip and names no place. A session can be routed to a pack file without naming a place in its own wording: Sessions 05 and 08 name no place but open the pack's starting-sources list, and Session 38 takes its currency and cash-culture facts from the pack's money reference. Every such pointer is a row in the table above.
+Sessions not in this table (00-04, 07, 09, 13-15, 20-22, 24-29, 31-33, 35, 39, 41, 44-46, 50-54) need no destination facts and are fully neutral -- 54 included, the optional post-trip session, in which the child compares what they predicted against what actually happened on the real trip and names no place. A session can be routed to a pack file without naming a place in its own wording: Sessions 05 and 08 name no place but open the pack's starting-sources list, and Session 38 takes its currency and cash-culture facts from the pack's money reference. Every such pointer is a row in the table above.
+
+### Parent-facing pages
+
+Parent-facing routing is in scope from Batch 2 onward. The parent-guide pages in the table below mention destination facts an adult needs: local hazards, emergency numbers, lodging priced per person, children's fares, and which airport to land at. Each stays destination-neutral and names the pack file generically, so each gets a row here on the same terms as a session. A parent page names the reference in the pack's own words, as a reference-routed session does, and says what to do until the pack has the file: use a current official source, checked and dated.
+
+| Parent-facing page | Insert it pulls | Reference file(s) it points to (`reference/`) |
+| --- | --- | --- |
+| Adult-only logistics | none | `adult_logistics.md` (entry specifics, luggage help), `safety_and_emergency.md` (local natural hazards) |
+| Safety and emergency guidance | none | `safety_and_emergency.md` (emergency numbers, local terms for help, local natural hazards) |
+| Money and budget guidance | none | `money_basics.md` (lodging priced per person, children's fares) |
+| Flights from your home airport | none | `airports_and_arrival_basics.md` (which airport to land at, arrival-day transit) |
 
 ## What each insert slot supplies
 
@@ -82,18 +94,18 @@ Dividing a row later means editing the row, in the same pass that writes the ref
 
 ## What is written in this pack, and what is not
 
-The contract table names twelve insert slots and twelve reference files. Both columns are completion targets. A reader given only the insert count would write twelve files and believe the pack was finished. The four bullets below count what *this* pack has built, so they are the one part of this contract that a second pack recounts for itself, as step 1 of the checklist below explains.
+The contract tables name twelve insert slots and thirteen reference files. Both columns are completion targets. A reader given only the insert count would write twelve files and believe the pack was finished. The four bullets below count what *this* pack has built, so they are the one part of this contract that a second pack recounts for itself, as step 1 of the checklist below explains.
 
 - **Insert slots written (four):** `10_snapshot_facts.md`, `11_regions_overview.md`, `12_seasons_and_events.md` and `kid_glossary.md`.
 - **Insert slots not yet written:** the other eight.
 - **Reference files written (seven):** `regions_overview.md`, `major_cities.md`, `seasons_weather_events.md`, `transportation_basics.md`, `money_basics.md`, `trusted_starting_sources.md` and `sample_search_terms.md`.
-- **Reference files not yet written (five):** `food_basics.md`, `language_basics.md`, `etiquette_basics.md`, `adult_logistics.md` and `airports_and_arrival_basics.md`.
+- **Reference files not yet written (six):** `food_basics.md`, `language_basics.md`, `etiquette_basics.md`, `adult_logistics.md`, `airports_and_arrival_basics.md` and `safety_and_emergency.md`.
 
 ## Adding a destination
 
 <!-- density-exempt: X, not Y -- the batch 1 brief's add-a-destination rules; the contrasts are in rule 5, the brief's verify framing ("never fixed"), and rule 6, the brief's completion rule word for word, which rules on what counts as a fill and which slots the open destination question binds -->
 
-1. Create the pack's two contents pages. `destinations/<name>/README.md` carries the provided-as-is framing and lists the pack's reference files and its inserts. `destinations/<name>/session_inserts/README.md` is a destination-neutral copy of this contract. Then create the pack's `reference/` directory and fill in its stable facts, one file per topic, each named as the contract's reference column names it: regions, major cities, seasons, weather and events, transportation, airports, money, language, etiquette, food, adult logistics, trusted starting sources, and sample search terms. Every field list above is written destination-neutral so that a copy of this contract carries only the contract, and the new pack supplies every value. One section is the exception. The four bullets under **What is written in this pack, and what is not** count what the first pack has built, so copying them hands a new pack counts it has not earned and makes an empty pack look part-finished. Delete those four bullets in the copy and recount them for the pack you are starting: nothing is written on day one, so every insert slot and every reference file in the contract table belongs on the not-yet-written lists.
+1. Create the pack's two contents pages. `destinations/<name>/README.md` carries the provided-as-is framing and lists the pack's reference files and its inserts. `destinations/<name>/session_inserts/README.md` is a destination-neutral copy of this contract. Then create the pack's `reference/` directory and fill in its stable facts, one file per topic, each named as the contract's reference column names it: regions, major cities, seasons, weather and events, transportation, airports, money, language, etiquette, food, adult logistics, safety and emergency, trusted starting sources, and sample search terms. Every field list above is written destination-neutral so that a copy of this contract carries only the contract, and the new pack supplies every value. One section is the exception. The four bullets under **What is written in this pack, and what is not** count what the first pack has built, so copying them hands a new pack counts it has not earned and makes an empty pack look part-finished. Delete those four bullets in the copy and recount them for the pack you are starting: nothing is written on day one, so every insert slot and every reference file in the contract tables belongs on the not-yet-written lists.
 2. Write the small "destination notes" each place-specific session pulls in.
 3. Do not edit any framework session, template, guide, or doc.
 4. Keep adult-owned legal and safety topics adult-owned.

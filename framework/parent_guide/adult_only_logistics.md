@@ -28,7 +28,7 @@ Worth knowing: your child's binder is valuable either way. If you use an agent, 
 ## The checklist
 
 - [ ] Passports
-- [ ] Entry requirements: verify the current rule on the official government source close to travel, and write the date you checked. If anyone is *selling* you a travel authorization, check that against the official source before paying; the destination specifics are in your destination pack
+- [ ] Entry requirements: verify the current rule on the official government source close to travel, and write the date you checked. If anyone is *selling* you a travel authorization, check that against the official source before paying; the destination specifics are in your destination pack's adult logistics page, or on the official source if the pack does not cover them yet
 - [ ] Visa or entry forms, if applicable
 - [ ] Flights
 - [ ] Hotels
@@ -44,7 +44,7 @@ Worth knowing: your child's binder is valuable either way. If you use an agent, 
 - [ ] Meeting-point plan
 - [ ] Travel advisories
 - [ ] Weather alerts
-- [ ] Local natural-hazard awareness: see your destination pack, or a current official source for the destination if the pack does not cover it yet, with the date you checked
+- [ ] Local natural-hazard awareness: see your destination pack's safety and emergency page, or a current official source for the destination if the pack does not cover it yet, with the date you checked
 - [ ] Timed tickets
 - [ ] Restaurant reservations
 - [ ] Transportation bookings
@@ -55,7 +55,7 @@ Three things go beyond stamina, and they are yours to verify:
 
 - **Step-free routing and station elevator availability** on the route you're actually planning
 - **Accessible lodging** — step-free access, and any room or bathroom needs
-- **Luggage handling** for anyone who shouldn't carry bags up stairs: forwarding services, porter help, or lockers. Those are categories; **which ones exist where you are going, and what they are called, is in your destination pack's adult-logistics page**. If your pack does not have that page yet, check the official sites of the local transport operators, or ask your lodging, and write the date you checked
+- **Luggage handling** for anyone who shouldn't carry bags up stairs: forwarding services, porter help, or lockers. Those are categories; **which ones exist where you are going, and what they are called, is in your destination pack's adult logistics page**. If your pack does not have that page yet, check the official sites of the local transport operators, or ask your lodging, and write the date you checked
 
 <!-- density-exempt: X, not Y -- the spec's child-flags-not-fixes boundary, bold in the batch 2 brief: the child does not research the fix -->
 Your child's job is to *flag* likely trouble spots: a stair-heavy transfer, a hilltop site, a station that may not have a lift. They notice and hand it to you. They don't research the fix.
@@ -79,7 +79,7 @@ Your child makes an "if I get separated" card and learns a three-step plan.
 
 **Rehearse the plan once**, calmly; keep it light, because a drill teaches fear rather than the script.
 
-Then three jobs on the card itself. **Fill in the lodging lines** once the lodging is booked and checked. **Fill in any local-language line** and confirm its current wording. And **check the emergency numbers on a current official page and write the date you checked**. Your child writes the numbers themselves once you have.
+Then three jobs on the card itself. **Fill in the lodging lines** once the lodging is booked and checked, on a fresh card for each place you stay, and tear up the card for a place you've left. **Fill in any local-language line** and confirm its current wording, along with the two emergency phrases. And **check the emergency numbers on a current official page and write the date you checked**. Your child writes the numbers themselves once you have.
 
 A rehearsed plan lowers a child's anxiety. It turns a vague fear into a known script.
 
