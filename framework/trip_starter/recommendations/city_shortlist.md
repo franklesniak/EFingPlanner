@@ -25,6 +25,8 @@ This is your Checkpoint 2 page, from [Session 22](../../sessions/phase_03_choose
 
 Your skip and save-for-future notes will help later, when you make your cut list.
 
+If a place is added or dropped later, come back to this page. Write the new beside the old, with where it changed.
+
 Before you start the next session:
 
 - **Approved with changes:** write the changes on this page and in your Decision Record.

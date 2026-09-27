@@ -4,7 +4,7 @@
 
 Copy this page out of the repository before you fill it in. Do not commit your filled-in work to a public repository.
 
-You make this card in [Session 49](../sessions/phase_08_readiness_final/49_travel_readiness_checklist.md), and you carry it in your pocket on the trip. It holds what a helper needs to get you back to your family. Fill in this page, or copy its rows onto a small card that fits your pocket, with your plan's three steps on the back.
+You make this card in [Session 49](../sessions/phase_08_readiness_final/49_travel_readiness_checklist.md), and you carry it in your pocket on the trip. It holds what a helper needs to get you back to your family. Fill it in on paper: print this page, or copy its rows onto a small card that fits your pocket, with your plan's three steps on the back.
 
 ## My card
 
@@ -22,7 +22,7 @@ You make this card in [Session 49](../sessions/phase_08_readiness_final/49_trave
 
 If the lodging lines are still blank, leave them for a grown-up to fill in after booking. A safety card never carries a guess. The number rows can wait until a grown-up has checked the numbers, too.
 
-Staying in more than one place? Then you carry only the card for where you sleep that night. At each move, a grown-up fills in a fresh card, and the old one is torn up. The same goes if the place to stay changes before the trip.
+Staying in more than one place? Then you carry only the card for where you sleep that night. At each move, a grown-up fills in a fresh card, and the old one is torn up. The same goes if the place to stay changes before the trip. The parent's number on each card is for a parent who's with you there, so a grown-up tells you whose number goes on it.
 
 ## Never on this card
 
@@ -41,7 +41,7 @@ The filled card stays in your pocket. It is never saved into a shared folder or 
 
 ## For the grown-ups: three card jobs
 
-1. Fill in the lodging lines once the lodging is booked and checked. If you stay in more than one place, fill in a fresh card for each one, and tear up the card for a place you've left, so your child carries only the current one. If the place to stay changes before the trip, fill in a fresh card for the new place, and tear up the old one.
+1. Fill in the lodging lines once the lodging is booked and checked. If you stay in more than one place, fill in a fresh card for each one, with its lodging lines and its local-language line, and tear up the card for a place you've left, so your child carries only the current one. If the place to stay changes before the trip, fill in a fresh card for the new place the same way, and tear up the old one. If the parent whose number is on the card won't be with your child at a place, say whose number goes on that place's card.
 2. Write the local-language line, and confirm its current wording. Check the two phrases while you're at it.
 3. Check each emergency number on a current official page, and write the date you checked. Then your child writes the numbers on the card.
 

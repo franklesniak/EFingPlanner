@@ -27,6 +27,6 @@ If your family stops at Checkpoint 5, the Core Finish Line, you have a complete 
 
 ## Keep it private
 
-Keep your filled-in outputs out of any public repository; complete them in your private binder or shared documents. Do not record exact booked travel dates, hotel names, confirmation numbers, passport details, or payment details.
+Keep your filled-in outputs out of any public repository; complete them in your private binder or shared documents. Do not record exact booked travel dates, hotel names, confirmation numbers, passport details, birthdates, your home address, or payment details.
 
 The full rules are on the [privacy and safety](../../docs/privacy_and_safety.md) page.

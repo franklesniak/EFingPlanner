@@ -6,7 +6,7 @@ This is the set of blank pages your family fills in. Every page here is empty on
 
 ## Three rules before you start
 
-1. **Copy this kit out of the repository before filling it in. Do not commit your filled-in work to a public repository.** Print the pages, or paste them into a Google Docs folder. Then work there.
+1. **Copy this kit out of the repository before filling it in. Do not commit your filled-in work to a public repository.** Print the pages, or paste them into a Google Docs folder. Then work there. Fill in your "if I get separated" card on paper, as its page says.
 2. **Prices, hours, and rules must be checked again before booking.** Anything you write down can go out of date. A grown-up checks it again at the end.
 3. **An open answer is fine.** It is okay to write not decided yet, unknown, or ask an adult. A blank you left open on purpose is a finished answer.
 

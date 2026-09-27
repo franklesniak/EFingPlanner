@@ -17,7 +17,7 @@ This is your whole recommendation on one page. A busy grown-up should be able to
 | What are the top experiences? | |
 | Where might we stay? (an area) | |
 | What are the food highlights? (if we did the food sessions) | |
-| What is the rough budget estimate for the parts I planned, and does it fit our band? (My Session 39 subtotal, with its "not counting ___" if it has one.) | |
+| What is the rough budget estimate for the parts I planned, and does it fit our band? (My Session 39 subtotal, with its "not counting ___" if it has one, and my band sentence, which checks its matching piece.) | |
 | What are the biggest trade-offs? | |
 | What did we cut, and why? | |
 

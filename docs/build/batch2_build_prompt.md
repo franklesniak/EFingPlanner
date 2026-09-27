@@ -4,7 +4,7 @@
 
 - **Status:** Active
 - **Owner:** Repository Maintainers
-- **Last Updated:** 2026-09-26
+- **Last Updated:** 2026-09-27
 - **Scope:** The complete build instruction for Batch 2 of the EFingPlanner curriculum -- thirty-four sessions across Phases 3 to 8, thirteen templates, the parent apparatus, the rest of the trip-starter kit, the two binder deliverables, and the roadmap extension. It carries every Batch 2 requirement, every applicable acceptance criterion, and the adjudicated answer to every open question, so an authoring run works from this brief and consults the archived specification only for a detail the brief turns out to lack. It does not cover Batches 0, 1, 3 or 4, and it is a build instruction rather than shipped curriculum.
 - **Related:** [Build prompt directory guide](README.md), [Batch 1 build brief](batch1_build_prompt.md), [Build prompt template](_build_prompt_template.md), [Archived specification](../spec/specification.md)
 
@@ -3866,7 +3866,8 @@ for final review and booking; the privacy reminder --
 
 > *"Keep your filled-in outputs out of any public repository; complete them in your private
 > binder or shared documents. Do not record exact booked travel dates, hotel names,
-> confirmation numbers, passport details, or payment details."*
+> confirmation numbers, passport details, birthdates, your home address, or payment
+> details."*
 
 -- and the Core-Finish-Line coherence note: **a family that stopped at Checkpoint 5 has a
 complete set of outputs; the later sections are a bonus.**
@@ -4027,7 +4028,9 @@ negotiable:
 relative links** to the newly-created folders and the four cards, and one short line naming
 the four cards as optional or session-made. It may also correct the two sentences that say
 the kit holds only `family/` and that recommendations wait for a later folder, because both
-stop being true when this batch ships. **Do not restructure or re-voice that file.**
+stop being true when this batch ships. It may also add one sentence to rule 1: the child
+fills in the "if I get separated" card on paper, as that card's page says, because the card
+stays out of every shared folder. **Do not restructure or re-voice that file.**
 
 ---
 

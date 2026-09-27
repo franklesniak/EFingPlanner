@@ -21,6 +21,8 @@ This is your Checkpoint 3 page, from [Session 27](../../sessions/phase_04_attrac
 
 Your skip and save-for-future notes will help later, when you make your cut list.
 
+If a must-do is added or dropped later, come back to this page. Write the new beside the old, with where it changed.
+
 Before you start the next session:
 
 - **Approved with changes:** write the changes on this page and in your Decision Record.

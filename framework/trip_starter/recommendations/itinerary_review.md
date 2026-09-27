@@ -19,7 +19,7 @@ Bring this page to a grown-up with your itinerary draft, its Daily Plan Cards an
 | Transit: the biggest travel days | |
 | Meals: how the plan handles food | |
 | Rest: where the rest and free time are | |
-| Budget: does it still fit our rough budget band? | |
+| Budget: does it still fit our rough budget band? (my Session 39 band sentence) | |
 | Reservation Watchlist: what the grown-ups need to book | |
 
 ## What I bring to the review

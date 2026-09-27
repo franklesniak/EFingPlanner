@@ -30,7 +30,7 @@ Copy this part once for each block Daily Plan Card, in trip order. A trip with o
 | Where we would stay (an area) | |
 | Main goal for this stay | |
 
-The day rows come in two tables, so the page still prints. Use the same day numbers in both. Each day's cost counts your whole group, as on your day cards. Copy any "fewer of us" beside it too.
+The day rows come in two tables, so the page still prints. Use the same day numbers in both. Each day's cost counts your whole group, as on your day cards, with any meal your place includes left out. Copy any "fewer of us" beside it too.
 
 | Day | Main activities | Meals and food ideas | Energy (Easy / Medium / Big day) |
 | --- | --- | --- | --- |
@@ -39,7 +39,7 @@ The day rows come in two tables, so the page still prints. Use the same day numb
 | | | | |
 | | | | |
 
-| Day | Transit | Estimated cost, for everyone | Booking notes | Backup plan |
+| Day | Transit | Estimated cost, for everyone: food, local transit, tickets, souvenirs | Booking notes | Backup plan |
 | --- | --- | --- | --- | --- |
 | | | | | |
 | | | | | |
@@ -58,7 +58,7 @@ Copy these from your route notes, starting with the trip from where you arrive t
 
 ## Reservations flagged
 
-Copy the items from your Reservation Watchlist. The grown-ups book every one of them.
+Copy the items from your Reservation Watchlist, backups included. The grown-ups do all of the booking.
 
 | Item | Does holding a date matter? | When the grown-ups should check |
 | --- | --- | --- |

@@ -30,7 +30,7 @@ If a place, its nights or a flight-day mark change later, come back to this page
 
 Before you start the next session:
 
-- **Approved, or Approved with changes:** write any changes on this page and in your Decision Record. A place or must-do that your approved route, or your one-base way, leaves out is a change too. Your special pick stays. For each change, go down your When the Plan Changes card, and fix every page it names that you've already made.
+- **Approved, or Approved with changes:** write any changes on this page and in your Decision Record. A place or must-do that your approved route, or your one-base way, leaves out is a change too. Your special pick stays, unless a grown-up names one of the three blocks. For each change, go down your When the Plan Changes card, and fix every page it names that you've already made.
 - **Needs more research:** do that one piece, and bring it back.
 - **Park this decision for later:** wait until your family comes back to it.
 
