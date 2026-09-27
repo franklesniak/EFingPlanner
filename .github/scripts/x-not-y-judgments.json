@@ -4386,16 +4386,6 @@
       "judgment": "no",
       "reason": "a fact: Session 44's Core-path steps"
     },
-    "split|Session 44: on the Core path, the child re-reads the must-do list on the My Calls page, starts the cut list from the Checkpoint 2 and 3 notes, and confirms in one line the special pick Session 26 settled. → Session 53: on the Core path, the child hands over the full binder and answers three more reflection questions, on patterns, time guesses and the budget against the band as an anchor.|1": {
-      "line": 76,
-      "judgment": "no",
-      "reason": "a fact: Session 53's Core-path steps"
-    },
-    "split|Session 53: on the Core path, the child hands over the full binder and answers three more reflection questions, on patterns, time guesses and the budget against the band as an anchor. → The adult uses the months-long acknowledgment.|1": {
-      "line": 76,
-      "judgment": "no",
-      "reason": "a fact: what the adult uses"
-    },
     "split|The adult uses the months-long acknowledgment. → With the dates booked, on either path, the handoff names the season confirmation.|1": {
       "line": 76,
       "judgment": "no",
@@ -4425,6 +4415,16 @@
       "line": 76,
       "judgment": "no",
       "reason": "a change record: a fact of navigation order and its result"
+    },
+    "split|Session 44: on the Core path, the child re-reads the must-do list on the My Calls page, starts the cut list from the Checkpoint 2 and 3 notes, and confirms in one line the special pick Session 26 settled. → Session 53: on the Core path, the child hands over the full binder and answers three more reflection questions, on patterns, the guesses (the time guesses, and the Session 23 and 30 guesses) and the budget against the band as an anchor.|1": {
+      "line": 76,
+      "judgment": "no",
+      "reason": "a change record: a fact of Session 53's Core-path steps"
+    },
+    "split|Session 53: on the Core path, the child hands over the full binder and answers three more reflection questions, on patterns, the guesses (the time guesses, and the Session 23 and 30 guesses) and the budget against the band as an anchor. → The adult uses the months-long acknowledgment.|1": {
+      "line": 76,
+      "judgment": "no",
+      "reason": "a change record: a fact of what the adult uses"
     },
     "device|Dropped the archived spec's which-slice-is-biggest budget visual.|1": {
       "line": 77,
@@ -16936,7 +16936,7 @@
       "judgment": "no",
       "reason": "a field label"
     },
-    "device|On the Core path, answers to three more questions, on patterns, time guesses (the ones that exist) and the budget against the band, comparing the matching piece your child checked with the band sentence, and each hotel for a hotel tier, saying what a \"not counting ___\" left out, with a band you changed since Session 39 taken down the When the Plan Changes card's \"Your budget band changed?\" row first, and the full binder handed over, with tabs 10 and 11 filled in, and with the must-do list and the approved route in place of the must-see list and the city choice; for a capstone re-run, a look back at the First Taste reflection too.|1": {
+    "device|On the Core path, answers to three more questions, on patterns, the guesses (the time guesses that exist, and the Session 23 and 30 guesses) and the budget against the band, comparing the matching piece your child checked with the band sentence, and each hotel for a hotel tier, saying what a \"not counting ___\" left out, with a band you changed since Session 39 taken down the When the Plan Changes card's \"Your budget band changed?\" row first, and the full binder handed over, with tabs 10 and 11 filled in, and with the must-do list and the approved route in place of the must-see list and the city choice; for a capstone re-run, a look back at the First Taste reflection too.|1": {
       "line": 508,
       "judgment": "device",
       "reason": "the must-do list and the approved route / in place of the must-see list and the city choice"
@@ -40637,16 +40637,6 @@
       "judgment": "no",
       "reason": "a question"
     },
-    "device|Time.|1": {
-      "line": 44,
-      "judgment": "no",
-      "reason": "a list label (follows the precedent)"
-    },
-    "split|Time. → In Sessions 16, 26, 35 and 45, how big was the gap between your guess and your time?|1": {
-      "line": 44,
-      "judgment": "no",
-      "reason": "a question"
-    },
     "split|In Sessions 16, 26, 35 and 45, how big was the gap between your guess and your time? → Did the gaps get smaller with practice?|1": {
       "line": 44,
       "judgment": "no",
@@ -40657,7 +40647,27 @@
       "judgment": "no",
       "reason": "a conditional fallback instruction"
     },
-    "split|If one of those has no guess, use the ones that do. → Being off is normal.|1": {
+    "device|Guesses.|1": {
+      "line": 44,
+      "judgment": "no",
+      "reason": "a list label"
+    },
+    "split|Guesses. → In Sessions 16, 26, 35 and 45, how big was the gap between your guess and your time?|1": {
+      "line": 44,
+      "judgment": "no",
+      "reason": "a question"
+    },
+    "split|If one of those has no guess, use the ones that do. → Then look at your ticket-price guess in Session 23 and your travel-time guess in Session 30.|1": {
+      "line": 44,
+      "judgment": "no",
+      "reason": "an instruction"
+    },
+    "split|Then look at your ticket-price guess in Session 23 and your travel-time guess in Session 30. → How far off was each one?|1": {
+      "line": 44,
+      "judgment": "no",
+      "reason": "a question"
+    },
+    "split|How far off was each one? → Being off is normal.|1": {
       "line": 44,
       "judgment": "no",
       "reason": "a reassurance"
