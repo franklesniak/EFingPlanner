@@ -1,5 +1,13 @@
 # EFingPlanner build prompts
 
+## Metadata
+
+- **Status:** Active
+- **Owner:** Repository Maintainers
+- **Last Updated:** 2026-09-27
+- **Scope:** How the build briefs in `docs/build/` are made and used: what the directory holds, how to create the next batch's brief from the template, where each placeholder comes from, the batch scope cheat-sheet, the guardrails every brief keeps, the `/goal` pointer pattern, and committing. It carries no batch's requirements, which live in that batch's brief, and it is not shipped curriculum.
+- **Related:** [Build prompt template](_build_prompt_template.md), [Batch 0 build brief](batch0_build_prompt.md), [Batch 4 build brief](batch4_build_prompt.md), [Archived specification](../spec/specification.md), [Leak hook](../../.github/scripts/check-leaks.py)
+
 This directory holds the **build briefs** that drive the curriculum build. Each brief is a self-contained prompt handed to the coding agent (via `/goal`) to build one batch of the curriculum, as defined in `docs/spec/specification.md` §31 (Implementation Order).
 
 These briefs are build instructions, not shipped curriculum. They live here, outside `framework/` and `destinations/`, so a family reading the curriculum never meets them.
@@ -20,7 +28,7 @@ The spec's build model reuses one set of rules for every batch and changes only 
 2. Read the source of truth first. Open `docs/spec/specification.md` and read §31 (Implementation Order) and §33 (Acceptance Criteria) in full. §31 defines this batch's scope, what must not be built yet, and the gate it stops at.
 3. Replace the inline tokens `{{BATCH_NUMBER}}` and `{{BATCH_SHORT_NAME}}` everywhere they appear.
 4. Resolve every **FILL IN** block using the guidance inside it and the spec sections in the next section. Delete each block once resolved.
-5. Delete the template note at the top of the file.
+5. Delete the template note at the top of the file, and rewrite the `## Metadata` block above it so it describes the new brief, with the current UTC date as its `Last Updated`.
 6. Verify: no `{{` token and no **FILL IN** marker remains; the file is markdownlint-clean; relative links resolve.
 7. Point `/goal` at the new file using the pointer pattern below.
 
@@ -50,7 +58,7 @@ Starting points from the spec's implementation order — confirm each against §
 
 - **Do not run ahead of a gate.** Each batch stops at its gate; the next batch starts only after the gate is cleared. **The Batch 0 gate clears one of two ways:** the child pilot **passes**, or the documented **no-child fallback is recorded in writing** — the spec permits proceeding once the deferral flag is carried forward, and this repository has recorded it in `framework/parent_guide/time_and_effort.md` and `framework/CHANGELOG.md`. A **failed** pilot is neither of those: it blocks Batch 2+ until Phases 0–2 are fixed and re-piloted. Silence is not a third way — an unrun, unrecorded pilot does not clear the gate.
 - **The destination-leak rule turns on at Batch 1.** Batch 0 is Japan-concrete on purpose; from Batch 1 the concrete→insert conversion keeps destination facts in inserts, not in reusable sessions.
-- **Keep destination and family facts out of the curriculum.** In framework sessions, concrete trip/origin/roster values belong in fill-in blanks that point to `trip_basics.md` — never hard-coded into reusable sessions. The build briefs themselves may name the fixed leak tokens; they are the check, not the leak.
+- **Keep destination and family facts out of the curriculum.** In framework sessions, concrete trip/origin/roster values belong in fill-in blanks that point to `trip_basics.md` — never hard-coded into reusable sessions. The build briefs name no family value either. The committed leak hook is the check: `python .github/scripts/check-leaks.py --rule family`, whose docstring's "In place of a hand-run grep" section names the calls a brief runs and says why a grep that names a value leaks it.
 - **The file-scope rule lives in the template, not here.** The two editing bullets at the end of the **BUILD RULES** section in [`_build_prompt_template.md`](_build_prompt_template.md) are the single source of truth for what a build run may create and edit. Copy them into every brief unchanged. Do not restate them here, and do not narrow them.
 
 ## The /goal pointer pattern
