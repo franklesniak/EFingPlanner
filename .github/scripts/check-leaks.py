@@ -188,13 +188,16 @@ script is the replacement. A build brief or a checklist that asks for the
 leak greps runs these calls instead, and they name no value and print none:
 
 * ``python .github/scripts/check-leaks.py --rule family``, which exits 0 with
-  one none-found line on a clean tree, and on a leak prints each unexcused
-  occurrence as a path, line, column and kind and exits 1;
+  one none-found line on a clean tree, and exits 1 on a leak, printing each
+  unexcused occurrence as a path, line, column and kind, or on a stale
+  exemption row, printing the row's number;
 * ``python .github/scripts/check-leaks.py --rule family --candidates``, the
   grep note's hand-read of bare numbers, which lists positions and exits 0.
   Those positions point at the family's number, so keep that list in a local
   terminal: never paste it into a pull request, an issue or a CI log;
-* ``python .github/scripts/check-leaks.py --rule destination``.
+* ``python .github/scripts/check-leaks.py --rule destination``, which reads
+  ``framework/`` and exits the same way: 0 with one none-found line, or 1 on
+  an unexcused name or a stale exemption row.
 
 A walk reads only the files Git tracks, as "File access" above says, so track
 a new file before any of these calls, or the call passes it unread.
