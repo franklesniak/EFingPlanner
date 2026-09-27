@@ -18,5 +18,117 @@
   "framework/trip_starter/family/trip_basics.md": {
     "register": "child",
     "basis": "copy of a child-facing template (names its blank in framework/templates/); no audience marker"
+  },
+  "framework/trip_starter/final_countdown_card.md": {
+    "register": "child",
+    "basis": "kit fill-in page with no audience marker; addresses the child (\"before you leave\")"
+  },
+  "framework/trip_starter/if_i_get_separated_card.md": {
+    "register": "child",
+    "basis": "kit fill-in page with no audience marker; addresses the child (\"You make this card in Session 49\")"
+  },
+  "framework/trip_starter/in_trip_capture_card.md": {
+    "register": "child",
+    "basis": "kit fill-in page with no audience marker; addresses the child (\"You're on vacation\")"
+  },
+  "framework/trip_starter/logs/cut_list.md": {
+    "register": "child",
+    "basis": "copy of a child-facing template (names its blank in framework/templates/); no audience marker"
+  },
+  "framework/trip_starter/logs/decision_log.md": {
+    "register": "child",
+    "basis": "copy of a child-facing template (names its blank in framework/templates/); no audience marker"
+  },
+  "framework/trip_starter/logs/question_parking_lot.md": {
+    "register": "child",
+    "basis": "copy of a child-facing template (names its blank in framework/templates/); no audience marker"
+  },
+  "framework/trip_starter/logs/source_log.md": {
+    "register": "child",
+    "basis": "copy of a child-facing template (names its blank in framework/templates/); no audience marker"
+  },
+  "framework/trip_starter/my_calls.md": {
+    "register": "child",
+    "basis": "kit fill-in page with no audience marker; addresses the child (\"This page is where you write them down\")"
+  },
+  "framework/trip_starter/outputs/README.md": {
+    "register": "child",
+    "basis": "inferred: no audience statement; a kit folder README that addresses the child (\"This part of your kit holds your finished pages\")"
+  },
+  "framework/trip_starter/outputs/adult_follow_up_questions.md": {
+    "register": "child",
+    "basis": "kit fill-in page with no audience marker; addresses the child (\"so you can copy that part here\")"
+  },
+  "framework/trip_starter/outputs/binder_table_of_contents.md": {
+    "register": "child",
+    "basis": "kit fill-in page with no audience marker; addresses the child (\"what's behind each tab of your binder\")"
+  },
+  "framework/trip_starter/outputs/executive_summary.md": {
+    "register": "child",
+    "basis": "kit fill-in page with no audience marker; addresses the child (\"This is your whole recommendation on one page\")"
+  },
+  "framework/trip_starter/outputs/family_presentation.md": {
+    "register": "child",
+    "basis": "kit fill-in page with no audience marker; addresses the child (\"your presentation as you gave it\")"
+  },
+  "framework/trip_starter/outputs/final_itinerary.md": {
+    "register": "child",
+    "basis": "kit fill-in page with no audience marker; addresses the child (\"This is your day-by-day plan\")"
+  },
+  "framework/trip_starter/outputs/final_reflection.md": {
+    "register": "child",
+    "basis": "kit fill-in page with no audience marker; addresses the child (\"This is your capstone reflection\")"
+  },
+  "framework/trip_starter/recommendations/README.md": {
+    "register": "child",
+    "basis": "inferred: no audience statement; a kit folder README that addresses the child (\"This part of your kit holds your checkpoint recommendations\")"
+  },
+  "framework/trip_starter/recommendations/city_shortlist.md": {
+    "register": "child",
+    "basis": "kit fill-in page with no audience marker; addresses the child (\"This is your Checkpoint 2 page\")"
+  },
+  "framework/trip_starter/recommendations/final_recommendation.md": {
+    "register": "child",
+    "basis": "kit fill-in page with no audience marker; addresses the child (\"This is your Checkpoint 6 page\")"
+  },
+  "framework/trip_starter/recommendations/itinerary_review.md": {
+    "register": "child",
+    "basis": "kit fill-in page with no audience marker; addresses the child (\"This is your Checkpoint 5 page\")"
+  },
+  "framework/trip_starter/recommendations/route_and_trip_length.md": {
+    "register": "child",
+    "basis": "kit fill-in page with no audience marker; addresses the child (\"This is your Checkpoint 4 page\")"
+  },
+  "framework/trip_starter/recommendations/season_recommendation.md": {
+    "register": "child",
+    "basis": "kit fill-in page with no audience marker; addresses the child (\"This is your Checkpoint 1 page\")"
+  },
+  "framework/trip_starter/recommendations/top_experiences.md": {
+    "register": "child",
+    "basis": "kit fill-in page with no audience marker; addresses the child (\"This is your Checkpoint 3 page\")"
+  },
+  "framework/trip_starter/research/README.md": {
+    "register": "child",
+    "basis": "inferred: no audience statement; a kit folder README that addresses the child (\"where your research cards live\")"
+  },
+  "framework/trip_starter/research/attraction_cards/README.md": {
+    "register": "child",
+    "basis": "inferred: no audience statement; a kit folder README that addresses the child (\"each attraction or experience you research\")"
+  },
+  "framework/trip_starter/research/city_cards/README.md": {
+    "register": "child",
+    "basis": "inferred: no audience statement; a kit folder README that addresses the child (\"each city or region you research\")"
+  },
+  "framework/trip_starter/research/day_cards/README.md": {
+    "register": "child",
+    "basis": "inferred: no audience statement; a kit folder README that addresses the child (\"Your Daily Plan Cards\")"
+  },
+  "framework/trip_starter/research/hotel_cards/README.md": {
+    "register": "child",
+    "basis": "inferred: no audience statement; a kit folder README that addresses the child (\"each place you might stay\")"
+  },
+  "framework/trip_starter/research/restaurant_cards/README.md": {
+    "register": "child",
+    "basis": "inferred: no audience statement; a kit folder README that addresses the child (\"the food wish list you wrote in Session 36\")"
   }
 }

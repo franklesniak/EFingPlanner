@@ -12,6 +12,8 @@ You are here: Phase 6 (Lodging, Food, and Budget). Not a First Taste step. Previ
 - Parent involvement: none / independent work
 - Materials: a device with the kid-safe filter on, blank [Hotel Comparison Cards](../../templates/hotel_comparison_card.md), your Neighborhood Comparison from Session 34, the route your family approved at Checkpoint 4, your must-do list on your My Calls page (for the places you want to reach), your route map notes from Session 28, the City Research Card for any region on your route (for its town), your part-trip note from Session 33 (if you made one), your [Source Log](../../templates/source_log.md), a timer and a clock
 
+(For an at-a-glance version, see the matching entry in [the parent session notes](../../parent_guide/session_support_notes.md); the Parent Notes below have the full detail.)
+
 ## Goal
 
 Compare a few places to stay for each city where you'll sleep, and say which one you'd recommend.

@@ -12,6 +12,8 @@ You are here: Phase 4 (Attractions and Experiences). Not a First Taste step. Pre
 - Parent involvement: none / independent work
 - Materials: your attraction cards from Session 23, a pencil
 
+(For an at-a-glance version, see the matching entry in [the parent session notes](../../parent_guide/session_support_notes.md); the Parent Notes below have the full detail.)
+
 ## Goal
 
 Check that your list of things to do has a good mix, so the trip isn't the same kind of day over and over.

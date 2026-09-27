@@ -14,7 +14,7 @@ You are here: Phase 2 (Destination Big Picture), First Taste step 6 of 13. Previ
 
 ## Goal
 
-Compare your destination's seasons so you can recommend a good time to go.
+Compare your destination's seasons so you can recommend a good time to go. If your trip dates are already booked, learn what your booked season will bring to the trip.
 
 ## Start Here
 
@@ -34,6 +34,8 @@ Now open your destination pack's seasons reference. Your Destination Notes give 
 
 Some timing cannot be pinned even after you check. That same reference says which of your destination's patterns work that way.
 
+**If your dates are already booked**, your season is set, and your job is to learn what it brings. Fill in your chart for your booked season first: the weather, the crowds, and the events in your dates. Then mark the one challenge your family most needs to plan around, like a hot, rainy or crowded stretch. Notes on the other seasons are extra.
+
 ## Workspace
 
 Use your [Season Comparison Chart](../../templates/season_comparison_chart.md) for the notes, and your Source Log for what you looked up.
@@ -44,9 +46,13 @@ You can say your answers to an adult who writes them, or draw them, if that is e
 
 Your Season comparison chart -- every season your Destination Notes list, with weather, crowds and cost, calendar fit, and the special things to watch for.
 
+With your dates booked, your chart covers your booked season, with the challenge your family most needs to plan around marked.
+
 ## Stop Point
 
 You are done when every season on your chart has a few notes and you have marked at least one busy window to be careful about. You do not need exact dates today: "check this year" is the right answer.
+
+With your dates booked, you are done when your booked season has a few notes on its weather, crowds and events, and you've marked the challenge to plan around. "Ask an adult" is a fine answer in any box.
 
 ## Source Check
 
@@ -62,8 +68,8 @@ Stuck? Use the [When I'm Stuck card](../../student_guide/when_im_stuck.md) in yo
 
 ## Optional Extension
 
-If you have extra energy, add a "best guess so far" note at the bottom: which season looks most fun to you, and why? You will use it next at Checkpoint 1. If not, you are done.
+If you have extra energy, add a "best guess so far" note at the bottom: which season looks most fun to you, and why? With your dates booked, write one idea for making the most of your season. You will use it next at Checkpoint 1. If not, you are done.
 
 ## Parent Notes
 
-This feeds the Checkpoint 1 season recommendation. Keep everything verify-framed -- the busy windows and seasonal patterns your destination pack lists are stable *patterns*, but exact dates, prices, and forecasts must be confirmed this year. Where the pack flags a season as hard on comfort or health, that matters for a multi-generational party; it connects forward to the pacing review later. Where the pack flags a pattern that can close things for a day or two, plan to reshuffle the days around it. Seasons your family will not travel in can stay light.
+This feeds the Checkpoint 1 season recommendation. With the dates booked, the chart feeds the season confirmation. Keep everything verify-framed -- the busy windows and seasonal patterns your destination pack lists are stable *patterns*, but exact dates, prices, and forecasts must be confirmed this year. Where the pack flags a season as hard on comfort or health, that matters for a multi-generational party; it connects forward to the pacing review later. Where the pack flags a pattern that can close things for a day or two, plan to reshuffle the days around it. Seasons your family will not travel in can stay light.

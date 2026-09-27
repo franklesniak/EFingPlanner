@@ -12,6 +12,8 @@ You are here: Phase 3 (Choose Places). Not a First Taste step. Previous: [15 Cit
 - Parent involvement: 5-minute check-in
 - Materials: this session's Destination Notes, a device with the kid-safe filter on, your City Research Card for City A from Session 15, your season from Checkpoint 1, a timer, your [Source Log](../../templates/source_log.md), and a blank [City Research Card](../../templates/city_research_card.md) only if your anchor city doesn't have a card yet
 
+(For an at-a-glance version, see the matching entry in [the parent session notes](../../parent_guide/session_support_notes.md); the Parent Notes below have the full detail.)
+
 ## Goal
 
 Take City A, your anchor city, to full depth on the card you already started.

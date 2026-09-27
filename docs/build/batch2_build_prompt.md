@@ -4,7 +4,7 @@
 
 - **Status:** Active
 - **Owner:** Repository Maintainers
-- **Last Updated:** 2026-09-26
+- **Last Updated:** 2026-09-27
 - **Scope:** The complete build instruction for Batch 2 of the EFingPlanner curriculum -- thirty-four sessions across Phases 3 to 8, thirteen templates, the parent apparatus, the rest of the trip-starter kit, the two binder deliverables, and the roadmap extension. It carries every Batch 2 requirement, every applicable acceptance criterion, and the adjudicated answer to every open question, so an authoring run works from this brief and consults the archived specification only for a detail the brief turns out to lack. It does not cover Batches 0, 1, 3 or 4, and it is a build instruction rather than shipped curriculum.
 - **Related:** [Build prompt directory guide](README.md), [Batch 1 build brief](batch1_build_prompt.md), [Build prompt template](_build_prompt_template.md), [Archived specification](../spec/specification.md)
 
@@ -143,7 +143,9 @@ README, **`framework/templates/city_research_card.md`** (a two-row addition, see
 **`framework/student_guide/progress_tracker.md`** (its Core/Full view, see F2), **the root
 `README.md`** (its build-state wording, see F1), **the existing
 `framework/parent_guide/session_support_notes.md` entries for the sessions this batch
-changes** (see section 10), **the Batch 1 neutrality riders listed in section 11**, and
+changes** (see section 10), **the Batch 1 neutrality riders listed in section 11**, **the
+binder card, `framework/student_guide/how_to_use_this_binder.md`** (the links to Session 50
+and the print index that the `0.2.0` changelog deferred until both exist), and
 `framework/CHANGELOG.md`.
 
 **The 53 is the non-session count**, which is the number the spec's own grouping produces.
@@ -2675,7 +2677,8 @@ this instruction in `## Parent Notes`.
 - **Start Here, self-generated.** Suggestion: write "If I get separated" at the top of a
   blank card.
 - **Workspace:** the readiness checklist as a checkbox list with a "who does this" column
-  (you / ask adults), plus the card's own small table.
+  (you / ask adults), plus a pointer to the kit's blank "if I get separated" card (9.4.5),
+  which holds the card's own small table, so its rows have one home.
 - **Stop Point:** you are done when every line on your readiness checklist is either
   checked or marked "ask adults to confirm", and your card is made, with its lodging lines
   filled in by a grown-up or marked for a grown-up to fill in after booking. You've also
@@ -3547,7 +3550,7 @@ look-for line naming the explanation and the confirmed fit, a coaching question 
 "What will our season change about the plan?", and a pitfall line against treating the
 confirmation as a formality), Session 15's prep line (the major cities reference is gone
 after 4.1b; the child now chooses from their Session 11 notes), Session 44's role, prep and
-look-for lines (on the Core path, the role is to confirm the pick Session 26 already chose,
+look-for lines (on the Core path, the role is to confirm the pick Session 26 settled,
 the My Calls page replaces the starred sights, and the must-do list is the one Session 26
 made),
 and Session 53's acknowledgment line (duration-true for Core/Full, duration-neutral for
@@ -3567,15 +3570,23 @@ whose online-safety guardrail requires them to stay. **Write Session 25's Role l
 co-worked.** **Session 49 is co-worked for the same kind of reason**: a grown-up rehearses
 the separation plan with the child, and its central-table value is `co-working
 recommended`, with that rehearsal named after a semicolon. Write its Role line as
-co-worked too. **Two more sessions have one grown-up
-step without being gated as a whole.** Session 09 is adult-operated: a grown-up runs the AI
+co-worked too. **Three more sessions have one grown-up
+step without being gated as a whole.** Session 07, when a family does it, needs a grown-up
+to open the library catalog or drive to the library, as the built First Taste list marks.
+Session 09 is adult-operated: a grown-up runs the AI
 tool, as its built entry says. Session 26 ends with the one unconditional pick, which a
 grown-up helps choose after showing the three blocks, as built Session 44 does on the First
 Taste path. Write Session 26's Role line the way Session 44's is written. **Sessions 34, 36
 and 37 have one grown-up step each:** a grown-up stays nearby for any search beyond the
 Destination Notes (and official city sites, in Session 34), and beside the child for an
 image search, as the privacy and safety page asks. Their section 10 values name that step
-after a semicolon, and their Role lines carry it. Every session not
+after a semicolon, and their Role lines carry it. **Sessions 29, 38 and 39 have one grown-up
+step that comes before the session:** a grown-up tells the child how long the trips there
+and home take and which flights land on a later date (29), the souvenir amount for one day
+(38), and how many rooms each overnight city needs (39). Their section 10 values name that
+step after a semicolon too, and their Role and Prep lines carry it. Sessions 29 and 39 hold
+the child until the answer is in hand, because their Stop Points need it. Session 38 does
+not hold the child, because its souvenir row takes "ask an adult". Every session not
 named in this paragraph is independent: the child can do it without a grown-up there. That
 includes a session whose section 10 value is a 5-minute check-in or a parent review after
 the session, because neither stops the child; its Role line still carries that value.
@@ -3606,7 +3617,9 @@ the next phase rather than pressing on.**
 *for* learning; the checkpoint reflection looks back at the stretch just finished. **Do not
 conflate them.**
 
-**Each Phase 7 and 8 entry carries the one-line note** on the two-session readiness trigger
+**Each Phase 7 and 8 entry for a lighter-template session carries the one-line note**
+(Sessions 44 and 53 are built full-template pages, so theirs do not) on the two-session
+readiness trigger
 for the lighter template and the anchors that never fade -- including the honest cost that a
 child who fades in Phase 5 meets the full template longer than they need.
 
@@ -3853,7 +3866,8 @@ for final review and booking; the privacy reminder --
 
 > *"Keep your filled-in outputs out of any public repository; complete them in your private
 > binder or shared documents. Do not record exact booked travel dates, hotel names,
-> confirmation numbers, passport details, or payment details."*
+> confirmation numbers, passport details, birthdates, your home address, or payment
+> details."*
 
 -- and the Core-Finish-Line coherence note: **a family that stopped at Checkpoint 5 has a
 complete set of outputs; the later sections are a bonus.**
@@ -4012,7 +4026,11 @@ negotiable:
 
 `framework/trip_starter/README.md` already names the kit's folders. Batch 2 may **add
 relative links** to the newly-created folders and the four cards, and one short line naming
-the four cards as optional or session-made. **Do not restructure or re-voice that file.**
+the four cards as optional or session-made. It may also correct the two sentences that say
+the kit holds only `family/` and that recommendations wait for a later folder, because both
+stop being true when this batch ships. It may also add one sentence to rule 1: the child
+fills in the "if I get separated" card on paper, as that card's page says, because the card
+stays out of every shared folder. **Do not restructure or re-voice that file.**
 
 ---
 
@@ -4284,7 +4302,11 @@ reaches each extension at its session's place.
 in the same form as the First Taste list's markers, taking which sessions those are from
 B7's rule, so the membership lives in one place. A 5-minute check-in or a parent review
 after the session gets no marker, because the child does not wait for it; the built First
-Taste list follows the same rule. **Scope the existing "Which sessions need a grown-up"
+Taste list follows the same rule. A grown-up step that comes before the session is marked
+with a *before you start* line only where B7 says it holds the child, and the legend says
+that line holds the child only until the answer is in hand. Where the step does not hold the
+child, as at Session 38, the line says *ask ahead*, and the legend says to write
+"ask an adult" and keep going if no grown-up is free. **Scope the existing "Which sessions need a grown-up"
 lists to the First Taste path**, and make its waiting rule point at a marked
 session, so a Core child is never told that the later checkpoints or Sessions 25 and 49 need
 no grown-up.
@@ -4311,9 +4333,10 @@ parenthetical. Give its Checkpoint 1 line the table's booked-dates form, too.
 
 **Optional mini-milestones, clearly not checkpoints.** The stretch from Checkpoint 4 to
 Checkpoint 5 runs about fourteen sessions with no checkpoint. Add a couple of lightweight
-named wins in that stretch -- after the first budget pass, *"you now know roughly what this
-trip costs"*; after the hotel comparison, *"you now know where you might stay"*. **These are
-not checkpoints**, so the headline is unchanged; they are small beats shown beneath it.
+named wins in that stretch -- after the first budget pass, *"you now know roughly what the
+parts you plan will cost"*, which names the child's slices as B4 requires; after the hotel
+comparison, *"you now know where you might stay"*. **These are not checkpoints**, so the
+headline is unchanged; they are small beats shown beneath it.
 
 **Other roadmap contents that must remain or be added:** the full phase overview; Core,
 Recommended and Optional labelling; the First Taste index, already built -- **do not

@@ -12,6 +12,8 @@ You are here: Phase 5 (Route, Length, and Transportation). Not a First Taste ste
 - Parent involvement: parent review after session
 - Materials: a fresh [Trade-Off Report](../../templates/tradeoff_report.md) page, your route map notes from Session 28, your My Calls page (for your special pick), your nights table from Session 29, your transportation notes from Session 30, on a one-base trip your must-dos and strong maybes from Checkpoint 3, your family's [current travel assumptions](../../templates/current_family_travel_assumptions.md) page (for the budget band), a device with a map app (kid-safe filter on) in case a route needs a new travel time, your [Source Log](../../templates/source_log.md) and your [simple citation forms](../../templates/simple_citation.md) page (for the Map form)
 
+(For an at-a-glance version, see the matching entry in [the parent session notes](../../parent_guide/session_support_notes.md); the Parent Notes below have the full detail.)
+
 ## Goal
 
 Compare two routes for the trip, and recommend one.

@@ -12,6 +12,8 @@ You are here: Phase 7 (Itinerary Building). Not a First Taste step. **This is Ch
 - Parent involvement: parent review -- genuinely use the recommendation in a real family talk
 - Materials: your full itinerary draft and the day cards behind it, your Reservation Watchlist, your budget summary, your cut list, your pacing review from Session 43 (for your flags for the adults), your [When the Plan Changes card](../../student_guide/when_the_plan_changes.md) and the pages it names that you've made (in case the grown-ups approve a change), your route map notes from Session 28 and a device with a map app or map website (kid-safe filter on) in case a change moves where you arrive or leave, your attraction cards (if your special pick hits a block), your [Trip-Basics card](../../templates/trip_basics.md) and your family's [current travel assumptions](../../templates/current_family_travel_assumptions.md) page (in case a change needs the trip length or the band), your [Source Log](../../templates/source_log.md), a [Decision Record page](../../templates/decision_record.md), a blank [Parent Review Form](../../templates/parent_review_form.md) for a grown-up to fill in
 
+(For an at-a-glance version, see the matching entry in [the parent session notes](../../parent_guide/session_support_notes.md); the Parent Notes below have the full detail.)
+
 ## Goal
 
 Get your plan reviewed, and find out what the grown-ups want changed.
@@ -47,6 +49,8 @@ Your itinerary review packet is your draft, plus these five answers and your rea
 | The biggest trade-offs | |
 | My reasons | |
 | Approval status (a grown-up circles one: Approved / Approved with changes / Needs more research / Park this decision for later) | |
+
+Keeping your work in the trip starter kit? Its [itinerary review page](../../trip_starter/recommendations/itinerary_review.md) has room for everything in this table, so you can fill it in there. Once this checkpoint is settled, your kit's [outputs page](../../trip_starter/outputs/README.md) says which finished pages to fill in, whether you stop here or go on.
 
 Then fill your Decision Record. Write "Our day-by-day plan" in its Decision box. Your plan goes in **My recommendation**, and your reasons, sources and trade-offs go in their own rows. When the grown-ups decide, write their answer in **Final family decision**. That record is your decision-log entry.
 

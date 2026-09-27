@@ -12,6 +12,8 @@ You are here: Phase 8 (Readiness and Final). Not a First Taste step. **This is C
 - Parent involvement: parent review -- genuinely use the recommendation in a real family talk
 - Materials: your Final Presentation Outline from Session 51, your assembled binder (with your Session 39 budget summary and your Checkpoint 4 route and trip-length recommendation), your [When the Plan Changes card](../../student_guide/when_the_plan_changes.md) and the pages it names (in case the grown-ups approve a change), your Family Trip Goals page from Session 03 (for the poll and your balancing line), your part-trip note from Session 33 (if you made one) or the grown-up's answer on who is there on which days, your route map notes from Session 28 and a device with a map app or map website (kid-safe filter on) in case a change moves where you arrive or leave, your [Source Log](../../templates/source_log.md), a [Decision Record page](../../templates/decision_record.md), a blank [Parent Review Form](../../templates/parent_review_form.md) for a grown-up to fill in
 
+(For an at-a-glance version, see the matching entry in [the parent session notes](../../parent_guide/session_support_notes.md); the Parent Notes below have the full detail.)
+
 ## Goal
 
 Bring your recommendation to the family, and write down what they decide.
@@ -51,6 +53,8 @@ Your final recommendation packet. Your Decision Record page and your Final Prese
 | Questions that are still open | |
 | Approval status (a grown-up circles one: Approved / Approved with changes / Needs more research / Park this decision for later) | |
 
+Keeping your work in the trip starter kit? Its [final recommendation page](../../trip_starter/recommendations/final_recommendation.md) has room for everything in this table, so you can fill it in there.
+
 Your handoff list:
 
 | Handed over to the grown-ups | Who does it next |
@@ -63,6 +67,8 @@ Your handoff list:
 | Final budget | |
 | Safety and emergency planning | |
 | Final booking tasks | |
+
+Keeping your work in the kit? Part 2 of your outline and your handoff list go on its [adult follow-up questions page](../../trip_starter/outputs/adult_follow_up_questions.md). What the family decided goes on its [final itinerary](../../trip_starter/outputs/final_itinerary.md) and [executive summary](../../trip_starter/outputs/executive_summary.md) pages.
 
 Then fill your Decision Record. Write "Our final recommendation" in its Decision box. Your recommendation goes in **My recommendation**, and your reasons, sources and trade-offs go in their own rows. When the family decides, write their answer in **Final family decision**. That record is your decision-log entry.
 

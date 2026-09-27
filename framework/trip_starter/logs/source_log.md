@@ -1,0 +1,31 @@
+<!-- markdownlint-disable MD013 -->
+
+# Source Log
+
+Copy this page out of the repository before you fill it in. Do not commit your filled-in work to a public repository.
+
+The blank this page was copied from is the [Source Log template](../../templates/source_log.md). You start this log in Session 04, and it runs for the whole trip. Keep your filled-in log in your binder or your own Docs folder, and keep private details off it. The rules are on the [privacy and safety](../../docs/privacy_and_safety.md) page.
+
+Your Source Log is where you record *where* each fact came from. Keep one Source Log for the whole trip. Each source you look up is one entry: a new copy of the table below. You don't have to fill in every box at once.
+
+How to use it: copy this page into your binder or notebook. Each fact you look up gets its own copy of the table. "Not listed" and "ask an adult" are fine answers.
+
+One entry per source:
+
+| Prompt | Your answer |
+| --- | --- |
+| Source number | |
+| Date checked (the day you used this source) | |
+| Source type (website / book / map / video / AI tool / person / other) | |
+| Title (a website: its name and the page's title) | |
+| Author or organization | |
+| Web address or book page | |
+| What I learned | |
+| Why it matters for our trip | |
+| Trust level (high / medium / low) | |
+| Useful for this question? (yes / sort of / no) | |
+| One other place I could check this | |
+| Verification source (if I checked it) | |
+| Date checked (the day you checked that other source) | |
+
+Tip: for facts that can change -- prices, hours, opening times, rules -- write "check again before booking" so a grown-up knows to re-check it close to travel.

@@ -12,6 +12,8 @@ You are here: Phase 7 (Itinerary Building). Not a First Taste step. Previous: [4
 - Parent involvement: parent review after session
 - Materials: your day cards from Session 41, your Session 29 formula (for its ½ marks), or a grown-up who can tell you how long the trip home takes, your must-do list on your My Calls page, your Reservation Watchlist (in case a change moves something on it), your attraction cards, your Session 39 budget summary and your family's [current travel assumptions](../../templates/current_family_travel_assumptions.md) page (if your special pick hits a block, for the new pick and the band check, or for a third trade-off report about the budget), your [When the Plan Changes card](../../student_guide/when_the_plan_changes.md) and the pages it names that you've made (for any day you change), your traveler profiles, your part-trip note from Session 33 (if you made one) or the grown-up's answer on who is there on which days, your [Trip-Basics card](../../templates/trip_basics.md) (for the time difference, and the maximum or booked trip length), your season from Checkpoint 1, or a grown-up who can tell you the booked season if it's different (for hot weather), your destination pack's transportation basics page, a device with the kid-safe filter on if you check an official site, your [Source Log](../../templates/source_log.md); a blank [Trade-Off Report](../../templates/tradeoff_report.md) if the third report goes here
 
+(For an at-a-glance version, see the matching entry in [the parent session notes](../../parent_guide/session_support_notes.md); the Parent Notes below have the full detail.)
+
 ## Goal
 
 Look over your plan, and find the days that would wear people out.

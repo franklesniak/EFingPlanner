@@ -12,6 +12,8 @@ You are here: Phase 5 (Route, Length, and Transportation). Not a First Taste ste
 - Parent involvement: none / independent work; beforehand, tell your child how long the trips there and home take and which flights land on a later date
 - Materials: your [Trip-Basics card](../../templates/trip_basics.md) (maximum trip length and time difference), your route map notes from Session 28, your My Calls page (for your special pick), your traveler profiles, a pencil, a calculator (allowed)
 
+(For an at-a-glance version, see the matching entry in [the parent session notes](../../parent_guide/session_support_notes.md); the Parent Notes below have the full detail.)
+
 ## Goal
 
 Work out how many nights each place needs and how long the whole trip should be, or how to share out the days if your dates are already booked.

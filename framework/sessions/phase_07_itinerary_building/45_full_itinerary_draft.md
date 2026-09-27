@@ -12,6 +12,8 @@ You are here: Phase 7 (Itinerary Building). Not a First Taste step. Previous: [4
 - Parent involvement: none / independent work
 - Materials: your [Trip-Basics card](../../templates/trip_basics.md) (for the booked trip length, if your dates are booked), your day cards from Session 41, your pacing review from Session 43, your backup plans and cut list from Session 44, your Reservation Watchlist, your route and nights from Checkpoint 4, your Session 29 formula (for its "- 1 flight day" marks), or a grown-up who can tell you which flights land on a later date and whether each is on the way there or home, your route map notes from Session 28 and your [Source Log](../../templates/source_log.md), the City Research Card for any region on your route (for its town), your family's [current travel assumptions](../../templates/current_family_travel_assumptions.md) page (for the arrival and departure places), a device with a map app or map website (kid-safe filter on), your minutes guesses and times from Sessions 16, 26 and 35 (on your City A card, your Session 26 scoring tables and your Session 35 Hotel Comparison Cards), your [When the Plan Changes card](../../student_guide/when_the_plan_changes.md) and the pages it names (if your days don't match your Checkpoint 4 plan), a timer and a clock, a few blank pages
 
+(For an at-a-glance version, see the matching entry in [the parent session notes](../../parent_guide/session_support_notes.md); the Parent Notes below have the full detail.)
+
 ## Goal
 
 Put everything you've built into one day-by-day plan.

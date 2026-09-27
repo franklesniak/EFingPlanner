@@ -8,7 +8,7 @@ Keep no sensitive personal data here. Do not write exact booked dates. Do not wr
 
 | Prompt | Your answer |
 | --- | --- |
-| Rough season window (or a few candidate months) | |
+| Rough season window (or a few candidate months; or, with your dates already booked, the booked season) | |
 | Rough budget band -- a not-to-exceed signal, not a final number, in the kid-sized form the child uses: about $____ per person per day, about $____ per day for the family, or "we can afford this hotel tier: ____" | |
 | Rough trip shape: in and out of the same place (round trip), in one place and out of another (open-jaw), or one base you stay at and travel from? | |
 | Likely arrival place | |

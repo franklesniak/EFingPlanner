@@ -6,19 +6,21 @@ This is the set of blank pages your family fills in. Every page here is empty on
 
 ## Three rules before you start
 
-1. **Copy this kit out of the repository before filling it in. Do not commit your filled-in work to a public repository.** Print the pages, or paste them into a Google Docs folder. Then work there.
+1. **Copy this kit out of the repository before filling it in. Do not commit your filled-in work to a public repository.** Print the pages, or paste them into a Google Docs folder. Then work there. Fill in your "if I get separated" card on paper, as its page says.
 2. **Prices, hours, and rules must be checked again before booking.** Anything you write down can go out of date. A grown-up checks it again at the end.
 3. **An open answer is fine.** It is okay to write not decided yet, unknown, or ask an adult. A blank you left open on purpose is a finished answer.
 
 ## What is in the kit
 
-The kit grows as the project does. Today it holds only `family/`, and a later release adds the other four folders. Each folder below names the binder section that holds its work until then.
+The kit grows as the project does. Each folder below names the binder section that holds its work.
 
-- `family/` holds the pages your whole family owns. It is the part that is ready now: the [Trip-Basics card](family/trip_basics.md), the [current family travel assumptions](family/current_family_travel_assumptions.md), the [family trip goals](family/family_trip_goals.md), and, if you did Session 02, one [traveler profile](family/traveler_profiles/README.md) per traveler. Session 02 is on the full Phases 0-2 path rather than the 13, so this folder is complete without profiles if you are on First Taste.
-- `logs/` holds your running records: the Source Log, the decision log, the question parking lot, and the cut list. In the binder, each of the four is its own section.
-- `research/` holds what you find out, in one folder per kind: cities, attractions, hotels, restaurants, and day cards. In the binder, that is the research cards section.
-- `recommendations/` holds what you decide to recommend to the grown-ups. Until this folder arrives, a recommendation is a Decision Record in your decision log, as Checkpoint 1's is.
-- `outputs/` holds the finished pages, put in order at the very end. In the binder, that is the last step, when the tabs go in.
+- `family/` holds the pages your whole family owns: the [Trip-Basics card](family/trip_basics.md), the [current family travel assumptions](family/current_family_travel_assumptions.md), the [family trip goals](family/family_trip_goals.md), and, if you did Session 02, one [traveler profile](family/traveler_profiles/README.md) per traveler. Session 02 is on the full Phases 0-2 path rather than the 13, so this folder is complete without profiles if you are on First Taste.
+- `logs/` holds your running records: the [Source Log](logs/source_log.md), the [decision log](logs/decision_log.md), the [question parking lot](logs/question_parking_lot.md), and the [cut list](logs/cut_list.md). In the binder, each of the four is its own section.
+- [`research/`](research/README.md) holds what you find out, in one folder per kind: cities, attractions, hotels, restaurants, and day cards. In the binder, that is the research cards section.
+- [`recommendations/`](recommendations/README.md) holds what you decide to recommend to the grown-ups, one page for each checkpoint. Its decision goes in your decision log too.
+- [`outputs/`](outputs/README.md) holds the finished pages, put in order at the very end. In the binder, that is the last step, when the tabs go in.
+
+The kit also has cards at its top level. Two are made in sessions: the [My Calls page](my_calls.md), from Session 26 or Session 44, and the [if I get separated card](if_i_get_separated_card.md), from Session 49. Two are optional, for the trip itself: the [Final Countdown card](final_countdown_card.md) and the [in-trip capture card](in_trip_capture_card.md).
 
 Your `family/` folder is the "Start Here" section of your binder. The [binder card](../student_guide/how_to_use_this_binder.md) says how the sections work, and it is the page to follow: tabs come once, at the very end, so label the section now and make the tab later.
 

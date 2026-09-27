@@ -12,6 +12,8 @@ You are here: Phase 7 (Itinerary Building). Not a First Taste step. Previous: [3
 - Parent involvement: 5-minute check-in
 - Materials: your destination pack's airports and arrival basics page (if you fly, for the first day's trip into the city), or a grown-up who can help you check the airport's own website if your pack doesn't have that page yet, your route and nights from Checkpoint 4, your route map notes from Session 28, your must-do list on your My Calls page, your strong maybes from Checkpoint 3 (for the ones marked "if nearby"), your [Trip-Basics card](../../templates/trip_basics.md) (for how your family gets there), your Session 29 formula (for its ½ marks), or a grown-up who can tell you how long the trips there and home take, your family's [current travel assumptions](../../templates/current_family_travel_assumptions.md) page (for the arrival and departure places), a device with a map app or map website (kid-safe filter on), your [Source Log](../../templates/source_log.md), a blank page
 
+(For an at-a-glance version, see the matching entry in [the parent session notes](../../parent_guide/session_support_notes.md); the Parent Notes below have the full detail.)
+
 ## Goal
 
 Write the rules you'll use to build every day of this trip.

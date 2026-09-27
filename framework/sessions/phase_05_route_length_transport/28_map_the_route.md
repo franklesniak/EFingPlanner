@@ -12,6 +12,8 @@ You are here: Phase 5 (Route, Length, and Transportation). Not a First Taste ste
 - Parent involvement: 5-minute check-in
 - Materials: a device with a map app or map website (kid-safe filter on), your city shortlist from Checkpoint 2 (and the card for any whole region on it), your must-do list from Checkpoint 3 if your trip has one base, your family's [current travel assumptions](../../templates/current_family_travel_assumptions.md) page (for the arrival and departure places), a pencil, your [Source Log](../../templates/source_log.md)
 
+(For an at-a-glance version, see the matching entry in [the parent session notes](../../parent_guide/session_support_notes.md); the Parent Notes below have the full detail.)
+
 ## Goal
 
 See how your places sit next to each other, measured by how long it takes to travel between them.

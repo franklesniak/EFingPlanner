@@ -12,6 +12,8 @@ You are here: Phase 5 (Route, Length, and Transportation). Not a First Taste ste
 - Parent involvement: none / independent work
 - Materials: this session's Destination Notes, a device with the kid-safe filter on, your route map notes from Session 28, your must-do list and strong maybes from Checkpoint 3, your attraction cards, your [Trip-Basics card](../../templates/trip_basics.md) (for the number of travelers), your [Source Log](../../templates/source_log.md)
 
+(For an at-a-glance version, see the matching entry in [the parent session notes](../../parent_guide/session_support_notes.md); the Parent Notes below have the full detail.)
+
 ## Goal
 
 Learn how you'll get around, and what the grown-ups still have to check.

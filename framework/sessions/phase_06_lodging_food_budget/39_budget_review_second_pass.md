@@ -12,6 +12,8 @@ You are here: Phase 6 (Lodging, Food, and Budget). Not a First Taste step. Previ
 - Parent involvement: parent review after session; beforehand, tell your child how many rooms each overnight city needs
 - Materials: your [Budget Estimate page](../../templates/budget_estimate.md) from Session 33 and a blank one for this pass, your daily cost table from Session 38, your Hotel Comparison Cards, your route and nights from Checkpoint 4, your route map notes from Session 28, the City Research Card for any region on your route (for its town), your My Calls page (for your special pick), your attraction cards (for your special pick's ticket, and if it hits a block), your [When the Plan Changes card](../../student_guide/when_the_plan_changes.md) and the pages it names that you've made (if your special pick hits a block, or a grown-up agrees to a change), a device with a map app (kid-safe filter on) in case a change needs a new travel time, your part-trip note from Session 33 (if you made one) or the grown-up's answer on who is there on which days, your Session 29 formula (for its "- 1 flight day" marks), or a grown-up who can tell you which flights land on a later date, your [Trip-Basics card](../../templates/trip_basics.md) (for the number of travelers), your family's [current travel assumptions](../../templates/current_family_travel_assumptions.md) page (for the budget band), your [Source Log](../../templates/source_log.md), a calculator (allowed)
 
+(For an at-a-glance version, see the matching entry in [the parent session notes](../../parent_guide/session_support_notes.md); the Parent Notes below have the full detail.)
+
 ## Goal
 
 Update your budget to match the route the grown-ups approved, and check whether the parts you chose still fit your band.

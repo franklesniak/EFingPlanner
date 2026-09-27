@@ -12,6 +12,8 @@ You are here: Phase 4 (Attractions and Experiences). Not a First Taste step. **T
 - Parent involvement: parent review -- genuinely use the recommendation in a real family talk
 - Materials: your ranked attraction list and attraction cards, your My Calls page, your City A card from Session 16 and your Session 26 scoring tables (for the optional look back at your minutes guesses), your family's [current travel assumptions](../../templates/current_family_travel_assumptions.md) page (for the budget band), your [Source Log](../../templates/source_log.md), a [Decision Record page](../../templates/decision_record.md), a blank [Parent Review Form](../../templates/parent_review_form.md) for a grown-up to fill in
 
+(For an at-a-glance version, see the matching entry in [the parent session notes](../../parent_guide/session_support_notes.md); the Parent Notes below have the full detail.)
+
 ## Goal
 
 Present your top experiences to the grown-ups, with your reasons, and find out what they decide.
@@ -55,6 +57,8 @@ Your top experiences recommendation:
 | Does this still fit our rough budget band? | |
 | What a grown-up still needs to check or decide | |
 | Approval status (a grown-up circles one: Approved / Approved with changes / Needs more research / Park this decision for later) | |
+
+Keeping your work in the trip starter kit? Its [top experiences page](../../trip_starter/recommendations/top_experiences.md) has room for everything in this table, so you can fill it in there.
 
 Then fill your Decision Record. Your must-dos go in **My recommendation**, and your reasons, sources and trade-offs go in their own rows. When the grown-ups decide, write their answer in **Final family decision**. That record is your decision-log entry.
 
