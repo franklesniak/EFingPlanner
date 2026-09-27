@@ -672,7 +672,7 @@ def test_the_session_00_strip_shape_passes() -> None:
         parent_bullets=(
             "- Status: Core (adult-only setup)",
             "- Estimated time: about 1-2 hours, once",
-            "- Parent involvement: adult-owned; the child does not do this session",
+            "- Parent involvement: adult-owned; this session is yours, and your child starts at Session 01",
             "- Materials: this checklist",
         )
     )
