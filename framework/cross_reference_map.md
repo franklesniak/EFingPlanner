@@ -119,7 +119,7 @@ These are named once, here, so the rows stay short:
 | [48 Packing List][s48] | [Packing List][t-packing] | none | Tab 8 |
 | [49 Travel Readiness Checklist][s49] | the session page | [If I Get Separated Card][k-separated] | Tab 8 (the readiness checklist); the card goes in the child's pocket |
 | [50 Final Binder Assembly][s50] | the session page | [Binder Table of Contents][o-contents] | The assembled binder, with the table of contents at the front |
-| [51 Final Presentation][s51] | [Final Presentation Outline][t-outline] | none | Checkpoint 6, then the [Family Presentation][o-presentation]; its Part 2 feeds the [Adult Follow-Up Questions][o-follow] |
+| [51 Final Presentation][s51] | [Final Presentation Outline][t-outline] | none | Checkpoint 6, then the [Family Presentation][o-presentation]; its Part 2 feeds the [Adult Follow-Up Questions][o-follow]; tab 11, when the outline stands in for the family presentation |
 | [52 Checkpoint 6 Family Decision Meeting][s52] | the session page; [Decision Record][t-decision] | [Final Recommendation][r-final]; [decision log][k-decision] | The [Family Presentation][o-presentation]; the after-Checkpoint-5 parts of the [Final Itinerary][o-itinerary], [Executive Summary][o-summary] and [Adult Follow-Up Questions][o-follow]; tab 11 |
 | [53 Reflection and Handoff][s53] | [Final Reflection][t-reflect], on the First Taste path | [Final Reflection][o-reflect], on the Core path | Tab 11; the plan handed to the grown-ups |
 

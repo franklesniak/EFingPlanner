@@ -15,7 +15,7 @@ For the child this project is designed for, **finishing First Taste is the expec
 
 ## The phases at a glance
 
-The project's sessions sit in nine phases, 0 to 8, and [Session 54](sessions/phase_09_after_you_get_back/54_after_you_get_back.md), after the trip, is listed separately. Each row names what the child does in that phase and what they make. The checkpoints are where a grown-up reviews the work and the family decides.
+Before the trip, the project's sessions sit in nine phases, 0 to 8, one per row below. [Session 54](sessions/phase_09_after_you_get_back/54_after_you_get_back.md) is in Phase 9 (After You Get Back), an optional phase for after the trip, so it is listed separately. Each row names what the child does in that phase and what they make. The checkpoints are where a grown-up reviews the work and the family decides.
 
 | Phase | Sessions | What the child does | What they make | Ends at |
 | --- | --- | --- | --- | --- |
