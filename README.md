@@ -2,9 +2,11 @@
 
 # EFingPlanner
 
+<!-- density-exempt: X, not Y -- the provided-as-is banner in the spec's canonical wording, which the spec requires verbatim at the top of this page -->
+
 > **Provided as-is by one family. This is not an actively maintained project, and no one is on call to fix or update it. Facts -- prices, hours, entry and visa rules, attraction names, links -- may be out of date. Always verify anything you rely on against official sources before acting on it.**
 
-**A self-guided executive-function curriculum for kids (roughly ages 9-11) that teaches how to break a big project into doable steps by planning a real family trip to Japan.**
+**A self-guided executive-function curriculum for kids (roughly 9-11) that teaches how to break a big project into doable steps by planning a real family trip to Japan.**
 
 The trip is the hook; the subject is *executive function*: getting started, planning, tracking sources, making trade-offs, and knowing when to stop. A child works through short Markdown "sessions" mostly on their own, with light adult coaching, and comes out having planned a trip and practiced the skills that make any large project less overwhelming.
 
@@ -14,7 +16,7 @@ A thoughtful, sourced mini-plan the family can use: a when-to-go call, one or tw
 
 ## How a destination fits in
 
-One [destination pack](destinations/japan/README.md) ships with this repository. The sessions carry no facts about any particular place. Where a session needs one, it sends the child to the pack. Some sessions say "open this session's Destination Notes," and the matching insert in the pack supplies the fact. Others name a reference page in the same pack, where the longer facts live.
+One [destination pack](destinations/japan/README.md) ships with this repository. The sessions are written for any destination. Where a session needs a fact about a place, it sends the child to the pack. Some sessions say "open this session's Destination Notes," and the matching insert in the pack supplies the fact. Others name a reference page in the same pack, where the longer facts live.
 
 **Which kind of "reuse" you actually need:** another US family doing Japan needs only their own two setup pages: the [Trip-Basics card](framework/templates/trip_basics.md) (airport, party size, trip length, roster) and the [Current Family Travel Assumptions page](framework/templates/current_family_travel_assumptions.md) (season window, budget band, AI choice, rough trip shape, constraints), both filled in at Session 00 and both read by later sessions: near-zero cost, and the reuse most families need. Rebuilding for a *different destination* is the only thing the heavier machinery is for.
 
@@ -35,7 +37,7 @@ Quick-start:
 3. Do the parent setup (Session 00).
 4. Print the first sessions.
 5. Start Session 01.
-6. Review at Checkpoint 1, then decide whether to keep going (the try-then-commit on-ramp: you do not have to commit to the whole project to start).
+6. Review at Checkpoint 1, then decide whether to keep going (the try-then-commit on-ramp: try Phases 0-2 first, then choose how far to go).
 7. Finish the First Taste path at Session 53: a usable mini-plan and a complete stopping point. (The [roadmap](framework/PROJECT_ROADMAP.md) maps the fuller path toward the Core Finish Line.)
 
 After the trip, an optional short module, [Session 54](framework/sessions/phase_09_after_you_get_back/54_after_you_get_back.md), lets your child compare the plan with what happened.
@@ -68,7 +70,7 @@ Three layers (this is how the pages fit together):
 
 - `framework/` -- the reusable curriculum: sessions, templates, and the student and parent guides. No trip data.
 - `destinations/japan/` -- the Japan knowledge pack: stable reference facts.
-- the **trip layer** -- your child's real, filled-in work, copied out of the blank pages and **never committed here.**
+- the **trip layer** -- your child's real, filled-in work, which your family copies out of the blank pages and keeps in its own binder or Docs folder.
 
 ## Safety and responsibility
 

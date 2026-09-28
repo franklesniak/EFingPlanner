@@ -31,9 +31,9 @@ Set up your first small step, then do it. A suggestion: write "If I get separate
 
 **Rules that change.** Entry rules, visas (the permission to visit that some countries ask for), how long a passport must stay valid, health rules and travel warnings all change. Grown-ups check each one on an official source shortly before the trip. So whatever you read about them today, treat it as something to check again.
 
-**Your card.** Your card holds where you're staying, its address and its phone number, and a parent's phone number. A grown-up adds a line in the local language saying where you're staying, so you can show it to anyone. Copy two emergency phrases from your destination pack's safety and emergency page: one that means "please help", and one that means "I'm lost, I got separated from my family". A grown-up checks the wording.
+**Your card.** Your card holds the name, address and phone number of where you're staying, and a parent's phone number. A grown-up adds a line in the local language saying where you're staying, so you can show it to anyone. Copy two emergency phrases from your destination pack's safety and emergency page: one that means "please help", and one that means "I'm lost, I got separated from my family". A grown-up checks the wording.
 
-If a grown-up has already booked and checked where you're staying, they fill in those lines now. If not, the lines stay blank until after booking. Your family may book after the plan is finished. A safety card never carries a guess. Staying in more than one place? Then you carry only the card for where you sleep that night. At each move, a grown-up fills in the lodging lines on a fresh card, and you copy your other lines onto it. The old one is torn up. The parent's number on each card is for a parent who is with you there, so a grown-up tells you whose number goes on it.
+If a grown-up has already booked and checked where you're staying, they fill in those lines now. If not, the lines stay blank until after booking. Your family may book after the plan is finished. A safety card never carries a guess. Staying in more than one place? Then you carry only the card for where you sleep that night. At each move, a grown-up fills in the lodging lines and the local-language line on a fresh card, and you copy your other lines onto it. The old one is torn up. The parent's number on each card is for a parent who is with you there, so a grown-up tells you whose number goes on it.
 
 <!-- density-exempt: X, not Y -- the card's privacy rule is a safety statement the brief requires on this page -->
 > **The privacy rule for this card.** This card is **not** an exception to the privacy rules. It may carry the name, address and phone number of where you're staying, and a parent's phone number. That's the least your family needs to find you again. It **never** carries a passport number, a birthdate, a confirmation number, or your home address. It's a safety card for your pocket, filled in on paper. It is never saved in a shared folder, put into an AI tool, or posted anywhere. See [the privacy and safety page](../../docs/privacy_and_safety.md).
@@ -86,7 +86,7 @@ You are done when every line on your readiness checklist is either checked or ma
 
 ## Source Check
 
-Log where your phrases came from in your Source Log, with today's date: your destination pack's safety and emergency page. Any emergency number or local rule on your card gets checked by a grown-up on a current official page, with the date written down. Add that official page to your Source Log too, with the same date.
+Log where your phrases came from in your Source Log, with today's date: your destination pack's safety and emergency page. Each emergency number on your card gets checked by a grown-up on a current official page, with the date written down. Add that official page to your Source Log too, with the same date.
 
 ## Finish and Quality Check
 

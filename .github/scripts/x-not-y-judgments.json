@@ -2335,20 +2335,15 @@
       "judgment": "no",
       "reason": "a fact"
     },
-    "split|Most of the time, you're with your family. → If you can't find them, first do what today's rule says.|1": {
+    "split|Most of the time, you're with your family. → If you cannot find them, first do what today's rule says.|1": {
       "line": 15,
       "judgment": "no",
       "reason": "a conditional instruction"
     },
-    "split|If you can't find them, first do what today's rule says. → A grown-up names it each morning, and it's usually to stay where you are.|1": {
+    "split|If you cannot find them, first do what today's rule says. → A grown-up names it each morning, and it is usually to stay where you are.|1": {
       "line": 15,
       "judgment": "no",
       "reason": "a fact of the usual rule"
-    },
-    "split|A grown-up names it each morning, and it's usually to stay where you are. → Then ask a helper who is right there, and stay in your spot while you do.|1": {
-      "line": 17,
-      "judgment": "no",
-      "reason": "an instruction"
     },
     "split|Then ask a helper who is right there, and stay in your spot while you do. → Call out or wave, even to a helper you can see farther away.|1": {
       "line": 17,
@@ -2359,6 +2354,11 @@
       "line": 17,
       "judgment": "no",
       "reason": "a rule with its one exception; only is a limit"
+    },
+    "split|A grown-up names it each morning, and it is usually to stay where you are. → Then ask a helper who is right there, and stay in your spot while you do.|1": {
+      "line": 17,
+      "judgment": "no",
+      "reason": "an instruction"
     },
     "split|The only time you move is to a meeting spot that morning's rule named. → Helpers you might have right beside you:|1": {
       "line": 19,
@@ -2879,25 +2879,25 @@
       "judgment": "no",
       "reason": "a statement of adult ownership"
     },
-    "split|So are travel advisories. → The child's job is to compare seasons and recommend a good time.|1": {
-      "line": 35,
-      "judgment": "no",
-      "reason": "a role statement (the child's job); it rejects no named alternative"
-    },
     "split|So is watching for typhoons. → So are travel advisories.|1": {
       "line": 35,
       "judgment": "no",
       "reason": "a statement of adult ownership"
     },
-    "split|The child's job is to compare seasons and recommend a good time. → Adults confirm the dates and watch the weather.|1": {
-      "line": 35,
-      "judgment": "no",
-      "reason": "a role statement (the adults' job)"
-    },
     "split|Weather alerts are adult-owned. → So is watching for typhoons.|1": {
       "line": 35,
       "judgment": "no",
       "reason": "a statement of adult ownership"
+    },
+    "split|So are travel advisories. → Your job is to compare seasons and recommend a good time.|1": {
+      "line": 35,
+      "judgment": "no",
+      "reason": "a role statement (the child's job); it rejects no named alternative"
+    },
+    "split|Your job is to compare seasons and recommend a good time. → Adults confirm the dates and watch the weather.|1": {
+      "line": 35,
+      "judgment": "no",
+      "reason": "a role statement (the adults' job)"
     }
   },
   "destinations/japan/reference/transportation_basics.md": {
@@ -3001,15 +3001,15 @@
       "judgment": "no",
       "reason": "a fact"
     },
-    "split|Adults check the current value, and the rules for who may buy one. → The child only needs to know a pass may exist.|1": {
-      "line": 15,
-      "judgment": "no",
-      "reason": "a role limit (the child only needs to know); it rejects no named alternative"
-    },
     "split|Whether a rail pass is worth it changes too. → Adults check the current value, and the rules for who may buy one.|1": {
       "line": 15,
       "judgment": "no",
       "reason": "a role statement"
+    },
+    "split|Adults check the current value, and the rules for who may buy one. → You only need to know a pass may exist.|1": {
+      "line": 15,
+      "judgment": "no",
+      "reason": "a role limit (all the child needs to know); it rejects no named alternative"
     },
     "device|IC cards and rail passes are both on the access and pricing watch, the list of things to check again close to travel.|1": {
       "line": 17,
@@ -3051,11 +3051,6 @@
       "judgment": "no",
       "reason": "a caveat"
     },
-    "split|That checking is a grown-up's job. → The child just flags likely trouble spots.|1": {
-      "line": 21,
-      "judgment": "no",
-      "reason": "a role statement"
-    },
     "split|That matters for pacing. → It matters most for anyone who tires more easily.|1": {
       "line": 21,
       "judgment": "no",
@@ -3070,6 +3065,11 @@
       "line": 21,
       "judgment": "no",
       "reason": "a fact"
+    },
+    "split|That checking is a grown-up's job. → You just flag likely trouble spots.|1": {
+      "line": 21,
+      "judgment": "no",
+      "reason": "a role statement"
     },
     "device|Takkyubin (luggage forwarding) -- your bags can be sent ahead to your next hotel.|1": {
       "line": 25,
@@ -5461,12 +5461,12 @@
       "judgment": "no",
       "reason": "a change record: a fact"
     },
-    "split|The tab table, the binder item list and the design principles table now write Source Log and Stop Point the same way. → A template's title in a label list still keeps the list's own case.|1": {
+    "split|The tab table, the binder item list and the design principles table now write Source Log and Stop Point the same way. → Session 52's title keeps its own case in the link text that names it, and a template's title in a label list keeps the list's own case.|1": {
       "line": 48,
       "judgment": "no",
       "reason": "a change record: a limit on the label rule"
     },
-    "split|A template's title in a label list still keeps the list's own case. → The root README's session index is not part of this release.|1": {
+    "split|Session 52's title keeps its own case in the link text that names it, and a template's title in a label list keeps the list's own case. → The root README's session index is not part of this release.|1": {
       "line": 48,
       "judgment": "no",
       "reason": "a scope limit in a change record (the session index is outside this release); it rejects no alternative to the claim before it"
@@ -5501,12 +5501,12 @@
       "judgment": "no",
       "reason": "a change record of wording fixes; it prefers no option to the reader"
     },
-    "split|The paths past First Taste are \"Core and full\" everywhere, the lighter parent mode is Low-Bandwidth Parent Mode, the audience range reads \"roughly 9-11\", and American spelling replaces the few British spellings outside released entries. → Four British usages now read as American English writes them: \"math\", \"has gotten\", \"medical coverage\" and \"elevator\".|1": {
+    "split|The paths past First Taste are \"Core and full\" everywhere, the lighter parent mode is Low-Bandwidth Parent Mode, the audience range reads \"roughly 9-11\", and American spelling replaces the few British spellings outside released entries. → Three British usages now read as American English writes them: \"math\", \"has gotten\" and \"elevator\".|1": {
       "line": 49,
       "judgment": "no",
       "reason": "a change record: a fact (which usages now read as American English)"
     },
-    "split|Four British usages now read as American English writes them: \"math\", \"has gotten\", \"medical coverage\" and \"elevator\". → \"Guardrails\" names only the adults' planning limits.|1": {
+    "split|Three British usages now read as American English writes them: \"math\", \"has gotten\" and \"elevator\". → \"Guardrails\" names only the adults' planning limits.|1": {
       "line": 49,
       "judgment": "no",
       "reason": "a change record: a usage limit"
@@ -5551,16 +5551,6 @@
       "judgment": "no",
       "reason": "a change record: a fact"
     },
-    "split|A pointer now names what its target holds. → The differentiation guide carries the rehearsal ladder that three pages send a parent to, the quick sheet's bathing pointer goes to Session 47, and Sessions 08 and 25 link the source trustworthiness page.|1": {
-      "line": 51,
-      "judgment": "no",
-      "reason": "a change record: a fact"
-    },
-    "split|The differentiation guide carries the rehearsal ladder that three pages send a parent to, the quick sheet's bathing pointer goes to Session 47, and Sessions 08 and 25 link the source trustworthiness page. → Where two pages explained one concept, it now has one home, with a one-clause reminder and a link on the other page.|1": {
-      "line": 51,
-      "judgment": "no",
-      "reason": "a change record: a fact"
-    },
     "split|Where two pages explained one concept, it now has one home, with a one-clause reminder and a link on the other page. → The framework glossary defines the four executive-function terms, and the parent pages point there.|1": {
       "line": 51,
       "judgment": "no",
@@ -5571,7 +5561,17 @@
       "judgment": "no",
       "reason": "a change record: a fact"
     },
-    "split|Every page that describes the Source Log gives one entry to each source. → The When the Plan Changes card gives the grown-up the lodging lines and the child the rest, as Session 49 does.|1": {
+    "split|A pointer now names what its target holds. → The differentiation guide carries the rehearsal ladder that two parent pages and the child's presentation outline point to, the quick sheet's bathing pointer goes to Session 47, and Sessions 08 and 25 link the source trustworthiness page.|1": {
+      "line": 51,
+      "judgment": "no",
+      "reason": "a change record: a fact"
+    },
+    "split|The differentiation guide carries the rehearsal ladder that two parent pages and the child's presentation outline point to, the quick sheet's bathing pointer goes to Session 47, and Sessions 08 and 25 link the source trustworthiness page. → Where two pages explained one concept, it now has one home, with a one-clause reminder and a link on the other page.|1": {
+      "line": 51,
+      "judgment": "no",
+      "reason": "a change record: a fact"
+    },
+    "split|Every page that describes the Source Log gives one entry to each source. → The When the Plan Changes card gives the grown-up the lodging lines and the local-language line of a fresh \"if I get separated\" card, and the child the rest, as that card's page and Session 49 do.|1": {
       "line": 51,
       "judgment": "no",
       "reason": "a change record: a division of roles"
@@ -5671,12 +5671,12 @@
       "judgment": "no",
       "reason": "a change record: a fact"
     },
-    "split|Each ‹code› , ‹code› and ‹code› the pass listed went through the delete test, with wording a build brief fixes or the spec quotes kept, and this file's own count is back at its cap. → The two banned ‹code› shapes are gone.|1": {
+    "split|Each ‹code› , ‹code› and ‹code› the pass listed went through the delete test, with wording a build brief fixes or the spec quotes kept, and this file's own count is back at its cap. → The banned ‹code› shape, joined into one sentence in GETTING_STARTED, is gone.|1": {
       "line": 54,
       "judgment": "no",
       "reason": "a change record: a status"
     },
-    "split|The two banned ‹code› shapes are gone. → The root README and GETTING_STARTED are within the parent ‹code› cap by hand count, and three markers now name the device as the style law does.|1": {
+    "split|The banned ‹code› shape, joined into one sentence in GETTING_STARTED, is gone. → The root README and GETTING_STARTED are within the parent ‹code› cap by hand count, and three markers now name the device as the style law does.|1": {
       "line": 54,
       "judgment": "no",
       "reason": "a change record: a fact"
@@ -5731,16 +5731,6 @@
       "judgment": "no",
       "reason": "a change record: a fact"
     },
-    "split|The stated counts the pass checked were re-derived from the files they count. → The design principles table lists every mechanic, the navigation line and the When I'm Stuck card included, and its gradient covers Phases 0 to 8.|1": {
-      "line": 57,
-      "judgment": "no",
-      "reason": "a change record: a fact"
-    },
-    "split|The design principles table lists every mechanic, the navigation line and the When I'm Stuck card included, and its gradient covers Phases 0 to 8. → The print index counts five optional lines and Session 50 counts four, because tab 2's research-skill pages depend on the family's choice too.|1": {
-      "line": 57,
-      "judgment": "no",
-      "reason": "a change record: a fact with its reason"
-    },
     "split|The print index counts five optional lines and Session 50 counts four, because tab 2's research-skill pages depend on the family's choice too. → The progress tracker, the review checkpoints page and the roadmap say when Checkpoint 1 is finished.|1": {
       "line": 57,
       "judgment": "no",
@@ -5750,6 +5740,16 @@
       "line": 57,
       "judgment": "no",
       "reason": "a change record: a fact; the negation names the no-research line"
+    },
+    "split|The stated counts the pass checked were re-derived from the files they count. → The design principles table now lists the navigation line and the When I'm Stuck card, and its gradient covers Phases 0 to 8.|1": {
+      "line": 57,
+      "judgment": "no",
+      "reason": "a change record: a fact"
+    },
+    "split|The design principles table now lists the navigation line and the When I'm Stuck card, and its gradient covers Phases 0 to 8. → The print index counts five optional lines and Session 50 counts four, because tab 2's research-skill pages depend on the family's choice too.|1": {
+      "line": 57,
+      "judgment": "no",
+      "reason": "a change record: a fact with its reason"
     },
     "device|Privacy wording.|1": {
       "line": 58,
@@ -5761,25 +5761,25 @@
       "judgment": "no",
       "reason": "a change record: a wording rule after a label; it pairs with no claim"
     },
-    "split|The \"if I get separated\" card is never called an exception to the privacy rules. → The privacy and safety page, the two parent guides that name it, the kit card and the destination pack's safety page each say what the card may hold or carry.|1": {
-      "line": 58,
-      "judgment": "no",
-      "reason": "a change record: which pages say what the card may hold; a permission after the wording rule, nothing recast"
-    },
-    "split|The privacy and safety page, the two parent guides that name it, the kit card and the destination pack's safety page each say what the card may hold or carry. → Every privacy prohibition, and the card's stay-where-you-are rule, keep the full form.|1": {
-      "line": 58,
-      "judgment": "no",
-      "reason": "a change record: a fact"
-    },
     "split|Every privacy prohibition, and the card's stay-where-you-are rule, keep the full form. → The backup sections on the privacy page and in GETTING_STARTED leave the card out, because it stays on paper, in the child's pocket.|1": {
       "line": 58,
       "judgment": "no",
       "reason": "a change record: a fact with its reason"
     },
-    "split|The backup sections on the privacy page and in GETTING_STARTED leave the card out, because it stays on paper, in the child's pocket. → The Final Countdown card says what goes on the separated card, with no names and no home address.|1": {
+    "split|The \"if I get separated\" card is never called an exception to the privacy rules. → The privacy and safety page, the safety and emergency guidance, the adult-only logistics page, the kit card and the destination pack's safety page each say what the card may hold or carry.|1": {
+      "line": 58,
+      "judgment": "no",
+      "reason": "a change record: which pages say what the card may hold or carry"
+    },
+    "split|The privacy and safety page, the safety and emergency guidance, the adult-only logistics page, the kit card and the destination pack's safety page each say what the card may hold or carry. → Every privacy prohibition, and the card's stay-where-you-are rule, keep the full form.|1": {
       "line": 58,
       "judgment": "no",
       "reason": "a change record: a fact"
+    },
+    "split|The backup sections on the privacy page and in GETTING_STARTED leave the card out, because it stays on paper, in the child's pocket. → The Final Countdown card names what goes on the separated card: the name, address and phone number of where the child is staying, and a parent's phone number.|1": {
+      "line": 58,
+      "judgment": "no",
+      "reason": "a change record: a fact (what goes on the separated card)"
     },
     "device|Worksheets.|1": {
       "line": 59,
@@ -17099,10 +17099,10 @@
       "judgment": "no",
       "reason": "instruction"
     },
-    "split|Your child never books, never pays, and never handles booking, account, passport or payment data. → Their safety card, and it matters: your child carries an \"if I get separated\" card with where you are staying, its address and phone number, and a parent's phone number.|1": {
+    "split|Your child never books, never pays, and never handles booking, account, passport or payment data. → Their safety card, and it matters: your child carries an \"if I get separated\" card with the name, address and phone number of where you are staying, and a parent's phone number.|1": {
       "line": 8,
       "judgment": "no",
-      "reason": "names the one exception to the rule, the child's safety card, with what it carries; nothing is rejected or recast"
+      "reason": "names the child's safety card and what it carries; nothing is rejected or recast"
     },
     "banned|Don't skim past those. → They're the parts a child can actually do, and the safety one is the reason the whole split works.|1": {
       "line": 10,
@@ -17621,15 +17621,10 @@
       "judgment": "no",
       "reason": "an instruction to reassure when changing the plan"
     },
-    "split|When you change part of the plan, say so warmly and name what of theirs still stands. → \"Your work wasn't wrong\" is the message.|1": {
+    "split|When you change part of the plan, say so warmly and name what of theirs still stands. → That is the Your-Work-Wasn't-Wrong message, and the coaching guide has the scripts.|1": {
       "line": 33,
       "judgment": "no",
-      "reason": "names the message to give; the negation sits inside the quoted words"
-    },
-    "split|\"Your work wasn't wrong\" is the message. → See the coaching guide for the scripts.|1": {
-      "line": 33,
-      "judgment": "no",
-      "reason": "a navigation pointer to the coaching guide"
+      "reason": "names the message and points to the scripts; the negation sits inside a Named concept"
     },
     "device|Time and effort -- the third must-read: what this costs you, and how to lighten it.|1": {
       "line": 37,
@@ -18547,12 +18542,12 @@
       "judgment": "no",
       "reason": "a limit (only the delivery format flexes); no alternative is named"
     },
-    "split|Only the delivery format flexes. → Offer the rehearsal ladder too: you first, then a couple of adults, then the whole group, or just a recording.|1": {
+    "split|Only the delivery format flexes. → Offer the rehearsal ladder too: you first, then a few more people, then the whole group, or just a recording.|1": {
       "line": 20,
       "judgment": "no",
       "reason": "an instruction listing the rehearsal ladder"
     },
-    "split|Offer the rehearsal ladder too: you first, then a couple of adults, then the whole group, or just a recording. → Your child climbs it at their own pace.|1": {
+    "split|Offer the rehearsal ladder too: you first, then a few more people, then the whole group, or just a recording. → Your child climbs it at their own pace.|1": {
       "line": 20,
       "judgment": "no",
       "reason": "a statement that the child sets the pace"
@@ -20250,12 +20245,12 @@
       "judgment": "no",
       "reason": "a condition and a fact"
     },
-    "split|If your answer moves where the trip arrives or leaves, the draft's first or last day carries the wrong travel leg. → That is \"Approved with changes\": write the new place on your assumptions page, which later sessions read, and tell your child whether each flight still lands on a later date.|1": {
+    "split|If your answer moves where the trip arrives or leaves, the draft's first or last day carries the wrong travel leg. → That is \"Approved with changes\": write the new place on your assumptions page, which later sessions read, and, if you fly, tell your child whether each flight still lands on a later date.|1": {
       "line": 111,
       "judgment": "no",
       "reason": "an instruction"
     },
-    "split|That is \"Approved with changes\": write the new place on your assumptions page, which later sessions read, and tell your child whether each flight still lands on a later date. → Make it \"Needs more research\" if the change alters which route works best.|1": {
+    "split|That is \"Approved with changes\": write the new place on your assumptions page, which later sessions read, and, if you fly, tell your child whether each flight still lands on a later date. → Make it \"Needs more research\" if the change alters which route works best.|1": {
       "line": 111,
       "judgment": "no",
       "reason": "a conditional instruction"
@@ -20310,12 +20305,12 @@
       "judgment": "no",
       "reason": "a condition and a fact"
     },
-    "split|If your answer moves where the trip arrives or leaves, the same two answers apply. → \"Approved with changes\" means you write the new place on your assumptions page and tell your child whether each flight still lands on a later date.|1": {
+    "split|If your answer moves where the trip arrives or leaves, the same two answers apply. → \"Approved with changes\" means you write the new place on your assumptions page and, if you fly, tell your child whether each flight still lands on a later date.|1": {
       "line": 125,
       "judgment": "no",
       "reason": "a definition of an answer"
     },
-    "split|\"Approved with changes\" means you write the new place on your assumptions page and tell your child whether each flight still lands on a later date. → \"Needs more research\" fits a change that alters which route works best, and your child does that piece before Session 53.|1": {
+    "split|\"Approved with changes\" means you write the new place on your assumptions page and, if you fly, tell your child whether each flight still lands on a later date. → \"Needs more research\" fits a change that alters which route works best, and your child does that piece before Session 53.|1": {
       "line": 125,
       "judgment": "no",
       "reason": "a fact about when an answer fits"
@@ -23009,12 +23004,12 @@
       "judgment": "no",
       "reason": "a prep list of materials; on paper is a placement stated alone"
     },
-    "device|Look for: a readiness checklist with every line ticked or marked for the grown-ups, the card made on paper, with a parent's phone number, the two emergency phrases and the plan's three steps on its back, and its lodging and number lines filled in or marked for later, the official page you checked the numbers on logged in the Source Log with the date, and the three-part plan said out loud once with you.|1": {
+    "device|Look for: a readiness checklist with every line ticked or marked for the grown-ups, the card made on paper, with a parent's phone number, the two emergency phrases and the plan's three steps on its back, and its lodging, local-language and number lines filled in or marked for later, the official page you checked the numbers on logged in the Source Log with the date, and the three-part plan said out loud once with you.|1": {
       "line": 472,
       "judgment": "no",
       "reason": "a look-for list; made on paper is a placement stated alone"
     },
-    "split|Look for: a readiness checklist with every line ticked or marked for the grown-ups, the card made on paper, with a parent's phone number, the two emergency phrases and the plan's three steps on its back, and its lodging and number lines filled in or marked for later, the official page you checked the numbers on logged in the Source Log with the date, and the three-part plan said out loud once with you. → With more than one place to stay, there is one card per place: your child carries only the card for tonight's place, and at each move, or if the place to stay changes before the trip, you fill in a fresh card's lodging lines and say whose number goes on it, and the old one is torn up.|1": {
+    "split|Look for: a readiness checklist with every line ticked or marked for the grown-ups, the card made on paper, with a parent's phone number, the two emergency phrases and the plan's three steps on its back, and its lodging, local-language and number lines filled in or marked for later, the official page you checked the numbers on logged in the Source Log with the date, and the three-part plan said out loud once with you. → With more than one place to stay, there is one card per place: your child carries only the card for tonight's place, and at each move, or if the place to stay changes before the trip, you fill in a fresh card's lodging lines and local-language line and say whose number goes on it, and the old one is torn up.|1": {
       "line": 472,
       "judgment": "no",
       "reason": "a rule for more than one place to stay; only is a limit"
@@ -38067,20 +38062,20 @@
       "judgment": "no",
       "reason": "an instruction"
     },
-    "split|Log this session's Destination Notes first, with their title and today's date. → Then add a new entry to the same Source Log you started in Session 04 for each area you looked at.|1": {
-      "line": 62,
-      "judgment": "no",
-      "reason": "an instruction"
-    },
-    "split|Then add a new entry to the same Source Log you started in Session 04 for each area you looked at. → Write what you learned, the site or book title, who made it, the link or page, and the date you checked.|1": {
-      "line": 62,
-      "judgment": "no",
-      "reason": "an instruction"
-    },
     "split|Write what you learned, the site or book title, who made it, the link or page, and the date you checked. → Cost levels and room rules can change, so mark them for a grown-up to check again before booking.|1": {
       "line": 62,
       "judgment": "no",
       "reason": "a reason with an instruction"
+    },
+    "split|Log this session's Destination Notes first, with their title and today's date. → Then give each source you used for the areas its own entry in the same Source Log you started in Session 04.|1": {
+      "line": 62,
+      "judgment": "no",
+      "reason": "an instruction"
+    },
+    "split|Then give each source you used for the areas its own entry in the same Source Log you started in Session 04. → Write what you learned, the site or book title, who made it, the link or page, and the date you checked.|1": {
+      "line": 62,
+      "judgment": "no",
+      "reason": "an instruction"
     },
     "device|Finished?|1": {
       "line": 66,
@@ -45032,22 +45027,22 @@
       "judgment": "no",
       "reason": "a lead-in label"
     },
-    "split|Your card. → Your card holds where you're staying, its address and its phone number, and a parent's phone number.|1": {
-      "line": 34,
-      "judgment": "no",
-      "reason": "a fact (what the card holds)"
-    },
-    "split|Your card holds where you're staying, its address and its phone number, and a parent's phone number. → A grown-up adds a line in the local language saying where you're staying, so you can show it to anyone.|1": {
-      "line": 34,
-      "judgment": "no",
-      "reason": "a fact"
-    },
     "split|A grown-up adds a line in the local language saying where you're staying, so you can show it to anyone. → Copy two emergency phrases from your destination pack's safety and emergency page: one that means \"please help\", and one that means \"I'm lost, I got separated from my family\".|1": {
       "line": 34,
       "judgment": "no",
       "reason": "an instruction"
     },
     "split|Copy two emergency phrases from your destination pack's safety and emergency page: one that means \"please help\", and one that means \"I'm lost, I got separated from my family\". → A grown-up checks the wording.|1": {
+      "line": 34,
+      "judgment": "no",
+      "reason": "a fact"
+    },
+    "split|Your card. → Your card holds the name, address and phone number of where you're staying, and a parent's phone number.|1": {
+      "line": 34,
+      "judgment": "no",
+      "reason": "a fact (what the card holds)"
+    },
+    "split|Your card holds the name, address and phone number of where you're staying, and a parent's phone number. → A grown-up adds a line in the local language saying where you're staying, so you can show it to anyone.|1": {
       "line": 34,
       "judgment": "no",
       "reason": "a fact"
@@ -45077,16 +45072,6 @@
       "judgment": "no",
       "reason": "an instruction with a limit"
     },
-    "split|Then you carry only the card for where you sleep that night. → At each move, a grown-up fills in the lodging lines on a fresh card, and you copy your other lines onto it.|1": {
-      "line": 36,
-      "judgment": "no",
-      "reason": "an instruction of who fills in which lines"
-    },
-    "split|At each move, a grown-up fills in the lodging lines on a fresh card, and you copy your other lines onto it. → The old one is torn up.|1": {
-      "line": 36,
-      "judgment": "no",
-      "reason": "a replacement: the old card is torn up; nothing is argued against"
-    },
     "split|A grown-up checks the wording. → If a grown-up has already booked and checked where you're staying, they fill in those lines now.|1": {
       "line": 36,
       "judgment": "no",
@@ -45096,6 +45081,16 @@
       "line": 36,
       "judgment": "no",
       "reason": "a fact with its consequence"
+    },
+    "split|Then you carry only the card for where you sleep that night. → At each move, a grown-up fills in the lodging lines and the local-language line on a fresh card, and you copy your other lines onto it.|1": {
+      "line": 36,
+      "judgment": "no",
+      "reason": "an instruction of who fills in which lines"
+    },
+    "split|At each move, a grown-up fills in the lodging lines and the local-language line on a fresh card, and you copy your other lines onto it. → The old one is torn up.|1": {
+      "line": 36,
+      "judgment": "no",
+      "reason": "a replacement: the old card is torn up; nothing is argued against"
     },
     "device|The privacy rule for this card.|1|block quote": {
       "line": 39,
@@ -45337,20 +45332,20 @@
       "judgment": "no",
       "reason": "a permission with a condition"
     },
-    "split|Any emergency number or local rule on your card gets checked by a grown-up on a current official page, with the date written down. → Add that official page to your Source Log too, with the same date.|1": {
-      "line": 89,
-      "judgment": "no",
-      "reason": "an instruction"
-    },
     "device|Log where your phrases came from in your Source Log, with today's date: your destination pack's safety and emergency page.|1": {
       "line": 89,
       "judgment": "no",
       "reason": "an instruction"
     },
-    "split|Log where your phrases came from in your Source Log, with today's date: your destination pack's safety and emergency page. → Any emergency number or local rule on your card gets checked by a grown-up on a current official page, with the date written down.|1": {
+    "split|Log where your phrases came from in your Source Log, with today's date: your destination pack's safety and emergency page. → Each emergency number on your card gets checked by a grown-up on a current official page, with the date written down.|1": {
       "line": 89,
       "judgment": "no",
       "reason": "a rule"
+    },
+    "split|Each emergency number on your card gets checked by a grown-up on a current official page, with the date written down. → Add that official page to your Source Log too, with the same date.|1": {
+      "line": 89,
+      "judgment": "no",
+      "reason": "an instruction"
     },
     "device|Finished?|1": {
       "line": 93,
@@ -46116,12 +46111,12 @@
       "judgment": "no",
       "reason": "a fact (a reassurance)"
     },
-    "device|If you would like to build up to it, try it with one grown-up first, then a couple of adults, then the whole group.|1": {
+    "device|If you would like to build up to it, try it with one grown-up first, then a few more people, then the whole group.|1": {
       "line": 43,
       "judgment": "no",
       "reason": "a conditional instruction"
     },
-    "split|If you would like to build up to it, try it with one grown-up first, then a couple of adults, then the whole group. → Or just record it.|1": {
+    "split|If you would like to build up to it, try it with one grown-up first, then a few more people, then the whole group. → Or just record it.|1": {
       "line": 43,
       "judgment": "no",
       "reason": "another option offered; nothing is rejected"
@@ -46251,15 +46246,10 @@
       "judgment": "no",
       "reason": "a fact"
     },
-    "split|The presentation accommodations and the rehearsal ladder live in the differentiation guide. → If your child wants to rehearse, be the first audience, then add a couple of adults, then the group.|1": {
+    "split|The presentation accommodations and the rehearsal ladder live in the differentiation guide. → If your child wants to rehearse, be the first audience, then add a few more people, then the group.|1": {
       "line": 83,
       "judgment": "no",
       "reason": "a conditional instruction"
-    },
-    "split|If your child wants to rehearse, be the first audience, then add a couple of adults, then the group. → The lighter page.|1": {
-      "line": 85,
-      "judgment": "no",
-      "reason": "a label"
     },
     "split|The readiness signal is two sessions in a row done without needing the When I'm Stuck card or leaning on the written Steps; the Finish and Quality Check closes every session, so using it never counts against them. → If your child isn't there yet, read the Steps with them.|1": {
       "line": 85,
@@ -46280,6 +46270,11 @@
       "line": 85,
       "judgment": "no",
       "reason": "a definition of the readiness signal with a caveat; it rejects no named alternative"
+    },
+    "split|If your child wants to rehearse, be the first audience, then add a few more people, then the group. → The lighter page.|1": {
+      "line": 85,
+      "judgment": "no",
+      "reason": "a label"
     }
   },
   "framework/sessions/phase_08_readiness_final/52_checkpoint_6_family_decision_meeting.md": {
@@ -50428,12 +50423,12 @@
       "judgment": "no",
       "reason": "a replacement procedure: the old card is torn up"
     },
-    "split|Then it's torn up. → They fill in the lodging lines on a fresh card for where you'll sleep, and you copy your other lines onto it.|1": {
+    "split|Then it's torn up. → They fill in the lodging lines and the local-language line on a fresh card for where you'll sleep, and you copy your other lines onto it.|1": {
       "line": 14,
       "judgment": "no",
       "reason": "a replacement procedure: a fresh card is filled in"
     },
-    "split|They fill in the lodging lines on a fresh card for where you'll sleep, and you copy your other lines onto it. → Then go down Your plan pages.|1": {
+    "split|They fill in the lodging lines and the local-language line on a fresh card for where you'll sleep, and you copy your other lines onto it. → Then go down Your plan pages.|1": {
       "line": 14,
       "judgment": "no",
       "reason": "a navigation instruction (go down Your plan pages)"
@@ -50543,20 +50538,20 @@
       "judgment": "no",
       "reason": "a question"
     },
-    "split|Has a grown-up filled in the lodging lines on your \"if I get separated\" card? → Then they fill in the lodging lines on a fresh card for the new place, and you copy your other lines onto it.|1": {
-      "line": 16,
-      "judgment": "no",
-      "reason": "a replacement procedure: a fresh card for the new place"
-    },
-    "split|Then they fill in the lodging lines on a fresh card for the new place, and you copy your other lines onto it. → The old one is torn up, as Session 49 says.|1": {
-      "line": 16,
-      "judgment": "no",
-      "reason": "a replacement procedure: the old card is torn up"
-    },
     "split|The old one is torn up, as Session 49 says. → Then go down Your plan pages.|1": {
       "line": 16,
       "judgment": "no",
       "reason": "a navigation instruction (go down Your plan pages)"
+    },
+    "split|Has a grown-up filled in the lodging lines on your \"if I get separated\" card? → Then they fill in the lodging lines and the local-language line on a fresh card for the new place, and you copy your other lines onto it.|1": {
+      "line": 16,
+      "judgment": "no",
+      "reason": "a replacement procedure: a fresh card for the new place"
+    },
+    "split|Then they fill in the lodging lines and the local-language line on a fresh card for the new place, and you copy your other lines onto it. → The old one is torn up, as Session 49 says.|1": {
+      "line": 16,
+      "judgment": "no",
+      "reason": "a replacement procedure: the old card is torn up"
     },
     "device|A different number of rooms?|1": {
       "line": 17,
@@ -53005,12 +53000,12 @@
       "judgment": "no",
       "reason": "a reassurance stating what changes; nothing rejected"
     },
-    "device|If you want to work up to it, the differentiation guide has a rehearsal ladder: one grown-up, then a couple of adults, then the group.|1": {
+    "device|If you want to work up to it, the differentiation guide has a rehearsal ladder: one grown-up, then a few more people, then the group.|1": {
       "line": 17,
       "judgment": "no",
       "reason": "a conditional pointer"
     },
-    "split|If you want to work up to it, the differentiation guide has a rehearsal ladder: one grown-up, then a couple of adults, then the group. → Climb it at whatever pace you like.|1": {
+    "split|If you want to work up to it, the differentiation guide has a rehearsal ladder: one grown-up, then a few more people, then the group. → Climb it at whatever pace you like.|1": {
       "line": 17,
       "judgment": "no",
       "reason": "a permission"
@@ -56598,10 +56593,10 @@
       "judgment": "no",
       "reason": "a privacy rule; the sentence before it is an unrelated safety rule"
     },
-    "split|This card holds no private details. → Where you're staying, its address and its phone number, and a parent's phone number go on your \"if I get separated\" card.|1": {
+    "split|This card holds no private details. → The name, address and phone number of where you're staying, and a parent's phone number, go on your \"if I get separated\" card.|1": {
       "line": 35,
       "judgment": "split",
-      "reason": "this card holds no private details / the lodging and a parent's number go on your \"if I get separated\" card"
+      "reason": "this card holds no private details / the lodging's name, address and phone number and a parent's number go on your \"if I get separated\" card"
     }
   },
   "framework/trip_starter/if_i_get_separated_card.md": {
@@ -56630,20 +56625,20 @@
       "judgment": "no",
       "reason": "an instruction offering two ways to fill in the card"
     },
-    "device|If the lodging lines are still blank, leave them for a grown-up to fill in after booking.|1": {
-      "line": 23,
-      "judgment": "no",
-      "reason": "a conditional instruction"
-    },
-    "split|If the lodging lines are still blank, leave them for a grown-up to fill in after booking. → A safety card never carries a guess.|1": {
-      "line": 23,
-      "judgment": "split",
-      "reason": "leave the blank lodging lines for a grown-up to fill in after booking / a safety card never carries a guess"
-    },
     "split|A safety card never carries a guess. → The number rows can wait until a grown-up has checked the numbers, too.|1": {
       "line": 23,
       "judgment": "no",
       "reason": "a further instruction; the rejection of a guess pairs with the sentence before it"
+    },
+    "device|If the lodging lines or the local-language line are still blank, leave them for a grown-up to fill in after booking.|1": {
+      "line": 23,
+      "judgment": "no",
+      "reason": "a conditional instruction"
+    },
+    "split|If the lodging lines or the local-language line are still blank, leave them for a grown-up to fill in after booking. → A safety card never carries a guess.|1": {
+      "line": 23,
+      "judgment": "split",
+      "reason": "leave the blank lodging and local-language lines for a grown-up to fill in after booking / a safety card never carries a guess"
     },
     "split|The number rows can wait until a grown-up has checked the numbers, too. → Staying in more than one place?|1": {
       "line": 25,
@@ -56655,16 +56650,6 @@
       "judgment": "no",
       "reason": "an instruction with a limit"
     },
-    "split|Then you carry only the card for where you sleep that night. → At each move, a grown-up fills in the lodging lines on a fresh card, and you copy your other lines onto it.|1": {
-      "line": 25,
-      "judgment": "no",
-      "reason": "an instruction of who fills in which lines"
-    },
-    "split|At each move, a grown-up fills in the lodging lines on a fresh card, and you copy your other lines onto it. → The old one is torn up.|1": {
-      "line": 25,
-      "judgment": "no",
-      "reason": "a replacement: the old card is torn up; nothing is argued against"
-    },
     "split|The old one is torn up. → The same goes if the place to stay changes before the trip.|1": {
       "line": 25,
       "judgment": "no",
@@ -56674,6 +56659,16 @@
       "line": 25,
       "judgment": "no",
       "reason": "a rule of whose number goes on the card"
+    },
+    "split|Then you carry only the card for where you sleep that night. → At each move, a grown-up fills in the lodging lines and the local-language line on a fresh card, and you copy your other lines onto it.|1": {
+      "line": 25,
+      "judgment": "no",
+      "reason": "an instruction of who fills in which lines"
+    },
+    "split|At each move, a grown-up fills in the lodging lines and the local-language line on a fresh card, and you copy your other lines onto it. → The old one is torn up.|1": {
+      "line": 25,
+      "judgment": "no",
+      "reason": "a replacement: the old card is torn up; nothing is argued against"
     },
     "banned|Never on this card|1": {
       "line": 27,

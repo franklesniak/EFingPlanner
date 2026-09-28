@@ -40,7 +40,7 @@ Your presentation is about 5 to 10 minutes long. Part 1 says what you recommend.
 - Record a video and play it.
 - Hand over your binder with a short written summary.
 
-If you would like to build up to it, try it with one grown-up first, then a couple of adults, then the whole group. Or just record it. Your family makes its decision at Checkpoint 6 whichever way you choose.
+If you would like to build up to it, try it with one grown-up first, then a few more people, then the whole group. Or just record it. Your family makes its decision at Checkpoint 6 whichever way you choose.
 
 ## Workspace
 
@@ -80,6 +80,6 @@ If you change where the trip arrives or leaves after Checkpoint 5, write the new
 
 The budget line is your child's subtotal for the parts they chose. Getting there, getting between cities, insurance, entry costs and phone service stay on your own page, so say so if anyone reads it as the trip's cost.
 
-The presentation accommodations and the rehearsal ladder live in the [differentiation guide](../../parent_guide/differentiation.md). If your child wants to rehearse, be the first audience, then add a couple of adults, then the group.
+The presentation accommodations and the rehearsal ladder live in the [differentiation guide](../../parent_guide/differentiation.md). If your child wants to rehearse, be the first audience, then add a few more people, then the group.
 
 **The lighter page.** This page's Steps and Workspace are short, and your child sets their own Start Here. The readiness signal is two sessions in a row done without needing the When I'm Stuck card or leaning on the written Steps; the Finish and Quality Check closes every session, so using it never counts against them. If your child isn't there yet, read the Steps with them. Start Here, the Stop Point, the named artifact and the Source Check stay on every page.

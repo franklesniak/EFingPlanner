@@ -17,7 +17,7 @@ This project is built for the child who finds planning hard, so the moves on thi
 ## Writing and presenting
 
 - **Writing accommodations.** Writing is the bigger barrier for many kids, and the artifact is the point, not the handwriting. Let your child dictate answers to you, answer in short fragments, or draw and diagram. Never penalize spelling or handwriting on any worksheet.
-- **Presentation accommodations.** The final family presentation can be the most stressful moment for an anxious child. Offer these as equal options for every child: present to one adult first as a rehearsal, present from notes, record a video and play it, or hand over the binder with a short written summary. Only the delivery format flexes. Offer the rehearsal ladder too: you first, then a couple of adults, then the whole group, or just a recording. Your child climbs it at their own pace.
+- **Presentation accommodations.** The final family presentation can be the most stressful moment for an anxious child. Offer these as equal options for every child: present to one adult first as a rehearsal, present from notes, record a video and play it, or hand over the binder with a short written summary. Only the delivery format flexes. Offer the rehearsal ladder too: you first, then a few more people, then the whole group, or just a recording. Your child climbs it at their own pace.
 
 ## Notes for specific needs
 

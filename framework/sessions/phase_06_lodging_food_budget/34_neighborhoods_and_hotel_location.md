@@ -59,7 +59,7 @@ You are done when your Neighborhood Comparison has at least two areas filled in,
 
 ## Source Check
 
-Log this session's Destination Notes first, with their title and today's date. Then add a new entry to the same Source Log you started in Session 04 for each area you looked at. Write what you learned, the site or book title, who made it, the link or page, and the date you checked. Cost levels and room rules can change, so mark them for a grown-up to check again before booking.
+Log this session's Destination Notes first, with their title and today's date. Then give each source you used for the areas its own entry in the same Source Log you started in Session 04. Write what you learned, the site or book title, who made it, the link or page, and the date you checked. Cost levels and room rules can change, so mark them for a grown-up to check again before booking.
 
 ## Finish and Quality Check
 

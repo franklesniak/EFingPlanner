@@ -2,18 +2,20 @@
 
 # Getting Started
 
+<!-- density-exempt: X, not Y -- the provided-as-is banner in the spec's canonical wording, which the spec requires verbatim at the top of this page -->
+
 > **Provided as-is by one family. This is not an actively maintained project, and no one is on call to fix or update it. Facts -- prices, hours, entry and visa rules, attraction names, links -- may be out of date. Always verify anything you rely on against official sources before acting on it.**
 
 That banner is the whole spirit of this project: your child learns the **[Verify-Don't-Trust](framework/docs/source_trustworthiness.md) habit**. Treat every price, opening time, rule, and link here as a starting point to confirm against an official source, with the date you checked it.
 
 ## What this is
 
-A set of Markdown worksheets ("sessions") a child fills in to plan a real family trip to Japan -- and, along the way, to practice executive-function skills. **No software is needed:** read the sessions on GitHub, print them, or copy them into Google Docs and work in a binder.
+A set of Markdown worksheets ("sessions") a child fills in to plan a real family trip to Japan -- and, along the way, to practice executive-function skills. **It works in a browser or on paper:** read the sessions on GitHub, print them, or copy them into Google Docs and work in a binder.
 
 ## Start here (parents)
 
 1. Read the [parent quick-start](framework/parent_guide/README.md): three short must-reads.
-2. Copy the [trip starter kit](framework/trip_starter/README.md) out of this repository, somewhere your family works. You fill in your copies, and filled-in work never comes back here. The [start guide](framework/how_to_start_a_trip.md) walks through it.
+2. Copy the [trip starter kit](framework/trip_starter/README.md) out of this repository, somewhere your family works. You and your child fill in the copies there. The [start guide](framework/how_to_start_a_trip.md) walks through it.
 3. Do the [parent setup](framework/sessions/phase_00_setup/00_parent_setup.md) (Session 00): kid-safe filter on, fill in **your copies** of the [Trip-Basics card](framework/trip_starter/family/trip_basics.md) and the [assumptions page](framework/trip_starter/family/current_family_travel_assumptions.md), choose AI yes/no.
 4. Print [Session 01](framework/sessions/phase_00_setup/01_project_kickoff.md).
 5. Your child starts Session 01, following the [progress tracker](framework/student_guide/progress_tracker.md).
@@ -78,7 +80,7 @@ Standard materials (free option in parentheses):
 - Do not enter passport numbers, birthdates, or payment information anywhere.
 - Do not book anything or create accounts without an adult.
 - Do not trust one source, and do not use AI as the only source.
-- Do not commit your filled-in trip work to a public repository. Work in a private binder or Google Docs. A Google Docs folder is not a private vault either, so the same rule applies: keep sensitive personal data off it. See [privacy and safety](framework/docs/privacy_and_safety.md).
+- Do not commit your filled-in trip work to a public repository. A Google Docs folder is not a private vault either, so the same rule applies: keep sensitive personal data off it. See [privacy and safety](framework/docs/privacy_and_safety.md).
 
 ## Back up your work (30 seconds)
 

@@ -20,9 +20,9 @@ You make this card in [Session 49](../sessions/phase_08_readiness_final/49_trave
 | Emergency number, and the date a grown-up checked it | A grown-up checks it on a current official page and writes the date. Then I write the number. | |
 | Second emergency number, and the date a grown-up checked it | A grown-up checks it on a current official page and writes the date. Then I write the number. | |
 
-If the lodging lines are still blank, leave them for a grown-up to fill in after booking. A safety card never carries a guess. The number rows can wait until a grown-up has checked the numbers, too.
+If the lodging lines or the local-language line are still blank, leave them for a grown-up to fill in after booking. A safety card never carries a guess. The number rows can wait until a grown-up has checked the numbers, too.
 
-Staying in more than one place? Then you carry only the card for where you sleep that night. At each move, a grown-up fills in the lodging lines on a fresh card, and you copy your other lines onto it. The old one is torn up. The same goes if the place to stay changes before the trip. The parent's number on each card is for a parent who is with you there, so a grown-up tells you whose number goes on it.
+Staying in more than one place? Then you carry only the card for where you sleep that night. At each move, a grown-up fills in the lodging lines and the local-language line on a fresh card, and you copy your other lines onto it. The old one is torn up. The same goes if the place to stay changes before the trip. The parent's number on each card is for a parent who is with you there, so a grown-up tells you whose number goes on it.
 
 ## Never on this card
 

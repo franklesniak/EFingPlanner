@@ -14,7 +14,7 @@ If you only have time for one, ask this one: *"What is one thing you'd love on t
 
 ## Their answers
 
-| Traveler (by relationship or role) | What they'd love | What they prefer | What might tire them |
+| Traveler (by relationship or role) | What they would love | What they prefer | What might tire them |
 | --- | --- | --- | --- |
 | | | | |
 | | | | |

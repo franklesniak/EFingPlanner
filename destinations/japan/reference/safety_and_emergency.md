@@ -12,7 +12,7 @@ Japan has earthquakes. It's also one of the best-prepared places in the world fo
 
 ## If you ever get separated
 
-Most of the time, you're with your family. If you can't find them, first do what today's rule says. A grown-up names it each morning, and it's usually to stay where you are.
+Most of the time, you're with your family. If you cannot find them, first do what today's rule says. A grown-up names it each morning, and it is usually to stay where you are.
 
 Then ask a helper who is right there, and stay in your spot while you do. Call out or wave, even to a helper you can see farther away. The only time you move is to a meeting spot that morning's rule named.
 

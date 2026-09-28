@@ -30,7 +30,7 @@ Record both on the child's "My Calls" page, with a one-line adult acknowledgment
 
 ## What stays firmly adult-owned
 
-Money, booking, travel, insurance, safety, and any legal, health, or medical decision. If your trip leaves the country, passports and entry requirements are adult-owned too. When you change part of the plan, say so warmly and name what of theirs still stands. "Your work wasn't wrong" is the message. See the [coaching guide](coaching_and_support.md) for the scripts.
+Money, booking, travel, insurance, safety, and any legal, health, or medical decision. If your trip leaves the country, passports and entry requirements are adult-owned too. When you change part of the plan, say so warmly and name what of theirs still stands. That is the [Your-Work-Wasn't-Wrong](coaching_and_support.md) message, and the coaching guide has the scripts.
 
 ## Where to go next
 

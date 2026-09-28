@@ -14,7 +14,7 @@ One line under each item is enough. You're talking from an outline, not reading 
 - Record a video and play it
 - Hand over the binder with a short written summary
 
-If you want to work up to it, [the differentiation guide](../parent_guide/differentiation.md) has a rehearsal ladder: one grown-up, then a couple of adults, then the group. Climb it at whatever pace you like. The family still makes its decision either way; only how you deliver it changes.
+If you want to work up to it, [the differentiation guide](../parent_guide/differentiation.md) has a rehearsal ladder: one grown-up, then a few more people, then the group. Climb it at whatever pace you like. The family still makes its decision either way; only how you deliver it changes.
 
 ## Part 1 — What I recommend
 

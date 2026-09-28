@@ -23,7 +23,7 @@ This one page holds both of your Session 03 artifacts: your family trip goals an
 
 Ask each traveler: *"What is one thing you'd love on this trip?"* Write one line per person. If someone is hard to reach, ask by text. Or have a grown-up pass the question on. Or just mark "asked through a grown-up."
 
-| Traveler (by relationship or role) | One thing they'd love |
+| Traveler (by relationship or role) | One thing they would love |
 | --- | --- |
 | | |
 | | |

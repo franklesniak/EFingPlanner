@@ -32,4 +32,4 @@ You can plan for the *season*. But no one can promise the exact peak week months
 
 ## What stays with the adults
 
-Weather alerts are adult-owned. So is watching for typhoons. So are travel advisories. The child's job is to compare seasons and recommend a good time. Adults confirm the dates and watch the weather.
+Weather alerts are adult-owned. So is watching for typhoons. So are travel advisories. Your job is to compare seasons and recommend a good time. Adults confirm the dates and watch the weather.
