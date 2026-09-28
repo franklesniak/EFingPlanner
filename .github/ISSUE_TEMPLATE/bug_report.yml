@@ -116,7 +116,7 @@ body:
       label: Screenshot or photo (optional)
       description: >-
         A screenshot of the page, or a photo of a blank printed worksheet, helps a lot.
-        Never post a photo of your child's filled-in page: it can show names, dates and plans.
+        Never post a photo or screenshot of your child's filled-in page: it can show names, dates and plans.
         Drag and drop images directly into this field.
       placeholder: Drag and drop images here...
     validations:
@@ -149,7 +149,7 @@ body:
     attributes:
       label: Additional context (optional)
       description: >-
-        Anything else that would help — related issues, or your child's age or reading level.
+        Anything else that would help — related issues, or your child's age range or reading level (for example, 8 to 10).
         Leave out names, health details and trip details.
       placeholder: Add any other context here...
     validations:
