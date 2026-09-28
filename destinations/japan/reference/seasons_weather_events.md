@@ -2,7 +2,7 @@
 
 # Seasons, Weather, and Events (Japan)
 
-**Last reviewed:** July 2026
+**Last reviewed:** September 2026
 
 Use this to compare seasons, not to pick "the perfect" one. These patterns hold up well. But exact dates, prices, and forecasts move. So **confirm this year's dates** for anything you plan around.
 
@@ -16,8 +16,8 @@ Use this to compare seasons, not to pick "the perfect" one. These patterns hold 
 ## Things to watch for
 
 - **Cherry blossoms** in spring and **fall colors** in autumn are big draws. Those weeks are busier.
-- **Rainy season** is roughly June for most of Japan.
-- **Summer heat and humidity** are real. On long walking days they can be a health concern. That's true for the child. It's true for anyone who tires more easily, too. Plan summer days gently, with water.
+- **Rainy season** runs roughly from early June to late July for most of Japan. In Okinawa it comes about a month earlier, and Hokkaido usually misses it. Japan's weather agency lists the usual dates for each region, so confirm this year's dates there.
+- **Summer heat and humidity** can be a health concern on long walking days. That's true for you. It's true for anyone who tires more easily, too. Plan summer days gently, with water.
 - **Typhoon season** runs roughly from late spring, around May, through autumn. The peak comes in late summer and early autumn. So it can hit a late-spring or summer trip, and a fall one. A grown-up watches the official forecast. A forecast typhoon can shut trains and attractions for a day or two. So it's a reshuffle-the-days event, not just a rainy afternoon.
 
 ## Busy travel windows (crowds and higher prices; confirm this year's dates)
@@ -32,4 +32,4 @@ You can plan for the *season*. But no one can promise the exact peak week months
 
 ## What stays with the adults
 
-Weather alerts are adult-owned. So is watching for typhoons. So are travel advisories. The child's job is to compare seasons and recommend a good time. Adults confirm the dates and watch the weather.
+Weather alerts are adult-owned. So is watching for typhoons. So are travel advisories. Your job is to compare seasons and recommend a good time. Adults confirm the dates and watch the weather.

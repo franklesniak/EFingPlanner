@@ -2,7 +2,7 @@
 
 # Session 15: City Research Cards
 
-You are here: Phase 3 (Choose Places), First Taste step 9 of 13. Previous: [14 Checkpoint 1: Season Recommendation](../phase_02_destination_big_picture/14_checkpoint_1_season_recommendation.md) | Next: [16 Deep-Dive City A](16_deep_dive_city_a.md)
+You are here: Phase 3 (Choose Places), First Taste step 9 of 13. Previous: [14 Checkpoint 1 Season Recommendation](../phase_02_destination_big_picture/14_checkpoint_1_season_recommendation.md) | Next: [16 Deep-Dive City A](16_deep_dive_city_a.md)
 
 *On the First Taste path, go straight to [21 Compare Cities](21_compare_cities.md). Sessions 16 to 20 are not among the 13.*
 
@@ -76,4 +76,4 @@ If you have extra energy, start a third city card, or add a "things I can't wait
 
 ## Parent Notes
 
-Let one city be a gentle anchor, and let your child choose the second. Ownership matters here. On the First Taste path your child has not done Session 11, so be ready to name a good first city yourself. Two cards are enough for First Taste; the comparison in Session 21 needs two things to compare. The starred "can't wait to see" sights feed the must-see list later. The movable-blocks idea is what makes a later change to the shape of the journey a small edit, not a redo -- it ties to the "your work wasn't wrong" message. One solid card per sitting is a good pace, and it gives a curious child a natural place to stop digging.
+Let one city be a gentle anchor, and let your child choose the second. Ownership matters here. On the First Taste path your child has not done Session 11, so be ready to name a good first city yourself. Two cards are enough for First Taste; the comparison in Session 21 needs two things to compare. The starred "can't wait to see" sights feed the must-see list later. The movable-blocks idea is what makes a later change to the shape of the journey a small edit, not a redo. It ties to the [Your-Work-Wasn't-Wrong](../../parent_guide/coaching_and_support.md) message. One solid card per sitting is a good pace, and it gives a curious child a natural place to stop digging.

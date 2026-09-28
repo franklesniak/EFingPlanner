@@ -10,7 +10,7 @@ You are here: Phase 7 (Itinerary Building). Not a First Taste step. Previous: [4
 - Planner skill: organizing information
 - Estimated time: several sittings; stop whenever you want
 - Parent involvement: none / independent work
-- Materials: your [Trip-Basics card](../../templates/trip_basics.md) (for the booked trip length, if your dates are booked), your day cards from Session 41, your pacing review from Session 43, your backup plans and cut list from Session 44, your Reservation Watchlist, your route and nights from Checkpoint 4, your Session 29 formula (for its "- 1 flight day" marks), or a grown-up who can tell you which flights land on a later date and whether each is on the way there or home, your route map notes from Session 28 and your [Source Log](../../templates/source_log.md), the City Research Card for any region on your route (for its town), your family's [current travel assumptions](../../templates/current_family_travel_assumptions.md) page (for the arrival and departure places), a device with a map app or map website (kid-safe filter on), your minutes guesses and times from Sessions 16, 26 and 35 (on your City A card, your Session 26 scoring tables and your Session 35 Hotel Comparison Cards), your [When the Plan Changes card](../../student_guide/when_the_plan_changes.md) and the pages it names (if your days don't match your Checkpoint 4 plan), a timer and a clock, a few blank pages
+- Materials: your [Trip-Basics card](../../templates/trip_basics.md) (for the booked trip length, if your dates are booked), your day cards from Session 41, your pacing review from Session 43, your backup plans and cut list from Session 44, your Reservation Watchlist, your route and nights from Checkpoint 4, your Session 29 formula (for its "- 1 flight day" marks), or a grown-up who can tell you which flights land on a later date and whether each is on the way there or home, your route map notes from Session 28 and your [Source Log](../../templates/source_log.md), the City Research Card for any region on your route (for its town), the grown-ups' [current family travel assumptions](../../templates/current_family_travel_assumptions.md) page (for the arrival and departure places), a device with a map app or map website (kid-safe filter on), your minutes guesses and times from Sessions 16, 26 and 35 (on your City A card, your Session 26 scoring tables and your Session 35 Hotel Comparison Cards), your [When the Plan Changes card](../../student_guide/when_the_plan_changes.md) and the pages it names (if your days don't match your Checkpoint 4 plan), a timer and a clock, a few blank pages
 
 (For an at-a-glance version, see the matching entry in [the parent session notes](../../parent_guide/session_support_notes.md); the Parent Notes below have the full detail.)
 
@@ -81,7 +81,7 @@ Stuck? Use the [When I'm Stuck card](../../student_guide/when_im_stuck.md) in yo
 
 ## Optional Extension
 
-If you have extra energy, read your whole draft aloud to someone, the way you'd tell a friend about the trip. Mark any day that sounds too full. If not, you are done.
+If you have extra energy, read your whole draft aloud to someone, the way you would tell a friend about the trip. Mark any day that sounds too full. If not, you are done.
 
 ## Parent Notes
 
@@ -91,4 +91,4 @@ A partly filled draft still reads as a finished plan. Day, city and main activit
 
 The minutes guess is the last stop of the session-time loop, after Sessions 16, 26 and 35. Let your child notice whether the gap between guess and time shrank. The final reflection comes back to it.
 
-**The lighter page.** From Phase 7 on, Steps and Workspace are short and your child sets their own Start Here. The readiness signal is two sessions in a row done without needing the When I'm Stuck card or leaning on the written Steps; the Finish and Quality Check closes every session, so using it never counts against them. If your child isn't there yet, read the Steps with them. Start Here, the Stop Point, the named artifact and the Source Check stay on every page.
+**The lighter page.** This page's Steps and Workspace are short, and your child sets their own Start Here. The readiness signal is two sessions in a row done without needing the When I'm Stuck card or leaning on the written Steps; the Finish and Quality Check closes every session, so using it never counts against them. If your child isn't there yet, read the Steps with them. Start Here, the Stop Point, the named artifact and the Source Check stay on every page.

@@ -2,9 +2,9 @@
 
 # Question Parking Lot
 
-A question pops up. Chasing it would pull you off track. So park it here instead. This keeps your session focused. It also makes sure the question is not lost. You can come back to parked questions any time. That includes while you wait for a grown-up.
+A question pops up. Chasing it would pull you off track. So park it here instead. This keeps your session focused. It also makes sure the question isn't lost. You can come back to parked questions any time. That includes while you wait for a grown-up.
 
-One entry per question -- start a new copy of this table for each one:
+One entry per question. Start a new copy of this table for each one:
 
 | Prompt | Your answer |
 | --- | --- |

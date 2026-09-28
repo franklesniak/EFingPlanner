@@ -7,8 +7,8 @@
 
 - **Status:** Active
 - **Owner:** Repository Maintainers
-- **Last Updated:** 2026-09-24
-- **Scope:** Why each session mechanic is there, which executive-function skills the curriculum trains, the honest limit on what transfer can be promised, the canonical carry-over tag wording and its one placement rule, and the scaffolding fade gradient with the readiness test that releases each stage. Parent-facing and builder-facing. A later batch authoring new sessions follows the tag rule and the gradient from here.
+- **Last Updated:** 2026-09-28
+- **Scope:** Why each session mechanic is there, which executive-function skills the curriculum trains, the honest limit on what transfer can be promised, the canonical carry-over tag wording and its one placement rule, and the scaffolding fade gradient with the readiness test that releases each stage. Parent-facing and builder-facing. Anyone authoring a new session follows the tag rule and the gradient from here.
 - **Related:** [What executive function is](../parent_guide/what_is_executive_function.md), [Build style and vocabulary](build_style_and_vocab.md), [Project roadmap](../PROJECT_ROADMAP.md)
 
 ## Every mechanic has a job
@@ -17,19 +17,21 @@ Everything in a session earns its place. Each repeated part of the page is there
 
 | Mechanic | What it is for |
 | --- | --- |
+| Navigation line | Shows where the child is in the project, so they do not have to hold it in mind |
 | Start Here micro-action | Makes it easier to get started |
 | Timer | Makes the task bounded and prevents endless research |
-| Stop point | Teaches "done" and prevents perfectionism |
+| Stop Point | Teaches "done" and prevents perfectionism |
 | Artifact | Creates visible progress and supports follow-through |
 | Completion checklist | Supports self-monitoring |
 | Quick quality check | Nudges quality continuously, not only at the six checkpoints |
 | Optional extension | Captures extra energy without making extra work mandatory |
+| When I'm Stuck card | Gives a stalled child a next small move, so a hard moment does not end the session |
 | Question parking lot | Prevents tangents from derailing the session |
 | Cut list | Teaches prioritization and helps process trade-offs |
 | Backup plan | Builds flexible thinking |
 | Review checkpoint | Keeps the steps in the right order and teaches planning in stages |
 | Decision log | Records reasoning and prevents repeated decisions |
-| Source log | Builds research discipline and evidence tracking |
+| Source Log | Builds research discipline and evidence tracking |
 | Final reflection | Builds the habit of reflecting on how the work went |
 | Carry-over tag | Names a planning move out loud so it can transfer past the trip; placed once, on the session that first introduces the move |
 
@@ -41,7 +43,7 @@ The curriculum trains three executive-function skills, and it trains them on pur
 
 - **Working memory** is holding information in mind while using it. It is supported by the checkboxes, the concrete instructions, the logs, and the "you are here" navigation aids that tell a child where in the project they are standing.
 - **Cognitive flexibility** is shifting and adapting when something changes. It is supported by the trade-off reports, the backup plans, and the repeated message that plans can change when facts change.
-- **Inhibitory control**, or self-control, is resisting distraction, not over-researching, and sticking to the stop point. It is supported by the timer, the stop point, "good enough is good enough," and the question parking lot.
+- **Inhibitory control**, or self-control, is resisting distraction, not over-researching, and sticking to the Stop Point. It is supported by the timer, the Stop Point, "good enough is good enough," and the question parking lot.
 
 Those are the adult names for them, and they stay on adult pages. For the third, child-facing text says "self-control" or "knowing when to stop."
 
@@ -49,7 +51,7 @@ Those are the adult names for them, and they stay on adult pages. For the third,
 
 **Emotional regulation** sits under all three. It is the skill of noticing mid-session frustration and taking a break instead of quitting.
 
-It gets no new tool, because the supports already in place train it: the break permission, the stop point, the parking lot, and the message that being off is normal. The kid-facing line for it lives in the planner-mindset card.
+It gets no new tool, because the supports already in place train it: the break permission, the Stop Point, the parking lot, and the message that being off is normal. The kid-facing line for it lives on the [Planner Mindset](../student_guide/planner_mindset.md) card.
 
 ## What we can honestly claim about transfer
 
@@ -75,7 +77,7 @@ The quoted move changes; nothing else does.
 
 ## The scaffolding fades
 
-Support is heavy at the start and lifts as the child earns it. The gradient across the eight phases:
+Support is heavy at the start and lifts as the child earns it. The gradient across Phases 0 to 8:
 
 | Phases | Stance |
 | --- | --- |
@@ -84,7 +86,7 @@ Support is heavy at the start and lifts as the child earns it. The gradient acro
 | 5 to 6 | You do, with check-ins |
 | 7 to 8 | You do |
 
-**The gradient moves on demonstrated readiness rather than on the calendar.** The test is what the child did: two consecutive sessions completed without *needing* the When I'm Stuck card and without *leaning on* the written Steps. The Finish and Quality Check still closes every session, so doing it never counts against the child. The sections stay on the page at every stage, because the structure gate requires them and because a child who stops needing them one week may need them the next. What changes is whether the child reaches for them.
+**The gradient moves on demonstrated readiness rather than on the calendar.** The test is what the child did: two consecutive sessions completed without *needing* the When I'm Stuck card and without *leaning on* the written Steps. The Finish and Quality Check still closes every session, so doing it never counts against the child. The sections stay on the page at every stage, because every child session carries them and because a child who stops needing them one week may need them the next. What changes is whether the child reaches for them.
 
 If the two sessions do not come, the stage does not move. Going back a stage after a hard week is a normal adjustment.
 

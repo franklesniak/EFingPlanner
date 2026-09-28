@@ -19,7 +19,7 @@ Only the first two layers live in this repository. The third one is yours, and i
 
 ## Curriculum version
 
-**Curriculum version: 0.5.0.** What changed between revisions is in the [curriculum changelog](CHANGELOG.md).
+**Curriculum version: 1.0.0.** What changed between revisions is in the [curriculum changelog](CHANGELOG.md).
 
 <!-- density-exempt: X, not Y -- this is the which-is-which tag the batch 1 brief and the spec require wherever the two logs meet, a rule about telling two named logs apart, and it carries the privacy rule that a family's decision log is never committed -->
 
@@ -29,7 +29,7 @@ Which log is which: the curriculum changelog is the version history of these reu
 
 Done, for modularity, means this: a family can copy the blank kit and a destination pack, fill in their own Trip-Basics card and their own Current Family Travel Assumptions page, write a new destination's reference facts and inserts, and reuse the whole curriculum unchanged, without editing any framework file and without editing the first destination.
 
-A family who reaches their destination by road or rail rather than by air reads differently. Most of the wording that assumed a flight has been made general, and the few pages that still assume one are converted as later batches edit them.
+A family who reaches their destination by road or rail rather than by air reads differently. The pages are written for any way of getting there. Where one still names flights, such as a checklist's Flights line or the [flights from your home airport](parent_guide/flights_from_origin_guidance.md) guide, it applies only if your family flies.
 
 One bound sits on that promise today: a trip across several countries.
 
@@ -54,7 +54,7 @@ A family traveling from elsewhere swaps three things in the framework:
 - The home-airport and time-zone fields on the Trip-Basics card, together with the two sentences of adult help beside them, which name US time zones and daylight saving.
 - The home currency on the budget surfaces. The rough budget band on the current family travel assumptions page, the budget estimate template, and the first-pass budget session all write amounts with a dollar sign. Swap the symbol for your own currency; nothing else on those pages changes.
 
-The destination pack carries the same assumption in its own layer. A pack's child word list and its money reference convert prices into US dollars, the word list gives Fahrenheit and miles beside the local units, and its trusted-sources list names a US government travel page as the adult-owned entry and safety source. A pack written for a family from somewhere else converts into that family's money and units, and names that family's own government page in that role.
+The destination pack carries the same assumption in its own layer. A pack's "Words and Numbers You Will Meet" page and its money basics page convert prices into US dollars, the word page gives Fahrenheit and miles beside the local units, and its trusted starting sources list names a US government travel page as the adult-owned entry and safety source. Its adult logistics page, access and pricing watch and safety and emergency page also describe entry, advisories, medical coverage and the embassy for a US traveler. A pack written for a family from somewhere else converts into that family's money and units, and names that family's own government pages in those roles.
 
 Beyond the origin logistics layer, nothing in the framework assumes an origin country.
 

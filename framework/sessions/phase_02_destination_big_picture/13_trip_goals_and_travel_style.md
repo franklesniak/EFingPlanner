@@ -2,7 +2,7 @@
 
 # Session 13: Trip Goals and Travel Style
 
-You are here: Phase 2 (Destination Big Picture), First Taste step 7 of 13. Previous: [12 Weather, Seasons, and Events](12_weather_seasons_and_events.md) | Next: [14 Checkpoint 1: Season Recommendation](14_checkpoint_1_season_recommendation.md)
+You are here: Phase 2 (Destination Big Picture), First Taste step 7 of 13. Previous: [12 Weather, Seasons, and Events](12_weather_seasons_and_events.md) | Next: [14 Checkpoint 1 Season Recommendation](14_checkpoint_1_season_recommendation.md)
 
 **For parents:**
 
@@ -18,13 +18,13 @@ Decide what kind of trip your family wants, so your choices later fit your style
 
 ## Start Here
 
-On the first row of your Travel Style Worksheet, circle **busy days**, **relaxed days** or **somewhere between**, whichever sounds most like your family. That is your first style choice.
+On the first row of your Travel Style Worksheet, circle **busy days**, **relaxed days** or **somewhere between**, whichever sounds most like your family. That's your first style choice.
 
 ## Steps
 
-There is no single "right" trip. Different families like different styles. Now that you know a little about your destination, choose the style that fits your family. Look back at your Session 03 goals to remind yourself what people wanted.
+There's no single "right" trip. Different families like different styles. Now that you know a little about your destination, choose the style that fits your family. Look back at your Session 03 goals to remind yourself what people wanted.
 
-For each pair, circle the one your family leans toward (it is okay to land in the middle):
+For each pair, circle the one your family leans toward (it's okay to land in the middle):
 
 1. Busy days **or** relaxed days.
 2. Cities **or** nature.
@@ -35,21 +35,21 @@ For each pair, circle the one your family leans toward (it is okay to land in th
 
 Then write one sentence: *Our travel style is...*
 
-**A quick money thought (not full budgeting yet):** using the rough budget band a grown-up gave you at setup, remember a simple rule -- **more cities and more hotel moves usually cost more**, and a far-away region adds travel cost. Keep this in mind so you do not plan a trip that is too expensive. You will do real budgeting later.
+**A quick money thought (not full budgeting yet):** using the rough budget band a grown-up gave you at setup, remember a simple rule: **more cities and more hotel moves usually cost more**, and a far-away region adds travel cost. Keep this in mind so you don't plan a trip that's too expensive. You'll do real budgeting later.
 
 ## Workspace
 
 Use your [Travel Style Worksheet](../../templates/travel_style_worksheet.md) for the six pairs and your "our travel style is..." sentence.
 
-You can say your answers to an adult who writes them, or draw them, if that is easier.
+You can say your answers to an adult who writes them, or draw them, if that's easier.
 
 ## Artifact Created
 
-Your Travel style worksheet -- your family's leanings and a one-sentence style summary.
+Your Travel style worksheet: your family's leanings and a one-sentence style summary.
 
 ## Stop Point
 
-You are done when you have made your six choices and written your one-sentence style summary. Your answers just need to fit your family.
+You are done when you've made your six choices and written your one-sentence style summary. Your answers just need to fit your family.
 
 ## Source Check
 
@@ -69,4 +69,4 @@ If you have extra energy, ask one other traveler which way *they* lean on two of
 
 ## Parent Notes
 
-This is a light, low-pressure session that sets direction. The cost-awareness touch keeps affordability in view while your child chooses places, so they do not design an unaffordable route -- keep it to the simple "more cities and moves cost more" idea; detailed budgeting comes later. A mixed-stamina, multi-generational party often fits a "fewer places, deeper" style well.
+This is a light, low-pressure session that sets direction. The cost-awareness touch keeps affordability in view while your child chooses places, so they do not design an unaffordable route. Keep it to the simple "more cities and moves cost more" idea; detailed budgeting comes later. A mixed-stamina, multi-generational party often fits a "fewer places, deeper" style well.

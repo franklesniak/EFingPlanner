@@ -7,13 +7,13 @@ Read this page first. It is the shortest honest description of what this project
 
 ## What this project is
 
-This is a Markdown curriculum that a child of roughly nine to eleven works through to plan a real family trip. It runs over weeks or months, depending on which of the finish lines below the family picks; [time and effort](../parent_guide/time_and_effort.md) is where the range for each path lives. Every page is plain text. The child reads a short session, does one small piece of work, and writes it down. Along the way they are building executive function, which is the set of brain skills for getting started, staying with a task, and knowing when to stop.
+This is a Markdown curriculum that a child of roughly 9-11 works through to plan a real family trip. It runs over weeks or months, depending on which of the finish lines below the family picks; [time and effort](../parent_guide/time_and_effort.md) is where the range for each path lives. Every page is plain text. The child reads a short session, does one small piece of work, and writes it down. Along the way they are building executive function, which is the set of brain skills for getting started, staying with a task, and knowing when to stop.
 
 ## Two things at once
 
 The project is doing two jobs, and both of them are the point.
 
-It is a **real trip-planning binder**. What comes out of it is a thoughtful, sourced, family-usable recommendation: when to go, one or two places, a short must-see list, a rough budget check, and the child's own special pick, with a source log and a decision log showing how they got there.
+It is a **real trip-planning binder**. What comes out of it is a thoughtful, sourced, family-usable recommendation: when to go, one or two places, a short must-see list, a rough budget check, and the child's own special pick, with a Source Log and a decision log showing how they got there.
 
 It is also an **executive-function curriculum**. The trip is the hook. The repeated moves are the subject: start small, track a source, make one trade-off, know when to stop.
 

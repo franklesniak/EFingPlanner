@@ -21,4 +21,4 @@ Use this page in Session 12. Your job is to compare the seasons, not to pick the
 | --- | --- |
 | Best guess so far: which season looks most fun to me, and why | |
 
-You can say your answers to an adult who writes them, or draw them, if that is easier.
+You can say your answers to an adult who writes them, or draw them, if that's easier.

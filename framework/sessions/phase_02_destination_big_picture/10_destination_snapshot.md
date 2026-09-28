@@ -22,22 +22,22 @@ Make one snapshot page of the big facts about your destination.
 
 ## Start Here
 
-Write your destination's name at the top of your Destination Snapshot page. That is your start.
+Write your destination's name at the top of your Destination Snapshot page. That's your start.
 
 ## Steps
 
 Open this session's Destination Notes.
 
-Before you plan *where* to go, it helps to know a few big facts. You do not need to memorize anything. This is just a snapshot to get oriented.
+Before you plan *where* to go, it helps to know a few big facts. You don't need to memorize anything. This is just a snapshot to get oriented.
 
-Fill in your snapshot page. Look up anything you are not sure about, and add it to your Source Log.
+Fill in your snapshot page. Look up anything you're not sure about, and add it to your Source Log.
 
 1. **Capital:** from your Destination Notes.
 2. **Major land features:** from your Destination Notes. Your Notes may call these islands, mountains, or rivers.
 3. **Currency:** from your Destination Notes.
 4. **Main language:** from your Destination Notes.
 5. **Time difference:** use the time-difference figure on your Trip-Basics card; a grown-up confirms your home zone's exact current offset.
-6. **Getting there:** a grown-up can tell you roughly how long the trip takes from home, and how you will travel. (Travel arrangements are the grown-ups' job.)
+6. **Getting there:** a grown-up can tell you roughly how long the trip takes from home, and how you'll travel. (Travel arrangements are the grown-ups' job.)
 7. **Three surprising facts:** find three things about your destination that surprise you, from a trusted source. Write them down.
 8. **One question for later:** write one thing you want to find out. Park it for now.
 
@@ -45,7 +45,7 @@ Fill in your snapshot page. Look up anything you are not sure about, and add it 
 
 Use your [Destination Snapshot](../../templates/destination_snapshot.md) page for the facts, and your Source Log for wherever the three surprising facts came from.
 
-You can say your answers to an adult who writes them, or draw them, if that is easier.
+You can say your answers to an adult who writes them, or draw them, if that's easier.
 
 ## Artifact Created
 
@@ -53,7 +53,7 @@ Your Destination snapshot page: the big facts about your destination, plus three
 
 ## Stop Point
 
-You are done when your snapshot has the capital, major land features, currency, language, time difference, three surprising facts, and one question. Do not try to learn everything about your destination today. A snapshot is enough.
+You are done when your snapshot has the capital, major land features, currency, language, time difference, three surprising facts, and one question. Don't try to learn everything about your destination today. A snapshot is enough.
 
 ## Source Check
 
@@ -69,7 +69,7 @@ Stuck? Use the [When I'm Stuck card](../../student_guide/when_im_stuck.md) in yo
 
 ## Optional Extension
 
-If you have extra energy, find today's *exact* time difference between your home and your destination yourself, and write down why it can change (hint: daylight saving time). It is a small "facts have conditions" check. If not, you are done.
+If you have extra energy, find today's *exact* time difference between your home and your destination yourself, and write down why it can change (hint: daylight saving time). It's a small "facts have conditions" check. If not, you are done.
 
 ## Parent Notes
 

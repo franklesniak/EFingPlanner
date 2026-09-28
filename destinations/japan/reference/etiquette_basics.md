@@ -30,7 +30,7 @@ Public trash cans can be hard to find. Many people carry a small bag and take th
 
 ## Handing over money
 
-Many shop counters have a small tray by the register. Put your money in the tray, and the cashier takes it from there. Your change may come back in the tray, or handed to you.
+Many shop counters have a small tray by the register. Put your money in the tray, and the cashier takes it from there. Your change may come back in the tray, or be handed to you.
 
 Tipping is uncommon in Japan, at restaurants, in taxis and at hotels. So pay just the amount on the bill. How people pay, with cash or a card, is on the [money basics page](money_basics.md).
 
@@ -45,7 +45,7 @@ Shrines are places of worship in the Shinto religion. Temples are Buddhist. Visi
 
 ## Photos
 
-You can take photos in most places. Some places limit them: some temple halls, museums, shops and private homes, and some neighborhoods. In parts of Kyoto's Gion district, for example, posted signs ask visitors to stay off private lanes and to put cameras away there.
+You can take photos in most places. Some places limit them: some temple halls, museums, shops and private homes, and some neighborhoods. In parts of Kyoto's Gion district, for example, posted signs ask visitors to stay off private lanes and to put cameras away there. Rules like these change. The [access and pricing watch](access_and_pricing_watch.md) lists them to check again close to travel.
 
 Watch for posted signs, and do what they say. Ask before you take a photo of a person.
 

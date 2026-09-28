@@ -10,7 +10,7 @@ You are here: Phase 4 (Attractions and Experiences). Not a First Taste step. Pre
 - Planner skill: ranking priorities
 - Estimated time: 20-30 minutes
 - Parent involvement: 5-minute check-in; help co-choose the one unconditional pick
-- Materials: your attraction cards, your balance chart from Session 24, your City A card from Session 16 (for your minutes guess), a clock or timer, a [Scoring Rubric page](../../templates/scoring_rubric.md) for spare copies of the lighter table, or extra copies of this page's fuller table if you use that one, and a [My Calls page](../../trip_starter/my_calls.md) from your trip starter kit (copy one out if you don't have it yet)
+- Materials: your attraction cards, your balance chart from Session 24, your City A card from Session 16 (for your minutes guess), a clock or timer, a [Scoring Rubric page](../../templates/scoring_rubric.md) for spare copies of the Lighter Rubric (3-criteria) table, or extra copies of this page's fuller table if you use that one, and a [My Calls page](../../trip_starter/my_calls.md) from your trip starter kit (copy one out if you don't have it yet)
 
 (For an at-a-glance version, see the matching entry in [the parent session notes](../../parent_guide/session_support_notes.md); the Parent Notes below have the full detail.)
 
@@ -26,7 +26,7 @@ Write the name of one attraction in the Attraction 1 column of a scoring table i
 
 You have a stack of attraction cards. Now you decide which ones matter most. Scores help you think, and you make the choice.
 
-1. **Pick your scoring version.** The lighter version has three questions and the fuller one has eight. Use whichever fits you today. Both give you a complete ranking.
+1. **Pick your scoring version.** The [Lighter Rubric (3-criteria)](../../templates/scoring_rubric.md) has three questions, and the fuller one has eight. Use whichever fits you today. Both give you a complete ranking.
 2. **Score each attraction** from 1 (low) to 5 (high) on each question. Each table holds three attractions. For more, start a fresh copy.
 3. **Glance at your balance chart.** Did you circle a kind of day you want more of? Let that nudge your choices.
 4. **Sort every attraction into a group**: must-do, strong maybe, only if nearby, or skip or save for future. Write the group in the Final decision status row of each card, too.
@@ -40,9 +40,9 @@ Your skip and save-for-future notes are worth keeping. You'll use them again at 
 
 ## Workspace
 
-Use one of these tables. Each holds three attractions, so start a fresh copy for the next three. The Scoring Rubric page has spare copies of the lighter one. For the fuller one, ask a grown-up to print it again, or copy its questions onto a blank sheet. The Scoring Rubric's fuller table asks different questions, so keep to these.
+Use one of these tables. Each holds three attractions, so start a fresh copy for the next three. The Scoring Rubric page has spare copies of the Lighter Rubric (3-criteria) table. For the fuller one, ask a grown-up to print it again, or copy its questions onto a blank sheet. The Scoring Rubric's fuller table asks different questions, so keep to these.
 
-The lighter version:
+The Lighter Rubric (3-criteria):
 
 | Question | Attraction 1 | Attraction 2 | Attraction 3 |
 | --- | --- | --- | --- |
@@ -105,6 +105,6 @@ The one unconditional personal pick is chosen here and acknowledged at Checkpoin
 
 The must-do list is your child's owned decision. Within the approved cities, the budget band, and the pacing and safety rules, they choose which attractions make it, and you honor those picks. If one of those limits blocks a pick, tell them which one and why. Money, booking, getting there and safety stay with the adults. The My Calls page is the binder page where these calls are written down once, with an adult's "got it" beside each.
 
-Weighted scoring stalls some ten-year-olds, and the lighter three-question version is a full answer. Let your child choose the version.
+Weighted scoring stalls some ten-year-olds, and the Lighter Rubric (3-criteria) is a full answer. Let your child choose the version.
 
 The minutes guess returns from Session 16. It's estimating practice, and Checkpoint 3 takes one quick look back at both gaps.

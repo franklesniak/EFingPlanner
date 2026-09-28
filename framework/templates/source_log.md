@@ -4,7 +4,7 @@
 
 Your Source Log is where you record *where* each fact came from. Keep one Source Log for the whole trip. Each source you look up is one entry: a new copy of the table below. You don't have to fill in every box at once.
 
-How to use it: copy this page into your binder or notebook. Each fact you look up gets its own copy of the table. "Not listed" and "ask an adult" are fine answers.
+How to use it: copy this page into your binder or notebook. "Not listed" and "ask an adult" are fine answers.
 
 One entry per source:
 
@@ -24,4 +24,4 @@ One entry per source:
 | Verification source (if I checked it) | |
 | Date checked (the day you checked that other source) | |
 
-Tip: for facts that can change -- prices, hours, opening times, rules -- write "check again before booking" so a grown-up knows to re-check it close to travel.
+Tip: for facts that can change, such as prices, opening hours and rules, write "check again before booking" so a grown-up knows to re-check it close to travel.

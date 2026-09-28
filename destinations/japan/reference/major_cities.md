@@ -4,13 +4,13 @@
 
 **Last reviewed:** September 2026
 
-These are places to *research*. They are not choices already made. Reading about a place does not mean you picked it. You still do the comparing. You still own the route choice.
+These are places to *research*. They aren't choices already made. Reading about a place doesn't mean you picked it. You still do the comparing. You still own the route choice.
 
 ## Common first-trip cities
 
-- **Tokyo** -- the huge, busy capital. It has food, museums, and pop culture. It has many neighborhoods to walk around. It is a great base for day trips too. Tokyo is a strong anchor for most first trips.
+- **Tokyo** -- the huge, busy capital. It has food, museums, and pop culture. It has many neighborhoods to walk around. It's a great base for day trips too. Tokyo is a strong anchor for most first trips.
 - **Kyoto** -- temples, shrines, and gardens. Many streets there still look traditional. The feel is calm and old.
-- **Osaka** -- famous for its food. The city feels lively and friendly. It is a good base for day trips close by.
+- **Osaka** -- famous for its food. The city feels lively and friendly. It's a good base for day trips close by.
 
 ## Other places people research
 
@@ -33,14 +33,14 @@ These are places to *research*. They are not choices already made. Reading about
 
 ## Two ways to shape a first trip (comparison anchors, not answers)
 
-- **The "golden route"** -- Tokyo, Kyoto, and Osaka. Lots of first-timers pick this shape. The trains are the easy part. It is one long leg plus one short hop. The hard part is **packed days and hotel moves.**
+- **The "golden route"** -- Tokyo, Kyoto, and Osaka. Lots of first-timers pick this shape. The trains are the easy part. It's one long leg plus one short hop. The hard part is **packed days and hotel moves.**
 - **Fewer cities, deeper** -- stay in Tokyo and take day trips. Or just do Tokyo and Kyoto. This is often a gentler fit. It can work better when your group has mixed stamina and mixed ages.
 
 Both are just starting points to compare. Weigh each one against your family's stamina and pace.
 
 ## Fun things to consider (research, not pre-chosen)
 
-- Big draws: a Ghibli museum or park, Tokyo Disney, and Pokemon Centers. Universal Studios Japan has Super Nintendo World. These are ideas to research, and what's open changes. Check which are open now, and what a visit involves. You could also look at teamLab's current venues, and check which ones are open now. Nara is known for its deer.
+- Big draws: a Ghibli museum or park, Tokyo Disney, and Pokemon Centers. Universal Studios Japan has Super Nintendo World. These are ideas to research, and what's open changes. Check which are open now, and what a visit involves. You could also look at teamLab's current venues.
 - Small everyday treats count too. You could enjoy the Shinkansen ride itself, on a route that already uses it. You could try conveyor-belt sushi. There are gachapon capsule-toy machines, and vending machines are everywhere. There are arcades, themed cafes, and a big aquarium.
 - A goshuin stamp book. You buy the book once. Then each shrine or temple you visit can add its own hand-brushed page, for a small fee. Goshuin are a religious custom, so visit respectfully first. Then wait quietly, with your book open and ready. The custom can differ from place to place, so check how it works where you go.
 

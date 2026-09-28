@@ -3,9 +3,9 @@
 
 # Judging How Much to Trust a Source
 
-This page is for the adult, and most of it can be read aloud to the child. It is the canonical home for three things the sessions point to: the current-information rule, lateral reading, and the difference between a primary and a secondary source.
+This page is for the adult, and most of it can be read aloud to the child. It is the canonical home for three things the sessions point to: the current-information rule, which this project calls Verify-Don't-Trust; lateral reading; and the difference between a primary and a secondary source.
 
-Everything on this page applies to any destination. The destination pack carries the list of which sources are worth starting from for one particular destination, and which of them publish in English.
+Everything on this page applies to any destination. The destination pack's trusted starting sources list says which sources are worth starting from for one particular destination, and which of them publish in English.
 
 ## Kinds of sources
 
@@ -58,7 +58,7 @@ When a fact matters and the sources disagree, when it came from an AI tool, or w
 
 ## Two moves that make you harder to fool
 
-**Lateral reading.** Instead of reading further down a page to decide whether to trust it, open a new tab and look up the site itself. Who runs it? Do they sell the thing they are recommending? What do other sources say about them? A minute of reading sideways answers those questions, and the answers tell you how far to trust the page.
+**Lateral reading.** Instead of reading further down a page to decide whether to trust it, open a new tab and look up the site itself. This is what professional fact-checkers do. Who runs it? Do they sell the thing they are recommending? What do other sources say about them? A minute of reading sideways answers those questions, and the answers tell you how far to trust the page.
 
 **Primary and secondary sources.** A primary source is the one the fact comes from: the museum saying its own hours, the government saying its own entry rules, the railway saying its own timetable. A secondary source is somebody reporting that fact: an article, a blog post, a video, a summary. Secondary sources are useful for finding things out and weak for pinning things down. When something matters, follow it back to the primary source.
 
@@ -67,7 +67,7 @@ When a fact matters and the sources disagree, when it came from an AI tool, or w
 Some facts stay put, and some are only true this week. Prices, opening hours, closures, travel advisories, entry rules, visa rules, rail-pass rules and ticketing rules all belong in the second group.
 
 <!-- density-exempt: X, not Y -- the current-information rule the batch 1 brief's entry for this page requires, the Verify-Don't-Trust Named concept, whose home is this page -->
-Never write one of those into a plan as a settled fact. Write it with three habits instead:
+Never write one of those into a plan as a settled fact. That is the Verify-Don't-Trust rule. Write it with these four phrases instead:
 
 - "Check the official website."
 - "Record the date checked."

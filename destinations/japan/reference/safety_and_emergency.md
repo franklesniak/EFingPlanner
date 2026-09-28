@@ -12,7 +12,7 @@ Japan has earthquakes. It's also one of the best-prepared places in the world fo
 
 ## If you ever get separated
 
-Most of the time, you're with your family. If you can't find them, first do what today's rule says. A grown-up names it each morning, and it's usually to stay where you are.
+Most of the time, you're with your family. If you cannot find them, first do what today's rule says. A grown-up names it each morning, and it is usually to stay where you are.
 
 Then ask a helper who is right there, and stay in your spot while you do. Call out or wave, even to a helper you can see farther away. The only time you move is to a meeting spot that morning's rule named.
 
@@ -52,7 +52,7 @@ The rest of the safety side is yours. Each item is on the [adult-only logistics 
 - **Medical coverage**, confirmed with each traveler's own insurer for care outside the United States.
 - **Emergency contacts**, including the nearest US embassy or consulate.
 
-**Local natural hazards.** Earthquakes are the main one, and a strong quake can bring a tsunami warning on the coast. The Japan Meteorological Agency issues earthquake, tsunami and weather warnings. The Japan Tourism Agency's Safety tips app sends those alerts in English. Heat and typhoons are on the [seasons, weather, and events page](seasons_weather_events.md).
+**Local natural hazards.** Earthquakes are the main one, and a strong quake can bring a tsunami warning on the coast. The Japan Meteorological Agency issues earthquake, tsunami and weather warnings. The Japan Tourism Agency's Safety tips app sends those alerts in English. Apps change, so check that it still works before the trip. Heat and typhoons are on the [seasons, weather, and events page](seasons_weather_events.md).
 
 <!-- density-exempt: X, not Y -- the lodging-card privacy boundary, a safety statement the batch 3 brief requires on this page -->
-**The separation card's privacy boundary.** Your child's "if I get separated" card is the one place in this project where a lodging name, address and phone number, and a parent's phone number, may appear. It never carries a passport number, birthdate, confirmation number or home address. It is a copy-out card, filled in on paper, and it is never committed to the repository. The card's own rules live on the card.
+**What the separation card may carry.** Your child's "if I get separated" card may carry a lodging name, address and phone number, and a parent's phone number: the minimum needed to reunite. It never carries a passport number, birthdate, confirmation number or home address. It is a copy-out card, filled in on paper, and it is never committed to the repository. The card's own rules live on the card.

@@ -4,13 +4,13 @@
 
 Use one card per attraction or experience you research. It keeps each place's facts in one spot. When you rank the places later, the facts are right there, so you can compare fairly. Fill it in from trusted sources, and record each source in your Source Log.
 
-Before you look up the ticket price, write your guess in the row that asks for it. Then look it up and see how close you were. Being off is normal — that row is practice, not a test, and a wrong guess makes the real number stick better than reading it cold. If you think a place might be free, guess that. Free is a real price, so "free" can be your guess and what you find.
+Before you look up the ticket price, write your guess in the row that asks for it. Then look it up and see how close you were. Being off is normal. That row is practice, not a test, and a wrong guess makes the real number stick better than reading it cold. If you think a place might be free, guess that. Free is a real price, so "free" can be your guess and what you find.
 
 | Prompt | Your answer |
 | --- | --- |
 | Name | |
 | City or area | |
-| Type (one of these nine: history/culture; nature/parks; food; shopping and neighborhood wandering; museums; temples and shrines; pop culture, anime and games; unique experiences; rest and free time) | |
+| Type (one of these nine: history/culture; nature/parks; food; shopping and neighborhood wandering; museums; places of worship; pop culture and games; unique experiences; rest and free time) | |
 | Why it's interesting to me | |
 | Time needed (a rough guess in hours is fine) | |
 | Ticket or reservation needed? | |

@@ -10,7 +10,7 @@ You are here: Phase 2 (Destination Big Picture), First Taste step 6 of 13. Previ
 - Planner skill: comparing choices
 - Estimated time: 20-30 minutes
 - Parent involvement: 5-minute check-in
-- Materials: a device with the kid-safe filter on, this session's Destination Notes and your destination pack's seasons reference, a blank [Season Comparison Chart](../../templates/season_comparison_chart.md), your [Source Log](../../templates/source_log.md)
+- Materials: a device with the kid-safe filter on, this session's Destination Notes and your destination pack's seasons, weather, and events reference, a blank [Season Comparison Chart](../../templates/season_comparison_chart.md), your [Source Log](../../templates/source_log.md)
 
 ## Goal
 
@@ -18,7 +18,7 @@ Compare your destination's seasons so you can recommend a good time to go. If yo
 
 ## Start Here
 
-Open your Season Comparison Chart. In its Season name row, write each season your Destination Notes list. That is your season chart, started.
+Open your Season Comparison Chart. In its Season name row, write each season your Destination Notes list. That's your season chart, started.
 
 ## Steps
 
@@ -30,9 +30,9 @@ For each season, jot a few notes:
 2. **Crowds and cost:** busier, more popular times usually cost more.
 3. **School and work:** does this season fit your family's calendar? (Ask a grown-up.)
 
-Now open your destination pack's seasons reference. Your Destination Notes give you the pointer to it. Add the busy windows and the special things it names to your chart. These are patterns, but you must **check this year's exact dates** -- they move.
+Now open your destination pack's seasons, weather, and events reference. Your Destination Notes give you the pointer to it. Add the busy windows and the special things it names to your chart. These are patterns, but you must **check this year's exact dates** -- they move.
 
-Some timing cannot be pinned even after you check. That same reference says which of your destination's patterns work that way.
+Some timing can't be pinned even after you check. That same reference says which of your destination's patterns work that way.
 
 **If your dates are already booked**, your season is set, and your job is to learn what it brings. Fill in your chart for your booked season first: the weather, the crowds, and the events in your dates. Then mark the one challenge your family most needs to plan around, like a hot, rainy or crowded stretch. Notes on the other seasons are extra.
 
@@ -40,7 +40,7 @@ Some timing cannot be pinned even after you check. That same reference says whic
 
 Use your [Season Comparison Chart](../../templates/season_comparison_chart.md) for the notes, and your Source Log for what you looked up.
 
-You can say your answers to an adult who writes them, or draw them, if that is easier.
+You can say your answers to an adult who writes them, or draw them, if that's easier.
 
 ## Artifact Created
 
@@ -50,13 +50,13 @@ With your dates booked, your chart covers your booked season, with the challenge
 
 ## Stop Point
 
-You are done when every season on your chart has a few notes and you have marked at least one busy window to be careful about. You do not need exact dates today: "check this year" is the right answer.
+You are done when every season on your chart has a few notes and you've marked at least one busy window to be careful about. You don't need exact dates today: "check this year" is the right answer.
 
 With your dates booked, you are done when your booked season has a few notes on its weather, crowds and events, and you've marked the challenge to plan around. "Ask an adult" is a fine answer in any box.
 
 ## Source Check
 
-Your Destination Notes and your pack's seasons reference are both sources. Log each one in your Source Log, with its title and today's date. The trusted source you used outside the pack gets its own entry too. Remember: dates and prices change, so note that they must be re-checked close to travel.
+Your Destination Notes and your pack's seasons, weather, and events reference are both sources. Log each one in your Source Log, with its title and today's date. The trusted source you used outside the pack gets its own entry too. Remember: dates and prices change, so note that they must be re-checked close to travel.
 
 ## Finish and Quality Check
 
@@ -68,8 +68,8 @@ Stuck? Use the [When I'm Stuck card](../../student_guide/when_im_stuck.md) in yo
 
 ## Optional Extension
 
-If you have extra energy, add a "best guess so far" note at the bottom: which season looks most fun to you, and why? With your dates booked, write one idea for making the most of your season. You will use it next at Checkpoint 1. If not, you are done.
+If you have extra energy, add a "best guess so far" note at the bottom: which season looks most fun to you, and why? With your dates booked, write one idea for making the most of your season. You'll use it next at Checkpoint 1. If not, you are done.
 
 ## Parent Notes
 
-This feeds the Checkpoint 1 season recommendation. With the dates booked, the chart feeds the season confirmation. Keep everything verify-framed -- the busy windows and seasonal patterns your destination pack lists are stable *patterns*, but exact dates, prices, and forecasts must be confirmed this year. Where the pack flags a season as hard on comfort or health, that matters for a multi-generational party; it connects forward to the pacing review later. Where the pack flags a pattern that can close things for a day or two, plan to reshuffle the days around it. Seasons your family will not travel in can stay light.
+This feeds the Checkpoint 1 season recommendation. With the dates booked, the chart feeds the season confirmation. Keep everything verify-framed: the busy windows and seasonal patterns your destination pack lists are stable *patterns*, but exact dates, prices, and forecasts must be confirmed this year. Where the pack flags a season as hard on comfort or health, that matters for a multi-generational party; it connects forward to the pacing review later. Where the pack flags a pattern that can close things for a day or two, plan to reshuffle the days around it. Seasons your family will not travel in can stay light.

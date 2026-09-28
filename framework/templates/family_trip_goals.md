@@ -2,9 +2,9 @@
 
 # Family Trip Goals and Input Summary
 
-Use this page in Session 03. Write down what your family wants from the trip. Start with your own goals. Then add a quick poll of each traveler. These answers are real evidence. You will use them when you choose cities and things to do.
+Use this page in Session 03. Write down what your family wants from the trip. Start with your own goals. Then add a quick poll of each traveler. These answers are real evidence. You'll use them when you choose cities and things to do.
 
-This one page holds both of your Session 03 artifacts: your family trip goals and your family input summary. You do not need a second page.
+This one page holds both of your Session 03 artifacts: your family trip goals and your family input summary. You don't need a second page.
 
 ## My goals
 
@@ -19,7 +19,7 @@ This one page holds both of your Session 03 artifacts: your family trip goals an
 
 Ask each traveler: *"What is one thing you'd love on this trip?"* Write one line per person. If someone is hard to reach, ask by text. Or have a grown-up pass the question on. Or just mark "asked through a grown-up."
 
-| Traveler (by relationship or role) | One thing they'd love |
+| Traveler (by relationship or role) | One thing they would love |
 | --- | --- |
 | | |
 | | |
@@ -27,6 +27,8 @@ Ask each traveler: *"What is one thing you'd love on this trip?"* Write one line
 | | |
 | | |
 | | |
+
+More travelers than rows? Add a row for each one.
 
 ## What I noticed
 

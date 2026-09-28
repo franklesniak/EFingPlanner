@@ -2,9 +2,9 @@
 
 # Destination Snapshot
 
-Use this page in Session 10. Before you plan *where* to go, it helps to know a few big facts. You do not need to memorize anything. This is a snapshot to get you oriented.
+Use this page in Session 10. Before you plan *where* to go, it helps to know a few big facts. You don't need to memorize anything. This is a snapshot to get you oriented.
 
-Open this session's Destination Notes for the first four. Look up anything you are not sure about, and add it to your Source Log.
+Open this session's Destination Notes for the first four. Look up anything you're not sure about, and add it to your Source Log.
 
 | Prompt | Your answer |
 | --- | --- |
@@ -27,4 +27,4 @@ Three things that surprised you, from a trusted source. Put each source in your 
 | --- | --- |
 | One question I want to find out later | |
 
-You can say your answers to an adult who writes them, or draw them, if that is easier.
+You can say your answers to an adult who writes them, or draw them, if that's easier.

@@ -7,7 +7,7 @@
 
 - **Status:** Active
 - **Owner:** Repository Maintainers
-- **Last Updated:** 2026-09-25
+- **Last Updated:** 2026-09-28
 - **Scope:** The blank authoring skeleton for a child-facing curriculum session, with the rules a new session has to satisfy: the seven mandatory-core fields, the section order, the navigation line, the "For parents" strip, and the structure gate's floor. Builder-facing; a child never reads this page.
 - **Related:** [Build style and vocabulary](../docs/build_style_and_vocab.md), [Golden exemplar session](../sessions/phase_00_setup/04_start_a_source_log.md)
 
@@ -59,7 +59,7 @@ The skeleton opens with the `markdownlint-disable` directive, because every buil
 
 Goal, Start Here, Steps, Workspace, Artifact Created, Stop Point, and Source Check when the session has a research step. Those seven are the whole mandatory core, and the author still owes every child session the three sections below, though the structure gate asks for none of them.
 
-`## Source Check` is required wherever research occurs, and a session that omits it declares why in its own text, with a `<!-- no-source-check: <reason> -->` comment near the top. `.github/scripts/check-session-structure.py` fails a session carrying neither the heading nor that marker; an adult-only session may instead carry `<!-- audience: adult -->`. Silence is never an exemption. A session with no research step has a second, simpler route: carry the heading with the built no-research form, *"No new sources needed unless you looked something up."* Sessions 01, 03 and 13 ship that way.
+`## Source Check` is required wherever research occurs, and a session that omits it declares why in its own text, with a `<!-- no-source-check: <reason> -->` comment near the top. `.github/scripts/check-session-structure.py` fails a session carrying neither the heading nor that marker; an adult-only session may instead carry `<!-- audience: adult -->`. Silence is never an exemption. A session with no research step has a second, simpler route: carry the heading with the built no-research form, *"No new sources needed unless you looked something up."* Most child sessions with no research step ship that way, Session 01 among them. A few, such as Session 20, word the line for their own page.
 
 ## The three sections no gate asks for
 
@@ -78,9 +78,9 @@ The canonical pointer wordings, with their links, are:
 
 ## The section order, and why it is this one
 
-The order at the top of a session is: the navigation line, then any italic routing lines the section below permits, then the labelled parent strip, then `## Goal`. The strip is written exactly `**For parents:**` and renders as a short list, one field per line. **The routing lines come between the two**, which is where every built session puts them; an earlier wording put the strip directly under the navigation line and left a session that needs a routing note with two rules it could not both follow, so an author could have misplaced a load-bearing route or deleted it to satisfy the template. The child's own sections lead the body, and `## Parent Notes` comes last.
+The order at the top of a session is: the navigation line, then any italic routing lines the section below permits, then the labeled parent strip, then `## Goal`. The strip is written exactly `**For parents:**` and renders as a short list, one field per line. **The routing lines come between the two**, which is where every built session puts them; an earlier wording put the strip directly under the navigation line and left a session that needs a routing note with two rules it could not both follow, so an author could have misplaced a load-bearing route or deleted it to satisfy the template. The child's own sections lead the body, and `## Parent Notes` comes last.
 
-Every built session is laid out that way, and the built repository wins on conflict, so that section order satisfies the acceptance criterion asking for the child's action before parent-facing meta, and the five-field strip stays near the top. The style law asks for both halves in one sentence: the child's action first, and the parent meta grouped into the labelled strip near the top. Do not reorder the strip, here or in any session.
+Every built session is laid out that way, and the built repository wins on conflict, so that section order satisfies the acceptance criterion asking for the child's action before parent-facing meta, and the five-field strip stays near the top. The style law asks for both halves in one sentence: the child's action first, and the parent meta grouped into the labeled strip near the top. Do not reorder the strip, here or in any session.
 
 ## The H1 and the navigation line
 
@@ -124,7 +124,7 @@ A conditional-core session names its condition on the same line, in the built fo
 - **Estimated time** defaults to 20-30 minutes.
 - **Parent involvement** is one of: none / independent work; 5-minute check-in; parent review after session; parent setup needed; co-working recommended; a grown-up stays nearby for this one; adult-operated; adult-owned. Two of these are requirements. **A grown-up stays nearby** is Session 08's, because a filter reduces exposure without removing it. **Adult-operated** is Session 09's: the adult runs the tool, on the adult's account, with the child present. Keep both at full strength, because co-working recommended in place of either one would drop a requirement.
 - **Planner skill** comes from a closed list: getting started; comparing choices; checking sources; ranking priorities; planning realistic time; making trade-offs; organizing information; revising a plan; self-control (knowing when to stop). Write the value your batch brief assigns, and when it assigns two, name both. Some sessions built before the list was closed carry other labels, such as *estimating* or *reflection*. Leave those as built, and do not copy one into a new session.
-- **Materials** names what the child needs in hand, with a relative link to each framework template it names. **Link a blank, and leave the child's own filled-in page unlinked.** "two blank City Research Cards" links the template, because the child needs to fetch one; "your two City Research Cards" names work they already have, and a link there would send them to an empty page. A running artifact the child keeps -- the Source Log -- is linked anyway, because a family may still be printing their first copy. A setup page a grown-up filled in, such as the Trip-Basics card or the assumptions page, is linked too: it is a canonical concept, and the style law links every concept Name to its home.
+- **Materials** names what the child needs in hand, with a relative link to each framework template it names. **Link a blank, and leave the child's own filled-in page unlinked.** "two blank City Research Cards" links the template, because the child needs to fetch one; "your two City Research Cards" names work they already have, and a link there would send them to an empty page. A running artifact the child keeps, such as the Source Log, is linked anyway, because a family may still be printing their first copy. A setup page a grown-up filled in, such as the Trip-Basics card or the assumptions page, is linked too: it is a canonical concept, and the style law links every concept Name to its home.
 
 **A parent-involvement value can take one short clause**, after a semicolon, to name the grown-up's one step, as Sessions 33 and 44 do. When a batch brief assigns a softer value to a session whose steps keep a grown-up nearby, the value stays as the brief assigns it, and the clause names that requirement. Session 25 does this: `co-working recommended; stay nearby for both sittings, and alongside for any video`. The two requirement values above stay with Sessions 08 and 09.
 
@@ -149,4 +149,4 @@ In Phases 7-8, and on the two-session readiness trigger, the template gets light
 
 - Draft and check it against the golden exemplar, Session 04.
 - Read the voice, vocabulary, density and lint rules in [build style and vocabulary](../docs/build_style_and_vocab.md). They are not repeated here.
-- Run `python .github/scripts/check-session-structure.py` and `python .github/scripts/check-readability.py`, then the four repo-wide gates.
+- Run `python .github/scripts/check-session-structure.py` and `python .github/scripts/check-readability.py`, then the four repo-wide gates: `pre-commit run --all-files`, `npm run lint:md`, `npm run lint:md:nested` and `npm run lint:md:links`.

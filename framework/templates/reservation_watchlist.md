@@ -6,7 +6,7 @@ This is the list of things that might need booking ahead, so the grown-ups know 
 
 Some experiences make you commit to a date before you can reserve — sometimes weeks or a month ahead — and they can sell out. That's the thing to notice. The longer your family's dates stay open, the more of these quietly become unbookable. The fix is to know which items are on that clock so nobody is surprised, not to force the dates. If your family's dates are already booked, nothing waits on them. Then this is an act-early list. Grown-ups book each item as soon as its booking opens. So write how far ahead that is under "When adults should check", such as "30 days before". A grown-up turns it into a date in their own calendar, because only they keep the booked dates. Open your destination pack for examples of what that looks like where you're going.
 
-Three tables, so the page still prints. The **Item** column is the same in all three — fill the first table, then carry each item across.
+Three tables, so the page still prints. The **Item** column is the same in all three. Fill the first table, then carry each item across.
 
 ## What I found
 
@@ -38,10 +38,10 @@ Three tables, so the page still prints. The **Item** column is the same in all t
 | | | | | |
 | | | | | |
 
-Add rows as you need them, and keep the three tables matching — every item in the first one needs its row in the other two. If you run past the page, carry all three on to another sheet. Every item off your day cards that might need booking belongs here, however many that turns out to be.
+Add rows as you need them, and keep the three tables matching. Every item in the first one needs its row in the other two. If you run past the page, carry all three on to another sheet. Every item off your day cards that might need booking belongs here, however many that turns out to be.
 
 Things worth putting on this list: popular museums, theme parks, special restaurants, tours, long-distance trains if your trip uses them, anything with a timed ticket, and hotels.
 
 For the last column, use words like *ask adults to confirm*, *adults verify*, *adults decide*, *adults book*. That column is the grown-ups' side of the page.
 
-Booking rules, ticket systems, and entry requirements change — sometimes a lot. So re-check them close to travel. These are categories to verify, never numbers to memorize.
+Booking rules, ticket systems, and entry requirements change, sometimes a lot. So re-check them close to travel. These are categories to verify, never numbers to memorize.

@@ -10,7 +10,7 @@ You are here: Phase 5 (Route, Length, and Transportation). Not a First Taste ste
 - Planner skill: making trade-offs
 - Estimated time: 20-30 minutes
 - Parent involvement: parent review after session
-- Materials: a fresh [Trade-Off Report](../../templates/tradeoff_report.md) page, your route map notes from Session 28, your My Calls page (for your special pick), your nights table from Session 29, your transportation notes from Session 30, on a one-base trip your must-dos and strong maybes from Checkpoint 3, your family's [current travel assumptions](../../templates/current_family_travel_assumptions.md) page (for the budget band), a device with a map app (kid-safe filter on) in case a route needs a new travel time, your [Source Log](../../templates/source_log.md) and your [simple citation forms](../../templates/simple_citation.md) page (for the Map form)
+- Materials: a fresh [Trade-Off Report](../../templates/tradeoff_report.md) page, your route map notes from Session 28, your My Calls page (for your special pick), your nights table from Session 29, your transportation notes from Session 30, on a one-base trip your must-dos and strong maybes from Checkpoint 3, the grown-ups' [current family travel assumptions](../../templates/current_family_travel_assumptions.md) page (for the budget band), a device with a map app (kid-safe filter on) in case a route needs a new travel time, your [Source Log](../../templates/source_log.md) and your [simple citation forms](../../templates/simple_citation.md) page (for the Map form)
 
 (For an at-a-glance version, see the matching entry in [the parent session notes](../../parent_guide/session_support_notes.md); the Parent Notes below have the full detail.)
 
@@ -28,7 +28,7 @@ This is your route trade-off, one of the three trade-off reports you'll write in
 
 1. **Choose two routes to compare.** Route 1 can be the plan you have now. Route 2 should be a different shape. One classic pair is fewer cities with more nights in each, against more cities, seen faster. On a one-base trip, compare two ways to use your base: fewer must-dos with more free time, against more must-dos, seen faster. Use the base-to-must-do times from Session 28. Whichever pair you choose, keep your special pick and its place in both routes. Is your special pick your only must-do, with no strong maybes? Then compare two ways to pace your days around it, such as doing it early in the trip against doing it after a slower start.
 2. **Put one route in each column.** Route 1 goes under Option A and Route 2 under Option B. Write which cities each route includes. On a one-base trip, write what each way does. The example row shows the shape: "Route 1: City A + City B" and "Route 2: City A + City C".
-3. **Fill every row for both routes.** Go down the page: pros, cons, cost effect, time effect, energy effect, and what you'd miss. For cost, write higher, about the same, or lower. You don't need prices.
+3. **Fill every row for both routes.** Go down the page: pros, cons, cost effect, time effect, energy effect, and what you would miss. For cost, write higher, about the same, or lower. You don't need prices.
 4. **Use travel times from Directions.** Copy them from your route map notes. They came from the map's Directions in Session 28, so they're better than a guess from the map picture. If a route needs a trip your notes don't have, such as going straight from City A to City C, check it now with Directions. Add that time to your route map notes too.
 5. **Do the budget-band check.** In that row, ask: "Does this route still fit our rough budget band?" More cities and more hotel moves usually cost more. Your band check looks at the hotels and the days, and the grown-ups price the rides between places on their own page.
 6. **Fill the source rows.** Where did your facts come from? Use your Source Log.
@@ -64,7 +64,7 @@ Stuck? Use the [When I'm Stuck card](../../student_guide/when_im_stuck.md) in yo
 
 ## Optional Extension
 
-If you have extra energy, give each row your own importance weight, from 1 to 3, and argue the trade-off in a short paragraph. If you'd like to score the routes, the [scoring rubric](../../templates/scoring_rubric.md) has a lighter three-question version beside the full one, and either is fine. If not, your table is a complete report.
+If you have extra energy, give each row your own importance weight, from 1 to 3, and argue the trade-off in a short paragraph. If you would like to score the routes, the [scoring rubric](../../templates/scoring_rubric.md) has the Lighter Rubric (3-criteria) beside the full one, and either is fine. If not, your table is a complete report.
 
 ## Parent Notes
 

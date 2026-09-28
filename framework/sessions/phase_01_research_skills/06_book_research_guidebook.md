@@ -34,7 +34,7 @@ Every move below comes in two forms. Use the form that matches what you picked.
 2. **Look one thing up.** In a book, use the index at the back: it lists places and topics in alphabetical order, with the page each one is on. On a website, use its search box. Try a place name you already know.
 3. **Skim first.** Read headings, captions and the first line of each part before you read anything closely. Skimming tells you which two pages are worth your time.
 4. **Write down where you found it.** From a book, the page number. From a website, the page title and its web address. Do it as you go, so you can go straight back to each fact later.
-5. **Check how recent it is.** A book prints its publication year on one of the first pages. A website often says when the page was last updated. "Not stated" is a real answer, so write that. When you can choose, pick the source that tells you.
+5. **Check how recent it is.** A book prints its publication year on one of the first pages. A website often says when the page was last updated. "Not stated" is a fine answer, so write that. When you can choose, pick the source that tells you.
 
 Now do the work:
 

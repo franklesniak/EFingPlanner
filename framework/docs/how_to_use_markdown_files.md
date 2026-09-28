@@ -28,7 +28,7 @@ Print each session when you reach it. The print routes are written out once, at 
 
 ## How the worksheet tables work
 
-Every fill-in form in this project is a two-column table. The prompt is in the first cell and the answer space is the second cell, left empty.
+A fill-in form for one thing is a two-column table. The prompt is in the first cell and the answer space is the second cell, left empty.
 
 An empty cell behaves well in all three places a family might use it.
 
@@ -36,13 +36,13 @@ An empty cell behaves well in all three places a family might use it.
 - Pasted into Google Docs it becomes an editable table cell, and the child types into it.
 - On a screen it reflows, so the form is still usable on a phone.
 
-Comparison grids follow the same idea with a few more columns. They are kept narrow enough to print on portrait letter or A4 without spilling off the edge.
+Lists and comparison grids follow the same idea with a few more columns. They are kept narrow enough to print on portrait letter or A4 without spilling off the edge.
 
 ## The automatic checks are not yours to run
 
 If you look in the repository you will find workflow files, linting configuration and scripts. Those check the formatting of the source for whoever edits it. A family using the materials can ignore all of it completely. Nothing you do as a reader can break a check, and no check has to pass before you print a page.
 
-## The honest tradeoff
+## The honest trade-off
 
 Plain text buys the four things above, and it costs something.
 

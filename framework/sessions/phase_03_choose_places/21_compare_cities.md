@@ -14,7 +14,7 @@ You are here: Phase 3 (Choose Places), First Taste step 10 of 13. Previous: [20 
 - Planner skill: comparing choices; making trade-offs
 - Estimated time: 20-30 minutes
 - Parent involvement: 5-minute check-in
-- Materials: your two City Research Cards, your Family Trip Goals page from Session 03 (for the poll), your family's [current travel assumptions](../../templates/current_family_travel_assumptions.md) page (for the budget band), a [Scoring Rubric page](../../templates/scoring_rubric.md), and on the Core path your City Long-List from Session 20 and the cards for every place you keep in the running
+- Materials: your two City Research Cards, your Family Trip Goals page from Session 03 (for the poll), the grown-ups' [current family travel assumptions](../../templates/current_family_travel_assumptions.md) page (for the budget band), a [Scoring Rubric page](../../templates/scoring_rubric.md), and on the Core path your City Long-List from Session 20 and the cards for every place you keep in the running
 
 ## Goal
 
@@ -26,7 +26,7 @@ Put your two City Research Cards side by side. That's your start. Everything you
 
 ## Steps
 
-You've researched two cities. Now you compare them fairly, using the same questions for each. For First Taste, use the **lighter 3-criteria version**. It's quick and clear.
+You've researched two cities. Now you compare them fairly, using the same questions for each. For First Taste, use the **[Lighter Rubric (3-criteria)](../../templates/scoring_rubric.md)**. It's quick and clear.
 
 Score each city from 1 (low) to 5 (high) on three things:
 
@@ -49,9 +49,9 @@ The scores are only half the job. Now **make one trade-off** and write it in one
 - Which city scored higher, and does the total match your gut?
 - What would you *gain* and what would you *lose* by choosing it?
 
-**A quick money check:** does keeping both cities still fit your family's rough budget band? If two cities feels like too much, it's fine to recommend just one for a first trip. Fewer places, done well, is a real plan.
+**A quick money check:** does keeping both cities still fit your family's rough budget band? If two cities feels like too much, it's fine to recommend just one for a first trip. Fewer places, done well, still make a good plan.
 
-**On the Core path**, you come here with the long-list you made in Session 20. Give each place on it that you want to keep in the running its own column, so your table can hold more than two. The two cities you scored in the table above count, so add columns only for the others. If a place is a whole region, choose one town in it with a grown-up: the one where you'd sleep or spend the day. Write the town on the region's card, and use that town for its travel time and scores. If a card from Session 19 has only its key rows, fill it in first: top sights with stars, travel time, and a rough number of days. If the table gets too wide to print, start a second copy for the next few places. Your trade-off can compare your top two. Then do the quick money check again, for every place you keep.
+**On the Core path**, you come here with the long-list you made in Session 20. Give each place on it that you want to keep in the running its own column, so your table can hold more than two. The two cities you scored in the table above count, so add columns only for the others. If a place is a whole region, choose one town in it with a grown-up: the one where you would sleep or spend the day. Write the town on the region's card, and use that town for its travel time and scores. If a card from Session 19 has only its key rows, fill it in first: top sights with stars, travel time, and a rough number of days. If the table gets too wide to print, start a second copy for the next few places. Your trade-off can compare your top two. Then do the quick money check again, for every place you keep.
 
 ## Workspace
 
@@ -67,9 +67,9 @@ On the Core path, your comparison also holds every place you kept in the running
 
 ## Stop Point
 
-You are done when both cities have three scores and a total. You also need your trade-off, written in a sentence or two. And you need a recommendation: either **one city** for this first trip, or **both, kept on purpose**. You don't have to feel sure. "I recommend both, let's decide together" is a real answer. But write down which way you lean, because your final plan needs a city or two. For each city you keep, also jot the rough number of days from your City Research Card, so your plan has a length.
+You are done when both cities have three scores and a total. You also need your trade-off, written in a sentence or two. And you need a recommendation: either **one city** for this first trip, or **both, kept on purpose**. You don't have to feel sure. "I recommend both, let's decide together" is a fine answer. But write down which way you lean, because your final plan needs a city or two. For each city you keep, also jot the rough number of days from your City Research Card, so your plan has a length.
 
-On the Core path, you are done when every place you kept in the running has three scores and a total too, and your money check covers them all. Your recommendation can name more than two places. It names every place you'd take to Checkpoint 2, with a rough number of days for each.
+On the Core path, you are done when every place you kept in the running has three scores and a total too, and your money check covers them all. Your recommendation can name more than two places. It names every place you would take to Checkpoint 2, with a rough number of days for each.
 
 ## Source Check
 
@@ -85,8 +85,8 @@ Stuck? Use the [When I'm Stuck card](../../student_guide/when_im_stuck.md) in yo
 
 ## Optional Extension
 
-If you have extra energy, try the fuller version on the [Scoring Rubric page](../../templates/scoring_rubric.md): add more categories like uniqueness, variety, cost level, and weather fit. You may change a category if you write one sentence saying why. If not, the 3-criteria version is complete.
+If you have extra energy, try the fuller version on the [Scoring Rubric page](../../templates/scoring_rubric.md): add more categories like uniqueness, variety, cost level, and weather fit. You may change a category if you write one sentence saying why. If not, your Lighter Rubric (3-criteria) scores are complete.
 
 ## Parent Notes
 
-Weighted scoring is sophisticated for a ten-year-old -- some children love it, others stall. The 3-criteria version is the recommended path; the fuller version is there for a child who is ready. If the total does not match their gut, that is a great talking point: scores inform a choice, and the people weighing them make it. This is a real trade-off report, so ask them to walk you through how they weighed one city against the other.
+Weighted scoring is sophisticated for a ten-year-old. Some children love it, and others stall. The Lighter Rubric (3-criteria) is the recommended path; the fuller version is there for a child who is ready. If the total does not match their gut, that is a great talking point: scores inform a choice, and the people weighing them make it. Your child just weighed one city against the other, so ask them to walk you through how they did it.

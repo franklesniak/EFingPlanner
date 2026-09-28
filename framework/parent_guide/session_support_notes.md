@@ -2,7 +2,7 @@
 
 # Session Support Notes
 
-Each entry is a short, parent-facing overview of one session -- your role, what to prep, the artifact to look for, a coaching question on the sessions the child does, and a common pitfall. This page is the at-a-glance map, and the Parent Notes inside each session still hold the detail. A session with no entry here has what you need in its own For parents strip and Parent Notes. The Prep lines leave out what is always at hand: the Source Log, a pencil and paper, and your child's device with its kid-safe filter on.
+Each entry is a short, parent-facing overview of one session: your role, what to prep, the artifact to look for, a coaching question on the sessions the child does, and a common pitfall. This page is the at-a-glance map, and the Parent Notes inside each session still hold the detail. The Prep lines leave out what is always at hand: the Source Log, a pencil and paper, and your child's device with its kid-safe filter on.
 
 **Whether you need to be there.** A Role line marked *parent-gated* is a session your child waits for you on. *Co-worked* marks one you sit through with them. Any other session is one your child can do on their own, apart from any single step its Role line gives you. A Role line that recommends co-working without that mark still lets your child go ahead. A 5-minute check-in or a review after the session never holds them up. A Role line that says *beforehand* names an answer to give before the session. Sessions 29 and 39 need it to finish, so your child waits for it there. In Session 38, "ask an adult" in the souvenir row is enough.
 
@@ -53,7 +53,7 @@ Want a rough signal of how the executive-function side is going? The optional [e
 
 ## Session 04: Start a Source Log
 
-- Role: a real 5-minute look -- this habit carries the project.
+- Role: a 5-minute look. This habit carries the project.
 - Prep: a Source Log page; one thing to look up, a book or a website.
 - Look for: one complete entry that shows *where* the fact came from, as well as the fact.
 - Coaching question: "Where could you check that same fact?"
@@ -62,7 +62,7 @@ Want a rough signal of how the executive-function side is going? The optional [e
 ## Session 05: Good Sources, Bad Sources
 
 - Role: co-work this one; model the three questions out loud, then hand over (parent-gated).
-- Prep: a device with the kid-safe filter on; the trusted sources list.
+- Prep: a device with the kid-safe filter on; your destination pack's trusted starting sources list.
 - Look for: the three-question test used on two real sites, and one trusted source kept.
 - Coaching question: "Which would you trust for opening hours, and why?" Formative check, afterward: ask your child to show you how they would decide whether a website is trustworthy.
 - Pitfall: rushing it, when this skill carries the next sessions.
@@ -89,7 +89,7 @@ Want a rough signal of how the executive-function side is going? The optional [e
 
 <!-- density-exempt: X, not Y -- both contrasts here are safety content: the supervision rule for open-web research, and the spec's standalone rule that a kid-safe filter reduces but does not remove exposure -->
 
-- Role: a grown-up stays nearby for this one (parent-gated) -- required, not a suggestion, and it holds in Low-Bandwidth Parent Mode too. A filter reduces exposure without removing it.
+- Role: a grown-up stays nearby for this one (parent-gated). That is required, not a suggestion, and it holds in Low-Bandwidth Parent Mode too.
 - Prep: a device with the kid-safe filter on; your destination pack's trusted starting sources and its sample search terms; a blank Website Notes form.
 - Look for: website comparison notes with one question, two sources, and a call on which is more useful.
 - Coaching question: "What made the one you trusted less feel less trustworthy?" Formative check, afterward: ask your child to talk you through judging one page they found.
@@ -99,7 +99,7 @@ Want a rough signal of how the executive-function side is going? The optional [e
 
 <!-- density-exempt: X, not Y -- the Pitfall is the field the spec's Session Support Notes require in every entry, and it carries the AI safety rule that AI never supplies facts (the spec's AI Use Rules) -->
 
-- Role: adult-operated -- you run the tool, on your account, with the child present.
+- Role: adult-operated. You run the tool, on your account, with the child present.
 - Prep: your AI tool; verify its current minimum-age policy first, and write the date you checked; a blank AI Notes form.
 - Look for: an AI notes page recording one safe AI use (like brainstorming), with the use also logged in the Source Log.
 - Coaching question: "Where would you check a fact the AI gave you?"
@@ -118,7 +118,7 @@ Want a rough signal of how the executive-function side is going? The optional [e
 ## Session 11: Regions and Cities Overview
 
 - Role: 5-minute check-in.
-- Prep: this session's Destination Notes, your destination pack's regions and major-cities references, and a map.
+- Prep: this session's Destination Notes, your destination pack's regions overview and major cities reference, and a map.
 - Look for: region and map notes naming the regions the Destination Notes list, one way they differ, and one route shape.
 - Coaching question: "How long does it take to get from this one to that one?"
 - Pitfall: correcting an over-packed route now, which cuts short the collecting this session is for.
@@ -128,7 +128,7 @@ Want a rough signal of how the executive-function side is going? The optional [e
 <!-- density-exempt: X, not Y -- the Verify-Don't-Trust Named concept: a season is a category to confirm for the year of travel, and exact dates are not fixed facts -->
 
 - Role: 5-minute check-in; help with school/work calendar fit.
-- Prep: this session's Destination Notes, your destination pack's seasons reference, and a blank Season Comparison Chart.
+- Prep: this session's Destination Notes, your destination pack's seasons, weather, and events reference, and a blank Season Comparison Chart.
 - Look for: a season chart covering every season the destination has, with at least one busy window flagged to be careful about. With the dates booked, notes on what the chosen season brings, with the challenge to plan around marked.
 - Coaching question: "Which season fits our family best so far, and why?" With the dates booked: "What will our season be like, and what should we plan around?"
 - Pitfall: chasing exact dates. "Check this year" is the right answer.
@@ -149,7 +149,7 @@ Want a rough signal of how the executive-function side is going? The optional [e
 - Prep: the Season Comparison Chart from Session 12; a Decision Record page and a blank Parent Review Form. On the Core path, a Trade-Off Report page.
 - Look for: a season pick and a backup, a season to be careful about, reasons and sources, plus questions for you. On the Core path, a Trade-Off Report comparing the best season with the backup, or, with the dates booked, two ways to plan around the booked season's biggest challenge. With the dates booked, an explanation of what the season means for the trip, and the confirmed fit.
 - Coaching question: "Why not your backup season?" With the dates booked: "What will our season change about the plan?"
-- Pitfall: overriding silently. If you adjust it, say why -- their reasons still count. With the dates booked, treating the confirmation as a formality; explaining the season is the child's work here.
+- Pitfall: overriding silently. If you adjust it, say why. Their reasons still count. With the dates booked, treating the confirmation as a formality; explaining the season is the child's work here.
 
 ## Session 15: City Research Cards
 
@@ -258,7 +258,7 @@ Want a rough signal of how the executive-function side is going? The optional [e
 <!-- density-exempt: X, not Y -- the Pitfall is the field the spec's Session Support Notes require in every entry -->
 
 - Role: 5-minute check-in; help co-choose the one unconditional pick, after you show the three blocks. A family continuing from First Taste confirms the pick from Session 44 in one line. If a block now stops it, your child chooses a new one with you, from their attraction cards.
-- Prep: the attraction cards and the Session 24 balance chart; a Scoring Rubric page, for spare copies of the lighter table; extra copies of the session's own fuller table, which you print again or your child copies the questions from; a blank My Calls page from the trip starter kit; the City A card, for the anchor city; a clock or timer, for the minutes guess.
+- Prep: the attraction cards and the Session 24 balance chart; a Scoring Rubric page, for spare copies of the Lighter Rubric (3-criteria) table; extra copies of the session's own fuller table, which you print again or your child copies the questions from; a blank My Calls page from the trip starter kit; the City A card, for the anchor city; a clock or timer, for the minutes guess.
 - Look for: every attraction in one of the four groups, a must-do list short enough to read in one breath, the special pick on the My Calls page and on the must-do list, and a minutes guess with the time taken.
 - Coaching question: "Which must-do would you keep if you could keep only one?"
 - Pitfall: letting the scores decide. Scores inform the choice, and your child makes it.
@@ -291,14 +291,14 @@ Want a rough signal of how the executive-function side is going? The optional [e
 - Prep: your three travel facts: whether getting there takes only a few hours, whether the trip home does, and a count of the flights that land on a later date; the Trip-Basics card's maximum trip length row, for the maximum or the booked length, and the card's time difference; the route map notes; the My Calls page, for the special pick; the traveler profiles.
 - Look for: the real-days formula filled in, with a ½ over the arrival 1 for a short trip there, a ½ over the departure 1 for a short trip home, and a "- 1 flight day" mark for each flight that lands on a later date; and nights for each overnight place that fit between the floor and the maximum, with the floor checked again after any new total, or that share out the booked trip. A place dropped for a shorter or gentler trip is never the one with the special pick. Later changes go down the When the Plan Changes card, then Your plan pages: a flight-day mark by its "A flight-day mark added or taken away?" row, a new way to travel by "How you travel, or your home airport, changed?", a new time zone by "A place with a different time zone?", and a new maximum with open dates by "Your family's maximum trip length changed?". A traveler whose energy, walking or senses change goes down its "A traveler's energy, walking, senses or food changed?" row.
 - Coaching question: "Where would one more night help most?"
-- Pitfall: treating the maximum as the target. For a mixed-stamina group, shorter and gentler usually works better. A traveler with you for only part of the trip counts only on their days, as their profile says, so lean the part they're there for.
+- Pitfall: treating the maximum as the target. For a mixed-stamina group, shorter and gentler usually works better. A traveler with you for only part of the trip counts only on their days, as their profile says, so keep the days they're there gentler.
 
 ## Session 30: Trains, Transit, and Travel Cards
 
 <!-- density-exempt: X, not Y -- the Pitfall is the field the spec's Session Support Notes require in every entry -->
 
 - Role: Independent.
-- Prep: this session's Destination Notes; the route map notes; the Trip-Basics card, for the number of travelers; the Checkpoint 3 must-do list and strong maybes; the attraction cards.
+- Prep: this session's Destination Notes; the destination pack's transportation basics page, for a transit planner; the route map notes; the Trip-Basics card, for the number of travelers; the Checkpoint 3 must-do list and strong maybes; the attraction cards.
 - Look for: transportation notes with each way of getting around, what it's for, and at least two things for a grown-up to check. A travel-time guess in a new Source Log entry, for a trip the route map notes lack, such as one must-do to another in the same city, or to a strong maybe or any carded attraction. It is checked in a current transit planner, or in Directions if the family won't ride trains or buses there.
 - Coaching question: "How close was your travel-time guess?"
 - Pitfall: buying a pass on assumption. A pass's value depends on the exact route, so compare it with single tickets.
@@ -329,7 +329,7 @@ Want a rough signal of how the executive-function side is going? The optional [e
 - Prep: a Budget Estimate page; the assumptions page, for the budget band; the Trip-Basics card, for the number of travelers, or the travelers listed on it if the number says "not decided yet"; on First Taste, the Session 21 recommendation; on the Core path, the route, nights and total days approved at Checkpoint 4, the Session 29 formula, for its "- 1 flight day" marks, or your answer on which flights land on a later date, and the traveler profiles if someone comes for only part of the trip. A calculator is allowed. On the Core path, have your own rough cost of getting there on your own page, ready for your check at Session 39.
 - Look for: a high/medium/low estimate for meals and hotel, checked against the band. The hotel guess is per room, or per person where the places charge that way, and a per-person guess counts people. On First Taste, the rows follow the Session 21 recommendation. On the Core path, the hotel line is one typical nightly price times every approved night and the number of rooms or people, and food uses the plan's total days minus any flight days. A "not sure yet" night uses your number, or says "ask an adult". A word-only answer gets your reading of the band. For a per-day family band, the two-slice estimate is divided by the days used for food, as Session 39 does; for a hotel tier, each hotel is checked against it. If a part still says "ask an adult" or "not sure yet", your child adds up the rest, and writes "not counting ___" beside what they added up, naming what's missing. The band check says what the total leaves out. If a traveler comes for only part of the trip, an optional note on who is there on which days, by day number.
 - Coaching question: "Do the parts you chose fit our band?"
-- Pitfall: reaching for a real total. The cost of getting there stays off their check; keep it to two slices.
+- Pitfall: reaching for a whole-trip total. The cost of getting there stays off their check; keep it to two slices.
 
 ## Session 34: Neighborhoods and Hotel Location
 
@@ -453,14 +453,14 @@ Want a rough signal of how the executive-function side is going? The optional [e
 - Prep: this session's Destination Notes; a blank Language and Etiquette Quick Sheet; a phone, if your child wants a photo version.
 - Look for: a one-page Language and Etiquette Quick Sheet with hello, thank you, excuse me and please, plus two or three manners, small enough to carry.
 - Coaching question: "Which line will you use first?"
-- Pitfall: dropping this one quickly. It's among the most useful sessions, and the shared-bathing call is yours.
+- Pitfall: dropping this one quickly. It's among the most useful sessions, and if your family may visit a shared bath, that call is yours.
 
 ## Session 48: Packing List
 
 <!-- density-exempt: X, not Y -- the Pitfall is the field the spec's Session Support Notes require in every entry -->
 
 - Role: Independent; parent review after the session. Lighter page: read the Steps with your child until they manage two sessions in a row without the When I'm Stuck card or leaning on the Steps. Start Here, the Stop Point, the artifact and the Source Check always stay.
-- Prep: a blank Packing List; the Checkpoint 1 season, or the booked season if you booked a different window, as a broad word such as "late spring"; the destination pack's seasons and weather page; the Daily Plan Cards.
+- Prep: a blank Packing List; the Checkpoint 1 season, or the booked season if you booked a different window, as a broad word such as "late spring"; the destination pack's seasons, weather, and events reference; the Daily Plan Cards.
 - Look for: a draft Packing List with every category covered, and the documents and medication lines marked for you. If how you travel or the season changes later, your child goes down the When the Plan Changes card's "How you travel, or your home airport, changed?" or "The season changed?" row, then Your plan pages, which reach this list.
 - Coaching question: "What will you wear on a long walking day?"
 - Pitfall: handing documents or medication to your child. Those lines are yours.
@@ -469,7 +469,7 @@ Want a rough signal of how the executive-function side is going? The optional [e
 
 - Role: Co-worked: co-working recommended; hear your child say the staying-found plan out loud once, calmly. Lighter page: read the Steps with your child until they manage two sessions in a row without the When I'm Stuck card or leaning on the Steps. Start Here, the Stop Point, the artifact and the Source Check always stay.
 - Prep: the blank "if I get separated" card from the trip starter kit, for your child to fill in on paper; the destination pack's safety and emergency page, or an official site; the Packing List and the Session 30 transportation notes, for the checklist.
-- Look for: a readiness checklist with every line ticked or marked for the grown-ups, the card made on paper, with a parent's phone number, the two emergency phrases and the plan's three steps on its back, and its lodging and number lines filled in or marked for later, the official page you checked the numbers on logged in the Source Log with the date, and the three-part plan said out loud once with you. With more than one place to stay, there is one card per place: your child carries only the card for tonight's place, and at each move, or if the place to stay changes before the trip, you fill in a fresh card's lodging lines and say whose number goes on it, and the old one is torn up.
+- Look for: a readiness checklist with every line ticked or marked for the grown-ups, the card made on paper, with a parent's phone number, the two emergency phrases and the plan's three steps on its back, and its lodging, local-language and number lines filled in or marked for later, the official page you checked the numbers on logged in the Source Log with the date, and the three-part plan said out loud once with you. With more than one place to stay, there is one card per place: your child carries only the card for tonight's place, and at each move, or if the place to stay changes before the trip, you fill in a fresh card's lodging lines and local-language line and say whose number goes on it, and the old one is torn up.
 - Coaching question: "What's today's rule, and what do you do if you lose us?"
 - Pitfall: turning it into a scary drill. One calm "what if" lowers anxiety.
 
@@ -507,7 +507,7 @@ Want a rough signal of how the executive-function side is going? The optional [e
 - Prep: the Session 01 baseline reflection; the Session 33 budget estimate; a Final Reflection page; the plan pages your child hands over. On the Core path, the kit's final reflection page in place of the Final Reflection page, and also the assembled binder, the follow-up questions, Checkpoint 6's parent review form, the final recommendation packet, the checkpoint reflections, the minutes guesses and times (on the City A card, the Session 26 scoring tables, the Session 35 hotel cards and the itinerary draft), the ticket-price and travel-time guesses from Sessions 23 and 30, and the Session 39 budget summary; the assumptions page, for the budget band, and the When the Plan Changes card, if you changed the band after the band sentence; and the First Taste reflection, for a capstone re-run.
 - Look for: a reflection compared to the baseline, and the plan handed to you. On the Core path, answers to three more questions, on patterns, the guesses (the time guesses that exist, and the Session 23 and 30 guesses) and the budget against the band, comparing the matching piece your child checked with the band sentence, and each hotel for a hotel tier, saying what a "not counting ___" left out, with a band you changed since Session 39 taken down the When the Plan Changes card's "Your budget band changed?" row first, and the full binder handed over, with tabs 10 and 11 filled in, and with the must-do list and the approved route in place of the must-see list and the city choice; for a capstone re-run, a look back at the First Taste reflection too.
 - Coaching question: "Where else could you use one of these planning moves?"
-- Pitfall: skipping the acknowledgment. Finishing a real project is a big deal -- say so.
+- Pitfall: skipping the acknowledgment. Finishing the project is a big deal. Say so.
 
 ## Session 54: After You Get Back
 

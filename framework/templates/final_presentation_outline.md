@@ -6,27 +6,27 @@ This is the outline you'll talk from at the family decision meeting. Aim for **5
 
 One line under each item is enough. You're talking from an outline, not reading a script.
 
-**There is no single required way to present.** Pick whichever of these fits you, and circle it at the bottom. They're all real options, and each one is just as good as the others:
+**There's no single required way to present.** Pick whichever of these fits you, and circle it at the bottom. They're all real options, and each one is just as good as the others:
 
 - Present live
-- Practice with one parent first, then present
+- Practice with one grown-up first, then present
 - Present from notes
 - Record a video and play it
 - Hand over the binder with a short written summary
 
-If you want to work up to it, [the differentiation guide](../parent_guide/differentiation.md) has a rehearsal ladder — one parent, then a couple of adults, then the group. Climb it at whatever pace you like. The family still makes its decision either way; only how you deliver it changes.
+If you want to work up to it, [the differentiation guide](../parent_guide/differentiation.md) has a rehearsal ladder: one grown-up, then a few more people, then the group. Climb it at whatever pace you like. The family still makes its decision either way; only how you deliver it changes.
 
 ## Part 1 — What I recommend
 
 | Question | My one line |
 | --- | --- |
-| When should we go? (With the dates booked: What does our season mean for the trip?) | |
-| How long should we go? (With the dates booked: How do we use our booked days?) | |
+| When should we go? (With the dates booked: what does our season mean for the trip?) | |
+| How long should we go? (With the dates booked: how do we use our booked days?) | |
 | Which cities should we visit? | |
 | What route should we take? | |
 | What are the top experiences? | |
 | Where might we stay? (an area) | |
-| What are the food highlights? | |
+| What are the food highlights? (if we did the food sessions) | |
 | What's the rough budget for the parts I chose? (The grown-ups add the rest, such as getting there.) | |
 | What are the biggest trade-offs? | |
 | What did we cut, and why? | |
@@ -45,6 +45,6 @@ If you want to work up to it, [the differentiation guide](../parent_guide/differ
 
 | | |
 | --- | --- |
-| Circle one | live / practice with one parent first / from notes / record a video / hand over the binder with a summary |
+| Circle one | live / practice with one grown-up first / from notes / record a video / hand over the binder with a summary |
 
-Every claim you make should be able to name where it came from. If someone asks "how do you know that?", your Source Log is the answer — you don't have to remember it.
+Every claim you make should be able to name where it came from. If someone asks "how do you know that?", your Source Log is the answer. You don't have to remember it.

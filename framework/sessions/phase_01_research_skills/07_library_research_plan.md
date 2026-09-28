@@ -22,7 +22,7 @@ Open your [Library Book List](../../templates/library_book_list.md) and write yo
 
 ## Steps
 
-Libraries lend travel books for nothing. That's the whole idea behind this session. A guidebook you borrow works exactly as well as one you buy, and you can borrow four at once and keep the one you like.
+Libraries lend travel books for nothing. That's the whole idea behind this session. A guidebook you borrow works exactly as well as one you buy. You can often borrow several at once, then keep reading the one you like best.
 
 There are two ways to do this session, and either one counts.
 
@@ -68,7 +68,7 @@ You are done when your list names at least one book from two or three of the fiv
 
 ## Source Check
 
-Record what you actually used. **If you searched the catalog**, a search is a look-up, so the catalog gets an entry: **Source type** = "website"; **Title** = the catalog's name and the page you searched; **Author or organization** = the library; **Web address or book page** = the catalog's web address; **Date checked** = today's date. **If you asked a librarian instead**, record that and not a catalog you never opened: **Source type** = "person"; **Title** = "a librarian"; **Author or organization** = which library it was, like "our city library" or "the school library"; **What I learned** = what they told you; **Date checked** = today's date. You do not need their name, and you do not need the branch. If you did both, record both. When you actually borrow a book, that book gets its own entry, with its title, its author or publisher, the pages you used, and the date you used it.
+Record what you actually used. **If you searched the catalog**, a search is a look-up, so the catalog gets an entry: **Source type** = "website"; **Title** = the catalog's name and the page you searched; **Author or organization** = the library; **Web address or book page** = the catalog's web address; **Date checked** = today's date. **If you asked a librarian instead**, record that and not a catalog you never opened: **Source type** = "person"; **Title** = "a librarian"; **Author or organization** = which library it was, like "our city library" or "the school library"; **What I learned** = what they told you; **Date checked** = today's date. You don't need their name, and you don't need the branch. If you did both, record both. When you actually borrow a book, that book gets its own entry, with its title, its author or publisher, the pages you used, and the date you used it.
 
 ## Finish and Quality Check
 

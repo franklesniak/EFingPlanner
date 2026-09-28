@@ -4,7 +4,7 @@
 
 **Last reviewed:** September 2026
 
-These are words and units you will see on signs, on menus, and on trains. For travel words that fit any trip, such as *itinerary* and *day trip*, see the [travel glossary](../../../framework/student_guide/travel_glossary.md) in your student guide.
+These are words and units you'll see on signs, on menus, and on trains. For travel words that fit any trip, such as *itinerary* and *day trip*, see the [travel glossary](../../../framework/student_guide/travel_glossary.md) in your student guide.
 
 ## Japan words you will meet
 
@@ -24,8 +24,8 @@ These are words and units you will see on signs, on menus, and on trains. For tr
 - **Kaitenzushi** -- conveyor-belt sushi, where plates ride past on a moving belt.
 - **Teishoku** -- a set meal: one tray with a main dish, rice, soup and small sides.
 - **Depachika** -- a department store's food hall, usually in the basement.
-- **Takkyubin** -- luggage forwarding: your bags are sent ahead so you do not carry them on stairs.
-- **Gachapon** -- capsule-toy machines you will see all over.
+- **Takkyubin** -- luggage forwarding: your bags are sent ahead so you don't carry them on stairs.
+- **Gachapon** -- capsule-toy machines you'll see all over.
 - **Torii** -- the tall gate at the entrance to a shrine. Maps use its shape to mark shrines.
 - **Goshuin** -- a special stamp you can collect at shrines and temples (visit respectfully first).
 

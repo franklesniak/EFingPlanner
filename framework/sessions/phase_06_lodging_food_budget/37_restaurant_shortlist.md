@@ -10,13 +10,13 @@ You are here: Phase 6 (Lodging, Food, and Budget). Not a First Taste step. Previ
 - Planner skill: organizing information
 - Estimated time: 20-30 minutes
 - Parent involvement: none / independent work; stay nearby for any search beyond the Destination Notes, and beside your child for an image search
-- Materials: this session's Destination Notes, a device with the kid-safe filter on, a grown-up nearby if you search beyond the Destination Notes (beside you for an image search), your food wish list from Session 36, any Restaurant Research Cards from an earlier sitting, blank [Restaurant Research Cards](../../templates/restaurant_research_card.md), your Hotel Comparison Cards from Session 35, your must-do list on your My Calls page, the route your family approved at Checkpoint 4, your [Trip-Basics card](../../templates/trip_basics.md) (for the number of travelers), your family's [current travel assumptions](../../templates/current_family_travel_assumptions.md) page (for its dietary constraints) and your traveler profiles (for what each person avoids), your part-trip note from Session 33 (if you made one), your [Source Log](../../templates/source_log.md)
+- Materials: this session's Destination Notes, your destination pack's food basics page (if you look for a local review site), a device with the kid-safe filter on, a grown-up nearby if you search beyond the Destination Notes (beside you for an image search), your food wish list from Session 36, any Restaurant Research Cards from an earlier sitting, blank [Restaurant Research Cards](../../templates/restaurant_research_card.md), your Hotel Comparison Cards from Session 35, your must-do list on your My Calls page, the route your family approved at Checkpoint 4, your [Trip-Basics card](../../templates/trip_basics.md) (for the number of travelers), the grown-ups' [current family travel assumptions](../../templates/current_family_travel_assumptions.md) page (for its dietary constraints) and your traveler profiles (for what each person avoids), your part-trip note from Session 33 (if you made one), your [Source Log](../../templates/source_log.md)
 
 (For an at-a-glance version, see the matching entry in [the parent session notes](../../parent_guide/session_support_notes.md); the Parent Notes below have the full detail.)
 
 ## Goal
 
-Turn your food wish list into a few places to eat, or areas full of them, that you'd suggest to the family.
+Turn your food wish list into a few places to eat, or areas full of them, that you would suggest to the family.
 
 ## Start Here
 
@@ -30,11 +30,11 @@ A card can be about one place to eat, or about a whole area with lots of places 
 
 1. **Open this session's Destination Notes.** Find where the foods on your wish list are easy to find. If you search beyond them, have a grown-up nearby, and beside you for an image search.
 2. **Start near where you'll be.** Look near a hotel from your Session 35 cards, or near a must-do on your My Calls page.
-3. **Fill in one card for each place or area.** Before you start a new card, check that you don't already have one for that place or area. Go from top to bottom. Can everyone who's with you in that city eat there? Check the dietary constraints on your assumptions page, and what each traveler profile says they avoid. Not sure? Write "ask an adult" in the card's "Possible downside" row. For "Reservation needed?", "ask an adult" is a finished answer. For "Cash-only?", write what your source says, and mark it for a grown-up to check.
+3. **Fill in one card for each place or area.** Before you start a new card, check that you don't already have one for that place or area. Go from top to bottom. Can everyone who is with you in that city eat there? Check the dietary constraints on your assumptions page, and what each traveler profile says they avoid. Not sure? Write "ask an adult" in the card's "Possible downside" row. For "Reservation needed?", "ask an adult" is a finished answer. For "Cash-only?", write what your source says, and mark it for a grown-up to check.
 4. **Aim for one card per main city** where you'll sleep overnight, on the route the grown-ups approved at Checkpoint 4. You can make the cards over more than one sitting.
 5. **Fill in the planning assumption rows** at the bottom of each card.
 
-Your Destination Notes may point to a local review site. Sites like that can be great, but they may be in another language. So ask an adult to help, and it's fine to skip it.
+Your destination pack's food basics page says where to find a local review site. Sites like that can be great, but they may be in another language. So ask an adult to help, and it's fine to skip it.
 
 Look at the number of travelers on your Trip-Basics card. If it says "not decided yet", count the travelers listed on the card instead. If your Session 33 note says someone is with you for only part of the trip, count the biggest group you'll have in each card's city. If the group is bigger than about four, add a seating note to the card. Can this place seat all of you, or would you split into two tables?
 
@@ -70,7 +70,7 @@ Stuck? Use the [When I'm Stuck card](../../student_guide/when_im_stuck.md) in yo
 
 ## Optional Extension
 
-If you have extra energy, pick the one card you'd most like for a special meal, and write what kind of day it would suit, such as a slow day or a big day. If not, you are done.
+If you have extra energy, pick the one card you would most like for a special meal, and write what kind of day it would suit, such as a slow day or a big day. If not, you are done.
 
 ## Parent Notes
 

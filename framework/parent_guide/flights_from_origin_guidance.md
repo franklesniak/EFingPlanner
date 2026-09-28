@@ -14,30 +14,30 @@ Record what you actually know at setup as the **rough trip shape**: the likely a
 
 **Recording only the arrival place is a supported setup**, and for a family who has never researched the destination it is the honest one. Leave a field open until you know its answer.
 
-**Where it gets settled depends on your path.** On **Core and Full**, Checkpoint 2 is the point, which is where the setup checklist expects it. **First Taste never reaches Checkpoint 2**, so there is no built moment that forces it. Settle the departure place and the trip shape yourself before you book the flights, since booking is the real deadline either way. Your child builds their route on it from Phase 3 onward, in movable per-city blocks.
+**Where it gets settled depends on your path.** On **Core and full**, Checkpoint 2 is the point, which is where the setup checklist expects it. **First Taste never reaches Checkpoint 2**, so there is no built moment that forces it. Settle the departure place and the trip shape yourself before you book the flights, since booking is the real deadline either way. Your child builds their route on it from Phase 3 onward, in movable per-city blocks.
 
 <!-- density-exempt: X, not Y -- the batch 2 brief requires this item: Checkpoint 4 confirms the trip shape and is not where it is first revealed -->
 **Checkpoint 4 is where you confirm or adjust that shape** against real flight options. It is not where you reveal it for the first time. If it changes there, your child moves one block and keeps the rest, which only works if the shape existed from the start.
 
-Flying into one city and out of another is called an **open-jaw** ticket, and a route through several is a **multi-city** one. Both can save real backtracking. You will meet the term on your [current travel assumptions](../templates/current_family_travel_assumptions.md) page, which is why it is named here.
+Flying into one city and out of another is called an **open-jaw** ticket, and a route through several is a **multi-city** one. Both can save real backtracking. You will meet the term on your [current family travel assumptions](../templates/current_family_travel_assumptions.md) page, which is why it is named here.
 
 Keep it parent-side. Your child works from the recorded arrival and departure places and doesn't need the concept.
 
 ## Arrival time and layovers
 
-Arrival time shapes the first day more than most people expect. A late landing turns day one into transit and sleep, which is fine if you planned it that way and demoralising if you didn't.
+Arrival time shapes the first day more than most people expect. A late landing turns day one into transit and sleep, which is fine if you planned it that way and demoralizing if you didn't.
 
 Layovers add fatigue on top of the time change. Your child's day cards mark day one, and often day two, as easy. That plan only holds if the flights match it.
 
 ## Plan the return, not just the arrival
 
-Book the trip home so there are a day or two at home before school or work resumes.
+Book the trip home so you have a day or two at home before school or work resumes.
 
 One of the two legs will be the harder adjustment, and which one depends on the direction you fly. Work out which it is for your own trip. Whichever it is, a child landing the night before school starts is a classic and completely avoidable planning failure, and it's the part of the trip nobody is thinking about while booking the exciting half. If your window is a fixed school break, part of it belongs to recovery at home.
 
 ## Where a city has more than one airport
 
-Which one you land at can change arrival-day fatigue substantially: sometimes an hour or more of extra transit while everyone is exhausted. The specifics belong in your destination pack's airports and arrival basics page. If your pack does not have that page yet, check the airport's official site for current transit options, and write the date you checked.
+Which one you land at can change arrival-day fatigue substantially, because a farther airport adds transit while everyone is exhausted. The specifics belong in your destination pack's airports and arrival basics page. If your pack lacks that page, check the airport's official site for current transit options, and write the date you checked.
 
 ## Dates, and what they cost you
 
@@ -51,7 +51,7 @@ Which one you land at can change arrival-day fatigue substantially: sometimes an
 
 ---
 
-Don't enter flight booking information anywhere in this repository or the kit.
+Do not enter flight booking information anywhere in this repository or the kit.
 
 ## Where to go next
 

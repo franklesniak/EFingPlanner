@@ -1,6 +1,6 @@
 <!-- markdownlint-disable MD013 -->
 
-# Decision Record
+# Decision Log
 
 Copy this page out of the repository before you fill it in. Do not commit your filled-in work to a public repository.
 

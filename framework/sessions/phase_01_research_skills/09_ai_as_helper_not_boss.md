@@ -22,7 +22,7 @@ Learn the safe way to use AI as a helper, never as the boss of your facts.
 
 ## Start Here
 
-Say the rule out loud with a grown-up: *"AI helps me think. It never decides facts, and it is never my only source."* That is your start.
+Say the rule out loud with a grown-up: *"AI helps me think. It never decides facts, and it is never my only source."* That's your start.
 
 ## Steps
 
@@ -43,7 +43,7 @@ If your family uses AI, a grown-up runs it, on the grown-up's own account, with 
 2. Give you facts to trust without checking. AI can make up things that sound right.
 3. Decide anything about passports, entry, safety, medical questions, money, or booking. Those are for the adults.
 
-**Privacy rule:** never put family or personal details into AI -- no names, addresses, dates, or booking details, and **no photos or scans of your filled-in pages.** If you want AI's help with your work, a grown-up retypes the question without the personal parts.
+**Privacy rule:** never put family or personal details into AI: no names, addresses, dates, or booking details, and **no photos or scans of your filled-in pages.** If you want AI's help with your work, a grown-up retypes the question without the personal parts.
 
 **Every time you use AI, record it in your Source Log:** the tool name, what you asked, today's date, what it helped with, and the fact you checked somewhere else.
 
@@ -58,15 +58,15 @@ should research about one place we are considering. Do not make the decision for
 
 Use your Source Log for the AI entry, the [AI Notes form](../../templates/ai_notes.md) for the fuller record beside it, and scratch paper for any questions or search terms the tool suggested.
 
-You can say your answers to an adult who writes them, or draw them, if that is easier.
+You can say your answers to an adult who writes them, or draw them, if that's easier.
 
 ## Artifact Created
 
-Your AI notes and verification checklist -- what AI helped with, and where you checked its facts against a real source.
+Your AI notes and verification checklist: what AI helped with, and where you checked its facts against a real source.
 
 ## Stop Point
 
-You are done when you have used AI for one safe job (like brainstorming questions), filled in your AI Notes page, and recorded the use in your Source Log. Every fact AI gave you is checked against a non-AI source, or taken out.
+You are done when you've used AI for one safe job (like brainstorming questions), filled in your AI Notes page, and recorded the use in your Source Log. Every fact AI gave you is checked against a non-AI source, or taken out.
 
 ## Source Check
 
@@ -82,8 +82,8 @@ Stuck? Use the [When I'm Stuck card](../../student_guide/when_im_stuck.md) in yo
 
 ## Optional Extension
 
-If you have extra energy, ask AI to help organize notes you already wrote, then check that it did not add any new "facts" you did not give it. If it did, take them out or verify them.
+If you have extra energy, ask AI to help organize notes you already wrote, then check that it didn't add any new "facts" you didn't give it. If it did, take them out or verify them.
 
 ## Parent Notes
 
-Major AI tools commonly set a minimum age (often 13+) that a ten-year-old is under, but these policies vary by provider and change -- so verify the tool's current minimum-age and supervision policy on its own terms page before you opt in, and record the date. Whatever the policy says, this curriculum's pattern is adult-operated, supervised use on your account, with AI confined to brainstorming, search terms, and tidying the child's own notes -- never as a fact source, and never the child on their own. Keep all personal data (including photos of pages) out of AI. See the [privacy and safety rules](../../docs/privacy_and_safety.md).
+Major AI tools commonly set a minimum age (often 13+) that a ten-year-old is under, but these policies vary by provider and change. So verify the tool's current minimum-age and supervision policy on its own terms page before you opt in, and record the date. Whatever the policy says, this curriculum's pattern is adult-operated, supervised use on your account, with AI confined to brainstorming, search terms, and tidying the child's own notes -- never as a fact source, and never the child on their own. Keep all personal data (including photos of pages) out of AI. See the [privacy and safety rules](../../docs/privacy_and_safety.md).

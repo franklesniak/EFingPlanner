@@ -10,7 +10,7 @@ You are here: Phase 9 (After You Get Back). Not a First Taste step. Previous: [5
 - Planner skill: planning realistic time; revising a plan
 - Estimated time: one sitting of 15-20 minutes
 - Parent involvement: 5-minute check-in; you share the trip numbers you choose, and your child does the comparing
-- Materials: your in-trip capture card, if your family kept it; your final reflection from Session 53; your budget pages (your Session 33 estimate, and your Session 39 budget summary on the Core path); your day cards or itinerary, if you made them; and whatever numbers from the trip a grown-up chooses to share
+- Materials: your [in-trip capture card](../../trip_starter/in_trip_capture_card.md), if your family kept it; your final reflection from Session 53; your budget pages (your Session 33 estimate, and your Session 39 budget summary on the Core path); your day cards or itinerary, if you made them; and whatever numbers from the trip a grown-up chooses to share
 
 (For an at-a-glance version, see the matching entry in [the parent session notes](../../parent_guide/session_support_notes.md); the Parent Notes below have the full detail.)
 
@@ -30,7 +30,7 @@ You can do this weeks or months after you get home. Short answers are fine.
 
 1. Pick two or three days of the trip. Your capture card or your day cards can help you choose, or pick days you remember well.
 2. For each day, fill in one table in the Workspace. Compare what you planned with what happened: time, cost, energy and pacing (how tired you got, and how full the day felt), crowds, and how much you enjoyed it. A grown-up tells you the cost numbers they want to share, and you do the comparing. Money from the trip is the grown-ups' to share or keep private, so the Cost row can stay empty.
-3. Look back at the guesses you checked in Session 53: your budget check, and any time guesses you made. How close did they come to what happened on the trip? Being off is normal, and noticing it is the whole point. (See your [planner mindset card](../../student_guide/planner_mindset.md).)
+3. Look back at the guesses you checked in Session 53: your budget check, and any time or price guesses you made. How close did they come to what happened on the trip? Being off is normal, and noticing it is the whole point. (See your [planner mindset card](../../student_guide/planner_mindset.md).)
 4. Answer the three questions in the Workspace: what did your plan get right, what did it get wrong, and what would you change next time? Your guesses from step 3 are part of your plan too.
 5. Write one line for your binder: the one lesson you want to keep for a future trip.
 

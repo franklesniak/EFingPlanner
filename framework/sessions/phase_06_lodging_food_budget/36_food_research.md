@@ -16,7 +16,7 @@ You are here: Phase 6 (Lodging, Food, and Budget). Not a First Taste step. Previ
 
 ## Goal
 
-Make a short list of foods you'd like to try, and a few kinds of places to eat them.
+Make a short list of foods you would like to try, and a few kinds of places to eat them.
 
 ## Start Here
 
@@ -29,7 +29,7 @@ Your family decides whether a food list goes in the binder. If it does, this ses
 <!-- density-exempt: X, not Y -- "Not every meal needs to be famous." is the session's mandated core line, required as a callout -->
 > **Not every meal needs to be famous.**
 
-A good food plan is a mix. Plan a few special meals, the ones you'd look forward to. Add some easy meals for busy days, like something quick near your hotel or along the way. Then find a few areas with lots of places to eat, where you can just walk in and choose.
+A good food plan is a mix. Plan a few special meals, the ones you would look forward to. Add some easy meals for busy days, like something quick near your hotel or along the way. Then find a few areas with lots of places to eat, where you can just walk in and choose.
 
 1. **Read your Destination Notes.** They name foods to try and the kinds of places people eat. Everything there is an idea to look into, and you pick what goes on your list. Stick to what you could find in the places on the route the grown-ups approved at Checkpoint 4. If you search beyond your Destination Notes, have a grown-up nearby, and beside you for an image search.
 2. **Fill in your food wish list** in the Workspace. Add a few foods or kinds of meals.
@@ -62,7 +62,7 @@ You can say your answers to an adult who writes them, or draw them, if that's ea
 
 ## Artifact Created
 
-Your food wish list: a few foods you'd like to try, each marked as a special, easy, or wherever-we-are meal. If you skipped this session, you don't make one.
+Your food wish list: a few foods you would like to try, each marked as a special, easy, or wherever-we-are meal. If you skipped this session, you don't make one.
 
 ## Stop Point
 

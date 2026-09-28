@@ -2,7 +2,7 @@
 
 # Packing List (draft)
 
-This is your **draft**. You write it, then hand it to a grown-up to check. A draft is what's wanted here — you're not expected to get it perfect on your own.
+This is your **draft**. You write it, then hand it to a grown-up to check. A draft is what's wanted here. You're not expected to get it perfect on your own.
 
 Tick a box when the thing is on your list. Two of the rows aren't yours to pack; they're marked so the grown-ups pick them up.
 
@@ -33,11 +33,11 @@ Tick a box when the thing is on your list. Two of the rows aren't yours to pack;
 
 ## Travel documents
 
-- [ ] Ask adults to confirm what's needed and who's carrying it
+- [ ] Ask adults to confirm what's needed and who is carrying it
 
 ## Medication
 
-- [ ] Ask adults to confirm what's needed and who's carrying it
+- [ ] Ask adults to confirm what's needed and who is carrying it
 
 ## Comfort items
 
@@ -56,6 +56,8 @@ Tick a box when the thing is on your list. Two of the rows aren't yours to pack;
 
 ## Plane items
 
+Going by train or car? Use these boxes for that ride.
+
 - [ ]
 - [ ]
 
@@ -65,7 +67,7 @@ Tick a box when the thing is on your list. Two of the rows aren't yours to pack;
 
 ## What the season might mean
 
-Check what your season actually looks like where you're going this year — seasons don't behave the same everywhere, and they shift.
+Check what your season looks like where you're going this year. Seasons don't behave the same everywhere, and they shift.
 
 | Season | What to think about |
 | --- | --- |

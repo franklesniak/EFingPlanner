@@ -11,7 +11,7 @@ Three pages answer "what does that word mean," and they answer for three differe
 
 - **This page** is the canonical adult lookup for the framework's own vocabulary and for its executive-function terms. When another page names one of these concepts, the definition is here.
 - **[What executive function is](../parent_guide/what_is_executive_function.md)** is the lay-parent narrative. It explains the idea and why it matters, in everyday language, and it points here for definitions.
-- **[Travel glossary](../student_guide/travel_glossary.md)** is the child's page, and it holds kid-facing travel words. The family's destination pack carries its own word list for the place they are going, together with the temperature, distance and money units used there, and the travel glossary points the child to it.
+- **[Travel glossary](../student_guide/travel_glossary.md)** is the child's page, and it holds kid-facing travel words. The family's destination pack carries its own word page, "Words and Numbers You Will Meet," for the place they are going, together with the temperature, distance and money units used there, and the travel glossary points the child to it.
 
 This page is distinct from both of those. It defines no travel words and no destination words, and a child is not expected to read it.
 
@@ -25,7 +25,7 @@ This page is distinct from both of those. It defines no travel words and no dest
 - **[First Taste path](../PROJECT_ROADMAP.md)** -- the roughly thirteen-session minimal path that still produces a complete mini-plan.
 - **Mini-plan** -- the thin but complete plan the First Taste path produces: a when-to-go call, one or two places, a short must-see list, a rough budget check, and the child's one special pick.
 - **[Source Log](../templates/source_log.md)** -- the child's running record of every source used, one copy of the table per source, kept for the whole project.
-- **[Decision log](../templates/decision_record.md)** -- the record of what was decided, when, and why, so a decision is not re-argued three weeks later.
+- **Decision log** -- the record of what was decided, when, and why, one [Decision Record](../templates/decision_record.md) per decision, so a decision is not re-argued three weeks later.
 - **[Question parking lot](../templates/question_parking_lot.md)** -- where a question that would derail the current session goes instead.
 - **[Cut list](../templates/cut_list.md)** -- the things the child chose to leave out, kept on purpose so the choosing is visible.
 - **[Research cards](../templates/city_research_card.md)** -- one page per candidate place, so two candidates can be compared side by side.
@@ -41,6 +41,13 @@ This page is distinct from both of those. It defines no travel words and no dest
 - **[Rough trip shape](../templates/current_family_travel_assumptions.md)** -- the adults' provisional call on the shape of the trip: in and out of the same place, in one place and out of another, or one base to travel from. It also names the likely arrival and departure places.
 - **Planning assumption** -- a starting point the adults set that can still change, recorded so the child is planning against something real.
 - **Trade-off report** -- the child's written account of what they gave up to get something else, which is the actual work a scoring grid is there to support.
-- **[Verify-don't-trust](source_trustworthiness.md)** -- prefer official and current sources, and never treat a volatile fact as fixed.
-- **[Your-work-wasn't-wrong](../parent_guide/coaching_and_support.md)** -- the message an adult gives when they change part of the plan. The decision moved; the child's reasoning still counts.
-- **[Lighter 3-criteria rubric](../templates/scoring_rubric.md)** -- the simplified scoring option offered wherever weighted scoring appears, for a child who finds the full grid heavy.
+- **[Verify-Don't-Trust](source_trustworthiness.md)** -- prefer official and current sources, and never treat a volatile fact as fixed.
+- **[Your-Work-Wasn't-Wrong](../parent_guide/coaching_and_support.md)** -- the message an adult gives when they change part of the plan. The decision moved; the child's reasoning still counts.
+- **[Lighter Rubric (3-criteria)](../templates/scoring_rubric.md)** -- the simplified scoring option offered wherever weighted scoring appears, for a child who finds the full grid heavy.
+
+## Executive-function terms
+
+- **[Working memory](design_principles.md#the-three-core-skills)** -- holding information in mind while using it.
+- **[Cognitive flexibility](design_principles.md#the-three-core-skills)** -- shifting and adapting when something changes.
+- **[Inhibitory control](design_principles.md#the-three-core-skills)** -- self-control: resisting distraction, stopping research once it is enough, and sticking to the Stop Point. Child-facing pages call it "self-control" or "knowing when to stop."
+- **[Emotional regulation](design_principles.md#the-fourth-skill-underneath)** -- noticing frustration mid-session and taking a break so the work can go on.

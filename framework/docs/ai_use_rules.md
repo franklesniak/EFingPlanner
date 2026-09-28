@@ -7,7 +7,7 @@
 
 - **Status:** Active
 - **Owner:** Repository Maintainers
-- **Last Updated:** 2026-09-25
+- **Last Updated:** 2026-09-28
 - **Scope:** The single canonical home for the AI rules in this curriculum: the AI-free default, the adult-operated pattern, the before-you-opt-in age and supervision check, the three jobs AI may do, the jobs it may never do, the AI-privacy prohibitions, and the verification rules. Parent-facing, with rules a child can read. Every other surface that mentions the AI choice points here instead of restating these rules.
 - **Related:** [Privacy and safety](privacy_and_safety.md), [Session 09: AI as Helper, Not Boss](../sessions/phase_01_research_skills/09_ai_as_helper_not_boss.md), [AI notes form](../templates/ai_notes.md)
 
@@ -18,7 +18,7 @@ This program is AI-free by default, and AI is not required at any point. A famil
 Two different things get confused here, so the curriculum separates them.
 
 - **The AI-literacy lesson is always core.** Every family gets it, in Session 05, including families who will never touch a tool. It teaches three things: AI can make up facts that sound completely plausible; AI is never the only source for anything; and AI never decides legal, safety, entry, medical, money or booking matters.
-- **Using an AI tool is a labelled opt-in.** It is taught in the full Session 09, it happens only if the family opted in at setup, and it is skipped entirely by an AI-free family.
+- **Using an AI tool is a labeled opt-in.** It is taught in the full Session 09, it happens only if the family opted in at setup, and it is skipped entirely by an AI-free family.
 
 An adult records the yes or no at setup, on the family's assumptions page. Writing it down is what keeps the safety sequence from being skipped by accident.
 
@@ -26,7 +26,7 @@ An adult records the yes or no at setup, on the family's assumptions page. Writi
 
 An adult does one check first, and it takes a few minutes.
 
-A roughly-ten-year-old is below the minimum age for independent use of the major general-purpose AI tools. Treat any specific age you read anywhere, including here, as a dated example rather than a fixed fact. The tools change their terms.
+A child of roughly ten is below the minimum age for independent use of the major general-purpose AI tools. Treat any specific age you read anywhere, including here, as a dated example rather than a fixed fact. The tools change their terms.
 
 So before opting in, an adult opens the chosen tool's own terms or help pages, reads its current minimum-age and supervision policy, and writes the date checked beside the yes or no on the assumptions page. This page endorses no product and names none. The rule is the same whichever tool you pick.
 

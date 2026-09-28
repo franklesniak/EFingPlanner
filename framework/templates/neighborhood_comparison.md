@@ -15,19 +15,20 @@ Write the area names across the top, then fill down. If the grid gets too wide t
 | Breakfast or easy food nearby | | | |
 | Lodging types available here | | | |
 | Room-count reality for our group | | | |
-| Approximate cost level (example only — re-check, with the date) | | | |
-| What we'd give up by staying here | | | |
+| Approximate cost level (an example to re-check, with the date) | | | |
+| What we would give up by staying here | | | |
 | Sources (also in my Source Log) | | | |
 | What other source could check this? | | | |
 | Verification source (the one I actually used to check) | | | |
 | Date checked | | | |
 
-**The one I'd recommend:**
+| Prompt | Your answer |
+| --- | --- |
+| The one I would recommend | |
+| Why, in one sentence | |
 
-**Why, in one sentence:**
+Circle it on the grid too, so the page says it twice: once where you compared, once where you decided.
 
-Circle it on the grid too, so the page says it twice — once where you compared, once where you decided.
+A few things worth knowing while you fill this in. A cheaper place far out can cost you time and energy instead of money, and tired is expensive too. Being near a useful station may be worth paying for. How an area *feels* matters. You'll walk it every morning and every night. Easy breakfast nearby saves a slow start. And there's more than one type of place to stay: open your destination pack for the lodging types where you're going.
 
-A few things worth knowing while you fill this in. A cheaper place far out can cost you time and energy instead of money, and tired is expensive too. Being near a useful station may be worth paying for. How an area *feels* matters — you'll walk it every morning and every night. Easy breakfast nearby saves a slow start. And there's more than one type of place to stay: open your destination pack for the lodging types where you're going.
-
-If you'd rather score these than eyeball them, use the [scoring rubric](scoring_rubric.md) — it has a lighter three-criteria version beside the full one, and either is fine. Adults finalize lodging safety and booking.
+If you would rather score these than eyeball them, use the [scoring rubric](scoring_rubric.md). It has the Lighter Rubric (3-criteria) beside the full one, and either is fine. Adults finalize lodging safety and booking.

@@ -14,11 +14,11 @@ Use this page in Session 07. Two columns is plenty: the book, and whether the li
 
 If a book is checked out, put a hold on it with a grown-up, or write "ask again later" and move on.
 
-If you are going in person, the shelf number is worth writing down. That number is how you find the book on the shelf in about a minute.
+If you're going in person, the shelf number is worth writing down. That number is how you find the book on the shelf in about a minute.
 
 | Prompt | Your answer |
 | --- | --- |
 | Shelf numbers to take with me | |
 | Date of our library visit, if we picked one | |
 
-Keep this small. A list, or a plan. You are not signing up to read four books.
+Keep this small. A list, or a plan. You're not signing up to read four books.
