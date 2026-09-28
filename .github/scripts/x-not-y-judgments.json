@@ -20089,12 +20089,12 @@
       "judgment": "no",
       "reason": "a bold lead-in label"
     },
-    "split|The lighter pages in Phases 7 and 8. → From Session 40 to Session 53, the Steps and Workspace are short, and your child sets their own Start Here.|1": {
+    "split|The lighter pages in Phases 7 and 8. → Sessions 40 to 43 and 45 to 52 have short Steps and Workspace, and your child sets their own Start Here; their entries below say \"Lighter page\".|1": {
       "line": 13,
       "judgment": "no",
-      "reason": "a fact: which sessions have the short Steps and Workspace, after a bold lead-in label"
+      "reason": "a fact: which sessions have the short Steps and Workspace and how their entries are marked, after a bold lead-in label"
     },
-    "split|From Session 40 to Session 53, the Steps and Workspace are short, and your child sets their own Start Here. → The signal that a child is ready sooner is two sessions in a row done without needing the When I'm Stuck card or leaning on the written Steps.|1": {
+    "split|Sessions 40 to 43 and 45 to 52 have short Steps and Workspace, and your child sets their own Start Here; their entries below say \"Lighter page\". → The signal that a child is ready sooner is two sessions in a row done without needing the When I'm Stuck card or leaning on the written Steps.|1": {
       "line": 13,
       "judgment": "no",
       "reason": "a definition of a signal; 'without needing' is part of what the signal is, not a rejected alternative"
