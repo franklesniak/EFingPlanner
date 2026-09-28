@@ -56,7 +56,8 @@ Batch 4's content: the optional after-the-trip session, the seven worked example
 - **The seven worked examples.** The [worked examples](examples/README.md) are a README and six pages from one pretend trip to Italy: a Source Log, a City Research Card, the lighter Scoring Rubric, a Trade-Off Report, a Daily Plan Card block card, and a think-aloud, "How a Planner Thought About It".
   - Each opens with the EXAMPLE ONLY marker above its H1.
   - Each fills its template's rows in order, with the labels unchanged.
-  - None carries a current price, opening hour, ticket rule, numeric date or web address.
+  - None carries a current price, opening hour, ticket rule or web address.
+  - Each date checked is written as a month and a day, such as March 3.
   - No session or template links them.
 - **The cross-reference map.** The [cross-reference map](cross_reference_map.md) has two parts. The first is a table per phase, from Phase 0 to Phase 9, naming the template each session uses, the kit page it fills and the finished page its work feeds, derived from the built sessions and the kit. The second mirrors the routing contract's session rows and parent-facing rows, with every pack file named generically in inline code, and names the contract as canonical.
 - **The add-a-destination guide.** [How to add a destination](how_to_add_a_destination.md) says what a pack covers, lists the steps for building one, and ends with a section on sharing a pack. A framework page cannot link into a pack, so the guide names the contract by its path pattern, `destinations/<pack>/session_inserts/README.md`.
