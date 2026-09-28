@@ -31,7 +31,7 @@ This is a set of worksheets a child fills in. The normal way to use it is to **p
 Quick-start:
 
 1. Read [GETTING_STARTED.md](GETTING_STARTED.md).
-2. Copy the [trip starter kit](framework/trip_starter/README.md) out of this repository. Your filled-in pages live in your copy, never here.
+2. Copy the [trip starter kit](framework/trip_starter/README.md) out of this repository. Your filled-in pages live in your copy.
 3. Do the parent setup (Session 00).
 4. Print the first sessions.
 5. Start Session 01.

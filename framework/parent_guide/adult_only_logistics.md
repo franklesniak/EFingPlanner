@@ -58,7 +58,7 @@ Three things go beyond stamina, and they are yours to verify:
 - **Luggage handling** for anyone who shouldn't carry bags up stairs: forwarding services, porter help, or lockers. Those are categories; **which ones exist where you are going, and what they are called, is in your destination pack's adult logistics page**. If your pack lacks that page, check the official sites of the local transport operators, or ask your lodging, and write the date you checked
 
 <!-- density-exempt: X, not Y -- the spec's child-flags-not-fixes boundary, bold in the batch 2 brief: the child does not research the fix -->
-Your child's job is to *flag* likely trouble spots: a stair-heavy transfer, a hilltop site, a station that may not have a lift. They notice and hand it to you. They don't research the fix.
+Your child's job is to *flag* likely trouble spots: a stair-heavy transfer, a hilltop site, a station that may not have an elevator. They notice and hand it to you. They don't research the fix.
 
 Write about this generically with your child: "an older adult".
 

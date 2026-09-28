@@ -41,4 +41,4 @@ You can say your answers to an adult who writes them, or draw them, if that's ea
 ## Where this goes next
 
 - [Family trip goals and input summary](../trip_starter/family/family_trip_goals.md) -- your own goals and the traveler poll live on that one page.
-- [Traveler profile](traveler_profile.md) -- copy each answer onto that traveler's own profile.
+- [Traveler profiles](../trip_starter/family/traveler_profiles/README.md) -- copy each answer onto that traveler's own profile.

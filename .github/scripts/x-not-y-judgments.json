@@ -5486,16 +5486,6 @@
       "judgment": "no",
       "reason": "a change record: which reader the pack pages address"
     },
-    "split|The destination pack's money, transportation and seasons pages now speak to the child as \"you\" too. → The paths past First Taste are \"Core and full\" everywhere, the lighter parent mode is Low-Bandwidth Parent Mode, the audience range reads \"roughly 9-11\", and American spelling and usage replace the few British forms outside released entries.|1": {
-      "line": 49,
-      "judgment": "no",
-      "reason": "a change record of wording fixes; it prefers no option to the reader"
-    },
-    "split|The paths past First Taste are \"Core and full\" everywhere, the lighter parent mode is Low-Bandwidth Parent Mode, the audience range reads \"roughly 9-11\", and American spelling and usage replace the few British forms outside released entries. → \"Guardrails\" names only the adults' planning limits.|1": {
-      "line": 49,
-      "judgment": "no",
-      "reason": "a change record: a usage limit"
-    },
     "device|The presentation options, the checkpoint relays and the rehearsal ladder assume no family shape: \"one grown-up\" on a child's page, \"one adult\" on a parent's page, and \"a decision passed on to the rest\".|1": {
       "line": 49,
       "judgment": "no",
@@ -5505,6 +5495,21 @@
       "line": 49,
       "judgment": "no",
       "reason": "a change record: a fact"
+    },
+    "split|The destination pack's money, transportation and seasons pages now speak to the child as \"you\" too. → The paths past First Taste are \"Core and full\" everywhere, the lighter parent mode is Low-Bandwidth Parent Mode, the audience range reads \"roughly 9-11\", and American spelling replaces the few British spellings outside released entries.|1": {
+      "line": 49,
+      "judgment": "no",
+      "reason": "a change record of wording fixes; it prefers no option to the reader"
+    },
+    "split|The paths past First Taste are \"Core and full\" everywhere, the lighter parent mode is Low-Bandwidth Parent Mode, the audience range reads \"roughly 9-11\", and American spelling replaces the few British spellings outside released entries. → Four British usages now read as American English writes them: \"math\", \"has gotten\", \"medical coverage\" and \"elevator\".|1": {
+      "line": 49,
+      "judgment": "no",
+      "reason": "a change record: a fact (which usages now read as American English)"
+    },
+    "split|Four British usages now read as American English writes them: \"math\", \"has gotten\", \"medical coverage\" and \"elevator\". → \"Guardrails\" names only the adults' planning limits.|1": {
+      "line": 49,
+      "judgment": "no",
+      "reason": "a change record: a usage limit"
     },
     "device|Names.|1": {
       "line": 50,
@@ -5681,20 +5686,20 @@
       "judgment": "no",
       "reason": "a lead-in label"
     },
-    "split|Reading level. → Finished the contraction pass the ‹code› entry carried: child-facing prose now contracts where the style law's list calls for it, and ‹code› and ‹code› read in full, apart from text a child copies (the poll question, its quoted answer label and one quoted example answer) and one row label that other pages cite.|1": {
-      "line": 55,
-      "judgment": "no",
-      "reason": "a change record: a fact with an exception"
-    },
-    "split|Finished the contraction pass the ‹code› entry carried: child-facing prose now contracts where the style law's list calls for it, and ‹code› and ‹code› read in full, apart from text a child copies (the poll question, its quoted answer label and one quoted example answer) and one row label that other pages cite. → The templates that varied the accommodation line now use its fixed form.|1": {
-      "line": 55,
-      "judgment": "no",
-      "reason": "a change record: a fact"
-    },
     "split|The templates that varied the accommodation line now use its fixed form. → The readability gate passes on its default scan, and by name on the worked examples and every kit page.|1": {
       "line": 55,
       "judgment": "no",
       "reason": "a change record: a status"
+    },
+    "split|Reading level. → Finished the contraction pass the ‹code› entry carried: child-facing prose now contracts where the style law's list calls for it, and ‹code› and ‹code› read in full, apart from text a child copies (the poll question and its quoted answer label) and one row label that other pages cite.|1": {
+      "line": 55,
+      "judgment": "no",
+      "reason": "a change record: a fact with an exception"
+    },
+    "split|Finished the contraction pass the ‹code› entry carried: child-facing prose now contracts where the style law's list calls for it, and ‹code› and ‹code› read in full, apart from text a child copies (the poll question and its quoted answer label) and one row label that other pages cite. → The templates that varied the accommodation line now use its fixed form.|1": {
+      "line": 55,
+      "judgment": "no",
+      "reason": "a change record: a fact"
     },
     "device|Links.|1": {
       "line": 56,
@@ -5836,11 +5841,6 @@
       "judgment": "no",
       "reason": "a change record: the adult's check"
     },
-    "split|A grown-up checks each number on a current official page and writes the date. → No page prints a number.|1": {
-      "line": 61,
-      "judgment": "no",
-      "reason": "a change record: a fact (no page prints a number), as recorded for the same pair in the first pass"
-    },
     "split|No page prints a number. → This closes the 0.4.0 deferral.|1": {
       "line": 61,
       "judgment": "no",
@@ -5850,6 +5850,11 @@
       "line": 61,
       "judgment": "no",
       "reason": "a change record: a fact"
+    },
+    "split|A grown-up checks each number on a current official page and writes the date. → No page prints a number.|1": {
+      "line": 61,
+      "judgment": "no",
+      "reason": "a change record: a fact (no page prints a number)"
     },
     "device|Closed the 0.4.0 deferrals for framework pages that read wrongly against the pack.|1": {
       "line": 62,
@@ -8329,7 +8334,7 @@
     "split|The archived spec let a child start the next session's independent work while an adult review was pending. → Checkpoints 2 to 6 follow the built When I'm Stuck card: the next session waits, because it builds on the decision, and the child's outlets while waiting are an Optional Extension, the question parking lot and the \"things I can't wait to see\" page.|1": {
       "line": 197,
       "judgment": "no",
-      "reason": "a fact: the built rule after the spec's; a recorded departure, as the Session 14 calibration"
+      "reason": "a fact: the built rule after the spec's, recorded as a departure from it"
     },
     "device|Converted Session 15 to a destination-neutral skeleton.|1": {
       "line": 198,
@@ -9416,15 +9421,15 @@
       "judgment": "no",
       "reason": "a condition (when it closes)"
     },
-    "split|Walk the add-a-destination guide, as a person ( ‹code› ). → Follow how to add a destination and confirm that a second destination could be added and a fresh trip started without editing the framework or the first pack, and that origin logistics stay labeled as the US-specific layer.|1": {
-      "line": 296,
-      "judgment": "no",
-      "reason": "an instruction naming what to confirm; without editing states the capability being tested (as recorded)"
-    },
     "split|Follow how to add a destination and confirm that a second destination could be added and a fresh trip started without editing the framework or the first pack, and that origin logistics stay labeled as the US-specific layer. → Under the one-country model recorded in 0.5.0 ( ‹code› ), the walk covers a second pack for a country.|1": {
       "line": 296,
       "judgment": "no",
       "reason": "a limit"
+    },
+    "split|Walk the add-a-destination guide, as a person ( ‹code› ). → Follow how to add a destination and confirm that a second destination could be added and a fresh trip started without editing the framework or the first pack, and that origin logistics stay labeled as the US-specific layer.|1": {
+      "line": 296,
+      "judgment": "no",
+      "reason": "an instruction naming what to confirm; without editing states the capability being tested"
     },
     "device|Read every file Batch 4's content release created or edited that a child or a parent reads, as a person.|1": {
       "line": 297,
@@ -11681,15 +11686,15 @@
       "judgment": "no",
       "reason": "a fact: the lesson is always core"
     },
-    "device|Using an AI tool is a labeled opt-in.|1": {
-      "line": 21,
-      "judgment": "no",
-      "reason": "a fact: tool use is an opt-in (as recorded)"
-    },
     "split|Using an AI tool is a labeled opt-in. → It is taught in the full Session 09, it happens only if the family opted in at setup, and it is skipped entirely by an AI-free family.|1": {
       "line": 21,
       "judgment": "no",
       "reason": "states when the lesson happens and when it is skipped; conditions, not a rejected alternative"
+    },
+    "device|Using an AI tool is a labeled opt-in.|1": {
+      "line": 21,
+      "judgment": "no",
+      "reason": "a fact: tool use is an opt-in"
     },
     "split|An adult records the yes or no at setup, on the family's assumptions page. → Writing it down is what keeps the safety sequence from being skipped by accident.|1": {
       "line": 23,
@@ -12368,11 +12373,6 @@
       "judgment": "no",
       "reason": "an instruction with a portability fact"
     },
-    "device|Neither ‹code› nor ‹code› is in POSIX; the ‹code› escape is not in POSIX either and is absent from BSD grep as well, so ‹code› is simply the form that fails in fewer places.|1": {
-      "line": 77,
-      "judgment": "device",
-      "reason": "ranks named grep forms and prefers one: -w is the form that fails in fewer places (S51-52)"
-    },
     "split|Neither ‹code› nor ‹code› is in POSIX; the ‹code› escape is not in POSIX either and is absent from BSD grep as well, so ‹code› is simply the form that fails in fewer places. → ‹code› also stops ‹code› matching inside ‹code› , which is why both forms are listed).|1": {
       "line": 77,
       "judgment": "no",
@@ -12382,6 +12382,11 @@
       "line": 77,
       "judgment": "no",
       "reason": "a fact, then an expectation for the QA grep; rejects no alternative"
+    },
+    "device|Neither ‹code› nor ‹code› is in POSIX; the ‹code› escape is not in POSIX either and is absent from BSD grep as well, so ‹code› is simply the form that fails in fewer places.|1": {
+      "line": 77,
+      "judgment": "device",
+      "reason": "ranks named grep forms and prefers one: -w is the form that fails in fewer places"
     },
     "device|Parent-facing text may read at an adult level, but every ‹code› file still uses short sentences, states the point first, and qualifies at most once: plain parent voice, not the archived spec's nested-qualification voice.|1": {
       "line": 78,
@@ -15262,15 +15267,15 @@
       "judgment": "no",
       "reason": "a definition"
     },
-    "split|Secondary sources are useful for finding things out and weak for pinning things down. → When something matters, follow it back to the primary source.|1": {
-      "line": 63,
-      "judgment": "split",
-      "reason": "secondary sources are weak for pinning things down / follow it back to the primary source (primary over secondary, S51-52)"
-    },
     "split|A minute of reading sideways answers those questions, and the answers tell you how far to trust the page. → Primary and secondary sources.|1": {
       "line": 63,
       "judgment": "no",
       "reason": "a label introducing the next move"
+    },
+    "split|Secondary sources are useful for finding things out and weak for pinning things down. → When something matters, follow it back to the primary source.|1": {
+      "line": 63,
+      "judgment": "split",
+      "reason": "secondary sources are weak for pinning things down / follow it back to the primary source (primary preferred over secondary)"
     },
     "device|Some facts stay put, and some are only true this week.|1": {
       "line": 67,
@@ -17359,15 +17364,15 @@
       "judgment": "split",
       "reason": "claim, then its negation: they notice and hand it on / they don't research the fix (the child-flags-not-fixes boundary)"
     },
-    "split|Your child's job is to flag likely trouble spots: a stair-heavy transfer, a hilltop site, a station that may not have a lift. → They notice and hand it to you.|1": {
-      "line": 61,
-      "judgment": "no",
-      "reason": "\"may not have a lift\" describes a trouble spot in a list; neither sentence rejects an alternative"
-    },
     "device|They notice and hand it to you.|1": {
       "line": 61,
       "judgment": "no",
       "reason": "a statement of the child's job"
+    },
+    "split|Your child's job is to flag likely trouble spots: a stair-heavy transfer, a hilltop site, a station that may not have an elevator. → They notice and hand it to you.|1": {
+      "line": 61,
+      "judgment": "no",
+      "reason": "\"may not have an elevator\" describes a trouble spot in a list; neither sentence rejects an alternative"
     },
     "split|They don't research the fix. → Write about this generically with your child: \"an older adult\".|1": {
       "line": 63,
@@ -19141,11 +19146,6 @@
       "judgment": "no",
       "reason": "a fact about the First Taste path; it rejects no alternative to the Core claim"
     },
-    "split|Checkpoint 4 is where you confirm or adjust that shape against real flight options. → It is not where you reveal it for the first time.|1": {
-      "line": 20,
-      "judgment": "split",
-      "reason": "claim, then its negation: confirm the shape at Checkpoint 4 / not where you reveal it (the batch 2 brief's B3 item)"
-    },
     "split|It is not where you reveal it for the first time. → If it changes there, your child moves one block and keeps the rest, which only works if the shape existed from the start.|1": {
       "line": 20,
       "judgment": "no",
@@ -19155,6 +19155,11 @@
       "line": 20,
       "judgment": "no",
       "reason": "a fact"
+    },
+    "split|Checkpoint 4 is where you confirm or adjust that shape against real flight options. → It is not where you reveal it for the first time.|1": {
+      "line": 20,
+      "judgment": "split",
+      "reason": "claim, then its negation: confirm the shape at Checkpoint 4 / not where you reveal it"
     },
     "split|Flying into one city and out of another is called an open-jaw ticket, and a route through several is a multi-city one. → Both can save real backtracking.|1": {
       "line": 22,
@@ -21012,7 +21017,7 @@
     "device|Pitfall: rushing it, when this skill carries the next sessions.|1": {
       "line": 68,
       "judgment": "no",
-      "reason": "a Pitfall line with its reason (S51-51: a Pitfall line alone is no unless it holds its own contrast)"
+      "reason": "a Pitfall line with its reason; a Pitfall line alone is no unless it holds its own contrast"
     },
     "device|Role: 5-minute check-in; an adult may need to fetch the library book.|1": {
       "line": 72,
@@ -25014,7 +25019,7 @@
     "split|Your cover is part of your \"Make It Yours\" zone, so you can add to it any time. → You don't need to decorate it perfectly.|1": {
       "line": 62,
       "judgment": "no",
-      "reason": "a release after its claim, last in its paragraph; nothing after it recasts what the thing is, so it does not count (consistency ruling 1)"
+      "reason": "a release after its claim, last in its paragraph; nothing after it recasts what the thing is, so it does not count"
     },
     "device|No new sources needed unless you looked something up.|1": {
       "line": 66,
@@ -27218,15 +27223,15 @@
       "judgment": "no",
       "reason": "a conditional instruction"
     },
-    "split|If you asked a librarian instead, record that and not a catalog you never opened: Source type = \"person\"; Title = \"a librarian\"; Author or organization = which library it was, like \"our city library\" or \"the school library\"; What I learned = what they told you; Date checked = today's date. → You don't need their name, and you don't need the branch.|1": {
-      "line": 71,
-      "judgment": "no",
-      "reason": "a release, then an instruction; nothing is recast (as recorded)"
-    },
     "split|You don't need their name, and you don't need the branch. → If you did both, record both.|1": {
       "line": 71,
       "judgment": "no",
       "reason": "a conditional instruction"
+    },
+    "split|If you asked a librarian instead, record that and not a catalog you never opened: Source type = \"person\"; Title = \"a librarian\"; Author or organization = which library it was, like \"our city library\" or \"the school library\"; What I learned = what they told you; Date checked = today's date. → You don't need their name, and you don't need the branch.|1": {
+      "line": 71,
+      "judgment": "no",
+      "reason": "a release, then an instruction; nothing is recast"
     },
     "device|Finished?|1": {
       "line": 75,
@@ -28054,11 +28059,6 @@
       "judgment": "no",
       "reason": "a reason"
     },
-    "split|Before you plan where to go, it helps to know a few big facts. → You don't need to memorize anything. → This is just a snapshot to get oriented.|1": {
-      "line": 31,
-      "judgment": "split",
-      "reason": "you don't need to memorize anything / this is just a snapshot to get oriented (the release and its recast, judged on the release's own item as on the template copy and in Session 01)"
-    },
     "banned|You don't need to memorize anything. → This is just a snapshot to get oriented.|1": {
       "line": 31,
       "judgment": "no",
@@ -28068,6 +28068,11 @@
       "line": 31,
       "judgment": "no",
       "reason": "a recast after a release; that pair is counted once, under the release's own item"
+    },
+    "split|Before you plan where to go, it helps to know a few big facts. → You don't need to memorize anything. → This is just a snapshot to get oriented.|1": {
+      "line": 31,
+      "judgment": "split",
+      "reason": "you don't need to memorize anything / this is just a snapshot to get oriented (the release and its recast, judged on the release's own item)"
     },
     "split|This is just a snapshot to get oriented. → Fill in your snapshot page.|1": {
       "line": 33,
@@ -29023,7 +29028,7 @@
     "split|Keep this in mind so you don't plan a trip that's too expensive. → You'll do real budgeting later.|1": {
       "line": 38,
       "judgment": "no",
-      "reason": "a note that real budgeting comes later; it follows an instruction and rejects no alternative (as recorded)"
+      "reason": "a note that real budgeting comes later; it follows an instruction and rejects no alternative"
     },
     "device|Use your Travel Style Worksheet for the six pairs and your \"our travel style is...\" sentence.|1": {
       "line": 42,
@@ -40422,16 +40427,6 @@
       "judgment": "no",
       "reason": "a condition with an instruction"
     },
-    "split|If they don't fit, say what you would change. → \"It doesn't fit, so I'd cut ___\" is a finished, good answer.|1": {
-      "line": 73,
-      "judgment": "no",
-      "reason": "a reassurance quoting a valid answer"
-    },
-    "split|\"It doesn't fit, so I'd cut ___\" is a finished, good answer. → With a hotel tier, the check and the sentence are about your hotels.|1": {
-      "line": 73,
-      "judgment": "no",
-      "reason": "a conditional scope for the check and the sentence"
-    },
     "split|If a part still says \"ask an adult\" or \"not sure yet\", your subtotal and your sentence both say what they leave out. → Your daily slices count only your days on the ground.|1": {
       "line": 73,
       "judgment": "no",
@@ -40446,6 +40441,16 @@
       "line": 73,
       "judgment": "no",
       "reason": "a stop condition: how the ticket is counted"
+    },
+    "split|If they don't fit, say what you would change. → \"It doesn't fit, so I would cut ___\" is a finished, good answer.|1": {
+      "line": 73,
+      "judgment": "no",
+      "reason": "a reassurance quoting a valid answer"
+    },
+    "split|\"It doesn't fit, so I would cut ___\" is a finished, good answer. → With a hotel tier, the check and the sentence are about your hotels.|1": {
+      "line": 73,
+      "judgment": "no",
+      "reason": "a conditional scope for the check and the sentence"
     },
     "split|No new sources needed unless you looked something up. → Your numbers come from your Hotel Comparison Cards, your daily cost table and your Session 33 page.|1": {
       "line": 77,
@@ -41042,12 +41047,12 @@
     "split|This is the Phase 7 hand-off. → Here your child sets up the whole session: they read what it makes, choose a first move and run it.|1": {
       "line": 83,
       "judgment": "no",
-      "reason": "a statement of the child's role (as recorded)"
+      "reason": "a statement of the child's role"
     },
     "split|Here your child sets up the whole session: they read what it makes, choose a first move and run it. → Your part is a light check-in.|1": {
       "line": 83,
       "judgment": "no",
-      "reason": "a statement of the parent's role; it rejects no named alternative (as recorded)"
+      "reason": "a statement of the parent's role; it rejects no named alternative"
     },
     "split|If they freeze, the suggestion on the page is there to use. → Afterward, ask one quick spoken question: \"How did you decide how to set this session up?\"|1": {
       "line": 85,
@@ -43174,15 +43179,15 @@
       "judgment": "no",
       "reason": "a navigation line"
     },
-    "device|You are here: Phase 7 (Itinerary Building). → Not a First Taste step.|1": {
-      "line": 5,
-      "judgment": "no",
-      "reason": "mandated nav-line label (calibration: Not a First Taste step)"
-    },
     "split|Not a First Taste step. → Previous: 44 Backup Plans and Cut List | Next: 46 Checkpoint 5 Itinerary Review|1": {
       "line": 5,
       "judgment": "no",
       "reason": "a navigation line"
+    },
+    "device|You are here: Phase 7 (Itinerary Building). → Not a First Taste step.|1": {
+      "line": 5,
+      "judgment": "no",
+      "reason": "a mandated nav-line label (Not a First Taste step)"
     },
     "device|For parents:|1": {
       "line": 7,
@@ -44912,15 +44917,15 @@
       "judgment": "no",
       "reason": "a navigation line"
     },
-    "device|You are here: Phase 8 (Readiness and Final). → Not a First Taste step.|1": {
-      "line": 5,
-      "judgment": "no",
-      "reason": "mandated nav-line label (calibration: Not a First Taste step)"
-    },
     "split|Not a First Taste step. → Previous: 48 Packing List | Next: 50 Final Binder Assembly|1": {
       "line": 5,
       "judgment": "no",
       "reason": "a navigation line"
+    },
+    "device|You are here: Phase 8 (Readiness and Final). → Not a First Taste step.|1": {
+      "line": 5,
+      "judgment": "no",
+      "reason": "a mandated nav-line label (Not a First Taste step)"
     },
     "device|For parents:|1": {
       "line": 7,
@@ -51816,11 +51821,6 @@
       "judgment": "no",
       "reason": "a fact about where Session 01 has you write this"
     },
-    "split|Session 01 has you write this on a fresh page, or on the back of your cover page. → If you would rather fill in boxes, use this page instead.|1": {
-      "line": 5,
-      "judgment": "no",
-      "reason": "a conditional permission offering this page as an option; it prefers neither (as in the first pass)"
-    },
     "split|If you would rather fill in boxes, use this page instead. → It's a snapshot of how big projects feel right now.|1": {
       "line": 5,
       "judgment": "no",
@@ -51835,6 +51835,11 @@
       "line": 5,
       "judgment": "no",
       "reason": "a reassurance"
+    },
+    "split|Session 01 has you write this on a fresh page, or on the back of your cover page. → If you would rather fill in boxes, use this page instead.|1": {
+      "line": 5,
+      "judgment": "no",
+      "reason": "a conditional permission offering this page as an option; it prefers neither"
     },
     "split|There are no wrong answers. → You can say your answers to an adult who writes them, or draw them, if that's easier.|1": {
       "line": 7,
@@ -52306,11 +52311,6 @@
       "judgment": "no",
       "reason": "a label"
     },
-    "split|First, the full trip total is a grown-up number. → Keep it off the child's worksheet.|1": {
-      "line": 24,
-      "judgment": "no",
-      "reason": "a rule following from the claim (who owns the total), as in the calibrated builder-facing rule"
-    },
     "split|Keep it off the child's worksheet. → Second, if the AI helper answer is yes, the child does Session 09 first.|1": {
       "line": 24,
       "judgment": "no",
@@ -52330,6 +52330,11 @@
       "line": 24,
       "judgment": "no",
       "reason": "a fact"
+    },
+    "split|First, the full trip total is a grown-up number. → Keep it off the child's worksheet.|1": {
+      "line": 24,
+      "judgment": "no",
+      "reason": "a rule following from the claim (who owns the total), not an alternative to it"
     },
     "split|The grown-ups also follow the adult-operated pattern in the privacy and safety rules. → Has your family never been to the destination?|1": {
       "line": 26,
@@ -52841,7 +52846,7 @@
       "judgment": "no",
       "reason": "a navigation line"
     },
-    "device|Traveler profile -- copy each answer onto that traveler's own profile.|1": {
+    "device|Traveler profiles -- copy each answer onto that traveler's own profile.|1": {
       "line": 44,
       "judgment": "no",
       "reason": "a navigation line"
@@ -52963,12 +52968,12 @@
     "split|You're talking from an outline, not reading a script. → There's no single required way to present.|1": {
       "line": 9,
       "judgment": "no",
-      "reason": "a release in the next paragraph; it pairs with nothing before it (as recorded)"
+      "reason": "a release in the next paragraph; it pairs with nothing before it"
     },
     "split|There's no single required way to present. → Pick whichever of these fits you, and circle it at the bottom.|1": {
       "line": 9,
       "judgment": "no",
-      "reason": "a permission after a release; nothing is recast (as recorded)"
+      "reason": "a permission after a release; nothing is recast"
     },
     "device|Present live|1": {
       "line": 11,
@@ -55781,7 +55786,7 @@
     "split|‹code› holds the pages your whole family owns: the Trip-Basics card, the current family travel assumptions, the family trip goals, and, if you did Session 02, one traveler profile per traveler. → Session 02 isn't one of the 13 First Taste sessions, so on First Taste this folder is complete without profiles.|1": {
       "line": 17,
       "judgment": "no",
-      "reason": "a status note (not one of the 13) with its consequence; no alternative is preferred, as for the same sentence in how to use this binder and calibration line 9"
+      "reason": "a status note (not one of the 13) with its consequence; no alternative is preferred, as for the matching sentence on the How to Use This Binder card"
     },
     "device|‹code› holds your running records: the Source Log, the decision log, the question parking lot, and the cut list.|1": {
       "line": 18,
