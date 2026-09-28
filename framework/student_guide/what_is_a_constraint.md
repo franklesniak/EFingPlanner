@@ -1,6 +1,6 @@
 <!-- markdownlint-disable MD013 -->
 
-# What Is a Constraint?
+# What Is a Constraint
 
 A constraint is something real that limits what the plan can be.
 
@@ -15,9 +15,9 @@ Think of the size of your backpack. You choose what goes in, but the backpack de
 - **Rules and availability.** Some things need a booking. Some sell out. Some close on certain days, or only open in certain seasons. These change, so check them, and write the date you checked.
 - **Safety, and what grown-ups decide.** Some things simply aren't your call.
 
-## Constraints aren't the enemy
+## Constraints make a plan possible
 
-They're what makes a plan possible. They're also why a trade-off has two real sides. If nothing limited you, there would be nothing to trade.
+Constraints are also why a trade-off has two real sides. If nothing limited you, there would be nothing to trade.
 
 A plan that ignores a constraint just breaks later.
 
@@ -26,14 +26,14 @@ A plan that ignores a constraint just breaks later.
 Three steps, every time:
 
 1. **Name it.** Say what the limit actually is.
-2. **Write it down where that kind of thing lives.** Some settled limits are already written down for you. Your **Trip-Basics card** holds how you will travel, the time difference, the maximum trip length and who is coming. The **current travel assumptions** page, which the grown-ups own, holds the budget band, the rough season, the trip shape, and things like how far anyone can comfortably walk. Look there before you write anything down twice. Something you are unsure about that belongs to one place you are researching goes in that card's planning-assumption block. And an unsure trip-wide one -- a budget or a date nobody has confirmed -- goes in your **question parking lot**, because there is no card for it and it is a question for a grown-up.
+2. **Write it down where that kind of thing lives.** Some settled limits are already written down for you. Your **Trip-Basics card** holds how you will travel, the time difference, the maximum trip length and who is coming. The **current family travel assumptions** page, which the grown-ups own, holds the budget band, the rough season, the trip shape, and things like how far anyone can comfortably walk. Look there before you write anything down twice. Something you're unsure about that belongs to one place you're researching goes in that card's planning-assumption block. And an unsure trip-wide one -- a budget or a date nobody has confirmed -- goes in your **question parking lot**, because there's no card for it and it's a question for a grown-up.
 3. **Check your recommendation against it.** Does this still fit?
 
 That third step is the budget-band question your [Trade-Off Report](../templates/tradeoff_report.md) asks. Same move.
 
-## Not sure about one?
+## When you are not sure about one
 
-Then it's an assumption. That's the difference: a constraint someone confirmed is a fact you plan around; one you're guessing at you plan around *and flag*. If it belongs to a place you are researching, write it in that card's planning-assumption block, say what could change it, and flag whether a grown-up needs to check it. If it is trip-wide, it goes in your question parking lot instead.
+Then it's an assumption. That's the difference: a constraint someone confirmed is a fact you plan around; one you're guessing at you plan around *and flag*. If it belongs to a place you're researching, write it in that card's planning-assumption block, say what could change it, and flag whether a grown-up needs to check it. If it's trip-wide, it goes in your question parking lot instead.
 
 When an assumption starts driving a decision, it moves to your decision log.
 

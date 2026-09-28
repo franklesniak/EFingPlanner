@@ -4,7 +4,7 @@
 
 **Last reviewed:** September 2026
 
-This page is for your food research. It sorts the places people eat by kind, explains how ordering works, and names what a family plans ahead. Picking the actual places is your research, and grown-ups check prices and book.
+This page is for your food research. It sorts the places people eat by kind, explains how ordering works, and names what a family plans ahead. Picking the places is your research, and grown-ups check prices and book.
 
 ## Kinds of places to eat
 

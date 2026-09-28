@@ -2,13 +2,15 @@
 
 # Trade-Off Report
 
-This is the page where you compare two real options honestly and then say which one you'd pick. Every option costs you something — that's what a trade-off is, and naming it out loud is the whole skill.
+This is the page where you compare two real options honestly. Then you say which one you would pick. Every option costs you something. That's what a trade-off is, and naming it out loud is the whole skill.
 
 **You'll write three of these over the project**, one each time a big choice comes up: your season, which cities and route, and one about pacing, where you stay, or the budget. If your trip dates are already booked, the season one compares two ways to plan around them. Use a fresh copy of this page for each.
 
 The columns are already drawn for you, and the example row shows the shape. Replace it with your own options. Which two options are you comparing? If a row doesn't fit your decision, like travel time when you're comparing seasons, leave it blank.
 
-**The decision I'm making:**
+| Prompt | Your answer |
+| --- | --- |
+| The decision I'm making | |
 
 | What I'm comparing | Option A | Option B | Option C (only if you need it) |
 | --- | --- | --- | --- |
@@ -16,7 +18,7 @@ The columns are already drawn for you, and the example row shows the shape. Repl
 | What this option is | | | |
 | Pros | | | |
 | Cons | | | |
-| Cost effect (higher / about the same / lower — not a price) | | | |
+| Cost effect (higher / about the same / lower, with no price) | | | |
 | Time effect | | | |
 | Energy effect | | | |
 | Travel time (read it from the map's "Directions", don't guess from the map picture) | | | |
@@ -27,16 +29,15 @@ The columns are already drawn for you, and the example row shows the shape. Repl
 | Verification source (the one I actually used to check) | | | |
 | Date checked | | | |
 
-**My recommendation:**
+| Prompt | Your answer |
+| --- | --- |
+| My recommendation | |
+| My reasons (two or three, each tied to something I found) | |
+| What we give up by choosing it | |
+| What a grown-up still needs to check or decide | |
 
-**My reasons (two or three, each tied to something I found):**
+Travel time is the one people get wrong most. Two places can look close on a map and take hours by train. Or they can look far apart and be a quick ride. Use the "Directions" tool and trust the time, not your eyes.
 
-**What we give up by choosing it:**
-
-**What a grown-up still needs to check or decide:**
-
-Travel time is the one people get wrong most. Two places can look close on a map and take hours by train, or look far apart and be a quick ride. Use the "Directions" tool and trust the time, not your eyes.
-
-Scores can help you think, and you make the choice. If you want to score the options, the [scoring rubric](scoring_rubric.md) has a lighter three-criteria version beside the full one, and either is fine.
+Scores can help you think, and you make the choice. If you want to score the options, the [scoring rubric](scoring_rubric.md) has the Lighter Rubric (3-criteria) beside the full one, and either is fine.
 
 **If you have extra energy:** try giving each row your own importance weight and arguing the trade-off in a short paragraph instead of a table. That's optional, and the table above is a complete job on its own.

@@ -4,7 +4,7 @@
 
 You are here: Phase 1 (Research Skills), First Taste step 4 of 13. Previous: [04 Start a Source Log](../phase_00_setup/04_start_a_source_log.md) | Next: [06 Book Research With a Guidebook](06_book_research_guidebook.md)
 
-*On the First Taste path, go straight to [10 Destination Snapshot](../phase_02_destination_big_picture/10_destination_snapshot.md). Sessions 06, 07, and 08 are not among the 13. **If your family uses AI, do [09 AI as Helper, Not Boss](09_ai_as_helper_not_boss.md) first** -- it comes right after this session and before Session 10.*
+*On the First Taste path, go straight to [10 Destination Snapshot](../phase_02_destination_big_picture/10_destination_snapshot.md). Sessions 06, 07, and 08 are not among the 13. **If your family uses AI, do [09 AI as Helper, Not Boss](09_ai_as_helper_not_boss.md) first.** It comes right after this session and before Session 10.*
 
 *If your family chose to use AI, do [09 AI as Helper, Not Boss](09_ai_as_helper_not_boss.md) before you use any AI tool.*
 
@@ -22,7 +22,7 @@ Learn a quick way to tell if a website can be trusted, and practice it on a real
 
 ## Start Here
 
-Open your destination pack's trusted starting sources list and read just the first two names on it. That is your start.
+Open your destination pack's trusted starting sources list and read just the first two names on it. That's your start.
 
 ## Steps
 
@@ -40,7 +40,7 @@ Now practice with a grown-up:
 2. Run the three questions on each. Which one would you trust more for facts like opening hours or rules? Why?
 3. Add the better source to your Source Log with today's date.
 
-**What AI is and is not** (every planner learns this, even if your family does not use AI):
+**What AI is and is not** (every planner learns this, even if your family doesn't use AI):
 
 <!-- density-exempt: X, not Y -- these three lines are the always-core AI lesson every family gets, which the batch 1 brief preserves line for line and ai_use_rules.md names: AI can make things up, is never the only source, and never decides legal, safety, entry, medical, money or booking questions -->
 
@@ -48,13 +48,13 @@ Now practice with a grown-up:
 - AI is never your only source. Always check it against a real source.
 - AI never decides legal, safety, entry, medical, money, or booking questions. Those are for the adults.
 
-Tracking *who said it* is the same move you started in Session 04 -- you are getting good at it.
+Tracking *who said it* is the same move you started in Session 04. You're getting good at it.
 
 ## Workspace
 
 Use scratch paper for your three-question notes on each site, and your Source Log for the one good source you keep.
 
-You can say your answers to an adult who writes them, or draw them, if that is easier.
+You can say your answers to an adult who writes them, or draw them, if that's easier.
 
 ## Artifact Created
 
@@ -62,7 +62,7 @@ Your quick trust test, used on two real sites, plus one trusted source added to 
 
 ## Stop Point
 
-You are done when you have run the three questions on two sites, written down which one you trust more and why, and put that one in your Source Log. That is plenty for today.
+You are done when you've run the three questions on two sites, written down which one you trust more and why, and put that one in your Source Log. That's plenty for today.
 
 ## Source Check
 
@@ -81,11 +81,11 @@ Stuck? Use the [When I'm Stuck card](../../student_guide/when_im_stuck.md) in yo
 If you have extra energy (or when you continue past First Taste), try the **deeper trust check** on another day:
 
 - Ask more questions: When was it written or updated? Is this fact or opinion? Is it the right kind of source for this question?
-- **Lateral reading:** when you are unsure about a site, look the site itself up in a new tab, the way professional fact-checkers do. The whole move is in [Judging How Much to Trust a Source](../../docs/source_trustworthiness.md).
+- **Lateral reading:** when you're unsure about a site, look the site itself up in a new tab, the way professional fact-checkers do. The whole move is in [Judging How Much to Trust a Source](../../docs/source_trustworthiness.md).
 - **Primary vs. secondary:** for facts like hours and rules, prefer the source the fact comes from. The difference is explained in [Judging How Much to Trust a Source](../../docs/source_trustworthiness.md).
 
 (The official page may be in the local language -- use "translate this page" to *understand* it, but check anything important against an English official source or a grown-up.)
 
 ## Parent Notes
 
-Please do this session together -- model the three questions out loud once, then hand it over. This source-judging skill carries the rest of the project, so it is worth the time. Afterward, do a quick, ungraded check: ask your child to show how they would decide whether a website is trustworthy. If it is shaky, spend one more session here before moving on. You do not have to be the expert -- if you are unsure about a site, look it up together.
+Please do this session together. Model the three questions out loud once, then hand it over. This source-judging skill carries the rest of the project, so it is worth the time. Afterward, do a quick, ungraded check: ask your child to show how they would decide whether a website is trustworthy. If it is shaky, spend one more session here before moving on. You do not have to be the expert. If you are unsure about a site, look it up together.

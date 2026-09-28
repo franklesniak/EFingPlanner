@@ -3,15 +3,13 @@
 
 # Project Roadmap
 
-This roadmap shows the paths through the project and where the honest stopping points are. There are three finish lines, and **each is a genuine, complete success**: the short **First Taste** path, the **Core Finish Line** (a usable plan), and the **full program**.
+This roadmap shows the paths through the project and where the honest stopping points are. There are three finish lines, and **each is a complete success**: the short **First Taste** path, the **Core Finish Line** (a usable plan), and the **full program**.
 
-For the child this project is designed for, **finishing First Taste is the expected, complete outcome** -- not a lesser starter. Continuing to the Core Finish Line or the full program is a genuine bonus, and nothing done in First Taste is ever redone.
+For the child this project is designed for, **finishing First Taste is the expected, complete outcome** -- not a lesser starter. Continuing to the Core Finish Line or the full program is a bonus, and nothing done in First Taste is ever redone.
 
-> **What is built right now** lives in the [curriculum changelog](CHANGELOG.md), which is the version history of these materials and the one file that changes every time something ships. This page describes the whole program; the changelog says how much of it exists today.
+> The [curriculum changelog](CHANGELOG.md) is the version history of these materials. It records what each release changed, and the checks still owed to a person.
 >
-> The Batch 0 gate **cleared** on the recorded no-child fallback, which is one of its two routes. What is still open is the thing that fallback stands in for: **no child has piloted this design.** The flag saying so is carried in [time and effort](parent_guide/time_and_effort.md), and it stays until a real pilot happens.
->
-> Batch 1 opened two more checks on the Phases 0-2 slice: an adult reads the converted pages against the Batch 0 originals, and an adult watches a child work the new sessions. Both are recorded as open in the changelog, and neither has been done yet.
+> **No child has piloted this design yet.** The flag saying so is in [time and effort](parent_guide/time_and_effort.md), and it stays until a child pilots it.
 
 ## The phases at a glance
 
@@ -49,9 +47,9 @@ Every session in Phases 0-2, in numbered order. The First Taste path below overl
 - [11 Regions and Cities Overview](sessions/phase_02_destination_big_picture/11_regions_and_cities_overview.md) *(not one of the 13)*
 - [12 Weather, Seasons, and Events](sessions/phase_02_destination_big_picture/12_weather_seasons_and_events.md)
 - [13 Trip Goals and Travel Style](sessions/phase_02_destination_big_picture/13_trip_goals_and_travel_style.md)
-- [14 Checkpoint 1: Season Recommendation](sessions/phase_02_destination_big_picture/14_checkpoint_1_season_recommendation.md) *(a grown-up reviews this)*
+- [14 Checkpoint 1 Season Recommendation](sessions/phase_02_destination_big_picture/14_checkpoint_1_season_recommendation.md) *(a grown-up reviews this)*
 
-## First Taste path (the pilotable mini-plan)
+## First Taste path (the mini-plan)
 
 About 13 sessions that produce a thin but complete mini-plan: a when-to-go call, one or two cities, a short must-see list, a rough budget check, and the one personal pick. It teaches the four core planning moves: **start small, track a source, make one trade-off, know when to stop.**
 
@@ -66,20 +64,20 @@ Session 00 (adult-only setup) comes first. Then, in order:
 5. [10 Destination Snapshot](sessions/phase_02_destination_big_picture/10_destination_snapshot.md)
 6. [12 Weather, Seasons, and Events](sessions/phase_02_destination_big_picture/12_weather_seasons_and_events.md)
 7. [13 Trip Goals and Travel Style](sessions/phase_02_destination_big_picture/13_trip_goals_and_travel_style.md)
-8. [14 Checkpoint 1: Season Recommendation](sessions/phase_02_destination_big_picture/14_checkpoint_1_season_recommendation.md) -- *make one trade-off* (when to go), or confirm the season when the dates are booked; first finish point
+8. [14 Checkpoint 1 Season Recommendation](sessions/phase_02_destination_big_picture/14_checkpoint_1_season_recommendation.md) -- *make one trade-off* (when to go), or confirm the season when the dates are booked; first finish point
 9. [15 City Research Cards](sessions/phase_03_choose_places/15_city_research_cards.md)
 10. [21 Compare Cities](sessions/phase_03_choose_places/21_compare_cities.md) -- *make one trade-off* (where)
 11. [33 Budget Basics, First Pass](sessions/phase_06_lodging_food_budget/33_budget_basics_first_pass.md)
 12. [44 Backup Plans and Cut List](sessions/phase_07_itinerary_building/44_backup_plans_and_cut_list.md) -- *know when to stop*
 13. [53 Reflection and Handoff](sessions/phase_08_readiness_final/53_reflection_and_handoff.md) -- *know when to stop* + reflection
 
-**You can stop here with a real mini-plan -- this counts.**
+**You can stop here with a usable mini-plan. This counts.**
 
 *Using AI?* Do [09 AI as Helper, Not Boss](sessions/phase_01_research_skills/09_ai_as_helper_not_boss.md) right after step 4, before any AI use.
 
 ## Progress is real (what you know after each milestone)
 
-- After **Checkpoint 1**, your family knows roughly *when* you might go -- the trip is becoming real. With the dates already booked, your family knows what its season means for the trip, and which challenge to plan around.
+- After **Checkpoint 1**, your family knows roughly *when* you might go. The trip is becoming real. With the dates already booked, your family knows what its season means for the trip, and which challenge to plan around.
 - After **Checkpoint 2**, the rough *where*.
 - After **Checkpoint 3**, the *top experiences*.
 - After **Checkpoint 4**, *when, where, and how long*. The trip is becoming concrete. With the dates booked, your family knows *where*, and how the booked days are split.
@@ -96,7 +94,7 @@ On this path the headline signal is the number of checkpoints reached:
 
 **Checkpoints reached: ____ of 6**
 
-A checkpoint counts once it is finished: Approved, or Approved with changes once your child has written the changes in. At Checkpoints 2 to 5, "Needs more research" and "Park this decision for later" leave it open until your child comes back to it. At Checkpoint 6, a parked decision is the result, so it counts. Every answer is still a normal result.
+Checkpoint 1 counts once your child has shared it with you. From Checkpoint 2 on, a checkpoint counts once it is finished: Approved, or Approved with changes once your child has written the changes in. At Checkpoints 2 to 5, "Needs more research" and "Park this decision for later" leave it open until your child comes back to it. At Checkpoint 6, a parked decision is the result, so it counts. Every answer is still a normal result.
 
 It stays accurate when sessions are skipped or the family stops at the Core Finish Line, and each of the six checkpoints is one of the six decisions your family makes. Progress within a phase is the smaller detail beneath it. If a picture helps, draw a plain bar for the phase you're in:
 

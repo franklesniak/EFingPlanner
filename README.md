@@ -4,29 +4,29 @@
 
 > **Provided as-is by one family. This is not an actively maintained project, and no one is on call to fix or update it. Facts -- prices, hours, entry and visa rules, attraction names, links -- may be out of date. Always verify anything you rely on against official sources before acting on it.**
 
-**A self-guided executive-function curriculum for kids -- roughly ages 9-11 -- that teaches how to break a big project into doable steps by planning a real family trip to Japan.**
+**A self-guided executive-function curriculum for kids (roughly ages 9-11) that teaches how to break a big project into doable steps by planning a real family trip to Japan.**
 
-The trip is the hook; the real subject is *executive function*: getting started, planning, tracking sources, making trade-offs, and knowing when to stop. A child works through short Markdown "sessions" mostly on their own, with light adult coaching, and comes out having planned a trip -- and having practiced the skills that make any large project less overwhelming.
+The trip is the hook; the subject is *executive function*: getting started, planning, tracking sources, making trade-offs, and knowing when to stop. A child works through short Markdown "sessions" mostly on their own, with light adult coaching, and comes out having planned a trip and practiced the skills that make any large project less overwhelming.
 
 ## What your child produces
 
-A thoughtful, sourced mini-plan the family can actually use: a when-to-go call, one or two cities, a short must-see list, a rough budget check, and their own special pick -- plus a source log and a decision log showing their reasoning. Adults review, adjust, verify, and do the real booking.
+A thoughtful, sourced mini-plan the family can use: a when-to-go call, one or two cities, a short must-see list, a rough budget check, and their own special pick, plus a Source Log and a decision log showing their reasoning. Adults review, adjust, verify, and do the booking.
 
 ## How a destination fits in
 
-One [destination pack](destinations/japan/README.md) ships with this repository, and you do not have to choose a build. The sessions carry no facts about any particular place. Where a session needs one, it sends the child to the pack. Some sessions say "open this session's Destination Notes," and the matching insert in the pack supplies the fact. Others name a reference page in the same pack, where the longer facts live.
+One [destination pack](destinations/japan/README.md) ships with this repository. The sessions carry no facts about any particular place. Where a session needs one, it sends the child to the pack. Some sessions say "open this session's Destination Notes," and the matching insert in the pack supplies the fact. Others name a reference page in the same pack, where the longer facts live.
 
-**Which kind of "reuse" you actually need:** another US family doing Japan needs only their own two setup pages: the [Trip-Basics card](framework/templates/trip_basics.md) (airport, party size, trip length, roster) and the [Current Family Travel Assumptions page](framework/templates/current_family_travel_assumptions.md) (season window, budget band, AI choice, rough trip shape, constraints), both filled in at Session 00 and both read by later sessions -- near-zero cost, and the real reuse goal. Rebuilding for a *different destination* is the only thing the heavier machinery is for. They are not the same feature.
+**Which kind of "reuse" you actually need:** another US family doing Japan needs only their own two setup pages: the [Trip-Basics card](framework/templates/trip_basics.md) (airport, party size, trip length, roster) and the [Current Family Travel Assumptions page](framework/templates/current_family_travel_assumptions.md) (season window, budget band, AI choice, rough trip shape, constraints), both filled in at Session 00 and both read by later sessions: near-zero cost, and the reuse most families need. Rebuilding for a *different destination* is the only thing the heavier machinery is for.
 
 ## What success looks like
 
-**For the child this is designed for, finishing the short First Taste path *is* the expected, complete success** -- the binder and the skills are real either way. Continuing to the Core Finish Line (a full, usable plan) or the full program is a genuine bonus, not "the real version." Stopping at any checkpoint is also a real success.
+**For the child this is designed for, finishing the short First Taste path *is* the expected, complete success.** The binder and the skills are real either way. Continuing to the Core Finish Line (a full, usable plan) or the full program is a bonus, not "the real version." Stopping at any checkpoint is also a success.
 
 Both ends are served: a stretched family can lighten the load (Low-Bandwidth Parent Mode in [time and effort](framework/parent_guide/time_and_effort.md)); an eager, capable child can go faster and deeper (High-Engagement Mode in the [differentiation guide](framework/parent_guide/differentiation.md)).
 
 ## How to use it
 
-This is a set of worksheets a child fills in. The normal way to use it is to **print the pages or copy them into Google Docs and work in a binder.** No software, Node, Python, or command line is needed. Git and GitHub are an optional storage choice for technical adults -- you never need to learn Git to use this.
+This is a set of worksheets a child fills in. The normal way to use it is to **print the pages or copy them into Google Docs and work in a binder.** No software, Node, Python, or command line is needed. Git and GitHub are an optional storage choice for technical adults.
 
 Quick-start:
 
@@ -35,8 +35,8 @@ Quick-start:
 3. Do the parent setup (Session 00).
 4. Print the first sessions.
 5. Start Session 01.
-6. Review at Checkpoint 1 -- then decide whether to keep going (the try-then-commit on-ramp: you do not have to commit to the whole project to start).
-7. Finish the First Taste path at Session 53 -- a real, usable mini-plan and a complete stopping point. (The [roadmap](framework/PROJECT_ROADMAP.md) maps the fuller path toward the Core Finish Line.)
+6. Review at Checkpoint 1, then decide whether to keep going (the try-then-commit on-ramp: you do not have to commit to the whole project to start).
+7. Finish the First Taste path at Session 53: a usable mini-plan and a complete stopping point. (The [roadmap](framework/PROJECT_ROADMAP.md) maps the fuller path toward the Core Finish Line.)
 
 After the trip, an optional short module, [Session 54](framework/sessions/phase_09_after_you_get_back/54_after_you_get_back.md), lets your child compare the plan with what happened.
 
@@ -72,9 +72,9 @@ Three layers (this is how the pages fit together):
 
 ## Safety and responsibility
 
-- **Privacy:** your child's real trip work is never committed to this public repository, and no sensitive personal data goes on any page. See [privacy and safety](framework/docs/privacy_and_safety.md).
+- **Privacy:** your child's trip work is never committed to this public repository, and no sensitive personal data goes on any page. See [privacy and safety](framework/docs/privacy_and_safety.md).
 - **Adults own** money, booking, flights, passports, entry rules, insurance, and safety. The child researches and recommends; adults verify and decide.
-- **Equity note:** this project requires **no new purchases** -- a library and free reputable websites are enough, and AI is optional and off by default. It does assume internet or library access, a literate adult with some sustained time, and printer or library printing.
+- **Equity note:** a library and free reputable websites are enough to run this project, and AI is optional and off by default. It does assume internet or library access, a literate adult with some sustained time, and printer or library printing.
 
 ## Status
 
@@ -91,6 +91,6 @@ Early. The [roadmap](framework/PROJECT_ROADMAP.md) describes the whole program, 
 
 ## License
 
-The contents of this repository are licensed under **Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)** -- see [LICENSE](LICENSE).
+The contents of this repository are licensed under **Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)**. See [LICENSE](LICENSE).
 
 **Educators and nonprofits:** classroom, school, library, homeschool-co-op, and nonprofit use is explicitly welcome. Most such use is already permitted by the license, and the author will grant a free license for good-faith educational use that falls outside it, on request via the contact links on the maintainer's public GitHub profile ([@franklesniak](https://github.com/franklesniak)). See [LICENSING.md](LICENSING.md) for details.

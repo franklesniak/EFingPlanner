@@ -14,15 +14,15 @@ You are here: Phase 2 (Destination Big Picture), First Taste step 8 of 13. **Thi
 
 ## Goal
 
-Recommend the best time for your family to visit your destination, and write it down as your first real decision. If your dates are already booked, explain what your season means for the trip, and confirm that it fits.
+Recommend the best time for your family to visit your destination, and write it down as your first decision-log entry. If your dates are already booked, explain what your season means for the trip, and confirm that it fits.
 
 ## Start Here
 
-Open a Decision Record page and write "My season recommendation" in its Decision box. You are starting your first recommendation. If your dates are already booked, write "Confirming our season" there.
+Open a Decision Record page and write "My season recommendation" in its Decision box. You're starting your first recommendation. If your dates are already booked, write "Confirming our season" there.
 
 ## Steps
 
-You have compared the seasons. Now you make a recommendation the grown-ups will use. A good recommendation gives a clear pick *and* the reasons behind it.
+You've compared the seasons. Now you make a recommendation the grown-ups will use. A good recommendation gives a clear pick *and* the reasons behind it.
 
 On a [Decision Record page](../../templates/decision_record.md), write:
 
@@ -44,17 +44,17 @@ Then bring it to a grown-up for a family talk. They will weigh school and work s
 
 **This is real progress.** Once your season is set, your family knows *when* you might go. The trip is becoming real, and you helped decide it. If your dates were already booked, your family now knows what your season means for the trip, and which challenge to plan around.
 
-*A calm choice point:* this is a natural moment to decide to keep going, take a break, or stop. All three are okay. There is no wrong choice here.
+*A calm choice point:* this is a natural moment to decide to keep going, take a break, or stop. All three are okay. There's no wrong choice here.
 
-*One thing to know (mostly for the grown-ups):* a few must-do experiences and popular hotels can fill up months ahead. You do not have to lock in dates now. Just know that waiting a long time can make some options harder to get. If your dates are already booked, that's the grown-ups' cue to book those early.
+*One thing to know (mostly for the grown-ups):* a few must-do experiences and popular hotels can fill up months ahead. You don't have to lock in dates now. Just know that waiting a long time can make some options harder to get. If your dates are already booked, that's the grown-ups' cue to book those early.
 
 ## Workspace
 
-Use your Decision Record page. This becomes the first entry in your **decision log** -- a place you will record each big decision and its reasons all through the project.
+Use your Decision Record page. This becomes the first entry in your **decision log**: the place where you'll record each big decision and its reasons all through the project.
 
 Keeping your work in the trip starter kit? Its [season recommendation page](../../trip_starter/recommendations/season_recommendation.md) has room for every part, in both forms. Fill it in, then copy your season and the family's decision onto your Decision Record. On the Core path, keep your Trade-Off Report with it.
 
-You can say your answers to an adult who writes them, or draw them, if that is easier.
+You can say your answers to an adult who writes them, or draw them, if that's easier.
 
 ## Artifact Created
 
@@ -66,7 +66,7 @@ On the Core path, your filled-in Trade-Off Report is part of it too.
 
 ## Stop Point
 
-You are done when your Decision Record has a season pick, a backup, a season to be careful about, your reasons and sources, and your questions for the grown-ups. You have also shared it with a grown-up. You do not need exact dates. A season and maybe some months is a complete recommendation.
+You are done when your Decision Record has a season pick, a backup, a season to be careful about, your reasons and sources, and your questions for the grown-ups. You've also shared it with a grown-up. You don't need exact dates. A season and maybe some months is a complete recommendation.
 
 With your dates booked, you are done when your Decision Record says what your season means for the trip and whether it fits, with your sources and your questions, and you've shared it with a grown-up.
 
@@ -86,8 +86,8 @@ Stuck? Use the [When I'm Stuck card](../../student_guide/when_im_stuck.md) in yo
 
 ## Optional Extension
 
-If you have extra energy, write one line about *why* you did not pick your backup season. Explaining a choice you did *not* make is a planner skill. With your dates booked, write one line about a season you might pick for a future trip, and why. If not, you are done.
+If you have extra energy, write one line about *why* you didn't pick your backup season. Explaining a choice you did *not* make is a planner skill. With your dates booked, write one line about a season you might pick for a future trip, and why. If not, you are done.
 
 ## Parent Notes
 
-This is the pilot's big milestone -- reaching a real season recommendation, largely on your child's own. Genuinely take their recommendation into a real family conversation; seeing their work shape the trip this early is what sustains the effort that follows. Deliver any change warmly ("we're going to shift this because of school -- your reasons still hold"). This is also the try-then-commit decision point: keep going, pause, or park it -- all are real successes. If your child is still lukewarm here, see the [coaching guide](../../parent_guide/coaching_and_support.md) rather than pushing on. Record the final family decision on the same page so your decision log and the checkpoints stay in sync. Fill in a [parent review form](../../templates/parent_review_form.md) for Checkpoint 1 as you decide. It has the full set of coaching questions and the good-enough standards. On the Core path, your child files it behind tab 10 in Session 50; [review checkpoints](../../parent_guide/review_checkpoints.md) explains how to run each one. With the dates booked, the recommendation is the season confirmation: your child explains what the booked season means for the trip, and the family talk confirms that fit, since the season is already set.
+This is the first big milestone: your child reaches a season recommendation largely on their own. Take their recommendation into a real family conversation; seeing their work shape the trip this early is what sustains the effort that follows. Deliver any change warmly ("we're going to shift this because of school -- your reasons still hold"). This is also the try-then-commit decision point: keep going, pause, or park it. All three count as successes. If your child is still lukewarm here, see the [coaching guide](../../parent_guide/coaching_and_support.md) rather than pushing on. Record the final family decision on the same page so your decision log and the checkpoints stay in sync. Fill in a [parent review form](../../templates/parent_review_form.md) for Checkpoint 1 as you decide. It has the full set of coaching questions and the good-enough standards. On the Core path, your child files it behind tab 10 in Session 50; [review checkpoints](../../parent_guide/review_checkpoints.md) explains how to run each one. With the dates booked, the recommendation is the season confirmation: your child explains what the booked season means for the trip, and the family talk confirms that fit, since the season is already set.

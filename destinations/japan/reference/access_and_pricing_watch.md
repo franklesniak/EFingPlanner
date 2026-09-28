@@ -4,7 +4,7 @@
 
 **Last reviewed:** September 2026
 
-The items on this list are the facts most likely to have changed since each page in this pack was checked. So check each one again close to travel, even if you checked it earlier. Work down the list, and write the date beside each check.
+The items on this list are the facts most likely to have changed since the "Last reviewed" date on each page in this pack. So check each one again close to travel, even if you checked it earlier. Work down the list, and write the date beside each check.
 
 Grown-ups own anything to do with entry, money and booking. You can help by flagging an item that looks out of date.
 

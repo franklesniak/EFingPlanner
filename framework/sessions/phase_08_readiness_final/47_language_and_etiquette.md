@@ -47,7 +47,7 @@ Your Language and Etiquette Quick Sheet: one page of words and manners to carry 
 
 ## Stop Point
 
-You are done when your sheet has the words you'd actually say (hello, thank you, excuse me and please), plus two or three manners you want to remember, and it fits on one page you can carry. Six good lines beat twenty you'll never use, and a blank "how it sounds" box is fine.
+You are done when your sheet has the words you'll use most (hello, thank you, excuse me and please), plus two or three manners you want to remember, and it fits on one page you can carry. Six good lines beat twenty you'll never use, and a blank "how it sounds" box is fine.
 
 If your family decided to skip this session, you're done too. There's no sheet to check, so you can skip the Finish card this time and go on to Session 48.
 
@@ -77,4 +77,4 @@ Every phrase and etiquette point comes from the destination pack, so the session
 
 Keep the tone matter-of-fact: how things are commonly done there, and why. If your child describes a custom as weird, ask what the reason for it might be.
 
-**The lighter page.** From Phase 7 on, Steps and Workspace are short and your child sets their own Start Here. The readiness signal is two sessions in a row done without needing the When I'm Stuck card or leaning on the written Steps; the Finish and Quality Check closes every session, so using it never counts against them. If your child isn't there yet, read the Steps with them. Start Here, the Stop Point, the named artifact and the Source Check stay on every page.
+**The lighter page.** This page's Steps and Workspace are short, and your child sets their own Start Here. The readiness signal is two sessions in a row done without needing the When I'm Stuck card or leaning on the written Steps; the Finish and Quality Check closes every session, so using it never counts against them. If your child isn't there yet, read the Steps with them. Start Here, the Stop Point, the named artifact and the Source Check stay on every page.

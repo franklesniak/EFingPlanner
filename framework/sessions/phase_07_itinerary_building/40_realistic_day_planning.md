@@ -10,7 +10,7 @@ You are here: Phase 7 (Itinerary Building). Not a First Taste step. Previous: [3
 - Planner skill: planning realistic time
 - Estimated time: 20-30 minutes
 - Parent involvement: 5-minute check-in
-- Materials: your destination pack's airports and arrival basics page (if you fly, for the first day's trip into the city), or a grown-up who can help you check the airport's own website if your pack doesn't have that page yet, your route and nights from Checkpoint 4, your route map notes from Session 28, your must-do list on your My Calls page, your strong maybes from Checkpoint 3 (for the ones marked "if nearby"), your [Trip-Basics card](../../templates/trip_basics.md) (for how your family gets there), your Session 29 formula (for its ½ marks), or a grown-up who can tell you how long the trips there and home take, your family's [current travel assumptions](../../templates/current_family_travel_assumptions.md) page (for the arrival and departure places), a device with a map app or map website (kid-safe filter on), your [Source Log](../../templates/source_log.md), a blank page
+- Materials: your destination pack's airports and arrival basics page (if you fly, for the first day's trip into the city), your route and nights from Checkpoint 4, your route map notes from Session 28, your must-do list on your My Calls page, your strong maybes from Checkpoint 3 (for the ones marked "if nearby"), your [Trip-Basics card](../../templates/trip_basics.md) (for how your family gets there), your Session 29 formula (for its ½ marks), or a grown-up who can tell you how long the trips there and home take, the grown-ups' [current family travel assumptions](../../templates/current_family_travel_assumptions.md) page (for the arrival and departure places), a device with a map app or map website (kid-safe filter on), your [Source Log](../../templates/source_log.md), a blank page
 
 (For an at-a-glance version, see the matching entry in [the parent session notes](../../parent_guide/session_support_notes.md); the Parent Notes below have the full detail.)
 
@@ -37,7 +37,7 @@ Planners who make good days use a few simple rules. Here are the ones that work:
 - Have a **backup** in case something is closed or rained out.
 - **Do not pack too much into one day.**
 
-**The first day has its own rule.** Its anchor is getting from where you arrive to where you're staying, and settling in. How much of the day that takes depends on the trip there. Your Session 29 formula shows which kind yours is: a ½ written over the 1 before "arrival day" means getting there takes only a few hours. If you can't tell, ask a grown-up. After a long journey, arriving at an airport, a station or the end of a long drive takes a big chunk of the day, and you'll be tired, too. So mark day one Easy, and often day two as well. If getting there takes only a few hours, arriving takes about half the day. Then plan one light activity for the other half, and mark the day Easy or Medium. Flying in? Your destination pack's airports and arrival basics page helps you find how long the trip into the city takes. If your pack doesn't have that page yet, a grown-up can help you check the airport's own website. Arriving by train or car? Time the ride from where you arrive to where you're staying with the map's Directions, and log the map, the way Session 28 does.
+**The first day has its own rule.** Its anchor is getting from where you arrive to where you're staying, and settling in. How much of the day that takes depends on the trip there. Your Session 29 formula shows which kind yours is: a ½ written over the 1 before "arrival day" means getting there takes only a few hours. If you can't tell, ask a grown-up. After a long journey, arriving at an airport, a station or the end of a long drive takes a big chunk of the day, and you'll be tired, too. So mark day one Easy, and often day two as well. If getting there takes only a few hours, arriving takes about half the day. Then plan one light activity for the other half, and mark the day Easy or Medium. Flying in? Your destination pack's airports and arrival basics page helps you find how long the trip into the city takes. Arriving by train or car? Time the ride from where you arrive to where you're staying with the map's Directions, and log the map, the way Session 28 does.
 
 **The last day has a rule too.** Its anchor is getting from your last overnight place to where you leave from, once a grown-up has set that place. After a long journey home, that takes most of the day, so mark the last day Easy. After a short one, it takes about half, so mark it Easy or Medium. A ½ over the 1 before "departure day" on your Session 29 formula means the trip home takes only a few hours. Write it next to your first-day rule.
 
@@ -46,11 +46,11 @@ Planners who make good days use a few simple rules. Here are the ones that work:
 1. Read the rules above, and pick the ones you want to keep.
 2. Write them as your own short list, in your own words.
 3. Write the first-day, moving-day and last-day rules as their own lines.
-4. Put a star by the rule you'd break first if a day got too full.
+4. Put a star by the rule you would break first if a day got too full.
 
 ## Workspace
 
-A blank page for your numbered list of day rules, with one line each for the first-day and last-day rules.
+A blank page for your numbered list of day rules, with one line each for the first-day, moving-day and last-day rules.
 
 You can say your answers to an adult who writes them, or draw them, if that's easier.
 
@@ -60,7 +60,7 @@ Your realistic day rules: a short list you wrote yourself, ready to use when you
 
 ## Stop Point
 
-You are done when you've written your own short list of day rules, including your rules for the first day, a moving day and the last day, and you've put a star by the rule you'd break first if a day got too full. Three or four rules are plenty, and "not sure yet" is fine for the one you'd break.
+You are done when you've written your own short list of day rules, including your rules for the first day, a moving day and the last day, and you've put a star by the rule you would break first if a day got too full. Three or four rules are plenty, and "not sure yet" is fine for the one you would break.
 
 ## Source Check
 
@@ -76,14 +76,14 @@ Stuck? Use the [When I'm Stuck card](../../student_guide/when_im_stuck.md) in yo
 
 ## Optional Extension
 
-If you have extra energy, write a rule of your own that isn't on the list, one that fits your family. Add it to your numbered list, and check whether it changes the rule you'd break first. If not, you are done.
+If you have extra energy, write a rule of your own that isn't on the list, one that fits your family. Add it to your numbered list, and check whether it changes the rule you would break first. If not, you are done.
 
 ## Parent Notes
 
-This is the Phase 7 hand-off. From here your child sets up the whole session: they read what it makes, choose a first move and run it. Your part is a light check-in. If they freeze, the suggestion on the page is there to use.
+This is the Phase 7 hand-off. Here your child sets up the whole session: they read what it makes, choose a first move and run it. Your part is a light check-in. If they freeze, the suggestion on the page is there to use.
 
 Afterward, ask one quick spoken question: "How did you decide how to set this session up?" It checks how the skill is growing, and a short answer is plenty. If they can't yet explain it, set up the next session or two together before stepping back.
 
-After a long journey, the first day's anchor is the arrival itself; after a short one, arriving takes about half the day. The airport-to-city details are in the destination pack's airports and arrival basics page. Where the pack does not have that page yet, or you arrive by train or car, use the official airport or station site, or the map's Directions, and note the date. If your child can't tell from the Session 29 formula how long the trips there and home take, tell them. Booking that transfer is yours.
+After a long journey, the first day's anchor is the arrival itself; after a short one, arriving takes about half the day. The airport-to-city details are in the destination pack's airports and arrival basics page. Where the pack lacks that page, or you arrive by train or car, use the official airport or station site, or the map's Directions, and note the date. If your child can't tell from the Session 29 formula how long the trips there and home take, tell them. Booking that transfer is yours.
 
-**The lighter page.** From Phase 7 on, Steps and Workspace are short and your child sets their own Start Here. The readiness signal is two sessions in a row done without needing the When I'm Stuck card or leaning on the written Steps; the Finish and Quality Check closes every session, so using it never counts against them. If your child isn't there yet, read the Steps with them. Start Here, the Stop Point, the named artifact and the Source Check stay on every page.
+**The lighter page.** This page's Steps and Workspace are short, and your child sets their own Start Here. The readiness signal is two sessions in a row done without needing the When I'm Stuck card or leaning on the written Steps; the Finish and Quality Check closes every session, so using it never counts against them. If your child isn't there yet, read the Steps with them. Start Here, the Stop Point, the named artifact and the Source Check stay on every page.

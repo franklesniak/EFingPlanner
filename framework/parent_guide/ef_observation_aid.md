@@ -4,7 +4,7 @@
 
 This is a private note you keep for yourself. It takes about a minute, three times in the whole project. It is optional, and skipping it costs your child nothing.
 
-## Four guardrails, before anything else
+## Four rules, before anything else
 
 <!-- density-exempt: X, not Y -- the four guardrails the spec's Optional EF Observation Aid and the batch 1 brief's entry for this page require at the top: a privacy rule, and noticing, not grading, as a rough home signal for you and not an assessment of your child -->
 
@@ -18,7 +18,7 @@ This is a private note you keep for yourself. It takes about a minute, three tim
 <!-- density-exempt: X, not Y -- the batch 1 brief's entry for this page requires it to say the items are everyday behaviors and not a one-to-one measurement of the three skills -->
 The three items below are everyday behaviors you can see from across the room. They are not a one-to-one measurement of the three core executive-function skills, and this page does not claim they are.
 
-The canonical three are **working memory**, **cognitive flexibility** and **inhibitory control**, and they are defined in [design principles](../docs/design_principles.md). A three-item home note cannot see cognitive flexibility at all, so nothing here stands in for it. What you are watching is the visible surface: getting started, sustaining effort, and knowing when to stop.
+The canonical three are **working memory**, **cognitive flexibility** and **inhibitory control**, and the [framework glossary](../docs/glossary.md) defines them. A three-item home note cannot see cognitive flexibility at all, so nothing here stands in for it. What you are watching is the visible surface: getting started, sustaining effort, and knowing when to stop.
 
 ## The three items
 
@@ -41,7 +41,7 @@ Score each one from 1 to 5, using the anchors.
 Three times, and no more.
 
 1. **At the start**, after your child has worked their first two or three sessions. Not before: every anchor under **The three items** asks how often something happened across sessions, and before the first one there is nothing to count. Two or three sittings is enough to score and early enough to still be a start.
-2. **At the midpoint**. On the First Taste path that is Checkpoint 1, Session 14. On the full path it is Checkpoint 3 or 4.
+2. **At the midpoint**. On the First Taste path that is Checkpoint 1, Session 14. On the Core and full path it is Checkpoint 3 or 4.
 3. **At the end**, after the final reflection.
 
 Three readings spread across the whole project show a direction. On the full program that is months apart; on First Taste it is weeks. Scoring every session would show your mood.
@@ -63,5 +63,5 @@ The whole point of this curriculum is executive-function practice, and practice 
 ## Where to go next
 
 - [What is executive function](what_is_executive_function.md) -- the everyday skills behind this project, and what this curriculum can and cannot claim about them.
-- [Time and effort](time_and_effort.md) -- what to expect before you commit, and the pilot deferral this batch still carries.
+- [Time and effort](time_and_effort.md) -- what to expect before you commit, and the pilot deferral the curriculum still carries.
 - [Design principles](../docs/design_principles.md) -- which session mechanic supports which skill.

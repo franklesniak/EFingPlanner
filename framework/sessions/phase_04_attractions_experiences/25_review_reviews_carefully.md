@@ -31,7 +31,7 @@ Reviews, travel blogs and videos can help you choose what to do. They can also s
 <!-- density-exempt: X, not Y -- two of the core moves the spec's section for this session and the batch 2 brief's entry for it require in sitting one: look for common themes across many reviews instead of trusting the star score alone, and famous does not always mean best for our family -->
 
 1. **Ask the big question.** Whenever you read a review or blog, or watch a video, ask: "Who made this, and what are they selling?" They might be selling a hotel, a tour, a product, or just more views.
-2. **Read sideways.** Open a new tab and look up the person or the website. Who are they? What do other sources say about them? This is the lateral reading move from Session 05, used on reviews.
+2. **Read sideways.** Open a new tab and look up the person or the website. Who are they? What do other sources say about them? This is the lateral reading move from Session 05, used on reviews. [Judging How Much to Trust a Source](../../docs/source_trustworthiness.md) has the whole move.
 3. **Look for what many reviews say.** One review is one person's day. Read several, and look for the themes that keep coming up. The star score alone tells you very little.
 4. **Remember who the trip is for.** Famous and best for our family can be two different things.
 

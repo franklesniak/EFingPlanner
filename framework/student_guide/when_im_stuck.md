@@ -15,7 +15,7 @@ Try these, in order:
 5. **Take a movement break.** Stand up, stretch, get water, come back.
 6. **Ask a grown-up** to read the session with you.
 
-Remember: feeling frustrated in the middle is normal. Noticing it and taking a break -- instead of quitting -- is a real planner skill.
+Remember: feeling frustrated in the middle is normal, and taking a break is a planner skill too. Your [Planner Mindset](planner_mindset.md) card says why.
 
 Want to see what a finished page can look like? The [worked examples](../examples/README.md) show a pretend planner's pages.
 

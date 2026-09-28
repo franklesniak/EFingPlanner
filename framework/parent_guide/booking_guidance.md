@@ -20,7 +20,7 @@ You own flights, bookings, payments, accounts, personal data, final hotel decisi
 
 The watchlist is the one to read first, once it exists. It's built specifically so you can see what's on a clock.
 
-**If booking arrives before your child has got that far, work from what they have.** On First Taste, and early on the Core path, most of that list has not been made yet: the hotel and neighborhood comparisons come in Sessions 34 and 35, the day cards in 41, the watchlist in 42. What exists early is the **season recommendation** (with your dates already booked, the season confirmation), the **city shortlist** once Checkpoint 2 has passed (on First Taste, the city comparison once Session 21 is done), and the **rough trip shape** you recorded at setup. If that shape still names only the arrival place, settle the departure place and round-trip or open-jaw yourself first, as the [flights page](flights_from_origin_guidance.md) says. Then it is enough to book flights and a first hotel against, and it is what the early-booking conversation in the coaching guide assumes you are holding.
+**If booking arrives before your child has gotten that far, work from what they have.** On First Taste, and early on the Core path, most of that list has not been made yet: the hotel and neighborhood comparisons come in Sessions 34 and 35, the day cards in 41, the watchlist in 42. What exists early is the **season recommendation** (with your dates already booked, the season confirmation), the **city shortlist** once Checkpoint 2 has passed (on First Taste, the city comparison once Session 21 is done), and the **rough trip shape** you recorded at setup. If that shape still names only the arrival place, settle the departure place and round-trip or open-jaw yourself first, as the [flights page](flights_from_origin_guidance.md) says. Then it is enough to book your travel both ways and a first hotel against, and it is what the early-booking conversation in the coaching guide assumes you are holding.
 
 ## Three timelines collide, and that's expected
 
@@ -30,7 +30,7 @@ This is handled two ways: you set the **rough trip shape** early, so their work 
 
 ## Order, and the long leads
 
-- **Passports are the longest lead.** Start them first.
+- **Passports are the longest lead, if your trip leaves the country.** Start them first.
 - **Peak-season lodging sells out months ahead.**
 - **Date-gated tickets open on their own schedule.** Once it exists, your child's watchlist flags which.
 - **Flight prices climb** as dates approach.
@@ -67,7 +67,7 @@ They carry each change back with their [When the Plan Changes card](../student_g
 
 ## Privacy
 
-Don't enter booking information, confirmation numbers or payment details anywhere in the repository or the kit. A shared-documents folder is not a private vault either. The same data stays off it that you'd keep off a public page.
+Do not enter booking information, confirmation numbers or payment details anywhere in the repository or the kit. A shared-documents folder is not a private vault either. The same data stays off it that you'd keep off a public page.
 
 ## Where to go next
 

@@ -18,18 +18,18 @@ Write down what would make this trip great for your family, and ask each travele
 
 ## Start Here
 
-Open your Family Trip Goals page. In its first box, finish this sentence: *One thing that makes any trip fun for me is...* You have started.
+Open your Family Trip Goals page. In its first box, finish this sentence: *One thing that makes any trip fun for me is...* You've started.
 
 ## Steps
 
-A good planner finds out what the *whole* group wants, not just their own ideas. You are going to gather that now.
+A good planner finds out what the *whole* group wants, not just their own ideas. You're going to gather that now.
 
 1. Answer these on your page (short answers are fine):
    - What makes a trip fun?
    - What makes a trip too tiring?
    - What would make this trip feel special?
    - What does a successful family trip feel like?
-2. **Run a quick traveler poll.** Ask each traveler on your trip one question: *"What is one thing you'd love on this trip?"* Write down each answer with who said it -- by relationship or role (for example, "a parent," "a grandparent," or "a cousin") -- that keeps private details off the page. These answers are real evidence. You will use them when you choose cities and things to do.
+2. **Run a quick traveler poll.** Ask each traveler on your trip one question: *"What is one thing you'd love on this trip?"* Write down each answer with who said it, by relationship or role (for example, "a parent," "a grandparent," or "a cousin"). That keeps private details off the page. These answers are real evidence. You'll use them when you choose cities and things to do.
    - If someone is far away or hard to reach, ask them by text or call, or have a grown-up ask and bring back the answer. You can also poll whoever is around now and mark the rest "asked through a grown-up." Do not wait on anyone's schedule.
 3. Look at all the answers together:
    - Which things did more than one person mention?
@@ -39,15 +39,15 @@ A good planner finds out what the *whole* group wants, not just their own ideas.
 
 1. Check that each traveler's one "must-have" shows up somewhere in the plan. Everyone gets at least one thing they named.
 2. Where two wants clash, do one of two things: find one place that gives both something, **or** plan different days so each person gets their day.
-3. Write one line: *"How I balanced what people wanted."* Bring it to the family meeting later.
+3. Write one line: *"How I balanced what people wanted."* Keep it. If your family goes on to the family decision meeting, you'll bring it there.
 
-Balancing what people want is the same kind of trade-off move you will use later on routes and budgets, something to notice as you go.
+Balancing what people want is the same kind of trade-off move you'll use later on routes and budgets, something to notice as you go.
 
 ## Workspace
 
 Use your binder pages for your own answers, the poll answers (one line per person), and your one "how I balanced it" line. Your copy of the [Family Trip Goals and Input Summary](../../trip_starter/family/family_trip_goals.md) page holds all three.
 
-You can say your answers to an adult who writes them, or draw them, if that is easier.
+You can say your answers to an adult who writes them, or draw them, if that's easier.
 
 ## Artifact Created
 
@@ -55,7 +55,7 @@ Your family trip goals and a short family input summary (the poll answers plus y
 
 ## Stop Point
 
-You are done when you have your own answers, at least one poll answer written down, and your one balancing line. If some travelers are not reachable yet, that is fine. Mark them and move on.
+You are done when you have your own answers, at least one poll answer written down, and your one balancing line. If some travelers aren't reachable yet, that's fine. Mark them and move on.
 
 ## Source Check
 
@@ -75,4 +75,4 @@ If you have extra energy, poll one more traveler, or add a "things I can't wait 
 
 ## Parent Notes
 
-The poll is a relatedness moment -- it gives every traveler a real stake and makes the plan reflect the whole party. Help make far-away travelers reachable (relay a question, bring back the answer), so your child can keep going. If a "what makes it special" answer sparks excitement, steer it onto the "things I can't wait to see" page. Keep private details off the page.
+The poll is a relatedness moment. It gives every traveler a real stake and makes the plan reflect the whole party. Help make far-away travelers reachable (relay a question, bring back the answer), so your child can keep going. If a "what makes it special" answer sparks excitement, steer it onto the "things I can't wait to see" page. Keep private details off the page.

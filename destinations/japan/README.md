@@ -7,7 +7,7 @@
 
 > **Provided as-is by one family. This is not an actively maintained project, and no one is on call to fix or update it. Facts -- prices, hours, entry and visa rules, attraction names, links -- may be out of date. Always verify anything you rely on against official sources before acting on it.**
 
-This pack holds stable, orienting facts about Japan for the planner to use as **starting points, not answers.** It does not recommend a trip, pre-pick cities, or give an itinerary -- that is the child's job. Everything here is meant to be confirmed against official sources close to travel.
+This pack holds stable, orienting facts about Japan for the planner to use as **starting points, not answers.** Recommending a trip, picking cities and writing an itinerary are the child's job. Everything here is meant to be confirmed against official sources close to travel.
 
 Each reference file and each session insert carries a `Last reviewed` date: the month the page was written or last checked against its sources. Nobody promises to keep it current, and the date does not mean a person has read the page. The two contents pages do not carry one, because they hold no facts to go stale.
 

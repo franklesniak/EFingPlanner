@@ -10,7 +10,7 @@ You are here: Phase 7 (Itinerary Building). Not a First Taste step. Previous: [4
 - Planner skill: organizing information
 - Estimated time: 20-30 minutes
 - Parent involvement: none / independent work
-- Materials: this session's Destination Notes, a device with the kid-safe filter on, your day cards from Session 41, your Hotel Comparison Cards (for a hotel you put on the watchlist), your My Calls page (your must-do list and special pick), your attraction cards (to fill a tickets row, and if your special pick hits a block), your Session 39 budget summary and your family's [current travel assumptions](../../templates/current_family_travel_assumptions.md) page (if your special pick hits a block, for the band check), your [When the Plan Changes card](../../student_guide/when_the_plan_changes.md) (if your special pick hits a block), your [Trip-Basics card](../../templates/trip_basics.md) (for whether your dates are booked), a blank [Reservation Watchlist](../../templates/reservation_watchlist.md), your [Source Log](../../templates/source_log.md)
+- Materials: this session's Destination Notes, a device with the kid-safe filter on, your day cards from Session 41, your Hotel Comparison Cards (for a hotel you put on the watchlist), your My Calls page (your must-do list and special pick), your attraction cards (to fill a tickets row, and if your special pick hits a block), your Session 39 budget summary and the grown-ups' [current family travel assumptions](../../templates/current_family_travel_assumptions.md) page (if your special pick hits a block, for the band check), your [When the Plan Changes card](../../student_guide/when_the_plan_changes.md) (if your special pick hits a block), your [Trip-Basics card](../../templates/trip_basics.md) (for whether your dates are booked), a blank [Reservation Watchlist](../../templates/reservation_watchlist.md), your [Source Log](../../templates/source_log.md)
 
 (For an at-a-glance version, see the matching entry in [the parent session notes](../../parent_guide/session_support_notes.md); the Parent Notes below have the full detail.)
 
@@ -20,7 +20,7 @@ List the things that might need booking ahead, so the grown-ups know what to wat
 
 ## Start Here
 
-Choose your own first move, then make it. A suggestion if you'd like one: write the one thing you most don't want to miss at the top of a blank Reservation Watchlist page.
+Choose your own first move, then make it. A suggestion if you would like one: write the one thing you most don't want to miss at the top of a blank Reservation Watchlist page.
 
 ## Steps
 
@@ -75,4 +75,4 @@ The lesson here is date-gating. The longer your dates stay open, the more date-g
 
 Every example of a date-gated item is in the destination pack. Booking windows, reservation systems and entry rules all move, so verify each one on its official source close to travel.
 
-**The lighter page.** From Phase 7 on, Steps and Workspace are short and your child sets their own Start Here. The readiness signal is two sessions in a row done without needing the When I'm Stuck card or leaning on the written Steps; the Finish and Quality Check closes every session, so using it never counts against them. If your child isn't there yet, read the Steps with them. Start Here, the Stop Point, the named artifact and the Source Check stay on every page.
+**The lighter page.** This page's Steps and Workspace are short, and your child sets their own Start Here. The readiness signal is two sessions in a row done without needing the When I'm Stuck card or leaning on the written Steps; the Finish and Quality Check closes every session, so using it never counts against them. If your child isn't there yet, read the Steps with them. Start Here, the Stop Point, the named artifact and the Source Check stay on every page.

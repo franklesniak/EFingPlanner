@@ -32,4 +32,4 @@ Pick one job, or more than one. Each one is a job the family needs done.
 
 The navigator-helper and the phrase-sayer are helper jobs. You always do them beside a grown-up, and the grown-up stays in charge of where the family goes.
 
-This card holds no private details. Names, addresses and phone numbers go only on your "if I get separated" card.
+This card holds no private details. Where you're staying, its address and its phone number, and a parent's phone number go on your "if I get separated" card.

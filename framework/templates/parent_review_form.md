@@ -6,7 +6,7 @@
 Use one copy per checkpoint. Print it, or keep it in the binder under the Parent Review tab.
 
 <!-- density-exempt: X, not Y -- "you don't have to be the expert" and "model the process" are the spec's note for the reviewing parent, which the batch 2 brief makes mandatory -->
-You don't have to be the expert. Your job is to model the process, not to know the answers. If you're unsure whether a source is trustworthy, look it up together using the same quick trust test your child is learning — that's a better lesson than a correct answer.
+You don't have to be the expert. Your job is to model the process, not to know the answers. If you're unsure whether a source is trustworthy, look it up together using the same quick trust test your child is learning. That's a better lesson than a correct answer.
 
 ## Which checkpoint
 
@@ -66,13 +66,15 @@ Write this decision in the decision log too. The checkpoints and the log are mea
 
 ## Progress is real
 
-What the family now knows after this checkpoint:
+| | |
+| --- | --- |
+| What the family now knows after this checkpoint | |
 
 ## Optional: one line back
 
 Ask if they want to. Skipping it is fine, and a drawing is just as good an answer as words.
 
-*This stretch was easy / medium / hard (circle one), and one thing that helped or got in the way:* ___________ — *and how's this going for you: want to go lighter or deeper?*
+*This stretch was easy / medium / hard (circle one), and one thing that helped or got in the way:* ___________. *And how's this going for you: want to go lighter or deeper?*
 
 ## What to avoid
 
@@ -84,7 +86,7 @@ Ask if they want to. Skipping it is fine, and a drawing is just as good an answe
 - Letting them handle bookings, payments, accounts, or private data
 
 <!-- density-exempt: X, not Y -- praise the move, not the mind, with its "not you're so smart" example, is the praise calibration pair in the spec's Parent Review Rubric -->
-Praise the move, not the mind. "You checked a second source." "You stopped at the Stop Point." Not "you're so smart" — that one quietly teaches that being right is the point.
+Praise the move, not the mind. "You checked a second source." "You stopped at the Stop Point." Not "you're so smart". That one quietly teaches that being right is the point.
 
 ## Reviewed by
 

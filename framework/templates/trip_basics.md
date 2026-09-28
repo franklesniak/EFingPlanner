@@ -2,7 +2,7 @@
 
 # Trip-Basics Card
 
-This card holds the few facts about *your* family and trip. The sessions ask for these facts by name. Fill the card in once, with help from a grown-up. Then keep it at the front of your binder. The sessions point here for these facts. That is what makes the planner fit your family.
+This card holds the few facts about *your* family and trip. The sessions ask for these facts by name. Fill the card in once, with help from a grown-up. Then keep it at the front of your binder. The sessions point here for these facts. That's what makes the planner fit your family.
 
 Keep this card with your setup pages. It holds no sensitive personal data. Do not write passport numbers or birthdates. Do not write confirmation numbers. Do not write your home address. Do not write payment details.
 
@@ -21,13 +21,13 @@ Fill in:
 
 A grown-up writes the destination here. The name is on the front of your destination pack.
 
-If you are not flying, the travel row is where that goes: by car, by train, or another way.
+If you're not flying, the travel row is where that goes: by car, by train, or another way.
 
 If your family books the dates later, a grown-up writes the booked trip length in the maximum trip length row, with "booked" beside it, and tells you.
 
-For the time zone, a grown-up does the looking up. They find how many hours ahead of or behind home your destination is right now. Then they write it here. The gap is not the same for every US time zone. It also shifts with daylight saving. So check today's figure. Some destinations have more than one time zone. Then the grown-up writes the gap for the place you will probably arrive in, or writes a range.
+For the time zone, a grown-up does the looking up. They find how many hours ahead of or behind home your destination is right now. Then they write it here. The gap isn't the same for every US time zone. It also shifts with daylight saving. So check today's figure. Some destinations have more than one time zone. Then the grown-up writes the gap for the place you'll probably arrive in, or writes a range.
 
-Traveler roster: write each traveler by relationship, not by private details. For example, you could write: a parent, a parent, a grandparent. You could also write: an aunt or another adult relative, the child planner, and anyone else who is coming.
+Traveler roster: write each traveler by relationship, not by private details. For example, you could write: a parent, a grandparent, an aunt or another adult relative, the child planner, and anyone else who is coming.
 
 | # | Traveler (by relationship, not private details) |
 | --- | --- |
@@ -37,5 +37,7 @@ Traveler roster: write each traveler by relationship, not by private details. Fo
 | 4 | |
 | 5 | |
 | 6 | |
+
+More travelers than rows? Add a row for each one.
 
 The sessions talk in general terms. One might say "a traveler with lower stamina, like an older relative." This card names your family's real people.

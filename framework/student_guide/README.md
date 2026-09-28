@@ -2,7 +2,7 @@
 
 # Student Guide
 
-This is your planner's toolkit. These cards help you know what to do, get unstuck, and see how far you have come. You do not have to read them all at once -- open one when you need it.
+This is your planner's toolkit. These cards help you know what to do, get unstuck, and see how far you've come. You don't have to read them all at once. Open one when you need it.
 
 Start with these:
 
@@ -13,13 +13,13 @@ Start with these:
 
 Keep these nearby for the moment you need them:
 
-- [When I'm Stuck](when_im_stuck.md) -- what to do when you feel stuck, when you come back after a break, or when you are waiting for a grown-up.
+- [When I'm Stuck](when_im_stuck.md) -- what to do when you feel stuck, when you come back after a break, or when you're waiting for a grown-up.
 - [When the Plan Changes](when_the_plan_changes.md) -- what to fix on your earlier pages when a grown-up changes part of the plan, whichever way you travel.
 - [Finish and Quality Check](finish_and_quality_check.md) -- a quick self-check to wrap up each session.
-- [How to Make a Recommendation](how_to_make_a_recommendation.md) -- the four parts of a recommendation a grown-up can act on. Re-read it before each checkpoint; it is short on purpose.
-- [What Is a Constraint?](what_is_a_constraint.md) -- the word the whole project runs on, and how to use one in your work.
+- [How to Make a Recommendation](how_to_make_a_recommendation.md) -- the four parts of a recommendation a grown-up can act on. Re-read it before each checkpoint; it's short on purpose.
+- [What Is a Constraint](what_is_a_constraint.md) -- the word the whole project runs on, and how to use one in your work.
 - [Travel Glossary](travel_glossary.md) -- travel words, explained simply.
 - [How to Take Notes](how_to_take_notes.md) -- how to write a note you can use later: the fact, why it matters for your trip, where it came from, and the question to ask next.
 - [How to Use This Binder](how_to_use_this_binder.md) -- where your pages live, what to print when, and how to keep weeks or months of work safe.
 
-Remember: your job is to make a thoughtful, sourced recommendation the grown-ups can use. You are a real planner, and finishing your First Taste plan is a real success.
+Remember: your job is to make a thoughtful, sourced recommendation the grown-ups can use. You're a real planner, and finishing your First Taste plan is a complete success.

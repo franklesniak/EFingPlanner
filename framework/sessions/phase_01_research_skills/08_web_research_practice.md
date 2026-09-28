@@ -46,13 +46,13 @@ In [Session 05](05_good_sources_bad_sources.md) you learned the quick trust test
 That last one is where the thinking happens. Which page answers your exact question more directly? That's the more useful one, even if its answer is just two lines long.
 
 <!-- density-exempt: X, not Y -- the kid-safe filter caveat is the standalone safety rule in the spec's Privacy and Safety Requirements -->
-**Safety while you research.** A kid-safe filter cuts down what you might run into, but it does not remove it. So a grown-up stays nearby for this one, and for any research that could get sideways. If a page seems wrong, or makes you uncomfortable, close it and tell a grown-up. You are never in trouble for that. If a site asks for your name, an account, a payment, or any personal details, stop and ask a grown-up. The full rules are on the [privacy and safety page](../../docs/privacy_and_safety.md).
+**Safety while you research.** A kid-safe filter cuts down what you might run into, but it does not remove it. So a grown-up stays nearby for this one, and for any research that could go sideways. If a page seems wrong, or makes you uncomfortable, close it and tell a grown-up. You are never in trouble for that. If a site asks for your name, an account, a payment, or any personal details, stop and ask a grown-up. The full rules are on the [privacy and safety page](../../docs/privacy_and_safety.md).
 
-**When the source is not in English.** Official pages are often written in the local language first. Look for an official English version of the page before anything else. If there isn't one, a translation tool helps you *understand* the page. It does not help you trust it. Anything that matters gets checked against an official English source or a grown-up. When in doubt, ask a grown-up.
+**When the source is not in English.** Official pages are often written in the local language first. Look for an official English version of the page before anything else. If there isn't one, a translation tool helps you *understand* the page. It doesn't help you trust it. Anything that matters gets checked against an official English source or a grown-up. When in doubt, ask a grown-up.
 
 **Website citation form:** website title, organization or author, page title, web address, date I checked it. The other five forms are on the [simple citation page](../../templates/simple_citation.md).
 
-Session 05's other two moves help here as well: lateral reading, and primary versus secondary. Open [Session 05](05_good_sources_bad_sources.md) again if you want a reminder of either.
+Session 05's other two moves help here as well: lateral reading, and primary versus secondary. Open [Judging How Much to Trust a Source](../../docs/source_trustworthiness.md) if you want a reminder of either.
 
 If your two sources flatly disagree, that's a finding, not a failure. Write both down, say which one you trust more and why, and mark the fact "check again."
 
@@ -86,7 +86,7 @@ Stuck? Use the [When I'm Stuck card](../../student_guide/when_im_stuck.md) in yo
 
 ## Optional Extension
 
-If you have extra energy, run lateral reading on the source you trusted less, the way [Session 05](05_good_sources_bad_sources.md) sets it out. If not, you are done.
+If you have extra energy, run lateral reading on the source you trusted less, the way [Judging How Much to Trust a Source](../../docs/source_trustworthiness.md) sets it out. If not, you are done.
 
 ## Parent Notes
 

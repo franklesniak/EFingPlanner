@@ -24,11 +24,11 @@ That is why the trip is the hook and not the subject.
 
 Three things make this project a good practice ground.
 
-It is a real task. The child's recommendation goes to the adults and feeds a real family decision. Whether the trip is taken, moved or dropped is the adults' call and the world's, and the child's work stands either way -- Session 53 says so in as many words. Effort on something that matters is easier to sustain.
+It is a real task. The child's recommendation goes to the adults and feeds a real family decision. Whether the trip is taken, moved or dropped is the adults' call and the world's, and the child's work stands either way. Session 53 says so in as many words. Effort on something that matters is easier to sustain.
 
 It is long. The project runs for weeks or months depending on the path you pick, in short sessions, which is the shape these skills are built in. A single afternoon of planning trains nothing.
 
-It is bridged. A session names its planning move out loud the first time the child uses it, and asks where else it would work. Repeating the tag on every session turns it into wallpaper, so it appears once per move. The naming that matters most is yours, out loud, in the moment. That naming is deliberate, and the next section is about why.
+It is bridged. A session names its planning move out loud the first time the child uses it, and asks where else it would work. That callout is the carry-over tag, and [design principles](../docs/design_principles.md#the-carry-over-tag) sets out its one placement rule. The naming that matters most is yours, out loud, in the moment. That naming is deliberate, and the next section is about why.
 
 ## The honest part
 
@@ -40,12 +40,12 @@ So do that part, and do not expect a generalized payoff. This project is worth d
 
 ## This page and the glossary
 
-This page explains the concept and why it matters. The [framework glossary](../docs/glossary.md) defines the project's own terms and every piece of vocabulary the sessions use. The clinical names for these skills -- working memory, cognitive flexibility, inhibitory control and emotional regulation -- are defined in [design principles](../docs/design_principles.md), beside the mechanics that support each one.
+This page explains the concept and why it matters. The [framework glossary](../docs/glossary.md) defines the project's own terms, such as Stop Point and budget band, and the clinical names for these skills: working memory, cognitive flexibility, inhibitory control and emotional regulation. [Design principles](../docs/design_principles.md) shows the session parts that support each skill. Travel words are on your child's [travel glossary](../student_guide/travel_glossary.md), and words for the place are on your destination pack's "Words and Numbers You Will Meet" page.
 
-Read this one to understand the idea. Open that one when a word in a session is unfamiliar.
+Read this one to understand the idea. Open that one when a project word in a session is unfamiliar.
 
 ## Where to go next
 
 - [Time and effort](time_and_effort.md) -- what the project actually costs you, and the deferral flag it still carries.
 - [EF observation aid](ef_observation_aid.md) -- three readings that show a direction, and what they cannot tell you.
-- [Design principles](../docs/design_principles.md) -- the clinical names for these skills, beside the mechanics built to support each one.
+- [Design principles](../docs/design_principles.md) -- the session parts built to support each of these skills.

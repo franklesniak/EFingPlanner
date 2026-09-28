@@ -2,7 +2,7 @@
 
 # Finish and Quality Check
 
-Use this quick card to wrap up any session. It is a quick self-check, **not a grade.**
+Use this quick card to wrap up any session. It's a quick self-check, **not a grade.**
 
 ## Finish check (am I done?)
 
@@ -15,8 +15,8 @@ Use this quick card to wrap up any session. It is a quick self-check, **not a gr
 
 Ask yourself three quick questions:
 
-- **Could a grown-up understand it?** If not, add a word or two so it is clear.
+- **Could a grown-up understand it?** If not, add a word or two so it's clear.
 - **Did I give a reason?** A recommendation is stronger with a "because."
 - **Did I note my source?** If I looked something up, it should be in my Source Log.
 
-If you can say yes to these, you are done. Good enough is good enough -- you do not have to make it perfect.
+If you can say yes to these, you're done. Good enough is good enough. You don't have to make it perfect.

@@ -10,7 +10,7 @@ You are here: Phase 4 (Attractions and Experiences). Not a First Taste step. **T
 - Planner skill: making trade-offs
 - Estimated time: 20-30 minutes for the child, plus a 20-40 minute review with you
 - Parent involvement: parent review -- genuinely use the recommendation in a real family talk
-- Materials: your ranked attraction list and attraction cards, your My Calls page, your City A card from Session 16 and your Session 26 scoring tables (for the optional look back at your minutes guesses), your family's [current travel assumptions](../../templates/current_family_travel_assumptions.md) page (for the budget band), your [Source Log](../../templates/source_log.md), a [Decision Record page](../../templates/decision_record.md), a blank [Parent Review Form](../../templates/parent_review_form.md) for a grown-up to fill in
+- Materials: your ranked attraction list and attraction cards, your My Calls page, your City A card from Session 16 and your Session 26 scoring tables (for the optional look back at your minutes guesses), the grown-ups' [current family travel assumptions](../../templates/current_family_travel_assumptions.md) page (for the budget band), your [Source Log](../../templates/source_log.md), a [Decision Record page](../../templates/decision_record.md), a blank [Parent Review Form](../../templates/parent_review_form.md) for a grown-up to fill in
 
 (For an at-a-glance version, see the matching entry in [the parent session notes](../../parent_guide/session_support_notes.md); the Parent Notes below have the full detail.)
 
@@ -29,7 +29,7 @@ This is your third checkpoint, and it starts with the grown-ups. First, a grown-
 Now you show them the rest of your plan for what to do. Use the shape from [How to Make a Recommendation](../../student_guide/how_to_make_a_recommendation.md), and fill in the table in the Workspace:
 
 1. **Top must-do experiences.** Copy them from your ranked list.
-2. **Strong maybes.** These are the ones you'd love if there's time. Add your only-if-nearby ones here too, each marked "if nearby".
+2. **Strong maybes.** These are the ones you would love if there's time. Add your only-if-nearby ones here too, each marked "if nearby".
 3. **Skip or save for a future trip.** List what you set aside, and why. These notes will seed your cut list later.
 4. **Reasons.** Why these must-dos? Give two or three reasons, each tied to something you found.
 5. **Biggest trade-offs.** What did you give up to keep your must-dos short?
@@ -114,7 +114,7 @@ Like Checkpoint 2, this one is lightweight and asynchronous. One adult can revie
 
 **Your answer.** Pick one of the four and write it in the decision log too, so the checkpoints and the log tell the same story. "Needs more research" is the hard one to deliver; the [coaching guide](../../parent_guide/coaching_and_support.md) has the words.
 
-<!-- density-exempt: x-not-y -- "Praise the move, not the mind" is the coaching rule's named wording, required in Parent Notes -->
+<!-- density-exempt: X, not Y -- "Praise the move, not the mind" is the coaching rule's named wording, required in Parent Notes -->
 **Praise the move, not the mind.** Try "you kept your must-do list short enough to protect."
 
 If your child answers the lighter-or-deeper question with "lighter," see Low-Bandwidth Parent Mode in [time and effort](../../parent_guide/time_and_effort.md) and use the lighter forms. If they say "deeper," High-Engagement Mode in the [differentiation guide](../../parent_guide/differentiation.md) shows how.

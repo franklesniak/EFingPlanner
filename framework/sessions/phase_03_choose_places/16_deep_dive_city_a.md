@@ -41,7 +41,7 @@ Now work through your card:
 3. **Fill the empty rows.** Aim for three top sights, and star any you can't wait to see. Add one memorable fact, food and culture notes, and how long it takes to get there from a nearby city. How many days might you want? Does City A fit our Checkpoint 1 season?
 4. **Hunt for downsides.** Every city has some. Is it very crowded? Costly? Tiring to get around? Write at least one in the downsides row.
 5. **Log each source as you use it.** Every website or book gets its own entry in your Source Log, with today's date.
-6. **Finish the planning assumption rows.** Write what you're assuming, why you're using it, what could change it, and whether a grown-up needs to check it. The [planning assumption](../../templates/planning_assumption_field.md) page explains each row.
+6. **Finish the planning assumption rows.** Write what you're assuming, why you're using it, what could change it, and whether a grown-up needs to check it. The [planning assumption](../../templates/planning_assumption_field.md) note explains each row.
 
 City A is still one movable block, like every card ([Session 15](15_city_research_cards.md) explains blocks). In Session 20 it goes onto your long-list, and in Session 21 you compare it with the others.
 
@@ -83,6 +83,6 @@ This is the Phase 3 hand-off. From here on, your child chooses their own Start H
 
 Afterward, ask one quick spoken question: "How did you decide what your first tiny step should be?" It's a quick check on how the skill is growing. If your child can't yet explain how they chose, pick the first step together for a few more sessions before stepping back.
 
-City A is the anchor: the one city a first trip almost certainly keeps. The destination pack's candidate list, and the cities page it points to, help you name it, and you can nudge. Your child's free pick is City B, in Session 17.
+City A is the anchor: the one city a first trip almost certainly keeps. This session's Destination Notes, and the major cities reference they point to, help you name it, and you can nudge. Your child's free pick is City B, in Session 17.
 
 The minutes guess at Start Here and the minutes taken at the Stop Point are estimating practice. The gaps come back at Checkpoint 3 and in the final reflection, where your child looks at whether their guesses got closer.

@@ -24,7 +24,7 @@ Pick one starred sight from a City Research Card for a place on your shortlist. 
 
 ## Steps
 
-Your cities are shortlisted, so now you look at what you'd do in them. One Attraction Research Card holds one place or experience. It keeps that place's facts together, so later you can compare fairly, with the facts in front of you.
+Your cities are shortlisted, so now you look at what you would do in them. One Attraction Research Card holds one place or experience. It keeps that place's facts together, so later you can compare fairly, with the facts in front of you.
 
 1. **Start with your stars.** Use the cards for the places on your Checkpoint 2 shortlist: your overnight bases and day trips. The sights you starred on those cards are your first ideas. Leave the cards for places you set aside.
 2. **Check your "things I can't wait to see" page.** Any spot on it in a shortlisted place, such as a park or a market you saved in Session 19, gets a card too. Continuing from First Taste? Your special pick from Session 44 gets one as well, unless a grown-up told you at Checkpoint 2 that one of the three things stops it.

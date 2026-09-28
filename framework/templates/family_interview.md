@@ -22,6 +22,8 @@ If you only have time for one, ask this one: *"What is one thing you'd love on t
 | | | | |
 | | | | |
 
+More travelers than rows? Add a row for each one.
+
 ## If someone is hard to reach
 
 Ask them by text or call. Or have a grown-up ask and bring back the answer. Or interview whoever is around now and mark the rest "asked through a grown-up." You can also leave an answer open. Do not wait on anyone's schedule.
@@ -38,5 +40,5 @@ You can say your answers to an adult who writes them, or draw them, if that's ea
 
 ## Where this goes next
 
-- [Family trip goals and input summary](family_trip_goals.md) -- your own goals and the traveler poll live on that one page.
+- [Family trip goals and input summary](../trip_starter/family/family_trip_goals.md) -- your own goals and the traveler poll live on that one page.
 - [Traveler profile](traveler_profile.md) -- copy each answer onto that traveler's own profile.

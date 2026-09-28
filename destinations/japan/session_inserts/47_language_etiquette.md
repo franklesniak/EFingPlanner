@@ -32,4 +32,4 @@ Give each part of a word about the same weight. For your own restaurant phrase, 
 - **Signs and photos.** Some places limit photos, and a few post fines. Follow the signs. Always ask before you take a photo of a person.
 - **Shared baths.** Hot-spring baths (*onsen*) and public baths (*sento*) have their own rules. Your pack's [etiquette basics page](../reference/etiquette_basics.md) explains them. Whether you take part is a grown-up's call.
 
-The etiquette basics page has more on every manner in this list.
+The etiquette basics page has more on these manners. The money basics page has more on cash.

@@ -20,7 +20,7 @@ Print in this order:
 1. The [project roadmap](PROJECT_ROADMAP.md), including the Core Finish Line index.
 2. The [student guide](student_guide/README.md), including the [When I'm Stuck card](student_guide/when_im_stuck.md).
 3. The [progress tracker](student_guide/progress_tracker.md).
-4. The Source Log, from the [trip starter kit](trip_starter/logs/source_log.md).
+4. The [Source Log](trip_starter/logs/source_log.md), from the trip starter kit.
 5. The sessions, in order, as you reach them.
 6. The templates each session names, as you need them.
 7. The blank [trip starter kit](trip_starter/README.md): the logs, the research card folders, and the recommendation pages.
@@ -63,11 +63,11 @@ The mapping also files entries the item list on the [final deliverable](FINAL_DE
 | 6. Hotels and Budget | Hotel and neighborhood comparison summary (the Neighborhood Comparison and the Hotel Comparison Cards); Budget estimate (the Session 33 first pass and the Session 39 budget summary) |
 | 7. Itinerary | Day-by-day itinerary (the itinerary draft with its Checkpoint 5 review page, and the final itinerary); Reservation watchlist; Backup plans; Cut list or "save for future trip" list |
 | 8. Readiness | Packing list; Language and etiquette quick sheet, if the family chose it for the binder; Readiness checklist |
-| 9. Sources and Decisions | Source log; Decision log; "My Calls" page; [Itinerary revision notes](templates/itinerary_revision_notes.md), if the family used them |
+| 9. Sources and Decisions | Source Log; Decision log; "My Calls" page; [Itinerary revision notes](templates/itinerary_revision_notes.md), if the family used them |
 | 10. Parent Review | Adult follow-up questions; parent review forms |
 | 11. Final Recommendation | Final recommendation summary (the final recommendation packet from Session 52, the executive summary, and the family presentation or the Final Presentation Outline from Session 51); Final reflection; After-the-trip page, if the family did [Session 54](sessions/phase_09_after_you_get_back/54_after_you_get_back.md) |
 
-Four lines depend on the family's choices: the restaurant and food shortlist, the Language and Etiquette Quick Sheet, the itinerary revision notes, and the after-the-trip page. A binder without them is complete if the family skipped them or left them out. The after-the-trip page is filed after the trip, when a family does the optional [Session 54](sessions/phase_09_after_you_get_back/54_after_you_get_back.md), so Session 50's binder checklist doesn't list it.
+Five lines depend on the family's choices: the Phase 1 research-skill pages behind tab 2, the restaurant and food shortlist, the Language and Etiquette Quick Sheet, the itinerary revision notes, and the after-the-trip page. A binder without them is complete if the family skipped them or left them out. The after-the-trip page is filed after the trip, when a family does the optional [Session 54](sessions/phase_09_after_you_get_back/54_after_you_get_back.md), so Session 50's binder checklist doesn't list it.
 
 The binder table of contents goes at the front, before tab 1. The "if I get separated" card goes in your child's pocket. The Final Countdown card and the in-trip capture card go with the family on the trip.
 

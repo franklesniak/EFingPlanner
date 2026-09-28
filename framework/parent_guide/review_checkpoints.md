@@ -4,7 +4,7 @@
 
 Your child stops at certain points and brings you a recommendation. That's a checkpoint. You look at the work, ask a few questions, and decide.
 
-**How many you will meet depends on the path.** On **First Taste**, Checkpoint 1 is the only checkpoint, and the path carries on after it to Session 53; the [roadmap](../PROJECT_ROADMAP.md) lists the sessions in between. If that is your family's path, the Checkpoint 1 section below is the only one you need. On the **Core and Full** paths there are six, and the rest of this page covers them all.
+**How many you will meet depends on the path.** On **First Taste**, Checkpoint 1 is the only checkpoint, and the path carries on after it to Session 53; the [roadmap](../PROJECT_ROADMAP.md) lists the sessions in between. If that is your family's path, the Checkpoint 1 section below is the only one you need. On the **Core and full** paths there are six, and the rest of this page covers them all.
 
 The blank form is the [parent review form](../templates/parent_review_form.md). This page is the how and the why; the form is what you fill in, one copy at each checkpoint as you decide. On the Core path, your child files the forms behind tab 10 of the binder: Checkpoints 1 to 5 in Session 50, and Checkpoint 6 in Session 53.
 
@@ -25,7 +25,7 @@ Any of these works:
 
 ## Don't let a delay stall them
 
-Turn reviews around promptly. If you can't, your child has somewhere to go: the "what to do while you wait for an adult checkpoint" note on their [When I'm Stuck card](../student_guide/when_im_stuck.md). They can do an Optional Extension, add to the question parking lot, or grow their "things I can't wait to see" page.
+Turn reviews around promptly. If you can't, your child has somewhere to go: the "When I'm waiting for a grown-up" section of their [When I'm Stuck card](../student_guide/when_im_stuck.md). They can do an Optional Extension, add to the question parking lot, or grow their "things I can't wait to see" page.
 
 **The next session waits for your answer**, and that is on purpose. Everything after a checkpoint is built on the decision you are about to make; letting a child run ahead means later work rests on a season, shortlist or route nobody approved.
 
@@ -42,7 +42,7 @@ Pick one:
 
 A signature is optional. Initials or a "got it" is plenty.
 
-**When a checkpoint is finished.** From Checkpoint 2 on, a checkpoint is finished when your answer is Approved, or Approved with changes once your child has written the changes in. From Checkpoint 4 on, they also go down their [When the Plan Changes card](../student_guide/when_the_plan_changes.md) for each change. At Checkpoints 2 to 5, "Needs more research" and "Park this decision for later" keep it open until your child comes back to it. At Checkpoint 6, a parked decision is the result, so the checkpoint is finished. Every answer is still a normal result, and only a finished checkpoint counts toward "Checkpoints reached".
+**When a checkpoint is finished.** Checkpoint 1 is finished once your child has shared it with you. From Checkpoint 2 on, a checkpoint is finished when your answer is Approved, or Approved with changes once your child has written the changes in. From Checkpoint 4 on, they also go down their [When the Plan Changes card](../student_guide/when_the_plan_changes.md) for each change. At Checkpoints 2 to 5, "Needs more research" and "Park this decision for later" keep it open until your child comes back to it. At Checkpoint 6, a parked decision is the result, so the checkpoint is finished. Every answer is still a normal result, and only a finished checkpoint counts toward "Checkpoints reached".
 
 **"Needs more research" is the hard one**, and it's the most common of the hard ones. Said badly it reads as "you failed." The [coaching guide](coaching_and_support.md) has the script. Use its words, because this is the verdict most likely to end the project.
 
@@ -75,7 +75,7 @@ Each has its own **what to consider** list. The review form checks whether the w
 
 **Also yours to do here:** if you left the rough trip shape partly open at setup, firm it up now, including the departure place. The Phase 5 route work builds on it. If your family is continuing from First Taste, keep the place of your child's special pick on the shortlist. Only the three blocks can change the pick. If one applies, tell your child which one, so Session 23 makes no card for it. They choose a new pick from their attraction cards with you in Session 26.
 
-**What to consider:** whether the travel scope is workable; how it fits your maximum trip length, or your booked trip length; **whether the other travelers appear in it at all**, which is what the poll connection is there to show; budget implications; safety and common sense; and anything it implies for getting there, such as international flights if you fly.
+**What to consider:** whether the travel scope is workable; how it fits your maximum trip length, or your booked trip length; **whether the other travelers appear in it at all**, which is what the poll connection is there to show; budget implications; safety and common sense; and anything it implies for getting there, such as flights, if you fly.
 
 **Progress is real:** the family now knows roughly *where*.
 

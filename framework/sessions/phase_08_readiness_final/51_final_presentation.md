@@ -28,7 +28,7 @@ Your presentation is about 5 to 10 minutes long. Part 1 says what you recommend.
 
 **Has a grown-up changed where you arrive or leave since Checkpoint 5?** Check that they wrote the new place on your family's assumptions page. Then go down your When the Plan Changes card, with "changed at Session 51", and fix every page it names that you've already made.
 
-1. Fill in Part 1 of your outline: when to go, how long, which cities and what route, the top experiences, where you might stay, food highlights, your rough budget for the parts you chose, the biggest trade-offs, and what you cut and why. For the budget, use your Session 39 subtotal, with its "not counting ___" if it has one. Say that the grown-ups add the rest, such as getting there. If your family skipped the food sessions, write that on the food line. If your dates were already booked, say what your season means for the trip, and how you'd use the booked days. The booked trip length is on your Trip-Basics card's maximum trip length row. With one base, your route is getting there and back, plus your trips out from the base to your approved must-dos.
+1. Fill in Part 1 of your outline: when to go, how long, which cities and what route, the top experiences, where you might stay, food highlights, your rough budget for the parts you chose, the biggest trade-offs, and what you cut and why. For the budget, use your Session 39 subtotal, with its "not counting ___" if it has one. Say that the grown-ups add the rest, such as getting there. If your family skipped the food sessions, write that on the food line. If your dates were already booked, say what your season means for the trip, and how you would use the booked days. The booked trip length is on your Trip-Basics card's maximum trip length row. With one base, your route is getting there and back, plus your trips out from the base to your approved must-dos.
 2. Fill in Part 2: what the grown-ups still need to check, decide and book, the questions that are still open, and which of your pages they should use next. Part 2 is your adult follow-up questions, which go behind tab 10.
 3. Pick how you'll present, and circle it at the bottom of the outline.
 
@@ -40,7 +40,7 @@ Your presentation is about 5 to 10 minutes long. Part 1 says what you recommend.
 - Record a video and play it.
 - Hand over your binder with a short written summary.
 
-If you'd like to build up to it, try it with one grown-up first, then a couple of adults, then the whole group. Or just record it. Your family makes its decision at Checkpoint 6 whichever way you choose.
+If you would like to build up to it, try it with one grown-up first, then a couple of adults, then the whole group. Or just record it. Your family makes its decision at Checkpoint 6 whichever way you choose.
 
 ## Workspace
 
@@ -82,4 +82,4 @@ The budget line is your child's subtotal for the parts they chose. Getting there
 
 The presentation accommodations and the rehearsal ladder live in the [differentiation guide](../../parent_guide/differentiation.md). If your child wants to rehearse, be the first audience, then add a couple of adults, then the group.
 
-**The lighter page.** From Phase 7 on, Steps and Workspace are short and your child sets their own Start Here. The readiness signal is two sessions in a row done without needing the When I'm Stuck card or leaning on the written Steps; the Finish and Quality Check closes every session, so using it never counts against them. If your child isn't there yet, read the Steps with them. Start Here, the Stop Point, the named artifact and the Source Check stay on every page.
+**The lighter page.** This page's Steps and Workspace are short, and your child sets their own Start Here. The readiness signal is two sessions in a row done without needing the When I'm Stuck card or leaning on the written Steps; the Finish and Quality Check closes every session, so using it never counts against them. If your child isn't there yet, read the Steps with them. Start Here, the Stop Point, the named artifact and the Source Check stay on every page.

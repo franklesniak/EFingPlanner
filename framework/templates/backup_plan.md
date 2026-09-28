@@ -2,9 +2,9 @@
 
 # Backup Plan
 
-A good planner has a plan B. Backups give your trip some give when something does not go as planned. That could be rain. It could be a closed attraction, or a full restaurant. It could be a tired day, or a transit delay.
+A good planner has a plan B. Backups give your trip some give when something doesn't go as planned. That could be rain. It could be a closed attraction, or a full restaurant. It could be a tired day, or a transit delay.
 
-One entry per backup -- start a new copy of this table for each one:
+One entry per backup. Start a new copy of this table for each one:
 
 | Prompt | Your answer |
 | --- | --- |

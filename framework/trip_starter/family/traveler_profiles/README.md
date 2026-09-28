@@ -4,9 +4,9 @@
 
 ## What goes in this folder
 
-One finished profile for each traveler on your Trip-Basics roster, one traveler to one file -- if you did Session 02. That session is only on the full Phases 0-2 path, so on the First Taste path an empty folder is the right answer.
+If you did Session 02, this folder holds one finished profile for each traveler on your Trip-Basics roster, one traveler to one file. That session is only on the full Phases 0-2 path, so on the First Taste path an empty folder is the right answer.
 
-If six people are coming, six files live here when you are done. If two more join later, add two more files. Nothing else belongs in this folder.
+If six people are coming, six files live here when you're done. If two more join later, add two more files. Nothing else belongs in this folder.
 
 Someone here for only part of the trip? Their profile counts only on the days they're there, as the template's "Here for only part of the trip?" line says.
 
@@ -14,7 +14,7 @@ Someone here for only part of the trip? Their profile counts only on the days th
 
 The blank is the [traveler profile template](../../../templates/traveler_profile.md). Copy it once for each traveler, and fill in the copy.
 
-That template is the only blank. Leave it as it is. Do not fill it in, and do not keep a spare blank copy in this folder, or you will lose track of which page is the empty one.
+That template is the only blank. Leave it as it is. Do not fill it in, and do not keep a spare blank copy in this folder, or you'll lose track of which page is the empty one.
 
 ## How to name each file
 
@@ -25,7 +25,7 @@ Two examples of the shape:
 - `parent_1.md`
 - `grandparent.md`
 
-If two travelers share a role, add a number, the way the first example does. You will end up with a small stack of files here while the template stays single. That is the pattern: one blank, many filled copies, and the copies live in this folder.
+If two travelers share a role, add a number, the way the first example does. You'll end up with a small stack of files here while the template stays single. That's the pattern: one blank, many filled copies, and the copies live in this folder.
 
 ## Keep private details out
 
@@ -36,4 +36,4 @@ Medical specifics stay with the adults and go on no page at all. Write what some
 
 ## An open answer is a complete answer
 
-You will not know everything about every traveler, and you are not supposed to. It is fine to write not decided yet, unknown, or ask an adult. A profile with three open lines is finished if those three answers are open.
+You won't know everything about every traveler, and you're not supposed to. It's fine to write not decided yet, unknown, or ask an adult. A profile with three open lines is finished if those three answers are open.

@@ -6,7 +6,7 @@ Copy this page out of the repository before you fill it in. Do not commit your f
 
 The blank this page was copied from is the [current family travel assumptions template](../../templates/current_family_travel_assumptions.md).
 
-This page holds the rough starting points the grown-ups set at setup. Everything here can change. It is a first guess, not a final call. A grown-up owns this page and keeps it up to date. The child reads it so the plan stays real.
+This page holds the rough starting points the grown-ups set at setup. Everything here can change. It's a first guess, not a final call. A grown-up owns this page and keeps it up to date. The child reads it so the plan stays real.
 
 Keep no sensitive personal data here. Do not write exact booked dates. Do not write hotel names. Do not write confirmation numbers or payment details.
 
@@ -27,4 +27,4 @@ Keep no sensitive personal data here. Do not write exact booked dates. Do not wr
 
 Two adult notes. First, the full trip total is a grown-up number. Keep it off the child's worksheet. Second, if the AI helper answer is yes, the child does Session 09 first. That comes before any AI tool is used. The grown-ups also follow the adult-operated pattern in the privacy and safety rules.
 
-Has your family never been to the destination? Then naming just the arrival place is a fine answer. Leave the trip shape and the exit place open. You can firm them up later on the full Core path, by the City Shortlist checkpoint. For the First Taste, leaving them open is fine.
+Has your family never been to the destination? Then naming just the arrival place is a fine answer. Leave the trip shape and the departure place open. You can firm them up later on the Core path, by the City Shortlist checkpoint. On First Taste, leaving them open is fine.

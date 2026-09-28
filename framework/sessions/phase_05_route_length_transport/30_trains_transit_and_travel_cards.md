@@ -10,7 +10,7 @@ You are here: Phase 5 (Route, Length, and Transportation). Not a First Taste ste
 - Planner skill: checking sources
 - Estimated time: 20-30 minutes
 - Parent involvement: none / independent work
-- Materials: this session's Destination Notes, a device with the kid-safe filter on, your route map notes from Session 28, your must-do list and strong maybes from Checkpoint 3, your attraction cards, your [Trip-Basics card](../../templates/trip_basics.md) (for the number of travelers), your [Source Log](../../templates/source_log.md)
+- Materials: this session's Destination Notes, your destination pack's transportation basics page (for a transit planner), a device with the kid-safe filter on, your route map notes from Session 28, your must-do list and strong maybes from Checkpoint 3, your attraction cards, your [Trip-Basics card](../../templates/trip_basics.md) (for the number of travelers), your [Source Log](../../templates/source_log.md)
 
 (For an at-a-glance version, see the matching entry in [the parent session notes](../../parent_guide/session_support_notes.md); the Parent Notes below have the full detail.)
 
@@ -44,7 +44,7 @@ Every place has its own ways of getting around. Your Destination Notes name the 
 
 - **Rail passes.** A pass might save money, or it might cost more than single tickets. It depends on your exact route. The only way to know is to compare the two, and a grown-up checks before anyone buys one.
 - **A big group.** Look at the number of travelers on your Trip-Basics card. A big group should plan to reserve seats together on long train rides, because open seats side by side can be hard to find. A small group can skip this.
-- **A transit planner** is a website or app that plans a ride on trains and buses. Your Destination Notes may name one. Check that it's still working and up to date before you trust it.
+- **A transit planner** is a website or app that plans a ride on trains and buses. Your destination pack's transportation basics page names some. Check that the one you use still works and is up to date before you trust it.
 - **Grown-ups buy the tickets and passes.** Your job is to work out what the family needs.
 
 Now fill in the notes table in the Workspace, one row for each way of getting around you might use.
@@ -87,7 +87,7 @@ Stuck? Use the [When I'm Stuck card](../../student_guide/when_im_stuck.md) in yo
 
 ## Optional Extension
 
-If you have extra energy, plan one moving day in words: how you'd get from one city to the next, and where your bags would go. If not, you are done.
+If you have extra energy, plan one moving day in words: how you would get from one city to the next, and where your bags would go. If not, you are done.
 
 ## Parent Notes
 

@@ -28,7 +28,7 @@ If you don't have a Source Log page yet, copy the blank [Source Log template](..
 
 A source is where a fact comes from. It could be a website, a book, a map, a video, or a person. Good planners always know *where* a fact came from, so they can trust it and check it later.
 
-You're going to practice on one real fact about the place you are going.
+You're going to practice on one real fact about the place you're going.
 
 1. Pick one small thing you're curious about. For example: "What is the capital city?" or "What money do they use?"
 2. Look it up in **one** place: a book you have, or a website an adult says is okay.
@@ -46,7 +46,7 @@ You just tracked your first source. Now you can find that fact again later, and 
 
 ## Workspace
 
-Use your Source Log page. One fact fills one entry (one copy of the table). You can add a new entry any time you look something up.
+Use your Source Log page. Each source you use gets its own entry (one copy of the table). You can add a new entry any time you look something up.
 
 You can say your answers to an adult who writes them, or draw them, if that's easier.
 

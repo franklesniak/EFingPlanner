@@ -50,7 +50,7 @@ These are named once, here, so the rows stay short:
 | --- | --- | --- | --- |
 | [10 Destination Snapshot][s10] | [Destination Snapshot][t-snapshot] | none | The tab it fits best |
 | [11 Regions and Cities Overview][s11] | none: one drawn page | none | Session 15, on the Core path; the tab it fits best |
-| [12 Weather, Seasons, and Events][s12] | [Season Comparison Chart][t-season] | none | Checkpoint 1, then the [Executive Summary][o-summary] |
+| [12 Weather, Seasons, and Events][s12] | [Season Comparison Chart][t-season] | none | Checkpoint 1, then the [Executive Summary][o-summary]; the tab it fits best |
 | [13 Trip Goals and Travel Style][s13] | [Travel Style Worksheet][t-style] | none | The tab it fits best |
 | [14 Checkpoint 1 Season Recommendation][s14] | [Decision Record][t-decision]; on the Core path, a [Trade-Off Report][t-tradeoff] | [Season Recommendation][r-season]; [decision log][k-decision] | The [Executive Summary][o-summary]; tab 3 |
 
@@ -58,23 +58,23 @@ These are named once, here, so the rows stay short:
 
 | Session | Template it uses | Kit page it fills | Output it feeds |
 | --- | --- | --- | --- |
-| [15 City Research Cards][s15] | [City Research Card][t-city] | [City Cards][k-city] | Sessions 20 and 21, then Checkpoint 2 and the [Executive Summary][o-summary] |
-| [16 Deep-Dive City A][s16] | [City Research Card][t-city] | [City Cards][k-city] | Sessions 20 and 21, then Checkpoint 2; the [Final Reflection][o-reflect] (the minutes guess) |
-| [17 Deep-Dive City B][s17] | [City Research Card][t-city] | [City Cards][k-city] | Sessions 20 and 21, then Checkpoint 2 |
-| [18 Deep-Dive City C][s18] | [City Research Card][t-city] | [City Cards][k-city] | Sessions 20 and 21, then Checkpoint 2 |
-| [19 Other Places Research][s19] | [City Research Card][t-city] | [City Cards][k-city] | Sessions 20 and 21, then Checkpoint 2 |
+| [15 City Research Cards][s15] | [City Research Card][t-city] | [City Cards][k-city] | Sessions 20 and 21, then Checkpoint 2 and the [Executive Summary][o-summary]; the tab it fits best |
+| [16 Deep-Dive City A][s16] | [City Research Card][t-city] | [City Cards][k-city] | Sessions 20 and 21, then Checkpoint 2; the [Final Reflection][o-reflect] (the minutes guess); the tab it fits best |
+| [17 Deep-Dive City B][s17] | [City Research Card][t-city] | [City Cards][k-city] | Sessions 20 and 21, then Checkpoint 2; the tab it fits best |
+| [18 Deep-Dive City C][s18] | [City Research Card][t-city] | [City Cards][k-city] | Sessions 20 and 21, then Checkpoint 2; the tab it fits best |
+| [19 Other Places Research][s19] | [City Research Card][t-city] | [City Cards][k-city] | Sessions 20 and 21, then Checkpoint 2; the tab it fits best |
 | [20 City Long-List][s20] | [City Long-List][t-longlist] | none | Checkpoint 2, then the [Executive Summary][o-summary]; tab 4 |
-| [21 Compare Cities][s21] | [Scoring Rubric][t-rubric], or the session page's score table | none | Checkpoint 2, then the [Executive Summary][o-summary] |
+| [21 Compare Cities][s21] | [Scoring Rubric][t-rubric], or the session page's score table | none | Checkpoint 2, then the [Executive Summary][o-summary]; the tab it fits best |
 | [22 Checkpoint 2 City Shortlist][s22] | the session page; [Decision Record][t-decision] | [City Shortlist][r-shortlist]; [decision log][k-decision] | The [Executive Summary][o-summary]; tab 4 |
 
 ### Phase 4 (Attractions and Experiences)
 
 | Session | Template it uses | Kit page it fills | Output it feeds |
 | --- | --- | --- | --- |
-| [23 Attraction Research Cards][s23] | [Attraction Research Card][t-attraction] | [Attraction Cards][k-attraction] | Checkpoint 3, then the [Executive Summary][o-summary]; the [Final Reflection][o-reflect] (the ticket-price guess) |
+| [23 Attraction Research Cards][s23] | [Attraction Research Card][t-attraction] | [Attraction Cards][k-attraction] | Checkpoint 3, then the [Executive Summary][o-summary]; the [Final Reflection][o-reflect] (the ticket-price guess); the tab it fits best |
 | [24 Culture, History, Nature, Food, and Fun Balance][s24] | the session page | none | Session 26; tab 5 (the balance check) |
 | [25 Review Reviews Carefully][s25] | the session page | none | The tab it fits best |
-| [26 Rank Attractions][s26] | the session page, with spare lighter tables on the [Scoring Rubric][t-rubric] | [My Calls][k-calls] | Checkpoint 3, then the [Executive Summary][o-summary]; the [Final Reflection][o-reflect] (the minutes guess); tab 9 (My Calls) |
+| [26 Rank Attractions][s26] | the session page, with spare Lighter Rubric (3-criteria) tables on the [Scoring Rubric][t-rubric] | [My Calls][k-calls] | Checkpoint 3, then the [Executive Summary][o-summary]; the [Final Reflection][o-reflect] (the minutes guess); tab 9 (My Calls) |
 | [27 Checkpoint 3 Top Experiences][s27] | the session page; [Decision Record][t-decision] | [Top Experiences][r-top]; [decision log][k-decision] | The [Executive Summary][o-summary]; tab 5 |
 
 ### Phase 5 (Route, Length, and Transportation)
@@ -82,9 +82,9 @@ These are named once, here, so the rows stay short:
 | Session | Template it uses | Kit page it fills | Output it feeds |
 | --- | --- | --- | --- |
 | [28 Map the Route][s28] | the session page | none | Checkpoint 4; the [Final Itinerary][o-itinerary] (getting between the stays); the tab it fits best |
-| [29 How Long to Stay][s29] | the session page | none | Checkpoint 4, then the [Executive Summary][o-summary] |
+| [29 How Long to Stay][s29] | the session page | none | Checkpoint 4, then the [Executive Summary][o-summary]; the tab it fits best |
 | [30 Trains, Transit, and Travel Cards][s30] | the session page | none | Session 31; the [Final Reflection][o-reflect] (the travel-time guess); tab 4 |
-| [31 Route Trade-Off Report][s31] | [Trade-Off Report][t-tradeoff] | none | Checkpoint 4, then the [Executive Summary][o-summary] |
+| [31 Route Trade-Off Report][s31] | [Trade-Off Report][t-tradeoff] | none | Checkpoint 4, then the [Executive Summary][o-summary]; the tab it fits best |
 | [32 Checkpoint 4 Route and Trip Length][s32] | the session page; [Decision Record][t-decision] | [Route and Trip Length][r-route]; [decision log][k-decision] | The [Executive Summary][o-summary]; tab 4 |
 
 ### Phase 6 (Lodging, Food, and Budget)
@@ -96,15 +96,15 @@ These are named once, here, so the rows stay short:
 | [35 Hotel Comparison][s35] | [Hotel Comparison Card][t-hotel] | [Hotel Cards][k-hotel] | The [Executive Summary][o-summary] (where to stay); the [Final Reflection][o-reflect] (the minutes guess); tab 6 |
 | [36 Food Research][s36] | the session page | none | Session 37, then the [Executive Summary][o-summary] (food highlights); tab 5, if the family chose it |
 | [37 Restaurant Shortlist][s37] | [Restaurant Research Card][t-restaurant] | [Restaurant Cards][k-restaurant] | The [Executive Summary][o-summary] (food highlights); tab 5, if the family chose it |
-| [38 Daily Cost Estimates][s38] | the session page | none | Session 39, then the [Executive Summary][o-summary] |
+| [38 Daily Cost Estimates][s38] | the session page | none | Session 39, then the [Executive Summary][o-summary]; the tab it fits best |
 | [39 Budget Review, Second Pass][s39] | [Budget Estimate][t-budget], with the session page's hotel table | none | Checkpoint 5, then the [Executive Summary][o-summary]; the [Final Reflection][o-reflect] (the band sentence); tab 6 |
 
 ### Phase 7 (Itinerary Building)
 
 | Session | Template it uses | Kit page it fills | Output it feeds |
 | --- | --- | --- | --- |
-| [40 Realistic Day Planning][s40] | none: a blank page | none | Session 41, then the [Final Itinerary][o-itinerary] |
-| [41 Build Day Cards][s41] | [Daily Plan Card][t-daily] | [Day Cards][k-day] | Checkpoint 5, then the [Final Itinerary][o-itinerary] |
+| [40 Realistic Day Planning][s40] | none: a blank page | none | Session 41, then the [Final Itinerary][o-itinerary]; the tab it fits best |
+| [41 Build Day Cards][s41] | [Daily Plan Card][t-daily] | [Day Cards][k-day] | Checkpoint 5, then the [Final Itinerary][o-itinerary]; the tab it fits best |
 | [42 Reservations and Timed Entries][s42] | [Reservation Watchlist][t-watchlist] | none | Checkpoint 5; the [Final Itinerary][o-itinerary] (reservations flagged); tab 7 |
 | [43 Rest Days, Jet Lag, and Pacing][s43] | the session page; a [Trade-Off Report][t-tradeoff], if the third report goes here | none | Checkpoint 5 (the flags for the adults); the tab it fits best |
 | [44 Backup Plans and Cut List][s44] | [Cut List][t-cut]; [Backup Plan][t-backup] | [Cut List][k-cut]; [My Calls][k-calls] | Checkpoint 5; the [Final Itinerary][o-itinerary] (backup ideas) and the [Executive Summary][o-summary] (what we cut); tab 7 |
@@ -138,7 +138,7 @@ The routing contract in each destination pack, at `destinations/<pack>/session_i
 | Session | Insert it pulls (`session_inserts/`) | Reference file(s) it points to (`reference/`) |
 | --- | --- | --- |
 | 05 Good Sources, Bad Sources | none | `trusted_starting_sources.md` |
-| 06 Book Research With a Guidebook | none | `trusted_starting_sources.md` (the recommended guidebook) |
+| 06 Book Research With a Guidebook | none | `trusted_starting_sources.md` (the guidebooks it names) |
 | 08 Web Research Practice | none | `trusted_starting_sources.md`, `sample_search_terms.md` |
 | 10 Destination Snapshot | `10_snapshot_facts.md` | none |
 | 11 Regions and Cities Overview | `11_regions_overview.md` | `regions_overview.md`, `major_cities.md` |

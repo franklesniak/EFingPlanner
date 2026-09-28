@@ -12,18 +12,18 @@ Real families miss a week or three. A break is normal and is not the same as wan
 
 Two different cases:
 
-- **A bad day or rough patch.** Shorten the session, take a break, switch to the easy optional task, read it aloud, or try again when they are rested and fed -- then continue.
+- **A bad day or rough patch.** Shorten the session, take a break, switch to the easy optional task, read it aloud, or try again when they are rested and fed. Then continue.
 - **Genuine, lasting waning interest.** It is fine to pause, switch to a shorter finish line, or park the whole project for later. Forcing an executive-function project backfires. Pausing or stopping is a respected outcome, not a failure.
 
 ## Scripts for the hard moments
 
-**Using the recommendation** (genuinely take it into a real decision):
+**Using the recommendation** (take it into a family decision):
 > "You recommended fall for the leaves and smaller crowds -- let's plan around that and see what the dates allow."
 
 **Disagreeing without overriding:**
 > "Here's a worry I have about that hotel being far from the train -- can you look into the travel time and tell me what you find?"
 
-**"Needs more research"** (the most common hard checkpoint verdict -- deliver it kindly):
+**"Needs more research"** (the most common hard checkpoint verdict, so deliver it kindly):
 > "This is really close. One thing needs checking -- the hotel distances aren't verified yet. That's one session of work, and everything else stands. Finding that now is the checkpoint doing its job."
 
 Name the one specific gap, size the redo to one session, frame it as the checkpoint working, and end on what already stands.
@@ -32,16 +32,18 @@ Name the one specific gap, size the redo to one session, frame it as the checkpo
 <!-- density-exempt: X, not Y -- the timeline-collision script in the spec's Coaching and Support scripts, the Your-Work-Wasn't-Wrong Named concept in a parent's words -->
 > "We had to lock the bookings before you finished, because prices were climbing -- that's how trips work, and it doesn't mean your planning was wrong. Here's what's still yours to decide inside the dates we booked."
 
+That is the Your-Work-Wasn't-Wrong message: the decision moved, and your child's reasoning still counts.
+
 **Honoring the child's calls** (even when you'd have chosen differently):
 > "You chose the aquarium over a third temple. That's your call, and we'll make it work."
 
 <!-- density-exempt: X, not Y -- the owned-decision rule (only with a reason given to the child, never silently) is the spec's multi-adult guarantee, in its Child Autonomy With Adult Guardrails -->
-You set the guardrails (budget, approved cities, pacing, safety, availability), and the calls your child makes inside them stand. In a multi-adult party, group agreement can sometimes reshape a conditional pick -- but only with a reason given to the child, never silently.
+You set the guardrails (budget, approved cities, pacing, safety, availability), and the calls your child makes inside them stand. In a multi-adult party, group agreement can sometimes reshape a must-do pick, but only with a reason given to the child, never silently.
 
 **Honoring the one unconditional pick** (a firmer, smaller promise):
 > "Your one special pick was the aquarium -- that one's locked in. We'll only change it if it busts the budget, can't be booked, or isn't safe or doable for everyone, and we'll tell you which."
 
-A group vote does not override this one. Set it up to be keepable: co-choose an affordable, bookable, everyone-can-do-it pick, and show the three blocks before your child commits. If another adult challenges a pick in front of the child, do not relitigate on the spot -- name the rule ("that's their call; if it needs to change, we owe them the reason") and take it offline. Brief the other travelers in advance that the child owns certain calls.
+A group vote does not override this one. Set it up to be keepable: co-choose an affordable, bookable, everyone-can-do-it pick, and show the three blocks before your child commits. If another adult challenges a pick in front of the child, name the rule ("that's their call; if it needs to change, we owe them the reason") and take it offline rather than relitigating on the spot. Brief the other travelers in advance that the child owns certain calls.
 
 **The "here's how your plan shaped what we booked" reveal** (after booking):
 > "Want to see how your plan turned into our real trip? You recommended three nights in the place you picked -- here's our hotel there, three nights. Your must-do aquarium is on Day 4."
@@ -55,7 +57,7 @@ Five minutes showing this, concretely, lets your child see their own recommendat
 > "You finished a real project, start to finish, and made a real mini-plan we can actually use. That's a big deal."
 
 <!-- density-exempt: X, not Y -- the duration-true praise wording and the non-gamified acknowledgment are spec-required calibration (the spec's Session 53 acknowledgment beat) -->
-(For the fuller months-long capstone, "you stuck with a months-long project" is the right wording. Do not use "months-long" for a First Taste finisher -- it overclaims and deflates.) No certificate or badge -- just genuine recognition. This stands whether or not the trip happens.
+(For the fuller months-long capstone, "you stuck with a months-long project" is the right wording. Do not use "months-long" for a First Taste finisher. It overclaims and deflates.) No certificate or badge, just the spoken acknowledgment. This stands whether or not the trip happens.
 
 **When the plan changes during the trip:**
 > "Plans flex on the ground -- weather, tiredness, a closed shop. That's normal and doesn't mean your work failed. Look what did hold: the route, your must-sees, the language sheet you made."
@@ -67,8 +69,8 @@ After the trip, the optional [Session 54](../sessions/phase_09_after_you_get_bac
 <!-- density-exempt: X, not Y -- each note restates a guarantee the spec gives: the child is never blocked on a schedule, a party of two is a full configuration, and a sibling comparison stays cooperative, never scored -->
 
 - **Interview/poll reachability.** If a traveler is hard to reach, ask by text, ask asynchronously, or relay the question yourself and bring the answer back. Your child can also poll whoever is around and mark the rest "asked through a grown-up." Never let a schedule stall a session.
-- **Small party or single parent.** A party of two -- one parent and the child -- is a normal way to run this. The interview and poll become interviewing the one other traveler (you), plus optionally a remote relative by relay. A one-on-one interview is a strong relatedness moment, not a lesser version.
-- **Other siblings.** It is fine for this to be one child's project. A sibling can have a small helper role, their own "things I can't wait to see" page, or be a reviewer at the family meeting. If two children both want to plan, split the cities or alternate sessions, and give each their own picks -- keep any comparison cooperative, never scored.
+- **Small party or single parent.** A party of two (one parent and the child) is a normal way to run this. The interview and poll become interviewing the one other traveler (you), plus optionally a remote relative by relay. A one-on-one interview is a strong relatedness moment, not a lesser version.
+- **Other siblings.** It is fine for this to be one child's project. A sibling can have a small helper role, their own "things I can't wait to see" page, or be a reviewer at the family decision meeting. If two children both want to plan, split the cities or alternate sessions, and give each their own picks; keep any comparison cooperative, never scored.
 
 ## Where to go next
 

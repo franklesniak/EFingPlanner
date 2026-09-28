@@ -10,7 +10,7 @@ You are here: Phase 3 (Choose Places). Not a First Taste step. **This is Checkpo
 - Planner skill: making trade-offs
 - Estimated time: 20-30 minutes for the child, plus a 20-40 minute review with you
 - Parent involvement: parent review -- genuinely use the recommendation in a real family talk
-- Materials: your City Long-List and City comparison, your My Calls page if you're continuing from First Taste, your Family Trip Goals page from Session 03, your [Trip-Basics card](../../templates/trip_basics.md) (for the maximum or booked trip length), your family's [current travel assumptions](../../templates/current_family_travel_assumptions.md) page (for the budget band), your [Source Log](../../templates/source_log.md), a [Decision Record page](../../templates/decision_record.md), a blank [Parent Review Form](../../templates/parent_review_form.md) for a grown-up to fill in
+- Materials: your City Long-List and City comparison, your My Calls page if you're continuing from First Taste, your Family Trip Goals page from Session 03, your [Trip-Basics card](../../templates/trip_basics.md) (for the maximum or booked trip length), the grown-ups' [current family travel assumptions](../../templates/current_family_travel_assumptions.md) page (for the budget band), your [Source Log](../../templates/source_log.md), a [Decision Record page](../../templates/decision_record.md), a blank [Parent Review Form](../../templates/parent_review_form.md) for a grown-up to fill in
 
 (For an at-a-glance version, see the matching entry in [the parent session notes](../../parent_guide/session_support_notes.md); the Parent Notes below have the full detail.)
 
@@ -24,14 +24,14 @@ Open a Decision Record page and write "Our city shortlist" in its Decision box. 
 
 ## Steps
 
-This is your second checkpoint. You've researched a lot of places, and now you pick the few you'd plan the trip around. Then a grown-up reviews your choice with you. Read [How to Make a Recommendation](../../student_guide/how_to_make_a_recommendation.md) once before you start. It shows the shape a good recommendation takes.
+This is your second checkpoint. You've researched a lot of places, and now you pick the few you would plan the trip around. Then a grown-up reviews your choice with you. Read [How to Make a Recommendation](../../student_guide/how_to_make_a_recommendation.md) once before you start. It shows the shape a good recommendation takes.
 
 Fill in the shortlist table in the Workspace, in this order:
 
-1. **Overnight bases.** Choose 2 to 4 places where you'd sleep. If your family plans one base to stay at and travel from, one is enough. Take them from your long-list and your Session 21 comparison.
+1. **Overnight bases.** Choose 2 to 4 places where you would sleep. If your family plans one base to stay at and travel from, one is enough. Take them from your long-list and your Session 21 comparison.
 2. **Day trips.** Choose up to 3 places you could visit and come back from on the same day. If none is close enough, write "none".
 3. **Skip this time.** Name the places you're setting aside for this trip.
-4. **Save for a future trip.** Name the places you'd love to see someday. These notes help later, when you make your cut list.
+4. **Save for a future trip.** Name the places you would love to see someday. These notes help later, when you make your cut list.
 5. **Reasons.** Give two or three, and tie each one to something you found.
 6. **Sources.** Say where your reasons came from, using your Source Log.
 7. **Who it makes room for.** Look back at the poll on your Family Trip Goals page, and go through every traveler's "one thing you'd love". A traveler still marked with no answer? Ask them now, or have a grown-up ask. If you still can't reach them, write "not heard from yet" beside their name. Whose does your shortlist make room for? Name anyone it leaves out, too.
@@ -104,15 +104,15 @@ If you have extra energy, add one "things I can't wait to see" idea for each ove
 
 ## Parent Notes
 
-This checkpoint is lightweight and asynchronous. One accountable adult can review and relay the decision: a quick five-minute call, a comment on a shared note, a short text thread, or one parent deciding and telling the rest. Lightweight still means an adult reads the work and decides. Turn it around promptly, because the next session waits for your answer.
+This checkpoint is lightweight and asynchronous. One accountable adult can review and relay the decision: a quick five-minute call, a comment on a shared note, a short text thread, or a decision passed on to the rest. Lightweight still means an adult reads the work and decides. Turn it around promptly, because the next session waits for your answer.
 
-**What to consider:** whether the travel scope is workable; how it fits your family's maximum trip length from the [Trip-Basics card](../../templates/trip_basics.md), or the booked trip length if your dates are booked; whether the other travelers show up in it, which is what the poll step is there to show; budget implications; safety and common sense; and what it means for getting there, such as international flights if you fly.
+**What to consider:** whether the travel scope is workable; how it fits your family's maximum trip length from the [Trip-Basics card](../../templates/trip_basics.md), or the booked trip length if your dates are booked; whether the other travelers show up in it, which is what the poll step is there to show; budget implications; safety and common sense; and what it means for getting there, such as flights, if you fly.
 
 **Your own job here.** If you left the rough trip shape partly open at setup, with only the arrival place written down, firm it up now, including the departure place. The route work in Sessions 28 to 32 builds on it. Keep the reasoning about the trip's shape between the adults; your child only needs the arrival and departure places once they are settled.
 
 **A First Taste pick.** If your child chose their one special pick in Session 44, keep its place on the shortlist. Only the three blocks can change that pick: cost, bookability, and safety or feasibility for everyone. If one applies, tell your child which one, so Session 23 makes no card for it. They choose a new pick from their attraction cards with you in Session 26.
 
-**Use it in a family talk.** Take the shortlist into a family conversation and plan from it. Seeing their research shape the trip a second time, well before the final meeting, is what keeps a child going through the long middle of the project.
+**Use it in a family talk.** Take the shortlist into a family conversation and plan from it. Seeing their research shape the trip a second time, well before the family decision meeting, is what keeps a child going through the long middle of the project.
 
 **Questions to ask:** "Which base would you drop first, and why?" and "Whose wish does this shortlist leave out?" Fill in a [parent review form](../../templates/parent_review_form.md) for this checkpoint as you decide. It has the full set of coaching questions and the good-enough standards, and your child files it behind tab 10 in Session 50; [review checkpoints](../../parent_guide/review_checkpoints.md) explains how to run each one.
 
@@ -120,7 +120,7 @@ This checkpoint is lightweight and asynchronous. One accountable adult can revie
 
 **Your answer.** Pick one of the four and write it in the decision log too, so the checkpoints and the log tell the same story. "Needs more research" is the hard one to deliver; the [coaching guide](../../parent_guide/coaching_and_support.md) has the words.
 
-<!-- density-exempt: x-not-y -- "Praise the move, not the mind" is the coaching rule's named wording, required in Parent Notes -->
+<!-- density-exempt: X, not Y -- "Praise the move, not the mind" is the coaching rule's named wording, required in Parent Notes -->
 **Praise the move, not the mind.** Try "you tied every reason to a source."
 
 If your child answers the lighter-or-deeper question with "lighter," see Low-Bandwidth Parent Mode in [time and effort](../../parent_guide/time_and_effort.md) and use the lighter forms. If they say "deeper," High-Engagement Mode in the [differentiation guide](../../parent_guide/differentiation.md) shows how.

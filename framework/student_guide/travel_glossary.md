@@ -2,7 +2,7 @@
 
 # Travel Glossary
 
-New words, explained simply. If you meet a travel word you do not know, look here first, or ask a grown-up to help you look it up. Each session also explains new words the first time they show up.
+New words, explained simply. If you meet a travel word you don't know, look here first, or ask a grown-up to help you look it up. Each session also explains new words the first time they show up.
 
 ## Travel words (any trip)
 
@@ -16,6 +16,6 @@ New words, explained simply. If you meet a travel word you do not know, look her
 
 ## Words for the place you are going
 
-Your destination pack has its own word list. It holds the words you will see on signs,
-on menus, and while you are getting around, and it explains the temperature, distance,
+Your destination pack has its own page of words, called "Words and Numbers You Will Meet." It holds the words you'll see on signs,
+on menus, and while you're getting around, and it explains the temperature, distance,
 and money units used there. Ask a grown-up to open it with you.

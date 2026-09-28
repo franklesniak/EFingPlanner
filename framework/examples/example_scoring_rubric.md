@@ -6,9 +6,9 @@ We made up this trip so you can see what good work looks like. Your own trip is 
 
 # Example: Scoring Rubric
 
-This is a filled copy of the [Scoring Rubric](../templates/scoring_rubric.md). The pretend planner used the lighter version to compare two cities, Florence and Venice.
+This is a filled copy of the [Scoring Rubric](../templates/scoring_rubric.md). The pretend planner used the Lighter Rubric (3-criteria) to compare two cities, Florence and Venice.
 
-## Lighter version (3 criteria)
+## Lighter Rubric (3-criteria)
 
 | Criteria | Option A | Option B | Option C |
 | --- | --- | --- | --- |

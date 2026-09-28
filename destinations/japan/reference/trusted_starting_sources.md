@@ -11,7 +11,7 @@ Here is where to start your research. The list is grouped by what each one is be
 Start here when you need a rule or a hard fact. These are run by a government or by an official group.
 
 - Japan National Tourism Organization (JNTO).
-- The U.S. Department of State Japan travel page. It covers entry and safety, and it is adult-owned.
+- The U.S. Department of State Japan travel page. It covers entry and safety, and it's adult-owned.
 - Official Japanese government entry pages.
 - Official city and prefecture tourism sites. A prefecture is a bit like a state.
 - Official airport, railway, and transit sites.
@@ -28,16 +28,16 @@ A guidebook is great for getting your bearings. But **check the year it was prin
 
 ## Useful travel sites (use with care)
 
-These are not official. They are still handy, but use them with care.
+These aren't official. They're still handy, but use them with care.
 
-- Japan Guide. It is reliably in English, and good for a first look.
-- Google Maps. It is best for travel times. Use the "Directions" tool.
+- Japan Guide. It's reliably in English, and good for a first look.
+- Google Maps. It's best for travel times. Use the "Directions" tool.
 - Tripadvisor and Time Out Tokyo. Both are good for reviews and ideas.
-- Tabelog. It has restaurant reviews, but it is often Japanese-first, so a grown-up helps.
+- Tabelog. It has restaurant reviews, but it's often Japanese-first, so a grown-up helps.
 
 ## A note on language
 
-Many official Japanese sources are Japanese-first. Some are only part way translated. Official transit pages are one case. So are Tabelog and some attraction pages. JNTO and Japan Guide are reliably English. When you land on a Japanese page, look for the "English" toggle. You may use "translate this page" to **understand** it. But do not use it to **trust** it. Check anything that matters against an official English page, or ask a grown-up.
+Many official Japanese sources are Japanese-first. Some are only partly translated. Official transit pages are one case. So are Tabelog and some attraction pages. JNTO and Japan Guide are reliably English. When you land on a Japanese page, look for the "English" toggle. You may use "translate this page" to **understand** it. But do not use it to **trust** it. Check anything that matters against an official English page, or ask a grown-up.
 
 ## Match the source to the question
 

@@ -10,7 +10,7 @@ You are here: Phase 7 (Itinerary Building). Not a First Taste step. Previous: [4
 - Planner skill: planning realistic time
 - Estimated time: 20-30 minutes
 - Parent involvement: parent review after session
-- Materials: your day cards from Session 41, your Session 29 formula (for its ½ marks), or a grown-up who can tell you how long the trip home takes, your must-do list on your My Calls page, your Reservation Watchlist (in case a change moves something on it), your attraction cards, your Session 39 budget summary and your family's [current travel assumptions](../../templates/current_family_travel_assumptions.md) page (if your special pick hits a block, for the new pick and the band check, or for a third trade-off report about the budget), your [When the Plan Changes card](../../student_guide/when_the_plan_changes.md) and the pages it names that you've made (for any day you change), your traveler profiles, your part-trip note from Session 33 (if you made one) or the grown-up's answer on who is there on which days, your [Trip-Basics card](../../templates/trip_basics.md) (for the time difference, and the maximum or booked trip length), your season from Checkpoint 1, or a grown-up who can tell you the booked season if it's different (for hot weather), your destination pack's transportation basics page, a device with the kid-safe filter on if you check an official site, your [Source Log](../../templates/source_log.md); a blank [Trade-Off Report](../../templates/tradeoff_report.md) if the third report goes here
+- Materials: your day cards from Session 41, your Session 29 formula (for its ½ marks), or a grown-up who can tell you how long the trip home takes, your must-do list on your My Calls page, your Reservation Watchlist (in case a change moves something on it), your attraction cards, your Session 39 budget summary and the grown-ups' [current family travel assumptions](../../templates/current_family_travel_assumptions.md) page (if your special pick hits a block, for the new pick and the band check, or for a third trade-off report about the budget), your [When the Plan Changes card](../../student_guide/when_the_plan_changes.md) and the pages it names that you've made (for any day you change), your traveler profiles, your part-trip note from Session 33 (if you made one) or the grown-up's answer on who is there on which days, your [Trip-Basics card](../../templates/trip_basics.md) (for the time difference, and the maximum or booked trip length), your season from Checkpoint 1, or a grown-up who can tell you the booked season if it's different (for hot weather), your destination pack's transportation basics page, a device with the kid-safe filter on if you check an official site, your [Source Log](../../templates/source_log.md); a blank [Trade-Off Report](../../templates/tradeoff_report.md) if the third report goes here
 
 (For an at-a-glance version, see the matching entry in [the parent session notes](../../parent_guide/session_support_notes.md); the Parent Notes below have the full detail.)
 
@@ -20,7 +20,7 @@ Look over your plan, and find the days that would wear people out.
 
 ## Start Here
 
-Pick your own first move and do it. If you'd like an idea, lay your day cards out in order and circle the one that looks busiest. If a day has no energy level yet, give it one first.
+Pick your own first move and do it. If you would like an idea, lay your day cards out in order and circle the one that looks busiest. If a day has no energy level yet, give it one first.
 
 ## Steps
 
@@ -82,11 +82,11 @@ You can say your answers to an adult who writes them, or draw them, if that's ea
 
 ## Artifact Created
 
-Your pacing review: the checks, the days you'd make gentler, and your flags for the adults.
+Your pacing review: the checks, the days you would make gentler, and your flags for the adults.
 
 ## Stop Point
 
-You are done when you've gone through the checks once, marking each one yes or no, and either marked at least one day you'd make gentler and checked it again, or written that every day passed, and you've written your list of flags for the adults. Every day has an energy level. You've gone down your When the Plan Changes card for each change you made. Finding even one thing to fix is a finished review, and so is a plan that passes every check. "Not sure" is a fine note on any check. If you didn't write your third trade-off report in Session 34, you're done once it's written here too. If your special pick hit a block, you've chosen a new one with a grown-up, every page the card's special-pick row names is fixed, and you've checked that day again.
+You are done when you've gone through the checks once, marking each one yes or no, and either marked at least one day you would make gentler and checked it again, or written that every day passed, and you've written your list of flags for the adults. Every day has an energy level. You've gone down your When the Plan Changes card for each change you made. Finding even one thing to fix is a finished review, and so is a plan that passes every check. "Not sure" is a fine note on any check. If you didn't write your third trade-off report in Session 34, you're done once it's written here too. If your special pick hit a block, you've chosen a new one with a grown-up, every page the card's special-pick row names is fixed, and you've checked that day again.
 
 ## Source Check
 
@@ -118,4 +118,4 @@ If the pacing check shows the special pick is not doable for every traveler, nam
 
 The floor's third trade-off report is about pacing, where to stay, or the budget. If your child did not write it at Session 34, it belongs here.
 
-**The lighter page.** From Phase 7 on, Steps and Workspace are short and your child sets their own Start Here. The readiness signal is two sessions in a row done without needing the When I'm Stuck card or leaning on the written Steps; the Finish and Quality Check closes every session, so using it never counts against them. If your child isn't there yet, read the Steps with them. Start Here, the Stop Point, the named artifact and the Source Check stay on every page.
+**The lighter page.** This page's Steps and Workspace are short, and your child sets their own Start Here. The readiness signal is two sessions in a row done without needing the When I'm Stuck card or leaning on the written Steps; the Finish and Quality Check closes every session, so using it never counts against them. If your child isn't there yet, read the Steps with them. Start Here, the Stop Point, the named artifact and the Source Check stay on every page.

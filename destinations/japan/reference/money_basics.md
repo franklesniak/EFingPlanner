@@ -4,7 +4,7 @@
 
 **Last reviewed:** July 2026
 
-Enough to help the child think about cost. Adults own the real budget. Adults also change the money and do all the paying.
+Enough to help you think about cost. Adults own the budget. Adults also change the money and do all the paying.
 
 ## The currency is the yen
 
@@ -15,21 +15,21 @@ Japan uses the yen. To tell if a thing costs a lot, change yen into dollars. But
 
 ## Cash still matters
 
-Card and phone payments are growing. But **many small places are still cash-only**. That can mean small restaurants. It can mean temple and shrine admissions. It can mean some local shops. So families plan to carry some yen. ATMs in convenience stores can get yen with a foreign card. You can find those at 7-Eleven and Japan Post, for example. Getting the cash and carrying it is a grown-up's job. How much a place leans on cash can shift over time. Treat that as something to check for current norms.
+Card and phone payments are growing. But **many small places are still cash-only**. That can mean small restaurants. It can mean temple and shrine admissions. It can mean some local shops. So families plan to carry some yen. Some ATMs can get yen with a foreign card. You can find them at 7-Eleven stores and at Japan Post, for example. Getting the cash and carrying it is a grown-up's job. How much a place leans on cash can shift over time. Treat that as something to check for current norms.
 
 ## Costs come in different shapes
 
 - **Per person** -- like meals and most activity tickets.
 - **Per room** -- like most hotels. A family may need more than one room, and room count is an adult call. How many people a room holds is on the [adult logistics page](adult_logistics.md).
 - **Per group** -- some things are one cost for everyone.
-- A **ryokan** (traditional inn) is usually priced **per person**. It often includes dinner and breakfast. So the per-room math does not apply to it.
+- A **ryokan** (traditional inn) is usually priced **per person**. It often includes dinner and breakfast. So the per-room math doesn't apply to it.
 
 ## A fun budget fact to check
 
-On Japanese trains, children often cost less than adults. Sometimes it is about half. Very young children often ride free. Look up the current ages and amounts on an official source first. Do not assume a fixed rule.
+On Japanese trains, children often cost less than adults. Sometimes it's about half. Very young children often ride free. Look up the current ages and amounts on an official source first. Do not assume a fixed rule.
 
 Child fares are one of the items on the [access and pricing watch](access_and_pricing_watch.md), the list of things to check again close to travel.
 
-## Things that are changing (verify, never assume)
+## Things that change (verify, never assume)
 
-Several travel costs are in motion right now. One is a departure tax. One is how tax-free shopping works for visitors. Some cities add a lodging tax or a bathing tax. Some attractions use tourist or dual pricing, which means a visitor may pay more than a local. All of these change. So a grown-up checks the current amounts and rules at booking, and again before travel. No amount is pinned here on purpose.
+Watch these kinds of travel cost. One is a departure tax. One is how tax-free shopping works for visitors. Some cities add a lodging tax or a bathing tax. Some attractions use tourist or dual pricing, which means a visitor may pay more than a local. All of these change. So a grown-up checks the current amounts and rules at booking, and again before travel. No amount is pinned here on purpose.

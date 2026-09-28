@@ -5,7 +5,7 @@
 <!-- density-exempt: X, not Y -- safety and privacy rule: the child never books, pays or handles personal data (privacy and safety page, online safety for the child) -->
 The booking and logistics tasks on this page are yours. Your child never books, never pays, and never handles booking, account, passport or payment data.
 
-**One deliberate exception, and it matters:** your child carries an "if I get separated" card with where you are staying, its address and phone number, and a parent's phone number. That is the minimum needed to reunite, it is a carry-in-pocket card rather than data written anywhere else, and it is theirs to carry. Do not strip it.
+**Their safety card, and it matters:** your child carries an "if I get separated" card with where you are staying, its address and phone number, and a parent's phone number. That is the minimum needed to reunite, it is a carry-in-pocket card rather than data written anywhere else, and it is theirs to carry. Do not strip it.
 
 Two things here are theirs, and they matter: your child **flags** accessibility trouble spots for you, and your child **makes and learns** the separation card and its three-step plan. Don't skim past those. They're the parts a child can actually do, and the safety one is the reason the whole split works.
 
@@ -13,7 +13,7 @@ Long-lead items come first, because those are the ones that quietly set your ear
 
 ## Passports are an early task
 
-A child's first passport takes time to get, and that constrains the earliest window you can travel in, which shapes the seasonal research your child is doing right now. If passports aren't sorted, start them before the trip feels real.
+If your trip leaves the country, start here. A child's first passport takes time to get, and that constrains the earliest window you can travel in, which shapes the seasonal research your child is doing right now. If passports aren't sorted, start them before the trip feels real.
 
 There are age-based rules about who must appear in person, who must consent, and what proof is needed, and there are processing times that vary through the year. **All of that changes, and all of it has documented exceptions**, including for families where one parent can't attend. So don't take a rule from a blog, or from this page. Check the current requirements on the official government passport source, write the date you checked, and work from what it says today.
 
@@ -27,8 +27,8 @@ Worth knowing: your child's binder is valuable either way. If you use an agent, 
 
 ## The checklist
 
-- [ ] Passports
-- [ ] Entry requirements: verify the current rule on the official government source close to travel, and write the date you checked. If anyone is *selling* you a travel authorization, check that against the official source before paying; the destination specifics are in your destination pack's adult logistics page, or on the official source if the pack does not cover them yet
+- [ ] Passports, if your trip leaves the country
+- [ ] Entry requirements: verify the current rule on the official government source close to travel, and write the date you checked. If anyone is *selling* you a travel authorization, check that against the official source before paying; the destination specifics are in your destination pack's adult logistics page, or on the official source if the pack lacks them
 - [ ] Visa or entry forms, if applicable
 - [ ] Flights
 - [ ] Hotels
@@ -39,12 +39,12 @@ Worth knowing: your child's binder is valuable either way. If you use an agent, 
 - [ ] Health and medications
 - [ ] Medication rules, if relevant
 - [ ] Emergency contacts
-- [ ] Embassy or consulate awareness
+- [ ] Embassy or consulate awareness, if your trip leaves the country
 - [ ] Copies of documents
 - [ ] Meeting-point plan
 - [ ] Travel advisories
 - [ ] Weather alerts
-- [ ] Local natural-hazard awareness: see your destination pack's safety and emergency page, or a current official source for the destination if the pack does not cover it yet, with the date you checked
+- [ ] Local natural-hazard awareness: see your destination pack's safety and emergency page, or a current official source for the destination if the pack lacks it, with the date you checked
 - [ ] Timed tickets
 - [ ] Restaurant reservations
 - [ ] Transportation bookings
@@ -55,7 +55,7 @@ Three things go beyond stamina, and they are yours to verify:
 
 - **Step-free routing and station elevator availability** on the route you're actually planning
 - **Accessible lodging** — step-free access, and any room or bathroom needs
-- **Luggage handling** for anyone who shouldn't carry bags up stairs: forwarding services, porter help, or lockers. Those are categories; **which ones exist where you are going, and what they are called, is in your destination pack's adult logistics page**. If your pack does not have that page yet, check the official sites of the local transport operators, or ask your lodging, and write the date you checked
+- **Luggage handling** for anyone who shouldn't carry bags up stairs: forwarding services, porter help, or lockers. Those are categories; **which ones exist where you are going, and what they are called, is in your destination pack's adult logistics page**. If your pack lacks that page, check the official sites of the local transport operators, or ask your lodging, and write the date you checked
 
 <!-- density-exempt: X, not Y -- the spec's child-flags-not-fixes boundary, bold in the batch 2 brief: the child does not research the fix -->
 Your child's job is to *flag* likely trouble spots: a stair-heavy transfer, a hilltop site, a station that may not have a lift. They notice and hand it to you. They don't research the fix.
@@ -91,7 +91,7 @@ Verify on official sources close to travel. For every item on this page you chec
 
 ---
 
-This page holds no personal data, and it shouldn't. No document numbers, no example passport details, no names.
+This page holds no personal data, and it should not. No document numbers, no example passport details, no names.
 
 ## Where to go next
 

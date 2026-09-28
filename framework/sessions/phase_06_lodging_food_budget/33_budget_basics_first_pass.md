@@ -14,7 +14,7 @@ You are here: Phase 6 (Lodging, Food, and Budget), First Taste step 11 of 13. Pr
 - Planner skill: estimating; making trade-offs
 - Estimated time: 20-30 minutes
 - Parent involvement: 5-minute check-in; you supply the kid-sized budget band and the number of rooms
-- Materials: a [Budget Estimate page](../../templates/budget_estimate.md), your family's [current travel assumptions](../../templates/current_family_travel_assumptions.md) page (for the budget band), your [Trip-Basics card](../../templates/trip_basics.md) (for the number of travelers), your [Source Log](../../templates/source_log.md), a calculator (allowed). On the First Taste path, also your Session 21 recommendation. On the Core path, also the route and nights your family approved at Checkpoint 4, for your overnight cities, their nights and the number of days, your Session 29 formula (for its "- 1 flight day" marks), or a grown-up who can tell you which flights land on a later date, and your traveler profiles from Session 02 if a traveler is coming for part of the trip.
+- Materials: a [Budget Estimate page](../../templates/budget_estimate.md), the grown-ups' [current family travel assumptions](../../templates/current_family_travel_assumptions.md) page (for the budget band), your [Trip-Basics card](../../templates/trip_basics.md) (for the number of travelers), your [Source Log](../../templates/source_log.md), a calculator (allowed). On the First Taste path, also your Session 21 recommendation. On the Core path, also the route and nights your family approved at Checkpoint 4, for your overnight cities, their nights and the number of days, your Session 29 formula (for its "- 1 flight day" marks), or a grown-up who can tell you which flights land on a later date, and your traveler profiles from Session 02 if a traveler is coming for part of the trip. For the optional treat lookup, also a device with the kid-safe filter on.
 
 ## Goal
 
@@ -28,10 +28,10 @@ Write the word "Food" and the word "Hotel" on your Budget Estimate page. Those a
 
 Every trip is made of cost categories. You're learning how trip money is split up, and checking whether the parts *you* choose fit. Rough numbers work fine for that.
 
-1. **Meet the categories** (just read these once): getting there, hotels, food, local transit, longer journeys once you are there, activities and tickets, souvenirs, and a buffer for surprises.
+1. **Meet the categories** (just read these once): getting there, hotels, food, local transit, longer journeys once you're there, activities and tickets, souvenirs, and a buffer for surprises.
 2. **Estimate two of them** with simple **high / medium / low** guesses (a grown-up can help you find rough numbers, and you can use a calculator):
    - **Meals:** about how much per person, per day? (high / medium / low)
-   - **Hotel:** about how much per night, per room? (high / medium / low) A grown-up tells you how many rooms. If they say the places you'd stay charge per person, guess per person, and multiply by the number of people. (On the First Taste path: if you kept two cities in Session 21, guess a hotel for each. Your plan pays for both.) On the Core path, guess one typical price that fits all the overnight cities the grown-ups approved at Checkpoint 4.
+   - **Hotel:** about how much per night, per room? (high / medium / low) A grown-up tells you how many rooms. If they say the places you would stay charge per person, guess per person, and multiply by the number of people. (On the First Taste path: if you kept two cities in Session 21, guess a hotel for each. Your plan pays for both.) On the Core path, guess one typical price that fits all the overnight cities the grown-ups approved at Checkpoint 4.
 3. **Do the easy math** (round to friendly numbers first; a grown-up may do the multiplying while you do the thinking):
 
    | Cost | How to figure it | My estimate |
@@ -56,7 +56,7 @@ Every trip is made of cost categories. You're learning how trip money is split u
 
 ## Workspace
 
-Use your Budget Estimate page for the two estimates, the math, and your fits / too-high check.
+Use your Budget Estimate page for the two estimates, the math, and your fits / too-high check. Your two-slice estimate goes in its Subtotal row.
 
 Only if someone is coming for part of the trip (Core path):
 
@@ -73,13 +73,13 @@ Your budget first pass: the cost categories, a meals-and-hotel estimate, and a c
 
 ## Stop Point
 
-You are done when you have a high/medium/low estimate for meals and for hotel, and you have checked the matching piece against your band. Two slices is enough for First Taste. You can stop here.
+You are done when you have a high/medium/low estimate for meals and for hotel, and you've checked the matching piece against your band. Two slices is enough for First Taste. You can stop here.
 
 On the Core path, you are done when your hotel row uses every night in your Checkpoint 4 plan and your food row uses that plan's total days, minus any flight days. If a city's nights say "not sure yet", use a number a grown-up gives you, or write "ask an adult" in that blank. Someone coming for only part of the trip? The part-trip table from step 5 is a helpful extra. You can stop without it.
 
 ## Source Check
 
-If you looked up any rough prices, record where in your Source Log, with today's date, and note that prices change and must be re-checked before booking.
+If you looked up any rough prices, a treat's price included, record where in your Source Log, with today's date, and note that prices change and must be re-checked before booking.
 
 ## Finish and Quality Check
 
@@ -91,11 +91,11 @@ Stuck? Use the [When I'm Stuck card](../../student_guide/when_im_stuck.md) in yo
 
 ## Optional Extension
 
-If you have extra energy, estimate a third slice like activities or souvenirs. You can also do this when you continue past First Taste. Or plan your own "spending money." Did a grown-up give you an amount? Then look up what a small treat costs. How many could you get?
+If you have extra energy, estimate a third slice like activities or souvenirs. You can also do this when you continue past First Taste. Or plan your own "spending money." Did a grown-up give you an amount? Then look up what a small treat costs where you're going, with a grown-up, on a site they pick. How many could you get?
 
 ## Parent Notes
 
-Keep this light -- two slices (meals and hotel), checked against a kid-sized band. Getting there is adult-owned, so it stays *off* your child's check here, and when it is a long flight it can outweigh everything else; the lesson is how costs are structured and whether *their* choices fit, not a real bookable total. Supply the band in kid-sized form (per person per day, per day for the family, or "this hotel tier"). A calculator is always allowed, and you may do the arithmetic while your child does the reasoning -- this matters for a child with number anxiety. Keep all figures verify-framed, because every price here can change.
+Keep this light: two slices (meals and hotel), checked against a kid-sized band. Getting there is adult-owned, so it stays *off* your child's check here, and when it is a long flight it can outweigh everything else; the lesson is how costs are structured and whether *their* choices fit, not a bookable total. Supply the band in kid-sized form (per person per day, per day for the family, or "this hotel tier"). A calculator is always allowed, and you may do the arithmetic while your child does the reasoning. This matters for a child with number anxiety. Keep all figures verify-framed, because every price here can change.
 
 Before Session 39, have your own cost of getting there ready. Keep a rough figure on your own page: a per-person fare times the number of travelers if you fly or take the train, or the drive's own costs if you drive. It is for your own sanity check at Session 39, on your own page. A family that finished First Taste first gets it ready when it continues, before Session 39.
 

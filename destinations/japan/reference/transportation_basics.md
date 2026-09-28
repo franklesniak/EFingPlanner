@@ -4,7 +4,7 @@
 
 **Last reviewed:** September 2026
 
-Enough to help the child plan a route that will work. Adults own the booking. Adults judge whether a rail pass is worth its price. Adults also do any checks on step-free access.
+Enough to help you plan a route that will work. Adults own the booking. Adults judge whether a rail pass is worth its price. Adults also do any checks on step-free access.
 
 ## Trains are the backbone
 
@@ -22,7 +22,7 @@ Japan trips often mean a lot of walking. Busy days can run to 15,000 steps or mo
 
 ## Handy planning ideas
 
-- **Takkyubin (luggage forwarding)** -- your bags can be sent ahead to your next hotel. Then you do not carry them on stairs. It is great for a family with a lot of luggage.
+- **Takkyubin (luggage forwarding)** -- your bags can be sent ahead to your next hotel. Then you don't carry them on stairs. It's great for a family with a lot of luggage.
 - **Coin lockers** -- many stations have them. You can stash bags there for the day.
 - On some Shinkansen lines, including the one that links Tokyo, Kyoto and Osaka, **oversized baggage may need a reserved spot**. Check the current size rule. A big family's luggage can hit that size, which makes forwarding even handier.
 

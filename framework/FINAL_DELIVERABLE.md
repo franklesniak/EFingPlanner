@@ -17,7 +17,7 @@ This list names what the child produces, in this order.
 2. Traveler profiles
 3. Family trip goals
 4. Current family travel assumptions
-5. Source log
+5. Source Log
 6. Decision log
 7. Season recommendation (or the season confirmation, when the dates were booked by Checkpoint 1)
 8. City long-list
@@ -40,7 +40,7 @@ This list names what the child produces, in this order.
 25. Adult follow-up questions
 26. Final reflection
 
-This page holds the item list, and the [print index](print_index.md) holds the organization: the tab order, and what goes behind each tab. Its mapping also files the family's setup input, the adult's review forms, and the summaries assembled from the rest, for the reason stated there.
+This page holds the item list, and the [print index](print_index.md) holds the organization: the tab order, and what goes behind each tab. Its mapping also files pages this list does not name, such as the family's setup input, the "My Calls" page, the adult's review forms and the summaries assembled from the rest, for the reason stated there.
 
 ## Final output files
 
@@ -62,7 +62,7 @@ The child gives a 5-10 minute presentation at the family decision meeting, in tw
 
 **Part 2, Handoff:** what do adults still need to verify? What do adults still need to decide? What do adults need to book? What questions remain open? Which child-created materials should adults use next?
 
-There is no single required way to present. The child can present live, practice with one parent first, present from notes, record a video and play it, or hand over the binder with a short written summary. The family makes its decision the same way whichever one they choose. The blank outline is the [Final Presentation Outline](templates/final_presentation_outline.md).
+There is no single required way to present. The child can present live, practice with one adult first, present from notes, record a video and play it, or hand over the binder with a short written summary. The family makes its decision the same way whichever one they choose. The blank outline is the [Final Presentation Outline](templates/final_presentation_outline.md).
 
 ## Adult handoff
 
@@ -91,7 +91,7 @@ This is a floor. Meeting it is success, and a child is never asked to pile up mo
 - Day cards, with the block card per city-stay as the strong default.
 - At least one food or restaurant note per major overnight city, only if the family does the food sessions.
 - At least three trade-off reports: the season report at Checkpoint 1 in Session 14, the route report in Session 31, and a third on pacing, where to stay, or the budget, in Session 34 or Session 43. With the dates booked, the season report compares two ways to plan around the booked season's biggest challenge.
-- Source log entries for the major recommendations.
+- Source Log entries for the major recommendations.
 - An adult follow-up list.
 
 ## Which path these counts are for
@@ -101,7 +101,7 @@ These counts are the floor for the **Core Finish Line and the full program**. Th
 ## Trade-off reports, sources and decisions
 
 - **Trade-off reports:** each on a [Trade-Off Report](templates/tradeoff_report.md) page; the floor above says how many.
-- **Source log:** every major recommendation points to its entries on the [Source Log](templates/source_log.md), with the date each source was checked.
+- **Source Log:** every major recommendation points to its entries on the [Source Log](templates/source_log.md), with the date each source was checked.
 - **Decision log:** every checkpoint decision has a [Decision Record](templates/decision_record.md) in the decision log.
 
 ## A binder ready to present

@@ -20,7 +20,7 @@ Start your planner binder with a cover page, and write down what you already kno
 
 ## Start Here
 
-Write your name and today's date at the top of a fresh page. That is your first step as the travel planner.
+Write your name and today's date at the top of a fresh page. That's your first step as the travel planner.
 
 ## Steps
 
@@ -28,10 +28,10 @@ Write your name and today's date at the top of a fresh page. That is your first 
 
 You are the **junior travel planner** for a real family trip. Your job is to research, compare, and recommend. The grown-ups make the final calls on money, booking, travel, and safety. Your recommendations really matter to those calls.
 
-Two things are already decided by the grown-ups: we are going on a trip, and the grown-ups have picked where. Everything *else* is really yours to figure out: which places make the list, your must-dos, the order of your days, and your one special pick. Read the one-page [What I Decide card](../../student_guide/what_i_decide.md) so you can see the honest boundary up front.
+Two things are already decided by the grown-ups: we're going on a trip, and the grown-ups have picked where. Everything *else* is yours to figure out: which places make the list, your must-dos, the order of your days, and your one special pick. Read the one-page [What I Decide card](../../student_guide/what_i_decide.md) so you can see the honest boundary up front.
 
 1. Make a **cover page** for your binder with:
-   - Project title (name your planning practice if you want; that is yours to choose).
+   - Project title (name your planning practice if you want; that's yours to choose).
    - Planner name (you).
    - Destination: ______ (from your Trip-Basics card).
    - Home airport and code, if you are flying: ______ (from your Trip-Basics card).
@@ -43,15 +43,15 @@ Two things are already decided by the grown-ups: we are going on a trip, and the
    - What is hard for me when a project is big?
    - What helps me get started?
 
-Keep your baseline reflection somewhere safe. At the very end, you will look back at it and see how far you have come.
+Keep your baseline reflection somewhere safe. At the very end, you'll look back at it and see how far you've come.
 
 > **Carry-over tag:** You just used the move "start with one tiny step." Where else could you use it -- homework, a chore, a big school project?
 
 ## Workspace
 
-Use two fresh pages: your cover page and your "things I can't wait to see" page. The baseline reflection can go on the back of the cover page. **These two are yours to make, and there is no blank to print** -- a cover is better when it looks like you drew it.
+Use two fresh pages: your cover page and your "things I can't wait to see" page. The baseline reflection can go on the back of the cover page. **These two are yours to make, and there's no blank to print.** A cover is better when it looks like you drew it.
 
-You can say your answers to an adult who writes them, or draw them, if that is easier.
+You can say your answers to an adult who writes them, or draw them, if that's easier.
 
 ## Artifact Created
 
@@ -59,7 +59,7 @@ Your trip planner cover page, the start of your "things I can't wait to see" pag
 
 ## Stop Point
 
-You are done when your cover page is filled in and you have written (or said) your two baseline-reflection answers. You do not need to decorate it perfectly. You can add to the "Make It Yours" cover any time.
+You are done when your cover page is filled in and you've written (or said) your two baseline-reflection answers. Your cover is part of your "Make It Yours" zone, so you can add to it any time. You don't need to decorate it perfectly.
 
 ## Source Check
 
@@ -79,4 +79,4 @@ If you have extra energy, decorate your cover or add three more things to your "
 
 ## Parent Notes
 
-This is the buy-in moment. Deliver the "you are the planner" message as trust, not a letdown: the grown-ups picked the trip and the country; the planning is really theirs. Ask once, lightly, "what would make this fun for you?" and let their answer feed the "things I can't wait to see" page. The planning moves here -- getting started, breaking a big job into steps -- are the same ones they use for homework and chores; you can name that out loud when you notice it. If they are lukewarm, that is okay; see the [coaching guide](../../parent_guide/coaching_and_support.md).
+This is the buy-in moment. Deliver the "you are the planner" message as trust, not a letdown: the grown-ups picked the trip and where it goes; the planning is really theirs. Ask once, lightly, "what would make this fun for you?" and let their answer feed the "things I can't wait to see" page. The planning moves here -- getting started, breaking a big job into steps -- are the same ones they use for homework and chores; you can name that out loud when you notice it. If they are lukewarm, that is okay; see the [coaching guide](../../parent_guide/coaching_and_support.md).

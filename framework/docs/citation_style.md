@@ -7,9 +7,9 @@
 
 - **Status:** Active
 - **Owner:** Repository Maintainers
-- **Last Updated:** 2026-09-24
+- **Last Updated:** 2026-09-28
 - **Scope:** The single canonical home for the citation rule in this curriculum: when a citation is required, the six citation forms with their exact field names, the three verification fields, and the note structure. Every built page that reproduces a form copies its field names from here. Builder-facing and parent-facing, and written to be read aloud to a child.
-- **Related:** [Simple citation forms](../templates/simple_citation.md), [Source log](../templates/source_log.md), [Source trustworthiness](source_trustworthiness.md)
+- **Related:** [Simple citation forms](../templates/simple_citation.md), [Source Log](../templates/source_log.md), [Source trustworthiness](source_trustworthiness.md)
 
 ## Why we write down where a fact came from
 
@@ -85,10 +85,10 @@ Every note the child writes has four parts, in this order:
 3. The source.
 4. A question for later.
 
-The fourth part is the one people drop, and it is the one that keeps research moving. A question written down goes to the question parking lot instead of derailing the session it occurred to you in.
+The second part is the one people skip, and the fourth is the one that keeps research moving. A question written down goes to the question parking lot instead of derailing the session it occurred to you in.
 
 ## Where these are used
 
 - [Simple citation forms](../templates/simple_citation.md) is the printable page. It carries all six forms and the three verification fields as fill-in tables.
-- [Source log](../templates/source_log.md) is the running record. One copy of the table per source, kept for the whole project.
+- [Source Log](../templates/source_log.md) is the running record. One copy of the table per source, kept for the whole project.
 - [Source trustworthiness](source_trustworthiness.md) is how to judge whether a source was worth citing in the first place.

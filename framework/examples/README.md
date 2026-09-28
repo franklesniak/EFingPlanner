@@ -14,7 +14,7 @@ One planner made all six pages, for one trip. They're listed in the order the pl
 
 - The [Example Source Log](example_source_log.md) shows three short entries on a [Source Log](../templates/source_log.md). It helps when you wonder how much to write about one source.
 - The [Example City Research Card](example_city_card.md) shows a [City Research Card](../templates/city_research_card.md) filled in for one city. It helps when you start a city card and wonder how long an answer should be.
-- The [Example Scoring Rubric](example_scoring_rubric.md) shows the lighter version of the [Scoring Rubric](../templates/scoring_rubric.md), used on two cities. It helps the first time you score your choices.
+- The [Example Scoring Rubric](example_scoring_rubric.md) shows the Lighter Rubric (3-criteria) from the [Scoring Rubric](../templates/scoring_rubric.md), used on two cities. It helps the first time you score your choices.
 - The [Example Trade-Off Report](example_tradeoff_report.md) shows a [Trade-Off Report](../templates/tradeoff_report.md) that compares two routes. It helps when you have to name what a choice gives up.
 - [How a Planner Thought About It](example_how_a_planner_thought_about_it.md) is the planner thinking out loud about one choice. It uses no template. It helps when you want to hear how a choice gets made.
 - The [Example Daily Plan Card](example_day_card.md) shows one block card from the [Daily Plan Card](../templates/daily_plan_card.md). It helps when you build your day cards.

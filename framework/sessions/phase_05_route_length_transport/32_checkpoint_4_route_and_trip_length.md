@@ -10,7 +10,7 @@ You are here: Phase 5 (Route, Length, and Transportation). Not a First Taste ste
 - Planner skill: making trade-offs
 - Estimated time: 20-30 minutes for the child, plus a 20-40 minute review with you
 - Parent involvement: parent review -- genuinely use the recommendation in a real family talk
-- Materials: your Trade-Off Report from Session 31, your nights table and formula from Session 29, your route map notes, your My Calls page (for your special pick), your [Trip-Basics card](../../templates/trip_basics.md), your family's [current travel assumptions](../../templates/current_family_travel_assumptions.md) page (for the budget band), a device with a map app (kid-safe filter on) if the grown-ups change where you arrive or leave, your [When the Plan Changes card](../../student_guide/when_the_plan_changes.md) and the pages it names that you've made (for any change the grown-ups approve), your [Source Log](../../templates/source_log.md), a [Decision Record page](../../templates/decision_record.md), a blank [Parent Review Form](../../templates/parent_review_form.md) for a grown-up to fill in
+- Materials: your Trade-Off Report from Session 31, your nights table and formula from Session 29, your route map notes, your My Calls page (for your special pick), your [Trip-Basics card](../../templates/trip_basics.md), the grown-ups' [current family travel assumptions](../../templates/current_family_travel_assumptions.md) page (for the budget band), a device with a map app (kid-safe filter on) if the grown-ups change where you arrive or leave, your [When the Plan Changes card](../../student_guide/when_the_plan_changes.md) and the pages it names that you've made (for any change the grown-ups approve), your [Source Log](../../templates/source_log.md), a [Decision Record page](../../templates/decision_record.md), a blank [Parent Review Form](../../templates/parent_review_form.md) for a grown-up to fill in
 
 (For an at-a-glance version, see the matching entry in [the parent session notes](../../parent_guide/session_support_notes.md); the Parent Notes below have the full detail.)
 
@@ -119,7 +119,7 @@ This review stays lightweight too: a five-minute call, a note on a shared page, 
 
 **Your answer.** Pick one of the four and write it in the decision log too, so the checkpoints and the log tell the same story. "Needs more research" is the hard one to deliver; the [coaching guide](../../parent_guide/coaching_and_support.md) has the words.
 
-<!-- density-exempt: x-not-y -- "Praise the move, not the mind" is the coaching rule's named wording, required in Parent Notes -->
+<!-- density-exempt: X, not Y -- "Praise the move, not the mind" is the coaching rule's named wording, required in Parent Notes -->
 **Praise the move, not the mind.** Try "you built in a slower day for the traveler who tires more easily."
 
 If your child answers the lighter-or-deeper question with "lighter," see Low-Bandwidth Parent Mode in [time and effort](../../parent_guide/time_and_effort.md) and use the lighter forms. If they say "deeper," High-Engagement Mode in the [differentiation guide](../../parent_guide/differentiation.md) shows how.
