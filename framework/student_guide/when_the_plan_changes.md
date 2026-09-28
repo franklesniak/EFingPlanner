@@ -4,7 +4,7 @@
 
 Plans change. A grown-up might move a place, change the nights, book the dates, or tell you your special pick can't work. That doesn't mean your work was wrong. You move a block and keep the rest, as [What I Decide](what_i_decide.md) explains.
 
-When something changes, your earlier pages need to catch up. First, write the change where it happened, such as your itinerary draft or your Decision Record. Say where it changed, such as "changed at Checkpoint 5". Then use this card in two parts. First, do the rows under "What changed?" that fit your change. Then go down "Your plan pages" at the end. Fix only the pages you've already made. A page you haven't made yet will use the new plan when you get to it.
+When something changes, your earlier pages need to catch up. First, write the change where it happened, such as your itinerary draft or your Decision Record. Say where it changed, such as "changed at Checkpoint 5". If your plan changes many times, you can also keep a short note of each change on the optional [Itinerary Revision Notes](../templates/itinerary_revision_notes.md) page. Then use this card in two parts. First, do the rows under "What changed?" that fit your change. Then go down "Your plan pages" at the end. Fix only the pages you've already made. A page you haven't made yet will use the new plan when you get to it.
 
 ## What changed?
 

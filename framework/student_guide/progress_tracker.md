@@ -142,6 +142,12 @@ How to read the lines:
 
 Stopping at Checkpoint 5, the Core Finish Line, is a complete success, and so is going all the way to Session 53.
 
+## After the trip
+
+This one is optional, and it comes after the trip, whichever finish line you reached.
+
+- [ ] [54 After You Get Back](../sessions/phase_09_after_you_get_back/54_after_you_get_back.md) *(optional, after the trip: a grown-up shares the numbers)*
+
 ## Which sessions need a grown-up
 
 On the First Taste path, most sessions you can do on your own. Only a few need a grown-up first:

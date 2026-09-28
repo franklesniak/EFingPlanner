@@ -30,7 +30,7 @@ Each reference file and each session insert carries a `Last reviewed` date: the 
 
 ## Session inserts
 
-- [Insert contract and add-a-destination checklist](session_inserts/README.md) -- which session pulls which insert, and what it takes to add a destination.
+- [The routing contract](session_inserts/README.md) -- which session pulls which insert and reference file, and what each insert must supply.
 - [Destination snapshot notes](session_inserts/10_snapshot_facts.md) -- the big facts for the snapshot session.
 - [Regions and cities notes](session_inserts/11_regions_overview.md) -- the regions this pack plans around, for the regions session.
 - [Weather and seasons notes](session_inserts/12_seasons_and_events.md) -- the four seasons, for the seasons session.

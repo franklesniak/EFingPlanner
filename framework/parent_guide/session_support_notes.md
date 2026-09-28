@@ -508,3 +508,11 @@ Want a rough signal of how the executive-function side is going? The optional [e
 - Look for: a reflection compared to the baseline, and the plan handed to you. On the Core path, answers to three more questions, on patterns, the guesses (the time guesses that exist, and the Session 23 and 30 guesses) and the budget against the band, comparing the matching piece your child checked with the band sentence, and each hotel for a hotel tier, saying what a "not counting ___" left out, with a band you changed since Session 39 taken down the When the Plan Changes card's "Your budget band changed?" row first, and the full binder handed over, with tabs 10 and 11 filled in, and with the must-do list and the approved route in place of the must-see list and the city choice; for a capstone re-run, a look back at the First Taste reflection too.
 - Coaching question: "Where else could you use one of these planning moves?"
 - Pitfall: skipping the acknowledgment. Finishing a real project is a big deal -- say so.
+
+## Session 54: After You Get Back
+
+- Role: optional, after the trip, and fully skippable; a 5-minute check-in. Supply the numbers from the trip you choose to share, and your child does the comparing.
+- Prep: the in-trip capture card, if you kept it; the Session 53 final reflection; the Session 33 budget estimate, and the Session 39 budget summary on the Core path; the day cards or itinerary, if your child made them; and the numbers you're willing to share, such as a daily food total, a ticket or a ride. Confirmation numbers and payment details stay in your own records, as the privacy and safety rules say, because this page is filed in the binder.
+- Look for: two or three days compared on the session page, with any Cost row left empty where you kept the money private; the three questions answered; and one lesson line, with the page filed after the final reflection.
+- Coaching question: "Which day went most like your plan, and why?"
+- Pitfall: turning it into homework, or into a verdict on the trip. One short sitting and one lesson line is the whole job.

@@ -19,9 +19,9 @@ Copy the blanks out; do not fill them in here. The child's real work is never co
 
 ## 2. Choose the destination pack
 
-Pick the destination pack for the place you are going, and keep it beside the sessions. A pack holds the stable facts about one place, plus the short "destination notes" pages the sessions pull in. One pack serves any number of trips to that place.
+Pick the destination pack for the country your trip is in, and keep it beside the sessions. A pack covers one country: it holds that country's stable facts, plus the short "destination notes" pages the sessions pull in. A trip to one city or one region uses the pack for its country. One pack serves any number of trips there.
 
-If nobody has written a pack for your destination yet, the packs that exist carry a checklist for building one.
+If nobody has written a pack for your country yet, [how to add a destination](how_to_add_a_destination.md) says how to build one.
 
 ## 3. Work the sessions in order, with the pack open
 

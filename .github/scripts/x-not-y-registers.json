@@ -1,4 +1,32 @@
 {
+  "framework/examples/README.md": {
+    "register": "child",
+    "basis": "worked example a child reads: the examples folder's contents page, with no audience marker; addresses the child (\"Look at them when you're stuck\")"
+  },
+  "framework/examples/example_city_card.md": {
+    "register": "child",
+    "basis": "worked example a child reads: a filled copy of a child-facing template, with no audience marker; addresses the child (\"so you can see what good work looks like\")"
+  },
+  "framework/examples/example_day_card.md": {
+    "register": "child",
+    "basis": "worked example a child reads: a filled copy of a child-facing template, with no audience marker; addresses the child (\"so you can see what good work looks like\")"
+  },
+  "framework/examples/example_how_a_planner_thought_about_it.md": {
+    "register": "child",
+    "basis": "worked example a child reads: a pretend planner's think-aloud, with no audience marker; addresses the child (\"so you can see what good work looks like\")"
+  },
+  "framework/examples/example_scoring_rubric.md": {
+    "register": "child",
+    "basis": "worked example a child reads: a filled copy of a child-facing template, with no audience marker; addresses the child (\"so you can see what good work looks like\")"
+  },
+  "framework/examples/example_source_log.md": {
+    "register": "child",
+    "basis": "worked example a child reads: a filled copy of a child-facing template, with no audience marker; addresses the child (\"so you can see what good work looks like\")"
+  },
+  "framework/examples/example_tradeoff_report.md": {
+    "register": "child",
+    "basis": "worked example a child reads: a filled copy of a child-facing template, with no audience marker; addresses the child (\"so you can see what good work looks like\")"
+  },
   "framework/trip_starter/README.md": {
     "register": "child",
     "basis": "inferred: no audience statement; addresses the child (\"ask an adult\"), and the kit's pages are copies of child-facing templates"

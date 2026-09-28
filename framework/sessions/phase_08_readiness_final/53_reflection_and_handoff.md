@@ -2,7 +2,7 @@
 
 # Session 53: Reflection and Handoff
 
-You are here: Phase 8 (Readiness and Final), First Taste step 13 of 13. **This is your finish line.** Previous: [52 Checkpoint 6 Family Decision Meeting](52_checkpoint_6_family_decision_meeting.md) | Next: none. You made it.
+You are here: Phase 8 (Readiness and Final), First Taste step 13 of 13. **This is your finish line.** Previous: [52 Checkpoint 6 Family Decision Meeting](52_checkpoint_6_family_decision_meeting.md) | Next: [54 After You Get Back](../phase_09_after_you_get_back/54_after_you_get_back.md) (optional, after the trip). You made it.
 
 *On the First Taste path, you came here straight from [44 Backup Plans and Cut List](../phase_07_itinerary_building/44_backup_plans_and_cut_list.md).*
 
@@ -42,7 +42,7 @@ These are the same planning moves people use for homework, chores, and any big p
 
 - **Patterns.** Look at the one-line reflections from your checkpoints, however many you wrote. What felt easy or hard more than once? What helped more than once?
 - **Guesses.** In Sessions 16, 26, 35 and 45, how big was the gap between your guess and your time? Did the gaps get smaller with practice? If one of those has no guess, use the ones that do. Then look at your ticket-price guess in Session 23 and your travel-time guess in Session 30. How far off was each one? Being off is normal.
-- **Budget.** Did a grown-up change your band after you wrote your band sentence? Do the "Your budget band changed?" row of your When the Plan Changes card first. Look at your Session 39 band sentence, and the matching piece you checked against the band. How close did it come? With a hotel tier, did each hotel fit? If it said "not counting ___", say what it left out. The band is the anchor you compare with, since nobody has spent the money yet.
+- **Budget.** Did a grown-up change your band after you wrote your band sentence? Do the "Your budget band changed?" row of your When the Plan Changes card first. Look at your Session 39 band sentence, and the matching piece you checked against the band. How close did it come? With a hotel tier, did each hotel fit? If it said "not counting ___", say what it left out. The band is the anchor you compare with, since nobody has spent the money yet. If your family does [Session 54](../phase_09_after_you_get_back/54_after_you_get_back.md) after the trip, that's where you compare with what was spent.
 
 **Hand it off.** Give your plan to the grown-ups: your season pick (or your season confirmation, if you made one at Checkpoint 1), your city choice (with roughly how many days for each), your must-see list, your one special pick, and your budget check. You did the planning; they do the booking. On the Core path, first put your newest pages in your binder, in place of each "comes next" and of any page Checkpoint 6 changed, with any page it added: the follow-up questions and Checkpoint 6's parent review form behind tab 10, and your final recommendation packet, your executive summary, your family presentation or presentation outline, and this final reflection behind tab 11. Your "if I get separated" card stays in your pocket. Then hand over the full binder you put together in Session 50. In it are your must-do list and your approved route, with its nights.
 

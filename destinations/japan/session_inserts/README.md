@@ -1,21 +1,21 @@
 <!-- markdownlint-disable MD013 -->
 <!-- audience: builder -->
 
-# Session Inserts: Contract and Add-a-Destination Checklist
+# Session Inserts: The Routing Contract
 
 ## Metadata
 
 - **Status:** Active
 - **Owner:** Repository Maintainers
-- **Last Updated:** 2026-09-27
-- **Scope:** The destination-pack routing contract. It says which session pulls which insert, which reference files each session points to, what fields every insert slot has to supply, and what it takes to add a new destination pack. It holds routing rather than facts, so it carries no `Last reviewed` stamp.
-- **Related:** [Destination pack contents](../README.md)
+- **Last Updated:** 2026-09-28
+- **Scope:** The destination-pack routing contract. It says which session pulls which insert, which reference files each session points to, and what fields every insert slot has to supply. The steps for adding a destination pack are in the framework's add-a-destination guide. It holds routing rather than facts, so it carries no `Last reviewed` stamp.
+- **Related:** [Destination pack contents](../README.md), [How to add a destination](../../../framework/how_to_add_a_destination.md), [Cross-reference map](../../../framework/cross_reference_map.md)
 
 This file is for whoever builds a destination pack or adds one. The pack's [contents page](../README.md) carries the provided-as-is framing every family reading the pack needs: the facts come from one family, nobody is on call to keep them current, and anything a family relies on gets verified against official sources close to travel.
 
 ## The insert and reference contract
 
-This table routes every session that needs place facts to the pack, in session order. The rule under the table says how each session writes its pointer.
+This table routes every session that needs place facts to the pack, in session order. The rule under the table says how each session writes its pointer. The framework's [cross-reference map](../../../framework/cross_reference_map.md) mirrors this table and the parent-facing one, with every pack file named generically, and this contract is the canonical copy.
 
 | Session | Insert it pulls (`session_inserts/`) | Reference file(s) it points to (`reference/`) |
 | --- | --- | --- |
@@ -48,7 +48,7 @@ Sessions not in this table (00-04, 07, 09, 13-15, 20-22, 24-29, 31-33, 35, 39, 4
 
 ### Parent-facing pages
 
-Parent-facing routing is in scope from Batch 2 onward. The parent-guide pages in the table below mention destination facts an adult needs: local hazards, emergency numbers, lodging priced per person, children's fares, and which airport to land at. Each stays destination-neutral and names the pack file generically, so each gets a row here on the same terms as a session. A parent page names the reference in the pack's own words, as a reference-routed session does, and says what to do until the pack has the file: use a current official source, checked and dated.
+The parent-guide pages in the table below mention destination facts an adult needs: local hazards, emergency numbers, lodging priced per person, children's fares, and which airport to land at. Each stays destination-neutral and names the pack file generically, so each gets a row here on the same terms as a session. A parent page names the reference in the pack's own words, as a reference-routed session does, and says what to do until the pack has the file: use a current official source, checked and dated.
 
 | Parent-facing page | Insert it pulls | Reference file(s) it points to (`reference/`) |
 | --- | --- | --- |
@@ -94,7 +94,7 @@ Dividing a row later means editing the row, in the same pass that writes the ref
 
 ## What is written in this pack, and what is not
 
-The contract tables name twelve insert slots and fourteen reference files. Both columns are completion targets. A reader given only the insert count would write twelve files and believe the pack was finished. The four bullets below count what *this* pack has built, so they are the one part of this contract that a second pack recounts for itself, as step 1 of the checklist below explains.
+The contract tables name twelve insert slots and fourteen reference files. Both columns are completion targets. A reader given only the insert count would write twelve files and believe the pack was finished. The four bullets below count what *this* pack has built, so they are the one part of this contract that a second pack recounts for itself. A new pack's copy of this contract deletes the four bullets and recounts them for that pack, so an empty pack reads as empty. On day one, every insert slot and every reference file in the contract tables goes on the second and fourth bullets, the lists of what is still to write.
 
 - **Insert slots written (twelve):** [`10_snapshot_facts.md`](10_snapshot_facts.md), [`11_regions_overview.md`](11_regions_overview.md), [`12_seasons_and_events.md`](12_seasons_and_events.md), [`16_18_candidate_cities.md`](16_18_candidate_cities.md), [`19_other_places_menu.md`](19_other_places_menu.md), [`23_attraction_ideas.md`](23_attraction_ideas.md), [`30_transport_specifics.md`](30_transport_specifics.md), [`34_lodging_types.md`](34_lodging_types.md), [`36_37_food_ideas.md`](36_37_food_ideas.md), [`42_reservation_examples.md`](42_reservation_examples.md), [`47_language_etiquette.md`](47_language_etiquette.md) and [`kid_glossary.md`](kid_glossary.md).
 - **Insert slots not yet written:** none.
@@ -103,13 +103,6 @@ The contract tables name twelve insert slots and fourteen reference files. Both 
 
 ## Adding a destination
 
-<!-- density-exempt: X, not Y -- the batch 1 brief's add-a-destination rules; the contrasts are in rule 5, the brief's verify framing ("never fixed"), and rule 6, the brief's completion rule word for word, which rules on what counts as a fill and which slots the open destination question binds -->
+The steps for building a new destination pack are in the framework's [add-a-destination guide](../../../framework/how_to_add_a_destination.md).
 
-1. Create the pack's two contents pages. `destinations/<name>/README.md` carries the provided-as-is framing and lists the pack's reference files and its inserts. `destinations/<name>/session_inserts/README.md` is a destination-neutral copy of this contract. Then create the pack's `reference/` directory and fill in its stable facts, one file per topic, each named as the contract's reference column names it: regions, major cities, seasons, weather and events, transportation, airports, money, language, etiquette, food, adult logistics, safety and emergency, the access and pricing watch, trusted starting sources, and sample search terms. Every field list above is written destination-neutral so that a copy of this contract carries only the contract, and the new pack supplies every value. One section is the exception. The four bullets under **What is written in this pack, and what is not** count what the first pack has built, so copying them hands a new pack counts it has not earned and makes an empty pack look part-finished. Delete those four bullets in the copy and recount them for the pack you are starting: nothing is written on day one, so every insert slot and every reference file in the contract tables belongs on the not-yet-written lists.
-2. Write the small "destination notes" each place-specific session pulls in.
-3. Do not edit any framework session, template, guide, or doc.
-4. Keep adult-owned legal and safety topics adult-owned.
-5. Keep volatile facts -- prices, hours, entry rules -- as "verify on official sources," never fixed.
-6. When both contents pages exist and every named insert slot and every named reference file is filled, the destination is added. If your destination is not a country, the slots that assume one are not fillable yet: the snapshot slot's `Capital` field and the candidate-cities slot both take their wording from a destination model this repository has not settled, and what either one means for a city, a region, or a route across several countries is undecided. Deciding it by substituting another word is not a fill. The test is the assumption and not this pair of names -- any slot whose field only makes sense for a country is bound by the same undecided question, named here or not. A pack of that shape is not finished until that question is answered.
-
-**Open Question: what a destination is.** The slots above are written for a country. A pack for a city, a region, or a route across several countries has no settled answer for the snapshot slot's `Capital` field or for the candidate-cities slot, and substituting another word is not an answer. Until this is decided, a pack of that shape cannot complete step 6, and any slot whose field only makes sense for a country is bound by it, named here or not. Carried as an open question so a later handoff reads it as a blocker for every pack of that shape.
+A pack covers one country, and a trip to a city or a region inside that country uses its pack; the [add-a-destination guide](../../../framework/how_to_add_a_destination.md#what-a-pack-is-and-what-it-covers) records what a trip across several countries does as an Open Question.

@@ -63,11 +63,11 @@ The mapping also files entries the item list on the [final deliverable](FINAL_DE
 | 6. Hotels and Budget | Hotel and neighborhood comparison summary (the Neighborhood Comparison and the Hotel Comparison Cards); Budget estimate (the Session 33 first pass and the Session 39 budget summary) |
 | 7. Itinerary | Day-by-day itinerary (the itinerary draft with its Checkpoint 5 review page, and the final itinerary); Reservation watchlist; Backup plans; Cut list or "save for future trip" list |
 | 8. Readiness | Packing list; Language and etiquette quick sheet, if the family chose it for the binder; Readiness checklist |
-| 9. Sources and Decisions | Source log; Decision log; "My Calls" page |
+| 9. Sources and Decisions | Source log; Decision log; "My Calls" page; [Itinerary revision notes](templates/itinerary_revision_notes.md), if the family used them |
 | 10. Parent Review | Adult follow-up questions; parent review forms |
-| 11. Final Recommendation | Final recommendation summary (the final recommendation packet from Session 52, the executive summary, and the family presentation or the Final Presentation Outline from Session 51); Final reflection |
+| 11. Final Recommendation | Final recommendation summary (the final recommendation packet from Session 52, the executive summary, and the family presentation or the Final Presentation Outline from Session 51); Final reflection; After-the-trip page, if the family did [Session 54](sessions/phase_09_after_you_get_back/54_after_you_get_back.md) |
 
-Two lines depend on the family's choices: the restaurant and food shortlist, and the Language and Etiquette Quick Sheet. A binder without them is complete if the family skipped those sessions or left their pages out.
+Four lines depend on the family's choices: the restaurant and food shortlist, the Language and Etiquette Quick Sheet, the itinerary revision notes, and the after-the-trip page. A binder without them is complete if the family skipped them or left them out. The after-the-trip page is filed after the trip, when a family does the optional [Session 54](sessions/phase_09_after_you_get_back/54_after_you_get_back.md), so Session 50's binder checklist doesn't list it.
 
 The binder table of contents goes at the front, before tab 1. The "if I get separated" card goes in your child's pocket. The Final Countdown card and the in-trip capture card go with the family on the trip.
 
