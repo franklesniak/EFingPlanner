@@ -28,6 +28,13 @@ body:
         printing problem, or an accessibility barrier. For a plain typo, unclear
         wording, or a missing link, the 📚 Documentation Issue form fits better.
 
+        **This issue is public.** Anyone can read it, and GitHub keeps its edit history.
+        Do not post your child's filled-in work or anything from your trip: no names,
+        dates, places, health details or booking details. Use a blank page, or retype
+        the problem without the personal parts, as the
+        [privacy and safety page](https://github.com/franklesniak/EFingPlanner/blob/HEAD/framework/docs/privacy_and_safety.md)
+        asks.
+
         **Security Notice:** If you are reporting a security vulnerability, do NOT use this form.
         Report it through the repository's
         [private vulnerability reporting form](https://github.com/franklesniak/EFingPlanner/security/advisories/new)
@@ -108,7 +115,8 @@ body:
     attributes:
       label: Screenshot or photo (optional)
       description: >-
-        A screenshot of the page, or a photo of the printed worksheet, helps a lot.
+        A screenshot of the page, or a photo of a blank printed worksheet, helps a lot.
+        Never post a photo of your child's filled-in page: it can show names, dates and plans.
         Drag and drop images directly into this field.
       placeholder: Drag and drop images here...
     validations:
@@ -141,7 +149,8 @@ body:
     attributes:
       label: Additional context (optional)
       description: >-
-        Anything else that would help — related issues, the child's context, etc.
+        Anything else that would help — related issues, or your child's age or reading level.
+        Leave out names, health details and trip details.
       placeholder: Add any other context here...
     validations:
       required: false
