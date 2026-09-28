@@ -10,7 +10,7 @@ Each entry is a short, parent-facing overview of one session -- your role, what 
 
 **Formative checks.** A few entries name a formative check: a quick spoken prompt that shows whether a skill is growing. It is never a graded test. If your child can't yet show their reasoning, turn support up before the next phase begins. The checkpoint reflection looks back at the stretch just finished.
 
-**The lighter pages in Phases 7 and 8.** From Session 40 on, the Steps and Workspace are short, and your child sets their own Start Here. The signal that a child is ready sooner is two sessions in a row done without needing the When I'm Stuck card or leaning on the written Steps. The Finish and Quality Check closes every session, so using it never counts against them. The pages switch by phase, so a child who shows that signal in Phase 5 still meets the fuller pages through Phase 6. That errs on the side of more support, which is the safer side, and you can step back on your side sooner. Start Here, the Stop Point, the named artifact and the Source Check stay on every page.
+**The lighter pages in Phases 7 and 8.** Sessions 40 to 43 and 45 to 52 have short Steps and Workspace, and your child sets their own Start Here; their entries below say "Lighter page". The signal that a child is ready sooner is two sessions in a row done without needing the When I'm Stuck card or leaning on the written Steps. The Finish and Quality Check closes every session, so using it never counts against them. The pages switch by phase, so a child who shows that signal in Phase 5 still meets the fuller pages through Phase 6. That errs on the side of more support, which is the safer side, and you can step back on your side sooner. Start Here, the Stop Point, the named artifact and the Source Check stay on every page.
 
 Want a rough signal of how the executive-function side is going? The optional [executive-function observation aid](ef_observation_aid.md) is a private three-item note you keep to yourself.
 
@@ -508,3 +508,11 @@ Want a rough signal of how the executive-function side is going? The optional [e
 - Look for: a reflection compared to the baseline, and the plan handed to you. On the Core path, answers to three more questions, on patterns, the guesses (the time guesses that exist, and the Session 23 and 30 guesses) and the budget against the band, comparing the matching piece your child checked with the band sentence, and each hotel for a hotel tier, saying what a "not counting ___" left out, with a band you changed since Session 39 taken down the When the Plan Changes card's "Your budget band changed?" row first, and the full binder handed over, with tabs 10 and 11 filled in, and with the must-do list and the approved route in place of the must-see list and the city choice; for a capstone re-run, a look back at the First Taste reflection too.
 - Coaching question: "Where else could you use one of these planning moves?"
 - Pitfall: skipping the acknowledgment. Finishing a real project is a big deal -- say so.
+
+## Session 54: After You Get Back
+
+- Role: optional, after the trip, and fully skippable; a 5-minute check-in. Supply the numbers from the trip you choose to share, and your child does the comparing.
+- Prep: the in-trip capture card, if you kept it; the Session 53 final reflection; the Session 33 budget estimate, and the Session 39 budget summary on the Core path; the day cards or itinerary, if your child made them; and the numbers you're willing to share, such as a daily food total, a ticket or a ride. Confirmation numbers and payment details stay in your own records, as the privacy and safety rules say, because this page is filed in the binder.
+- Look for: two or three days compared on the session page, with any Cost row left empty where you kept the money private; the three questions answered; and one lesson line, with the page filed after the final reflection.
+- Coaching question: "Which day went most like your plan, and why?"
+- Pitfall: turning it into homework, or into a verdict on the trip. One short sitting and one lesson line is the whole job.

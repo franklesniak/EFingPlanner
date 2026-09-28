@@ -38,6 +38,8 @@ Quick-start:
 6. Review at Checkpoint 1 -- then decide whether to keep going (the try-then-commit on-ramp: you do not have to commit to the whole project to start).
 7. Finish the First Taste path at Session 53 -- a real, usable mini-plan and a complete stopping point. (The [roadmap](framework/PROJECT_ROADMAP.md) maps the fuller path toward the Core Finish Line.)
 
+After the trip, an optional short module, [Session 54](framework/sessions/phase_09_after_you_get_back/54_after_you_get_back.md), lets your child compare the plan with what happened.
+
 ## First Taste session index (the short path)
 
 Session 00 is adult-only setup; the child does the First Taste sessions listed below, ending at Session 53 (a subset, not every number in between). This table is the First Taste path. Its first eight numbered steps sit in Phases 0-2, and its last five -- Sessions 15, 21, 33, 44 and 53 -- are in later phases.
@@ -83,6 +85,7 @@ Early. The [roadmap](framework/PROJECT_ROADMAP.md) describes the whole program, 
 ## Contributing and community
 
 - [Contributing guidelines](CONTRIBUTING.md)
+- [Sharing a destination pack](framework/how_to_add_a_destination.md#sharing-a-destination-pack)
 - [Code of Conduct](CODE_OF_CONDUCT.md)
 - [Security policy](SECURITY.md)
 

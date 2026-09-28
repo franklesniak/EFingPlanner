@@ -15,7 +15,7 @@ For the child this project is designed for, **finishing First Taste is the expec
 
 ## The phases at a glance
 
-Every session sits in one of nine phases. Each row names what the child does in that phase and what they make. The checkpoints are where a grown-up reviews the work and the family decides.
+Before the trip, the project's sessions sit in nine phases, 0 to 8, one per row below. [Session 54](sessions/phase_09_after_you_get_back/54_after_you_get_back.md) is in Phase 9 (After You Get Back), an optional phase for after the trip, so it is listed separately. Each row names what the child does in that phase and what they make. The checkpoints are where a grown-up reviews the work and the family decides.
 
 | Phase | Sessions | What the child does | What they make | Ends at |
 | --- | --- | --- | --- | --- |
@@ -29,7 +29,7 @@ Every session sits in one of nine phases. Each row names what the child does in 
 | 7 Itinerary Building | 40-46 | Builds the day-by-day plan | Day rules; daily plan cards; reservation watchlist; pacing review; cut list and backup plan; full itinerary draft; itinerary review packet | Checkpoint 5, the Core Finish Line |
 | 8 Readiness and Final | 47-53 | Gets ready, assembles the binder and presents it | Language and etiquette quick sheet, if the family does that session; packing list; readiness checklist and "if I get separated" card; assembled binder; final presentation outline; final recommendation packet; final reflection | Checkpoint 6, the family decision meeting |
 
-Every session is Core unless its line on the index below says otherwise. A few are Recommended or Conditional core, and the index names each one and its condition. After the trip, Session 54, After You Get Back, is an optional module, listed below.
+Every session is Core unless its line on the index below says otherwise. A few are Recommended or Conditional core, and the index names each one and its condition. After the trip, [Session 54](sessions/phase_09_after_you_get_back/54_after_you_get_back.md) is an optional module in Phase 9 (After You Get Back), listed below.
 
 ## Full Phases 0-2 path
 
@@ -175,7 +175,7 @@ The rest of the Core path is the continuation, from readiness to the family deci
 
 ### The full program
 
-The full program adds the Recommended sessions your family chooses, each in its numbered place. A conditional session comes in when its own condition holds, just as on the Core path. After the trip, Session 54, After You Get Back, is an optional, post-trip reflection module.
+The full program adds the Recommended sessions your family chooses, each in its numbered place. A conditional session comes in when its own condition holds, just as on the Core path. Phase 9 (After You Get Back) holds one optional reflection module for after the trip: [54 After You Get Back](sessions/phase_09_after_you_get_back/54_after_you_get_back.md).
 
 ## Both ends are served
 

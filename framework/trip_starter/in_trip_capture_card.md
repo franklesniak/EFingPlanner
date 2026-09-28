@@ -8,7 +8,7 @@ This card is optional. You're on vacation, so it's fine to leave it at home.
 
 One line a day. That's the whole card. Each evening, answer one question: **How did today compare to the plan?** If you like, note one thing that changed today and one thing that held.
 
-If you look back after the trip, your lines give you your own words from each day, and they show how plans bend and still work.
+If you look back after the trip, as the optional [Session 54](../sessions/phase_09_after_you_get_back/54_after_you_get_back.md) does, your lines give you your own words from each day, and they show how plans bend and still work.
 
 | Day | One line |
 | --- | --- |

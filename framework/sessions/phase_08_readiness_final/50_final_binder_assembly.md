@@ -33,7 +33,7 @@ Maybe you kept everything in one growing folder, in rough order. Maybe you filed
 
 Tabs 3 and 4 hold the page you made at that checkpoint. If your dates were booked by Checkpoint 1, that's your season confirmation. If they were booked by Checkpoint 4, it's your nights plan. Otherwise, it's the recommendation.
 
-Two lines in the list depend on choices your family made. The restaurant and food shortlist goes under tab 5 only if you did the food sessions and your family chose it for the binder. The language and etiquette sheet goes under tab 8 the same way: only if you did that session and your family chose it. If you skipped one, write "we didn't do this session" on that tab. If your family left one out, write "not in our binder". Either way, that line is complete. Tab 2 holds the research-skill pages your family chooses to keep, so ask a grown-up which. If they keep none, write "not in our binder" there too.
+Three lines in the list depend on choices your family made. The restaurant and food shortlist goes under tab 5 only if you did the food sessions and your family chose it for the binder. The language and etiquette sheet goes under tab 8 the same way: only if you did that session and your family chose it. If you skipped one, write "we didn't do this session" on that tab. If your family left one out, write "not in our binder". Either way, that line is complete. The third line is your itinerary revision notes, under tab 9, only if you used them. If you didn't, tab 9 is complete without them. Tab 2 holds the research-skill pages your family chooses to keep, so ask a grown-up which. If they keep none, write "not in our binder" there too.
 
 Tab 10 gets the parent review forms from your checkpoints now. Its follow-up questions, which are Part 2 of your presentation outline, get their last part in Session 52. Tab 11 fills up in Sessions 52 and 53. For now, write "comes next" where a page is still to come. Session 53 puts those pages in before you hand the binder over.
 
@@ -53,7 +53,7 @@ Your binder checklist. Tick each tab when its pages are in:
 | 6. Hotels and Budget | Hotel and neighborhood comparison summary (your Neighborhood Comparison and your Hotel Comparison Cards); Budget estimate (your Session 33 first pass and your Session 39 budget summary) | |
 | 7. Itinerary | Day-by-day itinerary (your itinerary draft with its Checkpoint 5 review page, and your final itinerary); Reservation watchlist; Backup plans; Cut list or "save for future trip" list | |
 | 8. Readiness | Packing list; Language and etiquette quick sheet, if your family chose it for the binder; Readiness checklist | |
-| 9. Sources and Decisions | Source log; Decision log; "My Calls" page | |
+| 9. Sources and Decisions | Source log; Decision log; "My Calls" page; Itinerary revision notes, if you used them | |
 | 10. Parent Review | Adult follow-up questions; parent review forms | |
 | 11. Final Recommendation | Final recommendation summary (your final recommendation packet from Session 52, your executive summary, and your family presentation or your Final Presentation Outline from Session 51); Final reflection | |
 
@@ -93,6 +93,6 @@ This full tabbed assembly is the one required organizing step in the project. A 
 
 Tell your child which Phase 1 research-skill pages to keep behind tab 2. Judge the binder on organization and clarity. Decoration belongs on the cover and the dividers, and the research pages stay clean enough for you to use.
 
-Two contents lines are conditional: the food shortlist under tab 5, and the language and etiquette sheet under tab 8. If your family skipped those sessions, the binder is complete without them. The eleven tabs are the one organizing scheme for the whole project, so keep to them.
+Three contents lines are conditional: the food shortlist under tab 5, the language and etiquette sheet under tab 8, and the itinerary revision notes under tab 9. If your family skipped those sessions or didn't use the notes, the binder is complete without them. The eleven tabs are the one organizing scheme for the whole project, so keep to them.
 
 **The lighter page.** From Phase 7 on, Steps and Workspace are short and your child sets their own Start Here. The readiness signal is two sessions in a row done without needing the When I'm Stuck card or leaning on the written Steps; the Finish and Quality Check closes every session, so using it never counts against them. If your child isn't there yet, read the Steps with them. Start Here, the Stop Point, the named artifact and the Source Check stay on every page.

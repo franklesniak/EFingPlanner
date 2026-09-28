@@ -17,6 +17,8 @@ Try these, in order:
 
 Remember: feeling frustrated in the middle is normal. Noticing it and taking a break -- instead of quitting -- is a real planner skill.
 
+Want to see what a finished page can look like? The [worked examples](../examples/README.md) show a pretend planner's pages.
+
 ## When I come back after a break
 
 Missed a week or more? You don't start over. Come back like this:

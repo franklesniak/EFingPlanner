@@ -12,14 +12,14 @@ New here? [The overview](docs/overview.md) is the page to read first.
 The project is built in three layers, and each has a different lifecycle.
 
 1. **The framework** is the reusable curriculum: the guides, the blank templates, the generic session skeletons, the executive-function rationale and the roadmap logic. It is written once and then reused by every family and every destination. It holds no destination facts and no trip data.
-2. **A destination knowledge pack**, one per place. It holds the stable facts about that place, plus the short "destination notes" inserts that the generic sessions pull in. A pack is written once for a destination and reused across any number of trips there.
+2. **A destination knowledge pack**, one per country. It holds the stable facts about that country, plus the short "destination notes" inserts that the generic sessions pull in. A pack is written once for a country and reused across any number of trips there.
 3. **A trip**, one per trip. This is one family's filled-in work, and it is **never committed**. The family copies a blank trip starter kit out of the repository and fills it in a binder or a Google Docs folder.
 
 Only the first two layers live in this repository. The third one is yours, and it stays with you.
 
 ## Curriculum version
 
-**Curriculum version: 0.4.0.** What changed between revisions is in the [curriculum changelog](CHANGELOG.md).
+**Curriculum version: 0.5.0.** What changed between revisions is in the [curriculum changelog](CHANGELOG.md).
 
 <!-- density-exempt: X, not Y -- this is the which-is-which tag the batch 1 brief and the spec require wherever the two logs meet, a rule about telling two named logs apart, and it carries the privacy rule that a family's decision log is never committed -->
 
@@ -31,16 +31,16 @@ Done, for modularity, means this: a family can copy the blank kit and a destinat
 
 A family who reaches their destination by road or rail rather than by air reads differently. Most of the wording that assumed a flight has been made general, and the few pages that still assume one are converted as later batches edit them.
 
-One bound sits on that promise today, and only a decision clears it.
+One bound sits on that promise today: a trip across several countries.
 
-**The shape of the destination.** The pack contract assumes a destination that is a country. A second destination that is a country needs no framework edit. For a city, a region, or a route across several countries, the pack slots that assume a country have no settled meaning yet, and somebody has to answer that before a pack of that shape can be finished.
+**The shape of the destination.** A destination pack covers one country. A trip to a city or a region inside a country uses that country's pack, so a second destination that is a country, or a place inside one, needs no framework edit. What a trip across several countries does is still open. The [add-a-destination guide](how_to_add_a_destination.md) records it as an open question, with the step that settles it.
 
 ## Two kinds of reuse
 
 Two different things both get called reuse, and they cost very different amounts.
 
 - **Parameter reuse.** Another family with the same origin assumptions, traveling to the same destination, fills in only the two pages that configure a family. Those are the Trip-Basics card and the Current Family Travel Assumptions page, which Session 00 sets with that family's season window, budget band, AI choice, rough trip shape and constraints, and which Session 13 reads the budget band from. Near-zero cost, and it is the reuse most families are after. "The same origin assumptions" is carrying weight in that sentence: the origin logistics layer below lists what a family traveling from somewhere else swaps.
-- **Destination reuse.** Another place needs a whole new destination pack: its reference facts, its session inserts, its word list. That is a project rather than an edit, and it is the only thing the heavier machinery exists for.
+- **Destination reuse.** Another country needs a whole new destination pack: its reference facts, its session inserts, its word list. That is a project rather than an edit, and it is the only thing the heavier machinery exists for.
 
 One further boundary belongs beside that promise. Everything here assumes English-literate adults and a child who reads English or is read to in English. Every session, worksheet, template and guide is written in English, and nothing in this repository translates them. A family who does not read English, or a child who does not read and has nobody to read to them, needs translation and reading support this project does not build and does not plan to.
 
@@ -66,5 +66,8 @@ Beyond the origin logistics layer, nothing in the framework assumes an origin co
 - [Parent guide](parent_guide/README.md) and [student guide](student_guide/README.md) are the two reading toolkits.
 - [Trip starter kit](trip_starter/README.md) holds the blanks a family copies out.
 - `framework/templates/` holds the blank forms the sessions use, and `framework/sessions/` holds the sessions themselves.
+- [Worked examples](examples/README.md) are a pretend planner's filled-in pages from a pretend trip to Italy, for a child who wants to see what a finished page looks like. No session uses them.
 - `framework/docs/` holds this folder's reference pages: [overview](docs/overview.md), [design principles](docs/design_principles.md), [source trustworthiness](docs/source_trustworthiness.md), [citation style](docs/citation_style.md), [AI use rules](docs/ai_use_rules.md), the [framework glossary](docs/glossary.md), [privacy and safety](docs/privacy_and_safety.md), and [build style and vocabulary](docs/build_style_and_vocab.md) for whoever authors a batch.
-- The destination packs sit in their own top-level `destinations` folder, one folder per place. Send a family to the pack for where they are going. This page holds no facts about any destination, by design.
+- The [cross-reference map](cross_reference_map.md) is for builders and reusers: which template each session uses, what that work feeds, and which pack files each session reads.
+- The destination packs sit in their own top-level `destinations` folder, one folder per country. Send a family to the pack for the country they are going to. This page holds no facts about any destination, by design.
+- [How to add a destination](how_to_add_a_destination.md) is for an adult who builds a pack for a new country, and it ends with how to share one.

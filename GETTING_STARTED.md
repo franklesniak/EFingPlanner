@@ -36,6 +36,8 @@ These "Save as PDF" options are your own convenience -- the project ships no PDF
 
 *EXAMPLE ONLY -- a pretend trip to Italy, used just to show how the pieces fit. This is not your trip and not a recommendation.*
 
+The [worked examples](framework/examples/README.md) show fuller pages from the same pretend trip, filled in the way a child might fill them.
+
 1. Start from a blank template, for example the [City Research Card](framework/templates/city_research_card.md).
 2. Copy it into your binder or a Google Docs folder and fill it in -- for the pretend Italy trip, that might become your "Rome" card. This is your working copy.
 3. Later, summarize your best city cards into a city shortlist.

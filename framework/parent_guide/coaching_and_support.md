@@ -60,6 +60,8 @@ Five minutes showing this, concretely, lets your child see their own recommendat
 **When the plan changes during the trip:**
 > "Plans flex on the ground -- weather, tiredness, a closed shop. That's normal and doesn't mean your work failed. Look what did hold: the route, your must-sees, the language sheet you made."
 
+After the trip, the optional [Session 54](../sessions/phase_09_after_you_get_back/54_after_you_get_back.md) lets your child compare the plan with what happened, if your family wants to.
+
 ## A few practical notes
 
 <!-- density-exempt: X, not Y -- each note restates a guarantee the spec gives: the child is never blocked on a schedule, a party of two is a full configuration, and a sibling comparison stays cooperative, never scored -->

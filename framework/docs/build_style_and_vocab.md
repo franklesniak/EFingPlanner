@@ -7,7 +7,7 @@
 
 - **Status:** Active
 - **Owner:** Repository Maintainers
-- **Last Updated:** 2026-09-25
+- **Last Updated:** 2026-09-28
 - **Scope:** Builder-facing voice, vocabulary, banned-word, and lint conventions for authoring and editing the EFingPlanner curriculum batches. Read by builders only.
 
 This file is for whoever *builds* the curriculum. Load it before authoring or editing any batch so voice, vocabulary, banned words, and lint conventions stay constant across work sessions. The archived spec at `../../docs/spec/specification.md` is the original design record -- but once curriculum files exist, the built repository supersedes the spec on any conflict; this file is the short, load-before-each-batch digest of the rules that keep the built files consistent.
@@ -174,3 +174,28 @@ For reference, the hook rejects `TBD`, `TODO:`, `FIXME`, `XXX`, the spelled-out 
 ## First Taste path (the Batch 0 slice)
 
 The child-facing order built for Batch 0 is: 01, 03, 04, 05, then (only if the family opted into AI at setup) 09, then 10, 12, 13, 14, 15, 21, 33, 44, 53. Session 00 is adult-only setup and precedes all of them. Every session preserves the four core moves: start small, track a source, make one trade-off, know when to stop.
+
+## Build-risk register
+
+This register lists the build's own failure modes, each with the check in this repository that catches it. What can go wrong for a family running the project has its own list, the [risk register in time and effort](../parent_guide/time_and_effort.md#risk-register). Load this register with the rest of this file before each batch, and run its checks in each batch's quality pass and in the closing whole-repository pass.
+
+| Risk | The check in this repository |
+| --- | --- |
+| A destination named in a session title or heading | The leak hook's destination rule, `python .github/scripts/check-leaks.py --rule destination`, which reads every tracked file under `framework/` and holds no session exemption |
+| A family value in a framework page | The leak hook's family rule, `python .github/scripts/check-leaks.py --rule family`. Its `--candidates` list is read in your own terminal and never pasted anywhere. A family's values live only on its Trip-Basics card |
+| A destination named in a session body | The same destination rule. It reads bodies, fenced blocks, link text and link paths, so a link into a pack fails it too |
+| A pointer to a missing section, to an outside document, or to the archived spec by section number | A read, and the three section-number greps that the closing-pass checks in the [Batch 4 build brief](../../docs/build/batch4_build_prompt.md) run over `framework/`, `destinations/`, `README.md` and `GETTING_STARTED.md`. A hit is allowed only in builder-facing text that names a build brief in the same sentence |
+| The design pilot skipped or failed while the build went on | A human read. The usability-pilot deferral flag in [time and effort](../parent_guide/time_and_effort.md) stays until a child pilots the design, and the [curriculum changelog](../CHANGELOG.md) carries the pilot as owed to a human |
+| A destination reference file or slot with no freshness stamp | The stamp loop in the [Batch 3 build brief](../../docs/build/batch3_build_prompt.md)'s section 9, copied and run on its own, and a read that no `Last reviewed` stamp moved on a page nobody re-checked |
+| A worksheet table too wide to print on portrait paper | A read of each worksheet table against the worksheet-form rule under Lint conventions above: a two-column form, or a grid of a few columns |
+| The curriculum changelog and a family's decision log treated as one | A read: wherever the two meet, the page says which is which |
+| The framework glossary and a child travel glossary treated as one | A read: wherever the two meet, the page says which is which |
+| A typo or grammar slip in a built heading or file | A light proofread of every built file, headings included |
+| A worked example missing its EXAMPLE ONLY marker | A read of each example's first rendered line, which the batch checks in the [Batch 4 build brief](../../docs/build/batch4_build_prompt.md) also test, and a read that no example holds an answer for the destination the repository's pack covers |
+| Terminology drift across files | The agreed labels and canonical Names in this file, loaded before each batch, and a read against them |
+| A thin file, or a concept explained again where a pointer belongs | A read: every file has usable content, and each cross-cutting concept has one home, with a one-clause reminder and a link everywhere else. The placeholder hook, `python .github/scripts/check-prohibited-placeholders.py`, fails a placeholder, and the structure gate, `python .github/scripts/check-session-structure.py`, fails a session that lacks a required field |
+| A broken relative link | The link check, `npm run lint:md:links` |
+| Child reading level creeping up | The readability gate, `python .github/scripts/check-readability.py`, run on its default scan and again by name on the child-facing pages outside its default globs, such as the worked examples and the kit |
+| A weighted scoring point with no lighter rubric | A read: every weighted scoring point offers the Lighter Rubric (3-criteria) |
+| A carry-the-project file shipped as raw generation | A human read of every file a child or a parent reads, under the review-coverage rule in Build path and review coverage above |
+| Voice or vocabulary drift across batches | This file, loaded before each batch; the `X, not Y` recount, `python .github/scripts/check-x-not-y.py`; and the closing whole-repository pass, which reads every built file for terms, tone and Names |
