@@ -112,11 +112,15 @@ past blank lines and other comments. This gate reads the devices
 ``spaced dash`` and ``real``; the recount reads ``X, not Y``. A marker is
 refused, named, and fails the run when it names another device, gives no
 reason, parts its device and reason by anything but `` -- ``, cites its
-source by number (the recount's reason rules), covers nothing, or shares its
-line with text or with another comment, or sits inside a block quote or a
-list item. A marker waives a count only: never a dash's test, the child-text
-bans or a zero-tolerance family. There is no per-file waiver. Every marker in
-use is printed with its line, its scope and the lines whose hits it exempts.
+source by number (the recount's reason rules), covers nothing, stands above
+the page's level-1 title, or shares its line with text or with another
+comment, or sits inside a block quote or a list item. A marker waives a count
+only: never a dash's test, the child-text bans or a zero-tolerance family.
+There is no per-file waiver: the one block that is a whole page is the
+title's section, and a marker above the title is refused, as the recount
+refuses one, so no marker can lift a page's file cap or all its section caps
+at once. Every marker in use is printed with its line, its scope and the
+lines whose hits it exempts.
 
 What fails the run
 ------------------
@@ -582,6 +586,9 @@ def marker_problem(marker: Any, body: str, blocks: list[dict[str, Any]]) -> str:
         return f"the reason cites its source by number ({cited.group(0).strip()!r}); name the source instead"
     if not marker.scope_start:
         return f"covers nothing: {marker.scope_desc}"
+    if any(b["type"] == "heading" and b["start"] == marker.scope_start and b.get("level") == 1 for b in blocks):
+        # The title's section is the whole page: that would be a per-file waiver.
+        return xny.TITLE_MARKER_PROBLEM
     own = xny.listed_numbers(blocks, marker.scope_start, marker.scope_end)
     for place, numbers in marker.places:
         if not set(numbers) <= own:

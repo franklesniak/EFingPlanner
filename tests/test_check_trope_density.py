@@ -624,7 +624,10 @@ def test_an_x_not_y_marker_belongs_to_the_recount() -> None:
     ("<!-- density-exempt: spaced dash --- the brief's wording -->", "not parted by ' -- '"),
     ("<!-- density-exempt: spaced dash -- the spec's section 12 -->", "cites its source by number"),
     ("<!-- density-exempt: real -- step 2 of the brief -->", "cites its source by number"),
-    ("<!-- density-exempt: spaced dash -- the brief's step 4, which this list lacks -->", "cites its source by number"),
+    ("<!-- density-exempt: spaced dash -- the brief's step 4, which this list lacks -->",
+     "cites its source by number (\"brief's step 4\"); name the source instead"),
+    ("<!-- density-exempt: spaced dash -- step 4 keeps its fixed wording -->",
+     "a number names only an item of the numbered list the marker covers"),
 ])
 def test_a_marker_with_no_reason_or_a_numbered_source_is_refused(marker: str, problem: str) -> None:
     result = check(page("# P", "", marker, "1. One -- two.", "2. Three."), rel=PARENT)
@@ -653,6 +656,29 @@ def test_a_misplaced_marker_is_refused(lines: list[str], problem: str) -> None:
     assert "marker" in fail_kinds(result)
     assert problem in " ".join(n.message for n in result.fails)
     assert all(d.exempt_by is None for d in result.devices)
+
+
+TITLE_FIX = "put the marker above the paragraph, list, block quote or `##` section it is for"
+
+
+def test_a_marker_above_the_page_title_is_refused() -> None:
+    # Above the title a marker would cover the whole page: a per-file waiver.
+    result = check(page("<!-- markdownlint-disable MD013 -->",
+                        "<!-- density-exempt: spaced dash -- the brief's wording for this page -->", "", "# S", "",
+                        "One -- two.", "", "## Goal", "", "Three -- four.", "", "## Steps", "", "Five -- six.", "",
+                        "Seven -- eight."))
+    assert result.markers[0].problem == td.xny.TITLE_MARKER_PROBLEM
+    assert TITLE_FIX in result.markers[0].problem
+    assert all(d.exempt_by is None for d in result.devices)
+    assert sorted(set(fail_kinds(result))) == ["marker", "spaced dash file cap", "spaced dash section cap"]
+
+
+def test_a_marker_above_a_section_under_the_title_is_accepted() -> None:
+    marker = "<!-- density-exempt: spaced dash -- the brief's wording for these steps -->"
+    result = check(page("# S", "", *filler(10), marker, "## Steps", "", "Five -- six.", "", "Seven -- eight."))
+    assert result.fails == []
+    assert result.markers[0].scope_desc == "section 'Steps' (lines 24-29)"
+    assert [d.exempt_by for d in dashes(result)] == [23, 23]
 
 
 def test_a_refused_marker_is_named_and_fails_the_run(tmp_path: Path, capsys: Any) -> None:

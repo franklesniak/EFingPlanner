@@ -5441,20 +5441,20 @@
       "judgment": "no",
       "reason": "a change entry's lead-in label"
     },
-    "split|Style law. → The build style and vocabulary file now states each counting reading the gate applies: a link label, or a bold label with one parenthetical, is a label separator; a spaced em dash is a spaced dash; a builder or spec file's dash number is its ratio alone; every ratio rounds down before the floor of 1; two spaced dashes in one sentence are one paired device; an empty checkbox line sits outside the prose-line count; text in inline quotation marks counts unless a marker covers it; a marker may cover a block quote and stand past blank lines and comments; a Parent Notes region ends at the next heading of its own level or higher; and a child-facing ‹code› breaks the ban and counts toward the ‹code› caps, with the ban holding under a marker.|1": {
-      "line": 44,
-      "judgment": "no",
-      "reason": "a change record listing counting readings; each is a stated rule and none rejects an alternative"
-    },
-    "split|The build style and vocabulary file now states each counting reading the gate applies: a link label, or a bold label with one parenthetical, is a label separator; a spaced em dash is a spaced dash; a builder or spec file's dash number is its ratio alone; every ratio rounds down before the floor of 1; two spaced dashes in one sentence are one paired device; an empty checkbox line sits outside the prose-line count; text in inline quotation marks counts unless a marker covers it; a marker may cover a block quote and stand past blank lines and comments; a Parent Notes region ends at the next heading of its own level or higher; and a child-facing ‹code› breaks the ban and counts toward the ‹code› caps, with the ban holding under a marker. → Its build-risk register names the gate.|1": {
-      "line": 44,
-      "judgment": "no",
-      "reason": "a change record: a fact"
-    },
     "split|Its build-risk register names the gate. → The root README and GETTING_STARTED carry a parent audience marker, so the gate measures them under the parent caps.|1": {
       "line": 44,
       "judgment": "no",
       "reason": "a change record: a fact with its consequence"
+    },
+    "split|Style law. → The build style and vocabulary file now states each counting reading the gate applies: a link label, or a bold label with one parenthetical, is a label separator; a spaced em dash is a spaced dash; a builder or spec file's dash number is its ratio alone; every ratio rounds down before the floor of 1; two spaced dashes in one sentence are one paired device; an empty checkbox line sits outside the prose-line count; text in inline quotation marks counts unless a marker covers it; a marker may cover a block quote and stand past blank lines and comments, and one above the page title is refused; a Parent Notes region ends at the next heading of its own level or higher; and a child-facing ‹code› breaks the ban and counts toward the ‹code› caps, with the ban holding under a marker.|1": {
+      "line": 44,
+      "judgment": "no",
+      "reason": "a change record listing counting readings; each is a stated rule and none rejects an alternative"
+    },
+    "split|The build style and vocabulary file now states each counting reading the gate applies: a link label, or a bold label with one parenthetical, is a label separator; a spaced em dash is a spaced dash; a builder or spec file's dash number is its ratio alone; every ratio rounds down before the floor of 1; two spaced dashes in one sentence are one paired device; an empty checkbox line sits outside the prose-line count; text in inline quotation marks counts unless a marker covers it; a marker may cover a block quote and stand past blank lines and comments, and one above the page title is refused; a Parent Notes region ends at the next heading of its own level or higher; and a child-facing ‹code› breaks the ban and counts toward the ‹code› caps, with the ban holding under a marker. → Its build-risk register names the gate.|1": {
+      "line": 44,
+      "judgment": "no",
+      "reason": "a change record: a fact"
     },
     "device|The closing whole-repository consistency pass.|1": {
       "line": 50,
@@ -12913,11 +12913,6 @@
       "judgment": "no",
       "reason": "a scope fact and a permission"
     },
-    "split|A block quote is one such block too, and blank lines and other comments may stand between a marker and its block. → Text above a page's first ‹code› heading is not a ‹code› section, so only the file caps reach it.|1": {
-      "line": 92,
-      "judgment": "no",
-      "reason": "a scope fact with its consequence (so only the file caps reach it)"
-    },
     "split|A child-facing session carries two parent-facing regions, the labeled \"For parents\" strip and ‹code› ; both are measured under the parent-facing caps, and the ban on ‹code› stops at their headings. → The Parent Notes region keeps any deeper heading inside it and ends at the next heading of the same or a higher level, and the strip ends at the next heading of any level.|1": {
       "line": 92,
       "judgment": "no",
@@ -12927,6 +12922,16 @@
       "line": 92,
       "judgment": "no",
       "reason": "a fact"
+    },
+    "split|A block quote is one such block too, and blank lines and other comments may stand between a marker and its block. → A marker above the page title covers nothing, and the counters refuse it.|1": {
+      "line": 92,
+      "judgment": "no",
+      "reason": "a scope rule for one marker position and what the counters do; it rejects no alternative"
+    },
+    "split|A marker above the page title covers nothing, and the counters refuse it. → Text above a page's first ‹code› heading is not a ‹code› section, so only the file caps reach it.|1": {
+      "line": 92,
+      "judgment": "no",
+      "reason": "a scope fact with its consequence (so only the file caps reach it)"
     },
     "device|‹code› / ‹code› / ‹code› : apply the delete test.|1": {
       "line": 93,

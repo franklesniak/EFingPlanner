@@ -128,7 +128,8 @@ beyond that container's edge. A marker that gives no reason, that names the
 device in any other spelling (``X not Y``, ``xnoty``), that parts its device
 and its reason by anything but `` -- `` (``--required``, ``--- required``),
 that reaches its
-source by number, that has no block below it in its container, or that
+source by number, that has no block below it in its container, that stands
+above the page's level-1 title (whose section is the whole page), or that
 shares its lines with text the page shows (in an HTML block, or inside a
 line of a paragraph, a heading or a table cell) or with another comment,
 exempts nothing, and the report names it. A marker shown in a code span is text, not a marker. A
@@ -394,6 +395,11 @@ PARENT_SECTION_RE = re.compile(
 #: A `density-exempt` marker's comment text. Its body is `<device> -- <reason>`;
 #: a body with no reason is still read, so that the report can name it.
 EXEMPT_MARKER_RE = re.compile(r"^\s*density-exempt:(?P<body>.*)$", re.DOTALL)
+#: Why a marker above a page's level-1 title exempts nothing. The title's
+#: section is the whole page, and a marker covers one block. The trope-density
+#: gate refuses such a marker of its own devices with the same words.
+TITLE_MARKER_PROBLEM = ("covers the whole page, because it stands above the page's title; put the marker above the"
+                        " paragraph, list, block quote or `##` section it is for")
 
 
 def marker_comments(content: str) -> list[tuple[int, str]]:
@@ -1174,6 +1180,8 @@ def marker_scope(marker: Marker, blocks: list[dict[str, Any]], index: int,
     and its block. It is one paragraph, one whole list (a loose list included)
     or one block quote, as markdown-it reads it. Above a heading, the block is
     that heading's section, up to the next heading of the same or a higher level.
+    Above the page's level-1 title that section is the whole page, so an
+    `X, not Y` marker there exempts nothing, and the report names it.
 
     The block must sit in the marker's own container: a marker written inside
     a block quote or a list item covers the next block inside it, never a
@@ -1213,6 +1221,11 @@ def marker_scope(marker: Marker, blocks: list[dict[str, Any]], index: int,
                 end -= 1
         marker.scope_start, marker.scope_end = first, end
         marker.scope_desc = f"section '{heading_lines[first][1]}' (lines {first}-{end})"
+        if level == 1 and marker.device in XNOTY_DEVICE_NAMES and not marker.problem:
+            # The title's section is the whole page, and a marker covers one
+            # block: above the title it would waive every count on the page.
+            marker.applies = False
+            marker.problem = TITLE_MARKER_PROBLEM
         return
     end = block["end"]
     # markdown-it gives a list the blank line after it; the block ends at its last text.
