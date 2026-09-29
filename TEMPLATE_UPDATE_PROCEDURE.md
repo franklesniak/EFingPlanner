@@ -990,7 +990,7 @@ The current `template-sync-support-reference-only` inline blocks live in:
 - `README.md` for the optional `.template-sync/` and `schemas/template-sync-*.schema.json` surface rows, which are removed when `template-sync-support` is excluded.
 - `CONTRIBUTING.md` for the Template-Sync Validation section, which is removed when `template-sync-support` is excluded.
 
-The current `data-ci-reference-only` inline block lives in:
+The current `data-ci-reference-only` inline blocks live in:
 
 - `CONTRIBUTING.md` for the Data CI workflow row, and `README.md` for the `.github/workflows/data-ci.yml` key-file bullet, each retained when any of `baseline`, `json`, `yaml`, `schema`, or `template-sync-support` is adopted and removed only when all five are excluded.
 - `.github/pull_request_template.md` for the generic retained data-file checklist section.
@@ -999,7 +999,7 @@ The current `azure-devops-guide-reference-only` inline blocks live in:
 
 - `README.md`, `CONTRIBUTING.md`, `OPTIONAL_CONFIGURATIONS.md`, `COPILOT_CHAT_PROMPTS.md`, `docs/PR_REVIEW_PROMPTS.md`, and `schemas/README.md` for optional links to `docs/azure-devops-support.md`, retained when any of `azure-devops-platform`, `azure-pipelines`, or `azure-devops-collaboration` is adopted and removed only when all three are excluded.
 
-The current `python-only` inline block lives in:
+The current `python-only` inline blocks live in:
 
 - `.pre-commit-config.yaml` for the `black` and `ruff-check` Python project hooks.
 - `.github/dependabot.yml` for the `pip` ecosystem header line and update block.
