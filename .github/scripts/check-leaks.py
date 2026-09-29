@@ -379,7 +379,9 @@ DESTINATION_EXEMPTIONS: tuple[tuple[str, str, str, int, str], ...] = (
 RULES = ("family", "destination")
 KINDS = ("word", "code", "number")
 #: The family rule reads every tracked text file except these. The design
-#: record states the values on purpose, and it is the owner's to edit.
+#: record states the values on purpose, and it is the owner's to edit. The
+#: owner decided to keep it as written: see
+#: docs/adr/ADR-0001-archived-design-record-stays-as-written.md.
 FAMILY_SKIPPED_PREFIXES = ("docs/spec/",)
 #: The destination rule reads only these folders, and a tracked entry at a
 #: folder's own path: a link or a submodule there stands in the folder's place.
