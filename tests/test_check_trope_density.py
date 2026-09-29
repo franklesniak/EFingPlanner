@@ -422,6 +422,14 @@ RECORD = "docs/build/test_brief.md"
     ("Keep your notes brief. See Section 21.8.", False, True),
     ("The briefing covers section 4.", False, True),
     ("The build briefs list it in section 4.", False, False),
+    # Each form the brief exemption states: Batch N, Batch N's (straight and curly), batch, its, and brief's.
+    ("The Batch 2 brief gives it in section 5.2.", False, False),
+    ("Batch 2's brief, section 5.2, has it.", False, False),
+    ("Batch 2\u2019s brief, section 5.2, has it.", False, False),
+    ("Your batch brief gives it in section 4.", False, False),
+    ("Its brief gives it in section 4.", False, False),
+    ("Each brief's section 4 has it.", False, False),
+    ("Each brief\u2019s section 4 has it.", False, False),
 ])
 def test_spec_section_reads_each_citation_form(text: str, named: bool, gated: bool) -> None:
     record = check(page("# B", "", text), rel=RECORD, gated=False)
