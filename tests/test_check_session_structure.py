@@ -11,12 +11,20 @@ where the tests follow GitHub's renderer.
 
 from __future__ import annotations
 
+import ast
 import importlib.util
+import itertools
+import json
 import os
 import pathlib
+import re
+import shutil
+import subprocess
 import sys
+from collections.abc import Iterable, Mapping, Sequence
 from pathlib import Path
 from typing import Any, cast
+from urllib.parse import unquote
 
 from tests._pytest_compat import pytest
 
@@ -282,13 +290,6 @@ def test_paths_outside_the_repository_root_are_refused(tmp_path: Path) -> None:
     assert structure.resolve_paths([str(outside)], tmp_path) == []
 
 
-#: A floor, not the real count. The repository has more sessions than this, and
-#: is about to have many more. The number exists so that a change which silently
-#: stops matching any file fails loudly instead of reporting a clean corpus it
-#: never looked at.
-MINIMUM_SESSIONS = 10
-
-
 def test_an_unparsable_filename_is_a_violation() -> None:
     """A filename with no session number cannot be checked, so it is a violation.
 
@@ -322,13 +323,11 @@ def test_a_non_markdown_explicit_path_is_refused(tmp_path: Path) -> None:
 
 
 def test_the_real_session_corpus_is_well_formed() -> None:
-    """The gate must be green on the real repository, or it is not a gate."""
-    checked = structure.resolve_paths([], structure.REPO_ROOT)
-    assert len(checked) >= MINIMUM_SESSIONS, (
-        f"only {len(checked)} session file(s) were found. The gate is not looking at the "
-        "corpus any more; check DEFAULT_SCAN_GLOB and the path guard."
-    )
+    """The gate must be green on the real repository, or it is not a gate.
 
+    Which files it reads is the roadmap tests' business: they prove the walk
+    reads every session the roadmap links, and only those.
+    """
     violations = structure.scan_files([], root=structure.REPO_ROOT)
     assert not violations, "\n".join(v.format_message() for v in violations)
 
@@ -5317,3 +5316,772 @@ def test_an_empty_comment_hides_nothing_after_it() -> None:
         sections=sections, markers="<!--> <!-- no-source-check: offline exercise -->"
     )
     assert check(text) == []
+
+
+# ---------------------------------------------------------------------------
+# The Status value is one of four, and a conditional line names its condition
+# ---------------------------------------------------------------------------
+
+#: The session template, whose classification sentence lists the four values.
+SESSION_TEMPLATE = (
+    structure.REPO_ROOT / "framework" / "templates" / "student_session_template.md"
+)
+
+
+def _status_session(status: str) -> str:
+    """Return a well-formed session whose Status bullet is ``status``."""
+    return build_session(
+        parent_bullets=(
+            status,
+            "- Estimated time: 20-30 minutes",
+            "- Parent involvement: 5-minute check-in",
+        )
+    )
+
+
+@pytest.mark.parametrize(
+    "status",
+    [
+        "- Status: Core",
+        "- Status: Conditional core -- done **only if** your family opted in at setup",
+        "- Status: Recommended",
+        "- Status: Optional",
+        "- Status: Core (adult-only setup)",
+        "- **Status:** **Conditional core** -- becomes Core if a third city comes up",
+        "- Status: Conditional core (adult-led) -- done **only if** your family opted in",
+        "- Status: Conditional core (see [Session 00](00_x.md)) -- done **only if** your family opted in",
+    ],
+)
+def test_each_legal_status_value_passes(status: str) -> None:
+    """The positive controls: each of the four values, and Session 00's note."""
+    assert check(_status_session(status)) == []
+
+
+@pytest.mark.parametrize(
+    ("status", "expected"),
+    [
+        ("- Status: Conditonal core", "'Conditonal core', which is not one of the four"),
+        ("- Status: core", "'core', which is not one of the four"),
+        ("- Status: Conditional core", "names no condition"),
+        ("- Status: Conditional core --", "names no condition"),
+        ("- Status: Conditional core (only if the family opts in)", "names no condition"),
+        ("- Status: Conditional core (only if -- see Session 00)", "names no condition"),
+        ("- Status: Conditional core (only if (a) -- see Session 00)", "names no condition"),
+        ("- Status: Conditional core (adult-led) (see Session 00 -- as before)", "names no condition"),
+        ("- Status: Conditional core (adult-led -- see Session 00", "names no condition"),
+    ],
+)
+def test_a_wrong_status_value_fails(status: str, expected: str) -> None:
+    """A typo, a lower-case value, and a conditional line with no condition."""
+    messages = check(_status_session(status))
+    assert any(expected in message for message in messages), messages
+
+
+def test_a_wrong_status_value_is_reported_on_its_own_line() -> None:
+    """The failure names the Status line and the four values a builder may write."""
+    status = "- Status: Conditonal core"
+    text = _status_session(status)
+    violations = structure.check_text(text, "07_a_session.md", "07_a_session.md")
+    assert [v.line_number for v in violations] == [text.split("\n").index(status) + 1]
+    assert "Core, Conditional core, Recommended, Optional" in violations[0].message
+
+
+def test_every_status_bullet_in_a_strip_is_read() -> None:
+    """A second Status bullet is named, and its own wrong value is named too."""
+    text = build_session(
+        parent_bullets=(
+            "- Status: Core -- the capstone",
+            "- Status: Conditonal core",
+            "- Estimated time: 20-30 minutes",
+            "- Parent involvement: 5-minute check-in",
+        )
+    )
+    violations = structure.check_text(text, "07_a_session.md", "07_a_session.md")
+    second = text.split("\n").index("- Status: Conditonal core") + 1
+    assert [v.line_number for v in violations] == [second, second]
+    assert "second Status bullet" in violations[0].message
+    assert "'Conditonal core', which is not one of the four" in violations[1].message
+
+
+def test_two_legal_status_bullets_still_fail() -> None:
+    """Two legal values tell a parent two things, so the second bullet is named."""
+    text = build_session(
+        parent_bullets=(
+            "- Status: Core",
+            "- Status: Optional",
+            "- Estimated time: 20-30 minutes",
+            "- Parent involvement: 5-minute check-in",
+        )
+    )
+    messages = check(text)
+    assert len(messages) == 1 and "second Status bullet" in messages[0], messages
+
+
+def test_the_status_values_are_the_four_the_template_lists() -> None:
+    """The gate's tuple and the template's classification sentence are one list."""
+    text = SESSION_TEMPLATE.read_text(encoding="utf-8")
+    sentences = [
+        line for line in text.split("\n") if line.startswith("There are four classifications")
+    ]
+    assert len(sentences) == 1, (
+        "the session template no longer holds one sentence that lists the four "
+        "Status values, so the gate's STATUS_VALUES cannot be checked against it"
+    )
+    listed = tuple(re.findall(r"\*\*([^*]+)\*\*", sentences[0].split(":", 1)[1]))
+    assert listed == structure.STATUS_VALUES
+
+
+# ---------------------------------------------------------------------------
+# The gate reads every session the roadmap links, and only those
+# ---------------------------------------------------------------------------
+
+#: A link into the sessions tree: an inline link's destination, or a link
+#: reference definition's, with an optional ``./`` in front. The fragment and
+#: any title are left out.
+ROADMAP_SESSION_LINK_PATTERN = re.compile(
+    r"\]\([ \t]*<?(?:\./)?(?P<inline>sessions/[^)\s>#]+)"
+    r"|^ {0,3}\[[^\]]+\]:[ \t]*<?(?:\./)?(?P<defined>sessions/[^\s>#]+)",
+    re.MULTILINE,
+)
+
+
+def roadmap_session_links(root: Path) -> set[Path]:
+    """Return every file ``root``'s roadmap links into ``sessions/``, resolved.
+
+    Each link is resolved against ``framework/``, where the roadmap sits. The
+    roadmap is read as the gate reads a page, so a link shown in a fenced
+    example or inside a comment is not a link. A session the roadmap links by
+    another path, one that does not start ``sessions/``, is not read here:
+    the roadmap links every session into that tree.
+    """
+    framework = root / "framework"
+    text = structure.normalize_line_endings(
+        (framework / "PROJECT_ROADMAP.md").read_text(encoding="utf-8")
+    )
+    visible = structure.scan_document(text).text
+    return {
+        (framework / unquote(match.group("inline") or match.group("defined"))).resolve()
+        for match in ROADMAP_SESSION_LINK_PATTERN.finditer(visible)
+    }
+
+
+def roadmap_mismatches(root: Path) -> list[str]:
+    """Return one line for each session only the roadmap, or only the gate, names."""
+    resolved_root = root.resolve()
+    linked = roadmap_session_links(root)
+    read = {path.resolve() for path in structure.resolve_paths([], root)}
+
+    def name(path: Path) -> str:
+        try:
+            return path.relative_to(resolved_root).as_posix()
+        except ValueError:
+            return path.as_posix()
+
+    problems = [
+        f"{name(path)}: the roadmap links it, and the gate does not read it. Move "
+        "the session under framework/sessions/ as a .md file, or fix the link."
+        for path in sorted(linked - read)
+    ]
+    problems += [
+        f"{name(path)}: the gate reads it, and the roadmap does not link it. Link a "
+        "new session from framework/PROJECT_ROADMAP.md."
+        for path in sorted(read - linked)
+    ]
+    return problems
+
+
+def session_number_problems(paths: Iterable[Path]) -> list[str]:
+    """Return each repeat or missing number in the sessions' file names.
+
+    The numbers must run from 00 with no gap and no repeat, so the last number
+    is one less than the count of sessions.
+    """
+    problems: list[str] = []
+    numbered: dict[int, list[str]] = {}
+    for path in paths:
+        match = structure.FILENAME_NUMBER_PATTERN.match(path.name)
+        if match is None:
+            problems.append(f"{path.name}: the file name has no two-digit session number")
+            continue
+        numbered.setdefault(int(match.group("number")), []).append(path.name)
+    for number, names in sorted(numbered.items()):
+        if len(names) > 1:
+            problems.append(f"Session {number:02d}: {len(names)} files carry it: {sorted(names)}")
+    top = max(numbered, default=-1)
+    problems += [
+        f"Session {number:02d}: no linked session carries it"
+        for number in range(top + 1)
+        if number not in numbered
+    ]
+    return problems
+
+
+def test_the_gate_reads_exactly_the_sessions_the_roadmap_links() -> None:
+    """A session the gate never reads can ship without its Stop Point.
+
+    The roadmap links every session, and ``npm run lint:md:links`` fails a
+    link to a missing file, so it is the list the walk is held to. A count
+    would have to be raised by hand for each new session.
+    """
+    linked = roadmap_session_links(structure.REPO_ROOT)
+    assert linked, "the roadmap links no session, so there is nothing to compare"
+    problems = roadmap_mismatches(structure.REPO_ROOT)
+    assert not problems, "\n".join(problems)
+
+
+def test_the_linked_sessions_are_numbered_from_00_with_no_gap() -> None:
+    """The sessions the roadmap links run 00, 01, 02 and on, each number once."""
+    linked = roadmap_session_links(structure.REPO_ROOT)
+    assert linked, "the roadmap links no session, so there is nothing to number"
+    problems = session_number_problems(linked)
+    assert not problems, "\n".join(problems)
+
+
+@pytest.mark.parametrize(
+    ("names", "expected"),
+    [
+        (["00_a.md", "01_b.md"], []),
+        (["00_a.md", "02_c.md"], ["Session 01: no linked session carries it"]),
+        (["01_b.md"], ["Session 00: no linked session carries it"]),
+        (["00_a.md", "01_b.md", "01_c.md"], ["Session 01: 2 files carry it: ['01_b.md', '01_c.md']"]),
+    ],
+    ids=["in-order", "a-gap", "no-00", "a-repeat"],
+)
+def test_the_session_numbering_check_names_each_problem(
+    names: list[str], expected: list[str]
+) -> None:
+    """The controls: a gap, a missing 00 and a repeat are each named; a run is not."""
+    assert session_number_problems(Path(name) for name in names) == expected
+
+
+def _roadmap_tree(tmp_path: Path, links: Sequence[str]) -> Path:
+    """Return a scratch repository with one session and a roadmap linking ``links``."""
+    root = tmp_path / "repo"
+    phase = root / "framework" / "sessions" / "phase_00_setup"
+    phase.mkdir(parents=True)
+    (phase / "00_a_session.md").write_text(build_session(number="00"), encoding="utf-8")
+    body = "\n".join(f"- [{link}]({link})" for link in links)
+    (root / "framework" / "PROJECT_ROADMAP.md").write_text(
+        "# Project Roadmap\n\n" + body + "\n", encoding="utf-8"
+    )
+    return root
+
+
+FIRST_SESSION_LINK = "sessions/phase_00_setup/00_a_session.md"
+
+
+def test_the_roadmap_check_passes_a_tree_it_reads_in_full(tmp_path: Path) -> None:
+    """The positive control: one session, linked, read."""
+    root = _roadmap_tree(tmp_path, [FIRST_SESSION_LINK])
+    assert roadmap_mismatches(root) == []
+
+
+def test_the_roadmap_check_names_a_session_saved_outside_the_root(tmp_path: Path) -> None:
+    """A session saved beside ``framework/sessions`` is one the gate never opens.
+
+    The gate alone passes this tree: the file is outside the directory it
+    walks, so the run reports one clean session. The roadmap's link names the
+    session the gate never read.
+    """
+    link = "sessions/phase_01_research_skills/01_b_session.md"
+    root = _roadmap_tree(tmp_path, [FIRST_SESSION_LINK, link])
+    outside = root / "framework" / "phase_01_research_skills"
+    outside.mkdir()
+    (outside / "01_b_session.md").write_text(
+        build_session(number="01", sections=("Goal",)), encoding="utf-8"
+    )
+    assert structure.main([], root=root) == 0
+    problems = roadmap_mismatches(root)
+    assert len(problems) == 1, problems
+    assert problems[0].startswith("framework/" + link + ": the roadmap links it")
+
+
+def test_the_roadmap_check_names_a_session_saved_with_another_suffix(
+    tmp_path: Path,
+) -> None:
+    """A ``.markdown`` file is skipped by the walk as not Markdown, and the run passes."""
+    link = "sessions/phase_00_setup/01_b_session.markdown"
+    root = _roadmap_tree(tmp_path, [FIRST_SESSION_LINK, link])
+    (root / "framework" / link).write_text(
+        build_session(number="01", sections=("Goal",)), encoding="utf-8"
+    )
+    assert structure.main([], root=root) == 0
+    problems = roadmap_mismatches(root)
+    assert len(problems) == 1, problems
+    assert problems[0].startswith("framework/" + link + ": the roadmap links it")
+
+
+def test_the_roadmap_check_names_a_session_the_roadmap_does_not_link(
+    tmp_path: Path,
+) -> None:
+    """The other direction: a session the gate reads and the roadmap leaves out."""
+    root = _roadmap_tree(tmp_path, [FIRST_SESSION_LINK])
+    extra = root / "framework" / "sessions" / "phase_00_setup" / "01_b_session.md"
+    extra.write_text(build_session(number="01"), encoding="utf-8")
+    assert roadmap_mismatches(root) == [
+        "framework/sessions/phase_00_setup/01_b_session.md: the gate reads it, and "
+        "the roadmap does not link it. Link a new session from "
+        "framework/PROJECT_ROADMAP.md."
+    ]
+
+
+# ---------------------------------------------------------------------------
+# A helper the three gates share stays the same code in each
+# ---------------------------------------------------------------------------
+
+#: The three gates that carry their own CommonMark reading, and so their own
+#: copies of the same helpers.
+GATE_SCRIPTS = (
+    "check-readability.py",
+    "check-session-structure.py",
+    "check-prohibited-placeholders.py",
+)
+
+_LINE_SHAPE = (
+    "The search is the same. Readability's copy reads ParagraphLine records, "
+    "each line with its container prefix and the column its content starts "
+    "at; this gate's copy reads the content with the prefix already peeled."
+)
+_COMMENT_WALKS = (
+    "Two functions share the name. Readability's removes every comment from a "
+    "whole document, with literal code and raw text masked first; the other "
+    "walks one line and hands the open-comment state on to the next line."
+)
+_ENTRY_POINT = "Each gate's own command line: its options, its report and its exit rule."
+_OWN_SCOPE = "Each gate reads its own set of files, and says so in its own result."
+_QUOTE_SPELLING = (
+    "The same pattern. The placeholder hook's copy writes each single quote as a "
+    "backslash and a quote, which a regular expression reads as the quote itself."
+)
+
+#: The definitions two gates share by name and write differently on
+#: purpose: functions, classes and assigned values, keyed by the two scripts
+#: and the name, each with the reason read from both copies. Every other shared
+#: definition must be the same code, its docstrings aside. An entry whose two
+#: copies are now the same, or that names a definition one of the two no
+#: longer holds, fails the test, so the list names only differences that
+#: exist.
+SHARED_HELPER_DIFFERENCES: dict[tuple[str, str, str], str] = {
+    ("check-readability.py", "check-session-structure.py", "following_backtick_run"): _LINE_SHAPE,
+    ("check-readability.py", "check-session-structure.py", "following_comment_end"): _LINE_SHAPE,
+    ("check-readability.py", "check-session-structure.py", "following_link_end"): _LINE_SHAPE,
+    ("check-readability.py", "check-session-structure.py", "following_raw_html_end"): _LINE_SHAPE,
+    ("check-readability.py", "check-session-structure.py", "following_tag_end"): _LINE_SHAPE,
+    ("check-readability.py", "check-session-structure.py", "strip_html_comments"): _COMMENT_WALKS,
+    ("check-readability.py", "check-prohibited-placeholders.py", "strip_html_comments"): _COMMENT_WALKS,
+    ("check-readability.py", "check-prohibited-placeholders.py", "resolve_candidate_path"): (
+        "Readability refuses a file that is not Markdown; the placeholder hook "
+        "keeps only the paths its is_scan_target accepts."
+    ),
+    ("check-readability.py", "check-session-structure.py", "resolve_paths"): (
+        "Readability selects from its child-facing globs and returns each path "
+        "with its display name; this gate walks framework/sessions and returns "
+        "the paths alone."
+    ),
+    ("check-readability.py", "check-session-structure.py", "scan_files"): _OWN_SCOPE,
+    ("check-readability.py", "check-prohibited-placeholders.py", "scan_files"): _OWN_SCOPE,
+    ("check-session-structure.py", "check-prohibited-placeholders.py", "scan_files"): _OWN_SCOPE,
+    ("check-readability.py", "check-session-structure.py", "parse_args"): _ENTRY_POINT,
+    ("check-readability.py", "check-prohibited-placeholders.py", "parse_args"): _ENTRY_POINT,
+    ("check-session-structure.py", "check-prohibited-placeholders.py", "parse_args"): _ENTRY_POINT,
+    ("check-readability.py", "check-session-structure.py", "main"): _ENTRY_POINT,
+    ("check-readability.py", "check-prohibited-placeholders.py", "main"): _ENTRY_POINT,
+    ("check-session-structure.py", "check-prohibited-placeholders.py", "main"): _ENTRY_POINT,
+    ("check-readability.py", "check-session-structure.py", "HEADING_PATTERN"): (
+        "Two patterns share the name. Readability's finds a heading line, indented up to "
+        "three spaces, so its words are not scored; this gate's takes the level and the "
+        "title from a line its scan has already placed."
+    ),
+    ("check-readability.py", "check-session-structure.py", "PARENT_STRIP_PATTERN"): (
+        "Readability finds the strip label in any case and without its colon, so a drifted "
+        "label still keeps adult text out of the score; this gate holds the label to its "
+        "exact form and names a drifted one."
+    ),
+    ("check-readability.py", "check-prohibited-placeholders.py", "_TAG_ATTRIBUTE"): _QUOTE_SPELLING,
+    ("check-session-structure.py", "check-prohibited-placeholders.py", "_TAG_ATTRIBUTE"): _QUOTE_SPELLING,
+    ("check-session-structure.py", "check-prohibited-placeholders.py", "Violation"): (
+        "Each gate's own report: this gate's violation carries a message, and the "
+        "placeholder hook's carries the matched text and names the remedy."
+    ),
+}
+
+
+def definition_dumps(tree: ast.Module) -> dict[str, str]:
+    """Return each top-level definition in ``tree`` as ``ast.dump`` output, docstrings dropped.
+
+    A definition is a function, a class or a value assigned to a name. A
+    helper reads its patterns and records by name, so a fix to a shared
+    pattern is as much a change to the helper as a fix to its body. A value
+    built from another is compared as written, so its parts are compared under
+    their own names. ``ast.dump`` leaves out line numbers, comments and layout,
+    so two copies compare equal when they are the same code.
+    """
+    dumps: dict[str, str] = {}
+    for node in tree.body:
+        if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)):
+            named = [(node.name, node)]
+        elif isinstance(node, ast.Assign):
+            named = [(target.id, node.value) for target in node.targets if isinstance(target, ast.Name)]
+        elif isinstance(node, ast.AnnAssign) and isinstance(node.target, ast.Name) and node.value:
+            named = [(node.target.id, node.value)]
+        else:
+            continue
+        for inner in ast.walk(node):
+            if isinstance(inner, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)):
+                body = inner.body
+                if (
+                    body
+                    and isinstance(body[0], ast.Expr)
+                    and isinstance(body[0].value, ast.Constant)
+                    and isinstance(body[0].value.value, str)
+                ):
+                    inner.body = body[1:] or [ast.Pass()]
+        for name, value in named:
+            assert name not in dumps, f"the script defines {name} twice"
+            dumps[name] = ast.dump(value)
+    return dumps
+
+
+def gate_tree(name: str) -> ast.Module:
+    """Return one gate script's syntax tree."""
+    path = SCRIPT_PATH.parent / name
+    return ast.parse(path.read_text(encoding="utf-8"), filename=str(path))
+
+
+def shared_helper_findings(
+    scripts: Mapping[str, Mapping[str, str]],
+    allowed: Mapping[tuple[str, str, str], str],
+) -> list[str]:
+    """Return each shared definition whose copies differ unlisted, and each stale entry."""
+    findings: list[str] = []
+    for first, second in itertools.combinations(scripts, 2):
+        for function in sorted(set(scripts[first]) & set(scripts[second])):
+            same = scripts[first][function] == scripts[second][function]
+            listed = (first, second, function) in allowed
+            if not same and not listed:
+                findings.append(
+                    f"{function}: {first} and {second} hold different code. Make the "
+                    "two copies the same, or name the pair in "
+                    "SHARED_HELPER_DIFFERENCES with the reason."
+                )
+            elif same and listed:
+                findings.append(
+                    f"{function}: {first} and {second} now hold the same code. Remove "
+                    "the entry from SHARED_HELPER_DIFFERENCES."
+                )
+    for first, second, function in allowed:
+        if function not in scripts.get(first, {}) or function not in scripts.get(second, {}):
+            findings.append(
+                f"{function}: {first} and {second} no longer both define it. Remove "
+                "the entry from SHARED_HELPER_DIFFERENCES."
+            )
+    return findings
+
+
+def test_the_gates_shared_helpers_are_the_same_code() -> None:
+    """A fix to one copy of a shared definition must reach its siblings, or say why not.
+
+    The behavioural pins above test what a helper does; this tests that the
+    copies are the same, for every function, class and assigned value two or
+    more gates define by name. A helper reads its patterns and records by
+    name, so a one-sided edit to one of them is drift as much as an edit to
+    the helper's body.
+    """
+    scripts = {name: definition_dumps(gate_tree(name)) for name in GATE_SCRIPTS}
+    shared = {
+        function
+        for first, second in itertools.combinations(scripts, 2)
+        for function in set(scripts[first]) & set(scripts[second])
+    }
+    assert shared, "the three gates share no definition, so this test compares nothing"
+    findings = shared_helper_findings(scripts, SHARED_HELPER_DIFFERENCES)
+    assert not findings, "\n".join(findings)
+
+
+def _tree_with_changed_helper(name: str, function: str, *, docstring_only: bool) -> ast.Module:
+    """Return a gate's tree with one function changed, as an edit to one copy would."""
+    tree = gate_tree(name)
+    for node in tree.body:
+        if isinstance(node, ast.FunctionDef) and node.name == function:
+            if docstring_only:
+                node.body[0] = ast.Expr(ast.Constant("A docstring written another way."))
+            else:
+                node.body.append(ast.Pass())
+            return tree
+    raise AssertionError(f"{name} defines no {function}")
+
+
+def test_a_change_to_one_copy_of_a_shared_helper_is_named() -> None:
+    """The negative control: one statement added to one copy fails both of its pairs."""
+    scripts = {name: definition_dumps(gate_tree(name)) for name in GATE_SCRIPTS}
+    scripts["check-prohibited-placeholders.py"] = definition_dumps(
+        _tree_with_changed_helper(
+            "check-prohibited-placeholders.py", "is_closing_fence", docstring_only=False
+        )
+    )
+    findings = shared_helper_findings(scripts, SHARED_HELPER_DIFFERENCES)
+    assert [finding.split(". ")[0] for finding in findings] == [
+        "is_closing_fence: check-readability.py and check-prohibited-placeholders.py "
+        "hold different code",
+        "is_closing_fence: check-session-structure.py and check-prohibited-placeholders.py "
+        "hold different code",
+    ]
+
+
+def test_a_change_to_one_copy_of_a_shared_pattern_is_named() -> None:
+    """The negative control: one gate's fence opener allows four spaces of indent."""
+    scripts = {name: definition_dumps(gate_tree(name)) for name in GATE_SCRIPTS}
+    tree = gate_tree("check-readability.py")
+    for node in tree.body:
+        if isinstance(node, ast.Assign) and any(
+            isinstance(target, ast.Name) and target.id == "FENCE_OPEN_PATTERN"
+            for target in node.targets
+        ):
+            node.value.args[0] = ast.Constant(r"^ {0,4}(?P<marker>`{3,}|~{3,})")
+    scripts["check-readability.py"] = definition_dumps(tree)
+    findings = shared_helper_findings(scripts, SHARED_HELPER_DIFFERENCES)
+    assert [finding.split(". ")[0] for finding in findings] == [
+        "FENCE_OPEN_PATTERN: check-readability.py and check-session-structure.py hold "
+        "different code",
+        "FENCE_OPEN_PATTERN: check-readability.py and check-prohibited-placeholders.py "
+        "hold different code",
+    ]
+
+
+def test_a_docstring_change_to_one_copy_is_not_a_difference() -> None:
+    """No false alarm: a docstring is not code, so rewording one is not drift."""
+    scripts = {name: definition_dumps(gate_tree(name)) for name in GATE_SCRIPTS}
+    scripts["check-prohibited-placeholders.py"] = definition_dumps(
+        _tree_with_changed_helper(
+            "check-prohibited-placeholders.py", "is_closing_fence", docstring_only=True
+        )
+    )
+    assert shared_helper_findings(scripts, SHARED_HELPER_DIFFERENCES) == []
+
+
+def test_an_entry_for_copies_that_are_the_same_is_stale() -> None:
+    """The list stays live: an entry for two copies that agree is itself a finding."""
+    scripts = {name: definition_dumps(gate_tree(name)) for name in GATE_SCRIPTS}
+    allowed = dict(SHARED_HELPER_DIFFERENCES)
+    allowed[("check-readability.py", "check-session-structure.py", "is_closing_fence")] = "none"
+    allowed[("check-readability.py", "check-session-structure.py", "no_such_helper")] = "none"
+    assert shared_helper_findings(scripts, allowed) == [
+        "is_closing_fence: check-readability.py and check-session-structure.py now hold "
+        "the same code. Remove the entry from SHARED_HELPER_DIFFERENCES.",
+        "no_such_helper: check-readability.py and check-session-structure.py no longer "
+        "both define it. Remove the entry from SHARED_HELPER_DIFFERENCES.",
+    ]
+
+
+# ---------------------------------------------------------------------------
+# The gate reads every page's headings and fences as markdown-it does
+# ---------------------------------------------------------------------------
+
+#: The markdown-it block reader the `X, not Y` recount uses. The differential
+#: below reads every page through it, in one Node process. The decision to
+#: keep this gate's own parser, and to hold it to markdown-it's reading this
+#: way, is recorded in
+#: ``docs/adr/ADR-0002-three-gates-keep-their-markdown-parsers.md``.
+BLOCK_READER = SCRIPT_PATH.parent / "x-not-y-blocks.js"
+
+#: Differences between this gate's reading and markdown-it's that are known
+#: and accepted, keyed by the page and by the difference as the test states
+#: it, each with its reason. It is empty: on every tracked page under
+#: ``framework/`` and ``destinations/`` the two readings agree. An entry whose
+#: difference no longer occurs fails the test, so the list names only
+#: differences that exist.
+MARKDOWN_IT_DIFFERENCES: dict[tuple[str, str], str] = {}
+
+
+def tracked_pages() -> list[str]:
+    """Return every tracked Markdown page under ``framework/`` and ``destinations/``."""
+    completed = subprocess.run(
+        ["git", "ls-files", "-z", "--", "framework", "destinations"],
+        cwd=structure.REPO_ROOT,
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+        check=False,
+    )
+    assert completed.returncode == 0, completed.stderr
+    pages = [path for path in completed.stdout.split("\0") if path.lower().endswith(".md")]
+    assert pages, "git lists no Markdown page under framework/ or destinations/"
+    return pages
+
+
+def markdown_it_blocks(
+    texts: Sequence[str], node_command: str = "node", reader: Path = BLOCK_READER
+) -> list[dict[str, Any]]:
+    """Return markdown-it's answer for each text, read in one Node process.
+
+    **Without Node.js, or without markdown-it, the test fails and says so.**
+    Skipping would report agreement for pages nobody compared. The workflow
+    that runs this suite installs both first.
+    """
+    node = shutil.which(node_command)
+    if node is None:
+        raise AssertionError(
+            f"{node_command!r} was not found. This test reads every page through "
+            f"{reader.name}, which needs Node.js: install Node.js and run `npm ci` "
+            "in the repository root."
+        )
+    request = "".join(json.dumps({"text": text}) + "\n" for text in texts)
+    completed = subprocess.run(
+        [node, str(reader)],
+        input=request,
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+        cwd=structure.REPO_ROOT,
+        check=False,
+    )
+    answers = [json.loads(line) for line in completed.stdout.splitlines() if line.strip()]
+    if completed.returncode != 0 or len(answers) != len(texts):
+        raise AssertionError(
+            f"{reader.name} answered {len(answers)} of {len(texts)} page(s) and exited "
+            f"{completed.returncode}. Run `npm ci` in the repository root so that "
+            "markdown-it is installed. It said: " + completed.stderr.strip()[-600:]
+        )
+    return answers
+
+
+def _heading(level: int | None) -> str:
+    """Return how a difference names a heading, or its absence."""
+    return "no heading" if level is None else f"a level-{level} heading"
+
+
+def reading_differences(text: str, answer: Mapping[str, Any]) -> list[str]:
+    """Return each line where this gate reads a page otherwise than markdown-it does.
+
+    Two readings are compared. The headings, by line and level. And the lines
+    the gate's scan hides: every line of a fenced block markdown-it finds must
+    be hidden, and a hidden line must sit in a fenced block, in an HTML block,
+    or on a paragraph or heading line that prints nothing, such as a comment.
+    Blank lines are not compared.
+    """
+    if "error" in answer:
+        return [f"markdown-it could not read the page: {answer['error']}"]
+    blocks = answer["blocks"]
+    scan = structure.scan_document(text)
+    lines = text.split("\n")
+    if len(scan.content_lines) != len(lines):
+        return [f"the gate's scan holds {len(scan.content_lines)} lines for {len(lines)}"]
+    differences: list[str] = []
+    gate = {heading.line_number: heading.level for heading in structure.find_headings(scan)}
+    renderer = {block["start"]: block["level"] for block in blocks if block["type"] == "heading"}
+    for number in sorted(set(gate) | set(renderer)):
+        if gate.get(number) != renderer.get(number):
+            differences.append(
+                f"line {number}: the gate reads {_heading(gate.get(number))}, and "
+                f"markdown-it reads {_heading(renderer.get(number))}"
+            )
+    fenced: set[int] = set()
+    quiet: set[int] = set()
+    for block in blocks:
+        if block["type"] == "fence":
+            fenced.update(range(block["start"], block["end"] + 1))
+        elif block["type"] == "html_block":
+            quiet.update(range(block["start"], block["end"] + 1))
+        elif block["type"] in ("paragraph", "heading"):
+            quiet.update(
+                block["start"] + offset
+                for offset, printed in enumerate(block["text"].split("\n"))
+                if not printed.strip()
+            )
+    blank = structure.ASCII_HORIZONTAL_WHITESPACE
+    for number, (source, seen) in enumerate(zip(lines, scan.content_lines), start=1):
+        if not source.strip(blank):
+            continue
+        hidden = not seen.strip(blank)
+        if number in fenced and not hidden:
+            differences.append(
+                f"line {number}: markdown-it reads it in a fenced block, and the gate shows it"
+            )
+        elif hidden and number not in fenced and number not in quiet:
+            differences.append(f"line {number}: the gate hides it, and markdown-it prints it")
+    return differences
+
+
+def test_the_gate_reads_every_page_as_markdown_it_does() -> None:
+    """Every tracked page's headings and hidden lines match markdown-it's reading.
+
+    This gate keeps its own CommonMark parser, and this test is what holds it
+    to the renderer on the pages that exist. A difference is not patched in
+    the parser: the ADR named on ``BLOCK_READER`` says what to do instead.
+    """
+    pages = tracked_pages()
+    texts = [
+        structure.normalize_line_endings(
+            (structure.REPO_ROOT / page).read_text(encoding="utf-8")
+        )
+        for page in pages
+    ]
+    found = {
+        (page, difference)
+        for page, text, answer in zip(pages, texts, markdown_it_blocks(texts))
+        for difference in reading_differences(text, answer)
+    }
+    unexplained = sorted(found - set(MARKDOWN_IT_DIFFERENCES))
+    stale = sorted(set(MARKDOWN_IT_DIFFERENCES) - found)
+    report = [f"{page}: {difference}" for page, difference in unexplained]
+    report += [
+        f"{page}: {difference}: no longer occurs; remove it from MARKDOWN_IT_DIFFERENCES"
+        for page, difference in stale
+    ]
+    assert not report, (
+        "the structure gate reads these pages otherwise than markdown-it does. "
+        "Read docs/adr/ADR-0002-three-gates-keep-their-markdown-parsers.md for "
+        "what to do.\n" + "\n".join(report)
+    )
+
+
+@pytest.mark.parametrize(
+    ("text", "expected"),
+    [
+        (
+            "Title\n=====\n\nWords.\n",
+            ["line 1: the gate reads no heading, and markdown-it reads a level-1 heading"],
+        ),
+        (
+            "- a\n\t" + FENCE + "\n\tcode\n\t" + FENCE + "\n",
+            [
+                f"line {number}: markdown-it reads it in a fenced block, and the gate shows it"
+                for number in (2, 3, 4)
+            ],
+        ),
+        (
+            "a <!--\nb\n\nc -->\n",
+            ["line 2: the gate hides it, and markdown-it prints it"],
+        ),
+    ],
+    ids=["a-setext-heading", "a-fence-indented-by-a-tab", "a-comment-left-open"],
+)
+def test_the_reading_comparison_names_a_difference(text: str, expected: list[str]) -> None:
+    """The negative controls: three shapes no page uses, where the two readings part."""
+    assert reading_differences(text, markdown_it_blocks([text])[0]) == expected
+
+
+def test_the_reading_comparison_passes_a_page_the_two_read_alike() -> None:
+    """The positive control: a heading, a fence and a comment, read the same way."""
+    text = (
+        "# Title\n\n<!-- a note -->\n\nWords <!-- aside --> here.\n\n"
+        + FENCE
+        + "text\n## Not a heading\n"
+        + FENCE
+        + "\n\n## Section\n"
+    )
+    assert reading_differences(text, markdown_it_blocks([text])[0]) == []
+
+
+def test_the_reader_names_npm_ci_when_node_is_missing() -> None:
+    """A missing Node.js fails the comparison, and the message says how to fix it."""
+    with pytest.raises(AssertionError, match="npm ci"):
+        markdown_it_blocks(["# A\n"], node_command="node-absent-for-this-test")
+
+
+def test_the_reader_names_npm_ci_when_markdown_it_is_missing(tmp_path: Path) -> None:
+    """A reader that cannot load its module fails the comparison the same way."""
+    reader = tmp_path / "reader.js"
+    reader.write_text("require('markdown-it-absent-for-this-test');\n", encoding="utf-8")
+    with pytest.raises(AssertionError, match="npm ci"):
+        markdown_it_blocks(["# A\n"], reader=reader)

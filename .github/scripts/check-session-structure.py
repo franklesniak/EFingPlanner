@@ -1,5 +1,7 @@
 """Check that every curriculum session carries its mandatory structure.
 
+Read ``docs/writing_checkers.md`` before changing this check or writing one.
+
 A session is the unit a child actually sits down with, and its shape is load
 bearing rather than cosmetic. The seven mandatory fields are what make a session
 startable and, more importantly, *stoppable*: a child with executive-function
@@ -28,7 +30,15 @@ What is checked
    specification states that the parent-facing meta-fields "may be shown in a
    compact strip near the top ... or grouped at the bottom", so a strip below
    the work is in one of the two places the curriculum allows, and a gate that
-   demanded the header would reject it.
+   demanded the header would reject it. The Status value is one of the four
+   the session template lists: Core, Conditional core, Recommended or
+   Optional. A note may follow it after `` -- `` or in parentheses, as in
+   Session 00's ``Core (adult-only setup)``. A Conditional core line names its
+   condition after `` -- ``, and a `` -- `` inside a parenthetical note names
+   none. The strip holds one Status bullet: every Status bullet in it is
+   read, and a second one is named whatever it says. A legal value that is
+   wrong for the session still passes, because nothing here knows which
+   value a session should have.
 4. The six always-mandatory sections exist: Goal, Start Here, Steps, Workspace,
    Artifact Created, Stop Point.
 5. Source Check exists, unless the session is exempt (see below).
@@ -260,6 +270,26 @@ PARENT_STRIP_FIELDS: tuple[tuple[str, re.Pattern[str]], ...] = tuple(
     )
     for field in ("Status", "Estimated time", "Parent involvement")
 )
+
+#: The four values a Status may hold, as the session template lists them. A
+#: value is compared exactly, capital letters included, once it is cut at the
+#: first of ``STATUS_VALUE_ENDS`` and stripped of white space and emphasis
+#: marks. So Session 00's ``Core (adult-only setup)`` is Core with a note, and
+#: ``Core -- **Checkpoint 1**`` is Core with another. A value outside the four
+#: tells a parent nothing they can plan from, and ``Conditonal core`` is the
+#: typo a presence check lets through.
+STATUS_VALUES = ("Core", "Conditional core", "Recommended", "Optional")
+#: Where a Status value ends when a note follows it. The template's built form
+#: for a conditional line puts its condition after `` -- ``, on the same line.
+STATUS_VALUE_ENDS = (" -- ", " (")
+#: What is stripped from each end of a value, and of a condition: spaces and
+#: tabs, and the marks that make emphasis. ``***Core***`` is Core in bold.
+STATUS_VALUE_STRIP = " \t*_"
+#: The value that must name its condition, after `` -- ``. A parent reads a
+#: conditional session with no condition as one that never applies, or as
+#: one that always does.
+CONDITIONAL_STATUS = "Conditional core"
+
 HEADING_PATTERN = re.compile(r"^(?P<hashes>#{1,6})[ \t]+(?P<title>.+?)[ \t]*$")
 
 #: A worksheet fill-in blank: a run of four or more underscores that starts
@@ -4582,6 +4612,86 @@ def renders_as_content(body: str) -> bool:
     return False
 
 
+def status_value_problems(strip: str) -> list[tuple[int, str]]:
+    """Return the row and the message for each Status problem in a strip.
+
+    ``strip`` is the parent strip as ``parent_strip_body`` gives it. Every
+    bullet the Status pattern in ``PARENT_STRIP_FIELDS`` finds is read. A strip
+    with no Status value is reported by that presence check, so it adds
+    nothing here. A strip holds one Status bullet: a second is reported on its
+    own line, whatever it says, because a parent cannot plan from two. The row
+    counts from the strip's first line.
+    """
+    lines = strip.split("\n")
+    problems: list[tuple[int, str]] = []
+    first_row: int | None = None
+    for match in dict(PARENT_STRIP_FIELDS)["Status"].finditer(strip):
+        row = strip.count("\n", 0, match.start())
+        if first_row is None:
+            first_row = row
+        else:
+            problems.append(
+                (
+                    row,
+                    "the strip has a second Status bullet, below the first. Keep "
+                    "one Status bullet, so a parent reads one value.",
+                )
+            )
+        problem = status_line_problem(lines[row])
+        if problem is not None:
+            problems.append((row, problem))
+    return problems
+
+
+def status_line_problem(line: str) -> str | None:
+    """Return the message for one Status bullet whose value is wrong, or ``None``.
+
+    The value is the text after the label's colon, cut at the first of
+    ``STATUS_VALUE_ENDS`` and stripped with ``STATUS_VALUE_STRIP``. It must
+    equal one of ``STATUS_VALUES``. A ``Conditional core`` value must also
+    have text after `` -- ``: the first `` -- `` after the value that stands
+    outside every parenthesis. Parentheses are counted, a link's included,
+    so a `` -- `` inside any note, or inside a note that never closes, names
+    no condition. The line is read with one
+    space added at its end, so ``Conditional core --`` with nothing after it
+    is a conditional line with no condition, and is reported as that.
+    """
+    # The pattern puts nothing but a list marker, spaces and emphasis marks
+    # before the label, so the first colon on the line is the label's own.
+    after_label = line.split(":", 1)[1].rstrip(ASCII_HORIZONTAL_WHITESPACE) + " "
+    ends = [after_label.find(end) for end in STATUS_VALUE_ENDS if end in after_label]
+    cut = min(ends) if ends else len(after_label)
+    value = after_label[:cut].strip(STATUS_VALUE_STRIP)
+    if value not in STATUS_VALUES:
+        return (
+            f"the Status value is {value!r}, which is not one of the four the "
+            "session template lists: "
+            + ", ".join(STATUS_VALUES)
+            + ". Write one of them exactly, capital letters included. A note "
+            'may follow the value, after " -- " or in parentheses.'
+        )
+    # The condition starts at the first " -- " at parenthesis depth 0, so a
+    # " -- " inside any note, closed or not, names no condition.
+    separator = STATUS_VALUE_ENDS[0]
+    condition, depth = "", 0
+    for index in range(cut, len(after_label)):
+        if after_label[index] == "(":
+            depth += 1
+        elif after_label[index] == ")":
+            depth = max(depth - 1, 0)
+        elif depth == 0 and after_label.startswith(separator, index):
+            condition = after_label[index + len(separator) :]
+            break
+    if value == CONDITIONAL_STATUS and not condition.strip(STATUS_VALUE_STRIP):
+        return (
+            "the Status value is Conditional core, and the line names no "
+            'condition. Write the condition after " -- " on the same line, as '
+            'in "Status: Conditional core -- done **only if** ...", so a parent '
+            "can tell when the session applies."
+        )
+    return None
+
+
 def parent_strip_differences(drift: re.Match[str]) -> list[str]:
     """Return each way a drifted strip label differs from ``**For parents:**``.
 
@@ -4722,6 +4832,8 @@ def check_text(text: str, display_path: str, file_name: str) -> list[Violation]:
                     "involvement.",
                 )
             )
+        for row, message in status_value_problems(strip):
+            violations.append(Violation(display_path, label_line + row, message))
 
     section_headings = [heading for heading in headings if heading.level == 2]
     titles = [heading.title for heading in section_headings]
