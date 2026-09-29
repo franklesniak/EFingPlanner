@@ -117,7 +117,7 @@ Write the line scoped to the path it describes. An unqualified shortcut written 
 There are four classifications, and Conditional core is the easy one to miss: **Core**, **Conditional core**, **Recommended**, **Optional**.
 
 <!-- density-exempt: X, not Y -- the batch 1 brief requires the built form "and never by citing a spec section number", which the reference-hygiene rule forbids -->
-A conditional-core session names its condition on the same line, in the built form `Status: Conditional core -- done **only if** ...`, and never by citing a spec section number. Built files reference concepts by Name and relative link. The structure gate requires a `Status` bullet and never reads its value, so a session flattened into Core or Recommended passes every gate in this repository while moving in or out of a Core baseline the design record fixes on purpose.
+A conditional-core session names its condition on the same line, in the built form `Status: Conditional core -- done **only if** ...`, and never by citing a spec section number. Built files reference concepts by Name and relative link. The structure gate reads the `Status` value. It fails a value outside the four, a Conditional core line with no condition after ` -- `, and a second `Status` bullet. A legal value that is wrong for the session still passes, so a session flattened into Core or Recommended passes every gate in this repository while moving in or out of a Core baseline the design record fixes on purpose.
 
 ## The rest of the strip
 

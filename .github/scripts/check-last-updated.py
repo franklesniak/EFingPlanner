@@ -1,5 +1,7 @@
 """Check that a pull request bumps `Last Updated` on every Markdown file it changes.
 
+Read ``docs/writing_checkers.md`` before changing this check or writing one.
+
 The documentation style guide (`.github/instructions/docs.instructions.md`,
 "Synchronizing `Last Updated` and `Version` on Content Changes") makes this a
 MUST: a commit that changes the rendered content or meaning of a document
