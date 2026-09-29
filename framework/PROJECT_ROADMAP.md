@@ -109,7 +109,7 @@ Two small wins sit between Checkpoints 4 and 5, where the path runs longest with
 
 The day-to-day check-off lists for both paths are on the [progress tracker](student_guide/progress_tracker.md).
 
-Continuing is frictionless: do the not-yet-done sessions in numbered order, and **extend -- don't redo -- the sessions already finished.** Every First Taste artifact is the seed its later session builds on. Each First Taste session whose Core version asks for more work has its own extension line on the progress tracker.
+Continuing is frictionless: do the not-yet-done sessions in numbered order, and **extend, don't redo, the sessions already finished.** Every First Taste artifact is the seed its later session builds on. Each First Taste session whose Core version asks for more work has its own extension line on the progress tracker.
 
 ### The Core Finish Line index
 
@@ -177,5 +177,5 @@ The full program adds the Recommended sessions your family chooses, each in its 
 
 ## Both ends are served
 
-- A stretched family or a struggling planner can lighten the load -- see Low-Bandwidth Parent Mode in [time and effort](parent_guide/time_and_effort.md).
-- An eager, capable child can go faster and deeper -- see High-Engagement Mode in the [differentiation guide](parent_guide/differentiation.md).
+- A stretched family or a struggling planner can lighten the load. See Low-Bandwidth Parent Mode in [time and effort](parent_guide/time_and_effort.md).
+- An eager, capable child can go faster and deeper. See High-Engagement Mode in the [differentiation guide](parent_guide/differentiation.md).

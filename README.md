@@ -1,4 +1,5 @@
 <!-- markdownlint-disable MD013 -->
+<!-- audience: parent -->
 
 # EFingPlanner
 
@@ -155,9 +156,9 @@ Every session, grouped by phase and linked to its page. The First Taste path is 
 
 Three layers (this is how the pages fit together):
 
-- `framework/` -- the reusable curriculum: sessions, templates, and the student and parent guides. No trip data.
-- `destinations/japan/` -- the Japan knowledge pack: stable reference facts.
-- the **trip layer** -- your child's real, filled-in work, which your family copies out of the blank pages and keeps in its own binder or Docs folder.
+- `framework/`: the reusable curriculum (sessions, templates, and the student and parent guides). No trip data.
+- `destinations/japan/`: the Japan knowledge pack, with stable reference facts.
+- the **trip layer**: your child's real, filled-in work, which your family copies out of the blank pages and keeps in its own binder or Docs folder.
 
 ## Safety and responsibility
 

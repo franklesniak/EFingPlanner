@@ -138,7 +138,7 @@ Want a rough signal of how the executive-function side is going? The optional [e
 - Role: 5-minute check-in.
 - Prep: the Session 03 goals; the budget band; a blank Travel Style Worksheet.
 - Look for: six style choices and a one-sentence style summary.
-- Coaching question: "Fewer places deeper, or more places faster -- which fits us?"
+- Coaching question: "Fewer places deeper, or more places faster? Which fits us?"
 - Pitfall: treating it as a test. There are no wrong answers here.
 
 ## Session 14: Checkpoint 1 Season Recommendation

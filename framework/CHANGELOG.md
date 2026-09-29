@@ -7,7 +7,7 @@
 
 - **Status:** Active
 - **Owner:** Repository Maintainers
-- **Last Updated:** 2026-09-28
+- **Last Updated:** 2026-09-29
 - **Scope:** Version history for the reusable curriculum in `framework/` (and the destination packs that plug into it). Builder- and reuser-facing. Not part of the child's or parent's reading path.
 
 ## Which log is this
@@ -35,7 +35,13 @@ The current version also appears in `framework/README.md`.
 
 ## Unreleased
 
-Nothing yet. Entries land here until the next release is cut.
+### Added
+
+- **Trope-density gate.** `.github/scripts/check-trope-density.py` holds every page under `framework/` and `destinations/`, and the root README and GETTING_STARTED, to the style law's spaced-dash and `real` caps, its child-text bans on `genuine`, `genuinely` and `guardrails`, and a set of zero-tolerance tropes, and CI fails the build on a breach. It reads each page as the `X, not Y` recount reads it, prints every `density-exempt` marker it honors with the lines it covers, and prints the build briefs, the archived spec and the root policy files as records only. On a pull request, a second job prints each changed child-facing page whose reading grade rose, for the reviewer to judge.
+
+### Changed
+
+- **Style law.** The [build style and vocabulary](docs/build_style_and_vocab.md) file now states each counting reading the gate applies: a link label, or a bold label with one parenthetical, is a label separator; a spaced em dash is a spaced dash; a builder or spec file's dash number is its ratio alone; every ratio rounds down before the floor of 1; two spaced dashes in one sentence are one paired device; an empty checkbox line sits outside the prose-line count; text in inline quotation marks counts unless a marker covers it; a marker may cover a block quote and stand past blank lines and comments; a Parent Notes region ends at the next heading of its own level or higher; and a child-facing `genuine` breaks the ban and counts toward the `real` caps, with the ban holding under a marker. Its build-risk register names the gate. The root README and GETTING_STARTED carry a parent audience marker, so the gate measures them under the parent caps.
 
 ---
 

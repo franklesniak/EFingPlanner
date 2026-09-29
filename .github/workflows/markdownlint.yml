@@ -5,10 +5,14 @@
 # Source: https://github.com/DavidAnson/markdownlint
 #
 # Purpose: Enforce Markdown formatting, nested Markdown linting,
-# offline repository-local link validation, and the toolchain-EOL regression
-# test across the repository, and, on pull requests, the `Last Updated` bump
-# on every changed Markdown file that carries the metadata header block
-# Runs on: push and pull_request events (the Last Updated job: pull_request only)
+# offline repository-local link validation, the curriculum's page gates
+# (reading level, session structure, trope density), and the toolchain-EOL
+# regression test across the repository, and, on pull requests, the
+# `Last Updated` bump on every changed Markdown file that carries the metadata
+# header block and a report of each changed child-facing page whose reading
+# grade rose
+# Runs on: push and pull_request events (the Last Updated and reading-grade
+# jobs: pull_request only)
 
 name: Markdown and Toolchain Checks
 
@@ -201,6 +205,29 @@ jobs:
         continue-on-error: true
         run: pytest tests/test_required_wording.py -v
 
+      # The trope-density gate holds every page under framework/ and
+      # destinations/, and the root README and GETTING_STARTED, to the style
+      # law's spaced-dash and `real` caps, its child-text bans and the
+      # zero-tolerance families, and fails on a breach. It reads each page
+      # through the X, not Y recount's markdown-it page model, so it needs the
+      # packages `npm ci` installs above. Two steps, not two commands in one
+      # step, for the same reason as the reading-level check above: a failing
+      # unit test must not hide the list of pages to fix. The unit-test step
+      # is skipped rather than failed when its suite is not there, as the
+      # sibling suites' steps are.
+      - name: Check trope density unit tests
+        id: test-trope-density
+        if: >-
+          hashFiles('tests/test_check_trope_density.py') != '' &&
+          hashFiles('tests/_pytest_compat.py') != ''
+        continue-on-error: true
+        run: pytest tests/test_check_trope_density.py -v
+
+      - name: Check trope density
+        id: lint-trope-density
+        continue-on-error: true
+        run: python .github/scripts/check-trope-density.py
+
       # template-sync: begin python-only
       # A repository-wide rule enforced only by a test nothing runs is a rule
       # in name: a later comment could point at a review round, an issue
@@ -218,9 +245,10 @@ jobs:
       # which only the scan needs. The step is the last check, so it needs no
       # `continue-on-error` for the
       # checks above to run, and its own failure fails the job. The scan
-      # asserts that the three hook suites above, the recount's suite and the
-      # required-wording suite are present, so their own steps keep their
-      # guards: deleting or renaming one fails this step. It reads Markdown through markdown-it, from
+      # asserts that the three hook suites above, the recount's suite, the
+      # required-wording suite and the trope-density suite are present, so
+      # their own steps keep their guards: deleting or renaming one fails
+      # this step. It reads Markdown through markdown-it, from
       # the packages `npm ci` installs above, and fails if they are missing.
       - name: Check references resolve inside this repository
         id: test-self-contained
@@ -241,7 +269,9 @@ jobs:
           steps.lint-structure.outcome == 'failure' ||
           steps.test-placeholders.outcome == 'failure' ||
           steps.test-x-not-y.outcome == 'failure' ||
-          steps.test-required-wording.outcome == 'failure'
+          steps.test-required-wording.outcome == 'failure' ||
+          steps.test-trope-density.outcome == 'failure' ||
+          steps.lint-trope-density.outcome == 'failure'
         run: |
           echo "::error::Markdown and toolchain checks failed. Check the logs above for details."
           exit 1
@@ -314,3 +344,53 @@ jobs:
         run: |
           echo "::error::Last Updated check failed. Check the logs above for details."
           exit 1
+
+  # A dash-thinning or contraction edit can make a child's page harder to
+  # read, and no cap in the trope-density gate can see that. On a pull request
+  # this job scores each changed child-facing page with the reading-level check
+  # at the merge base and at the head, and prints every page whose grade rose.
+  # A rise never fails the job: a new sentence can raise a grade for a good
+  # reason, so the reviewer reads the rise and judges it. The job fails only
+  # when the report cannot run. Like the Last Updated job, it needs the pull
+  # request's base and full history, so it runs only on pull requests and
+  # checks out the head commit with a read-only token and no persisted
+  # credential. The report finds child-facing pages with the gate's register
+  # lookup, which reads pages through markdown-it, so it needs Node and
+  # node_modules; the reading-level check needs PyYAML.
+  reading-grade-change:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout pull request head with history
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: '24'
+          cache: 'npm'
+          cache-dependency-path: package-lock.json
+
+      - name: Install dependencies
+        run: npm ci --ignore-scripts
+
+      - name: Setup Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.13'
+          cache: 'pip'
+
+      - name: Install PyYAML
+        run: |
+          python -m pip install --upgrade pip
+          pip install "PyYAML>=6.0.3"
+
+      - name: Report reading-grade rises on changed child-facing pages
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: python .github/scripts/check-trope-density.py --grade-report "$BASE_SHA"
