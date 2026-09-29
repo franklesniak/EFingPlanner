@@ -524,9 +524,11 @@ HABITS = "- Read it.\n- Check it.\n- Ask about it.\n"
     "Plan to spend a day or two:\n\n" + HABITS,
     "Pick two or more of these:\n\n" + HABITS,
     "Write at least two reasons, such as:\n\n" + HABITS,
+    "Plan two to four stops:\n\n" + HABITS,
+    "Name at most two places:\n\n" + HABITS,
 ], ids=["three over three", "four over four", "two-slice total over five", "no colon", "a nested list",
         "three over three past two comments", "a paragraph between", "a range in words", "a day or two",
-        "two or more", "at least two"])
+        "two or more", "at least two", "two to four", "at most two"])
 def test_a_count_that_matches_or_states_nothing_passes(text: str) -> None:
     assert count_mismatches(text) == []
 
