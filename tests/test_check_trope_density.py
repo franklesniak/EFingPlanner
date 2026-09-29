@@ -391,10 +391,17 @@ def test_zero_tolerance_reads_headings_and_table_cells() -> None:
     ("See the spec's own numbered section 31.", True),
     ("See the spec's own long numbered section 31.", False),
     ("See the spec's sections 3 and 4.", True),
+    ("See section 31 of the design record.", True),
+    ("See section 31 of the archived record.", True),
+    ("See section 31 of the archived spec.", True),
+    ("See section 4.2 of the spec.", True),
+    ("See the archived record: section 31.", True),
     ("As the brief's section 10 says, pick one.", False),
     ("Session 10 has the rule.", False),
     ("Section 10 of the brief has the rule.", False),
     ("The design record fixes the titles.", False),
+    ("Section 2 of the record lists your choices.", False),
+    ("Section 3 of the special guide lists food.", False),
 ])
 def test_spec_section_reads_each_citation_form(text: str, hit: bool) -> None:
     assert fail_kinds(check(page("# P", "", text), rel=PARENT)) == (["SPEC-SECTION"] if hit else [])
