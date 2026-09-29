@@ -1,3 +1,5 @@
+<!-- markdownlint-disable MD013 -->
+
 # ADR-0001: The Archived Design Record Stays as Written
 
 ## Metadata
