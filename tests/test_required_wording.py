@@ -28,12 +28,26 @@ Markdown workflow runs this test before the self-containment scan, which
 refuses a tracked link, so this test cannot wait for that scan.
 
 A sentence may change only with the authority of the source named beside it.
+
+The suite also holds a lead-in's count to its list, because a child counts
+along with the page. A paragraph directly followed by a list, whose last
+sentence ends with a colon and states a count as a number word from two to
+twelve, must count that list's items, so ``Keep these three habits:`` above
+four items fails. A comment between them, such as a ``density-exempt`` marker,
+prints nothing, so the list below it is the one checked. Digits are not read:
+above a list they are a session number, a range or the end of a scale more
+often than a count. Nor is a number word joined to the next word by a hyphen,
+as in ``your big two-slice total:``, or one that is an end of a range or an
+approximate count, as in ``one or two sentences:`` or ``at least two``. Every
+tracked page under ``framework/`` and ``destinations/`` is read, and the root
+``README.md`` and ``GETTING_STARTED.md``.
 """
 
 from __future__ import annotations
 
 import importlib.util
 import re
+import subprocess
 import sys
 from pathlib import Path
 from typing import Any, cast
@@ -265,3 +279,288 @@ def test_the_required_wording_test_reads_through_the_check(tmp_path: Path, monke
     monkeypatch.setitem(globals(), "REPO_ROOT", tmp_path)
     with pytest.raises(cx.ReadError, match="refusing to read it"):
         test_required_wording_is_visible_on_its_page(page, wording, source)
+
+
+# A pack's freshness stamp. Each reference file and each session insert of a
+# destination pack carries one `Last reviewed` label as the first block below
+# its title, so a parent can judge whether a fact may be stale. The contents
+# pages, each folder's README.md, hold no facts and carry none.
+STAMP_GLOBS = ("destinations/*/reference/*.md", "destinations/*/session_inserts/*.md")
+#: A label is a paragraph whose printed text starts with this, in any case.
+STAMP_RE = re.compile(r"last reviewed:", re.IGNORECASE)
+
+
+def stamped_pages(root: Path | None = None) -> list[str]:
+    """Return every pack page that must carry a stamp, each folder's README.md aside."""
+    base = REPO_ROOT if root is None else root
+    return sorted({path.relative_to(base).as_posix() for pattern in STAMP_GLOBS for path in base.glob(pattern)
+                   if path.name != "README.md"})
+
+
+def unmatched_folders(root: Path | None = None) -> list[str]:
+    """Return each glob, written for one pack, that matches no page in that pack's folder."""
+    base = REPO_ROOT if root is None else root
+    packs = sorted(path for path in base.glob("destinations/*") if path.is_dir())
+    return [f"{pack.relative_to(base).as_posix()}/{folder}" for pack in packs
+            for folder in (pattern.split("/", 2)[2] for pattern in STAMP_GLOBS)
+            if not any(page.name != "README.md" for page in pack.glob(folder))]
+
+
+def stamp_problem(text: str) -> str | None:
+    """Return what is wrong with a page's `Last reviewed` label, or None when it has one, in its place.
+
+    The page is read as the recount reads it, through markdown-it. A label is a
+    paragraph whose printed text starts with `Last reviewed:`, in any case and
+    with any emphasis. So a label in a comment or a fence, which prints nothing,
+    does not count, and neither does one that follows other text in its
+    paragraph. A page needs exactly one, as the first block below its title,
+    the first level-1 heading.
+    """
+    blocks = cx.read_blocks(text)
+    labels = [i for i, block in enumerate(blocks)
+              if block["type"] == "paragraph" and STAMP_RE.match(cx.normalize_space(cx.plain(block["text"])))]
+    lines = ", ".join(str(blocks[i]["start"]) for i in labels) or "none"
+    if len(labels) != 1:
+        return f"{len(labels)} `Last reviewed` labels (lines: {lines}); it needs exactly one, below its title"
+    title = next((i for i, block in enumerate(blocks) if block["type"] == "heading" and block["level"] == 1), None)
+    if title is None:
+        return f"1 `Last reviewed` label (line {lines}), but no title for it to stand below"
+    if labels[0] != title + 1:
+        return (f"1 `Last reviewed` label (line {lines}), but it is not the first block below the title"
+                f" at line {blocks[title]['start']}")
+    return None
+
+
+def test_each_pack_page_carries_one_last_reviewed_label_below_its_title() -> None:
+    """Each pack reference file and session insert shows one `Last reviewed` label, first below its title.
+
+    The globs take a new pack's files with no edit here. Globs that match no
+    file fail, and so does a pack folder that one glob matches nothing in, so a
+    moved or renamed folder cannot pass by matching nothing.
+    """
+    pages = stamped_pages()
+    assert pages, f"{' and '.join(STAMP_GLOBS)} matched no file, so no pack page was checked"
+    missing = unmatched_folders()
+    assert not missing, f"{' and '.join(missing)} matched no page, so a moved or renamed folder went unchecked"
+    problems = [f"{page}: {why}" for page in pages if (why := stamp_problem(read_page(page))) is not None]
+    assert not problems, "pack pages without one `Last reviewed` label below the title:\n" + "\n".join(problems)
+
+
+PAGE_TOP = "<!-- markdownlint-disable MD013 -->\n<!-- audience: child -->\n\n# A Pack Page\n\n"
+STAMP = "**Last reviewed:** September 2026\n"
+
+
+@pytest.mark.parametrize("text", [
+    PAGE_TOP + STAMP + "\nA fact to check.\n",
+    PAGE_TOP + "Last reviewed: September 2026\n\nA fact to check.\n",
+    PAGE_TOP + "*LAST REVIEWED:* September 2026\n\nA fact to check.\n",
+    PAGE_TOP + "**Last reviewed**: September 2026\n\nA fact to check.\n",
+])
+def test_one_label_first_below_the_title_passes(text: str) -> None:
+    assert stamp_problem(text) is None
+
+
+@pytest.mark.parametrize(("text", "why"), [
+    (PAGE_TOP + "A fact to check.\n", "0 `Last reviewed` labels (lines: none)"),
+    (PAGE_TOP + STAMP + "\nA fact to check.\n\n" + STAMP, "2 `Last reviewed` labels (lines: 6, 10)"),
+    (PAGE_TOP + "<!-- " + STAMP.strip() + " -->\n\nA fact to check.\n", "0 `Last reviewed` labels"),
+    (PAGE_TOP + "```text\n" + STAMP + "```\n\nA fact to check.\n", "0 `Last reviewed` labels"),
+    (PAGE_TOP + "A fact to check. " + STAMP, "0 `Last reviewed` labels"),
+    (PAGE_TOP + "A fact to check.\n\n" + STAMP,
+     "1 `Last reviewed` label (line 8), but it is not the first block below the title at line 4"),
+], ids=["no label", "two labels", "a label in a comment", "a label in a fence", "a label after other text on its line",
+        "a label below other text"])
+def test_a_missing_doubled_hidden_or_misplaced_label_fails(text: str, why: str) -> None:
+    problem = stamp_problem(text)
+    assert problem is not None and problem.startswith(why), problem
+
+
+def test_the_stamp_test_fails_when_its_globs_match_no_file(tmp_path: Path, monkeypatch: Any) -> None:
+    write_page(tmp_path / "destinations/somewhere/README.md", "# Contents\n")
+    monkeypatch.setitem(globals(), "REPO_ROOT", tmp_path)
+    with pytest.raises(AssertionError, match="matched no file"):
+        test_each_pack_page_carries_one_last_reviewed_label_below_its_title()
+
+
+def test_the_stamp_test_names_an_unstamped_page_and_leaves_out_each_readme(tmp_path: Path, monkeypatch: Any) -> None:
+    pack = tmp_path / "destinations/somewhere"
+    write_page(pack / "reference/README.md", "# Contents\n\nNo facts here.\n")
+    write_page(pack / "session_inserts/README.md", "# Routing\n\nNo facts here.\n")
+    write_page(pack / "reference/stamped.md", PAGE_TOP + STAMP)
+    write_page(pack / "session_inserts/unstamped.md", PAGE_TOP + "A fact to check.\n")
+    monkeypatch.setitem(globals(), "REPO_ROOT", tmp_path)
+    assert stamped_pages() == ["destinations/somewhere/reference/stamped.md",
+                               "destinations/somewhere/session_inserts/unstamped.md"]
+    with pytest.raises(AssertionError) as failure:
+        test_each_pack_page_carries_one_last_reviewed_label_below_its_title()
+    assert ("destinations/somewhere/session_inserts/unstamped.md: 0 `Last reviewed` labels (lines: none)"
+            in str(failure.value))
+    assert "reference/stamped.md" not in str(failure.value)
+
+
+@pytest.mark.parametrize(("layout", "missing"), [
+    ({"somewhere/session_inserts/stamped.md": True, "somewhere/references/unstamped.md": False},
+     "destinations/somewhere/reference/*.md"),
+    ({"first/reference/a.md": True, "first/session_inserts/b.md": True, "second/reference/c.md": True,
+      "second/inserts/d.md": False}, "destinations/second/session_inserts/*.md"),
+], ids=["a renamed folder in the only pack", "a misnamed folder in a second pack"])
+def test_the_stamp_test_fails_when_a_pack_folder_matches_no_page(tmp_path: Path, monkeypatch: Any,
+                                                                layout: dict[str, bool], missing: str) -> None:
+    for page, stamped in layout.items():
+        write_page(tmp_path / "destinations" / page, PAGE_TOP + (STAMP if stamped else "A fact to check.\n"))
+    monkeypatch.setitem(globals(), "REPO_ROOT", tmp_path)
+    with pytest.raises(AssertionError, match=re.escape(missing) + " matched no page"):
+        test_each_pack_page_carries_one_last_reviewed_label_below_its_title()
+
+
+# A lead-in's count. The roots are Git pathspecs: the two folders, and the two
+# root pages by name.
+LEAD_IN_ROOTS = ("framework", "destinations", "README.md", "GETTING_STARTED.md")
+COUNT_WORDS = ("two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve")
+#: A stated count: a number word, not joined to the next word by a hyphen. Digits are never read.
+COUNT_RE = re.compile(r"\b(" + "|".join(COUNT_WORDS) + r")\b(?!-\w)", re.IGNORECASE)
+#: A number word that is an end of a range or an approximate count counts no list: `one or two`,
+#: `two to four`, `a day or two`, `two or more`, `at least two` and `at most two`.
+NOT_A_COUNT_RE = re.compile(r"\b(?:one|{0})\s+(?:or|to)\s+(?:one|{0})\b|\bor\s+(?:{0})\b|\b(?:{0})\s+or\b"
+                            r"|\bat\s+(?:least|most)\s+(?:{0})\b".format("|".join(COUNT_WORDS)), re.IGNORECASE)
+
+
+def lead_in_pages() -> list[str]:
+    """Return every tracked page under framework/ and destinations/, and the two root pages, as Git lists them."""
+    listed = subprocess.run(["git", "ls-files", "-z", "--", *LEAD_IN_ROOTS], cwd=REPO_ROOT, capture_output=True,
+                            text=True, encoding="utf-8", check=True)
+    return sorted(page for page in listed.stdout.split("\0") if page.endswith(".md"))
+
+
+def unlisted_roots(pages: list[str]) -> list[str]:
+    """Return each root in LEAD_IN_ROOTS under which no listed page stands."""
+    return [root for root in LEAD_IN_ROOTS if not any(page == root or page.startswith(root + "/") for page in pages)]
+
+
+def count_mismatches(text: str) -> list[str]:
+    """Return each lead-in on a page whose stated count differs from the list directly below it.
+
+    A lead-in is a paragraph directly followed by a list, whose last sentence
+    ends with a colon. A block that shows nothing, such as a comment holding a
+    ``density-exempt`` marker, is read past, as the recount reads past it to
+    find a marker's block. The count is the first number word in that
+    sentence that is not an end of a range or an approximate count
+    (``NOT_A_COUNT_RE``). A lead-in with no such number word states no count. Each entry names
+    the line the number word is on, the claim and the list's item count.
+    """
+    blocks = cx.read_blocks(text)
+    out: list[str] = []
+    for index, para in enumerate(blocks):
+        if para["type"] != "paragraph":
+            continue
+        below = next((block for block in blocks[index + 1:] if not cx.shows_nothing(block)), None)
+        if below is None or below["type"] not in ("bullet_list", "ordered_list"):
+            continue
+        # One printed line per source line, as the recount splits a paragraph into sentences.
+        printed = "\n".join(cx.plain(line) for line in para["text"].split("\n"))
+        spans = cx.sentence_spans(printed)
+        if not spans or not printed[spans[-1][0]:spans[-1][1]].endswith(":"):
+            continue
+        start, end = spans[-1]
+        ranges = [match.span() for match in NOT_A_COUNT_RE.finditer(printed, start, end)]
+        found = next((match for match in COUNT_RE.finditer(printed, start, end)
+                      if not any(a <= match.start() < b for a, b in ranges)), None)
+        if found is None:
+            continue
+        claim = COUNT_WORDS.index(found.group(1).lower()) + 2
+        if claim != below["items"]:
+            line = para["start"] + printed.count("\n", 0, found.start())
+            out.append(f"line {line}: {cx.normalize_space(printed[start:end])!r} states {claim}, and the list"
+                       f" below it has {below['items']}")
+    return out
+
+
+def test_each_lead_in_count_matches_the_list_below_it() -> None:
+    """Each counted lead-in on the tracked pages matches the list below it.
+
+    Each root must list a page, so a moved or renamed root cannot pass by
+    listing nothing.
+    """
+    pages = lead_in_pages()
+    empty = unlisted_roots(pages)
+    assert not empty, f"git listed no page under {', '.join(empty)}, so a moved or renamed root went unchecked"
+    problems = [f"{page}: {problem}" for page in pages for problem in count_mismatches(read_page(page))]
+    assert not problems, "lead-ins whose count differs from the list below them:\n" + "\n".join(problems)
+
+
+def git_tree(root: Path, pages: list[str]) -> None:
+    """Write each page into a new Git repository at root, and stage it, as the lead-in test lists pages with Git."""
+    for page in pages:
+        write_page(root / page, "A page.\n")
+    subprocess.run(["git", "init", "-q"], cwd=root, check=True, capture_output=True)
+    if pages:
+        subprocess.run(["git", "add", "--", *pages], cwd=root, check=True, capture_output=True)
+
+
+@pytest.mark.parametrize(("pages", "empty"), [
+    (["curriculum/a.md", "destinations/b.md", "README.md", "GETTING_STARTED.md"], "framework"),
+    ([], "framework, destinations, README.md, GETTING_STARTED.md"),
+], ids=["a renamed framework folder", "nothing tracked"])
+def test_the_lead_in_test_fails_when_a_root_lists_no_page(tmp_path: Path, monkeypatch: Any, pages: list[str],
+                                                          empty: str) -> None:
+    git_tree(tmp_path, pages)
+    monkeypatch.setitem(globals(), "REPO_ROOT", tmp_path)
+    with pytest.raises(AssertionError, match="git listed no page under " + re.escape(empty) + ","):
+        test_each_lead_in_count_matches_the_list_below_it()
+
+
+HABITS = "- Read it.\n- Check it.\n- Ask about it.\n"
+
+
+@pytest.mark.parametrize("text", [
+    "Keep these three habits:\n\n" + HABITS,
+    "Four steps, in order:\n\n1. Look.\n2. Read.\n3. Check.\n4. Write.\n",
+    "Add up your big two-slice total:\n\n- a\n- b\n- c\n- d\n- e\n",
+    "Keep these three habits.\n\n- Read it.\n",
+    "- Pack two things:\n  - a hat\n  - a map\n",
+    "Keep these three habits:\n\n<!-- a note for the builder -->\n\n<!-- a second note -->\n\n" + HABITS,
+    "Keep these three habits:\n\nThen read on.\n\n- Read it.\n",
+    "Now write it in one or two sentences:\n\n" + HABITS,
+    "Plan to spend a day or two:\n\n" + HABITS,
+    "Pick two or more of these:\n\n" + HABITS,
+    "Write at least two reasons, such as:\n\n" + HABITS,
+    "Plan two to four stops:\n\n" + HABITS,
+    "Name at most two places:\n\n" + HABITS,
+], ids=["three over three", "four over four", "two-slice total over five", "no colon", "a nested list",
+        "three over three past two comments", "a paragraph between", "a range in words", "a day or two",
+        "two or more", "at least two", "two to four", "at most two"])
+def test_a_count_that_matches_or_states_nothing_passes(text: str) -> None:
+    assert count_mismatches(text) == []
+
+
+@pytest.mark.parametrize("text", [
+    "At 2-4 sessions a week:\n\n" + HABITS,
+    "Before you start Session 53:\n\n" + HABITS,
+    "Score each city from 1 (low) to 5 (high) on three things:\n\n" + HABITS,
+], ids=["a range", "a session number", "a scale's ends beside a number word"])
+def test_a_digit_count_is_ignored(text: str) -> None:
+    assert count_mismatches(text) == []
+
+
+@pytest.mark.parametrize(("text", "why"), [
+    ("Keep these three habits:\n\n" + HABITS + "- Write it down.\n",
+     "line 1: 'Keep these three habits:' states 3, and the list below it has 4"),
+    ("# Steps\n\nFive steps, in order:\n\n1. Look.\n2. Read.\n3. Check.\n",
+     "line 3: 'Five steps, in order:' states 5, and the list below it has 3"),
+    ("- Pack two things:\n  - a hat\n  - a map\n  - a snack\n",
+     "line 1: 'Pack two things:' states 2, and the list below it has 3"),
+    ("Read the page first. Then keep\nthese four habits:\n\n" + HABITS,
+     "line 2: 'Then keep these four habits:' states 4, and the list below it has 3"),
+    ("Keep these three habits:\n\n<!-- density-exempt: X, not Y -- a reason -->\n\n" + HABITS + "- Write it down.\n",
+     "line 1: 'Keep these three habits:' states 3, and the list below it has 4"),
+    ("Keep these three habits:\n\n<!-- a note for the builder -->\n\n<!-- a second note -->\n\n" + HABITS
+     + "- Write it down.\n", "line 1: 'Keep these three habits:' states 3, and the list below it has 4"),
+    ("In one or two sentences, answer these three questions:\n\n" + HABITS + "- Write it down.\n",
+     "line 1: 'In one or two sentences, answer these three questions:' states 3, and the list below it has 4"),
+    ("Cut your list down to three:\n\n" + HABITS + "- Write it down.\n",
+     "line 1: 'Cut your list down to three:' states 3, and the list below it has 4"),
+], ids=["three over four", "five over three", "a nested list", "a count on the paragraph's second line",
+        "three over four behind a comment", "three over four past two comments",
+        "a count after a range in words", "a count after 'to'"])
+def test_a_wrong_count_fails_with_its_line_claim_and_count(text: str, why: str) -> None:
+    assert count_mismatches(text) == [why]

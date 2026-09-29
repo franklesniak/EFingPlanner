@@ -7,13 +7,13 @@ description: "Documentation standards:  contract-first, traceable, drift-resista
 
 # Documentation Writing Style
 
-**Version:** 1.6.20260924.0
+**Version:** 1.6.20260929.0
 
 ## Metadata
 
 - **Status:** Active
 - **Owner:** Repository Maintainers
-- **Last Updated:** 2026-09-24
+- **Last Updated:** 2026-09-29
 - **Scope:** Defines documentation standards for Markdown (`**/*.md`) and Cursor Markdown rule (`**/*.mdc`) files in this repository, including specs, design docs, runbooks, ADRs, instruction files, and developer documentation. Does not cover code comments or inline documentation in source files.
 - **Related:** [Repository Copilot Instructions](../copilot-instructions.md)
 
@@ -484,7 +484,7 @@ Before merging, verify:
   - A line that begins with an `**Open Question:**` or `**Assumption:**` label, bare or as a list item.
   - A line that carries a same-line `<!-- ALLOW-TBD: <reason> -->` marker, when a brief suppression justification is necessary. The reason must not be empty, and the marker counts only where it is a real comment.
 
-  A raw-text element changes what is a comment. The elements `script`, `style`, `textarea`, `title`, `xmp`, `iframe`, `noembed`, and `noframes` hold text that the page parses as neither Markdown nor HTML, and a `plaintext` element does the same and never closes. Comment-shaped text inside one of them hides no placeholder, and an `ALLOW-TBD` marker inside one grants no exemption. The hook reads these elements as the HTML Standard defines them, as a browser does:
+  A raw-text element changes what is a comment. The elements `script`, `style`, `textarea`, `title`, `xmp`, `iframe`, `noembed`, and `noframes` hold text that a browser parses as neither Markdown nor HTML, and a `plaintext` element does the same and never closes. GitHub's renderer writes these tags as text instead, so its page shows what they hold as ordinary HTML; markdownlint's `MD033` refuses every such tag, and the hook keeps a browser's reading. Comment-shaped text inside one of them hides no placeholder, and an `ALLOW-TBD` marker inside one grants no exemption. The hook reads these elements as the HTML Standard defines them, as a browser does:
   - What an element holds ends at its closing tag, not at the end of the line. In `<script></script><!-- ALLOW-TBD: reason -->` the script is empty and the marker is a real comment, so it counts. In `<script><!-- ALLOW-TBD: reason -->` the marker is inside the script and counts for nothing. An element that is never closed holds everything to the end of the file.
   - Only a real end tag closes an element. In `<script title="</script>">` the characters `</script>` are a quoted attribute value, so the element stays open.
   - A tag ends at the next `>` outside a quoted attribute value. In `</script title="> x">` the first `>` is attribute data, so a placeholder written before the second `>` is inside the tag, and the hook reports it. This rule and the one above are one rule, seen from the two ends of a tag.
