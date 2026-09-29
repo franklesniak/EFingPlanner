@@ -5367,6 +5367,8 @@ def test_each_legal_status_value_passes(status: str) -> None:
         ("- Status: Conditional core (only if the family opts in)", "names no condition"),
         ("- Status: Conditional core (only if -- see Session 00)", "names no condition"),
         ("- Status: Conditional core (only if (a) -- see Session 00)", "names no condition"),
+        ("- Status: Conditional core (adult-led) (see Session 00 -- as before)", "names no condition"),
+        ("- Status: Conditional core (adult-led -- see Session 00", "names no condition"),
     ],
 )
 def test_a_wrong_status_value_fails(status: str, expected: str) -> None:
