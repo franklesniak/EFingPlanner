@@ -5441,10 +5441,10 @@
       "judgment": "no",
       "reason": "a change record: the three forms of a spec section number that fail the build; rejects nothing"
     },
-    "split|Its zero-tolerance families include a section number of the archived spec, which fails the build in three forms: a section sign before a number; the spec, the specification, the design record or the archived record within two words before ‹code› and a number; and ‹code› and a number followed by ‹code› and one of those names. → A build brief's numbered section passes.|1": {
+    "split|Its zero-tolerance families include a section number of the archived spec, which fails the build in three forms: a section sign before a number; the spec, the specification, the design record or the archived record within two words before ‹code› and a number; and ‹code› and a number followed by ‹code› and one of those names. → On a gated page, ‹code› or ‹code› before a number fails too, unless the same paragraph, heading or cell names a build brief.|1": {
       "line": 40,
       "judgment": "no",
-      "reason": "a change record: what passes the gate, stated positively; it rejects nothing"
+      "reason": "a change record: one more form that fails the gate, with the condition that exempts it; it adds to the claim and rejects nothing"
     },
     "device|Style law.|1": {
       "line": 44,

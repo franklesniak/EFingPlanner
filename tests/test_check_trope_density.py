@@ -376,35 +376,70 @@ def test_zero_tolerance_reads_headings_and_table_cells() -> None:
     assert fail_kinds(check(table, rel=PARENT)) == ["T100"]
 
 
-@pytest.mark.parametrize(("text", "hit"), [
-    ("See the spec's section 31.", True),
-    ("See the spec\u2019s section 31.", True),
-    ("The rule is in \u00a7 9.", True),
-    ("The rule is in \u00a79.", True),
-    ("As the specification section 4.2 says, pick one.", True),
-    ("See Section 31 of the spec.", True),
-    ("See section 31 of the specification.", True),
-    ("See the design record's section 31.", True),
-    ("See the archived record's section 31.", True),
-    ("See the archived spec, section 31.", True),
-    ("See the spec (section 31).", True),
-    ("See the spec's own numbered section 31.", True),
-    ("See the spec's own long numbered section 31.", False),
-    ("See the spec's sections 3 and 4.", True),
-    ("See section 31 of the design record.", True),
-    ("See section 31 of the archived record.", True),
-    ("See section 31 of the archived spec.", True),
-    ("See section 4.2 of the spec.", True),
-    ("See the archived record: section 31.", True),
-    ("As the brief's section 10 says, pick one.", False),
-    ("Session 10 has the rule.", False),
-    ("Section 10 of the brief has the rule.", False),
-    ("The design record fixes the titles.", False),
-    ("Section 2 of the record lists your choices.", False),
-    ("Section 3 of the special guide lists food.", False),
+RECORD = "docs/build/test_brief.md"
+
+
+# `named`: one of the named forms, which every page reads. `gated`: what a
+# gated page reads, the bare form included. A record reads the named forms only.
+@pytest.mark.parametrize(("text", "named", "gated"), [
+    ("See the spec's section 31.", True, True),
+    ("See the spec\u2019s section 31.", True, True),
+    ("The rule is in \u00a7 9.", True, True),
+    ("The rule is in \u00a79.", True, True),
+    ("As the specification section 4.2 says, pick one.", True, True),
+    ("See Section 31 of the spec.", True, True),
+    ("See section 31 of the specification.", True, True),
+    ("See the design record's section 31.", True, True),
+    ("See the archived record's section 31.", True, True),
+    ("See the archived spec, section 31.", True, True),
+    ("See the spec (section 31).", True, True),
+    ("See the spec's own numbered section 31.", True, True),
+    ("See the spec's own long numbered section 31.", False, True),
+    ("See the spec's sections 3 and 4.", True, True),
+    ("See section 31 of the design record.", True, True),
+    ("See section 31 of the archived record.", True, True),
+    ("See section 31 of the archived spec.", True, True),
+    ("See section 4.2 of the spec.", True, True),
+    ("See the archived record: section 31.", True, True),
+    ("The brief quotes the spec's section 31.", True, True),
+    ("As the brief's section 10 says, pick one.", False, False),
+    ("Session 10 has the rule.", False, False),
+    ("Section 10 of the brief has the rule.", False, False),
+    ("The design record fixes the titles.", False, False),
+    ("Section 2 of the record lists your choices.", False, True),
+    ("Section 3 of the special guide lists food.", False, True),
+    # The bare form: a numbered section on a gated page, with no build brief named.
+    ("See Section 21.8.", False, True),
+    ("Pick one (Sections 8.1, 27).", False, True),
+    ("See sections 3 and 4 of the spec.", False, True),
+    ("See subsection 31 of the spec.", False, True),
+    ("The spec's subsection 31 says so.", False, True),
+    ("The brief's section 10 says the same.", False, False),
+    ("Section 10 of the brief lists them.", False, False),
+    ("Session 10 comes next.", False, False),
+    ("Read the cross-section 3 of the map.", False, False),
 ])
-def test_spec_section_reads_each_citation_form(text: str, hit: bool) -> None:
-    assert fail_kinds(check(page("# P", "", text), rel=PARENT)) == (["SPEC-SECTION"] if hit else [])
+def test_spec_section_reads_each_citation_form(text: str, named: bool, gated: bool) -> None:
+    record = check(page("# B", "", text), rel=RECORD, gated=False)
+    assert fail_kinds(record) == (["SPEC-SECTION"] if named else [])
+    assert fail_kinds(check(page("# P", "", text), rel=PARENT)) == (["SPEC-SECTION"] if gated else [])
+
+
+def test_a_record_may_cite_its_own_section_by_number() -> None:
+    record = check(page("# B", "", "See section 3."), rel=RECORD, gated=False)
+    assert record.fails == [] and record.zero_tolerance_hits == 0
+    gated = check(page("# P", "", "See section 3."), rel=PARENT)
+    assert fail_kinds(gated) == ["SPEC-SECTION"] and gated.zero_tolerance_hits == 1
+    assert gated.fails[0].message == ("SPEC-SECTION (a section number with no brief named; the style law"
+                                      " wants the Name): 'section 3'")
+
+
+def test_a_bare_section_number_is_read_in_headings_and_table_cells() -> None:
+    assert fail_kinds(check(page("# P", "", "## Section 4 rules"), rel=PARENT)) == ["SPEC-SECTION"]
+    table = page("# P", "", "| Rule | Where |", "| --- | --- |", "| Pick one | Section 4 |")
+    assert fail_kinds(check(table, rel=PARENT)) == ["SPEC-SECTION"]
+    brief = page("# P", "", "| Rule | Where |", "| --- | --- |", "| Pick one | The brief's section 4 |")
+    assert check(brief, rel=PARENT).fails == []
 
 
 def test_load_bearing_fails_in_child_text_and_is_printed_elsewhere() -> None:

@@ -156,9 +156,13 @@ paragraph's start rather than at a wrapped source line:
   section 31", "the archived spec, section 31", "the spec (section 31)").
   And "section" and a number, then "of the" and one of those names,
   "archived" allowed before "spec", "specification" or "design record"
-  ("section 31 of the specification"). A build brief's numbered section
-  ("the brief's section 10", "section 10 of the brief") is no hit: the
-  style law's read decides where one may stand.
+  ("section 31 of the specification"). On a gated page, "section" or
+  "subsection" before a number fails too, unless the same paragraph,
+  heading or cell names a build brief ("see section 21.8" fails; "the
+  brief's section 10" and "section 10 of the brief" pass). A record gets
+  no hit from that bare form, because it cites its own sections. A bare
+  hit inside a named one is not counted again, so one citation fails once.
+  The style law's read decides where a brief's section may stand.
 - T104: ``load-bearing``, a metaphor from building work. It fails in
   child-facing text and is printed elsewhere, where a structural use is fine.
 
@@ -354,6 +358,14 @@ ZERO_TOLERANCE: dict[str, tuple[str, re.Pattern[str]]] = {
         r"|\bsections?\s+\d[\d.]*\s+of\s+the\s+"
         r"(?:(?:archived\s+)?(?:spec(?:ification)?|design\s+record)|archived\s+record)\b")),
 }
+#: SPEC-SECTION's bare form, read on a gated page only: "section" or
+#: "subsection", one or more, before a number. A record cites its own sections.
+BARE_SECTION_RE = re.compile(r"(?i)(?<![\w-])(?:sub)?sections?\s+\d+(?:\.\d+)*")
+#: A build brief named in the same text, which lets a bare section number stand.
+BRIEF_RE = re.compile(r"(?i)\bbriefs?\b")
+#: What a bare hit reports: it may point at any document, and the style law
+#: wants a Name there, never a section number.
+BARE_SECTION_WHAT = "a section number with no brief named; the style law wants the Name"
 LOAD_BEARING = ("T104", "`load-bearing`, a metaphor from building work", re.compile(r"(?i)\bload[- ]?bearing\b"))
 
 #: The style law's banned words, printed as mentions: nearly every one is a
@@ -804,6 +816,18 @@ def check_words(result: PageResult, text: str, line_of: Any, region_of: Any, is_
             n = line_of(m.start())
             result.zero_tolerance_hits += 1
             result.fails.append(Note(family, n, f"{family} ({what}): {m.group(0)!r}", source_line(source, n)))
+    if result.gated and not BRIEF_RE.search(text):
+        family = "SPEC-SECTION"
+        rx = ZERO_TOLERANCE[family][1]
+        named = [(m.start(), m.end()) for m in rx.finditer(text)]
+        for m in BARE_SECTION_RE.finditer(text):
+            if any(start <= m.start() < end for start, end in named):
+                # A named citation has failed already, and one citation fails once.
+                continue
+            n = line_of(m.start())
+            result.zero_tolerance_hits += 1
+            result.fails.append(Note(family, n, f"{family} ({BARE_SECTION_WHAT}): {m.group(0)!r}",
+                                     source_line(source, n)))
     family, what, rx = LOAD_BEARING
     for m in rx.finditer(text):
         n = line_of(m.start())
