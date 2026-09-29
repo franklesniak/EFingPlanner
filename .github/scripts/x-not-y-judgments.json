@@ -54741,7 +54741,7 @@
       "judgment": "no",
       "reason": "a metadata field"
     },
-    "device|Last Updated: 2026-09-28|1": {
+    "device|Last Updated: 2026-09-29|1": {
       "line": 10,
       "judgment": "no",
       "reason": "a metadata field"
@@ -55091,15 +55091,25 @@
       "judgment": "device",
       "reason": "X, and never Y: in the built form, and never by citing a spec section number (the batch 1 brief's reference-hygiene clause)"
     },
-    "split|Built files reference concepts by Name and relative link. → The structure gate requires a ‹code› bullet and never reads its value, so a session flattened into Core or Recommended passes every gate in this repository while moving in or out of a Core baseline the design record fixes on purpose.|1": {
-      "line": 120,
-      "judgment": "no",
-      "reason": "a fact about the gate (never reads the value) and its consequence; it rejects no alternative"
-    },
     "split|A conditional-core session names its condition on the same line, in the built form ‹code› , and never by citing a spec section number. → Built files reference concepts by Name and relative link.|1": {
       "line": 120,
       "judgment": "no",
       "reason": "a general rule restating the with sentence, whose never-clause is its own device"
+    },
+    "split|Built files reference concepts by Name and relative link. → The structure gate reads the ‹code› value.|1": {
+      "line": 120,
+      "judgment": "no",
+      "reason": "a plain fact about what the gate reads; it rejects no alternative"
+    },
+    "split|The structure gate reads the ‹code› value. → It fails a value outside the four, a Conditional core line with no condition after ‹code› , and a second ‹code› bullet.|1": {
+      "line": 120,
+      "judgment": "no",
+      "reason": "names the values the gate fails; the negations describe invalid values, rejecting no alternative"
+    },
+    "split|It fails a value outside the four, a Conditional core line with no condition after ‹code› , and a second ‹code› bullet. → A legal value that is wrong for the session still passes, so a session flattened into Core or Recommended passes every gate in this repository while moving in or out of a Core baseline the design record fixes on purpose.|1": {
+      "line": 120,
+      "judgment": "no",
+      "reason": "a limit of the gate and its consequence; it rejects no alternative"
     },
     "device|Estimated time defaults to 20-30 minutes.|1": {
       "line": 124,

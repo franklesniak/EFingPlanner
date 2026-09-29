@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """Hold the curriculum pages to the style law's trope-density caps.
 
+Read ``docs/writing_checkers.md`` before changing this check or writing one.
+
 The style law, ``framework/docs/build_style_and_vocab.md``, caps two density
 devices that the `X, not Y` recount does not count: the spaced dash and the
 `real` family (`real`, `really`, `genuine`, `genuinely`). It bans `genuine`,

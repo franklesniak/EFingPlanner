@@ -12,7 +12,13 @@ where the tests follow GitHub's renderer.
 from __future__ import annotations
 
 import importlib.util
+import json
+import re
+import shutil
+import subprocess
 import sys
+from collections import Counter
+from collections.abc import Mapping, Sequence
 from pathlib import Path
 from typing import Any, cast
 
@@ -7494,3 +7500,321 @@ def test_the_words_after_a_bang_closer_are_scored() -> None:
     """The page prints what follows ``--!>`` up to the ``-->``, so it is prose."""
     prose = readability.extract_prose("Head. <!-- a --!> tail words --> more.")
     assert "tail" in prose.split(), prose
+
+
+# ---------------------------------------------------------------------------
+# The default scan reaches every curriculum page a child may read
+# ---------------------------------------------------------------------------
+
+
+def tracked_pages() -> list[str]:
+    """Return every tracked Markdown page under ``framework/`` and ``destinations/``."""
+    completed = subprocess.run(
+        ["git", "ls-files", "-z", "--", "framework", "destinations"],
+        cwd=readability.REPO_ROOT,
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+        check=False,
+    )
+    assert completed.returncode == 0, completed.stderr
+    return [path for path in completed.stdout.split("\0") if path.lower().endswith(".md")]
+
+
+def unscanned_pages(root: Path, pages: Sequence[str]) -> list[str]:
+    """Return each page the default scan leaves out that is not marked for adults.
+
+    A page under ``ALWAYS_EXCLUDED_PREFIXES`` is adult-facing by its place,
+    and a page with an audience marker says so in its own text. Every other
+    page is one a child may read, so the default scan must reach it.
+    """
+    in_scope = readability.default_path_set(root)
+    unscanned: list[str] = []
+    for page in pages:
+        if readability.is_excluded_path(page):
+            continue
+        path = root / page
+        if readability.has_adult_marker(path.read_text(encoding="utf-8")):
+            continue
+        if path.resolve() not in in_scope:
+            unscanned.append(page)
+    return unscanned
+
+
+def test_every_curriculum_page_is_scored_or_marked_for_adults() -> None:
+    """A page no default run scores is a page whose reading level nobody checks.
+
+    The kit and the worked examples once sat outside ``DEFAULT_INCLUDE_GLOBS``
+    with no marker, so a green run said nothing about 40 child-facing pages.
+    """
+    pages = tracked_pages()
+    assert pages, "git lists no Markdown page under framework/ or destinations/"
+    unscanned = unscanned_pages(readability.REPO_ROOT, pages)
+    assert not unscanned, (
+        "the default readability scan does not reach these pages, and none is "
+        "marked for adults. Add its tree to DEFAULT_INCLUDE_GLOBS, or mark the "
+        "page <!-- audience: adult -->, parent or builder, if a child never "
+        "reads it:\n" + "\n".join(unscanned)
+    )
+
+
+def test_the_scope_check_names_a_page_in_a_tree_the_scan_does_not_read(
+    tmp_path: Path,
+) -> None:
+    """The controls: a new tree is named; a scanned page and a marked page are not."""
+    pages = {
+        "framework/sessions/01_a.md": LINK_TEST_PROSE,
+        "framework/new_kit/card.md": LINK_TEST_PROSE,
+        "framework/new_kit/adult_card.md": "<!-- audience: adult -->\n\n" + LINK_TEST_PROSE,
+        "framework/parent_guide/guide.md": LINK_TEST_PROSE,
+    }
+    for page, text in pages.items():
+        (tmp_path / page).parent.mkdir(parents=True, exist_ok=True)
+        (tmp_path / page).write_text(text, encoding="utf-8")
+    assert unscanned_pages(tmp_path, list(pages)) == ["framework/new_kit/card.md"]
+
+
+# ---------------------------------------------------------------------------
+# The gate reads every page's fenced blocks as markdown-it does
+# ---------------------------------------------------------------------------
+
+#: The markdown-it block reader the `X, not Y` recount uses. The differential
+#: below reads every page through it, in one Node process. The decision to
+#: keep this gate's own parser, and to hold it to markdown-it's reading this
+#: way, is recorded in
+#: ``docs/adr/ADR-0002-three-gates-keep-their-markdown-parsers.md``.
+BLOCK_READER = SCRIPT_PATH.parent / "x-not-y-blocks.js"
+
+#: Differences between this gate's fenced lines and markdown-it's that are
+#: known and accepted, keyed by the page and by the difference as the test
+#: states it, each with its reason. It is empty: on every tracked page under
+#: ``framework/`` and ``destinations/`` the two readings agree. An entry whose
+#: difference no longer occurs fails the test, so the list names only
+#: differences that exist.
+MARKDOWN_IT_FENCE_DIFFERENCES: dict[tuple[str, str], str] = {}
+
+
+def markdown_it_blocks(
+    texts: Sequence[str], node_command: str = "node", reader: Path = BLOCK_READER
+) -> list[dict[str, Any]]:
+    """Return markdown-it's answer for each text, read in one Node process.
+
+    **Without Node.js, or without markdown-it, the test fails and says so.**
+    Skipping would report agreement for pages nobody compared. The workflow
+    that runs this suite installs both first.
+    """
+    node = shutil.which(node_command)
+    if node is None:
+        raise AssertionError(
+            f"{node_command!r} was not found. This test reads every page through "
+            f"{reader.name}, which needs Node.js: install Node.js and run `npm ci` "
+            "in the repository root."
+        )
+    request = "".join(json.dumps({"text": text}) + "\n" for text in texts)
+    completed = subprocess.run(
+        [node, str(reader)],
+        input=request,
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+        cwd=readability.REPO_ROOT,
+        check=False,
+    )
+    answers = [json.loads(line) for line in completed.stdout.splitlines() if line.strip()]
+    if completed.returncode != 0 or len(answers) != len(texts):
+        raise AssertionError(
+            f"{reader.name} answered {len(answers)} of {len(texts)} page(s) and exited "
+            f"{completed.returncode}. Run `npm ci` in the repository root so that "
+            "markdown-it is installed. It said: " + completed.stderr.strip()[-600:]
+        )
+    return answers
+
+
+def fenced_line_differences(text: str, answer: Mapping[str, Any]) -> list[str]:
+    """Return each line this gate and markdown-it place differently in a fenced block.
+
+    The gate's fenced blocks come from ``scan_literal_code`` as character
+    ranges and are turned into line numbers here. Blank lines are not
+    compared: a blank line inside a fence prints nothing either way.
+    """
+    if "error" in answer:
+        return [f"markdown-it could not read the page: {answer['error']}"]
+    lines = text.split("\n")
+    nonblank = {
+        number
+        for number, line in enumerate(lines, start=1)
+        if line.strip(readability.ASCII_HORIZONTAL_WHITESPACE)
+    }
+    renderer: set[int] = set()
+    for block in answer["blocks"]:
+        if block["type"] == "fence":
+            renderer.update(range(block["start"], block["end"] + 1))
+    gate: set[int] = set()
+    fenced, _spans = readability.scan_literal_code(text)
+    for start, end in fenced:
+        first = text.count("\n", 0, start) + 1
+        last = text.count("\n", 0, max(start, end - 1)) + 1
+        gate.update(range(first, last + 1))
+    differences = [
+        f"line {number}: markdown-it reads it in a fenced block, and the gate does not"
+        for number in sorted((renderer - gate) & nonblank)
+    ]
+    differences += [
+        f"line {number}: the gate reads it in a fenced block, and markdown-it does not"
+        for number in sorted((gate - renderer) & nonblank)
+    ]
+    return differences
+
+
+
+#: A line that could open a fence, once block-quote and list prefixes are set
+#: aside. Loose on purpose: the relation below blanks such a line and asks only
+#: that no words appear, and blanking a line that opens nothing adds no word.
+FENCE_SHAPED_LINE = re.compile(r"^[ \t>*+\-0-9.)]*(?:`{3,}|~{3,})")
+
+
+def _blank_lines(text: str, numbers: set[int]) -> str:
+    """Return ``text`` with the numbered lines emptied, every line break kept."""
+    return "\n".join(
+        "" if number in numbers else line
+        for number, line in enumerate(text.split("\n"), start=1)
+    )
+
+
+def scoring_fence_differences(text: str, answer: Mapping[str, Any]) -> list[str]:
+    """Return how the fences the gate scores from differ from markdown-it's.
+
+    The score comes from ``extract_prose``, which walks the fences again. Its
+    fences are held by what they do to the prose. Blanking markdown-it's
+    fenced lines must leave the prose as it is. Then blanking every other
+    fence-shaped line must add no word, because a line that opens no fence
+    hides nothing.
+    """
+    if "error" in answer:
+        return [f"markdown-it could not read the page: {answer['error']}"]
+    fenced = {
+        number
+        for block in answer["blocks"]
+        if block["type"] == "fence"
+        for number in range(block["start"], block["end"] + 1)
+    }
+    without_fences = _blank_lines(text, fenced)
+    differences: list[str] = []
+    if readability.extract_prose(text) != readability.extract_prose(without_fences):
+        differences.append(
+            "the scored prose changes when markdown-it's fenced lines are blanked, "
+            "so the gate scores a line inside a fence, or hides one outside it"
+        )
+    shaped = {
+        number
+        for number, line in enumerate(without_fences.split("\n"), start=1)
+        if FENCE_SHAPED_LINE.match(line)
+    }
+    kept = Counter(readability.extract_prose(without_fences).split())
+    shown = Counter(readability.extract_prose(_blank_lines(without_fences, shaped)).split())
+    if shown - kept:
+        differences.append(
+            "the scored prose gains words when the fence-shaped lines markdown-it "
+            "does not read as fences are blanked, so the gate opens a fence there"
+        )
+    return differences
+
+def test_the_gate_reads_every_page_s_fences_as_markdown_it_does() -> None:
+    """Both of the gate's fence walks match markdown-it's reading, on every tracked page.
+
+    This gate keeps its own CommonMark parser, and this test is what holds its
+    fence reading to the renderer on the pages that exist. The literal-code
+    walk is compared line by line, and the scoring walk by the prose it
+    returns. A difference is not patched in the parser: the ADR named on
+    ``BLOCK_READER`` says what to do.
+    """
+    pages = tracked_pages()
+    assert pages, "git lists no Markdown page under framework/ or destinations/"
+    texts = [
+        readability.normalize_line_endings(
+            (readability.REPO_ROOT / page).read_text(encoding="utf-8")
+        )
+        for page in pages
+    ]
+    found = {
+        (page, difference)
+        for page, text, answer in zip(pages, texts, markdown_it_blocks(texts))
+        for difference in fenced_line_differences(text, answer)
+        + scoring_fence_differences(text, answer)
+    }
+    unexplained = sorted(found - set(MARKDOWN_IT_FENCE_DIFFERENCES))
+    stale = sorted(set(MARKDOWN_IT_FENCE_DIFFERENCES) - found)
+    report = [f"{page}: {difference}" for page, difference in unexplained]
+    report += [
+        f"{page}: {difference}: no longer occurs; remove it from "
+        "MARKDOWN_IT_FENCE_DIFFERENCES"
+        for page, difference in stale
+    ]
+    assert not report, (
+        "the readability gate reads these pages' fenced blocks otherwise than "
+        "markdown-it does. Read "
+        "docs/adr/ADR-0002-three-gates-keep-their-markdown-parsers.md for what "
+        "to do.\n" + "\n".join(report)
+    )
+
+
+def test_the_fence_comparison_names_a_difference() -> None:
+    """The negative control: a fence indented by a tab in a list item, which no page uses."""
+    text = "- a\n\t" + FENCE + "\n\tcode\n\t" + FENCE + "\n"
+    assert fenced_line_differences(text, markdown_it_blocks([text])[0]) == [
+        f"line {number}: markdown-it reads it in a fenced block, and the gate does not"
+        for number in (2, 3, 4)
+    ]
+
+
+def test_the_fence_comparison_passes_a_page_the_two_read_alike() -> None:
+    """The positive control: a fence in a list item and one at the top level."""
+    text = (
+        "# Title\n\nWords.\n\n- item\n\n  " + FENCE + "text\n  code\n  " + FENCE + "\n\n"
+        + FENCE + "\nmore code\n" + FENCE + "\n"
+    )
+    assert fenced_line_differences(text, markdown_it_blocks([text])[0]) == []
+
+
+@pytest.mark.parametrize(
+    ("text", "expected"),
+    [
+        (
+            "Words before.\n\n<div>\n</div>\n" + FENCE + "\n\n" + FENCE
+            + "\ncodeword alpha beta\n" + FENCE + "\n",
+            "the scored prose changes when markdown-it's fenced lines are blanked",
+        ),
+        (
+            "Words before.\n\n<div>\n</div>\n" + FENCE + "\n\n" + LINK_TEST_PROSE + "\n",
+            "the scored prose gains words when the fence-shaped lines",
+        ),
+    ],
+    ids=["code-scored-as-prose", "prose-hidden-as-code"],
+)
+def test_the_scoring_fence_comparison_names_a_difference(text: str, expected: str) -> None:
+    """The negative controls: a fence-shaped line that closes an HTML block."""
+    differences = scoring_fence_differences(text, markdown_it_blocks([text])[0])
+    assert any(difference.startswith(expected) for difference in differences), differences
+
+
+def test_the_scoring_fence_comparison_passes_a_page_the_two_read_alike() -> None:
+    """The positive control: fences in a list item and at the top level, and a code span."""
+    text = (
+        "# Title\n\nWords and `code` here.\n\n- item\n\n  " + FENCE + "text\n  code\n  "
+        + FENCE + "\n\n" + FENCE + "\nmore code\n" + FENCE + "\n\nLast words.\n"
+    )
+    assert scoring_fence_differences(text, markdown_it_blocks([text])[0]) == []
+
+
+def test_the_fence_reader_names_npm_ci_when_node_is_missing() -> None:
+    """A missing Node.js fails the comparison, and the message says how to fix it."""
+    with pytest.raises(AssertionError, match="npm ci"):
+        markdown_it_blocks(["# A\n"], node_command="node-absent-for-this-test")
+
+
+def test_the_fence_reader_names_npm_ci_when_markdown_it_is_missing(tmp_path: Path) -> None:
+    """A reader that cannot load its module fails the comparison the same way."""
+    reader = tmp_path / "reader.js"
+    reader.write_text("require('markdown-it-absent-for-this-test');\n", encoding="utf-8")
+    with pytest.raises(AssertionError, match="npm ci"):
+        markdown_it_blocks(["# A\n"], reader=reader)

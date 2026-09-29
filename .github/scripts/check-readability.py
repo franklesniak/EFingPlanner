@@ -1,5 +1,7 @@
 """Check child-facing Markdown for reading level.
 
+Read ``docs/writing_checkers.md`` before changing this check or writing one.
+
 The curriculum targets a fourth-to-sixth-grade reading level for the text a
 child reads. This script measures two things that a human cannot eyeball
 reliably across dozens of files:
@@ -145,11 +147,16 @@ MIN_WORDS_TO_SCORE = 40
 # Scope
 # --------------------------------------------------------------------------
 
-#: Child-facing trees, scanned when no explicit paths are given.
+#: Child-facing trees, scanned when no explicit paths are given. The trip
+#: starter kit and the worked examples are pages a child reads too. A test in
+#: the suite fails when a tracked curriculum page is neither in these trees
+#: nor marked for adults, so a new tree cannot fall outside the scan unseen.
 DEFAULT_INCLUDE_GLOBS = (
     "framework/sessions/**/*.md",
     "framework/student_guide/**/*.md",
     "framework/templates/**/*.md",
+    "framework/trip_starter/**/*.md",
+    "framework/examples/**/*.md",
     "destinations/*/session_inserts/**/*.md",
     "destinations/*/reference/*.md",
 )
