@@ -65,8 +65,21 @@ template_sync:
       reason: Terraform module excluded.
     - path: .github/instructions/docs.instructions.md
       adoption_mode: minimal-preservation
-      decision: SKIP
-      reason: Owner declined edits to docs.instructions.md (question Q-C) to avoid future template-sync friction; retained verbatim.
+      decision: MERGE
+      authorization_basis: >-
+        Owner authorized rewriting the Prohibited Patterns bullet on the repo-local
+        check-prohibited-placeholders hook in a review thread:
+        https://github.com/franklesniak/EFingPlanner/pull/28#discussion_r4004076363
+        On 2026-09-29 the owner authorized one more sentence in that bullet, on
+        how GitHub's renderer shows raw-text tags, with local-only placement:
+        https://github.com/franklesniak/EFingPlanner/issues/71
+        This supersedes the first-initialization SKIP (question Q-C).
+      authorized_scope: >-
+        Keep the local Prohibited Patterns bullet that describes the repo-local
+        check-prohibited-placeholders hook (its scope of docs/, framework/, and
+        destinations/, what it allows, and how it reads raw-text elements),
+        because that hook is local and upstream's is not the same. Merge every
+        other upstream change to this file.
   protected_guide_contract_waivers:
     - path: AGENTS.md
       contract_key: agents-azure-devops-pr-review-protocol
