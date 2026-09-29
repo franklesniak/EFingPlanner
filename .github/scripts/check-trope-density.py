@@ -126,9 +126,10 @@ What fails the run
 ------------------
 On a gated page: a dash or `real` count over its file or section cap;
 `genuine`, `genuinely` or `guardrails` in child-facing text; any hit of the
-zero-tolerance families T88 to T96 and T100 below; `load-bearing` (T104) in
-child-facing text; an undetermined register; a refused marker; and an HTML
-block the page model cannot read, whose text no count would see.
+zero-tolerance families T88 to T96, T100 and SPEC-SECTION below;
+`load-bearing` (T104) in child-facing text; an undetermined register; a
+refused marker; and an HTML block the page model cannot read, whose text no
+count would see.
 
 The zero-tolerance families, matched on the text the caps read (no comments,
 code or quotation block quotes; headings and table cells included), a
@@ -146,6 +147,11 @@ paragraph's start rather than at a wrapped source line:
 - T95: an email's throat-clearing ("I wanted to reach out").
 - T96: an email's pleasantry ("I hope this message finds you well").
 - T100: an unnamed authority ("studies show", "experts say").
+- SPEC-SECTION: a section number of the archived spec, which the style law
+  bans in every built file: a section sign before a number, or "spec" or
+  "specification", at most two words, then "section" and a number ("the
+  spec's section 31"). A build brief's numbered section ("the brief's
+  section 10") is no hit: the style law's read decides where one may stand.
 - T104: ``load-bearing``, a metaphor from building work. It fails in
   child-facing text and is printed elsewhere, where a structural use is fine.
 
@@ -334,6 +340,8 @@ ZERO_TOLERANCE: dict[str, tuple[str, re.Pattern[str]]] = {
         r"(?i)(?:studies (?:show|suggest|have shown)|research (?:shows|suggests|indicates)"
         r"|experts (?:say|agree|believe)|industry leaders believe|critics argue|science (?:shows|says)"
         r"|it" + APOSTROPHE + r"?s been proven)")),
+    "SPEC-SECTION": ("a section number of the archived spec", re.compile(
+        r"(?i)\u00a7\s*\d|\bspec(?:ification)?(?:" + APOSTROPHE + r"s)?(?:\s+\w+){0,2}?\s+sections?\s+\d")),
 }
 LOAD_BEARING = ("T104", "`load-bearing`, a metaphor from building work", re.compile(r"(?i)\bload[- ]?bearing\b"))
 

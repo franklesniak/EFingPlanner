@@ -7,7 +7,7 @@
 
 - **Status:** Active
 - **Owner:** Repository Maintainers
-- **Last Updated:** 2026-09-28
+- **Last Updated:** 2026-09-29
 - **Scope:** The blank authoring skeleton for a child-facing curriculum session, with the rules a new session has to satisfy: the seven mandatory-core fields, the section order, the navigation line, the "For parents" strip, and the structure gate's floor. Builder-facing; a child never reads this page.
 - **Related:** [Build style and vocabulary](../docs/build_style_and_vocab.md), [Golden exemplar session](../sessions/phase_00_setup/04_start_a_source_log.md)
 
@@ -148,5 +148,6 @@ In Phases 7-8, and on the two-session readiness trigger, the template gets light
 ## Before you ship a session
 
 - Draft and check it against the golden exemplar, Session 04.
+- Check that the Stop Point says when a child on each branch is done, such as a child whose dates are booked or a child on the Core path. Sessions 12 and 14 are the model.
 - Read the voice, vocabulary, density and lint rules in [build style and vocabulary](../docs/build_style_and_vocab.md). They are not repeated here.
 - Run `python .github/scripts/check-session-structure.py` and `python .github/scripts/check-readability.py`, then the four repo-wide gates: `pre-commit run --all-files`, `npm run lint:md`, `npm run lint:md:nested` and `npm run lint:md:links`.

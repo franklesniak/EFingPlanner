@@ -339,6 +339,7 @@ ZERO_TOLERANCE_SAMPLES = [
     ("T95", "I wanted to reach out about the trip.", "Reach out to a grown-up about the trip."),
     ("T96", "I hope this message finds you well.", "This message is for you."),
     ("T100", "Studies show that maps help.", "Your notes show that maps help."),
+    ("SPEC-SECTION", "See the spec's section 31.", "See the Batch 4 build brief's section 8."),
 ]
 
 
@@ -373,6 +374,20 @@ def test_zero_tolerance_reads_headings_and_table_cells() -> None:
     assert fail_kinds(check(page("# P", "", "## Studies show this"), rel=PARENT)) == ["T100"]
     table = page("# P", "", "| Prompt | Your answer |", "| --- | --- |", "| Experts say | |")
     assert fail_kinds(check(table, rel=PARENT)) == ["T100"]
+
+
+@pytest.mark.parametrize(("text", "hit"), [
+    ("See the spec's section 31.", True),
+    ("See the spec\u2019s section 31.", True),
+    ("The rule is in \u00a7 9.", True),
+    ("The rule is in \u00a79.", True),
+    ("As the specification section 4.2 says, pick one.", True),
+    ("As the brief's section 10 says, pick one.", False),
+    ("Session 10 has the rule.", False),
+    ("Section 10 of the brief has the rule.", False),
+])
+def test_spec_section_reads_each_citation_form(text: str, hit: bool) -> None:
+    assert fail_kinds(check(page("# P", "", text), rel=PARENT)) == (["SPEC-SECTION"] if hit else [])
 
 
 def test_load_bearing_fails_in_child_text_and_is_printed_elsewhere() -> None:
