@@ -38,6 +38,13 @@ body:
         ## Thank you for your feature suggestion!
         Please fill out the form below to help us understand and evaluate your request.
 
+        **This issue is public.** Anyone can read it, and GitHub keeps its edit history.
+        Do not post your child's filled-in work or anything from your trip: no names,
+        dates, places, health details or booking details. Use a blank page, or retype
+        your example without the personal parts, as the
+        [privacy and safety page](https://github.com/franklesniak/EFingPlanner/blob/HEAD/framework/docs/privacy_and_safety.md)
+        asks.
+
   - type: checkboxes
     id: pre_flight
     attributes:
@@ -194,8 +201,8 @@ body:
     attributes:
       label: Additional Context
       description: >-
-        Add any other context, mockups, screenshots, or examples about the feature request.
-        Drag and drop images directly into this field
+        Add any other context, a mockup, or a screenshot of a blank page.
+        Never post a photo or screenshot of your child's filled-in page.
       placeholder: |
         Additional context...
 
