@@ -21,12 +21,15 @@
 #   base, as Step 4 of the procedure requires.
 #
 # New upstream modules. The upstream manifest now defines seven modules that
-# `included_modules` below does not list, and the owner must choose each one
-# at that sync. The agent files this repository keeps for them:
+# this repository's manifest does not have, and the owner must choose each
+# one at that sync. The agent files this repository keeps for them:
 #
-# - agent-copilot: .github/copilot-instructions.md
+# - agent-copilot: none. Upstream maps .github/copilot-instructions.md to
+#   agent-instructions alone, and this module to
+#   .github/workflows/copilot-setup-steps.yml and docs/copilot-setup.md,
+#   which this repository does not have.
 # - agent-claude: CLAUDE.md and .claude/
-# - agent-codex: AGENTS.md
+# - agent-codex: AGENTS.md and .codex/
 # - agent-gemini: GEMINI.md
 # - agent-hermes: .hermes.md
 # - agent-cursor: .cursor/rules/
@@ -55,6 +58,9 @@ template_sync:
         OPTIONAL_CONFIGURATIONS.md reference removal, and the
         schema-reference-only editable-install and README-pointer cleanup, were
         owner-authorized during the PR #5 review (https://github.com/franklesniak/EFingPlanner/pull/5).
+        In the same review, the owner authorized removing six PowerShell
+        references that upstream leaves outside any template-sync block:
+        https://github.com/franklesniak/EFingPlanner/pull/5
         The owner authorized taking this file from the template with the
         SHA-form `uses:` examples, without the workflow security contract
         entry, and with step 9's path for a finding that warrants no guide
@@ -72,16 +78,20 @@ template_sync:
         OPTIONAL_CONFIGURATIONS.md reference, the broken editable-install
         command (no downstream Python package metadata), and the dangling
         README prerequisite pointer. Retained content and instruction-contract
-        anchors preserved. Keep three local passages. First, a maximum of
-        eighty review rounds and eight days per loop invocation, where upstream
-        has eight rounds and six hours. Second, the `uses:` examples in the
-        pinned SHA form that the immutable-pin rule requires
+        anchors preserved. Remove the six PowerShell references that upstream
+        leaves outside any block: the Pester tests line for
+        `tests/PowerShell/`, the PowerShell row of the instruction-file list,
+        the Pester note, the PSScriptAnalyzer bullet, and the two
+        `**PowerShell:**` subheaders under Running Linters and Running Tests.
+        Keep three local passages. First, a maximum of eighty review rounds and
+        eight days per loop invocation, where upstream has eight rounds and six
+        hours. Second, the `uses:` examples in the pinned SHA form that the
+        immutable-pin rule requires
         (`actions/checkout@<40-character-SHA> # vX.Y.Z`), with no protected-file
-        entry for `.github/workflow-security-contract.yml`, which this
-        repository does not have. Third, step 9's path for an evaluation that
-        finds no guide change is warranted: "record that determination and its
-        reason; no prompt is required". Merge every other upstream change to
-        this file.
+        entry for `.github/workflow-security-contract.yml`, which this repository
+        does not have. Third, step 9's path for an evaluation that finds no guide
+        change is warranted: "record that determination and its reason; no
+        prompt is required". Merge every other upstream change to this file.
     - path: CLAUDE.md
       adoption_mode: minimal-preservation
       decision: MERGE
@@ -230,33 +240,42 @@ template_sync:
       default_decision: SKIP
     - path: .github/ISSUE_TEMPLATE/config.yml
       reason: >-
-        Keep three local passages. `blank_issues_enabled` is `false`, with a
+        Keep the local passages. `blank_issues_enabled` is `false`, with a
         comment that says why: a blank issue shows none of a form's markdown,
-        so it skips every form's public-issue notice. The Discussions contact
-        link is enabled, as the owner chose at adoption, without the
-        commented-out how-to lines around it. Its `about` text says that posts
-        are public and never to post a child's filled-in page or trip details.
-        Merge every other upstream change.
+        so it skips every form's public-issue notice. When upstream adds its
+        one-line comment on blank issues, keep the local comment and do not add
+        upstream's. The Discussions contact link is enabled, as the owner chose
+        at adoption: its heading drops "(OPTIONAL)", and a three-line comment
+        saying that the link assumes Discussions is on replaces the
+        commented-out how-to lines. Its `about` text says that posts are public
+        and never to post a child's filled-in page or trip details. The
+        template's CUSTOMIZE notes on replacing the repository name are
+        removed, because adoption substituted it. Merge every other upstream
+        change.
       default_decision: MERGE
     - path: .github/ISSUE_TEMPLATE/documentation_issue.yml
       reason: >-
         Keep the local passages. The first markdown element carries the
         public-issue notice of bug_report.yml, with "retype your example" for
-        "retype the problem", and links the privacy and safety page by
-        absolute URL. The `triage` label is on. The `doc_version` field and
-        the "Code Example Issue" option are removed. Merge every other
-        upstream change.
+        "retype the problem", and links the privacy and safety page by absolute
+        URL. When upstream adds its generic visibility notice to this form,
+        keep the local notice in its place and do not add upstream's. The
+        `triage` label is on. The `doc_version` field and the "Code Example
+        Issue" option are removed. Merge every other upstream change.
       default_decision: MERGE
     - path: .github/ISSUE_TEMPLATE/feature_request.yml
       reason: >-
         Keep the local passages. The first markdown element carries the
         public-issue notice of bug_report.yml, with "retype your example" for
-        "retype the problem", and links the privacy and safety page by
-        absolute URL. The Additional Context field asks for a mockup or a
-        screenshot of a blank page, and says never to post a photo or
-        screenshot of a child's filled-in page. The `triage` label is on, the
-        user-story roles are parent, educator and child, and the Area options
-        name the curriculum's parts. Merge every other upstream change.
+        "retype the problem", and links the privacy and safety page by absolute
+        URL. When upstream adds its generic visibility notice to this form,
+        keep the local notice in its place and do not add upstream's. The
+        Additional Context field asks for a mockup or a screenshot of a blank
+        page, and says never to post a photo or screenshot of a child's
+        filled-in page. The `triage` label is on, the user-story roles are
+        parent, educator and child, and the Area options name the curriculum's
+        parts, with the CUSTOMIZE note above them removed. Merge every other
+        upstream change.
       default_decision: MERGE
     - path: README.md
       reason: Fully tailored, project-specific reader-facing README for the EFingPlanner curriculum.
@@ -298,18 +317,30 @@ template_sync:
         the Python dependency install, "Validate the template-sync adoption",
         runs `python .template-sync/scripts/validate_downstream_adoption.py
         --require-marker`, so a file that maps to an excluded module fails its
-        pull request until this marker records it.
+        pull request until this marker records it. The header comments name
+        only the retained workflows (no python-ci, powershell-ci or
+        terraform-ci), drop the template-repository wording of the trigger
+        policy, list the `X, not Y` hooks, and link the upstream
+        design-decisions page by URL.
       default_decision: MERGE
     - path: .pre-commit-config.yaml
       reason: >-
-        Local override excludes docs/spec/ from the check-prohibited-placeholders
-        hook because the archived design record intentionally uses "TBD" for
-        open trip parameters. It also adds a downstream-only check-jsonschema
-        block at the end of the file for the `X, not Y` recount's data files
-        and their schemas (validate-x-not-y-*). The Markdown-only block also
-        holds three local leak-check hooks, check-family-leaks,
-        check-destination-leaks and check-leaks-tests, which run
-        .github/scripts/check-leaks.py and its suite.
+        Local override excludes docs/spec/ from the
+        check-prohibited-placeholders hook because the archived design record
+        intentionally uses "TBD" for open trip parameters. It also adds a
+        downstream-only check-jsonschema block at the end of the file for the
+        `X, not Y` recount's data files and their schemas (validate-x-not-y-*).
+        The Markdown-only block also holds three local leak-check hooks,
+        check-family-leaks, check-destination-leaks and check-leaks-tests,
+        which run .github/scripts/check-leaks.py and its suite. The
+        `check-added-large-files` hook excludes
+        `.github/scripts/x-not-y-judgments.json`, with the comment above it,
+        because that reviewed data file is over the hook's size limit. The
+        check-prohibited-placeholders hook reads `docs/`, `framework/` and
+        `destinations/` (`files: ^(docs|framework|destinations)/.*\.md$`),
+        where upstream's reads `docs/` only. Where Dependabot has moved a
+        hook's `rev` past upstream's (check-jsonschema is 0.38.2 here), keep
+        the newer version.
       default_decision: MERGE
     - path: templates/json/
       reason: The json module stays adopted for its validators (check-json and check-jsonschema) and instruction file, but the sample-authoring subtree templates/json/** was pruned to resolve issue 8 (https://github.com/franklesniak/EFingPlanner/issues/8); this directory-level SKIP override prevents template-sync materialization (reconcile_staged_files) from re-creating the deleted starter files on a future sync against an upstream that still ships them, without dropping the retained json infrastructure.
@@ -331,7 +362,13 @@ template_sync:
       reason: >-
         Two module-level constants were renamed from upstream-tracker issue
         numbers to repository-observable behavior names, for the same reason
-        and with the same measurement as the entry above.
+        and with the same measurement as the entry above. The file also adds a
+        local test,
+        test_procedure_inline_block_inventory_names_every_file_that_holds_a_block,
+        with its helper _procedure_inventory, its PROCEDURE_INVENTORY_HEADING
+        pattern and the collect_live_inline_block_spans import; the test checks
+        that the procedure's inline-block inventory names every file that holds
+        a block.
       default_decision: MERGE
     - path: .gitattributes
       reason: >-
@@ -359,16 +396,20 @@ template_sync:
       default_decision: MERGE
     - path: .github/workflows/markdownlint.yml
       reason: >-
-        Keep the local curriculum gates: the Python setup and install steps;
-        the steps for the readability, session-structure, placeholder-hook,
-        `X, not Y`, required-wording, local-only-exclusion, trope-density and
-        self-containment checks and their suites; the checkout's full-history
-        fetch that the self-containment scan needs; the result step's list of
-        those steps; the `last-updated` and `reading-grade-change` jobs; and
-        the SHA pins. No template-sync block wraps the self-containment step
-        or the fetch, because both are local and a `python-only` block would
-        name a module this repository does not adopt. Merge every other
-        upstream change.
+        Keep the local curriculum gates: the header comment that lists them;
+        the comment above Setup Python, which names no Python CI workflow; the
+        Install Python dependencies step, which installs pytest, jsonschema and
+        PyYAML directly, with its comment, because this repository ships no
+        Python package metadata; the steps for the readability,
+        session-structure, placeholder-hook, `X, not Y`, required-wording,
+        local-only-exclusion, trope-density and self-containment checks and
+        their suites; the checkout's full-history fetch that the
+        self-containment scan needs; the result step's list of those steps; and
+        the `last-updated` and `reading-grade-change` jobs, with their SHA
+        pins. No template-sync block wraps the self-containment step or the
+        fetch, because both are local and a `python-only` block would name a
+        module this repository does not adopt. Merge every other upstream
+        change.
       default_decision: MERGE
     - path: .markdownlint.jsonc
       reason: >-
@@ -385,17 +426,30 @@ template_sync:
       default_decision: MERGE
     - path: CONTRIBUTING.md
       reason: >-
-        Keep the local "3. Install Python" section, which installs the
-        repository's own check dependencies from requirements-dev.txt and the
-        pinned check-jsonschema, and the renumbered steps after it. Merge every
-        other upstream change.
+        Keep the local passages: the "3. Install Python" section, which
+        installs the repository's own check dependencies from
+        requirements-dev.txt and the pinned check-jsonschema, and the
+        renumbered steps after it; the Test Requirements bullet that names the
+        checks CI runs (the Data CI schema-guard checks and the Markdown
+        checks), in place of upstream's line on the applicable CI matrix; the
+        CC BY-NC-SA 4.0 contribution terms that link LICENSE and LICENSING.md,
+        in place of upstream's MIT License; the removal of the PowerShell
+        passages that upstream keeps outside any block (the two PowerShell
+        linting bullets, the PowerShell Validation and PowerShell Tests
+        sections, the PowerShell instruction-file row, the PowerShell CI bullet
+        and the Pester test-requirement bullet); and the removal of the
+        template's notes for adopters (the placeholder-strategy comment at the
+        top, the CUSTOMIZE notes and the license comment). Merge every other
+        upstream change.
       default_decision: MERGE
     - path: SECURITY.md
       reason: >-
-        Keep the local security policy: the best-effort Response Timeline with
-        no guaranteed response time for a repository that is not actively
-        monitored, and the rewritten Disclosure Policy and Supported Versions
-        sections. Merge every other upstream change.
+        Keep the local security policy: the Reporting a Vulnerability section,
+        which offers only GitHub private vulnerability reporting, publishes no
+        security email address and calls a report a "concern"; the best-effort
+        Response Timeline with no guaranteed response time for a repository
+        that is not actively monitored; and the rewritten Disclosure Policy and
+        Supported Versions sections. Merge every other upstream change.
       default_decision: MERGE
     - path: package.json
       reason: >-
@@ -407,10 +461,14 @@ template_sync:
       default_decision: MERGE
     - path: schemas/README.md
       reason: >-
-        Keep the two `X, not Y` rows in the Project-Owned Schema-Backed Files
-        table and the "X, not Y Recount Data Schemas" section, whose links
-        include the local suite tests/test_check_x_not_y.py. Merge every other
-        upstream change.
+        Keep the local passages: the two `X, not Y` rows in the Project-Owned
+        Schema-Backed Files table, the "X, not Y Recount Data Schemas" section,
+        whose links include the local suite tests/test_check_x_not_y.py, and
+        the Scope line's mention of those schemas; the wording in this
+        repository's voice in place of the template's (Template Portability,
+        Validation and Worked Example); and the removal of the pointers to
+        templates/python/tests/test_schema_examples.py, which the excluded
+        python module ships. Merge every other upstream change.
       default_decision: MERGE
     - path: tests/test_check_prohibited_placeholders.py
       reason: >-
