@@ -361,8 +361,12 @@ ZERO_TOLERANCE: dict[str, tuple[str, re.Pattern[str]]] = {
 #: SPEC-SECTION's bare form, read on a gated page only: "section" or
 #: "subsection", one or more, before a number. A record cites its own sections.
 BARE_SECTION_RE = re.compile(r"(?i)(?<![\w-])(?:sub)?sections?\s+\d+(?:\.\d+)*")
-#: A build brief named in the same text, which lets a bare section number stand.
-BRIEF_RE = re.compile(r"(?i)\bbriefs?\b")
+#: A build brief named in the same text, which lets a bare section number stand:
+#: "brief" after build, batch, Batch N, Batch N's, the or its, or as "brief's".
+#: An everyday "brief" ("keep your notes brief") names none.
+BRIEF_RE = re.compile(
+    r"(?i)\b(?:build|batch(?:\s+\d+(?:" + APOSTROPHE + r"s)?)?|the|its)\s+briefs?\b"
+    r"|\bbrief" + APOSTROPHE + r"s\b")
 #: What a bare hit reports: it may point at any document, and the style law
 #: wants a Name there, never a section number.
 BARE_SECTION_WHAT = "a section number with no brief named; the style law wants the Name"

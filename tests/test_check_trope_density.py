@@ -418,6 +418,10 @@ RECORD = "docs/build/test_brief.md"
     ("Section 10 of the brief lists them.", False, False),
     ("Session 10 comes next.", False, False),
     ("Read the cross-section 3 of the map.", False, False),
+    # An everyday "brief" names no build brief; a build brief named in the plural does.
+    ("Keep your notes brief. See Section 21.8.", False, True),
+    ("The briefing covers section 4.", False, True),
+    ("The build briefs list it in section 4.", False, False),
 ])
 def test_spec_section_reads_each_citation_form(text: str, named: bool, gated: bool) -> None:
     record = check(page("# B", "", text), rel=RECORD, gated=False)
