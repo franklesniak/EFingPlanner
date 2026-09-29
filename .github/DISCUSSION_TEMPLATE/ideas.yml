@@ -1,0 +1,26 @@
+# =============================================================================
+# DISCUSSION CATEGORY FORM: Ideas
+# =============================================================================
+# Local to this repository (recorded in .template-sync/marker.yml): the form
+# shows the issue forms' public-issue notice before anyone writes a post.
+# The link is an absolute URL because the form renders on the new-discussion
+# page, where a relative path would resolve against that page and 404.
+# =============================================================================
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **This discussion is public.** Anyone can read it, and GitHub keeps its edit history.
+        Do not post your child's filled-in work or anything from your trip: no names,
+        dates, places, health details or booking details. Use a blank page, or retype
+        your example without the personal parts, as the
+        [privacy and safety page](https://github.com/franklesniak/EFingPlanner/blob/HEAD/framework/docs/privacy_and_safety.md)
+        asks.
+
+  - type: textarea
+    id: post
+    attributes:
+      label: Your post
+    validations:
+      required: true

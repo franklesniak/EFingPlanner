@@ -4812,13 +4812,11 @@ def test_the_workflow_runs_the_scan_unconditionally() -> None:
     A condition on a file let the step skip, and a skipped step passed the
     job: keyed on the module, deleting it skipped the gate, and keyed on the
     fixtures, deleting both did. The step has no condition now and fails the
-    job itself. An adoption without the ``python`` module prunes the scan, so
-    the step sits in a template-sync block for that module, which removes it
-    with the scan; and the result step does not name it, so nothing is left
-    naming a step that is gone. **The comment above the step is in the block
-    too**, and the checkout's full-history fetch, which only the scan needs,
-    has a block of its own: outside them, a pruned workflow kept a comment on
-    a suite it no longer ran, and a fetch nothing needed.
+    job itself, and the result step does not name it. **No template-sync
+    block wraps the step.** The scan is this repository's own gate, recorded
+    in the marker. A ``python-only`` block would name a module this
+    repository does not adopt, so the adoption validator rejects it, and a
+    sync that strips it would take the gate out of CI with it.
     """
     path = REPO_ROOT / ".github" / "workflows" / "markdownlint.yml"
     text = path.read_text(encoding="utf-8")
@@ -4834,18 +4832,12 @@ def test_the_workflow_runs_the_scan_unconditionally() -> None:
     assert "if" not in step, step
     assert "continue-on-error" not in step, step
     assert THIS_MODULE in step["run"], step["run"]
-    begin = "# template-sync: begin python-only"
-    end = "# template-sync: end python-only"
-    pieces = text.split(begin)
-    blocks = [piece.split(end, 1)[0] for piece in pieces[1:]]
-    outside = pieces[0] + "".join(piece.split(end, 1)[1] for piece in pieces[1:])
-    step_blocks = [block for block in blocks if "id: test-self-contained" in block]
-    assert len(step_blocks) == 1, blocks
-    assert "the only enforcement the self-containment scan" in step_blocks[0]
-    assert "self-containment" not in outside, "every comment on the scan is in a block"
+    before_step = text.split("id: test-self-contained", 1)[0]
+    opened = before_step.count("# template-sync: begin ")
+    closed = before_step.count("# template-sync: end ")
+    assert opened == closed, "no template-sync block wraps the step"
     checkout = workflow["jobs"]["markdownlint"]["steps"][0]
     assert checkout["with"].get("fetch-depth") == 0, checkout
-    assert "fetch-depth" not in outside.split("jobs:", 1)[1].split("last-updated:", 1)[0]
     assert text.count("test-self-contained") == 1, "only the step itself names it"
 
 

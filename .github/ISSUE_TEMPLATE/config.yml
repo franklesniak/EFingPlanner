@@ -11,11 +11,10 @@
 # - GHES users: Replace github.com with your GHES host (e.g., github.company.com)
 # =============================================================================
 
-# CUSTOMIZE: Set to `true` (default) to allow users flexibility in creating issues
-# without a template. Set to `false` to require template usage—useful once you have
-# comprehensive templates covering all issue types and want structured data collection.
-# Consider setting to false once you have comprehensive templates and want structured intake.
-blank_issues_enabled: true
+# Blank issues are off because a blank issue shows none of a form's markdown,
+# so it skips every form's notice, including the public-issue notice about a
+# child's filled-in page.
+blank_issues_enabled: false
 
 contact_links:
   # NOTE: blob/HEAD is used instead of blob/main to support repos with non-main default branches.
@@ -42,7 +41,9 @@ contact_links:
   # =============================================================================
   - name: 💬 Questions & Discussions
     url: https://github.com/franklesniak/EFingPlanner/discussions
-    about: Ask questions and discuss ideas (not for bug reports)
+    about: >-
+      Ask questions and discuss ideas (not for bug reports). Posts are public,
+      so never post your child's filled-in page or trip details.
 
   # =============================================================================
   # SUPPORT / FAQ LINK (OPTIONAL)

@@ -300,5 +300,15 @@ jobs:
           check_jsonschema_rev="$(python .github/scripts/pinned-check-jsonschema-rev.py)"
           pip install pytest "check-jsonschema==${check_jsonschema_rev}" "jsonschema>=4.18.0"
 
+      # LOCAL OVERRIDE (recorded in .template-sync/marker.yml): the adoption
+      # validator from Step 12 of TEMPLATE_UPDATE_PROCEDURE.md. It fails on a
+      # file that maps to a module this repository does not adopt and that no
+      # marker record covers, on a block left for such a module, and on a link
+      # into one. So a new gate suite under tests/ fails its own pull request
+      # until the marker records it. It needs PyYAML and jsonschema, which the
+      # step above installs.
+      - name: Validate the template-sync adoption
+        run: python .template-sync/scripts/validate_downstream_adoption.py --require-marker
+
       - name: Run schema-example and dependabot-schema regression tests
         run: python -m pytest tests/test_schema_examples.py tests/test_dependabot_schema.py -v
