@@ -30,15 +30,17 @@ refuses a tracked link, so this test cannot wait for that scan.
 A sentence may change only with the authority of the source named beside it.
 
 The suite also holds a lead-in's count to its list, because a child counts
-along with the page. A paragraph whose last sentence ends with a colon and
-states a count as a number word, two to twelve, must be directly followed by a
-list of that many items, so ``Keep these three habits:`` above four items
-fails. A comment between them, such as a ``density-exempt`` marker, prints
-nothing, so the list below it is the one checked. Digits are not read: above a list they are a session number, a range or
-the end of a scale more often than a count. Nor is a number word joined to the
-next word by a hyphen, as in ``your big two-slice total:``. Every tracked page
-under ``framework/`` and ``destinations/`` is read, and the root ``README.md``
-and ``GETTING_STARTED.md``.
+along with the page. A paragraph directly followed by a list, whose last
+sentence ends with a colon and states a count as a number word from two to
+twelve, must count that list's items, so ``Keep these three habits:`` above
+four items fails. A comment between them, such as a ``density-exempt`` marker,
+prints nothing, so the list below it is the one checked. Digits are not read:
+above a list they are a session number, a range or the end of a scale more
+often than a count. Nor is a number word joined to the next word by a hyphen,
+as in ``your big two-slice total:``, or one that is an end of a range or an
+approximate count, as in ``one or two sentences:`` or ``at least two``. Every
+tracked page under ``framework/`` and ``destinations/`` is read, and the root
+``README.md`` and ``GETTING_STARTED.md``.
 """
 
 from __future__ import annotations
@@ -295,6 +297,15 @@ def stamped_pages(root: Path | None = None) -> list[str]:
                    if path.name != "README.md"})
 
 
+def unmatched_folders(root: Path | None = None) -> list[str]:
+    """Return each glob, written for one pack, that matches no page in that pack's folder."""
+    base = REPO_ROOT if root is None else root
+    packs = sorted(path for path in base.glob("destinations/*") if path.is_dir())
+    return [f"{pack.relative_to(base).as_posix()}/{folder}" for pack in packs
+            for folder in (pattern.split("/", 2)[2] for pattern in STAMP_GLOBS)
+            if not any(page.name != "README.md" for page in pack.glob(folder))]
+
+
 def stamp_problem(text: str) -> str | None:
     """Return what is wrong with a page's `Last reviewed` label, or None when it has one, in its place.
 
@@ -324,10 +335,13 @@ def test_each_pack_page_carries_one_last_reviewed_label_below_its_title() -> Non
     """Each pack reference file and session insert shows one `Last reviewed` label, first below its title.
 
     The globs take a new pack's files with no edit here. Globs that match no
-    file fail, so a moved folder cannot pass by matching nothing.
+    file fail, and so does a pack folder that one glob matches nothing in, so a
+    moved or renamed folder cannot pass by matching nothing.
     """
     pages = stamped_pages()
     assert pages, f"{' and '.join(STAMP_GLOBS)} matched no file, so no pack page was checked"
+    missing = unmatched_folders()
+    assert not missing, f"{' and '.join(missing)} matched no page, so a moved or renamed folder went unchecked"
     problems = [f"{page}: {why}" for page in pages if (why := stamp_problem(read_page(page))) is not None]
     assert not problems, "pack pages without one `Last reviewed` label below the title:\n" + "\n".join(problems)
 
@@ -384,12 +398,31 @@ def test_the_stamp_test_names_an_unstamped_page_and_leaves_out_each_readme(tmp_p
     assert "reference/stamped.md" not in str(failure.value)
 
 
+@pytest.mark.parametrize(("layout", "missing"), [
+    ({"somewhere/session_inserts/stamped.md": True, "somewhere/references/unstamped.md": False},
+     "destinations/somewhere/reference/*.md"),
+    ({"first/reference/a.md": True, "first/session_inserts/b.md": True, "second/reference/c.md": True,
+      "second/inserts/d.md": False}, "destinations/second/session_inserts/*.md"),
+], ids=["a renamed folder in the only pack", "a misnamed folder in a second pack"])
+def test_the_stamp_test_fails_when_a_pack_folder_matches_no_page(tmp_path: Path, monkeypatch: Any,
+                                                                layout: dict[str, bool], missing: str) -> None:
+    for page, stamped in layout.items():
+        write_page(tmp_path / "destinations" / page, PAGE_TOP + (STAMP if stamped else "A fact to check.\n"))
+    monkeypatch.setitem(globals(), "REPO_ROOT", tmp_path)
+    with pytest.raises(AssertionError, match=re.escape(missing) + " matched no page"):
+        test_each_pack_page_carries_one_last_reviewed_label_below_its_title()
+
+
 # A lead-in's count. The roots are Git pathspecs: the two folders, and the two
 # root pages by name.
 LEAD_IN_ROOTS = ("framework", "destinations", "README.md", "GETTING_STARTED.md")
 COUNT_WORDS = ("two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve")
 #: A stated count: a number word, not joined to the next word by a hyphen. Digits are never read.
 COUNT_RE = re.compile(r"\b(" + "|".join(COUNT_WORDS) + r")\b(?!-\w)", re.IGNORECASE)
+#: A number word that is an end of a range or an approximate count counts no list: `one or two`,
+#: `two to four`, `a day or two`, `two or more`, `at least two` and `at most two`.
+NOT_A_COUNT_RE = re.compile(r"\b(?:one|{0})\s+(?:or|to)\s+(?:one|{0})\b|\bor\s+(?:{0})\b|\b(?:{0})\s+or\b"
+                            r"|\bat\s+(?:least|most)\s+(?:{0})\b".format("|".join(COUNT_WORDS)), re.IGNORECASE)
 
 
 def lead_in_pages() -> list[str]:
@@ -399,6 +432,11 @@ def lead_in_pages() -> list[str]:
     return sorted(page for page in listed.stdout.split("\0") if page.endswith(".md"))
 
 
+def unlisted_roots(pages: list[str]) -> list[str]:
+    """Return each root in LEAD_IN_ROOTS under which no listed page stands."""
+    return [root for root in LEAD_IN_ROOTS if not any(page == root or page.startswith(root + "/") for page in pages)]
+
+
 def count_mismatches(text: str) -> list[str]:
     """Return each lead-in on a page whose stated count differs from the list directly below it.
 
@@ -406,7 +444,8 @@ def count_mismatches(text: str) -> list[str]:
     ends with a colon. A block that shows nothing, such as a comment holding a
     ``density-exempt`` marker, is read past, as the recount reads past it to
     find a marker's block. The count is the first number word in that
-    sentence. A lead-in with no number word states no count. Each entry names
+    sentence that is not an end of a range or an approximate count
+    (``NOT_A_COUNT_RE``). A lead-in with no such number word states no count. Each entry names
     the line the number word is on, the claim and the list's item count.
     """
     blocks = cx.read_blocks(text)
@@ -423,7 +462,9 @@ def count_mismatches(text: str) -> list[str]:
         if not spans or not printed[spans[-1][0]:spans[-1][1]].endswith(":"):
             continue
         start, end = spans[-1]
-        found = COUNT_RE.search(printed, start, end)
+        ranges = [match.span() for match in NOT_A_COUNT_RE.finditer(printed, start, end)]
+        found = next((match for match in COUNT_RE.finditer(printed, start, end)
+                      if not any(a <= match.start() < b for a, b in ranges)), None)
         if found is None:
             continue
         claim = COUNT_WORDS.index(found.group(1).lower()) + 2
@@ -435,10 +476,37 @@ def count_mismatches(text: str) -> list[str]:
 
 
 def test_each_lead_in_count_matches_the_list_below_it() -> None:
+    """Each counted lead-in on the tracked pages matches the list below it.
+
+    Each root must list a page, so a moved or renamed root cannot pass by
+    listing nothing.
+    """
     pages = lead_in_pages()
-    assert pages, f"git listed no page under {', '.join(LEAD_IN_ROOTS)}, so no lead-in was checked"
+    empty = unlisted_roots(pages)
+    assert not empty, f"git listed no page under {', '.join(empty)}, so a moved or renamed root went unchecked"
     problems = [f"{page}: {problem}" for page in pages for problem in count_mismatches(read_page(page))]
     assert not problems, "lead-ins whose count differs from the list below them:\n" + "\n".join(problems)
+
+
+def git_tree(root: Path, pages: list[str]) -> None:
+    """Write each page into a new Git repository at root, and stage it, as the lead-in test lists pages with Git."""
+    for page in pages:
+        write_page(root / page, "A page.\n")
+    subprocess.run(["git", "init", "-q"], cwd=root, check=True, capture_output=True)
+    if pages:
+        subprocess.run(["git", "add", "--", *pages], cwd=root, check=True, capture_output=True)
+
+
+@pytest.mark.parametrize(("pages", "empty"), [
+    (["curriculum/a.md", "destinations/b.md", "README.md", "GETTING_STARTED.md"], "framework"),
+    ([], "framework, destinations, README.md, GETTING_STARTED.md"),
+], ids=["a renamed framework folder", "nothing tracked"])
+def test_the_lead_in_test_fails_when_a_root_lists_no_page(tmp_path: Path, monkeypatch: Any, pages: list[str],
+                                                          empty: str) -> None:
+    git_tree(tmp_path, pages)
+    monkeypatch.setitem(globals(), "REPO_ROOT", tmp_path)
+    with pytest.raises(AssertionError, match="git listed no page under " + re.escape(empty) + ","):
+        test_each_lead_in_count_matches_the_list_below_it()
 
 
 HABITS = "- Read it.\n- Check it.\n- Ask about it.\n"
@@ -452,8 +520,13 @@ HABITS = "- Read it.\n- Check it.\n- Ask about it.\n"
     "- Pack two things:\n  - a hat\n  - a map\n",
     "Keep these three habits:\n\n<!-- a note for the builder -->\n\n<!-- a second note -->\n\n" + HABITS,
     "Keep these three habits:\n\nThen read on.\n\n- Read it.\n",
+    "Now write it in one or two sentences:\n\n" + HABITS,
+    "Plan to spend a day or two:\n\n" + HABITS,
+    "Pick two or more of these:\n\n" + HABITS,
+    "Write at least two reasons, such as:\n\n" + HABITS,
 ], ids=["three over three", "four over four", "two-slice total over five", "no colon", "a nested list",
-        "three over three past two comments", "a paragraph between"])
+        "three over three past two comments", "a paragraph between", "a range in words", "a day or two",
+        "two or more", "at least two"])
 def test_a_count_that_matches_or_states_nothing_passes(text: str) -> None:
     assert count_mismatches(text) == []
 
@@ -478,7 +551,14 @@ def test_a_digit_count_is_ignored(text: str) -> None:
      "line 2: 'Then keep these four habits:' states 4, and the list below it has 3"),
     ("Keep these three habits:\n\n<!-- density-exempt: X, not Y -- a reason -->\n\n" + HABITS + "- Write it down.\n",
      "line 1: 'Keep these three habits:' states 3, and the list below it has 4"),
+    ("Keep these three habits:\n\n<!-- a note for the builder -->\n\n<!-- a second note -->\n\n" + HABITS
+     + "- Write it down.\n", "line 1: 'Keep these three habits:' states 3, and the list below it has 4"),
+    ("In one or two sentences, answer these three questions:\n\n" + HABITS + "- Write it down.\n",
+     "line 1: 'In one or two sentences, answer these three questions:' states 3, and the list below it has 4"),
+    ("Cut your list down to three:\n\n" + HABITS + "- Write it down.\n",
+     "line 1: 'Cut your list down to three:' states 3, and the list below it has 4"),
 ], ids=["three over four", "five over three", "a nested list", "a count on the paragraph's second line",
-        "three over four behind a comment"])
+        "three over four behind a comment", "three over four past two comments",
+        "a count after a range in words", "a count after 'to'"])
 def test_a_wrong_count_fails_with_its_line_claim_and_count(text: str, why: str) -> None:
     assert count_mismatches(text) == [why]
