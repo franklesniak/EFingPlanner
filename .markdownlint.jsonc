@@ -37,10 +37,6 @@
   // Has false positives with bold text that isn't meant to be a heading
   "MD036": false,
 
-  // MD041: First line should be a top-level heading - disabled because it's not auto-fixable
-  // Prevents files from starting with badges, metadata, or front matter
-  "MD041": false,
-
   // ============================================================================
   // CONFIGURED RULES (Auto-fixable style rules for consistency)
   // ============================================================================
@@ -81,6 +77,18 @@
   // content with varied hr styles, but for human-authored docs we enforce "---".
   "MD035": {
     "style": "---"
+  },
+
+  // MD041: First line should be a top-level heading
+  // The template turns this rule off because it is not auto-fixable. It is on
+  // here because every curriculum page needs a title. A file whose first
+  // heading is not an H1 fails. allow_preamble lets text stand above the
+  // title, so the worked examples keep their "EXAMPLE ONLY" banner above it.
+  // With allow_preamble, a file with no heading at all passes this rule.
+  // .github/.markdownlint.jsonc turns it off for the files under .github/,
+  // because the pull request template cannot open with an H1.
+  "MD041": {
+    "allow_preamble": true
   },
 
   // MD048: Code fence style - use backticks

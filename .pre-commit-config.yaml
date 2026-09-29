@@ -28,6 +28,14 @@ repos:
     hooks:
       - id: trailing-whitespace
       - id: end-of-file-fixer
+      # .gitattributes pins LF, but a tool can still write CRLF to the
+      # working tree. This hook rewrites that CRLF to LF before the commit.
+      # It reads no .gitattributes rule: it rewrites every CR in any file
+      # that pre-commit detects as text. Exclude any path that must keep
+      # CR bytes: one pinned to eol=crlf, one marked -text or binary, a
+      # fixture that holds a lone CR, or a file committed with CRLF.
+      - id: mixed-line-ending
+        args: [--fix=lf]
       - id: check-yaml
       # check-json validates strict JSON only. The anchored pattern below
       # excludes .jsonc; downstream repos that need JSONC validation should
@@ -482,3 +490,34 @@ repos:
         alias: validate-x-not-y-registers-schema
         name: Self-validate X, not Y registers schema
         files: ^schemas/x-not-y-registers\.schema\.json$
+
+  # LOCAL OVERRIDE (recorded in .template-sync/marker.yml): this
+  # repository's readability gate, .github/scripts/check-readability.py, and
+  # its session-structure gate, .github/scripts/check-session-structure.py.
+  # CI runs both in markdownlint.yml. Each hook runs the same command, on the
+  # gate's whole default scan, so its verdict matches CI's. It runs only when
+  # a commit changes a page the gate reads or the gate itself; a commit that
+  # changes no such file skips it. The readability gate imports PyYAML, so
+  # its hook installs it. The structure gate needs only the standard library.
+  # `types: []` and `types_or` are set as the leak hooks above set them, so a
+  # link or a submodule under a gated path also starts the gate.
+  - repo: local
+    hooks:
+      - id: check-readability
+        name: Check child-facing reading level
+        entry: python .github/scripts/check-readability.py
+        language: python
+        pass_filenames: false
+        types: []
+        types_or: [file, symlink, directory]
+        files: '^(framework|destinations)/.*\.md$|^\.github/scripts/check-readability\.py$'
+        additional_dependencies:
+          - PyYAML>=6.0.3
+      - id: check-session-structure
+        name: Check session structure
+        entry: python .github/scripts/check-session-structure.py
+        language: python
+        pass_filenames: false
+        types: []
+        types_or: [file, symlink, directory]
+        files: '^framework/sessions/|^\.github/scripts/check-session-structure\.py$'
