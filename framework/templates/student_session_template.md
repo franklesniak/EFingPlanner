@@ -7,7 +7,7 @@
 
 - **Status:** Active
 - **Owner:** Repository Maintainers
-- **Last Updated:** 2026-09-28
+- **Last Updated:** 2026-09-29
 - **Scope:** The blank authoring skeleton for a child-facing curriculum session, with the rules a new session has to satisfy: the seven mandatory-core fields, the section order, the navigation line, the "For parents" strip, and the structure gate's floor. Builder-facing; a child never reads this page.
 - **Related:** [Build style and vocabulary](../docs/build_style_and_vocab.md), [Golden exemplar session](../sessions/phase_00_setup/04_start_a_source_log.md)
 
@@ -117,7 +117,7 @@ Write the line scoped to the path it describes. An unqualified shortcut written 
 There are four classifications, and Conditional core is the easy one to miss: **Core**, **Conditional core**, **Recommended**, **Optional**.
 
 <!-- density-exempt: X, not Y -- the batch 1 brief requires the built form "and never by citing a spec section number", which the reference-hygiene rule forbids -->
-A conditional-core session names its condition on the same line, in the built form `Status: Conditional core -- done **only if** ...`, and never by citing a spec section number. Built files reference concepts by Name and relative link. The structure gate requires a `Status` bullet and never reads its value, so a session flattened into Core or Recommended passes every gate in this repository while moving in or out of a Core baseline the design record fixes on purpose.
+A conditional-core session names its condition on the same line, in the built form `Status: Conditional core -- done **only if** ...`, and never by citing a spec section number. Built files reference concepts by Name and relative link. The structure gate reads the `Status` value. It fails a value that is not one of the four, and a Conditional core line with no condition after ` -- `. A legal value that is wrong for the session still passes, so a session flattened into Core or Recommended passes every gate in this repository while moving in or out of a Core baseline the design record fixes on purpose.
 
 ## The rest of the strip
 

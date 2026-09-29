@@ -1,5 +1,7 @@
 """Check tracked files for leaked family values and destination names.
 
+Read ``docs/writing_checkers.md`` before changing this check or writing one.
+
 One script, two rules, chosen with ``--rule``:
 
 ``--rule family``

@@ -150,9 +150,9 @@ beside it:
   leaves as tildes; and footnotes, which markdown-it leaves as text. In every
   file, one kind of break is left unread: a block comment's ``*`` at the
   start of each line looks like a list item, so two such lines are read as
-  two items. The curriculum hooks still read Markdown by hand; whether they
-  should read markdown-it's output is an open question:
-  https://github.com/franklesniak/EFingPlanner/issues/27
+  two items. The curriculum hooks still read Markdown by hand, and
+  docs/adr/ADR-0002-three-gates-keep-their-markdown-parsers.md records why
+  they keep their parsers, with tests that compare them with markdown-it.
 """
 
 from __future__ import annotations

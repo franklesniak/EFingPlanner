@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """Recount the `X, not Y` device across the curriculum pages.
 
+Read ``docs/writing_checkers.md`` before changing this check or writing one.
+
 The style law, ``framework/docs/build_style_and_vocab.md``, caps the `X, not Y`
 device: 2 per child-facing file, 3 per parent-facing file, 4 per builder or
 spec file, and one per ``##`` section in child-facing and parent-facing text.
