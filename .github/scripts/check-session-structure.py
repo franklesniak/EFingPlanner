@@ -4649,9 +4649,10 @@ def status_line_problem(line: str) -> str | None:
     The value is the text after the label's colon, cut at the first of
     ``STATUS_VALUE_ENDS`` and stripped with ``STATUS_VALUE_STRIP``. It must
     equal one of ``STATUS_VALUES``. A ``Conditional core`` value must also
-    have text after `` -- ``, looked for after the value, or after the note's
-    closing parenthesis when a note in parentheses follows the value. So a
-    `` -- `` inside the note names no condition. The line is read with one
+    have text after `` -- ``, looked for after the value, or after the
+    parenthesis that closes the note when a note in parentheses follows the
+    value. Parentheses inside the note, such as a link's, are counted, so a
+    `` -- `` anywhere inside the note names no condition. The line is read with one
     space added at its end, so ``Conditional core --`` with nothing after it
     is a conditional line with no condition, and is reported as that.
     """
@@ -4671,8 +4672,17 @@ def status_line_problem(line: str) -> str | None:
         )
     start = cut
     if after_label.startswith(STATUS_VALUE_ENDS[1], cut):
-        close = after_label.find(")", cut)
-        start = close + 1 if close != -1 else len(after_label)
+        # The note ends at the parenthesis that brings the depth back to 0.
+        # A note that never closes leaves nothing after it to name a condition.
+        depth, start = 0, len(after_label)
+        for index in range(cut + 1, len(after_label)):
+            if after_label[index] == "(":
+                depth += 1
+            elif after_label[index] == ")":
+                depth -= 1
+                if depth == 0:
+                    start = index + 1
+                    break
     dash = after_label.find(STATUS_VALUE_ENDS[0], start)
     condition = after_label[dash + len(STATUS_VALUE_ENDS[0]) :] if dash != -1 else ""
     if value == CONDITIONAL_STATUS and not condition.strip(STATUS_VALUE_STRIP):

@@ -5349,6 +5349,7 @@ def _status_session(status: str) -> str:
         "- Status: Core (adult-only setup)",
         "- **Status:** **Conditional core** -- becomes Core if a third city comes up",
         "- Status: Conditional core (adult-led) -- done **only if** your family opted in",
+        "- Status: Conditional core (see [Session 00](00_x.md)) -- done **only if** your family opted in",
     ],
 )
 def test_each_legal_status_value_passes(status: str) -> None:
@@ -5365,6 +5366,7 @@ def test_each_legal_status_value_passes(status: str) -> None:
         ("- Status: Conditional core --", "names no condition"),
         ("- Status: Conditional core (only if the family opts in)", "names no condition"),
         ("- Status: Conditional core (only if -- see Session 00)", "names no condition"),
+        ("- Status: Conditional core (only if (a) -- see Session 00)", "names no condition"),
     ],
 )
 def test_a_wrong_status_value_fails(status: str, expected: str) -> None:
