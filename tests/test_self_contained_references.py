@@ -202,6 +202,10 @@ REQUIRED_MEMBERS = (
     ".github/scripts/check-x-not-y.py",
     "tests/test_check_x_not_y.py",
     "tests/test_required_wording.py",
+    # The trope-density gate and its suite, whose workflow step is guarded
+    # on the suite's presence in the same way.
+    ".github/scripts/check-trope-density.py",
+    "tests/test_check_trope_density.py",
     THIS_MODULE,
     "tests/printed_markdown.mjs",
 )

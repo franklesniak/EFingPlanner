@@ -738,6 +738,33 @@ def test_a_marker_that_cites_its_source_by_number_fails_the_run(tmp_path: Path, 
     assert run(root, judge_all(root), capsys) == 1
 
 
+def test_a_marker_above_the_page_title_exempts_nothing() -> None:
+    # The title's section is the whole page, and a marker covers one block.
+    text = "\n".join(["<!-- density-exempt: X, not Y -- required -->", "# Title", "", "It is a map, not a list.",
+                      "", "## Next", "", "Choose the map, not the list."])
+    (mk,) = scoped(text)
+    assert (mk.scope_start, mk.scope_end, mk.applies) == (2, 8, False)
+    assert mk.problem == cx.TITLE_MARKER_PROBLEM
+    assert "put the marker above the paragraph, list, block quote or `##` section it is for" in mk.problem
+
+
+def test_a_marker_above_a_section_under_the_title_applies() -> None:
+    (mk,) = scoped("# Title\n\n<!-- density-exempt: X, not Y -- required -->\n## Rule\n\nIt is a map, not a list.")
+    assert (mk.scope_start, mk.scope_end, mk.applies, mk.problem) == (4, 6, True, "")
+
+
+def test_a_marker_above_the_page_title_fails_the_run(tmp_path: Path, capsys: Any) -> None:
+    root = repo_with(tmp_path, "<!-- density-exempt: X, not Y -- required -->\n# Title\n\n## A\n\n"
+                               "It is a map, not a list.\n")
+    assert run(root, judge_all(root), capsys) == 1
+
+
+def test_a_marker_above_a_section_passes_the_run(tmp_path: Path, capsys: Any) -> None:
+    root = repo_with(tmp_path, "# Title\n\n<!-- density-exempt: X, not Y -- required -->\n## A\n\n"
+                               "It is a map, not a list.\n")
+    assert run(root, judge_all(root), capsys) == 0
+
+
 # ---------------------------------------------------------------------------
 # Registers
 # ---------------------------------------------------------------------------

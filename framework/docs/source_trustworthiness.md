@@ -54,7 +54,7 @@ Judging a source is the job of the quick trust test in [Session 05](../sessions/
 - Verification source
 - Date checked
 
-When a fact matters and the sources disagree, when it came from an AI tool, or when it carries a recommendation, it is not settled until a second source agrees. When the fact belongs to the place itself -- a museum's own hours, a railway's own timetable -- that page is the answer, and the question to ask is how recently it was checked.
+When a fact matters and the sources disagree, when it came from an AI tool, or when it carries a recommendation, it is not settled until a second source agrees. When the fact belongs to the place itself (a museum's own hours, a railway's own timetable), that page is the answer, and the question to ask is how recently it was checked.
 
 ## Two moves that make you harder to fool
 
