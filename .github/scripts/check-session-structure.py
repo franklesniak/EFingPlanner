@@ -34,8 +34,11 @@ What is checked
    the session template lists: Core, Conditional core, Recommended or
    Optional. A note may follow it after `` -- `` or in parentheses, as in
    Session 00's ``Core (adult-only setup)``. A Conditional core line names its
-   condition after `` -- ``. A legal value that is wrong for the session still
-   passes, because nothing here knows which value a session should have.
+   condition after `` -- ``, and a `` -- `` inside a parenthetical note names
+   none. The strip holds one Status bullet: every Status bullet in it is
+   read, and a second one is named whatever it says. A legal value that is
+   wrong for the session still passes, because nothing here knows which
+   value a session should have.
 4. The six always-mandatory sections exist: Goal, Start Here, Steps, Workspace,
    Artifact Created, Stop Point.
 5. Source Check exists, unless the session is exempt (see below).
@@ -4609,26 +4612,49 @@ def renders_as_content(body: str) -> bool:
     return False
 
 
-def status_value_problem(strip: str) -> tuple[int, str] | None:
-    """Return the row and the message for a Status value the strip gets wrong.
+def status_value_problems(strip: str) -> list[tuple[int, str]]:
+    """Return the row and the message for each Status problem in a strip.
 
-    ``strip`` is the parent strip as ``parent_strip_body`` gives it, and the
-    bullet read is the one the Status pattern in ``PARENT_STRIP_FIELDS``
-    finds. A strip with no Status value is reported by that presence check,
-    so it returns ``None`` here. The row counts from the strip's first line.
+    ``strip`` is the parent strip as ``parent_strip_body`` gives it. Every
+    bullet the Status pattern in ``PARENT_STRIP_FIELDS`` finds is read. A strip
+    with no Status value is reported by that presence check, so it adds
+    nothing here. A strip holds one Status bullet: a second is reported on its
+    own line, whatever it says, because a parent cannot plan from two. The row
+    counts from the strip's first line.
+    """
+    lines = strip.split("\n")
+    problems: list[tuple[int, str]] = []
+    first_row: int | None = None
+    for match in dict(PARENT_STRIP_FIELDS)["Status"].finditer(strip):
+        row = strip.count("\n", 0, match.start())
+        if first_row is None:
+            first_row = row
+        else:
+            problems.append(
+                (
+                    row,
+                    "the strip has a second Status bullet, below the first. Keep "
+                    "one Status bullet, so a parent reads one value.",
+                )
+            )
+        problem = status_line_problem(lines[row])
+        if problem is not None:
+            problems.append((row, problem))
+    return problems
+
+
+def status_line_problem(line: str) -> str | None:
+    """Return the message for one Status bullet whose value is wrong, or ``None``.
 
     The value is the text after the label's colon, cut at the first of
     ``STATUS_VALUE_ENDS`` and stripped with ``STATUS_VALUE_STRIP``. It must
     equal one of ``STATUS_VALUES``. A ``Conditional core`` value must also
-    have text after `` -- ``. The line is read with one space added at its
-    end, so ``Conditional core --`` with nothing after it is a conditional
-    line with no condition, and is reported as that.
+    have text after `` -- ``, looked for after the value, or after the note's
+    closing parenthesis when a note in parentheses follows the value. So a
+    `` -- `` inside the note names no condition. The line is read with one
+    space added at its end, so ``Conditional core --`` with nothing after it
+    is a conditional line with no condition, and is reported as that.
     """
-    match = dict(PARENT_STRIP_FIELDS)["Status"].search(strip)
-    if match is None:
-        return None
-    row = strip.count("\n", 0, match.start())
-    line = strip.split("\n")[row]
     # The pattern puts nothing but a list marker, spaces and emphasis marks
     # before the label, so the first colon on the line is the label's own.
     after_label = line.split(":", 1)[1].rstrip(ASCII_HORIZONTAL_WHITESPACE) + " "
@@ -4637,23 +4663,24 @@ def status_value_problem(strip: str) -> tuple[int, str] | None:
     value = after_label[:cut].strip(STATUS_VALUE_STRIP)
     if value not in STATUS_VALUES:
         return (
-            row,
             f"the Status value is {value!r}, which is not one of the four the "
             "session template lists: "
             + ", ".join(STATUS_VALUES)
             + ". Write one of them exactly, capital letters included. A note "
-            'may follow the value, after " -- " or in parentheses.',
+            'may follow the value, after " -- " or in parentheses.'
         )
-    condition = ""
-    if after_label.startswith(STATUS_VALUE_ENDS[0], cut):
-        condition = after_label[cut + len(STATUS_VALUE_ENDS[0]) :]
+    start = cut
+    if after_label.startswith(STATUS_VALUE_ENDS[1], cut):
+        close = after_label.find(")", cut)
+        start = close + 1 if close != -1 else len(after_label)
+    dash = after_label.find(STATUS_VALUE_ENDS[0], start)
+    condition = after_label[dash + len(STATUS_VALUE_ENDS[0]) :] if dash != -1 else ""
     if value == CONDITIONAL_STATUS and not condition.strip(STATUS_VALUE_STRIP):
         return (
-            row,
             "the Status value is Conditional core, and the line names no "
             'condition. Write the condition after " -- " on the same line, as '
             'in "Status: Conditional core -- done **only if** ...", so a parent '
-            "can tell when the session applies.",
+            "can tell when the session applies."
         )
     return None
 
@@ -4798,9 +4825,7 @@ def check_text(text: str, display_path: str, file_name: str) -> list[Violation]:
                     "involvement.",
                 )
             )
-        status_problem = status_value_problem(strip)
-        if status_problem is not None:
-            row, message = status_problem
+        for row, message in status_value_problems(strip):
             violations.append(Violation(display_path, label_line + row, message))
 
     section_headings = [heading for heading in headings if heading.level == 2]

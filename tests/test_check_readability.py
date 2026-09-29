@@ -13,9 +13,11 @@ from __future__ import annotations
 
 import importlib.util
 import json
+import re
 import shutil
 import subprocess
 import sys
+from collections import Counter
 from collections.abc import Mapping, Sequence
 from pathlib import Path
 from typing import Any, cast
@@ -7664,12 +7666,67 @@ def fenced_line_differences(text: str, answer: Mapping[str, Any]) -> list[str]:
     return differences
 
 
+
+#: A line that could open a fence, once block-quote and list prefixes are set
+#: aside. Loose on purpose: the relation below blanks such a line and asks only
+#: that no words appear, and blanking a line that opens nothing adds no word.
+FENCE_SHAPED_LINE = re.compile(r"^[ \t>*+\-0-9.)]*(?:`{3,}|~{3,})")
+
+
+def _blank_lines(text: str, numbers: set[int]) -> str:
+    """Return ``text`` with the numbered lines emptied, every line break kept."""
+    return "\n".join(
+        "" if number in numbers else line
+        for number, line in enumerate(text.split("\n"), start=1)
+    )
+
+
+def scoring_fence_differences(text: str, answer: Mapping[str, Any]) -> list[str]:
+    """Return how the fences the gate scores from differ from markdown-it's.
+
+    The score comes from ``extract_prose``, which walks the fences again. Its
+    fences are held by what they do to the prose. Blanking markdown-it's
+    fenced lines must leave the prose as it is. Then blanking every other
+    fence-shaped line must add no word, because a line that opens no fence
+    hides nothing.
+    """
+    if "error" in answer:
+        return [f"markdown-it could not read the page: {answer['error']}"]
+    fenced = {
+        number
+        for block in answer["blocks"]
+        if block["type"] == "fence"
+        for number in range(block["start"], block["end"] + 1)
+    }
+    without_fences = _blank_lines(text, fenced)
+    differences: list[str] = []
+    if readability.extract_prose(text) != readability.extract_prose(without_fences):
+        differences.append(
+            "the scored prose changes when markdown-it's fenced lines are blanked, "
+            "so the gate scores a line inside a fence, or hides one outside it"
+        )
+    shaped = {
+        number
+        for number, line in enumerate(without_fences.split("\n"), start=1)
+        if FENCE_SHAPED_LINE.match(line)
+    }
+    kept = Counter(readability.extract_prose(without_fences).split())
+    shown = Counter(readability.extract_prose(_blank_lines(without_fences, shaped)).split())
+    if shown - kept:
+        differences.append(
+            "the scored prose gains words when the fence-shaped lines markdown-it "
+            "does not read as fences are blanked, so the gate opens a fence there"
+        )
+    return differences
+
 def test_the_gate_reads_every_page_s_fences_as_markdown_it_does() -> None:
-    """Every tracked page's fenced lines match markdown-it's reading.
+    """Both of the gate's fence walks match markdown-it's reading, on every tracked page.
 
     This gate keeps its own CommonMark parser, and this test is what holds its
-    fence reading to the renderer on the pages that exist. A difference is not
-    patched in the parser: the ADR named on ``BLOCK_READER`` says what to do.
+    fence reading to the renderer on the pages that exist. The literal-code
+    walk is compared line by line, and the scoring walk by the prose it
+    returns. A difference is not patched in the parser: the ADR named on
+    ``BLOCK_READER`` says what to do.
     """
     pages = tracked_pages()
     assert pages, "git lists no Markdown page under framework/ or destinations/"
@@ -7683,6 +7740,7 @@ def test_the_gate_reads_every_page_s_fences_as_markdown_it_does() -> None:
         (page, difference)
         for page, text, answer in zip(pages, texts, markdown_it_blocks(texts))
         for difference in fenced_line_differences(text, answer)
+        + scoring_fence_differences(text, answer)
     }
     unexplained = sorted(found - set(MARKDOWN_IT_FENCE_DIFFERENCES))
     stale = sorted(set(MARKDOWN_IT_FENCE_DIFFERENCES) - found)
@@ -7716,6 +7774,36 @@ def test_the_fence_comparison_passes_a_page_the_two_read_alike() -> None:
         + FENCE + "\nmore code\n" + FENCE + "\n"
     )
     assert fenced_line_differences(text, markdown_it_blocks([text])[0]) == []
+
+
+@pytest.mark.parametrize(
+    ("text", "expected"),
+    [
+        (
+            "Words before.\n\n<div>\n</div>\n" + FENCE + "\n\n" + FENCE
+            + "\ncodeword alpha beta\n" + FENCE + "\n",
+            "the scored prose changes when markdown-it's fenced lines are blanked",
+        ),
+        (
+            "Words before.\n\n<div>\n</div>\n" + FENCE + "\n\n" + LINK_TEST_PROSE + "\n",
+            "the scored prose gains words when the fence-shaped lines",
+        ),
+    ],
+    ids=["code-scored-as-prose", "prose-hidden-as-code"],
+)
+def test_the_scoring_fence_comparison_names_a_difference(text: str, expected: str) -> None:
+    """The negative controls: a fence-shaped line that closes an HTML block."""
+    differences = scoring_fence_differences(text, markdown_it_blocks([text])[0])
+    assert any(difference.startswith(expected) for difference in differences), differences
+
+
+def test_the_scoring_fence_comparison_passes_a_page_the_two_read_alike() -> None:
+    """The positive control: fences in a list item and at the top level, and a code span."""
+    text = (
+        "# Title\n\nWords and `code` here.\n\n- item\n\n  " + FENCE + "text\n  code\n  "
+        + FENCE + "\n\n" + FENCE + "\nmore code\n" + FENCE + "\n\nLast words.\n"
+    )
+    assert scoring_fence_differences(text, markdown_it_blocks([text])[0]) == []
 
 
 def test_the_fence_reader_names_npm_ci_when_node_is_missing() -> None:

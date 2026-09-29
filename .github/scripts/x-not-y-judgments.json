@@ -55101,12 +55101,12 @@
       "judgment": "no",
       "reason": "a plain fact about what the gate reads; it rejects no alternative"
     },
-    "split|The structure gate reads the ‹code› value. → It fails a value that is not one of the four, and a Conditional core line with no condition after ‹code› .|1": {
+    "split|The structure gate reads the ‹code› value. → It fails a value outside the four, a Conditional core line with no condition after ‹code› , and a second ‹code› bullet.|1": {
       "line": 120,
       "judgment": "no",
       "reason": "names the values the gate fails; the negations describe invalid values, rejecting no alternative"
     },
-    "split|It fails a value that is not one of the four, and a Conditional core line with no condition after ‹code› . → A legal value that is wrong for the session still passes, so a session flattened into Core or Recommended passes every gate in this repository while moving in or out of a Core baseline the design record fixes on purpose.|1": {
+    "split|It fails a value outside the four, a Conditional core line with no condition after ‹code› , and a second ‹code› bullet. → A legal value that is wrong for the session still passes, so a session flattened into Core or Recommended passes every gate in this repository while moving in or out of a Core baseline the design record fixes on purpose.|1": {
       "line": 120,
       "judgment": "no",
       "reason": "a limit of the gate and its consequence; it rejects no alternative"

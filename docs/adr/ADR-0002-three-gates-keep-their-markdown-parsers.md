@@ -28,7 +28,9 @@ On 2026-09-29, all 207 tracked Markdown pages under `framework/` and `destinatio
 
 - The session-structure gate found the same headings as markdown-it, at the same lines and levels, on 207 of 207 pages.
 - The session-structure gate's scan hid every line of every fenced block markdown-it found on 207 of 207 pages. It hid nothing outside fenced blocks, HTML blocks and lines that print nothing.
-- The readability gate read the same fenced-block lines as markdown-it on 207 of 207 pages.
+- The readability gate's literal-code walk read the same fenced-block lines as markdown-it on 207 of 207 pages.
+- Its scoring walk's prose did not change when markdown-it's fenced lines were blanked, on 207 of 207 pages.
+- Blanking every other fence-shaped line added no word to that prose, on 207 of 207 pages.
 
 ## Decision
 
@@ -37,7 +39,7 @@ On 2026-09-29, all 207 tracked Markdown pages under `framework/` and `destinatio
 - A gate whose CommonMark reading must change moves to markdown-it, and its parser is not patched. A reading must change when the gate reads a tracked page otherwise than markdown-it does and the difference changes what the gate reports.
 - Two tests hold two of the gates to markdown-it's reading of every tracked page under `framework/` and `destinations/`, each through one Node.js process:
   - `test_the_gate_reads_every_page_as_markdown_it_does` in `tests/test_check_session_structure.py` compares the headings and the hidden lines.
-  - `test_the_gate_reads_every_page_s_fences_as_markdown_it_does` in `tests/test_check_readability.py` compares the fenced-block lines.
+  - `test_the_gate_reads_every_page_s_fences_as_markdown_it_does` in `tests/test_check_readability.py` compares the literal-code walk's fenced lines, and the prose the scoring walk returns.
 - Each test fails when Node.js or `node_modules` is missing, with a message that names `npm ci`. Neither test skips.
 - A difference the gate keeps on purpose, such as a reading that follows GitHub's renderer where markdown-it does not, is named in the allow-list beside its test, with its reason. An entry whose difference no longer occurs fails the test.
 
@@ -53,7 +55,7 @@ Negative:
 
 - The tests compare block structure only. They do not compare inline rules, such as a comment inside a line of text or a code span.
 - The placeholder hook is not compared. It exposes no line map, and adding one would change a template-managed file.
-- The repository keeps two kinds of Markdown reader. The gates' copies of their shared helpers can still drift apart, which `test_the_gates_shared_helpers_are_the_same_code` in `tests/test_check_session_structure.py` catches.
+- The gates' copies of the functions, classes and values they share by name can still drift apart. `test_the_gates_shared_helpers_are_the_same_code` catches that drift. It does not catch an edit inside a difference its allow-list accepts.
 - The readability and structure suites now need Node.js and `node_modules`, as the recount's suites do. The Markdown workflow runs `npm ci` before it runs them.
 
 ## Alternatives Considered

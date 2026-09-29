@@ -5348,6 +5348,7 @@ def _status_session(status: str) -> str:
         "- Status: Optional",
         "- Status: Core (adult-only setup)",
         "- **Status:** **Conditional core** -- becomes Core if a third city comes up",
+        "- Status: Conditional core (adult-led) -- done **only if** your family opted in",
     ],
 )
 def test_each_legal_status_value_passes(status: str) -> None:
@@ -5363,6 +5364,7 @@ def test_each_legal_status_value_passes(status: str) -> None:
         ("- Status: Conditional core", "names no condition"),
         ("- Status: Conditional core --", "names no condition"),
         ("- Status: Conditional core (only if the family opts in)", "names no condition"),
+        ("- Status: Conditional core (only if -- see Session 00)", "names no condition"),
     ],
 )
 def test_a_wrong_status_value_fails(status: str, expected: str) -> None:
@@ -5378,6 +5380,37 @@ def test_a_wrong_status_value_is_reported_on_its_own_line() -> None:
     violations = structure.check_text(text, "07_a_session.md", "07_a_session.md")
     assert [v.line_number for v in violations] == [text.split("\n").index(status) + 1]
     assert "Core, Conditional core, Recommended, Optional" in violations[0].message
+
+
+def test_every_status_bullet_in_a_strip_is_read() -> None:
+    """A second Status bullet is named, and its own wrong value is named too."""
+    text = build_session(
+        parent_bullets=(
+            "- Status: Core -- the capstone",
+            "- Status: Conditonal core",
+            "- Estimated time: 20-30 minutes",
+            "- Parent involvement: 5-minute check-in",
+        )
+    )
+    violations = structure.check_text(text, "07_a_session.md", "07_a_session.md")
+    second = text.split("\n").index("- Status: Conditonal core") + 1
+    assert [v.line_number for v in violations] == [second, second]
+    assert "second Status bullet" in violations[0].message
+    assert "'Conditonal core', which is not one of the four" in violations[1].message
+
+
+def test_two_legal_status_bullets_still_fail() -> None:
+    """Two legal values tell a parent two things, so the second bullet is named."""
+    text = build_session(
+        parent_bullets=(
+            "- Status: Core",
+            "- Status: Optional",
+            "- Estimated time: 20-30 minutes",
+            "- Parent involvement: 5-minute check-in",
+        )
+    )
+    messages = check(text)
+    assert len(messages) == 1 and "second Status bullet" in messages[0], messages
 
 
 def test_the_status_values_are_the_four_the_template_lists() -> None:
@@ -5612,13 +5645,18 @@ _COMMENT_WALKS = (
 )
 _ENTRY_POINT = "Each gate's own command line: its options, its report and its exit rule."
 _OWN_SCOPE = "Each gate reads its own set of files, and says so in its own result."
+_QUOTE_SPELLING = (
+    "The same pattern. The placeholder hook's copy writes each single quote as a "
+    "backslash and a quote, which a regular expression reads as the quote itself."
+)
 
-#: The helpers two gates share by name and write differently on purpose,
-#: keyed by the two scripts and the function name, each with the reason read
-#: from both copies. Every other shared helper must be the same code, its
-#: docstring aside. An entry whose two copies are now the same, or that names
-#: a function one of the two no longer defines, fails the test, so the list
-#: names only differences that exist.
+#: The definitions two gates share by name and write differently on
+#: purpose: functions, classes and assigned values, keyed by the two scripts
+#: and the name, each with the reason read from both copies. Every other shared
+#: definition must be the same code, its docstrings aside. An entry whose two
+#: copies are now the same, or that names a definition one of the two no
+#: longer holds, fails the test, so the list names only differences that
+#: exist.
 SHARED_HELPER_DIFFERENCES: dict[tuple[str, str, str], str] = {
     ("check-readability.py", "check-session-structure.py", "following_backtick_run"): _LINE_SHAPE,
     ("check-readability.py", "check-session-structure.py", "following_comment_end"): _LINE_SHAPE,
@@ -5645,29 +5683,58 @@ SHARED_HELPER_DIFFERENCES: dict[tuple[str, str, str], str] = {
     ("check-readability.py", "check-session-structure.py", "main"): _ENTRY_POINT,
     ("check-readability.py", "check-prohibited-placeholders.py", "main"): _ENTRY_POINT,
     ("check-session-structure.py", "check-prohibited-placeholders.py", "main"): _ENTRY_POINT,
+    ("check-readability.py", "check-session-structure.py", "HEADING_PATTERN"): (
+        "Two patterns share the name. Readability's finds a heading line, indented up to "
+        "three spaces, so its words are not scored; this gate's takes the level and the "
+        "title from a line its scan has already placed."
+    ),
+    ("check-readability.py", "check-session-structure.py", "PARENT_STRIP_PATTERN"): (
+        "Readability finds the strip label in any case and without its colon, so a drifted "
+        "label still keeps adult text out of the score; this gate holds the label to its "
+        "exact form and names a drifted one."
+    ),
+    ("check-readability.py", "check-prohibited-placeholders.py", "_TAG_ATTRIBUTE"): _QUOTE_SPELLING,
+    ("check-session-structure.py", "check-prohibited-placeholders.py", "_TAG_ATTRIBUTE"): _QUOTE_SPELLING,
+    ("check-session-structure.py", "check-prohibited-placeholders.py", "Violation"): (
+        "Each gate's own report: this gate's violation carries a message, and the "
+        "placeholder hook's carries the matched text and names the remedy."
+    ),
 }
 
 
-def function_dumps(tree: ast.Module) -> dict[str, str]:
-    """Return each top-level function in ``tree`` as ``ast.dump`` output, docstring dropped.
+def definition_dumps(tree: ast.Module) -> dict[str, str]:
+    """Return each top-level definition in ``tree`` as ``ast.dump`` output, docstrings dropped.
 
-    ``ast.dump`` leaves out line numbers, comments and layout, so two copies
-    compare equal when they are the same code, however each is laid out.
+    A definition is a function, a class or a value assigned to a name. A
+    helper reads its patterns and records by name, so a fix to a shared
+    pattern is as much a change to the helper as a fix to its body. A value
+    built from another is compared as written, so its parts are compared under
+    their own names. ``ast.dump`` leaves out line numbers, comments and layout,
+    so two copies compare equal when they are the same code.
     """
     dumps: dict[str, str] = {}
     for node in tree.body:
-        if not isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
+        if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)):
+            named = [(node.name, node)]
+        elif isinstance(node, ast.Assign):
+            named = [(target.id, node.value) for target in node.targets if isinstance(target, ast.Name)]
+        elif isinstance(node, ast.AnnAssign) and isinstance(node.target, ast.Name) and node.value:
+            named = [(node.target.id, node.value)]
+        else:
             continue
-        body = node.body
-        if (
-            body
-            and isinstance(body[0], ast.Expr)
-            and isinstance(body[0].value, ast.Constant)
-            and isinstance(body[0].value.value, str)
-        ):
-            node.body = body[1:] or [ast.Pass()]
-        assert node.name not in dumps, f"the script defines {node.name} twice"
-        dumps[node.name] = ast.dump(node)
+        for inner in ast.walk(node):
+            if isinstance(inner, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)):
+                body = inner.body
+                if (
+                    body
+                    and isinstance(body[0], ast.Expr)
+                    and isinstance(body[0].value, ast.Constant)
+                    and isinstance(body[0].value.value, str)
+                ):
+                    inner.body = body[1:] or [ast.Pass()]
+        for name, value in named:
+            assert name not in dumps, f"the script defines {name} twice"
+            dumps[name] = ast.dump(value)
     return dumps
 
 
@@ -5681,7 +5748,7 @@ def shared_helper_findings(
     scripts: Mapping[str, Mapping[str, str]],
     allowed: Mapping[tuple[str, str, str], str],
 ) -> list[str]:
-    """Return each shared helper whose copies differ unlisted, and each stale entry."""
+    """Return each shared definition whose copies differ unlisted, and each stale entry."""
     findings: list[str] = []
     for first, second in itertools.combinations(scripts, 2):
         for function in sorted(set(scripts[first]) & set(scripts[second])):
@@ -5708,18 +5775,21 @@ def shared_helper_findings(
 
 
 def test_the_gates_shared_helpers_are_the_same_code() -> None:
-    """A fix to one copy of a shared helper must reach its siblings, or say why not.
+    """A fix to one copy of a shared definition must reach its siblings, or say why not.
 
     The behavioural pins above test what a helper does; this tests that the
-    copies are the same, for every helper two or more gates define.
+    copies are the same, for every function, class and assigned value two or
+    more gates define by name. A helper reads its patterns and records by
+    name, so a one-sided edit to one of them is drift as much as an edit to
+    the helper's body.
     """
-    scripts = {name: function_dumps(gate_tree(name)) for name in GATE_SCRIPTS}
+    scripts = {name: definition_dumps(gate_tree(name)) for name in GATE_SCRIPTS}
     shared = {
         function
         for first, second in itertools.combinations(scripts, 2)
         for function in set(scripts[first]) & set(scripts[second])
     }
-    assert shared, "the three gates share no helper, so this test compares nothing"
+    assert shared, "the three gates share no definition, so this test compares nothing"
     findings = shared_helper_findings(scripts, SHARED_HELPER_DIFFERENCES)
     assert not findings, "\n".join(findings)
 
@@ -5739,8 +5809,8 @@ def _tree_with_changed_helper(name: str, function: str, *, docstring_only: bool)
 
 def test_a_change_to_one_copy_of_a_shared_helper_is_named() -> None:
     """The negative control: one statement added to one copy fails both of its pairs."""
-    scripts = {name: function_dumps(gate_tree(name)) for name in GATE_SCRIPTS}
-    scripts["check-prohibited-placeholders.py"] = function_dumps(
+    scripts = {name: definition_dumps(gate_tree(name)) for name in GATE_SCRIPTS}
+    scripts["check-prohibited-placeholders.py"] = definition_dumps(
         _tree_with_changed_helper(
             "check-prohibited-placeholders.py", "is_closing_fence", docstring_only=False
         )
@@ -5754,10 +5824,30 @@ def test_a_change_to_one_copy_of_a_shared_helper_is_named() -> None:
     ]
 
 
+def test_a_change_to_one_copy_of_a_shared_pattern_is_named() -> None:
+    """The negative control: one gate's fence opener allows four spaces of indent."""
+    scripts = {name: definition_dumps(gate_tree(name)) for name in GATE_SCRIPTS}
+    tree = gate_tree("check-readability.py")
+    for node in tree.body:
+        if isinstance(node, ast.Assign) and any(
+            isinstance(target, ast.Name) and target.id == "FENCE_OPEN_PATTERN"
+            for target in node.targets
+        ):
+            node.value.args[0] = ast.Constant(r"^ {0,4}(?P<marker>`{3,}|~{3,})")
+    scripts["check-readability.py"] = definition_dumps(tree)
+    findings = shared_helper_findings(scripts, SHARED_HELPER_DIFFERENCES)
+    assert [finding.split(". ")[0] for finding in findings] == [
+        "FENCE_OPEN_PATTERN: check-readability.py and check-session-structure.py hold "
+        "different code",
+        "FENCE_OPEN_PATTERN: check-readability.py and check-prohibited-placeholders.py "
+        "hold different code",
+    ]
+
+
 def test_a_docstring_change_to_one_copy_is_not_a_difference() -> None:
     """No false alarm: a docstring is not code, so rewording one is not drift."""
-    scripts = {name: function_dumps(gate_tree(name)) for name in GATE_SCRIPTS}
-    scripts["check-prohibited-placeholders.py"] = function_dumps(
+    scripts = {name: definition_dumps(gate_tree(name)) for name in GATE_SCRIPTS}
+    scripts["check-prohibited-placeholders.py"] = definition_dumps(
         _tree_with_changed_helper(
             "check-prohibited-placeholders.py", "is_closing_fence", docstring_only=True
         )
@@ -5767,7 +5857,7 @@ def test_a_docstring_change_to_one_copy_is_not_a_difference() -> None:
 
 def test_an_entry_for_copies_that_are_the_same_is_stale() -> None:
     """The list stays live: an entry for two copies that agree is itself a finding."""
-    scripts = {name: function_dumps(gate_tree(name)) for name in GATE_SCRIPTS}
+    scripts = {name: definition_dumps(gate_tree(name)) for name in GATE_SCRIPTS}
     allowed = dict(SHARED_HELPER_DIFFERENCES)
     allowed[("check-readability.py", "check-session-structure.py", "is_closing_fence")] = "none"
     allowed[("check-readability.py", "check-session-structure.py", "no_such_helper")] = "none"
