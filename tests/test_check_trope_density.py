@@ -382,9 +382,19 @@ def test_zero_tolerance_reads_headings_and_table_cells() -> None:
     ("The rule is in \u00a7 9.", True),
     ("The rule is in \u00a79.", True),
     ("As the specification section 4.2 says, pick one.", True),
+    ("See Section 31 of the spec.", True),
+    ("See section 31 of the specification.", True),
+    ("See the design record's section 31.", True),
+    ("See the archived record's section 31.", True),
+    ("See the archived spec, section 31.", True),
+    ("See the spec (section 31).", True),
+    ("See the spec's own numbered section 31.", True),
+    ("See the spec's own long numbered section 31.", False),
+    ("See the spec's sections 3 and 4.", True),
     ("As the brief's section 10 says, pick one.", False),
     ("Session 10 has the rule.", False),
     ("Section 10 of the brief has the rule.", False),
+    ("The design record fixes the titles.", False),
 ])
 def test_spec_section_reads_each_citation_form(text: str, hit: bool) -> None:
     assert fail_kinds(check(page("# P", "", text), rel=PARENT)) == (["SPEC-SECTION"] if hit else [])

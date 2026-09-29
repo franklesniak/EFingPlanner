@@ -148,10 +148,17 @@ paragraph's start rather than at a wrapped source line:
 - T96: an email's pleasantry ("I hope this message finds you well").
 - T100: an unnamed authority ("studies show", "experts say").
 - SPEC-SECTION: a section number of the archived spec, which the style law
-  bans in every built file: a section sign before a number, or "spec" or
-  "specification", at most two words, then "section" and a number ("the
-  spec's section 31"). A build brief's numbered section ("the brief's
-  section 10") is no hit: the style law's read decides where one may stand.
+  bans in every built file. It reads three forms. A section sign before a
+  number. One of the spec's names ("spec", "specification", "design
+  record", "archived record"), with or without a possessive, then at most
+  two words, then "section" or "sections" and a number, where a comma, a
+  colon or an opening parenthesis may stand before "section" ("the spec's
+  section 31", "the archived spec, section 31", "the spec (section 31)").
+  And "section" and a number, then "of the" and one of those names,
+  "archived" allowed before "spec", "specification" or "design record"
+  ("section 31 of the specification"). A build brief's numbered section
+  ("the brief's section 10", "section 10 of the brief") is no hit: the
+  style law's read decides where one may stand.
 - T104: ``load-bearing``, a metaphor from building work. It fails in
   child-facing text and is printed elsewhere, where a structural use is fine.
 
@@ -341,7 +348,11 @@ ZERO_TOLERANCE: dict[str, tuple[str, re.Pattern[str]]] = {
         r"|experts (?:say|agree|believe)|industry leaders believe|critics argue|science (?:shows|says)"
         r"|it" + APOSTROPHE + r"?s been proven)")),
     "SPEC-SECTION": ("a section number of the archived spec", re.compile(
-        r"(?i)\u00a7\s*\d|\bspec(?:ification)?(?:" + APOSTROPHE + r"s)?(?:\s+\w+){0,2}?\s+sections?\s+\d")),
+        r"(?i)\u00a7\s*\d"
+        r"|\b(?:spec(?:ification)?|(?:design|archived)\s+record)(?:" + APOSTROPHE + r"s)?(?:\s+\w+){0,2}?"
+        r"[\s,:(]+sections?\s+\d"
+        r"|\bsections?\s+\d[\d.]*\s+of\s+the\s+"
+        r"(?:(?:archived\s+)?(?:spec(?:ification)?|design\s+record)|archived\s+record)\b")),
 }
 LOAD_BEARING = ("T104", "`load-bearing`, a metaphor from building work", re.compile(r"(?i)\bload[- ]?bearing\b"))
 

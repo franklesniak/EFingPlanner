@@ -5436,10 +5436,15 @@
       "judgment": "no",
       "reason": "a change record: a second job and who judges its output"
     },
-    "split|On a pull request, a second job prints each changed child-facing page whose reading grade rose, for the reviewer to judge. → Its zero-tolerance families include a section number of the archived spec, so a built page that cites the spec by section fails the build, and a build brief's numbered section passes.|1": {
+    "split|On a pull request, a second job prints each changed child-facing page whose reading grade rose, for the reviewer to judge. → Its zero-tolerance families include a section number of the archived spec, which fails the build in three forms: a section sign before a number; the spec, the specification, the design record or the archived record within two words before ‹code› and a number; and ‹code› and a number followed by ‹code› and one of those names.|1": {
       "line": 40,
       "judgment": "no",
-      "reason": "a change record: which section citations fail the build and which pass; rejects nothing"
+      "reason": "a change record: the three forms of a spec section number that fail the build; rejects nothing"
+    },
+    "split|Its zero-tolerance families include a section number of the archived spec, which fails the build in three forms: a section sign before a number; the spec, the specification, the design record or the archived record within two words before ‹code› and a number; and ‹code› and a number followed by ‹code› and one of those names. → A build brief's numbered section passes.|1": {
+      "line": 40,
+      "judgment": "no",
+      "reason": "a change record: what passes the gate, stated positively; it rejects nothing"
     },
     "device|Style law.|1": {
       "line": 44,
