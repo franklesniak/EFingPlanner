@@ -128,9 +128,10 @@ What fails the run
 ------------------
 On a gated page: a dash or `real` count over its file or section cap;
 `genuine`, `genuinely` or `guardrails` in child-facing text; any hit of the
-zero-tolerance families T88 to T96 and T100 below; `load-bearing` (T104) in
-child-facing text; an undetermined register; a refused marker; and an HTML
-block the page model cannot read, whose text no count would see.
+zero-tolerance families T88 to T96, T100 and SPEC-SECTION below;
+`load-bearing` (T104) in child-facing text; an undetermined register; a
+refused marker; and an HTML block the page model cannot read, whose text no
+count would see.
 
 The zero-tolerance families, matched on the text the caps read (no comments,
 code or quotation block quotes; headings and table cells included), a
@@ -148,6 +149,22 @@ paragraph's start rather than at a wrapped source line:
 - T95: an email's throat-clearing ("I wanted to reach out").
 - T96: an email's pleasantry ("I hope this message finds you well").
 - T100: an unnamed authority ("studies show", "experts say").
+- SPEC-SECTION: a section number of the archived spec, which the style law
+  bans in every built file. It reads three forms. A section sign before a
+  number. One of the spec's names ("spec", "specification", "design
+  record", "archived record"), with or without a possessive, then at most
+  two words, then "section" or "sections" and a number, where a comma, a
+  colon or an opening parenthesis may stand before "section" ("the spec's
+  section 31", "the archived spec, section 31", "the spec (section 31)").
+  And "section" and a number, then "of the" and one of those names,
+  "archived" allowed before "spec", "specification" or "design record"
+  ("section 31 of the specification"). On a gated page, "section" or
+  "subsection" before a number fails too, unless the same paragraph,
+  heading or cell names a build brief ("see section 21.8" fails; "the
+  brief's section 10" and "section 10 of the brief" pass). A record gets
+  no hit from that bare form, because it cites its own sections. A bare
+  hit inside a named one is not counted again, so one citation fails once.
+  The style law's read decides where a brief's section may stand.
 - T104: ``load-bearing``, a metaphor from building work. It fails in
   child-facing text and is printed elsewhere, where a structural use is fine.
 
@@ -336,7 +353,25 @@ ZERO_TOLERANCE: dict[str, tuple[str, re.Pattern[str]]] = {
         r"(?i)(?:studies (?:show|suggest|have shown)|research (?:shows|suggests|indicates)"
         r"|experts (?:say|agree|believe)|industry leaders believe|critics argue|science (?:shows|says)"
         r"|it" + APOSTROPHE + r"?s been proven)")),
+    "SPEC-SECTION": ("a section number of the archived spec", re.compile(
+        r"(?i)\u00a7\s*\d"
+        r"|\b(?:spec(?:ification)?|(?:design|archived)\s+record)(?:" + APOSTROPHE + r"s)?(?:\s+\w+){0,2}?"
+        r"[\s,:(]+sections?\s+\d"
+        r"|\bsections?\s+\d[\d.]*\s+of\s+the\s+"
+        r"(?:(?:archived\s+)?(?:spec(?:ification)?|design\s+record)|archived\s+record)\b")),
 }
+#: SPEC-SECTION's bare form, read on a gated page only: "section" or
+#: "subsection", one or more, before a number. A record cites its own sections.
+BARE_SECTION_RE = re.compile(r"(?i)(?<![\w-])(?:sub)?sections?\s+\d+(?:\.\d+)*")
+#: A build brief named in the same text, which lets a bare section number stand:
+#: "brief" after build, batch, Batch N, Batch N's, the or its, or as "brief's".
+#: An everyday "brief" ("keep your notes brief") names none.
+BRIEF_RE = re.compile(
+    r"(?i)\b(?:build|batch(?:\s+\d+(?:" + APOSTROPHE + r"s)?)?|the|its)\s+briefs?\b"
+    r"|\bbrief" + APOSTROPHE + r"s\b")
+#: What a bare hit reports: it may point at any document, and the style law
+#: wants a Name there, never a section number.
+BARE_SECTION_WHAT = "a section number with no brief named; the style law wants the Name"
 LOAD_BEARING = ("T104", "`load-bearing`, a metaphor from building work", re.compile(r"(?i)\bload[- ]?bearing\b"))
 
 #: The style law's banned words, printed as mentions: nearly every one is a
@@ -787,6 +822,18 @@ def check_words(result: PageResult, text: str, line_of: Any, region_of: Any, is_
             n = line_of(m.start())
             result.zero_tolerance_hits += 1
             result.fails.append(Note(family, n, f"{family} ({what}): {m.group(0)!r}", source_line(source, n)))
+    if result.gated and not BRIEF_RE.search(text):
+        family = "SPEC-SECTION"
+        rx = ZERO_TOLERANCE[family][1]
+        named = [(m.start(), m.end()) for m in rx.finditer(text)]
+        for m in BARE_SECTION_RE.finditer(text):
+            if any(start <= m.start() < end for start, end in named):
+                # A named citation has failed already, and one citation fails once.
+                continue
+            n = line_of(m.start())
+            result.zero_tolerance_hits += 1
+            result.fails.append(Note(family, n, f"{family} ({BARE_SECTION_WHAT}): {m.group(0)!r}",
+                                     source_line(source, n)))
     family, what, rx = LOAD_BEARING
     for m in rx.finditer(text):
         n = line_of(m.start())

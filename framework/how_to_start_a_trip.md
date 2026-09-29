@@ -31,6 +31,8 @@ Start with the adult-only [Session 00: Parent Setup](sessions/phase_00_setup/00_
 
 Print each session as you reach it rather than the whole set at once.
 
+The session titles keep the names the project's original design record gave them. They expect several cities to compare, as in Deep-Dive City A, and a season to choose, as in Checkpoint 1 Season Recommendation. If your dates are already booked, Sessions 12 and 14 turn the season choice into a season confirmation. A trip to one city or one base still researches places to visit, and [Checkpoint 2](sessions/phase_03_choose_places/22_checkpoint_2_city_shortlist.md) lets the child keep one base.
+
 ## Later: the next trip to the same place
 
 Copy out a fresh starter kit and reuse the same destination pack. The facts have not moved, so nothing needs rebuilding. The child starts with new blanks and the pack they already know.
