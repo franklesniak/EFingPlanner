@@ -466,7 +466,8 @@ template_sync:
         whose links include the local suite tests/test_check_x_not_y.py, and
         the Scope line's mention of those schemas; the wording in this
         repository's voice in place of the template's (Template Portability,
-        Validation and Worked Example); and the removal of the pointers to
+        Repository-Specific Validation Inventory, Validation and Worked
+        Example); and the removal of the pointers to
         templates/python/tests/test_schema_examples.py, which the excluded
         python module ships. Merge every other upstream change.
       default_decision: MERGE
