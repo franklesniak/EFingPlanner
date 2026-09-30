@@ -9,33 +9,45 @@ side sees the routing without opening a pack. Two copies kept by hand drift
 apart, and no other check compares them. So this suite compares them row for
 row, header rows included, for every pack.
 
-The copies may differ in their links only. The contract links each pack file it
-names, and a pack still being built writes a file it has not written yet in
-inline code. The mirror writes every pack file in inline code, unlinked, so no
-framework page links into a pack, and it links each parent-facing page that the
-contract names in plain text. So each link is read as its text: an inline link
-``[text](destination)``, a full reference link ``[text][label]`` and a
-collapsed one ``[text][]``. A run of white space counts as one space.
-Everything else must match exactly, in the same order.
+Both pages are read through markdown-it, as ADR-0002 says a new tool reads
+Markdown, by ``tests/markdown_tables.mjs``. It gives each heading and each
+table as the page prints them, so a heading or a table inside a fenced block
+or an HTML comment is not read. The copies may differ in their links only. The
+contract links each pack file it names, and a pack still being built writes a
+file it has not written yet in inline code. The mirror writes every pack file
+in inline code, unlinked, so no framework page links into a pack, and it links
+each parent-facing page that the contract names in plain text. The reader
+prints a link as its label and a code span as its code between backticks, so
+a linked filename matches the same name in inline code, and two filenames
+never match each other. Everything else must match exactly, in the same order.
 
 Every folder under ``destinations/`` is one pack, as the leak check reads them,
 and each must carry the contract. A table is the first one under its heading,
-before the next heading of any level, and a heading or a table inside a fenced
-block is not read. A missing heading, a heading with no table under it, a table
-with no rows below its header and a pack without its contract each fail by
-name, so the suite cannot pass on tables it never found.
+before the next heading of any level. A missing heading, a heading with no
+table under it, a table with no rows below its header and a pack without its
+contract each fail by name, so the suite cannot pass on tables it never found.
+Without Node.js or markdown-it the suite fails and names ``npm ci``; the
+Markdown workflow installs both before it runs the suite. The rules for a
+check are in ``docs/writing_checkers.md``.
 """
 
 from __future__ import annotations
 
 import difflib
-import re
+import functools
+import json
+import shutil
+import subprocess
+from collections.abc import Sequence
 from pathlib import Path
+from typing import Any
 
 from tests._pytest_compat import pytest
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 
+#: The Node program that reads a page's headings and tables through markdown-it.
+READER = REPO_ROOT / "tests" / "markdown_tables.mjs"
 #: The framework page that holds the mirror.
 MIRROR = "framework/cross_reference_map.md"
 #: The folder of the destination packs. Each folder under it is one pack.
@@ -43,104 +55,117 @@ PACKS_FOLDER = "destinations"
 #: The contract's path inside each pack's folder.
 CONTRACT = "session_inserts/README.md"
 
+Heading = tuple[int, str]
+Row = tuple[str, ...]
+
 #: Each table the mirror copies: its name, the heading path to it in the
-#: contract, and the heading path to it in the mirror.
-TABLES = (
+#: contract, and the heading path to it in the mirror. A heading is its level
+#: and the text it prints.
+TABLES: tuple[tuple[str, tuple[Heading, ...], tuple[Heading, ...]], ...] = (
     (
         "sessions",
-        ("## The insert and reference contract",),
-        ("## Part 2: The destination routing mirror", "### Sessions"),
+        ((2, "The insert and reference contract"),),
+        ((2, "Part 2: The destination routing mirror"), (3, "Sessions")),
     ),
     (
         "parent-facing pages",
-        ("## The insert and reference contract", "### Parent-facing pages"),
-        ("## Part 2: The destination routing mirror", "### Parent-facing pages"),
+        ((2, "The insert and reference contract"), (3, "Parent-facing pages")),
+        ((2, "Part 2: The destination routing mirror"), (3, "Parent-facing pages")),
     ),
 )
 
-HEADING = re.compile(r"^ {0,3}(#{1,6})(?:[ \t]|$)")
-FENCE = re.compile(r"^ {0,3}(`{3,}|~{3,})")
-TABLE_LINE = re.compile(r"^ {0,3}\|")
-DELIMITER_CELL = re.compile(r"^:?-+:?$")
-INLINE_LINK = re.compile(r"\[([^\]]*)\]\([^)]*\)")
-REFERENCE_LINK = re.compile(r"\[([^\]]*)\]\[[^\]]*\]")
-CELL_BORDER = re.compile(r"(?<!\\)\|")
 
-Row = tuple[str, ...]
+def markdown_it_blocks(
+    texts: Sequence[str], node_command: str = "node", reader: Path = READER
+) -> list[list[dict[str, Any]]]:
+    """Return each text's headings and tables, read by markdown-it in one Node process.
 
-
-def visible_lines(text: str) -> list[str]:
-    """Return the page's lines, with each line of a fenced block left blank."""
-    lines: list[str] = []
-    fence = ""
-    for line in text.splitlines():
-        if not fence:
-            opening = FENCE.match(line)
-            if opening:
-                fence = opening.group(1)
-                lines.append("")
-            else:
-                lines.append(line)
-            continue
-        closing = line.strip()
-        if closing and set(closing) == {fence[0]} and len(closing) >= len(fence):
-            fence = ""
-        lines.append("")
-    return lines
-
-
-def heading_level(line: str) -> int:
-    """Return the level of an ATX heading line, or 0 for any other line."""
-    match = HEADING.match(line)
-    return len(match.group(1)) if match else 0
-
-
-def normalize(cell: str) -> str:
-    """Read each link in a cell as its text, and each run of white space as one space."""
-    text = INLINE_LINK.sub(r"\1", cell)
-    text = REFERENCE_LINK.sub(r"\1", text)
-    return " ".join(text.split())
+    **Without Node.js, or without markdown-it, the suite fails and says so.**
+    Skipping would report a match for tables nobody compared.
+    """
+    node = shutil.which(node_command)
+    if node is None:
+        raise AssertionError(
+            f"{node_command!r} was not found. This suite reads each page through "
+            f"{reader.name}, which needs Node.js: install Node.js and run `npm ci` "
+            "in the repository root."
+        )
+    request = "".join(json.dumps({"text": text}) + "\n" for text in texts)
+    completed = subprocess.run(
+        [node, str(reader)],
+        input=request,
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+        cwd=REPO_ROOT,
+        check=False,
+    )
+    answers = [json.loads(line) for line in completed.stdout.splitlines() if line.strip()]
+    if completed.returncode != 0 or len(answers) != len(texts):
+        raise AssertionError(
+            f"{reader.name} answered {len(answers)} of {len(texts)} page(s) and exited "
+            f"{completed.returncode}. Run `npm ci` in the repository root so that "
+            "markdown-it is installed. It said: " + completed.stderr.strip()[-600:]
+        )
+    errors = [answer["error"] for answer in answers if "error" in answer]
+    if errors:
+        raise AssertionError(f"{reader.name} could not read a page: {errors}")
+    return [answer["blocks"] for answer in answers]
 
 
-def split_row(line: str) -> Row:
-    """Split one table line into its normalized cells."""
-    body = line.strip()
-    if body.startswith("|"):
-        body = body[1:]
-    if body.endswith("|") and not body.endswith("\\|"):
-        body = body[:-1]
-    return tuple(normalize(cell) for cell in CELL_BORDER.split(body))
+@functools.lru_cache(maxsize=None)
+def page_blocks(text: str) -> tuple[dict[str, Any], ...]:
+    """Return one page's headings and tables, reading each text once."""
+    return tuple(markdown_it_blocks([text])[0])
 
 
-def read_table(text: str, path: tuple[str, ...], where: str) -> list[Row]:
+def heading_name(heading: Heading) -> str:
+    """Write a heading as its Markdown source line."""
+    level, text = heading
+    return f"{'#' * level} {text}"
+
+
+def read_table(text: str, path: Sequence[Heading], where: str) -> list[Row]:
     """Return the header row and body rows of the first table under a heading path.
 
     Each heading in ``path`` is looked for inside the section of the one before
-    it. The table is the first one after the last heading, before the next
-    heading of any level. Its delimiter row is dropped.
+    it, which runs to the next heading of the same level or a higher one. The
+    table is the first one after the last heading, before the next heading of
+    any level.
     """
-    lines = visible_lines(text)
-    start, end = 0, len(lines)
+    blocks = page_blocks(text)
+    start, end = 0, len(blocks)
     for heading in path:
-        level = heading_level(heading)
-        found = next((i for i in range(start, end) if lines[i].strip() == heading), None)
+        level = heading[0]
+        found = next(
+            (
+                index
+                for index in range(start, end)
+                if blocks[index]["type"] == "heading" and (blocks[index]["level"], blocks[index]["text"]) == heading
+            ),
+            None,
+        )
         if found is None:
-            raise LookupError(f"{where}: no heading {heading!r} where the path {path!r} leads")
+            route = " > ".join(heading_name(step) for step in path)
+            raise LookupError(f"{where}: no heading {heading_name(heading)!r} where the path {route!r} leads")
         start = found + 1
-        end = next((j for j in range(start, end) if 0 < heading_level(lines[j]) <= level), end)
-    table: list[str] = []
-    for line in lines[start:end]:
-        if heading_level(line):
+        end = next(
+            (index for index in range(start, end) if blocks[index]["type"] == "heading" and blocks[index]["level"] <= level),
+            end,
+        )
+    table = None
+    for block in blocks[start:end]:
+        if block["type"] == "heading":
             break
-        if TABLE_LINE.match(line):
-            table.append(line)
-        elif table:
+        if block["type"] == "table":
+            table = block
             break
-    if len(table) < 2 or not all(DELIMITER_CELL.match(cell) for cell in split_row(table[1])):
-        raise LookupError(f"{where}: no table under {path[-1]!r}")
-    if len(table) < 3:
-        raise LookupError(f"{where}: the table under {path[-1]!r} has no rows below its header")
-    return [split_row(table[0])] + [split_row(line) for line in table[2:]]
+    if table is None:
+        raise LookupError(f"{where}: no table under {heading_name(path[-1])!r}")
+    rows = [tuple(row) for row in table["rows"]]
+    if len(rows) < 2:
+        raise LookupError(f"{where}: the table under {heading_name(path[-1])!r} has no rows below its header")
+    return rows
 
 
 def differences(contract: list[Row], mirror: list[Row]) -> list[str]:
@@ -177,7 +202,7 @@ def test_every_pack_carries_the_contract() -> None:
 @pytest.mark.parametrize("pack", [pack.name for pack in pack_folders()])
 @pytest.mark.parametrize(("table", "contract_path", "mirror_path"), TABLES, ids=[t[0] for t in TABLES])
 def test_the_mirror_matches_the_contract(
-    pack: str, table: str, contract_path: tuple[str, ...], mirror_path: tuple[str, ...]
+    pack: str, table: str, contract_path: tuple[Heading, ...], mirror_path: tuple[Heading, ...]
 ) -> None:
     """The mirror's copy of each table matches the pack's contract row for row."""
     contract_file = f"{PACKS_FOLDER}/{pack}/{CONTRACT}"
@@ -233,6 +258,8 @@ MIRROR_PAGE = """\
 [p-money]: parent_guide/money.md
 """
 
+SESSIONS_PATH = TABLES[0][2]
+
 
 def compare(contract_page: str, mirror_page: str) -> list[str]:
     """Compare both sample tables, and return every difference found."""
@@ -250,11 +277,21 @@ def test_matching_samples_pass() -> None:
     assert compare(CONTRACT_PAGE, MIRROR_PAGE) == []
 
 
-def test_every_link_form_reads_as_its_text() -> None:
-    assert normalize("[`a.md`](../reference/a.md) (note)") == "`a.md` (note)"
-    assert normalize("[Money guidance][p-money]") == "Money guidance"
-    assert normalize("[Money guidance][]") == "Money guidance"
-    assert normalize("  `a.md`,\t `b.md`  ") == "`a.md`, `b.md`"
+def test_each_cell_reads_as_the_page_prints_it() -> None:
+    """Every link form prints its label, and code keeps its backticks; a bracket with no definition stays."""
+    page = (
+        "### Sessions\n\n| A | B |\n| --- | --- |\n"
+        "| [`a.md`](../reference/a_(b).md) | [Money guidance][p-money] |\n"
+        "| [Money guidance][] | [Money guidance] |\n"
+        "| **`c.md`**, `d.md` | [no definition] &amp; a\\|b |\n\n"
+        "[money guidance]: parent_guide/money.md\n[p-money]: parent_guide/money.md\n"
+    )
+    assert read_table(page, [(3, "Sessions")], "sample") == [
+        ("A", "B"),
+        ("`a.md`", "Money guidance"),
+        ("Money guidance", "Money guidance"),
+        ("`c.md`, `d.md`", "[no definition] & a|b"),
+    ]
 
 
 @pytest.mark.parametrize(
@@ -277,32 +314,44 @@ def test_a_drifted_mirror_is_reported(before: str, after: str, reported: str) ->
 
 
 def test_a_missing_heading_is_refused_by_name() -> None:
+    """The refusal names the heading that is missing, whichever step of the path it is."""
     page = MIRROR_PAGE.replace("### Sessions", "### Session rows")
-    with pytest.raises(LookupError, match="'### Sessions'"):
-        read_table(page, TABLES[0][2], "mirror")
+    with pytest.raises(LookupError, match="no heading '### Sessions'"):
+        read_table(page, SESSIONS_PATH, "mirror")
+    page = MIRROR_PAGE.replace("## Part 2:", "## Part Two:")
+    with pytest.raises(LookupError, match="no heading '## Part 2: The destination routing mirror'"):
+        read_table(page, SESSIONS_PATH, "mirror")
 
 
 def test_a_heading_without_a_table_is_refused() -> None:
     page = "## Part 2: The destination routing mirror\n\n### Sessions\n\nNo table.\n\n### Parent-facing pages\n"
     with pytest.raises(LookupError, match="no table under '### Sessions'"):
-        read_table(page, TABLES[0][2], "mirror")
+        read_table(page, SESSIONS_PATH, "mirror")
 
 
 def test_a_table_without_rows_is_refused() -> None:
     page = "## Part 2: The destination routing mirror\n\n### Sessions\n\n| Session | Insert |\n| --- | --- |\n"
     with pytest.raises(LookupError, match="no rows below its header"):
-        read_table(page, TABLES[0][2], "mirror")
+        read_table(page, SESSIONS_PATH, "mirror")
 
 
 def test_a_fenced_heading_and_table_are_not_read() -> None:
     """A sample inside a fenced block is neither the heading nor the table."""
     fenced = "```text\n### Sessions\n\n| Session | Insert |\n| --- | --- |\n| 05 First | none |\n```\n"
     page = "## Part 2: The destination routing mirror\n\n" + fenced
-    with pytest.raises(LookupError, match="'### Sessions'"):
-        read_table(page, TABLES[0][2], "mirror")
+    with pytest.raises(LookupError, match="no heading '### Sessions'"):
+        read_table(page, SESSIONS_PATH, "mirror")
     page = "## Part 2: The destination routing mirror\n\n### Sessions\n\n" + fenced.replace("### Sessions\n\n", "")
     with pytest.raises(LookupError, match="no table under '### Sessions'"):
-        read_table(page, TABLES[0][2], "mirror")
+        read_table(page, SESSIONS_PATH, "mirror")
+
+
+def test_a_table_inside_a_comment_is_not_read() -> None:
+    """A table a comment hides prints nothing, so it is not the mirror's table."""
+    hidden = "<!--\n| Session | Insert |\n| --- | --- |\n| 05 First | none |\n-->\n"
+    page = "## Part 2: The destination routing mirror\n\n### Sessions\n\n" + hidden
+    with pytest.raises(LookupError, match="no table under '### Sessions'"):
+        read_table(page, SESSIONS_PATH, "mirror")
 
 
 def test_the_table_is_the_one_under_its_own_heading() -> None:
@@ -311,3 +360,17 @@ def test_the_table_is_the_one_under_its_own_heading() -> None:
     assert [row[0] for row in rows] == ["Session", "05 First", "10 Second"]
     rows = read_table(CONTRACT_PAGE, TABLES[1][1], "contract")
     assert [row[0] for row in rows] == ["Parent-facing page", "Money guidance"]
+
+
+def test_the_reader_names_npm_ci_when_node_is_missing() -> None:
+    """A missing Node.js fails the suite, and the message says how to fix it."""
+    with pytest.raises(AssertionError, match="npm ci"):
+        markdown_it_blocks(["# A\n"], node_command="node-absent-for-this-test")
+
+
+def test_the_reader_names_npm_ci_when_markdown_it_is_missing(tmp_path: Path) -> None:
+    """A reader that cannot load its module fails the suite the same way."""
+    reader = tmp_path / "reader.mjs"
+    reader.write_text("import 'markdown-it-absent-for-this-test';\n", encoding="utf-8")
+    with pytest.raises(AssertionError, match="npm ci"):
+        markdown_it_blocks(["# A\n"], reader=reader)
