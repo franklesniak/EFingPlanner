@@ -495,13 +495,16 @@ repos:
   # repository's readability gate, .github/scripts/check-readability.py, and
   # its session-structure gate, .github/scripts/check-session-structure.py.
   # CI runs both in markdownlint.yml. Each hook runs the same command, on the
-  # gate's whole default scan, so its verdict matches CI's. It runs when a
-  # commit changes a file or a link in a tree the gate reads, that tree or a
-  # folder above it, or the gate itself; any other commit skips it. The
-  # readability gate imports PyYAML, so its hook installs it. The structure
-  # gate needs only the standard library. `types: []` and `types_or` are set
-  # as the leak hooks above set them, so a link or a submodule under a gated
-  # path also starts the gate.
+  # gate's whole default scan, so its verdict matches CI's. The readability
+  # hook runs when a commit changes a file or a link under framework/ or
+  # destinations/, either folder itself, or its gate. So it also runs for
+  # some pages its gate does not score, such as the parent guide. The
+  # structure hook runs when a commit changes a file or a link under
+  # framework/sessions/, that folder, framework itself, or its gate. Any
+  # other commit skips both hooks. The readability gate imports PyYAML, so
+  # its hook installs it. The structure gate needs only the standard
+  # library. `types: []` and `types_or` are set as the leak hooks above set
+  # them, so a link or a submodule under a gated path also starts the gate.
   - repo: local
     hooks:
       - id: check-readability
