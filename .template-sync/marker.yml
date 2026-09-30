@@ -330,6 +330,11 @@ template_sync:
         intentionally uses "TBD" for open trip parameters. It also adds a
         downstream-only check-jsonschema block at the end of the file for the
         `X, not Y` recount's data files and their schemas (validate-x-not-y-*).
+        A second downstream-only block after it, a `repo: local` block, runs
+        the readability and session-structure gates (check-readability and
+        check-session-structure) when a commit changes a file or a link in a
+        tree that either gate reads, that tree or a folder above it, or the gate
+        itself.
         The Markdown-only block also holds three local leak-check hooks,
         check-family-leaks, check-destination-leaks and check-leaks-tests,
         which run .github/scripts/check-leaks.py and its suite. The
@@ -415,7 +420,14 @@ template_sync:
       reason: >-
         Keep the local "Fix with" comment line, which also names
         `#.orchestration` and `#ORCHESTRATOR_PROMPT.md`, the two local-only
-        working paths. Merge every other upstream change.
+        working paths. Keep MD041 on, as `"MD041": { "allow_preamble": true }`
+        among the configured rules, with the comment above it; upstream turns
+        MD041 off because it is not auto-fixable. It is on here because every
+        curriculum page needs a title, and `allow_preamble` lets the worked
+        examples keep their banner above the title. Keep the two comment lines
+        that name `.github/.markdownlint.jsonc`, which turns MD041 off for the
+        files under `.github/` (see that record). Merge every other upstream
+        change.
       default_decision: MERGE
     - path: .remarkignore
       reason: >-
@@ -587,6 +599,12 @@ template_sync:
         Downstream-owned leak check for family values and destination names;
         its three hooks sit in the Markdown-only block of
         .pre-commit-config.yaml (see that record).
+    - path: .github/.markdownlint.jsonc
+      reason: >-
+        Downstream-owned markdownlint folder configuration. It extends the root
+        .markdownlint.jsonc and turns MD041 off for the Markdown files under
+        .github/, because GitHub copies the pull request template into every
+        pull request body, so the template cannot open with an H1.
     - path: requirements-dev.txt
       reason: >-
         Downstream-owned list of the Python packages the repository's own
