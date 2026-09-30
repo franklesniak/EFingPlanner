@@ -186,9 +186,17 @@ def differences(contract: list[Row], mirror: list[Row]) -> list[str]:
     )
 
 
-def pack_folders() -> list[Path]:
+def pack_folders(root: Path = REPO_ROOT) -> list[Path]:
     """Return every pack's folder, in name order."""
-    return sorted(path for path in (REPO_ROOT / PACKS_FOLDER).iterdir() if path.is_dir())
+    return sorted(path for path in (root / PACKS_FOLDER).iterdir() if path.is_dir())
+
+
+def check_packs(root: Path = REPO_ROOT) -> None:
+    """Fail unless at least one pack exists and each one holds the contract."""
+    packs = pack_folders(root)
+    assert packs, f"no pack folder under {PACKS_FOLDER}/"
+    missing = [f"{PACKS_FOLDER}/{pack.name}/{CONTRACT}" for pack in packs if not (pack / CONTRACT).is_file()]
+    assert not missing, f"a pack must carry the routing contract; missing: {missing}"
 
 
 def read(path: Path) -> str:
@@ -197,10 +205,21 @@ def read(path: Path) -> str:
 
 def test_every_pack_carries_the_contract() -> None:
     """At least one pack exists, and each one holds the contract the mirror copies."""
-    packs = pack_folders()
-    assert packs, f"no pack folder under {PACKS_FOLDER}/"
-    missing = [f"{PACKS_FOLDER}/{pack.name}/{CONTRACT}" for pack in packs if not (pack / CONTRACT).is_file()]
-    assert not missing, f"a pack must carry the routing contract; missing: {missing}"
+    check_packs()
+
+
+def test_a_folder_without_the_contract_fails_by_name(tmp_path: Path) -> None:
+    """Every folder is a pack: no folder fails, and a folder without the contract is named."""
+    (tmp_path / PACKS_FOLDER).mkdir()
+    with pytest.raises(AssertionError, match="no pack folder"):
+        check_packs(tmp_path)
+    (tmp_path / PACKS_FOLDER / "built" / "session_inserts").mkdir(parents=True)
+    (tmp_path / PACKS_FOLDER / "built" / CONTRACT).touch()
+    check_packs(tmp_path)
+    (tmp_path / PACKS_FOLDER / "unbuilt").mkdir()
+    with pytest.raises(AssertionError) as refused:
+        check_packs(tmp_path)
+    assert f"missing: ['{PACKS_FOLDER}/unbuilt/{CONTRACT}']" in str(refused.value)
 
 
 @pytest.mark.parametrize("pack", [pack.name for pack in pack_folders()])
