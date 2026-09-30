@@ -13,6 +13,7 @@ from __future__ import annotations
 
 import importlib.util
 import json
+import os
 import re
 import shutil
 import subprocess
@@ -7818,3 +7819,174 @@ def test_the_fence_reader_names_npm_ci_when_markdown_it_is_missing(tmp_path: Pat
     reader.write_text("require('markdown-it-absent-for-this-test');\n", encoding="utf-8")
     with pytest.raises(AssertionError, match="npm ci"):
         markdown_it_blocks(["# A\n"], reader=reader)
+
+
+# ---------------------------------------------------------------------------
+# A named path with nothing at it
+# ---------------------------------------------------------------------------
+
+#: The start of the refusal for a named path with nothing at it, after the path.
+MISSING_PATH_START = ": nothing is at this path, so there is nothing to check."
+
+#: A sentence well past the hard limit, so a page made of it fails the run.
+HARD_SENTENCE = (
+    "The comprehensive administrative documentation subsequently demonstrated "
+    "considerable organizational inefficiencies throughout the international "
+    "transportation infrastructure evaluation methodology."
+)
+
+
+def _missing_path_repo(tmp_path: Path, page_text: str = LINK_TEST_PROSE) -> Path:
+    """Return a repository with one child-facing page and one deleted page."""
+    root = tmp_path / "repo"
+    session_dir = root / "framework" / "sessions"
+    session_dir.mkdir(parents=True)
+    (session_dir / "01_real.md").write_text(page_text, encoding="utf-8")
+    (session_dir / "02_deleted.md").write_text(LINK_TEST_PROSE, encoding="utf-8")
+    (session_dir / "02_deleted.md").unlink()
+    return root
+
+
+@pytest.mark.parametrize(
+    ("missing_path", "is_absolute"),
+    [
+        ("framework/sesions/01_real.md", False),
+        ("framework/sesions/01_real.md", True),
+        ("framework/sessions/01_rael.md", False),
+        ("framework/sessions/02_deleted.md", False),
+        ("", False),
+    ],
+    ids=["folder-typo", "absolute-folder-typo", "file-typo", "deleted-file", "empty-argument"],
+)
+def test_main_refuses_a_missing_path(
+    tmp_path: Path, capsys: Any, missing_path: str, is_absolute: bool
+) -> None:
+    """A named path with nothing at it fails the run by name, on standard error.
+
+    It printed "skipped" and the run exited zero, so a mistyped path passed
+    having scored nothing. An empty argument was worse: ``Path("")`` is the
+    repository root, so it selected the whole default scan, as ``.`` does.
+    The test decides "nothing is there" itself, with ``os.path.lexists``.
+    """
+    root = _missing_path_repo(tmp_path)
+    location: Path | str = root / missing_path if missing_path else missing_path
+    assert not os.path.lexists(location)
+    path_argument = str(root / missing_path) if is_absolute else missing_path
+    shown_path = '""' if path_argument == "" else path_argument
+
+    assert readability.main([path_argument], root=root) == 1
+
+    printed = capsys.readouterr()
+    assert printed.err.startswith(shown_path + MISSING_PATH_START)
+    assert "A relative path is read from the repository root, not the current folder." in printed.err
+    assert "a typo here would otherwise pass silently" in printed.err
+    assert "skipped" not in printed.err
+    assert printed.out.strip() == (
+        "Readability: 0 file(s) scored, 0 failing, 0 warning. Nothing is at 1 named path(s)."
+    )
+
+
+@pytest.mark.parametrize("is_missing_path_first", [False, True], ids=["missing-last", "missing-first"])
+@pytest.mark.parametrize(
+    ("page_text", "expected_fail_lines"),
+    [(LINK_TEST_PROSE, 0), (" ".join([HARD_SENTENCE] * 3), 1)],
+    ids=["passing-page", "failing-page"],
+)
+def test_main_refuses_a_missing_path_beside_a_real_page(
+    tmp_path: Path,
+    capsys: Any,
+    page_text: str,
+    expected_fail_lines: int,
+    is_missing_path_first: bool,
+) -> None:
+    """The run still scores the real page, so one typo hides no failing page, and it fails all the same."""
+    root = _missing_path_repo(tmp_path, page_text)
+    arguments = ["framework/sessions/01_real.md", "framework/sessions/01_rael.md"]
+    if is_missing_path_first:
+        arguments.reverse()
+
+    assert readability.main(arguments, root=root) == 1
+
+    printed = capsys.readouterr()
+    assert printed.err.startswith("framework/sessions/01_rael.md" + MISSING_PATH_START)
+    fail_lines = [line for line in printed.out.splitlines() if line.startswith("FAIL framework/sessions/01_real.md")]
+    assert len(fail_lines) == expected_fail_lines
+    assert "Readability: 1 file(s) scored" in printed.out
+
+
+def test_an_empty_argument_walks_no_tree(tmp_path: Path, capsys: Any) -> None:
+    """An empty argument names nothing, so it walks nothing: a link in a scanned tree is not its business.
+
+    ``Path("")`` is the repository root, a directory, so before the refusal it walked the default trees, as
+    ``.`` does, and the link below refused the run over a tree nobody named. The control: ``.`` still walks
+    them, and refuses the link by name. The link is a junction on Windows and a symbolic link elsewhere.
+    """
+    kind = "junction" if os.name == "nt" else "symlink"
+    root = _missing_path_repo(tmp_path)
+    outside = tmp_path / "outside"
+    outside.mkdir()
+    _make_link(kind, root / "framework" / "sessions" / "extra", outside)
+
+    assert readability.main([""], root=root) == 1
+    printed = capsys.readouterr()
+    assert printed.err.startswith('""' + MISSING_PATH_START)
+    assert "extra" not in printed.err
+
+    assert readability.main(["."], root=root) == 1
+    assert "extra" in capsys.readouterr().err, "control: a directory argument walks the trees"
+
+
+def test_a_missing_path_keeps_the_json_report_whole(tmp_path: Path, capsys: Any) -> None:
+    """The refusal goes to standard error, so standard output is still one JSON document."""
+    root = _missing_path_repo(tmp_path)
+    arguments = ["--format", "json", "framework/sessions/01_real.md", "framework/sessions/01_rael.md"]
+
+    assert readability.main(arguments, root=root) == 1
+
+    printed = capsys.readouterr()
+    assert [entry["path"] for entry in json.loads(printed.out)] == ["framework/sessions/01_real.md"]
+    assert printed.err.startswith("framework/sessions/01_rael.md" + MISSING_PATH_START)
+
+
+@pytest.mark.parametrize(
+    "path_argument",
+    [".", "./", "framework/sessions", "framework/sessions/01_real.md", "notes.txt"],
+    ids=["dot", "dot-slash", "folder", "real-page", "not-markdown"],
+)
+def test_an_existing_path_is_not_refused_as_missing(tmp_path: Path, capsys: Any, path_argument: str) -> None:
+    """The negative control: a path that is there keeps the handling it had.
+
+    ``.`` and ``./`` are folders that are there, so they still select the
+    default scan, though ``Path("")`` and ``Path(".")`` are the same path. A
+    file that is not Markdown is still skipped with its own message.
+    """
+    root = _missing_path_repo(tmp_path)
+    (root / "notes.txt").write_text("Some notes.", encoding="utf-8")
+    assert os.path.lexists(root / path_argument)
+
+    assert readability.main([path_argument], root=root) == 0
+
+    printed = capsys.readouterr()
+    assert "nothing is at this path" not in printed.err
+    assert "Nothing is at" not in printed.out
+    expected_scored = 0 if path_argument == "notes.txt" else 1
+    assert f"Readability: {expected_scored} file(s) scored" in printed.out
+    if path_argument == "notes.txt":
+        assert "notes.txt: skipped; not a Markdown file inside the repository" in printed.err
+
+
+def test_a_dangling_link_is_not_refused_as_missing(tmp_path: Path, capsys: Any) -> None:
+    """A link is there even when its target is gone, as pre-commit's own test says, so it keeps the link skip."""
+    root = _missing_path_repo(tmp_path)
+    link = root / "framework" / "sessions" / "03_link.md"
+    try:
+        link.symlink_to(root / "framework" / "sessions" / "gone.md")
+    except (OSError, NotImplementedError):
+        pytest.skip("this platform or account cannot create symlinks")
+    assert os.path.lexists(link) and not link.exists()
+
+    assert readability.main(["framework/sessions/03_link.md"], root=root) == 0
+
+    printed = capsys.readouterr()
+    assert "nothing is at this path" not in printed.err
+    assert "framework/sessions/03_link.md: skipped; not a Markdown file inside the repository" in printed.err

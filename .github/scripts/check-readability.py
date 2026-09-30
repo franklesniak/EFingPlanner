@@ -84,6 +84,12 @@ default scan would otherwise follow. A file that is selected but cannot be read
 stops the run with one message and a non-zero exit code, because a corpus that
 was not checked in full must never report success.
 
+A named path with nothing at it fails the run by name, on standard error, and
+the run still scores every other path it was given. A relative path is read
+from the repository root, not the current folder. An empty argument names
+nothing too, and is refused the same way: ``Path("")`` is the repository
+root, so it used to select the whole default scan.
+
 The notes below cite markdown-it 14.3.0, the version each was measured on.
 markdown-it 15.0.2, which the repository now installs, reads each of those
 cases the same way, with one exception the notes name: a lowercase
@@ -5789,6 +5795,47 @@ def default_path_set(root: Path) -> set[Path]:
     return found
 
 
+#: What a run prints after a named path that has nothing at it.
+MISSING_PATH_HINT = (
+    "nothing is at this path, so there is nothing to check. A relative path is "
+    "read from the repository root, not the current folder. Check the path: a "
+    "typo here would otherwise pass silently, because a run that checks nothing "
+    "finds no problem."
+)
+
+
+def is_missing_path(path_argument: str | Path, root: Path) -> bool:
+    """Return whether nothing at all is at a named path.
+
+    A relative path is read from ``root``, as ``resolve_paths`` reads it.
+    ``os.path.lexists`` is the test pre-commit applies before it passes a
+    file name to a hook, so no name pre-commit passes is missing here. A link
+    counts as there even when its target is gone, and keeps the link handling
+    it had. An empty argument names nothing. It is tested before it becomes a
+    ``Path``, because ``Path("")`` is ``Path(".")``, the repository root, and
+    a directory argument there selects the whole default scan.
+    """
+    if path_argument == "":
+        return True
+    path = Path(path_argument)
+    return not os.path.lexists(path if path.is_absolute() else root / path)
+
+
+def missing_paths(path_arguments: Sequence[str], root: Path) -> list[str]:
+    """Return each named path with nothing at it, in the order given."""
+    return [argument for argument in path_arguments if is_missing_path(argument, root)]
+
+
+def missing_path_message(path_argument: str) -> str:
+    """Return the refusal for a named path with nothing at it.
+
+    An empty argument is shown as ``""``, so the line never starts with a
+    bare colon.
+    """
+    shown = path_argument if path_argument else '""'
+    return f"{shown}: {MISSING_PATH_HINT}"
+
+
 def is_inside(path: Path, root: Path) -> bool:
     """Return ``True`` when a path stays inside ``root`` after resolution."""
     try:
@@ -5828,8 +5875,14 @@ def resolve_candidate_path(
 
 
 def resolve_paths(path_arguments: Sequence[str], root: Path) -> list[tuple[Path, str]]:
-    """Turn command-line path arguments into contained Markdown file paths."""
+    """Turn command-line path arguments into contained Markdown file paths.
+
+    A path with nothing at it selects nothing here: ``main`` refuses it by
+    name. An empty argument is one of them, so it no longer walks the whole
+    default scan as the repository root.
+    """
     root = root.resolve()
+    named = [argument for argument in path_arguments if not is_missing_path(argument, root)]
 
     candidates: list[Path] = []
     in_scope: set[Path] | None = None
@@ -5847,7 +5900,7 @@ def resolve_paths(path_arguments: Sequence[str], root: Path) -> list[tuple[Path,
     # link at or above a directory argument still refuses the run.
     walked = [
         Path(os.path.normpath(root / argument))
-        for argument in path_arguments
+        for argument in named
     ]
     if not path_arguments or any(candidate.is_dir() for candidate in walked):
         refused: list[str] = []
@@ -5865,7 +5918,7 @@ def resolve_paths(path_arguments: Sequence[str], root: Path) -> list[tuple[Path,
     if not path_arguments:
         candidates.extend(default_paths(root))
     else:
-        for argument in path_arguments:
+        for argument in named:
             path = Path(argument)
             candidate = path if path.is_absolute() else root / path
             if (
@@ -6023,7 +6076,9 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
         nargs="*",
         help=(
             "Markdown files to score, or directories to scan for child-facing "
-            "Markdown. A directory keeps the default child-facing scope."
+            "Markdown. A directory keeps the default child-facing scope. A "
+            "relative path is read from the repository root. A path with "
+            "nothing at it fails the run."
         ),
     )
     parser.add_argument(
@@ -6049,6 +6104,15 @@ def main(argv: Sequence[str] | None = None, root: Path = REPO_ROOT) -> int:
     """Run the readability check."""
     args = parse_args(argv)
 
+    # **A named path with nothing at it fails the run, by name.** It printed
+    # "skipped" and the run exited zero, so a mistyped path passed having
+    # scored nothing. The run still scores every other path, so one typo hides
+    # no failing page. The refusal goes to standard error, which also keeps
+    # the JSON report on standard output whole.
+    missing = missing_paths(args.paths, root)
+    for argument in missing:
+        print(missing_path_message(argument), file=sys.stderr)
+
     try:
         scores = scan_files(args.paths, root=root)
     except (FileReadError, LinkRefusal) as error:
@@ -6060,12 +6124,13 @@ def main(argv: Sequence[str] | None = None, root: Path = REPO_ROOT) -> int:
     else:
         failed, warned = report_text(scores, show_ok=args.show_ok)
         scored = [s for s in scores if s.scored]
+        refused = f" Nothing is at {len(missing)} named path(s)." if missing else ""
         print(
             f"\nReadability: {len(scored)} file(s) scored, "
-            f"{failed} failing, {warned} warning."
+            f"{failed} failing, {warned} warning.{refused}"
         )
 
-    if failed:
+    if failed or missing:
         return 1
     if warned and args.strict:
         return 1

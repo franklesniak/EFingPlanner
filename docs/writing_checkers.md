@@ -6,7 +6,7 @@
 
 - **Status:** Active
 - **Owner:** Repository Maintainers
-- **Last Updated:** 2026-09-29
+- **Last Updated:** 2026-09-30
 - **Scope:** Seven rules for writing or changing a check in this repository: a gate script under `.github/scripts/`, or a test under `tests/` that checks the repository's files. Each rule has one example from this repository. It does not cover what the curriculum's pages say, which the style law in `framework/docs/build_style_and_vocab.md` governs.
 - **Related:** [ADR-0002: the three gates keep their own Markdown parsers](adr/ADR-0002-three-gates-keep-their-markdown-parsers.md), [Contributing](../CONTRIBUTING.md)
 
@@ -38,7 +38,7 @@ Example: `tests/test_check_session_structure.py` compares the sessions the struc
 
 A check recognises only the words and shapes it was written for. State that vocabulary where the check is. Then measure its recall: build a set of cases by hand that the check must find, and prove that it finds each one. A clean result from a check whose vocabulary is not stated means only that nothing in its dictionary was broken.
 
-Example: the destination rule in `.github/scripts/check-leaks.py` holds the names it reads in `DESTINATION_NAMES`. `tests/test_check_leaks.py` proves that the walk finds each of them, in any case, and that other words are not taken for one.
+Example: the destination rule in `.github/scripts/check-leaks.py` holds its five built-in names in `DESTINATION_NAMES`, and reads the rest from the list in each destination pack's `README.md`. `tests/test_check_leaks.py` proves that the walk finds each of them, in any case, and that other words are not taken for one.
 
 ## 5. Measure Clearing and Exemption Rules the Same Way
 

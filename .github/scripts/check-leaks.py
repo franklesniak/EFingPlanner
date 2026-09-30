@@ -19,7 +19,10 @@ One script, two rules, chosen with ``--rule``:
     framework. The rule reads every tracked file under ``framework/``, the
     scope the style law (``framework/docs/build_style_and_vocab.md``) gives its
     destination-names ban, and a tracked entry at ``framework`` itself, such
-    as a link or a submodule in the folder's place, which it refuses.
+    as a link or a submodule in the folder's place, which it refuses. It
+    reads its names from two places: the five in ``DESTINATION_NAMES``, and
+    the names each pack lists in its own ``README.md``, as "What a match is"
+    says below.
 
 The values are not in this file
 -------------------------------
@@ -102,11 +105,24 @@ is a candidate, a binary file's included.
   number and its unit ("N full days"), and a cap with no unit or label
   ("the trip cannot go past N"), are left to that hand-read.
 * A **destination** name matches a word that begins with it, in any case,
-  so a demonym or a path segment into a pack matches. The names are the
+  so a demonym or a path segment into a pack matches. A name of two or
+  more words matches its words in order, as a phrase. The names are the
   five ``AC-16-1`` gives and the style law lists, and the suite checks
-  ``DESTINATION_NAMES`` against both. A folder under ``destinations/``
-  adds no name (DP-21): no pack name beyond the five caught anything on
-  any branch.
+  ``DESTINATION_NAMES`` against both, **and the names each pack declares**.
+  Every folder under ``destinations/`` is a pack, and its ``README.md``
+  lists the pack's names under the heading ``## Names this pack uses``,
+  in one fenced block whose info string is ``text``, one name per line.
+  A fence keeps the list out of the ``X, not Y`` recount, which reads
+  paragraphs, so a pack author adds a name with no ruling to wait for. A
+  name is letters, with one space between its words. Text above the
+  block is a lead and is not read; a list item in the section, a line
+  after the block and a second block are refused, so no name can sit
+  outside the list. A pack whose ``README.md`` is missing, has no such
+  section or block, lists no name in it or cannot be read is refused by
+  name, and the run fails. This supersedes DP-21's rule that a folder under
+  ``destinations/`` adds no name: two version-history lines in the
+  framework named places from the pack that the five could not see, and a
+  second pack's names would have had no guard at all.
 
 Exemptions
 ----------
@@ -168,17 +184,27 @@ default passes files only. Git's own record of a link,
 mode 120000 in the index, is read too, so a link a checkout wrote as a
 plain file holding its target, as Git for Windows does by default, is
 refused as well. A passed path Git does not
-track is neither read nor refused, whether it resolves or not, so a local
-file such as one under ``.git/`` is never read. A tracked submodule in the
+track is neither read nor refused, so a local file such as one under
+``.git/`` is never read. A passed path with nothing at it is refused by
+name, on standard error, whether Git tracks it or not, and the run still
+checks every other path it was given; a relative path is read from the
+repository root, not the current folder. Whether anything is there is
+asked of ``os.path.lexists``, as pre-commit asks it before it passes a
+name, so a commit never trips the refusal: it catches a mistyped path in a
+hand run, which used to pass having read nothing. A walk never asks it.
+A tracked submodule in the
 rule's scope is refused by name too: its content is another repository,
 which this run cannot read. A file holding a zero byte is binary: its path
 is read, and its bytes are skipped, as Git treats them. A file that cannot
 be read as UTF-8 stops the run, because a file that was not read has not
 been checked, and so does a tracked path the run cannot look at, such as
 one in a folder it may not search. A tracked file that is not there, as
-``git status`` shows a deleted one, has nothing to read and is skipped;
-one a sparse checkout leaves out, which ``git status`` does not show, is
-refused by name, since the run did not read it.
+``git status`` shows a deleted one, has nothing to read, and a walk skips
+it; named by hand, it is refused as a path with nothing at it. One a
+sparse checkout leaves out, which ``git status`` does not show, is
+refused by name, since the run did not read it. The destination rule also
+reads each pack's ``README.md`` for its names, under the same rules: Git
+must track it, and a link is refused.
 The pre-commit entries end with ``--``, so a file whose name begins with a
 hyphen is read as a path, never taken for an option.
 
@@ -199,7 +225,8 @@ leak greps runs these calls instead, and they name no value and print none:
   terminal: never paste it into a pull request, an issue or a CI log;
 * ``python .github/scripts/check-leaks.py --rule destination``, which reads
   ``framework/`` and exits the same way: 0 with one none-found line, or 1 on
-  an unexcused name or a stale exemption row.
+  an unexcused name, a stale exemption row, or a pack whose list of names
+  cannot be read.
 
 A walk reads only the files Git tracks, as "File access" above says, so track
 a new file before any of these calls, or the call passes it unread.
@@ -249,8 +276,9 @@ person's read, to ``--candidates``, or to another check:
   ``\\xXX``, octal, base64 and a cipher are text built to hide a value,
   which the threat model above leaves out.
 * A value the lists do not hold: a relative the BUILD RULE line does not
-  name, and a destination name other than the five, such as a pack
-  folder's own name, a second city or a landmark.
+  name, and a destination name that neither the five nor a pack's own list
+  holds, such as a pack folder's own name, or a city or a landmark its
+  ``README.md`` does not list.
 * What the hook does not read: ``docs/spec/``, untracked files, a binary
   file's bytes, a submodule's content (refused, not read), Git history,
   commit messages, branch and tag names, pull request text and issues.
@@ -313,12 +341,19 @@ FAMILY_VALUES: tuple[tuple[str, int, str], ...] = (
     ("word", 1, "8e9662ba76c03835748fa2fbb963d9949bb8d14ac6c16eaceabecfe9e587d5a1"),
 )
 
-#: The destination names ``AC-16-1``'s grep part names, and the whole of the
-#: destination rule's list: a folder under ``destinations/`` adds no name
-#: (DP-21). A name to keep out of the framework goes here, into ``AC-16-1``,
-#: and into the style law's destination-names bullet; the suite checks that
-#: the three agree.
+#: The destination names ``AC-16-1``'s grep part names, which the style law's
+#: destination-names bullet lists too; the suite checks that the three agree.
+#: The rule reads these five and, beside them, the names each pack declares
+#: under ``PACK_NAMES_HEADING`` in its own ``README.md``, so a pack's other
+#: names go there, not here.
 DESTINATION_NAMES = ("Japan", "Tokyo", "Kyoto", "Osaka", "Shinkansen")
+
+#: Where the destination packs live. Each folder under it is one pack.
+PACKS_FOLDER = "destinations/"
+#: The file in each pack's folder that lists the names the pack uses.
+PACK_README = "README.md"
+#: The heading, in the pack's ``README.md``, of the list of the pack's names.
+PACK_NAMES_HEADING = "## Names this pack uses"
 
 #: The reasons the rows below give, each written once.
 CHANGELOG_PACK_LINE = (
@@ -633,8 +668,17 @@ def check_family_values(rows: Sequence[object]) -> list[str]:
     return errors
 
 
-def check_exemption_rows(rule: str, rows: Sequence[object]) -> list[str]:
-    """Return every problem with one rule's exemption rows."""
+def check_exemption_rows(
+    rule: str, rows: Sequence[object], names: Sequence[tuple[str, ...]] | None = None
+) -> list[str]:
+    """Return every problem with one rule's exemption rows.
+
+    ``names`` are the destination names in force, as letter runs: the five,
+    and the names the packs declare. A destination row must name one of
+    them. With none given, the five alone are used.
+    """
+    if names is None:
+        names = DESTINATION_RUNS
     name = "FAMILY_EXEMPTIONS" if rule == "family" else "DESTINATION_EXEMPTIONS"
     if not isinstance(rows, (tuple, list)):
         return [f"{name} is not a tuple of rows"]
@@ -670,7 +714,7 @@ def check_exemption_rows(rule: str, rows: Sequence[object]) -> list[str]:
                 errors.append(f"{where} gives a context that does not hold its occurrence")
             elif not any(
                 (start, end) == (0, len(matched))
-                for start, end, _label, _key in destination_hits_in_reading(Reading(matched), DESTINATION_RUNS)
+                for start, end, _label, _key in destination_hits_in_reading(Reading(matched), names)
             ):
                 # A stale row's message names what it matched, so what it
                 # matched must be a destination name, never other text.
@@ -904,8 +948,13 @@ def trip_lengths(text: str, numbers: frozenset[str]) -> list[tuple[int, int, int
     return sorted(found.values())
 
 
+def destination_runs(names: Iterable[str]) -> tuple[tuple[str, ...], ...]:
+    """Return each name as its folded letter runs, as the finder reads them, once each and in order."""
+    return tuple(dict.fromkeys(tuple(LETTER_RUN.findall(fold(name))) for name in names))
+
+
 #: The five destination names as their folded letter runs, as the finder reads them.
-DESTINATION_RUNS = tuple(tuple(LETTER_RUN.findall(fold(name))) for name in DESTINATION_NAMES)
+DESTINATION_RUNS = destination_runs(DESTINATION_NAMES)
 
 
 def destination_hits_in_reading(
@@ -914,14 +963,25 @@ def destination_hits_in_reading(
     """Return ``(start, end, name, name)`` for each destination name in ``reading``.
 
     A name's last run matches a letter run that begins with it; its earlier
-    runs, when it has any, match whole runs. No two of the five names begin
-    the same word, so the first that matches is the only one.
+    runs, when it has any, match whole runs. A place is reported once: the
+    first name, in the order given, that matches at a word is the one
+    reported, so a pack name that begins the same word as one of the five,
+    or as another pack name, adds no second hit.
+
+    A name can match only a word with its own first letter, since its first
+    run is matched whole or as the word's start. So each word is tried only
+    against the names that share its first letter, in their given order,
+    which keeps the walk quick with many names and changes no result.
     """
     text = reading.text
     runs = letter_runs(text)
     found: list[tuple[int, int, str, str]] = []
+    by_initial: dict[str, list[tuple[str, ...]]] = {}
+    for name in names:
+        if name:
+            by_initial.setdefault(name[0][:1], []).append(name)
     for index in range(len(runs)):
-        for name in names:
+        for name in by_initial.get(runs[index][2][:1], ()):
             last = index + len(name) - 1
             if last >= len(runs):
                 continue
@@ -1369,6 +1429,224 @@ def read_text(path: Path, display_path: str) -> str | None:
         raise FileReadError(display_path, error) from error
 
 
+#: What a run prints after a named path that has nothing at it.
+MISSING_PATH_HINT = (
+    "nothing is at this path, so there is nothing to check. A relative path is read from the repository root, "
+    "not the current folder. Check the path: a typo here would otherwise pass silently, because a run that "
+    "reads nothing finds no leak."
+)
+
+
+def is_missing_path(path_argument: str, root: Path) -> bool:
+    """Return whether nothing at all is at a named path.
+
+    A relative path is read from ``root``, as ``resolve_candidate`` reads
+    it. ``os.path.lexists`` is the test pre-commit applies before it passes
+    a file name to a hook, so no name pre-commit passes is missing here, and
+    a commit cannot trip the refusal. A link counts as there even when its
+    target is gone, and keeps the refusal a link has. An empty argument
+    names nothing. It is tested before it becomes a ``Path``, because
+    ``Path("")`` is ``Path(".")``, the repository root, which is there.
+    """
+    if path_argument == "":
+        return True
+    path = Path(path_argument)
+    return not os.path.lexists(path if path.is_absolute() else root / path)
+
+
+def missing_path_message(path_argument: str) -> str:
+    """Return the refusal for a named path with nothing at it; ``emit()`` masks it.
+
+    An empty argument is shown as ``""``, so the line never starts with a
+    bare colon.
+    """
+    shown = path_argument if path_argument else '""'
+    return f"{shown}: {MISSING_PATH_HINT}"
+
+
+#: The info string the fenced block of a pack's names declares.
+PACK_NAMES_INFO = "text"
+#: A line that opens a fenced code block, as CommonMark reads one: up to
+#: three spaces, a run of three or more backticks or of three or more
+#: tildes, then the info string.
+FENCE_OPENING = re.compile(r" {0,3}(?P<fence>`{3,}|~{3,})(?P<info>.*)")
+#: A line that may close a fenced code block: up to three spaces, a run of
+#: backticks or of tildes, then only spaces or tabs.
+FENCE_CLOSING = re.compile(r" {0,3}(?P<fence>`+|~+)[ \t]*")
+#: A Markdown heading, which ends the section.
+HEADING_LINE = re.compile(r" {0,3}#{1,6}(?:[ \t]|$)")
+#: A line that holds one HTML comment and nothing else.
+COMMENT_LINE = re.compile(r"<!--.*-->")
+#: A list item: the old form of a pack's list, whose names this rule no longer reads.
+LIST_ITEM_LINE = re.compile(r" {0,3}(?:[-*+]|\d{1,9}[.)])(?:[ \t]|$)")
+#: What a refusal of a pack's list asks the author to do.
+ADD_PACK_NAMES = (
+    f'Give the pack a "{PACK_NAMES_HEADING}" section in its {PACK_README}, with one fenced "{PACK_NAMES_INFO}" '
+    "block that holds one name per line."
+)
+
+
+def fence_opening(line: str) -> tuple[str, str] | None:
+    """Return ``(fence, info string)`` when ``line`` opens a fenced code block, or ``None``.
+
+    CommonMark trims the info string of spaces and tabs, and a backtick
+    fence's info string holds no backtick: a line such as three backticks
+    before ``te`xt`` opens no block. <https://spec.commonmark.org/0.31.2/#fenced-code-blocks>
+    """
+    match = FENCE_OPENING.fullmatch(line)
+    if match is None:
+        return None
+    fence, info = match.group("fence"), match.group("info")
+    if fence.startswith("`") and "`" in info:
+        return None
+    return fence, info.strip(" \t")
+
+
+def fence_closes(line: str, fence: str) -> bool:
+    """Return whether ``line`` closes the block ``fence`` opened: the same character, at least as many times."""
+    match = FENCE_CLOSING.fullmatch(line)
+    return match is not None and match.group("fence")[0] == fence[0] and len(match.group("fence")) >= len(fence)
+
+
+def names_in_pack_readme(text: str) -> list[str] | str:
+    """Return the names a pack's README lists under ``PACK_NAMES_HEADING``, or why they cannot be read.
+
+    The section runs from its heading to the next heading outside a fenced
+    block, or to the end of the file. It holds one fenced block whose info
+    string is exactly ``text``, and each line in the block is one name:
+    letters, with one space between its words, which is what the finder
+    matches. A blank line in the block is passed over. The block closes at
+    a fence of the same character, at least as long as the one that opened
+    it, as CommonMark closes one.
+
+    Text above the block is a lead, which is not read, and so are blank
+    lines and a line that holds only a comment. Anything else is refused
+    rather than passed over, since a name written there would not be read:
+    a list item anywhere in the section, which is how the list was once
+    written; a line after the block; a second block; a block with no name,
+    or one that declares another info string or never closes.
+    """
+    lines = text.replace("\r\n", "\n").replace("\r", "\n").split("\n")
+    starts = [index for index, line in enumerate(lines) if line.rstrip() == PACK_NAMES_HEADING]
+    if not starts:
+        return f'has no "{PACK_NAMES_HEADING}" section, so this run cannot read the names the pack uses. ' + (
+            ADD_PACK_NAMES
+        )
+    if len(starts) > 1:
+        return f'has the "{PACK_NAMES_HEADING}" heading {len(starts)} times. Keep one, so the pack has one list.'
+    where = f'under "{PACK_NAMES_HEADING}"'
+    names: list[str] = []
+    blocks = 0
+    fence: str | None = None
+    opened_at = 0
+    # A line the block cannot read. It is reported only once the block is
+    # known to close: in a block that never closes, the missing fence is the
+    # fault, and every later line of the page would be read as a name.
+    unreadable: str | None = None
+    for number in range(starts[0] + 2, len(lines) + 1):
+        line = lines[number - 1]
+        if fence is not None:
+            if fence_closes(line, fence):
+                if unreadable is not None:
+                    return unreadable
+                fence = None
+                continue
+            name = line.strip()
+            if not name:
+                continue
+            runs = LETTER_RUN.findall(fold(name))
+            if (not runs or " ".join(runs) != fold(name)) and unreadable is None:
+                unreadable = (
+                    f"line {number}, {where}, holds no name this rule can read. Each line of the block holds "
+                    "one name, and a name is letters, with one space between its words."
+                )
+            names.append(name)
+            continue
+        if HEADING_LINE.match(line):
+            break
+        opening = fence_opening(line)
+        if opening is not None:
+            blocks += 1
+            if blocks > 1:
+                return (
+                    f"line {number}, {where}, opens a second fenced block. Keep one block, so the pack has one list."
+                )
+            if opening[1] != PACK_NAMES_INFO:
+                return (
+                    f'line {number}, {where}, opens a fenced block whose info string is not exactly '
+                    f'"{PACK_NAMES_INFO}". Open the block with its fence and the word {PACK_NAMES_INFO}, so it is '
+                    "read as the pack's list of names."
+                )
+            fence, opened_at = opening[0], number
+            continue
+        if not line.strip() or COMMENT_LINE.fullmatch(line.strip()):
+            continue
+        if LIST_ITEM_LINE.match(line):
+            return (
+                f"line {number}, {where}, is a list item, so a name on it would not be read. Put each name on a "
+                "line of its own in the fenced block."
+            )
+        if blocks:
+            return (
+                f"line {number}, {where}, stands after the fenced block, so a name on it would not be read. Put "
+                "each name in the block, and end the section with it."
+            )
+    if fence is not None:
+        return (
+            f"line {opened_at}, {where}, opens a fenced block that never closes, so the rest of the page would be "
+            "read as names. Close it with a fence of the same character, at least as long."
+        )
+    if not blocks:
+        return f"has no fenced block {where}, so this run cannot read the names the pack uses. " + ADD_PACK_NAMES
+    if not names:
+        return (
+            f"lists no name in its fenced block {where}, so this run would guard none of the pack's names. "
+            + ADD_PACK_NAMES
+        )
+    return names
+
+
+def read_pack_names(root: Path, tracked: Sequence[str], unreadable: dict[str, str]) -> tuple[list[str], list[str]]:
+    """Return the names every pack declares, and a refusal for each pack whose list cannot be read.
+
+    A pack is a folder under ``PACKS_FOLDER`` that holds a tracked file.
+    Its README is read only when Git tracks it and ``resolve_candidate``
+    accepts it, as every other file this script reads is, so a link is
+    refused and never followed. A README the run cannot look at, or cannot
+    read as UTF-8, raises ``FileReadError``, which stops the run.
+    """
+    tracked_set = set(tracked)
+    packs = sorted({name.split("/")[1] for name in tracked if name.startswith(PACKS_FOLDER) and name.count("/") >= 2})
+    names: list[str] = []
+    refusals: list[str] = []
+    cannot_read = "this run cannot read the names the pack uses, so it refuses to report."
+    for pack in packs:
+        readme = f"{PACKS_FOLDER}{pack}/{PACK_README}"
+        if readme not in tracked_set:
+            refusals.append(
+                f"{readme}: Git tracks no {PACK_README} in this pack's folder, so this run cannot read the "
+                f"names the pack uses. {ADD_PACK_NAMES}"
+            )
+            continue
+        if readme in unreadable:
+            refusals.append(f"{readme} ({unreadable[readme]}): {cannot_read}")
+            continue
+        resolved = resolve_candidate(readme, root)
+        if isinstance(resolved, str):
+            refusals.append(f"{readme} ({resolved}): {cannot_read}")
+            continue
+        text = read_text(*resolved)
+        if text is None:
+            refusals.append(f"{readme} (a binary file): {cannot_read}")
+            continue
+        found = names_in_pack_readme(text)
+        if isinstance(found, str):
+            refusals.append(f"{readme}: {found}")
+            continue
+        names.extend(found)
+    return names, refusals
+
+
 # --------------------------------------------------------------------------
 # Run
 # --------------------------------------------------------------------------
@@ -1396,6 +1674,7 @@ def scan(
     exemptions: Sequence[tuple[str, str, str, int, str]] | None = None,
     list_candidates: bool = False,
     complete: bool = False,
+    names: Sequence[tuple[str, ...]] | None = None,
 ) -> Report:
     """Scan resolved ``(path, display path)`` targets and apply the exemptions.
 
@@ -1403,13 +1682,18 @@ def scan(
     line of the file, so hits, excusing and candidates cover both; a binary
     file's path is read, and its bytes are skipped. ``complete`` says the
     targets are every tracked file the rule reads, so a row for a file not
-    among them is stale.
+    among them is stale. ``names`` are the destination names as letter
+    runs; ``run()`` passes the five and every name the packs declare, and
+    with none given the five alone are read.
     """
     if rule == "family" and values is None:
         values = FamilyValues.from_rows(FAMILY_VALUES)
     if exemptions is None:
         exemptions = FAMILY_EXEMPTIONS if rule == "family" else DESTINATION_EXEMPTIONS
-    names = DESTINATION_RUNS if rule == "destination" else ()
+    if rule != "destination":
+        names = ()
+    elif names is None:
+        names = DESTINATION_RUNS
     ledger = Ledger.for_rows(exemptions)
     unexcused: list[Hit] = []
     candidates: list[str] = []
@@ -1477,12 +1761,19 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
     parser.add_argument(
         "--candidates",
         action="store_true",
-        help="With --rule family, list each bare trip-length number for a hand-read, and exit 0.",
+        help=(
+            "With --rule family, list each bare trip-length number for a hand-read. "
+            "Exit 0, or 1 when a named path has nothing at it."
+        ),
     )
     parser.add_argument(
         "--exemption-rows",
         action="store_true",
-        help="Print an exemption row for each unexcused occurrence, and exit 0.",
+        help=(
+            "Print an exemption row for each unexcused occurrence. Exit 0, or 1 when a "
+            "named path has nothing at it or, with --rule destination, when a pack's "
+            "list of names cannot be read."
+        ),
     )
     return parser.parse_args(argv)
 
@@ -1602,32 +1893,49 @@ def run(argv: Sequence[str] | None = None, root: Path = REPO_ROOT) -> int:
         emit("--candidates lists trip-length numbers, so it needs --rule family", values, error=True)
         return 2
 
+    root = root.resolve()
+    walked = not args.paths
+    targets: list[tuple[Path, str]] = []
+    refused: list[str] = []
+    missing: list[str] = []
+    declared: list[str] = []
+    pack_refusals: list[str] = []
+    try:
+        tracked = tracked_files(root)
+        unreadable = tracked_unreadable(root)
+        if args.rule == "destination":
+            # The destination rule reads the five names and each pack's own
+            # list. A pack whose list cannot be read is refused by name, and
+            # the run goes on with the names it could read, so every hit it
+            # can find still prints.
+            declared, pack_refusals = read_pack_names(root, tracked, unreadable)
+    except FileReadError as error:
+        emit(str(error), values, error=True)
+        return 1
+    for refusal in pack_refusals:
+        emit(refusal, values, error=True)
+    names = destination_runs((*DESTINATION_NAMES, *declared))
+
+    # A destination row may excuse a name a pack declares, so the rows are
+    # checked against every name in force, which needs the packs read first.
     exemptions = FAMILY_EXEMPTIONS if args.rule == "family" else DESTINATION_EXEMPTIONS
-    errors = check_exemption_rows(args.rule, exemptions)
+    errors = check_exemption_rows(args.rule, exemptions, names)
     if errors:
         for error in errors:
             emit(error, values, error=True)
         return 1
 
-    root = root.resolve()
-    walked = not args.paths
-    targets: list[tuple[Path, str]] = []
-    refused: list[str] = []
-    try:
-        tracked = tracked_files(root)
-        unreadable = tracked_unreadable(root)
-    except FileReadError as error:
-        emit(str(error), values, error=True)
-        return 1
     tracked_set = set(tracked)
     arguments: Iterable[str] = tracked if walked else args.paths
     for argument in arguments:
         name = lexical_relative(argument, root)
-        if name is None or name not in tracked_set:
-            # A path Git does not track is not this repository's content,
-            # whether it resolves or not, so it is neither read nor refused.
-            continue
-        if not in_scope(args.rule, name):
+        if name is None or name not in tracked_set or not in_scope(args.rule, name):
+            # A path Git does not track is not this repository's content, and
+            # a path outside the rule's scope is not this rule's, so neither
+            # is read. A named path with nothing at it is refused, though:
+            # skipping it too let a mistyped path pass having read nothing.
+            if not walked and is_missing_path(argument, root):
+                missing.append(argument)
             continue
         if name in unreadable:
             # The index records a link or a submodule by its mode, whatever
@@ -1647,12 +1955,21 @@ def run(argv: Sequence[str] | None = None, root: Path = REPO_ROOT) -> int:
             # whether a walk found it or pre-commit passed it. A file deleted
             # from the working tree is not content any more, and neither is
             # one whose folder became a link to nothing, which ``git status``
-            # also shows as deleted.
+            # also shows as deleted: a walk skips it. Named by hand, it is a
+            # path with nothing at it, and is refused as the typo above is.
+            # A path the run cannot look at raised ``FileReadError`` above,
+            # so only a path that is truly not there reaches this check.
             if resolved != "not a file":
                 refused.append(f"{argument} ({resolved})")
+            elif not walked and is_missing_path(argument, root):
+                missing.append(argument)
             continue
         if in_scope(args.rule, resolved[1]):
             targets.append(resolved)
+    # The refusal is an input error, so it goes to standard error, and the
+    # run still reads every other path it was given.
+    for argument in missing:
+        emit(missing_path_message(argument), values, error=True)
     if refused:
         emit(
             "these tracked paths are links or submodules, are not checked out, go through a linked folder, "
@@ -1673,27 +1990,32 @@ def run(argv: Sequence[str] | None = None, root: Path = REPO_ROOT) -> int:
 
     family_values = values if args.rule == "family" else None
     try:
-        report = scan(args.rule, targets, root, family_values, list_candidates=args.candidates, complete=walked)
+        report = scan(
+            args.rule, targets, root, family_values, list_candidates=args.candidates, complete=walked, names=names
+        )
     except FileReadError as error:
         emit(str(error), values, error=True)
         return 1
 
+    # A path with nothing at it, or a pack whose names could not be read,
+    # leaves the run short of what it was asked to read, in every mode.
+    incomplete = bool(missing or pack_refusals)
     if args.candidates:
         for line in report.candidates:
             emit(line, values)
-        return 0
+        return 1 if incomplete else 0
     if args.exemption_rows:
         for line in exemption_row_lines(report.hits, values, args.rule, exemptions):
             emit(line, values)
-        return 0
+        return 1 if incomplete else 0
 
     for hit in report.hits:
         emit(hit.format_message(), values)
     for message in report.stale:
         emit(message, values)
-    if walked and not report.hits and not report.stale:
+    if walked and not report.hits and not report.stale and not incomplete:
         emit(f"{args.rule.capitalize()} leaks: {report.checked} file(s) checked, none found.", values)
-    return 1 if report.hits or report.stale else 0
+    return 1 if report.hits or report.stale or incomplete else 0
 
 
 if __name__ == "__main__":

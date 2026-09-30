@@ -4,6 +4,12 @@ The pre-commit hook calls this script with candidate Markdown paths. The
 checker intentionally stays dependency-free so it can run in the repo-local
 hook environment on Windows, macOS, Linux, and WSL.
 
+A named path with nothing at it fails the run by name, on standard error,
+and the run still checks every other path it was given. A relative path is
+read from the repository root, not the current folder, so a mistyped path in
+a hand run cannot pass in silence. A path that is there but is not a scan
+target, such as a folder, a link or a changelog, is skipped as before.
+
 The notes below cite markdown-it 14.3.0, the version each was measured on.
 markdown-it 15.0.2, which the repository now installs, reads each of those
 cases the same way, with one exception the notes name: a lowercase
@@ -14,6 +20,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import re
 import stat
 import sys
@@ -429,6 +436,13 @@ REMEDIATION_HINT = (
     "To suppress with explicit justification, add <!-- ALLOW-TBD: <reason> --> "
     'on the same line. See .github/instructions/docs.instructions.md "Prohibited Patterns".'
 )
+#: What a run prints after a named path that has nothing at it.
+MISSING_PATH_HINT = (
+    "nothing is at this path, so there is nothing to check. A relative path is "
+    "read from the repository root, not the current folder. Check the path: a "
+    "typo here would otherwise pass silently, because a run that checks nothing "
+    "finds no problem."
+)
 
 
 @dataclass(frozen=True)
@@ -612,6 +626,34 @@ def is_scan_target(relative_path: Path) -> bool:
         and relative_path.suffix.lower() == ".md"
         and not is_changelog_file(relative_path)
     )
+
+
+def is_missing_path(path_argument: str | Path, root: Path) -> bool:
+    """Return whether nothing at all is at a named path.
+
+    A relative path is read from ``root``, as ``resolve_candidate_path``
+    reads it. ``os.path.lexists`` is the test pre-commit applies before it
+    passes a file name to a hook, so no name pre-commit passes is missing
+    here, and a commit cannot trip this refusal. A link counts as there even
+    when its target is gone; ``resolve_candidate_path`` skips every link, as
+    before. An empty argument names nothing. It is tested before it becomes a
+    ``Path``, because ``Path("")`` is ``Path(".")``, the repository root,
+    which is there.
+    """
+    if path_argument == "":
+        return True
+    path = Path(path_argument)
+    return not os.path.lexists(path if path.is_absolute() else root / path)
+
+
+def missing_path_message(path_argument: str) -> str:
+    """Return the refusal for a named path with nothing at it.
+
+    An empty argument is shown as ``""``, so the line never starts with a
+    bare colon.
+    """
+    shown = path_argument if path_argument else '""'
+    return f"{shown}: {MISSING_PATH_HINT}"
 
 
 def resolve_candidate_path(path_argument: str | Path, root: Path) -> tuple[Path, str] | None:
@@ -2463,7 +2505,11 @@ def find_violations_in_text(text: str, display_path: str) -> list[Violation]:
 
 
 def scan_files(path_arguments: Iterable[str | Path], root: Path = REPO_ROOT) -> list[Violation]:
-    """Find prohibited placeholder markers in candidate Markdown docs."""
+    """Find prohibited placeholder markers in candidate Markdown docs.
+
+    A path that is not a scan target is skipped here, and so is a path with
+    nothing at it: ``main`` refuses that one by name before the scan.
+    """
     violations: list[Violation] = []
     for path_argument in path_arguments:
         candidate = resolve_candidate_path(path_argument, root)
@@ -2598,7 +2644,14 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
             "With no paths, checks every Markdown file under the scan roots."
         )
     )
-    parser.add_argument("paths", nargs="*", help="Markdown files passed by pre-commit.")
+    parser.add_argument(
+        "paths",
+        nargs="*",
+        help=(
+            "Markdown files passed by pre-commit. A relative path is read from "
+            "the repository root. A path with nothing at it fails the run."
+        ),
+    )
     return parser.parse_args(argv)
 
 
@@ -2608,6 +2661,17 @@ def main(argv: Sequence[str] | None = None, root: Path = REPO_ROOT) -> int:
 
     targets: Sequence[str | Path] = args.paths
     walked = not args.paths
+    # **A named path with nothing at it fails the run, by name.** It was
+    # skipped in silence, like a path that is there but out of scope, so a
+    # mistyped path in a hand run exited zero having read nothing. The run
+    # still checks every other path, so one typo hides no placeholder. The
+    # refusal is an input error, like an unreadable file, so it goes to
+    # standard error; a placeholder match stays on standard output.
+    missing = [] if walked else [
+        argument for argument in args.paths if is_missing_path(argument, root)
+    ]
+    for argument in missing:
+        print(missing_path_message(argument), file=sys.stderr)
     if walked:
         targets = default_targets(root)
         if not targets:
@@ -2658,7 +2722,7 @@ def main(argv: Sequence[str] | None = None, root: Path = REPO_ROOT) -> int:
         # success on an empty set for as long as it did.
         print(f"Placeholders: {len(accepted)} file(s) checked, none found.")
 
-    return 1 if violations else 0
+    return 1 if violations or missing else 0
 
 
 if __name__ == "__main__":
