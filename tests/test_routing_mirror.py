@@ -431,10 +431,11 @@ def test_the_first_of_two_tables_is_read() -> None:
     assert read_table(page, [(3, "Sessions")], "sample") == [("A",), ("first",)]
 
 
-def test_a_heading_is_looked_for_only_inside_the_section_before_it() -> None:
-    """A section ends at the next heading of its level, so a ``### Sessions`` under another part is not the mirror's."""
+@pytest.mark.parametrize("end", ["## Part 3: Other", "# Part 3: Other"], ids=["same-level", "higher-level"])
+def test_a_heading_is_looked_for_only_inside_the_section_before_it(end: str) -> None:
+    """A section ends at the next heading of its level or a higher one, so a ``### Sessions`` under another part is not the mirror's."""
     page = MIRROR_PAGE.replace("### Sessions", "### Session rows")
-    page += "\n## Part 3: Other\n\n### Sessions\n\n| A |\n| - |\n| x |\n"
+    page += f"\n{end}\n\n### Sessions\n\n| A |\n| - |\n| x |\n"
     with pytest.raises(LookupError, match="no heading '### Sessions'"):
         read_table(page, SESSIONS_PATH, "mirror")
 
@@ -443,6 +444,55 @@ def test_the_reader_names_npm_ci_when_node_is_missing() -> None:
     """A missing Node.js fails the suite, and the message says how to fix it."""
     with pytest.raises(AssertionError, match="npm ci"):
         markdown_it_blocks(["# A\n"], node_command="node-absent-for-this-test")
+
+
+def test_packs_are_listed_in_name_order(tmp_path: Path, monkeypatch: Any) -> None:
+    """The file system's own order does not decide the order of the packs."""
+    for name in ("b_pack", "a_pack"):
+        (tmp_path / PACKS_FOLDER / name).mkdir(parents=True)
+    listed = sorted((tmp_path / PACKS_FOLDER).iterdir(), reverse=True)
+    monkeypatch.setattr(Path, "iterdir", lambda self: iter(listed))
+    assert [pack.name for pack in pack_folders(tmp_path)] == ["a_pack", "b_pack"]
+
+
+def test_the_reader_answers_each_request_line_once() -> None:
+    """The reader skips a blank line, and answers a line it cannot read with an error."""
+    node = shutil.which("node")
+    assert node, "node was not found: install Node.js and run `npm ci` in the repository root."
+    completed = subprocess.run(
+        [node, str(READER)],
+        input='\n{"text": "# A\\n"}\nnot json\n{"page": "# A"}\n',
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+        cwd=REPO_ROOT,
+        check=False,
+    )
+    answers = [json.loads(line) for line in completed.stdout.splitlines()]
+    assert [sorted(answer) for answer in answers] == [["blocks"], ["error"], ["error"]], completed.stdout
+    assert answers[0]["blocks"] == [{"type": "heading", "level": 1, "text": "A"}]
+
+
+@pytest.mark.parametrize(
+    ("script", "reported"),
+    [
+        (
+            "import { createInterface } from 'node:readline';\n"
+            "const input = createInterface({ input: process.stdin });\n"
+            "input.on('line', () => process.stdout.write('{\"blocks\": []}\\n'));\n"
+            "input.on('close', () => { process.exitCode = 1; });\n",
+            "answered 1 of 1 page",
+        ),
+        ("process.stdin.resume();\n", "answered 0 of 1 page"),
+    ],
+    ids=["failed-exit", "no-answer"],
+)
+def test_a_reader_that_fails_or_answers_nothing_fails_the_suite(tmp_path: Path, script: str, reported: str) -> None:
+    """A reader that exits with a failure, or answers too few pages, fails the suite and names `npm ci`."""
+    reader = tmp_path / "reader.mjs"
+    reader.write_text(script, encoding="utf-8")
+    with pytest.raises(AssertionError, match=reported + r".*npm ci"):
+        markdown_it_blocks(["# A\n"], reader=reader)
 
 
 def test_a_page_the_reader_cannot_read_fails_the_suite(tmp_path: Path) -> None:

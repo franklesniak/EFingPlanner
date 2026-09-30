@@ -14,6 +14,8 @@
  *   {"type": "table", "rows": [[<what each cell prints>, ...], ...]},
  *   with the header row first
  *
+ * A blank line gets no answer.
+ *
  * A heading's or a cell's text is what it prints, on one line, except that a
  * code span prints its code between backticks, so two filenames in code stay
  * apart. A link prints its label, inline or by reference, so a linked filename
