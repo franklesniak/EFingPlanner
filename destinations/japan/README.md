@@ -68,6 +68,7 @@ Kanazawa
 Takayama
 Nara
 Uji
+Phoenix Hall
 Nikko
 Hakone
 Kawagoe
@@ -128,6 +129,7 @@ torii
 goshuin
 Shinto
 Obon
+Golden Week
 yukata
 hiragana
 katakana
