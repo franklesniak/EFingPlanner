@@ -528,3 +528,26 @@ repos:
         types: []
         types_or: [file, symlink, directory]
         files: '^framework/sessions(/|$)|^framework$|^\.github/scripts/check-session-structure\.py$'
+
+  # LOCAL OVERRIDE (recorded in .template-sync/marker.yml): this
+  # repository's routing-mirror suite, tests/test_routing_mirror.py. Part 2
+  # of framework/cross_reference_map.md copies two tables of the routing
+  # contract that each destination pack carries, and the suite compares the
+  # copy with every pack's contract, row for row. The hook runs when a commit
+  # changes the map, any file under destinations/, or the suite. CI runs it
+  # through precommit-ci.yml, which runs every hook on every file.
+  - repo: local
+    hooks:
+      - id: check-routing-mirror
+        name: Check the routing mirror against each pack's contract
+        entry: python -m pytest tests/test_routing_mirror.py -q -p no:cacheprovider
+        language: python
+        pass_filenames: false
+        files: |
+          (?x)^(
+            framework/cross_reference_map\.md|
+            destinations/.+|
+            tests/test_routing_mirror\.py
+          )$
+        additional_dependencies:
+          - pytest
