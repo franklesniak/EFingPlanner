@@ -648,7 +648,7 @@ Before editing protected files or template-derived governance, community, proces
 - For non-protected paths, record path-specific `tailored` opt-ins or required local ownership exceptions in `.template-sync/marker.yml` as `local_overrides`, with a reason that names the selected mode and the local policy being preserved.
 - Record the mode in the sync working notes and final sync summary when the sync does not modify `_TODO-repo-init.md` or `.template-sync/marker.yml`.
 
-Between syncs, each local-only change to a file that `.template-sync/manifest.yml` maps, including a test, a script or a configuration file, also needs a record in `.template-sync/marker.yml` that keeps it at the next sync. In the same pull request, add the file's record (`local_overrides` for a non-protected file), or update it when it does not already keep the change; a `SKIP` record keeps every change.
+Between syncs, each local-only change to a file that `.template-sync/manifest.yml` maps and the template ships, including a test, a script or a configuration file, also needs a record in `.template-sync/marker.yml` that keeps it at the next sync. In the same pull request, add the file's record (`local_overrides` for a non-protected file), or update it when it does not already keep the change; a `SKIP` record keeps every change.
 
 Do not add ad hoc, non-schema fields to `.template-sync/marker.yml`. Use the schema-backed marker fields above, or record the mode in the checklist, working notes, or sync summary.
 
