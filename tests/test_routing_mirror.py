@@ -377,6 +377,39 @@ def test_the_table_is_the_one_under_its_own_heading() -> None:
     assert [row[0] for row in rows] == ["Parent-facing page", "Money guidance"]
 
 
+SESSION_ROWS = (
+    "| Session | Insert | Reference |\n| --- | --- | --- |\n"
+    "| 05 First | none | [`a.md`](../reference/a.md) |\n"
+    "| 10 Second | [`10_b.md`](10_b.md) | [`c.md`](../reference/c.md) (its note) |\n"
+)
+
+
+def test_a_section_without_its_own_table_is_refused() -> None:
+    """The search for a table stops at the next heading, so the table under a deeper heading is not taken.
+
+    The contract's session path is its ``##`` heading alone, and its
+    parent-facing table sits under a ``###`` heading inside that section.
+    Without its own table, the session path fails by name.
+    """
+    assert SESSION_ROWS in CONTRACT_PAGE
+    page = CONTRACT_PAGE.replace(SESSION_ROWS, "")
+    with pytest.raises(LookupError, match="no table under '## The insert and reference contract'"):
+        read_table(page, TABLES[0][1], "contract")
+
+
+def test_the_first_of_two_tables_is_read() -> None:
+    page = "### Sessions\n\n| A |\n| - |\n| first |\n\n| B |\n| - |\n| second |\n"
+    assert read_table(page, [(3, "Sessions")], "sample") == [("A",), ("first",)]
+
+
+def test_a_heading_is_looked_for_only_inside_the_section_before_it() -> None:
+    """A section ends at the next heading of its level, so a ``### Sessions`` under another part is not the mirror's."""
+    page = MIRROR_PAGE.replace("### Sessions", "### Session rows")
+    page += "\n## Part 3: Other\n\n### Sessions\n\n| A |\n| - |\n| x |\n"
+    with pytest.raises(LookupError, match="no heading '### Sessions'"):
+        read_table(page, SESSIONS_PATH, "mirror")
+
+
 def test_the_reader_names_npm_ci_when_node_is_missing() -> None:
     """A missing Node.js fails the suite, and the message says how to fix it."""
     with pytest.raises(AssertionError, match="npm ci"):
