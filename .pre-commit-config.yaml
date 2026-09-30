@@ -495,12 +495,13 @@ repos:
   # repository's readability gate, .github/scripts/check-readability.py, and
   # its session-structure gate, .github/scripts/check-session-structure.py.
   # CI runs both in markdownlint.yml. Each hook runs the same command, on the
-  # gate's whole default scan, so its verdict matches CI's. It runs only when
-  # a commit changes a page the gate reads or the gate itself; a commit that
-  # changes no such file skips it. The readability gate imports PyYAML, so
-  # its hook installs it. The structure gate needs only the standard library.
-  # `types: []` and `types_or` are set as the leak hooks above set them, so a
-  # link or a submodule under a gated path also starts the gate.
+  # gate's whole default scan, so its verdict matches CI's. It runs when a
+  # commit changes a file or a link in a tree the gate reads, that tree or a
+  # folder above it, or the gate itself; any other commit skips it. The
+  # readability gate imports PyYAML, so its hook installs it. The structure
+  # gate needs only the standard library. `types: []` and `types_or` are set
+  # as the leak hooks above set them, so a link or a submodule under a gated
+  # path also starts the gate.
   - repo: local
     hooks:
       - id: check-readability
@@ -510,7 +511,7 @@ repos:
         pass_filenames: false
         types: []
         types_or: [file, symlink, directory]
-        files: '^(framework|destinations)/.*\.md$|^\.github/scripts/check-readability\.py$'
+        files: '^(framework|destinations)(/|$)|^\.github/scripts/check-readability\.py$'
         additional_dependencies:
           - PyYAML>=6.0.3
       - id: check-session-structure
@@ -520,4 +521,4 @@ repos:
         pass_filenames: false
         types: []
         types_or: [file, symlink, directory]
-        files: '^framework/sessions/|^\.github/scripts/check-session-structure\.py$'
+        files: '^framework/sessions(/|$)|^framework$|^\.github/scripts/check-session-structure\.py$'

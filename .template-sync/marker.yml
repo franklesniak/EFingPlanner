@@ -332,8 +332,9 @@ template_sync:
         `X, not Y` recount's data files and their schemas (validate-x-not-y-*).
         A second downstream-only block after it, a `repo: local` block, runs
         the readability and session-structure gates (check-readability and
-        check-session-structure) when a commit changes a page that either gate
-        reads, or the gate itself.
+        check-session-structure) when a commit changes a file or a link in a
+        tree that either gate reads, that tree or a folder above it, or the gate
+        itself.
         The Markdown-only block also holds three local leak-check hooks,
         check-family-leaks, check-destination-leaks and check-leaks-tests,
         which run .github/scripts/check-leaks.py and its suite. The
