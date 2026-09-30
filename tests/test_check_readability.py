@@ -7826,7 +7826,7 @@ def test_the_fence_reader_names_npm_ci_when_markdown_it_is_missing(tmp_path: Pat
 # ---------------------------------------------------------------------------
 
 #: The start of the refusal for a named path with nothing at it, after the path.
-MISSING_PATH_START = ": nothing is at this path, so there is nothing to score."
+MISSING_PATH_START = ": nothing is at this path, so there is nothing to check."
 
 #: A sentence well past the hard limit, so a page made of it fails the run.
 HARD_SENTENCE = (

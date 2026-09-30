@@ -440,8 +440,8 @@ REMEDIATION_HINT = (
 MISSING_PATH_HINT = (
     "nothing is at this path, so there is nothing to check. A relative path is "
     "read from the repository root, not the current folder. Check the path: a "
-    "typo here would otherwise pass silently, because a run that reads nothing "
-    "finds no placeholder."
+    "typo here would otherwise pass silently, because a run that checks nothing "
+    "finds no problem."
 )
 
 

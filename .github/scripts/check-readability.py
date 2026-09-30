@@ -5797,10 +5797,10 @@ def default_path_set(root: Path) -> set[Path]:
 
 #: What a run prints after a named path that has nothing at it.
 MISSING_PATH_HINT = (
-    "nothing is at this path, so there is nothing to score. A relative path is "
+    "nothing is at this path, so there is nothing to check. A relative path is "
     "read from the repository root, not the current folder. Check the path: a "
-    "typo here would otherwise pass silently, because a run that scores nothing "
-    "reports no failure."
+    "typo here would otherwise pass silently, because a run that checks nothing "
+    "finds no problem."
 )
 
 
