@@ -572,13 +572,11 @@ template_sync:
       default_decision: SKIP
     - path: TEMPLATE_UPDATE_PROCEDURE.md
       reason: >-
-        Keep the local wording of "Adoption Mode Records": its lead sentence
-        covers every file that .template-sync/manifest.yml maps, for everyday
-        changes between syncs as well as adoption and sync work, and its
-        non-protected bullet names a local passage that the next sync must
-        keep. Keep the inventory line that names the
-        template-sync-support-reference-only block in
-        .github/copilot-instructions.md. Keep them until the template carries
+        Keep the local paragraph at the end of the "Adoption Mode Records"
+        list, which says that each local-only change to a file the manifest
+        maps needs a record that keeps it at the next sync. Keep the inventory
+        line that names the template-sync-support-reference-only block in
+        .github/copilot-instructions.md. Keep both until the template carries
         an equivalent rule; then take the template's text. Merge every other
         upstream change.
       default_decision: MERGE

@@ -61,7 +61,7 @@ Downstream repositories that keep only part of this template's language or tooli
 
 When a repository that adopted this template keeps template-sync support, place each change to a file that `.template-sync/manifest.yml` maps in one of three ways:
 
-- **Local only:** the change **MUST** add or update the file's record in `.template-sync/marker.yml` in the same pull request, so that the next sync keeps it. See "Adoption Mode Records" in `TEMPLATE_UPDATE_PROCEDURE.md` for the kind of record.
+- **Local only:** a record in `.template-sync/marker.yml` **MUST** keep the change at the next sync. In the same pull request, add the file's record, or update it when it does not already keep the change; a `SKIP` record keeps every change. See "Adoption Mode Records" in `TEMPLATE_UPDATE_PROCEDURE.md` for the kind of record.
 - **Both places:** make the same change in a template pull request, and link it from the local pull request. No marker record is needed. A change that is only proposed upstream is local until the template carries it.
 - **Upstream only:** make the change in the template, and take it here at the next sync.
 <!-- template-sync: end template-sync-support-reference-only -->

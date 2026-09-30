@@ -641,12 +641,14 @@ The marker validator discovers unrecorded local paths with `git ls-files --cache
 
 ### Adoption Mode Records
 
-Before editing a protected file, or any other file that `.template-sync/manifest.yml` maps, record the mode for the affected file or file set. This applies to an everyday change between syncs as well as to adoption and sync work:
+Before editing protected files or template-derived governance, community, process, workflow, or collaboration files, record the mode for the affected file or file set:
 
 - Record the default `minimal-preservation` mode in `_TODO-repo-init.md` when that checklist exists.
 - For protected paths, record path-specific decisions in `.template-sync/marker.yml` as `protected_file_decisions` before editing or removing the file.
-- For non-protected paths, record path-specific `tailored` opt-ins, required local ownership exceptions, or a local passage that the next sync must keep in `.template-sync/marker.yml` as `local_overrides`, with a reason that names the selected mode and the local policy being preserved.
+- For non-protected paths, record path-specific `tailored` opt-ins or required local ownership exceptions in `.template-sync/marker.yml` as `local_overrides`, with a reason that names the selected mode and the local policy being preserved.
 - Record the mode in the sync working notes and final sync summary when the sync does not modify `_TODO-repo-init.md` or `.template-sync/marker.yml`.
+
+Between syncs, each local-only change to a file that `.template-sync/manifest.yml` maps, including a test, a script or a configuration file, also needs a record in `.template-sync/marker.yml` that keeps it at the next sync. In the same pull request, add the file's record (`local_overrides` for a non-protected file), or update it when it does not already keep the change; a `SKIP` record keeps every change.
 
 Do not add ad hoc, non-schema fields to `.template-sync/marker.yml`. Use the schema-backed marker fields above, or record the mode in the checklist, working notes, or sync summary.
 
