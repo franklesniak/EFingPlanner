@@ -5346,10 +5346,10 @@
       "judgment": "no",
       "reason": "a field label"
     },
-    "device|Last Updated: 2026-09-29|1": {
+    "device|Last Updated: 2026-09-30|1": {
       "line": 10,
       "judgment": "no",
-      "reason": "a metadata field"
+      "reason": "a metadata field label (a date), rejects no named alternative"
     },
     "device|Builder- and reuser-facing. → Not part of the child's or parent's reading path.|1": {
       "line": 11,

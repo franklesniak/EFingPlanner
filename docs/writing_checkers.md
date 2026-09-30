@@ -6,7 +6,7 @@
 
 - **Status:** Active
 - **Owner:** Repository Maintainers
-- **Last Updated:** 2026-09-29
+- **Last Updated:** 2026-09-30
 - **Scope:** Seven rules for writing or changing a check in this repository: a gate script under `.github/scripts/`, or a test under `tests/` that checks the repository's files. Each rule has one example from this repository. It does not cover what the curriculum's pages say, which the style law in `framework/docs/build_style_and_vocab.md` governs.
 - **Related:** [ADR-0002: the three gates keep their own Markdown parsers](adr/ADR-0002-three-gates-keep-their-markdown-parsers.md), [Contributing](../CONTRIBUTING.md)
 
