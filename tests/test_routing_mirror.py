@@ -209,8 +209,9 @@ def test_every_pack_carries_the_contract() -> None:
 
 
 def test_a_folder_without_the_contract_fails_by_name(tmp_path: Path) -> None:
-    """Every folder is a pack: no folder fails, and a folder without the contract is named."""
+    """Every folder is a pack, and a file is not: no folder fails, and a folder without the contract is named."""
     (tmp_path / PACKS_FOLDER).mkdir()
+    (tmp_path / PACKS_FOLDER / "README.md").touch()
     with pytest.raises(AssertionError, match="no pack folder"):
         check_packs(tmp_path)
     (tmp_path / PACKS_FOLDER / "built" / "session_inserts").mkdir(parents=True)
@@ -306,7 +307,8 @@ def test_each_cell_reads_as_the_page_prints_it() -> None:
         "### Sessions\n\n| A | B |\n| --- | --- |\n"
         "| [`a.md`](../reference/a_(b).md) | [Money guidance][p-money] |\n"
         "| [Money guidance][] | [Money guidance] |\n"
-        "| **`c.md`**, `d.md` | [no definition] &amp; a\\|b |\n\n"
+        "| **`c.md`**, `d.md` | [no definition] &amp; a\\|b |\n"
+        "| ![stop](stop.png) `e.md` | <kbd>k</kbd> *em* |\n\n"
         "[money guidance]: parent_guide/money.md\n[p-money]: parent_guide/money.md\n"
     )
     assert read_table(page, [(3, "Sessions")], "sample") == [
@@ -314,6 +316,7 @@ def test_each_cell_reads_as_the_page_prints_it() -> None:
         ("`a.md`", "Money guidance"),
         ("Money guidance", "Money guidance"),
         ("`c.md`, `d.md`", "[no definition] & a|b"),
+        ("`e.md`", "k em"),
     ]
 
 
@@ -354,6 +357,13 @@ def test_a_missing_heading_is_refused_by_name() -> None:
         read_table(page, SESSIONS_PATH, "mirror")
     page = MIRROR_PAGE.replace("## Part 2:", "## Part Two:")
     with pytest.raises(LookupError, match="no heading '## Part 2: The destination routing mirror'"):
+        read_table(page, SESSIONS_PATH, "mirror")
+
+
+def test_a_heading_of_another_level_is_not_the_one_named() -> None:
+    """A heading is its level and its text, so ``#### Sessions`` is not ``### Sessions``."""
+    page = MIRROR_PAGE.replace("### Sessions", "#### Sessions")
+    with pytest.raises(LookupError, match="no heading '### Sessions'"):
         read_table(page, SESSIONS_PATH, "mirror")
 
 
@@ -433,6 +443,19 @@ def test_the_reader_names_npm_ci_when_node_is_missing() -> None:
     """A missing Node.js fails the suite, and the message says how to fix it."""
     with pytest.raises(AssertionError, match="npm ci"):
         markdown_it_blocks(["# A\n"], node_command="node-absent-for-this-test")
+
+
+def test_a_page_the_reader_cannot_read_fails_the_suite(tmp_path: Path) -> None:
+    """An error answer from the reader fails the suite, and names the error."""
+    reader = tmp_path / "reader.mjs"
+    reader.write_text(
+        "import { createInterface } from 'node:readline';\n"
+        "createInterface({ input: process.stdin })"
+        ".on('line', () => process.stdout.write('{\"error\": \"sample\"}\\n'));\n",
+        encoding="utf-8",
+    )
+    with pytest.raises(AssertionError, match=r"could not read a page: \['sample'\]"):
+        markdown_it_blocks(["# A\n"], reader=reader)
 
 
 def test_the_reader_names_npm_ci_when_markdown_it_is_missing(tmp_path: Path) -> None:
