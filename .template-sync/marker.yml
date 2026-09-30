@@ -69,6 +69,13 @@ template_sync:
         The owner authorized raising the review loop's limits to eighty
         review rounds and eight days per loop invocation:
         https://github.com/franklesniak/EFingPlanner/pull/48
+        On 2026-09-30 the owner authorized the local changes that the decision
+        process selected for the pending protected-file prompts: the
+        Template-Derived Files subsection, the docs/writing_checkers.md bullet,
+        and upstream's plain `uses:` examples in place of the SHA-form ones:
+        https://github.com/franklesniak/EFingPlanner/issues/72#issuecomment-5912916273
+        https://github.com/franklesniak/EFingPlanner/issues/30#issuecomment-5912916873
+        https://github.com/franklesniak/EFingPlanner/issues/72#issuecomment-5912918383
       authorized_scope: >-
         Remove excluded-module reference-only blocks
         (powershell/python/terraform/git-lfs/azure); remove the emptied
@@ -83,15 +90,17 @@ template_sync:
         `tests/PowerShell/`, the PowerShell row of the instruction-file list,
         the Pester note, the PSScriptAnalyzer bullet, and the two
         `**PowerShell:**` subheaders under Running Linters and Running Tests.
-        Keep three local passages. First, a maximum of eighty review rounds and
+        Keep five local passages. First, a maximum of eighty review rounds and
         eight days per loop invocation, where upstream has eight rounds and six
-        hours. Second, the `uses:` examples in the pinned SHA form that the
-        immutable-pin rule requires
-        (`actions/checkout@<40-character-SHA> # vX.Y.Z`), with no protected-file
-        entry for `.github/workflow-security-contract.yml`, which this repository
-        does not have. Third, step 9's path for an evaluation that finds no guide
-        change is warranted: "record that determination and its reason; no
-        prompt is required". Merge every other upstream change to this file.
+        hours. Second, no protected-file entry for
+        `.github/workflow-security-contract.yml`, which this repository does not
+        have. Third, step 9's path for an evaluation that finds no guide change
+        is warranted: "record that determination and its reason; no prompt is
+        required". Fourth, the "Template-Derived Files" subsection after
+        "Template Adoption and Stack Selection", until the template carries an
+        equivalent rule; then take the template's text. Fifth, the "Modular
+        Instructions" bullet for `docs/writing_checkers.md`, a page only this
+        repository has. Merge every other upstream change to this file.
     - path: CLAUDE.md
       adoption_mode: minimal-preservation
       decision: MERGE
@@ -561,6 +570,16 @@ template_sync:
         tests/*.py rule, which maps to the excluded python module. No upstream
         file has this path.
       default_decision: SKIP
+    - path: TEMPLATE_UPDATE_PROCEDURE.md
+      reason: >-
+        Keep the local paragraph at the end of the "Adoption Mode Records"
+        list, which says that each local-only change to a file the manifest
+        maps needs a record that keeps it at the next sync. Keep the inventory
+        line that names the template-sync-support-reference-only block in
+        .github/copilot-instructions.md. Keep both until the template carries
+        an equivalent rule; then take the template's text. Merge every other
+        upstream change.
+      default_decision: MERGE
   local_path_ownership:
     - path: docs/spec/
       reason: Downstream-owned archived design record (the curriculum specification); not an upstream template path.

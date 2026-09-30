@@ -1,13 +1,13 @@
 <!-- markdownlint-disable MD013 -->
 # Downstream Template Update Procedure
 
-**Version:** 1.2.20260929.0
+**Version:** 1.2.20260930.0
 
 ## Metadata
 
 - **Status:** Active
 - **Owner:** Repository Maintainers
-- **Last Updated:** 2026-09-29
+- **Last Updated:** 2026-09-30
 - **Scope:** Defines the selective review procedure for downstream repositories that were created from, or adopted files from, this template repository. Covers manual and agent-assisted syncs from later upstream template changes, first-adoption preflight state, the first-adoption bootstrap command, the read-only first-adoption preflight/questionnaire mode, raw first-adoption state reporting, first-adoption quality-debt reports and suppressions, the adoption difficulties journal, one-shot first-adoption materialization, shell-safe first-adoption args files, package identity and collaboration-policy materialization, first-adoption structural convention assessment, first-adoption working-tree validation and doctor diagnostics, downstream local path ownership records, the human-readable view of the template sync manifest, required/recommended/deferred structural-change classification, protected-file decision records, the marker-aware retained-state validation helper command, the excluded-module cleanup report, the sync candidate table generator, post-adoption issue drafting, the generated adoption ledger review artifact, and the concise adoption summary for PR descriptions. Does not define an automated ongoing upstream sync tool.
 - **Related:** [Optional Configurations](https://github.com/franklesniak/copilot-repo-template/blob/HEAD/OPTIONAL_CONFIGURATIONS.md), [Getting Started for New Repositories](https://github.com/franklesniak/copilot-repo-template/blob/HEAD/GETTING_STARTED_NEW_REPO.md), [Getting Started for Existing Repositories](https://github.com/franklesniak/copilot-repo-template/blob/HEAD/GETTING_STARTED_EXISTING_REPO.md), [Repository Copilot Instructions](.github/copilot-instructions.md)
 
@@ -648,6 +648,8 @@ Before editing protected files or template-derived governance, community, proces
 - For non-protected paths, record path-specific `tailored` opt-ins or required local ownership exceptions in `.template-sync/marker.yml` as `local_overrides`, with a reason that names the selected mode and the local policy being preserved.
 - Record the mode in the sync working notes and final sync summary when the sync does not modify `_TODO-repo-init.md` or `.template-sync/marker.yml`.
 
+Between syncs, each local-only change to a file that `.template-sync/manifest.yml` maps and the template ships, including a test, a script or a configuration file, also needs a record in `.template-sync/marker.yml` that keeps it at the next sync. In the same pull request, add the file's record (`local_overrides` for a non-protected file), or update it when it does not already keep the change; a `SKIP` record keeps every change.
+
 Do not add ad hoc, non-schema fields to `.template-sync/marker.yml`. Use the schema-backed marker fields above, or record the mode in the checklist, working notes, or sync summary.
 
 ### Protected File Decisions
@@ -989,6 +991,7 @@ The current `template-sync-support-reference-only` inline blocks live in:
 
 - `README.md` for the optional `.template-sync/` and `schemas/template-sync-*.schema.json` surface rows, which are removed when `template-sync-support` is excluded.
 - `CONTRIBUTING.md` for the Template-Sync Validation section, which is removed when `template-sync-support` is excluded.
+- `.github/copilot-instructions.md` for the Template-Derived Files subsection, which is removed when `template-sync-support` is excluded.
 
 The current `data-ci-reference-only` inline blocks live in:
 
