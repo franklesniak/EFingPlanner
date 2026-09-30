@@ -4,7 +4,7 @@
 
 - **Status:** Active
 - **Owner:** Repository Maintainers
-- **Last Updated:** 2026-09-27
+- **Last Updated:** 2026-09-30
 - **Scope:** How the build briefs in `docs/build/` are made and used: what the directory holds, how to create the next batch's brief from the template, where each placeholder comes from, the batch scope cheat-sheet, the guardrails every brief keeps, the `/goal` pointer pattern, and committing. It carries no batch's requirements, which live in that batch's brief, and it is not shipped curriculum.
 - **Related:** [Build prompt template](_build_prompt_template.md), [Batch 0 build brief](batch0_build_prompt.md), [Batch 4 build brief](batch4_build_prompt.md), [Archived specification](../spec/specification.md), [Leak hook](../../.github/scripts/check-leaks.py)
 
@@ -72,4 +72,4 @@ The `/goal` command has a 4000-character limit, so keep it short: point it at th
 
 ## Committing
 
-These briefs are committed — see the `!docs/build/` exception in `.gitignore`. Keep them markdownlint-clean so `pre-commit run --all-files` stays green: MD013 (line length), MD034 (bare URLs), MD036 and MD041 are disabled repo-wide, but MD040 (every fence declares a language) and MD026 (no heading ends in `.`, `,`, `;`, `:` or `!`; it lets `?` pass by default) are enforced, and the style guide is what rules out `?`.
+These briefs are committed — see the `!docs/build/` exception in `.gitignore`. Keep them markdownlint-clean so `pre-commit run --all-files` stays green: MD013 (line length), MD034 (bare URLs) and MD036 are disabled repo-wide, but MD040 (every fence declares a language), MD026 (no heading ends in `.`, `,`, `;`, `:` or `!`; it lets `?` pass by default) and MD041 (the first heading is the H1 title; text may stand above it) are enforced, and the style guide is what rules out `?`. A finished batch's brief records the lint rules as they stood when that batch ran, so a later change to the config does not update it.

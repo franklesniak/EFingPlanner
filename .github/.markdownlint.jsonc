@@ -1,0 +1,15 @@
+{
+  // markdownlint configuration for the Markdown files under .github/
+  // It is the root configuration with one change: MD041 is off here.
+  //
+  // GitHub copies the pull request template into the body of every new pull
+  // request, so the template cannot open with an H1. The other Markdown files
+  // here are protected instruction files.
+  //
+  // This file is local: the template has no such file. See its record in
+  // .template-sync/marker.yml.
+  "extends": "../.markdownlint.jsonc",
+
+  // MD041: First line should be a top-level heading
+  "MD041": false
+}

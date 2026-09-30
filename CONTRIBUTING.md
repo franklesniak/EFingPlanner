@@ -86,7 +86,7 @@ Run the all-files form before opening a pull request.
 
 This repository uses pre-commit for git hooks. Configured hooks include:
 
-- **Formatting:** trailing whitespace and end-of-file fixes.
+- **Formatting:** trailing whitespace, end-of-file, and line-ending fixes.
 - **Markdown linting:** markdownlint and local Markdown link validation.
 - **Data-file validation:** `check-json` for strict `.json` files, `check-yaml`, and `actionlint` for GitHub Actions workflows.
 <!-- template-sync: begin yaml-reference-only -->
@@ -150,7 +150,7 @@ python .template-sync/scripts/report_excluded_module_references.py
 
 Pre-commit hooks are not optional. They enforce:
 
-- Formatting and end-of-file hygiene.
+- Formatting, end-of-file, and line-ending hygiene.
 - Markdown linting and local Markdown link validation.
 - Data-file validation for strict `.json`, YAML parsing, and GitHub Actions workflows.
 <!-- template-sync: begin yaml-reference-only -->
