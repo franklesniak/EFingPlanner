@@ -210,10 +210,10 @@
       "judgment": "no",
       "reason": "a fact with its purpose: when the check fails and why; it rejects no named alternative"
     },
-    "split|It fails when a framework page uses one of these names, so the sessions work for any destination. → When a page in this pack names a new place or a new local word, add it to the block below, one name per line.|1": {
+    "split|It fails when a framework page uses one of these names, so the sessions work for any destination. → When a page in this pack names a new place or a new local word, add it to the block below, one name per line, unless it begins an ordinary English word.|1": {
       "line": 55,
       "judgment": "no",
-      "reason": "an instruction with its condition: add a new name to the block"
+      "reason": "an instruction with its condition and an exception (add a new name to the block, unless it begins an ordinary English word); the unless-clause states a limit and the with sentence is a fact with its reason, so nothing named is rejected against a claim"
     }
   },
   "destinations/japan/reference/access_and_pricing_watch.md": {
@@ -16898,15 +16898,20 @@
       "judgment": "no",
       "reason": "a fact: what the check reads and when it fails"
     },
-    "split|The repository's leak check reads this block, and fails when a framework page uses one of the names. → Until the block is there, the check refuses the pack by name.|1": {
-      "line": 36,
-      "judgment": "no",
-      "reason": "a fact with its condition"
-    },
     "split|Until the block is there, the check refuses the pack by name. → When a later edit names a new place or word in the pack, add it to the block.|1": {
       "line": 36,
       "judgment": "no",
       "reason": "an instruction with its condition"
+    },
+    "split|The repository's leak check reads this block, and fails when a framework page uses one of the names. → It fails any word that begins with one of the names, so leave out a name that begins an ordinary English word.|1": {
+      "line": 36,
+      "judgment": "no",
+      "reason": "a reason and the instruction it leads to (the check fails any word beginning with a name, so leave out such a name); the leave-out clause is a limit on the listing rule, and the with sentence is a fact, so no split"
+    },
+    "split|It fails any word that begins with one of the names, so leave out a name that begins an ordinary English word. → Until the block is there, the check refuses the pack by name.|1": {
+      "line": 36,
+      "judgment": "no",
+      "reason": "a fact with its condition (until the block is there, the check refuses the pack); it recasts nothing in the with sentence, as the old judgment of this sentence held"
     },
     "device|Call the pack done when every file is written and filled.|1": {
       "line": 37,

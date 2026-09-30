@@ -1761,12 +1761,19 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
     parser.add_argument(
         "--candidates",
         action="store_true",
-        help="With --rule family, list each bare trip-length number for a hand-read, and exit 0.",
+        help=(
+            "With --rule family, list each bare trip-length number for a hand-read. "
+            "Exit 0, or 1 when a named path has nothing at it."
+        ),
     )
     parser.add_argument(
         "--exemption-rows",
         action="store_true",
-        help="Print an exemption row for each unexcused occurrence, and exit 0.",
+        help=(
+            "Print an exemption row for each unexcused occurrence. Exit 0, or 1 when a "
+            "named path has nothing at it or, with --rule destination, when a pack's "
+            "list of names cannot be read."
+        ),
     )
     return parser.parse_args(argv)
 

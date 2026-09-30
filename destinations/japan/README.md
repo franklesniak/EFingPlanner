@@ -52,7 +52,7 @@ The facts most likely to have changed since a page's `Last reviewed` date are ga
 
 ## Names this pack uses
 
-The repository's leak check reads this list. It fails when a framework page uses one of these names, so the sessions work for any destination. When a page in this pack names a new place or a new local word, add it to the block below, one name per line.
+The repository's leak check reads this list. It fails when a framework page uses one of these names, so the sessions work for any destination. When a page in this pack names a new place or a new local word, add it to the block below, one name per line, unless it begins an ordinary English word.
 
 ```text
 Honshu
@@ -134,4 +134,18 @@ romaji
 sumimasen
 arigato
 konnichiwa
+onegaishimasu
+iie
+eigo
+hanasemasu
+toire
+doko
+kudasai
+okaikei
+omizu
+oishii
+itadakimasu
+gochisousama
+deshita
+gozaimasu
 ```
