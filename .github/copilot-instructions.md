@@ -1,13 +1,13 @@
 <!-- markdownlint-disable MD013 -->
 # Repository Copilot Instructions (Repo-Wide Constitution)
 
-**Version:** 1.6.20260923.1
+**Version:** 1.7.20260930.0
 
 ## Metadata
 
 - **Status:** Active
 - **Owner:** Repository Maintainers
-- **Last Updated:** 2026-09-23
+- **Last Updated:** 2026-09-30
 - **Scope:** Repo-wide canonical instructions ("constitution") that govern all changes in this repository. This file is the authoritative source of truth for repository rules; all language-specific instruction files and agent entry points defer to it.
 <!-- template-sync: begin markdown-reference-only -->
 - **Related:** [Documentation Writing Style](instructions/docs.instructions.md)
@@ -55,6 +55,16 @@ Downstream repositories that keep only part of this template's language or tooli
 4. Update `.github/copilot-instructions.md`, remaining root agent files, and relevant `.github/instructions/*.instructions.md` files so they match the stacks retained by the downstream repository.
 5. Bump `Last Updated` and `Version` metadata where those fields exist.
 6. Avoid ephemeral implementation-stage language in durable governance docs.
+
+<!-- template-sync: begin template-sync-support-reference-only -->
+### Template-Derived Files
+
+When a repository that adopted this template keeps template-sync support, place each change to a file that `.template-sync/manifest.yml` maps in one of three ways:
+
+- **Local only:** the change **MUST** add or update the file's record in `.template-sync/marker.yml` in the same pull request, so that the next sync keeps it. See "Adoption Mode Records" in `TEMPLATE_UPDATE_PROCEDURE.md` for the kind of record.
+- **Both places:** make the same change in a template pull request, and link it from the local pull request. No marker record is needed. A change that is only proposed upstream is local until the template carries it.
+- **Upstream only:** make the change in the template, and take it here at the next sync.
+<!-- template-sync: end template-sync-support-reference-only -->
 
 ## Non-negotiable Safety and Security Rules
 
@@ -196,7 +206,7 @@ For the rationale, see the **Workflow Version Pinning and Dependabot Coherence**
 
 ### Action versions in `uses:` references
 
-- Third-party action versions **MUST** remain directly visible in `uses:` references (for example, `actions/checkout@<40-character-SHA> # vX.Y.Z`, `actions/setup-node@<40-character-SHA> # vX.Y.Z`) so Dependabot's `github-actions` ecosystem can update them.
+- Third-party action versions **MUST** remain directly visible in `uses:` references (for example, `actions/checkout`, `actions/setup-node`) so Dependabot's `github-actions` ecosystem can update them.
 - Repeated `uses:` references to the same action across jobs and steps are acceptable when each occurrence is a normal Dependabot-managed `uses:` reference. Dependabot updates each `uses:` line directly.
 - Do **NOT** store an action version in a workflow-level `env:` variable, unmanaged comment, cache key, file path, shell literal, manually constructed image tag, or any other secondary location as a mirror of a `uses:` version. The `uses:` line **MUST** be the only authoritative source for the action version because Dependabot rewrites `uses:` references and will leave unrelated literals stale.
 - Do **NOT** copy a Dependabot-managed action version into secondary workflow locations that Dependabot will not reliably rewrite (for example, cache keys, file paths, shell commands, manually constructed image tags, or comments presented as authoritative version state).
@@ -225,7 +235,7 @@ The two categories are **not** symmetric, and the difference is the entire point
 
 Action wrapper versions and the tool versions they install are **separate pins** that travel through different channels:
 
-- `actions/setup-node@<40-character-SHA> # vX.Y.Z` is the setup action version (managed by Dependabot via `uses:`).
+- `actions/setup-node` is the setup action version (managed by Dependabot via `uses:`).
 - The `node-version` input's value is the Node.js version installed by that setup action (not managed by Dependabot; manually maintained).
 
 Both pins exist in the same workflow step, but they update on different cadences and through different mechanisms. Do not conflate them.
@@ -311,6 +321,7 @@ This repository uses modular instruction files covering both language-specific s
 <!-- template-sync: begin yaml-reference-only -->
 - YAML: `.github/instructions/yaml.instructions.md` applies to `**/*.yml` and `**/*.yaml`.
 <!-- template-sync: end yaml-reference-only -->
+- Checks and their tests: `docs/writing_checkers.md` applies to `.github/scripts/**` and `tests/**`. It is a repository page, not an instruction file, and it holds this repository's rules for writing a check.
 
 **To customize for your project:**
 
