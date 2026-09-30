@@ -86,6 +86,8 @@ Narita
 Haneda
 Itami
 Fuji
+Edo
+samurai
 Disney
 Super Nintendo World
 Nintendo Museum
@@ -148,4 +150,8 @@ itadakimasu
 gochisousama
 deshita
 gozaimasu
+tasukete
+maigo
+kazoku
+haguremashita
 ```

@@ -16888,11 +16888,6 @@
       "judgment": "no",
       "reason": "an instruction with examples"
     },
-    "split|List every local word it teaches too, such as its money and its words for food and places to stay. → Write each name as letters, with one space between its words.|1": {
-      "line": 36,
-      "judgment": "no",
-      "reason": "an instruction: the format for each name; it names no rejected alternative"
-    },
     "split|Write each name as letters, with one space between its words. → The repository's leak check reads this block, and fails when a framework page uses one of the names.|1": {
       "line": 36,
       "judgment": "no",
@@ -16912,6 +16907,16 @@
       "line": 36,
       "judgment": "no",
       "reason": "a fact with its condition (until the block is there, the check refuses the pack); it recasts nothing in the with sentence, as the old judgment of this sentence held"
+    },
+    "split|List every local word it teaches too, such as its money and its words for food and places to stay. → To find them, list the words your pack uses that no framework page uses, and read each one.|1": {
+      "line": 36,
+      "judgment": "no",
+      "reason": "an instruction giving the way to find the names; “that no framework page uses” is a clause naming which words to list, not a rejected alternative to the claim before it"
+    },
+    "split|To find them, list the words your pack uses that no framework page uses, and read each one. → Write each name as letters, with one space between its words.|1": {
+      "line": 36,
+      "judgment": "no",
+      "reason": "an instruction: the format for each name; neither it nor the sentence before it names a rejected alternative (as the old judgment at this line held)"
     },
     "device|Call the pack done when every file is written and filled.|1": {
       "line": 37,
