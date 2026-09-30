@@ -12,14 +12,18 @@ row, header rows included, for every pack.
 Both pages are read through markdown-it, as ADR-0002 says a new tool reads
 Markdown, by ``tests/markdown_tables.mjs``. It gives each heading and each
 table as the page prints them, so a heading or a table inside a fenced block
-or an HTML comment is not read. The copies may differ in their links only. The
-contract links each pack file it names, and a pack still being built writes a
+or an HTML comment is not read. The copies are compared as the reader prints
+them, so they may differ in markup that prints the same text, links above all.
+The contract links each pack file it names, and a pack still being built writes a
 file it has not written yet in inline code. The mirror writes every pack file
 in inline code, unlinked, so no framework page links into a pack, and it links
 each parent-facing page that the contract names in plain text. The reader
 prints a link as its label and a code span as its code between backticks, so
 a linked filename matches the same name in inline code, and two filenames
-never match each other. Everything else must match exactly, in the same order.
+never match each other. Markup that prints nothing, such as emphasis marks, an
+image, a comment or an HTML tag, is not compared, and none of it changes which
+file a row routes to. Everything else the copies print must match exactly, in
+the same order.
 
 Every folder under ``destinations/`` is one pack, as the leak check reads them,
 and each must carry the contract. A table is the first one under its heading,
@@ -292,6 +296,17 @@ def test_each_cell_reads_as_the_page_prints_it() -> None:
         ("Money guidance", "Money guidance"),
         ("`c.md`, `d.md`", "[no definition] & a|b"),
     ]
+
+
+@pytest.mark.parametrize(
+    "heading",
+    ["Part 2: The destination\nrouting mirror\n---\n", "Part 2: The destination\\\nrouting mirror\n---\n"],
+    ids=["soft-break", "hard-break"],
+)
+def test_white_space_reads_as_one_space(heading: str) -> None:
+    """A soft or a hard line break and each run of white space print one space, and a cell's ends are trimmed."""
+    page = heading + "\n### Sessions\n\n| A | B |\n| --- | --- |\n| `a.md`,  \t`b.md` <!-- note --> | x |\n"
+    assert read_table(page, SESSIONS_PATH, "sample") == [("A", "B"), ("`a.md`, `b.md`", "x")]
 
 
 @pytest.mark.parametrize(

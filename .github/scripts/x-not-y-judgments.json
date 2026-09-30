@@ -5466,20 +5466,20 @@
       "judgment": "no",
       "reason": "an entry label naming the change; it rejects no named alternative"
     },
-    "split|Routing-mirror test. → ‹code› compares the routing mirror in the cross-reference map with the routing contract in each destination pack, row for row, and fails on any difference.|1": {
-      "line": 41,
-      "judgment": "no",
-      "reason": "a change record: a fact (what the test compares and when it fails); the label before it is not a claim this recasts or rejects, so the pair is not a split negation"
-    },
-    "split|‹code› compares the routing mirror in the cross-reference map with the routing contract in each destination pack, row for row, and fails on any difference. → It reads both pages through markdown-it, where a link prints its label, so a linked filename matches the same name in inline code.|1": {
-      "line": 41,
-      "judgment": "no",
-      "reason": "a fact with its reason (how the test reads both pages through markdown-it, so a linked filename matches the same name in inline code); it rejects no named alternative, and it adds a detail to the claim before it rather than rejecting or recasting it, so the pair is not a split negation"
-    },
     "split|It reads both pages through markdown-it, where a link prints its label, so a linked filename matches the same name in inline code. → The Markdown workflow runs it on every push and pull request.|1": {
       "line": 41,
       "judgment": "no",
       "reason": "a fact (when the Markdown workflow runs the test); it neither rejects nor recasts the sentence before it, so the pair is not a split negation"
+    },
+    "split|Routing-mirror test. → ‹code› compares the routing mirror in the cross-reference map with the routing contract in each destination pack, row for row, and fails on any difference in the text they print.|1": {
+      "line": 41,
+      "judgment": "no",
+      "reason": "a change record: a fact (what the test compares, row for row, and that it fails on any difference in the printed text); it rejects no named alternative, and the label before it is not a claim this recasts or rejects, so the pair is not a split negation"
+    },
+    "split|‹code› compares the routing mirror in the cross-reference map with the routing contract in each destination pack, row for row, and fails on any difference in the text they print. → It reads both pages through markdown-it, where a link prints its label, so a linked filename matches the same name in inline code.|1": {
+      "line": 41,
+      "judgment": "no",
+      "reason": "a fact with its reason (the test reads both pages through markdown-it, so a linked filename matches the same name in inline code); it rejects no named alternative and adds a detail to the sentence before it rather than rejecting or recasting it, so the pair is not a split negation"
     },
     "device|Style law.|1": {
       "line": 45,
