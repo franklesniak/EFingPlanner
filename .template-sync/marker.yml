@@ -384,7 +384,11 @@ template_sync:
         docs/spec/ default exclusion, a default walk and file counts, and
         tests/test_check_prohibited_placeholders.py tests it. A TAKE would
         replace it with upstream's hook. Port each upstream fix into the local
-        hook by hand.
+        hook by hand. The local hook ports upstream's missing-path refusal in
+        its own code: a named path with nothing at it, the empty argument
+        included, fails the run by name on standard error, the run still
+        checks every other path, and a path that is there but is not a scan
+        target is still skipped.
       default_decision: MERGE
     - path: .github/scripts/lint-nested-markdown.js
       reason: >-

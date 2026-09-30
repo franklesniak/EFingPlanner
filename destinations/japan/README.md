@@ -49,3 +49,89 @@ Each reference file and each session insert carries a `Last reviewed` date: the 
 <!-- density-exempt: X, not Y -- the verify framing of the spec's Japan Topics to Cover Briefly: its required "re-check close to travel" pair -->
 
 The facts most likely to have changed since a page's `Last reviewed` date are gathered on one short list, the [access and pricing watch](reference/access_and_pricing_watch.md). Treat each item on it as **"re-check close to travel," not "set it once."** Adults own anything to do with entry, money, and booking.
+
+## Names this pack uses
+
+The repository's leak check reads this list. It fails when a framework page uses one of these names, so the sessions work for any destination. When a page in this pack names a new place or a new local word, add it to the block below, one name per line.
+
+```text
+Honshu
+Hokkaido
+Kyushu
+Shikoku
+Okinawa
+Kanto
+Kansai
+Sapporo
+Nagoya
+Kanazawa
+Takayama
+Nara
+Uji
+Nikko
+Hakone
+Kawagoe
+Hiroshima
+Miyajima
+Fukuoka
+Koyasan
+Naoshima
+Gion
+Nishiki
+Kuromon
+Tsukiji
+Dotonbori
+Yanaka
+Narita
+Haneda
+Itami
+Fuji
+Disney
+Super Nintendo World
+Nintendo Museum
+Ghibli
+teamLab
+Pokemon Center
+JR
+IC card
+JNTO
+NAVITIME
+Jorudan
+Tabelog
+yen
+ryokan
+minpaku
+tatami
+onsen
+sento
+kashikiri
+izakaya
+konbini
+depachika
+ekiben
+teishoku
+kaitenzushi
+sushi
+ramen
+udon
+soba
+tempura
+onigiri
+takoyaki
+okonomiyaki
+koban
+takkyubin
+gachapon
+torii
+goshuin
+Shinto
+Obon
+yukata
+hiragana
+katakana
+kanji
+romaji
+sumimasen
+arigato
+konnichiwa
+```

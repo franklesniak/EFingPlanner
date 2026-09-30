@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import importlib
 import importlib.util
+import os
 import sys
 from collections.abc import Iterable
 from pathlib import Path
@@ -2188,3 +2189,134 @@ def test_an_inline_comment_that_never_closes_hides_nothing() -> None:
         "<!-- ALLOW-TBD: reason --> x <!-- TBD\n\n",
     ):
         assert _find(document) == [], document
+
+
+#: The start of the refusal for a named path with nothing at it, after the path.
+MISSING_PATH_START = ": nothing is at this path, so there is nothing to check."
+
+
+@pytest.mark.parametrize(
+    ("missing_path", "is_absolute"),
+    [
+        ("framework/sesions/clean.md", False),
+        ("framework/sesions/clean.md", True),
+        ("framework/sessions/clena.md", False),
+        ("framework/sessions/deleted.md", False),
+        ("READMEE.md", False),
+        ("", False),
+    ],
+    ids=[
+        "folder-typo",
+        "absolute-folder-typo",
+        "file-typo",
+        "deleted-file",
+        "outside-the-scan-roots",
+        "empty-argument",
+    ],
+)
+def test_main_refuses_a_missing_path(
+    tmp_path: Path,
+    capsys: Any,
+    missing_path: str,
+    is_absolute: bool,
+) -> None:
+    """A named path with nothing at it fails the run by name, on standard error.
+
+    It was skipped in silence, like a path that is there but out of scope, so
+    ``check-prohibited-placeholders.py framework/nope.md`` exited zero having
+    read nothing. The test decides "nothing is there" itself, with
+    ``os.path.lexists``, rather than through the hook's own predicate. An
+    empty argument names nothing: ``os.path.lexists("")`` is false, while
+    ``Path("")`` is the root, which is there.
+    """
+    write_file(tmp_path / "framework" / "sessions" / "clean.md", "Measured value.\n")
+    write_file(tmp_path / "framework" / "sessions" / "deleted.md", "Measured value.\n").unlink()
+    write_file(tmp_path / "README.md", "Measured value.\n")
+    location: Path | str = tmp_path / missing_path if missing_path else missing_path
+    assert not os.path.lexists(location)
+    path_argument = str(tmp_path / missing_path) if is_absolute else missing_path
+    shown_path = '""' if path_argument == "" else path_argument
+
+    result = placeholder_hook.main([path_argument], root=tmp_path)
+
+    captured = capsys.readouterr()
+    assert result == 1
+    assert captured.out == ""
+    assert captured.err.startswith(shown_path + MISSING_PATH_START)
+    assert "A relative path is read from the repository root, not the current folder." in captured.err
+    assert "a typo here would otherwise pass silently" in captured.err
+    assert len(captured.err.splitlines()) == 1
+
+
+@pytest.mark.parametrize("is_missing_path_first", [False, True], ids=["missing-last", "missing-first"])
+@pytest.mark.parametrize(
+    ("real_file_text", "expected_findings"),
+    [
+        ("Measured value.\n", []),
+        ("The value is TBD.\n", ['framework/sessions/one.md:1: prohibited placeholder "TBD"']),
+    ],
+    ids=["clean-real-file", "real-file-with-placeholder"],
+)
+def test_main_refuses_a_missing_path_beside_a_real_file(
+    tmp_path: Path,
+    capsys: Any,
+    real_file_text: str,
+    expected_findings: list[str],
+    is_missing_path_first: bool,
+) -> None:
+    """The run still reads the real file, so one typo hides no placeholder, and it fails all the same."""
+    write_file(tmp_path / "framework" / "sessions" / "one.md", real_file_text)
+    path_arguments = ["framework/sessions/one.md", "framework/sessions/oen.md"]
+    if is_missing_path_first:
+        path_arguments.reverse()
+
+    result = placeholder_hook.main(path_arguments, root=tmp_path)
+
+    captured = capsys.readouterr()
+    assert result == 1
+    assert [line.split(";")[0] for line in captured.out.splitlines()] == expected_findings
+    assert captured.err.startswith("framework/sessions/oen.md" + MISSING_PATH_START)
+
+
+@pytest.mark.parametrize(
+    "path_argument",
+    ["framework/sessions", "README.md", "framework/CHANGELOG.md", "framework/notes.txt", ".", "./"],
+    ids=["folder", "outside-the-scan-roots", "changelog", "not-markdown", "dot", "dot-slash"],
+)
+def test_main_skips_an_existing_path_that_is_not_a_scan_target(
+    tmp_path: Path,
+    capsys: Any,
+    path_argument: str,
+) -> None:
+    """The negative control: a path that is there but out of scope is skipped, as before, not refused.
+
+    ``.`` and ``./`` are folders that are there, so the empty argument's
+    refusal must not reach them, though ``Path("")`` and ``Path(".")`` are
+    the same path.
+    """
+    write_file(tmp_path / "framework" / "sessions" / "one.md", "Measured value.\n")
+    write_file(tmp_path / "README.md", "The value is TBD.\n")
+    write_file(tmp_path / "framework" / "CHANGELOG.md", "The value is TBD.\n")
+    write_file(tmp_path / "framework" / "notes.txt", "The value is TBD.\n")
+    assert os.path.lexists(tmp_path / path_argument)
+
+    result = placeholder_hook.main([path_argument], root=tmp_path)
+
+    captured = capsys.readouterr()
+    assert (result, captured.out, captured.err) == (0, "", "")
+
+
+def test_main_skips_a_dangling_symlink(tmp_path: Path, capsys: Any) -> None:
+    """A link is there even when its target is gone, as pre-commit's own test says, so it keeps the link skip."""
+    link = tmp_path / "framework" / "sessions" / "link.md"
+    link.parent.mkdir(parents=True)
+    try:
+        link.symlink_to(tmp_path / "framework" / "sessions" / "gone.md")
+    except (OSError, NotImplementedError):
+        pytest.skip("this platform or account cannot create symlinks")
+    assert os.path.lexists(link) and not link.exists()
+
+    result = placeholder_hook.main(["framework/sessions/link.md"], root=tmp_path)
+
+    captured = capsys.readouterr()
+    assert (result, captured.out, captured.err) == (0, "", "")

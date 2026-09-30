@@ -1026,22 +1026,290 @@ def test_the_walk_finds_each_of_the_five_names_in_any_case(
     assert found == ["japan", "TOKYO", "Kyoto", "osaka", "SHINKANSEN"]
 
 
-def test_a_pack_folder_adds_no_destination_name(
+#: Three backticks and three tildes, spelled once, so no fixture embeds a fence marker in a literal.
+TICKS = "`" * 3
+TILDES = "~" * 3
+#: The top of every fixture README, down to the names heading: a list of reference files, whose bullet is no name.
+README_HEAD = "# A Pack\n\n## Reference files\n\n- [Places](reference/places.md) -- where to go.\n\n"
+
+
+def names_block(*names: str, fence: str = TICKS, info: str = "text") -> str:
+    """Return one fenced block holding ``names``, one per line."""
+    return f"{fence}{info}\n" + "".join(f"{name}\n" for name in names) + f"{fence}\n"
+
+
+def pack_readme(*names: str, lead: str = "The leak check reads this list.") -> str:
+    """Return a pack's README: a list of reference files, then its names section with ``names`` in one block."""
+    return f"{README_HEAD}{hook.PACK_NAMES_HEADING}\n\n{lead}\n\n{names_block(*names)}"
+
+
+def printed_names(out: str) -> list[str]:
+    """Return the name each destination hit in ``out`` prints, in order."""
+    return [line.split('"')[1] for line in out.splitlines()]
+
+
+def test_a_pack_adds_the_names_its_readme_lists(
     tmp_path: Path, made_up_family: None, capsys: pytest.CaptureFixture[str]
 ) -> None:
-    """DP-21: the destination rule reads the five names AC-16-1 gives; a folder under ``destinations/`` adds none."""
-    text = "Zemblan food, North Quarland trips, Tokyo Bay, Route 66 and routes.\n"
+    """The destination rule reads the names each pack declares, beside the five; this supersedes DP-21.
+
+    A pack folder's own name still adds nothing: only the list does. The failure injection takes one name off
+    the list, and its hit goes with it.
+    """
+    text = "Zemblan food, NORTH QUARLAND trips, Tokyo Bay, Route 66 and routes.\n"
+    files: dict[str, str | bytes] = {
+        "destinations/zembla/README.md": pack_readme("Zembla", "North Quarland"),
+        "destinations/zembla/reference/places.md": "Pack.\n",
+        "destinations/route66/README.md": pack_readme("Kestrel Falls"),
+        "framework/a.md": text,
+    }
+    root = make_repo(tmp_path / "declared", files)
+    assert hook.main(["--rule", "destination"], root=root) == 1
+    assert printed_names(capsys.readouterr().out) == ["Zemblan", "NORTH QUARLAND", "Tokyo"]
+    files["destinations/zembla/README.md"] = pack_readme("Zembla")
+    root = make_repo(tmp_path / "one_fewer", files)
+    assert hook.main(["--rule", "destination"], root=root) == 1
+    assert printed_names(capsys.readouterr().out) == ["Zemblan", "Tokyo"]
+
+
+def test_a_framework_file_with_no_declared_name_passes(
+    tmp_path: Path, made_up_family: None, capsys: pytest.CaptureFixture[str]
+) -> None:
+    """The negative control: a pack's names add no hit where the framework does not use them."""
     root = make_repo(
         tmp_path,
-        {
-            "destinations/zembla/a.md": "Pack.\n",
-            "destinations/north_quarland/a.md": "Pack.\n",
-            "destinations/route66/a.md": "Pack.\n",
-            "framework/a.md": text,
-        },
+        {"destinations/zembla/README.md": pack_readme("Zembla", "North Quarland"), "framework/a.md": "North trips.\n"},
     )
+    assert hook.main(["--rule", "destination"], root=root) == 0
+    assert capsys.readouterr().out.strip() == "Destination leaks: 1 file(s) checked, none found."
+
+
+#: Where a refusal says it stands, for a line of the names section.
+UNDER = 'under "## Names this pack uses"'
+#: The section's first line after its heading and one blank line, in every fixture below.
+FIRST = 9
+
+#: One README for each way a list cannot be read: ``(label, the section after its heading, the refusal's words)``.
+UNREADABLE_LISTS = [
+    ("no-section", None, 'has no "## Names this pack uses" section'),
+    ("no-block", "The leak check reads this list.\n", f"has no fenced block {UNDER}"),
+    ("empty-section", "", f"has no fenced block {UNDER}"),
+    ("empty-block", names_block(), f"lists no name in its fenced block {UNDER}"),
+    ("blank-lines-only-block", f"{TICKS}text\n\n  \n{TICKS}\n", f"lists no name in its fenced block {UNDER}"),
+    ("two-blocks", names_block("Zembla") + "\n" + names_block("Quarland"),
+     f"line {FIRST + 4}, {UNDER}, opens a second fenced block"),
+    ("no-info-string", names_block("Zembla", info=""), f"line {FIRST}, {UNDER}, opens a fenced block whose info"),
+    ("info-string-in-capitals", names_block("Zembla", info="Text"), f"line {FIRST}, {UNDER}, opens a fenced block"),
+    ("info-string-with-more-words", names_block("Zembla", info="text names"), f"line {FIRST}, {UNDER}, opens a"),
+    ("another-language", names_block("Zembla", info="markdown"), f"line {FIRST}, {UNDER}, opens a fenced block"),
+    ("digit-in-a-name", names_block("Zembla", "Route 66"), f"line {FIRST + 2}, {UNDER}, holds no name"),
+    ("punctuation-in-a-name", names_block("Kaiten-zushi"), f"line {FIRST + 1}, {UNDER}, holds no name"),
+    ("two-spaces-in-a-name", names_block("North  Quarland"), f"line {FIRST + 1}, {UNDER}, holds no name"),
+    ("a-bullet-in-the-block", names_block("- Zembla"), f"line {FIRST + 1}, {UNDER}, holds no name"),
+    ("a-heading-line-in-the-block", names_block("Zembla", "# Quarland"), f"line {FIRST + 2}, {UNDER}, holds no name"),
+    ("a-shorter-fence-does-not-close", f"{TICKS}`text\nZembla\n{TICKS}\n{TICKS}`\n",
+     f"line {FIRST + 2}, {UNDER}, holds no name"),
+    ("another-character-does-not-close", f"{TICKS}text\nZembla\n{TILDES}\n{TICKS}\n",
+     f"line {FIRST + 2}, {UNDER}, holds no name"),
+    ("never-closes", f"{TICKS}text\nZembla\n\n## After\n\nMore.\n",
+     f"line {FIRST}, {UNDER}, opens a fenced block that never closes"),
+    ("prose-after-the-block", names_block("Zembla") + "Also North Quarland.\n",
+     f"line {FIRST + 3}, {UNDER}, stands after the fenced block"),
+    ("a-bullet-before-the-block", "- Quarland\n\n" + names_block("Zembla"),
+     f"line {FIRST}, {UNDER}, is a list item"),
+    ("a-bullet-after-the-block", names_block("Zembla") + "\n- Quarland\n",
+     f"line {FIRST + 4}, {UNDER}, is a list item"),
+    ("a-numbered-item", "1. Quarland\n\n" + names_block("Zembla"), f"line {FIRST}, {UNDER}, is a list item"),
+    ("section-twice", names_block("Zembla") + "\n## Names this pack uses\n\n" + names_block("Quarland"),
+     "heading 2 times"),
+]
+
+
+@pytest.mark.parametrize(("label", "section", "refusal"), UNREADABLE_LISTS, ids=[row[0] for row in UNREADABLE_LISTS])
+def test_a_pack_whose_list_cannot_be_read_is_refused_and_the_run_finishes(
+    tmp_path: Path,
+    made_up_family: None,
+    capsys: pytest.CaptureFixture[str],
+    label: str,
+    section: str | None,
+    refusal: str,
+) -> None:
+    """A pack whose list is missing, empty or malformed is refused by name, and the run still prints every hit.
+
+    The list is one fenced ``text`` block, each line one name: letters with one space between its words, which
+    is what the finder matches. A block closes as CommonMark closes one, with the same character, at least as
+    many times, so a shorter fence or the other character is a line of the block. A list item anywhere in the
+    section is the list's old form, whose names would not be read.
+    """
+    readme = README_HEAD if section is None else f"{README_HEAD}{hook.PACK_NAMES_HEADING}\n\n{section}"
+    root = make_repo(tmp_path, {"destinations/zembla/README.md": readme, "framework/a.md": "Tokyo and Zemblan.\n"})
+    assert hook.main(["--rule", "destination"], root=root) == 1, label
+    captured = capsys.readouterr()
+    assert captured.err.startswith("destinations/zembla/README.md: "), label
+    assert refusal in captured.err, label
+    assert printed_names(captured.out) == ["Tokyo"], label
+    assert "file(s) checked" not in captured.out, "a run that could not read a pack's list does not report clean"
+
+
+def test_a_pack_with_no_readme_is_refused(
+    tmp_path: Path, made_up_family: None, capsys: pytest.CaptureFixture[str]
+) -> None:
+    """A pack folder with no README has no list, so the run cannot say which names to keep out; it fails."""
+    root = make_repo(tmp_path, {"destinations/zembla/reference/places.md": "Pack.\n", "framework/a.md": "Clean.\n"})
     assert hook.main(["--rule", "destination"], root=root) == 1
-    assert [line.split('"')[1] for line in capsys.readouterr().out.splitlines()] == ["Tokyo"]
+    assert capsys.readouterr().err.startswith(
+        "destinations/zembla/README.md: Git tracks no README.md in this pack's folder"
+    )
+    assert hook.main(["--rule", "family"], root=root) == 0, "control: the family rule reads no pack's list"
+
+
+@pytest.mark.parametrize("kind", ["a link in the working tree", "a link checked out as a file"])
+def test_a_pack_readme_that_is_a_link_is_refused(
+    tmp_path: Path, made_up_family: None, capsys: pytest.CaptureFixture[str], kind: str
+) -> None:
+    """A pack's README is read under the rules every other file is: a link is refused, never followed.
+
+    With ``core.symlinks`` false, Git writes a link as a plain file holding its target, so only the index's mode
+    says it is a link; the file's text here is a list that would pass, and it must not be read.
+    """
+    files: dict[str, str | bytes] = {
+        "docs/names.md": pack_readme("Zembla"),
+        "framework/a.md": "Zemblan.\n",
+        "destinations/zembla/x.md": "",
+    }
+    if kind == "a link checked out as a file":
+        files["destinations/zembla/README.md"] = pack_readme("Zembla")
+    root = make_repo(tmp_path, files)
+    if kind == "a link checked out as a file":
+        record_as_link(root, "destinations/zembla/README.md")
+    else:
+        make_link(root / "destinations" / "zembla" / "README.md", root / "docs" / "names.md", "symlink")
+        subprocess.run(["git", "-C", str(root), "add", "-A"], check=True)
+    assert hook.main(["--rule", "destination"], root=root) == 1
+    captured = capsys.readouterr()
+    assert "destinations/zembla/README.md (a link): this run cannot read the names the pack uses" in captured.err
+    assert captured.out == "", "the names behind the link are never read"
+
+
+def test_the_list_is_read_only_from_the_block_under_its_heading() -> None:
+    """The names are the lines of the one block in the section; everything around it that is allowed is not read.
+
+    A block under another heading holds no names; the lead, comments and blank lines are passed over; a blank
+    line in the block names nothing; and the section ends at the next heading of any level, outside the block.
+    """
+    text = (
+        f"# A Pack\n\n## Reference files\n\n- Quarland\n\n{names_block('Kestrel')}\n## Names this pack uses\n\n"
+        "The leak check reads this list.\nIt has a second lead line.\n\n<!-- a note for maintainers -->\n\n"
+        f"{TICKS}text\nZembla\n\n  North Quarland \nteamLab\n{TICKS}\n\n<!-- a closing note -->\n\n"
+        f"### More\n\n- Falls\n\n{names_block('Moor')}\n## After\n\nMore prose.\n"
+    )
+    assert hook.names_in_pack_readme(text) == ["Zembla", "North Quarland", "teamLab"]
+    assert hook.names_in_pack_readme(text.replace("## Names this pack uses", "## Names This Pack Uses")) == (
+        'has no "## Names this pack uses" section, so this run cannot read the names the pack uses. '
+        + hook.ADD_PACK_NAMES
+    ), "the heading is matched exactly, so a changed one is refused rather than read as some other section"
+
+
+@pytest.mark.parametrize(
+    ("label", "block"),
+    [
+        ("backticks", names_block("Zembla", "North Quarland")),
+        ("tildes", names_block("Zembla", "North Quarland", fence=TILDES)),
+        ("a longer fence", names_block("Zembla", "North Quarland", fence=TICKS + "``")),
+        ("a longer closing fence", f"{TICKS}text\nZembla\nNorth Quarland\n{TICKS}``\n"),
+        ("indented fences", f"   {TICKS}text\nZembla\nNorth Quarland\n  {TICKS}  \n"),
+        ("spaces around the info string", f"{TICKS}  text \t\nZembla\nNorth Quarland\n{TICKS}\n"),
+        ("a heading line after the block", names_block("Zembla", "North Quarland") + "#### Next\n\n- Falls\n"),
+    ],
+    ids=["backticks", "tildes", "longer-fence", "longer-closing-fence", "indented", "info-spacing", "heading-after"],
+)
+def test_every_fence_commonmark_accepts_holds_the_list(label: str, block: str) -> None:
+    """The positive controls for the fence rules: each block CommonMark reads as a ``text`` block is read.
+
+    CommonMark 0.31.2: a fence is three or more backticks or tildes, indented up to three spaces; the info
+    string is trimmed; a closing fence is the same character, at least as long, with only spaces after it.
+    <https://spec.commonmark.org/0.31.2/#fenced-code-blocks>
+    """
+    text = f"{README_HEAD}{hook.PACK_NAMES_HEADING}\n\nThe lead.\n\n{block}"
+    assert hook.names_in_pack_readme(text) == ["Zembla", "North Quarland"], label
+
+
+@pytest.mark.parametrize(
+    ("line", "expected"),
+    [
+        (TICKS + "text", (TICKS, "text")),
+        (TILDES + "~ text", (TILDES + "~", "text")),
+        ("   " + TICKS + "text", (TICKS, "text")),
+        (TILDES + "te`xt", (TILDES, "te`xt")),
+        ("    " + TICKS + "text", None),
+        ("``text", None),
+        (TICKS + "te`xt", None),
+        ("~~ text", None),
+    ],
+    ids=["backticks", "tildes", "three-spaces", "tilde-info-with-a-backtick", "four-spaces", "two-backticks",
+         "backtick-info-with-a-backtick", "two-tildes"],
+)
+def test_a_fence_opens_only_as_commonmark_opens_one(line: str, expected: tuple[str, str] | None) -> None:
+    """Positive and negative controls for the opening fence: four spaces make indented code, and a backtick
+    fence's info string may not hold a backtick, while a tilde fence's may."""
+    assert hook.fence_opening(line) == expected
+
+
+def test_a_row_may_excuse_a_name_a_pack_declares(
+    tmp_path: Path, made_up_family: None, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    """A destination row is checked against every name in force, so a row for a declared name is well formed."""
+    row = ("framework/a.md", "Zemblan", "Try Zemblan food.", 1, "a test row")
+    assert any("not a destination name" in error for error in hook.check_exemption_rows("destination", [row]))
+    names = hook.destination_runs((*hook.DESTINATION_NAMES, "Zembla"))
+    assert hook.check_exemption_rows("destination", [row], names) == []
+    root = make_repo(
+        tmp_path, {"destinations/zembla/README.md": pack_readme("Zembla"), "framework/a.md": "Try Zemblan food.\n"}
+    )
+    assert hook.main(["--rule", "destination"], root=root) == 1, "control: with no row, the name fails the run"
+    capsys.readouterr()
+    monkeypatch.setattr(hook, "DESTINATION_EXEMPTIONS", (row,))
+    assert hook.main(["--rule", "destination"], root=root) == 0
+
+
+def test_a_pack_folder_named_for_a_family_value_prints_masked(
+    tmp_path: Path, made_up_family: None, capsys: pytest.CaptureFixture[str]
+) -> None:
+    """A pack's refusal names its folder, and goes through ``emit()`` like every other line, so no value prints."""
+    root = make_repo(tmp_path, {"destinations/quillhaven/places.md": "Pack.\n", "framework/a.md": "Clean.\n"})
+    assert hook.main(["--rule", "destination"], root=root) == 1
+    err = capsys.readouterr().err
+    assert err.startswith("destinations/<family value>/README.md: Git tracks no README.md")
+    assert "quillhaven" not in err.casefold()
+
+
+#: Ordinary words beside the committed names' first letters, which the rule must not take for a name.
+ORDINARY_WORDS = ("sentence", "narrate", "sobering", "kanban", "honest", "romantic", "yearly", "tempo")
+
+
+def test_the_rule_finds_every_name_the_packs_list() -> None:
+    """Recall over the committed lists: each declared name is found in a framework line, in any case.
+
+    ``docs/writing_checkers.md`` rule 4 asks a check to state its vocabulary and measure its recall. The five
+    have their own test above; this measures the names the packs add, read by the hook's own reader.
+    """
+    tracked = hook.tracked_files(REPO_ROOT)
+    if not any(name.startswith(hook.PACKS_FOLDER) for name in tracked):
+        pytest.skip("Git tracks no destination pack in this tree")
+    declared, refusals = hook.read_pack_names(REPO_ROOT, tracked, hook.tracked_unreadable(REPO_ROOT))
+    assert refusals == []
+    assert declared, "a pack with an empty list would have been refused"
+    names = hook.destination_runs((*hook.DESTINATION_NAMES, *declared))
+    missed = [
+        form
+        for name in declared
+        for form in (name, name.upper(), name.lower(), name.title())
+        if destination(f"A page names {form} here.\n", names) != [form]
+    ]
+    assert missed == []
+    assert [word for word in ORDINARY_WORDS if destination(f"A {word} line.\n", names)] == [], (
+        "control: an ordinary word is not taken for a name"
+    )
 
 
 @pytest.mark.parametrize(
@@ -1056,7 +1324,7 @@ def test_a_pack_folder_adds_no_destination_name(
     ids=["phrase", "across-a-line-break", "another-first-word", "across-a-blank-line", "across-a-digit"],
 )
 def test_a_two_word_destination_name_matches_its_words_as_a_phrase(text: str, found: list[str]) -> None:
-    """None of the five has two words, but ``AC-16-1`` may add one: its words match in order, as a phrase."""
+    """None of the five has two words, but a pack's list may hold one: its words match in order, as a phrase."""
     assert destination(text + "\n", (("mount", "fuji"),)) == found
 
 
@@ -1402,13 +1670,116 @@ def test_a_passed_path_outside_the_repository_is_skipped(
 def test_a_passed_path_git_does_not_track_is_neither_read_nor_refused(
     tmp_path: Path, made_up_family: None, name: str
 ) -> None:
-    """Only tracked files are this repository's content, whether a path resolves or not."""
+    """Only tracked files are this repository's content, so a path that is there but untracked is not read."""
     root = make_repo(tmp_path, {"a.md": "Clean.\n", "sub/b.md": "Clean.\n"})
     (root / "notes.md").write_text("From Quillhaven.\n", encoding="utf-8")
     (root / ".git" / "extra.md").write_text("From Quillhaven.\n", encoding="utf-8")
     assert hook.main(["--rule", "family", name], root=root) == 0
     subprocess.run(["git", "-C", str(root), "add", "notes.md"], check=True)
     assert hook.main(["--rule", "family", "notes.md"], root=root) == 1
+
+
+#: The start of the refusal for a named path with nothing at it, after the path.
+MISSING_PATH_START = ": nothing is at this path, so there is nothing to check."
+
+
+@pytest.mark.parametrize("rule", ["family", "destination"])
+@pytest.mark.parametrize(
+    ("missing_path", "is_absolute"),
+    [
+        ("framework/sesions/a.md", False),
+        ("framework/sesions/a.md", True),
+        ("framework/deleted.md", False),
+        ("docs/typo.md", False),
+        ("", False),
+    ],
+    ids=["folder-typo", "absolute-folder-typo", "deleted-tracked-file", "outside-a-rule-s-scope", "empty-argument"],
+)
+def test_a_named_path_with_nothing_at_it_fails_the_run(
+    tmp_path: Path,
+    made_up_family: None,
+    capsys: pytest.CaptureFixture[str],
+    rule: str,
+    missing_path: str,
+    is_absolute: bool,
+) -> None:
+    """A mistyped path in a hand run fails the run by name, on standard error, under either rule.
+
+    It was neither read nor refused, like an untracked file, so the run exited zero having read nothing.
+    Pre-commit passes only names ``os.path.lexists`` finds, so a commit never trips this. The test decides
+    "nothing is there" itself, with that same call: ``os.path.lexists("")`` is false, while ``Path("")`` is
+    the root, which is there. A tracked file deleted from the working tree is refused by name too; a walk skips
+    it, as ``test_a_tracked_file_deleted_from_the_working_tree_is_skipped`` holds.
+    """
+    root = make_repo(tmp_path, {"framework/a.md": "Clean.\n", "framework/deleted.md": "Clean.\n"})
+    (root / "framework" / "deleted.md").unlink()
+    location: Path | str = root / missing_path if missing_path else missing_path
+    assert not os.path.lexists(location)
+    path_argument = str(root / missing_path) if is_absolute else missing_path
+    shown_path = '""' if path_argument == "" else path_argument
+    assert hook.main(["--rule", rule, "--", path_argument], root=root) == 1
+    captured = capsys.readouterr()
+    assert captured.out == ""
+    assert captured.err.startswith(shown_path + MISSING_PATH_START)
+    assert "A relative path is read from the repository root, not the current folder." in captured.err
+    assert "a typo here would otherwise pass silently" in captured.err
+
+
+@pytest.mark.parametrize("is_missing_path_first", [False, True], ids=["missing-last", "missing-first"])
+def test_a_named_path_with_nothing_at_it_beside_a_real_file_fails_and_the_run_finishes(
+    tmp_path: Path, made_up_family: None, capsys: pytest.CaptureFixture[str], is_missing_path_first: bool
+) -> None:
+    """The run still reads the real file, so one typo hides no leak, and it fails all the same."""
+    root = make_repo(tmp_path, {"framework/a.md": "Visit Tokyo.\n"})
+    paths = ["framework/a.md", "framework/b.md"]
+    if is_missing_path_first:
+        paths.reverse()
+    assert hook.main(["--rule", "destination", "--", *paths], root=root) == 1
+    captured = capsys.readouterr()
+    assert captured.out.startswith('framework/a.md:1:7: the destination name "Tokyo"')
+    assert captured.err.startswith("framework/b.md" + MISSING_PATH_START)
+    assert hook.main(["--rule", "destination", "--", "framework/a.md"], root=root) == 1
+    assert capsys.readouterr().err == "", "control: the real file alone fails on its hit, and nothing is refused"
+
+
+@pytest.mark.parametrize("rule", ["family", "destination"])
+@pytest.mark.parametrize(
+    "path_argument",
+    [".", "./", "framework", "notes.md", "README.md"],
+    ids=["dot", "dot-slash", "folder", "untracked-file", "outside-the-destination-rule-s-scope"],
+)
+def test_an_existing_path_the_rule_does_not_read_is_not_refused(
+    tmp_path: Path, made_up_family: None, capsys: pytest.CaptureFixture[str], rule: str, path_argument: str
+) -> None:
+    """The negative control: a path that is there keeps the handling it had, and ``.`` is no empty argument."""
+    root = make_repo(tmp_path, {"framework/a.md": "Clean.\n", "README.md": "Clean.\n"})
+    (root / "notes.md").write_text("From Quillhaven.\n", encoding="utf-8")
+    assert os.path.lexists(root / path_argument)
+    assert hook.main(["--rule", rule, "--", path_argument], root=root) == 0
+    assert capsys.readouterr().err == ""
+
+
+def test_a_missing_path_that_holds_a_family_value_prints_masked(
+    tmp_path: Path, made_up_family: None, capsys: pytest.CaptureFixture[str]
+) -> None:
+    """The refusal names the path, and goes through ``emit()`` like every other line, so no value prints."""
+    root = make_repo(tmp_path, {"docs/a.md": "Clean.\n"})
+    assert hook.main(["--rule", "family", "--", "docs/quillhaven-notes.md"], root=root) == 1
+    err = capsys.readouterr().err
+    assert err.startswith("docs/<family value>-notes.md" + MISSING_PATH_START)
+    assert "quillhaven" not in err.casefold()
+
+
+@pytest.mark.parametrize("mode", ["--candidates", "--exemption-rows"])
+def test_a_missing_path_fails_a_listing_mode_too(
+    tmp_path: Path, made_up_family: None, capsys: pytest.CaptureFixture[str], mode: str
+) -> None:
+    """A listing mode exits 0 on what it read; a path with nothing at it leaves it short of what it was asked."""
+    root = make_repo(tmp_path, {"docs/a.md": "Session 23.\n"})
+    assert hook.main(["--rule", "family", mode, "--", "docs/a.md"], root=root) == 0, "control: a real path"
+    capsys.readouterr()
+    assert hook.main(["--rule", "family", mode, "--", "docs/a.md", "docs/b.md"], root=root) == 1
+    assert capsys.readouterr().err.startswith("docs/b.md" + MISSING_PATH_START)
 
 
 @pytest.mark.parametrize("name", ["--exemption-rows", "--help", "-h", "--candidates"])
@@ -1565,7 +1936,7 @@ def test_a_link_or_a_submodule_in_the_framework_folder_s_place_is_refused(
 
 
 @pytest.mark.parametrize(
-    ("error", "skipped"),
+    ("error", "not_there"),
     [
         (FileNotFoundError(2, "made-up failure"), True),
         (NotADirectoryError(20, "made-up failure"), True),
@@ -1574,18 +1945,24 @@ def test_a_link_or_a_submodule_in_the_framework_folder_s_place_is_refused(
     ],
     ids=["missing", "under-a-file", "no-permission", "other-error"],
 )
-def test_only_a_tracked_path_that_is_not_there_is_skipped(
+def test_only_a_tracked_path_that_is_not_there_is_passed_over(
     tmp_path: Path,
     made_up_family: None,
     monkeypatch: pytest.MonkeyPatch,
     capsys: pytest.CaptureFixture[str],
     error: OSError,
-    skipped: bool,
+    not_there: bool,
 ) -> None:
-    """S53-44: a tracked path the run cannot look at fails the run; one that is not there is skipped.
+    """S53-44: a tracked path the run cannot look at fails the run; one that is not there is passed over.
+
+    A walk skips a path that is not there, as ``git status`` shows a deleted file. Named by hand, the same path
+    is refused as a path with nothing at it, as a typo is. Either way, a path the run cannot look at stops the run
+    with the error, and is never called missing.
 
     ``os.stat`` and ``os.lstat`` both fail for the one path, as a folder the run may not search makes them fail,
     so the test holds under Python 3.14 too, whose ``Path.is_file()`` returns ``False`` for any error.
+    ``os.path.lexists`` is made to ask the failing ``os.lstat``, as POSIX Python's does; Windows Python answers
+    it natively, from the file system, which the stand-in errors never reach.
     """
     root = make_repo(tmp_path, {"framework/locked/a.md": "Visit Tokyo.\n", "framework/b.md": "Clean.\n"})
 
@@ -1599,15 +1976,29 @@ def test_only_a_tracked_path_that_is_not_there_is_skipped(
 
         return call
 
+    def lexists(path: object) -> bool:
+        try:
+            os.lstat(path)  # type: ignore[arg-type]
+        except (OSError, ValueError):
+            return False
+        return True
+
     monkeypatch.setattr(os, "stat", failing(os.stat))
     monkeypatch.setattr(os, "lstat", failing(os.lstat))
-    code = hook.main(["--rule", "destination", "--", "framework/locked/a.md", "framework/b.md"], root=root)
-    err = capsys.readouterr().err
-    if skipped:
-        assert (code, err) == (0, "")
+    monkeypatch.setattr(os.path, "lexists", lexists)
+    walk_code = hook.main(["--rule", "destination"], root=root)
+    walk_err = capsys.readouterr().err
+    named_code = hook.main(["--rule", "destination", "--", "framework/locked/a.md", "framework/b.md"], root=root)
+    named_err = capsys.readouterr().err
+    if not_there:
+        assert (walk_code, walk_err) == (0, "")
+        assert named_code == 1
+        assert named_err.startswith("framework/locked/a.md: nothing is at this path")
     else:
-        assert code == 1
-        assert f"framework/locked/a.md: unable to read file ({type(error).__name__}: made-up failure)" in err
+        for code, err in ((walk_code, walk_err), (named_code, named_err)):
+            assert code == 1
+            assert f"framework/locked/a.md: unable to read file ({type(error).__name__}: made-up failure)" in err
+            assert "nothing is at this path" not in err
 
 
 @pytest.mark.skipif(
@@ -1677,7 +2068,8 @@ def test_a_tracked_file_a_sparse_checkout_leaves_out_is_refused(
 ) -> None:
     """S53-56: Git marks it skip-worktree and ``git status`` stays clean, so a walk that skipped it would pass unread.
 
-    A file deleted from the working tree, which ``git status`` shows, is still skipped (S53-37).
+    A file deleted from the working tree, which ``git status`` shows, is still skipped by a walk (S53-37). Named by
+    hand it is a path with nothing at it, and is refused as one; the sparse file keeps its own, more exact refusal.
     """
     root = make_repo(
         tmp_path, {"framework/a.md": "Clean.\n", "framework/b.md": "Visit Tokyo.\n", "framework/c.md": "Clean.\n"}
@@ -1685,10 +2077,14 @@ def test_a_tracked_file_a_sparse_checkout_leaves_out_is_refused(
     subprocess.run(["git", "-C", str(root), "update-index", "--skip-worktree", "framework/b.md"], check=True)
     (root / "framework" / "b.md").unlink()
     (root / "framework" / "c.md").unlink()
-    for args in (["--rule", "destination"], ["--rule", "destination", "--", "framework/b.md", "framework/c.md"]):
-        assert hook.main(args, root=root) == 1
-        err = capsys.readouterr().err
-        assert "framework/b.md (" + hook.NOT_CHECKED_OUT + ")" in err and "framework/c.md" not in err
+    assert hook.main(["--rule", "destination"], root=root) == 1
+    err = capsys.readouterr().err
+    assert "framework/b.md (" + hook.NOT_CHECKED_OUT + ")" in err and "framework/c.md" not in err
+    assert hook.main(["--rule", "destination", "--", "framework/b.md", "framework/c.md"], root=root) == 1
+    err = capsys.readouterr().err
+    assert "framework/b.md (" + hook.NOT_CHECKED_OUT + ")" in err
+    assert "framework/b.md: nothing is at this path" not in err
+    assert "framework/c.md: nothing is at this path" in err
     subprocess.run(["git", "-C", str(root), "update-index", "--no-skip-worktree", "framework/b.md"], check=True)
     assert hook.main(["--rule", "destination"], root=root) == 0, "control: a plain deletion is skipped"
 
@@ -1817,14 +2213,23 @@ def test_pre_commit_passes_each_scan_exactly_the_paths_its_rule_reads(
 
 
 @pytest.mark.parametrize(
-    "path", [".github/scripts/check-leaks.py", "tests/test_check_leaks.py", "docs/spec/specification.md", STYLE_LAW]
+    "path",
+    [
+        ".github/scripts/check-leaks.py",
+        "tests/test_check_leaks.py",
+        "docs/spec/specification.md",
+        STYLE_LAW,
+        "destinations/japan/README.md",
+    ],
 )
 def test_the_unit_tests_rerun_when_a_file_they_read_changes(path: str) -> None:
-    """The suite reads the design record and the style law as sources, so a change to either reruns it."""
+    """The suite reads the design record, the style law and each pack's list of names as sources, so a change
+    to any of them reruns it."""
     files = hook_pattern(hook_block("check-leaks-tests"), "files")
     assert files is not None
     assert re.search(files, path) is not None
-    assert re.search(files, "framework/docs/another.md") is None, "control: another file does not"
+    for other in ("framework/docs/another.md", "destinations/japan/reference/places.md", "destinations/README.md"):
+        assert re.search(files, other) is None, "control: another file does not"
 
 
 def test_the_destination_rule_never_prints_a_family_value(
