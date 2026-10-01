@@ -6,11 +6,11 @@
 #
 # Purpose: Enforce Markdown formatting, nested Markdown linting,
 # offline repository-local link validation, the curriculum's page gates
-# (reading level, session structure, trope density), and the toolchain-EOL
-# regression test across the repository, and, on pull requests, the
-# `Last Updated` bump on every changed Markdown file that carries the metadata
-# header block and a report of each changed child-facing page whose reading
-# grade rose
+# (reading level, session structure, trope density, the routing mirror), and
+# the toolchain-EOL regression test across the repository, and, on pull
+# requests, the `Last Updated` bump on every changed Markdown file that
+# carries the metadata header block and a report of each changed
+# child-facing page whose reading grade rose
 # Runs on: push and pull_request events (the Last Updated and reading-grade
 # jobs: pull_request only)
 
@@ -203,6 +203,19 @@ jobs:
         continue-on-error: true
         run: pytest tests/test_required_wording.py -v
 
+      # The routing mirror in framework/cross_reference_map.md copies two
+      # tables of the routing contract each destination pack carries. This
+      # suite compares the copy with every pack's contract, row for row. It
+      # reads both pages through markdown-it, from the packages `npm ci`
+      # installs above, and fails if they are missing.
+      - name: Check the routing mirror
+        id: test-routing-mirror
+        if: >-
+          hashFiles('tests/test_routing_mirror.py') != '' &&
+          hashFiles('tests/_pytest_compat.py') != ''
+        continue-on-error: true
+        run: pytest tests/test_routing_mirror.py -v
+
       # The trope-density gate holds every page under framework/ and
       # destinations/, and the root README and GETTING_STARTED, to the style
       # law's spaced-dash and `real` caps, its child-text bans and the
@@ -244,7 +257,8 @@ jobs:
       # `continue-on-error` for the
       # checks above to run, and its own failure fails the job. The scan
       # asserts that the three hook suites above, the recount's suite, the
-      # required-wording suite and the trope-density suite are present, so
+      # required-wording suite, the routing-mirror suite and the trope-density
+      # suite are present, so
       # their own steps keep their guards: deleting or renaming one fails
       # this step. It reads Markdown through markdown-it, from
       # the packages `npm ci` installs above, and fails if they are missing.
@@ -267,6 +281,7 @@ jobs:
           steps.test-placeholders.outcome == 'failure' ||
           steps.test-x-not-y.outcome == 'failure' ||
           steps.test-required-wording.outcome == 'failure' ||
+          steps.test-routing-mirror.outcome == 'failure' ||
           steps.test-trope-density.outcome == 'failure' ||
           steps.lint-trope-density.outcome == 'failure'
         run: |

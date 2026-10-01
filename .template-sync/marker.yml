@@ -420,8 +420,9 @@ template_sync:
         PyYAML directly, with its comment, because this repository ships no
         Python package metadata; the steps for the readability,
         session-structure, placeholder-hook, `X, not Y`, required-wording,
-        local-only-exclusion, trope-density and self-containment checks and
-        their suites; the checkout's full-history fetch that the
+        routing-mirror, local-only-exclusion, trope-density and
+        self-containment checks and their suites; the checkout's full-history
+        fetch that the
         self-containment scan needs; the result step's list of those steps; and
         the `last-updated` and `reading-grade-change` jobs, with their SHA
         pins. No template-sync block wraps the self-containment step or the
@@ -552,6 +553,13 @@ template_sync:
         step with their templates; it matches the tests/*.py rule, which maps
         to the excluded python module. No upstream file has this path.
       default_decision: SKIP
+    - path: tests/test_routing_mirror.py
+      reason: >-
+        Downstream-only gate suite that compares the routing mirror in
+        framework/cross_reference_map.md with each destination pack's routing
+        contract; it matches the tests/*.py rule, which maps to the excluded
+        python module. No upstream file has this path.
+      default_decision: SKIP
     - path: tests/test_self_contained_references.py
       reason: >-
         Downstream-only gate suite for the self-containment scan; it matches
@@ -637,6 +645,11 @@ template_sync:
         Downstream-owned Node program through which the self-containment scan,
         tests/test_self_contained_references.py, reads Markdown as markdown-it
         prints it.
+    - path: tests/markdown_tables.mjs
+      reason: >-
+        Downstream-owned Node program through which the routing-mirror suite,
+        tests/test_routing_mirror.py, reads each page's headings and tables as
+        markdown-it reads them.
     - path: tests/fixtures/self_contained_references/
       reason: >-
         Downstream-owned fixtures of the self-containment scan,
