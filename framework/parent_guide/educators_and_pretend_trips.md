@@ -95,8 +95,8 @@ With those rules and the ones above, the tables below list every session with mo
 | 15 | The teacher names a good first city, as the page asks a grown-up to |
 | 21 | Runs as written, with the pretend band and the poll answers from Session 03 |
 | 33 | The teacher gives the room count, and says whether prices are per room or per person |
-| 44 | The teacher chooses the special pick with the student and checks its three limits: the pretend band, whether it can be booked, and whether it suits every pretend traveler. The teacher initials it on the My Calls page. The student may bring research to the checks |
-| 53 | The student hands the plan to the teacher, and skips the line about the "if I get separated" card |
+| 44 | The student chooses the special pick with the teacher, who checks its three limits: the pretend band, whether it can be booked, and whether it suits every pretend traveler. The teacher initials it on the My Calls page. The student may bring research to the checks |
+| 53 | The student hands the plan to the teacher, and skips the line about the "if I get separated" card. For question 6, the student names what the pretend party's grown-ups would take over. At the handoff, the teacher says nobody books this plan. In the closing words the Parent Notes give, say "a mini-plan a family could use" (or "a full trip plan a family could use") |
 
 ### Past First Taste
 

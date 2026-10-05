@@ -19809,6 +19809,11 @@
       "judgment": "no",
       "reason": "a table cell with a reason; not the banned shape"
     },
+    "banned|At the handoff, the teacher says nobody books this plan. → In the closing words the Parent Notes give, say \"a mini-plan a family could use\" (or \"a full trip plan a family could use\")|1": {
+      "line": 99,
+      "judgment": "no",
+      "reason": "a table cell giving the wording to say; not the banned shape, since neither sentence says what the plan is not and then what it is"
+    },
     "banned|The watchlist is never acted on|1": {
       "line": 109,
       "judgment": "no",
