@@ -13,6 +13,8 @@ That banner is the whole spirit of this project: your child learns the **[Verify
 
 A set of Markdown worksheets ("sessions") a child fills in to plan a real family trip to Japan -- and, along the way, to practice executive-function skills. **It works in a browser or on paper:** read the sessions on GitHub, print them, or copy them into Google Docs and work in a binder.
 
+Running it with a class, a library group or a co-op, or at home with a trip nobody will book? [Educators and pretend trips](framework/parent_guide/educators_and_pretend_trips.md) says what to set up and what changes.
+
 ## Start here (parents)
 
 1. Read the [parent quick-start](framework/parent_guide/README.md): three short must-reads.

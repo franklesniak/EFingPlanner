@@ -11,7 +11,7 @@ You do not have to read all of this before you start. This page is the quick-sta
 <!-- density-exempt: X, not Y -- the spec's most important rule for this page, in its bold wording in the spec's Parent Quick-Start: a rule about what counts, where the relationship outranks the project and pausing, shrinking or stopping are successes -->
 And the most important rule: **this is meant to be a positive experience you share. If it ever becomes a source of conflict, the relationship matters more than the project.** Pausing, shrinking to a short First Taste, or stopping are all successes, not failures.
 
-*New to the term "executive function"? It is the set of brain skills for getting started, sticking with a task, knowing when to stop, staying organized, and being flexible. This project builds them by having your child plan a real trip. Read [what executive function is](what_is_executive_function.md) for the one-page version.*
+*New to the term "executive function"? It is the set of brain skills for getting started, sticking with a task, knowing when to stop, staying organized, and being flexible. Every child is still building them at this age, whether or not planning comes easily. This project builds them by having your child plan a real trip. Read [what executive function is](what_is_executive_function.md) for the one-page version.*
 
 ## The three must-reads
 
@@ -33,6 +33,7 @@ You do not need these at the start. Each one is written for the moment its task 
 | When anything needs booking | [Booking guidance](booking_guidance.md), order, long leads, and what your child hands you |
 | Passports, insurance, and the rest of the adult list | [Adult-only logistics](adult_only_logistics.md) |
 | Before the trip, and for the separation plan | [Safety and emergency guidance](safety_emergency_guidance.md) |
+| You run it with a class or a group, as a pretend trip, or want to log it as schoolwork | [Educators and pretend trips](educators_and_pretend_trips.md), with the setup, the privacy rules for a group, and the subjects the project touches |
 
 ## Is this realistic for me right now
 

@@ -31,7 +31,7 @@ Start with the adult-only [Session 00: Parent Setup](sessions/phase_00_setup/00_
 
 Print each session as you reach it rather than the whole set at once.
 
-The session titles keep the names the project's original design record gave them. They expect several cities to compare, as in Deep-Dive City A, and a season to choose, as in Checkpoint 1 Season Recommendation. If your dates are already booked, Sessions 12 and 14 turn the season choice into a season confirmation. A trip to one city or one base still researches places to visit, and [Checkpoint 2](sessions/phase_03_choose_places/22_checkpoint_2_city_shortlist.md) lets the child keep one base.
+The session titles keep the names the project's original design record gave them. They expect several cities to compare, as in Deep-Dive City A, and a season to choose, as in Checkpoint 1 Season Recommendation. If your dates are already booked, Sessions 12 and 14 turn the season choice into a season confirmation. A trip to one city or one base still researches places to visit, and [Checkpoint 2](sessions/phase_03_choose_places/22_checkpoint_2_city_shortlist.md) lets the child keep one base. A pretend trip, such as a class project where nothing gets booked, is a shape too: [educators and pretend trips](parent_guide/educators_and_pretend_trips.md) says what changes.
 
 ## Later: the next trip to the same place
 

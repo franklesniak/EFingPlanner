@@ -2,7 +2,7 @@
 
 # Differentiation (Designing for the Planner Who Finds Planning Hard)
 
-This project is built for the child who finds planning hard, so the moves on this page are everyday tools: reach for them whenever the defaults are still too much. Turn here whenever a session is a struggle. (For your own capacity, see Low-Bandwidth Parent Mode in [time and effort](time_and_effort.md).)
+This project was designed with the child who finds planning hard in mind, and that design helps every child. The moves on this page are everyday tools: reach for them whenever the defaults are still too much. Turn here whenever a session is a struggle. (For your own capacity, see Low-Bandwidth Parent Mode in [time and effort](time_and_effort.md).)
 
 ## Concrete moves
 
