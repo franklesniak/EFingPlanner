@@ -55,7 +55,8 @@ A teacher and classmates see this work, so the home rules on [privacy and safety
 
 - **Pretend travelers only.** Every profile, interview and poll answer is about a pretend traveler, and that includes the planner's own profile in Session 02. A student may add their own interests there.
 - **A student's own details stay off the pages.** Leave every student's own relatives off the pages, along with any student's own health, sensory, stamina, food or access needs.
-- **Names, addresses and photos.** Keep every name off the pages except the student's own. Leave addresses and birthdates off too, and never post a photo of a filled page.
+- **Names, addresses and photos.** Leave off the names of classmates, relatives and anyone else a student knows, along with home addresses and birthdates. Never post a photo of a filled page.
+- **Source details.** The Source Log still records each source's title, author or organization, and web address, as Sessions 04 and 06 ask. A person who is a source is written by their job, as the [citation style](../docs/citation_style.md#person) says.
 - **The "if I get separated" card.** Skip it. It holds where a family stays and a parent's phone number, and a group should collect neither. Sessions 49, 50 and 53 mention it.
 - **School rules.** Follow the school's own rules for research online, video, student records and any AI tool.
 
@@ -94,7 +95,7 @@ With those rules and the ones above, the tables below list every session with mo
 | 15 | The teacher names a good first city, as the page asks a grown-up to |
 | 21 | Runs as written, with the pretend band and the poll answers from Session 03 |
 | 33 | The teacher gives the room count, and says whether prices are per room or per person |
-| 44 | The teacher initials the special pick on the My Calls page. Its three limits stay checks the student researches: the band, whether it can be booked, and whether it suits every traveler |
+| 44 | The teacher chooses the special pick with the student and checks its three limits: the pretend band, whether it can be booked, and whether it suits every pretend traveler. The teacher initials it on the My Calls page. The student may bring research to the checks |
 | 53 | The student hands the plan to the teacher, and skips the line about the "if I get separated" card |
 
 ### Past First Taste
@@ -116,7 +117,7 @@ With those rules and the ones above, the tables below list every session with mo
 
 ## Pacing
 
-First Taste is 13 sessions of 20-30 minutes each, plus a 20-40 minute review at Checkpoint 1. At 2-4 sessions a week, it fills a unit of roughly 3-7 weeks, and it ends at a complete mini-plan. The Core Finish Line takes roughly 3-4 months at the same pace, which suits a semester-long project. [Time and effort](time_and_effort.md) has the estimates for every path.
+First Taste has 13 numbered sessions of 20-30 minutes each, plus a 20-40 minute review at Checkpoint 1. Session 15's second city card can take a sitting of its own, and a group that chose AI adds Session 09. So plan on 13 to 15 sittings. At 2-4 sittings a week, that is roughly 3-8 weeks, and it ends at a complete mini-plan. The Core Finish Line takes roughly 3-4 months at the same pace, which suits a semester-long project. [Time and effort](time_and_effort.md) has the family estimates for every path.
 
 ## Cross-curricular ties
 

@@ -19664,218 +19664,243 @@
       "judgment": "no",
       "reason": "a list item's label"
     },
-    "split|Names, addresses and photos. → Keep every name off the pages except the student's own.|1": {
+    "split|Names, addresses and photos. → Leave off the names of classmates, relatives and anyone else a student knows, along with home addresses and birthdates.|1": {
       "line": 58,
       "judgment": "no",
-      "reason": "a privacy rule with its exception"
+      "reason": "a privacy prohibition under its label; no claim with a rejected alternative"
     },
-    "device|Leave addresses and birthdates off too, and never post a photo of a filled page.|1": {
+    "device|Leave off the names of classmates, relatives and anyone else a student knows, along with home addresses and birthdates. → Never post a photo of a filled page.|1": {
       "line": 58,
       "judgment": "no",
-      "reason": "two prohibitions joined; no claim with a rejected alternative"
+      "reason": "a second prohibition after a prohibition; it recasts nothing and rejects no alternative to a claim"
+    },
+    "device|Source details.|1": {
+      "line": 59,
+      "judgment": "no",
+      "reason": "a list item's label"
+    },
+    "split|Source details. → The Source Log still records each source's title, author or organization, and web address, as Sessions 04 and 06 ask.|1": {
+      "line": 59,
+      "judgment": "no",
+      "reason": "a fact: what the Source Log still records"
+    },
+    "split|The Source Log still records each source's title, author or organization, and web address, as Sessions 04 and 06 ask. → A person who is a source is written by their job, as the citation style says.|1": {
+      "line": 59,
+      "judgment": "no",
+      "reason": "a rule for writing a person who is a source; it names no rejected alternative"
     },
     "device|The \"if I get separated\" card.|1": {
-      "line": 59,
+      "line": 60,
       "judgment": "no",
       "reason": "a list item's label (a quoted card name)"
     },
     "split|The \"if I get separated\" card. → Skip it.|1": {
-      "line": 59,
+      "line": 60,
       "judgment": "no",
       "reason": "an instruction"
     },
     "split|Skip it. → It holds where a family stays and a parent's phone number, and a group should collect neither.|1": {
-      "line": 59,
+      "line": 60,
       "judgment": "no",
       "reason": "a reason"
     },
     "split|It holds where a family stays and a parent's phone number, and a group should collect neither. → Sessions 49, 50 and 53 mention it.|1": {
-      "line": 59,
+      "line": 60,
       "judgment": "no",
       "reason": "a fact"
     },
     "device|School rules.|1": {
-      "line": 60,
+      "line": 61,
       "judgment": "no",
       "reason": "a list item's label"
     },
     "split|School rules. → Follow the school's own rules for research online, video, student records and any AI tool.|1": {
-      "line": 60,
+      "line": 61,
       "judgment": "no",
       "reason": "an instruction"
     },
     "device|The teacher is the grown-up on every page.|1": {
-      "line": 64,
+      "line": 65,
       "judgment": "no",
       "reason": "a role mapping"
     },
     "split|The teacher is the grown-up on every page. → Where a page asks a grown-up for a fact or a choice, the teacher gives one for the pretend family.|1": {
-      "line": 64,
+      "line": 65,
       "judgment": "no",
       "reason": "a conditional role rule"
     },
     "split|Where a page asks a grown-up for a fact or a choice, the teacher gives one for the pretend family. → Where a page says \"your family\", read it as the pretend travel party.|1": {
-      "line": 64,
+      "line": 65,
       "judgment": "no",
       "reason": "a reading instruction"
     },
     "device|Checkpoint 1 (Session 14) is the one checkpoint on First Taste.|1": {
-      "line": 66,
+      "line": 67,
       "judgment": "no",
       "reason": "a fact"
     },
     "split|Checkpoint 1 (Session 14) is the one checkpoint on First Taste. → It is finished once the student has shared it with the teacher, who fills in the parent review form for the pretend family.|1": {
-      "line": 66,
+      "line": 67,
       "judgment": "no",
       "reason": "a condition (when it is finished)"
     },
     "device|Checkpoints 2 to 5 are teacher reviews with the same four decisions a family uses: Approved, Approved with changes, Needs more research, and Park this decision for later.|1": {
-      "line": 67,
+      "line": 68,
       "judgment": "no",
       "reason": "a fact listing the four decisions"
     },
     "split|Checkpoints 2 to 5 are teacher reviews with the same four decisions a family uses: Approved, Approved with changes, Needs more research, and Park this decision for later. → Review checkpoints explains each one.|1": {
-      "line": 67,
+      "line": 68,
       "judgment": "no",
       "reason": "a navigation pointer"
     },
     "device|Checkpoint 6, the family decision meeting in Session 52, becomes a presentation to the class or to the teacher.|1": {
-      "line": 68,
+      "line": 69,
       "judgment": "no",
       "reason": "a fact of what the checkpoint becomes"
     },
     "device|Session 53 ends with the student handing the finished plan to the teacher.|1": {
-      "line": 69,
+      "line": 70,
       "judgment": "no",
       "reason": "a fact"
     },
     "device|The student's own calls hold inside the pretend plan: the one special pick, the must-do list and the order of the day.|1": {
-      "line": 70,
+      "line": 71,
       "judgment": "no",
       "reason": "a fact listing the student's calls"
     },
     "split|The student's own calls hold inside the pretend plan: the one special pick, the must-do list and the order of the day. → What I decide draws that line, and the teacher honors it at every review, as a family would.|1": {
-      "line": 70,
+      "line": 71,
       "judgment": "no",
       "reason": "a fact; What I decide is a page title"
     },
     "device|Two rules hold on every page:|1": {
-      "line": 74,
+      "line": 75,
       "judgment": "no",
       "reason": "a lead-in to a list"
     },
     "device|Skip every line for a family whose dates are already booked.|1": {
-      "line": 76,
+      "line": 77,
       "judgment": "no",
       "reason": "an instruction (a skip for a condition)"
     },
     "split|Skip every line for a family whose dates are already booked. → A pretend trip keeps its dates open.|1": {
-      "line": 76,
+      "line": 77,
       "judgment": "no",
       "reason": "a reason for the skip"
     },
     "device|Stop every booking step at the research, because nothing gets booked, bought or reserved.|1": {
-      "line": 77,
+      "line": 78,
       "judgment": "no",
       "reason": "an instruction with its reason"
     },
     "device|With those rules and the ones above, the tables below list every session with more to change.|1": {
-      "line": 79,
+      "line": 80,
       "judgment": "no",
       "reason": "a fact pointing to the tables"
     },
     "split|With those rules and the ones above, the tables below list every session with more to change. → Every other session runs as written.|1": {
-      "line": 79,
+      "line": 80,
       "judgment": "no",
       "reason": "a scope fact"
     },
     "banned|A class vote cannot stand in, because Sessions 21, 22 and 52 read the answers one traveler at a time|1": {
-      "line": 87,
+      "line": 88,
       "judgment": "no",
       "reason": "a table cell with a reason; not the banned shape"
     },
     "banned|The watchlist is never acted on|1": {
-      "line": 108,
+      "line": 109,
       "judgment": "no",
       "reason": "a table cell; not the banned shape"
     },
     "banned|Nothing is booked|1": {
-      "line": 114,
+      "line": 115,
       "judgment": "no",
       "reason": "a table cell; not the banned shape"
     },
-    "device|First Taste is 13 sessions of 20-30 minutes each, plus a 20-40 minute review at Checkpoint 1.|1": {
-      "line": 119,
+    "device|First Taste has 13 numbered sessions of 20-30 minutes each, plus a 20-40 minute review at Checkpoint 1.|1": {
+      "line": 120,
       "judgment": "no",
       "reason": "a fact of time"
     },
-    "split|First Taste is 13 sessions of 20-30 minutes each, plus a 20-40 minute review at Checkpoint 1. → At 2-4 sessions a week, it fills a unit of roughly 3-7 weeks, and it ends at a complete mini-plan.|1": {
-      "line": 119,
+    "split|First Taste has 13 numbered sessions of 20-30 minutes each, plus a 20-40 minute review at Checkpoint 1. → Session 15's second city card can take a sitting of its own, and a group that chose AI adds Session 09.|1": {
+      "line": 120,
+      "judgment": "no",
+      "reason": "a fact with a condition (what can add a sitting)"
+    },
+    "split|Session 15's second city card can take a sitting of its own, and a group that chose AI adds Session 09. → So plan on 13 to 15 sittings.|1": {
+      "line": 120,
+      "judgment": "no",
+      "reason": "an instruction with a range"
+    },
+    "split|So plan on 13 to 15 sittings. → At 2-4 sittings a week, that is roughly 3-8 weeks, and it ends at a complete mini-plan.|1": {
+      "line": 120,
       "judgment": "no",
       "reason": "a fact of time"
     },
-    "split|At 2-4 sessions a week, it fills a unit of roughly 3-7 weeks, and it ends at a complete mini-plan. → The Core Finish Line takes roughly 3-4 months at the same pace, which suits a semester-long project.|1": {
-      "line": 119,
+    "split|At 2-4 sittings a week, that is roughly 3-8 weeks, and it ends at a complete mini-plan. → The Core Finish Line takes roughly 3-4 months at the same pace, which suits a semester-long project.|1": {
+      "line": 120,
       "judgment": "no",
       "reason": "a fact of time"
     },
-    "split|The Core Finish Line takes roughly 3-4 months at the same pace, which suits a semester-long project. → Time and effort has the estimates for every path.|1": {
-      "line": 119,
+    "split|The Core Finish Line takes roughly 3-4 months at the same pace, which suits a semester-long project. → Time and effort has the family estimates for every path.|1": {
+      "line": 120,
       "judgment": "no",
       "reason": "a navigation pointer"
     },
     "device|The project touches several school subjects, so a teacher or a homeschool parent can log it as schoolwork, whether the trip is pretend or booked.|1": {
-      "line": 123,
+      "line": 124,
       "judgment": "no",
       "reason": "a fact with the idiom \"whether ... or\""
     },
     "split|The project touches several school subjects, so a teacher or a homeschool parent can log it as schoolwork, whether the trip is pretend or booked. → Geography: regions, maps and routes.|1": {
-      "line": 123,
+      "line": 124,
       "judgment": "no",
       "reason": "a field label with a list"
     },
     "split|Geography: regions, maps and routes. → Math: budget estimates, currency and unit conversions, and estimating time and cost.|1": {
-      "line": 123,
+      "line": 124,
       "judgment": "no",
       "reason": "a field label with a list"
     },
     "split|Math: budget estimates, currency and unit conversions, and estimating time and cost. → Reading and writing: research, note-taking, a recommendation and the final presentation.|1": {
-      "line": 123,
+      "line": 124,
       "judgment": "no",
       "reason": "a field label with a list"
     },
     "split|Reading and writing: research, note-taking, a recommendation and the final presentation. → Executive-function and study skills: planning, prioritizing and self-monitoring.|1": {
-      "line": 123,
+      "line": 124,
       "judgment": "no",
       "reason": "a field label with a list"
     },
     "split|Executive-function and study skills: planning, prioritizing and self-monitoring. → Cultural studies: etiquette, language basics and history.|1": {
-      "line": 123,
+      "line": 124,
       "judgment": "no",
       "reason": "a field label with a list"
     },
     "split|Cultural studies: etiquette, language basics and history. → This page maps no standards, because standards vary by state and country.|1": {
-      "line": 123,
+      "line": 124,
       "judgment": "no",
       "reason": "a limit with its reason"
     },
     "split|No child has piloted this curriculum yet, and no class has either. → The pilot flag in time and effort and its signals were written for a family, so treat every time estimate here as designed intent.|1": {
-      "line": 127,
+      "line": 128,
       "judgment": "no",
       "reason": "a status; it rejects no alternative"
     },
     "device|The pilot flag in time and effort and its signals were written for a family, so treat every time estimate here as designed intent.|1": {
-      "line": 127,
+      "line": 128,
       "judgment": "no",
       "reason": "a caveat with an instruction"
     },
     "split|The pilot flag in time and effort and its signals were written for a family, so treat every time estimate here as designed intent. → If you run a pretend trip with a group, share how it went in the project's Discussions.|1": {
-      "line": 127,
+      "line": 128,
       "judgment": "no",
       "reason": "a conditional instruction"
     },
     "split|If you run a pretend trip with a group, share how it went in the project's Discussions. → Discussions are public, so write about the group in general terms.|1": {
-      "line": 127,
+      "line": 128,
       "judgment": "no",
       "reason": "a reason with an instruction (write in general terms); no alternative is named"
     }
