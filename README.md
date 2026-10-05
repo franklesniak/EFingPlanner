@@ -11,6 +11,14 @@
 
 The trip is the hook; the subject is *executive function*: getting started, planning, tracking sources, making trade-offs, and knowing when to stop. A child works through short Markdown "sessions" mostly on their own, with light adult coaching, and comes out having planned a trip and practiced the skills that make any large project less overwhelming.
 
+## Who this is for
+
+Any child of roughly 9-11 who reads English, or has someone to read it to them, and who has not yet learned how to plan something this big. Planning a big project is a skill a child learns by doing one, and this is a safe one to learn on.
+
+- **A child who has simply never done it.** The default path is written for them. Every session starts small, says what to do next, and says when to stop.
+- **A child who finds planning hard.** The defaults were designed with this child in mind, and that design helps every child. When the defaults are still too much, the [differentiation guide](framework/parent_guide/differentiation.md) has the lighter moves, with notes for specific needs such as ADHD, dyslexia, anxiety and autism.
+- **An eager, fast child.** High-Engagement Mode in the same guide removes the brakes.
+
 ## What your child produces
 
 A thoughtful, sourced mini-plan the family can use: a when-to-go call, one or two cities, a short must-see list, a rough budget check, and their own special pick, plus a Source Log and a decision log showing their reasoning. Adults review, adjust, verify, and do the booking.
@@ -23,13 +31,15 @@ One [destination pack](destinations/japan/README.md) ships with this repository.
 
 ## What success looks like
 
-**For the child this is designed for, finishing the short First Taste path *is* the expected, complete success.** The binder and the skills are real either way. Continuing to the Core Finish Line (a full, usable plan) or the full program is a bonus, not "the real version." Stopping at any checkpoint is also a success.
+**For most children, and above all for a child who finds planning hard, finishing the short First Taste path *is* the expected, complete success.** The binder and the skills are real either way. Continuing to the Core Finish Line (a full, usable plan) or the full program is a bonus, not "the real version." Stopping at any checkpoint is also a success.
 
 Both ends are served: a stretched family can lighten the load (Low-Bandwidth Parent Mode in [time and effort](framework/parent_guide/time_and_effort.md)); an eager, capable child can go faster and deeper (High-Engagement Mode in the [differentiation guide](framework/parent_guide/differentiation.md)).
 
 ## How to use it
 
 This is a set of worksheets a child fills in. The normal way to use it is to **print the pages or copy them into Google Docs and work in a binder.** No software, Node, Python, or command line is needed. Git and GitHub are an optional storage choice for technical adults.
+
+Running it with a class or a group, or at home with a trip nobody will book? [Educators and pretend trips](framework/parent_guide/educators_and_pretend_trips.md) says what to set up and what changes.
 
 Quick-start:
 
@@ -183,4 +193,4 @@ The curriculum is complete. With release 1.0.0, the full set of sessions, templa
 
 The contents of this repository are licensed under **Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)**. See [LICENSE](LICENSE).
 
-**Educators and nonprofits:** classroom, school, library, homeschool-co-op, and nonprofit use is explicitly welcome. Most such use is already permitted by the license, and the author will grant a free license for good-faith educational use that falls outside it, on request via the contact links on the maintainer's public GitHub profile ([@franklesniak](https://github.com/franklesniak)). See [LICENSING.md](LICENSING.md) for details.
+**Educators and nonprofits:** classroom, school, library, homeschool-co-op, and nonprofit use is explicitly welcome. Most such use is already permitted by the license, and the author will grant a free license for good-faith educational use that falls outside it, on request via the contact links on the maintainer's public GitHub profile ([@franklesniak](https://github.com/franklesniak)). See [LICENSING.md](LICENSING.md) for details. To run it with a group, or as a pretend trip, see [educators and pretend trips](framework/parent_guide/educators_and_pretend_trips.md).

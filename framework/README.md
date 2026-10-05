@@ -19,7 +19,7 @@ Only the first two layers live in this repository. The third one is yours, and i
 
 ## Curriculum version
 
-**Curriculum version: 1.0.0.** What changed between revisions is in the [curriculum changelog](CHANGELOG.md).
+**Curriculum version: 1.1.0.** What changed between revisions is in the [curriculum changelog](CHANGELOG.md).
 
 <!-- density-exempt: X, not Y -- this is the which-is-which tag the batch 1 brief and the spec require wherever the two logs meet, a rule about telling two named logs apart, and it carries the privacy rule that a family's decision log is never committed -->
 

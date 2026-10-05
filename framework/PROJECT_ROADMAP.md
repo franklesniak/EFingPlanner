@@ -5,7 +5,7 @@
 
 This roadmap shows the paths through the project and where the honest stopping points are. There are three finish lines, and **each is a complete success**: the short **First Taste** path, the **Core Finish Line** (a usable plan), and the **full program**.
 
-For the child this project is designed for, **finishing First Taste is the expected, complete outcome** -- not a lesser starter. Continuing to the Core Finish Line or the full program is a bonus, and nothing done in First Taste is ever redone.
+For most children, and above all for a child who finds planning hard, **finishing First Taste is the expected, complete outcome** -- not a lesser starter. Continuing to the Core Finish Line or the full program is a bonus, and nothing done in First Taste is ever redone.
 
 > The [curriculum changelog](CHANGELOG.md) is the version history of these materials. It records what each release changed, and the checks still owed to a person.
 >
