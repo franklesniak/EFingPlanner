@@ -109,7 +109,7 @@ With those rules and the ones above, the tables below list every session with mo
 | 42 | Research only. The watchlist is never acted on |
 | 47 | The teacher decides whether the group does it, and may leave out any item, such as the note on shared baths. The quick sheet becomes a reference a pretend traveler could carry |
 | 48 | Runs as a pretend list |
-| 49 | Skip it, or do the research half only. Skip the "if I get separated" card |
+| 49 | Skip it, with its "if I get separated" card |
 | 50 | Skip the line about the card. Tab 1 holds the pretend setup pages |
 | 51 | The presentation is for the class or the teacher. A recorded video follows the school's media rules |
 | 52 | Checkpoint 6, as "Who does what" says. On the handoff list, the student names which grown-up in the pretend party would do each job. Nothing is booked |
