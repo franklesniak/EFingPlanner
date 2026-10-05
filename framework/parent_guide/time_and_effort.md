@@ -9,8 +9,10 @@ An honest look at what this costs you, so you can decide whether and when to sta
 At 2-4 sessions a week:
 
 - **First Taste** (the ~13-session mini-plan) takes roughly **3-7 weeks.**
-- The **Core Finish Line** (a full, usable plan at Checkpoint 5) takes roughly **3-4 months.**
-- The **full program** takes roughly **4-6 months.**
+- The **Core Finish Line** (41 numbered sessions to a full, usable plan at Checkpoint 5) takes roughly **3-6 months.**
+- The **full program** takes roughly **3-7 months.**
+
+The faster end of each range is 4 sessions a week, and the slower end is 2. Several sessions take more than one sitting, such as Session 41's day cards, and the ranges allow for them.
 
 Plan on about **1-2 hours of setup** up front, **more hands-on time in the first several weeks** (often 20-40 minutes of co-working per early session), then much lighter check-ins later. Every child is different, and exact travel dates can stay flexible until you book them.
 

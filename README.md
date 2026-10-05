@@ -13,7 +13,7 @@ The trip is the hook; the subject is *executive function*: getting started, plan
 
 ## Who this is for
 
-Any child of roughly 9-11 who has not yet learned how to plan something this big. Planning a big project is a skill a child learns by doing one, and this is a safe one to learn on.
+Any child of roughly 9-11 who reads English, or has someone to read it to them, and who has not yet learned how to plan something this big. Planning a big project is a skill a child learns by doing one, and this is a safe one to learn on.
 
 - **A child who has simply never done it.** The default path is written for them. Every session starts small, says what to do next, and says when to stop.
 - **A child who finds planning hard.** The defaults were designed with this child in mind, and that design helps every child. When the defaults are still too much, the [differentiation guide](framework/parent_guide/differentiation.md) has the lighter moves, with notes for specific needs such as ADHD, dyslexia, anxiety and autism.

@@ -96,7 +96,7 @@ With those rules and the ones above, the tables below list every session with mo
 | 21 | Runs as written, with the pretend band and the poll answers from Session 03 |
 | 33 | The teacher gives the room count, and says whether prices are per room or per person |
 | 44 | The student chooses the special pick with the teacher, who checks its three limits: the pretend band, whether it can be booked, and whether it suits every pretend traveler. The teacher initials it on the My Calls page. The student may bring research to the checks |
-| 53 | The student hands the plan to the teacher, and skips the line about the "if I get separated" card. For question 6, the student names what the pretend party's grown-ups would take over. At the handoff, the teacher says nobody books this plan. In the closing words the Parent Notes give, say "a mini-plan a family could use" (or "a full trip plan a family could use") |
+| 53 | The student hands the plan to the teacher, and skips the line about the "if I get separated" card. For question 6, the student names what the pretend party's grown-ups would take over. At the handoff, the teacher says nobody books this plan. In the closing words the Parent Notes give, say "a mini-plan a family could use" (or "a full trip plan a family could use"). Read the coaching guide's finish script and the final reflection page's last line the same way |
 
 ### Past First Taste
 
@@ -107,17 +107,17 @@ With those rules and the ones above, the tables below list every session with mo
 | 25 | Video research follows the school's video rules, with an adult alongside, as the session asks |
 | 28 to 45 | The teacher answers each question the pages give a grown-up, such as arrival and departure places, room counts, which meals are included, souvenir amounts, travel times and flight days |
 | 42 | Research only. The watchlist is never acted on |
-| 47 | The teacher decides whether the group does it, and may leave out any item, such as the note on shared baths |
+| 47 | The teacher decides whether the group does it, and may leave out any item, such as the note on shared baths. The quick sheet becomes a reference a pretend traveler could carry |
 | 48 | Runs as a pretend list |
 | 49 | Skip it, or do the research half only. Skip the "if I get separated" card |
 | 50 | Skip the line about the card. Tab 1 holds the pretend setup pages |
 | 51 | The presentation is for the class or the teacher. A recorded video follows the school's media rules |
-| 52 | Checkpoint 6, as "Who does what" says. On the handoff list, the student names which pretend traveler would do each job. Nothing is booked |
+| 52 | Checkpoint 6, as "Who does what" says. On the handoff list, the student names which grown-up in the pretend party would do each job. Nothing is booked |
 | 54 | Skip it |
 
 ## Pacing
 
-First Taste has 13 numbered sessions of 20-30 minutes each, plus a 20-40 minute review at Checkpoint 1. Session 15's second city card can take a sitting of its own, and a group that chose AI adds Session 09. So plan on 13 to 15 sittings. At 2-4 sittings a week, that is roughly 3-8 weeks, and it ends at a complete mini-plan. The Core Finish Line takes roughly 3-4 months at the same pace, which suits a semester-long project. [Time and effort](time_and_effort.md) has the family estimates for every path.
+First Taste has 13 numbered sessions of 20-30 minutes each, plus a 20-40 minute review at Checkpoint 1. Session 15's second city card can take a sitting of its own, and a group that chose AI adds Session 09. So plan on 13 to 15 sittings. At 2-4 sittings a week, that is roughly 3-8 weeks, and it ends at a complete mini-plan. For the Core Finish Line and the full program, [time and effort](time_and_effort.md) has the ranges for both paces.
 
 ## Cross-curricular ties
 
